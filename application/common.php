@@ -1,12 +1,34 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: 流年 <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
-// 应用公共文件
+/**
+ * 打印输出数据到文件
+ * @param mixed $data
+ * @param bool $replace
+ * @param string|null $pathname
+ */
+function p($data, $replace = false, $pathname = NULL) {
+    is_null($pathname) && $pathname = RUNTIME_PATH . date('Ymd') . '.txt';
+    $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, TRUE) : var_export($data, TRUE)) . "\n";
+    $replace ? file_put_contents($pathname, $str) : file_put_contents($pathname, $str, FILE_APPEND);
+}
+
+/**
+ * 安全URL编码
+ * @param array $data
+ * @return string
+ */
+function encode($data) {
+    return str_replace(array('+', '/', '='), array('-', '_', ''), base64_encode(serialize($data)));
+}
+
+/**
+ * 安全URL解码
+ * @param string $string
+ * @return string
+ */
+function decode($string) {
+    $data = str_replace(array('-', '_'), array('+', '/'), $string);
+    $mod4 = strlen($data) % 4;
+    ($mod4) && $data .= substr('====', $mod4);
+    return unserialize(base64_decode($data));
+}
