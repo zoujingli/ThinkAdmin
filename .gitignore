@@ -1,0 +1,50 @@
+.env
+.git
+.svn
+.idea
+.fleet
+.vscode
+.DS_Store
+
+/vendor
+/runtime
+/safefile
+/nbproject
+/composer.lock
+!composer.json
+
+### 屏蔽环境文件
+/404.html
+/.user.ini
+/index.html
+/public/upload
+/public/404.html
+/public/.htaccess
+/public/.user.ini
+/public/index.html
+/public/favicon.ico
+/database/sqlite.db
+
+### 屏蔽插件文件
+/app/admin
+/app/wechat
+
+### 屏蔽配置文件
+/config/app.php
+/config/cookie.php
+/config/lang.php
+/config/log.php
+/config/route.php
+/config/session.php
+/config/view.php
+
+/public/static/plugs
+/public/static/theme
+/public/static/admin.js
+/public/static/login.js
+
+### 屏蔽数据库脚本
+/database/migrations/*_install_*.php
+/database/migrations/*_upgrade_*.php
+!database/migrations/*_install_table.php
+!database/migrations/*_install_package.php
