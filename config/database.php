@@ -11,23 +11,23 @@
 
 return [
     // 数据库类型
-    'type'            => 'Sqlite',
+    'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '',
+    'hostname'        => 'data.cuci.cc',
     // 数据库名
-    'database'        => APP_PATH.'extra/sqlite.db',
+    'database'        => 'think.admin',
     // 用户名
-    'username'        => '',
+    'username'        => 'think.admin',
     // 密码
-    'password'        => '',
+    'password'        => 'think.admin',
     // 端口
-    'hostport'        => '',
+    'hostport'        => '3306',
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数
     'params'          => [],
     // 数据库编码默认采用utf8
-    'charset'         => 'utf8',
+    'charset'         => 'utf8mb4',
     // 数据库表前缀
     'prefix'          => '',
     // 数据库调试模式
