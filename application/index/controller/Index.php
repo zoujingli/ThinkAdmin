@@ -1,9 +1,15 @@
 <?php
 namespace app\index\controller;
 
-class Index {
+use think\Controller;
+use think\Db;
+
+class Index extends Controller {
 
     public function index() {
-        return '别着急，慢慢来！';
+        $version = Db::query('select version() as ver');
+        $version = array_pop($version);
+        $this->assign('mysql_ver', $version['ver']);
+        return view();
     }
 }
