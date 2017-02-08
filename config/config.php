@@ -126,7 +126,7 @@ return [
         // 模板后缀
         'view_suffix'  => 'html',
         // 模板文件名分隔符
-        'view_depr'    => DS,
+        'view_depr'    => '.',
         // 模板引擎普通标签开始标记
         'tpl_begin'    => '{',
         // 模板引擎普通标签结束标记
