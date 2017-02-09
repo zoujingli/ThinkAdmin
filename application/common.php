@@ -1,4 +1,7 @@
 <?php
+use think\Config;
+use Wechat\Loader;
+use Wechat\WechatReceive;
 
 /**
  * 打印输出数据到文件
@@ -10,6 +13,22 @@ function p($data, $replace = false, $pathname = NULL) {
     is_null($pathname) && $pathname = RUNTIME_PATH . date('Ymd') . '.txt';
     $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, TRUE) : var_export($data, TRUE)) . "\n";
     $replace ? file_put_contents($pathname, $str) : file_put_contents($pathname, $str, FILE_APPEND);
+}
+
+/**
+ * 获取微信操作对象
+ * @param string $type
+ * @return WechatReceive
+ */
+function & load_wechat($type = '') {
+    static $wechat = array();
+    $index = md5(strtolower($type));
+    if (!isset($wechat[$index])) {
+        $config = Config::get('wechat');
+        $config['cachepath'] = CACHE_PATH . 'wechat' . DS;
+        $wechat[$index] = &Loader::get($type, $config);
+    }
+    return $wechat[$index];
 }
 
 /**
