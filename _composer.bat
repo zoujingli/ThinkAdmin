@@ -5,3 +5,4 @@
 @composer update --profile --prefer-dist --optimize-autoloader
 @echo ========= 压缩并发布插件 =========
 @composer dump-autoload --optimize
+pause

@@ -218,17 +218,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.0.5",
-        "version_normalized": "5.0.5.0",
+        "version": "v5.0.6",
+        "version_normalized": "5.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "86cc9378a0c46e66dabed6681f8b8de758585ae1"
+            "reference": "a3a37e6cfad132d5b02ffff8f23a4abc565f7928"
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/top-think/framework/86cc9378a0c46e66dabed6681f8b8de758585ae1.zip",
-            "reference": "86cc9378a0c46e66dabed6681f8b8de758585ae1",
+            "url": "https://packagist.phpcomposer.com/files/top-think/framework/a3a37e6cfad132d5b02ffff8f23a4abc565f7928.zip",
+            "reference": "a3a37e6cfad132d5b02ffff8f23a4abc565f7928",
             "shasum": ""
         },
         "require": {
@@ -243,7 +243,7 @@
             "phpunit/phpunit": "4.8.*",
             "sebastian/phpcpd": "2.*"
         },
-        "time": "2017-01-23 05:59:21",
+        "time": "2017-02-07 09:39:59",
         "type": "think-framework",
         "installation-source": "dist",
         "autoload": {
@@ -345,17 +345,17 @@
     },
     {
         "name": "workerman/workerman",
-        "version": "v3.3.7",
-        "version_normalized": "3.3.7.0",
+        "version": "v3.3.8",
+        "version_normalized": "3.3.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/walkor/Workerman.git",
-            "reference": "d466c0f4b37c6cfb4f27c69b158175c7e7ccc24c"
+            "reference": "bbcfd9169cf6acd9d9866e17ed2f2189ee6d7f91"
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/walkor/Workerman/d466c0f4b37c6cfb4f27c69b158175c7e7ccc24c.zip",
-            "reference": "d466c0f4b37c6cfb4f27c69b158175c7e7ccc24c",
+            "url": "https://packagist.phpcomposer.com/files/walkor/Workerman/bbcfd9169cf6acd9d9866e17ed2f2189ee6d7f91.zip",
+            "reference": "bbcfd9169cf6acd9d9866e17ed2f2189ee6d7f91",
             "shasum": ""
         },
         "require": {
@@ -364,7 +364,7 @@
         "suggest": {
             "ext-event": "For better performance."
         },
-        "time": "2017-02-02 02:52:58",
+        "time": "2017-02-09 08:07:55",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

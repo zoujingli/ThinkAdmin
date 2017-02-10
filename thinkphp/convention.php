@@ -107,6 +107,8 @@ return [
     'request_cache'          => false,
     // 请求缓存有效期
     'request_cache_expire'   => null,
+    // 全局请求缓存排除规则
+    'request_cache_except'   => [],
 
     // +----------------------------------------------------------------------
     // | 模板设置
@@ -272,10 +274,6 @@ return [
         'datetime_format' => 'Y-m-d H:i:s',
         // 是否需要进行SQL性能分析
         'sql_explain'     => false,
-        // Builder类
-        'builder'         => '',
-        // Query类
-        'query'           => '\\think\\db\\Query',
     ],
 
     //分页配置

@@ -2,3 +2,4 @@
 .idea
 .svn
 runtime
+composer.lock
