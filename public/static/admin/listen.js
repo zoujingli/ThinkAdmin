@@ -1,0 +1,198 @@
+define(['jquery', 'admin.plugs'], function () {
+
+    /** 事件委派 */
+    $('body').on('click', '[data-load]', function () {
+        $.form.load($(this).attr('data-load'), {}, 'GET', null, true, $(this).attr('data-tips'));
+    }).on('click', '[data-modal]', function () {
+        return $.form.modal($(this).attr('data-modal'), 'open_type=modal');
+    }).on('click', '[data-open]', function () {
+        var url = $(this).attr('data-open');
+        window.location.href = '#' + parseUri(url, this);
+    }).on('click', 'a[data-page-href]', function () {
+        window.location.href = '#' + parseUri(this.href, this);
+    }).on('submit', 'form[data-form-href]', function () {
+        var split = this.action.indexOf('?') === -1 ? '?' : '&';
+        window.location.href = '#' + parseUri(this.action + split + $(this).serialize());
+    }).on('click', '[data-back]', function () {
+        window.history.back();
+    }).on('click', '[data-reload]', function () {
+        $.form.reload();
+    }).on('click', '[data-check-target]', function () {
+        var checked = !!this.checked;
+        $($(this).attr('data-check-target')).map(function () {
+            this.checked = checked;
+        });
+    }).on('click', '[data-update]', function () {
+        var id = $(this).attr('data-update') || (function () {
+            var data = [];
+            return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
+                (this.checked) && data.push(this.value);
+            }), data.join(',');
+        }).call(this);
+        if (id.length < 1) {
+            return $.msg.tips('请选择需要操作的数据！');
+        }
+        var action = $(this).attr('data-action') || $(this).parents('[data-location]').attr('data-location');
+        var value = $(this).attr('data-value') || 0, field = $(this).attr('data-field') || 'status';
+        $.msg.confirm('确定要操作这些数据吗？', function () {
+            $.form.load(action, {field: field, value: value, id: id}, 'POST');
+        });
+    }).on('click', '[data-href]', function () {
+        var href = $(this).attr('data-href');
+        if (href && href.indexOf('#') !== 0) {
+            window.location.href = href;
+        }
+    }).on('click', '[data-file]', function () {
+        var type = $(this).attr('data-type') || 'image'; //jpg,png
+        var field = $(this).attr('data-field') || type;
+        var method = $(this).attr('data-one') ? 'one' : 'index';
+        var title = $(this).attr('data-title') || '文件管理';
+        var uptype = $(this).attr('data-uptype') || 'qiniu';
+        var url = window.APP_URL + '/plugs/file/' + method + '.html?uptype=' + uptype + '&type=' + type + '&field=' + field;
+        $.form.iframe(url, title || '文件管理');
+    }).on('click', '[data-iframe]', function () {
+        $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口');
+    }).on('click', '[data-icon]', function () {
+        var field = $(this).attr('data-field') || 'iconv';
+        var url = window.APP_URL + '/plugs/icon.html?field=' + field;
+        $.form.iframe(url, '图标选择');
+    }).on('click', '[data-tips-image]', function () {
+        var src = this.getAttribute('data-tips-image') || this.src, img = new Image();
+        var imgWidth = this.getAttribute('data-width') || '480px';
+        img.onload = function () {
+            layer.open({
+                type: 1, area: imgWidth, title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true,
+                content: $(img).appendTo('body').css({background: '#fff', width: imgWidth, height: 'auto'}),
+                end: function () {
+                    $(img).remove();
+                }
+            });
+        };
+        img.src = src;
+    }).on('mouseenter', '[data-tips-text]', function () {
+        var text = $(this).attr('data-tips-text');
+        var placement = $(this).attr('data-tips-placement') || 'auto';
+        $(this).tooltip({title: text, placement: placement}).tooltip('show');
+    }).on('click', '[data-phone-view]', function () {
+        var src = this.getAttribute('data-phone-view') || this.href;
+        var $container = $('<div class="phone-container hide"><img src="http://static.cdn.cuci.cc/mobile_head.png" style="width:100%"/><div class="phone-screen"><iframe frameborder="0" marginheight="0" marginwidth="0"></iframe></div></div>').appendTo('body');
+        var $iframe = $container.find('iframe').attr('src', src);
+        $container.find('img').on('click', function () {
+            $iframe.attr('src', src);
+        });
+        var index = layer.open({
+            type: 1, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true,
+            content: $container.removeClass('hide'),
+            end: function () {
+                $container.remove();
+            }
+        });
+        layer.style(index, {boxShadow: 'none'});
+    });
+    /*! 左侧菜单状态切换 */
+    $('ul.sidebar-trans .nav-item a').on('click', function () {
+        $(this).parents('.sidebar-nav.main-nav').addClass('open').find('ul.sidebar-trans').show();
+        $('.sidebar-trans .nav-item').not($(this).parent().addClass('active')).removeClass('active');
+    });
+    $('body').on('click', '.framework-sidebar-full .sidebar-title', function () {
+        var $trans = $(this).next('ul.sidebar-trans'), node = $trans.attr('data-menu-node') || false;
+        node && $.cookie(node, $(this).parent().toggleClass('open').hasClass('open') ? 2 : 1);
+        $(this).parent().hasClass('open') ? $trans.show() : $trans.hide();
+    });
+    $('ul.sidebar-trans').map(function () {
+        var node = this.getAttribute('data-menu-node') || false;
+        node && (parseInt($.cookie(node) || 2) === 2) && $(this).show().parent().addClass('open');
+    });
+    /*! Mini Tips 显示*/
+    $('body').on('mouseenter mouseleave', '.framework-sidebar-mini .sidebar-trans .nav-item,.framework-sidebar-mini .sidebar-title', function (e) {
+        $(this).tooltip({
+            template: '<div class="console-sidebar-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+            title: $(this).text(), placement: 'right', container: 'body'
+        }).tooltip('show');
+        (e.type === 'mouseleave') && $(this).tooltip('destroy');
+    });
+    /*! 切换左侧菜单 */
+    function showLeftMenu(menuNode, $openNode) {
+        var $leftmenu = $('[data-menu-box=' + menuNode + ']').removeClass('hide');
+        $("[data-menu-box]").not($leftmenu).addClass('hide');
+        $openNode ? $openNode.trigger('click') : $leftmenu.find('[data-open]:first').trigger('click');
+    }
+    var $menutarget = $('[data-menu-target]').on('click', function () {
+        $menutarget.not($(this).addClass('active')).removeClass('active');
+        showLeftMenu($(this).attr('data-menu-target'));
+    });
+    /*! 左侧菜单样式切换 */
+    var $targetmenu = $('.sidebar-fold').on('click', function () {
+        var $body = $('.framework-body').toggleClass('framework-sidebar-mini framework-sidebar-full');
+        $.cookie('menu-style', $body.hasClass('framework-sidebar-mini') ? 'mini' : 'full');
+    });
+    ($.cookie('menu-style') !== 'mini') && $targetmenu.trigger('click');
+
+    /**　URL转URI */
+    window.parseUri = function (uri, obj) {
+        var params = {};
+        if (uri.indexOf('?') !== -1) {
+            var queryParams = uri.split('?')[1].split('&');
+            for (var i in queryParams) {
+                if (queryParams[i].indexOf('=') !== -1) {
+                    var hash = queryParams[i].split('=');
+                    try {
+                        params[hash[0]] = window.decodeURIComponent(window.decodeURIComponent(hash[1].replace(/%2B/ig, ' ')));
+                    } catch (e) {
+                        console.log([e, uri, queryParams, hash]);
+                    }
+                }
+            }
+        }
+        uri = getUri(uri);
+        params.spm = obj && obj.getAttribute('data-menu-node') || queryNode(uri);
+        if (!params.token) {
+            var token = window.location.href.replace(/.*token=(\w+).*/ig, '$1');
+            (/^\w{16}$/.test(token)) && (params.token = token);
+        }
+        delete params[""];
+        return uri + '?' + $.param(params);
+    };
+    /*! 通过URI查询最有可能的菜单NODE */
+    function queryNode(url) {
+        var $menu = $('.framework-sidebar').find('[data-menu-node][data-open*="_URL_"]'.replace('_URL_', url.replace(/\.html$/ig, '')));
+        if ($menu.size()) {
+            return $menu.get(0).getAttribute('data-menu-node');
+        }
+        return /^m\-/.test(node = location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1')) ? node : '';
+    }
+    /*! 计算URL地址中有效的URI */
+    function getUri(uri) {
+        uri = uri || window.location.href;
+        uri = (uri.indexOf(window.location.host) !== -1 ? uri.split(window.location.host)[1] : uri).split('?')[0];
+        return (uri.indexOf('#') !== -1 ? uri.split('#')[1] : uri);
+    }
+    /*! URI路由处理 */
+    window.onhashchange = function () {
+        var hash = (window.location.hash || '').substring(1), node = hash.replace(/.*spm=([\d\-m]+).*/ig, "$1");
+        if (!/^m\-[\d\-]+$/.test(node)) {
+            node = queryNode(getUri()) || '';
+        }
+        if (hash.length < 1 || node.length < 1) {
+            return $('.topbar-home-link:first').trigger('click');
+        }
+        /* 顶部菜单选中处理 */
+        var parentNode = [node.split('-')[0], node.split('-')[1]].join('-');
+        $('[data-menu-target]').not($('[data-menu-target="' + parentNode + '"]').addClass('active')).removeClass('active');
+        /* 左则菜单处理 */
+        var $menu = $('[data-menu-node="' + node + '"]').eq(0);
+        if ($menu.size() > 0) {
+            $('.framework-container').addClass('framework-sidebar-full');
+            var $li = $menu.parent('li').addClass('active');
+            $li.parents('.framework-sidebar').find('li.active').not($li).removeClass('active');
+            $menu.parents('.sidebar-trans').removeClass('hide').show();
+            $menu.parents('.main-nav').addClass('open');
+            $menu.parents('[data-menu-box]').removeClass('hide').siblings('[data-menu-box]').addClass('hide');
+        } else {
+            $('.framework-container').removeClass('framework-sidebar-full');
+        }
+        /* 加载资源 */
+        $.form.open(hash);
+    };
+    window.onhashchange.call(this);
+});
