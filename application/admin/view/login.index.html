@@ -10,9 +10,10 @@
 <div class="text-center layer-box">
     <div class="animated fadeInDown layer-content">
         <div class='logo'><img
-                src="http://static.cdn.cuci.cc/2016/0414/af3c5d9fcf94b34113274f8c047755fc.png?imageMogr2/thumbnail/!160x56r/gravity/Center/crop/160x56/interlace/1"
+                src="{:sysconf('site_logo')}"
                 onerror='this.src="http://basic.demo.cuci.cc/static/theme/img/cuci.png"' alt=""/></div>
-        <form onsubmit="return false;" data-callback='logincallback' data-time="0.01" data-auto role="form" method="POST">
+        <form onsubmit="return false;" data-callback='logincallback' data-time="0.01" data-auto role="form"
+              method="POST">
             <div class="form-group has-feedback">
                 <span class="fa fa-user input-icon"></span>
                 <input autofocus="true" autocomplete="off" class="form-control" name="username" placeholder="Username"
@@ -36,7 +37,7 @@
         </form>
     </div>
     <p class='copyright'>
-        <small>广州楚才信息科技有限公司 &copy; {:date('Y')}</small>
+        <small>{:sysconf('site_company')} &copy; {:date('Y')}</small>
     </p>
 </div>
 <div class="hide">
