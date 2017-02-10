@@ -127,22 +127,22 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
      */
     msg.prototype.auto = function (data, time) {
         var self = this;
-        if (data.code === 'SUCCESS') {
-            self.success(data.info, time, function () {
-                if (data.referer === 'back') {
+        if (data.code === 0) {
+            self.success(data.msg, time, function () {
+                if (data.url === 'back') {
                     window.history.back();
-                } else if (data.referer === 'reload') {
+                } else if (data.url === 'reload') {
                     $.form.reload();
-                } else if (data.referer) {
-                    window.location.href = data.referer;
+                } else if (data.url) {
+                    window.location.href = data.url;
                 } else {
                     $.form.reload();
                 }
             });
         } else {
-            self.error(data.info, 3, function () {
-                if (data.referer) {
-                    window.location.href = data.referer;
+            self.error(data.msg, 3000, function () {
+                if (data.url) {
+                    window.location.href = data.url;
                 }
             });
         }
