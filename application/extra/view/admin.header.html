@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="renderer" content="webkit"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{block name="title"}{$ptitle|default=''}{/block}</title>
+        <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="__STATIC__/theme/default/css/console.css">
+        <link rel="stylesheet" href="__STATIC__/theme/default/css/animate.css">
+        {block name="style"}{/block}
+        <script src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+        <script src="__STATIC__/admin/app.js"></script>
+    </head>
+    {block name="bodyTag"}
+    <body>
+        {block name="body"}
+        {/block}
+        {block name="script"}
+        {/block}
+    </body>
+    {/block}
+</html>
