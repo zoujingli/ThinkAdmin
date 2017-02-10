@@ -19,6 +19,7 @@ class Login extends Controller {
      */
     public function index() {
         if ($this->request->isGet()) {
+            $this->assign('ptitle', '用户登录');
             return $this->fetch();
         } else {
             $username = $this->request->post('username', '', 'trim');
