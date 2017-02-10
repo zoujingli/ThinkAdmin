@@ -1,5 +1,6 @@
 <?php
 use think\Config;
+use think\Db;
 use Wechat\Loader;
 use Wechat\WechatReceive;
 
@@ -50,4 +51,20 @@ function decode($string) {
     $mod4 = strlen($data) % 4;
     ($mod4) && $data .= substr('====', $mod4);
     return unserialize(base64_decode($data));
+}
+
+/**
+ * 从配置表读取配置信息
+ * @param string $name
+ * @return string
+ */
+function sysconf($name) {
+    static $conf = [];
+    if (empty($conf)) {
+        $list = Db::name('SystemConfig')->select();
+        foreach ($list as $vo) {
+            $conf[$vo['name']] = $vo['value'];
+        }
+    }
+    return isset($conf[$name]) ? $conf[$name] : '';
 }
