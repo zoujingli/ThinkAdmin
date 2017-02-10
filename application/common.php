@@ -38,7 +38,7 @@ function & load_wechat($type = '') {
  * @return string
  */
 function encode($data) {
-    return str_replace(array('+', '/', '='), array('-', '_', ''), base64_encode(serialize($data)));
+    return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(serialize($data)));
 }
 
 /**
@@ -47,9 +47,9 @@ function encode($data) {
  * @return string
  */
 function decode($string) {
-    $data = str_replace(array('-', '_'), array('+', '/'), $string);
+    $data = str_replace(['-', '_'], ['+', '/'], $string);
     $mod4 = strlen($data) % 4;
-    ($mod4) && $data .= substr('====', $mod4);
+    !!$mod4 && $data .= substr('====', $mod4);
     return unserialize(base64_decode($data));
 }
 
