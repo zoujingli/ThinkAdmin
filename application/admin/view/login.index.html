@@ -26,13 +26,11 @@
 
     <div class="container" style="top:50%;margin-top:-300px">
 
-        <form onsubmit="return false;" method="post" class="content layui-form">
+        <form onsubmit="return false;" data-auto="true" method="post" class="content layui-form">
             <div class="people">
                 <div class="tou"></div>
-                <div class="initial_left_hand"
-                     data-ng-class="{false:'initial_left_hand', true:'left_hand'}[hideEye]"></div>
-                <div class="initial_right_hand"
-                     data-ng-class="{false:'initial_right_hand', true:'right_hand'}[hideEye]"></div>
+                <div id="left-hander" class="initial_left_hand"></div>
+                <div id="right-hander" class="initial_right_hand"></div>
             </div>
             <ul>
                 <li>
@@ -64,5 +62,16 @@
     </div>
     <div class="footer">{:sysconf('site_company')} &copy; {:date('Y')}</div>
 </div>
+<script>
+    require(['jquery'], function ($) {
+        $('[name="password"]').on('focus', function () {
+            $('#left-hander').removeClass('initial_left_hand').addClass('left_hand');
+            $('#right-hander').removeClass('initial_right_hand').addClass('right_hand')
+        }).on('blur', function () {
+            $('#left-hander').addClass('initial_left_hand').removeClass('left_hand');
+            $('#right-hander').addClass('initial_right_hand').removeClass('right_hand')
+        });
+    });
+</script>
 </body>
 {/block}
