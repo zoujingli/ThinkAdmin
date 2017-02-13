@@ -54,6 +54,15 @@ function decode($string) {
 }
 
 /**
+ * RBAC节点权限验证
+ * @param string $node
+ * @return bool
+ */
+function auth($node) {
+    return true;
+}
+
+/**
  * 从配置表读取配置信息
  * @param string $name
  * @return string

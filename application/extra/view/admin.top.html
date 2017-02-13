@@ -6,13 +6,19 @@
                     <span class="icon-logo">{:sysconf('app_name')} <sup>{:sysconf('app_version')}</sup></span>
                 </a>
             </div>
-            <a data-menu-node='1' data-open="{:url('@admin/index/main')}"
-               class="topbar-home-link topbar-btn topbar-left active">
-                <span> 系统信息</span>
+            {volist name='menus' id='pmenu'}
+            {empty name='pmenu.sub'}
+            <a data-menu-node='m-{$pmenu.id}' data-open="{$pmenu.url}"
+               class="topbar-home-link topbar-btn topbar-left">
+                <span>{notempty name='$pmenu.icon'}<i class="{$pmenu.icon}"></i>{/notempty} {$pmenu.title}</span>
             </a>
-            <a data-menu-target="m-3" class="topbar-home-link topbar-btn topbar-left">
-                <span> 系统管理</span>
+            {else/}
+            <a data-menu-target='m-{$pmenu.id}' class="topbar-home-link topbar-btn topbar-left">
+                <span>{notempty name='$pmenu.icon'}<i class="{$pmenu.icon}"></i>{/notempty} {$pmenu.title}</span>
             </a>
+            {/empty}
+            {/volist}
+
             <div class="topbar-info topbar-right">
                 <a data-reload data-tips-text='刷新'
                    class=" topbar-btn topbar-left topbar-info-item text-center"

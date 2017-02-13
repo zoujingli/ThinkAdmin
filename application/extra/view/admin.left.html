@@ -4,122 +4,49 @@
             <div class="sidebar-fold">
                 <span class="glyphicon glyphicon-option-vertical transition"></span>
             </div>
-            <div class="" data-menu-box="m-3">
-                <div class="sidebar-nav main-nav open">
+            {volist name='menus' id='pmenu'}
+            {notempty name='pmenu.sub'}
+            <div data-menu-box="m-{$pmenu.id}">
+                {volist name='pmenu.sub' id='menu'}
+                <div class="sidebar-nav main-nav">
+                    {empty name='menu.sub'}
+                    <ul class="sidebar-trans">
+                        <li class="nav-item">
+                            <a data-menu-node='m-{$pmenu.id}-{$menu.id}' data-open="{$menu.url}"
+                               class="sidebar-trans">
+                                <div class="nav-icon sidebar-trans">
+                                    <span class="{$menu.icon|default='fa fa-link'} transition-min"></span>
+                                </div>
+                                <span class="nav-title">{$menu.title}</span>
+                            </a>
+                        </li>
+                    </ul>
+                    {else}
                     <div class="sidebar-title">
                         <div class="sidebar-title-inner">
                             <span class="sidebar-title-icon fa fa-caret-right transition-min"></span>
-                            <span class="sidebar-title-text">系统配置</span>
+                            <span class="sidebar-title-text">{$menu.title}</span>
                         </div>
                     </div>
-                    <ul class="sidebar-trans" style="" data-menu-node="m-3-10044">
-                        <li class="nav-item active">
-                            <a class="sidebar-trans">
-                                <div class="nav-icon sidebar-trans">
-                                    <span class="fa fa-envelope transition-min"></span>
-                                </div>
-                                <span class="nav-title">邮箱配置</span>
-                            </a>
-                        </li>
+                    <ul class="sidebar-trans" style="display:none" data-menu-node='m-{$pmenu.id}-{$menu.id}'>
+                        {volist name='menu.sub' id='submenu'}
                         <li class="nav-item">
-                            <a class="sidebar-trans">
+                            <a data-menu-node='m-{$pmenu.id}-{$submenu.id}' data-open="{$submenu.url}"
+                               class="sidebar-trans">
                                 <div class="nav-icon sidebar-trans">
-                                    <span class="fa fa-envelope-square transition-min"></span>
+                                    <span class="{$submenu.icon|default='fa fa-link'} transition-min"></span>
                                 </div>
-                                <span class="nav-title">短信配置</span>
+                                <span class="nav-title">{$submenu.title}</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="sidebar-trans">
-                                <div class="nav-icon sidebar-trans">
-                                    <span class="fa fa-internet-explorer transition-min"></span>
-                                </div>
-                                <span class="nav-title">网站配置</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="sidebar-trans">
-                                <div class="nav-icon sidebar-trans">
-                                    <span class="fa fa-apple transition-min"></span>
-                                </div>
-                                <span class="nav-title">后台配置</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="sidebar-trans">
-                                <div class="nav-icon sidebar-trans">
-                                    <span class="fa fa-hdd-o transition-min"></span>
-                                </div>
-                                <span class="nav-title">文件存储</span>
-                            </a>
-                        </li>
-
+                        {/volist}
                     </ul>
+                    {/empty}
                 </div>
-                <div class="sidebar-nav main-nav open">
-                    <div class="sidebar-title">
-                        <div class="sidebar-title-inner">
-                            <span class="sidebar-title-icon fa fa-caret-right transition-min"></span>
-                            <span class="sidebar-title-text">系统权限</span>
-                        </div>
-                    </div>
-                    <ul class="sidebar-trans" style="" data-menu-node="m-3-10043">
-                        <li class="nav-item">
-                            <a class="sidebar-trans">
-                                <div class="nav-icon sidebar-trans">
-                                    <span class="fa fa-user-secret transition-min"></span>
-                                </div>
-                                <span class="nav-title">权限管理</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="sidebar-trans">
-                                <div class="nav-icon sidebar-trans">
-                                    <span class="fa fa-user transition-min"></span>
-                                </div>
-                                <span class="nav-title">用户管理</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="sidebar-trans">
-                                <div class="nav-icon sidebar-trans">
-                                    <span class="glyphicon glyphicon-menu-hamburger transition-min"></span>
-                                </div>
-                                <span class="nav-title">系统菜单</span>
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-                <div class="sidebar-nav main-nav open">
-                    <div class="sidebar-title">
-                        <div class="sidebar-title-inner">
-                            <span class="sidebar-title-icon fa fa-caret-right transition-min"></span>
-                            <span class="sidebar-title-text">系统工具</span>
-                        </div>
-                    </div>
-                    <ul class="sidebar-trans" style="" data-menu-node="m-3-10045">
-                        <li class="nav-item">
-                            <a class="sidebar-trans">
-                                <div class="nav-icon sidebar-trans">
-                                    <span class="glyphicon glyphicon-hourglass transition-min"></span>
-                                </div>
-                                <span class="nav-title">系统日志</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="sidebar-trans">
-                                <div class="nav-icon sidebar-trans">
-                                    <span class="glyphicon glyphicon-hdd transition-min"></span>
-                                </div>
-                                <span class="nav-title">数据备份</span>
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-
+                {/volist}
             </div>
+            {/notempty}
+            {/volist}
         </div>
     </div>
 </div>
