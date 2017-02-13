@@ -24,11 +24,11 @@ define(['jquery', 'admin.plugs'], function () {
         });
     }).on('click', '[data-update]', function () {
         var id = $(this).attr('data-update') || (function () {
-            var data = [];
-            return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
-                (this.checked) && data.push(this.value);
-            }), data.join(',');
-        }).call(this);
+                var data = [];
+                return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
+                    (this.checked) && data.push(this.value);
+                }), data.join(',');
+            }).call(this);
         if (id.length < 1) {
             return $.msg.tips('请选择需要操作的数据！');
         }
@@ -81,7 +81,13 @@ define(['jquery', 'admin.plugs'], function () {
             $iframe.attr('src', src);
         });
         var index = layer.open({
-            type: 1, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true,
+            type: 1,
+            scrollbar: false,
+            area: ['320px', '600px'],
+            title: false,
+            closeBtn: 1,
+            skin: 'layui-layer-nobg',
+            shadeClose: true,
             content: $container.removeClass('hide'),
             end: function () {
                 $container.remove();
@@ -117,6 +123,7 @@ define(['jquery', 'admin.plugs'], function () {
         $("[data-menu-box]").not($leftmenu).addClass('hide');
         $openNode ? $openNode.trigger('click') : $leftmenu.find('[data-open]:first').trigger('click');
     }
+
     var $menutarget = $('[data-menu-target]').on('click', function () {
         $menutarget.not($(this).addClass('active')).removeClass('active');
         showLeftMenu($(this).attr('data-menu-target'));
@@ -161,12 +168,14 @@ define(['jquery', 'admin.plugs'], function () {
         }
         return /^m\-/.test(node = location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1')) ? node : '';
     }
+
     /*! 计算URL地址中有效的URI */
     function getUri(uri) {
         uri = uri || window.location.href;
         uri = (uri.indexOf(window.location.host) !== -1 ? uri.split(window.location.host)[1] : uri).split('?')[0];
         return (uri.indexOf('#') !== -1 ? uri.split('#')[1] : uri);
     }
+
     /*! URI路由处理 */
     window.onhashchange = function () {
         var hash = (window.location.hash || '').substring(1), node = hash.replace(/.*spm=([\d\-m]+).*/ig, "$1");
@@ -194,5 +203,5 @@ define(['jquery', 'admin.plugs'], function () {
         /* 加载资源 */
         $.form.open(hash);
     };
-    // window.onhashchange.call(this);
+    window.onhashchange.call(this);
 });
