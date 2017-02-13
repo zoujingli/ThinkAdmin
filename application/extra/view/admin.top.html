@@ -2,10 +2,9 @@
     <div class="console-topbar">
         <div class="topbar-wrap topbar-clearfix">
             <div class="topbar-head topbar-left">
-                <a href="<{''|site_url}>" class="topbar-logo topbar-left">
+                <a href="{:url('@admin')}" class="topbar-logo topbar-left">
                     <span class="icon-logo">{:sysconf('app_name')}</span>
                 </a>
-
             </div>
             <div class="topbar-info topbar-right">
                 <a data-reload data-tips-text='刷新' class=" topbar-btn topbar-left topbar-info-item text-center"
@@ -15,23 +14,24 @@
                 <div class="topbar-left topbar-user">
                     <div class="dropdown topbar-info-item">
                         <a href="#" class="dropdown-toggle topbar-btn text-center" data-toggle="dropdown">
-                            <span><span
-                                    class='glyphicon glyphicon-user'></span> <{$Think.session.user.username}></span>
-                            <span class="glyphicon glyphicon glyphicon-menu-up transition-min"
-                                  style="font-size:12px"></span>
+                            <span class='glyphicon glyphicon-user'></span> {:session('user.username')} </span>
+                            <span class="glyphicon glyphicon-menu-up transition" style="font-size:12px"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="topbar-info-btn">
-                                <a data-title=" " data-iframe="{:url('admin/main/password')}"><span><span
-                                        class='glyphicon glyphicon-edit'></span> 修改密码</span></a>
+                                <a data-title=" " data-iframe="{:url('admin/main/password')}">
+                                    <span><i class='glyphicon glyphicon-edit'></i> 修改密码</span>
+                                </a>
                             </li>
                             <li class="topbar-info-btn">
-                                <a data-title=" " data-iframe="{:url('admin/main/myinfo')}>"><span><span
-                                        class='glyphicon glyphicon-edit'></span> 修改资料</span></a>
+                                <a data-title=" " data-iframe="{:url('admin/main/myinfo')}>">
+                                    <span><i class='glyphicon glyphicon-edit'></i> 修改资料</span>
+                                </a>
                             </li>
                             <li class="topbar-info-btn">
-                                <a data-load="{:url('admin/login/out')}"><span><span
-                                        class="glyphicon glyphicon-log-out"></span> 退出登录</span></a>
+                                <a data-load="{:url('admin/login/out')}">
+                                    <span><i class="glyphicon glyphicon-log-out"></i> 退出登录</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
