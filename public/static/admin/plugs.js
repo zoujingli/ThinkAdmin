@@ -163,7 +163,6 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
         var self = this;
         if (parseInt(data.code) === 1) {
             return self.success(data.msg, time, function () {
-                alert(data.url);
                 !!data.url ? (window.location.href = data.url) : $.form.reload();
             });
         }
