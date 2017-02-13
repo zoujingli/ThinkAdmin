@@ -3,6 +3,7 @@
 namespace controller;
 
 use think\Controller;
+use think\db\Query;
 
 /**
  * 后台权限基础控制器
@@ -20,6 +21,10 @@ class BasicAdmin extends Controller {
         if (!$this->isLogin()) {
             $this->redirect('@admin/login');
         }
+        // 初始化赋值常用变量
+        if ($this->request->isGet()) {
+            $this->assign('classuri', strtolower($this->request->module() . '/' . $this->request->controller()));
+        }
     }
 
     /**
@@ -30,6 +35,100 @@ class BasicAdmin extends Controller {
         $user = session('user');
         if (empty($user) || empty($user['id'])) {
             return false;
+        }
+        return true;
+    }
+
+    /**
+     * 列表集成处理方法
+     * @param Query $db 数据库查询对象
+     * @param bool $is_page 是启用分页
+     * @param bool $is_display 是否直接输出显示
+     * @param bool $total 总记录数
+     * @return array|string
+     */
+    protected function _list($db = null, $is_page = true, $is_display = true, $total = false) {
+        is_null($db) && $db = db($this->table);
+        is_string($db) && $db = db($db);
+        !$db->getTable() && $db->setTable($this->table);
+        # 列表排序默认处理
+        if ($this->request->isPost() && $this->request->post('action') === 'resort') {
+            $data = $this->request->post();
+            unset($data['action']);
+            foreach ($data as $key => &$value) {
+                if (false === $db->where('id', intval(ltrim($key, '_')))->update(['sort' => $value])) {
+                    $this->error('列表排序失败，请稍候再试！');
+                }
+            }
+            $this->success('列表排序成功，正在刷新列表！', 'javascript:location.reload()');
+        }
+        # 列表显示
+        $result = array();
+        if ($is_page) {
+            $row_page = $this->request->get('rows', cookie('rows'), 'intval');
+            cookie('rows', $row_page >= 10 ? $row_page : 10);
+            $page = $db->paginate($row_page, $total, ['query' => input('get.')]);
+            $result['list'] = $page->all();
+            $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
+        } else {
+            $result['list'] = $db->select();
+        }
+        if ($this->_callback('_data_filter', $result['list']) === false) {
+            return $result;
+        }
+        $is_display && exit($this->fetch('', $result));
+        return $result;
+    }
+
+    /**
+     * 表单默认操作
+     * @param Query $db 数据库查询对象
+     * @param string $tpl 显示模板名字
+     * @param string $pk 更新主键规则
+     * @param array $where 查询规则
+     * @param array $data 扩展数据
+     * @return array|string
+     */
+    protected function _form($db = null, $tpl = null, $pk = null, $where = [], $data = []) {
+        is_null($db) && $db = db($this->table);
+        is_string($db) && $db = db($db);
+        !$db->getTable() && $db->setTable($this->table);
+        is_null($pk) && $pk = $db->getPk();
+        $pk_value = input($pk, isset($where[$pk]) ? $where[$pk] : (isset($data[$pk]) ? $data[$pk] : ''));
+        $vo = $data;
+        if ($this->request->isPost()) { // Save Options
+            $vo = array_merge(input('post.'), $data);
+            $this->_callback('_form_filter', $vo);
+            $result = Data::save($db, $vo, $pk, $where);
+            if (false !== $this->_callback('_form_result', $result)) {
+                $back = $pk_value === '' ? 'javascript:history.back();' : 'javascript:$.form.reload();';
+                $result !== false ? $this->success('恭喜，保存成功哦！', $back) : $this->error('保存失败，请稍候再试！');
+            }
+            return $result;
+        }
+        if ($pk_value !== '') { // Edit Options
+            !empty($pk_value) && $db->where($pk, $pk_value);
+            !empty($where) && $db->where($where);
+            $vo = array_merge($data, (array)$db->find());
+        }
+        $this->_callback('_form_filter', $vo);
+        $this->assign('vo', $vo);
+        empty($this->ptitle) or $this->assign('ptitle', $this->ptitle);
+        return is_null($tpl) ? $vo : $this->display($tpl);
+    }
+
+
+    /**
+     * 当前对象回调成员方法
+     * @param string $method
+     * @param array $data
+     * @return bool
+     */
+    protected function _callback($method, &$data) {
+        foreach (array($method, "_" . $this->request->action() . "{$method}") as $method) {
+            if (method_exists($this, $method) && false === $this->$method($data)) {
+                return false;
+            }
         }
         return true;
     }

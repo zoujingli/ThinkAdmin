@@ -1,0 +1,69 @@
+<form onsubmit="return false;" data-auto="" method="POST">
+    <input type="hidden" value="resort" name="action"/>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class='list-table-check-td'>
+                    <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+                </th>
+                <th class='list-table-sort-td'>
+                    <button>排序</button>
+                </th>
+                <th class='text-center'></th>
+                <th>菜单名称</th>
+                <th>链接</th>
+                <th class='text-center'>状态</th>
+                <th class='text-center'>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $list as $key=>$vo}
+            <tr>
+                <td class='list-table-check-td'>
+                    <input data-none-auto="" value='{$vo.ids}' class='list-check-box' type='checkbox'/>
+                </td>
+                <td class='list-table-sort-td'>
+                    <input data-none-auto="" name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
+                </td>
+                <td class='text-center'>
+                    <i style="font-size:18px" class="{$vo.icon}"></i>
+                </td>
+                <td>{$vo.spl}{$vo.title}
+                </td>
+                <td>{$vo.url}
+                </td>
+                <td class='text-center'>
+                    {if $vo.status eq 0}
+                    <span>已禁用</span>
+                    {elseif $vo.status eq 1}
+                    <span style="color:#090">使用中</span>
+                    {/if}
+                </td>
+                <td class='text-center'>
+                    {if auth("$classuri/edit")}
+                    <span class="text-explode">|</span>
+                    <a data-modal='{"$classuri/form"|url}?id={$vo.id}' href="javascript:void(0)">编辑</a>
+                    {/if}
+                    {if $vo.status eq 1 and auth("$classuri/forbid")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.ids}" data-field='status' data-value='0'
+                       data-action='{"$classuri/forbid"|url}' href="javascript:void(0)">禁用
+                    </a>
+                    {elseif auth("$classuri/resume")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.ids}" data-field='status' data-value='1'
+                       data-action='{"$classuri/resume"|url}' href="javascript:void(0)">启用
+                    </a>
+                    {/if}
+                    {if auth("$classuri/del")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.ids}" data-field='delete' data-action="{'system/menu/del'|url}"
+                       href="javascript:void(0)">删除
+                    </a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+</form>
