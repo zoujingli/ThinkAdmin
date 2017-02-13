@@ -1,1 +1,9 @@
-admin
+{extend name="extra@admin/header" /}
+
+{block name='body'}
+{include file="extra@admin/top"}
+<div class="framework-body framework-sidebar-mini">
+    <{include file="extra@admin/left"}>
+    <div class="framework-container layer-main-container"></div>
+</div>
+{/block}
