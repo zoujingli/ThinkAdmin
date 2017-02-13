@@ -60,7 +60,7 @@ class BasicAdmin extends Controller {
                     $this->error('列表排序失败，请稍候再试！');
                 }
             }
-            $this->success('列表排序成功，正在刷新列表！', 'javascript:location.reload()');
+            $this->success('列表排序成功，正在刷新列表！', '');
         }
         # 列表显示
         $result = array();
