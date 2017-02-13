@@ -1,57 +1,68 @@
 {extend name="extra@admin/header" /}
 
+{block name="style"}
+<link rel="stylesheet" href="__STATIC__/theme/default/css/login.css">
+{/block}
+
 {block name="bodyTag"}
-<body class="gray-bg full-height full-width login-container">
-<style>
-    html {
-        height: 100%
-    }
-</style>
-<div class="text-center layer-box">
-    <div class="animated fadeInDown layer-content">
-        <div class='logo'><img
-                src="{:sysconf('site_logo')}"
-                onerror='this.src="http://basic.demo.cuci.cc/static/theme/img/cuci.png"' alt=""/></div>
-        <form onsubmit="return false;" data-callback='logincallback' data-time="0.01" data-auto role="form"
-              method="POST">
-            <div class="form-group has-feedback">
-                <span class="fa fa-user input-icon"></span>
-                <input autofocus="true" autocomplete="off" class="form-control" name="username" placeholder="Username"
-                       title="请输入用户帐号" required type="text"/>
+<body>
+<div class="login-container" style="height:100%">
+
+    <div class="clouds clouds-footer"></div>
+    <div class="clouds"></div>
+    <div class="clouds clouds-fast"></div>
+
+    <div class="header">
+        <span>欢迎登录后台管理界面平台</span>
+        <ul>
+            <li><a href="/">回首页</a></li>
+            <li><a href="javascript:void(0)" target="_blank"><b><font color="#FFF">帮助</font></b></a></li>
+            <li>
+                <a href="http://sw.bos.baidu.com/sw-search-sp/software/4bcf5e4f1835b/ChromeStandalone_54.0.2840.99_Setup.exe"
+                   target="_blank"><b><font color="#fff">推荐谷歌浏览器</font></b></a></li>
+            <li><a href="http://www.cuci.cc">楚才官网</a></li>
+        </ul>
+    </div>
+
+    <div class="container" style="top:50%;margin-top:-300px">
+
+        <form onsubmit="return false;" method="post" class="content layui-form">
+            <div class="people">
+                <div class="tou"></div>
+                <div class="initial_left_hand"
+                     data-ng-class="{false:'initial_left_hand', true:'left_hand'}[hideEye]"></div>
+                <div class="initial_right_hand"
+                     data-ng-class="{false:'initial_right_hand', true:'right_hand'}[hideEye]"></div>
             </div>
-            <div class="form-group has-feedback">
-                <span class="fa fa-key input-icon"></span>
-                <input autocomplete="off" class="form-control" name="password" placeholder="Password" title="请输入登录密码"
-                       required type="password"/>
-            </div>
-            <div class="form-group has-feedback verify-label clearfix hide">
-                <span class="fa fa-gg input-icon"></span>
-                <span class='input'>
-                            <input maxlength='4' autocomplete="off" class="form-control" name="verify"
-                                   placeholder="Verify" title="请输入验证码" required type="text"/>
-                        </span>
-                <img data-tips-text='刷新验证码' class='pointer' onclick="this.src = this.src + '?'"
-                     src="http://basic.demo.cuci.cc/admin-login-verify.html"/>
-            </div>
-            <button type="submit" class="btn btn-primary btn-lg full-width login-btn">登录</button>
+            <ul>
+                <li>
+                    <input required="required"
+                           pattern="^\S{4,}$"
+                           title="请输入4位及以上的字符"
+                           type="text"
+                           name="username"
+                           class="layui-input username"
+                           autocomplete="off"
+                           autofocus="autofocus"
+                           placeholder="请输入用户名/手机号码"/>
+                </li>
+                <li>
+                    <input required="required"
+                           pattern="^\S{4,}$"
+                           title="请输入4位及以上的字符"
+                           type="password"
+                           name="password"
+                           class="layui-input password"
+                           autocomplete="off" placeholder="请输入密码"/>
+                </li>
+                <li class="text-center">
+                    <button type="submit" class="layui-btn layui-btn">立 即 登 入</button>
+                    <a style="position:absolute;display:block;right:0" href="javascript:void(0)">忘记密码？</a>
+                </li>
+            </ul>
         </form>
     </div>
-    <p class='copyright'>
-        <small>{:sysconf('site_company')} &copy; {:date('Y')}</small>
-    </p>
-</div>
-<div class="hide">
-    <script>
-        window.login_error_num = parseInt('0');
-        window.logincallback = function (ret) {
-            if (ret.code !== 'SUCCESS') {
-                window.login_error_num += 1;
-                if (window.login_error_num >= 3) {
-                    $('.verify-label').removeClass('hide');
-                }
-            }
-        };
-    </script>
+    <div class="footer">{:sysconf('site_company')} &copy; {:date('Y')}</div>
 </div>
 </body>
 {/block}
