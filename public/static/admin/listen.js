@@ -194,5 +194,5 @@ define(['jquery', 'admin.plugs'], function () {
         /* 加载资源 */
         $.form.open(hash);
     };
-    window.onhashchange.call(this);
+    // window.onhashchange.call(this);
 });
