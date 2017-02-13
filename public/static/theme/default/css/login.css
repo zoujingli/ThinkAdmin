@@ -52,6 +52,7 @@ html,body{height:100%;width:100%}
 .login-container .content ul li input{margin-bottom:25px;position:relative;background:url(../img/icon.png) no-repeat;background-size:20px;padding-left:38px}
 .login-container .content ul li input.username{background-position: 8px 7px}
 .login-container .content ul li input.password{background-position: 8px -20px}
+.login-container .login-input {display:block;width:100%;padding-left:10px;height: 38px;line-height:38px;line-height:36px\9;border:1px solid #e6e6e6;background-color:#fff;border-radius:2px;}
 
 /* 头像 */
 .login-container .people{width:165px; height:96px;position:relative;top:8px;left:-70px}

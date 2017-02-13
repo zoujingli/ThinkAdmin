@@ -16,10 +16,17 @@
         <span>欢迎登录后台管理界面平台</span>
         <ul>
             <li><a href="/">回首页</a></li>
-            <li><a href="javascript:void(0)" target="_blank"><b><font color="#FFF">帮助</font></b></a></li>
+            <li>
+                <a href="javascript:void(0)" target="_blank">
+                    <b style="color:#fff">帮助</b>
+                </a>
+            </li>
             <li>
                 <a href="http://sw.bos.baidu.com/sw-search-sp/software/4bcf5e4f1835b/ChromeStandalone_54.0.2840.99_Setup.exe"
-                   target="_blank"><b><font color="#fff">推荐谷歌浏览器</font></b></a></li>
+                   target="_blank">
+                    <b style="color:#fff">推荐谷歌浏览器</b>
+                </a>
+            </li>
             <li><a href="http://www.cuci.cc">楚才官网</a></li>
         </ul>
     </div>
@@ -29,8 +36,8 @@
         <form onsubmit="return false;" data-auto="true" method="post" class="content layui-form">
             <div class="people">
                 <div class="tou"></div>
-                <div id="left-hander" class="initial_left_hand"></div>
-                <div id="right-hander" class="initial_right_hand"></div>
+                <div id="left-hander" class="initial_left_hand transition-min"></div>
+                <div id="right-hander" class="initial_right_hand transition-min"></div>
             </div>
             <ul>
                 <li>
@@ -39,7 +46,7 @@
                            title="请输入4位及以上的字符"
                            type="text"
                            name="username"
-                           class="layui-input username"
+                           class="login-input username"
                            autocomplete="off"
                            autofocus="autofocus"
                            placeholder="请输入用户名/手机号码"/>
@@ -50,7 +57,7 @@
                            title="请输入4位及以上的字符"
                            type="password"
                            name="password"
-                           class="layui-input password"
+                           class="login-input password"
                            autocomplete="off" placeholder="请输入密码"/>
                 </li>
                 <li class="text-center">
