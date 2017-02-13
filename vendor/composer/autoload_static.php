@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a
+class ComposerStaticInitbe5fdc6ce25a854de4cbf5279dee37ce
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -16,7 +16,6 @@ class ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (
-            'think\\worker\\' => 13,
             'think\\mongo\\' => 12,
             'think\\helper\\' => 13,
             'think\\composer\\' => 15,
@@ -25,7 +24,6 @@ class ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a
         ),
         'W' => 
         array (
-            'Workerman\\' => 10,
             'Wechat\\' => 7,
         ),
         'Q' => 
@@ -35,10 +33,6 @@ class ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a
     );
 
     public static $prefixDirsPsr4 = array (
-        'think\\worker\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-worker/src',
-        ),
         'think\\mongo\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-mongo/src',
@@ -60,10 +54,6 @@ class ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a
             0 => __DIR__ . '/../..' . '/thinkphp/library/think',
             1 => __DIR__ . '/..' . '/topthink/think-queue/src',
         ),
-        'Workerman\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/workerman/workerman',
-        ),
         'Wechat\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat',
@@ -74,36 +64,7 @@ class ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'P' => 
-        array (
-            'PHPQRCode' => 
-            array (
-                0 => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib',
-            ),
-        ),
-    );
-
     public static $classMap = array (
-        'PHPQRCode' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode.php',
-        'PHPQRCode\\Autoloader' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/Autoloader.php',
-        'PHPQRCode\\Constants' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/Constants.php',
-        'PHPQRCode\\FrameFiller' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/FrameFiller.php',
-        'PHPQRCode\\QRbitstream' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRbitstream.php',
-        'PHPQRCode\\QRcode' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRcode.php',
-        'PHPQRCode\\QRencode' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRencode.php',
-        'PHPQRCode\\QRimage' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRimage.php',
-        'PHPQRCode\\QRinput' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRinput.php',
-        'PHPQRCode\\QRinputItem' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRinputItem.php',
-        'PHPQRCode\\QRmask' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRmask.php',
-        'PHPQRCode\\QRrawcode' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRrawcode.php',
-        'PHPQRCode\\QRrs' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRrs.php',
-        'PHPQRCode\\QRrsItem' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRrsItem.php',
-        'PHPQRCode\\QRrsblock' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRrsblock.php',
-        'PHPQRCode\\QRspec' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRspec.php',
-        'PHPQRCode\\QRsplit' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRsplit.php',
-        'PHPQRCode\\QRstr' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRstr.php',
-        'PHPQRCode\\QRtools' => __DIR__ . '/..' . '/aferrandini/phpqrcode/lib/PHPQRCode/QRtools.php',
         'PclZip' => __DIR__ . '/..' . '/pclzip/pclzip/pclzip.lib.php',
         'Qiniu\\Auth' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Auth.php',
         'Qiniu\\Config' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Config.php',
@@ -137,30 +98,6 @@ class ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a
         'Wechat\\WechatScript' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatScript.php',
         'Wechat\\WechatService' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatService.php',
         'Wechat\\WechatUser' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatUser.php',
-        'Workerman\\Autoloader' => __DIR__ . '/..' . '/workerman/workerman/Autoloader.php',
-        'Workerman\\Connection\\AsyncTcpConnection' => __DIR__ . '/..' . '/workerman/workerman/Connection/AsyncTcpConnection.php',
-        'Workerman\\Connection\\ConnectionInterface' => __DIR__ . '/..' . '/workerman/workerman/Connection/ConnectionInterface.php',
-        'Workerman\\Connection\\TcpConnection' => __DIR__ . '/..' . '/workerman/workerman/Connection/TcpConnection.php',
-        'Workerman\\Connection\\UdpConnection' => __DIR__ . '/..' . '/workerman/workerman/Connection/UdpConnection.php',
-        'Workerman\\Events\\Ev' => __DIR__ . '/..' . '/workerman/workerman/Events/Ev.php',
-        'Workerman\\Events\\Event' => __DIR__ . '/..' . '/workerman/workerman/Events/Event.php',
-        'Workerman\\Events\\EventInterface' => __DIR__ . '/..' . '/workerman/workerman/Events/EventInterface.php',
-        'Workerman\\Events\\Libevent' => __DIR__ . '/..' . '/workerman/workerman/Events/Libevent.php',
-        'Workerman\\Events\\React' => __DIR__ . '/..' . '/workerman/workerman/Events/React.php',
-        'Workerman\\Events\\React\\ExtEventLoop' => __DIR__ . '/..' . '/workerman/workerman/Events/React/ExtEventLoop.php',
-        'Workerman\\Events\\React\\LibEventLoop' => __DIR__ . '/..' . '/workerman/workerman/Events/React/LibEventLoop.php',
-        'Workerman\\Events\\React\\StreamSelectLoop' => __DIR__ . '/..' . '/workerman/workerman/Events/React/StreamSelectLoop.php',
-        'Workerman\\Events\\Select' => __DIR__ . '/..' . '/workerman/workerman/Events/Select.php',
-        'Workerman\\Lib\\Timer' => __DIR__ . '/..' . '/workerman/workerman/Lib/Timer.php',
-        'Workerman\\Protocols\\Frame' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Frame.php',
-        'Workerman\\Protocols\\Http' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Http.php',
-        'Workerman\\Protocols\\HttpCache' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Http.php',
-        'Workerman\\Protocols\\ProtocolInterface' => __DIR__ . '/..' . '/workerman/workerman/Protocols/ProtocolInterface.php',
-        'Workerman\\Protocols\\Text' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Text.php',
-        'Workerman\\Protocols\\Websocket' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Websocket.php',
-        'Workerman\\Protocols\\Ws' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Ws.php',
-        'Workerman\\WebServer' => __DIR__ . '/..' . '/workerman/workerman/WebServer.php',
-        'Workerman\\Worker' => __DIR__ . '/..' . '/workerman/workerman/Worker.php',
         'think\\App' => __DIR__ . '/../..' . '/thinkphp/library/think/App.php',
         'think\\Build' => __DIR__ . '/../..' . '/thinkphp/library/think/Build.php',
         'think\\Cache' => __DIR__ . '/../..' . '/thinkphp/library/think/Cache.php',
@@ -331,16 +268,14 @@ class ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a
         'think\\template\\taglib\\Cx' => __DIR__ . '/../..' . '/thinkphp/library/think/template/taglib/Cx.php',
         'think\\view\\driver\\Php' => __DIR__ . '/../..' . '/thinkphp/library/think/view/driver/Php.php',
         'think\\view\\driver\\Think' => __DIR__ . '/../..' . '/thinkphp/library/think/view/driver/Think.php',
-        'think\\worker\\Server' => __DIR__ . '/..' . '/topthink/think-worker/src/Server.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit5a34d2cf88418439a1e7fb45047b8e5a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitbe5fdc6ce25a854de4cbf5279dee37ce::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitbe5fdc6ce25a854de4cbf5279dee37ce::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitbe5fdc6ce25a854de4cbf5279dee37ce::$classMap;
 
         }, null, ClassLoader::class);
     }
