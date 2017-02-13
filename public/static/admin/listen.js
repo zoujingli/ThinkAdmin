@@ -162,7 +162,7 @@ define(['jquery', 'admin.plugs'], function () {
     };
     /*! 通过URI查询最有可能的菜单NODE */
     function queryNode(url) {
-        var $menu = $('.framework-sidebar').find('[data-menu-node][data-open*="_URL_"]'.replace('_URL_', url.replace(/\.html$/ig, '')));
+        var $menu = $('[data-menu-node][data-open*="_URL_"]'.replace('_URL_', url.replace(/\.html$/ig, '')));
         if ($menu.size()) {
             return $menu.get(0).getAttribute('data-menu-node');
         }

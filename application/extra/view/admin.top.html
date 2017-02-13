@@ -6,7 +6,11 @@
                     <span class="icon-logo">{:sysconf('app_name')} <sup>{:sysconf('app_version')}</sup></span>
                 </a>
             </div>
-            <a data-menu-target="m-3" class="topbar-home-link topbar-btn topbar-left active">
+            <a data-menu-node='1' data-open="{:url('@admin/index/main')}"
+               class="topbar-home-link topbar-btn topbar-left active">
+                <span> 系统信息</span>
+            </a>
+            <a data-menu-target="m-3" class="topbar-home-link topbar-btn topbar-left">
                 <span> 系统管理</span>
             </a>
             <div class="topbar-info topbar-right">
