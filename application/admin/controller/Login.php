@@ -1,17 +1,26 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
+use controller\BasicAdmin;
 use think\Db;
 
 /**
  * 系统登录控制器
- * Class Login
+ *
  * @package app\admin\controller
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/10 13:59
  */
-class Login extends Controller {
+class Login extends BasicAdmin {
+
+    /**
+     * 控制器基础方法
+     */
+    public function _initialize() {
+        if ($this->isLogin() && $this->request->action() !== 'out') {
+            $this->redirect('@admin');
+        }
+    }
 
     /**
      * 用户登录

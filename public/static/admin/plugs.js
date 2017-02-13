@@ -161,25 +161,15 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
      */
     msg.prototype.auto = function (data, time) {
         var self = this;
-        if (data.code === 1) {
-            self.success(data.msg, time, function () {
-                if (data.url === 'back') {
-                    window.history.back();
-                } else if (data.url === 'reload') {
-                    $.form.reload();
-                } else if (data.url) {
-                    window.location.href = data.url;
-                } else {
-                    $.form.reload();
-                }
-            });
-        } else {
-            self.error(data.msg, 3000, function () {
-                if (data.url) {
-                    window.location.href = data.url;
-                }
+        if (parseInt(data.code) === 1) {
+            return self.success(data.msg, time, function () {
+                alert(data.url);
+                !!data.url ? (window.location.href = data.url) : $.form.reload();
             });
         }
+        self.error(data.msg, 3000, function () {
+            !!data.url && (window.location.href = data.url);
+        });
     };
 
     /**
