@@ -30,7 +30,7 @@ class Login extends Controller {
             empty($user) && $this->error('登录账号不存在，请重新输入!');
             ($user['password'] !== md5($password)) && $this->error('登录密码与账号不匹配，请重新输入!');
             session('user', $user);
-            $this->error('登录成功，正在进入系统...');
+            $this->success('登录成功，正在进入系统...', '@admin');
         }
     }
 

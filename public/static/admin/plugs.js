@@ -15,9 +15,24 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
         fix: function () {
             $(':input[placeholder]').map(function () {
                 var self = $(this), txt = self.attr('placeholder');
-                self.wrap($('<div></div>').css({position: 'relative', zoom: '1', border: 'none', background: 'none', padding: 'none', margin: 'none'}));
+                self.wrap($('<div></div>').css({
+                    position: 'relative',
+                    zoom: '1',
+                    border: 'none',
+                    background: 'none',
+                    padding: 'none',
+                    margin: 'none'
+                }));
                 var pos = self.position(), h = self.outerHeight(true), paddingleft = self.css('padding-left');
-                var holder = $('<span></span>').text(txt).css({position: 'absolute', left: pos.left, top: pos.top, height: h, lineHeight: h + 'px', paddingLeft: paddingleft, color: '#aaa'}).appendTo(self.parent());
+                var holder = $('<span></span>').text(txt).css({
+                    position: 'absolute',
+                    left: pos.left,
+                    top: pos.top,
+                    height: h,
+                    lineHeight: h + 'px',
+                    paddingLeft: paddingleft,
+                    color: '#aaa'
+                }).appendTo(self.parent());
                 self.on('focusin focusout change keyup', function () {
                     self.val() ? holder.hide() : holder.show();
                 });
@@ -82,7 +97,14 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
      */
     msg.prototype.success = function (msg, time, callback) {
         this.close();
-        return this.index = layer.msg(msg, {icon: 1, shade: this.shade, scrollbar: false, end: callback, time: (time || 2) * 1000, shadeClose: true});
+        return this.index = layer.msg(msg, {
+            icon: 1,
+            shade: this.shade,
+            scrollbar: false,
+            end: callback,
+            time: (time || 2) * 1000,
+            shadeClose: true
+        });
     };
 
     /**
@@ -93,7 +115,14 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
      */
     msg.prototype.error = function (msg, time, callback) {
         this.close();
-        return this.index = layer.msg(msg, {icon: 2, shade: this.shade, scrollbar: false, time: (time || 3) * 1000, end: callback, shadeClose: true});
+        return this.index = layer.msg(msg, {
+            icon: 2,
+            shade: this.shade,
+            scrollbar: false,
+            time: (time || 3) * 1000,
+            end: callback,
+            shadeClose: true
+        });
     };
 
     /**
@@ -105,7 +134,12 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
      */
     msg.prototype.tips = function (msg, time, callback) {
         this.close();
-        return this.index = layer.msg(msg, {time: (time || 3) * 1000, shade: this.shade, end: callback, shadeClose: true});
+        return this.index = layer.msg(msg, {
+            time: (time || 3) * 1000,
+            shade: this.shade,
+            end: callback,
+            shadeClose: true
+        });
     };
 
     /**
@@ -127,7 +161,7 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
      */
     msg.prototype.auto = function (data, time) {
         var self = this;
-        if (data.code === 0) {
+        if (data.code === 1) {
             self.success(data.msg, time, function () {
                 if (data.url === 'back') {
                     window.history.back();
@@ -330,7 +364,14 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
      * @returns {unresolved}
      */
     _form.prototype.iframe = function (url, title) {
-        return layer.open({title: title || '窗口', type: 2, area: ['800px', '530px'], fix: true, maxmin: false, content: url});
+        return layer.open({
+            title: title || '窗口',
+            type: 2,
+            area: ['800px', '530px'],
+            fix: true,
+            maxmin: false,
+            content: url
+        });
     };
 
     /**
@@ -398,27 +439,6 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
         }
         var attrProp = ele.getAttribute(prop);
         return (attrProp !== undefined && attrProp !== null && attrProp !== false)
-    };
-
-    /**
-     * 设置文件选择范围
-     * @param {type} ele
-     * @param {type} start
-     * @param {type} end
-     * @returns {validate_L1.validate.prototype}
-     */
-    validate.prototype.selectRange = function (ele, start, end) {
-        if (ele.createTextRange) {
-            var range = ele.createTextRange();
-            range.collapse(true);
-            range.moveEnd('character', end);
-            range.moveStart('character', start);
-            range.select();
-        } else {
-            //ele.focus();
-            ele.setSelectionRange(start, end);
-        }
-        return this;
     };
 
     /**
@@ -614,7 +634,12 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
      */
     validate.prototype.insertErrorEle = function (ele) {
         var $html = $('<span style="-webkit-animation-duration:.2s;animation-duration:.2s;padding-right:20px;color:#a94442;position:absolute;right:0;font-size:12px;z-index:2;display:block;width:34px;text-align:center;pointer-events:none"></span>');
-        $html.css({top: $(ele).position().top + 'px', paddingTop: $(ele).css('paddingTop'), paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('lineHeight')});
+        $html.css({
+            top: $(ele).position().top + 'px',
+            paddingTop: $(ele).css('paddingTop'),
+            paddingBottom: $(ele).css('paddingBottom'),
+            lineHeight: $(ele).css('lineHeight')
+        });
         $(ele).data('input-info') || $(ele).data('input-info', $html.insertAfter(ele));
     };
 
