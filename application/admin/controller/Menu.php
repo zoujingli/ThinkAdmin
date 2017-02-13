@@ -52,9 +52,7 @@ class Menu extends BasicAdmin {
      */
     protected function _index_data_filter(&$data) {
         foreach ($data as &$vo) {
-            if ($vo['url'] !== '#') {
-                $vo['url'] = url($vo['url']);
-            }
+            ($vo['url'] !== '#') && ($vo['url'] = url($vo['url']));
             $vo['ids'] = join(',', Tools::getArrSubIds($data, $vo['id']));
         }
         $data = Tools::arr2table($data);

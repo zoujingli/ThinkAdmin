@@ -57,7 +57,7 @@ class Tools {
             $tree[] = $_tree;
             if (!empty($sub)) {
                 $sub_array = self::arr2table($sub, $id, $pid, $path, $_tree[$path]);
-                $tree = array_merge($tree, (Array) $sub_array);
+                $tree = array_merge($tree, (Array)$sub_array);
             }
         }
         return $tree;
@@ -103,7 +103,7 @@ class Tools {
             $tree[] = $_tree;
             if (!empty($sub)) {
                 $sub_array = self::node2table($sub, $node, $pnode, $path, $_tree[$path . "_node"]);
-                $tree = array_merge($tree, (Array) $sub_array);
+                $tree = array_merge($tree, (Array)$sub_array);
             }
         }
         return $tree;
