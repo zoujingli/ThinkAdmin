@@ -21,17 +21,17 @@ class Menu extends BasicAdmin {
      * 绑定操作模型
      * @var string
      */
-    protected $table = 'system_menu';
+    protected $table = 'SystemMenu';
 
     /**
      * 关闭分页
-     * @var type
+     * @var bool
      */
     protected $_page_on = false;
 
     /**
      * 定义菜单链接打开方式
-     * @var type
+     * @var array
      */
     protected $targetList = array(
         '_self'   => '本窗口打开',
@@ -40,15 +40,17 @@ class Menu extends BasicAdmin {
         '_top'    => '顶级窗口打开',
     );
 
+    /**
+     * 菜单列表
+     */
     public function index() {
-        $db = Db::table($this->table);
+        $db = Db::name($this->table);
         parent::_list($db, false);
     }
 
     /**
      * 列表数据处理
-     *
-     * @param type $data
+     * @param array $data
      */
     protected function _index_data_filter(&$data) {
         foreach ($data as &$vo) {
@@ -60,21 +62,18 @@ class Menu extends BasicAdmin {
 
     /**
      * 新增编辑方法
-     *
      */
     public function form() {
-        if (request()->method() === 'GET' && input('get.action') === 'nodelist') {
-            /*
-             * 构建节点数组
-             */
-            $list = Db::table("system_node")->where(array("status" => 1, "is_menu" => 1))->order("module asc,controller asc")->select();
-            $new_data = array();
+        // 读取节点列表
+        if ($this->request->isGet() && $this->request->get('action') === 'nodelist') {
+            $list = Db::name("SystemNode")->where(["status" => 1, "is_menu" => 1])->order("module asc,controller asc")->select();
+            $new_data = [];
             foreach ($list as $value) {
                 if (empty($value['pnode'])) {
                     //主节点
                     $new_data[$value['module']]['node'] = $value['module'];
                     $new_data[$value['module']]['title'] = $value['menu_desc'];
-                } elseif (substr_count($value['pnode'], '/') == 0) {
+                } elseif (substr_count($value['pnode'], ' / ') == 0) {
                     //二级节点
                     $new_data[$value['module']]["_sub_"][$value['controller']]["node"] = $value['pnode'];
                     $new_data[$value['module']]["_sub_"][$value['controller']]["title"] = $value['menu_desc'];
@@ -85,14 +84,13 @@ class Menu extends BasicAdmin {
             }
             return $new_data;
         }
-
-        if (request()->method() == "POST") {
-            $post = input("post.");
-            $db = db($this->table);
+        // 表单操作
+        $db = Db::name($this->table);
+        if ($this->request->isPost()) {
+            $post = $this->request->post();
             if (!isset($post['id'])) {
                 if ($db->insert($post)) {
-                    $url = url('system/nodes/index');
-                    $this->success("数据保存成功", "javascript:$.form.open('{$url}')");
+                    $this->success("数据保存成功", '');
                 } else {
                     $this->error("数据保存失败");
                 }
@@ -101,11 +99,12 @@ class Menu extends BasicAdmin {
                 $this->success("数据保存成功");
             }
         } else {
-            $id = input("get.id");
-            $vo = Db::table($this->table)->where(array("id" => $id, 'status' => 1))->find();
+            $id = $this->request->get('id');
+            $vo = $db->where(["id" => $id, 'status' => 1])->find();
             $this->assign("vo", $vo);
             /* 去除自己的菜单及子菜单 */
-            $menus = Tools::arr2table(Db::table('system_menu')->where('status', '1')->order('sort ASC,id ASC')->select());
+            $_menus = Db::name($this->table)->where('status', '1')->order('sort ASC,id ASC')->select();
+            $menus = Tools::arr2table($_menus);
             foreach ($menus as $key => &$menu) {
                 $current_path = "-{$vo['pid']}-{$vo['id']}";
                 if ($vo['pid'] !== '' && (stripos("{$menu['path']}-", "{$current_path}-") !== false || $menu['path'] === $current_path)) {
@@ -113,14 +112,40 @@ class Menu extends BasicAdmin {
                 }
             }
             $this->assign('menus', $menus);
-            //节点
-            $db = Db::table("system_node");
-            $db->field('node,is_menu,menu_desc')->where('is_menu', '1')->order('node ASC');
+            //节点列表
+            $db = Db::name("SystemNode")->field('node,is_menu,menu_desc')->where('is_menu', '1')->order('node ASC');
             $nodes = parent::_list($db, false, false);
             $this->assign('nodes', $nodes['list']);
             $this->assign("ptitle", "编辑菜单");
-            exit($this->display());
+            return $this->fetch();
         }
+    }
+
+    /**
+     * 表单数据
+     */
+    protected function _form_filter() {
+        if ($this->request->isGet()) {
+            //节点列表
+            $db = Db::name("SystemNode")->field('node,is_menu,menu_desc')->where('is_menu', '1')->order('node ASC');
+            $nodes = parent::_list($db, false, false);
+            $this->assign('nodes', $nodes['list']);
+        }
+    }
+
+
+    /**
+     * 添加菜单
+     */
+    public function add() {
+        return $this->_form($this->table);
+    }
+
+    /**
+     * 编辑菜单
+     */
+    public function edit() {
+        return $this->_form($this->table);
     }
 
     /**
