@@ -37,7 +37,7 @@ require.config({
         'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
     },
     deps: ['css!//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css'],
-    // urlArgs: "t=" + (new Date()).getTime()
+    urlArgs: "t=" + (new Date()).getTime()
 });
 
 window.WEB_SOCKET_SWF_LOCATION = "//cdn.bootcss.com/web-socket-js/1.0.0/WebSocketMain.swf";

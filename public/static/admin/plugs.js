@@ -166,7 +166,7 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
                 !!data.url ? (window.location.href = data.url) : $.form.reload();
             });
         }
-        self.error(data.msg, 3000, function () {
+        self.error(data.msg, 3, function () {
             !!data.url && (window.location.href = data.url);
         });
     };
@@ -179,7 +179,7 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
 
     /**
      * 表单构造函数
-     * @returns {common_L11._form}
+     * @private
      */
     function _form() {
         this.version = '2.0';
@@ -189,13 +189,13 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
 
     /**
      * 异步加载的数据
-     * @param {type} url 请求的地址
-     * @param {json|form|$form} data 额外请求数据
-     * @param {type} type 提交的类型 GET|POST
-     * @param {type} callback 成功后的回调方法
-     * @param {type} loading 是否显示加载层
-     * @param {type} tips 提示消息
-     * @param {type} time 消息提示时间
+     * @param url 请求的地址
+     * @param data 额外请求数据
+     * @param type 提交的类型 GET|POST
+     * @param callback 成功后的回调方法
+     * @param loading 是否显示加载层
+     * @param tips 提示消息
+     * @param time 消息提示时间
      */
     _form.prototype.load = function (url, data, type, callback, loading, tips, time) {
         var self = this;
@@ -244,10 +244,10 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
             });
         });
     };
+
     /**
      * 动态HTML事件重载
-     * @param {type} $container
-     * @returns {undefined}
+     * @param $container
      */
     _form.prototype.reInit = function ($container) {
         $.validate.listen.call(this);
@@ -266,15 +266,15 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
         /* 自动给必填字符加上样式 @zoujingli @by 2016-05-11 */
         $container.find('[required]').parent().prevAll('label').addClass('label-required');
     };
+
     /**
      * 加载HTML到目标位置
-     * @param {type} url
-     * @param {type} data
-     * @param {type} target
-     * @param {type} callback
-     * @param {type} loading
-     * @param {type} tips
-     * @returns {undefined}
+     * @param url
+     * @param data
+     * @param target
+     * @param callback
+     * @param loading
+     * @param tips
      */
     _form.prototype.open = function (url, data, target, callback, loading, tips) {
         data && (typeof (data) === 'object') && (data = $.param(data));
@@ -284,25 +284,21 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
                 return $.msg.auto(res);
             }
             var $container = $('.layer-main-container').html(res);
-
-            function reinit() {
-                /* 事件重载 */
-                $.form.reInit($container);
-            }
-
             reinit.call(this), setTimeout(reinit, 500), setTimeout(reinit, 1000);
             return (typeof callback === 'function') && callback.call(this);
+            function reinit() {
+                $.form.reInit($container);
+            }
         }, loading, tips);
     };
 
     /**
      * 加载HTML到弹出层
-     * @param {type} url
-     * @param {type} data
-     * @param {type} callback
-     * @param {type} loading
-     * @param {type} tips
-     * @returns {undefined}
+     * @param url
+     * @param data
+     * @param callback
+     * @param loading
+     * @param tips
      */
     _form.prototype.modal = function (url, data, callback, loading, tips) {
         data && (typeof (data) === 'object') && (data = $.param(data));
@@ -333,24 +329,21 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
 
     /**
      * 显示HTML到中主内容区
-     * @param {type} html
-     * @returns {undefined}
+     * @param html
      */
     _form.prototype.show = function (html) {
         var $container = $('.layer-main-container').html(html);
-
+        reinit.call(this), setTimeout(reinit, 500), setTimeout(reinit, 1000);
         function reinit() {
             $.validate.listen.call(this);
             $container.find('h3').addClass('animated fadeIn container-animated');
         }
-
-        reinit.call(this), setTimeout(reinit, 500), setTimeout(reinit, 1000);
     };
 
     /**
      * 打开一个iframe窗口
-     * @param {type} url
-     * @returns {unresolved}
+     * @param url
+     * @param title
      */
     _form.prototype.iframe = function (url, title) {
         return layer.open({
@@ -365,13 +358,15 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
 
     /**
      * 关闭FORM框
-     * @returns {undefined}
+     * @return {*|jQuery}
      */
     _form.prototype.close = function () {
         return $(this._modal).modal('hide');
     };
 
-    /*刷新当前页面*/
+    /**
+     * 刷新当前页面
+     */
     _form.prototype.reload = function () {
         window.onhashchange.call(this);
     };

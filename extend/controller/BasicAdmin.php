@@ -3,6 +3,7 @@
 namespace controller;
 
 use think\Controller;
+use think\Db;
 use think\db\Query;
 
 /**
@@ -15,16 +16,46 @@ use think\db\Query;
 class BasicAdmin extends Controller {
 
     /**
+     * 默认操作数据表
+     * @var string
+     */
+    protected $table;
+
+    /**
+     * 默认检查用户登录状态
+     * @var bool
+     */
+    protected $checkLogin = true;
+
+    /**
+     * 默认检查节点访问权限
+     * @var bool
+     */
+    protected $checkAuth = true;
+
+    /**
      * 后台权限控制初始化方法
      */
     public function _initialize() {
-        if (!$this->isLogin()) {
-            $this->redirect('@admin/login');
+        # 用户登录状态检查
+        if ($this->checkLogin || $this->checkAuth) {
+            if (!$this->isLogin()) {
+                $this->redirect('@admin/login');
+            }
         }
-        // 初始化赋值常用变量
+        # 节点访问权限检查
+        if ($this->checkLogin && $this->checkAuth) {
+            $node = strtolower($this->request->module() . '/' . $this->request->controller() . '/' . $this->request->action());
+            if (!auth($node)) {
+                $this->error('抱歉，您没有访问该模块的权限！');
+            }
+        }
+        # 初始化赋值常用变量
         if ($this->request->isGet()) {
-            $this->assign('classuri', strtolower($this->request->module() . '/' . $this->request->controller()));
+            $class_uri = strtolower($this->request->module() . '/' . $this->request->controller());
+            $this->assign('classuri', $class_uri);
         }
+
     }
 
     /**
@@ -48,9 +79,8 @@ class BasicAdmin extends Controller {
      * @return array|string
      */
     protected function _list($db = null, $is_page = true, $is_display = true, $total = false) {
-        is_null($db) && $db = db($this->table);
-        is_string($db) && $db = db($db);
-        !$db->getTable() && $db->setTable($this->table);
+        is_null($db) && $db = Db::name($this->table);
+        is_string($db) && $db = Db::name($db);
         # 列表排序默认处理
         if ($this->request->isPost() && $this->request->post('action') === 'resort') {
             $data = $this->request->post();
@@ -67,7 +97,7 @@ class BasicAdmin extends Controller {
         if ($is_page) {
             $row_page = $this->request->get('rows', cookie('rows'), 'intval');
             cookie('rows', $row_page >= 10 ? $row_page : 10);
-            $page = $db->paginate($row_page, $total, ['query' => input('get.')]);
+            $page = $db->paginate($row_page, $total, ['query' => $this->request->get()]);
             $result['list'] = $page->all();
             $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
         } else {
@@ -101,8 +131,7 @@ class BasicAdmin extends Controller {
             $this->_callback('_form_filter', $vo);
             $result = Data::save($db, $vo, $pk, $where);
             if (false !== $this->_callback('_form_result', $result)) {
-                $back = $pk_value === '' ? 'javascript:history.back();' : 'javascript:$.form.reload();';
-                $result !== false ? $this->success('恭喜，保存成功哦！', $back) : $this->error('保存失败，请稍候再试！');
+                $result !== false ? $this->success('恭喜，保存成功哦！', ($pk_value === '' ? null : '')) : $this->error('保存失败，请稍候再试！');
             }
             return $result;
         }

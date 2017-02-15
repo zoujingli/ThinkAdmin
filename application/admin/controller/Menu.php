@@ -8,7 +8,13 @@ use library\Node;
 use library\Tools;
 use think\Db;
 
-
+/**
+ * 系统后台管理管理
+ *
+ * @package app\admin\controller
+ * @author Anyon <zoujingli@qq.com>
+ * @date 2017/02/15
+ */
 class Menu extends BasicAdmin {
 
     /**
@@ -24,28 +30,21 @@ class Menu extends BasicAdmin {
     protected $table = 'SystemMenu';
 
     /**
-     * 关闭分页
-     * @var bool
-     */
-    protected $_page_on = false;
-
-    /**
      * 定义菜单链接打开方式
      * @var array
      */
-    protected $targetList = array(
+    protected $targetList = [
         '_self'   => '本窗口打开',
         '_blank'  => '新窗口打开',
         '_parent' => '父窗口打开',
         '_top'    => '顶级窗口打开',
-    );
+    ];
 
     /**
      * 菜单列表
      */
     public function index() {
-        $db = Db::name($this->table);
-        parent::_list($db, false);
+        parent::_list($this->table, false);
     }
 
     /**
