@@ -6,12 +6,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <link rel="shortcut icon" href="{:sysconf('app_logo')}" />
         <title>{block name="title"}{$title|default=''}{/block}</title>
-        <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="__STATIC__/plugs/bootstrap/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="__STATIC__/theme/default/css/console.css">
         <link rel="stylesheet" href="__STATIC__/theme/default/css/animate.css">
         {block name="style"}{/block}
         <script>window.ROOT_URL='__ROOT__';</script>
-        <script src="__STATIC__/plugs/require.js"></script>
+        <script src="__STATIC__/plugs/require/require.js"></script>
         <script src="__STATIC__/admin/app.js"></script>
     </head>
     {block name="bodyTag"}

@@ -14,7 +14,7 @@ require.config({
         'jquery': ['//cdn.bootcss.com/jquery/1.12.4/jquery.min', '../plugs/jquery/jquery.min'],
         'jquery.icheck': ['//cdn.bootcss.com/iCheck/1.0.2/icheck.min'],
         'jquery.cookies': ['//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie', '../plugs/jquery/jquery.cookie'],
-        'bootstrap': ['//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min', '../plugs/bootstrap/script/bootstrap.min'],
+        'bootstrap': ['//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min', '../plugs/bootstrap/js/bootstrap.min'],
         'bootstrap.multiselect': ['//cdn.bootcss.com/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min', '../plugs/multiselect/bootstrap-multiselect'],
         'pcasunzips': ['../plugs/jquery/pcasunzips'],
         'layui': ['../plugs/layui/layui'],
