@@ -6,6 +6,15 @@
     </div>
     {/if}
     <div class="ibox-content fadeInUp animated">
+        {if isset($alert)}
+        <div class="alert alert-{$alert.type} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {if isset($alert['title'])}<strong>{$alert.title}</strong><br/>{/if}
+            {if isset($alert['content'])}<p>{$alert.content}</p>{/if}
+        </div>
+        {/if}
         {block name="content"}
         {/block}
     </div>

@@ -58,7 +58,14 @@ class Index extends BasicAdmin {
         $version = Db::query('select version() as ver');
         $version = array_pop($version);
         $this->assign('mysql_ver', $version['ver']);
-        $this->assign('title', '系统信息');
+        if (session('user.username') === 'admin' && session('user.password') === '662af1cd1976f09a9f8cecc868ccc0a2') {
+            $alert = [
+                'type'    => 'danger',
+                'title'   => '安全提示',
+                'content' => '超级管理员默认密码未修改，建议马上修改！'
+            ];
+            $this->assign('alert', $alert);
+        }
         return view();
     }
 
