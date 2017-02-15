@@ -1,68 +1,73 @@
-<div style="padding:15px">
-    <div class="row">
-        <div class="col-sm-6">
-            <table class="table table-bordered">
-                <tr>
-                    <td>框架版本</td>
-                    <td>{$Think.const.THINK_VERSION}</td>
-                </tr>
-                <tr>
-                    <td>系统类型</td>
-                    <td>{:php_uname('s')}</td>
-                </tr>
-                <tr>
-                    <td>运行环境</td>
-                    <td>{:php_sapi_name()}</td>
-                </tr>
-                <tr>
-                    <td>PHP版本</td>
-                    <td>{:phpversion()}</td>
-                </tr>
-                <tr>
-                    <td>MySQL版本</td>
-                    <td>{$mysql_ver}</td>
-                </tr>
-                <tr>
-                    <td>上传限制</td>
-                    <td>{:ini_get('upload_max_filesize')}</td>
-                </tr>
-                <tr>
-                    <td>POST限制</td>
-                    <td>{:ini_get('post_max_size')}</td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-sm-6">
-            <table class="table table-bordered">
-                <tr>
-                    <td>框架版本</td>
-                    <td>{$Think.const.THINK_VERSION}</td>
-                </tr>
-                <tr>
-                    <td>系统类型</td>
-                    <td>{:php_uname('s')}</td>
-                </tr>
-                <tr>
-                    <td>运行环境</td>
-                    <td>{:php_sapi_name()}</td>
-                </tr>
-                <tr>
-                    <td>PHP版本</td>
-                    <td>{:phpversion()}</td>
-                </tr>
-                <tr>
-                    <td>MySQL版本</td>
-                    <td>{$mysql_ver}</td>
-                </tr>
-                <tr>
-                    <td>上传限制</td>
-                    <td>{:ini_get('upload_max_filesize')}</td>
-                </tr>
-                <tr>
-                    <td>POST限制</td>
-                    <td>{:ini_get('post_max_size')}</td>
-                </tr>
-            </table>
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>{$title}</h5>
+    </div>
+    <div class="ibox-content fadeInUp animated">
+        <div class="row">
+            <div class="col-sm-6">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>框架版本</td>
+                        <td>{$Think.const.THINK_VERSION}</td>
+                    </tr>
+                    <tr>
+                        <td>系统类型</td>
+                        <td>{:php_uname('s')}</td>
+                    </tr>
+                    <tr>
+                        <td>运行环境</td>
+                        <td>{:php_sapi_name()}</td>
+                    </tr>
+                    <tr>
+                        <td>PHP版本</td>
+                        <td>{:phpversion()}</td>
+                    </tr>
+                    <tr>
+                        <td>MySQL版本</td>
+                        <td>{$mysql_ver}</td>
+                    </tr>
+                    <tr>
+                        <td>上传限制</td>
+                        <td>{:ini_get('upload_max_filesize')}</td>
+                    </tr>
+                    <tr>
+                        <td>POST限制</td>
+                        <td>{:ini_get('post_max_size')}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm-6">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>框架版本</td>
+                        <td>{$Think.const.THINK_VERSION}</td>
+                    </tr>
+                    <tr>
+                        <td>系统类型</td>
+                        <td>{:php_uname('s')}</td>
+                    </tr>
+                    <tr>
+                        <td>运行环境</td>
+                        <td>{:php_sapi_name()}</td>
+                    </tr>
+                    <tr>
+                        <td>PHP版本</td>
+                        <td>{:phpversion()}</td>
+                    </tr>
+                    <tr>
+                        <td>MySQL版本</td>
+                        <td>{$mysql_ver}</td>
+                    </tr>
+                    <tr>
+                        <td>上传限制</td>
+                        <td>{:ini_get('upload_max_filesize')}</td>
+                    </tr>
+                    <tr>
+                        <td>POST限制</td>
+                        <td>{:ini_get('post_max_size')}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </div>
