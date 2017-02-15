@@ -58,6 +58,7 @@ class Index extends BasicAdmin {
         $version = Db::query('select version() as ver');
         $version = array_pop($version);
         $this->assign('mysql_ver', $version['ver']);
+        $this->assign('title', '系统信息');
         return view();
     }
 

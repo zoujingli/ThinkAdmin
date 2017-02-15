@@ -1,0 +1,13 @@
+{block name="contentTag"}
+<div class="ibox">
+    {if isset($title)}
+    <div class="ibox-title">
+        <h5>{$title}</h5>
+    </div>
+    {/if}
+    <div class="ibox-content fadeInUp animated">
+        {block name="content"}
+        {/block}
+    </div>
+</div>
+{/block}
