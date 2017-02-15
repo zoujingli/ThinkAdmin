@@ -8,7 +8,7 @@ use think\Db;
 
 /**
  * 后台入口
- *
+ * Class Index
  * @package app\admin\controller
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15 10:41

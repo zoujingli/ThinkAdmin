@@ -10,7 +10,7 @@ use think\Db;
 
 /**
  * 系统后台管理管理
- *
+ * Class Menu
  * @package app\admin\controller
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15
