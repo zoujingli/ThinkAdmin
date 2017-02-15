@@ -1,3 +1,6 @@
+{extend name='extra@admin/content' /}
+
+{block name="content"}
 <form onsubmit="return false;" data-auto="" method="POST">
     <input type="hidden" value="resort" name="action"/>
     <table class="table table-hover">
@@ -67,3 +70,4 @@
         </tbody>
     </table>
 </form>
+{/block}
