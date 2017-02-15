@@ -15,7 +15,7 @@ class Menu extends BasicAdmin {
      * 模块标题
      * @var string
      */
-    public $ptitle = '系统菜单';
+    public $title = '系统菜单';
 
     /**
      * 绑定操作模型
@@ -116,7 +116,7 @@ class Menu extends BasicAdmin {
             $db = Db::name("SystemNode")->field('node,is_menu,menu_desc')->where('is_menu', '1')->order('node ASC');
             $nodes = parent::_list($db, false, false);
             $this->assign('nodes', $nodes['list']);
-            $this->assign("ptitle", "编辑菜单");
+            $this->assign("title", "编辑菜单");
             return $this->fetch();
         }
     }

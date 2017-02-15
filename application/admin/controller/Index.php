@@ -6,26 +6,36 @@ use controller\BasicAdmin;
 use library\Tools;
 use think\Db;
 
+/**
+ * 后台入口
+ *
+ * @package app\admin\controller
+ * @author Anyon <zoujingli@qq.com>
+ * @date 2017/02/15 10:41
+ */
 class Index extends BasicAdmin {
 
+    /**
+     * 后台框架布局
+     * @return \think\response\View
+     */
     public function index() {
-        $this->assign('ptitle', '后台管理');
-        $menuList = Db::name('SystemMenu')->field('title,id,pid,url,icon')->where('status', '1')->select();
-        $result = Tools::arr2tree($menuList);
-        $this->assign('menus', $this->_filterMenu($result));
+        $list = Db::name('SystemMenu')->field('title,id,pid,url,icon')->where('status', '1')->select();
+        $menus = $this->_filter_menu(Tools::arr2tree($list));
+        $this->assign('title', '后台管理');
+        $this->assign('menus', $menus);
         return view();
     }
 
     /**
      * 后台主菜单权限过滤
-     * --- 权限只检测节点三级
      * @param array $menus
      * @return array
      */
-    private function _filterMenu($menus) {
+    private function _filter_menu($menus) {
         foreach ($menus as $key => &$menu) {
             if (!empty($menu['sub'])) {
-                $menu['sub'] = $this->_filterMenu($menu['sub']);
+                $menu['sub'] = $this->_filter_menu($menu['sub']);
             }
             if (!empty($menu['sub'])) {
                 $menu['url'] = '#';
@@ -40,6 +50,10 @@ class Index extends BasicAdmin {
         return $menus;
     }
 
+    /**
+     * 主机信息显示
+     * @return \think\response\View
+     */
     public function main() {
         $version = Db::query('select version() as ver');
         $version = array_pop($version);

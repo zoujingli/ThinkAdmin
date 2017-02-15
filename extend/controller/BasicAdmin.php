@@ -113,7 +113,7 @@ class BasicAdmin extends Controller {
         }
         $this->_callback('_form_filter', $vo);
         $this->assign('vo', $vo);
-        empty($this->ptitle) or $this->assign('ptitle', $this->ptitle);
+        empty($this->title) or $this->assign('title', $this->title);
         return is_null($tpl) ? $vo : $this->display($tpl);
     }
 
