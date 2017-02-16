@@ -55,8 +55,8 @@ class Index extends BasicAdmin {
      * @return \think\response\View
      */
     public function main() {
-        $version = Db::query('select version() as ver');
-        $version = array_pop($version);
+        $_version = Db::query('select version() as ver');
+        $version = array_pop($_version);
         $this->assign('mysql_ver', $version['ver']);
         if (session('user.username') === 'admin' && session('user.password') === '662af1cd1976f09a9f8cecc868ccc0a2') {
             $alert = [
@@ -64,6 +64,7 @@ class Index extends BasicAdmin {
                 'title'   => '安全提示',
                 'content' => '超级管理员默认密码未修改，建议马上修改！'
             ];
+            $this->assign('title', '后台首页');
             $this->assign('alert', $alert);
         }
         return view();

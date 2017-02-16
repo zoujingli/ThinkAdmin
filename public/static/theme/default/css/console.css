@@ -199,7 +199,7 @@ td .text-explode:first-child {opacity:0;display:none}
 .ibox-title {border-bottom:1px solid #e7eaec;color:inherit;margin-bottom:0;padding:0px 15px 0px 15px;min-height:48px}
 .ibox-content {background-color:#ffffff;color:inherit;padding:15px}
 .ibox-footer {color:inherit;border-top:1px solid #e7eaec;font-size:90%;background:#ffffff;padding:10px 15px}
-.ibox-title h5 {display:inline-block;font-size:14px;margin:16px 0px;font-weight:500;text-indent:8px;text-overflow:ellipsis;border-left:2px solid #88B7E0}
+.ibox-title h5 {display:inline-block;font-size:16px;margin:16px 0px;font-weight:500;text-indent:8px;text-overflow:ellipsis;border-left:2px solid #88B7E0}
 
 /** 分页样式 */
 .pagination > li > a {background-color:#FFFFFF !important;border:1px solid #DDDDDD !important;color:inherit !important;float:left;line-height:1.42857;margin-left:-1px;padding:4px 10px;position:relative;text-decoration:none}
