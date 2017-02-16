@@ -1,4 +1,4 @@
-define(['jquery', 'admin.plugs'], function () {
+define(['jquery', 'admin.plugs', 'jquery.icheck'], function () {
 
     /** 事件委派 */
     $('body').on('click', '[data-load]', function () {
