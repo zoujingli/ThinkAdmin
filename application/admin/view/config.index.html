@@ -1,0 +1,155 @@
+{extend name="extra@admin/content"}
+
+{block name="content"}
+<div class="panel panel-default">
+    <div class="panel-heading">网站设置</div>
+    <div class="panel-body">
+        <div style="height:20px;"></div>
+        <form class=" layui-form" data-auto="" method="post" style="padding-right:20px;">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="layui-form-item layui">
+                        <label class="layui-form-label">网站名称</label>
+                        <div class="layui-input-block">
+                            <input type="text"
+                                   name="site_name"
+                                   required="required"
+                                   title="请输入网站名称"
+                                   placeholder="请输入网站名称"
+                                   autocomplete="off"
+                                   value="{:sysconf('site_name')}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui">
+                        <label class="layui-form-label">网站域名</label>
+                        <div class="layui-input-block">
+                            <input type="text"
+                                   name="site_domain"
+                                   required="required"
+                                   title="请输入网站域名"
+                                   placeholder="请输入网站域名"
+                                   autocomplete="off"
+                                   value="{:sysconf('site_domain')}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui">
+                        <label class="layui-form-label">公司名称</label>
+                        <div class="layui-input-block">
+                            <input type="text"
+                                   name="site_company"
+                                   required="required"
+                                   title="请输入公司名称"
+                                   placeholder="请输入公司名称"
+                                   autocomplete="off"
+                                   value="{:sysconf('site_company')}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui">
+                        <label class="layui-form-label">百度统计ID</label>
+                        <div class="layui-input-block">
+                            <input type="text"
+                                   name="site_tongji_baidu"
+                                   title="请输入公司名称"
+                                   placeholder="请输入百度统计ID"
+                                   autocomplete="off"
+                                   value="{:sysconf('site_tongji_baidu')}"
+                                   class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            帮助统计网页访问情况，可以去<a target="_blank" href="http://tongji.baidu.com">百度统计</a>获取ID。
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui">
+                        <label class="layui-form-label">CNZZ统计ID</label>
+                        <div class="layui-input-block">
+                            <input type="text"
+                                   name="site_tongji_cnzz"
+                                   placeholder="请输入CNZZ统计ID"
+                                   autocomplete="off"
+                                   value="{:sysconf('site_tongji_cnzz')}"
+                                   class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            帮助统计网页访问情况，可以去<a target="_blank" href="https://tongji.cnzz.com">流量统计</a>获取ID。
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="layui-form-item layui">
+                        <label class="layui-form-label">后台标题</label>
+                        <div class="layui-input-block">
+                            <input type="text"
+                                   name="site_name"
+                                   required="required"
+                                   title="请输入网站名称"
+                                   placeholder="请输入网站名称"
+                                   autocomplete="off"
+                                   value="{:sysconf('site_name')}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui">
+                        <label class="layui-form-label">系统版本</label>
+                        <div class="layui-input-block">
+                            <input type="text"
+                                   name="app_version"
+                                   required="required"
+                                   title="请输入网站域名"
+                                   placeholder="请输入网站域名"
+                                   autocomplete="off"
+                                   value="{:sysconf('app_version')}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui">
+                        <label class="layui-form-label">网站Logo</label>
+                        <div class="layui-input-block">
+                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px"
+                                 src="{:sysconf('site_logo')}"/>
+                            <input type="text"
+                                   name="site_logo"
+                                   required="required"
+                                   title="请输入公司名称"
+                                   placeholder="请输入公司名称"
+                                   autocomplete="off"
+                                   value="{:sysconf('site_logo')}"
+                                   class="layui-input hide">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            建议LOGO图片的尺寸为160x56px，此LOGO图片用于后台登陆页面。
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui">
+                        <label class="layui-form-label">浏览器图标</label>
+                        <div class="layui-input-block">
+                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px"
+                                 src="{:sysconf('app_logo')}"/>
+                            <input type="text"
+                                   name="app_logo"
+                                   title="请输入公司名称"
+                                   placeholder="请输入百度统计ID"
+                                   autocomplete="off"
+                                   value="{:sysconf('app_logo')}"
+                                   class="layui-input hide">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            建议上传ICO图标的尺寸为128x128px，此图标用于网站标题前，ICON在线制作。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui">
+                <div class="layui-input-block text-center">
+                    <button class="layui-btn" type="submit">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{/block}

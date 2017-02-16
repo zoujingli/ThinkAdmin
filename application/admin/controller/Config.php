@@ -13,8 +13,11 @@ use controller\BasicAdmin;
  */
 class Config extends BasicAdmin {
 
-    public function index() {
+    protected $table = 'SystemConfig';
 
+    public function index() {
+        parent::_list($this->table);
+        
     }
 
 }

@@ -262,6 +262,7 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
                 });
             });
         });
+        layui.use(['form', 'element']);
         JPlaceHolder.init();
         /* 自动给必填字符加上样式 @zoujingli @by 2016-05-11 */
         $container.find('[required]').parent().prevAll('label').addClass('label-required');

@@ -6,6 +6,13 @@
  * date 2017/02/13 14:15
  */
 
+/* layui 兼容处理  */
+.layui, .layui * {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
 /* 设置选择文字及背景颜色 */
 ::selection {
     background-color: #ec494e;
