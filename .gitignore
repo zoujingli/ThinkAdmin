@@ -1,5 +1,5 @@
 !.gitignore
-.idea
-.svn
-runtime
-composer.lock
+/.idea
+/.svn
+/runtime/
+/composer.lock
