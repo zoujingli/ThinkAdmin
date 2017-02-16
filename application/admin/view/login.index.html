@@ -4,8 +4,7 @@
 <link rel="stylesheet" href="__STATIC__/theme/default/css/login.css">
 {/block}
 
-{block name="bodyTag"}
-<body>
+{block name="body"}
 <div class="login-container" style="height:100%">
 
     <div class="clouds clouds-footer"></div>
@@ -72,6 +71,9 @@
     </div>
     <div class="footer">{:sysconf('site_company')} &copy; {:date('Y')}</div>
 </div>
+{/block}
+
+{block name="script"}
 <script>
     require(['jquery'], function ($) {
         $('[name="password"]').on('focus', function () {
@@ -83,5 +85,4 @@
         });
     });
 </script>
-</body>
 {/block}

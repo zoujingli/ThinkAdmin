@@ -17,7 +17,6 @@ class Config extends BasicAdmin {
 
     public function index() {
         parent::_list($this->table);
-        
     }
 
 }

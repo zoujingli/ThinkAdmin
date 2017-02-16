@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
@@ -12,7 +13,6 @@ use think\Db;
  * @date 2017/02/10 13:59
  */
 class Login extends BasicAdmin {
-
 
     /**
      * 控制器基础方法
@@ -51,4 +51,5 @@ class Login extends BasicAdmin {
         session('user', null);
         $this->success('退出登录成功！', '@admin/login');
     }
+
 }

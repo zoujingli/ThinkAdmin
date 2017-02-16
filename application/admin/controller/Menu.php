@@ -127,7 +127,6 @@ class Menu extends BasicAdmin {
         }
     }
 
-
     /**
      * 添加菜单
      */
