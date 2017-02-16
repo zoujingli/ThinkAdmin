@@ -158,7 +158,8 @@ define(['jquery', 'admin.plugs'], function () {
             (/^\w{16}$/.test(token)) && (params.token = token);
         }
         delete params[""];
-        return uri + '?' + $.param(params);
+        var query = '?' + $.param(params);
+        return uri + (query !== '?' ? query : '');
     };
     /*! 通过URI查询最有可能的菜单NODE */
     function queryNode(url) {

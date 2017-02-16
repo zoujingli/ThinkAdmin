@@ -236,7 +236,7 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
                     if (typeof (res) === 'object') {
                         return $.msg.auto(res, time);
                     }
-                    if (res.indexOf('A PHP Error was encountered') !== -1) {
+                    if (res.indexOf('A PHP Error was encountered') > -1) {
                         return $.msg.tips(self.errMsg.replace('{status}', 'E505 - '));
                     }
                     self.show(res);
