@@ -49,6 +49,6 @@ class Login extends BasicAdmin {
      */
     public function out() {
         session('user', null);
-        $this->success('退出登录成功！', '@admin/login');
+        $this->success('退出登录成功！', '@admin / login');
     }
 }

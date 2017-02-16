@@ -16,6 +16,12 @@ use think\db\Query;
 class BasicAdmin extends Controller {
 
     /**
+     * 页面标题
+     * @var string
+     */
+    protected $title;
+
+    /**
      * 默认操作数据表
      * @var string
      */
@@ -106,6 +112,7 @@ class BasicAdmin extends Controller {
         if ($this->_callback('_data_filter', $result['list']) === false) {
             return $result;
         }
+        !empty($this->title) && $this->assign('title', $this->title);
         $is_display && exit($this->fetch('', $result));
         return $result;
     }

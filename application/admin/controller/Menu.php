@@ -18,12 +18,6 @@ use think\Db;
 class Menu extends BasicAdmin {
 
     /**
-     * 模块标题
-     * @var string
-     */
-    public $title = '系统菜单';
-
-    /**
      * 绑定操作模型
      * @var string
      */
@@ -44,6 +38,7 @@ class Menu extends BasicAdmin {
      * 菜单列表
      */
     public function index() {
+        $this->title = '系统菜单管理';
         parent::_list($this->table, false);
     }
 

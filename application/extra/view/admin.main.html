@@ -5,7 +5,7 @@
         <meta name="renderer" content="webkit"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <link rel="shortcut icon" href="{:sysconf('app_logo')}" />
-        <title>{block name="title"}{$title|default=''}{/block}</title>
+        <title>{block name="title"}{$title|default=''}&nbsp;{if !empty($title)}-{/if}&nbsp;{:sysconf('app_name')}{/block}</title>
         <link rel="stylesheet" href="__STATIC__/plugs/bootstrap/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="__STATIC__/theme/default/css/console.css">
         <link rel="stylesheet" href="__STATIC__/theme/default/css/animate.css">
