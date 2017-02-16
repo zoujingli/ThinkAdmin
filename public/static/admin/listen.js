@@ -1,4 +1,4 @@
-define(['jquery', 'admin.plugs', 'jquery.icheck'], function () {
+define(['jquery', 'admin.plugs'], function () {
 
     /** 事件委派 */
     $('body').on('click', '[data-load]', function () {
@@ -24,11 +24,11 @@ define(['jquery', 'admin.plugs', 'jquery.icheck'], function () {
         });
     }).on('click', '[data-update]', function () {
         var id = $(this).attr('data-update') || (function () {
-                var data = [];
-                return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
-                    (this.checked) && data.push(this.value);
-                }), data.join(',');
-            }).call(this);
+            var data = [];
+            return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
+                (this.checked) && data.push(this.value);
+            }), data.join(',');
+        }).call(this);
         if (id.length < 1) {
             return $.msg.tips('请选择需要操作的数据！');
         }
@@ -48,13 +48,13 @@ define(['jquery', 'admin.plugs', 'jquery.icheck'], function () {
         var method = $(this).attr('data-one') ? 'one' : 'index';
         var title = $(this).attr('data-title') || '文件管理';
         var uptype = $(this).attr('data-uptype') || 'qiniu';
-        var url = window.APP_URL + '/plugs/file/' + method + '.html?uptype=' + uptype + '&type=' + type + '&field=' + field;
+        var url = window.ROOT_URL + '/index.php/plugs/file/' + method + '.html?uptype=' + uptype + '&type=' + type + '&field=' + field;
         $.form.iframe(url, title || '文件管理');
     }).on('click', '[data-iframe]', function () {
         $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口');
     }).on('click', '[data-icon]', function () {
-        var field = $(this).attr('data-field') || 'iconv';
-        var url = window.APP_URL + '/plugs/icon.html?field=' + field;
+        var field = $(this).attr('data-field') || 'icon';
+        var url = window.ROOT_URL + '/index.php/plugs/icon.html?field=' + field;
         $.form.iframe(url, '图标选择');
     }).on('click', '[data-tips-image]', function () {
         var src = this.getAttribute('data-tips-image') || this.src, img = new Image();
