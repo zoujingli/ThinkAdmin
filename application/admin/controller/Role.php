@@ -12,8 +12,10 @@ use controller\BasicAdmin;
  */
 class Role extends BasicAdmin {
 
-    public function index() {
+    protected $table = 'SystemRole';
 
+    public function index() {
+        parent::_list($this->table);
     }
 
 }

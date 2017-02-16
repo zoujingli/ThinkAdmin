@@ -12,8 +12,10 @@ use controller\BasicAdmin;
  */
 class User extends BasicAdmin {
 
-    public function index() {
+    protected $table = 'SystemUser';
 
+    public function index() {
+        parent::_list($this->table);
     }
 
 }
