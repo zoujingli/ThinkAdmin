@@ -6,24 +6,26 @@ require.config({
     waitSeconds: 0,
     map: {'*': {css: '//cdn.bootcss.com/require-css/0.1.8/css.min.js'}},
     paths: {
+        // 开源插件 CDN
         'pace': ['//cdn.bootcss.com/pace/1.0.2/pace.min', '../plugs/jquery/pace.min'],
         'echarts': ['//cdn.bootcss.com/echarts/3.2.3/echarts.min'],
-        'base64': ['//cdn.bootcss.com/Base64/1.0.0/base64.min'],
-        'json': ['//cdn.bootcss.com/json2/20150503/json2.min'],
         'socket': ['//cdn.bootcss.com/web-socket-js/1.0.0/web_socket.min'],
+        'zeroclipboard': ['//cdn.bootcss.com/zeroclipboard/2.3.0/ZeroClipboard.min'],
+        'json': ['//cdn.bootcss.com/json2/20160511/json2.min', '../plugs/jquery/json2.min'],
+        'base64': ['//cdn.bootcss.com/Base64/1.0.0/base64.min', '../plugs/jquery/base64.min'],
         'jquery': ['//cdn.bootcss.com/jquery/1.12.4/jquery.min', '../plugs/jquery/jquery.min'],
         'jquery.icheck': ['//cdn.bootcss.com/iCheck/1.0.2/icheck.min'],
         'jquery.cookies': ['//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie', '../plugs/jquery/jquery.cookie'],
         'bootstrap': ['//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min', '../plugs/bootstrap/js/bootstrap.min'],
         'bootstrap.multiselect': ['//cdn.bootcss.com/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min', '../plugs/multiselect/bootstrap-multiselect'],
-        'pcasunzips': ['../plugs/jquery/pcasunzips'],
+        // 自定义插件
+        'admin.plugs': ['plugs'],
+        'admin.listen': ['listen'],
         'layui': ['../plugs/layui/layui'],
+        'ueditor': ['../plugs/ueditor/ueditor'],
+        'pcasunzips': ['../plugs/jquery/pcasunzips'],
         'laydate': ['../plugs/layui/laydate/laydate'],
         'template': ['../plugs/template/template'],
-        'ueditor': ['../plugs/ueditor/ueditor'],
-        'zeroclipboard': ['//cdn.bootcss.com/zeroclipboard/2.2.0/ZeroClipboard.min'],
-        'admin.plugs': ['plugs'],
-        'admin.listen': ['listen']
     },
     shim: {
         'laydate': {deps: ['jquery']},
@@ -36,7 +38,7 @@ require.config({
         'admin.plugs': {deps: ['jquery', 'layui']},
         'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
     },
-    deps: ['css!//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css'],
+    deps: ['css!//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'],
     urlArgs: "t=" + (new Date()).getTime()
 });
 

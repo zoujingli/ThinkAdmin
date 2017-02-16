@@ -1,6 +1,6 @@
 /* global layer, Pace */
 
-define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
+define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
 
     /*!
      * jQuery placeholder, fix for IE6,7,8,9
@@ -269,14 +269,13 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
 
     /**
      * 加载HTML到目标位置
-     * @param url
-     * @param data
-     * @param target
-     * @param callback
-     * @param loading
-     * @param tips
+     * @param url 目标URL地址
+     * @param data URL参数
+     * @param callback 回调函数
+     * @param loading 是否显示加载
+     * @param tips 提示消息
      */
-    _form.prototype.open = function (url, data, target, callback, loading, tips) {
+    _form.prototype.open = function (url, data, callback, loading, tips) {
         data && (typeof (data) === 'object') && (data = $.param(data));
         data && (url += (url.indexOf('?') === -1 ? '?' : '&') + data);
         this.load(url, data, 'GET', function (res) {
@@ -702,10 +701,10 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
 
     /**
      * 注册对象到Jq
-     * @param {type} form
-     * @param {type} callback
-     * @param {type} options
-     * @returns {undefined}
+     * @param form
+     * @param callback
+     * @param options
+     * @return {$|Function|Zepto}
      */
     $.validate = function (form, callback, options) {
         return (new validate()).check(form, callback, options);
@@ -713,15 +712,17 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
 
     /**
      * 注册对象到JqFn
-     * @param {type} callback
-     * @param {type} options
-     * @returns {jquery.validate_L1.$|Function|Zepto|$}
+     * @param callback
+     * @param options
+     * @return {$|Function|Zepto}
      */
-
     $.fn.validate = function (callback, options) {
         return (new validate()).check(this, callback, options);
     };
 
+    /**
+     * 自动监听规则内表单
+     */
     $.validate.listen = function () {
         $('form[data-auto]').map(function () {
             if ($(this).attr('data-listen') === 'true') {
@@ -737,6 +738,10 @@ define(['zeroclipboard', 'jquery', 'layui'], function (ZeroClipboard) {
             });
         });
     };
+
+    /**
+     * 表单监听初始化
+     */
     if ($.form && typeof $.form.load === 'function') {
         $.validate.listen.call(this);
     }
