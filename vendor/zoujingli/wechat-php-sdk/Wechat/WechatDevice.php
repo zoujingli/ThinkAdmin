@@ -13,6 +13,7 @@ use Wechat\Lib\Tools;
 class WechatDevice extends Common {
 
     const SHAKEAROUND_DEVICE_APPLYID = '/shakearound/device/applyid?'; //申请设备ID
+	const SHAKEAROUND_DEVICE_APPLYSTATUS = '/shakearound/device/applystatus?'; //查询设备ID申请审核状态
     const SHAKEAROUND_DEVICE_UPDATE = '/shakearound/device/update?'; //编辑设备信息
     const SHAKEAROUND_DEVICE_SEARCH = '/shakearound/device/search?'; //查询设备列表
     const SHAKEAROUND_DEVICE_BINDLOCATION = '/shakearound/device/bindlocation?'; //配置设备与门店ID的关系
@@ -37,6 +38,29 @@ class WechatDevice extends Common {
             return false;
         }
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_APPLYID . "access_token={$this->access_token}", Tools::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json;
+        }
+        return false;
+    }
+	
+    /**
+     * 查询设备ID申请审核状态
+     * @param int $apply_id
+     * @return bool|array
+     */
+    public function applyStatusShakeAroundDevice($apply_id) {
+        if (!$this->access_token && !$this->getAccessToken()) {
+            return false;
+        }
+		$data = array("apply_id" => $apply_id);
+        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_APPLYSTATUS . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -118,6 +142,31 @@ class WechatDevice extends Common {
             );
         }
         $data = array('device_identifier' => $device_identifier, 'poi_id' => $poi_id);
+        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_BINDLOCATION . "access_token={$this->access_token}", Tools::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json; //这个可以更改为返回true
+        }
+        return false;
+    }
+    
+    /**
+     * 配置设备与其他公众账号门店的关联关系
+     * @param type $device_identifier 设备信息
+     * @param type $poi_id 待关联的门店ID
+     * @param type $poi_appid 目标微信appid
+     * @return boolean
+     */
+    public function bindLocationOtherShakeAroundDevice($device_identifier,$poi_id,$poi_appid) {
+        if (!$this->access_token && !$this->getAccessToken()) {
+            return false;
+        }
+        $data = array('device_identifier' => $device_identifier, 'poi_id' => $poi_id,"type"=>2,"poi_appid"=>$poi_appid);
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_BINDLOCATION . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
