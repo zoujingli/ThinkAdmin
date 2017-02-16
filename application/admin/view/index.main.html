@@ -27,23 +27,23 @@
                     <td>{:php_uname('s')}</td>
                 </tr>
                 <tr>
-                    <td>运行环境</td>
+                    <td>WEB运行环境</td>
                     <td>{:php_sapi_name()}</td>
                 </tr>
                 <tr>
-                    <td>MySQL版本</td>
+                    <td>MySQL数据库版本</td>
                     <td>{$mysql_ver}</td>
                 </tr>
                 <tr>
-                    <td>PHP版本</td>
+                    <td>运行PHP版本</td>
                     <td>{:phpversion()}</td>
                 </tr>
                 <tr>
-                    <td>上传限制</td>
+                    <td>上传大小限制</td>
                     <td>{:ini_get('upload_max_filesize')}</td>
                 </tr>
                 <tr>
-                    <td>POST限制</td>
+                    <td>POST大小限制</td>
                     <td>{:ini_get('post_max_size')}</td>
                 </tr>
             </tbody>
