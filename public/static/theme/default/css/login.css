@@ -1,4 +1,10 @@
-@charset "utf-8";
+@charset "UTF-8";
+
+/**
+ * 楚才团队后台框架
+ * author Anyon <zoujingli@qq.com>
+ * date 2017/02/13 14:15
+ */
 
 html, body {
     height: 100%;
