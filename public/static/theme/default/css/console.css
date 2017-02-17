@@ -117,9 +117,6 @@ input::-ms-clear {display:none}
 ::selection {background-color:#ec494e;color:#FFF}
 ::-moz-selection {background-color:#ec494e;color:#FFF}
 
-/* layui 兼容处理 */
-.layui, .layui * {-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}
-
 /** checkbox 优化 */
 input[type=checkbox],input[type=radio] {-webkit-appearance:none;appearance:none;width:18px;height:18px;margin:0;cursor:pointer;vertical-align:bottom;background:#fff;border:1px solid #dcdcdc;-webkit-border-radius:1px;-moz-border-radius:1px;border-radius:1px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;position:relative}
 input[type=checkbox]:active,input[type=radio]:active {border-color:#c6c6c6;background:#ebebeb}
