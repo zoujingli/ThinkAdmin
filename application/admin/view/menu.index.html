@@ -43,22 +43,22 @@
                 <td class='text-center'>
                     {if auth("$classuri/edit")}
                     <span class="text-explode">|</span>
-                    <a data-modal='{"$classuri/form"|url}?id={$vo.id}' href="javascript:void(0)">编辑</a>
+                    <a data-modal='{:url("$classuri/form")}?id={$vo.id}' href="javascript:void(0)">编辑</a>
                     {/if}
                     {if $vo.status eq 1 and auth("$classuri/forbid")}
                     <span class="text-explode">|</span>
                     <a data-update="{$vo.ids}" data-field='status' data-value='0'
-                       data-action='{"$classuri/forbid"|url}' href="javascript:void(0)">禁用
+                       data-action='{:url("$classuri/forbid")}' href="javascript:void(0)">禁用
                     </a>
                     {elseif auth("$classuri/resume")}
                     <span class="text-explode">|</span>
                     <a data-update="{$vo.ids}" data-field='status' data-value='1'
-                       data-action='{"$classuri/resume"|url}' href="javascript:void(0)">启用
+                       data-action='{:url("$classuri/resume")}' href="javascript:void(0)">启用
                     </a>
                     {/if}
                     {if auth("$classuri/del")}
                     <span class="text-explode">|</span>
-                    <a data-update="{$vo.ids}" data-field='delete' data-action="{'system/menu/del'|url}"
+                    <a data-update="{$vo.ids}" data-field='delete' data-action="{:url('system/menu/del')}"
                        href="javascript:void(0)">删除
                     </a>
                     {/if}
