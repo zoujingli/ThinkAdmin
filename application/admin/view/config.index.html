@@ -1,158 +1,80 @@
 {extend name="extra@admin/content"}
 
 {block name="content"}
-<!--
-<fieldset class="layui-elem-field layui-box" style="width:49%; float:left">
-    <legend>系统菜单</legend>
-    <div class="layui-field-box">
-        <blockquote class="layui-elem-quote layui-quote-nm">友情提示：<span style="color:#ff5722">单击小箭头折叠</span>
-            <a href="/WebSystems/Sysadmin_z.php?fid="><button id="add" class="layui-btn layui-btn-radius layui-btn-small" style="float: right; margin-top: -4px;margin-right:10px;"><i class="layui-icon"></i>新增子栏目</button></a>
-            <a href="/WebSystems/Sysadmin_f.php"> <button id="add" class="layui-btn layui-btn-radius layui-btn-small" style="float: right; margin-top: -4px;margin-right:10px;"><i class="layui-icon"></i>新增大栏目</button></a>
-        </blockquote>
-        <div class="widget-content nopadding" style="border-bottom:0px">
-            <div class="zTreeDemoBackground left">
-                <ul id="treeDemo" class="ztree"></ul>
-                <ul id="layui-tree" class="ztree layui-box layui-tree">
-
-                    <li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=1"><i class="layui-icon layui-tree-branch"></i><cite class="">网站配置</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=1&amp;zid=1"><i class="layui-icon layui-tree-leaf"></i><cite class="">系统信息</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=49"><i class="layui-icon layui-tree-leaf"></i><cite class="">网站栏目配置</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=2"><i class="layui-icon layui-tree-leaf"></i><cite class="">登陆日志</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=70"><i class="layui-icon layui-tree-leaf"></i><cite class="">日志记录</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=4"><i class="layui-icon layui-tree-leaf"></i><cite class="">系统管理员</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=5"><i class="layui-icon layui-tree-leaf"></i><cite class="">排序序列号</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=25"><i class="layui-icon layui-tree-leaf"></i><cite class="">网站关键词</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=20"><i class="layui-icon layui-tree-branch"></i><cite class="">地区管理</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=20&amp;zid=54"><i class="layui-icon layui-tree-leaf"></i><cite class="">省级地区</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=20&amp;zid=55"><i class="layui-icon layui-tree-leaf"></i><cite class="">市区级管理</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=2"><i class="layui-icon layui-tree-branch"></i><cite class="">关于我们</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=2&amp;zid=6"><i class="layui-icon layui-tree-leaf"></i><cite class="">公司简介</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=2&amp;zid=7"><i class="layui-icon layui-tree-leaf"></i><cite class="">企业文化</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=2&amp;zid=8"><i class="layui-icon layui-tree-leaf"></i><cite class="">荣誉资质</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=2&amp;zid=10"><i class="layui-icon layui-tree-leaf"></i><cite class="">联系我们</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=9"><i class="layui-icon layui-tree-branch"></i><cite class="">新闻中心</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=9&amp;zid=23"><i class="layui-icon layui-tree-leaf"></i><cite class="">新闻中心</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=9&amp;zid=24"><i class="layui-icon layui-tree-leaf"></i><cite class="">新闻分类</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=30"><i class="layui-icon layui-tree-branch"></i><cite class="">产品中心</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=30&amp;zid=77"><i class="layui-icon layui-tree-leaf"></i><cite class="">环境可靠性检测</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=30&amp;zid=78"><i class="layui-icon layui-tree-leaf"></i><cite class="">力学性能检测</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=30&amp;zid=85"><i class="layui-icon layui-tree-leaf"></i><cite class="">结构设计与强度计算</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=30&amp;zid=82"><i class="layui-icon layui-tree-leaf"></i><cite class="">分类</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=31"><i class="layui-icon layui-tree-branch"></i><cite class="">技术支持</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=31&amp;zid=80"><i class="layui-icon layui-tree-leaf"></i><cite class="">成功案例</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=32"><i class="layui-icon layui-tree-branch"></i><cite class="">手机/微信</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=32&amp;zid=104"><i class="layui-icon layui-tree-leaf"></i><cite class="">微信单页</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=32&amp;zid=105"><i class="layui-icon layui-tree-leaf"></i><cite class="">微信投票</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=32&amp;zid=106"><i class="layui-icon layui-tree-leaf"></i><cite class="">微信动感相册</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=8"><i class="layui-icon layui-tree-branch"></i><cite class="">首页幻灯片</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=8&amp;zid=43"><i class="layui-icon layui-tree-leaf"></i><cite class="">首页头部广告</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=28"><i class="layui-icon layui-tree-branch"></i><cite class="">vip功能</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=28&amp;zid=99"><i class="layui-icon layui-tree-leaf"></i><cite class="">相册服务</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=28&amp;zid=101"><i class="layui-icon layui-tree-leaf"></i><cite class="">400电话</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=28&amp;zid=102"><i class="layui-icon layui-tree-leaf"></i><cite class="">微信微官网</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=28&amp;zid=103"><i class="layui-icon layui-tree-leaf"></i><cite class="">网站托管</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=13"><i class="layui-icon layui-tree-branch"></i><cite class="">会员管理</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=13&amp;zid=38"><i class="layui-icon layui-tree-leaf"></i><cite class="">申请协议</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=13&amp;zid=39"><i class="layui-icon layui-tree-leaf"></i><cite class="">会员商家管理</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=14"><i class="layui-icon layui-tree-branch"></i><cite class="">在线留言</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=14&amp;zid=100"><i class="layui-icon layui-tree-leaf"></i><cite class="">在线留言</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=10"><i class="layui-icon layui-tree-branch"></i><cite class="">友情链接</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=10&amp;zid=29"><i class="layui-icon layui-tree-leaf"></i><cite class="">友情链接</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li></ul>
-            </div>
-        </div>
-    </div>
-</fieldset>
--->
-<div class="panel panel-default">
-    <div class="panel-heading">网站设置</div>
-    <div class="panel-body">
-        <div style="height:20px;"></div>
-        <form class=" layui-form layui-box" data-auto="" method="post" style="padding-right:20px;">
-            <fieldset class="layui-elem-field layui-box" style="width:49%; float:left">
-                <legend>系统菜单</legend>
-                <div class="layui-field-box">
-                    <blockquote class="layui-elem-quote layui-quote-nm">友情提示：<span style="color:#ff5722">单击小箭头折叠</span>
-                        <a href="/WebSystems/Sysadmin_z.php?fid="><button id="add" class="layui-btn layui-btn-radius layui-btn-small" style="float: right; margin-top: -4px;margin-right:10px;"><i class="layui-icon"></i>新增子栏目</button></a>
-                        <a href="/WebSystems/Sysadmin_f.php"> <button id="add" class="layui-btn layui-btn-radius layui-btn-small" style="float: right; margin-top: -4px;margin-right:10px;"><i class="layui-icon"></i>新增大栏目</button></a>
-                    </blockquote>
-                    <div class="widget-content nopadding" style="border-bottom:0px">
-                        <div class="zTreeDemoBackground left">
-                            <ul id="treeDemo" class="ztree"></ul>
-                            <ul id="layui-tree" class="ztree layui-box layui-tree">
-
-                                <li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=1"><i class="layui-icon layui-tree-branch"></i><cite class="">网站配置</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=1&amp;zid=1"><i class="layui-icon layui-tree-leaf"></i><cite class="">系统信息</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=49"><i class="layui-icon layui-tree-leaf"></i><cite class="">网站栏目配置</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=2"><i class="layui-icon layui-tree-leaf"></i><cite class="">登陆日志</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=70"><i class="layui-icon layui-tree-leaf"></i><cite class="">日志记录</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=4"><i class="layui-icon layui-tree-leaf"></i><cite class="">系统管理员</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=5"><i class="layui-icon layui-tree-leaf"></i><cite class="">排序序列号</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=1&amp;zid=25"><i class="layui-icon layui-tree-leaf"></i><cite class="">网站关键词</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=20"><i class="layui-icon layui-tree-branch"></i><cite class="">地区管理</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=20&amp;zid=54"><i class="layui-icon layui-tree-leaf"></i><cite class="">省级地区</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=20&amp;zid=55"><i class="layui-icon layui-tree-leaf"></i><cite class="">市区级管理</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=2"><i class="layui-icon layui-tree-branch"></i><cite class="">关于我们</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=2&amp;zid=6"><i class="layui-icon layui-tree-leaf"></i><cite class="">公司简介</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=2&amp;zid=7"><i class="layui-icon layui-tree-leaf"></i><cite class="">企业文化</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=2&amp;zid=8"><i class="layui-icon layui-tree-leaf"></i><cite class="">荣誉资质</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=2&amp;zid=10"><i class="layui-icon layui-tree-leaf"></i><cite class="">联系我们</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=9"><i class="layui-icon layui-tree-branch"></i><cite class="">新闻中心</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=9&amp;zid=23"><i class="layui-icon layui-tree-leaf"></i><cite class="">新闻中心</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=9&amp;zid=24"><i class="layui-icon layui-tree-leaf"></i><cite class="">新闻分类</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=30"><i class="layui-icon layui-tree-branch"></i><cite class="">产品中心</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=30&amp;zid=77"><i class="layui-icon layui-tree-leaf"></i><cite class="">环境可靠性检测</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=30&amp;zid=78"><i class="layui-icon layui-tree-leaf"></i><cite class="">力学性能检测</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=30&amp;zid=85"><i class="layui-icon layui-tree-leaf"></i><cite class="">结构设计与强度计算</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=30&amp;zid=82"><i class="layui-icon layui-tree-leaf"></i><cite class="">分类</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=31"><i class="layui-icon layui-tree-branch"></i><cite class="">技术支持</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=31&amp;zid=80"><i class="layui-icon layui-tree-leaf"></i><cite class="">成功案例</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=32"><i class="layui-icon layui-tree-branch"></i><cite class="">手机/微信</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=32&amp;zid=104"><i class="layui-icon layui-tree-leaf"></i><cite class="">微信单页</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=32&amp;zid=105"><i class="layui-icon layui-tree-leaf"></i><cite class="">微信投票</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=32&amp;zid=106"><i class="layui-icon layui-tree-leaf"></i><cite class="">微信动感相册</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=8"><i class="layui-icon layui-tree-branch"></i><cite class="">首页幻灯片</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=8&amp;zid=43"><i class="layui-icon layui-tree-leaf"></i><cite class="">首页头部广告</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=28"><i class="layui-icon layui-tree-branch"></i><cite class="">vip功能</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=28&amp;zid=99"><i class="layui-icon layui-tree-leaf"></i><cite class="">相册服务</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=28&amp;zid=101"><i class="layui-icon layui-tree-leaf"></i><cite class="">400电话</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=28&amp;zid=102"><i class="layui-icon layui-tree-leaf"></i><cite class="">微信微官网</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=28&amp;zid=103"><i class="layui-icon layui-tree-leaf"></i><cite class="">网站托管</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=13"><i class="layui-icon layui-tree-branch"></i><cite class="">会员管理</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=13&amp;zid=38"><i class="layui-icon layui-tree-leaf"></i><cite class="">申请协议</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li><li><a href="Sysadmin_z.php?fid=13&amp;zid=39"><i class="layui-icon layui-tree-leaf"></i><cite class="">会员商家管理</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=14"><i class="layui-icon layui-tree-branch"></i><cite class="">在线留言</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=14&amp;zid=100"><i class="layui-icon layui-tree-leaf"></i><cite class="">在线留言</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li><li><i class="layui-icon layui-tree-spread"></i><a href="Sysadmin_f.php?fid=10"><i class="layui-icon layui-tree-branch"></i><cite class="">友情链接</cite></a><span class="tree_flag icon iconfont tree_lv"></span><ul class=""><li><a href="Sysadmin_z.php?fid=10&amp;zid=29"><i class="layui-icon layui-tree-leaf"></i><cite class="">友情链接</cite></a><span class="tree_flag icon iconfont tree_lv"></span></li></ul></li></ul>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
-            <div class="row">
-                <div class="col-lg-6">
+<div class="row">
+    <div class="col-lg-6">
+        <form class=" layui-form" data-auto="" method="post">
+            <fieldset class="layui-elem-field layui-box">
+                <legend>网站信息</legend>
+                <div class="layui-field-box" style="padding-right:35px">
                     <div class="layui-form-item layui-box">
                         <label class="layui-form-label">网站名称</label>
                         <div class="layui-input-block">
-                            <input type="text"
-                                   name="site_name"
-                                   required="required"
-                                   title="请输入网站名称"
-                                   placeholder="请输入网站名称"
-                                   autocomplete="off"
-                                   value="{:sysconf('site_name')}"
-                                   class="layui-input">
+                            <input type="text" name="site_name" required="required" title="请输入网站名称" placeholder="请输入网站名称" value="{:sysconf('site_name')}" class="layui-input">
                         </div>
                     </div>
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">网站域名</label>
-                        <div class="layui-input-block">
-                            <input type="text"
-                                   name="site_domain"
-                                   required="required"
-                                   title="请输入网站域名"
-                                   placeholder="请输入网站域名"
-                                   autocomplete="off"
-                                   value="{:sysconf('site_domain')}"
-                                   class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">公司名称</label>
-                        <div class="layui-input-block">
-                            <input type="text"
-                                   name="site_company"
-                                   required="required"
-                                   title="请输入公司名称"
-                                   placeholder="请输入公司名称"
-                                   autocomplete="off"
-                                   value="{:sysconf('site_company')}"
-                                   class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">百度统计ID</label>
-                        <div class="layui-input-block">
-                            <input type="text"
-                                   name="site_tongji_baidu"
-                                   title="请输入公司名称"
-                                   placeholder="请输入百度统计ID"
-                                   autocomplete="off"
-                                   value="{:sysconf('site_tongji_baidu')}"
-                                   class="layui-input">
-                        </div>
-                        <div class="layui-form-mid layui-word-aux">
-                            帮助统计网页访问情况，可以去<a target="_blank" href="http://tongji.baidu.com">百度统计</a>获取ID。
-                        </div>
-                    </div>
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">CNZZ统计ID</label>
-                        <div class="layui-input-block">
-                            <input type="text"
-                                   name="site_tongji_cnzz"
-                                   placeholder="请输入CNZZ统计ID"
-                                   autocomplete="off"
-                                   value="{:sysconf('site_tongji_cnzz')}"
-                                   class="layui-input">
-                        </div>
-                        <div class="layui-form-mid layui-word-aux">
-                            帮助统计网页访问情况，可以去<a target="_blank" href="https://tongji.cnzz.com">流量统计</a>获取ID。
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
+
                     <div class="layui-form-item layui-box">
                         <label class="layui-form-label">后台标题</label>
                         <div class="layui-input-block">
-                            <input type="text"
-                                   name="site_name"
-                                   required="required"
-                                   title="请输入网站名称"
-                                   placeholder="请输入网站名称"
-                                   autocomplete="off"
-                                   value="{:sysconf('site_name')}"
-                                   class="layui-input">
+                            <input type="text" name="site_name" required="required" title="请输入网站名称" placeholder="请输入网站名称" value="{:sysconf('site_name')}" class="layui-input">
                         </div>
                     </div>
+
                     <div class="layui-form-item layui-box">
                         <label class="layui-form-label">系统版本</label>
                         <div class="layui-input-block">
-                            <input type="text"
-                                   name="app_version"
-                                   required="required"
-                                   title="请输入网站域名"
-                                   placeholder="请输入网站域名"
-                                   autocomplete="off"
-                                   value="{:sysconf('app_version')}"
-                                   class="layui-input">
+                            <input type="text" name="app_version" required="required" title="请输入网站域名" placeholder="请输入网站域名" value="{:sysconf('app_version')}" class="layui-input">
                         </div>
                     </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">备案域名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_domain" required="required" title="请输入网站域名" placeholder="请输入网站域名" value="{:sysconf('site_domain')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">百度统计ID</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_tongji_baidu" title="请输入公司名称" placeholder="请输入百度统计ID" value="{:sysconf('site_tongji_baidu')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">CNZZ统计ID</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_tongji_cnzz" placeholder="请输入CNZZ统计ID" value="{:sysconf('site_tongji_cnzz')}" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-box text-center">
+                    <button class="layui-btn" type="submit">立即提交</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="col-lg-6">
+        <form class=" layui-form" data-auto="" method="post">
+            <fieldset class="layui-elem-field layui-box">
+                <legend>公司信息</legend>
+                <div class="layui-field-box" style="padding-right:35px">
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">公司名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_company" required="required" title="请输入公司名称" placeholder="请输入公司名称" value="{:sysconf('site_company')}" class="layui-input">
+                        </div>
+                    </div>
+
+
                     <div class="layui-form-item layui-box">
                         <label class="layui-form-label">网站Logo</label>
                         <div class="layui-input-block">
-                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px"
-                                 src="{:sysconf('site_logo')}"/>
-                            <input type="text"
-                                   name="site_logo"
-                                   required="required"
-                                   title="请输入公司名称"
-                                   placeholder="请输入公司名称"
-                                   autocomplete="off"
-                                   value="{:sysconf('site_logo')}"
-                                   class="layui-input hide">
+                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('site_logo')}"/>
+                            <input type="text" name="site_logo" required="required" title="请输入公司名称" placeholder="请输入公司名称" value="{:sysconf('site_logo')}" class="layui-input hide">
                         </div>
                         <div class="layui-form-mid layui-word-aux">
                             建议LOGO图片的尺寸为160x56px，此LOGO图片用于后台登陆页面。
@@ -163,26 +85,18 @@
                         <div class="layui-input-block">
                             <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px"
                                  src="{:sysconf('app_logo')}"/>
-                            <input type="text"
-                                   name="app_logo"
-                                   title="请输入公司名称"
-                                   placeholder="请输入百度统计ID"
-                                   autocomplete="off"
-                                   value="{:sysconf('app_logo')}"
-                                   class="layui-input hide">
+                            <input type="text" name="app_logo" title="请输入公司名称" placeholder="请输入百度统计ID" value="{:sysconf('app_logo')}" class="layui-input hide">
                         </div>
                         <div class="layui-form-mid layui-word-aux">
                             建议上传ICO图标的尺寸为128x128px，此图标用于网站标题前，ICON在线制作。
                         </div>
                     </div>
+                    <div class="layui-form-item layui-box text-center">
+                        <button class="layui-btn" type="submit">立即提交</button>
+                    </div>
                 </div>
-            </div>
-
-            <div class="layui-form-item layui-box">
-                <div class="layui-input-block text-center">
-                    <button class="layui-btn" type="submit">立即提交</button>
                 </div>
-            </div>
+            </fieldset>
         </form>
     </div>
 

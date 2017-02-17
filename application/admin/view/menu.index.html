@@ -10,7 +10,7 @@
                     <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
                 </th>
                 <th class='list-table-sort-td'>
-                    <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排序</button>
+                    <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
                 </th>
                 <th class='text-center'></th>
                 <th>菜单名称</th>
@@ -23,10 +23,10 @@
             {foreach $list as $key=>$vo}
             <tr>
                 <td class='list-table-check-td'>
-                    <input data-none-auto="" value='{$vo.ids}' class='list-check-box' type='checkbox'/>
+                    <input class="list-check-box" value='{$vo.ids}' type='checkbox'/>
                 </td>
                 <td class='list-table-sort-td'>
-                    <input data-none-auto="" name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
+                    <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
                 </td>
                 <td class='text-center'>
                     <i style="font-size:18px" class="{$vo.icon}"></i>
@@ -43,7 +43,7 @@
                 <td class='text-center'>
                     {if auth("$classuri/edit")}
                     <span class="text-explode">|</span>
-                    <a data-modal='{:url("$classuri/form")}?id={$vo.id}' href="javascript:void(0)">编辑</a>
+                    <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' href="javascript:void(0)">编辑</a>
                     {/if}
                     {if $vo.status eq 1 and auth("$classuri/forbid")}
                     <span class="text-explode">|</span>

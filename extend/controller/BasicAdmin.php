@@ -61,7 +61,6 @@ class BasicAdmin extends Controller {
             $class_uri = strtolower($this->request->module() . '/' . $this->request->controller());
             $this->assign('classuri', $class_uri);
         }
-
     }
 
     /**
@@ -85,8 +84,11 @@ class BasicAdmin extends Controller {
      * @return array|string
      */
     protected function _list($db = null, $is_page = true, $is_display = true, $total = false) {
-        is_null($db) && $db = Db::name($this->table);
-        is_string($db) && $db = Db::name($db);
+        if (is_null($db)) {
+            $db = Db::name($this->table);
+        } elseif (is_string($db)) {
+            $db = Db::name($db);
+        }
         # 列表排序默认处理
         if ($this->request->isPost() && $this->request->post('action') === 'resort') {
             $data = $this->request->post();
@@ -127,10 +129,14 @@ class BasicAdmin extends Controller {
      * @return array|string
      */
     protected function _form($db = null, $tpl = null, $pk = null, $where = [], $data = []) {
-        is_null($db) && $db = db($this->table);
-        is_string($db) && $db = db($db);
-        !$db->getTable() && $db->setTable($this->table);
-        is_null($pk) && $pk = $db->getPk();
+        if (is_null($db)) {
+            $db = Db::name($this->table);
+        } elseif (is_string($db)) {
+            $db = Db::name($db);
+        }
+        if (is_null($pk)) {
+            $pk = $db->getPk();
+        }
         $pk_value = input($pk, isset($where[$pk]) ? $where[$pk] : (isset($data[$pk]) ? $data[$pk] : ''));
         $vo = $data;
         if ($this->request->isPost()) { // Save Options
@@ -145,14 +151,13 @@ class BasicAdmin extends Controller {
         if ($pk_value !== '') { // Edit Options
             !empty($pk_value) && $db->where($pk, $pk_value);
             !empty($where) && $db->where($where);
-            $vo = array_merge($data, (array)$db->find());
+            $vo = array_merge($data, (array) $db->find());
         }
         $this->_callback('_form_filter', $vo);
         $this->assign('vo', $vo);
         empty($this->title) or $this->assign('title', $this->title);
         return is_null($tpl) ? $vo : $this->display($tpl);
     }
-
 
     /**
      * 当前对象回调成员方法
@@ -168,4 +173,5 @@ class BasicAdmin extends Controller {
         }
         return true;
     }
+
 }

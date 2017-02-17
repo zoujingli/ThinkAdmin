@@ -69,16 +69,15 @@ class Data {
      * @return bool
      */
     static public function save($db, $data, $upkey = 'id', $where = []) {
-        $db = is_string($db) ? db($db) : $db;
-        $fields = $db->getFieldsType(['table' => $db->getTable()]);
+        if (is_string($db)) {
+            $db = Db::name($db);
+        }
+        $fields = $db->getTableFields(['table' => $db->getTable()]);
         $_data = [];
         foreach ($data as $k => $v) {
-            if (array_key_exists($k, $fields)) {
-                $_data[$k] = $v;
-            }
+            in_array($k, $fields) && ($_data[$k] = $v);
         }
-        $db = self::_apply_save_where($db, $data, $upkey, $where);
-        if ($db->getOptions() && $db->count() > 0) {
+        if (self::_apply_save_where($db, $data, $upkey, $where)->count() > 0) {
             return self::_apply_save_where($db, $data, $upkey, $where)->update($_data) !== FALSE;
         }
         return self::_apply_save_where($db, $data, $upkey, $where)->insert($_data) !== FALSE;
@@ -110,13 +109,12 @@ class Data {
      * @return bool|null
      */
     static public function update(&$db, $where = []) {
-        if (!request()->isPost()) {
-            return null;
+        if (is_string($db)) {
+            $db = Db::name($db);
         }
-        $db = is_string($db) ? db($db) : $db;
-        $ids = explode(',', input("post.id", '', 'trim'));
-        $field = input('post.field', '', 'trim');
-        $value = input('post.value', '', 'trim');
+        $ids = explode(',', input("post.id", ''));
+        $field = input('post.field', '');
+        $value = input('post.value', '');
         $pk = $db->getPk(['table' => $db->getTable()]);
         $db->where(empty($pk) ? 'id' : $pk, 'in', $ids);
         !empty($where) && $db->where($where);

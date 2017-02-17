@@ -118,6 +118,7 @@ input::-ms-clear{display:none}
 ::-moz-selection{background-color:#ec494e;color:#FFF}
 
 .layui-box legend{width:auto!important;border-bottom:none!important}
+.layui-btn {border-radius:0!important}
 
 /** checkbox 优化 */
 input[type=checkbox],input[type=radio]{-webkit-appearance:none;appearance:none;width:18px;height:18px;margin:0;cursor:pointer;vertical-align:bottom;background:#fff;border:1px solid #dcdcdc;-webkit-border-radius:1px;-moz-border-radius:1px;border-radius:1px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;position:relative}
@@ -164,7 +165,7 @@ td .text-explode:first-child{opacity:0;display:none}
 
 /** 列表排序样式 */
 .list-table-sort-td{width:60px !important;text-align:center}
-.list-table-sort-td input{width:50px;text-align:center;font-size:12px;line-height:14px;padding:2px}
+.list-table-sort-td input{width:50px;text-align:center;font-size:12px;line-height:14px;padding:2px;border:1px solid #e6e6e6}
 /*.list-table-sort-td button{width:50px;text-align:center;font-size:12px;color:#333}*/
 
 /** 列表选择框 */
