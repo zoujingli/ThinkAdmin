@@ -335,6 +335,7 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
         var $container = $('.layer-main-container').html(html);
         reinit.call(this), setTimeout(reinit, 500), setTimeout(reinit, 1000);
         function reinit() {
+            $.form.reInit($container);
             $.validate.listen.call(this);
             $container.find('h3').addClass('animated fadeIn container-animated');
         }
