@@ -1,8 +1,10 @@
-@charset "UTF-8";/**
+@charset "UTF-8";
+
+/* ------------------------------------- 
  * 楚才团队后台框架
  * author Anyon <zoujingli@qq.com>
  * date 2017/02/13 14:15
- */
+ * --------------------------------------- */
 
 html {overflow:auto;overflow-y:scroll !important}
 body {min-width:1024px;font-size:12px;line-height:24px;font-family:'微软雅黑',"Microsoft YaHei","Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Hiragino Sans GB",serif}
