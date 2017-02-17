@@ -9,10 +9,12 @@
                 <th class='list-table-check-td'>
                     <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
                 </th>
-                <th class='list-table-sort-td'><button>排序</button></th>
+                <th class='list-table-sort-td'>
+                    <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排序</button>
+                </th>
                 <th class='text-center'></th>
                 <th>菜单名称</th>
-                <th>链接</th>
+                <th>菜单链接</th>
                 <th class='text-center'>状态</th>
                 <th class='text-center'>操作</th>
             </tr>
@@ -29,10 +31,8 @@
                 <td class='text-center'>
                     <i style="font-size:18px" class="{$vo.icon}"></i>
                 </td>
-                <td>{$vo.spl}{$vo.title}
-                </td>
-                <td>{$vo.url}
-                </td>
+                <td>{$vo.spl}{$vo.title}</td>
+                <td>{$vo.url}</td>
                 <td class='text-center'>
                     {if $vo.status eq 0}
                     <span>已禁用</span>
@@ -47,20 +47,14 @@
                     {/if}
                     {if $vo.status eq 1 and auth("$classuri/forbid")}
                     <span class="text-explode">|</span>
-                    <a data-update="{$vo.ids}" data-field='status' data-value='0'
-                       data-action='{:url("$classuri/forbid")}' href="javascript:void(0)">禁用
-                    </a>
+                    <a data-update="{$vo.ids}" data-field='status' data-value='0'data-action='{:url("$classuri/forbid")}' href="javascript:void(0)">禁用</a>
                     {elseif auth("$classuri/resume")}
                     <span class="text-explode">|</span>
-                    <a data-update="{$vo.ids}" data-field='status' data-value='1'
-                       data-action='{:url("$classuri/resume")}' href="javascript:void(0)">启用
-                    </a>
+                    <a data-update="{$vo.ids}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}' href="javascript:void(0)">启用</a>
                     {/if}
                     {if auth("$classuri/del")}
                     <span class="text-explode">|</span>
-                    <a data-update="{$vo.ids}" data-field='delete' data-action="{:url('system/menu/del')}"
-                       href="javascript:void(0)">删除
-                    </a>
+                    <a data-update="{$vo.ids}" data-field='delete' data-action='{:url("$classuri/del")}' href="javascript:void(0)">删除</a>
                     {/if}
                 </td>
             </tr>
