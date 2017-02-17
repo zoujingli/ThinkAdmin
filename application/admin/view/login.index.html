@@ -69,7 +69,9 @@
             </ul>
         </form>
     </div>
-    <div class="footer">{:sysconf('site_company')} &copy; {:date('Y')}</div>
+    {if sysconf('site_copy')}
+    <div class="footer">{:sysconf('site_copy')}</div>
+    {/if}
 </div>
 {/block}
 

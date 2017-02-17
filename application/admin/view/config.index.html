@@ -7,17 +7,78 @@
             <fieldset class="layui-elem-field layui-box">
                 <legend>网站信息</legend>
                 <div class="layui-field-box" style="padding-right:35px">
+
                     <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">网站名称</label>
+                        <label class="layui-form-label">公司名称</label>
                         <div class="layui-input-block">
-                            <input type="text" name="site_name" required="required" title="请输入网站名称" placeholder="请输入网站名称" value="{:sysconf('site_name')}" class="layui-input">
+                            <input type="text" name="site_company" required="required" title="请输入公司名称" placeholder="请输入公司名称" value="{:sysconf('site_company')}" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">后台标题</label>
+                        <label class="layui-form-label">网站标题</label>
                         <div class="layui-input-block">
-                            <input type="text" name="site_name" required="required" title="请输入网站名称" placeholder="请输入网站名称" value="{:sysconf('site_name')}" class="layui-input">
+                            <input type="text" name="site_name" required="required" title="请输入网站标题" placeholder="请输入网站标题" value="{:sysconf('site_name')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站域名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_domain" required="required" title="请输入网站域名" placeholder="请输入网站域名" value="{:sysconf('site_domain')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站版权</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_copy" required="required" title="请输入网站版权" placeholder="请输入网站版权" value="{:sysconf('site_copy')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站备案号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_beian" title="请输入网站备案号" placeholder="请输入网站备案号" value="{:sysconf('site_beian')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站关键字</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_keys" title="请输入SEO关键字" placeholder="请输入关键字，多个以英文逗号隔开" value="{:sysconf('site_keys')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站描述</label>
+                        <div class="layui-input-block">
+                            <textarea name="site_desc" placeholder="请输入网站描述" class="layui-textarea">{:sysconf('site_desc')}</textarea>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+                <div class="layui-form-item layui-box text-center">
+                    <button class="layui-btn" type="submit">立即提交</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="col-lg-6">
+        <form class=" layui-form" data-auto="" method="post">
+            <fieldset class="layui-elem-field layui-box">
+                <legend>其它参数</legend>
+                <div class="layui-field-box" style="padding-right:35px">
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">系统名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="app_name" required="required" title="请输入系统名称" placeholder="请输入系统名称" value="{:sysconf('app_name')}" class="layui-input">
                         </div>
                     </div>
 
@@ -25,13 +86,6 @@
                         <label class="layui-form-label">系统版本</label>
                         <div class="layui-input-block">
                             <input type="text" name="app_version" required="required" title="请输入网站域名" placeholder="请输入网站域名" value="{:sysconf('app_version')}" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">备案域名</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="site_domain" required="required" title="请输入网站域名" placeholder="请输入网站域名" value="{:sysconf('site_domain')}" class="layui-input">
                         </div>
                     </div>
 
@@ -48,27 +102,6 @@
                             <input type="text" name="site_tongji_cnzz" placeholder="请输入CNZZ统计ID" value="{:sysconf('site_tongji_cnzz')}" class="layui-input">
                         </div>
                     </div>
-                </div>
-                <div class="layui-form-item layui-box text-center">
-                    <button class="layui-btn" type="submit">立即提交</button>
-                </div>
-            </fieldset>
-        </form>
-    </div>
-
-    <div class="col-lg-6">
-        <form class=" layui-form" data-auto="" method="post">
-            <fieldset class="layui-elem-field layui-box">
-                <legend>公司信息</legend>
-                <div class="layui-field-box" style="padding-right:35px">
-
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">公司名称</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="site_company" required="required" title="请输入公司名称" placeholder="请输入公司名称" value="{:sysconf('site_company')}" class="layui-input">
-                        </div>
-                    </div>
-
 
                     <div class="layui-form-item layui-box">
                         <label class="layui-form-label">网站Logo</label>
