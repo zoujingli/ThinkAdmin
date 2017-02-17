@@ -1,4 +1,5 @@
 <?php
+
 use think\Config;
 use think\Db;
 use Wechat\Loader;
