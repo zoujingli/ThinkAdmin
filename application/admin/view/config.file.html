@@ -5,13 +5,16 @@
     <div class="col-lg-6">
         <form class=" layui-form" data-auto="" method="post">
             <fieldset class="layui-elem-field layui-box">
-                <legend>网站信息</legend>
+                <legend>文件存储</legend>
                 <div class="layui-field-box" style="padding-right:35px">
 
                     <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">网站标题</label>
+                        <label class="layui-form-label">Storage(存储)</label>
                         <div class="layui-input-block">
-                            <input type="text" name="site_name" required="required" title="请输入网站标题" placeholder="请输入网站标题" value="{:sysconf('site_name')}" class="layui-input">
+                            <select name="storage_type">
+                                <option {if sysconf('storage_type')!=='qiniu'}selected{/if} value='local'>本地服务器</option>
+                                <option {if sysconf('storage_type')==='qiniu'}selected{/if} value='qiniu'>七牛云存储</option>
+                            </select>
                         </div>
                     </div>
 
@@ -57,70 +60,19 @@
         </form>
     </div>
 
-    <div class="col-lg-6">
-        <form class=" layui-form" data-auto="" method="post">
-            <fieldset class="layui-elem-field layui-box">
-                <legend>其它参数</legend>
-                <div class="layui-field-box" style="padding-right:35px">
 
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">系统名称</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="app_name" required="required" title="请输入系统名称" placeholder="请输入系统名称" value="{:sysconf('app_name')}" class="layui-input">
-                        </div>
-                    </div>
 
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">系统版本</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="app_version" required="required" title="请输入网站域名" placeholder="请输入网站域名" value="{:sysconf('app_version')}" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">百度统计ID</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="site_tongji_baidu" title="请输入公司名称" placeholder="请输入百度统计ID" value="{:sysconf('site_tongji_baidu')}" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">CNZZ统计ID</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="site_tongji_cnzz" placeholder="请输入CNZZ统计ID" value="{:sysconf('site_tongji_cnzz')}" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">网站Logo</label>
-                        <div class="layui-input-block">
-                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('site_logo')}"/>
-                            <input type="text" name="site_logo" required="required" title="请输入公司名称" placeholder="请输入公司名称" value="{:sysconf('site_logo')}" class="layui-input hide">
-                        </div>
-                        <div class="layui-form-mid layui-word-aux">
-                            建议LOGO图片的尺寸为160x56px，此LOGO图片用于后台登陆页面。
-                        </div>
-                    </div>
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">浏览器图标</label>
-                        <div class="layui-input-block">
-                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px"
-                                 src="{:sysconf('app_logo')}"/>
-                            <input type="text" name="app_logo" title="请输入公司名称" placeholder="请输入百度统计ID" value="{:sysconf('app_logo')}" class="layui-input hide">
-                        </div>
-                        <div class="layui-form-mid layui-word-aux">
-                            建议上传ICO图标的尺寸为128x128px，此图标用于网站标题前，ICON在线制作。
-                        </div>
-                    </div>
-                    <div class="layui-form-item layui-box text-center">
-                        <button class="layui-btn" type="submit">立即提交</button>
-                    </div>
-                </div>
-                </div>
-            </fieldset>
-        </form>
-    </div>
 
 </div>
 
+{/block}
+
+{block name="script"}
+<script>
+    require(['jquery'], function ($) {
+        $('[name="storage_type"]').on('change', function () {
+            console.log($(this).val());
+        })
+    });
+</script>
 {/block}
