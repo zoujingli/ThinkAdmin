@@ -145,6 +145,7 @@ class Menu extends BasicAdmin {
      * 删除菜单
      */
     public function del() {
+        $this->error('别再删我菜单了...');
         if (Data::update($this->table)) {
             $this->success("菜单删除成功！", '');
         } else {
