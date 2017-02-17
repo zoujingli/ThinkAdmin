@@ -62,7 +62,7 @@ class Index extends BasicAdmin {
             $alert = [
                 'type'    => 'danger',
                 'title'   => '安全提示',
-                'content' => '超级管理员默认密码未修改，建议马上修改！'
+                'content' => '超级管理员默认密码未修改，建议马上<a href="javascript:void(0)">修改</a>！'
             ];
             $this->assign('title', '后台首页');
             $this->assign('alert', $alert);

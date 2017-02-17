@@ -146,7 +146,7 @@ class Menu extends BasicAdmin {
      */
     public function del() {
         if (Data::update($this->table)) {
-            $this->success("菜单删除成功！");
+            $this->success("菜单删除成功！", '');
         } else {
             $this->error("菜单删除失败，请稍候再试！");
         }
@@ -157,7 +157,7 @@ class Menu extends BasicAdmin {
      */
     public function forbid() {
         if (Data::update($this->table)) {
-            $this->success("菜单禁用成功！");
+            $this->success("菜单禁用成功！", '');
         } else {
             $this->error("菜单禁用失败，请稍候再试！");
         }
@@ -168,30 +168,10 @@ class Menu extends BasicAdmin {
      */
     public function resume() {
         if (Data::update($this->table)) {
-            $this->success("菜单启用成功！");
+            $this->success("菜单启用成功！", '');
         } else {
             $this->error("菜单启用失败，请稍候再试！");
         }
-    }
-
-    /**
-     * 读取菜单节点数据
-     * @return array
-     */
-    private function _getMenuNodeData() {
-        $list = Node::getNodeArrayTree(implode(",", Node::getDir(APP_PATH)));
-        unset($list['Admin']['Public'], $list['Admin']['Index']);
-        //只识别菜单属性的节点
-        foreach ($list as $key => $module) {
-            foreach ($module as $_key => $action) {
-                foreach ($action as $__key => $method) {
-                    if (!isset($method['menu']) || !is_array($method['menu']) || empty($method['menu']['status'])) {
-                        unset($list[$key][$_key][$__key]);
-                    }
-                }
-            }
-        }
-        return $list;
     }
 
 }
