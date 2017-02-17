@@ -150,8 +150,8 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
     msg.prototype.loading = function (msg, callback) {
         this.close();
         return this.index = msg
-            ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: callback})
-            : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: callback});
+                ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: callback})
+                : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: callback});
     };
 
     /**
@@ -336,8 +336,6 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
         reinit.call(this), setTimeout(reinit, 500), setTimeout(reinit, 1000);
         function reinit() {
             $.form.reInit($container);
-            $.validate.listen.call(this);
-            $container.find('h3').addClass('animated fadeIn container-animated');
         }
     };
 
@@ -733,10 +731,10 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
             var callback = $(this).attr('data-callback');
             $(this).attr('data-listen', "true").validate(function (data) {
                 $.form.load(this.getAttribute('action') || window.location.href, data,
-                    this.getAttribute('method') || 'POST',
-                    window[callback || '_default_callback'] || undefined, true,
-                    this.getAttribute('data-tips') || undefined,
-                    this.getAttribute('data-time') || undefined);
+                        this.getAttribute('method') || 'POST',
+                        window[callback || '_default_callback'] || undefined, true,
+                        this.getAttribute('data-tips') || undefined,
+                        this.getAttribute('data-time') || undefined);
             });
         });
     };
