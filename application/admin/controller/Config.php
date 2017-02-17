@@ -30,4 +30,18 @@ class Config extends BasicAdmin {
         }
     }
 
+    public function file() {
+        if (!$this->request->isPost()) {
+            $this->title = '文件存储配置';
+            parent::_list($this->table);
+        } else {
+            $data = $this->request->post();
+            foreach ($data as $key => $vo) {
+                $_data = ['name' => $key, 'value' => $vo];
+                Data::save($this->table, $_data, 'name');
+            }
+            $this->success('数据修改成功！', '');
+        }
+    }
+
 }
