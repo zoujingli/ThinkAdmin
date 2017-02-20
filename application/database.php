@@ -14,7 +14,7 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'data.cuci.cc',
+    'hostname'        => 'think.ctolog.com',
     // 数据库名
     'database'        => 'think.admin',
     // 用户名
