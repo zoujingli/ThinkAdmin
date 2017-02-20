@@ -58,14 +58,14 @@ class Menu extends BasicAdmin {
      * 添加菜单
      */
     public function add() {
-        return $this->_form($this->table);
+        return $this->_form($this->table, 'form');
     }
 
     /**
      * 编辑菜单
      */
     public function edit() {
-        return $this->_form($this->table);
+        return $this->_form($this->table, 'form');
     }
 
     /**
