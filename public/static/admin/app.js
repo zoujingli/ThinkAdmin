@@ -48,8 +48,9 @@ window.LAYDATE_PATH = baseUrl + '../plugs/layui/laydate/';
 
 require(['pace', 'jquery', 'layui', 'laydate', 'bootstrap', 'template', 'ueditor', 'jquery.cookies'], function () {
     layui.config({dir: baseUrl + '../plugs/layui/'});
-    layui.use(['layer'], function () {
+    layui.use(['layer', 'form', 'element'], function () {
         window.layer = layui.layer;
+        window.form = layui.form();
         require(['admin.listen']);
     });
 });

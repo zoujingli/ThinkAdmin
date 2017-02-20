@@ -9,49 +9,60 @@
                 <div class="layui-field-box" style="padding-right:35px">
 
                     <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">Storage(存储)</label>
+                        <label class="layui-form-label">Storage</label>
                         <div class="layui-input-block">
-                            <select name="storage_type">
+                            <select name="storage_type" lay-filter="storage_type" required="required">
                                 <option {if sysconf('storage_type')!=='qiniu'}selected{/if} value='local'>本地服务器</option>
                                 <option {if sysconf('storage_type')==='qiniu'}selected{/if} value='qiniu'>七牛云存储</option>
                             </select>
+                            <div data-storage-type="qiniu" class="layui-form-mid layui-word-aux">
+                                若还没有帐号，请点击<a target="_blank" href="https://portal.qiniu.com/signup?code=3lhz6nmnwbple">免费申请10G存储空间</a>，申请成功后添加公开bucket空间！
+                            </div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">网站域名</label>
+                    <div class="layui-form-item layui-box" data-storage-type="qiniu">
+                        <label class="layui-form-label">https</label>
+                        <div class="layui-input-inline" style='width:50px'>
+                            {if sysconf('storage_qiniu_is_https')==1}
+                            <input type="checkbox" name="storage_qiniu_is_https" lay-skin="switch" checked required="required" title="https" value="1">
+                            {else/}
+                            <input type="checkbox" name="storage_qiniu_is_https" lay-skin="switch" required="required" title="https" value="1">
+                            {/if}
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">是否启用https访问资源！</div>
+                    </div>
+
+                    <div class="layui-form-item layui-box" data-storage-type="qiniu">
+                        <label class="layui-form-label">bucket</label>
                         <div class="layui-input-block">
-                            <input type="text" name="site_domain" required="required" title="请输入网站域名" placeholder="请输入网站域名" value="{:sysconf('site_domain')}" class="layui-input">
+                            <input type="text" name="storage_qiniu_bucket" required="required" title="请输入七牛云 Bucket" placeholder="请输入七牛云 Bucket" value="{:sysconf('storage_qiniu_bucket')}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">填写七牛云bucket名称，如：static</div>
+                    </div>
+
+                    <div class="layui-form-item layui-box" data-storage-type="qiniu">
+                        <label class="layui-form-label">domain</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="storage_qiniu_domain" required="required" title="请输入七牛云 Domain" placeholder="请输入七牛云 Domain" value="{:sysconf('storage_qiniu_domain')}" class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">只需填写域名，如：static.cdn.cuci.cc</div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">网站版权</label>
+                    <div class="layui-form-item layui-box" data-storage-type="qiniu">
+                        <label class="layui-form-label">access key</label>
                         <div class="layui-input-block">
-                            <input type="text" name="site_copy" required="required" title="请输入网站版权" placeholder="请输入网站版权" value="{:sysconf('site_copy')}" class="layui-input">
+                            <input type="text" name="storage_qiniu_access_key" required="required" title="请输入七牛云 AccessKey" placeholder="请输入七牛云 AccessKey" value="{:sysconf('storage_qiniu_access_key')}" class="layui-input">
                         </div>
                     </div>
 
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">网站备案号</label>
+                    <div class="layui-form-item layui-box" data-storage-type="qiniu">
+                        <label class="layui-form-label">secret key</label>
                         <div class="layui-input-block">
-                            <input type="text" name="site_beian" title="请输入网站备案号" placeholder="请输入网站备案号" value="{:sysconf('site_beian')}" class="layui-input">
+                            <input type="text" name="storage_qiniu_secret_key" required="required" title="请输入七牛云 SecretKey" placeholder="请输入七牛云 SecretKey" value="{:sysconf('storage_qiniu_secret_key')}" class="layui-input">
                         </div>
                     </div>
 
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">网站关键字</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="site_keys" title="请输入SEO关键字" placeholder="请输入关键字，多个以英文逗号隔开" value="{:sysconf('site_keys')}" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item layui-box">
-                        <label class="layui-form-label">网站描述</label>
-                        <div class="layui-input-block">
-                            <textarea name="site_desc" placeholder="请输入网站描述" class="layui-textarea">{:sysconf('site_desc')}</textarea>
-                        </div>
-                    </div>
                 </div>
                 <div class="layui-form-item layui-box text-center">
                     <button class="layui-btn" type="submit">立即提交</button>
@@ -59,20 +70,27 @@
             </fieldset>
         </form>
     </div>
-
-
-
-
 </div>
 
 {/block}
 
 {block name="script"}
 <script>
-    require(['jquery'], function ($) {
-        $('[name="storage_type"]').on('change', function () {
-            console.log($(this).val());
-        })
+
+    $(function () {
+        // 默认初始化布局
+        initLayout($('[name="storage_type"]').val());
+        // 表单动态渲染
+        window.form.render();
+        /*! 兼听 select 的值变化 */
+        window.form.on('select(storage_type)', function (data) {
+            // 重新初始化布局
+            initLayout(data.value);
+        });
+        // 表单初始化布局
+        function initLayout(storage_type) {
+            $("[data-storage-type]").not($("[data-storage-type='" + storage_type + "']").show()).hide();
+        }
     });
 </script>
 {/block}

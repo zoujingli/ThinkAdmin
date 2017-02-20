@@ -262,7 +262,6 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
                 });
             });
         });
-        layui.use(['form', 'element']);
         JPlaceHolder.init();
         /* 自动给必填字符加上样式 @zoujingli @by 2016-05-11 */
         $container.find('[required]').parent().prevAll('label').addClass('label-required');
@@ -277,8 +276,6 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
      * @param tips 提示消息
      */
     _form.prototype.open = function (url, data, callback, loading, tips) {
-        data && (typeof (data) === 'object') && (data = $.param(data));
-        data && (url += (url.indexOf('?') === -1 ? '?' : '&') + data);
         this.load(url, data, 'GET', function (res) {
             if (typeof (res) === 'object') {
                 return $.msg.auto(res);
