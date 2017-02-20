@@ -301,8 +301,6 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
      * @param tips
      */
     _form.prototype.modal = function (url, data, callback, loading, tips) {
-        data && (typeof (data) === 'object') && (data = $.param(data));
-        data && (url += (url.indexOf('?') === -1 ? '?' : '&') + data);
         this.load(url, data, 'GET', function (res) {
             if (typeof (res) === 'object') {
                 return $.msg.auto(res);
