@@ -241,5 +241,6 @@ define(['jquery', 'admin.plugs'], function () {
         /* 加载资源 */
         $.form.open(hash);
     };
+    // URI初始化动作
     window.onhashchange.call(this);
 });
