@@ -16,9 +16,10 @@ class Config extends BasicAdmin {
 
     protected $table = 'SystemConfig';
 
+    protected $title = '系统参数配置';
+
     public function index() {
         if (!$this->request->isPost()) {
-            $this->title = '系统参数配置';
             parent::_list($this->table);
         } else {
             $data = $this->request->post();
@@ -31,17 +32,19 @@ class Config extends BasicAdmin {
     }
 
     public function file() {
-        if (!$this->request->isPost()) {
-            $this->title = '文件存储配置';
-            parent::_list($this->table);
-        } else {
-            $data = $this->request->post();
-            foreach ($data as $key => $vo) {
-                $_data = ['name' => $key, 'value' => $vo];
-                Data::save($this->table, $_data, 'name');
-            }
-            $this->success('数据修改成功！', '');
-        }
+        $this->title = '文件存储配置';
+        $this->index();
+    }
+
+
+    public function mail() {
+        $this->title = '邮箱账号配置';
+        $this->index();
+    }
+
+    public function sms() {
+        $this->title = '短信账号配置';
+        $this->index();
     }
 
 }
