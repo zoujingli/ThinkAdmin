@@ -669,24 +669,30 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
             }
         });
 
+        (function ($) {
+            $.fn.serializeJson = function () {
+                var serializeObj = {};
+                var array = this.serializeArray();
+                $(array).each(function () {
+                    if (serializeObj[this.name]) {
+                        if ($.isArray(serializeObj[this.name])) {
+                            serializeObj[this.name].push(this.value);
+                        } else {
+                            serializeObj[this.name] = [serializeObj[this.name], this.value];
+                        }
+                    } else {
+                        serializeObj[this.name] = this.value;
+                    }
+                });
+                return serializeObj;
+            };
+        })(jQuery);
+
         $(form).bind("submit", function (event) {
             var elements = $(this).find(self.inputTag);
             if (self.isAllpass(elements, params) && params.validate() && $.isFunction(callback)) {
-                var sdata = {};
-                var data = $(form).serializeArray();
-                for (var i in data) {
-                    var key = data[i].name, value = data[i].value;
-                    if (sdata.hasOwnProperty(key)) {
-                        if (typeof sdata[key] === 'object') {
-                            sdata[key].push(value);
-                        } else {
-                            sdata[key] = [sdata[key], value];
-                        }
-                    } else {
-                        sdata[key] = value;
-                    }
-                }
-                callback.call(this, sdata);
+                var data = $(form).serialize();
+                callback.call(this, data);
             }
             event.preventDefault();
             return false;

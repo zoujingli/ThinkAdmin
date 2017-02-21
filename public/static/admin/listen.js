@@ -48,7 +48,7 @@ define(['jquery', 'admin.plugs'], function () {
         var method = $(this).attr('data-one') ? 'one' : 'index';
         var title = $(this).attr('data-title') || '文件管理';
         var uptype = $(this).attr('data-uptype') || 'qiniu';
-        var url = window.ROOT_URL + '/index.php/plugs/file/' + method + '.html?uptype=' + uptype + '&type=' + type + '&field=' + field;
+        var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/' + method + '.html?uptype=' + uptype + '&type=' + type + '&field=' + field;
         $.form.iframe(url, title || '文件管理');
     }).on('click', '[data-iframe]', function () {
         $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口');

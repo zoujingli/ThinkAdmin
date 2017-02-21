@@ -29,7 +29,15 @@ class Plugs extends BasicAdmin {
      * 文件上传
      */
     public function upfile() {
+        $this->assign('field', $this->request->get('field', 'file'));
+        $this->assign('types', '');
+        $this->assign('mimes', '');
+        $this->assign('uptype', '');
         return view();
+    }
+    
+    public function upload(){
+        
     }
 
     /**
