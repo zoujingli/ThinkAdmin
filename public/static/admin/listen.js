@@ -2,7 +2,15 @@ define(['jquery', 'admin.plugs'], function () {
 
     /** 事件委派 */
     $('body').on('click', '[data-load]', function () {
-        $.form.load($(this).attr('data-load'), {}, 'GET', null, true, $(this).attr('data-tips'));
+        var url = $(this).attr('data-load');
+        var tips = $(this).attr('data-tips');
+        function _goLoad() {
+            $.form.load(url, {}, 'GET', null, true, tips);
+        }
+        if ($(this).attr('data-confirm')) {
+            return $.msg.confirm($(this).attr('data-confirm'), _goLoad);
+        }
+        return _goLoad.call(this);
     }).on('click', '[data-modal]', function () {
         return $.form.modal($(this).attr('data-modal'), 'open_type=modal');
     }).on('click', '[data-open]', function () {
@@ -13,8 +21,6 @@ define(['jquery', 'admin.plugs'], function () {
     }).on('submit', 'form[data-form-href]', function () {
         var split = this.action.indexOf('?') === -1 ? '?' : '&';
         window.location.href = '#' + parseUri(this.action + split + $(this).serialize());
-    }).on('click', '[data-back]', function () {
-        window.history.back();
     }).on('click', '[data-reload]', function () {
         $.form.reload();
     }).on('click', '[data-check-target]', function () {
@@ -43,8 +49,8 @@ define(['jquery', 'admin.plugs'], function () {
             window.location.href = href;
         }
     }).on('click', '[data-file]', function () {
-        var type = $(this).attr('data-type') || 'image'; //jpg,png
-        var field = $(this).attr('data-field') || type;
+        var type = $(this).attr('data-type') || 'jpg,png';
+        var field = $(this).attr('data-field') || 'file';
         var method = $(this).attr('data-one') ? 'one' : 'index';
         var title = $(this).attr('data-title') || '文件管理';
         var uptype = $(this).attr('data-uptype') || 'qiniu';
@@ -54,7 +60,7 @@ define(['jquery', 'admin.plugs'], function () {
         $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口');
     }).on('click', '[data-icon]', function () {
         var field = $(this).attr('data-field') || 'icon';
-        var url = window.ROOT_URL + '/index.php/plugs/icon.html?field=' + field;
+        var url = window.ROOT_URL + '/index.php/admin/plugs/icon.html?field=' + field;
         $.form.iframe(url, '图标选择');
     }).on('click', '[data-tips-image]', function () {
         var src = this.getAttribute('data-tips-image') || this.src, img = new Image();
