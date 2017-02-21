@@ -15,8 +15,7 @@ use library\Data;
 class Config extends BasicAdmin {
 
     protected $table = 'SystemConfig';
-
-    protected $title = '系统参数配置';
+    protected $title = '网站参数配置';
 
     public function index() {
         if (!$this->request->isPost()) {
@@ -35,7 +34,6 @@ class Config extends BasicAdmin {
         $this->title = '文件存储配置';
         $this->index();
     }
-
 
     public function mail() {
         $this->title = '邮箱账号配置';
