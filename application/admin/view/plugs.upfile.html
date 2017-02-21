@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
-        <title><{'app_name'|sysconf}> <{'app_version'|sysconf}></title>
+        <title>{'app_name'|sysconf} {'app_version'|sysconf}</title>
         <meta charset="utf-8">
         <link rel="icon" href="../image/favicon.ico">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,7 +39,7 @@
              */
             function uploaded(ret, file) {
                 $('#' + file.id).attr('data-md5', file.md5).attr('data-src', ret.url || ret.site_url);
-                top.$('[name="<{$field}>"]').map(function () {
+                top.$('[name="{$field}"]').map(function () {
                     top.$(this).attr('data-srcs', ret.url).attr('data-md5', file.md5).val(ret.url || ret.site_url).trigger('change');
                 });
                 //top.$.msg.tips('文件上传成功！');
@@ -158,17 +158,18 @@
                             deferred.reject();
                         }).then(function (md5) {
                             file.md5 = md5;
-                            $.ajax("<{'plugs/file/upstate'|url}>", {
+                            $.ajax("{:url('admin/plugs/upstate')}", {
                                 dataType: 'json',
                                 method: 'post',
                                 data: {
                                     id: file.id,
                                     md5: md5,
-                                    uptype: '<{$uptype}>',
+                                    uptype: '{$uptype}',
                                     filename: file.name,
                                 },
                                 success: function (ret) {
-                                    if (ret.code === 'SUCCESS') {
+                                    if (ret.code !== 'IS_UPLOADED') {
+                                        // 文件
                                         owner.skipFile(file);
                                         uploaded.call(uploader, ret.data, file);
                                         console.log('文件秒传成功！file -> ' + file.name);
@@ -197,8 +198,8 @@
                     },
                     accept: {
                         title: '选择文件',
-                        extensions: '<{$types}>', //'gif,jpg,jpeg,bmp,png',
-                        mimeTypes: '<{$mimes}>'
+                        extensions: '{$types}', //'gif,jpg,jpeg,bmp,png',
+                        mimeTypes: '{$mimes}'
                     },
                     formData: {},
                     auto: true,
@@ -208,7 +209,7 @@
                     swf: '__STATIC__/plugs/uploader/Uploader.swf',
                     chunked: false,
                     chunkSize: 512 * 1024,
-                    server: '<{"plugs/file/upload"|url}>',
+                    server: '{"plugs/file/upload"|url}',
                     disableGlobalDnd: true,
                     fileNumLimit: 1,
                     fileSizeLimit: 200 * 1024 * 1024, // 200 M
@@ -295,7 +296,7 @@
                                 img = $('<img src="' + src + '">');
                                 $wrap.empty().append(img);
                             } else {
-                                $.ajax('<{"plugs/file/preview"|url}>', {
+                                $.ajax('{"plugs/file/preview"|url}', {
                                     method: 'POST',
                                     data: src,
                                     dataType: 'json'

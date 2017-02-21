@@ -16,6 +16,24 @@ use think\Log;
 class File {
 
     /**
+     * 获取文件MINE信息
+     * @param string $exts
+     * @return string
+     */
+    static public function getMine($exts) {
+        $_exts = is_string($exts) ? explode(',', $exts) : $exts;
+        $_mines = [];
+        $mines = require(__DIR__ . DS . 'resource' . DS . 'mines.php');
+        foreach ($_exts as $_e) {
+            if (isset($mines[strtolower($_e)])) {
+                $_exinfo = $mines[strtolower($_e)];
+                $_mines[] = is_array($_exinfo) ? join(',', $_exinfo) : $_exinfo;
+            }
+        }
+        return join(',', $_mines);
+    }
+
+    /**
      * 存储微信上传的文件
      * @param string $appid 公众号APPID
      * @param string $medias MediaID列表
