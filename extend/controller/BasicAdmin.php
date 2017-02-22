@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use library\Data;
 use think\Controller;
 use think\Db;
 use think\db\Query;
@@ -144,7 +145,7 @@ class BasicAdmin extends Controller {
             $this->_callback('_form_filter', $vo);
             $result = Data::save($db, $vo, $pk, $where);
             if (false !== $this->_callback('_form_result', $result)) {
-                $result !== false ? $this->success('恭喜，保存成功哦！', ($pk_value === '' ? null : '')) : $this->error('保存失败，请稍候再试！');
+                $result !== false ? $this->success('恭喜，保存成功哦！', '') : $this->error('保存失败，请稍候再试！');
             }
             return $result;
         }
