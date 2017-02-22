@@ -10,7 +10,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">菜单名称</label>
         <div class="layui-input-block">
-            <input type="text" name="title" required="required" title="请输入菜单名称" placeholder="请输入菜单名称" class="layui-input">
+            <input type="text" name="title" value='{$vo.title|default=""}' required="required" title="请输入菜单名称" placeholder="请输入菜单名称" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -21,10 +21,13 @@
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">菜单图标</label>
-        <div class="layui-input-inline">
-            <input type="text" name="icon" value='{$vo.icon|default=""}' class="layui-input">
+        <div class="layui-input-inline" style='width:300px'>
+            <input placeholder="请输入或选择图标" onchange="$('#icon-preview').get(0).className = this.value" type="text" name="icon" value='{$vo.icon|default=""}' class="layui-input">
         </div>
-        <button type="button" data-icon="icon" class="layui-btn layui-btn-primary">选择图标</button>
+        <span class='layui-btn layui-btn-primary' data-icon="icon" style='padding:0 12px;min-width:40px'>
+            <i id='icon-preview' style='font-size:1.2em' class='{$vo.icon|default=""}'></i>
+        </span>
+        <button data-icon='icon' class='layui-btn layui-btn-primary'>选择图标</button>
     </div>
     <div class="hr-line-dashed"></div>
     <div class="layui-form-item text-center">
