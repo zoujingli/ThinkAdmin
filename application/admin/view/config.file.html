@@ -24,6 +24,7 @@
                     <div class="layui-form-item layui-box" data-storage-type="qiniu">
                         <label class="layui-form-label">https</label>
                         <div class="layui-input-inline" style='width:50px'>
+                            <input type="hidden" name="storage_qiniu_is_https" value="0">
                             {if sysconf('storage_qiniu_is_https')==1}
                             <input type="checkbox" name="storage_qiniu_is_https" lay-skin="switch" checked required="required" title="https" value="1">
                             {else/}
@@ -59,7 +60,7 @@
                     <div class="layui-form-item layui-box" data-storage-type="qiniu">
                         <label class="layui-form-label">secret key</label>
                         <div class="layui-input-block">
-                            <input type="text" name="storage_qiniu_secret_key" required="required" title="请输入七牛云 SecretKey" placeholder="请输入七牛云 SecretKey" value="{:sysconf('storage_qiniu_secret_key')}" class="layui-input">
+                            <input type="password" name="storage_qiniu_secret_key" required="required" title="请输入七牛云 SecretKey" placeholder="请输入七牛云 SecretKey" value="{:sysconf('storage_qiniu_secret_key')}" class="layui-input">
                         </div>
                     </div>
 

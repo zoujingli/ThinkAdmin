@@ -240,8 +240,6 @@
                     fileSingleSizeLimit: 200 * 1024 * 1024    // 200 M
                 });
 
-
-
                 /**
                  * 处理上传后的结果
                  * @param {type} file
@@ -494,58 +492,6 @@
                     }
                     updateStatus();
                 }
-
-//                function setState(val) {
-//                    var file, stats;
-//                    if (val === state) {
-//                        return;
-//                    }
-//                    $upload.removeClass('state-' + state);
-//                    $upload.addClass('state-' + val);
-//                    state = val;
-//                    switch (state) {
-//                        case 'pedding':
-//                            $placeHolder.removeClass('element-invisible');
-//                            $queue.hide();
-//                            $statusBar.addClass('element-invisible');
-//                            uploader.refresh();
-//                            break;
-//                        case 'ready':
-//                            $placeHolder.addClass('element-invisible');
-//                            $queue.show();
-//                            $statusBar.removeClass('element-invisible');
-//                            uploader.refresh();
-//                            break;
-//                        case 'uploading':
-//                            $progress.show();
-//                            $upload.text('暂停上传');
-//                            break;
-//                        case 'paused':
-//                            $progress.show();
-//                            $upload.text('继续上传');
-//                            break;
-//                        case 'confirm':
-//                            $progress.hide();
-//                            $upload.text('开始上传');
-//                            stats = uploader.getStats();
-//                            if (stats.successNum && !stats.uploadFailNum) {
-//                                setState('finish');
-//                                return;
-//                            }
-//                            break;
-//                        case 'finish':
-//                            stats = uploader.getStats();
-//                            if (stats.successNum) {
-//                                completed.call(this);
-//                            } else {
-//                                // 没有成功的文件，重设
-//                                state = 'done';
-//                                location.reload();
-//                            }
-//                            break;
-//                    }
-//                    updateStatus();
-//                }
 
                 uploader.onUploadProgress = function (file, percentage) {
                     var $li = $('#' + file.id), $percent = $li.find('.progress span');

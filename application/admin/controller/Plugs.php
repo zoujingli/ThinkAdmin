@@ -47,17 +47,38 @@ class Plugs extends BasicAdmin {
      */
     public function upstate() {
         $post = $this->request->post();
+        // 组装返回数据
         $data = array();
         $data['uptype'] = $post['uptype'];
-        $data['file_url'] = date('Y/md') . "/{$post['md5']}." . pathinfo($post['filename'], 4);
+        $ext = pathinfo($post['filename'], PATHINFO_EXTENSION);
+        $data['file_url'] = join('/', str_split($post['md5'], 16)) . ".{$ext}";
         $data['token'] = $this->_getQiniuToken($data['file_url']);
         $data['server'] = url('admin/plugs/upload');
-        $file = Db::name('SystemFile')->where(['uptype' => $post['uptype'], 'md5' => $post['md5']])->find();
+        // 检查文件是否已经上传
+        $fileinfo = Db::name('SystemFile')->where(['uptype' => $post['uptype'], 'md5' => $post['md5']])->find();
+        // 七牛云文件写入处理
+        if (sysconf('storage_type') === 'qiniu') {
+            $data['server'] = sysconf('storage_qiniu_is_https') ? 'https://up.qbox.me' : 'http://upload.qiniu.com';
+            if (empty($fileinfo)) {
+                $file = [];
+                $file['uptype'] = 'qiniu';
+                $file['md5'] = $post['md5'];
+                $file['real_name'] = $post['filename'];
+                $file['file_name'] = pathinfo($data['file_url'], PATHINFO_BASENAME);
+                $file['file_path'] = $data['file_url'];
+                $file['full_path'] = $data['file_url'];
+                $file['file_ext'] = $ext;
+                $file['file_url'] = $data['file_url'];
+                $file['site_url'] = (sysconf('storage_qiniu_is_https') ? 'https' : 'http') . '://' . sysconf('storage_qiniu_domain') . '/' . $data['file_url'];
+                $file['create_by'] = session('user.id');
+                Data::save('SystemFile', $file, 'md5', ['uptype' => $post['uptype']]);
+            }
+        }
         // 本地上传或文件不存在
-        if (empty($file) || ($file['uptype'] === 'local' && !file_exists($file['full_path']))) {
+        if (empty($fileinfo) || ($fileinfo['uptype'] === 'local' && !file_exists($fileinfo['full_path']))) {
             return $this->result($data, 'NOT_FOUND');
         }
-        return $this->result($file, 'IS_FOUND');
+        return $this->result($fileinfo, 'IS_FOUND');
     }
 
     /**
@@ -91,26 +112,36 @@ class Plugs extends BasicAdmin {
      */
     public function upload() {
         if ($this->request->isPost()) {
-            $filepath = 'upload' . DS . date('Y/md');
-            $file = $this->request->file('file');
-            if (($info = $file->move($filepath))) {
+            $md5s = str_split($this->request->post('md5'), 16);
+            $filepath = 'upload' . DS . array_shift($md5s);
+            $savename = array_shift($md5s);
+            if (($info = $this->request->file('file')->move($filepath, $savename, true))) {
                 $data = [];
                 $data['uptype'] = 'local';
                 $data['md5'] = $this->request->post('md5', $info->md5());
-                $data['real_name'] = $info->getInfo('name');
-                $data['file_name'] = $info->getFilename();
-                $data['file_path'] = $info->getPathname();
-                $data['full_path'] = $info->getRealPath();
+                $data['real_name'] = $this->replacePath($info->getInfo('name'));
+                $data['file_name'] = $this->replacePath($info->getFilename());
+                $data['file_path'] = $this->replacePath($info->getPathname());
+                $data['full_path'] = $this->replacePath($info->getRealPath());
                 $data['file_ext'] = $info->getExtension();
                 $data['file_size'] = $info->getSize();
-                $data['file_url'] = str_replace('\\', '/', $filepath . '/' . $info->getSaveName());
-                $data['site_url'] = pathinfo($this->request->baseFile(true), PATHINFO_DIRNAME) . '/' . $data['file_url'];
+                $data['file_url'] = $this->replacePath($filepath . '/' . $info->getSaveName());
+                $data['site_url'] = $this->replacePath(pathinfo($this->request->baseFile(true), PATHINFO_DIRNAME) . '/' . $data['file_url']);
                 $data['create_by'] = session('user.id');
                 Data::save('SystemFile', $data, 'md5', ['uptype' => 'local']);
                 return json(['data' => $data, 'code' => 'SUCCESS']);
             }
         }
         return json(['code' => 'ERROR']);
+    }
+
+    /**
+     * 路径替换
+     * @param type $path
+     * @return type
+     */
+    protected function replacePath($path) {
+        return str_replace('\\', '/', $path);
     }
 
     /**
