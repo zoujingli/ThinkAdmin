@@ -148,6 +148,7 @@ class Plugs extends BasicAdmin {
      * 字体图标
      */
     public function icon() {
+        $this->assign('field', $this->request->get('field', 'icon'));
         return view();
     }
 
