@@ -74,7 +74,13 @@ class Menu extends BasicAdmin {
         }
     }
 
+    /**
+     * 添加菜单
+     */
     public function add() {
+        if ($this->request->isPost()) {
+            $this->error('系统开发中，不要动菜单哦！');
+        }
         return $this->_form($this->table, 'form');
     }
 
