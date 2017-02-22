@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use controller\BasicAdmin;
 use library\Data;
 use library\Tools;
+use think\Db;
 
 /**
  * 系统后台管理管理
@@ -52,9 +53,27 @@ class Menu extends BasicAdmin {
         $data = Tools::arr2table($data);
     }
 
-    /**
-     * 添加菜单
-     */
+    protected function _form_filter(&$vo) {
+        if ($this->request->isGet()) {
+            $_menus = Db::name($this->table)->where('status', '1')->order('sort ASC,id ASC')->select();
+            $_menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
+            $menus = Tools::arr2table($_menus);
+            foreach ($menus as $key => &$menu) {
+                if (substr_count($menu['path'], '-') > 3) {
+                    unset($menus[$key]);
+                    continue;
+                }
+                if (isset($vo['pid'])) {
+                    $current_path = "-{$vo['pid']}-{$vo['id']}";
+                    if ($vo['pid'] !== '' && (stripos("{$menu['path']}-", "{$current_path}-") !== false || $menu['path'] === $current_path)) {
+                        unset($menus[$key]);
+                    }
+                }
+            }
+            $this->assign('menus', $menus);
+        }
+    }
+
     public function add() {
         return $this->_form($this->table, 'form');
     }
@@ -63,7 +82,7 @@ class Menu extends BasicAdmin {
      * 编辑菜单
      */
     public function edit() {
-        return $this->_form($this->table, 'form');
+        return $this->add();
     }
 
     /**

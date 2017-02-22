@@ -3,7 +3,13 @@
         <label class="layui-form-label">上级菜单</label>
         <div class="layui-input-block">
             <select name='pid'>
-                <option value='0'>-- 顶级菜单 --</option>
+                <!--{foreach $menus as $menu}-->
+                <!--{eq name='menu.id' value='$vo.pid|default=0'}-->
+                <option selected  value='{$menu.id}'>{$menu.spl}{$menu.title}</option>
+                <!--{else/}-->
+                <option  value='{$menu.id}'>{$menu.spl}{$menu.title}</option>
+                <!--{/eq}-->
+                <!--{/foreach}-->
             </select>
         </div>
     </div>
@@ -31,6 +37,7 @@
     </div>
     <div class="hr-line-dashed"></div>
     <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
         <button class="layui-btn"type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-close>取消编辑</button>
     </div>
