@@ -75,10 +75,10 @@ define(['jquery', 'admin.plugs'], function () {
     this.$body.on('click', '[data-file]', function () {
         var type = $(this).attr('data-type') || 'jpg,png';
         var field = $(this).attr('data-field') || 'file';
-        var method = $(this).attr('data-one') ? 'one' : 'index';
-        var title = $(this).attr('data-title') || '文件管理';
-        var uptype = $(this).attr('data-uptype') || 'qiniu';
-        var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/' + method + '.html?uptype=' + uptype + '&type=' + type + '&field=' + field;
+        var method = $(this).attr('data-file') === 'one' ? 'one' : 'mtl';
+        var title = $(this).attr('data-title') || '文件上传';
+        var uptype = $(this).attr('data-uptype') || 'local';
+        var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/mode/' + method + '.html?uptype=' + uptype + '&type=' + type + '&field=' + field;
         $.form.iframe(url, title || '文件管理');
     });
 

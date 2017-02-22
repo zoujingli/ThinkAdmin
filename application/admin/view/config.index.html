@@ -95,7 +95,8 @@
                         <label class="layui-form-label">网站Logo</label>
                         <div class="layui-input-block">
                             <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('site_logo')}"/>
-                            <input type="text" name="site_logo" required="required" title="请输入公司名称" placeholder="请输入公司名称" value="{:sysconf('site_logo')}" class="layui-input hide">
+                            <input type="hidden" onchange="$(this).prev('img').attr('src', this.value)" name="site_logo"  class="layui-input">
+                            <a class="btn btn-link" data-file="one" data-type="jpg,png,gif" data-field="site_logo">上传图片</a>
                         </div>
                         <div class="layui-form-mid layui-word-aux">
                             建议LOGO图片的尺寸为160x56px，此LOGO图片用于后台登陆页面。
@@ -104,10 +105,9 @@
                     <div class="layui-form-item layui-box">
                         <label class="layui-form-label">浏览器图标</label>
                         <div class="layui-input-block">
-                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px"
-                                 src="{:sysconf('app_logo')}"/>
-                            <input type="text" name="app_logo" title="请输入公司名称" placeholder="请输入百度统计ID" value="{:sysconf('app_logo')}" class="layui-input hide">
-                            <a class="btn btn-link" data-file="" data-one="true" data-type="ico,png" data-field="site_logo">上传图片</a>
+                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('app_logo')}"/>
+                            <input type="hidden" name="app_logo" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('app_logo')}" class="layui-input">
+                            <a class="btn btn-link" data-file="one" data-type="ico,png" data-field="app_logo">上传图片</a>
                         </div>
                         <div class="layui-form-mid layui-word-aux">
                             建议上传ICO图标的尺寸为128x128px，此图标用于网站标题前，ICON在线制作。
