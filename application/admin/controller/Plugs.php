@@ -48,7 +48,7 @@ class Plugs extends BasicAdmin {
     public function upstate() {
         $post = $this->request->post();
         // 组装返回数据
-        $data = array();
+        $data = [];
         $data['uptype'] = $post['uptype'];
         $ext = pathinfo($post['filename'], PATHINFO_EXTENSION);
         $data['file_url'] = join('/', str_split($post['md5'], 16)) . ".{$ext}";
