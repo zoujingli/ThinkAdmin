@@ -18,7 +18,7 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-modal 事件行为 */
     this.$body.on('click', '[data-modal]', function () {
-        return $.form.modal($(this).attr('data-modal'), 'open_type=modal');
+        return $.form.modal($(this).attr('data-modal'), 'open_type=modal', $(this).attr('data-title') || '编辑');
     });
 
     /*! 注册 data-open 事件行为 */
@@ -89,7 +89,7 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-icon 事件行为 */
     this.$body.on('click', '[data-icon]', function () {
-        var field = $(this).attr('data-field') || 'icon';
+        var field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
         var url = window.ROOT_URL + '/index.php/admin/plugs/icon.html?field=' + field;
         $.form.iframe(url, '图标选择');
     });

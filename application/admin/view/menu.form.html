@@ -1,0 +1,37 @@
+<form class="layui-form layui-box" style='padding-right:20px' data-auto="true" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">上级菜单</label>
+        <div class="layui-input-block">
+            <select name='pid'>
+                <option value='0'>-- 顶级菜单 --</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" required="required" title="请输入菜单名称" placeholder="请输入菜单名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单链接</label>
+        <div class="layui-input-block">
+            <input type="tel" name="url" required="required" title="请输入菜单链接" placeholder="请输入菜单链接" value="{$vo.url|default='#'}" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单图标</label>
+        <div class="layui-input-inline">
+            <input type="text" name="icon" value='{$vo.icon|default=""}' class="layui-input">
+        </div>
+        <button type="button" data-icon="icon" class="layui-btn layui-btn-primary">选择图标</button>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn"type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>取消编辑</button>
+    </div>
+    <script>
+        window.form.render();
+    </script>
+</form>

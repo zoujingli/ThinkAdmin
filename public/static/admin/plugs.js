@@ -293,11 +293,12 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
      * 加载HTML到弹出层
      * @param url
      * @param data
+     * @param title
      * @param callback
      * @param loading
      * @param tips
      */
-    _form.prototype.modal = function (url, data, callback, loading, tips) {
+    _form.prototype.modal = function (url, data, title, callback, loading, tips) {
         this.load(url, data, 'GET', function (res) {
             if (typeof (res) === 'object') {
                 return $.msg.auto(res);
@@ -306,14 +307,13 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
                 area: "800px",
                 content: res,
                 btn: false,
+                title: title || '',
                 success: function (dom, index) {
                     var $container = $(dom);
                     /* 处理样式及返回按钮事件 */
-                    $container.find('.wrapper').css('minWidth', '760px').find('[data-back]').off('click').on('click', function () {
+                    $container.find('[data-close]').off('click').on('click', function () {
                         layer.close(index);
                     });
-                    /* 处理标题 */
-                    $container.find('.layui-layer-title').html($container.find('.ibox-title').hide().find('h5').html());
                     /* 事件重载 */
                     $.form.reInit($container);
                 }
