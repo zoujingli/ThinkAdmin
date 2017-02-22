@@ -304,15 +304,22 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
                 return $.msg.auto(res);
             }
             layer.open({
+                type: 1,
+                btn: false,
                 area: "800px",
                 content: res,
-                btn: false,
                 title: title || '',
                 success: function (dom, index) {
                     var $container = $(dom);
                     /* 处理样式及返回按钮事件 */
                     $container.find('[data-close]').off('click').on('click', function () {
-                        layer.close(index);
+                        if ($(this).attr('data-confirm')) {
+                            $.msg.confirm($(this).attr('data-confirm'), function () {
+                                layer.close(index);
+                            })
+                        } else {
+                            layer.close(index);
+                        }
                     });
                     /* 事件重载 */
                     $.form.reInit($container);
