@@ -26,9 +26,21 @@ use library\Data;
  */
 class Config extends BasicAdmin {
 
+    /**
+     * 当前默认数据模型
+     * @var string
+     */
     protected $table = 'SystemConfig';
+
+    /**
+     * 当前页面标题
+     * @var string
+     */
     protected $title = '网站参数配置';
 
+    /**
+     * 显示系统常规配置
+     */
     public function index() {
         if (!$this->request->isPost()) {
             parent::_list($this->table);
@@ -42,16 +54,25 @@ class Config extends BasicAdmin {
         }
     }
 
+    /**
+     * 文件存储配置
+     */
     public function file() {
         $this->title = '文件存储配置';
         $this->index();
     }
 
+    /**
+     * 邮件账号配置
+     */
     public function mail() {
         $this->title = '邮箱账号配置';
         $this->index();
     }
 
+    /**
+     * 短信通道账号配置
+     */
     public function sms() {
         $this->title = '短信账号配置';
         $this->index();

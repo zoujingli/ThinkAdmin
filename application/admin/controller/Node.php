@@ -28,8 +28,15 @@ use library\Tools;
  */
 class Node extends BasicAdmin {
 
+    /**
+     * 指定当前默认模型
+     * @var string
+     */
     protected $table = 'SystemNode';
 
+    /**
+     * 显示节点列表
+     */
     public function index() {
         $this->title = '系统节点管理';
         $alert = [
@@ -41,6 +48,10 @@ class Node extends BasicAdmin {
         parent::_list($this->table, FALSE);
     }
 
+    /**
+     * 列表数据处理
+     * @param $data
+     */
     protected function _index_data_filter($data) {
         $nodes = [];
         $alias = [];
@@ -58,6 +69,9 @@ class Node extends BasicAdmin {
         $this->assign('nodes', Tools::arr2table($nodes, 'node', 'pnode'));
     }
 
+    /**
+     * 保存节点变更
+     */
     public function save() {
         if ($this->request->isPost()) {
             $post = $this->request->post();
