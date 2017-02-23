@@ -1,0 +1,49 @@
+{extend name='extra@admin/content' /}
+
+{block name="content"}
+
+<div class="text-right" style='margin-bottom:10px'>
+    <button data-modal='{:url("$classuri/add")}' data-title="添加权限" class='layui-btn layui-btn-small'><i class='fa fa-plus'></i> 添加权限</button>
+    <button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-small layui-btn-danger'><i class='fa fa-remove'></i> 删除权限</button>
+</div>
+
+<form onsubmit="return false;" data-auto="" method="POST">
+    <input type="hidden" value="resort" name="action"/>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class='list-table-check-td'>
+                    <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+                </th>
+                <th class='list-table-sort-td'>
+                    <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
+                </th>
+                <th class='text-center'>权限名称</th>
+                <th class='text-center'>状态</th>
+                <th class='text-center'>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $list as $key=>$vo}
+            <tr>
+                <td class='list-table-check-td'>
+                    <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+                </td>
+                <td class='list-table-sort-td'>
+                    <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
+                </td>
+                <td class='text-center'>{$vo.name}</td>
+                <td class='text-center'>
+                    {if $vo.status eq 0}
+                    <span>已禁用</span>
+                    {elseif $vo.status eq 1}
+                    <span style="color:#090">使用中</span>
+                    {/if}
+                </td>
+                <td class='text-center nowrap'></td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+</form>
+{/block}
