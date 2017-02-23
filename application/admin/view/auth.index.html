@@ -19,6 +19,7 @@
                     <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
                 </th>
                 <th class='text-center'>权限名称</th>
+                <th class='text-center'>权限描述</th>
                 <th class='text-center'>状态</th>
                 <th class='text-center'>操作</th>
             </tr>
@@ -33,6 +34,7 @@
                     <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
                 </td>
                 <td class='text-center'>{$vo.name}</td>
+                <td class='text-center'>{$vo.desc|default="<span style='color:#ccc'>没有写描述哦！</span>"}</td>
                 <td class='text-center'>
                     {if $vo.status eq 0}
                     <span>已禁用</span>
@@ -40,7 +42,23 @@
                     <span style="color:#090">使用中</span>
                     {/if}
                 </td>
-                <td class='text-center nowrap'></td>
+                <td class='text-center nowrap'>
+                    {if auth("$classuri/edit")}
+                    <span class="text-explode">|</span>
+                    <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' href="javascript:void(0)">编辑</a>
+                    {/if}
+                    {if $vo.status eq 1 and auth("$classuri/forbid")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-field='status' data-value='0'data-action='{:url("$classuri/forbid")}' href="javascript:void(0)">禁用</a>
+                    {elseif auth("$classuri/resume")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}' href="javascript:void(0)">启用</a>
+                    {/if}
+                    {if auth("$classuri/del")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}' href="javascript:void(0)">删除</a>
+                    {/if}
+                </td>
             </tr>
             {/foreach}
         </tbody>
