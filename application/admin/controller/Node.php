@@ -20,7 +20,7 @@ class Node extends BasicAdmin {
 
     public function index() {
         $this->title = '系统节点管理';
-        parent::_list($this->table);
+        parent::_list($this->table, FALSE);
     }
 
     protected function _index_data_filter($data) {

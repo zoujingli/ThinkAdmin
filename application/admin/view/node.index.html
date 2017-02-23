@@ -14,7 +14,7 @@
                 <th class='text-left'>节点代码</th>
                 <th class='text-left'>节点名称</th>
                 <th class='text-left'><input data-none-auto="" data-check-target='.auth-check-box' type='checkbox'/> 权限控制</th>
-                <th class='text-left'><input data-none-auto="" data-check-target='.menu-check-box' type='checkbox'/> 是否菜单</th>
+                <th class='text-left'><input data-none-auto="" data-check-target='.menu-check-box' type='checkbox'/> 可设为菜单</th>
             </tr>
         </thead>
         <tbody>
@@ -23,14 +23,17 @@
                 <td class='text-left'>
                     {$vo.spl}{$vo.node}
                 </td>
-                <td><input name='title.{$vo.node}' value="{$vo.title}"/></td>
+                <td><input class='layui-input layui-input-inline' style='height:28px;line-height:28px;width:auto' name='title.{$vo.node}' value="{$vo.title}"/></td>
                 <td class='text-left'>
-                    {if substr_count($vo['node'],'/')==2}
-                    {notempty name='vo.is_auth'}
-                    <input name='auth.{$vo.node}' checked='checked' class="auth-check-box" type='checkbox' value='1'/>
-                    {else /}
-                    <input name='auth.{$vo.node}' class="auth-check-box" type='checkbox' value='1'/>
-                    {/notempty}
+                    <label>
+                        {if substr_count($vo['node'],'/')==2}
+                        {notempty name='vo.is_auth'}
+                        <input name='auth.{$vo.node}' checked='checked' class="auth-check-box" type='checkbox' value='1'/>
+                        {else /}
+                        <input name='auth.{$vo.node}' class="auth-check-box" type='checkbox' value='1'/>
+                        {/notempty}
+                        权限控制
+                    </label>
                     {/if}
                 </td>
                 <td class='text-left'>
@@ -40,6 +43,7 @@
                     {else/}
                     <input name='menu.{$vo.node}' class='menu-check-box' type='checkbox' value='1'/>
                     {/notempty}
+                    可设为菜单
                     {/if}
                 </td>
             </tr>
