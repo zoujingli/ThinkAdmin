@@ -1,5 +1,17 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | Think.Admin
+// +----------------------------------------------------------------------
+// | 版权所有 2016~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://think.ctolog.com
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/Think.Admin
+// +----------------------------------------------------------------------
+
 namespace controller;
 
 use service\FansService;
@@ -24,12 +36,12 @@ class BasicWechat extends Controller {
      * @var string
      */
     protected $current;
+
     /**
      * 是否默认开启网页授权
      * @var bool
      */
     protected $check_auth = true;
-
 
     /**
      * 初始化方法
@@ -70,7 +82,7 @@ class BasicWechat extends Controller {
             $params['redirecturl'] = encode($wxoauth_url);
             $wxoauth_url = url($this->request->baseUrl(), '', false, true) . '?' . http_build_query($params);
         }
-        $wechat =  &load_wechat('Oauth');
+        $wechat = &load_wechat('Oauth');
         # 微信网页授权处理
         if (!$this->request->get('code', false)) {
             exit(redirect($wechat->getOauthRedirect($wxoauth_url, 'webOauth', 'snsapi_base'))->send());
@@ -108,4 +120,5 @@ class BasicWechat extends Controller {
         !!$redirect_url && exit(redirect($redirect_url)->send());
         return $this->openid;
     }
+
 }

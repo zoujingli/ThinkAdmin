@@ -1,5 +1,17 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | Think.Admin
+// +----------------------------------------------------------------------
+// | 版权所有 2016~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://think.ctolog.com
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/Think.Admin
+// +----------------------------------------------------------------------
+
 namespace service;
 
 use library\Data;
@@ -153,11 +165,11 @@ class FansService {
         }
         $extends = &load_wechat('Extends', $appid);
         // 统计总数
-        $data['cumulate'] = (array)$extends->getDatacube('user', 'cumulate', date('Y-m-d', strtotime("-{$day} day")), date('Y-m-d', strtotime('-1 day')));
+        $data['cumulate'] = (array) $extends->getDatacube('user', 'cumulate', date('Y-m-d', strtotime("-{$day} day")), date('Y-m-d', strtotime('-1 day')));
         // 统计增量数
-        $data['summary'] = (array)$extends->getDatacube('user', 'summary', date('Y-m-d', strtotime("-{$day} day")), date('Y-m-d', strtotime('-1 day')));
+        $data['summary'] = (array) $extends->getDatacube('user', 'summary', date('Y-m-d', strtotime("-{$day} day")), date('Y-m-d', strtotime('-1 day')));
         // 统计消息数
-        $data['upstreammsg'] = (array)$extends->getDatacube('upstreammsg', 'summary', date('Y-m-d', strtotime("-{$day} day")), date('Y-m-d', strtotime('-1 day')));
+        $data['upstreammsg'] = (array) $extends->getDatacube('upstreammsg', 'summary', date('Y-m-d', strtotime("-{$day} day")), date('Y-m-d', strtotime('-1 day')));
         $temp = array();
         for ($i = 1; $i <= $day; $i++) {
             $temp[date('Y-m-d', strtotime("-{$i} day"))] = [];
