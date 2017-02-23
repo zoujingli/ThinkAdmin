@@ -1,0 +1,60 @@
+{extend name='extra@admin/content' /}
+
+{block name="content"}
+
+<form onsubmit="return false;" action='{:url("$classuri/save")}' data-auto="true" method="POST">
+
+    <div class="text-right" style='margin-bottom:10px'>
+        <button type="submit" class='layui-btn layui-btn-small'><i class='fa fa-save'></i> 保存更改</button>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class='text-left'>节点代码</th>
+                <th class='text-left'>节点名称</th>
+                <th class='text-left'><input data-none-auto="" data-check-target='.auth-check-box' type='checkbox'/> 权限控制</th>
+                <th class='text-left'><input data-none-auto="" data-check-target='.menu-check-box' type='checkbox'/> 是否菜单</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $nodes as $key=>$vo}
+            <tr>
+                <td class='text-left'>
+                    {$vo.spl}{$vo.node}
+                </td>
+                <td><input name='title.{$vo.node}' value="{$vo.title}"/></td>
+                <td class='text-left'>
+                    {if substr_count($vo['node'],'/')==2}
+                    {notempty name='vo.is_auth'}
+                    <input name='auth.{$vo.node}' checked='checked' class="auth-check-box" type='checkbox' value='1'/>
+                    {else /}
+                    <input name='auth.{$vo.node}' class="auth-check-box" type='checkbox' value='1'/>
+                    {/notempty}
+                    {/if}
+                </td>
+                <td class='text-left'>
+                    {if substr_count($vo['node'],'/')==2}
+                    {notempty name='vo.is_menu'}
+                    <input name='menu.{$vo.node}' checked='checked' class='menu-check-box' type='checkbox' value='1'/>
+                    {else/}
+                    <input name='menu.{$vo.node}' class='menu-check-box' type='checkbox' value='1'/>
+                    {/notempty}
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    <script>
+        $(function () {
+            $('input[type=checkbox]').on('click', function () {
+                var checked = !!this.checked;
+                $('[name^="' + this.name + '"]').map(function () {
+                    this.checked = checked;
+                });
+            });
+        });
+    </script>
+</form>
+{/block}

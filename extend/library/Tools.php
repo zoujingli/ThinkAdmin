@@ -44,10 +44,10 @@ class Tools {
      * @return array
      */
     static public function arr2table($list, $id = 'id', $pid = 'pid', $path = 'path', $ppath = '') {
-        $_array_tree = self::arr2tree($list);
+        $_array_tree = self::arr2tree($list, $id, $pid);
         $tree = array();
         foreach ($_array_tree as $_tree) {
-            $_tree[$path] = $ppath . '-' . $_tree['id'];
+            $_tree[$path] = $ppath . '-' . $_tree[$id];
             $_tree['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├ ", substr_count($ppath, '-'));
             if (!isset($_tree['sub'])) {
                 $_tree['sub'] = array();
@@ -57,7 +57,7 @@ class Tools {
             $tree[] = $_tree;
             if (!empty($sub)) {
                 $sub_array = self::arr2table($sub, $id, $pid, $path, $_tree[$path]);
-                $tree = array_merge($tree, (Array)$sub_array);
+                $tree = array_merge($tree, (Array) $sub_array);
             }
         }
         return $tree;
@@ -103,7 +103,7 @@ class Tools {
             $tree[] = $_tree;
             if (!empty($sub)) {
                 $sub_array = self::node2table($sub, $node, $pnode, $path, $_tree[$path . "_node"]);
-                $tree = array_merge($tree, (Array)$sub_array);
+                $tree = array_merge($tree, (Array) $sub_array);
             }
         }
         return $tree;
