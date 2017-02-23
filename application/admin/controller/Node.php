@@ -20,6 +20,12 @@ class Node extends BasicAdmin {
 
     public function index() {
         $this->title = '系统节点管理';
+        $alert = [
+            'type'    => 'danger',
+            'title'   => '安全警告',
+            'content' => '系统数据请勿随意修改！'
+        ];
+        $this->assign('alert', $alert);
         parent::_list($this->table, FALSE);
     }
 
