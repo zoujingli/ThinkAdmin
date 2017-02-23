@@ -46,7 +46,7 @@ class BasicAdmin extends Controller {
     public function _initialize() {
         # 用户登录状态检查
         if ($this->checkLogin || $this->checkAuth) {
-            if (!$this->isLogin()) {
+            if (!$this->_isLogin()) {
                 $this->redirect('@admin/login');
             }
         }
@@ -68,7 +68,7 @@ class BasicAdmin extends Controller {
      * 判断用户是否登录
      * @return bool
      */
-    public function isLogin() {
+    protected function _isLogin() {
         $user = session('user');
         if (empty($user) || empty($user['id'])) {
             return false;
