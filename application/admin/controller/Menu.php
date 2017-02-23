@@ -66,6 +66,7 @@ class Menu extends BasicAdmin {
      */
     protected function _form_filter(&$vo) {
         if ($this->request->isGet()) {
+            // 上级菜单处理
             $_menus = Db::name($this->table)->where('status', '1')->order('sort desc,id desc')->select();
             $_menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
             $menus = Tools::arr2table($_menus);
@@ -81,7 +82,15 @@ class Menu extends BasicAdmin {
                     }
                 }
             }
-            $this->assign('nodes', Node::getNodeTree(APP_PATH));
+            // 读取系统功能节点
+            $nodes = Node::getNodeTree(APP_PATH);
+            $denyAll = Db::name('SystemNode')->where('is_menu', '0')->column('node');
+            foreach ($nodes as $key => $vo) {
+                if (in_array($vo, $denyAll)) {
+                    unset($nodes[$key]);
+                }
+            }
+            $this->assign('nodes', array_values($nodes));
             $this->assign('menus', $menus);
         }
     }
