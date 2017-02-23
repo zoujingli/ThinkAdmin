@@ -17,6 +17,7 @@ require.config({
         'jquery.icheck': ['//cdn.bootcss.com/iCheck/1.0.2/icheck.min'],
         'jquery.cookies': ['//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie', '../plugs/jquery/jquery.cookie'],
         'bootstrap': ['//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min', '../plugs/bootstrap/js/bootstrap.min'],
+        'bootstrap.typeahead': ['//cdn.bootcss.com/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min'],
         'bootstrap.multiselect': ['//cdn.bootcss.com/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min', '../plugs/multiselect/bootstrap-multiselect'],
         // 自定义插件
         'admin.plugs': ['plugs'],

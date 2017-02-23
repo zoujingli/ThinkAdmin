@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use controller\BasicAdmin;
 use library\Data;
+use library\Node;
 use library\Tools;
 use think\Db;
 
@@ -55,7 +56,7 @@ class Menu extends BasicAdmin {
 
     protected function _form_filter(&$vo) {
         if ($this->request->isGet()) {
-            $_menus = Db::name($this->table)->where('status', '1')->order('sort ASC,id ASC')->select();
+            $_menus = Db::name($this->table)->where('status', '1')->order('sort desc,id desc')->select();
             $_menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
             $menus = Tools::arr2table($_menus);
             foreach ($menus as $key => &$menu) {
@@ -70,6 +71,7 @@ class Menu extends BasicAdmin {
                     }
                 }
             }
+            $this->assign('nodes', Node::getNodeTree(APP_PATH));
             $this->assign('menus', $menus);
         }
     }
