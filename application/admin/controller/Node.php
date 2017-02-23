@@ -35,7 +35,7 @@ class Node extends BasicAdmin {
             $two = "{$tmp[0]}/{$tmp[1]}";
             $nodes[$one] = array_merge(isset($alias[$one]) ? $alias[$one] : ['node' => $one, 'title' => $thr, 'is_menu' => 0, 'is_auth' => 0], ['pnode' => '']);
             $nodes[$two] = array_merge(isset($alias[$two]) ? $alias[$two] : ['node' => $two, 'title' => $thr, 'is_menu' => 0, 'is_auth' => 0], ['pnode' => $one]);
-            $nodes[$thr] = array_merge(isset($alias[$thr]) ? $alias[$thr] : ['node' => $thr, 'title' => $thr, 'is_menu' => 1, 'is_auth' => 1], ['pnode' => $two]);
+            $nodes[$thr] = array_merge(isset($alias[$thr]) ? $alias[$thr] : ['node' => $thr, 'title' => $thr, 'is_menu' => 1, 'is_auth' => 0], ['pnode' => $two]);
         }
         $this->assign('nodes', Tools::arr2table($nodes, 'node', 'pnode'));
     }
