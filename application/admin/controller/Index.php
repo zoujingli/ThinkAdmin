@@ -20,7 +20,7 @@ class Index extends BasicAdmin {
      * @return \think\response\View
      */
     public function index() {
-        $list = Db::name('SystemMenu')->field('title,id,pid,url,icon')->where('status', '1')->select();
+        $list = Db::name('SystemMenu')->field('title,id,pid,url,icon')->order('sort asc,id asc')->where('status', '1')->select();
         $menus = $this->_filter_menu(Tools::arr2tree($list));
         $this->assign('title', '后台管理');
         $this->assign('menus', $menus);

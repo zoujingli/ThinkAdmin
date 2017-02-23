@@ -28,7 +28,8 @@ class Menu extends BasicAdmin {
      */
     public function index() {
         $this->title = '系统菜单管理';
-        parent::_list($this->table, false);
+        $db = Db::name($this->table)->order('sort asc,id asc');
+        parent::_list($db, false);
     }
 
     /**
