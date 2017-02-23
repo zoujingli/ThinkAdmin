@@ -24,17 +24,6 @@ class Menu extends BasicAdmin {
     protected $table = 'SystemMenu';
 
     /**
-     * 定义菜单链接打开方式
-     * @var array
-     */
-    protected $targetList = [
-        '_self'   => '本窗口打开',
-        '_blank'  => '新窗口打开',
-        '_parent' => '父窗口打开',
-        '_top'    => '顶级窗口打开',
-    ];
-
-    /**
      * 菜单列表
      */
     public function index() {
@@ -54,6 +43,27 @@ class Menu extends BasicAdmin {
         $data = Tools::arr2table($data);
     }
 
+    /**
+     * 添加菜单
+     */
+    public function add() {
+        if ($this->request->isPost()) {
+            $this->error('系统开发中，不要动菜单哦！');
+        }
+        return $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 编辑菜单
+     */
+    public function edit() {
+        return $this->add();
+    }
+
+    /**
+     * 表单数据前缀方法
+     * @param array $vo
+     */
     protected function _form_filter(&$vo) {
         if ($this->request->isGet()) {
             $_menus = Db::name($this->table)->where('status', '1')->order('sort desc,id desc')->select();
@@ -74,23 +84,6 @@ class Menu extends BasicAdmin {
             $this->assign('nodes', Node::getNodeTree(APP_PATH));
             $this->assign('menus', $menus);
         }
-    }
-
-    /**
-     * 添加菜单
-     */
-    public function add() {
-        if ($this->request->isPost()) {
-            $this->error('系统开发中，不要动菜单哦！');
-        }
-        return $this->_form($this->table, 'form');
-    }
-
-    /**
-     * 编辑菜单
-     */
-    public function edit() {
-        return $this->add();
     }
 
     /**
