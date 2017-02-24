@@ -115,6 +115,12 @@ class BasicAdmin extends Controller {
         }
         # 列表显示
         $result = array();
+        # 默认排序
+        $options = $db->getOptions();
+        if (empty($options['order'])) {
+            $fields = $db->getTableFields(['table' => $db->getTable()]);
+            in_array('sort', $fields) && $db->order('sort asc');
+        }
         if ($is_page) {
             $row_page = $this->request->get('rows', cookie('rows'), 'intval');
             cookie('rows', $row_page >= 10 ? $row_page : 10);
@@ -164,7 +170,7 @@ class BasicAdmin extends Controller {
         if ($pk_value !== '') { // Edit Options
             !empty($pk_value) && $db->where($pk, $pk_value);
             !empty($where) && $db->where($where);
-            $vo = array_merge($data, (array) $db->find());
+            $vo = array_merge($data, (array)$db->find());
         }
         $this->_callback('_form_filter', $vo);
         $this->assign('vo', $vo);

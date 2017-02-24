@@ -33,7 +33,7 @@
                 <td class='list-table-sort-td'>
                     <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
                 </td>
-                <td class='text-center'>{$vo.name}</td>
+                <td class='text-center'>{$vo.title}</td>
                 <td class='text-center'>{$vo.desc|default="<span style='color:#ccc'>没有写描述哦！</span>"}</td>
                 <td class='text-center'>
                     {if $vo.status eq 0}
@@ -67,5 +67,6 @@
             {/foreach}
         </tbody>
     </table>
+    {if isset($page)}<p>{$page}</p>{/if}
 </form>
 {/block}

@@ -203,11 +203,6 @@ td .text-explode:first-child{opacity:0;display:none}
 .ibox-footer{color:inherit;border-top:1px solid #e7eaec;font-size:90%;background:#ffffff;padding:10px 15px}
 .ibox-title h5{display:inline-block;font-size:16px;margin:16px 0px;font-weight:500;text-indent:8px;text-overflow:ellipsis;border-left:2px solid #88B7E0}
 
-/** 分页样式 */
-.pagination > li > a{background-color:#FFFFFF !important;border:1px solid #DDDDDD !important;color:inherit !important;float:left;line-height:1.42857;margin-left:-1px;padding:4px 10px;position:relative;text-decoration:none}
-.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover,
-.pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover{background-color:#f4f4f4 !important;color:inherit !important;border-color:#DDDDDD !important;cursor:default;z-index:2}
-
 /** 页面加载进度 */
 .pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}
 .pace-inactive{display:none}

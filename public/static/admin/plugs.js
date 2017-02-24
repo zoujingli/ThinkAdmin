@@ -55,10 +55,8 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
     };
     JPlaceHolder.init();
 
-
     /**
      * 定义消息处理构造方法
-     * @returns {common_L11._msg}
      */
     function msg() {
         this.version = '2.0';
@@ -78,9 +76,9 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
 
     /**
      * 弹出警告消息框
-     * @param {type} msg
-     * @param {type} callback
-     * @returns {undefined}
+     * @param msg 消息内容
+     * @param callback 回调函数
+     * @return {*|undefined}
      */
     msg.prototype.alert = function (msg, callback) {
         this.close();
@@ -89,21 +87,28 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
 
     /**
      * 确认对话框
-     * @param {type} msg 提示消息内容
-     * @param {type} ok 确认的回调函数
-     * @param {type} no 取消的回调函数
-     * @returns {undefined}
+     * @param msg 提示消息内容
+     * @param ok 确认的回调函数
+     * @param no 取消的回调函数
+     * @return {undefined|*}
      */
     msg.prototype.confirm = function (msg, ok, no) {
-        this.close();
-        return this.index = layer.confirm(msg, {btn: ['确认', '取消']}, ok, no);
+        var self = this;
+        return this.index = layer.confirm(msg, {btn: ['确认', '取消']}, function () {
+            typeof ok === 'function' && ok.call(this);
+            self.close();
+        }, function () {
+            typeof no === 'function' && ok.call(this);
+            self.close();
+        });
     };
 
     /**
      * 显示成功类型的消息
-     * @param {type} msg 消息内容
-     * @param {type} time  延迟关闭时间
-     * @param {type} callback 回调函数
+     * @param msg 消息内容
+     * @param time 延迟关闭时间
+     * @param callback 回调函数
+     * @return {common_L11._msg|*}
      */
     msg.prototype.success = function (msg, time, callback) {
         this.close();
@@ -119,9 +124,10 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
 
     /**
      * 显示失败类型的消息
-     * @param {type} msg 消息内容
-     * @param {type} time 延迟关闭时间
-     * @param {type} callback 回调函数
+     * @param msg 消息内容
+     * @param time 延迟关闭时间
+     * @param callback 回调函数
+     * @return {common_L11._msg|*}
      */
     msg.prototype.error = function (msg, time, callback) {
         this.close();
@@ -137,10 +143,10 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
 
     /**
      * 状态消息提示
-     * @param {type} msg
-     * @param {type} time
-     * @param {type} callback
-     * @returns {unresolved}
+     * @param msg 消息内容
+     * @param time 显示时间s
+     * @param callback 回调函数
+     * @return {common_L11._msg|*}
      */
     msg.prototype.tips = function (msg, time, callback) {
         this.close();
@@ -154,8 +160,9 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
 
     /**
      * 显示正在加载中的提示
-     * @param {type} msg 提示内容
-     * @param {type} callback 回调方法
+     * @param msg 提示内容
+     * @param callback 回调方法
+     * @return {common_L11._msg|*}
      */
     msg.prototype.loading = function (msg, callback) {
         this.close();
@@ -166,19 +173,35 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
 
     /**
      * 自动处理显示Think返回的Json数据
-     * @param {type} data JSON数据对象
-     * @param {type} time 延迟关闭时间
+     * @param data JSON数据对象
+     * @param time 延迟关闭时间
+     * @return {common_L11._msg|*}
      */
     msg.prototype.auto = function (data, time) {
         var self = this;
         if (parseInt(data.code) === 1) {
             return self.success(data.msg, time, function () {
                 !!data.url ? (window.location.href = data.url) : $.form.reload();
+                if (self.autoSuccessCloseIndexs && self.autoSuccessCloseIndexs.length > 0) {
+                    for (var i in self.autoSuccessCloseIndexs) {
+                        layer.close(self.autoSuccessCloseIndexs[i]);
+                    }
+                    self.autoSuccessCloseIndexs = [];
+                }
             });
         }
         self.error(data.msg, 3, function () {
             !!data.url && (window.location.href = data.url);
         });
+    };
+
+    /**
+     * auto处理成功的自动关闭
+     * @param index
+     */
+    msg.prototype.addAutoSuccessCloseIndex = function (index) {
+        this.autoSuccessCloseIndexs = this.autoSuccessCloseIndexs || [];
+        this.autoSuccessCloseIndexs.push(index);
     };
 
     /**
@@ -193,7 +216,6 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
      */
     function _form() {
         this.version = '2.0';
-        this._model = null;
         this.errMsg = '{status}服务器繁忙，请稍候再试！';
     }
 
@@ -320,13 +342,15 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
                 content: res,
                 title: title || '',
                 success: function (dom, index) {
+                    // 此窗口完成时需要自动关闭
+                    $.msg.addAutoSuccessCloseIndex(index);
                     var $container = $(dom);
                     /* 处理样式及返回按钮事件 */
                     $container.find('[data-close]').off('click').on('click', function () {
                         if ($(this).attr('data-confirm')) {
                             $.msg.confirm($(this).attr('data-confirm'), function () {
                                 layer.close(index);
-                            })
+                            });
                         } else {
                             layer.close(index);
                         }
@@ -353,8 +377,8 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
 
     /**
      * 打开一个iframe窗口
-     * @param url
-     * @param title
+     * @param url iframe打开的URL地址
+     * @param title 窗口标题
      */
     _form.prototype.iframe = function (url, title) {
         return layer.open({
