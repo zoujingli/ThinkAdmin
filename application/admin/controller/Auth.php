@@ -16,7 +16,6 @@ namespace app\admin\controller;
 
 use controller\BasicAdmin;
 use library\Data;
-use think\Db;
 
 /**
  * 系统权限管理控制器
