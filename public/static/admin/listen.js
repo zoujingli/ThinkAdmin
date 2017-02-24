@@ -1,3 +1,15 @@
+// +----------------------------------------------------------------------
+// | Think.Admin
+// +----------------------------------------------------------------------
+// | 版权所有 2016~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://think.ctolog.com
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/Think.Admin
+// +----------------------------------------------------------------------
+
 define(['jquery', 'admin.plugs'], function () {
 
     /*! 定义当前body对象 */
@@ -7,9 +19,11 @@ define(['jquery', 'admin.plugs'], function () {
     this.$body.on('click', '[data-load]', function () {
         var url = $(this).attr('data-load');
         var tips = $(this).attr('data-tips');
+
         function _goLoad() {
             $.form.load(url, {}, 'GET', null, true, tips);
         }
+
         if ($(this).attr('data-confirm')) {
             return $.msg.confirm($(this).attr('data-confirm'), _goLoad);
         }
@@ -43,11 +57,11 @@ define(['jquery', 'admin.plugs'], function () {
     /*! 注册 data-update 事件行为 */
     this.$body.on('click', '[data-update]', function () {
         var id = $(this).attr('data-update') || (function () {
-            var data = [];
-            return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
-                (this.checked) && data.push(this.value);
-            }), data.join(',');
-        }).call(this);
+                var data = [];
+                return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
+                    (this.checked) && data.push(this.value);
+                }), data.join(',');
+            }).call(this);
         if (id.length < 1) {
             return $.msg.tips('请选择需要操作的数据！');
         }
@@ -125,7 +139,16 @@ define(['jquery', 'admin.plugs'], function () {
         $container.find('img').on('click', function () {
             $iframe.attr('src', src);
         });
-        var index = layer.open({type: 1, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true, content: $container.removeClass('hide'), end: function () {
+        var index = layer.open({
+            type: 1,
+            scrollbar: false,
+            area: ['320px', '600px'],
+            title: false,
+            closeBtn: 1,
+            skin: 'layui-layer-nobg',
+            shadeClose: true,
+            content: $container.removeClass('hide'),
+            end: function () {
                 $container.remove();
             }
         });
@@ -160,6 +183,7 @@ define(['jquery', 'admin.plugs'], function () {
         $("[data-menu-box]").not($leftmenu).addClass('hide');
         $openNode ? $openNode.trigger('click') : $leftmenu.find('[data-open]:first').trigger('click');
     }
+
     var $menutarget = $('[data-menu-target]').on('click', function () {
         $menutarget.not($(this).addClass('active')).removeClass('active');
         showLeftMenu($(this).attr('data-menu-target'));

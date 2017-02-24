@@ -1,6 +1,22 @@
-/* global require, layer, layui */
-var a = document.scripts, c = a[a.length - 1].src, baseUrl = c.substring(0, c.lastIndexOf("/") + 1);
+// +----------------------------------------------------------------------
+// | Think.Admin
+// +----------------------------------------------------------------------
+// | 版权所有 2016~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://think.ctolog.com
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/Think.Admin
+// +----------------------------------------------------------------------
 
+// 当前资源URL目录
+var baseUrl = (function () {
+    var scripts = document.scripts, src = scripts[scripts.length - 1].src;
+    return src.substring(0, src.lastIndexOf("/") + 1);
+})();
+
+// RequireJs 配置参数
 require.config({
     baseUrl: baseUrl,
     waitSeconds: 0,
@@ -40,6 +56,7 @@ require.config({
         'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
     },
     deps: ['css!//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'],
+    // 开启debug模式，不缓存资源
     urlArgs: "t=" + (new Date()).getTime()
 });
 
@@ -47,6 +64,7 @@ window.WEB_SOCKET_SWF_LOCATION = "//cdn.bootcss.com/web-socket-js/1.0.0/WebSocke
 window.UEDITOR_HOME_URL = (window.ROOT_URL ? window.ROOT_URL + '/static/' : baseUrl) + '../plugs/ueditor/';
 window.LAYDATE_PATH = baseUrl + '../plugs/layui/laydate/';
 
+// UI框架初始化
 require(['pace', 'jquery', 'layui', 'laydate', 'bootstrap', 'template', 'ueditor', 'jquery.cookies'], function () {
     layui.config({dir: baseUrl + '../plugs/layui/'});
     layui.use(['layer', 'form', 'element'], function () {
