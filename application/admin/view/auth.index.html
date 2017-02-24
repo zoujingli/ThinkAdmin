@@ -47,6 +47,10 @@
                     <span class="text-explode">|</span>
                     <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' href="javascript:void(0)">编辑</a>
                     {/if}
+                    {if auth("$classuri/apply")}
+                    <span class="text-explode">|</span>
+                    <a data-modal='{:url("$classuri/apple")}?id={$vo.id}' href="javascript:void(0)">授权</a>
+                    {/if}
                     {if $vo.status eq 1 and auth("$classuri/forbid")}
                     <span class="text-explode">|</span>
                     <a data-update="{$vo.id}" data-field='status' data-value='0'data-action='{:url("$classuri/forbid")}' href="javascript:void(0)">禁用</a>
