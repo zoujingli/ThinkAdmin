@@ -58,6 +58,12 @@ class Config extends BasicAdmin {
      * 文件存储配置
      */
     public function file() {
+        $alert = [
+            'type'    => 'info',
+            'title'   => '操作提示',
+            'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'
+        ];
+        $this->assign('alert', $alert);
         $this->title = '文件存储配置';
         $this->index();
     }

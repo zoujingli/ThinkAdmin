@@ -11,7 +11,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
             {if isset($alert['title'])}<p style="font-size:18px;padding-bottom:10px">{$alert.title}</p>{/if}
-            {if isset($alert['content'])}<p>{$alert.content}</p>{/if}
+            {if isset($alert['content'])}<p style="font-size:14px">{$alert.content}</p>{/if}
         </div>
         {/if}
         {block name="content"}
