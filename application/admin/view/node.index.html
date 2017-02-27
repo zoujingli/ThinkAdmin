@@ -11,8 +11,8 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th class='text-left' style='padding-left:30px'>节点代码</th>
                 <th class='text-left'>节点名称</th>
+                <th class='text-left'>节点代码</th>
                 <th class='text-left'><input data-none-auto="" data-check-target='.auth-check-box' type='checkbox'/> 权限控制</th>
                 <th class='text-left'><input data-none-auto="" data-check-target='.menu-check-box' type='checkbox'/> 可设为菜单</th>
             </tr>
@@ -20,11 +20,12 @@
         <tbody>
             {foreach $nodes as $key=>$vo}
             <tr>
-                <td class='text-left' style='padding-left:30px'>
-                    {$vo.spl}{$vo.node}
+                <td class="text-left nowrap" style="width:250px">
+                    {$vo.spl} &nbsp;
+                    <input class='layui-input layui-input-inline' style='height:28px;line-height:28px;width:auto' name='title.{$vo.node}' value="{$vo.title}"/>
                 </td>
-                <td><input class='layui-input layui-input-inline' style='height:28px;line-height:28px;width:auto' name='title.{$vo.node}' value="{$vo.title}"/></td>
-                <td class='text-left'>
+                <td class='text-left' style="width:250px">{$vo.spl}{$vo.node}</td>
+                <td class='text-left' style="width:100px">
                     <label>
                         {if substr_count($vo['node'],'/')==2}
                         {notempty name='vo.is_auth'}
