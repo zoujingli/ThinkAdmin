@@ -98,8 +98,8 @@ class Menu extends BasicAdmin {
             // 读取系统功能节点
             $nodes = Node::getNodeTree(APP_PATH);
             $denyAll = Db::name('SystemNode')->where('is_menu', '0')->column('node');
-            foreach ($nodes as $key => $vo) {
-                if (in_array($vo, $denyAll)) {
+            foreach ($nodes as $key => $_vo) {
+                if (in_array($_vo, $denyAll)) {
                     unset($nodes[$key]);
                 }
             }
