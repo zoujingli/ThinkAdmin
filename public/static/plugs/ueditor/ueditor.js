@@ -7,7 +7,7 @@ define(['zeroclipboard'], function (ZeroClipboard) {
             cssRules: 'background-position: -380px 0px;',
             onclick: function () {
                 var field = '_editor_upload_' + Math.floor(Math.random() * 100000);
-                var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/one.html?uptype=qiniu&type=image&field=' + field;
+                var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/one.html?uptype=qiniu&type=png,jpg,gif&field=' + field;
                 $('<input type="hidden">').attr('name', field).appendTo(editor.container).on('change', function () {
                     var srcs = this.value.split('|'), data = new Array();
                     for (var i in srcs) {
@@ -37,7 +37,7 @@ define(['zeroclipboard'], function (ZeroClipboard) {
             cssRules: 'background-position: -726px -77px;',
             onclick: function () {
                 var field = '_editor_upload_' + Math.floor(Math.random() * 100000);
-                var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/two.html?uptype=qiniu&type=image&field=' + field;
+                var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/two.html?uptype=qiniu&type=png,jpg,gif&field=' + field;
                 $('<input type="hidden">').attr('name', field).appendTo(editor.container).on('change', function () {
                     var srcs = this.value.split('|');
                     setTimeout(function () {
