@@ -11,7 +11,6 @@
 
 namespace think\queue\job;
 
-
 use think\queue\Job;
 use think\queue\connector\Topthink as TopthinkQueue;
 
@@ -55,7 +54,7 @@ class Topthink extends Job
      */
     public function attempts()
     {
-        return (int)$this->job->attempts;
+        return (int) $this->job->attempts;
     }
 
     public function delete()

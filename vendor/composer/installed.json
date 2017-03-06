@@ -10,7 +10,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/top-think/think-installer/4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d.zip",
+            "url": "https://files.phpcomposer.com/files/top-think/think-installer/4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d.zip",
             "reference": "4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d",
             "shasum": ""
         },
@@ -53,7 +53,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/ivanlanin/pclzip/19dd1de9d3f5fc4d7d70175b4c344dee329f45fd.zip",
+            "url": "https://files.phpcomposer.com/files/ivanlanin/pclzip/19dd1de9d3f5fc4d7d70175b4c344dee329f45fd.zip",
             "reference": "19dd1de9d3f5fc4d7d70175b4c344dee329f45fd",
             "shasum": ""
         },
@@ -92,7 +92,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/zoujingli/wechat-php-sdk/12759d48867aab14e6b66be81a5b5afe223a0476.zip",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/12759d48867aab14e6b66be81a5b5afe223a0476.zip",
             "reference": "12759d48867aab14e6b66be81a5b5afe223a0476",
             "shasum": ""
         },
@@ -128,7 +128,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/qiniu/php-sdk/b91653485e36b4797d7a302cc86c49695e47a642.zip",
+            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/b91653485e36b4797d7a302cc86c49695e47a642.zip",
             "reference": "b91653485e36b4797d7a302cc86c49695e47a642",
             "shasum": ""
         },
@@ -172,17 +172,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.0.6",
-        "version_normalized": "5.0.6.0",
+        "version": "v5.0.7",
+        "version_normalized": "5.0.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "a3a37e6cfad132d5b02ffff8f23a4abc565f7928"
+            "reference": "bcf64f19f4fadbff6c8503891689ff7e6f2fe9a3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/top-think/framework/a3a37e6cfad132d5b02ffff8f23a4abc565f7928.zip",
-            "reference": "a3a37e6cfad132d5b02ffff8f23a4abc565f7928",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/bcf64f19f4fadbff6c8503891689ff7e6f2fe9a3.zip",
+            "reference": "bcf64f19f4fadbff6c8503891689ff7e6f2fe9a3",
             "shasum": ""
         },
         "require": {
@@ -197,7 +197,7 @@
             "phpunit/phpunit": "4.8.*",
             "sebastian/phpcpd": "2.*"
         },
-        "time": "2017-02-07 09:39:59",
+        "time": "2017-02-25 02:51:57",
         "type": "think-framework",
         "installation-source": "dist",
         "autoload": {
@@ -234,7 +234,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/top-think/think-captcha/0c55455df26a1626a60d0dc35d2d89002b741d44.zip",
+            "url": "https://files.phpcomposer.com/files/top-think/think-captcha/0c55455df26a1626a60d0dc35d2d89002b741d44.zip",
             "reference": "0c55455df26a1626a60d0dc35d2d89002b741d44",
             "shasum": ""
         },
@@ -263,20 +263,20 @@
     },
     {
         "name": "topthink/think-mongo",
-        "version": "v1.5",
-        "version_normalized": "1.5.0.0",
+        "version": "v1.6",
+        "version_normalized": "1.6.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-mongo.git",
-            "reference": "2dd7ecae965cd3a6e5cc99f3db7c63353dae4cf3"
+            "reference": "1c6d29f58bd7caa8da088c167b4e65ddac621588"
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/top-think/think-mongo/2dd7ecae965cd3a6e5cc99f3db7c63353dae4cf3.zip",
-            "reference": "2dd7ecae965cd3a6e5cc99f3db7c63353dae4cf3",
+            "url": "https://files.phpcomposer.com/files/top-think/think-mongo/1c6d29f58bd7caa8da088c167b4e65ddac621588.zip",
+            "reference": "1c6d29f58bd7caa8da088c167b4e65ddac621588",
             "shasum": ""
         },
-        "time": "2017-02-06 06:05:55",
+        "time": "2017-02-13 07:17:51",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -308,7 +308,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/top-think/think-helper/ed64408cdc4cdbd390365ba0906d208b987af520.zip",
+            "url": "https://files.phpcomposer.com/files/top-think/think-helper/ed64408cdc4cdbd390365ba0906d208b987af520.zip",
             "reference": "ed64408cdc4cdbd390365ba0906d208b987af520",
             "shasum": ""
         },
@@ -337,24 +337,24 @@
     },
     {
         "name": "topthink/think-queue",
-        "version": "v1.1.2",
-        "version_normalized": "1.1.2.0",
+        "version": "v1.1.3",
+        "version_normalized": "1.1.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-queue.git",
-            "reference": "503c5b809585ca60cba9485a233aa8be4b22c990"
+            "reference": "07480c36381344bef9db9c9bbe3de28005a839d3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://packagist.phpcomposer.com/files/top-think/think-queue/503c5b809585ca60cba9485a233aa8be4b22c990.zip",
-            "reference": "503c5b809585ca60cba9485a233aa8be4b22c990",
+            "url": "https://files.phpcomposer.com/files/top-think/think-queue/07480c36381344bef9db9c9bbe3de28005a839d3.zip",
+            "reference": "07480c36381344bef9db9c9bbe3de28005a839d3",
             "shasum": ""
         },
         "require": {
             "topthink/think-helper": ">=1.0.4",
             "topthink/think-installer": ">=1.0.10"
         },
-        "time": "2016-12-01 04:29:39",
+        "time": "2017-02-28 08:07:37",
         "type": "think-extend",
         "extra": {
             "think-config": {

@@ -17,7 +17,7 @@ use think\Model;
 class BelongsTo extends OneToOne
 {
     /**
-     * 架构函数
+     * 构造函数
      * @access public
      * @param Model  $parent 上级模型对象
      * @param string $model 模型名
@@ -49,6 +49,45 @@ class BelongsTo extends OneToOne
             call_user_func_array($closure, [ & $this->query]);
         }
         return $this->query->where($this->localKey, $this->parent->$foreignKey)->relation($subRelation)->find();
+    }
+
+    /**
+     * 根据关联条件查询当前模型
+     * @access public
+     * @param string  $operator 比较操作符
+     * @param integer $count    个数
+     * @param string  $id       关联表的统计字段
+     * @param string  $joinType JOIN类型
+     * @return Query
+     */
+    public function has($operator = '>=', $count = 1, $id = '*')
+    {
+        return $this->parent;
+    }
+
+    /**
+     * 根据关联条件查询当前模型
+     * @access public
+     * @param mixed $where 查询条件（数组或者闭包）
+     * @return Query
+     */
+    public function hasWhere($where = [])
+    {
+        $table    = $this->query->getTable();
+        $model    = basename(str_replace('\\', '/', get_class($this->parent)));
+        $relation = basename(str_replace('\\', '/', $this->model));
+        if (is_array($where)) {
+            foreach ($where as $key => $val) {
+                if (false === strpos($key, '.')) {
+                    $where[$relation . '.' . $key] = $val;
+                    unset($where[$key]);
+                }
+            }
+        }
+        return $this->parent->db()->alias($model)
+            ->field($model . '.*')
+            ->join($table . ' ' . $relation, $model . '.' . $this->foreignKey . '=' . $relation . '.' . $this->localKey, $this->joinType)
+            ->where($where);
     }
 
     /**
@@ -85,10 +124,10 @@ class BelongsTo extends OneToOne
             // 关联数据封装
             foreach ($resultSet as $result) {
                 // 关联模型
-                if (!isset($data[$result->$localKey])) {
+                if (!isset($data[$result->$foreignKey])) {
                     $relationModel = null;
                 } else {
-                    $relationModel = $data[$result->$localKey];
+                    $relationModel = $data[$result->$foreignKey];
                 }
 
                 if ($relationModel && !empty($this->bindAttr)) {
@@ -116,10 +155,10 @@ class BelongsTo extends OneToOne
         $foreignKey = $this->foreignKey;
         $data       = $this->eagerlyWhere($this, [$localKey => $result->$foreignKey], $localKey, $relation, $subRelation, $closure);
         // 关联模型
-        if (!isset($data[$result->$localKey])) {
+        if (!isset($data[$result->$foreignKey])) {
             $relationModel = null;
         } else {
-            $relationModel = $data[$result->$localKey];
+            $relationModel = $data[$result->$foreignKey];
         }
         if ($relationModel && !empty($this->bindAttr)) {
             // 绑定关联属性

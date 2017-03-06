@@ -17,9 +17,9 @@ abstract class Connector
 {
     protected $options = [];
 
-    abstract function push($job, $data = '', $queue = null);
+    abstract public function push($job, $data = '', $queue = null);
 
-    abstract function later($delay, $job, $data = '', $queue = null);
+    abstract public function later($delay, $job, $data = '', $queue = null);
 
     abstract public function pop($queue = null);
 

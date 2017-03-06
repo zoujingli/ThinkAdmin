@@ -11,7 +11,6 @@
 
 namespace think\queue\job;
 
-
 use think\queue\Job;
 
 class Sync extends Job

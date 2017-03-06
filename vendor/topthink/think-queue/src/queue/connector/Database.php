@@ -116,7 +116,7 @@ class Database extends Connector
             ->order('id', 'asc')
             ->find();
 
-        return $job ? (object)$job : null;
+        return $job ? (object) $job : null;
     }
 
     /**

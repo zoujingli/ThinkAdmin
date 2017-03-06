@@ -74,7 +74,7 @@ class Database extends Job
      */
     public function attempts()
     {
-        return (int)$this->job->attempts;
+        return (int) $this->job->attempts;
     }
 
     /**

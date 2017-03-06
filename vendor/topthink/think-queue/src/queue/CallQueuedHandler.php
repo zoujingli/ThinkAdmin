@@ -25,12 +25,12 @@ class CallQueuedHandler
         }
     }
 
-    public function failed(array $data, $e)
+    public function failed(array $data)
     {
         $command = unserialize($data['command']);
 
         if (method_exists($command, 'failed')) {
-            $command->failed($e);
+            $command->failed();
         }
     }
 }

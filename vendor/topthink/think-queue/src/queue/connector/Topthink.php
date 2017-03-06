@@ -170,7 +170,7 @@ class Topthink extends Connector
             }
         }
         $this->reportHttpError($this->last_status, "Service unavailable");
-        return null;
+        return;
     }
 
     protected static function jsonDecode($response)
@@ -209,7 +209,6 @@ class Topthink extends Connector
             'attempts' => $this->request->header('topthink-message-attempts')
         ];
     }
-
 
     public function __destruct()
     {
