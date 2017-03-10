@@ -1,65 +1,73 @@
 {extend name='extra@admin/content' /}
 
 {block name="content"}
-
-<form onsubmit="return false;" action='{:url("$classuri/save")}' data-auto="true" method="POST">
-
-    <div class="text-right" style='margin-bottom:10px'>
-        <button type="submit" class='layui-btn layui-btn-small'><i class='fa fa-save'></i> 保存更改</button>
-    </div>
-
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th class='text-left'>节点名称</th>
-                <th class='text-left'>节点代码</th>
-                <th class='text-left'><input data-none-auto="" data-check-target='.auth-check-box' type='checkbox'/> 权限控制</th>
-                <th class='text-left'><input data-none-auto="" data-check-target='.menu-check-box' type='checkbox'/> 可设为菜单</th>
-            </tr>
-        </thead>
-        <tbody>
-            {foreach $nodes as $key=>$vo}
-            <tr>
-                <td class="text-left nowrap" style="width:250px">
-                    {$vo.spl} &nbsp;
-                    <input class='layui-input layui-input-inline' style='height:28px;line-height:28px;width:auto' name='title.{$vo.node}' value="{$vo.title}"/>
-                </td>
-                <td class='text-left' style="width:250px">{$vo.spl}{$vo.node}</td>
-                <td class='text-left' style="width:100px">
-                    <label>
-                        {if substr_count($vo['node'],'/')==2}
-                        {notempty name='vo.is_auth'}
-                        <input name='auth.{$vo.node}' checked='checked' class="auth-check-box" type='checkbox' value='1'/>
-                        {else /}
-                        <input name='auth.{$vo.node}' class="auth-check-box" type='checkbox' value='1'/>
-                        {/notempty}
-                        权限控制
-                    </label>
-                    {/if}
-                </td>
-                <td class='text-left'>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th style="width:20px"></th>
+            <th class='text-left'>节点</th>
+            <th class='text-left'></th>
+            <th class='text-left'></th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        {foreach $nodes as $key=>$vo}
+        <tr>
+            <td style="width:20px"></td>
+            <td class='text-left nowrap'>
+                {$vo.spl}{$vo.node}
+                {if auth("$classuri/save")}
+                &nbsp;<input class='layui-input layui-input-inline title-input' style='height:28px;line-height:28px;width:auto' name='title.{$vo.node}' value="{$vo.title}"/>
+                {/if}
+            </td>
+            <td class='text-left' style="width:100px">
+                {if auth("$classuri/save")}
+                <label>
+                    {if substr_count($vo['node'],'/')==2}
+                    {notempty name='vo.is_auth'}
+                    <input name='is_auth.{$vo.node}' checked='checked' class="check-box" type='checkbox' value='1'/>
+                    {else /}
+                    <input name='is_auth.{$vo.node}' class="check-box" type='checkbox' value='1'/>
+                    {/notempty}
+                    权限控制
+                </label>
+                {/if}
+                {/if}
+            </td>
+            <td class='text-left'>
+                {if auth("$classuri/save")}
+                <label>
                     {if substr_count($vo['node'],'/')==2}
                     {notempty name='vo.is_menu'}
-                    <input name='menu.{$vo.node}' checked='checked' class='menu-check-box' type='checkbox' value='1'/>
+                    <input name='is_menu.{$vo.node}' checked='checked' class='check-box' type='checkbox' value='1'/>
                     {else/}
-                    <input name='menu.{$vo.node}' class='menu-check-box' type='checkbox' value='1'/>
+                    <input name='is_menu.{$vo.node}' class='check-box' type='checkbox' value='1'/>
                     {/notempty}
                     可设为菜单
                     {/if}
-                </td>
-            </tr>
-            {/foreach}
-        </tbody>
-    </table>
-    <script>
-        $(function () {
-            $('input[type=checkbox]').on('click', function () {
-                var checked = !!this.checked;
-                $('[name^="' + this.name + '"]').map(function () {
-                    this.checked = checked;
-                });
+                </label>
+                {/if}
+            </td>
+            <td></td>
+        </tr>
+        {/foreach}
+    </tbody>
+</table>
+{if auth("$classuri/save")}
+<script>
+    $(function () {
+        $('input.title-input').on('blur', function () {
+            $.form.load('{:url("save")}', {name: this.name, value: this.value}, 'POST', function (ret) {
+                return false;
             });
         });
-    </script>
-</form>
+        $('input.check-box').on('click', function () {
+            $.form.load('{:url("save")}', {name: this.name, value: this.checked ? 1 : 0}, 'POST', function (ret) {
+                return false;
+            });
+        });
+    });
+</script>
+{/if}
 {/block}

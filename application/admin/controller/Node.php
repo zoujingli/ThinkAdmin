@@ -62,9 +62,9 @@ class Node extends BasicAdmin {
             $tmp = explode('/', $thr);
             $one = $tmp[0];
             $two = "{$tmp[0]}/{$tmp[1]}";
-            $nodes[$one] = array_merge(isset($alias[$one]) ? $alias[$one] : ['node' => $one, 'title' => $thr, 'is_menu' => 0, 'is_auth' => 0], ['pnode' => '']);
-            $nodes[$two] = array_merge(isset($alias[$two]) ? $alias[$two] : ['node' => $two, 'title' => $thr, 'is_menu' => 0, 'is_auth' => 0], ['pnode' => $one]);
-            $nodes[$thr] = array_merge(isset($alias[$thr]) ? $alias[$thr] : ['node' => $thr, 'title' => $thr, 'is_menu' => 1, 'is_auth' => 0], ['pnode' => $two]);
+            $nodes[$one] = array_merge(isset($alias[$one]) ? $alias[$one] : ['node' => $one, 'title' => '', 'is_menu' => 0, 'is_auth' => 0], ['pnode' => '']);
+            $nodes[$two] = array_merge(isset($alias[$two]) ? $alias[$two] : ['node' => $two, 'title' => '', 'is_menu' => 0, 'is_auth' => 0], ['pnode' => $one]);
+            $nodes[$thr] = array_merge(isset($alias[$thr]) ? $alias[$thr] : ['node' => $thr, 'title' => '', 'is_menu' => 0, 'is_auth' => 0], ['pnode' => $two]);
         }
         $this->assign('nodes', Tools::arr2table($nodes, 'node', 'pnode'));
     }
@@ -75,15 +75,13 @@ class Node extends BasicAdmin {
     public function save() {
         if ($this->request->isPost()) {
             $post = $this->request->post();
-            foreach ($post as $key => $vo) {
-                if (stripos($key, 'title_') !== 0) {
-                    continue;
-                }
-                $node = substr($key, strlen('title_'));
-                $data = ['node' => $node, 'title' => $vo, 'is_menu' => intval(!empty($post["menu_{$node}"])), 'is_auth' => intval(!empty($post["auth_{$node}"]))];
+            if (isset($post['name']) && isset($post['value'])) {
+                $nameattr = explode('.', $post['name']);
+                $field = array_shift($nameattr);
+                $data = ['node' => join(',', $nameattr), $field => $post['value']];
                 Data::save($this->table, $data, 'node');
+                $this->success('参数保存成功！', '');
             }
-            $this->success('参数保存成功！', '');
         } else {
             $this->error('访问异常，请重新进入...');
         }

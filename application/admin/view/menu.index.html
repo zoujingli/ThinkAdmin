@@ -1,11 +1,13 @@
 {extend name='extra@admin/content' /}
 
-{block name="content"}
-
-<div class="text-right" style='margin-bottom:10px'>
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
     <button data-modal='{:url("$classuri/add")}' data-title="添加菜单" class='layui-btn layui-btn-small'><i class='fa fa-plus'></i> 添加菜单</button>
     <button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-small layui-btn-danger'><i class='fa fa-remove'></i> 删除菜单</button>
 </div>
+{/block}
+
+{block name="content"}
 
 <form onsubmit="return false;" data-auto="" method="POST">
     <input type="hidden" value="resort" name="action"/>
@@ -35,7 +37,7 @@
                     <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
                 </td>
                 <td class='text-center'>
-                    <i style="font-size:18px;float:right" class="{$vo.icon}"></i>
+                    <i style="font-size:18px;" class="{$vo.icon}"></i>
                 </td>
                 <td>{$vo.spl}{$vo.title}</td>
                 <td class='visible-lg'>{$vo.url}</td>
