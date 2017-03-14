@@ -15,8 +15,10 @@
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
+use library\Data;
 use library\Tools;
 use think\Db;
+use think\response\View;
 
 /**
  * 后台入口
@@ -29,7 +31,7 @@ class Index extends BasicAdmin {
 
     /**
      * 后台框架布局
-     * @return \think\response\View
+     * @return View
      */
     public function index() {
         $list = Db::name('SystemMenu')->field('title,id,pid,url,icon')->order('sort asc,id asc')->where('status', '1')->select();
@@ -64,7 +66,7 @@ class Index extends BasicAdmin {
 
     /**
      * 主机信息显示
-     * @return \think\response\View
+     * @return View
      */
     public function main() {
         $_version = Db::query('select version() as ver');
@@ -80,6 +82,44 @@ class Index extends BasicAdmin {
             $this->assign('title', '后台首页');
         }
         return view();
+    }
+
+    /**
+     * 修改密码
+     */
+    public function pass() {
+        if (intval($this->request->request('id')) !== intval(session('user.id'))) {
+            $this->error('访问异常！');
+        }
+        if ($this->request->isGet()) {
+            $this->assign('verify', true);
+            return $this->_form('SystemUser', 'user/pass');
+        } else {
+            $data = $this->request->post();
+            if ($data['password'] !== $data['repassword']) {
+                $this->error('两次输入的密码不一致，请重新输入！');
+            }
+            $user = Db::name('SystemUser')->where('id', session('user.id'))->find();
+            if (md5($data['oldpassword']) !== $user['password']) {
+                $this->error('旧密码验证失败，请重新输入！');
+            }
+            if (Data::save('SystemUser', ['id' => session('user.id'), 'password' => md5($data['password'])])) {
+                $this->success('密码修改成功，下次请使用新密码登录！', '');
+            } else {
+                $this->error('密码修改失败，请稍候再试！');
+            }
+        }
+    }
+
+    /**
+     * 修改资料
+     */
+    public function info() {
+        if (intval($this->request->request('id')) === intval(session('user.id'))) {
+            return $this->_form('SystemUser', 'user/form');
+        } else {
+            $this->error('访问异常！');
+        }
     }
 
 }

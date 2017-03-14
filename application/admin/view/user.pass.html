@@ -11,17 +11,26 @@
         </div>
     </div>
 
+    {if $verify}
     <div class="layui-form-item">
-        <label class="layui-form-label">登录密码</label>
+        <label class="layui-form-label">旧的密码</label>
         <div class="layui-input-block">
-            <input type="password" name="password" value='' pattern="^\S{1,}$" required=""  title="请输入登录密码" placeholder="请输入登录密码" class="layui-input">
+            <input type="password" name="oldpassword" value='' pattern="^\S{1,}$" required=""  title="请输入旧的密码" placeholder="请输入旧的密码" class="layui-input">
+        </div>
+    </div>
+    {/if}
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">新的密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="password" value='' pattern="^\S{1,}$" required=""  title="请输入新的密码" placeholder="请输入新的密码" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">重复密码</label>
         <div class="layui-input-block">
-            <input type="text" name="repassword" value='' pattern="^\S{1,}$" required="" title="请输入重复密码" placeholder="请输入重复密码" class="layui-input">
+            <input type="password" name="repassword" value='' pattern="^\S{1,}$" required="" title="请输入重复密码" placeholder="请输入重复密码" class="layui-input">
         </div>
     </div>
 
