@@ -37,6 +37,9 @@ class Node {
             $alias["{$vo['node']}"] = $vo;
         }
         foreach (self::getNodeTree(APP_PATH) as $thr) {
+            if (stripos($thr, 'admin/plugs') === 0 && stripos($thr, 'admin/index')) {
+                continue;
+            }
             $tmp = explode('/', $thr);
             $one = $tmp[0];
             $two = "{$tmp[0]}/{$tmp[1]}";
