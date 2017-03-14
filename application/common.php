@@ -12,6 +12,7 @@
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
+
 use think\Config;
 use think\Db;
 use Wechat\Loader;
@@ -72,7 +73,18 @@ function decode($string) {
  * @return bool
  */
 function auth($node) {
-    return true;
+    $nodes = cache('need_access_node');
+    if (empty($nodes)) {
+        $nodes = Db::name('SystemNode')->where('is_auth', '1')->column('node');
+        cache('need_access_node', $nodes);
+    }
+    if (session('user.username') === 'admin' || stripos($node, 'admin/index') === 0) {
+        return true;
+    }
+    if (!in_array(strtolower($node), array_values($nodes))) {
+        return true;
+    }
+    return in_array(strtolower($node), (array) session('user.nodes'));
 }
 
 /**
@@ -81,12 +93,31 @@ function auth($node) {
  * @return string
  */
 function sysconf($name) {
-    static $conf = [];
-    if (empty($conf)) {
+    static $config = [];
+    if (empty($config)) {
         $list = Db::name('SystemConfig')->select();
         foreach ($list as $vo) {
-            $conf[$vo['name']] = $vo['value'];
+            $config[$vo['name']] = $vo['value'];
         }
     }
-    return isset($conf[$name]) ? $conf[$name] : '';
+    return isset($config[$name]) ? $config[$name] : '';
+}
+
+/**
+ * array_column 函数兼容
+ */
+if (!function_exists("array_column")) {
+
+    function array_column(array &$rows, $column_key, $index_key = null) {
+        $data = [];
+        foreach ($rows as $row) {
+            if (empty($index_key)) {
+                $data[] = $row[$column_key];
+            } else {
+                $data[$row[$index_key]] = $row[$column_key];
+            }
+        }
+        return $data;
+    }
+
 }

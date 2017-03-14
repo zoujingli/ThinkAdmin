@@ -14,9 +14,9 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Node;
 use controller\BasicAdmin;
 use library\Data;
-use library\Node;
 use library\Tools;
 use think\Db;
 
@@ -96,14 +96,13 @@ class Menu extends BasicAdmin {
                 }
             }
             // 读取系统功能节点
-            $nodes = Node::getNodeTree(APP_PATH);
-            $denyAll = Db::name('SystemNode')->where('is_menu', '0')->column('node');
+            $nodes = Node::get(APP_PATH);
             foreach ($nodes as $key => $_vo) {
-                if (in_array($_vo, $denyAll)) {
+                if (empty($_vo['is_menu'])) {
                     unset($nodes[$key]);
                 }
             }
-            $this->assign('nodes', array_values($nodes));
+            $this->assign('nodes', array_column($nodes, 'node'));
             $this->assign('menus', $menus);
         }
     }

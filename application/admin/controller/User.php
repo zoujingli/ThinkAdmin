@@ -40,6 +40,14 @@ class User extends BasicAdmin {
     }
 
     /**
+     * 授权管理
+     * @return type
+     */
+    public function auth() {
+        return $this->_form($this->table, 'auth');
+    }
+
+    /**
      * 用户添加
      */
     public function add() {
@@ -61,6 +69,7 @@ class User extends BasicAdmin {
             $this->error('系统超级账号禁止操作！');
         }
         if ($this->request->isGet()) {
+            $this->assign('verify', false);
             return $this->_form($this->table, 'pass');
         }
         $data = $this->request->post();
@@ -80,11 +89,17 @@ class User extends BasicAdmin {
      */
     public function _form_filter(&$data) {
         if ($this->request->isPost()) {
+            if (isset($data['authorize']) && is_array($data['authorize'])) {
+                $data['authorize'] = join(',', $data['authorize']);
+            }
             if (isset($data['id'])) {
                 unset($data['username']);
             } elseif (Db::name($this->table)->where('username', $data['username'])->find()) {
                 $this->error('用户账号已经存在，请使用其它账号！');
             }
+        } else {
+            $data['authorize'] = explode(',', isset($data['authorize']) ? $data['authorize'] : '');
+            $this->assign('authorizes', Db::name('SystemAuth')->select());
         }
     }
 

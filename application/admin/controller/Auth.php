@@ -14,8 +14,11 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Node;
 use controller\BasicAdmin;
 use library\Data;
+use library\Tools;
+use think\Db;
 
 /**
  * 系统权限管理控制器
@@ -44,7 +47,42 @@ class Auth extends BasicAdmin {
      * 权限授权
      */
     public function apply() {
-        return $this->_form($this->table, 'apply');
+        $auth_id = $this->request->get('id', '0');
+        switch (strtolower($this->request->get('action', '0'))) {
+            case 'getnode':
+                $nodes = Node::get();
+                $checked = Db::name('SystemAuthNode')->where('auth', $auth_id)->column('node');
+                foreach ($nodes as $key => &$node) {
+                    $node['checked'] = in_array($node['node'], $checked);
+                    if (empty($node['is_auth']) && substr_count($node['node'], '/') > 1) {
+                        unset($nodes[$key]);
+                    }
+                }
+                return $this->success('获取节点成功！', '', $this->_filterNodes($this->_filterNodes(Tools::arr2tree($nodes, 'node', 'pnode', '_sub_'))));
+            case 'save':
+                $data = [];
+                $post = $this->request->post();
+                foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
+                    $data[] = ['auth' => $auth_id, 'node' => $node];
+                }
+                Db::name('SystemAuthNode')->where('auth', $auth_id)->delete();
+                Db::name('SystemAuthNode')->insertAll($data);
+                return $this->success('节点授权更新成功！', '');
+            default :
+                $this->assign('title', '节点授权');
+                return $this->_form($this->table, 'apply');
+        }
+    }
+
+    protected function _filterNodes($nodes, $level = 1) {
+        foreach ($nodes as $key => &$node) {
+            if (!empty($node['_sub_']) && is_array($node['_sub_'])) {
+                $node['_sub_'] = $this->_filterNodes($node['_sub_'], $level + 1);
+            } elseif ($level < 3) {
+                unset($nodes[$key]);
+            }
+        }
+        return $nodes;
     }
 
     /**

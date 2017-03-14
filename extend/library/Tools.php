@@ -60,7 +60,7 @@ class Tools {
         $tree = array();
         foreach ($_array_tree as $_tree) {
             $_tree[$path] = $ppath . '-' . $_tree[$id];
-            $_tree['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├ ", substr_count($ppath, '-'));
+            $_tree['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├&nbsp;&nbsp;", substr_count($ppath, '-'));
             if (!isset($_tree['sub'])) {
                 $_tree['sub'] = array();
             }

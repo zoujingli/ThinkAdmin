@@ -32,7 +32,8 @@ class Data {
      * @return bool
      */
     static public function deleteSequence($sequence, $type = 'SYSTEM') {
-        return Db::table('system_sequence')->where('type', strtoupper($type))->where('sequence', $sequence)->delete();
+        $data = ['sequence' => $sequence, 'type' => strtoupper($type)];
+        return Db::name('SystemSequence')->where($data)->delete();
     }
 
     /**
@@ -41,35 +42,20 @@ class Data {
      * @param string $type 序号顾类型
      * @return string
      */
-    static public function createSequence($length = 13, $type = 'SYSTEM') {
-        return self::_createSequence($length, strtoupper($type));
-    }
-
-    /**
-     * 检测并创建序号
-     * @param int $length
-     * @param string $type
-     * @param int $times
-     * @param string $sequence
-     * @return string
-     */
-    static protected function _createSequence($length, $type, $times = 0, $sequence = '') {
-        if ($times > 10 || $length < 1) {
-            return null;
+    static public function createSequence($length = 10, $type = 'SYSTEM') {
+        $times = 0;
+        while ($times++ < 10) {
+            $sequence = '';
+            $i = 0;
+            while ($i++ < $length) {
+                $sequence .= ($i <= 1 ? rand(1, 9) : rand(0, 9));
+            }
+            $data = ['sequence' => $sequence, 'type' => strtoupper($type)];
+            if (Db::name('SystemSequence')->where($data)->count() < 1 && Db::name('SystemSequence')->insert($data)) {
+                return $sequence;
+            }
         }
-        $i = 0;
-        while ($i++ < $length) {
-            $sequence .= ($i <= 1 ? rand(1, 9) : rand(0, 9));
-        }
-        $data = ['sequence' => $sequence, 'type' => $type];
-        if (Db::table('system_sequence')->where($data)->count() > 0) {
-            return self::_createSequence($length, $type, ++$times);
-        }
-        if (Db::table('system_sequence')->insert($data) > 0) {
-            return $sequence;
-        } else {
-            return self::_createSequence($length, $type, ++$times);
-        }
+        return null;
     }
 
     /**

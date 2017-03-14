@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/extra/view/admin.content.html</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/public/static/admin/app.js</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/model/User.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/store/view/index.index.html</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/controller/Role.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/view/config.file.html</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/extend/library/Data.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/controller/Plugs.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/controller/Auth.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/controller/Index.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/view/config.index.html</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/view/plugs.upfile.html</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/controller/Menu.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/extra/view/admin.main.top.html</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/store/view/menu.index.html</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/store/controller/Menu.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/store/controller/Index.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/common.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/public/static/plugs/ueditor/ueditor.js</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/controller/Config.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/extra/view/admin.main.html</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/index/controller/Index.php</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/public/static/admin/plugs.js</file>
+            <file>file:/D:/WebRoot/git/Think.Admin.git/trunk/application/admin/view/auth.form.html</file>
+        </group>
+    </open-files>
+</project-private>

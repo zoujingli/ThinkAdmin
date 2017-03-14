@@ -133,6 +133,7 @@ return array(
     'm4a'   => 'audio/x-m4a',
     'f4v'   => 'video/mp4',
     'webm'  => 'video/webm',
+    'webp'  => 'image/webp',
     'aac'   => 'audio/x-acc',
     'm4u'   => 'application/vnd.mpegurl',
     'm3u'   => 'text/plain',

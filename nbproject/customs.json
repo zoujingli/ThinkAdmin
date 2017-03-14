@@ -1,0 +1,14 @@
+{
+    "elements": {},
+    "attributes": {
+        "lay-skin": {
+            "context": "input"
+        },
+        "lay-filter": {
+            "context": "select"
+        },
+        "lay-even": {
+            "context": "table"
+        }
+    }
+}
