@@ -33,12 +33,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li class="topbar-info-btn">
-                                <a data-title=" " data-iframe="{:url('admin/main/password')}">
+                                <a data-modal="{:url('admin/index/pass')}?id={:session('user.id')}">
                                     <span><i class='glyphicon glyphicon-lock'></i> 修改密码</span>
                                 </a>
                             </li>
                             <li class="topbar-info-btn">
-                                <a data-title=" " data-iframe="{:url('admin/main/myinfo')}>">
+                                <a data-modal="{:url('admin/index/info')}?id={:session('user.id')}">
                                     <span><i class='glyphicon glyphicon-edit'></i> 修改资料</span>
                                 </a>
                             </li>
