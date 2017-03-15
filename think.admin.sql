@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50629
 File Encoding         : 65001
 
-Date: 2017-03-15 12:53:20
+Date: 2017-03-15 12:55:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,8 +28,8 @@ CREATE TABLE `system_auth` (
   `create_by` bigint(11) unsigned DEFAULT '0' COMMENT '创建人',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `system_auth_title_index` (`title`) USING BTREE,
-  KEY `system_auth_status_index` (`status`) USING BTREE
+  UNIQUE KEY `index_system_auth_title` (`title`) USING BTREE,
+  KEY `index_system_auth_status` (`status`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COMMENT='系统权限表';
 
 -- ----------------------------
@@ -44,8 +44,8 @@ DROP TABLE IF EXISTS `system_auth_node`;
 CREATE TABLE `system_auth_node` (
   `auth` bigint(20) unsigned DEFAULT NULL COMMENT '角色ID',
   `node` varchar(200) DEFAULT NULL COMMENT '节点路径',
-  KEY `sys_role_node_role_id_index` (`auth`) USING BTREE,
-  KEY `sys_role_node_node` (`node`) USING BTREE
+  KEY `index_system_auth_auth` (`auth`) USING BTREE,
+  KEY `index_system_auth_node` (`node`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色与节点关系表';
 
 -- ----------------------------
@@ -343,7 +343,7 @@ CREATE TABLE `system_menu` (
   `create_by` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建人',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  KEY `system_menu_node` (`node`) USING BTREE
+  KEY `index_system_menu_node` (`node`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
@@ -3715,7 +3715,7 @@ CREATE TABLE `system_user` (
   `create_by` bigint(20) unsigned DEFAULT NULL COMMENT '创建人',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `system_user_username_index` (`username`)
+  UNIQUE KEY `index_system_user_username` (`username`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10010 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
 
 -- ----------------------------
