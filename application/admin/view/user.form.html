@@ -3,7 +3,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">用户账号</label>
         <div class="layui-input-block">
-            {if $vo and $vo.username}
+            {if $vo and isset($vo.username)}
             <input type="text" readonly="" disabled="" name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input disabled">
             {else/}
             <input type="text" name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input">
@@ -21,7 +21,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">联系邮箱</label>
         <div class="layui-input-block">
-            <input type="text" name="mail" value='{$vo.mail|default=""}' title="请输入联系邮箱" placeholder="请输入联系邮箱" class="layui-input">
+            <input type="text" name="mail" pattern="^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$" value='{$vo.mail|default=""}' title="请输入联系邮箱" placeholder="请输入联系邮箱" class="layui-input">
         </div>
     </div>
 
@@ -55,5 +55,6 @@
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>
+
     <script>window.form.render();</script>
 </form>

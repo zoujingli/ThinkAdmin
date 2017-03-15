@@ -72,11 +72,12 @@ class Index extends BasicAdmin {
         $_version = Db::query('select version() as ver');
         $version = array_pop($_version);
         $this->assign('mysql_ver', $version['ver']);
-        if (session('user.username') === 'admin' && session('user.password') === '662af1cd1976f09a9f8cecc868ccc0a2') {
+        if (session('user.username') === 'admin' && session('user.password') === '21232f297a57a5a743894a0e4a801fc3') {
+            $url = url('admin/index/pass') . '?id=' . session('user.id');
             $alert = [
                 'type'    => 'danger',
                 'title'   => '安全提示',
-                'content' => '超级管理员默认密码未修改，建议马上<a href="javascript:void(0)">修改</a>！'
+                'content' => "超级管理员默认密码未修改，建议马上<a href='javascript:void(0)' data-modal='{$url}'>修改</a>！"
             ];
             $this->assign('alert', $alert);
             $this->assign('title', '后台首页');

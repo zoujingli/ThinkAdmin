@@ -37,7 +37,7 @@ class Node {
             $alias["{$vo['node']}"] = $vo;
         }
         foreach (self::getNodeTree(APP_PATH) as $thr) {
-            if (stripos($thr, 'admin/plugs') === 0 && stripos($thr, 'admin/index')) {
+            if (stripos($thr, 'admin/plugs') === 0 || stripos($thr, 'admin/login') === 0 || stripos($thr, 'admin/index') === 0 || stripos($thr, 'index') === 0 || stripos($thr, 'store/api') === 0) {
                 continue;
             }
             $tmp = explode('/', $thr);
