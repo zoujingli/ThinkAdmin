@@ -38,7 +38,7 @@ define(['jquery', 'admin.plugs'], function () {
     /*! 注册 data-open 事件行为 */
     this.$body.on('click', '[data-open]', function () {
         var url = $(this).attr('data-open');
-        $.form.href(url);
+        $.form.href(url, this);
     });
 
     /*! 注册 data-reload 事件行为 */
@@ -263,6 +263,7 @@ define(['jquery', 'admin.plugs'], function () {
             $('.framework-container').removeClass('framework-sidebar-full');
         }
         /* 加载资源 */
+        console.log(hash);
         $.form.open(hash);
     };
     // URI初始化动作

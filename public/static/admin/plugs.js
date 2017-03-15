@@ -324,9 +324,10 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
     /**
      * 打开一个内置HTML页面
      * @param url
+     * @param obj
      */
-    _form.prototype.href = function (url) {
-        window.location.href = '#' + parseUri(url);
+    _form.prototype.href = function (url, obj) {
+        window.location.href = '#' + parseUri(url, obj);
     };
 
     /**
