@@ -263,7 +263,6 @@ define(['jquery', 'admin.plugs'], function () {
             $('.framework-container').removeClass('framework-sidebar-full');
         }
         /* 加载资源 */
-        console.log(hash);
         $.form.open(hash);
     };
     // URI初始化动作
