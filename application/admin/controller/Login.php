@@ -55,6 +55,7 @@ class Login extends BasicAdmin {
                 $authorizeids = explode(',', $user['authorize']);
                 $user['nodes'] = Db::name('SystemAuthNode')->where('auth', 'in', $authorizeids)->column('node');
             }
+            Db::name('SystemUser')->where('id', $user['id'])->update(['login_at' => ['exp', 'now()'], 'login_num' => ['exp', 'login_num+1']]);
             session('user', $user);
             $this->success('登录成功，正在进入系统...', '@admin');
         }
