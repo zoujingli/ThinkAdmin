@@ -14,6 +14,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Node;
 use controller\BasicAdmin;
 use library\Data;
 use library\Tools;
@@ -34,6 +35,7 @@ class Index extends BasicAdmin {
      * @return View
      */
     public function index() {
+        Node::applyAuthNode();
         $list = Db::name('SystemMenu')->field('title,id,pid,url,icon')->order('sort asc,id asc')->where('status', '1')->select();
         $menus = $this->_filter_menu(Tools::arr2tree($list));
         $this->assign('title', '后台管理');

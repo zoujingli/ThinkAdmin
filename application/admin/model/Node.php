@@ -17,13 +17,26 @@ namespace app\admin\model;
 use think\Db;
 
 /**
- * 系统用户管理控制器
+ * 系统权限节点读取器
  * Class Node
  * @package app\admin\model
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/14 18:12
  */
 class Node {
+
+    /**
+     * 应用用户权限节点
+     * @param type $authid
+     * @return bool
+     */
+    public static function applyAuthNode() {
+        if (($authorize = session('user.authorize'))) {
+            $nodes = (array) Db::name('SystemAuthNode')->where('auth', 'in', explode(',', $authorize))->column('node');
+            return session('user.nodes', $nodes);
+        }
+        return false;
+    }
 
     /**
      * 获取系统代码节点
