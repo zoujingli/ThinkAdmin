@@ -62,7 +62,7 @@ class Node {
                 continue;
             }
             $_tmp = explode(DS, $vo);
-            $controllerName = rtrim(array_pop($_tmp), '.php');
+            $controllerName = preg_replace('|\.php$|', '', array_pop($_tmp));
             array_pop($_tmp);
             $moduleName = array_pop($_tmp);
             $className = config('app_namespace') . "\\{$moduleName}\\controller\\{$controllerName}";
