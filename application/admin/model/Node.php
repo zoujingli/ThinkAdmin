@@ -40,6 +40,39 @@ class Node {
     }
 
     /**
+     * 获取授权节点
+     * @staticvar array $nodes
+     * @return array
+     */
+    public static function getAuthNode() {
+        static $nodes = [];
+        if (empty($nodes)) {
+            $nodes = cache('need_access_node');
+            if (empty($nodes)) {
+                $nodes = Db::name('SystemNode')->where('is_auth', '1')->column('node');
+                cache('need_access_node', $nodes);
+            }
+        }
+        return $nodes;
+    }
+
+    /**
+     * 检查用户节点权限
+     * @param string $node
+     * @return bool
+     */
+    public static function checkAuthNode($node) {
+        $auth_node = strtolower($node);
+        if (session('user.username') === 'admin' || stripos($node, 'admin/index') === 0) {
+            return true;
+        }
+        if (!in_array($auth_node, self::getAuthNode())) {
+            return true;
+        }
+        return in_array($auth_node, (array) session('user.nodes'));
+    }
+
+    /**
      * 获取系统代码节点
      * @return array
      */

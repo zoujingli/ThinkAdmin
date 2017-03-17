@@ -13,6 +13,7 @@
 // +----------------------------------------------------------------------
 
 
+use app\admin\model\Node as NodeModal;
 use think\Config;
 use think\Db;
 use Wechat\Loader;
@@ -73,18 +74,7 @@ function decode($string) {
  * @return bool
  */
 function auth($node) {
-    $nodes = cache('need_access_node');
-    if (empty($nodes)) {
-        $nodes = Db::name('SystemNode')->where('is_auth', '1')->column('node');
-        cache('need_access_node', $nodes);
-    }
-    if (session('user.username') === 'admin' || stripos($node, 'admin/index') === 0) {
-        return true;
-    }
-    if (!in_array(strtolower($node), array_values($nodes))) {
-        return true;
-    }
-    return in_array(strtolower($node), (array) session('user.nodes'));
+    return NodeModal::checkAuthNode($node);
 }
 
 /**
