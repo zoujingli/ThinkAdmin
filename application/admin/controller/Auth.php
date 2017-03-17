@@ -73,7 +73,7 @@ class Auth extends BasicAdmin {
                 break;
             default :
                 $this->assign('title', '节点授权');
-                $this->_form($this->table, 'apply');
+                return $this->_form($this->table, 'apply');
         }
     }
 
