@@ -61,7 +61,7 @@ require.config({
         'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
     },
     deps: ['css!//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'],
-    // 开启debug模式，不缓存资源
+    // 开启debug模式，不缓存资源              
     urlArgs: "t=" + (new Date()).getTime()
 });
 

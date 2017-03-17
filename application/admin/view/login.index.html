@@ -79,6 +79,9 @@
 
 {block name="script"}
 <script>
+    if (window.location.href.indexOf('#') > -1) {
+        window.location.href = window.location.href.split('#')[0];
+    }
     require(['jquery'], function ($) {
         $('[name="password"]').on('focus', function () {
             $('#left-hander').removeClass('initial_left_hand').addClass('left_hand');
