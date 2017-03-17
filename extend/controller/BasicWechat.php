@@ -48,7 +48,7 @@ class BasicWechat extends Controller {
      */
     public function _initialize() {
         parent::_initialize();
-        $this->current = (is_https() ? 'https' : 'http') . '://' . $this->request->host() . $this->request->url();
+        $this->current = ($this->request->isSsl() ? 'https' : 'http') . '://' . $this->request->host() . $this->request->url();
         /* 网页授权，并获粉丝信息 */
         if ($this->check_auth && $this->oAuth()) {
             if ($this->request->isGet()) {

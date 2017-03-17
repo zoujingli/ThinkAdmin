@@ -15,8 +15,6 @@
 namespace service;
 
 use library\Data;
-use PHPQRCode\Constants;
-use PHPQRCode\QRcode;
 use think\Db;
 use think\Log;
 use Wechat\WechatPay;
@@ -35,7 +33,7 @@ class PayService {
      * @return bool
      */
     static public function isPay($order_no) {
-        return Db::table('wechat_pay_prepayid')->where('order_no', $order_no)->where('is_pay', '1')->count() > 0;
+        return Db::name('WechatPayPrepayid')->where('order_no', $order_no)->where('is_pay', '1')->count() > 0;
     }
 
     /**
@@ -76,7 +74,7 @@ class PayService {
         $prepayinfo = Db::table('wechat_pay_prepayid')->where('appid=:appid and order_no=:order_no and (is_pay=:is_pay or expires_in>:expires_in)', $map)->find();
         if (empty($prepayinfo) || empty($prepayinfo['prepayid'])) {
             $out_trade_no = Data::createSequence(18, 'WXPAY-OUTER-NO');
-            $prepayid = $pay->getPrepayId($openid, $title, $out_trade_no, $fee, url("@push/wechat/notify/{$pay->appid}", '', true, true), $trade_type);
+            $prepayid = $pay->getPrepayId($openid, $title, $out_trade_no, $fee, url("@store/api/notify", '', true, true), $trade_type);
             if (empty($prepayid)) {
                 Log::error("内部订单号{$order_no}生成预支付失败，{$pay->errMsg}");
                 return false;
@@ -125,7 +123,7 @@ class PayService {
      */
     static public function refund($pay, $order_no, $fee = 0, $refund_no = NULL, $refund_account = '') {
         $map = array('order_no' => $order_no, 'is_pay' => '1', 'appid' => $pay->appid);
-        $notify = Db::table('wechat_pay_prepayid')->where($map)->find();
+        $notify = Db::name('WechatPayPrepayid')->where($map)->find();
         if (empty($notify)) {
             Log::error("内部订单号{$order_no}验证退款失败");
             return false;

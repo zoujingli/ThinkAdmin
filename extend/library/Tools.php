@@ -24,6 +24,24 @@ namespace library;
 class Tools {
 
     /**
+     * Cors Options 授权处理
+     */
+    static public function corsOptionsHandler() {
+        if (request()->isOptions()) {
+            header('Access-Control-Allow-Origin:*');
+            header('Access-Control-Allow-Headers:Accept,Referer,Host,Keep-Alive,User-Agent,X-Requested-With,Cache-Control,Content-Type,token');
+            header('Access-Control-Allow-Credentials:true');
+            header('Access-Control-Allow-Methods:GET,POST,OPTIONS');
+            header('Access-Control-Max-Age:1728000');
+            header('Content-Type:text/plain charset=UTF-8');
+            header('Content-Length: 0', true);
+            header('status: 204');
+            header('HTTP/1.0 204 No Content');
+            exit;
+        }
+    }
+
+    /**
      * 一维数据数组生成数据树
      * @param array $list 数据列表
      * @param string $id 父ID Key
@@ -91,80 +109,6 @@ class Tools {
             }
         }
         return $ids;
-    }
-
-    /**
-     * 一维数据数组生成数据树(节点)
-     * @param array $_array_tree 数据列表
-     * @param string $node 节点
-     * @param string $pnode 父节点
-     * @param string $path
-     * @param string $ppath
-     * @return array
-     */
-    static public function node2table($_array_tree, $node = 'node', $pnode = 'pnode', $path = "id", $ppath = '') {
-        $tree = array();
-        foreach ($_array_tree as $_tree) {
-            $_tree[$path . "_node"] = $ppath . '-' . $_tree['id'];
-            $_tree['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├ ", substr_count($ppath, '-'));
-            if (!isset($_tree['sub'])) {
-                $_tree['sub'] = array();
-            }
-            $sub = $_tree['sub'];
-            unset($_tree['sub']);
-            $tree[] = $_tree;
-            if (!empty($sub)) {
-                $sub_array = self::node2table($sub, $node, $pnode, $path, $_tree[$path . "_node"]);
-                $tree = array_merge($tree, (Array) $sub_array);
-            }
-        }
-        return $tree;
-    }
-
-    /**
-     * 数组解析重组
-     * @param array $data 数据列表
-     * @param array $params ["分组名"=>["新字段名"=>["原字段名","分割符"]]]
-     * @param bool $remove 移除原字段
-     * @return array
-     */
-    static public function parseArrayValue(array $data, $params = [], $remove = true) {
-        foreach ($params as $new => $param) {
-            foreach ($data as $key => $value) {
-                foreach ($param as $newfield => $attr) {
-                    if (is_string($attr)) {
-                        $attr = [$attr, ','];
-                    }
-                    if ($attr[0] === $key) {
-                        if (is_string($value)) {
-                            foreach (explode($attr[1], $value) as $k => $v) {
-                                $data[$new][$k][$newfield] = $v;
-                            }
-                        }
-                        if ($remove) {
-                            unset($data[$key]);
-                        }
-                    }
-                }
-            }
-        }
-        return $data;
-    }
-
-    /**
-     * 多维数组去重
-     * @param array $data
-     * @return array
-     */
-    static public function uniqueArray(array $data) {
-        foreach ($data as &$v) {
-            $v = json_encode($v);
-        }
-        $data = array_unique($data);
-        foreach ($data as &$v) {
-            $v = json_decode($v, true);
-        }
-        return $data;
     }
 
 }

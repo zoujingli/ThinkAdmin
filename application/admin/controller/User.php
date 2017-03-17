@@ -33,6 +33,9 @@ class User extends BasicAdmin {
      */
     protected $table = 'SystemUser';
 
+    /**
+     * 用户列表
+     */
     public function index() {
         $this->title = '系统用户管理';
         $db = Db::name($this->table)->where('is_deleted', '0');

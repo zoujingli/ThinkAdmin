@@ -45,6 +45,7 @@ class Auth extends BasicAdmin {
 
     /**
      * 权限授权
+     * @return void
      */
     public function apply() {
         $auth_id = $this->request->get('id', '0');
@@ -58,7 +59,8 @@ class Auth extends BasicAdmin {
                         unset($nodes[$key]);
                     }
                 }
-                return $this->success('获取节点成功！', '', $this->_filterNodes($this->_filterNodes(Tools::arr2tree($nodes, 'node', 'pnode', '_sub_'))));
+                $this->success('获取节点成功！', '', $this->_filterNodes($this->_filterNodes(Tools::arr2tree($nodes, 'node', 'pnode', '_sub_'))));
+                break;
             case 'save':
                 $data = [];
                 $post = $this->request->post();
@@ -67,10 +69,11 @@ class Auth extends BasicAdmin {
                 }
                 Db::name('SystemAuthNode')->where('auth', $auth_id)->delete();
                 Db::name('SystemAuthNode')->insertAll($data);
-                return $this->success('节点授权更新成功！', '');
+                $this->success('节点授权更新成功！', '');
+                break;
             default :
                 $this->assign('title', '节点授权');
-                return $this->_form($this->table, 'apply');
+                $this->_form($this->table, 'apply');
         }
     }
 

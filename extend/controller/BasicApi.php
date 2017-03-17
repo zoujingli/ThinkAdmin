@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use library\Tools;
 use think\Cache;
 use think\Request;
 use think\Response;
@@ -29,26 +30,19 @@ class BasicApi {
      * @param Request|null $request
      */
     public function __construct(Request $request = null) {
+        // CORS 跨域 Options 检测响应
+        Tools::corsOptionsHandler();
+        // 获取当前 Request 对象
         $this->request = is_null($request) ? Request::instance() : $request;
-        if (in_array($this->request->action(), ['response', 'setcache', 'getcache', 'delcache', '_empty'])) {
+        // 安全方法请求过滤
+        if (in_array(strtolower($this->request->action()), ['response', 'setcache', 'getcache', 'delcache', '_empty'])) {
             exit($this->response('禁止访问接口安全方法！', 'ACCESS_NOT_ALLOWED')->send());
         }
+        // 访问 Token 检测处理
         $this->token = $this->request->request('token', $this->request->header('token', false));
-        if ((empty($this->token) || !$this->getCache($this->token)) && ($this->request->action() !== 'auth')) {
+//        if ((empty($this->token) || !$this->getCache($this->token)) && ($this->request->action() !== 'auth')) {
+        if (empty($this->token) && $this->request->action() !== 'auth') {
             exit($this->response('访问TOKEN失效，请重新授权！', 'ACCESS_TOKEN_FAILD')->send());
-        }
-        // CORS 跨域 Options 检测响应
-        if ($this->request->isOptions()) {
-            header('Access-Control-Allow-Origin:*');
-            header('Access-Control-Allow-Headers:Accept,Referer,Host,Keep-Alive,User-Agent,X-Requested-With,Cache-Control,Content-Type,token');
-            header('Access-Control-Allow-Credentials:true');
-            header('Access-Control-Allow-Methods:GET,POST,OPTIONS');
-            header('Access-Control-Max-Age:1728000');
-            header('Content-Type:text/plain charset=UTF-8');
-            header('Content-Length: 0', true);
-            header('status: 204');
-            header('HTTP/1.0 204 No Content');
-            exit;
         }
     }
 
