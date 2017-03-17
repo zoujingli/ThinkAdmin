@@ -31,6 +31,7 @@ class Node {
      * @return bool
      */
     public static function applyAuthNode() {
+        cache('need_access_node', null);
         if (($authorize = session('user.authorize'))) {
             $nodes = (array) Db::name('SystemAuthNode')->where('auth', 'in', explode(',', $authorize))->column('node');
             return session('user.nodes', $nodes);
