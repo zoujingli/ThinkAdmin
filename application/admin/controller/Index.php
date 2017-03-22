@@ -19,7 +19,7 @@ use controller\BasicAdmin;
 use library\Data;
 use library\Tools;
 use think\Db;
-use think\response\View;
+use think\View;
 
 /**
  * 后台入口

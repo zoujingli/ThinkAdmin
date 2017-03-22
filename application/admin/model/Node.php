@@ -27,13 +27,12 @@ class Node {
 
     /**
      * 应用用户权限节点
-     * @param type $authid
      * @return bool
      */
     public static function applyAuthNode() {
         cache('need_access_node', null);
         if (($authorize = session('user.authorize'))) {
-            $nodes = (array) Db::name('SystemAuthNode')->where('auth', 'in', explode(',', $authorize))->column('node');
+            $nodes = (array)Db::name('SystemAuthNode')->where('auth', 'in', explode(',', $authorize))->column('node');
             return session('user.nodes', $nodes);
         }
         return false;
@@ -58,7 +57,7 @@ class Node {
 
     /**
      * 检查用户节点权限
-     * @param string $node
+     * @param string $node 节点
      * @return bool
      */
     public static function checkAuthNode($node) {
@@ -69,7 +68,7 @@ class Node {
         if (!in_array($auth_node, self::getAuthNode())) {
             return true;
         }
-        return in_array($auth_node, (array) session('user.nodes'));
+        return in_array($auth_node, (array)session('user.nodes'));
     }
 
     /**
@@ -77,15 +76,16 @@ class Node {
      * @return array
      */
     static public function get() {
-        $data = Db::name('SystemNode')->select();
-        $nodes = [];
         $alias = [];
-        foreach ($data as $vo) {
+        foreach (Db::name('SystemNode')->select() as $vo) {
             $alias["{$vo['node']}"] = $vo;
         }
+        $nodes = [];
         foreach (self::getNodeTree(APP_PATH) as $thr) {
-            if (stripos($thr, 'admin/plugs') === 0 || stripos($thr, 'admin/login') === 0 || stripos($thr, 'admin/index') === 0 || stripos($thr, 'index') === 0 || stripos($thr, 'store/api') === 0) {
-                continue;
+            foreach (['admin/plugs', 'admin/login', 'admin/index', 'store/api', 'index'] as $str) {
+                if (stripos($thr, $str) === 0) {
+                    continue 2;
+                }
             }
             $tmp = explode('/', $thr);
             $one = $tmp[0];
@@ -99,26 +99,22 @@ class Node {
 
     /**
      * 获取节点列表
-     * @param string $path
-     * @param array $nodes
+     * @param string $path 路径
+     * @param array $nodes 额外数据
      * @return array
      */
     static public function getNodeTree($path, $nodes = []) {
-        foreach (self::getFilePaths($path) as $vo) {
-            if (stripos($vo, DS . 'controller' . DS) === false) {
+        foreach (self::_getFilePaths($path) as $vo) {
+            if (!preg_match('|/(\w+)/controller/(\w+)|', str_replace(DS, '/', $vo), $matches) || count($matches) !== 3) {
                 continue;
             }
-            $_tmp = explode(DS, $vo);
-            $controllerName = preg_replace('|\.php$|', '', array_pop($_tmp));
-            array_pop($_tmp);
-            $moduleName = array_pop($_tmp);
-            $className = config('app_namespace') . "\\{$moduleName}\\controller\\{$controllerName}";
+            $className = config('app_namespace') . str_replace('/', '\\', $matches[0]);
             if (!class_exists($className)) {
                 continue;
             }
             foreach (get_class_methods($className) as $actionName) {
                 if ($actionName[0] !== '_') {
-                    $nodes[] = strtolower("{$moduleName}/{$controllerName}/{$actionName}");
+                    $nodes[] = strtolower("{$matches[1]}/{$matches[2]}/{$actionName}");
                 }
             }
         }
@@ -127,19 +123,18 @@ class Node {
 
     /**
      * 获取所有PHP文件
-     * @param string $path
-     * @param array $data
-     * @param string $ext
+     * @param string $path 目录
+     * @param array $data 额外数据
+     * @param string $ext 文件后缀
      * @return array
      */
-    static private function getFilePaths($path, $data = [], $ext = 'php') {
+    static private function _getFilePaths($path, $data = [], $ext = 'php') {
         foreach (scandir($path) as $dir) {
             if ($dir[0] === '.') {
                 continue;
             }
-            $tmp = realpath($path . DS . $dir);
-            if ($tmp && (is_dir($tmp) || pathinfo($tmp, PATHINFO_EXTENSION) === $ext)) {
-                is_dir($tmp) ? $data = array_merge($data, self::getFilePaths($tmp)) : $data[] = $tmp;
+            if (($tmp = realpath($path . DS . $dir)) && (is_dir($tmp) || pathinfo($tmp, PATHINFO_EXTENSION) === $ext)) {
+                is_dir($tmp) ? $data = array_merge($data, self::_getFilePaths($tmp)) : $data[] = $tmp;
             }
         }
         return $data;

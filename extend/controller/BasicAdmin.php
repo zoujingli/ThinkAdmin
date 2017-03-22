@@ -57,15 +57,12 @@ class BasicAdmin extends Controller {
      */
     public function _initialize() {
         # 用户登录状态检查
-        if ($this->checkLogin || $this->checkAuth) {
-            if (!$this->_isLogin()) {
-                $this->redirect('@admin/login');
-            }
+        if (($this->checkLogin || $this->checkAuth) && !$this->_isLogin()) {
+            $this->redirect('@admin/login');
         }
         # 节点访问权限检查
         if ($this->checkLogin && $this->checkAuth) {
-            $node = strtolower($this->request->module() . '/' . $this->request->controller() . '/' . $this->request->action());
-            if (!auth($node)) {
+            if (!auth(join('/', [$this->request->module(), $this->request->controller(), $this->request->action()]))) {
                 $this->error('抱歉，您没有访问该模块的权限！');
             }
         }
@@ -123,7 +120,7 @@ class BasicAdmin extends Controller {
         }
         if ($is_page) {
             $row_page = $this->request->get('rows', cookie('rows'), 'intval');
-            cookie('rows', $row_page >= 10 ? $row_page : 10);
+            cookie('rows', $row_page >= 10 ? $row_page : 20);
             $page = $db->paginate($row_page, $total, ['query' => $this->request->get()]);
             $result['list'] = $page->all();
             $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
@@ -185,7 +182,7 @@ class BasicAdmin extends Controller {
      * @return bool
      */
     protected function _callback($method, &$data) {
-        foreach (array($method, "_" . $this->request->action() . "{$method}") as $method) {
+        foreach ([$method, "_" . $this->request->action() . "{$method}"] as $method) {
             if (method_exists($this, $method) && false === $this->$method($data)) {
                 return false;
             }

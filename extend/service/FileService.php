@@ -123,6 +123,7 @@ class FileService {
                 $auth = new Auth(sysconf('storage_qiniu_access_key'), sysconf('storage_qiniu_secret_key'));
                 return file_get_contents($auth->privateDownloadUrl(self::getBaseUriQiniu() . $filename));
         }
+        Log::error("通过{$storage}读取文件{$filename}的不存在！");
         return null;
     }
 

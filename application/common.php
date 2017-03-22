@@ -85,8 +85,7 @@ function auth($node) {
 function sysconf($name) {
     static $config = [];
     if (empty($config)) {
-        $list = Db::name('SystemConfig')->select();
-        foreach ($list as $vo) {
+        foreach (Db::name('SystemConfig')->select() as $vo) {
             $config[$vo['name']] = $vo['value'];
         }
     }

@@ -15,6 +15,7 @@
 namespace service;
 
 use library\Data;
+use library\QRcode;
 use think\Db;
 use think\Log;
 use Wechat\WechatPay;
@@ -49,6 +50,10 @@ class PayService {
         $prepayid = self::_createPrepayid($pay, null, $order_no, $fee, $title, 'NATIVE', $from);
         if ($prepayid === false) {
             return false;
+        }
+        $filename = join('/', str_split(md5($prepayid), 16)) . '.png';
+        if (!FileService::hasFile($filename)) {
+            FileService::save($filename, QRcode::png($prepayid, $filename, Constants::QR_ECLEVEL_L, 8));
         }
         $filename = ROOT_PATH . "public/upload/{$pay->appid}/payqrc/" . join('/', str_split(md5($prepayid), 16)) . '.png';
         !is_dir(dirname($filename)) && mkdir(dirname($filename), 0755, true);

@@ -39,7 +39,7 @@ class BasicApi {
             exit($this->response('禁止访问接口安全方法！', 'ACCESS_NOT_ALLOWED')->send());
         }
         // 访问 Token 检测处理
-        $this->token = $this->request->request('token', $this->request->header('token', false));
+        $this->token = $this->request->param('token', $this->request->header('token', false));
 //        if ((empty($this->token) || !$this->getCache($this->token)) && ($this->request->action() !== 'auth')) {
         if (empty($this->token) && $this->request->action() !== 'auth') {
             exit($this->response('访问TOKEN失效，请重新授权！', 'ACCESS_TOKEN_FAILD')->send());
@@ -48,10 +48,10 @@ class BasicApi {
 
     /**
      * 输出返回数据
-     * @access protected
-     * @param mixed     $data 要返回的数据
-     * @param String    $type 返回类型 JSON XML
-     * @param integer   $code HTTP状态码
+     * @param string $msg 提示消息内容
+     * @param string $code 业务状态码
+     * @param mixed $data 要返回的数据
+     * @param string $type 返回类型 JSON XML
      * @return Response
      */
     public function response($msg, $code = 'SUCCESS', $data = [], $type = 'json') {
@@ -73,7 +73,7 @@ class BasicApi {
     /**
      * 读取缓存
      * @param string $name 缓存标识
-     * @param mixed  $default 默认值
+     * @param mixed $default 默认值
      * @return mixed
      */
     public function getCache($name, $default = false) {

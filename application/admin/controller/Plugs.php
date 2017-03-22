@@ -40,6 +40,8 @@ class Plugs extends BasicAdmin {
 
     /**
      * 文件上传
+     * @param string $mode
+     * @return \think\response\View
      */
     public function upfile($mode = 'one') {
         $types = $this->request->get('type', 'jpg,png');

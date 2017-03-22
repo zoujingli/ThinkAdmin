@@ -44,7 +44,7 @@ class User extends BasicAdmin {
 
     /**
      * 授权管理
-     * @return type
+     * @return array|string
      */
     public function auth() {
         return $this->_form($this->table, 'auth');
@@ -88,7 +88,7 @@ class User extends BasicAdmin {
 
     /**
      * 表单数据默认处理
-     * @param type $data
+     * @param array $data
      */
     public function _form_filter(&$data) {
         if ($this->request->isPost()) {
