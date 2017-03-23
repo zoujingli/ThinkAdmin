@@ -7,23 +7,24 @@
 // +----------------------------------------------------------------------
 // | 官方网站: http://think.ctolog.com
 // +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
+// | 开源协议 ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
-namespace library;
+namespace service;
 
 use think\Db;
-use think\db\Query;
+
 
 /**
- * 数据工具库类
- *
+ * 基础数据服务
+ * Class DataService
+ * @package service
  * @author Anyon <zoujingli@qq.com>
- * @date 2016/10/21 19:04
+ * @date 2017/03/22 15:32
  */
-class Data {
+class DataService {
 
     /**
      * 删除指定序号
@@ -31,7 +32,7 @@ class Data {
      * @param string $type
      * @return bool
      */
-    static public function deleteSequence($sequence, $type = 'SYSTEM') {
+    public static function deleteSequence($sequence, $type = 'SYSTEM') {
         $data = ['sequence' => $sequence, 'type' => strtoupper($type)];
         return Db::name('SystemSequence')->where($data)->delete();
     }
@@ -42,7 +43,7 @@ class Data {
      * @param string $type 序号顾类型
      * @return string
      */
-    static public function createSequence($length = 10, $type = 'SYSTEM') {
+    public static function createSequence($length = 10, $type = 'SYSTEM') {
         $times = 0;
         while ($times++ < 10) {
             $sequence = '';
@@ -60,13 +61,13 @@ class Data {
 
     /**
      * 数据增量保存
-     * @param Query|string $db 数据查询对象
+     * @param \think\db\Query|string $db 数据查询对象
      * @param array $data 需要保存或更新的数据
      * @param string $upkey 条件主键限制
      * @param array $where 其它的where条件
      * @return bool
      */
-    static public function save($db, $data, $upkey = 'id', $where = []) {
+    public static function save($db, $data, $upkey = 'id', $where = []) {
         if (is_string($db)) {
             $db = Db::name($db);
         }
@@ -83,13 +84,13 @@ class Data {
 
     /**
      * 应用 where 条件
-     * @param Query $db 数据查询对象
+     * @param \think\db\Query|string $db 数据查询对象
      * @param array $data 需要保存或更新的数据
      * @param string $upkey 条件主键限制
      * @param array $where 其它的where条件
-     * @return Query
+     * @return \think\db\Query
      */
-    static protected function _apply_save_where(&$db, $data, $upkey, $where) {
+    protected static function _apply_save_where(&$db, $data, $upkey, $where) {
         foreach (is_string($upkey) ? explode(',', $upkey) : $upkey as $v) {
             if (is_string($v) && array_key_exists($v, $data)) {
                 $db->where($v, $data[$v]);
@@ -102,11 +103,11 @@ class Data {
 
     /**
      * 更新数据表内容
-     * @param Query|string $db
+     * @param \think\db\Query|string $db 数据查询对象
      * @param array $where 额外查询条件
      * @return bool|null
      */
-    static public function update(&$db, $where = []) {
+    public static function update(&$db, $where = []) {
         if (is_string($db)) {
             $db = Db::name($db);
         }

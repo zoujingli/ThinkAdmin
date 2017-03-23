@@ -15,7 +15,7 @@
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
-use library\Data;
+use service\DataService;
 use think\Db;
 
 /**
@@ -79,7 +79,7 @@ class User extends BasicAdmin {
         if ($data['password'] !== $data['repassword']) {
             $this->error('两次输入的密码不一致！');
         }
-        if (Data::save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
+        if (DataService::save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
             $this->success('密码修改成功，下次请使用新密码登录！', '');
         } else {
             $this->error('密码修改失败，请稍候再试！');
@@ -113,7 +113,7 @@ class User extends BasicAdmin {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
             $this->error('系统超级账号禁止删除！');
         }
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("用户删除成功！", '');
         } else {
             $this->error("用户删除失败，请稍候再试！");
@@ -127,7 +127,7 @@ class User extends BasicAdmin {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
             $this->error('系统超级账号禁止操作！');
         }
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("用户禁用成功！", '');
         } else {
             $this->error("用户禁用失败，请稍候再试！");
@@ -138,7 +138,7 @@ class User extends BasicAdmin {
      * 用户禁用
      */
     public function resume() {
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("用户启用成功！", '');
         } else {
             $this->error("用户启用失败，请稍候再试！");

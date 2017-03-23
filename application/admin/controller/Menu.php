@@ -16,8 +16,8 @@ namespace app\admin\controller;
 
 use app\admin\model\Node;
 use controller\BasicAdmin;
-use library\Data;
-use library\Tools;
+use service\DataService;
+use service\ToolsService;
 use think\Db;
 
 /**
@@ -51,9 +51,9 @@ class Menu extends BasicAdmin {
     protected function _index_data_filter(&$data) {
         foreach ($data as &$vo) {
             ($vo['url'] !== '#') && ($vo['url'] = url($vo['url']));
-            $vo['ids'] = join(',', Tools::getArrSubIds($data, $vo['id']));
+            $vo['ids'] = join(',', ToolsService::getArrSubIds($data, $vo['id']));
         }
-        $data = Tools::arr2table($data);
+        $data = ToolsService::arr2table($data);
     }
 
     /**
@@ -82,7 +82,7 @@ class Menu extends BasicAdmin {
             // 上级菜单处理
             $_menus = Db::name($this->table)->where('status', '1')->order('sort desc,id desc')->select();
             $_menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
-            $menus = Tools::arr2table($_menus);
+            $menus = ToolsService::arr2table($_menus);
             foreach ($menus as $key => &$menu) {
                 if (substr_count($menu['path'], '-') > 3) {
                     unset($menus[$key]);
@@ -112,7 +112,7 @@ class Menu extends BasicAdmin {
      */
     public function del() {
         $this->error('别再删我菜单了...');
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("菜单删除成功！", '');
         } else {
             $this->error("菜单删除失败，请稍候再试！");
@@ -124,7 +124,7 @@ class Menu extends BasicAdmin {
      */
     public function forbid() {
         $this->error('请不要禁用菜单...');
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("菜单禁用成功！", '');
         } else {
             $this->error("菜单禁用失败，请稍候再试！");
@@ -135,7 +135,7 @@ class Menu extends BasicAdmin {
      * 菜单禁用
      */
     public function resume() {
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("菜单启用成功！", '');
         } else {
             $this->error("菜单启用失败，请稍候再试！");

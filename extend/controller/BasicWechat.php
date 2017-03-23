@@ -14,7 +14,6 @@
 
 namespace controller;
 
-use service\FansService;
 use think\Controller;
 
 class BasicWechat extends Controller {

@@ -16,8 +16,8 @@ namespace app\admin\controller;
 
 use app\admin\model\Node;
 use controller\BasicAdmin;
-use library\Data;
-use library\Tools;
+use service\DataService;
+use service\ToolsService;
 use think\Db;
 use think\View;
 
@@ -37,7 +37,7 @@ class Index extends BasicAdmin {
     public function index() {
         Node::applyAuthNode();
         $list = Db::name('SystemMenu')->field('title,id,pid,url,icon')->order('sort asc,id asc')->where('status', '1')->select();
-        $menus = $this->_filter_menu(Tools::arr2tree($list));
+        $menus = $this->_filter_menu(ToolsService::arr2tree($list));
         $this->assign('title', '后台管理');
         $this->assign('menus', $menus);
         return view();
@@ -109,7 +109,7 @@ class Index extends BasicAdmin {
             if (md5($data['oldpassword']) !== $user['password']) {
                 $this->error('旧密码验证失败，请重新输入！');
             }
-            if (Data::save('SystemUser', ['id' => session('user.id'), 'password' => md5($data['password'])])) {
+            if (DataService::save('SystemUser', ['id' => session('user.id'), 'password' => md5($data['password'])])) {
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {
                 $this->error('密码修改失败，请稍候再试！');

@@ -16,8 +16,8 @@ namespace app\admin\controller;
 
 use app\admin\model\Node as NodeModel;
 use controller\BasicAdmin;
-use library\Data;
-use library\Tools;
+use service\DataService;
+use service\ToolsService;
 
 /**
  * 系统功能节点管理
@@ -45,7 +45,7 @@ class Node extends BasicAdmin {
         ];
         $this->assign('alert', $alert);
         $this->assign('title', '系统节点管理');
-        $this->assign('nodes', Tools::arr2table(NodeModel::get(), 'node', 'pnode'));
+        $this->assign('nodes', ToolsService::arr2table(NodeModel::get(), 'node', 'pnode'));
         return view();
     }
 
@@ -59,7 +59,7 @@ class Node extends BasicAdmin {
                 $nameattr = explode('.', $post['name']);
                 $field = array_shift($nameattr);
                 $data = ['node' => join(',', $nameattr), $field => $post['value']];
-                Data::save($this->table, $data, 'node');
+                DataService::save($this->table, $data, 'node');
                 $this->success('参数保存成功！', '');
             }
         } else {

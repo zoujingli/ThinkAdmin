@@ -16,8 +16,8 @@ namespace app\admin\controller;
 
 use app\admin\model\Node;
 use controller\BasicAdmin;
-use library\Data;
-use library\Tools;
+use service\DataService;
+use service\ToolsService;
 use think\Db;
 
 /**
@@ -59,7 +59,7 @@ class Auth extends BasicAdmin {
                         unset($nodes[$key]);
                     }
                 }
-                $this->success('获取节点成功！', '', $this->_filterNodes($this->_filterNodes(Tools::arr2tree($nodes, 'node', 'pnode', '_sub_'))));
+                $this->success('获取节点成功！', '', $this->_filterNodes($this->_filterNodes(ToolsService::arr2tree($nodes, 'node', 'pnode', '_sub_'))));
                 break;
             case 'save':
                 $data = [];
@@ -106,7 +106,7 @@ class Auth extends BasicAdmin {
      * 权限禁用
      */
     public function forbid() {
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("权限禁用成功！", '');
         } else {
             $this->error("权限禁用失败，请稍候再试！");
@@ -117,7 +117,7 @@ class Auth extends BasicAdmin {
      * 权限恢复
      */
     public function resume() {
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("权限启用成功！", '');
         } else {
             $this->error("权限启用失败，请稍候再试！");
@@ -128,7 +128,7 @@ class Auth extends BasicAdmin {
      * 权限删除
      */
     public function del() {
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("权限删除成功！", '');
         } else {
             $this->error("权限删除失败，请稍候再试！");

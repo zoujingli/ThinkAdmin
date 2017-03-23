@@ -155,9 +155,10 @@ class FileService {
             !is_dir(dirname($filepath)) && mkdir(dirname($filepath), '0755', true);
             if (file_put_contents($filepath, $bodycontent)) {
                 return [
+                    'file' => $filepath,
                     'hash' => md5_file($filepath),
                     'key'  => "upload/{$filename}",
-                    'url'  => pathinfo(request()->baseFile(true), PATHINFO_DIRNAME) . '/upload/' . $filename
+                    'url'  => pathinfo(request()->baseFile(true), PATHINFO_DIRNAME) . '/upload/' . $filename,
                 ];
             }
         } catch (Exception $err) {
@@ -181,6 +182,7 @@ class FileService {
             Log::error('七牛云文件上传失败, ' . var_export($err, true));
             return null;
         }
+        $result['file'] = $filename;
         $result['url'] = self::getBaseUriQiniu() . $filename;
         return $result;
     }

@@ -2,7 +2,7 @@
 
 namespace controller;
 
-use library\Tools;
+use service\ToolsService;
 use think\Cache;
 use think\Request;
 use think\Response;
@@ -31,7 +31,7 @@ class BasicApi {
      */
     public function __construct(Request $request = null) {
         // CORS 跨域 Options 检测响应
-        Tools::corsOptionsHandler();
+        ToolsService::corsOptionsHandler();
         // 获取当前 Request 对象
         $this->request = is_null($request) ? Request::instance() : $request;
         // 安全方法请求过滤
