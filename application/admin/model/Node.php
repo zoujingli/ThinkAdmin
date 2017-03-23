@@ -32,7 +32,11 @@ class Node {
     public static function applyAuthNode() {
         cache('need_access_node', null);
         if (($authorize = session('user.authorize'))) {
-            $nodes = (array)Db::name('SystemAuthNode')->where('auth', 'in', explode(',', $authorize))->column('node');
+            $authorizeids = Db::name('SystemAuth')->where('status', '1')->where('id', 'in', explode(',', $authorize))->column('id');
+            if (empty($authorizeids)) {
+                return session('user.nodes', []);
+            }
+            $nodes = Db::name('SystemAuthNode')->where('auth', 'in', explode(',', $authorizeids))->column('node');
             return session('user.nodes', $nodes);
         }
         return false;
