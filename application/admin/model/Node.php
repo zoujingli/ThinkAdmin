@@ -14,6 +14,7 @@
 
 namespace app\admin\model;
 
+use think\Config;
 use think\Db;
 
 /**
@@ -36,7 +37,7 @@ class Node {
             if (empty($authorizeids)) {
                 return session('user.nodes', []);
             }
-            $nodes = Db::name('SystemAuthNode')->where('auth', 'in', explode(',', $authorizeids))->column('node');
+            $nodes = Db::name('SystemAuthNode')->where('auth', 'in', $authorizeids)->column('node');
             return session('user.nodes', $nodes);
         }
         return false;
