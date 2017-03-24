@@ -22,8 +22,9 @@ use think\Config;
 use think\Log;
 
 /**
- * 文件服务处理
- * @class FileService
+ * 系统文件服务
+ * Class FileService
+ * @package service
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/15 15:17
  */

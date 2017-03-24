@@ -16,7 +16,6 @@ namespace service;
 
 use think\Config;
 
-
 /**
  * HTTP请求服务
  * Class HttpService

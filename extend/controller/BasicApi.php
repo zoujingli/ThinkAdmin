@@ -6,6 +6,7 @@ use service\ToolsService;
 use think\Cache;
 use think\Request;
 use think\Response;
+use Wechat\Lib\Tools;
 
 /**
  * 数据接口通用控制器
@@ -38,10 +39,10 @@ class BasicApi {
         if (in_array(strtolower($this->request->action()), ['response', 'setcache', 'getcache', 'delcache', '_empty'])) {
             exit($this->response('禁止访问接口安全方法！', 'ACCESS_NOT_ALLOWED')->send());
         }
+
         // 访问 Token 检测处理
         $this->token = $this->request->param('token', $this->request->header('token', false));
-//        if ((empty($this->token) || !$this->getCache($this->token)) && ($this->request->action() !== 'auth')) {
-        if (empty($this->token) && $this->request->action() !== 'auth') {
+        if (empty($this->token) && !method_exists($this, $this->request->action())) {
             exit($this->response('访问TOKEN失效，请重新授权！', 'ACCESS_TOKEN_FAILD')->send());
         }
     }
@@ -55,8 +56,8 @@ class BasicApi {
      * @return Response
      */
     public function response($msg, $code = 'SUCCESS', $data = [], $type = 'json') {
-        $result = ['code' => $code, 'msg' => $msg, 'data' => $data, 'token' => $this->token, 'dataType' => strtolower($type)];
-        return Response::create($result, $type)->code(200);
+        $result = ['msg' => $msg, 'code' => $code, 'data' => $data, 'token' => $this->token, 'dataType' => strtolower($type)];
+        return Response::create($result, $type)->header(ToolsService::corsRequestHander())->code(200);
     }
 
     /**

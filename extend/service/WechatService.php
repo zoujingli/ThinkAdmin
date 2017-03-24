@@ -17,7 +17,6 @@ namespace service;
 use think\Db;
 use think\Log;
 
-
 /**
  * 微信数据服务
  * Class WechatService

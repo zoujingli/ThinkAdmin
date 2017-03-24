@@ -16,7 +16,8 @@ namespace service;
 
 /**
  * 系统工具服务
- *
+ * Class ToolsService
+ * @package service
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/10/25 14:49
  */
@@ -37,6 +38,20 @@ class ToolsService {
             header('HTTP/1.0 204 No Content');
             exit;
         }
+    }
+
+    /**
+     * Cors Request Header信息
+     * @return array
+     */
+    public static function corsRequestHander() {
+        return [
+            'Access-Control-Allow-Origin'      => '*',
+            'Access-Control-Allow-Credentials' => true,
+            'Access-Control-Allow-Methods'     => 'GET,POST,OPTIONS',
+            'X-Support'                        => 'service@cuci.cc',
+            'X-Servers'                        => 'Guangzhou Cuci Technology Co. Ltd',
+        ];
     }
 
     /**

@@ -19,9 +19,11 @@ use think\Db;
 use think\Log;
 use Wechat\WechatPay;
 
+
 /**
- * 支付数据处理
- *
+ * 支付数据服务
+ * Class PayService
+ * @package service
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/10/25 14:49
  */
@@ -32,8 +34,9 @@ class PayService {
      * @param string $order_no
      * @return bool
      */
-    static public function isPay($order_no) {
-        return Db::name('WechatPayPrepayid')->where('order_no', $order_no)->where('is_pay', '1')->count() > 0;
+    public static function isPay($order_no) {
+        $map = ['order_no' => $order_no, 'is_pay' => '1'];
+        return Db::name('WechatPayPrepayid')->where($map)->count() > 0;
     }
 
     /**
@@ -45,7 +48,7 @@ class PayService {
      * @param string $from 订单来源
      * @return bool
      */
-    public static function createWechatPayQrc($pay, $order_no, $fee, $title, $from = 'wechat') {
+    public static function createWechatPayQrc(WechatPay $pay, $order_no, $fee, $title, $from = 'wechat') {
         $prepayid = self::_createWechatPrepayid($pay, null, $order_no, $fee, $title, 'NATIVE', $from);
         if ($prepayid === false) {
             return false;
@@ -58,7 +61,7 @@ class PayService {
         }
         ob_clean();
         header("Content-type: image/png");
-        FileService::readFile($filename);
+        return FileService::readFile($filename);
     }
 
 
@@ -71,7 +74,7 @@ class PayService {
      * @param string $title 订单标题
      * @return bool|array
      */
-    public static function createWechatPayJsPicker($pay, $openid, $order_no, $fee, $title) {
+    public static function createWechatPayJsPicker(WechatPay $pay, $openid, $order_no, $fee, $title) {
         if (($prepayid = self::_createWechatPrepayid($pay, $openid, $order_no, $fee, $title, 'JSAPI')) === false) {
             return false;
         }
@@ -86,7 +89,7 @@ class PayService {
      * @param string|null $refund_no 退款订单号
      * @return bool
      */
-    public static function putWechatRefund($pay, $order_no, $fee = 0, $refund_no = NULL, $refund_account = '') {
+    public static function putWechatRefund(WechatPay $pay, $order_no, $fee = 0, $refund_no = NULL, $refund_account = '') {
         $map = array('order_no' => $order_no, 'is_pay' => '1', 'appid' => $pay->appid);
         $notify = Db::name('WechatPayPrepayid')->where($map)->find();
         if (empty($notify)) {
@@ -116,7 +119,7 @@ class PayService {
      * @param string $from 订单来源
      * @return bool|string
      */
-    protected static function _createWechatPrepayid($pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'shop') {
+    protected static function _createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'shop') {
         $map = ['order_no' => $order_no, 'is_pay' => '1', 'expires_in' => time(), 'appid' => $pay->appid];
         $where = 'appid=:appid and order_no=:order_no and (is_pay=:is_pay or expires_in>:expires_in)';
         $prepayinfo = Db::name('WechatPayPrepayid')->where($where, $map)->find();

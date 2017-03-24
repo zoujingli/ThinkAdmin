@@ -16,7 +16,6 @@ namespace service;
 
 use think\Db;
 
-
 /**
  * 基础数据服务
  * Class DataService
