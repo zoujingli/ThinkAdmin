@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50629
 File Encoding         : 65001
 
-Date: 2017-03-24 17:58:33
+Date: 2017-03-24 18:05:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -532,27 +532,27 @@ INSERT INTO `system_config` VALUES ('140', 'sms_smtp_password', '2d696a53cd0dab1
 INSERT INTO `system_config` VALUES ('141', 'sms_product', 'SMS_10795763');
 INSERT INTO `system_config` VALUES ('142', 'sms_tpl_register', '');
 INSERT INTO `system_config` VALUES ('144', 'site_tongji_baidu', 'f9a6d4c4393e28fa0b3f8a7d89c1c6da');
-INSERT INTO `system_config` VALUES ('145', 'site_tongji_cnzz', 'gsdagdsa');
+INSERT INTO `system_config` VALUES ('145', 'site_tongji_cnzz', 'f9a6d4c4393e28fa0b3f8a7d89c1c6da');
 INSERT INTO `system_config` VALUES ('148', 'file_storage', 'qiniu');
 INSERT INTO `system_config` VALUES ('149', 'site_copy', '广州楚才信息科技有限公司 © 2017');
-INSERT INTO `system_config` VALUES ('150', 'site_beian', '11114');
-INSERT INTO `system_config` VALUES ('151', 'site_keys', '2werewrewr');
+INSERT INTO `system_config` VALUES ('150', 'site_beian', '');
+INSERT INTO `system_config` VALUES ('151', 'site_keys', '');
 INSERT INTO `system_config` VALUES ('158', 'mail_from_name', '测试1');
 INSERT INTO `system_config` VALUES ('159', 'mail_reply', 'sdsss');
 INSERT INTO `system_config` VALUES ('160', 'mail_smtp_host', 'smtp.qq.com');
 INSERT INTO `system_config` VALUES ('161', 'mail_smtp_port', '3430000');
 INSERT INTO `system_config` VALUES ('162', 'mail_smtp_username', 'admin');
 INSERT INTO `system_config` VALUES ('163', 'mail_smtp_password', 'admin');
-INSERT INTO `system_config` VALUES ('164', 'storage_type', 'qiniu');
+INSERT INTO `system_config` VALUES ('164', 'storage_type', 'local');
 INSERT INTO `system_config` VALUES ('165', 'storage_qiniu_is_https', '0');
 INSERT INTO `system_config` VALUES ('166', 'storage_qiniu_bucket', 'static');
 INSERT INTO `system_config` VALUES ('167', 'storage_qiniu_domain', 'static.cdn.cuci.com');
 INSERT INTO `system_config` VALUES ('168', 'storage_qiniu_access_key', 'admin');
 INSERT INTO `system_config` VALUES ('169', 'storage_qiniu_secret_key', 'admin');
-INSERT INTO `system_config` VALUES ('170', 'site_name', '测试1');
-INSERT INTO `system_config` VALUES ('171', 'site_domain', 'thi11111wewewedd');
-INSERT INTO `system_config` VALUES ('172', 'site_desc', 'sad');
-INSERT INTO `system_config` VALUES ('173', 'app_name', 'Think.Admi1');
+INSERT INTO `system_config` VALUES ('170', 'site_name', 'Think.Admin Demo');
+INSERT INTO `system_config` VALUES ('171', 'site_domain', 'think.ctolog.com');
+INSERT INTO `system_config` VALUES ('172', 'site_desc', '');
+INSERT INTO `system_config` VALUES ('173', 'app_name', 'Think.Admin');
 INSERT INTO `system_config` VALUES ('174', 'app_version', '1.00 dev');
 INSERT INTO `system_config` VALUES ('175', 'site_logo', 'https://think.ctolog.com/upload/f47b8fe06e38ae99/08e8398da45583b9.png');
 INSERT INTO `system_config` VALUES ('176', 'app_logo', 'http://5000.gr83c9c9.zoujingli.ali-sh.goodrain.net:10080/upload/f47b8fe06e38ae99/08e8398da45583b9.png');
@@ -772,11 +772,13 @@ CREATE TABLE `system_log` (
   `content` text NOT NULL COMMENT '操作内容描述',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
 
 -- ----------------------------
 -- Records of system_log
 -- ----------------------------
+INSERT INTO `system_log` VALUES ('1', '116.22.209.50', 'admin/login/out', 'admin', '退出系统', '用户退出系统成功!', '2017-03-24 18:04:30');
+INSERT INTO `system_log` VALUES ('2', '116.22.209.50', 'admin/login/index', 'admin', '登录系统', '用户登录系统成功!', '2017-03-24 18:04:38');
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -956,7 +958,7 @@ CREATE TABLE `system_user` (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'zoujingli@cuci.ccc', '13617343801', '444444', '3666', '2017-03-24 17:54:34', '1', '98,102,103,104', '0', null, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'zoujingli@cuci.ccc', '13617343801', '444444', '3668', '2017-03-24 18:04:38', '1', '98,102,103,104', '0', null, '2015-11-13 15:14:22');
 INSERT INTO `system_user` VALUES ('10010', 'test', '', null, '', '13687227657', '', '0', null, '1', '71,72', '1', null, '2017-03-15 14:57:22');
 INSERT INTO `system_user` VALUES ('10011', 'test1', '', null, '', '', '', '0', null, '1', null, '1', null, '2017-03-15 22:42:38');
 INSERT INTO `system_user` VALUES ('10012', '你好', '', null, 'eqomnc@q.com', '13738152615', '', '0', null, '1', '72', '1', null, '2017-03-16 10:19:34');
