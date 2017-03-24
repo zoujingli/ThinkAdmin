@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7c9685d29208f32193dc293722b2f2e7",
-    "content-hash": "80db93fe5e6971dc5fd7643c71527810",
+    "hash": "22456adca8b8612f6dd35e7bac091d31",
+    "content-hash": "37d78544d8fdef59fac0a30784e660a4",
     "packages": [
         {
             "name": "pclzip/pclzip",
@@ -337,6 +337,40 @@
             ],
             "description": "The ThinkPHP5 Queue Package",
             "time": "2017-02-28 08:07:37"
+        },
+        {
+            "name": "zoujingli/ip2region",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zoujingli/ip2region.git",
+                "reference": "2efe42321acb83d01d1de5bfde69142ad81bff9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/zoujingli/ip2region/2efe42321acb83d01d1de5bfde69142ad81bff9b.zip",
+                "reference": "2efe42321acb83d01d1de5bfde69142ad81bff9b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "Ip2Region.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache 2.0"
+            ],
+            "description": "Ip2Region",
+            "homepage": "https://github.com/zoujingli/Ip2Region",
+            "keywords": [
+                "Ip2Region"
+            ],
+            "time": "2017-03-22 10:03:27"
         },
         {
             "name": "zoujingli/wechat-php-sdk",
