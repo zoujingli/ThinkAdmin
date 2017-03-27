@@ -14,6 +14,7 @@
 
 namespace controller;
 
+use service\WechatService;
 use think\Controller;
 
 class BasicWechat extends Controller {
@@ -91,7 +92,7 @@ class BasicWechat extends Controller {
             exit('网页授权失败，请稍候再试！');
         }
         session('openid', $this->openid = $result['openid']);
-        $this->fansinfo = FansService::get($this->openid);
+        $this->fansinfo = WechatService::getFansInfo($this->openid);
         # 微信粉丝信息处理
         if (empty($this->fansinfo['expires_in']) || $this->fansinfo['expires_in'] < time()) {
             switch ($result['scope']) {
@@ -112,8 +113,8 @@ class BasicWechat extends Controller {
             $user['expires_in'] = $result['expires_in'] + time() - 100;
             $user['refresh_token'] = $result['refresh_token'];
             $user['access_token'] = $result['access_token'];
-            !FansService::set($user) && exit('微信授权失败 [ save userinfo faild ]');
-            $this->fansinfo = FansService::get($this->openid);
+            !WechatService::setFansInfo($user, $wechat->appid) && exit('微信授权失败 [ save userinfo faild ]');
+            $this->fansinfo = WechatService::getFansInfo($this->openid);
         }
         empty($this->fansinfo) && exit('获取微信用户信息失败！');
         !!$redirect_url && exit(redirect($redirect_url)->send());

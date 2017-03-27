@@ -139,7 +139,7 @@ class Tools {
      * @param array|string $postdata
      * @return bool|mixed
      */
-    static public function httpPost($url, $postdata) {
+    static public function httpPost($url, $data) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -147,14 +147,15 @@ class Tools {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_POST, TRUE);
-        if (is_array($postdata)) {
-            foreach ($postdata as &$value) {
+        if (is_array($data)) {
+            foreach ($data as &$value) {
                 if (is_string($value) && stripos($value, '@') === 0 && class_exists('CURLFile', FALSE)) {
                     $value = new CURLFile(realpath(trim($value, '@')));
                 }
             }
+            $data = http_build_query($data);
         }
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $data = curl_exec($ch);
         curl_close($ch);
         if ($data) {

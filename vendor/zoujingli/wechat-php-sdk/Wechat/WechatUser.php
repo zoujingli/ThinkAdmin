@@ -18,7 +18,7 @@ class WechatUser extends Common {
     /* 获取粉丝信息 */
     const USER_INFO_URL = '/user/info?';
     /* 批量获取粉丝信息 */
-    const USER_BATCH_INFO_URL = '/user/info/batchget';
+    const USER_BATCH_INFO_URL = '/user/info/batchget?';
     /* 更新粉丝标注 */
     const USER_UPDATEREMARK_URL = '/user/info/updateremark?';
 
@@ -112,15 +112,15 @@ class WechatUser extends Common {
      * @param string $lang 指定返回语言
      * @return bool|mixed
      */
-    public function getUserBatchInfo(array $openids, $lang = 'zh-CN') {
+    public function getUserBatchInfo(array $openids, $lang = 'zh_CN') {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = array();
-        foreach ($openids as $openid) {
-            $data[] = array('openid' => $openid, 'lang' => $lang);
+        $data = array('user_list' => array());
+        foreach (array_unique($openids) as $openid) {
+            $data['user_list'][] = array('openid' => $openid, 'lang' => $lang);
         }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::USER_BATCH_INFO_URL . "access_token={$this->access_token}", $data);
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::USER_BATCH_INFO_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (isset($json['errcode']) && !isset($json['user_info_list'])) {

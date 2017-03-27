@@ -158,11 +158,11 @@ class WechatService {
             return false;
         }
         foreach (array_chunk($result['data']['openid'], 100) as $openids) {
-            if (false === ($info = $wechat->getUserBatchInfo($openids)) || !isset($info['user_info_list'])) {
+            if (false === ($info = $wechat->getUserBatchInfo($openids)) || !is_array($info)) {
                 Log::error("获取用户信息失败，$wechat->errMsg");
                 return false;
             }
-            foreach ($info['user_info_list'] as $userInfo) {
+            foreach ($info as $userInfo) {
                 if (false === self::setFansInfo($userInfo, $wechat->appid)) {
                     Log::error('更新粉丝信息更新失败！');
                     return false;
