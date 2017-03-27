@@ -14,7 +14,7 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\Node;
+use app\admin\model\Node as NodeModal;
 use controller\BasicAdmin;
 use service\DataService;
 use service\ToolsService;
@@ -51,7 +51,7 @@ class Auth extends BasicAdmin {
         $auth_id = $this->request->get('id', '0');
         switch (strtolower($this->request->get('action', '0'))) {
             case 'getnode':
-                $nodes = Node::get();
+                $nodes = NodeModal::get();
                 $checked = Db::name('SystemAuthNode')->where('auth', $auth_id)->column('node');
                 foreach ($nodes as $key => &$node) {
                     $node['checked'] = in_array($node['node'], $checked);
