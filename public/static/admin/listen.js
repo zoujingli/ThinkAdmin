@@ -30,6 +30,16 @@ define(['jquery', 'admin.plugs'], function () {
         return _goLoad.call(this);
     });
 
+    /*! 注册 data-serach 表单搜索行为 */
+    this.$body.on('submit', 'form[data-serach]', function () {
+        var split = this.action.indexOf('?') === -1 ? '?' : '&';
+        if ((this.method || 'get').toLowerCase() === 'get') {
+            window.location.href = '#' + parseUri(this.action + split + $(this).serialize());
+        } else {
+            $.form.load(this.action, this, 'post');
+        }
+    });
+
     /*! 注册 data-modal 事件行为 */
     this.$body.on('click', '[data-modal]', function () {
         return $.form.modal($(this).attr('data-modal'), 'open_type=modal', $(this).attr('data-title') || '编辑');
@@ -57,11 +67,11 @@ define(['jquery', 'admin.plugs'], function () {
     /*! 注册 data-update 事件行为 */
     this.$body.on('click', '[data-update]', function () {
         var id = $(this).attr('data-update') || (function () {
-            var data = [];
-            return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
-                (this.checked) && data.push(this.value);
-            }), data.join(',');
-        }).call(this);
+                var data = [];
+                return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
+                    (this.checked) && data.push(this.value);
+                }), data.join(',');
+            }).call(this);
         if (id.length < 1) {
             return $.msg.tips('请选择需要操作的数据！');
         }
