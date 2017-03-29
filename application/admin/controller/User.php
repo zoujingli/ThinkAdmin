@@ -37,12 +37,20 @@ class User extends BasicAdmin {
      * 用户列表
      */
     public function index() {
+        // 设置页面标题
         $this->title = '系统用户管理';
+        // 获取到所有GET参数
+        $get = $this->request->get();
+        // 实例Query对象
         $db = Db::name($this->table)->where('is_deleted', '0');
-
-        if ($this->request->get('username')) {
-            $db->where('username', 'like', '%' . $this->request->get('username') . '%');
+        // 应用搜索条件
+        if (isset($get['username']) && $get['username'] !== '') {
+            $db->where('username', 'like', "%{$get['username']}%");
         }
+        if (isset($get['phone'] && $get['phone'] !== '')) {
+            $db->where('phone', 'like', "%{$get['phone']}%");
+        }
+        // 实例化并显示
         parent::_list($db);
     }
 

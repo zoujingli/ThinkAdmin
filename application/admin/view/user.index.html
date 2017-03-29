@@ -24,6 +24,13 @@
             </div>
         </div>
 
+        <div class="col-xs-3">
+            <div class="form-group">
+                <input type="text" name="phone" value="{$Think.get.phone|default=''}" placeholder="手机号"
+                       class="input-sm form-control">
+            </div>
+        </div>
+
         <div class="col-xs-1">
             <div class="form-group">
                 <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i> 搜索</button>
@@ -31,7 +38,6 @@
         </div>
     </div>
 </form>
-
 <!-- 表单搜索 结束 -->
 
 <form onsubmit="return false;" data-auto="" method="POST">
