@@ -39,6 +39,10 @@ class User extends BasicAdmin {
     public function index() {
         $this->title = '系统用户管理';
         $db = Db::name($this->table)->where('is_deleted', '0');
+
+        if ($this->request->get('username')) {
+            $db->where('username', 'like', '%' . $this->request->get('username') . '%');
+        }
         parent::_list($db);
     }
 
