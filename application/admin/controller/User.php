@@ -47,7 +47,7 @@ class User extends BasicAdmin {
         if (isset($get['username']) && $get['username'] !== '') {
             $db->where('username', 'like', "%{$get['username']}%");
         }
-        if (isset($get['phone'] && $get['phone'] !== '')) {
+        if (isset($get['phone']) && $get['phone'] !== '') {
             $db->where('phone', 'like', "%{$get['phone']}%");
         }
         // 实例化并显示
