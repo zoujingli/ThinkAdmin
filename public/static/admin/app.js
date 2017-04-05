@@ -75,10 +75,6 @@ require(['pace', 'jquery', 'layui', 'laydate', 'bootstrap', 'template', 'ueditor
     layui.use(['layer', 'form', 'element'], function () {
         window.layer = layui.layer;
         window.form = layui.form();
-        require(['admin.listen'], function () {
-            $('[data-loaded]').map(function () {
-                $(this).html($(this).attr('data-loaded')).removeClass('layui-disabled');
-            });
-        });
+        require(['admin.listen']);
     });
 });

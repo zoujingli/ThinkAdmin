@@ -167,8 +167,8 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
     msg.prototype.loading = function (msg, callback) {
         this.close();
         return this.index = msg
-                ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: callback})
-                : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: callback});
+            ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: callback})
+            : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: callback});
     };
 
     /**
@@ -756,6 +756,7 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
      * 自动监听规则内表单
      */
     $.validate.listen = function () {
+
         $('form[data-auto]').map(function () {
             if ($(this).attr('data-listen') === 'true') {
                 return;
@@ -763,11 +764,15 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
             var callback = $(this).attr('data-callback');
             $(this).attr('data-listen', "true").validate(function (data) {
                 $.form.load(this.getAttribute('action') || window.location.href, data,
-                        this.getAttribute('method') || 'POST',
-                        window[callback || '_default_callback'] || undefined, true,
-                        this.getAttribute('data-tips') || undefined,
-                        this.getAttribute('data-time') || undefined);
+                    this.getAttribute('method') || 'POST',
+                    window[callback || '_default_callback'] || undefined, true,
+                    this.getAttribute('data-tips') || undefined,
+                    this.getAttribute('data-time') || undefined);
             });
+        });
+        $('[data-form-loaded]').map(function () {
+            $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
+            $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
         });
     };
 
