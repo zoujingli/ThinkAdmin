@@ -15,17 +15,21 @@
 namespace app\index\controller;
 
 use think\Controller;
-use think\Db;
 
+/**
+ * 网站入口控制器
+ * Class Index
+ * @package app\index\controller
+ * @author Anyon <zoujingli@qq.com>
+ * @date 2017/04/05 10:38
+ */
 class Index extends Controller {
 
+    /**
+     * 网站入口
+     */
     public function index() {
         $this->redirect('@admin');
-        $version = Db::query('select version() as ver');
-        $version = array_pop($version);
-        $this->assign('mysql_ver', $version['ver']);
-        return view();
     }
-
 
 }
