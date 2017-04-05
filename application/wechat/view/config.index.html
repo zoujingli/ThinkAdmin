@@ -1,75 +1,71 @@
 {extend name="extra@admin/content"}
 
 {block name="content"}
-<div class="row">
-    <div class="col-lg-12">
-        <form class="layui-form layui-box" data-auto="" method="post">
-            <fieldset class="layui-elem-field">
-                <legend>微信对接参数</legend>
-                <div class="layui-field-box" style="padding-right:35px">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label"></label>
-                        <div class="layui-input-inline well" style="width:70%">
-                            <div class="input-group">
-                                <input type="text" readonly
-                                       onmouseenter="this.focus(),this.select()"
-                                       onmouseover="console.log([this])"
-                                       value="{:url('@wechat/api','',true,true)}"
-                                       class="layui-input">
-                                <a class="input-group-addon" data-tips-text="复制" data-copy="">
-                                    <i class="fa fa-copy"></i>
-                                </a>
-                            </div>
-                            <p class="help-block" style='margin-bottom:10px'>
-                                注意：接口链接的域名必需要备案，分别支持80端口和443端口，建议使用80端口。
-                            </p>
-                        </div>
-                    </div>
+<form onsubmit="return false;" action="{:request()->url(true)}" data-auto="true" method="post" class='form-horizontal'
+      style='padding-top:20px'>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">APPID</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="wechat_appid" required="required" title="请输入公众号APPID"
-                                   placeholder="公众号APPID（必填）" value="{:sysconf('wechat_appid')}" class="layui-input">
-                        </div>
-                    </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">AppSecret</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="wechat_appsecret" required="required" title="请输入公众号AppSecret"
-                                   placeholder="公众号AppSecret（必填）" value="{:sysconf('wechat_appsecret')}"
-                                   class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">Token</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="wechat_token" required="required" title="请输入TOKEN"
-                                   placeholder="接口认证TOKEN（必填）" value="{:sysconf('wechat_token')}" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">AesKey</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="wechat_encodingaeskey"
-                                   title='请输入43位消息加密密钥' pattern="^.{43}$" maxlength='43'
-                                   placeholder="消息加密密钥，若开启了消息加密时必需填写（可选）"
-                                   value="{:sysconf('wechat_encodingaeskey')}" class="layui-input">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hr-line-dashed"></div>
-
-                <div class="layui-form-item text-center">
-                    <button class="layui-btn" type="submit">立即提交</button>
-                </div>
-            </fieldset>
-        </form>
+    <div class="form-group">
+        <label class="col-sm-2 col-xs-3 control-label">URL(服务器地址)</label>
+        <div class="col-sm-8">
+            <input readonly onmouseenter="this.select()" value="{:url('@wechat/api','',true,true)}" class="layui-input">
+            <p class="help-block">
+                注意：接口链接的域名必需要备案，目前微信官方只支持80端口和443端口。
+            </p>
+        </div>
     </div>
-</div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">AppID(应用ID)</label>
+        <div class='col-sm-8'>
+            <input type="text" name="wechat_appid" required="required" title="请输入公众号APPID"
+                   placeholder="公众号APPID（必填）" value="{:sysconf('wechat_appid')}" class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 col-xs-3 control-label">AppSecret(应用密钥)</label>
+        <div class='col-sm-8'>
+            <input type="text" name="wechat_appsecret" required="required" title="请输入公众号AppSecret"
+                   placeholder="公众号AppSecret（必填）" value="{:sysconf('wechat_appsecret')}"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 col-xs-3 control-label">Token(令牌)</label>
+        <div class='col-sm-8'>
+            <input type="text" name="wechat_token" required="required" title="请输入接口Token(令牌)"
+                   placeholder="公众号AppSecret（必填）" value="{:sysconf('wechat_token')}"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 col-xs-3  control-label">EncodingAESKey</label>
+        <div class='col-sm-8'>
+            <input type="text" name="wechat_encodingaeskey" required="required" title="请输入43位消息加密密钥"
+                   placeholder="消息加密密钥，若开启了消息加密时必需填写（可选）" value="{:sysconf('wechat_encodingaeskey')}"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-9">
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">立即提交</button>
+
+        </div>
+    </div>
+</form>
 
 {/block}

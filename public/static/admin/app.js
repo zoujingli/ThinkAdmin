@@ -48,11 +48,11 @@ require.config({
         'template': ['../plugs/template/template'],
     },
     shim: {
-        'laydate': {deps: ['jquery']},
         'layui': {deps: ['jquery']},
-        'socket': {deps: ['//cdn.bootcss.com/swfobject/2.2/swfobject.min.js']},
+        'laydate': {deps: ['jquery']},
         'bootstrap': {deps: ['jquery']},
         'pcasunzips': {deps: ['jquery']},
+        'socket': {deps: ['//cdn.bootcss.com/swfobject/2.2/swfobject.min.js']},
         'bootstrap.multiselect': {deps: ['jquery', 'bootstrap', 'css!//cdn.bootcss.com/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css']},
         'jquery.ztree': {deps: ['jquery', 'css!//cdn.bootcss.com/zTree.v3/3.5.28/css/zTreeStyle/zTreeStyle.min.css']},
         'jquery.icheck': {deps: ['jquery', 'bootstrap', 'css!//cdn.bootcss.com/iCheck/1.0.2/skins/square/blue.css']},
@@ -61,7 +61,7 @@ require.config({
         'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
     },
     deps: ['css!//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css'],
-    // 开启debug模式，不缓存资源              
+    // 开启debug模式，不缓存资源
     urlArgs: "t=" + (new Date()).getTime()
 });
 
@@ -72,7 +72,7 @@ window.LAYDATE_PATH = baseUrl + '../plugs/layui/laydate/';
 // UI框架初始化
 require(['pace', 'jquery', 'layui', 'bootstrap', 'jquery.cookies'], function () {
     layui.config({dir: baseUrl + '../plugs/layui/'});
-    layui.use(['layer', 'form', 'element'], function () {
+    layui.use(['layer', 'form'], function () {
         window.layer = layui.layer;
         window.form = layui.form();
         require(['admin.listen']);

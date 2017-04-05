@@ -14,6 +14,7 @@
 namespace app\wechat\controller;
 
 use controller\BasicAdmin;
+use service\DataService;
 
 /**
  * 微信配置管理
@@ -24,13 +25,42 @@ use controller\BasicAdmin;
  */
 class Config extends BasicAdmin {
 
+    /**
+     * 定义当前操作表名
+     * @var string
+     */
+    protected $table = 'SystemConfig';
+
+    /**
+     * 微信基础参数配置
+     * @return \think\response\View
+     */
     public function index() {
-        $this->assign('title', '微信接口配置');
-        return view();
+        if ($this->request->isGet()) {
+            $this->assign('title', '微信接口配置');
+            return view();
+
+        }
+        $data = $this->request->post();
+        foreach ($data as $key => $vo) {
+            DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
+        }
+        $this->success('数据修改成功！', '');
     }
 
+    /**
+     * 微信商户参数配置
+     * @return \think\response\View
+     */
     public function pay() {
-        $this->assign('title', '微信支付配置');
-        return view();
+        if ($this->request->isGet()) {
+            $this->assign('title', '微信支付配置');
+            return view();
+        }
+        $data = $this->request->post();
+        foreach ($data as $key => $vo) {
+            DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
+        }
+        $this->success('数据修改成功！', '');
     }
 }
