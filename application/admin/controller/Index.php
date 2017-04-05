@@ -36,8 +36,8 @@ class Index extends BasicAdmin {
      */
     public function index() {
         Node::applyAuthNode();
-        $list = Db::name('SystemMenu')->field('title,id,pid,url,icon')->order('sort asc,id asc')->where('status', '1')->select();
-        $menus = $this->_filter_menu(ToolsService::arr2tree($list));
+        $list = Db::name('SystemMenu')->where('status', '1')->order('sort asc,id asc')->select();
+        $menus = $this->_filterMenu(ToolsService::arr2tree($list));
         $this->assign('title', '后台管理');
         $this->assign('menus', $menus);
         return view();
@@ -48,10 +48,10 @@ class Index extends BasicAdmin {
      * @param array $menus
      * @return array
      */
-    private function _filter_menu($menus) {
+    private function _filterMenu($menus) {
         foreach ($menus as $key => &$menu) {
             if (!empty($menu['sub'])) {
-                $menu['sub'] = $this->_filter_menu($menu['sub']);
+                $menu['sub'] = $this->_filterMenu($menu['sub']);
             }
             if (!empty($menu['sub'])) {
                 $menu['url'] = '#';

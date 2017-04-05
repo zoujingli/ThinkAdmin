@@ -104,7 +104,9 @@ class Menu extends BasicAdmin {
             }
             $this->assign('nodes', array_column($nodes, 'node'));
             $this->assign('menus', $menus);
-        }
+        }else{
+			$this->error('请不要改菜单构造！');
+		}
     }
 
     /**

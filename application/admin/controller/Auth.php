@@ -45,7 +45,7 @@ class Auth extends BasicAdmin {
 
     /**
      * 权限授权
-     * @return void
+     * @return string|array
      */
     public function apply() {
         $auth_id = $this->request->get('id', '0');
@@ -77,6 +77,12 @@ class Auth extends BasicAdmin {
         }
     }
 
+    /**
+     * 节点数据拼装
+     * @param array $nodes
+     * @param int $level
+     * @return array
+     */
     protected function _filterNodes($nodes, $level = 1) {
         foreach ($nodes as $key => &$node) {
             if (!empty($node['_sub_']) && is_array($node['_sub_'])) {
