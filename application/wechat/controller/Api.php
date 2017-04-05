@@ -194,7 +194,7 @@ class Api extends Controller {
         }
         // 标识推荐关系
         Db::name('WechatFans')
-            ->where('appid', $this->appid)
+            ->where('openid', $this->openid)
             ->where('(spread_openid is null or spread_openid="")')
             ->setField(['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')]);
         // @todo 推荐成功的奖励
