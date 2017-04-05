@@ -70,7 +70,7 @@ window.UEDITOR_HOME_URL = (window.ROOT_URL ? window.ROOT_URL + '/static/' : base
 window.LAYDATE_PATH = baseUrl + '../plugs/layui/laydate/';
 
 // UI框架初始化
-require(['pace', 'jquery', 'layui', 'laydate', 'bootstrap', 'template', 'ueditor', 'jquery.cookies'], function () {
+require(['pace', 'jquery', 'layui', 'bootstrap', 'jquery.cookies'], function () {
     layui.config({dir: baseUrl + '../plugs/layui/'});
     layui.use(['layer', 'form', 'element'], function () {
         window.layer = layui.layer;
