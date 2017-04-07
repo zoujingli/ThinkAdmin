@@ -125,7 +125,7 @@ class PayService {
         $prepayinfo = Db::name('WechatPayPrepayid')->where($where, $map)->find();
         if (empty($prepayinfo) || empty($prepayinfo['prepayid'])) {
             $out_trade_no = DataService::createSequence(18, 'WXPAY-OUTER-NO');
-            $prepayid = $pay->getPrepayId($openid, $title, $out_trade_no, $fee, url("@store/api/notify", '', true, true), $trade_type);
+            $prepayid = $pay->getPrepayId($openid, $title, $out_trade_no, $fee, url("@wechat/notify", '', true, true), $trade_type);
             if (empty($prepayid)) {
                 Log::error("内部订单号{$order_no}生成预支付失败，{$pay->errMsg}");
                 return false;

@@ -26,7 +26,7 @@
                     <b style="color:#fff">推荐谷歌浏览器</b>
                 </a>
             </li>
-            <li><a href="http://www.cuci.cc">楚才官网</a></li>
+            <li><a target="_blank" href="http://www.cuci.cc">楚才官网</a></li>
         </ul>
     </div>
 
@@ -40,40 +40,44 @@
             </div>
             <ul>
                 <li>
-                    <input name='username' style='display:none' />
+                    <input name='username' style='display:none'/>
                     <input required="required"
                            pattern="^\S{4,}$"
                            title="请输入4位及以上的字符"
                            type="text"
                            name="username"
-                           class="login-input username"
+                           value="admin"
                            autocomplete="off"
                            autofocus="autofocus"
-                           value="admin"
+                           class="login-input username"
                            placeholder="请输入用户名/手机号码"/>
                 </li>
                 <li>
-                    <input name='password' style='display:none' />
+                    <input name='password' style='display:none'/>
                     <input required="required"
                            pattern="^\S{4,}$"
                            title="请输入4位及以上的字符"
                            type="password"
                            name="password"
-                           class="login-input password"
-                           autocomplete="off"
                            value="admin"
+                           autocomplete="off"
+                           class="login-input password"
                            placeholder="请输入密码"/>
                 </li>
                 <li class="text-center">
-                    <button type="submit" class="layui-btn layui-btn">立 即 登 入</button>
+                    <button type="submit" class="layui-btn layui-disabled" data-form-loaded="立 即 登 入">正 在 载 入</button>
                     <a style="position:absolute;display:block;right:0" href="javascript:void(0)">忘记密码？</a>
                 </li>
             </ul>
         </form>
     </div>
+
+    <!-- 底部版权信息 开始 -->
     {if sysconf('site_copy')}
     <div class="footer">{:sysconf('site_copy')}</div>
     {/if}
+    <!-- 底部版本信息 结束 -->
+
 </div>
 {/block}
 

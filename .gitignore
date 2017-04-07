@@ -3,3 +3,4 @@
 /.svn
 /runtime/
 /composer.lock
+/public/upload

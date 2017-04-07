@@ -1,0 +1,122 @@
+{extend name="extra@admin/content"}
+
+{block name="content"}
+<form onsubmit="return false;" action="{:request()->url(true)}" data-auto="true" method="post" class='form-horizontal'
+      style='padding-top:20px'>
+
+    <div class="form-group">
+        <div class="col-xs-8 col-xs-offset-1 text-center">
+            <h1 style="font-size:24px">商户支付配置</h1>
+            <div class="hr-line-dashed"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">商户ID</label>
+        <div class='col-sm-7'>
+            <input type='tel' placeholder="请输入10位商户MCH_ID（必填）" title='请输入10位数字商户MCH_ID'
+                   required="required" pattern="^\d{10}$" maxlength='10' name='wechat_mch_id'
+                   value='{:sysconf("wechat_mch_id")}' class='layui-input'/>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">商户密钥</label>
+        <div class='col-sm-7'>
+            <input type='password' placeholder="请输入32位商户支付密钥（必填）" required title='请输入32位商户支付密钥'
+                   pattern="^.{32}$" maxlength="32" name='wechat_partnerkey'
+                   value='{:sysconf("wechat_partnerkey")}' class='layui-input'/>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">支付证书</label>
+        <div class="col-sm-7">
+            <input onchange="$(this).next().html('已选择支付证书 (cert.zip)'), $('[data-pay-test]').remove()"
+                   type="hidden" name="cert_zip" value=""/>
+            <div class="well" style="text-align:center;cursor:pointer" data-file
+                 data-type="zip" data-field="cert_zip" data-uptype="local" data-one="true">
+                <span class="fa fa-check-circle-o" style="color:#00B83F;font-size:16px"></span>
+                已设置支付证书 (cert.zip)
+            </div>
+            <p class="help-block">
+                企业打款、企业红包、订单退款等操作需要使用双向证书，可在<a href="https://pay.weixin.qq.com" target="_blank">微信商户平台</a>下载证书！
+            </p>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <input type='hidden' name='id' value='10000'/>
+
+
+    <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-2 text-center">
+            <button type="submit" class="layui-btn">保存配置</button>
+            <button type="button" onerror="alert(this.src)" data-pay-test class="layui-btn layui-btn-primary">支付测试
+            </button>
+            <style>
+                .pay-qrc-test {
+                    height: 248px;
+                    width: 248px;
+                    background: url('http://basic.data.cuci.cc/static/plugs/layui/layer/skin/default/loading-2.gif') no-repeat center center
+                }
+
+                .refund-qrc-test {
+                    text-align: center;
+                    padding: 8px
+                }
+            </style>
+            <script>
+                $(function () {
+                    /* global layer */
+                    $('[data-pay-test]').on('click', function () {
+                        var timer = null;
+                        layer.open({
+                            type: 1, title: false, closeBtn: 1, shadeClose: true,
+                            content: function () {
+                                return '<img class="pay-qrc-test" src="{src}"/>'.replace('{src}', 'http://basic.data.cuci.cc/index.php/wechat/conf/pay.html?action=payqrc')
+                                    + '<p style="text-align:center">请用微信扫码测试支付!</p>'
+                                    + '<p class="refund-qrc-test"><a class="btn btn-xs btn-warning">退款测试</a></p>';
+                            }(),
+                            end: function () {
+                                (timer !== null) && window.clearTimeout(timer), timer = null;
+                            },
+                            success: function (layero, index) {
+                                $(layero).find('.pay-qrc-test').on('error', function () {
+                                    $.form.load(this.src), layer.close(index);
+                                }).on('load', function () {
+                                    var img = this;
+                                    (timer !== null) && window.clearTimeout(timer), timer = null;
+                                    timer = setTimeout(function () {
+                                        img.src = img.src.replace(/\&t=\d*/, '') + '&t=' + (new Date().getTime());
+                                    }, 3000);
+                                });
+                                $(layero).on('click', '.refund-qrc-test a', function () {
+                                    $.msg.loading();
+                                    $.get('http://basic.data.cuci.cc/index.php/wechat/conf/pay.html?action=refund', function (ret) {
+                                        if (ret.code === "SUCCESS") {
+                                            $.msg.tips(ret.info, 2, function () {
+                                                (timer !== null) && window.clearTimeout(timer), timer = null;
+                                                layer.close(index);
+                                            });
+                                        } else {
+                                            $.msg.tips(ret.info, 2);
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+
+</form>
+
+{/block}

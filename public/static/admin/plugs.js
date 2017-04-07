@@ -10,7 +10,7 @@
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
-define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
+define(['jquery'], function () {
 
     /*!
      * jQuery placeholder, fix for IE6,7,8,9
@@ -167,8 +167,8 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
     msg.prototype.loading = function (msg, callback) {
         this.close();
         return this.index = msg
-                ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: callback})
-                : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: callback});
+            ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: callback})
+            : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: callback});
     };
 
     /**
@@ -283,17 +283,6 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
      */
     _form.prototype.reInit = function ($container) {
         $.validate.listen.call(this);
-        $('[data-copy]').map(function () {
-            var client = new ZeroClipboard(this);
-            client.on("ready", function () {
-                client.on("copy", function (event) {
-                    event.clipboardData.setData("text/plain", event.target.getAttribute('data-copy'));
-                });
-                client.on("aftercopy", function () {
-                    $.msg.tips('内容复制成功！');
-                });
-            });
-        });
         JPlaceHolder.init();
         /* 自动给必填字符加上样式 @zoujingli @by 2016-05-11 */
         $container.find('[required]').parent().prevAll('label').addClass('label-required');
@@ -763,10 +752,14 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
             var callback = $(this).attr('data-callback');
             $(this).attr('data-listen', "true").validate(function (data) {
                 $.form.load(this.getAttribute('action') || window.location.href, data,
-                        this.getAttribute('method') || 'POST',
-                        window[callback || '_default_callback'] || undefined, true,
-                        this.getAttribute('data-tips') || undefined,
-                        this.getAttribute('data-time') || undefined);
+                    this.getAttribute('method') || 'POST',
+                    window[callback || '_default_callback'] || undefined, true,
+                    this.getAttribute('data-tips') || undefined,
+                    this.getAttribute('data-time') || undefined);
+            });
+            $(this).find('[data-form-loaded]').map(function () {
+                $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
+                $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
             });
         });
     };
@@ -774,9 +767,6 @@ define(['zeroclipboard', 'jquery'], function (ZeroClipboard) {
     /**
      * 表单监听初始化
      */
-    if ($.form && typeof $.form.load === 'function') {
-        $.validate.listen.call(this);
-    }
 
-    return $;
+    ($.form && typeof $.form.load === 'function') && $.validate.listen.call(this);
 });

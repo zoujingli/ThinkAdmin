@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit2bdb1a4ea6b2ecb142c59aa1efc16953
+class ComposerStaticInit8520da1d36357c0d503d181bd00e9d82
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -26,9 +26,17 @@ class ComposerStaticInit2bdb1a4ea6b2ecb142c59aa1efc16953
         array (
             'Wechat\\' => 7,
         ),
+        'S' => 
+        array (
+            'Symfony\\Component\\OptionsResolver\\' => 34,
+        ),
         'Q' => 
         array (
             'Qiniu\\' => 6,
+        ),
+        'E' => 
+        array (
+            'Endroid\\QrCode\\' => 15,
         ),
     );
 
@@ -58,13 +66,35 @@ class ComposerStaticInit2bdb1a4ea6b2ecb142c59aa1efc16953
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat',
         ),
+        'Symfony\\Component\\OptionsResolver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/options-resolver',
+        ),
         'Qiniu\\' => 
         array (
             0 => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu',
         ),
+        'Endroid\\QrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qrcode/src',
+        ),
     );
 
     public static $classMap = array (
+        'Endroid\\QrCode\\Bundle\\Controller\\QrCodeController' => __DIR__ . '/..' . '/endroid/qrcode/src/Bundle/Controller/QrCodeController.php',
+        'Endroid\\QrCode\\Bundle\\DependencyInjection\\Configuration' => __DIR__ . '/..' . '/endroid/qrcode/src/Bundle/DependencyInjection/Configuration.php',
+        'Endroid\\QrCode\\Bundle\\DependencyInjection\\EndroidQrCodeExtension' => __DIR__ . '/..' . '/endroid/qrcode/src/Bundle/DependencyInjection/EndroidQrCodeExtension.php',
+        'Endroid\\QrCode\\Bundle\\EndroidQrCodeBundle' => __DIR__ . '/..' . '/endroid/qrcode/src/Bundle/EndroidQrCodeBundle.php',
+        'Endroid\\QrCode\\Bundle\\Twig\\Extension\\QrCodeExtension' => __DIR__ . '/..' . '/endroid/qrcode/src/Bundle/Twig/Extension/QrCodeExtension.php',
+        'Endroid\\QrCode\\Exceptions\\DataDoesntExistsException' => __DIR__ . '/..' . '/endroid/qrcode/src/Exceptions/DataDoesntExistsException.php',
+        'Endroid\\QrCode\\Exceptions\\FreeTypeLibraryMissingException' => __DIR__ . '/..' . '/endroid/qrcode/src/Exceptions/FreeTypeLibraryMissingException.php',
+        'Endroid\\QrCode\\Exceptions\\ImageFunctionFailedException' => __DIR__ . '/..' . '/endroid/qrcode/src/Exceptions/ImageFunctionFailedException.php',
+        'Endroid\\QrCode\\Exceptions\\ImageFunctionUnknownException' => __DIR__ . '/..' . '/endroid/qrcode/src/Exceptions/ImageFunctionUnknownException.php',
+        'Endroid\\QrCode\\Exceptions\\ImageSizeTooLargeException' => __DIR__ . '/..' . '/endroid/qrcode/src/Exceptions/ImageSizeTooLargeException.php',
+        'Endroid\\QrCode\\Exceptions\\ImageTypeInvalidException' => __DIR__ . '/..' . '/endroid/qrcode/src/Exceptions/ImageTypeInvalidException.php',
+        'Endroid\\QrCode\\Exceptions\\VersionTooLargeException' => __DIR__ . '/..' . '/endroid/qrcode/src/Exceptions/VersionTooLargeException.php',
+        'Endroid\\QrCode\\Factory\\QrCodeFactory' => __DIR__ . '/..' . '/endroid/qrcode/src/Factory/QrCodeFactory.php',
+        'Endroid\\QrCode\\QrCode' => __DIR__ . '/..' . '/endroid/qrcode/src/QrCode.php',
         'Ip2Region' => __DIR__ . '/..' . '/zoujingli/ip2region/Ip2Region.php',
         'PclZip' => __DIR__ . '/..' . '/pclzip/pclzip/pclzip.lib.php',
         'Qiniu\\Auth' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Auth.php',
@@ -82,6 +112,16 @@ class ComposerStaticInit2bdb1a4ea6b2ecb142c59aa1efc16953
         'Qiniu\\Storage\\ResumeUploader' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/ResumeUploader.php',
         'Qiniu\\Storage\\UploadManager' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/UploadManager.php',
         'Qiniu\\Zone' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Zone.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\AccessException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/AccessException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/ExceptionInterface.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidArgumentException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\InvalidOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\MissingOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/MissingOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\NoSuchOptionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoSuchOptionException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\OptionDefinitionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/OptionDefinitionException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\UndefinedOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/UndefinedOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Options' => __DIR__ . '/..' . '/symfony/options-resolver/Options.php',
+        'Symfony\\Component\\OptionsResolver\\OptionsResolver' => __DIR__ . '/..' . '/symfony/options-resolver/OptionsResolver.php',
         'Wechat\\Lib\\Cache' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/Lib/Cache.php',
         'Wechat\\Lib\\Common' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/Lib/Common.php',
         'Wechat\\Lib\\Tools' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/Lib/Tools.php',
@@ -274,9 +314,9 @@ class ComposerStaticInit2bdb1a4ea6b2ecb142c59aa1efc16953
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit2bdb1a4ea6b2ecb142c59aa1efc16953::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit2bdb1a4ea6b2ecb142c59aa1efc16953::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit2bdb1a4ea6b2ecb142c59aa1efc16953::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit8520da1d36357c0d503d181bd00e9d82::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit8520da1d36357c0d503d181bd00e9d82::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit8520da1d36357c0d503d181bd00e9d82::$classMap;
 
         }, null, ClassLoader::class);
     }
