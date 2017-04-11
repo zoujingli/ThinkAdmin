@@ -13,7 +13,7 @@
 // +----------------------------------------------------------------------
 
 
-use app\admin\model\NodeModel as NodeModal;
+use app\admin\model\NodeModel;
 use think\Config;
 use think\Db;
 use Wechat\Loader;
@@ -73,7 +73,7 @@ function decode($string) {
  * @return bool
  */
 function auth($node) {
-    return NodeModal::checkAuthNode($node);
+    return NodeModel::checkAuthNode($node);
 }
 
 /**
