@@ -14,7 +14,7 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\Node as NodeModal;
+use app\admin\model\NodeModel as NodeModal;
 use controller\BasicAdmin;
 use service\LogService;
 use think\Db;

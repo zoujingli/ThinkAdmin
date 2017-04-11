@@ -24,7 +24,7 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/14 18:12
  */
-class Node {
+class NodeModel {
 
     /**
      * 应用用户权限节点

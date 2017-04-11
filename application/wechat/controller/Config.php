@@ -58,6 +58,16 @@ class Config extends BasicAdmin {
             return view();
         }
         $data = $this->request->post();
+        if (!empty($data['cert_zip_md5'])) {
+            $filename = ROOT_PATH . 'public/upload/' . join('/', str_split($data['cert_zip_md5'], 16)) . '.zip';
+            if (file_exists($filename)) {
+                $zip = new \PclZip($filename);
+                $dirpath = APP_PATH . 'extra/wechat/cert';
+                !file_exists($dirpath) && mkdir($dirpath, 0755, true);
+                $result = $zip->extract(PCLZIP_OPT_PATH, $dirpath);
+                dump($result);
+            }
+        }
         foreach ($data as $key => $vo) {
             DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
         }

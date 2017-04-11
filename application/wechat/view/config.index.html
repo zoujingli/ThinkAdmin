@@ -8,9 +8,10 @@
     <div class="form-group">
         <label class="col-sm-2 col-xs-3 control-label">URL(服务器地址)</label>
         <div class="col-sm-8">
-            <input readonly onmouseenter="this.select()" value="{:url('@wechat/api','',true,true)}" class="layui-input">
+            <input data-tips-text="请点鼠标右键复制URL地址" onmouseenter="this.select()" class="layui-input"
+                   value="{:url('@wechat/api','',true,true)}" readonly/>
             <p class="help-block">
-                注意：接口链接的域名必需要备案，目前微信官方只支持80端口和443端口。
+                注意：服务器域名必需备案，微信官方只支持80端口和443端口。
             </p>
         </div>
     </div>
@@ -30,7 +31,7 @@
     <div class="form-group">
         <label class="col-sm-2 col-xs-3 control-label">AppSecret(应用密钥)</label>
         <div class='col-sm-8'>
-            <input type="text" name="wechat_appsecret" required="required" title="请输入公众号AppSecret"
+            <input type="password" name="wechat_appsecret" required="required" title="请输入公众号AppSecret"
                    placeholder="公众号AppSecret（必填）" value="{:sysconf('wechat_appsecret')}"
                    class="layui-input">
         </div>

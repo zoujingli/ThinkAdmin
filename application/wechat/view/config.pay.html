@@ -36,10 +36,9 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">支付证书</label>
         <div class="col-sm-7">
-            <input onchange="$(this).next().html('已选择支付证书 (cert.zip)'), $('[data-pay-test]').remove()"
-                   type="hidden" name="cert_zip" value=""/>
-            <div class="well" style="text-align:center;cursor:pointer" data-file
-                 data-type="zip" data-field="cert_zip" data-uptype="local" data-one="true">
+            <input type="hidden" name="cert_zip_md5" value="" onchange="this.value=$(this).attr('data-md5')"/>
+            <div data-file="one" data-type="zip" data-field="cert_zip_md5" data-uptype="local"
+                 class="well" style="text-align:center;cursor:pointer">
                 <span class="fa fa-check-circle-o" style="color:#00B83F;font-size:16px"></span>
                 已设置支付证书 (cert.zip)
             </div>

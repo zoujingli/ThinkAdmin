@@ -136,7 +136,7 @@ class Tools {
     /**
      * 以post方式提交请求
      * @param string $url
-     * @param array|string $postdata
+     * @param array|string $data
      * @return bool|mixed
      */
     static public function httpPost($url, $data) {

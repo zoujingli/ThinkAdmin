@@ -46,7 +46,7 @@ class Api extends Controller {
         $this->wechat = &load_wechat('Receive');
         /* 验证接口请求 */
         if ($this->wechat->valid() === false) {
-            $msg = "微信消息验证失败，{$this->wechat->errMsg}[{$this->wechat->errCode}]";
+            $msg = "{$this->wechat->errMsg}[{$this->wechat->errCode}]";
             Log::error($msg);
             exit($msg);
         }

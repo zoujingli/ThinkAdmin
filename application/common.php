@@ -13,7 +13,7 @@
 // +----------------------------------------------------------------------
 
 
-use app\admin\model\Node as NodeModal;
+use app\admin\model\NodeModel as NodeModal;
 use think\Config;
 use think\Db;
 use Wechat\Loader;

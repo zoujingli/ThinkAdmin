@@ -1397,7 +1397,10 @@ class QrCode
             ++$i;
         }
 
-        $mib = $max_modules_1side + 8;
+        $mib = $max_modules_1side;
+        if ($this->draw_quiet_zone) {
+            $mib += 8;
+        }
 
         if ($this->size == 0) {
             $this->size = $mib * $qrcode_module_size;
@@ -1458,7 +1461,7 @@ class QrCode
         if ($this->draw_quiet_zone == true) {
             imagecopyresampled($output_image, $base_image, $this->padding, $this->padding, 0, 0, $this->size, $this->size, $mib, $mib);
         } else {
-            imagecopyresampled($output_image, $base_image, $this->padding, $this->padding, 4, 4, $this->size, $this->size, $mib - 8, $mib - 8);
+            imagecopyresampled($output_image, $base_image, $this->padding, $this->padding, 4, 4, $this->size, $this->size, $mib, $mib);
         }
 
         if ($this->draw_border == true) {
@@ -1559,7 +1562,15 @@ class QrCode
             $output_image = imagecreatetruecolor($image_width, $image_height);
             imagecopy($output_image, $output_image_org, 0, 0, 0, 0, $image_width, $image_height);
 
-            $logo_image = call_user_func('imagecreatefrom'.$this->image_type, $this->logo);
+            $image_info = getimagesize($this->logo);
+
+            if ($image_info !== false) {
+                $image_type = strtolower(substr(image_type_to_extension($image_info [2]), 1));
+                $logo_image = call_user_func('imagecreatefrom'.$image_type, $this->logo);
+            } else {
+                $logo_image = call_user_func('imagecreatefrom'.$this->image_type, $this->logo);
+            }
+
             if (!$logo_image) {
                 throw new ImageFunctionFailedException('imagecreatefrom'.$this->image_type.' '.$this->logo.' failed');
             }

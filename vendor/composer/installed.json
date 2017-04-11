@@ -88,18 +88,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "a7590727eac59b918274399eea3c16eb01242087"
+            "reference": "e04062d1c1cfb25e56bccb237e59382cfcc8facc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/a7590727eac59b918274399eea3c16eb01242087.zip",
-            "reference": "a7590727eac59b918274399eea3c16eb01242087",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/e04062d1c1cfb25e56bccb237e59382cfcc8facc.zip",
+            "reference": "e04062d1c1cfb25e56bccb237e59382cfcc8facc",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-03-27 06:30:12",
+        "time": "2017-04-07 03:34:14",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
@@ -335,20 +335,20 @@
     },
     {
         "name": "topthink/think-helper",
-        "version": "v1.0.5",
-        "version_normalized": "1.0.5.0",
+        "version": "v1.0.6",
+        "version_normalized": "1.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-helper.git",
-            "reference": "ed64408cdc4cdbd390365ba0906d208b987af520"
+            "reference": "0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-helper/ed64408cdc4cdbd390365ba0906d208b987af520.zip",
-            "reference": "ed64408cdc4cdbd390365ba0906d208b987af520",
+            "url": "https://files.phpcomposer.com/files/top-think/think-helper/0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f.zip",
+            "reference": "0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f",
             "shasum": ""
         },
-        "time": "2016-12-01 07:08:40",
+        "time": "2017-04-05 07:15:37",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -420,23 +420,23 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.2.6",
-        "version_normalized": "3.2.6.0",
+        "version": "v3.2.7",
+        "version_normalized": "3.2.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "56e3d0a41313f8a54326851f10690d591e62a24c"
+            "reference": "6a19be85237fe8bbd4975f86942b4763bb0da6ca"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/56e3d0a41313f8a54326851f10690d591e62a24c.zip",
-            "reference": "56e3d0a41313f8a54326851f10690d591e62a24c",
+            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/6a19be85237fe8bbd4975f86942b4763bb0da6ca.zip",
+            "reference": "6a19be85237fe8bbd4975f86942b4763bb0da6ca",
             "shasum": ""
         },
         "require": {
             "php": ">=5.5.9"
         },
-        "time": "2017-02-21 09:12:04",
+        "time": "2017-03-21 21:44:32",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -476,17 +476,17 @@
     },
     {
         "name": "endroid/qrcode",
-        "version": "1.9.1",
-        "version_normalized": "1.9.1.0",
+        "version": "1.9.3",
+        "version_normalized": "1.9.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/endroid/QrCode.git",
-            "reference": "ab09b42778ad67cfe850f9c23165f8d08b756680"
+            "reference": "c9644bec2a9cc9318e98d1437de3c628dcd1ef93"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/endroid/QrCode/ab09b42778ad67cfe850f9c23165f8d08b756680.zip",
-            "reference": "ab09b42778ad67cfe850f9c23165f8d08b756680",
+            "url": "https://files.phpcomposer.com/files/endroid/QrCode/c9644bec2a9cc9318e98d1437de3c628dcd1ef93.zip",
+            "reference": "c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
             "shasum": ""
         },
         "require": {
@@ -501,7 +501,7 @@
             "symfony/framework-bundle": "^2.3|^3.0",
             "symfony/http-kernel": "^2.3|^3.0"
         },
-        "time": "2017-01-03 11:02:14",
+        "time": "2017-04-08 09:13:59",
         "type": "library",
         "extra": {
             "branch-alias": {

@@ -47,7 +47,7 @@ class Plugs extends BasicAdmin {
         $types = $this->request->get('type', 'jpg,png');
         $this->assign('mode', $mode);
         $this->assign('types', $types);
-        $this->assign('uptype', sysconf('storage_type'));
+        $this->assign('uptype', $this->request->get('uptype', sysconf('storage_type')));
         $this->assign('mimes', FileService::getFileMine($types));
         $this->assign('field', $this->request->get('field', 'file'));
         return view();
@@ -61,8 +61,11 @@ class Plugs extends BasicAdmin {
         if ($this->request->isPost()) {
             $md5s = str_split($this->request->post('md5'), 16);
             if (($info = $this->request->file('file')->move('upload' . DS . $md5s[0], $md5s[1], true))) {
-                $site_url = FileService::getFileUrl(join('/', $md5s) . '.' . $info->getExtension());
-                return json(['data' => ['site_url' => $site_url], 'code' => 'SUCCESS']);
+                $filename = join('/', $md5s) . '.' . $info->getExtension();
+                $site_url = FileService::getFileUrl($filename, 'local');
+                if ($site_url) {
+                    return json(['data' => ['site_url' => $site_url], 'code' => 'SUCCESS']);
+                }
             }
         }
         return json(['code' => 'ERROR']);
@@ -70,7 +73,6 @@ class Plugs extends BasicAdmin {
 
     /**
      * 文件状态检查
-     * @return string
      */
     public function upstate() {
         $post = $this->request->post();
@@ -81,7 +83,7 @@ class Plugs extends BasicAdmin {
         }
         // 需要上传文件，生成上传配置参数
         $config = ['uptype' => $post['uptype'], 'file_url' => $filename, 'server' => url('admin/plugs/upload')];
-        switch (strtolower(sysconf('storage_type'))) {
+        switch (strtolower($post['uptype'])) {
             case 'qiniu':
                 $config['server'] = sysconf('storage_qiniu_is_https') ? 'https://up.qbox.me' : 'http://upload.qiniu.com';
                 $config['token'] = $this->_getQiniuToken($filename);

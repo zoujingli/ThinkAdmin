@@ -14,7 +14,7 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\Node;
+use app\admin\model\NodeModel;
 use controller\BasicAdmin;
 use service\DataService;
 use service\ToolsService;
@@ -96,7 +96,7 @@ class Menu extends BasicAdmin {
                 }
             }
             // 读取系统功能节点
-            $nodes = Node::get(APP_PATH);
+            $nodes = NodeModel::get(APP_PATH);
             foreach ($nodes as $key => $_vo) {
                 if (empty($_vo['is_menu'])) {
                     unset($nodes[$key]);

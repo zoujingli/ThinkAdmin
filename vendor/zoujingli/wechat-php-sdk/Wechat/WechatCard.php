@@ -46,6 +46,7 @@ class WechatCard extends Common {
     const CARD_PAYCELL_SET = '/card/paycell/set?';
     /*设置开卡字段接口*/
     const CARD_MEMBERCARD_ACTIVATEUSERFORM_SET = '/card/membercard/activateuserform/set?';
+
     /**
      * 获取微信卡券 api_ticket
      * @param string $appid
@@ -722,19 +723,20 @@ class WechatCard extends Common {
         }
         return false;
     }
+
     /**
      * 设置买单接口
-     * @DateTime  2016-12-02T19:19:45+0800
-     * @param     [type]                   $card_id   [description]
-     * @param     boolean                  $is_openid [description]
+     * @param string $card_id
+     * @param bool $is_openid
+     * @return bool|mixed
      */
-    public function setPaycell($card_id,$is_openid = true){
+    public function setPaycell($card_id, $is_openid = true) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
         $data = array(
-            'card_id'            => $card_id,
-            'is_open'            => $is_openid,
+            'card_id' => $card_id,
+            'is_open' => $is_openid,
         );
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_PAYCELL_SET . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
@@ -751,10 +753,10 @@ class WechatCard extends Common {
 
     /**
      * 设置开卡字段信息接口
-     * @DateTime  2016-12-02T20:31:43+0800
-     * @param     [type]                   $data [description]
+     * @param array $data
+     * @return bool|array
      */
-    public function setMembercardActivateuserform($data){
+    public function setMembercardActivateuserform($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
