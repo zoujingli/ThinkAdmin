@@ -67,6 +67,7 @@ class Login extends BasicAdmin {
     public function out() {
         LogService::write('退出系统', '用户退出系统成功!');
         session('user', null);
+        session_destroy();
         $this->success('退出登录成功！', '@admin/login');
     }
 
