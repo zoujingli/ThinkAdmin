@@ -14,10 +14,10 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\NodeModel as NodeModel;
 use controller\BasicAdmin;
-use library\Data;
-use library\Node as ModuleNode;
-use library\Tools;
+use service\DataService;
+use service\ToolsService;
 
 /**
  * 系统功能节点管理
@@ -38,35 +38,15 @@ class Node extends BasicAdmin {
      * 显示节点列表
      */
     public function index() {
-        $this->title = '系统节点管理';
         $alert = [
             'type'    => 'danger',
             'title'   => '安全警告',
-            'content' => '系统数据请勿随意修改！'
+            'content' => '结构为系统自动生成，状态数据请勿随意修改！'
         ];
         $this->assign('alert', $alert);
-        parent::_list($this->table, FALSE);
-    }
-
-    /**
-     * 列表数据处理
-     * @param $data
-     */
-    protected function _index_data_filter($data) {
-        $nodes = [];
-        $alias = [];
-        foreach ($data as $vo) {
-            $alias["{$vo['node']}"] = $vo;
-        }
-        foreach (ModuleNode::getNodeTree(APP_PATH) as $thr) {
-            $tmp = explode('/', $thr);
-            $one = $tmp[0];
-            $two = "{$tmp[0]}/{$tmp[1]}";
-            $nodes[$one] = array_merge(isset($alias[$one]) ? $alias[$one] : ['node' => $one, 'title' => '', 'is_menu' => 0, 'is_auth' => 0], ['pnode' => '']);
-            $nodes[$two] = array_merge(isset($alias[$two]) ? $alias[$two] : ['node' => $two, 'title' => '', 'is_menu' => 0, 'is_auth' => 0], ['pnode' => $one]);
-            $nodes[$thr] = array_merge(isset($alias[$thr]) ? $alias[$thr] : ['node' => $thr, 'title' => '', 'is_menu' => 0, 'is_auth' => 0], ['pnode' => $two]);
-        }
-        $this->assign('nodes', Tools::arr2table($nodes, 'node', 'pnode'));
+        $this->assign('title', '系统节点管理');
+        $this->assign('nodes', ToolsService::arr2table(NodeModel::get(), 'node', 'pnode'));
+        return view();
     }
 
     /**
@@ -79,7 +59,7 @@ class Node extends BasicAdmin {
                 $nameattr = explode('.', $post['name']);
                 $field = array_shift($nameattr);
                 $data = ['node' => join(',', $nameattr), $field => $post['value']];
-                Data::save($this->table, $data, 'node');
+                DataService::save($this->table, $data, 'node');
                 $this->success('参数保存成功！', '');
             }
         } else {

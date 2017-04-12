@@ -7,20 +7,19 @@
 // +----------------------------------------------------------------------
 // | 官方网站: http://think.ctolog.com
 // +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
+// | 开源协议 ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
 namespace service;
 
-use library\Http;
-
 /**
- * 快递查询接口
- * 
+ * 物流查询服务
+ * Class ExpressService
+ * @package service
  * @author Anyon <zoujingli@qq.com>
- * @date 2016/11/28 17:13
+ * @date 2017/03/15 15:17
  */
 class ExpressService {
 
@@ -43,7 +42,7 @@ class ExpressService {
             'DataType'    => 2,
             'DataSign'    => base64_encode(md5($sendData . self::APPKEY)),
         );
-        $result = Http::post(self::APIURI, $data);
+        $result = HttpService::post(self::APIURI, $data);
         $resultJson = json_decode($result, true);
         if (!$resultJson) {
             die(var_export($result));

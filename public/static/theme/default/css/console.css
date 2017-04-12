@@ -130,13 +130,14 @@ input[type=radio]:checked::after{content:'';display:block;position:relative;top:
 input[type=checkbox]:checked::after{display:block;position:absolute;top:-2px;left:-4px;content:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAtklEQVQ4y2P4//8/A7Ux1Q0cxoaCADIbCUgCMTvVXAoE5kA8CYidyXYpGrAH4iVAHIXiCwoMDQTimUBcBsRMlBrKCsTpUANzkC0j11BuIK6EGlgKsoAkQ4FgChD7AzELVI8YEDdDDawDYk6YQaQY6gg1oAqILYC4D8oHGcyLbBAphoJAKtQgGO4EYiHk2CLHUJAXm6AG9gCxNHoSIMdQEJCFGqiALaGSayjMxQwUGzq0S6nhZygA2ojsbh6J67kAAAAASUVORK5CYII=')}
 input[type=checkbox]:focus,input[type=radio]:focus{outline:none}
 
+/* 图片上传 */
+.uploadimage{display:inline-block;width:80px;height:80px;background-image:url('../img/image.png');background-repeat: no-repeat;background-position:center center;background-size:cover;cursor:pointer}
 /* 延时动画 */
 .transition{-webkit-transition:all .2s linear;-moz-transition:all .2s linear;-o-transition:all .2s linear;transition:all .2s linear}
 [data-tips-image]{cursor:pointer !important;cursor:-webkit-zoom-in !important;cursor:-moz-zoom-in !important;cursor:zoom-in !important}
 select.form-control.input-sm{padding:0 0 0 10px}
 .form-control.input-sm{line-height:1em}
 .pointer{cursor:pointer}
-.wrapper{padding:10px 15px;min-width:900px}
 .framework-sidebar-mini .wrapper{min-width:950px}
 .help-block{margin-bottom:0}
 .text-center{text-align:center}

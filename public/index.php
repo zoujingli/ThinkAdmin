@@ -12,8 +12,9 @@
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
+/* SESSION会话名称 */
+session_name(md5(__FILE__));
 /* 定义应用目录 */
 define('APP_PATH', dirname(__DIR__) . '/application/');
-
 /* 加载框架引导文件 */
 require dirname(__DIR__) . '/thinkphp/start.php';

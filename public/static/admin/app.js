@@ -28,8 +28,11 @@ require.config({
         'socket': ['//cdn.bootcss.com/web-socket-js/1.0.0/web_socket.min'],
         'zeroclipboard': ['//cdn.bootcss.com/zeroclipboard/2.3.0/ZeroClipboard.min'],
         'json': ['//cdn.bootcss.com/json2/20160511/json2.min', '../plugs/jquery/json2.min'],
+        'qrcode': ['//cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min'],
+        'print': ['../plugs/jquery/jquery.PrintArea'],
         'base64': ['//cdn.bootcss.com/Base64/1.0.0/base64.min', '../plugs/jquery/base64.min'],
         'jquery': ['//cdn.bootcss.com/jquery/1.12.4/jquery.min', '../plugs/jquery/jquery.min'],
+        'jquery.ztree': ['//cdn.bootcss.com/zTree.v3/3.5.28/js/jquery.ztree.all.min', '../plugs/ztree/jquery.ztree.all.min'],
         'jquery.icheck': ['//cdn.bootcss.com/iCheck/1.0.2/icheck.min'],
         'jquery.cookies': ['//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie', '../plugs/jquery/jquery.cookie'],
         'bootstrap': ['//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min', '../plugs/bootstrap/js/bootstrap.min'],
@@ -45,11 +48,13 @@ require.config({
         'template': ['../plugs/template/template'],
     },
     shim: {
-        'laydate': {deps: ['jquery']},
         'layui': {deps: ['jquery']},
-        'socket': {deps: ['//cdn.bootcss.com/swfobject/2.2/swfobject.min.js']},
+        'laydate': {deps: ['jquery']},
         'bootstrap': {deps: ['jquery']},
+        'pcasunzips': {deps: ['jquery']},
+        'socket': {deps: ['//cdn.bootcss.com/swfobject/2.2/swfobject.min.js']},
         'bootstrap.multiselect': {deps: ['jquery', 'bootstrap', 'css!//cdn.bootcss.com/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css']},
+        'jquery.ztree': {deps: ['jquery', 'css!//cdn.bootcss.com/zTree.v3/3.5.28/css/zTreeStyle/zTreeStyle.min.css']},
         'jquery.icheck': {deps: ['jquery', 'bootstrap', 'css!//cdn.bootcss.com/iCheck/1.0.2/skins/square/blue.css']},
         'jquery.cookies': {deps: ['jquery']},
         'admin.plugs': {deps: ['jquery', 'layui']},
@@ -65,9 +70,9 @@ window.UEDITOR_HOME_URL = (window.ROOT_URL ? window.ROOT_URL + '/static/' : base
 window.LAYDATE_PATH = baseUrl + '../plugs/layui/laydate/';
 
 // UI框架初始化
-require(['pace', 'jquery', 'layui', 'laydate', 'bootstrap', 'template', 'ueditor', 'jquery.cookies'], function () {
+require(['pace', 'jquery', 'layui', 'bootstrap', 'jquery.cookies'], function () {
     layui.config({dir: baseUrl + '../plugs/layui/'});
-    layui.use(['layer', 'form', 'element'], function () {
+    layui.use(['layer', 'form'], function () {
         window.layer = layui.layer;
         window.form = layui.form();
         require(['admin.listen']);

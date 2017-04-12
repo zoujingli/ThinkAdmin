@@ -1,0 +1,72 @@
+{extend name="extra@admin/content"}
+
+{block name="content"}
+<form onsubmit="return false;" action="{:request()->url(true)}" data-auto="true" method="post" class='form-horizontal'
+      style='padding-top:20px'>
+
+
+    <div class="form-group">
+        <label class="col-sm-2 col-xs-3 control-label">URL(服务器地址)</label>
+        <div class="col-sm-8">
+            <input data-tips-text="请点鼠标右键复制URL地址" onmouseenter="this.select()" class="layui-input"
+                   value="{:url('@wechat/api','',true,true)}" readonly/>
+            <p class="help-block">
+                注意：服务器域名必需备案，微信官方只支持80端口和443端口。
+            </p>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">AppID(应用ID)</label>
+        <div class='col-sm-8'>
+            <input type="text" name="wechat_appid" required="required" title="请输入公众号APPID"
+                   placeholder="公众号APPID（必填）" value="{:sysconf('wechat_appid')}" class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 col-xs-3 control-label">AppSecret(应用密钥)</label>
+        <div class='col-sm-8'>
+            <input type="password" name="wechat_appsecret" required="required" title="请输入公众号AppSecret"
+                   placeholder="公众号AppSecret（必填）" value="{:sysconf('wechat_appsecret')}"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 col-xs-3 control-label">Token(令牌)</label>
+        <div class='col-sm-8'>
+            <input type="text" name="wechat_token" required="required" title="请输入接口Token(令牌)"
+                   placeholder="公众号AppSecret（必填）" value="{:sysconf('wechat_token')}"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="form-group">
+        <label class="col-sm-2 col-xs-3  control-label">EncodingAESKey</label>
+        <div class='col-sm-8'>
+            <input type="text" name="wechat_encodingaeskey" required="required" title="请输入43位消息加密密钥"
+                   placeholder="消息加密密钥，若开启了消息加密时必需填写（可选）" value="{:sysconf('wechat_encodingaeskey')}"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-9">
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">立即提交</button>
+
+        </div>
+    </div>
+</form>
+
+{/block}

@@ -30,6 +30,16 @@ define(['jquery', 'admin.plugs'], function () {
         return _goLoad.call(this);
     });
 
+    /*! 注册 data-serach 表单搜索行为 */
+    this.$body.on('submit', 'form[data-search]', function () {
+        var split = this.action.indexOf('?') === -1 ? '?' : '&';
+        if ((this.method || 'get').toLowerCase() === 'get') {
+            window.location.href = '#' + parseUri(this.action + split + $(this).serialize());
+        } else {
+            $.form.load(this.action, this, 'post');
+        }
+    });
+
     /*! 注册 data-modal 事件行为 */
     this.$body.on('click', '[data-modal]', function () {
         return $.form.modal($(this).attr('data-modal'), 'open_type=modal', $(this).attr('data-title') || '编辑');
@@ -38,7 +48,7 @@ define(['jquery', 'admin.plugs'], function () {
     /*! 注册 data-open 事件行为 */
     this.$body.on('click', '[data-open]', function () {
         var url = $(this).attr('data-open');
-        window.location.href = '#' + parseUri(url, this);
+        $.form.href(url, this);
     });
 
     /*! 注册 data-reload 事件行为 */

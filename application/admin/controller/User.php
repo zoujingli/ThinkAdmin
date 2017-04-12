@@ -15,7 +15,7 @@
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
-use library\Data;
+use service\DataService;
 use think\Db;
 
 /**
@@ -33,10 +33,33 @@ class User extends BasicAdmin {
      */
     protected $table = 'SystemUser';
 
+    /**
+     * 用户列表
+     */
     public function index() {
-        $this->title = '用户管理';
+        // 设置页面标题
+        $this->title = '系统用户管理';
+        // 获取到所有GET参数
+        $get = $this->request->get();
+        // 实例Query对象
         $db = Db::name($this->table)->where('is_deleted', '0');
+        // 应用搜索条件
+        if (isset($get['username']) && $get['username'] !== '') {
+            $db->where('username', 'like', "%{$get['username']}%");
+        }
+        if (isset($get['phone']) && $get['phone'] !== '') {
+            $db->where('phone', 'like', "%{$get['phone']}%");
+        }
+        // 实例化并显示
         parent::_list($db);
+    }
+
+    /**
+     * 授权管理
+     * @return array|string
+     */
+    public function auth() {
+        return $this->_form($this->table, 'auth');
     }
 
     /**
@@ -61,13 +84,14 @@ class User extends BasicAdmin {
             $this->error('系统超级账号禁止操作！');
         }
         if ($this->request->isGet()) {
+            $this->assign('verify', false);
             return $this->_form($this->table, 'pass');
         }
         $data = $this->request->post();
         if ($data['password'] !== $data['repassword']) {
             $this->error('两次输入的密码不一致！');
         }
-        if (Data::save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
+        if (DataService::save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
             $this->success('密码修改成功，下次请使用新密码登录！', '');
         } else {
             $this->error('密码修改失败，请稍候再试！');
@@ -76,15 +100,21 @@ class User extends BasicAdmin {
 
     /**
      * 表单数据默认处理
-     * @param type $data
+     * @param array $data
      */
     public function _form_filter(&$data) {
         if ($this->request->isPost()) {
+            if (isset($data['authorize']) && is_array($data['authorize'])) {
+                $data['authorize'] = join(',', $data['authorize']);
+            }
             if (isset($data['id'])) {
                 unset($data['username']);
             } elseif (Db::name($this->table)->where('username', $data['username'])->find()) {
                 $this->error('用户账号已经存在，请使用其它账号！');
             }
+        } else {
+            $data['authorize'] = explode(',', isset($data['authorize']) ? $data['authorize'] : '');
+            $this->assign('authorizes', Db::name('SystemAuth')->select());
         }
     }
 
@@ -95,7 +125,7 @@ class User extends BasicAdmin {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
             $this->error('系统超级账号禁止删除！');
         }
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("用户删除成功！", '');
         } else {
             $this->error("用户删除失败，请稍候再试！");
@@ -109,7 +139,7 @@ class User extends BasicAdmin {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
             $this->error('系统超级账号禁止操作！');
         }
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("用户禁用成功！", '');
         } else {
             $this->error("用户禁用失败，请稍候再试！");
@@ -120,7 +150,7 @@ class User extends BasicAdmin {
      * 用户禁用
      */
     public function resume() {
-        if (Data::update($this->table)) {
+        if (DataService::update($this->table)) {
             $this->success("用户启用成功！", '');
         } else {
             $this->error("用户启用失败，请稍候再试！");

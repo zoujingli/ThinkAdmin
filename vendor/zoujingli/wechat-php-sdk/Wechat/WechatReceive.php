@@ -51,7 +51,7 @@ class WechatReceive extends Common {
             return $this;
         }
         $postStr = !empty($this->postxml) ? $this->postxml : file_get_contents("php://input");
-        !empty($postStr) && $this->_receive = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        !empty($postStr) && $this->_receive = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         return $this;
     }
 
@@ -70,9 +70,8 @@ class WechatReceive extends Common {
     public function getRevFrom() {
         if (isset($this->_receive['FromUserName'])) {
             return $this->_receive['FromUserName'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -82,9 +81,8 @@ class WechatReceive extends Common {
     public function getRevTo() {
         if (isset($this->_receive['ToUserName'])) {
             return $this->_receive['ToUserName'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -94,9 +92,8 @@ class WechatReceive extends Common {
     public function getRevType() {
         if (isset($this->_receive['MsgType'])) {
             return $this->_receive['MsgType'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -106,9 +103,8 @@ class WechatReceive extends Common {
     public function getRevID() {
         if (isset($this->_receive['MsgId'])) {
             return $this->_receive['MsgId'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -118,9 +114,8 @@ class WechatReceive extends Common {
     public function getRevCtime() {
         if (isset($this->_receive['CreateTime'])) {
             return $this->_receive['CreateTime'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -131,9 +126,8 @@ class WechatReceive extends Common {
     public function getRevCardPass() {
         if (isset($this->_receive['CardId'])) {
             return $this->_receive['CardId'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -155,9 +149,8 @@ class WechatReceive extends Common {
         }
         if (isset($array) && count($array) > 0) {
             return $array;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -174,9 +167,8 @@ class WechatReceive extends Common {
         }
         if (isset($array) && count($array) > 0) {
             return $array;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -188,9 +180,8 @@ class WechatReceive extends Common {
             return $this->_receive['Content'];
         } else if (isset($this->_receive['Recognition'])) { //获取语音识别文字内容，需申请开通
             return $this->_receive['Recognition'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -201,11 +192,10 @@ class WechatReceive extends Common {
         if (isset($this->_receive['PicUrl'])) {
             return array(
                 'mediaid' => $this->_receive['MediaId'],
-                'picurl'  => (string) $this->_receive['PicUrl'], //防止picurl为空导致解析出错
+                'picurl'  => (string)$this->_receive['PicUrl'], //防止picurl为空导致解析出错
             );
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -219,9 +209,8 @@ class WechatReceive extends Common {
                 'title'       => $this->_receive['Title'],
                 'description' => $this->_receive['Description']
             );
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -236,9 +225,8 @@ class WechatReceive extends Common {
                 'scale' => $this->_receive['Scale'],
                 'label' => $this->_receive['Label']
             );
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -284,7 +272,7 @@ class WechatReceive extends Common {
     public function getRevScanInfo() {
         if (isset($this->_receive['ScanCodeInfo'])) {
             if (!is_array($this->_receive['ScanCodeInfo'])) {
-                $array = (array) $this->_receive['ScanCodeInfo'];
+                $array = (array)$this->_receive['ScanCodeInfo'];
                 $this->_receive['ScanCodeInfo'] = $array;
             } else {
                 $array = $this->_receive['ScanCodeInfo'];
@@ -319,13 +307,13 @@ class WechatReceive extends Common {
     public function getRevSendPicsInfo() {
         if (isset($this->_receive['SendPicsInfo'])) {
             if (!is_array($this->_receive['SendPicsInfo'])) {
-                $array = (array) $this->_receive['SendPicsInfo'];
+                $array = (array)$this->_receive['SendPicsInfo'];
                 if (isset($array['PicList'])) {
-                    $array['PicList'] = (array) $array['PicList'];
+                    $array['PicList'] = (array)$array['PicList'];
                     $item = $array['PicList']['item'];
                     $array['PicList']['item'] = array();
                     foreach ($item as $key => $value) {
-                        $array['PicList']['item'][$key] = (array) $value;
+                        $array['PicList']['item'][$key] = (array)$value;
                     }
                 }
                 $this->_receive['SendPicsInfo'] = $array;
@@ -358,7 +346,7 @@ class WechatReceive extends Common {
     public function getRevSendGeoInfo() {
         if (isset($this->_receive['SendLocationInfo'])) {
             if (!is_array($this->_receive['SendLocationInfo'])) {
-                $array = (array) $this->_receive['SendLocationInfo'];
+                $array = (array)$this->_receive['SendLocationInfo'];
                 if (empty($array['Poiname'])) {
                     $array['Poiname'] = "";
                 }

@@ -17,6 +17,9 @@
  * @return array
  */
 return [
-    'appid'  => '',
-    'secret' => ''
+    'appid'      => 'wx19f64200446c3582',
+    'appsecret'  => 'fd4a29abd3c1d49e04c11f8ee914a245',
+    'mch_id'     => '1411857402',
+    'partnerkey' => '0ed5103f88f9b3417c8cba24b8cc268d',
+    'cachepath'  => RUNTIME_PATH . 'wechat/pay',
 ];

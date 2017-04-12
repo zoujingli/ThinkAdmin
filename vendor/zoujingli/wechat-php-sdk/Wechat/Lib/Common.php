@@ -29,7 +29,7 @@ class Common {
     public $postxml;
     public $_msg;
     public $errCode = 0;
-    public $errMsg = "no access";
+    public $errMsg = "";
     public $config = array();
     private $_retry = FALSE;
 

@@ -15,9 +15,7 @@
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
-use library\Data;
-use library\File;
-use think\Db;
+use service\FileService;
 
 /**
  * 插件助手控制器
@@ -42,80 +40,17 @@ class Plugs extends BasicAdmin {
 
     /**
      * 文件上传
+     * @param string $mode
+     * @return \think\response\View
      */
     public function upfile($mode = 'one') {
         $types = $this->request->get('type', 'jpg,png');
-        $field = $this->request->get('field', 'file');
-        $this->assign('field', $field);
-        $this->assign('types', $types);
-        $this->assign('mimes', File::getMine($types));
-        $this->assign('uptype', sysconf('storage_type'));
         $this->assign('mode', $mode);
+        $this->assign('types', $types);
+        $this->assign('uptype', $this->request->get('uptype', sysconf('storage_type')));
+        $this->assign('mimes', FileService::getFileMine($types));
+        $this->assign('field', $this->request->get('field', 'file'));
         return view();
-    }
-
-    /**
-     * 检查文件上传状态
-     */
-    public function upstate() {
-        $post = $this->request->post();
-        // 组装返回数据
-        $data = [];
-        $data['uptype'] = $post['uptype'];
-        $ext = pathinfo($post['filename'], PATHINFO_EXTENSION);
-        $data['file_url'] = join('/', str_split($post['md5'], 16)) . ".{$ext}";
-        $data['token'] = $this->_getQiniuToken($data['file_url']);
-        $data['server'] = url('admin/plugs/upload');
-        // 检查文件是否已经上传
-        $fileinfo = Db::name('SystemFile')->where(['uptype' => $post['uptype'], 'md5' => $post['md5']])->find();
-        // 七牛云文件写入处理
-        if (sysconf('storage_type') === 'qiniu') {
-            $data['server'] = sysconf('storage_qiniu_is_https') ? 'https://up.qbox.me' : 'http://upload.qiniu.com';
-            if (empty($fileinfo)) {
-                $file = [];
-                $file['uptype'] = 'qiniu';
-                $file['md5'] = $post['md5'];
-                $file['real_name'] = $post['filename'];
-                $file['file_name'] = pathinfo($data['file_url'], PATHINFO_BASENAME);
-                $file['file_path'] = $data['file_url'];
-                $file['full_path'] = $data['file_url'];
-                $file['file_ext'] = $ext;
-                $file['file_url'] = $data['file_url'];
-                $file['site_url'] = (sysconf('storage_qiniu_is_https') ? 'https' : 'http') . '://' . sysconf('storage_qiniu_domain') . '/' . $data['file_url'];
-                $file['create_by'] = session('user.id');
-                Data::save('SystemFile', $file, 'md5', ['uptype' => $post['uptype']]);
-            }
-        }
-        // 本地上传或文件不存在
-        if (empty($fileinfo) || ($fileinfo['uptype'] === 'local' && !file_exists($fileinfo['full_path']))) {
-            return $this->result($data, 'NOT_FOUND');
-        }
-        return $this->result($fileinfo, 'IS_FOUND');
-    }
-
-    /**
-     * 生成七牛文件上传Token
-     * @param string $key
-     * @return string
-     */
-    protected function _getQiniuToken($key) {
-        $accessKey = sysconf('storage_qiniu_access_key');
-        $secretKey = sysconf('storage_qiniu_secret_key');
-        $bucket = sysconf('storage_qiniu_bucket');
-        $host = sysconf('storage_qiniu_domain');
-        $protocol = sysconf('storage_qiniu_is_https') ? 'https' : 'http';
-        $time = time() + 3600;
-        empty($key) && exit('param error');
-        $params = [
-            "scope"      => "{$bucket}:{$key}",
-            "deadline"   => $time,
-            "returnBody" => "{\"data\":{\"site_url\":\"{$protocol}://{$host}/$(key)\",\"file_url\":\"$(key)\"}, \"code\": \"SUCCESS\"}",
-        ];
-        $find = array('+', '/');
-        $replace = array('-', '_');
-        $data = str_replace($find, $replace, base64_encode(json_encode($params)));
-        $sign = hash_hmac('sha1', $data, $secretKey, true);
-        return $accessKey . ':' . str_replace($find, $replace, base64_encode($sign)) . ':' . $data;
     }
 
     /**
@@ -125,35 +60,60 @@ class Plugs extends BasicAdmin {
     public function upload() {
         if ($this->request->isPost()) {
             $md5s = str_split($this->request->post('md5'), 16);
-            $filepath = 'upload' . DS . array_shift($md5s);
-            $savename = array_shift($md5s);
-            if (($info = $this->request->file('file')->move($filepath, $savename, true))) {
-                $data = [];
-                $data['uptype'] = 'local';
-                $data['md5'] = $this->request->post('md5', $info->md5());
-                $data['real_name'] = $this->replacePath($info->getInfo('name'));
-                $data['file_name'] = $this->replacePath($info->getFilename());
-                $data['file_path'] = $this->replacePath($info->getPathname());
-                $data['full_path'] = $this->replacePath($info->getRealPath());
-                $data['file_ext'] = $info->getExtension();
-                $data['file_size'] = $info->getSize();
-                $data['file_url'] = $this->replacePath($filepath . '/' . $info->getSaveName());
-                $data['site_url'] = $this->replacePath(pathinfo($this->request->baseFile(true), PATHINFO_DIRNAME) . '/' . $data['file_url']);
-                $data['create_by'] = session('user.id');
-                Data::save('SystemFile', $data, 'md5', ['uptype' => 'local']);
-                return json(['data' => $data, 'code' => 'SUCCESS']);
+            if (($info = $this->request->file('file')->move('upload' . DS . $md5s[0], $md5s[1], true))) {
+                $filename = join('/', $md5s) . '.' . $info->getExtension();
+                $site_url = FileService::getFileUrl($filename, 'local');
+                if ($site_url) {
+                    return json(['data' => ['site_url' => $site_url], 'code' => 'SUCCESS']);
+                }
             }
         }
         return json(['code' => 'ERROR']);
     }
 
     /**
-     * 路径替换
-     * @param type $path
-     * @return type
+     * 文件状态检查
      */
-    protected function replacePath($path) {
-        return str_replace('\\', '/', $path);
+    public function upstate() {
+        $post = $this->request->post();
+        $filename = join('/', str_split($post['md5'], 16)) . '.' . pathinfo($post['filename'], PATHINFO_EXTENSION);
+        // 检查文件是否已上传
+        if (($site_url = FileService::getFileUrl($filename))) {
+            return $this->result(['site_url' => $site_url], 'IS_FOUND');
+        }
+        // 需要上传文件，生成上传配置参数
+        $config = ['uptype' => $post['uptype'], 'file_url' => $filename, 'server' => url('admin/plugs/upload')];
+        switch (strtolower($post['uptype'])) {
+            case 'qiniu':
+                $config['server'] = sysconf('storage_qiniu_is_https') ? 'https://up.qbox.me' : 'http://upload.qiniu.com';
+                $config['token'] = $this->_getQiniuToken($filename);
+                break;
+            case 'local':
+                $config['server'] = url('admin/plugs/upload');
+                break;
+        }
+        return $this->result($config, 'NOT_FOUND');
+    }
+
+    /**
+     * 生成七牛文件上传Token
+     * @param string $key
+     * @return string
+     */
+    protected function _getQiniuToken($key) {
+        empty($key) && exit('param error');
+        $accessKey = sysconf('storage_qiniu_access_key');
+        $secretKey = sysconf('storage_qiniu_secret_key');
+        $bucket = sysconf('storage_qiniu_bucket');
+        $host = sysconf('storage_qiniu_domain');
+        $protocol = sysconf('storage_qiniu_is_https') ? 'https' : 'http';
+        $params = [
+            "scope"      => "{$bucket}:{$key}",
+            "deadline"   => 3600 + time(),
+            "returnBody" => "{\"data\":{\"site_url\":\"{$protocol}://{$host}/$(key)\",\"file_url\":\"$(key)\"}, \"code\": \"SUCCESS\"}",
+        ];
+        $data = str_replace(['+', '/'], ['-', '_'], base64_encode(json_encode($params)));
+        return $accessKey . ':' . str_replace(['+', '/'], ['-', '_'], base64_encode(hash_hmac('sha1', $data, $secretKey, true))) . ':' . $data;
     }
 
     /**

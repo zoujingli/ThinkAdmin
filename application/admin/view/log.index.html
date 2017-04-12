@@ -1,0 +1,48 @@
+{extend name='extra@admin/content' /}
+
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    {if auth("$classuri/del")}
+    <button data-update data-field='delete' data-action='{:url("$classuri/del")}'
+            class='layui-btn layui-btn-small layui-btn-danger'><i class='fa fa-remove'></i> 删除日志
+    </button>
+    {/if}
+</div>
+{/block}
+
+{block name="content"}
+<form onsubmit="return false;" data-auto="" method="POST">
+    <input type="hidden" value="resort" name="action"/>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th class='list-table-check-td'>
+                <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='text-center'>操作者</th>
+            <th class='text-center'>节点</th>
+            <th class='text-center'>行为</th>
+            <th class='text-center'>操作内容</th>
+            <th class='text-center'>操作位置</th>
+            <th class='text-center'>操作时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='text-center'>{$vo.username}</td>
+            <td class='text-center'>{$vo.node}</td>
+            <td class='text-center'>{$vo.action}</td>
+            <td class='text-center'>{$vo.content}</td>
+            <td class='text-center'>{$vo.isp|default=$vo.ip}</td>
+            <td class='text-center'>{$vo.create_at}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page}</p>{/if}
+</form>
+{/block}

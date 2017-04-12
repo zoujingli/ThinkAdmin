@@ -20,10 +20,12 @@
     "pclzip/pclzip": "^2.8",
     "qiniu/php-sdk": "^7.0",
     "zoujingli/wechat-php-sdk": "dev-master",
+	"zoujingli/ip2region": "^1.0",
     "topthink/framework": "^5.0",
     "topthink/think-captcha": "^1.0",
     "topthink/think-mongo": "^1.1",
-    "topthink/think-queue": "^1.0"
+    "topthink/think-queue": "^1.0",
+    "endroid/qrcode": "^1.9"
   },
   "extra": {
     "think-path": "thinkphp"

@@ -17,6 +17,8 @@ class WechatUser extends Common {
     const USER_GET_URL = '/user/get?';
     /* 获取粉丝信息 */
     const USER_INFO_URL = '/user/info?';
+    /* 批量获取粉丝信息 */
+    const USER_BATCH_INFO_URL = '/user/info/batchget?';
     /* 更新粉丝标注 */
     const USER_UPDATEREMARK_URL = '/user/info/updateremark?';
 
@@ -100,6 +102,33 @@ class WechatUser extends Common {
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
+        }
+        return false;
+    }
+
+    /**
+     * 批量获取用户基本信息
+     * @param array $openids 用户oepnid列表(最多支持100个openid)
+     * @param string $lang 指定返回语言
+     * @return bool|mixed
+     */
+    public function getUserBatchInfo(array $openids, $lang = 'zh_CN') {
+        if (!$this->access_token && !$this->getAccessToken()) {
+            return false;
+        }
+        $data = array('user_list' => array());
+        foreach (array_unique($openids) as $openid) {
+            $data['user_list'][] = array('openid' => $openid, 'lang' => $lang);
+        }
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::USER_BATCH_INFO_URL . "access_token={$this->access_token}", Tools::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (isset($json['errcode']) && !isset($json['user_info_list'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json['user_info_list'];
         }
         return false;
     }

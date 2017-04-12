@@ -12,10 +12,11 @@
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
+
+use app\admin\model\NodeModel;
 use think\Config;
 use think\Db;
 use Wechat\Loader;
-use Wechat\WechatReceive;
 
 /**
  * 打印输出数据到文件
@@ -25,14 +26,14 @@ use Wechat\WechatReceive;
  */
 function p($data, $replace = false, $pathname = NULL) {
     is_null($pathname) && $pathname = RUNTIME_PATH . date('Ymd') . '.txt';
-    $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, TRUE) : var_export($data, TRUE)) . "\n";
+    $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true)) . "\n";
     $replace ? file_put_contents($pathname, $str) : file_put_contents($pathname, $str, FILE_APPEND);
 }
 
 /**
  * 获取微信操作对象
  * @param string $type
- * @return WechatReceive
+ * @return \Wechat\WechatReceive|\Wechat\WechatUser
  */
 function & load_wechat($type = '') {
     static $wechat = array();
@@ -72,7 +73,7 @@ function decode($string) {
  * @return bool
  */
 function auth($node) {
-    return true;
+    return NodeModel::checkAuthNode($node);
 }
 
 /**
@@ -81,12 +82,30 @@ function auth($node) {
  * @return string
  */
 function sysconf($name) {
-    static $conf = [];
-    if (empty($conf)) {
-        $list = Db::name('SystemConfig')->select();
-        foreach ($list as $vo) {
-            $conf[$vo['name']] = $vo['value'];
+    static $config = [];
+    if (empty($config)) {
+        foreach (Db::name('SystemConfig')->select() as $vo) {
+            $config[$vo['name']] = $vo['value'];
         }
     }
-    return isset($conf[$name]) ? $conf[$name] : '';
+    return isset($config[$name]) ? $config[$name] : '';
+}
+
+/**
+ * array_column 函数兼容
+ */
+if (!function_exists("array_column")) {
+
+    function array_column(array &$rows, $column_key, $index_key = null) {
+        $data = [];
+        foreach ($rows as $row) {
+            if (empty($index_key)) {
+                $data[] = $row[$column_key];
+            } else {
+                $data[$row[$index_key]] = $row[$column_key];
+            }
+        }
+        return $data;
+    }
+
 }

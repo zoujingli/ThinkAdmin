@@ -14,7 +14,9 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\NodeModel;
 use controller\BasicAdmin;
+use service\LogService;
 use think\Db;
 
 /**
@@ -51,7 +53,10 @@ class Login extends BasicAdmin {
             $user = Db::name('SystemUser')->where('username', $username)->find();
             empty($user) && $this->error('登录账号不存在，请重新输入!');
             ($user['password'] !== md5($password)) && $this->error('登录密码与账号不匹配，请重新输入!');
+            Db::name('SystemUser')->where('id', $user['id'])->update(['login_at' => ['exp', 'now()'], 'login_num' => ['exp', 'login_num+1']]);
             session('user', $user);
+            !empty($user['authorize']) && NodeModel::applyAuthNode();
+            LogService::write('登录系统', '用户登录系统成功!');
             $this->success('登录成功，正在进入系统...', '@admin');
         }
     }
@@ -60,7 +65,9 @@ class Login extends BasicAdmin {
      * 退出登录
      */
     public function out() {
+        LogService::write('退出系统', '用户退出系统成功!');
         session('user', null);
+        session_destroy();
         $this->success('退出登录成功！', '@admin/login');
     }
 

@@ -7,7 +7,6 @@
             <th style="width:20px"></th>
             <th class='text-left'>节点</th>
             <th class='text-left'></th>
-            <th class='text-left'></th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -21,7 +20,7 @@
                 &nbsp;<input class='layui-input layui-input-inline title-input' style='height:28px;line-height:28px;width:auto' name='title.{$vo.node}' value="{$vo.title}"/>
                 {/if}
             </td>
-            <td class='text-left' style="width:100px">
+            <td class='text-left nowrap'>
                 {if auth("$classuri/save")}
                 <label>
                     {if substr_count($vo['node'],'/')==2}
@@ -30,13 +29,10 @@
                     {else /}
                     <input name='is_auth.{$vo.node}' class="check-box" type='checkbox' value='1'/>
                     {/notempty}
-                    权限控制
+                    加入权限控制
+                    {/if}
                 </label>
-                {/if}
-                {/if}
-            </td>
-            <td class='text-left'>
-                {if auth("$classuri/save")}
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 <label>
                     {if substr_count($vo['node'],'/')==2}
                     {notempty name='vo.is_menu'}
@@ -49,7 +45,7 @@
                 </label>
                 {/if}
             </td>
-            <td></td>
+            <td style="width:100%"></td>
         </tr>
         {/foreach}
     </tbody>

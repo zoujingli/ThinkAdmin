@@ -14,11 +14,12 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\NodeModel;
 use controller\BasicAdmin;
-use library\Data;
-use library\Tools;
+use service\DataService;
+use service\ToolsService;
 use think\Db;
-use think\response\View;
+use think\View;
 
 /**
  * 后台入口
@@ -34,8 +35,9 @@ class Index extends BasicAdmin {
      * @return View
      */
     public function index() {
-        $list = Db::name('SystemMenu')->field('title,id,pid,url,icon')->order('sort asc,id asc')->where('status', '1')->select();
-        $menus = $this->_filter_menu(Tools::arr2tree($list));
+        NodeModel::applyAuthNode();
+        $list = Db::name('SystemMenu')->where('status', '1')->order('sort asc,id asc')->select();
+        $menus = $this->_filterMenu(ToolsService::arr2tree($list));
         $this->assign('title', '后台管理');
         $this->assign('menus', $menus);
         return view();
@@ -46,10 +48,10 @@ class Index extends BasicAdmin {
      * @param array $menus
      * @return array
      */
-    private function _filter_menu($menus) {
+    private function _filterMenu($menus) {
         foreach ($menus as $key => &$menu) {
             if (!empty($menu['sub'])) {
-                $menu['sub'] = $this->_filter_menu($menu['sub']);
+                $menu['sub'] = $this->_filterMenu($menu['sub']);
             }
             if (!empty($menu['sub'])) {
                 $menu['url'] = '#';
@@ -72,11 +74,12 @@ class Index extends BasicAdmin {
         $_version = Db::query('select version() as ver');
         $version = array_pop($_version);
         $this->assign('mysql_ver', $version['ver']);
-        if (session('user.username') === 'admin' && session('user.password') === '662af1cd1976f09a9f8cecc868ccc0a2') {
+        if (session('user.username') === 'admin' && session('user.password') === '21232f297a57a5a743894a0e4a801fc3') {
+            $url = url('admin/index/pass') . '?id=' . session('user.id');
             $alert = [
                 'type'    => 'danger',
                 'title'   => '安全提示',
-                'content' => '超级管理员默认密码未修改，建议马上<a href="javascript:void(0)">修改</a>！'
+                'content' => "超级管理员默认密码未修改，建议马上<a href='javascript:void(0)' data-modal='{$url}'>修改</a>！"
             ];
             $this->assign('alert', $alert);
             $this->assign('title', '后台首页');
@@ -88,6 +91,9 @@ class Index extends BasicAdmin {
      * 修改密码
      */
     public function pass() {
+        if (in_array('10000', explode(',', $this->request->post('id')))) {
+            $this->error('系统超级账号禁止操作！');
+        }
         if (intval($this->request->request('id')) !== intval(session('user.id'))) {
             $this->error('访问异常！');
         }
@@ -103,7 +109,7 @@ class Index extends BasicAdmin {
             if (md5($data['oldpassword']) !== $user['password']) {
                 $this->error('旧密码验证失败，请重新输入！');
             }
-            if (Data::save('SystemUser', ['id' => session('user.id'), 'password' => md5($data['password'])])) {
+            if (DataService::save('SystemUser', ['id' => session('user.id'), 'password' => md5($data['password'])])) {
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {
                 $this->error('密码修改失败，请稍候再试！');
@@ -115,6 +121,9 @@ class Index extends BasicAdmin {
      * 修改资料
      */
     public function info() {
+        if (in_array('10000', explode(',', $this->request->post('id')))) {
+            $this->error('系统超级账号禁止操作！');
+        }
         if (intval($this->request->request('id')) === intval(session('user.id'))) {
             return $this->_form('SystemUser', 'user/form');
         } else {

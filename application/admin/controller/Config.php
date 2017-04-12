@@ -15,7 +15,7 @@
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
-use library\Data;
+use service\DataService;
 
 /**
  * 后台参数配置控制器
@@ -47,8 +47,7 @@ class Config extends BasicAdmin {
         } else {
             $data = $this->request->post();
             foreach ($data as $key => $vo) {
-                $_data = ['name' => $key, 'value' => $vo];
-                Data::save($this->table, $_data, 'name');
+                DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
             }
             $this->success('数据修改成功！', '');
         }
