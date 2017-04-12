@@ -23,7 +23,7 @@ return [
     'encodingaeskey' => 'eHSmk5yJN2vSsuYscC8aHIiXnrgXZSKA4MRL9csEwTv',
     'mch_id'         => '1332187001',
     'partnerkey'     => 'A82DC5BD1F3359081049C568D8502BC5',
-    'ssl_cer'        => '',
-    'ssl_key'        => '',
+    'ssl_cer'        => __DIR__ . '/cert/apiclient_cert.pem',
+    'ssl_key'        => __DIR__ . '/cert/apiclient_key.pem',
     'cachepath'      => RUNTIME_PATH . 'wechat/pay',
 ];
