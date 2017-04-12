@@ -1,29 +1,25 @@
 {extend name="extra@admin/content"}
 
 {block name="content"}
-<form onsubmit="return false;" action="{:request()->url(true)}" data-auto="true" method="post" class='form-horizontal'
-      style='padding-top:20px'>
+<form onsubmit="return false;" action="{:request()->url(true)}" data-auto="true" method="post"
+      class='form-horizontal' style='padding-top:20px'>
 
     <div class="form-group">
-        <div class="col-xs-8 col-xs-offset-1 text-center">
-            <h1 style="font-size:24px">商户支付配置</h1>
-            <div class="hr-line-dashed"></div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商户ID</label>
+        <label class="col-sm-2 control-label">mch_id(商户ID)</label>
         <div class='col-sm-7'>
             <input type='tel' placeholder="请输入10位商户MCH_ID（必填）" title='请输入10位数字商户MCH_ID'
                    required="required" pattern="^\d{10}$" maxlength='10' name='wechat_mch_id'
                    value='{:sysconf("wechat_mch_id")}' class='layui-input'/>
+            <p class="help-block">
+                注意：商户ID必需与微信接口配置公众号APPID对应，否则无法使用支付功能！
+            </p>
         </div>
     </div>
 
     <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">商户密钥</label>
+        <label class="col-sm-2 control-label">PartnerKey(商户密钥)</label>
         <div class='col-sm-7'>
             <input type='password' placeholder="请输入32位商户支付密钥（必填）" required title='请输入32位商户支付密钥'
                    pattern="^.{32}$" maxlength="32" name='wechat_partnerkey'
@@ -34,7 +30,7 @@
     <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">支付证书</label>
+        <label class="col-sm-2 control-label">Cert(支付证书)</label>
         <div class="col-sm-7">
             <input type="hidden" name="cert_zip_md5" value="" onchange="this.value=$(this).attr('data-md5')"/>
             <div data-file="one" data-type="zip" data-field="cert_zip_md5" data-uptype="local"
