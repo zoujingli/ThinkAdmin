@@ -46,7 +46,7 @@
 
     <div class="form-group">
         <label class="col-sm-2 control-label">Cert(双向证书)</label>
-        <div class="col-sm-8">
+        <div class="col-sm-8" style="min-width:540px">
             <input title="application_key.pem" type="hidden" name="wechat_cert_key_md5">
             <input title="application_cert.pem" type="hidden" name="wechat_cert_cert_md5">
             <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5"
@@ -106,6 +106,7 @@
                     if (ret.code === 2) {
                         ret.url = '__STATIC__/theme/default/img/wechat/qrc_payed.jpg';
                         timer && window.clearInterval(timer), timer = null;
+                        $('[refund-qrc-test]').removeClass('hide');
                     }
                     if (isShow) {
                         $('.pay-qrc-test').attr('src', ret.url)
