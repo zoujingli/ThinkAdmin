@@ -15,6 +15,7 @@
 namespace app\wechat\controller;
 
 use controller\BasicAdmin;
+use think\Db;
 
 /**
  * 微信粉丝管理
@@ -25,8 +26,16 @@ use controller\BasicAdmin;
  */
 class Fans extends BasicAdmin {
 
-    public function index() {
+    protected $table='WechatFans';
 
+    public function index() {
+        $this->title='微信粉丝管理';
+        $db = Db::name($this->table);
+        $get = $this->request->get();
+        if(isset($get['nickname']) && $get['nickname']!==''){
+            $db->where('nickname','like',"%{$get['nickname']}%");
+        }
+        return parent::_list($db);
     }
 
 }
