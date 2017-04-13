@@ -26,7 +26,26 @@ use think\Controller;
 class Notify extends Controller {
 
     public function index() {
+        // 实例支付接口
+        $pay = &load_wechat('Pay');
 
+        // 获取支付通知
+        $notifyInfo = $pay->getNotify();
+        p($notifyInfo);
+
+        // 支付通知数据获取失败
+        if ($notifyInfo === FALSE) {
+            // 接口失败的处理
+            echo $pay->errMsg;
+        } else {
+            //支付通知数据获取成功
+            if ($notifyInfo['result_code'] == 'SUCCESS' && $notifyInfo['return_code'] == 'SUCCESS') {
+                // 支付状态完全成功，可以更新订单的支付状态了
+                // @todo 这里去完成你的订单状态修改操作
+                // 回复xml，replyXml方法是终态方法
+                $pay->replyXml(['return_code' => 'SUCCESS', 'return_msg' => 'DEAL WITH SUCCESS']);
+            }
+        }
     }
 
 }
