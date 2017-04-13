@@ -114,7 +114,7 @@
                             type: 1, title: false, closeBtn: 1, shadeClose: true,
                             content: '<img class="pay-qrc-test" src="' + ret.url + '"/>'
                             + '<p style="text-align:center">请用微信扫码测试支付!</p>'
-                            + '<p class="refund-qrc-test"><a class="btn btn-xs btn-warning">退款测试</a></p>',
+                            + '<p class="refund-qrc-test hide"><a class="btn btn-xs btn-warning">退款测试</a></p>',
                             end: function () {
                                 isShow = false;
                                 timer && window.clearInterval(timer), timer = null;
@@ -122,6 +122,9 @@
                             success: function (layero, index) {
                                 isShow = true;
                                 timer = setInterval(payTest, 1000);
+                                if(ret.code===2){
+                                    $('[refund-qrc-test]').removeClass('hide');
+                                }
                             }
                         });
                     }
@@ -132,7 +135,7 @@
 
         $('[data-pay-test]').on('click', payTest);
 
-        $('body').on('click', '[refund-qrc-test]', function () {
+        $('body').on('click', '[refund-qrc-test] a', function () {
             $.msg.success('退款功能开发中哦！');
         });
     });
