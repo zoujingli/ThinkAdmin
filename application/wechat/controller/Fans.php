@@ -15,6 +15,7 @@
 namespace app\wechat\controller;
 
 use controller\BasicAdmin;
+use service\WechatService;
 use think\Db;
 
 /**
@@ -26,8 +27,16 @@ use think\Db;
  */
 class Fans extends BasicAdmin {
 
+    /**
+     * 定义当前默认数据表
+     * @var string
+     */
     protected $table='WechatFans';
 
+    /**
+     * 显示粉丝列表
+     * @return array|string
+     */
     public function index() {
         $this->title='微信粉丝管理';
         $db = Db::name($this->table);
@@ -36,6 +45,17 @@ class Fans extends BasicAdmin {
             $db->where('nickname','like',"%{$get['nickname']}%");
         }
         return parent::_list($db);
+    }
+
+    /**
+     * 同步粉丝列表
+     */
+    public function sync(){
+        if(WechatService::syncAllFans('')){
+            $this->success('同步获取所有粉丝成功！','');
+        }else{
+            $this->error('同步获取粉丝失败，请稍候再试！');
+        }
     }
 
 }
