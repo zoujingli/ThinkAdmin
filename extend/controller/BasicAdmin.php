@@ -86,6 +86,46 @@ class BasicAdmin extends Controller {
     }
 
     /**
+     * 表单默认操作
+     * @param Query $db 数据库查询对象
+     * @param string $tpl 显示模板名字
+     * @param string $pk 更新主键规则
+     * @param array $where 查询规则
+     * @param array $data 扩展数据
+     * @return array|string
+     */
+    protected function _form($db = null, $tpl = null, $pk = null, $where = [], $data = []) {
+        if (is_null($db)) {
+            $db = Db::name($this->table);
+        } elseif (is_string($db)) {
+            $db = Db::name($db);
+        }
+        if (is_null($pk)) {
+            $pk = $db->getPk();
+        }
+        $pk_value = input($pk, isset($where[$pk]) ? $where[$pk] : (isset($data[$pk]) ? $data[$pk] : ''));
+        $vo = $data;
+        if ($this->request->isPost()) { // Save Options
+            $vo = array_merge(input('post.'), $data);
+            $this->_callback('_form_filter', $vo);
+            $result = DataService::save($db, $vo, $pk, $where);
+            if (false !== $this->_callback('_form_result', $result)) {
+                $result !== false ? $this->success('恭喜，保存成功哦！', '') : $this->error('保存失败，请稍候再试！');
+            }
+            return $result;
+        }
+        if ($pk_value !== '') { // Edit Options
+            !empty($pk_value) && $db->where($pk, $pk_value);
+            !empty($where) && $db->where($where);
+            $vo = array_merge($data, (array)$db->find());
+        }
+        $this->_callback('_form_filter', $vo);
+        $this->assign('vo', $vo);
+        empty($this->title) or $this->assign('title', $this->title);
+        return is_null($tpl) ? $vo : $this->fetch($tpl);
+    }
+
+    /**
      * 列表集成处理方法
      * @param Query $db 数据库查询对象
      * @param bool $is_page 是启用分页
@@ -133,46 +173,6 @@ class BasicAdmin extends Controller {
         !empty($this->title) && $this->assign('title', $this->title);
         $is_display && exit($this->fetch('', $result));
         return $result;
-    }
-
-    /**
-     * 表单默认操作
-     * @param Query $db 数据库查询对象
-     * @param string $tpl 显示模板名字
-     * @param string $pk 更新主键规则
-     * @param array $where 查询规则
-     * @param array $data 扩展数据
-     * @return array|string
-     */
-    protected function _form($db = null, $tpl = null, $pk = null, $where = [], $data = []) {
-        if (is_null($db)) {
-            $db = Db::name($this->table);
-        } elseif (is_string($db)) {
-            $db = Db::name($db);
-        }
-        if (is_null($pk)) {
-            $pk = $db->getPk();
-        }
-        $pk_value = input($pk, isset($where[$pk]) ? $where[$pk] : (isset($data[$pk]) ? $data[$pk] : ''));
-        $vo = $data;
-        if ($this->request->isPost()) { // Save Options
-            $vo = array_merge(input('post.'), $data);
-            $this->_callback('_form_filter', $vo);
-            $result = DataService::save($db, $vo, $pk, $where);
-            if (false !== $this->_callback('_form_result', $result)) {
-                $result !== false ? $this->success('恭喜，保存成功哦！', '') : $this->error('保存失败，请稍候再试！');
-            }
-            return $result;
-        }
-        if ($pk_value !== '') { // Edit Options
-            !empty($pk_value) && $db->where($pk, $pk_value);
-            !empty($where) && $db->where($where);
-            $vo = array_merge($data, (array)$db->find());
-        }
-        $this->_callback('_form_filter', $vo);
-        $this->assign('vo', $vo);
-        empty($this->title) or $this->assign('title', $this->title);
-        return is_null($tpl) ? $vo : $this->fetch($tpl);
     }
 
     /**
