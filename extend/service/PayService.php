@@ -49,7 +49,7 @@ class PayService {
      * @return false|string
      */
     public static function createWechatPayQrc(WechatPay $pay, $order_no, $fee, $title, $from = 'wechat') {
-        $prepayid = self::_createWechatPrepayid($pay, null, $order_no, $fee, $title, 'NATIVE', $from);
+        $prepayid = self::createWechatPrepayid($pay, null, $order_no, $fee, $title, 'NATIVE', $from);
         if ($prepayid === false) {
             return false;
         }
@@ -75,7 +75,7 @@ class PayService {
      * @return bool|array
      */
     public static function createWechatPayJsPicker(WechatPay $pay, $openid, $order_no, $fee, $title) {
-        if (($prepayid = self::_createWechatPrepayid($pay, $openid, $order_no, $fee, $title, 'JSAPI')) === false) {
+        if (($prepayid = self::createWechatPrepayid($pay, $openid, $order_no, $fee, $title, 'JSAPI')) === false) {
             return false;
         }
         return $pay->createMchPay($prepayid);
@@ -119,7 +119,7 @@ class PayService {
      * @param string $from 订单来源
      * @return bool|string
      */
-    protected static function _createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'shop') {
+    public static function createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'shop') {
         $map = ['order_no' => $order_no, 'is_pay' => '1', 'expires_in' => time(), 'appid' => $pay->appid];
         $where = 'appid=:appid and order_no=:order_no and (is_pay=:is_pay or expires_in>:expires_in)';
         $prepayinfo = Db::name('WechatPayPrepayid')->where($where, $map)->find();
