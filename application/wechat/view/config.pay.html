@@ -103,12 +103,13 @@
         function payTest() {
             $.form.load('{:url("pay")}?action=payqrc', {}, 'get', function (ret) {
                 if (ret.code === 1 || ret.code === 2) {
-                    if(ret.code===2){
+                    if (ret.code === 2) {
                         ret.url = '__STATIC__/theme/default/img/wechat/qrc_payed.jpg';
+                        timer && window.clearInterval(timer), timer = null;
                     }
-                    if(isShow){
-                        $('.pay-qrc-test').attr('src',ret.url)
-                    }else{
+                    if (isShow) {
+                        $('.pay-qrc-test').attr('src', ret.url)
+                    } else {
                         layer.open({
                             type: 1, title: false, closeBtn: 1, shadeClose: true,
                             content: '<img class="pay-qrc-test" onerror="this.src=__STATIC__/theme/default/img/wechat/qrc_payed.jpg" src="' + ret.url + '"/>'
@@ -116,11 +117,11 @@
                             + '<p class="refund-qrc-test"><a class="btn btn-xs btn-warning">退款测试</a></p>',
                             end: function () {
                                 isShow = false;
-                                timer && window.clearInterval(timer);
+                                timer && window.clearInterval(timer), timer = null;
                             },
                             success: function (layero, index) {
                                 isShow = true;
-                                timer = setInterval(payTest,1000);
+                                timer = setInterval(payTest, 1000);
                             }
                         });
                     }
@@ -128,6 +129,7 @@
                 return false;
             });
         }
+
         $('[data-pay-test]').on('click', payTest);
     });
 
