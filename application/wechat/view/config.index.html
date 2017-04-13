@@ -51,7 +51,7 @@
         <label class="col-sm-2 col-xs-3 control-label">Token(令牌)</label>
         <div class='col-sm-8'>
             <input type="text" name="wechat_token" required="required" title="请输入接口Token(令牌)"
-                   placeholder="请输入接口Token（令牌）" value="{:sysconf('wechat_token')}"
+                   placeholder="Token（令牌）" value="{:sysconf('wechat_token')}"
                    class="layui-input">
             <p class="help-block">
                 公众号平台与系统对接认证Token，请优先填写此参数并保存，然后再在微信公众号平台操作对接。
@@ -78,7 +78,6 @@
     <div class="col-sm-9">
         <div class="layui-form-item text-center">
             <button class="layui-btn" type="submit">保存配置</button>
-
         </div>
     </div>
 </form>
