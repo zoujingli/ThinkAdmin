@@ -81,14 +81,18 @@ class Config extends BasicAdmin {
                     break;
                 // 检查订单是否支付成功
                 case 'refund':
+
                     $order_no = session('pay-test-order-no');
                     if (empty($order_no)) {
-                        $this->error('指定测试订单号不存在，请重新开始支付测试！');
+                        $this->error('测试订单号不存在，请重新开始支付测试！');
                     }
                     if (!PayService::isPay($order_no)) {
-                        $this->error('指定测试订单未支付或未收到微信支付通过！');
+                        $this->error('测试订单未支付或未收到微信支付通过！');
                     }
                     $pay = &load_wechat('pay');
+                    if (!file_exists($pay->config['ssl_cer']) || !file_exists($pay->config['ssl_key'])) {
+                        $this->error('微信支付双向证书异常，无法完成退款操作！');
+                    }
                     $refund_no = DataService::createSequence(10, 'wechat-pay-test');
                     if (false !== PayService::putWechatRefund($pay, $order_no, 1, $refund_no)) {
                         $this->success('操作退款成功！', '');
