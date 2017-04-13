@@ -65,27 +65,35 @@ class Config extends BasicAdmin {
                     $order_no = session('pay-test-order-no');
                     if (empty($order_no)) {
                         $order_no = DataService::createSequence(10, 'wechat-pay-test');
-                        session('pay-test-order-no',$order_no);
+                        session('pay-test-order-no', $order_no);
                     }
                     // 该订单号已经支付
-                    if(PayService::isPay($order_no)){
-                        return json(['code'=>2,'order_no'=>$order_no]);
+                    if (PayService::isPay($order_no)) {
+                        return json(['code' => 2, 'order_no' => $order_no]);
                     }
                     // 订单号未支付，生成支付二维码URL
                     $url = PayService::createWechatPayQrc($pay, $order_no, 1, '扫码支付测试！');
                     if ($url !== false) {
-                        return json(['code'=>1,'url'=>$url,'order_no'=>$order_no]);
+                        return json(['code' => 1, 'url' => $url, 'order_no' => $order_no]);
                     }
                     // 生成支付二维码URL失败
                     $this->error("生成支付二维码失败，{$pay->errMsg}[{$pay->errCode}]");
                     break;
                 // 检查订单是否支付成功
-                case 'check':
-                    $order_no = $this->request->get('order_no');
-                    if (PayService::isPay($order_no)) {
-                        $this->success('已经支付成功！', '');
+                case 'refund':
+                    $order_no = session('pay-test-order-no');
+                    if (empty($order_no)) {
+                        $this->error('指定测试订单号不存在，请重新开始支付测试！');
                     }
-                    $this->error('订单尚未支付！');
+                    if (!PayService::isPay($order_no)) {
+                        $this->error('指定测试订单未支付或未收到微信支付通过！');
+                    }
+                    $pay = &load_wechat('pay');
+                    $refund_no = DataService::createSequence(10, 'wechat-pay-test');
+                    if (false !== PayService::putWechatRefund($pay, $order_no, 1, $refund_no)) {
+                        $this->success('操作退款成功！', '');
+                    }
+                    $this->error("操作退款失败，{$pay->errMsg}[{$pay->errCode}]");
                     break;
                 default:
                     $this->assign('title', '微信支付配置');

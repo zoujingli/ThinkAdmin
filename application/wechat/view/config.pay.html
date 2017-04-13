@@ -106,7 +106,6 @@
                     if (ret.code === 2) {
                         ret.url = '__STATIC__/theme/default/img/wechat/qrc_payed.jpg';
                         timer && window.clearInterval(timer), timer = null;
-                        $('[refund-qrc-test]').removeClass('hide');
                     }
                     if (isShow) {
                         $('.pay-qrc-test').attr('src', ret.url)
@@ -115,29 +114,27 @@
                             type: 1, title: false, closeBtn: 1, shadeClose: true,
                             content: '<img class="pay-qrc-test" src="' + ret.url + '"/>'
                             + '<p style="text-align:center">请用微信扫码测试支付!</p>'
-                            + '<p class="refund-qrc-test hide"><a class="btn btn-xs btn-warning">退款测试</a></p>',
+                            + '<p class="refund-qrc-test"><a class="btn btn-xs btn-warning">退款测试</a></p>',
                             end: function () {
-                                isShow = false;
                                 timer && window.clearInterval(timer), timer = null;
+                                isShow = false;
                             },
                             success: function (layero, index) {
                                 isShow = true;
-                                timer = setInterval(payTest, 1000);
-                                if(ret.code===2){
-                                    $('[refund-qrc-test]').removeClass('hide');
-                                }
+                                timer = setInterval(payTest, 3000);
                             }
                         });
                     }
                 }
                 return false;
-            });
+            }, !isShow);
         }
 
         $('[data-pay-test]').on('click', payTest);
 
-        $('body').on('click', '[refund-qrc-test] a', function () {
-            $.msg.success('退款功能开发中哦！');
+        /*! 发起退款操作 */
+        $('body').on('click', '.refund-qrc-test a', function () {
+            $.form.load('{:url("pay")}?action=refund');
         });
     });
 
