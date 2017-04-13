@@ -132,7 +132,7 @@
 
         $('[data-pay-test]').on('click', payTest);
 
-        $('[refund-qrc-test]').on('click',function(){
+        $('body').on('click', '[refund-qrc-test]', function () {
             $.msg.success('退款功能开发中哦！');
         });
     });
