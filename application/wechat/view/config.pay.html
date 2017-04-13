@@ -6,7 +6,7 @@
 
     <div class="form-group">
         <label class="col-sm-2 control-label">MCH_ID(商户ID)</label>
-        <div class='col-sm-7'>
+        <div class='col-sm-8'>
             <input type='tel' placeholder="请输入10位商户MCH_ID（必填）" title='请输入10位数字商户MCH_ID'
                    required="required" pattern="^\d{10}$" maxlength='10' name='wechat_mch_id'
                    value='{:sysconf("wechat_mch_id")}' class='layui-input'/>
@@ -20,7 +20,7 @@
 
     <div class="form-group">
         <label class="col-sm-2 control-label">PartnerKey(商户密钥)</label>
-        <div class='col-sm-7'>
+        <div class='col-sm-8'>
             <input type='password' placeholder="请输入32位商户支付密钥（必填）" required title='请输入32位商户支付密钥'
                    pattern="^.{32}$" maxlength="32" name='wechat_partnerkey'
                    value='{:sysconf("wechat_partnerkey")}' class='layui-input'/>
