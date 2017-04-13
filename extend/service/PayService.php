@@ -46,22 +46,22 @@ class PayService {
      * @param int $fee 支付金额
      * @param string $title 订单标题
      * @param string $from 订单来源
-     * @return bool
+     * @return false|string
      */
     public static function createWechatPayQrc(WechatPay $pay, $order_no, $fee, $title, $from = 'wechat') {
         $prepayid = self::_createWechatPrepayid($pay, null, $order_no, $fee, $title, 'NATIVE', $from);
         if ($prepayid === false) {
             return false;
         }
-        $filename = 'wechat/payqrc/' . join('/', str_split(md5($prepayid), 16)) . '.png';
-        if (!FileService::hasFile($filename)) {
+        $filename = 'wechat/qrc/' . join('/', str_split(md5($prepayid), 16)) . '.png';
+        if (!FileService::hasFile($filename, 'local')) {
             $qrCode = new QrCode();
             $qrCode->setText($prepayid);
-            FileService::save($filename, $qrCode->get());
+            if (null === FileService::save($filename, $qrCode->get(), 'local')) {
+                return false;
+            }
         }
-        ob_clean();
-        header("Content-type: image/png");
-        return FileService::readFile($filename);
+        return FileService::getFileUrl($filename, 'local');
     }
 
 

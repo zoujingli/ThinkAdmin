@@ -117,8 +117,9 @@ class FileService {
     static public function readFile($filename, $storage = null) {
         switch (empty($storage) ? sysconf('storage_type') : $storage) {
             case 'local':
-                if (file_exists(ROOT_PATH . 'public/upload/' . $filename)) {
-                    return file_get_contents(ROOT_PATH . 'public/upload/' . $filename);
+                $filepath = ROOT_PATH . 'public/upload/' . $filename;
+                if (file_exists($filepath)) {
+                    return file_get_contents($filepath);
                 }
             case 'qiniu':
                 $auth = new Auth(sysconf('storage_qiniu_access_key'), sysconf('storage_qiniu_secret_key'));
@@ -133,13 +134,13 @@ class FileService {
      * @param string $filename
      * @param string $bodycontent
      * @param string|null $file_storage
-     * @return array|null
+     * @return array|false
      */
     static public function save($filename, $bodycontent, $file_storage = null) {
         $type = empty($file_storage) ? sysconf('storage_type') : $file_storage;
         if (!method_exists(__CLASS__, $type)) {
             Log::error("保存存储失败，调用{$type}存储引擎不存在！");
-            return null;
+            return false;
         }
         return self::$type($filename, $bodycontent);
     }
@@ -153,7 +154,7 @@ class FileService {
     static public function local($filename, $bodycontent) {
         $filepath = ROOT_PATH . 'public/upload/' . $filename;
         try {
-            !is_dir(dirname($filepath)) && mkdir(dirname($filepath), '0755', true);
+            !file_exists(dirname($filepath)) && mkdir(dirname($filepath), '0755', true);
             if (file_put_contents($filepath, $bodycontent)) {
                 return [
                     'file' => $filepath,
