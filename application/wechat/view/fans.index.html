@@ -53,7 +53,7 @@
             <td class='text-left'>
                 <img style="width:25px;height:25px;border-radius:50%;margin-right:10px" alt=""
                      onerror="this.src='__STATIC__/theme/default/img/image.png'" src="{$vo.headimgurl}"/>
-                {$vo.nickname}
+                {$vo.nickname|default="<span style='color:#999'>未设置微信昵称</span>"}
             </td>
             <td class='text-center'>{$vo.sex==1?'男':($vo.sex==2?'女':'未知')}</td>
             <td class='text-center'>{$vo.country|default='<span style="color:#999">未设置区域信息</span>'}{$vo.province}{$vo.city}</td>
