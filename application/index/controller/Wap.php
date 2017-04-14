@@ -55,7 +55,7 @@ class Wap extends BasicWechat {
     public function payjs() {
         $this->oAuth();
         $this->assign('jsSign', load_wechat('script')->getJsSign($this->url));
-        switch ($this->request->get('options')) {
+        switch ($this->request->get('action')) {
             case 'options':
                 $pay = &load_wechat('pay');
                 $order_no = session('pay-test-order-no');
