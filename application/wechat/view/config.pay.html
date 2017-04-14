@@ -16,11 +16,11 @@
 {/block}
 
 {block name="content"}
-<form onsubmit="return false;" action="{:request()->url(true)}" data-auto="true" method="post"
+<form onsubmit="return false;" action="{$_url_}" data-auto="true" method="post"
       class='form-horizontal' style='padding-top:20px'>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">MCH_ID(商户ID)</label>
+        <label class="col-sm-2 col-xs-3 control-label">MCH_ID <span class="nowrap">(商户ID)</span></label>
         <div class='col-sm-8'>
             <input type='tel' placeholder="请输入10位商户MCH_ID（必填）" title='请输入10位数字商户MCH_ID'
                    required="required" pattern="^\d{10}$" maxlength='10' name='wechat_mch_id'
@@ -34,7 +34,7 @@
     <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">PartnerKey(商户密钥)</label>
+        <label class="col-sm-2 col-xs-3 control-label">PartnerKey <span class="nowrap">(商户密钥)</span></label>
         <div class='col-sm-8'>
             <input type='password' placeholder="请输入32位商户支付密钥（必填）" required title='请输入32位商户支付密钥'
                    pattern="^.{32}$" maxlength="32" name='wechat_partnerkey'
@@ -48,8 +48,8 @@
     <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Cert(双向证书)</label>
-        <div class="col-sm-8" style="min-width:540px">
+        <label class="col-sm-2 col-xs-3 control-label">Apiclient <span class="nowrap">(双向证书)</span></label>
+        <div class="col-sm-8">
             <input title="apiclient_key.pem" type="hidden" name="wechat_cert_key_md5">
             <input title="apiclient_cert.pem" type="hidden" name="wechat_cert_cert_md5">
             <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5"
