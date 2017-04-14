@@ -70,6 +70,7 @@ class Wap extends BasicWechat {
                 if ($options === false) {
                     $options = ['code' => 3, 'msg' => "创建支付失败，{$pay->errMsg}[$pay->errCode]"];
                 }
+                $options['order_no'] = $order_no;
                 return json($options);
             case 'reset':
                 session('pay-test-order-no', null);
