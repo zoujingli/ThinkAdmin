@@ -17,7 +17,7 @@
     <p class="orderno">订单号：13412341234</p>
     <hr/>
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-offset-2 col-sm-10" id="test">
             <button type="submit" class="btn btn-success">立即支付</button>
         </div>
     </div>
@@ -35,7 +35,19 @@
     wx.ready(function () {
         $('[type="submit"]').on('click', function () {
             $.get('{:url("payjs")}', {'action': 'options'}, function (ret) {
+                if (ret.code && ret.code === 2) {
+                    $('#test').append('<button type="button" class="btn btn-success">已支付，刷新支付号</button>');
+                    return $('[type="submit"]').remove();
+                }
+                if (ret.code && ret.code === 3) {
+                    return alert(ret.msg);
+                }
                 wx.chooseWXPay(ret);
+            });
+        });
+        $('body').on('click', '[type="button"]', function () {
+            $.get('{:url("payqrc")}', {'action': 'reset'}, function () {
+                window.location.reload();
             });
         });
     });

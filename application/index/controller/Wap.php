@@ -67,6 +67,9 @@ class Wap extends BasicWechat {
                 }
                 $pay = &load_wechat('pay');
                 $options = PayService::createWechatPayJsPicker($pay, $this->openid, $order_no, 1, 'JSAPI支付测试');
+                if ($options === false) {
+                    $options = ['code' => 3, 'msg' => "创建支付失败，{$pay->errMsg}[$pay->errCode]"];
+                }
                 return json($options);
             case 'reset':
                 session('pay-test-order-no', null);
