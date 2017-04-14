@@ -39,6 +39,9 @@
             <input type='password' placeholder="请输入32位商户支付密钥（必填）" required title='请输入32位商户支付密钥'
                    pattern="^.{32}$" maxlength="32" name='wechat_partnerkey'
                    value='{:sysconf("wechat_partnerkey")}' class='layui-input'/>
+            <p class="help-block">
+                微信支付商户密钥需要在商户平台配置，必需填写密钥之后才能正常使用微信支付功能。
+            </p>
         </div>
     </div>
 
