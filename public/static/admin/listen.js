@@ -31,7 +31,7 @@ define(['jquery', 'admin.plugs'], function () {
     });
 
     /*! 注册 data-serach 表单搜索行为 */
-    this.$body.on('submit', 'form[data-search]', function () {
+    this.$body.on('submit', 'form.form-search', function () {
         var split = this.action.indexOf('?') === -1 ? '?' : '&';
         if ((this.method || 'get').toLowerCase() === 'get') {
             window.location.href = '#' + parseUri(this.action + split + $(this).serialize());

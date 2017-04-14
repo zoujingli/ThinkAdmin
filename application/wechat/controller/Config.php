@@ -15,6 +15,9 @@ namespace app\wechat\controller;
 
 use controller\BasicAdmin;
 use service\DataService;
+use service\PayService;
+use think\Db;
+use Wechat\WechatService;
 
 /**
  * 微信配置管理
@@ -54,18 +57,61 @@ class Config extends BasicAdmin {
      */
     public function pay() {
         if ($this->request->isGet()) {
-            $this->assign('title', '微信支付配置');
-            return view();
+            switch ($this->request->get('action')) {
+                // 生成测试支付二维码
+                case 'payqrc':
+                    $pay = &load_wechat('pay');
+                    // 生成订单号
+                    $order_no = session('pay-test-order-no');
+                    if (empty($order_no)) {
+                        $order_no = DataService::createSequence(10, 'wechat-pay-test');
+                        session('pay-test-order-no', $order_no);
+                    }
+                    // 该订单号已经支付
+                    if (PayService::isPay($order_no)) {
+                        return json(['code' => 2, 'order_no' => $order_no]);
+                    }
+                    // 订单号未支付，生成支付二维码URL
+                    $url = PayService::createWechatPayQrc($pay, $order_no, 1, '扫码支付测试！');
+                    if ($url !== false) {
+                        return json(['code' => 1, 'url' => $url, 'order_no' => $order_no]);
+                    }
+                    // 生成支付二维码URL失败
+                    $this->error("生成支付二维码失败，{$pay->errMsg}[{$pay->errCode}]");
+                    break;
+                // 检查订单是否支付成功
+                case 'refund':
+                    $order_no = session('pay-test-order-no');
+                    if (empty($order_no)) {
+                        $this->error('测试订单号不存在，请重新开始支付测试！');
+                    }
+                    if (!PayService::isPay($order_no)) {
+                        $this->error('测试订单未支付或未收到微信支付通过！');
+                    }
+                    $pay = &load_wechat('pay');
+                    if (!file_exists($pay->ssl_cer) || !file_exists($pay->ssl_key)) {
+                        $this->error('微信支付双向证书异常，无法完成退款操作！');
+                    }
+                    $refund_no = DataService::createSequence(10, 'wechat-pay-test');
+                    if (false !== PayService::putWechatRefund($pay, $order_no, 1, $refund_no)) {
+                        session('pay-test-order-no', null);
+                        $this->success('操作退款成功！', '');
+                    }
+                    $this->error("操作退款失败，{$pay->errMsg}[{$pay->errCode}]");
+                    break;
+                default:
+                    $this->assign('title', '微信支付配置');
+                    return view();
+            }
         }
         $data = $this->request->post();
-        if (!empty($data['cert_zip_md5'])) {
-            $filename = ROOT_PATH . 'public/upload/' . join('/', str_split($data['cert_zip_md5'], 16)) . '.zip';
-            if (file_exists($filename)) {
-                $zip = new \PclZip($filename);
-                $dirpath = APP_PATH . 'extra/wechat/cert';
-                !file_exists($dirpath) && mkdir($dirpath, 0755, true);
-                $result = $zip->extract(PCLZIP_OPT_PATH, $dirpath);
-                dump($result);
+        foreach ($data as $key => $vo) {
+            if (in_array($key, ['wechat_cert_key_md5', 'wechat_cert_cert_md5']) && !empty($vo)) {
+                $filename = ROOT_PATH . 'public/upload/' . join('/', str_split($vo, 16)) . '.pem';
+                !file_exists($filename) && $this->error('支付双向证书上传失败，请重新上传！');
+                $keyname = str_replace('_md5', '', $key);
+                $data[$keyname] = $filename;
+                unset($data[$key]);
             }
         }
         foreach ($data as $key => $vo) {

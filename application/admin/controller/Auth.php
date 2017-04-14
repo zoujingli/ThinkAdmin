@@ -105,7 +105,7 @@ class Auth extends BasicAdmin {
      * 权限编辑
      */
     public function edit() {
-        return $this->add();
+        return $this->_form($this->table, 'form');
     }
 
     /**

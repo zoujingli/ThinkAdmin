@@ -109,7 +109,7 @@ return [
     'xl'    => 'application/excel',
     'eml'   => 'message/rfc822',
     'json'  => ['application/json', 'text/json'],
-    'pem'   => ['application/x-x509-user-cert', 'application/x-pem-file', 'application/octet-stream'],
+    'pem'   => ['application/x-x509-user-cert', 'application/x-x509-ca-cert', 'application/x-pem-file', 'application/octet-stream'],
     'p10'   => ['application/x-pkcs10', 'application/pkcs10'],
     'p12'   => 'application/x-pkcs12',
     'p7a'   => 'application/x-pkcs7-signature',

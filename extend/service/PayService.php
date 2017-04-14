@@ -46,22 +46,22 @@ class PayService {
      * @param int $fee 支付金额
      * @param string $title 订单标题
      * @param string $from 订单来源
-     * @return bool
+     * @return false|string
      */
     public static function createWechatPayQrc(WechatPay $pay, $order_no, $fee, $title, $from = 'wechat') {
-        $prepayid = self::_createWechatPrepayid($pay, null, $order_no, $fee, $title, 'NATIVE', $from);
+        $prepayid = self::createWechatPrepayid($pay, null, $order_no, $fee, $title, 'NATIVE', $from);
         if ($prepayid === false) {
             return false;
         }
-        $filename = 'wechat/payqrc/' . join('/', str_split(md5($prepayid), 16)) . '.png';
-        if (!FileService::hasFile($filename)) {
+        $filename = 'wechat/qrc/' . join('/', str_split(md5($prepayid), 16)) . '.png';
+        if (!FileService::hasFile($filename, 'local')) {
             $qrCode = new QrCode();
             $qrCode->setText($prepayid);
-            FileService::save($filename, $qrCode->get());
+            if (null === FileService::save($filename, $qrCode->get(), 'local')) {
+                return false;
+            }
         }
-        ob_clean();
-        header("Content-type: image/png");
-        return FileService::readFile($filename);
+        return FileService::getFileUrl($filename, 'local');
     }
 
 
@@ -75,7 +75,7 @@ class PayService {
      * @return bool|array
      */
     public static function createWechatPayJsPicker(WechatPay $pay, $openid, $order_no, $fee, $title) {
-        if (($prepayid = self::_createWechatPrepayid($pay, $openid, $order_no, $fee, $title, 'JSAPI')) === false) {
+        if (($prepayid = self::createWechatPrepayid($pay, $openid, $order_no, $fee, $title, 'JSAPI')) === false) {
             return false;
         }
         return $pay->createMchPay($prepayid);
@@ -119,12 +119,13 @@ class PayService {
      * @param string $from 订单来源
      * @return bool|string
      */
-    protected static function _createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'shop') {
+    public static function createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'shop') {
         $map = ['order_no' => $order_no, 'is_pay' => '1', 'expires_in' => time(), 'appid' => $pay->appid];
         $where = 'appid=:appid and order_no=:order_no and (is_pay=:is_pay or expires_in>:expires_in)';
         $prepayinfo = Db::name('WechatPayPrepayid')->where($where, $map)->find();
         if (empty($prepayinfo) || empty($prepayinfo['prepayid'])) {
             $out_trade_no = DataService::createSequence(18, 'WXPAY-OUTER-NO');
+            p(url("@wechat/notify", '', true, true));
             $prepayid = $pay->getPrepayId($openid, $title, $out_trade_no, $fee, url("@wechat/notify", '', true, true), $trade_type);
             if (empty($prepayid)) {
                 Log::error("内部订单号{$order_no}生成预支付失败，{$pay->errMsg}");
