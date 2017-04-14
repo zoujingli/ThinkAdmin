@@ -7,17 +7,12 @@
 </head>
 <body style="text-align:center">
 
-<h3>扫码支付DEMO</h3>
-
-<div id="showbox">
-
+<div class="contrainer">
+    <h3>扫码支付DEMO</h3>
+    <div id="showbox"></div>
+    <p id="orderno bg-success"></p>
+    <button data-reset class="btn btn-default">重置订单号</button>
 </div>
-
-<p id="orderno">
-
-</p>
-
-<button data-reset class="btn btn-default">重置订单号</button>
 
 </body>
 <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
@@ -34,7 +29,7 @@
                     ret.url = '__STATIC__/theme/default/img/wechat/qrc_payed.jpg';
                 }
                 console.log(ret);
-                $('#showbox').html('<img src="' + ret.url + '"/>');
+                $('#showbox').html('<img class="img-thumbnail" src="' + ret.url + '"/>');
                 $('#orderno').html('订单号：' + ret.order_no);
             });
         }
