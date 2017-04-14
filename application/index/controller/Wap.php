@@ -52,7 +52,7 @@ class Wap extends BasicWechat {
         }
     }
 
-    public function jspay() {
+    public function payjs() {
 
         return view();
     }
