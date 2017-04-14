@@ -43,7 +43,9 @@ class Notify extends Controller {
             //支付通知数据获取成功
             if ($notifyInfo['result_code'] == 'SUCCESS' && $notifyInfo['return_code'] == 'SUCCESS') {
                 // 记录支付通知数据
-                Db::name('WechatPayNotify')->insert($notifyInfo);
+                if(!Db::name('WechatPayNotify')->insert($notifyInfo)){
+                    $pay->replyXml(['return_code' => 'ERROR', 'return_msg' => '系统记录微信通知时发生异常！']);
+                }
                 $prepayMap = ['out_trade_no' => $notifyInfo['out_trade_no']];
                 $prepayData = Db::name('WechatPayPrepayid')->where($prepayMap)->find();
                 if (empty($prepayData)) {

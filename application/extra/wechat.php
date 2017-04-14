@@ -17,13 +17,13 @@
  * @return array
  */
 return [
-    'token'          => 'mytoken',
-    'appid'          => 'wx60a43dd8161666d4',
-    'appsecret'      => '5ac28d66f7c4dc20ca9e729ccb09b9b1',
-    'encodingaeskey' => 'eHSmk5yJN2vSsuYscC8aHIiXnrgXZSKA4MRL9csEwTv',
-    'mch_id'         => '1332187001',
-    'partnerkey'     => 'A82DC5BD1F3359081049C568D8502BC5',
-    'ssl_cer'        => __DIR__ . '/cert/apiclient_cert.pem',
-    'ssl_key'        => __DIR__ . '/cert/apiclient_key.pem',
-    'cachepath'      => RUNTIME_PATH . 'wechat/pay',
+    'token'          => sysconf('wechat_token'),
+    'appid'          => sysconf('wechat_appid'),
+    'appsecret'      => sysconf('wechat_appsecret'),
+    'encodingaeskey' => sysconf('wechat_encodingaeskey'),
+    'mch_id'         => sysconf('wechat_mch_id'),
+    'partnerkey'     => sysconf('wechat_partnerkey'),
+    'ssl_cer'        => sysconf('wechat_cert_cert'),
+    'ssl_key'        => sysconf('wechat_cert_key'),
+    'cachepath'      => CACHE_PATH . 'wxpay' . DS,
 ];

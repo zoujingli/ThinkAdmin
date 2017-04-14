@@ -94,6 +94,7 @@ class Config extends BasicAdmin {
                     }
                     $refund_no = DataService::createSequence(10, 'wechat-pay-test');
                     if (false !== PayService::putWechatRefund($pay, $order_no, 1, $refund_no)) {
+                        session('pay-test-order-no', null);
                         $this->success('操作退款成功！', '');
                     }
                     $this->error("操作退款失败，{$pay->errMsg}[{$pay->errCode}]");
