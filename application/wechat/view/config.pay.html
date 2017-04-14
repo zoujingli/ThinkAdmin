@@ -134,7 +134,12 @@
 
         /*! 发起退款操作 */
         $('body').on('click', '.refund-qrc-test a', function () {
-            $.form.load('{:url("pay")}?action=refund');
+            $.form.load('{:url("pay")}?action=refund', {}, 'get', function (ret) {
+                if (ret.code === 1) {
+                    timer && window.clearInterval(timer), timer = null;
+                    return $.msg.success(ret.msg, 3), false;
+                }
+            });
         });
     });
 
