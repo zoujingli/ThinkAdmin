@@ -19,9 +19,10 @@ use service\PayService;
 
 class Wap extends BasicWechat {
 
-    protected $check_auth = true;
+    protected $check_auth = false;
 
     public function index() {
+        $this->oAuth();
         dump($this->fansinfo);
     }
 
