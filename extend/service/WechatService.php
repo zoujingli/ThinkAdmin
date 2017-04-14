@@ -144,7 +144,7 @@ class WechatService {
      */
     public static function getFansInfo($openid, $appid = null) {
         $map = ['openid' => $openid];
-        is_string($map['appid']) && $map['appid'] = $appid;
+        is_string($appid) && $map['appid'] = $appid;
         return Db::name('WechatFans')->where($map)->find();
     }
 
