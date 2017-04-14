@@ -78,7 +78,7 @@ class Config extends BasicAdmin {
                     // 生成支付二维码URL失败
                     $this->error("生成支付二维码失败，{$pay->errMsg}[{$pay->errCode}]");
                     break;
-                // 检查订单是否支付成功
+                // 微信支付退款操作
                 case 'refund':
                     $order_no = session('pay-test-order-no');
                     if (empty($order_no)) {
