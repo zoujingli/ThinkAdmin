@@ -51,7 +51,7 @@ class BasicWechat extends Controller {
         // 当前完整URL地址
         $this->url = $this->request->url(true);
         // 网页授权，并获粉丝信息
-        if ($this->check_auth && $this->_oAuth()) {
+        if ($this->check_auth && $this->oAuth()) {
             $this->assign('jsSign', load_wechat('script')->getJsSign($this->url));
             $this->assign('fansinfo', $this->fansinfo);
         }
@@ -62,10 +62,10 @@ class BasicWechat extends Controller {
      * @param bool $full 获取完整
      * @return string
      */
-    protected function _oAuth($full = true) {
+    protected function oAuth($full = true) {
         // 本地开发调试用户 openid
         if (in_array($this->request->host(), ['127.0.0.1', 'localhost'])) {
-            session('openid', 'o38gps1Unf64JOTdxNdd424lsEmM');
+            session('openid', 'o38gps3vNdCqaggFfrBRCRikwlWY');
         }
         // 检查缓存中 openid 信息是否完整
         if ($this->openid = session('openid')) {

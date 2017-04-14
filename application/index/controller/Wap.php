@@ -14,6 +14,8 @@
 namespace app\index\controller;
 
 use controller\BasicWechat;
+use service\DataService;
+use service\PayService;
 
 class Wap extends BasicWechat {
 
@@ -21,5 +23,36 @@ class Wap extends BasicWechat {
 
     public function index() {
         dump($this->fansinfo);
+    }
+
+    public function payqrc() {
+        switch ($this->request->get('action')) {
+            case 'payqrc':
+                $pay = &load_wechat('pay');
+                $order_no = session('pay-test-order-no');
+                if (empty($order_no)) {
+                    $order_no = DataService::createSequence(10, 'wechat-pay-test');
+                    session('pay-test-order-no', $order_no);
+                }
+                if (PayService::isPay($order_no)) {
+                    return json(['code' => 2, 'order_no' => $order_no]);
+                }
+                $url = PayService::createWechatPayQrc($pay, $order_no, 1, '微信扫码支付测试！');
+                if ($url !== false) {
+                    return json(['code' => 1, 'url' => $url, 'order_no' => $order_no]);
+                }
+                $this->error("生成支付二维码失败，{$pay->errMsg}[{$pay->errCode}]");
+                break;
+            case 'reset':
+                session('pay-test-order-no', null);
+                break;
+            default:
+                return view();
+        }
+    }
+
+    public function jspay() {
+
+        return view();
     }
 }
