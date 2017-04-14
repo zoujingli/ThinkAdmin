@@ -39,7 +39,17 @@ function & load_wechat($type = '') {
     static $wechat = array();
     $index = md5(strtolower($type));
     if (!isset($wechat[$index])) {
-        $config = Config::get('wechat');
+        $config = [
+            'token'          => sysconf('wechat_token'),
+            'appid'          => sysconf('wechat_appid'),
+            'appsecret'      => sysconf('wechat_appsecret'),
+            'encodingaeskey' => sysconf('wechat_encodingaeskey'),
+            'mch_id'         => sysconf('wechat_mch_id'),
+            'partnerkey'     => sysconf('wechat_partnerkey'),
+            'ssl_cer'        => sysconf('wechat_cert_cert'),
+            'ssl_key'        => sysconf('wechat_cert_key'),
+            'cachepath'      => CACHE_PATH . 'wxpay' . DS,
+        ];
         $config['cachepath'] = CACHE_PATH . 'wechat' . DS;
         $wechat[$index] = &Loader::get($type, $config);
     }
