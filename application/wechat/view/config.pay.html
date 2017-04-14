@@ -20,7 +20,7 @@
       class='form-horizontal' style='padding-top:20px'>
 
     <div class="form-group">
-        <label class="col-sm-2 col-xs-3 control-label">MCH_ID <span class="nowrap">(商户ID)</span></label>
+        <label class="col-sm-2 control-label">MCH_ID <span class="nowrap">(商户ID)</span></label>
         <div class='col-sm-8'>
             <input type='tel' placeholder="请输入10位商户MCH_ID（必填）" title='请输入10位数字商户MCH_ID'
                    required="required" pattern="^\d{10}$" maxlength='10' name='wechat_mch_id'
@@ -34,7 +34,7 @@
     <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 col-xs-3 control-label">PartnerKey <span class="nowrap">(商户密钥)</span></label>
+        <label class="col-sm-2 control-label">PartnerKey <span class="nowrap">(商户密钥)</span></label>
         <div class='col-sm-8'>
             <input type='password' placeholder="请输入32位商户支付密钥（必填）" required title='请输入32位商户支付密钥'
                    pattern="^.{32}$" maxlength="32" name='wechat_partnerkey'
@@ -48,26 +48,28 @@
     <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 col-xs-3 control-label">Apiclient <span class="nowrap">(双向证书)</span></label>
+        <label class="col-sm-2 control-label">Apiclient <span class="nowrap">(双向证书)</span></label>
         <div class="col-sm-8">
-            <input title="apiclient_key.pem" type="hidden" name="wechat_cert_key_md5">
-            <input title="apiclient_cert.pem" type="hidden" name="wechat_cert_cert_md5">
-            <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5"
-                    type="button" class="layui-btn layui-btn-primary">
-                {if file_exists(sysconf('wechat_cert_key'))}
-                已上传 apiclient_key.pem 文件
-                {else/}
-                请上传 apiclient_key.pem 文件
-                {/if}
-            </button>
-            <button data-file="one" data-type="pem" data-field="wechat_cert_cert_md5"
-                    type="button" class="layui-btn layui-btn-primary">
-                {if file_exists(sysconf('wechat_cert_cert'))}
-                已上传 apiclient_cert.pem 文件
-                {else/}
-                请上传 apiclient_cert.pem 文件
-                {/if}
-            </button>
+            <div class="nowrap">
+                <input title="apiclient_key.pem" type="hidden" name="wechat_cert_key_md5">
+                <input title="apiclient_cert.pem" type="hidden" name="wechat_cert_cert_md5">
+                <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5"
+                        type="button" class="layui-btn layui-btn-primary">
+                    {if file_exists(sysconf('wechat_cert_key'))}
+                    已上传 apiclient_key.pem
+                    {else/}
+                    请上传 apiclient_key.pem
+                    {/if}
+                </button>
+                <button data-file="one" data-type="pem" data-field="wechat_cert_cert_md5"
+                        type="button" class="layui-btn layui-btn-primary">
+                    {if file_exists(sysconf('wechat_cert_cert'))}
+                    已上传 apiclient_cert.pem
+                    {else/}
+                    请上传 apiclient_cert.pem
+                    {/if}
+                </button>
+            </div>
             <p class="help-block">
                 企业打款、企业红包、订单退款等操作需要使用双向证书，可在<a href="https://pay.weixin.qq.com" target="_blank">微信商户平台</a>下载证书！
             </p>
@@ -96,7 +98,7 @@
         /*！ 证书上传动作 */
         $('[name="wechat_cert_key_md5"],[name="wechat_cert_cert_md5"]').on('change', function () {
             this.value = $(this).attr('data-md5');
-            $('[data-field="' + this.name + '"]').html('已选择 ' + this.title + ' 文件');
+            $('[data-field="' + this.name + '"]').html('已选择 ' + this.title);
         });
 
         var isShow = false;
