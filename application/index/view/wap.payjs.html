@@ -46,7 +46,7 @@
             });
         });
         $('body').on('click', '[type="button"]', function () {
-            $.get('{:url("payqrc")}', {'action': 'reset'}, function () {
+            $.get('{:url("payjs")}', {'action': 'reset'}, function () {
                 window.location.reload();
             });
         });
