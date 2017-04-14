@@ -53,7 +53,27 @@ class Wap extends BasicWechat {
     }
 
     public function payjs() {
+        $this->oAuth();
+        $this->assign('jsSign', load_wechat('script')->getJsSign($this->url));
+        switch ($this->request->get('options')) {
+            case 'options':
+                $pay = &load_wechat('pay');
+                $order_no = session('pay-test-order-no');
+                if (empty($order_no)) {
+                    $order_no = DataService::createSequence(10, 'wechat-pay-test');
+                    session('pay-test-order-no', $order_no);
+                }
+                if (PayService::isPay($order_no)) {
+                    return json(['code' => 2, 'order_no' => $order_no]);
+                }
+                $options = PayService::createWechatPayJsPicker($pay, $this->openid, $order_no, 1, 'JSAPI支付测试');
+                return json($options);
+            case 'reset':
+                session('pay-test-order-no', null);
+                break;
+            default:
+                return view();
 
-        return view();
+        }
     }
 }
