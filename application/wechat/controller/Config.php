@@ -42,7 +42,6 @@ class Config extends BasicAdmin {
         if ($this->request->isGet()) {
             $this->assign('title', '微信接口配置');
             return view();
-
         }
         $data = $this->request->post();
         foreach ($data as $key => $vo) {
@@ -72,7 +71,7 @@ class Config extends BasicAdmin {
                         return json(['code' => 2, 'order_no' => $order_no]);
                     }
                     // 订单号未支付，生成支付二维码URL
-                    $url = PayService::createWechatPayQrc($pay, $order_no, 1, '扫码支付测试！');
+                    $url = PayService::createWechatPayQrc($pay, $order_no, 1, '微信扫码支付测试！');
                     if ($url !== false) {
                         return json(['code' => 1, 'url' => $url, 'order_no' => $order_no]);
                     }
@@ -99,6 +98,7 @@ class Config extends BasicAdmin {
                     }
                     $this->error("操作退款失败，{$pay->errMsg}[{$pay->errCode}]");
                     break;
+                // 显示支付配置界面
                 default:
                     $this->assign('title', '微信支付配置');
                     return view();
