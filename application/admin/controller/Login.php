@@ -32,7 +32,7 @@ class Login extends BasicAdmin {
      * 控制器基础方法
      */
     public function _initialize() {
-        if ($this->_isLogin() && $this->request->action() !== 'out') {
+        if (session('user') && $this->request->action() !== 'out') {
             $this->redirect('@admin');
         }
     }
