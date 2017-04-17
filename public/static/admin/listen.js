@@ -101,7 +101,7 @@ define(['jquery', 'admin.plugs'], function () {
         var field = $(this).attr('data-field') || 'file';
         var method = $(this).attr('data-file') === 'one' ? 'one' : 'mtl';
         var title = $(this).attr('data-title') || '文件上传';
-        var uptype = $(this).attr('data-uptype') || 'local';
+        var uptype = $(this).attr('data-uptype') || '';
         var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/mode/' + method + '.html?uptype=' + uptype + '&type=' + type + '&field=' + field;
         $.form.iframe(url, title || '文件管理');
     });

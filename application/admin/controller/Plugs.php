@@ -47,7 +47,11 @@ class Plugs extends BasicAdmin {
         $types = $this->request->get('type', 'jpg,png');
         $this->assign('mode', $mode);
         $this->assign('types', $types);
-        $this->assign('uptype', $this->request->get('uptype', sysconf('storage_type')));
+        $uptype = $this->request->get('uptype');
+        if (!in_array($uptype, ['local', 'qiniu'])) {
+            $uptype = sysconf('storage_type');
+        }
+        $this->assign('uptype', $uptype);
         $this->assign('mimes', FileService::getFileMine($types));
         $this->assign('field', $this->request->get('field', 'file'));
         return view();
