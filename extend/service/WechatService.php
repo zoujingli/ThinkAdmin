@@ -138,14 +138,11 @@ class WechatService {
 
     /**
      * 读取粉丝信息
-     * @param string $openid 微信用户openid
-     * @param string $appid 公众号appid
+     * @param string $openid
      * @return array|false
      */
-    public static function getFansInfo($openid, $appid = null) {
-        $map = ['openid' => $openid];
-        is_string($appid) && $map['appid'] = $appid;
-        return Db::name('WechatFans')->where($map)->find();
+    public static function getFansInfo($openid) {
+        return Db::name('WechatFans')->where('openid', $openid)->find();
     }
 
     /**

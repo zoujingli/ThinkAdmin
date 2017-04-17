@@ -56,19 +56,33 @@ class BasicAdmin extends Controller {
      * 后台权限控制初始化方法
      */
     public function _initialize() {
-        // 用户登录状态检查
-        if (($this->checkLogin || $this->checkAuth) && !session('user')) {
+        # 用户登录状态检查
+        if (($this->checkLogin || $this->checkAuth) && !$this->_isLogin()) {
             $this->redirect('@admin/login');
         }
-        list($module, $controller, $action) = [$this->request->module(), $this->request->controller(), $this->request->action()];
-        // 节点访问权限检查
-        if ($this->checkLogin && $this->checkAuth && !auth("{$module}/{$controller}/{$action}")) {
-            $this->error('抱歉，您没有访问该模块的权限！');
+        # 节点访问权限检查
+        if ($this->checkLogin && $this->checkAuth) {
+            if (!auth(join('/', [$this->request->module(), $this->request->controller(), $this->request->action()]))) {
+                $this->error('抱歉，您没有访问该模块的权限！');
+            }
         }
-        // 初始化赋值常用变量
-        $this->assign('_url_', $this->request->url(true));
-        $this->assign('_uri_', strtolower("{$module}/{$controller}/{$action}"));
-        $this->assign('classuri', strtolower("{$module}/{$controller}"));
+        # 初始化赋值常用变量
+        if ($this->request->isGet()) {
+            $class_uri = strtolower($this->request->module() . '/' . $this->request->controller());
+            $this->assign('classuri', $class_uri);
+        }
+    }
+
+    /**
+     * 判断用户是否登录
+     * @return bool
+     */
+    protected function _isLogin() {
+        $user = session('user');
+        if (empty($user) || empty($user['id'])) {
+            return false;
+        }
+        return true;
     }
 
     /**
