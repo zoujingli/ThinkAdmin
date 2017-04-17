@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite4b30659f938a4e87588699dc50b59ad
+class ComposerStaticInita5b88035fa8b1d8f6696f1aa3e286eea
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -96,7 +96,6 @@ class ComposerStaticInite4b30659f938a4e87588699dc50b59ad
         'Endroid\\QrCode\\Factory\\QrCodeFactory' => __DIR__ . '/..' . '/endroid/qrcode/src/Factory/QrCodeFactory.php',
         'Endroid\\QrCode\\QrCode' => __DIR__ . '/..' . '/endroid/qrcode/src/QrCode.php',
         'Ip2Region' => __DIR__ . '/..' . '/zoujingli/ip2region/Ip2Region.php',
-        'PclZip' => __DIR__ . '/..' . '/pclzip/pclzip/pclzip.lib.php',
         'Qiniu\\Auth' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Auth.php',
         'Qiniu\\Config' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Config.php',
         'Qiniu\\Etag' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Etag.php',
@@ -314,9 +313,9 @@ class ComposerStaticInite4b30659f938a4e87588699dc50b59ad
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite4b30659f938a4e87588699dc50b59ad::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite4b30659f938a4e87588699dc50b59ad::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInite4b30659f938a4e87588699dc50b59ad::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInita5b88035fa8b1d8f6696f1aa3e286eea::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInita5b88035fa8b1d8f6696f1aa3e286eea::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInita5b88035fa8b1d8f6696f1aa3e286eea::$classMap;
 
         }, null, ClassLoader::class);
     }

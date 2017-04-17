@@ -21,7 +21,6 @@ return array(
     'Endroid\\QrCode\\Factory\\QrCodeFactory' => $vendorDir . '/endroid/qrcode/src/Factory/QrCodeFactory.php',
     'Endroid\\QrCode\\QrCode' => $vendorDir . '/endroid/qrcode/src/QrCode.php',
     'Ip2Region' => $vendorDir . '/zoujingli/ip2region/Ip2Region.php',
-    'PclZip' => $vendorDir . '/pclzip/pclzip/pclzip.lib.php',
     'Qiniu\\Auth' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Auth.php',
     'Qiniu\\Config' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Config.php',
     'Qiniu\\Etag' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Etag.php',

@@ -22,7 +22,7 @@ class Wap extends BasicWechat {
     protected $check_auth = false;
 
     public function index() {
-        $this->oAuth();
+        dump($this->oAuth());
         dump($this->fansinfo);
     }
 
@@ -54,7 +54,6 @@ class Wap extends BasicWechat {
 
     public function payjs() {
         $this->openid = $this->oAuth(false);
-        $this->assign('jsSign', load_wechat('script')->getJsSign($this->url));
         switch ($this->request->get('action')) {
             case 'options':
                 $order_no = session('pay-test-order-no');

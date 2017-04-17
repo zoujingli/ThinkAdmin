@@ -43,63 +43,24 @@
         ]
     },
     {
-        "name": "pclzip/pclzip",
-        "version": "2.8.2",
-        "version_normalized": "2.8.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ivanlanin/pclzip.git",
-            "reference": "19dd1de9d3f5fc4d7d70175b4c344dee329f45fd"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/ivanlanin/pclzip/19dd1de9d3f5fc4d7d70175b4c344dee329f45fd.zip",
-            "reference": "19dd1de9d3f5fc4d7d70175b4c344dee329f45fd",
-            "shasum": ""
-        },
-        "time": "2014-06-05 11:42:24",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "pclzip.lib.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-2.1"
-        ],
-        "authors": [
-            {
-                "name": "Vincent Blavet"
-            }
-        ],
-        "description": "A PHP library that offers compression and extraction functions for Zip formatted archives",
-        "homepage": "http://www.phpconcept.net/pclzip",
-        "keywords": [
-            "php",
-            "zip"
-        ]
-    },
-    {
         "name": "zoujingli/wechat-php-sdk",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "eb8ee1abd932cb2fa150d0d5fdba7056c2195526"
+            "reference": "bb509f17ad860322b39a607731c37adbd8f21e75"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/eb8ee1abd932cb2fa150d0d5fdba7056c2195526.zip",
-            "reference": "eb8ee1abd932cb2fa150d0d5fdba7056c2195526",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/bb509f17ad860322b39a607731c37adbd8f21e75.zip",
+            "reference": "bb509f17ad860322b39a607731c37adbd8f21e75",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-04-12 11:30:27",
+        "time": "2017-04-17 09:22:40",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
