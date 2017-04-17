@@ -16,6 +16,7 @@ namespace controller;
 
 use service\WechatService;
 use think\Controller;
+use think\Log;
 
 class BasicWechat extends Controller {
 
@@ -35,7 +36,7 @@ class BasicWechat extends Controller {
      * 当前访问网址
      * @var string
      */
-    protected $current;
+    protected $url;
 
     /**
      * 是否默认开启网页授权
@@ -47,78 +48,74 @@ class BasicWechat extends Controller {
      * 初始化方法
      */
     public function _initialize() {
-        parent::_initialize();
-        $this->current = ($this->request->isSsl() ? 'https' : 'http') . '://' . $this->request->host() . $this->request->url();
-        /* 网页授权，并获粉丝信息 */
+        // 当前完整URL地址
+        $this->url = $this->request->url(true);
+        // 网页授权，并获粉丝信息
         if ($this->check_auth && $this->oAuth()) {
-            if ($this->request->isGet()) {
-                $this->assign('js_sign', load_wechat('script')->getJsSign($this->current));
-                $this->assign('fansinfo', $this->fansinfo);
-            }
+            $this->assign('jsSign', load_wechat('script')->getJsSign($this->url));
+            $this->assign('fansinfo', $this->fansinfo);
         }
     }
 
     /**
-     * 微信网页授权函数
-     * @param bool $isfull
+     * 微信网页授权
+     * @param bool $full 获取完整
      * @return string
      */
-    protected function oAuth($isfull = true) {
-        $host = $this->request->host();
-        # 本地开发调试用户OPENID
-        if (in_array($host, ['127.0.0.1', 'localhost'])) {
-            session('openid', 'o38gps1Unf64JOTdxNdd424lsEmM');
+    protected function oAuth($full = true) {
+        // 本地开发调试用户 openid
+        if (in_array($this->request->host(), ['127.0.0.1', 'localhost'])) {
+            session('openid', 'o38gps3vNdCqaggFfrBRCRikwlWY');
         }
-        # 检查缓存中openid信息是否完整
-        if (!!($this->openid = session('openid'))) {
-            if (!!($this->fansinfo = FansService::get($this->openid)) || !$isfull) {
+        // 检查缓存中 openid 信息是否完整
+        if ($this->openid = session('openid')) {
+            if (($this->fansinfo = WechatService::getFansInfo($this->openid)) || !$full) {
                 return $this->openid;
             }
         }
-        # 发起微信网页授权
-        $wxoauth_url = $this->current;
-        if (!($redirect_url = $this->request->get('redirecturl', false, 'decode'))) {
-            $params = $this->request->param();
-            $params['redirecturl'] = encode($wxoauth_url);
-            $wxoauth_url = url($this->request->baseUrl(), '', false, true) . '?' . http_build_query($params);
+        // 发起微信网页授权
+        $wxoauth_url = $this->url;
+        if (!($redirect_url = $this->request->get('redirectcode', false, 'decode'))) {
+            $split = stripos($this->url, '?') === false ? '?' : '&';
+            $wxoauth_url = "{$this->url}{$split}redirectcode=" . encode($this->url);
         }
         $wechat = &load_wechat('Oauth');
-        # 微信网页授权处理
+        // 微信网页授权处理
         if (!$this->request->get('code', false)) {
-            exit(redirect($wechat->getOauthRedirect($wxoauth_url, 'webOauth', 'snsapi_base'))->send());
+            $this->redirect($wechat->getOauthRedirect($wxoauth_url, 'webOauth', 'snsapi_base'));
         }
         if (FALSE === ($result = $wechat->getOauthAccessToken()) || empty($result['openid'])) {
-            Log::error("微信授权失败 [ {$wechat->errMsg} ]");
-            exit('网页授权失败，请稍候再试！');
+            Log::error("微信网页授权失败，{$wechat->errMsg}[{$wechat->errCode}]");
+            exit("微信网页授权失败，{$wechat->errMsg}[{$wechat->errCode}]");
         }
         session('openid', $this->openid = $result['openid']);
+        !$full && $this->redirect($redirect_url);
+        // 微信粉丝信息处理
         $this->fansinfo = WechatService::getFansInfo($this->openid);
-        # 微信粉丝信息处理
         if (empty($this->fansinfo['expires_in']) || $this->fansinfo['expires_in'] < time()) {
-            switch ($result['scope']) {
-                case 'snsapi_base': /* 普通授权，获取用户资料；未关注时重新使用高级授权 */
-                    $user = load_wechat('User')->getUserInfo($this->openid);
-                    if ($isfull && empty($user['subscribe'])) {
-                        exit(redirect($wechat->getOauthRedirect($wxoauth_url, 'webOauth', 'snsapi_userinfo'))->send());
-                    }
-                    break;
-                case 'snsapi_userinfo': /* 高级授权，获取用户资料 */
-                    $user = $wechat->getOauthUserinfo($result['access_token'], $this->openid);
-                    break;
+            /* 使用普通授权，获取用户资料；未关注时重新使用高级授权 */
+            if ($result['scope'] === 'snsapi_base') {
+                $user = load_wechat('User')->getUserInfo($this->openid);
+                if ($full && empty($user['subscribe'])) {
+                    $this->redirect($wechat->getOauthRedirect($wxoauth_url, 'webOauth', 'snsapi_userinfo'));
+                }
+            } /* 使用高级授权，获取用户资料 */
+            elseif ($result['scope'] === 'snsapi_userinfo') {
+                $user = $wechat->getOauthUserinfo($result['access_token'], $this->openid);
             }
-            if ($isfull && (empty($user) || !array_key_exists('nickname', $user))) {
-                exit("微信授权失败 [{$wechat->errMsg}]!");
+            if ($full && (empty($user) || !array_key_exists('nickname', $user))) {
+                Log::error("微信网页授权获取用户信息失败，{$wechat->errMsg}[{$wechat->errCode}]");
+                exit("微信网页授权获取用户信息失败，{$wechat->errMsg}[{$wechat->errCode}]");
             }
             /* 更新粉丝信息 */
             $user['expires_in'] = $result['expires_in'] + time() - 100;
             $user['refresh_token'] = $result['refresh_token'];
             $user['access_token'] = $result['access_token'];
-            !WechatService::setFansInfo($user, $wechat->appid) && exit('微信授权失败 [ save userinfo faild ]');
-            $this->fansinfo = WechatService::getFansInfo($this->openid);
+            if (!WechatService::setFansInfo($user, $wechat->appid)) {
+                exit('微信网页授权获取用户信息保存失败');
+            }
         }
-        empty($this->fansinfo) && exit('获取微信用户信息失败！');
-        !!$redirect_url && exit(redirect($redirect_url)->send());
-        return $this->openid;
+        $this->redirect($redirect_url);
     }
 
 }

@@ -42,7 +42,6 @@ class Config extends BasicAdmin {
         if ($this->request->isGet()) {
             $this->assign('title', '微信接口配置');
             return view();
-
         }
         $data = $this->request->post();
         foreach ($data as $key => $vo) {
@@ -72,14 +71,14 @@ class Config extends BasicAdmin {
                         return json(['code' => 2, 'order_no' => $order_no]);
                     }
                     // 订单号未支付，生成支付二维码URL
-                    $url = PayService::createWechatPayQrc($pay, $order_no, 1, '扫码支付测试！');
+                    $url = PayService::createWechatPayQrc($pay, $order_no, 1, '微信扫码支付测试！');
                     if ($url !== false) {
                         return json(['code' => 1, 'url' => $url, 'order_no' => $order_no]);
                     }
                     // 生成支付二维码URL失败
                     $this->error("生成支付二维码失败，{$pay->errMsg}[{$pay->errCode}]");
                     break;
-                // 检查订单是否支付成功
+                // 微信支付退款操作
                 case 'refund':
                     $order_no = session('pay-test-order-no');
                     if (empty($order_no)) {
@@ -95,10 +94,11 @@ class Config extends BasicAdmin {
                     $refund_no = DataService::createSequence(10, 'wechat-pay-test');
                     if (false !== PayService::putWechatRefund($pay, $order_no, 1, $refund_no)) {
                         session('pay-test-order-no', null);
-                        $this->success('操作退款成功！', '');
+                        $this->success('测试退款操作成功，请查看微信通知！', '');
                     }
                     $this->error("操作退款失败，{$pay->errMsg}[{$pay->errCode}]");
                     break;
+                // 显示支付配置界面
                 default:
                     $this->assign('title', '微信支付配置');
                     return view();

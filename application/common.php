@@ -33,7 +33,7 @@ function p($data, $replace = false, $pathname = NULL) {
 /**
  * 获取微信操作对象
  * @param string $type
- * @return \Wechat\WechatReceive|\Wechat\WechatUser|\Wechat\WechatPay
+ * @return \Wechat\WechatReceive|\Wechat\WechatUser|\Wechat\WechatPay|\Wechat\WechatScript|\Wechat\WechatOauth
  */
 function & load_wechat($type = '') {
     static $wechat = array();
@@ -58,7 +58,7 @@ function & load_wechat($type = '') {
 
 /**
  * 安全URL编码
- * @param array $data
+ * @param array|string $data
  * @return string
  */
 function encode($data) {
