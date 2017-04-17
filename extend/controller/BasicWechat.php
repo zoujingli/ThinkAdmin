@@ -73,7 +73,7 @@ class BasicWechat extends Controller {
                 return $this->openid;
             }
             $this->fansinfo = WechatService::getFansInfo($this->openid);
-            if (is_array($this->fansinfo && $this->fansinfo['expires_in'] < time())) {
+            if (!empty($this->fansinfo) && $this->fansinfo['expires_in'] < time()) {
                 return $this->openid;
             }
         }
