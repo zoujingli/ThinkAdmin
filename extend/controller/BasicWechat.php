@@ -93,10 +93,7 @@ class BasicWechat extends Controller {
             exit("微信网页授权失败，{$wechat->errMsg}[{$wechat->errCode}]");
         }
         session('openid', $this->openid = $result['openid']);
-        if ($fullMode) {
-            return $this->openid;
-        }
-        $this->redirect($redirect_url);
+        !$fullMode && $this->redirect($redirect_url);
         // 微信粉丝信息处理
         $this->fansinfo = WechatService::getFansInfo($this->openid);
         if (empty($this->fansinfo['expires_in']) || $this->fansinfo['expires_in'] < time()) {
