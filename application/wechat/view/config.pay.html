@@ -16,11 +16,11 @@
 {/block}
 
 {block name="content"}
-<form onsubmit="return false;" action="{$_url_}" data-auto="true" method="post"
+<form onsubmit="return false;" action="{:request()->url(true)}" data-auto="true" method="post"
       class='form-horizontal' style='padding-top:20px'>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">MCH_ID <span class="nowrap">(商户ID)</span></label>
+        <label class="col-sm-2 control-label">MCH_ID(商户ID)</label>
         <div class='col-sm-8'>
             <input type='tel' placeholder="请输入10位商户MCH_ID（必填）" title='请输入10位数字商户MCH_ID'
                    required="required" pattern="^\d{10}$" maxlength='10' name='wechat_mch_id'
@@ -31,43 +31,40 @@
         </div>
     </div>
 
+    <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">PartnerKey <span class="nowrap">(商户密钥)</span></label>
+        <label class="col-sm-2 control-label">PartnerKey(商户密钥)</label>
         <div class='col-sm-8'>
             <input type='password' placeholder="请输入32位商户支付密钥（必填）" required title='请输入32位商户支付密钥'
                    pattern="^.{32}$" maxlength="32" name='wechat_partnerkey'
                    value='{:sysconf("wechat_partnerkey")}' class='layui-input'/>
-            <p class="help-block">
-                微信支付商户密钥需要在商户平台配置，必需填写密钥之后才能正常使用微信支付功能。
-            </p>
         </div>
     </div>
 
+    <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Apiclient <span class="nowrap">(双向证书)</span></label>
-        <div class="col-sm-8">
-            <div class="nowrap">
-                <input title="apiclient_key.pem" type="hidden" name="wechat_cert_key_md5">
-                <input title="apiclient_cert.pem" type="hidden" name="wechat_cert_cert_md5">
-                <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5"
-                        type="button" class="layui-btn layui-btn-primary">
-                    {if file_exists(sysconf('wechat_cert_key'))}
-                    已上传 apiclient_key.pem
-                    {else/}
-                    请上传 apiclient_key.pem
-                    {/if}
-                </button>
-                <button data-file="one" data-type="pem" data-field="wechat_cert_cert_md5"
-                        type="button" class="layui-btn layui-btn-primary">
-                    {if file_exists(sysconf('wechat_cert_cert'))}
-                    已上传 apiclient_cert.pem
-                    {else/}
-                    请上传 apiclient_cert.pem
-                    {/if}
-                </button>
-            </div>
+        <label class="col-sm-2 control-label">Cert(双向证书)</label>
+        <div class="col-sm-8" style="min-width:540px">
+            <input title="application_key.pem" type="hidden" name="wechat_cert_key_md5">
+            <input title="application_cert.pem" type="hidden" name="wechat_cert_cert_md5">
+            <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5"
+                    type="button" class="layui-btn layui-btn-primary">
+                {if file_exists(sysconf('wechat_cert_key'))}
+                已上传 application_key.pem 文件
+                {else/}
+                请上传 application_key.pem 文件
+                {/if}
+            </button>
+            <button data-file="one" data-type="pem" data-field="wechat_cert_cert_md5"
+                    type="button" class="layui-btn layui-btn-primary">
+                {if file_exists(sysconf('wechat_cert_cert'))}
+                已上传 application_cert.pem 文件
+                {else/}
+                请上传 application_cert.pem 文件
+                {/if}
+            </button>
             <p class="help-block">
                 企业打款、企业红包、订单退款等操作需要使用双向证书，可在<a href="https://pay.weixin.qq.com" target="_blank">微信商户平台</a>下载证书！
             </p>
@@ -80,7 +77,7 @@
 
 
     <div class="form-group">
-        <div class="col-sm-4 col-sm-offset-2 text-center">
+        <div class="col-sm-6 col-sm-offset-2 text-center">
             <button type="submit" class="layui-btn">保存配置</button>
             <button type="button" data-pay-test class="layui-btn layui-btn-primary">支付测试</button>
         </div>
@@ -96,12 +93,12 @@
         /*！ 证书上传动作 */
         $('[name="wechat_cert_key_md5"],[name="wechat_cert_cert_md5"]').on('change', function () {
             this.value = $(this).attr('data-md5');
-            $('[data-field="' + this.name + '"]').html('已选择 ' + this.title);
+            $('[data-field="' + this.name + '"]').html('已选择 ' + this.title + ' 文件');
         });
 
         var isShow = false;
         var timer = null;
-        var layIndex = 0;
+
         /*! 支付测试动作 */
         function payTest() {
             $.form.load('{:url("pay")}?action=payqrc', {}, 'get', function (ret) {
@@ -124,7 +121,6 @@
                             },
                             success: function (layero, index) {
                                 isShow = true;
-                                layIndex = index;
                                 timer = setInterval(payTest, 3000);
                             }
                         });
@@ -138,14 +134,7 @@
 
         /*! 发起退款操作 */
         $('body').on('click', '.refund-qrc-test a', function () {
-            $.form.load('{:url("pay")}?action=refund', {}, 'get', function (ret) {
-                if (ret.code === 1) {
-                    timer && window.clearInterval(timer), timer = null;
-                    return $.msg.success(ret.msg, 3, function () {
-                        layer.close(layIndex);
-                    }), false;
-                }
-            });
+            $.form.load('{:url("pay")}?action=refund');
         });
     });
 
