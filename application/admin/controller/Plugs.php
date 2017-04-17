@@ -47,8 +47,7 @@ class Plugs extends BasicAdmin {
         $types = $this->request->get('type', 'jpg,png');
         $this->assign('mode', $mode);
         $this->assign('types', $types);
-        $uptype = $this->request->get('uptype');
-        if (!in_array($uptype, ['local', 'qiniu'])) {
+        if (!in_array(($uptype = $this->request->get('uptype')), ['local', 'qiniu'])) {
             $uptype = sysconf('storage_type');
         }
         $this->assign('uptype', $uptype);
