@@ -51,7 +51,7 @@
                 <option value='北美'>北美</option>
                 {/if}
             </select>
-            <p class="help-block">七牛云存储空间所在域名，需要严格对应储存所在区域，否则无法上传文件。</p>
+            <p class="help-block">七牛云存储空间所在域名，需要严格对应储存所在区域才能上传文件</p>
         </div>
     </div>
 
@@ -83,12 +83,12 @@
     </div>
 
     <div class="form-group" data-storage-type="qiniu">
-        <label class="col-sm-2 control-label">Domain <span class="nowrap">(绑定域名)</span></label>
+        <label class="col-sm-2 control-label">Domain <span class="nowrap">(访问域名)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="storage_qiniu_domain" required="required" title="请输入七牛云存储 Domain (绑定域名)"
-                   placeholder="请输入七牛云存储 Domain (绑定域名)" value="{:sysconf('storage_qiniu_domain')}"
+            <input type="text" name="storage_qiniu_domain" required="required" title="请输入七牛云存储 Domain (访问域名)"
+                   placeholder="请输入七牛云存储 Domain (访问域名)" value="{:sysconf('storage_qiniu_domain')}"
                    class="layui-input">
-            <p class="help-block">填写七牛云存储绑定域名，如：static.cdn.cuci.cc</p>
+            <p class="help-block">填写七牛云存储访问域名，如：static.ctolog.cc</p>
         </div>
     </div>
 
