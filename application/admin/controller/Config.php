@@ -58,7 +58,7 @@ class Config extends BasicAdmin {
      */
     public function file() {
         $alert = [
-            'type'    => 'info',
+            'type'    => 'success',
             'title'   => '操作提示',
             'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'
         ];

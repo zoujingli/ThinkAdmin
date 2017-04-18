@@ -85,14 +85,14 @@ class Plugs extends BasicAdmin {
             $this->result(['site_url' => $site_url], 'IS_FOUND');
         }
         // 需要上传文件，生成上传配置参数
-        $config = ['uptype' => $post['uptype'], 'file_url' => $filename, 'server' => url('admin/plugs/upload')];
+        $config = ['uptype' => $post['uptype'], 'file_url' => $filename];
         switch (strtolower($post['uptype'])) {
             case 'qiniu':
-                $config['server'] = sysconf('storage_qiniu_is_https') ? 'https://up.qbox.me' : 'http://upload.qiniu.com';
+                $config['server'] = FileService::getUploadQiniuUrl(true);
                 $config['token'] = $this->_getQiniuToken($filename);
                 break;
             case 'local':
-                $config['server'] = url('admin/plugs/upload');
+                $config['server'] = FileService::getUploadLocalUrl();
                 break;
         }
         $this->result($config, 'NOT_FOUND');
