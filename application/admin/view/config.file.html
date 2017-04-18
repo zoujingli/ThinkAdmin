@@ -18,7 +18,7 @@
             </select>
             <div class="help-block" data-storage-type="qiniu">
                 若还没有七牛云帐号，请点击
-                <a target="_blank" href="https://portal.qiniu.com/signup?code=3lhz6nmnwbple">免费申请10G存储空间</a>，
+                <a target="_blank" href="HTTPS://portal.qiniu.com/signup?code=3lhz6nmnwbple">免费申请10G存储空间</a>，
                 申请成功后添加公开bucket空间
             </div>
         </div>
@@ -58,8 +58,8 @@
     <div class="form-group" data-storage-type="qiniu">
         <label class="col-sm-2 control-label">Protocol <span class="nowrap">(访问协议)</span></label>
         <div class='col-sm-8'>
-            <select class="layui-input" name="storage_qiniu_is_https" required="required">
-                {if sysconf('storage_qiniu_is_https')!=='1'}
+            <select class="layui-input" name="storage_qiniu_is_HTTPS" required="required">
+                {if sysconf('storage_qiniu_is_HTTPS')!=='1'}
                 <option selected value='0'>HTTP</option>
                 <option value='1'>HTTPS</option>
                 {else/}
@@ -67,7 +67,7 @@
                 <option selected value='1'>HTTPS</option>
                 {/if}
             </select>
-            <p class="help-block">七牛云资源访问协议（http或https），https 需要单独配置证书</p>
+            <p class="help-block">七牛云资源访问协议（HTTP或HTTPS），HTTPS 需要单独配置证书</p>
         </div>
     </div>
 
