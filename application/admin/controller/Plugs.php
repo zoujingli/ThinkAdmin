@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
-// | 版权所有 2016~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://think.ctolog.com
 // +----------------------------------------------------------------------
@@ -47,7 +47,10 @@ class Plugs extends BasicAdmin {
         $types = $this->request->get('type', 'jpg,png');
         $this->assign('mode', $mode);
         $this->assign('types', $types);
-        $this->assign('uptype', $this->request->get('uptype', sysconf('storage_type')));
+        if (!in_array(($uptype = $this->request->get('uptype')), ['local', 'qiniu'])) {
+            $uptype = sysconf('storage_type');
+        }
+        $this->assign('uptype', $uptype);
         $this->assign('mimes', FileService::getFileMine($types));
         $this->assign('field', $this->request->get('field', 'file'));
         return view();
@@ -79,7 +82,7 @@ class Plugs extends BasicAdmin {
         $filename = join('/', str_split($post['md5'], 16)) . '.' . pathinfo($post['filename'], PATHINFO_EXTENSION);
         // 检查文件是否已上传
         if (($site_url = FileService::getFileUrl($filename))) {
-            return $this->result(['site_url' => $site_url], 'IS_FOUND');
+            $this->result(['site_url' => $site_url], 'IS_FOUND');
         }
         // 需要上传文件，生成上传配置参数
         $config = ['uptype' => $post['uptype'], 'file_url' => $filename, 'server' => url('admin/plugs/upload')];
@@ -92,7 +95,7 @@ class Plugs extends BasicAdmin {
                 $config['server'] = url('admin/plugs/upload');
                 break;
         }
-        return $this->result($config, 'NOT_FOUND');
+        $this->result($config, 'NOT_FOUND');
     }
 
     /**

@@ -34,13 +34,13 @@
     });
     wx.config($.parseJSON('{$jsSign|json_encode}'));
     wx.ready(function () {
-        $('[type="submit"]').on('click', function () {
-            $.get('{:url("payjs")}', {'action': 'options'}, function (ret) {
-                $('.orderno').html('订单号：' + ret.order_no);
-                if (ret.code && ret.code === 2) {
-                    $('#test').append('<button type="button" class="btn btn-success">已支付，刷新支付号</button>');
-                    return $('[type="submit"]').remove();
-                }
+        $.get('{:url("payjs")}', {'action': 'options'}, function (ret) {
+            $('.orderno').html('订单号：' + ret.order_no);
+            if (ret.code && ret.code === 2) {
+                $('#test').append('<button type="button" class="btn btn-success">已支付，刷新支付号</button>');
+                return $('[type="submit"]').remove();
+            }
+            $('[type="submit"]').on('click', function () {
                 if (ret.code && ret.code === 3) {
                     return alert(ret.msg);
                 }

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "00c7fd31fef687befa6355a3a5b42d51",
-    "content-hash": "99e422492ce63e615c7a1971c49eaf13",
+    "hash": "92eab86981f913034625267940d7e455",
+    "content-hash": "3428b381eb387b7decf39999545717d3",
     "packages": [
         {
             "name": "endroid/qrcode",
@@ -66,43 +66,6 @@
                 "symfony"
             ],
             "time": "2017-04-08 09:13:59"
-        },
-        {
-            "name": "pclzip/pclzip",
-            "version": "2.8.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ivanlanin/pclzip.git",
-                "reference": "19dd1de9d3f5fc4d7d70175b4c344dee329f45fd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://files.phpcomposer.com/files/ivanlanin/pclzip/19dd1de9d3f5fc4d7d70175b4c344dee329f45fd.zip",
-                "reference": "19dd1de9d3f5fc4d7d70175b4c344dee329f45fd",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "pclzip.lib.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1"
-            ],
-            "authors": [
-                {
-                    "name": "Vincent Blavet"
-                }
-            ],
-            "description": "A PHP library that offers compression and extraction functions for Zip formatted archives",
-            "homepage": "http://www.phpconcept.net/pclzip",
-            "keywords": [
-                "php",
-                "zip"
-            ],
-            "time": "2014-06-05 11:42:24"
         },
         {
             "name": "qiniu/php-sdk",
@@ -492,12 +455,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-                "reference": "eb8ee1abd932cb2fa150d0d5fdba7056c2195526"
+                "reference": "bb509f17ad860322b39a607731c37adbd8f21e75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/eb8ee1abd932cb2fa150d0d5fdba7056c2195526.zip",
-                "reference": "eb8ee1abd932cb2fa150d0d5fdba7056c2195526",
+                "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/bb509f17ad860322b39a607731c37adbd8f21e75.zip",
+                "reference": "bb509f17ad860322b39a607731c37adbd8f21e75",
                 "shasum": ""
             },
             "require": {
@@ -518,7 +481,7 @@
             "keywords": [
                 "wechat-php-sdk"
             ],
-            "time": "2017-04-12 11:30:27"
+            "time": "2017-04-17 09:22:40"
         }
     ],
     "packages-dev": [],

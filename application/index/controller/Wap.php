@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
-// | 版权所有 2016~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://think.ctolog.com
 // +----------------------------------------------------------------------
@@ -22,7 +22,7 @@ class Wap extends BasicWechat {
     protected $check_auth = false;
 
     public function index() {
-        $this->oAuth();
+        dump($this->oAuth());
         dump($this->fansinfo);
     }
 
@@ -54,7 +54,6 @@ class Wap extends BasicWechat {
 
     public function payjs() {
         $this->openid = $this->oAuth(false);
-        $this->assign('jsSign', load_wechat('script')->getJsSign($this->url));
         switch ($this->request->get('action')) {
             case 'options':
                 $order_no = session('pay-test-order-no');

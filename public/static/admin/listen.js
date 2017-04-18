@@ -1,7 +1,7 @@
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
-// | 版权所有 2016~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://think.ctolog.com
 // +----------------------------------------------------------------------
@@ -101,7 +101,7 @@ define(['jquery', 'admin.plugs'], function () {
         var field = $(this).attr('data-field') || 'file';
         var method = $(this).attr('data-file') === 'one' ? 'one' : 'mtl';
         var title = $(this).attr('data-title') || '文件上传';
-        var uptype = $(this).attr('data-uptype') || 'local';
+        var uptype = $(this).attr('data-uptype') || '';
         var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/mode/' + method + '.html?uptype=' + uptype + '&type=' + type + '&field=' + field;
         $.form.iframe(url, title || '文件管理');
     });

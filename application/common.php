@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
-// | 版权所有 2016~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://think.ctolog.com
 // +----------------------------------------------------------------------
@@ -14,9 +14,8 @@
 
 
 use app\admin\model\NodeModel;
-use think\Config;
-use think\Db;
 use Wechat\Loader;
+use think\Db;
 
 /**
  * 打印输出数据到文件
@@ -50,7 +49,6 @@ function & load_wechat($type = '') {
             'ssl_key'        => sysconf('wechat_cert_key'),
             'cachepath'      => CACHE_PATH . 'wxpay' . DS,
         ];
-        $config['cachepath'] = CACHE_PATH . 'wechat' . DS;
         $wechat[$index] = &Loader::get($type, $config);
     }
     return $wechat[$index];
