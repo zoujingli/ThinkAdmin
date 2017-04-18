@@ -106,7 +106,7 @@
     <div class="form-group" data-storage-type="qiniu">
         <label class="col-sm-2 control-label">SecretKey <span class="nowrap">(安全密钥)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="storage_qiniu_secret_key" required="required" title="请输入七牛云 SecretKey (安全密钥)"
+            <input type="password" name="storage_qiniu_secret_key" required="required" title="请输入七牛云 SecretKey (安全密钥)"
                    placeholder="请输入七牛云 SecretKey (安全密钥)" value="{:sysconf('storage_qiniu_secret_key')}"
                    maxlength="43" class="layui-input">
             <p class="help-block">可以在 七牛云 个人中心 设置并获取到安全密钥</p>
