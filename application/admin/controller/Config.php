@@ -66,21 +66,6 @@ class Config extends BasicAdmin {
         $this->title = '文件存储配置';
         $this->index();
     }
-
-    /**
-     * 邮件账号配置
-     */
-    public function mail() {
-        $this->title = '邮箱账号配置';
-        $this->index();
-    }
-
-    /**
-     * 短信通道账号配置
-     */
-    public function sms() {
-        $this->title = '短信账号配置';
-        $this->index();
-    }
+    
 
 }
