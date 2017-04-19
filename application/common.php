@@ -15,8 +15,8 @@
 
 use app\admin\model\NodeModel;
 use service\DataService;
-use think\Db;
 use Wechat\Loader;
+use think\Db;
 
 /**
  * 打印输出数据到文件
@@ -86,10 +86,10 @@ function auth($node) {
 }
 
 /**
- * 从配置表读取配置信息
- * @param string $name
- * @param bool $value
- * @return string
+ * 设备或配置系统参数
+ * @param string $name 参数名称
+ * @param bool $value 默认是false为获取值，否则为更新
+ * @return string|bool
  */
 function sysconf($name, $value = false) {
     static $config = [];
