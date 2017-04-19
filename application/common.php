@@ -14,8 +14,9 @@
 
 
 use app\admin\model\NodeModel;
-use Wechat\Loader;
+use service\DataService;
 use think\Db;
+use Wechat\Loader;
 
 /**
  * 打印输出数据到文件
@@ -87,10 +88,15 @@ function auth($node) {
 /**
  * 从配置表读取配置信息
  * @param string $name
+ * @param bool $value
  * @return string
  */
-function sysconf($name) {
+function sysconf($name, $value = false) {
     static $config = [];
+    if ($value !== false) {
+        $config = [];
+        return DataService::save('SystemConfig', ['name' => $value], 'name');
+    }
     if (empty($config)) {
         foreach (Db::name('SystemConfig')->select() as $vo) {
             $config[$vo['name']] = $vo['value'];

@@ -73,7 +73,7 @@ class User extends BasicAdmin {
      * 用户编辑
      */
     public function edit() {
-        return $this->add();
+        return $this->_form($this->table, 'form');
     }
 
     /**

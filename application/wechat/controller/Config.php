@@ -43,9 +43,8 @@ class Config extends BasicAdmin {
             $this->assign('title', '微信接口配置');
             return view();
         }
-        $data = $this->request->post();
-        foreach ($data as $key => $vo) {
-            DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
+        foreach ($this->request->post() as $key => $vo) {
+            sysconf($key, $vo);
         }
         $this->success('数据修改成功！', '');
     }
@@ -111,9 +110,9 @@ class Config extends BasicAdmin {
                 !file_exists($filename) && $this->error('支付双向证书上传失败，请重新上传！');
                 $keyname = str_replace('_md5', '', $key);
                 $data[$keyname] = $filename;
-                unset($data[$key]);
             }
         }
+        unset($data['wechat_cert_key_md5'], $data['wechat_cert_cert_md5']);
         foreach ($data as $key => $vo) {
             DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
         }

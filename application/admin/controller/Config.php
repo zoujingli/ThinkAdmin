@@ -45,9 +45,8 @@ class Config extends BasicAdmin {
         if (!$this->request->isPost()) {
             parent::_list($this->table);
         } else {
-            $data = $this->request->post();
-            foreach ($data as $key => $vo) {
-                DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
+            foreach ($this->request->post() as $key => $vo) {
+                sysconf($key, $vo);
             }
             $this->success('数据修改成功！', '');
         }
@@ -66,6 +65,6 @@ class Config extends BasicAdmin {
         $this->title = '文件存储配置';
         $this->index();
     }
-    
+
 
 }
