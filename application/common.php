@@ -14,6 +14,7 @@
 
 
 use app\admin\model\NodeModel;
+use service\DataService;
 use Wechat\Loader;
 use think\Db;
 
@@ -32,7 +33,7 @@ function p($data, $replace = false, $pathname = NULL) {
 /**
  * 获取微信操作对象
  * @param string $type
- * @return \Wechat\WechatReceive|\Wechat\WechatUser|\Wechat\WechatPay|\Wechat\WechatScript|\Wechat\WechatOauth
+ * @return \Wechat\WechatReceive|\Wechat\WechatUser|\Wechat\WechatPay|\Wechat\WechatScript|\Wechat\WechatOauth|\Wechat\WechatMenu
  */
 function & load_wechat($type = '') {
     static $wechat = array();
@@ -85,12 +86,17 @@ function auth($node) {
 }
 
 /**
- * 从配置表读取配置信息
- * @param string $name
- * @return string
+ * 设备或配置系统参数
+ * @param string $name 参数名称
+ * @param bool $value 默认是false为获取值，否则为更新
+ * @return string|bool
  */
-function sysconf($name) {
+function sysconf($name, $value = false) {
     static $config = [];
+    if ($value !== false) {
+        $config = [];
+        return DataService::save('SystemConfig', ['name' => $value], 'name');
+    }
     if (empty($config)) {
         foreach (Db::name('SystemConfig')->select() as $vo) {
             $config[$vo['name']] = $vo['value'];

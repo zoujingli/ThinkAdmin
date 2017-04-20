@@ -45,9 +45,8 @@ class Config extends BasicAdmin {
         if (!$this->request->isPost()) {
             parent::_list($this->table);
         } else {
-            $data = $this->request->post();
-            foreach ($data as $key => $vo) {
-                DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
+            foreach ($this->request->post() as $key => $vo) {
+                sysconf($key, $vo);
             }
             $this->success('数据修改成功！', '');
         }
@@ -58,7 +57,7 @@ class Config extends BasicAdmin {
      */
     public function file() {
         $alert = [
-            'type'    => 'info',
+            'type'    => 'success',
             'title'   => '操作提示',
             'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'
         ];
@@ -67,20 +66,5 @@ class Config extends BasicAdmin {
         $this->index();
     }
 
-    /**
-     * 邮件账号配置
-     */
-    public function mail() {
-        $this->title = '邮箱账号配置';
-        $this->index();
-    }
-
-    /**
-     * 短信通道账号配置
-     */
-    public function sms() {
-        $this->title = '短信账号配置';
-        $this->index();
-    }
 
 }
