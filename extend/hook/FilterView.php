@@ -31,7 +31,7 @@ class FilterView {
         $replace = [
             '__APP__'    => $app,
             '__SELF__'   => Request::instance()->url(true),
-            '__PUBLIC__' => strpos($app, '.') ? ltrim(dirname($app), DS) : $app,
+            '__PUBLIC__' => strpos($app, EXT) ? ltrim(dirname($app), DS) : $app,
         ];
         $params = str_replace(array_keys($replace), array_values($replace), $params);
         $this->baidu($params);
