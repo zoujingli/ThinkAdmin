@@ -128,7 +128,7 @@
                         <label class="col-md-2 control-label label-required">图片地址</label>
                         <div class="col-md-9">
 
-                            <input onchange="$(this).next().attr('src', this.value);" type="text" class="layui-input"
+                            <input onchange="$(this).next().next().attr('src', this.value);" type="text" class="layui-input"
                                    value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="image_url" required="required" title="请上传图片或输入图片URL地址"/>
 
@@ -193,7 +193,7 @@
                         <label class="col-md-2 control-label">音乐图片</label>
                         <div class="col-md-9">
 
-                            <input onchange="$(this).next().attr('src', this.value);" type="text" class="layui-input"
+                            <input onchange="$(this).next().next().attr('src', this.value);" type="text" class="layui-input"
                                    value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="music_image" required="required" title="请上传音乐图片或输入音乐图片URL地址　　"/>
 
