@@ -38,7 +38,7 @@ class Index extends BasicAdmin {
         NodeModel::applyAuthNode();
         $list = Db::name('SystemMenu')->where('status', '1')->order('sort asc,id asc')->select();
         $menus = $this->_filterMenu(ToolsService::arr2tree($list));
-        $this->assign('title', '平台管理');
+        $this->assign('title', '系统管理');
         $this->assign('menus', $menus);
         return view();
     }

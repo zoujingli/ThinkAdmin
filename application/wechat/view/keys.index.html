@@ -1,0 +1,174 @@
+{extend name='extra@admin/content' /}
+
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    <button data-open="{:url('add')}" class='layui-btn layui-btn-small'>添加规则</button>
+</div>
+{/block}
+
+{block name='content'}
+<form onsubmit="return false;" data-auto="" method="POST">
+    <input type="hidden" value="resort" name="action"/>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">关键字</th>
+            <th class="text-center">回复类型</th>
+            <th class="text-center">回复内容</th>
+            <th class="text-center">更新时间</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td>{$vo.keys}</td>
+            <td>{$vo.type}</td>
+            <td>
+                {if $vo.type eq '音乐'}
+                <a class="btn btn-link" data-tips-text="预览" data-tips-placement="bottom"
+                   data-phone-view='{:url("@wechat/review")}&type=music&title={$vo.music_title}&desc={$vo.music_desc}'>
+                    <i class="fa fa-eye"></i> 预览
+                </a>
+                {elseif $vo.type eq '图文'}
+                <a class="btn btn-link" data-tips-text="预览" data-tips-placement="bottom"
+                   data-phone-view='{:url("@wechat/review")}&type=news&content={$vo.news_id}'>
+                    <i class="fa fa-eye"></i> 预览
+                </a>
+                {elseif $vo.type eq '视频'}
+                <a class="btn btn-link" data-tips-text="预览" data-tips-placement="bottom"
+                   data-phone-view='{:url("@wechat/review")}&type=video&title={$vo.video_title}&desc={$vo.video_desc}&url={$vo.video_url}'>
+                    <i class="fa fa-eye"></i> 预览
+                </a>
+                {else}
+                {$vo.content}
+                {/if}
+            </td>
+            <td>{$vo.create_at}</td>
+            <td>
+                {if auth("$classuri/edit")}
+                <span class="text-explode">|</span>
+                <a href='{"@wechat/keys/edit"|app_url}&id={$vo.id}'>编辑</a>
+                {/if}
+                {if auth("$classuri/del")}
+                <span class="text-explode">|</span>
+                <a data-delete='{$vo.id}' data-action='{"@wechat/keys/del"|app_url}'
+                   href="javascript:void(0)">删除</a>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page}</p>{/if}
+</form>
+
+{/block}
+
+{block name="script"}
+<script>
+    /* 瀑布流控制 */
+    var $layer = $('.news-container').cascade();
+    /* 事件处理 */
+    $('.news-container').on('mouseenter', '.news-box', function () {
+        $(this).addClass('active');
+    }).on('mouseleave', '.news-box', function () {
+        $(this).removeClass('active');
+    });
+    /* 删除图文 */
+    $('.news-container').on('click', '[data-news-del]', function () {
+        var $news_box = $(this).parents('.news-box');
+        var $news_del = $(this);
+        $.msg.confirm('确定要删除吗？', function () {
+            $.form.load('{"wechat/news/del"|app_url}', {id: $news_del.attr('data-news-del')}, 'POST', function (ret) {
+                if (ret.code === 'SUCCESS') {
+                    $.msg.success(ret.info);
+                    $news_box.remove(), $layer.data('cascade').layout();
+                } else {
+                    $.msg.error(ret.info);
+                }
+            });
+        });
+    });
+    $(function () {
+        /**
+         * 默认类型事件
+         * @type String
+         */
+        $('body').off('change', 'select[name=type]').on('change', 'select[name=type]', function () {
+            var value = $(this).val(), $form = $(this).parents('form');
+            var $current = $form.find('[data-keys-type="' + value + '"]').removeClass('hide');
+            $form.find('[data-keys-type]').not($current).addClass('hide');
+            switch (value) {
+                case 'news':
+                    return $('[name="news_id"]').trigger('change');
+                case 'text':
+                    return $('[name="content"]').trigger('change');
+                case 'image':
+                    return $('[name="image_url"]').trigger('change');
+                case 'video':
+                    return $('[name="video_url"]').trigger('change');
+                case 'music':
+                    return $('[name="music_url"]').trigger('change');
+                case 'voice':
+                    return $('[name="voice_url"]').trigger('change');
+            }
+        });
+
+        function showReview(params) {
+            params = params || {};
+            $('#phone-preview').attr('src', '{"@wechat/review"|app_url}&' + $.param(params));
+        }
+
+        // 图文显示预览
+        $('body').off('change', '[name="news_id"]').on('change', '[name="news_id"]', function () {
+            showReview({type: 'news', content: this.value});
+        });
+        // 文字显示预览
+        $('body').off('change', '[name="content"]').on('change', '[name="content"]', function () {
+            showReview({type: 'text', content: this.value});
+        });
+        // 图片显示预览
+        $('body').off('change', '[name="image_url"]').on('change', '[name="image_url"]', function () {
+            showReview({type: 'image', content: this.value});
+        });
+        // 音乐显示预览
+        var musicSelector = '[name="music_url"],[name="music_title"],[name="music_desc"],[name="music_image"]';
+        $('body').off('change', musicSelector).on('change', musicSelector, function () {
+            var params = {type: 'music'}, $parent = $(this).parents('form');
+            params.title = $parent.find('[name="music_title"]').val();
+            params.url = $parent.find('[name="music_url"]').val();
+            params.image = $parent.find('[name="music_image"]').val();
+            params.desc = $parent.find('[name="music_desc"]').val();
+            showReview(params);
+        });
+        // 视频显示预览
+        var videoSelector = '[name="video_title"],[name="video_url"],[name="video_desc"]';
+        $('body').off('change', videoSelector).on('change', videoSelector, function () {
+            var params = {type: 'video'}, $parent = $(this).parents('form');
+            params.title = $parent.find('[name="video_title"]').val();
+            params.url = $parent.find('[name="video_url"]').val();
+            params.desc = $parent.find('[name="video_desc"]').val();
+            showReview(params);
+        });
+
+        // 默认事件触发
+        $('select[name=type]').map(function () {
+            $(this).trigger('change');
+        });
+
+        /*! 删除关键字 */
+        $('[data-delete]').on('click', function () {
+            var id = this.getAttribute('data-delete');
+            var url = this.getAttribute('data-action');
+            $.msg.confirm('确定要删除这条记录吗？', function () {
+                $.form.load(url, {id: id}, 'POST', function (ret) {
+                    if (ret.code === "SUCCESS") {
+                        window.location.reload();
+                    }
+                });
+            })
+        });
+    });
+</script>
+{/block}
