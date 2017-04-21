@@ -95,6 +95,29 @@ class Keys extends BasicAdmin {
         $this->error("关键字删除失败，请稍候再试！");
     }
 
+
+    /**
+     * 关键字禁用
+     */
+    public function forbid() {
+        if (DataService::update($this->table)) {
+            $this->success("关键字禁用成功！", '');
+        } else {
+            $this->error("关键字禁用失败，请稍候再试！");
+        }
+    }
+
+    /**
+     * 关键字禁用
+     */
+    public function resume() {
+        if (DataService::update($this->table)) {
+            $this->success("关键字启用成功！", '');
+        } else {
+            $this->error("关键字启用失败，请稍候再试！");
+        }
+    }
+
     /**
      * 关注默认回复
      */

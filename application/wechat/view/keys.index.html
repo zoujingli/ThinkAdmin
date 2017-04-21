@@ -16,6 +16,7 @@
             <th class="text-center">回复类型</th>
             <th class="text-center">回复内容</th>
             <th class="text-center">更新时间</th>
+            <th class="text-center">状态</th>
             <th class="text-center">操作</th>
         </tr>
         </thead>
@@ -50,11 +51,28 @@
                 {/if}
             </td>
             <td class="text-center">{$vo.create_at}</td>
+            <td class='text-center'>
+                {if $vo.status eq 0}
+                <span>已禁用</span>
+                {elseif $vo.status eq 1}
+                <span style="color:#090">使用中</span>
+                {/if}
+            </td>
             <td class='text-center nowrap'>
 
                 {if auth("$classuri/edit")}
                 <span class="text-explode">|</span>
                 <a data-open='{:url("edit")}?id={$vo.id}'>编辑</a>
+                {/if}
+
+                {if $vo.status eq 1 and auth("$classuri/forbid")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'
+                   href="javascript:void(0)">禁用</a>
+                {elseif auth("$classuri/resume")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'
+                   href="javascript:void(0)">启用</a>
                 {/if}
 
                 {if auth("$classuri/del")}
