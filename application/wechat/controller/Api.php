@@ -18,8 +18,8 @@ use service\DataService;
 use service\WechatService;
 use Wechat\WechatReceive;
 use think\Controller;
-use think\Db;
 use think\Log;
+use think\Db;
 
 /**
  * 微信接口控制器
@@ -151,18 +151,18 @@ class Api extends Controller {
     protected function _event() {
         $event = $this->wechat->getRevEvent();
         switch (strtolower($event['event'])) {
-            /* 关注事件 */
+            /* 粉丝关注事件 */
             case 'subscribe':
                 $this->_syncFans(true);
                 if (!empty($event['key']) && stripos($event['key'], 'qrscene_') !== false) {
                     $this->_spread(preg_replace('|^.*?(\d+).*?$|', '$1', $event['key']));
                 }
                 return $this->_keys('wechat_keys#keys#subscribe');
-            /* 取消关注 */
+            /* 粉丝取消关注 */
             case 'unsubscribe':
                 $this->_syncFans(false);
                 exit('success');
-            /* 点击菜单 */
+            /* 点击菜单事件 */
             case 'click':
                 return $this->_keys($event['key']);
             /* 扫码推事件 */

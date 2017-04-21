@@ -50,7 +50,7 @@ function & load_wechat($type = '') {
             'ssl_key'        => sysconf('wechat_cert_key'),
             'cachepath'      => CACHE_PATH . 'wxpay' . DS,
         ];
-        $wechat[$index] = &Loader::get($type, $config);
+        $wechat[$index] = Loader::get($type, $config);
     }
     return $wechat[$index];
 }
