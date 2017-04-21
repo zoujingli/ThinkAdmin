@@ -14,6 +14,7 @@
 namespace app\wechat\controller;
 
 use controller\BasicAdmin;
+use service\LogService;
 use service\ToolsService;
 use think\Db;
 
@@ -84,6 +85,7 @@ class Menu extends BasicAdmin {
             if (Db::name($this->table)->where('1=1')->delete() !== false && Db::name($this->table)->insertAll($data) !== false) {
                 $result = $this->_push();
                 if ($result['status']) {
+                    LogService::write('微信管理', '发布微信菜单成功');
                     $this->success('保存发布菜单成功！', '');
                 }
                 $this->error('菜单发布失败，' . $result['errmsg']);
