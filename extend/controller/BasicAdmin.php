@@ -66,8 +66,6 @@ class BasicAdmin extends Controller {
             $this->error('抱歉，您没有访问该模块的权限！');
         }
         // 初始化赋值常用变量
-        $this->assign('_url_', $this->request->url(true));
-        $this->assign('_uri_', strtolower("{$module}/{$controller}/{$action}"));
         $this->assign('classuri', strtolower("{$module}/{$controller}"));
     }
 

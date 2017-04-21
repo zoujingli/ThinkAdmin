@@ -1,5 +1,17 @@
 {extend name='extra@admin/content' /}
 
+{block name="style"}
+<style>
+    .layui-box .control-label {
+        margin: 0;
+        padding: 0;
+    }
+
+    .layui-box textarea {
+        width: 95%
+    }
+</style>
+{/block}
 
 {block name="content"}
 <div class="row">
@@ -14,214 +26,220 @@
     </div>
     <!-- 效果预览区域 结束 -->
     <div class='col-xs-6'>
-        <form class="form-horizontal" role="form" data-auto="true" action="{$_url_}" method="post">
-            <div class="form-body">
+        <form class="form-horizontal" role="form" data-auto="true" action="__SELF__" method="post">
+            <fieldset class="layui-elem-field layui-box">
+                <legend>编辑规则</legend>
+                <div>
+                    {if !isset($vo.keys) or $vo.keys neq 'default' and $vo.keys neq 'subscribe'}
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">关键字</label>
+                        <div class="col-md-9">
+                            <input required title='请输入关键字' maxlength='15' name='keys' value='{$vo.keys|default=""}'
+                                   class="layui-input">
 
-                {if isset($vo.keys) and $vo.keys neq 'default' and $vo.keys neq 'subscribe'}
-                <div class="form-group">
-                    <label class="col-md-3 control-label">关键字</label>
-                    <div class="col-md-9">
-                        {if isset($vo.keys) and $vo.keys neq ""}
-                        <input required title='请输入关键字' maxlength='15' name='keys'
-                               value='{$vo.keys}' class="layui-input">
-                        {else/}
-                        <input required title='请输入关键字' maxlength='15' name='keys' value=''
-                               class="layui-input">
-                        {/if}
-                    </div>
-                </div>
-                {else}
-                <div class="form-group">
-                    <label class="col-md-3 control-label">规则状态</label>
-                    <div class="col-md-9">
-                        <div class="mt-radio-inline" style='padding-bottom:0'>
-                            {if !isset($vo.status) or $vo.status neq 0}
-                            <label class="layui-form-label">
-                                <input data-none-auto type="radio" checked name="status" value="1"> 启用
-                            </label>
-                            <label class="layui-form-label">
-                                <input data-none-auto type="radio" name="status" value="0"> 禁用
-                            </label>
-                            {else/}
-                            <label class="layui-form-label">
-                                <input data-none-auto type="radio" name="status" value="1"> 启用
-                            </label>
-                            <label class="layui-form-label">
-                                <input data-none-auto type="radio" checked name="status" value="0"> 禁用
-                            </label>
-                            {/if}
                         </div>
                     </div>
-                </div>
-                {/if}
-
-                <div class="form-group">
-                    <label class="col-md-3 control-label">规则类型</label>
-                    <div class="col-md-9">
-                        <select name='type' class='layui-input'>
-                            {if !isset($vo.type) or $vo.type eq 'text'}
-                            <option value='text' selected>文字</option>
-                            {else/}
-                            <option value='text'>文字</option>
-                            {/if}
-
-                            {if isset($vo.type) and $vo.type eq 'news'}
-                            <option value='news' selected>图文</option>
-                            {else}
-                            <option value='news'>图文</option>
-                            {/if}
-
-                            {if isset($vo.type) and $vo.type eq 'image'}
-                            <option value='image' selected>图片</option>
-                            {else}
-                            <option value='image'>图片</option>
-                            {/if}
-
-                            {if isset($vo.type) and $vo.type eq 'voice'}
-                            <option value='voice' selected>语音</option>
-                            {else}
-                            <option value='voice'>语音</option>
-                            {/if}
-
-                            {if isset($vo.type) and $vo.type eq 'music'}
-                            <option value='music' selected>音乐</option>
-                            {else}
-                            <option value='music'>音乐</option>
-                            {/if}
-
-                            {if isset($vo.type) and $vo.type eq 'video'}
-                            <option value='video' selected>视频</option>
-                            {else}
-                            <option value='video'>视频</option>
-                            {/if}
-                        </select>
+                    {else}
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">规则状态</label>
+                        <div class="col-md-9">
+                            <div class="mt-radio-inline" style='padding-bottom:0'>
+                                {if !isset($vo.status) or $vo.status neq 0}
+                                <label class="layui-form-label">
+                                    <input data-none-auto type="radio" checked name="status" value="1"> 启用
+                                </label>
+                                <label class="layui-form-label">
+                                    <input data-none-auto type="radio" name="status" value="0"> 禁用
+                                </label>
+                                {else/}
+                                <label class="layui-form-label">
+                                    <input data-none-auto type="radio" name="status" value="1"> 启用
+                                </label>
+                                <label class="layui-form-label">
+                                    <input data-none-auto type="radio" checked name="status" value="0"> 禁用
+                                </label>
+                                {/if}
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    {/if}
 
-                <div class="form-group" data-keys-type='text'>
-                    <label class="col-md-3 control-label">规则内容</label>
-                    <div class="col-md-9">
-                        <textarea name="content" maxlength="10000" class="form-control" style="height:100px">{$vo.content|default='说点什么吧'}</textarea>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">规则类型</label>
+                        <div class="col-md-9">
+                            <select name='type' class='layui-input'>
+                                {if !isset($vo.type) or $vo.type eq 'text'}
+                                <option value='text' selected>文字</option>
+                                {else}
+                                <option value='text'>文字</option>
+                                {/if}
+
+                                {if isset($vo.type) and $vo.type eq 'news'}
+                                <option value='news' selected>图文</option>
+                                {else}
+                                <option value='news'>图文</option>
+                                {/if}
+
+                                {if isset($vo.type) and $vo.type eq 'image'}
+                                <option value='image' selected>图片</option>
+                                {else}
+                                <option value='image'>图片</option>
+                                {/if}
+
+                                {if isset($vo.type) and $vo.type eq 'voice'}
+                                <option value='voice' selected>语音</option>
+                                {else}
+                                <option value='voice'>语音</option>
+                                {/if}
+
+                                {if isset($vo.type) and $vo.type eq 'music'}
+                                <option value='music' selected>音乐</option>
+                                {else}
+                                <option value='music'>音乐</option>
+                                {/if}
+
+                                {if isset($vo.type) and $vo.type eq 'video'}
+                                <option value='video' selected>视频</option>
+                                {else}
+                                <option value='video'>视频</option>
+                                {/if}
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group" data-keys-type='news'>
-                    <label class="col-md-3 control-label">选取图文</label>
-                    <div class="col-md-9">
-                        <a class="btn btn-link" data-iframe="{:url('wechat/news/select')}?field={:encode('news_id')}">
-                            选择图文
-                        </a>
-                        <input type="hidden" class='layui-input' value="{$vo.news_id|default=0}" name="news_id"/>
+                    <div class="form-group" data-keys-type='text'>
+                        <label class="col-md-2 control-label">规则内容</label>
+                        <div class="col-md-9">
+                            <textarea name="content" maxlength="10000" class="form-control" style="height:100px">{$vo.content|default='说点什么吧'}</textarea>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group" data-keys-type='image'>
-                    <label class="col-md-3 control-label">图片地址</label>
-                    <div class="col-md-9">
-                        <input onchange="$(this).next().attr('src', this.value);" type="hidden" name="image_url"
-                               value="{$vo.image_url|default='__STATIC__/theme/default/img/image.png'}"/>
-                        <img style="width:112px;height:auto;" data-tips-image
-                             src='{$vo.image_url|default="__STATIC__/theme/default/img/image.png"}'/>
-                        <a data-file="one" data-type="jpg,png,gif" data-field="image_url" class='btn btn-link'>上传图片</a>
-                    </div>
-                </div>
-
-                <div class="form-group" data-keys-type='voice'>
-                    <label class="col-md-3 control-label">上传语音</label>
-                    <div class="col-md-9">
-                        <div class="input-group">
-                            <input class='layui-input' type="text" value="{$vo.voice_url|default=''}" name="voice_url"/>
-                            <a data-file="one" data-type="mp3,wma,wav,amr" data-field="voice_url"
-                               class="input-group-addon">
-                                <i class="fa fa-file"></i>
+                    <div class="form-group" data-keys-type='news'>
+                        <label class="col-md-2 control-label">选取图文</label>
+                        <div class="col-md-9">
+                            <a class="btn btn-link"
+                               data-iframe="{:url('wechat/news/select')}?field={:encode('news_id')}">
+                                选择图文
                             </a>
+                            <input type="hidden" class='layui-input' value="{$vo.news_id|default=0}" name="news_id"/>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group" data-keys-type='music'>
-                    <label class="col-md-3 control-label">音乐标题</label>
-                    <div class="col-md-9">
-                        <input class='layui-input' maxlength='10' value="{$vo.music_title|default='音乐标题'}"
-                               name="music_title"/>
-                    </div>
-                </div>
-                <div class="form-group" data-keys-type='music'>
-                    <label class="col-md-3 control-label">上传音乐</label>
-                    <div class="col-md-9">
-                        <div class="input-group">
-                            <input class='layui-input' type="text" value="{$vo.music_url|default=''}" name="music_url"/>
-                            <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url"
-                               class="input-group-addon">
-                                <i class="fa fa-file"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group" data-keys-type='music'>
-                    <label class="col-md-3 control-label">音乐描述</label>
-                    <div class="col-md-9">
-                        <textarea name="music_desc" maxlength="50" class="form-control" style="height:100px">{$vo.music_desc|default='音乐描述'}</textarea>
-                    </div>
-                </div>
-                <div class="form-group" data-keys-type='music'>
-                    <label class="col-md-3 control-label">音乐图片</label>
-                    <div class="col-md-9">
+                    <div class="form-group" data-keys-type='image'>
+                        <label class="col-md-2 control-label">图片地址</label>
+                        <div class="col-md-9">
 
-                        <input onchange="$(this).next().attr('src', this.value);" type="hidden"
-                               value="{$vo.image_url|default='__STATIC__/theme/default/img/image.png'}"
-                               name="music_image"/>
+                            <input onchange="$(this).next().attr('src', this.value);" type="text" class="layui-input"
+                                   value="{$vo.image_url|default='__PUBLIC__/theme/default/img/image.png'}"
+                                   name="image_url" required="required" title="请上传图片或输入图片URL地址"/>
 
-                        <img style="width:112px;height:auto;" data-tips-image
-                             src='{$vo.image_url|default="__STATIC__/theme/default/img/image.png"}'/>
+                            <img style="width:112px;height:auto;" data-tips-image
+                                 src='{$vo.image_url|default="__STATIC__/theme/default/img/image.png"}'/>
 
-                        <a class="btn btn-sm green" data-file data-one="true" data-type="image"
-                           data-field="music_image" class='btn btn-link'>上传图片</a>
-
-                    </div>
-                </div>
-
-                <div class="form-group" data-keys-type='video'>
-                    <label class="col-md-3 control-label">视频标题</label>
-                    <div class="col-md-9">
-                        <input class='layui-input' maxlength='10'
-                               value="{$vo.video_title|default='视频标题'}" name="video_title"/>
-                    </div>
-                </div>
-
-                <div class="form-group" data-keys-type='video'>
-                    <label class="col-md-3 control-label">上传视频</label>
-                    <div class="col-md-9">
-                        <div class="input-group">
-
-                            <input class='layui-input' type="text"
-                                   value="{$vo.video_url|default=''}" name="video_url"/>
-
-                            <a data-file data-one="true" data-type="mp4" data-field="video_url"
-                               class="input-group-addon">
-                                <i class="fa fa-file"></i>
-                            </a>
+                            <a data-file="one" data-type="jpg,png,gif" data-field="image_url"
+                               class='btn btn-link'>上传图片</a>
 
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group" data-keys-type='video'>
-                    <label class="col-md-3 control-label">视频描述</label>
-                    <div class="col-md-9">
-                        <textarea name="video_desc" maxlength="50" class="form-control" style="height:100px">{$vo.video_desc|default='视频描述'}</textarea>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <div class="row">
-                        <div class="col-md-offset-3 col-md-9">
-                            <button class="layui-btn menu-submit">保存数据</button>
+                    <div class="form-group" data-keys-type='voice'>
+                        <label class="col-md-2 control-label">上传语音</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <input class='layui-input' type="text" value="{$vo.voice_url|default=''}"
+                                       name="voice_url" required="required" title="请上传语音文件或输入语音URL地址"/>
+                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="voice_url"
+                                   class="input-group-addon">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="form-group" data-keys-type='music'>
+                        <label class="col-md-2 control-label">音乐标题</label>
+                        <div class="col-md-9">
+                            <input class='layui-input' maxlength='10' value="{$vo.music_title|default='音乐标题'}"
+                                   name="music_title"/>
+                        </div>
+                    </div>
+                    <div class="form-group" data-keys-type='music'>
+                        <label class="col-md-2 control-label">上传音乐</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <input class='layui-input' type="text" value="{$vo.music_url|default=''}"
+                                       name="music_url" required="required" title="请上传音乐文件或输入音乐URL地址"/>
+                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url"
+                                   class="input-group-addon">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-keys-type='music'>
+                        <label class="col-md-2 control-label">音乐描述</label>
+                        <div class="col-md-9">
+                            <textarea name="music_desc" maxlength="50" class="form-control" style="height:100px">{$vo.music_desc|default='音乐描述'}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group" data-keys-type='music'>
+                        <label class="col-md-2 control-label">音乐图片</label>
+                        <div class="col-md-9">
+
+                            <input onchange="$(this).next().attr('src', this.value);" type="text" class="layui-input"
+                                   value="{$vo.image_url|default='__STATIC__/theme/default/img/image.png'}"
+                                   name="music_image" required="required" title="请上传音乐图片或输入音乐图片URL地址"/>
+
+                            <img style="width:112px;height:auto;" data-tips-image
+                                 src='{$vo.image_url|default="__STATIC__/theme/default/img/image.png"}'/>
+
+                            <a class="btn btn-sm green" data-file data-one="true" data-type="image"
+                               data-field="music_image" class='btn btn-link'>上传图片</a>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group" data-keys-type='video'>
+                        <label class="col-md-2 control-label">视频标题</label>
+                        <div class="col-md-9">
+                            <input class='layui-input' maxlength='10'
+                                   value="{$vo.video_title|default='视频标题'}" name="video_title"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group" data-keys-type='video'>
+                        <label class="col-md-2 control-label">上传视频</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+
+                                <input class='layui-input' type="text"
+                                       value="{$vo.video_url|default=''}" name="video_url"/>
+
+                                <a data-file data-one="true" data-type="mp4" data-field="video_url"
+                                   class="input-group-addon">
+                                    <i class="fa fa-file"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" data-keys-type='video'>
+                        <label class="col-md-2 control-label">视频描述</label>
+                        <div class="col-md-9">
+                            <textarea name="video_desc" maxlength="50" class="form-control" style="height:100px">{$vo.video_desc|default='视频描述'}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+
+                    <div class="text-center" style="padding-bottom:30px">
+                        <button class="layui-btn menu-submit">保存数据</button>
+                    </div>
+
+                    {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
                 </div>
-                {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
-            </div>
+            </fieldset>
         </form>
     </div>
 </div>
