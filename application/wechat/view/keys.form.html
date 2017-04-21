@@ -197,13 +197,13 @@
 
                             <input onchange="$(this).nextAll('img').attr('src', this.value);"
                                    type="text" class="layui-input"
-                                   value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
+                                   value="{$vo.music_image|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="music_image" required="required" title="请上传音乐图片或输入音乐图片URL地址　　"/>
 
                             <p class="help-block">文件最大64KB，只支持JPG格式</p>
 
                             <img style="width:112px;height:auto;" data-tips-image
-                                 src='{$vo.image_url|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
+                                 src='{$vo.music_image|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
 
                             <a data-file="one" data-type="jpg" data-field="music_image" class='btn btn-link'>上传图片</a>
 
