@@ -53,6 +53,7 @@ class Fans extends BasicAdmin {
     public function sync() {
         Db::name($this->table)->where('1=1')->delete();
         if (WechatService::syncAllFans('')) {
+            LogService::write('微信管理', '同步全部微信粉丝成功');
             $this->success('同步获取所有粉丝成功！', '');
         }
         $this->error('同步获取粉丝失败，请稍候再试！');
