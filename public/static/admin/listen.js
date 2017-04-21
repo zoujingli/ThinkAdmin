@@ -46,7 +46,8 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-open 事件行为 */
     this.$body.on('click', '[data-open]', function () {
-        $.form.href($(this).attr('data-open'), this);
+        var url = $(this).attr('data-open');
+        $.form.href(url, this);
     });
 
     /*! 注册 data-reload 事件行为 */
@@ -189,7 +190,7 @@ define(['jquery', 'admin.plugs'], function () {
     function showLeftMenu(menuNode, $openNode) {
         var $leftmenu = $('[data-menu-box=' + menuNode + ']').removeClass('hide');
         $("[data-menu-box]").not($leftmenu).addClass('hide');
-        $openNode ? $openNode.trigger('click') : $leftmenu.find('[data-load]:first').trigger('click');
+        $openNode ? $openNode.trigger('click') : $leftmenu.find('[data-open]:first').trigger('click');
     }
 
     var $menutarget = $('[data-menu-target]').on('click', function () {
@@ -232,7 +233,7 @@ define(['jquery', 'admin.plugs'], function () {
     };
     /*! 通过URI查询最有可能的菜单NODE */
     function queryNode(url) {
-        var $menu = $('[data-menu-node][data-load*="_URL_"]'.replace('_URL_', url.replace(/\.html$/ig, '')));
+        var $menu = $('[data-menu-node][data-open*="_URL_"]'.replace('_URL_', url.replace(/\.html$/ig, '')));
         if ($menu.size()) {
             return $menu.get(0).getAttribute('data-menu-node');
         }
