@@ -13,6 +13,8 @@
 
 namespace app\wechat\controller;
 
+use service\FileService;
+use service\WechatService;
 use think\Controller;
 use think\Db;
 
@@ -32,7 +34,7 @@ class Review extends Controller {
         $this->assign('type', $type);
         // 图文处理
         if ($type === 'news' && is_numeric($content) && !empty($content)) {
-            $news = News::get($content, ['appid' => $this->real_appid]);
+            $news = WechatService::getNewsById($content);
             $this->assign('articles', $news['articles']);
         }
         // 文章预览
@@ -48,15 +50,14 @@ class Review extends Controller {
     /**
      * 微信图片显示
      */
-    public function wechatImage() {
-        $url = input('get.url', '');
-        $filename = 'upload/tmp/' . join('/', str_split(md5($url), 16));
-        $realfile = ROOT_PATH . 'public/' . $filename;
-        file_exists(dirname($realfile)) || mkdir(dirname($realfile), 0755, true);
-        if (!file_exists($realfile)) {
-            file_put_contents($realfile, file_get_contents($url));
+    public function img() {
+        $url = $this->request->get('url', '');
+        $filename = 'wechat/tmp/' . join('/', str_split(md5($url), 16)) . '.jpg';
+        if (false === ($img = FileService::getFileUrl($filename))) {
+            $info = FileService::save($filename, file_get_contents($url));
+            $img = (is_array($info) && isset($info['url'])) ? $info['url'] : $url;
         }
-        $this->redirect(pathinfo($this->requestbaseFile(true), PATHINFO_DIRNAME) . '/' . $filename);
+        $this->redirect($img);
     }
 
 }

@@ -99,9 +99,8 @@ class Menu extends BasicAdmin {
         $wehcat = &load_wechat('Menu');
         if (false !== $wehcat->deleteMenu()) {
             $this->success('菜单取消成功，重新关注可立即生效！', '');
-        } else {
-            $this->error('菜单取消失败，' . $wehcat->errMsg);
         }
+        $this->error('菜单取消失败，' . $wehcat->errMsg);
     }
 
     /**

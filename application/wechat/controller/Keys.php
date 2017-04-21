@@ -79,9 +79,7 @@ class Keys extends BasicAdmin {
         if ($this->request->isPost() && isset($data['keys'])) {
             $db = Db::name($this->table)->where('keys', $data['keys']);
             !empty($data['id']) && $db->where('id', 'neq', $data['id']);
-            if ($db->count() > 0) {
-                $this->error('关键字已经存在，请使用其它关键字！');
-            }
+            $db->count() > 0 && $this->error('关键字已经存在，请使用其它关键字！');
         }
     }
 
@@ -102,9 +100,8 @@ class Keys extends BasicAdmin {
     public function forbid() {
         if (DataService::update($this->table)) {
             $this->success("关键字禁用成功！", '');
-        } else {
-            $this->error("关键字禁用失败，请稍候再试！");
         }
+        $this->error("关键字禁用失败，请稍候再试！");
     }
 
     /**
@@ -113,9 +110,8 @@ class Keys extends BasicAdmin {
     public function resume() {
         if (DataService::update($this->table)) {
             $this->success("关键字启用成功！", '');
-        } else {
-            $this->error("关键字启用失败，请稍候再试！");
         }
+        $this->error("关键字启用失败，请稍候再试！");
     }
 
     /**

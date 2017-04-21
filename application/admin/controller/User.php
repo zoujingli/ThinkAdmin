@@ -93,9 +93,8 @@ class User extends BasicAdmin {
         }
         if (DataService::save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
             $this->success('密码修改成功，下次请使用新密码登录！', '');
-        } else {
-            $this->error('密码修改失败，请稍候再试！');
         }
+        $this->error('密码修改失败，请稍候再试！');
     }
 
     /**
@@ -127,9 +126,8 @@ class User extends BasicAdmin {
         }
         if (DataService::update($this->table)) {
             $this->success("用户删除成功！", '');
-        } else {
-            $this->error("用户删除失败，请稍候再试！");
         }
+        $this->error("用户删除失败，请稍候再试！");
     }
 
     /**
@@ -141,9 +139,8 @@ class User extends BasicAdmin {
         }
         if (DataService::update($this->table)) {
             $this->success("用户禁用成功！", '');
-        } else {
-            $this->error("用户禁用失败，请稍候再试！");
         }
+        $this->error("用户禁用失败，请稍候再试！");
     }
 
     /**
@@ -152,9 +149,8 @@ class User extends BasicAdmin {
     public function resume() {
         if (DataService::update($this->table)) {
             $this->success("用户启用成功！", '');
-        } else {
-            $this->error("用户启用失败，请稍候再试！");
         }
+        $this->error("用户启用失败，请稍候再试！");
     }
 
 }

@@ -114,9 +114,8 @@ class Auth extends BasicAdmin {
     public function forbid() {
         if (DataService::update($this->table)) {
             $this->success("权限禁用成功！", '');
-        } else {
-            $this->error("权限禁用失败，请稍候再试！");
         }
+        $this->error("权限禁用失败，请稍候再试！");
     }
 
     /**
@@ -125,9 +124,8 @@ class Auth extends BasicAdmin {
     public function resume() {
         if (DataService::update($this->table)) {
             $this->success("权限启用成功！", '');
-        } else {
-            $this->error("权限启用失败，请稍候再试！");
         }
+        $this->error("权限启用失败，请稍候再试！");
     }
 
     /**

@@ -61,9 +61,8 @@ class Log extends BasicAdmin {
     public function del() {
         if (DataService::update($this->table)) {
             $this->success("日志删除成功！", '');
-        } else {
-            $this->error("日志删除失败，请稍候再试！");
         }
+        $this->error("日志删除失败，请稍候再试！");
     }
 
 }

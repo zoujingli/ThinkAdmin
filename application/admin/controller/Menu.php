@@ -116,9 +116,8 @@ class Menu extends BasicAdmin {
         $this->error('别再删我菜单了...');
         if (DataService::update($this->table)) {
             $this->success("菜单删除成功！", '');
-        } else {
-            $this->error("菜单删除失败，请稍候再试！");
         }
+        $this->error("菜单删除失败，请稍候再试！");
     }
 
     /**
@@ -128,9 +127,8 @@ class Menu extends BasicAdmin {
         $this->error('请不要禁用菜单...');
         if (DataService::update($this->table)) {
             $this->success("菜单禁用成功！", '');
-        } else {
-            $this->error("菜单禁用失败，请稍候再试！");
         }
+        $this->error("菜单禁用失败，请稍候再试！");
     }
 
     /**
@@ -139,9 +137,8 @@ class Menu extends BasicAdmin {
     public function resume() {
         if (DataService::update($this->table)) {
             $this->success("菜单启用成功！", '');
-        } else {
-            $this->error("菜单启用失败，请稍候再试！");
         }
+        $this->error("菜单启用失败，请稍候再试！");
     }
 
 }

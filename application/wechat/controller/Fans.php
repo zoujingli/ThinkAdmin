@@ -31,18 +31,18 @@ class Fans extends BasicAdmin {
      * 定义当前默认数据表
      * @var string
      */
-    protected $table='WechatFans';
+    protected $table = 'WechatFans';
 
     /**
      * 显示粉丝列表
      * @return array|string
      */
     public function index() {
-        $this->title='微信粉丝管理';
+        $this->title = '微信粉丝管理';
         $db = Db::name($this->table);
         $get = $this->request->get();
-        if(isset($get['nickname']) && $get['nickname']!==''){
-            $db->where('nickname','like',"%{$get['nickname']}%");
+        if (isset($get['nickname']) && $get['nickname'] !== '') {
+            $db->where('nickname', 'like', "%{$get['nickname']}%");
         }
         return parent::_list($db);
     }
@@ -50,13 +50,12 @@ class Fans extends BasicAdmin {
     /**
      * 同步粉丝列表
      */
-    public function sync(){
+    public function sync() {
         Db::name($this->table)->where('1=1')->delete();
-        if(WechatService::syncAllFans('')){
-            $this->success('同步获取所有粉丝成功！','');
-        }else{
-            $this->error('同步获取粉丝失败，请稍候再试！');
+        if (WechatService::syncAllFans('')) {
+            $this->success('同步获取所有粉丝成功！', '');
         }
+        $this->error('同步获取粉丝失败，请稍候再试！');
     }
 
 }

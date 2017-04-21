@@ -126,9 +126,8 @@ class Index extends BasicAdmin {
         }
         if (intval($this->request->request('id')) === intval(session('user.id'))) {
             return $this->_form('SystemUser', 'user/form');
-        } else {
-            $this->error('访问异常！');
         }
+        $this->error('访问异常！');
     }
 
 }
