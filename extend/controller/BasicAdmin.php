@@ -147,7 +147,7 @@ class BasicAdmin extends Controller {
             cookie('rows', $row_page >= 10 ? $row_page : 20);
             $page = $db->paginate($row_page, $total, ['query' => $this->request->get()]);
             $result['list'] = $page->all();
-            $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
+            $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-load="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
         } else {
             $result['list'] = $db->select();
         }
