@@ -51,7 +51,7 @@
             <div class="nowrap">
                 <input title="apiclient_key.pem" type="hidden" name="wechat_cert_key_md5">
                 <input title="apiclient_cert.pem" type="hidden" name="wechat_cert_cert_md5">
-                <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5"
+                <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5" data-uptype="local"
                         type="button" class="layui-btn layui-btn-primary">
                     {if file_exists(sysconf('wechat_cert_key'))}
                     已上传 apiclient_key.pem
@@ -59,7 +59,7 @@
                     请上传 apiclient_key.pem
                     {/if}
                 </button>
-                <button data-file="one" data-type="pem" data-field="wechat_cert_cert_md5"
+                <button data-file="one" data-type="pem" data-field="wechat_cert_cert_md5" data-uptype="local"
                         type="button" class="layui-btn layui-btn-primary">
                     {if file_exists(sysconf('wechat_cert_cert'))}
                     已上传 apiclient_cert.pem

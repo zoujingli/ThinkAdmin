@@ -66,6 +66,17 @@ class Keys extends BasicAdmin {
         return $this->_form($this->table, 'form', 'id');
     }
 
+
+    protected function _form_filter($data) {
+        if ($this->request->isPost() && isset($data['keys'])) {
+            $db = Db::name($this->table)->where('keys', $data['keys']);
+            !empty($data['id']) && $db->where('id', 'neq', $data['id']);
+            if ($db->count() > 0) {
+                $this->error('关键字已经存在，请使用其它关键字！');
+            }
+        }
+    }
+
     /**
      * 删除关键字
      */

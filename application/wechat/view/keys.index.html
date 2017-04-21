@@ -26,19 +26,20 @@
             <td class="text-center">{$vo.type}</td>
             <td class="text-center">
                 {if $vo.type eq '音乐'}
-                <a class="btn btn-link" data-tips-text="预览" data-tips-placement="bottom"
-                   data-phone-view='{:url("@wechat/review")}&type=music&title={$vo.music_title}&desc={$vo.music_desc}'>
-                    <i class="fa fa-eye"></i> 预览
+                <a data-phone-view='{:url("@wechat/review")}?type=music&title={$vo.music_title}&desc={$vo.music_desc}'
+                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
+                </a>
+                {elseif $vo.type eq '图片'}
+                <a data-phone-view='{:url("@wechat/review")}?type=image&title={$vo.image_url}'
+                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
                 </a>
                 {elseif $vo.type eq '图文'}
-                <a class="btn btn-link" data-tips-text="预览" data-tips-placement="bottom"
-                   data-phone-view='{:url("@wechat/review")}&type=news&content={$vo.news_id}'>
-                    <i class="fa fa-eye"></i> 预览
+                <a data-phone-view='{:url("@wechat/review")}?type=news&content={$vo.news_id}'
+                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
                 </a>
                 {elseif $vo.type eq '视频'}
-                <a class="btn btn-link" data-tips-text="预览" data-tips-placement="bottom"
-                   data-phone-view='{:url("@wechat/review")}&type=video&title={$vo.video_title}&desc={$vo.video_desc}&url={$vo.video_url}'>
-                    <i class="fa fa-eye"></i> 预览
+                <a data-phone-view='{:url("@wechat/review")}?type=video&title={$vo.video_title}&desc={$vo.video_desc}&url={$vo.video_url}'
+                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
                 </a>
                 {else}
                 {$vo.content}
@@ -46,14 +47,18 @@
             </td>
             <td class="text-center">{$vo.create_at}</td>
             <td class='text-center nowrap'>
+
                 {if auth("$classuri/edit")}
                 <span class="text-explode">|</span>
-                <a data-open='{:url("@wechat/keys/edit")}?id={$vo.id}'>编辑</a>
+                <a data-open='{:url("edit")}?id={$vo.id}'>编辑</a>
                 {/if}
+
                 {if auth("$classuri/del")}
                 <span class="text-explode">|</span>
-                <a data-delete='{$vo.id}' data-action='{:url("@wechat/keys/del")}' href="javascript:void(0)">删除</a>
+                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("del")}'
+                   href="javascript:void(0)">删除</a>
                 {/if}
+
             </td>
         </tr>
         {/foreach}
