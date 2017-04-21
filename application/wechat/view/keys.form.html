@@ -132,11 +132,12 @@
                             <input onchange="$(this).next().attr('src', this.value);" type="text" class="layui-input"
                                    value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="image_url" required="required" title="请上传图片或输入图片URL地址"/>
+                            <p class="help-block">文件最大2Mb，支持bmp/png/jpeg/jpg/gif格式</p>
 
                             <img style="width:112px;height:auto;" data-tips-image
                                  src='{$vo.image_url|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
 
-                            <a data-file="one" data-type="jpg,png,gif" data-field="image_url"
+                            <a data-file="one" data-type="bmp,png,jpeg,jpg,gif" data-field="image_url"
                                class='btn btn-link'>上传图片</a>
 
                         </div>
@@ -156,6 +157,7 @@
                                 </a>
 
                             </div>
+                            <p class="help-block">文件最大2Mb，播放长度不超过60s，mp3/wma/wav/amr格式</p>
                         </div>
                     </div>
 
@@ -174,7 +176,8 @@
                                 <input class='layui-input' type="text" value="{$vo.music_url|default=''}"
                                        name="music_url" required="required" title="请上传音乐文件或输入音乐URL地址　　"/>
 
-                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url" class="input-group-addon">
+                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url"
+                                   class="input-group-addon">
                                     <i class="fa fa-file"></i>
                                 </a>
 
@@ -195,10 +198,12 @@
                                    value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="music_image" required="required" title="请上传音乐图片或输入音乐图片URL地址　　"/>
 
+                            <p class="help-block">文件最大64KB，只支持JPG格式</p>
+
                             <img style="width:112px;height:auto;" data-tips-image
                                  src='{$vo.image_url|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
 
-                            <a data-file="one" data-type="jpg,png,gif" data-field="music_image" class='btn btn-link'>上传图片</a>
+                            <a data-file="one" data-type="jpg" data-field="music_image" class='btn btn-link'>上传图片</a>
 
                         </div>
                     </div>
@@ -206,8 +211,7 @@
                     <div class="form-group" data-keys-type='video'>
                         <label class="col-md-2 control-label">视频标题</label>
                         <div class="col-md-9">
-                            <input class='layui-input' maxlength='10' value="{$vo.video_title|default='视频标题'}"
-                                   name="video_title"/>
+                            <input class='layui-input' value="{$vo.video_title|default='视频标题'}" name="video_title"/>
                         </div>
                     </div>
 
@@ -224,6 +228,7 @@
                                 </a>
 
                             </div>
+                            <p class="help-block">文件最大10MB，只支持MP4格式</p>
                         </div>
                     </div>
 

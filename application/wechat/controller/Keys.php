@@ -61,6 +61,7 @@ class Keys extends BasicAdmin {
      * @return string
      */
     public function edit() {
+        $this->assign('title', '编辑关键字规则');
         return $this->_form($this->table, 'form', 'id');
     }
 
