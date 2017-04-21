@@ -174,8 +174,7 @@
                                 <input class='layui-input' type="text" value="{$vo.music_url|default=''}"
                                        name="music_url" required="required" title="请上传音乐文件或输入音乐URL地址　　"/>
 
-                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url"
-                                   class="input-group-addon">
+                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url" class="input-group-addon">
                                     <i class="fa fa-file"></i>
                                 </a>
 
@@ -199,8 +198,7 @@
                             <img style="width:112px;height:auto;" data-tips-image
                                  src='{$vo.image_url|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
 
-                            <a class="btn btn-sm green" data-file data-one="true" data-type="jpg,png,gif"
-                               data-field="music_image" class='btn btn-link'>上传图片</a>
+                            <a data-file="one" data-type="jpg,png,gif" data-field="music_image" class='btn btn-link'>上传图片</a>
 
                         </div>
                     </div>
@@ -208,8 +206,8 @@
                     <div class="form-group" data-keys-type='video'>
                         <label class="col-md-2 control-label">视频标题</label>
                         <div class="col-md-9">
-                            <input class='layui-input' maxlength='10'
-                                   value="{$vo.video_title|default='视频标题'}" name="video_title"/>
+                            <input class='layui-input' maxlength='10' value="{$vo.video_title|default='视频标题'}"
+                                   name="video_title"/>
                         </div>
                     </div>
 
@@ -221,8 +219,7 @@
                                 <input class='layui-input' type="text" value="{$vo.video_url|default=''}"
                                        name="video_url" required="required" title="请上传音乐视频或输入音乐视频URL地址　　"/>
 
-                                <a data-file data-one="true" data-type="mp4" data-field="video_url"
-                                   class="input-group-addon">
+                                <a data-file="one" data-type="mp4" data-field="video_url" class="input-group-addon">
                                     <i class="fa fa-file"></i>
                                 </a>
 
