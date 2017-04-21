@@ -56,7 +56,7 @@ class Login extends BasicAdmin {
             Db::name('SystemUser')->where('id', $user['id'])->update(['login_at' => ['exp', 'now()'], 'login_num' => ['exp', 'login_num+1']]);
             session('user', $user);
             !empty($user['authorize']) && NodeModel::applyAuthNode();
-            LogService::write('登录系统', '用户登录系统成功!');
+            LogService::write('系统管理', '用户登录系统成功');
             $this->success('登录成功，正在进入系统...', '@admin');
         }
     }
@@ -65,7 +65,7 @@ class Login extends BasicAdmin {
      * 退出登录
      */
     public function out() {
-        LogService::write('退出系统', '用户退出系统成功!');
+        LogService::write('系统管理', '用户退出系统成功');
         session('user', null);
         session_destroy();
         $this->success('退出登录成功！', '@admin/login');
