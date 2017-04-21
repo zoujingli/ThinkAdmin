@@ -17,8 +17,7 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-load 事件行为 */
     this.$body.on('click', '[data-load]', function () {
-        var url = $(this).attr('data-load');
-        var tips = $(this).attr('data-tips');
+        var url = $(this).attr('data-load'), tips = $(this).attr('data-tips');
 
         function _goLoad() {
             $.form.load(url, {}, 'GET', null, true, tips);
@@ -43,6 +42,11 @@ define(['jquery', 'admin.plugs'], function () {
     /*! 注册 data-modal 事件行为 */
     this.$body.on('click', '[data-modal]', function () {
         return $.form.modal($(this).attr('data-modal'), 'open_type=modal', $(this).attr('data-title') || '编辑');
+    });
+
+    /*! 注册 data-open 事件行为 */
+    this.$body.on('click', '[data-open]', function () {
+        $.form.href($(this).attr('data-open'), this);
     });
 
     /*! 注册 data-reload 事件行为 */

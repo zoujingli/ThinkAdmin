@@ -8,7 +8,7 @@
             </div>
             {volist name='menus' id='pmenu'}
             {empty name='pmenu.sub'}
-            <a data-menu-node='m-{$pmenu.id}' data-load="{$pmenu.url}"
+            <a data-menu-node='m-{$pmenu.id}' data-open="{$pmenu.url}"
                class="topbar-home-link topbar-btn topbar-left">
                 <span>{notempty name='$pmenu.icon'}<i class="{$pmenu.icon}"></i>{/notempty} {$pmenu.title}</span>
             </a>
