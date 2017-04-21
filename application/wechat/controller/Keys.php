@@ -26,6 +26,10 @@ use think\Db;
  */
 class Keys extends BasicAdmin {
 
+    /**
+     * 指定当前数据表
+     * @var string
+     */
     protected $table = 'WechatKeys';
 
     /**
@@ -54,7 +58,7 @@ class Keys extends BasicAdmin {
      */
     public function add() {
         $this->assign('title', '添加关键字规则');
-        return $this->_form($this->table, 'form', 'id');
+        return $this->_form($this->table, 'form');
     }
 
     /**
@@ -63,10 +67,14 @@ class Keys extends BasicAdmin {
      */
     public function edit() {
         $this->assign('title', '编辑关键字规则');
-        return $this->_form($this->table, 'form', 'id');
+        return $this->_form($this->table, 'form');
     }
 
 
+    /**
+     * 表单处理
+     * @param $data
+     */
     protected function _form_filter($data) {
         if ($this->request->isPost() && isset($data['keys'])) {
             $db = Db::name($this->table)->where('keys', $data['keys']);
@@ -87,11 +95,43 @@ class Keys extends BasicAdmin {
         $this->error("关键字删除失败，请稍候再试！");
     }
 
+    /**
+     * 关注默认回复
+     */
     public function subscribe() {
-
+        $this->assign('title', '编辑默认回复');
+        return $this->_form($this->table, 'form');
     }
 
-    public function defaults() {
+    /**
+     * 关注默认回复表单处理
+     * @param $data
+     */
+    protected function _subscribe_form_filter(&$data) {
+        if ($this->request->isGet()) {
+            $data = Db::name($this->table)->where('keys', 'subscribe')->find();
+        }
+        $data['keys'] = 'subscribe';
+    }
 
+
+    /**
+     * 无配置默认回复
+     */
+    public function defaults() {
+        $this->assign('title', '编辑无配置默认回复');
+        return $this->_form($this->table, 'form');
+    }
+
+
+    /**
+     * 无配置默认回复表单处理
+     * @param $data
+     */
+    protected function _defaults_form_filter(&$data) {
+        if ($this->request->isGet()) {
+            $data = Db::name($this->table)->where('keys', 'default')->find();
+        }
+        $data['keys'] = 'default';
     }
 }
