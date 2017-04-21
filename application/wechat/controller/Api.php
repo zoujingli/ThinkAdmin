@@ -104,7 +104,7 @@ class Api extends Controller {
                     return $this->wechat->music($info['music_title'], $info['music_desc'], $info['music_url'], $info['music_url'], $media_id)->reply();
                 case 'voice': /* 语音消息 */
                     empty($info['voice_url']) && exit('success');
-                    $media_id = WechatService::uploadForeverMedia($info['voice_url'], 'voice')->reply();
+                    $media_id = WechatService::uploadForeverMedia($info['voice_url'], 'voice');
                     empty($media_id) && exit('success');
                     return $this->wechat->voice($media_id)->reply();
                 case 'image': /* 图文消息 */
