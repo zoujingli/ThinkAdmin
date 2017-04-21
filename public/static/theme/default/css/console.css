@@ -209,17 +209,12 @@ td .text-explode:first-child{opacity:0;display:none}
 .pace-inactive{display:none}
 .pace .pace-progress{background:#22df80;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}
 
-/** 手机盒子 */
-.phone-container{background:#2c3e50;border-radius:30px;left:0;margin:0 auto 0;padding:70px 18px 68px 18px;position:absolute;right:0;width:300px}
-.phone-container:before{background:#1f2b38;border-radius:20px;content:'';height:8px;left:0;margin:-35px auto;position:absolute;right:0;width:45px}
-.phone-container:after{background:#1f2b38;border-radius:20px;content:"";display:block;height:42px;left:0;margin:12px auto;position:absolute;right:0;width:42px}
-.phone-screen{background:#d6e6e9;height:408px;overflow:hidden;padding:0;position:relative}
-.phone-screen iframe{width:100%;height:100%;background:#fff}
-
 /** 微信菜单 */
-.mobile-preview{position:relative;width:317px;height:580px;background:transparent url("../img/wechat/mobile_head.png") no-repeat 0 0;background-position:0 0;border:1px solid #e7e7eb}
+.mobile-preview{position:relative;width:317px;height:580px;background:url("../img/wechat/mobile_head.png") no-repeat 0 0;border:1px solid #e7e7eb}
 .mobile-preview .mobile-header{color:#fff;text-align:center;padding-top:30px;font-size:15px;width:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;margin:0 30px}
-.mobile-footer{list-style-type:none;margin:0;position:absolute;bottom:0;left:0;right:0;border-top:1px solid #e7e7eb;background:transparent url("../img/wechat/mobile_foot.png") no-repeat 0 0;background-position:0 0;background-repeat:no-repeat;padding-left:43px}
+.mobile-body{width:100%;position:absolute;bottom:0;top:60px}
+.mobile-body iframe{width:100%;height:100%;background:#fff}
+.mobile-footer{list-style-type:none;margin:0;position:absolute;bottom:0;left:0;right:0;border-top:1px solid #e7e7eb;background:url("../img/wechat/mobile_foot.png") no-repeat 0 0;padding-left:43px}
 .mobile-footer li{width:33.33%;line-height:50px;position:relative;float:left;text-align:center}
 .mobile-footer li a{display:block;border:1px solid rgba(255, 255, 255, 0);border-left:1px solid #e7e7eb;width:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;color:#616161;text-decoration:none}
 .mobile-footer li a.active{background-color:#fff;border:1px solid #44b549 !important}
