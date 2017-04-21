@@ -29,6 +29,10 @@
                 <a data-phone-view='{:url("@wechat/review")}?type=music&title={$vo.music_title|urlencode}&desc={$vo.music_desc|urlencode}'
                    class="btn btn-link"><i class="fa fa-eye"></i> 预览
                 </a>
+                {elseif $vo.type eq '文字'}
+                <a data-phone-view='{:url("@wechat/review")}?type=text&content={$vo.content|urlencode}'
+                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
+                </a>
                 {elseif $vo.type eq '图片'}
                 <a data-phone-view='{:url("@wechat/review")}?type=image&content={$vo.image_url|urlencode}'
                    class="btn btn-link"><i class="fa fa-eye"></i> 预览

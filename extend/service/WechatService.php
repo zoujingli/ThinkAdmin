@@ -68,6 +68,7 @@ class WechatService {
         # 下载临时文件到本地
         $filename = 'wechat/' . join('/', str_split($md5, 16)) . '.' . pathinfo($local_url, PATHINFO_EXTENSION);
         $upload = FileService::local($filename, file_get_contents($local_url));
+
         if (!empty($upload) && isset($upload['file']) && file_exists($upload['file'])) {
             # 上传图片素材
             $result = $wechat->uploadForeverMedia(array('media' => "@{$upload['file']}"), $type, $is_video, $video_info);

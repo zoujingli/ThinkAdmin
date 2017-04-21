@@ -114,7 +114,7 @@
         </div>
         <div class="aui-info aui-padded-l-15 aui-padded-r-15">
             <div class="aui-info-item aui-font-size-12">
-                <span class="aui-margin-l-5">{date('Y-m-d',strtotime($vo['create_at']))}</span>
+                <span class="aui-margin-l-5">{:date('Y-m-d',strtotime($vo['create_at']))}</span>
                 <span class="aui-margin-l-5" style='color:#0099CC'>{$vo.author|default=''}</span>
             </div>
         </div>
@@ -135,9 +135,8 @@
     </div>
 </section>
 {elseif $type eq 'video'}
-{* 视频显示 *}
 <section class="aui-chat">
-    <div class="aui-chat-header"><span class="time">{date('H:i')}</span></div>
+    <div class="aui-chat-header"><span class="time">{:date('H:i')}</span></div>
     <div class="aui-chat-item">
         <div class="aui-chat-content"
              style='background: #fff;border:1px solid #ccc;width:100%;max-width:100%;padding:0'>
@@ -147,7 +146,7 @@
                          style='padding:0 .3rem 0 .3rem;min-height:1.5rem;white-space:nowrap;overflow: hidden;text-overflow:ellipsis'>
                         {$title|default=''}
                     </div>
-                    <div style='font-size:.5rem;padding:0 .3rem .3rem .3rem;color:#999'>{date('m月d日')}</div>
+                    <div style='font-size:.5rem;padding:0 .3rem .3rem .3rem;color:#999'>{:date('m月d日')}</div>
                     <div class="aui-card-list-content-padded aui-border-b" style='padding:0 .3rem'>
                         <video src="{$url|default=''}" width="100%" controls preload></video>
                     </div>
@@ -163,9 +162,8 @@
 </section>
 
 {elseif $type eq 'news'}
-{* 图文显示 *}
 <section class="aui-chat">
-    <div class="aui-chat-header"><span class="time">{date('H:i')}</span></div>
+    <div class="aui-chat-header"><span class="time">{:date('H:i')}</span></div>
     <div class="aui-chat-item">
         <div class="aui-chat-content"
              style='background: #fff;border:1px solid #ccc;width:100%;max-width:100%;padding:0'>
@@ -173,7 +171,7 @@
                 {if !empty($articles)}
                 {foreach $articles as $key=>$vo}
                 {if $articles|count gt 1}
-                {if $key<1}
+                {if $key < 1}
                 <div href="{'wechat/review/index'|app_url}&content={$vo.id}&type=article"
                      onclick="location.href = this.getAttribute('href')" class="aui-card-list"
                      style="margin:0;padding:.5rem .5rem .3rem .5rem;display:block;background:none">
@@ -209,7 +207,7 @@
                     </div>
                     <div class="aui-font-size-12"
                          style="color:#999;min-height:1rem;display:block;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                        {date('Y年m月d日')}
+                        {:date('Y年m月d日')}
                     </div>
                     <div class="aui-card-list-content" style='max-height:10rem;overflow:hidden;text-overflow:ellipsis'>
                         <img src="{$vo.local_url|default=''}"/>
