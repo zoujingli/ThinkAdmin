@@ -128,7 +128,8 @@
                         <label class="col-md-2 control-label label-required">图片地址</label>
                         <div class="col-md-9">
 
-                            <input onchange="$(this).next().next().attr('src', this.value);" type="text" class="layui-input"
+                            <input type="text" class="layui-input"
+                                   onchange="$(this).nextAll('img').attr('src', this.value);"
                                    value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="image_url" required="required" title="请上传图片或输入图片URL地址"/>
 
@@ -176,8 +177,7 @@
                                        name="music_url" required="required" title="请上传音乐文件或输入音乐URL地址　　"/>
 
                                 <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url"
-                                   class="input-group-addon">
-                                    <i class="fa fa-file"></i>
+                                   class="input-group-addon"><i class="fa fa-file"></i>
                                 </a>
 
                             </div>
@@ -193,7 +193,8 @@
                         <label class="col-md-2 control-label">音乐图片</label>
                         <div class="col-md-9">
 
-                            <input onchange="$(this).next().next().attr('src', this.value);" type="text" class="layui-input"
+                            <input onchange="$(this).nextAll('img').attr('src', this.value);"
+                                   type="text" class="layui-input"
                                    value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="music_image" required="required" title="请上传音乐图片或输入音乐图片URL地址　　"/>
 
