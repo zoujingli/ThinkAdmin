@@ -14,6 +14,7 @@
 namespace app\wechat\controller;
 
 use controller\BasicAdmin;
+use service\DataService;
 use think\Db;
 
 /**
@@ -63,6 +64,16 @@ class Keys extends BasicAdmin {
     public function edit() {
         $this->assign('title', '编辑关键字规则');
         return $this->_form($this->table, 'form', 'id');
+    }
+
+    /**
+     * 删除关键字
+     */
+    public function del() {
+        if (DataService::update($this->table)) {
+            $this->success("关键字删除成功！", '');
+        }
+        $this->error("关键字删除失败，请稍候再试！");
     }
 
     public function subscribe() {
