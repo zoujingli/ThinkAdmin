@@ -31,11 +31,12 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-serach 表单搜索行为 */
     this.$body.on('submit', 'form.form-search', function () {
-        var split = this.action.indexOf('?') === -1 ? '?' : '&';
+        var url = $(this).attr('action');
+        var split = url.indexOf('?') === -1 ? '?' : '&';
         if ((this.method || 'get').toLowerCase() === 'get') {
-            window.location.href = '#' + parseUri(this.action + split + $(this).serialize());
+            window.location.href = '#' + parseUri(url + split + $(this).serialize());
         } else {
-            $.form.load(this.action, this, 'post');
+            $.form.load(url, this, 'post');
         }
     });
 
@@ -46,8 +47,7 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-open 事件行为 */
     this.$body.on('click', '[data-open]', function () {
-        var url = $(this).attr('data-open');
-        $.form.href(url, this);
+        $.form.href($(this).attr('data-open'), this);
     });
 
     /*! 注册 data-reload 事件行为 */
