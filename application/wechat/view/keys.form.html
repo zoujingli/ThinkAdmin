@@ -126,15 +126,15 @@
                     </div>
 
                     <div class="form-group" data-keys-type='image'>
-                        <label class="col-md-2 control-label">图片地址</label>
+                        <label class="col-md-2 control-label label-required">图片地址</label>
                         <div class="col-md-9">
 
                             <input onchange="$(this).next().attr('src', this.value);" type="text" class="layui-input"
-                                   value="{$vo.image_url|default='__PUBLIC__/theme/default/img/image.png'}"
+                                   value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="image_url" required="required" title="请上传图片或输入图片URL地址"/>
 
                             <img style="width:112px;height:auto;" data-tips-image
-                                 src='{$vo.image_url|default="__STATIC__/theme/default/img/image.png"}'/>
+                                 src='{$vo.image_url|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
 
                             <a data-file="one" data-type="jpg,png,gif" data-field="image_url"
                                class='btn btn-link'>上传图片</a>
@@ -143,15 +143,18 @@
                     </div>
 
                     <div class="form-group" data-keys-type='voice'>
-                        <label class="col-md-2 control-label">上传语音</label>
+                        <label class="col-md-2 control-label label-required">上传语音</label>
                         <div class="col-md-9">
                             <div class="input-group">
+
                                 <input class='layui-input' type="text" value="{$vo.voice_url|default=''}"
-                                       name="voice_url" required="required" title="请上传语音文件或输入语音URL地址"/>
+                                       name="voice_url" required="required" title="请上传语音文件或输入语音URL地址　　"/>
+
                                 <a data-file="one" data-type="mp3,wma,wav,amr" data-field="voice_url"
                                    class="input-group-addon">
                                     <i class="fa fa-file"></i>
                                 </a>
+
                             </div>
                         </div>
                     </div>
@@ -164,15 +167,18 @@
                         </div>
                     </div>
                     <div class="form-group" data-keys-type='music'>
-                        <label class="col-md-2 control-label">上传音乐</label>
+                        <label class="col-md-2 control-label label-required">上传音乐</label>
                         <div class="col-md-9">
                             <div class="input-group">
+
                                 <input class='layui-input' type="text" value="{$vo.music_url|default=''}"
-                                       name="music_url" required="required" title="请上传音乐文件或输入音乐URL地址"/>
+                                       name="music_url" required="required" title="请上传音乐文件或输入音乐URL地址　　"/>
+
                                 <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url"
                                    class="input-group-addon">
                                     <i class="fa fa-file"></i>
                                 </a>
+
                             </div>
                         </div>
                     </div>
@@ -187,11 +193,11 @@
                         <div class="col-md-9">
 
                             <input onchange="$(this).next().attr('src', this.value);" type="text" class="layui-input"
-                                   value="{$vo.image_url|default='__STATIC__/theme/default/img/image.png'}"
-                                   name="music_image" required="required" title="请上传音乐图片或输入音乐图片URL地址"/>
+                                   value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
+                                   name="music_image" required="required" title="请上传音乐图片或输入音乐图片URL地址　　"/>
 
                             <img style="width:112px;height:auto;" data-tips-image
-                                 src='{$vo.image_url|default="__STATIC__/theme/default/img/image.png"}'/>
+                                 src='{$vo.image_url|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
 
                             <a class="btn btn-sm green" data-file data-one="true" data-type="image"
                                data-field="music_image" class='btn btn-link'>上传图片</a>
@@ -208,12 +214,12 @@
                     </div>
 
                     <div class="form-group" data-keys-type='video'>
-                        <label class="col-md-2 control-label">上传视频</label>
+                        <label class="col-md-2 control-label label-required">上传视频</label>
                         <div class="col-md-9">
                             <div class="input-group">
 
-                                <input class='layui-input' type="text"
-                                       value="{$vo.video_url|default=''}" name="video_url"/>
+                                <input class='layui-input' type="text" value="{$vo.video_url|default=''}"
+                                       name="video_url" required="required" title="请上传音乐视频或输入音乐视频URL地址　　"/>
 
                                 <a data-file data-one="true" data-type="mp4" data-field="video_url"
                                    class="input-group-addon">
