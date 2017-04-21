@@ -15,6 +15,7 @@ namespace app\wechat\controller;
 
 use controller\BasicAdmin;
 use service\DataService;
+use service\LogService;
 use service\PayService;
 use think\Db;
 use Wechat\WechatService;
@@ -46,6 +47,7 @@ class Config extends BasicAdmin {
         foreach ($this->request->post() as $key => $vo) {
             sysconf($key, $vo);
         }
+        LogService::write('微信管理', '修改微信接口参数成功');
         $this->success('数据修改成功！', '');
     }
 
@@ -116,6 +118,7 @@ class Config extends BasicAdmin {
         foreach ($data as $key => $vo) {
             DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
         }
+        LogService::write('微信管理', '修改微信支付参数成功');
         $this->success('数据修改成功！', '');
     }
 }

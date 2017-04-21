@@ -16,6 +16,7 @@ namespace app\admin\controller;
 
 use controller\BasicAdmin;
 use service\DataService;
+use service\LogService;
 
 /**
  * 后台参数配置控制器
@@ -48,6 +49,7 @@ class Config extends BasicAdmin {
             foreach ($this->request->post() as $key => $vo) {
                 sysconf($key, $vo);
             }
+            LogService::write('系统管理', '修改系统配置参数成功');
             $this->success('数据修改成功！', '');
         }
     }
