@@ -7,7 +7,7 @@
 {/block}
 
 {block name='content'}
-<form onsubmit="return false;" data-auto="" method="POST">
+<form onsubmit="return false;" data-auto="true" action="__SELF__" method="POST">
     <input type="hidden" value="resort" name="action"/>
     <table class="table table-hover">
         <thead>
@@ -22,9 +22,9 @@
         <tbody>
         {foreach $list as $key=>$vo}
         <tr>
-            <td>{$vo.keys}</td>
-            <td>{$vo.type}</td>
-            <td>
+            <td class="text-center">{$vo.keys}</td>
+            <td class="text-center">{$vo.type}</td>
+            <td class="text-center">
                 {if $vo.type eq '音乐'}
                 <a class="btn btn-link" data-tips-text="预览" data-tips-placement="bottom"
                    data-phone-view='{:url("@wechat/review")}&type=music&title={$vo.music_title}&desc={$vo.music_desc}'>
@@ -44,16 +44,15 @@
                 {$vo.content}
                 {/if}
             </td>
-            <td>{$vo.create_at}</td>
-            <td>
+            <td class="text-center">{$vo.create_at}</td>
+            <td class='text-center nowrap'>
                 {if auth("$classuri/edit")}
                 <span class="text-explode">|</span>
-                <a href='{"@wechat/keys/edit"|app_url}&id={$vo.id}'>编辑</a>
+                <a data-open='{:url("@wechat/keys/edit")}?id={$vo.id}'>编辑</a>
                 {/if}
                 {if auth("$classuri/del")}
                 <span class="text-explode">|</span>
-                <a data-delete='{$vo.id}' data-action='{"@wechat/keys/del"|app_url}'
-                   href="javascript:void(0)">删除</a>
+                <a data-delete='{$vo.id}' data-action='{:url("@wechat/keys/del")}' href="javascript:void(0)">删除</a>
                 {/if}
             </td>
         </tr>
@@ -67,29 +66,7 @@
 
 {block name="script"}
 <script>
-    /* 瀑布流控制 */
-    var $layer = $('.news-container').cascade();
-    /* 事件处理 */
-    $('.news-container').on('mouseenter', '.news-box', function () {
-        $(this).addClass('active');
-    }).on('mouseleave', '.news-box', function () {
-        $(this).removeClass('active');
-    });
-    /* 删除图文 */
-    $('.news-container').on('click', '[data-news-del]', function () {
-        var $news_box = $(this).parents('.news-box');
-        var $news_del = $(this);
-        $.msg.confirm('确定要删除吗？', function () {
-            $.form.load('{"wechat/news/del"|app_url}', {id: $news_del.attr('data-news-del')}, 'POST', function (ret) {
-                if (ret.code === 'SUCCESS') {
-                    $.msg.success(ret.info);
-                    $news_box.remove(), $layer.data('cascade').layout();
-                } else {
-                    $.msg.error(ret.info);
-                }
-            });
-        });
-    });
+
     $(function () {
         /**
          * 默认类型事件
