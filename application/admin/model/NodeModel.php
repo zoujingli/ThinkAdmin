@@ -89,13 +89,8 @@ class NodeModel {
             $alias["{$vo['node']}"] = $vo;
         }
         $nodes = [];
-        $ignore = [
-            'index',
-            'wechat/api', 'wechat/notify',
-            'admin/plugs', 'admin/login', 'admin/index',
-        ];
         foreach (self::getNodeTree(APP_PATH) as $thr) {
-            foreach ($ignore as $str) {
+            foreach (['admin/plugs', 'admin/login', 'admin/index', 'store/api', 'index'] as $str) {
                 if (stripos($thr, $str) === 0) {
                     continue 2;
                 }

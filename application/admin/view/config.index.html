@@ -1,65 +1,127 @@
 {extend name="extra@admin/content"}
 
 {block name="content"}
-<form onsubmit="return false;" action="{$_url_}" data-auto="true" method="post"
-      class='form-horizontal' style='padding-top:20px'>
+<div class="row">
+    <div class="col-lg-6">
+        <form class=" layui-form" data-auto="" method="post">
+            <fieldset class="layui-elem-field layui-box">
+                <legend>网站信息</legend>
+                <div class="layui-field-box" style="padding-right:35px">
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label">SiteName <span class="nowrap">(网站名称)</span></label>
-        <div class='col-sm-8'>
-            <input type="text" name="site_name" required="required" title="请输入网站名称" placeholder="请输入网站名称"
-                   value="{:sysconf('site_name')}" class="layui-input">
-            <p class="help-block">网站名称，显示在浏览器标签上</p>
-        </div>
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_name" required="required" title="请输入网站标题" placeholder="请输入网站标题" value="{:sysconf('site_name')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站域名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_domain" required="required" title="请输入网站域名" placeholder="请输入网站域名" value="{:sysconf('site_domain')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站版权</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_copy" required="required" title="请输入网站版权" placeholder="请输入网站版权" value="{:sysconf('site_copy')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站备案号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_beian" title="请输入网站备案号" placeholder="请输入网站备案号" value="{:sysconf('site_beian')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站关键字</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_keys" title="请输入SEO关键字" placeholder="请输入关键字，多个以英文逗号隔开" value="{:sysconf('site_keys')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站描述</label>
+                        <div class="layui-input-block">
+                            <textarea name="site_desc" placeholder="请输入网站描述" class="layui-textarea">{:sysconf('site_desc')}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-box text-center">
+                    <button class="layui-btn" type="submit">立即提交</button>
+                </div>
+            </fieldset>
+        </form>
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Copyright <span class="nowrap">(版权信息)</span></label>
-        <div class='col-sm-8'>
-            <input type="text" name="site_copy" required="required" title="请输入版权信息" placeholder="请输入版权信息"
-                   value="{:sysconf('site_copy')}" class="layui-input">
-            <p class="help-block">程序的版权信息设置，在后台登录页面显示</p>
-        </div>
+    <div class="col-lg-6">
+        <form class=" layui-form" data-auto="" method="post">
+            <fieldset class="layui-elem-field layui-box">
+                <legend>其它参数</legend>
+                <div class="layui-field-box" style="padding-right:35px">
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">系统名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="app_name" required="required" title="请输入系统名称" placeholder="请输入系统名称" value="{:sysconf('app_name')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">系统版本</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="app_version" required="required" title="请输入网站域名" placeholder="请输入网站域名" value="{:sysconf('app_version')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">百度统计ID</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_tongji_baidu" title="请输入公司名称" placeholder="请输入百度统计ID" value="{:sysconf('site_tongji_baidu')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">CNZZ统计ID</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="site_tongji_cnzz" placeholder="请输入CNZZ统计ID" value="{:sysconf('site_tongji_cnzz')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">网站Logo</label>
+                        <div class="layui-input-block">
+                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('site_logo')}"/>
+                            <input type="hidden" onchange="$(this).prev('img').attr('src', this.value)" name="site_logo" value="{:sysconf('site_logo')}"  class="layui-input">
+                            <a class="btn btn-link" data-file="one" data-uptype="qiniu" data-type="jpg,png,gif" data-field="site_logo">上传图片</a>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            建议LOGO图片的尺寸为160x56px，此LOGO图片用于后台登陆页面。
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">浏览器图标</label>
+                        <div class="layui-input-block">
+                            <img data-tips-image="" style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('app_logo')}"/>
+                            <input type="hidden" name="app_logo" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('app_logo')}" class="layui-input">
+                            <a class="btn btn-link" data-file="one" data-type="ico,png" data-field="app_logo">上传图片</a>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            建议上传ICO图标的尺寸为128x128px，此图标用于网站标题前，ICON在线制作。
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-box text-center">
+                        <button class="layui-btn" type="submit">立即提交</button>
+                    </div>
+                </div>
+                </div>
+            </fieldset>
+        </form>
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label">AppName <span class="nowrap">(程序名称)</span></label>
-        <div class='col-sm-8'>
-            <input type="text" name="app_name" required="required" title="请输入程序名称" placeholder="请输入程序名称"
-                   value="{:sysconf('app_name')}" class="layui-input">
-            <p class="help-block">当前程序名称，在后台主标题上显示</p>
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">AppVersion <span class="nowrap">(程序版本)</span></label>
-        <div class='col-sm-8'>
-            <input type="text" name="app_version" required="required" title="请输入程序版本" placeholder="请输入程序版本"
-                   value="{:sysconf('app_version')}" class="layui-input">
-            <p class="help-block">当前程序版本号，在后台主标题上标显示</p>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">BrowserIcon <span class="nowrap">(浏览器图标)</span></label>
-        <div class='col-sm-8'>
-            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('browser_icon')}"/>
-            <input type="hidden" name="browser_icon" onchange="$(this).prev('img').attr('src', this.value)"
-                   value="{:sysconf('browser_icon')}" class="layui-input">
-            <a class="btn btn-link" data-file="one" data-type="ico,png" data-field="browser_icon">上传图片</a>
-            <p>建议上传ICO图标的尺寸为128x128px，此图标用于网站标题前，ICON在线制作。</p>
-        </div>
-    </div>
-
-    <div class="hr-line-dashed"></div>
-
-    <div class="col-sm-4 col-sm-offset-2">
-        <div class="layui-form-item text-center">
-            <button class="layui-btn" type="submit">保存配置</button>
-        </div>
-    </div>
-
-</form>
+</div>
 
 {/block}

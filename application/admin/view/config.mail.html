@@ -1,0 +1,61 @@
+{extend name="extra@admin/content"}
+
+{block name="content"}
+<div class="row">
+    <div class="col-lg-12">
+        <form class=" layui-form" data-auto="" method="post">
+            <fieldset class="layui-elem-field layui-box">
+                <legend>邮件配置</legend>
+                <div class="layui-field-box" style="padding-right:35px">
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">邮件发件人</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mail_from_name" required="required" title="请输入邮件发件人" placeholder="请输入邮件发件人" value="{:sysconf('mail_from_name')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">回复收信邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mail_reply" required="required" title="请输入回复收信邮箱" placeholder="请输入回复收信邮箱" value="{:sysconf('mail_reply')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">SMTP服务器</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mail_smtp_host" required="required" title="请输入SMTP服务器" placeholder="请输入SMTP服务器" value="{:sysconf('mail_smtp_host')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">SMTP端口号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mail_smtp_port" required="required" title="请输入SMTP端口号" placeholder="请输入SMTP端口号" value="{:sysconf('mail_smtp_port')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">SMTP帐号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mail_smtp_username" required="required" title="请输入SMTP帐号" placeholder="请输入SMTP帐号" value="{:sysconf('mail_smtp_username')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">SMTP密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="mail_smtp_password" required="required" title="请输入SMTP密码" placeholder="请输入SMTP密码" value="{:sysconf('mail_smtp_password')}" class="layui-input">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-form-item layui-box text-center">
+                    <button class="layui-btn" type="submit">立即提交</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{/block}
