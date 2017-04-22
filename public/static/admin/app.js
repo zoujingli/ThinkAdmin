@@ -66,7 +66,7 @@ require.config({
 });
 
 window.WEB_SOCKET_SWF_LOCATION = "//cdn.bootcss.com/web-socket-js/1.0.0/WebSocketMain.swf";
-window.UEDITOR_HOME_URL = (window.ROOT_URL ? window.ROOT_URL + '/static/' : baseUrl) + '../plugs/ueditor/';
+window.UEDITOR_HOME_URL = (window.ROOT_URL ? window.ROOT_URL + '/static/' : baseUrl) + 'plugs/ueditor/';
 window.LAYDATE_PATH = baseUrl + '../plugs/layui/laydate/';
 
 // UI框架初始化

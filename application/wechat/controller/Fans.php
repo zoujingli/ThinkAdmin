@@ -15,6 +15,7 @@
 namespace app\wechat\controller;
 
 use controller\BasicAdmin;
+use service\LogService;
 use service\WechatService;
 use think\Db;
 
