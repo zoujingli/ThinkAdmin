@@ -68,47 +68,6 @@ class FileService {
     }
 
     /**
-     * 根据配置获取到七牛云文件上传目标地址
-     * @return string
-     */
-    public static function getUploadLocalUrl() {
-        return url('@admin/plugs/upload');
-    }
-
-    /**
-     * 根据配置获取到七牛云文件上传目标地址
-     * @param bool $isClient
-     * @return string
-     */
-    public static function getUploadQiniuUrl($isClient = true) {
-        $region = sysconf('storage_qiniu_region');
-        $isHttps = !!sysconf('storage_qiniu_is_https');
-        switch ($region) {
-            case '华东':
-                if ($isHttps) {
-                    return $isClient ? 'https://upload.qbox.me' : 'https://up.qbox.me';
-                }
-                return $isClient ? 'http://upload.qiniu.com' : 'http://up.qiniu.com';
-            case '华北':
-                if ($isHttps) {
-                    return $isClient ? 'https://upload-z1.qbox.me' : 'https://up-z1.qbox.me';
-                }
-                return $isClient ? 'http://upload-z1.qiniu.com' : 'http://up-z1.qiniu.com';
-            case '北美':
-                if ($isHttps) {
-                    return $isClient ? 'https://upload-na0.qbox.me' : 'https://up-na0.qbox.me';
-                }
-                return $isClient ? 'http://upload-na0.qiniu.com' : 'http://up-na0.qiniu.com';
-            case '华南':
-            default:
-                if ($isHttps) {
-                    return $isClient ? 'https://upload-z2.qbox.me' : 'https://up-z2.qbox.me';
-                }
-                return $isClient ? 'http://upload-z2.qiniu.com' : 'http://up-z2.qiniu.com';
-        }
-    }
-
-    /**
      * 获取服务器URL前缀
      * @return string
      */

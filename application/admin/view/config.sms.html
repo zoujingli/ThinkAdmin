@@ -1,0 +1,79 @@
+{extend name="extra@admin/content"}
+
+{block name="content"}
+<div class="row">
+    <div class="col-lg-12">
+        <form class=" layui-form" data-auto="" method="post">
+            <fieldset class="layui-elem-field layui-box">
+                <legend>短信平台</legend>
+                <div class="layui-field-box" style="padding-right:35px">
+
+                    <div class="layui-form-item layui-box">
+                        <label class="layui-form-label">短信平台</label>
+                        <div class="layui-input-block">
+                            <select name="sms_type" lay-filter="sms_type" required="required">
+                                <option {if sysconf('storage_type')!=='zt'}selected{/if} value='zt'>助通短信平台</option>
+                                <option {if sysconf('storage_type')==='ali'}selected{/if} value='ali'>阿里云短信</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box" data-sms-type="zt">
+                        <label class="layui-form-label">平台账号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sms_zt_username" required="required" title="请输入短信平台账号" placeholder="请输入短信平台账号" value="{:sysconf('sms_zt_username')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box" data-sms-type="zt">
+                        <label class="layui-form-label">平台密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="sms_zt_password" required="required" title="请输入短信平台密码" placeholder="请输入短信平台密码" value="{:sysconf('sms_zt_password')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box" data-sms-type="ali">
+                        <label class="layui-form-label">AccessKey</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sms_ali_key" required="required" title="请输入AccessKey" placeholder="请输入AccessKey" value="{:sysconf('sms_ali_key')}" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-box" data-sms-type="ali">
+                        <label class="layui-form-label">AccessSecret</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sms_ali_secret" required="required" title="请输入AccessSecret" placeholder="请输入AccessSecret" value="{:sysconf('sms_ali_secret')}" class="layui-input">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-form-item layui-box text-center">
+                    <button class="layui-btn" type="submit">立即提交</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script>
+
+    $(function () {
+        // 默认初始化布局
+        initLayout($('[name="sms_type"]').val());
+        // 表单动态渲染
+        window.form.render();
+        /*! 兼听 select 的值变化 */
+        window.form.on('select(sms_type)', function (data) {
+            // 重新初始化布局
+            initLayout(data.value);
+        });
+        // 表单初始化布局
+        function initLayout(storage_type) {
+            $("[data-sms-type]").not($("[data-sms-type='" + storage_type + "']").show()).hide();
+        }
+    });
+</script>
+{/block}
