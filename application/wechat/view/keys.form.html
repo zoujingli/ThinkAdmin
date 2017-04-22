@@ -36,7 +36,7 @@
     <!-- 效果预览区域 结束 -->
     <div class='col-xs-6' style="margin-left:15px">
         <form class="form-horizontal" role="form" data-auto="true" action="__SELF__" method="post">
-            <fieldset class="layui-elem-field layui-box">
+            <fieldset class="layui-elem-field layui-box" style="height:580px;position:absolute;width:535px">
                 <legend>{$title}</legend>
                 <div>
                     {if !isset($vo.keys) or ($vo.keys neq 'default' and $vo.keys neq 'subscribe')}
@@ -196,7 +196,7 @@
                     <div class="form-group" data-keys-type='music'>
                         <label class="col-md-2 control-label layui-form-label">音乐描述</label>
                         <div class="col-md-9">
-                            <textarea name="music_desc" maxlength="50" class="form-control" style="height:100px">{$vo.music_desc|default='音乐描述'}</textarea>
+                            <input name="music_desc" class="layui-input" value="{$vo.music_desc|default='音乐描述'}"/>
                         </div>
                     </div>
                     <div class="form-group" data-keys-type='music'>
@@ -250,13 +250,14 @@
                         </div>
                     </div>
 
-                    <div class="hr-line-dashed"></div>
-
-                    <div class="text-center" style="padding-bottom:30px">
+                    <div class="text-center" style="position:absolute;bottom:50px;width:100%;">
+                        <div class="hr-line-dashed"></div>
                         <button class="layui-btn menu-submit">保存数据</button>
+                        {if !isset($vo.keys) || !in_array($vo.keys,['default','subscribe'])}
                         <button onclick="$.msg.confirm('确定取消编辑吗？',function(){history.back()})"
                                 class="layui-btn layui-btn-danger" type='button'>取消编辑
                         </button>
+                        {/if}
                     </div>
 
                     {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
