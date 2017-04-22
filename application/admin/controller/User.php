@@ -44,11 +44,10 @@ class User extends BasicAdmin {
         // 实例Query对象
         $db = Db::name($this->table)->where('is_deleted', '0');
         // 应用搜索条件
-        if (isset($get['username']) && $get['username'] !== '') {
-            $db->where('username', 'like', "%{$get['username']}%");
-        }
-        if (isset($get['phone']) && $get['phone'] !== '') {
-            $db->where('phone', 'like', "%{$get['phone']}%");
+        foreach (['username', 'phone'] as $key) {
+            if (isset($get[$key]) && $get[$key] !== '') {
+                $db->where($key, 'like', "%{$get[$key]}%");
+            }
         }
         // 实例化并显示
         parent::_list($db);

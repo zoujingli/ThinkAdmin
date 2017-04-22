@@ -42,8 +42,10 @@ class Fans extends BasicAdmin {
         $this->title = '微信粉丝管理';
         $db = Db::name($this->table);
         $get = $this->request->get();
-        if (isset($get['nickname']) && $get['nickname'] !== '') {
-            $db->where('nickname', 'like', "%{$get['nickname']}%");
+        foreach (['nickname'] as $key) {
+            if (isset($get[$key]) && $get[$key] !== '') {
+                $db->where($key, 'like', "%{$get[$key]}%");
+            }
         }
         return parent::_list($db);
     }
