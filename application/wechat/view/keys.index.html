@@ -3,6 +3,9 @@
 {block name="button"}
 <div class="nowrap pull-right" style="margin-top:10px">
     <button data-open="{:url('add')}" class='layui-btn layui-btn-small'>添加规则</button>
+    <button data-update data-field='delete' data-action='{:url("$classuri/del")}'
+            class='layui-btn layui-btn-small layui-btn-danger'>删除规则
+    </button>
 </div>
 {/block}
 
@@ -12,6 +15,12 @@
     <table class="table table-hover">
         <thead>
         <tr>
+            <th class='list-table-check-td'>
+                <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='list-table-sort-td'>
+                <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
+            </th>
             <th class="text-center">关键字</th>
             <th class="text-center">回复类型</th>
             <th class="text-center">回复内容</th>
@@ -23,6 +32,12 @@
         <tbody>
         {foreach $list as $key=>$vo}
         <tr>
+            <td class='list-table-check-td'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='list-table-sort-td'>
+                <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
+            </td>
             <td class="text-center">{$vo.keys}</td>
             <td class="text-center">{$vo.type}</td>
             <td class="text-center">
