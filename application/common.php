@@ -95,7 +95,8 @@ function sysconf($name, $value = false) {
     static $config = [];
     if ($value !== false) {
         $config = [];
-        return DataService::save('SystemConfig', ['name' => $name, 'value' => $value], 'name');
+        $data = ['name' => $name, 'value' => $value];
+        return DataService::save('SystemConfig', $data, 'name');
     }
     if (empty($config)) {
         foreach (Db::name('SystemConfig')->select() as $vo) {
