@@ -67,7 +67,7 @@
                             <div class="col-xs-8" style="width: 400px">
                                 <br>
                                 <a data-file="one" data-type="jpg,png,jpeg" data-field="local_url" class="btn btn-sm">上传图片</a>
-                                <a data-iframe="{:url('@wechat/news/media')}?field=local_url" class="btn  btn-sm">从图库中选择图片</a>
+                                <a data-iframe="{:url('@wechat/news/media')}?field=local_url" class="btn btn-sm">从图库中选择图片</a>
                                 <br><br>
                                 <label style="margin-left:0;padding-left:10px">
                                     <input data-auto-none type="checkbox" value="1" name="show_cover_pic">
@@ -146,14 +146,12 @@
 
                 // 数据提交
                 $form.find('button[data-submit]').on('click', function () {
+                    var data = [];
                     $form.submit();
-                    if ($form.find('input.validate-error').size() > 0 || (editor.getContent() || '').length < 1) {
-                        if ((editor.getContent() || '').length < 1) {
-                            editor.setContent('文章内容不能留空，请输入内容！')
-                        }
+                    if (!syncEditor($('.news-item.active'))) {
+                        editor.setContent('文章内容不能留空，请输入内容！');
                         return false;
                     }
-                    var data = [];
                     $('.news-item').map(function () {
                         var item = $(this).data('item');
                         item.content = item.content || '文章内容不能留空，请输入内容！';
@@ -173,8 +171,8 @@
                     }
                 });
 
-                /*! 显示编辑器 */
-                function showEditor($pItem) {
+                /*! 同步编辑器 */
+                function syncEditor($pItem) {
                     // 处理上一个编辑器
                     if ($form && $pItem && $pItem.size() > 0) {
                         var data = {};
@@ -191,6 +189,11 @@
                             return false;
                         }
                     }
+                    return true;
+                }
+
+                /*! 显示编辑器 */
+                function showEditor() {
                     // 读取对象数据
                     $item = $('.news-item.active');
                     this.get = function () {
@@ -227,9 +230,10 @@
                     }
                 }).off('click', '.news-item').on('click', '.news-item', function () {
                     /*! 列表选择 */
-                    $item = $('.news-item.active');
-                    $(this).addClass('active').siblings().removeClass('active');
-                    showEditor($item);
+                    if (syncEditor($('.news-item.active'))) {
+                        $(this).addClass('active').siblings().removeClass('active');
+                        showEditor($item);
+                    }
                 }).off('mouseleave').on('mouseleave', '.news-item', function () {
                     /*! 隐藏删除按钮 */
                     $(this).find('.upload-multiple-close').addClass('hide');
