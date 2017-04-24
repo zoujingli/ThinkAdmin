@@ -1,245 +1,117 @@
 {extend name='extra@admin/content' /}
 
-{block name="style"}
-<style>
-    .mail-body {
-        overflow: auto !important
-    }
-
-    .mail-body img {
-        width: 100% !important
-    }
-
-    .mail-body p {
-        margin: 0
-    }
-
-    .news-box hr {
-        margin: 4px
-    }
-
-    .news-box .table-hover {
-        margin-bottom: 0;
-        margin-top: 10px;
-        border-top: none
-    }
-
-    .news-box .news-item {
-        position: relative;
-        border: 1px solid #cecece;
-        border-radius: 2px;
-        overflow: hidden;
-        cursor: pointer
-    }
-
-    .news-box .news-item.active {
-        box-shadow: 1px 0px 10px #0099CC;
-        border-color: #0099CC
-    }
-
-    .news-box .news-image {
-        text-align: center;
-        height: 120px;
-        width: 100%;
-        overflow: hidden
-    }
-
-    .news-box .news-image img {
-        margin-top: -5%;
-        min-width: 100%;
-        min-height: 100%
-    }
-
-    .news-box .news-image .fa,
-    .news-box .article-add .fa {
-        font-size: 6em;
-        color: #efefef;
-        height: 80px;
-        width: 100%;
-        line-height: 1em;
-        margin: 5px 0
-    }
-
-    .news-box .article-add {
-        display: block;
-        text-align: center;
-        font-size: 1em;
-        color: #cecece;
-        padding: 3px;
-        position: relative;
-        cursor: pointer
-    }
-
-    .news-box .news-title {
-        position: absolute;
-        background: rgba(0, 0, 0, 0.5);
-        color: #fff;
-        padding: 2px;
-        margin: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        text-align: right;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden
-    }
-
-    .upload-multiple-close {
-        position: absolute;
-        font-weight: 400;
-        top: 0;
-        right: 0;
-        text-align: center;
-        color: #fff;
-        background: #999;
-        border-radius: 50%;
-        height: 20px;
-        width: 20px;
-        line-height: 20px;
-        border: 1px solid #fff;
-    }
-</style>
-{/block}
-
 {block name='content'}
-<div class="row">
-    <div class="col-xs-3" style='padding-right:0'>
-        <div class="portlet light bordered pinned">
-            <div class="portlet-title">
-                <div class="caption">
-                    <h5 class='text-center' style='margin-top:0;display:block'>图文列表</h5>
-                </div>
-            </div>
-            <div class="portlet-body form">
-                <div class="news-box">
-                    {if empty($vo['articles']) eq FALSE}
-                    {foreach $vo.articles as $key=>$value}
-                    <div class="news-item transition-min" data-id="{$value.id}">
-                        <a href="javascript:void(0)" class="upload-multiple-close hide"><i class="fa fa-close"></i></a>
-                        <div class="news-image">
-                            <img alt="image" class="img-responsive"
-                                 src="{$value.local_url}?imageView2/1/w/338/h/190/interlace/1"/>
-                        </div>
-                        <span class="news-title">{$value.title}</span>
-                    </div>
-                    <hr/>
-                    {/foreach}
-                    {else}
-                    <div class="news-item transition-min">
-                        <div class="news-image">
-                            <img alt="image" class="img-responsive"
-                                 src="__ROOT__/static/plugs/uploader/theme/image.png"/>
-                        </div>
-                        <span class="news-title" style='display:none'>标题</span>
-                    </div>
-                    <hr/>
-                    {/if}
-                    <div class='article-add' data-text-tip="添加图文">
-                        <i class="fa fa-plus"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="col-xs-9" style='padding-right:0'>
-        <div class="portlet light bordered">
-            <div class="portlet-title">
-                <div class="caption">
-                    <h5 class='text-center' style='margin-top:0;display:block'>图文内容编辑</h5>
-                </div>
-            </div>
-            <div class="portlet-body form">
-                <form class="form-horizontal" role="form" name="news" onsubmit="return false;">
-                    <div class="form-body">
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon">标题</span>
-                                    <input maxlength="64" required="" title="标题不能为空哦！" type="text" name='title'
-                                           class="form-control" placeholder="请在这里输入标题">
-                                    <input type="hidden" name="id">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon">作者</span>
-                                    <input maxlength="8" required="" title="作者不能为空哦" type="text" name='author'
-                                           class="form-control" placeholder="请输入作者">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <div class="form-control" style="height:auto">
-                                    <label>图文封面大图片</label>
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <div style="width: 112px;height:112px;overflow:hidden">
-                                                <input onchange="$(this).next().attr('src', this.value), $('.news-item.active').find('img').attr('src', this.value)"
-                                                       value="__ROOT__/static/plugs/uploader/theme/image.png"
-                                                       type="hidden" name="local_url">
-                                                <img data-tips-image
-                                                     style="min-height:112px;min-width:112px;width:100%;height:100%"
-                                                     src="__ROOT__/static/plugs/uploader/theme/image.png">
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-8">
-                                            <br>
-                                            <a data-file="" data-one="true" data-type="image" data-field="local_url"
-                                               class="btn btn-transparent green btn-outline btn-circle btn-sm">上传图片</a>
-                                            <a data-iframe="{'@wechat/news/media'|app_url}&field=local_url"
-                                               class="btn btn-transparent green btn-outline btn-circle btn-sm">从图库中选择图片</a>
-                                            <br>
-                                            <br>
-                                            <label class="mt-checkbox mt-checkbox-outline"
-                                                   style="margin-left:0px;padding-left:24px">
-                                                <input data-auto-none type="checkbox" value="1" name="show_cover_pic">
-                                                在正文显示此图片
-                                                <span></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <p class="help-block" style="margin-top:10px">封面大图片建议尺寸：900像素 * 500像素</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <textarea name='content'></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label>摘要选填，如果不填写会默认抓取正文前54个字</label>
-                                <textarea resize="false" name="digest" class="form-control"
-                                          style="height:80px"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label>原文链接选填，填写之后在图文左下方会出现此链接</label>
-                                <input maxlength="200" type="text" name='content_source_url' class="form-control"
-                                       placeholder="请输入原文链接">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <button data-submit type="button" class="btn green">保存图文</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+<!--左侧图文列表 开始-->
+<div class="panel panel-default news-left">
+    <div class="panel-heading">图文列表</div>
+    <div class="panel-body news-box">
+        {if empty($vo['articles']) eq false}
+        {foreach $vo.articles as $key=>$value}
+        <div class="news-item transition" data-id="{$value.id}"
+             style="background-image:url('{$value.local_url}?imageView2/1/w/338/h/190/interlace/1')">
+            <span class="news-title">{$value.title}</span>
         </div>
+        <hr/>
+        {/foreach}
+        {else}
+        <div class="news-item transition active news-image"
+             style="background-image:url('__ROOT__/static/plugs/uploader/theme/image.png')">
+            <span class="news-title" style='display:none'>标题</span>
+        </div>
+        <hr/>
+        {/if}
+        <a href="javascript:void(0)" class='article-add transition' data-text-tip="添加图文"><i class="fa fa-plus"></i></a>
     </div>
 </div>
+<!--左侧图文列表 结束-->
+
+<!--右侧编辑区 开始-->
+<div class="panel panel-default news-right">
+    <div class="panel-heading">图文内容编辑</div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form" name="news" onsubmit="return false;">
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">标题</span>
+                        <input maxlength="64" required="required" title="标题不能为空哦" placeholder="请在这里输入标题"
+                               name='title' class="layui-input">
+                        <input type="hidden" name="id">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">作者</span>
+                        <input maxlength="8" required="required" title="作者不能为空哦" placeholder="请输入作者"
+                               name='author' class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="form-control" style="height:auto">
+                        <label style="color:#ccc">图文封面大图片设置</label>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="upload-image-box">
+                                    <input value="__ROOT__/static/plugs/uploader/theme/image.png" type="hidden"
+                                           name="local_url">
+                                </div>
+                            </div>
+                            <div class="col-xs-8">
+                                <br>
+                                <a data-file="one" data-type="jpg,png,jpeg" data-field="local_url" class="btn btn-sm">上传图片</a>
+                                <a data-iframe="{:url('@wechat/news/media')}?field=local_url" class="btn  btn-sm">从图库中选择图片</a>
+                                <br>
+                                <br>
+                                <label style="margin-left:0;padding-left:10px">
+                                    <input data-auto-none type="checkbox" value="1" name="show_cover_pic">
+                                    在正文显示此图片
+                                </label>
+                            </div>
+                        </div>
+                        <p class="help-block" style="margin-top:10px;color:#ccc">封面大图片建议尺寸：900像素 * 500像素</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <textarea name='content'></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label style="color:#aaa">摘要选填，如果不填写会默认抓取正文前54个字</label>
+                    <textarea name="digest" class="form-control" style="height:80px;resize:none;"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label style="display:block"><span style="color:#aaa;">原文链接<b>选填</b>，填写之后在图文左下方会出现此链接</span>
+                        <input maxlength="200" name='content_source_url' class="layui-input">
+                    </label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-4 col-md-9">
+                        <button data-submit type="button" class="layui-btn">保存图文</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--右侧编辑区 结束-->
+
 {/block}
 
 
@@ -248,9 +120,15 @@
     $(function () {
 
         var editDdata = $.parseJSON('{$vo.articles|default=[]|json_encode}');
+
         for (var i in editDdata) {
             $('.news-item').eq(i).data('item', editDdata[i]);
         }
+
+        $('body').on('change', '.upload-image-box input', function () {
+            $('.news-item.active').css('background-image', 'url(' + this.value + ')');
+            $(this).parent('.upload-image-box').css('background-image', 'url(' + this.value + ')');
+        });
 
         require(['ueditor'], function () {
 
@@ -259,8 +137,11 @@
 
             /*! 默认编辑第一篇图文 */
             editor = window.createEditor('[name="content"]', 'basic');
+
             editor.ready(function () {
+
                 var $form = $('form[name="news"]');
+
                 // 表单验证
                 function verify(callback) {
                     $form.validate(function (ret) {
@@ -280,19 +161,22 @@
                         $('.news-item').map(function () {
                             data.push($(this).data('item'));
                         });
-                        $.form.load('__SELF__', {data: data}, "POST");
+                        $.form.load('__SELF__', {data: data}, "post");
                     });
                 });
+
                 // 输入标题显示
                 $form.find('[name="title"]').on('keyup', function () {
+                    console.log($preItem);
                     if ($preItem) {
-                        if (this.value.length > 0) {
+                        if (('' + this.value).length > 0) {
                             $preItem.find('.news-title').html(this.value).show();
                         } else {
                             $preItem.find('.news-title').html(this.value).hide();
                         }
                     }
                 });
+
                 /*! 显示编辑器 */
                 function showEditor() {
                     var $item = $('.news-item.active');
@@ -322,23 +206,17 @@
                 }
 
                 /*! jQuery事件绑定 */
-                $('body').on('click', '.news-box .article-add', function () {
+                $('body').off('click', '.news-box .article-add').on('click', '.news-box .article-add', function () {
                     /*! 添加新图文 */
-                    var $html = $('<div class="news-item transition-min"><a href="javascript:void(0)" class="upload-multiple-close hide"><i class="fa fa-close"></i></a><div class="news-image"><img alt="image" class="img-responsive" src="__ROOT__/static/plugs/uploader/theme/image.png"/></div><span class="news-title" style="display:none"></span></div><hr />');
+                    var $html = $('<div class="news-item transition"><span class="news-title" style="display:none"></span></div><hr />');
                     $html.insertBefore(this).trigger('click');
                     if ($('.news-item').size() >= 7) {
                         return $(this).hide();
                     }
                 }).off('click', '.news-item').on('click', '.news-item', function () {
-                    var self = this;
-
-                    function init() {
-                        $(self).siblings().removeClass('active');
-                        $(self).addClass('active');
-                        showEditor();
-                    }
-
-                    $('.news-item.active').size() > 0 ? verify(init) : init.call(this);
+                    /*! 列表选择 */
+                    $(this).addClass('active').siblings().removeClass('active');
+                    showEditor();
                 }).off('mouseleave').on('mouseleave', '.news-item', function () {
                     /*! 隐藏删除按钮 */
                     $(this).find('.upload-multiple-close').addClass('hide');
@@ -359,4 +237,88 @@
         });
     });
 </script>
+{/block}
+
+{block name="style"}
+<style>
+    .news-left {
+        left: 20px;
+        width: 300px;
+        position: absolute;
+    }
+
+    .news-right {
+        position: absolute;
+        left: 335px;
+        right: 20px;
+    }
+
+    .news-left .news-item {
+        position: relative;
+        width: 280px;
+        height: 150px;
+        max-width: 270px;
+        overflow: hidden;
+        background-size: 100%;
+        border: 1px solid #ccc;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-image: url('__ROOT__/static/plugs/uploader/theme/image.png');
+    }
+
+    .news-left .news-item.active {
+        border: 1px solid #44b549 !important;
+    }
+
+    .news-left .article-add {
+        font-size: 22px;
+        text-align: center;
+        display: block;
+        color: #999;
+    }
+
+    .news-left .article-add:hover {
+        color: #666;
+    }
+
+    .news-left .news-title {
+        bottom: 0;
+        width: 272px;
+        color: #fff;
+        display: block;
+        padding: 0 5px;
+        position: absolute;
+        margin-left: -1px;
+        text-overflow: ellipsis;
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .news-right .layui-input {
+        border-radius: 0;
+        border: 1px solid #e5e6e7;
+    }
+
+    .news-right .layui-input:hover, .news-right .layui-input:focus {
+        border-color: #e5e6e7 !important;
+    }
+
+    .news-right .input-group-addon {
+        background: #fff;
+        border-radius: 0;
+        border-color: #e5e6e7;
+    }
+
+    .news-right .upload-image-box {
+        width: 150px;
+        height: 120px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-image: url('__ROOT__/static/plugs/uploader/theme/image.png');
+    }
+
+    .panel {
+        border-radius: 0
+    }
+</style>
 {/block}

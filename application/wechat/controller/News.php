@@ -15,6 +15,7 @@ namespace app\wechat\controller;
 
 use controller\BasicAdmin;
 use service\DataService;
+use service\WechatService;
 use think\Db;
 
 /**
@@ -32,21 +33,45 @@ class News extends BasicAdmin {
      */
     protected $table = 'WechatNews';
 
+    /**
+     * 添加图文
+     * @return \think\response\View
+     */
     public function add() {
         if ($this->request->isGet()) {
-            $this->assign('title', '新建图文');
-            return view('form');
+            return view('form', ['title' => '新建图文']);
         }
         if ($this->request->isPost()) {
             $data = $this->request->post();
             if (($ids = $this->_apply_news_article($data['data'])) && !empty($ids)) {
                 $post = ['article_id' => $ids, 'create_by' => session('user.id')];
-                if (DataService::save($this->table, $post, 'id') !== FALSE) {
-                    $this->success('图文添加成功！', url('@wechat/news'));
+                if (DataService::save($this->table, $post, 'id') !== false) {
+                    $this->success('图文添加成功！', '');
                 }
             }
             $this->error('图文添加失败，请稍候再试！');
         }
+    }
+
+    /**
+     * 编辑图文
+     * @return \think\response\View
+     */
+    public function edit() {
+        $id = $this->request->get('id', '');
+        if ($this->request->isGet()) {
+            empty($id) && $this->error('参数错误，请稍候再试！');
+            return view('form', ['title' => '编辑图文', 'vo' => WechatService::getNewsById($id)]);
+        }
+        $data = $this->request->post();
+        $ids = $this->_apply_news_article($data['data']);
+        if (!empty($ids)) {
+            $post = ['id' => $id, 'article_id' => $ids, 'create_by' => session('user.id')];
+            if (false !== DataService::save('wechat_news', $post, 'id')) {
+                $this->success('图文更新成功!', '');
+            }
+        }
+        $this->error('图文更新失败，请稍候再试！');
     }
 
     /**
