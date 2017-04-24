@@ -57,19 +57,18 @@
                 <div class="col-md-12">
                     <div class="form-control" style="height:auto">
                         <label style="color:#ccc">图文封面大图片设置</label>
-                        <div class="row">
-                            <div class="col-xs-3">
+                        <div class="row nowrap">
+                            <div class="col-xs-3" style="min-width:145px">
                                 <div class="upload-image-box">
                                     <input value="__PUBLIC__/static/plugs/uploader/theme/image.png" type="hidden"
                                            name="local_url">
                                 </div>
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-8" style="width: 400px">
                                 <br>
                                 <a data-file="one" data-type="jpg,png,jpeg" data-field="local_url" class="btn btn-sm">上传图片</a>
                                 <a data-iframe="{:url('@wechat/news/media')}?field=local_url" class="btn  btn-sm">从图库中选择图片</a>
-                                <br>
-                                <br>
+                                <br><br>
                                 <label style="margin-left:0;padding-left:10px">
                                     <input data-auto-none type="checkbox" value="1" name="show_cover_pic">
                                     在正文显示此图片
@@ -143,11 +142,22 @@
 
                 var $form = $('form[name="news"]');
 
+                $form.validate();
+
                 // 数据提交
                 $form.find('button[data-submit]').on('click', function () {
+                    $form.submit();
+                    if ($form.find('input.validate-error').size() > 0 || (editor.getContent() || '').length < 1) {
+                        if ((editor.getContent() || '').length < 1) {
+                            editor.setContent('文章内容不能留空，请输入内容！')
+                        }
+                        return false;
+                    }
                     var data = [];
                     $('.news-item').map(function () {
-                        data.push($(this).data('item'));
+                        var item = $(this).data('item');
+                        item.content = item.content || '文章内容不能留空，请输入内容！';
+                        data.push(item);
                     });
                     $.form.load('__SELF__', {data: data}, "post");
                 });
@@ -170,11 +180,16 @@
                         var data = {};
                         data.title = $form.find('[name=title]').val();
                         data.local_url = $form.find('[name=local_url]').val();
-                        data.content = editor.getContent();
+                        data.content = editor.getContent() || '';
                         data.author = $form.find('[name=author]').val();
                         data.show_cover_pic = $form.find('[name="show_cover_pic"]').get(0).checked ? 1 : 0;
                         $form.find('[name=local_url]').trigger('change');
-                        $pItem.data('item', data);
+                        $pItem.data('item', data), $form.submit();
+                        if ($form.find('input.validate-error').size() > 0 || data.content.length < 1) {
+                            ((data.content || '').length < 1) && editor.setContent('文章内容不能留空，请输入内容！');
+                            $pItem.addClass('active').siblings().removeClass('active');
+                            return false;
+                        }
                     }
                     // 读取对象数据
                     $item = $('.news-item.active');
@@ -183,7 +198,7 @@
                         data.title = data.title || '';
                         data.local_url = data.local_url || '__PUBLIC__/static/plugs/uploader/theme/image.png';
                         data.content = data.content || '';
-                        data.author = data.author || '小编';
+                        data.author = data.author || '';
                         data.show_cover_pic = data.show_cover_pic || 0;
                         return data;
                     };
