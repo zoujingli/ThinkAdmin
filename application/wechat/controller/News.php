@@ -34,6 +34,24 @@ class News extends BasicAdmin {
     protected $table = 'WechatNews';
 
     /**
+     * 图文列表
+     */
+    public function index() {
+        $this->assign('title', '图文列表');
+        parent::_list();
+    }
+
+    /**
+     * 图文列表数据处理
+     * @param $data
+     */
+    protected function _index_data_filter(&$data) {
+        foreach ($data as &$vo) {
+            $vo = WechatService::getNewsById($vo['id']);
+        }
+    }
+
+    /**
      * 添加图文
      * @return \think\response\View
      */

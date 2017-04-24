@@ -1,0 +1,95 @@
+{extend name='extra@admin/content' /}
+
+{block name='content'}
+
+{foreach $list as $key=>$vo}
+
+<style>
+    #news-list li {
+        width: 30%;
+        float: left;
+    }
+
+    #news-list li img {
+        width: 100%;
+        padding: 10px
+    }
+</style>
+
+<ul class="flow-default" id="news-list"></ul>
+
+<script>
+    layui.use('flow', function () {
+
+        layui.flow.load({
+            elem: '#news-list',
+            scrollElem: '#news-list',
+            isAuto: false,
+            isLazyimg: true,
+            done: function (page, next) {
+                setTimeout(function () {
+                    var lis = [];
+                    for (var i = 0; i < 6; i++) {
+                        lis.push('<li><img lay-src="http://s17.mogucdn.com/p2/161011/upload_279h87jbc9l0hkl54djjjh42dc7i1_800x480.jpg?v=' + ( (page - 1) * 6 + i + 1 ) + '"></li>')
+                    }
+                    next(lis.join(''), page < 6); //假设总页数为 6
+                }, 500);
+            }
+        });
+    });
+</script>
+
+<!--<div class="graphic web-design cbp-item" style="border:1px solid #eee;padding:8px 8px 0 8px;">-->
+<!--<div class="cbp-caption">-->
+<!--{foreach $vo.articles as $key=>$value}-->
+<!--{if $key < 1}-->
+<!--<div class="cbp-caption-defaultWrap">-->
+<!--<img src="{$value.local_url}?imageMogr2/thumbnail/!338x180r/gravity/Center/crop/338x180/interlace/1">-->
+<!--<span class="news-title">{$value.title}</span>-->
+<!--</div>-->
+<!--{else}-->
+<!--<div class="cbp-caption-defaultWrap" style="background:#fff">-->
+<!--<hr style="margin:10px 0 0 0">-->
+<!--<div class="row">-->
+<!--<div class="col-xs-8" style="padding-right:0">-->
+<!--<span style="display:inline-block;max-height:4em;overflow:hidden;margin:10px 0">-->
+<!--{$value.title}-->
+<!--</span>-->
+<!--</div>-->
+<!--<div class="col-xs-4" style="padding-left:0">-->
+<!--<img style="margin:10px 0"-->
+<!--src="{$value.local_url}?imageMogr2/thumbnail/!338x260r/gravity/Center/crop/338x260/interlace/1"-->
+<!--alt="">-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--{/if}-->
+<!--{/foreach}-->
+<!--<div class="cbp-caption-activeWrap">-->
+<!--<div class="cbp-l-caption-alignCenter">-->
+<!--<div class="cbp-l-caption-body">-->
+<!--<a class="btn red uppercase btn red uppercase" data-tips-text="预览" data-tips-placement="bottom"-->
+<!--data-phone-view='{:url("wechat/review/index")}?type=news&content={$vo.id}'>-->
+<!--<i class="fa fa-eye"></i>-->
+<!--</a>-->
+<!--<a class="btn red uppercase btn red uppercase" data-tips-text="推送" data-title='图文推送'-->
+<!--data-tips-placement="bottom" data-iframe='{"@wechat/news/push/`$vo.id`"|app_url}'><i-->
+<!--class="fa fa-weixin"></i></a>-->
+<!--<a class="btn red uppercase btn red uppercase" data-tips-text="编辑" data-tips-placement="bottom"-->
+<!--href='{"@wechat/news/edit/`$vo.id`"|app_url}'><i class="fa fa-pencil"></i></a>-->
+<!--<a class="btn red uppercase btn red uppercase" data-tips-text="删除" data-tips-placement="bottom"-->
+<!--data-news-del='{$vo.id}'><i class="fa fa-trash"></i></a>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+{/foreach}
+{/block}
+
+
+{block name='script'}
+{/block}
+
+{block name="style"}
+{/block}

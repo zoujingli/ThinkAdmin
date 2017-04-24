@@ -140,11 +140,11 @@
             /*! 编辑器初始化成功 */
             editor.ready(function () {
 
-                var $form = $('form[name="news"]');
+                var $form = $('form[name="news"]'), $body = $('body');
 
                 $form.validate();
 
-                // 数据提交
+                /*! 数据提交 */
                 $form.find('button[data-submit]').on('click', function () {
                     var data = [];
                     $form.submit();
@@ -160,7 +160,7 @@
                     $.form.load('__SELF__', {data: data}, "post");
                 });
 
-                // 输入标题显示
+                /*! 输入标题显示 */
                 $form.find('[name="title"]').on('keyup', function () {
                     if ($item) {
                         if (('' + this.value).length > 0) {
@@ -220,34 +220,38 @@
                     editor.setContent(data.content);
                 }
 
-                /*! jQuery事件绑定 */
-                $('body').off('click', '.news-box .article-add').on('click', '.news-box .article-add', function () {
-                    /*! 添加新图文 */
+                /*! 添加新图文 */
+                $body.off('click', '.news-box .article-add').on('click', '.news-box .article-add', function () {
                     var $html = $('<div class="news-item transition" style="background-image:url(__PUBLIC__/static/plugs/uploader/theme/image.png)"><span class="news-title" style="display:none"></span></div><hr />');
                     $html.insertBefore(this).trigger('click');
-                    if ($('.news-item').size() >= 7) {
-                        return $(this).hide();
-                    }
-                }).off('click', '.news-item').on('click', '.news-item', function () {
-                    /*! 列表选择 */
+                    $('.news-item').size() >= 7 && $(this).hide();
+                });
+
+                /*! 列表选择 */
+                $body.off('click', '.news-item').on('click', '.news-item', function () {
                     if (syncEditor($('.news-item.active'))) {
                         $(this).addClass('active').siblings().removeClass('active');
                         showEditor($item);
                     }
-                }).off('mouseleave').on('mouseleave', '.news-item', function () {
-                    /*! 隐藏删除按钮 */
+                });
+
+                /*! 隐藏删除按钮 */
+                $body.off('mouseleave').on('mouseleave', '.news-item', function () {
                     $(this).find('.upload-multiple-close').addClass('hide');
-                }).off('mouseenter', '.news-item').on('mouseenter', '.news-item', function () {
-                    /*! 显示删除按钮 */
+                });
+
+                /*! 显示删除按钮 */
+                $body.off('mouseenter', '.news-item').on('mouseenter', '.news-item', function () {
                     $('.upload-multiple-close').addClass('hide');
                     $(this).find('.upload-multiple-close').removeClass('hide');
-                }).off('click', '.upload-multiple-close').on('click', '.upload-multiple-close', function () {
-                    /*! 删除操作图文 */
-                    $(this).parents('.news-item').remove();
-                    if ($('.news-item').size() < 7) {
-                        $('.news-box .article-add').show();
-                    }
                 });
+
+                /*! 删除操作图文 */
+                $body.off('click', '.upload-multiple-close').on('click', '.upload-multiple-close', function () {
+                    $(this).parents('.news-item').remove();
+                    $('.news-item').size() < 7 && $('.news-box .article-add').show();
+                });
+
                 /*! 默认显示第一个 */
                 $('.news-box .news-item:first').trigger('click');
             });
