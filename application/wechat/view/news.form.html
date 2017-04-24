@@ -223,7 +223,7 @@
                 /*! jQuery事件绑定 */
                 $('body').off('click', '.news-box .article-add').on('click', '.news-box .article-add', function () {
                     /*! 添加新图文 */
-                    var $html = $('<div class="news-item transition"><span class="news-title" style="display:none"></span></div><hr />');
+                    var $html = $('<div class="news-item transition" style="background-image:url(__PUBLIC__/static/plugs/uploader/theme/image.png)"><span class="news-title" style="display:none"></span></div><hr />');
                     $html.insertBefore(this).trigger('click');
                     if ($('.news-item').size() >= 7) {
                         return $(this).hide();
