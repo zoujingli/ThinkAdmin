@@ -133,56 +133,51 @@
         require(['ueditor'], function () {
 
             /*! 实例富文本编辑器  */
-            var editor, $preItem;
+            var editor, $item;
 
             /*! 默认编辑第一篇图文 */
             editor = window.createEditor('[name="content"]', 'basic');
 
+            /*! 编辑器初始化成功 */
             editor.ready(function () {
 
                 var $form = $('form[name="news"]');
 
-                // 表单验证
-                function verify(callback) {
-                    $form.validate(function (ret) {
-                        ret.content = editor.getContent();
-                        if (ret.content.length < 1) {
-                            return $.msg.tips('请输入图文内容！');
-                        }
-                        $('.news-item.active').data('item', ret);
-                        callback.call(this.ret);
-                    }).submit();
-                }
-
                 // 数据提交
                 $form.find('button[data-submit]').on('click', function () {
-                    verify(function () {
-                        var data = [];
-                        $('.news-item').map(function () {
-                            data.push($(this).data('item'));
-                        });
-                        $.form.load('__SELF__', {data: data}, "post");
+                    var data = [];
+                    $('.news-item').map(function () {
+                        data.push($(this).data('item'));
                     });
+                    $.form.load('__SELF__', {data: data}, "post");
                 });
 
                 // 输入标题显示
                 $form.find('[name="title"]').on('keyup', function () {
-                    console.log($preItem);
-                    if ($preItem) {
+                    if ($item) {
                         if (('' + this.value).length > 0) {
-                            $preItem.find('.news-title').html(this.value).show();
+                            $item.find('.news-title').html(this.value).show();
                         } else {
-                            $preItem.find('.news-title').html(this.value).hide();
+                            $item.find('.news-title').html(this.value).hide();
                         }
                     }
                 });
 
                 /*! 显示编辑器 */
-                function showEditor() {
-                    var $item = $('.news-item.active');
+                function showEditor($pItem) {
                     // 处理上一个编辑器
-                    $preItem = $item;
+                    if ($form && $pItem && $pItem.size() > 0) {
+                        var data = {};
+                        data.title = $form.find('[name=title]').val();
+                        data.local_url = $form.find('[name=local_url]').val();
+                        data.content = editor.getContent();
+                        data.author = $form.find('[name=author]').val();
+                        data.show_cover_pic = $form.find('[name="show_cover_pic"]').get(0).checked ? 1 : 0;
+                        $form.find('[name=local_url]').trigger('change');
+                        $pItem.data('item', data);
+                    }
                     // 读取对象数据
+                    $item = $('.news-item.active');
                     this.get = function () {
                         var data = $item.data('item') || {};
                         data.title = data.title || '';
@@ -192,7 +187,9 @@
                         data.show_cover_pic = data.show_cover_pic || 0;
                         return data;
                     };
+                    // 重置表单
                     $form.get(0).reset();
+                    // 获取当前数据
                     var data = this.get();
                     for (var i in data) {
                         if (i !== 'content' && i !== 'show_cover_pic') {
@@ -215,8 +212,9 @@
                     }
                 }).off('click', '.news-item').on('click', '.news-item', function () {
                     /*! 列表选择 */
+                    $item = $('.news-item.active');
                     $(this).addClass('active').siblings().removeClass('active');
-                    showEditor();
+                    showEditor($item);
                 }).off('mouseleave').on('mouseleave', '.news-item', function () {
                     /*! 隐藏删除按钮 */
                     $(this).find('.upload-multiple-close').addClass('hide');
@@ -259,11 +257,9 @@
         height: 150px;
         max-width: 270px;
         overflow: hidden;
-        background-size: 100%;
         border: 1px solid #ccc;
-        background-repeat: no-repeat;
+        background-size: cover;
         background-position: center center;
-        background-image: url('__PUBLIC__/static/plugs/uploader/theme/image.png');
     }
 
     .news-left .news-item.active {
@@ -312,10 +308,8 @@
     .news-right .upload-image-box {
         width: 150px;
         height: 120px;
-        background-size: 100%;
-        background-repeat: no-repeat;
+        background-size: cover;
         background-position: center center;
-        background-image: url('__PUBLIC__/static/plugs/uploader/theme/image.png');
     }
 
     .panel {

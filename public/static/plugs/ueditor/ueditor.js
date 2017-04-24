@@ -67,9 +67,8 @@ define(['zeroclipboard'], function (ZeroClipboard) {
 
     /**
      * 全局编辑器生成器
-     * @param {type} selector
-     * @param {type} type
-     * @returns {unresolved}
+     * @param {string} selector
+     * @param {string} type
      */
     window.createEditor = function (selector, type) {
         type = type || 'basic';
