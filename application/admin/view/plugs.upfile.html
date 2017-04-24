@@ -6,11 +6,11 @@
         <link rel="icon" href="../image/favicon.ico">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=0">
-        <link href="__STATIC__/plugs/uploader/webuploader.css" rel="stylesheet" type="text/css"/>
-        <link href="__STATIC__/plugs/uploader/theme/uploader.css" rel="stylesheet" type="text/css"/>
-        <script src="__STATIC__/plugs/jquery/jquery.min.js" type="text/javascript"></script>
-        <script src="__STATIC__/plugs/uploader/webuploader.min.js" type="text/javascript"></script>
-        <script src="__STATIC__/plugs/uploader/theme/upload.js" type="text/javascript"></script>
+        <link href="__PUBLIC__/static/plugs/uploader/webuploader.css" rel="stylesheet" type="text/css"/>
+        <link href="__PUBLIC__/static/plugs/uploader/theme/uploader.css" rel="stylesheet" type="text/css"/>
+        <script src="__PUBLIC__/static/plugs/jquery/jquery.min.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/static/plugs/uploader/webuploader.min.js" type="text/javascript"></script>
+        <script src="__PUBLIC__/static/plugs/uploader/theme/upload.js" type="text/javascript"></script>
     </head>
     <body>
         <div id="uploader">
@@ -159,7 +159,7 @@
                                 }
                                 delete window['expressinstallcallback'];
                             };
-                            var swf = '__STATIC__/plugs/uploader/expressInstall.swf';
+                            var swf = '__PUBLIC__/static/plugs/uploader/expressInstall.swf';
                             var html = '<object type="application/' + 'x-shockwave-flash" data="' + swf + '" ';
                             if (WebUploader.browser.ie) {
                                 html += 'classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" ';
@@ -231,7 +231,7 @@
                     compress: false,
                     dnd: '#dndArea',
                     paste: document.body,
-                    swf: '__STATIC__/plugs/uploader/Uploader.swf',
+                    swf: '__PUBLIC__/static/plugs/uploader/Uploader.swf',
                     chunked: false,
                     chunkSize: 512 * 1024,
                     server: '{:url("admin/plugs/upload")}',

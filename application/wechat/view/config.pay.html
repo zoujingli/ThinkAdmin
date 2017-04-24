@@ -5,7 +5,7 @@
     .pay-qrc-test {
         height: 248px;
         width: 248px;
-        background: url('__STATIC__/plugs/layui/css/modules/layer/default/loading-2.gif') no-repeat center center
+        background: url('__PUBLIC__/static/plugs/layui/css/modules/layer/default/loading-2.gif') no-repeat center center
     }
 
     .refund-qrc-test {
@@ -104,7 +104,7 @@
             $.form.load('{:url("pay")}?action=payqrc', {}, 'get', function (ret) {
                 if (ret.code === 1 || ret.code === 2) {
                     if (ret.code === 2) {
-                        ret.url = '__STATIC__/theme/default/img/wechat/qrc_payed.jpg';
+                        ret.url = '__PUBLIC__/static/theme/default/img/wechat/qrc_payed.jpg';
                         timer && window.clearInterval(timer), timer = null;
                     }
                     if (isShow) {
