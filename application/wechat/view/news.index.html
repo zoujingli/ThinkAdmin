@@ -6,7 +6,7 @@
 
 <style>
     #news-list li {
-        width: 30%;
+        width: 33.33%;
         float: left;
     }
 
@@ -20,7 +20,6 @@
 
 <script>
     layui.use('flow', function () {
-
         layui.flow.load({
             elem: '#news-list',
             scrollElem: '#news-list',
@@ -28,11 +27,11 @@
             isLazyimg: true,
             done: function (page, next) {
                 setTimeout(function () {
-                    var lis = [];
+                    var list = [];
                     for (var i = 0; i < 6; i++) {
-                        lis.push('<li><img lay-src="http://s17.mogucdn.com/p2/161011/upload_279h87jbc9l0hkl54djjjh42dc7i1_800x480.jpg?v=' + ( (page - 1) * 6 + i + 1 ) + '"></li>')
+                        list.push('<li><img lay-src="http://s17.mogucdn.com/p2/161011/upload_279h87jbc9l0hkl54djjjh42dc7i1_800x480.jpg?v=' + ( (page - 1) * 6 + i + 1 ) + '"></li>')
                     }
-                    next(lis.join(''), page < 6); //假设总页数为 6
+                    next(list.join(''), page < 6); //假设总页数为 6
                 }, 500);
             }
         });
