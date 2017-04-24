@@ -63,7 +63,7 @@ class Plugs extends BasicAdmin {
     public function upload() {
         if ($this->request->isPost()) {
             $md5s = str_split($this->request->post('md5'), 16);
-            if (($info = $this->request->file('file')->move('upload' . DS . $md5s[0], $md5s[1], true))) {
+            if (($info = $this->request->file('file')->move('static' . DS . 'upload' . DS . $md5s[0], $md5s[1], true))) {
                 $filename = join('/', $md5s) . '.' . $info->getExtension();
                 $site_url = FileService::getFileUrl($filename, 'local');
                 if ($site_url) {

@@ -119,7 +119,7 @@ class FileService {
         if ('' != $root) {
             $root = '/' . ltrim($root, '/');
         }
-        return ($request->isSsl() ? 'https' : 'http') . '://' . $request->host() . "{$root}/upload/";
+        return ($request->isSsl() ? 'https' : 'http') . '://' . $request->host() . "{$root}/static/upload/";
     }
 
     /**
@@ -139,7 +139,7 @@ class FileService {
     static public function hasFile($filename, $storage = null) {
         switch (empty($storage) ? sysconf('storage_type') : $storage) {
             case 'local':
-                return file_exists(ROOT_PATH . 'public/upload/' . $filename);
+                return file_exists(ROOT_PATH . 'static/upload/' . $filename);
             case 'qiniu':
                 $auth = new Auth(sysconf('storage_qiniu_access_key'), sysconf('storage_qiniu_secret_key'));
                 $bucketMgr = new BucketManager($auth);
@@ -158,7 +158,7 @@ class FileService {
     static public function readFile($filename, $storage = null) {
         switch (empty($storage) ? sysconf('storage_type') : $storage) {
             case 'local':
-                $filepath = ROOT_PATH . 'public/upload/' . $filename;
+                $filepath = ROOT_PATH . 'static/upload/' . $filename;
                 if (file_exists($filepath)) {
                     return file_get_contents($filepath);
                 }
@@ -193,7 +193,7 @@ class FileService {
      * @return string
      */
     static public function local($filename, $bodycontent) {
-        $filepath = ROOT_PATH . 'public/upload/' . $filename;
+        $filepath = ROOT_PATH . 'static/upload/' . $filename;
         try {
             !file_exists(dirname($filepath)) && mkdir(dirname($filepath), '0755', true);
             if (file_put_contents($filepath, $bodycontent)) {
