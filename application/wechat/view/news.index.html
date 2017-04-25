@@ -1,42 +1,14 @@
 {extend name='extra@admin/content' /}
 
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    <button data-open="{:url('add')}" class='layui-btn layui-btn-small'>添加图文</button>
+</div>
+{/block}
+
 {block name='content'}
 
 {foreach $list as $key=>$vo}
-
-<style>
-    #news-list li {
-        width: 33.33%;
-        float: left;
-    }
-
-    #news-list li img {
-        width: 100%;
-        padding: 10px
-    }
-</style>
-
-<ul class="flow-default" id="news-list"></ul>
-
-<script>
-    layui.use('flow', function () {
-        layui.flow.load({
-            elem: '#news-list',
-            scrollElem: '#news-list',
-            isAuto: false,
-            isLazyimg: true,
-            done: function (page, next) {
-                setTimeout(function () {
-                    var list = [];
-                    for (var i = 0; i < 6; i++) {
-                        list.push('<li><img lay-src="http://s17.mogucdn.com/p2/161011/upload_279h87jbc9l0hkl54djjjh42dc7i1_800x480.jpg?v=' + ( (page - 1) * 6 + i + 1 ) + '"></li>')
-                    }
-                    next(list.join(''), page < 6); //假设总页数为 6
-                }, 500);
-            }
-        });
-    });
-</script>
 
 <!--<div class="graphic web-design cbp-item" style="border:1px solid #eee;padding:8px 8px 0 8px;">-->
 <!--<div class="cbp-caption">-->
@@ -84,11 +56,64 @@
 <!--</div>-->
 <!--</div>-->
 {/foreach}
-{/block}
+<style>
+    #news_box {position:relative;}
+    #news_box .news_item {position:relative;left:0;top:0;padding:5px;border:1px solid #ccc;box-sizing:content-box;margin:10px;width: 300px}
+    #news_box .news_item .news_articel_item{
+        background-position:center center;
+        background-size:100%;position:relative;height:150px;width:100%;overflow:hidden;
+    }
 
+    #news_box .news_item .news_articel_item p {
+        padding:5px;font-size:12px;color:#fff;
+        white-space:nowrap;overflow:hidden;text-overflow: ellipsis;
+        background: rgba(0, 0, 0, 0.7);position:absolute;width: 100%;bottom:0
+    }
+
+    #news_box .news_item .news_articel_item.other{
+        height:80px;padding:5px 0;
+    }
+    #news_box .news_item .hr-line-dashed:last-child{
+        display:none
+    }
+    #news_box .news_item .news_articel_item .left-image{
+        width:100px;height:75px;position:relative;float:left;
+        background-position:center center;background-size:100%;overflow:hidden;
+    }
+    #news_box .news_item .news_articel_item .right-text{
+        float:left;width:200px;padding-left: 5px;
+    }
+</style>
+<div id="news_box">
+    {foreach $list as $vo}
+    <div class="news_item"> 
+        {foreach $vo.articles as $k => $v}
+        {if $k < 1}
+        <div class='news_articel_item first' style='background-image:url("{$v.local_url}")'>
+            {if $v.title}<p>{$v.title}</p>{/if}
+        </div>
+        <div style='margin:6px 0 1px 0' class="hr-line-dashed"></div>
+        {else}
+        <div class='news_articel_item other'>
+            <div class='left-image' style='background-image:url("{$v.local_url}");'></div>
+            <div class='right-text'>{$v.title}</div>
+        </div>
+        <div style='margin:6px 0 1px 0' class="hr-line-dashed"></div>
+        {/if}
+        {/foreach}
+    </div>
+    {/foreach}
+    <div style="clear:both"></div>
+</div>
+
+{/block}
 
 {block name='script'}
-{/block}
-
-{block name="style"}
+<script>
+    require(['jquery.masonry', 'template'], function (Masonry, tpl) {
+        var container = document.querySelector('#news_box');
+        var msnry = new Masonry(container, {itemSelector: '.news_item', columnWidth: 0});
+        msnry.layout();
+    });
+</script>
 {/block}
