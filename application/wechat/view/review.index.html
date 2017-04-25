@@ -8,51 +8,20 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <link rel="stylesheet" href="__PUBLIC__/static/plugs/aui/aui.css">
-        <script src="__PUBLIC__/static/plugs/jquery/jquery.min.js" type="text/javascript"></script>
-        <style>
-            * {
-                font-family: "Microsoft YaHei" !important;
-                letter-spacing: .01rem
-            }
-
-            .aui-chat .time {
-                color: #f5f5f5;
-                background: rgba(0, 0, 0, .3);
-                padding: .1rem .3rem;
-                border-radius: .2rem;
-                font-size: .5rem;
-            }
-
-            .aui-chat .aui-chat-media img {
-                border-radius: 0
-            }
-
-            .aui-chat .bg-white {
-                background: #f5f5f5 !important;
-                border: 1px solid #ccc;
-            }
-
-            .aui-chat .aui-chat-inner {
-                max-width: 80% !important;
-            }
-
-            .aui-chat .aui-chat-content .aui-chat-arrow.one {
-                top: .7rem !important;
-                background: #f5f5f5 !important;
-                border: 1px solid #ccc !important;
-                left: -0.28rem !important;
-            }
-
-            .aui-chat .aui-chat-content .aui-chat-arrow.two {
-                top: .7rem !important;
-                background: #f5f5f5 !important;
-                left: -0.25rem !important;
-            }
-            html,body{height:100%;overflow:auto!important}
-        </style>
     </head>
     <body>
-
+        <style>
+            * {font-family: "Microsoft YaHei" !important;letter-spacing: .01rem}
+            html,body{height:100%;overflow:auto!important}
+            .aui-chat .aui-chat-media img {border-radius:0}
+            .aui-chat .aui-chat-inner {max-width:80%!important;}
+            .aui-chat .bg-white {background: #f5f5f5!important;border:1px solid #ccc;}
+            .aui-chat .time {color: #f5f5f5;background:rgba(0, 0, 0, .3);padding:.1rem .3rem;border-radius:.2rem;font-size:.5rem;}
+            .aui-chat .aui-chat-content .aui-chat-arrow.two {top:.7rem!important;background:#f5f5f5!important;left:-0.25rem!important;}
+            .aui-chat .aui-chat-content .aui-chat-arrow.one {top:.7rem!important;background:#f5f5f5!important;border:1px solid #ccc!important;left:-0.28rem!important;}
+            .aui-card-list-content-padded img {max-width: 100% !important;}
+        </style>
+        <script src="__PUBLIC__/static/plugs/jquery/jquery.min.js" type="text/javascript"></script>
         {if ($type eq 'text') or ($type eq 'image') or ($type eq 'music')}
         <section class="aui-chat">
             <div class="aui-chat-header"><span class="time">{:date('H:i')}</span></div>
@@ -120,11 +89,6 @@
                 <div class="aui-card-list-content-padded aui-padded-t-0 aui-padded-b-0" style="color:#666;">
                     {$vo.content|default=''}
                 </div>
-                <style>
-                    .aui-card-list-content-padded img {
-                        max-width: 100% !important;
-                    }
-                </style>
                 <div class="aui-card-list-footer aui-font-size-12" style="color:#999;">
                     <div>
                         <a style='color:#0099CC' target='_blank' href='__SELF__'>阅读原文</a>
