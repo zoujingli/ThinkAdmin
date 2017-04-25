@@ -83,19 +83,38 @@
     #news_box .news_item .news_articel_item .right-text{
         float:left;width:200px;padding-left: 5px;
     }
+    #news_box .news_tools{
+        top:0;
+        z-index:80;
+        color:#fff;
+        width:312px;
+        margin-left:-6px;
+        position:absolute;
+        background: rgba(0, 0, 0, 0.7);
+        text-align:right;
+        padding:0 5px;
+        line-height: 30px;
+    }
+
+    #news_box .news_tools a{color:#fff;margin-left:10px}
 </style>
 <div id="news_box">
     {foreach $list as $vo}
-    <div class="news_item"> 
+    <div class="news_item">
+        <div class='news_tools hide'>
+            <a href='javascript:alert("开发中...")'>推送</a>
+            <a data-open='{:url("edit")}?id={$vo.id}' href='javascript:void(0)'>编辑</a>
+            <a href='javascript:alert("开发中...")'>删除</a>
+        </div>
         {foreach $vo.articles as $k => $v}
         {if $k < 1}
-        <div class='news_articel_item first' style='background-image:url("{$v.local_url}")'>
+        <div data-tips-image='{$v.local_url}' class='news_articel_item first' style='background-image:url("{$v.local_url}")'>
             {if $v.title}<p>{$v.title}</p>{/if}
         </div>
         <div style='margin:6px 0 1px 0' class="hr-line-dashed"></div>
         {else}
         <div class='news_articel_item other'>
-            <div class='left-image' style='background-image:url("{$v.local_url}");'></div>
+            <div data-tips-image='{$v.local_url}' class='left-image' style='background-image:url("{$v.local_url}");'></div>
             <div class='right-text'>{$v.title}</div>
         </div>
         <div style='margin:6px 0 1px 0' class="hr-line-dashed"></div>
@@ -110,10 +129,18 @@
 
 {block name='script'}
 <script>
+
+    $('body').on('mouseenter', '.news_item', function () {
+        $(this).find('.news_tools').removeClass('hide');
+    }).on('mouseleave', '.news_item', function () {
+        $(this).find('.news_tools').addClass('hide');
+    });
+
     require(['jquery.masonry', 'template'], function (Masonry, tpl) {
         var container = document.querySelector('#news_box');
         var msnry = new Masonry(container, {itemSelector: '.news_item', columnWidth: 0});
         msnry.layout();
     });
+
 </script>
 {/block}
