@@ -2,38 +2,23 @@
 
 {block name="style"}
 <style>
-    .layui-box .control-label {
-        margin: 0;
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .layui-box textarea {
-        width: 95%
-    }
+    .layui-box .control-label {margin:0;padding-left:0;padding-right:0;}
+    .layui-box textarea {width: 95%}
 </style>
 {/block}
 
 {block name="content"}
 
+<!-- 效果预览区域 开始 -->
 <div class='mobile-preview pull-left'>
     <div class='mobile-header'>公众号</div>
     <div class='mobile-body'>
         <iframe id="phone-preview" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
     </div>
 </div>
+<!-- 效果预览区域 结束 -->
 
 <div class="row" style="min-width:1130px">
-    <!-- 效果预览区域 开始 -->
-    <!--<div class="col-xs-4" style="width:320px;">-->
-    <!--<div style="position:relative" class="phone-container animated fadeIn">-->
-    <!--<img style='width:100%' src="__PUBLIC__/static/theme/default/img/wechat/mobile_head.png" alt=""/>-->
-    <!--<div class="phone-screen">-->
-    <!--<iframe id="phone-preview" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!-- 效果预览区域 结束 -->
     <div class='col-xs-6' style="margin-left:15px">
         <form class="form-horizontal" role="form" data-auto="true" action="__SELF__" method="post">
             <fieldset class="layui-elem-field layui-box" style="height:580px;position:absolute;width:535px">
@@ -125,10 +110,7 @@
                     <div class="form-group" data-keys-type='news'>
                         <label class="col-md-2 control-label layui-form-label">选取图文</label>
                         <div class="col-md-9">
-                            <a class="btn btn-link"
-                               data-iframe="{:url('wechat/news/select')}?field={:encode('news_id')}">
-                                选择图文
-                            </a>
+                            <a class="btn btn-link" data-iframe="{:url('wechat/news/select')}?field={:encode('news_id')}">选择图文</a>
                             <input type="hidden" class='layui-input' value="{$vo.news_id|default=0}" name="news_id"/>
                         </div>
                     </div>
@@ -136,20 +118,12 @@
                     <div class="form-group" data-keys-type='image'>
                         <label class="col-md-2 control-label layui-form-label label-required">图片地址</label>
                         <div class="col-md-9">
-
-                            <input type="text" class="layui-input"
-                                   onchange="$(this).nextAll('img').attr('src', this.value);"
+                            <input type="text" class="layui-input" onchange="$(this).nextAll('img').attr('src', this.value);"
                                    value="{$vo.image_url|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="image_url" required="required" title="请上传图片或输入图片URL地址"/>
-
                             <p class="help-block">文件最大2Mb，支持bmp/png/jpeg/jpg/gif格式</p>
-
-                            <img style="width:112px;height:auto;" data-tips-image
-                                 src='{$vo.image_url|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
-
-                            <a data-file="one" data-type="bmp,png,jpeg,jpg,gif" data-field="image_url"
-                               class='btn btn-link'>上传图片</a>
-
+                            <img style="width:112px;height:auto;" data-tips-image src='{$vo.image_url|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
+                            <a data-file="one" data-type="bmp,png,jpeg,jpg,gif" data-field="image_url" class='btn btn-link'>上传图片</a>
                         </div>
                     </div>
 
@@ -157,15 +131,8 @@
                         <label class="col-md-2 control-label layui-form-label label-required">上传语音</label>
                         <div class="col-md-9">
                             <div class="input-group">
-
-                                <input class='layui-input' type="text" value="{$vo.voice_url|default=''}"
-                                       name="voice_url" required="required" title="请上传语音文件或输入语音URL地址　　"/>
-
-                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="voice_url"
-                                   class="input-group-addon">
-                                    <i class="fa fa-file"></i>
-                                </a>
-
+                                <input class='layui-input' type="text" value="{$vo.voice_url|default=''}" name="voice_url" required="required" title="请上传语音文件或输入语音URL地址　　"/>
+                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="voice_url" class="input-group-addon"><i class="fa fa-file"></i></a>
                             </div>
                             <p class="help-block">文件最大2Mb，播放长度不超过60s，mp3/wma/wav/amr格式</p>
                         </div>
@@ -174,22 +141,15 @@
                     <div class="form-group" data-keys-type='music'>
                         <label class="col-md-2 control-label layui-form-label">音乐标题</label>
                         <div class="col-md-9">
-                            <input class='layui-input' value="{$vo.music_title|default='音乐标题'}"
-                                   name="music_title" required="required" title="请输入音乐标题"/>
+                            <input class='layui-input' value="{$vo.music_title|default='音乐标题'}" name="music_title" required="required" title="请输入音乐标题"/>
                         </div>
                     </div>
                     <div class="form-group" data-keys-type='music'>
                         <label class="col-md-2 control-label layui-form-label label-required">上传音乐</label>
                         <div class="col-md-9">
                             <div class="input-group">
-
-                                <input class='layui-input' type="text" value="{$vo.music_url|default=''}"
-                                       name="music_url" required="required" title="请上传音乐文件或输入音乐URL地址　　"/>
-
-                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url"
-                                   class="input-group-addon"><i class="fa fa-file"></i>
-                                </a>
-
+                                <input class='layui-input' type="text" value="{$vo.music_url|default=''}" name="music_url" required="required" title="请上传音乐文件或输入音乐URL地址　　"/>
+                                <a data-file="one" data-type="mp3,wma,wav,amr" data-field="music_url" class="input-group-addon"><i class="fa fa-file"></i></a>
                             </div>
                         </div>
                     </div>
@@ -203,26 +163,19 @@
                         <label class="col-md-2 control-label layui-form-label">音乐图片</label>
                         <div class="col-md-9">
 
-                            <input onchange="$(this).nextAll('img').attr('src', this.value);"
-                                   type="text" class="layui-input"
+                            <input onchange="$(this).nextAll('img').attr('src', this.value);" type="text" class="layui-input"
                                    value="{$vo.music_image|default='__PUBLIC__/static/theme/default/img/image.png'}"
                                    name="music_image" required="required" title="请上传音乐图片或输入音乐图片URL地址　　"/>
-
                             <p class="help-block">文件最大64KB，只支持JPG格式</p>
-
-                            <img style="width:112px;height:auto;" data-tips-image
-                                 src='{$vo.music_image|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
-
+                            <img style="width:112px;height:auto;" data-tips-image src='{$vo.music_image|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
                             <a data-file="one" data-type="jpg" data-field="music_image" class='btn btn-link'>上传图片</a>
-
                         </div>
                     </div>
 
                     <div class="form-group" data-keys-type='video'>
                         <label class="col-md-2 control-label layui-form-label">视频标题</label>
                         <div class="col-md-9">
-                            <input class='layui-input' value="{$vo.video_title|default='视频标题'}" name="video_title"
-                                   required="required" title="请输入视频标题"/>
+                            <input class='layui-input' value="{$vo.video_title|default='视频标题'}" name="video_title" required="required" title="请输入视频标题"/>
                         </div>
                     </div>
 
@@ -230,14 +183,8 @@
                         <label class="col-md-2 control-label layui-form-label label-required">上传视频</label>
                         <div class="col-md-9">
                             <div class="input-group">
-
-                                <input class='layui-input' type="text" value="{$vo.video_url|default=''}"
-                                       name="video_url" required="required" title="请上传音乐视频或输入音乐视频URL地址　　"/>
-
-                                <a data-file="one" data-type="mp4" data-field="video_url" class="input-group-addon">
-                                    <i class="fa fa-file"></i>
-                                </a>
-
+                                <input class='layui-input' type="text" value="{$vo.video_url|default=''}" name="video_url" required="required" title="请上传音乐视频或输入音乐视频URL地址　　"/>
+                                <a data-file="one" data-type="mp4" data-field="video_url" class="input-group-addon"><i class="fa fa-file"></i></a>
                             </div>
                             <p class="help-block">文件最大10MB，只支持MP4格式</p>
                         </div>
@@ -254,11 +201,7 @@
                         <div class="hr-line-dashed"></div>
                         <button class="layui-btn menu-submit">保存数据</button>
                         {if !isset($vo.keys) || !in_array($vo.keys,['default','subscribe'])}
-                        <button onclick="$.msg.confirm('确定取消编辑吗？', function () {
-                                    history.back()
-                                })"
-                                class="layui-btn layui-btn-danger" type='button'>取消编辑
-                        </button>
+                        <button data-cancel-edit class="layui-btn layui-btn-danger" type='button'>取消编辑</button>
                         {/if}
                     </div>
 
@@ -274,10 +217,15 @@
 <script>
 
     $(function () {
-        /**
-         * 默认类型事件
-         * @type String
-         */
+
+        /*! 取消编辑 */
+        $('[data-cancel-edit]').on('click', function () {
+            $.msg.confirm('确定取消编辑吗？', function () {
+                history.back();
+            });
+        });
+
+        /*! 默认类型事件 */
         $('body').off('change', 'select[name=type]').on('change', 'select[name=type]', function () {
             var value = $(this).val(), $form = $(this).parents('form');
             var $current = $form.find('[data-keys-type="' + value + '"]').removeClass('hide');
@@ -306,14 +254,17 @@
         $('body').off('change', '[name="news_id"]').on('change', '[name="news_id"]', function () {
             showReview({type: 'news', content: this.value});
         });
+
         // 文字显示预览
         $('body').off('change', '[name="content"]').on('change', '[name="content"]', function () {
             showReview({type: 'text', content: this.value});
         });
+
         // 图片显示预览
         $('body').off('change', '[name="image_url"]').on('change', '[name="image_url"]', function () {
             showReview({type: 'image', content: this.value});
         });
+
         // 音乐显示预览
         var musicSelector = '[name="music_url"],[name="music_title"],[name="music_desc"],[name="music_image"]';
         $('body').off('change', musicSelector).on('change', musicSelector, function () {
@@ -324,6 +275,7 @@
             params.desc = $parent.find('[name="music_desc"]').val();
             showReview(params);
         });
+
         // 视频显示预览
         var videoSelector = '[name="video_title"],[name="video_url"],[name="video_desc"]';
         $('body').off('change', videoSelector).on('change', videoSelector, function () {
