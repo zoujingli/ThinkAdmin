@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
@@ -19,6 +20,8 @@ use think\Request;
  * 视图输出过滤
  * Class FilterView
  * @package hook
+ * @author Anyon <zoujingli@qq.com>
+ * @date 2017/04/25 11:59
  */
 class FilterView {
 
@@ -53,4 +56,5 @@ class FilterView {
     public function cnzz(&$params) {
         // @todo CNZZ统计
     }
+
 }

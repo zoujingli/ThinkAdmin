@@ -66,11 +66,11 @@ define(['jquery', 'admin.plugs'], function () {
     /*! 注册 data-update 事件行为 */
     this.$body.on('click', '[data-update]', function () {
         var id = $(this).attr('data-update') || (function () {
-                var data = [];
-                return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
-                    (this.checked) && data.push(this.value);
-                }), data.join(',');
-            }).call(this);
+            var data = [];
+            return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
+                (this.checked) && data.push(this.value);
+            }), data.join(',');
+        }).call(this);
         if (id.length < 1) {
             return $.msg.tips('请选择需要操作的数据！');
         }
