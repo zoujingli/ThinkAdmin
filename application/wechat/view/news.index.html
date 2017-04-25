@@ -8,96 +8,6 @@
 
 {block name='content'}
 
-{foreach $list as $key=>$vo}
-
-<!--<div class="graphic web-design cbp-item" style="border:1px solid #eee;padding:8px 8px 0 8px;">-->
-<!--<div class="cbp-caption">-->
-<!--{foreach $vo.articles as $key=>$value}-->
-<!--{if $key < 1}-->
-<!--<div class="cbp-caption-defaultWrap">-->
-<!--<img src="{$value.local_url}?imageMogr2/thumbnail/!338x180r/gravity/Center/crop/338x180/interlace/1">-->
-<!--<span class="news-title">{$value.title}</span>-->
-<!--</div>-->
-<!--{else}-->
-<!--<div class="cbp-caption-defaultWrap" style="background:#fff">-->
-<!--<hr style="margin:10px 0 0 0">-->
-<!--<div class="row">-->
-<!--<div class="col-xs-8" style="padding-right:0">-->
-<!--<span style="display:inline-block;max-height:4em;overflow:hidden;margin:10px 0">-->
-<!--{$value.title}-->
-<!--</span>-->
-<!--</div>-->
-<!--<div class="col-xs-4" style="padding-left:0">-->
-<!--<img style="margin:10px 0"-->
-<!--src="{$value.local_url}?imageMogr2/thumbnail/!338x260r/gravity/Center/crop/338x260/interlace/1"-->
-<!--alt="">-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--{/if}-->
-<!--{/foreach}-->
-<!--<div class="cbp-caption-activeWrap">-->
-<!--<div class="cbp-l-caption-alignCenter">-->
-<!--<div class="cbp-l-caption-body">-->
-<!--<a class="btn red uppercase btn red uppercase" data-tips-text="预览" data-tips-placement="bottom"-->
-<!--data-phone-view='{:url("wechat/review/index")}?type=news&content={$vo.id}'>-->
-<!--<i class="fa fa-eye"></i>-->
-<!--</a>-->
-<!--<a class="btn red uppercase btn red uppercase" data-tips-text="推送" data-title='图文推送'-->
-<!--data-tips-placement="bottom" data-iframe='{"@wechat/news/push/`$vo.id`"|app_url}'><i-->
-<!--class="fa fa-weixin"></i></a>-->
-<!--<a class="btn red uppercase btn red uppercase" data-tips-text="编辑" data-tips-placement="bottom"-->
-<!--href='{"@wechat/news/edit/`$vo.id`"|app_url}'><i class="fa fa-pencil"></i></a>-->
-<!--<a class="btn red uppercase btn red uppercase" data-tips-text="删除" data-tips-placement="bottom"-->
-<!--data-news-del='{$vo.id}'><i class="fa fa-trash"></i></a>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-{/foreach}
-<style>
-    #news_box {position:relative;}
-    #news_box .news_item {position:relative;left:0;top:0;padding:5px;border:1px solid #ccc;box-sizing:content-box;margin:10px;width: 300px}
-    #news_box .news_item .news_articel_item{
-        background-position:center center;
-        background-size:100%;position:relative;height:150px;width:100%;overflow:hidden;
-    }
-
-    #news_box .news_item .news_articel_item p {
-        padding:5px;font-size:12px;color:#fff;
-        white-space:nowrap;overflow:hidden;text-overflow: ellipsis;
-        background: rgba(0, 0, 0, 0.7);position:absolute;width: 100%;bottom:0
-    }
-
-    #news_box .news_item .news_articel_item.other{
-        height:80px;padding:5px 0;
-    }
-    #news_box .news_item .hr-line-dashed:last-child{
-        display:none
-    }
-    #news_box .news_item .news_articel_item .left-image{
-        width:100px;height:75px;position:relative;float:left;
-        background-position:center center;background-size:100%;overflow:hidden;
-    }
-    #news_box .news_item .news_articel_item .right-text{
-        float:left;width:200px;padding-left: 5px;
-    }
-    #news_box .news_tools{
-        top:0;
-        z-index:80;
-        color:#fff;
-        width:312px;
-        margin-left:-6px;
-        position:absolute;
-        background: rgba(0, 0, 0, 0.7);
-        text-align:right;
-        padding:0 5px;
-        line-height: 30px;
-    }
-
-    #news_box .news_tools a{color:#fff;margin-left:10px}
-</style>
 <div id="news_box">
     {foreach $list as $vo}
     <div class="news_item">
@@ -144,4 +54,19 @@
     });
 
 </script>
+{/block}
+
+{block name="style"}
+<style>
+    #news_box {position:relative;}
+    #news_box .news_item {position:relative;left:0;top:0;padding:5px;border:1px solid #ccc;box-sizing:content-box;margin:10px;width: 300px}
+    #news_box .news_item .news_articel_item{background-position:center center;background-size:100%;position:relative;height:150px;width:100%;overflow:hidden;}
+    #news_box .news_item .news_articel_item p {padding:5px;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;background: rgba(0, 0, 0, 0.7);position:absolute;width: 100%;bottom:0}
+    #news_box .news_item .news_articel_item.other{height:80px;padding:5px 0;}
+    #news_box .news_item .news_articel_item .left-image{width:100px;height:75px;position:relative;float:left;background-position:center center;background-size:100%;overflow:hidden;}
+    #news_box .news_item .news_articel_item .right-text{float:left;width:200px;padding-left: 5px;}
+    #news_box .news_item .hr-line-dashed:last-child{display:none}
+    #news_box .news_tools{top:0;z-index:80;color:#fff;width:312px;margin-left:-6px;position:absolute;background: rgba(0, 0, 0, 0.7);text-align:right;padding:0 5px;line-height: 38px;}
+    #news_box .news_tools a{color:#fff;margin-left:10px}
+</style>
 {/block}
