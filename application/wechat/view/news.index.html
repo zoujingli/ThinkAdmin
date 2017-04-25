@@ -14,7 +14,7 @@
         <div class='news_tools hide'>
             <a href='javascript:alert("开发中...")'>推送</a>
             <a data-open='{:url("edit")}?id={$vo.id}' href='javascript:void(0)'>编辑</a>
-            <a href='javascript:alert("开发中...")'>删除</a>
+            <a data-news-del="{$vo.id}" href='javascript:void(0)'>删除</a>
         </div>
         {foreach $vo.articles as $k => $v}
         {if $k < 1}
@@ -47,10 +47,23 @@
         $(this).find('.news_tools').addClass('hide');
     });
 
-    require(['jquery.masonry'], function (Masonry, tpl) {
+    require(['jquery.masonry'], function (Masonry) {
         var container = document.querySelector('#news_box');
         var msnry = new Masonry(container, {itemSelector: '.news_item', columnWidth: 0});
         msnry.layout();
+        $('body').on('click', '[data-news-del]', function () {
+            var self = this;
+            $.msg.confirm('确定要删除图文吗？', function () {
+                $.form.load('{:url("del")}', {id: self.getAttribute('data-news-del')}, 'post', function (ret) {
+                    if (ret.code) {
+                        $(self).parents('.news_item').remove();
+                        msnry.layout();
+                        return $.msg.success(ret.msg), false;
+                    }
+                    return $.msg.error(ret.msg), false;
+                });
+            });
+        });
     });
 
 </script>

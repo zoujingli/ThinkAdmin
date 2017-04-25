@@ -118,6 +118,40 @@ class News extends BasicAdmin {
         return join(',', $ids);
     }
 
+    /**
+     * 图文推送
+     */
+    public function push() {
+        
+    }
+
+    /**
+     * 删除图文
+     */
+    public function del() {
+        $id = $this->request->post('id', '');
+        empty($id) && $this->error('参数错误，请重新操作删除!');
+        $info = Db::name('WechatNews')->where('id', $id)->find();
+        empty($info) && $this->error('删除的记录不存在，请重新操作删除!');
+        if (isset($info['article_id'])) {
+            Db::startTrans();
+            try {
+                Db::name('WechatNewsArticle')->where('id', 'in', explode(',', $info['article_id']))->delete();
+                Db::name('WechatNews')->where('id', $id)->delete();
+                Db::commit();
+                $isSuccess = true;
+            } catch (\Exception $e) {
+                Db::rollback();
+            }
+            (isset($isSuccess) && $isSuccess) && $this->success('图文删除成功!');
+        }
+        $this->error('图文删除失败，请重新再试!');
+    }
+
+    /**
+     * 图文选择器
+     * @return string
+     */
     public function select() {
         return '开发中';
     }
