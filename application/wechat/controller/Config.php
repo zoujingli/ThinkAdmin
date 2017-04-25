@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
@@ -17,8 +18,7 @@ use controller\BasicAdmin;
 use service\DataService;
 use service\LogService;
 use service\PayService;
-use think\Db;
-use Wechat\WechatService;
+use think\response\View;
 
 /**
  * 微信配置管理
@@ -37,7 +37,7 @@ class Config extends BasicAdmin {
 
     /**
      * 微信基础参数配置
-     * @return \think\response\View
+     * @return View
      */
     public function index() {
         if ($this->request->isGet()) {
@@ -53,7 +53,7 @@ class Config extends BasicAdmin {
 
     /**
      * 微信商户参数配置
-     * @return \think\response\View
+     * @return View
      */
     public function pay() {
         if ($this->request->isGet()) {
@@ -121,4 +121,5 @@ class Config extends BasicAdmin {
         LogService::write('微信管理', '修改微信支付参数成功');
         $this->success('数据修改成功！', '');
     }
+
 }
