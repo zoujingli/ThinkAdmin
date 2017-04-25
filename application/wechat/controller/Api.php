@@ -123,7 +123,6 @@ class Api extends Controller {
         return $this->_keys('wechat_keys#keys#default', true);
     }
 
-
     /**
      * 回复图文
      * @param int $news_id
@@ -137,7 +136,7 @@ class Api extends Controller {
                     'Title'       => $vo['title'],
                     'Description' => $vo['digest'],
                     'PicUrl'      => $vo['local_url'],
-                    'Url'         => url("@wechat/view/news/id/{$vo['id']}", '', true, true)
+                    'Url'         => url("@wechat/review/index", '', true, true) . "?content={$vo['id']}&type=article",
                 ];
             }
             return $this->wechat->news($newsdata)->reply();
@@ -194,9 +193,9 @@ class Api extends Controller {
         }
         // 标识推荐关系
         Db::name('WechatFans')
-            ->where('openid', $this->openid)
-            ->where('(spread_openid is null or spread_openid="")')
-            ->setField(['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')]);
+                ->where('openid', $this->openid)
+                ->where('(spread_openid is null or spread_openid="")')
+                ->setField(['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')]);
         // @todo 推荐成功的奖励
     }
 
