@@ -24,7 +24,15 @@ require.config({
     waitSeconds: 0,
     map: {'*': {css: baseUrl + '../plugs/require/require.css.js'}},
     paths: {
-        // 开源插件 CDN
+        // 自定义插件（源码自创建或已修改源码）
+        'admin.plugs': ['plugs'],
+        'admin.listen': ['listen'],
+        'layui': ['../plugs/layui/layui'],
+        'ueditor': ['../plugs/ueditor/ueditor'],
+        'template': ['../plugs/template/template'],
+        'pcasunzips': ['../plugs/jquery/pcasunzips'],
+        'laydate': ['../plugs/layui/laydate/laydate'],
+        // 开源插件（未修改源码）
         'pace': ['../plugs/jquery/pace.min'],
         'json': ['../plugs/jquery/json2.min'],
         'print': ['../plugs/jquery/jquery.PrintArea'],
@@ -36,14 +44,6 @@ require.config({
         'zeroclipboard': ['../plugs/ueditor/third-party/zeroclipboard/ZeroClipboard.min'],
         'jquery.cookies': ['../plugs/jquery/jquery.cookie'],
         'jquery.masonry': ['../plugs/jquery/masonry.min'],
-        // 自定义插件
-        'admin.plugs': ['plugs'],
-        'admin.listen': ['listen'],
-        'layui': ['../plugs/layui/layui'],
-        'ueditor': ['../plugs/ueditor/ueditor'],
-        'template': ['../plugs/template/template'],
-        'pcasunzips': ['../plugs/jquery/pcasunzips'],
-        'laydate': ['../plugs/layui/laydate/laydate'],
     },
     shim: {
         'layui': {deps: ['jquery']},
@@ -53,9 +53,9 @@ require.config({
         'jquery.cookies': {deps: ['jquery']},
         'jquery.masonry': {deps: ['jquery']},
         'admin.plugs': {deps: ['jquery', 'layui']},
-        'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
-        'jquery.ztree': {deps: ['jquery', 'css!' + baseUrl + '../plugs/zTreeStyle/zTreeStyle.min.css']},
         'websocket': {deps: [baseUrl + '../plugs/socket/swfobject.min.js']},
+        'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
+        'jquery.ztree': {deps: ['jquery', 'css!' + baseUrl + '../plugs/ztree/zTreeStyle/zTreeStyle.css']},
     },
     deps: ['css!' + baseUrl + '../plugs/awesome/css/font-awesome.min.css'],
     // 开启debug模式，不缓存资源

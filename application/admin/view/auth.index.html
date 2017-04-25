@@ -50,7 +50,7 @@
                     {/if}
                     {if auth("$classuri/apply")}
                     <span class="text-explode">|</span>
-                    <a data-load='{:url("$classuri/apply")}?id={$vo.id}' href="javascript:void(0)">授权</a>
+                    <a data-open='{:url("$classuri/apply")}?id={$vo.id}' href="javascript:void(0)">授权</a>
                     {/if}
                     {if $vo.status eq 1 and auth("$classuri/forbid")}
                     <span class="text-explode">|</span>
