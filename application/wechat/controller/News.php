@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
@@ -38,7 +39,8 @@ class News extends BasicAdmin {
      */
     public function index() {
         $this->assign('title', '图文列表');
-        parent::_list();
+        $db = Db::name($this->table)->order('id desc');
+        parent::_list($db);
     }
 
     /**
@@ -119,4 +121,5 @@ class News extends BasicAdmin {
     public function select() {
         return '开发中';
     }
+
 }
