@@ -13,7 +13,7 @@
 // +----------------------------------------------------------------------
 
 /* SESSION会话名称 */
-session_name('sess' . substr(md5(__FILE__)), 0, 8);
+session_name('s' . substr(md5(__FILE__), 0, 8));
 
 /* 定义应用目录 */
 define('APP_PATH', __DIR__ . '/application/');

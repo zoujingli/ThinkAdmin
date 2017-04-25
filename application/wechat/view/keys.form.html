@@ -250,11 +250,13 @@
                         </div>
                     </div>
 
-                    <div class="text-center" style="position:absolute;bottom:50px;width:100%;">
+                    <div class="text-center" style="position:absolute;bottom:20px;width:100%;">
                         <div class="hr-line-dashed"></div>
                         <button class="layui-btn menu-submit">保存数据</button>
                         {if !isset($vo.keys) || !in_array($vo.keys,['default','subscribe'])}
-                        <button onclick="$.msg.confirm('确定取消编辑吗？',function(){history.back()})"
+                        <button onclick="$.msg.confirm('确定取消编辑吗？', function () {
+                                    history.back()
+                                })"
                                 class="layui-btn layui-btn-danger" type='button'>取消编辑
                         </button>
                         {/if}

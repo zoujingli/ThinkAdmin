@@ -5,3 +5,4 @@
 /composer.lock
 /public/upload
 /nbproject
+/static/runtime/
