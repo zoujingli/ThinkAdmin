@@ -14,7 +14,6 @@
 
 namespace app\admin\model;
 
-use think\Config;
 use think\Db;
 
 /**
@@ -33,10 +32,7 @@ class NodeModel {
     public static function applyAuthNode() {
         cache('need_access_node', null);
         if (($authorize = session('user.authorize'))) {
-            $authorizeids = Db::name('SystemAuth')
-                ->where('id', 'in', explode(',', $authorize))
-                ->where('status', '1')
-                ->column('id');
+            $authorizeids = Db::name('SystemAuth')->where('id', 'in', explode(',', $authorize))->where('status', '1')->column('id');
             if (empty($authorizeids)) {
                 return session('user.nodes', []);
             }
@@ -76,7 +72,7 @@ class NodeModel {
         if (!in_array($auth_node, self::getAuthNode())) {
             return true;
         }
-        return in_array($auth_node, (array)session('user.nodes'));
+        return in_array($auth_node, (array) session('user.nodes'));
     }
 
     /**
@@ -91,7 +87,7 @@ class NodeModel {
         $nodes = [];
         $ignore = [
             'index',
-            'wechat/api', 'wechat/notify',
+            'wechat/api', 'wechat/notify', 'wechat/review',
             'admin/plugs', 'admin/login', 'admin/index',
         ];
         foreach (self::getNodeTree(APP_PATH) as $thr) {
