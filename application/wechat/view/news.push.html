@@ -18,7 +18,7 @@
         <div class="list-item">
 
             {foreach $fans_tags as $tag}
-            <label class="cuci-lable">
+            <label class='control-label layui-form-label' style='text-align:left!important'>
                 <input name="fans_tags[]" value='{$tag.id}' type="checkbox"/> {$tag.name} ({$tag.count})
             </label>
             {/foreach}
@@ -26,15 +26,13 @@
             {literal}
             <script id="push" type="text/template">
                 {{if data}}
-                {{each data as value}}
-                <label class="cuci-lable">
-                {{value.nickname}}
-                </label>
+                {{each data as value key}}
+                {{if key <= 200 }}
+                <label>{{value}}</label>
+                {{/if}}
                 {{/each}}
-                {{if (data.length > 199)}}
-                <label class="cuci-lable">
-                ...
-                </label>
+                {{if (data.length > 200)}}
+                <label>...</label>
                 {{/if}}
                 {{else}}
                 <h5></h5>
@@ -97,6 +95,7 @@
 
 <style>
     body { min-width: 500px }
+    #push-tags{height:300px;overflow:auto}
     .bottom-btn { display: block; background: #F7F7F7; padding: 10px; position: absolute; position: fixed; bottom: 0; width: 100% }
     .news-container { width: 200px; padding-right: 8px }
     .list-container { width: 578px; padding-right: 8px; padding-left: 0 }

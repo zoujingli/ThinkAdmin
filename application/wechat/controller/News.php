@@ -160,22 +160,17 @@ class News extends BasicAdmin {
      */
     public function push() {
         # 获取将要推送的粉丝列表
-        $params = $this->request->post('group', '');
-        $ids = explode(',', $params);
-        $fansDb = Db::name('WechatFans');
-        $news_id = $this->request->get('id', '');
         switch (strtolower($this->request->get('action', ''))) {
-            case 'getgroup':
-                if (!in_array('0', $ids)) {
-                    $fansDb->where("concat(',',tagid_list,',') REGEXP '," . join(',|,', $ids) . ",'");
-                }
-                return ['code' => "SUCCESS", 'data' => $fansDb->where('subscribe', '1')->column('openid,nickname')];
             case 'getuser':
-                if (!in_array('0', $ids)) {
-                    $fansDb->where("concat(',',tagid_list,',') REGEXP '," . join(',|,', $ids) . ",'");
+                if ('' === ($params = $this->request->post('group', ''))) {
+                    return ['code' => 'SUCCESS', 'data' => []];
                 }
-                return ['code' => "SUCCESS", 'data' => $fansDb->where('subscribe', '1')->column('openid,nickname')];
+                $ids = explode(',', $params);
+                $db = Db::name('WechatFans');
+                !in_array('0', $ids) && $db->where("concat(',',tagid_list,',') REGEXP '," . join(',|,', $ids) . ",'");
+                return ['code' => "SUCCESS", 'data' => $db->where('subscribe', '1')->limit(200)->column('nickname')];
             default :
+                $news_id = $this->request->get('id', '');
                 // 显示及图文
                 $newsinfo = WechatService::getNewsById($news_id);
                 // Get 请求，显示选择器界面
