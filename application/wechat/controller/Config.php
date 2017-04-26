@@ -44,6 +44,7 @@ class Config extends BasicAdmin {
             $this->assign('title', '微信接口配置');
             return view();
         }
+        $this->error('矜持点，别改测试参数哦！');
         foreach ($this->request->post() as $key => $vo) {
             sysconf($key, $vo);
         }
@@ -105,6 +106,7 @@ class Config extends BasicAdmin {
                     return view();
             }
         }
+        $this->error('矜持点，别改测试参数哦！');
         $data = $this->request->post();
         foreach ($data as $key => $vo) {
             if (in_array($key, ['wechat_cert_key_md5', 'wechat_cert_cert_md5']) && !empty($vo)) {
