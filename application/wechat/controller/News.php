@@ -21,6 +21,7 @@ use think\response\View;
 use controller\BasicAdmin;
 use service\DataService;
 use service\FileService;
+use service\LogService;
 use service\WechatService;
 
 /**
@@ -204,7 +205,10 @@ class News extends BasicAdmin {
                     $data['mpnews'] = ['media_id' => $newsinfo['media_id']];
                 }
                 $wechat = &load_wechat('Receive');
-                (FALSE !== $wechat->sendGroupMassMessage($data)) && $this->success('微信图文推送成功！');
+                if (FALSE !== $wechat->sendGroupMassMessage($data)) {
+                    LogService::write('微信管理', "图文[{$news_id}]推送成功!");
+                    $this->success('微信图文推送成功！');
+                }
                 $this->error("微信图文推送失败，{$wechat->errMsg} [{$wechat->errCode}]");
         }
     }
