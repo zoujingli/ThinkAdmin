@@ -112,7 +112,7 @@
 <script>
     $(function () {
 
-        var editDdata = $.parseJSON('{$vo.articles|default=[]|json_encode}');
+        var editDdata = {$vo.articles|default=[]|json_encode};
 
         for (var i in editDdata) {
             $('.news-item').eq(i).data('item', editDdata[i]);
