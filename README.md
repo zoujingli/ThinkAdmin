@@ -6,7 +6,7 @@ Think.Admin
 项目安装请参考`ThinkPHP`官方文档及下面的服务环境说明，数据库`sql`文件存放于项目根目录下。
 
 
-**注意：项目测试使用自己搭建数据库（并修改`database.php`文件），切勿直接使用测试环境数据！**
+**注意：项目测试请自己搭建环境及数据库（并修改`database.php`文件）, 切勿直接使用测试环境数据！**
 
 
 `Think.Admin`已集成模块
@@ -23,9 +23,17 @@ Think.Admin
 服务器环境
 ---
 * `PHP`版本不低于`PHP5.4`，推荐使用`PHP7`以达到最优效果
-* 项目运行需支持`PATHINFO`
-
+* 项目运行需支持`PATHINFO`，项目不支持`ThinkPHP`的`URL`兼容模式运行（源于如何优雅的展示）
 * `Apache`：已在项目根目录加入`.htaccess`文件，只需开启`rewrite`模块
+```
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks -Multiviews
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+</IfModule>
+```
 * `Nginx`：配置参考下面的`demo`代码
 ```
 server {
