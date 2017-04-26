@@ -2,9 +2,7 @@
 
 {block name="button"}
 <div class="nowrap pull-right" style="margin-top:10px">
-    <button data-load="{:url('sync')}" class='layui-btn layui-btn-small'>
-        <i class='fa fa-referer'></i> 同步粉丝
-    </button>
+    <button data-load="{:url('sync')}" class='layui-btn layui-btn-small'><i class='fa fa-referer'></i> 同步粉丝</button>
 </div>
 {/block}
 
@@ -16,8 +14,7 @@
     <div class="row">
         <div class="col-xs-3">
             <div class="form-group">
-                <input type="text" name="nickname" value="{$Think.get.nickname|default=''}" placeholder="昵称"
-                       class="input-sm form-control">
+                <input type="text" name="nickname" value="{$Think.get.nickname|default=''}" placeholder="昵称" class="input-sm form-control">
             </div>
         </div>
 
@@ -34,32 +31,31 @@
     <input type="hidden" value="resort" name="action"/>
     <table class="table table-hover">
         <thead>
-        <tr>
-            <th class='list-table-check-td'>
-                <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
-            </th>
-            <th class='text-left'>用户昵称</th>
-            <th class='text-center'>性别</th>
-            <th class='text-center'>区域</th>
-            <th class='text-center'>关注时间</th>
-        </tr>
+            <tr>
+                <th class='list-table-check-td'>
+                    <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+                </th>
+                <th class='text-left'>用户昵称</th>
+                <th class='text-center'>性别</th>
+                <th class='text-center'>区域</th>
+                <th class='text-center'>关注时间</th>
+            </tr>
         </thead>
         <tbody>
-        {foreach $list as $key=>$vo}
-        <tr>
-            <td class='list-table-check-td'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
-            </td>
-            <td class='text-left'>
-                <img style="width:25px;height:25px;border-radius:50%;margin-right:10px" data-tips-image="{$vo.headimgurl}"
-                     onerror="this.src='__PUBLIC__/static/theme/default/img/image.png'" alt="" src="{$vo.headimgurl}"/>
-                {$vo.nickname|default="<span style='color:#999'>未设置微信昵称</span>"}
-            </td>
-            <td class='text-center'>{$vo.sex==1?'男':($vo.sex==2?'女':'未知')}</td>
-            <td class='text-center'>{$vo.country|default='<span style="color:#999">未设置区域信息</span>'}{$vo.province}{$vo.city}</td>
-            <td class='text-center'>{$vo.subscribe_at}</td>
-        </tr>
-        {/foreach}
+            {foreach $list as $key=>$vo}
+            <tr>
+                <td class='list-table-check-td'>
+                    <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+                </td>
+                <td class='text-left'>
+                    <img style="width:25px;height:25px;border-radius:50%;margin-right:10px" data-tips-image src="{$vo.headimgurl}"/>
+                    {$vo.nickname|default="<span style='color:#999'>未设置微信昵称</span>"}
+                </td>
+                <td class='text-center'>{$vo.sex==1?'男':($vo.sex==2?'女':'未知')}</td>
+                <td class='text-center'>{$vo.country|default='<span style="color:#999">未设置区域信息</span>'}{$vo.province}{$vo.city}</td>
+                <td class='text-center'>{$vo.subscribe_at}</td>
+            </tr>
+            {/foreach}
         </tbody>
     </table>
     {if isset($page)}<p>{$page}</p>{/if}

@@ -28,8 +28,7 @@
                     <div class="form-group">
                         <label class="col-md-2 control-label layui-form-label ">关 键 字</label>
                         <div class="col-md-9">
-                            <input required="required" title='请输入关键字' maxlength='20' name='keys' class="layui-input"
-                                   value='{$vo.keys|default=""}'>
+                            <input required="required" title='请输入关键字' maxlength='20' name='keys' class="layui-input" value='{$vo.keys|default=""}'>
                         </div>
                     </div>
                     {else}
@@ -61,6 +60,7 @@
                         <label class="col-md-2 control-label layui-form-label label-required">消息类型</label>
                         <div class="col-md-9">
                             <select name='type' class='layui-input'>
+
                                 {if !isset($vo.type) or $vo.type eq 'text'}
                                 <option value='text' selected>文字</option>
                                 {else}
@@ -96,6 +96,7 @@
                                 {else}
                                 <option value='video'>视频</option>
                                 {/if}
+
                             </select>
                         </div>
                     </div>

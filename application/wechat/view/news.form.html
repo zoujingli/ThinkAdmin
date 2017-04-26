@@ -8,15 +8,13 @@
     <div class="panel-body news-box">
         {if empty($vo['articles']) eq false}
         {foreach $vo.articles as $key=>$value}
-        <div class="news-item transition" data-id="{$value.id}"
-             style="background-image:url('{$value.local_url}?imageView2/1/w/338/h/190/interlace/1')">
+        <div class="news-item transition" data-id="{$value.id}" style="background-image:url('{$value.local_url}?imageView2/1/w/338/h/190/interlace/1')">
             <span class="news-title">{$value.title}</span>
         </div>
         <hr/>
         {/foreach}
         {else}
-        <div class="news-item transition active news-image"
-             style="background-image:url('__PUBLIC__/static/plugs/uploader/theme/image.png')">
+        <div class="news-item transition active news-image" style="background-image:url('__PUBLIC__/static/plugs/uploader/theme/image.png')">
             <span class="news-title" style='display:none'>标题</span>
         </div>
         <hr/>
@@ -36,8 +34,7 @@
                 <div class="col-md-12">
                     <div class="input-group">
                         <span class="input-group-addon">标题</span>
-                        <input maxlength="64" required="required" title="标题不能为空哦" placeholder="请在这里输入标题"
-                               name='title' class="layui-input">
+                        <input maxlength="64" required="required" title="标题不能为空哦" placeholder="请在这里输入标题" name='title' class="layui-input">
                         <input type="hidden" name="id">
                     </div>
                 </div>
@@ -47,8 +44,7 @@
                 <div class="col-md-12">
                     <div class="input-group">
                         <span class="input-group-addon">作者</span>
-                        <input maxlength="8" required="required" title="作者不能为空哦" placeholder="请输入作者"
-                               name='author' class="layui-input">
+                        <input maxlength="8" required="required" title="作者不能为空哦" placeholder="请输入作者" name='author' class="layui-input">
                     </div>
                 </div>
             </div>
@@ -260,82 +256,17 @@
 
 {block name="style"}
 <style>
-    .news-left {
-        left: 20px;
-        width: 300px;
-        position: absolute;
-    }
-
-    .news-right {
-        position: absolute;
-        left: 335px;
-        right: 20px;
-    }
-
-    .news-left .news-item {
-        position: relative;
-        width: 280px;
-        height: 150px;
-        max-width: 270px;
-        overflow: hidden;
-        border: 1px solid #ccc;
-        background-size: cover;
-        background-position: center center;
-    }
-
-    .news-left .news-item.active {
-        border: 1px solid #44b549 !important;
-    }
-
-    .news-left .article-add {
-        font-size: 22px;
-        text-align: center;
-        display: block;
-        color: #999;
-    }
-
-    .news-left .article-add:hover {
-        color: #666;
-    }
-
-    .news-left .news-title {
-        bottom: 0;
-        width: 272px;
-        color: #fff;
-        display: block;
-        padding: 0 5px;
-        overflow: hidden;
-        position: absolute;
-        margin-left: -1px;
-        text-overflow: ellipsis;
-        max-height:6em;
-        background: rgba(0, 0, 0, 0.7);
-    }
-
-    .news-right .layui-input {
-        border-radius: 0;
-        border: 1px solid #e5e6e7;
-    }
-
-    .news-right .layui-input:hover, .news-right .layui-input:focus {
-        border-color: #e5e6e7 !important;
-    }
-
-    .news-right .input-group-addon {
-        background: #fff;
-        border-radius: 0;
-        border-color: #e5e6e7;
-    }
-
-    .news-right .upload-image-box {
-        width: 150px;
-        height: 120px;
-        background-size: cover;
-        background-position: center center;
-    }
-
-    .panel {
-        border-radius: 0
-    }
+    .panel{border-radius:0}
+    .news-left {left:20px;width:300px;position:absolute;}
+    .news-right {position:absolute;left:335px;right:20px;}
+    .news-left .news-item {position:relative;width:280px;height:150px;max-width:270px;overflow:hidden;border:1px solid #ccc;background-size:cover;background-position:center center;}
+    .news-left .news-item.active {border:1px solid #44b549 !important;}
+    .news-left .article-add {font-size:22px;text-align:center;display:block;color:#999;}
+    .news-left .article-add:hover{color:#666;}
+    .news-left .news-title{bottom:0;width:272px;color:#fff;display:block;padding:0 5px;overflow:hidden;position:absolute;margin-left:-1px;text-overflow:ellipsis;max-height:6em;background:rgba(0,0,0,0.7);}
+    .news-right .layui-input{border-radius:0;border:1px solid #e5e6e7;}
+    .news-right .layui-input:hover, .news-right .layui-input:focus{border-color:#e5e6e7!important;}
+    .news-right .input-group-addon{background:#fff;border-radius:0;border-color:#e5e6e7;}
+    .news-right .upload-image-box{width:150px;height:120px;background-size:cover;background-position:center center;}
 </style>
 {/block}

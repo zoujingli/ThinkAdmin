@@ -14,91 +14,88 @@
     <input type="hidden" value="resort" name="action"/>
     <table class="table table-hover">
         <thead>
-        <tr>
-            <th class='list-table-check-td'>
-                <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
-            </th>
-            <th class='list-table-sort-td'>
-                <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
-            </th>
-            <th class="text-center">关键字</th>
-            <th class="text-center">回复类型</th>
-            <th class="text-center">回复内容</th>
-            <th class="text-center">更新时间</th>
-            <th class="text-center">状态</th>
-            <th class="text-center">操作</th>
-        </tr>
+            <tr>
+                <th class='list-table-check-td'>
+                    <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+                </th>
+                <th class='list-table-sort-td'>
+                    <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
+                </th>
+                <th class="text-center">关键字</th>
+                <th class="text-center">回复类型</th>
+                <th class="text-center">回复内容</th>
+                <th class="text-center">更新时间</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">操作</th>
+            </tr>
         </thead>
         <tbody>
-        {foreach $list as $key=>$vo}
-        <tr>
-            <td class='list-table-check-td'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
-            </td>
-            <td class='list-table-sort-td'>
-                <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
-            </td>
-            <td class="text-center">{$vo.keys}</td>
-            <td class="text-center">{$vo.type}</td>
-            <td class="text-center">
-                {if $vo.type eq '音乐'}
-                <a data-phone-view='{:url("@wechat/review")}?type=music&title={$vo.music_title|urlencode}&desc={$vo.music_desc|urlencode}'
-                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
-                </a>
-                {elseif $vo.type eq '文字'}
-                <a data-phone-view='{:url("@wechat/review")}?type=text&content={$vo.content|urlencode}'
-                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
-                </a>
-                {elseif $vo.type eq '图片'}
-                <a data-phone-view='{:url("@wechat/review")}?type=image&content={$vo.image_url|urlencode}'
-                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
-                </a>
-                {elseif $vo.type eq '图文'}
-                <a data-phone-view='{:url("@wechat/review")}?type=news&content={$vo.news_id}'
-                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
-                </a>
-                {elseif $vo.type eq '视频'}
-                <a data-phone-view='{:url("@wechat/review")}?type=video&title={$vo.video_title|urlencode}&desc={$vo.video_desc|urlencode}&url={$vo.video_url|urlencode}'
-                   class="btn btn-link"><i class="fa fa-eye"></i> 预览
-                </a>
-                {else}
-                {$vo.content}
-                {/if}
-            </td>
-            <td class="text-center">{$vo.create_at}</td>
-            <td class='text-center'>
-                {if $vo.status eq 0}
-                <span>已禁用</span>
-                {elseif $vo.status eq 1}
-                <span style="color:#090">使用中</span>
-                {/if}
-            </td>
-            <td class='text-center nowrap'>
+            {foreach $list as $key=>$vo}
+            <tr>
+                <td class='list-table-check-td'>
+                    <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+                </td>
+                <td class='list-table-sort-td'>
+                    <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
+                </td>
+                <td class="text-center">{$vo.keys}</td>
+                <td class="text-center">{$vo.type}</td>
+                <td class="text-center">
+                    {if $vo.type eq '音乐'}
+                    <a data-phone-view='{:url("@wechat/review")}?type=music&title={$vo.music_title|urlencode}&desc={$vo.music_desc|urlencode}'
+                       class="btn btn-link"><i class="fa fa-eye"></i> 预览
+                    </a>
+                    {elseif $vo.type eq '文字'}
+                    <a data-phone-view='{:url("@wechat/review")}?type=text&content={$vo.content|urlencode}'
+                       class="btn btn-link"><i class="fa fa-eye"></i> 预览
+                    </a>
+                    {elseif $vo.type eq '图片'}
+                    <a data-phone-view='{:url("@wechat/review")}?type=image&content={$vo.image_url|urlencode}'
+                       class="btn btn-link"><i class="fa fa-eye"></i> 预览
+                    </a>
+                    {elseif $vo.type eq '图文'}
+                    <a data-phone-view='{:url("@wechat/review")}?type=news&content={$vo.news_id}'
+                       class="btn btn-link"><i class="fa fa-eye"></i> 预览
+                    </a>
+                    {elseif $vo.type eq '视频'}
+                    <a data-phone-view='{:url("@wechat/review")}?type=video&title={$vo.video_title|urlencode}&desc={$vo.video_desc|urlencode}&url={$vo.video_url|urlencode}'
+                       class="btn btn-link"><i class="fa fa-eye"></i> 预览
+                    </a>
+                    {else}
+                    {$vo.content}
+                    {/if}
+                </td>
+                <td class="text-center">{$vo.create_at}</td>
+                <td class='text-center'>
+                    {if $vo.status eq 0}
+                    <span>已禁用</span>
+                    {elseif $vo.status eq 1}
+                    <span style="color:#090">使用中</span>
+                    {/if}
+                </td>
+                <td class='text-center nowrap'>
 
-                {if auth("$classuri/edit")}
-                <span class="text-explode">|</span>
-                <a data-open='{:url("edit")}?id={$vo.id}'>编辑</a>
-                {/if}
+                    {if auth("$classuri/edit")}
+                    <span class="text-explode">|</span>
+                    <a data-open='{:url("edit")}?id={$vo.id}'>编辑</a>
+                    {/if}
 
-                {if $vo.status eq 1 and auth("$classuri/forbid")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'
-                   href="javascript:void(0)">禁用</a>
-                {elseif auth("$classuri/resume")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'
-                   href="javascript:void(0)">启用</a>
-                {/if}
+                    {if $vo.status eq 1 and auth("$classuri/forbid")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}' href="javascript:void(0)">禁用</a>
+                    {elseif auth("$classuri/resume")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'  href="javascript:void(0)">启用</a>
+                    {/if}
 
-                {if auth("$classuri/del")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("del")}'
-                   href="javascript:void(0)">删除</a>
-                {/if}
+                    {if auth("$classuri/del")}
+                    <span class="text-explode">|</span>
+                    <a data-update="{$vo.id}" data-field='delete' data-action='{:url("del")}' href="javascript:void(0)">删除</a>
+                    {/if}
 
-            </td>
-        </tr>
-        {/foreach}
+                </td>
+            </tr>
+            {/foreach}
         </tbody>
     </table>
     {if isset($page)}<p>{$page}</p>{/if}
