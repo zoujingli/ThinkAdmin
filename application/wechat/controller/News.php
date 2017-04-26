@@ -14,10 +14,14 @@
 
 namespace app\wechat\controller;
 
+use Exception;
+use think\Db;
+use think\Log;
+use think\response\View;
 use controller\BasicAdmin;
 use service\DataService;
+use service\FileService;
 use service\WechatService;
-use think\Db;
 
 /**
  * 微信图文管理
@@ -55,7 +59,7 @@ class News extends BasicAdmin {
 
     /**
      * 添加图文
-     * @return \think\response\View
+     * @return View
      */
     public function add() {
         if ($this->request->isGet()) {
@@ -75,7 +79,7 @@ class News extends BasicAdmin {
 
     /**
      * 编辑图文
-     * @return \think\response\View
+     * @return View
      */
     public function edit() {
         $id = $this->request->get('id', '');
@@ -119,13 +123,6 @@ class News extends BasicAdmin {
     }
 
     /**
-     * 图文推送
-     */
-    public function push() {
-        
-    }
-
-    /**
      * 删除图文
      */
     public function del() {
@@ -140,7 +137,7 @@ class News extends BasicAdmin {
                 Db::name('WechatNews')->where('id', $id)->delete();
                 Db::commit();
                 $isSuccess = true;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Db::rollback();
             }
             (isset($isSuccess) && $isSuccess) && $this->success('图文删除成功!');
@@ -154,6 +151,117 @@ class News extends BasicAdmin {
      */
     public function select() {
         return '开发中';
+    }
+
+    /**
+     * 推荐图文
+     * @return array|void
+     */
+    public function push() {
+        # 获取将要推送的粉丝列表
+        $params = $this->request->post('group', '');
+        $ids = explode(',', $params);
+        $fansDb = Db::name('WechatFans');
+        $news_id = $this->request->get('id', '');
+        switch (strtolower($this->request->get('action', ''))) {
+            case 'getgroup':
+                if (!in_array('0', $ids)) {
+                    $fansDb->where("concat(',',tagid_list,',') REGEXP '," . join(',|,', $ids) . ",'");
+                }
+                return ['code' => "SUCCESS", 'data' => $fansDb->where('subscribe', '1')->column('openid,nickname')];
+            case 'getuser':
+                if (!in_array('0', $ids)) {
+                    $fansDb->where("concat(',',tagid_list,',') REGEXP '," . join(',|,', $ids) . ",'");
+                }
+                return ['code' => "SUCCESS", 'data' => $fansDb->where('subscribe', '1')->column('openid,nickname')];
+            default :
+                // 显示及图文
+                $newsinfo = WechatService::getNewsById($news_id);
+                // Get 请求，显示选择器界面
+                if ($this->request->isGet()) {
+                    $fans_tags = Db::name('WechatFansTags')->select();
+                    array_unshift($fans_tags, [
+                        'id'    => 0,
+                        'name'  => '全部',
+                        'count' => Db::name('WechatFans')->where('subscribe', '1')->count(),
+                    ]);
+                    return view('push', ['vo' => $newsinfo, 'fans_tags' => $fans_tags]);
+                }
+                // Post 请求，执行图文推送操作
+                $post = $this->request->post();
+                empty($post['fans_tags']) && $this->error('还没有选择要粉丝对象！');
+                // 图文上传操作
+                !$this->_uploadWechatNews($newsinfo) && $this->error('图文上传失败，请稍候再试！');
+                // 数据拼装
+                $data = [];
+                if (in_array('0', $post['fans_tags'])) {
+                    $data['msgtype'] = 'mpnews';
+                    $data['filter'] = ['is_to_all' => true];
+                    $data['mpnews'] = ['media_id' => $newsinfo['media_id']];
+                } else {
+                    $data['msgtype'] = 'mpnews';
+                    $data['filter'] = ['is_to_all' => false, 'tag_id' => join(',', $post['fans_tags'])];
+                    $data['mpnews'] = ['media_id' => $newsinfo['media_id']];
+                }
+                $wechat = &load_wechat('Receive');
+                (FALSE !== $wechat->sendGroupMassMessage($data)) && $this->success('微信图文推送成功！');
+                $this->error("微信图文推送失败，{$wechat->errMsg} [{$wechat->errCode}]");
+        }
+    }
+
+    /**
+     * 上传永久图文
+     * @param type $newsinfo
+     * @return boolean
+     */
+    private function _uploadWechatNews(&$newsinfo) {
+        $self = $this;
+        foreach ($newsinfo['articles'] as &$article) {
+            $article['thumb_media_id'] = WechatService::uploadForeverMedia($article['local_url']);
+            $article['content'] = preg_replace_callback("/<img(.*?)src=['\"](.*?)['\"](.*?)\/?>/i", function ($matches) use ($self) {
+                $src = $self->_filterWechatImage($matches[2]);
+                return "<img{$matches[1]}src=\"{$src}\"{$matches[3]}/>";
+            }, htmlspecialchars_decode($article['content']));
+        }
+        $wechat = & load_wechat('media');
+        // 如果已经上传过，先删除之前的历史记录
+        !empty($newsinfo['media_id']) && $wechat->delForeverMedia($newsinfo['media_id']);
+        // 上传图文到微信服务器
+        $result = $wechat->uploadForeverArticles(['articles' => $newsinfo['articles']]);
+        if (isset($result['media_id'])) {
+            $newsinfo['media_id'] = $result['media_id'];
+            return Db::name('WechatNews')->where('id', $newsinfo['id'])->update(['media_id' => $result['media_id']]);
+        }
+        Log::error("上传永久图文失败, {$wechat->errMsg}[{$wechat->errCode}]");
+        return false;
+    }
+
+    /**
+     * 文章内容图片处理
+     * @param string $local_url
+     * @return string|null
+     */
+    private function _filterWechatImage($local_url = '') {
+        # 检测图片是否已经上传过了
+        $img = Db::name('WechatNewsImage')->where('local_url', $local_url)->find();
+        if (!empty($img) && isset($img['media_url'])) {
+            return $img['media_url'];
+        }
+        # 下载临时文件到本地
+        $filename = 'wechat/image/' . join('/', str_split(md5($local_url), 16)) . '.' . strtolower(pathinfo($local_url, 4));
+        $result = FileService::local($filename, file_get_contents($local_url));
+        if ($result && isset($result['file'])) {
+            # 上传图片到微信服务器
+            $wechat = &load_wechat('media');
+            $mediainfo = $wechat->uploadImg(['media' => "@{$result['file']}"]);
+            if (!empty($mediainfo)) {
+                $data = ['local_url' => $local_url, 'media_url' => $mediainfo['url'], 'md5' => md5($local_url)];
+                Db::name('WechatNewsImage')->insert($data);
+                return $mediainfo['url'];
+            }
+        }
+        Log::error("图片上传失败，请稍后再试！{$wechat->errMsg}[{$wechat->errCode}]");
+        return null;
     }
 
 }

@@ -12,7 +12,7 @@
     {foreach $list as $vo}
     <div class="news_item">
         <div class='news_tools hide'>
-            <a href='javascript:alert("开发中...")'>推送</a>
+            <a data-modal="{:url('push')}?id={$vo.id}" href='javascript:void(0)'>推送</a>
             <a data-open='{:url("edit")}?id={$vo.id}' href='javascript:void(0)'>编辑</a>
             <a data-news-del="{$vo.id}" href='javascript:void(0)'>删除</a>
         </div>
