@@ -6,7 +6,6 @@ use service\ToolsService;
 use think\Cache;
 use think\Request;
 use think\Response;
-use Wechat\Lib\Tools;
 
 /**
  * 数据接口通用控制器
@@ -39,7 +38,6 @@ class BasicApi {
         if (in_array(strtolower($this->request->action()), ['response', 'setcache', 'getcache', 'delcache', '_empty'])) {
             exit($this->response('禁止访问接口安全方法！', 'ACCESS_NOT_ALLOWED')->send());
         }
-
         // 访问 Token 检测处理
         $this->token = $this->request->param('token', $this->request->header('token', false));
         if (empty($this->token) && !method_exists($this, $this->request->action())) {
