@@ -202,7 +202,7 @@ class News extends BasicAdmin {
                 $wechat = &load_wechat('Receive');
                 if (FALSE !== $wechat->sendGroupMassMessage($data)) {
                     LogService::write('微信管理', "图文[{$news_id}]推送成功!");
-                    $this->success('微信图文推送成功！');
+                    $this->success('微信图文推送成功！', '');
                 }
                 $this->error("微信图文推送失败，{$wechat->errMsg} [{$wechat->errCode}]");
         }
