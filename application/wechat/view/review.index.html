@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title></title>
         <meta charset="utf-8">
-        <title>Wechat Preview</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="viewport" content="initial-scale=1,maximum-scale=1">
@@ -160,16 +160,16 @@
                                 {$vo.title|default=''}
                             </div>
                             <div  style="padding:5px 0;color:#999;min-height:1rem;display:block;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px">
-                                {:date('Y年m月d日')}
+                                {:date('m月d日')}
                             </div>
                             <div class="aui-card-list-content" style='max-height:10rem;overflow:hidden;text-overflow:ellipsis'>
                                 <img src="{$vo.local_url|default=''}"/>
                             </div>
                             <div class="aui-card-list-content-padded" style="color:#7b7b7b;padding:0;display:block;max-height:5rem;overflow:hidden;text-overflow:ellipsis">
-                                {$vo.content}
+                                {:strip_tags($vo.content)}
                             </div>
                         </div>
-                        <div class="aui-card-list-content-padded aui-border-t" style="padding-top:.3rem;margin-top:.3rem">
+                        <div class="aui-card-list-content-padded aui-border-t" style="padding-top:.3rem">
                             <a class="aui-list-item-arrow" style="color:#333;font-size:.6rem;display:block" href="{:url('wechat/review/index')}?content={$vo.id}&type=article">阅读全文</a>
                         </div>
                         {/if}
