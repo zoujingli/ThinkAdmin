@@ -81,10 +81,8 @@
                         <span class="aui-margin-l-5" style='color:#0099CC'>{$vo.author|default=''}</span>
                     </div>
                 </div>
-                {if $vo.show_cover_pic neq 0}
-                <div class="aui-card-list-content">
-                    <img src="{$vo.local_url}"/>
-                </div>
+                {if $vo.show_cover_pic eq 1}
+                <div class="aui-card-list-content"><img src="{$vo.local_url}"/></div>
                 {/if}
                 <div class="aui-card-list-content-padded aui-padded-t-0 aui-padded-b-0" style="color:#666;">
                     {$vo.content|default=''}
