@@ -71,9 +71,9 @@
         </section>
         {elseif $type eq 'article'}
         <section class="aui-content">
-            <div class="aui-card-list aui-border-t" style='margin-bottom:0'>
-                <div class="aui-card-list-header aui-padded-t-5 aui-padded-b-5">{$vo.title|default=''}</div>
-                <div class="aui-info aui-padded-l-15 aui-padded-r-15">
+            <div class="aui-card-list" style='margin-bottom:0'>
+                <div class="aui-card-list-header">{$vo.title|default=''}</div>
+                <div class="aui-info" style='padding:0 15px'>
                     <div class="aui-info-item aui-font-size-12">
                         <span class="aui-margin-l-5">{:date('Y-m-d',strtotime($vo['create_at']))}</span>
                         <span class="aui-margin-l-5" style='color:#0099CC'>{$vo.author|default=''}</span>
@@ -82,14 +82,14 @@
                 {if $vo.show_cover_pic eq 1}
                 <div class="aui-card-list-content-padded"><img src="{$vo.local_url}"/></div>
                 {/if}
-                <div class="aui-card-list-content-padded aui-padded-t-0 aui-padded-b-0" style="color:#666;">{$vo.content|default=''}</div>
+                <div class="aui-card-list-content-padded" style="color:#666;">{$vo.content|default=''}</div>
+                {if $vo.content_source_url}
                 <div class="aui-card-list-footer aui-font-size-12" style="color:#999;">
                     <div>
-                        {if $vo.content_source_url}
                         <a style='color:#0099CC' target='_blank' href='__SELF__'>阅读原文</a>
-                        {/if}
                     </div>
                 </div>
+                {/if}
             </div>
         </section>
         {elseif $type eq 'video'}
