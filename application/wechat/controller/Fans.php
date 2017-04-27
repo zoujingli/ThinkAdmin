@@ -40,7 +40,7 @@ class Fans extends BasicAdmin {
      */
     public function index() {
         $this->title = '微信粉丝管理';
-        $db = Db::name($this->table);
+        $db = Db::name($this->table)->order('id desc');
         $get = $this->request->get();
         foreach (['nickname'] as $key) {
             if (isset($get[$key]) && $get[$key] !== '') {
