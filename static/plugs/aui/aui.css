@@ -13,10 +13,10 @@ html {
 }
 
 html, body {
-/*    -webkit-touch-callout: none;
+    -webkit-touch-callout: none;
     -webkit-text-size-adjust: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-user-select: none;*/
+    -webkit-user-select: none;
     width: 100%;
 }
 
@@ -557,7 +557,7 @@ img.aui-img-round {
 
 /*基本容器*/
 .aui-content {
-    /*-webkit-overflow-scrolling: touch;*/
+    -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
     word-break: break-all;
 }
@@ -566,7 +566,7 @@ img.aui-img-round {
     margin: 0.75rem;
     position: relative;
     word-break: break-all;
-    /*-webkit-overflow-scrolling: touch;*/
+    -webkit-overflow-scrolling: touch;
 }
 
 /*栅格类*/
@@ -953,14 +953,14 @@ input[type="search"]::-webkit-search-cancel-button {
 .aui-scroll-x {
     position: relative;
     overflow-y: auto;
-    /*-webkit-overflow-scrolling: touch;*/
+    -webkit-overflow-scrolling: touch;
 }
 
 .aui-scroll-y {
     position: relative;
     width: 100%;
     overflow-x: auto;
-    /*-webkit-overflow-scrolling: touch;*/
+    -webkit-overflow-scrolling: touch;
 }
 
 ::-webkit-scrollbar {
