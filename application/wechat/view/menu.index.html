@@ -231,7 +231,7 @@
                 var type = $span.attr('data-type') || 'text';
                 $html.find('input[name="menu-type"]').on('click', function () {
                     $span.attr('data-type', this.value || 'text');
-                    var content = $span.attr('data-content') || '';
+                    var content = $span.data('content') || '';
                     var html = function () {
                         switch (this.value) {
                             case 'customservice':
@@ -253,7 +253,7 @@
                                 var select = [], tpl = '<div><label class="font-noraml"><input class="cuci-radio" name="content" type="radio" {checked} value="{value}"> {title}</label></div>';
                                 if (!(options[content] || false)) {
                                     content = 'scancode_push';
-                                    $span.attr('data-content', content);
+                                    $span.data('content', content);
                                 }
                                 for (var i in options) {
                                     select.push(tpl.replace('{value}', i).replace('{title}', options[i]).replace('{checked}', (i === content) ? 'checked' : ''));
@@ -263,7 +263,7 @@
                     }.call(this);
                     var $html = $(html), $input = $html.find('input,textarea');
                     $input.on('change keyup click', function () {
-                        $span.attr('data-content', $(this).val() || $(this).html());
+                        $span.data('content', $(this).val() || $(this).html());
                     });
                     $('.editor-content-input').html($html);
                 }).filter('input[value="{type}"]'.replace('{type}', type)).trigger('click');
@@ -280,7 +280,7 @@
                 var menudata = {};
                 menudata.name = $span.text();
                 menudata.type = $span.attr('data-type');
-                menudata.content = $span.attr('data-content') || '';
+                menudata.content = $span.data('content') || '';
                 return menudata;
             }
 
