@@ -37,6 +37,14 @@ think\Route::post([
     },
     'wechat/config/pay' => function() {
         return json(['code' => 0, 'msg' => '测试环境禁止修改微信支付操作！']);
+    },
+    'wechat/menu/edit' => function() {
+        return json(['code' => 0, 'msg' => '测试环境禁止修改微信菜单操作！']);
+    }
+]);
+think\Route::get([
+    'wechat/menu/cancel' => function() {
+        return json(['code' => 0, 'msg' => '测试环境禁止删除微信菜单操作！']);
     }
 ]);
 
