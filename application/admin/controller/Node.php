@@ -14,7 +14,7 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\NodeModel as NodeModel;
+use app\admin\model\NodeModel;
 use controller\BasicAdmin;
 use service\DataService;
 use service\ToolsService;

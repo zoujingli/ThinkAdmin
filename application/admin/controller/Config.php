@@ -15,7 +15,6 @@
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
-use service\DataService;
 use service\LogService;
 
 /**
@@ -66,6 +65,5 @@ class Config extends BasicAdmin {
         $this->title = '文件存储配置';
         $this->index();
     }
-
 
 }

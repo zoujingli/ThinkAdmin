@@ -60,9 +60,6 @@ class Menu extends BasicAdmin {
      * 添加菜单
      */
     public function add() {
-        if ($this->request->isPost()) {
-            $this->error('系统开发中，不要动菜单哦！');
-        }
         return $this->_form($this->table, 'form');
     }
 
@@ -113,7 +110,6 @@ class Menu extends BasicAdmin {
      * 删除菜单
      */
     public function del() {
-        $this->error('别再删我菜单了...');
         if (DataService::update($this->table)) {
             $this->success("菜单删除成功！", '');
         }
@@ -124,7 +120,6 @@ class Menu extends BasicAdmin {
      * 菜单禁用
      */
     public function forbid() {
-        $this->error('请不要禁用菜单...');
         if (DataService::update($this->table)) {
             $this->success("菜单禁用成功！", '');
         }

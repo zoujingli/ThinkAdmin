@@ -40,11 +40,11 @@ class Plugs extends BasicAdmin {
 
     /**
      * 文件上传
-     * @param string $mode
      * @return \think\response\View
      */
-    public function upfile($mode = 'one') {
+    public function upfile() {
         $types = $this->request->get('type', 'jpg,png');
+        $mode = $this->request->get('mode', 'one');
         $this->assign('mode', $mode);
         $this->assign('types', $types);
         if (!in_array(($uptype = $this->request->get('uptype')), ['local', 'qiniu'])) {
