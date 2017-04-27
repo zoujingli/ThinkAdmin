@@ -72,9 +72,9 @@
         {elseif $type eq 'article'}
         <section class="aui-content">
             <div class="aui-card-list" style='margin-bottom:0'>
-                <div class="aui-card-list-header">{$vo.title|default=''}</div>
+                <div class="aui-card-list-header" style='font-size:1rem'>{$vo.title|default=''}</div>
                 <div class="aui-info" style='padding:0 15px'>
-                    <div class="aui-info-item aui-font-size-12">
+                    <div class="aui-info-item" style='font-size:0.8rem;color:#666'>
                         <span class="aui-margin-l-5">{:date('Y-m-d',strtotime($vo['create_at']))}</span>
                         <span class="aui-margin-l-5" style='color:#0099CC'>{$vo.author|default=''}</span>
                     </div>
@@ -82,9 +82,9 @@
                 {if $vo.show_cover_pic eq 1}
                 <div class="aui-card-list-content-padded"><img src="{$vo.local_url}"/></div>
                 {/if}
-                <div class="aui-card-list-content-padded" style="color:#666;">{$vo.content|default=''}</div>
+                <div class="aui-card-list-content-padded" style="color:#333;font-size:0.8rem">{$vo.content|default=''}</div>
                 {if $vo.content_source_url}
-                <div class="aui-card-list-footer aui-font-size-12" style="color:#999;">
+                <div class="aui-card-list-footer" style="color:#999;">
                     <div>
                         <a style='color:#0099CC' target='_blank' href='__SELF__'>阅读原文</a>
                     </div>
