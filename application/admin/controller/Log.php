@@ -38,6 +38,7 @@ class Log extends BasicAdmin {
      */
     public function index() {
         $this->title = '系统操作日志';
+        $this->assign('actions', Db::name($this->table)->group('action')->column('action'));
         $db = Db::name($this->table)->order('id desc');
         $get = $this->request->get();
         foreach (['action', 'content', 'username'] as $key) {
@@ -45,6 +46,7 @@ class Log extends BasicAdmin {
                 $db->where($key, 'like', "%{$get[$key]}%");
             }
         }
+
         parent::_list($db);
     }
 
