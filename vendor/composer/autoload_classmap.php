@@ -188,6 +188,7 @@ return array(
     'think\\model\\relation\\HasManyThrough' => $baseDir . '/thinkphp/library/think/model/relation/HasManyThrough.php',
     'think\\model\\relation\\HasOne' => $baseDir . '/thinkphp/library/think/model/relation/HasOne.php',
     'think\\model\\relation\\MorphMany' => $baseDir . '/thinkphp/library/think/model/relation/MorphMany.php',
+    'think\\model\\relation\\MorphOne' => $baseDir . '/thinkphp/library/think/model/relation/MorphOne.php',
     'think\\model\\relation\\MorphTo' => $baseDir . '/thinkphp/library/think/model/relation/MorphTo.php',
     'think\\model\\relation\\OneToOne' => $baseDir . '/thinkphp/library/think/model/relation/OneToOne.php',
     'think\\mongo\\Builder' => $vendorDir . '/topthink/think-mongo/src/Builder.php',

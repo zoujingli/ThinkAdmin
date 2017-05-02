@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5b507475abadaa513a875abacd8b8aee
+class ComposerStaticInit25f262128a8b880e0632e899b112c332
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -263,6 +263,7 @@ class ComposerStaticInit5b507475abadaa513a875abacd8b8aee
         'think\\model\\relation\\HasManyThrough' => __DIR__ . '/../..' . '/thinkphp/library/think/model/relation/HasManyThrough.php',
         'think\\model\\relation\\HasOne' => __DIR__ . '/../..' . '/thinkphp/library/think/model/relation/HasOne.php',
         'think\\model\\relation\\MorphMany' => __DIR__ . '/../..' . '/thinkphp/library/think/model/relation/MorphMany.php',
+        'think\\model\\relation\\MorphOne' => __DIR__ . '/../..' . '/thinkphp/library/think/model/relation/MorphOne.php',
         'think\\model\\relation\\MorphTo' => __DIR__ . '/../..' . '/thinkphp/library/think/model/relation/MorphTo.php',
         'think\\model\\relation\\OneToOne' => __DIR__ . '/../..' . '/thinkphp/library/think/model/relation/OneToOne.php',
         'think\\mongo\\Builder' => __DIR__ . '/..' . '/topthink/think-mongo/src/Builder.php',
@@ -313,9 +314,9 @@ class ComposerStaticInit5b507475abadaa513a875abacd8b8aee
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5b507475abadaa513a875abacd8b8aee::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5b507475abadaa513a875abacd8b8aee::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit5b507475abadaa513a875abacd8b8aee::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit25f262128a8b880e0632e899b112c332::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit25f262128a8b880e0632e899b112c332::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit25f262128a8b880e0632e899b112c332::$classMap;
 
         }, null, ClassLoader::class);
     }

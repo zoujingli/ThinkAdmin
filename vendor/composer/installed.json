@@ -169,17 +169,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.0.7",
-        "version_normalized": "5.0.7.0",
+        "version": "v5.0.8",
+        "version_normalized": "5.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "bcf64f19f4fadbff6c8503891689ff7e6f2fe9a3"
+            "reference": "02f8e8a9099c534d1b2c38385fcf1fa5404694d4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/bcf64f19f4fadbff6c8503891689ff7e6f2fe9a3.zip",
-            "reference": "bcf64f19f4fadbff6c8503891689ff7e6f2fe9a3",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/02f8e8a9099c534d1b2c38385fcf1fa5404694d4.zip",
+            "reference": "02f8e8a9099c534d1b2c38385fcf1fa5404694d4",
             "shasum": ""
         },
         "require": {
@@ -194,7 +194,7 @@
             "phpunit/phpunit": "4.8.*",
             "sebastian/phpcpd": "2.*"
         },
-        "time": "2017-02-25 02:51:57",
+        "time": "2017-04-28 09:33:15",
         "type": "think-framework",
         "installation-source": "dist",
         "autoload": {
@@ -381,23 +381,23 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.2.7",
-        "version_normalized": "3.2.7.0",
+        "version": "v3.2.8",
+        "version_normalized": "3.2.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "6a19be85237fe8bbd4975f86942b4763bb0da6ca"
+            "reference": "8cbb4f23414e2a5e92690cf67680a979a461113c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/6a19be85237fe8bbd4975f86942b4763bb0da6ca.zip",
-            "reference": "6a19be85237fe8bbd4975f86942b4763bb0da6ca",
+            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/8cbb4f23414e2a5e92690cf67680a979a461113c.zip",
+            "reference": "8cbb4f23414e2a5e92690cf67680a979a461113c",
             "shasum": ""
         },
         "require": {
             "php": ">=5.5.9"
         },
-        "time": "2017-03-21 21:44:32",
+        "time": "2017-04-12 14:13:17",
         "type": "library",
         "extra": {
             "branch-alias": {
