@@ -46,7 +46,20 @@ class FilterView {
      * @param $params
      */
     public function baidu(&$params) {
-        // @todo 百度统计
+        if (!IS_CLI && ($key = sysconf('tongji_baidu_key'))) {
+            $script = <<<SCRIPT
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?{$key}";
+                var s = document.getElementsByTagName("script")[0]; 
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+SCRIPT;
+            $params = preg_replace('|</body>|i', "{$script}\n    </body>", $params);
+        }
     }
 
     /**
