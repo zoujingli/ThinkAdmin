@@ -26,19 +26,28 @@ use think\Request;
 class FilterView {
 
     /**
+     * 当前请求对象
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * 行为入口
      * @param $params
      */
     public function run(&$params) {
-        $app = Request::instance()->root(true);
+        $this->request = Request::instance();
+        $app = $this->request->root(true);
         $replace = [
             '__APP__'    => $app,
-            '__SELF__'   => Request::instance()->url(true),
+            '__SELF__'   => $this->request->url(true),
             '__PUBLIC__' => strpos($app, EXT) ? ltrim(dirname($app), DS) : $app,
         ];
         $params = str_replace(array_keys($replace), array_values($replace), $params);
-        $this->baidu($params);
-        $this->cnzz($params);
+        if (!IS_CLI) {
+            $this->baidu($params);
+            $this->cnzz($params);
+        }
     }
 
     /**
@@ -46,7 +55,7 @@ class FilterView {
      * @param $params
      */
     public function baidu(&$params) {
-        if (!IS_CLI && ($key = sysconf('tongji_baidu_key'))) {
+        if (($key = sysconf('tongji_baidu_key'))) {
             $script = <<<SCRIPT
         <script>
             var _hmt = _hmt || [];
@@ -67,7 +76,11 @@ SCRIPT;
      * @param $params
      */
     public function cnzz(&$params) {
-        // @todo CNZZ统计
+        if (($key = sysconf('tongji_cnzz_key'))) {
+            $query = ['siteid' => $key, 'r' => $this->request->server('HTTP_REFERER'), 'rnd' => mt_rand(100000, 999999)];
+            $imgSrc = 'https://c.cnzz.com/wapstat.php?' . http_build_query($query);
+            $params = preg_replace('|</body>|i', "<img src='{$imgSrc}' style='display:block;position:absolute' width='0' height='9'/>\n    </body>", $params);
+        }
     }
 
 }
