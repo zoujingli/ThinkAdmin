@@ -28,6 +28,7 @@ Think.Admin
 ```
 <IfModule mod_rewrite.c>
   Options +FollowSymlinks -Multiviews
+
   RewriteEngine On
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-f

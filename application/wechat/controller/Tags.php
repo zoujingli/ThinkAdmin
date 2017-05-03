@@ -58,6 +58,15 @@ class Tags extends BasicAdmin {
         if ($this->request->isGet()) {
             return parent::_form($this->table, 'form', 'id');
         }
+        $name = $this->request->post('name', '');
+        empty($name) && $this->error('粉丝标签名不能为空!');
+        if (Db::name($this->table)->where('name', $name)->count() > 0) {
+            $this->error('粉丝标签标签名已经存在，请使用其它标签名!');
+        }
+        $result = DataService::save($this->table, ['name' => $name, 'count' => 0]);
+        empty($result) && $this->error('粉丝标签添加失败，请稍候再试！');
+        $info = Db::name($this->table)->where('name', $name)->find();
+        empty($info) && $this->error('粉丝标签添加失败，请稍候再试！');
     }
 
     /**
