@@ -15,6 +15,7 @@
 namespace app\wechat\controller;
 
 use controller\BasicAdmin;
+use service\DataService;
 use service\LogService;
 use service\WechatService;
 use think\Db;
@@ -68,23 +69,20 @@ class Tags extends BasicAdmin {
             return parent::_form($this->table, 'form', 'id');
         }
         // 接收提交的数据
-        $name = $this->request->post('name', '');
-        $id = $this->request->post('id', '0');
-        $info = db($this->table)->where('name', $name)->find();
+        list($name, $id) = [$this->request->post('name', ''), $this->request->post('id', '0')];
+        $info = Db::name($this->table)->where('name', $name)->find();
         if (!empty($info)) {
             if (intval($info['id']) === intval($id)) {
-                $this->success('标签没有改变！');
-            } else {
-                $this->error('标签已经存在，请使用其它名称再试！');
+                $this->success('粉丝标签没有改变！', '');
             }
+            $this->error('标签已经存在，请使用其它名称再试！');
         }
-        $wechat = &load_wechat('User', $this->real_appid);
+        $wechat = &load_wechat('User');
         $data = array('id' => $id, 'name' => $name);
-        if (FALSE !== $wechat->updateTag($id, $name) && FALSE !== Data::save($this->table, $data, 'id')) {
+        if (false !== $wechat->updateTag($id, $name) && false !== DataService::save($this->table, $data, 'id')) {
             $this->success('编辑标签成功!');
-        } else {
-            $this->error('编辑标签失败，请稍后再试！' . $wechat->errMsg);
         }
+        $this->error('编辑标签失败，请稍后再试！' . $wechat->errMsg);
     }
 
     /**
