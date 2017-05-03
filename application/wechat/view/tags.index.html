@@ -2,8 +2,8 @@
 
 {block name="button"}
 <div class="nowrap pull-right" style="margin-top:10px">
-    <button data-load="{:url('add')}" class='layui-btn layui-btn-small'><i class='fa fa-referer'></i> 添加标签</button>
-    <button data-load="{:url('sync')}" class='layui-btn layui-btn-small'><i class='fa fa-plus-square-o'></i> 同步标签</button>
+    <button data-modal="{:url('add')}" data-title="添加标签" class='layui-btn layui-btn-small'> 添加标签 </button>
+    <button data-load="{:url('sync')}" class='layui-btn layui-btn-small'> 同步标签 </button>
 </div>
 {/block}
 
@@ -59,7 +59,7 @@
                 <td class='text-center nowrap'>
                     {if auth("$classuri/edit")}
                     <span class="text-explode">|</span>
-                    <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' href="javascript:void(0)">编辑</a>
+                    <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' data-title="编辑标签" href="javascript:void(0)">编辑</a>
                     {/if}
                     {if auth("$classuri/del")}
                     <span class="text-explode">|</span>
