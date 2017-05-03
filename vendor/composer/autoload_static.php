@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit25f262128a8b880e0632e899b112c332
+class ComposerStaticInitf3ef7a459e4b29cdf35865d01f6cf929
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -314,9 +314,9 @@ class ComposerStaticInit25f262128a8b880e0632e899b112c332
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit25f262128a8b880e0632e899b112c332::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit25f262128a8b880e0632e899b112c332::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit25f262128a8b880e0632e899b112c332::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf3ef7a459e4b29cdf35865d01f6cf929::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf3ef7a459e4b29cdf35865d01f6cf929::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitf3ef7a459e4b29cdf35865d01f6cf929::$classMap;
 
         }, null, ClassLoader::class);
     }
