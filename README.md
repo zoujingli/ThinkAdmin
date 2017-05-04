@@ -25,6 +25,7 @@ Think.Admin
 * `PHP`版本不低于`PHP5.4`，推荐使用`PHP7`以达到最优效果
 * 项目运行需支持`PATHINFO`，项目不支持`ThinkPHP`的`URL`兼容模式运行（源于如何优雅的展示）
 * `Apache`：已在项目根目录加入`.htaccess`文件，只需开启`rewrite`模块
+
 ```xml
 <IfModule mod_rewrite.c>
   Options +FollowSymlinks -Multiviews
@@ -34,7 +35,9 @@ Think.Admin
   RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
 </IfModule>
 ```
+
 * `Nginx`：配置参考下面的`demo`代码
+
 ```
 server {
 	listen 80;
