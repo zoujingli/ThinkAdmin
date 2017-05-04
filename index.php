@@ -19,7 +19,7 @@ session_name('s' . substr(md5(__FILE__), 0, 8));
 define('APP_PATH', __DIR__ . '/application/');
 
 /* 定义Runtime运行目录 */
-define('RUNTIME_PATH', __DIR__ . '/static/runtime/');
+define('RUNTIME_PATH', __DIR__ . '/runtime/');
 
 /* 加载框架引导文件 */
 require __DIR__ . '/thinkphp/start.php';
