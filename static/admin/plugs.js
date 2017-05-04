@@ -1,3 +1,4 @@
+
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
@@ -25,24 +26,9 @@ define(['jquery'], function () {
         fix: function () {
             $(':input[placeholder]').map(function () {
                 var self = $(this), txt = self.attr('placeholder');
-                self.wrap($('<div></div>').css({
-                    zoom: '1',
-                    margin: 'none',
-                    border: 'none',
-                    padding: 'none',
-                    background: 'none',
-                    position: 'relative',
-                }));
+                self.wrap($('<div></div>').css({zoom: '1', margin: 'none', border: 'none', padding: 'none', background: 'none', position: 'relative'}));
                 var pos = self.position(), h = self.outerHeight(true), paddingleft = self.css('padding-left');
-                var holder = $('<span></span>').text(txt).css({
-                    position: 'absolute',
-                    left: pos.left,
-                    top: pos.top,
-                    height: h,
-                    lineHeight: h + 'px',
-                    paddingLeft: paddingleft,
-                    color: '#aaa'
-                }).appendTo(self.parent());
+                var holder = $('<span></span>').text(txt).css({position: 'absolute', left: pos.left, top: pos.top, height: h, lineHeight: h + 'px', paddingLeft: paddingleft, color: '#aaa'}).appendTo(self.parent());
                 self.on('focusin focusout change keyup', function () {
                     self.val() ? holder.hide() : holder.show();
                 });
@@ -230,50 +216,34 @@ define(['jquery'], function () {
      * @param time 消息提示时间
      */
     _form.prototype.load = function (url, data, type, callback, loading, tips, time) {
-        var self = this;
-        if (loading !== false) {
-            var index = $.msg.loading(tips);
-        }
-        var send_data = data;
-        if (typeof data === 'object' && data.tagName === 'FORM') {
-            send_data = $(data).serialize();
-        }
-        try {
-            Pace && Pace.restart();
-        } catch (e) {
-        }
-        require(['admin.listen'], function () {
-            $.ajax({
-                type: type || 'GET',
-                url: parseUri(url),
-                data: send_data || {},
-                statusCode: {
-                    404: function () {
-                        $.msg.tips(self.errMsg.replace('{status}', 'E404 - '));
-                    },
-                    500: function () {
-                        $.msg.tips(self.errMsg.replace('{status}', 'E500 - '));
-                    }
+        var self = this, dialogIndex = 0;
+        (loading !== false) && (dialogIndex = $.msg.loading(tips));
+        (typeof Pace === 'object') && Pace.restart();
+        $.ajax({
+            type: type || 'GET',
+            url: $.menu.parseUri(url),
+            data: data || {},
+            statusCode: {
+                404: function () {
+                    $.msg.tips(self.errMsg.replace('{status}', 'E404 - '));
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $.msg.tips(self.errMsg.replace('{status}', 'E' + textStatus + ' - '));
-                },
-                success: function (res) {
-                    if (loading !== false) {
-                        $.msg.close(index);
-                    }
-                    if (typeof callback === 'function' && callback.call(self, res) === false) {
-                        return false;
-                    }
-                    if (typeof (res) === 'object') {
-                        return $.msg.auto(res, time);
-                    }
-                    if (res.indexOf('A PHP Error was encountered') > -1) {
-                        return $.msg.tips(self.errMsg.replace('{status}', 'E505 - '));
-                    }
-                    self.show(res);
+                500: function () {
+                    $.msg.tips(self.errMsg.replace('{status}', 'E500 - '));
                 }
-            });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $.msg.tips(self.errMsg.replace('{status}', 'E' + textStatus + ' - '));
+            },
+            success: function (res) {
+                $.msg.close(dialogIndex);
+                if (typeof callback === 'function' && callback.call(self, res) === false) {
+                    return false;
+                }
+                if (typeof (res) === 'object') {
+                    return $.msg.auto(res, time);
+                }
+                self.show(res);
+            }
         });
     };
 
@@ -282,9 +252,7 @@ define(['jquery'], function () {
      * @param $container
      */
     _form.prototype.reInit = function ($container) {
-        $.validate.listen.call(this);
-        JPlaceHolder.init();
-        /* 自动给必填字符加上样式 @zoujingli @by 2016-05-11 */
+        $.validate.listen.call(this), JPlaceHolder.init();
         $container.find('[required]').parent().prevAll('label').addClass('label-required');
     };
 
@@ -316,7 +284,7 @@ define(['jquery'], function () {
      * @param obj
      */
     _form.prototype.href = function (url, obj) {
-        window.location.href = '#' + parseUri(url, obj);
+        window.location.href = '#' + $.menu.parseUri(url, obj);
     };
 
     /**
@@ -379,14 +347,7 @@ define(['jquery'], function () {
      * @param title 窗口标题
      */
     _form.prototype.iframe = function (url, title) {
-        return layer.open({
-            title: title || '窗口',
-            type: 2,
-            area: ['800px', '530px'],
-            fix: true,
-            maxmin: false,
-            content: url
-        });
+        return layer.open({title: title || '窗口', type: 2, area: ['800px', '530px'], fix: true, maxmin: false, content: url});
     };
 
     /**
@@ -412,8 +373,6 @@ define(['jquery'], function () {
      * @returns {validate_L1.validate}
      */
     var validate = function () {
-        // 模式检测
-        this.isSupport = ($('<input type="email">').attr("type") === "email");
         // 表单元素
         this.inputTag = 'input,textarea,select';
         // 检测元素事件
@@ -466,12 +425,8 @@ define(['jquery'], function () {
      */
     validate.prototype.isEmpty = function (ele, value) {
         value = value || ele.getAttribute('placeholder');
-        var trimValue = ele.value;
-        trimValue = this.trim(trimValue);
-        if (trimValue === "" || trimValue === value) {
-            return true;
-        }
-        return false;
+        var trimValue = this.trim(ele.value);
+        return (trimValue === "" || trimValue === value);
     };
 
     /**
@@ -482,14 +437,10 @@ define(['jquery'], function () {
      * @returns {Boolean}
      */
     validate.prototype.isRegex = function (ele, regex, params) {
-        var self = this;
         // 原始值和处理值
-        var inputValue = ele.value;
-        var dealValue = inputValue;
-        var type = this.getElementType(ele);
-
-        if (type !== "password") {
-            // 密码不trim前后空格
+        var inputValue = ele.value, dealValue = inputValue;
+        var self = this, type = this.getElementType(ele);
+        if (type !== "password") {  // 密码不trim前后空格
             dealValue = this.trim(inputValue);
             if (dealValue !== inputValue) {
                 if (ele.tagName.toLowerCase() !== "textarea") {
@@ -520,7 +471,6 @@ define(['jquery'], function () {
         } else {
             return newRegExp.test(dealValue);
         }
-        return true;
     };
 
     /**
@@ -530,9 +480,7 @@ define(['jquery'], function () {
         if (!elements) {
             return true;
         }
-        var params = options || {};
-        var allpass = true;
-        var self = this;
+        var allpass = true, self = this, params = options || {};
         if (elements.size && elements.size() === 1 && elements.get(0).tagName.toLowerCase() === "form") {
             elements = $(elements).find(self.inputTag);
         } else if (elements.tagName && elements.tagName.toLowerCase() === "form") {
@@ -540,9 +488,7 @@ define(['jquery'], function () {
         }
         elements.each(function () {
             if (self.checkInput(this, params) === false) {
-                $(this).focus();
-                allpass = false;
-                return false;
+                return $(this).focus(), (allpass = false);
             }
         });
         return allpass;
@@ -630,8 +576,7 @@ define(['jquery'], function () {
      * @returns {undefined}
      */
     validate.prototype.errorPlacement = function (ele, content) {
-        $(ele).addClass('validate-error');
-        this.insertErrorEle(ele);
+        $(ele).addClass('validate-error'), this.insertErrorEle(ele);
         $($(ele).data('input-info')).addClass('fadeInRight animated').css({width: 'auto'}).html(content);
     };
 
@@ -639,8 +584,7 @@ define(['jquery'], function () {
      * 错误消息消除
      */
     validate.prototype.successPlacement = function (ele) {
-        $(ele).removeClass('validate-error');
-        this.insertErrorEle(ele);
+        $(ele).removeClass('validate-error'), this.insertErrorEle(ele);
         $($(ele).data('input-info')).removeClass('fadeInRight').css({width: '30px'}).html('');
     };
 
@@ -651,12 +595,7 @@ define(['jquery'], function () {
      */
     validate.prototype.insertErrorEle = function (ele) {
         var $html = $('<span style="-webkit-animation-duration:.2s;animation-duration:.2s;padding-right:20px;color:#a94442;position:absolute;right:0;font-size:12px;z-index:2;display:block;width:34px;text-align:center;pointer-events:none"></span>');
-        $html.css({
-            top: $(ele).position().top + 'px',
-            paddingTop: $(ele).css('paddingTop'),
-            paddingBottom: $(ele).css('paddingBottom'),
-            lineHeight: $(ele).css('lineHeight')
-        });
+        $html.css({top: $(ele).position().top + 'px', paddingTop: $(ele).css('paddingTop'), paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('lineHeight')});
         $(ele).data('input-info') || $(ele).data('input-info', $html.insertAfter(ele));
     };
 
@@ -667,36 +606,10 @@ define(['jquery'], function () {
      * @returns {$|Function|Zepto}
      */
     validate.prototype.check = function (form, callback, options) {
-        var self = this;
-        var defaults = {
-            // 取消浏览器默认的HTML验证
-            novalidate: true,
-            // 禁用submit按钮可用
-            submitEnabled: true,
-            // 额外的其他验证
-            validate: function () {
-                return true;
-            }
-        };
-        var params = $.extend({}, defaults, options || {});
-        if (this.isSupport) {
-            if (params.novalidate) {
-                $(form).attr("novalidate", "novalidate");
-            } else {
-                params.hasTypeNormally = true;
-            }
-        }
-
-        // disabled的submit按钮还原
-        if (params.submitEnabled) {
-            $(form).find("[disabled]").each(function () {
-                if (/^image|submit$/.test(this.type)) {
-                    $(this).removeAttr("disabled");
-                }
-            });
-        }
-
-        //元素动态监听
+        var params = $.extend({}, options || {}), self = this;
+        // 去除HTML默认验证
+        $(form).attr("novalidate", "novalidate");
+        // 表单元素动态监听
         $(form).find(self.inputTag).map(function () {
             var func = function () {
                 self.checkInput(this);
@@ -707,28 +620,15 @@ define(['jquery'], function () {
                 }
             }
         });
-
+        // 表单提交事情监听
         $(form).bind("submit", function (event) {
-            var elements = $(this).find(self.inputTag);
-            if (self.isAllpass(elements, params) && params.validate() && $.isFunction(callback)) {
-                var data = $(form).serialize();
-                callback.call(this, data);
+            if (self.isAllpass($(this).find(self.inputTag), params) && typeof callback === 'function') {
+                callback.call(this, $(form).serialize());
             }
-            event.preventDefault();
-            return false;
+            return event.preventDefault(), false;
         });
+        // 表单对象绑定
         return $(form).data('validate', this);
-    };
-
-    /**
-     * 注册对象到Jq
-     * @param form
-     * @param callback
-     * @param options
-     * @return {$|Function|Zepto}
-     */
-    $.validate = function (form, callback, options) {
-        return (new validate()).check(form, callback, options);
     };
 
     /**
@@ -742,31 +642,163 @@ define(['jquery'], function () {
     };
 
     /**
-     * 自动监听规则内表单
+     * 注册对象到Jq
+     * @param form
+     * @param callback
+     * @param options
+     * @return {$|Function|Zepto}
      */
+    $.validate = function (form, callback, options) {
+        return (new validate()).check(form, callback, options);
+    };
+
+    /*! 自动监听规则内表单 */
     $.validate.listen = function () {
         $('form[data-auto]').map(function () {
-            if ($(this).attr('data-listen') === 'true') {
-                return;
+            if ($(this).attr('data-listen') !== 'true') {
+                // 表单监听初始化
+                var callback = $(this).attr('data-callback');
+                $(this).attr('data-listen', 'true').validate(function (data) {
+                    $.form.load(this.getAttribute('action') || window.location.href,
+                            data,
+                            this.getAttribute('method') || 'POST',
+                            window[callback || '_default_callback'] || undefined,
+                            true,
+                            this.getAttribute('data-tips') || undefined,
+                            this.getAttribute('data-time') || undefined);
+                });
+                // 表单监听初始完成后的处理
+                $(this).find('[data-form-loaded]').map(function () {
+                    $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
+                    $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
+                });
             }
-            var callback = $(this).attr('data-callback');
-            $(this).attr('data-listen', "true").validate(function (data) {
-                $.form.load(this.getAttribute('action') || window.location.href, data,
-                        this.getAttribute('method') || 'POST',
-                        window[callback || '_default_callback'] || undefined, true,
-                        this.getAttribute('data-tips') || undefined,
-                        this.getAttribute('data-time') || undefined);
-            });
-            $(this).find('[data-form-loaded]').map(function () {
-                $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
-                $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
-            });
         });
     };
 
     /**
-     * 表单监听初始化
+     * 后台菜单辅助插件
+     * @returns {plugsL#14.menu}
      */
+    var menu = function () {
+        this.version = '1.0';
+    };
 
-    ($.form && typeof $.form.load === 'function') && $.validate.listen.call(this);
+    /*! 计算URL地址中有效的URI */
+    menu.prototype.getUri = function (uri) {
+        uri = uri || window.location.href;
+        uri = (uri.indexOf(window.location.host) !== -1 ? uri.split(window.location.host)[1] : uri).split('?')[0];
+        return (uri.indexOf('#') !== -1 ? uri.split('#')[1] : uri);
+    };
+
+    /*! 通过URI查询最有可能的菜单NODE */
+    menu.prototype.queryNode = function (url) {
+        var $menu = $('[data-menu-node][data-open*="_URL_"]'.replace('_URL_', url.replace(/\.html$/ig, '')));
+        if ($menu.size()) {
+            return $menu.get(0).getAttribute('data-menu-node');
+        }
+        return /^m\-/.test(node = location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1')) ? node : '';
+    };
+
+    /*!　URL转URI */
+    menu.prototype.parseUri = function (uri, obj) {
+        var params = {};
+        if (uri.indexOf('?') !== -1) {
+            var queryParams = uri.split('?')[1].split('&');
+            for (var i in queryParams) {
+                if (queryParams[i].indexOf('=') !== -1) {
+                    var hash = queryParams[i].split('=');
+                    try {
+                        params[hash[0]] = window.decodeURIComponent(window.decodeURIComponent(hash[1].replace(/%2B/ig, ' ')));
+                    } catch (e) {
+                        console.log([e, uri, queryParams, hash]);
+                    }
+                }
+            }
+        }
+        uri = this.getUri(uri);
+        params.spm = obj && obj.getAttribute('data-menu-node') || this.queryNode(uri);
+        if (!params.token) {
+            var token = window.location.href.replace(/.*token=(\w+).*/ig, '$1');
+            (/^\w{16}$/.test(token)) && (params.token = token);
+        }
+        delete params[""];
+        var query = '?' + $.param(params);
+        return uri + (query !== '?' ? query : '');
+    };
+
+    /*! 后台菜单动作初始化 */
+    menu.prototype.listen = function () {
+        /*! 左侧菜单状态切换 */
+        $('ul.sidebar-trans .nav-item a').on('click', function () {
+            $(this).parents('.sidebar-nav.main-nav').addClass('open').find('ul.sidebar-trans').show();
+            $('.sidebar-trans .nav-item').not($(this).parent().addClass('active')).removeClass('active');
+        });
+        $('body').on('click', '.framework-sidebar-full .sidebar-title', function () {
+            var $trans = $(this).next('ul.sidebar-trans'), node = $trans.attr('data-menu-node') || false;
+            node && $.cookie(node, $(this).parent().toggleClass('open').hasClass('open') ? 2 : 1);
+            $(this).parent().hasClass('open') ? $trans.show() : $trans.hide();
+        });
+        $('ul.sidebar-trans').map(function () {
+            var node = this.getAttribute('data-menu-node') || false;
+            node && (parseInt($.cookie(node) || 2) === 2) && $(this).show().parent().addClass('open');
+        });
+
+        /*! Mini 菜单模式 Tips 显示*/
+        $('body').on('mouseenter mouseleave', '.framework-sidebar-mini .sidebar-trans .nav-item,.framework-sidebar-mini .sidebar-title', function (e) {
+            $(this).tooltip({
+                template: '<div class="console-sidebar-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+                title: $(this).text(), placement: 'right', container: 'body'
+            }).tooltip('show'), (e.type === 'mouseleave') && $(this).tooltip('destroy');
+        });
+
+        /*! 切换左侧菜单 */
+        var $menutarget = $('[data-menu-target]').on('click', function () {
+            $menutarget.not($(this).addClass('active')).removeClass('active');
+            var menuNode = $(this).attr('data-menu-target');
+            var $leftmenu = $('[data-menu-box=' + menuNode + ']').removeClass('hide');
+            $("[data-menu-box]").not($leftmenu).addClass('hide');
+            $leftmenu.find('[data-open]:first').trigger('click')
+        });
+
+        /*! 左侧菜单样式切换 */
+        var $targetmenu = $('.sidebar-fold').on('click', function () {
+            var $body = $('.framework-body').toggleClass('framework-sidebar-mini framework-sidebar-full');
+            $.cookie('menu-style', $body.hasClass('framework-sidebar-mini') ? 'mini' : 'full');
+        });
+        ($.cookie('menu-style') !== 'mini') && $targetmenu.trigger('click');
+
+        /*! URI路由处理 */
+        window.onhashchange = function () {
+            var hash = (window.location.hash || '').substring(1), node = hash.replace(/.*spm=([\d\-m]+).*/ig, "$1");
+            if (!/^m\-[\d\-]+$/.test(node)) {
+                node = $.menu.queryNode($.menu.getUri()) || '';
+            }
+            if (hash.length < 1 || node.length < 1) {
+                return $('.topbar-home-link:first').trigger('click');
+            }
+            /* 顶部菜单选中处理 */
+            var parentNode = [node.split('-')[0], node.split('-')[1]].join('-');
+            $('[data-menu-target]').not($('[data-menu-target="' + parentNode + '"]').addClass('active')).removeClass('active');
+            /* 左则菜单处理 */
+            var $menu = $('[data-menu-node="' + node + '"]').eq(0);
+            if ($menu.size() > 0) {
+                $('.framework-container').addClass('framework-sidebar-full');
+                var $li = $menu.parent('li').addClass('active');
+                $li.parents('.framework-sidebar').find('li.active').not($li).removeClass('active');
+                $menu.parents('.sidebar-trans').removeClass('hide').show();
+                $menu.parents('.main-nav').addClass('open');
+                $menu.parents('[data-menu-box]').removeClass('hide').siblings('[data-menu-box]').addClass('hide');
+            } else {
+                $('.framework-container').removeClass('framework-sidebar-full');
+            }
+            $.form.open(hash);
+        };
+        // URI初始化动作
+        window.onhashchange.call(this);
+    };
+
+    /*! 实例并加载到jQ对象上 */
+    $.menu = new menu();
+
 });
