@@ -5,11 +5,10 @@ Think.Admin
 
 项目安装请参考`ThinkPHP`官方文档及下面的服务环境说明，数据库`sql`文件存放于项目根目录下。
 
-**注意：项目测试请自己搭建环境及数据库（数据库修改`application/database.php`配置文件）, 切勿直接使用测试环境数据！**
+注意：项目测试请另行搭建环境并创建数据库（数据库配置`application/database.php`）, 切勿直接使用测试环境数据！
 
-
-**`Think.Admin`及`微信开发`技术交流QQ群**
-![http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a](http://pub.idqqimg.com/wpa/images/group.png)
+`Think.Admin`及`微信开发`技术交流QQ群
+[![QQ群](http://pub.idqqimg.com/wpa/images/group.png "QQ群")](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a)
 
 `Think.Admin`已集成模块
 ---
