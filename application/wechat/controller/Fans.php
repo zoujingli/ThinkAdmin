@@ -52,6 +52,29 @@ class Fans extends BasicAdmin {
     }
 
     /**
+     * 列表数据处理
+     * @param type $list
+     */
+    protected function _data_filter(&$list) {
+        $tags = Db::name('WechatFansTags')->column('id,name');
+        foreach ($list as &$vo) {
+            $vo['tags_list'] = [];
+            foreach (explode(',', $vo['tagid_list']) as $tag) {
+                if ($tag !== '' && isset($tags[$tag])) {
+                    $vo['tags_list'][$tag] = $tags[$tag];
+                } elseif ($tag !== '') {
+                    $vo['tags_list'][$tag] = $tag;
+                }
+            }
+        }
+        $this->assign('alert', [
+            'type'    => 'success',
+            'title'   => '开发中',
+            'content' => '请稍候...'
+        ]);
+    }
+
+    /**
      * 黑名单列表
      */
     public function back() {

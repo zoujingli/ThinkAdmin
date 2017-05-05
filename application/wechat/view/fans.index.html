@@ -80,8 +80,9 @@
                     <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
                 </th>
                 <th class='text-left'>用户昵称</th>
-                <th class='text-center'>性别</th>
-                <th class='text-center'>区域</th>
+                <th class='text-left'>性别</th>
+                <th class='text-center'>标签</th>
+                <th class='text-left'>区域</th>
                 <th class='text-center'>关注时间</th>
             </tr>
         </thead>
@@ -95,8 +96,33 @@
                     <img style="width:25px;height:25px;border-radius:50%;margin-right:10px" data-tips-image src="{$vo.headimgurl}"/>
                     {$vo.nickname|default="<span style='color:#999'>未设置微信昵称</span>"}
                 </td>
-                <td class='text-center'>{$vo.sex==1?'男':($vo.sex==2?'女':'未知')}</td>
-                <td class='text-center'>{$vo.country|default='<span style="color:#999">未设置区域信息</span>'}{$vo.province}{$vo.city}</td>
+                <td class='text-left'>{$vo.sex==1?'男':($vo.sex==2?'女':'未知')}</td>
+                <td>
+                    {if count($vo.tags_list) < 3}
+                    <span>
+                        <a data-add-tag='{$vo.id}' data-used-ids='{:join(",",array_keys($vo.tags_list))}' data-tips-text='添加标签'
+                           href='javascript:void(0)' style='font-size:12px;font-weight:400;border-radius:50%' class='label label-default'>+</a>
+                    </span>
+                    {else}
+                    <span>
+                        <a  data-tips-text='最多添加三个标签' href='javascript:void(0)' 
+                            style='font-size:12px;font-weight:400;border-radius:50%;background:#ccc' class='label label-default'>+</a>
+                    </span>
+                    {/if}
+
+                    {if empty($vo.tags_list)}
+                    <span style='color:#999'>尚未设置标签</span>
+                    {else}
+                    {foreach $vo.tags_list as $k=>$tag}
+                    <span>
+                        <a href='javascript:void(0)' style='font-size:12px;font-weight:400' class='label label-default'
+                           data-remove-tag='{$vo.id}' data-tag-id='{$k}' data-tips-text='移除' >{$tag}</a>
+                    </span>
+                    {/foreach}
+                    {/if}
+
+                </td>
+                <td class='text-left'>{$vo.country|default='<span style="color:#999">未设置区域信息</span>'}{$vo.province}{$vo.city}</td>
                 <td class='text-center'>{$vo.subscribe_at}</td>
             </tr>
             {/foreach}
