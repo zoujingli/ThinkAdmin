@@ -54,13 +54,19 @@
                 </td>
                 <td class='text-center'>{$vo.id|default='0'}</td>
                 <td class='text-center'>{$vo.name|default=''}</td>
-                <td class='text-center'>{$vo.id<100 ? "系统标签" : "自定义标签"}</td>
+                <td class='text-center'>{$vo.id < 100 ? "系统标签" : "自定义标签"}</td>
                 <td class='text-center'>{$vo.count|default=''}</td>
                 <td class='text-center nowrap'>
+
                     {if auth("$classuri/edit")}
+                    {if $vo.id >= 100}
                     <span class="text-explode">|</span>
                     <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' data-title="编辑标签" href="javascript:void(0)">编辑</a>
+                    {else}
+                    <a href="javascript:void(0)" style="color:#999">编辑</a>
                     {/if}
+                    {/if}
+
                     {if auth("$classuri/del")}
                     <span class="text-explode">|</span>
                     {if $vo.id >= 100}
@@ -69,6 +75,7 @@
                     <a href="javascript:void(0)" style="color:#999">删除</a>
                     {/if}
                     {/if}
+
                 </td>
             </tr>
             {/foreach}

@@ -41,8 +41,8 @@ class Tags extends BasicAdmin {
      */
     public function index() {
         $this->title = '微信粉丝标签管理';
-        $db = Db::name($this->table)->order('id asc');
         $get = $this->request->get();
+        $db = Db::name($this->table)->order('id asc');
         foreach (['name'] as $key) {
             if (isset($get[$key]) && $get[$key] !== '') {
                 $db->where($key, 'like', "%{$get[$key]}%");
