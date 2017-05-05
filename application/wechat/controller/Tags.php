@@ -66,8 +66,8 @@ class Tags extends BasicAdmin {
             $this->error("添加粉丝标签失败. {$wechat->errMsg}[{$wechat->errCode}]");
         }
         $result['tag']['count'] = 0;
-        DataService::save($this->table, $result['tag'], 'id') && $this->success('添加粉丝标签成功！', '');
-        $this->error('粉丝标签添加失败，请稍候再试！');
+        DataService::save($this->table, $result['tag'], 'id') && $this->success('添加粉丝标签成功!', '');
+        $this->error('粉丝标签添加失败, 请稍候再试!');
     }
 
     /**
@@ -83,16 +83,16 @@ class Tags extends BasicAdmin {
         $info = Db::name($this->table)->where('name', $name)->find();
         if (!empty($info)) {
             if (intval($info['id']) === intval($id)) {
-                $this->error('粉丝标签名没有改变，无需修改！');
+                $this->error('粉丝标签名没有改变, 无需修改!');
             }
-            $this->error('标签已经存在，请使用其它名称再试！');
+            $this->error('标签已经存在, 使用其它名称再试!');
         }
         $wechat = &load_wechat('User');
         $data = ['id' => $id, 'name' => $name];
         if (false !== $wechat->updateTag($id, $name) && false !== DataService::save($this->table, $data, 'id')) {
             $this->success('编辑标签成功!', '');
         }
-        $this->error('编辑标签失败，请稍后再试！' . $wechat->errMsg);
+        $this->error('编辑标签失败, 请稍后再试!' . $wechat->errMsg);
     }
 
     /**
@@ -102,9 +102,9 @@ class Tags extends BasicAdmin {
         Db::name($this->table)->where('1=1')->delete();
         if (WechatService::syncFansTags()) {
             LogService::write('微信管理', '同步全部微信粉丝标签成功');
-            $this->success('同步获取所有粉丝标签成功！', '');
+            $this->success('同步获取所有粉丝标签成功!', '');
         }
-        $this->error('同步获取粉丝标签失败，请稍候再试！');
+        $this->error('同步获取粉丝标签失败, 请稍候再!');
     }
 
 }
