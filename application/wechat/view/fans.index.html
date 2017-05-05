@@ -100,6 +100,9 @@
                 <td class='text-center'>{$vo.subscribe_at}</td>
             </tr>
             {/foreach}
+            {if empty($list)}
+            <tr><td colspan="5" style="text-align:center">没 有 记 录 了 哦 !</td></tr>
+            {/if}
         </tbody>
     </table>
     {if isset($page)}<p>{$page}</p>{/if}

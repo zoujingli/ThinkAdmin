@@ -79,6 +79,9 @@
                 </td>
             </tr>
             {/foreach}
+            {if empty($list)}
+            <tr><td colspan="6" style="text-align:center">没 有 记 录 了 哦 !</td></tr>
+            {/if}
         </tbody>
     </table>
     {if isset($page)}<p>{$page}</p>{/if}
