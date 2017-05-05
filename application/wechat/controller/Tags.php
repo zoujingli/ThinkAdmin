@@ -60,13 +60,14 @@ class Tags extends BasicAdmin {
         }
         $name = $this->request->post('name', '');
         empty($name) && $this->error('粉丝标签名不能为空!');
-        if (Db::name($this->table)->where('name', $name)->count() > 0) {
-            $this->error('粉丝标签标签名已经存在，请使用其它标签名!');
+        (Db::name($this->table)->where('name', $name)->count() > 0) && $this->error('粉丝标签标签名已经存在, 请使用其它标签名!');
+        $wechat = & load_wechat('User');
+        if (false === ($result = $wechat->createTags($name)) && isset($result['tag'])) {
+            $this->error("添加粉丝标签失败. {$wechat->errMsg}[{$wechat->errCode}]");
         }
-        $result = DataService::save($this->table, ['name' => $name, 'count' => 0]);
-        empty($result) && $this->error('粉丝标签添加失败，请稍候再试！');
-        $info = Db::name($this->table)->where('name', $name)->find();
-        empty($info) && $this->error('粉丝标签添加失败，请稍候再试！');
+        $result['tag']['count'] = 0;
+        DataService::save($this->table, $result['tag'], 'id') && $this->success('添加粉丝标签成功！', '');
+        $this->error('粉丝标签添加失败，请稍候再试！');
     }
 
     /**
