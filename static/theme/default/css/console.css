@@ -10,8 +10,9 @@ html{overflow:auto;overflow-y:scroll !important}
 body{min-width:1024px;font-size:12px;line-height:24px;font-family:'微软雅黑',"Microsoft YaHei","Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Hiragino Sans GB",serif}
 a{color:#06C;cursor:pointer}
 a:hover{color:#039}
-label{font-size:100%;font-weight:500}
 input::-ms-clear{display:none}
+button{border-radius:0!important}
+label{font-size:100%;font-weight:500}
 
 /** 后台框架 */
 .framework-topbar{position:fixed;width:100%;height:50px;background:#09C;z-index:101}

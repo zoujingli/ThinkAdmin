@@ -42,7 +42,8 @@ class Fans extends BasicAdmin {
         $this->title = '微信粉丝管理';
         $db = Db::name($this->table)->where('is_back', '0')->order('id desc');
         $get = $this->request->get();
-        foreach (['nickname'] as $key) {
+        !empty($get['sex']) && $db->where('sex', $get['sex']);
+        foreach (['nickname', 'country', 'province', 'city'] as $key) {
             if (isset($get[$key]) && $get[$key] !== '') {
                 $db->where($key, 'like', "%{$get[$key]}%");
             }
@@ -57,7 +58,8 @@ class Fans extends BasicAdmin {
         $this->title = '微信粉丝黑名单管理';
         $db = Db::name($this->table)->where('is_back', '1')->order('id desc');
         $get = $this->request->get();
-        foreach (['nickname'] as $key) {
+        !empty($get['sex']) && $db->where('sex', $get['sex']);
+        foreach (['nickname', 'country', 'province', 'city'] as $key) {
             if (isset($get[$key]) && $get[$key] !== '') {
                 $db->where($key, 'like', "%{$get[$key]}%");
             }
