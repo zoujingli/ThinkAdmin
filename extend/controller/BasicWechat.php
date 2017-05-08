@@ -81,41 +81,37 @@ class BasicWechat extends Controller {
             $split = stripos($this->url, '?') === false ? '?' : '&';
             $wxoauth_url = "{$this->url}{$split}redirectcode=" . encode($this->url);
         }
-        $wechat = &load_wechat('Oauth');
         // 微信网页授权处理
+        $wechat = &load_wechat('Oauth');
         if (!$this->request->get('code', false)) {
             $this->redirect($wechat->getOauthRedirect($wxoauth_url, 'webOauth', 'snsapi_base'));
         }
         if (FALSE === ($result = $wechat->getOauthAccessToken()) || empty($result['openid'])) {
-            Log::error("微信网页授权失败，{$wechat->errMsg}[{$wechat->errCode}]");
-            exit("微信网页授权失败，{$wechat->errMsg}[{$wechat->errCode}]");
+            Log::error("微信网页授权失败, {$wechat->errMsg}[{$wechat->errCode}]");
+            exit("微信网页授权失败, {$wechat->errMsg}[{$wechat->errCode}]");
         }
         session('openid', $this->openid = $result['openid']);
-        !$fullMode && $this->redirect($redirect_url);
+        empty($fullMode) && $this->redirect($redirect_url);
         // 微信粉丝信息处理
         $this->fansinfo = WechatService::getFansInfo($this->openid);
-        if (empty($this->fansinfo['expires_in']) || $this->fansinfo['expires_in'] < time()) {
-            /* 使用普通授权，获取用户资料；未关注时重新使用高级授权 */
-            if ($result['scope'] === 'snsapi_base') {
+        if (empty($this->fansinfo['expires_in']) || intval($this->fansinfo['expires_in']) < time()) {
+            /* 使用普通授权, 获取用户资料; 未关注时重新使用高级授权 */
+            if ($result['scope'] === 'snsapi_base') :
                 $user = load_wechat('User')->getUserInfo($this->openid);
-                if (empty($user['subscribe'])) {
-                    $this->redirect($wechat->getOauthRedirect($wxoauth_url, 'webOauth', 'snsapi_userinfo'));
-                }
-            } /* 使用高级授权，获取用户资料 */
-            elseif ($result['scope'] === 'snsapi_userinfo') {
+                empty($user['subscribe']) && $this->redirect($wechat->getOauthRedirect($wxoauth_url, 'webOauth', 'snsapi_userinfo'));
+            /* 使用高级授权, 获取完整用户资料 */
+            elseif ($result['scope'] === 'snsapi_userinfo') :
                 $user = $wechat->getOauthUserinfo($result['access_token'], $this->openid);
-            }
-            if ((empty($user) || !array_key_exists('nickname', $user))) {
-                Log::error("微信网页授权获取用户信息失败，{$wechat->errMsg}[{$wechat->errCode}]");
-                exit("微信网页授权获取用户信息失败，{$wechat->errMsg}[{$wechat->errCode}]");
-            }
-            /* 更新粉丝信息 */
+            endif;
+            /* 授权结果处理, 更新粉丝信息 */
+            if ((empty($user) || !array_key_exists('nickname', $user))) :
+                Log::error("微信网页授权获取用户信息失败, {$wechat->errMsg}[{$wechat->errCode}]");
+                exit("微信网页授权获取用户信息失败, {$wechat->errMsg}[{$wechat->errCode}]");
+            endif;
             $user['expires_in'] = $result['expires_in'] + time() - 100;
             $user['refresh_token'] = $result['refresh_token'];
             $user['access_token'] = $result['access_token'];
-            if (!WechatService::setFansInfo($user, $wechat->appid)) {
-                exit('微信网页授权获取用户信息保存失败');
-            }
+            WechatService::setFansInfo($user, $wechat->appid) or exit('微信网页授权用户保存失败!');
         }
         $this->redirect($redirect_url);
     }

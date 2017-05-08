@@ -96,11 +96,11 @@ class BasicApi {
         list($module, $controller, $action, $method) = explode('/', $this->request->path() . '///');
         if (!empty($module) && !empty($controller) && !empty($action) && !empty($method)) {
             $action = ucfirst($action);
-            $Api = "app\\{$module}\\{$controller}\\{$action}Api";
+            $Api = config('app_namespace') . "\\{$module}\\{$controller}\\{$action}Api";
             if (method_exists($Api, $method)) {
                 return $Api::$method($this);
             }
-            return $this->response('访问的接口不存在！', 'NOT_FOUND');
+            return $this->response('访问的接口不存在！', 'API_NOT_FOUND');
         }
         return $this->response('不符合标准的接口！', 'API_ERROR');
     }
