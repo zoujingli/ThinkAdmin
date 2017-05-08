@@ -260,20 +260,20 @@
     },
     {
         "name": "topthink/think-mongo",
-        "version": "v1.6",
-        "version_normalized": "1.6.0.0",
+        "version": "v1.7",
+        "version_normalized": "1.7.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-mongo.git",
-            "reference": "1c6d29f58bd7caa8da088c167b4e65ddac621588"
+            "reference": "fc552c8fe5798679a52f4f0d7e60763f64aeb155"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-mongo/1c6d29f58bd7caa8da088c167b4e65ddac621588.zip",
-            "reference": "1c6d29f58bd7caa8da088c167b4e65ddac621588",
+            "url": "https://files.phpcomposer.com/files/top-think/think-mongo/fc552c8fe5798679a52f4f0d7e60763f64aeb155.zip",
+            "reference": "fc552c8fe5798679a52f4f0d7e60763f64aeb155",
             "shasum": ""
         },
-        "time": "2017-02-13 07:17:51",
+        "time": "2017-05-05 07:52:33",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
