@@ -15,10 +15,9 @@
 namespace service;
 
 use Endroid\QrCode\QrCode;
-use think\Db;
-use think\Log;
 use Wechat\WechatPay;
-
+use think\Log;
+use think\Db;
 
 /**
  * 支付数据服务
@@ -63,7 +62,6 @@ class PayService {
         }
         return FileService::getFileUrl($filename, 'local');
     }
-
 
     /**
      * 创建微信JSAPI支付签名包

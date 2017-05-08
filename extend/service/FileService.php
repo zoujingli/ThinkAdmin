@@ -15,11 +15,11 @@
 namespace service;
 
 use Exception;
+use think\Log;
+use think\Config;
 use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\UploadManager;
-use think\Config;
-use think\Log;
 
 /**
  * 系统文件服务
@@ -31,21 +31,20 @@ use think\Log;
 class FileService {
 
     /**
-     * 获取文件MINE信息
-     * @param string $exts
+     * 根据文件后缀获取文件MINE
+     * @param array $exts 文件后缀
+     * @param array $mine 文件后缀MINE信息
      * @return string
      */
-    static public function getFileMine($exts) {
-        $_exts = is_string($exts) ? explode(',', $exts) : $exts;
-        $_mines = [];
+    public static function getFileMine($exts, $mine = []) {
         $mines = Config::get('mines');
-        foreach ($_exts as $_e) {
+        foreach (is_string($exts) ? explode(',', $exts) : $exts as $_e) {
             if (isset($mines[strtolower($_e)])) {
                 $_exinfo = $mines[strtolower($_e)];
-                $_mines[] = is_array($_exinfo) ? join(',', $_exinfo) : $_exinfo;
+                $mine[] = is_array($_exinfo) ? join(',', $_exinfo) : $_exinfo;
             }
         }
-        return join(',', $_mines);
+        return join(',', $mine);
     }
 
     /**
@@ -54,7 +53,7 @@ class FileService {
      * @param string|null $storage
      * @return bool|string
      */
-    static public function getFileUrl($filename, $storage = null) {
+    public static function getFileUrl($filename, $storage = null) {
         if (self::hasFile($filename, $storage) === false) {
             return false;
         }
@@ -112,7 +111,7 @@ class FileService {
      * 获取服务器URL前缀
      * @return string
      */
-    static public function getBaseUriLocal() {
+    public static function getBaseUriLocal() {
         $request = request();
         $base = $request->root();
         $root = strpos($base, '.') ? ltrim(dirname($base), DS) : $base;
@@ -126,7 +125,7 @@ class FileService {
      * 获取七牛云URL前缀
      * @return string
      */
-    static public function getBaseUriQiniu() {
+    public static function getBaseUriQiniu() {
         return (sysconf('storage_qiniu_is_https') ? 'https' : 'http') . '://' . sysconf('storage_qiniu_domain') . '/';
     }
 
@@ -136,7 +135,7 @@ class FileService {
      * @param string|null $storage
      * @return bool
      */
-    static public function hasFile($filename, $storage = null) {
+    public static function hasFile($filename, $storage = null) {
         switch (empty($storage) ? sysconf('storage_type') : $storage) {
             case 'local':
                 return file_exists(ROOT_PATH . 'static/upload/' . $filename);
@@ -155,7 +154,7 @@ class FileService {
      * @param string|null $storage
      * @return string|null
      */
-    static public function readFile($filename, $storage = null) {
+    public static function readFile($filename, $storage = null) {
         switch (empty($storage) ? sysconf('storage_type') : $storage) {
             case 'local':
                 $filepath = ROOT_PATH . 'static/upload/' . $filename;
@@ -177,7 +176,7 @@ class FileService {
      * @param string|null $file_storage
      * @return array|false
      */
-    static public function save($filename, $bodycontent, $file_storage = null) {
+    public static function save($filename, $bodycontent, $file_storage = null) {
         $type = empty($file_storage) ? sysconf('storage_type') : $file_storage;
         if (!method_exists(__CLASS__, $type)) {
             Log::error("保存存储失败，调用{$type}存储引擎不存在！");
@@ -192,9 +191,9 @@ class FileService {
      * @param string $bodycontent
      * @return string
      */
-    static public function local($filename, $bodycontent) {
-        $filepath = ROOT_PATH . 'static/upload/' . $filename;
+    public static function local($filename, $bodycontent) {
         try {
+            $filepath = ROOT_PATH . 'static/upload/' . $filename;
             !file_exists(dirname($filepath)) && mkdir(dirname($filepath), '0755', true);
             if (file_put_contents($filepath, $bodycontent)) {
                 return [
@@ -216,7 +215,7 @@ class FileService {
      * @param string $bodycontent
      * @return string
      */
-    static public function qiniu($filename, $bodycontent) {
+    public static function qiniu($filename, $bodycontent) {
         $auth = new Auth(sysconf('storage_qiniu_access_key'), sysconf('storage_qiniu_secret_key'));
         $token = $auth->uploadToken(sysconf('storage_qiniu_bucket'));
         $uploadMgr = new UploadManager();
