@@ -6,7 +6,7 @@
                 <!--{foreach $menus as $menu}-->
                 <!--{eq name='menu.id' value='$vo.pid|default=0'}-->
                 <option selected  value='{$menu.id}'>{$menu.spl}{$menu.title}</option>
-                <!--{else/}-->
+                <!--{else}-->
                 <option  value='{$menu.id}'>{$menu.spl}{$menu.title}</option>
                 <!--{/eq}-->
                 <!--{/foreach}-->
@@ -44,7 +44,6 @@
     <script>
         require(['bootstrap.typeahead'], function () {
             var subjects = JSON.parse('{$nodes|json_encode}');
-            $('.typeahead').typeahead({source: subjects, items: 5});
-        });
+            $('.typeahead').typeahead({source: subjects, items: 5});});
     </script>
 </form>

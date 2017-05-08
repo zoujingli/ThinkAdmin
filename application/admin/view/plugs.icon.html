@@ -9,11 +9,11 @@
         <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <script src="__PUBLIC__/static/plugs/jquery/jquery.min.js" type="text/javascript"></script>
         <style>
-            .bs-glyphicons-list { padding-left: 0; list-style: none }
-            .bs-glyphicons li { float: left; width: 20%; padding: 10px; font-size: 10px; line-height: 1.4; text-align: center; background-color: #f9f9f9; border: 1px solid #fff;cursor: pointer }
-            .bs-glyphicons .glyphicon, .bs-glyphicons .fa { margin-top: 5px; margin-bottom: 10px; font-size: 24px; }
-            .bs-glyphicons .glyphicon-class { display: block; text-align: center; white-space: nowrap; overflow: hidden; }
-            .bs-glyphicons li:hover { color: #fff; background-color: #563d7c }
+            .bs-glyphicons-list { padding-left: 0; list-style: none}
+            .bs-glyphicons li { float: left; width: 20%; padding: 10px; font-size: 10px; line-height: 1.4; text-align: center; background-color: #f9f9f9; border: 1px solid #fff;cursor: pointer}
+            .bs-glyphicons .glyphicon, .bs-glyphicons .fa { margin-top: 5px; margin-bottom: 10px; font-size: 24px;}
+            .bs-glyphicons .glyphicon-class { display: block; text-align: center; white-space: nowrap; overflow: hidden;}
+            .bs-glyphicons li:hover { color: #fff; background-color: #563d7c}
         </style>
     </head>
     <body>
@@ -1908,23 +1908,16 @@
                     /* global top */
                     if (document.all) {
                         document.onselectstart = function () {
-                            return false;
-                        };
-                    } else {
+                            return false;};} else {
                         document.onmouseup = document.onmousedown = function () {
-                            return false;
-                        };
-                    }
+                            return false;};}
                     document.onselectstart = new Function('event.returnValue=false;');
                     $('li').on('click', function () {
                         var className = $(this).find('span.glyphicon,span.fa').get(0).className;
                         if (className) {
                             top.$('[name="{$field}"]').val(className).trigger('change');
                             var index = top.layer.getFrameIndex(window.name);
-                            top.layer.close(index);
-                        }
-                    });
-                });
+                            top.layer.close(index);}});});
             </script>
         </div>
     </body>

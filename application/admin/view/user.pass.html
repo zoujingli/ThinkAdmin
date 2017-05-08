@@ -5,7 +5,7 @@
         <div class="layui-input-block">
             {if $vo and $vo.username}
             <input type="text" readonly="" disabled="" name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input disabled">
-            {else/}
+            {else}
             <input type="text" name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input">
             {/if}
         </div>

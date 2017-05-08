@@ -1,4 +1,4 @@
-{extend name='extra@admin/content' /}
+{extend name='extra@admin/content'}
 
 {block name="button"}
 <div class="nowrap pull-right" style="margin-top:10px">
@@ -42,10 +42,8 @@
 <script>
 
     $('body').on('mouseenter', '.news_item', function () {
-        $(this).find('.news_tools').removeClass('hide');
-    }).on('mouseleave', '.news_item', function () {
-        $(this).find('.news_tools').addClass('hide');
-    });
+        $(this).find('.news_tools').removeClass('hide');}).on('mouseleave', '.news_item', function () {
+        $(this).find('.news_tools').addClass('hide');});
 
     require(['jquery.masonry'], function (Masonry) {
         var container = document.querySelector('#news_box');
@@ -58,13 +56,8 @@
                     if (ret.code) {
                         $(self).parents('.news_item').remove();
                         msnry.layout();
-                        return $.msg.success(ret.msg), false;
-                    }
-                    return $.msg.error(ret.msg), false;
-                });
-            });
-        });
-    });
+                        return $.msg.success(ret.msg), false;}
+                    return $.msg.error(ret.msg), false;});});});});
 
 </script>
 {/block}

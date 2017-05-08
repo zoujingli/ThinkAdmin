@@ -27,7 +27,7 @@
             <script id="push" type="text/template">
                 {{if data}}
                 {{each data as value key}}
-                {{if key <= 200 }}
+                {{if key <= 200}}
                 <label>{{value}}</label>
                 {{/if}}
                 {{/each}}
@@ -46,40 +46,30 @@
                         var check_status = check_checked();
                         /*重置和全选数据变化处理*/
                         $('input[name*=fans_tags]').map(function () {
-                            this.checked = !check_status;
-                        });
+                            this.checked = !check_status;});
                         check_checked();
-                        postpush();
-                    });
+                        postpush();});
                     /*重置和全选的效果处理*/
                     function check_checked() {
                         var allcheck = true;
                         $('input[name*=fans_tags]').map(function () {
-                            (!this.checked) && (allcheck = false);
-                        });
-                        return ((allcheck) ? $allbtn.html('重置') : $allbtn.html('全选')), allcheck;
-                    }
+                            (!this.checked) && (allcheck = false);});
+                        return ((allcheck) ? $allbtn.html('重置') : $allbtn.html('全选')), allcheck;}
 
                     /*点击每一个选项都触发事件*/
                     $('input[name*=fans_tags]').on('click', function () {
                         check_checked();
-                        postpush();
-                    });
+                        postpush();});
                     /*数据异步获取并显示出来*/
                     function postpush() {
                         var inp = $('input[name*=fans_tags]');
                         var group = [];
                         for (var i = 0; i < inp.length; i++) {
                             if (inp[i].checked === true) {
-                                group.push(inp[i].value);
-                            }
-                        }
+                                group.push(inp[i].value);}}
                         $.post("{:url('wechat/news/push')}?action=getuser", {group: group.join(',')}, function (ret) {
                             var html = template('push', ret);
-                            document.getElementById('push-tags').innerHTML = html;
-                        });
-                    }
-                });
+                            document.getElementById('push-tags').innerHTML = html;});}});
             </script>
         </div>
         <div id='push-tags' class="list-item"></div>
@@ -94,18 +84,18 @@
 </form>
 
 <style>
-    body { min-width: 500px }
+    body { min-width: 500px}
     #push-tags{height:300px;overflow:auto}
-    .bottom-btn { display: block; background: #F7F7F7; padding: 10px; position: absolute; position: fixed; bottom: 0; width: 100% }
-    .news-container { width: 200px; padding-right: 8px }
-    .list-container { width: 578px; padding-right: 8px; padding-left: 0 }
-    .list-container h5 a { font-size: 12px; float: right }
-    .list-container .list-item { border: 1px solid #eee; padding: 8px }
-    .list-container .list-item:after { content: ''; display: block; clear: both; width: 100% }
-    .list-container .list-item label { display: block; width: 25%; float: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
-    .news-container .news-box { border: 1px solid #eee; padding: 8px }
-    .news-container .news-box hr { margin: 4px }
-    .news-container .news-box .news-item { position: relative; border: 1px solid #cecece; border-radius: 2px; overflow: hidden; cursor: pointer }
+    .bottom-btn { display: block; background: #F7F7F7; padding: 10px; position: absolute; position: fixed; bottom: 0; width: 100%}
+    .news-container { width: 200px; padding-right: 8px}
+    .list-container { width: 578px; padding-right: 8px; padding-left: 0}
+    .list-container h5 a { font-size: 12px; float: right}
+    .list-container .list-item { border: 1px solid #eee; padding: 8px}
+    .list-container .list-item:after { content: ''; display: block; clear: both; width: 100%}
+    .list-container .list-item label { display: block; width: 25%; float: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis}
+    .news-container .news-box { border: 1px solid #eee; padding: 8px}
+    .news-container .news-box hr { margin: 4px}
+    .news-container .news-box .news-item { position: relative; border: 1px solid #cecece; border-radius: 2px; overflow: hidden; cursor: pointer}
     .news-container .news-box .news-image {background-position:center center;background-size:100%;height:90px}
-    .news-container .news-box .news-title { position: absolute; background: rgba(0, 0, 0, 0.5); color: #fff; padding: 2px; margin: 0; bottom: 0; left: 0; right: 0; text-align: right; white-space: nowrap; text-overflow: ellipsis; overflow: hidden }
+    .news-container .news-box .news-title { position: absolute; background: rgba(0, 0, 0, 0.5); color: #fff; padding: 2px; margin: 0; bottom: 0; left: 0; right: 0; text-align: right; white-space: nowrap; text-overflow: ellipsis; overflow: hidden}
 </style>
