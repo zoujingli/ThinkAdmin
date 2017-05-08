@@ -94,11 +94,8 @@ class Fans extends BasicAdmin {
      * 设置黑名单
      */
     public function backadd() {
-        $ids = $this->request->post('id', '');
-        empty($ids) && $this->error('没有需要操作的数据!');
-        $openids = Db::name($this->table)->where('id', 'in', explode(',', $ids))->column('openid');
-        empty($openids) && $this->error('没有需要操作的数据!');
         $wechat = & load_wechat('User');
+        $openids = $this->_getActionOpenids();
         if (false !== $wechat->addBacklist($openids)) {
             Db::name($this->table)->where('openid', 'in', $openids)->setField('is_back', '1');
             $this->success("已成功将 " . count($openids) . " 名粉丝移到黑名单!", '');
@@ -110,16 +107,53 @@ class Fans extends BasicAdmin {
      * 取消黑名
      */
     public function backdel() {
-        $ids = $this->request->post('id', '');
-        empty($ids) && $this->error('没有需要操作的数据!');
-        $openids = Db::name($this->table)->where('id', 'in', explode(',', $ids))->column('openid');
-        empty($openids) && $this->error('没有需要操作的数据!');
         $wechat = & load_wechat('User');
+        $openids = $this->_getActionOpenids();
         if (false !== $wechat->delBacklist($openids)) {
             Db::name($this->table)->where('openid', 'in', $openids)->setField('is_back', '0');
             $this->success("已成功将 " . count($openids) . " 名粉丝从黑名单中移除!", '');
         }
         $this->error("设备黑名单失败，请稍候再试！{$wechat->errMsg}[{$wechat->errCode}]");
+    }
+
+    /**
+     * 给粉丝增加标签
+     */
+    public function tagadd() {
+        $tagid = $this->request->post('tag_id', 0);
+        empty($tagid) && $this->error('没有可能操作的标签ID');
+        $openids = $this->_getActionOpenids();
+        $wechat = & load_wechat('User');
+        if (false !== $wechat->batchAddUserTag($tagid, $openids)) {
+            $this->success('设置粉丝标签成功!', '');
+        }
+        $this->error("设置粉丝标签失败, 请稍候再试! {$wechat->errMsg}[{$wechat->errCode}]");
+    }
+
+    /**
+     * 移除粉丝标签
+     */
+    public function tagdel() {
+        $tagid = $this->request->post('tag_id', 0);
+        empty($tagid) && $this->error('没有可能操作的标签ID');
+        $openids = $this->_getActionOpenids();
+        $wechat = & load_wechat('User');
+        if (false !== $wechat->batchDeleteUserTag($tagid, $openids)) {
+            $this->success('删除粉丝标签成功!', '');
+        }
+        $this->error("删除粉丝标签失败, 请稍候再试! {$wechat->errMsg}[{$wechat->errCode}]");
+    }
+
+    /**
+     * 获取当前操作用户openid数组
+     * @return array
+     */
+    private function _getActionOpenids() {
+        $ids = $this->request->post('id', '');
+        empty($ids) && $this->error('没有需要操作的数据!');
+        $openids = Db::name($this->table)->where('id', 'in', explode(',', $ids))->column('openid');
+        empty($openids) && $this->error('没有需要操作的数据!');
+        return $openids;
     }
 
     /**
