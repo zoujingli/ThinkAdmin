@@ -44,17 +44,13 @@ class NodeService {
 
     /**
      * 获取授权节点
-     * @staticvar array $nodes
      * @return array
      */
     public static function getAuthNode() {
-        static $nodes = [];
+        $nodes = cache('need_access_node');
         if (empty($nodes)) {
-            $nodes = cache('need_access_node');
-            if (empty($nodes)) {
-                $nodes = Db::name('SystemNode')->where('is_auth', '1')->column('node');
-                cache('need_access_node', $nodes);
-            }
+            $nodes = Db::name('SystemNode')->where('is_auth', '1')->column('node');
+            cache('need_access_node', $nodes);
         }
         return $nodes;
     }
