@@ -13,8 +13,8 @@
 // +----------------------------------------------------------------------
 
 
-use app\admin\model\NodeModel;
 use service\DataService;
+use service\NodeService;
 use Wechat\Loader;
 use think\Db;
 
@@ -82,7 +82,7 @@ function decode($string) {
  * @return bool
  */
 function auth($node) {
-    return NodeModel::checkAuthNode($node);
+    return NodeService::checkAuthNode($node);
 }
 
 /**

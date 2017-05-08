@@ -12,18 +12,18 @@
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
-namespace app\admin\model;
+namespace service;
 
 use think\Db;
 
 /**
  * 系统权限节点读取器
- * Class Node
- * @package app\admin\model
+ * Class NodeService
+ * @package extend
  * @author Anyon <zoujingli@qq.com>
- * @date 2017/03/14 18:12
+ * @date 2017/05/08 11:28
  */
-class NodeModel {
+class NodeService {
 
     /**
      * 应用用户权限节点
@@ -64,7 +64,7 @@ class NodeModel {
      * @param string $node 节点
      * @return bool
      */
-    public static function checkAuthNode($node) {
+    static public function checkAuthNode($node) {
         $auth_node = strtolower($node);
         if (session('user.username') === 'admin' || stripos($node, 'admin/index') === 0) {
             return true;
@@ -79,7 +79,7 @@ class NodeModel {
      * 获取系统代码节点
      * @return array
      */
-    static public function get() {
+    public static function get() {
         $alias = [];
         foreach (Db::name('SystemNode')->select() as $vo) {
             $alias["{$vo['node']}"] = $vo;
@@ -112,7 +112,7 @@ class NodeModel {
      * @param array $nodes 额外数据
      * @return array
      */
-    static public function getNodeTree($path, $nodes = []) {
+    public static function getNodeTree($path, $nodes = []) {
         foreach (self::_getFilePaths($path) as $vo) {
             if (!preg_match('|/(\w+)/controller/(\w+)|', str_replace(DS, '/', $vo), $matches) || count($matches) !== 3) {
                 continue;
@@ -137,7 +137,7 @@ class NodeModel {
      * @param string $ext 文件后缀
      * @return array
      */
-    static private function _getFilePaths($path, $data = [], $ext = 'php') {
+    private static function _getFilePaths($path, $data = [], $ext = 'php') {
         foreach (scandir($path) as $dir) {
             if ($dir[0] === '.') {
                 continue;

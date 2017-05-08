@@ -46,7 +46,6 @@ class Log extends BasicAdmin {
                 $db->where($key, 'like', "%{$get[$key]}%");
             }
         }
-
         parent::_list($db);
     }
 

@@ -14,9 +14,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\NodeModel;
 use controller\BasicAdmin;
 use service\DataService;
+use service\NodeService;
 use service\ToolsService;
 
 /**
@@ -45,7 +45,7 @@ class Node extends BasicAdmin {
         ];
         $this->assign('alert', $alert);
         $this->assign('title', '系统节点管理');
-        $this->assign('nodes', ToolsService::arr2table(NodeModel::get(), 'node', 'pnode'));
+        $this->assign('nodes', ToolsService::arr2table(NodeService::get(), 'node', 'pnode'));
         return view();
     }
 
