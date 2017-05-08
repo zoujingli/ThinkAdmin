@@ -100,13 +100,13 @@
                 <td>
                     {if count($vo.tags_list) < 3}
                     <span>
-                        <a data-add-tag='{$vo.id}' data-used-ids='{:join(",",array_keys($vo.tags_list))}' data-tips-text='添加标签'
-                           href='javascript:void(0)' style='font-size:12px;font-weight:400;border-radius:50%' class='label label-default'>+</a>
+                        <a data-add-tag='{$vo.id}' data-used-id='{:join(",",array_keys($vo.tags_list))}' data-tips-text='添加标签'
+                           href='javascript:void(0)' style='font-size:12px;font-weight:400;border-radius:50%;background:#9f9f9f' class='label label-default'>+</a>
                     </span>
                     {else}
                     <span>
-                        <a  data-tips-text='最多添加三个标签' href='javascript:void(0)' 
-                            style='font-size:12px;font-weight:400;border-radius:50%;background:#ccc' class='label label-default'>+</a>
+                        <a  data-tips-text='最多三个标签' href='javascript:void(0)' 
+                            style='font-size:12px;font-weight:400;border-radius:50%;background:#dfdfdf' class='label label-default'>+</a>
                     </span>
                     {/if}
 
@@ -115,7 +115,7 @@
                     {else}
                     {foreach $vo.tags_list as $k=>$tag}
                     <span>
-                        <a href='javascript:void(0)' style='font-size:12px;font-weight:400' class='label label-default'
+                        <a href='javascript:void(0)' style='font-size:12px;font-weight:400;background:#9f9f9f' class='label label-default'
                            data-remove-tag='{$vo.id}' data-tag-id='{$k}' data-tips-text='移除' >{$tag}</a>
                     </span>
                     {/foreach}
@@ -133,4 +133,15 @@
     </table>
     {if isset($page)}<p>{$page}</p>{/if}
 </form>
+{/block}
+
+{block name="script"}
+<script>
+    // 添加标签
+    $('body').on('click', '[data-add-tag]', function () {
+        var fans_id = this.getAttribute('data-add-tag');
+        var used_id = this.getAttribute('data-used-id');
+        alert(used_id);
+    });
+</script>
 {/block}
