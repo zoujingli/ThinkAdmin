@@ -55,10 +55,15 @@
     $(function () {
         $('input.title-input').on('blur', function () {
             $.form.load('{:url("save")}', {name: this.name, value: this.value}, 'POST', function (ret) {
-                return false;});});
+                return false;
+            });
+        });
         $('input.check-box').on('click', function () {
             $.form.load('{:url("save")}', {name: this.name, value: this.checked ? 1 : 0}, 'POST', function (ret) {
-                return false;});});});
+                return false;
+            });
+        });
+    });
 </script>
 {/if}
 {/block}

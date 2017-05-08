@@ -115,11 +115,13 @@
         var editDdata = {$vo.articles | default = [] | json_encode};
 
         for (var i in editDdata) {
-            $('.news-item').eq(i).data('item', editDdata[i]);}
+            $('.news-item').eq(i).data('item', editDdata[i]);
+        }
 
         $('body').on('change', '.upload-image-box input', function () {
             $('.news-item.active').css('background-image', 'url(' + this.value + ')');
-            $(this).parent('.upload-image-box').css('background-image', 'url(' + this.value + ')');});
+            $(this).parent('.upload-image-box').css('background-image', 'url(' + this.value + ')');
+        });
 
         require(['ueditor'], function () {
 
@@ -142,17 +144,22 @@
                     $form.submit();
                     if (!syncEditor($('.news-item.active'))) {
                         editor.setContent('文章内容不能留空，请输入内容！');
-                        return false;}
+                        return false;
+                    }
                     $('.news-item').map(function () {
                         var item = $(this).data('item');
                         item.content = item.content || '文章内容不能留空，请输入内容！';
-                        data.push(item);});
-                    $.form.load('__SELF__', {data: data}, "post");});
+                        data.push(item);
+                    });
+                    $.form.load('__SELF__', {data: data}, "post");
+                });
 
                 /*! 输入标题显示 */
                 $form.find('[name="title"]').on('keyup', function () {
                     if ($item) {
-                        $item.find('.news-title').html(this.value).show();}});
+                        $item.find('.news-title').html(this.value).show();
+                    }
+                });
 
                 /*! 同步编辑器 */
                 function syncEditor($pItem) {
@@ -169,8 +176,11 @@
                         if ($form.find('input.validate-error').size() > 0 || data.content.length < 1) {
                             ((data.content || '').length < 1) && editor.setContent('文章内容不能留空，请输入内容！');
                             $pItem.addClass('active').siblings().removeClass('active');
-                            return false;}}
-                    return true;}
+                            return false;
+                        }
+                    }
+                    return true;
+                }
 
                 /*! 显示编辑器 */
                 function showEditor() {
@@ -183,46 +193,60 @@
                         data.content = data.content || '';
                         data.author = data.author || '';
                         data.show_cover_pic = data.show_cover_pic || 0;
-                        return data;};
+                        return data;
+                    };
                     // 重置表单
                     $form.get(0).reset();
                     // 获取当前数据
                     var data = this.get();
                     for (var i in data) {
                         if (i !== 'content' && i !== 'show_cover_pic') {
-                            $form.find('[name="' + i + '"]').val(data[i]).trigger('change');}}
+                            $form.find('[name="' + i + '"]').val(data[i]).trigger('change');
+                        }
+                    }
                     if (parseInt(data.show_cover_pic) === 1) {
-                        $form.find('[name="show_cover_pic"]').get(0).checked = true;}
-                    editor.setContent(data.content);}
+                        $form.find('[name="show_cover_pic"]').get(0).checked = true;
+                    }
+                    editor.setContent(data.content);
+                }
 
                 /*! 添加新图文 */
                 $body.off('click', '.news-box .article-add').on('click', '.news-box .article-add', function () {
                     var $html = $('<div class="news-item transition" style="background-image:url(__PUBLIC__/static/plugs/uploader/theme/image.png)"><span class="news-title"></span></div><hr />');
                     $html.insertBefore(this).trigger('click');
-                    $('.news-item').size() >= 7 && $(this).hide();});
+                    $('.news-item').size() >= 7 && $(this).hide();
+                });
 
                 /*! 列表选择 */
                 $body.off('click', '.news-item').on('click', '.news-item', function () {
                     if (syncEditor($('.news-item.active'))) {
                         $(this).addClass('active').siblings().removeClass('active');
-                        showEditor($item);}});
+                        showEditor($item);
+                    }
+                });
 
                 /*! 隐藏删除按钮 */
                 $body.off('mouseleave').on('mouseleave', '.news-item', function () {
-                    $(this).find('.upload-multiple-close').addClass('hide');});
+                    $(this).find('.upload-multiple-close').addClass('hide');
+                });
 
                 /*! 显示删除按钮 */
                 $body.off('mouseenter', '.news-item').on('mouseenter', '.news-item', function () {
                     $('.upload-multiple-close').addClass('hide');
-                    $(this).find('.upload-multiple-close').removeClass('hide');});
+                    $(this).find('.upload-multiple-close').removeClass('hide');
+                });
 
                 /*! 删除操作图文 */
                 $body.off('click', '.upload-multiple-close').on('click', '.upload-multiple-close', function () {
                     $(this).parents('.news-item').remove();
-                    $('.news-item').size() < 7 && $('.news-box .article-add').show();});
+                    $('.news-item').size() < 7 && $('.news-box .article-add').show();
+                });
 
                 /*! 默认显示第一个 */
-                $('.news-box .news-item:first').trigger('click');});});});
+                $('.news-box .news-item:first').trigger('click');
+            });
+        });
+    });
 </script>
 {/block}
 

@@ -1908,16 +1908,23 @@
                     /* global top */
                     if (document.all) {
                         document.onselectstart = function () {
-                            return false;};} else {
+                            return false;
+                        };
+                    } else {
                         document.onmouseup = document.onmousedown = function () {
-                            return false;};}
+                            return false;
+                        };
+                    }
                     document.onselectstart = new Function('event.returnValue=false;');
                     $('li').on('click', function () {
                         var className = $(this).find('span.glyphicon,span.fa').get(0).className;
                         if (className) {
                             top.$('[name="{$field}"]').val(className).trigger('change');
                             var index = top.layer.getFrameIndex(window.name);
-                            top.layer.close(index);}});});
+                            top.layer.close(index);
+                        }
+                    });
+                });
             </script>
         </div>
     </body>

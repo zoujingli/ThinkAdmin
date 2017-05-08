@@ -3,8 +3,8 @@
 {block name="button"}
 <div class="nowrap pull-right" style="margin-top:10px">
     {if auth("$classuri/del")}
-    <button data-update data-field='delete' data-action='{:url("$classuri/del")}'
-            class='layui-btn layui-btn-small layui-btn-danger'><i class='fa fa-remove'></i> 删除日志
+    <button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-small layui-btn-danger'>
+        <i class='fa fa-remove'></i> 删除日志
     </button>
     {/if}
 </div>
@@ -39,8 +39,7 @@
 
         <div class="col-xs-3">
             <div class="form-group">
-                <input type="text" name="content" value="{$Think.get.content|default=''}" placeholder="操作内容"
-                       class="input-sm form-control">
+                <input type="text" name="content" value="{$Think.get.content|default=''}" placeholder="操作内容" class="input-sm form-control">
             </div>
         </div>
 

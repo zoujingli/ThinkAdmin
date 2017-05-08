@@ -16,25 +16,25 @@
     <div class='mobile-header'>公众号</div>
     <div class='mobile-body'></div>
     <ul class='mobile-footer'>
-        {foreach $list as $menu}
+        <!--{foreach $list as $menu}-->
         <li class="parent-menu">
             <a><i class="icon-sub hide"></i> <span data-type="{$menu.type}" data-content="{$menu.content}">{$menu.name}</span></a>
             <div class="sub-menu text-center hide">
                 <ul>
-                    {if empty($menu['sub']) eq false}
-                    {foreach $menu.sub as $submenu}
+                    <!--{if empty($menu['sub']) eq false}-->
+                    <!--{foreach $menu.sub as $submenu}-->
                     <li>
                         <a class="bottom-border"><span data-type="{$submenu.type}" data-content="{$submenu.content}">{$submenu.name}</span></a>
                     </li>
-                    {/foreach}
-                    {/if}
+                    <!--{/foreach}-->
+                    <!--{/if}-->
                     <li class="menu-add"><a><i class="icon-add"></i></a></li>
                 </ul>
                 <i class="arrow arrow_out"></i>
                 <i class="arrow arrow_in"></i>
             </div>
         </li>
-        {/foreach}
+        <!--{/foreach}-->
         <li class="parent-menu menu-add">
             <a><i class="icon-add"></i></a>
         </li>
@@ -121,7 +121,8 @@
         var menu = function () {
             this.version = '1.0';
             this.$btn;
-            this.listen();};
+            this.listen();
+        };
         /**
          * 控件默认事件
          * @returns {undefined}
@@ -130,12 +131,17 @@
             var self = this;
             $('.mobile-footer').on('click', 'li a', function () {
                 self.$btn = $(this);
-                self.$btn.parent('li').hasClass('menu-add') ? self.add() : self.checkShow();}).find('li:first a:first').trigger('click');
+                self.$btn.parent('li').hasClass('menu-add') ? self.add() : self.checkShow();
+            }).find('li:first a:first').trigger('click');
             $('.menu-delete').on('click', function () {
                 var index = $.msg.confirm('删除后菜单下设置的内容将被删除！', function () {
-                    self.del(), $.msg.close(index);});});
+                    self.del(), $.msg.close(index);
+                });
+            });
             $('.menu-submit').on('click', function () {
-                self.submit();});};
+                self.submit();
+            });
+        };
         /**
          * 添加一个菜单
          * @returns {undefined}
@@ -145,9 +151,12 @@
             if ($ul.hasClass('mobile-footer')) { /* 添加一级菜单 */
                 var $li = $('<li class="parent-menu"><a class="active"><i class="icon-sub hide"></i> <span>一级菜单</span></a></li>').insertBefore($add);
                 this.$btn = $li.find('a');
-                $('<div class="sub-menu text-center hide"><ul><li class="menu-add"><a><i class="icon-add"></i></a></li></ul><i class="arrow arrow_out"></i><i class="arrow arrow_in"></i></div>').appendTo($li);} else { /* 添加二级菜单 */
-                this.$btn = $('<li><a class="bottom-border"><span>二级菜单</span></a></li>').prependTo($ul).find('a');}
-            this.checkShow();};
+                $('<div class="sub-menu text-center hide"><ul><li class="menu-add"><a><i class="icon-add"></i></a></li></ul><i class="arrow arrow_out"></i><i class="arrow arrow_in"></i></div>').appendTo($li);
+            } else { /* 添加二级菜单 */
+                this.$btn = $('<li><a class="bottom-border"><span>二级菜单</span></a></li>').prependTo($ul).find('a');
+            }
+            this.checkShow();
+        };
         /**
          * 数据校验显示
          * @returns {unresolved}
@@ -156,7 +165,8 @@
             var $li = this.$btn.parent('li'), $ul = $li.parent('ul');
             /* 选中一级菜单时显示二级菜单 */
             if ($li.hasClass('parent-menu')) {
-                $('.parent-menu .sub-menu').not(this.$btn.parent('li').find('.sub-menu').removeClass('hide')).addClass('hide');}
+                $('.parent-menu .sub-menu').not(this.$btn.parent('li').find('.sub-menu').removeClass('hide')).addClass('hide');
+            }
 
             /* 一级菜单添加按钮 */
             var $add = $('li.parent-menu:last');
@@ -164,16 +174,19 @@
             /* 二级菜单添加按钮 */
             $add.siblings('li').map(function () {
                 var $add = $(this).find('ul li:last');
-                $add.siblings('li').size() >= 5 ? $add.addClass('hide') : $add.removeClass('hide');});
+                $add.siblings('li').size() >= 5 ? $add.addClass('hide') : $add.removeClass('hide');
+            });
             /* 处理一级菜单 */
             var parentWidth = 100 / $('li.parent-menu:visible').size() + '%';
             $('li.parent-menu').map(function () {
                 var $icon = $(this).find('.icon-sub');
-                $(this).width(parentWidth).find('ul li').size() > 1 ? $icon.removeClass('hide') : $icon.addClass('hide');});
+                $(this).width(parentWidth).find('ul li').size() > 1 ? $icon.removeClass('hide') : $icon.addClass('hide');
+            });
             /* 更新选择中状态 */
             $('.mobile-footer a.active').not(this.$btn.addClass('active')).removeClass('active');
             this.renderEdit();
-            return $ul;};
+            return $ul;
+        };
         /**
          * 删除当前菜单
          * @returns {undefined}
@@ -182,15 +195,20 @@
             var $li = this.$btn.parent('li'), $ul = $li.parent('ul');
             var $default = function () {
                 if ($li.prev('li').size() > 0) {
-                    return $li.prev('li');}
+                    return $li.prev('li');
+                }
                 if ($li.next('li').size() > 0 && !$li.next('li').hasClass('menu-add')) {
-                    return $li.next('li');}
+                    return $li.next('li');
+                }
                 if ($ul.parents('li.parent-menu').size() > 0) {
-                    return $ul.parents('li.parent-menu');}
-                return $('null');}.call(this);
+                    return $ul.parents('li.parent-menu');
+                }
+                return $('null');
+            }.call(this);
             $li.remove();
             this.$btn = $default.find('a:first');
-            this.checkShow();};
+            this.checkShow();
+        };
         /**
          * 显示当前菜单的属性值
          * @returns {undefined}
@@ -201,11 +219,14 @@
             if ($li.find('ul li').size() > 1) { /*父菜单*/
                 $html = $($('.menu-editor-parent-tpl').html());
                 $html.find('input[name="menu-name"]').val($span.text()).on('change keyup', function () {
-                    $span.text(this.value || ' ');});
-                $('.menu-editor .menu-content').html($html);} else {
+                    $span.text(this.value || ' ');
+                });
+                $('.menu-editor .menu-content').html($html);
+            } else {
                 $html = $($('.menu-editor-content-tpl').html());
                 $html.find('input[name="menu-name"]').val($span.text()).on('change keyup', function () {
-                    $span.text(this.value || ' ');});
+                    $span.text(this.value || ' ');
+                });
                 $('.menu-editor .menu-content').html($html);
                 var type = $span.attr('data-type') || 'text';
                 $html.find('input[name="menu-type"]').on('click', function () {
@@ -231,14 +252,22 @@
                                 var select = [], tpl = '<div><label class="font-noraml"><input class="cuci-radio" name="content" type="radio" {checked} value="{value}"> {title}</label></div>';
                                 if (!(options[content] || false)) {
                                     content = 'scancode_push';
-                                    $span.data('content', content);}
+                                    $span.data('content', content);
+                                }
                                 for (var i in options) {
-                                    select.push(tpl.replace('{value}', i).replace('{title}', options[i]).replace('{checked}', (i === content) ? 'checked' : ''));}
-                                return select.join('');}}.call(this);
+                                    select.push(tpl.replace('{value}', i).replace('{title}', options[i]).replace('{checked}', (i === content) ? 'checked' : ''));
+                                }
+                                return select.join('');
+                        }
+                    }.call(this);
                     var $html = $(html), $input = $html.find('input,textarea');
                     $input.on('change keyup click', function () {
-                        $span.data('content', $(this).val() || $(this).html());});
-                    $('.editor-content-input').html($html);}).filter('input[value="{type}"]'.replace('{type}', type)).trigger('click');}};
+                        $span.data('content', $(this).val() || $(this).html());
+                    });
+                    $('.editor-content-input').html($html);
+                }).filter('input[value="{type}"]'.replace('{type}', type)).trigger('click');
+            }
+        };
         /**
          * 提交数据
          * @returns {undefined}
@@ -251,7 +280,8 @@
                 menudata.name = $span.text();
                 menudata.type = $span.attr('data-type');
                 menudata.content = $span.data('content') || '';
-                return menudata;}
+                return menudata;
+            }
 
             $('li.parent-menu').map(function (index, item) {
                 if (!$(item).hasClass('menu-add')) {
@@ -266,11 +296,16 @@
                         submenudata.index = (index + 1) + '' + (ii + 1);
                         submenudata.pindex = menudata.index;
                         submenudata.sort = ii;
-                        data.push(submenudata);});}});
-            $.form.load('{:url("$classuri/edit")}', {data: data}, 'POST');};
+                        data.push(submenudata);
+                    });
+                }
+            });
+            $.form.load('{:url("$classuri/edit")}', {data: data}, 'POST');
+        };
         /**
          * 实例菜单控件
          */
-        new menu();});
+        new menu();
+    });
 </script>
 {/block}

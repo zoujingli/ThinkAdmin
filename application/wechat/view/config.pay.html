@@ -10,19 +10,17 @@
     .refund-qrc-test {
         text-align: center;
         padding: 8px}
-</style>
-{/block}
+    </style>
+    {/block}
 
-{block name="content"}
-<form onsubmit="return false;" action="__SELF__" data-auto="true" method="post"
-      class='form-horizontal' style='padding-top:20px'>
+    {block name="content"}
+    <form onsubmit="return false;" action="__SELF__" data-auto="true" method="post"
+          class='form-horizontal' style='padding-top:20px'>
 
     <div class="form-group">
         <label class="col-sm-2 control-label">MCH_ID <span class="nowrap">(商户ID)</span></label>
         <div class='col-sm-8'>
-            <input type='tel' placeholder="请输入10位商户MCH_ID（必填）" title='请输入10位数字商户MCH_ID'
-                   required="required" pattern="^\d{10}$" maxlength='10' name='wechat_mch_id'
-                   value='{:sysconf("wechat_mch_id")}' class='layui-input'/>
+            <input type='tel' placeholder="请输入10位商户MCH_ID（必填）" title='请输入10位数字商户MCH_ID' required="required" pattern="^\d{10}$" maxlength='10' name='wechat_mch_id' value='{:sysconf("wechat_mch_id")}' class='layui-input'/>
             <p class="help-block">
                 注意：商户ID必需与微信接口配置公众号APPID对应，否则无法使用支付功能！
             </p>
@@ -33,9 +31,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">PartnerKey <span class="nowrap">(商户密钥)</span></label>
         <div class='col-sm-8'>
-            <input type='password' placeholder="请输入32位商户支付密钥（必填）" required title='请输入32位商户支付密钥'
-                   pattern="^.{32}$" maxlength="32" name='wechat_partnerkey'
-                   value='{:sysconf("wechat_partnerkey")}' class='layui-input'/>
+            <input type='password' placeholder="请输入32位商户支付密钥（必填）" required title='请输入32位商户支付密钥' pattern="^.{32}$" maxlength="32" name='wechat_partnerkey' value='{:sysconf("wechat_partnerkey")}' class='layui-input'/>
             <p class="help-block">
                 微信支付商户密钥需要在商户平台配置，必需填写密钥之后才能正常使用微信支付功能。
             </p>
@@ -49,16 +45,14 @@
             <div class="nowrap">
                 <input title="apiclient_key.pem" type="hidden" name="wechat_cert_key_md5">
                 <input title="apiclient_cert.pem" type="hidden" name="wechat_cert_cert_md5">
-                <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5" data-uptype="local"
-                        type="button" class="layui-btn layui-btn-primary">
+                <button data-file="one" data-type="pem" data-field="wechat_cert_key_md5" data-uptype="local" type="button" class="layui-btn layui-btn-primary">
                     {if file_exists(sysconf('wechat_cert_key'))}
                     已上传 apiclient_key.pem
                     {else}
                     请上传 apiclient_key.pem
                     {/if}
                 </button>
-                <button data-file="one" data-type="pem" data-field="wechat_cert_cert_md5" data-uptype="local"
-                        type="button" class="layui-btn layui-btn-primary">
+                <button data-file="one" data-type="pem" data-field="wechat_cert_cert_md5" data-uptype="local" type="button" class="layui-btn layui-btn-primary">
                     {if file_exists(sysconf('wechat_cert_cert'))}
                     已上传 apiclient_cert.pem
                     {else}
@@ -91,7 +85,8 @@
         /*！ 证书上传动作 */
         $('[name="wechat_cert_key_md5"],[name="wechat_cert_cert_md5"]').on('change', function () {
             this.value = $(this).attr('data-md5');
-            $('[data-field="' + this.name + '"]').html('已选择 ' + this.title);});
+            $('[data-field="' + this.name + '"]').html('已选择 ' + this.title);
+        });
 
         var isShow = false;
         var timer = null;
@@ -102,22 +97,30 @@
                 if (ret.code === 1 || ret.code === 2) {
                     if (ret.code === 2) {
                         ret.url = '__PUBLIC__/static/theme/default/img/wechat/qrc_payed.jpg';
-                        timer && window.clearInterval(timer), timer = null;}
+                        timer && window.clearInterval(timer), timer = null;
+                    }
                     if (isShow) {
-                        $('.pay-qrc-test').attr('src', ret.url)} else {
+                        $('.pay-qrc-test').attr('src', ret.url)
+                    } else {
                         layer.open({
                             type: 1, title: false, closeBtn: 1, shadeClose: true,
                             content: '<img class="pay-qrc-test" src="' + ret.url + '"/>'
-                            + '<p style="text-align:center">请用微信扫码测试支付!</p>'
-                            + '<p class="refund-qrc-test"><a class="btn btn-xs btn-warning">退款测试</a></p>',
+                                    + '<p style="text-align:center">请用微信扫码测试支付!</p>'
+                                    + '<p class="refund-qrc-test"><a class="btn btn-xs btn-warning">退款测试</a></p>',
                             end: function () {
                                 timer && window.clearInterval(timer), timer = null;
-                                isShow = false;},
+                                isShow = false;
+                            },
                             success: function (layero, index) {
                                 isShow = true;
                                 layIndex = index;
-                                timer = setInterval(payTest, 3000);}});}}
-                return false;}, !isShow);}
+                                timer = setInterval(payTest, 3000);
+                            }});
+                    }
+                }
+                return false;
+            }, !isShow);
+        }
 
         $('[data-pay-test]').on('click', payTest);
 
@@ -127,7 +130,12 @@
                 if (ret.code === 1) {
                     timer && window.clearInterval(timer), timer = null;
                     return $.msg.success(ret.msg, 3, function () {
-                        layer.close(layIndex);}), false;}});});});
+                        layer.close(layIndex);
+                    }), false;
+                }
+            });
+        });
+    });
 
 </script>
 {/block}

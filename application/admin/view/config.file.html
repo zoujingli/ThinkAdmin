@@ -30,26 +30,31 @@
         <label class="col-sm-2 control-label">Region <span class="nowrap">(存储区域)</span></label>
         <div class='col-sm-8'>
             <select class="layui-input" name="storage_qiniu_region" required="required">
+
                 {if sysconf('storage_qiniu_region') eq '华东'}
                 <option selected value='华东'>华东</option>
                 {else}
                 <option value='华东'>华东</option>
                 {/if}
+
                 {if sysconf('storage_qiniu_region') eq '华北'}
                 <option selected value='华北'>华北</option>
                 {else}
                 <option value='华北'>华北</option>
                 {/if}
+
                 {if sysconf('storage_qiniu_region') eq '华南'}
                 <option selected value='华南'>华南</option>
                 {else}
                 <option value='华南'>华南</option>
                 {/if}
+
                 {if sysconf('storage_qiniu_region') eq '北美'}
                 <option selected value='北美'>北美</option>
                 {else}
                 <option value='北美'>北美</option>
                 {/if}
+
             </select>
             <p class="help-block">七牛云存储空间所在区域，需要严格对应储存所在区域才能上传文件</p>
         </div>
@@ -127,6 +132,8 @@
 <script>
     $(function () {
         $('[name="storage_type"]').on('change', function () {
-            $("[data-storage-type]").not($("[data-storage-type='" + $(this).val() + "']").show()).hide();}).trigger('change');});
+            $("[data-storage-type]").not($("[data-storage-type='" + $(this).val() + "']").show()).hide();
+        }).trigger('change');
+    });
 </script>
 {/block}

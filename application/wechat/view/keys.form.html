@@ -61,23 +61,23 @@
                         <div class="col-md-9">
                             <select name='type' class='layui-input'>
 
-                                {if !isset($vo.type) or $vo.type eq 'text'}
+                                <!--{if !isset($vo.type) or $vo.type eq 'text'}-->
                                 <option value='text' selected>文字</option>
-                                {else}
+                                <!--{else}-->
                                 <option value='text'>文字</option>
-                                {/if}
+                                <!--{/if}-->
 
-                                {if isset($vo.type) and $vo.type eq 'news'}
+                                <!--{if isset($vo.type) and $vo.type eq 'news'}-->
                                 <option value='news' selected>图文</option>
-                                {else}
+                                <!--{else}-->
                                 <option value='news'>图文</option>
-                                {/if}
+                                <!--{/if}-->
 
-                                {if isset($vo.type) and $vo.type eq 'image'}
+                                <!--{if isset($vo.type) and $vo.type eq 'image'}-->
                                 <option value='image' selected>图片</option>
-                                {else}
+                                <!--{else}-->
                                 <option value='image'>图片</option>
-                                {/if}
+                                <!--{/if}-->
 
                                 <!--{if isset($vo.type) and $vo.type eq 'voice'}-->
                                 <!--<option value='voice' selected>语音</option>-->
@@ -85,17 +85,17 @@
                                 <!--<option value='voice'>语音</option>-->
                                 <!--{/if}-->
 
-                                {if isset($vo.type) and $vo.type eq 'music'}
+                                <!--{if isset($vo.type) and $vo.type eq 'music'}-->
                                 <option value='music' selected>音乐</option>
-                                {else}
+                                <!--{else}-->
                                 <option value='music'>音乐</option>
-                                {/if}
+                                <!--{/if}-->
 
-                                {if isset($vo.type) and $vo.type eq 'video'}
+                                <!--{if isset($vo.type) and $vo.type eq 'video'}-->
                                 <option value='video' selected>视频</option>
-                                {else}
+                                <!--{else}-->
                                 <option value='video'>视频</option>
-                                {/if}
+                                <!--{/if}-->
 
                             </select>
                         </div>
@@ -222,7 +222,9 @@
         /*! 取消编辑 */
         $('[data-cancel-edit]').on('click', function () {
             $.msg.confirm('确定取消编辑吗？', function () {
-                history.back();});});
+                history.back();
+            });
+        });
 
         /*! 默认类型事件 */
         $('body').off('change', 'select[name=type]').on('change', 'select[name=type]', function () {
@@ -241,22 +243,28 @@
                 case 'music':
                     return $('[name="music_url"]').trigger('change');
                 case 'voice':
-                    return $('[name="voice_url"]').trigger('change');}});
+                    return $('[name="voice_url"]').trigger('change');
+            }
+        });
 
         function showReview(params) {
-            $('#phone-preview').attr('src', '{:url("@wechat/review")}?' + $.param(params || {}));}
+            $('#phone-preview').attr('src', '{:url("@wechat/review")}?' + $.param(params || {}));
+        }
 
         // 图文显示预览
         $('body').off('change', '[name="news_id"]').on('change', '[name="news_id"]', function () {
-            showReview({type: 'news', content: this.value});});
+            showReview({type: 'news', content: this.value});
+        });
 
         // 文字显示预览
         $('body').off('change', '[name="content"]').on('change', '[name="content"]', function () {
-            showReview({type: 'text', content: this.value});});
+            showReview({type: 'text', content: this.value});
+        });
 
         // 图片显示预览
         $('body').off('change', '[name="image_url"]').on('change', '[name="image_url"]', function () {
-            showReview({type: 'image', content: this.value});});
+            showReview({type: 'image', content: this.value});
+        });
 
         // 音乐显示预览
         var musicSelector = '[name="music_url"],[name="music_title"],[name="music_desc"],[name="music_image"]';
@@ -266,7 +274,8 @@
             params.url = $parent.find('[name="music_url"]').val();
             params.image = $parent.find('[name="music_image"]').val();
             params.desc = $parent.find('[name="music_desc"]').val();
-            showReview(params);});
+            showReview(params);
+        });
 
         // 视频显示预览
         var videoSelector = '[name="video_title"],[name="video_url"],[name="video_desc"]';
@@ -275,10 +284,13 @@
             params.title = $parent.find('[name="video_title"]').val();
             params.url = $parent.find('[name="video_url"]').val();
             params.desc = $parent.find('[name="video_desc"]').val();
-            showReview(params);});
+            showReview(params);
+        });
 
         // 默认事件触发
         $('select[name=type]').map(function () {
-            $(this).trigger('change');});});
+            $(this).trigger('change');
+        });
+    });
 </script>
 {/block}

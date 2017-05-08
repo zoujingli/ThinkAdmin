@@ -39,14 +39,19 @@
                 callback: {
                     beforeClick: function (treeId, treeNode) {
                         if (treeNode.children.length < 1) {
-                            window.roleForm.ztree.checkNode(treeNode, !treeNode.checked, null, true);} else {
-                            window.roleForm.ztree.expandNode(treeNode);}
-                        return false;}}};
-            this.listen();}
+                            window.roleForm.ztree.checkNode(treeNode, !treeNode.checked, null, true);
+                        } else {
+                            window.roleForm.ztree.expandNode(treeNode);
+                        }
+                        return false;
+                    }}};
+            this.listen();
+        }
         showTree.prototype = {
             constructor: showTree,
             listen: function () {
-                this.getData(this);},
+                this.getData(this);
+            },
             getData: function (self) {
                 $.msg.loading();
                 jQuery.get('{:url()}?id={$vo.id}', {action: 'getNode'}, function (ret) {
@@ -60,28 +65,41 @@
                             children.name = data[i].title || data[i].node;
                             children.checked = data[i].checked || false;
                             children.children = renderChildren(data[i]._sub_, level + 1);
-                            childrenData.push(children);}
-                        return childrenData;}
+                            childrenData.push(children);
+                        }
+                        return childrenData;
+                    }
                     self.data = renderChildren(ret.data, 1);
-                    self.showTree();}, 'JSON');},
+                    self.showTree();
+                }, 'JSON');
+            },
             showTree: function () {
                 this.ztree = jQuery.fn.zTree.init(jQuery("#zTree"), this.setting, this.data);
                 while (true) {
                     var reNodes = this.ztree.getNodesByFilter(function (node) {
-                        return  (!node.node && node.children.length < 1);});
+                        return  (!node.node && node.children.length < 1);
+                    });
                     if (reNodes.length < 1) {
-                        break;}
+                        break;
+                    }
                     for (var i in reNodes) {
-                        this.ztree.removeNode(reNodes[i]);}}},
+                        this.ztree.removeNode(reNodes[i]);
+                    }
+                }
+            },
             submit: function () {
                 var nodes = [];
                 var data = this.ztree.getCheckedNodes(true);
                 for (var i in data) {
-                    (data[i].node) && nodes.push(data[i].node);}
-                $.form.load('{:url()}?id={$vo.id}&action=save', {nodes: nodes}, 'POST');}};
+                    (data[i].node) && nodes.push(data[i].node);
+                }
+                $.form.load('{:url()}?id={$vo.id}&action=save', {nodes: nodes}, 'POST');
+            }};
         window.roleForm = new showTree();
         $('[data-submit-role]').on('click', function () {
-            window.roleForm.submit();});});
+            window.roleForm.submit();
+        });
+    });
 </script>
 
 {/block}
