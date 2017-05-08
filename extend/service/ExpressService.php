@@ -43,10 +43,7 @@ class ExpressService {
             'DataSign'    => base64_encode(md5($sendData . self::APPKEY)),
         );
         $result = HttpService::post(self::APIURI, $data);
-        $resultJson = json_decode($result, true);
-        if (!$resultJson) {
-            die(var_export($result));
-        }
+        !($resultJson = json_decode($result, true)) && die(var_export($result));
         return self::response($resultJson);
     }
 
@@ -72,37 +69,7 @@ class ExpressService {
             $status = "success";
             $message = '此订单号有' . count($data) . '条跟踪记录';
         }
-
         return array('result' => $status, 'data' => $data, 'message' => $message);
-    }
-
-    /**
-     * CURL模拟提交数据
-     * @param $url string 提交的url
-     * @param $data array 要发送的数据
-     * @return mixed 返回的数据
-     */
-    private static function curl_post($url, $data) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, self::_encode_data($data));
-        return curl_exec($ch);
-    }
-
-    /**
-     * 进行数据的string字符串编码
-     * @param type $datas
-     * @return type
-     */
-    private static function _encode_data($datas) {
-        $temps = array();
-        foreach ($datas as $key => $value) {
-            $temps[] = sprintf('%s=%s', $key, $value);
-        }
-        return join('&', $temps);
     }
 
 }
