@@ -18,8 +18,8 @@ use service\DataService;
 use service\WechatService;
 use Wechat\WechatReceive;
 use think\Controller;
-use think\Log;
 use think\Db;
+use think\Log;
 
 /**
  * 微信接口控制器
@@ -31,7 +31,7 @@ class Api extends Controller {
 
     /**
      * 微信消息对象
-     * @var \Wechat\WechatReceive
+     * @var WechatReceive
      */
     protected $wechat;
 
@@ -192,10 +192,8 @@ class Api extends Controller {
             return false;
         }
         // 标识推荐关系
-        Db::name('WechatFans')
-                ->where('openid', $this->openid)
-                ->where('(spread_openid is null or spread_openid="")')
-                ->setField(['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')]);
+        $data = ['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')];
+        Db::name('WechatFans')->where("openid='{$this->openid}' and (spread_openid is null or spread_openid='')")->setField($data);
         // @todo 推荐成功的奖励
     }
 
