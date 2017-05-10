@@ -79,7 +79,7 @@ SCRIPT;
         if (($key = sysconf('tongji_cnzz_key'))) {
             $query = ['siteid' => $key, 'r' => $this->request->server('HTTP_REFERER'), 'rnd' => mt_rand(100000, 999999)];
             $imgSrc = 'https://c.cnzz.com/wapstat.php?' . http_build_query($query);
-            $params = preg_replace('|</body>|i', "<img src='{$imgSrc}' style='display:block;position:absolute' width='0' height='9'/>\n    </body>", $params);
+            $params = preg_replace('|</body>|i', "<img src='{$imgSrc}' style='display:block;position:absolute' width='0' height='0'/>\n    </body>", $params);
         }
     }
 
