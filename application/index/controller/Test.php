@@ -14,6 +14,13 @@
 
 namespace app\index\controller;
 
-class Test extends \controller\BasicApi {
-    
+use controller\BasicApi;
+use service\FileService;
+
+class Test extends BasicApi {
+
+    public function index() {
+        dump(FileService::oss('fassdfsa', 'fsadfasdf'));
+    }
+
 }
