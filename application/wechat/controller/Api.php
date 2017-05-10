@@ -228,7 +228,7 @@ class Api extends Controller {
                 WechatService::setFansInfo($userInfo, $wechat->appid);
             }
         } else {
-            $data = ['subscribe' => '0', 'appid' => $this->appid, 'openid' => $this->openid];
+            $data = ['subscribe' => '0', 'appid' => $this->wechat->appid, 'openid' => $this->openid];
             DataService::save('wechat_fans', $data, ['appid', 'openid']);
         }
     }
