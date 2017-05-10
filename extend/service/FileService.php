@@ -15,11 +15,13 @@
 namespace service;
 
 use Exception;
-use think\Log;
-use think\Config;
+use OSS\Core\OssException;
+use OSS\OssClient;
 use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\UploadManager;
+use think\Config;
+use think\Log;
 
 /**
  * 系统文件服务
@@ -130,6 +132,14 @@ class FileService {
     }
 
     /**
+     * 获取AliOss URL前缀
+     * @return string
+     */
+    public static function getBaseUriOss() {
+        return (sysconf('storage_oss_is_https') ? 'https' : 'http') . '://' . sysconf('storage_oss_domain') . '/';
+    }
+
+    /**
      * 检查文件是否已经存在
      * @param string $filename
      * @param string|null $storage
@@ -196,12 +206,8 @@ class FileService {
             $filepath = ROOT_PATH . 'static/upload/' . $filename;
             !file_exists(dirname($filepath)) && mkdir(dirname($filepath), '0755', true);
             if (file_put_contents($filepath, $bodycontent)) {
-                return [
-                    'file' => $filepath,
-                    'hash' => md5_file($filepath),
-                    'key'  => "upload/{$filename}",
-                    'url'  => pathinfo(request()->baseFile(true), PATHINFO_DIRNAME) . '/upload/' . $filename,
-                ];
+                $url = pathinfo(request()->baseFile(true), PATHINFO_DIRNAME) . '/upload/' . $filename;
+                return ['file' => $filepath, 'hash' => md5_file($filepath), 'key' => "upload/{$filename}", 'url' => $url];
             }
         } catch (Exception $err) {
             Log::error('本地文件存储失败, ' . var_export($err, true));
@@ -227,6 +233,23 @@ class FileService {
         $result['file'] = $filename;
         $result['url'] = self::getBaseUriQiniu() . $filename;
         return $result;
+    }
+
+    /**
+     * 阿里云OSS
+     * @param type $filename
+     * @param type $bodycontent
+     * @return type
+     */
+    public static function oss($filename, $bodycontent) {
+        try {
+            $ossClient = new OssClient(sysconf('storage_oss_keyid'), sysconf('storage_oss_secret'), self::getBaseUriOss(), true);
+            $result = $ossClient->putObject(sysconf('storage_oss_bucket'), $filename, $bodycontent);
+            return ['file' => $filename, 'hash' => $result['content-md5'], 'key' => $filename, 'url' => $result['oss-request-url']];
+        } catch (OssException $err) {
+            Log::error('阿里云OSS文件上传失败, ' . var_export($err, true));
+            return null;
+        }
     }
 
 }
