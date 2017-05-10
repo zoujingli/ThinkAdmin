@@ -3,14 +3,12 @@
 {block name="button"}
 <div class="nowrap pull-right" style="margin-top:10px">
     <button data-open="{:url('add')}" class='layui-btn layui-btn-small'>添加规则</button>
-    <button data-update data-field='delete' data-action='{:url("$classuri/del")}'
-            class='layui-btn layui-btn-small layui-btn-danger'>删除规则
-    </button>
+    <button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-small layui-btn-danger'>删除规则</button>
 </div>
 {/block}
 
 {block name='content'}
-<form onsubmit="return false;" data-auto="true" action="__SELF__" method="POST">
+<form onsubmit="return false;" data-auto="true" action="__SELF__" method="post">
     <input type="hidden" value="resort" name="action"/>
     <table class="table table-hover">
         <thead>
@@ -128,7 +126,7 @@
                     return $('[name="music_url"]').trigger('change');
                 case 'voice':
                     return $('[name="voice_url"]').trigger('change');
-                    }
+            }
         });
 
         function showReview(params) {

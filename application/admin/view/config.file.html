@@ -1,20 +1,19 @@
 {extend name="extra@admin/content"}
 
 {block name="content"}
-<form onsubmit="return false;" action="__SELF__" data-auto="true" method="post"
-      class='form-horizontal' style='padding-top:20px'>
+<form onsubmit="return false;" action="__SELF__" data-auto="true" method="post" class='form-horizontal' style='padding-top:20px'>
 
     <div class="form-group">
         <label class="col-sm-2 control-label">Storage <span class="nowrap">(存储引擎)</span></label>
         <div class='col-sm-8'>
             <select class="layui-input" name="storage_type" required="required">
-                {if sysconf('storage_type')!=='qiniu'}
+                <!--{if sysconf('storage_type')!=='qiniu'}-->
                 <option selected value='local'>本地服务器</option>
                 <option value='qiniu'>七牛云存储</option>
-                {else}
+                <!--{else}-->
                 <option value='local'>本地服务器</option>
                 <option selected value='qiniu'>七牛云存储</option>
-                {/if}
+                <!--{/if}-->
             </select>
             <div class="help-block" data-storage-type="qiniu">
                 若还没有七牛云帐号，请点击
