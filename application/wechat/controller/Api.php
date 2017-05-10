@@ -136,7 +136,7 @@ class Api extends Controller {
                     'Title'       => $vo['title'],
                     'Description' => $vo['digest'],
                     'PicUrl'      => $vo['local_url'],
-                    'Url'         => url("@wechat/review/index", '', true, true) . "?content={$vo['id']}&type=article",
+                    'Url'         => url("@wechat/review", '', true, true) . "?content={$vo['id']}&type=article",
                 ];
             }
             return $this->wechat->news($newsdata)->reply();
