@@ -60,7 +60,7 @@ class NodeService {
      * @param string $node 节点
      * @return bool
      */
-    static public function checkAuthNode($node) {
+    public static function checkAuthNode($node) {
         $auth_node = strtolower($node);
         if (session('user.username') === 'admin' || stripos($node, 'admin/index') === 0) {
             return true;

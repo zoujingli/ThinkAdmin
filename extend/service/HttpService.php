@@ -15,7 +15,6 @@
 namespace service;
 
 use CURLFile;
-use think\Config;
 
 /**
  * HTTP请求服务

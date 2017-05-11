@@ -117,27 +117,20 @@ class PayService {
      * @param string $from 订单来源
      * @return bool|string
      */
-    public static function createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'shop') {
+    public static function createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'wechat') {
         $map = ['order_no' => $order_no, 'is_pay' => '1', 'expires_in' => time(), 'appid' => $pay->appid];
         $where = 'appid=:appid and order_no=:order_no and (is_pay=:is_pay or expires_in>:expires_in)';
         $prepayinfo = Db::name('WechatPayPrepayid')->where($where, $map)->find();
         if (empty($prepayinfo) || empty($prepayinfo['prepayid'])) {
             $out_trade_no = DataService::createSequence(18, 'WXPAY-OUTER-NO');
-            $prepayid = $pay->getPrepayId($openid, $title, $out_trade_no, $fee, url("@wechat/notify", '', true, true), $trade_type);
-            if (empty($prepayid)) {
+            if (!($prepayid = $pay->getPrepayId($openid, $title, $out_trade_no, $fee, url("@wechat/notify", '', true, true), $trade_type))) {
                 Log::error("内部订单号{$order_no}生成预支付失败，{$pay->errMsg}");
                 return false;
             }
-            $data = [
-                'appid'        => $pay->appid, // 对应公众号APPID
-                'prepayid'     => $prepayid, // 微信支付预支付码
-                'order_no'     => $order_no, // 内部订单号
-                'out_trade_no' => $out_trade_no, // 微信商户订单号
-                'fee'          => $fee, // 需要支付费用（单位为分）
-                'trade_type'   => $trade_type, // 发起支付类型
-                'expires_in'   => time() + 5400, // 微信预支付码有效时间1.5小时（最长为2小时）
-                'from'         => $from // 订单来源
-            ];
+            $data = ['prepayid' => $prepayid, 'order_no' => $order_no, 'out_trade_no' => $out_trade_no, 'fee' => $fee, 'trade_type' => $trade_type];
+            $data['from'] = $from;
+            $data['appid'] = $pay->appid;
+            $data['expires_in'] = time() + 5400; //微信预支付码有效时间1.5小时(最长为2小时)
             if (Db::name('WechatPayPrepayid')->insert($data) > 0) {
                 Log::notice("内部订单号{$order_no}生成预支付成功,{$prepayid}");
                 return $prepayid;
