@@ -64,6 +64,8 @@ class FileService {
                 return self::getBaseUriLocal() . $filename;
             case 'qiniu':
                 return self::getBaseUriQiniu() . $filename;
+            case 'oss':
+                return self::getBaseUriOss() . $filename;
         }
         return false;
     }
@@ -107,6 +109,14 @@ class FileService {
                 }
                 return $isClient ? 'http://upload-z2.qiniu.com' : 'http://up-z2.qiniu.com';
         }
+    }
+
+    /**
+     * 获取AliOSS上传地址
+     * @return type
+     */
+    public static function getUploadOssUrl() {
+        return (request()->isSsl() ? 'https' : 'http') . '://' . sysconf('storage_oss_domain');
     }
 
     /**
@@ -154,6 +164,9 @@ class FileService {
                 $bucketMgr = new BucketManager($auth);
                 list($ret, $err) = $bucketMgr->stat(sysconf('storage_qiniu_bucket'), $filename);
                 return $err === null;
+            case 'oss':
+                $ossClient = new OssClient(sysconf('storage_oss_keyid'), sysconf('storage_oss_secret'), self::getBaseUriOss(), true);
+                return $ossClient->doesObjectExist(sysconf('storage_oss_bucket'), $filename);
         }
         return false;
     }
@@ -174,6 +187,9 @@ class FileService {
             case 'qiniu':
                 $auth = new Auth(sysconf('storage_qiniu_access_key'), sysconf('storage_qiniu_secret_key'));
                 return file_get_contents($auth->privateDownloadUrl(self::getBaseUriQiniu() . $filename));
+            case 'oss':
+                $ossClient = new OssClient(sysconf('storage_oss_keyid'), sysconf('storage_oss_secret'), self::getBaseUriOss(), true);
+                return $ossClient->getObject(sysconf('storage_oss_bucket'), $filename);
         }
         Log::error("通过{$storage}读取文件{$filename}的不存在！");
         return null;

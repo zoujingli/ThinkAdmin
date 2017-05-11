@@ -196,8 +196,13 @@
                                         console.log('文件秒传成功 --> ' + file.name);
                                     } else {
                                         file.md5 = md5;
-                                        file.token = ret.data.token;
-                                        file.key = ret.data.file_url;
+                                        file.token = ret.data.token || '';
+                                        file.key = ret.data.file_url || '';
+                                        file.site_url = ret.data.site_url || '';
+                                        me.options.formData.OSSAccessKeyId = ret.data.OSSAccessKeyId || ''; // OSS
+                                        me.options.formData.signature = ret.data.signature; // OSS
+                                        me.options.formData.policy = ret.data.policy; // OSS
+                                        me.options.formData.success_action_status = '200'; // OSS
                                         me.options.server = ret.data.server;
                                     }
                                     deferred.resolve();
@@ -240,14 +245,29 @@
                     fileSingleSizeLimit: 200 * 1024 * 1024    // 200 M
                 });
 
+                /* 上传开始前的处理 */
+                uploader.on('uploadBeforeSend', function (file, data, header) {
+                    header['X_Requested_With'] = 'XMLHttpRequest';
+                    data['allowed_types'] = this.options.accept[0].extensions.split(',').join('|');
+                    data['md5'] = file.file.md5;
+                    data['key'] = file.file.key;
+                    data['token'] = file.file.token;
+                });
+
                 /**
                  * 处理上传后的结果
                  * @param {type} file
                  * @returns {undefined}
                  */
                 uploader.on('uploadAccept', function (fieldata, ret) {
+                    // Qiniu or Local 上传
                     if (ret.code === 'SUCCESS') {
                         uploaded.call(uploader, ret.data, fieldata.file);
+                        return true;
+                    }
+                    // AliOSS 上传
+                    if (fieldata.file.site_url) {
+                        uploaded.call(uploader, {'site_url': fieldata.file.site_url}, fieldata.file);
                         return true;
                     }
                     return false;
@@ -266,14 +286,7 @@
                     return !denied;
                 });
 
-                /* 上传开始前的处理 */
-                uploader.on('uploadBeforeSend', function (file, data, header) {
-                    header['X_Requested_With'] = 'XMLHttpRequest';
-                    data['allowed_types'] = this.options.accept[0].extensions.split(',').join('|');
-                    data['md5'] = file.file.md5;
-                    data['key'] = file.file.key;
-                    data['token'] = file.file.token;
-                });
+
 
                 // 添加“添加文件”的按钮，
                 uploader.addButton({
@@ -484,7 +497,6 @@
                             if (stats.successNum) {
                                 completed.call(this);
                             } else {
-                                // 没有成功的文件，重设
                                 state = 'done';
                                 location.reload();
                             }
@@ -515,9 +527,7 @@
                 uploader.onfieldequeued = function (file) {
                     fileCount--;
                     fileSize -= file.size;
-                    if (!fileCount) {
-                        setState('pedding');
-                    }
+                    !fileCount && setState('pedding');
                     removeFile(file);
                     updateTotalProgress();
                 };
