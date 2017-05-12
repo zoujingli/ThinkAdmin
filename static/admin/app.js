@@ -39,9 +39,11 @@ require.config({
         'websocket': ['../plugs/socket/websocket'],
         'bootstrap': ['../plugs/bootstrap/js/bootstrap.min'],
         'jquery.ztree': ['../plugs/ztree/jquery.ztree.all.min'],
+        'bootstrap.typeahead': ['../plugs/bootstrap/js/bootstrap3-typeahead.min'],
         'zeroclipboard': ['../plugs/ueditor/third-party/zeroclipboard/ZeroClipboard.min'],
         'jquery.cookies': ['../plugs/jquery/jquery.cookie'],
         'jquery.masonry': ['../plugs/jquery/masonry.min'],
+
     },
     shim: {
         'layui': {deps: ['jquery']},
@@ -51,6 +53,7 @@ require.config({
         'jquery.cookies': {deps: ['jquery']},
         'jquery.masonry': {deps: ['jquery']},
         'admin.plugs': {deps: ['jquery', 'layui']},
+        'bootstrap.typeahead': {deps: ['jquery', 'bootstrap']},
         'websocket': {deps: [baseUrl + '../plugs/socket/swfobject.min.js']},
         'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
         'jquery.ztree': {deps: ['jquery', 'css!' + baseUrl + '../plugs/ztree/zTreeStyle/zTreeStyle.css']},
