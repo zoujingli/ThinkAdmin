@@ -54,11 +54,10 @@
         $('body').on('click', '[data-news-del]', function () {
             var self = this;
             $.msg.confirm('确定要删除图文吗？', function () {
-                $.form.load('{:url("del")}', {id: self.getAttribute('data-news-del')}, 'post', function (ret) {
+                $.form.load('{:url("del")}', {field: 'delete', value: 0, id: self.getAttribute('data-news-del')}, 'post', function (ret) {
                     if (ret.code) {
                         $(self).parents('.news_item').remove();
-                        msnry.layout();
-                        return $.msg.success(ret.msg), false;
+                        return $.msg.success(ret.msg), msnry.layout(), false;
                     }
                     return $.msg.error(ret.msg), false;
                 });
