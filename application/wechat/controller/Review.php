@@ -29,7 +29,7 @@ class Review extends Controller {
         $get = $this->request->get();
         // 内容
         $content = $this->request->get('content', '');
-        $this->assign('content', $content);
+        $this->assign('content', str_replace("\n", '<br>', $content));
         // 类型
         $type = $this->request->get('type', 'text');
         $this->assign('type', $type);
