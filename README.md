@@ -10,6 +10,8 @@ Think.Admin
 `Think.Admin`及`微信开发`技术交流QQ群
 [![QQ群](http://pub.idqqimg.com/wpa/images/group.png "QQ群")](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a)
 
+**`Think.Admin`开发手册 ( 撰写中 )** : http://doc.think.ctolog.com
+
 `Think.Admin`已集成模块
 ---
 * 简易`RBAC`权限管理（用户、权限、节点、菜单控制）
