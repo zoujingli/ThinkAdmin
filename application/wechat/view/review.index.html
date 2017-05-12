@@ -129,14 +129,14 @@
                         {foreach $articles as $key=>$vo}
                         {if count($articles) gt 1}
                         {if $key < 1}
-                        <div data-href="{:url('wechat/review/index')}?content={$vo.id}&type=article" class="aui-card-list" style="margin:0;padding:.5rem .5rem .3rem .5rem;display:block;background:none">
+                        <div data-href="{:url('wechat/review/index')}?content={$vo.id}&type=article" class="aui-card-list" style="cursor:pointer;margin:0;padding:.5rem .5rem .3rem .5rem;display:block;background:none">
                             <div class="aui-card-list-content" style='width:100%;height:10rem;background-repeat:no-repeat;background-image:url("{$vo.local_url}");background-position:center;background-size:cover'></div>
                             <div class="aui-card-list-header" style='left:.5rem;right:.5rem;position:absolute;bottom:0.2rem;display:block;max-height:6em;overflow:hidden;text-overflow:ellipsis;background:rgba(0,0,0,.8);color:#fff'>
                                 {$vo.title|default=''}
                             </div>
                         </div>
                         {else}
-                        <table data-href="{:url('wechat/review/index')}?content={$vo.id}&type=article" class="aui-border-t" style='width:100%;padding:0;margin:0;margin:0;padding:.3rem .5rem .5rem .5rem;'>
+                        <table data-href="{:url('wechat/review/index')}?content={$vo.id}&type=article" class="aui-border-t" style='cursor:pointer;width:100%;padding:0;margin:0;margin:0;padding:.3rem .5rem .5rem .5rem;'>
                             <tr style='width:100%;padding:0;margin:0;'>
                                 <td style="text-overflow:ellipsis;overflow:hidden;display:inline-block;">{$vo.title}</td>
                                 <td style='width:3rem;height:3rem;background-repeat:no-repeat;background-image:url("{$vo.local_url}");background-position:center;background-size:cover'></td>
@@ -144,8 +144,7 @@
                         </table>
                         {/if}
                         {else}
-                        <div class="aui-card-list"
-                             style="margin:0;padding:.5rem .5rem .3rem .5rem;display:block;background:none">
+                        <div class="aui-card-list" style="margin:0;padding:.5rem .5rem .3rem .5rem;display:block;background:none">
                             <div class="aui-card-list-header" style='padding:0;margin:0;min-height:1.2rem;display:block;overflow:hidden;text-overflow:ellipsis;'>
                                 {$vo.title|default=''}
                             </div>
