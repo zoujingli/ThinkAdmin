@@ -140,13 +140,11 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-phone-view 事件行为 */
     this.$body.on('click', '[data-phone-view]', function () {
-        var src = this.getAttribute('data-phone-view') || this.href;
         var $container = $('<div class="mobile-preview pull-left"><div class="mobile-header">公众号</div><div class="mobile-body"><iframe id="phone-preview" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe></div></div>').appendTo('body');
-        var $iframe = $container.find('iframe').attr('src', src);
-        $container.find('.mobile-header').on('click', function () {
-            $iframe.attr('src', src);
-        });
-        layer.style(layer.open({type: 1, scrollbar: !1, area: ['330px', '600px'], title: !1, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: !!1, content: $container, end: function () {
+        $container.find('iframe').attr('src', this.getAttribute('data-phone-view') || this.href);
+        layer.style(layer.open({type: 1, scrollbar: !1, area: ['330px', '600px'], title: !1, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: !!1,
+            content: $container,
+            end: function () {
                 $container.remove();
             }
         }), {boxShadow: 'none'});
