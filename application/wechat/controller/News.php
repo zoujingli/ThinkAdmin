@@ -14,15 +14,14 @@
 
 namespace app\wechat\controller;
 
-use Exception;
-use think\Db;
-use think\Log;
-use think\response\View;
 use controller\BasicAdmin;
 use service\DataService;
 use service\FileService;
 use service\LogService;
 use service\WechatService;
+use think\Db;
+use think\Log;
+use think\response\View;
 
 /**
  * 微信图文管理
@@ -45,14 +44,14 @@ class News extends BasicAdmin {
     public function index() {
         $this->assign('title', '图文列表');
         $db = Db::name($this->table)->where('is_deleted', '0')->order('id desc');
-        parent::_list($db);
+        return parent::_list($db);
     }
 
     /**
      * 图文列表数据处理
      * @param $data
      */
-    protected function _index_data_filter(&$data) {
+    protected function _data_filter(&$data) {
         foreach ($data as &$vo) {
             $vo = WechatService::getNewsById($vo['id']);
         }
@@ -138,7 +137,7 @@ class News extends BasicAdmin {
      * @return string
      */
     public function select() {
-        return '开发中';
+        $this->index();
     }
 
     /**
