@@ -109,7 +109,7 @@ class News extends BasicAdmin {
         foreach ($data as &$vo) {
             $vo['create_by'] = session('user.id');
             $vo['create_at'] = date('Y-m-d H:i:s');
-            $vo['digest'] = empty($vo['digest']) ? mb_substr(strip_tags($vo['content']), 0, 120) : $vo['digest'];
+            $vo['digest'] = empty($vo['digest']) ? mb_substr(strip_tags(str_replace(["\s", '　'], '', $vo['content'])), 0, 120) : $vo['digest'];
             if (empty($vo['id'])) {
                 $result = $id = Db::name('WechatNewsArticle')->insertGetId($vo);
             } else {
