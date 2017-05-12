@@ -27,11 +27,8 @@ class Review extends Controller {
      */
     public function index() {
         $get = $this->request->get();
-        // 内容
-        $content = $this->request->get('content', '');
-        $this->assign('content', str_replace("\n", '<br>', $content));
-        // 类型
-        $type = $this->request->get('type', 'text');
+        $content = str_replace("\n", "<br>", $this->request->get('content', '')); // 内容
+        $type = $this->request->get('type', 'text'); // 类型
         $this->assign('type', $type);
         // 图文处理
         if ($type === 'news' && is_numeric($content) && !empty($content)) {
@@ -44,6 +41,7 @@ class Review extends Controller {
             $this->assign('vo', $article);
         }
         $this->assign($get);
+        $this->assign('content', $content);
         // 渲染模板并显示
         return view();
     }
