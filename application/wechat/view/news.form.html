@@ -112,7 +112,7 @@
 <script>
     $(function () {
 
-        var editDdata = {$vo.articles|default=[]|json_encode};
+        var editDdata = {$vo.articles | default = [] | json_encode};
 
         for (var i in editDdata) {
             $('.news-item').eq(i).data('item', editDdata[i]);
@@ -166,6 +166,7 @@
                     // 处理上一个编辑器
                     if ($form && $pItem && $pItem.size() > 0) {
                         var data = {};
+                        data.id = $form.find('[name=id]').val();
                         data.title = $form.find('[name=title]').val();
                         data.local_url = $form.find('[name=local_url]').val();
                         data.content = editor.getContent() || '';
@@ -189,11 +190,12 @@
                     $item = $('.news-item.active');
                     this.get = function () {
                         var data = $item.data('item') || {};
+                        data.id = data.id || 0;
                         data.title = data.title || '';
                         data.local_url = data.local_url || '__PUBLIC__/static/plugs/uploader/theme/image.png';
                         data.content = data.content || '';
                         data.author = data.author || '';
-                        data.digest = data.digest||'';
+                        data.digest = data.digest || '';
                         data.show_cover_pic = data.show_cover_pic || 0;
                         return data;
                     };
