@@ -233,16 +233,25 @@
                     auto: false,
                     fileNumLimit: 300,
                     /* {/if} */
-                    compress: false,
-                    dnd: '#dndArea',
-                    paste: document.body,
                     swf: '__PUBLIC__/static/plugs/uploader/Uploader.swf',
                     chunked: false,
+                    dnd: '#dndArea',
+                    paste: document.body,
                     chunkSize: 512 * 1024,
                     server: '{:url("admin/plugs/upload")}',
                     disableGlobalDnd: true,
                     fileSizeLimit: 200 * 1024 * 1024, // 200 M
-                    fileSingleSizeLimit: 200 * 1024 * 1024    // 200 M
+                    fileSingleSizeLimit: 200 * 1024 * 1024, // 200 M
+                    compress: {
+                        width: 1600,
+                        height: 16000,
+                        quality: 90, // 图片质量(只有type为`image/jpeg`的时候才有效)
+                        allowMagnify: false, //  // 是否允许放大(如果想要生成小图的时候不失真，此选项应该设置为false).
+                        crop: false, // 是否允许裁剪
+                        preserveHeaders: true, // 是否保留头部meta信息
+                        noCompressIfLarger: false, // 如果发现压缩后文件大小比原来还大，则使用原来图片
+                        compressSize: 1024 * 512, // 单位字节(如果图片大小小于此值，不会采用压缩)
+                    }
                 });
 
                 /* 上传开始前的处理 */
