@@ -33,7 +33,7 @@ class Config extends BasicAdmin {
      * 定义当前操作表名
      * @var string
      */
-    protected $table = 'SystemConfig';
+    public $table = 'SystemConfig';
 
     /**
      * 微信基础参数配置

@@ -31,6 +31,9 @@ class NodeService {
      */
     public static function applyAuthNode() {
         cache('need_access_node', null);
+        if (($userid = session('user.id'))) {
+            session('user', Db::name('SystemUser')->where('id', $userid)->find());
+        }
         if (($authorize = session('user.authorize'))) {
             $authorizeids = Db::name('SystemAuth')->where('id', 'in', explode(',', $authorize))->where('status', '1')->column('id');
             if (empty($authorizeids)) {
@@ -61,7 +64,8 @@ class NodeService {
      * @return bool
      */
     public static function checkAuthNode($node) {
-        $auth_node = strtolower($node);
+        list($module, $controller, $action) = explode('/', str_replace(['?', '=', '&'], '/', $node . '///'));
+        $auth_node = strtolower(trim("{$module}/{$controller}/{$action}", '/'));
         if (session('user.username') === 'admin' || stripos($node, 'admin/index') === 0) {
             return true;
         }

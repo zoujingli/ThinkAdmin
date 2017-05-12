@@ -32,7 +32,7 @@ class Fans extends BasicAdmin {
      * 定义当前默认数据表
      * @var string
      */
-    protected $table = 'WechatFans';
+    public $table = 'WechatFans';
 
     /**
      * 显示粉丝列表

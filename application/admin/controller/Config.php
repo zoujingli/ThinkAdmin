@@ -30,13 +30,13 @@ class Config extends BasicAdmin {
      * 当前默认数据模型
      * @var string
      */
-    protected $table = 'SystemConfig';
+    public $table = 'SystemConfig';
 
     /**
      * 当前页面标题
      * @var string
      */
-    protected $title = '网站参数配置';
+    public $title = '网站参数配置';
 
     /**
      * 显示系统常规配置

@@ -37,7 +37,7 @@ class News extends BasicAdmin {
      * 设置默认操作表
      * @var string
      */
-    protected $table = 'WechatNews';
+    public $table = 'WechatNews';
 
     /**
      * 图文列表

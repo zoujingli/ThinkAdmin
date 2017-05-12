@@ -15,7 +15,6 @@
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
-use OSS\OssClient;
 use service\FileService;
 use think\View;
 
@@ -32,13 +31,13 @@ class Plugs extends BasicAdmin {
      * 默认检查用户登录状态
      * @var bool
      */
-    protected $checkLogin = false;
+    public $checkLogin = false;
 
     /**
      * 默认检查节点访问权限
      * @var bool
      */
-    protected $checkAuth = false;
+    public $checkAuth = false;
 
     /**
      * 文件上传

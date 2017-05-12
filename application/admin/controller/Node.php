@@ -32,7 +32,7 @@ class Node extends BasicAdmin {
      * 指定当前默认模型
      * @var string
      */
-    protected $table = 'SystemNode';
+    public $table = 'SystemNode';
 
     /**
      * 显示节点列表

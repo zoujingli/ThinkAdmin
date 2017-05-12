@@ -32,42 +32,25 @@ class BasicAdmin extends Controller {
      * 页面标题
      * @var string
      */
-    protected $title;
+    public $title;
 
     /**
      * 默认操作数据表
      * @var string
      */
-    protected $table;
+    public $table;
 
     /**
      * 默认检查用户登录状态
      * @var bool
      */
-    protected $checkLogin = true;
+    public $checkLogin = true;
 
     /**
      * 默认检查节点访问权限
      * @var bool
      */
-    protected $checkAuth = true;
-
-    /**
-     * 后台权限控制初始化方法
-     */
-    public function _initialize() {
-        // 用户登录状态检查
-        if (($this->checkLogin || $this->checkAuth) && !session('user')) {
-            $this->redirect('@admin/login');
-        }
-        list($module, $controller, $action) = [$this->request->module(), $this->request->controller(), $this->request->action()];
-        // 节点访问权限检查
-        if ($this->checkLogin && $this->checkAuth && !auth("{$module}/{$controller}/{$action}")) {
-            $this->error('抱歉，您没有访问该模块的权限！');
-        }
-        // 初始化赋值常用变量
-        $this->assign('classuri', strtolower("{$module}/{$controller}"));
-    }
+    public $checkAuth = true;
 
     /**
      * 表单默认操作
@@ -101,7 +84,7 @@ class BasicAdmin extends Controller {
         if ($pk_value !== '') { // Edit Options
             !empty($pk_value) && $db->where($pk, $pk_value);
             !empty($where) && $db->where($where);
-            $vo = array_merge($data, (array)$db->find());
+            $vo = array_merge($data, (array) $db->find());
         }
         $this->_callback('_form_filter', $vo);
         $this->assign('vo', $vo);

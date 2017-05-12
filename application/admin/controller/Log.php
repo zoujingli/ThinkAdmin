@@ -31,7 +31,7 @@ class Log extends BasicAdmin {
      * 指定当前数据表
      * @var string
      */
-    protected $table = 'SystemLog';
+    public $table = 'SystemLog';
 
     /**
      * 日志列表

@@ -33,7 +33,7 @@ class Menu extends BasicAdmin {
      * 绑定操作模型
      * @var string
      */
-    protected $table = 'SystemMenu';
+    public $table = 'SystemMenu';
 
     /**
      * 菜单列表

@@ -33,7 +33,7 @@ class Auth extends BasicAdmin {
      * 默认数据模型
      * @var string
      */
-    protected $table = 'SystemAuth';
+    public $table = 'SystemAuth';
 
     /**
      * 权限列表

@@ -32,13 +32,13 @@ class Menu extends BasicAdmin {
      * 指定当前页面标题
      * @var string
      */
-    protected $title = '微信菜单定制';
+    public $title = '微信菜单定制';
 
     /**
      * 指定默认操作的数据表
      * @var string
      */
-    protected $table = 'WechatMenu';
+    public $table = 'WechatMenu';
 
     /**
      * 微信菜单的类型

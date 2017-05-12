@@ -29,6 +29,18 @@ use think\Db;
 class Login extends BasicAdmin {
 
     /**
+     * 默认检查用户登录状态
+     * @var bool
+     */
+    public $checkLogin = false;
+
+    /**
+     * 默认检查节点访问权限
+     * @var bool
+     */
+    public $checkAuth = false;
+
+    /**
      * 控制器基础方法
      */
     public function _initialize() {

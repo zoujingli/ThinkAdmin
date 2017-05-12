@@ -33,7 +33,7 @@ class Tags extends BasicAdmin {
      * 定义当前默认数据表
      * @var string
      */
-    protected $table = 'WechatFansTags';
+    public $table = 'WechatFansTags';
 
     /**
      * 显示粉丝标签列表
