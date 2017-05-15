@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
-        <title>{'app_name'|sysconf} {'app_version'|sysconf}</title>
+        <title>{:sysconf('app_name')} {:sysconf('app_version')}</title>
         <meta charset="utf-8">
         <link rel="icon" href="../image/favicon.ico">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,8 +54,7 @@
             }
 
             function confirmSelected() {
-                var srcs = new Array();
-                var md5s = new Array();
+                var srcs = new Array(), md5s = new Array();
                 $('[data-md5] .success').map(function () {
                     var $li = $(this).parents('[data-md5]');
                     md5s.push($li.attr('data-md5'));
@@ -101,8 +100,7 @@
                         /*优化retina, 在retina下这个值是2*/
                         ratio = window.devicePixelRatio || 1,
                         /*缩略图大小*/
-                        thumbnailWidth = 110 * ratio,
-                        thumbnailHeight = 110 * ratio,
+                        thumbnailWidth = 110 * ratio, thumbnailHeight = 110 * ratio,
                         /*可能有pedding, ready, uploading, confirm, done.*/
                         state = 'pedding',
                         /*所有文件的进度信息，key为file id*/
@@ -218,7 +216,11 @@
                     pick: {
                         id: '#filePicker',
                         label: '点击选择文件',
-                        multiple: false
+                        /*{if $mode === 'one'}*/
+                        multiple: false,
+                        /* {else} */
+                        multiple: true,
+                        /* {/if} */
                     },
                     accept: {
                         title: '选择文件',
@@ -227,18 +229,18 @@
                     },
                     formData: {},
                     /*{if $mode === 'one'}*/
-                    fileNumLimit: 1,
                     auto: true,
-                    /* {else /} */
+                    fileNumLimit: 1,
+                    /* {else} */
                     auto: false,
                     fileNumLimit: 300,
                     /* {/if} */
+                    server: '{:url("admin/plugs/upload")}',
                     swf: '__PUBLIC__/static/plugs/uploader/Uploader.swf',
                     chunked: false,
                     dnd: '#dndArea',
                     paste: document.body,
                     chunkSize: 512 * 1024,
-                    server: '{:url("admin/plugs/upload")}',
                     disableGlobalDnd: true,
                     fileSizeLimit: 200 * 1024 * 1024, // 200 M
                     fileSingleSizeLimit: 200 * 1024 * 1024, // 200 M
