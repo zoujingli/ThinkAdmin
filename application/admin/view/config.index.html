@@ -1,14 +1,12 @@
 {extend name="extra@admin/content"}
 
 {block name="content"}
-<form onsubmit="return false;" action="__SELF__" data-auto="true" method="post"
-      class='form-horizontal' style='padding-top:20px'>
+<form onsubmit="return false;" action="__SELF__" data-auto="true" method="post" class='form-horizontal' style='padding-top:20px'>
 
     <div class="form-group">
         <label class="col-sm-2 control-label">SiteName <span class="nowrap">(网站名称)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="site_name" required="required" title="请输入网站名称" placeholder="请输入网站名称"
-                   value="{:sysconf('site_name')}" class="layui-input">
+            <input type="text" name="site_name" required="required" title="请输入网站名称" placeholder="请输入网站名称" value="{:sysconf('site_name')}" class="layui-input">
             <p class="help-block">网站名称，显示在浏览器标签上</p>
         </div>
     </div>
@@ -16,8 +14,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">Copyright <span class="nowrap">(版权信息)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="site_copy" required="required" title="请输入版权信息" placeholder="请输入版权信息"
-                   value="{:sysconf('site_copy')}" class="layui-input">
+            <input type="text" name="site_copy" required="required" title="请输入版权信息" placeholder="请输入版权信息" value="{:sysconf('site_copy')}" class="layui-input">
             <p class="help-block">程序的版权信息设置，在后台登录页面显示</p>
         </div>
     </div>
@@ -25,8 +22,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">AppName <span class="nowrap">(程序名称)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="app_name" required="required" title="请输入程序名称" placeholder="请输入程序名称"
-                   value="{:sysconf('app_name')}" class="layui-input">
+            <input type="text" name="app_name" required="required" title="请输入程序名称" placeholder="请输入程序名称" value="{:sysconf('app_name')}" class="layui-input">
             <p class="help-block">当前程序名称，在后台主标题上显示</p>
         </div>
     </div>
@@ -35,9 +31,24 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">AppVersion <span class="nowrap">(程序版本)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="app_version" required="required" title="请输入程序版本" placeholder="请输入程序版本"
-                   value="{:sysconf('app_version')}" class="layui-input">
+            <input type="text" name="app_version" required="required" title="请输入程序版本" placeholder="请输入程序版本" value="{:sysconf('app_version')}" class="layui-input">
             <p class="help-block">当前程序版本号，在后台主标题上标显示</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Baidu <span class="nowrap">(百度统计)</span></label>
+        <div class='col-sm-8'>
+            <input type="text" name="tongji_baidu_key" maxlength="32" pattern="^[0-9a-z]{32}$" title="请输入32位百度统计应用ID" placeholder="请输入32位百度统计应用ID" value="{:sysconf('tongji_baidu_key')}" class="layui-input">
+            <p class="help-block">百度统计应用ID，可以在<a target="_blank" href="https://tongji.baidu.com">百度网站统计</a>申请并获取</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">CNZZ <span class="nowrap">(友盟统计)</span></label>
+        <div class='col-sm-8'>
+            <input type="text" name="tongji_cnzz_key" maxlength="32" pattern="^[0-9]{10}$" title="请输入10位CNZZ统计应用ID" placeholder="请输入10位CNZZ统计应用ID" value="{:sysconf('tongji_cnzz_key')}" class="layui-input">
+            <p class="help-block">友盟统计应用ID，可以在<a target="_blank" href="https://web.umeng.com">友盟网站统计</a>申请并获取</p>
         </div>
     </div>
 

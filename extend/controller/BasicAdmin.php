@@ -21,10 +21,8 @@ use think\Db;
 
 /**
  * 后台权限基础控制器
- *
+ * Class BasicAdmin
  * @package controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/02/13 14:24
  */
 class BasicAdmin extends Controller {
 
@@ -32,42 +30,25 @@ class BasicAdmin extends Controller {
      * 页面标题
      * @var string
      */
-    protected $title;
+    public $title;
 
     /**
      * 默认操作数据表
      * @var string
      */
-    protected $table;
+    public $table;
 
     /**
      * 默认检查用户登录状态
      * @var bool
      */
-    protected $checkLogin = true;
+    public $checkLogin = true;
 
     /**
      * 默认检查节点访问权限
      * @var bool
      */
-    protected $checkAuth = true;
-
-    /**
-     * 后台权限控制初始化方法
-     */
-    public function _initialize() {
-        // 用户登录状态检查
-        if (($this->checkLogin || $this->checkAuth) && !session('user')) {
-            $this->redirect('@admin/login');
-        }
-        list($module, $controller, $action) = [$this->request->module(), $this->request->controller(), $this->request->action()];
-        // 节点访问权限检查
-        if ($this->checkLogin && $this->checkAuth && !auth("{$module}/{$controller}/{$action}")) {
-            $this->error('抱歉，您没有访问该模块的权限！');
-        }
-        // 初始化赋值常用变量
-        $this->assign('classuri', strtolower("{$module}/{$controller}"));
-    }
+    public $checkAuth = true;
 
     /**
      * 表单默认操作
@@ -147,7 +128,7 @@ class BasicAdmin extends Controller {
             cookie('rows', $row_page >= 10 ? $row_page : 20);
             $page = $db->paginate($row_page, $total, ['query' => $this->request->get()]);
             $result['list'] = $page->all();
-            $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-load="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
+            $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
         } else {
             $result['list'] = $db->select();
         }
@@ -166,8 +147,8 @@ class BasicAdmin extends Controller {
      * @return bool
      */
     protected function _callback($method, &$data) {
-        foreach ([$method, "_" . $this->request->action() . "{$method}"] as $method) {
-            if (method_exists($this, $method) && false === $this->$method($data)) {
+        foreach ([$method, "_" . $this->request->action() . "{$method}"] as $_method) {
+            if (method_exists($this, $_method) && false === $this->$_method($data)) {
                 return false;
             }
         }

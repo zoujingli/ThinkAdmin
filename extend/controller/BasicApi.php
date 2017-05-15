@@ -1,4 +1,15 @@
 <?php
+// +----------------------------------------------------------------------
+// | Think.Admin
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://think.ctolog.com
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/Think.Admin
+// +----------------------------------------------------------------------
 
 namespace controller;
 
@@ -6,10 +17,10 @@ use service\ToolsService;
 use think\Cache;
 use think\Request;
 use think\Response;
-use Wechat\Lib\Tools;
 
 /**
  * 数据接口通用控制器
+ * Class BasicApi
  * @package controller
  */
 class BasicApi {
@@ -39,7 +50,6 @@ class BasicApi {
         if (in_array(strtolower($this->request->action()), ['response', 'setcache', 'getcache', 'delcache', '_empty'])) {
             exit($this->response('禁止访问接口安全方法！', 'ACCESS_NOT_ALLOWED')->send());
         }
-
         // 访问 Token 检测处理
         $this->token = $this->request->param('token', $this->request->header('token', false));
         if (empty($this->token) && !method_exists($this, $this->request->action())) {
@@ -98,11 +108,11 @@ class BasicApi {
         list($module, $controller, $action, $method) = explode('/', $this->request->path() . '///');
         if (!empty($module) && !empty($controller) && !empty($action) && !empty($method)) {
             $action = ucfirst($action);
-            $Api = "app\\{$module}\\{$controller}\\{$action}Api";
+            $Api = config('app_namespace') . "\\{$module}\\{$controller}\\{$action}Api";
             if (method_exists($Api, $method)) {
                 return $Api::$method($this);
             }
-            return $this->response('访问的接口不存在！', 'NOT_FOUND');
+            return $this->response('访问的接口不存在！', 'API_NOT_FOUND');
         }
         return $this->response('不符合标准的接口！', 'API_ERROR');
     }

@@ -13,8 +13,8 @@
 // +----------------------------------------------------------------------
 
 
-use app\admin\model\NodeModel;
 use service\DataService;
+use service\NodeService;
 use Wechat\Loader;
 use think\Db;
 
@@ -82,7 +82,7 @@ function decode($string) {
  * @return bool
  */
 function auth($node) {
-    return NodeModel::checkAuthNode($node);
+    return NodeService::checkAuthNode($node);
 }
 
 /**
@@ -95,7 +95,8 @@ function sysconf($name, $value = false) {
     static $config = [];
     if ($value !== false) {
         $config = [];
-        return DataService::save('SystemConfig', ['name' => $value], 'name');
+        $data = ['name' => $name, 'value' => $value];
+        return DataService::save('SystemConfig', $data, 'name');
     }
     if (empty($config)) {
         foreach (Db::name('SystemConfig')->select() as $vo) {

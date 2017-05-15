@@ -18,8 +18,8 @@ use service\DataService;
 use service\WechatService;
 use Wechat\WechatReceive;
 use think\Controller;
-use think\Log;
 use think\Db;
+use think\Log;
 
 /**
  * 微信接口控制器
@@ -31,7 +31,7 @@ class Api extends Controller {
 
     /**
      * 微信消息对象
-     * @var \Wechat\WechatReceive
+     * @var WechatReceive
      */
     protected $wechat;
 
@@ -123,7 +123,6 @@ class Api extends Controller {
         return $this->_keys('wechat_keys#keys#default', true);
     }
 
-
     /**
      * 回复图文
      * @param int $news_id
@@ -137,7 +136,7 @@ class Api extends Controller {
                     'Title'       => $vo['title'],
                     'Description' => $vo['digest'],
                     'PicUrl'      => $vo['local_url'],
-                    'Url'         => url("@wechat/view/news/id/{$vo['id']}", '', true, true)
+                    'Url'         => url("@wechat/review", '', true, true) . "?content={$vo['id']}&type=article",
                 ];
             }
             return $this->wechat->news($newsdata)->reply();
@@ -193,10 +192,8 @@ class Api extends Controller {
             return false;
         }
         // 标识推荐关系
-        Db::name('WechatFans')
-            ->where('openid', $this->openid)
-            ->where('(spread_openid is null or spread_openid="")')
-            ->setField(['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')]);
+        $data = ['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')];
+        Db::name('WechatFans')->where("openid='{$this->openid}' and (spread_openid is null or spread_openid='')")->setField($data);
         // @todo 推荐成功的奖励
     }
 
@@ -229,7 +226,7 @@ class Api extends Controller {
                 WechatService::setFansInfo($userInfo, $wechat->appid);
             }
         } else {
-            $data = ['subscribe' => '0', 'appid' => $this->appid, 'openid' => $this->openid];
+            $data = ['subscribe' => '0', 'appid' => $this->wechat->appid, 'openid' => $this->openid];
             DataService::save('wechat_fans', $data, ['appid', 'openid']);
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
@@ -31,13 +32,13 @@ class Menu extends BasicAdmin {
      * 指定当前页面标题
      * @var string
      */
-    protected $title = '微信菜单定制';
+    public $title = '微信菜单定制';
 
     /**
      * 指定默认操作的数据表
      * @var string
      */
-    protected $table = 'WechatMenu';
+    public $table = 'WechatMenu';
 
     /**
      * 微信菜单的类型
@@ -82,6 +83,11 @@ class Menu extends BasicAdmin {
                 load_wechat('Menu')->deleteMenu();
                 $this->success('删除并取消微信菜单成功！', '');
             }
+            foreach ($data as &$vo) {
+                if (isset($vo['content'])) {
+                    $vo['content'] = str_replace('"', "'", $vo['content']);
+                }
+            }
             if (Db::name($this->table)->where('1=1')->delete() !== false && Db::name($this->table)->insertAll($data) !== false) {
                 $result = $this->_push();
                 if ($result['status']) {
@@ -110,10 +116,10 @@ class Menu extends BasicAdmin {
      */
     protected function _push() {
         $result = Db::name($this->table)
-            ->field('id,index,pindex,name,type,content')
-            ->where('status', '1')
-            ->order('sort ASC,id ASC')
-            ->select();
+                ->field('id,index,pindex,name,type,content')
+                ->where('status', '1')
+                ->order('sort ASC,id ASC')
+                ->select();
         foreach ($result as &$row) {
             empty($row['content']) && $row['content'] = uniqid();
             switch ($row['type']) {
@@ -153,4 +159,5 @@ class Menu extends BasicAdmin {
         }
         return array('status' => false, 'errmsg' => $wechat->errMsg);
     }
+
 }

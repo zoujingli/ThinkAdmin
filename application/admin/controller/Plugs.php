@@ -16,6 +16,7 @@ namespace app\admin\controller;
 
 use controller\BasicAdmin;
 use service\FileService;
+use think\View;
 
 /**
  * 插件助手控制器
@@ -30,21 +31,21 @@ class Plugs extends BasicAdmin {
      * 默认检查用户登录状态
      * @var bool
      */
-    protected $checkLogin = false;
+    public $checkLogin = false;
 
     /**
      * 默认检查节点访问权限
      * @var bool
      */
-    protected $checkAuth = false;
+    public $checkAuth = false;
 
     /**
      * 文件上传
-     * @param string $mode
-     * @return \think\response\View
+     * @return View
      */
-    public function upfile($mode = 'one') {
+    public function upfile() {
         $types = $this->request->get('type', 'jpg,png');
+        $mode = $this->request->get('mode', 'one');
         $this->assign('mode', $mode);
         $this->assign('types', $types);
         if (!in_array(($uptype = $this->request->get('uptype')), ['local', 'qiniu'])) {
@@ -63,7 +64,7 @@ class Plugs extends BasicAdmin {
     public function upload() {
         if ($this->request->isPost()) {
             $md5s = str_split($this->request->post('md5'), 16);
-            if (($info = $this->request->file('file')->move('upload' . DS . $md5s[0], $md5s[1], true))) {
+            if (($info = $this->request->file('file')->move('static' . DS . 'upload' . DS . $md5s[0], $md5s[1], true))) {
                 $filename = join('/', $md5s) . '.' . $info->getExtension();
                 $site_url = FileService::getFileUrl($filename, 'local');
                 if ($site_url) {
@@ -94,6 +95,19 @@ class Plugs extends BasicAdmin {
             case 'local':
                 $config['server'] = FileService::getUploadLocalUrl();
                 break;
+            case 'oss':
+                $time = time() + 3600;
+                $policyText = [
+                    'expiration' => date('Y-m-d', $time) . 'T' . date('H:i:s', $time) . '.000Z',
+                    'conditions' => [
+                        ['content-length-range', 0, 1048576000]
+                    ]
+                ];
+                $config['policy'] = base64_encode(json_encode($policyText));
+                $config['server'] = FileService::getUploadOssUrl();
+                $config['site_url'] = FileService::getBaseUriOss() . $filename;
+                $config['signature'] = base64_encode(hash_hmac('sha1', $config['policy'], sysconf('storage_oss_secret'), true));
+                $config['OSSAccessKeyId'] = sysconf('storage_oss_keyid');
         }
         $this->result($config, 'NOT_FOUND');
     }

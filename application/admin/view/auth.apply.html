@@ -1,4 +1,4 @@
-{extend name='extra@admin/content' /}
+{extend name='extra@admin/content'}
 
 {block name="content"}
 
@@ -44,9 +44,7 @@
                             window.roleForm.ztree.expandNode(treeNode);
                         }
                         return false;
-                    }
-                }
-            };
+                    }}};
             this.listen();
         }
         showTree.prototype = {
@@ -96,8 +94,7 @@
                     (data[i].node) && nodes.push(data[i].node);
                 }
                 $.form.load('{:url()}?id={$vo.id}&action=save', {nodes: nodes}, 'POST');
-            }
-        };
+            }};
         window.roleForm = new showTree();
         $('[data-submit-role]').on('click', function () {
             window.roleForm.submit();

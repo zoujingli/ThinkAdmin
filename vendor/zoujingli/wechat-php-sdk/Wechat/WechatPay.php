@@ -117,6 +117,33 @@ class WechatPay {
     }
 
     /**
+     * 创建刷卡支付参数包
+     * @param string $auth_code 授权Code号
+     * @param string $out_trade_no 商户订单号
+     * @param int $total_fee 支付费用
+     * @param string $body 订单标识
+     * @param null $goods_tag 商品标签
+     * @return array|bool
+     */
+    public function createMicroPay($auth_code, $out_trade_no, $total_fee, $body, $goods_tag = null) {
+        $data = array(
+            "appid"            => $this->appid,
+            "mch_id"           => $this->mch_id,
+            "body"             => $body,
+            "out_trade_no"     => $out_trade_no,
+            "total_fee"        => $total_fee,
+            "auth_code"        => $auth_code,
+            "spbill_create_ip" => Tools::getAddress()
+        );
+        empty($goods_tag) || $data['goods_tag'] = $goods_tag;
+        $json = Tools::xml2arr($this->postXml($data, self::MCH_BASE_URL . '/pay/micropay'));
+        if (!empty($json) && false === $this->_parseResult($json)) {
+            return false;
+        }
+        return $json;
+    }
+
+    /**
      * 支付通知验证处理
      * @return bool|array
      */

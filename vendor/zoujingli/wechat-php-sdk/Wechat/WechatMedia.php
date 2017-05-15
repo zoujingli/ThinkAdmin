@@ -83,6 +83,53 @@ class WechatMedia extends Common {
     }
 
     /**
+     * 获取临时素材(认证后的订阅号可用) 包含返回的http头信息
+     * @param string $media_id 媒体文件id
+     * @param bool $is_video 是否为视频文件，默认为否
+     * @return bool|array
+     */
+    public function getMediaWithHttpInfo($media_id, $is_video = false) {
+        if (!$this->access_token && !$this->getAccessToken()) {
+            return false;
+        }
+        //原先的上传多媒体文件接口使用 self::UPLOAD_MEDIA_URL 前缀
+        //如果要获取的素材是视频文件时，不能使用https协议，必须更换成http协议
+        $url_prefix = $is_video ? str_replace('https', 'http', self::API_URL_PREFIX) : self::API_URL_PREFIX;
+        $url = $url_prefix . self::MEDIA_GET_URL . "access_token={$this->access_token}" . '&media_id=' . $media_id;
+        $oCurl = curl_init();
+        if (stripos($url, "https://") !== FALSE) {
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, FALSE);
+            curl_setopt($oCurl, CURLOPT_SSLVERSION, 1);
+        }
+        curl_setopt($oCurl, CURLOPT_URL, $url);
+        curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
+        $sContent = curl_exec($oCurl);
+        $aStatus = curl_getinfo($oCurl);
+
+        $result = [];
+
+        if (intval($aStatus["http_code"]) !== 200) {
+            return false;
+        }
+
+        if ($sContent) {
+            if (is_string($sContent)) {
+                $json = json_decode($sContent, true);
+                if (isset($json['errcode'])) {
+                    $this->errCode = $json['errcode'];
+                    $this->errMsg = $json['errmsg'];
+                    return $this->checkRetry(__FUNCTION__, func_get_args());
+                }
+            }
+            $result['content'] = $sContent;
+            $result['info'] = $aStatus;
+            return $result;
+        }
+        return false;
+    }
+
+    /**
      * 上传图片，本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。图片仅支持jpg/png格式，大小必须在1MB以下。 (认证后的订阅号可用)
      * 注意：上传大文件时可能需要先调用 set_time_limit(0) 避免超时
      * 注意：数组的键值任意，但文件名前必须加@，使用单引号以避免本地路径斜杠被转义

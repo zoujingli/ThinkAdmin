@@ -31,7 +31,7 @@ class User extends BasicAdmin {
      * 指定当前数据表
      * @var string
      */
-    protected $table = 'SystemUser';
+    public $table = 'SystemUser';
 
     /**
      * 用户列表

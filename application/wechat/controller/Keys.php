@@ -30,7 +30,7 @@ class Keys extends BasicAdmin {
      * 指定当前数据表
      * @var string
      */
-    protected $table = 'WechatKeys';
+    public $table = 'WechatKeys';
 
     /**
      * 显示关键字列表

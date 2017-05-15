@@ -14,7 +14,7 @@
 
 namespace service;
 
-use think\Config;
+use CURLFile;
 
 /**
  * HTTP请求服务
@@ -35,25 +35,19 @@ class HttpService {
      */
     public static function get($url, $data = array(), $second = 30, $header = []) {
         if (!empty($data)) {
-            $url .= (stripos($url, '?') === FALSE ? '?' : '&');
+            $url .= (stripos($url, '?') === false ? '?' : '&');
             $url .= (is_array($data) ? http_build_query($data) : $data);
         }
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, $second);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        if (!empty($header)) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        }
+        !empty($header) && curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
         self::_setSsl($curl, $url);
         $content = curl_exec($curl);
         $status = curl_getinfo($curl);
         curl_close($curl);
-        if (intval($status["http_code"]) == 200) {
-            return $content;
-        } else {
-            return false;
-        }
+        return (intval($status["http_code"]) === 200) ? $content : false;
     }
 
     /**
@@ -69,22 +63,16 @@ class HttpService {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, $second);
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, FALSE);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($curl, CURLOPT_POST, TRUE);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        if (!empty($header)) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        }
+        !empty($header) && curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
         self::_setSsl($curl, $url);
         $content = curl_exec($curl);
         $status = curl_getinfo($curl);
         curl_close($curl);
-        if (intval($status["http_code"]) == 200) {
-            return $content;
-        } else {
-            return false;
-        }
+        return (intval($status["http_code"]) === 200) ? $content : false;
     }
 
     /**
@@ -94,8 +82,8 @@ class HttpService {
      */
     private static function _setSsl(&$curl, $url) {
         if (stripos($url, "https") === 0) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($curl, CURLOPT_SSLVERSION, 1);
         }
     }
@@ -106,30 +94,16 @@ class HttpService {
      * @return string
      */
     private static function _setUploadFile(&$data) {
-        if (is_array($data)) {
-            foreach ($data as &$value) {
-                if (!is_string($value) || stripos($value, '@') !== 0) {
-                    continue;
-                }
-                $filename = realpath(trim($value, '@'));
-                $filemime = self::_getFileMine($filename);
-                $value = class_exists('CURLFile', FALSE) ? new CURLFile($filename, $filemime) : "{$value};type={$filemime}";
-            }
+        if (!is_array($data)) {
+            return null;
         }
-    }
-
-    /**
-     * 文件上传MIMS设置
-     * @param $filename
-     * @return string
-     */
-    private static function _getFileMine($filename) {
-        $mimes = Config::get('mines');
-        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-        if (isset($mimes[$ext])) {
-            return is_array($mimes[$ext]) ? $mimes[$ext][0] : $mimes[$ext];
-        } else {
-            return 'application/octet-stream';
+        foreach ($data as &$value) {
+            if (!(is_string($value) && strlen($value) > 0 && $value[0] === '@')) {
+                continue;
+            }
+            $filename = realpath(trim($value, '@'));
+            $filemime = FileService::getFileMine(strtolower(pathinfo($filename, PATHINFO_EXTENSION)));
+            $value = class_exists('CURLFile', false) ? new CURLFile($filename, $filemime) : "{$value};type={$filemime}";
         }
     }
 

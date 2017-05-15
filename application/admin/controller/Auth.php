@@ -14,9 +14,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\NodeModel;
 use controller\BasicAdmin;
 use service\DataService;
+use service\NodeService;
 use service\ToolsService;
 use think\Db;
 
@@ -33,7 +33,7 @@ class Auth extends BasicAdmin {
      * 默认数据模型
      * @var string
      */
-    protected $table = 'SystemAuth';
+    public $table = 'SystemAuth';
 
     /**
      * 权限列表
@@ -51,7 +51,7 @@ class Auth extends BasicAdmin {
         $auth_id = $this->request->get('id', '0');
         switch (strtolower($this->request->get('action', '0'))) {
             case 'getnode':
-                $nodes = NodeModel::get();
+                $nodes = NodeService::get();
                 $checked = Db::name('SystemAuthNode')->where('auth', $auth_id)->column('node');
                 foreach ($nodes as $key => &$node) {
                     $node['checked'] = in_array($node['node'], $checked);
