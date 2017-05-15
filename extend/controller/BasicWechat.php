@@ -18,6 +18,11 @@ use service\WechatService;
 use think\Controller;
 use think\Log;
 
+/**
+ * 微信基础控制器
+ * Class BasicWechat
+ * @package controller
+ */
 class BasicWechat extends Controller {
 
     /**

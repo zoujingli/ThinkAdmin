@@ -21,10 +21,8 @@ use think\Db;
 
 /**
  * 后台权限基础控制器
- *
+ * Class BasicAdmin
  * @package controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/02/13 14:24
  */
 class BasicAdmin extends Controller {
 
@@ -84,7 +82,7 @@ class BasicAdmin extends Controller {
         if ($pk_value !== '') { // Edit Options
             !empty($pk_value) && $db->where($pk, $pk_value);
             !empty($where) && $db->where($where);
-            $vo = array_merge($data, (array) $db->find());
+            $vo = array_merge($data, (array)$db->find());
         }
         $this->_callback('_form_filter', $vo);
         $this->assign('vo', $vo);
