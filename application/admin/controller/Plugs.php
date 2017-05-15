@@ -97,7 +97,12 @@ class Plugs extends BasicAdmin {
                 break;
             case 'oss':
                 $time = time() + 3600;
-                $policyText = ['expiration' => date('Y-m-d', $time) . 'T' . date('H:i:s') . '.000Z', 'conditions' => [['content-length-range', 0, 1048576000]]];
+                $policyText = [
+                    'expiration' => date('Y-m-d', $time) . 'T' . date('H:i:s', $time) . '.000Z',
+                    'conditions' => [
+                        ['content-length-range', 0, 1048576000]
+                    ]
+                ];
                 $config['policy'] = base64_encode(json_encode($policyText));
                 $config['server'] = FileService::getUploadOssUrl();
                 $config['site_url'] = FileService::getBaseUriOss() . $filename;
