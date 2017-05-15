@@ -147,8 +147,8 @@ class BasicAdmin extends Controller {
      * @return bool
      */
     protected function _callback($method, &$data) {
-        foreach ([$method, "_" . $this->request->action() . "{$method}"] as $method) {
-            if (method_exists($this, $method) && false === $this->$method($data)) {
+        foreach ([$method, "_" . $this->request->action() . "{$method}"] as $_method) {
+            if (method_exists($this, $_method) && false === $this->$_method($data)) {
                 return false;
             }
         }
