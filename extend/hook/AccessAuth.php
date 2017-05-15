@@ -17,7 +17,6 @@ namespace hook;
 use think\Config;
 use think\exception\HttpResponseException;
 use think\Request;
-use think\Response;
 use think\View;
 
 /**

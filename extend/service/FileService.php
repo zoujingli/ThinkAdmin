@@ -113,7 +113,7 @@ class FileService {
 
     /**
      * 获取AliOSS上传地址
-     * @return type
+     * @return string
      */
     public static function getUploadOssUrl() {
         return (request()->isSsl() ? 'https' : 'http') . '://' . sysconf('storage_oss_domain');
@@ -198,30 +198,30 @@ class FileService {
     /**
      * 根据当前配置存储文件
      * @param string $filename
-     * @param string $bodycontent
+     * @param string $content
      * @param string|null $file_storage
      * @return array|false
      */
-    public static function save($filename, $bodycontent, $file_storage = null) {
+    public static function save($filename, $content, $file_storage = null) {
         $type = empty($file_storage) ? sysconf('storage_type') : $file_storage;
         if (!method_exists(__CLASS__, $type)) {
             Log::error("保存存储失败，调用{$type}存储引擎不存在！");
             return false;
         }
-        return self::$type($filename, $bodycontent);
+        return self::$type($filename, $content);
     }
 
     /**
      * 文件储存在本地
      * @param string $filename
-     * @param string $bodycontent
-     * @return string
+     * @param string $content
+     * @return array|null
      */
-    public static function local($filename, $bodycontent) {
+    public static function local($filename, $content) {
         try {
             $filepath = ROOT_PATH . 'static/upload/' . $filename;
             !file_exists(dirname($filepath)) && mkdir(dirname($filepath), '0755', true);
-            if (file_put_contents($filepath, $bodycontent)) {
+            if (file_put_contents($filepath, $content)) {
                 $url = pathinfo(request()->baseFile(true), PATHINFO_DIRNAME) . '/upload/' . $filename;
                 return ['file' => $filepath, 'hash' => md5_file($filepath), 'key' => "upload/{$filename}", 'url' => $url];
             }
@@ -234,14 +234,14 @@ class FileService {
     /**
      * 七牛云存储
      * @param string $filename
-     * @param string $bodycontent
-     * @return string
+     * @param string $content
+     * @return array|null
      */
-    public static function qiniu($filename, $bodycontent) {
+    public static function qiniu($filename, $content) {
         $auth = new Auth(sysconf('storage_qiniu_access_key'), sysconf('storage_qiniu_secret_key'));
         $token = $auth->uploadToken(sysconf('storage_qiniu_bucket'));
         $uploadMgr = new UploadManager();
-        list($result, $err) = $uploadMgr->put($token, $filename, $bodycontent);
+        list($result, $err) = $uploadMgr->put($token, $filename, $content);
         if ($err !== null) {
             Log::error('七牛云文件上传失败, ' . var_export($err, true));
             return null;
@@ -253,14 +253,14 @@ class FileService {
 
     /**
      * 阿里云OSS
-     * @param type $filename
-     * @param type $bodycontent
-     * @return type
+     * @param string $filename
+     * @param string $content
+     * @return array|null
      */
-    public static function oss($filename, $bodycontent) {
+    public static function oss($filename, $content) {
         try {
             $ossClient = new OssClient(sysconf('storage_oss_keyid'), sysconf('storage_oss_secret'), self::getBaseUriOss(), true);
-            $result = $ossClient->putObject(sysconf('storage_oss_bucket'), $filename, $bodycontent);
+            $result = $ossClient->putObject(sysconf('storage_oss_bucket'), $filename, $content);
             return ['file' => $filename, 'hash' => $result['content-md5'], 'key' => $filename, 'url' => $result['oss-request-url']];
         } catch (OssException $err) {
             Log::error('阿里云OSS文件上传失败, ' . var_export($err, true));

@@ -67,7 +67,7 @@ class Menu extends BasicAdmin {
      * 编辑菜单
      */
     public function edit() {
-        return $this->add();
+        return $this->_form($this->table, 'form');
     }
 
     /**
@@ -93,7 +93,7 @@ class Menu extends BasicAdmin {
                 }
             }
             // 读取系统功能节点
-            $nodes = NodeService::get(APP_PATH);
+            $nodes = NodeService::get();
             foreach ($nodes as $key => $_vo) {
                 if (empty($_vo['is_menu'])) {
                     unset($nodes[$key]);
