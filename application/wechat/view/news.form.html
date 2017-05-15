@@ -244,7 +244,8 @@
 
                 /*! 删除操作图文 */
                 $body.off('click', '.upload-multiple-close').on('click', '.upload-multiple-close', function () {
-                    $(this).parents('.news-item').remove();
+                    var $box = $(this).parents('.news-item');
+                    $box.add($box.next('hr')).remove();
                     $('.news-item').size() < 7 && $('.news-box .article-add').show();
                 });
 
