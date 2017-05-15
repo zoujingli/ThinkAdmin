@@ -9,12 +9,14 @@
         {if empty($vo['articles']) eq false}
         {foreach $vo.articles as $key=>$value}
         <div class="news-item transition" data-id="{$value.id}" style="background-image:url('{$value.local_url}?imageView2/1/w/338/h/190/interlace/1')">
+            <a class="upload-multiple-close fa fa-close hide"></a>
             <span class="news-title">{$value.title}</span>
         </div>
         <hr/>
         {/foreach}
         {else}
         <div class="news-item transition active news-image" style="background-image:url('__PUBLIC__/static/plugs/uploader/theme/image.png')">
+            <a class="upload-multiple-close fa fa-close hide"></a>
             <span class="news-title"></span>
         </div>
         <hr/>
@@ -216,7 +218,7 @@
 
                 /*! 添加新图文 */
                 $body.off('click', '.news-box .article-add').on('click', '.news-box .article-add', function () {
-                    var $html = $('<div class="news-item transition" style="background-image:url(__PUBLIC__/static/plugs/uploader/theme/image.png)"><span class="news-title"></span></div><hr />');
+                    var $html = $('<div class="news-item transition" style="background-image:url(__PUBLIC__/static/plugs/uploader/theme/image.png)"><a class="upload-multiple-close fa fa-close hide"></a><span class="news-title"></span></div><hr />');
                     $html.insertBefore(this).trigger('click');
                     $('.news-item').size() >= 7 && $(this).hide();
                 });
@@ -268,5 +270,7 @@
     .news-right .layui-input:hover, .news-right .layui-input:focus{border-color:#e5e6e7!important;}
     .news-right .input-group-addon{background:#fff;border-radius:0;border-color:#e5e6e7;}
     .news-right .upload-image-box{width:150px;height:120px;background-size:cover;background-position:center center;}
+    .news-item .upload-multiple-close{width:30px;height:30px;line-height:30px;text-align:center;background-color:rgba(0,0,0,.5);color:#fff;float:right}
+    .news-item .upload-multiple-close:hover{text-decoration:none}
 </style>
 {/block}
