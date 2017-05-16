@@ -146,6 +146,7 @@
 {/block}
 
 {block name="script"}
+{if auth("$classuri/tagset")}
 <script>
     // 添加标签
     $('body').find('[data-add-tag]').map(function () {
@@ -185,4 +186,5 @@
         });
     });
 </script>
+{/if}
 {/block}

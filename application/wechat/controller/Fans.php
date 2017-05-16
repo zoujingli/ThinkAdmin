@@ -68,7 +68,6 @@ class Fans extends BasicAdmin {
             }
         }
         $this->assign('tags', $tags);
-        $this->assign('alert', ['type' => 'success', 'title' => '开发中', 'content' => '请稍候...']);
     }
 
     /**
