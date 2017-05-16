@@ -48,7 +48,7 @@ class Document extends BasicAdmin {
      * 列表数据处理
      * @param array $data
      */
-    protected function _index_data_filter(&$data) {
+    protected function _category_data_filter(&$data) {
         foreach ($data as &$vo) {
             ($vo['url'] !== '#') && ($vo['url'] = url($vo['url']));
             $vo['ids'] = join(',', ToolsService::getArrSubIds($data, $vo['id']));
