@@ -14,9 +14,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\NodeModel;
 use controller\BasicAdmin;
 use service\DataService;
+use service\NodeService;
 use service\ToolsService;
 use think\Db;
 use think\View;
@@ -35,10 +35,10 @@ class Index extends BasicAdmin {
      * @return View
      */
     public function index() {
-        NodeModel::applyAuthNode();
+        NodeService::applyAuthNode();
         $list = Db::name('SystemMenu')->where('status', '1')->order('sort asc,id asc')->select();
         $menus = $this->_filterMenu(ToolsService::arr2tree($list));
-        $this->assign('title', '后台管理');
+        $this->assign('title', '系统管理');
         $this->assign('menus', $menus);
         return view();
     }
@@ -126,9 +126,8 @@ class Index extends BasicAdmin {
         }
         if (intval($this->request->request('id')) === intval(session('user.id'))) {
             return $this->_form('SystemUser', 'user/form');
-        } else {
-            $this->error('访问异常！');
         }
+        $this->error('访问异常！');
     }
 
 }

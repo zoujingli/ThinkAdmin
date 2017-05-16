@@ -14,9 +14,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\NodeModel;
 use controller\BasicAdmin;
 use service\LogService;
+use service\NodeService;
 use think\Db;
 
 /**
@@ -27,6 +27,18 @@ use think\Db;
  * @date 2017/02/10 13:59
  */
 class Login extends BasicAdmin {
+
+    /**
+     * 默认检查用户登录状态
+     * @var bool
+     */
+    public $checkLogin = false;
+
+    /**
+     * 默认检查节点访问权限
+     * @var bool
+     */
+    public $checkAuth = false;
 
     /**
      * 控制器基础方法
@@ -55,8 +67,8 @@ class Login extends BasicAdmin {
             ($user['password'] !== md5($password)) && $this->error('登录密码与账号不匹配，请重新输入!');
             Db::name('SystemUser')->where('id', $user['id'])->update(['login_at' => ['exp', 'now()'], 'login_num' => ['exp', 'login_num+1']]);
             session('user', $user);
-            !empty($user['authorize']) && NodeModel::applyAuthNode();
-            LogService::write('登录系统', '用户登录系统成功!');
+            !empty($user['authorize']) && NodeService::applyAuthNode();
+            LogService::write('系统管理', '用户登录系统成功');
             $this->success('登录成功，正在进入系统...', '@admin');
         }
     }
@@ -65,7 +77,7 @@ class Login extends BasicAdmin {
      * 退出登录
      */
     public function out() {
-        LogService::write('退出系统', '用户退出系统成功!');
+        LogService::write('系统管理', '用户退出系统成功');
         session('user', null);
         session_destroy();
         $this->success('退出登录成功！', '@admin/login');

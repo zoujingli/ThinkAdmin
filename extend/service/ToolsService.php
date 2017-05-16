@@ -28,7 +28,7 @@ class ToolsService {
     public static function corsOptionsHandler() {
         if (request()->isOptions()) {
             header('Access-Control-Allow-Origin:*');
-            header('Access-Control-Allow-Headers:Accept,Referer,Host,Keep-Alive,User-Agent,X-Requested-With,Cache-Control,Content-Type,token');
+            header('Access-Control-Allow-Headers:Accept,Referer,Host,Keep-Alive,User-Agent,X-Requested-With,Cache-Control,Content-Type,Cookie,token');
             header('Access-Control-Allow-Credentials:true');
             header('Access-Control-Allow-Methods:GET,POST,OPTIONS');
             header('Access-Control-Max-Age:1728000');

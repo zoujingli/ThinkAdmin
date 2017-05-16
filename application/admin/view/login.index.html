@@ -1,35 +1,37 @@
-{extend name="extra@admin/main" /}
+{extend name="extra@admin/main"}
 
 {block name="style"}
-<link rel="stylesheet" href="__STATIC__/theme/default/css/login.css">
+<link rel="stylesheet" href="__PUBLIC__/static/theme/default/css/login.css">
 {/block}
 
 {block name="body"}
 <div class="login-container" style="height:100%">
 
+    <!-- 动态云层动画 开始 -->
     <div class="clouds clouds-footer"></div>
     <div class="clouds"></div>
     <div class="clouds clouds-fast"></div>
+    <!-- 动态云层动画 结束 -->
 
+    <!-- 顶部导航条 开始 -->
     <div class="header">
         <span>欢迎登录后台管理界面平台</span>
         <ul>
             <li><a href="{:url('@')}">回首页</a></li>
             <li>
-                <a href="javascript:void(0)" target="_blank">
-                    <b style="color:#fff">帮助</b>
-                </a>
+                <a href="javascript:void(0)" target="_blank"><b style="color:#fff">帮助</b></a>
             </li>
             <li>
-                <a href="http://sw.bos.baidu.com/sw-search-sp/software/4bcf5e4f1835b/ChromeStandalone_54.0.2840.99_Setup.exe"
-                   target="_blank">
+                <a href="http://sw.bos.baidu.com/sw-search-sp/software/4bcf5e4f1835b/ChromeStandalone_54.0.2840.99_Setup.exe" target="_blank">
                     <b style="color:#fff">推荐谷歌浏览器</b>
                 </a>
             </li>
             <li><a target="_blank" href="http://www.cuci.cc">楚才官网</a></li>
         </ul>
     </div>
+    <!-- 顶部导航条 结束 -->
 
+    <!-- 页面表单主体 开始 -->
     <div class="container" style="top:50%;margin-top:-300px">
 
         <form onsubmit="return false;" data-time="0.001" data-auto="true" method="post" class="content layui-form">
@@ -71,6 +73,7 @@
             </ul>
         </form>
     </div>
+    <!-- 页面表单主体 结束 -->
 
     <!-- 底部版权信息 开始 -->
     {if sysconf('site_copy')}

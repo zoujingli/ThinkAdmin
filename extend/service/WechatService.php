@@ -14,8 +14,8 @@
 
 namespace service;
 
-use think\Db;
 use think\Log;
+use think\Db;
 
 /**
  * 微信数据服务
@@ -72,7 +72,6 @@ class WechatService {
             # 上传图片素材
             $result = $wechat->uploadForeverMedia(array('media' => "@{$upload['file']}"), $type, $is_video, $video_info);
             # 删除本地文件
-            @unlink($filename);
             if (false !== $result) {
                 $data = ['md5' => $md5, 'type' => $type, 'appid' => $wechat->appid, 'media_id' => $result['media_id'], 'local_url' => $local_url,];
                 isset($result['url']) && $data['media_url'] = $result['url'];
@@ -209,6 +208,5 @@ class WechatService {
         }
         return !empty($result['next_openid']) ? self::syncBlackFans($result['next_openid']) : true;
     }
-
 
 }

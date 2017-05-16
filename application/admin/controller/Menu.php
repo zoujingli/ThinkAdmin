@@ -14,9 +14,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\NodeModel;
 use controller\BasicAdmin;
 use service\DataService;
+use service\NodeService;
 use service\ToolsService;
 use think\Db;
 
@@ -33,7 +33,7 @@ class Menu extends BasicAdmin {
      * 绑定操作模型
      * @var string
      */
-    protected $table = 'SystemMenu';
+    public $table = 'SystemMenu';
 
     /**
      * 菜单列表
@@ -60,9 +60,6 @@ class Menu extends BasicAdmin {
      * 添加菜单
      */
     public function add() {
-        if ($this->request->isPost()) {
-            $this->error('系统开发中，不要动菜单哦！');
-        }
         return $this->_form($this->table, 'form');
     }
 
@@ -70,7 +67,7 @@ class Menu extends BasicAdmin {
      * 编辑菜单
      */
     public function edit() {
-        return $this->add();
+        return $this->_form($this->table, 'form');
     }
 
     /**
@@ -96,7 +93,7 @@ class Menu extends BasicAdmin {
                 }
             }
             // 读取系统功能节点
-            $nodes = NodeModel::get(APP_PATH);
+            $nodes = NodeService::get();
             foreach ($nodes as $key => $_vo) {
                 if (empty($_vo['is_menu'])) {
                     unset($nodes[$key]);
@@ -104,8 +101,6 @@ class Menu extends BasicAdmin {
             }
             $this->assign('nodes', array_column($nodes, 'node'));
             $this->assign('menus', $menus);
-        } else {
-            $this->error('请不要改菜单构造！');
         }
     }
 
@@ -113,24 +108,20 @@ class Menu extends BasicAdmin {
      * 删除菜单
      */
     public function del() {
-        $this->error('别再删我菜单了...');
         if (DataService::update($this->table)) {
             $this->success("菜单删除成功！", '');
-        } else {
-            $this->error("菜单删除失败，请稍候再试！");
         }
+        $this->error("菜单删除失败，请稍候再试！");
     }
 
     /**
      * 菜单禁用
      */
     public function forbid() {
-        $this->error('请不要禁用菜单...');
         if (DataService::update($this->table)) {
             $this->success("菜单禁用成功！", '');
-        } else {
-            $this->error("菜单禁用失败，请稍候再试！");
         }
+        $this->error("菜单禁用失败，请稍候再试！");
     }
 
     /**
@@ -139,9 +130,8 @@ class Menu extends BasicAdmin {
     public function resume() {
         if (DataService::update($this->table)) {
             $this->success("菜单启用成功！", '');
-        } else {
-            $this->error("菜单启用失败，请稍候再试！");
         }
+        $this->error("菜单启用失败，请稍候再试！");
     }
 
 }

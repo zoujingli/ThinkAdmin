@@ -1,0 +1,88 @@
+{extend name='extra@admin/content'}
+
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    <button data-open="{:url('add')}" class='layui-btn layui-btn-small'>添加图文</button>
+</div>
+{/block}
+
+{block name='content'}
+
+<div id="news_box">
+    {foreach $list as $vo}
+    <div class="news_item">
+        <div class='news_tools hide'>
+            <a data-phone-view="{:url('@wechat/review')}?type=news&content={$vo.id}" href='javascript:void(0)'>预览</a>
+            <a data-modal="{:url('push')}?id={$vo.id}" href='javascript:void(0)'>推送</a>
+            <a data-open='{:url("edit")}?id={$vo.id}' href='javascript:void(0)'>编辑</a>
+            <a data-news-del="{$vo.id}" href='javascript:void(0)'>删除</a>
+        </div>
+        {foreach $vo.articles as $k => $v}
+        {if $k < 1}
+        <div data-tips-image='{$v.local_url}' class='news_articel_item' style='background-image:url("{$v.local_url}")'>
+            {if $v.title}<p>{$v.title}</p>{/if}
+        </div>
+        <div class="hr-line-dashed"></div>
+        {else}
+        <div class='news_articel_item other'>
+            <div class='right-text'>{$v.title}</div>
+            <div data-tips-image='{$v.local_url}' class='left-image' style='background-image:url("{$v.local_url}");'></div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        {/if}
+        {/foreach}
+    </div>
+    {/foreach}
+    <div style="clear:both"></div>
+</div>
+{if isset($page)}<p>{$page}</p>{/if}
+
+{/block}
+
+{block name='script'}
+<script>
+
+    $('body').on('mouseenter', '.news_item', function () {
+        $(this).find('.news_tools').removeClass('hide');
+    }).on('mouseleave', '.news_item', function () {
+        $(this).find('.news_tools').addClass('hide');
+    });
+
+    require(['jquery.masonry'], function (Masonry) {
+        var container = document.querySelector('#news_box');
+        var msnry = new Masonry(container, {itemSelector: '.news_item', columnWidth: 0});
+        msnry.layout();
+        $('body').on('click', '[data-news-del]', function () {
+            var self = this;
+            $.msg.confirm('确定要删除图文吗？', function () {
+                $.form.load('{:url("del")}', {field: 'delete', value: 0, id: self.getAttribute('data-news-del')}, 'post', function (ret) {
+                    if (ret.code) {
+                        $(self).parents('.news_item').remove();
+                        return $.msg.success(ret.msg), msnry.layout(), false;
+                    }
+                    return $.msg.error(ret.msg), false;
+                });
+            });
+        });
+    });
+
+</script>
+{/block}
+
+{block name="style"}
+<style>
+
+    #news_box {position:relative;}
+    #news_box .news_item {position:relative;left:0;top:0;padding:5px;border:1px solid #ccc;box-sizing:content-box;margin:10px;width:300px}
+    #news_box .news_item .news_articel_item{background-position:center center;background-size:100%;position:relative;height:150px;width:100%;overflow:hidden;}
+    #news_box .news_item .news_articel_item p {padding:5px;max-height:5em;font-size:12px;color:#fff;overflow:hidden;text-overflow:ellipsis;background:rgba(0,0,0,0.7);position:absolute;width:100%;bottom:0}
+    #news_box .news_item .news_articel_item.other{height:50px;padding:5px 0;}
+    #news_box .news_item .news_articel_item .left-image{width:50px;height:50px;position:relative;float:left;background-position:center center;background-size:100%;overflow:hidden;}
+    #news_box .news_item .news_articel_item .right-text{float:left;width:250px;padding-right:10px;overflow:hidden;text-overflow:ellipsis;}
+    #news_box .news_item .hr-line-dashed:last-child{display:none}
+    #news_box .hr-line-dashed{margin:6px 0 1px 0}
+    #news_box .news_tools{top:0;z-index:80;color:#fff;width:312px;margin-left:-6px;position:absolute;background:rgba(0,0,0,0.7);text-align:right;padding:0 5px;line-height:38px;}
+    #news_box .news_tools a{color:#fff;margin-left:10px}
+
+</style>
+{/block}

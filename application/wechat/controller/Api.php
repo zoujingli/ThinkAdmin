@@ -31,7 +31,7 @@ class Api extends Controller {
 
     /**
      * 微信消息对象
-     * @var \Wechat\WechatReceive
+     * @var WechatReceive
      */
     protected $wechat;
 
@@ -104,7 +104,7 @@ class Api extends Controller {
                     return $this->wechat->music($info['music_title'], $info['music_desc'], $info['music_url'], $info['music_url'], $media_id)->reply();
                 case 'voice': /* 语音消息 */
                     empty($info['voice_url']) && exit('success');
-                    $media_id = WechatService::uploadForeverMedia($info['voice_url'], 'voice')->reply();
+                    $media_id = WechatService::uploadForeverMedia($info['voice_url'], 'voice');
                     empty($media_id) && exit('success');
                     return $this->wechat->voice($media_id)->reply();
                 case 'image': /* 图文消息 */
@@ -123,7 +123,6 @@ class Api extends Controller {
         return $this->_keys('wechat_keys#keys#default', true);
     }
 
-
     /**
      * 回复图文
      * @param int $news_id
@@ -137,7 +136,7 @@ class Api extends Controller {
                     'Title'       => $vo['title'],
                     'Description' => $vo['digest'],
                     'PicUrl'      => $vo['local_url'],
-                    'Url'         => url("@wechat/view/news/id/{$vo['id']}", '', true, true)
+                    'Url'         => url("@wechat/review", '', true, true) . "?content={$vo['id']}&type=article",
                 ];
             }
             return $this->wechat->news($newsdata)->reply();
@@ -151,18 +150,18 @@ class Api extends Controller {
     protected function _event() {
         $event = $this->wechat->getRevEvent();
         switch (strtolower($event['event'])) {
-            /* 关注事件 */
+            /* 粉丝关注事件 */
             case 'subscribe':
                 $this->_syncFans(true);
                 if (!empty($event['key']) && stripos($event['key'], 'qrscene_') !== false) {
                     $this->_spread(preg_replace('|^.*?(\d+).*?$|', '$1', $event['key']));
                 }
                 return $this->_keys('wechat_keys#keys#subscribe');
-            /* 取消关注 */
+            /* 粉丝取消关注 */
             case 'unsubscribe':
                 $this->_syncFans(false);
                 exit('success');
-            /* 点击菜单 */
+            /* 点击菜单事件 */
             case 'click':
                 return $this->_keys($event['key']);
             /* 扫码推事件 */
@@ -193,10 +192,8 @@ class Api extends Controller {
             return false;
         }
         // 标识推荐关系
-        Db::name('WechatFans')
-            ->where('openid', $this->openid)
-            ->where('(spread_openid is null or spread_openid="")')
-            ->setField(['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')]);
+        $data = ['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')];
+        Db::name('WechatFans')->where("openid='{$this->openid}' and (spread_openid is null or spread_openid='')")->setField($data);
         // @todo 推荐成功的奖励
     }
 
@@ -229,7 +226,7 @@ class Api extends Controller {
                 WechatService::setFansInfo($userInfo, $wechat->appid);
             }
         } else {
-            $data = ['subscribe' => '0', 'appid' => $this->appid, 'openid' => $this->openid];
+            $data = ['subscribe' => '0', 'appid' => $this->wechat->appid, 'openid' => $this->openid];
             DataService::save('wechat_fans', $data, ['appid', 'openid']);
         }
     }

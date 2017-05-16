@@ -11,7 +11,6 @@
 
 namespace think\model\relation;
 
-use think\Db;
 use think\db\Query;
 use think\Exception;
 use think\Loader;
@@ -56,7 +55,14 @@ class MorphMany extends Relation
         if ($closure) {
             call_user_func_array($closure, [ & $this->query]);
         }
-        return $this->relation($subRelation)->select();
+        $list   = $this->relation($subRelation)->select();
+        $parent = clone $this->parent;
+
+        foreach ($list as &$model) {
+            $model->setParent($parent);
+        }
+
+        return $list;
     }
 
     /**
@@ -119,7 +125,11 @@ class MorphMany extends Relation
                 if (!isset($data[$result->$pk])) {
                     $data[$result->$pk] = [];
                 }
-                $result->setAttr($attr, $this->resultSetBuild($data[$result->$pk]));
+                foreach ($data[$result->$pk] as &$relationModel) {
+                    $relationModel->setParent(clone $result);
+                    $relationModel->isUpdate(true);
+                }
+                $result->setRelation($attr, $this->resultSetBuild($data[$result->$pk]));
             }
         }
     }
@@ -141,7 +151,17 @@ class MorphMany extends Relation
                 $this->morphKey  => $result->$pk,
                 $this->morphType => $this->type,
             ], $relation, $subRelation, $closure);
-            $result->setAttr(Loader::parseName($relation), $this->resultSetBuild($data[$result->$pk]));
+
+            if (!isset($data[$result->$pk])) {
+                $data[$result->$pk] = [];
+            }
+
+            foreach ($data[$result->$pk] as &$relationModel) {
+                $relationModel->setParent(clone $result);
+                $relationModel->isUpdate(true);
+            }
+
+            $result->setRelation(Loader::parseName($relation), $this->resultSetBuild($data[$result->$pk]));
         }
     }
 
@@ -215,7 +235,7 @@ class MorphMany extends Relation
      * 保存（新增）当前关联数据对象
      * @access public
      * @param mixed $data 数据 可以使用数组 关联模型对象 和 关联对象的主键
-     * @return integer
+     * @return Model|false
      */
     public function save($data)
     {
@@ -225,10 +245,10 @@ class MorphMany extends Relation
         // 保存关联表数据
         $pk = $this->parent->getPk();
 
+        $model                  = new $this->model;
         $data[$this->morphKey]  = $this->parent->$pk;
         $data[$this->morphType] = $this->type;
-        $model                  = new $this->model;
-        return $model->save($data);
+        return $model->save($data) ? $model : false;
     }
 
     /**
@@ -253,7 +273,7 @@ class MorphMany extends Relation
      */
     protected function baseQuery()
     {
-        if (empty($this->baseQuery)) {
+        if (empty($this->baseQuery) && $this->parent->getData()) {
             $pk                    = $this->parent->getPk();
             $map[$this->morphKey]  = $this->parent->$pk;
             $map[$this->morphType] = $this->type;

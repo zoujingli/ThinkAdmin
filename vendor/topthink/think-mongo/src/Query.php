@@ -1045,6 +1045,17 @@ class Query
     }
 
     /**
+     * 设置软删除字段及条件（暂无支持）
+     * @access public
+     * @param false|string  $field     查询字段
+     * @param mixed         $condition 查询条件
+     * @return $this
+     */
+    public function useSoftDelete($field, $condition = null)
+    {
+    }
+
+    /**
      * 不主动获取数据集
      * @access public
      * @param bool $cursor 是否返回 Cursor 对象
@@ -1800,7 +1811,7 @@ class Query
      * 查找单条记录
      * @access public
      * @param array|string|Query|\Closure $data
-     * @return array|false|Cursor|string|Model
+     * @return array|null|Cursor|string|Model
      * @throws ModelNotFoundException
      * @throws DataNotFoundException
      * @throws AuthenticationException
@@ -2005,6 +2016,8 @@ class Query
             $result = $this->table($tableName)->find();
             if ($result instanceof Model) {
                 $result = $result->toArray();
+            } elseif (!$result) {
+                $result = [];
             }
             $fields = array_keys($result);
             $type   = [];

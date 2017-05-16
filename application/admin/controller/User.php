@@ -31,7 +31,7 @@ class User extends BasicAdmin {
      * 指定当前数据表
      * @var string
      */
-    protected $table = 'SystemUser';
+    public $table = 'SystemUser';
 
     /**
      * 用户列表
@@ -44,11 +44,10 @@ class User extends BasicAdmin {
         // 实例Query对象
         $db = Db::name($this->table)->where('is_deleted', '0');
         // 应用搜索条件
-        if (isset($get['username']) && $get['username'] !== '') {
-            $db->where('username', 'like', "%{$get['username']}%");
-        }
-        if (isset($get['phone']) && $get['phone'] !== '') {
-            $db->where('phone', 'like', "%{$get['phone']}%");
+        foreach (['username', 'phone'] as $key) {
+            if (isset($get[$key]) && $get[$key] !== '') {
+                $db->where($key, 'like', "%{$get[$key]}%");
+            }
         }
         // 实例化并显示
         parent::_list($db);
@@ -73,7 +72,7 @@ class User extends BasicAdmin {
      * 用户编辑
      */
     public function edit() {
-        return $this->add();
+        return $this->_form($this->table, 'form');
     }
 
     /**
@@ -93,9 +92,8 @@ class User extends BasicAdmin {
         }
         if (DataService::save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
             $this->success('密码修改成功，下次请使用新密码登录！', '');
-        } else {
-            $this->error('密码修改失败，请稍候再试！');
         }
+        $this->error('密码修改失败，请稍候再试！');
     }
 
     /**
@@ -127,9 +125,8 @@ class User extends BasicAdmin {
         }
         if (DataService::update($this->table)) {
             $this->success("用户删除成功！", '');
-        } else {
-            $this->error("用户删除失败，请稍候再试！");
         }
+        $this->error("用户删除失败，请稍候再试！");
     }
 
     /**
@@ -141,9 +138,8 @@ class User extends BasicAdmin {
         }
         if (DataService::update($this->table)) {
             $this->success("用户禁用成功！", '');
-        } else {
-            $this->error("用户禁用失败，请稍候再试！");
         }
+        $this->error("用户禁用失败，请稍候再试！");
     }
 
     /**
@@ -152,9 +148,8 @@ class User extends BasicAdmin {
     public function resume() {
         if (DataService::update($this->table)) {
             $this->success("用户启用成功！", '');
-        } else {
-            $this->error("用户启用失败，请稍候再试！");
         }
+        $this->error("用户启用失败，请稍候再试！");
     }
 
 }

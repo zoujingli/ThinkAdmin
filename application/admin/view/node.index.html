@@ -1,11 +1,11 @@
-{extend name='extra@admin/content' /}
+{extend name='extra@admin/content'}
 
 {block name="content"}
 <table class="table table-hover">
     <thead>
         <tr>
             <th style="width:20px"></th>
-            <th class='text-left'>节点</th>
+            <th class='text-left'>系统节点结构</th>
             <th class='text-left'></th>
             <th>&nbsp;</th>
         </tr>
@@ -26,7 +26,7 @@
                     {if substr_count($vo['node'],'/')==2}
                     {notempty name='vo.is_auth'}
                     <input name='is_auth.{$vo.node}' checked='checked' class="check-box" type='checkbox' value='1'/>
-                    {else /}
+                    {else}
                     <input name='is_auth.{$vo.node}' class="check-box" type='checkbox' value='1'/>
                     {/notempty}
                     加入权限控制
@@ -37,7 +37,7 @@
                     {if substr_count($vo['node'],'/')==2}
                     {notempty name='vo.is_menu'}
                     <input name='is_menu.{$vo.node}' checked='checked' class='check-box' type='checkbox' value='1'/>
-                    {else/}
+                    {else}
                     <input name='is_menu.{$vo.node}' class='check-box' type='checkbox' value='1'/>
                     {/notempty}
                     可设为菜单

@@ -66,6 +66,8 @@ class Connection
         'hostname'        => '',
         // 数据库名
         'database'        => '',
+        // 是否是复制集
+        'is_replica_set'  => false,
         // 用户名
         'username'        => '',
         // 密码
@@ -160,6 +162,18 @@ class Connection
             }
         }
         return $this->links[$linkNum];
+    }
+
+    /**
+     * 指定当前使用的查询对象
+     * @access public
+     * @param Query $query 查询对象
+     * @return $this
+     */
+    public function setQuery($query, $model = 'db')
+    {
+        $this->query[$model] = $query;
+        return $this;
     }
 
     /**
@@ -567,7 +581,11 @@ class Connection
             // 主从式采用读写分离
             if ($master) // 主服务器写入
             {
-                $r = $m;
+                if ($this->config['is_replica_set']) {
+                    return $this->replicaSetConnect();
+                } else {
+                    $r = $m;
+                }
             } elseif (is_numeric($this->config['slave_no'])) {
                 // 指定服务器读
                 $r = $this->config['slave_no'];
@@ -584,6 +602,41 @@ class Connection
             $dbConfig[$name] = isset($_config[$name][$r]) ? $_config[$name][$r] : $_config[$name][0];
         }
         return $this->connect($dbConfig, $r);
+    }
+
+    /**
+     * 创建基于复制集的连接
+     * @return Manager
+     */
+    public function replicaSetConnect()
+    {
+        $this->dbName  = $this->config['database'];
+        $this->typeMap = $this->config['type_map'];
+        if ($this->config['debug']) {
+            $startTime = microtime(true);
+        }
+        $this->config['params']['replicaSet'] = $this->config['database'];
+        $manager                              = new Manager($this->buildUrl(), $this->config['params']);
+        if ($this->config['debug']) {
+            // 记录数据库连接信息
+            Log::record('[ DB ] CONNECT:[ UseTime:' . number_format(microtime(true) - $startTime, 6) . 's ] ' . $this->config['dsn'], 'sql');
+        }
+        return $manager;
+    }
+
+    /**
+     * 根据配置信息 生成适用于链接复制集的 URL
+     * @return string
+     */
+    private function buildUrl()
+    {
+        $url      = 'mongodb://' . ($this->config['username'] ? "{$this->config['username']}" : '') . ($this->config['password'] ? ":{$this->config['password']}@" : '');
+        $hostList = explode(',', $this->config['hostname']);
+        $portList = explode(',', $this->config['hostport']);
+        for ($i = 0; $i < count($hostList); $i++) {
+            $url = $url . $hostList[$i] . ':' . $portList[0] . ',';
+        }
+        return rtrim($url, ",") . '/';
     }
 
     /**

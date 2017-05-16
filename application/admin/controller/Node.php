@@ -14,9 +14,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\NodeModel as NodeModel;
 use controller\BasicAdmin;
 use service\DataService;
+use service\NodeService;
 use service\ToolsService;
 
 /**
@@ -32,20 +32,19 @@ class Node extends BasicAdmin {
      * 指定当前默认模型
      * @var string
      */
-    protected $table = 'SystemNode';
+    public $table = 'SystemNode';
 
     /**
      * 显示节点列表
      */
     public function index() {
-        $alert = [
+        $this->assign('alert', [
             'type'    => 'danger',
             'title'   => '安全警告',
             'content' => '结构为系统自动生成，状态数据请勿随意修改！'
-        ];
-        $this->assign('alert', $alert);
+        ]);
         $this->assign('title', '系统节点管理');
-        $this->assign('nodes', ToolsService::arr2table(NodeModel::get(), 'node', 'pnode'));
+        $this->assign('nodes', ToolsService::arr2table(NodeService::get(), 'node', 'pnode'));
         return view();
     }
 

@@ -153,7 +153,6 @@ class Tools {
                     $value = new CURLFile(realpath(trim($value, '@')));
                 }
             }
-            $data = http_build_query($data);
         }
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $data = curl_exec($ch);

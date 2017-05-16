@@ -13,7 +13,8 @@
 // +----------------------------------------------------------------------
 
 
-use app\admin\model\NodeModel;
+use service\DataService;
+use service\NodeService;
 use Wechat\Loader;
 use think\Db;
 
@@ -32,7 +33,7 @@ function p($data, $replace = false, $pathname = NULL) {
 /**
  * 获取微信操作对象
  * @param string $type
- * @return \Wechat\WechatReceive|\Wechat\WechatUser|\Wechat\WechatPay|\Wechat\WechatScript|\Wechat\WechatOauth
+ * @return \Wechat\WechatReceive|\Wechat\WechatUser|\Wechat\WechatPay|\Wechat\WechatScript|\Wechat\WechatOauth|\Wechat\WechatMenu
  */
 function & load_wechat($type = '') {
     static $wechat = array();
@@ -49,7 +50,7 @@ function & load_wechat($type = '') {
             'ssl_key'        => sysconf('wechat_cert_key'),
             'cachepath'      => CACHE_PATH . 'wxpay' . DS,
         ];
-        $wechat[$index] = &Loader::get($type, $config);
+        $wechat[$index] = Loader::get($type, $config);
     }
     return $wechat[$index];
 }
@@ -81,16 +82,22 @@ function decode($string) {
  * @return bool
  */
 function auth($node) {
-    return NodeModel::checkAuthNode($node);
+    return NodeService::checkAuthNode($node);
 }
 
 /**
- * 从配置表读取配置信息
- * @param string $name
- * @return string
+ * 设备或配置系统参数
+ * @param string $name 参数名称
+ * @param bool $value 默认是false为获取值，否则为更新
+ * @return string|bool
  */
-function sysconf($name) {
+function sysconf($name, $value = false) {
     static $config = [];
+    if ($value !== false) {
+        $config = [];
+        $data = ['name' => $name, 'value' => $value];
+        return DataService::save('SystemConfig', $data, 'name');
+    }
     if (empty($config)) {
         foreach (Db::name('SystemConfig')->select() as $vo) {
             $config[$vo['name']] = $vo['value'];

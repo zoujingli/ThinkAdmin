@@ -15,7 +15,7 @@
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
-use service\DataService;
+use service\LogService;
 
 /**
  * 后台参数配置控制器
@@ -30,13 +30,13 @@ class Config extends BasicAdmin {
      * 当前默认数据模型
      * @var string
      */
-    protected $table = 'SystemConfig';
+    public $table = 'SystemConfig';
 
     /**
      * 当前页面标题
      * @var string
      */
-    protected $title = '网站参数配置';
+    public $title = '网站参数配置';
 
     /**
      * 显示系统常规配置
@@ -45,10 +45,10 @@ class Config extends BasicAdmin {
         if (!$this->request->isPost()) {
             parent::_list($this->table);
         } else {
-            $data = $this->request->post();
-            foreach ($data as $key => $vo) {
-                DataService::save($this->table, ['name' => $key, 'value' => $vo], 'name');
+            foreach ($this->request->post() as $key => $vo) {
+                sysconf($key, $vo);
             }
+            LogService::write('系统管理', '修改系统配置参数成功');
             $this->success('数据修改成功！', '');
         }
     }
@@ -57,29 +57,12 @@ class Config extends BasicAdmin {
      * 文件存储配置
      */
     public function file() {
-        $alert = [
-            'type'    => 'info',
+        $this->assign('alert', [
+            'type'    => 'success',
             'title'   => '操作提示',
             'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'
-        ];
-        $this->assign('alert', $alert);
+        ]);
         $this->title = '文件存储配置';
-        $this->index();
-    }
-
-    /**
-     * 邮件账号配置
-     */
-    public function mail() {
-        $this->title = '邮箱账号配置';
-        $this->index();
-    }
-
-    /**
-     * 短信通道账号配置
-     */
-    public function sms() {
-        $this->title = '短信账号配置';
         $this->index();
     }
 
