@@ -67,11 +67,8 @@ class Fans extends BasicAdmin {
                 }
             }
         }
-        $this->assign('alert', [
-            'type'    => 'success',
-            'title'   => '开发中',
-            'content' => '请稍候...'
-        ]);
+        $this->assign('tags', $tags);
+        $this->assign('alert', ['type' => 'success', 'title' => '开发中', 'content' => '请稍候...']);
     }
 
     /**
@@ -101,6 +98,27 @@ class Fans extends BasicAdmin {
             $this->success("已成功将 " . count($openids) . " 名粉丝移到黑名单!", '');
         }
         $this->error("设备黑名单失败，请稍候再试！{$wechat->errMsg}[{$wechat->errCode}]");
+    }
+
+    /**
+     * 标签选择
+     */
+    public function tagset() {
+        $tags = $this->request->post('tags', '');
+        $fans_id = $this->request->post('fans_id', '');
+        $fans = Db::name('WechatFans')->where('id', $fans_id)->find();
+        empty($fans) && $this->error('需要操作的数据不存在!');
+        $wechat = & load_wechat('User');
+        foreach (explode(',', $fans['tagid_list']) as $tagid) {
+            is_numeric($tagid) && $wechat->batchDeleteUserTag($tagid, [$fans['openid']]);
+        }
+        foreach (explode(',', $tags) as $tagid) {
+            is_numeric($tagid) && $wechat->batchAddUserTag($tagid, [$fans['openid']]);
+        }
+        if (false !== Db::name('WechatFans')->where('id', $fans_id)->setField('tagid_list', $tags)) {
+            $this->success('粉丝标签成功!', '');
+        }
+        $this->error('粉丝标签设置失败, 请稍候再试!');
     }
 
     /**
