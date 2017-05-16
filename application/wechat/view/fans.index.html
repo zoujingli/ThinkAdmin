@@ -45,6 +45,21 @@
 
         <div class="col-xs-2">
             <div class="form-group">
+                <select name="tag" class="input-sm form-control">
+                    <option value="">- 粉丝标签 -</option>
+                    <!--{foreach $tags as $key=>$tag}-->
+                    <!--{if $Think.get.tag eq $key}-->
+                    <option selected value="{$key}">{$tag}</option>
+                    <!--{else}-->
+                    <option value="{$key}">{$tag}</option>
+                    <!--{/if}-->
+                    <!--{/foreach}-->
+                </select>
+            </div>
+        </div>
+
+        <div class="col-xs-2">
+            <div class="form-group">
                 <input type="text" name="country" value="{$Think.get.country|default=''}" placeholder="国家" class="input-sm form-control">
             </div>
         </div>

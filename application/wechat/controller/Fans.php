@@ -48,6 +48,9 @@ class Fans extends BasicAdmin {
                 $db->where($key, 'like', "%{$get[$key]}%");
             }
         }
+        if (isset($get['tag']) && $get['tag'] !== '') {
+            $db->where("concat(',',tagid_list,',') like :tag", ['tag' => "%,{$get['tag']},%"]);
+        }
         return parent::_list($db);
     }
 
