@@ -28,12 +28,20 @@ use think\Db;
  * @date 2017/02/15
  */
 class Document extends BasicAdmin {
+	
+	public $document_table = 'AppsDocument';
 
     /**
-     * 绑定操作模型
+     * 绑定分类操作模型
      * @var string
      */
     public $category_table = 'AppsCategory';
+    
+    public function index() {
+    	$this->title = '文档列表';
+    	$this->assign('categories', Db::name($this->category_table)->column('title'));
+    	parent::_list($this->document_table);
+    }
 
     /**
      * 菜单列表
@@ -60,7 +68,9 @@ class Document extends BasicAdmin {
      * 添加菜单
      */
     public function add() {
-        return $this->_form($this->category_table, 'form');
+    	$this->title = '添加文档';
+    	$this->assign('categories', Db::name($this->category_table)->column('title'));
+        return $this->_form($this->document_table, 'form');
     }
 
     /**
