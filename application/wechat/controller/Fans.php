@@ -16,6 +16,7 @@ namespace app\wechat\controller;
 
 use controller\BasicAdmin;
 use service\LogService;
+use service\ToolsService;
 use service\WechatService;
 use think\Db;
 
@@ -61,6 +62,7 @@ class Fans extends BasicAdmin {
     protected function _data_filter(&$list) {
         $tags = Db::name('WechatFansTags')->column('id,name');
         foreach ($list as &$vo) {
+            $vo['nickname'] = ToolsService::emojiDecode($vo['nickname']);
             $vo['tags_list'] = [];
             foreach (explode(',', $vo['tagid_list']) as $tag) {
                 if ($tag !== '' && isset($tags[$tag])) {

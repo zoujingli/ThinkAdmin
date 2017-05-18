@@ -156,6 +156,7 @@ class WechatService {
             $userInfo['tagid_list'] = join(',', $userInfo['tagid_list']);
         }
         $userInfo['appid'] = $appid;
+        $userInfo['nickname'] = ToolsService::emojiEncode($userInfo['nickname']);
         return DataService::save('WechatFans', $userInfo, 'openid');
     }
 
@@ -168,7 +169,10 @@ class WechatService {
     public static function getFansInfo($openid, $appid = null) {
         $map = ['openid' => $openid];
         is_string($appid) && $map['appid'] = $appid;
-        return Db::name('WechatFans')->where($map)->find();
+        if (($fans = Db::name('WechatFans')->where($map)->find()) && isset($fans['nickname'])) {
+            $fans['nickname'] = ToolsService::emojiDecode($fans['nickname']);
+        }
+        return $fans;
     }
 
     /**
@@ -178,19 +182,18 @@ class WechatService {
      */
     public static function syncAllFans($next_openid = '') {
         $wechat = &load_wechat('User');
-        $result = $wechat->getUserList($next_openid);
-        if ($result === false || empty($result['data']['openid'])) {
-            Log::error("获取粉丝列表失败，{$wechat->errMsg} [{$wechat->errCode}]");
+        if (false === ($result = $wechat->getUserList($next_openid)) || empty($result['data']['openid'])) {
+            Log::error("获取粉丝列表失败, {$wechat->errMsg} [{$wechat->errCode}]");
             return false;
         }
         foreach (array_chunk($result['data']['openid'], 100) as $openids) {
             if (false === ($info = $wechat->getUserBatchInfo($openids)) || !is_array($info)) {
-                Log::error("获取用户信息失败，$wechat->errMsg");
+                Log::error("获取用户信息失败, {$wechat->errMsg} [{$wechat->errCode}]");
                 return false;
             }
             foreach ($info as $userInfo) {
                 if (false === self::setFansInfo($userInfo, $wechat->appid)) {
-                    Log::error('更新粉丝信息更新失败！');
+                    Log::error('更新粉丝信息更新失败!');
                     return false;
                 }
                 if ($result['next_openid'] === $userInfo['openid']) {
