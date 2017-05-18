@@ -59,9 +59,9 @@ class BasicAdmin extends Controller {
      * @param array $data 扩展数据
      * @return array|string
      */
-    protected function _form($dbQuery = null, $tplFile = '', $pkField = null, $where = [], $data = []) {
+    protected function _form($dbQuery = null, $tplFile = '', $pkField = '', $where = [], $data = []) {
         $db = is_null($dbQuery) ? Db::name($this->table) : (is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery);
-        $pk = is_null($pkField) ? ($db->getPk() ? $db->getPk() : 'id') : $pkField;
+        $pk = empty($pkField) ? ($db->getPk() ? $db->getPk() : 'id') : $pkField;
         $pkValue = $this->request->request($pk, isset($where[$pk]) ? $where[$pk] : (isset($data[$pk]) ? $data[$pk] : null));
         // POST请求, 数据自动存库
         if ($this->request->isPost()) {
