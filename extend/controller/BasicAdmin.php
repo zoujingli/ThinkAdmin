@@ -52,42 +52,32 @@ class BasicAdmin extends Controller {
 
     /**
      * 表单默认操作
-     * @param Query $db 数据库查询对象
-     * @param string $tpl 显示模板名字
-     * @param string $pk 更新主键规则
+     * @param Query $dbQuery 数据库查询对象
+     * @param string $tplFile 显示模板名字
+     * @param string $pkField 更新主键规则
      * @param array $where 查询规则
      * @param array $data 扩展数据
      * @return array|string
      */
-    protected function _form($db = null, $tpl = null, $pk = null, $where = [], $data = []) {
-        if (is_null($db)) {
-            $db = Db::name($this->table);
-        } elseif (is_string($db)) {
-            $db = Db::name($db);
-        }
-        if (is_null($pk)) {
-            $pk = $db->getPk();
-        }
-        $pk_value = input($pk, isset($where[$pk]) ? $where[$pk] : (isset($data[$pk]) ? $data[$pk] : ''));
-        $vo = $data;
-        if ($this->request->isPost()) { // Save Options
-            $vo = array_merge(input('post.'), $data);
-            $this->_callback('_form_filter', $vo);
-            $result = DataService::save($db, $vo, $pk, $where);
-            if (false !== $this->_callback('_form_result', $result)) {
-                $result !== false ? $this->success('恭喜，保存成功哦！', '') : $this->error('保存失败，请稍候再试！');
+    protected function _form($dbQuery = null, $tplFile = '', $pkField = null, $where = [], $data = []) {
+        $db = is_null($dbQuery) ? Db::name($this->table) : (is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery);
+        $pk = is_null($pkField) ? ($db->getPk() ? $db->getPk() : 'id') : $pkField;
+        $pkValue = $this->request->request($pk, isset($where[$pk]) ? $where[$pk] : (isset($data[$pk]) ? $data[$pk] : null));
+        // POST请求, 数据自动存库
+        if ($this->request->isPost()) {
+            $data = array_merge($this->request->post(), $data);
+            if (false !== $this->_callback('_form_filter', $data)) {
+                $result = DataService::save($db, $data, $pk, $where);
+                (false !== $this->_callback('_form_result', $result)) && ($result !== false ? $this->success('恭喜, 数据保存成功!', '') : $this->error('数据保存失败, 请稍候再试!'));
             }
             return $result;
         }
-        if ($pk_value !== '') { // Edit Options
-            !empty($pk_value) && $db->where($pk, $pk_value);
-            !empty($where) && $db->where($where);
-            $vo = array_merge($data, (array)$db->find());
+        // GET请求, 获取并显示表单页面
+        $vo = ($pkValue !== null) ? array_merge((array) $db->where($pk, $pkValue)->where($where)->find(), $data) : $data;
+        if (false !== $this->_callback('_form_filter', $vo)) {
+            return $this->fetch($tplFile, ['title' => $this->title, 'vo' => $vo]);
         }
-        $this->_callback('_form_filter', $vo);
-        $this->assign('vo', $vo);
-        empty($this->title) or $this->assign('title', $this->title);
-        return is_null($tpl) ? $vo : $this->fetch($tpl);
+        return $vo;
     }
 
     /**
