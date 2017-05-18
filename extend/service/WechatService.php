@@ -14,8 +14,8 @@
 
 namespace service;
 
-use think\Log;
 use think\Db;
+use think\Log;
 
 /**
  * 微信数据服务
@@ -50,6 +50,33 @@ class WechatService {
     }
 
     /**
+     * 上传图片到微信服务器 
+     * @param string $local_url
+     * @return string|null
+     */
+    public static function uploadImage($local_url) {
+        # 检测文件上否已经上传过了
+        if (($img = Db::name('WechatNewsImage')->where('md5', md5($local_url))->find()) && isset($img['media_url'])) {
+            return $img['media_url'];
+        }
+        # 下载临时文件到本地
+        $filename = 'wechat/image/' . join('/', str_split(md5($local_url), 16)) . '.' . strtolower(pathinfo($local_url, 4));
+        $result = FileService::local($filename, file_get_contents($local_url));
+        if ($result && isset($result['file'])) {
+            # 上传图片到微信服务器
+            $wechat = &load_wechat('media');
+            $mediainfo = $wechat->uploadImg(['media' => "@{$result['file']}"]);
+            if (!empty($mediainfo)) {
+                $data = ['local_url' => $local_url, 'media_url' => $mediainfo['url'], 'md5' => md5($local_url)];
+                Db::name('WechatNewsImage')->insert($data);
+                return $mediainfo['url'];
+            }
+        }
+        Log::error("图片上传失败，请稍后再试！{$wechat->errMsg}[{$wechat->errCode}]");
+        return null;
+    }
+
+    /**
      * 上传图片永久素材
      * @param string $local_url 文件URL地址
      * @param string $type 文件类型
@@ -60,28 +87,25 @@ class WechatService {
     public static function uploadForeverMedia($local_url = '', $type = 'image', $is_video = false, $video_info = array()) {
         # 检测文件上否已经上传过了
         $wechat = &load_wechat('media');
-        $map = ['md5' => ($md5 = md5($local_url)), 'appid' => $wechat->appid];
         # 检查文件URL是否已经上传为永久素材
-        if (($result = Db::name('WechatNewsMedia')->where($map)->find()) && !empty($result)) {
-            return $result['media_id'];
+        $map = ['md5' => ($md5 = md5($local_url)), 'appid' => $wechat->appid];
+        if (($img = Db::name('WechatNewsMedia')->where($map)->find()) && isset($img['media_id'])) {
+            return $img['media_id'];
         }
         # 下载临时文件到本地
-        $filename = 'wechat/' . join('/', str_split($md5, 16)) . '.' . pathinfo($local_url, PATHINFO_EXTENSION);
+        $filename = 'wechat/image/' . join('/', str_split(md5($local_url), 16)) . '.' . strtolower(pathinfo($local_url, 4));
         $upload = FileService::local($filename, file_get_contents($local_url));
         if (!empty($upload) && isset($upload['file']) && file_exists($upload['file'])) {
-            # 上传图片素材
-            $result = $wechat->uploadForeverMedia(array('media' => "@{$upload['file']}"), $type, $is_video, $video_info);
-            # 删除本地文件
-            if (false !== $result) {
-                $data = ['md5' => $md5, 'type' => $type, 'appid' => $wechat->appid, 'media_id' => $result['media_id'], 'local_url' => $local_url,];
+            # 上传图片到微信服务器
+            if (false !== ($result = $wechat->uploadForeverMedia(array('media' => "@{$upload['file']}"), $type, $is_video, $video_info))) {
+                $data = ['md5' => $md5, 'type' => $type, 'appid' => $wechat->appid, 'media_id' => $result['media_id'], 'local_url' => $local_url];
                 isset($result['url']) && $data['media_url'] = $result['url'];
-                if (false !== Db::name('WechatNewsMedia')->insert($data)) {
-                    return $data['media_id'];
-                }
+                Db::name('WechatNewsMedia')->insert($data);
+                return $data['media_id'];
             }
         }
         Log::error("素材上传失败，请稍后再试！{$wechat->errMsg}[{$wechat->errCode}]");
-        return NULL;
+        return null;
     }
 
     /**

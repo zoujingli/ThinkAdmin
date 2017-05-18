@@ -1,0 +1,28 @@
+{extend name='extra@admin/main'}
+
+{block name="body"}
+<style>
+    body{min-width:100px!important}
+    .pagination{padding:0 10px}
+    .news-image{cursor:pointer;width:111px;height:120px;background-size:cover;background-position:center center;float:left;margin:10px;border:1px solid rgba(125,125,125,0.3)}
+</style>
+<div class="news-container" id='news_box'>
+    {foreach $list as $key=>$vo}
+    <a class="news-image transition" data-src='{$vo.local_url}' style="background-image:url('{$vo.local_url}')"></a>
+    {/foreach}
+    <div style='clear:both'></div>
+</div>
+
+{if isset($page)}{$page}{/if}
+<script>
+    require(['jquery'], function () {
+        $('body').on('click', '[data-open]', function () {
+            window.location.href = this.getAttribute('data-open');
+        }).on('click', '.news-image', function () {
+            var src = this.getAttribute('data-src');
+            top.$('[name="{$field}"]').val(src).trigger('change');
+            parent.layer.close(parent.layer.getFrameIndex(window.name));
+        });
+    });
+</script>
+{/block}
