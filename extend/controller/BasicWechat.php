@@ -47,7 +47,7 @@ class BasicWechat extends Controller {
      * 是否默认开启网页授权
      * @var bool
      */
-    protected $check_auth = true;
+    protected $checkAuth = true;
 
     /**
      * 初始化方法
@@ -57,6 +57,8 @@ class BasicWechat extends Controller {
         $this->url = $this->request->url(true);
         // 网页授权，并获粉丝信息
         $this->assign('jsSign', load_wechat('script')->getJsSign($this->url));
+        // 检查启用网页授权
+        $this->checkAuth && $this->oAuth();
     }
 
     /**
