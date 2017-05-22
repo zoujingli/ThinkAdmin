@@ -43,7 +43,7 @@ class Config extends BasicAdmin {
      */
     public function index() {
         if (!$this->request->isPost()) {
-            $this->assign('title', $this->table);
+            $this->assign('title', $this->title);
             return view();
         }
         foreach ($this->request->post() as $key => $vo) {
