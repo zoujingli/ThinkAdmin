@@ -150,6 +150,17 @@ class FileService {
     }
 
     /**
+     * 获取文件相对名称
+     * @param 文件标识 $source
+     * @param 文件后缀 $ext
+     * @param 文件前缀 $pre
+     * @return string
+     */
+    public static function getFileName($source, $ext = '', $pre = '') {
+        return $pre . join('/', str_split(md5($source), 16)) . '.' . $ext;
+    }
+
+    /**
      * 检查文件是否已经存在
      * @param string $filename
      * @param string|null $storage
@@ -222,8 +233,8 @@ class FileService {
             $filepath = ROOT_PATH . 'static/upload/' . $filename;
             !file_exists(dirname($filepath)) && mkdir(dirname($filepath), '0755', true);
             if (file_put_contents($filepath, $content)) {
-                $url = pathinfo(request()->baseFile(true), PATHINFO_DIRNAME) . '/upload/' . $filename;
-                return ['file' => $filepath, 'hash' => md5_file($filepath), 'key' => "upload/{$filename}", 'url' => $url];
+                $url = pathinfo(request()->baseFile(true), PATHINFO_DIRNAME) . '/static/upload/' . $filename;
+                return ['file' => $filepath, 'hash' => md5_file($filepath), 'key' => "static/upload/{$filename}", 'url' => $url];
             }
         } catch (Exception $err) {
             Log::error('本地文件存储失败, ' . var_export($err, true));
@@ -265,6 +276,26 @@ class FileService {
         } catch (OssException $err) {
             Log::error('阿里云OSS文件上传失败, ' . var_export($err, true));
             return null;
+        }
+    }
+
+    /**
+     * 下载文件到本地
+     * @param string $url 文件URL地址
+     * @param bool $isForce 是否强制重新下载文件
+     * @return array|null;
+     */
+    public static function download($url, $isForce = false) {
+        try {
+            $filename = self::getFileName($url, strtolower(pathinfo($url, 4)), 'download/');
+            if (false === $isForce && ($siteUrl = self::getFileUrl($filename, 'local'))) {
+                $realfile = ROOT_PATH . 'static/upload/' . $filename;
+                return ['file' => $realfile, 'hash' => md5_file($realfile), 'key' => "static/upload/{$filename}", 'url' => $siteUrl];
+            }
+            return self::local($filename, file_get_contents($url));
+        } catch (\Exception $e) {
+            Log::error("FileService 文件下载失败 [ {$url} ] . {$e->getMessage()}");
+            return false;
         }
     }
 
