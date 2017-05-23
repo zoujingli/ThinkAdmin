@@ -63,7 +63,7 @@ class Config extends BasicAdmin {
             'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'
         ]);
         $this->title = '文件存储配置';
-        $this->index();
+        return $this->index();
     }
 
 }
