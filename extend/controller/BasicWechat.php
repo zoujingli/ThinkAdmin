@@ -69,7 +69,7 @@ class BasicWechat extends Controller {
     protected function oAuth($fullMode = true) {
         // 本地开发调试用户 openid
         if (in_array($this->request->host(), ['127.0.0.1', 'localhost'])) {
-            session('openid', 'o38gps3vNdCqaggFfrBRCRikwlWY');
+            session('openid', 'oBWB3wWVNujb-PJlmPmxC5CBTNF0');
         }
         // 检查缓存中 openid 信息是否完整
         if (($this->openid = session('openid'))) {

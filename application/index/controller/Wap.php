@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
@@ -19,13 +20,25 @@ use service\PayService;
 
 class Wap extends BasicWechat {
 
-    protected $check_auth = false;
+    /**
+     * 禁用自动网页授权
+     * @var bool
+     */
+    protected $checkAuth = false;
 
+    /**
+     * 网页授权DEMO
+     */
     public function index() {
-        dump($this->oAuth());
-        dump($this->fansinfo);
+//        dump($this->oAuth(false)); // 仅获取用户openid
+        dump($this->oAuth());  // 获取用户详情信息
+        dump($this->fansinfo); // 打
     }
 
+    /**
+     * 微信二维码支付DEMO
+     * @return \think\response\Json|\think\response\View
+     */
     public function payqrc() {
         switch ($this->request->get('action')) {
             case 'payqrc':
@@ -52,6 +65,10 @@ class Wap extends BasicWechat {
         }
     }
 
+    /**
+     * 微信JSAPI支付DEMO
+     * @return \think\response\Json|\think\response\View
+     */
     public function payjs() {
         $this->openid = $this->oAuth(false);
         switch ($this->request->get('action')) {
@@ -76,7 +93,7 @@ class Wap extends BasicWechat {
                 break;
             default:
                 return view();
-
         }
     }
+
 }
