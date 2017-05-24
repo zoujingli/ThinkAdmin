@@ -18,8 +18,8 @@ use service\DataService;
 use service\WechatService;
 use Wechat\WechatReceive;
 use think\Controller;
-use think\Db;
 use think\Log;
+use think\Db;
 
 /**
  * 微信接口控制器
@@ -30,96 +30,126 @@ use think\Log;
 class Api extends Controller {
 
     /**
-     * 微信消息对象
-     * @var WechatReceive
-     */
-    protected $wechat;
-
-    /**
      * 微信openid
      * @var string
      */
     protected $openid;
 
+
+    /**
+     * 微信消息对象
+     * @var WechatReceive
+     */
+    protected $wechat;
+
+
+    /**
+     * 微信消息接口
+     * @return string
+     */
     public function index() {
-        /* 实例接口对象 */
+        // 实例接口对象
         $this->wechat = &load_wechat('Receive');
-        /* 验证接口请求 */
+        // 验证接口请求
         if ($this->wechat->valid() === false) {
             $msg = "{$this->wechat->errMsg}[{$this->wechat->errCode}]";
             Log::error($msg);
-            exit($msg);
+            return $msg;
         }
-        /* 获取消息openid */
+        // 获取消息来源用户OPENID
         $this->openid = $this->wechat->getRev()->getRevFrom();
-        /* 同步粉丝数据 */
+        // 获取并同步粉丝信息到数据库
         $this->_syncFans(true);
-        /* 分别执行对应类型的操作 */
+        // 分别执行对应类型的操作
         switch ($this->wechat->getRev()->getRevType()) {
             case WechatReceive::MSGTYPE_TEXT:
                 $keys = $this->wechat->getRevContent();
-                exit($this->_keys("wechat_keys#keys#{$keys}"));
+                return $this->_keys("wechat_keys#keys#{$keys}");
             case WechatReceive::MSGTYPE_EVENT:
-                exit($this->_event());
+                return $this->_event();
             case WechatReceive::MSGTYPE_IMAGE:
-                exit($this->_image());
+                return $this->_image();
             case WechatReceive::MSGTYPE_LOCATION:
-                exit($this->_location());
+                return $this->_location();
             default:
-                exit('success');
+                return 'success';
         }
     }
 
     /**
      * 关键字处理
      * @param string $keys 关键字（常规或规格关键字）
-     * @param bool $default 是否启用默认模式
+     * @param bool $isDefaultMode 是否启用默认模式
      * @return string
      */
-    private function _keys($keys, $default = false) {
+    private function _keys($keys, $isDefaultMode = false) {
         list($table, $field, $value) = explode('#', $keys . '##');
         $info = Db::name($table)->where($field, $value)->find();
         if ($info && is_array($info) && isset($info['type'])) {
             // 转发给多客服
             if (!empty($info['type']) && $info['type'] === 'customservice') {
                 $this->wechat->sendCustomMessage(['touser' => $this->openid, 'msgtype' => 'text', 'text' => ['content' => $info['content']]]);
-                return $this->wechat->transfer_customer_service()->reply();
+                return $this->wechat->transfer_customer_service()->reply(false, true);
             }
             // 无法给出回复时调用默认回复机制
-            array_key_exists('status', $info) && empty($info['status']) && exit('success');
+            if (array_key_exists('status', $info) && empty($info['status'])) {
+                return 'success';
+            }
             switch ($info['type']) {
                 case 'keys': /* 关键字 */
-                    empty($info['content']) && empty($info['name']) && exit('success');
+                    if (empty($info['content']) && empty($info['name'])) {
+                        return 'success';
+                    }
                     return $this->_keys('wechat_keys#keys#' . (empty($info['content']) ? $info['name'] : $info['content']));
                 case 'text': /* 文本消息 */
-                    empty($info['content']) && exit('success');
-                    return $this->wechat->text($info['content'])->reply();
+                    if (empty($info['content']) && empty($info['name'])) {
+                        return 'success';
+                    }
+                    return $this->wechat->text($info['content'])->reply(false, true);
                 case 'news': /* 图文消息 */
-                    empty($info['news_id']) && exit('success');
+                    if (empty($info['news_id'])) {
+                        return 'success';
+                    }
                     return $this->_news($info['news_id']);
                 case 'music': /* 音频消息 */
-                    (empty($info['music_url']) || empty($info['music_title']) || empty($info['music_desc'])) && exit('success');
+                    if (empty($info['music_url']) || empty($info['music_title']) || empty($info['music_desc'])) {
+                        return 'success';
+                    }
                     $media_id = empty($info['music_image']) ? '' : WechatService::uploadForeverMedia($info['music_image'], 'image');
-                    empty($media_id) && exit('success');
-                    return $this->wechat->music($info['music_title'], $info['music_desc'], $info['music_url'], $info['music_url'], $media_id)->reply();
+                    if (empty($media_id)) {
+                        return 'success';
+                    }
+                    return $this->wechat->music($info['music_title'], $info['music_desc'], $info['music_url'], $info['music_url'], $media_id)->reply(false, true);
                 case 'voice': /* 语音消息 */
-                    empty($info['voice_url']) && exit('success');
+                    if (empty($info['voice_url'])) {
+                        return 'success';
+                    }
                     $media_id = WechatService::uploadForeverMedia($info['voice_url'], 'voice');
-                    empty($media_id) && exit('success');
-                    return $this->wechat->voice($media_id)->reply();
+                    if (empty($media_id)) {
+                        return 'success';
+                    }
+                    return $this->wechat->voice($media_id)->reply(false, true);
                 case 'image': /* 图文消息 */
-                    empty($info['image_url']) && exit('success');
+                    if (empty($info['image_url'])) {
+                        return 'success';
+                    }
                     $media_id = WechatService::uploadForeverMedia($info['image_url'], 'image');
-                    empty($media_id) && exit('success');
-                    return $this->wechat->image($media_id)->reply();
+                    if (empty($media_id)) {
+                        return 'success';
+                    }
+                    return $this->wechat->image($media_id)->reply(false, true);
                 case 'video': /* 视频消息 */
-                    (empty($info['video_url']) || empty($info['video_desc']) || empty($info['video_title'])) && exit('success');
+                    if (empty($info['video_url']) || empty($info['video_desc']) || empty($info['video_title'])) {
+                        return 'success';
+                    }
                     $data = ['title' => $info['video_title'], 'introduction' => $info['video_desc']];
                     $media_id = WechatService::uploadForeverMedia($info['video_url'], 'video', true, $data);
-                    return $this->wechat->video($media_id, $info['video_title'], $info['video_desc'])->reply();
+                    return $this->wechat->video($media_id, $info['video_title'], $info['video_desc'])->reply(false, true);
             }
         }
-        $default && exit('success');
+        if ($isDefaultMode) {
+            return 'success';
+        }
         return $this->_keys('wechat_keys#keys#default', true);
     }
 
@@ -141,7 +171,7 @@ class Api extends Controller {
             }
             return $this->wechat->news($newsdata)->reply();
         }
-        exit('success');
+        return 'success';
     }
 
     /**
@@ -160,7 +190,7 @@ class Api extends Controller {
             /* 粉丝取消关注 */
             case 'unsubscribe':
                 $this->_syncFans(false);
-                exit('success');
+                return 'success';
             /* 点击菜单事件 */
             case 'click':
                 return $this->_keys($event['key']);
@@ -171,13 +201,14 @@ class Api extends Controller {
                 if (isset($scanInfo['ScanResult'])) {
                     return $this->_keys($scanInfo['ScanResult']);
                 }
-                exit('success');
+                return 'success';
             case 'scan':
                 if (!empty($event['key'])) {
                     return $this->_spread($event['key']);
                 }
-                exit('success');
+                return 'success';
         }
+        return 'success';
     }
 
     /**
@@ -202,14 +233,14 @@ class Api extends Controller {
      * @return string
      */
     private function _location() {
-        exit('success');
+        return 'success';
     }
 
     /**
      * 图片事件处理
      */
     private function _image() {
-        exit('success');
+        return 'success';
     }
 
     /**

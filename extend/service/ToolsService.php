@@ -37,7 +37,6 @@ class ToolsService {
             header('Content-Length: 0', true);
             header('status: 204');
             header('HTTP/1.0 204 No Content');
-            exit;
         }
     }
 

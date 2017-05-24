@@ -38,7 +38,7 @@ class Keys extends BasicAdmin {
     public function index() {
         $this->assign('title', '微信关键字');
         $db = Db::name($this->table)->where('keys', 'not in', ['subscribe', 'default']);
-        $this->_list($db);
+        return $this->_list($db);
     }
 
     /**
@@ -57,7 +57,7 @@ class Keys extends BasicAdmin {
      * @return string
      */
     public function add() {
-        $this->assign('title', '添加关键字规则');
+        $this->title = '添加关键字规则';
         return $this->_form($this->table, 'form');
     }
 
@@ -66,7 +66,7 @@ class Keys extends BasicAdmin {
      * @return string
      */
     public function edit() {
-        $this->assign('title', '编辑关键字规则');
+        $this->title = '编辑关键字规则';
         return $this->_form($this->table, 'form');
     }
 

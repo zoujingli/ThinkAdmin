@@ -118,7 +118,6 @@ class Plugs extends BasicAdmin {
      * @return string
      */
     protected function _getQiniuToken($key) {
-        empty($key) && exit('param error');
         $accessKey = sysconf('storage_qiniu_access_key');
         $secretKey = sysconf('storage_qiniu_secret_key');
         $bucket = sysconf('storage_qiniu_bucket');

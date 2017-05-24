@@ -59,7 +59,7 @@ class Menu extends BasicAdmin {
      * 显示列表操作
      */
     public function index() {
-        parent::_list(Db::name($this->table), false, true);
+        return parent::_list(Db::name($this->table), false, true);
     }
 
     /**
@@ -116,10 +116,10 @@ class Menu extends BasicAdmin {
      */
     protected function _push() {
         $result = Db::name($this->table)
-                ->field('id,index,pindex,name,type,content')
-                ->where('status', '1')
-                ->order('sort ASC,id ASC')
-                ->select();
+            ->field('id,index,pindex,name,type,content')
+            ->where('status', '1')
+            ->order('sort ASC,id ASC')
+            ->select();
         foreach ($result as &$row) {
             empty($row['content']) && $row['content'] = uniqid();
             switch ($row['type']) {

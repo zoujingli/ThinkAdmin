@@ -95,7 +95,7 @@ class BasicWechat extends Controller {
         }
         if (FALSE === ($result = $wechat->getOauthAccessToken()) || empty($result['openid'])) {
             Log::error("微信网页授权失败, {$wechat->errMsg}[{$wechat->errCode}]");
-            exit("微信网页授权失败, {$wechat->errMsg}[{$wechat->errCode}]");
+            $this->error("微信网页授权失败, {$wechat->errMsg}[{$wechat->errCode}]");
         }
         session('openid', $this->openid = $result['openid']);
         empty($fullMode) && $this->redirect($redirect_url);
@@ -113,12 +113,12 @@ class BasicWechat extends Controller {
             /* 授权结果处理, 更新粉丝信息 */
             if ((empty($user) || !array_key_exists('nickname', $user))) :
                 Log::error("微信网页授权获取用户信息失败, {$wechat->errMsg}[{$wechat->errCode}]");
-                exit("微信网页授权获取用户信息失败, {$wechat->errMsg}[{$wechat->errCode}]");
+                $this->error("微信网页授权获取用户信息失败, {$wechat->errMsg}[{$wechat->errCode}]");
             endif;
             $user['expires_in'] = $result['expires_in'] + time() - 100;
             $user['refresh_token'] = $result['refresh_token'];
             $user['access_token'] = $result['access_token'];
-            WechatService::setFansInfo($user, $wechat->appid) or exit('微信网页授权用户保存失败!');
+            WechatService::setFansInfo($user, $wechat->appid) or $this->error('微信网页授权用户保存失败!');
         }
         $this->redirect($redirect_url);
     }
