@@ -169,7 +169,7 @@ class Api extends Controller {
                     'Url'         => url("@wechat/review", '', true, true) . "?content={$vo['id']}&type=article",
                 ];
             }
-            return $this->wechat->news($newsdata)->reply();
+            return $this->wechat->news($newsdata)->reply(false, true);
         }
         return 'success';
     }
