@@ -63,22 +63,13 @@ class Api extends Controller {
         // 分别执行对应类型的操作
         switch ($this->wechat->getRev()->getRevType()) {
             case WechatReceive::MSGTYPE_TEXT:
-                $keys = $this->wechat->getRevContent();
-                $reply = $this->_keys("wechat_keys#keys#{$keys}");
-                p($reply);
-                return $reply;
+                return $this->_keys("WechatKeys#keys#" . $this->wechat->getRevContent());
             case WechatReceive::MSGTYPE_EVENT:
-                $reply = $this->_event();
-                p($reply);
-                return $reply;
+                return $this->_event();
             case WechatReceive::MSGTYPE_IMAGE:
-                $reply = $this->_image();
-                p($reply);
-                return $reply;
+                return $this->_image();
             case WechatReceive::MSGTYPE_LOCATION:
-                $reply = $this->_location();
-                p($reply);
-                return $reply;
+                return $this->_location();
             default:
                 return 'success';
         }
