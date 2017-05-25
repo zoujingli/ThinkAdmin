@@ -60,16 +60,14 @@ class DataService {
 
     /**
      * 数据增量保存
-     * @param \think\db\Query|string $db 数据查询对象
+     * @param \think\db\Query|string $dbQuery 数据查询对象
      * @param array $data 需要保存或更新的数据
      * @param string $upkey 条件主键限制
      * @param array $where 其它的where条件
      * @return bool
      */
-    public static function save($db, $data, $upkey = 'id', $where = []) {
-        if (is_string($db)) {
-            $db = Db::name($db);
-        }
+    public static function save($dbQuery, $data, $upkey = 'id', $where = []) {
+        $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
         $fields = $db->getTableFields(['table' => $db->getTable()]);
         $_data = [];
         foreach ($data as $k => $v) {
@@ -102,14 +100,12 @@ class DataService {
 
     /**
      * 更新数据表内容
-     * @param \think\db\Query|string $db 数据查询对象
+     * @param \think\db\Query|string $dbQuery 数据查询对象
      * @param array $where 额外查询条件
      * @return bool|null
      */
-    public static function update(&$db, $where = []) {
-        if (is_string($db)) {
-            $db = Db::name($db);
-        }
+    public static function update(&$dbQuery, $where = []) {
+        $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
         $ids = explode(',', input("post.id", ''));
         $field = input('post.field', '');
         $value = input('post.value', '');
