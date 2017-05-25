@@ -16,7 +16,6 @@ namespace app\wechat\controller;
 
 use controller\BasicAdmin;
 use service\DataService;
-use service\FileService;
 use service\LogService;
 use service\WechatService;
 use think\Db;
@@ -52,7 +51,7 @@ class News extends BasicAdmin {
      * @return string
      */
     public function select() {
-        $this->index();
+        return $this->index();
     }
 
     /**
