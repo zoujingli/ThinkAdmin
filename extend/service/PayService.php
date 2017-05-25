@@ -52,10 +52,9 @@ class PayService {
         if ($prepayid === false) {
             return false;
         }
-        $filename = 'wechat/qrc/' . join('/', str_split(md5($prepayid), 16)) . '.png';
+        $filename = FileService::getFileName($prepayid, 'png', 'qrc/');
         if (!FileService::hasFile($filename, 'local')) {
-            $qrCode = new QrCode();
-            $qrCode->setText($prepayid);
+            $qrCode = new QrCode($prepayid);
             if (null === FileService::save($filename, $qrCode->get(), 'local')) {
                 return false;
             }
