@@ -5,7 +5,7 @@
     {foreach $list as $key=>$vo}
     <div class="news-box item transition" data-news-id='{$vo.id}'>
         {foreach $vo.articles as $key=>$value}
-        <div class="news-item transition-min" data-id="{$value.id}">
+        <div class="news-item transition" data-id="{$value.id}">
             <div class="news-image">
                 <img alt="image" class="img-responsive" src="{$value.local_url}"/>
             </div>
