@@ -56,34 +56,30 @@ class BasicAdmin extends Controller {
      * @param string $tplFile 显示模板名字
      * @param string $pkField 更新主键规则
      * @param array $where 查询规则
-     * @param array $data 扩展数据
+     * @param array $extendData 扩展数据
      * @return array|string
      */
-    protected function _form($dbQuery = null, $tplFile = '', $pkField = '', $where = [], $data = []) {
+    protected function _form($dbQuery = null, $tplFile = '', $pkField = '', $where = [], $extendData = []) {
         $db = is_null($dbQuery) ? Db::name($this->table) : (is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery);
         $pk = empty($pkField) ? ($db->getPk() ? $db->getPk() : 'id') : $pkField;
-        $pkValue = $this->request->request($pk, isset($where[$pk]) ? $where[$pk] : (isset($data[$pk]) ? $data[$pk] : null));
-        // POST请求, 数据自动存库
-        if ($this->request->isPost()) {
-            $data = array_merge($this->request->post(), $data);
-            if (false !== $this->_callback('_form_filter', $data)) {
-                $result = DataService::save($db, $data, $pk, $where);
-                if (false === $this->_callback('_form_result', $result)) {
-                    return $result;
-                }
-                if ($result !== false) {
-                    $this->success('恭喜, 数据保存成功!', '');
-                }
-                $this->error('数据保存失败, 请稍候再试!');
+        $pkValue = $this->request->request($pk, isset($where[$pk]) ? $where[$pk] : (isset($extendData[$pk]) ? $extendData[$pk] : null));
+        // 非POST请求, 获取数据并显示表单页面
+        if (!$this->request->isPost()) {
+            $vo = ($pkValue !== null) ? array_merge((array) $db->where($pk, $pkValue)->where($where)->find(), $extendData) : $extendData;
+            if (false !== $this->_callback('_form_filter', $vo)) {
+                empty($this->title) || $this->assign('title', $this->title);
+                return $this->fetch($tplFile, ['vo' => $vo]);
             }
-        }
-        // GET请求, 获取并显示表单页面
-        $vo = ($pkValue !== null) ? array_merge((array) $db->where($pk, $pkValue)->where($where)->find(), $data) : $data;
-        if (false === $this->_callback('_form_filter', $vo)) {
             return $vo;
         }
-        empty($this->title) or $this->assign('title', $this->title);
-        return $this->fetch($tplFile, ['vo' => $vo]);
+        // POST请求, 数据自动存库
+        $data = array_merge($this->request->post(), $extendData);
+        if (false !== $this->_callback('_form_filter', $data)) {
+            $result = DataService::save($db, $data, $pk, $where);
+            if (false !== $this->_callback('_form_result', $result)) {
+                $result !== false ? $this->success('恭喜, 数据保存成功!', '') : $this->error('数据保存失败, 请稍候再试!');
+            }
+        }
     }
 
     /**
@@ -108,15 +104,15 @@ class BasicAdmin extends Controller {
             $this->success('列表排序成功, 正在刷新列表', '');
         }
         // 列表数据查询与显示
-        $result = array();
         if (null === $db->getOptions('order')) {
             $fields = $db->getTableFields(['table' => $db->getTable()]);
             in_array('sort', $fields) && $db->order('sort asc');
         }
+        $result = array();
         if ($isPage) {
-            $row_page = $this->request->get('rows', cookie('rows'), 'intval');
-            cookie('rows', $row_page >= 10 ? $row_page : 20);
-            $page = $db->paginate($row_page, $total, ['query' => $this->request->get()]);
+            $rowPage = intval($this->request->get('rows', cookie('rows')));
+            cookie('rows', $rowPage >= 10 ? $rowPage : 20);
+            $page = $db->paginate($rowPage, $total, ['query' => $this->request->get()]);
             $result['list'] = $page->all();
             $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
         } else {
