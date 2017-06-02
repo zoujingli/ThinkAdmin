@@ -1,17 +1,17 @@
 [
     {
         "name": "topthink/think-installer",
-        "version": "v1.0.11",
-        "version_normalized": "1.0.11.0",
+        "version": "v1.0.12",
+        "version_normalized": "1.0.12.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-installer.git",
-            "reference": "4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d"
+            "reference": "1be326e68f63de4e95977ed50f46ae75f017556d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-installer/4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d.zip",
-            "reference": "4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d",
+            "url": "https://files.phpcomposer.com/files/top-think/think-installer/1be326e68f63de4e95977ed50f46ae75f017556d.zip",
+            "reference": "1be326e68f63de4e95977ed50f46ae75f017556d",
             "shasum": ""
         },
         "require": {
@@ -20,7 +20,7 @@
         "require-dev": {
             "composer/composer": "1.0.*@dev"
         },
-        "time": "2016-12-01 09:08:45",
+        "time": "2017-05-27T06:58:09+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "think\\composer\\Plugin"
@@ -60,7 +60,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-05-10 07:41:59",
+        "time": "2017-05-10T07:41:59+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
@@ -100,7 +100,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2016-11-18 02:57:31",
+        "time": "2016-11-18T02:57:31+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -149,7 +149,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-03-22 10:03:27",
+        "time": "2017-03-22T10:03:27+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -194,7 +194,7 @@
             "phpunit/phpunit": "4.8.*",
             "sebastian/phpcpd": "2.*"
         },
-        "time": "2017-05-20 10:43:04",
+        "time": "2017-05-20T10:43:04+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "autoload": {
@@ -235,7 +235,7 @@
             "reference": "0c55455df26a1626a60d0dc35d2d89002b741d44",
             "shasum": ""
         },
-        "time": "2016-07-06 01:47:11",
+        "time": "2016-07-06T01:47:11+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -273,7 +273,7 @@
             "reference": "fc552c8fe5798679a52f4f0d7e60763f64aeb155",
             "shasum": ""
         },
-        "time": "2017-05-05 07:52:33",
+        "time": "2017-05-05T07:52:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -309,7 +309,7 @@
             "reference": "0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f",
             "shasum": ""
         },
-        "time": "2017-04-05 07:15:37",
+        "time": "2017-04-05T07:15:37+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -351,7 +351,7 @@
             "topthink/think-helper": ">=1.0.4",
             "topthink/think-installer": ">=1.0.10"
         },
-        "time": "2017-02-28 08:07:37",
+        "time": "2017-02-28T08:07:37+00:00",
         "type": "think-extend",
         "extra": {
             "think-config": {
@@ -381,27 +381,27 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.2.8",
-        "version_normalized": "3.2.8.0",
+        "version": "v3.3.0",
+        "version_normalized": "3.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "8cbb4f23414e2a5e92690cf67680a979a461113c"
+            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/8cbb4f23414e2a5e92690cf67680a979a461113c.zip",
-            "reference": "8cbb4f23414e2a5e92690cf67680a979a461113c",
+            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/ff48982d295bcac1fd861f934f041ebc73ae40f0.zip",
+            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0",
             "shasum": ""
         },
         "require": {
             "php": ">=5.5.9"
         },
-        "time": "2017-04-12 14:13:17",
+        "time": "2017-04-12T14:14:56+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.2-dev"
+                "dev-master": "3.3-dev"
             }
         },
         "installation-source": "dist",
@@ -462,7 +462,7 @@
             "symfony/framework-bundle": "^2.3|^3.0",
             "symfony/http-kernel": "^2.3|^3.0"
         },
-        "time": "2017-04-08 09:13:59",
+        "time": "2017-04-08T09:13:59+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -519,7 +519,7 @@
             "phpunit/phpunit": "~4.0",
             "satooshi/php-coveralls": "~1.0"
         },
-        "time": "2017-04-25 09:15:12",
+        "time": "2017-04-25T09:15:12+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

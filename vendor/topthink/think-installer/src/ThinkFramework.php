@@ -2,12 +2,21 @@
 
 namespace think\composer;
 
-use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
+use Composer\Package\PackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 
 class ThinkFramework extends LibraryInstaller
 {
+    public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
+    {
+        parent::install($repo, $package);
+        if ($this->composer->getPackage()->getType() == 'project' && $package->getInstallationSource() != 'source') {
+            //remove tests dir
+            $this->filesystem->removeDirectory($this->getInstallPath($package) . DIRECTORY_SEPARATOR . 'tests');
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -31,19 +40,10 @@ class ThinkFramework extends LibraryInstaller
         return 'thinkphp';
     }
 
-    public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
-    {
-        parent::install($repo, $package);
-        if ($this->composer->getPackage()->getType() == 'project') {
-            //remove tests dir
-            $this->filesystem->removeDirectory($this->getInstallPath($package) . DIRECTORY_SEPARATOR . 'tests');
-        }
-    }
-
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
         parent::update($repo, $initial, $target);
-        if ($this->composer->getPackage()->getType() == 'project') {
+        if ($this->composer->getPackage()->getType() == 'project' && $target->getInstallationSource() != 'source') {
             //remove tests dir
             $this->filesystem->removeDirectory($this->getInstallPath($target) . DIRECTORY_SEPARATOR . 'tests');
         }
