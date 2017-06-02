@@ -78,7 +78,7 @@ class BasicAdmin extends Controller {
             }
         }
         // GET请求, 获取并显示表单页面
-        $vo = ($pkValue !== null) ? array_merge((array)$db->where($pk, $pkValue)->where($where)->find(), $data) : $data;
+        $vo = ($pkValue !== null) ? array_merge((array) $db->where($pk, $pkValue)->where($where)->find(), $data) : $data;
         if (false === $this->_callback('_form_filter', $vo)) {
             return $vo;
         }
@@ -127,7 +127,6 @@ class BasicAdmin extends Controller {
         }
         !empty($this->title) && $this->assign('title', $this->title);
         return $this->fetch('', $result);
-
     }
 
     /**
