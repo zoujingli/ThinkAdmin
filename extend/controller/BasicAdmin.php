@@ -118,11 +118,11 @@ class BasicAdmin extends Controller {
         } else {
             $result['list'] = $db->select();
         }
-        if (false === $this->_callback('_data_filter', $result['list']) || !$isDisplay) {
-            return $result;
+        if (false !== $this->_callback('_data_filter', $result['list']) && $isDisplay) {
+            !empty($this->title) && $this->assign('title', $this->title);
+            return $this->fetch('', $result);
         }
-        !empty($this->title) && $this->assign('title', $this->title);
-        return $this->fetch('', $result);
+        return $result;
     }
 
     /**
