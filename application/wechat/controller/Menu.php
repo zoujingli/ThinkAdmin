@@ -116,13 +116,16 @@ class Menu extends BasicAdmin {
      */
     protected function _push() {
         $result = Db::name($this->table)
-            ->field('id,index,pindex,name,type,content')
-            ->where('status', '1')
-            ->order('sort ASC,id ASC')
-            ->select();
+                ->field('id,index,pindex,name,type,content')
+                ->where('status', '1')
+                ->order('sort ASC,id ASC')
+                ->select();
         foreach ($result as &$row) {
             empty($row['content']) && $row['content'] = uniqid();
             switch ($row['type']) {
+                case 'miniprogram':
+                    list($row['appid'], $row['pagepath']) = explode(',', $row['content']);
+                    break;
                 case 'view':
                     $row['url'] = preg_match('#^(\w+:)?//#i', $row['content']) ? $row['content'] : url($row['content'], '', true, true);
                     break;
