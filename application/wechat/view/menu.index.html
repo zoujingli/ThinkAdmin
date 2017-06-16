@@ -300,12 +300,7 @@
                 var menudata = {};
                 menudata.name = $span.text();
                 menudata.type = $span.attr('data-type');
-                // 小程序要特殊处理
-                if (menudata.type === 'miniprogram') {
-                    menudata.content = $span.data('appid') + ',' + $span.data('url') + ',' + $span.data('pagepath');
-                } else {
-                    menudata.content = $span.data('content') || '';
-                }
+                menudata.content = $span.data('content') || '';
                 return menudata;
             }
 
