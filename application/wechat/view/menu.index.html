@@ -240,9 +240,9 @@
                         switch (type) {
                             case 'miniprogram':
                                 var tpl = '<div>\
-                                                <div>appid<input data-appid="{appid}" style="display:block;margin-bottom:10px" class="form-control input-sm" value="{appid}" name="appid"></div>\
-                                                <div>url<input data-url="{_url}" style="display:block;margin-bottom:10px" class="form-control input-sm" value="{_url}" name="url"></div>\
-                                                <div>pagepath<input data-pagepath="{pagepath}" style="display:block" name="pagepath" class="form-control input-sm" value={pagepath}></div>\
+                                                <div>appid<input style="display:block;margin-bottom:10px" class="form-control input-sm" value="{appid}" name="appid"></div>\
+                                                <div>url<input style="display:block;margin-bottom:10px" class="form-control input-sm" value="{url}" name="url"></div>\
+                                                <div>pagepath<input style="display:block" name="pagepath" class="form-control input-sm" value={pagepath}></div>\
                                             </div>';
                                 var _appid = '', _pagepath = '', _url = '';
                                 if (content.indexOf(',') > 0) {
@@ -250,7 +250,8 @@
                                     _url = content.split(',')[1] || '';
                                     _pagepath = content.split(',')[2] || '';
                                 }
-                                return tpl.replace(/\{appid\}/ig, _appid).replace(/\{_url\}/ig, _url).replace(/\{pagepath\}/ig, _pagepath);
+								$span.data('appid',_appid),$span.data('url',_url),$span.data('pagepath',_pagepath);
+                                return tpl.replace('{appid}', _appid).replace('{url}', _url).replace('{pagepath}', _pagepath);
                             case 'customservice':
                             case 'text':
                                 return '<div>回复内容<textarea style="resize:none;height:225px" name="content" class="form-control input-sm">{content}</textarea></div>'.replace('{content}', content);
