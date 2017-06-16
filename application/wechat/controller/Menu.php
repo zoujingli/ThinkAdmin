@@ -124,7 +124,7 @@ class Menu extends BasicAdmin {
             empty($row['content']) && $row['content'] = uniqid();
             switch ($row['type']) {
                 case 'miniprogram':
-                    list($row['appid'], $row['pagepath']) = explode(',', $row['content'] . ',');
+                    list($row['appid'], $row['pagepath'], $row['url']) = explode(',', $row['content'] . ',,');
                     break;
                 case 'view':
                     $row['url'] = preg_match('#^(\w+:)?//#i', $row['content']) ? $row['content'] : url($row['content'], '', true, true);
