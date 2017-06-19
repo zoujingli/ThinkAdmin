@@ -52,10 +52,9 @@ class PayService {
         if ($prepayid === false) {
             return false;
         }
-        $filename = 'wechat/qrc/' . join('/', str_split(md5($prepayid), 16)) . '.png';
+        $filename = FileService::getFileName($prepayid, 'png', 'qrc/');
         if (!FileService::hasFile($filename, 'local')) {
-            $qrCode = new QrCode();
-            $qrCode->setText($prepayid);
+            $qrCode = new QrCode($prepayid);
             if (null === FileService::save($filename, $qrCode->get(), 'local')) {
                 return false;
             }
@@ -118,8 +117,8 @@ class PayService {
      * @return bool|string
      */
     public static function createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'wechat') {
-        $map = ['order_no' => $order_no, 'is_pay' => '1', 'expires_in' => time(), 'appid' => $pay->appid];
-        $where = 'appid=:appid and order_no=:order_no and (is_pay=:is_pay or expires_in>:expires_in)';
+        $map = ['order_no' => $order_no, 'is_pay' => '1', 'expires_in' => time(), 'appid' => $pay->appid, 'trade_type' => $trade_type];
+        $where = 'appid=:appid and order_no=:order_no and (is_pay=:is_pay or expires_in>:expires_in) and trade_type=:trade_type';
         $prepayinfo = Db::name('WechatPayPrepayid')->where($where, $map)->find();
         if (empty($prepayinfo) || empty($prepayinfo['prepayid'])) {
             $out_trade_no = DataService::createSequence(18, 'WXPAY-OUTER-NO');

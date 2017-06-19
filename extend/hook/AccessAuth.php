@@ -45,7 +45,7 @@ class AccessAuth {
         // 用户登录状态检查
         if ((!empty($vars['checkAuth']) || !empty($vars['checkLogin'])) && !session('user')) {
             if ($this->request->isAjax()) {
-                $result = ['code' => 0, 'msg' => '抱歉, 您还没有登录获取访问权限!', 'data' => '', 'url' => '@admin/login', 'wait' => 3];
+                $result = ['code' => 0, 'msg' => '抱歉, 您还没有登录获取访问权限!', 'data' => '', 'url' => url('@admin/login'), 'wait' => 3];
                 throw new HttpResponseException(json($result));
             }
             throw new HttpResponseException(redirect('@admin/login'));

@@ -22,6 +22,7 @@ namespace service;
  * @date 2016/10/25 14:49
  */
 class ToolsService {
+
     /**
      * Cors Options 授权处理
      */
@@ -36,7 +37,6 @@ class ToolsService {
             header('Content-Length: 0', true);
             header('status: 204');
             header('HTTP/1.0 204 No Content');
-            exit;
         }
     }
 
@@ -52,6 +52,28 @@ class ToolsService {
             'X-Support'                        => 'service@cuci.cc',
             'X-Servers'                        => 'Guangzhou Cuci Technology Co. Ltd',
         ];
+    }
+
+    /**
+     * Emoji原形转换为String
+     * @param string $content
+     * @return string
+     */
+    public static function emojiEncode($content) {
+        return json_decode(preg_replace_callback("/(\\\u[ed][0-9a-f]{3})/i", function($str) {
+                    return addslashes($str[0]);
+                }, json_encode($content)));
+    }
+
+    /**
+     * Emoji字符串转换为原形
+     * @param string $content
+     * @return string
+     */
+    public static function emojiDecode($content) {
+        return json_decode(preg_replace_callback('/\\\\\\\\/i', function() {
+                    return '\\';
+                }, json_encode($content)));
     }
 
     /**
@@ -100,7 +122,7 @@ class ToolsService {
             $tree[] = $_tree;
             if (!empty($sub)) {
                 $sub_array = self::arr2table($sub, $id, $pid, $path, $_tree[$path]);
-                $tree = array_merge($tree, (Array)$sub_array);
+                $tree = array_merge($tree, (Array) $sub_array);
             }
         }
         return $tree;
