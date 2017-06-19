@@ -90,8 +90,6 @@ define(['zeroclipboard'], function (ZeroClipboard) {
                     catchRemoteImageEnable: false,
                     toolbars: [[
                             'source', //源代码
-                            'undo', //撤销
-                            'redo', //重做
                             'fontfamily', //字体
                             'fontsize', //字号
                             'paragraph', //段落格式
@@ -102,9 +100,7 @@ define(['zeroclipboard'], function (ZeroClipboard) {
                             'backcolor', //背景色
                             'indent', //首行缩进
                             'justifyleft', //居左对齐
-                            'justifyright', //居右对齐
                             'justifycenter', //居中对齐
-                            'justifyjustify', //两端对齐
                             'formatmatch', //格式刷
                             'autotypeset', //自动排版
                             'uimage', //单图上传
@@ -119,7 +115,6 @@ define(['zeroclipboard'], function (ZeroClipboard) {
                             'imageright', //右浮动
                             'imagecenter', //居中
                             'lineheight', //行间距
-                            'scrawl', //涂鸦
                             'inserttable' //插入表格
                         ]]
                 };
