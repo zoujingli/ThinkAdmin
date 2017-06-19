@@ -7,3 +7,6 @@
 /composer.lock
 /public/upload
 /static/upload
+/.buildpath
+/.project
+/.settings

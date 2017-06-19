@@ -21,24 +21,27 @@ use service\ToolsService;
 use think\Db;
 
 /**
- * 文档管理
- * Class Menu
+ * 文档分类
+ * Class Category
  * @package app\admin\controller
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15
  */
-class Document extends BasicAdmin {
+class Category extends BasicAdmin {
 	
+	/**
+	 * 绑定分类操作模型
+	 * @var string
+	 */
+	public $table = 'AppsCategory';
+
     /**
-     * 绑定文档操作模型
-     * @var string
+     * 菜单列表
      */
-    public $table = 'AppsDocument';
-    
     public function index() {
-    	$this->title = '文档列表';
-    	$this->assign('categories', Db::name('AppsCategory')->column('title'));
-    	parent::_list($this->table);
+        $this->title = '文档分类管理';
+        $db = Db::name($this->table)->order('sort asc,id asc');
+        parent::_list($db, false);
     }
 
     /**
@@ -59,20 +62,9 @@ class Document extends BasicAdmin {
     public function add() {
         if ($this->request->isGet()) {
         	$this->title = '添加文档';
-    		$this->assign('categories', Db::name('AppsCategory')->column('id', 'title'));
-        	return $this->_form($this->table, 'form');
+    		$this->assign('categories', Db::name($this->table)->column('id', 'title'));
+        	return $this->_form($this->document_table, 'form');
         }
-        if ($this->request->isPost()) {
-        	$data = $this->request->post();
-        	if (($ids = $this->_apply_document($data)) && !empty($ids)) {
-        		$post = ['article_id' => $ids, 'create_by' => session('user.id')];
-        		if (DataService::save($this->table, $post, 'id') !== false) {
-        			$this->success('图文添加成功！', '');
-        		}
-        	}
-        	$this->error('图文添加失败，请稍候再试！');
-        }
-        
     }
 
     /**
@@ -82,29 +74,6 @@ class Document extends BasicAdmin {
         return $this->_form($this->table, 'form');
     }
     
-    /**
-     * 图文更新操作
-     * @param array $data
-     * @param array $ids
-     * @return string
-     */
-    protected function _apply_document($data, $id=0) {
-		$data['create_time'] = time();
-		$data['update_time'] = time();
-		$data['status'] = 1;
-		
-		if(empty($id)) {
-			$data['uid'] = session('user.id');
-			$result = $id = Db::name('AppsDocument')->insertGetId($data);
-		} else {
-			$result = Db::name('AppsDocument')->where('id', $id)->update($data);
-		}
-		if($result !== FALSE) {
-			$ids[] = $id;
-		}
-		return $id;
-	}
-
     /**
      * 表单数据前缀方法
      * @param array $vo
