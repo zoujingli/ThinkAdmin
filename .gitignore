@@ -2,8 +2,8 @@
 !.gitattributes
 /.idea
 /.svn
+/.git
 /runtime
 /nbproject
 /composer.lock
-/public/upload
 /static/upload
