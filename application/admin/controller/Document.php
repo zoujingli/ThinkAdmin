@@ -65,10 +65,10 @@ class Document extends BasicAdmin {
     }
 
     /**
-     * 添加菜单
+     * 添加文档
      */
     public function add() {
-    	$this->title = '添加文档';
+    	$this->title = '撰写新文档';
     	$this->assign('categories', Db::name($this->category_table)->column('title'));
         return $this->_form($this->document_table, 'form');
     }

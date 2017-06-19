@@ -4,8 +4,8 @@
 <form onsubmit="return false;" action="__SELF__" data-auto="true" method="post" class='form-horizontal' style='padding-top:20px'>
 
 	<div class="form-group">
-        <label class="col-sm-2 control-label">文档分类</label>
-        <div class="col-sm-8">
+        <label class="col-sm-1 control-label">文档分类</label>
+        <div class="col-sm-10">
             <select name='category' class='layui-input'>
 				<!--{foreach $categories as $category}-->
 				<!--{if $category===$Think.get.category}-->
@@ -19,31 +19,28 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">URL别名</label>
-        <div class="col-sm-8">
-            <input type="text" name="url" class="layui-input" value=""/>
+        <label class="col-sm-1 control-label">别名</label>
+        <div class="col-sm-10">
+            <input type="text" name="name" class="layui-input" value=""/>
             <p class="help-block">
-                <b>注意</b>：URL主域名必需备案，微信服务接口只支持 80 端口 ( http ) 和 443 端口 ( https )
+                <b>注意</b>：该字段可替换URL中的ID部分，不可重复（空格将替换为-）。
             </p>
         </div>
     </div>
 
  	<div class="form-group">
-        <label class="col-sm-2 control-label">标题</label>
-        <div class='col-sm-8'>
-            <input type="text" name="wechat_appid" title="请输入以wx开头的18位公众号APPID"  placeholder="公众号APPID（必填）" pattern="^wx[0-9a-z]{16}$" maxlength="18" required="required" value="{:sysconf('wechat_appid')}" class="layui-input">
-            <p class="help-block">
-                公众号应用ID是所有接口必要参数，可以在公众号平台 [ 开发 >> 基本配置 ] 页面获取。
-            </p>
+        <label class="col-sm-1 control-label">标题</label>
+        <div class='col-sm-10'>
+            <input type="text" name="title" placeholder="在此输入标题" required="required" value="" class="layui-input">
         </div>
     </div>
 
 	<div class="form-group" data-keys-type='music'>
-        <label class="col-sm-2 control-label">缩略图</label>
-        <div class="col-sm-8">
+        <label class="col-sm-1 control-label">缩略图</label>
+        <div class="col-sm-10">
             <input onchange="$(this).nextAll('img').attr('src', this.value);" type="text" class="layui-input"
-                   value="{$vo.music_image|default='__PUBLIC__/static/theme/default/img/image.png'}"
-                   name="music_image" required="required" title="请上传音乐图片或输入音乐图片URL地址　　"/>
+                   value="{$vo.music_image|default=''}"
+                   name="music_image" required="required"/>
             <p class="help-block">文件最大64KB，只支持JPG格式</p>
             <img style="width:112px;height:auto;" data-tips-image src='{$vo.music_image|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
             <a data-file="one" data-type="jpg" data-field="music_image" class='btn btn-link'>上传图片</a>
@@ -53,25 +50,23 @@
     <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">摘要</label>
-        <div class='col-sm-8'>
-            <textarea class="layui-input" name="description" style="height:80px;resize:none;line-height:20px"></textarea>
-            <p class="help-block">
-                公众号平台接口设置为加密模式，消息加密密钥必需填写并保持与公众号平台一致。
-            </p>
+        <label class="col-sm-1 control-label">摘要</label>
+        <div class='col-sm-10'>
+            <textarea class="layui-input" name="description" style="height:60px;resize:none;line-height:20px"></textarea>
+            <p class="help-block">摘要是可选的手工创建的内容总结，并可在您的主题中使用。</p>
         </div>
     </div>
 
 	<div class="form-group">
-		<label class="col-sm-2 control-label">主体</label>
-        <div class="col-sm-8">
+		<label class="col-sm-1 control-label">主体</label>
+        <div class="col-sm-10">
 			<textarea name="content"></textarea>
         </div>
     </div>
 
     <div class="hr-line-dashed"></div>
 
-    <div class="col-sm-2 col-sm-offset-2">
+    <div class="col-sm-1 col-sm-offset-1">
         <div class="layui-form-item text-center">
             <button class="layui-btn" type="submit">保存配置</button>
         </div>
