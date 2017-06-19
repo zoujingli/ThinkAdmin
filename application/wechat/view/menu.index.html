@@ -250,6 +250,7 @@
                                     _url = content.split(',')[1] || '';
                                     _pagepath = content.split(',')[2] || '';
                                 }
+								$span.data('appid',_appid),$span.data('url',_url),$span.data('pagepath',_pagepath);
                                 return tpl.replace('{appid}', _appid).replace('{url}', _url).replace('{pagepath}', _pagepath);
                             case 'customservice':
                             case 'text':
