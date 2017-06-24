@@ -38,9 +38,7 @@ class Index extends BasicAdmin {
         NodeService::applyAuthNode();
         $list = Db::name('SystemMenu')->where('status', '1')->order('sort asc,id asc')->select();
         $menus = $this->_filterMenu(ToolsService::arr2tree($list));
-        $this->assign('title', '系统管理');
-        $this->assign('menus', $menus);
-        return view();
+        return view('', ['title' => '系统管理', 'menus' => $menus]);
     }
 
     /**
@@ -71,9 +69,6 @@ class Index extends BasicAdmin {
      * @return View
      */
     public function main() {
-        $_version = Db::query('select version() as ver');
-        $version = array_pop($_version);
-        $this->assign('mysql_ver', $version['ver']);
         if (session('user.username') === 'admin' && session('user.password') === '21232f297a57a5a743894a0e4a801fc3') {
             $url = url('admin/index/pass') . '?id=' . session('user.id');
             $alert = [
@@ -84,7 +79,9 @@ class Index extends BasicAdmin {
             $this->assign('alert', $alert);
             $this->assign('title', '后台首页');
         }
-        return view();
+        $_version = Db::query('select version() as ver');
+        $version = array_pop($_version);
+        return view('', ['mysql_ver' => $version['ver']]);
     }
 
     /**
