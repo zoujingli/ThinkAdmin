@@ -50,7 +50,7 @@ class WechatService {
     }
 
     /**
-     * 上传图片到微信服务器 
+     * 上传图片到微信服务器
      * @param string $local_url
      * @return string|null
      */
@@ -62,8 +62,8 @@ class WechatService {
         # 下载临时文件到本地
         $filename = 'wechat/image/' . join('/', str_split(md5($local_url), 16)) . '.' . strtolower(pathinfo($local_url, 4));
         $result = FileService::local($filename, file_get_contents($local_url));
+        # 上传图片到微信服务器
         if ($result && isset($result['file'])) {
-            # 上传图片到微信服务器
             $wechat = &load_wechat('media');
             $mediainfo = $wechat->uploadImg(['media' => "@{$result['file']}"]);
             if (!empty($mediainfo)) {
@@ -71,8 +71,8 @@ class WechatService {
                 Db::name('WechatNewsImage')->insert($data);
                 return $mediainfo['url'];
             }
+            Log::error("图片上传失败，请稍后再试！{$wechat->errMsg}[{$wechat->errCode}]");
         }
-        Log::error("图片上传失败，请稍后再试！{$wechat->errMsg}[{$wechat->errCode}]");
         return null;
     }
 

@@ -35,7 +35,8 @@ class NodeService {
             session('user', Db::name('SystemUser')->where('id', $userid)->find());
         }
         if (($authorize = session('user.authorize'))) {
-            $authorizeids = Db::name('SystemAuth')->where('id', 'in', explode(',', $authorize))->where('status', '1')->column('id');
+            $where = ['id' => ['in', explode(',', $authorize)], 'status' => '1'];
+            $authorizeids = Db::name('SystemAuth')->where($where)->column('id');
             if (empty($authorizeids)) {
                 return session('user.nodes', []);
             }
@@ -72,7 +73,7 @@ class NodeService {
         if (!in_array($auth_node, self::getAuthNode())) {
             return true;
         }
-        return in_array($auth_node, (array) session('user.nodes'));
+        return in_array($auth_node, (array)session('user.nodes'));
     }
 
     /**

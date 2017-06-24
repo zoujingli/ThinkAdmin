@@ -151,9 +151,9 @@ class FileService {
 
     /**
      * 获取文件相对名称
-     * @param 文件标识 $source
-     * @param 文件后缀 $ext
-     * @param 文件前缀 $pre
+     * @param string $source 文件标识
+     * @param string $ext 文件后缀
+     * @param string $pre 文件前缀
      * @return string
      */
     public static function getFileName($source, $ext = '', $pre = '') {
@@ -295,7 +295,7 @@ class FileService {
             return self::local($filename, file_get_contents($url));
         } catch (\Exception $e) {
             Log::error("FileService 文件下载失败 [ {$url} ] . {$e->getMessage()}");
-            return false;
+            return null;
         }
     }
 
