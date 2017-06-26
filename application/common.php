@@ -56,24 +56,30 @@ function & load_wechat($type = '') {
 }
 
 /**
- * 安全URL编码
- * @param array|string $data
+ * UTF8字符串加密
+ * @param string $string
  * @return string
  */
-function encode($data) {
-    return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(serialize($data)));
+function encode($string) {
+    $chars = '';
+    $len = strlen($string = iconv('utf-8', 'gbk', $string));
+    for ($i = 0; $i < $len; $i++) {
+        $chars .= str_pad(base_convert(ord($string[$i]), 10, 36), 2, 0, 0);
+    }
+    return strtoupper($chars);
 }
 
 /**
- * 安全URL解码
+ * UTF8字符串解密
  * @param string $string
  * @return string
  */
 function decode($string) {
-    $data = str_replace(['-', '_'], ['+', '/'], $string);
-    $mod4 = strlen($data) % 4;
-    !!$mod4 && $data .= substr('====', $mod4);
-    return unserialize(base64_decode($data));
+    $chars = '';
+    foreach (str_split($string, 2) as $char) {
+        $chars .= chr(intval(base_convert($char, 36, 10)));
+    }
+    return iconv('gbk', 'utf-8', $chars);
 }
 
 /**
