@@ -51,7 +51,7 @@ class Review extends Controller {
      */
     public function img() {
         $url = $this->request->get('url', '');
-        $filename = 'wechat/tmp/' . join('/', str_split(md5($url), 16)) . '.jpg';
+        $filename = FileService::getFileName($url, 'jpg', 'tmp/');
         if (false === ($img = FileService::getFileUrl($filename))) {
             $info = FileService::save($filename, file_get_contents($url));
             $img = (is_array($info) && isset($info['url'])) ? $info['url'] : $url;

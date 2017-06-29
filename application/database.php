@@ -16,13 +16,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'think.ctolog.com',
+    'hostname'        => '127.0.0.1',
     // 数据库名
     'database'        => 'think.admin',
     // 用户名
     'username'        => 'think.admin',
     // 密码
-    'password'        => 'think.admin',
+    'password'        => '',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
@@ -30,7 +30,7 @@ return [
     // 数据库连接参数
     'params'          => [],
     // 数据库编码默认采用utf8
-    'charset'         => 'utf8mb4',
+    'charset'         => 'utf8',
     // 数据库表前缀
     'prefix'          => '',
     // 数据库调试模式

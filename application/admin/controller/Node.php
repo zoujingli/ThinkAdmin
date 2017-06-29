@@ -38,14 +38,9 @@ class Node extends BasicAdmin {
      * 显示节点列表
      */
     public function index() {
-        $this->assign('alert', [
-            'type'    => 'danger',
-            'title'   => '安全警告',
-            'content' => '结构为系统自动生成，状态数据请勿随意修改！'
-        ]);
-        $this->assign('title', '系统节点管理');
-        $this->assign('nodes', ToolsService::arr2table(NodeService::get(), 'node', 'pnode'));
-        return view();
+        $alert = ['type' => 'danger', 'title' => '安全警告', 'content' => '结构为系统自动生成, 状态数据请勿随意修改!'];
+        $nodes = ToolsService::arr2table(NodeService::get(), 'node', 'pnode');
+        return view('', ['title' => '系统节点管理', 'nodes' => $nodes, 'alert' => $alert]);
     }
 
     /**

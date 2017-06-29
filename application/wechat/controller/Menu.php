@@ -59,7 +59,7 @@ class Menu extends BasicAdmin {
      * 显示列表操作
      */
     public function index() {
-        parent::_list(Db::name($this->table), false, true);
+        return parent::_list(Db::name($this->table), false, true);
     }
 
     /**
@@ -123,6 +123,9 @@ class Menu extends BasicAdmin {
         foreach ($result as &$row) {
             empty($row['content']) && $row['content'] = uniqid();
             switch ($row['type']) {
+                case 'miniprogram':
+                    list($row['appid'], $row['url'], $row['pagepath']) = explode(',', $row['content'] . ',,');
+                    break;
                 case 'view':
                     $row['url'] = preg_match('#^(\w+:)?//#i', $row['content']) ? $row['content'] : url($row['content'], '', true, true);
                     break;

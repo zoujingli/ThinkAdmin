@@ -84,7 +84,7 @@ define(['jquery'], function () {
             typeof ok === 'function' && ok.call(this);
             self.close();
         }, function () {
-            typeof no === 'function' && ok.call(this);
+            typeof no === 'function' && no.call(this);
             self.close();
         });
     };

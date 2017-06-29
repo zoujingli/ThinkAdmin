@@ -56,8 +56,6 @@ abstract class Connection
     protected $attrCase = PDO::CASE_LOWER;
     // 监听回调
     protected static $event = [];
-    // 查询对象
-    protected $query = [];
     // 使用Builder类
     protected $builder;
     // 数据库连接参数配置
@@ -137,32 +135,14 @@ abstract class Connection
     }
 
     /**
-     * 指定当前使用的查询对象
-     * @access public
-     * @param Query $query 查询对象
-     * @return $this
-     */
-    public function setQuery($query, $model = 'db')
-    {
-        $this->query[$model] = $query;
-
-        return $this;
-    }
-
-    /**
-     * 创建指定模型的查询对象
-     * @access public
+     * 获取新的查询对象
+     * @access protected
      * @return Query
      */
-    public function getQuery($model = 'db')
+    protected function getQuery()
     {
-        if (!isset($this->query[$model])) {
-            $class = $this->config['query'];
-
-            $this->query[$model] = new $class($this, 'db' == $model ? '' : $model);
-        }
-
-        return $this->query[$model];
+        $class = $this->config['query'];
+        return new $class($this);
     }
 
     /**
@@ -402,10 +382,15 @@ abstract class Connection
             // 返回结果集
             return $this->getResult($pdo, $procedure);
         } catch (\PDOException $e) {
-            if ($this->config['break_reconnect'] && $this->isBreak($e)) {
+            if ($this->isBreak($e)) {
                 return $this->close()->query($sql, $bind, $master, $pdo);
             }
             throw new PDOException($e, $this->config, $this->getLastsql());
+        } catch (\ErrorException $e) {
+            if ($this->isBreak($e)) {
+                return $this->close()->query($sql, $bind, $master, $pdo);
+            }
+            throw $e;
         }
     }
 
@@ -460,10 +445,15 @@ abstract class Connection
             $this->numRows = $this->PDOStatement->rowCount();
             return $this->numRows;
         } catch (\PDOException $e) {
-            if ($this->config['break_reconnect'] && $this->isBreak($e)) {
+            if ($this->isBreak($e)) {
                 return $this->close()->execute($sql, $bind);
             }
             throw new PDOException($e, $this->config, $this->getLastsql());
+        } catch (\ErrorException $e) {
+            if ($this->isBreak($e)) {
+                return $this->close()->execute($sql, $bind);
+            }
+            throw $e;
         }
     }
 
@@ -638,13 +628,25 @@ abstract class Connection
         }
 
         ++$this->transTimes;
+        try {
+            if (1 == $this->transTimes) {
+                $this->linkID->beginTransaction();
+            } elseif ($this->transTimes > 1 && $this->supportSavepoint()) {
+                $this->linkID->exec(
+                    $this->parseSavepoint('trans' . $this->transTimes)
+                );
+            }
 
-        if (1 == $this->transTimes) {
-            $this->linkID->beginTransaction();
-        } elseif ($this->transTimes > 1 && $this->supportSavepoint()) {
-            $this->linkID->exec(
-                $this->parseSavepoint('trans' . $this->transTimes)
-            );
+        } catch (\PDOException $e) {
+            if ($this->isBreak($e)) {
+                return $this->close()->startTrans();
+            }
+            throw $e;
+        } catch (\ErrorException $e) {
+            if ($this->isBreak($e)) {
+                return $this->close()->startTrans();
+            }
+            throw $e;
         }
     }
 
@@ -780,11 +782,35 @@ abstract class Connection
     /**
      * 是否断线
      * @access protected
-     * @param \PDOException  $e 异常
+     * @param \PDOException  $e 异常对象
      * @return bool
      */
     protected function isBreak($e)
     {
+        if (!$this->config['break_reconnect']) {
+            return false;
+        }
+
+        $info = [
+            'server has gone away',
+            'no connection to the server',
+            'Lost connection',
+            'is dead or not enabled',
+            'Error while sending',
+            'decryption failed or bad record mac',
+            'server closed the connection unexpectedly',
+            'SSL connection has been closed unexpectedly',
+            'Error writing data to the connection',
+            'Resource deadlock avoided',
+        ];
+
+        $error = $e->getMessage();
+
+        foreach ($info as $msg) {
+            if (false !== stripos($error, $msg)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -869,7 +895,6 @@ abstract class Connection
                 Debug::remark('queryEndTime', 'time');
                 $runtime = Debug::getRangeTime('queryStartTime', 'queryEndTime');
                 $sql     = $sql ?: $this->getLastsql();
-                $log     = $sql . ' [ RunTime:' . $runtime . 's ]';
                 $result  = [];
                 // SQL性能分析
                 if ($this->config['sql_explain'] && 0 === stripos(trim($sql), 'select')) {

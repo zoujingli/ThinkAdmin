@@ -50,7 +50,7 @@ class User extends BasicAdmin {
             }
         }
         // 实例化并显示
-        parent::_list($db);
+        return parent::_list($db);
     }
 
     /**

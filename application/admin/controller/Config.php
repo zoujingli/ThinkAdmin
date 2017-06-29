@@ -43,14 +43,14 @@ class Config extends BasicAdmin {
      */
     public function index() {
         if (!$this->request->isPost()) {
-            parent::_list($this->table);
-        } else {
-            foreach ($this->request->post() as $key => $vo) {
-                sysconf($key, $vo);
-            }
-            LogService::write('系统管理', '修改系统配置参数成功');
-            $this->success('数据修改成功！', '');
+            $this->assign('title', $this->title);
+            return view();
         }
+        foreach ($this->request->post() as $key => $vo) {
+            sysconf($key, $vo);
+        }
+        LogService::write('系统管理', '修改系统配置参数成功');
+        $this->success('数据修改成功！', '');
     }
 
     /**
@@ -63,7 +63,7 @@ class Config extends BasicAdmin {
             'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'
         ]);
         $this->title = '文件存储配置';
-        $this->index();
+        return $this->index();
     }
 
 }

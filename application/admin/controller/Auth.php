@@ -40,7 +40,7 @@ class Auth extends BasicAdmin {
      */
     public function index() {
         $this->title = '系统权限管理';
-        parent::_list($this->table);
+        return parent::_list($this->table);
     }
 
     /**

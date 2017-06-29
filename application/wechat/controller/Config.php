@@ -41,8 +41,7 @@ class Config extends BasicAdmin {
      */
     public function index() {
         if ($this->request->isGet()) {
-            $this->assign('title', '微信接口配置');
-            return view();
+            return view('', ['title' => '微信接口配置']);
         }
         foreach ($this->request->post() as $key => $vo) {
             sysconf($key, $vo);

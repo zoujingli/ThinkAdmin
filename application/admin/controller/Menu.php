@@ -41,7 +41,7 @@ class Menu extends BasicAdmin {
     public function index() {
         $this->title = '系统菜单管理';
         $db = Db::name($this->table)->order('sort asc,id asc');
-        parent::_list($db, false);
+        return parent::_list($db, false);
     }
 
     /**
@@ -109,9 +109,9 @@ class Menu extends BasicAdmin {
      */
     public function del() {
         if (DataService::update($this->table)) {
-            $this->success("菜单删除成功！", '');
+            $this->success("菜单删除成功!", '');
         }
-        $this->error("菜单删除失败，请稍候再试！");
+        $this->error("菜单删除失败, 请稍候再试!");
     }
 
     /**
@@ -119,9 +119,9 @@ class Menu extends BasicAdmin {
      */
     public function forbid() {
         if (DataService::update($this->table)) {
-            $this->success("菜单禁用成功！", '');
+            $this->success("菜单禁用成功!", '');
         }
-        $this->error("菜单禁用失败，请稍候再试！");
+        $this->error("菜单禁用失败, 请稍候再试!");
     }
 
     /**
@@ -129,9 +129,9 @@ class Menu extends BasicAdmin {
      */
     public function resume() {
         if (DataService::update($this->table)) {
-            $this->success("菜单启用成功！", '');
+            $this->success("菜单启用成功!", '');
         }
-        $this->error("菜单启用失败，请稍候再试！");
+        $this->error("菜单启用失败, 请稍候再试!");
     }
 
 }
