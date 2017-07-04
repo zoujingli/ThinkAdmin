@@ -132,6 +132,7 @@ class Request
         if (is_null($this->filter)) {
             $this->filter = Config::get('default_filter');
         }
+
         // 保存 php://input
         $this->input = file_get_contents('php://input');
     }
@@ -601,7 +602,7 @@ class Request
     }
 
     /**
-     * 获取获取当前请求的参数
+     * 获取当前请求的参数
      * @access public
      * @param string|array  $name 变量名
      * @param mixed         $default 默认值
@@ -638,7 +639,7 @@ class Request
     }
 
     /**
-     * 设置获取获取路由参数
+     * 设置获取路由参数
      * @access public
      * @param string|array  $name 变量名
      * @param mixed         $default 默认值
@@ -655,7 +656,7 @@ class Request
     }
 
     /**
-     * 设置获取获取GET参数
+     * 设置获取GET参数
      * @access public
      * @param string|array  $name 变量名
      * @param mixed         $default 默认值
@@ -675,7 +676,7 @@ class Request
     }
 
     /**
-     * 设置获取获取POST参数
+     * 设置获取POST参数
      * @access public
      * @param string        $name 变量名
      * @param mixed         $default 默认值
@@ -700,7 +701,7 @@ class Request
     }
 
     /**
-     * 设置获取获取PUT参数
+     * 设置获取PUT参数
      * @access public
      * @param string|array      $name 变量名
      * @param mixed             $default 默认值
@@ -726,7 +727,7 @@ class Request
     }
 
     /**
-     * 设置获取获取DELETE参数
+     * 设置获取DELETE参数
      * @access public
      * @param string|array      $name 变量名
      * @param mixed             $default 默认值
@@ -739,7 +740,7 @@ class Request
     }
 
     /**
-     * 设置获取获取PATCH参数
+     * 设置获取PATCH参数
      * @access public
      * @param string|array      $name 变量名
      * @param mixed             $default 默认值
@@ -1214,6 +1215,8 @@ class Request
             return true;
         } elseif (isset($server['HTTP_X_FORWARDED_PROTO']) && 'https' == $server['HTTP_X_FORWARDED_PROTO']) {
             return true;
+        } elseif (Config::get('https_agent_name') && isset($server[Config::get('https_agent_name')])) {
+            return true;
         }
         return false;
     }
@@ -1541,7 +1544,7 @@ class Request
                 $key = call_user_func_array($key, [$this]);
             } elseif (true === $key) {
                 foreach ($except as $rule) {
-                    if (0 === strpos($this->url(), $rule)) {
+                    if (0 === stripos($this->url(), $rule)) {
                         return;
                     }
                 }
