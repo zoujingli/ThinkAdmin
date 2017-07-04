@@ -105,7 +105,7 @@ class BasicAdmin extends Controller {
         }
         // 列表数据查询与显示
         if (null === $db->getOptions('order')) {
-            $fields = $db->getTableFields(['table' => $db->getTable()]);
+            $fields = $db->getTableFields($db->getTable());
             in_array('sort', $fields) && $db->order('sort asc');
         }
         $result = array();

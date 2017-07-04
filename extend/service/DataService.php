@@ -95,7 +95,7 @@ class DataService {
         // 删除模式，如果存在 is_deleted 字段使用软删除
         if ($field === 'delete') {
             if (method_exists($db, 'getTableFields')) {
-                if (in_array('is_deleted', $db->getTableFields(['table' => $db->getTable()]))) {
+                if (in_array('is_deleted', $db->getTableFields($db->getTable()))) {
                     return false !== $db->where($where)->update(['is_deleted' => 1]);
                 }
             }
