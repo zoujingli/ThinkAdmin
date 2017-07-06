@@ -45,16 +45,16 @@ class Menu extends BasicAdmin
      * 微信菜单的类型
      * @var array
      */
-    protected $menu_type = array(
-        'view' => '跳转URL',
-        'click' => '点击推事件',
-        'scancode_push' => '扫码推事件',
-        'scancode_waitmsg' => '扫码推事件且弹出“消息接收中”提示框',
-        'pic_sysphoto' => '弹出系统拍照发图',
+    protected $menu_type = [
+        'view'               => '跳转URL',
+        'click'              => '点击推事件',
+        'scancode_push'      => '扫码推事件',
+        'scancode_waitmsg'   => '扫码推事件且弹出“消息接收中”提示框',
+        'pic_sysphoto'       => '弹出系统拍照发图',
         'pic_photo_or_album' => '弹出拍照或者相册发图',
-        'pic_weixin' => '弹出微信相册发图器',
-        'location_select' => '弹出地理位置选择器',
-    );
+        'pic_weixin'         => '弹出微信相册发图器',
+        'location_select'    => '弹出地理位置选择器',
+    ];
 
     /**
      * 显示列表操作
@@ -164,9 +164,9 @@ class Menu extends BasicAdmin
         }
         $wechat = &load_wechat('Menu');
         if (false !== $wechat->createMenu(['button' => $menus])) {
-            return array('status' => true, 'errmsg' => '');
+            return ['status' => true, 'errmsg' => ''];
         }
-        return array('status' => false, 'errmsg' => $wechat->errMsg);
+        return ['status' => false, 'errmsg' => $wechat->errMsg];
     }
 
 }

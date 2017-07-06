@@ -158,13 +158,13 @@ class Api extends Controller
     protected function _news($news_id = 0)
     {
         if (is_array($newsinfo = WechatService::getNewsById($news_id)) && !empty($newsinfo['articles'])) {
-            $newsdata = array();
+            $newsdata = [];
             foreach ($newsinfo['articles'] as $vo) {
                 $newsdata[] = [
-                    'Title' => $vo['title'],
+                    'Title'       => $vo['title'],
                     'Description' => $vo['digest'],
-                    'PicUrl' => $vo['local_url'],
-                    'Url' => url("@wechat/review", '', true, true) . "?content={$vo['id']}&type=article",
+                    'PicUrl'      => $vo['local_url'],
+                    'Url'         => url("@wechat/review", '', true, true) . "?content={$vo['id']}&type=article",
                 ];
             }
             return $this->wechat->news($newsdata)->reply(false, true);

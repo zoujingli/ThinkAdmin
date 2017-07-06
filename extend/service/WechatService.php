@@ -38,7 +38,7 @@ class WechatService
         $data = Db::name('WechatNews')->where('id', $id)->where($where)->find();
         $article_ids = explode(',', $data['article_id']);
         $articles = Db::name('WechatNewsArticle')->where('id', 'in', $article_ids)->select();
-        $data['articles'] = array();
+        $data['articles'] = [];
         foreach ($article_ids as $article_id) {
             foreach ($articles as $article) {
                 if (intval($article['id']) === intval($article_id)) {
@@ -87,7 +87,7 @@ class WechatService
      * @param array $video_info 视频信息
      * @return string|null
      */
-    public static function uploadForeverMedia($local_url = '', $type = 'image', $is_video = false, $video_info = array())
+    public static function uploadForeverMedia($local_url = '', $type = 'image', $is_video = false, $video_info = [])
     {
         # 检测文件上否已经上传过了
         $wechat = &load_wechat('media');
@@ -101,7 +101,7 @@ class WechatService
         $upload = FileService::local($filename, file_get_contents($local_url));
         if (!empty($upload) && isset($upload['file']) && file_exists($upload['file'])) {
             # 上传图片到微信服务器
-            if (false !== ($result = $wechat->uploadForeverMedia(array('media' => "@{$upload['file']}"), $type, $is_video, $video_info))) {
+            if (false !== ($result = $wechat->uploadForeverMedia(['media' => "@{$upload['file']}"], $type, $is_video, $video_info))) {
                 $data = ['md5' => $md5, 'type' => $type, 'appid' => $wechat->appid, 'media_id' => $result['media_id'], 'local_url' => $local_url];
                 isset($result['url']) && $data['media_url'] = $result['url'];
                 Db::name('WechatNewsMedia')->insert($data);

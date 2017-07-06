@@ -37,7 +37,7 @@ class Notify extends Controller
         $notifyInfo = $pay->getNotify();
 
         // 支付通知数据获取失败
-        if ($notifyInfo === FALSE) {
+        if ($notifyInfo === false) {
             // 接口失败的处理
             Log::error("微信支付通知消息验证失败，{$pay->errCode}[{$pay->errCode}]");
             return $pay->errMsg;

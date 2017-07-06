@@ -36,14 +36,14 @@ class ExpressService
      */
     public static function line($ShipperCode, $LogisticCode)
     {
-        $sendData = json_encode(array('ShipperCode' => $ShipperCode, 'LogisticCode' => $LogisticCode), JSON_UNESCAPED_UNICODE);
-        $data = array(
+        $sendData = json_encode(['ShipperCode' => $ShipperCode, 'LogisticCode' => $LogisticCode], JSON_UNESCAPED_UNICODE);
+        $data = [
             'RequestData' => $sendData,
             'EBusinessID' => self::APPID,
             'RequestType' => '1002',
-            'DataType' => 2,
-            'DataSign' => base64_encode(md5($sendData . self::APPKEY)),
-        );
+            'DataType'    => 2,
+            'DataSign'    => base64_encode(md5($sendData . self::APPKEY)),
+        ];
         $result = HttpService::post(self::APIURI, $data);
         !($resultJson = json_decode($result, true)) && die(var_export($result));
         return self::response($resultJson);
@@ -57,11 +57,11 @@ class ExpressService
     public static function response($result)
     {
         $status = "fail";
-        $data = array();
+        $data = [];
         $message = "此单号无跟踪记录";
         if (isset($result['Message'])) {
             $message = $result['Message'];
-        } else if (isset($result['Reason'])) {
+        } elseif (isset($result['Reason'])) {
             $message = $result['Reason'];
         }
         if (isset($result['Traces']) && $result['Traces']) {
@@ -72,7 +72,7 @@ class ExpressService
             $status = "success";
             $message = '此订单号有' . count($data) . '条跟踪记录';
         }
-        return array('result' => $status, 'data' => $data, 'message' => $message);
+        return ['result' => $status, 'data' => $data, 'message' => $message];
     }
 
 }

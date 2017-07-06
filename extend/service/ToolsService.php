@@ -49,11 +49,11 @@ class ToolsService
     public static function corsRequestHander()
     {
         return [
-            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Origin'      => '*',
             'Access-Control-Allow-Credentials' => true,
-            'Access-Control-Allow-Methods' => 'GET,POST,OPTIONS',
-            'X-Support' => 'service@cuci.cc',
-            'X-Servers' => 'Guangzhou Cuci Technology Co. Ltd',
+            'Access-Control-Allow-Methods'     => 'GET,POST,OPTIONS',
+            'X-Support'                        => 'service@cuci.cc',
+            'X-Servers'                        => 'Guangzhou Cuci Technology Co. Ltd',
         ];
     }
 
@@ -91,7 +91,7 @@ class ToolsService
      */
     public static function arr2tree($list, $id = 'id', $pid = 'pid', $son = 'sub')
     {
-        $tree = $map = array();
+        $tree = $map = [];
         foreach ($list as $item) {
             $map[$item[$id]] = $item;
         }
@@ -117,12 +117,12 @@ class ToolsService
     public static function arr2table($list, $id = 'id', $pid = 'pid', $path = 'path', $ppath = '')
     {
         $_array_tree = self::arr2tree($list, $id, $pid);
-        $tree = array();
+        $tree = [];
         foreach ($_array_tree as $_tree) {
             $_tree[$path] = $ppath . '-' . $_tree[$id];
             $_tree['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├&nbsp;&nbsp;", substr_count($ppath, '-'));
             if (!isset($_tree['sub'])) {
-                $_tree['sub'] = array();
+                $_tree['sub'] = [];
             }
             $sub = $_tree['sub'];
             unset($_tree['sub']);
@@ -145,7 +145,7 @@ class ToolsService
      */
     public static function getArrSubIds($list, $id = 0, $key = 'id', $pkey = 'pid')
     {
-        $ids = array(intval($id));
+        $ids = [intval($id)];
         foreach ($list as $vo) {
             if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) == intval($id)) {
                 $ids = array_merge($ids, self::getArrSubIds($list, intval($vo[$key]), $key, $pkey));

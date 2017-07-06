@@ -75,11 +75,7 @@ class Index extends BasicAdmin
     {
         if (session('user.username') === 'admin' && session('user.password') === '21232f297a57a5a743894a0e4a801fc3') {
             $url = url('admin/index/pass') . '?id=' . session('user.id');
-            $alert = [
-                'type' => 'danger',
-                'title' => '安全提示',
-                'content' => "超级管理员默认密码未修改，建议马上<a href='javascript:void(0)' data-modal='{$url}'>修改</a>！"
-            ];
+            $alert = ['type' => 'danger', 'title' => '安全提示', 'content' => "超级管理员默认密码未修改，建议马上<a href='javascript:void(0)' data-modal='{$url}'>修改</a>！",];
             $this->assign('alert', $alert);
             $this->assign('title', '后台首页');
         }

@@ -151,7 +151,7 @@ class News extends BasicAdmin
                 $id = intval($vo['id']);
                 $result = Db::name('WechatNewsArticle')->where('id', $id)->update($vo);
             }
-            if ($result !== FALSE) {
+            if ($result !== false) {
                 $ids[] = $id;
             }
         }
@@ -193,8 +193,8 @@ class News extends BasicAdmin
                 if ($this->request->isGet()) {
                     $fans_tags = Db::name('WechatFansTags')->select();
                     array_unshift($fans_tags, [
-                        'id' => 0,
-                        'name' => '全部',
+                        'id'    => 0,
+                        'name'  => '全部',
                         'count' => Db::name('WechatFans')->where('subscribe', '1')->count(),
                     ]);
                     return view('push', ['vo' => $newsinfo, 'fans_tags' => $fans_tags]);
@@ -216,7 +216,7 @@ class News extends BasicAdmin
                     $data['mpnews'] = ['media_id' => $newsinfo['media_id']];
                 }
                 $wechat = &load_wechat('Receive');
-                if (FALSE !== $wechat->sendGroupMassMessage($data)) {
+                if (false !== $wechat->sendGroupMassMessage($data)) {
                     LogService::write('微信管理', "图文[{$news_id}]推送成功");
                     $this->success('微信图文推送成功！', '');
                 }

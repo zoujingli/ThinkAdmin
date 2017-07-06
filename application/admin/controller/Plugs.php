@@ -99,7 +99,7 @@ class Plugs extends BasicAdmin
                 $time = time() + 3600;
                 $policyText = [
                     'expiration' => date('Y-m-d', $time) . 'T' . date('H:i:s', $time) . '.000Z',
-                    'conditions' => [['content-length-range', 0, 1048576000]]
+                    'conditions' => [['content-length-range', 0, 1048576000]],
                 ];
                 $config['policy'] = base64_encode(json_encode($policyText));
                 $config['server'] = FileService::getUploadOssUrl();
@@ -123,8 +123,8 @@ class Plugs extends BasicAdmin
         $host = sysconf('storage_qiniu_domain');
         $protocol = sysconf('storage_qiniu_is_https') ? 'https' : 'http';
         $params = [
-            "scope" => "{$bucket}:{$key}",
-            "deadline" => 3600 + time(),
+            "scope"      => "{$bucket}:{$key}",
+            "deadline"   => 3600 + time(),
             "returnBody" => "{\"data\":{\"site_url\":\"{$protocol}://{$host}/$(key)\",\"file_url\":\"$(key)\"}, \"code\": \"SUCCESS\"}",
         ];
         $data = str_replace(['+', '/'], ['-', '_'], base64_encode(json_encode($params)));

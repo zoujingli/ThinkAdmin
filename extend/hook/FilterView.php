@@ -41,8 +41,8 @@ class FilterView
         $this->request = Request::instance();
         $appRoot = $this->request->root(true);
         $replace = [
-            '__APP__' => $appRoot,
-            '__SELF__' => $this->request->url(true),
+            '__APP__'    => $appRoot,
+            '__SELF__'   => $this->request->url(true),
             '__PUBLIC__' => strpos($appRoot, EXT) ? ltrim(dirname($appRoot), DS) : $appRoot,
         ];
         $params = str_replace(array_keys($replace), array_values($replace), $params);

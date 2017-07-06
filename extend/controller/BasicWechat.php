@@ -96,7 +96,7 @@ class BasicWechat extends Controller
         if (!$this->request->get('code', false)) {
             $this->redirect($wechat->getOauthRedirect($wxoauth_url, 'webOauth', 'snsapi_base'));
         }
-        if (FALSE === ($result = $wechat->getOauthAccessToken()) || empty($result['openid'])) {
+        if (false === ($result = $wechat->getOauthAccessToken()) || empty($result['openid'])) {
             Log::error("微信网页授权失败, {$wechat->errMsg}[{$wechat->errCode}]");
             $this->error("微信网页授权失败, {$wechat->errMsg}[{$wechat->errCode}]");
         }

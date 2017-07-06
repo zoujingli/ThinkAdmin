@@ -34,7 +34,7 @@ class HttpService
      * @param array $header 请求Header信息
      * @return bool|string
      */
-    public static function get($url, $data = array(), $second = 30, $header = [])
+    public static function get($url, $data = [], $second = 30, $header = [])
     {
         if (!empty($data)) {
             $url .= (stripos($url, '?') === false ? '?' : '&');

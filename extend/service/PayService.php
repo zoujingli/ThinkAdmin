@@ -90,9 +90,9 @@ class PayService
      * @param string|null $refund_no 退款订单号
      * @return bool
      */
-    public static function putWechatRefund(WechatPay $pay, $order_no, $fee = 0, $refund_no = NULL, $refund_account = '')
+    public static function putWechatRefund(WechatPay $pay, $order_no, $fee = 0, $refund_no = null, $refund_account = '')
     {
-        $map = array('order_no' => $order_no, 'is_pay' => '1', 'appid' => $pay->appid);
+        $map = ['order_no' => $order_no, 'is_pay' => '1', 'appid' => $pay->appid];
         $notify = Db::name('WechatPayPrepayid')->where($map)->find();
         if (empty($notify)) {
             Log::error("内部订单号{$order_no}验证退款失败");
