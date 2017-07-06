@@ -174,12 +174,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "90d71bbc76d0915e0cf51ecad57350c0c79d5a3f"
+            "reference": "e428c43ec5138c989cfdb38ac300a964ad77f9cb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/90d71bbc76d0915e0cf51ecad57350c0c79d5a3f.zip",
-            "reference": "90d71bbc76d0915e0cf51ecad57350c0c79d5a3f",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/e428c43ec5138c989cfdb38ac300a964ad77f9cb.zip",
+            "reference": "e428c43ec5138c989cfdb38ac300a964ad77f9cb",
             "shasum": ""
         },
         "require": {
@@ -194,7 +194,7 @@
             "phpunit/phpunit": "4.8.*",
             "sebastian/phpcpd": "2.*"
         },
-        "time": "2017-07-04T03:46:13+00:00",
+        "time": "2017-07-05T03:35:06+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "autoload": {
@@ -381,8 +381,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.3.3",
-        "version_normalized": "3.3.3.0",
+        "version": "v3.3.4",
+        "version_normalized": "3.3.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",

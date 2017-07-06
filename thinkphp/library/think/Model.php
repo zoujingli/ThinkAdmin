@@ -353,7 +353,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             // 检测修改器
             $method = 'set' . Loader::parseName($name, 1) . 'Attr';
             if (method_exists($this, $method)) {
-                $value = $this->$method($value, array_merge($this->data, $data));
+                $value = $this->$method($value, array_merge($this->data, $data), $this->relation);
             } elseif (isset($this->type[$name])) {
                 // 类型转换
                 $value = $this->writeTransform($value, $this->type[$name]);
@@ -532,7 +532,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         // 检测属性获取器
         $method = 'get' . Loader::parseName($name, 1) . 'Attr';
         if (method_exists($this, $method)) {
-            $value = $this->$method($value, $this->data);
+            $value = $this->$method($value, $this->data, $this->relation);
         } elseif (isset($this->type[$name])) {
             // 类型转换
             $value = $this->readTransform($value, $this->type[$name]);
@@ -1094,19 +1094,16 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
 
     protected function checkAllowField($auto = [])
     {
-        if (!empty($this->field)) {
-            if (!empty($this->origin)) {
-                $this->field = array_keys($this->origin);
-                $field       = $this->field;
-            } elseif (true === $this->field) {
-                $this->field = $this->getQuery()->getTableInfo('', 'fields');
-                $field       = $this->field;
-            } else {
-                $field = array_merge($this->field, $auto);
-            }
+        if (true === $this->field) {
+            $this->field = $this->getQuery()->getTableInfo('', 'fields');
+            $field       = $this->field;
+        } elseif (!empty($this->field)) {
+            $field = array_merge($this->field, $auto);
         } else {
             $field = [];
+
         }
+
         return $field;
     }
 
