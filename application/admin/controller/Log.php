@@ -25,7 +25,8 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15 18:12
  */
-class Log extends BasicAdmin {
+class Log extends BasicAdmin
+{
 
     /**
      * 指定当前数据表
@@ -36,7 +37,8 @@ class Log extends BasicAdmin {
     /**
      * 日志列表
      */
-    public function index() {
+    public function index()
+    {
         $this->title = '系统操作日志';
         $get = $this->request->get();
         $actions = Db::name($this->table)->group('action')->column('action');
@@ -54,7 +56,8 @@ class Log extends BasicAdmin {
      * 列表数据处理
      * @param $data
      */
-    protected function _index_data_filter(&$data) {
+    protected function _index_data_filter(&$data)
+    {
         $ip = new \Ip2Region();
         foreach ($data as &$vo) {
             $result = $ip->btreeSearch($vo['ip']);
@@ -66,7 +69,8 @@ class Log extends BasicAdmin {
     /**
      * 日志删除操作
      */
-    public function del() {
+    public function del()
+    {
         if (DataService::update($this->table)) {
             $this->success("日志删除成功!", '');
         }

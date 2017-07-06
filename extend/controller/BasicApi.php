@@ -24,7 +24,8 @@ use think\Response;
  * Class BasicApi
  * @package controller
  */
-class BasicApi {
+class BasicApi
+{
 
     /**
      * 访问请求对象
@@ -42,7 +43,8 @@ class BasicApi {
      * 基础接口SDK
      * @param Request|null $request
      */
-    public function __construct(Request $request = null) {
+    public function __construct(Request $request = null)
+    {
         // CORS 跨域 Options 检测响应
         ToolsService::corsOptionsHandler();
         // 获取当前 Request 对象
@@ -66,7 +68,8 @@ class BasicApi {
      * @param string $type 返回类型 JSON XML
      * @return Response
      */
-    public function response($msg, $code = 'SUCCESS', $data = [], $type = 'json') {
+    public function response($msg, $code = 'SUCCESS', $data = [], $type = 'json')
+    {
         $result = ['msg' => $msg, 'code' => $code, 'data' => $data, 'token' => $this->token, 'dataType' => strtolower($type)];
         return Response::create($result, $type)->header(ToolsService::corsRequestHander())->code(200);
     }
@@ -78,7 +81,8 @@ class BasicApi {
      * @param int|null $expire 有效时间 0为永久
      * @return bool
      */
-    public function setCache($name, $value, $expire = null) {
+    public function setCache($name, $value, $expire = null)
+    {
         return Cache::set("{$this->token}_{$name}", $value, $expire);
     }
 
@@ -88,7 +92,8 @@ class BasicApi {
      * @param mixed $default 默认值
      * @return mixed
      */
-    public function getCache($name, $default = false) {
+    public function getCache($name, $default = false)
+    {
         return Cache::get("{$this->token}_{$name}", $default);
     }
 
@@ -97,7 +102,8 @@ class BasicApi {
      * @param string $name 缓存标识
      * @return bool
      */
-    public function delCache($name) {
+    public function delCache($name)
+    {
         return Cache::rm("{$this->token}_{$name}");
     }
 
@@ -105,7 +111,8 @@ class BasicApi {
      * API接口调度
      * @return Response
      */
-    public function _empty() {
+    public function _empty()
+    {
         list($module, $controller, $action, $method) = explode('/', $this->request->path() . '///');
         if (!empty($module) && !empty($controller) && !empty($action) && !empty($method)) {
             $action = ucfirst($action);

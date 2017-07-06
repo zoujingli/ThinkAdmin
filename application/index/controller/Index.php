@@ -23,12 +23,14 @@ use think\Controller;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/04/05 10:38
  */
-class Index extends Controller {
+class Index extends Controller
+{
 
     /**
      * 网站入口
      */
-    public function index() {
+    public function index()
+    {
         $this->redirect('@admin');
     }
 

@@ -26,7 +26,8 @@ use think\View;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/05/12 11:59
  */
-class AccessAuth {
+class AccessAuth
+{
 
     /**
      * 当前请求对象
@@ -38,7 +39,8 @@ class AccessAuth {
      * 行为入口
      * @param $params
      */
-    public function run(&$params) {
+    public function run(&$params)
+    {
         $this->request = Request::instance();
         list($module, $controller, $action) = [$this->request->module(), $this->request->controller(), $this->request->action()];
         $vars = get_class_vars(config('app_namespace') . "\\{$module}\\controller\\{$controller}");

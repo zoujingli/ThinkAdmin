@@ -30,7 +30,8 @@ use think\Log;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/15 15:17
  */
-class FileService {
+class FileService
+{
 
     /**
      * 根据文件后缀获取文件MINE
@@ -38,7 +39,8 @@ class FileService {
      * @param array $mine 文件后缀MINE信息
      * @return string
      */
-    public static function getFileMine($exts, $mine = []) {
+    public static function getFileMine($exts, $mine = [])
+    {
         $mines = Config::get('mines');
         foreach (is_string($exts) ? explode(',', $exts) : $exts as $_e) {
             if (isset($mines[strtolower($_e)])) {
@@ -55,7 +57,8 @@ class FileService {
      * @param string|null $storage
      * @return bool|string
      */
-    public static function getFileUrl($filename, $storage = null) {
+    public static function getFileUrl($filename, $storage = null)
+    {
         if (self::hasFile($filename, $storage) === false) {
             return false;
         }
@@ -74,7 +77,8 @@ class FileService {
      * 根据配置获取到七牛云文件上传目标地址
      * @return string
      */
-    public static function getUploadLocalUrl() {
+    public static function getUploadLocalUrl()
+    {
         return url('@admin/plugs/upload');
     }
 
@@ -83,7 +87,8 @@ class FileService {
      * @param bool $isClient
      * @return string
      */
-    public static function getUploadQiniuUrl($isClient = true) {
+    public static function getUploadQiniuUrl($isClient = true)
+    {
         $region = sysconf('storage_qiniu_region');
         $isHttps = !!sysconf('storage_qiniu_is_https');
         switch ($region) {
@@ -115,7 +120,8 @@ class FileService {
      * 获取AliOSS上传地址
      * @return string
      */
-    public static function getUploadOssUrl() {
+    public static function getUploadOssUrl()
+    {
         return (request()->isSsl() ? 'https' : 'http') . '://' . sysconf('storage_oss_domain');
     }
 
@@ -123,7 +129,8 @@ class FileService {
      * 获取服务器URL前缀
      * @return string
      */
-    public static function getBaseUriLocal() {
+    public static function getBaseUriLocal()
+    {
         $request = request();
         $base = $request->root();
         $root = strpos($base, '.') ? ltrim(dirname($base), DS) : $base;
@@ -137,7 +144,8 @@ class FileService {
      * 获取七牛云URL前缀
      * @return string
      */
-    public static function getBaseUriQiniu() {
+    public static function getBaseUriQiniu()
+    {
         return (sysconf('storage_qiniu_is_https') ? 'https' : 'http') . '://' . sysconf('storage_qiniu_domain') . '/';
     }
 
@@ -145,7 +153,8 @@ class FileService {
      * 获取AliOss URL前缀
      * @return string
      */
-    public static function getBaseUriOss() {
+    public static function getBaseUriOss()
+    {
         return (sysconf('storage_oss_is_https') ? 'https' : 'http') . '://' . sysconf('storage_oss_domain') . '/';
     }
 
@@ -156,7 +165,8 @@ class FileService {
      * @param string $pre 文件前缀
      * @return string
      */
-    public static function getFileName($source, $ext = '', $pre = '') {
+    public static function getFileName($source, $ext = '', $pre = '')
+    {
         return $pre . join('/', str_split(md5($source), 16)) . '.' . $ext;
     }
 
@@ -166,7 +176,8 @@ class FileService {
      * @param string|null $storage
      * @return bool
      */
-    public static function hasFile($filename, $storage = null) {
+    public static function hasFile($filename, $storage = null)
+    {
         switch (empty($storage) ? sysconf('storage_type') : $storage) {
             case 'local':
                 return file_exists(ROOT_PATH . 'static/upload/' . $filename);
@@ -188,7 +199,8 @@ class FileService {
      * @param string|null $storage
      * @return string|null
      */
-    public static function readFile($filename, $storage = null) {
+    public static function readFile($filename, $storage = null)
+    {
         switch (empty($storage) ? sysconf('storage_type') : $storage) {
             case 'local':
                 $filepath = ROOT_PATH . 'static/upload/' . $filename;
@@ -213,7 +225,8 @@ class FileService {
      * @param string|null $file_storage
      * @return array|false
      */
-    public static function save($filename, $content, $file_storage = null) {
+    public static function save($filename, $content, $file_storage = null)
+    {
         $type = empty($file_storage) ? sysconf('storage_type') : $file_storage;
         if (!method_exists(__CLASS__, $type)) {
             Log::error("保存存储失败，调用{$type}存储引擎不存在！");
@@ -228,7 +241,8 @@ class FileService {
      * @param string $content
      * @return array|null
      */
-    public static function local($filename, $content) {
+    public static function local($filename, $content)
+    {
         try {
             $filepath = ROOT_PATH . 'static/upload/' . $filename;
             !file_exists(dirname($filepath)) && mkdir(dirname($filepath), '0755', true);
@@ -248,7 +262,8 @@ class FileService {
      * @param string $content
      * @return array|null
      */
-    public static function qiniu($filename, $content) {
+    public static function qiniu($filename, $content)
+    {
         $auth = new Auth(sysconf('storage_qiniu_access_key'), sysconf('storage_qiniu_secret_key'));
         $token = $auth->uploadToken(sysconf('storage_qiniu_bucket'));
         $uploadMgr = new UploadManager();
@@ -268,7 +283,8 @@ class FileService {
      * @param string $content
      * @return array|null
      */
-    public static function oss($filename, $content) {
+    public static function oss($filename, $content)
+    {
         try {
             $ossClient = new OssClient(sysconf('storage_oss_keyid'), sysconf('storage_oss_secret'), self::getBaseUriOss(), true);
             $result = $ossClient->putObject(sysconf('storage_oss_bucket'), $filename, $content);
@@ -285,7 +301,8 @@ class FileService {
      * @param bool $isForce 是否强制重新下载文件
      * @return array|null;
      */
-    public static function download($url, $isForce = false) {
+    public static function download($url, $isForce = false)
+    {
         try {
             $filename = self::getFileName($url, strtolower(pathinfo($url, 4)), 'download/');
             if (false === $isForce && ($siteUrl = self::getFileUrl($filename, 'local'))) {

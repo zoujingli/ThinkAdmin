@@ -26,7 +26,8 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/10 13:59
  */
-class Login extends BasicAdmin {
+class Login extends BasicAdmin
+{
 
     /**
      * 默认检查用户登录状态
@@ -43,7 +44,8 @@ class Login extends BasicAdmin {
     /**
      * 控制器基础方法
      */
-    public function _initialize() {
+    public function _initialize()
+    {
         if (session('user') && $this->request->action() !== 'out') {
             $this->redirect('@admin');
         }
@@ -53,7 +55,8 @@ class Login extends BasicAdmin {
      * 用户登录
      * @return string
      */
-    public function index() {
+    public function index()
+    {
         if ($this->request->isGet()) {
             return $this->fetch('', ['title' => '用户登录']);
         } else {
@@ -80,7 +83,8 @@ class Login extends BasicAdmin {
     /**
      * 退出登录
      */
-    public function out() {
+    public function out()
+    {
         LogService::write('系统管理', '用户退出系统成功');
         session('user', null);
         session_destroy();

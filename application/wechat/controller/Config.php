@@ -27,7 +27,8 @@ use think\response\View;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/27 14:43
  */
-class Config extends BasicAdmin {
+class Config extends BasicAdmin
+{
 
     /**
      * 定义当前操作表名
@@ -39,7 +40,8 @@ class Config extends BasicAdmin {
      * 微信基础参数配置
      * @return View
      */
-    public function index() {
+    public function index()
+    {
         if ($this->request->isGet()) {
             return view('', ['title' => '微信接口配置']);
         }
@@ -54,7 +56,8 @@ class Config extends BasicAdmin {
      * 微信商户参数配置
      * @return View
      */
-    public function pay() {
+    public function pay()
+    {
         if ($this->request->isGet()) {
             switch ($this->request->get('action')) {
                 // 生成测试支付二维码

@@ -27,7 +27,8 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15
  */
-class Menu extends BasicAdmin {
+class Menu extends BasicAdmin
+{
 
     /**
      * 绑定操作模型
@@ -38,7 +39,8 @@ class Menu extends BasicAdmin {
     /**
      * 菜单列表
      */
-    public function index() {
+    public function index()
+    {
         $this->title = '系统菜单管理';
         $db = Db::name($this->table)->order('sort asc,id asc');
         return parent::_list($db, false);
@@ -48,7 +50,8 @@ class Menu extends BasicAdmin {
      * 列表数据处理
      * @param array $data
      */
-    protected function _index_data_filter(&$data) {
+    protected function _index_data_filter(&$data)
+    {
         foreach ($data as &$vo) {
             ($vo['url'] !== '#') && ($vo['url'] = url($vo['url']));
             $vo['ids'] = join(',', ToolsService::getArrSubIds($data, $vo['id']));
@@ -59,14 +62,16 @@ class Menu extends BasicAdmin {
     /**
      * 添加菜单
      */
-    public function add() {
+    public function add()
+    {
         return $this->_form($this->table, 'form');
     }
 
     /**
      * 编辑菜单
      */
-    public function edit() {
+    public function edit()
+    {
         return $this->_form($this->table, 'form');
     }
 
@@ -74,7 +79,8 @@ class Menu extends BasicAdmin {
      * 表单数据前缀方法
      * @param array $vo
      */
-    protected function _form_filter(&$vo) {
+    protected function _form_filter(&$vo)
+    {
         if ($this->request->isGet()) {
             // 上级菜单处理
             $_menus = Db::name($this->table)->where('status', '1')->order('sort desc,id desc')->select();
@@ -107,7 +113,8 @@ class Menu extends BasicAdmin {
     /**
      * 删除菜单
      */
-    public function del() {
+    public function del()
+    {
         if (DataService::update($this->table)) {
             $this->success("菜单删除成功!", '');
         }
@@ -117,7 +124,8 @@ class Menu extends BasicAdmin {
     /**
      * 菜单禁用
      */
-    public function forbid() {
+    public function forbid()
+    {
         if (DataService::update($this->table)) {
             $this->success("菜单禁用成功!", '');
         }
@@ -127,7 +135,8 @@ class Menu extends BasicAdmin {
     /**
      * 菜单禁用
      */
-    public function resume() {
+    public function resume()
+    {
         if (DataService::update($this->table)) {
             $this->success("菜单启用成功!", '');
         }

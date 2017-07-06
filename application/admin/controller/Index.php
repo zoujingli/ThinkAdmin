@@ -28,13 +28,15 @@ use think\View;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15 10:41
  */
-class Index extends BasicAdmin {
+class Index extends BasicAdmin
+{
 
     /**
      * 后台框架布局
      * @return View
      */
-    public function index() {
+    public function index()
+    {
         NodeService::applyAuthNode();
         $list = Db::name('SystemMenu')->where('status', '1')->order('sort asc,id asc')->select();
         $menus = $this->_filterMenu(ToolsService::arr2tree($list));
@@ -46,7 +48,8 @@ class Index extends BasicAdmin {
      * @param array $menus
      * @return array
      */
-    private function _filterMenu($menus) {
+    private function _filterMenu($menus)
+    {
         foreach ($menus as $key => &$menu) {
             if (!empty($menu['sub'])) {
                 $menu['sub'] = $this->_filterMenu($menu['sub']);
@@ -68,12 +71,13 @@ class Index extends BasicAdmin {
      * 主机信息显示
      * @return View
      */
-    public function main() {
+    public function main()
+    {
         if (session('user.username') === 'admin' && session('user.password') === '21232f297a57a5a743894a0e4a801fc3') {
             $url = url('admin/index/pass') . '?id=' . session('user.id');
             $alert = [
-                'type'    => 'danger',
-                'title'   => '安全提示',
+                'type' => 'danger',
+                'title' => '安全提示',
                 'content' => "超级管理员默认密码未修改，建议马上<a href='javascript:void(0)' data-modal='{$url}'>修改</a>！"
             ];
             $this->assign('alert', $alert);
@@ -87,7 +91,8 @@ class Index extends BasicAdmin {
     /**
      * 修改密码
      */
-    public function pass() {
+    public function pass()
+    {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
             $this->error('系统超级账号禁止操作！');
         }
@@ -117,7 +122,8 @@ class Index extends BasicAdmin {
     /**
      * 修改资料
      */
-    public function info() {
+    public function info()
+    {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
             $this->error('系统超级账号禁止操作！');
         }

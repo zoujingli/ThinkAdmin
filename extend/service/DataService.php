@@ -24,7 +24,8 @@ use think\Request;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/22 15:32
  */
-class DataService {
+class DataService
+{
 
     /**
      * 删除指定序号
@@ -32,7 +33,8 @@ class DataService {
      * @param string $type
      * @return bool
      */
-    public static function deleteSequence($sequence, $type = 'SYSTEM') {
+    public static function deleteSequence($sequence, $type = 'SYSTEM')
+    {
         $data = ['sequence' => $sequence, 'type' => strtoupper($type)];
         return Db::name('SystemSequence')->where($data)->delete();
     }
@@ -43,7 +45,8 @@ class DataService {
      * @param string $type 序号顾类型
      * @return string
      */
-    public static function createSequence($length = 10, $type = 'SYSTEM') {
+    public static function createSequence($length = 10, $type = 'SYSTEM')
+    {
         $times = 0;
         while ($times++ < 10) {
             $i = 0;
@@ -69,7 +72,8 @@ class DataService {
      * @param array $where 其它的where条件
      * @return bool
      */
-    public static function save($dbQuery, $data, $key = 'id', $where = []) {
+    public static function save($dbQuery, $data, $key = 'id', $where = [])
+    {
         $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
         $where[$key] = isset($data[$key]) ? $data[$key] : '';
         if ($db->where($where)->count() > 0) {
@@ -84,7 +88,8 @@ class DataService {
      * @param array $where 额外查询条件
      * @return bool|null
      */
-    public static function update(&$dbQuery, $where = []) {
+    public static function update(&$dbQuery, $where = [])
+    {
         $request = Request::instance();
         $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
         $ids = explode(',', $request->post('id', ''));

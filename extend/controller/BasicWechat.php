@@ -23,7 +23,8 @@ use think\Log;
  * Class BasicWechat
  * @package controller
  */
-class BasicWechat extends Controller {
+class BasicWechat extends Controller
+{
 
     /**
      * 当前粉丝用户OPENID
@@ -52,7 +53,8 @@ class BasicWechat extends Controller {
     /**
      * 初始化方法
      */
-    public function _initialize() {
+    public function _initialize()
+    {
         // 当前完整URL地址
         $this->url = $this->request->url(true);
         // 网页授权，并获粉丝信息
@@ -66,7 +68,8 @@ class BasicWechat extends Controller {
      * @param bool $fullMode 获取完整
      * @return string
      */
-    protected function oAuth($fullMode = true) {
+    protected function oAuth($fullMode = true)
+    {
         // 本地开发调试用户 openid
         if (in_array($this->request->host(), ['127.0.0.1', 'localhost'])) {
             session('openid', 'oBWB3wWVNujb-PJlmPmxC5CBTNF0');

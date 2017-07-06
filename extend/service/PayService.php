@@ -26,14 +26,16 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/10/25 14:49
  */
-class PayService {
+class PayService
+{
 
     /**
      * 查询订单是否已经支付
      * @param string $order_no
      * @return bool
      */
-    public static function isPay($order_no) {
+    public static function isPay($order_no)
+    {
         $map = ['order_no' => $order_no, 'is_pay' => '1'];
         return Db::name('WechatPayPrepayid')->where($map)->count() > 0;
     }
@@ -47,7 +49,8 @@ class PayService {
      * @param string $from 订单来源
      * @return false|string
      */
-    public static function createWechatPayQrc(WechatPay $pay, $order_no, $fee, $title, $from = 'wechat') {
+    public static function createWechatPayQrc(WechatPay $pay, $order_no, $fee, $title, $from = 'wechat')
+    {
         $prepayid = self::createWechatPrepayid($pay, null, $order_no, $fee, $title, 'NATIVE', $from);
         if ($prepayid === false) {
             return false;
@@ -71,7 +74,8 @@ class PayService {
      * @param string $title 订单标题
      * @return bool|array
      */
-    public static function createWechatPayJsPicker(WechatPay $pay, $openid, $order_no, $fee, $title) {
+    public static function createWechatPayJsPicker(WechatPay $pay, $openid, $order_no, $fee, $title)
+    {
         if (($prepayid = self::createWechatPrepayid($pay, $openid, $order_no, $fee, $title, 'JSAPI')) === false) {
             return false;
         }
@@ -86,7 +90,8 @@ class PayService {
      * @param string|null $refund_no 退款订单号
      * @return bool
      */
-    public static function putWechatRefund(WechatPay $pay, $order_no, $fee = 0, $refund_no = NULL, $refund_account = '') {
+    public static function putWechatRefund(WechatPay $pay, $order_no, $fee = 0, $refund_no = NULL, $refund_account = '')
+    {
         $map = array('order_no' => $order_no, 'is_pay' => '1', 'appid' => $pay->appid);
         $notify = Db::name('WechatPayPrepayid')->where($map)->find();
         if (empty($notify)) {
@@ -116,7 +121,8 @@ class PayService {
      * @param string $from 订单来源
      * @return bool|string
      */
-    public static function createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'wechat') {
+    public static function createWechatPrepayid(WechatPay $pay, $openid, $order_no, $fee, $title, $trade_type = 'JSAPI', $from = 'wechat')
+    {
         $map = ['order_no' => $order_no, 'is_pay' => '1', 'expires_in' => time(), 'appid' => $pay->appid, 'trade_type' => $trade_type];
         $where = 'appid=:appid and order_no=:order_no and (is_pay=:is_pay or expires_in>:expires_in) and trade_type=:trade_type';
         $prepayinfo = Db::name('WechatPayPrepayid')->where($where, $map)->find();
