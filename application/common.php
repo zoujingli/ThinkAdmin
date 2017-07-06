@@ -24,7 +24,7 @@ use think\Db;
  * @param bool $replace
  * @param string|null $pathname
  */
-function p($data, $replace = false, $pathname = NULL)
+function p($data, $replace = false, $pathname = null)
 {
     is_null($pathname) && $pathname = RUNTIME_PATH . date('Ymd') . '.txt';
     $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true)) . "\n";
@@ -38,19 +38,19 @@ function p($data, $replace = false, $pathname = NULL)
  */
 function & load_wechat($type = '')
 {
-    static $wechat = array();
+    static $wechat = [];
     $index = md5(strtolower($type));
     if (!isset($wechat[$index])) {
         $config = [
-            'token' => sysconf('wechat_token'),
-            'appid' => sysconf('wechat_appid'),
-            'appsecret' => sysconf('wechat_appsecret'),
+            'token'          => sysconf('wechat_token'),
+            'appid'          => sysconf('wechat_appid'),
+            'appsecret'      => sysconf('wechat_appsecret'),
             'encodingaeskey' => sysconf('wechat_encodingaeskey'),
-            'mch_id' => sysconf('wechat_mch_id'),
-            'partnerkey' => sysconf('wechat_partnerkey'),
-            'ssl_cer' => sysconf('wechat_cert_cert'),
-            'ssl_key' => sysconf('wechat_cert_key'),
-            'cachepath' => CACHE_PATH . 'wxpay' . DS,
+            'mch_id'         => sysconf('wechat_mch_id'),
+            'partnerkey'     => sysconf('wechat_partnerkey'),
+            'ssl_cer'        => sysconf('wechat_cert_cert'),
+            'ssl_key'        => sysconf('wechat_cert_key'),
+            'cachepath'      => CACHE_PATH . 'wxpay' . DS,
         ];
         $wechat[$index] = Loader::get($type, $config);
     }
@@ -122,7 +122,7 @@ function sysconf($name, $value = false)
  * array_column 函数兼容
  */
 if (!function_exists("array_column")) {
-
+    
     function array_column(array &$rows, $column_key, $index_key = null)
     {
         $data = [];
