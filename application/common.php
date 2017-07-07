@@ -122,7 +122,7 @@ function sysconf($name, $value = false)
  * array_column 函数兼容
  */
 if (!function_exists("array_column")) {
-    
+
     function array_column(array &$rows, $column_key, $index_key = null)
     {
         $data = [];

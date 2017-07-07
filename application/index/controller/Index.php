@@ -15,6 +15,7 @@
 namespace app\index\controller;
 
 use think\Controller;
+use think\Db;
 
 /**
  * 网站入口控制器
@@ -32,6 +33,15 @@ class Index extends Controller
     public function index()
     {
         $this->redirect('@admin');
+    }
+
+    public function test()
+    {
+        $json = json_decode(file_get_contents('citys.json'), true);
+//        dump($json);
+        foreach ($json as $key => $vo) {
+            dump(Db::name('DataRegion')->insert(['code' => $key, 'name' => $vo]));
+        }
     }
 
 }
