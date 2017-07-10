@@ -23,27 +23,17 @@ use controller\BasicAdmin;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/07/10 18:13
  */
-class Plugs extends BasicAdmin
+class Inter extends BasicAdmin
 {
 
     /**
      * 省市区插件
      * @return \think\response\View
      */
-    public function region()
+    public function file()
     {
-        $this->title = '省市区插件';
+        $this->title = '文件上传';
         return view('', ['title' => $this->title]);
     }
 
-
-    /**
-     * 省市区插件
-     * @return \think\response\View
-     */
-    public function pcasunzip()
-    {
-        $this->title = '省市区插件';
-        return view('', ['title' => $this->title]);
-    }
 }
