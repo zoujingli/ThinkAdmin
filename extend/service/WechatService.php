@@ -92,7 +92,7 @@ class WechatService
         # 检测文件上否已经上传过了
         $wechat = &load_wechat('media');
         # 检查文件URL是否已经上传为永久素材
-        $map = ['md5' => ($md5 = md5($local_url)), 'appid' => $wechat->appid];
+        $map = ['md5' => md5($local_url), 'appid' => $wechat->appid];
         if (($img = Db::name('WechatNewsMedia')->where($map)->find()) && isset($img['media_id'])) {
             return $img['media_id'];
         }
@@ -102,7 +102,7 @@ class WechatService
         if (!empty($upload) && isset($upload['file']) && file_exists($upload['file'])) {
             # 上传图片到微信服务器
             if (false !== ($result = $wechat->uploadForeverMedia(['media' => "@{$upload['file']}"], $type, $is_video, $video_info))) {
-                $data = ['md5' => $md5, 'type' => $type, 'appid' => $wechat->appid, 'media_id' => $result['media_id'], 'local_url' => $local_url];
+                $data = ['md5' => $map['md5'], 'type' => $type, 'appid' => $wechat->appid, 'media_id' => $result['media_id'], 'local_url' => $local_url];
                 isset($result['url']) && $data['media_url'] = $result['url'];
                 Db::name('WechatNewsMedia')->insert($data);
                 return $data['media_id'];
