@@ -26,7 +26,11 @@ use controller\BasicAdmin;
 class Plugs extends BasicAdmin
 {
     public $title = '插件案例';
-    
+
+    /**
+     * 省市区插件
+     * @return \think\response\View
+     */
     public function region()
     {
         $this->title = '省市区插件';
