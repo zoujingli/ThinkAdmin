@@ -33,7 +33,7 @@ require.config({
         // 开源插件（未修改源码）
         'pace': ['../plugs/jquery/pace.min'],
         'json': ['../plugs/jquery/json2.min'],
-        'citys': ['../plugs/juqyer/jquery.citys'],
+        'citys': ['../plugs/jquery/jquery.citys'],
         'print': ['../plugs/jquery/jquery.PrintArea'],
         'base64': ['../plugs/jquery/base64.min'],
         'jquery': ['../plugs/jquery/jquery.min'],
