@@ -46,7 +46,7 @@ class Plugs extends BasicAdmin
      */
     public function upfile()
     {
-        if (!in_array(($uptype = $this->request->get('uptype')), ['local', 'qiniu'])) {
+        if (!in_array(($uptype = $this->request->get('uptype')), ['local', 'qiniu', 'oss'])) {
             $uptype = sysconf('storage_type');
         }
         $types = $this->request->get('type', 'jpg,png');
@@ -137,8 +137,8 @@ class Plugs extends BasicAdmin
      */
     public function icon()
     {
-        $this->assign('field', $this->request->get('field', 'icon'));
-        return view();
+        $field = $this->request->get('field', 'icon');
+        return view('', ['field' => $field]);
     }
 
     /**
@@ -147,8 +147,7 @@ class Plugs extends BasicAdmin
      */
     public function region()
     {
-        $list = Db::name('DataRegion')->where('status', '1')->column('code,name');
-        return json($list);
+        return json(Db::name('DataRegion')->where('status', '1')->column('code,name'));
     }
 
 }

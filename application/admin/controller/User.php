@@ -85,9 +85,6 @@ class User extends BasicAdmin
      */
     public function pass()
     {
-        if (in_array('10000', explode(',', $this->request->post('id')))) {
-            $this->error('系统超级账号禁止操作！');
-        }
         if ($this->request->isGet()) {
             $this->assign('verify', false);
             return $this->_form($this->table, 'pass');

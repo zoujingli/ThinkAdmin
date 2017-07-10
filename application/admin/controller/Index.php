@@ -89,9 +89,6 @@ class Index extends BasicAdmin
      */
     public function pass()
     {
-        if (in_array('10000', explode(',', $this->request->post('id')))) {
-            $this->error('系统超级账号禁止操作！');
-        }
         if (intval($this->request->request('id')) !== intval(session('user.id'))) {
             $this->error('访问异常！');
         }
@@ -120,9 +117,6 @@ class Index extends BasicAdmin
      */
     public function info()
     {
-        if (in_array('10000', explode(',', $this->request->post('id')))) {
-            $this->error('系统超级账号禁止操作！');
-        }
         if (intval($this->request->request('id')) === intval(session('user.id'))) {
             return $this->_form('SystemUser', 'user/form');
         }
