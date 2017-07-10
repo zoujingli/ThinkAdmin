@@ -49,18 +49,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "caeb3d93a4c7ad78c6aaf7bcdbb0086f0e1f3ae8"
+            "reference": "4431e3a9684dde09c0a1642ca1d83b62a2af6b3e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/caeb3d93a4c7ad78c6aaf7bcdbb0086f0e1f3ae8.zip",
-            "reference": "caeb3d93a4c7ad78c6aaf7bcdbb0086f0e1f3ae8",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/4431e3a9684dde09c0a1642ca1d83b62a2af6b3e.zip",
+            "reference": "4431e3a9684dde09c0a1642ca1d83b62a2af6b3e",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-05-10T07:41:59+00:00",
+        "time": "2017-07-10T02:49:05+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {

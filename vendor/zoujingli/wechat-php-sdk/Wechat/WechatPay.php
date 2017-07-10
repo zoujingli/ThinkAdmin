@@ -202,10 +202,11 @@ class WechatPay {
      * @param string $goods_tag 商品标记，代金券或立减优惠功能的参数
      * @return bool|string
      */
-    public function getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI", $goods_tag = null) {
+    public function getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI", $goods_tag = null, $fee_type = 'CNY') {
         $postdata = array(
             "body"             => $body,
             "out_trade_no"     => $out_trade_no,
+            "fee_type"         => $fee_type,
             "total_fee"        => $total_fee,
             "notify_url"       => $notify_url,
             "trade_type"       => $trade_type,
@@ -230,10 +231,11 @@ class WechatPay {
      * @param string $goods_tag 商品标记，代金券或立减优惠功能的参数
      * @return bool|string
      */
-    public function getQrcPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $goods_tag = null) {
+    public function getQrcPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $goods_tag = null, $fee_type = 'CNY') {
         $postdata = array(
             "body"             => $body,
             "out_trade_no"     => $out_trade_no,
+            "fee_type"         => $fee_type,
             "total_fee"        => $total_fee,
             "notify_url"       => $notify_url,
             "trade_type"       => 'NATIVE',
