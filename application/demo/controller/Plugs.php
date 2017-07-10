@@ -36,4 +36,15 @@ class Plugs extends BasicAdmin
         $this->title = '省市区插件';
         return view('', ['title' => $this->title]);
     }
+
+
+    /**
+     * 省市区插件
+     * @return \think\response\View
+     */
+    public function pcasunzip()
+    {
+        $this->title = '省市区插件';
+        return view('', ['title' => $this->title]);
+    }
 }
