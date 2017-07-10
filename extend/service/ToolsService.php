@@ -164,12 +164,12 @@ class ToolsService
     public static function express($code)
     {
         $result = [];
-        $autoResult = HttpService::get("http://www.kuaidi100.com/autonumber/autoComNum?text={$code}");
+        $client_ip = Request::instance()->ip();
+        $header = ['Host' => 'www.kuaidi100.com', 'CLIENT-IP' => $client_ip, 'X-FORWARDED-FOR' => $client_ip];
+        $autoResult = HttpService::get("http://www.kuaidi100.com/autonumber/autoComNum?text={$code}", [], 30, $header);
         foreach (json_decode($autoResult)->auto as $vo) {
             $microtime = microtime(true);
             $url = "http://www.kuaidi100.com/query?type={$vo->comCode}&postid={$code}&id=1&valicode=&temp={$microtime}";
-            $client_ip = Request::instance()->ip();
-            $header = ['Host' => 'www.kuaidi100.com', 'CLIENT-IP' => $client_ip, 'X-FORWARDED-FOR' => $client_ip];
             $result[$vo->comCode] = json_decode(HttpService::get($url, [], 30, $header), true);
         }
         return $result;
