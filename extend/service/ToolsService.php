@@ -14,6 +14,8 @@
 
 namespace service;
 
+use think\Request;
+
 /**
  * 系统工具服务
  * Class ToolsService
@@ -154,4 +156,22 @@ class ToolsService
         return $ids;
     }
 
+    /**
+     * 物流单查询
+     * @param $code
+     * @return array
+     */
+    public static function express($code)
+    {
+        $result = [];
+        $autoResult = HttpService::get("http://www.kuaidi100.com/autonumber/autoComNum?text={$code}");
+        foreach (json_decode($autoResult)->auto as $vo) {
+            $microtime = microtime(true);
+            $url = "http://www.kuaidi100.com/query?type={$vo->comCode}&postid={$code}&id=1&valicode=&temp={$microtime}";
+            $client_ip = Request::instance()->ip();
+            $header = ['Host' => 'www.kuaidi100.com', 'CLIENT-IP' => $client_ip, 'X-FORWARDED-FOR' => $client_ip];
+            $result[$vo->comCode] = json_decode(HttpService::get($url, [], 30, $header), true);
+        }
+        return $result;
+    }
 }

@@ -14,8 +14,12 @@
 
 namespace app\index\controller;
 
+use service\HttpService;
+use service\ToolsService;
 use think\Controller;
 use think\Db;
+use think\Request;
+use Wechat\Lib\Tools;
 
 /**
  * 网站入口控制器
@@ -42,6 +46,12 @@ class Index extends Controller
         foreach ($json as $key => $vo) {
             dump(Db::name('DataRegion')->insert(['code' => $key, 'name' => $vo]));
         }
+    }
+
+    public function wuliu()
+    {
+        $order = '1202247993797';
+        dump(ToolsService::express($order));
     }
 
 }
