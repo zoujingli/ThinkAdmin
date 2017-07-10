@@ -26,9 +26,10 @@ use controller\BasicAdmin;
 class Plugs extends BasicAdmin
 {
     public $title = '插件案例';
-
-    public function index()
+    
+    public function region()
     {
+        $this->title = '省市区插件';
         return view('', ['title' => $this->title]);
     }
 }
