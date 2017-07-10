@@ -34,7 +34,7 @@ function p($data, $replace = false, $pathname = null)
 /**
  * 获取微信操作对象
  * @param string $type
- * @return \Wechat\WechatReceive|\Wechat\WechatUser|\Wechat\WechatPay|\Wechat\WechatScript|\Wechat\WechatOauth|\Wechat\WechatMenu
+ * @return \Wechat\WechatReceive|\Wechat\WechatUser|\Wechat\WechatPay|\Wechat\WechatScript|\Wechat\WechatOauth|\Wechat\WechatMenu|\Wechat\WechatMedia
  */
 function & load_wechat($type = '')
 {

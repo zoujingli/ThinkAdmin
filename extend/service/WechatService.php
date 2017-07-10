@@ -68,11 +68,11 @@ class WechatService
         # 上传图片到微信服务器
         if ($result && isset($result['file'])) {
             $wechat = &load_wechat('media');
-            $mediainfo = $wechat->uploadImg(['media' => "@{$result['file']}"]);
-            if (!empty($mediainfo)) {
-                $data = ['local_url' => $local_url, 'media_url' => $mediainfo['url'], 'md5' => md5($local_url)];
+            $info = $wechat->uploadImg(['media' => "@{$result['file']}"]);
+            if (!empty($info)) {
+                $data = ['local_url' => $local_url, 'media_url' => $info['url'], 'md5' => md5($local_url)];
                 Db::name('WechatNewsImage')->insert($data);
-                return $mediainfo['url'];
+                return $info['url'];
             }
             Log::error("图片上传失败，请稍后再试！{$wechat->errMsg}[{$wechat->errCode}]");
         }
@@ -108,7 +108,7 @@ class WechatService
                 return $data['media_id'];
             }
         }
-        Log::error("素材上传失败，请稍后再试！{$wechat->errMsg}[{$wechat->errCode}]");
+        Log::error("素材上传失败, 请稍后再试! {$wechat->errMsg}[{$wechat->errCode}]");
         return null;
     }
 
@@ -150,21 +150,21 @@ class WechatService
 
     /**
      * 保存/更新粉丝信息
-     * @param array $userInfo
+     * @param array $user
      * @param string $appid
      * @return bool
      */
-    public static function setFansInfo($userInfo, $appid = '')
+    public static function setFansInfo($user, $appid = '')
     {
-        if (!empty($userInfo['subscribe_time'])) {
-            $userInfo['subscribe_at'] = date('Y-m-d H:i:s', $userInfo['subscribe_time']);
+        if (!empty($user['subscribe_time'])) {
+            $user['subscribe_at'] = date('Y-m-d H:i:s', $user['subscribe_time']);
         }
-        if (!empty($userInfo['tagid_list']) && is_array($userInfo['tagid_list'])) {
-            $userInfo['tagid_list'] = join(',', $userInfo['tagid_list']);
+        if (!empty($user['tagid_list']) && is_array($user['tagid_list'])) {
+            $user['tagid_list'] = join(',', $user['tagid_list']);
         }
-        $userInfo['appid'] = $appid;
-        $userInfo['nickname'] = ToolsService::emojiEncode($userInfo['nickname']);
-        return DataService::save('WechatFans', $userInfo, 'openid');
+        $user['appid'] = $appid;
+        $user['nickname'] = ToolsService::emojiEncode($user['nickname']);
+        return DataService::save('WechatFans', $user, 'openid');
     }
 
     /**
@@ -200,17 +200,17 @@ class WechatService
                 Log::error("获取用户信息失败, {$wechat->errMsg} [{$wechat->errCode}]");
                 return false;
             }
-            foreach ($info as $userInfo) {
-                if (false === self::setFansInfo($userInfo, $wechat->appid)) {
+            foreach ($info as $user) {
+                if (false === self::setFansInfo($user, $wechat->appid)) {
                     Log::error('更新粉丝信息更新失败!');
                     return false;
                 }
-                if ($result['next_openid'] === $userInfo['openid']) {
+                if ($result['next_openid'] === $user['openid']) {
                     unset($result['next_openid']);
                 }
             }
         }
-        return !empty($result['next_openid']) ? self::syncAllFans($result['next_openid']) : true;
+        return empty($result['next_openid']) ? true : self::syncAllFans($result['next_openid']);
     }
 
     /**
@@ -230,12 +230,12 @@ class WechatService
             return false;
         }
         foreach ($result['data']['openid'] as $openid) {
-            if (false === ($userInfo = $wechat->getUserInfo($openid))) {
+            if (false === ($user = $wechat->getUserInfo($openid))) {
                 Log::error("获取用户[{$openid}]信息失败，$wechat->errMsg");
                 return false;
             }
-            $userInfo['is_back'] = '1';
-            if (false === self::setFansInfo($userInfo)) {
+            $user['is_back'] = '1';
+            if (false === self::setFansInfo($user)) {
                 Log::error('更新粉丝信息更新失败！');
                 return false;
             }
@@ -243,7 +243,7 @@ class WechatService
                 unset($result['next_openid']);
             }
         }
-        return !empty($result['next_openid']) ? self::syncBlackFans($result['next_openid']) : true;
+        return empty($result['next_openid']) ? true : self::syncBlackFans($result['next_openid']);
     }
 
 }

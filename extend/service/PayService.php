@@ -88,6 +88,7 @@ class PayService
      * @param string $order_no 系统订单号
      * @param int $fee 退款金额
      * @param string|null $refund_no 退款订单号
+     * @param string $refund_account
      * @return bool
      */
     public static function putWechatRefund(WechatPay $pay, $order_no, $fee = 0, $refund_no = null, $refund_account = '')
