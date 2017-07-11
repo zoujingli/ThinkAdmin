@@ -24,7 +24,8 @@ use think\Db;
  * Class BasicAdmin
  * @package controller
  */
-class BasicAdmin extends Controller {
+class BasicAdmin extends Controller
+{
 
     /**
      * 页面标题
@@ -59,13 +60,14 @@ class BasicAdmin extends Controller {
      * @param array $extendData 扩展数据
      * @return array|string
      */
-    protected function _form($dbQuery = null, $tplFile = '', $pkField = '', $where = [], $extendData = []) {
+    protected function _form($dbQuery = null, $tplFile = '', $pkField = '', $where = [], $extendData = [])
+    {
         $db = is_null($dbQuery) ? Db::name($this->table) : (is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery);
         $pk = empty($pkField) ? ($db->getPk() ? $db->getPk() : 'id') : $pkField;
         $pkValue = $this->request->request($pk, isset($where[$pk]) ? $where[$pk] : (isset($extendData[$pk]) ? $extendData[$pk] : null));
         // 非POST请求, 获取数据并显示表单页面
         if (!$this->request->isPost()) {
-            $vo = ($pkValue !== null) ? array_merge((array) $db->where($pk, $pkValue)->where($where)->find(), $extendData) : $extendData;
+            $vo = ($pkValue !== null) ? array_merge((array)$db->where($pk, $pkValue)->where($where)->find(), $extendData) : $extendData;
             if (false !== $this->_callback('_form_filter', $vo)) {
                 empty($this->title) || $this->assign('title', $this->title);
                 return $this->fetch($tplFile, ['vo' => $vo]);
@@ -90,7 +92,8 @@ class BasicAdmin extends Controller {
      * @param bool $total 总记录数
      * @return array|string
      */
-    protected function _list($dbQuery = null, $isPage = true, $isDisplay = true, $total = false) {
+    protected function _list($dbQuery = null, $isPage = true, $isDisplay = true, $total = false)
+    {
         $db = is_null($dbQuery) ? Db::name($this->table) : (is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery);
         // 列表排序默认处理
         if ($this->request->isPost() && $this->request->post('action') === 'resort') {
@@ -105,10 +108,10 @@ class BasicAdmin extends Controller {
         }
         // 列表数据查询与显示
         if (null === $db->getOptions('order')) {
-            $fields = $db->getTableFields(['table' => $db->getTable()]);
+            $fields = $db->getTableFields($db->getTable());
             in_array('sort', $fields) && $db->order('sort asc');
         }
-        $result = array();
+        $result = [];
         if ($isPage) {
             $rowPage = intval($this->request->get('rows', cookie('rows')));
             cookie('rows', $rowPage >= 10 ? $rowPage : 20);
@@ -131,7 +134,8 @@ class BasicAdmin extends Controller {
      * @param array|bool $data
      * @return bool
      */
-    protected function _callback($method, &$data) {
+    protected function _callback($method, &$data)
+    {
         foreach ([$method, "_" . $this->request->action() . "{$method}"] as $_method) {
             if (method_exists($this, $_method) && false === $this->$_method($data)) {
                 return false;

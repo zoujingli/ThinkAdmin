@@ -26,7 +26,8 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/27 14:43
  */
-class Menu extends BasicAdmin {
+class Menu extends BasicAdmin
+{
 
     /**
      * 指定当前页面标题
@@ -44,7 +45,7 @@ class Menu extends BasicAdmin {
      * 微信菜单的类型
      * @var array
      */
-    protected $menu_type = array(
+    protected $menu_type = [
         'view'               => '跳转URL',
         'click'              => '点击推事件',
         'scancode_push'      => '扫码推事件',
@@ -53,12 +54,13 @@ class Menu extends BasicAdmin {
         'pic_photo_or_album' => '弹出拍照或者相册发图',
         'pic_weixin'         => '弹出微信相册发图器',
         'location_select'    => '弹出地理位置选择器',
-    );
+    ];
 
     /**
      * 显示列表操作
      */
-    public function index() {
+    public function index()
+    {
         return parent::_list(Db::name($this->table), false, true);
     }
 
@@ -66,14 +68,16 @@ class Menu extends BasicAdmin {
      * 列表数据处理
      * @param array $data
      */
-    protected function _index_data_filter(&$data) {
+    protected function _index_data_filter(&$data)
+    {
         $data = ToolsService::arr2tree($data, 'index', 'pindex');
     }
 
     /**
      * 微信菜单编辑
      */
-    public function edit() {
+    public function edit()
+    {
         if ($this->request->isPost()) {
             $post = $this->request->post();
             !isset($post['data']) && $this->error('访问出错，请稍候再试！');
@@ -103,7 +107,8 @@ class Menu extends BasicAdmin {
     /**
      * 取消菜单
      */
-    public function cancel() {
+    public function cancel()
+    {
         $wehcat = &load_wechat('Menu');
         if (false !== $wehcat->deleteMenu()) {
             $this->success('菜单取消成功，重新关注可立即生效！', '');
@@ -114,12 +119,13 @@ class Menu extends BasicAdmin {
     /**
      * 菜单推送
      */
-    protected function _push() {
+    protected function _push()
+    {
         $result = Db::name($this->table)
-                ->field('id,index,pindex,name,type,content')
-                ->where('status', '1')
-                ->order('sort ASC,id ASC')
-                ->select();
+            ->field('id,index,pindex,name,type,content')
+            ->where('status', '1')
+            ->order('sort ASC,id ASC')
+            ->select();
         foreach ($result as &$row) {
             empty($row['content']) && $row['content'] = uniqid();
             switch ($row['type']) {
@@ -158,9 +164,9 @@ class Menu extends BasicAdmin {
         }
         $wechat = &load_wechat('Menu');
         if (false !== $wechat->createMenu(['button' => $menus])) {
-            return array('status' => true, 'errmsg' => '');
+            return ['status' => true, 'errmsg' => ''];
         }
-        return array('status' => false, 'errmsg' => $wechat->errMsg);
+        return ['status' => false, 'errmsg' => $wechat->errMsg];
     }
 
 }

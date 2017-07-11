@@ -18,7 +18,8 @@ use controller\BasicWechat;
 use service\DataService;
 use service\PayService;
 
-class Wap extends BasicWechat {
+class Wap extends BasicWechat
+{
 
     /**
      * 禁用自动网页授权
@@ -29,7 +30,8 @@ class Wap extends BasicWechat {
     /**
      * 网页授权DEMO
      */
-    public function index() {
+    public function index()
+    {
 //        dump($this->oAuth(false)); // 仅获取用户openid
         dump($this->oAuth());  // 获取用户详情信息
         dump($this->fansinfo); // 打
@@ -39,7 +41,8 @@ class Wap extends BasicWechat {
      * 微信二维码支付DEMO
      * @return \think\response\Json|\think\response\View
      */
-    public function payqrc() {
+    public function payqrc()
+    {
         switch ($this->request->get('action')) {
             case 'payqrc':
                 $pay = &load_wechat('pay');
@@ -69,7 +72,8 @@ class Wap extends BasicWechat {
      * 微信JSAPI支付DEMO
      * @return \think\response\Json|\think\response\View
      */
-    public function payjs() {
+    public function payjs()
+    {
         $this->openid = $this->oAuth(false);
         switch ($this->request->get('action')) {
             case 'options':

@@ -18,7 +18,9 @@
             this.endDecorate();
             this.box();
         }, item: function () {
-            var $box = this.$element, _coord = [], _num = 0, _options = this.options, i = 0, $items = $box.find(this.options.fallsCss), fallsWidth = $items.eq(0).outerWidth() + this.options.margin, boxWidth = $box.outerWidth() + this.options.margin, _autoWidth = 0;
+            var $box = this.$element, _coord = [], _num = 0, _options = this.options, i = 0,
+                $items = $box.find(this.options.fallsCss), fallsWidth = $items.eq(0).outerWidth() + this.options.margin,
+                boxWidth = $box.outerWidth() + this.options.margin, _autoWidth = 0;
             _num = Math.floor(boxWidth / fallsWidth);
             _autoWidth = (boxWidth - _num * fallsWidth) / 2;
             for (; i < _num; i++) {
@@ -48,7 +50,8 @@
         }, box: function () {
             this.$element.height(this.getFallsMaxHeight());
         }, endDecorate: function () {
-            var _coord = this.coord, i = 0, _num = this.num, fallsMaxHeight = this.getFallsMaxHeight(), falls = document.createElement('div'), fallsClone, fallsHeight = 0;
+            var _coord = this.coord, i = 0, _num = this.num, fallsMaxHeight = this.getFallsMaxHeight(),
+                falls = document.createElement('div'), fallsClone, fallsHeight = 0;
             falls.className = 'additem';
             for (; i < _num; i++) {
                 if (fallsMaxHeight != _coord[i][1]) {

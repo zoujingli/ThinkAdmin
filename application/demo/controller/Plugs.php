@@ -12,46 +12,38 @@
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
-namespace app\index\controller;
+namespace app\demo\controller;
 
-use service\HttpService;
-use service\ToolsService;
-use think\Controller;
-use think\Db;
-use think\Request;
-use Wechat\Lib\Tools;
+use controller\BasicAdmin;
 
 /**
- * 网站入口控制器
- * Class Index
- * @package app\index\controller
+ * 系统权限管理控制器
+ * Class Plugs
+ * @package app\demo\controller
  * @author Anyon <zoujingli@qq.com>
- * @date 2017/04/05 10:38
+ * @date 2017/07/10 18:13
  */
-class Index extends Controller
+class Plugs extends BasicAdmin
 {
 
     /**
-     * 网站入口
+     * 省市区插件
+     * @return \think\response\View
      */
-    public function index()
+    public function region()
     {
-        $this->redirect('@admin');
+        $this->title = '省市区插件';
+        return view('', ['title' => $this->title]);
     }
 
-    public function test()
-    {
-        $json = json_decode(file_get_contents('citys.json'), true);
-//        dump($json);
-        foreach ($json as $key => $vo) {
-            dump(Db::name('DataRegion')->insert(['code' => $key, 'name' => $vo]));
-        }
-    }
 
-    public function wuliu()
+    /**
+     * 省市区插件
+     * @return \think\response\View
+     */
+    public function pcasunzip()
     {
-        $order = '444500528707';
-        dump(ToolsService::express($order));
+        $this->title = '省市区插件';
+        return view('', ['title' => $this->title]);
     }
-
 }

@@ -1,0 +1,79 @@
+{extend name='extra@admin/content'}
+
+{block name="content"}
+
+<div class="code">
+    <style>
+        .uploadbutton {
+            line-height: 50px;
+            display: inline-block;
+            position: absolute;
+            margin-left: 10px;
+            top: 20px;
+        }
+    </style>
+
+    <blockquote class="site-text layui-elem-quote">
+        单图片上传
+    </blockquote>
+
+    <div style="position:relative">
+        <div class="uploadimage">
+            <input type="hidden" name="file_1"/>
+        </div>
+        <a data-file="one"
+           data-field="file_1"
+           data-type="png,jpg"
+           data-uptype="local"
+           href="javascript:void(0)"
+           class="uploadbutton">上传图片</a>
+    </div>
+
+    <script>
+        require(['jquery'], function () {
+            $('[name="file_1"]').on('change', function () {
+                $(this).parent().css('backgroundImage', 'url(' + this.value + ')');
+                $(this).parent().attr('data-tips-image', this.value);
+            });
+        });
+    </script>
+
+    <pre class="layui-code" lay-title="HTML代码">
+
+<div style="position:relative">
+    <div class="uploadimage">
+        <input type="hidden" name="file_1"/>
+    </div>
+    <a data-file="one"
+       data-field="file_1"
+       data-type="png,jpg"
+       data-uptype="local"
+       href="javascript:void(0)">上传图片</a>
+</div>
+    </pre>
+    <pre class="layui-code" lay-title="javascript代码">
+
+// 监听 input 的 onchange 事件
+// 当有图片上传时，会触发 change 事件
+require(['jquery'], function () {
+    $('[name="file_1"]').on('change', function () {
+        $(this).parent().css('backgroundImage', 'url(' + this.value + ')');
+        $(this).parent().attr('data-tips-image', this.value);
+    });
+});
+    </pre>
+    <script>
+        require(['pcasunzips'], function () {
+            new PCAS('province', 'city', 'area', '广东省', '广州市', '海珠区');
+        });
+    </script>
+</div>
+
+<script>
+    layui.use('code', function () {
+        layui.code({
+            encode: true
+        });
+    });
+</script>
+{/block}

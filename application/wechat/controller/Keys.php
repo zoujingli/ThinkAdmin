@@ -24,7 +24,8 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/27 14:43
  */
-class Keys extends BasicAdmin {
+class Keys extends BasicAdmin
+{
 
     /**
      * 指定当前数据表
@@ -35,7 +36,8 @@ class Keys extends BasicAdmin {
     /**
      * 显示关键字列表
      */
-    public function index() {
+    public function index()
+    {
         $this->assign('title', '微信关键字');
         $db = Db::name($this->table)->where('keys', 'not in', ['subscribe', 'default']);
         return $this->_list($db);
@@ -45,7 +47,8 @@ class Keys extends BasicAdmin {
      * 列表数据处理
      * @param array $data
      */
-    protected function _index_data_filter(&$data) {
+    protected function _index_data_filter(&$data)
+    {
         $types = ['keys' => '关键字', 'image' => '图片', 'news' => '图文', 'music' => '音乐', 'text' => '文字', 'video' => '视频', 'voice' => '语音'];
         foreach ($data as &$vo) {
             $vo['type'] = isset($types[$vo['type']]) ? $types[$vo['type']] : $vo['type'];
@@ -56,7 +59,8 @@ class Keys extends BasicAdmin {
      * 添加关键字
      * @return string
      */
-    public function add() {
+    public function add()
+    {
         $this->title = '添加关键字规则';
         return $this->_form($this->table, 'form');
     }
@@ -65,7 +69,8 @@ class Keys extends BasicAdmin {
      * 编辑关键字
      * @return string
      */
-    public function edit() {
+    public function edit()
+    {
         $this->title = '编辑关键字规则';
         return $this->_form($this->table, 'form');
     }
@@ -75,7 +80,8 @@ class Keys extends BasicAdmin {
      * 表单处理
      * @param $data
      */
-    protected function _form_filter($data) {
+    protected function _form_filter($data)
+    {
         if ($this->request->isPost() && isset($data['keys'])) {
             $db = Db::name($this->table)->where('keys', $data['keys']);
             !empty($data['id']) && $db->where('id', 'neq', $data['id']);
@@ -86,7 +92,8 @@ class Keys extends BasicAdmin {
     /**
      * 删除关键字
      */
-    public function del() {
+    public function del()
+    {
         if (DataService::update($this->table)) {
             $this->success("关键字删除成功！", '');
         }
@@ -97,7 +104,8 @@ class Keys extends BasicAdmin {
     /**
      * 关键字禁用
      */
-    public function forbid() {
+    public function forbid()
+    {
         if (DataService::update($this->table)) {
             $this->success("关键字禁用成功！", '');
         }
@@ -107,7 +115,8 @@ class Keys extends BasicAdmin {
     /**
      * 关键字禁用
      */
-    public function resume() {
+    public function resume()
+    {
         if (DataService::update($this->table)) {
             $this->success("关键字启用成功！", '');
         }
@@ -117,7 +126,8 @@ class Keys extends BasicAdmin {
     /**
      * 关注默认回复
      */
-    public function subscribe() {
+    public function subscribe()
+    {
         $this->assign('title', '编辑默认回复');
         return $this->_form($this->table, 'form');
     }
@@ -126,7 +136,8 @@ class Keys extends BasicAdmin {
      * 关注默认回复表单处理
      * @param $data
      */
-    protected function _subscribe_form_filter(&$data) {
+    protected function _subscribe_form_filter(&$data)
+    {
         if ($this->request->isGet()) {
             $data = Db::name($this->table)->where('keys', 'subscribe')->find();
         }
@@ -137,7 +148,8 @@ class Keys extends BasicAdmin {
     /**
      * 无配置默认回复
      */
-    public function defaults() {
+    public function defaults()
+    {
         $this->assign('title', '编辑无配置默认回复');
         return $this->_form($this->table, 'form');
     }
@@ -147,7 +159,8 @@ class Keys extends BasicAdmin {
      * 无配置默认回复表单处理
      * @param $data
      */
-    protected function _defaults_form_filter(&$data) {
+    protected function _defaults_form_filter(&$data)
+    {
         if ($this->request->isGet()) {
             $data = Db::name($this->table)->where('keys', 'default')->find();
         }

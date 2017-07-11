@@ -24,7 +24,8 @@ use service\LogService;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15 18:05
  */
-class Config extends BasicAdmin {
+class Config extends BasicAdmin
+{
 
     /**
      * 当前默认数据模型
@@ -41,7 +42,8 @@ class Config extends BasicAdmin {
     /**
      * 显示系统常规配置
      */
-    public function index() {
+    public function index()
+    {
         if (!$this->request->isPost()) {
             $this->assign('title', $this->title);
             return view();
@@ -56,13 +58,11 @@ class Config extends BasicAdmin {
     /**
      * 文件存储配置
      */
-    public function file() {
-        $this->assign('alert', [
-            'type'    => 'success',
-            'title'   => '操作提示',
-            'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'
-        ]);
+    public function file()
+    {
         $this->title = '文件存储配置';
+        $alert = ['type' => 'success', 'title' => '操作提示', 'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'];
+        $this->assign('alert', $alert);
         return $this->index();
     }
 

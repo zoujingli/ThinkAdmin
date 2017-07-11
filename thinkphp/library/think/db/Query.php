@@ -395,7 +395,7 @@ class Query
     public function value($field, $default = null, $force = false)
     {
         $result = false;
-        if (empty($options['fetch_sql']) && !empty($this->options['cache'])) {
+        if (empty($this->options['fetch_sql']) && !empty($this->options['cache'])) {
             // 判断查询缓存
             $cache = $this->options['cache'];
             if (empty($this->options['table'])) {
@@ -438,7 +438,7 @@ class Query
     public function column($field, $key = '')
     {
         $result = false;
-        if (empty($options['fetch_sql']) && !empty($this->options['cache'])) {
+        if (empty($this->options['fetch_sql']) && !empty($this->options['cache'])) {
             // 判断查询缓存
             $cache = $this->options['cache'];
             if (empty($this->options['table'])) {
@@ -1776,21 +1776,21 @@ class Query
     }
 
     // 获取当前数据表字段信息
-    public function getTableFields($options)
+    public function getTableFields($table = '')
     {
-        return $this->getTableInfo($options['table'], 'fields');
+        return $this->getTableInfo($table ?: $this->getOptions('table'), 'fields');
     }
 
     // 获取当前数据表字段类型
-    public function getFieldsType($options)
+    public function getFieldsType($table = '')
     {
-        return $this->getTableInfo($options['table'], 'type');
+        return $this->getTableInfo($table ?: $this->getOptions('table'), 'type');
     }
 
     // 获取当前数据表绑定信息
-    public function getFieldsBind($options)
+    public function getFieldsBind($table = '')
     {
-        $types = $this->getFieldsType($options);
+        $types = $this->getFieldsType($table);
         $bind  = [];
         if ($types) {
             foreach ($types as $key => $type) {
@@ -2117,9 +2117,10 @@ class Query
      * 批量插入记录
      * @access public
      * @param mixed $dataSet 数据集
+     * @param boolean $replace  是否replace
      * @return integer|string
      */
-    public function insertAll(array $dataSet)
+    public function insertAll(array $dataSet, $replace = false)
     {
         // 分析查询表达式
         $options = $this->parseExpress();
@@ -2127,7 +2128,7 @@ class Query
             return false;
         }
         // 生成SQL语句
-        $sql = $this->builder->insertAll($dataSet, $options);
+        $sql = $this->builder->insertAll($dataSet, $options, $replace);
         // 获取参数绑定
         $bind = $this->getBind();
         if ($options['fetch_sql']) {
@@ -2300,7 +2301,7 @@ class Query
             $key       = is_string($cache['key']) ? $cache['key'] : md5(serialize($options) . serialize($this->bind));
             $resultSet = Cache::get($key);
         }
-        if (!$resultSet) {
+        if (false === $resultSet) {
             // 生成查询SQL
             $sql = $this->builder->select($options);
             // 获取参数绑定
@@ -2322,7 +2323,7 @@ class Query
                 }
             }
 
-            if (isset($cache) && $resultSet) {
+            if (isset($cache) && false !== $resultSet) {
                 // 缓存数据集
                 $this->cacheData($key, $resultSet, $cache);
             }
@@ -2480,7 +2481,7 @@ class Query
                 $result = isset($resultSet[0]) ? $resultSet[0] : null;
             }
 
-            if (isset($cache) && $result) {
+            if (isset($cache) && false !== $result) {
                 // 缓存数据
                 $this->cacheData($key, $result, $cache);
             }

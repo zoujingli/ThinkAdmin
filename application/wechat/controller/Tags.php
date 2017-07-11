@@ -27,7 +27,8 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/27 14:43
  */
-class Tags extends BasicAdmin {
+class Tags extends BasicAdmin
+{
 
     /**
      * 定义当前默认数据表
@@ -39,7 +40,8 @@ class Tags extends BasicAdmin {
      * 显示粉丝标签列表
      * @return array|string
      */
-    public function index() {
+    public function index()
+    {
         $this->title = '微信粉丝标签管理';
         $get = $this->request->get();
         $db = Db::name($this->table)->order('id asc');
@@ -54,14 +56,15 @@ class Tags extends BasicAdmin {
     /**
      * 添加粉丝标签
      */
-    public function add() {
+    public function add()
+    {
         if ($this->request->isGet()) {
             return parent::_form($this->table, 'form', 'id');
         }
         $name = $this->request->post('name', '');
         empty($name) && $this->error('粉丝标签名不能为空!');
         (Db::name($this->table)->where('name', $name)->count() > 0) && $this->error('粉丝标签标签名已经存在, 请使用其它标签名!');
-        $wechat = & load_wechat('User');
+        $wechat = &load_wechat('User');
         if (false === ($result = $wechat->createTags($name)) && isset($result['tag'])) {
             $this->error("添加粉丝标签失败. {$wechat->errMsg}[{$wechat->errCode}]");
         }
@@ -73,7 +76,8 @@ class Tags extends BasicAdmin {
     /**
      * 编辑粉丝标签
      */
-    public function edit() {
+    public function edit()
+    {
         // 显示编辑界面
         if ($this->request->isGet()) {
             return parent::_form($this->table, 'form', 'id');
@@ -98,7 +102,8 @@ class Tags extends BasicAdmin {
     /**
      * 同步粉丝标签列表
      */
-    public function sync() {
+    public function sync()
+    {
         Db::name($this->table)->where('1=1')->delete();
         if (WechatService::syncFansTags()) {
             LogService::write('微信管理', '同步全部微信粉丝标签成功');

@@ -24,7 +24,8 @@ use think\Log;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/22 15:32
  */
-class WechatService {
+class WechatService
+{
 
     /**
      * 通过图文ID读取图文信息
@@ -32,11 +33,12 @@ class WechatService {
      * @param array $where 额外的查询条件
      * @return array
      */
-    public static function getNewsById($id, $where = []) {
+    public static function getNewsById($id, $where = [])
+    {
         $data = Db::name('WechatNews')->where('id', $id)->where($where)->find();
         $article_ids = explode(',', $data['article_id']);
         $articles = Db::name('WechatNewsArticle')->where('id', 'in', $article_ids)->select();
-        $data['articles'] = array();
+        $data['articles'] = [];
         foreach ($article_ids as $article_id) {
             foreach ($articles as $article) {
                 if (intval($article['id']) === intval($article_id)) {
@@ -54,7 +56,8 @@ class WechatService {
      * @param string $local_url
      * @return string|null
      */
-    public static function uploadImage($local_url) {
+    public static function uploadImage($local_url)
+    {
         # 检测文件上否已经上传过了
         if (($img = Db::name('WechatNewsImage')->where('md5', md5($local_url))->find()) && isset($img['media_url'])) {
             return $img['media_url'];
@@ -65,11 +68,11 @@ class WechatService {
         # 上传图片到微信服务器
         if ($result && isset($result['file'])) {
             $wechat = &load_wechat('media');
-            $mediainfo = $wechat->uploadImg(['media' => "@{$result['file']}"]);
-            if (!empty($mediainfo)) {
-                $data = ['local_url' => $local_url, 'media_url' => $mediainfo['url'], 'md5' => md5($local_url)];
+            $info = $wechat->uploadImg(['media' => "@{$result['file']}"]);
+            if (!empty($info)) {
+                $data = ['local_url' => $local_url, 'media_url' => $info['url'], 'md5' => md5($local_url)];
                 Db::name('WechatNewsImage')->insert($data);
-                return $mediainfo['url'];
+                return $info['url'];
             }
             Log::error("图片上传失败，请稍后再试！{$wechat->errMsg}[{$wechat->errCode}]");
         }
@@ -84,11 +87,12 @@ class WechatService {
      * @param array $video_info 视频信息
      * @return string|null
      */
-    public static function uploadForeverMedia($local_url = '', $type = 'image', $is_video = false, $video_info = array()) {
+    public static function uploadForeverMedia($local_url = '', $type = 'image', $is_video = false, $video_info = [])
+    {
         # 检测文件上否已经上传过了
         $wechat = &load_wechat('media');
         # 检查文件URL是否已经上传为永久素材
-        $map = ['md5' => ($md5 = md5($local_url)), 'appid' => $wechat->appid];
+        $map = ['md5' => md5($local_url), 'appid' => $wechat->appid];
         if (($img = Db::name('WechatNewsMedia')->where($map)->find()) && isset($img['media_id'])) {
             return $img['media_id'];
         }
@@ -97,14 +101,14 @@ class WechatService {
         $upload = FileService::local($filename, file_get_contents($local_url));
         if (!empty($upload) && isset($upload['file']) && file_exists($upload['file'])) {
             # 上传图片到微信服务器
-            if (false !== ($result = $wechat->uploadForeverMedia(array('media' => "@{$upload['file']}"), $type, $is_video, $video_info))) {
-                $data = ['md5' => $md5, 'type' => $type, 'appid' => $wechat->appid, 'media_id' => $result['media_id'], 'local_url' => $local_url];
+            if (false !== ($result = $wechat->uploadForeverMedia(['media' => "@{$upload['file']}"], $type, $is_video, $video_info))) {
+                $data = ['md5' => $map['md5'], 'type' => $type, 'appid' => $wechat->appid, 'media_id' => $result['media_id'], 'local_url' => $local_url];
                 isset($result['url']) && $data['media_url'] = $result['url'];
                 Db::name('WechatNewsMedia')->insert($data);
                 return $data['media_id'];
             }
         }
-        Log::error("素材上传失败，请稍后再试！{$wechat->errMsg}[{$wechat->errCode}]");
+        Log::error("素材上传失败, 请稍后再试! {$wechat->errMsg}[{$wechat->errCode}]");
         return null;
     }
 
@@ -112,7 +116,8 @@ class WechatService {
      * 从微信服务器获取所有标签
      * @return bool
      */
-    public static function syncFansTags() {
+    public static function syncFansTags()
+    {
         $wechat = &load_wechat("User");
         if (($result = $wechat->getTags()) !== false) {
             $tags = $result['tags'];
@@ -132,7 +137,8 @@ class WechatService {
      * @param string $openid
      * @return bool
      */
-    public static function syncFansTagsByOpenid($openid) {
+    public static function syncFansTagsByOpenid($openid)
+    {
         $wechat = &load_wechat('User');
         $tagsid = $wechat->getUserTags($openid);
         if ($tagsid === false || !is_array($tagsid)) {
@@ -144,20 +150,21 @@ class WechatService {
 
     /**
      * 保存/更新粉丝信息
-     * @param array $userInfo
+     * @param array $user
      * @param string $appid
      * @return bool
      */
-    public static function setFansInfo($userInfo, $appid = '') {
-        if (!empty($userInfo['subscribe_time'])) {
-            $userInfo['subscribe_at'] = date('Y-m-d H:i:s', $userInfo['subscribe_time']);
+    public static function setFansInfo($user, $appid = '')
+    {
+        if (!empty($user['subscribe_time'])) {
+            $user['subscribe_at'] = date('Y-m-d H:i:s', $user['subscribe_time']);
         }
-        if (!empty($userInfo['tagid_list']) && is_array($userInfo['tagid_list'])) {
-            $userInfo['tagid_list'] = join(',', $userInfo['tagid_list']);
+        if (!empty($user['tagid_list']) && is_array($user['tagid_list'])) {
+            $user['tagid_list'] = join(',', $user['tagid_list']);
         }
-        $userInfo['appid'] = $appid;
-        $userInfo['nickname'] = ToolsService::emojiEncode($userInfo['nickname']);
-        return DataService::save('WechatFans', $userInfo, 'openid');
+        $user['appid'] = $appid;
+        $user['nickname'] = ToolsService::emojiEncode($user['nickname']);
+        return DataService::save('WechatFans', $user, 'openid');
     }
 
     /**
@@ -166,7 +173,8 @@ class WechatService {
      * @param string $appid 公众号appid
      * @return array|false
      */
-    public static function getFansInfo($openid, $appid = null) {
+    public static function getFansInfo($openid, $appid = null)
+    {
         $map = ['openid' => $openid];
         is_string($appid) && $map['appid'] = $appid;
         if (($fans = Db::name('WechatFans')->where($map)->find()) && isset($fans['nickname'])) {
@@ -180,7 +188,8 @@ class WechatService {
      * @param string $next_openid
      * @return bool
      */
-    public static function syncAllFans($next_openid = '') {
+    public static function syncAllFans($next_openid = '')
+    {
         $wechat = &load_wechat('User');
         if (false === ($result = $wechat->getUserList($next_openid)) || empty($result['data']['openid'])) {
             Log::error("获取粉丝列表失败, {$wechat->errMsg} [{$wechat->errCode}]");
@@ -191,17 +200,17 @@ class WechatService {
                 Log::error("获取用户信息失败, {$wechat->errMsg} [{$wechat->errCode}]");
                 return false;
             }
-            foreach ($info as $userInfo) {
-                if (false === self::setFansInfo($userInfo, $wechat->appid)) {
+            foreach ($info as $user) {
+                if (false === self::setFansInfo($user, $wechat->appid)) {
                     Log::error('更新粉丝信息更新失败!');
                     return false;
                 }
-                if ($result['next_openid'] === $userInfo['openid']) {
+                if ($result['next_openid'] === $user['openid']) {
                     unset($result['next_openid']);
                 }
             }
         }
-        return !empty($result['next_openid']) ? self::syncAllFans($result['next_openid']) : true;
+        return empty($result['next_openid']) ? true : self::syncAllFans($result['next_openid']);
     }
 
     /**
@@ -209,7 +218,8 @@ class WechatService {
      * @param string $next_openid
      * @return bool
      */
-    public static function syncBlackFans($next_openid = '') {
+    public static function syncBlackFans($next_openid = '')
+    {
         $wechat = &load_wechat('User');
         $result = $wechat->getBacklist($next_openid);
         if ($result === false || (empty($result['data']['openid']))) {
@@ -220,12 +230,12 @@ class WechatService {
             return false;
         }
         foreach ($result['data']['openid'] as $openid) {
-            if (false === ($userInfo = $wechat->getUserInfo($openid))) {
+            if (false === ($user = $wechat->getUserInfo($openid))) {
                 Log::error("获取用户[{$openid}]信息失败，$wechat->errMsg");
                 return false;
             }
-            $userInfo['is_back'] = '1';
-            if (false === self::setFansInfo($userInfo)) {
+            $user['is_back'] = '1';
+            if (false === self::setFansInfo($user)) {
                 Log::error('更新粉丝信息更新失败！');
                 return false;
             }
@@ -233,7 +243,7 @@ class WechatService {
                 unset($result['next_openid']);
             }
         }
-        return !empty($result['next_openid']) ? self::syncBlackFans($result['next_openid']) : true;
+        return empty($result['next_openid']) ? true : self::syncBlackFans($result['next_openid']);
     }
 
 }

@@ -14,6 +14,8 @@
 
 namespace service;
 
+use think\Request;
+
 /**
  * 系统工具服务
  * Class ToolsService
@@ -21,12 +23,14 @@ namespace service;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/10/25 14:49
  */
-class ToolsService {
+class ToolsService
+{
 
     /**
      * Cors Options 授权处理
      */
-    public static function corsOptionsHandler() {
+    public static function corsOptionsHandler()
+    {
         if (request()->isOptions()) {
             header('Access-Control-Allow-Origin:*');
             header('Access-Control-Allow-Headers:Accept,Referer,Host,Keep-Alive,User-Agent,X-Requested-With,Cache-Control,Content-Type,Cookie,token');
@@ -44,7 +48,8 @@ class ToolsService {
      * Cors Request Header信息
      * @return array
      */
-    public static function corsRequestHander() {
+    public static function corsRequestHander()
+    {
         return [
             'Access-Control-Allow-Origin'      => '*',
             'Access-Control-Allow-Credentials' => true,
@@ -59,10 +64,11 @@ class ToolsService {
      * @param string $content
      * @return string
      */
-    public static function emojiEncode($content) {
-        return json_decode(preg_replace_callback("/(\\\u[ed][0-9a-f]{3})/i", function($str) {
-                    return addslashes($str[0]);
-                }, json_encode($content)));
+    public static function emojiEncode($content)
+    {
+        return json_decode(preg_replace_callback("/(\\\u[ed][0-9a-f]{3})/i", function ($str) {
+            return addslashes($str[0]);
+        }, json_encode($content)));
     }
 
     /**
@@ -70,10 +76,11 @@ class ToolsService {
      * @param string $content
      * @return string
      */
-    public static function emojiDecode($content) {
-        return json_decode(preg_replace_callback('/\\\\\\\\/i', function() {
-                    return '\\';
-                }, json_encode($content)));
+    public static function emojiDecode($content)
+    {
+        return json_decode(preg_replace_callback('/\\\\\\\\/i', function () {
+            return '\\';
+        }, json_encode($content)));
     }
 
     /**
@@ -84,8 +91,9 @@ class ToolsService {
      * @param string $son 定义子数据Key
      * @return array
      */
-    public static function arr2tree($list, $id = 'id', $pid = 'pid', $son = 'sub') {
-        $tree = $map = array();
+    public static function arr2tree($list, $id = 'id', $pid = 'pid', $son = 'sub')
+    {
+        $tree = $map = [];
         foreach ($list as $item) {
             $map[$item[$id]] = $item;
         }
@@ -108,21 +116,22 @@ class ToolsService {
      * @param string $path
      * @return array
      */
-    public static function arr2table($list, $id = 'id', $pid = 'pid', $path = 'path', $ppath = '') {
+    public static function arr2table($list, $id = 'id', $pid = 'pid', $path = 'path', $ppath = '')
+    {
         $_array_tree = self::arr2tree($list, $id, $pid);
-        $tree = array();
+        $tree = [];
         foreach ($_array_tree as $_tree) {
             $_tree[$path] = $ppath . '-' . $_tree[$id];
             $_tree['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├&nbsp;&nbsp;", substr_count($ppath, '-'));
             if (!isset($_tree['sub'])) {
-                $_tree['sub'] = array();
+                $_tree['sub'] = [];
             }
             $sub = $_tree['sub'];
             unset($_tree['sub']);
             $tree[] = $_tree;
             if (!empty($sub)) {
                 $sub_array = self::arr2table($sub, $id, $pid, $path, $_tree[$path]);
-                $tree = array_merge($tree, (Array) $sub_array);
+                $tree = array_merge($tree, (Array)$sub_array);
             }
         }
         return $tree;
@@ -136,8 +145,9 @@ class ToolsService {
      * @param string $pkey 父Key
      * @return array
      */
-    public static function getArrSubIds($list, $id = 0, $key = 'id', $pkey = 'pid') {
-        $ids = array(intval($id));
+    public static function getArrSubIds($list, $id = 0, $key = 'id', $pkey = 'pid')
+    {
+        $ids = [intval($id)];
         foreach ($list as $vo) {
             if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) == intval($id)) {
                 $ids = array_merge($ids, self::getArrSubIds($list, intval($vo[$key]), $key, $pkey));
@@ -146,4 +156,22 @@ class ToolsService {
         return $ids;
     }
 
+    /**
+     * 物流单查询
+     * @param $code
+     * @return array
+     */
+    public static function express($code)
+    {
+        $result = [];
+        $client_ip = Request::instance()->ip();
+        $header = ['Host' => 'www.kuaidi100.com', 'CLIENT-IP' => $client_ip, 'X-FORWARDED-FOR' => $client_ip];
+        $autoResult = HttpService::get("http://www.kuaidi100.com/autonumber/autoComNum?text={$code}", [], 30, $header);
+        foreach (json_decode($autoResult)->auto as $vo) {
+            $microtime = microtime(true);
+            $url = "http://www.kuaidi100.com/query?type={$vo->comCode}&postid={$code}&id=1&valicode=&temp={$microtime}";
+            $result[$vo->comCode] = json_decode(HttpService::get($url, [], 30, $header), true);
+        }
+        return $result;
+    }
 }

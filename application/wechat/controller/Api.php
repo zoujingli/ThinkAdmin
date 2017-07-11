@@ -27,7 +27,8 @@ use Wechat\WechatReceive;
  * @package app\wechat\controller
  * @author Anyon <zoujingli@qq.com>
  */
-class Api extends Controller {
+class Api extends Controller
+{
 
     /**
      * 微信openid
@@ -45,7 +46,8 @@ class Api extends Controller {
      * 微信消息接口
      * @return string
      */
-    public function index() {
+    public function index()
+    {
         // 实例接口对象
         $this->wechat = &load_wechat('Receive');
         // 验证接口请求
@@ -79,7 +81,8 @@ class Api extends Controller {
      * @param bool $isForce
      * @return string
      */
-    private function _keys($keys, $isForce = false) {
+    private function _keys($keys, $isForce = false)
+    {
         list($table, $field, $value) = explode('#', $keys . '##');
         if (is_array($info = Db::name($table)->where($field, $value)->find()) && isset($info['type'])) {
             // 数据状态检查
@@ -152,9 +155,10 @@ class Api extends Controller {
      * @param int $news_id
      * @return bool|string
      */
-    protected function _news($news_id = 0) {
+    protected function _news($news_id = 0)
+    {
         if (is_array($newsinfo = WechatService::getNewsById($news_id)) && !empty($newsinfo['articles'])) {
-            $newsdata = array();
+            $newsdata = [];
             foreach ($newsinfo['articles'] as $vo) {
                 $newsdata[] = [
                     'Title'       => $vo['title'],
@@ -171,7 +175,8 @@ class Api extends Controller {
     /**
      * 事件处理
      */
-    protected function _event() {
+    protected function _event()
+    {
         $event = $this->wechat->getRevEvent();
         switch (strtolower($event['event'])) {
             case 'subscribe': // 粉丝关注事件
@@ -204,7 +209,8 @@ class Api extends Controller {
      * @param string $event
      * @return mixed
      */
-    private function _spread($event) {
+    private function _spread($event)
+    {
         $key = preg_replace('|^.*?(\d+).*?$|', '$1', "{$event}");
         // 检测推荐是否有效
         $fans = Db::name('WechatFans')->where('id', $key)->find();
@@ -221,14 +227,16 @@ class Api extends Controller {
      * 位置事情回复
      * @return string
      */
-    private function _location() {
+    private function _location()
+    {
         return 'success';
     }
 
     /**
      * 图片事件处理
      */
-    private function _image() {
+    private function _image()
+    {
         return 'success';
     }
 
@@ -236,7 +244,8 @@ class Api extends Controller {
      * 同步粉丝状态
      * @param bool $subscribe 关注状态
      */
-    protected function _updateFansInfo($subscribe = true) {
+    protected function _updateFansInfo($subscribe = true)
+    {
         if ($subscribe) {
             $fans = WechatService::getFansInfo($this->openid);
             if (empty($fans) || empty($fans['subscribe'])) {

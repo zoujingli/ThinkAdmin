@@ -3,24 +3,37 @@
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
-// | 版权所有 2016~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://think.ctolog.com
 // +----------------------------------------------------------------------
-// | 开源协议 ( http://www.apache.org/licenses/LICENSE-2.0 )
+// | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
-namespace app\index\controller;
+namespace app\demo\controller;
 
-use controller\BasicApi;
-use service\FileService;
+use controller\BasicAdmin;
 
-class Test extends BasicApi {
+/**
+ * 系统权限管理控制器
+ * Class Plugs
+ * @package app\demo\controller
+ * @author Anyon <zoujingli@qq.com>
+ * @date 2017/07/10 18:13
+ */
+class Inter extends BasicAdmin
+{
 
-    public function index() {
-        dump(FileService::oss('fassdfsa', 'fsadfasdf'));
+    /**
+     * 省市区插件
+     * @return \think\response\View
+     */
+    public function file()
+    {
+        $this->title = '文件上传';
+        return view('', ['title' => $this->title]);
     }
 
 }

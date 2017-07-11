@@ -23,7 +23,8 @@ use CURLFile;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/22 15:32
  */
-class HttpService {
+class HttpService
+{
 
     /**
      * HTTP GET 请求
@@ -33,7 +34,8 @@ class HttpService {
      * @param array $header 请求Header信息
      * @return bool|string
      */
-    public static function get($url, $data = array(), $second = 30, $header = []) {
+    public static function get($url, $data = [], $second = 30, $header = [])
+    {
         if (!empty($data)) {
             $url .= (stripos($url, '?') === false ? '?' : '&');
             $url .= (is_array($data) ? http_build_query($data) : $data);
@@ -58,7 +60,8 @@ class HttpService {
      * @param array $header 请求Header信息
      * @return bool|string
      */
-    static public function post($url, $data = [], $second = 30, $header = []) {
+    static public function post($url, $data = [], $second = 30, $header = [])
+    {
         self::_setUploadFile($data);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, $second);
@@ -80,7 +83,8 @@ class HttpService {
      * @param $curl
      * @param string $url
      */
-    private static function _setSsl(&$curl, $url) {
+    private static function _setSsl(&$curl, $url)
+    {
         if (stripos($url, "https") === 0) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
@@ -93,7 +97,8 @@ class HttpService {
      * @param array $data
      * @return string
      */
-    private static function _setUploadFile(&$data) {
+    private static function _setUploadFile(&$data)
+    {
         if (!is_array($data)) {
             return null;
         }

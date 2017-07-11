@@ -25,9 +25,11 @@ use think\Log;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/04/05 14:02
  */
-class Notify extends Controller {
+class Notify extends Controller
+{
 
-    public function index() {
+    public function index()
+    {
         // 实例支付接口
         $pay = &load_wechat('Pay');
 
@@ -35,7 +37,7 @@ class Notify extends Controller {
         $notifyInfo = $pay->getNotify();
 
         // 支付通知数据获取失败
-        if ($notifyInfo === FALSE) {
+        if ($notifyInfo === false) {
             // 接口失败的处理
             Log::error("微信支付通知消息验证失败，{$pay->errCode}[{$pay->errCode}]");
             return $pay->errMsg;
@@ -43,7 +45,7 @@ class Notify extends Controller {
             //支付通知数据获取成功
             if ($notifyInfo['result_code'] == 'SUCCESS' && $notifyInfo['return_code'] == 'SUCCESS') {
                 // 记录支付通知数据
-                if(!Db::name('WechatPayNotify')->insert($notifyInfo)){
+                if (!Db::name('WechatPayNotify')->insert($notifyInfo)) {
                     $pay->replyXml(['return_code' => 'ERROR', 'return_msg' => '系统记录微信通知时发生异常！']);
                 }
                 $prepayMap = ['out_trade_no' => $notifyInfo['out_trade_no']];
