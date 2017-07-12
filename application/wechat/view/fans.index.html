@@ -143,15 +143,15 @@
 
 <div id="tags-box" class="hide">
     <form>
-        <div class="row">
+        <div class="row" style='max-height:230px;overflow:auto;margin-right:0'>
             {foreach $tags as $key=>$tag}
-            <div class="col-xs-6">
+            <div class="col-xs-4">
                 <label><input value="{$key}" type="checkbox" /> {$tag}</label>
             </div>
             {/foreach}
         </div>
         <div class="text-center">
-            <div class="hr-line-dashed"></div>
+            <div class="hr-line-dashed" style="margin-top:0"></div>
             <button type="button" data-event="confirm" class="layui-btn layui-btn-small">保存数据</button>
             <button type="button" data-event="cancel" class="layui-btn layui-btn-danger layui-btn-small" type='button'>取消编辑</button>
         </div>
