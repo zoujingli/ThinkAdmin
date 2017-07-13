@@ -56,13 +56,14 @@ class FilterView
     public function baidu(&$params)
     {
         if (($key = sysconf('tongji_baidu_key'))) {
+            $https = Request::instance()->isSsl() ? 'https' : 'http';
             $script = <<<SCRIPT
 \n<!-- 百度统计 开始 -->
 <script>
     var _hmt = _hmt || [];
     (function() {
         var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?{$key}";
+        hm.src = "{$https}://hm.baidu.com/hm.js?{$key}";
         var s = document.getElementsByTagName("script")[0]; 
         s.parentNode.insertBefore(hm, s);
     })();
