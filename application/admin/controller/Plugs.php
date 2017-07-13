@@ -62,17 +62,16 @@ class Plugs extends BasicAdmin
      */
     public function upload()
     {
-        if (!$this->request->isPost()) {
-            return json(['code' => 'ERROR', '文件上传失败']);
-        }
         $file = $this->request->file('file');
-        $ext = pathinfo($file->getInfo('name'), PATHINFO_EXTENSION);
-        if (in_array($ext, ['php', 'bat', 'cmd', 'sh', 'exe'])) {
-            return json(['code' => 'ERROR', 'msg' => "禁止上传{$ext}文件"]);
-        }
         $md5s = str_split($this->request->post('md5'), 16);
+        $ext = pathinfo($file->getInfo('name'), 4);
+        $filename = join('/', $md5s) . ".{$ext}";
+        // 文件上传Token验证
+        if ($this->request->post('token') !== md5($filename . session_id())) {
+            return json(['code' => 'ERROR', '文件上传验证失败']);
+        }
+        // 文件上传处理
         if (($info = $file->move('static' . DS . 'upload' . DS . $md5s[0], $md5s[1], true))) {
-            $filename = join('/', $md5s) . '.' . $info->getExtension();
             if (($site_url = FileService::getFileUrl($filename, 'local'))) {
                 return json(['data' => ['site_url' => $site_url], 'code' => 'SUCCESS', 'msg' => '文件上传成功']);
             }
@@ -100,6 +99,7 @@ class Plugs extends BasicAdmin
                 break;
             case 'local':
                 $config['server'] = FileService::getUploadLocalUrl();
+                $config['token'] = md5($filename . session_id());
                 break;
             case 'oss':
                 $time = time() + 3600;
