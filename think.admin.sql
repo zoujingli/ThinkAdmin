@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50629
 File Encoding         : 65001
 
-Date: 2017-08-23 15:55:39
+Date: 2017-08-23 16:17:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,7 +30,7 @@ CREATE TABLE `system_auth` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_system_auth_title` (`title`) USING BTREE,
   KEY `index_system_auth_status` (`status`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='系统权限表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统权限表';
 
 -- ----------------------------
 -- Records of system_auth
@@ -61,7 +61,7 @@ CREATE TABLE `system_config` (
   `value` varchar(500) DEFAULT NULL COMMENT '配置值',
   PRIMARY KEY (`id`),
   KEY `index_system_config_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
+) ENGINE=InnoDB AUTO_INCREMENT=204 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
 
 -- ----------------------------
 -- Records of system_config
@@ -72,26 +72,26 @@ INSERT INTO `system_config` VALUES ('164', 'storage_type', 'local');
 INSERT INTO `system_config` VALUES ('165', 'storage_qiniu_is_https', '1');
 INSERT INTO `system_config` VALUES ('166', 'storage_qiniu_bucket', 'static');
 INSERT INTO `system_config` VALUES ('167', 'storage_qiniu_domain', 'static.ctolog.com');
-INSERT INTO `system_config` VALUES ('168', 'storage_qiniu_access_key', '');
-INSERT INTO `system_config` VALUES ('169', 'storage_qiniu_secret_key', '');
+INSERT INTO `system_config` VALUES ('168', 'storage_qiniu_access_key', 'OAFHGzCgZjod2-s4xr-g5ptkXsNbxDO_t2fozIEC');
+INSERT INTO `system_config` VALUES ('169', 'storage_qiniu_secret_key', 'gy0aYdSFMSayQ4kMkgUeEeJRLThVjLpUJoPFxd-Z');
 INSERT INTO `system_config` VALUES ('170', 'storage_qiniu_region', '华东');
 INSERT INTO `system_config` VALUES ('173', 'app_name', 'Think.Admin');
 INSERT INTO `system_config` VALUES ('174', 'app_version', '2.00 dev');
 INSERT INTO `system_config` VALUES ('176', 'browser_icon', 'https://think.ctolog.com/static/upload/f47b8fe06e38ae99/08e8398da45583b9.png');
 INSERT INTO `system_config` VALUES ('184', 'wechat_appid', 'wx60a43dd8161666d4');
-INSERT INTO `system_config` VALUES ('185', 'wechat_appsecret', '');
+INSERT INTO `system_config` VALUES ('185', 'wechat_appsecret', '062938ddcfe0d69786e4e3d9dcbb08aa');
 INSERT INTO `system_config` VALUES ('186', 'wechat_token', 'mytoken');
-INSERT INTO `system_config` VALUES ('187', 'wechat_encodingaeskey', '');
+INSERT INTO `system_config` VALUES ('187', 'wechat_encodingaeskey', 'KHyoWLoS7oLZYkB4PokMTfA5sm6Hrqc9Tzgn9iXc0YH');
 INSERT INTO `system_config` VALUES ('188', 'wechat_mch_id', '1332187001');
-INSERT INTO `system_config` VALUES ('189', 'wechat_partnerkey', '');
+INSERT INTO `system_config` VALUES ('189', 'wechat_partnerkey', 'A82DC5BD1F3359081049C568D8502BC5');
 INSERT INTO `system_config` VALUES ('194', 'wechat_cert_key', '');
 INSERT INTO `system_config` VALUES ('196', 'wechat_cert_cert', '');
 INSERT INTO `system_config` VALUES ('197', 'tongji_baidu_key', 'aa2f9869e9b578122e4692de2bd9f80f');
 INSERT INTO `system_config` VALUES ('198', 'tongji_cnzz_key', '1261854404');
 INSERT INTO `system_config` VALUES ('199', 'storage_oss_bucket', 'think-oss');
-INSERT INTO `system_config` VALUES ('200', 'storage_oss_keyid', '');
-INSERT INTO `system_config` VALUES ('201', 'storage_oss_secret', '');
-INSERT INTO `system_config` VALUES ('202', 'storage_oss_domain', '');
+INSERT INTO `system_config` VALUES ('200', 'storage_oss_keyid', 'WjeX0AYSfgy5VbXQ');
+INSERT INTO `system_config` VALUES ('201', 'storage_oss_secret', 'hQTENHy6MYVUTgwjcgfOCq5gckm2Lp');
+INSERT INTO `system_config` VALUES ('202', 'storage_oss_domain', 'think-oss.oss-cn-shanghai.aliyuncs.com');
 INSERT INTO `system_config` VALUES ('203', 'storage_oss_is_https', '1');
 
 -- ----------------------------
@@ -107,7 +107,11 @@ CREATE TABLE `system_log` (
   `content` text NOT NULL COMMENT '操作内容描述',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
+
+-- ----------------------------
+-- Records of system_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -180,7 +184,89 @@ CREATE TABLE `system_node` (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `index_system_node_node` (`node`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=209 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统节点表';
+
+-- ----------------------------
+-- Records of system_node
+-- ----------------------------
+INSERT INTO `system_node` VALUES ('131', 'admin/auth/index', '权限列表', '1', '1', '1', '2017-08-23 15:45:42');
+INSERT INTO `system_node` VALUES ('132', 'admin', '后台管理', '0', '1', '1', '2017-08-23 15:45:44');
+INSERT INTO `system_node` VALUES ('133', 'admin/auth/apply', '节点授权', '0', '1', '1', '2017-08-23 16:05:18');
+INSERT INTO `system_node` VALUES ('134', 'admin/auth/add', '添加授权', '0', '1', '1', '2017-08-23 16:05:19');
+INSERT INTO `system_node` VALUES ('135', 'admin/auth/edit', '编辑权限', '0', '1', '1', '2017-08-23 16:05:19');
+INSERT INTO `system_node` VALUES ('136', 'admin/auth/forbid', '禁用权限', '0', '1', '1', '2017-08-23 16:05:20');
+INSERT INTO `system_node` VALUES ('137', 'admin/auth/resume', '启用权限', '0', '1', '1', '2017-08-23 16:05:20');
+INSERT INTO `system_node` VALUES ('138', 'admin/auth/del', '删除权限', '0', '1', '1', '2017-08-23 16:05:21');
+INSERT INTO `system_node` VALUES ('139', 'admin/config/index', '参数配置', '1', '1', '1', '2017-08-23 16:05:22');
+INSERT INTO `system_node` VALUES ('140', 'admin/config/file', '文件配置', '1', '1', '1', '2017-08-23 16:05:22');
+INSERT INTO `system_node` VALUES ('141', 'admin/log/index', '日志列表', '1', '1', '1', '2017-08-23 16:05:23');
+INSERT INTO `system_node` VALUES ('142', 'admin/log/del', '删除日志', '0', '1', '1', '2017-08-23 16:05:24');
+INSERT INTO `system_node` VALUES ('143', 'admin/menu/index', '菜单列表', '1', '1', '1', '2017-08-23 16:05:25');
+INSERT INTO `system_node` VALUES ('144', 'admin/menu/add', '添加菜单', '0', '1', '1', '2017-08-23 16:05:25');
+INSERT INTO `system_node` VALUES ('145', 'admin/menu/edit', '编辑菜单', '0', '1', '1', '2017-08-23 16:05:26');
+INSERT INTO `system_node` VALUES ('146', 'admin/menu/del', '删除菜单', '0', '1', '1', '2017-08-23 16:05:26');
+INSERT INTO `system_node` VALUES ('147', 'admin/menu/forbid', '禁用菜单', '0', '1', '1', '2017-08-23 16:05:27');
+INSERT INTO `system_node` VALUES ('148', 'admin/menu/resume', '启用菜单', '0', '1', '1', '2017-08-23 16:05:28');
+INSERT INTO `system_node` VALUES ('149', 'admin/node/index', '节点列表', '1', '1', '1', '2017-08-23 16:05:29');
+INSERT INTO `system_node` VALUES ('150', 'admin/node/save', '节点更新', '0', '1', '1', '2017-08-23 16:05:30');
+INSERT INTO `system_node` VALUES ('151', 'admin/user/index', '用户管理', '1', '1', '1', '2017-08-23 16:05:31');
+INSERT INTO `system_node` VALUES ('152', 'admin/user/auth', '用户授权', '0', '1', '1', '2017-08-23 16:05:32');
+INSERT INTO `system_node` VALUES ('153', 'admin/user/add', '添加用户', '0', '1', '1', '2017-08-23 16:05:33');
+INSERT INTO `system_node` VALUES ('154', 'admin/user/edit', '编辑用户', '0', '1', '1', '2017-08-23 16:05:33');
+INSERT INTO `system_node` VALUES ('155', 'admin/user/pass', '用户密码', '0', '1', '1', '2017-08-23 16:05:34');
+INSERT INTO `system_node` VALUES ('156', 'admin/user/del', '删除用户', '0', '1', '1', '2017-08-23 16:05:34');
+INSERT INTO `system_node` VALUES ('157', 'admin/user/forbid', '禁用用户', '0', '1', '1', '2017-08-23 16:05:34');
+INSERT INTO `system_node` VALUES ('158', 'admin/user/resume', '启用用户', '0', '1', '1', '2017-08-23 16:05:35');
+INSERT INTO `system_node` VALUES ('159', 'demo/plugs/file', '文件上传', '1', '0', '0', '2017-08-23 16:05:36');
+INSERT INTO `system_node` VALUES ('160', 'demo/plugs/region', '区域选择', '1', '0', '0', '2017-08-23 16:05:36');
+INSERT INTO `system_node` VALUES ('161', 'demo/plugs/editor', '富文本器', '1', '0', '0', '2017-08-23 16:05:37');
+INSERT INTO `system_node` VALUES ('162', 'wechat/config/index', '微信参数', '1', '1', '1', '2017-08-23 16:05:37');
+INSERT INTO `system_node` VALUES ('163', 'wechat/config/pay', '微信支付', '0', '1', '1', '2017-08-23 16:05:38');
+INSERT INTO `system_node` VALUES ('164', 'wechat/fans/index', '粉丝列表', '1', '1', '1', '2017-08-23 16:05:39');
+INSERT INTO `system_node` VALUES ('165', 'wechat/fans/back', '粉丝黑名单', '1', '1', '1', '2017-08-23 16:05:39');
+INSERT INTO `system_node` VALUES ('166', 'wechat/fans/backadd', '移入黑名单', '0', '1', '1', '2017-08-23 16:05:40');
+INSERT INTO `system_node` VALUES ('167', 'wechat/fans/tagset', '设置标签', '0', '1', '1', '2017-08-23 16:05:41');
+INSERT INTO `system_node` VALUES ('168', 'wechat/fans/backdel', '移出黑名单', '0', '1', '1', '2017-08-23 16:05:41');
+INSERT INTO `system_node` VALUES ('169', 'wechat/fans/tagadd', '添加标签', '0', '1', '1', '2017-08-23 16:05:41');
+INSERT INTO `system_node` VALUES ('170', 'wechat/fans/tagdel', '删除标签', '0', '1', '1', '2017-08-23 16:05:42');
+INSERT INTO `system_node` VALUES ('171', 'wechat/fans/sync', '同步粉丝', '0', '1', '1', '2017-08-23 16:05:43');
+INSERT INTO `system_node` VALUES ('172', 'wechat/keys/index', '关键字列表', '1', '1', '1', '2017-08-23 16:05:44');
+INSERT INTO `system_node` VALUES ('173', 'wechat/keys/add', '添加关键字', '0', '1', '1', '2017-08-23 16:05:44');
+INSERT INTO `system_node` VALUES ('174', 'wechat/keys/edit', '编辑关键字', '0', '1', '1', '2017-08-23 16:05:45');
+INSERT INTO `system_node` VALUES ('175', 'wechat/keys/del', '删除关键字', '0', '1', '1', '2017-08-23 16:05:45');
+INSERT INTO `system_node` VALUES ('176', 'wechat/keys/forbid', '禁用关键字', '0', '1', '1', '2017-08-23 16:05:46');
+INSERT INTO `system_node` VALUES ('177', 'wechat/keys/resume', '启用关键字', '0', '1', '1', '2017-08-23 16:05:46');
+INSERT INTO `system_node` VALUES ('178', 'wechat/keys/subscribe', '关注默认回复', '0', '1', '1', '2017-08-23 16:05:48');
+INSERT INTO `system_node` VALUES ('179', 'wechat/keys/defaults', '默认响应回复', '0', '1', '1', '2017-08-23 16:05:49');
+INSERT INTO `system_node` VALUES ('180', 'wechat/menu/index', '微信菜单', '1', '1', '1', '2017-08-23 16:05:51');
+INSERT INTO `system_node` VALUES ('181', 'wechat/menu/edit', '发布微信菜单', '0', '1', '1', '2017-08-23 16:05:51');
+INSERT INTO `system_node` VALUES ('182', 'wechat/menu/cancel', '取消微信菜单', '0', '1', '1', '2017-08-23 16:05:52');
+INSERT INTO `system_node` VALUES ('183', 'wechat/news/index', '微信图文列表', '1', '1', '1', '2017-08-23 16:05:52');
+INSERT INTO `system_node` VALUES ('184', 'wechat/news/select', '微信图文选择', '0', '1', '1', '2017-08-23 16:05:53');
+INSERT INTO `system_node` VALUES ('185', 'wechat/news/image', '微信图片选择', '0', '1', '1', '2017-08-23 16:05:53');
+INSERT INTO `system_node` VALUES ('186', 'wechat/news/add', '添加图文', '0', '1', '1', '2017-08-23 16:05:54');
+INSERT INTO `system_node` VALUES ('187', 'wechat/news/edit', '编辑图文', '0', '1', '1', '2017-08-23 16:05:56');
+INSERT INTO `system_node` VALUES ('188', 'wechat/news/del', '删除图文', '0', '1', '1', '2017-08-23 16:05:56');
+INSERT INTO `system_node` VALUES ('189', 'wechat/news/push', '推送图文', '0', '1', '1', '2017-08-23 16:05:56');
+INSERT INTO `system_node` VALUES ('190', 'wechat/tags/index', '微信标签列表', '1', '1', '1', '2017-08-23 16:05:58');
+INSERT INTO `system_node` VALUES ('191', 'wechat/tags/add', '添加微信标签', '0', '1', '1', '2017-08-23 16:05:58');
+INSERT INTO `system_node` VALUES ('192', 'wechat/tags/edit', '编辑微信标签', '0', '1', '1', '2017-08-23 16:05:58');
+INSERT INTO `system_node` VALUES ('193', 'wechat/tags/sync', '同步微信标签', '0', '1', '1', '2017-08-23 16:05:59');
+INSERT INTO `system_node` VALUES ('194', 'admin/auth', '权限管理', '0', '1', '1', '2017-08-23 16:06:58');
+INSERT INTO `system_node` VALUES ('195', 'admin/config', '系统配置', '0', '1', '1', '2017-08-23 16:07:34');
+INSERT INTO `system_node` VALUES ('196', 'admin/log', '系统日志', '0', '1', '1', '2017-08-23 16:07:46');
+INSERT INTO `system_node` VALUES ('197', 'admin/menu', '系统菜单', '0', '1', '1', '2017-08-23 16:08:02');
+INSERT INTO `system_node` VALUES ('198', 'admin/node', '系统节点', '0', '1', '1', '2017-08-23 16:08:44');
+INSERT INTO `system_node` VALUES ('199', 'admin/user', '系统用户', '0', '1', '1', '2017-08-23 16:09:43');
+INSERT INTO `system_node` VALUES ('200', 'demo', '插件案例', '0', '1', '1', '2017-08-23 16:10:43');
+INSERT INTO `system_node` VALUES ('201', 'demo/plugs', '插件案例', '0', '1', '1', '2017-08-23 16:10:51');
+INSERT INTO `system_node` VALUES ('202', 'wechat', '微信管理', '0', '1', '1', '2017-08-23 16:11:13');
+INSERT INTO `system_node` VALUES ('203', 'wechat/config', '微信配置', '0', '1', '1', '2017-08-23 16:11:19');
+INSERT INTO `system_node` VALUES ('204', 'wechat/fans', '粉丝管理', '0', '1', '1', '2017-08-23 16:11:36');
+INSERT INTO `system_node` VALUES ('205', 'wechat/keys', '关键字管理', '0', '1', '1', '2017-08-23 16:13:00');
+INSERT INTO `system_node` VALUES ('206', 'wechat/menu', '微信菜单管理', '0', '1', '1', '2017-08-23 16:14:11');
+INSERT INTO `system_node` VALUES ('207', 'wechat/news', '微信图文管理', '0', '1', '1', '2017-08-23 16:14:40');
+INSERT INTO `system_node` VALUES ('208', 'wechat/tags', '微信标签管理', '0', '1', '1', '2017-08-23 16:15:25');
 
 -- ----------------------------
 -- Table structure for system_sequence
@@ -195,7 +281,11 @@ CREATE TABLE `system_sequence` (
   UNIQUE KEY `index_system_sequence_unique` (`type`,`sequence`) USING BTREE,
   KEY `index_system_sequence_type` (`type`),
   KEY `index_system_sequence_number` (`sequence`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='系统序号表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统序号表';
+
+-- ----------------------------
+-- Records of system_sequence
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for system_user
@@ -223,7 +313,7 @@ CREATE TABLE `system_user` (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'sdfsd@Qq.com1', '13888888855', 'dfgsdfgsfd', '27035', '2017-08-23 15:44:52', '1', '301,302,303,304', '0', null, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'sdfsd@Qq.com1', '13888888855', 'dfgsdfgsfd', '27039', '2017-08-23 16:15:57', '1', '301,302,303,304', '0', null, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
@@ -257,7 +347,7 @@ CREATE TABLE `wechat_fans` (
   PRIMARY KEY (`id`),
   KEY `index_wechat_fans_spread_openid` (`spread_openid`) USING BTREE,
   KEY `index_wechat_fans_openid` (`openid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='微信粉丝';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信粉丝';
 
 -- ----------------------------
 -- Records of wechat_fans
@@ -306,7 +396,11 @@ CREATE TABLE `wechat_keys` (
   `create_by` bigint(20) unsigned DEFAULT NULL COMMENT '创建人',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT=' 微信关键字';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=' 微信关键字';
+
+-- ----------------------------
+-- Records of wechat_keys
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wechat_menu
@@ -345,7 +439,11 @@ CREATE TABLE `wechat_news` (
   `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`),
   KEY `index_wechat_new_artcle_id` (`article_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='微信图文表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信图文表';
+
+-- ----------------------------
+-- Records of wechat_news
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wechat_news_article
@@ -363,7 +461,11 @@ CREATE TABLE `wechat_news_article` (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='微信素材表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信素材表';
+
+-- ----------------------------
+-- Records of wechat_news_article
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wechat_news_image
@@ -397,7 +499,11 @@ CREATE TABLE `wechat_news_media` (
   `media_url` varchar(300) DEFAULT NULL COMMENT '远程图片链接',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='微信素材表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信素材表';
+
+-- ----------------------------
+-- Records of wechat_news_media
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wechat_pay_notify
@@ -426,7 +532,11 @@ CREATE TABLE `wechat_pay_notify` (
   KEY `index_wechat_pay_notify_openid` (`openid`) USING BTREE,
   KEY `index_wechat_pay_notify_out_trade_no` (`out_trade_no`) USING BTREE,
   KEY `index_wechat_pay_notify_transaction_id` (`transaction_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='支付日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支付日志表';
+
+-- ----------------------------
+-- Records of wechat_pay_notify
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wechat_pay_prepayid
@@ -453,4 +563,8 @@ CREATE TABLE `wechat_pay_prepayid` (
   KEY `index_wechat_pay_prepayid_order_no` (`order_no`) USING BTREE,
   KEY `index_wechat_pay_is_pay` (`is_pay`) USING BTREE,
   KEY `index_wechat_pay_is_refund` (`is_refund`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='支付订单号对应表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支付订单号对应表';
+
+-- ----------------------------
+-- Records of wechat_pay_prepayid
+-- ----------------------------
