@@ -40,18 +40,6 @@ class BasicAdmin extends Controller
     public $table;
 
     /**
-     * 默认检查用户登录状态
-     * @var bool
-     */
-    public $checkLogin = true;
-
-    /**
-     * 默认检查节点访问权限
-     * @var bool
-     */
-    public $checkAuth = true;
-
-    /**
      * 表单默认操作
      * @param Query $dbQuery 数据库查询对象
      * @param string $tplFile 显示模板名字
@@ -79,7 +67,10 @@ class BasicAdmin extends Controller
         if (false !== $this->_callback('_form_filter', $data)) {
             $result = DataService::save($db, $data, $pk, $where);
             if (false !== $this->_callback('_form_result', $result)) {
-                $result !== false ? $this->success('恭喜, 数据保存成功!', '') : $this->error('数据保存失败, 请稍候再试!');
+                if ($result !== false) {
+                    $this->success('恭喜, 数据保存成功!', '');
+                }
+                $this->error('数据保存失败, 请稍候再试!');
             }
         }
     }
@@ -113,11 +104,13 @@ class BasicAdmin extends Controller
         }
         $result = [];
         if ($isPage) {
-            $rowPage = intval($this->request->get('rows', cookie('rows')));
-            cookie('rows', $rowPage >= 10 ? $rowPage : 20);
-            $page = $db->paginate($rowPage, $total, ['query' => $this->request->get()]);
+            $rows = intval($this->request->get('rows', cookie('rows')));
+            cookie('rows', $rows >= 10 ? $rows : 20);
+            $page = $db->paginate($rows, $total, ['query' => $this->request->get()]);
             $result['list'] = $page->all();
-            $result['page'] = preg_replace(['|href="(.*?)"|', '|pagination|'], ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'], $page->render());
+            $pattern = ['|href="(.*?)"|', '|pagination|'];
+            $replacement = ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'];
+            $result['page'] = preg_replace($pattern, $replacement, $page->render());
         } else {
             $result['list'] = $db->select();
         }

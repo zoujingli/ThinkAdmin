@@ -171,7 +171,7 @@ class News extends BasicAdmin
 
     /**
      * 推荐图文
-     * @return array|void
+     * @return array
      */
     public function push()
     {
@@ -181,8 +181,7 @@ class News extends BasicAdmin
                 if ('' === ($params = $this->request->post('group', ''))) {
                     return ['code' => 'SUCCESS', 'data' => []];
                 }
-                $ids = explode(',', $params);
-                $db = Db::name('WechatFans');
+                list($ids, $db) = [explode(',', $params), Db::name('WechatFans')];
                 !in_array('0', $ids) && $db->where("concat(',',tagid_list,',') REGEXP '," . join(',|,', $ids) . ",'");
                 return ['code' => "SUCCESS", 'data' => $db->where('subscribe', '1')->limit(200)->column('nickname')];
             default :
@@ -193,8 +192,7 @@ class News extends BasicAdmin
                 if ($this->request->isGet()) {
                     $fans_tags = Db::name('WechatFansTags')->select();
                     array_unshift($fans_tags, [
-                        'id'    => 0,
-                        'name'  => '全部',
+                        'id'    => 0, 'name' => '全部',
                         'count' => Db::name('WechatFans')->where('subscribe', '1')->count(),
                     ]);
                     return view('push', ['vo' => $newsinfo, 'fans_tags' => $fans_tags]);
@@ -215,7 +213,7 @@ class News extends BasicAdmin
                     $data['filter'] = ['is_to_all' => false, 'tag_id' => join(',', $post['fans_tags'])];
                     $data['mpnews'] = ['media_id' => $newsinfo['media_id']];
                 }
-                $wechat = &load_wechat('Receive');
+                $wechat = load_wechat('Receive');
                 if (false !== $wechat->sendGroupMassMessage($data)) {
                     LogService::write('微信管理', "图文[{$news_id}]推送成功");
                     $this->success('微信图文推送成功！', '');
@@ -226,8 +224,8 @@ class News extends BasicAdmin
 
     /**
      * 上传永久图文
-     * @param type $newsinfo
-     * @return boolean
+     * @param array $newsinfo
+     * @return bool
      */
     private function _uploadWechatNews(&$newsinfo)
     {
@@ -238,7 +236,7 @@ class News extends BasicAdmin
                 return "<img{$matches[1]}src=\"{$src}\"{$matches[3]}/>";
             }, htmlspecialchars_decode($article['content']));
         }
-        $wechat = &load_wechat('media');
+        $wechat = load_wechat('media');
         // 如果已经上传过，先删除之前的历史记录
         !empty($newsinfo['media_id']) && $wechat->delForeverMedia($newsinfo['media_id']);
         // 上传图文到微信服务器

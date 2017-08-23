@@ -22,7 +22,7 @@ return [
     // 用户名
     'username'        => 'think.admin',
     // 密码
-    'password'        => '',
+    'password'        => 'think.admin',
     // 端口
     'hostport'        => '3306',
     // 连接dsn

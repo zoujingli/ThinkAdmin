@@ -117,6 +117,7 @@ return array(
     'Wechat\\WechatHardware' => $vendorDir . '/zoujingli/wechat-php-sdk/Wechat/WechatHardware.php',
     'Wechat\\WechatMedia' => $vendorDir . '/zoujingli/wechat-php-sdk/Wechat/WechatMedia.php',
     'Wechat\\WechatMenu' => $vendorDir . '/zoujingli/wechat-php-sdk/Wechat/WechatMenu.php',
+    'Wechat\\WechatMessage' => $vendorDir . '/zoujingli/wechat-php-sdk/Wechat/WechatMessage.php',
     'Wechat\\WechatOauth' => $vendorDir . '/zoujingli/wechat-php-sdk/Wechat/WechatOauth.php',
     'Wechat\\WechatPay' => $vendorDir . '/zoujingli/wechat-php-sdk/Wechat/WechatPay.php',
     'Wechat\\WechatPoi' => $vendorDir . '/zoujingli/wechat-php-sdk/Wechat/WechatPoi.php',

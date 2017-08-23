@@ -16,7 +16,6 @@ namespace app\admin\controller;
 
 use controller\BasicAdmin;
 use service\FileService;
-use think\Db;
 
 /**
  * 插件助手控制器
@@ -29,28 +28,17 @@ class Plugs extends BasicAdmin
 {
 
     /**
-     * 默认检查用户登录状态
-     * @var bool
-     */
-    public $checkLogin = false;
-
-    /**
-     * 默认检查节点访问权限
-     * @var bool
-     */
-    public $checkAuth = false;
-
-    /**
      * 文件上传
      * @return \think\response\View
      */
     public function upfile()
     {
-        if (!in_array(($uptype = $this->request->get('uptype')), ['local', 'qiniu', 'oss'])) {
+        $uptype = $this->request->get('uptype');
+        if (!in_array($uptype, ['local', 'qiniu', 'oss'])) {
             $uptype = sysconf('storage_type');
         }
-        $types = $this->request->get('type', 'jpg,png');
         $mode = $this->request->get('mode', 'one');
+        $types = $this->request->get('type', 'jpg,png');
         $this->assign('mimes', FileService::getFileMine($types));
         $this->assign('field', $this->request->get('field', 'file'));
         return view('', ['mode' => $mode, 'types' => $types, 'uptype' => $uptype]);
@@ -63,15 +51,15 @@ class Plugs extends BasicAdmin
     public function upload()
     {
         $file = $this->request->file('file');
-        $md5s = str_split($this->request->post('md5'), 16);
         $ext = pathinfo($file->getInfo('name'), 4);
-        $filename = join('/', $md5s) . ".{$ext}";
+        $md5 = str_split($this->request->post('md5'), 16);
+        $filename = join('/', $md5) . ".{$ext}";
         // 文件上传Token验证
         if ($this->request->post('token') !== md5($filename . session_id())) {
             return json(['code' => 'ERROR', '文件上传验证失败']);
         }
         // 文件上传处理
-        if (($info = $file->move('static' . DS . 'upload' . DS . $md5s[0], $md5s[1], true))) {
+        if (($info = $file->move('static' . DS . 'upload' . DS . $md5[0], $md5[1], true))) {
             if (($site_url = FileService::getFileUrl($filename, 'local'))) {
                 return json(['data' => ['site_url' => $site_url], 'code' => 'SUCCESS', 'msg' => '文件上传成功']);
             }
@@ -85,7 +73,7 @@ class Plugs extends BasicAdmin
     public function upstate()
     {
         $post = $this->request->post();
-        $filename = join('/', str_split($post['md5'], 16)) . '.' . pathinfo($post['filename'], PATHINFO_EXTENSION);
+        $filename = join('/', str_split($post['md5'], 16)) . '.' . pathinfo($post['filename'], 4);
         // 检查文件是否已上传
         if (($site_url = FileService::getFileUrl($filename))) {
             $this->result(['site_url' => $site_url], 'IS_FOUND');
@@ -123,14 +111,13 @@ class Plugs extends BasicAdmin
      */
     protected function _getQiniuToken($key)
     {
+        $host = sysconf('storage_qiniu_domain');
+        $bucket = sysconf('storage_qiniu_bucket');
         $accessKey = sysconf('storage_qiniu_access_key');
         $secretKey = sysconf('storage_qiniu_secret_key');
-        $bucket = sysconf('storage_qiniu_bucket');
-        $host = sysconf('storage_qiniu_domain');
         $protocol = sysconf('storage_qiniu_is_https') ? 'https' : 'http';
         $params = [
-            "scope"      => "{$bucket}:{$key}",
-            "deadline"   => 3600 + time(),
+            "scope"      => "{$bucket}:{$key}", "deadline"   => 3600 + time(),
             "returnBody" => "{\"data\":{\"site_url\":\"{$protocol}://{$host}/$(key)\",\"file_url\":\"$(key)\"}, \"code\": \"SUCCESS\"}",
         ];
         $data = str_replace(['+', '/'], ['-', '_'], base64_encode(json_encode($params)));
@@ -145,15 +132,6 @@ class Plugs extends BasicAdmin
     {
         $field = $this->request->get('field', 'icon');
         return view('', ['field' => $field]);
-    }
-
-    /**
-     * 区域数据
-     * @return \think\response\Json
-     */
-    public function region()
-    {
-        return json(Db::name('DataRegion')->where('status', '1')->column('code,name'));
     }
 
 }

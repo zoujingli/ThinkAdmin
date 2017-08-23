@@ -15,6 +15,7 @@ use think\console\Command;
 use think\console\Input;
 use think\console\input\Option;
 use think\console\Output;
+use think\Hook;
 use think\queue\Job;
 use think\queue\Worker;
 use Exception;
@@ -65,6 +66,7 @@ class Work extends Command
         $memory = $input->getOption('memory');
 
         if ($input->getOption('daemon')) {
+            Hook::listen('worker_daemon_start', $queue);
             $this->daemon(
                 $queue, $delay, $memory,
                 $input->getOption('sleep'), $input->getOption('tries')
@@ -107,7 +109,13 @@ class Work extends Command
                 $queue, $delay, $sleep, $maxTries
             );
 
-            if ($this->memoryExceeded($memory) || $this->queueShouldRestart($lastRestart)) {
+            if ( $this->memoryExceeded($memory) ) {
+                Hook::listen('worker_memory_exceeded', $queue);
+                $this->stop();
+            }
+            
+            if ( $this->queueShouldRestart($lastRestart) ) {
+                Hook::listen('worker_queue_restart', $queue);
                 $this->stop();
             }
         }

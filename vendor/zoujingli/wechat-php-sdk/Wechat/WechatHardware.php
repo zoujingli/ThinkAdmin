@@ -1,11 +1,24 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方文档: https://www.kancloud.cn/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+
 namespace Wechat;
 
 use Wechat\Lib\Common;
 use Wechat\Lib\Tools;
 
-class WechatHardware extends Common {
+class WechatHardware extends Common
+{
 
     const DEVICE_AUTHORIZE_DEVICE = '/device/authorize_device?'; //设备设全
     const DEVICE_GETQRCODE = '/device/getqrcode?';               //设备授权新接口
@@ -19,7 +32,8 @@ class WechatHardware extends Common {
      * @param $data
      * @return bool|mixed
      */
-    public function deviceCompelUnbindhttps($data) {
+    public function deviceCompelUnbindhttps($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -37,7 +51,8 @@ class WechatHardware extends Common {
     }
 
 
-    public function transmsg($data) {
+    public function transmsg($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -55,7 +70,8 @@ class WechatHardware extends Common {
         return false;
     }
 
-    public function getQrcode($product_id) {
+    public function getQrcode($product_id)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -77,7 +93,8 @@ class WechatHardware extends Common {
      * @param $data
      * @return bool|mixed
      */
-    public function deviceAuthorize($data) {
+    public function deviceAuthorize($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -99,7 +116,8 @@ class WechatHardware extends Common {
      * @param $data
      * @return bool|mixed
      */
-    public function getDeviceQrcode($data) {
+    public function getDeviceQrcode($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -122,7 +140,8 @@ class WechatHardware extends Common {
      * @param $device_id
      * @return bool|mixed
      */
-    public function getDeviceStat($device_id) {
+    public function getDeviceStat($device_id)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }

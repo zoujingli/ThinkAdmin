@@ -134,9 +134,7 @@ class PayService
                 return false;
             }
             $data = ['prepayid' => $prepayid, 'order_no' => $order_no, 'out_trade_no' => $out_trade_no, 'fee' => $fee, 'trade_type' => $trade_type];
-            $data['from'] = $from;
-            $data['appid'] = $pay->appid;
-            $data['expires_in'] = time() + 5400; //微信预支付码有效时间1.5小时(最长为2小时)
+            list($data['from'], $data['appid'], $data['expires_in']) = [$from, $pay->getAppid(), time() + 5400];
             if (Db::name('WechatPayPrepayid')->insert($data) > 0) {
                 Log::notice("内部订单号{$order_no}生成预支付成功,{$prepayid}");
                 return $prepayid;

@@ -3,12 +3,15 @@
 {block name="button"}
 <div class="nowrap pull-right" style="margin-top:10px">
     <button data-open="{:url('add')}" class='layui-btn layui-btn-small'>添加规则</button>
-    <button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-small layui-btn-danger'>删除规则</button>
+    <button data-update data-field='delete' data-action='{:url("$classuri/del")}'
+            class='layui-btn layui-btn-small layui-btn-danger'>删除规则
+    </button>
 </div>
 {/block}
 
 {block name='content'}
 <form onsubmit="return false;" data-auto="true" action="__SELF__" method="post">
+    {if !empty($list)}
     <input type="hidden" value="resort" name="action"/>
     <table class="table table-hover">
         <thead>
@@ -19,7 +22,7 @@
                 <th class='list-table-sort-td'>
                     <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
                 </th>
-                <th class="text-center">关键字</th>
+                <th class="text-left">关键字</th>
                 <th class="text-center">回复类型</th>
                 <th class="text-center">回复内容</th>
                 <th class="text-center">更新时间</th>
@@ -36,7 +39,12 @@
                 <td class='list-table-sort-td'>
                     <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
                 </td>
-                <td class="text-center">{$vo.keys}</td>
+                <td class="text-left">
+                    {if !empty($vo.qrc)}
+                    <i class="fa fa-qrcode fa-lg pointer" data-tips-image="{$vo.qrc}" data-tips-text="关键字二维码"></i>
+                    {/if}
+                    {$vo.keys}
+                </td>
                 <td class="text-center">{$vo.type}</td>
                 <td class="text-center">
                     {if $vo.type eq '音乐'}
@@ -80,15 +88,18 @@
 
                     {if $vo.status eq 1 and auth("$classuri/forbid")}
                     <span class="text-explode">|</span>
-                    <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}' href="javascript:void(0)">禁用</a>
+                    <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'
+                       href="javascript:void(0)">禁用</a>
                     {elseif auth("$classuri/resume")}
                     <span class="text-explode">|</span>
-                    <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'  href="javascript:void(0)">启用</a>
+                    <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'
+                       href="javascript:void(0)">启用</a>
                     {/if}
 
                     {if auth("$classuri/del")}
                     <span class="text-explode">|</span>
-                    <a data-update="{$vo.id}" data-field='delete' data-action='{:url("del")}' href="javascript:void(0)">删除</a>
+                    <a data-update="{$vo.id}" data-field='delete' data-action='{:url("del")}'
+                       href="javascript:void(0)">删除</a>
                     {/if}
 
                 </td>
@@ -97,6 +108,10 @@
         </tbody>
     </table>
     {if isset($page)}<p>{$page}</p>{/if}
+    {else}
+    <p class="help-block">暂时无记录</p>
+    {/if}
+
 </form>
 
 {/block}

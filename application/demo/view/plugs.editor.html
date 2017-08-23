@@ -1,0 +1,47 @@
+{extend name='extra@admin/content'}
+
+{block name="content"}
+
+<!--<div class="code">-->
+    <!--<blockquote class="site-text layui-elem-quote">-->
+        <!--富文本编辑器-->
+    <!--</blockquote>-->
+    <div style="position:relative">
+        <textarea name="content">这里可以放默认值</textarea>
+        <script>
+            require(['ckeditor'], function () {
+                var editor = window.createEditor('[name="content"]');
+                // 设置内容
+                editor.setData('修改内容');
+                // 获取内容
+                var content = editor.getData();
+                console.log(content);
+            });
+        </script>
+    </div>
+
+    <pre class="layui-code" lay-title="HTML代码">
+
+<textarea name="content">这里可以放默认值</textarea>
+    </pre>
+
+    <pre class="layui-code" lay-title="javascript代码">
+
+require(['ckeditor'], function () {
+    var editor = window.createEditor('[name="content"]');
+    // 设置内容
+    editor.setData('修改内容');
+    // 获取内容
+    var content = editor.getData();
+    console.log(content);
+});
+
+    </pre>
+</div>
+
+<script>
+    layui.use('code', function () {
+        layui.code({encode: true});
+    });
+</script>
+{/block}

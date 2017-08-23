@@ -109,7 +109,7 @@ class Job2{
 
 
 ## 发布任务
-> `think\Queue:push($job, $data = '', $queue = null)` 和 `think\Queue::later($delay, $job, $data = '', $queue = null)` 两个方法，前者是立即执行，后者是在`$delay`秒后执行
+> `think\Queue::push($job, $data = '', $queue = null)` 和 `think\Queue::later($delay, $job, $data = '', $queue = null)` 两个方法，前者是立即执行，后者是在`$delay`秒后执行
 
 `$job` 是任务名  
 单模块的，且命名空间是`app\job`的，比如上面的例子一,写`Job1`类名即可  

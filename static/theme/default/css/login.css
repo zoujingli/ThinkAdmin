@@ -1,14 +1,20 @@
 @charset "UTF-8";
 
-/* ------------------------------------- 
- * 楚才团队后台框架
- * author Anyon <zoujingli@qq.com>
- * date 2017/02/13 14:15
- * --------------------------------------- */
+/* +----------------------------------------------------------------------
+// | Think.Admin
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://think.ctolog.com
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/Think.Admin
+// +--------------------------------------------------------------------*/
 
-html, body {height:100%;width:100%;overflow:hidden!important;overflow-y:hidden !important}
+html, body {height:100%;width:100%;overflow:hidden!important;overflow-y:hidden !important;min-width:0}
 
-.login-container {background-color:#1c77ac;overflow:hidden;font-family:'微软雅黑', serif;margin:0 auto;min-width:980px;font-size:9pt}
+.login-container {background-color:#2494F2;overflow:hidden;font-family:'微软雅黑', serif;margin:0 auto;min-width:1000px;font-size:9pt}
 .login-container ul {display:block;margin:0;padding:0;list-style:none}
 .login-container ul li {display:block;margin:0;padding:0;list-style:none}
 .login-container img {border:0}
@@ -22,14 +28,14 @@ html, body {height:100%;width:100%;overflow:hidden!important;overflow-y:hidden !
 @keyframes cloudmove {0% {left:-50%}100% {left:150%}}
 
 .login-container a,
-.login-container a:focus {text-decoration:none;color:#000;outline:none;blur:expression(this.onFocus=this.blur())}
 .login-container a:hover {color:#00a4ac;text-decoration:none}
-.login-container .header {height:47px;position:absolute;position:fixed;top:0;background:url(../img/login/loginbg1.png) repeat-x;z-index:100;width:100%}
-.login-container .header span {line-height:47px;text-indent:44px;float:left;font-family:"Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;color:#DDD;font-size:12px}
+.login-container a:focus {text-decoration:none;color:#000;outline:none;blur:expression(this.onFocus=this.blur())}
+.login-container .header {height:47px;position:absolute;position:fixed;top:0;z-index:100;width:100%}
+.login-container .header span.title {line-height:47px;text-indent:44px;float:left;font-family:"Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;color:#fff;font-size:16px;letter-spacing:0.5px}
 .login-container .header ul {float:right;padding-right:30px}
-.login-container .header ul li {float:left;margin-left:20px;line-height:47px}
-.login-container .header ul li a {color:#afc5d2}
-.login-container .header ul li a:hover {color:#fff}
+.login-container .header ul li {float:left;margin-left:20px;line-height:47px;letter-spacing:0.5px}
+.login-container .header ul li a {color:#fff}
+.login-container .header ul li a:hover {color:#fff;}
 .login-container .container {background:url(../img/login/loginbg3.png) no-repeat center center;width:100%;height:585px;overflow:hidden;position:relative;top:47px}
 
 /* 登录表单 */
@@ -50,6 +56,6 @@ html, body {height:100%;width:100%;overflow:hidden!important;overflow-y:hidden !
 .login-container .people .initial_right_hand {background:url("../img/login/hand.png") no-repeat;width:30px;height:20px;position:absolute;top:-12px;right:-112px}
 
 /* 底部版权 */
-.login-container .footer {height:50px;line-height:50px;text-align:center;background:url(../img/login/loginbg2.png) repeat-x;position:fixed;_position:absolute;*position:absolute;bottom:0;width:100%;color:#fff}
-.login-container .footer a {font-weight:bold;color:#0b3a58}
+.login-container .footer {height:50px;line-height:50px;text-align:center;position:fixed;_position:absolute;*position:absolute;bottom:0;width:100%;color:#fff}
+.login-container .footer a {font-weight:bold;color:#0b3a58;letter-spacing:0.5px}
 .login-container .footer a:hover {color:#fff}

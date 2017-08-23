@@ -36,6 +36,9 @@
             <input type="checkbox" name="authorize[]" value="{$authorize.id}" title="{$authorize.title}">
             {/if}
             {/foreach}
+            {if empty($authorizes)}
+            <span style="color:#999;line-height:36px">尚未配置权限</span>
+            {/if}
         </div>
     </div>
     {/if}

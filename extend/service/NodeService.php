@@ -82,20 +82,13 @@ class NodeService
 
     /**
      * 获取系统代码节点
+     * @param array $nodes
      * @return array
      */
-    public static function get()
+    public static function get($nodes = [])
     {
-        $alias = [];
-        foreach (Db::name('SystemNode')->select() as $vo) {
-            $alias["{$vo['node']}"] = $vo;
-        }
-        $nodes = [];
-        $ignore = [
-            'index',
-            'wechat/api', 'wechat/notify', 'wechat/review',
-            'admin/plugs', 'admin/login', 'admin/index',
-        ];
+        $alias = Db::name('SystemNode')->column('node,is_menu,is_auth,is_login,title');
+        $ignore = ['index', 'wechat/api', 'wechat/notify', 'wechat/review', 'admin/plugs', 'admin/login', 'admin/index'];
         foreach (self::getNodeTree(APP_PATH) as $thr) {
             foreach ($ignore as $str) {
                 if (stripos($thr, $str) === 0) {
@@ -103,11 +96,16 @@ class NodeService
                 }
             }
             $tmp = explode('/', $thr);
-            $one = $tmp[0];
-            $two = "{$tmp[0]}/{$tmp[1]}";
-            $nodes[$one] = array_merge(isset($alias[$one]) ? $alias[$one] : ['node' => $one, 'title' => '', 'is_menu' => 0, 'is_auth' => 0], ['pnode' => '']);
-            $nodes[$two] = array_merge(isset($alias[$two]) ? $alias[$two] : ['node' => $two, 'title' => '', 'is_menu' => 0, 'is_auth' => 0], ['pnode' => $one]);
-            $nodes[$thr] = array_merge(isset($alias[$thr]) ? $alias[$thr] : ['node' => $thr, 'title' => '', 'is_menu' => 0, 'is_auth' => 0], ['pnode' => $two]);
+            list($one, $two) = ["{$tmp[0]}", "{$tmp[0]}/{$tmp[1]}"];
+            $nodes[$one] = array_merge(isset($alias[$one]) ? $alias[$one] : ['node' => $one, 'title' => '', 'is_menu' => 0, 'is_auth' => 0, 'is_login' => 0], ['pnode' => '']);
+            $nodes[$two] = array_merge(isset($alias[$two]) ? $alias[$two] : ['node' => $two, 'title' => '', 'is_menu' => 0, 'is_auth' => 0, 'is_login' => 0], ['pnode' => $one]);
+            $nodes[$thr] = array_merge(isset($alias[$thr]) ? $alias[$thr] : ['node' => $thr, 'title' => '', 'is_menu' => 0, 'is_auth' => 0, 'is_login' => 0], ['pnode' => $two]);
+        }
+        foreach ($nodes as &$node) {
+            list($node['is_auth'], $node['is_menu'], $node['is_login']) = [
+                intval($node['is_auth']), intval($node['is_menu']),
+                empty($node['is_auth']) ? intval($node['is_login']) : 1
+            ];
         }
         return $nodes;
     }
@@ -150,7 +148,7 @@ class NodeService
             if ($dir[0] === '.') {
                 continue;
             }
-            if (($tmp = realpath($path . DS . $dir)) && (is_dir($tmp) || pathinfo($tmp, PATHINFO_EXTENSION) === $ext)) {
+            if (($tmp = realpath($path . DS . $dir)) && (is_dir($tmp) || pathinfo($tmp, 4) === $ext)) {
                 is_dir($tmp) ? $data = array_merge($data, self::_getFilePaths($tmp)) : $data[] = $tmp;
             }
         }

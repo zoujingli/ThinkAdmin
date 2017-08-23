@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
@@ -49,8 +50,14 @@ class Keys extends BasicAdmin
      */
     protected function _index_data_filter(&$data)
     {
-        $types = ['keys' => '关键字', 'image' => '图片', 'news' => '图文', 'music' => '音乐', 'text' => '文字', 'video' => '视频', 'voice' => '语音'];
+        $types = [
+            'keys'  => '关键字', 'image' => '图片', 'news' => '图文',
+            'music' => '音乐', 'text' => '文字', 'video' => '视频', 'voice' => '语音'
+        ];
+        $wechat = load_wechat('Extends');
         foreach ($data as &$vo) {
+            $result = $wechat->getQRCode($vo['keys'], 1);
+            $vo['qrc'] = $wechat->getQRUrl($result['ticket']);
             $vo['type'] = isset($types[$vo['type']]) ? $types[$vo['type']] : $vo['type'];
         }
     }

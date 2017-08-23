@@ -1,9 +1,20 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方文档: https://www.kancloud.cn/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+
 namespace Wechat;
 
 use Prpcrypt;
-use Wechat\Lib\Common;
 use Wechat\Lib\Tools;
 
 /**
@@ -12,31 +23,21 @@ use Wechat\Lib\Tools;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:29
  */
-class WechatReceive extends Common {
-
-    /** 消息推送地址 */
-    const CUSTOM_SEND_URL = '/message/custom/send?';
-    const MASS_SEND_URL = '/message/mass/send?';
-    const TEMPLATE_SET_INDUSTRY_URL = '/message/template/api_set_industry?';
-    const TEMPLATE_ADD_TPL_URL = '/message/template/api_add_template?';
-    const TEMPLATE_SEND_URL = '/message/template/send?';
-    const MASS_SEND_GROUP_URL = '/message/mass/sendall?';
-    const MASS_DELETE_URL = '/message/mass/delete?';
-    const MASS_PREVIEW_URL = '/message/mass/preview?';
-    const MASS_QUERY_URL = '/message/mass/get?';
+class WechatReceive extends WechatMessage
+{
 
     /** 消息回复类型 */
     const MSGTYPE_TEXT = 'text';
-    const MSGTYPE_IMAGE = 'image';
-    const MSGTYPE_LOCATION = 'location';
     const MSGTYPE_LINK = 'link';
+    const MSGTYPE_NEWS = 'news';
+    const MSGTYPE_IMAGE = 'image';
+    const MSGTYPE_VOICE = 'voice';
     const MSGTYPE_EVENT = 'event';
     const MSGTYPE_MUSIC = 'music';
-    const MSGTYPE_NEWS = 'news';
-    const MSGTYPE_VOICE = 'voice';
     const MSGTYPE_VIDEO = 'video';
+    const MSGTYPE_LOCATION = 'location';
 
-    /** 文件过滤 */
+    /** 文本过滤 */
     protected $_text_filter = true;
 
     /** 消息对象 */
@@ -46,7 +47,8 @@ class WechatReceive extends Common {
      * 获取微信服务器发来的内容
      * @return $this
      */
-    public function getRev() {
+    public function getRev()
+    {
         if ($this->_receive) {
             return $this;
         }
@@ -59,7 +61,8 @@ class WechatReceive extends Common {
      * 获取微信服务器发来的信息数据
      * @return array
      */
-    public function getRevData() {
+    public function getRevData()
+    {
         return $this->_receive;
     }
 
@@ -67,7 +70,8 @@ class WechatReceive extends Common {
      * 获取消息发送者
      * @return bool|string
      */
-    public function getRevFrom() {
+    public function getRevFrom()
+    {
         if (isset($this->_receive['FromUserName'])) {
             return $this->_receive['FromUserName'];
         }
@@ -78,7 +82,8 @@ class WechatReceive extends Common {
      * 获取消息接受者
      * @return bool|string
      */
-    public function getRevTo() {
+    public function getRevTo()
+    {
         if (isset($this->_receive['ToUserName'])) {
             return $this->_receive['ToUserName'];
         }
@@ -89,7 +94,8 @@ class WechatReceive extends Common {
      * 获取接收消息的类型
      * @return bool|string
      */
-    public function getRevType() {
+    public function getRevType()
+    {
         if (isset($this->_receive['MsgType'])) {
             return $this->_receive['MsgType'];
         }
@@ -100,7 +106,8 @@ class WechatReceive extends Common {
      * 获取消息ID
      * @return bool|string
      */
-    public function getRevID() {
+    public function getRevID()
+    {
         if (isset($this->_receive['MsgId'])) {
             return $this->_receive['MsgId'];
         }
@@ -111,7 +118,8 @@ class WechatReceive extends Common {
      * 获取消息发送时间
      * @return bool|string
      */
-    public function getRevCtime() {
+    public function getRevCtime()
+    {
         if (isset($this->_receive['CreateTime'])) {
             return $this->_receive['CreateTime'];
         }
@@ -123,7 +131,8 @@ class WechatReceive extends Common {
      * 当Event为 card_pass_check(审核通过) 或 card_not_pass_check(未通过)
      * @return bool|string  返回卡券ID
      */
-    public function getRevCardPass() {
+    public function getRevCardPass()
+    {
         if (isset($this->_receive['CardId'])) {
             return $this->_receive['CardId'];
         }
@@ -135,7 +144,8 @@ class WechatReceive extends Common {
      * 当Event为 user_get_card(用户领取卡券)
      * @return bool|array
      */
-    public function getRevCardGet() {
+    public function getRevCardGet()
+    {
         $array = array();
         if (isset($this->_receive['CardId'])) {
             $array['CardId'] = $this->_receive['CardId'];
@@ -147,38 +157,34 @@ class WechatReceive extends Common {
         if (isset($this->_receive['UserCardCode']) && !empty($this->_receive['UserCardCode'])) {
             $array['UserCardCode'] = $this->_receive['UserCardCode'];
         }
-        if (isset($array) && count($array) > 0) {
-            return $array;
-        }
-        return false;
+        return (isset($array) && count($array) > 0) ? $array : false;
     }
 
     /**
      * 获取卡券事件推送 - 删除卡券
-     * 当Event为 user_del_card(用户删除卡券)
+     * 当Event为 user_del_card (用户删除卡券)
      * @return bool|array
      */
-    public function getRevCardDel() {
+    public function getRevCardDel()
+    {
         if (isset($this->_receive['CardId'])) {  //卡券 ID
             $array['CardId'] = $this->_receive['CardId'];
         }
         if (isset($this->_receive['UserCardCode']) && !empty($this->_receive['UserCardCode'])) {
             $array['UserCardCode'] = $this->_receive['UserCardCode'];
         }
-        if (isset($array) && count($array) > 0) {
-            return $array;
-        }
-        return false;
+        return (isset($array) && count($array) > 0) ? $array : false;
     }
 
     /**
      * 获取接收消息内容正文
      * @return bool
      */
-    public function getRevContent() {
+    public function getRevContent()
+    {
         if (isset($this->_receive['Content'])) {
             return $this->_receive['Content'];
-        } else if (isset($this->_receive['Recognition'])) { //获取语音识别文字内容，需申请开通
+        } else if (isset($this->_receive['Recognition'])) {
             return $this->_receive['Recognition'];
         }
         return false;
@@ -188,11 +194,12 @@ class WechatReceive extends Common {
      * 获取接收消息图片
      * @return array|bool
      */
-    public function getRevPic() {
+    public function getRevPic()
+    {
         if (isset($this->_receive['PicUrl'])) {
             return array(
                 'mediaid' => $this->_receive['MediaId'],
-                'picurl'  => (string)$this->_receive['PicUrl'], //防止picurl为空导致解析出错
+                'picurl'  => (string)$this->_receive['PicUrl'],
             );
         }
         return false;
@@ -202,7 +209,8 @@ class WechatReceive extends Common {
      * 获取接收消息链接
      * @return bool|array
      */
-    public function getRevLink() {
+    public function getRevLink()
+    {
         if (isset($this->_receive['Url'])) {
             return array(
                 'url'         => $this->_receive['Url'],
@@ -217,7 +225,8 @@ class WechatReceive extends Common {
      * 获取接收地理位置
      * @return bool|array
      */
-    public function getRevGeo() {
+    public function getRevGeo()
+    {
         if (isset($this->_receive['Location_X'])) {
             return array(
                 'x'     => $this->_receive['Location_X'],
@@ -233,7 +242,8 @@ class WechatReceive extends Common {
      * 获取上报地理位置事件
      * @return bool|array
      */
-    public function getRevEventGeo() {
+    public function getRevEventGeo()
+    {
         if (isset($this->_receive['Latitude'])) {
             return array(
                 'x'         => $this->_receive['Latitude'],
@@ -248,28 +258,27 @@ class WechatReceive extends Common {
      * 获取接收事件推送
      * @return bool|array
      */
-    public function getRevEvent() {
+    public function getRevEvent()
+    {
         if (isset($this->_receive['Event'])) {
             $array['event'] = $this->_receive['Event'];
         }
         if (isset($this->_receive['EventKey'])) {
             $array['key'] = $this->_receive['EventKey'];
         }
-        if (isset($array) && count($array) > 0) {
-            return $array;
-        }
-        return false;
+        return (isset($array) && count($array) > 0) ? $array : false;
     }
 
     /**
      * 获取自定义菜单的扫码推事件信息
      *
      * 事件类型为以下两种时则调用此方法有效
-     * Event     事件类型，scancode_push
-     * Event     事件类型，scancode_waitmsg
+     * Event    事件类型, scancode_push
+     * Event    事件类型, scancode_waitmsg
      * @return bool|array
      */
-    public function getRevScanInfo() {
+    public function getRevScanInfo()
+    {
         if (isset($this->_receive['ScanCodeInfo'])) {
             if (!is_array($this->_receive['ScanCodeInfo'])) {
                 $array = (array)$this->_receive['ScanCodeInfo'];
@@ -278,10 +287,7 @@ class WechatReceive extends Common {
                 $array = $this->_receive['ScanCodeInfo'];
             }
         }
-        if (isset($array) && count($array) > 0) {
-            return $array;
-        }
-        return false;
+        return (isset($array) && count($array) > 0) ? $array : false;
     }
 
     /**
@@ -304,7 +310,8 @@ class WechatReceive extends Common {
      * )
      *
      */
-    public function getRevSendPicsInfo() {
+    public function getRevSendPicsInfo()
+    {
         if (isset($this->_receive['SendPicsInfo'])) {
             if (!is_array($this->_receive['SendPicsInfo'])) {
                 $array = (array)$this->_receive['SendPicsInfo'];
@@ -321,10 +328,7 @@ class WechatReceive extends Common {
                 $array = $this->_receive['SendPicsInfo'];
             }
         }
-        if (isset($array) && count($array) > 0) {
-            return $array;
-        }
-        return false;
+        return (isset($array) && count($array) > 0) ? $array : false;
     }
 
     /**
@@ -343,7 +347,8 @@ class WechatReceive extends Common {
      * )
      *
      */
-    public function getRevSendGeoInfo() {
+    public function getRevSendGeoInfo()
+    {
         if (isset($this->_receive['SendLocationInfo'])) {
             if (!is_array($this->_receive['SendLocationInfo'])) {
                 $array = (array)$this->_receive['SendLocationInfo'];
@@ -358,17 +363,15 @@ class WechatReceive extends Common {
                 $array = $this->_receive['SendLocationInfo'];
             }
         }
-        if (isset($array) && count($array) > 0) {
-            return $array;
-        }
-        return false;
+        return (isset($array) && count($array) > 0) ? $array : false;
     }
 
     /**
      * 获取接收语音推送
      * @return bool|array
      */
-    public function getRevVoice() {
+    public function getRevVoice()
+    {
         if (isset($this->_receive['MediaId'])) {
             return array(
                 'mediaid' => $this->_receive['MediaId'],
@@ -382,7 +385,8 @@ class WechatReceive extends Common {
      * 获取接收视频推送
      * @return array|bool
      */
-    public function getRevVideo() {
+    public function getRevVideo()
+    {
         if (isset($this->_receive['MediaId'])) {
             return array(
                 'mediaid'      => $this->_receive['MediaId'],
@@ -396,7 +400,8 @@ class WechatReceive extends Common {
      * 获取接收TICKET
      * @return bool|string
      */
-    public function getRevTicket() {
+    public function getRevTicket()
+    {
         if (isset($this->_receive['Ticket'])) {
             return $this->_receive['Ticket'];
         }
@@ -407,7 +412,8 @@ class WechatReceive extends Common {
      * 获取二维码的场景值
      * @return bool|string
      */
-    public function getRevSceneId() {
+    public function getRevSceneId()
+    {
         if (isset($this->_receive['EventKey'])) {
             return str_replace('qrscene_', '', $this->_receive['EventKey']);
         }
@@ -420,7 +426,8 @@ class WechatReceive extends Common {
      * 当Event为 MASSSENDJOBFINISH 或 TEMPLATESENDJOBFINISH
      * @return bool|string
      */
-    public function getRevTplMsgID() {
+    public function getRevTplMsgID()
+    {
         if (isset($this->_receive['MsgID'])) {
             return $this->_receive['MsgID'];
         }
@@ -431,7 +438,8 @@ class WechatReceive extends Common {
      * 获取模板消息发送状态
      * @return bool|string
      */
-    public function getRevStatus() {
+    public function getRevStatus()
+    {
         if (isset($this->_receive['Status'])) {
             return $this->_receive['Status'];
         }
@@ -443,7 +451,8 @@ class WechatReceive extends Common {
      * 当Event为 MASSSENDJOBFINISH 或 TEMPLATESENDJOBFINISH，即高级群发/模板消息
      * @return bool|array
      */
-    public function getRevResult() {
+    public function getRevResult()
+    {
         if (isset($this->_receive['Status'])) { //发送是否成功，具体的返回值请参考 高级群发/模板消息 的事件推送说明
             $array['Status'] = $this->_receive['Status'];
         }
@@ -474,7 +483,8 @@ class WechatReceive extends Common {
      * 当Event为 kfcreatesession 即接入会话
      * @return bool|string
      */
-    public function getRevKFCreate() {
+    public function getRevKFCreate()
+    {
         if (isset($this->_receive['KfAccount'])) {
             return $this->_receive['KfAccount'];
         }
@@ -486,7 +496,8 @@ class WechatReceive extends Common {
      * 当Event为 kfclosesession 即关闭会话
      * @return bool|string
      */
-    public function getRevKFClose() {
+    public function getRevKFClose()
+    {
         if (isset($this->_receive['KfAccount'])) {
             return $this->_receive['KfAccount'];
         }
@@ -498,17 +509,15 @@ class WechatReceive extends Common {
      * 当Event为 kfswitchsession 即转接会话
      * @return bool|array
      */
-    public function getRevKFSwitch() {
+    public function getRevKFSwitch()
+    {
         if (isset($this->_receive['FromKfAccount'])) {  //原接入客服
             $array['FromKfAccount'] = $this->_receive['FromKfAccount'];
         }
         if (isset($this->_receive['ToKfAccount'])) { //转接到客服
             $array['ToKfAccount'] = $this->_receive['ToKfAccount'];
         }
-        if (isset($array) && count($array) > 0) {
-            return $array;
-        }
-        return false;
+        return (isset($array) && count($array) > 0) ? $array : false;
     }
 
     /**
@@ -516,109 +525,12 @@ class WechatReceive extends Common {
      * @param array $data 消息结构{"touser":"OPENID","msgtype":"news","news":{...}}
      * @return bool|array
      */
-    public function sendCustomMessage($data) {
+    public function sendCustomMessage($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::CUSTOM_SEND_URL . "access_token={$this->access_token}", Tools::json_encode($data));
-        if ($result) {
-            $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
-            }
-            return $json;
-        }
-        return false;
-    }
-
-    /**
-     * 模板消息 设置所属行业
-     * @param string $id1 公众号模板消息所属行业编号，参看官方开发文档 行业代码
-     * @param string $id2 同$id1。但如果只有一个行业，此参数可省略
-     * @return bool|mixed
-     */
-    public function setTMIndustry($id1, $id2 = '') {
-        if ($id1) {
-            $data['industry_id1'] = $id1;
-        }
-        if ($id2) {
-            $data['industry_id2'] = $id2;
-        }
-        if (!$this->access_token && !$this->getAccessToken()) {
-            return false;
-        }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::TEMPLATE_SET_INDUSTRY_URL . "access_token={$this->access_token}", Tools::json_encode($data));
-        if ($result) {
-            $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
-            }
-            return $json;
-        }
-        return false;
-    }
-
-    /**
-     * 模板消息 添加消息模板
-     * 成功返回消息模板的调用id
-     * @param string $tpl_id 模板库中模板的编号，有“TM**”和“OPENTMTM**”等形式
-     * @return bool|string
-     */
-    public function addTemplateMessage($tpl_id) {
-        $data = array('template_id_short' => $tpl_id);
-        if (!$this->access_token && !$this->getAccessToken())
-            return false;
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::TEMPLATE_ADD_TPL_URL . "access_token={$this->access_token}", Tools::json_encode($data));
-        if ($result) {
-            $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
-            }
-            return $json['template_id'];
-        }
-        return false;
-    }
-
-    /**
-     * 发送模板消息
-     * @param array $data 消息结构
-     * {
-     *      "touser":"OPENID",
-     *       "template_id":"ngqIpbwh8bUfcSsECmogfXcV14J0tQlEpBO27izEYtY",
-     *       "url":"http://weixin.qq.com/download",
-     *       "topcolor":"#FF0000",
-     *       "data":{
-     *           "参数名1": {
-     *           "value":"参数",
-     *           "color":"#173177"     //参数颜色
-     *       },
-     *       "Date":{
-     *           "value":"06月07日 19时24分",
-     *           "color":"#173177"
-     *       },
-     *       "CardNumber":{
-     *           "value":"0426",
-     *           "color":"#173177"
-     *      },
-     *      "Type":{
-     *          "value":"消费",
-     *          "color":"#173177"
-     *       }
-     *   }
-     * }
-     * @return bool|array
-     */
-    public function sendTemplateMessage($data) {
-        if (!$this->access_token && !$this->getAccessToken()) {
-            return false;
-        }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::TEMPLATE_SEND_URL . "access_token={$this->access_token}", Tools::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . "/message/custom/send?access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -636,7 +548,8 @@ class WechatReceive extends Common {
      * @param string $customer_account
      * @return $this
      */
-    public function transfer_customer_service($customer_account = '') {
+    public function transfer_customer_service($customer_account = '')
+    {
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -651,160 +564,13 @@ class WechatReceive extends Common {
     }
 
     /**
-     * 高级群发消息, 根据OpenID列表群发图文消息(订阅号不可用)
-     *       注意：视频需要在调用uploadMedia()方法后，再使用 uploadMpVideo() 方法生成，
-     *           然后获得的 mediaid 才能用于群发，且消息类型为 mpvideo 类型。
-     * @param array $data 消息结构
-     * {
-     *     "touser"=>array(
-     *         "OPENID1",
-     *         "OPENID2"
-     *     ),
-     *      "msgtype"=>"mpvideo",
-     *      // 在下面5种类型中选择对应的参数内容
-     *      // mpnews | voice | image | mpvideo => array( "media_id"=>"MediaId")
-     *      // text => array ( "content" => "hello")
-     * }
-     * @return bool|array
-     */
-    public function sendMassMessage($data) {
-        if (!$this->access_token && !$this->getAccessToken()) {
-            return false;
-        }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_SEND_URL . "access_token={$this->access_token}", Tools::json_encode($data));
-        if ($result) {
-            $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
-            }
-            return $json;
-        }
-        return false;
-    }
-
-    /**
-     * 高级群发消息, 根据群组id群发图文消息(认证后的订阅号可用)
-     *       注意：视频需要在调用uploadMedia()方法后，再使用 uploadMpVideo() 方法生成，
-     *           然后获得的 mediaid 才能用于群发，且消息类型为 mpvideo 类型。
-     * @param array $data 消息结构
-     * {
-     *     "filter"=>array(
-     *         "is_to_all"=>False,     //是否群发给所有用户.True不用分组id，False需填写分组id
-     *         "group_id"=>"2"     //群发的分组id
-     *     ),
-     *      "msgtype"=>"mpvideo",
-     *      // 在下面5种类型中选择对应的参数内容
-     *      // mpnews | voice | image | mpvideo => array( "media_id"=>"MediaId")
-     *      // text => array ( "content" => "hello")
-     * }
-     * @return bool|array
-     */
-    public function sendGroupMassMessage($data) {
-        if (!$this->access_token && !$this->getAccessToken()) {
-            return false;
-        }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_SEND_GROUP_URL . "access_token={$this->access_token}", Tools::json_encode($data));
-        if ($result) {
-            $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
-            }
-            return $json;
-        }
-        return false;
-    }
-
-    /**
-     *  高级群发消息, 删除群发图文消息(认证后的订阅号可用)
-     * @param string $msg_id 消息ID
-     * @return bool
-     */
-    public function deleteMassMessage($msg_id) {
-        if (!$this->access_token && !$this->getAccessToken()) {
-            return false;
-        }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_DELETE_URL . "access_token={$this->access_token}", Tools::json_encode(array('msg_id' => $msg_id)));
-        if ($result) {
-            $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 高级群发消息, 预览群发消息(认证后的订阅号可用)
-     *     注意：视频需要在调用uploadMedia()方法后，再使用 uploadMpVideo() 方法生成，
-     *           然后获得的 mediaid 才能用于群发，且消息类型为 mpvideo 类型。
-     * @param type $data
-     * @消息结构
-     * {
-     *     "touser"=>"OPENID",
-     *      "msgtype"=>"mpvideo",
-     *      // 在下面5种类型中选择对应的参数内容
-     *      // mpnews | voice | image | mpvideo => array( "media_id"=>"MediaId")
-     *      // text => array ( "content" => "hello")
-     * }
-     * @return bool|array
-     */
-    public function previewMassMessage($data) {
-        if (!$this->access_token && !$this->getAccessToken()) {
-            return false;
-        }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_PREVIEW_URL . "access_token={$this->access_token}", Tools::json_encode($data));
-        if ($result) {
-            $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
-            }
-            return $json;
-        }
-        return false;
-    }
-
-    /**
-     * 高级群发消息, 查询群发消息发送状态(认证后的订阅号可用)
-     * @param string $msg_id 消息ID
-     * @return bool|array
-     * {
-     *     "msg_id":201053012,     //群发消息后返回的消息id
-     *     "msg_status":"SEND_SUCCESS" //消息发送后的状态，SENDING表示正在发送 SEND_SUCCESS表示发送成功
-     * }
-     */
-    public function queryMassMessage($msg_id) {
-        if (!$this->access_token && !$this->getAccessToken()) {
-            return false;
-        }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_QUERY_URL . "access_token={$this->access_token}", Tools::json_encode(array('msg_id' => $msg_id)));
-        if ($result) {
-            $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
-            }
-            return $json;
-        }
-        return false;
-    }
-
-    /**
      * 设置发送消息
      * @param string|array $msg 消息数组
      * @param bool $append 是否在原消息数组追加
      * @return array
      */
-    public function Message($msg = '', $append = false) {
+    public function Message($msg = '', $append = false)
+    {
         if (is_null($msg)) {
             $this->_msg = array();
         } elseif (is_array($msg)) {
@@ -823,7 +589,8 @@ class WechatReceive extends Common {
      * @param string $text 文本内容
      * @return $this
      */
-    public function text($text = '') {
+    public function text($text = '')
+    {
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -840,7 +607,8 @@ class WechatReceive extends Common {
      * @param string $mediaid 图片媒体ID
      * @return $this
      */
-    public function image($mediaid = '') {
+    public function image($mediaid = '')
+    {
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -857,7 +625,8 @@ class WechatReceive extends Common {
      * @param string $mediaid 语音媒体ID
      * @return $this
      */
-    public function voice($mediaid = '') {
+    public function voice($mediaid = '')
+    {
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -876,7 +645,8 @@ class WechatReceive extends Common {
      * @param string $description 视频描述
      * @return $this
      */
-    public function video($mediaid = '', $title = '', $description = '') {
+    public function video($mediaid = '', $title = '', $description = '')
+    {
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -901,7 +671,8 @@ class WechatReceive extends Common {
      * @param string $thumbmediaid 音乐图片缩略图的媒体id（可选）
      * @return $this
      */
-    public function music($title, $desc, $musicurl, $hgmusicurl = '', $thumbmediaid = '') {
+    public function music($title, $desc, $musicurl, $hgmusicurl = '', $thumbmediaid = '')
+    {
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -926,7 +697,8 @@ class WechatReceive extends Common {
      * @param array $newsData
      * @return $this
      */
-    public function news($newsData = array()) {
+    public function news($newsData = array())
+    {
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -945,7 +717,8 @@ class WechatReceive extends Common {
      * @param bool $return 是否返回信息而不抛出到浏览器（默认:否）
      * @return bool|string
      */
-    public function reply($msg = array(), $return = false) {
+    public function reply($msg = array(), $return = false)
+    {
         if (empty($msg)) {
             if (empty($this->_msg)) {   //防止不先设置回复内容，直接调用reply方法导致异常
                 return false;
@@ -954,7 +727,7 @@ class WechatReceive extends Common {
         }
         $xmldata = Tools::arr2xml($msg);
         if ($this->encrypt_type == 'aes') { //如果来源消息为加密方式
-            !class_exists('Prpcrypt', FALSE) && require __DIR__ . '/Lib/Prpcrypt.php';
+            !class_exists('Prpcrypt', false) && require __DIR__ . '/Lib/Prpcrypt.php';
             $pc = new Prpcrypt($this->encodingAesKey);
             // 如果是第三方平台，加密得使用 component_appid
             $array = $pc->encrypt($xmldata, empty($this->config['component_appid']) ? $this->appid : $this->config['component_appid']);
@@ -966,7 +739,7 @@ class WechatReceive extends Common {
             $timestamp = time();
             $nonce = rand(77, 999) * rand(605, 888) * rand(11, 99);
             $encrypt = $array[1];
-            $tmpArr = array($this->token, $timestamp, $nonce, $encrypt); //比普通公众平台多了一个加密的密文
+            $tmpArr = array($this->token, $timestamp, $nonce, $encrypt);
             sort($tmpArr, SORT_STRING);
             $signature = sha1(implode($tmpArr));
             $format = "<xml><Encrypt><![CDATA[%s]]></Encrypt><MsgSignature><![CDATA[%s]]></MsgSignature><TimeStamp>%s</TimeStamp><Nonce><![CDATA[%s]]></Nonce></xml>";
@@ -983,7 +756,8 @@ class WechatReceive extends Common {
      * @param string $text
      * @return string
      */
-    private function _auto_text_filter($text) {
+    private function _auto_text_filter($text)
+    {
         if (!$this->_text_filter) {
             return $text;
         }

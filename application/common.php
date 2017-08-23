@@ -14,6 +14,7 @@
 
 
 use service\DataService;
+use service\FileService;
 use service\NodeService;
 use Wechat\Loader;
 use think\Db;
@@ -64,12 +65,11 @@ function & load_wechat($type = '')
  */
 function encode($string)
 {
-    $chars = '';
-    $len = strlen($string = iconv('utf-8', 'gbk', $string));
-    for ($i = 0; $i < $len; $i++) {
+    list($chars, $length) = ['', strlen($string = iconv('utf-8', 'gbk', $string))];
+    for ($i = 0; $i < $length; $i++) {
         $chars .= str_pad(base_convert(ord($string[$i]), 10, 36), 2, 0, 0);
     }
-    return strtoupper($chars);
+    return $chars;
 }
 
 /**
@@ -87,13 +87,16 @@ function decode($string)
 }
 
 /**
- * RBAC节点权限验证
- * @param string $node
- * @return bool
+ * 本地化网络图片
+ * @param string $url
+ * @return string
  */
-function auth($node)
+function local_image($url)
 {
-    return NodeService::checkAuthNode($node);
+    if (is_array(($result = FileService::download($url)))) {
+        return $result['url'];
+    }
+    return $url;
 }
 
 /**
@@ -106,16 +109,23 @@ function sysconf($name, $value = false)
 {
     static $config = [];
     if ($value !== false) {
-        $config = [];
-        $data = ['name' => $name, 'value' => $value];
+        list($config, $data) = [[], ['name' => $name, 'value' => $value]];
         return DataService::save('SystemConfig', $data, 'name');
     }
     if (empty($config)) {
-        foreach (Db::name('SystemConfig')->select() as $vo) {
-            $config[$vo['name']] = $vo['value'];
-        }
+        $config = Db::name('SystemConfig')->column('name,value');
     }
     return isset($config[$name]) ? $config[$name] : '';
+}
+
+/**
+ * RBAC节点权限验证
+ * @param string $node
+ * @return bool
+ */
+function auth($node)
+{
+    return NodeService::checkAuthNode($node);
 }
 
 /**

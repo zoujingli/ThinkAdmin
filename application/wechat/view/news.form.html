@@ -15,7 +15,7 @@
         <hr/>
         {/foreach}
         {else}
-        <div class="news-item transition active news-image" style="background-image:url('__PUBLIC__/static/plugs/uploader/theme/image.png')">
+        <div class="news-item transition active news-image" style="background-image:url('__STATIC__/plugs/uploader/theme/image.png')">
             <a class="upload-multiple-close fa fa-close hide"></a>
             <span class="news-title"></span>
         </div>
@@ -58,7 +58,7 @@
                         <div class="row nowrap">
                             <div class="col-xs-3" style="width:160px">
                                 <div class="upload-image-box transition">
-                                    <input value="__PUBLIC__/static/plugs/uploader/theme/image.png" type="hidden" name="local_url">
+                                    <input value="__STATIC__/plugs/uploader/theme/image.png" type="hidden" name="local_url">
                                 </div>
                             </div>
                             <div class="col-xs-6">
@@ -126,134 +126,134 @@
             $(this).parent('.upload-image-box').css('background-image', 'url(' + this.value + ')');
         });
 
-        require(['ueditor'], function () {
+        
 
-            /*! 实例富文本编辑器  */
-            var editor, $item;
+		/*! 实例富文本编辑器  */
+		var editor, $item;
 
-            /*! 默认编辑第一篇图文 */
-            editor = window.createEditor('[name="content"]', 'basic');
+		/*! 默认编辑第一篇图文 */
+		editor = window.createEditor('[name="content"]');
 
-            /*! 编辑器初始化成功 */
-            editor.ready(function () {
 
-                var $form = $('form[name="news"]'), $body = $('body');
 
-                $form.validate();
+		var $form = $('form[name="news"]'), $body = $('body');
 
-                /*! 数据提交 */
-                $form.find('button[data-submit]').on('click', function () {
-                    var data = [];
-                    $form.submit();
-                    if (!syncEditor($('.news-item.active'))) {
-                        editor.setContent('文章内容不能留空，请输入内容！');
-                        return false;
-                    }
-                    $('.news-item').map(function () {
-                        var item = $(this).data('item');
-                        item.content = item.content || '文章内容不能留空，请输入内容！';
-                        data.push(item);
-                    });
-                    $.form.load('__SELF__', {data: data}, "post");
-                });
+		$form.validate();
 
-                /*! 输入标题显示 */
-                $form.find('[name="title"]').on('keyup', function () {
-                    if ($item) {
-                        $item.find('.news-title').html(this.value).show();
-                    }
-                });
+		/*! 数据提交 */
+		$form.find('button[data-submit]').on('click', function () {
+			var data = [];
+			$form.submit();
+			if (!syncEditor($('.news-item.active'))) {
+				editor.setData('文章内容不能留空，请输入内容！');
+				return false;
+			}
+			$('.news-item').map(function () {
+				var item = $(this).data('item');
+				item.content = item.content || '文章内容不能留空，请输入内容！';
+				data.push(item);
+			});
+			$.form.load('__SELF__', {data: data}, "post");
+		});
 
-                /*! 同步编辑器 */
-                function syncEditor($pItem) {
-                    // 处理上一个编辑器
-                    if ($form && $pItem && $pItem.size() > 0) {
-                        var data = {};
-                        data.id = $form.find('[name=id]').val();
-                        data.title = $form.find('[name=title]').val();
-                        data.local_url = $form.find('[name=local_url]').val();
-                        data.content = editor.getContent() || '';
-                        data.author = $form.find('[name=author]').val();
-                        data.digest = $form.find('[name=digest]').val();
-                        data.show_cover_pic = $form.find('[name="show_cover_pic"]').get(0).checked ? 1 : 0;
-                        $form.find('[name=local_url]').trigger('change');
-                        $pItem.data('item', data), $form.submit();
-                        if ($form.find('input.validate-error').size() > 0 || data.content.length < 1) {
-                            ((data.content || '').length < 1) && editor.setContent('文章内容不能留空，请输入内容！');
-                            $pItem.addClass('active').siblings().removeClass('active');
-                            return false;
-                        }
-                    }
-                    return true;
-                }
+		/*! 输入标题显示 */
+		$form.find('[name="title"]').on('keyup', function () {
+			if ($item) {
+				$item.find('.news-title').html(this.value).show();
+			}
+		});
 
-                /*! 显示编辑器 */
-                function showEditor() {
-                    // 读取对象数据
-                    $item = $('.news-item.active');
-                    this.get = function () {
-                        var data = $item.data('item') || {};
-                        data.id = data.id || 0;
-                        data.title = data.title || '';
-                        data.local_url = data.local_url || '__PUBLIC__/static/plugs/uploader/theme/image.png';
-                        data.content = data.content || '';
-                        data.author = data.author || '';
-                        data.digest = data.digest || '';
-                        data.show_cover_pic = data.show_cover_pic || 0;
-                        return data;
-                    };
-                    // 重置表单
-                    $form.get(0).reset();
-                    // 获取当前数据
-                    var data = this.get();
-                    for (var i in data) {
-                        if (i !== 'content' && i !== 'show_cover_pic') {
-                            $form.find('[name="' + i + '"]').val(data[i]).trigger('change');
-                        }
-                    }
-                    if (parseInt(data.show_cover_pic) === 1) {
-                        $form.find('[name="show_cover_pic"]').get(0).checked = true;
-                    }
-                    editor.setContent(data.content);
-                }
+		/*! 同步编辑器 */
+		function syncEditor($pItem) {
+			// 处理上一个编辑器
+			if ($form && $pItem && $pItem.size() > 0) {
+				var data = {};
+				data.id = $form.find('[name=id]').val();
+				data.title = $form.find('[name=title]').val();
+				data.local_url = $form.find('[name=local_url]').val();
+				data.content = editor.getData() || '';
+				data.author = $form.find('[name=author]').val();
+				data.digest = $form.find('[name=digest]').val();
+				data.show_cover_pic = $form.find('[name="show_cover_pic"]').get(0).checked ? 1 : 0;
+				data.content_source_url = $form.find('[name="content_source_url"]').val();
+				$form.find('[name=local_url]').trigger('change');
+				$pItem.data('item', data), $form.submit();
+				if ($form.find('input.validate-error').size() > 0 || data.content.length < 1) {
+					((data.content || '').length < 1) && editor.setData('文章内容不能留空，请输入内容！');
+					$pItem.addClass('active').siblings().removeClass('active');
+					return false;
+				}
+			}
+			return true;
+		}
 
-                /*! 添加新图文 */
-                $body.off('click', '.news-box .article-add').on('click', '.news-box .article-add', function () {
-                    var $html = $('<div class="news-item transition" style="background-image:url(__PUBLIC__/static/plugs/uploader/theme/image.png)"><a class="upload-multiple-close fa fa-close hide"></a><span class="news-title"></span></div><hr />');
-                    $html.insertBefore(this).trigger('click');
-                    $('.news-item').size() >= 7 && $(this).hide();
-                });
+		/*! 显示编辑器 */
+		function showEditor() {
+			// 读取对象数据
+			$item = $('.news-item.active');
+			this.get = function () {
+				var data = $item.data('item') || {};
+				data.id = data.id || 0;
+				data.title = data.title || '';
+				data.local_url = data.local_url || '__STATIC__/plugs/uploader/theme/image.png';
+				data.content = data.content || '';
+				data.author = data.author || '';
+				data.digest = data.digest || '';
+				data.content_source_url = data.content_source_url||'';
+				data.show_cover_pic = data.show_cover_pic || 0;
+				return data;
+			};
+			// 重置表单
+			$form.get(0).reset();
+			// 获取当前数据
+			var data = this.get();
+			for (var i in data) {
+				if (i !== 'content' && i !== 'show_cover_pic') {
+					$form.find('[name="' + i + '"]').val(data[i]).trigger('change');
+				}
+			}
+			if (parseInt(data.show_cover_pic) === 1) {
+				$form.find('[name="show_cover_pic"]').get(0).checked = true;
+			}
+			editor.setData(data.content);
+		}
 
-                /*! 列表选择 */
-                $body.off('click', '.news-item').on('click', '.news-item', function () {
-                    if (syncEditor($('.news-item.active'))) {
-                        $(this).addClass('active').siblings().removeClass('active');
-                        showEditor($item);
-                    }
-                });
+		/*! 添加新图文 */
+		$body.off('click', '.news-box .article-add').on('click', '.news-box .article-add', function () {
+			var $html = $('<div class="news-item transition" style="background-image:url(__STATIC__/plugs/uploader/theme/image.png)"><a class="upload-multiple-close fa fa-close hide"></a><span class="news-title"></span></div><hr />');
+			$html.insertBefore(this).trigger('click');
+			$('.news-item').size() >= 7 && $(this).hide();
+		});
 
-                /*! 隐藏删除按钮 */
-                $body.off('mouseleave').on('mouseleave', '.news-item', function () {
-                    $(this).find('.upload-multiple-close').addClass('hide');
-                });
+		/*! 列表选择 */
+		$body.off('click', '.news-item').on('click', '.news-item', function () {
+			if (syncEditor($('.news-item.active'))) {
+				$(this).addClass('active').siblings().removeClass('active');
+				showEditor($item);
+			}
+		});
 
-                /*! 显示删除按钮 */
-                $body.off('mouseenter', '.news-item').on('mouseenter', '.news-item', function () {
-                    $('.upload-multiple-close').addClass('hide');
-                    $(this).find('.upload-multiple-close').removeClass('hide');
-                });
+		/*! 隐藏删除按钮 */
+		$body.off('mouseleave').on('mouseleave', '.news-item', function () {
+			$(this).find('.upload-multiple-close').addClass('hide');
+		});
 
-                /*! 删除操作图文 */
-                $body.off('click', '.upload-multiple-close').on('click', '.upload-multiple-close', function () {
-                    var $box = $(this).parents('.news-item');
-                    $box.add($box.next('hr')).remove();
-                    $('.news-item').size() < 7 && $('.news-box .article-add').show();
-                });
+		/*! 显示删除按钮 */
+		$body.off('mouseenter', '.news-item').on('mouseenter', '.news-item', function () {
+			$('.upload-multiple-close').addClass('hide');
+			$(this).find('.upload-multiple-close').removeClass('hide');
+		});
 
-                /*! 默认显示第一个 */
-                $('.news-box .news-item:first').trigger('click');
-            });
-        });
+		/*! 删除操作图文 */
+		$body.off('click', '.upload-multiple-close').on('click', '.upload-multiple-close', function () {
+			var $box = $(this).parents('.news-item');
+			$box.add($box.next('hr')).remove();
+			$('.news-item').size() < 7 && $('.news-box .article-add').show();
+		});
+
+		/*! 默认显示第一个 */
+		$('.news-box .news-item:first').trigger('click');
+   
     });
 </script>
 {/block}
@@ -262,7 +262,7 @@
 <style>
     .panel{border-radius:0}
     .news-left {left:20px;width:300px;position:absolute;}
-    .news-right {position:absolute;left:335px;right:20px;}
+    .news-right {position:absolute;left:330px;right:20px;}
     .news-left .news-item {position:relative;width:280px;height:150px;max-width:270px;overflow:hidden;border:1px solid #ccc;background-size:cover;background-position:center center;}
     .news-left .news-item.active {border:1px solid #44b549 !important;}
     .news-left .article-add {font-size:22px;text-align:center;display:block;color:#999;}
@@ -272,8 +272,7 @@
     .news-right .layui-input:hover, .news-right .layui-input:focus{border-color:#e5e6e7!important;}
     .news-right .input-group-addon{background:#fff;border-radius:0;border-color:#e5e6e7;}
     .news-right .upload-image-box{width:130px;height:90px;background-size:cover;background-position:center center;border:1px solid rgba(125,125,125,0.1);margin:5px}
-    .news-item .upload-multiple-close{width:30px;height:30px;line-height:30px;text-align:center;background-color:rgba(0,0,0,.5);color:#fff;float:right;}
+    .news-item .upload-multiple-close{width:30px;height:30px;line-height:30px;text-align:center;background-color:rgba(0,0,0,.5);color:#fff;float:right;margin-right:-1px;margin-top:-1px}
     .news-item .upload-multiple-close:hover{text-decoration:none}
-    .edui-default .edui-editor{border-radius:0!important}
 </style>
 {/block}

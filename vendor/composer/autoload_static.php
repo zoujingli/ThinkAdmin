@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3690105f7719931c5f8f2ffabcf1c6ab
+class ComposerStaticInitcec999826fe83b0c9b320b555c760b92
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -200,6 +200,7 @@ class ComposerStaticInit3690105f7719931c5f8f2ffabcf1c6ab
         'Wechat\\WechatHardware' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatHardware.php',
         'Wechat\\WechatMedia' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatMedia.php',
         'Wechat\\WechatMenu' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatMenu.php',
+        'Wechat\\WechatMessage' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatMessage.php',
         'Wechat\\WechatOauth' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatOauth.php',
         'Wechat\\WechatPay' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatPay.php',
         'Wechat\\WechatPoi' => __DIR__ . '/..' . '/zoujingli/wechat-php-sdk/Wechat/WechatPoi.php',
@@ -383,9 +384,9 @@ class ComposerStaticInit3690105f7719931c5f8f2ffabcf1c6ab
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3690105f7719931c5f8f2ffabcf1c6ab::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3690105f7719931c5f8f2ffabcf1c6ab::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit3690105f7719931c5f8f2ffabcf1c6ab::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitcec999826fe83b0c9b320b555c760b92::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitcec999826fe83b0c9b320b555c760b92::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitcec999826fe83b0c9b320b555c760b92::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -1,5 +1,17 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方文档: https://www.kancloud.cn/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+
 namespace Wechat\Lib;
 
 use Prpcrypt;
@@ -13,7 +25,8 @@ use Wechat\Loader;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/05/28 11:55
  */
-class Common {
+class Common
+{
 
     /** API接口URL需要使用此前缀 */
     const API_BASE_URL_PREFIX = 'https://api.weixin.qq.com';
@@ -31,13 +44,14 @@ class Common {
     public $errCode = 0;
     public $errMsg = "";
     public $config = array();
-    private $_retry = FALSE;
+    private $_retry = false;
 
     /**
      * 构造方法
      * @param array $options
      */
-    public function __construct($options = array()) {
+    public function __construct($options = array())
+    {
         $config = Loader::config($options);
         $this->token = isset($config['token']) ? $config['token'] : '';
         $this->appid = isset($config['appid']) ? $config['appid'] : '';
@@ -47,10 +61,48 @@ class Common {
     }
 
     /**
+     * 当前当前错误代码
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->errCode;
+    }
+
+    /**
+     * 获取当前错误内容
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->errMsg;
+    }
+
+    /**
+     * 获取当前操作公众号APPID
+     * @return string
+     */
+    public function getAppid()
+    {
+        return $this->appid;
+    }
+
+    /**
+     * 获取SDK配置参数
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+
+    /**
      * 接口验证
      * @return bool
      */
-    public function valid() {
+    public function valid()
+    {
         $encryptStr = "";
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $postStr = file_get_contents("php://input");
@@ -58,7 +110,7 @@ class Common {
             $this->encrypt_type = isset($_GET["encrypt_type"]) ? $_GET["encrypt_type"] : '';
             if ($this->encrypt_type == 'aes') {
                 $encryptStr = $array['Encrypt'];
-                !class_exists('Prpcrypt', FALSE) && require __DIR__ . '/Prpcrypt.php';
+                !class_exists('Prpcrypt', false) && require __DIR__ . '/Prpcrypt.php';
                 $pc = new Prpcrypt($this->encodingAesKey);
                 $array = $pc->decrypt($encryptStr, $this->appid);
                 if (!isset($array[0]) || intval($array[0]) > 0) {
@@ -75,9 +127,8 @@ class Common {
         } elseif (isset($_GET["echostr"])) {
             if ($this->checkSignature()) {
                 exit($_GET["echostr"]);
-            } else {
-                return false;
             }
+            return false;
         }
         if (!$this->checkSignature($encryptStr)) {
             $this->errMsg = 'Interface authentication failed, please use the correct method to call.';
@@ -91,8 +142,8 @@ class Common {
      * @param string $str
      * @return bool
      */
-    private function checkSignature($str = '') {
-        // 如果存在加密验证则用加密验证段
+    private function checkSignature($str = '')
+    {
         $signature = isset($_GET["msg_signature"]) ? $_GET["msg_signature"] : (isset($_GET["signature"]) ? $_GET["signature"] : '');
         $timestamp = isset($_GET["timestamp"]) ? $_GET["timestamp"] : '';
         $nonce = isset($_GET["nonce"]) ? $_GET["nonce"] : '';
@@ -100,9 +151,8 @@ class Common {
         sort($tmpArr, SORT_STRING);
         if (sha1(implode($tmpArr)) == $signature) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -112,7 +162,8 @@ class Common {
      * @param string $token 手动指定access_token，非必要情况不建议用
      * @return bool|string
      */
-    public function getAccessToken($appid = '', $appsecret = '', $token = '') {
+    public function getAccessToken($appid = '', $appsecret = '', $token = '')
+    {
         if (!$appid || !$appsecret) {
             $appid = $this->appid;
             $appsecret = $this->appsecret;
@@ -151,7 +202,8 @@ class Common {
      * @param array $arguments SDK方法参数
      * @return bool|mixed
      */
-    protected function checkRetry($method, $arguments = array()) {
+    protected function checkRetry($method, $arguments = array())
+    {
         if (!$this->_retry && in_array($this->errCode, array('40014', '40001', '41001', '42001'))) {
             Tools::log("Run {$method} Faild. {$this->errMsg}[{$this->errCode}]", 'ERR');
             ($this->_retry = true) && $this->resetAuth();
@@ -168,7 +220,8 @@ class Common {
      * @param string $appid 如在类初始化时已提供，则可为空
      * @return bool
      */
-    public function resetAuth($appid = '') {
+    public function resetAuth($appid = '')
+    {
         $authname = 'wechat_access_token_' . (empty($appid) ? $this->appid : $appid);
         Tools::log("Reset Auth And Remove Old AccessToken.");
         $this->access_token = '';

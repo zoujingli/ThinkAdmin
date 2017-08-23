@@ -39,12 +39,11 @@ class FilterView
     public function run(&$params)
     {
         $this->request = Request::instance();
-        $appRoot = $this->request->root(true);
-        $replace = [
-            '__APP__'    => $appRoot,
-            '__SELF__'   => $this->request->url(true),
-            '__PUBLIC__' => strpos($appRoot, EXT) ? ltrim(dirname($appRoot), DS) : $appRoot,
-        ];
+        list($appRoot, $uriSelf) = [$this->request->root(true), $this->request->url(true)];
+        $uriRoot = strpos($appRoot, EXT) ? ltrim(dirname($appRoot), DS) : $appRoot;
+        $uriStatic = (Request::instance()->isSsl() ? 'https' : 'http') . "://plugs.ctolog.com";
+        $uriStatic = "{$uriRoot}/static";
+        $replace = ['__APP__' => $appRoot, '__SELF__' => $uriSelf, '__PUBLIC__' => $uriRoot, '__STATIC__' => $uriStatic];
         $params = str_replace(array_keys($replace), array_values($replace), $params);
         !IS_CLI && $this->baidu($params);
     }

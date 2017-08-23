@@ -1,12 +1,12 @@
 <div class="ibox">
     {block name="style"}{/block}
     {if isset($title)}
-    <div class="ibox-title">
+    <div class="ibox-title notselect">
         <h5>{$title}</h5>
         {block name="button"}{/block}
     </div>
     {/if}
-    <div class="ibox-content fadeInUp animated">
+    <div class="ibox-content">
         {if isset($alert)}
         <div class="alert alert-{$alert.type} alert-dismissible" role="alert" style="border-radius:0">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

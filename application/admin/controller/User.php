@@ -39,19 +39,14 @@ class User extends BasicAdmin
      */
     public function index()
     {
-        // 设置页面标题
         $this->title = '系统用户管理';
-        // 获取到所有GET参数
         $get = $this->request->get();
-        // 实例Query对象
-        $db = Db::name($this->table)->where('is_deleted', '0');
-        // 应用搜索条件
+        $db = Db::name($this->table)->where(['is_deleted' => '0']);
         foreach (['username', 'phone'] as $key) {
             if (isset($get[$key]) && $get[$key] !== '') {
                 $db->where($key, 'like', "%{$get[$key]}%");
             }
         }
-        // 实例化并显示
         return parent::_list($db);
     }
 
@@ -111,7 +106,7 @@ class User extends BasicAdmin
             }
             if (isset($data['id'])) {
                 unset($data['username']);
-            } elseif (Db::name($this->table)->where('username', $data['username'])->find()) {
+            } elseif (Db::name($this->table)->where(['username' => $data['username']])->find()) {
                 $this->error('用户账号已经存在，请使用其它账号！');
             }
         } else {

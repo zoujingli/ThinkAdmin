@@ -40,6 +40,9 @@ class Review extends Controller
         // 文章预览
         if ($type === 'article' && is_numeric($content) && !empty($content)) {
             $article = Db::name('WechatNewsArticle')->where('id', $content)->find();
+            if (!empty($article['content_source_url'])) {
+                $this->redirect($article['content_source_url']);
+            }
             $this->assign('vo', $article);
         }
         $this->assign($get);

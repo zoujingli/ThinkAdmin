@@ -38,31 +38,44 @@ class Index extends BasicAdmin
     public function index()
     {
         NodeService::applyAuthNode();
-        $list = Db::name('SystemMenu')->where('status', '1')->order('sort asc,id asc')->select();
-        $menus = $this->_filterMenu(ToolsService::arr2tree($list));
+        $list = (array) Db::name('SystemMenu')->where(['status' => '1'])->order('sort asc,id asc')->select();
+        $menus = $this->_filterMenu(ToolsService::arr2tree($list), NodeService::get());
         return view('', ['title' => '系统管理', 'menus' => $menus]);
     }
 
     /**
      * 后台主菜单权限过滤
      * @param array $menus
+     * @param array $nodes
      * @return array
      */
-    private function _filterMenu($menus)
+    private function _filterMenu($menus, $nodes)
     {
         foreach ($menus as $key => &$menu) {
-            if (!empty($menu['sub'])) {
-                $menu['sub'] = $this->_filterMenu($menu['sub']);
-            }
-            if (!empty($menu['sub'])) {
+            // 存在子菜单时，直接使用递归处理
+            if (!empty($menu['sub'])):
+                $menu['sub'] = $this->_filterMenu($menu['sub'], $nodes);
+            endif;
+            if (!empty($menu['sub'])):
                 $menu['url'] = '#';
-            } elseif (stripos($menu['url'], 'http') === 0) {
+            // 菜单链接以http开头时，不做处理
+            elseif (preg_match('/^https?\:/i', $menu['url'])) :
                 continue;
-            } elseif ($menu['url'] !== '#' && auth(join('/', array_slice(explode('/', $menu['url']), 0, 3)))) {
+            // 菜单链接不为空时，判断登录状态及权限验证
+            elseif ($menu['url'] !== '#') :
+                $node = join('/', array_slice(explode('/', preg_replace('/[\W^_]/', '/', $menu['url'])), 0, 3));
                 $menu['url'] = url($menu['url']);
-            } else {
+                // 节点需要验证验证，未登录时移除此菜单
+                if (isset($nodes[$node]) && $nodes[$node]['is_login'] && !session('user')) :
+                    unset($menus[$key]);
+                // 节点需要权限验证，无权限时移除此菜单
+                elseif (isset($nodes[$node]) && $nodes[$node]['is_auth'] && session('user') && !auth($node)) :
+                    unset($menus[$key]);
+                endif;
+            // 非以上情况时，移除此菜单
+            else :
                 unset($menus[$key]);
-            }
+            endif;
         }
         return $menus;
     }
@@ -73,15 +86,13 @@ class Index extends BasicAdmin
      */
     public function main()
     {
-        if (session('user.username') === 'admin' && session('user.password') === '21232f297a57a5a743894a0e4a801fc3') {
+        if (session('user.password') === '21232f297a57a5a743894a0e4a801fc3') {
             $url = url('admin/index/pass') . '?id=' . session('user.id');
             $alert = ['type' => 'danger', 'title' => '安全提示', 'content' => "超级管理员默认密码未修改，建议马上<a href='javascript:void(0)' data-modal='{$url}'>修改</a>！",];
             $this->assign('alert', $alert);
-            $this->assign('title', '后台首页');
         }
         $_version = Db::query('select version() as ver');
-        $version = array_pop($_version);
-        return view('', ['mysql_ver' => $version['ver']]);
+        return view('', ['mysql_ver' => array_pop($_version)['ver'], 'title' => '后台首页']);
     }
 
     /**
@@ -95,21 +106,19 @@ class Index extends BasicAdmin
         if ($this->request->isGet()) {
             $this->assign('verify', true);
             return $this->_form('SystemUser', 'user/pass');
-        } else {
-            $data = $this->request->post();
-            if ($data['password'] !== $data['repassword']) {
-                $this->error('两次输入的密码不一致，请重新输入！');
-            }
-            $user = Db::name('SystemUser')->where('id', session('user.id'))->find();
-            if (md5($data['oldpassword']) !== $user['password']) {
-                $this->error('旧密码验证失败，请重新输入！');
-            }
-            if (DataService::save('SystemUser', ['id' => session('user.id'), 'password' => md5($data['password'])])) {
-                $this->success('密码修改成功，下次请使用新密码登录！', '');
-            } else {
-                $this->error('密码修改失败，请稍候再试！');
-            }
         }
+        $data = $this->request->post();
+        if ($data['password'] !== $data['repassword']) {
+            $this->error('两次输入的密码不一致，请重新输入！');
+        }
+        $user = Db::name('SystemUser')->where('id', session('user.id'))->find();
+        if (md5($data['oldpassword']) !== $user['password']) {
+            $this->error('旧密码验证失败，请重新输入！');
+        }
+        if (DataService::save('SystemUser', ['id' => session('user.id'), 'password' => md5($data['password'])])) {
+            $this->success('密码修改成功，下次请使用新密码登录！', '');
+        }
+        $this->error('密码修改失败，请稍候再试！');
     }
 
     /**

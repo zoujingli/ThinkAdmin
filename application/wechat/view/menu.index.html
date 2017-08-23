@@ -2,12 +2,42 @@
 
 {block name="style"}
 <style>
-    .mobile-preview { -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; -khtml-user-select: none; user-select: none;}
-    .menu-editor { left: 317px; display: block; max-width: 500px; width: 500px; height: 580px; border-radius: 0; border-color: #e7e7eb; box-shadow: none}
-    .menu-editor .arrow { top: auto !important; bottom: 15px}
-    .menu-editor .popover-title { margin-top: 0}
-    .menu-delete { font-weight: 400; font-size: 12px;}
-    .menu-submit { margin-right: 10px}
+    .mobile-preview {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        -khtml-user-select: none;
+        user-select: none;
+    }
+
+    .menu-editor {
+        left: 317px;
+        display: block;
+        max-width: 500px;
+        width: 500px;
+        height: 580px;
+        border-radius: 0;
+        border-color: #e7e7eb;
+        box-shadow: none
+    }
+
+    .menu-editor .arrow {
+        top: auto !important;
+        bottom: 15px
+    }
+
+    .menu-editor .popover-title {
+        margin-top: 0
+    }
+
+    .menu-delete {
+        font-weight: 400;
+        font-size: 12px;
+    }
+
+    .menu-submit {
+        margin-right: 10px
+    }
 </style>
 {/block}
 
@@ -18,13 +48,18 @@
     <ul class='mobile-footer'>
         <!--{foreach $list as $menu}-->
         <li class="parent-menu">
-            <a><i class="icon-sub hide"></i> <span data-type="{$menu.type}" data-content="{$menu.content}">{$menu.name}</span></a>
+            <a>
+                <i class="icon-sub hide"></i>
+                <span data-type="{$menu.type}" data-content="{$menu.content}">{$menu.name}</span>
+            </a>
             <div class="sub-menu text-center hide">
                 <ul>
                     <!--{if empty($menu['sub']) eq false}-->
                     <!--{foreach $menu.sub as $submenu}-->
                     <li>
-                        <a class="bottom-border"><span data-type="{$submenu.type}" data-content="{$submenu.content}">{$submenu.name}</span></a>
+                        <a class="bottom-border">
+                            <span data-type="{$submenu.type}" data-content="{$submenu.content}">{$submenu.name}</span>
+                        </a>
                     </li>
                     <!--{/foreach}-->
                     <!--{/if}-->
@@ -117,19 +152,12 @@
 {block name="script"}
 <script>
     $(function () {
-        /**
-         * 菜单事件构造方法
-         * @returns {menu.index_L2.menu}
-         */
+
         var menu = function () {
-            this.version = '1.0';
             this.$btn;
             this.listen();
         };
-        /**
-         * 控件默认事件
-         * @returns {undefined}
-         */
+
         menu.prototype.listen = function () {
             var self = this;
             $('.mobile-footer').on('click', 'li a', function () {
@@ -145,10 +173,7 @@
                 self.submit();
             });
         };
-        /**
-         * 添加一个菜单
-         * @returns {undefined}
-         */
+
         menu.prototype.add = function () {
             var $add = this.$btn.parent('li'), $ul = $add.parent('ul');
             if ($ul.hasClass('mobile-footer')) { /* 添加一级菜单 */
@@ -160,10 +185,7 @@
             }
             this.checkShow();
         };
-        /**
-         * 数据校验显示
-         * @returns {unresolved}
-         */
+
         menu.prototype.checkShow = function () {
             var $li = this.$btn.parent('li'), $ul = $li.parent('ul');
             /* 选中一级菜单时显示二级菜单 */
@@ -190,10 +212,7 @@
             this.renderEdit();
             return $ul;
         };
-        /**
-         * 删除当前菜单
-         * @returns {undefined}
-         */
+
         menu.prototype.del = function () {
             var $li = this.$btn.parent('li'), $ul = $li.parent('ul');
             var $default = function () {
@@ -212,13 +231,9 @@
             this.$btn = $default.find('a:first');
             this.checkShow();
         };
-        /**
-         * 显示当前菜单的属性值
-         * @returns {undefined}
-         */
+
         menu.prototype.renderEdit = function () {
-            var $span = this.$btn.find('span'), $li = this.$btn.parent('li'), $ul = $li.parent('ul');
-            var $html = '';
+            var $span = this.$btn.find('span'), $li = this.$btn.parent('li'), $ul = $li.parent('ul'), $html = '';
             if ($li.find('ul li').size() > 1) { /*父菜单*/
                 $html = $($('.menu-editor-parent-tpl').html());
                 $html.find('input[name="menu-name"]').val($span.text()).on('change keyup', function () {
@@ -234,16 +249,16 @@
                 var type = $span.attr('data-type') || 'text';
                 $html.find('input[name="menu-type"]').on('click', function () {
                     $span.attr('data-type', this.value || 'text');
-                    var content = $span.data('content') || '';
-                    var type = this.value;
+                    var type = this.value, content = $span.data('content') || '请输入内容';
                     var html = function () {
                         switch (type) {
                             case 'miniprogram':
-                                var tpl = '<div>\
-                                                <div>appid<input style="display:block;margin-bottom:10px" class="form-control input-sm" value="{appid}" name="appid"></div>\
-                                                <div>url<input style="display:block;margin-bottom:10px" class="form-control input-sm" value="{url}" name="url"></div>\
-                                                <div>pagepath<input style="display:block" name="pagepath" class="form-control input-sm" value={pagepath}></div>\
-                                            </div>';
+                                var tpl = '\
+<div>\
+    <div>appid<input style="display:block;margin-bottom:10px" class="form-control input-sm" value="{appid}" name="appid"></div>\
+    <div>url<input style="display:block;margin-bottom:10px" class="form-control input-sm" value="{url}" name="url"></div>\
+    <div>pagepath<input style="display:block" name="pagepath" class="form-control input-sm" value={pagepath}></div>\
+</div>';
                                 var _appid = '', _pagepath = '', _url = '';
                                 if (content.indexOf(',') > 0) {
                                     _appid = content.split(',')[0] || '';
@@ -266,8 +281,10 @@
                                     'pic_sysphoto': '弹出系统拍照发图',
                                     'pic_photo_or_album': '弹出拍照或者相册发图',
                                     'pic_weixin': '弹出微信相册发图器',
-                                    'location_select': '弹出地理位置选择器'};
-                                var select = [], tpl = '<div><label class="font-noraml"><input class="cuci-radio" name="content" type="radio" {checked} value="{value}"> {title}</label></div>';
+                                    'location_select': '弹出地理位置选择器'
+                                };
+                                var select = [],
+                                    tpl = '<div><label class="font-noraml"><input class="cuci-radio" name="content" type="radio" {checked} value="{value}"> {title}</label></div>';
                                 if (!(options[content] || false)) {
                                     content = 'scancode_push';
                                     $span.data('content', content);
@@ -291,20 +308,9 @@
                 }).filter('input[value="{type}"]'.replace('{type}', type)).trigger('click');
             }
         };
-        /**
-         * 提交数据
-         * @returns {undefined}
-         */
+
         menu.prototype.submit = function () {
             var data = [];
-            function getdata($span) {
-                var menudata = {};
-                menudata.name = $span.text();
-                menudata.type = $span.attr('data-type');
-                menudata.content = $span.data('content') || '';
-                return menudata;
-            }
-
             $('li.parent-menu').map(function (index, item) {
                 if (!$(item).hasClass('menu-add')) {
                     var menudata = getdata($(item).find('a:first span'));
@@ -322,11 +328,19 @@
                     });
                 }
             });
+
             $.form.load('{:url("$classuri/edit")}', {data: data}, 'POST');
+
+            function getdata($span) {
+                var menudata = {};
+                menudata.name = $span.text();
+                menudata.type = $span.attr('data-type');
+                menudata.content = $span.data('content') || '';
+                return menudata;
+            }
+
         };
-        /**
-         * 实例菜单控件
-         */
+
         new menu();
     });
 </script>

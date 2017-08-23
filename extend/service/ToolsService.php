@@ -41,6 +41,7 @@ class ToolsService
             header('Content-Length: 0', true);
             header('status: 204');
             header('HTTP/1.0 204 No Content');
+            exit;
         }
     }
 
@@ -54,8 +55,8 @@ class ToolsService
             'Access-Control-Allow-Origin'      => '*',
             'Access-Control-Allow-Credentials' => true,
             'Access-Control-Allow-Methods'     => 'GET,POST,OPTIONS',
-            'X-Support'                        => 'service@cuci.cc',
-            'X-Servers'                        => 'Guangzhou Cuci Technology Co. Ltd',
+            'Access-Defined-X-Support'         => 'service@cuci.cc',
+            'Access-Defined-X-Servers'         => 'Guangzhou Cuci Technology Co. Ltd',
         ];
     }
 
@@ -93,7 +94,7 @@ class ToolsService
      */
     public static function arr2tree($list, $id = 'id', $pid = 'pid', $son = 'sub')
     {
-        $tree = $map = [];
+        list($tree, $map) = [[], []];
         foreach ($list as $item) {
             $map[$item[$id]] = $item;
         }
@@ -114,24 +115,21 @@ class ToolsService
      * @param string $id ID Key
      * @param string $pid 父ID Key
      * @param string $path
+     * @param string $ppath
      * @return array
      */
     public static function arr2table($list, $id = 'id', $pid = 'pid', $path = 'path', $ppath = '')
     {
-        $_array_tree = self::arr2tree($list, $id, $pid);
         $tree = [];
-        foreach ($_array_tree as $_tree) {
-            $_tree[$path] = $ppath . '-' . $_tree[$id];
-            $_tree['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├&nbsp;&nbsp;", substr_count($ppath, '-'));
-            if (!isset($_tree['sub'])) {
-                $_tree['sub'] = [];
-            }
-            $sub = $_tree['sub'];
-            unset($_tree['sub']);
-            $tree[] = $_tree;
+        foreach (self::arr2tree($list, $id, $pid) as $attr) {
+            $attr[$path] = "{$ppath}-{$attr[$id]}";
+            $attr['sub'] = isset($attr['sub']) ? $attr['sub'] : [];
+            $attr['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├&nbsp;&nbsp;", substr_count($ppath, '-'));
+            $sub = $attr['sub'];
+            unset($attr['sub']);
+            $tree[] = $attr;
             if (!empty($sub)) {
-                $sub_array = self::arr2table($sub, $id, $pid, $path, $_tree[$path]);
-                $tree = array_merge($tree, (Array)$sub_array);
+                $tree = array_merge($tree, (array)self::arr2table($sub, $id, $pid, $path, $attr[$path]));
             }
         }
         return $tree;
@@ -149,7 +147,7 @@ class ToolsService
     {
         $ids = [intval($id)];
         foreach ($list as $vo) {
-            if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) == intval($id)) {
+            if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) === intval($id)) {
                 $ids = array_merge($ids, self::getArrSubIds($list, intval($vo[$key]), $key, $pkey));
             }
         }
@@ -163,14 +161,13 @@ class ToolsService
      */
     public static function express($code)
     {
-        $result = [];
-        $client_ip = Request::instance()->ip();
+        list($result, $client_ip) = [[], Request::instance()->ip()];
         $header = ['Host' => 'www.kuaidi100.com', 'CLIENT-IP' => $client_ip, 'X-FORWARDED-FOR' => $client_ip];
         $autoResult = HttpService::get("http://www.kuaidi100.com/autonumber/autoComNum?text={$code}", [], 30, $header);
         foreach (json_decode($autoResult)->auto as $vo) {
             $microtime = microtime(true);
-            $url = "http://www.kuaidi100.com/query?type={$vo->comCode}&postid={$code}&id=1&valicode=&temp={$microtime}";
-            $result[$vo->comCode] = json_decode(HttpService::get($url, [], 30, $header), true);
+            $location = "http://www.kuaidi100.com/query?type={$vo->comCode}&postid={$code}&id=1&valicode=&temp={$microtime}";
+            $result[$vo->comCode] = json_decode(HttpService::get($location, [], 30, $header), true);
         }
         return $result;
     }

@@ -15,6 +15,7 @@
 namespace hook;
 
 use think\Config;
+use think\Db;
 use think\exception\HttpResponseException;
 use think\Request;
 use think\View;
@@ -43,23 +44,41 @@ class AccessAuth
     {
         $this->request = Request::instance();
         list($module, $controller, $action) = [$this->request->module(), $this->request->controller(), $this->request->action()];
-        $vars = get_class_vars(config('app_namespace') . "\\{$module}\\controller\\{$controller}");
+        $node = strtolower("{$module}/{$controller}/{$action}");
+        $info = Db::name('SystemNode')->where('node', $node)->find();
+        $access = [
+            'is_menu'  => intval(!empty($info['is_menu'])),
+            'is_auth'  => intval(!empty($info['is_auth'])),
+            'is_login' => empty($info['is_auth']) ? intval(!empty($info['is_login'])) : 1
+        ];
         // 用户登录状态检查
-        if ((!empty($vars['checkAuth']) || !empty($vars['checkLogin'])) && !session('user')) {
+        if (!empty($access['is_login']) && !session('user')) {
             if ($this->request->isAjax()) {
-                $result = ['code' => 0, 'msg' => '抱歉, 您还没有登录获取访问权限!', 'data' => '', 'url' => url('@admin/login'), 'wait' => 3];
-                throw new HttpResponseException(json($result));
+                $this->response('抱歉，您还没有登录获取访问权限！', 0, url('@admin/login'));
             }
             throw new HttpResponseException(redirect('@admin/login'));
         }
         // 访问权限节点检查
-        if (!empty($vars['checkLogin']) && !auth("{$module}/{$controller}/{$action}")) {
-            $result = ['code' => 0, 'msg' => '抱歉, 您没有访问该模块的权限!', 'data' => '', 'url' => '', 'wait' => 3];
-            throw new HttpResponseException(json($result));
+        if (!empty($access['is_auth']) && !auth($node)) {
+            $this->response('抱歉，您没有访问该模块的权限！', 0);
         }
         // 权限正常, 默认赋值
         $view = View::instance(Config::get('template'), Config::get('view_replace_str'));
         $view->assign('classuri', strtolower("{$module}/{$controller}"));
+    }
+
+    /**
+     * 返回消息对象
+     * @param string $msg 消息内容
+     * @param int $code 返回状态码
+     * @param string $url 跳转URL地址
+     * @param array $data 数据内容
+     * @param int $wait
+     */
+    protected function response($msg, $code = 0, $url = '', $data = [], $wait = 3)
+    {
+        $result = ['code' => $code, 'msg' => $msg, 'data' => $data, 'url' => $url, 'wait' => $wait];
+        throw new HttpResponseException(json($result));
     }
 
 }

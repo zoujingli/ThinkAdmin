@@ -14,12 +14,7 @@
 
 namespace app\index\controller;
 
-use service\HttpService;
-use service\ToolsService;
 use think\Controller;
-use think\Db;
-use think\Request;
-use Wechat\Lib\Tools;
 
 /**
  * 网站入口控制器
@@ -39,19 +34,14 @@ class Index extends Controller
         $this->redirect('@admin');
     }
 
-    public function test()
+    public function qrc()
     {
-        $json = json_decode(file_get_contents('citys.json'), true);
-//        dump($json);
-        foreach ($json as $key => $vo) {
-            dump(Db::name('DataRegion')->insert(['code' => $key, 'name' => $vo]));
+        $wechat = load_wechat('Extends');
+        for ($i = 10; $i < 90; $i++) {
+            $qrc = $wechat->getQRCode($i, 1);
+            print_r($qrc);
         }
-    }
 
-    public function wuliu()
-    {
-        $order = '444500528707';
-        dump(ToolsService::express($order));
     }
 
 }

@@ -1,5 +1,17 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方文档: https://www.kancloud.cn/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+
 namespace Wechat;
 
 use Wechat\Lib\Tools;
@@ -9,13 +21,17 @@ use Wechat\Lib\Tools;
  * @author zoujingli <zoujingli@qq.com>
  * @date 2015/05/13 12:12:00
  */
-class WechatPay {
+class WechatPay
+{
 
     /** 支付接口基础地址 */
     const MCH_BASE_URL = 'https://api.mch.weixin.qq.com';
 
     /** 公众号appid */
     public $appid;
+
+    /** 公众号配置 */
+    public $config;
 
     /** 商户身份ID */
     public $mch_id;
@@ -35,13 +51,50 @@ class WechatPay {
      * WechatPay constructor.
      * @param array $options
      */
-    public function __construct($options = array()) {
-        $config = Loader::config($options);
-        $this->appid = isset($config['appid']) ? $config['appid'] : '';
-        $this->mch_id = isset($config['mch_id']) ? $config['mch_id'] : '';
-        $this->partnerKey = isset($config['partnerkey']) ? $config['partnerkey'] : '';
-        $this->ssl_cer = isset($config['ssl_cer']) ? $config['ssl_cer'] : '';
-        $this->ssl_key = isset($config['ssl_key']) ? $config['ssl_key'] : '';
+    public function __construct($options = array())
+    {
+        $this->config = Loader::config($options);
+        $this->appid = isset($this->config['appid']) ? $this->config['appid'] : '';
+        $this->mch_id = isset($this->config['mch_id']) ? $this->config['mch_id'] : '';
+        $this->partnerKey = isset($this->config['partnerkey']) ? $this->config['partnerkey'] : '';
+        $this->ssl_cer = isset($this->config['ssl_cer']) ? $this->config['ssl_cer'] : '';
+        $this->ssl_key = isset($this->config['ssl_key']) ? $this->config['ssl_key'] : '';
+    }
+
+    /**
+     * 获取当前错误内容
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->errMsg;
+    }
+
+    /**
+     * 当前当前错误代码
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->errCode;
+    }
+
+    /**
+     * 获取当前操作公众号APPID
+     * @return string
+     */
+    public function getAppid()
+    {
+        return $this->appid;
+    }
+
+    /**
+     * 获取SDK配置参数
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**
@@ -49,7 +102,8 @@ class WechatPay {
      * @param array $data
      * @return string
      */
-    protected function createXml($data) {
+    protected function createXml($data)
+    {
         if (!isset($data['wxappid']) && !isset($data['mch_appid']) && !isset($data['appid'])) {
             $data['appid'] = $this->appid;
         }
@@ -67,7 +121,8 @@ class WechatPay {
      * @param string $url
      * @return mixed
      */
-    public function postXml($data, $url) {
+    public function postXml($data, $url)
+    {
         return Tools::httpPost($url, $this->createXml($data));
     }
 
@@ -77,7 +132,8 @@ class WechatPay {
      * @param string $url
      * @return mixed
      */
-    function postXmlSSL($data, $url) {
+    function postXmlSSL($data, $url)
+    {
         return Tools::httpsPost($url, $this->createXml($data), $this->ssl_cer, $this->ssl_key);
     }
 
@@ -88,7 +144,8 @@ class WechatPay {
      * @param string $method
      * @return array
      */
-    public function getArrayResult($data, $url, $method = 'postXml') {
+    public function getArrayResult($data, $url, $method = 'postXml')
+    {
         return Tools::xml2arr($this->$method($data, $url));
     }
 
@@ -97,7 +154,8 @@ class WechatPay {
      * @param array $result
      * @return bool|array
      */
-    protected function _parseResult($result) {
+    protected function _parseResult($result)
+    {
         if (empty($result)) {
             $this->errCode = 'result error';
             $this->errMsg = '解析返回结果失败';
@@ -125,7 +183,8 @@ class WechatPay {
      * @param null $goods_tag 商品标签
      * @return array|bool
      */
-    public function createMicroPay($auth_code, $out_trade_no, $total_fee, $body, $goods_tag = null) {
+    public function createMicroPay($auth_code, $out_trade_no, $total_fee, $body, $goods_tag = null)
+    {
         $data = array(
             "appid"            => $this->appid,
             "mch_id"           => $this->mch_id,
@@ -147,7 +206,8 @@ class WechatPay {
      * 支付通知验证处理
      * @return bool|array
      */
-    public function getNotify() {
+    public function getNotify()
+    {
         $notifyInfo = (array)simplexml_load_string(file_get_contents("php://input"), 'SimpleXMLElement', LIBXML_NOCDATA);
         if (empty($notifyInfo)) {
             Tools::log('Payment notification forbidden access.', 'ERR');
@@ -182,7 +242,8 @@ class WechatPay {
      * @param bool $isReturn 是否返回XML内容，默认不返回
      * @return string
      */
-    public function replyXml(array $data, $isReturn = false) {
+    public function replyXml(array $data, $isReturn = false)
+    {
         $xml = Tools::arr2xml($data);
         if ($isReturn) {
             return $xml;
@@ -200,9 +261,11 @@ class WechatPay {
      * @param string $notify_url 支付成功回调地址
      * @param string $trade_type 支付类型JSAPI|NATIVE|APP
      * @param string $goods_tag 商品标记，代金券或立减优惠功能的参数
+     * @param string $fee_type 交易币种
      * @return bool|string
      */
-    public function getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI", $goods_tag = null, $fee_type = 'CNY') {
+    public function getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI", $goods_tag = null, $fee_type = 'CNY')
+    {
         $postdata = array(
             "body"             => $body,
             "out_trade_no"     => $out_trade_no,
@@ -218,7 +281,7 @@ class WechatPay {
         if (false === $this->_parseResult($result)) {
             return false;
         }
-        return in_array($trade_type, array('JSAPI', 'APP')) ? $result['prepay_id'] : $result['code_url'];
+        return in_array($trade_type, array('JSAPI', 'APP')) ? $result['prepay_id'] : ($trade_type === 'MWEB' ? $result['mweb_url'] : $result['code_url']);
     }
 
     /**
@@ -229,9 +292,11 @@ class WechatPay {
      * @param int $total_fee 订单总价
      * @param string $notify_url 支付成功回调地址
      * @param string $goods_tag 商品标记，代金券或立减优惠功能的参数
+     * @param string $fee_type 交易币种
      * @return bool|string
      */
-    public function getQrcPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $goods_tag = null, $fee_type = 'CNY') {
+    public function getQrcPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $goods_tag = null, $fee_type = 'CNY')
+    {
         $postdata = array(
             "body"             => $body,
             "out_trade_no"     => $out_trade_no,
@@ -255,7 +320,8 @@ class WechatPay {
      * @param string $product_id 商户定义的商品id 或者订单号
      * @return string
      */
-    public function getQrcPayUrl($product_id) {
+    public function getQrcPayUrl($product_id)
+    {
         $data = array(
             'appid'      => $this->appid,
             'mch_id'     => $this->mch_id,
@@ -273,7 +339,8 @@ class WechatPay {
      * @param string $prepay_id
      * @return array
      */
-    public function createMchPay($prepay_id) {
+    public function createMchPay($prepay_id)
+    {
         $option = array();
         $option["appId"] = $this->appid;
         $option["timeStamp"] = (string)time();
@@ -290,7 +357,8 @@ class WechatPay {
      * @param string $out_trade_no
      * @return bool
      */
-    public function closeOrder($out_trade_no) {
+    public function closeOrder($out_trade_no)
+    {
         $data = array('out_trade_no' => $out_trade_no);
         $result = $this->getArrayResult($data, self::MCH_BASE_URL . '/pay/closeorder');
         if (false === $this->_parseResult($result)) {
@@ -304,7 +372,8 @@ class WechatPay {
      * @param $out_trade_no
      * @return bool|array
      */
-    public function queryOrder($out_trade_no) {
+    public function queryOrder($out_trade_no)
+    {
         $data = array('out_trade_no' => $out_trade_no);
         $result = $this->getArrayResult($data, self::MCH_BASE_URL . '/pay/orderquery');
         if (false === $this->_parseResult($result)) {
@@ -316,26 +385,31 @@ class WechatPay {
     /**
      * 订单退款接口
      * @param string $out_trade_no 商户订单号
-     * @param string $transaction_id 微信订单号
-     * @param string $out_refund_no 商户退款订单号
+     * @param string $transaction_id 微信订单号，与 out_refund_no 二选一（不选时传0或false）
+     * @param string $out_refund_no 商户退款订单号，与 transaction_id 二选一（不选时传0或false）
      * @param int $total_fee 商户订单总金额
-     * @param int $refund_fee 退款金额
+     * @param int $refund_fee 退款金额，不可大于订单总金额
      * @param int|null $op_user_id 操作员ID，默认商户ID
      * @param string $refund_account 退款资金来源
-     *      仅针对老资金流商户使用
-     *          REFUND_SOURCE_UNSETTLED_FUNDS --- 未结算资金退款（默认使用未结算资金退款）
-     *          REFUND_SOURCE_RECHARGE_FUNDS --- 可用余额退款
+     *        仅针对老资金流商户使用
+     *        REFUND_SOURCE_UNSETTLED_FUNDS --- 未结算资金退款（默认使用未结算资金退款）
+     *        REFUND_SOURCE_RECHARGE_FUNDS  --- 可用余额退款
+     * @param string $refund_desc 退款原因
+     * @param string $refund_fee_type 退款货币种类
      * @return bool
      */
-    public function refund($out_trade_no, $transaction_id, $out_refund_no, $total_fee, $refund_fee, $op_user_id = null, $refund_account = '') {
+    public function refund($out_trade_no, $transaction_id, $out_refund_no, $total_fee, $refund_fee, $op_user_id = null, $refund_account = '', $refund_desc = '', $refund_fee_type = 'CNY')
+    {
         $data = array();
         $data['out_trade_no'] = $out_trade_no;
-        $data['transaction_id'] = $transaction_id;
-        $data['out_refund_no'] = $out_refund_no;
         $data['total_fee'] = $total_fee;
         $data['refund_fee'] = $refund_fee;
+        $data['refund_fee_type'] = $refund_fee_type;
         $data['op_user_id'] = empty($op_user_id) ? $this->mch_id : $op_user_id;
+        !empty($out_refund_no) && $data['out_refund_no'] = $out_refund_no;
+        !empty($transaction_id) && $data['transaction_id'] = $transaction_id;
         !empty($refund_account) && $data['refund_account'] = $refund_account;
+        !empty($refund_desc) && $data['refund_desc'] = $refund_desc;
         $result = $this->getArrayResult($data, self::MCH_BASE_URL . '/secapi/pay/refund', 'postXmlSSL');
         if (false === $this->_parseResult($result)) {
             return false;
@@ -348,7 +422,8 @@ class WechatPay {
      * @param string $out_trade_no
      * @return bool|array
      */
-    public function refundQuery($out_trade_no) {
+    public function refundQuery($out_trade_no)
+    {
         $data = array();
         $data['out_trade_no'] = $out_trade_no;
         $result = $this->getArrayResult($data, self::MCH_BASE_URL . '/pay/refundquery');
@@ -364,7 +439,8 @@ class WechatPay {
      * @param string $bill_type ALL|SUCCESS|REFUND|REVOKED
      * @return bool|array
      */
-    public function getBill($bill_date, $bill_type = 'ALL') {
+    public function getBill($bill_date, $bill_type = 'ALL')
+    {
         $data = array();
         $data['bill_date'] = $bill_date;
         $data['bill_type'] = $bill_type;
@@ -392,7 +468,8 @@ class WechatPay {
      * @return array|bool
      * @link  https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_5
      */
-    public function sendRedPack($openid, $total_amount, $mch_billno, $sendname, $wishing, $act_name, $remark, $total_num = 1, $scene_id = null, $risk_info = '', $consume_mch_id = null) {
+    public function sendRedPack($openid, $total_amount, $mch_billno, $sendname, $wishing, $act_name, $remark, $total_num = 1, $scene_id = null, $risk_info = '', $consume_mch_id = null)
+    {
         $data = array();
         $data['mch_billno'] = $mch_billno; // 商户订单号 mch_id+yyyymmdd+10位一天内不能重复的数字
         $data['wxappid'] = $this->appid;
@@ -429,7 +506,8 @@ class WechatPay {
      * @return bool|array
      * @link https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_7&index=6
      */
-    public function queryRedPack($billno) {
+    public function queryRedPack($billno)
+    {
         $data['mch_billno'] = $billno;
         $data['bill_type'] = 'MCHT';
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/gethbinfo');
@@ -449,7 +527,8 @@ class WechatPay {
      * @return bool|array
      * @link https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2
      */
-    public function transfers($openid, $amount, $billno, $desc) {
+    public function transfers($openid, $amount, $billno, $desc)
+    {
         $data = array();
         $data['mchid'] = $this->mch_id;
         $data['mch_appid'] = $this->appid;
@@ -473,7 +552,8 @@ class WechatPay {
      * @return bool|array
      * @link https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_3
      */
-    public function queryTransfers($billno) {
+    public function queryTransfers($billno)
+    {
         $data['appid'] = $this->appid;
         $data['mch_id'] = $this->mch_id;
         $data['partner_trade_no'] = $billno;
@@ -490,7 +570,8 @@ class WechatPay {
      * @param string $url 需要处理的长链接
      * @return bool|string
      */
-    public function shortUrl($url) {
+    public function shortUrl($url)
+    {
         $data = array();
         $data['long_url'] = $url;
         $result = $this->getArrayResult($data, self::MCH_BASE_URL . '/tools/shorturl');
@@ -516,7 +597,8 @@ class WechatPay {
      * @return bool|array
      * @link  https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_3
      */
-    public function sendCoupon($coupon_stock_id, $partner_trade_no, $openid, $op_user_id = null) {
+    public function sendCoupon($coupon_stock_id, $partner_trade_no, $openid, $op_user_id = null)
+    {
         $data = array();
         $data['appid'] = $this->appid;
         $data['coupon_stock_id'] = $coupon_stock_id;

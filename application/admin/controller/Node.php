@@ -40,8 +40,8 @@ class Node extends BasicAdmin
      */
     public function index()
     {
-        $alert = ['type' => 'danger', 'title' => '安全警告', 'content' => '结构为系统自动生成, 状态数据请勿随意修改!'];
         $nodes = ToolsService::arr2table(NodeService::get(), 'node', 'pnode');
+        $alert = ['type' => 'danger', 'title' => '安全警告', 'content' => '结构为系统自动生成, 状态数据请勿随意修改!'];
         return view('', ['title' => '系统节点管理', 'nodes' => $nodes, 'alert' => $alert]);
     }
 
@@ -52,11 +52,13 @@ class Node extends BasicAdmin
     {
         if ($this->request->isPost()) {
             $post = $this->request->post();
-            if (isset($post['name']) && isset($post['value'])) {
-                $nameattr = explode('.', $post['name']);
-                $field = array_shift($nameattr);
-                $data = ['node' => join(',', $nameattr), $field => $post['value']];
-                DataService::save($this->table, $data, 'node');
+            if (isset($post['list'])) {
+                $data = [];
+                foreach ($post['list'] as $vo) {
+                    $data['node'] = $vo['node'];
+                    $data[$vo['name']] = $vo['value'];
+                }
+                !empty($data) && DataService::save($this->table, $data, 'node');
                 $this->success('参数保存成功！', '');
             }
         } else {

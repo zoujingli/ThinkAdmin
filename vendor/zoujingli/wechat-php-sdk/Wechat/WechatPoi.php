@@ -1,5 +1,17 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方文档: https://www.kancloud.cn/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+
 namespace Wechat;
 
 use Wechat\Lib\Common;
@@ -10,7 +22,8 @@ use Wechat\Lib\Tools;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/10/26 15:43
  */
-class WechatPoi extends Common {
+class WechatPoi extends Common
+{
 
     /** 创建门店 */
     const POI_ADD = '/cgi-bin/poi/addpoi?';
@@ -36,7 +49,8 @@ class WechatPoi extends Common {
      * @param array $data
      * @return bool
      */
-    public function addPoi($data) {
+    public function addPoi($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -59,7 +73,8 @@ class WechatPoi extends Common {
      * @param string $poi_id JSON数据格式
      * @return bool|array
      */
-    public function delPoi($poi_id) {
+    public function delPoi($poi_id)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -83,7 +98,8 @@ class WechatPoi extends Common {
      * @param array $data
      * @return bool
      */
-    public function updatePoi($data) {
+    public function updatePoi($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -106,7 +122,8 @@ class WechatPoi extends Common {
      * @param string $poi_id
      * @return bool
      */
-    public function getPoi($poi_id) {
+    public function getPoi($poi_id)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -131,7 +148,8 @@ class WechatPoi extends Common {
      * @param int $limit 返回数据条数，最大允许50，默认为20
      * @return bool|array
      */
-    public function getPoiList($begin = 0, $limit = 50) {
+    public function getPoiList($begin = 0, $limit = 50)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -154,7 +172,8 @@ class WechatPoi extends Common {
      * 获取商家门店类目表
      * @return bool|string
      */
-    public function getCategory() {
+    public function getCategory()
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }

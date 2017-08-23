@@ -31,7 +31,7 @@ class Notify extends Controller
     public function index()
     {
         // 实例支付接口
-        $pay = &load_wechat('Pay');
+        $pay = load_wechat('Pay');
 
         // 获取支付通知
         $notifyInfo = $pay->getNotify();

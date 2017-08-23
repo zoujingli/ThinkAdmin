@@ -1,5 +1,17 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方文档: https://www.kancloud.cn/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+
 # 引入文件
 require 'include.php';
 
@@ -23,7 +35,7 @@ exit;
 
 // 第三方平台 JSSDK 签名包
 
-$wechat = Db::table('wechat_config')->where('authorizer_appid', 'wx60a43dd8161666d4')->find();
+$wechat = Db::name('WechatConfig')->where('authorizer_appid', 'wx60a43dd8161666d4')->find();
 // 第三方授权获取到的 Access_token
 $access_token = $wechat['authorizer_access_token'];
 // 参与授权的公众号 APPID

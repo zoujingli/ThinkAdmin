@@ -1,0 +1,263 @@
+{extend name='extra@admin/content'}
+
+{block name="content"}
+
+<div class="code">
+    <blockquote class="site-text layui-elem-quote">
+        单图片上传
+        <hr/>
+        <p style='font-size:12px;line-height:26px'>
+            1. data-file 指定上传文件模式，可选择 ( one | mut )，one : 表示单文件上传, mut : 表示多文件上传。
+        </p>
+        <p style='font-size:12px;line-height:26px'>
+            2. data-type 指定上传文件后缀，多种后缀时使用英文逗号分割，如：jpg,png。
+        </p>
+        <p style='font-size:12px;line-height:26px'>
+            3. data-uptype 指定上传文件存储方式，可选择( local | qiniu | oss )。local : 文件存储在本地服务器, qiniu : 文件存储在七牛云, oss :
+            文件存储在阿里云OSS。
+        </p>
+        <p style='font-size:12px;line-height:26px'>
+            4. data-field 绑定上传成功后返回URL地址的 input，同时会触发 input 的 change 事件，可以监听并进行处理。
+        </p>
+    </blockquote>
+    <div style="position:relative">
+        <div class="uploadimage transition"><input type="hidden" name="file_1"/></div>
+        <a data-file="one" data-field="file_1" data-type="png,jpg" data-uptype="local" href="javascript:void(0)"
+           class="uploadbutton">上传图片</a>
+    </div>
+    <script>
+        require(['jquery'], function () {
+            $('[name="file_1"]').on('change', function () {
+                $(this).parent().attr('data-tips-image', this.value).css('backgroundImage', 'url(' + this.value + ')');
+            });
+        });
+    </script>
+
+    <pre class="layui-code" lay-title="HTML代码">
+
+<div style="position:relative">
+    <div class="uploadimage"><input type="hidden" name="file_1"/></div>
+    <a data-file="one" data-field="file_1" data-type="png,jpg" data-uptype="local" href="javascript:void(0)"
+       class="uploadbutton">上传图片</a>
+</div>
+    </pre>
+
+    <pre class="layui-code" lay-title="javascript代码">
+
+// 监听 input 的 onchange 事件
+// 当有文件上传时，会触发 change 事件
+require(['jquery'], function () {
+    $('[name="file_1"]').on('change', function () {
+        $(this).parent().attr('data-tips-image', this.value).css('backgroundImage', 'url(' + this.value + ')');
+    });
+});
+    </pre>
+</div>
+
+<div class="code">
+    <blockquote class="site-text layui-elem-quote">
+        多图片上传
+        <hr/>
+        <p style='font-size:12px;line-height:26px'>
+            1. data-file 指定上传文件模式，可选择 ( one | mut )，one : 表示单文件上传, mut : 表示多文件上传。
+        </p>
+        <p style='font-size:12px;line-height:26px'>
+            2. data-type 指定上传文件后缀，多种后缀时使用英文逗号分割，如：jpg,png。
+        </p>
+        <p style='font-size:12px;line-height:26px'>
+            3. data-uptype 指定上传文件存储方式，可选择( local | qiniu | oss )。local : 文件存储在本地服务器, qiniu : 文件存储在七牛云, oss :
+            文件存储在阿里云OSS。
+        </p>
+        <p style='font-size:12px;line-height:26px'>
+            4. data-field 绑定上传成功后返回URL地址的 input，同时会触发 input 的 change 事件，可以监听并进行处理。
+        </p>
+    </blockquote>
+    <div style="position:relative">
+        <style>
+            .upload-option-button {
+                float: right;
+                background: rgba(0, 0, 0, 0.5);
+                color: #fff;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                text-align: center;
+                display: none
+            }
+
+            .upload-option-button:hover {
+                text-decoration: none;
+                color: #fff
+            }
+
+            .uploadimagemtl:hover a {
+                display: inline-block
+            }
+        </style>
+        <input type='hidden' name='file_2'/>
+        <p>
+            <a data-file="mut" data-field="file_2" data-type="png,jpg" data-uptype="local" href="javascript:void(0)">上传图片</a>
+        </p>
+    </div>
+    <script>
+        require(['jquery'], function () {
+            var tpl = '<div class="uploadimage transition uploadimagemtl"><a href="javascript:void(0)" class="layui-icon upload-option-button">&#x1006;</a></div>';
+            $('[name="file_2"]').on('change', function () {
+                var input = this, values = [], srcs = this.value.split('|');
+                $(this).prevAll('.uploadimage').map(function () {
+                    values.push($(this).attr('data-tips-image'));
+                }), $(this).prevAll('.uploadimage').remove();
+                values.reverse();
+                for (var i in srcs) {
+                    values.push(srcs[i]);
+                }
+                this.value = values.join('|');
+                for (var i in values) {
+                    var $tpl = $(tpl).attr('data-tips-image', values[i]).css('backgroundImage', 'url(' + values[i] + ')');
+                    $tpl.data('input', input).data('srcs', values).data('index', i);
+                    $tpl.on('click', 'a', function (e) {
+                        e.stopPropagation();
+                        var $cur = $(this).parent();
+                        $.msg.confirm('确定要移除这张图片吗？', function () {
+                            var data = $cur.data('srcs');
+                            delete data[$cur.data('index')];
+                            $cur.data('input').value = data.join('|');
+                            $cur.remove();
+                        });
+                    });
+                    $(this).before($tpl);
+                }
+            });
+        });
+    </script>
+
+    <pre class="layui-code" lay-title="HTML代码">
+
+<div style="position:relative">
+    <style>
+                .upload-option-button {
+                    float: right;
+                    background: rgba(0, 0, 0, 0.5);
+                    color: #fff;
+                    width: 20px;
+                    height: 20px;
+                    line-height: 20px;
+                    text-align: center;
+                    display: none
+                }
+
+                .upload-option-button:hover {
+                    text-decoration: none;
+                    color: #fff
+                }
+
+                .uploadimagemtl:hover a {
+                    display: inline-block
+                }
+    </style>
+    <input type='hidden' name='file_2'/>
+    <a data-file="mut" data-field="file_2" data-type="png,jpg" data-uptype="local" href="javascript:void(0)">上传图片</a>
+</div>
+    </pre>
+
+    <pre class="layui-code" lay-title="javascript代码">
+
+require(['jquery'], function () {
+    var tpl = '<div class="uploadimage transition uploadimagemtl"><a href="javascript:void(0)"
+                                                                     class="layui-icon upload-option-button">&#x1006;</a></div>';
+    $('[name="file_2"]').on('change', function () {
+        var input = this, values = [], srcs = this.value.split('|');
+        $(this).prevAll('.uploadimage').map(function () {
+            values.push($(this).attr('data-tips-image'));
+        }), $(this).prevAll('.uploadimage').remove();
+        values.reverse();
+        for (var i in srcs) {
+            values.push(srcs[i]);
+        }
+        this.value = values.join('|');
+        for (var i in values) {
+            var $tpl = $(tpl).attr('data-tips-image', values[i]).css('backgroundImage', 'url(' + values[i] + ')');
+            $tpl.data('input', input).data('srcs', values).data('index', i);
+            $tpl.on('click', 'a', function (e) {
+                e.stopPropagation();
+                var $cur = $(this).parent();
+                $.msg.confirm('确定要移除这张图片吗？', function () {
+                    var data = $cur.data('srcs');
+                    delete data[$cur.data('index')];
+                    $cur.data('input').value = data.join('|');
+                    $cur.remove();
+                });
+            });
+            $(this).before($tpl);
+        }
+    });
+});
+    </pre>
+</div>
+
+<div class="code">
+    <blockquote class="site-text layui-elem-quote">
+        单文件上传
+        <hr/>
+        <p style='font-size:12px;line-height:26px'>
+            1. data-file 指定上传文件模式，可选择 ( one | mut )，one : 表示单文件上传, mut : 表示多文件上传。
+        </p>
+        <p style='font-size:12px;line-height:26px'>
+            2. data-type 指定上传文件后缀，多种后缀时使用英文逗号分割，如：zip,rar。
+        </p>
+        <p style='font-size:12px;line-height:26px'>
+            3. data-uptype 指定上传文件存储方式，可选择( local | qiniu | oss )。local : 文件存储在本地服务器, qiniu : 文件存储在七牛云, oss :
+            文件存储在阿里云OSS。
+        </p>
+        <p style='font-size:12px;line-height:26px'>
+            4. data-field 绑定上传成功后返回URL地址的 input，同时会触发 input 的 change 事件，可以监听并进行处理。
+        </p>
+    </blockquote>
+    <div style="position:relative;width:500px">
+        <div class="input-group">
+            <input type="text" class="form-control" name="file_3" placeholder="请选择ZIP文件...">
+            <a class="input-group-addon" data-file="one" data-type="zip" data-uptype="local" data-field="file_3">
+                <i class="fa fa-file"></i>
+            </a>
+        </div>
+    </div>
+    <script>
+        require(['jquery'], function () {
+            $('[name="file_3"]').on('change', function () {
+                alert('文件上传后的地址：' + this.value);
+            });
+        });
+    </script>
+
+    <pre class="layui-code" lay-title="HTML代码">
+
+<div style="position:relative;width:500px">
+    <div class="input-group">
+        <input type="text" class="form-control" name="file_3" placeholder="请选择ZIP文件...">
+        <a class="input-group-addon" data-file="one" data-type="zip" data-uptype="local" data-field="file_3">
+            <i class="fa fa-file"></i>
+        </a>
+    </div>
+</div>
+
+    </pre>
+    <pre class="layui-code" lay-title="javascript代码">
+
+// 监听 input 的 onchange 事件
+// 当有文件上传时，会触发 change 事件
+require(['jquery'], function () {
+    $('[name="file_3"]').on('change', function () {
+        alert('文件上传后的地址：' + this.value);
+    });
+});
+    </pre>
+
+
+</div>
+
+<script>
+    layui.use('code', function () {
+        layui.code({encode: true});
+    });
+</script>
+{/block}

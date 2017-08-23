@@ -72,8 +72,10 @@ class Redis extends Connector
 
         $queue = $this->getQueue($queue);
 
+        $this->migrateExpiredJobs($queue . ':delayed', $queue, false);
+
         if (!is_null($this->options['expire'])) {
-            $this->migrateAllExpiredJobs($queue);
+            $this->migrateExpiredJobs($queue . ':reserved', $queue);
         }
 
         $job = $this->redis->lPop($queue);
@@ -127,19 +129,6 @@ class Redis extends Connector
     public function deleteReserved($queue, $job)
     {
         $this->redis->zRem($this->getQueue($queue) . ':reserved', $job);
-    }
-
-    /**
-     * 移动所有任务
-     *
-     * @param  string $queue
-     * @return void
-     */
-    protected function migrateAllExpiredJobs($queue)
-    {
-        $this->migrateExpiredJobs($queue . ':delayed', $queue, false);
-
-        $this->migrateExpiredJobs($queue . ':reserved', $queue);
     }
 
     /**

@@ -160,14 +160,14 @@ class FileService
 
     /**
      * 获取文件相对名称
-     * @param string $source 文件标识
+     * @param string $location 文件标识
      * @param string $ext 文件后缀
      * @param string $pre 文件前缀
      * @return string
      */
-    public static function getFileName($source, $ext = '', $pre = '')
+    public static function getFileName($location, $ext = '', $pre = '')
     {
-        return $pre . join('/', str_split(md5($source), 16)) . '.' . $ext;
+        return $pre . join('/', str_split(md5($location), 16)) . '.' . $ext;
     }
 
     /**
@@ -203,10 +203,8 @@ class FileService
     {
         switch (empty($storage) ? sysconf('storage_type') : $storage) {
             case 'local':
-                $filepath = ROOT_PATH . 'static/upload/' . $filename;
-                if (file_exists($filepath)) {
-                    return file_get_contents($filepath);
-                }
+                $file = ROOT_PATH . 'static/upload/' . $filename;
+                return file_exists($file) ? file_get_contents($file) : '';
             case 'qiniu':
                 $auth = new Auth(sysconf('storage_qiniu_access_key'), sysconf('storage_qiniu_secret_key'));
                 return file_get_contents($auth->privateDownloadUrl(self::getBaseUriQiniu() . $filename));

@@ -49,18 +49,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "4431e3a9684dde09c0a1642ca1d83b62a2af6b3e"
+            "reference": "acc75f50ac89eacfb66371ffd3e3ecb17073894b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/4431e3a9684dde09c0a1642ca1d83b62a2af6b3e.zip",
-            "reference": "4431e3a9684dde09c0a1642ca1d83b62a2af6b3e",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/acc75f50ac89eacfb66371ffd3e3ecb17073894b.zip",
+            "reference": "acc75f50ac89eacfb66371ffd3e3ecb17073894b",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-07-10T02:49:05+00:00",
+        "time": "2017-08-22T04:00:09+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
@@ -334,24 +334,24 @@
     },
     {
         "name": "topthink/think-queue",
-        "version": "v1.1.3",
-        "version_normalized": "1.1.3.0",
+        "version": "v1.1.4",
+        "version_normalized": "1.1.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-queue.git",
-            "reference": "07480c36381344bef9db9c9bbe3de28005a839d3"
+            "reference": "ad709611d516e13d6760234bc98e91faa901cae8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-queue/07480c36381344bef9db9c9bbe3de28005a839d3.zip",
-            "reference": "07480c36381344bef9db9c9bbe3de28005a839d3",
+            "url": "https://files.phpcomposer.com/files/top-think/think-queue/ad709611d516e13d6760234bc98e91faa901cae8.zip",
+            "reference": "ad709611d516e13d6760234bc98e91faa901cae8",
             "shasum": ""
         },
         "require": {
             "topthink/think-helper": ">=1.0.4",
             "topthink/think-installer": ">=1.0.10"
         },
-        "time": "2017-02-28T08:07:37+00:00",
+        "time": "2017-06-25T00:49:56+00:00",
         "type": "think-extend",
         "extra": {
             "think-config": {
@@ -381,8 +381,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.3.4",
-        "version_normalized": "3.3.4.0",
+        "version": "v3.3.6",
+        "version_normalized": "3.3.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",

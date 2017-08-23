@@ -45,8 +45,7 @@ class Config extends BasicAdmin
     public function index()
     {
         if (!$this->request->isPost()) {
-            $this->assign('title', $this->title);
-            return view();
+            return view('', ['title' => $this->title]);
         }
         foreach ($this->request->post() as $key => $vo) {
             sysconf($key, $vo);
@@ -61,7 +60,7 @@ class Config extends BasicAdmin
     public function file()
     {
         $this->title = '文件存储配置';
-        $alert = ['type' => 'success', 'title' => '操作提示', 'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'];
+        $alert = ['type' => 'success', 'title' => '操作提示', 'content' => '文件引擎参数影响全局文件上传功能,请勿随意修改！'];
         $this->assign('alert', $alert);
         return $this->index();
     }

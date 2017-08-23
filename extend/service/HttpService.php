@@ -41,14 +41,14 @@ class HttpService
             $url .= (is_array($data) ? http_build_query($data) : $data);
         }
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_TIMEOUT, $second);
+        self::applyHttp($curl, $url);
         curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_TIMEOUT, $second);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        !empty($header) && curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        self::_setSsl($curl, $url);
-        $content = curl_exec($curl);
-        $status = curl_getinfo($curl);
-        curl_close($curl);
+        if (!empty($header)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+        }
+        list($content, $status) = [curl_exec($curl), curl_getinfo($curl), curl_close($curl)];
         return (intval($status["http_code"]) === 200) ? $content : false;
     }
 
@@ -62,19 +62,19 @@ class HttpService
      */
     static public function post($url, $data = [], $second = 30, $header = [])
     {
-        self::_setUploadFile($data);
         $curl = curl_init();
+        self::applyData($data);
+        self::applyHttp($curl, $url);
         curl_setopt($curl, CURLOPT_TIMEOUT, $second);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        !empty($header) && curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        self::_setSsl($curl, $url);
-        $content = curl_exec($curl);
-        $status = curl_getinfo($curl);
-        curl_close($curl);
+        if (!empty($header)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+        }
+        list($content, $status) = [curl_exec($curl), curl_getinfo($curl), curl_close($curl)];
         return (intval($status["http_code"]) === 200) ? $content : false;
     }
 
@@ -83,7 +83,7 @@ class HttpService
      * @param $curl
      * @param string $url
      */
-    private static function _setSsl(&$curl, $url)
+    private static function applyHttp(&$curl, $url)
     {
         if (stripos($url, "https") === 0) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -93,23 +93,32 @@ class HttpService
     }
 
     /**
-     * 设置POST文件上传兼容
+     * Post 数据过滤处理
      * @param array $data
+     * @param bool $isBuild
      * @return string
      */
-    private static function _setUploadFile(&$data)
+    private static function applyData(&$data, $isBuild = true)
     {
         if (!is_array($data)) {
             return null;
         }
         foreach ($data as &$value) {
+            is_array($value) && $isBuild = true;
             if (!(is_string($value) && strlen($value) > 0 && $value[0] === '@')) {
                 continue;
             }
-            $filename = realpath(trim($value, '@'));
-            $filemime = FileService::getFileMine(strtolower(pathinfo($filename, PATHINFO_EXTENSION)));
-            $value = class_exists('CURLFile', false) ? new CURLFile($filename, $filemime) : "{$value};type={$filemime}";
+            if (!file_exists(($file = realpath(trim($value, '@'))))) {
+                continue;
+            }
+            list($isBuild, $mime) = [false, FileService::getFileMine(pathinfo($file, 4))];
+            if (class_exists('CURLFile', false)) {
+                $value = new CURLFile($file, $mime);
+            } else {
+                $value = "{$value};type={$mime}";
+            }
         }
+        $isBuild && $data = http_build_query($data);
     }
 
 }

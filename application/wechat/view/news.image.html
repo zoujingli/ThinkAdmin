@@ -2,9 +2,24 @@
 
 {block name="body"}
 <style>
-    body{min-width:100px!important}
-    .pagination{padding:0 10px}
-    .news-image{cursor:pointer;width:111px;height:120px;background-size:cover;background-position:center center;float:left;margin:10px;border:1px solid rgba(125,125,125,0.3)}
+    body {
+        min-width: 100px !important
+    }
+
+    .pagination {
+        padding: 0 10px
+    }
+
+    .news-image {
+        cursor: pointer;
+        width: 111px;
+        height: 120px;
+        background-size: cover;
+        background-position: center center;
+        float: left;
+        margin: 10px;
+        border: 1px solid rgba(125, 125, 125, 0.3)
+    }
 </style>
 <div class="news-container" id='news_box'>
     {foreach $list as $key=>$vo}

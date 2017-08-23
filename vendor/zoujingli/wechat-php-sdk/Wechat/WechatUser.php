@@ -1,5 +1,17 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方文档: https://www.kancloud.cn/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+
 namespace Wechat;
 
 use Wechat\Lib\Common;
@@ -11,7 +23,8 @@ use Wechat\Lib\Tools;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:20
  */
-class WechatUser extends Common {
+class WechatUser extends Common
+{
 
     /** 获取粉丝列表 */
     const USER_GET_URL = '/user/get?';
@@ -66,7 +79,8 @@ class WechatUser extends Common {
      * @param string $next_openid
      * @return bool|array
      */
-    public function getUserList($next_openid = '') {
+    public function getUserList($next_openid = '')
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -89,7 +103,8 @@ class WechatUser extends Common {
      * @return bool|array {subscribe,openid,nickname,sex,city,province,country,language,headimgurl,subscribe_time,[unionid]}
      * @注意：unionid字段 只有在粉丝将公众号绑定到微信开放平台账号后，才会出现。建议调用前用isset()检测一下
      */
-    public function getUserInfo($openid) {
+    public function getUserInfo($openid)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -112,7 +127,8 @@ class WechatUser extends Common {
      * @param string $lang 指定返回语言
      * @return bool|mixed
      */
-    public function getUserBatchInfo(array $openids, $lang = 'zh_CN') {
+    public function getUserBatchInfo(array $openids, $lang = 'zh_CN')
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -139,7 +155,8 @@ class WechatUser extends Common {
      * @param string $remark 备注名
      * @return bool|array
      */
-    public function updateUserRemark($openid, $remark) {
+    public function updateUserRemark($openid, $remark)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -161,7 +178,8 @@ class WechatUser extends Common {
      * 获取粉丝分组列表
      * @return bool|array
      */
-    public function getGroup() {
+    public function getGroup()
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -183,7 +201,8 @@ class WechatUser extends Common {
      * @param type $id
      * @return bool
      */
-    public function delGroup($id) {
+    public function delGroup($id)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -206,7 +225,8 @@ class WechatUser extends Common {
      * @param string $openid
      * @return bool|int 成功则返回粉丝分组id
      */
-    public function getUserGroup($openid) {
+    public function getUserGroup($openid)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -230,7 +250,8 @@ class WechatUser extends Common {
      * @param string $name 分组名称
      * @return bool|array
      */
-    public function createGroup($name) {
+    public function createGroup($name)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -254,7 +275,8 @@ class WechatUser extends Common {
      * @param string $name 分组名称
      * @return bool|array
      */
-    public function updateGroup($groupid, $name) {
+    public function updateGroup($groupid, $name)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -278,7 +300,8 @@ class WechatUser extends Common {
      * @param string $openid 粉丝openid
      * @return bool|array
      */
-    public function updateGroupMembers($groupid, $openid) {
+    public function updateGroupMembers($groupid, $openid)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -302,7 +325,8 @@ class WechatUser extends Common {
      * @param string $openid_list 粉丝openid数组(一次不能超过50个)
      * @return bool|array
      */
-    public function batchUpdateGroupMembers($groupid, $openid_list) {
+    public function batchUpdateGroupMembers($groupid, $openid_list)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -325,7 +349,8 @@ class WechatUser extends Common {
      * @param string $name 标签名称
      * @return bool|array
      */
-    public function createTags($name) {
+    public function createTags($name)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -349,7 +374,8 @@ class WechatUser extends Common {
      * @param string $name 标签名称
      * @return bool|array
      */
-    public function updateTag($id, $name) {
+    public function updateTag($id, $name)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -371,7 +397,8 @@ class WechatUser extends Common {
      * 获取粉丝标签列表
      * @return bool|array
      */
-    public function getTags() {
+    public function getTags()
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -393,7 +420,8 @@ class WechatUser extends Common {
      * @param string $id
      * @return bool
      */
-    public function delTag($id) {
+    public function delTag($id)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -417,7 +445,8 @@ class WechatUser extends Common {
      * @param string $next_openid
      * @return bool
      */
-    public function getTagUsers($tagid, $next_openid = '') {
+    public function getTagUsers($tagid, $next_openid = '')
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -441,7 +470,8 @@ class WechatUser extends Common {
      * @param array $openid_list 粉丝openid数组，一次不能超过50个
      * @return bool|array
      */
-    public function batchAddUserTag($tagid, $openid_list) {
+    public function batchAddUserTag($tagid, $openid_list)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -465,7 +495,8 @@ class WechatUser extends Common {
      * @param array $openid_list 粉丝openid数组，一次不能超过50个
      * @return bool|array
      */
-    public function batchDeleteUserTag($tagid, $openid_list) {
+    public function batchDeleteUserTag($tagid, $openid_list)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -488,7 +519,8 @@ class WechatUser extends Common {
      * @param string $openid 粉丝openid
      * @return bool|array
      */
-    public function getUserTags($openid) {
+    public function getUserTags($openid)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -511,7 +543,8 @@ class WechatUser extends Common {
      * @param string $begin_openid
      * @return bool|array
      */
-    public function getBacklist($begin_openid = '') {
+    public function getBacklist($begin_openid = '')
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -534,7 +567,8 @@ class WechatUser extends Common {
      * @param string $openids
      * @return bool|array
      */
-    public function addBacklist($openids) {
+    public function addBacklist($openids)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -557,7 +591,8 @@ class WechatUser extends Common {
      * @param string $openids
      * @return bool|array
      */
-    public function delBacklist($openids) {
+    public function delBacklist($openids)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }

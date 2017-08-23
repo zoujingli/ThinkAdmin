@@ -45,7 +45,7 @@ class Menu extends BasicAdmin
      * 微信菜单的类型
      * @var array
      */
-    protected $menu_type = [
+    protected $menuType = [
         'view'               => '跳转URL',
         'click'              => '点击推事件',
         'scancode_push'      => '扫码推事件',
@@ -109,11 +109,11 @@ class Menu extends BasicAdmin
      */
     public function cancel()
     {
-        $wehcat = &load_wechat('Menu');
+        $wehcat = load_wechat('Menu');
         if (false !== $wehcat->deleteMenu()) {
             $this->success('菜单取消成功，重新关注可立即生效！', '');
         }
-        $this->error('菜单取消失败，' . $wehcat->errMsg);
+        $this->error('菜单取消失败，' . $wehcat->getError());
     }
 
     /**
@@ -121,33 +121,28 @@ class Menu extends BasicAdmin
      */
     protected function _push()
     {
-        $result = Db::name($this->table)
-            ->field('id,index,pindex,name,type,content')
-            ->where('status', '1')
-            ->order('sort ASC,id ASC')
-            ->select();
+        list($map, $fields) = [['status' => '1'], 'id,index,pindex,name,type,content'];
+        $result = (array)Db::name($this->table)->field($fields)->where($map)->order('sort ASC,id ASC')->select();
         foreach ($result as &$row) {
             empty($row['content']) && $row['content'] = uniqid();
-            switch ($row['type']) {
-                case 'miniprogram':
-                    list($row['appid'], $row['url'], $row['pagepath']) = explode(',', $row['content'] . ',,');
-                    break;
-                case 'view':
-                    $row['url'] = preg_match('#^(\w+:)?//#i', $row['content']) ? $row['content'] : url($row['content'], '', true, true);
-                    break;
-                case 'event':
-                    if (isset($this->menu_type[$row['content']])) {
-                        $row['type'] = $row['content'];
-                        $row['key'] = "wechat_menu#id#{$row['id']}";
-                    }
-                    break;
-                case 'media_id':
-                    $row['media_id'] = $row['content'];
-                    break;
-                default :
-                    (!in_array($row['type'], $this->menu_type)) && $row['type'] = 'click';
-                    $row['key'] = "wechat_menu#id#{$row['id']}";
-            }
+            if ($row['type'] === 'miniprogram') :
+                list($row['appid'], $row['url'], $row['pagepath']) = explode(',', "{$row['content']},,");
+            elseif ($row['type'] === 'view') :
+                if (preg_match('#^(\w+:)?//#', $row['content'])) {
+                    $row['url'] = $row['content'];
+                } else {
+                    $row['url'] = url($row['content'], '', true, true);
+                }
+            elseif ($row['type'] === 'event') :
+                if (isset($this->menuType[$row['content']])) {
+                    list($row['type'], $row['key']) = [$row['content'], "wechat_menu#id#{$row['id']}"];
+                };
+            elseif ($row['type'] === 'media_id'):
+                $row['media_id'] = $row['content'];
+            else :
+                $row['key'] = "wechat_menu#id#{$row['id']}";
+                !in_array($row['type'], $this->menuType) && $row['type'] = 'click';
+            endif;
             unset($row['content']);
         }
         $menus = ToolsService::arr2tree($result, 'index', 'pindex', 'sub_button');
@@ -162,11 +157,11 @@ class Menu extends BasicAdmin
             }
             unset($menu['type']);
         }
-        $wechat = &load_wechat('Menu');
+        $wechat = load_wechat('Menu');
         if (false !== $wechat->createMenu(['button' => $menus])) {
             return ['status' => true, 'errmsg' => ''];
         }
-        return ['status' => false, 'errmsg' => $wechat->errMsg];
+        return ['status' => false, 'errmsg' => $wechat->getError()];
     }
 
 }

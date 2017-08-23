@@ -7,7 +7,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="viewport" content="initial-scale=1,maximum-scale=1">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <link rel="stylesheet" href="__PUBLIC__/static/plugs/aui/aui.css">
+        <link rel="stylesheet" href="__STATIC__/plugs/aui/aui.css">
     </head>
     <body class='aui-scroll-x'>
         <style>
@@ -21,13 +21,13 @@
             .aui-chat .aui-chat-content .aui-chat-arrow.one {top:.7rem!important;background:#f5f5f5!important;border:1px solid #ccc!important;left:-0.28rem!important;}
             .aui-card-list-content-padded img {max-width: 100% !important;}
         </style>
-        <script src="__PUBLIC__/static/plugs/jquery/jquery.min.js" type="text/javascript"></script>
+        <script src="__STATIC__/plugs/jquery/jquery.min.js" type="text/javascript"></script>
         {if ($type eq 'text') or ($type eq 'image') or ($type eq 'music')}
         <section class="aui-chat">
             <div class="aui-chat-header"><span class="time">{:date('H:i')}</span></div>
             <div class="aui-chat-item aui-chat-left">
                 <div class="aui-chat-media">
-                    <img src="__PUBLIC__/static/theme/default/img/head.gif"/>
+                    <img src="__STATIC__/theme/default/img/head.gif"/>
                 </div>
                 <div class="aui-chat-inner">
                     {if $type eq 'text'}
@@ -40,7 +40,7 @@
                     <div class="aui-chat-content bg-white">
                         <div class="aui-chat-arrow one"></div>
                         <div class="aui-chat-arrow two"></div>
-                        <img src='{$content|default="__PUBLIC__/static/theme/default/img/image.png"}'/>
+                        <img src='{$content|default="__STATIC__/theme/default/img/image.png"}'/>
                     </div>
                     {elseif $type eq 'music'}
                     <div class="aui-chat-content" style='background:#080'>

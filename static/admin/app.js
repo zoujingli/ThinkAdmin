@@ -25,55 +25,51 @@ require.config({
         // 自定义插件（源码自创建或已修改源码）
         'admin.plugs': ['plugs'],
         'admin.listen': ['listen'],
-        'layui': ['../plugs/layui/layui'],
-        'ueditor': ['../plugs/ueditor/ueditor'],
         'template': ['../plugs/template/template'],
         'pcasunzips': ['../plugs/jquery/pcasunzips'],
-        'laydate': ['../plugs/layui/laydate/laydate'],
-        // 开源插件（未修改源码）
+        // 开源插件(未修改源码)
         'pace': ['../plugs/jquery/pace.min'],
         'json': ['../plugs/jquery/json2.min'],
-        'citys': ['../plugs/jquery/jquery.citys'],
-        'print': ['../plugs/jquery/jquery.PrintArea'],
-        'base64': ['../plugs/jquery/base64.min'],
+        'layui': ['../plugs/layui/layui'],
         'jquery': ['../plugs/jquery/jquery.min'],
+        'base64': ['../plugs/jquery/base64.min'],
+        'ckeditor': ['../plugs/ckeditor/ckeditor'],
         'websocket': ['../plugs/socket/websocket'],
         'bootstrap': ['../plugs/bootstrap/js/bootstrap.min'],
-        'jquery.ztree': ['../plugs/ztree/jquery.ztree.all.min'],
         'bootstrap.typeahead': ['../plugs/bootstrap/js/bootstrap3-typeahead.min'],
-        'zeroclipboard': ['../plugs/ueditor/third-party/zeroclipboard/ZeroClipboard.min'],
-        'jquery.cookies': ['../plugs/jquery/jquery.cookie'],
+        'jquery.ztree': ['../plugs/ztree/jquery.ztree.all.min'],
         'jquery.masonry': ['../plugs/jquery/masonry.min'],
-
+        'jquery.cookies': ['../plugs/jquery/jquery.cookie'],
     },
     shim: {
-        'citys': {deps: ['jquery']},
         'layui': {deps: ['jquery']},
-        'laydate': {deps: ['jquery']},
-        'bootstrap': {deps: ['jquery']},
+        'ckeditor': {deps: ['jquery']},
+        'websocket': {deps: [baseUrl + '../plugs/socket/swfobject.min.js']},
         'pcasunzips': {deps: ['jquery']},
+        'admin.plugs': {deps: ['jquery', 'layui']},
+        'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
+        'bootstrap': {deps: ['jquery']},
+        'bootstrap.typeahead': {deps: ['bootstrap']},
+        'jquery.ztree': {deps: ['jquery', 'css!' + baseUrl + '../plugs/ztree/zTreeStyle/zTreeStyle.css']},
         'jquery.cookies': {deps: ['jquery']},
         'jquery.masonry': {deps: ['jquery']},
-        'admin.plugs': {deps: ['jquery', 'layui']},
-        'bootstrap.typeahead': {deps: ['jquery', 'bootstrap']},
-        'websocket': {deps: [baseUrl + '../plugs/socket/swfobject.min.js']},
-        'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
-        'jquery.ztree': {deps: ['jquery', 'css!' + baseUrl + '../plugs/ztree/zTreeStyle/zTreeStyle.css']},
     },
     deps: ['css!' + baseUrl + '../plugs/awesome/css/font-awesome.min.css'],
     // 开启debug模式，不缓存资源
-    urlArgs: "ver=" + (new Date()).getTime()
+    // urlArgs: "ver=" + (new Date()).getTime()
 });
-
-window.WEB_SOCKET_SWF_LOCATION = baseUrl + "../plugs/socket/WebSocketMain.swf";
-window.UEDITOR_HOME_URL = (window.ROOT_URL ? window.ROOT_URL + '/static/' : baseUrl) + 'plugs/ueditor/';
 
 // UI框架初始化
-require(['pace', 'jquery', 'layui', 'bootstrap', 'jquery.cookies'], function () {
-    layui.config({dir: baseUrl + '../plugs/layui/'});
-    layui.use(['layer', 'form'], function () {
-        window.layer = layui.layer;
-        window.form = layui.form();
-        require(['admin.listen']);
+PageLayout.call(this);
+function PageLayout(callback, custom, basic) {
+    custom = custom || ['admin.listen', 'ckeditor'];
+    basic = basic || ['pace', 'jquery', 'layui', 'bootstrap'];
+    window.WEB_SOCKET_SWF_LOCATION = baseUrl + "../plugs/socket/WebSocketMain.swf";
+    require(basic, function () {
+        layui.config({dir: baseUrl + '../plugs/layui/'});
+        layui.use(['layer', 'form'], function () {
+            window.layer = layui.layer, window.form = layui.form;
+            require(custom, callback || false);
+        });
     });
-});
+}

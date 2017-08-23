@@ -70,12 +70,6 @@
             </div>
         </div>
 
-        <div class="col-xs-2">
-            <div class="form-group">
-                <input type="text" name="city" value="{$Think.get.city|default=''}" placeholder="城市" class="input-sm form-control">
-            </div>
-        </div>
-
         <div class="col-xs-1">
             <div class="form-group">
                 <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i> 搜索</button>
@@ -87,6 +81,7 @@
 <!-- 表单搜索 结束 -->
 
 <form onsubmit="return false;" data-auto="" method="POST">
+    {if !empty($list)}
     <input type="hidden" value="resort" name="action"/>
     <table class="table table-hover">
         <thead>
@@ -133,25 +128,27 @@
                 <td class='text-center'>{$vo.subscribe_at}</td>
             </tr>
             {/foreach}
-            {if empty($list)}
-            <tr><td colspan="5" style="text-align:center">没 有 记 录 了 哦 !</td></tr>
-            {/if}
         </tbody>
     </table>
     {if isset($page)}<p>{$page}</p>{/if}
+    {else}
+    <p class="help-block">暂时无记录</p>
+    {/if}
 </form>
 
 <div id="tags-box" class="hide">
     <form>
-        <div class="row">
+        <div class="row" style='max-height:230px;overflow:auto;margin-right:0'>
             {foreach $tags as $key=>$tag}
-            <div class="col-xs-6">
-                <label><input value="{$key}" type="checkbox" /> {$tag}</label>
+            <div class="col-xs-4">
+                <label style="overflow:hidden;text-overflow:ellipsis;display:block;white-space:nowrap">
+                    <input value="{$key}" type="checkbox" /> {$tag}
+                </label>
             </div>
             {/foreach}
         </div>
-        <div class="text-center">
-            <div class="hr-line-dashed"></div>
+        <div class="text-center" style="margin-top:10px">
+            <div class="hr-line-dashed" style="margin-top:0"></div>
             <button type="button" data-event="confirm" class="layui-btn layui-btn-small">保存数据</button>
             <button type="button" data-event="cancel" class="layui-btn layui-btn-danger layui-btn-small" type='button'>取消编辑</button>
         </div>
