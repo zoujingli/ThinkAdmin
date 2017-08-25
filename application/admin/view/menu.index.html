@@ -64,6 +64,9 @@
                     <span class="text-explode">|</span>
                     <a data-update="{$vo.ids}" data-field='delete' data-action='{:url("$classuri/del")}' href="javascript:void(0)">删除</a>
                     {/if}
+                    {if auth("$classuri/add")}
+                    <a data-modal='{:url("$classuri/add")}?pid={$vo.ids}' href="javascript:void(0)">添加菜单</a>
+                    {/if}
                 </td>
             </tr>
             {/foreach}
