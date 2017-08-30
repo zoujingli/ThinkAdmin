@@ -10,18 +10,20 @@ use Qiniu\Http\Error;
 /**
  * 主要涉及了空间资源管理及批量操作接口的实现，具体的接口规格可以参考
  *
- * @link http://developer.qiniu.com/docs/v6/api/reference/rs/
+ * @link https://developer.qiniu.com/kodo/api/1274/rs
  */
 final class BucketManager
 {
     private $auth;
-    private $zone;
+    private $config;
 
-    public function __construct(Auth $auth, Zone $zone = null)
+    public function __construct(Auth $auth, Config $config = null)
     {
         $this->auth = $auth;
-        if ($zone === null) {
-            $this->zone = new Zone();
+        if ($config == null) {
+            $this->config = new Config();
+        } else {
+            $this->config = $config;
         }
     }
 
@@ -30,10 +32,29 @@ final class BucketManager
      *
      * @return string[] 包含所有空间名
      */
-    public function buckets()
+    public function buckets($shared = true)
     {
-        return $this->rsGet('/buckets');
+        $includeShared = "false";
+        if ($shared === true) {
+            $includeShared = "true";
+        }
+        return $this->rsGet('/buckets?shared=' . $includeShared);
     }
+
+    /**
+     * 获取指定空间绑定的所有的域名
+     *
+     * @return string[] 包含所有空间域名
+     */
+    public function domains($bucket)
+    {
+        return $this->apiGet('/v6/domain/list?tbl=' . $bucket);
+    }
+
+    /**
+     * 获取空间绑定的域名列表
+     * @return string[] 包含空间绑定的所有域名
+     */
 
     /**
      * 列取空间的文件列表
@@ -62,13 +83,8 @@ final class BucketManager
         \Qiniu\setWithoutEmpty($query, 'marker', $marker);
         \Qiniu\setWithoutEmpty($query, 'limit', $limit);
         \Qiniu\setWithoutEmpty($query, 'delimiter', $delimiter);
-        $url = Config::RSF_HOST . '/list?' . http_build_query($query);
-        list($ret, $error) = $this->get($url);
-        if ($ret === null) {
-            return array(null, null, $error);
-        }
-        $marker = array_key_exists('marker', $ret) ? $ret['marker'] : null;
-        return array($ret['items'], $marker, null);
+        $url = $this->getRsfHost() . '/list?' . http_build_query($query);
+        return $this->get($url);
     }
 
     /**
@@ -81,8 +97,9 @@ final class BucketManager
      *                                              [
      *                                                  "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>",
-     *                                                  "fsize" => "<file size>",
+     *                                                  "fsize" => <file size>,
      *                                                  "putTime" => "<file modify time>"
+     *                                                  "fileType" => <file type>
      *                                              ]
      *
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/stat.html
@@ -140,7 +157,7 @@ final class BucketManager
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
         $path = '/copy/' . $from . '/' . $to;
-        if ($force) {
+        if ($force === true) {
             $path .= '/force/true';
         }
         list(, $error) = $this->rsPost($path);
@@ -184,10 +201,30 @@ final class BucketManager
     {
         $resource = \Qiniu\entry($bucket, $key);
         $encode_mime = \Qiniu\base64_urlSafeEncode($mime);
-        $path = '/chgm/' . $resource . '/mime/' .$encode_mime;
+        $path = '/chgm/' . $resource . '/mime/' . $encode_mime;
         list(, $error) = $this->rsPost($path);
         return $error;
     }
+
+
+    /**
+     * 修改指定资源的存储类型
+     *
+     * @param $bucket     待操作资源所在空间
+     * @param $key        待操作资源文件名
+     * @param $fileType       待操作文件目标文件类型
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     * @link  https://developer.qiniu.com/kodo/api/3710/modify-the-file-type
+     */
+    public function changeType($bucket, $key, $fileType)
+    {
+        $resource = \Qiniu\entry($bucket, $key);
+        $path = '/chtype/' . $resource . '/type/' . $fileType;
+        list(, $error) = $this->rsPost($path);
+        return $error;
+    }
+
 
     /**
      * 从指定URL抓取资源，并将该资源存储到指定空间中
@@ -219,7 +256,7 @@ final class BucketManager
         $path = '/fetch/' . $resource . '/to/' . $to;
 
         $ak = $this->auth->getAccessKey();
-        $ioHost = $this->zone->getIoHost($ak, $bucket);
+        $ioHost = $this->config->getIovipHost($ak, $bucket);
 
         $url = $ioHost . $path;
         return $this->post($url, null);
@@ -240,7 +277,7 @@ final class BucketManager
         $path = '/prefetch/' . $resource;
 
         $ak = $this->auth->getAccessKey();
-        $ioHost = $this->zone->getIoHost($ak, $bucket);
+        $ioHost = $this->config->getIovipHost($ak, $bucket);
 
         $url = $ioHost . $path;
         list(, $error) = $this->post($url, null);
@@ -269,22 +306,67 @@ final class BucketManager
         return $this->rsPost('/batch', $params);
     }
 
+    /**
+     * 设置文件的生命周期
+     *
+     * @param $bucket 设置文件生命周期文件所在的空间
+     * @param $key    设置文件生命周期文件的文件名
+     * @param $days   设置该文件多少天后删除，当$days设置为0时表示取消该文件的生命周期
+     *
+     * @return Mixed
+     * @link https://developer.qiniu.com/kodo/api/update-file-lifecycle
+     */
+    public function deleteAfterDays($bucket, $key, $days)
+    {
+        $entry = \Qiniu\entry($bucket, $key);
+        $path = "/deleteAfterDays/$entry/$days";
+        list(, $error) = $this->rsPost($path);
+        return $error;
+    }
+
+    private function getRsfHost()
+    {
+        $scheme = "http://";
+        if ($this->config->useHTTPS == true) {
+            $scheme = "https://";
+        }
+        return $scheme . Config::RSF_HOST;
+    }
+
+    private function getRsHost()
+    {
+        $scheme = "http://";
+        if ($this->config->useHTTPS == true) {
+            $scheme = "https://";
+        }
+        return $scheme . Config::RS_HOST;
+    }
+
+    private function getApiHost()
+    {
+        $scheme = "http://";
+        if ($this->config->useHTTPS == true) {
+            $scheme = "https://";
+        }
+        return $scheme . Config::API_HOST;
+    }
+
     private function rsPost($path, $body = null)
     {
-        $url = Config::RS_HOST . $path;
+        $url = $this->getRsHost() . $path;
         return $this->post($url, $body);
+    }
+
+    private function apiGet($path)
+    {
+        $url = $this->getApiHost() . $path;
+        return $this->get($url);
     }
 
     private function rsGet($path)
     {
-        $url = Config::RS_HOST . $path;
+        $url = $this->getRsHost() . $path;
         return $this->get($url);
-    }
-
-    private function ioPost($path, $body = null)
-    {
-        $url = Config::IO_HOST . $path;
-        return $this->post($url, $body);
     }
 
     private function get($url)
@@ -308,33 +390,60 @@ final class BucketManager
         return array($r, null);
     }
 
-    public static function buildBatchCopy($source_bucket, $key_pairs, $target_bucket)
+    public static function buildBatchCopy($source_bucket, $key_pairs, $target_bucket, $force)
     {
-        return self::twoKeyBatch('copy', $source_bucket, $key_pairs, $target_bucket);
+        return self::twoKeyBatch('/copy', $source_bucket, $key_pairs, $target_bucket, $force);
     }
 
 
-    public static function buildBatchRename($bucket, $key_pairs)
+    public static function buildBatchRename($bucket, $key_pairs, $force)
     {
-        return self::buildBatchMove($bucket, $key_pairs, $bucket);
+        return self::buildBatchMove($bucket, $key_pairs, $bucket, $force);
     }
 
 
-    public static function buildBatchMove($source_bucket, $key_pairs, $target_bucket)
+    public static function buildBatchMove($source_bucket, $key_pairs, $target_bucket, $force)
     {
-        return self::twoKeyBatch('move', $source_bucket, $key_pairs, $target_bucket);
+        return self::twoKeyBatch('/move', $source_bucket, $key_pairs, $target_bucket, $force);
     }
 
 
     public static function buildBatchDelete($bucket, $keys)
     {
-        return self::oneKeyBatch('delete', $bucket, $keys);
+        return self::oneKeyBatch('/delete', $bucket, $keys);
     }
 
 
     public static function buildBatchStat($bucket, $keys)
     {
-        return self::oneKeyBatch('stat', $bucket, $keys);
+        return self::oneKeyBatch('/stat', $bucket, $keys);
+    }
+
+    public static function buildBatchDeleteAfterDays($bucket, $key_day_pairs)
+    {
+        $data = array();
+        foreach ($key_day_pairs as $key => $day) {
+            array_push($data, '/deleteAfterDays/' . \Qiniu\entry($bucket, $key) . '/' . $day);
+        }
+        return $data;
+    }
+
+    public static function buildBatchChangeMime($bucket, $key_mime_pairs)
+    {
+        $data = array();
+        foreach ($key_mime_pairs as $key => $mime) {
+            array_push($data, '/chgm/' . \Qiniu\entry($bucket, $key) . '/mime/' . base64_encode($mime));
+        }
+        return $data;
+    }
+
+    public static function buildBatchChangeType($bucket, $key_type_pairs)
+    {
+        $data = array();
+        foreach ($key_type_pairs as $key => $type) {
+            array_push($data, '/chtype/' . \Qiniu\entry($bucket, $key) . '/type/' . $type);
+        }
+        return $data;
     }
 
     private static function oneKeyBatch($operation, $bucket, $keys)
@@ -346,16 +455,20 @@ final class BucketManager
         return $data;
     }
 
-    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket)
+    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket, $force)
     {
         if ($target_bucket === null) {
             $target_bucket = $source_bucket;
         }
         $data = array();
+        $forceOp = "false";
+        if ($force) {
+            $forceOp = "true";
+        }
         foreach ($key_pairs as $from_key => $to_key) {
             $from = \Qiniu\entry($source_bucket, $from_key);
             $to = \Qiniu\entry($target_bucket, $to_key);
-            array_push($data, $operation . '/' . $from . '/' . $to);
+            array_push($data, $operation . '/' . $from . '/' . $to . "/force/" . $forceOp);
         }
         return $data;
     }

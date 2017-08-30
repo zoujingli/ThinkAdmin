@@ -8,14 +8,12 @@ use Qiniu\Auth;
 use Qiniu\Storage\UploadManager;
 
 // 需要填写你的 Access Key 和 Secret Key
-$accessKey = 'Access_Key';
-$secretKey = 'Secret_Key';
+$accessKey = getenv('QINIU_ACCESS_KEY');
+$secretKey = getenv('QINIU_SECRET_KEY');
+$bucket = getenv('QINIU_TEST_BUCKET');
 
 // 构建鉴权对象
 $auth = new Auth($accessKey, $secretKey);
-
-// 要上传的空间
-$bucket = 'Bucket_Name';
 
 // 生成上传 Token
 $token = $auth->uploadToken($bucket);

@@ -39,10 +39,10 @@ final class Client
         }
 
         array_push($data, '--' . $mimeBoundary);
-        $mimeType = empty($mimeType) ? 'application/octet-stream' : $mimeType;
-        $fileName = self::escapeQuotes($fileName);
-        array_push($data, "Content-Disposition: form-data; name=\"$name\"; filename=\"$fileName\"");
-        array_push($data, "Content-Type: $mimeType");
+        $finalMimeType = empty($mimeType) ? 'application/octet-stream' : $mimeType;
+        $finalFileName = self::escapeQuotes($fileName);
+        array_push($data, "Content-Disposition: form-data; name=\"$name\"; filename=\"$finalFileName\"");
+        array_push($data, "Content-Type: $finalMimeType");
         array_push($data, '');
         array_push($data, $fileBody);
 
@@ -82,7 +82,7 @@ final class Client
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_HEADER => true,
             CURLOPT_NOBODY => false,
-            CURLOPT_CUSTOMREQUEST  => $request->method,
+            CURLOPT_CUSTOMREQUEST => $request->method,
             CURLOPT_URL => $request->url
         );
 
@@ -106,7 +106,7 @@ final class Client
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
         $t2 = microtime(true);
-        $duration = round($t2-$t1, 3);
+        $duration = round($t2 - $t1, 3);
         $ret = curl_errno($ch);
         if ($ret !== 0) {
             $r = new Response(-1, $duration, array(), null, curl_error($ch));
@@ -128,7 +128,7 @@ final class Client
         foreach ($headerLines as $line) {
             $headerLine = trim($line);
             $kv = explode(':', $headerLine);
-            if (count($kv) >1) {
+            if (count($kv) > 1) {
                 $headers[$kv[0]] = trim($kv[1]);
             }
         }

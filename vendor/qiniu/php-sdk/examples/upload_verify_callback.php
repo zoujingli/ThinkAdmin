@@ -3,8 +3,10 @@ require_once __DIR__ . '/../autoload.php';
 
 use Qiniu\Auth;
 
-$accessKey = 'Access_Key';
-$secretKey = 'Secret_Key';
+$accessKey = getenv('QINIU_ACCESS_KEY');
+$secretKey = getenv('QINIU_SECRET_KEY');
+$bucket = getenv('QINIU_TEST_BUCKET');
+
 $auth = new Auth($accessKey, $secretKey);
 
 //获取回调的body信息
@@ -17,7 +19,7 @@ $contentType = 'application/x-www-form-urlencoded';
 $authorization = $_SERVER['HTTP_AUTHORIZATION'];
 
 //七牛回调的url，具体可以参考：http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html
-$url = 'http://172.30.251.210/callback.php';
+$url = 'http://172.30.251.210/upload_verify_callback.php';
 
 $isQiniuCallback = $auth->verifyCallback($contentType, $authorization, $url, $callbackBody);
 

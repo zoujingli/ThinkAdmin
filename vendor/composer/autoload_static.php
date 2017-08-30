@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitcec999826fe83b0c9b320b555c760b92
+class ComposerStaticInit78f9a02e77fad1b99d68824fc75d2c98
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -165,6 +165,7 @@ class ComposerStaticInitcec999826fe83b0c9b320b555c760b92
         'OSS\\Result\\Result' => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS/Result/Result.php',
         'OSS\\Result\\UploadPartResult' => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS/Result/UploadPartResult.php',
         'Qiniu\\Auth' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Auth.php',
+        'Qiniu\\Cdn\\CdnManager' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Cdn/CdnManager.php',
         'Qiniu\\Config' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Config.php',
         'Qiniu\\Etag' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Etag.php',
         'Qiniu\\Http\\Client' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Http/Client.php',
@@ -384,9 +385,9 @@ class ComposerStaticInitcec999826fe83b0c9b320b555c760b92
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitcec999826fe83b0c9b320b555c760b92::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitcec999826fe83b0c9b320b555c760b92::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitcec999826fe83b0c9b320b555c760b92::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit78f9a02e77fad1b99d68824fc75d2c98::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit78f9a02e77fad1b99d68824fc75d2c98::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit78f9a02e77fad1b99d68824fc75d2c98::$classMap;
 
         }, null, ClassLoader::class);
     }

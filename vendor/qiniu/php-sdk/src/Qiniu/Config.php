@@ -1,25 +1,134 @@
 <?php
 namespace Qiniu;
 
-use Qiniu\Zone;
-
 final class Config
 {
-    const SDK_VER = '7.1.3';
+    const SDK_VER = '7.2.1';
 
     const BLOCK_SIZE = 4194304; //4*1024*1024 分块上传块大小，该参数为接口规格，不能修改
 
-    const RS_HOST  = 'http://rs.qbox.me';               // 文件元信息管理操作Host
-    const RSF_HOST = 'http://rsf.qbox.me';              // 列举操作Host
-    const API_HOST = 'http://api.qiniu.com';            // 数据处理操作Host
-    const UC_HOST  = 'http://uc.qbox.me';              // Host
+    const RSF_HOST = 'rsf.qiniu.com';
+    const API_HOST = 'api.qiniu.com';
+    const RS_HOST = 'rs.qiniu.com';      //RS Host
+    const UC_HOST = 'https://uc.qbox.me';              //UC Host
 
+    // Zone 空间对应的机房
     public $zone;
+    //BOOL 是否使用https域名
+    public $useHTTPS;
+    //BOOL 是否使用CDN加速上传域名
+    public $useCdnDomains;
+    // Zone Cache
+    private $zoneCache;
 
-    public function __construct(Zone $z = null)         // 构造函数，默认为zone0
+    // 构造函数
+    public function __construct(Zone $z = null)
     {
-        // if ($z === null) {
-            $this->zone = new Zone();
-        // }
+        $this->zone = $z;
+        $this->useHTTPS = false;
+        $this->useCdnDomains = false;
+        $this->zoneCache = array();
+    }
+
+    public function getUpHost($accessKey, $bucket)
+    {
+        $zone = $this->getZone($accessKey, $bucket);
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        $host = $zone->srcUpHosts[0];
+        if ($this->useCdnDomains === true) {
+            $host = $zone->cdnUpHosts[0];
+        }
+
+        return $scheme . $host;
+    }
+
+    public function getUpBackupHost($accessKey, $bucket)
+    {
+        $zone = $this->getZone($accessKey, $bucket);
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        $host = $zone->cdnUpHosts[0];
+        if ($this->useCdnDomains === true) {
+            $host = $zone->srcUpHosts[0];
+        }
+
+        return $scheme . $host;
+    }
+
+    public function getRsHost($accessKey, $bucket)
+    {
+        $zone = $this->getZone($accessKey, $bucket);
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return $scheme . $zone->rsHost;
+    }
+
+    public function getRsfHost($accessKey, $bucket)
+    {
+        $zone = $this->getZone($accessKey, $bucket);
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return $scheme . $zone->rsfHost;
+    }
+
+    public function getIovipHost($accessKey, $bucket)
+    {
+        $zone = $this->getZone($accessKey, $bucket);
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return $scheme . $zone->iovipHost;
+    }
+
+    public function getApiHost($accessKey, $bucket)
+    {
+        $zone = $this->getZone($accessKey, $bucket);
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return $scheme . $zone->apiHost;
+    }
+
+    private function getZone($accessKey, $bucket)
+    {
+        $cacheId = "$accessKey:$bucket";
+
+        if (isset($this->zoneCache[$cacheId])) {
+            $zone = $this->zoneCache[$cacheId];
+        } elseif (isset($this->zone)) {
+            $zone = $this->zone;
+            $this->zoneCache[$cacheId] = $zone;
+        } else {
+            $zone = Zone::queryZone($accessKey, $bucket);
+            $this->zoneCache[$cacheId] = $zone;
+        }
+        return $zone;
     }
 }

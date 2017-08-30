@@ -82,6 +82,7 @@ return array(
     'OSS\\Result\\Result' => $vendorDir . '/aliyuncs/oss-sdk-php/src/OSS/Result/Result.php',
     'OSS\\Result\\UploadPartResult' => $vendorDir . '/aliyuncs/oss-sdk-php/src/OSS/Result/UploadPartResult.php',
     'Qiniu\\Auth' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Auth.php',
+    'Qiniu\\Cdn\\CdnManager' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Cdn/CdnManager.php',
     'Qiniu\\Config' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Config.php',
     'Qiniu\\Etag' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Etag.php',
     'Qiniu\\Http\\Client' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Http/Client.php',

@@ -7,7 +7,7 @@ use Qiniu\Config;
 if (!defined('QINIU_FUNCTIONS_VERSION')) {
     define('QINIU_FUNCTIONS_VERSION', Config::SDK_VER);
 
-   /**
+    /**
      * 计算文件的crc32检验码:
      *
      * @param $file string  待计算校验码的文件路径
@@ -21,7 +21,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return sprintf('%u', $array[1]);
     }
 
-   /**
+    /**
      * 计算输入流的crc32检验码
      *
      * @param $data 待计算校验码的字符串
@@ -35,7 +35,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return sprintf('%u', $array[1]);
     }
 
-   /**
+    /**
      * 对提供的数据进行urlsafe的base64编码。
      *
      * @param string $data 待编码的数据，一般为字符串
@@ -50,7 +50,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return str_replace($find, $replace, base64_encode($data));
     }
 
-   /**
+    /**
      * 对提供的urlsafe的base64编码的数据进行解码
      *
      * @param string $str 待解码的数据，一般为字符串
@@ -64,14 +64,14 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return base64_decode(str_replace($find, $replace, $str));
     }
 
-   /**
+    /**
      * Wrapper for JSON decode that implements error detection with helpful
      * error messages.
      *
-     * @param string $json    JSON data to parse
-     * @param bool $assoc     When true, returned objects will be converted
+     * @param string $json JSON data to parse
+     * @param bool $assoc When true, returned objects will be converted
      *                        into associative arrays.
-     * @param int    $depth   User specified recursion depth.
+     * @param int $depth User specified recursion depth.
      *
      * @return mixed
      * @throws \InvalidArgumentException if the JSON cannot be parsed.
@@ -105,7 +105,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return $data;
     }
 
-   /**
+    /**
      * 计算七牛API中的数据格式
      *
      * @param $bucket 待操作的空间名
@@ -139,7 +139,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         }
         return $array;
     }
-    
+
     /**
      * 缩略图链接拼接
      *
@@ -165,6 +165,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $interlace = null,
         $ignoreError = 1
     ) {
+
         static $imageUrlBuilder = null;
         if (is_null($imageUrlBuilder)) {
             $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
@@ -196,6 +197,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $dy = null,
         $watermarkScale = null
     ) {
+
         static $imageUrlBuilder = null;
         if (is_null($imageUrlBuilder)) {
             $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
@@ -231,11 +233,32 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $dx = null,
         $dy = null
     ) {
+
         static $imageUrlBuilder = null;
         if (is_null($imageUrlBuilder)) {
             $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
         }
 
         return call_user_func_array(array($imageUrlBuilder, 'waterText'), func_get_args());
+    }
+
+    /**
+     *  从uptoken解析accessKey和bucket
+     *
+     * @param $upToken
+     * @return array(ak,bucket,err=null)
+     */
+    function explodeUpToken($upToken)
+    {
+        $items = explode(':', $upToken);
+        if (count($items) != 3) {
+            return array(null, null, "invalid uptoken");
+        }
+        $accessKey = $items[0];
+        $putPolicy = json_decode(base64_decode($items[2]));
+        $scope = $putPolicy->scope;
+        $scopeItems = explode(':', $scope);
+        $bucket = $scopeItems[0];
+        return array($accessKey, $bucket, null);
     }
 }
