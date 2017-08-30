@@ -137,13 +137,16 @@ define(['jquery'], function () {
                 type: type || 'GET', url: $.menu.parseUri(url), data: data || {},
                 statusCode: {
                     404: function () {
+						$.msg.close(dialogIndex);
                         $.msg.tips(self.errMsg.replace('{status}', 'E404 - '));
                     },
                     500: function () {
+						$.msg.close(dialogIndex);
                         $.msg.tips(self.errMsg.replace('{status}', 'E500 - '));
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+					$.msg.close(dialogIndex);
                     $.msg.tips(self.errMsg.replace('{status}', 'E' + textStatus + ' - '));
                 },
                 success: function (res) {
