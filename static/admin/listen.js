@@ -1,3 +1,4 @@
+
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
@@ -18,19 +19,18 @@ define(['jquery', 'admin.plugs'], function () {
     /*! 注册 data-load 事件行为 */
     this.$body.on('click', '[data-load]', function () {
         var url = $(this).attr('data-load'), tips = $(this).attr('data-tips');
-        function _goLoad() {
-            $.form.load(url, {}, 'GET', null, true, tips);
-        }
         if ($(this).attr('data-confirm')) {
             return $.msg.confirm($(this).attr('data-confirm'), _goLoad);
         }
         return _goLoad.call(this);
+        function _goLoad() {
+            $.form.load(url, {}, 'GET', null, true, tips);
+        }
     });
 
     /*! 注册 data-serach 表单搜索行为 */
     this.$body.on('submit', 'form.form-search', function () {
-        var url = $(this).attr('action');
-        var split = url.indexOf('?') === -1 ? '?' : '&';
+        var url = $(this).attr('action'), split = url.indexOf('?') === -1 ? '?' : '&';
         if ((this.method || 'get').toLowerCase() === 'get') {
             window.location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
         } else {
@@ -82,9 +82,7 @@ define(['jquery', 'admin.plugs'], function () {
     /*! 注册 data-href 事件行为 */
     this.$body.on('click', '[data-href]', function () {
         var href = $(this).attr('data-href');
-        if (href && href.indexOf('#') !== 0) {
-            window.location.href = href;
-        }
+        (href && href.indexOf('#') !== 0) && (window.location.href = href);
     });
 
     /*! 注册 data-page-href 事件行为 */
@@ -94,11 +92,9 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-file 事件行为 */
     this.$body.on('click', '[data-file]', function () {
-        var type = $(this).attr('data-type') || 'jpg,png';
-        var field = $(this).attr('data-field') || 'file';
+        var type = $(this).attr('data-type') || 'jpg,png', field = $(this).attr('data-field') || 'file';
         var method = $(this).attr('data-file') === 'one' ? 'one' : 'mtl';
-        var title = $(this).attr('data-title') || '文件上传';
-        var uptype = $(this).attr('data-uptype') || '';
+        var title = $(this).attr('data-title') || '文件上传', uptype = $(this).attr('data-uptype') || '';
         var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/mode/' + method + '.html?mode=' + method + '&uptype=' + uptype + '&type=' + type + '&field=' + field;
         $.form.iframe(url, title || '文件管理');
     });
@@ -120,10 +116,7 @@ define(['jquery', 'admin.plugs'], function () {
         var src = this.getAttribute('data-tips-image') || this.src, img = new Image();
         var imgWidth = this.getAttribute('data-width') || '480px';
         img.onload = function () {
-            layer.open({
-                type: 1, area: imgWidth, title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true,
-                content: $(img).appendTo('body').css({background: '#fff', width: imgWidth, height: 'auto'}),
-                end: function () {
+            layer.open({type: 1, area: imgWidth, title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true, content: $(img).appendTo('body').css({background: '#fff', width: imgWidth, height: 'auto'}), end: function () {
                     $(img).remove();
                 }
             });
@@ -133,8 +126,7 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-tips-text 事件行为 */
     this.$body.on('mouseenter', '[data-tips-text]', function () {
-        var text = $(this).attr('data-tips-text');
-        var placement = $(this).attr('data-tips-placement') || 'auto';
+        var text = $(this).attr('data-tips-text'), placement = $(this).attr('data-tips-placement') || 'auto';
         $(this).tooltip({title: text, placement: placement}).tooltip('show');
     });
 
@@ -142,9 +134,7 @@ define(['jquery', 'admin.plugs'], function () {
     this.$body.on('click', '[data-phone-view]', function () {
         var $container = $('<div class="mobile-preview pull-left"><div class="mobile-header">公众号</div><div class="mobile-body"><iframe id="phone-preview" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe></div></div>').appendTo('body');
         $container.find('iframe').attr('src', this.getAttribute('data-phone-view') || this.href);
-        layer.style(layer.open({type: 1, scrollbar: !1, area: ['330px', '600px'], title: !1, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: !!1,
-            content: $container,
-            end: function () {
+        layer.style(layer.open({type: 1, scrollbar: !1, area: ['330px', '600px'], title: !1, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: !!1, content: $container, end: function () {
                 $container.remove();
             }
         }), {boxShadow: 'none'});

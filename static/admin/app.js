@@ -1,3 +1,4 @@
+
 // +----------------------------------------------------------------------
 // | Think.Admin
 // +----------------------------------------------------------------------
@@ -33,6 +34,7 @@ require.config({
         'layui': ['../plugs/layui/layui'],
         'jquery': ['../plugs/jquery/jquery.min'],
         'base64': ['../plugs/jquery/base64.min'],
+        'angular':['../plugs/angular/angular.min'],
         'ckeditor': ['../plugs/ckeditor/ckeditor'],
         'websocket': ['../plugs/socket/websocket'],
         'bootstrap': ['../plugs/bootstrap/js/bootstrap.min'],
@@ -62,14 +64,12 @@ require.config({
 // UI框架初始化
 PageLayout.call(this);
 function PageLayout(callback, custom, basic) {
-    custom = custom || ['admin.listen', 'ckeditor'];
-    basic = basic || ['pace', 'jquery', 'layui', 'bootstrap'];
     window.WEB_SOCKET_SWF_LOCATION = baseUrl + "../plugs/socket/WebSocketMain.swf";
-    require(basic, function () {
+    require(basic || ['pace', 'jquery', 'layui', 'bootstrap'], function () {
         layui.config({dir: baseUrl + '../plugs/layui/'});
         layui.use(['layer', 'form'], function () {
             window.layer = layui.layer, window.form = layui.form;
-            require(custom, callback || false);
+            require(custom || ['admin.listen', 'ckeditor'], callback || false);
         });
     });
 }

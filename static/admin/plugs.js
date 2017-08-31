@@ -81,7 +81,7 @@ define(['jquery'], function () {
         };
         this.successNeedCloseLayerIndex = [];
         // 自动处理显示Think返回的Json数据
-        this.auto = function (data, time, load) {
+        this.auto = function (data, time) {
             if (parseInt(data.code) === 1) {
                 return self.success(data.msg, time, function () {
                     !!data.url ? (window.location.href = data.url) : $.form.reload();
@@ -137,16 +137,16 @@ define(['jquery'], function () {
                 type: type || 'GET', url: $.menu.parseUri(url), data: data || {},
                 statusCode: {
                     404: function () {
-						$.msg.close(dialogIndex);
+                        $.msg.close(dialogIndex);
                         $.msg.tips(self.errMsg.replace('{status}', 'E404 - '));
                     },
                     500: function () {
-						$.msg.close(dialogIndex);
+                        $.msg.close(dialogIndex);
                         $.msg.tips(self.errMsg.replace('{status}', 'E500 - '));
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-					$.msg.close(dialogIndex);
+                    $.msg.close(dialogIndex);
                     $.msg.tips(self.errMsg.replace('{status}', 'E' + textStatus + ' - '));
                 },
                 success: function (res) {
