@@ -14,7 +14,7 @@
 define(['jquery', 'admin.plugs'], function () {
 
     /*! 定义当前body对象 */
-    this.$body = $('body');
+    this.$body = $('.framework-body').add('.framework-topbar');
 
     /*! 注册 data-load 事件行为 */
     this.$body.on('click', '[data-load]', function () {
@@ -24,7 +24,7 @@ define(['jquery', 'admin.plugs'], function () {
         }
         return _goLoad.call(this);
         function _goLoad() {
-            $.form.load(url, {}, 'GET', null, true, tips);
+            $.form.load(url, {}, 'get', null, true, tips);
         }
     });
 
@@ -32,10 +32,9 @@ define(['jquery', 'admin.plugs'], function () {
     this.$body.on('submit', 'form.form-search', function () {
         var url = $(this).attr('action'), split = url.indexOf('?') === -1 ? '?' : '&';
         if ((this.method || 'get').toLowerCase() === 'get') {
-            window.location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
-        } else {
-            $.form.load(url, this, 'post');
+            return window.location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
         }
+        $.form.load(url, this, 'post');
     });
 
     /*! 注册 data-modal 事件行为 */
@@ -92,8 +91,8 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-file 事件行为 */
     this.$body.on('click', '[data-file]', function () {
-        var type = $(this).attr('data-type') || 'jpg,png', field = $(this).attr('data-field') || 'file';
         var method = $(this).attr('data-file') === 'one' ? 'one' : 'mtl';
+        var type = $(this).attr('data-type') || 'jpg,png', field = $(this).attr('data-field') || 'file';
         var title = $(this).attr('data-title') || '文件上传', uptype = $(this).attr('data-uptype') || '';
         var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/mode/' + method + '.html?mode=' + method + '&uptype=' + uptype + '&type=' + type + '&field=' + field;
         $.form.iframe(url, title || '文件管理');
@@ -113,7 +112,7 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-tips-image 事件行为 */
     this.$body.on('click', '[data-tips-image]', function () {
-        var src = this.getAttribute('data-tips-image') || this.src, img = new Image();
+        var img = new Image(), src = this.getAttribute('data-tips-image') || this.src;
         var imgWidth = this.getAttribute('data-width') || '480px';
         img.onload = function () {
             layer.open({type: 1, area: imgWidth, title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true, content: $(img).appendTo('body').css({background: '#fff', width: imgWidth, height: 'auto'}), end: function () {
@@ -134,7 +133,7 @@ define(['jquery', 'admin.plugs'], function () {
     this.$body.on('click', '[data-phone-view]', function () {
         var $container = $('<div class="mobile-preview pull-left"><div class="mobile-header">公众号</div><div class="mobile-body"><iframe id="phone-preview" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe></div></div>').appendTo('body');
         $container.find('iframe').attr('src', this.getAttribute('data-phone-view') || this.href);
-        layer.style(layer.open({type: 1, scrollbar: !1, area: ['330px', '600px'], title: !1, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: !!1, content: $container, end: function () {
+        layer.style(layer.open({type: 1, scrollbar: !1, area: ['335px', '600px'], title: !1, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: !1, content: $container, end: function () {
                 $container.remove();
             }
         }), {boxShadow: 'none'});
@@ -142,7 +141,6 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 后台菜单控制初始化 */
     $.menu.listen();
-
     /*! 表单监听初始化 */
     $.validate.listen(this);
 
