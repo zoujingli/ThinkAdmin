@@ -17,6 +17,9 @@ think\Route::post([
     'admin/index/pass'    => function () {
         return json(['code' => 0, 'msg' => '测试环境禁修改用户密码！']);
     },
+    'admin/user/pass'     => function () {
+        return json(['code' => 0, 'msg' => '测试环境禁修改用户密码！']);
+    },
     'admin/config/index'  => function () {
         return json(['code' => 0, 'msg' => '测试环境禁修改系统配置操作！']);
     },
