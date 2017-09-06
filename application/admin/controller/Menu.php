@@ -107,6 +107,10 @@ class Menu extends BasicAdmin
             }
             $this->assign('nodes', array_column($nodes, 'node'));
             $this->assign('menus', $menus);
+            $pid = $this->request->get('pid', '');
+            if ($pid !== '') {
+                $vo['pid'] = $pid;
+            }
         }
     }
 
