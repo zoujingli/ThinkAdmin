@@ -218,7 +218,7 @@ class Api extends Controller
             return false;
         }
         // 标识推荐关系
-        $data = ['spread_by' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')];
+        $data = ['spread_openid' => $fans['openid'], 'spread_at' => date('Y-m-d H:i:s')];
         Db::name('WechatFans')->where("openid='{$this->openid}' and (spread_openid is null or spread_openid='')")->setField($data);
         // @todo 推荐成功的奖励
     }
