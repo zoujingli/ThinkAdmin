@@ -14,7 +14,7 @@
 define(['jquery', 'admin.plugs'], function () {
 
     /*! 定义当前body对象 */
-    this.$body = $('.framework-body').add('.framework-topbar').add('body');
+    this.$body = $('body');
 
     /*! 注册 data-load 事件行为 */
     this.$body.on('click', '[data-load]', function () {
