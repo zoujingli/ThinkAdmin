@@ -117,7 +117,7 @@ class Plugs extends BasicAdmin
         $secretKey = sysconf('storage_qiniu_secret_key');
         $protocol = sysconf('storage_qiniu_is_https') ? 'https' : 'http';
         $params = [
-            "scope"      => "{$bucket}:{$key}", "deadline"   => 3600 + time(),
+            "scope"      => "{$bucket}:{$key}", "deadline" => 3600 + time(),
             "returnBody" => "{\"data\":{\"site_url\":\"{$protocol}://{$host}/$(key)\",\"file_url\":\"$(key)\"}, \"code\": \"SUCCESS\"}",
         ];
         $data = str_replace(['+', '/'], ['-', '_'], base64_encode(json_encode($params)));

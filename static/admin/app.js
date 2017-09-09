@@ -12,7 +12,7 @@
 // +----------------------------------------------------------------------
 
 // 当前资源URL目录
-var baseUrl = (function () {
+var _root = (function () {
     var scripts = document.scripts, src = scripts[scripts.length - 1].src;
     return src.substring(0, src.lastIndexOf("/") + 1);
 })();
@@ -20,8 +20,8 @@ var baseUrl = (function () {
 // RequireJs 配置参数
 require.config({
     waitSeconds: 0,
-    baseUrl: baseUrl,
-    map: {'*': {css: baseUrl + '../plugs/require/require.css.js'}},
+    baseUrl: _root,
+    map: {'*': {css: _root + '../plugs/require/require.css.js'}},
     paths: {
         // 自定义插件（源码自创建或已修改源码）
         'admin.plugs': ['plugs'],
@@ -34,7 +34,7 @@ require.config({
         'layui': ['../plugs/layui/layui'],
         'jquery': ['../plugs/jquery/jquery.min'],
         'base64': ['../plugs/jquery/base64.min'],
-        'angular':['../plugs/angular/angular.min'],
+        'angular': ['../plugs/angular/angular.min'],
         'ckeditor': ['../plugs/ckeditor/ckeditor'],
         'websocket': ['../plugs/socket/websocket'],
         'bootstrap': ['../plugs/bootstrap/js/bootstrap.min'],
@@ -46,17 +46,17 @@ require.config({
     shim: {
         'layui': {deps: ['jquery']},
         'ckeditor': {deps: ['jquery']},
-        'websocket': {deps: [baseUrl + '../plugs/socket/swfobject.min.js']},
+        'websocket': {deps: [_root + '../plugs/socket/swfobject.min.js']},
         'pcasunzips': {deps: ['jquery']},
         'admin.plugs': {deps: ['jquery', 'layui']},
         'admin.listen': {deps: ['jquery', 'jquery.cookies', 'admin.plugs']},
         'bootstrap': {deps: ['jquery']},
         'bootstrap.typeahead': {deps: ['bootstrap']},
-        'jquery.ztree': {deps: ['jquery', 'css!' + baseUrl + '../plugs/ztree/zTreeStyle/zTreeStyle.css']},
+        'jquery.ztree': {deps: ['jquery', 'css!' + _root + '../plugs/ztree/zTreeStyle/zTreeStyle.css']},
         'jquery.cookies': {deps: ['jquery']},
         'jquery.masonry': {deps: ['jquery']},
     },
-    deps: ['css!' + baseUrl + '../plugs/awesome/css/font-awesome.min.css'],
+    deps: ['css!' + _root + '../plugs/awesome/css/font-awesome.min.css'],
     // 开启debug模式，不缓存资源
     // urlArgs: "ver=" + (new Date()).getTime()
 });
@@ -64,11 +64,11 @@ require.config({
 // UI框架初始化
 PageLayout.call(this);
 function PageLayout(callback, custom, basic) {
-    window.WEB_SOCKET_SWF_LOCATION = baseUrl + "../plugs/socket/WebSocketMain.swf";
+    window.WEB_SOCKET_SWF_LOCATION = _root + "../plugs/socket/WebSocketMain.swf";
     require(basic || ['pace', 'jquery', 'layui', 'bootstrap'], function () {
-        layui.config({dir: baseUrl + '../plugs/layui/'});
-        layui.use(['layer', 'form'], function () {
-            window.layer = layui.layer, window.form = layui.form;
+        layui.config({dir: _root + '../plugs/layui/'});
+        layui.use(['layer', 'form', 'laydate'], function () {
+            window.layer = layui.layer, window.form = layui.form, window.laydate = layui.laydate;
             require(custom || ['admin.listen', 'ckeditor'], callback || false);
         });
     });

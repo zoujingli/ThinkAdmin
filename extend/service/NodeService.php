@@ -42,7 +42,7 @@ class NodeService
             if (empty($authorizeids)) {
                 return session('user.nodes', []);
             }
-            $nodes = Db::name('SystemAuthNode')->where('auth', 'in', $authorizeids)->column('node');
+            $nodes = Db::name('SystemAuthNode')->whereIn('auth', $authorizeids)->column('node');
             return session('user.nodes', $nodes);
         }
         return false;
@@ -56,7 +56,7 @@ class NodeService
     {
         $nodes = cache('need_access_node');
         if (empty($nodes)) {
-            $nodes = Db::name('SystemNode')->where('is_auth', '1')->column('node');
+            $nodes = Db::name('SystemNode')->where(['is_auth' => '1'])->column('node');
             cache('need_access_node', $nodes);
         }
         return $nodes;

@@ -60,6 +60,11 @@ class Request
     protected $routeInfo = [];
 
     /**
+     * @var array 环境变量
+     */
+    protected $env;
+
+    /**
      * @var array 当前调度信息
      */
     protected $dispatch = [];
@@ -1088,7 +1093,7 @@ class Request
     public function filterExp(&$value)
     {
         // 过滤查询特殊字符
-        if (is_string($value) && preg_match('/^(EXP|NEQ|GT|EGT|LT|ELT|OR|XOR|LIKE|NOTLIKE|NOT BETWEEN|NOTBETWEEN|BETWEEN|NOTIN|NOT IN|IN)$/i', $value)) {
+        if (is_string($value) && preg_match('/^(EXP|NEQ|GT|EGT|LT|ELT|OR|XOR|LIKE|NOTLIKE|NOT LIKE|NOT BETWEEN|NOTBETWEEN|BETWEEN|NOTIN|NOT IN|IN)$/i', $value)) {
             $value .= ' ';
         }
         // TODO 其他安全过滤
@@ -1529,10 +1534,16 @@ class Request
      * @param string $key 缓存标识，支持变量规则 ，例如 item/:name/:id
      * @param mixed  $expire 缓存有效期
      * @param array  $except 缓存排除
+     * @param string $tag    缓存标签
      * @return void
      */
-    public function cache($key, $expire = null, $except = [])
+    public function cache($key, $expire = null, $except = [], $tag = null)
     {
+        if (!is_array($except)) {
+            $tag    = $except;
+            $except = [];
+        }
+
         if (false !== $key && $this->isGet() && !$this->isCheckCache) {
             // 标记请求缓存检查
             $this->isCheckCache = true;
@@ -1586,7 +1597,7 @@ class Request
                 $response               = Response::create($content)->header($header);
                 throw new \think\exception\HttpResponseException($response);
             } else {
-                $this->cache = [$key, $expire];
+                $this->cache = [$key, $expire, $tag];
             }
         }
     }
@@ -1604,7 +1615,7 @@ class Request
     /**
      * 设置当前请求绑定的对象实例
      * @access public
-     * @param string $name 绑定的对象标识
+     * @param string|array $name 绑定的对象标识
      * @param mixed  $obj 绑定的对象实例
      * @return mixed
      */

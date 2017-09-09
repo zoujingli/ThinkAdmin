@@ -82,12 +82,15 @@ class Db
                 Log::record('[ DB ] INIT ' . $options['type'], 'info');
             }
             if (true === $name) {
-                return new $class($options);
-            } else {
-                self::$instance[$name] = new $class($options);
+                $name = md5(serialize($config));
             }
+            self::$instance[$name] = new $class($options);
         }
         return self::$instance[$name];
+    }
+    
+    public static function clear() {
+        self::$instance = null;
     }
 
     /**

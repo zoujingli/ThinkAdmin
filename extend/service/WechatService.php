@@ -35,9 +35,9 @@ class WechatService
      */
     public static function getNewsById($id, $where = [])
     {
-        $data = Db::name('WechatNews')->where('id', $id)->where($where)->find();
+        $data = Db::name('WechatNews')->where(['id' => $id])->where($where)->find();
         $article_ids = explode(',', $data['article_id']);
-        $articles = Db::name('WechatNewsArticle')->where('id', 'in', $article_ids)->select();
+        $articles = Db::name('WechatNewsArticle')->whereIn('id', $article_ids)->select();
         $data['articles'] = [];
         foreach ($article_ids as $article_id) {
             foreach ($articles as $article) {
@@ -59,18 +59,19 @@ class WechatService
     public static function uploadImage($local_url)
     {
         # 检测文件上否已经上传过了
-        if (($img = Db::name('WechatNewsImage')->where('md5', md5($local_url))->find()) && isset($img['media_url'])) {
+        $md5 = md5($local_url);
+        if (($img = Db::name('WechatNewsImage')->where(['md5' => $md5])->find()) && !empty($img['media_url'])) {
             return $img['media_url'];
         }
         # 下载临时文件到本地
-        $filename = 'wechat/image/' . join('/', str_split(md5($local_url), 16)) . '.' . strtolower(pathinfo($local_url, 4));
-        $result = FileService::local($filename, file_get_contents($local_url));
+        $content = file_get_contents($local_url);
+        $filename = 'wechat/image/' . join('/', str_split($md5, 16)) . '.' . strtolower(pathinfo($local_url, 4));
         # 上传图片到微信服务器
-        if ($result && isset($result['file'])) {
-            $wechat = &load_wechat('media');
-            $info = $wechat->uploadImg(['media' => "@{$result['file']}"]);
+        if (($result = FileService::local($filename, $content)) && isset($result['file'])) {
+            $wechat = load_wechat('media');
+            $info = $wechat->uploadImg(['media' => base64_encode($content)]);
             if (!empty($info)) {
-                $data = ['local_url' => $local_url, 'media_url' => $info['url'], 'md5' => md5($local_url)];
+                $data = ['local_url' => $local_url, 'media_url' => $info['url'], 'md5' => $md5];
                 Db::name('WechatNewsImage')->insert($data);
                 return $info['url'];
             }
@@ -90,19 +91,18 @@ class WechatService
     public static function uploadForeverMedia($local_url = '', $type = 'image', $is_video = false, $video_info = [])
     {
         # 检测文件上否已经上传过了
-        $wechat = &load_wechat('media');
-        # 检查文件URL是否已经上传为永久素材
-        $map = ['md5' => md5($local_url), 'appid' => $wechat->appid];
-        if (($img = Db::name('WechatNewsMedia')->where($map)->find()) && isset($img['media_id'])) {
+        $wechat = load_wechat('media');
+        $map = ['md5' => md5($local_url), 'appid' => $wechat->getAppid()];
+        if (($img = Db::name('WechatNewsMedia')->where($map)->find()) && !empty($img['media_id'])) {
             return $img['media_id'];
         }
         # 下载临时文件到本地
+        $content = file_get_contents($local_url);
         $filename = 'wechat/image/' . join('/', str_split(md5($local_url), 16)) . '.' . strtolower(pathinfo($local_url, 4));
-        $upload = FileService::local($filename, file_get_contents($local_url));
-        if (!empty($upload) && isset($upload['file']) && file_exists($upload['file'])) {
+        if (($upload = FileService::local($filename, $content)) && isset($upload['file']) && file_exists($upload['file'])) {
             # 上传图片到微信服务器
-            if (false !== ($result = $wechat->uploadForeverMedia(['media' => "@{$upload['file']}"], $type, $is_video, $video_info))) {
-                $data = ['md5' => $map['md5'], 'type' => $type, 'appid' => $wechat->appid, 'media_id' => $result['media_id'], 'local_url' => $local_url];
+            if (false !== ($result = $wechat->uploadForeverMedia(['media' => base64_encode($content)], $type, $is_video, $video_info))) {
+                $data = ['md5' => $map['md5'], 'type' => $type, 'appid' => $wechat->getAppid(), 'media_id' => $result['media_id'], 'local_url' => $local_url];
                 isset($result['url']) && $data['media_url'] = $result['url'];
                 Db::name('WechatNewsMedia')->insert($data);
                 return $data['media_id'];
@@ -118,14 +118,10 @@ class WechatService
      */
     public static function syncFansTags()
     {
-        $wechat = &load_wechat("User");
+        $wechat = load_wechat("User");
         if (($result = $wechat->getTags()) !== false) {
-            $tags = $result['tags'];
-            foreach ($tags as &$tag) {
-                $tag['appid'] = $wechat->appid;
-            }
-            Db::name('WechatFansTags')->where('appid', $wechat->appid)->delete();
-            foreach (array_chunk($tags, 100) as $list) {
+            Db::name('WechatFansTags')->where('appid', $wechat->getAppid())->delete();
+            foreach (array_chunk($result['tags'], 100) as $list) {
                 Db::name('WechatFansTags')->insertAll($list);
             }
         }
@@ -139,13 +135,13 @@ class WechatService
      */
     public static function syncFansTagsByOpenid($openid)
     {
-        $wechat = &load_wechat('User');
+        $wechat = load_wechat('User');
         $tagsid = $wechat->getUserTags($openid);
         if ($tagsid === false || !is_array($tagsid)) {
             return false;
         }
-        $data = ['appid' => $wechat->appid, 'openid' => $openid, 'tagid_list' => join(',', $tagsid)];
-        return DataService::save('wechat_fans', $data, 'openid', ['appid' => $wechat->appid]);
+        $data = ['openid' => $openid, 'tagid_list' => join(',', $tagsid)];
+        return DataService::save('wechat_fans', $data, 'openid', ['appid' => $wechat->getAppid()]);
     }
 
     /**
@@ -162,8 +158,10 @@ class WechatService
         if (!empty($user['tagid_list']) && is_array($user['tagid_list'])) {
             $user['tagid_list'] = join(',', $user['tagid_list']);
         }
+        foreach (['country', 'province', 'city', 'nickname', 'remark'] as $k) {
+            isset($user[$k]) && $user[$k] = ToolsService::emojiEncode($user[$k]);
+        }
         $user['appid'] = $appid;
-        $user['nickname'] = ToolsService::emojiEncode($user['nickname']);
         return DataService::save('WechatFans', $user, 'openid');
     }
 
@@ -177,10 +175,11 @@ class WechatService
     {
         $map = ['openid' => $openid];
         is_string($appid) && $map['appid'] = $appid;
-        if (($fans = Db::name('WechatFans')->where($map)->find()) && isset($fans['nickname'])) {
-            $fans['nickname'] = ToolsService::emojiDecode($fans['nickname']);
+        $user = Db::name('WechatFans')->where($map)->find();
+        foreach (['country', 'province', 'city', 'nickname', 'remark'] as $k) {
+            isset($user[$k]) && $user[$k] = ToolsService::emojiDecode($user[$k]);
         }
-        return $fans;
+        return $user;
     }
 
     /**
@@ -190,7 +189,8 @@ class WechatService
      */
     public static function syncAllFans($next_openid = '')
     {
-        $wechat = &load_wechat('User');
+        $wechat = load_wechat('User');
+        $appid = $wechat->getAppid();
         if (false === ($result = $wechat->getUserList($next_openid)) || empty($result['data']['openid'])) {
             Log::error("获取粉丝列表失败, {$wechat->errMsg} [{$wechat->errCode}]");
             return false;
@@ -201,7 +201,7 @@ class WechatService
                 return false;
             }
             foreach ($info as $user) {
-                if (false === self::setFansInfo($user, $wechat->appid)) {
+                if (false === self::setFansInfo($user, $appid)) {
                     Log::error('更新粉丝信息更新失败!');
                     return false;
                 }
@@ -220,9 +220,9 @@ class WechatService
      */
     public static function syncBlackFans($next_openid = '')
     {
-        $wechat = &load_wechat('User');
+        $wechat = load_wechat('User');
         $result = $wechat->getBacklist($next_openid);
-        if ($result === false || (empty($result['data']['openid']))) {
+        if ($result === false || empty($result['data']['openid'])) {
             if (empty($result['total'])) {
                 return true;
             }

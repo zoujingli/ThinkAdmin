@@ -63,6 +63,8 @@ class SoapService
                 return $this->getError();
             case 'errcode':
                 return $this->getErrorCode();
+            case 'appid':
+                return $this->getAppid();
         }
         return '';
     }
@@ -79,8 +81,8 @@ class SoapService
             return $this->soap->__call($name, $arguments);
         } catch (\Exception $e) {
             Log::error("Soap Error. Call {$name} Method --- " . $e->getMessage());
-            return false;
         }
+        return false;
     }
 
 }

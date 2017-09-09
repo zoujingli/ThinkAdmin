@@ -98,10 +98,9 @@ define(['jquery'], function () {
         };
     }
 
-
     // 表单构造函数
-    $.form = new _form();
-    function _form() {
+    $.form = new form();
+    function form() {
         this.errMsg = '{status}服务器繁忙，请稍候再试！';
         // 内容区域动态加载后初始化
         this.reInit = function ($container) {
@@ -119,10 +118,6 @@ define(['jquery'], function () {
             function reinit() {
                 $.form.reInit($container);
             }
-        };
-        // 关闭FORM框
-        this.close = function () {
-            return $(this._modal).modal('hide');
         };
         // 刷新当前页面
         this.reload = function () {
@@ -203,8 +198,39 @@ define(['jquery'], function () {
         };
     }
 
+    // 注册对象到JqFn
+    $.fn.validate = function (callback, options) {
+        return (new validate()).check(this, callback, options);
+    };
+
+    // 注册对象到Jq
+    $.validate = function (form, callback, options) {
+        return (new validate()).check(form, callback, options);
+    };
+
+    // 自动监听规则内表单
+    $.validate.listen = function () {
+        $('form[data-auto]').map(function () {
+            if ($(this).attr('data-listen') !== 'true') {
+                var callbackname = $(this).attr('data-callback');
+                $(this).attr('data-listen', 'true').validate(function (data) {
+                    var method = this.getAttribute('method') || 'POST';
+                    var tips = this.getAttribute('data-tips') || undefined;
+                    var url = this.getAttribute('action') || window.location.href;
+                    var callback = window[callbackname || '_default_callback'] || undefined;
+                    var time = this.getAttribute('data-time') || undefined;
+                    $.form.load(url, data, method, callback, true, tips, time);
+                });
+                $(this).find('[data-form-loaded]').map(function () {
+                    $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
+                    $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
+                });
+            }
+        });
+    };
+
     // 表单验证
-    var validate = function () {
+    function validate() {
         var self = this;
         // 表单元素
         this.tags = 'input,textarea,select';
@@ -264,7 +290,7 @@ define(['jquery'], function () {
         };
         // 验证标志
         this.remind = function (input) {
-            return this.isVisible(input) ? this.errorPlacement(input, this.getErrMsg(input)) : false;
+            return this.isVisible(input) ? this.showError(input, input.getAttribute('title') || '') : false;
         };
         // 检测表单单元
         this.checkInput = function (input) {
@@ -282,7 +308,7 @@ define(['jquery'], function () {
                 if (radiopass === false) {
                     allpass = this.remind(eleRadios.get(0), type, tag);
                 } else {
-                    this.successPlacement(input);
+                    this.hideError(input);
                 }
             } else if (type === "checkbox" && isRequired && !$(input).is("[checked]")) {
                 allpass = this.remind(input, type, tag);
@@ -292,28 +318,24 @@ define(['jquery'], function () {
                 allpass ? this.remind(input, type, "empty") : this.remind(input, type, tag);
                 allpass = false;
             } else {
-                this.successPlacement(input);
+                this.hideError(input);
             }
             return allpass;
         };
-        // 获取错误提示的内容
-        this.getErrMsg = function (ele) {
-            return ele.getAttribute('title') || '';
-        };
         // 错误消息显示
-        this.errorPlacement = function (ele, content) {
-            $(ele).addClass('validate-error'), this.insertErrorEle(ele);
+        this.showError = function (ele, content) {
+            $(ele).addClass('validate-error'), this.insertError(ele);
             $($(ele).data('input-info')).addClass('fadeInRight animated').css({width: 'auto'}).html(content);
         };
         // 错误消息消除
-        this.successPlacement = function (ele) {
-            $(ele).removeClass('validate-error'), this.insertErrorEle(ele);
+        this.hideError = function (ele) {
+            $(ele).removeClass('validate-error'), this.insertError(ele);
             $($(ele).data('input-info')).removeClass('fadeInRight').css({width: '30px'}).html('');
         };
         // 错误消息标签插入
-        this.insertErrorEle = function (ele) {
+        this.insertError = function (ele) {
             var $html = $('<span style="-webkit-animation-duration:.2s;animation-duration:.2s;padding-right:20px;color:#a94442;position:absolute;right:0;font-size:12px;z-index:2;display:block;width:34px;text-align:center;pointer-events:none"></span>');
-            $html.css({top: $(ele).position().top + 'px', paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('lineHeight')});
+            $html.css({top: $(ele).position().top + 'px', paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('height')});
             $(ele).data('input-info') || $(ele).data('input-info', $html.insertAfter(ele));
         };
         // 表单验证入口
@@ -338,41 +360,11 @@ define(['jquery'], function () {
             });
             return $(form).data('validate', this);
         };
-    };
-
-    // 注册对象到JqFn
-    $.fn.validate = function (callback, options) {
-        return (new validate()).check(this, callback, options);
-    };
-
-    // 注册对象到Jq
-    $.validate = function (form, callback, options) {
-        return (new validate()).check(form, callback, options);
-    };
-
-    // 自动监听规则内表单
-    $.validate.listen = function () {
-        $('form[data-auto]').map(function () {
-            if ($(this).attr('data-listen') !== 'true') {
-                var callbackname = $(this).attr('data-callback');
-                $(this).attr('data-listen', 'true').validate(function (data) {
-                    var method = this.getAttribute('method') || 'POST';
-                    var tips = this.getAttribute('data-tips') || undefined;
-                    var url = this.getAttribute('action') || window.location.href;
-                    var callback = window[callbackname || '_default_callback'] || undefined;
-                    $.form.load(url, data, method, callback, true, tips, this.getAttribute('data-time') || undefined);
-                });
-                $(this).find('[data-form-loaded]').map(function () {
-                    $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
-                    $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
-                });
-            }
-        });
-    };
+    }
 
     // 后台菜单辅助插件
-    $.menu = new _menu();
-    function _menu() {
+    $.menu = new menu();
+    function menu() {
         // 计算URL地址中有效的URI
         this.getUri = function (uri) {
             uri = uri || window.location.href;

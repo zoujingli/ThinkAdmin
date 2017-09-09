@@ -16,8 +16,8 @@ namespace controller;
 
 use service\DataService;
 use think\Controller;
-use think\db\Query;
 use think\Db;
+use think\db\Query;
 
 /**
  * 后台权限基础控制器

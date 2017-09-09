@@ -151,7 +151,7 @@ class Auth extends BasicAdmin
     {
         if (DataService::update($this->table)) {
             $id = $this->request->post('id');
-            Db::name('SystemAuthNode')->where('auth', $id)->delete();
+            Db::name('SystemAuthNode')->where(['auth' => $id])->delete();
             $this->success("权限删除成功！", '');
         }
         $this->error("权限删除失败，请稍候再试！");

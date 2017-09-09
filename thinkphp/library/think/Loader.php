@@ -360,7 +360,7 @@ class Loader
      * @param string $layer        业务层名称
      * @param bool   $appendSuffix 是否添加类名后缀
      * @param string $common       公共模块名
-     * @return Object
+     * @return object
      * @throws ClassNotFoundException
      */
     public static function model($name = '', $layer = 'model', $appendSuffix = false, $common = 'common')
@@ -400,7 +400,7 @@ class Loader
      * @param string $layer        控制层名称
      * @param bool   $appendSuffix 是否添加类名后缀
      * @param string $empty        空控制器名称
-     * @return Object|false
+     * @return object
      * @throws ClassNotFoundException
      */
     public static function controller($name, $layer = 'controller', $appendSuffix = false, $empty = '')
@@ -420,6 +420,8 @@ class Loader
             return App::invokeClass($class);
         } elseif ($empty && class_exists($emptyClass = self::parseClass($module, $layer, $empty, $appendSuffix))) {
             return new $emptyClass(Request::instance());
+        } else {
+            throw new ClassNotFoundException('class not exists:' . $class, $class);
         }
     }
 
@@ -429,7 +431,7 @@ class Loader
      * @param string $layer        验证层名称
      * @param bool   $appendSuffix 是否添加类名后缀
      * @param string $common       公共模块名
-     * @return Object|false
+     * @return object|false
      * @throws ClassNotFoundException
      */
     public static function validate($name = '', $layer = 'validate', $appendSuffix = false, $common = 'common')

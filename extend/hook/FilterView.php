@@ -41,7 +41,7 @@ class FilterView
         $this->request = Request::instance();
         list($appRoot, $uriSelf) = [$this->request->root(true), $this->request->url(true)];
         $uriRoot = strpos($appRoot, EXT) ? ltrim(dirname($appRoot), DS) : $appRoot;
-        $uriStatic = "{$uriRoot}/static";
+        $uriStatic = ($this->request->isSsl() ? 'https' : 'http') . "://plugs.ctolog.com";
         $replace = ['__APP__' => $appRoot, '__SELF__' => $uriSelf, '__PUBLIC__' => $uriRoot, '__STATIC__' => $uriStatic];
         $params = str_replace(array_keys($replace), array_values($replace), $params);
         !IS_CLI && $this->baidu($params);
@@ -54,7 +54,7 @@ class FilterView
     public function baidu(&$params)
     {
         if (($key = sysconf('tongji_baidu_key'))) {
-            $https = Request::instance()->isSsl() ? 'https' : 'http';
+            $https = $this->request->isSsl() ? 'https' : 'http';
             $script = <<<SCRIPT
 \n<!-- 百度统计 开始 -->
 <script>

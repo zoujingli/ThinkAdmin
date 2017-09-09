@@ -38,7 +38,7 @@ class Index extends BasicAdmin
     public function index()
     {
         NodeService::applyAuthNode();
-        $list = (array) Db::name('SystemMenu')->where(['status' => '1'])->order('sort asc,id asc')->select();
+        $list = (array)Db::name('SystemMenu')->where(['status' => '1'])->order('sort asc,id asc')->select();
         $menus = $this->_filterMenu(ToolsService::arr2tree($list), NodeService::get());
         return view('', ['title' => '系统管理', 'menus' => $menus]);
     }

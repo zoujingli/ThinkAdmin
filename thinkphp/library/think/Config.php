@@ -113,6 +113,15 @@ class Config
             // 二维数组设置和获取支持
             $name    = explode('.', $name, 2);
             $name[0] = strtolower($name[0]);
+
+            if (!isset(self::$config[$range][$name[0]])) {
+                // 动态载入额外配置
+                $module = Request::instance()->module();
+                $file   = CONF_PATH . ($module ? $module . DS : '') . 'extra' . DS . $name[0] . CONF_EXT;
+
+                is_file($file) && self::load($file, $name[0]);
+            }
+
             return isset(self::$config[$range][$name[0]][$name[1]]) ? self::$config[$range][$name[0]][$name[1]] : null;
         }
     }
@@ -143,8 +152,7 @@ class Config
             // 批量设置
             if (!empty($value)) {
                 self::$config[$range][$value] = isset(self::$config[$range][$value]) ?
-                array_merge(self::$config[$range][$value], $name) :
-                self::$config[$range][$value] = $name;
+                array_merge(self::$config[$range][$value], $name) : $name;
                 return self::$config[$range][$value];
             } else {
                 return self::$config[$range] = array_merge(self::$config[$range], array_change_key_case($name));

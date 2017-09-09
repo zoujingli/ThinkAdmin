@@ -83,7 +83,7 @@ class Menu extends BasicAdmin
     {
         if ($this->request->isGet()) {
             // 上级菜单处理
-            $_menus = Db::name($this->table)->where('status', '1')->order('sort desc,id desc')->select();
+            $_menus = Db::name($this->table)->where(['status' => '1'])->order('sort desc,id desc')->select();
             $_menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
             $menus = ToolsService::arr2table($_menus);
             foreach ($menus as $key => &$menu) {

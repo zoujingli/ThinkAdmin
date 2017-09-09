@@ -95,7 +95,8 @@ class File extends SplFileObject
 
     /**
      * 获取文件的哈希散列值
-     * @return $string
+     * @param string $type
+     * @return mixed $string
      */
     public function hash($type = 'sha1')
     {
@@ -229,7 +230,7 @@ class File extends SplFileObject
     {
         $extension = strtolower(pathinfo($this->getInfo('name'), PATHINFO_EXTENSION));
         /* 对图像文件进行严格检测 */
-        if (in_array($extension, ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) && !in_array($this->getImageType($this->filename), [1, 2, 3, 4, 6])) {
+        if (in_array($extension, ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) && !in_array($this->getImageType($this->filename), [1, 2, 3, 4, 6, 13])) {
             return false;
         }
         return true;
