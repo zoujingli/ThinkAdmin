@@ -6,6 +6,7 @@
         <title>{block name="title"}{$title|default=''}{if !empty($title)} · {/if}{:sysconf('site_name')}{/block}</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <link rel="shortcut icon" href="{:sysconf('browser_icon')}" />
+        <link rel="stylesheet" href="__STATIC__/plugs/awesome/css/font-awesome.min.css?ver={:date('ymd')}">
         <link rel="stylesheet" href="__STATIC__/plugs/bootstrap/css/bootstrap.min.css?ver={:date('ymd')}"/>
         <link rel="stylesheet" href="__STATIC__/plugs/layui/css/layui.css?ver={:date('ymd')}"/>
         <link rel="stylesheet" href="__STATIC__/theme/default/css/console.css?ver={:date('ymd')}">

@@ -56,7 +56,7 @@ require.config({
         'jquery.cookies': {deps: ['jquery']},
         'jquery.masonry': {deps: ['jquery']},
     },
-    deps: ['css!' + _root + '../plugs/awesome/css/font-awesome.min.css'],
+    // deps: [],
     // 开启debug模式，不缓存资源
     // urlArgs: "ver=" + (new Date()).getTime()
 });
