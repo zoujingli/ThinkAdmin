@@ -26,6 +26,9 @@ think\Route::post([
     'admin/config/file'   => function () {
         return json(['code' => 0, 'msg' => '测试环境禁修改文件配置操作！']);
     },
+	'admin/menu/index'      => function () {
+        return json(['code' => 0, 'msg' => '测试环境禁排序菜单操作！']);
+    },
     'admin/menu/add'      => function () {
         return json(['code' => 0, 'msg' => '测试环境禁添加菜单操作！']);
     },
