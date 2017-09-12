@@ -118,7 +118,7 @@ class ToolsService
      * @param string $ppath
      * @return array
      */
-    public static function arr2table($list, $id = 'id', $pid = 'pid', $path = 'path', $ppath = '')
+    public static function arr2table(array $list, $id = 'id', $pid = 'pid', $path = 'path', $ppath = '')
     {
         $tree = [];
         foreach (self::arr2tree($list, $id, $pid) as $attr) {
