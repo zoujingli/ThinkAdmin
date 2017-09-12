@@ -354,6 +354,11 @@ define(['jquery'], function () {
             });
             $(form).bind("submit", function (event) {
                 if (self.isAllpass($(this).find(self.tags), params) && typeof callback === 'function') {
+                    if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
+                        for (var instance in CKEDITOR.instances) {
+                            CKEDITOR.instances[instance].updateElement();
+                        }
+                    }
                     callback.call(this, $(form).serialize());
                 }
                 return event.preventDefault(), false;
