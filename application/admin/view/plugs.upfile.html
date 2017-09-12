@@ -43,14 +43,13 @@
             function uploaded(ret, file) {
                 var url = ret.url || ret.site_url;
                 $('#' + file.id).attr('data-md5', file.md5).attr('data-src', url);
-                /* {if $mode === 'one'} */
+                /*{if $mode === 'one'}*/
                 top.$('[name="{$field}"]').map(function () {
                     top.$(this).attr('data-srcs', ret.url).attr('data-md5', file.md5).val(url).trigger('change');
                 });
-                //top.$.msg.tips('文件上传成功！');
                 var index = top.layer.getFrameIndex(window.name);
                 top.layer.close(index);
-                /* {/if} {$mode}*/
+                /*{/if} {$mode}*/
             }
 
             function confirmSelected() {
@@ -135,8 +134,7 @@
                         })(),
                         supportTransition = (function () {
                             var s = document.createElement('p').style, r = 'transition' in s || 'WebkitTransition' in s || 'MozTransition' in s || 'msTransition' in s || 'OTransition' in s;
-                            s = null;
-                            return r;
+                            return (s = null), r;
                         })(),
                         uploader;
                 if (!WebUploader.Uploader.support('flash') && WebUploader.browser.ie) {
@@ -146,10 +144,10 @@
                             window['expressinstallcallback'] = function (state) {
                                 switch (state) {
                                     case 'Download.Cancelled':
-                                        alert('您取消了更新！')
+                                        alert('您取消了更新！');
                                         break;
                                     case 'Download.Failed':
-                                        alert('安装失败')
+                                        alert('安装失败');
                                         break;
                                     default:
                                         alert('安装已成功，请刷新！');
@@ -218,23 +216,23 @@
                         label: '点击选择文件',
                         /*{if $mode === 'one'}*/
                         multiple: false,
-                        /* {else} */
+                        /*{else}*/
                         multiple: true,
-                        /* {/if} */
+                        /*{/if}*/
                     },
                     accept: {
                         title: '选择文件',
-                        extensions: '{$types}', //'gif,jpg,jpeg,bmp,png',
+                        extensions: '{$types}',
                         mimeTypes: '{$mimes}'
                     },
                     formData: {},
                     /*{if $mode === 'one'}*/
                     auto: true,
                     fileNumLimit: 1,
-                    /* {else} */
+                    /*{else}*/
                     auto: false,
                     fileNumLimit: 300,
-                    /* {/if} */
+                    /*{/if}*/
                     server: '{:url("admin/plugs/upload")}',
                     swf: '__PUBLIC__/static/plugs/uploader/Uploader.swf',
                     chunked: false,
@@ -249,7 +247,7 @@
                         height: 16000,
                         crop: false, // 是否允许裁剪
                         quality: 90, // 图片质量(只有type为`image/jpeg`的时候才有效)
-                        allowMagnify: false, //  // 是否允许放大(如果想要生成小图的时候不失真，此选项应该设置为false).
+                        allowMagnify: false, // 是否允许放大(如果想要生成小图的时候不失真，此选项应该设置为false).
                         preserveHeaders: true, // 是否保留头部meta信息
                         noCompressIfLarger: false, // 如果发现压缩后文件大小比原来还大，则使用原来图片
                         compressSize: 1024 * 512, // 单位字节(如果图片大小小于此值，不会采用压缩)
@@ -260,16 +258,12 @@
                 uploader.on('uploadBeforeSend', function (file, data, header) {
                     header['X_Requested_With'] = 'XMLHttpRequest';
                     data['allowed_types'] = this.options.accept[0].extensions.split(',').join('|');
+                    data['token'] = file.file.token;
                     data['md5'] = file.file.md5;
                     data['key'] = file.file.key;
-                    data['token'] = file.file.token;
                 });
 
-                /**
-                 * 处理上传后的结果
-                 * @param {type} file
-                 * @returns {undefined}
-                 */
+                /* 处理上传后的结果 */
                 uploader.on('uploadAccept', function (fieldata, ret) {
                     // Qiniu or Local 上传
                     if (ret.code === 'SUCCESS') {
@@ -286,8 +280,7 @@
 
                 // 拖拽时不接受 js, txt 文件。
                 uploader.on('dndAccept', function (items) {
-                    var denied = false, len = items.length;
-                    var unAllowed = 'text/plain;application/javascript ';
+                    var denied = false, len = items.length, unAllowed = 'text/plain;application/javascript ';
                     for (var i = 0; i < len; i++) {
                         if (~unAllowed.indexOf(items[ i ].type)) {
                             denied = true;
@@ -297,14 +290,8 @@
                     return !denied;
                 });
 
-
-
                 // 添加“添加文件”的按钮，
-                uploader.addButton({
-                    id: '#filePicker2',
-                    label: '继续添加'
-                });
-
+                uploader.addButton({id: '#filePicker2', label: '继续添加'});
                 uploader.on('ready', function () {
                     window.uploader = uploader;
                 });
@@ -343,11 +330,11 @@
                         // @todo lazyload
                         $wrap.text('预览中');
                         uploader.makeThumb(file, function (error, src) {
-                            var img;
                             if (error) {
                                 $wrap.text('不能预览');
                                 return;
                             }
+                            var img;
                             if (isSupportBase64) {
                                 img = $('<img src="' + src + '">');
                                 $wrap.empty().append(img);
@@ -388,24 +375,18 @@
                         } else if (cur === 'complete') {
                             $li.append('<span class="success"></span>');
                         }
-
                         $li.removeClass('state-' + prev).addClass('state-' + cur);
                     });
-
                     $li.on('mouseenter', function () {
                         $btns.stop().animate({height: 30});
-                    });
-
-                    $li.on('mouseleave', function () {
+                    }).on('mouseleave', function () {
                         $btns.stop().animate({height: 0});
                     });
-
                     $btns.on('click', 'span', function () {
                         var index = $(this).index(), deg;
                         switch (index) {
                             case 0:
-                                uploader.removeFile(file);
-                                return;
+                                return uploader.removeFile(file);
                             case 1:
                                 file.rotation += 90;
                                 break;
@@ -425,10 +406,9 @@
 
                 // 负责view的销毁
                 function removeFile(file) {
-                    var $li = $('#' + file.id);
                     delete percentages[ file.id ];
                     updateTotalProgress();
-                    $li.off().find('.file-panel').off().end().remove();
+                    $('#' + file.id).off().find('.file-panel').off().end().remove();
                 }
 
                 function updateTotalProgress() {
@@ -463,7 +443,7 @@
                 }
 
                 function setState(val) {
-                    var file, stats;
+                    var stats;
                     if (val === state) {
                         return;
                     }

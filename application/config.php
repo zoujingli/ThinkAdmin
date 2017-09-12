@@ -136,13 +136,13 @@ return [
     // 视图输出字符串内容替换
     'view_replace_str'       => [],
     // 默认跳转页面对应的模板文件
-    'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
-    'dispatch_error_tmpl'    => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
+    'dispatch_success_tmpl'  => APP_PATH . 'extra' . DS . 'view' . DS . 'handler.jump.html',
+    'dispatch_error_tmpl'    => APP_PATH . 'extra' . DS . 'view' . DS . 'handler.jump.html',
     // +----------------------------------------------------------------------
     // | 异常及错误设置
     // +----------------------------------------------------------------------
     // 异常页面的模板文件
-    'exception_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_exception.tpl',
+//    'exception_tmpl'         => APP_PATH . 'extra' . DS . 'view' . DS . 'handler.exception.html',
     // 错误显示信息,非调试模式有效
     'error_message'          => '页面错误！请稍后再试～',
     // 显示错误信息
@@ -158,7 +158,7 @@ return [
         // 日志保存目录
         'path'        => LOG_PATH,
         // 日志记录级别 log,error,info,sql,notice,alert,debug
-        'level'       => ['error', 'log', 'sql', 'notice', 'alert', 'debug'],
+        'level'       => ['error', 'log', 'info', 'sql', 'notice', 'alert', 'debug'],
         // error和sql日志单独记录
         'apart_level' => ['error', 'sql'],
     ],
@@ -221,4 +221,10 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+	
+	//系统数据加密设置
+	'data_auth_key'	=> 'A6uzt6apuYyh6hgRUsaz',
+		
+	//使用评论模型
+	'comment_models' => [ 1 => 'Online', 2 => 'Event', 3 => 'News', 4 => 'Gift', 5 => 'Works'],
 ];

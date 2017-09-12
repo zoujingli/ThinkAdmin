@@ -12,13 +12,22 @@
 // | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
-/*  测试环境禁止操作路由绑定 */
-think\Route::post([]);
 
 think\Route::get([
-    'wechat/menu/cancel' => function() {
-        return json(['code' => 0, 'msg' => '测试环境禁止删除微信菜单操作！']);
-    }
+	// 作品	
+	'works$'  		=> 'Index/Works/index',
+	'works/:guid'  	=> ['Index/Works/detail', [], ['guid'=>'\d+']],
+		
+	'api/works$'	=> 'Api/Works/index',
+		
+	// 评论
+	'api/comment/praise/:id' => ['Api/Comment/praise', [], ['id'=>'\d+']],
+	'api/comment/:token' => ['Api/Comment/index', [], ['token'=>'[a-zA-Z0-9]+']],
+]);
+
+think\Route::post([
+	// 评论
+	'api/comment/add/:token' => ['Api/Comment/add', [], ['token'=>'[a-zA-Z0-9]+']],
 ]);
 
 return [];

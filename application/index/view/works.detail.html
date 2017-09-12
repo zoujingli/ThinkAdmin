@@ -1,0 +1,81 @@
+{extend name='extra@index/main'}
+
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__CSS__/works-detail.css">
+{/block}
+
+{block name="body"}
+<div class="content group-info">
+	<div class="headbar">
+		<div id="slider">
+			<div class="swipe-wrap" style="height: auto;">
+				<figure data-am-widget="figure" class="am am-figure am-figure-default " data-am-figure="{  pureview: 'true' }">
+					<img src="{$item_info.cover}/600" data-rel="{$item_info.cover}/0" />
+				</figure>
+				<figcaption class="am-figure-capition-btm">
+					{$item_info.title}
+				</figcaption>
+			</div>
+		</div>
+	</div>
+
+	<div class="cost-box">
+		<div class="buy-box">
+			<div class="price">
+				<span class="left">创作者：{:getUserById($item_info['author'], 'nickname')}</span>
+				<span class="right">创作时间：{$item_info.create_time.friendly_time}</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="detail-info group-detail">
+	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+		<h2 class="am-titlebar-title ">作品描述</h2>
+	</div>
+	<div class="con am-paragraph-default">
+		<p>
+			{$item_info.digest|nl2br}
+		</p>
+	</div>
+</div>
+
+<div class="detail-info group-detail">
+	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+		<h2 class="am-titlebar-title ">创作历程</h2>
+	</div>
+	<div class="con am-paragraph-default">
+		<video proload="meta" src="{$item_info.vfile}" style="max-width: 100%!important;height: auto!important;" controls="controls"></video>
+	</div>
+</div>
+
+<div class="detail-info group-detail">
+	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+		<h2 class="am-titlebar-title ">创作图集</h2>
+	</div>
+	<div class="con">
+
+		<ul data-am-widget="gallery" class="am-gallery am-avg-sm-3 am-avg-md-3 am-avg-lg-4 am-gallery-default" data-am-gallery="{ pureview: true }" >
+			{volist name="item_info.photos" id="vo"}
+			<li>
+				<div class="am-gallery-item">
+					<img src="{$vo.photo}/s43" data-rel="{$vo.photo}/0" alt="{$vo.text}"/><h3 class="am-gallery-title">{$vo.text}</h3>
+				</div>
+			</li>
+			{/volist}
+		</ul>
+
+	</div>
+</div>
+
+{:p($jsSign)}
+<div class="detail-info group-other J_group-other">
+	<div class="con">
+	{:widget('Comment/render', array('app'=>'works', 'permaid'=>$item_info['id']))}
+	</div>
+</div>
+{/block}
+
+{block name="script"}
+<script src="http://s.amazeui.org/assets/2.x/js/jquery.min.js?v=ibj1kwmm"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
+{/block}

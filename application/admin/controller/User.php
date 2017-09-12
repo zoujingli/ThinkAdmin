@@ -25,7 +25,8 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15 18:12
  */
-class User extends BasicAdmin {
+class User extends BasicAdmin
+{
 
     /**
      * 指定当前数据表
@@ -36,7 +37,8 @@ class User extends BasicAdmin {
     /**
      * 用户列表
      */
-    public function index() {
+    public function index()
+    {
         // 设置页面标题
         $this->title = '系统用户管理';
         // 获取到所有GET参数
@@ -50,38 +52,39 @@ class User extends BasicAdmin {
             }
         }
         // 实例化并显示
-        parent::_list($db);
+        return parent::_list($db);
     }
 
     /**
      * 授权管理
      * @return array|string
      */
-    public function auth() {
+    public function auth()
+    {
         return $this->_form($this->table, 'auth');
     }
 
     /**
      * 用户添加
      */
-    public function add() {
+    public function add()
+    {
         return $this->_form($this->table, 'form');
     }
 
     /**
      * 用户编辑
      */
-    public function edit() {
+    public function edit()
+    {
         return $this->_form($this->table, 'form');
     }
 
     /**
      * 用户密码修改
      */
-    public function pass() {
-        if (in_array('10000', explode(',', $this->request->post('id')))) {
-            $this->error('系统超级账号禁止操作！');
-        }
+    public function pass()
+    {
         if ($this->request->isGet()) {
             $this->assign('verify', false);
             return $this->_form($this->table, 'pass');
@@ -100,7 +103,8 @@ class User extends BasicAdmin {
      * 表单数据默认处理
      * @param array $data
      */
-    public function _form_filter(&$data) {
+    public function _form_filter(&$data)
+    {
         if ($this->request->isPost()) {
             if (isset($data['authorize']) && is_array($data['authorize'])) {
                 $data['authorize'] = join(',', $data['authorize']);
@@ -119,7 +123,8 @@ class User extends BasicAdmin {
     /**
      * 删除用户
      */
-    public function del() {
+    public function del()
+    {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
             $this->error('系统超级账号禁止删除！');
         }
@@ -132,7 +137,8 @@ class User extends BasicAdmin {
     /**
      * 用户禁用
      */
-    public function forbid() {
+    public function forbid()
+    {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
             $this->error('系统超级账号禁止操作！');
         }
@@ -145,7 +151,8 @@ class User extends BasicAdmin {
     /**
      * 用户禁用
      */
-    public function resume() {
+    public function resume()
+    {
         if (DataService::update($this->table)) {
             $this->success("用户启用成功！", '');
         }

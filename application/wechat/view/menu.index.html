@@ -90,6 +90,9 @@
                         <input class="cuci-radio" type="radio" name="menu-type" value="event"> 事件功能
                     </label>
                     <label class="col-xs-5 font-noraml">
+                        <input class="cuci-radio" type="radio" name="menu-type" value="miniprogram"> 小程序
+                    </label>
+                    <label class="col-xs-5 font-noraml">
                         <input class="cuci-radio" type="radio" name="menu-type" value="customservice"> 多客服
                     </label>
                 </div>
@@ -232,8 +235,23 @@
                 $html.find('input[name="menu-type"]').on('click', function () {
                     $span.attr('data-type', this.value || 'text');
                     var content = $span.data('content') || '';
+                    var type = this.value;
                     var html = function () {
-                        switch (this.value) {
+                        switch (type) {
+                            case 'miniprogram':
+                                var tpl = '<div>\
+                                                <div>appid<input style="display:block;margin-bottom:10px" class="form-control input-sm" value="{appid}" name="appid"></div>\
+                                                <div>url<input style="display:block;margin-bottom:10px" class="form-control input-sm" value="{url}" name="url"></div>\
+                                                <div>pagepath<input style="display:block" name="pagepath" class="form-control input-sm" value={pagepath}></div>\
+                                            </div>';
+                                var _appid = '', _pagepath = '', _url = '';
+                                if (content.indexOf(',') > 0) {
+                                    _appid = content.split(',')[0] || '';
+                                    _url = content.split(',')[1] || '';
+                                    _pagepath = content.split(',')[2] || '';
+                                }
+                                $span.data('appid', _appid), $span.data('url', _url), $span.data('pagepath', _pagepath);
+                                return tpl.replace('{appid}', _appid).replace('{url}', _url).replace('{pagepath}', _pagepath);
                             case 'customservice':
                             case 'text':
                                 return '<div>回复内容<textarea style="resize:none;height:225px" name="content" class="form-control input-sm">{content}</textarea></div>'.replace('{content}', content);
@@ -262,7 +280,12 @@
                     }.call(this);
                     var $html = $(html), $input = $html.find('input,textarea');
                     $input.on('change keyup click', function () {
-                        $span.data('content', $(this).val() || $(this).html());
+                        // 将input值写入到span上
+                        $span.data(this.name, $(this).val() || $(this).html());
+                        // 如果是小程序，合并内容到span的content上
+                        if (type === 'miniprogram') {
+                            $span.data('content', $span.data('appid') + ',' + $span.data('url') + ',' + $span.data('pagepath'));
+                        }
                     });
                     $('.editor-content-input').html($html);
                 }).filter('input[value="{type}"]'.replace('{type}', type)).trigger('click');
@@ -274,7 +297,6 @@
          */
         menu.prototype.submit = function () {
             var data = [];
-
             function getdata($span) {
                 var menudata = {};
                 menudata.name = $span.text();

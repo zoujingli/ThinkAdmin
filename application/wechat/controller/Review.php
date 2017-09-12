@@ -19,13 +19,15 @@ use service\WechatService;
 use think\Controller;
 use think\Db;
 
-class Review extends Controller {
+class Review extends Controller
+{
 
     /**
      * 显示手机预览
      * @return string
      */
-    public function index() {
+    public function index()
+    {
         $get = $this->request->get();
         $content = str_replace("\n", "<br>", $this->request->get('content', '')); // 内容
         $type = $this->request->get('type', 'text'); // 类型
@@ -49,9 +51,10 @@ class Review extends Controller {
     /**
      * 微信图片显示
      */
-    public function img() {
+    public function img()
+    {
         $url = $this->request->get('url', '');
-        $filename = 'wechat/tmp/' . join('/', str_split(md5($url), 16)) . '.jpg';
+        $filename = FileService::getFileName($url, 'jpg', 'tmp/');
         if (false === ($img = FileService::getFileUrl($filename))) {
             $info = FileService::save($filename, file_get_contents($url));
             $img = (is_array($info) && isset($info['url'])) ? $info['url'] : $url;

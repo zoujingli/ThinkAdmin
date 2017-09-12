@@ -24,7 +24,8 @@ use service\LogService;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15 18:05
  */
-class Config extends BasicAdmin {
+class Config extends BasicAdmin
+{
 
     /**
      * 当前默认数据模型
@@ -41,29 +42,28 @@ class Config extends BasicAdmin {
     /**
      * 显示系统常规配置
      */
-    public function index() {
+    public function index()
+    {
         if (!$this->request->isPost()) {
-            parent::_list($this->table);
-        } else {
-            foreach ($this->request->post() as $key => $vo) {
-                sysconf($key, $vo);
-            }
-            LogService::write('系统管理', '修改系统配置参数成功');
-            $this->success('数据修改成功！', '');
+            $this->assign('title', $this->title);
+            return view();
         }
+        foreach ($this->request->post() as $key => $vo) {
+            sysconf($key, $vo);
+        }
+        LogService::write('系统管理', '修改系统配置参数成功');
+        $this->success('数据修改成功！', '');
     }
 
     /**
      * 文件存储配置
      */
-    public function file() {
-        $this->assign('alert', [
-            'type'    => 'success',
-            'title'   => '操作提示',
-            'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'
-        ]);
+    public function file()
+    {
         $this->title = '文件存储配置';
-        $this->index();
+        $alert = ['type' => 'success', 'title' => '操作提示', 'content' => '文件引擎参数影响全局文件上传功能，请勿随意修改！'];
+        $this->assign('alert', $alert);
+        return $this->index();
     }
 
 }

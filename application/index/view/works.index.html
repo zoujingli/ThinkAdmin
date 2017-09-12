@@ -1,0 +1,53 @@
+{extend name='extra@index/main'}
+
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__CSS__/works.css">
+{/block}
+
+{block name="body"}
+<div id="wrapper" class="wrapper">
+	<div id="main-tab-content" class="main">
+		<div data-index="2" class="current">
+			<ul class="image-list"></ul>
+			<div class="more-link" style="display: none;">
+				<a href="#">点击查看更多</a>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+
+{block name="script"}
+<script src="http://s.amazeui.org/assets/2.x/js/jquery.min.js?v=ibj1kwmm"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
+<script type="text/javascript">
+var pageIndex = 1
+
+$(function () {
+loadPage(pageIndex);
+$('.more-link').show()
+$('.more-link').click(function(event) {
+pageIndex++;
+loadPage(pageIndex);
+return false;
+});
+})
+
+function loadPage(page){
+$.getJSON('/api/works?page=' + page, function (res) {
+var html = ''
+$.each(res.data, function(index, vo) {
+html+='<li class="image-list-item">\
+<div class="image-wrap"><a href="'+vo.link+'"><img src="'+vo.cover+'/600" alt="'+vo.title+'" width="296"></a></div>\
+<div class="image-title"><a href="'+vo.link+'">'+vo.title+'</a></div>\
+<div class="total-bar">\
+<a href="'+vo.link+'" class="fav-num" data-id="online_'+vo.id+'">创作者：'+vo.author+'</a>\
+<a href="'+vo.link+'" class="sub-tit">创作时间：'+vo.create_time.friendly_time+'</a>\
+</div>\
+</li>';
+});
+$('ul.image-list').append(html);
+});
+}
+</script>
+{/block}

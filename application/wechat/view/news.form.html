@@ -57,13 +57,14 @@
                         <label style="color:#ccc">图文封面大图片设置</label>
                         <div class="row nowrap">
                             <div class="col-xs-3" style="width:160px">
-                                <div class="upload-image-box">
+                                <div class="upload-image-box transition">
                                     <input value="__PUBLIC__/static/plugs/uploader/theme/image.png" type="hidden" name="local_url">
                                 </div>
                             </div>
                             <div class="col-xs-6">
                                 <br>
                                 <a data-file="one" data-type="jpg,png,jpeg" data-field="local_url" class="btn btn-sm">上传图片</a>
+                                <a data-iframe='{:url("image")}?field=local_url' class="btn btn-sm">选择图片</a>
                                 <br><br>
                                 <label style="margin-left:0;padding-left:10px">
                                     <input data-auto-none type="checkbox" value="1" name="show_cover_pic">
@@ -270,8 +271,9 @@
     .news-right .layui-input{border-radius:0;border:1px solid #e5e6e7;}
     .news-right .layui-input:hover, .news-right .layui-input:focus{border-color:#e5e6e7!important;}
     .news-right .input-group-addon{background:#fff;border-radius:0;border-color:#e5e6e7;}
-    .news-right .upload-image-box{width:150px;height:120px;background-size:cover;background-position:center center;}
+    .news-right .upload-image-box{width:130px;height:90px;background-size:cover;background-position:center center;border:1px solid rgba(125,125,125,0.1);margin:5px}
     .news-item .upload-multiple-close{width:30px;height:30px;line-height:30px;text-align:center;background-color:rgba(0,0,0,.5);color:#fff;float:right;}
     .news-item .upload-multiple-close:hover{text-decoration:none}
+    .edui-default .edui-editor{border-radius:0!important}
 </style>
 {/block}

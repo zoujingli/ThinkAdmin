@@ -1,0 +1,12 @@
+{volist name="list.items" id="vo"}
+<li>
+	<img src="{$vo.author.headimgurl}" class="head" alt="{$vo.author.nickname}">
+	<p class="nameCon">
+		<span class="name">{$vo.author.nickname}{eq name="vo['author']['verified']" value="1"}<i class="icon-v i-ve" title="认证"></i>{/eq}</span> <span class="time">{$vo.create_at.friendly_time}</span>
+	</p>
+	<p class="comCon">{$vo.message}</p>
+	<div class="ctr" rel="{$vo.id}" id="com_{$vo.id}" res="{$vo.author.nickname}">
+		<a href="#share" class="recom">回复</a> <a href="#" class="zan" name="up_{$vo.id}">赞（{$vo.likes}）</a>
+	</div>
+</li>
+{/volist}

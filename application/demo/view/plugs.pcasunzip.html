@@ -1,0 +1,67 @@
+{extend name='extra@admin/content'}
+
+{block name="content"}
+
+<div class="code">
+    <blockquote class="site-text layui-elem-quote">
+        PCAS 单文件JS省市区插件（也适用于Wap端）
+    </blockquote>
+    <div id="demo" class="citys">
+        <div class="layui-input-inline">
+            <select class="layui-select" name="province"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="city"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="area"></select>
+        </div>
+    </div>
+    <pre class="layui-code" lay-title="HTML代码">
+
+<div class="citys">
+    <div class="layui-input-inline">
+        <select class="layui-select" name="province"></select>
+    </div>
+    <div class="layui-input-inline">
+        <select class="layui-select" name="city"></select>
+    </div>
+    <div class="layui-input-inline">
+        <select class="layui-select" name="area"></select>
+    </div>
+</div>
+    </pre>
+    <pre class="layui-code" lay-title="javascript代码">
+
+require(['pcasunzips'], function () {
+    /**   // 省市联动
+    *   new PCAS("Province","City")
+    *   new PCAS("Province","City","吉林省")
+    *   new PCAS("Province","City","吉林省","吉林市")
+    *   // 省市地区联动
+    *   new PCAS("Province","City","Area")
+    *   new PCAS("Province","City","Area","吉林省")
+    *   new PCAS("Province","City","Area","吉林省","松原市")
+    *   new PCAS("Province","City","Area","吉林省","松原市","宁江区")
+    *   // 省、市、地区对象取得的值均为实际值。
+    *   // 注：省、市、地区提示信息选项的值为""(空字符串)
+    */
+    // 实例化PCAS插件
+    new PCAS('province', 'city', 'area', '广东省', '广州市', '海珠区');
+});
+    </pre>
+    <script>
+        require(['pcasunzips'], function () {
+            new PCAS('province', 'city', 'area', '广东省', '广州市', '海珠区');
+        });
+    </script>
+</div>
+
+<script>
+    layui.use('code', function () {
+        layui.code({
+            encode: true
+        });
+    });
+</script>
+{/block}

@@ -26,7 +26,8 @@ use service\ToolsService;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/02/15 18:13
  */
-class Node extends BasicAdmin {
+class Node extends BasicAdmin
+{
 
     /**
      * 指定当前默认模型
@@ -37,21 +38,18 @@ class Node extends BasicAdmin {
     /**
      * 显示节点列表
      */
-    public function index() {
-        $this->assign('alert', [
-            'type'    => 'danger',
-            'title'   => '安全警告',
-            'content' => '结构为系统自动生成，状态数据请勿随意修改！'
-        ]);
-        $this->assign('title', '系统节点管理');
-        $this->assign('nodes', ToolsService::arr2table(NodeService::get(), 'node', 'pnode'));
-        return view();
+    public function index()
+    {
+        $alert = ['type' => 'danger', 'title' => '安全警告', 'content' => '结构为系统自动生成, 状态数据请勿随意修改!'];
+        $nodes = ToolsService::arr2table(NodeService::get(), 'node', 'pnode');
+        return view('', ['title' => '系统节点管理', 'nodes' => $nodes, 'alert' => $alert]);
     }
 
     /**
      * 保存节点变更
      */
-    public function save() {
+    public function save()
+    {
         if ($this->request->isPost()) {
             $post = $this->request->post();
             if (isset($post['name']) && isset($post['value'])) {

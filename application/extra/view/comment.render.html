@@ -1,0 +1,295 @@
+<link rel="stylesheet" href="__CSS__/comment.css">
+
+<div id="comment">
+	<h2>我要评论</h2>
+	{empty name="fansinfo"}
+	<textarea placeholder="登录即可参与讨论！" disabled onclick="maskShow('unlogin')"></textarea>
+	<div class="info cf">
+		<a href="javascript:void(0);" onclick="maskShow('unlogin')" class="btn btn_disable">提交评论</a>
+	</div>
+	{else /} 
+	<textarea placeholder="说点什么？" id="conBox"></textarea>
+	<div class="info cf">
+		<img src="{$fansinfo.headimgurl}" class="heade_s" alt="">  <a href="javascript:void(0);" onclick="comment('{$data.app}', {$data.permaid})" class="btn" id="comm_send">提交评论</a> <input type="hidden" id="loginStat" value="1">
+	</div>
+	{/empty}
+
+	<if condition="$data['hotlist']['total'] EGT 1">
+	<div class="comFrame">
+		<h3>精彩评论（{$data.hotlist.total}）</h3>
+		<ol id="top_comment">
+			{volist name="data.hotlist.items" id="vo"}
+			<li><img src="{$vo.author.headimgurl}" class="head" alt="{$vo.author.nickname}">
+				<p class="nameCon">
+					<span class="name">{$vo.author.nickname}{eq name="vo['author']['verified']" value="1"}<i class="icon-v i-ve" title="认证"></i>{/eq}</span> <span class="time">{$vo.create_at.friendly_time}</span>
+				</p>
+				<p class="comCon">{$vo.message}</p>
+				
+				{notempty name="vo.parent"}
+				<div class="recomm">
+		            <p><span class="name">{$vo.parent.author.nickname}</span><span class="time">{$vo.parent.create_at.friendly_time}</span></p>
+		            <p>{$vo.parent.message}</p>
+		        </div>
+		        {/notempty}
+				
+				<div class="ctr" rel="{$vo.id}" id="com_{$vo.id}" res="{$vo.author.nickname}">
+					<a href="#share" class="recom">回复</a> <a href="#" class="zan" name="up_11456181">赞（{$vo.likes}）</a>
+				</div>
+			</li>
+			{/volist}
+		</ol>
+	</div>
+	</if>
+	
+	{if condition="$data['list']['total'] EGT 1"}
+	<div id="pjax-container">
+		<div class="comFrame" style="position: relative">
+			<div id="comment_anchor" style="position: absolute; top: -55px; z-index: 0;"></div>
+			<h3>全部评论（{$data.list.total}）</h3>
+			<ol id="all_comment">
+				{volist name="data.list.items" id="vo"}
+				<li>
+					<img src="{$vo.author.headimgurl}" class="head" alt="{$vo.author.nickname}">
+					<p class="nameCon">
+						<span class="name">{$vo.author.nickname}{eq name="vo['author']['verified']" value="1"}<i class="icon-v i-ve" title="认证"></i>{/eq}</span> <span class="time">{$vo.create_at.friendly_time}</span>
+					</p>
+					<p class="comCon">{$vo.message}</p>
+					
+					{notempty name="vo.parent"}
+					<div class="recomm">
+			            <p><span class="name">{$vo.parent.author.nickname}</span><span class="time">{$vo.parent.create_at.friendly_time}</span></p>
+			            <p>{$vo.parent.message}</p>
+			        </div>
+			        {/notempty}
+					
+					<div class="ctr" rel="{$vo.id}" id="com_{$vo.id}" res="{$vo.author.nickname}">
+						<a href="#share" class="recom">回复</a> <a href="#" class="zan" name="up_{$vo.id}">赞（{$vo.likes}）</a>
+					</div>
+				</li>
+				{/volist}
+			</ol>
+			<div class="loading" style="visibility: hidden;">
+				<span class="load"></span> 正在加载...
+			</div>
+		</div>
+		<a id="page">{$data.page}</a>
+	</div>
+	{/if}
+	
+</div>
+
+<script type="text/javascript" src="http://static.vrbeing.com/comment/jQuery.1.11.min.js"></script>
+<script type="text/javascript" src="http://static.vrbeing.com/comment/common.js"></script>
+<script type="text/javascript" src="http://static.vrbeing.com/comment/jsrender.min.js"></script>
+<script type="text/javascript" src='http://static.vrbeing.com/comment/main.js'></script>
+
+<script>
+var to_user_str = '';
+var to_user_id = 0;
+
+var destory = function (id) {
+    $.ajax({
+	type: "get",
+	url: '/comment/destory/' + id,
+	success: function (data) {
+	    if (data.errCode) {
+		blinkShow(data.errMsg);
+		return;
+	    }
+
+	    blinkShow('删除成功');
+	    $('#com_' + id).closest('li').remove();
+	},
+	error: function (data) {
+	    if (data.status == 401) {
+		maskShow("登录之后才可以举报哦~");
+		return;
+	    }
+	}
+    });
+}
+
+
+var report = function (id) {
+    $.ajax({
+	type: "get",
+	url: '/comment/report/' + id,
+	success: function (data) {
+	    if (data.errCode) {
+		blinkShow(data.errMsg);
+		return;
+	    }
+
+	    blinkShow('举报成功');
+	},
+	error: function (data) {
+	    if (data.status == 401) {
+		maskShow("登录之后才可以举报哦~");
+		return;
+	    }
+	}
+    });
+}
+
+
+var up = function (id) {
+    $.ajax({
+	type: "get",
+	url: '/api/comment/praise/' + id + '?token={$data.token}',
+	success: function (res) {
+	    if (res.data.errCode) {
+		blinkShow(res.data.errMsg);
+		return;
+	    }
+	    blinkShow("赞 +1");
+	    var name = "[name=up_" + res.data.id + "]";
+	    $(name).html("赞（" + res.data.up + "）");
+	},
+	error: function (data) {
+	    if (data.status == 401) {
+		maskShow("unlogin");
+		return;
+	    }
+	}
+    });
+
+}
+
+
+var comment = function () {
+    var url = "/api/comment/add/{$data.token}";
+    var content = $('#conBox').val();
+
+    var _data = {
+		'content': content.replace(to_user_str, ""),
+		'parent_id': to_user_id
+    };
+
+    $.ajax({
+		type: "post",
+		url: url,
+		data: _data,
+		success: function (data) {
+		    if (data.errCode) {
+				if (data.errCode == 401) {
+				    maskShow('unlogin');
+				    return;
+				}
+				maskShow(data.errMsg);
+					return;
+		    }
+		    $('#conBox').val('');
+		    blinkShow("评论成功");
+		    $('#all_comment').empty();
+		    to_user_id = 0;
+		    loadPage(1);
+		},
+		error: function (data) {
+		    if (data.status == 401) {
+				maskShow('unlogin');
+				return;
+		    }
+		}
+    });
+}
+
+
+var setCommentInfo = function (comment_id, user_name) {
+    to_user_str = '回复@' + user_name + '的评论:';
+    to_user_id = comment_id;
+    $('#conBox').focus().val(to_user_str);
+}
+
+
+String.prototype.startWith = function (str) {
+    var reg = new RegExp("^" + str);
+    return reg.test(this);
+}
+
+
+var scroll_locked = false;
+var scroll_times = 1;
+
+$(function () {
+    $(document).scroll(function () {
+	window.setTimeout(function () {
+	    if (scroll_times < 30 && !scroll_locked) {
+		var allHeight = document.body.scrollHeight;
+		var sHeight = document.documentElement.scrollTop || document.body.scrollTop;
+		var winHeight = document.documentElement.clientHeight;
+		var margin = allHeight - sHeight - winHeight;
+
+		if (margin < 1000) {
+		    scroll_locked = true;
+		    var page = 1;
+		    if (request('page')) {
+			page = parseInt(request('page'));
+		    }
+		    page = page + scroll_times;
+		    scroll_times = scroll_times + 1;
+
+		    loadPage(page);
+
+		}
+	    }
+	}, 100)
+    });
+    $('#comment').delegate('a.recom', 'click', function () {
+	var comment_id = $(this).closest('.ctr').attr('rel');
+	var user_name = $(this).closest('.ctr').attr('res');
+	var logined = $('#loginStat').val();
+	if (logined) {
+	    setCommentInfo(comment_id, user_name)
+	} else {
+	    maskShow('unlogin');
+	    return false;
+	}
+    });
+    $('#comment').delegate('a.report', 'click', function () {
+	var comment_id = $(this).closest('.ctr').attr('rel');
+	var logined = $('#loginStat').val();
+	if (logined) {
+	    report(comment_id)
+	} else {
+	    maskShow('unlogin');
+
+	}
+	return false;
+    });
+    $('#comment').delegate('a.zan', 'click', function () {
+	var comment_id = $(this).closest('.ctr').attr('rel');
+	var logined = $('#loginStat').val();
+	if (logined) {
+	    up(comment_id)
+	} else {
+	    maskShow('unlogin');
+	}
+	return false;
+    });
+    $('#comment').delegate('a.destory', 'click', function () {
+	var comment_id = $(this).closest('.ctr').attr('rel');
+	var logined = $('#loginStat').val();
+	if (logined) {
+	    destory(comment_id)
+	} else {
+	    maskShow('unlogin');
+	}
+	return false;
+    });
+
+})
+
+function loadPage(page) {
+    $('.loading').css({visibility: 'visible'});
+    $.getJSON('/api/comment/{$data.token}?page=' + page, function (data) {
+		var html = data.data;
+		$(html).appendTo('#all_comment');
+		$('.pagination').replaceWith(data.render);
+		$('.loading').css({visibility: 'hidden'});
+		scroll_locked = false;
+		if (scroll_times === 3) {
+		    $('.pagination').css('visibility', 'visible')
+		}
+    });
+}
+</script>

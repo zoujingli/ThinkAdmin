@@ -1,0 +1,354 @@
+{extend name='extra@admin/content'}
+
+{block name="content"}
+
+<div class="code">
+    <blockquote class="site-text layui-elem-quote">
+        通过地区编码初始化设置
+    </blockquote>
+    <div id="demo" class="citys">
+        <div class="layui-input-inline">
+            <select class="layui-select" name="province"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="city"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="area"></select>
+        </div>
+    </div>
+    <pre class="layui-code" lay-title="HTML代码">
+
+<div id="demo" class="citys">
+    <div class="layui-input-inline">
+        <select class="layui-select" name="province"></select>
+    </div>
+    <div class="layui-input-inline">
+        <select class="layui-select" name="city"></select>
+    </div>
+    <div class="layui-input-inline">
+        <select class="layui-select" name="area"></select>
+    </div>
+</div>
+    </pre>
+    <pre class="layui-code" lay-title="javascript代码">
+
+require(['citys'], function () {
+    $('#demo').citys({code: 350206});
+});
+    </pre>
+    <script>
+        require(['citys'], function () {
+            $('#demo').citys({code: 350206});
+        });
+    </script>
+</div>
+
+<div class="code">
+    <blockquote class="site-text layui-elem-quote">
+        通过地区名称初始化设置，并且下拉框值为地区名称
+    </blockquote>
+    <div id="demo1" class="citys">
+        <div class="layui-input-inline">
+            <select class="layui-select" name="province"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="city"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="area"></select>
+        </div>
+    </div>
+    <pre class="layui-code" lay-title="HTML代码">
+
+<div id="demo1" class="citys">
+    <div class="layui-input-inline">
+        <select class="layui-select" name="province"></select>
+    </div>
+    <div class="layui-input-inline">
+        <select class="layui-select" name="city"></select>
+    </div>
+    <div class="layui-input-inline">
+        <select class="layui-select" name="area"></select>
+    </div>
+</div>
+    </pre>
+    <pre class="layui-code" lay-title="javascript代码">
+
+require(['citys'], function () {
+    $('#demo1').citys({valueType: 'name', province: '福建', city: '厦门', area: '思明'});
+});
+    </pre>
+    <script>
+        require(['citys'], function () {
+            $('#demo1').citys({valueType: 'name', province: '福建', city: '厦门', area: '思明'});
+        });
+    </script>
+</div>
+
+
+<div class="code">
+    <blockquote class="site-text layui-elem-quote">
+        事件处理，并且下拉框值为地区名称
+    </blockquote>
+    <div id="demo2" class="citys">
+        <div class="layui-input-inline">
+            <select class="layui-select" name="province"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="city"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="area"></select>
+        </div>
+        <p id="place">请选择地区</p>
+    </div>
+    <pre class="layui-code" lay-title="HTML代码">
+
+<div id="demo2" class="citys">
+    <div class="layui-input-inline">
+        <select class="layui-select" name="province"></select>
+    </div>
+    <div class="layui-input-inline">
+        <select class="layui-select" name="city"></select>
+    </div>
+    <div class="layui-input-inline">
+        <select class="layui-select" name="area"></select>
+    </div>
+    <p id="place">请选择地区</p>
+</div>
+    </pre>
+    <pre class="layui-code" lay-title="javascript代码">
+
+require(['citys'], function (ret) {
+    $('#demo2').citys({
+        required: false,
+        nodata: 'disabled',
+        onChange: function (data) {
+            var text = data['direct'] ? '(直辖市)' : '';
+            $('#place').text('当前选中地区：' + data['province'] + text + ' ' + data['city'] + ' ' + data['area']);
+        }
+    });
+});
+    </pre>
+    <script>
+        require(['citys'], function (ret) {
+            $('#demo2').citys({
+                required: false,
+                nodata: 'disabled',
+                onChange: function (data) {
+                    var text = data['direct'] ? '(直辖市)' : '';
+                    $('#place').text('当前选中地区：' + data['province'] + text + ' ' + data['city'] + ' ' + data['area']);
+                }
+            });
+        });
+    </script>
+</div>
+
+
+<div class="code">
+    <blockquote class="site-text layui-elem-quote">
+        扩展显示行政区划第四级(街道)信息
+    </blockquote>
+    <div id="demo3" class="citys">
+        <div class="layui-input-inline">
+            <select class="layui-select" name="province"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="city"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select class="layui-select" name="area"></select>
+        </div>
+    </div>
+    <pre class="layui-code" lay-title="javascript代码">
+
+require(['citys'], function () {
+    var $town = $('#demo3 select[name="town"]');
+    var townFormat = function (info) {
+        $town.hide().empty();
+        if (info['code'] % 1e4 && info['code'] < 7e5) {
+            //是否为“区”且不是港澳台地区
+            $.ajax({
+                url: 'http://passer-by.com/data_location/town/' + info['code'] + '.json',
+                dataType: 'json',
+                success: function (town) {
+                    $town.show();
+                    for (i in town) {
+                        $town.append('<option value="' + i + '">' + town[i] + '</option>');
+                    }
+                }
+            });
+        }
+    };
+    $('#demo3').citys({
+        province: '福建',
+        city: '厦门',
+        area: '思明',
+        onChange: function (info) {
+            townFormat(info);
+        }
+    }, function (api) {
+        var info = api.getInfo();
+        townFormat(info);
+    });
+});
+    </pre>
+    <script>
+        require(['citys'], function () {
+            var $town = $('#demo3 select[name="town"]');
+            var townFormat = function (info) {
+                $town.hide().empty();
+                if (info['code'] % 1e4 && info['code'] < 7e5) {	//是否为“区”且不是港澳台地区
+                    $.ajax({
+                        url: 'http://passer-by.com/data_location/town/' + info['code'] + '.json',
+                        dataType: 'json',
+                        success: function (town) {
+                            $town.show();
+                            for (i in town) {
+                                $town.append('<option value="' + i + '">' + town[i] + '</option>');
+                            }
+                        }
+                    });
+                }
+            };
+            $('#demo3').citys({
+                province: '福建',
+                city: '厦门',
+                area: '思明',
+                onChange: function (info) {
+                    townFormat(info);
+                }
+            }, function (api) {
+                var info = api.getInfo();
+                townFormat(info);
+            });
+        });
+    </script>
+</div>
+
+<div class="example">
+    <blockquote class="site-text layui-elem-quote">
+        调用方法：$(selector).citys(options,callback);
+    </blockquote>
+    <p style="font-size:18px;line-height:30px;">Options</p>
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th width="150">参数</th>
+                <th width="120">默认值</th>
+                <th>说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>dataUrl</td>
+                <td>[数据库地址]</td>
+                <td>
+                    <p>最新数据库（
+                        <script src="http://passer-by.com/data_location/version.js"></script>
+                        ）：
+                        <a href="http://passer-by.com/data_location/list.json" target="_blank">JSON格式</a>
+                        <a href="http://passer-by.com/data_location/list.jsonp" target="_blank">JSONP格式</a></p>
+                    <p>数据库项目：<a href="https://github.com/mumuy/data_location" target="_blank">中国行政区划（省、市、区、街道）</a></p>
+                </td>
+            </tr>
+            <tr>
+                <td>dataType</td>
+                <td>'json'</td>
+                <td>
+                    <p>数据库类型:'json'或'jsonp'</p>
+                    <p class="warning">IE9-由于默认安全设置，需开启“通过域访问数据源”才能跨域访问json，此类情况建议使用jsonp格式</p>
+                </td>
+            </tr>
+            <tr>
+                <td>crossDomain</td>
+                <td>true</td>
+                <td>
+                    <p>是否开启跨域</p>
+                    <p class="warning">IE9-如果设置开启跨域而实际未跨域，造成请求异常</p>
+                </td>
+            </tr>
+            <tr>
+                <td>provinceField</td>
+                <td>'province'</td>
+                <td>省份(省级)字段名</td>
+            </tr>
+            <tr>
+                <td>cityField</td>
+                <td>'city'</td>
+                <td>城市(地级)字段名</td>
+            </tr>
+            <tr>
+                <td>areaField</td>
+                <td>'area'</td>
+                <td>地区(县区级)字段名</td>
+            </tr>
+            <tr>
+                <td>valueType</td>
+                <td>'code'</td>
+                <td>下拉框值的类型,code行政区划代码,name地名</td>
+            </tr>
+            <tr>
+                <td>code</td>
+                <td>0</td>
+                <td>地区编码</td>
+            </tr>
+            <tr>
+                <td>province</td>
+                <td>[无]</td>
+                <td>省份(省级),可以为地区编码或者名称</td>
+            </tr>
+            <tr>
+                <td>city</td>
+                <td>[无]</td>
+                <td>城市(地级),可以为地区编码或者名称</td>
+            </tr>
+            <tr>
+                <td>area</td>
+                <td>[无]</td>
+                <td>地区(县区级),可以为地区编码或者名称</td>
+            </tr>
+            <tr>
+                <td>required</td>
+                <td>true</td>
+                <td>是否必须选中(是否自动选择地区)</td>
+            </tr>
+            <tr>
+                <td>nodata</td>
+                <td>'hidden'</td>
+                <td>当无数据时的表现形式:'hidden'隐藏,'disabled'禁用,为空不做任何处理</td>
+            </tr>
+            <tr>
+                <td>onChange(info)</td>
+                <td>[无]</td>
+                <td>地区切换时触发,回调函数传入地区信息:direct是否为直辖市,province省份(省级)名称,city城市(地级)名称,area地区(县区级)名称,code地区编码</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="font-size:18px;line-height:30px;">callback(api)参数</p>
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th width="200">方法</th>
+                <th>说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>getInfo(data)</td>
+                <td>获取当前选中的地区信息:direct是否为直辖市,province省份(省级)名称,city城市(地级)名称,area地区(县区级)名称,code地区编码</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<script>
+        layui.use('code', function () {
+            layui.code({
+                encode: true
+            });
+        });
+</script>
+{/block}

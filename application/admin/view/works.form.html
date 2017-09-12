@@ -1,0 +1,163 @@
+{extend name="extra@admin/content"}
+
+{block name='style'}
+<style>
+.upload-option-button{
+    float:right;
+    background:rgba(0,0,0,0.5);
+    color:#fff;
+    width:20px;
+    height:20px;
+    line-height:20px;
+    text-align:center;
+    display:none
+}
+.upload-option-button:hover{
+    text-decoration:none;
+    color:#fff
+}
+.uploadimagemtl:hover a{
+    display:inline-block
+}
+</style>
+{/block}
+
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    <button data-open='{:url("$classuri/index")}' data-title="作品列表" class='layui-btn layui-btn-small'><i class='fa fa-plus'></i> 作品列表</button>
+</div>
+{/block}
+
+{block name="content"}
+<form onsubmit="return false;" action="__SELF__" data-auto="true" method="post" class='form-horizontal' style='padding-top:20px'>
+
+	<div class="form-group">
+		<label class="col-sm-1 control-label">名称</label>
+		<div class='col-sm-9'>
+			<input type="text" name="title" placeholder="作品名称" maxlength="18" required="required" value="{$vo.title|default=""}" class="layui-input">
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-1 control-label">创作者</label>
+		<div class='col-sm-9'>
+			<input type="number" name="author" placeholder="创作者编号" maxlength="18" required="required" value="{$vo.author|default=""}" class="layui-input">
+			<p class="help-block">
+				<a class="btn btn-link" data-modal='/wechat/tags/edit.html?id=105' data-title="编辑标签" href="javascript:void(0)">查找作者</a>
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-1 control-label">作品封面</label>
+		<div class="col-sm-9">
+			<input onchange="$(this).nextAll('img').attr('src', this.value+'/600');" type="text" class="layui-input" value="{$vo.cover|default='__PUBLIC__/static/theme/default/img/image.png'}"
+			name="cover" required="required" title="请上传缩略图或输入图片URL地址　　"/>
+			<p class="help-block">
+				建议上传大小图为：600px*300px
+			</p>
+			<img style="width:112px;height:auto;" data-tips-image src='{$vo.cover ? $vo.cover."/600" : "__PUBLIC__/static/theme/default/img/image.png"}'/>
+			<a data-file="one" data-field="cover" data-type="png,jpg" data-uptype="local" href="javascript:void(0)" class="btn btn-link">上传封面</a>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-1 control-label">简介</label>
+		<div class='col-sm-9'>
+			<textarea class="layui-input" name="digest" style="height:80px;resize:none;line-height:20px">{$vo.digest|default=""}</textarea>
+			<p class="help-block">
+				作品创作历程，作品简介，可和创作者交流。
+			</p>
+		</div>
+	</div>
+	
+	<div class="hr-line-dashed"></div>
+	
+	<div class="form-group">
+		<label class="col-sm-1 control-label">视频</label>
+		<div class='col-sm-9'>
+			<div class="input-group">
+		        <input type="text" class="form-control" name="vfile" value="{$vo.vfile|default=""}" placeholder="请选择MP4文件...">
+		        <a class="input-group-addon" data-file="one" data-type="mp4" data-uptype="local" data-field="vfile">
+		            <i class="fa fa-file"></i>
+		        </a>
+		    </div>
+		    <p class="help-block">
+				视频文件在50Mb以内
+			</p>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-1 control-label">组图</label>
+		<div class='col-sm-9'>
+			<input type="hidden" name="photos">
+			<p class="help-block">
+				建议图片大小：600px*450px（4:3）
+			</p>
+			<a data-file="mut" data-field="photos" data-type="png,jpg" data-uptype="local" href="javascript:void(0)" class="btn btn-link">上传图片</a>
+		</div>
+	</div>
+
+	{notempty name="vo"}
+	<input type="hidden" name="guid" value="{$vo.id}"/>
+	{foreach $vo.photos as $k=>$v}
+	<div class="form-group">
+		<label class="col-sm-1 control-label"></label>
+		<div class="col-sm-9">
+			<div class="input-group">
+        		<span class="input-group-addon" style="padding:3px 8px;"><img style="width:45px;height:30px" data-tips-image="{$v.photo}/0" src="{$v.photo}/s43"/></span>
+                <input type="text" class="layui-input" value="{$v.text}" name="text[]" title="请填写图片简介"/>
+            </div> 
+		</div>
+	</div>
+	{/foreach}
+	{/notempty}
+
+	<div class="hr-line-dashed"></div>
+
+	<div class="col-sm-1 col-sm-offset-2">
+		<div class="layui-form-item text-center">
+			<button class="layui-btn" type="submit">
+				保存配置
+			</button>
+		</div>
+	</div>
+
+</form>
+
+{/block}
+
+{block name='script'}
+<script>
+require(['jquery'], function () {
+    var tpl = '<div class="uploadimage transition uploadimagemtl"><a href="javascript:void(0)" class="layui-icon upload-option-button">&#x1006;</a></div>';
+    $('[name="photos"]').on('change', function () {
+        var input = this, values = [], srcs = this.value.split('|');
+        $(this).prevAll('.uploadimage').map(function () {
+            values.push($(this).attr('data-tips-image'));
+        }), $(this).prevAll('.uploadimage').remove();
+        values.reverse();
+        for (var i in srcs) {
+            values.push(srcs[i]);
+        }
+        this.value = values.join('|');
+        for (var i in values) {
+            var $tpl = $(tpl).attr('data-tips-image', values[i]+'/0').css('backgroundImage', 'url(' + values[i] + '/s43)');
+            $tpl.data('input', input).data('srcs', values).data('index', i);
+            $tpl.on('click', 'a', function (e) {
+                e.stopPropagation();
+                var $cur = $(this).parent();
+                $.msg.confirm('确定要移除这张图片吗？', function () {
+                    var data = $cur.data('srcs');
+                    delete data[$cur.data('index')];
+                    $cur.data('input').value = data.join('|');
+                    $cur.remove();
+                });
+            });
+            $(this).before($tpl);
+        }
+    });
+});
+</script>
+{/block}
