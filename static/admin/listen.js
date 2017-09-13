@@ -30,7 +30,7 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-serach 表单搜索行为 */
     this.$body.on('submit', 'form.form-search', function () {
-        var url = $(this).attr('action'), split = url.indexOf('?') === -1 ? '?' : '&';
+        var url = $(this).attr('action').replace(/\&?page\=\d+/g, ''), split = url.indexOf('?') === -1 ? '?' : '&';
         if ((this.method || 'get').toLowerCase() === 'get') {
             return window.location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
         }
