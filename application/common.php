@@ -49,16 +49,25 @@ function mongo($col, $force = false)
  * @return \Wechat\WechatMedia|\Wechat\WechatMenu|\Wechat\WechatOauth|\Wechat\WechatPay|\Wechat\WechatReceive|\Wechat\WechatScript|\Wechat\WechatUser|\Wechat\WechatExtends|\Wechat\WechatMessage
  * @throws Exception
  */
-function load_wechat($name = '')
+function & load_wechat($type = '')
 {
-    static $cache = [];
-    if (empty($cache[$name])) {
-        list($appid, $appkey) = [sysconf('wechat_appid'), sysconf('wechat_appkey')];
-        $token = strtolower("{$name}-{$appid}-{$appkey}");
-        $location = "http://api.cuci.cc/wechat/instance/{$token}.html";
-        $cache[$name] = new SoapService(null, ['uri' => strtolower($name), 'location' => $location]);
+    static $wechat = [];
+    $index = md5(strtolower($type));
+    if (!isset($wechat[$index])) {
+        $config = [
+            'token'          => sysconf('wechat_token'),
+            'appid'          => sysconf('wechat_appid'),
+            'appsecret'      => sysconf('wechat_appsecret'),
+            'encodingaeskey' => sysconf('wechat_encodingaeskey'),
+            'mch_id'         => sysconf('wechat_mch_id'),
+            'partnerkey'     => sysconf('wechat_partnerkey'),
+            'ssl_cer'        => sysconf('wechat_cert_cert'),
+            'ssl_key'        => sysconf('wechat_cert_key'),
+            'cachepath'      => CACHE_PATH . 'wxpay' . DS,
+        ];
+        $wechat[$index] = Loader::get($type, $config);
     }
-    return $cache[$name];
+    return $wechat[$index];
 }
 
 /**
