@@ -1,10 +1,9 @@
 {extend name='extra@admin/content'}
 
 {block name="button"}
-<div class="nowrap pull-right" style="margin-top:10px">
+<div class="nowrap pull-right margin-top-10" style="margin-top:10px">
     {if auth("$classuri/del")}
-    <button data-update data-field='delete' data-action='{:url("$classuri/del")}'
-            class='layui-btn layui-btn-small layui-btn-danger'>
+    <button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-small layui-btn-danger'>
         <i class='fa fa-remove'></i> 删除日志
     </button>
     {/if}
@@ -16,14 +15,14 @@
 <!-- 表单搜索 开始 -->
 <form class="layui-form layui-form-pane form-search" action="__SELF__" onsubmit="return false" method="get">
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label" style="width:auto">操作者</label>
+        <label class="layui-form-label">操作者</label>
         <div class="layui-input-inline">
             <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入操作者" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label" style="width:auto">操作行为</label>
+        <label class="layui-form-label">操作行为</label>
         <div class="layui-input-inline">
             <select name='action' class='layui-select' lay-search="">
                 <option value=''> - 所有记录 -</option>
@@ -39,9 +38,17 @@
     </div>
 
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label" style="width:auto">操作内容</label>
+        <label class="layui-form-label">操作内容</label>
         <div class="layui-input-inline">
             <input name="content" value="{$Think.get.content|default=''}" placeholder="请输入操作内容" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">操作时间</label>
+        <div class="layui-input-inline">
+            <input name="date" id='range-date' value="{$Think.get.date|default=''}"
+                   placeholder="请选择操作时间" class="layui-input">
         </div>
     </div>
 
@@ -51,7 +58,7 @@
 </form>
 <!-- 表单搜索 结束 -->
 
-<form onsubmit="return false;" data-auto="" method="POST">
+<form onsubmit="return false;" data-auto="true" method="post">
     <input type="hidden" value="resort" name="action"/>
     <table class="layui-table" lay-skin="line" lay-size="sm">
         <thead>
@@ -78,7 +85,7 @@
             <td class='text-left'>{$vo.action}</td>
             <td class='text-left'>{$vo.content}</td>
             <td class='text-left'>{$vo.isp|default=$vo.ip}</td>
-            <td class='text-left'>{$vo.create_at}</td>
+            <td class='text-left'>{$vo.create_at|format_datetime}</td>
         </tr>
         {/foreach}
         </tbody>
@@ -86,6 +93,7 @@
     {if isset($page)}<p>{$page}</p>{/if}
     <script>
         window.form.render();
+        window.laydate.render({range: true, elem: '#range-date', format: 'yyyy/MM/dd'});
     </script>
 </form>
 {/block}

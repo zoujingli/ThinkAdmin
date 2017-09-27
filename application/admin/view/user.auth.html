@@ -4,9 +4,11 @@
         <label class="layui-form-label">用户账号</label>
         <div class="layui-input-block">
             {if $vo and $vo.username}
-            <input type="text" readonly="" disabled="" name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input disabled">
+            <input type="text" readonly="" disabled="" name="username" value='{$vo.username|default=""}'
+                   required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input disabled">
             {else}
-            <input type="text" name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input">
+            <input type="text" name="username" value='{$vo.username|default=""}' required="required"
+                   title="请输入用户名称" placeholder="请输入用户名称" class="layui-input">
             {/if}
         </div>
     </div>
@@ -16,13 +18,17 @@
         <div class="layui-input-block">
             {foreach $authorizes as $authorize}
             {if in_array($authorize['id'],$vo['authorize'])}
-            <input type="checkbox" checked name="authorize[]" value="{$authorize.id}" title="{$authorize.title}">
+            <label class="think-checkbox">
+                <input type="checkbox" checked name="authorize[]" value="{$authorize.id}" lay-ignore> {$authorize.title}
+            </label>
             {else}
-            <input type="checkbox" name="authorize[]" value="{$authorize.id}" title="{$authorize.title}">
+            <label class="think-checkbox">
+                <input type="checkbox" checked name="authorize[]" value="{$authorize.id}" lay-ignore> {$authorize.title}
+            </label>
             {/if}
             {/foreach}
             {if empty($authorizes)}
-            <span style="color:#999;line-height:36px">尚未配置权限</span>
+            <span class="color-desc" style="line-height:36px">未配置权限</span>
             {/if}
         </div>
     </div>

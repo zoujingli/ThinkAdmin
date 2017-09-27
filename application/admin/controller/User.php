@@ -42,10 +42,14 @@ class User extends BasicAdmin
         $this->title = '系统用户管理';
         $get = $this->request->get();
         $db = Db::name($this->table)->where(['is_deleted' => '0']);
-        foreach (['username', 'phone'] as $key) {
+        foreach (['username', 'phone', 'mail'] as $key) {
             if (isset($get[$key]) && $get[$key] !== '') {
                 $db->where($key, 'like', "%{$get[$key]}%");
             }
+        }
+        if (isset($get['date']) && $get['date'] !== '') {
+            list($start, $end) = explode('-', str_replace(' ', '', $get['date']));
+            $db->whereBetween('login_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
         }
         return parent::_list($db);
     }
@@ -111,7 +115,7 @@ class User extends BasicAdmin
             }
         } else {
             $data['authorize'] = explode(',', isset($data['authorize']) ? $data['authorize'] : '');
-            $this->assign('authorizes', Db::name('SystemAuth')->select());
+            $this->assign('authorizes', Db::name('SystemAuth')->where(['status' => '1'])->select());
         }
     }
 

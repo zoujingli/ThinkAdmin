@@ -30,6 +30,7 @@
             <th class='text-center'>权限名称</th>
             <th class='text-center'>权限描述</th>
             <th class='text-center'>状态</th>
+            <th class='text-center'>添加时间</th>
             <th class='text-center'>操作</th>
         </tr>
         </thead>
@@ -51,6 +52,7 @@
                 <span style="color:#090">使用中</span>
                 {/if}
             </td>
+            <td class="text-center nowrap">{$vo.create_at|format_datetime}</td>
             <td class='text-center nowrap'>
 
                 {if auth("$classuri/edit")}

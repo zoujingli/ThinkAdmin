@@ -76,12 +76,12 @@
         $('input.title-input').on('blur', function () {
             var data = {list: [{name: this.name, value: this.value, node: this.getAttribute('data-node')}]};
             $.form.load('{:url("save")}', data, 'POST', function (ret) {
-				if(ret.code===0){
-					setTimeout(function(){
-						$.form.reload();
-					},3000);
-					$.msg.auto(ret);
-				}
+                if (ret.code === 0) {
+                    setTimeout(function () {
+                        $.form.reload();
+                    }, 3000);
+                    $.msg.auto(ret);
+                }
                 return false;
             });
         });
@@ -91,12 +91,12 @@
                 data.list.push({name: this.name, value: this.checked ? 1 : 0, node: this.getAttribute('data-node')});
             });
             $.form.load('{:url("save")}', data, 'POST', function (ret) {
-                if(ret.code===0){
-					setTimeout(function(){
-						$.form.reload();
-					},3000);
-					$.msg.auto(ret);
-				}
+                if (ret.code === 0) {
+                    setTimeout(function () {
+                        $.form.reload();
+                    }, 3000);
+                    $.msg.auto(ret);
+                }
                 return false;
             });
         });

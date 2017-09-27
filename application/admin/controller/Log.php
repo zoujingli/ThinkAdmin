@@ -52,6 +52,10 @@ class Log extends BasicAdmin
                 $db->where($key, 'like', "%{$get[$key]}%");
             }
         }
+        if (isset($get['date']) && $get['date'] !== '') {
+            list($start, $end) = explode('-', str_replace(' ', '', $get['date']));
+            $db->whereBetween('create_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
+        }
         return parent::_list($db);
     }
 

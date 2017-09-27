@@ -8,9 +8,11 @@
 <div class="login-container full-height">
 
     <!-- 动态云层动画 开始 -->
-    <div class="clouds clouds-footer"></div>
-    <div class="clouds"></div>
-    <div class="clouds clouds-fast"></div>
+    <div class="clouds-container">
+        <div class="clouds clouds-footer"></div>
+        <div class="clouds"></div>
+        <div class="clouds clouds-fast"></div>
+    </div>
     <!-- 动态云层动画 结束 -->
 
     <!-- 顶部导航条 开始 -->
@@ -41,13 +43,13 @@
             <ul>
                 <li>
                     <input name='username' class="hide"/>
-                    <input required="required" pattern="^\S{4,}$" value="admin" name="username"
+                    <input required="required" pattern="^\S{4,}$" value="" name="username"
                            autofocus="autofocus" autocomplete="off" class="login-input username"
                            title="请输入4位及以上的字符" placeholder="请输入用户名/手机号码"/>
                 </li>
                 <li>
                     <input name='password' class="hide"/>
-                    <input required="required" pattern="^\S{4,}$" value="admin" name="password"
+                    <input required="required" pattern="^\S{4,}$" value="" name="password"
                            type="password" autocomplete="off" class="login-input password"
                            title="请输入4位及以上的字符" placeholder="请输入密码"/>
                 </li>

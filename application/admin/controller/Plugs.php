@@ -51,12 +51,15 @@ class Plugs extends BasicAdmin
     public function upload()
     {
         $file = $this->request->file('file');
-        $ext = pathinfo($file->getInfo('name'), 4);
+        $ext = strtolower(pathinfo($file->getInfo('name'), 4));
         $md5 = str_split($this->request->post('md5'), 16);
         $filename = join('/', $md5) . ".{$ext}";
+        if (!in_array($ext, explode(',', strtolower(sysconf('storage_local_exts'))))) {
+            return json(['code' => 'ERROR', 'msg' => '文件上传类型受限']);
+        }
         // 文件上传Token验证
         if ($this->request->post('token') !== md5($filename . session_id())) {
-            return json(['code' => 'ERROR', '文件上传验证失败']);
+            return json(['code' => 'ERROR', 'msg' => '文件上传验证失败']);
         }
         // 文件上传处理
         if (($info = $file->move('static' . DS . 'upload' . DS . $md5[0], $md5[1], true))) {
@@ -64,7 +67,7 @@ class Plugs extends BasicAdmin
                 return json(['data' => ['site_url' => $site_url], 'code' => 'SUCCESS', 'msg' => '文件上传成功']);
             }
         }
-        return json(['code' => 'ERROR', '文件上传失败']);
+        return json(['code' => 'ERROR', 'msg' => '文件上传失败']);
     }
 
     /**

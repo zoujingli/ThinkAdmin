@@ -4,9 +4,11 @@
         <label class="layui-form-label">用户账号</label>
         <div class="layui-input-block">
             {if $vo and $vo.username}
-            <input type="text" readonly="" disabled="" name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input disabled">
+            <input readonly="readonly" disabled="disabled" name="username" value='{$vo.username|default=""}'
+                   required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input layui-disabled">
             {else}
-            <input type="text" name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input">
+            <input name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称"
+                   placeholder="请输入用户名称" class="layui-input">
             {/if}
         </div>
     </div>
@@ -15,7 +17,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">旧的密码</label>
         <div class="layui-input-block">
-            <input type="password" autofocus name="oldpassword" value='' pattern="^\S{1,}$" required=""  title="请输入旧的密码" placeholder="请输入旧的密码" class="layui-input">
+            <input type="password" autofocus name="oldpassword" value='' pattern="^\S{1,}$" required="" title="请输入旧的密码"
+                   placeholder="请输入旧的密码" class="layui-input">
         </div>
     </div>
     {/if}
@@ -23,14 +26,16 @@
     <div class="layui-form-item">
         <label class="layui-form-label">新的密码</label>
         <div class="layui-input-block">
-            <input type="password" name="password" value='' pattern="^\S{1,}$" required=""  title="请输入新的密码" placeholder="请输入新的密码" class="layui-input">
+            <input type="password" name="password" value='' pattern="^\S{1,}$" required="" title="请输入新的密码"
+                   placeholder="请输入新的密码" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">重复密码</label>
         <div class="layui-input-block">
-            <input type="password" name="repassword" value='' pattern="^\S{1,}$" required="" title="请输入重复密码" placeholder="请输入重复密码" class="layui-input">
+            <input type="password" name="repassword" value='' pattern="^\S{1,}$" required="" title="请输入重复密码"
+                   placeholder="请输入重复密码" class="layui-input">
         </div>
     </div>
 
