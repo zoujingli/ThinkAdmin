@@ -131,13 +131,9 @@ class FileService
      */
     public static function getBaseUriLocal()
     {
-        $request = request();
-        $base = $request->root();
-        $root = strpos($base, '.') ? ltrim(dirname($base), DS) : $base;
-        if ('' != $root) {
-            $root = '/' . ltrim($root, '/');
-        }
-        return ($request->isSsl() ? 'https' : 'http') . '://' . $request->host() . "{$root}/static/upload/";
+        $appRoot = request()->root(true);
+        $uriRoot = preg_match('/\.php$/', $appRoot) ? dirname($appRoot) : $appRoot;
+        return "{$uriRoot}/static/upload/";
     }
 
     /**

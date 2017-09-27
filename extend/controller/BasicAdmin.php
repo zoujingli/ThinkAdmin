@@ -81,9 +81,10 @@ class BasicAdmin extends Controller
      * @param bool $isPage 是启用分页
      * @param bool $isDisplay 是否直接输出显示
      * @param bool $total 总记录数
+     * @param array $result
      * @return array|string
      */
-    protected function _list($dbQuery = null, $isPage = true, $isDisplay = true, $total = false)
+    protected function _list($dbQuery = null, $isPage = true, $isDisplay = true, $total = false, $result = [])
     {
         $db = is_null($dbQuery) ? Db::name($this->table) : (is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery);
         // 列表排序默认处理
@@ -102,15 +103,12 @@ class BasicAdmin extends Controller
             $fields = $db->getTableFields($db->getTable());
             in_array('sort', $fields) && $db->order('sort asc');
         }
-        $result = [];
         if ($isPage) {
             $rows = intval($this->request->get('rows', cookie('rows')));
             cookie('rows', $rows >= 10 ? $rows : 20);
-            $page = $db->paginate($rows, $total, ['query' => $this->request->get()]);
-            $result['list'] = $page->all();
-            $pattern = ['|href="(.*?)"|', '|pagination|'];
-            $replacement = ['data-open="$1" href="javascript:void(0);"', 'pagination pull-right'];
-            $result['page'] = preg_replace($pattern, $replacement, $page->render());
+            $page = $db->paginate($rows, $total, ['query' => $this->request->get('', '', 'urlencode')]);
+            list($pattern, $replacement) = [['|href="(.*?)"|', '|pagination|'], ['data-open="$1"', 'pagination pull-right']];
+            list($result['list'], $result['page']) = [$page->all(), preg_replace($pattern, $replacement, $page->render())];
         } else {
             $result['list'] = $db->select();
         }

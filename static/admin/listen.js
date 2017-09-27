@@ -30,7 +30,7 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 注册 data-serach 表单搜索行为 */
     this.$body.on('submit', 'form.form-search', function () {
-        var url = $(this).attr('action'), split = url.indexOf('?') === -1 ? '?' : '&';
+        var url = $(this).attr('action').replace(/\&?page\=\d+/g, ''), split = url.indexOf('?') === -1 ? '?' : '&';
         if ((this.method || 'get').toLowerCase() === 'get') {
             return window.location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
         }
@@ -94,7 +94,7 @@ define(['jquery', 'admin.plugs'], function () {
         var method = $(this).attr('data-file') === 'one' ? 'one' : 'mtl';
         var type = $(this).attr('data-type') || 'jpg,png', field = $(this).attr('data-field') || 'file';
         var title = $(this).attr('data-title') || '文件上传', uptype = $(this).attr('data-uptype') || '';
-        var url = window.ROOT_URL + '/index.php/admin/plugs/upfile/mode/' + method + '.html?mode=' + method + '&uptype=' + uptype + '&type=' + type + '&field=' + field;
+        var url = window.ROOT_URL + '/index.php/admin/plugs/upfile.html?mode=' + method + '&uptype=' + uptype + '&type=' + type + '&field=' + field;
         $.form.iframe(url, title || '文件管理');
     });
 
@@ -115,7 +115,8 @@ define(['jquery', 'admin.plugs'], function () {
         var img = new Image(), src = this.getAttribute('data-tips-image') || this.src;
         var imgWidth = this.getAttribute('data-width') || '480px';
         img.onload = function () {
-            layer.open({type: 1, area: imgWidth, title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true, content: $(img).appendTo('body').css({background: '#fff', width: imgWidth, height: 'auto'}), end: function () {
+            var $content = $(img).appendTo('body').css({background: '#fff', width: imgWidth, height: 'auto'});
+            layer.open({type: 1, area: imgWidth, title: false, closeBtn: 1, skin: 'layui-layer-nobg', shadeClose: true, content: $content, end: function () {
                     $(img).remove();
                 }
             });
@@ -141,6 +142,7 @@ define(['jquery', 'admin.plugs'], function () {
 
     /*! 后台菜单控制初始化 */
     $.menu.listen();
+
     /*! 表单监听初始化 */
     $.validate.listen(this);
 

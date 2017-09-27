@@ -15,10 +15,12 @@
 html{overflow:auto;overflow-y:scroll !important}
 body{min-width:1024px;font-size:12px;line-height:24px;font-family:'微软雅黑','Microsoft YaHei','Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB',serif}
 a:hover{color:#039}a{color:#06C;cursor:pointer}input::-ms-clear{display:none}button{border-radius:0!important}label{font-size:100%;font-weight:500;margin-bottom:0}
-.block{display:block}.pointer{cursor:pointer}.help-block{margin-bottom:0}
-.inline-block{display:inline-block}.nowrap{white-space:nowrap !important}
-.text-left{text-align:left!important}.text-right{text-align:right!important}.text-center{text-align:center!important}
+label.think-radio,label.think-checkbox{line-height:18px;margin-right:10px;margin-top:8px}
+.pointer{cursor:pointer!important}.help-block{margin-bottom:0}.block{display:block!important}.inline-block{display:inline-block!important}
+.nowrap{white-space:nowrap !important}.text-left{text-align:left!important}.text-right{text-align:right!important}.text-center{text-align:center!important}
 .full-width{width:100% !important}.full-height{height:100% !important}
+.color-desc{color:#999!important}.color-text{color:#333!important}.color-blue{color:#2494F2!important}
+.color-red{color:#ec494e!important}.color-green{color:#00B83F!important}
 
 /* 设置选择文字及背景颜色 */
 ::selection{background-color:#ec494e;color:#fff}::-moz-selection{background-color:#ec494e;color:#fff}
@@ -60,6 +62,7 @@ table td .text-explode{color:#ccc!important;font-weight:normal!important;margin:
 /** 列表排序样式 */
 .list-table-image{width:22px;cursor:pointer}
 .list-table-sort-td{width:60px !important;text-align:center!important}
+.list-table-sort-td button{width:50px}
 .list-table-sort-td input{width:50px;text-align:center;font-size:12px;line-height:14px;padding:2px;border:1px solid #e6e6e6}
 .list-table-check-td{width:30px !important;text-align:center;padding:0}
 .list-table-check-td input{margin:0;vertical-align:middle}
