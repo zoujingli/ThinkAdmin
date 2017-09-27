@@ -41,7 +41,7 @@ class User extends BasicAdmin
     {
         $this->title = '系统用户管理';
         $get = $this->request->get();
-        $db = Db::name($this->table)->where(['is_deleted' => '0']);
+        $db = Db::name($this->table)->where(['is_deleted' => '0', 'type' => '系统用户']);
         foreach (['username', 'phone'] as $key) {
             if (isset($get[$key]) && $get[$key] !== '') {
                 $db->where($key, 'like', "%{$get[$key]}%");
@@ -64,7 +64,7 @@ class User extends BasicAdmin
      */
     public function add()
     {
-        return $this->_form($this->table, 'form');
+        return $this->_form($this->table, 'form', 'id', [], ['type' => '系统用户']);
     }
 
     /**
@@ -72,7 +72,7 @@ class User extends BasicAdmin
      */
     public function edit()
     {
-        return $this->_form($this->table, 'form');
+        return $this->_form($this->table, 'form', 'id', [], ['type' => '系统用户']);
     }
 
     /**

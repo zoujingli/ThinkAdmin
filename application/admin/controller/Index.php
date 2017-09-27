@@ -63,7 +63,7 @@ class Index extends BasicAdmin
                 continue;
             // 菜单链接不为空时，判断登录状态及权限验证
             elseif ($menu['url'] !== '#') :
-                $node = join('/', array_slice(explode('/', preg_replace('/[\W]/', '/', $menu['url'])), 0, 3));
+                $node = join('/', array_slice(explode('/', preg_replace('/[\W^_]/', '/', $menu['url'])), 0, 3));
                 $menu['url'] = url($menu['url']);
                 // 节点需要验证验证，未登录时移除此菜单
                 if (isset($nodes[$node]) && $nodes[$node]['is_login'] && !session('user')) :

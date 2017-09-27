@@ -70,9 +70,12 @@ class Auth extends BasicAdmin
         $checked = Db::name('SystemAuthNode')->where(['auth' => $auth_id])->column('node');
         foreach ($nodes as $key => &$node) {
             $node['checked'] = in_array($node['node'], $checked);
+            if (empty($node['is_auth']) && substr_count($node['node'], '/') > 1) {
+                unset($nodes[$key]);
+            }
         }
-        $all = $this->_apply_filter(ToolsService::arr2tree($nodes, 'node', 'pnode', '_sub_'));
-        $this->success('获取节点成功！', '', $all);
+        $allnode = $this->_apply_filter(ToolsService::arr2tree($nodes, 'node', 'pnode', '_sub_'));
+        $this->success('获取节点成功！', '', $allnode);
     }
 
     /**
@@ -101,6 +104,8 @@ class Auth extends BasicAdmin
         foreach ($nodes as $key => &$node) {
             if (!empty($node['_sub_']) && is_array($node['_sub_'])) {
                 $node['_sub_'] = $this->_apply_filter($node['_sub_'], $level + 1);
+            } elseif ($level < 3) {
+                unset($nodes[$key]);
             }
         }
         return $nodes;
@@ -151,7 +156,7 @@ class Auth extends BasicAdmin
     {
         if (DataService::update($this->table)) {
             $id = $this->request->post('id');
-            Db::name('SystemAuthNode')->where(['auth' => $id])->delete();
+            Db::name('SystemAuthNode')->where('auth', $id)->delete();
             $this->success("权限删除成功！", '');
         }
         $this->error("权限删除失败，请稍候再试！");

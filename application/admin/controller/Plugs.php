@@ -16,6 +16,7 @@ namespace app\admin\controller;
 
 use controller\BasicAdmin;
 use service\FileService;
+use think\Db;
 
 /**
  * 插件助手控制器
