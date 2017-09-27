@@ -16,7 +16,7 @@
 use service\DataService;
 use service\FileService;
 use service\NodeService;
-use Wechat\Loader;
+use service\SoapService;
 use think\Db;
 
 /**
@@ -33,29 +33,32 @@ function p($data, $replace = false, $pathname = null)
 }
 
 /**
- * 获取微信操作对象
- * @param string $type
- * @return \Wechat\WechatReceive|\Wechat\WechatUser|\Wechat\WechatPay|\Wechat\WechatScript|\Wechat\WechatOauth|\Wechat\WechatMenu|\Wechat\WechatMedia
+ * 获取mongoDB连接
+ * @param string $col 数据库集合
+ * @param bool $force 是否强制连接
+ * @return \think\db\Query|\think\mongo\Query
  */
-function & load_wechat($type = '')
+function mongo($col, $force = false)
 {
-    static $wechat = [];
-    $index = md5(strtolower($type));
-    if (!isset($wechat[$index])) {
-        $config = [
-            'token'          => sysconf('wechat_token'),
-            'appid'          => sysconf('wechat_appid'),
-            'appsecret'      => sysconf('wechat_appsecret'),
-            'encodingaeskey' => sysconf('wechat_encodingaeskey'),
-            'mch_id'         => sysconf('wechat_mch_id'),
-            'partnerkey'     => sysconf('wechat_partnerkey'),
-            'ssl_cer'        => sysconf('wechat_cert_cert'),
-            'ssl_key'        => sysconf('wechat_cert_key'),
-            'cachepath'      => CACHE_PATH . 'wxpay' . DS,
-        ];
-        $wechat[$index] = Loader::get($type, $config);
+    return Db::connect(config('mongo'), $force)->name($col);
+}
+
+/**
+ * 获取微信操作对象
+ * @param string $name
+ * @return \Wechat\WechatMedia|\Wechat\WechatMenu|\Wechat\WechatOauth|\Wechat\WechatPay|\Wechat\WechatReceive|\Wechat\WechatScript|\Wechat\WechatUser|\Wechat\WechatExtends|\Wechat\WechatMessage
+ * @throws Exception
+ */
+function load_wechat($name = '')
+{
+    static $cache = [];
+    if (empty($cache[$name])) {
+        list($appid, $appkey) = [sysconf('wechat_appid'), sysconf('wechat_appkey')];
+        $token = strtolower("{$name}-{$appid}-{$appkey}");
+        $location = "http://api.cuci.cc/wechat/instance/{$token}.html";
+        $cache[$name] = new SoapService(null, ['uri' => strtolower($name), 'location' => $location]);
     }
-    return $wechat[$index];
+    return $cache[$name];
 }
 
 /**
@@ -87,7 +90,7 @@ function decode($string)
 }
 
 /**
- * 本地化网络图片
+ * 网络图片本地化
  * @param string $url
  * @return string
  */
@@ -100,15 +103,26 @@ function local_image($url)
 }
 
 /**
+ * 日期格式化
+ * @param string $date 标准日期格式
+ * @param string $format 输出格式化date
+ * @return false|string
+ */
+function format_datetime($date, $format = 'Y年m月d日 H:i:s')
+{
+    return empty($date) ? '' : date($format, strtotime($date));
+}
+
+/**
  * 设备或配置系统参数
  * @param string $name 参数名称
- * @param bool $value 默认是false为获取值，否则为更新
+ * @param bool $value 默认是null为获取值，否则为更新
  * @return string|bool
  */
-function sysconf($name, $value = false)
+function sysconf($name, $value = null)
 {
     static $config = [];
-    if ($value !== false) {
+    if ($value !== null) {
         list($config, $data) = [[], ['name' => $name, 'value' => $value]];
         return DataService::save('SystemConfig', $data, 'name');
     }
