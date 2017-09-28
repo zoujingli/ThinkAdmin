@@ -18,6 +18,7 @@ use service\FileService;
 use service\NodeService;
 use service\SoapService;
 use think\Db;
+use Wechat\Loader;
 
 /**
  * 打印输出数据到文件
@@ -45,7 +46,7 @@ function mongo($col, $force = false)
 
 /**
  * 获取微信操作对象
- * @param string $name
+ * @param string $type
  * @return \Wechat\WechatMedia|\Wechat\WechatMenu|\Wechat\WechatOauth|\Wechat\WechatPay|\Wechat\WechatReceive|\Wechat\WechatScript|\Wechat\WechatUser|\Wechat\WechatExtends|\Wechat\WechatMessage
  * @throws Exception
  */
