@@ -43,6 +43,7 @@ class WechatService
             foreach ($articles as $article) {
                 if (intval($article['id']) === intval($article_id)) {
                     unset($article['create_by'], $article['create_at']);
+                    $article['content'] = htmlspecialchars_decode($article['content']);
                     $data['articles'][] = $article;
                 }
             }
