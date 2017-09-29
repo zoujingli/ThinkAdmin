@@ -26,10 +26,8 @@ use Wechat\Lib\Tools;
  */
 class WechatMedia extends Common
 {
-
-    const UPLOAD_MEDIA_URL = 'http://file.api.weixin.qq.com/cgi-bin';
     const MEDIA_UPLOAD_URL = '/media/upload?';
-    const MEDIA_UPLOADIMG_URL = '/media/uploadimg?'; //图片上传接口
+    const MEDIA_UPLOADIMG_URL = '/media/uploadimg?';
     const MEDIA_GET_URL = '/media/get?';
     const MEDIA_VIDEO_UPLOAD = '/media/uploadvideo?';
     const MEDIA_FOREVER_UPLOAD_URL = '/material/add_material?';
@@ -84,10 +82,7 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        //原先的上传多媒体文件接口使用 self::UPLOAD_MEDIA_URL 前缀
-        //如果要获取的素材是视频文件时，不能使用https协议，必须更换成http协议
-        $url_prefix = $is_video ? str_replace('https', 'http', self::API_URL_PREFIX) : self::API_URL_PREFIX;
-        $result = Tools::httpGet($url_prefix . self::MEDIA_GET_URL . "access_token={$this->access_token}" . '&media_id=' . $media_id);
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::MEDIA_GET_URL . "access_token={$this->access_token}" . '&media_id=' . $media_id);
         if ($result) {
             if (is_string($result)) {
                 $json = json_decode($result, true);
@@ -418,7 +413,7 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = Tools::httpPost(self::UPLOAD_MEDIA_URL . self::MEDIA_VIDEO_UPLOAD . "access_token={$this->access_token}", Tools::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_VIDEO_UPLOAD . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (empty($json) || !empty($json['errcode'])) {

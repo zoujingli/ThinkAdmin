@@ -733,7 +733,7 @@ class WechatReceive extends WechatMessage
             $array = $pc->encrypt($xmldata, empty($this->config['component_appid']) ? $this->appid : $this->config['component_appid']);
             $ret = $array[0];
             if ($ret != 0) {
-                Tools::log('encrypt err!');
+                Tools::log('Encrypt Error!', "ERR-{$this->appid}");
                 return false;
             }
             $timestamp = time();
