@@ -82,9 +82,9 @@ class WechatCard extends Common
         $result = Tools::httpGet(self::API_URL_PREFIX . self::GET_TICKET_URL . "access_token={$this->access_token}" . '&type=wx_card');
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             $expire = $json['expires_in'] ? intval($json['expires_in']) - 100 : 3600;
@@ -181,9 +181,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_CREATE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -205,9 +205,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_UPDATE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -231,9 +231,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_DELETE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -257,9 +257,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_USER_GET_LIST . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode']) || empty($json['card_list'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -282,9 +282,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_SEND_HTML . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode']) || empty($json['card_list'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -307,9 +307,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_CHECKCODE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode']) || empty($json['card_list'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -331,9 +331,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_GET . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -354,9 +354,9 @@ class WechatCard extends Common
         $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::CARD_GETCOLORS . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -391,9 +391,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_QRCODE_CREATE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -424,9 +424,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_CODE_CONSUME . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -453,9 +453,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_CODE_DECRYPT . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -487,9 +487,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_CODE_GET . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -519,9 +519,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_BATCHGET . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -547,9 +547,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_CODE_UPDATE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -574,9 +574,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_CODE_UNAVAILABLE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -597,9 +597,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_MODIFY_STOCK . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -620,9 +620,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_MEETINGCARD_UPDATEUSER . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -643,9 +643,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_MEMBERCARD_ACTIVATE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -667,9 +667,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_MEMBERCARD_UPDATEUSER . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -694,9 +694,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_TESTWHILELIST_SET . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -721,10 +721,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_LUCKYMONEY_UPDATE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -754,9 +753,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_SET_SELFCONSUMECELL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -779,9 +778,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_PAYCELL_SET . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -802,9 +801,9 @@ class WechatCard extends Common
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_MEMBERCARD_ACTIVATEUSERFORM_SET . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;

@@ -38,9 +38,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/template/get_all_private_template?access_token={$this->access_token}", []);
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -60,9 +60,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/template/get_industry?access_token={$this->access_token}", []);
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -84,9 +84,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/template/del_private_template?access_token={$this->access_token}", [Tools::json_encode($data)]);
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -112,9 +112,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/template/api_set_industry?access_token={$this->access_token}", $json);
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errMsg = $json['errmsg'];
-                $this->errCode = $json['errcode'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -137,9 +137,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/template/api_add_template?access_token={$this->access_token}", $data);
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errMsg = $json['errmsg'];
-                $this->errCode = $json['errcode'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json['template_id'];
@@ -184,9 +184,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/message/template/send?access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errMsg = $json['errmsg'];
-                $this->errCode = $json['errcode'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -219,9 +219,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/message/mass/send?access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -254,9 +254,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/message/mass/sendall?access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -278,9 +278,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/message/mass/delete?access_token={$this->access_token}", $data);
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
@@ -311,9 +311,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/message/mass/preview?access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
@@ -339,9 +339,9 @@ class WechatMessage extends Common
         $result = Tools::httpPost(self::API_URL_PREFIX . "/message/mass/get?access_token={$this->access_token}", $data);
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;

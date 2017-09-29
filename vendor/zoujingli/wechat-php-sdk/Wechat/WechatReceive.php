@@ -533,9 +533,9 @@ class WechatReceive extends WechatMessage
         $result = Tools::httpPost(self::API_URL_PREFIX . "/message/custom/send?access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || !empty($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
+            if (empty($json) || !empty($json['errcode'])) {
+                $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+                $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;

@@ -366,11 +366,8 @@ class WechatService
         if (empty($this->component_access_token)) {
             return false;
         }
-        $url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?"
-            . "appid={$appid}&code={$code}&"
-            . "grant_type=authorization_code&"
-            . "component_appid={$this->component_appid}&"
-            . "component_access_token={$this->component_access_token}";
+        $url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid={$appid}&code={$code}&grant_type=authorization_code&"
+            . "component_appid={$this->component_appid}&component_access_token={$this->component_access_token}";
         $json = $this->parseJson(Tools::httpGet($url));
         if ($json !== false) {
             return $json;
@@ -386,9 +383,9 @@ class WechatService
     private function parseJson($result)
     {
         $json = json_decode($result, true);
-        if (!empty($json['errcode'])) {
-            $this->errCode = $json['errcode'];
-            $this->errMsg = $json['errmsg'];
+        if (empty($json) || !empty($json['errcode'])) {
+            $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
+            $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
             return false;
         }
         return $json;

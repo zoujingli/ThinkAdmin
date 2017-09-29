@@ -29,8 +29,8 @@ class Tools
 
     /**
      * 产生随机字符串
-     * @param int $length
-     * @param string $str
+     * @param int $length 指定字符长度
+     * @param string $str 字符串前缀
      * @return string
      */
     static public function createNoncestr($length = 32, $str = "")
@@ -43,19 +43,19 @@ class Tools
     }
 
     /**
-     * 获取签名
-     * @param array $arrdata 签名数组
+     * 数据生成签名
+     * @param array $data 签名数组
      * @param string $method 签名方法
      * @return bool|string 签名值
      */
-    static public function getSignature($arrdata, $method = "sha1")
+    static public function getSignature($data, $method = "sha1")
     {
         if (!function_exists($method)) {
             return false;
         }
-        ksort($arrdata);
+        ksort($data);
         $params = array();
-        foreach ($arrdata as $key => $value) {
+        foreach ($data as $key => $value) {
             $params[] = "{$key}={$value}";
         }
         return $method(join('&', $params));
@@ -144,21 +144,16 @@ class Tools
      */
     static public function httpGet($url)
     {
-        $oCurl = curl_init();
-        if (stripos($url, "https://") !== false) {
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($oCurl, CURLOPT_SSLVERSION, 1);
+        $curl = curl_init();
+        if (stripos($url, "https://") !== 0) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($curl, CURLOPT_SSLVERSION, 1);
         }
-        curl_setopt($oCurl, CURLOPT_URL, $url);
-        curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
-        $sContent = curl_exec($oCurl);
-        $aStatus = curl_getinfo($oCurl);
-        curl_close($oCurl);
-        if (intval($aStatus["http_code"]) == 200) {
-            return $sContent;
-        }
-        return false;
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        list($content, $status) = array(curl_exec($curl), curl_getinfo($curl), curl_close($curl));
+        return (intval($status["http_code"]) === 200) ? $content : false;
     }
 
     /**
@@ -169,70 +164,66 @@ class Tools
      */
     static public function httpPost($url, $data)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_POST, true);
-        if (is_array($data)) {
-            foreach ($data as &$value) {
-                if (is_string($value) && stripos($value, '@') === 0 && class_exists('CURLFile', false)) {
-                    $value = new CURLFile(realpath(trim($value, '@')));
-                }
-            }
-        }
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $data = curl_exec($ch);
-        curl_close($ch);
-        if ($data) {
-            return $data;
-        }
-        return false;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, self::_buildPost($data));
+        list($content, $status) = array(curl_exec($curl), curl_getinfo($curl), curl_close($curl));
+        return (intval($status["http_code"]) === 200) ? $content : false;
     }
 
     /**
      * 使用证书，以post方式提交xml到对应的接口url
      * @param string $url POST提交的内容
-     * @param array $postdata 请求的地址
+     * @param array $data 请求的地址
      * @param string $ssl_cer 证书Cer路径 | 证书内容
      * @param string $ssl_key 证书Key路径 | 证书内容
      * @param int $second 设置请求超时时间
      * @return bool|mixed
      */
-    static public function httpsPost($url, $postdata, $ssl_cer = null, $ssl_key = null, $second = 30)
+    static public function httpsPost($url, $data, $ssl_cer = null, $ssl_key = null, $second = 30)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_TIMEOUT, $second);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_TIMEOUT, $second);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         if (!is_null($ssl_cer) && file_exists($ssl_cer) && is_file($ssl_cer)) {
-            curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');
-            curl_setopt($ch, CURLOPT_SSLCERT, $ssl_cer);
+            curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
+            curl_setopt($curl, CURLOPT_SSLCERT, $ssl_cer);
         }
         if (!is_null($ssl_key) && file_exists($ssl_key) && is_file($ssl_key)) {
-            curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');
-            curl_setopt($ch, CURLOPT_SSLKEY, $ssl_key);
+            curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
+            curl_setopt($curl, CURLOPT_SSLKEY, $ssl_key);
         }
-        curl_setopt($ch, CURLOPT_POST, true);
-        if (is_array($postdata)) {
-            foreach ($postdata as &$data) {
-                if (is_string($data) && stripos($data, '@') === 0 && class_exists('CURLFile', false)) {
-                    $data = new CURLFile(realpath(trim($data, '@')));
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, self::_buildPost($data));
+        list($content, $status) = array(curl_exec($curl), curl_getinfo($curl), curl_close($curl));
+        return (intval($status["http_code"]) === 200) ? $content : false;
+    }
+
+    /**
+     * POST数据过滤处理
+     * @param array $data
+     * @return array
+     */
+    static private function _buildPost(&$data)
+    {
+        if (is_array($data)) {
+            foreach ($data as &$value) {
+                if (is_string($value) && $value[0] === '@' && class_exists('CURLFile', false)) {
+                    $filename = realpath(trim($value, '@'));
+                    file_exists($filename) && $value = new CURLFile($filename);
                 }
             }
         }
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-        $result = curl_exec($ch);
-        curl_close($ch);
-        if ($result) {
-            return $result;
-        }
-        return false;
+        return $data;
     }
 
     /**

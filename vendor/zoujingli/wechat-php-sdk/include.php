@@ -12,4 +12,6 @@
 // | github开源项目：https://github.com/zoujingli/wechat-php-sdk
 // +----------------------------------------------------------------------
 
-require __DIR__ . DIRECTORY_SEPARATOR . 'Wechat' . DIRECTORY_SEPARATOR . 'Loader.php';
+if (!class_exists('\Wechat\Loader')) {
+    require __DIR__ . DIRECTORY_SEPARATOR . 'Wechat' . DIRECTORY_SEPARATOR . 'Loader.php';
+}

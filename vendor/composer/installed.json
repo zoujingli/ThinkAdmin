@@ -49,18 +49,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "acc75f50ac89eacfb66371ffd3e3ecb17073894b"
+            "reference": "d00deaacb4862bda3525fd246c370fca5c0b6e6e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/acc75f50ac89eacfb66371ffd3e3ecb17073894b.zip",
-            "reference": "acc75f50ac89eacfb66371ffd3e3ecb17073894b",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/d00deaacb4862bda3525fd246c370fca5c0b6e6e.zip",
+            "reference": "d00deaacb4862bda3525fd246c370fca5c0b6e6e",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-08-22T04:00:09+00:00",
+        "time": "2017-09-29T04:02:48+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
@@ -174,12 +174,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "45268eeba3da7eedaead09a524e2bc20a0132e29"
+            "reference": "926c9edb0c2682b14f563cac2c8a93f42f729016"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/45268eeba3da7eedaead09a524e2bc20a0132e29.zip",
-            "reference": "45268eeba3da7eedaead09a524e2bc20a0132e29",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/926c9edb0c2682b14f563cac2c8a93f42f729016.zip",
+            "reference": "926c9edb0c2682b14f563cac2c8a93f42f729016",
             "shasum": ""
         },
         "require": {
@@ -194,7 +194,7 @@
             "phpunit/phpunit": "4.8.*",
             "sebastian/phpcpd": "2.*"
         },
-        "time": "2017-09-07T10:37:47+00:00",
+        "time": "2017-09-13T03:30:29+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "autoload": {
@@ -381,8 +381,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.3.8",
-        "version_normalized": "3.3.8.0",
+        "version": "v3.3.9",
+        "version_normalized": "3.3.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",

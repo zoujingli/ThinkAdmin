@@ -204,8 +204,8 @@ class Common
      */
     protected function checkRetry($method, $arguments = array())
     {
+        Tools::log("Run {$method} Faild. {$this->errMsg}[{$this->errCode}]", 'ERR');
         if (!$this->_retry && in_array($this->errCode, array('40014', '40001', '41001', '42001'))) {
-            Tools::log("Run {$method} Faild. {$this->errMsg}[{$this->errCode}]", 'ERR');
             ($this->_retry = true) && $this->resetAuth();
             $this->errCode = 40001;
             $this->errMsg = 'no access';
