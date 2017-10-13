@@ -51,7 +51,7 @@ class WechatOauth extends Common
     {
         $code = isset($_GET['code']) ? $_GET['code'] : '';
         if (empty($code)) {
-            Tools::log("getOauthAccessToken Fail, Because there is no access to the code value in get.", "MSG-{$this->appid}");
+            Tools::log("getOauthAccessToken Fail, Because there is no access to the code value in get.", "MSG - {$this->appid}");
             return false;
         }
         $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::OAUTH_TOKEN_URL . "appid={$this->appid}&secret={$this->appsecret}&code={$code}&grant_type=authorization_code");
@@ -60,7 +60,7 @@ class WechatOauth extends Common
             if (empty($json) || !empty($json['errcode'])) {
                 $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
                 $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
-                Tools::log("WechatOauth::getOauthAccessToken Fail.{$this->errMsg} [{$this->errCode}]", "ERR-{$this->appid}");
+                Tools::log("WechatOauth::getOauthAccessToken Fail.{$this->errMsg} [{$this->errCode}]", "ERR - {$this->appid}");
                 return false;
             }
             return $json;
@@ -81,7 +81,7 @@ class WechatOauth extends Common
             if (empty($json) || !empty($json['errcode'])) {
                 $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
                 $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
-                Tools::log("WechatOauth::getOauthRefreshToken Fail.{$this->errMsg} [{$this->errCode}]", "ERR-{$this->appid}");
+                Tools::log("WechatOauth::getOauthRefreshToken Fail.{$this->errMsg} [{$this->errCode}]", "ERR - {$this->appid}");
                 return false;
             }
             return $json;
@@ -104,7 +104,7 @@ class WechatOauth extends Common
             if (empty($json) || !empty($json['errcode'])) {
                 $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
                 $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
-                Tools::log("WechatOauth::getOauthUserInfo Fail.{$this->errMsg} [{$this->errCode}]", "ERR-{$this->appid}");
+                Tools::log("WechatOauth::getOauthUserInfo Fail.{$this->errMsg} [{$this->errCode}]", "ERR - {$this->appid}");
                 return false;
             }
             return $json;
@@ -126,7 +126,7 @@ class WechatOauth extends Common
             if (empty($json) || !empty($json['errcode'])) {
                 $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
                 $this->errMsg = isset($json['errmsg']) ? $json['errmsg'] : '无法解析接口返回内容！';
-                Tools::log("WechatOauth::getOauthAuth Fail.{$this->errMsg} [{$this->errCode}]", "ERR-{$this->appid}");
+                Tools::log("WechatOauth::getOauthAuth Fail.{$this->errMsg} [{$this->errCode}]", "ERR - {$this->appid}");
                 return false;
             } elseif (intval($json['errcode']) === 0) {
                 return true;

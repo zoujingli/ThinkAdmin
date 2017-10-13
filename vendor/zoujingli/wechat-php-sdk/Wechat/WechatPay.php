@@ -210,13 +210,13 @@ class WechatPay
     {
         $notifyInfo = (array)simplexml_load_string(file_get_contents("php://input"), 'SimpleXMLElement', LIBXML_NOCDATA);
         if (empty($notifyInfo)) {
-            Tools::log('Payment notification forbidden access.', "ERR-{$this->appid}");
+            Tools::log('Payment notification forbidden access.', "ERR - {$this->appid}");
             $this->errCode = '404';
             $this->errMsg = 'Payment notification forbidden access.';
             return false;
         }
         if (empty($notifyInfo['sign'])) {
-            Tools::log('Payment notification signature is missing.' . var_export($notifyInfo, true), "ERR-{$this->appid}");
+            Tools::log('Payment notification signature is missing.' . var_export($notifyInfo, true), "ERR - {$this->appid}");
             $this->errCode = '403';
             $this->errMsg = 'Payment notification signature is missing.';
             return false;
@@ -224,12 +224,12 @@ class WechatPay
         $data = $notifyInfo;
         unset($data['sign']);
         if ($notifyInfo['sign'] !== Tools::getPaySign($data, $this->partnerKey)) {
-            Tools::log('Payment notification signature verification failed.' . var_export($notifyInfo, true), "ERR-{$this->appid}");
+            Tools::log('Payment notification signature verification failed.' . var_export($notifyInfo, true), "ERR - {$this->appid}");
             $this->errCode = '403';
             $this->errMsg = 'Payment signature verification failed.';
             return false;
         }
-        Tools::log('Payment notification signature verification success.' . var_export($notifyInfo, true), "MSG-{$this->appid}");
+        Tools::log('Payment notification signature verification success.' . var_export($notifyInfo, true), "MSG - {$this->appid}");
         $this->errCode = '0';
         $this->errMsg = '';
         return $notifyInfo;

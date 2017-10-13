@@ -116,7 +116,7 @@ class Common
                 if (!isset($array[0]) || intval($array[0]) > 0) {
                     $this->errCode = $array[0];
                     $this->errMsg = $array[1];
-                    Tools::log("Interface Authentication Failed. {$this->errMsg}[{$this->errCode}]", "ERR-{$this->appid}");
+                    Tools::log("Interface Authentication Failed. {$this->errMsg}[{$this->errCode}]", "ERR - {$this->appid}");
                     return false;
                 }
                 $this->postxml = $array[1];
@@ -165,7 +165,7 @@ class Common
     public function getAccessToken($appid = '', $appsecret = '', $token = '')
     {
         if (!$appid || !$appsecret) {
-            list($appid, $$appsecret) = [$this->appid, $this->appsecret];
+            list($appid, $appsecret) = [$this->appid, $this->appsecret];
         }
         if ($token) {
             return $this->access_token = $token;
@@ -184,11 +184,11 @@ class Common
             if (!$json || isset($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                Tools::log("Get New AccessToken Error. {$this->errMsg}[{$this->errCode}]", "ERR-{$this->appid}");
+                Tools::log("Get New AccessToken Error. {$this->errMsg}[{$this->errCode}]", "ERR - {$this->appid}");
                 return false;
             }
             $this->access_token = $json['access_token'];
-            Tools::log("Get New AccessToken Success.", "MSG-{$this->appid}");
+            Tools::log("Get New AccessToken Success.", "MSG - {$this->appid}");
             Tools::setCache($cache, $this->access_token, 5000);
             return $this->access_token;
         }
@@ -203,12 +203,12 @@ class Common
      */
     protected function checkRetry($method, $arguments = array())
     {
-        Tools::log("Run {$method} Faild. {$this->errMsg}[{$this->errCode}]", "ERR-{$this->appid}");
+        Tools::log("Run {$method} Faild. {$this->errMsg}[{$this->errCode}]", "ERR - {$this->appid}");
         if (!$this->_retry && in_array($this->errCode, array('40014', '40001', '41001', '42001'))) {
             ($this->_retry = true) && $this->resetAuth();
             $this->errCode = 40001;
             $this->errMsg = 'no access';
-            Tools::log("Retry Run {$method} ...", "MSG-{$this->appid}");
+            Tools::log("Retry Run {$method} ...", "MSG - {$this->appid}");
             return call_user_func_array(array($this, $method), $arguments);
         }
         return false;
@@ -222,7 +222,7 @@ class Common
     public function resetAuth($appid = '')
     {
         $authname = 'wechat_access_token_' . (empty($appid) ? $this->appid : $appid);
-        Tools::log("Reset Auth And Remove Old AccessToken.", "MSG-{$this->appid}");
+        Tools::log("Reset Auth And Remove Old AccessToken.", "MSG - {$this->appid}");
         $this->access_token = '';
         Tools::removeCache($authname);
         return true;

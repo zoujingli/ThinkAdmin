@@ -49,18 +49,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "a5ac4d6351c8b07982f77bbbe6ea5fd823d62dda"
+            "reference": "25f246fade52aa53514fb49ec48f72cdef2ca1ea"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/a5ac4d6351c8b07982f77bbbe6ea5fd823d62dda.zip",
-            "reference": "a5ac4d6351c8b07982f77bbbe6ea5fd823d62dda",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/25f246fade52aa53514fb49ec48f72cdef2ca1ea.zip",
+            "reference": "25f246fade52aa53514fb49ec48f72cdef2ca1ea",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-09-29T07:13:32+00:00",
+        "time": "2017-09-30T14:25:36+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
@@ -381,8 +381,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.3.9",
-        "version_normalized": "3.3.9.0",
+        "version": "v3.3.10",
+        "version_normalized": "3.3.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
