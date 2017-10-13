@@ -95,13 +95,14 @@ class Menu extends BasicAdmin
                     $current_path = "-{$vo['pid']}-{$vo['id']}";
                     if ($vo['pid'] !== '' && (stripos("{$menu['path']}-", "{$current_path}-") !== false || $menu['path'] === $current_path)) {
                         unset($menus[$key]);
+                        continue;
                     }
                 }
             }
             // 读取系统功能节点
             $nodes = NodeService::get();
-            foreach ($nodes as $key => $_vo) {
-                if (empty($_vo['is_menu'])) {
+            foreach ($nodes as $key => $node) {
+                if (empty($node['is_menu'])) {
                     unset($nodes[$key]);
                 }
             }

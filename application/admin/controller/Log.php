@@ -40,17 +40,14 @@ class Log extends BasicAdmin
      */
     public function index()
     {
-        $this->title = '系统操作日志';
-        $get = $this->request->get();
         // 日志行为类别
         $actions = Db::name($this->table)->group('action')->column('action');
         $this->assign('actions', $actions);
         // 日志数据库对象
+        list($this->title, $get) = ['系统操作日志', $this->request->get()];
         $db = Db::name($this->table)->order('id desc');
         foreach (['action', 'content', 'username'] as $key) {
-            if (isset($get[$key]) && $get[$key] !== '') {
-                $db->where($key, 'like', "%{$get[$key]}%");
-            }
+            (isset($get[$key]) && $get[$key] !== '') && $db->whereLike($key, "%{$get[$key]}%");
         }
         if (isset($get['date']) && $get['date'] !== '') {
             list($start, $end) = explode('-', str_replace(' ', '', $get['date']));

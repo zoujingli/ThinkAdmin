@@ -68,7 +68,7 @@ class Auth extends BasicAdmin
     {
         $nodes = NodeService::get();
         $checked = Db::name('SystemAuthNode')->where(['auth' => $auth_id])->column('node');
-        foreach ($nodes as $key => &$node) {
+        foreach ($nodes as &$node) {
             $node['checked'] = in_array($node['node'], $checked);
         }
         $all = $this->_apply_filter(ToolsService::arr2tree($nodes, 'node', 'pnode', '_sub_'));

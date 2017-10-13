@@ -40,8 +40,12 @@ class Node extends BasicAdmin
      */
     public function index()
     {
+        $alert = [
+            'type'    => 'danger',
+            'title'   => '操作安全警告（默认新节点所有人可以访问，请勾选登录控制）',
+            'content' => '结构为系统自动生成，其权限各选项直接影响到不同权限用户的访问及操作，请勿随意修改数据！'
+        ];
         $nodes = ToolsService::arr2table(NodeService::get(), 'node', 'pnode');
-        $alert = ['type' => 'danger', 'title' => '安全警告', 'content' => '结构为系统自动生成, 状态数据请勿随意修改!'];
         return view('', ['title' => '系统节点管理', 'nodes' => $nodes, 'alert' => $alert]);
     }
 
@@ -51,9 +55,8 @@ class Node extends BasicAdmin
     public function save()
     {
         if ($this->request->isPost()) {
-            $post = $this->request->post();
+            list($data, $post) = [[], $this->request->post()];
             if (isset($post['list'])) {
-                $data = [];
                 foreach ($post['list'] as $vo) {
                     $data['node'] = $vo['node'];
                     $data[$vo['name']] = $vo['value'];

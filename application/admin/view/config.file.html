@@ -1,11 +1,10 @@
 {extend name="extra@admin/content"}
 
 {block name="content"}
-<form onsubmit="return false;" action="__SELF__" data-auto="true" method="post"
-      class='form-horizontal layui-form' style='padding-top:20px'>
+<form onsubmit="return false;" action="__SELF__" data-auto="true" method="post" class='form-horizontal layui-form' style='padding-top:20px'>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Storage <span class="nowrap">(存储引擎)</span></label>
+        <label class="col-sm-2 control-label label-required">Storage <span class="nowrap">(存储引擎)</span></label>
         <div class='col-sm-8'>
             <label class="think-radio">
                 <!--{if sysconf('storage_type') eq 'local'}-->
@@ -111,11 +110,10 @@
     </div>
 
     <div class="form-group" data-storage-type="local">
-        <label class="col-sm-2 control-label">Allow <span class="nowrap">(允许类型)</span></label>
+        <label class="col-sm-2 control-label">AllowExts <span class="nowrap">(允许类型)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="storage_local_exts" required="required"
-                   title="请输入系统文件上传后缀" placeholder="请输入系统文件上传后缀"
-                   value="{:sysconf('storage_local_exts')}" class="layui-input">
+            <input type="text" name="storage_local_exts" required="required" value="{:sysconf('storage_local_exts')}"
+                   title="请输入系统文件上传后缀" placeholder="请输入系统文件上传后缀" class="layui-input">
             <p class="help-block">设置系统允许上传文件的后缀，多个以英文逗号隔开。如：png,jpg,rar,doc</p>
         </div>
     </div>
@@ -123,9 +121,8 @@
     <div class="form-group" data-storage-type="qiniu">
         <label class="col-sm-2 control-label">Bucket <span class="nowrap">(空间名称)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="storage_qiniu_bucket" required="required"
-                   title="请输入七牛云存储 Bucket (空间名称)" placeholder="请输入七牛云存储 Bucket (空间名称)"
-                   value="{:sysconf('storage_qiniu_bucket')}" class="layui-input">
+            <input type="text" name="storage_qiniu_bucket" required="required" value="{:sysconf('storage_qiniu_bucket')}"
+                   title="请输入七牛云存储 Bucket (空间名称)" placeholder="请输入七牛云存储 Bucket (空间名称)" class="layui-input">
             <p class="help-block">填写七牛云存储空间名称，如：static</p>
         </div>
     </div>
@@ -133,9 +130,8 @@
     <div class="form-group" data-storage-type="qiniu">
         <label class="col-sm-2 control-label">Domain <span class="nowrap">(访问域名)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="storage_qiniu_domain" required="required"
-                   title="请输入七牛云存储 Domain (访问域名)" placeholder="请输入七牛云存储 Domain (访问域名)"
-                   value="{:sysconf('storage_qiniu_domain')}" class="layui-input">
+            <input type="text" name="storage_qiniu_domain" required="required" value="{:sysconf('storage_qiniu_domain')}"
+                   title="请输入七牛云存储 Domain (访问域名)" placeholder="请输入七牛云存储 Domain (访问域名)" class="layui-input">
             <p class="help-block">填写七牛云存储访问域名，如：static.ctolog.cc</p>
         </div>
     </div>
@@ -143,9 +139,8 @@
     <div class="form-group" data-storage-type="qiniu">
         <label class="col-sm-2 control-label">AccessKey <span class="nowrap">(访问密钥)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="storage_qiniu_access_key" required="required"
-                   title="请输入七牛云 AccessKey (访问密钥)" placeholder="请输入七牛云 AccessKey (访问密钥)"
-                   value="{:sysconf('storage_qiniu_access_key')}" class="layui-input">
+            <input type="text" name="storage_qiniu_access_key" required="required" value="{:sysconf('storage_qiniu_access_key')}"
+                   title="请输入七牛云 AccessKey (访问密钥)" placeholder="请输入七牛云 AccessKey (访问密钥)" class="layui-input">
             <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到访问密钥</p>
         </div>
     </div>
@@ -154,9 +149,8 @@
     <div class="form-group" data-storage-type="qiniu">
         <label class="col-sm-2 control-label">SecretKey <span class="nowrap">(安全密钥)</span></label>
         <div class='col-sm-8'>
-            <input type="password" name="storage_qiniu_secret_key" required="required"
-                   title="请输入七牛云 SecretKey (安全密钥)" placeholder="请输入七牛云 SecretKey (安全密钥)"
-                   value="{:sysconf('storage_qiniu_secret_key')}" maxlength="43" class="layui-input">
+            <input type="password" name="storage_qiniu_secret_key" required="required" value="{:sysconf('storage_qiniu_secret_key')}" maxlength="43"
+                   title="请输入七牛云 SecretKey (安全密钥)" placeholder="请输入七牛云 SecretKey (安全密钥)" class="layui-input">
             <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到安全密钥</p>
         </div>
     </div>
@@ -186,9 +180,8 @@
     <div class="form-group" data-storage-type="oss">
         <label class="col-sm-2 control-label">Bucket <span class="nowrap">(空间名称)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="storage_oss_bucket" required="required"
-                   title="请输入AliOSS Bucket (空间名称)" placeholder="请输入AliOSS Bucket (空间名称)"
-                   value="{:sysconf('storage_oss_bucket')}" class="layui-input">
+            <input type="text" name="storage_oss_bucket" required="required" value="{:sysconf('storage_oss_bucket')}"
+                   title="请输入AliOSS Bucket (空间名称)" placeholder="请输入AliOSS Bucket (空间名称)" class="layui-input">
             <p class="help-block">填写OSS存储空间名称，如：static</p>
         </div>
     </div>
@@ -196,9 +189,8 @@
     <div class="form-group" data-storage-type="oss">
         <label class="col-sm-2 control-label">Domain <span class="nowrap">(访问域名)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="storage_oss_domain" required="required"
-                   title="请输入AliOSS存储 Domain (访问域名)" placeholder="请输入AliOSS存储 Domain (访问域名)"
-                   value="{:sysconf('storage_oss_domain')}" class="layui-input">
+            <input type="text" name="storage_oss_domain" required="required" value="{:sysconf('storage_oss_domain')}"
+                   title="请输入AliOSS存储 Domain (访问域名)" placeholder="请输入AliOSS存储 Domain (访问域名)" class="layui-input">
             <p class="help-block">填写OSS存储外部访问域名，如：static.ctolog.cc</p>
         </div>
     </div>
@@ -206,9 +198,8 @@
     <div class="form-group" data-storage-type="oss">
         <label class="col-sm-2 control-label">AccessKey <span class="nowrap">(访问密钥)</span></label>
         <div class='col-sm-8'>
-            <input type="text" name="storage_oss_keyid" required="required"
-                   title="请输入16位AliOSS AccessKey (访问密钥)" placeholder="请输入AliOSS AccessKey (访问密钥)"
-                   value="{:sysconf('storage_oss_keyid')}" maxlength="16" class="layui-input">
+            <input type="text" name="storage_oss_keyid" required="required" value="{:sysconf('storage_oss_keyid')}" maxlength="16"
+                   title="请输入16位AliOSS AccessKey (访问密钥)" placeholder="请输入AliOSS AccessKey (访问密钥)" class="layui-input">
             <p class="help-block">可以在 [ 阿里云 > 个人中心 ] 设置并获取到访问密钥</p>
         </div>
     </div>
@@ -217,9 +208,8 @@
     <div class="form-group" data-storage-type="oss">
         <label class="col-sm-2 control-label">SecretKey <span class="nowrap">(安全密钥)</span></label>
         <div class='col-sm-8'>
-            <input type="password" name="storage_oss_secret" required="required"
-                   title="请输入30位AliOSS SecretKey (安全密钥)" placeholder="请输入AliOSS SecretKey (安全密钥)"
-                   value="{:sysconf('storage_oss_secret')}" maxlength="30" class="layui-input">
+            <input type="password" name="storage_oss_secret" required="required" value="{:sysconf('storage_oss_secret')}" maxlength="30"
+                   title="请输入30位AliOSS SecretKey (安全密钥)" placeholder="请输入AliOSS SecretKey (安全密钥)" class="layui-input">
             <p class="help-block">可以在 [ 阿里云 > 个人中心 ] 设置并获取到安全密钥</p>
         </div>
     </div>
@@ -239,7 +229,6 @@
 <script>
     (function () {
         window.form.render();
-
         buildForm('{:sysconf("storage_type")}');
         $('[name=storage_type]').on('click', function () {
             buildForm($('[name=storage_type]:checked').val())

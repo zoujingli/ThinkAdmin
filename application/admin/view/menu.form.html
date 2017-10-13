@@ -6,9 +6,9 @@
             <select name='pid' class='layui-select full-width' style='display:block'>
                 <!--{foreach $menus as $menu}-->
                 <!--{eq name='menu.id' value='$vo.pid|default=0'}-->
-                <option selected  value='{$menu.id}'>{$menu.spl}{$menu.title}</option>
+                <option selected value='{$menu.id}'>{$menu.spl}{$menu.title}</option>
                 <!--{else}-->
-                <option  value='{$menu.id}'>{$menu.spl}{$menu.title}</option>
+                <option value='{$menu.id}'>{$menu.spl}{$menu.title}</option>
                 <!--{/eq}-->
                 <!--{/foreach}-->
             </select>

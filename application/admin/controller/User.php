@@ -43,9 +43,7 @@ class User extends BasicAdmin
         $get = $this->request->get();
         $db = Db::name($this->table)->where(['is_deleted' => '0']);
         foreach (['username', 'phone', 'mail'] as $key) {
-            if (isset($get[$key]) && $get[$key] !== '') {
-                $db->where($key, 'like', "%{$get[$key]}%");
-            }
+            (isset($get[$key]) && $get[$key] !== '') && $db->whereLike($key, "%{$get[$key]}%");
         }
         if (isset($get['date']) && $get['date'] !== '') {
             list($start, $end) = explode('-', str_replace(' ', '', $get['date']));
@@ -88,11 +86,12 @@ class User extends BasicAdmin
             $this->assign('verify', false);
             return $this->_form($this->table, 'pass');
         }
-        $data = $this->request->post();
-        if ($data['password'] !== $data['repassword']) {
+        $post = $this->request->post();
+        if ($post['password'] !== $post['repassword']) {
             $this->error('两次输入的密码不一致！');
         }
-        if (DataService::save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
+        $data = ['id' => $post['id'], 'password' => md5($post['password'])];
+        if (DataService::save($this->table, $data, 'id')) {
             $this->success('密码修改成功，下次请使用新密码登录！', '');
         }
         $this->error('密码修改失败，请稍候再试！');
@@ -110,7 +109,7 @@ class User extends BasicAdmin
             }
             if (isset($data['id'])) {
                 unset($data['username']);
-            } elseif (Db::name($this->table)->where(['username' => $data['username']])->find()) {
+            } elseif (Db::name($this->table)->where(['username' => $data['username']])->count() > 0) {
                 $this->error('用户账号已经存在，请使用其它账号！');
             }
         } else {
