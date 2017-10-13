@@ -69,4 +69,5 @@ class Config extends BasicAdmin
         $this->assign('alert', $alert);
         return $this->index();
     }
+
 }
