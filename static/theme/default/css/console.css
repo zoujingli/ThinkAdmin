@@ -128,6 +128,10 @@ table td .text-explode{color:#ccc!important;font-weight:normal!important;margin:
 .console-topbar .topbar-info .topbar-info-btn a{line-height:39px;text-align:center;padding-left:10px;padding-right:10px;margin:0}
 .console-topbar .topbar-info-item{display:inline-block;margin-left:1px}
 .console-topbar .topbar-info-item.open .glyphicon-menu-up{transform:rotate(180deg);-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-ms-transform:rotate(180deg);-o-transform:rotate(180deg)}
+#menus ul.menu-more {padding: 0;text-align: center;}
+#menus ul.menu-more li {width: 100%;}
+#menus ul.menu-more li a {width: 100%;background-color: #2494f2;color: white;}
+#menus ul.menu-more li a.active {background-color: #36a3ff;}
 
 /** 左侧菜单 **/
 .framework-sidebar{width:0px;display:none;position:fixed;top:50px;bottom:0px;background-color:#293038;z-index:102;overflow-x:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
