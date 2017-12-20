@@ -121,6 +121,8 @@ class BasicWechat extends Controller
             $user['expires_in'] = $result['expires_in'] + time() - 100;
             $user['refresh_token'] = $result['refresh_token'];
             $user['access_token'] = $result['access_token'];
+            // 用户特权信息不处理
+            unset($user['privilege']);
             WechatService::setFansInfo($user, $wechat->appid) or $this->error('微信网页授权用户保存失败!');
         }
         $this->redirect($redirect_url);
