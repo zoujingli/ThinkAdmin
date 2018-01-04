@@ -256,7 +256,7 @@ class Api extends Controller
             }
         } else {
             $data = ['subscribe' => '0', 'appid' => $this->wechat->appid, 'openid' => $this->openid];
-            DataService::save('wechat_fans', $data, ['appid', 'openid']);
+            DataService::save('wechat_fans', $data, 'openid');
         }
     }
 
