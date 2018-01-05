@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf044e82bda67c57e2e97ab8ef5eda062
+class ComposerStaticInite852dc75b22dac3e2b90bb7b0bb60e3a
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -180,11 +180,13 @@ class ComposerStaticInitf044e82bda67c57e2e97ab8ef5eda062
         'Qiniu\\Storage\\ResumeUploader' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/ResumeUploader.php',
         'Qiniu\\Storage\\UploadManager' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/UploadManager.php',
         'Qiniu\\Zone' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Zone.php',
+        'Symfony\\Component\\OptionsResolver\\Debug\\OptionsResolverIntrospector' => __DIR__ . '/..' . '/symfony/options-resolver/Debug/OptionsResolverIntrospector.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\AccessException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/AccessException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/ExceptionInterface.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidArgumentException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\InvalidOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidOptionsException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\MissingOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/MissingOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\NoConfigurationException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoConfigurationException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\NoSuchOptionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoSuchOptionException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\OptionDefinitionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/OptionDefinitionException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\UndefinedOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/UndefinedOptionsException.php',
@@ -385,9 +387,9 @@ class ComposerStaticInitf044e82bda67c57e2e97ab8ef5eda062
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf044e82bda67c57e2e97ab8ef5eda062::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf044e82bda67c57e2e97ab8ef5eda062::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf044e82bda67c57e2e97ab8ef5eda062::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite852dc75b22dac3e2b90bb7b0bb60e3a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite852dc75b22dac3e2b90bb7b0bb60e3a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite852dc75b22dac3e2b90bb7b0bb60e3a::$classMap;
 
         }, null, ClassLoader::class);
     }

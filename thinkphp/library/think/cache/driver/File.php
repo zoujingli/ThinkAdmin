@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -109,7 +109,7 @@ class File extends Driver
         $content = file_get_contents($filename);
         if (false !== $content) {
             $expire = (int) substr($content, 8, 12);
-            if (0 != $expire && $_SERVER['REQUEST_TIME'] > filemtime($filename) + $expire) {
+            if (0 != $expire && time() > filemtime($filename) + $expire) {
                 return $default;
             }
             $content = substr($content, 32);
@@ -189,7 +189,7 @@ class File extends Driver
         if ($this->has($name)) {
             $value = $this->get($name) - $step;
         } else {
-            $value = $step;
+            $value = -$step;
         }
         return $this->set($name, $value, 0) ? $value : false;
     }
@@ -226,7 +226,10 @@ class File extends Driver
         $files = (array) glob($this->options['path'] . ($this->options['prefix'] ? $this->options['prefix'] . DS : '') . '*');
         foreach ($files as $path) {
             if (is_dir($path)) {
-                array_map('unlink', glob($path . '/*.php'));
+                $matches = glob($path . '/*.php');
+                if (is_array($matches)) {
+                    array_map('unlink', $matches);
+                }
                 rmdir($path);
             } else {
                 unlink($path);

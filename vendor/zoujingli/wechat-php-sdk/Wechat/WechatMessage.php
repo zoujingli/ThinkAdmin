@@ -81,7 +81,7 @@ class WechatMessage extends Common
             return false;
         }
         $data = array('template_id' => $tpl_id);
-        $result = Tools::httpPost(self::API_URL_PREFIX . "/template/del_private_template?access_token={$this->access_token}", [Tools::json_encode($data)]);
+        $result = Tools::httpPost(self::API_URL_PREFIX . "/template/del_private_template?access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (empty($json) || !empty($json['errcode'])) {

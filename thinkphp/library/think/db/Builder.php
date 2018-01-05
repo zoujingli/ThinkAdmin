@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -26,7 +26,7 @@ abstract class Builder
     protected $exp = ['eq' => '=', 'neq' => '<>', 'gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=', 'notlike' => 'NOT LIKE', 'not like' => 'NOT LIKE', 'like' => 'LIKE', 'in' => 'IN', 'exp' => 'EXP', 'notin' => 'NOT IN', 'not in' => 'NOT IN', 'between' => 'BETWEEN', 'not between' => 'NOT BETWEEN', 'notbetween' => 'NOT BETWEEN', 'exists' => 'EXISTS', 'notexists' => 'NOT EXISTS', 'not exists' => 'NOT EXISTS', 'null' => 'NULL', 'notnull' => 'NOT NULL', 'not null' => 'NOT NULL', '> time' => '> TIME', '< time' => '< TIME', '>= time' => '>= TIME', '<= time' => '<= TIME', 'between time' => 'BETWEEN TIME', 'not between time' => 'NOT BETWEEN TIME', 'notbetween time' => 'NOT BETWEEN TIME'];
 
     // SQL表达式
-    protected $selectSql    = 'SELECT%DISTINCT% %FIELD% FROM %TABLE%%FORCE%%JOIN%%WHERE%%GROUP%%HAVING%%ORDER%%LIMIT% %UNION%%LOCK%%COMMENT%';
+    protected $selectSql    = 'SELECT%DISTINCT% %FIELD% FROM %TABLE%%FORCE%%UNION%%JOIN%%WHERE%%GROUP%%HAVING%%ORDER%%LIMIT%%LOCK%%COMMENT%';
     protected $insertSql    = '%INSERT% INTO %TABLE% (%FIELD%) VALUES (%DATA%) %COMMENT%';
     protected $insertAllSql = '%INSERT% INTO %TABLE% (%FIELD%) %DATA% %COMMENT%';
     protected $updateSql    = 'UPDATE %TABLE% SET %SET% %JOIN% %WHERE% %ORDER%%LIMIT% %LOCK%%COMMENT%';
@@ -110,8 +110,18 @@ abstract class Builder
                 }
             } elseif (is_null($val)) {
                 $result[$item] = 'NULL';
-            } elseif (isset($val[0]) && 'exp' == $val[0]) {
-                $result[$item] = $val[1];
+            } elseif (is_array($val) && !empty($val)) {
+                switch ($val[0]) {
+                    case 'exp':
+                        $result[$item] = $val[1];
+                        break;
+                    case 'inc':
+                        $result[$item] = $this->parseKey($val[1]) . '+' . floatval($val[2]);
+                        break;
+                    case 'dec':
+                        $result[$item] = $this->parseKey($val[1]) . '-' . floatval($val[2]);
+                        break;
+                }
             } elseif (is_scalar($val)) {
                 // 过滤非标量数据
                 if (0 === strpos($val, ':') && $this->query->isBind(substr($val, 1))) {
@@ -630,12 +640,12 @@ abstract class Builder
         unset($union['type']);
         foreach ($union as $u) {
             if ($u instanceof \Closure) {
-                $sql[] = $type . ' ' . $this->parseClosure($u, false);
+                $sql[] = $type . ' ' . $this->parseClosure($u);
             } elseif (is_string($u)) {
-                $sql[] = $type . ' ' . $this->parseSqlTable($u);
+                $sql[] = $type . ' ( ' . $this->parseSqlTable($u) . ' )';
             }
         }
-        return implode(' ', $sql);
+        return ' ' . implode(' ', $sql);
     }
 
     /**
@@ -749,7 +759,7 @@ abstract class Builder
             $fields = $options['field'];
         }
 
-        foreach ($dataSet as &$data) {
+        foreach ($dataSet as $data) {
             foreach ($data as $key => $val) {
                 if (!in_array($key, $fields, true)) {
                     if ($options['strict']) {
@@ -770,19 +780,21 @@ abstract class Builder
             }
             $value    = array_values($data);
             $values[] = 'SELECT ' . implode(',', $value);
+
+            if (!isset($insertFields)) {
+                $insertFields = array_map([$this, 'parseKey'], array_keys($data));
+            }
         }
-        $fields = array_map([$this, 'parseKey'], array_keys(reset($dataSet)));
-        $sql    = str_replace(
+
+        return str_replace(
             ['%INSERT%', '%TABLE%', '%FIELD%', '%DATA%', '%COMMENT%'],
             [
                 $replace ? 'REPLACE' : 'INSERT',
                 $this->parseTable($options['table'], $options),
-                implode(' , ', $fields),
+                implode(' , ', $insertFields),
                 implode(' UNION ALL ', $values),
                 $this->parseComment($options['comment']),
             ], $this->insertAllSql);
-
-        return $sql;
     }
 
     /**

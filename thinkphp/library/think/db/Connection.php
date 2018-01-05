@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -354,15 +354,15 @@ abstract class Connection
             $this->bind = $bind;
         }
 
-        // 释放前次的查询结果
-        if (!empty($this->PDOStatement)) {
-            $this->free();
-        }
-
         Db::$queryTimes++;
         try {
             // 调试开始
             $this->debug(true);
+
+            // 释放前次的查询结果
+            if (!empty($this->PDOStatement)) {
+                $this->free();
+            }
             // 预处理
             if (empty($this->PDOStatement)) {
                 $this->PDOStatement = $this->linkID->prepare($sql);
@@ -386,6 +386,11 @@ abstract class Connection
                 return $this->close()->query($sql, $bind, $master, $pdo);
             }
             throw new PDOException($e, $this->config, $this->getLastsql());
+        } catch (\Throwable $e) {
+            if ($this->isBreak($e)) {
+                return $this->close()->query($sql, $bind, $master, $pdo);
+            }
+            throw $e;
         } catch (\Exception $e) {
             if ($this->isBreak($e)) {
                 return $this->close()->query($sql, $bind, $master, $pdo);
@@ -416,15 +421,15 @@ abstract class Connection
             $this->bind = $bind;
         }
 
-        //释放前次的查询结果
-        if (!empty($this->PDOStatement) && $this->PDOStatement->queryString != $sql) {
-            $this->free();
-        }
-
         Db::$executeTimes++;
         try {
             // 调试开始
             $this->debug(true);
+
+            //释放前次的查询结果
+            if (!empty($this->PDOStatement) && $this->PDOStatement->queryString != $sql) {
+                $this->free();
+            }
             // 预处理
             if (empty($this->PDOStatement)) {
                 $this->PDOStatement = $this->linkID->prepare($sql);
@@ -449,6 +454,11 @@ abstract class Connection
                 return $this->close()->execute($sql, $bind);
             }
             throw new PDOException($e, $this->config, $this->getLastsql());
+        } catch (\Throwable $e) {
+            if ($this->isBreak($e)) {
+                return $this->close()->execute($sql, $bind);
+            }
+            throw $e;
         } catch (\Exception $e) {
             if ($this->isBreak($e)) {
                 return $this->close()->execute($sql, $bind);
@@ -466,6 +476,10 @@ abstract class Connection
      */
     public function getRealSql($sql, array $bind = [])
     {
+        if (is_array($sql)) {
+            $sql = implode(';', $sql);
+        }
+
         foreach ($bind as $key => $val) {
             $value = is_array($val) ? $val[0] : $val;
             $type  = is_array($val) ? $val[1] : PDO::PARAM_STR;
@@ -478,8 +492,8 @@ abstract class Connection
             $sql = is_numeric($key) ?
             substr_replace($sql, $value, strpos($sql, '?'), 1) :
             str_replace(
-                [':' . $key . ')', ':' . $key . ',', ':' . $key . ' '],
-                [$value . ')', $value . ',', $value . ' '],
+                [':' . $key . ')', ':' . $key . ',', ':' . $key . ' ', ':' . $key . PHP_EOL],
+                [$value . ')', $value . ',', $value . ' ', $value . PHP_EOL],
                 $sql . ' ');
         }
         return rtrim($sql);
@@ -648,6 +662,11 @@ abstract class Connection
                 return $this->close()->startTrans();
             }
             throw $e;
+        } catch (\Error $e) {
+            if ($this->isBreak($e)) {
+                return $this->close()->startTrans();
+            }
+            throw $e;
         }
     }
 
@@ -725,7 +744,7 @@ abstract class Connection
      * @param array $sqlArray SQL批处理指令
      * @return boolean
      */
-    public function batchQuery($sqlArray = [])
+    public function batchQuery($sqlArray = [], $bind = [])
     {
         if (!is_array($sqlArray)) {
             return false;
@@ -734,7 +753,7 @@ abstract class Connection
         $this->startTrans();
         try {
             foreach ($sqlArray as $sql) {
-                $this->execute($sql);
+                $this->execute($sql, $bind);
             }
             // 提交事务
             $this->commit();
@@ -742,6 +761,7 @@ abstract class Connection
             $this->rollback();
             throw $e;
         }
+
         return true;
     }
 

@@ -23,7 +23,7 @@
 
 ### 3. 体积小：
 
-数据库文件ip2region.db只有3.5M
+数据库文件ip2region.db只有1.5M
 
 ### Composer 安装
 

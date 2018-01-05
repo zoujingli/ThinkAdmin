@@ -126,6 +126,7 @@ class Common
             }
         } elseif (isset($_GET["echostr"])) {
             if ($this->checkSignature()) {
+                @ob_clean();
                 exit($_GET["echostr"]);
             }
             return false;

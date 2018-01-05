@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -335,9 +335,9 @@ class Route
             if ('*' == $type) {
                 // 注册路由快捷方式
                 foreach (['get', 'post', 'put', 'delete', 'patch', 'head', 'options'] as $method) {
-                    if (self::$domain) {
+                    if (self::$domain && !isset(self::$rules['domain'][self::$domain][$method][$rule])) {
                         self::$rules['domain'][self::$domain][$method][$rule] = true;
-                    } else {
+                    } elseif (!self::$domain && !isset(self::$rules[$method][$rule])) {
                         self::$rules[$method][$rule] = true;
                     }
                 }
