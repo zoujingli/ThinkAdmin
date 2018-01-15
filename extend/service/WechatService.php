@@ -158,6 +158,8 @@ class WechatService
         }
         if (!empty($user['tagid_list']) && is_array($user['tagid_list'])) {
             $user['tagid_list'] = join(',', $user['tagid_list']);
+        }else{
+            unset($user['tagid_list']);
         }
         foreach (['country', 'province', 'city', 'nickname', 'remark'] as $k) {
             isset($user[$k]) && $user[$k] = ToolsService::emojiEncode($user[$k]);
