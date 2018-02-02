@@ -134,10 +134,10 @@ class Cache
      */
     static public function getFileExt($content)
     {
-        $types = [
+        $types = array(
             255216 => 'jpg', 7173 => 'gif', 6677 => 'bmp', 13780 => 'png',
             7368   => 'mp3', 4838 => 'wma', 7784 => 'mid', 6063 => 'xml',
-        ];
+        );
         $typeInfo = @unpack("C2chars", substr($content, 0, 2));
         $typeCode = intval($typeInfo['chars1'] . $typeInfo['chars2']);
         return isset($types[$typeCode]) ? $types[$typeCode] : 'mp4';

@@ -84,7 +84,7 @@ class WechatUser extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = Tools::httpGet(self::API_URL_PREFIX . self::USER_GET_URL . "access_token={$this->access_token}" . '&next_openid=' . $next_openid);
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::USER_GET_URL . "access_token={$this->access_token}&next_openid={$next_openid}");
         if ($result) {
             $json = json_decode($result, true);
             if (empty($json) || !empty($json['errcode'])) {

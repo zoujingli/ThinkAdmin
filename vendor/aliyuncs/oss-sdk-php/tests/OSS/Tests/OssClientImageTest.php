@@ -38,7 +38,7 @@ class OssClinetImageTest extends \PHPUnit_Framework_TestCase
         $options = array(
             OssClient::OSS_FILE_DOWNLOAD => $this->download_file,
             OssClient::OSS_PROCESS => "image/resize,m_fixed,h_100,w_100", );
-        $this->check($options, 100, 100, 3587, 'jpg');
+        $this->check($options, 100, 100, 3267, 'jpg');
     }
     
     public function testImageCrop()
@@ -46,7 +46,7 @@ class OssClinetImageTest extends \PHPUnit_Framework_TestCase
         $options = array(
             OssClient::OSS_FILE_DOWNLOAD => $this->download_file,
             OssClient::OSS_PROCESS => "image/crop,w_100,h_100,x_100,y_100,r_1", );
-        $this->check($options, 100, 100, 2281, 'jpg');
+        $this->check($options, 100, 100, 1969, 'jpg');
     }
 
     public function testImageRotate()
@@ -54,7 +54,7 @@ class OssClinetImageTest extends \PHPUnit_Framework_TestCase
         $options = array(
             OssClient::OSS_FILE_DOWNLOAD => $this->download_file,
             OssClient::OSS_PROCESS => "image/rotate,90", );
-        $this->check($options, 267, 400, 21509, 'jpg');
+        $this->check($options, 267, 400, 20998, 'jpg');
     }
 
     public function testImageSharpen()
@@ -62,7 +62,7 @@ class OssClinetImageTest extends \PHPUnit_Framework_TestCase
         $options = array(
             OssClient::OSS_FILE_DOWNLOAD => $this->download_file,
             OssClient::OSS_PROCESS => "image/sharpen,100", );
-        $this->check($options, 400, 267, 24183, 'jpg');
+        $this->check($options, 400, 267, 23015, 'jpg');
     }
 
     public function testImageWatermark()
@@ -70,7 +70,7 @@ class OssClinetImageTest extends \PHPUnit_Framework_TestCase
         $options = array(
             OssClient::OSS_FILE_DOWNLOAD => $this->download_file,
             OssClient::OSS_PROCESS => "image/watermark,text_SGVsbG8g5Zu-54mH5pyN5YqhIQ", );
-        $this->check($options, 400, 267, 26953, 'jpg');
+        $this->check($options, 400, 267, 26369, 'jpg');
     }
 
     public function testImageFormat()
@@ -86,7 +86,7 @@ class OssClinetImageTest extends \PHPUnit_Framework_TestCase
         $options = array(
             OssClient::OSS_FILE_DOWNLOAD => $this->download_file,
             OssClient::OSS_PROCESS => "image/resize,m_fixed,w_100,h_100", );
-        $this->check($options, 100, 100, 3587, 'jpg');
+        $this->check($options, 100, 100, 3267, 'jpg');
     }
 
     private function check($options, $width, $height, $size, $type)
