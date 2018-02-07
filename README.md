@@ -1,7 +1,7 @@
 ThinkAdmin for PHP
 --
 * ThinkAdmin 是一个基于 Thinkphp 5.0.x 开发的后台管理系统，集成后台系统常用功能。
-* 项目安装请参考 ThinkPHP 官方文档及下面的服务环境说明，数据库 sql 文件存放于项目根目录下。
+* 项目安装及二次开发请参考 ThinkPHP 官方文档及下面的服务环境说明，数据库 sql 文件存放于项目根目录下。
 > 注意：项目测试请另行搭建环境并创建数据库（数据库配置 application/database.php）, 切勿直接使用测试环境数据！
 
 
@@ -17,6 +17,7 @@ Repositorie
  ThinkAdmin 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
 >* GitHub 托管地址：https://github.com/zoujingli/ThinkAdmin
 >* OSChina 托管地址：http://git.oschina.net/zoujingli/Think.Admin
+
 
 Module
 --
