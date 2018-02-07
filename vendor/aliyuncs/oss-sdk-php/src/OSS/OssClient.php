@@ -12,6 +12,7 @@ use OSS\Model\LoggingConfig;
 use OSS\Model\LiveChannelConfig;
 use OSS\Model\LiveChannelInfo;
 use OSS\Model\LiveChannelListInfo;
+use OSS\Model\StorageCapacityConfig;
 use OSS\Result\AclResult;
 use OSS\Result\BodyResult;
 use OSS\Result\GetCorsResult;
@@ -20,6 +21,7 @@ use OSS\Result\GetLoggingResult;
 use OSS\Result\GetRefererResult;
 use OSS\Result\GetWebsiteResult;
 use OSS\Result\GetCnameResult;
+use OSS\Result\GetLocationResult;
 use OSS\Result\HeaderResult;
 use OSS\Result\InitiateMultipartUploadResult;
 use OSS\Result\ListBucketsResult;
@@ -37,6 +39,7 @@ use OSS\Result\GetLiveChannelHistoryResult;
 use OSS\Result\GetLiveChannelInfoResult;
 use OSS\Result\GetLiveChannelStatusResult;
 use OSS\Result\ListLiveChannelResult;
+use OSS\Result\GetStorageCapacityResult;
 use OSS\Result\AppendResult;
 use OSS\Model\ObjectListInfo;
 use OSS\Result\UploadPartResult;
@@ -46,6 +49,7 @@ use OSS\Model\RefererConfig;
 use OSS\Model\WebsiteConfig;
 use OSS\Core\OssUtil;
 use OSS\Model\ListPartsInfo;
+use OSS\Result\SymlinkResult;
 
 /**
  * Class OssClient
@@ -73,9 +77,10 @@ class OssClient
      * @param string $endpoint 您选定的OSS数据中心访问域名，例如oss-cn-hangzhou.aliyuncs.com
      * @param boolean $isCName 是否对Bucket做了域名绑定，并且Endpoint参数填写的是自己的域名
      * @param string $securityToken
+     * @param string $requestProxy 添加代理支持
      * @throws OssException
      */
-    public function __construct($accessKeyId, $accessKeySecret, $endpoint, $isCName = false, $securityToken = NULL)
+    public function __construct($accessKeyId, $accessKeySecret, $endpoint, $isCName = false, $securityToken = NULL, $requestProxy = NULL)
     {
         $accessKeyId = trim($accessKeyId);
         $accessKeySecret = trim($accessKeySecret);
@@ -94,6 +99,8 @@ class OssClient
         $this->accessKeyId = $accessKeyId;
         $this->accessKeySecret = $accessKeySecret;
         $this->securityToken = $securityToken;
+        $this->requestProxy = $requestProxy;
+
         self::checkEnv();
     }
 
@@ -124,6 +131,7 @@ class OssClient
      * @param string $bucket
      * @param string $acl
      * @param array $options
+     * @param string $storageType
      * @return null
      */
     public function createBucket($bucket, $acl = self::OSS_ACL_TYPE_PRIVATE, $options = NULL)
@@ -133,6 +141,11 @@ class OssClient
         $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
         $options[self::OSS_OBJECT] = '/';
         $options[self::OSS_HEADERS] = array(self::OSS_ACL => $acl);
+        if (isset($options[self::OSS_STORAGE])) {
+            $this->precheckStorage($options[self::OSS_STORAGE]);
+            $options[self::OSS_CONTENT] = OssUtil::createBucketXmlBody($options[self::OSS_STORAGE]);
+            unset($options[self::OSS_STORAGE]);
+        }
         $response = $this->auth($options);
         $result = new PutSetDeleteResult($response);
         return $result->getData();
@@ -175,6 +188,44 @@ class OssClient
         $response = $this->auth($options);
         $result = new ExistResult($response);
         return $result->getData();
+    }
+    
+    /**
+     * 获取bucket所属的数据中心位置信息
+     *
+     * @param string $bucket
+     * @param array $options
+     * @throws OssException
+     * @return string
+     */
+    public function getBucketLocation($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'location';
+        $response = $this->auth($options);
+        $result = new GetLocationResult($response);
+        return $result->getData();
+    }
+    
+    /**
+     * 获取Bucket的Meta信息
+     *
+     * @param string $bucket
+     * @param array $options 具体参考SDK文档
+     * @return array
+     */
+    public function getBucketMeta($bucket, $options = NULL)
+    {
+    	$this->precheckCommon($bucket, NULL, $options, false);
+    	$options[self::OSS_BUCKET] = $bucket;
+    	$options[self::OSS_METHOD] = self::OSS_HTTP_HEAD;
+    	$options[self::OSS_OBJECT] = '/';
+    	$response = $this->auth($options);
+    	$result = new HeaderResult($response);
+    	return $result->getData();
     }
 
     /**
@@ -900,6 +951,51 @@ class OssClient
         $result = new GetRefererResult($response);
         return $result->getData();
     }
+    
+    /**
+     * 设置bucket的容量大小，单位GB
+     * 当bucket的容量大于设置的容量时，禁止继续写入
+     *
+     * @param string $bucket bucket名称
+     * @param int $storageCapacity
+     * @param array $options
+     * @return ResponseCore
+     * @throws null
+     */
+    public function putBucketStorageCapacity($bucket, $storageCapacity, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'qos';
+        $options[self::OSS_CONTENT_TYPE] = 'application/xml';
+        $storageCapacityConfig = new StorageCapacityConfig($storageCapacity);
+        $options[self::OSS_CONTENT] = $storageCapacityConfig->serializeToXml();
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+    
+    /**
+     * 获取bucket的容量大小，单位GB
+     *
+     * @param string $bucket bucket名称
+     * @param array $options
+     * @throws OssException
+     * @return int
+     */
+    public function getBucketStorageCapacity($bucket, $options = NULL)
+    {
+        $this->precheckCommon($bucket, NULL, $options, false);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = '/';
+        $options[self::OSS_SUB_RESOURCE] = 'qos';
+        $response = $this->auth($options);
+        $result = new GetStorageCapacityResult($response);
+        return $result->getData();
+    }
 
     /**
      * 获取bucket下的object列表
@@ -975,7 +1071,6 @@ class OssClient
     {
         $this->precheckCommon($bucket, $object, $options);
 
-        OssUtil::validateContent($content);
         $options[self::OSS_CONTENT] = $content;
         $options[self::OSS_BUCKET] = $bucket;
         $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
@@ -1004,6 +1099,49 @@ class OssClient
             $result = new PutSetDeleteResult($response);
         }
             
+        return $result->getData();
+    }
+
+    /**
+     * 创建symlink
+     * @param string $bucket bucket名称
+     * @param string $symlink symlink名称
+     * @param string $targetObject 目标object名称
+     * @param array $options
+     * @return null
+     */
+    public function putSymlink($bucket, $symlink ,$targetObject, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $symlink, $options);
+
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_PUT;
+        $options[self::OSS_OBJECT] = $symlink;
+        $options[self::OSS_SUB_RESOURCE] = self::OSS_SYMLINK;
+        $options[self::OSS_HEADERS][self::OSS_SYMLINK_TARGET] = rawurlencode($targetObject);
+
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * 获取symlink
+     *@param string $bucket bucket名称
+     * @param string $symlink symlink名称
+     * @return null
+     */
+    public function getSymlink($bucket, $symlink)
+    {
+        $this->precheckCommon($bucket, $symlink, $options);
+
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_GET;
+        $options[self::OSS_OBJECT] = $symlink;
+        $options[self::OSS_SUB_RESOURCE] = self::OSS_SYMLINK;
+
+        $response = $this->auth($options);
+        $result = new SymlinkResult($response);
         return $result->getData();
     }
 
@@ -1058,7 +1196,6 @@ class OssClient
     {
         $this->precheckCommon($bucket, $object, $options);
 
-        OssUtil::validateContent($content);
         $options[self::OSS_CONTENT] = $content;
         $options[self::OSS_BUCKET] = $bucket;
         $options[self::OSS_METHOD] = self::OSS_HTTP_POST;
@@ -1278,6 +1415,27 @@ class OssClient
         $options[self::OSS_OBJECT] = $object;
         $response = $this->auth($options);
         $result = new ExistResult($response);
+        return $result->getData();
+    }
+
+    /**
+     * 针对Archive类型的Object读取
+     * 需要使用Restore操作让服务端执行解冻任务
+     *
+     * @param string $bucket bucket名称
+     * @param string $object object名称
+     * @return null
+     * @throws OssException
+     */
+    public function restoreObject($bucket, $object, $options = NULL)
+    {
+        $this->precheckCommon($bucket, $object, $options);
+        $options[self::OSS_BUCKET] = $bucket;
+        $options[self::OSS_METHOD] = self::OSS_HTTP_POST;
+        $options[self::OSS_OBJECT] = $object;
+        $options[self::OSS_SUB_RESOURCE] = self::OSS_RESTORE;
+        $response = $this->auth($options);
+        $result = new PutSetDeleteResult($response);
         return $result->getData();
     }
 
@@ -1751,6 +1909,29 @@ class OssClient
     }
 
     /**
+     * 校验option restore
+     *
+     * @param string $restore
+     * @throws OssException
+     */
+    private function precheckStorage($storage)
+    {
+        if (is_string($storage)) {
+            switch ($storage) {
+                    case self::OSS_STORAGE_ARCHIVE:
+                        return;
+                    case self::OSS_STORAGE_IA:
+                        return;
+                    case self::OSS_STORAGE_STANDARD:
+                        return;
+                    default:
+                        break;
+            }
+        }
+        throw new OssException('storage name is invalid');
+    }
+
+    /**
      * 校验bucket,options参数
      *
      * @param string $bucket
@@ -1893,7 +2074,7 @@ class OssClient
         $this->requestUrl = $scheme . $hostname . $resource_uri . $signable_query_string . $non_signable_resource;
 
         //创建请求
-        $request = new RequestCore($this->requestUrl);
+        $request = new RequestCore($this->requestUrl, $this->requestProxy);
         $request->set_useragent($this->generateUserAgent());
         // Streaming uploads
         if (isset($options[self::OSS_FILE_UPLOAD])) {
@@ -2216,7 +2397,9 @@ class OssClient
             self::OSS_LIVE_CHANNEL_START_TIME,
             self::OSS_LIVE_CHANNEL_END_TIME,
             self::OSS_PROCESS,
-            self::OSS_POSITION
+            self::OSS_POSITION,
+            self::OSS_SYMLINK,
+            self::OSS_RESTORE,
         );
 
         foreach ($signableList as $item) {
@@ -2476,6 +2659,16 @@ class OssClient
     const OSS_DEFAULT_PREFIX = 'x-oss-';
     const OSS_CHECK_MD5 = 'checkmd5';
     const DEFAULT_CONTENT_TYPE = 'application/octet-stream';
+    const OSS_SYMLINK_TARGET = 'x-oss-symlink-target';
+    const OSS_SYMLINK = 'symlink';
+    const OSS_HTTP_CODE = 'http_code';
+    const OSS_REQUEST_ID = 'x-oss-request-id';
+    const OSS_INFO = 'info';
+    const OSS_STORAGE = 'storage';
+    const OSS_RESTORE = 'restore';
+    const OSS_STORAGE_STANDARD = 'Standard';
+    const OSS_STORAGE_IA = 'IA';
+    const OSS_STORAGE_ARCHIVE = 'Archive';
 
     //私有URL变量
     const OSS_URL_ACCESS_KEY_ID = 'OSSAccessKeyId';
@@ -2520,8 +2713,8 @@ class OssClient
     );
     // OssClient版本信息
     const OSS_NAME = "aliyun-sdk-php";
-    const OSS_VERSION = "2.2.4";
-    const OSS_BUILD = "20170425";
+    const OSS_VERSION = "2.3.0";
+    const OSS_BUILD = "20180105";
     const OSS_AUTHOR = "";
     const OSS_OPTIONS_ORIGIN = 'Origin';
     const OSS_OPTIONS_REQUEST_METHOD = 'Access-Control-Request-Method';
@@ -2539,6 +2732,7 @@ class OssClient
     private $accessKeySecret;
     private $hostname;
     private $securityToken;
+    private $requestProxy = null;
     private $enableStsInUrl = false;
     private $timeout = 0;
     private $connectTimeout = 0;

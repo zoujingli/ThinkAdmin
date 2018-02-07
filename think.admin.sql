@@ -4,7 +4,7 @@ Navicat MySQL Data Transfer
 Source Server         : ctolog.com_3306
 Source Server Version : 50629
 Source Host           : ctolog.com:3306
-Source Database       : think.admin
+Source Database       : ThinkAdmin
 
 Target Server Type    : MYSQL
 Target Server Version : 50629
@@ -66,7 +66,7 @@ CREATE TABLE `system_config` (
 -- ----------------------------
 -- Records of system_config
 -- ----------------------------
-INSERT INTO `system_config` VALUES ('148', 'site_name', 'Think.Admin Demo');
+INSERT INTO `system_config` VALUES ('148', 'site_name', 'ThinkAdmin Demo');
 INSERT INTO `system_config` VALUES ('149', 'site_copy', '广州楚才信息科技有限公司 © 2014~2017');
 INSERT INTO `system_config` VALUES ('164', 'storage_type', 'local');
 INSERT INTO `system_config` VALUES ('165', 'storage_qiniu_is_https', '1');
@@ -75,7 +75,7 @@ INSERT INTO `system_config` VALUES ('167', 'storage_qiniu_domain', 'static.ctolo
 INSERT INTO `system_config` VALUES ('168', 'storage_qiniu_access_key', 'OAFHGzCgZjod2-s4xr-g5ptkXsNbxDO_t2fozIEC');
 INSERT INTO `system_config` VALUES ('169', 'storage_qiniu_secret_key', 'gy0aYdSFMSayQ4kMkgUeEeJRLThVjLpUJoPFxd-Z');
 INSERT INTO `system_config` VALUES ('170', 'storage_qiniu_region', '华东');
-INSERT INTO `system_config` VALUES ('173', 'app_name', 'Think.Admin');
+INSERT INTO `system_config` VALUES ('173', 'app_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES ('174', 'app_version', '2.00 dev');
 INSERT INTO `system_config` VALUES ('176', 'browser_icon', 'https://think.ctolog.com/static/upload/f47b8fe06e38ae99/08e8398da45583b9.png');
 INSERT INTO `system_config` VALUES ('184', 'wechat_appid', 'wx60a43dd8161666d4');

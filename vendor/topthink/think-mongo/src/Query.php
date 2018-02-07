@@ -385,8 +385,8 @@ class Query
             $result = Cache::get($guid);
         }
         if (!$result) {
-            if (isset($this->options['field'])) {
-                unset($this->options['field']);
+            if (isset($this->options['projection'])) {
+                unset($this->options['projection']);
             }
             if ($key && '*' != $field) {
                 $field = $key . ',' . $field;
@@ -512,7 +512,7 @@ class Query
         }
         return $result;
     }
-    
+
     /**
      * 聚合查询
      * @access public
@@ -523,7 +523,7 @@ class Query
     public function aggregate($aggregate, $field)
     {
         $result = $this->cmd('aggregate', [$aggregate, $field]);
-        return isset($result[0]['result'][0]['aggregate']) ? $result[0]['result'][0]['aggregate'] : 0;
+        return isset($result[0]['aggregate']) ? $result[0]['aggregate'] : 0;
     }
 
     /**

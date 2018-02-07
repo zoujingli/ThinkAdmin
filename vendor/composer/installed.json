@@ -49,18 +49,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "f1aa56a3749c6dfa6a87b454eefc9d5b8322cc6b"
+            "reference": "4e8563507213f030cb6612fafceb96380ce7cfb7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/f1aa56a3749c6dfa6a87b454eefc9d5b8322cc6b.zip",
-            "reference": "f1aa56a3749c6dfa6a87b454eefc9d5b8322cc6b",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/4e8563507213f030cb6612fafceb96380ce7cfb7.zip",
+            "reference": "4e8563507213f030cb6612fafceb96380ce7cfb7",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-12-28T10:44:09+00:00",
+        "time": "2018-02-05T02:44:49+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
@@ -76,59 +76,6 @@
         "homepage": "http://www.kancloud.cn/zoujingli/wechat-php-sdk",
         "keywords": [
             "wechat-php-sdk"
-        ]
-    },
-    {
-        "name": "topthink/framework",
-        "version": "v5.0.14",
-        "version_normalized": "5.0.14.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/top-think/framework.git",
-            "reference": "3d1bdfbc19a7e7fd323be1dd53c4bacbe7bfb706"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/3d1bdfbc19a7e7fd323be1dd53c4bacbe7bfb706.zip",
-            "reference": "3d1bdfbc19a7e7fd323be1dd53c4bacbe7bfb706",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4.0",
-            "topthink/think-installer": "~1.0"
-        },
-        "require-dev": {
-            "johnkary/phpunit-speedtrap": "^1.0",
-            "mikey179/vfsstream": "~1.6",
-            "phpdocumentor/reflection-docblock": "^2.0",
-            "phploc/phploc": "2.*",
-            "phpunit/phpunit": "4.8.*",
-            "sebastian/phpcpd": "2.*"
-        },
-        "time": "2018-01-01T12:44:11+00:00",
-        "type": "think-framework",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "think\\": "library/think"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "liu21st",
-                "email": "liu21st@gmail.com"
-            }
-        ],
-        "description": "the new thinkphp framework",
-        "homepage": "http://thinkphp.cn/",
-        "keywords": [
-            "framework",
-            "orm",
-            "thinkphp"
         ]
     },
     {
@@ -221,6 +168,59 @@
         ]
     },
     {
+        "name": "topthink/framework",
+        "version": "v5.0.15",
+        "version_normalized": "5.0.15.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/top-think/framework.git",
+            "reference": "7c1375791fe8772e33282ee8611ea465dc215fca"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/7c1375791fe8772e33282ee8611ea465dc215fca.zip",
+            "reference": "7c1375791fe8772e33282ee8611ea465dc215fca",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0",
+            "topthink/think-installer": "~1.0"
+        },
+        "require-dev": {
+            "johnkary/phpunit-speedtrap": "^1.0",
+            "mikey179/vfsstream": "~1.6",
+            "phpdocumentor/reflection-docblock": "^2.0",
+            "phploc/phploc": "2.*",
+            "phpunit/phpunit": "4.8.*",
+            "sebastian/phpcpd": "2.*"
+        },
+        "time": "2018-01-31T08:40:10+00:00",
+        "type": "think-framework",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "think\\": "library/think"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "liu21st",
+                "email": "liu21st@gmail.com"
+            }
+        ],
+        "description": "the new thinkphp framework",
+        "homepage": "http://thinkphp.cn/",
+        "keywords": [
+            "framework",
+            "orm",
+            "thinkphp"
+        ]
+    },
+    {
         "name": "topthink/think-captcha",
         "version": "v1.0.7",
         "version_normalized": "1.0.7.0",
@@ -260,20 +260,20 @@
     },
     {
         "name": "topthink/think-mongo",
-        "version": "v1.8",
-        "version_normalized": "1.8.0.0",
+        "version": "v1.8.2",
+        "version_normalized": "1.8.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-mongo.git",
-            "reference": "f7dc55d6bb9d22142ae262f15a3d269850218335"
+            "reference": "5433e971b4892b09cbec49090c690f5d4350a981"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-mongo/f7dc55d6bb9d22142ae262f15a3d269850218335.zip",
-            "reference": "f7dc55d6bb9d22142ae262f15a3d269850218335",
+            "url": "https://files.phpcomposer.com/files/top-think/think-mongo/5433e971b4892b09cbec49090c690f5d4350a981.zip",
+            "reference": "5433e971b4892b09cbec49090c690f5d4350a981",
             "shasum": ""
         },
-        "time": "2017-12-15T10:35:03+00:00",
+        "time": "2018-01-30T07:12:02+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -381,23 +381,23 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.2",
-        "version_normalized": "3.4.2.0",
+        "version": "v3.4.4",
+        "version_normalized": "3.4.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "4576693efc58c022c3fe9f144aa61d204c86ad2c"
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/4576693efc58c022c3fe9f144aa61d204c86ad2c.zip",
-            "reference": "4576693efc58c022c3fe9f144aa61d204c86ad2c",
+            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/f3109a6aedd20e35c3a33190e932c2b063b7b50e.zip",
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e",
             "shasum": ""
         },
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2017-12-14T19:40:10+00:00",
+        "time": "2018-01-11T07:56:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -500,17 +500,17 @@
     },
     {
         "name": "aliyuncs/oss-sdk-php",
-        "version": "v2.2.4",
-        "version_normalized": "2.2.4.0",
+        "version": "v2.3.0",
+        "version_normalized": "2.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-            "reference": "0b9b85b6c5c38cfc4ef3b0205a5a62d1e36acf2e"
+            "reference": "e69f57916678458642ac9d2fd341ae78a56996c8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/aliyun/aliyun-oss-php-sdk/0b9b85b6c5c38cfc4ef3b0205a5a62d1e36acf2e.zip",
-            "reference": "0b9b85b6c5c38cfc4ef3b0205a5a62d1e36acf2e",
+            "url": "https://files.phpcomposer.com/files/aliyun/aliyun-oss-php-sdk/e69f57916678458642ac9d2fd341ae78a56996c8.zip",
+            "reference": "e69f57916678458642ac9d2fd341ae78a56996c8",
             "shasum": ""
         },
         "require": {
@@ -520,7 +520,7 @@
             "phpunit/phpunit": "~4.0",
             "satooshi/php-coveralls": "~1.0"
         },
-        "time": "2017-04-25T09:15:12+00:00",
+        "time": "2018-01-08T06:59:35+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
