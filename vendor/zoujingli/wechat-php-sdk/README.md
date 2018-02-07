@@ -20,7 +20,7 @@
 
 * **文档链接地址**：http://www.kancloud.cn/zoujingli/wechat-php-sdk
 
-* **Think.Admin**：https://github.com/zoujingli/Think.Admin
+* **ThinkAdmin**：https://github.com/zoujingli/ThinkAdmin
 
 * **开发交流QQ群：513350915（新）**
 

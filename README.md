@@ -1,18 +1,18 @@
-Think.Admin
+ThinkAdmin
 ---
 
-`Think.Admin`是一个基于`Thinkphp5`开发的后台管理系统，集成后台系统常用功能。
+`ThinkAdmin`是一个基于`Thinkphp5`开发的后台管理系统，集成后台系统常用功能。
 
 项目安装请参考`ThinkPHP`官方文档及下面的服务环境说明，数据库`sql`文件存放于项目根目录下。
 
 注意：项目测试请另行搭建环境并创建数据库（数据库配置`application/database.php`）, 切勿直接使用测试环境数据！
 
-`Think.Admin`及`微信开发`技术交流QQ群
+`ThinkAdmin`及`微信开发`技术交流QQ群
 [![QQ群](http://pub.idqqimg.com/wpa/images/group.png "QQ群")](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a)
 
-**`Think.Admin`开发手册 ( 撰写中 )** : http://doc.think.ctolog.com
+**`ThinkAdmin`开发手册 ( 撰写中 )** : http://doc.think.ctolog.com
 
-`Think.Admin`已集成模块
+`ThinkAdmin`已集成模块
 ---
 * 简易`RBAC`权限管理（用户、权限、节点、菜单控制）
 * 自建秒传文件上载组件（本地存储、七牛云存储，阿里云OSS存储）
@@ -46,7 +46,7 @@ Think.Admin
 server {
 	listen 80;
 	server_name wealth.demo.cuci.cc;
-	root /home/wwwroot/Think.Admin;
+	root /home/wwwroot/ThinkAdmin;
 	index index.php index.html index.htm;
 	
 	add_header X-Powered-Host $hostname;
