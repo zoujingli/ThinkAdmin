@@ -79,7 +79,7 @@ class WechatCard extends Common
         if (($jsapi_ticket = Tools::getCache($authname))) {
             return $jsapi_ticket;
         }
-        $result = Tools::httpGet(self::API_URL_PREFIX . self::GET_TICKET_URL . "access_token={$this->access_token}" . '&type=wx_card');
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::GET_TICKET_URL . "access_token={$this->access_token}&type=wx_card");
         if ($result) {
             $json = json_decode($result, true);
             if (empty($json) || !empty($json['errcode'])) {
@@ -125,28 +125,33 @@ class WechatCard extends Common
      */
     public function createAddCardJsPackage($cardid = null, $data = array())
     {
-
-        function _sign($cardid = null, $attr = array(), $self)
-        {
-            unset($attr['outer_id']);
-            $attr['cardId'] = $cardid;
-            $attr['timestamp'] = time();
-            $attr['api_ticket'] = $self->getJsCardTicket();
-            $attr['nonce_str'] = Tools::createNoncestr();
-            $attr['signature'] = $self->getTicketSignature($attr);
-            unset($attr['api_ticket']);
-            return $attr;
-        }
-
         $cardList = array();
         if (is_array($cardid)) {
             foreach ($cardid as $id) {
-                $cardList[] = array('cardId' => $id, 'cardExt' => json_encode(_sign($id, $data, $this)));
+                $cardList[] = array('cardId' => $id, 'cardExt' => json_encode($this->_cardSign($id, $data)));
             }
         } else {
-            $cardList[] = array('cardId' => $cardid, 'cardExt' => json_encode(_sign($cardid, $data, $this)));
+            $cardList[] = array('cardId' => $cardid, 'cardExt' => json_encode($this->_cardSign($cardid, $data)));
         }
         return array('cardList' => $cardList);
+    }
+
+    /**
+     * 卡券数据签名
+     * @param null|string $cardid
+     * @param array $attr
+     * @return array
+     */
+    private function _cardSign($cardid = null, $attr = array())
+    {
+        unset($attr['outer_id']);
+        $attr['cardId'] = $cardid;
+        $attr['timestamp'] = time();
+        $attr['api_ticket'] = $this->getJsCardTicket();
+        $attr['nonce_str'] = Tools::createNoncestr();
+        $attr['signature'] = $this->getTicketSignature($attr);
+        unset($attr['api_ticket']);
+        return $attr;
     }
 
     /**

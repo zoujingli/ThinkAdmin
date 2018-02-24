@@ -49,18 +49,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "25f246fade52aa53514fb49ec48f72cdef2ca1ea"
+            "reference": "4e8563507213f030cb6612fafceb96380ce7cfb7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/25f246fade52aa53514fb49ec48f72cdef2ca1ea.zip",
-            "reference": "25f246fade52aa53514fb49ec48f72cdef2ca1ea",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/4e8563507213f030cb6612fafceb96380ce7cfb7.zip",
+            "reference": "4e8563507213f030cb6612fafceb96380ce7cfb7",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-09-30T14:25:36+00:00",
+        "time": "2018-02-05T02:44:49+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
@@ -80,17 +80,17 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.1",
-        "version_normalized": "7.2.1.0",
+        "version": "v7.2.2",
+        "version_normalized": "7.2.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "8c7ba738bd4443ee3569a07441913b07c4b2c4a2"
+            "reference": "79290fd9cb5d72cc2feef779008b3aaeeac49eb9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/8c7ba738bd4443ee3569a07441913b07c4b2c4a2.zip",
-            "reference": "8c7ba738bd4443ee3569a07441913b07c4b2c4a2",
+            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/79290fd9cb5d72cc2feef779008b3aaeeac49eb9.zip",
+            "reference": "79290fd9cb5d72cc2feef779008b3aaeeac49eb9",
             "shasum": ""
         },
         "require": {
@@ -100,7 +100,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2017-08-26T00:46:11+00:00",
+        "time": "2017-11-07T06:12:11+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -133,23 +133,23 @@
     },
     {
         "name": "zoujingli/ip2region",
-        "version": "v1.0.1",
-        "version_normalized": "1.0.1.0",
+        "version": "v1.0.2",
+        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ip2region.git",
-            "reference": "2efe42321acb83d01d1de5bfde69142ad81bff9b"
+            "reference": "5d981fbf3b574bad7fe9652e7aecba0920f54325"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/ip2region/2efe42321acb83d01d1de5bfde69142ad81bff9b.zip",
-            "reference": "2efe42321acb83d01d1de5bfde69142ad81bff9b",
+            "url": "https://files.phpcomposer.com/files/zoujingli/ip2region/5d981fbf3b574bad7fe9652e7aecba0920f54325.zip",
+            "reference": "5d981fbf3b574bad7fe9652e7aecba0920f54325",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-03-22T10:03:27+00:00",
+        "time": "2017-11-09T03:36:17+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -169,17 +169,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.0.11",
-        "version_normalized": "5.0.11.0",
+        "version": "v5.0.15",
+        "version_normalized": "5.0.15.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "926c9edb0c2682b14f563cac2c8a93f42f729016"
+            "reference": "7c1375791fe8772e33282ee8611ea465dc215fca"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/926c9edb0c2682b14f563cac2c8a93f42f729016.zip",
-            "reference": "926c9edb0c2682b14f563cac2c8a93f42f729016",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/7c1375791fe8772e33282ee8611ea465dc215fca.zip",
+            "reference": "7c1375791fe8772e33282ee8611ea465dc215fca",
             "shasum": ""
         },
         "require": {
@@ -194,7 +194,7 @@
             "phpunit/phpunit": "4.8.*",
             "sebastian/phpcpd": "2.*"
         },
-        "time": "2017-09-13T03:30:29+00:00",
+        "time": "2018-01-31T08:40:10+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "autoload": {
@@ -260,20 +260,20 @@
     },
     {
         "name": "topthink/think-mongo",
-        "version": "v1.7",
-        "version_normalized": "1.7.0.0",
+        "version": "v1.8.2",
+        "version_normalized": "1.8.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-mongo.git",
-            "reference": "fc552c8fe5798679a52f4f0d7e60763f64aeb155"
+            "reference": "5433e971b4892b09cbec49090c690f5d4350a981"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-mongo/fc552c8fe5798679a52f4f0d7e60763f64aeb155.zip",
-            "reference": "fc552c8fe5798679a52f4f0d7e60763f64aeb155",
+            "url": "https://files.phpcomposer.com/files/top-think/think-mongo/5433e971b4892b09cbec49090c690f5d4350a981.zip",
+            "reference": "5433e971b4892b09cbec49090c690f5d4350a981",
             "shasum": ""
         },
-        "time": "2017-05-05T07:52:33+00:00",
+        "time": "2018-01-30T07:12:02+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -381,27 +381,27 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.3.10",
-        "version_normalized": "3.3.10.0",
+        "version": "v3.4.4",
+        "version_normalized": "3.4.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "ee4e22978fe885b54ee5da8c7964f0a5301abfb6"
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/ee4e22978fe885b54ee5da8c7964f0a5301abfb6.zip",
-            "reference": "ee4e22978fe885b54ee5da8c7964f0a5301abfb6",
+            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/f3109a6aedd20e35c3a33190e932c2b063b7b50e.zip",
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e",
             "shasum": ""
         },
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2017-07-29T21:54:42+00:00",
+        "time": "2018-01-11T07:56:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.3-dev"
+                "dev-master": "3.4-dev"
             }
         },
         "installation-source": "dist",
@@ -441,12 +441,12 @@
         "version_normalized": "1.9.3.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/endroid/QrCode.git",
+            "url": "https://github.com/endroid/qr-code.git",
             "reference": "c9644bec2a9cc9318e98d1437de3c628dcd1ef93"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/endroid/QrCode/c9644bec2a9cc9318e98d1437de3c628dcd1ef93.zip",
+            "url": "https://files.phpcomposer.com/files/endroid/qr-code/c9644bec2a9cc9318e98d1437de3c628dcd1ef93.zip",
             "reference": "c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
             "shasum": ""
         },
@@ -495,21 +495,22 @@
             "qr",
             "qrcode",
             "symfony"
-        ]
+        ],
+        "abandoned": "endroid/qr-code"
     },
     {
         "name": "aliyuncs/oss-sdk-php",
-        "version": "v2.2.4",
-        "version_normalized": "2.2.4.0",
+        "version": "v2.3.0",
+        "version_normalized": "2.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-            "reference": "0b9b85b6c5c38cfc4ef3b0205a5a62d1e36acf2e"
+            "reference": "e69f57916678458642ac9d2fd341ae78a56996c8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/aliyun/aliyun-oss-php-sdk/0b9b85b6c5c38cfc4ef3b0205a5a62d1e36acf2e.zip",
-            "reference": "0b9b85b6c5c38cfc4ef3b0205a5a62d1e36acf2e",
+            "url": "https://files.phpcomposer.com/files/aliyun/aliyun-oss-php-sdk/e69f57916678458642ac9d2fd341ae78a56996c8.zip",
+            "reference": "e69f57916678458642ac9d2fd341ae78a56996c8",
             "shasum": ""
         },
         "require": {
@@ -519,7 +520,7 @@
             "phpunit/phpunit": "~4.0",
             "satooshi/php-coveralls": "~1.0"
         },
-        "time": "2017-04-25T09:15:12+00:00",
+        "time": "2018-01-08T06:59:35+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

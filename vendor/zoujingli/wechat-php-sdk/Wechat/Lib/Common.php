@@ -126,6 +126,7 @@ class Common
             }
         } elseif (isset($_GET["echostr"])) {
             if ($this->checkSignature()) {
+                @ob_clean();
                 exit($_GET["echostr"]);
             }
             return false;
@@ -165,7 +166,7 @@ class Common
     public function getAccessToken($appid = '', $appsecret = '', $token = '')
     {
         if (!$appid || !$appsecret) {
-            list($appid, $appsecret) = [$this->appid, $this->appsecret];
+            list($appid, $appsecret) = array($this->appid, $this->appsecret);
         }
         if ($token) {
             return $this->access_token = $token;

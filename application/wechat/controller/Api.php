@@ -1,7 +1,7 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | Think.Admin
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/Think.Admin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\wechat\controller;
@@ -256,7 +256,7 @@ class Api extends Controller
             }
         } else {
             $data = ['subscribe' => '0', 'appid' => $this->wechat->appid, 'openid' => $this->openid];
-            DataService::save('wechat_fans', $data, ['appid', 'openid']);
+            DataService::save('wechat_fans', $data, 'openid');
         }
     }
 

@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -79,14 +79,16 @@ class BelongsTo extends OneToOne
     /**
      * 根据关联条件查询当前模型
      * @access public
-     * @param mixed $where 查询条件（数组或者闭包）
+     * @param  mixed  $where 查询条件（数组或者闭包）
+     * @param  mixed  $fields   字段
      * @return Query
      */
-    public function hasWhere($where = [])
+    public function hasWhere($where = [], $fields = null)
     {
         $table    = $this->query->getTable();
         $model    = basename(str_replace('\\', '/', get_class($this->parent)));
         $relation = basename(str_replace('\\', '/', $this->model));
+
         if (is_array($where)) {
             foreach ($where as $key => $val) {
                 if (false === strpos($key, '.')) {
@@ -95,9 +97,11 @@ class BelongsTo extends OneToOne
                 }
             }
         }
+        $fields = $this->getRelationQueryFields($fields, $model);
+
         return $this->parent->db()->alias($model)
-            ->field($model . '.*')
-            ->join($table . ' ' . $relation, $model . '.' . $this->foreignKey . '=' . $relation . '.' . $this->localKey, $this->joinType)
+            ->field($fields)
+            ->join([$table => $relation], $model . '.' . $this->foreignKey . '=' . $relation . '.' . $this->localKey, $this->joinType)
             ->where($where);
     }
 
@@ -124,7 +128,7 @@ class BelongsTo extends OneToOne
         }
 
         if (!empty($range)) {
-            $data = $this->eagerlyWhere($this, [
+            $data = $this->eagerlyWhere($this->query, [
                 $localKey => [
                     'in',
                     $range,
@@ -146,10 +150,10 @@ class BelongsTo extends OneToOne
                 if (!empty($this->bindAttr)) {
                     // 绑定关联属性
                     $this->bindAttr($relationModel, $result, $this->bindAttr);
+                } else {
+                    // 设置关联属性
+                    $result->setRelation($attr, $relationModel);
                 }
-
-                // 设置关联属性
-                $result->setRelation($attr, $relationModel);
             }
         }
     }
@@ -167,7 +171,7 @@ class BelongsTo extends OneToOne
     {
         $localKey   = $this->localKey;
         $foreignKey = $this->foreignKey;
-        $data       = $this->eagerlyWhere($this, [$localKey => $result->$foreignKey], $localKey, $relation, $subRelation, $closure);
+        $data       = $this->eagerlyWhere($this->query, [$localKey => $result->$foreignKey], $localKey, $relation, $subRelation, $closure);
         // 关联模型
         if (!isset($data[$result->$foreignKey])) {
             $relationModel = null;
@@ -179,9 +183,10 @@ class BelongsTo extends OneToOne
         if (!empty($this->bindAttr)) {
             // 绑定关联属性
             $this->bindAttr($relationModel, $result, $this->bindAttr);
+        } else {
+            // 设置关联属性
+            $result->setRelation(Loader::parseName($relation), $relationModel);
         }
-        // 设置关联属性
-        $result->setRelation(Loader::parseName($relation), $relationModel);
     }
 
     /**

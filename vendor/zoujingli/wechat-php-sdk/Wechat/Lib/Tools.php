@@ -134,7 +134,9 @@ class Tools
      */
     static public function json_encode($array)
     {
-        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', create_function('$matches', 'return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");'), json_encode($array));
+        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', function ($matches) {
+            return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");
+        }, json_encode($array));
     }
 
     /**
@@ -145,12 +147,11 @@ class Tools
     static public function httpGet($url)
     {
         $curl = curl_init();
-        if (stripos($url, "https://") !== 0) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($curl, CURLOPT_SSLVERSION, 1);
-        }
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSLVERSION, 1);
         curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         list($content, $status) = array(curl_exec($curl), curl_getinfo($curl), curl_close($curl));
         return (intval($status["http_code"]) === 200) ? $content : false;

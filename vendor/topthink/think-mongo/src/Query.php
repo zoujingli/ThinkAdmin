@@ -385,8 +385,8 @@ class Query
             $result = Cache::get($guid);
         }
         if (!$result) {
-            if (isset($this->options['field'])) {
-                unset($this->options['field']);
+            if (isset($this->options['projection'])) {
+                unset($this->options['projection']);
             }
             if ($key && '*' != $field) {
                 $field = $key . ',' . $field;
@@ -492,6 +492,28 @@ class Query
     }
 
     /**
+     * 多聚合操作
+     *
+     * @param array $aggregate 聚合指令, 可以聚合多个参数, 如 ['sum' => 'field1', 'avg' => 'field2']
+     * @param array $groupBy 类似mysql里面的group字段, 可以传入多个字段, 如 ['field_a', 'field_b', 'field_c']
+     * @return array 查询结果
+     */
+    public function multiAggregate($aggregate, $groupBy)
+    {
+        $result = $this->cmd('multiAggregate', [$aggregate, $groupBy]);
+        $result = isset($result[0]['result']) ? $result[0]['result'] : [];
+        foreach ($result as &$row) {
+            if (isset($row['_id']) && !empty($row['_id'])) {
+                foreach ($row['_id'] as $k => $v) {
+                    $row[$k] = $v;
+                }
+                unset($row['_id']);
+            }
+        }
+        return $result;
+    }
+
+    /**
      * 聚合查询
      * @access public
      * @param string $aggregate 聚合指令
@@ -501,7 +523,7 @@ class Query
     public function aggregate($aggregate, $field)
     {
         $result = $this->cmd('aggregate', [$aggregate, $field]);
-        return isset($result[0]['result'][0]['aggregate']) ? $result[0]['result'][0]['aggregate'] : 0;
+        return isset($result[0]['aggregate']) ? $result[0]['aggregate'] : 0;
     }
 
     /**

@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -77,7 +77,7 @@ class HasMany extends Relation
         }
 
         if (!empty($range)) {
-            $data = $this->eagerlyOneToMany(new $this->model, [
+            $data = $this->eagerlyOneToMany($this->query, [
                 $this->foreignKey => [
                     'in',
                     $range,
@@ -114,7 +114,7 @@ class HasMany extends Relation
         $localKey = $this->localKey;
 
         if (isset($result->$localKey)) {
-            $data = $this->eagerlyOneToMany(new $this->model, [$this->foreignKey => $result->$localKey], $relation, $subRelation, $closure);
+            $data = $this->eagerlyOneToMany($this->query, [$this->foreignKey => $result->$localKey], $relation, $subRelation, $closure);
             // 关联数据封装
             if (!isset($data[$result->$localKey])) {
                 $data[$result->$localKey] = [];
@@ -185,7 +185,7 @@ class HasMany extends Relation
         if ($closure) {
             call_user_func_array($closure, [ & $model]);
         }
-        $list = $model->where($where)->with($subRelation)->select();
+        $list = $model->removeWhereField($foreignKey)->where($where)->with($subRelation)->select();
 
         // 组装模型数据
         $data = [];
@@ -245,7 +245,7 @@ class HasMany extends Relation
         return $this->parent->db()
             ->alias($model)
             ->field($model . '.*')
-            ->join($table . ' ' . $relation, $model . '.' . $this->localKey . '=' . $relation . '.' . $this->foreignKey, $joinType)
+            ->join([$table => $relation], $model . '.' . $this->localKey . '=' . $relation . '.' . $this->foreignKey, $joinType)
             ->group($relation . '.' . $this->foreignKey)
             ->having('count(' . $id . ')' . $operator . $count);
     }
@@ -253,14 +253,16 @@ class HasMany extends Relation
     /**
      * 根据关联条件查询当前模型
      * @access public
-     * @param mixed $where 查询条件（数组或者闭包）
+     * @param  mixed     $where  查询条件（数组或者闭包）
+     * @param  mixed     $fields 字段
      * @return Query
      */
-    public function hasWhere($where = [])
+    public function hasWhere($where = [], $fields = null)
     {
         $table    = $this->query->getTable();
         $model    = basename(str_replace('\\', '/', get_class($this->parent)));
         $relation = basename(str_replace('\\', '/', $this->model));
+
         if (is_array($where)) {
             foreach ($where as $key => $val) {
                 if (false === strpos($key, '.')) {
@@ -269,9 +271,13 @@ class HasMany extends Relation
                 }
             }
         }
+
+        $fields = $this->getRelationQueryFields($fields, $model);
+
         return $this->parent->db()->alias($model)
-            ->field($model . '.*')
-            ->join($table . ' ' . $relation, $model . '.' . $this->localKey . '=' . $relation . '.' . $this->foreignKey)
+            ->field($fields)
+            ->group($model . '.' . $this->localKey)
+            ->join([$table => $relation], $model . '.' . $this->localKey . '=' . $relation . '.' . $this->foreignKey)
             ->where($where);
     }
 

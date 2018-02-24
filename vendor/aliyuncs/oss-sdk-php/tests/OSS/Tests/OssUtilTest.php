@@ -5,6 +5,7 @@ namespace OSS\Tests;
 
 use OSS\Core\OssException;
 use OSS\Core\OssUtil;
+use OSS\OssClient;
 
 class OssUtilTest extends \PHPUnit_Framework_TestCase
 {
@@ -104,6 +105,15 @@ BBBB;
 BBBB;
         $a = array(array("PartNumber" => 2, "ETag" => "xx"));
         $this->assertEquals($this->cleanXml(OssUtil::createCompleteMultipartUploadXmlBody($a)), $xml);
+    }
+
+    public function testCreateBucketXmlBody()
+    {
+        $xml = <<<BBBB
+<?xml version="1.0" encoding="UTF-8"?><CreateBucketConfiguration><StorageClass>Standard</StorageClass></CreateBucketConfiguration>
+BBBB;
+        $storageClass ="Standard";
+        $this->assertEquals($this->cleanXml(OssUtil::createBucketXmlBody($storageClass)), $xml);
     }
 
     public function testValidateBucket()
@@ -211,4 +221,5 @@ BBBB;
     {
         return str_replace("\n", "", str_replace("\r", "", $xml));
     }
+
 }

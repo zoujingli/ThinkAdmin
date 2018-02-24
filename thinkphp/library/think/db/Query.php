@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -58,9 +58,9 @@ class Query
      * 构造函数
      * @access public
      * @param Connection $connection 数据库对象实例
-     * @param string     $model      模型名
+     * @param Model      $model      模型对象
      */
-    public function __construct(Connection $connection = null, $model = '')
+    public function __construct(Connection $connection = null, $model = null)
     {
         $this->connection = $connection ?: Db::connect([], true);
         $this->prefix     = $this->connection->getConfig('prefix');
@@ -133,7 +133,7 @@ class Query
     /**
      * 获取当前的模型对象名
      * @access public
-     * @return string
+     * @return Model|null
      */
     public function getModel()
     {
@@ -312,9 +312,9 @@ class Query
      * @param array $sql SQL批处理指令
      * @return boolean
      */
-    public function batchQuery($sql = [])
+    public function batchQuery($sql = [], $bind = [])
     {
-        return $this->connection->batchQuery($sql);
+        return $this->connection->batchQuery($sql, $bind);
     }
 
     /**
@@ -534,22 +534,24 @@ class Query
      * MIN查询
      * @access public
      * @param string $field 字段名
+     * @param bool   $force   强制转为数字类型
      * @return mixed
      */
-    public function min($field)
+    public function min($field, $force = true)
     {
-        return $this->value('MIN(' . $field . ') AS tp_min', 0, true);
+        return $this->value('MIN(' . $field . ') AS tp_min', 0, $force);
     }
 
     /**
      * MAX查询
      * @access public
      * @param string $field 字段名
+     * @param bool   $force   强制转为数字类型
      * @return mixed
      */
-    public function max($field)
+    public function max($field, $force = true)
     {
-        return $this->value('MAX(' . $field . ') AS tp_max', 0, true);
+        return $this->value('MAX(' . $field . ') AS tp_max', 0, $force);
     }
 
     /**
@@ -607,7 +609,7 @@ class Query
                 return true;
             }
         }
-        return $this->setField($field, ['exp', $field . '+' . $step]);
+        return $this->setField($field, ['inc', $field, $step]);
     }
 
     /**
@@ -635,8 +637,9 @@ class Query
                 $this->options = [];
                 return true;
             }
+            return $this->setField($field, ['inc', $field, $step]);
         }
-        return $this->setField($field, ['exp', $field . '-' . $step]);
+        return $this->setField($field, ['dec', $field, $step]);
     }
 
     /**
@@ -704,7 +707,7 @@ class Query
     {
         // 传入的表名为数组
         if (is_array($join)) {
-            list($table, $alias) = each($join);
+            $table = $join;
         } else {
             $join = trim($join);
             if (false !== strpos($join, '(')) {
@@ -725,13 +728,9 @@ class Query
                     $table = $this->getTable($table);
                 }
             }
-        }
-        if (isset($alias)) {
-            if (isset($this->options['alias'][$table])) {
-                $table = $table . '@think' . uniqid();
+            if (isset($alias) && $table != $alias) {
+                $table = [$table => $alias];
             }
-            $table = [$table => $alias];
-            $this->alias($table);
         }
         return $table;
     }
@@ -828,7 +827,7 @@ class Query
     {
         $fields = is_string($field) ? explode(',', $field) : $field;
         foreach ($fields as $field) {
-            $this->data($field, ['exp', $field . '+' . $step]);
+            $this->data($field, ['inc', $field, $step]);
         }
         return $this;
     }
@@ -844,7 +843,7 @@ class Query
     {
         $fields = is_string($field) ? explode(',', $field) : $field;
         foreach ($fields as $field) {
-            $this->data($field, ['exp', $field . '-' . $step]);
+            $this->data($field, ['dec', $field, $step]);
         }
         return $this;
     }
@@ -1239,6 +1238,7 @@ class Query
         $logic = strtoupper($logic);
         if (isset($this->options['where'][$logic][$field])) {
             unset($this->options['where'][$logic][$field]);
+            unset($this->options['multi'][$logic][$field]);
         }
         return $this;
     }
@@ -1523,7 +1523,12 @@ class Query
     {
         if (is_array($alias)) {
             foreach ($alias as $key => $val) {
-                $this->options['alias'][$key] = $val;
+                if (false !== strpos($key, '__')) {
+                    $table = $this->parseSqlTable($key);
+                } else {
+                    $table = $key;
+                }
+                $this->options['alias'][$table] = $val;
             }
         } else {
             if (isset($this->options['table'])) {
@@ -1651,46 +1656,49 @@ class Query
      * 查询日期或者时间
      * @access public
      * @param string       $field 日期字段名
-     * @param string       $op    比较运算符或者表达式
+     * @param string|array $op    比较运算符或者表达式
      * @param string|array $range 比较范围
      * @return $this
      */
     public function whereTime($field, $op, $range = null)
     {
         if (is_null($range)) {
-            // 使用日期表达式
-            $date = getdate();
-            switch (strtolower($op)) {
-                case 'today':
-                case 'd':
-                    $range = ['today', 'tomorrow'];
-                    break;
-                case 'week':
-                case 'w':
-                    $range = 'this week 00:00:00';
-                    break;
-                case 'month':
-                case 'm':
-                    $range = mktime(0, 0, 0, $date['mon'], 1, $date['year']);
-                    break;
-                case 'year':
-                case 'y':
-                    $range = mktime(0, 0, 0, 1, 1, $date['year']);
-                    break;
-                case 'yesterday':
-                    $range = ['yesterday', 'today'];
-                    break;
-                case 'last week':
-                    $range = ['last week 00:00:00', 'this week 00:00:00'];
-                    break;
-                case 'last month':
-                    $range = [date('y-m-01', strtotime('-1 month')), mktime(0, 0, 0, $date['mon'], 1, $date['year'])];
-                    break;
-                case 'last year':
-                    $range = [mktime(0, 0, 0, 1, 1, $date['year'] - 1), mktime(0, 0, 0, 1, 1, $date['year'])];
-                    break;
-                default:
-                    $range = $op;
+            if (is_array($op)) {
+                $range = $op;
+            } else {
+                // 使用日期表达式
+                switch (strtolower($op)) {
+                    case 'today':
+                    case 'd':
+                        $range = ['today', 'tomorrow'];
+                        break;
+                    case 'week':
+                    case 'w':
+                        $range = ['this week 00:00:00', 'next week 00:00:00'];
+                        break;
+                    case 'month':
+                    case 'm':
+                        $range = ['first Day of this month 00:00:00', 'first Day of next month 00:00:00'];
+                        break;
+                    case 'year':
+                    case 'y':
+                        $range = ['this year 1/1', 'next year 1/1'];
+                        break;
+                    case 'yesterday':
+                        $range = ['yesterday', 'today'];
+                        break;
+                    case 'last week':
+                        $range = ['last week 00:00:00', 'this week 00:00:00'];
+                        break;
+                    case 'last month':
+                        $range = ['first Day of last month 00:00:00', 'first Day of this month 00:00:00'];
+                        break;
+                    case 'last year':
+                        $range = ['last year 1/1', 'this year 1/1'];
+                        break;
+                    default:
+                        $range = $op;
+                }
             }
             $op = is_array($range) ? 'between' : '>';
         }
@@ -1735,7 +1743,7 @@ class Query
                 $schema = $guid;
             }
             // 读取缓存
-            if (is_file(RUNTIME_PATH . 'schema/' . $schema . '.php')) {
+            if (!App::$debug && is_file(RUNTIME_PATH . 'schema/' . $schema . '.php')) {
                 $info = include RUNTIME_PATH . 'schema/' . $schema . '.php';
             } else {
                 $info = $this->connection->getFields($guid);
@@ -1810,7 +1818,9 @@ class Query
      */
     protected function getFieldBindType($type)
     {
-        if (preg_match('/(int|double|float|decimal|real|numeric|serial|bit)/is', $type)) {
+        if (0 === strpos($type, 'set') || 0 === strpos($type, 'enum')) {
+            $bind = PDO::PARAM_STR;
+        } elseif (preg_match('/(int|double|float|decimal|real|numeric|serial|bit)/is', $type)) {
             $bind = PDO::PARAM_INT;
         } elseif (preg_match('/bool/is', $type)) {
             $bind = PDO::PARAM_BOOL;
@@ -1892,11 +1902,10 @@ class Query
             $with = explode(',', $with);
         }
 
-        $first        = true;
-        $currentModel = $this->model;
+        $first = true;
 
         /** @var Model $class */
-        $class = new $currentModel;
+        $class = $this->model;
         foreach ($with as $key => $relation) {
             $subRelation = '';
             $closure     = false;
@@ -1955,7 +1964,7 @@ class Query
                     $relation = $key;
                 }
                 $relation = Loader::parseName($relation, 1, false);
-                $count    = '(' . (new $this->model)->$relation()->getRelationCountQuery($closure) . ')';
+                $count    = '(' . $this->model->$relation()->getRelationCountQuery($closure) . ')';
                 $this->field([$count => Loader::parseName($relation) . '_count']);
             }
         }
@@ -2118,24 +2127,37 @@ class Query
     /**
      * 批量插入记录
      * @access public
-     * @param mixed $dataSet 数据集
-     * @param boolean $replace  是否replace
+     * @param mixed     $dataSet 数据集
+     * @param boolean   $replace  是否replace
+     * @param integer   $limit   每次写入数据限制
      * @return integer|string
      */
-    public function insertAll(array $dataSet, $replace = false)
+    public function insertAll(array $dataSet, $replace = false, $limit = null)
     {
         // 分析查询表达式
         $options = $this->parseExpress();
         if (!is_array(reset($dataSet))) {
             return false;
         }
+
         // 生成SQL语句
-        $sql = $this->builder->insertAll($dataSet, $options, $replace);
+        if (is_null($limit)) {
+            $sql = $this->builder->insertAll($dataSet, $options, $replace);
+        } else {
+            $array = array_chunk($dataSet, $limit, true);
+            foreach ($array as $item) {
+                $sql[] = $this->builder->insertAll($item, $options, $replace);
+            }
+        }
+
         // 获取参数绑定
         $bind = $this->getBind();
         if ($options['fetch_sql']) {
             // 获取实际执行的SQL语句
             return $this->connection->getRealSql($sql, $bind);
+        } elseif (is_array($sql)) {
+            // 执行操作
+            return $this->batchQuery($sql, $bind);
         } else {
             // 执行操作
             return $this->execute($sql, $bind);
@@ -2334,11 +2356,10 @@ class Query
         // 数据列表读取后的处理
         if (!empty($this->model)) {
             // 生成模型对象
-            $modelName = $this->model;
             if (count($resultSet) > 0) {
                 foreach ($resultSet as $key => $result) {
                     /** @var Model $model */
-                    $model = new $modelName($result);
+                    $model = $this->model->newInstance($result);
                     $model->isUpdate(true);
 
                     // 关联查询
@@ -2358,7 +2379,7 @@ class Query
                 // 模型数据集转换
                 $resultSet = $model->toCollection($resultSet);
             } else {
-                $resultSet = (new $modelName)->toCollection($resultSet);
+                $resultSet = $this->model->toCollection($resultSet);
             }
         } elseif ('collection' == $this->connection->getConfig('resultset_type')) {
             // 返回Collection对象
@@ -2484,7 +2505,7 @@ class Query
                 $result = isset($resultSet[0]) ? $resultSet[0] : null;
             }
 
-            if (isset($cache) && false !== $result) {
+            if (isset($cache) && $result) {
                 // 缓存数据
                 $this->cacheData($key, $result, $cache);
             }
@@ -2494,8 +2515,7 @@ class Query
         if (!empty($result)) {
             if (!empty($this->model)) {
                 // 返回模型对象
-                $model  = $this->model;
-                $result = new $model($result);
+                $result = $this->model->newInstance($result);
                 $result->isUpdate(true, isset($options['where']['AND']) ? $options['where']['AND'] : null);
                 // 关联查询
                 if (!empty($options['relation'])) {
@@ -2526,7 +2546,8 @@ class Query
     protected function throwNotFound($options = [])
     {
         if (!empty($this->model)) {
-            throw new ModelNotFoundException('model data Not Found:' . $this->model, $this->model, $options);
+            $class = get_class($this->model);
+            throw new ModelNotFoundException('model data Not Found:' . $class, $class, $options);
         } else {
             $table = is_array($options['table']) ? key($options['table']) : $options['table'];
             throw new DataNotFoundException('table data not Found:' . $table, $table, $options);
@@ -2574,48 +2595,54 @@ class Query
     public function chunk($count, $callback, $column = null, $order = 'asc')
     {
         $options = $this->getOptions();
-        if (isset($options['table'])) {
-            $table = is_array($options['table']) ? key($options['table']) : $options['table'];
-        } else {
-            $table = '';
+        if (empty($options['table'])) {
+            $options['table'] = $this->getTable();
         }
-        $column = $column ?: $this->getPk($table);
-        if (is_array($column)) {
-            $column = $column[0];
-        }
+        $column = $column ?: $this->getPk($options);
+
         if (isset($options['order'])) {
             if (App::$debug) {
                 throw new \LogicException('chunk not support call order');
             }
             unset($options['order']);
         }
-        $bind      = $this->bind;
-        $resultSet = $this->options($options)->limit($count)->order($column, $order)->select();
-        if (strpos($column, '.')) {
-            list($alias, $key) = explode('.', $column);
+        $bind = $this->bind;
+        if (is_array($column)) {
+            $times = 1;
+            $query = $this->options($options)->page($times, $count);
         } else {
-            $key = $column;
-        }
-        if ($resultSet instanceof Collection) {
-            $resultSet = $resultSet->all();
-        }
-
-        while (!empty($resultSet)) {
-            if (false === call_user_func($callback, $resultSet)) {
-                return false;
+            if (strpos($column, '.')) {
+                list($alias, $key) = explode('.', $column);
+            } else {
+                $key = $column;
             }
-            $end       = end($resultSet);
-            $lastId    = is_array($end) ? $end[$key] : $end->$key;
-            $resultSet = $this->options($options)
-                ->limit($count)
-                ->bind($bind)
-                ->where($column, 'asc' == strtolower($order) ? '>' : '<', $lastId)
-                ->order($column, $order)
-                ->select();
+            $query = $this->options($options)->limit($count);
+        }
+        $resultSet = $query->order($column, $order)->select();
+
+        while (count($resultSet) > 0) {
             if ($resultSet instanceof Collection) {
                 $resultSet = $resultSet->all();
             }
+
+            if (false === call_user_func($callback, $resultSet)) {
+                return false;
+            }
+
+            if (is_array($column)) {
+                $times++;
+                $query = $this->options($options)->page($times, $count);
+            } else {
+                $end    = end($resultSet);
+                $lastId = is_array($end) ? $end[$key] : $end->getData($key);
+                $query  = $this->options($options)
+                    ->limit($count)
+                    ->where($column, 'asc' == strtolower($order) ? '>' : '<', $lastId);
+            }
+
+            $resultSet = $query->bind($bind)->order($column, $order)->select();
         }
+
         return true;
     }
 
