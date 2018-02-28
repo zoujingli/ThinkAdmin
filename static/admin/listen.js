@@ -42,6 +42,21 @@ define(['jquery', 'admin.plugs'], function () {
         return $.form.modal($(this).attr('data-modal'), 'open_type=modal', $(this).attr('data-title') || '编辑');
     });
 
+    /*! 注册 data-multi-modal 事件行为 */
+    this.$body.on('click', '[data-multi-modal]', function () {
+        var id = $(this).attr('data-update') || (function () {
+                var data = [];
+                return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
+                    (this.checked) && data.push(this.value);
+                }), data.join(',');
+            }).call(this);
+        if (id.length < 1) {
+            return $.msg.tips('请选择需要操作的数据！');
+        }
+        var field = $(this).attr('data-field') || 'id';
+        return $.form.modal($(this).attr('data-action'), 'open_type=modal&id=' + id, $(this).attr('data-title') || '编辑');
+    });
+    
     /*! 注册 data-open 事件行为 */
     this.$body.on('click', '[data-open]', function () {
         $.form.href($(this).attr('data-open'), this);
