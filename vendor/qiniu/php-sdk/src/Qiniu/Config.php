@@ -3,14 +3,14 @@ namespace Qiniu;
 
 final class Config
 {
-    const SDK_VER = '7.2.2';
+    const SDK_VER = '7.2.3';
 
     const BLOCK_SIZE = 4194304; //4*1024*1024 分块上传块大小，该参数为接口规格，不能修改
 
     const RSF_HOST = 'rsf.qiniu.com';
     const API_HOST = 'api.qiniu.com';
     const RS_HOST = 'rs.qiniu.com';      //RS Host
-    const UC_HOST = 'https://uc.qbox.me';              //UC Host
+    const UC_HOST = 'https://api.qiniu.com';              //UC Host
 
     // Zone 空间对应的机房
     public $zone;

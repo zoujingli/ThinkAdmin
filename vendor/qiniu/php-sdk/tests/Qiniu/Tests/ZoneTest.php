@@ -36,7 +36,6 @@ class ZoneTest extends \PHPUnit_Framework_TestCase
     public function testUpHosts()
     {
         $zone = Zone::queryZone($this->ak, $this->bucketName);
-        print_r($zone);
         $this->assertContains('upload.qiniup.com', $zone->cdnUpHosts);
 
         $zone = Zone::queryZone($this->ak, $this->bucketNameBC);

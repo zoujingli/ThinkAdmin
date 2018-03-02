@@ -130,7 +130,7 @@ final class Response
 
     private static function bodyJson($body)
     {
-        return \Qiniu\json_decode((string)$body, true, 512);
+        return \Qiniu\json_decode((string) $body, true, 512);
     }
 
     public function xVia()
