@@ -49,6 +49,8 @@ class DataService
      * @param string $sequence
      * @param string $type
      * @return bool
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public static function deleteSequence($sequence, $type = 'SYSTEM')
     {
@@ -87,15 +89,17 @@ class DataService
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
      * @return bool
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public static function save($dbQuery, $data, $key = 'id', $where = [])
     {
         $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
         $where[$key] = isset($data[$key]) ? $data[$key] : '';
         if ($db->where($where)->count() > 0) {
-            return $db->where($where)->update($data) !== false;
+            return $db->strict(false)->where($where)->update($data) !== false;
         }
-        return $db->insert($data) !== false;
+        return $db->strict(false)->insert($data) !== false;
     }
 
     /**
@@ -103,6 +107,8 @@ class DataService
      * @param \think\db\Query|string $dbQuery 数据查询对象
      * @param array $where 额外查询条件
      * @return bool|null
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public static function update(&$dbQuery, $where = [])
     {
