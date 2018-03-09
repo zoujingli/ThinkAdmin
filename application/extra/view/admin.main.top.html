@@ -8,18 +8,7 @@
                     </span>
                 </a>
             </div>
-            {volist name='menus' id='pmenu'}
-            {empty name='pmenu.sub'}
-            <a data-menu-node='m-{$pmenu.id}' data-open="{$pmenu.url}"
-               class="topbar-home-link topbar-btn topbar-left">
-                <span>{notempty name='$pmenu.icon'}<i class="{$pmenu.icon}"></i>{/notempty} {$pmenu.title}</span>
-            </a>
-            {else}
-            <a data-menu-target='m-{$pmenu.id}' class="topbar-home-link topbar-btn topbar-left">
-                <span>{notempty name='$pmenu.icon'}<i class="{$pmenu.icon}"></i>{/notempty} {$pmenu.title}</span>
-            </a>
-            {/empty}
-            {/volist}
+            <div id="menus"></div>
             <div class="topbar-info topbar-right">
                 <a data-reload data-tips-text='刷新' style='width:50px'
                    class=" topbar-btn topbar-left topbar-info-item text-center">
@@ -62,3 +51,75 @@
         </div>
     </div>
 </div>
+<script>
+    require(['jquery'], function () {
+        var menus = {$menus|json_encode};
+        function addMenu(menus, parent, more) {
+            for (var i = 0; i < menus.length; i++) {
+                var menu = menus[i];
+                var sub = [];
+                if (menu.sub != undefined) {
+                    sub = $.map(menu.sub, function(value, index) {
+                        return [value];
+                    });
+                }
+                var icon = '';
+                if (menu.icon) {
+                    icon = '<i class="' + menu.icon + '"></i> ';
+                }
+                if (sub.length > 0) {
+                    if (more) {
+                        $(parent).append('<li><a data-menu-target=\'m-' + menu.id + '\' class="topbar-home-link topbar-btn topbar-left">' +
+                            '<span>' + icon + menu.title + '</span></a></li>');
+                    } else {
+                        $(parent).append('<a data-menu-target=\'m-' + menu.id + '\' class="topbar-home-link topbar-btn topbar-left">' +
+                            '<span>' + icon + menu.title + '</span></a>');
+                    }
+                } else {
+                    if (more) {
+                        $(parent).append('<li><a data-menu-node=m-' + menu.id + ' data-open="' + menu.url + '" class= "topbar-home-link topbar-btn topbar-left" ><span>' + icon + menu.title + '</span></a></li>');
+                    } else {
+                        $(parent).append('<a data-menu-node=m-' + menu.id + ' data-open="' + menu.url + '" class= "topbar-home-link topbar-btn topbar-left" ><span>' + icon + menu.title + '</span></a>');
+                    }
+                }
+            }
+        }
+        function addMenuMore(menus, num) {
+            var f = menus.slice(0, num)
+            var left = menus.slice(num, menus.length)
+            addMenu(f, '#menus', false)
+            // add more button
+            $('#menus').append('<div class="topbar-left"><div class="dropdown topbar-info-item"><a class="topbar-home-link topbar-btn topbar-left" data-toggle="dropdown">更多 <span class="glyphicon glyphicon-menu-up transition" style="font-size:12px"></span></a><ul class="dropdown-menu menu-more"></ul></div></div>')
+            addMenu(left, '.menu-more', true)
+        }
+        function initMenu(menus, windowWidth) {
+            menus = $.map(menus, function(value, index) {
+                return [value];
+            });
+            $('#menus').empty()
+            var num = Math.floor(windowWidth / 120)
+            if (menus.length > num) {
+                addMenuMore(menus, num)
+            } else {
+                addMenu(menus, '#menus', false)
+            }
+            var $menutarget = $('[data-menu-target]').on('click', function () {
+                $menutarget.not($(this).addClass('active')).removeClass('active');
+                var menuNode = $(this).attr('data-menu-target');
+                var $leftmenu = $('[data-menu-box=' + menuNode + ']').removeClass('hide');
+                $("[data-menu-box]").not($leftmenu).addClass('hide');
+                $leftmenu.find('[data-open]:first').trigger('click')
+            });
+        }
+        $(function () {
+            console.log(menus)
+            var windowWidth = window.document.body.offsetWidth - 500;
+            // 可用宽度
+            initMenu(menus, windowWidth);
+            $(window).resize(function () {
+                var windowWidth = window.document.body.offsetWidth - 500;
+                initMenu(menus, windowWidth);
+            });
+        })
+    })
+</script>
