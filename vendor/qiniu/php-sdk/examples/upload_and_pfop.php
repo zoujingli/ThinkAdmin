@@ -12,7 +12,6 @@ $auth = new Auth($accessKey, $secretKey);
 
 // 在七牛保存的文件名
 $key = 'php-logo.png';
-$token = $auth->uploadToken($bucket);
 $uploadMgr = new UploadManager();
 
 $pfop = "imageMogr2/rotate/90|saveas/" . \Qiniu\base64_urlSafeEncode($bucket . ":php-logo-rotate.png");

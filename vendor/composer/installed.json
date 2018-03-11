@@ -49,18 +49,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "4e8563507213f030cb6612fafceb96380ce7cfb7"
+            "reference": "7869490b99e648d40a5a5169cc0469dccb8e8b0a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/4e8563507213f030cb6612fafceb96380ce7cfb7.zip",
-            "reference": "4e8563507213f030cb6612fafceb96380ce7cfb7",
+            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/7869490b99e648d40a5a5169cc0469dccb8e8b0a.zip",
+            "reference": "7869490b99e648d40a5a5169cc0469dccb8e8b0a",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2018-02-05T02:44:49+00:00",
+        "time": "2018-02-28T13:30:53+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
@@ -80,17 +80,17 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.2",
-        "version_normalized": "7.2.2.0",
+        "version": "v7.2.3",
+        "version_normalized": "7.2.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "79290fd9cb5d72cc2feef779008b3aaeeac49eb9"
+            "reference": "67852ba9cdd7f48e0e080961abebafee134fb329"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/79290fd9cb5d72cc2feef779008b3aaeeac49eb9.zip",
-            "reference": "79290fd9cb5d72cc2feef779008b3aaeeac49eb9",
+            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/67852ba9cdd7f48e0e080961abebafee134fb329.zip",
+            "reference": "67852ba9cdd7f48e0e080961abebafee134fb329",
             "shasum": ""
         },
         "require": {
@@ -100,7 +100,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2017-11-07T06:12:11+00:00",
+        "time": "2018-02-20T13:59:54+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -381,8 +381,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.4",
-        "version_normalized": "3.4.4.0",
+        "version": "v3.4.5",
+        "version_normalized": "3.4.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
