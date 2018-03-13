@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50559
 File Encoding         : 65001
 
-Date: 2018-03-13 15:42:19
+Date: 2018-03-13 15:44:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -86,21 +86,6 @@ INSERT INTO `system_config` VALUES ('15', 'storage_oss_endpoint', 'oss-cn-beijin
 INSERT INTO `system_config` VALUES ('16', 'storage_oss_domain', 'cuci.oss-cn-beijing.aliyuncs.com');
 INSERT INTO `system_config` VALUES ('17', 'storage_oss_keyid', '用你自己的吧');
 INSERT INTO `system_config` VALUES ('18', 'storage_oss_secret', '用你自己的吧');
-INSERT INTO `system_config` VALUES ('19', 'component_appid', 'wx1b8278fa121d8dc6');
-INSERT INTO `system_config` VALUES ('20', 'component_appsecret', 'f404e33a75d278d6a0f944229bb84afb');
-INSERT INTO `system_config` VALUES ('21', 'component_token', 'P8QHTIxpBEq88IrxatqhgpBm2OAQROkI');
-INSERT INTO `system_config` VALUES ('22', 'component_encodingaeskey', 'L5uFIa0U6KLalPyXckyqoVIJYLhsfrg8k9YzybZIHsx');
-INSERT INTO `system_config` VALUES ('23', 'wechat_appid', 'wx60a43dd8161666d4');
-INSERT INTO `system_config` VALUES ('24', 'wechat_appkey', '67b0056909f8ac5f42add03323d1faa0');
-INSERT INTO `system_config` VALUES ('25', 'wuma_appid', '2844152665343808');
-INSERT INTO `system_config` VALUES ('26', 'wuma_appkey', '25280e2930a30d81bc93b2bf40a62b48');
-INSERT INTO `system_config` VALUES ('27', 'depot_pda_secret_key', 'ACE7041C3204B10736F11309B66E2214');
-INSERT INTO `system_config` VALUES ('28', 'storage_oss_is_https', 'http');
-INSERT INTO `system_config` VALUES ('29', 'store_title', '商城');
-INSERT INTO `system_config` VALUES ('30', 'store_runtime_status', '0');
-INSERT INTO `system_config` VALUES ('31', 'store_order_dalay', '1');
-INSERT INTO `system_config` VALUES ('32', 'store_order_auto_cancel', '12.00');
-INSERT INTO `system_config` VALUES ('33', 'store_order_auto_comfirm', '12.00');
 
 -- ----------------------------
 -- Table structure for system_log
@@ -115,12 +100,13 @@ CREATE TABLE `system_log` (
   `content` text NOT NULL COMMENT '操作内容描述',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
 
 -- ----------------------------
 -- Records of system_log
 -- ----------------------------
 INSERT INTO `system_log` VALUES ('1', '113.106.73.138', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-03-13 15:42:15');
+INSERT INTO `system_log` VALUES ('2', '115.229.46.40', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-03-13 15:43:48');
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -314,7 +300,7 @@ CREATE TABLE `system_user` (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'zoujingli@qq.com', '13617343800', '', '22408', '2018-03-13 15:42:15', '1', '1', '0', null, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'zoujingli@qq.com', '13617343800', '', '22409', '2018-03-13 15:43:48', '1', '1', '0', null, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
