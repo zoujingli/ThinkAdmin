@@ -57,7 +57,7 @@ class WechatService
     {
         list($appid, $appkey) = [sysconf('wechat_appid'), sysconf('wechat_appkey')];
         $token = strtolower("{$name}-{$appid}-{$appkey}");
-        $location = config('wechat.service_url') . "/wechat/api.client/soap/{$token}.html";
+        $location = config('wechat.service_url') . "/wechat/api.client/soap/param/{$token}.html";
         $params = ['uri' => strtolower($name), 'location' => $location, 'trace' => true];
         return new SoapService(null, $params);
     }
