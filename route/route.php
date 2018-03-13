@@ -15,7 +15,7 @@
 use think\facade\Route;
 
 /* 去除下面注释可启用禁用功能 */
-//return [];
+return [];
 
 /*  测试环境禁止操作路由绑定 */
 Route::post('admin/user/pass', function () {
