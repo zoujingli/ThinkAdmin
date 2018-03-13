@@ -55,7 +55,7 @@ a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}but
 .hr-line-solid{border-bottom:1px solid #e7eaec;background-color:rgba(0,0,0,0);border-style:solid!important;margin-top:15px;margin-bottom:15px}
 .pagination-trigger{position:absolute;line-height:31px;margin:20px 0}
 .pagination-trigger select{height:20px;text-align:center;border:1px solid #ccc;border-radius:0;font-size:12px}
-.label-required:after{content:'*';color:red;position:absolute;margin-left:4px;font-weight:bold;line-height:1.8em;top:6px;right:0}
+.label-required:after{content:'*';color:red;position:absolute;margin-left:4px;font-weight:bold;line-height:1.8em;top:6px;right:5px}
 
 /** Layui样式调整 */
 .think-inner-table{border:none!important;margin:0!important}
