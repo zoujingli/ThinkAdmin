@@ -25,19 +25,20 @@ class Sqlite extends Connection
     /**
      * 解析pdo连接的dsn信息
      * @access protected
-     * @param array $config 连接信息
+     * @param  array $config 连接信息
      * @return string
      */
     protected function parseDsn($config)
     {
         $dsn = 'sqlite:' . $config['database'];
+
         return $dsn;
     }
 
     /**
      * 取得数据表的字段信息
      * @access public
-     * @param string $tableName
+     * @param  string $tableName
      * @return array
      */
     public function getFields($tableName)
@@ -48,6 +49,7 @@ class Sqlite extends Connection
         $pdo    = $this->query($sql, [], false, true);
         $result = $pdo->fetchAll(PDO::FETCH_ASSOC);
         $info   = [];
+
         if ($result) {
             foreach ($result as $key => $val) {
                 $val                = array_change_key_case($val);
@@ -61,18 +63,18 @@ class Sqlite extends Connection
                 ];
             }
         }
+
         return $this->fieldCase($info);
     }
 
     /**
      * 取得数据库的表信息
      * @access public
-     * @param string $dbName
+     * @param  string $dbName
      * @return array
      */
     public function getTables($dbName = '')
     {
-
         $sql = "SELECT name FROM sqlite_master WHERE type='table' "
             . "UNION ALL SELECT name FROM sqlite_temp_master "
             . "WHERE type='table' ORDER BY name";
@@ -80,16 +82,18 @@ class Sqlite extends Connection
         $pdo    = $this->query($sql, [], false, true);
         $result = $pdo->fetchAll(PDO::FETCH_ASSOC);
         $info   = [];
+
         foreach ($result as $key => $val) {
             $info[$key] = current($val);
         }
+
         return $info;
     }
 
     /**
      * SQL性能分析
      * @access protected
-     * @param string $sql
+     * @param  string $sql
      * @return array
      */
     protected function getExplain($sql)

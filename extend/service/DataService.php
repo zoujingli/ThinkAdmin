@@ -15,7 +15,7 @@
 namespace service;
 
 use think\Db;
-use think\Request;
+use think\db\Query;
 
 /**
  * 基础数据服务
@@ -26,23 +26,6 @@ use think\Request;
  */
 class DataService
 {
-
-    /**
-     * 数据签名
-     * @param array $data
-     * @param string $apikey
-     * @param string $prefix
-     * @return string
-     */
-    public static function sign(&$data, $apikey = '', $prefix = '')
-    {
-        $data['_SIGNSTR_'] = strtoupper(isset($data['_SIGNSTR_']) ? $data['_SIGNSTR_'] : substr(md5(uniqid()), 22));
-        ksort($data);
-        foreach (array_values($data) as $string) {
-            is_array($string) || ($prefix .= "{$string}");
-        }
-        return strtoupper(md5($prefix . $apikey . $data['_SIGNSTR_']));
-    }
 
     /**
      * 删除指定序号
@@ -73,10 +56,8 @@ class DataService
                 $sequence .= ($i <= 1 ? rand(1, 9) : rand(0, 9));
             }
             $data = ['sequence' => $sequence, 'type' => strtoupper($type)];
-            if (Db::name('SystemSequence')->where($data)->count() < 1) {
-                if (Db::name('SystemSequence')->insert($data) !== false) {
-                    return $sequence;
-                }
+            if (Db::name('SystemSequence')->where($data)->count() < 1 && Db::name('SystemSequence')->insert($data) !== false) {
+                return $sequence;
             }
         }
         return null;
@@ -84,7 +65,7 @@ class DataService
 
     /**
      * 数据增量保存
-     * @param \think\db\Query|string $dbQuery 数据查询对象
+     * @param Query|string $dbQuery 数据查询对象
      * @param array $data 需要保存或更新的数据
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
@@ -95,16 +76,16 @@ class DataService
     public static function save($dbQuery, $data, $key = 'id', $where = [])
     {
         $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
-        $where[$key] = isset($data[$key]) ? $data[$key] : '';
-        if ($db->where($where)->count() > 0) {
-            return $db->strict(false)->where($where)->update($data) !== false;
+        $where[] = [$key, 'eq', isset($data[$key]) ? $data[$key] : ''];
+        if (Db::name($db->getTable())->where($where)->count() > 0) {
+            return Db::name($db->getTable())->strict(false)->where($where)->update($data) !== false;
         }
-        return $db->strict(false)->insert($data) !== false;
+        return Db::name($db->getTable())->strict(false)->insert($data) !== false;
     }
 
     /**
      * 更新数据表内容
-     * @param \think\db\Query|string $dbQuery 数据查询对象
+     * @param Query|string $dbQuery 数据查询对象
      * @param array $where 额外查询条件
      * @return bool|null
      * @throws \think\Exception
@@ -112,24 +93,20 @@ class DataService
      */
     public static function update(&$dbQuery, $where = [])
     {
-        $request = Request::instance();
+        $request = app('request');
         $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
-        $ids = explode(',', $request->post('id', ''));
-        $field = $request->post('field', '');
-        $value = $request->post('value', '');
-        $pk = $db->getPk(['table' => $db->getTable()]);
-        $where[empty($pk) ? 'id' : $pk] = ['in', $ids];
+        list($pk, $table) = [$db->getPk(), $db->getTable()];
+        list($field, $value) = [$request->post('field', ''), $request->post('value', '')];
+        $where[] = [empty($pk) ? 'id' : $pk, 'in', explode(',', $request->post('id', ''))];
         // 删除模式，如果存在 is_deleted 字段使用软删除
         if ($field === 'delete') {
-            if (method_exists($db, 'getTableFields')) {
-                if (in_array('is_deleted', $db->getTableFields($db->getTable()))) {
-                    return false !== $db->where($where)->update(['is_deleted' => 1]);
-                }
+            if (method_exists($db, 'getTableFields') && in_array('is_deleted', $db->getTableFields())) {
+                return Db::name($table)->where($where)->update(['is_deleted' => '1']) !== false;
             }
-            return false !== $db->where($where)->delete();
+            return Db::name($table)->where($where)->delete() !== false;
         }
         // 更新模式，更新指定字段内容
-        return false !== $db->where($where)->update([$field => $value]);
+        return Db::name($table)->where($where)->update([$field => $value]) !== false;
     }
 
 }

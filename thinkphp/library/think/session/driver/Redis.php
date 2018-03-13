@@ -11,10 +11,10 @@
 
 namespace think\session\driver;
 
-use SessionHandler;
+use SessionHandlerInterface;
 use think\Exception;
 
-class Redis extends SessionHandler
+class Redis implements SessionHandlerInterface
 {
     /** @var \Redis */
     protected $handler = null;
@@ -37,8 +37,8 @@ class Redis extends SessionHandler
     /**
      * 打开Session
      * @access public
-     * @param string $savePath
-     * @param mixed  $sessName
+     * @param  string $savePath
+     * @param  mixed  $sessName
      * @return bool
      * @throws Exception
      */
@@ -48,6 +48,7 @@ class Redis extends SessionHandler
         if (!extension_loaded('redis')) {
             throw new Exception('not support:redis');
         }
+
         $this->handler = new \Redis;
 
         // 建立连接
@@ -74,13 +75,14 @@ class Redis extends SessionHandler
         $this->gc(ini_get('session.gc_maxlifetime'));
         $this->handler->close();
         $this->handler = null;
+
         return true;
     }
 
     /**
      * 读取Session
      * @access public
-     * @param string $sessID
+     * @param  string $sessID
      * @return string
      */
     public function read($sessID)
@@ -91,8 +93,8 @@ class Redis extends SessionHandler
     /**
      * 写入Session
      * @access public
-     * @param string $sessID
-     * @param String $sessData
+     * @param  string $sessID
+     * @param  string $sessData
      * @return bool
      */
     public function write($sessID, $sessData)
@@ -107,7 +109,7 @@ class Redis extends SessionHandler
     /**
      * 删除Session
      * @access public
-     * @param string $sessID
+     * @param  string $sessID
      * @return bool
      */
     public function destroy($sessID)
@@ -118,11 +120,50 @@ class Redis extends SessionHandler
     /**
      * Session 垃圾回收
      * @access public
-     * @param string $sessMaxLifeTime
+     * @param  string $sessMaxLifeTime
      * @return bool
      */
     public function gc($sessMaxLifeTime)
     {
         return true;
+    }
+
+    /**
+     * Redis Session 驱动的加锁机制
+     * @access public
+     * @param  string  $sessID   用于加锁的sessID
+     * @param  integer $timeout 默认过期时间
+     * @return bool
+     */
+    public function lock($sessID, $timeout = 10)
+    {
+        if (null == $this->handler) {
+            $this->open('', '');
+        }
+
+        $lockKey = 'LOCK_PREFIX_' . $sessID;
+        // 使用setnx操作加锁
+        $isLock = $this->handler->setnx($lockKey, 1);
+        if ($isLock) {
+            // 设置过期时间，防止死任务的出现
+            $this->handler->expire($lockKey, $timeout);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Redis Session 驱动的解锁机制
+     * @access public
+     * @param  string  $sessID   用于解锁的sessID
+     */
+    public function unlock($sessID)
+    {
+        if (null == $this->handler) {
+            $this->open('', '');
+        }
+
+        $this->handler->del('LOCK_PREFIX_' . $sessID);
     }
 }

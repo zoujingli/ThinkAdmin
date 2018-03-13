@@ -1,5 +1,5 @@
 # think-captcha
-thinkphp5 验证码类库
+thinkphp5.1 验证码类库
 
 ## 安装
 > composer require topthink/think-captcha
@@ -22,7 +22,7 @@ thinkphp5 验证码类库
 使用TP5的内置验证功能即可
 ~~~
 $this->validate($data,[
-    'captcha|验证码'=>'required|captcha'
+    'captcha|验证码'=>'require|captcha'
 ]);
 ~~~
 或者手动验证

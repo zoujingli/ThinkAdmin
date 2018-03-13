@@ -79,17 +79,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?php echo \think\Lang::get('System Error'); ?></title>
+    <title>系统发生错误</title>
     <meta name="robots" content="noindex,nofollow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <style>
         /* Base */
         body {
             color: #333;
-            font: 14px Verdana, "Helvetica Neue", helvetica, Arial, 'Microsoft YaHei', sans-serif;
+            font: 16px Verdana, "Helvetica Neue", helvetica, Arial, 'Microsoft YaHei', sans-serif;
             margin: 0;
             padding: 0 20px 20px;
-            word-break: break-word;
         }
         h1{
             margin: 10px 0 0;
@@ -104,11 +102,6 @@
             margin: 6px 0 0;
             font-size: 18px;
             border-bottom: 1px solid #eee;
-        }
-        h3.subheading {
-            color: #4288ce;
-            margin: 6px 0 0;
-            font-weight: 400;
         }
         h3{
             margin: 12px;
@@ -150,27 +143,7 @@
             padding: 0;
             margin: 0;
         }
-        /* Layout */
-        .col-md-3 {
-            width: 25%;
-        }
-        .col-md-9 {
-            width: 75%;
-        }
-        [class^="col-md-"] {
-            float: left;
-        }
-        .clearfix {
-            clear:both;
-        }
-        @media only screen 
-        and (min-device-width : 375px) 
-        and (max-device-width : 667px) { 
-            .col-md-3,
-            .col-md-9 {
-                width: 100%;
-            }
-        }
+    
         /* Exception Info */
         .exception {
             margin-top: 20px;
@@ -313,7 +286,7 @@
     <div class="echo">
         <?php echo $echo;?>
     </div>
-    <?php if(\think\App::$debug) { ?>
+    <?php if(\think\facade\App::isDebug()) { ?>
     <div class="exception">
     <div class="message">
         
@@ -405,19 +378,16 @@
     <div class="exception-var">
         <h2>Environment Variables</h2>
         <?php foreach ((array) $tables as $label => $value) { ?>
-        <div>
+        <table>
             <?php if(empty($value)){ ?>
-            <div class="clearfix">
-                <div class="col-md-3"><strong><?php echo $label; ?></strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
+            <caption><?php echo $label; ?><small>empty</small></caption>
             <?php } else { ?>
-            <h3 class="subheading"><?php echo $label; ?></h3>
-            <div>
+            <caption><?php echo $label; ?></caption>
+            <tbody>
                 <?php foreach ((array) $value as $key => $val) { ?>
-                <div class="clearfix">
-                    <div class="col-md-3"><strong><?php echo htmlentities($key); ?></strong></div>
-                    <div class="col-md-9"><small>
+                <tr>
+                    <td><?php echo htmlentities($key); ?></td>
+                    <td>
                         <?php 
                             if(is_array($val) || is_object($val)){ 
                                 echo htmlentities(json_encode($val, JSON_PRETTY_PRINT));
@@ -429,22 +399,22 @@
                                 echo 'Resource';
                             }
                         ?>
-                    </small></div>
-                </div>
+                    </td>
+                </tr>
                 <?php } ?>
-            </div>
+            </tbody>
             <?php } ?>
-        </div>
+        </table>
         <?php } ?>
     </div>
     <?php } ?>
 
     <div class="copyright">
         <a title="官方网站" href="http://www.thinkphp.cn">ThinkPHP</a> 
-        <span>V<?php echo THINK_VERSION; ?></span> 
+        <span>V<?php echo \think\facade\App::version(); ?></span> 
         <span>{ 十年磨一剑-为API开发设计的高性能框架 }</span>
     </div>
-    <?php if(\think\App::$debug) { ?>
+    <?php if(\think\facade\App::isDebug()) { ?>
     <script>
         var LINE = <?php echo $line; ?>;
 

@@ -16,11 +16,12 @@ namespace app\wechat\controller;
 
 use controller\BasicAdmin;
 use service\DataService;
+use service\WechatService;
 use think\Db;
 
 /**
  * 微信文章管理
- * Class Article
+ * Class Keys
  * @package app\wechat\controller
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/27 14:43
@@ -36,28 +37,35 @@ class Keys extends BasicAdmin
 
     /**
      * 显示关键字列表
+     * @return array|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\Exception
      */
     public function index()
     {
         $this->assign('title', '微信关键字');
-        $db = Db::name($this->table)->where('keys', 'not in', ['subscribe', 'default']);
-        return $this->_list($db);
+        $db = Db::name($this->table)->whereNotIn('keys', ['subscribe', 'default']);
+        return $this->_list($db->order('id desc'));
     }
 
     /**
      * 列表数据处理
      * @param array $data
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     protected function _index_data_filter(&$data)
     {
         $types = [
             'keys'  => '关键字', 'image' => '图片', 'news' => '图文',
-            'music' => '音乐', 'text' => '文字', 'video' => '视频', 'voice' => '语音'
+            'music' => '音乐', 'text' => '文字', 'video' => '视频', 'voice' => '语音',
         ];
-        $wechat = load_wechat('Extends');
+        $wechat = WechatService::qrcode();
         foreach ($data as &$vo) {
-            $result = $wechat->getQRCode($vo['keys'], 1);
-            $vo['qrc'] = $wechat->getQRUrl($result['ticket']);
+            $result = $wechat->create($vo['keys']);
+            $vo['qrc'] = $wechat->url($result['ticket']);
             $vo['type'] = isset($types[$vo['type']]) ? $types[$vo['type']] : $vo['type'];
         }
     }
@@ -65,6 +73,10 @@ class Keys extends BasicAdmin
     /**
      * 添加关键字
      * @return string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function add()
     {
@@ -73,21 +85,10 @@ class Keys extends BasicAdmin
     }
 
     /**
-     * 编辑关键字
-     * @return string
+     * 添加数据处理
+     * @param array $data
      */
-    public function edit()
-    {
-        $this->title = '编辑关键字规则';
-        return $this->_form($this->table, 'form');
-    }
-
-
-    /**
-     * 表单处理
-     * @param $data
-     */
-    protected function _form_filter($data)
+    protected function _add_form_filter(array $data)
     {
         if ($this->request->isPost() && isset($data['keys'])) {
             $db = Db::name($this->table)->where('keys', $data['keys']);
@@ -97,7 +98,32 @@ class Keys extends BasicAdmin
     }
 
     /**
+     * 编辑关键字
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function edit()
+    {
+        $this->title = '编辑关键字规则';
+        return $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 编辑数据处理
+     * @param array $data
+     */
+    protected function _edit_form_filter(array $data)
+    {
+        $this->_add_form_filter($data);
+    }
+
+    /**
      * 删除关键字
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function del()
     {
@@ -107,9 +133,10 @@ class Keys extends BasicAdmin
         $this->error("关键字删除失败，请稍候再试！");
     }
 
-
     /**
      * 关键字禁用
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -121,6 +148,8 @@ class Keys extends BasicAdmin
 
     /**
      * 关键字禁用
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {
@@ -132,6 +161,11 @@ class Keys extends BasicAdmin
 
     /**
      * 关注默认回复
+     * @return array|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function subscribe()
     {
@@ -141,19 +175,26 @@ class Keys extends BasicAdmin
 
     /**
      * 关注默认回复表单处理
-     * @param $data
+     * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     protected function _subscribe_form_filter(&$data)
     {
         if ($this->request->isGet()) {
-            $data = Db::name($this->table)->where('keys', 'subscribe')->find();
+            $data = Db::name($this->table)->where(['keys' => 'subscribe'])->find();
         }
         $data['keys'] = 'subscribe';
     }
 
-
     /**
      * 无配置默认回复
+     * @return array|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function defaults()
     {
@@ -161,16 +202,35 @@ class Keys extends BasicAdmin
         return $this->_form($this->table, 'form');
     }
 
-
     /**
      * 无配置默认回复表单处理
-     * @param $data
+     * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     protected function _defaults_form_filter(&$data)
     {
         if ($this->request->isGet()) {
-            $data = Db::name($this->table)->where('keys', 'default')->find();
+            $data = Db::name($this->table)->where(['keys' => 'default'])->find();
         }
         $data['keys'] = 'default';
     }
+
+    /**
+     * 编辑结果处理
+     * @param $result
+     */
+    protected function _form_result($result)
+    {
+        if ($result !== false) {
+            list($url, $keys) = ['', $this->request->post('keys')];
+            if (!in_array($keys, ['subscribe', 'default'])) {
+                $url = url('@admin') . '#' . url('wechat/keys/index') . '?spm=' . $this->request->get('spm');
+            }
+            $this->success('恭喜, 关键字保存成功!', $url);
+        }
+        $this->error('关键字保存失败, 请稍候再试!');
+    }
+
 }

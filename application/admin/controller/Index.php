@@ -18,8 +18,8 @@ use controller\BasicAdmin;
 use service\DataService;
 use service\NodeService;
 use service\ToolsService;
+use think\App;
 use think\Db;
-use think\View;
 
 /**
  * 后台入口
@@ -33,14 +33,16 @@ class Index extends BasicAdmin
 
     /**
      * 后台框架布局
-     * @return View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function index()
     {
         NodeService::applyAuthNode();
-        $list = (array) Db::name('SystemMenu')->where(['status' => '1'])->order('sort asc,id asc')->select();
-        $menus = $this->_filterMenuData(ToolsService::arr2tree($list), NodeService::get(), !!session('user'));
-        return view('', ['title' => '系统管理', 'menus' => $menus]);
+        $list = (array)Db::name('SystemMenu')->where(['status' => '1'])->order('sort asc,id asc')->select();
+        $menus = $this->buildMenuData(ToolsService::arr2tree($list), NodeService::get(), !!session('user'));
+        return $this->fetch('', ['title' => '系统管理', 'menus' => $menus]);
     }
 
     /**
@@ -50,10 +52,10 @@ class Index extends BasicAdmin
      * @param bool $isLogin 是否已经登录
      * @return array
      */
-    private function _filterMenuData($menus, $nodes, $isLogin)
+    private function buildMenuData($menus, $nodes, $isLogin)
     {
         foreach ($menus as $key => &$menu) {
-            !empty($menu['sub']) && $menu['sub'] = $this->_filterMenuData($menu['sub'], $nodes, $isLogin);
+            !empty($menu['sub']) && $menu['sub'] = $this->buildMenuData($menu['sub'], $nodes, $isLogin);
             if (!empty($menu['sub'])) {
                 $menu['url'] = '#';
             } elseif (preg_match('/^https?\:/i', $menu['url'])) {
@@ -75,16 +77,26 @@ class Index extends BasicAdmin
 
     /**
      * 主机信息显示
-     * @return View
+     * @return string
      */
     public function main()
     {
         $_version = Db::query('select version() as ver');
-        return view('', ['mysql_ver' => array_pop($_version)['ver'], 'title' => '后台首页']);
+        return $this->fetch('', [
+            'title'     => '后台首页',
+            'think_ver' => App::VERSION,
+            'mysql_ver' => array_pop($_version)['ver'],
+        ]);
     }
 
     /**
      * 修改密码
+     * @return array|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function pass()
     {
@@ -111,6 +123,11 @@ class Index extends BasicAdmin
 
     /**
      * 修改资料
+     * @return array|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function info()
     {

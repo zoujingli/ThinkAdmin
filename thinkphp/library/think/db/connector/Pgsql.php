@@ -21,36 +21,46 @@ class Pgsql extends Connection
 {
     protected $builder = '\\think\\db\\builder\\Pgsql';
 
+    // PDO连接参数
+    protected $params = [
+        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+        PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+        PDO::ATTR_STRINGIFY_FETCHES => false,
+    ];
+
     /**
      * 解析pdo连接的dsn信息
      * @access protected
-     * @param array $config 连接信息
+     * @param  array $config 连接信息
      * @return string
      */
     protected function parseDsn($config)
     {
         $dsn = 'pgsql:dbname=' . $config['database'] . ';host=' . $config['hostname'];
+
         if (!empty($config['hostport'])) {
             $dsn .= ';port=' . $config['hostport'];
         }
+
         return $dsn;
     }
 
     /**
      * 取得数据表的字段信息
      * @access public
-     * @param string $tableName
+     * @param  string $tableName
      * @return array
      */
     public function getFields($tableName)
     {
-
         list($tableName) = explode(' ', $tableName);
         $sql             = 'select fields_name as "field",fields_type as "type",fields_not_null as "null",fields_key_name as "key",fields_default as "default",fields_default as "extra" from table_msg(\'' . $tableName . '\');';
 
         $pdo    = $this->query($sql, [], false, true);
         $result = $pdo->fetchAll(PDO::FETCH_ASSOC);
         $info   = [];
+
         if ($result) {
             foreach ($result as $key => $val) {
                 $val                 = array_change_key_case($val);
@@ -64,13 +74,14 @@ class Pgsql extends Connection
                 ];
             }
         }
+
         return $this->fieldCase($info);
     }
 
     /**
      * 取得数据库的表信息
      * @access public
-     * @param string $dbName
+     * @param  string $dbName
      * @return array
      */
     public function getTables($dbName = '')
@@ -79,16 +90,18 @@ class Pgsql extends Connection
         $pdo    = $this->query($sql, [], false, true);
         $result = $pdo->fetchAll(PDO::FETCH_ASSOC);
         $info   = [];
+
         foreach ($result as $key => $val) {
             $info[$key] = current($val);
         }
+
         return $info;
     }
 
     /**
      * SQL性能分析
      * @access protected
-     * @param string $sql
+     * @param  string $sql
      * @return array
      */
     protected function getExplain($sql)

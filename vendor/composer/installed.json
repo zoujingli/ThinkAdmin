@@ -43,98 +43,9 @@
         ]
     },
     {
-        "name": "zoujingli/wechat-php-sdk",
+        "name": "zoujingli/ip2region",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "7869490b99e648d40a5a5169cc0469dccb8e8b0a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/wechat-php-sdk/7869490b99e648d40a5a5169cc0469dccb8e8b0a.zip",
-            "reference": "7869490b99e648d40a5a5169cc0469dccb8e8b0a",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "time": "2018-02-28T13:30:53+00:00",
-        "type": "project",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Wechat\\": "./Wechat"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "WeChat development of SDK",
-        "homepage": "http://www.kancloud.cn/zoujingli/wechat-php-sdk",
-        "keywords": [
-            "wechat-php-sdk"
-        ]
-    },
-    {
-        "name": "qiniu/php-sdk",
-        "version": "v7.2.3",
-        "version_normalized": "7.2.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "67852ba9cdd7f48e0e080961abebafee134fb329"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/67852ba9cdd7f48e0e080961abebafee134fb329.zip",
-            "reference": "67852ba9cdd7f48e0e080961abebafee134fb329",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "~4.0",
-            "squizlabs/php_codesniffer": "~2.3"
-        },
-        "time": "2018-02-20T13:59:54+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Qiniu\\": "src/Qiniu"
-            },
-            "files": [
-                "src/Qiniu/functions.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Qiniu",
-                "email": "sdk@qiniu.com",
-                "homepage": "http://www.qiniu.com"
-            }
-        ],
-        "description": "Qiniu Resource (Cloud) Storage SDK for PHP",
-        "homepage": "http://developer.qiniu.com/",
-        "keywords": [
-            "cloud",
-            "qiniu",
-            "sdk",
-            "storage"
-        ]
-    },
-    {
-        "name": "zoujingli/ip2region",
-        "version": "v1.0.2",
-        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ip2region.git",
@@ -168,22 +79,117 @@
         ]
     },
     {
-        "name": "topthink/framework",
-        "version": "v5.0.15",
-        "version_normalized": "5.0.15.0",
+        "name": "zoujingli/wechat-developer",
+        "version": "v1.0.3",
+        "version_normalized": "1.0.3.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/top-think/framework.git",
-            "reference": "7c1375791fe8772e33282ee8611ea465dc215fca"
+            "url": "https://github.com/zoujingli/WeChatDeveloper.git",
+            "reference": "3414f6e6219f0110fe38edeeec8ae4a240ff8fd5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/7c1375791fe8772e33282ee8611ea465dc215fca.zip",
-            "reference": "7c1375791fe8772e33282ee8611ea465dc215fca",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/3414f6e6219f0110fe38edeeec8ae4a240ff8fd5.zip",
+            "reference": "3414f6e6219f0110fe38edeeec8ae4a240ff8fd5",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.4.0",
+            "ext-curl": "*",
+            "ext-openssl": "*",
+            "php": ">=5.4"
+        },
+        "time": "2018-03-07T09:42:18+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "WeChat\\": "WeChat"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Anyon",
+                "email": "zoujingli@qq.com",
+                "homepage": "http://ctolog.com"
+            }
+        ],
+        "description": "WeChat platform and WeChat payment development tools",
+        "homepage": "https://github.com/zoujingli/WeChatDeveloper",
+        "keywords": [
+            "WeChatDeveloper",
+            "wechat",
+            "wechatpay"
+        ]
+    },
+    {
+        "name": "zoujingli/weopen-developer",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
+            "reference": "c6ff9438f26b4c36b926fcc91cae7b5850a78bc7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/c6ff9438f26b4c36b926fcc91cae7b5850a78bc7.zip",
+            "reference": "c6ff9438f26b4c36b926fcc91cae7b5850a78bc7",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-openssl": "*",
+            "php": ">=5.4",
+            "zoujingli/wechat-developer": "^1.0.0"
+        },
+        "time": "2018-02-25T09:52:00+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "WeOpen\\": "WeOpen"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Anyon",
+                "email": "zoujingli@qq.com",
+                "homepage": "http://ctolog.com"
+            }
+        ],
+        "description": "WeChat Open development of SDK",
+        "homepage": "https://github.com/zoujingli/WeOpenDeveloper",
+        "keywords": [
+            "WeChatOpen",
+            "WeChatOpenDeveloper",
+            "wechat"
+        ]
+    },
+    {
+        "name": "topthink/framework",
+        "version": "v5.1.5",
+        "version_normalized": "5.1.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/top-think/framework.git",
+            "reference": "f81c4282cdf401be44fbe1a28b3e3df425e3017f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/f81c4282cdf401be44fbe1a28b3e3df425e3017f.zip",
+            "reference": "f81c4282cdf401be44fbe1a28b3e3df425e3017f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.6.0",
             "topthink/think-installer": "~1.0"
         },
         "require-dev": {
@@ -191,17 +197,13 @@
             "mikey179/vfsstream": "~1.6",
             "phpdocumentor/reflection-docblock": "^2.0",
             "phploc/phploc": "2.*",
-            "phpunit/phpunit": "4.8.*",
-            "sebastian/phpcpd": "2.*"
+            "phpunit/phpunit": "^5.0|^6.0",
+            "sebastian/phpcpd": "2.*",
+            "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-01-31T08:40:10+00:00",
+        "time": "2018-02-02T05:39:38+00:00",
         "type": "think-framework",
         "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "think\\": "library/think"
-            }
-        },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
             "Apache-2.0"
@@ -210,6 +212,10 @@
             {
                 "name": "liu21st",
                 "email": "liu21st@gmail.com"
+            },
+            {
+                "name": "yunwuxin",
+                "email": "448901948@qq.com"
             }
         ],
         "description": "the new thinkphp framework",
@@ -222,20 +228,23 @@
     },
     {
         "name": "topthink/think-captcha",
-        "version": "v1.0.7",
-        "version_normalized": "1.0.7.0",
+        "version": "v2.0.2",
+        "version_normalized": "2.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-captcha.git",
-            "reference": "0c55455df26a1626a60d0dc35d2d89002b741d44"
+            "reference": "54c8a51552f99ff9ea89ea9c272383a8f738ceee"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-captcha/0c55455df26a1626a60d0dc35d2d89002b741d44.zip",
-            "reference": "0c55455df26a1626a60d0dc35d2d89002b741d44",
+            "url": "https://files.phpcomposer.com/files/top-think/think-captcha/54c8a51552f99ff9ea89ea9c272383a8f738ceee.zip",
+            "reference": "54c8a51552f99ff9ea89ea9c272383a8f738ceee",
             "shasum": ""
         },
-        "time": "2016-07-06T01:47:11+00:00",
+        "require": {
+            "topthink/framework": "5.1.*"
+        },
+        "time": "2017-12-31T16:37:49+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -259,130 +268,9 @@
         "description": "captcha package for thinkphp5"
     },
     {
-        "name": "topthink/think-mongo",
-        "version": "v1.8.2",
-        "version_normalized": "1.8.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/top-think/think-mongo.git",
-            "reference": "5433e971b4892b09cbec49090c690f5d4350a981"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-mongo/5433e971b4892b09cbec49090c690f5d4350a981.zip",
-            "reference": "5433e971b4892b09cbec49090c690f5d4350a981",
-            "shasum": ""
-        },
-        "time": "2018-01-30T07:12:02+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "think\\mongo\\": "src"
-            },
-            "files": []
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "liu21st",
-                "email": "liu21st@gmail.com"
-            }
-        ],
-        "description": "mongodb driver for thinkphp5"
-    },
-    {
-        "name": "topthink/think-helper",
-        "version": "v1.0.6",
-        "version_normalized": "1.0.6.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/top-think/think-helper.git",
-            "reference": "0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-helper/0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f.zip",
-            "reference": "0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f",
-            "shasum": ""
-        },
-        "time": "2017-04-05T07:15:37+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "think\\helper\\": "src"
-            },
-            "files": [
-                "src/helper.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "yunwuxin",
-                "email": "448901948@qq.com"
-            }
-        ],
-        "description": "The ThinkPHP5 Helper Package"
-    },
-    {
-        "name": "topthink/think-queue",
-        "version": "v1.1.4",
-        "version_normalized": "1.1.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/top-think/think-queue.git",
-            "reference": "ad709611d516e13d6760234bc98e91faa901cae8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-queue/ad709611d516e13d6760234bc98e91faa901cae8.zip",
-            "reference": "ad709611d516e13d6760234bc98e91faa901cae8",
-            "shasum": ""
-        },
-        "require": {
-            "topthink/think-helper": ">=1.0.4",
-            "topthink/think-installer": ">=1.0.10"
-        },
-        "time": "2017-06-25T00:49:56+00:00",
-        "type": "think-extend",
-        "extra": {
-            "think-config": {
-                "queue": "src/config.php"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "think\\": "src"
-            },
-            "files": [
-                "src/common.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "yunwuxin",
-                "email": "448901948@qq.com"
-            }
-        ],
-        "description": "The ThinkPHP5 Queue Package"
-    },
-    {
         "name": "symfony/options-resolver",
-        "version": "v3.4.5",
-        "version_normalized": "3.4.5.0",
+        "version": "v3.4.6",
+        "version_normalized": "3.4.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
@@ -540,5 +428,58 @@
         ],
         "description": "Aliyun OSS SDK for PHP",
         "homepage": "http://www.aliyun.com/product/oss/"
+    },
+    {
+        "name": "qiniu/php-sdk",
+        "version": "v7.2.3",
+        "version_normalized": "7.2.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/qiniu/php-sdk.git",
+            "reference": "67852ba9cdd7f48e0e080961abebafee134fb329"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/67852ba9cdd7f48e0e080961abebafee134fb329.zip",
+            "reference": "67852ba9cdd7f48e0e080961abebafee134fb329",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0",
+            "squizlabs/php_codesniffer": "~2.3"
+        },
+        "time": "2018-02-20T13:59:54+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Qiniu\\": "src/Qiniu"
+            },
+            "files": [
+                "src/Qiniu/functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Qiniu",
+                "email": "sdk@qiniu.com",
+                "homepage": "http://www.qiniu.com"
+            }
+        ],
+        "description": "Qiniu Resource (Cloud) Storage SDK for PHP",
+        "homepage": "http://developer.qiniu.com/",
+        "keywords": [
+            "cloud",
+            "qiniu",
+            "sdk",
+            "storage"
+        ]
     }
 ]

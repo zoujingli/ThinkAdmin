@@ -12,19 +12,28 @@
 // | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
+namespace think;
+
+use think\exception\HttpResponseException;
+
 return [
-    // 应用初始化
-    'app_init'     => [],
-    // 应用开始
-    'app_begin'    => [],
-    // 模块初始化
-    'module_init'  => [],
-    // 操作开始执行
-    'action_begin' => ['hook\\AccessAuth'],
-    // 视图内容过滤
-    'view_filter'  => ['hook\\FilterView'],
-    // 日志写入
-    'log_write'    => [],
-    // 应用结束
-    'app_end'      => [],
+    // 控制器开始前，进行权限检查
+    'action_begin' => function () {
+        $request = app('request');
+        list($module, $controller, $action) = [$request->module(), $request->controller(), $request->action()];
+        $node = strtolower("{$module}/{$controller}/{$action}");
+        $info = Db::name('SystemNode')->cache(true, 30)->where(['node' => $node])->find();
+        $access = ['is_menu' => intval(!empty($info['is_menu'])), 'is_auth' => intval(!empty($info['is_auth'])), 'is_login' => empty($info['is_auth']) ? intval(!empty($info['is_login'])) : 1];
+        // 登录状态检查
+        if (!empty($access['is_login']) && !session('user')) {
+            $msg = ['code' => 0, 'msg' => '抱歉，您还没有登录获取访问权限！', 'url' => url('@admin/login')];
+            throw new HttpResponseException($request->isAjax() ? json($msg) : redirect($msg['url']));
+        }
+        // 访问权限检查
+        if (!empty($access['is_auth']) && !auth($node)) {
+            throw new HttpResponseException(json(['code' => 0, 'msg' => '抱歉，您没有访问该模块的权限！']));
+        }
+        // 模板常量声明
+        app('view')->init(config('template.'))->assign(['classuri' => "{$module}/{$controller}"]);
+    },
 ];

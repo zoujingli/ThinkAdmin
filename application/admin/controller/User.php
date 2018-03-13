@@ -36,25 +36,33 @@ class User extends BasicAdmin
 
     /**
      * 用户列表
+     * @return array|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\Exception
      */
     public function index()
     {
         $this->title = '系统用户管理';
-        $get = $this->request->get();
-        $db = Db::name($this->table)->where(['is_deleted' => '0']);
+        list($get, $db) = [$this->request->get(), Db::name($this->table)];
         foreach (['username', 'phone', 'mail'] as $key) {
             (isset($get[$key]) && $get[$key] !== '') && $db->whereLike($key, "%{$get[$key]}%");
         }
         if (isset($get['date']) && $get['date'] !== '') {
-            list($start, $end) = explode('-', str_replace(' ', '', $get['date']));
+            list($start, $end) = explode(' - ', $get['date']);
             $db->whereBetween('login_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
         }
-        return parent::_list($db);
+        return parent::_list($db->where(['is_deleted' => '0']));
     }
 
     /**
      * 授权管理
      * @return array|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\Exception
      */
     public function auth()
     {
@@ -63,6 +71,11 @@ class User extends BasicAdmin
 
     /**
      * 用户添加
+     * @return array|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\Exception
      */
     public function add()
     {
@@ -71,6 +84,11 @@ class User extends BasicAdmin
 
     /**
      * 用户编辑
+     * @return array|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\Exception
      */
     public function edit()
     {
@@ -79,6 +97,12 @@ class User extends BasicAdmin
 
     /**
      * 用户密码修改
+     * @return array|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function pass()
     {
@@ -100,6 +124,9 @@ class User extends BasicAdmin
     /**
      * 表单数据默认处理
      * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function _form_filter(&$data)
     {
@@ -120,6 +147,8 @@ class User extends BasicAdmin
 
     /**
      * 删除用户
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function del()
     {
@@ -134,6 +163,8 @@ class User extends BasicAdmin
 
     /**
      * 用户禁用
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -148,6 +179,8 @@ class User extends BasicAdmin
 
     /**
      * 用户禁用
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {

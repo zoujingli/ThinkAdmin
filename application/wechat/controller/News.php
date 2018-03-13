@@ -14,13 +14,14 @@
 
 namespace app\wechat\controller;
 
+use app\wechat\service\MediaService;
 use controller\BasicAdmin;
 use service\DataService;
 use service\LogService;
+use service\ToolsService;
 use service\WechatService;
 use think\Db;
-use think\Log;
-use think\response\View;
+use think\facade\Log;
 
 /**
  * 微信图文管理
@@ -40,17 +41,40 @@ class News extends BasicAdmin
 
     /**
      * 图文列表
+     * @return array|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function index()
     {
-        $this->assign('title', '图文列表');
-        $db = Db::name($this->table)->where('is_deleted', '0')->order('id desc');
-        return parent::_list($db);
+        $this->title = '微信图文列表';
+        $db = Db::name($this->table)->where(['is_deleted' => '0']);
+        return parent::_list($db->order('id desc'));
+    }
+
+    /**
+     * 图文列表数据处理
+     * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    protected function _index_data_filter(&$data)
+    {
+        foreach ($data as &$vo) {
+            $vo = MediaService::getNewsById($vo['id']);
+        }
     }
 
     /**
      * 图文选择器
      * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\Exception
      */
     public function select()
     {
@@ -58,8 +82,26 @@ class News extends BasicAdmin
     }
 
     /**
+     * 图文列表数据处理
+     * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    protected function _select_data_filter(&$data)
+    {
+        foreach ($data as &$vo) {
+            $vo = MediaService::getNewsById($vo['id']);
+        }
+    }
+
+    /**
      * 媒体资源显示
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\Exception
      */
     public function image()
     {
@@ -69,42 +111,23 @@ class News extends BasicAdmin
     }
 
     /**
-     * 图文列表数据处理
-     * @param $data
-     */
-    protected function _index_data_filter(&$data)
-    {
-        foreach ($data as &$vo) {
-            $vo = WechatService::getNewsById($vo['id']);
-        }
-    }
-
-    /**
-     * 图文列表数据处理
-     * @param $data
-     */
-    protected function _select_data_filter(&$data)
-    {
-        foreach ($data as &$vo) {
-            $vo = WechatService::getNewsById($vo['id']);
-        }
-    }
-
-    /**
      * 添加图文
-     * @return View
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function add()
     {
         if ($this->request->isGet()) {
-            return view('form', ['title' => '新建图文']);
+            return $this->fetch('form', ['title' => '新建图文']);
         }
         if ($this->request->isPost()) {
             $data = $this->request->post();
             if (($ids = $this->_apply_news_article($data['data'])) && !empty($ids)) {
                 $post = ['article_id' => $ids, 'create_by' => session('user.id')];
                 if (DataService::save($this->table, $post, 'id') !== false) {
-                    $this->success('图文添加成功！', '');
+                    $url = url('@admin') . '#' . url('@wechat/news/index') . '?spm=' . $this->request->get('spm');
+                    $this->success('图文添加成功！', $url);
                 }
             }
             $this->error('图文添加失败，请稍候再试！');
@@ -113,21 +136,24 @@ class News extends BasicAdmin
 
     /**
      * 编辑图文
-     * @return View
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function edit()
     {
         $id = $this->request->get('id', '');
         if ($this->request->isGet()) {
             empty($id) && $this->error('参数错误，请稍候再试！');
-            return view('form', ['title' => '编辑图文', 'vo' => WechatService::getNewsById($id)]);
+            return $this->fetch('form', ['title' => '编辑图文', 'vo' => MediaService::getNewsById($id)]);
         }
         $data = $this->request->post();
         $ids = $this->_apply_news_article($data['data']);
         if (!empty($ids)) {
             $post = ['id' => $id, 'article_id' => $ids, 'create_by' => session('user.id')];
             if (false !== DataService::save('wechat_news', $post, 'id')) {
-                $this->success('图文更新成功!', '');
+                $url = url('@admin') . '#' . url('@wechat/news/index') . '?spm=' . $this->request->get('spm');
+                $this->success('图文更新成功!', $url);
             }
         }
         $this->error('图文更新失败，请稍候再试！');
@@ -138,13 +164,17 @@ class News extends BasicAdmin
      * @param array $data
      * @param array $ids
      * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     protected function _apply_news_article($data, $ids = [])
     {
         foreach ($data as &$vo) {
             $vo['create_by'] = session('user.id');
             $vo['create_at'] = date('Y-m-d H:i:s');
-            $vo['digest'] = empty($vo['digest']) ? mb_substr(strip_tags(str_replace(["\s", '　'], '', $vo['content'])), 0, 120) : $vo['digest'];
+            if (empty($vo['digest'])) {
+                $vo['digest'] = mb_substr(strip_tags(str_replace(["\s", '　'], '', htmlspecialchars_decode($vo['content']))), 0, 120);
+            }
             if (empty($vo['id'])) {
                 $result = $id = Db::name('WechatNewsArticle')->insertGetId($vo);
             } else {
@@ -160,6 +190,8 @@ class News extends BasicAdmin
 
     /**
      * 删除用户
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function del()
     {
@@ -172,6 +204,13 @@ class News extends BasicAdmin
     /**
      * 推荐图文
      * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function push()
     {
@@ -183,19 +222,21 @@ class News extends BasicAdmin
                 }
                 list($ids, $db) = [explode(',', $params), Db::name('WechatFans')];
                 !in_array('0', $ids) && $db->where("concat(',',tagid_list,',') REGEXP '," . join(',|,', $ids) . ",'");
-                return ['code' => "SUCCESS", 'data' => $db->where('subscribe', '1')->limit(200)->column('nickname')];
+                $list = $db->where(['subscribe' => '1'])->limit(200)->column('nickname');
+                foreach ($list as &$vo) {
+                    $vo = ToolsService::emojiDecode($vo);
+                }
+                return ['code' => "SUCCESS", 'data' => $list];
             default :
                 $news_id = $this->request->get('id', '');
                 // 显示及图文
-                $newsinfo = WechatService::getNewsById($news_id);
+                $newsinfo = MediaService::getNewsById($news_id);
                 // Get 请求，显示选择器界面
                 if ($this->request->isGet()) {
-                    $fans_tags = Db::name('WechatFansTags')->select();
-                    array_unshift($fans_tags, [
-                        'id'    => 0, 'name' => '全部',
-                        'count' => Db::name('WechatFans')->where('subscribe', '1')->count(),
-                    ]);
-                    return view('push', ['vo' => $newsinfo, 'fans_tags' => $fans_tags]);
+                    $fans_tags = (array)Db::name('WechatFansTags')->select();
+                    $count = Db::name('WechatFans')->where(['subscribe' => '1'])->count();
+                    array_unshift($fans_tags, ['id' => 0, 'name' => '全部', 'count' => $count]);
+                    return $this->fetch('push', ['vo' => $newsinfo, 'fans_tags' => $fans_tags]);
                 }
                 // Post 请求，执行图文推送操作
                 $post = $this->request->post();
@@ -213,39 +254,43 @@ class News extends BasicAdmin
                     $data['filter'] = ['is_to_all' => false, 'tag_id' => join(',', $post['fans_tags'])];
                     $data['mpnews'] = ['media_id' => $newsinfo['media_id']];
                 }
-                $wechat = load_wechat('Receive');
-                if (false !== $wechat->sendGroupMassMessage($data)) {
+                $wechat = WechatService::custom();
+                if (false !== $wechat->massSendAll($data)) {
                     LogService::write('微信管理', "图文[{$news_id}]推送成功");
                     $this->success('微信图文推送成功！', '');
                 }
-                $this->error("微信图文推送失败，{$wechat->errMsg} [{$wechat->errCode}]");
+                $this->error("微信图文推送失败");
         }
     }
 
     /**
      * 上传永久图文
-     * @param array $newsinfo
+     * @param array $news
      * @return bool
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
-    private function _uploadWechatNews(&$newsinfo)
+    private function _uploadWechatNews(&$news)
     {
-        foreach ($newsinfo['articles'] as &$article) {
-            $article['thumb_media_id'] = WechatService::uploadForeverMedia($article['local_url']);
+        foreach ($news['articles'] as &$article) {
+            $article['thumb_media_id'] = MediaService::uploadForeverMedia($article['local_url']);
             $article['content'] = preg_replace_callback("/<img(.*?)src=['\"](.*?)['\"](.*?)\/?>/i", function ($matches) {
-                $src = WechatService::uploadImage($matches[2]);
+                $src = MediaService::uploadImage($matches[2]);
                 return "<img{$matches[1]}src=\"{$src}\"{$matches[3]}/>";
             }, htmlspecialchars_decode($article['content']));
         }
-        $wechat = load_wechat('media');
+        $wechat = WechatService::media();
         // 如果已经上传过，先删除之前的历史记录
-        !empty($newsinfo['media_id']) && $wechat->delForeverMedia($newsinfo['media_id']);
+        !empty($news['media_id']) && $wechat->delMaterial($news['media_id']);
         // 上传图文到微信服务器
-        $result = $wechat->uploadForeverArticles(['articles' => $newsinfo['articles']]);
+        $result = $wechat->addNews(['articles' => $news['articles']]);
         if (isset($result['media_id'])) {
-            $newsinfo['media_id'] = $result['media_id'];
-            return Db::name('WechatNews')->where('id', $newsinfo['id'])->setField('media_id', $result['media_id']);
+            $news['media_id'] = $result['media_id'];
+            return Db::name('WechatNews')->where(['id' => $news['id']])->update(['media_id' => $result['media_id']]);
         }
-        Log::error("上传永久图文失败, {$wechat->errMsg}[{$wechat->errCode}]");
+        Log::error("上传永久图文失败");
         return false;
     }
 

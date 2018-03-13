@@ -32,10 +32,9 @@ class Error
     }
 
     /**
-     * 异常处理
+     * Exception Handler
      * @access public
-     * @param  \Exception|\Throwable $e 异常
-     * @return void
+     * @param  \Exception|\Throwable $e
      */
     public static function appException($e)
     {
@@ -43,60 +42,57 @@ class Error
             $e = new ThrowableError($e);
         }
 
-        $handler = self::getExceptionHandler();
-        $handler->report($e);
+        self::getExceptionHandler()->report($e);
 
-        if (IS_CLI) {
-            $handler->renderForConsole(new ConsoleOutput, $e);
+        if (PHP_SAPI == 'cli') {
+            self::getExceptionHandler()->renderForConsole(new ConsoleOutput, $e);
         } else {
-            $handler->render($e)->send();
+            self::getExceptionHandler()->render($e)->send();
         }
     }
 
     /**
-     * 错误处理
+     * Error Handler
      * @access public
-     * @param  integer $errno      错误编号
-     * @param  integer $errstr     详细错误信息
-     * @param  string  $errfile    出错的文件
-     * @param  integer $errline    出错行号
-     * @return void
+     * @param  integer $errno   错误编号
+     * @param  integer $errstr  详细错误信息
+     * @param  string  $errfile 出错的文件
+     * @param  integer $errline 出错行号
      * @throws ErrorException
      */
     public static function appError($errno, $errstr, $errfile = '', $errline = 0)
     {
         $exception = new ErrorException($errno, $errstr, $errfile, $errline);
-
-        // 符合异常处理的则将错误信息托管至 think\exception\ErrorException
         if (error_reporting() & $errno) {
+            // 将错误信息托管至 think\exception\ErrorException
             throw $exception;
+        } else {
+            self::getExceptionHandler()->report($exception);
         }
-
-        self::getExceptionHandler()->report($exception);
     }
 
     /**
-     * 异常中止处理
+     * Shutdown Handler
      * @access public
-     * @return void
      */
     public static function appShutdown()
     {
-        // 将错误信息托管至 think\ErrorException
         if (!is_null($error = error_get_last()) && self::isFatal($error['type'])) {
-            self::appException(new ErrorException(
-                $error['type'], $error['message'], $error['file'], $error['line']
-            ));
+            // 将错误信息托管至think\ErrorException
+            $exception = new ErrorException($error['type'], $error['message'], $error['file'], $error['line']);
+
+            self::appException($exception);
         }
 
         // 写入日志
-        Log::save();
+        Container::get('log')->save();
     }
 
     /**
      * 确定错误类型是否致命
+     *
      * @access protected
-     * @param  int $type 错误类型
+     * @param  int $type
      * @return bool
      */
     protected static function isFatal($type)
@@ -105,7 +101,8 @@ class Error
     }
 
     /**
-     * 获取异常处理的实例
+     * Get an instance of the exception handler.
+     *
      * @access public
      * @return Handle
      */
@@ -114,20 +111,15 @@ class Error
         static $handle;
 
         if (!$handle) {
-            // 异常处理 handle
-            $class = Config::get('exception_handle');
-
-            if ($class && is_string($class) && class_exists($class) &&
-                is_subclass_of($class, "\\think\\exception\\Handle")
-            ) {
+            // 异常处理handle
+            $class = Container::get('config')->get('exception_handle');
+            if ($class && is_string($class) && class_exists($class) && is_subclass_of($class, "\\think\\exception\\Handle")) {
                 $handle = new $class;
             } else {
                 $handle = new Handle;
-
                 if ($class instanceof \Closure) {
                     $handle->setRender($class);
                 }
-
             }
         }
 

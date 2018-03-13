@@ -1,0 +1,80 @@
+<style>
+    .headimg {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .add-tag {
+        font-size: 12px;
+        font-weight: 400;
+        border-radius: 50%;
+        color: #333;
+        background: #eee;
+        border: 1px solid #ddd;
+    }
+
+    .add-tag:hover {
+        color: #000 !important;
+        border: 1px solid #ccc;
+    }
+
+</style>
+
+<div id="tags-box" class="hide">
+    <form>
+        <div class="row margin-right-0" style='max-height:230px;overflow:auto;'>
+            {foreach $tags as $key=>$tag}
+            <div class="col-xs-4">
+                <label class="layui-elip block"><input value="{$key}" type="checkbox"/> {$tag}</label>
+            </div>
+            {/foreach}
+        </div>
+        <div class="text-center margin-top-10">
+            <div class="hr-line-dashed margin-top-0"></div>
+            <button type="button" data-event="confirm" class="layui-btn layui-btn-sm">保存数据</button>
+            <button type="button" data-event="cancel" class="layui-btn layui-btn-sm layui-btn-danger">取消编辑</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // 添加标签
+    $('body').find('[data-add-tag]').map(function () {
+        var self = this;
+        var fans_id = this.getAttribute('data-add-tag');
+        var used_ids = (this.getAttribute('data-used-id') || '').split(',');
+        var $content = $(document.getElementById('tags-box').innerHTML);
+        for (var i in used_ids) {
+            $content.find('[value="' + used_ids[i] + '"]').attr('checked', 'checked');
+        }
+        $content.attr('fans_id', fans_id);
+        // 标签面板关闭
+        $content.on('click', '[data-event="cancel"]', function () {
+            $(self).popover('hide');
+        });
+        // 标签面板确定
+        $content.on('click', '[data-event="confirm"]', function () {
+            var tags = [];
+            $content.find('input:checked').map(function () {
+                tags.push(this.value);
+            });
+            $.form.load('{:url("@wechat/fans/tagset")}', {fans_id: $content.attr('fans_id'), 'tags': tags.join(',')}, 'post');
+        });
+        // 限制每个表单最多只能选择三个
+        $content.on('click', 'input', function () {
+            ($content.find('input:checked').size() > 3) && (this.checked = false);
+        });
+        // 标签选择面板
+        $(this).data('content', $content).on('shown.bs.popover', function () {
+            $('[data-add-tag]').not(this).popover('hide');
+        }).popover({
+            html: true,
+            trigger: 'click',
+            content: $content,
+            title: '标签编辑（最多选择三个标签）',
+            template: '<div class="popover" style="max-width:500px" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="width:500px"></div></div>'
+        });
+    });
+</script>

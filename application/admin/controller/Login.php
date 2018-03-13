@@ -32,9 +32,9 @@ class Login extends BasicAdmin
     /**
      * 控制器基础方法
      */
-    public function _initialize()
+    public function initialize()
     {
-        if (session('user') && $this->request->action() !== 'out') {
+        if (session('user.id') && $this->request->action() !== 'out') {
             $this->redirect('@admin');
         }
     }
@@ -42,6 +42,11 @@ class Login extends BasicAdmin
     /**
      * 用户登录
      * @return string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function index()
     {
@@ -72,11 +77,9 @@ class Login extends BasicAdmin
      */
     public function out()
     {
-        if (session('user')) {
-            LogService::write('系统管理', '用户退出系统成功');
-        }
-        session('user', null);
-        session_destroy();
+        session('user') && LogService::write('系统管理', '用户退出系统成功');
+        !empty($_SESSION) && $_SESSION = [];
+        [session_unset(), session_destroy()];
         $this->success('退出登录成功！', '@admin/login');
     }
 

@@ -8,58 +8,96 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
-define('THINK_VERSION', '5.0.15');
-define('THINK_START_TIME', microtime(true));
-define('THINK_START_MEM', memory_get_usage());
-define('EXT', '.php');
-define('DS', DIRECTORY_SEPARATOR);
-defined('THINK_PATH') or define('THINK_PATH', __DIR__ . DS);
-define('LIB_PATH', THINK_PATH . 'library' . DS);
-define('CORE_PATH', LIB_PATH . 'think' . DS);
-define('TRAIT_PATH', LIB_PATH . 'traits' . DS);
-defined('APP_PATH') or define('APP_PATH', dirname($_SERVER['SCRIPT_FILENAME']) . DS);
-defined('ROOT_PATH') or define('ROOT_PATH', dirname(realpath(APP_PATH)) . DS);
-defined('EXTEND_PATH') or define('EXTEND_PATH', ROOT_PATH . 'extend' . DS);
-defined('VENDOR_PATH') or define('VENDOR_PATH', ROOT_PATH . 'vendor' . DS);
-defined('RUNTIME_PATH') or define('RUNTIME_PATH', ROOT_PATH . 'runtime' . DS);
-defined('LOG_PATH') or define('LOG_PATH', RUNTIME_PATH . 'log' . DS);
-defined('CACHE_PATH') or define('CACHE_PATH', RUNTIME_PATH . 'cache' . DS);
-defined('TEMP_PATH') or define('TEMP_PATH', RUNTIME_PATH . 'temp' . DS);
-defined('CONF_PATH') or define('CONF_PATH', APP_PATH); // 配置文件目录
-defined('CONF_EXT') or define('CONF_EXT', EXT); // 配置文件后缀
-defined('ENV_PREFIX') or define('ENV_PREFIX', 'PHP_'); // 环境变量的配置前缀
-
-// 环境常量
-define('IS_CLI', PHP_SAPI == 'cli' ? true : false);
-define('IS_WIN', strpos(PHP_OS, 'WIN') !== false);
+namespace think;
 
 // 载入Loader类
-require CORE_PATH . 'Loader.php';
-
-// 加载环境变量配置文件
-if (is_file(ROOT_PATH . '.env')) {
-    $env = parse_ini_file(ROOT_PATH . '.env', true);
-
-    foreach ($env as $key => $val) {
-        $name = ENV_PREFIX . strtoupper($key);
-
-        if (is_array($val)) {
-            foreach ($val as $k => $v) {
-                $item = $name . '_' . strtoupper($k);
-                putenv("$item=$v");
-            }
-        } else {
-            putenv("$name=$val");
-        }
-    }
-}
+require __DIR__ . '/library/think/Loader.php';
 
 // 注册自动加载
-\think\Loader::register();
+Loader::register();
 
 // 注册错误和异常处理机制
-\think\Error::register();
+Error::register();
+
+// 实现日志接口
+if (interface_exists('Psr\Log\LoggerInterface')) {
+    interface LoggerInterface extends \Psr\Log\LoggerInterface
+    {}
+} else {
+    interface LoggerInterface
+    {}
+}
+
+// 注册核心类到容器
+Container::getInstance()->bind([
+    'app'                   => App::class,
+    'build'                 => Build::class,
+    'cache'                 => Cache::class,
+    'config'                => Config::class,
+    'cookie'                => Cookie::class,
+    'debug'                 => Debug::class,
+    'env'                   => Env::class,
+    'hook'                  => Hook::class,
+    'lang'                  => Lang::class,
+    'log'                   => Log::class,
+    'request'               => Request::class,
+    'response'              => Response::class,
+    'route'                 => Route::class,
+    'session'               => Session::class,
+    'url'                   => Url::class,
+    'validate'              => Validate::class,
+    'view'                  => View::class,
+    'middlewareDispatcher'  => http\middleware\Dispatcher::class,
+    // 接口依赖注入
+    'think\LoggerInterface' => Log::class,
+]);
+
+// 注册核心类的静态代理
+Facade::bind([
+    facade\App::class      => App::class,
+    facade\Build::class    => Build::class,
+    facade\Cache::class    => Cache::class,
+    facade\Config::class   => Config::class,
+    facade\Cookie::class   => Cookie::class,
+    facade\Debug::class    => Debug::class,
+    facade\Env::class      => Env::class,
+    facade\Hook::class     => Hook::class,
+    facade\Lang::class     => Lang::class,
+    facade\Log::class      => Log::class,
+    facade\Request::class  => Request::class,
+    facade\Response::class => Response::class,
+    facade\Route::class    => Route::class,
+    facade\Session::class  => Session::class,
+    facade\Url::class      => Url::class,
+    facade\Validate::class => Validate::class,
+    facade\View::class     => View::class,
+]);
+
+// 注册类库别名
+Loader::addClassAlias([
+    'App'      => facade\App::class,
+    'Build'    => facade\Build::class,
+    'Cache'    => facade\Cache::class,
+    'Config'   => facade\Config::class,
+    'Cookie'   => facade\Cookie::class,
+    'Db'       => Db::class,
+    'Debug'    => facade\Debug::class,
+    'Env'      => facade\Env::class,
+    'Facade'   => Facade::class,
+    'Hook'     => facade\Hook::class,
+    'Lang'     => facade\Lang::class,
+    'Log'      => facade\Log::class,
+    'Request'  => facade\Request::class,
+    'Response' => facade\Response::class,
+    'Route'    => facade\Route::class,
+    'Session'  => facade\Session::class,
+    'Url'      => facade\Url::class,
+    'Validate' => facade\Validate::class,
+    'View'     => facade\View::class,
+]);
 
 // 加载惯例配置文件
-\think\Config::set(include THINK_PATH . 'convention' . EXT);
+facade\Config::set(include __DIR__ . '/convention.php');
+
+// 加载composer autofile文件
+Loader::loadComposerAutoloadFiles();

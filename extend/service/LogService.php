@@ -15,7 +15,7 @@
 namespace service;
 
 use think\Db;
-use think\Request;
+use think\db\Query;
 
 /**
  * 操作日志服务
@@ -29,7 +29,7 @@ class LogService
 
     /**
      * 获取数据操作对象
-     * @return \think\db\Query
+     * @return Query
      */
     protected static function db()
     {
@@ -44,9 +44,15 @@ class LogService
      */
     public static function write($action = '行为', $content = "内容描述")
     {
-        $request = Request::instance();
+        $request = app('request');
         $node = strtolower(join('/', [$request->module(), $request->controller(), $request->action()]));
-        $data = ['ip' => $request->ip(), 'node' => $node, 'username' => session('user.username') . '', 'action' => $action, 'content' => $content];
+        $data = [
+            'ip'       => $request->ip(),
+            'node'     => $node,
+            'action'   => $action,
+            'content'  => $content,
+            'username' => session('user.username') . '',
+        ];
         return self::db()->insert($data) !== false;
     }
 

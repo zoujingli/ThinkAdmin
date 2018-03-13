@@ -37,6 +37,10 @@ class Log extends BasicAdmin
     /**
      * 日志列表
      * @return array|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function index()
     {
@@ -49,8 +53,8 @@ class Log extends BasicAdmin
         foreach (['action', 'content', 'username'] as $key) {
             (isset($get[$key]) && $get[$key] !== '') && $db->whereLike($key, "%{$get[$key]}%");
         }
-        if (isset($get['date']) && $get['date'] !== '') {
-            list($start, $end) = explode('-', str_replace(' ', '', $get['date']));
+        if (isset($get['create_at']) && $get['create_at'] !== '') {
+            list($start, $end) = explode(' - ', $get['create_at']);
             $db->whereBetween('create_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
         }
         return parent::_list($db);
@@ -59,6 +63,7 @@ class Log extends BasicAdmin
     /**
      * 列表数据处理
      * @param array $data
+     * @throws \Exception
      */
     protected function _index_data_filter(&$data)
     {
@@ -66,12 +71,38 @@ class Log extends BasicAdmin
         foreach ($data as &$vo) {
             $result = $ip->btreeSearch($vo['ip']);
             $vo['isp'] = isset($result['region']) ? $result['region'] : '';
-            $vo['isp'] = str_replace(['|0|0|0|0', '0', '|'], ['', '', ' '], $vo['isp']);
+            $vo['isp'] = str_replace(['内网IP', '0', '|'], '', $vo['isp']);
         }
     }
 
     /**
+     * 短信发送记录
+     * @return array|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function sms()
+    {
+        // 日志数据库对象
+        $this->title = '短信发送日志';
+        $get = $this->request->get();
+        $db = Db::name('MemberSmsHistory');
+        foreach (['phone', 'content', 'result'] as $key) {
+            (isset($get[$key]) && $get[$key] !== '') && $db->whereLike($key, "%{$get[$key]}%");
+        }
+        if (isset($get['date']) && $get['date'] !== '') {
+            list($start, $end) = explode(' - ', $get['date']);
+            $db->whereBetween('create_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
+        }
+        return parent::_list($db->order('id desc'));
+    }
+
+    /**
      * 日志删除操作
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function del()
     {

@@ -1,6 +1,6 @@
 ThinkAdmin for PHP
 --
-* ThinkAdmin 是一个基于 Thinkphp 5.0.x 开发的后台管理系统，集成后台系统常用功能。
+* ThinkAdmin 是一个基于 Thinkphp 5.1.x 开发的后台管理系统，集成后台系统常用功能。
 * 项目安装及二次开发请参考 ThinkPHP 官方文档及下面的服务环境说明，数据库 sql 文件存放于项目根目录下。
 > 注意：项目测试请另行搭建环境并创建数据库（数据库配置 application/database.php）, 切勿直接使用测试环境数据！
 
@@ -25,8 +25,8 @@ Module
 * 自建秒传文件上载组件（本地存储、七牛云存储，阿里云OSS存储）
 * 基站数据服务组件（唯一随机序号、表单更新）
 * `Http`服务组件（原生`CURL`封装，兼容PHP多版本）
-* 微信公众号服务组件（基于[wechat-php-sdk](https://github.com/zoujingli/wechat-php-sdk)，微信网页授权获取用户信息、已关注粉丝管理、自定义菜单管理等等）
-* 微信商户支付服务组件（基于[wechat-php-sdk](https://github.com/zoujingli/wechat-php-sdk)，支持JSAPI支付、扫码模式一支付、扫码模式二支付）
+* 微信公众号服务组件（基于[WeChatDevloper](https://github.com/zoujingli/wechat-devloper)，微信网页授权获取用户信息、已关注粉丝管理、自定义菜单管理等等）
+* 微信商户支付服务组件（基于[WeChatDevloper](https://github.com/zoujingli/wechat-devloper)，支持JSAPI支付、扫码模式一支付、扫码模式二支付）
 * 测试公众号名称：思过崖思过 （大家可以关注它来进行简单的测试）
 * 更多组件开发中...
 

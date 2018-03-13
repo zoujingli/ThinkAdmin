@@ -25,14 +25,14 @@ class HasManyThrough extends Relation
     protected $through;
 
     /**
-     * 构造函数
-     * @access   public
-     * @param Model  $parent     上级模型对象
-     * @param string $model      模型名
-     * @param string $through    中间模型名
-     * @param string $foreignKey 关联外键
-     * @param string $throughKey 关联外键
-     * @param string $localKey   关联主键
+     * 架构函数
+     * @access public
+     * @param  Model  $parent     上级模型对象
+     * @param  string $model      模型名
+     * @param  string $through    中间模型名
+     * @param  string $foreignKey 关联外键
+     * @param  string $throughKey 关联外键
+     * @param  string $localKey   当前主键
      */
     public function __construct(Model $parent, $model, $through, $foreignKey, $throughKey, $localKey)
     {
@@ -47,26 +47,29 @@ class HasManyThrough extends Relation
 
     /**
      * 延迟获取关联数据
-     * @param string   $subRelation 子关联名
-     * @param \Closure $closure     闭包查询条件
-     * @return false|\PDOStatement|string|\think\Collection
+     * @access public
+     * @param  string   $subRelation 子关联名
+     * @param  \Closure $closure     闭包查询条件
+     * @return \think\Collection
      */
     public function getRelation($subRelation = '', $closure = null)
     {
         if ($closure) {
-            call_user_func_array($closure, [ & $this->query]);
+            $closure($this->query);
         }
 
-        return $this->relation($subRelation)->select();
+        $this->baseQuery();
+
+        return $this->query->relation($subRelation)->select();
     }
 
     /**
      * 根据关联条件查询当前模型
      * @access public
-     * @param string  $operator 比较操作符
-     * @param integer $count    个数
-     * @param string  $id       关联表的统计字段
-     * @param string  $joinType JOIN类型
+     * @param  string  $operator 比较操作符
+     * @param  integer $count    个数
+     * @param  string  $id       关联表的统计字段
+     * @param  string  $joinType JOIN类型
      * @return Query
      */
     public function has($operator = '>=', $count = 1, $id = '*', $joinType = 'INNER')
@@ -77,8 +80,8 @@ class HasManyThrough extends Relation
     /**
      * 根据关联条件查询当前模型
      * @access public
-     * @param  mixed  $where 查询条件（数组或者闭包）
-     * @param  mixed  $fields   字段
+     * @param  mixed     $where 查询条件（数组或者闭包）
+     * @param  mixed     $fields 字段
      * @return Query
      */
     public function hasWhere($where = [], $fields = null)
@@ -89,10 +92,10 @@ class HasManyThrough extends Relation
     /**
      * 预载入关联查询
      * @access public
-     * @param array    $resultSet   数据集
-     * @param string   $relation    当前关联名
-     * @param string   $subRelation 子关联名
-     * @param \Closure $closure     闭包
+     * @param  array    $resultSet   数据集
+     * @param  string   $relation    当前关联名
+     * @param  string   $subRelation 子关联名
+     * @param  \Closure $closure     闭包
      * @return void
      */
     public function eagerlyResultSet(&$resultSet, $relation, $subRelation, $closure)
@@ -101,10 +104,10 @@ class HasManyThrough extends Relation
     /**
      * 预载入关联查询 返回模型对象
      * @access public
-     * @param Model    $result      数据对象
-     * @param string   $relation    当前关联名
-     * @param string   $subRelation 子关联名
-     * @param \Closure $closure     闭包
+     * @param  Model    $result      数据对象
+     * @param  string   $relation    当前关联名
+     * @param  string   $subRelation 子关联名
+     * @param  \Closure $closure     闭包
      * @return void
      */
     public function eagerlyResult(&$result, $relation, $subRelation, $closure)
@@ -113,15 +116,17 @@ class HasManyThrough extends Relation
     /**
      * 关联统计
      * @access public
-     * @param Model    $result  数据对象
-     * @param \Closure $closure 闭包
+     * @param  Model    $result  数据对象
+     * @param  \Closure $closure 闭包
+     * @param  string   $aggregate 聚合查询方法
+     * @param  string   $field 字段
      * @return integer
      */
-    public function relationCount($result, $closure)
+    public function relationCount($result, $closure, $aggregate = 'count', $field = '*')
     {}
 
     /**
-     * 执行基础查询（进执行一次）
+     * 执行基础查询（仅执行一次）
      * @access protected
      * @return void
      */
@@ -134,10 +139,15 @@ class HasManyThrough extends Relation
             $pk           = (new $through)->getPk();
             $throughKey   = $this->throughKey;
             $modelTable   = $this->parent->getTable();
-            $this->query->field($alias . '.*')->alias($alias)
+            $fields       = $this->getQueryFields($alias);
+
+            $this->query
+                ->field($fields)
+                ->alias($alias)
                 ->join($throughTable, $throughTable . '.' . $pk . '=' . $alias . '.' . $throughKey)
                 ->join($modelTable, $modelTable . '.' . $this->localKey . '=' . $throughTable . '.' . $this->foreignKey)
                 ->where($throughTable . '.' . $this->foreignKey, $this->parent->{$this->localKey});
+
             $this->baseQuery = true;
         }
     }

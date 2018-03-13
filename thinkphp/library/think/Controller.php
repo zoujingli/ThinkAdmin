@@ -14,49 +14,60 @@ namespace think;
 use think\exception\ValidateException;
 use traits\controller\Jump;
 
-Loader::import('controller/Jump', TRAIT_PATH, EXT);
-
 class Controller
 {
     use Jump;
 
     /**
-     * @var \think\View 视图类实例
+     * 视图类实例
+     * @var \think\View
      */
     protected $view;
 
     /**
-     * @var \think\Request Request 实例
+     * Request实例
+     * @var \think\Request
      */
     protected $request;
 
     /**
-     * @var bool 验证失败是否抛出异常
+     * 应用实例
+     * @var \think\App
+     */
+    protected $app;
+
+    /**
+     * 验证失败是否抛出异常
+     * @var bool
      */
     protected $failException = false;
 
     /**
-     * @var bool 是否批量验证
+     * 是否批量验证
+     * @var bool
      */
     protected $batchValidate = false;
 
     /**
-     * @var array 前置操作方法列表
+     * 前置操作方法列表
+     * @var array $beforeActionList
      */
     protected $beforeActionList = [];
 
     /**
      * 构造方法
      * @access public
-     * @param Request $request Request 对象
      */
-    public function __construct(Request $request = null)
+    public function __construct()
     {
-        $this->view = View::instance(Config::get('template'), Config::get('view_replace_str'));
-        $this->request = is_null($request) ? Request::instance() : $request;
+        $this->request = Container::get('request');
+        $this->app     = Container::get('app');
+        $this->view    = Container::get('view')->init(
+            $this->app['config']->pull('template')
+        );
 
         // 控制器初始化
-        $this->_initialize();
+        $this->initialize();
 
         // 前置操作方法
         if ($this->beforeActionList) {
@@ -68,20 +79,15 @@ class Controller
         }
     }
 
-    /**
-     * 初始化操作
-     * @access protected
-     */
-    protected function _initialize()
-    {
-    }
+    // 初始化
+    protected function initialize()
+    {}
 
     /**
      * 前置操作
      * @access protected
      * @param  string $method  前置操作方法名
-     * @param  array  $options 调用参数 ['only'=>[...]] 或者 ['except'=>[...]]
-     * @return void
+     * @param  array  $options 调用参数 ['only'=>[...]] 或者['except'=>[...]]
      */
     protected function beforeAction($method, $options = [])
     {
@@ -89,7 +95,6 @@ class Controller
             if (is_string($options['only'])) {
                 $options['only'] = explode(',', $options['only']);
             }
-
             if (!in_array($this->request->action(), $options['only'])) {
                 return;
             }
@@ -97,7 +102,6 @@ class Controller
             if (is_string($options['except'])) {
                 $options['except'] = explode(',', $options['except']);
             }
-
             if (in_array($this->request->action(), $options['except'])) {
                 return;
             }
@@ -111,13 +115,12 @@ class Controller
      * @access protected
      * @param  string $template 模板文件名
      * @param  array  $vars     模板输出变量
-     * @param  array  $replace  模板替换
      * @param  array  $config   模板参数
      * @return mixed
      */
-    protected function fetch($template = '', $vars = [], $replace = [], $config = [])
+    protected function fetch($template = '', $vars = [], $config = [])
     {
-        return $this->view->fetch($template, $vars, $replace, $config);
+        return $this->view->fetch($template, $vars, $config);
     }
 
     /**
@@ -125,13 +128,12 @@ class Controller
      * @access protected
      * @param  string $content 模板内容
      * @param  array  $vars    模板输出变量
-     * @param  array  $replace 替换内容
      * @param  array  $config  模板参数
      * @return mixed
      */
-    protected function display($content = '', $vars = [], $replace = [], $config = [])
+    protected function display($content = '', $vars = [], $config = [])
     {
-        return $this->view->display($content, $vars, $replace, $config);
+        return $this->view->display($content, $vars, $config);
     }
 
     /**
@@ -149,9 +151,22 @@ class Controller
     }
 
     /**
+     * 视图过滤
+     * @access protected
+     * @param  Callable $filter 过滤方法或闭包
+     * @return $this
+     */
+    protected function filter($filter)
+    {
+        $this->view->filter($filter);
+
+        return $this;
+    }
+
+    /**
      * 初始化模板引擎
      * @access protected
-     * @param array|string $engine 引擎参数
+     * @param  array|string $engine 引擎参数
      * @return $this
      */
     protected function engine($engine)
@@ -164,7 +179,7 @@ class Controller
     /**
      * 设置验证失败后是否抛出异常
      * @access protected
-     * @param bool $fail 是否抛出异常
+     * @param  bool $fail 是否抛出异常
      * @return $this
      */
     protected function validateFailException($fail = true)
@@ -188,24 +203,28 @@ class Controller
     protected function validate($data, $validate, $message = [], $batch = false, $callback = null)
     {
         if (is_array($validate)) {
-            $v = Loader::validate();
+            $v = $this->app->validate();
             $v->rule($validate);
         } else {
-            // 支持场景
             if (strpos($validate, '.')) {
+                // 支持场景
                 list($validate, $scene) = explode('.', $validate);
             }
-
-            $v = Loader::validate($validate);
-
-            !empty($scene) && $v->scene($scene);
+            $v = $this->app->validate($validate);
+            if (!empty($scene)) {
+                $v->scene($scene);
+            }
         }
 
-        // 批量验证
-        if ($batch || $this->batchValidate) $v->batch(true);
-        // 设置错误信息
-        if (is_array($message)) $v->message($message);
-        // 使用回调验证
+        // 是否批量验证
+        if ($batch || $this->batchValidate) {
+            $v->batch(true);
+        }
+
+        if (is_array($message)) {
+            $v->message($message);
+        }
+
         if ($callback && is_callable($callback)) {
             call_user_func_array($callback, [$v, &$data]);
         }
@@ -213,11 +232,11 @@ class Controller
         if (!$v->check($data)) {
             if ($this->failException) {
                 throw new ValidateException($v->getError());
+            } else {
+                return $v->getError();
             }
-
-            return $v->getError();
+        } else {
+            return true;
         }
-
-        return true;
     }
 }

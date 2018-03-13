@@ -11,35 +11,37 @@
 
 namespace think\response;
 
-use think\Config;
+use think\Container;
 use think\Response;
-use think\View as ViewTemplate;
 
 class View extends Response
 {
     // 输出参数
-    protected $options     = [];
-    protected $vars        = [];
-    protected $replace     = [];
+    protected $options = [];
+    protected $vars    = [];
+    protected $filter;
     protected $contentType = 'text/html';
 
     /**
      * 处理数据
      * @access protected
-     * @param mixed $data 要处理的数据
+     * @param  mixed $data 要处理的数据
      * @return mixed
      */
     protected function output($data)
     {
         // 渲染模板输出
-        return ViewTemplate::instance(Config::get('template'), Config::get('view_replace_str'))
-            ->fetch($data, $this->vars, $this->replace);
+        $config = Container::get('config');
+        return Container::get('view')
+            ->init($config->pull('template'))
+            ->filter($this->filter)
+            ->fetch($data, $this->vars);
     }
 
     /**
      * 获取视图变量
      * @access public
-     * @param string $name 模板变量
+     * @param  string $name 模板变量
      * @return mixed
      */
     public function getVars($name = null)
@@ -54,8 +56,8 @@ class View extends Response
     /**
      * 模板变量赋值
      * @access public
-     * @param mixed $name  变量名
-     * @param mixed $value 变量值
+     * @param  mixed $name  变量名
+     * @param  mixed $value 变量值
      * @return $this
      */
     public function assign($name, $value = '')
@@ -66,24 +68,33 @@ class View extends Response
         } else {
             $this->vars[$name] = $value;
         }
+
         return $this;
     }
 
     /**
-     * 视图内容替换
+     * 视图内容过滤
      * @access public
-     * @param string|array $content 被替换内容（支持批量替换）
-     * @param string  $replace    替换内容
+     * @param callable $filter
      * @return $this
      */
-    public function replace($content, $replace = '')
+    public function filter($filter)
     {
-        if (is_array($content)) {
-            $this->replace = array_merge($this->replace, $content);
-        } else {
-            $this->replace[$content] = $replace;
-        }
+        $this->filter = $filter;
         return $this;
+    }
+
+    /**
+     * 检查模板是否存在
+     * @access private
+     * @param  string|array  $name 参数名
+     * @return bool
+     */
+    public function exists($name)
+    {
+        return Container::get('view')
+            ->init(Container::get('config')->pull('template'))
+            ->exists($name);
     }
 
 }

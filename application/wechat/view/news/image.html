@@ -1,0 +1,42 @@
+{extend name='admin@public/main'}
+
+{block name='style'}
+<style>
+    .news-image {width:112px;float:left;margin:10px;height:120px;cursor:pointer;background-size:cover;background-position:center center;border:1px solid rgba(125, 125, 125, 0.3)}
+    .page-style {bottom:0;width:100%;height:50px;padding:0 10px;position:fixed;background:#fff}
+    .page-style .pagination-trigger, .page-style .pagination {margin:10px 0 !important;;padding:0 10px !important}
+</style>
+{/block}
+
+{block name="body"}
+<div>
+    {foreach $list as $key=>$vo}
+    <a class="news-image transition" data-src='{$vo.local_url}' style="background-image:url('{$vo.local_url}')"></a>
+    {/foreach}
+    <div style='clear:both'></div>
+</div>
+<div style="height:50px"></div>
+<div class="page-style">
+    {if isset($page)}{$page|raw}{/if}
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    $(function () {
+        /*! 分页事件切换处理 */
+        $('body').off('change', '.pagination-trigger select').on('change', '.pagination-trigger select', function () {
+            var urls = this.options[this.selectedIndex].getAttribute('data-url').split('#');
+            urls.shift();
+            window.location.href = urls.join('#');
+        }).off('click', '[data-open]').on('click', '[data-open]', function () {
+            var url = this.getAttribute('data-open');
+            window.location.href = url;
+        }).on('click', '.news-image', function () {
+            var src = this.getAttribute('data-src');
+            top.$('[name="{$field}"]').val(src).trigger('change');
+            parent.layer.close(parent.layer.getFrameIndex(window.name));
+        });
+    });
+</script>
+{/block}

@@ -85,6 +85,7 @@ return [
 
     // Validate Error Message
     ':attribute require'                                        => ':attribute不能为空',
+    ':attribute must'                                           => ':attribute必须',
     ':attribute must be numeric'                                => ':attribute必须是数字',
     ':attribute must be integer'                                => ':attribute必须是整数',
     ':attribute must be float'                                  => ':attribute必须是浮点数',
