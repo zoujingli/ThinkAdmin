@@ -25,8 +25,8 @@ Module
 * 自建秒传文件上载组件（本地存储、七牛云存储，阿里云OSS存储）
 * 基站数据服务组件（唯一随机序号、表单更新）
 * `Http`服务组件（原生`CURL`封装，兼容PHP多版本）
-* 微信公众号服务组件（基于[WeChatDevloper](https://github.com/zoujingli/wechat-devloper)，微信网页授权获取用户信息、已关注粉丝管理、自定义菜单管理等等）
-* 微信商户支付服务组件（基于[WeChatDevloper](https://github.com/zoujingli/wechat-devloper)，支持JSAPI支付、扫码模式一支付、扫码模式二支付）
+* 微信公众号服务组件（基于[WeChatDeveloper](https://github.com/zoujingli/WeChatDeveloper)，微信网页授权获取用户信息、已关注粉丝管理、自定义菜单管理等等）
+* 微信商户支付服务组件（基于[WeChatDeveloper](https://github.com/zoujingli/WeChatDeveloper)，支持JSAPI支付、扫码模式一支付、扫码模式二支付）
 * 测试公众号名称：思过崖思过 （大家可以关注它来进行简单的测试）
 * 更多组件开发中...
 
