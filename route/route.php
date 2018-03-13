@@ -15,10 +15,13 @@
 use think\facade\Route;
 
 /* 去除下面注释可启用禁用功能 */
-return [];
+//return [];
 
 /*  测试环境禁止操作路由绑定 */
 Route::post('admin/user/pass', function () {
+    return json(['code' => 0, 'msg' => '测试环境禁修改用户密码！']);
+});
+Route::post('admin/index/pass', function () {
     return json(['code' => 0, 'msg' => '测试环境禁修改用户密码！']);
 });
 Route::post('admin/config/index', function () {
