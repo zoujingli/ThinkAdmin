@@ -145,43 +145,6 @@ class BasicAdmin extends Controller
         return $result;
     }
 
-    protected function _list_modal($dbQuery = null, $isPage = true, $isDisplay = true, $total = false, $result = [], $template = '')
-    {
-        $db = is_null($dbQuery) ? Db::name($this->table) : (is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery);
-        // 列表排序默认处理
-        if ($this->request->isPost() && $this->request->post('action') === 'resort') {
-            $data = $this->request->post();
-            unset($data['action']);
-            foreach ($data as $key => $value) {
-                if (false === $db->where('id', intval(ltrim($key, '_')))->setField('sort', $value)) {
-                    $this->error('列表排序失败, 请稍候再试');
-                }
-            }
-            $this->success('列表排序成功, 正在刷新列表', '');
-        }
-        // 列表数据查询与显示
-        if (null === $db->getOptions('order')) {
-            in_array('sort', $db->getTableFields($db->getTable())) && $db->order('sort asc');
-        }
-        if ($isPage) {
-            $rows = 10;
-            // 分页数据处理
-            $query = $this->request->get('', '', 'urlencode');
-            $page = $db->paginate($rows, $total, ['query' => $query]);
-            list($totalNum) = [$page->total()];
-            list($pattern, $replacement) = [['|href="(.*?)"|', '|pagination|'], ['href="javascript:;" onclick="pageto(this)"', 'pagination pull-right']];
-            $html = "<span class='pagination-trigger nowrap'>共 {$totalNum} 条记录，" . "</select> 共 " . ceil($totalNum / $rows) . " 页。</span>";
-            list($result['total'], $result['list'], $result['page']) = [$totalNum, $page->all(), $html . preg_replace($pattern, $replacement, $page->render())];
-        } else {
-            $result['list'] = $db->select();
-        }
-        if ($isDisplay && (false !== $this->_callback('_data_filter', $result['list'], []))) {
-            !empty($this->title) && $this->assign('title', $this->title);
-            return $this->fetch($template, $result);
-        }
-        return $result;
-    }
-
     /**
      * 当前对象回调成员方法
      * @param string $method
