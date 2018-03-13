@@ -15,7 +15,6 @@
 namespace app\index\controller;
 
 use controller\BasicAdmin;
-use service\WechatService;
 
 /**
  * 应用入口控制器
