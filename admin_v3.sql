@@ -300,7 +300,7 @@ CREATE TABLE `system_user` (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'zoujingli@qq.com', '13617343800', '', '22409', '2018-03-13 15:43:48', '1', '1', '0', null, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '22409', '2018-03-13 15:43:48', '1', '1', '0', null, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
