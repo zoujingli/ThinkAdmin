@@ -42,6 +42,9 @@ class Index extends BasicAdmin
         NodeService::applyAuthNode();
         $list = (array)Db::name('SystemMenu')->where(['status' => '1'])->order('sort asc,id asc')->select();
         $menus = $this->buildMenuData(ToolsService::arr2tree($list), NodeService::get(), !!session('user'));
+        if (empty($menus) && !session('user.id')) {
+            $this->redirect('@admin/login');
+        }
         return $this->fetch('', ['title' => '系统管理', 'menus' => $menus]);
     }
 
