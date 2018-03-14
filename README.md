@@ -24,7 +24,7 @@ Repositorie
 * GitHub 托管地址：https://github.com/zoujingli/ThinkService
 
 其安装与 ThinkAdmin 相似，这里就不多说了。具体可以参见微信开放平台官网
-https://open.weixin.qq.com，ThinkService 后台具体可以配置对应参数。
+https://open.weixin.qq.com ，ThinkService 后台具体可以配置对应参数。
 
 
 Module
