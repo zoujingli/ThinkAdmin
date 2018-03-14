@@ -15,7 +15,6 @@
 namespace app\admin\controller;
 
 use controller\BasicAdmin;
-use service\ExtendService;
 use service\LogService;
 
 /**
@@ -69,19 +68,6 @@ class Config extends BasicAdmin
     public function file()
     {
         $this->title = '文件存储配置';
-        return $this->index();
-    }
-
-    /**
-     * 短信参数配置
-     * @return string
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
-     */
-    public function sms()
-    {
-        $this->title = '短信服务配置';
-        $this->assign('result', ExtendService::querySmsBalance());
         return $this->index();
     }
 
