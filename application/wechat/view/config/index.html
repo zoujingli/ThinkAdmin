@@ -23,7 +23,7 @@
     <!--{/if}-->
 
     <div class="row form-group">
-        <label class="col-sm-2 control-label text-right">Authorize <span class="nowrap">(授权)</span></label>
+        <label class="col-sm-2 control-label text-right">Authorize<br><span class="nowrap color-desc">绑定授权</span></label>
         <div class="col-sm-8">
             <button type="button" data-href='{$authurl}' class='layui-btn layui-btn-primary'>{$wechat?'重新绑定公众号':'立即绑定公众号'}</button>
             <p class="help-block">点击连接将跳转到微信第三方平台进行公众号授权。</p>
@@ -33,7 +33,7 @@
     <div class="hr-line-dashed"></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">AppID <span class="nowrap">(应用ID)</span></label>
+        <label class="col-sm-2 control-label">AppId<br><span class="nowrap color-desc">公众号AppId</span></label>
         <div class='col-sm-8'>
             <input type="text" name="wechat_appid" required value="{$appid}" title="请输入以wx开头的18位公众号APPID" placeholder="公众号APPID（必填）" pattern="^wx[0-9a-z]{16}$" maxlength="18" class="layui-input">
             <p class="help-block">公众号 appid 通过微信第三方授权自动获取. 若没有值请进行微信第三方授权。</p>
@@ -41,7 +41,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">AppKey <span class="nowrap">(应用密钥)</span></label>
+        <label class="col-sm-2 control-label">AppKey<br><span class="nowrap color-desc">应用接口密钥</span></label>
         <div class='col-sm-8'>
             <input type="text" name="wechat_appkey" required value="{$appkey}" title="请输入32位公众号AppSecret" placeholder="公众号AppSecret（必填）" maxlength="32" pattern="^[0-9a-z]{32}$" class="layui-input">
             <p class="help-block">公众号服务平台接口密钥, 通过微信第三方授权自动获取, 若没有值请进行微信第三方授权。</p>
@@ -49,7 +49,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">AppUri <span class="nowrap">(接口通知)</span></label>
+        <label class="col-sm-2 control-label">AppUri<br><span class="nowrap color-desc">消息推送接口</span></label>
         <div class='col-sm-8'>
             <input type="text" name="wechat_appurl" required value="{$appuri}" title="请输入公众号接口通知URL" placeholder="公众号接口通知URL（必填）" class="layui-input layui-bg-gray">
             <p class="help-block">公众号服务平台接口通知URL, 公众号消息接收与回复等。</p>
