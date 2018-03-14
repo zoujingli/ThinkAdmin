@@ -41,7 +41,7 @@ Module
 
 Environment
 ---
->1. PHP 版本不低于 PHP5.4，推荐使用 PHP7 以达到最优效果；
+>1. PHP 版本不低于 PHP5.6，推荐使用 PHP7 以达到最优效果；
 >2. 需开启 PATHINFO，不再支持 ThinkPHP 的 URL 兼容模式运行（源于如何优雅的展示）。
 
 * Apache
