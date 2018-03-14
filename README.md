@@ -26,6 +26,8 @@ Repositorie
 其安装与 ThinkAdmin 相似，这里就不多说了。具体可以参见微信开放平台官网
 https://open.weixin.qq.com ，ThinkService 后台具体可以配置对应参数。
 
+ThinkAdmin 与 ThinkService 对接是通过 WebService 通信的，因此运行环境需要安装 Soap 模块支持。
+
 
 Module
 --
