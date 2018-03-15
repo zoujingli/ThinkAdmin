@@ -35,7 +35,7 @@ class Review extends Controller
      */
     public function index()
     {
-        $content = str_replace("\n", "<br>", $this->request->get('content', '')); // 内容
+        $content = str_replace("\n", "<br>", $this->request->get('content', '', 'urldecode')); // 内容
         $type = $this->request->get('type', 'text'); // 类型
         // 图文处理
         if ($type === 'news' && is_numeric($content) && !empty($content)) {

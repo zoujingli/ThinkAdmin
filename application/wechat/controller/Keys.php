@@ -85,20 +85,6 @@ class Keys extends BasicAdmin
     }
 
     /**
-     * 添加数据处理
-     * @param array $data
-     */
-    protected function _add_form_filter(array &$data)
-    {
-        if ($this->request->isPost() && isset($data['keys'])) {
-            $db = Db::name($this->table)->where('keys', $data['keys']);
-            !empty($data['id']) && $db->where('id', 'neq', $data['id']);
-            $data['content'] = htmlspecialchars_decode($data['content']);
-            $db->count() > 0 && $this->error('关键字已经存在，请使用其它关键字！');
-        }
-    }
-
-    /**
      * 编辑关键字
      * @return string
      * @throws \think\Exception
@@ -112,14 +98,6 @@ class Keys extends BasicAdmin
         return $this->_form($this->table, 'form');
     }
 
-    /**
-     * 编辑数据处理
-     * @param array $data
-     */
-    protected function _edit_form_filter(array &$data)
-    {
-        $this->_add_form_filter($data);
-    }
 
     /**
      * 删除关键字
@@ -171,23 +149,10 @@ class Keys extends BasicAdmin
     public function subscribe()
     {
         $this->assign('title', '编辑默认回复');
-        return $this->_form($this->table, 'form');
+        $extend = ['keys' => 'subscribe'];
+        return $this->_form($this->table, 'form', 'keys', $extend, $extend);
     }
 
-    /**
-     * 关注默认回复表单处理
-     * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    protected function _subscribe_form_filter(&$data)
-    {
-        if ($this->request->isGet()) {
-            $data = Db::name($this->table)->where(['keys' => 'subscribe'])->find();
-        }
-        $data['keys'] = 'subscribe';
-    }
 
     /**
      * 无配置默认回复
@@ -200,22 +165,22 @@ class Keys extends BasicAdmin
     public function defaults()
     {
         $this->assign('title', '编辑无配置默认回复');
-        return $this->_form($this->table, 'form');
+        $extend = ['keys' => 'default'];
+        return $this->_form($this->table, 'form', 'keys', $extend, $extend);
     }
 
     /**
-     * 无配置默认回复表单处理
+     * 添加数据处理
      * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
-    protected function _defaults_form_filter(&$data)
+    protected function _form_filter(array &$data)
     {
-        if ($this->request->isGet()) {
-            $data = Db::name($this->table)->where(['keys' => 'default'])->find();
+        if ($this->request->isPost() && isset($data['keys'])) {
+            $db = Db::name($this->table)->where('keys', $data['keys']);
+            !empty($data['id']) && $db->where('id', 'neq', $data['id']);
+            $data['content'] = htmlspecialchars_decode($data['content']);
+            $db->count() > 0 && $this->error('关键字已经存在，请使用其它关键字！');
         }
-        $data['keys'] = 'default';
     }
 
     /**

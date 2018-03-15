@@ -44,14 +44,15 @@ class Config extends BasicAdmin
     {
         if ($this->request->isGet()) {
             $code = encode(url('@admin', '', true, true) . '#' . $this->request->url());
-            return $this->fetch('', [
+            $assign = [
                 'title'   => '微信接口配置',
                 'appuri'  => url("@wechat/api.push", '', true, true),
                 'appid'   => $this->request->get('appid', sysconf('wechat_appid')),
                 'appkey'  => $this->request->get('appkey', sysconf('wechat_appkey')),
-                'authurl' => config('wechat.service_url') . "/wechat/api.push/auth/redirect/{$code}.html",
+                'authurl' => "http://wm.cuci.cc/wechat/api.push/auth/{$code}.html",
                 'wechat'  => WechatService::instance('config')->getConfig(),
-            ]);
+            ];
+            return $this->fetch('', $assign);
         }
         try {
             sysconf('wechat_appid', $this->request->post('wechat_appid'));

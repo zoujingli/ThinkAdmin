@@ -59,6 +59,7 @@ class Push
         $this->appid = $request->post('appid', '', null);
         $this->openid = $request->post('openid', '', null);
         $this->receive = unserialize($request->post('receive', '', null));
+        p($this->receive);
         if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
             throw new Exception('微信API实例缺失必要参数[appid,openid,event].');
         }
