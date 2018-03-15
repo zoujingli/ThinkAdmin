@@ -7,7 +7,7 @@
 <!--{/if}-->
 
 <!--{if auth("$classuri/sync")}-->
-<button data-load="{:url('sync')}" class='layui-btn layui-btn-sm'>获取远程粉丝列表</button>
+<button data-load="{:url('sync')}" class='layui-btn layui-btn-sm'>远程获取粉丝</button>
 <!--{/if}-->
 
 {/block}
@@ -79,7 +79,7 @@
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label">时 间</label>
         <div class="layui-input-inline">
-            <input name="date" id='range-date' value="{$Think.get.date|default=''}" placeholder="关注时间" class="layui-input">
+            <input name="create_at" id='create_at' value="{$Think.get.create_at|default=''}" placeholder="关注时间" class="layui-input">
         </div>
     </div>
 
@@ -151,7 +151,7 @@
 {block name="script"}
 <!--表单初始化-->
 <script>
-    window.laydate.render({range: true, elem: '#range-date'});
+    window.laydate.render({range: true, elem: '#create_at'});
     window.form.render();
 </script>
 

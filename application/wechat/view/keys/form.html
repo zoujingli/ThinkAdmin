@@ -100,7 +100,7 @@
                     <div class="form-group" data-keys-type='text'>
                         <label class="col-md-2 control-label layui-form-label label-required">规则内容</label>
                         <div class="col-md-9">
-                            <textarea name="content" maxlength="10000" class="form-control">{$vo.content|default='说点什么吧'}</textarea>
+                            <textarea name="content" maxlength="10000" class="form-control">{$vo.content|default='说点什么吧'|raw}</textarea>
                         </div>
                     </div>
 
@@ -153,7 +153,7 @@
                     <div class="form-group" data-keys-type='music'>
                         <label class="col-md-2 control-label layui-form-label">音乐描述</label>
                         <div class="col-md-9">
-                            <input name="music_desc" class="layui-input" value="{$vo.music_desc|default='音乐描述'}">
+                            <input name="music_desc" class="layui-input" value="{$vo.music_desc|default='音乐描述'|raw}">
                         </div>
                     </div>
                     <div class="form-group" data-keys-type='music'>
@@ -187,7 +187,7 @@
                     <div class="form-group" data-keys-type='video'>
                         <label class="col-md-2 control-label layui-form-label">视频描述</label>
                         <div class="col-md-9">
-                            <textarea name="video_desc" maxlength="50" class="form-control">{$vo.video_desc|default='视频描述'}</textarea>
+                            <textarea name="video_desc" maxlength="50" class="form-control">{$vo.video_desc|default='视频描述'|raw}</textarea>
                         </div>
                     </div>
 

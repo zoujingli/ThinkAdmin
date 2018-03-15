@@ -34,7 +34,7 @@
                     <div class="aui-chat-content bg-white">
                         <div class="aui-chat-arrow one"></div>
                         <div class="aui-chat-arrow two"></div>
-                        {$content|default=''}
+                        {$content|default=''|raw|htmlspecialchars_decode}
                     </div>
                     {elseif $type eq 'image'}
                     <div class="aui-chat-content bg-white">

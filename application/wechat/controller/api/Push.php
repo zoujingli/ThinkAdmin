@@ -207,6 +207,7 @@ class Push
     protected function sendMessage($type, $data)
     {
         $msgData = ['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data];
+        p($msgData);
         return WechatService::custom()->send($msgData);
     }
 

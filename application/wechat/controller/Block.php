@@ -46,9 +46,9 @@ class Block extends BasicAdmin
      */
     public function index()
     {
-        $this->title = '微信粉丝黑名单管理';
+        $this->title = '微信黑名单管理';
         $get = $this->request->get();
-        $db = Db::name($this->table)->where(['is_black' => '1'])->order('subscribe_time desc');
+        $db = Db::name($this->table)->where(['is_black' => '1']);
         (isset($get['sex']) && $get['sex'] !== '') && $db->where('sex', $get['sex']);
         foreach (['nickname', 'country', 'province', 'city'] as $key) {
             (isset($get[$key]) && $get[$key] !== '') && $db->whereLike($key, "%{$get[$key]}%");
@@ -56,11 +56,11 @@ class Block extends BasicAdmin
         if (isset($get['tag']) && $get['tag'] !== '') {
             $db->where("concat(',',tagid_list,',') like :tag", ['tag' => "%,{$get['tag']},%"]);
         }
-        if (isset($get['date']) && $get['date'] !== '') {
-            list($start, $end) = explode(' - ', $get['date']);
+        if (isset($get['create_at']) && $get['create_at'] !== '') {
+            list($start, $end) = explode(' - ', $get['create_at']);
             $db->whereBetween('subscribe_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
         }
-        return parent::_list($db);
+        return parent::_list($db->order('subscribe_time desc'));
     }
 
     /**
