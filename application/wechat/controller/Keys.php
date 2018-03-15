@@ -88,11 +88,12 @@ class Keys extends BasicAdmin
      * 添加数据处理
      * @param array $data
      */
-    protected function _add_form_filter(array $data)
+    protected function _add_form_filter(array &$data)
     {
         if ($this->request->isPost() && isset($data['keys'])) {
             $db = Db::name($this->table)->where('keys', $data['keys']);
             !empty($data['id']) && $db->where('id', 'neq', $data['id']);
+            $data['content'] = htmlspecialchars_decode($data['content']);
             $db->count() > 0 && $this->error('关键字已经存在，请使用其它关键字！');
         }
     }
@@ -115,7 +116,7 @@ class Keys extends BasicAdmin
      * 编辑数据处理
      * @param array $data
      */
-    protected function _edit_form_filter(array $data)
+    protected function _edit_form_filter(array &$data)
     {
         $this->_add_form_filter($data);
     }
