@@ -15,7 +15,7 @@
 use think\facade\Route;
 
 /* 去除下面注释可启用禁用功能 */
-//return [];
+// return [];
 
 /*  测试环境禁止操作路由绑定 */
 Route::post('admin/user/pass', function () {
@@ -54,7 +54,6 @@ Route::post('admin/node/save', function () {
 Route::post('wechat/menu/edit', function () {
     return json(['code' => 0, 'msg' => '测试环境禁止修改微信菜单操作！']);
 });
-Route::get(
-    'wechat/menu/cancel', function () {
+Route::get('wechat/menu/cancel', function () {
     return json(['code' => 0, 'msg' => '测试环境禁止删除微信菜单操作！']);
 });
