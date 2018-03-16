@@ -38,7 +38,7 @@ $(function () {
                     var self = $(this), txt = self.attr('placeholder');
                     self.wrap($('<div></div>').css({zoom: '1', margin: 'none', border: 'none', padding: 'none', background: 'none', position: 'relative'}));
                     var pos = self.position(), h = self.outerHeight(true), paddingleft = self.css('padding-left');
-                    var holder = $('<span></span>').text(txt).css({position: 'absolute', left: pos.left, top: pos.top, height: h, lineHeight: h + 'px', paddingLeft: paddingleft, color: '#aaa'}).appendTo(self.parent());
+                    var holder = $('<span></span>').text(txt).css({position: 'absolute', left: pos.left, top: pos.top, height: h, lineHeight: h + 'px', paddingLeft: paddingleft, color: '#aaa', zIndex: '999'}).appendTo(self.parent());
                     self.on('focusin focusout change keyup', function () {
                         self.val() ? holder.hide() : holder.show();
                     });
