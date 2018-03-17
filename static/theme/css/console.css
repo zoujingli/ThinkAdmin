@@ -106,8 +106,6 @@ input[type=checkbox]:focus,input[type=radio]:focus{outline:none}
 .mobile-footer .sub-menu ul li{padding:0;display:block;width:100%;float:none;z-index:11}
 .mobile-footer .sub-menu ul li a{border:1px solid #fff}
 .mobile-footer .sub-menu ul li a.bottom-border{border-bottom:1px solid #e7e7eb}
-.mobile-footer .sub-menu ul li:nth-last-child(2) a{border-bottom-color:#fff;}
-.mobile-footer .sub-menu ul li:last-child a{border-top-color:#e7e7eb}
 .mobile-footer .arrow{position:absolute;left:50%;margin-left:-6px}
 .mobile-footer .arrow_in,.mobile-footer .arrow_out{z-index:10;width:0;height:0;display:inline-block;border-width:6px;border-style:dashed;border-color:transparent;border-bottom-width:0;border-top-style:solid}
 .mobile-footer .arrow_in{bottom:-5px;border-top-color:#fafafa}.mobile-footer .arrow_out{bottom:-6px;border-top-color:#d0d0d0}

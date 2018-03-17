@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微信网页授权测试</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link href="__STATIC__/mobile/library.min.css" rel="stylesheet">
+    <script src="__STATIC__/mobile/library.min.js"></script>
+</head>
+
+<body>
+
+<!--{if empty($fans.fansinfo)}-->
+<div class="weui-msg">
+    <div class="weui-msg__icon-area"><i class="weui-icon-cancel weui-icon_msg"></i></div>
+    <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title">操作失败</h2>
+        <p class="weui-msg__desc">通过网页授权获取用户资料失败，请检查权限再试！</p>
+    </div>
+    <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+            <a href="javascript:;" onclick="location.reload()" class="weui-btn weui-btn_default">重新获取（刷新）</a>
+        </p>
+    </div>
+</div>
+<!--{else}-->
+<div class="header" style="padding:1rem 0 0.5rem 0;text-align:center">
+    <img style='width:132px;height:132px;border-radius:50%;border:0.5rem solid rgba(150,40,40,0.5)' src="{$fans.fansinfo.headimgurl}">
+    <h1>{$fans.fansinfo.nickname}</h1>
+</div>
+<div class="weui-cells__title">用户标识</div>
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">OPENID</div>
+        <div class="weui-cell__ft" style="font-size:0.6rem">{$fans.fansinfo.openid}</div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">UNIONID</div>
+        <div class="weui-cell__ft" style="font-size:0.6rem">{$fans.fansinfo.unionid}</div>
+    </div>
+</div>
+<div class="weui-cells__title">详细资料</div>
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">性别</div>
+        <div class="weui-cell__ft">{:[1=>'男',2=>'女'][$fans.fansinfo.sex]??'未知'}</div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">系统语言</div>
+        <div class="weui-cell__ft">{$fans.fansinfo.language}</div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">所在区域</div>
+        <div class="weui-cell__ft">{$fans.fansinfo.country}{$fans.fansinfo.province}{$fans.fansinfo.city}</div>
+    </div>
+    {if isset($fans.fansinfo.privilege.0)}
+    <div class="weui-cell">
+        <div class="weui-cell__bd">设备网络</div>
+        <div class="weui-cell__ft">{$fans.fansinfo.privilege.0}</div>
+    </div>
+    {/if}
+</div>
+<!--{/if}-->
+</body>
