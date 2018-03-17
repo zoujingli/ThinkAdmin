@@ -26,7 +26,7 @@ class Tools extends BasicAdmin
 {
     /**
      * 网页授权测试
-     * @return mixed
+     * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -34,6 +34,17 @@ class Tools extends BasicAdmin
     {
         $fans = WechatService::webOauth(1);
         return $this->fetch('', ['fans' => $fans]);
+    }
+
+    /**
+     * JSSDK测试
+     * @return string
+     */
+    public function jssdk()
+    {
+        $wechat = WechatService::wechat();
+        $options = $wechat->jsSign($this->request->url(true));
+        return $this->fetch('', ['options' => $options]);
     }
 
 }
