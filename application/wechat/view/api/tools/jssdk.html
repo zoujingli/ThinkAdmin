@@ -23,7 +23,7 @@
 
 <script>
     wx.error(function (err) {
-        $.toptip(err.errMsg, 360000, 'error');
+        $.toptip(err.errMsg, 100000, 'error');
     });
     wx.ready(function () {
         $('#show-alert').removeClass('weui-btn_disabled').on('click', function () {
