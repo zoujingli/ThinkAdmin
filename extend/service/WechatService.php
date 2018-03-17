@@ -79,8 +79,8 @@ class WechatService
         }
         $service = self::instance('wechat');
         $result = $service->oauth(session_id(), request()->url(true), $fullMode);
-        session("{$appid}_openid", $result['openid']);
-        session("{$appid}_fansinfo", $result['fans']);
+        session("{$appid}_openid", $openid = $result['openid']);
+        session("{$appid}_fansinfo", $fansinfo = $result['fans']);
         if ((empty($fullMode) && !empty($openid)) || (!empty($fullMode) && !empty($fansinfo))) {
             empty($fansinfo) || FansService::set($fansinfo);
             return ['openid' => $openid, 'fansinfo' => $fansinfo];
