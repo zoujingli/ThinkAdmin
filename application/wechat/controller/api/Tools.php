@@ -15,6 +15,7 @@
 namespace app\wechat\controller\api;
 
 use controller\BasicAdmin;
+use Endroid\QrCode\QrCode;
 use service\WechatService;
 
 /**
@@ -37,6 +38,19 @@ class Tools extends BasicAdmin
     }
 
     /**
+     * 显示网页授权二维码
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    public function oauth_qrc()
+    {
+        $url = url('@wechat/api.tools/oauth', '', true, true);
+        return $this->createQrc($url);
+    }
+
+    /**
      * JSSDK测试
      * @return string
      */
@@ -45,6 +59,34 @@ class Tools extends BasicAdmin
         $wechat = WechatService::wechat();
         $options = $wechat->jsSign($this->request->url(true));
         return $this->fetch('', ['options' => $options]);
+    }
+
+    /**
+     * 显示网页授权二维码
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    public function jssdk_qrc()
+    {
+        $url = url('@wechat/api.tools/jssdk', '', true, true);
+        return $this->createQrc($url);
+    }
+
+    /**
+     * 创建二维码响应对应
+     * @param string $url 二维码内容
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    protected function createQrc($url)
+    {
+        $qrCode = new QrCode();
+        $qrCode->setText($url)->setSize(300)->setPadding(20)->setImageType(QrCode::IMAGE_TYPE_PNG);
+        return \think\facade\Response::header('Content-Type', 'image/png')->data($qrCode->get());
     }
 
 }
