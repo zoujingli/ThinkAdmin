@@ -84,7 +84,7 @@ class MediaService
      */
     public static function uploadForeverMedia($local_url, $type = 'image', $video_info = [])
     {
-        $map = ['md5' => md5($local_url), 'appid' => sysconf('wechat_appid')];
+        $map = ['md5' => md5($local_url), 'appid' => WechatService::getAppid()];
         if (($media_id = Db::name('WechatNewsMedia')->where($map)->value('media_id'))) {
             return $media_id;
         }

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf5ccf8306b43a082cf18a5c251d77c48
+class ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -237,6 +237,7 @@ class ComposerStaticInitf5ccf8306b43a082cf18a5c251d77c48
         'app\\wechat\\controller\\Review' => __DIR__ . '/../..' . '/application/wechat/controller/Review.php',
         'app\\wechat\\controller\\Tags' => __DIR__ . '/../..' . '/application/wechat/controller/Tags.php',
         'app\\wechat\\controller\\api\\Push' => __DIR__ . '/../..' . '/application/wechat/controller/api/Push.php',
+        'app\\wechat\\controller\\api\\Tools' => __DIR__ . '/../..' . '/application/wechat/controller/api/Tools.php',
         'app\\wechat\\service\\FansService' => __DIR__ . '/../..' . '/application/wechat/service/FansService.php',
         'app\\wechat\\service\\MediaService' => __DIR__ . '/../..' . '/application/wechat/service/MediaService.php',
         'app\\wechat\\service\\TagsService' => __DIR__ . '/../..' . '/application/wechat/service/TagsService.php',
@@ -251,9 +252,9 @@ class ComposerStaticInitf5ccf8306b43a082cf18a5c251d77c48
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf5ccf8306b43a082cf18a5c251d77c48::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf5ccf8306b43a082cf18a5c251d77c48::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf5ccf8306b43a082cf18a5c251d77c48::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc::$classMap;
 
         }, null, ClassLoader::class);
     }

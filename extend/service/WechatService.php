@@ -15,6 +15,7 @@
 namespace service;
 
 use app\wechat\service\FansService;
+use function Couchbase\defaultDecoder;
 
 /**
  * 微信数据服务
@@ -40,8 +41,8 @@ use app\wechat\service\FansService;
  * @method \WeChat\Template template() static 模板消息
  * @method \WeChat\User user() static 微信粉丝管理
  * @method \WeChat\Wifi wifi() static 门店WIFI管理
- * @method void wechat static 第三方微信工具
- * @method void config static 第三方配置工具
+ * @method void wechat() static 第三方微信工具
+ * @method void config() static 第三方配置工具
  */
 class WechatService
 {
@@ -49,17 +50,35 @@ class WechatService
     /**
      * 获取微信实例ID
      * @param string $name 实例对象名称
-     * @return SoapService
+     * @return SoapService|string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
     public static function instance($name)
     {
-        list($appid, $appkey) = [sysconf('wechat_appid'), sysconf('wechat_appkey')];
-        $token = strtolower("{$name}-{$appid}-{$appkey}");
-        $location = config('wechat.service_url') . "/wechat/api.client/soap/param/{$token}.html";
-        $params = ['uri' => strtolower($name), 'location' => $location, 'trace' => true];
-        return new SoapService(null, $params);
+        switch (strtolower(sysconf('wechat_type'))) {
+            case 'api':
+                $config = [
+                    'token'          => sysconf('wechat_token'),
+                    'appid'          => sysconf('wechat_appid'),
+                    'appsecret'      => sysconf('wechat_appsecret'),
+                    'encodingaeskey' => sysconf('wechat_encodingaeskey'),
+                    'mch_id'         => sysconf('wechat_mch_id'),
+                    'partnerkey'     => sysconf('wechat_partnerkey'),
+                    'ssl_cer'        => sysconf('wechat_cert_cert'),
+                    'ssl_key'        => sysconf('wechat_cert_key'),
+                    'cachepath'      => env('cache_path') . 'wechat' . DIRECTORY_SEPARATOR,
+                ];
+                $type = '\\WeChat\\' . ucfirst(strtolower($name));
+                return new $type($config);
+            case 'thr':
+            default:
+                list($appid, $appkey) = [sysconf('wechat_thr_appid'), sysconf('wechat_thr_appkey')];
+                $token = strtolower("{$name}-{$appid}-{$appkey}");
+                $location = config('wechat.service_url') . "/wechat/api.client/soap/param/{$token}.html";
+                $params = ['uri' => strtolower($name), 'location' => $location, 'trace' => true];
+                return new SoapService(null, $params);
+        }
     }
 
     /**
@@ -71,7 +90,7 @@ class WechatService
      */
     public static function webOauth($fullMode = 0)
     {
-        $appid = sysconf('wechat_appid');
+        $appid = sysconf('wechat_thr_appid');
         list($openid, $fansinfo) = [session("{$appid}_openid"), session("{$appid}_fansinfo")];
         if ((empty($fullMode) && !empty($openid)) || (!empty($fullMode) && !empty($fansinfo))) {
             empty($fansinfo) || FansService::set($fansinfo);
@@ -87,6 +106,24 @@ class WechatService
         }
         if (!empty($result['url'])) {
             redirect($result['url'], [], 301)->send();
+        }
+    }
+
+    /**
+     * 获取当前公众号的AppId
+     * @return bool|string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public static function getAppid()
+    {
+        switch (strtolower(sysconf('wechat_type'))) {
+            case 'api':
+                return sysconf('wechat_appid');
+            case 'thr':
+                return sysconf('wechat_thr_appid');
+            default:
+                return '';
         }
     }
 

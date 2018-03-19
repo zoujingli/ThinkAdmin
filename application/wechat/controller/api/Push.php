@@ -50,26 +50,56 @@ class Push
 
     /**
      * 微信消息接口
+     * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function __construct()
+    public function index()
     {
         $request = app('request');
         $this->appid = $request->post('appid', '', null);
         $this->openid = $request->post('openid', '', null);
         $this->receive = unserialize($request->post('receive', '', null));
-        p($this->receive);
         if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
             throw new Exception('微信API实例缺失必要参数[appid,openid,event].');
         }
-        if ($this->appid !== sysconf('wechat_appid')) {
+        return $this->call($this->openid, $this->appid, $this->receive);
+    }
+
+    /**
+     * 公众号直接对接
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function notify()
+    {
+        $wechat = WechatService::receive();
+        return $this->call(WechatService::getAppid(), $wechat->getOpenid(), $wechat->getReceive());
+    }
+
+    /**
+     * 初始化接口
+     * @param string $appid 公众号APPID
+     * @param string $openid 公众号OPENID
+     * @param array $revice 消息对象
+     * @return string
+     * @throws Exception
+     * @throws \think\exception\PDOException
+     */
+    protected function call($appid, $openid, $revice)
+    {
+        $this->appid = $appid;
+        $this->openid = $openid;
+        $this->receive = $revice;
+        if ($this->appid !== WechatService::getAppid()) {
             throw new Exception('微信API实例APPID验证失败.');
         }
         // text,event,image,location
         if (method_exists($this, ($method = $this->receive['MsgType']))) {
-            $this->$method();
+            return $this->$method();
         }
+        return 'success';
     }
 
     /**

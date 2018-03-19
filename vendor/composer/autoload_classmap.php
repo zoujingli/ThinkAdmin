@@ -159,6 +159,7 @@ return array(
     'app\\wechat\\controller\\Review' => $baseDir . '/application/wechat/controller/Review.php',
     'app\\wechat\\controller\\Tags' => $baseDir . '/application/wechat/controller/Tags.php',
     'app\\wechat\\controller\\api\\Push' => $baseDir . '/application/wechat/controller/api/Push.php',
+    'app\\wechat\\controller\\api\\Tools' => $baseDir . '/application/wechat/controller/api/Tools.php',
     'app\\wechat\\service\\FansService' => $baseDir . '/application/wechat/service/FansService.php',
     'app\\wechat\\service\\MediaService' => $baseDir . '/application/wechat/service/MediaService.php',
     'app\\wechat\\service\\TagsService' => $baseDir . '/application/wechat/service/TagsService.php',

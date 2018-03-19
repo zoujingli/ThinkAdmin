@@ -44,21 +44,29 @@ class Config extends BasicAdmin
     {
         if ($this->request->isGet()) {
             $code = encode(url('@admin', '', true, true) . '#' . $this->request->url());
-            $assign = [
+            return $this->fetch('', [
                 'title'   => '微信接口配置',
                 'appuri'  => url("@wechat/api.push", '', true, true),
-                'appid'   => $this->request->get('appid', sysconf('wechat_appid')),
-                'appkey'  => $this->request->get('appkey', sysconf('wechat_appkey')),
+                'appid'   => $this->request->get('appid', sysconf('wechat_thr_appid')),
+                'appkey'  => $this->request->get('appkey', sysconf('wechat_thr_appkey')),
                 'authurl' => "http://wm.cuci.cc/wechat/api.push/auth/{$code}.html",
                 'wechat'  => WechatService::instance('config')->getConfig(),
-            ];
-            return $this->fetch('', $assign);
+            ]);
         }
         try {
+            // 接口对接类型
+            sysconf('wechat_type', $this->request->post('wechat_type'));
+            // 直接参数对应
+            sysconf('wechat_token', $this->request->post('wechat_token'));
             sysconf('wechat_appid', $this->request->post('wechat_appid'));
-            sysconf('wechat_appkey', $this->request->post('wechat_appkey'));
-            $apiurl = $this->request->post('wechat_appurl');
-            if (!empty($apiurl)) {
+            sysconf('wechat_appsecret', $this->request->post('wechat_appsecret'));
+            sysconf('wechat_encodingaeskey', $this->request->post('wechat_encodingaeskey'));
+            // 第三方平台配置
+            sysconf('wechat_thr_appid', $this->request->post('wechat_thr_appid'));
+            sysconf('wechat_thr_appkey', $this->request->post('wechat_thr_appkey'));
+            // 第三方平台时设置远程平台通知接口
+            if ($this->request->post('wechat_type') === 'thr') {
+                $apiurl = url('@wechat/api.push', '', true, true);
                 if (!WechatService::instance('config')->setApiNotifyUri($apiurl)) {
                     $this->error('远程服务端接口更新失败，请稍候再试！');
                 }

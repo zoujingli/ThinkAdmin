@@ -35,7 +35,7 @@ class FansService
      */
     public static function set(array $user)
     {
-        $user['appid'] = sysconf('wechat_appid');
+        $user['appid'] = WechatService::getAppid();
         if (!empty($user['subscribe_time'])) {
             $user['subscribe_at'] = date('Y-m-d H:i:s', $user['subscribe_time']);
         }
@@ -58,7 +58,7 @@ class FansService
      */
     public static function get($openid)
     {
-        $map = ['openid' => $openid, 'appid' => sysconf('wechat_appid')];
+        $map = ['openid' => $openid, 'appid' => WechatService::getAppid()];
         $user = Db::name('WechatFans')->where($map)->find();
         foreach (['country', 'province', 'city', 'nickname', 'remark'] as $k) {
             isset($user[$k]) && $user[$k] = ToolsService::emojiDecode($user[$k]);
