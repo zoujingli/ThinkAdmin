@@ -104,19 +104,22 @@ class WechatService
                 $wechat = self::oauth();
                 if (request()->get('state') !== $appid) {
                     $snsapi = empty($fullMode) ? 'snsapi_base' : 'snsapi_userinfo';
-                    $OauthUrl = $wechat->getOauthRedirect(request()->url(true), $appid, $snsapi);
+                    $baseUrl = request()->url(true);
+                    $param = (strpos($baseUrl, '?') !== false ? '&' : '?') . 'rcode=' . encode($baseUrl);
+                    $OauthUrl = $wechat->getOauthRedirect($baseUrl . $param, $appid, $snsapi);
                     redirect($OauthUrl, [], 301)->send();
                 }
                 $token = $wechat->getOauthAccessToken();
                 if (isset($token['openid'])) {
                     session("{$appid}_openid", $openid = $token['openid']);
-                    if (empty($fullMode)) {
-                        return ['openid' => $openid, 'fansinfo' => []];
+                    if (empty($fullMode) && request()->get('rcode')) {
+                        redirect(decode(request()->get('rcode')))->send();
                     }
                     session("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
                     empty($fansinfo) || FansService::set($fansinfo);
                 }
-                return ['openid' => $openid, 'fansinfo' => $fansinfo];
+                redirect(decode(request()->get('rcode')))->send();
+                break;
             case 'thr':
             default:
                 $service = self::instance('wechat');
