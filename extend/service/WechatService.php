@@ -16,6 +16,7 @@ namespace service;
 
 use app\wechat\service\FansService;
 use function Couchbase\defaultDecoder;
+use think\Exception;
 
 /**
  * 微信数据服务
@@ -64,13 +65,16 @@ class WechatService
                     'appsecret'      => sysconf('wechat_appsecret'),
                     'encodingaeskey' => sysconf('wechat_encodingaeskey'),
                     'mch_id'         => sysconf('wechat_mch_id'),
-                    'partnerkey'     => sysconf('wechat_partnerkey'),
+                    'mch_key'        => sysconf('wechat_partnerkey'),
                     'ssl_cer'        => sysconf('wechat_cert_cert'),
                     'ssl_key'        => sysconf('wechat_cert_key'),
                     'cachepath'      => env('cache_path') . 'wechat' . DIRECTORY_SEPARATOR,
                 ];
-                $type = '\\WeChat\\' . ucfirst(strtolower($name));
-                return new $type($config);
+                $class = '\\WeChat\\' . ucfirst(strtolower($name));
+                if (class_exists($class)) {
+                    return new $class($config);
+                }
+                throw new Exception("Class '{$class}' not found");
             case 'thr':
             default:
                 list($appid, $appkey) = [sysconf('wechat_thr_appid'), sysconf('wechat_thr_appkey')];
