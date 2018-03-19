@@ -8,7 +8,7 @@
         <div class="col-sm-8">
             {php}
             $wechat_type=sysconf('wechat_type')?sysconf('wechat_type'):'api';
-            $wechat_type=request()->get('appkey')?'thr':'api';
+            $wechat_type=request()->get('appkey')?'thr':$wechat_type;
             {/php}
             {foreach ['api'=>'普通接口参数','thr'=>'第三方授权对接'] as $k=>$v}
             <label class="think-radio">
