@@ -14,6 +14,7 @@
 
 namespace app\wechat\service;
 
+use service\FileService;
 use service\WechatService;
 use think\Db;
 
@@ -56,17 +57,20 @@ class MediaService
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public static function uploadImage($local_url)
     {
-        $media_url = Db::name('WechatNewsImage')->where(['md5' => md5($local_url)])->value('media_url');
-        if (!empty($media_url)) {
+        $map = ['md5' => md5($local_url)];
+        if (!($media_url = Db::name('WechatNewsImage')->where($map)->value('media_url'))) {
             return $media_url;
         }
-        $result = WechatService::wechat()->upFile(base64_encode(file_get_contents($local_url)), $local_url);
-        $info = WechatService::media()->uploadImg($result['file']);
-        WechatService::wechat()->rmFile($local_url);
-        $data = ['local_url' => $local_url, 'media_url' => $info['url'], 'md5' => md5($local_url)];
+        $info = WechatService::media()->uploadImg(self::getServerPath($local_url));
+        if (strtolower(sysconf('wechat_type')) === 'thr') {
+            WechatService::wechat()->rmFile($local_url);
+        }
+        $data = ['local_url' => $local_url, 'media_url' => $info['url'], 'md5' => $map['md5']];
         Db::name('WechatNewsImage')->insert($data);
         return $info['url'];
     }
@@ -88,13 +92,36 @@ class MediaService
         if (($media_id = Db::name('WechatNewsMedia')->where($map)->value('media_id'))) {
             return $media_id;
         }
-        $result = WechatService::wechat()->upFile(base64_encode(file_get_contents($local_url)), $local_url);
-        $result = WechatService::media()->addMaterial($result['file'], $type, $video_info);
-        WechatService::wechat()->rmFile($local_url);
+        $result = WechatService::media()->addMaterial(self::getServerPath($local_url), $type, $video_info);
+        if (strtolower(sysconf('wechat_type')) === 'thr') {
+            WechatService::wechat()->rmFile($local_url);
+        }
         $data = ['md5' => $map['md5'], 'type' => $type, 'appid' => $map['appid'], 'media_id' => $result['media_id'], 'local_url' => $local_url];
         isset($result['url']) && $data['media_url'] = $result['url'];
         Db::name('WechatNewsMedia')->insert($data);
         return $data['media_id'];
+    }
+
+    /**
+     * 文件位置处理
+     * @param string $local
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    protected static function getServerPath($local)
+    {
+        switch (strtolower(sysconf('wechat_type'))) {
+            case 'api':
+                if (file_exists($local)) {
+                    return $local;
+                }
+                return FileService::download($local)['file'];
+            case 'thr':
+                return WechatService::wechat()->upFile(base64_encode(file_get_contents($local)), $local)['file'];
+            default:
+                return $local;
+        }
     }
 
 }
