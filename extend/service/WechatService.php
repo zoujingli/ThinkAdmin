@@ -15,7 +15,6 @@
 namespace service;
 
 use app\wechat\service\FansService;
-use function Couchbase\defaultDecoder;
 use think\Exception;
 
 /**
@@ -94,22 +93,42 @@ class WechatService
      */
     public static function webOauth($fullMode = 0)
     {
-        $appid = sysconf('wechat_thr_appid');
+        $appid = self::getAppid();
         list($openid, $fansinfo) = [session("{$appid}_openid"), session("{$appid}_fansinfo")];
         if ((empty($fullMode) && !empty($openid)) || (!empty($fullMode) && !empty($fansinfo))) {
             empty($fansinfo) || FansService::set($fansinfo);
             return ['openid' => $openid, 'fansinfo' => $fansinfo];
         }
-        $service = self::instance('wechat');
-        $result = $service->oauth(session_id(), request()->url(true), $fullMode);
-        session("{$appid}_openid", $openid = $result['openid']);
-        session("{$appid}_fansinfo", $fansinfo = $result['fans']);
-        if ((empty($fullMode) && !empty($openid)) || (!empty($fullMode) && !empty($fansinfo))) {
-            empty($fansinfo) || FansService::set($fansinfo);
-            return ['openid' => $openid, 'fansinfo' => $fansinfo];
-        }
-        if (!empty($result['url'])) {
-            redirect($result['url'], [], 301)->send();
+        switch (strtolower(sysconf('wechat_type'))) {
+            case 'api':
+                $wechat = self::oauth();
+                if (request()->get('state') !== $appid) {
+                    $snsapi = empty($fullMode) ? 'snsapi_base' : 'snsapi_userinfo';
+                    $OauthUrl = $wechat->getOauthRedirect(request()->url(true), $appid, $snsapi);
+                    redirect($OauthUrl, [], 301)->send();
+                }
+                $token = $wechat->getOauthAccessToken();
+                if (isset($token['openid'])) {
+                    session("{$appid}_openid", $openid = $token['openid']);
+                    if (empty($fullMode)) {
+                        return ['openid' => $openid, 'fansinfo' => []];
+                    }
+                    session("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
+                }
+                return ['openid' => $openid, 'fansinfo' => $fansinfo];
+            case 'thr':
+            default:
+                $service = self::instance('wechat');
+                $result = $service->oauth(session_id(), request()->url(true), $fullMode);
+                session("{$appid}_openid", $openid = $result['openid']);
+                session("{$appid}_fansinfo", $fansinfo = $result['fans']);
+                if ((empty($fullMode) && !empty($openid)) || (!empty($fullMode) && !empty($fansinfo))) {
+                    empty($fansinfo) || FansService::set($fansinfo);
+                    return ['openid' => $openid, 'fansinfo' => $fansinfo];
+                }
+                if (!empty($result['url'])) {
+                    redirect($result['url'], [], 301)->send();
+                }
         }
     }
 
