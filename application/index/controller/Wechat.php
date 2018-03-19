@@ -36,4 +36,16 @@ class Wechat extends Controller
         return $this->fetch('wechat@api/tools/oauth', ['fans' => $fans]);
     }
 
+    /**
+     * 网页JSSDK测试
+     * @return mixed
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function jssdk()
+    {
+        $wechat = WechatService::script();
+        $options = $wechat->getJsSign($this->request->url(true));
+        return $this->fetch('wechat@api/tools/jssdk', ['options' => $options]);
+    }
 }
