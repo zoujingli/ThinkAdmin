@@ -26,7 +26,6 @@
         $.toptip(err.errMsg, 100000, 'error');
     });
     wx.ready(function () {
-        $.toptip('JSSDK 初始化成功...', 'success');
         $('#show-alert').removeClass('weui-btn_disabled').on('click', function () {
             wx.scanQRCode({
                 needResult: 1,
