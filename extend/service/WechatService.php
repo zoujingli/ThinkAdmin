@@ -114,6 +114,7 @@ class WechatService
                         return ['openid' => $openid, 'fansinfo' => []];
                     }
                     session("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
+                    empty($fansinfo) || FansService::set($fansinfo);
                 }
                 return ['openid' => $openid, 'fansinfo' => $fansinfo];
             case 'thr':
