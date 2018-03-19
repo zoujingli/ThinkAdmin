@@ -73,7 +73,7 @@ class Config extends BasicAdmin
             // 第三方平台时设置远程平台通知接口
             if ($this->request->post('wechat_type') === 'thr') {
                 $apiurl = url('@wechat/api.push', '', true, true);
-                if (!WechatService::instance('config')->setApiNotifyUri($apiurl)) {
+                if (!WechatService::config()->setApiNotifyUri($apiurl)) {
                     $this->error('远程服务端接口更新失败，请稍候再试！');
                 }
             }
