@@ -103,8 +103,8 @@ class WechatService
             case 'api':
                 $wechat = self::oauth();
                 if (request()->get('state') !== $appid) {
-                    $snsapi = empty($fullMode) ? 'snsapi_base' : 'snsapi_userinfo';
                     $baseUrl = request()->url(true);
+                    $snsapi = empty($fullMode) ? 'snsapi_base' : 'snsapi_userinfo';
                     $param = (strpos($baseUrl, '?') !== false ? '&' : '?') . 'rcode=' . encode($baseUrl);
                     $OauthUrl = $wechat->getOauthRedirect($baseUrl . $param, $appid, $snsapi);
                     redirect($OauthUrl, [], 301)->send();
