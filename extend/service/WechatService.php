@@ -69,6 +69,9 @@ class WechatService
                     'ssl_key'        => sysconf('wechat_cert_key'),
                     'cachepath'      => env('cache_path') . 'wechat' . DIRECTORY_SEPARATOR,
                 ];
+                if (in_array(strtolower($name), ['wechat', 'config'])) {
+                    $name = 'receive';
+                }
                 $type = '\\WeChat\\' . ucfirst(strtolower($name));
                 return new $type($config);
             case 'thr':
