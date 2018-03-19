@@ -14,18 +14,26 @@
 
 namespace app\index\controller;
 
+use service\WechatService;
 use think\Controller;
 
 /**
- * 应用入口控制器
- * @author Anyon <zoujingli@qq.com>
+ * 公众号测试
+ * Class Wechat
+ * @package app\index\controller
  */
-class Index extends Controller
+class Wechat extends Controller
 {
-
-    public function index()
+    /**
+     * 网页授权测试
+     * @return mixed
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function oauth()
     {
-        $this->redirect('@admin/login');
+        $fans = WechatService::webOauth(1);
+        return $this->fetch('wechat@api/tools/oauth', ['fans' => $fans]);
     }
 
 }
