@@ -41,11 +41,11 @@ class Wechat extends Controller
      * @return mixed
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function jssdk()
     {
-        $wechat = WechatService::script();
-        $options = $wechat->getJsSign($this->request->url(true));
-        return $this->fetch('wechat@api/tools/jssdk', ['options' => $options]);
+        return $this->fetch('wechat@api/tools/jssdk', ['options' => WechatService::webJsSDK()]);
     }
 }
