@@ -146,7 +146,6 @@
 
         function updateViwe() {
             var type = $('[name="wechat_type"]:checked').val();
-            console.log('[data-api-type="' + type + '"]');
             $('[data-api-type]').not($('[data-api-type="' + type + '"]').removeClass('hide')).addClass('hide');
         }
     });
