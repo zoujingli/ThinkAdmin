@@ -17,6 +17,7 @@ namespace app\wechat\controller;
 use controller\BasicAdmin;
 use service\LogService;
 use service\WechatService;
+use think\Exception;
 
 /**
  * 微信配置管理
@@ -44,13 +45,18 @@ class Config extends BasicAdmin
     {
         if ($this->request->isGet()) {
             $code = encode(url('@admin', '', true, true) . '#' . $this->request->url());
+            try {
+                $info = WechatService::instance('config')->getConfig();
+            } catch (Exception $e) {
+                $info = [];
+            }
             return $this->fetch('', [
                 'title'   => '微信接口配置',
                 'appuri'  => url("@wechat/api.push", '', true, true),
                 'appid'   => $this->request->get('appid', sysconf('wechat_thr_appid')),
                 'appkey'  => $this->request->get('appkey', sysconf('wechat_thr_appkey')),
                 'authurl' => "http://wm.cuci.cc/wechat/api.push/auth/{$code}.html",
-                'wechat'  => WechatService::instance('config')->getConfig(),
+                'wechat'  => $info,
             ]);
         }
         try {
