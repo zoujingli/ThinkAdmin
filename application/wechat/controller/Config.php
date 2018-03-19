@@ -81,7 +81,7 @@ class Config extends BasicAdmin
         } catch (\Exception $e) {
             $this->error('微信授权保存失败 , 请稍候重试 ! ' . $e->getMessage());
         }
-        $this->success('微信授权数据修改成功！', '');
+        $this->success('微信授权数据修改成功！', url('@admin') . "#" . url('@wechat/config/index'));
     }
 
 }
