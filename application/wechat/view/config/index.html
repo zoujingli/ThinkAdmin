@@ -4,7 +4,7 @@
 <form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
 
     <div class="row form-group">
-        <label class="col-sm-2 control-label label-required">ApiType<br><span class="nowrap color-desc">对接模式</span></label>
+        <label class="col-sm-2 control-label label-required">Mode<br><span class="nowrap color-desc">模式</span></label>
         <div class="col-sm-8">
             {php}
             $wechat_type=sysconf('wechat_type')?sysconf('wechat_type'):'api';
@@ -27,10 +27,10 @@
     <div class="hr-line-dashed"></div>
 
     <div class="row">
-        <div class="col-sm-2 control-label">Test<br><span class="nowrap color-desc">功能测试</span></div>
+        <div class="col-sm-2 control-label">Test<br><span class="nowrap color-desc">测试</span></div>
         <div class="col-sm-10">
             <div class="pull-left padding-right-15 notselect">
-                <img data-tips-image src="{:url('@wechat/api.tools/oauth_qrc')}" style="width:80px;margin-left:-10px">
+                <img data-tips-image src="{:url('@wechat/api.tools/oauth_qrc')}" style="width:80px;margin-left:-4px">
                 <p class="text-center" style="margin-left:-10px">网页授权</p>
             </div>
             <div class="pull-left padding-left-0">
@@ -87,8 +87,8 @@
         <div class="row">
             <div class="col-sm-2 control-label">Qrc<br><span class="nowrap color-desc">二维码</span></div>
             <div class="col-sm-10">
-                <div class="pull-left padding-right-15 notselect">
-                    <img data-tips-image src="{$wechat.qrcode_url|local_image}" style="width:160px;margin-left:-15px">
+                <div class="pull-left notselect">
+                    <img data-tips-image src="{$wechat.qrcode_url|local_image}" style="width:160px;margin-left:-10px">
                 </div>
                 <div class="pull-left padding-15 padding-left-0">
                     <p class="margin-bottom-10 nowrap">微信昵称：{$wechat.nick_name}</p>
@@ -99,7 +99,6 @@
                 </div>
             </div>
         </div>
-
         <div class="hr-line-dashed"></div>
         <!--{/if}-->
         <div class="row form-group">
