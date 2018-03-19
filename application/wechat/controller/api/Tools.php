@@ -53,12 +53,14 @@ class Tools extends BasicAdmin
     /**
      * JSSDK测试
      * @return string
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function jssdk()
     {
-        $wechat = WechatService::wechat();
-        $options = $wechat->jsSign($this->request->url(true));
-        return $this->fetch('', ['options' => $options]);
+        return $this->fetch('', ['options' => WechatService::webJsSDK()]);
     }
 
     /**

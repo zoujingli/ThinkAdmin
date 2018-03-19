@@ -85,6 +85,25 @@ class WechatService
     }
 
     /**
+     * 获取微信网页JSSDK
+     * @return array
+     * @throws \think\Exception
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\exception\PDOException
+     */
+    public static function webJsSDK()
+    {
+        switch (strtolower(sysconf('wechat_type'))) {
+            case 'api':
+                return WechatService::script()->getJsSign(request()->url(true));
+            case 'thr':
+            default:
+                return WechatService::wechat()->jsSign(request()->url(true));
+        }
+    }
+
+    /**
      * 初始化进入授权
      * @param int $fullMode 授权公众号模式
      * @return array
