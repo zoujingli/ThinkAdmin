@@ -70,7 +70,7 @@ class WechatService
                     'cachepath'      => env('cache_path') . 'wechat' . DIRECTORY_SEPARATOR,
                 ];
                 if (in_array(strtolower($name), ['wechat', 'config'])) {
-                    $name = 'receive';
+                    $name = 'user';
                 }
                 $type = '\\WeChat\\' . ucfirst(strtolower($name));
                 return new $type($config);
