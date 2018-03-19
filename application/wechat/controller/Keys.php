@@ -53,8 +53,6 @@ class Keys extends BasicAdmin
     /**
      * 列表数据处理
      * @param array $data
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
      */
     protected function _index_data_filter(&$data)
     {
@@ -62,11 +60,15 @@ class Keys extends BasicAdmin
             'keys'  => '关键字', 'image' => '图片', 'news' => '图文',
             'music' => '音乐', 'text' => '文字', 'video' => '视频', 'voice' => '语音',
         ];
-        $wechat = WechatService::qrcode();
-        foreach ($data as &$vo) {
-            $result = $wechat->create($vo['keys']);
-            $vo['qrc'] = $wechat->url($result['ticket']);
-            $vo['type'] = isset($types[$vo['type']]) ? $types[$vo['type']] : $vo['type'];
+        try {
+            $wechat = WechatService::qrcode();
+            foreach ($data as &$vo) {
+                $result = $wechat->create($vo['keys']);
+                $vo['qrc'] = $wechat->url($result['ticket']);
+                $vo['type'] = isset($types[$vo['type']]) ? $types[$vo['type']] : $vo['type'];
+            }
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
         }
     }
 
