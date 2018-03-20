@@ -4,7 +4,7 @@
 <form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
 
     <div class="row form-group">
-        <label class="col-sm-2 control-label label-required">Mode<br><span class="nowrap color-desc">模式</span></label>
+        <label class="col-sm-2 control-label label-required">Mode<br><span class="nowrap color-desc">接口模式</span></label>
         <div class="col-sm-8">
             {php}
             $wechat_type=sysconf('wechat_type')?sysconf('wechat_type'):'api';
