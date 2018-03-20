@@ -27,14 +27,14 @@
     <div class="hr-line-dashed"></div>
 
     <div class="row">
-        <div class="col-sm-2 control-label">Test<br><span class="nowrap color-desc">功能测试</span></div>
+        <div class="col-sm-2 control-label">WxTest<br><span class="nowrap color-desc">功能测试</span></div>
         <div class="col-sm-10">
             <div class="pull-left padding-right-15 notselect">
-                <img data-tips-image src="{:url('@wechat/api.tools/oauth_qrc')}" style="width:80px;margin-left:-4px">
+                <img class="notselect" data-tips-image src="{:url('@wechat/api.tools/oauth_qrc')}" style="width:80px;margin-left:-4px">
                 <p class="text-center" style="margin-left:-10px">网页授权</p>
             </div>
             <div class="pull-left padding-left-0">
-                <img data-tips-image src="{:url('@wechat/api.tools/jssdk_qrc')}" style="width:80px;">
+                <img class="notselect" data-tips-image src="{:url('@wechat/api.tools/jssdk_qrc')}" style="width:80px;">
                 <p class="text-center">JSSDK签名</p>
             </div>
         </div>
@@ -85,7 +85,7 @@
     <div data-api-type="thr" class="hide">
         <!--{if !empty($wechat)}-->
         <div class="row">
-            <div class="col-sm-2 control-label">WxQrc<br><span class="nowrap color-desc">公众号二维码</span></div>
+            <div class="col-sm-2 control-label">QRCode<br><span class="nowrap color-desc">公众号二维码</span></div>
             <div class="col-sm-10">
                 <div class="pull-left notselect">
                     <img data-tips-image src="{$wechat.qrcode_url|local_image}" style="width:95px;margin-left:-10px">
