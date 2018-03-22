@@ -55,7 +55,7 @@ class Config extends BasicAdmin
                 'appuri'  => url("@wechat/api.push", '', true, true),
                 'appid'   => $this->request->get('appid', sysconf('wechat_thr_appid')),
                 'appkey'  => $this->request->get('appkey', sysconf('wechat_thr_appkey')),
-                'authurl' => config('wechat.service_url') . "/wechat/api.push/auth/redirect/{$code}.html",
+                'authurl' => config('wechat.service_url') . "/wechat/api.push/auth/{$code}.html",
                 'wechat'  => $info,
             ]);
         }
