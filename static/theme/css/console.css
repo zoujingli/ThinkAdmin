@@ -75,7 +75,7 @@ legend{width:auto!important;border-bottom:none!important}
 .layui-table .list-table-sort-td{width:60px!important;text-align:center!important}
 .layui-table .list-table-sort-td button{width:50px}
 .layui-table .list-table-sort-td input{width:50px;text-align:center;line-height:14px;padding:2px;border:1px solid #e6e6e6}
-.layui-table .list-table-check-td{width:30px!important;text-align:center;padding:0}
+.layui-table .list-table-check-td{width:30px!important;text-align:center;}
 .layui-table .list-table-check-td input{margin:0;vertical-align:middle}
 
 /** checkbox 优化 */
