@@ -103,12 +103,6 @@ CREATE TABLE `system_log` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
 
 -- ----------------------------
--- Records of system_log
--- ----------------------------
-INSERT INTO `system_log` VALUES ('1', '113.106.73.138', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-03-13 15:42:15');
-INSERT INTO `system_log` VALUES ('2', '115.229.46.40', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-03-13 15:43:48');
-
--- ----------------------------
 -- Table structure for system_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `system_menu`;
