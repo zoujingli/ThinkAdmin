@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* +----------------------------------------------------------------------
-// | ThinkAdmin
+// | ThinkService
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkService
 // +--------------------------------------------------------------------*/
 
 html{overflow:auto}body{width:100%;font-size:12px;font-family:'微软雅黑','Microsoft YaHei','Helvetica Neue','Luxi Sans','DejaVu Sans','Hiragino Sans GB',serif}
@@ -44,6 +44,7 @@ a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}but
 
 /** 页面加载进度 */
 .pace-inactive{display:none}
+.modal-form-box{padding:30px 60px 15px 0}
 .pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}
 .pace .pace-progress{background:#22df80;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}
 .uploadimage{display:inline-block;width:80px;height:80px;background: url('../img/image.png') no-repeat center center;background-size:cover;cursor:pointer}
