@@ -12,7 +12,7 @@
 // | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +--------------------------------------------------------------------*/
 
-html{overflow:auto}body{width:100%;font-size:13px;font-family:'微软雅黑','Microsoft YaHei','Helvetica Neue','Luxi Sans','DejaVu Sans','Hiragino Sans GB',serif}
+html{overflow:auto}body{width:100%;font-size:12px;font-family:'微软雅黑','Microsoft YaHei','Helvetica Neue','Luxi Sans','DejaVu Sans','Hiragino Sans GB',serif}
 a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}button{border-radius:0!important}
 .text-left{text-align:left!important}.text-right{text-align:right!important}.text-center{text-align:center!important}.text-top{vertical-align:top!important}
 .color-desc{color:#999!important}.color-text{color:#333!important}.color-blue{color:#2494f2!important}.color-red{color:#ec494e!important}.color-green{color:#090!important}
@@ -68,7 +68,7 @@ legend{width:auto!important;border-bottom:none!important}
 .layui-form-label{padding:9px 15px 9px 0;width:95px}
 .layui-input,.layui-select{line-height:38px}
 .layui-table.notevent tbody tr:hover {background-color: inherit;}
-.layui-table th,.layui-table td{font-size:13px}
+.layui-table th,.layui-table td{font-size:12px}
 .layui-table td .text-explode:first-child{opacity:0;display:none}
 .layui-table td .text-explode{color:#ccc!important;font-weight:normal!important;margin:0px 4px!important}
 .layui-table .list-table-image{width:22px;cursor:pointer}
@@ -152,7 +152,7 @@ input[type=checkbox]:focus,input[type=radio]:focus{outline:none}
 
 /* 右则内容搜索样式 */
 .framework-body .form-search{background:#fff;padding-top:15px}
-.framework-body .form-search .layui-btn{height:32px;line-height:30px;font-size:13px;padding:0 10px}
+.framework-body .form-search .layui-btn{height:32px;line-height:30px;font-size:12px;padding:0 10px}
 .framework-body .form-search .layui-form-label{width:auto!important;border-radius:0;padding:0 6px;height:32px;line-height:30px}
 .framework-body .form-search .layui-input-inline{width:170px}
 .framework-body .form-search .layui-input-inline input,

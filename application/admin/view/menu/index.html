@@ -61,7 +61,7 @@
 
                 {if auth("$classuri/edit")}
                 <span class="text-explode">|</span>
-                <a data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
+                <a data-title="编辑菜单" data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
                 {/if}
 
                 {if $vo.status eq 1 and auth("$classuri/forbid")}
