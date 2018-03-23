@@ -10,10 +10,130 @@ Target Server Type    : MYSQL
 Target Server Version : 50559
 File Encoding         : 65001
 
-Date: 2018-03-13 15:44:55
+Date: 2018-03-23 17:07:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for goods
+-- ----------------------------
+DROP TABLE IF EXISTS `goods`;
+CREATE TABLE `goods` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `brand_id` bigint(20) unsigned DEFAULT '0' COMMENT '品牌ID',
+  `cate_id` bigint(20) unsigned DEFAULT '0' COMMENT '商品分类id',
+  `unit_id` bigint(20) DEFAULT NULL COMMENT '商品单位ID',
+  `spec_id` bigint(20) unsigned DEFAULT '0' COMMENT '规格ID',
+  `tags_id` varchar(255) DEFAULT '' COMMENT '商品标签ID',
+  `is_code` bigint(1) DEFAULT '1' COMMENT '是否有码商品',
+  `goods_title` varchar(255) DEFAULT '' COMMENT '商品标签',
+  `goods_content` text COMMENT '商品内容',
+  `goods_logo` varchar(255) DEFAULT '' COMMENT '商品LOGO',
+  `goods_image` text COMMENT '商品图片地址',
+  `goods_video` varchar(500) DEFAULT '' COMMENT '商品视频URL',
+  `goods_desc` varchar(500) DEFAULT '' COMMENT '商品描述',
+  `package_stock` bigint(20) unsigned DEFAULT '0' COMMENT '总库存数量',
+  `package_sale` bigint(20) unsigned DEFAULT '0' COMMENT '已销售数量',
+  `favorite_num` bigint(20) unsigned DEFAULT '0' COMMENT '收藏次数',
+  `sort` bigint(20) unsigned DEFAULT '0' COMMENT '数据排序',
+  `status` bigint(1) unsigned DEFAULT '1' COMMENT '商品状态(1有效,0无效)',
+  `is_deleted` bigint(1) unsigned DEFAULT '0' COMMENT '删除状态(1删除,0未删除)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商城商品主表';
+
+-- ----------------------------
+-- Records of goods
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for goods_brand
+-- ----------------------------
+DROP TABLE IF EXISTS `goods_brand`;
+CREATE TABLE `goods_brand` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `brand_logo` varchar(1024) DEFAULT '' COMMENT '品牌logo',
+  `brand_cover` varchar(1024) DEFAULT '' COMMENT '品牌封面',
+  `brand_title` varchar(255) DEFAULT '' COMMENT '商品品牌名称',
+  `brand_desc` text COMMENT '商品品牌描述',
+  `brand_detail` text COMMENT '品牌图文信息',
+  `sort` int(11) unsigned DEFAULT '0' COMMENT '商品分类排序',
+  `status` tinyint(1) unsigned DEFAULT '1' COMMENT '商品状态(1有效,0无效)',
+  `is_deleted` tinyint(1) unsigned DEFAULT '0' COMMENT '删除状态(1删除,0未删除)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品产品品牌';
+
+-- ----------------------------
+-- Records of goods_brand
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for goods_cate
+-- ----------------------------
+DROP TABLE IF EXISTS `goods_cate`;
+CREATE TABLE `goods_cate` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` bigint(20) unsigned DEFAULT '0' COMMENT '上级分类编号',
+  `brand_id` bigint(20) DEFAULT '0' COMMENT '品牌ID',
+  `cate_title` varchar(255) DEFAULT '' COMMENT '商品分类名称',
+  `cate_desc` text COMMENT '商品分类',
+  `sort` bigint(20) unsigned DEFAULT '0' COMMENT '商品分类排序',
+  `status` bigint(1) unsigned DEFAULT '1' COMMENT '商品状态(1有效,0无效)',
+  `is_deleted` bigint(1) unsigned DEFAULT '0' COMMENT '删除状态(1删除,0未删除)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商城商品分类';
+
+-- ----------------------------
+-- Records of goods_cate
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for goods_list
+-- ----------------------------
+DROP TABLE IF EXISTS `goods_list`;
+CREATE TABLE `goods_list` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `goods_id` bigint(20) unsigned DEFAULT '0' COMMENT '商品ID',
+  `goods_spec` varchar(255) DEFAULT '' COMMENT '商品规格名称',
+  `goods_number` bigint(20) unsigned DEFAULT '0' COMMENT '商品礼品-商品数量',
+  `market_price` decimal(20,2) unsigned DEFAULT '0.00' COMMENT '销售价格',
+  `selling_price` decimal(20,2) unsigned DEFAULT '0.00' COMMENT '商品价格',
+  `goods_stock` bigint(20) unsigned DEFAULT '0' COMMENT '商品库存统计',
+  `goods_sale` bigint(20) unsigned DEFAULT '0' COMMENT '已销售数量',
+  `status` bigint(1) unsigned DEFAULT '1' COMMENT '商品状态(1有效,0无效)',
+  `is_deleted` bigint(1) unsigned DEFAULT '0' COMMENT '删除状态(1删除,0未删除)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商城商品列表';
+
+-- ----------------------------
+-- Records of goods_list
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for goods_spec
+-- ----------------------------
+DROP TABLE IF EXISTS `goods_spec`;
+CREATE TABLE `goods_spec` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `mch_id` bigint(20) unsigned DEFAULT '0' COMMENT '商户ID',
+  `spec_title` varchar(255) DEFAULT '' COMMENT '商品规格名称',
+  `spec_param` varchar(255) DEFAULT '' COMMENT '商品规格参数',
+  `spec_desc` varchar(255) DEFAULT '' COMMENT '商品规格描述',
+  `sort` bigint(20) unsigned DEFAULT '0' COMMENT '商品规格排序',
+  `status` bigint(1) unsigned DEFAULT '1' COMMENT '商品状态(1有效,0无效)',
+  `is_deleted` bigint(1) unsigned DEFAULT '0' COMMENT '删除状态(1删除,0未删除)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `index_store_goods_spec_mch_id` (`mch_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商城商品规格';
+
+-- ----------------------------
+-- Records of goods_spec
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for system_auth
@@ -63,7 +183,7 @@ CREATE TABLE `system_config` (
   `value` varchar(500) DEFAULT NULL COMMENT '配置值',
   PRIMARY KEY (`id`),
   KEY `index_system_config_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
 
 -- ----------------------------
 -- Records of system_config
@@ -86,6 +206,15 @@ INSERT INTO `system_config` VALUES ('15', 'storage_oss_endpoint', 'oss-cn-beijin
 INSERT INTO `system_config` VALUES ('16', 'storage_oss_domain', 'cuci.oss-cn-beijing.aliyuncs.com');
 INSERT INTO `system_config` VALUES ('17', 'storage_oss_keyid', '用你自己的吧');
 INSERT INTO `system_config` VALUES ('18', 'storage_oss_secret', '用你自己的吧');
+INSERT INTO `system_config` VALUES ('34', 'wechat_appid', 'wx60a43dd8161666d4');
+INSERT INTO `system_config` VALUES ('35', 'wechat_appkey', '9890a0d7c91801a609d151099e95b61a');
+INSERT INTO `system_config` VALUES ('36', 'storage_oss_is_https', 'http');
+INSERT INTO `system_config` VALUES ('37', 'wechat_type', 'api');
+INSERT INTO `system_config` VALUES ('38', 'wechat_token', 'test');
+INSERT INTO `system_config` VALUES ('39', 'wechat_appsecret', 'a041bec98ed015d52b99acea5c6a16ef');
+INSERT INTO `system_config` VALUES ('40', 'wechat_encodingaeskey', 'BJIUzE0gqlWy0GxfPp4J1oPTBmOrNDIGPNav1YFH5Z5');
+INSERT INTO `system_config` VALUES ('41', 'wechat_thr_appid', 'wx60a43dd8161666d4');
+INSERT INTO `system_config` VALUES ('42', 'wechat_thr_appkey', '05db2aa335382c66ab56d69b1a9ad0ee');
 
 -- ----------------------------
 -- Table structure for system_log
@@ -100,7 +229,11 @@ CREATE TABLE `system_log` (
   `content` text NOT NULL COMMENT '操作内容描述',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
+
+-- ----------------------------
+-- Records of system_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -121,7 +254,7 @@ CREATE TABLE `system_menu` (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `index_system_menu_node` (`node`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of system_menu
@@ -166,7 +299,7 @@ CREATE TABLE `system_node` (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `index_system_node_node` (`node`)
-) ENGINE=InnoDB AUTO_INCREMENT=322 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统节点表';
 
 -- ----------------------------
 -- Records of system_node
@@ -182,7 +315,6 @@ INSERT INTO `system_node` VALUES ('8', 'admin/auth/resume', '启用权限', '0',
 INSERT INTO `system_node` VALUES ('9', 'admin/auth/del', '删除权限', '0', '1', '1', '2018-01-23 12:39:25');
 INSERT INTO `system_node` VALUES ('10', 'admin/config/index', '系统参数', '1', '1', '1', '2018-01-23 12:39:25');
 INSERT INTO `system_node` VALUES ('11', 'admin/config/file', '文件存储', '0', '1', '1', '2018-01-23 12:39:26');
-INSERT INTO `system_node` VALUES ('12', 'admin/config/sms', '短信接口', '0', '1', '1', '2018-01-23 12:39:28');
 INSERT INTO `system_node` VALUES ('13', 'admin/log/index', '日志记录', '1', '1', '1', '2018-01-23 12:39:28');
 INSERT INTO `system_node` VALUES ('14', 'admin/log/sms', '短信记录', '0', '1', '1', '2018-01-23 12:39:29');
 INSERT INTO `system_node` VALUES ('15', 'admin/log/del', '日志删除', '0', '1', '1', '2018-01-23 12:39:29');
@@ -294,7 +426,7 @@ CREATE TABLE `system_user` (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '22409', '2018-03-13 15:43:48', '1', '1', '0', null, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '18993368867', '', '23296', '2018-03-23 17:05:40', '1', '2,4', '0', null, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

@@ -1,0 +1,63 @@
+{extend name='admin@public/content'}
+
+{block name="content"}
+<form class="layui-form layui-box padding-top-20" action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">产品品牌</label>
+        <div class="layui-input-block">
+            <input autofocus name="brand_title" value='{$vo.brand_title|default=""}' required="required" title="请输入产品品牌" placeholder="请输入产品品牌" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-inline ">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline well">
+            <p class="color-desc label-required">品牌Logo图片</p>
+            <input type="hidden" name="brand_logo" value="{$vo.brand_logo|default=''}">
+            <script>$('[name=brand_logo]').uploadOneImage()</script>
+        </div>
+    </div>
+
+    <div class="layui-inline">
+        <div class="layui-input-inline well">
+            <p class="color-desc label-required">品牌封面图片</p>
+            <input type="hidden" name="brand_cover" value="{$vo.brand_cover|default=''}">
+            <script>$('[name=brand_cover]').uploadOneImage()</script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">品牌描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入品牌描述" title="请输入品牌描述" class="layui-textarea" name="brand_desc">{$vo.brand_desc|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">品牌内容</label>
+        <div class="layui-input-block">
+            <textarea name="brand_detail">{$vo.brand_detail|default=''|raw}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-7 col-sm-offset-2">
+        <div class="layui-form-item text-center">
+            {if !empty($vo.id)}<input type="hidden" name="id" value="{$vo.id}">{/if}
+            <button class="layui-btn" type="submit">保存配置</button>
+            <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+        </div>
+    </div>
+
+    <script>window.form.render();</script>
+
+    <script>
+        /*! 实例富文本编辑器  */
+        require(['ckeditor'], function () {
+            window.createEditor('[name="brand_detail"]', {height: 500});
+        });
+    </script>
+</form>
+{/block}
