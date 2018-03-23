@@ -97,7 +97,7 @@ class Push
         }
         // text,event,image,location
         if (method_exists($this, ($method = $this->receive['MsgType']))) {
-            return $this->$method();
+            $this->$method();
         }
         return 'success';
     }
@@ -237,7 +237,6 @@ class Push
     protected function sendMessage($type, $data)
     {
         $msgData = ['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data];
-        p($msgData);
         return WechatService::custom()->send($msgData);
     }
 
