@@ -112,44 +112,41 @@ class WechatService
      */
     public static function webOauth($fullMode = 0)
     {
-        $appid = self::getAppid();
+        list($appid, $request) = [self::getAppid(), app('request')];
         list($openid, $fansinfo) = [session("{$appid}_openid"), session("{$appid}_fansinfo")];
         if ((empty($fullMode) && !empty($openid)) || (!empty($fullMode) && !empty($fansinfo))) {
-            empty($fansinfo) || FansService::set($fansinfo);
             return ['openid' => $openid, 'fansinfo' => $fansinfo];
         }
         switch (strtolower(sysconf('wechat_type'))) {
             case 'api':
                 $wechat = self::oauth();
-                if (request()->get('state') !== $appid) {
-                    $baseUrl = request()->url(true);
-                    $snsapi = empty($fullMode) ? 'snsapi_base' : 'snsapi_userinfo';
-                    $param = (strpos($baseUrl, '?') !== false ? '&' : '?') . 'rcode=' . encode($baseUrl);
-                    $OauthUrl = $wechat->getOauthRedirect($baseUrl . $param, $appid, $snsapi);
-                    redirect($OauthUrl, [], 301)->send();
+                if ($request->get('state') !== $appid) {
+                    $selfUrl = $request->url(true);
+                    $typeSns = empty($fullMode) ? 'snsapi_base' : 'snsapi_userinfo';
+                    $params = (strpos($selfUrl, '?') === false ? '?' : '&') . 'rcode=' . encode($selfUrl);
+                    redirect($wechat->getOauthRedirect($selfUrl . $params, $appid, $typeSns), [], 301)->send();
                 }
                 $token = $wechat->getOauthAccessToken();
-                if (isset($token['openid'])) {
-                    session("{$appid}_openid", $openid = $token['openid']);
-                    if (empty($fullMode) && request()->get('rcode')) {
-                        redirect(decode(request()->get('rcode')))->send();
-                    }
-                    session("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
+                session("{$appid}_openid", empty($token['openid']) ? null : $token['openid']);
+                if (!empty($fullMode) && !empty($token['openid']) && !empty($token['access_token'])) {
+                    $fansinfo = $wechat->getUserInfo($token['access_token'], $token['openid']);
+                    session("{$appid}_fansinfo", empty($fansinfo) ? null : $fansinfo);
                     empty($fansinfo) || FansService::set($fansinfo);
                 }
-                redirect(decode(request()->get('rcode')))->send();
-                break;
+                if (($rcode = $request->get('rcode', false))) {
+                    redirect(decode($rcode))->send();
+                }
+                throw new Exception('网页授权异常，请稍候再试！', '503');
             case 'thr':
             default:
-                $service = self::instance('wechat');
-                $result = $service->oauth(session_id(), request()->url(true), $fullMode);
-                session("{$appid}_openid", $openid = $result['openid']);
-                session("{$appid}_fansinfo", $fansinfo = $result['fans']);
-                if ((empty($fullMode) && !empty($openid)) || (!empty($fullMode) && !empty($fansinfo))) {
-                    empty($fansinfo) || FansService::set($fansinfo);
-                    return ['openid' => $openid, 'fansinfo' => $fansinfo];
+                $result = self::wechat()->oauth(session_id(), $request->url(true), $fullMode);
+                session("{$appid}_openid", empty($result['openid']) ? null : $result['openid']);
+                session("{$appid}_fansinfo", empty($result['fans']) ? null : $result['fans']);
+                if ((empty($fullMode) && !empty($result['openid'])) || (!empty($fullMode) && !empty($result['fans']))) {
+                    empty($result['fans']) || FansService::set($result['fans']);
+                    return ['openid' => $result['openid'], 'fansinfo' => $result['fans']];
                 }
-                if (!empty($result['url'])) {
+                if (!empty($result['url'])) { // 授权跳转
                     redirect($result['url'], [], 301)->send();
                 }
         }
