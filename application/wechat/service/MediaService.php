@@ -14,6 +14,7 @@
 
 namespace app\wechat\service;
 
+use service\DataService;
 use service\FileService;
 use service\WechatService;
 use think\Db;
@@ -71,7 +72,7 @@ class MediaService
             WechatService::wechat()->rmFile($local_url);
         }
         $data = ['local_url' => $local_url, 'media_url' => $info['url'], 'md5' => $map['md5']];
-        Db::name('WechatNewsImage')->insert($data);
+        DataService::save('WechatNewsImage', $data, 'md5', ['type' => 'image']);
         return $info['url'];
     }
 
@@ -98,7 +99,7 @@ class MediaService
         }
         $data = ['md5' => $map['md5'], 'type' => $type, 'appid' => $map['appid'], 'media_id' => $result['media_id'], 'local_url' => $local_url];
         isset($result['url']) && $data['media_url'] = $result['url'];
-        Db::name('WechatNewsMedia')->insert($data);
+        DataService::save('WechatNewsMedia', $data, 'md5', ['appid' => $map['appid'], 'type' => $type]);
         return $data['media_id'];
     }
 
