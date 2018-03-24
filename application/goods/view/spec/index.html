@@ -87,23 +87,24 @@
             </td>
             <td class='text-left text-top nowrap'>
 
-                {if auth("$classuri/edit")}
+                <!--{if auth("$classuri/edit")}-->
                 <span class="text-explode">|</span>
-                <a data-title="编辑标签" data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
-                {/if}
+                <a data-title="编辑规格" data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
+                <!--{/if}-->
 
-                {if $vo.status eq 1 and auth("$classuri/forbid")}
+                <!--{if $vo.status eq 1 and auth("$classuri/forbid")}-->
                 <span class="text-explode">|</span>
                 <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>禁用</a>
-                {elseif auth("$classuri/resume")}
+                <!--{elseif auth("$classuri/resume")}-->
                 <span class="text-explode">|</span>
                 <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>启用</a>
-                {/if}
+                <!--{/if}-->
 
-                {if auth("$classuri/del")}
+                <!--{if auth("$classuri/del")}-->
                 <span class="text-explode">|</span>
                 <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
-                {/if}
+                <!--{/if}-->
+
             </td>
         </tr>
         {/foreach}
