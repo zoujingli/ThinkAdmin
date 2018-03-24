@@ -84,7 +84,7 @@ class Push
      * @param string $openid 公众号OPENID
      * @param array $revice 消息对象
      * @return string
-     * @throws Exception
+     * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
     protected function call($appid, $openid, $revice)
@@ -105,10 +105,14 @@ class Push
     /**
      * 文件消息处理
      * @return bool
-     * @throws \Exception
+     * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     protected function text()
     {
@@ -118,7 +122,9 @@ class Push
     /**
      * 事件消息处理
      * @return bool|string
-     * @throws \Exception
+     * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -162,11 +168,15 @@ class Push
      * 关键字处理
      * @param string $rule 关键字规则
      * @param bool $isLastReply 强制结束
-     * @return bool
-     * @throws \Exception
+     * @return bool|string
+     * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     protected function keys($rule, $isLastReply = false)
     {
@@ -231,7 +241,11 @@ class Push
      * @param string $type 消息类型（text|image|voice|video|music|news|mpnews|wxcard）
      * @param array $data 消息内容
      * @return array|bool
-     * @throws \Exception
+     * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     protected function sendMessage($type, $data)
     {
@@ -273,7 +287,8 @@ class Push
      * 同步粉丝状态
      * @param bool $subscribe 关注状态
      * @return string
-     * @throws \Exception
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
