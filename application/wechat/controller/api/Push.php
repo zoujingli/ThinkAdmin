@@ -49,7 +49,7 @@ class Push
     protected $receive;
 
     /**
-     * 微信消息接口
+     * 微信消息接口（通过ThinkService推送）
      * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
@@ -67,7 +67,7 @@ class Push
     }
 
     /**
-     * 公众号直接对接
+     * 公众号直接对接（通过参数对接推送）
      * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
@@ -89,15 +89,15 @@ class Push
      */
     protected function call($appid, $openid, $revice)
     {
-        $this->appid = $appid;
-        $this->openid = $openid;
-        $this->receive = $revice;
+        list($this->appid, $this->openid, $this->receive) = [$appid, $openid, $revice];
         if ($this->appid !== WechatService::getAppid()) {
             throw new Exception('微信API实例APPID验证失败.');
         }
         // text,event,image,location
         if (method_exists($this, ($method = $this->receive['MsgType']))) {
-            $this->$method();
+            if (is_string(($result = $this->$method()))) {
+                return $result;
+            }
         }
         return 'success';
     }
@@ -172,7 +172,6 @@ class Push
     {
         list($table, $field, $value) = explode('#', $rule . '##');
         $info = Db::name($table)->where($field, $value)->find();
-        p($info);
         if (empty($info['type']) || (array_key_exists('status', $info) && empty($info['status']))) {
             // 切换默认回复
             return $isLastReply ? false : $this->keys('wechat_keys#keys#default', true);
@@ -237,7 +236,14 @@ class Push
     protected function sendMessage($type, $data)
     {
         $msgData = ['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data];
-        return WechatService::custom()->send($msgData);
+        switch (strtolower(sysconf('wechat_type'))) {
+            case 'api':
+                return WechatService::receive()->reply($msgData, true);
+            case 'thr':
+                return WechatService::custom()->send($msgData);
+            default:
+                return 'success';
+        }
     }
 
     /**
