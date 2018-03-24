@@ -255,7 +255,7 @@ class Push
                 $wechat = WechatService::receive();
                 switch (strtolower($type)) {
                     case 'text':
-                        return $wechat->text($data)->reply([], true);
+                        return $wechat->text($data['content'])->reply([], true);
                     case 'image':
                         return $wechat->image($data['media_id'])->reply([], true);
                     case 'video':
