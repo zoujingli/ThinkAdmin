@@ -53,7 +53,7 @@
                 {if auth("$classuri/add")}
                 <span class="text-explode">|</span>
                 <!--{if $vo.spt<2}-->
-                <a data-modal='{:url("$classuri/add")}?pid={$vo.id}'>添加下级</a>
+                <a data-title="添加菜单" data-modal='{:url("$classuri/add")}?pid={$vo.id}'>添加下级</a>
                 <!--{else}-->
                 <a class="color-desc">添加下级</a>
                 <!--{/if}-->
