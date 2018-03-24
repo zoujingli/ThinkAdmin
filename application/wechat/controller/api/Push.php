@@ -188,7 +188,7 @@ class Push
         }
         switch ($info['type']) {
             case 'customservice':
-                return $this->sendMessage('text', ['content' => $info['content']]);
+                return $this->sendMessage('customservice', ['content' => $info['content']]);
             case 'keys':
                 $content = empty($info['content']) ? $info['name'] : $info['content'];
                 return $this->keys("wechat_keys#keys#{$content}");
@@ -251,9 +251,28 @@ class Push
     {
         $msgData = ['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data];
         switch (strtolower(sysconf('wechat_type'))) {
-            case 'api':
-                return WechatService::receive()->reply($msgData, true);
-            case 'thr':
+            case 'api': // 参数对接，直接回复XML来实现消息回复
+                $wechat = WechatService::receive();
+                switch (strtolower($type)) {
+                    case 'text':
+                        return $wechat->text($data)->reply([], true);
+                    case 'image':
+                        return $wechat->image($data['media_id'])->reply([], true);
+                    case 'video':
+                        return $wechat->video($data['media_id'], $data['title'], $data['description'])->reply([], true);
+                    case 'voice':
+                        return $wechat->voice($data['media_id'])->reply([], true);
+                    case 'music':
+                        return $wechat->music($data['title'], $data['description'], $data['musicurl'], $data['hqmusicurl'], $data['thumb_media_id'])->reply([], true);
+                    case 'news':
+                        return $wechat->news($data['articles'])->reply([], true);
+                    case 'customservice':
+                        WechatService::custom()->send(['touser' => $this->openid, 'msgtype' => 'text', "text" => $data['content']]);
+                        return $wechat->transferCustomerService()->reply([], true);
+                    default:
+                        return 'success';
+                }
+            case 'thr': // 第三方平台，使用客服消息来实现
                 return WechatService::custom()->send($msgData);
             default:
                 return 'success';
