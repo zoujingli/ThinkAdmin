@@ -11,28 +11,32 @@
         <label class="layui-form-label label-required">规格参数</label>
         <div class="layui-input-block">
             <textarea class="hide" ng-model="spec_param"></textarea>
+            <div class="param-table-list">
+                <table class="layui-table margin-none">
+                    <tbody class="param-table-list">
+                    <tr ng-repeat="x in paramList" class="transition">
+                        <td class="param-input-td one nowrap">
+                            <input required placeholder="分组" title="请输入属性分组" ng-model="x.name" class="layui-input">
+                        </td>
+                        <td class="param-input-td two nowrap">
+                            <input required placeholder="名称" title="请输入属性名称" ng-model="x.value" class="layui-input">
+                        </td>
+                        <td class="param-input-td thr nowrap">
+                            <a ng-if="$index<1" class="color-desc">删除</a>
+                            <a ng-if="$index>0" ng-click="delParam($index)">删除</a>
+                            <a ng-if="$index<1" class="color-desc">上移</a>
+                            <a ng-if="$index>0" ng-click="moveToUp($index)">上移</a>
+                            <a ng-if="$index+1<paramList.length" ng-click="moveToDn($index)">下移</a>
+                            <a ng-if="$index+1>=paramList.length" class="color-desc">下移</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <table class="layui-table">
-                <tbody class="param-table-list">
-                <tr ng-repeat="x in paramList" class="transition">
-                    <td class="param-input-td one nowrap">
-                        <input required placeholder="分组" title="请输入属性分组" ng-model="x.name" class="layui-input">
-                    </td>
-                    <td class="param-input-td two nowrap">
-                        <input required placeholder="名称" title="请输入属性名称" ng-model="x.value" class="layui-input">
-                    </td>
-                    <td class="param-input-td thr nowrap">
-                        <a ng-if="$index<1" class="color-desc">删除</a>
-                        <a ng-if="$index>0" ng-click="delParam($index)">删除</a>
-                        <a ng-if="$index<1" class="color-desc">上移</a>
-                        <a ng-if="$index>0" ng-click="moveToUp($index)">上移</a>
-                        <a ng-if="$index+1<paramList.length" ng-click="moveToDn($index)">下移</a>
-                        <a ng-if="$index+1>=paramList.length" class="color-desc">下移</a>
-                    </td>
-                </tr>
-                </tbody>
                 <tr>
-                    <td style="border-top:none;text-align:center" colspan="3">
-                        <a ng-click="addParam()">添加属性</a>
+                    <td class="text-center notselect padding-none border-none">
+                        <button type="button" class="layui-btn full-width layui-btn-primary" ng-click="addParam()">添加属性</button>
                     </td>
                 </tr>
             </table>
@@ -85,6 +89,9 @@
                 // 添加参数
                 $rootScope.addParam = function () {
                     $rootScope.paramList.push({name: '', value: ''});
+                    setTimeout(function () {
+                        $('.param-table-list').scrollTop('10000')
+                    }, 10);
                 };
 
                 // 属性参数下移
@@ -148,7 +155,6 @@
     <style>
         .param-table-list {
             overflow: auto;
-            display: block;
             max-height: 200px;
             position: relative;
             overflow-y: scroll;
