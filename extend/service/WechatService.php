@@ -135,8 +135,9 @@ class WechatService
                 }
                 if (($rcode = $request->get('rcode', false))) {
                     redirect(decode($rcode), [], 301)->send();
+                } else {
+                    throw new Exception('网页授权异常，请稍候再试！', '503');
                 }
-                throw new Exception('网页授权异常，请稍候再试！', '503');
             case 'thr':
             default:
                 $result = self::wechat()->oauth(session_id(), $request->url(true), $fullMode);
