@@ -28,16 +28,14 @@ class Route extends Command
 
     protected function execute(Input $input, Output $output)
     {
-        $filename = Container::get('app')->getRuntimePath() . 'route.php';
-        unlink($filename);
-        file_put_contents($filename, $this->buildRouteCache());
+        file_put_contents(Container::get('app')->getRuntimePath() . 'route.php', $this->buildRouteCache());
         $output->writeln('<info>Succeed!</info>');
     }
 
     protected function buildRouteCache()
     {
         Container::get('route')->setName([]);
-        Container::get('route')->lazy(false);
+        Container::get('config')->set('url_lazy_route', false);
         // 路由检测
         $path = Container::get('app')->getRoutePath();
 

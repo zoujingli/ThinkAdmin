@@ -24,7 +24,6 @@ class File
         'file_size'   => 2097152,
         'path'        => '',
         'apart_level' => [],
-        'max_files'   => 0,
     ];
 
     protected $writed = [];
@@ -37,9 +36,7 @@ class File
         }
 
         if (empty($this->config['path'])) {
-            $this->config['path'] = Container::get('app')->getRuntimePath() . 'log' . DIRECTORY_SEPARATOR;
-        } elseif (substr($this->config['path'], -1) != DIRECTORY_SEPARATOR) {
-            $this->config['path'] .= DIRECTORY_SEPARATOR;
+            $this->config['path'] = Container::get('app')->getRuntimePath() . 'log/';
         }
     }
 
@@ -52,23 +49,11 @@ class File
     public function save(array $log = [])
     {
         if ($this->config['single']) {
-            $name        = is_string($this->config['single']) ? $this->config['single'] : 'single';
+            $name        = is_string($single) ? $single : 'single';
             $destination = $this->config['path'] . $name . '.log';
         } else {
-            $cli = PHP_SAPI == 'cli' ? '_cli' : '';
-
-            if ($this->config['max_files']) {
-                $filename = date('Ymd') . $cli . '.log';
-                $files    = glob($this->config['path'] . '*.log');
-
-                if (count($files) > $this->config['max_files']) {
-                    unlink($files[0]);
-                }
-            } else {
-                $filename = date('Ym') . DIRECTORY_SEPARATOR . date('d') . $cli . '.log';
-            }
-
-            $destination = $this->config['path'] . $filename;
+            $cli         = PHP_SAPI == 'cli' ? '_cli' : '';
+            $destination = $this->config['path'] . date('Ym') . '/' . date('d') . $cli . '.log';
         }
 
         $path = dirname($destination);
@@ -87,11 +72,9 @@ class File
             if (in_array($type, $this->config['apart_level'])) {
                 // 独立记录的日志级别
                 if ($this->config['single']) {
-                    $filename = $path . DIRECTORY_SEPARATOR . $name . '_' . $type . '.log';
-                } elseif ($this->config['max_files']) {
-                    $filename = $path . DIRECTORY_SEPARATOR . date('Ymd') . '_' . $type . $cli . '.log';
+                    $filename = $path . '/' . $name . '_' . $type . '.log';
                 } else {
-                    $filename = $path . DIRECTORY_SEPARATOR . date('d') . '_' . $type . $cli . '.log';
+                    $filename = $path . '/' . date('d') . '_' . $type . $cli . '.log';
                 }
 
                 $this->write($level, $filename, true);
@@ -120,7 +103,7 @@ class File
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成
         if (is_file($destination) && floor($this->config['file_size']) <= filesize($destination)) {
             try {
-                rename($destination, dirname($destination) . DIRECTORY_SEPARATOR . time() . '-' . basename($destination));
+                rename($destination, dirname($destination) . '/' . time() . '-' . basename($destination));
             } catch (\Exception $e) {
             }
 

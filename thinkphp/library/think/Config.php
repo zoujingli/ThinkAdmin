@@ -72,11 +72,12 @@ class Config implements \ArrayAccess
                 return $this->set(include $file, $name);
             } elseif ('yaml' == $type && function_exists('yaml_parse_file')) {
                 return $this->set(yaml_parse_file($file), $name);
+            } else {
+                return $this->parse($file, $type, $name);
             }
-            return $this->parse($file, $type, $name);
+        } else {
+            return $this->config;
         }
-
-        return $this->config;
     }
 
     /**
@@ -89,12 +90,12 @@ class Config implements \ArrayAccess
     {
         // 如果尚未载入 则动态加载配置文件
         $module = Container::get('request')->module();
-        $module = $module ? $module . DIRECTORY_SEPARATOR : '';
+        $module = $module ? $module . '/' : '';
         $app    = Container::get('app');
         $path   = $app->getAppPath() . $module;
 
         if (is_dir($path . 'config')) {
-            $file = $path . 'config' . DIRECTORY_SEPARATOR . $name . $app->getConfigExt();
+            $file = $path . 'config/' . $name . $app->getConfigExt();
         } elseif (is_dir($app->getConfigPath() . $module)) {
             $file = $app->getConfigPath() . $module . $name . $app->getConfigExt();
         }
@@ -116,7 +117,7 @@ class Config implements \ArrayAccess
             $name = $this->prefix . '.' . $name;
         }
 
-        return !is_null($this->get($name)) ? true : false;
+        return $this->get($name) ? true : false;
     }
 
     /**

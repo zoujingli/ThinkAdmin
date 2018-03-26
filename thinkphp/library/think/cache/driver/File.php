@@ -43,7 +43,7 @@ class File extends Driver
         }
 
         if (empty($this->options['path'])) {
-            $this->options['path'] = Container::get('app')->getRuntimePath() . 'cache' . DIRECTORY_SEPARATOR;
+            $this->options['path'] = Container::get('app')->getRuntimePath() . 'cache/';
         } elseif (substr($this->options['path'], -1) != DIRECTORY_SEPARATOR) {
             $this->options['path'] .= DIRECTORY_SEPARATOR;
         }
@@ -242,10 +242,7 @@ class File extends Driver
     {
         $this->writeTimes++;
 
-        try {
-            return $this->unlink($this->getCacheKey($name));
-        } catch (\Exception $e) {
-        }
+        return $this->unlink($this->getCacheKey($name));
     }
 
     /**
@@ -272,7 +269,7 @@ class File extends Driver
 
         foreach ($files as $path) {
             if (is_dir($path)) {
-                $matches = glob($path . DIRECTORY_SEPARATOR . '*.php');
+                $matches = glob($path . '/*.php');
                 if (is_array($matches)) {
                     array_map('unlink', $matches);
                 }

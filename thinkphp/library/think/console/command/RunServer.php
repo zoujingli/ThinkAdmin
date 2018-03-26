@@ -42,7 +42,7 @@ class RunServer extends Command
             $host,
             $port,
             escapeshellarg($root),
-            escapeshellarg($root . DIRECTORY_SEPARATOR . 'router.php')
+            escapeshellarg($root . '/router.php')
         );
 
         $output->writeln(sprintf('ThinkPHP Development server is started On <http://%s:%s/>', $host, $port));

@@ -223,8 +223,9 @@ class Debug
         if ($echo) {
             echo($output);
             return;
+        } else {
+            return $output;
         }
-        return $output;
     }
 
     public function inject(Response $response, &$content)

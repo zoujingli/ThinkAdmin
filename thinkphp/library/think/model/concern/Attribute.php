@@ -139,38 +139,37 @@ trait Attribute
     {
         if (is_string($data)) {
             $this->data[$data] = $value;
-            return $this;
-        }
-
-        // 清空数据
-        $this->data = [];
-
-        if (is_object($data)) {
-            $data = get_object_vars($data);
-        }
-
-        if ($this->disuse) {
-            // 废弃字段
-            foreach ((array) $this->disuse as $key) {
-                if (array_key_exists($key, $data)) {
-                    unset($data[$key]);
-                }
-            }
-        }
-
-        if (true === $value) {
-            // 数据对象赋值
-            foreach ($data as $key => $value) {
-                $this->setAttr($key, $value, $data);
-            }
-        } elseif (is_array($value)) {
-            foreach ($value as $name) {
-                if (isset($data[$name])) {
-                    $this->data[$name] = $data[$name];
-                }
-            }
         } else {
-            $this->data = $data;
+            // 清空数据
+            $this->data = [];
+
+            if (is_object($data)) {
+                $data = get_object_vars($data);
+            }
+
+            if ($this->disuse) {
+                // 废弃字段
+                foreach ((array) $this->disuse as $key) {
+                    if (array_key_exists($key, $data)) {
+                        unset($data[$key]);
+                    }
+                }
+            }
+
+            if (true === $value) {
+                // 数据对象赋值
+                foreach ($data as $key => $value) {
+                    $this->setAttr($key, $value, $data);
+                }
+            } elseif (is_array($value)) {
+                foreach ($value as $name) {
+                    if (isset($data[$name])) {
+                        $this->data[$name] = $data[$name];
+                    }
+                }
+            } else {
+                $this->data = $data;
+            }
         }
 
         return $this;
@@ -211,8 +210,9 @@ trait Attribute
     {
         if (is_null($name)) {
             return $this->origin;
+        } else {
+            return array_key_exists($name, $this->origin) ? $this->origin[$name] : null;
         }
-        return array_key_exists($name, $this->origin) ? $this->origin[$name] : null;
     }
 
     /**
@@ -230,8 +230,9 @@ trait Attribute
             return $this->data[$name];
         } elseif (array_key_exists($name, $this->relation)) {
             return $this->relation[$name];
+        } else {
+            throw new InvalidArgumentException('property not exists:' . static::class . '->' . $name);
         }
-        throw new InvalidArgumentException('property not exists:' . static::class . '->' . $name);
     }
 
     /**
@@ -453,51 +454,36 @@ trait Attribute
                 $value = $this->formatDateTime($value, $this->dateFormat);
             }
         } elseif ($notFound) {
-            $value = $this->getRelationAttribute($name, $item);
-        }
+            $relation = $this->isRelationAttr($name);
 
-        return $value;
-    }
+            if ($relation) {
+                $modelRelation = $this->$relation();
+                if ($modelRelation instanceof Relation) {
+                    $value = $this->getRelationData($modelRelation);
 
-    /**
-     * 获取关联属性值
-     * @access protected
-     * @param  string   $name  属性名
-     * @param  array    $item  数据
-     * @return mixed
-     */
-    protected function getRelationAttribute($name, &$item)
-    {
-        $relation = $this->isRelationAttr($name);
+                    if ($item && method_exists($modelRelation, 'getBindAttr') && $bindAttr = $modelRelation->getBindAttr()) {
 
-        if ($relation) {
-            $modelRelation = $this->$relation();
-            if ($modelRelation instanceof Relation) {
-                $value = $this->getRelationData($modelRelation);
+                        foreach ($bindAttr as $key => $attr) {
+                            $key = is_numeric($key) ? $attr : $key;
 
-                if ($item && method_exists($modelRelation, 'getBindAttr') && $bindAttr = $modelRelation->getBindAttr()) {
-
-                    foreach ($bindAttr as $key => $attr) {
-                        $key = is_numeric($key) ? $attr : $key;
-
-                        if (isset($item[$key])) {
-                            throw new Exception('bind attr has exists:' . $key);
-                        } else {
-                            $item[$key] = $value ? $value->getAttr($attr) : null;
+                            if (isset($item[$key])) {
+                                throw new Exception('bind attr has exists:' . $key);
+                            } else {
+                                $item[$key] = $value ? $value->getAttr($attr) : null;
+                            }
                         }
+                        return false;
                     }
 
-                    return false;
+                    // 保存关联对象值
+                    $this->relation[$name] = $value;
+
+                    return $value;
                 }
-
-                // 保存关联对象值
-                $this->relation[$name] = $value;
-
-                return $value;
             }
+            throw new InvalidArgumentException('property not exists:' . static::class . '->' . $name);
         }
-
-        throw new InvalidArgumentException('property not exists:' . static::class . '->' . $name);
+        return $value;
     }
 
     /**
@@ -555,11 +541,7 @@ trait Attribute
                 $value = empty($value) ? new \stdClass() : json_decode($value);
                 break;
             case 'serialize':
-                try {
-                    $value = unserialize($value);
-                } catch (\Exception $e) {
-                    $value = null;
-                }
+                $value = unserialize($value);
                 break;
             default:
                 if (false !== strpos($type, '\\')) {
