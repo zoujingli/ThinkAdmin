@@ -13,5 +13,5 @@
 // +----------------------------------------------------------------------
 
 return [
-    'service_url' => 'http://service.thinkadmin.top',
+    'service_url' => 'https://service.thinkadmin.top',
 ];
