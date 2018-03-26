@@ -63,7 +63,7 @@ class Push
         if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
             throw new Exception('微信API实例缺失必要参数[appid,openid,event].');
         }
-        return $this->call($this->openid, $this->appid, $this->receive);
+        return $this->call($this->appid, $this->openid, $this->receive);
     }
 
     /**
