@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc
+class ComposerStaticInit82478bf98a2bb4bf864d022f0191d40d
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -227,6 +227,11 @@ class ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc
         'app\\admin\\controller\\Node' => __DIR__ . '/../..' . '/application/admin/controller/Node.php',
         'app\\admin\\controller\\Plugs' => __DIR__ . '/../..' . '/application/admin/controller/Plugs.php',
         'app\\admin\\controller\\User' => __DIR__ . '/../..' . '/application/admin/controller/User.php',
+        'app\\goods\\controller\\Brand' => __DIR__ . '/../..' . '/application/goods/controller/Brand.php',
+        'app\\goods\\controller\\Cate' => __DIR__ . '/../..' . '/application/goods/controller/Cate.php',
+        'app\\goods\\controller\\Product' => __DIR__ . '/../..' . '/application/goods/controller/Product.php',
+        'app\\goods\\controller\\Spec' => __DIR__ . '/../..' . '/application/goods/controller/Spec.php',
+        'app\\goods\\service\\ProductService' => __DIR__ . '/../..' . '/application/goods/service/ProductService.php',
         'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/application/index/controller/Index.php',
         'app\\wechat\\controller\\Block' => __DIR__ . '/../..' . '/application/wechat/controller/Block.php',
         'app\\wechat\\controller\\Config' => __DIR__ . '/../..' . '/application/wechat/controller/Config.php',
@@ -252,9 +257,9 @@ class ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitaf24f5f94ed079e6264991343eebb4cc::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit82478bf98a2bb4bf864d022f0191d40d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit82478bf98a2bb4bf864d022f0191d40d::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit82478bf98a2bb4bf864d022f0191d40d::$classMap;
 
         }, null, ClassLoader::class);
     }

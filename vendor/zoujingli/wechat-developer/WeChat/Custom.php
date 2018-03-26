@@ -244,7 +244,7 @@ class Custom extends BasicWeChat
     {
         $url = "https://api.weixin.qq.com/cgi-bin/message/mass/speed/set?access_token=ACCESS_TOKEN";
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->httpPostForJson($url, []);
+        return $this->httpPostForJson($url, ['speed' => $speed]);
     }
 
 

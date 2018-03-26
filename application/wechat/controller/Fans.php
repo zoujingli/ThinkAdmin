@@ -183,7 +183,7 @@ class Fans extends BasicAdmin
             TagsService::sync();
             LogService::write('微信管理', '同步全部微信粉丝成功');
         } catch (\Exception $e) {
-            $this->error('同步粉丝记录失败，请稍候再试！');
+            $this->error('同步粉丝记录失败，请稍候再试！' . $e->getMessage());
         }
         $this->success('同步获取所有粉丝成功！', '');
     }
