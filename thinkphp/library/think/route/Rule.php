@@ -34,7 +34,7 @@ abstract class Rule
     // 路由变量规则
     protected $pattern = [];
     // 需要合并的路由参数
-    protected $mergeOptions = ['after', 'before', 'model'];
+    protected $mergeOptions = ['after', 'before', 'model', 'header', 'response', 'append', 'middleware'];
 
     abstract public function check($request, $url, $depr = '/');
 
@@ -75,14 +75,14 @@ abstract class Rule
     }
 
     /**
-     * 设置Name
+     * 设置标识
      * @access public
-     * @param  string|array  $name 变量名
+     * @param  string  $name 标识名
      * @return $this
      */
     public function name($name)
     {
-        $this->name = '/' != $name ? ltrim($name, '/') : '/';
+        $this->name = $name;
 
         return $this;
     }
@@ -125,23 +125,6 @@ abstract class Rule
         }
 
         return isset($this->option[$name]) ? $this->option[$name] : null;
-    }
-
-    /**
-     * 附加路由隐式参数
-     * @access public
-     * @param  array     $append
-     * @return $this
-     */
-    public function append(array $append = [])
-    {
-        if (isset($this->option['append'])) {
-            $this->option['append'] = array_merge($this->option['append'], $append);
-        } else {
-            $this->option['append'] = $append;
-        }
-
-        return $this;
     }
 
     /**
@@ -220,12 +203,31 @@ abstract class Rule
      */
     public function model($var, $model = null, $exception = true)
     {
-        if (is_array($var)) {
+        if ($var instanceof \Closure) {
+            $this->option['model'][] = $var;
+        } elseif (is_array($var)) {
             $this->option['model'] = $var;
         } elseif (is_null($model)) {
             $this->option['model']['id'] = [$var, true];
         } else {
             $this->option['model'][$var] = [$model, $exception];
+        }
+
+        return $this;
+    }
+
+    /**
+     * 附加路由隐式参数
+     * @access public
+     * @param  array     $append
+     * @return $this
+     */
+    public function append(array $append = [])
+    {
+        if (isset($this->option['append'])) {
+            $this->option['append'] = array_merge($this->option['append'], $append);
+        } else {
+            $this->option['append'] = $append;
         }
 
         return $this;
@@ -255,7 +257,8 @@ abstract class Rule
      */
     public function response($response)
     {
-        return $this->option('response', $response);
+        $this->option['response'][] = $response;
+        return $this;
     }
 
     /**
@@ -267,14 +270,30 @@ abstract class Rule
      */
     public function header($header, $value = null)
     {
-        if (empty($this->option['header'])) {
-            $this->option['header'] = [];
-        }
-
         if (is_array($header)) {
-            $this->option['header'] = array_merge($this->option['header'], $header);
+            $this->option['header'] = $header;
         } else {
             $this->option['header'][$header] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * 指定路由中间件
+     * @access public
+     * @param  string|array|\Closure    $middleware
+     * @param  mixed                    $param
+     * @return $this
+     */
+    public function middleware($middleware, $param = null)
+    {
+        if (is_null($param) && is_array($middleware)) {
+            $this->option['middleware'] = $middleware;
+        } else {
+            foreach ((array) $middleware as $item) {
+                $this->option['middleware'][] = [$item, $param];
+            }
         }
 
         return $this;
@@ -416,7 +435,7 @@ abstract class Rule
         }
 
         if ($allow && $this->parent) {
-            $this->parent->addRule($this, 'options');
+            $this->parent->addRuleItem($this, 'options');
         }
 
         return $this->option('cross_domain', $allow);
@@ -484,6 +503,8 @@ abstract class Rule
         }
 
         $this->option = array_merge($parentOption, $this->option);
+
+        return $this->option;
     }
 
     /**
@@ -574,34 +595,15 @@ abstract class Rule
         // 替换路由地址中的变量
         if (is_string($route) && !empty($matches)) {
             foreach ($matches as $key => $val) {
-                if (false !== strpos($route, ':' . $key)) {
+                if (false !== strpos($route, '<' . $key . '>')) {
+                    $route = str_replace('<' . $key . '>', $val, $route);
+                } elseif (false !== strpos($route, ':' . $key)) {
                     $route = str_replace(':' . $key, $val, $route);
                 }
             }
         }
 
-        // 绑定模型数据
-        if (isset($option['model'])) {
-            $this->createBindModel($option['model'], $matches);
-        }
-
-        // 指定Header数据
-        if (!empty($option['header'])) {
-            $header = $option['header'];
-            Container::get('hook')->add('response_send', function ($response) use ($header) {
-                $response->header($header);
-            });
-        }
-
-        // 指定Response响应数据
-        if (!empty($option['response'])) {
-            Container::get('hook')->add('response_send', $option['response']);
-        }
-
-        // 开启请求缓存
-        if (isset($option['cache']) && $request->isGet()) {
-            $this->parseRequestCache($request, $option['cache']);
-        }
+        $this->afterMatchRule($request, $option, $matches);
 
         // 解析额外参数
         $count = substr_count($rule, '/');
@@ -627,6 +629,43 @@ abstract class Rule
 
         // 发起路由调度
         return $this->dispatch($request, $route, $option);
+    }
+
+    protected function afterMatchRule($request, $option = [], $matches = [])
+    {
+        // 添加中间件
+        if (!empty($option['middleware'])) {
+            foreach ($option['middleware'] as $middleware) {
+                Container::get('middleware')->add($middleware);
+            }
+        }
+
+        // 绑定模型数据
+        if (!empty($option['model'])) {
+            $this->createBindModel($option['model'], $matches);
+        }
+
+        // 指定Header数据
+        if (!empty($option['header'])) {
+            $header = $option['header'];
+            Container::get('hook')->add('response_send', function ($response) use ($header) {
+                $response->header($header);
+            });
+        }
+
+        // 指定Response响应数据
+        if (!empty($option['response'])) {
+            Container::get('hook')->add('response_send', $option['response']);
+        }
+
+        // 开启请求缓存
+        if (isset($option['cache']) && $request->isGet()) {
+            $this->parseRequestCache($request, $option['cache']);
+        }
+
+        if (!empty($option['append'])) {
+            $request->route($option['append']);
+        }
     }
 
     /**
@@ -694,6 +733,8 @@ abstract class Rule
      */
     protected function checkAfter($after)
     {
+        Container::get('log')->notice('路由后置行为建议使用中间件替代！');
+
         $hook = Container::get('hook');
 
         $result = null;
@@ -711,9 +752,9 @@ abstract class Rule
             return new ResponseDispatch($result);
         } elseif ($result instanceof Dispatch) {
             return $result;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -738,24 +779,13 @@ abstract class Rule
             $result = new RedirectDispatch($route, [], isset($option['status']) ? $option['status'] : 301);
         } elseif (false !== strpos($route, '\\')) {
             // 路由到方法
-            list($path, $var) = $this->parseUrlPath($route);
-            $route            = str_replace('/', '@', implode('/', $path));
-            $method           = strpos($route, '@') ? explode('@', $route) : $route;
-            $result           = new CallbackDispatch($method, $var);
+            $result = $this->dispatchMethod($route);
         } elseif (0 === strpos($route, '@')) {
             // 路由到控制器
-            $route             = substr($route, 1);
-            list($route, $var) = $this->parseUrlPath($route);
-            $result            = new ControllerDispatch(implode('/', $route), $var);
-
-            $request->action(array_pop($route));
-            $app = Container::get('app');
-            $request->controller($route ? array_pop($route) : $app->config('default_controller'));
-            $request->module($route ? array_pop($route) : $app->config('default_module'));
-            $app->setModulePath($app->getAppPath() . ($app->config('app_multi_module') ? $request->module() . DIRECTORY_SEPARATOR : ''));
+            $result = $this->dispatchController($request, substr($route, 1));
         } else {
             // 路由到模块/控制器/操作
-            $result = $this->parseModule($route);
+            $result = $this->dispatchModule($request, $route);
         }
 
         return $result;
@@ -764,18 +794,57 @@ abstract class Rule
     /**
      * 解析URL地址为 模块/控制器/操作
      * @access protected
-     * @param  string    $url URL地址
-     * @return array
+     * @param  string    $route 路由地址
+     * @return CallbackDispatch
      */
-    protected function parseModule($url)
+    protected function dispatchMethod($route)
     {
-        list($path, $var) = $this->parseUrlPath($url);
-        $config           = Container::get('config');
-        $request          = Container::get('request');
-        $action           = array_pop($path);
-        $controller       = !empty($path) ? array_pop($path) : null;
-        $module           = $config->get('app_multi_module') && !empty($path) ? array_pop($path) : null;
-        $method           = $request->method();
+        list($path, $var) = $this->parseUrlPath($route);
+
+        $route  = str_replace('/', '@', implode('/', $path));
+        $method = strpos($route, '@') ? explode('@', $route) : $route;
+
+        return new CallbackDispatch($method, $var);
+    }
+
+    /**
+     * 解析URL地址为 模块/控制器/操作
+     * @access protected
+     * @param  Request   $request Request对象
+     * @param  string    $route 路由地址
+     * @return ControllerDispatch
+     */
+    protected function dispatchController($request, $route)
+    {
+        list($route, $var) = $this->parseUrlPath($route);
+
+        $result = new ControllerDispatch(implode('/', $route), $var);
+
+        $request->action(array_pop($route));
+        $app = Container::get('app');
+        $request->controller($route ? array_pop($route) : $app->config('default_controller'));
+        $request->module($route ? array_pop($route) : $app->config('default_module'));
+        $app->setModulePath($app->getAppPath() . ($app->config('app_multi_module') ? $request->module() . DIRECTORY_SEPARATOR : ''));
+
+        return $result;
+    }
+
+    /**
+     * 解析URL地址为 模块/控制器/操作
+     * @access protected
+     * @param  Request   $request Request对象
+     * @param  string    $route 路由地址
+     * @return ModuleDispatch
+     */
+    protected function dispatchModule($request, $route)
+    {
+        list($path, $var) = $this->parseUrlPath($route);
+
+        $config     = Container::get('config');
+        $action     = array_pop($path);
+        $controller = !empty($path) ? array_pop($path) : null;
+        $module     = $config->get('app_multi_module') && !empty($path) ? array_pop($path) : null;
+        $method     = $request->method();
 
         if ($config->get('use_action_prefix') && $this->router->getMethodPrefix($method)) {
             $prefix = $this->router->getMethodPrefix($method);
@@ -888,6 +957,107 @@ abstract class Rule
         }
 
         return [$path, $var];
+    }
+
+    /**
+     * 生成路由的正则规则
+     * @access protected
+     * @param  string    $rule 路由规则
+     * @param  array     $match 匹配的变量
+     * @param  array     $pattern   路由变量规则
+     * @param  array     $option    路由参数
+     * @param  bool      $completeMatch   路由是否完全匹配
+     * @param  string    $suffix   路由正则变量后缀
+     * @return string
+     */
+    protected function buildRuleRegex($rule, $match, $pattern = [], $option = [], $completeMatch = false, $suffix = '')
+    {
+        foreach ($match as $name) {
+            $replace[] = $this->buildNameRegex($name, $pattern, $suffix);
+        }
+
+        // 是否区分 / 地址访问
+        if (!empty($option['remove_slash']) && '/' != $rule) {
+            $rule = rtrim($rule, '/');
+        }
+
+        $regex = str_replace($match, $replace, $rule);
+        $regex = str_replace([')?/', ')/', ')?-', ')-', '\\\\/'], [')\/', ')\/', ')\-', ')\-', '\/'], $regex);
+
+        return $regex . ($completeMatch ? '$' : '');
+    }
+
+    /**
+     * 生成路由变量的正则规则
+     * @access protected
+     * @param  string    $name      路由变量
+     * @param  string    $pattern   变量规则
+     * @param  string    $suffix    路由正则变量后缀
+     * @return string
+     */
+    protected function buildNameRegex($name, $pattern, $suffix)
+    {
+        $optional = '';
+        $slash    = substr($name, 0, 1);
+
+        if (in_array($slash, ['/', '-'])) {
+            $prefix = '\\' . $slash;
+            $name   = substr($name, 1);
+            $slash  = substr($name, 0, 1);
+        } else {
+            $prefix = '';
+        }
+
+        if ('<' != $slash) {
+            return $prefix . preg_quote($name, '/');
+        }
+
+        if (strpos($name, '?')) {
+            $name     = substr($name, 1, -2);
+            $optional = '?';
+        } elseif (strpos($name, '>')) {
+            $name = substr($name, 1, -1);
+        }
+
+        if (isset($pattern[$name])) {
+            $nameRule = $pattern[$name];
+            if (0 === strpos($nameRule, '/') && '/' == substr($nameRule, -1)) {
+                $nameRule = substr($nameRule, 1, -1);
+            }
+        } else {
+            $nameRule = '\w+';
+        }
+
+        return '(' . $prefix . '(?<' . $name . $suffix . '>' . $nameRule . '))' . $optional;
+    }
+
+    /**
+     * 分析路由规则中的变量
+     * @access protected
+     * @param  string    $rule 路由规则
+     * @return array
+     */
+    protected function parseVar($rule)
+    {
+        // 提取路由规则中的变量
+        $var = [];
+
+        if (preg_match_all('/<\w+\??>/', $rule, $matches)) {
+            foreach ($matches[0] as $name) {
+                $optional = false;
+
+                if (strpos($name, '?')) {
+                    $name     = substr($name, 1, -2);
+                    $optional = true;
+                } else {
+                    $name = substr($name, 1, -1);
+                }
+
+                $var[$name] = $optional ? 2 : 1;
+            }
+        }
+
+        return $var;
     }
 
     /**

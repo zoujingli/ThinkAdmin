@@ -389,7 +389,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     /**
      * 检查数据是否允许写入
      * @access protected
-     * @param  array   $autoFields 自动完成的字段列表
+     * @param  array   $append 自动完成的字段列表
      * @return array
      */
     protected function checkAllowFields(array $append = [])
@@ -478,13 +478,11 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             $where = $array;
         }
 
-        if (!empty($this->relationWrite)) {
-            foreach ($this->relationWrite as $name => $val) {
-                if (is_array($val)) {
-                    foreach ($val as $key) {
-                        if (isset($data[$key])) {
-                            unset($data[$key]);
-                        }
+        foreach ((array) $this->relationWrite as $name => $val) {
+            if (is_array($val)) {
+                foreach ($val as $key) {
+                    if (isset($data[$key])) {
+                        unset($data[$key]);
                     }
                 }
             }
@@ -861,13 +859,15 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      */
     public static function destroy($data)
     {
+        if (empty($data) && 0 !== $data) {
+            return 0;
+        }
+
         $model = new static();
 
         $query = $model->db();
 
-        if (empty($data) && 0 !== $data) {
-            return 0;
-        } elseif (is_array($data) && key($data) !== 0) {
+        if (is_array($data) && key($data) !== 0) {
             $query->where($data);
             $data = null;
         } elseif ($data instanceof \Closure) {
@@ -947,9 +947,9 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     {
         if (array_key_exists($name, $this->data) || array_key_exists($name, $this->relation)) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

@@ -104,8 +104,8 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
      * @param       $items
      * @param       $listRows
      * @param null  $currentPage
-     * @param bool  $simple
      * @param null  $total
+     * @param bool  $simple
      * @param array $options
      * @return Paginator
      */
@@ -150,7 +150,7 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
 
         $url = $path;
         if (!empty($parameters)) {
-            $url .= '?' . urldecode(http_build_query($parameters, null, '&'));
+            $url .= '?' . http_build_query($parameters, null, '&');
         }
 
         return $url . $this->buildFragment();
