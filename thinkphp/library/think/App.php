@@ -20,7 +20,7 @@ use think\route\Dispatch;
  */
 class App implements \ArrayAccess
 {
-    const VERSION = '5.1.5';
+    const VERSION = '5.1.6';
 
     /**
      * 当前模块路径
@@ -126,7 +126,7 @@ class App implements \ArrayAccess
 
     public function __construct($appPath = '')
     {
-        $this->appPath   = $appPath ?: realpath(dirname($_SERVER['SCRIPT_FILENAME']) . '/../application') . '/';
+        $this->appPath   = $appPath ?: realpath(dirname(dirname($_SERVER['SCRIPT_FILENAME'])) . DIRECTORY_SEPARATOR . 'application') . DIRECTORY_SEPARATOR;
         $this->container = Container::getInstance();
     }
 
@@ -163,11 +163,11 @@ class App implements \ArrayAccess
     {
         $this->beginTime   = microtime(true);
         $this->beginMem    = memory_get_usage();
-        $this->thinkPath   = dirname(dirname(__DIR__)) . '/';
-        $this->rootPath    = dirname(realpath($this->appPath)) . '/';
-        $this->runtimePath = $this->rootPath . 'runtime/';
-        $this->routePath   = $this->rootPath . 'route/';
-        $this->configPath  = $this->rootPath . 'config/';
+        $this->thinkPath   = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
+        $this->rootPath    = dirname(realpath($this->appPath)) . DIRECTORY_SEPARATOR;
+        $this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
+        $this->routePath   = $this->rootPath . 'route' . DIRECTORY_SEPARATOR;
+        $this->configPath  = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
 
         // 设置路径环境变量
         $this->env->set([
@@ -177,8 +177,8 @@ class App implements \ArrayAccess
             'config_path'  => $this->configPath,
             'route_path'   => $this->routePath,
             'runtime_path' => $this->runtimePath,
-            'extend_path'  => $this->rootPath . 'extend/',
-            'vendor_path'  => $this->rootPath . 'vendor/',
+            'extend_path'  => $this->rootPath . 'extend' . DIRECTORY_SEPARATOR,
+            'vendor_path'  => $this->rootPath . 'vendor' . DIRECTORY_SEPARATOR,
         ]);
 
         // 加载环境变量配置文件
@@ -228,6 +228,9 @@ class App implements \ArrayAccess
         // 设置系统时区
         date_default_timezone_set($this->config('app.default_timezone'));
 
+        // 读取语言包
+        $this->loadLangPack();
+
         // 监听app_init
         $this->hook->listen('app_init');
     }
@@ -252,7 +255,10 @@ class App implements \ArrayAccess
         } else {
             // 加载行为扩展文件
             if (is_file($path . 'tags.php')) {
-                $this->hook->import(include $path . 'tags.php');
+                $tags = include $path . 'tags.php';
+                if (is_array($tags)) {
+                    $this->hook->import($tags);
+                }
             }
 
             // 加载公共文件
@@ -263,11 +269,21 @@ class App implements \ArrayAccess
             if ('' == $module) {
                 // 加载系统助手函数
                 include $this->thinkPath . 'helper.php';
+                // 加载全局中间件
+                if (is_file($path . 'middleware.php')) {
+                    $middleware = include $path . 'middleware.php';
+                    if (is_array($middleware)) {
+                        $this->middleware->import($middleware);
+                    }
+                }
             }
 
             // 注册服务的容器对象实例
             if (is_file($path . 'provider.php')) {
-                $this->container->bind(include $path . 'provider.php');
+                $provider = include $path . 'provider.php';
+                if (is_array($provider)) {
+                    $this->container->bind($provider);
+                }
             }
 
             // 自动读取配置文件
@@ -298,10 +314,10 @@ class App implements \ArrayAccess
      */
     public function run()
     {
-        // 初始化应用
-        $this->initialize();
-
         try {
+            // 初始化应用
+            $this->initialize();
+
             if ($this->bind) {
                 // 模块/控制器绑定
                 $this->route->bind($this->bind);
@@ -313,28 +329,18 @@ class App implements \ArrayAccess
                 }
             }
 
-            // 读取默认语言
-            $this->lang->range($this->config('app.default_lang'));
-            if ($this->config('app.lang_switch_on')) {
-                // 开启多语言机制 检测当前语言
-                $this->lang->detect();
-            }
-
-            $this->request->langset($this->lang->range());
-
-            // 加载系统语言包
-            $this->lang->load([
-                $this->thinkPath . 'lang/' . $this->request->langset() . '.php',
-                $this->appPath . 'lang/' . $this->request->langset() . '.php',
-            ]);
-
             // 监听app_dispatch
             $this->hook->listen('app_dispatch');
 
             // 获取应用调度信息
             $dispatch = $this->dispatch;
             if (empty($dispatch)) {
-                // 进行URL路由检测
+                // 路由检测
+                $this->route
+                    ->lazy($this->config('app.url_lazy_route'))
+                    ->autoSearchController($this->config('app.controller_auto_search'))
+                    ->mergeRuleRegex($this->config('app.route_rule_merge'));
+
                 $dispatch = $this->routeCheck();
             }
 
@@ -358,14 +364,22 @@ class App implements \ArrayAccess
                 $this->config('app.request_cache_except')
             );
 
-            // 执行调度
-            $data = $dispatch->run();
-
+            $data = null;
         } catch (HttpResponseException $exception) {
-            $data = $exception->getResponse();
+            $dispatch = null;
+            $data     = $exception->getResponse();
         }
 
-        $this->middlewareDispatcher->add(function (Request $request, $next) use ($data) {
+        $this->middleware->add(function (Request $request, $next) use ($dispatch, $data) {
+            if (is_null($data)) {
+                try {
+                    // 执行调度
+                    $data = $dispatch->run();
+                } catch (HttpResponseException $exception) {
+                    $data = $exception->getResponse();
+                }
+            }
+
             // 输出数据到客户端
             if ($data instanceof Response) {
                 $response = $data;
@@ -381,12 +395,30 @@ class App implements \ArrayAccess
             return $response;
         });
 
-        $response = $this->middlewareDispatcher->dispatch($this->request);
+        $response = $this->middleware->dispatch($this->request);
 
         // 监听app_end
         $this->hook->listen('app_end', $response);
 
         return $response;
+    }
+
+    protected function loadLangPack()
+    {
+        // 读取默认语言
+        $this->lang->range($this->config('app.default_lang'));
+        if ($this->config('app.lang_switch_on')) {
+            // 开启多语言机制 检测当前语言
+            $this->lang->detect();
+        }
+
+        $this->request->langset($this->lang->range());
+
+        // 加载系统语言包
+        $this->lang->load([
+            $this->thinkPath . 'lang' . DIRECTORY_SEPARATOR . $this->request->langset() . '.php',
+            $this->appPath . 'lang' . DIRECTORY_SEPARATOR . $this->request->langset() . '.php',
+        ]);
     }
 
     /**
@@ -408,9 +440,9 @@ class App implements \ArrayAccess
      * @param  string $type 信息类型
      * @return void
      */
-    public function log($log, $type = 'info')
+    public function log($msg, $type = 'info')
     {
-        $this->debug && $this->log->record($log, $type);
+        $this->debug && $this->log->record($msg, $type);
     }
 
     /**
@@ -574,9 +606,9 @@ class App implements \ArrayAccess
             return $this->__get($class);
         } elseif ($empty && class_exists($emptyClass = $this->parseClass($module, $layer, $empty, $appendSuffix))) {
             return $this->__get($emptyClass);
-        } else {
-            throw new ClassNotFoundException('class not exists:' . $class, $class);
         }
+
+        throw new ClassNotFoundException('class not exists:' . $class, $class);
     }
 
     /**

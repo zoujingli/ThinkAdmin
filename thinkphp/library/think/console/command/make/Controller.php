@@ -24,17 +24,24 @@ class Controller extends Make
     {
         parent::configure();
         $this->setName('make:controller')
+            ->addOption('api', null, Option::VALUE_NONE, 'Generate an api controller class.')
             ->addOption('plain', null, Option::VALUE_NONE, 'Generate an empty controller class.')
             ->setDescription('Create a new resource controller class');
     }
 
     protected function getStub()
     {
-        if ($this->input->getOption('plain')) {
-            return __DIR__ . '/stubs/controller.plain.stub';
+        $stubPath = __DIR__ . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR;
+
+        if ($this->input->getOption('api')) {
+            return $stubPath . 'controller.api.stub';
         }
 
-        return __DIR__ . '/stubs/controller.stub';
+        if ($this->input->getOption('plain')) {
+            return $stubPath . 'controller.plain.stub';
+        }
+
+        return $stubPath . 'controller.stub';
     }
 
     protected function getClassName($name)

@@ -135,13 +135,19 @@ abstract class Builder
             } elseif (is_array($val) && !empty($val)) {
                 switch ($val[0]) {
                     case 'exp':
-                        $result[$item] = $val[1];
+                        if (isset($val[2]) && $query->getSecureKey() == $val[2]) {
+                            $result[$item] = $val[1];
+                        }
                         break;
                     case 'inc':
-                        $result[$item] = $this->parseKey($query, $val[1]) . ' + ' . floatval($val[2]);
+                        if ($key == $val[1]) {
+                            $result[$item] = $this->parseKey($query, $val[1]) . ' + ' . floatval($val[2]);
+                        }
                         break;
                     case 'dec':
-                        $result[$item] = $this->parseKey($query, $val[1]) . ' - ' . floatval($val[2]);
+                        if ($key == $val[1]) {
+                            $result[$item] = $this->parseKey($query, $val[1]) . ' - ' . floatval($val[2]);
+                        }
                         break;
                 }
             } elseif (is_scalar($val)) {
@@ -168,12 +174,11 @@ abstract class Builder
         // 过滤非标量数据
         if (0 === strpos($data, ':') && $query->isBind(substr($data, 1))) {
             return $data;
-        } else {
-            $key  = str_replace(['.', '->'], '_', $key);
-            $name = 'data__' . $key . $suffix;
-            $query->bind($name, $data, isset($bind[$key]) ? $bind[$key] : PDO::PARAM_STR);
-            return ':' . $name;
         }
+        $key  = str_replace(['.', '->'], '_', $key);
+        $name = 'data__' . $key . $suffix;
+        $query->bind($name, $data, isset($bind[$key]) ? $bind[$key] : PDO::PARAM_STR);
+        return ':' . $name;
     }
 
     /**
@@ -228,6 +233,7 @@ abstract class Builder
     {
         $item    = [];
         $options = $query->getOptions();
+
         foreach ((array) $tables as $key => $table) {
             if (!is_numeric($key)) {
                 $key    = $this->connection->parseSqlTable($key);
@@ -387,7 +393,7 @@ abstract class Builder
             $exp = $this->exp[$exp];
         }
 
-        $bindName = $bindName ?: 'where_' . str_replace(['.', '-'], '_', $field);
+        $bindName = $bindName ?: 'where_' . $rule . '_' . str_replace(['.', '-'], '_', $field);
 
         if (preg_match('/\W/', $bindName)) {
             // 处理带非单词字符的字段名
@@ -845,7 +851,19 @@ abstract class Builder
      */
     protected function parseGroup(Query $query, $group)
     {
-        return !empty($group) ? ' GROUP BY ' . $this->parseKey($query, $group) : '';
+        if (empty($group)) {
+            return '';
+        }
+
+        if (is_string($group)) {
+            $group = explode(',', $group);
+        }
+
+        foreach ($group as $key) {
+            $val[] = $this->parseKey($query, $key);
+        }
+
+        return ' GROUP BY ' . implode(',', $val);
     }
 
     /**

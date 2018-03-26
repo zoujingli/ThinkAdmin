@@ -58,29 +58,44 @@ class Loader
         // 注册系统自动加载
         spl_autoload_register($autoload ?: 'think\\Loader::autoload', true, true);
 
-        // 注册命名空间定义
-        self::addNamespace([
-            'think'  => __DIR__ . '/',
-            'traits' => __DIR__ . '/../traits/',
-        ]);
+        $path = realpath(dirname($_SERVER['SCRIPT_FILENAME']));
 
-        $path = dirname($_SERVER['SCRIPT_FILENAME']);
-        if (is_file('./think')) {
-            $rootPath = realpath($path) . '/';
+        if ('cli-server' == PHP_SAPI || !is_file('./think')) {
+            $rootPath = dirname($path) . DIRECTORY_SEPARATOR;
         } else {
-            $rootPath = realpath($path . '/../') . '/';
+            $rootPath = $path . DIRECTORY_SEPARATOR;
         }
 
-        // 加载类库映射文件
-        if (is_file($rootPath . 'runtime/classmap.php')) {
-            self::addClassMap(__include_file($rootPath . 'runtime/classmap.php'));
-        }
-
-        self::$composerPath = $rootPath . 'vendor/composer/';
+        self::$composerPath = $rootPath . 'vendor' . DIRECTORY_SEPARATOR . 'composer' . DIRECTORY_SEPARATOR;
 
         // Composer自动加载支持
         if (is_dir(self::$composerPath)) {
-            self::registerComposerLoader(self::$composerPath);
+            if (is_file(self::$composerPath . 'autoload_static.php')) {
+                require self::$composerPath . 'autoload_static.php';
+
+                $declaredClass = get_declared_classes();
+                $composerClass = array_pop($declaredClass);
+
+                self::$prefixLengthsPsr4 = $composerClass::$prefixLengthsPsr4;
+
+                self::$prefixDirsPsr4 = property_exists($composerClass, 'prefixDirsPsr4') ? $composerClass::$prefixDirsPsr4 : [];
+
+                self::$prefixesPsr0 = property_exists($composerClass, 'prefixesPsr0') ? $composerClass::$prefixesPsr0 : [];
+                self::$map          = property_exists($composerClass, 'classMap') ? $composerClass::$classMap : [];
+            } else {
+                self::registerComposerLoader(self::$composerPath);
+            }
+        }
+
+        // 注册命名空间定义
+        self::addNamespace([
+            'think'  => __DIR__,
+            'traits' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'traits',
+        ]);
+
+        // 加载类库映射文件
+        if (is_file($rootPath . 'runtime' . DIRECTORY_SEPARATOR . 'classmap.php')) {
+            self::addClassMap(__include_file($rootPath . 'runtime' . DIRECTORY_SEPARATOR . 'classmap.php'));
         }
 
         // 自动加载extend目录
@@ -346,9 +361,9 @@ class Loader
                 return strtoupper($match[1]);
             }, $name);
             return $ucfirst ? ucfirst($name) : lcfirst($name);
-        } else {
-            return strtolower(trim(preg_replace("/[A-Z]/", "_\\0", $name), "_"));
         }
+
+        return strtolower(trim(preg_replace("/[A-Z]/", "_\\0", $name), "_"));
     }
 }
 
