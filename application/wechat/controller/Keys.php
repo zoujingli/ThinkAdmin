@@ -47,7 +47,7 @@ class Keys extends BasicAdmin
     {
         $this->assign('title', '微信关键字');
         $db = Db::name($this->table)->whereNotIn('keys', ['subscribe', 'default']);
-        return $this->_list($db->order('id desc'));
+        return $this->_list($db->order('sort asc,id desc'));
     }
 
     /**
