@@ -134,7 +134,7 @@ class WechatService
                     empty($fansinfo) || FansService::set($fansinfo);
                 }
                 if (($rcode = $request->get('rcode', false))) {
-                    redirect(decode($rcode))->send();
+                    redirect(decode($rcode), [], 301)->send();
                 }
                 throw new Exception('网页授权异常，请稍候再试！', '503');
             case 'thr':
