@@ -2,47 +2,18 @@
 
 {block name="style"}
 <style>
-    .mobile-preview {
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        -khtml-user-select: none;
-        user-select: none;
-    }
-
-    .menu-editor {
-        left: 317px;
-        display: block;
-        max-width: 500px;
-        width: 500px;
-        height: 580px;
-        border-radius: 0;
-        border-color: #e7e7eb;
-        box-shadow: none
-    }
-
-    .menu-editor .arrow {
-        top: auto !important;
-        bottom: 15px
-    }
-
-    .menu-editor .popover-title {
-        margin-top: 0
-    }
-
-    .menu-delete {
-        font-weight: 400;
-        font-size: 12px;
-    }
-
-    .menu-submit {
-        margin-right: 10px
-    }
+    .menu-editor{left:317px;width:500px;height:580px;display:block;max-width:500px;border-radius:0;box-shadow:none;border-color:#e7e7eb;}
+    .menu-editor textarea:active,.menu-editor textarea:focus{box-shadow:none}
+    .menu-editor .arrow{top:auto!important;bottom:15px}
+    .menu-editor .popover-title{margin-top:0}
+    .menu-editor textarea, .menu-editor input[type=text]{border-radius:0}
+    .menu-editor .menu-item-deleted{font-weight: 400;font-size:12px}
+    .menu-submit-container{width:780px;padding-top:40px}
 </style>
 {/block}
 
 {block name='content'}
-<div class='mobile-preview pull-left'>
+<div class='mobile-preview pull-left notselect'>
     <div class='mobile-header'>公众号</div>
     <div class='mobile-body'></div>
     <ul class='mobile-footer'>
@@ -80,9 +51,7 @@
         <div class="arrow"></div>
         <h3 class="popover-title">
             菜单名称
-            {if auth("$classuri/edit")}
-            <a class="pull-right menu-delete">删除</a>
-            {/if}
+            {if auth("$classuri/edit")}<a class="pull-right menu-item-deleted">删除</a>{/if}
         </h3>
         <div class="popover-content menu-content"></div>
     </div>
@@ -91,7 +60,7 @@
 <div class="hide menu-editor-parent-tpl">
     <form class="form-horizontal">
         <p class="help-block text-center">已添加子菜单，仅可设置菜单名称。</p>
-        <div class="form-group" style="margin-top:50px">
+        <div class="form-group margin-top-20">
             <label class="col-xs-3 control-label">菜单名称</label>
             <div class="col-xs-8">
                 <input name="menu-name" class="layui-input block">
@@ -103,46 +72,46 @@
 
 <div class="hide menu-editor-content-tpl">
     <form class="form-horizontal">
-        <div class="form-group" style="margin-top:50px">
+        <div class="form-group margin-top-20">
             <label class="col-xs-3 control-label">菜单名称</label>
             <div class="col-xs-8">
                 <input name="menu-name" class="layui-input">
                 <span class="help-block m-b-none">字数不超过13个汉字或40个字母</span>
             </div>
         </div>
-        <div class="form-group" style="margin-top:30px">
+        <div class="form-group margin-top-20">
             <label class="col-xs-3 control-label">菜单内容</label>
             <div class="col-xs-8">
                 <div class="row">
-                    <label class="col-xs-5 font-noraml">
+                    <label class="col-xs-5 margin-bottom-10 pointer">
                         <input class="cuci-radio" type="radio" name="menu-type" value="text"> 文字消息
                     </label>
-                    <label class="col-xs-5 font-noraml">
+                    <label class="col-xs-5 margin-bottom-10 pointer">
                         <input class="cuci-radio" type="radio" name="menu-type" value="keys"> 关键字
                     </label>
-                    <label class="col-xs-5 font-noraml">
+                    <label class="col-xs-5 margin-bottom-10 pointer">
                         <input class="cuci-radio" type="radio" name="menu-type" value="view"> 跳转网页
                     </label>
-                    <label class="col-xs-5 font-noraml">
+                    <label class="col-xs-5 margin-bottom-10 pointer">
                         <input class="cuci-radio" type="radio" name="menu-type" value="event"> 事件功能
                     </label>
-                    <label class="col-xs-5 font-noraml">
+                    <label class="col-xs-5 margin-bottom-10 pointer">
                         <input class="cuci-radio" type="radio" name="menu-type" value="miniprogram"> 小程序
                     </label>
-                    <label class="col-xs-5 font-noraml">
+                    <label class="col-xs-5 margin-bottom-10 pointer">
                         <input class="cuci-radio" type="radio" name="menu-type" value="customservice"> 多客服
                     </label>
                 </div>
             </div>
         </div>
-        <div class="form-group" style="margin-top:30px">
+        <div class="form-group margin-top-20">
             <div class="col-xs-10 col-xs-offset-1 editor-content-input"></div>
         </div>
     </form>
 </div>
 
 <div style="clear:both"></div>
-<div class="text-center" style="width:780px;padding-top:40px">
+<div class="text-center menu-submit-container">
     <!--{if auth("$classuri/edit")}-->
     <button class="layui-btn menu-submit">保存发布</button>
     <!--{/if}-->
@@ -163,7 +132,7 @@
                     self.$btn = $(this);
                     self.$btn.parent('li').hasClass('menu-add') ? self.add() : self.checkShow();
                 }).find('li:first a:first').trigger('click');
-                $('.menu-delete').on('click', function () {
+                $('.menu-item-deleted').on('click', function () {
                     var dialogIndex = $.msg.confirm('删除后菜单下设置的内容将被删除！', function () {
                         self.del(), $.msg.close(dialogIndex);
                     });
@@ -275,7 +244,7 @@
                                     'location_select': '弹出地理位置选择器'
                                 };
                                 var select = [];
-                                var tpl = '<div><label class="font-noraml"><input class="cuci-radio" name="content" type="radio" {checked} value="{value}"> {title}</label></div>';
+                                var tpl = '<p class="margin-bottom-10"><label class="font-noraml pointer"><input class="cuci-radio" name="content" type="radio" {checked} value="{value}"> {title}</label></p>';
                                 if (!(options[content] || false)) {
                                     (content = 'scancode_push'), $span.data('content', content);
                                 }
@@ -318,6 +287,7 @@
                     }
                 });
                 $.form.load('{:url("$classuri/edit")}', {data: data}, 'post');
+
                 function getdata($span) {
                     var menudata = {};
                     menudata.name = $span.text();
