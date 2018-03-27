@@ -12,14 +12,14 @@
 // | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +--------------------------------------------------------------------*/
 
-html,body{height:100%;width:100%;overflow:hidden!important;overflow-y:hidden!important;min-width:0}
+html,body{height:100%;width:100%;overflow:hidden!important;min-width:0}
 
 .login-container{height:100%;background-color:#2494F2;overflow:hidden;font-size:9pt}
 .login-container ul{display:block;margin:0;padding:0;list-style:none}
 .login-container ul li{display:block;margin:0;padding:0;list-style:none}
 .login-container .clouds-container{position:absolute;overflow:hidden;height:100%;width:100%}
 .login-container .clouds{background:url("../img/login/cloud_two.png") repeat-x left 15%;position:absolute;left:0;top:0;height:100%;width:300%;-webkit-animation:cloudmove 200s linear infinite;-moz-animation:cloudmove 200s linear infinite;-o-animation:cloudmove 200s linear infinite;animation:cloudmove 200s linear infinite;-webkit-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
-.login-container .clouds-fast{background:url("../img/login/cloud.png") no-repeat 0px 40%;-webkit-animation:cloudmove 30s linear infinite;-moz-animation:cloudmove 30s linear infinite;-o-animation:cloudmove 30s linear infinite;animation:cloudmove 30s linear infinite}
+.login-container .clouds-fast{background:url("../img/login/cloud.png") no-repeat 0 40%;-webkit-animation:cloudmove 30s linear infinite;-moz-animation:cloudmove 30s linear infinite;-o-animation:cloudmove 30s linear infinite;animation:cloudmove 30s linear infinite}
 .login-container .clouds-footer{background:url("../img/login/cloud_one.png") no-repeat left 100%;animation:none}
 
 @keyframes cloudmove{0%{left:-50%}100%{left:150%}}
