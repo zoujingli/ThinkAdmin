@@ -2,13 +2,43 @@
 
 {block name="style"}
 <style>
-    .menu-editor{left:317px;width:500px;height:580px;display:block;max-width:500px;border-radius:0;box-shadow:none;border-color:#e7e7eb;}
-    .menu-editor textarea:active,.menu-editor textarea:focus{box-shadow:none}
-    .menu-editor .arrow{top:auto!important;bottom:15px}
-    .menu-editor .popover-title{margin-top:0}
-    .menu-editor textarea, .menu-editor input[type=text]{border-radius:0}
-    .menu-editor .menu-item-deleted{font-weight: 400;font-size:12px}
-    .menu-submit-container{width:780px;padding-top:40px}
+    .menu-editor {
+        left: 317px;
+        width: 500px;
+        height: 580px;
+        display: block;
+        max-width: 500px;
+        border-radius: 0;
+        box-shadow: none;
+        border-color: #e7e7eb;
+    }
+
+    .menu-editor textarea:active, .menu-editor textarea:focus {
+        box-shadow: none
+    }
+
+    .menu-editor .arrow {
+        top: auto !important;
+        bottom: 15px
+    }
+
+    .menu-editor .popover-title {
+        margin-top: 0
+    }
+
+    .menu-editor textarea, .menu-editor input[type=text] {
+        border-radius: 0
+    }
+
+    .menu-editor .menu-item-deleted {
+        font-weight: 400;
+        font-size: 12px
+    }
+
+    .menu-submit-container {
+        width: 780px;
+        padding-top: 40px
+    }
 </style>
 {/block}
 
@@ -73,16 +103,16 @@
 <div class="hide menu-editor-content-tpl">
     <form class="form-horizontal">
         <div class="form-group margin-top-20">
-            <label class="col-xs-3 control-label">菜单名称</label>
+            <label class="col-xs-3 control-label label-required">菜单名称</label>
             <div class="col-xs-8">
                 <input name="menu-name" class="layui-input">
                 <span class="help-block m-b-none">字数不超过13个汉字或40个字母</span>
             </div>
         </div>
         <div class="form-group margin-top-20">
-            <label class="col-xs-3 control-label">菜单内容</label>
+            <label class="col-xs-3 control-label label-required">菜单内容</label>
             <div class="col-xs-8">
-                <div class="row">
+                <div class="row padding-top-5">
                     <label class="col-xs-5 margin-bottom-10 pointer">
                         <input class="cuci-radio" type="radio" name="menu-type" value="text"> 文字消息
                     </label>
