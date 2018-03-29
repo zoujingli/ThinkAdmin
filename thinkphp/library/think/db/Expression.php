@@ -9,18 +9,40 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-namespace think\route\dispatch;
+namespace think\db;
 
-use think\Response;
-use think\route\Dispatch;
-
-class View extends Dispatch
+class Expression
 {
-    public function run()
-    {
-        // 渲染模板输出
-        $vars = array_merge($this->app['request']->param(), $this->param);
+    /**
+     * 查询表达式
+     *
+     * @var string
+     */
+    protected $value;
 
-        return Response::create($this->dispatch, 'view')->assign($vars);
+    /**
+     * 创建一个查询表达式
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * 获取表达式
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->value;
     }
 }
