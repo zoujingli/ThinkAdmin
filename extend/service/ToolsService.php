@@ -160,7 +160,7 @@ class ToolsService
     {
         header('Content-Type: application/octet-stream');
         header("Content-Disposition: attachment; filename=" . iconv('utf-8', 'gbk//TRANSLIT', $filename));
-        echo @iconv('utf-8', 'gbk//TRANSLIT', '"' . implode('","', $headers) . "\"\n");
+        echo @iconv('utf-8', 'gbk//TRANSLIT', "\"" . implode('","', $headers) . "\"\n");
     }
 
     /**
