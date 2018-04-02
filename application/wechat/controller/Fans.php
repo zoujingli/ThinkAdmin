@@ -177,6 +177,8 @@ class Fans extends BasicAdmin
      */
     public function sync()
     {
+        echo 11;
+        exit;
         try {
             Db::name($this->table)->where('1=1')->delete();
             FansService::sync();
