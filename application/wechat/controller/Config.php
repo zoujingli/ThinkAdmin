@@ -51,7 +51,6 @@ class Config extends BasicAdmin
                 'appkey'  => $this->request->get('appkey', sysconf('wechat_thr_appkey')),
                 'authurl' => config('wechat.service_url') . "/wechat/api.push/auth/{$code}.html",
             ];
-            // 第三方平台配置
             $wechat = WechatService::config();
             if ($this->request->get('appid', false)) {
                 sysconf('wechat_thr_appid', $data['appid']);
