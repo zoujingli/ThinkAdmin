@@ -324,7 +324,7 @@
         ]
     },
     {
-        "name": "endroid/qrcode",
+        "name": "endroid/qr-code",
         "version": "1.9.3",
         "version_normalized": "1.9.3.0",
         "source": {
@@ -383,8 +383,7 @@
             "qr",
             "qrcode",
             "symfony"
-        ],
-        "abandoned": "endroid/qr-code"
+        ]
     },
     {
         "name": "aliyuncs/oss-sdk-php",
