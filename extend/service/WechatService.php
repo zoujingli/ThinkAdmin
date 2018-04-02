@@ -41,8 +41,8 @@ use think\Exception;
  * @method \WeChat\Template template() static 模板消息
  * @method \WeChat\User user() static 微信粉丝管理
  * @method \WeChat\Wifi wifi() static 门店WIFI管理
- * @method void wechat() static 第三方微信工具
- * @method void config() static 第三方配置工具
+ * @method object wechat() static 第三方微信工具
+ * @method object config() static 第三方配置工具
  */
 class WechatService
 {
