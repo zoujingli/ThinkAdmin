@@ -126,7 +126,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">AppUri<br><span class="nowrap color-desc">第三方推送接口</span></label>
             <div class='col-sm-8'>
-                <input type="text" name="wechat_thr_appurl" required value="{$appuri}" title="请输入公众号接口通知URL" placeholder="公众号接口通知URL（必填）" class="layui-input layui-bg-gray">
+                <input type="text" name="wechat_thr_appurl" required value="{:url('@wechat/api.push', '', true, true)}" title="请输入公众号接口通知URL" placeholder="公众号接口通知URL（必填）" class="layui-input layui-bg-gray">
                 <p class="help-block">公众号服务平台接口通知URL, 公众号消息接收与回复等。</p>
             </div>
         </div>

@@ -45,19 +45,25 @@ class Config extends BasicAdmin
     {
         if ($this->request->isGet()) {
             $code = encode(url('@admin', '', true, true) . '#' . $this->request->url());
-            try {
-                $info = WechatService::instance('config')->getConfig();
-            } catch (Exception $e) {
-                $info = [];
-            }
-            return $this->fetch('', [
+            $data = [
                 'title'   => '微信接口配置',
-                'appuri'  => url("@wechat/api.push", '', true, true),
                 'appid'   => $this->request->get('appid', sysconf('wechat_thr_appid')),
                 'appkey'  => $this->request->get('appkey', sysconf('wechat_thr_appkey')),
                 'authurl' => config('wechat.service_url') . "/wechat/api.push/auth/{$code}.html",
-                'wechat'  => $info,
-            ]);
+            ];
+            // 第三方平台配置
+            $wechat = WechatService::config();
+            if ($this->request->get('appid', false)) {
+                sysconf('wechat_thr_appid', $data['appid']);
+                sysconf('wechat_thr_appkey', $data['appkey']);
+                $wechat->setApiNotifyUri(url('@wechat/api.push', '', true, true));
+            }
+            try {
+                $data['wechat'] = $wechat->getConfig();
+            } catch (Exception $e) {
+                $data['wechat'] = [];
+            }
+            return $this->fetch('', $data);
         }
         try {
             // 接口对接类型
