@@ -1,4 +1,3 @@
-:: Composer 安装更新脚本
 @echo off
 title Composer Plugs Update and Optimize
 echo.
