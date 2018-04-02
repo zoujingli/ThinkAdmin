@@ -122,8 +122,7 @@ class Product extends BasicAdmin
             $goods_id = $this->request->get('id');
             $goods = Db::name($this->table)->where(['id' => $goods_id, 'is_deleted' => '0'])->find();
             empty($goods) && $this->error('需要编辑的产品不存在！');
-            $specWhere = ['goods_id' => $goods_id, 'is_deleted' => '0'];
-            $goods['list'] = Db::name('GoodsList')->where($specWhere)->select();
+            $goods['list'] = Db::name('GoodsList')->where(['goods_id' => $goods_id, 'is_deleted' => '0'])->select();
             $this->_form_assign();
             return $this->fetch('form', ['vo' => $goods, 'title' => '编辑产品']);
         }
@@ -160,7 +159,6 @@ class Product extends BasicAdmin
      */
     protected function _form_assign()
     {
-        // 信息
         list($where, $order) = [['status' => '1', 'is_deleted' => '0'], 'sort asc,id desc'];
         $specs = (array)Db::name('GoodsSpec')->where($where)->order($order)->select();
         $brands = (array)Db::name('GoodsBrand')->where($where)->order($order)->select();

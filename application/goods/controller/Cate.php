@@ -45,8 +45,6 @@ class Cate extends BasicAdmin
      */
     public function index()
     {
-        $brands = Db::name('GoodsBrand')->where(['status' => '1'])->order('sort asc,id asc')->select();
-        $this->assign('brands', $brands);
         $this->title = '产品分类';
         $db = Db::name($this->table)->where(['is_deleted' => '0']);
         return parent::_list($db->order('sort asc,id asc'), false);
@@ -100,9 +98,6 @@ class Cate extends BasicAdmin
     protected function _form_filter(&$vo)
     {
         if ($this->request->isGet()) {
-            // 读取所有品牌列表
-            $brands = Db::name('GoodsBrand')->where(['status' => '1'])->order('sort asc,id asc')->select();
-            $this->assign('brands', $brands);
             // 读取上级分类
             $where = ['status' => '1', 'is_deleted' => '0'];
             $_cates = (array)Db::name($this->table)->where($where)->order('sort desc,id desc')->select();
