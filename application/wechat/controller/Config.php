@@ -43,6 +43,7 @@ class Config extends BasicAdmin
      */
     public function index()
     {
+        $thrNotifyUrl = url('@wechat/api.push', '', true, true);
         if ($this->request->isGet()) {
             $code = encode(url('@admin', '', true, true) . '#' . $this->request->url());
             $data = [
@@ -51,14 +52,13 @@ class Config extends BasicAdmin
                 'appkey'  => $this->request->get('appkey', sysconf('wechat_thr_appkey')),
                 'authurl' => config('wechat.service_url') . "/wechat/api.push/auth/{$code}.html",
             ];
-            $wechat = WechatService::config();
             if ($this->request->get('appid', false)) {
                 sysconf('wechat_thr_appid', $data['appid']);
                 sysconf('wechat_thr_appkey', $data['appkey']);
-                $wechat->setApiNotifyUri(url('@wechat/api.push', '', true, true));
+                WechatService::config()->setApiNotifyUri($thrNotifyUrl);
             }
             try {
-                $data['wechat'] = $wechat->getConfig();
+                $data['wechat'] = WechatService::config()->getConfig();
             } catch (Exception $e) {
                 $data['wechat'] = [];
             }
@@ -77,8 +77,7 @@ class Config extends BasicAdmin
             sysconf('wechat_thr_appkey', $this->request->post('wechat_thr_appkey'));
             // 第三方平台时设置远程平台通知接口
             if ($this->request->post('wechat_type') === 'thr') {
-                $apiurl = url('@wechat/api.push', '', true, true);
-                if (!WechatService::config()->setApiNotifyUri($apiurl)) {
+                if (!WechatService::config()->setApiNotifyUri($thrNotifyUrl)) {
                     $this->error('远程服务端接口更新失败，请稍候再试！');
                 }
             }
