@@ -86,20 +86,21 @@ class WechatService
 
     /**
      * 获取微信网页JSSDK
+     * @param null|string $url 签名SDK
      * @return array
      * @throws \think\Exception
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\exception\PDOException
      */
-    public static function webJsSDK()
+    public static function webJsSDK($url = null)
     {
         switch (strtolower(sysconf('wechat_type'))) {
             case 'api':
-                return WechatService::script()->getJsSign(request()->url(true));
+                return WechatService::script()->getJsSign(is_null($url) ? request()->url(true) : $url);
             case 'thr':
             default:
-                return WechatService::wechat()->jsSign(request()->url(true));
+                return WechatService::wechat()->jsSign(is_null($url) ? request()->url(true) : $url);
         }
     }
 
