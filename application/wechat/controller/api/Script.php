@@ -24,13 +24,6 @@ use think\facade\Response;
  */
 class Script
 {
-
-    /**
-     * 当前请求对象
-     * @var \think\Request
-     */
-    protected $request;
-
     /**
      * jsSign签名
      * @throws \Exception
@@ -41,12 +34,12 @@ class Script
         $wechat = WechatService::webOauth($result->get('mode', 1));
         $url = $result->server('HTTP_REFERER', $result->url(true), null);
         $assign = [
-            'jssdk'  => json_encode(WechatService::webJsSDK($url), 256),
+            'jssdk'  => WechatService::webJsSDK($url),
             'openid' => $wechat['openid'], 'fansinfo' => $wechat['fansinfo'],
         ];
         return Response::create(env('APP_PATH') . 'wechat/view/api/script/index.js', 'view', 200, [
-            'content-type'  => 'application/x-javascript;charset=utf-8',
-            'cache-control' => 'no-cache', 'pragma' => 'no-cache', 'expires' => '0',
+            'Content-Type'  => 'application/x-javascript;charset=utf-8',
+            'Cache-Control' => 'no-cache', 'Pragma' => 'no-cache', 'Expires' => '0',
         ])->assign($assign);
     }
 }
