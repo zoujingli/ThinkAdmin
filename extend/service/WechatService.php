@@ -41,8 +41,8 @@ use think\Exception;
  * @method \WeChat\Template template() static 模板消息
  * @method \WeChat\User user() static 微信粉丝管理
  * @method \WeChat\Wifi wifi() static 门店WIFI管理
- * @method object wechat() static 第三方微信工具
- * @method object config() static 第三方配置工具
+ * @method void wechat() static 第三方微信工具
+ * @method void config() static 第三方配置工具
  */
 class WechatService
 {
@@ -86,9 +86,9 @@ class WechatService
 
     /**
      * 获取微信网页JSSDK
-     * @param null|string $url 签名SDK
+     * @param null|string $url JS签名地址
      * @return array
-     * @throws \think\Exception
+     * @throws Exception
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\exception\PDOException
@@ -97,60 +97,65 @@ class WechatService
     {
         switch (strtolower(sysconf('wechat_type'))) {
             case 'api':
-                return WechatService::script()->getJsSign(is_null($url) ? request()->url(true) : $url);
+                return WechatService::script()->getJsSign(is_null($url) ? app('request')->url(true) : $url);
             case 'thr':
             default:
-                return WechatService::wechat()->jsSign(is_null($url) ? request()->url(true) : $url);
+                return WechatService::wechat()->jsSign(is_null($url) ? app('request')->url(true) : $url);
         }
     }
 
     /**
      * 初始化进入授权
+     * @param string $url 授权页面URL地址
      * @param int $fullMode 授权公众号模式
+     * @param bool $isRedirect 是否进行跳转
      * @return array
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function webOauth($fullMode = 0)
+    public static function webOauth($url, $fullMode = 0, $isRedirect = true)
     {
-        list($appid, $request) = [self::getAppid(), app('request')];
+        $appid = self::getAppid();
         list($openid, $fansinfo) = [session("{$appid}_openid"), session("{$appid}_fansinfo")];
         if ((empty($fullMode) && !empty($openid)) || (!empty($fullMode) && !empty($fansinfo))) {
+            empty($fansinfo) || FansService::set($fansinfo);
             return ['openid' => $openid, 'fansinfo' => $fansinfo];
         }
         switch (strtolower(sysconf('wechat_type'))) {
             case 'api':
                 $wechat = self::oauth();
-                if ($request->get('state') !== $appid) {
-                    $selfUrl = $request->url(true);
-                    $typeSns = empty($fullMode) ? 'snsapi_base' : 'snsapi_userinfo';
-                    $params = (strpos($selfUrl, '?') === false ? '?' : '&') . 'rcode=' . encode($selfUrl);
-                    redirect($wechat->getOauthRedirect($selfUrl . $params, $appid, $typeSns), [], 301)->send();
+                if (request()->get('state') !== $appid) {
+                    $snsapi = empty($fullMode) ? 'snsapi_base' : 'snsapi_userinfo';
+                    $param = (strpos($url, '?') !== false ? '&' : '?') . 'rcode=' . encode($url);
+                    $OauthUrl = $wechat->getOauthRedirect($url . $param, $appid, $snsapi);
+                    $isRedirect && redirect($OauthUrl, [], 301)->send();
+                    exit("window.location.href='{$OauthUrl}'");
                 }
                 $token = $wechat->getOauthAccessToken();
-                session("{$appid}_openid", empty($token['openid']) ? null : $token['openid']);
-                if (!empty($fullMode) && !empty($token['openid']) && !empty($token['access_token'])) {
-                    $fansinfo = $wechat->getUserInfo($token['access_token'], $token['openid']);
-                    session("{$appid}_fansinfo", empty($fansinfo) ? null : $fansinfo);
+                if (isset($token['openid'])) {
+                    session("{$appid}_openid", $openid = $token['openid']);
+                    if (empty($fullMode) && request()->get('rcode')) {
+                        redirect(decode(request()->get('rcode')))->send();
+                    }
+                    session("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
                     empty($fansinfo) || FansService::set($fansinfo);
                 }
-                if (($rcode = $request->get('rcode', false))) {
-                    redirect(decode($rcode), [], 301)->send();
-                } else {
-                    throw new Exception('网页授权异常，请稍候再试！', '503');
-                }
+                redirect(decode(request()->get('rcode')))->send();
+                break;
             case 'thr':
             default:
-                $result = self::wechat()->oauth(session_id(), $request->url(true), $fullMode);
-                session("{$appid}_openid", empty($result['openid']) ? null : $result['openid']);
-                session("{$appid}_fansinfo", empty($result['fans']) ? null : $result['fans']);
-                if ((empty($fullMode) && !empty($result['openid'])) || (!empty($fullMode) && !empty($result['fans']))) {
-                    empty($result['fans']) || FansService::set($result['fans']);
-                    return ['openid' => $result['openid'], 'fansinfo' => $result['fans']];
+                $service = self::wechat();
+                $result = $service->oauth(session_id(), $url, $fullMode);
+                session("{$appid}_openid", $openid = $result['openid']);
+                session("{$appid}_fansinfo", $fansinfo = $result['fans']);
+                if ((empty($fullMode) && !empty($openid)) || (!empty($fullMode) && !empty($fansinfo))) {
+                    empty($fansinfo) || FansService::set($fansinfo);
+                    return ['openid' => $openid, 'fansinfo' => $fansinfo];
                 }
-                if (!empty($result['url'])) { // 授权跳转
+                if ($isRedirect && !empty($result['url'])) {
                     redirect($result['url'], [], 301)->send();
                 }
+                exit("window.location.href='{$result['url']}'");
         }
     }
 

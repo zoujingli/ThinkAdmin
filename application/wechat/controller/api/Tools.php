@@ -33,7 +33,7 @@ class Tools extends BasicAdmin
      */
     public function oauth()
     {
-        $fans = WechatService::webOauth(1);
+        $fans = WechatService::webOauth($this->request->url(true), 1);
         return $this->fetch('', ['fans' => $fans]);
     }
 

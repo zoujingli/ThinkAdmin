@@ -24,21 +24,26 @@ use think\facade\Response;
  */
 class Js
 {
+
     /**
      * jsSign签名
-     * @throws \Exception
+     * @return mixed
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function index()
     {
         $result = app('request');
-        $wechat = WechatService::webOauth($result->get('mode', 1));
         $url = $result->server('HTTP_REFERER', $result->url(true), null);
+        $wechat = WechatService::webOauth($url, $result->get('mode', 1), false);
         $assign = [
             'jssdk'  => WechatService::webJsSDK($url),
             'openid' => $wechat['openid'], 'fansinfo' => $wechat['fansinfo'],
         ];
         return Response::create(env('APP_PATH') . 'wechat/view/api/script/index.js', 'view', 200, [
-            'Content-Type'  => 'application/x-javascript;charset=utf-8',
+            'Content-Type'  => 'application/x-javascript',
             'Cache-Control' => 'no-cache', 'Pragma' => 'no-cache', 'Expires' => '0',
         ])->assign($assign);
     }
