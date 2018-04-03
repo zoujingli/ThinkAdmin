@@ -22,7 +22,7 @@ use think\facade\Response;
  * Class Script
  * @package app\wechat\controller\api
  */
-class Script
+class Js
 {
     /**
      * jsSign签名
