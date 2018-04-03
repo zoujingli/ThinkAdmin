@@ -14,12 +14,11 @@
 
 namespace app\wechat\controller\api;
 
-use service\ToolsService;
 use service\WechatService;
 use think\facade\Response;
 
 /**
- * 微信公众号页面脚本
+ * 公众号页面支持
  * Class Script
  * @package app\wechat\controller\api
  */
@@ -32,28 +31,18 @@ class Script
      */
     protected $request;
 
-
-    /**
-     * Wechat constructor.
-     */
-    public function __construct()
-    {
-        ToolsService::corsOptionsHandler();
-        $this->request = app('request');
-    }
-
     /**
      * jsSign签名
      * @throws \Exception
      */
     public function index()
     {
-        $wechat = WechatService::webOauth($this->request->get('mode', 1));
-        $url = $this->request->server('HTTP_REFERER', $this->request->url(true), null);
+        $result = app('request');
+        $wechat = WechatService::webOauth($result->get('mode', 1));
+        $url = $result->server('HTTP_REFERER', $result->url(true), null);
         $assign = [
-            'openid'   => $wechat['openid'],
-            'fansinfo' => $wechat['fansinfo'],
-            'jssdk'    => WechatService::webJsSDK($url),
+            'jssdk'  => json_encode(WechatService::webJsSDK($url), 256),
+            'openid' => $wechat['openid'], 'fansinfo' => $wechat['fansinfo'],
         ];
         return Response::create(env('APP_PATH') . 'wechat/view/api/script/index.js', 'view', 200, [
             'content-type'  => 'application/x-javascript;charset=utf-8',
