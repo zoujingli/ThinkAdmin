@@ -169,7 +169,7 @@ $(function () {
                         return false;
                     }
                     if (typeof (res) === 'object') {
-                        return $.msg.auto(res, time);
+                        return $.msg.auto(res, res.wait ? res.wait : time);
                     }
                     self.show(res);
                 }
