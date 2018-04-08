@@ -20,6 +20,8 @@ use think\route\dispatch\Module as ModuleDispatch;
 
 class Domain extends RuleGroup
 {
+    protected $bind;
+
     /**
      * 架构函数
      * @access public
@@ -68,6 +70,12 @@ class Domain extends RuleGroup
             return $result;
         }
 
+        // 添加域名中间件
+        if (!empty($this->option['middleware'])) {
+            Container::get('middleware')->import($this->option['middleware']);
+            unset($this->option['middleware']);
+        }
+
         return parent::check($request, $url, $depr, $completeMatch);
     }
 
@@ -79,6 +87,7 @@ class Domain extends RuleGroup
      */
     public function bind($bind)
     {
+        $this->bind = $bind;
         $this->router->bind($bind, $this->domain);
 
         return $this;
@@ -110,10 +119,8 @@ class Domain extends RuleGroup
      */
     private function checkUrlBind($url, $depr = '/')
     {
-        $bind = $this->router->getBind($this->domain);
-
-        if (!empty($bind)) {
-
+        if (!empty($this->bind)) {
+            $bind = $this->bind;
             $this->parseBindAppendParam($bind);
 
             // 记录绑定信息

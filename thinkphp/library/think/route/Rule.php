@@ -98,6 +98,16 @@ abstract class Rule
     }
 
     /**
+     * 获取Parent对象
+     * @access public
+     * @return $this|null
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
      * 获取变量规则定义
      * @access public
      * @param  string  $name 变量名
@@ -635,9 +645,7 @@ abstract class Rule
     {
         // 添加中间件
         if (!empty($option['middleware'])) {
-            foreach ($option['middleware'] as $middleware) {
-                Container::get('middleware')->add($middleware);
-            }
+            Container::get('middleware')->import($option['middleware']);
         }
 
         // 绑定模型数据

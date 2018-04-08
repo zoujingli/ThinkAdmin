@@ -163,6 +163,7 @@ return array(
     'app\\wechat\\controller\\News' => $baseDir . '/application/wechat/controller/News.php',
     'app\\wechat\\controller\\Review' => $baseDir . '/application/wechat/controller/Review.php',
     'app\\wechat\\controller\\Tags' => $baseDir . '/application/wechat/controller/Tags.php',
+    'app\\wechat\\controller\\api\\Js' => $baseDir . '/application/wechat/controller/api/Js.php',
     'app\\wechat\\controller\\api\\Push' => $baseDir . '/application/wechat/controller/api/Push.php',
     'app\\wechat\\controller\\api\\Tools' => $baseDir . '/application/wechat/controller/api/Tools.php',
     'app\\wechat\\service\\FansService' => $baseDir . '/application/wechat/service/FansService.php',
