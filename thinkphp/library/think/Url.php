@@ -124,7 +124,7 @@ class Url
             if ($alias) {
                 // 别名路由解析
                 foreach ($alias as $key => $item) {
-                    $val = $item->gerRoute();
+                    $val = $item->getRoute();
 
                     if (0 === strpos($url, $val)) {
                         $url        = $key . substr($url, strlen($val));
@@ -148,7 +148,7 @@ class Url
 
         // 检测URL绑定
         if (!$this->bindCheck) {
-            $bind = $this->app['route']->getBind();
+            $bind = $this->app['route']->getBind($domain ?: null);
 
             if ($bind && 0 === strpos($url, $bind)) {
                 $url = substr($url, strlen($bind) + 1);
@@ -252,11 +252,11 @@ class Url
             return '';
         }
 
+        $rootDomain = $this->app['request']->rootDomain();
         if (true === $domain) {
 
             // 自动判断域名
-            $domain     = $this->app['config']->get('app_host') ?: $this->app['request']->host();
-            $rootDomain = $this->app['config']->get('url_domain_root');
+            $domain = $this->app['config']->get('app_host') ?: $this->app['request']->host();
 
             $domains = $this->app['route']->getDomains();
 
@@ -286,6 +286,8 @@ class Url
                     }
                 }
             }
+        } elseif (!strpos($domain, '.')) {
+            $domain .= '.' . $rootDomain;
         }
 
         if (false !== strpos($domain, '://')) {
