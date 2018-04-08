@@ -43,7 +43,7 @@
             <td class='text-center'>
                 <i class="{$vo.icon} font-s18"></i>
             </td>
-            <td class="nowrap"><span style="color:#ccc">{$vo.spl|raw}</span>{$vo.title}</td>
+            <td class="nowrap"><span class="color-desc">{$vo.spl|raw}</span>{$vo.title}</td>
             <td class='visible-lg'>{$vo.url}</td>
             <td class='text-center nowrap'>
                 {if $vo.status eq 0}<span>已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}

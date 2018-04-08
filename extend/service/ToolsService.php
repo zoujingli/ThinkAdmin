@@ -121,7 +121,7 @@ class ToolsService
             $attr[$path] = "{$ppath}-{$attr[$id]}";
             $attr['sub'] = isset($attr['sub']) ? $attr['sub'] : [];
             $attr['spt'] = substr_count($ppath, '-');
-            $attr['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;├&nbsp;", $attr['spt']);
+            $attr['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├&nbsp;&nbsp;", $attr['spt']);
             $sub = $attr['sub'];
             unset($attr['sub']);
             $tree[] = $attr;
