@@ -60,7 +60,6 @@
                 function successSelected() {
                     if (!isSuccessState && this.innerHTML === btnHTML) {
                         isSuccessState = true;
-                        console.log(btnHTML);
                         var srcs = [], md5s = [];
                         $('[data-md5] .success').map(function () {
                             var $li = $(this).parents('[data-md5]');
