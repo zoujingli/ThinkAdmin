@@ -48,7 +48,6 @@ class Review extends Controller
             if (!empty($article['content_source_url'])) {
                 $this->redirect($article['content_source_url']);
             }
-            $article['content'] = htmlspecialchars_decode($article['content']);
             $this->assign('vo', $article);
         }
         $this->assign('type', $type);

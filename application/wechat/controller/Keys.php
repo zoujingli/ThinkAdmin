@@ -180,7 +180,6 @@ class Keys extends BasicAdmin
         if ($this->request->isPost() && isset($data['keys'])) {
             $db = Db::name($this->table)->where('keys', $data['keys']);
             !empty($data['id']) && $db->where('id', 'neq', $data['id']);
-            $data['content'] = htmlspecialchars_decode($data['content']);
             $db->count() > 0 && $this->error('关键字已经存在，请使用其它关键字！');
         }
     }
