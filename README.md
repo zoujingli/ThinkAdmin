@@ -9,6 +9,10 @@ ThinkAdmin for PHP
 
 Documentation
 --
+认真看看文档可能会对你的开发有所帮助哦！
+
+文档地址：[ThinkAdmin 开发文档](https://www.kancloud.cn/zoujingli/thinkadmin/content)
+
 PHP开发技术交流（QQ群 513350915）
 
 [![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
