@@ -68,10 +68,13 @@
         <label class="col-sm-2 control-label label-required">产品图片</label>
         <div class='col-sm-8'>
             <table class="layui-table background-item margin-none" lay-size="sm" lay-skin="nob">
+                <thead>
                 <tr>
                     <td>产品LOGO</td>
                     <td>产品图片</td>
                 </tr>
+                </thead>
+                <tbody>
                 <tr>
                     <td class="text-top" style="width:100px">
                         <input type="hidden" name="goods_logo" value="{$vo.goods_logo|default=''}">
@@ -80,6 +83,7 @@
                         <input type="hidden" name="goods_image" value="{$vo.goods_image|default=''}">
                     </td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -322,7 +326,11 @@
 
     .background-item {
         padding: 15px;
-        background: #f5f5f5;
+        background: #efefef;
+    }
+
+    .background-item thead tr {
+        background: #e0e0e0
     }
 
     .price-input-td {
