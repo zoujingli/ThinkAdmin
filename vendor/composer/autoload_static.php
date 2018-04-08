@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit95af81df6ac420fb6c658e7c9ee159af
+class ComposerStaticInit89214cd95eb7c7c04f32b98e8012aa49
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -241,6 +241,7 @@ class ComposerStaticInit95af81df6ac420fb6c658e7c9ee159af
         'app\\wechat\\controller\\News' => __DIR__ . '/../..' . '/application/wechat/controller/News.php',
         'app\\wechat\\controller\\Review' => __DIR__ . '/../..' . '/application/wechat/controller/Review.php',
         'app\\wechat\\controller\\Tags' => __DIR__ . '/../..' . '/application/wechat/controller/Tags.php',
+        'app\\wechat\\controller\\api\\Js' => __DIR__ . '/../..' . '/application/wechat/controller/api/Js.php',
         'app\\wechat\\controller\\api\\Push' => __DIR__ . '/../..' . '/application/wechat/controller/api/Push.php',
         'app\\wechat\\controller\\api\\Tools' => __DIR__ . '/../..' . '/application/wechat/controller/api/Tools.php',
         'app\\wechat\\service\\FansService' => __DIR__ . '/../..' . '/application/wechat/service/FansService.php',
@@ -257,9 +258,9 @@ class ComposerStaticInit95af81df6ac420fb6c658e7c9ee159af
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit95af81df6ac420fb6c658e7c9ee159af::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit95af81df6ac420fb6c658e7c9ee159af::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit95af81df6ac420fb6c658e7c9ee159af::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit89214cd95eb7c7c04f32b98e8012aa49::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit89214cd95eb7c7c04f32b98e8012aa49::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit89214cd95eb7c7c04f32b98e8012aa49::$classMap;
 
         }, null, ClassLoader::class);
     }

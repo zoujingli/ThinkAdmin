@@ -175,17 +175,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.7",
-        "version_normalized": "5.1.7.0",
+        "version": "v5.1.8",
+        "version_normalized": "5.1.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "81a93819dbbd66774405daf9c27a9219232dba9a"
+            "reference": "8f6c84abd9e2f9db5a071168c0153724b54b083c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/81a93819dbbd66774405daf9c27a9219232dba9a.zip",
-            "reference": "81a93819dbbd66774405daf9c27a9219232dba9a",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/8f6c84abd9e2f9db5a071168c0153724b54b083c.zip",
+            "reference": "8f6c84abd9e2f9db5a071168c0153724b54b083c",
             "shasum": ""
         },
         "require": {
@@ -201,7 +201,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-03-29T04:16:43+00:00",
+        "time": "2018-04-06T05:28:49+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -269,8 +269,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.6",
-        "version_normalized": "3.4.6.0",
+        "version": "v3.4.8",
+        "version_normalized": "3.4.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
