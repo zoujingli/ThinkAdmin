@@ -253,20 +253,156 @@ $(function () {
                         $cur.data('input').value = tmp.join('|');
                         $cur.remove(), $.msg.close(dialogIndex);
                     });
-                })
+                });
                 $(this).before($tpl);
             }
         }).trigger('change');
     };
 
-    // 注册对象到JqFn
-    $.fn.validate = function (callback, options) {
-        return (new validate()).check(this, callback, options);
-    };
-
     // 注册对象到Jq
     $.validate = function (form, callback, options) {
-        return (new validate()).check(form, callback, options);
+        return (new function () {
+            var self = this;
+            // 表单元素
+            this.tags = 'input,textarea,select';
+            // 检测元素事件
+            this.checkEvent = {change: true, blur: true, keyup: false};
+            // 去除字符串两头的空格
+            this.trim = function (str) {
+                return str.replace(/(^\s*)|(\s*$)/g, '');
+            };
+            // 标签元素是否可见
+            this.isVisible = function (ele) {
+                return $(ele).is(':visible');
+            };
+            // 检测属性是否有定义
+            this.hasProp = function (ele, prop) {
+                if (typeof prop !== "string") {
+                    return false;
+                }
+                var attrProp = ele.getAttribute(prop);
+                return (typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false);
+            };
+            // 判断表单元素是否为空
+            this.isEmpty = function (ele, value) {
+                var trimValue = this.trim(ele.value);
+                value = value || ele.getAttribute('placeholder');
+                return (trimValue === "" || trimValue === value);
+            };
+            // 正则验证表单元素
+            this.isRegex = function (ele, regex, params) {
+                var inputValue = ele.value, dealValue = this.trim(inputValue);
+                regex = regex || ele.getAttribute('pattern');
+                if (dealValue === "" || !regex) {
+                    return true;
+                }
+                if (dealValue !== inputValue) {
+                    (ele.tagName.toLowerCase() !== "textarea") ? (ele.value = dealValue) : (ele.innerHTML = dealValue);
+                }
+                return new RegExp(regex, params || 'i').test(dealValue);
+            };
+            // 检侧所的表单元素
+            this.isAllpass = function (elements, options) {
+                if (!elements) {
+                    return true;
+                }
+                var allpass = true, self = this, params = options || {};
+                if (elements.size && elements.size() === 1 && elements.get(0).tagName.toLowerCase() === "form") {
+                    elements = $(elements).find(self.tags);
+                } else if (elements.tagName && elements.tagName.toLowerCase() === "form") {
+                    elements = $(elements).find(self.tags);
+                }
+                elements.each(function () {
+                    if (self.checkInput(this, params) === false) {
+                        return $(this).focus(), (allpass = false);
+                    }
+                });
+                return allpass;
+            };
+            // 验证标志
+            this.remind = function (input) {
+                return this.isVisible(input) ? this.showError(input, input.getAttribute('title') || '') : false;
+            };
+            // 检测表单单元
+            this.checkInput = function (input) {
+                var type = (input.getAttribute("type") + "").replace(/\W+$/, "").toLowerCase();
+                var tag = input.tagName.toLowerCase(), isRequired = this.hasProp(input, "required");
+                if (this.hasProp(input, 'data-auto-none') || input.disabled || type === 'submit' || type === 'reset' || type === 'file' || type === 'image' || !this.isVisible(input)) {
+                    return;
+                }
+                var allpass = true;
+                if (type === "radio" && isRequired) {
+                    var radiopass = false, eleRadios = input.name ? $("input[type='radio'][name='" + input.name + "']") : $(input);
+                    eleRadios.each(function () {
+                        (radiopass === false && $(this).is("[checked]")) && (radiopass = true);
+                    });
+                    if (radiopass === false) {
+                        allpass = this.remind(eleRadios.get(0), type, tag);
+                    } else {
+                        this.hideError(input);
+                    }
+                } else if (type === "checkbox" && isRequired && !$(input).is("[checked]")) {
+                    allpass = this.remind(input, type, tag);
+                } else if (tag === "select" && isRequired && !input.value) {
+                    allpass = this.remind(input, type, tag);
+                } else if ((isRequired && this.isEmpty(input)) || !(allpass = this.isRegex(input))) {
+                    allpass ? this.remind(input, type, "empty") : this.remind(input, type, tag);
+                    allpass = false;
+                } else {
+                    this.hideError(input);
+                }
+                return allpass;
+            };
+            // 错误消息显示
+            this.showError = function (ele, content) {
+                $(ele).addClass('validate-error'), this.insertError(ele);
+                $($(ele).data('input-info')).addClass('fadeInRight animated').css({width: 'auto'}).html(content);
+            };
+            // 错误消息消除
+            this.hideError = function (ele) {
+                $(ele).removeClass('validate-error'), this.insertError(ele);
+                $($(ele).data('input-info')).removeClass('fadeInRight').css({width: '30px'}).html('');
+            };
+            // 错误消息标签插入
+            this.insertError = function (ele) {
+                var $html = $('<span style="-webkit-animation-duration:.2s;animation-duration:.2s;padding-right:20px;color:#a94442;position:absolute;right:0;font-size:12px;z-index:2;display:block;width:34px;text-align:center;pointer-events:none"></span>');
+                $html.css({top: $(ele).position().top + 'px', paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('height')});
+                $(ele).data('input-info') || $(ele).data('input-info', $html.insertAfter(ele));
+            };
+            // 表单验证入口
+            this.check = function (form, callback, options) {
+                var params = $.extend({}, options || {});
+                $(form).attr("novalidate", "novalidate");
+                $(form).find(self.tags).map(function () {
+                    for (var i in self.checkEvent) {
+                        if (self.checkEvent[i] === true) {
+                            $(this).off(i, func).on(i, func);
+                        }
+                    }
+
+                    function func() {
+                        self.checkInput(this);
+                    }
+                });
+                $(form).bind("submit", function (event) {
+                    if (self.isAllpass($(this).find(self.tags), params) && typeof callback === 'function') {
+                        if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
+                            for (var instance in CKEDITOR.instances) {
+                                CKEDITOR.instances[instance].updateElement();
+                            }
+                        }
+                        callback.call(this, $(form).serialize());
+                    }
+                    return event.preventDefault(), false;
+                });
+                return $(form).data('validate', this);
+            };
+        }).check(form, callback, options);
+    };
+
+    // 注册对象到JqFn
+    $.fn.validate = function (callback, options) {
+        return $.validate(this, callback, options);
     };
 
     // 自动监听规则内表单
@@ -290,144 +426,6 @@ $(function () {
         });
     };
 
-    // 表单验证
-    function validate() {
-        var self = this;
-        // 表单元素
-        this.tags = 'input,textarea,select';
-        // 检测元素事件
-        this.checkEvent = {change: true, blur: true, keyup: false};
-        // 去除字符串两头的空格
-        this.trim = function (str) {
-            return str.replace(/(^\s*)|(\s*$)/g, '');
-        };
-        // 标签元素是否可见
-        this.isVisible = function (ele) {
-            return $(ele).is(':visible');
-        };
-        // 检测属性是否有定义
-        this.hasProp = function (ele, prop) {
-            if (typeof prop !== "string") {
-                return false;
-            }
-            var attrProp = ele.getAttribute(prop);
-            return (typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false);
-        };
-        // 判断表单元素是否为空
-        this.isEmpty = function (ele, value) {
-            var trimValue = this.trim(ele.value);
-            value = value || ele.getAttribute('placeholder');
-            return (trimValue === "" || trimValue === value);
-        };
-        // 正则验证表单元素
-        this.isRegex = function (ele, regex, params) {
-            var inputValue = ele.value, dealValue = this.trim(inputValue);
-            regex = regex || ele.getAttribute('pattern');
-            if (dealValue === "" || !regex) {
-                return true;
-            }
-            if (dealValue !== inputValue) {
-                (ele.tagName.toLowerCase() !== "textarea") ? (ele.value = dealValue) : (ele.innerHTML = dealValue);
-            }
-            return new RegExp(regex, params || 'i').test(dealValue);
-        };
-        // 检侧所的表单元素
-        this.isAllpass = function (elements, options) {
-            if (!elements) {
-                return true;
-            }
-            var allpass = true, self = this, params = options || {};
-            if (elements.size && elements.size() === 1 && elements.get(0).tagName.toLowerCase() === "form") {
-                elements = $(elements).find(self.tags);
-            } else if (elements.tagName && elements.tagName.toLowerCase() === "form") {
-                elements = $(elements).find(self.tags);
-            }
-            elements.each(function () {
-                if (self.checkInput(this, params) === false) {
-                    return $(this).focus(), (allpass = false);
-                }
-            });
-            return allpass;
-        };
-        // 验证标志
-        this.remind = function (input) {
-            return this.isVisible(input) ? this.showError(input, input.getAttribute('title') || '') : false;
-        };
-        // 检测表单单元
-        this.checkInput = function (input) {
-            var type = (input.getAttribute("type") + "").replace(/\W+$/, "").toLowerCase();
-            var tag = input.tagName.toLowerCase(), isRequired = this.hasProp(input, "required");
-            if (this.hasProp(input, 'data-auto-none') || input.disabled || type === 'submit' || type === 'reset' || type === 'file' || type === 'image' || !this.isVisible(input)) {
-                return;
-            }
-            var allpass = true;
-            if (type === "radio" && isRequired) {
-                var radiopass = false, eleRadios = input.name ? $("input[type='radio'][name='" + input.name + "']") : $(input);
-                eleRadios.each(function () {
-                    (radiopass === false && $(this).is("[checked]")) && (radiopass = true);
-                });
-                if (radiopass === false) {
-                    allpass = this.remind(eleRadios.get(0), type, tag);
-                } else {
-                    this.hideError(input);
-                }
-            } else if (type === "checkbox" && isRequired && !$(input).is("[checked]")) {
-                allpass = this.remind(input, type, tag);
-            } else if (tag === "select" && isRequired && !input.value) {
-                allpass = this.remind(input, type, tag);
-            } else if ((isRequired && this.isEmpty(input)) || !(allpass = this.isRegex(input))) {
-                allpass ? this.remind(input, type, "empty") : this.remind(input, type, tag);
-                allpass = false;
-            } else {
-                this.hideError(input);
-            }
-            return allpass;
-        };
-        // 错误消息显示
-        this.showError = function (ele, content) {
-            $(ele).addClass('validate-error'), this.insertError(ele);
-            $($(ele).data('input-info')).addClass('fadeInRight animated').css({width: 'auto'}).html(content);
-        };
-        // 错误消息消除
-        this.hideError = function (ele) {
-            $(ele).removeClass('validate-error'), this.insertError(ele);
-            $($(ele).data('input-info')).removeClass('fadeInRight').css({width: '30px'}).html('');
-        };
-        // 错误消息标签插入
-        this.insertError = function (ele) {
-            var $html = $('<span style="-webkit-animation-duration:.2s;animation-duration:.2s;padding-right:20px;color:#a94442;position:absolute;right:0;font-size:12px;z-index:2;display:block;width:34px;text-align:center;pointer-events:none"></span>');
-            $html.css({top: $(ele).position().top + 'px', paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('height')});
-            $(ele).data('input-info') || $(ele).data('input-info', $html.insertAfter(ele));
-        };
-        // 表单验证入口
-        this.check = function (form, callback, options) {
-            var params = $.extend({}, options || {});
-            $(form).attr("novalidate", "novalidate");
-            $(form).find(self.tags).map(function () {
-                for (var i in self.checkEvent) {
-                    if (self.checkEvent[i] === true) {
-                        $(this).off(i, func).on(i, func);
-                    }
-                }
-
-                function func() {
-                    self.checkInput(this);
-                }
-            });
-            $(form).bind("submit", function (event) {
-                if (self.isAllpass($(this).find(self.tags), params) && typeof callback === 'function') {
-                    if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
-                        for (var instance in CKEDITOR.instances) {
-                            CKEDITOR.instances[instance].updateElement();
-                        }
-                    }
-                    callback.call(this, $(form).serialize());
-                }
-                return event.preventDefault(), false;
-            });
-            return $(form).data('validate', this);
-        };
-    }
 
     /*! 后台菜单辅助插件 */
     $.menu = new function () {
