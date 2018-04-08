@@ -117,7 +117,7 @@ $(function () {
         this.errMsg = '{status}服务器繁忙，请稍候再试！';
         // 内容区域动态加载后初始化
         this.reInit = function ($container) {
-            $.validate.listen.call(this), JPlaceHolder.init();
+            $.vali.listen(this), JPlaceHolder.init();
             $container.find('[required]').parent().prevAll('label').addClass('label-required');
         };
         // 在内容区显示视图
@@ -214,53 +214,101 @@ $(function () {
         };
     };
 
-    // 上传单个图片
-    $.fn.uploadOneImage = function () {
-        var name = $(this).attr('name') || 'image';
-        var type = $(this).data('type') || 'png,jpg';
-        var $tpl = $('<a data-file="one" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
-        $(this).hide().attr('name', name).after($tpl).on('change', function () {
-            $tpl.get(0).style = this.value ? 'background-image:url(' + this.value + ')' : '';
-        }).trigger('change');
-    };
-
-    // 上传多个图片
-    $.fn.uploadMultipleImage = function () {
-        var type = $(this).data('type') || 'png,jpg';
-        var name = $(this).attr('name') || 'umt-image';
-        var $tpl = $('<a data-file="mut" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
-        $(this).hide().attr('name', name).after($tpl).on('change', function () {
-            var input = this, values = [], srcs = this.value.split('|');
-            $(this).prevAll('.uploadimage').map(function () {
-                values.push($(this).attr('data-tips-image'));
-            }), $(this).prevAll('.uploadimage').remove(), values.reverse();
-            for (var i in srcs) {
-                srcs[i] && values.push(srcs[i]);
+    /*! 后台菜单辅助插件 */
+    $.menu = new function () {
+        // 计算URL地址中有效的URI
+        this.getUri = function (uri) {
+            uri = uri || window.location.href;
+            uri = (uri.indexOf(window.location.host) > -1 ? uri.split(window.location.host)[1] : uri).split('?')[0];
+            return (uri.indexOf('#') !== -1 ? uri.split('#')[1] : uri);
+        };
+        // 通过URI查询最有可能的菜单NODE
+        this.queryNode = function (url) {
+            var node = location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1');
+            if (!/^m\-/.test(node)) {
+                var $menu = $('[data-menu-node][data-open*="' + url.replace(/\.html$/ig, '') + '"]');
+                return $menu.size() ? $menu.get(0).getAttribute('data-menu-node') : '';
             }
-            this.value = values.join('|');
-            for (var i in values) {
-                var tpl = '<div class="uploadimage uploadimagemtl"><a class="layui-icon">&#x1006;</a></div>';
-                var $tpl = $(tpl).attr('data-tips-image', values[i]).css('backgroundImage', 'url(' + values[i] + ')');
-                $tpl.data('input', input).data('srcs', values).data('index', i);
-                $tpl.on('click', 'a', function (e) {
-                    e.stopPropagation();
-                    var $cur = $(this).parent();
-                    var dialogIndex = $.msg.confirm('确定要移除这张图片吗？', function () {
-                        var data = $cur.data('srcs'), tmp = [];
-                        for (var i in data) {
-                            i !== $cur.data('index') && tmp.push(data[i]);
+            return node;
+        };
+        // URL转URI
+        this.parseUri = function (uri, obj) {
+            var params = {};
+            if (uri.indexOf('?') > -1) {
+                var serach = uri.split('?')[1].split('&');
+                for (var i in serach) {
+                    if (serach[i].indexOf('=') > -1) {
+                        var arr = serach[i].split('=');
+                        try {
+                            params[arr[0]] = window.decodeURIComponent(window.decodeURIComponent(arr[1].replace(/%2B/ig, ' ')));
+                        } catch (e) {
+                            console.log([e, uri, serach, arr]);
                         }
-                        $cur.data('input').value = tmp.join('|');
-                        $cur.remove(), $.msg.close(dialogIndex);
-                    });
-                });
-                $(this).before($tpl);
+                    }
+                }
             }
-        }).trigger('change');
+            uri = this.getUri(uri);
+            params.spm = obj && obj.getAttribute('data-menu-node') || this.queryNode(uri);
+            delete params[""];
+            var query = '?' + $.param(params);
+            return uri + (query !== '?' ? query : '');
+        };
+        // 后台菜单动作初始化
+        this.listen = function () {
+            var self = this;
+            // 左则二级菜单展示
+            $('[data-submenu-layout]>a').on('click', function () {
+                $(this).parent().toggleClass('open');
+                self.syncOpenStatus(1);
+            });
+            // 同步二级菜单展示状态
+            this.syncOpenStatus = function (mode) {
+                $('[data-submenu-layout]').map(function () {
+                    var node = $(this).attr('data-submenu-layout');
+                    if (mode === 1) {
+                        var type = (this.className || '').indexOf('open') > -1 ? 2 : 1;
+                        layui.data('menu', {key: node, value: type});
+                    } else {
+                        var type = layui.data('menu')[node] || 2;
+                        (type === 2) && $(this).addClass('open');
+                    }
+                });
+            };
+            window.onhashchange = function () {
+                var hash = window.location.hash || '';
+                if (hash.length < 1) {
+                    return $('[data-menu-node][data-open!="#"]:first').trigger('click');
+                }
+                $.form.load(hash);
+                self.syncOpenStatus(2);
+                // 菜单选择切换
+                var node = self.queryNode(self.getUri());
+                if (/^m\-/.test(node)) {
+                    var $all = $('a[data-menu-node]'), tmp = node.split('-'), tmpNode = tmp.shift();
+                    while (tmp.length > 0) {
+                        tmpNode = tmpNode + '-' + tmp.shift();
+                        $all = $all.not($('a[data-menu-node="' + tmpNode + '"]').addClass('active'));
+                    }
+                    $all.removeClass('active');
+                    // 菜单模式切换
+                    if (node.split('-').length > 2) {
+                        var _tmp = node.split('-'), _node = _tmp.shift() + '-' + _tmp.shift();
+                        $('[data-menu-layout]').not($('[data-menu-layout="' + _node + '"]').removeClass('hide')).addClass('hide');
+                        $('[data-menu-node="' + node + '"]').parent('div').parent('div').addClass('open');
+                        $('body.framework').removeClass('mini');
+                    } else {
+                        $('body.framework').addClass('mini');
+                    }
+                    self.syncOpenStatus(1);
+                }
+            };
+            // URI初始化动作
+            window.onhashchange.call(this);
+        };
     };
 
     // 注册对象到Jq
-    $.validate = function (form, callback, options) {
+    $.vali = function (form, callback, options) {
         return (new function () {
             var self = this;
             // 表单元素
@@ -400,17 +448,12 @@ $(function () {
         }).check(form, callback, options);
     };
 
-    // 注册对象到JqFn
-    $.fn.validate = function (callback, options) {
-        return $.validate(this, callback, options);
-    };
-
     // 自动监听规则内表单
-    $.validate.listen = function () {
+    $.vali.listen = function () {
         $('form[data-auto]').map(function () {
             if ($(this).attr('data-listen') !== 'true') {
                 var callbackname = $(this).attr('data-callback');
-                $(this).attr('data-listen', 'true').validate(function (data) {
+                $(this).attr('data-listen', 'true').vali(function (data) {
                     var method = this.getAttribute('method') || 'POST';
                     var tips = this.getAttribute('data-tips') || undefined;
                     var url = this.getAttribute('action') || window.location.href;
@@ -426,98 +469,54 @@ $(function () {
         });
     };
 
+    // 注册对象到JqFn
+    $.fn.vali = function (callback, options) {
+        return $.vali(this, callback, options);
+    };
 
-    /*! 后台菜单辅助插件 */
-    $.menu = new function () {
-        // 计算URL地址中有效的URI
-        this.getUri = function (uri) {
-            uri = uri || window.location.href;
-            uri = (uri.indexOf(window.location.host) > -1 ? uri.split(window.location.host)[1] : uri).split('?')[0];
-            return (uri.indexOf('#') !== -1 ? uri.split('#')[1] : uri);
-        };
-        // 通过URI查询最有可能的菜单NODE
-        this.queryNode = function (url) {
-            var node = location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1');
-            if (!/^m\-/.test(node)) {
-                var $menu = $('[data-menu-node][data-open*="' + url.replace(/\.html$/ig, '') + '"]');
-                return $menu.size() ? $menu.get(0).getAttribute('data-menu-node') : '';
+    // 上传单个图片
+    $.fn.uploadOneImage = function () {
+        var name = $(this).attr('name') || 'image';
+        var type = $(this).data('type') || 'png,jpg';
+        var $tpl = $('<a data-file="one" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
+        $(this).hide().attr('name', name).after($tpl).on('change', function () {
+            $tpl.get(0).style = this.value ? 'background-image:url(' + this.value + ')' : '';
+        }).trigger('change');
+    };
+
+    // 上传多个图片
+    $.fn.uploadMultipleImage = function () {
+        var type = $(this).data('type') || 'png,jpg';
+        var name = $(this).attr('name') || 'umt-image';
+        var $tpl = $('<a data-file="mut" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
+        $(this).hide().attr('name', name).after($tpl).on('change', function () {
+            var input = this, values = [], srcs = this.value.split('|');
+            $(this).prevAll('.uploadimage').map(function () {
+                values.push($(this).attr('data-tips-image'));
+            }), $(this).prevAll('.uploadimage').remove(), values.reverse();
+            for (var i in srcs) {
+                srcs[i] && values.push(srcs[i]);
             }
-            return node;
-        };
-        // URL转URI
-        this.parseUri = function (uri, obj) {
-            var params = {};
-            if (uri.indexOf('?') > -1) {
-                var serach = uri.split('?')[1].split('&');
-                for (var i in serach) {
-                    if (serach[i].indexOf('=') > -1) {
-                        var arr = serach[i].split('=');
-                        try {
-                            params[arr[0]] = window.decodeURIComponent(window.decodeURIComponent(arr[1].replace(/%2B/ig, ' ')));
-                        } catch (e) {
-                            console.log([e, uri, serach, arr]);
+            this.value = values.join('|');
+            for (var i in values) {
+                var tpl = '<div class="uploadimage uploadimagemtl"><a class="layui-icon">&#x1006;</a></div>';
+                var $tpl = $(tpl).attr('data-tips-image', values[i]).css('backgroundImage', 'url(' + values[i] + ')');
+                $tpl.data('input', input).data('srcs', values).data('index', i);
+                $tpl.on('click', 'a', function (e) {
+                    e.stopPropagation();
+                    var $cur = $(this).parent();
+                    var dialogIndex = $.msg.confirm('确定要移除这张图片吗？', function () {
+                        var data = $cur.data('srcs'), tmp = [];
+                        for (var i in data) {
+                            i !== $cur.data('index') && tmp.push(data[i]);
                         }
-                    }
-                }
-            }
-            uri = this.getUri(uri);
-            params.spm = obj && obj.getAttribute('data-menu-node') || this.queryNode(uri);
-            delete params[""];
-            var query = '?' + $.param(params);
-            return uri + (query !== '?' ? query : '');
-        };
-        // 后台菜单动作初始化
-        this.listen = function () {
-            var self = this;
-            // 左则二级菜单展示
-            $('[data-submenu-layout]>a').on('click', function () {
-                $(this).parent().toggleClass('open');
-                self.syncOpenStatus(1);
-            });
-            // 同步二级菜单展示状态
-            this.syncOpenStatus = function (mode) {
-                $('[data-submenu-layout]').map(function () {
-                    var node = $(this).attr('data-submenu-layout');
-                    if (mode === 1) {
-                        var type = (this.className || '').indexOf('open') > -1 ? 2 : 1;
-                        layui.data('menu', {key: node, value: type});
-                    } else {
-                        var type = layui.data('menu')[node] || 2;
-                        (type === 2) && $(this).addClass('open');
-                    }
+                        $cur.data('input').value = tmp.join('|');
+                        $cur.remove(), $.msg.close(dialogIndex);
+                    });
                 });
-            };
-            window.onhashchange = function () {
-                var hash = window.location.hash || '';
-                if (hash.length < 1) {
-                    return $('[data-menu-node][data-open!="#"]:first').trigger('click');
-                }
-                $.form.load(hash);
-                self.syncOpenStatus(2);
-                // 菜单选择切换
-                var node = self.queryNode(self.getUri());
-                if (/^m\-/.test(node)) {
-                    var $all = $('a[data-menu-node]'), tmp = node.split('-'), tmpNode = tmp.shift();
-                    while (tmp.length > 0) {
-                        tmpNode = tmpNode + '-' + tmp.shift();
-                        $all = $all.not($('a[data-menu-node="' + tmpNode + '"]').addClass('active'));
-                    }
-                    $all.removeClass('active');
-                    // 菜单模式切换
-                    if (node.split('-').length > 2) {
-                        var _tmp = node.split('-'), _node = _tmp.shift() + '-' + _tmp.shift();
-                        $('[data-menu-layout]').not($('[data-menu-layout="' + _node + '"]').removeClass('hide')).addClass('hide');
-                        $('[data-menu-node="' + node + '"]').parent('div').parent('div').addClass('open');
-                        $('body.framework').removeClass('mini');
-                    } else {
-                        $('body.framework').addClass('mini');
-                    }
-                    self.syncOpenStatus(1);
-                }
-            };
-            // URI初始化动作
-            window.onhashchange.call(this);
-        };
+                $(this).before($tpl);
+            }
+        }).trigger('change');
     };
 
     /*! 注册 data-load 事件行为 */
@@ -658,5 +657,5 @@ $(function () {
 
     /*! 初始化 */
     $.menu.listen();
-    $.validate.listen(this);
+    $.vali.listen();
 });
