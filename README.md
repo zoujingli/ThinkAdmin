@@ -1,6 +1,6 @@
 ThinkAdmin for PHP
 --
-大道致简 for ThinkAdmin
+## 大道至简·悟在天成
 
 * ThinkAdmin 是一个基于 Thinkphp 5.1.x 开发的后台管理系统，集成后台系统常用功能。
 * 项目安装及二次开发请参考 ThinkPHP 官方文档及下面的服务环境说明，数据库 sql 文件存放于项目根目录下。
