@@ -479,8 +479,8 @@ $(function () {
         var name = $(this).attr('name') || 'image';
         var type = $(this).data('type') || 'png,jpg';
         var $tpl = $('<a data-file="one" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
-        $(this).hide().attr('name', name).after($tpl).on('change', function () {
-            $tpl.get(0).style = this.value ? 'background-image:url(' + this.value + ')' : '';
+        $(this).attr('name', name).after($tpl).on('change', function () {
+            !!this.value && $tpl.css('backgroundImage', 'url(' + this.value + ')');
         }).trigger('change');
     };
 
@@ -489,7 +489,7 @@ $(function () {
         var type = $(this).data('type') || 'png,jpg';
         var name = $(this).attr('name') || 'umt-image';
         var $tpl = $('<a data-file="mut" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
-        $(this).hide().attr('name', name).after($tpl).on('change', function () {
+        $(this).attr('name', name).after($tpl).on('change', function () {
             var input = this, values = [], srcs = this.value.split('|');
             $(this).prevAll('.uploadimage').map(function () {
                 values.push($(this).attr('data-tips-image'));
