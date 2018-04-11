@@ -105,7 +105,7 @@ class Product extends BasicAdmin
         } catch (\Exception $e) {
             $this->error('产品添加失败，请稍候再试！');
         }
-        list($base, $spm, $url) = [url('@admin'), $this->request->get('spm'), url('store/goods/index')];
+        list($base, $spm, $url) = [url('@admin'), $this->request->get('spm'), url('goods/product/index')];
         $this->success('添加产品成功！', "{$base}#{$url}?spm={$spm}");
     }
 
