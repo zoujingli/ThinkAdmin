@@ -27,7 +27,7 @@
                     var field = '_editor_upload_' + Math.floor(Math.random() * 100000);
                     var url = window.ROOT_URL + '/index.php/admin/plugs/upfile.html?mode=one&type=png,jpg,gif,jpeg&field=' + field;
                     $('<input type="hidden">').attr('name', field).appendTo(editor.element.$).on('change', function () {
-                        var element = CKEDITOR.dom.element.createFromHtml('<img src="' + this.value + '" style="max-width:500px" border="0" title="image" />');
+                        var element = CKEDITOR.dom.element.createFromHtml('<img src="' + this.value + '" border="0" title="image" />');
                         editor.insertElement(element), $(this).remove();
                     });
                     $.form.iframe(url, '插入图片');
