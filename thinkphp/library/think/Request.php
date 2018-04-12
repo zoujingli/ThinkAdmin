@@ -1588,9 +1588,18 @@ class Request
             $ip = $_SERVER['REMOTE_ADDR'];
         }
 
+        // IP地址类型
+        $ip_mode = (strpos($ip, ':') === false) ? 'ipv4' : 'ipv6';
+
         // IP地址合法验证
-        $long = sprintf("%u", ip2long($ip));
-        $ip   = $long ? [$ip, $long] : ['0.0.0.0', 0];
+        if (filter_var($ip, FILTER_VALIDATE_IP) !== $ip) {
+            $ip = ($ip_mode === 'ipv4') ? '0.0.0.0' : '::';
+        }
+
+        // 如果是ipv4地址，则直接使用ip2long返回int类型ip；如果是ipv6地址，暂时不支持，直接返回0
+        $long_ip = ($ip_mode === 'ipv4') ? sprintf("%u", ip2long($ip)) : 0;
+
+        $ip = [$ip, $long_ip];
 
         return $ip[$type];
     }
