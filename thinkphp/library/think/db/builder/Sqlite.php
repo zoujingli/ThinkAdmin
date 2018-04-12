@@ -59,10 +59,9 @@ class Sqlite extends Builder
      * @access public
      * @param  Query     $query     查询对象
      * @param  string    $key       字段名
-     * @param  bool      $strict   严格检测
      * @return string
      */
-    public function parseKey(Query $query, $key, $strict = false)
+    public function parseKey(Query $query, $key)
     {
         $key = trim($key);
         if (strpos($key, '.')) {

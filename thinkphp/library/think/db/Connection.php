@@ -2076,7 +2076,7 @@ abstract class Connection
     {
         if (is_scalar($value)) {
             $data = $value;
-        } elseif (is_array($value) && isset($value[1], $value[2]) && in_array($value[1], ['=', 'eq'], true) && is_scalar($value[2])) {
+        } elseif (is_array($value) && isset($value[1], $value[2]) && in_array($value[1], ['=', 'eq'])) {
             $data = $value[2];
         }
 
@@ -2089,7 +2089,7 @@ abstract class Connection
         try {
             return md5($prefix . serialize($query->getOptions()) . serialize($query->getBind(false)));
         } catch (\Exception $e) {
-            throw new Exception('closure not support cache(true)');
+            return;
         }
     }
 
