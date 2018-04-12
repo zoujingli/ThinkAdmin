@@ -11,23 +11,28 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label"></label>
+        <label class="col-sm-2 control-label label-required">品牌图片</label>
         <div class='col-sm-8'>
-            <div class="layui-inline ">
-                <div class="layui-input-inline well">
-                    <p class="color-desc label-required">品牌Logo图片</p>
-                    <input type="hidden" name="brand_logo" value="{$vo.brand_logo|default=''}">
-                    <script>$('[name=brand_logo]').uploadOneImage()</script>
-                </div>
-            </div>
-
-            <div class="layui-inline">
-                <div class="layui-input-inline well">
-                    <p class="color-desc label-required">品牌封面图片</p>
-                    <input type="hidden" name="brand_cover" value="{$vo.brand_cover|default=''}">
-                    <script>$('[name=brand_cover]').uploadOneImage()</script>
-                </div>
-            </div>
+            <table class="layui-table background-item margin-none" lay-size="sm" lay-skin="nob">
+                <thead>
+                <tr>
+                    <td>品牌LOGO</td>
+                    <td>品牌图片</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-top" style="width:100px">
+                        <input type="hidden" name="brand_logo" value="{$vo.brand_logo|default=''}">
+                        <script>$('[name=brand_logo]').uploadOneImage()</script>
+                    </td>
+                    <td class="text-top">
+                        <input type="hidden" name="brand_cover" value="{$vo.brand_cover|default=''}">
+                        <script>$('[name=brand_cover]').uploadOneImage()</script>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -63,5 +68,15 @@
             window.createEditor('[name="brand_detail"]', {height: 500});
         });
     </script>
+    <style>
+        .background-item {
+            padding: 15px;
+            background: #efefef;
+        }
+
+        .background-item thead tr {
+            background: #e0e0e0
+        }
+    </style>
 </form>
 {/block}
