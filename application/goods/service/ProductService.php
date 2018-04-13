@@ -44,7 +44,7 @@ class ProductService
             return ['list' => $goodsList, 'cate' => $cateList, 'brand' => $brandList];
         }
         // 读取产品详情列表
-        $specWhere = ['status' => '1', 'is_deleted' => '0', ['goods_id', 'in', array_column($goodsList, 'id')]];
+        $specWhere = [['status', 'eq', '1'], ['is_deleted', 'eq', '0'], ['goods_id', 'in', array_column($goodsList, 'id')]];
         $specField = 'id,goods_id,goods_spec,goods_number,market_price,selling_price,goods_stock,goods_sale';
         $specList = Db::name('GoodsList')->where($specWhere)->column($specField);
         foreach ($specList as $key => $spec) {
