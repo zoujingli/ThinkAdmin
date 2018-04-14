@@ -1,0 +1,29 @@
+{
+  "type": "library",
+  "name": "zoujingli/wechat-developer",
+  "homepage": "https://github.com/zoujingli/WeChatDeveloper",
+  "description": "WeChat platform and WeChat payment development tools",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Anyon",
+      "email": "zoujingli@qq.com",
+      "homepage": "http://ctolog.com"
+    }
+  ],
+  "keywords": [
+    "WeChat",
+    "WeChatPay",
+    "WeChatDeveloper"
+  ],
+  "require": {
+    "php": ">=5.4",
+    "ext-curl": "*",
+    "ext-openssl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "WeChat\\": "WeChat"
+    }
+  }
+}
