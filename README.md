@@ -24,8 +24,8 @@ PHP开发技术交流（QQ群 513350915）
 Repositorie
 --
  ThinkAdmin 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
->* GitHub 托管地址：https://github.com/zoujingli/ThinkAdmin
->* Gitee  托管地址：http://gitee.com/zoujingli/Think.Admin
+* GitHub 托管地址：https://github.com/zoujingli/ThinkAdmin
+* Gitee  托管地址：http://gitee.com/zoujingli/Think.Admin
 
 对于新版本的微信模块使用的是授权模式，需要用到 ThinkService 项目。
 * GitHub 托管地址：https://github.com/zoujingli/ThinkService
