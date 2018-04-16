@@ -12,6 +12,7 @@
 namespace think\db\builder;
 
 use think\db\Builder;
+use think\db\Expression;
 use think\db\Query;
 
 /**
@@ -88,16 +89,16 @@ class Mysql extends Builder
     /**
      * 正则查询
      * @access protected
-     * @param  Query     $query        查询对象
-     * @param  string    $key
-     * @param  string    $exp
-     * @param  mixed     $value
-     * @param  string    $field
+     * @param  Query        $query        查询对象
+     * @param  string       $key
+     * @param  string       $exp
+     * @param  Expression   $value
+     * @param  string       $field
      * @return string
      */
-    protected function parseRegexp(Query $query, $key, $exp, $value, $field)
+    protected function parseRegexp(Query $query, $key, $exp, Expression $value, $field)
     {
-        return $key . ' ' . $exp . ' ' . $value;
+        return $key . ' ' . $exp . ' ' . $value->getValue();
     }
 
     /**
@@ -135,7 +136,7 @@ class Mysql extends Builder
             }
         }
 
-        if ($strict || !preg_match('/[,\'\"\*\(\)`.\s]/', $key)) {
+        if ('*' != $key && ($strict || !preg_match('/[,\'\"\*\(\)`.\s]/', $key))) {
             $key = '`' . $key . '`';
         }
 
@@ -148,30 +149,6 @@ class Mysql extends Builder
         }
 
         return $key;
-    }
-
-    /**
-     * field分析
-     * @access protected
-     * @param  Query     $query     查询对象
-     * @param  mixed     $fields    字段名
-     * @return string
-     */
-    protected function parseField(Query $query, $fields)
-    {
-        $fieldsStr = parent::parseField($query, $fields);
-        $options   = $query->getOptions();
-
-        if (!empty($options['point'])) {
-            $array = [];
-            foreach ($options['point'] as $key => $field) {
-                $key     = !is_numeric($key) ? $key : $field;
-                $array[] = 'AsText(' . $this->parseKey($query, $key) . ') AS ' . $this->parseKey($query, $field);
-            }
-            $fieldsStr .= ',' . implode(',', $array);
-        }
-
-        return $fieldsStr;
     }
 
     /**
