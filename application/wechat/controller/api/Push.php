@@ -49,36 +49,70 @@ class Push
     protected $receive;
 
     /**
-     * 微信消息接口
+     * 微信消息接口（通过ThinkService推送）
+     * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function __construct()
+    public function index()
     {
         $request = app('request');
         $this->appid = $request->post('appid', '', null);
         $this->openid = $request->post('openid', '', null);
         $this->receive = unserialize($request->post('receive', '', null));
-        p($this->receive);
         if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
             throw new Exception('微信API实例缺失必要参数[appid,openid,event].');
         }
-        if ($this->appid !== sysconf('wechat_appid')) {
+        return $this->call($this->appid, $this->openid, $this->receive);
+    }
+
+    /**
+     * 公众号直接对接（通过参数对接推送）
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function notify()
+    {
+        $wechat = WechatService::receive();
+        return $this->call(WechatService::getAppid(), $wechat->getOpenid(), $wechat->getReceive());
+    }
+
+    /**
+     * 初始化接口
+     * @param string $appid 公众号APPID
+     * @param string $openid 公众号OPENID
+     * @param array $revice 消息对象
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    protected function call($appid, $openid, $revice)
+    {
+        list($this->appid, $this->openid, $this->receive) = [$appid, $openid, $revice];
+        if ($this->appid !== WechatService::getAppid()) {
             throw new Exception('微信API实例APPID验证失败.');
         }
         // text,event,image,location
         if (method_exists($this, ($method = $this->receive['MsgType']))) {
-            $this->$method();
+            if (is_string(($result = $this->$method()))) {
+                return $result;
+            }
         }
+        return 'success';
     }
 
     /**
      * 文件消息处理
      * @return bool
-     * @throws \Exception
+     * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     protected function text()
     {
@@ -88,7 +122,9 @@ class Push
     /**
      * 事件消息处理
      * @return bool|string
-     * @throws \Exception
+     * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -132,24 +168,27 @@ class Push
      * 关键字处理
      * @param string $rule 关键字规则
      * @param bool $isLastReply 强制结束
-     * @return bool
-     * @throws \Exception
+     * @return bool|string
+     * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     protected function keys($rule, $isLastReply = false)
     {
         list($table, $field, $value) = explode('#', $rule . '##');
         $info = Db::name($table)->where($field, $value)->find();
-        p($info);
         if (empty($info['type']) || (array_key_exists('status', $info) && empty($info['status']))) {
             // 切换默认回复
             return $isLastReply ? false : $this->keys('wechat_keys#keys#default', true);
         }
         switch ($info['type']) {
             case 'customservice':
-                return $this->sendMessage('text', ['content' => $info['content']]);
+                return $this->sendMessage('customservice', ['content' => $info['content']]);
             case 'keys':
                 $content = empty($info['content']) ? $info['name'] : $info['content'];
                 return $this->keys("wechat_keys#keys#{$content}");
@@ -202,13 +241,42 @@ class Push
      * @param string $type 消息类型（text|image|voice|video|music|news|mpnews|wxcard）
      * @param array $data 消息内容
      * @return array|bool
-     * @throws \Exception
+     * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     protected function sendMessage($type, $data)
     {
         $msgData = ['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data];
-        p($msgData);
-        return WechatService::custom()->send($msgData);
+        switch (strtolower(sysconf('wechat_type'))) {
+            case 'api': // 参数对接，直接回复XML来实现消息回复
+                $wechat = WechatService::receive();
+                switch (strtolower($type)) {
+                    case 'text':
+                        return $wechat->text($data['content'])->reply([], true);
+                    case 'image':
+                        return $wechat->image($data['media_id'])->reply([], true);
+                    case 'video':
+                        return $wechat->video($data['media_id'], $data['title'], $data['description'])->reply([], true);
+                    case 'voice':
+                        return $wechat->voice($data['media_id'])->reply([], true);
+                    case 'music':
+                        return $wechat->music($data['title'], $data['description'], $data['musicurl'], $data['hqmusicurl'], $data['thumb_media_id'])->reply([], true);
+                    case 'news':
+                        return $wechat->news($data['articles'])->reply([], true);
+                    case 'customservice':
+                        WechatService::custom()->send(['touser' => $this->openid, 'msgtype' => 'text', "text" => $data['content']]);
+                        return $wechat->transferCustomerService()->reply([], true);
+                    default:
+                        return 'success';
+                }
+            case 'thr': // 第三方平台，使用客服消息来实现
+                return WechatService::custom()->send($msgData);
+            default:
+                return 'success';
+        }
     }
 
     /**
@@ -238,7 +306,8 @@ class Push
      * 同步粉丝状态
      * @param bool $subscribe 关注状态
      * @return string
-     * @throws \Exception
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */

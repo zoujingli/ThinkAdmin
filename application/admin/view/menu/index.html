@@ -43,7 +43,7 @@
             <td class='text-center'>
                 <i class="{$vo.icon} font-s18"></i>
             </td>
-            <td class="nowrap"><span style="color:#ccc">{$vo.spl|raw}</span>{$vo.title}</td>
+            <td class="nowrap"><span class="color-desc">{$vo.spl|raw}</span>{$vo.title}</td>
             <td class='visible-lg'>{$vo.url}</td>
             <td class='text-center nowrap'>
                 {if $vo.status eq 0}<span>已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}
@@ -53,7 +53,7 @@
                 {if auth("$classuri/add")}
                 <span class="text-explode">|</span>
                 <!--{if $vo.spt<2}-->
-                <a data-modal='{:url("$classuri/add")}?pid={$vo.id}'>添加下级</a>
+                <a data-title="添加菜单" data-modal='{:url("$classuri/add")}?pid={$vo.id}'>添加下级</a>
                 <!--{else}-->
                 <a class="color-desc">添加下级</a>
                 <!--{/if}-->
@@ -61,7 +61,7 @@
 
                 {if auth("$classuri/edit")}
                 <span class="text-explode">|</span>
-                <a data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
+                <a data-title="编辑菜单" data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
                 {/if}
 
                 {if $vo.status eq 1 and auth("$classuri/forbid")}

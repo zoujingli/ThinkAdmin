@@ -2,41 +2,6 @@
 
 {block name="content"}
 
-<ul class="block-list">
-    <li style="background-color:#009688;">
-        <p class="title">微信粉丝统计</p>
-        <p class="font-s18">{:db('WechatFans')->cache(true,60)->where(['subscribe'=>'1','is_black'=>'0'])->count()}</p>
-    </li>
-    <li style="background-color:#5FB878;">
-        <p class="title">微信粉丝统计</p>
-        <p class="font-s18">{:db('WechatFans')->cache(true,60)->where(['subscribe'=>'1'])->count()}</p>
-    </li>
-    <li style="background-color:#393D49;">
-        <p class="title">微信粉丝统计</p>
-        <p class="font-s18">{:db('WechatFans')->cache(true,60)->where(['subscribe'=>'1'])->count()}</p>
-    </li>
-    <li style="background-color:#1E9FFF;">
-        <p class="title">微信粉丝统计</p>
-        <p class="font-s18">{:db('WechatFans')->cache(true,60)->where(['subscribe'=>'1'])->count()}</p>
-    </li>
-    <li style="background-color:#FFB800;">
-        <p class="title">微信粉丝统计</p>
-        <p class="font-s18">{:db('WechatFans')->cache(true,60)->where(['subscribe'=>'1'])->count()}</p>
-    </li>
-    <li style="background-color:#FF5722;">
-        <p class="title">微信粉丝统计</p>
-        <p class="font-s18">{:db('WechatFans')->cache(true,60)->where(['subscribe'=>'1'])->count()}</p>
-    </li>
-    <li style="background-color:#01AAED;">
-        <p class="title">微信粉丝统计</p>
-        <p class="font-s18">{:db('WechatFans')->cache(true,60)->where(['subscribe'=>'1'])->count()}</p>
-    </li>
-    <li style="background-color:#2F4056;">
-        <p class="title">微信粉丝统计</p>
-        <p class="font-s18">{:db('WechatFans')->cache(true,60)->where(['subscribe'=>'1'])->count()}</p>
-    </li>
-</ul>
-
 <table class="layui-table" lay-even lay-skin="line">
     <colgroup>
         <col width="20%">
@@ -68,7 +33,7 @@
         <td class="nowrap">{:php_uname('s')}</td>
         <td class="nowrap">产品DEMO体验</td>
         <td class="nowrap">
-            <a target="_blank" href="http://service.thinkadmin.top">http://service.thinkadmin.top</a>
+            <a target="_blank" href="http://demo.thinkadmin.top">http://demo.thinkadmin.top</a>
         </td>
     </tr>
     <tr>
@@ -115,31 +80,4 @@
     </tr>
     </tbody>
 </table>
-{/block}
-
-{block name='style'}
-<style>
-    .block-list {
-        font-size: 0;
-    }
-
-    .block-list li {
-        color: #fff;
-        width: 180px;
-        font-size: 14px;
-        line-height: 22px;
-        margin-right: 20px;
-        padding: 20px 10px;
-        text-align: center;
-        border-radius: 2px;
-        margin-bottom: 20px;
-        letter-spacing: 1px;
-        display: inline-block;
-        vertical-align: middle;
-    }
-
-    .block-list .title {
-        font-weight: 700;
-    }
-</style>
 {/block}

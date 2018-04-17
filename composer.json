@@ -17,7 +17,7 @@
   ],
   "require": {
     "php": ">=5.6.0",
-    "endroid/qrcode": "^1.9",
+    "endroid/qr-code": "^1.9",
     "topthink/framework": "5.1.*",
     "zoujingli/ip2region": "dev-master",
     "aliyuncs/oss-sdk-php": "^2.2",

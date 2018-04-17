@@ -18,7 +18,6 @@ use controller\BasicAdmin;
 use service\ToolsService;
 use service\WechatService;
 use think\Db;
-use think\Exception;
 
 /**
  * 微信粉丝管理

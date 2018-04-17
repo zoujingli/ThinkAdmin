@@ -1,15 +1,12 @@
 {extend name='admin@public/content'}
 
 {block name="button"}
-
 <!--{if auth("$classuri/backadd")}-->
 <button data-update data-action="{:url('backadd')}" class='layui-btn layui-btn-sm layui-btn-danger'>批量拉黑</button>
 <!--{/if}-->
-
 <!--{if auth("$classuri/sync")}-->
 <button data-load="{:url('sync')}" class='layui-btn layui-btn-sm'>远程获取粉丝</button>
 <!--{/if}-->
-
 {/block}
 
 {block name="content"}

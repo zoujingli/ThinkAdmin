@@ -27,7 +27,7 @@
             <div class="aui-chat-header"><span class="time">{:date('H:i')}</span></div>
             <div class="aui-chat-item aui-chat-left">
                 <div class="aui-chat-media">
-                    <img style="min-width:42px;display:inline-block;" src="http://plugs.ctolog.com/theme/default/img/head.gif"/>
+                    <img style="border-radius:50%;border:1px solid #ccc;min-width:42px;display:inline-block;" src="__STATIC__/theme/img/headimg.png"/>
                 </div>
                 <div class="aui-chat-inner">
                     {if $type eq 'text'}
@@ -40,7 +40,7 @@
                     <div class="aui-chat-content bg-white">
                         <div class="aui-chat-arrow one"></div>
                         <div class="aui-chat-arrow two"></div>
-                        <img src='{$content|default="http://plugs.ctolog.com/default/img/image.png"}'/>
+                        <img src='{$content|default="__STATIC__/theme/img/image.png"}'/>
                     </div>
                     {elseif $type eq 'music'}
                     <div class="aui-chat-content" style='background:#080'>

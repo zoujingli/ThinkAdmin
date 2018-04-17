@@ -43,7 +43,7 @@ class File extends Driver
         }
 
         if (empty($this->options['path'])) {
-            $this->options['path'] = Container::get('app')->getRuntimePath() . 'cache/';
+            $this->options['path'] = Container::get('app')->getRuntimePath() . 'cache' . DIRECTORY_SEPARATOR;
         } elseif (substr($this->options['path'], -1) != DIRECTORY_SEPARATOR) {
             $this->options['path'] .= DIRECTORY_SEPARATOR;
         }
@@ -59,10 +59,11 @@ class File extends Driver
     private function init()
     {
         // 创建项目缓存目录
-        if (!is_dir($this->options['path'])) {
-            if (mkdir($this->options['path'], 0755, true)) {
+        try {
+            if (!is_dir($this->options['path']) && mkdir($this->options['path'], 0755, true)) {
                 return true;
             }
+        } catch (\Exception $e) {
         }
 
         return false;
@@ -92,7 +93,10 @@ class File extends Driver
         $dir      = dirname($filename);
 
         if ($auto && !is_dir($dir)) {
-            mkdir($dir, 0755, true);
+            try {
+                mkdir($dir, 0755, true);
+            } catch (\Exception $e) {
+            }
         }
 
         return $filename;
@@ -242,7 +246,10 @@ class File extends Driver
     {
         $this->writeTimes++;
 
-        return $this->unlink($this->getCacheKey($name));
+        try {
+            return $this->unlink($this->getCacheKey($name));
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -269,7 +276,7 @@ class File extends Driver
 
         foreach ($files as $path) {
             if (is_dir($path)) {
-                $matches = glob($path . '/*.php');
+                $matches = glob($path . DIRECTORY_SEPARATOR . '*.php');
                 if (is_array($matches)) {
                     array_map('unlink', $matches);
                 }

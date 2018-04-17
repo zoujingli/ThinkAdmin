@@ -1,9 +1,8 @@
-:: Composer 安装更新脚本
 @echo off
-title Composer Plugs Install And Optimize
+title Composer Plugs Update and Optimize
 echo.
 echo ========= 1. 清理已安装插件 =========
-rmdir /s/q vendor thinkphp runtime
+@rmdir /s/q vendor thinkphp
 echo.
 echo ========= 2. 下载并安装插件 =========
 composer update --profile --prefer-dist --optimize-autoloader

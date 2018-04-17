@@ -172,7 +172,6 @@ class News extends BasicAdmin
         foreach ($data as &$vo) {
             $vo['create_by'] = session('user.id');
             $vo['create_at'] = date('Y-m-d H:i:s');
-            $vo['content'] = htmlspecialchars_decode($vo['content']);
             if (empty($vo['digest'])) {
                 $vo['digest'] = mb_substr(strip_tags(str_replace(["\s", '　'], '', $vo['content'])), 0, 120);
             }
@@ -280,7 +279,7 @@ class News extends BasicAdmin
             $article['content'] = preg_replace_callback("/<img(.*?)src=['\"](.*?)['\"](.*?)\/?>/i", function ($matches) {
                 $src = MediaService::uploadImage($matches[2]);
                 return "<img{$matches[1]}src=\"{$src}\"{$matches[3]}/>";
-            }, htmlspecialchars_decode($article['content']));
+            }, $article['content']);
         }
         $wechat = WechatService::media();
         // 如果已经上传过，先删除之前的历史记录

@@ -90,7 +90,7 @@ class Tags extends BasicWeChat
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->httpPostForJson($url, ['openid_list' => $openids, $tagId]);
+        return $this->httpPostForJson($url, ['openid_list' => $openids, 'tagid' => $tagId]);
     }
 
     /**
@@ -105,7 +105,7 @@ class Tags extends BasicWeChat
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->httpPostForJson($url, ['openid_list' => $openids, $tagId]);
+        return $this->httpPostForJson($url, ['openid_list' => $openids, 'tagid' => $tagId]);
     }
 
     /**

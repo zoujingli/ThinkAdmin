@@ -17,13 +17,15 @@ PHP开发技术交流（QQ群 513350915）
 
 > 针对 WeChatDeveloper 也有一准备了帮助资料可供参考。
 >* WeChatDeveloper 文档：http://www.kancloud.cn/zoujingli/wechat-developer
->* WeOpenDeveloper 文档：http://www.kancloud.cn/zoujingli/weopen-developer
 
 Repositorie
 --
  WeOpenDeveloper 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
 >* GitHub 托管地址：https://github.com/zoujingli/WeOpenDeveloper
 >* OSChina 托管地址：http://git.oschina.net/zoujingli/WeOpenDeveloper
+
+更多开发可以参考项目 [ThinkService](https://github.com/zoujingli/ThinkService) 。
+此项目已经实现对接，[ThinkAdmin](https://github.com/zoujingli/ThinkAdmin) + [ThinkService](https://github.com/zoujingli/ThinkService) 组合。
 
 Install
 --

@@ -60,6 +60,9 @@
 <!-- 表单搜索 结束 -->
 
 <form onsubmit="return false;" data-auto="true" method="post">
+    <!--{empty name='list'}-->
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    <!--{else}-->
     <input type="hidden" value="resort" name="action">
     <table class="layui-table" lay-skin="line">
         <thead>
@@ -92,5 +95,6 @@
         </tbody>
     </table>
     {if isset($page)}<p>{$page|raw}</p>{/if}
+    <!--{/empty}-->
 </form>
 {/block}

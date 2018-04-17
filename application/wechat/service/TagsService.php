@@ -54,7 +54,7 @@ class TagsService
      */
     public static function sync()
     {
-        $appid = sysconf('wechat_appid');
+        $appid = WechatService::getAppid();
         $result = WechatService::tags()->getTags();
         Db::name('WechatFansTags')->where(['appid' => $appid])->delete();
         foreach (array_chunk($result['tags'], 100) as $list) {

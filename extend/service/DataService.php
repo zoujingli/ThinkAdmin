@@ -77,10 +77,10 @@ class DataService
     {
         $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
         $where[] = [$key, 'eq', isset($data[$key]) ? $data[$key] : ''];
-        if (Db::name($db->getTable())->where($where)->count() > 0) {
-            return Db::name($db->getTable())->strict(false)->where($where)->update($data) !== false;
+        if (Db::table($db->getTable())->where($where)->count() > 0) {
+            return Db::table($db->getTable())->strict(false)->where($where)->update($data) !== false;
         }
-        return Db::name($db->getTable())->strict(false)->insert($data) !== false;
+        return Db::table($db->getTable())->strict(false)->insert($data) !== false;
     }
 
     /**
@@ -101,12 +101,12 @@ class DataService
         // 删除模式，如果存在 is_deleted 字段使用软删除
         if ($field === 'delete') {
             if (method_exists($db, 'getTableFields') && in_array('is_deleted', $db->getTableFields())) {
-                return Db::name($table)->where($where)->update(['is_deleted' => '1']) !== false;
+                return Db::table($table)->where($where)->update(['is_deleted' => '1']) !== false;
             }
-            return Db::name($table)->where($where)->delete() !== false;
+            return Db::table($table)->where($where)->delete() !== false;
         }
         // 更新模式，更新指定字段内容
-        return Db::name($table)->where($where)->update([$field => $value]) !== false;
+        return Db::table($table)->where($where)->update([$field => $value]) !== false;
     }
 
 }

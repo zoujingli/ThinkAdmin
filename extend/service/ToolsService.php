@@ -121,7 +121,7 @@ class ToolsService
             $attr[$path] = "{$ppath}-{$attr[$id]}";
             $attr['sub'] = isset($attr['sub']) ? $attr['sub'] : [];
             $attr['spt'] = substr_count($ppath, '-');
-            $attr['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;├&nbsp;", $attr['spt']);
+            $attr['spl'] = str_repeat("&nbsp;&nbsp;&nbsp;├&nbsp;&nbsp;", $attr['spt']);
             $sub = $attr['sub'];
             unset($attr['sub']);
             $tree[] = $attr;
@@ -149,6 +149,51 @@ class ToolsService
             }
         }
         return $ids;
+    }
+
+    /**
+     * 写入CSV文件头部
+     * @param string $filename 导出文件
+     * @param array $headers CSV 头部(一级数组)
+     */
+    public static function setCsvHeader($filename, array $headers)
+    {
+        header('Content-Type: application/octet-stream');
+        header("Content-Disposition: attachment; filename=" . iconv('utf-8', 'gbk//TRANSLIT', $filename));
+        echo @iconv('utf-8', 'gbk//TRANSLIT', "\"" . implode('","', $headers) . "\"\n");
+    }
+
+    /**
+     * 写入CSV文件内容
+     * @param array $list 数据列表(二维数组或多维数组)
+     * @param array $rules 数据规则(一维数组)
+     */
+    public static function setCsvBody(array $list, array $rules)
+    {
+        foreach ($list as $data) {
+            $rows = [];
+            foreach ($rules as $rule) {
+                $item = self::parseKeyDot($data, $rule);
+                $rows[] = $item === $data ? '' : $item;
+            }
+            echo @iconv('utf-8', 'gbk//TRANSLIT', "\"" . implode('","', $rows) . "\"\n");
+            flush();
+        }
+    }
+
+    /**
+     * 根据数组key查询(可带点规则)
+     * @param array $data 数据
+     * @param string $rule 规则，如: order.order_no
+     * @return mixed
+     */
+    private static function parseKeyDot(array $data, $rule)
+    {
+        list($temp, $attr) = [$data, explode('.', trim($rule, '.'))];
+        while ($key = array_shift($attr)) {
+            $temp = isset($temp[$key]) ? $temp[$key] : $temp;
+        }
+        return (is_string($temp) || is_numeric($temp)) ? str_replace('"', '""', "\t{$temp}") : '';
     }
 
 }

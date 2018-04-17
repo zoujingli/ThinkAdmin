@@ -37,8 +37,8 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <span class="input-group-addon">标 题</span>
-                        <input maxlength="64" required title="标题不能为空哦" placeholder="请在这里输入标题" name='title' class="layui-input">
+                        <span class="input-group-addon">文章标题</span>
+                        <input maxlength="64" required title="文章的标题不能为空哦" placeholder="请在这里输入标题" name='title' class="layui-input">
                         <input type="hidden" name="id">
                     </div>
                 </div>
@@ -47,34 +47,32 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <span class="input-group-addon">作 者</span>
-                        <input maxlength="8" required title="作者不能为空哦" placeholder="请输入作者" name='author' class="layui-input">
+                        <span class="input-group-addon">文章作者</span>
+                        <input maxlength="8" required title="文章的作者不能为空哦" placeholder="请输入作者" name='author' class="layui-input">
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-12">
-                    <div class="form-control" style="height:auto">
-                        <label class="color-desc">图文封面大图片设置</label>
+                    <div class="form-control border-radius-none" style="height:auto">
+                        <label class="color-desc font-s12 margin-bottom-5">图文封面大图片设置</label>
                         <div class="row nowrap">
                             <div class="col-xs-3" style="width:160px">
                                 <div class="upload-image-box transition">
                                     <input value="__STATIC__/plugs/uploader/theme/image.png" type="hidden" name="local_url">
                                 </div>
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-xs-6 padding-top-10">
+                                <button type="button" data-title="上传图片" data-file="one" data-type="jpg,png,jpeg" data-field="local_url" class="layui-btn layui-btn-sm layui-btn-primary">上传图片</button>
+                                <button type="button" data-title="选择图片" data-iframe='{:url("image")}?field=local_url' class="layui-btn layui-btn-sm layui-btn-primary">选择图片</button>
                                 <br>
-                                <a data-file="one" data-type="jpg,png,jpeg" data-field="local_url" class="btn btn-sm">上传图片</a>
-                                <a data-title="选择图片" data-iframe='{:url("image")}?field=local_url' class="btn btn-sm">选择图片</a>
-                                <br><br>
-                                <label class="magin-left-0 padding-left-0">
-                                    <input data-auto-none type="checkbox" value="1" name="show_cover_pic">
-                                    在正文显示此图片
+                                <label class="think-checkbox notselect margin-top-15">
+                                    <input data-auto-none type="checkbox" value="1" name="show_cover_pic"> 在正文中显示此图片
                                 </label>
                             </div>
                         </div>
-                        <p class="help-block margin-top-10 color-desc">封面大图片建议尺寸：900像素 * 500像素</p>
+                        <p class="help-block margin-top-5 color-desc">封面大图片建议尺寸：900像素 * 500像素</p>
                     </div>
                 </div>
             </div>
@@ -91,9 +89,8 @@
             </div>
             <div class="form-group">
                 <div class="col-md-12">
-                    <label style="display:block"><span class="color-desc">原文链接<b>选填</b>，填写之后在图文左下方会出现此链接</span>
-                        <input maxlength="200" name='content_source_url' class="layui-input">
-                    </label>
+                    <label class="color-desc">原文链接<b>选填</b>，填写之后在图文左下方会出现此链接</label>
+                    <input maxlength="200" name='content_source_url' class="layui-input">
                 </div>
             </div>
             <div class="form-actions">
@@ -127,7 +124,7 @@
 
         /*! 默认编辑第一篇图文 */
         editor = window.createEditor('[name="content"]');
-        $form.validate();
+        $form.vali();
 
         /*! 上传图片 */
         $body.on('change', '.upload-image-box input', function () {
@@ -335,7 +332,6 @@
     }
 
     .news-right .upload-image-box {
-        margin: 5px;
         width: 130px;
         height: 90px;
         background-size: cover;

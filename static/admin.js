@@ -117,7 +117,7 @@ $(function () {
         this.errMsg = '{status}服务器繁忙，请稍候再试！';
         // 内容区域动态加载后初始化
         this.reInit = function ($container) {
-            $.validate.listen.call(this), JPlaceHolder.init();
+            $.vali.listen(this), JPlaceHolder.init();
             $container.find('[required]').parent().prevAll('label').addClass('label-required');
         };
         // 在内容区显示视图
@@ -169,7 +169,7 @@ $(function () {
                         return false;
                     }
                     if (typeof (res) === 'object') {
-                        return $.msg.auto(res, time);
+                        return $.msg.auto(res, time || res.wait || undefined);
                     }
                     self.show(res);
                 }
@@ -213,221 +213,6 @@ $(function () {
             }, loading, tips);
         };
     };
-
-    // 上传单个图片
-    $.fn.uploadOneImage = function () {
-        var name = $(this).attr('name') || 'image';
-        var type = $(this).data('type') || 'png,jpg';
-        var $tpl = $('<a data-file="one" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
-        $(this).hide().attr('name', name).after($tpl).on('change', function () {
-            $tpl.get(0).style = this.value ? 'background-image:url(' + this.value + ')' : '';
-        }).trigger('change');
-    };
-
-    // 上传多个图片
-    $.fn.uploadMultipleImage = function () {
-        var type = $(this).data('type') || 'png,jpg';
-        var name = $(this).attr('name') || 'umt-image';
-        var $tpl = $('<a data-file="mut" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
-        $(this).hide().attr('name', name).after($tpl).on('change', function () {
-            var input = this, values = [], srcs = this.value.split('|');
-            $(this).prevAll('.uploadimage').map(function () {
-                values.push($(this).attr('data-tips-image'));
-            }), $(this).prevAll('.uploadimage').remove(), values.reverse();
-            for (var i in srcs) {
-                srcs[i] && values.push(srcs[i]);
-            }
-            this.value = values.join('|');
-            for (var i in values) {
-                var tpl = '<div class="uploadimage uploadimagemtl"><a class="layui-icon">&#x1006;</a></div>';
-                var $tpl = $(tpl).attr('data-tips-image', values[i]).css('backgroundImage', 'url(' + values[i] + ')');
-                $tpl.data('input', input).data('srcs', values).data('index', i);
-                $tpl.on('click', 'a', function (e) {
-                    e.stopPropagation();
-                    var $cur = $(this).parent();
-                    var dialogIndex = $.msg.confirm('确定要移除这张图片吗？', function () {
-                        var data = $cur.data('srcs'), tmp = [];
-                        for (var i in data) {
-                            i !== $cur.data('index') && tmp.push(data[i]);
-                        }
-                        $cur.data('input').value = tmp.join('|');
-                        $cur.remove(), $.msg.close(dialogIndex);
-                    });
-                })
-                $(this).before($tpl);
-            }
-        }).trigger('change');
-    };
-
-    // 注册对象到JqFn
-    $.fn.validate = function (callback, options) {
-        return (new validate()).check(this, callback, options);
-    };
-
-    // 注册对象到Jq
-    $.validate = function (form, callback, options) {
-        return (new validate()).check(form, callback, options);
-    };
-
-    // 自动监听规则内表单
-    $.validate.listen = function () {
-        $('form[data-auto]').map(function () {
-            if ($(this).attr('data-listen') !== 'true') {
-                var callbackname = $(this).attr('data-callback');
-                $(this).attr('data-listen', 'true').validate(function (data) {
-                    var method = this.getAttribute('method') || 'POST';
-                    var tips = this.getAttribute('data-tips') || undefined;
-                    var url = this.getAttribute('action') || window.location.href;
-                    var callback = window[callbackname || '_default_callback'] || undefined;
-                    var time = this.getAttribute('data-time') || undefined;
-                    $.form.load(url, data, method, callback, true, tips, time);
-                });
-                $(this).find('[data-form-loaded]').map(function () {
-                    $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
-                    $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
-                });
-            }
-        });
-    };
-
-    // 表单验证
-    function validate() {
-        var self = this;
-        // 表单元素
-        this.tags = 'input,textarea,select';
-        // 检测元素事件
-        this.checkEvent = {change: true, blur: true, keyup: false};
-        // 去除字符串两头的空格
-        this.trim = function (str) {
-            return str.replace(/(^\s*)|(\s*$)/g, '');
-        };
-        // 标签元素是否可见
-        this.isVisible = function (ele) {
-            return $(ele).is(':visible');
-        };
-        // 检测属性是否有定义
-        this.hasProp = function (ele, prop) {
-            if (typeof prop !== "string") {
-                return false;
-            }
-            var attrProp = ele.getAttribute(prop);
-            return (typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false);
-        };
-        // 判断表单元素是否为空
-        this.isEmpty = function (ele, value) {
-            var trimValue = this.trim(ele.value);
-            value = value || ele.getAttribute('placeholder');
-            return (trimValue === "" || trimValue === value);
-        };
-        // 正则验证表单元素
-        this.isRegex = function (ele, regex, params) {
-            var inputValue = ele.value, dealValue = this.trim(inputValue);
-            regex = regex || ele.getAttribute('pattern');
-            if (dealValue === "" || !regex) {
-                return true;
-            }
-            if (dealValue !== inputValue) {
-                (ele.tagName.toLowerCase() !== "textarea") ? (ele.value = dealValue) : (ele.innerHTML = dealValue);
-            }
-            return new RegExp(regex, params || 'i').test(dealValue);
-        };
-        // 检侧所的表单元素
-        this.isAllpass = function (elements, options) {
-            if (!elements) {
-                return true;
-            }
-            var allpass = true, self = this, params = options || {};
-            if (elements.size && elements.size() === 1 && elements.get(0).tagName.toLowerCase() === "form") {
-                elements = $(elements).find(self.tags);
-            } else if (elements.tagName && elements.tagName.toLowerCase() === "form") {
-                elements = $(elements).find(self.tags);
-            }
-            elements.each(function () {
-                if (self.checkInput(this, params) === false) {
-                    return $(this).focus(), (allpass = false);
-                }
-            });
-            return allpass;
-        };
-        // 验证标志
-        this.remind = function (input) {
-            return this.isVisible(input) ? this.showError(input, input.getAttribute('title') || '') : false;
-        };
-        // 检测表单单元
-        this.checkInput = function (input) {
-            var type = (input.getAttribute("type") + "").replace(/\W+$/, "").toLowerCase();
-            var tag = input.tagName.toLowerCase(), isRequired = this.hasProp(input, "required");
-            if (this.hasProp(input, 'data-auto-none') || input.disabled || type === 'submit' || type === 'reset' || type === 'file' || type === 'image' || !this.isVisible(input)) {
-                return;
-            }
-            var allpass = true;
-            if (type === "radio" && isRequired) {
-                var radiopass = false, eleRadios = input.name ? $("input[type='radio'][name='" + input.name + "']") : $(input);
-                eleRadios.each(function () {
-                    (radiopass === false && $(this).is("[checked]")) && (radiopass = true);
-                });
-                if (radiopass === false) {
-                    allpass = this.remind(eleRadios.get(0), type, tag);
-                } else {
-                    this.hideError(input);
-                }
-            } else if (type === "checkbox" && isRequired && !$(input).is("[checked]")) {
-                allpass = this.remind(input, type, tag);
-            } else if (tag === "select" && isRequired && !input.value) {
-                allpass = this.remind(input, type, tag);
-            } else if ((isRequired && this.isEmpty(input)) || !(allpass = this.isRegex(input))) {
-                allpass ? this.remind(input, type, "empty") : this.remind(input, type, tag);
-                allpass = false;
-            } else {
-                this.hideError(input);
-            }
-            return allpass;
-        };
-        // 错误消息显示
-        this.showError = function (ele, content) {
-            $(ele).addClass('validate-error'), this.insertError(ele);
-            $($(ele).data('input-info')).addClass('fadeInRight animated').css({width: 'auto'}).html(content);
-        };
-        // 错误消息消除
-        this.hideError = function (ele) {
-            $(ele).removeClass('validate-error'), this.insertError(ele);
-            $($(ele).data('input-info')).removeClass('fadeInRight').css({width: '30px'}).html('');
-        };
-        // 错误消息标签插入
-        this.insertError = function (ele) {
-            var $html = $('<span style="-webkit-animation-duration:.2s;animation-duration:.2s;padding-right:20px;color:#a94442;position:absolute;right:0;font-size:12px;z-index:2;display:block;width:34px;text-align:center;pointer-events:none"></span>');
-            $html.css({top: $(ele).position().top + 'px', paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('height')});
-            $(ele).data('input-info') || $(ele).data('input-info', $html.insertAfter(ele));
-        };
-        // 表单验证入口
-        this.check = function (form, callback, options) {
-            var params = $.extend({}, options || {});
-            $(form).attr("novalidate", "novalidate");
-            $(form).find(self.tags).map(function () {
-                for (var i in self.checkEvent) {
-                    if (self.checkEvent[i] === true) {
-                        $(this).off(i, func).on(i, func);
-                    }
-                }
-
-                function func() {
-                    self.checkInput(this);
-                }
-            });
-            $(form).bind("submit", function (event) {
-                if (self.isAllpass($(this).find(self.tags), params) && typeof callback === 'function') {
-                    if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
-                        for (var instance in CKEDITOR.instances) {
-                            CKEDITOR.instances[instance].updateElement();
-                        }
-                    }
-                    callback.call(this, $(form).serialize());
-                }
-                return event.preventDefault(), false;
-            });
-            return $(form).data('validate', this);
-        };
-    }
 
     /*! 后台菜单辅助插件 */
     $.menu = new function () {
@@ -520,6 +305,218 @@ $(function () {
             // URI初始化动作
             window.onhashchange.call(this);
         };
+    };
+
+    // 注册对象到Jq
+    $.vali = function (form, callback, options) {
+        return (new function () {
+            var self = this;
+            // 表单元素
+            this.tags = 'input,textarea,select';
+            // 检测元素事件
+            this.checkEvent = {change: true, blur: true, keyup: false};
+            // 去除字符串两头的空格
+            this.trim = function (str) {
+                return str.replace(/(^\s*)|(\s*$)/g, '');
+            };
+            // 标签元素是否可见
+            this.isVisible = function (ele) {
+                return $(ele).is(':visible');
+            };
+            // 检测属性是否有定义
+            this.hasProp = function (ele, prop) {
+                if (typeof prop !== "string") {
+                    return false;
+                }
+                var attrProp = ele.getAttribute(prop);
+                return (typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false);
+            };
+            // 判断表单元素是否为空
+            this.isEmpty = function (ele, value) {
+                var trimValue = this.trim(ele.value);
+                value = value || ele.getAttribute('placeholder');
+                return (trimValue === "" || trimValue === value);
+            };
+            // 正则验证表单元素
+            this.isRegex = function (ele, regex, params) {
+                var inputValue = ele.value, dealValue = this.trim(inputValue);
+                regex = regex || ele.getAttribute('pattern');
+                if (dealValue === "" || !regex) {
+                    return true;
+                }
+                if (dealValue !== inputValue) {
+                    (ele.tagName.toLowerCase() !== "textarea") ? (ele.value = dealValue) : (ele.innerHTML = dealValue);
+                }
+                return new RegExp(regex, params || 'i').test(dealValue);
+            };
+            // 检侧所的表单元素
+            this.isAllpass = function (elements, options) {
+                if (!elements) {
+                    return true;
+                }
+                var allpass = true, self = this, params = options || {};
+                if (elements.size && elements.size() === 1 && elements.get(0).tagName.toLowerCase() === "form") {
+                    elements = $(elements).find(self.tags);
+                } else if (elements.tagName && elements.tagName.toLowerCase() === "form") {
+                    elements = $(elements).find(self.tags);
+                }
+                elements.each(function () {
+                    if (self.checkInput(this, params) === false) {
+                        return $(this).focus(), (allpass = false);
+                    }
+                });
+                return allpass;
+            };
+            // 验证标志
+            this.remind = function (input) {
+                return this.isVisible(input) ? this.showError(input, input.getAttribute('title') || '') : false;
+            };
+            // 检测表单单元
+            this.checkInput = function (input) {
+                var type = (input.getAttribute("type") + "").replace(/\W+$/, "").toLowerCase();
+                var tag = input.tagName.toLowerCase(), isRequired = this.hasProp(input, "required");
+                if (this.hasProp(input, 'data-auto-none') || input.disabled || type === 'submit' || type === 'reset' || type === 'file' || type === 'image' || !this.isVisible(input)) {
+                    return;
+                }
+                var allpass = true;
+                if (type === "radio" && isRequired) {
+                    var radiopass = false, eleRadios = input.name ? $("input[type='radio'][name='" + input.name + "']") : $(input);
+                    eleRadios.each(function () {
+                        (radiopass === false && $(this).is("[checked]")) && (radiopass = true);
+                    });
+                    if (radiopass === false) {
+                        allpass = this.remind(eleRadios.get(0), type, tag);
+                    } else {
+                        this.hideError(input);
+                    }
+                } else if (type === "checkbox" && isRequired && !$(input).is("[checked]")) {
+                    allpass = this.remind(input, type, tag);
+                } else if (tag === "select" && isRequired && !input.value) {
+                    allpass = this.remind(input, type, tag);
+                } else if ((isRequired && this.isEmpty(input)) || !(allpass = this.isRegex(input))) {
+                    allpass ? this.remind(input, type, "empty") : this.remind(input, type, tag);
+                    allpass = false;
+                } else {
+                    this.hideError(input);
+                }
+                return allpass;
+            };
+            // 错误消息显示
+            this.showError = function (ele, content) {
+                $(ele).addClass('validate-error'), this.insertError(ele);
+                $($(ele).data('input-info')).addClass('fadeInRight animated').css({width: 'auto'}).html(content);
+            };
+            // 错误消息消除
+            this.hideError = function (ele) {
+                $(ele).removeClass('validate-error'), this.insertError(ele);
+                $($(ele).data('input-info')).removeClass('fadeInRight').css({width: '30px'}).html('');
+            };
+            // 错误消息标签插入
+            this.insertError = function (ele) {
+                var $html = $('<span style="-webkit-animation-duration:.2s;animation-duration:.2s;padding-right:20px;color:#a94442;position:absolute;right:0;font-size:12px;z-index:2;display:block;width:34px;text-align:center;pointer-events:none"></span>');
+                $html.css({top: $(ele).position().top + 'px', paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('height')});
+                $(ele).data('input-info') || $(ele).data('input-info', $html.insertAfter(ele));
+            };
+            // 表单验证入口
+            this.check = function (form, callback, options) {
+                var params = $.extend({}, options || {});
+                $(form).attr("novalidate", "novalidate");
+                $(form).find(self.tags).map(function () {
+                    for (var i in self.checkEvent) {
+                        if (self.checkEvent[i] === true) {
+                            $(this).off(i, func).on(i, func);
+                        }
+                    }
+
+                    function func() {
+                        self.checkInput(this);
+                    }
+                });
+                $(form).bind("submit", function (event) {
+                    if (self.isAllpass($(this).find(self.tags), params) && typeof callback === 'function') {
+                        if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
+                            for (var instance in CKEDITOR.instances) {
+                                CKEDITOR.instances[instance].updateElement();
+                            }
+                        }
+                        callback.call(this, $(form).serialize());
+                    }
+                    return event.preventDefault(), false;
+                });
+                return $(form).data('validate', this);
+            };
+        }).check(form, callback, options);
+    };
+
+    // 自动监听规则内表单
+    $.vali.listen = function () {
+        $('form[data-auto]').map(function () {
+            if ($(this).attr('data-listen') !== 'true') {
+                var callbackname = $(this).attr('data-callback');
+                $(this).attr('data-listen', 'true').vali(function (data) {
+                    var method = this.getAttribute('method') || 'POST';
+                    var tips = this.getAttribute('data-tips') || undefined;
+                    var url = this.getAttribute('action') || window.location.href;
+                    var callback = window[callbackname || '_default_callback'] || undefined;
+                    var time = this.getAttribute('data-time') || undefined;
+                    $.form.load(url, data, method, callback, true, tips, time);
+                });
+                $(this).find('[data-form-loaded]').map(function () {
+                    $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
+                    $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
+                });
+            }
+        });
+    };
+
+    // 注册对象到JqFn
+    $.fn.vali = function (callback, options) {
+        return $.vali(this, callback, options);
+    };
+
+    // 上传单个图片
+    $.fn.uploadOneImage = function () {
+        var name = $(this).attr('name') || 'image';
+        var type = $(this).data('type') || 'png,jpg';
+        var $tpl = $('<a data-file="one" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
+        $(this).attr('name', name).after($tpl).on('change', function () {
+            !!this.value && $tpl.css('backgroundImage', 'url(' + this.value + ')');
+        }).trigger('change');
+    };
+
+    // 上传多个图片
+    $.fn.uploadMultipleImage = function () {
+        var type = $(this).data('type') || 'png,jpg';
+        var name = $(this).attr('name') || 'umt-image';
+        var $tpl = $('<a data-file="mut" data-field="' + name + '" data-type="' + type + '" class="uploadimage"></a>');
+        $(this).attr('name', name).after($tpl).on('change', function () {
+            var input = this, values = [], srcs = this.value.split('|');
+            $(this).prevAll('.uploadimage').map(function () {
+                values.push($(this).attr('data-tips-image'));
+            }), $(this).prevAll('.uploadimage').remove(), values.reverse();
+            for (var i in srcs) {
+                srcs[i] && values.push(srcs[i]);
+            }
+            this.value = values.join('|');
+            for (var i in values) {
+                var tpl = '<div class="uploadimage uploadimagemtl"><a class="layui-icon">&#x1006;</a></div>';
+                var $tpl = $(tpl).attr('data-tips-image', values[i]).css('backgroundImage', 'url(' + values[i] + ')');
+                $tpl.data('input', input).data('srcs', values).data('index', i);
+                $tpl.on('click', 'a', function (e) {
+                    e.stopPropagation();
+                    var $cur = $(this).parent();
+                    var dialogIndex = $.msg.confirm('确定要移除这张图片吗？', function () {
+                        var data = $cur.data('srcs'), tmp = [];
+                        for (var i in data) {
+                            i !== $cur.data('index') && tmp.push(data[i]);
+                        }
+                        $cur.data('input').value = tmp.join('|');
+                        $cur.remove(), $.msg.close(dialogIndex);
+                    });
+                });
+                $(this).before($tpl);
+            }
+        }).trigger('change');
     };
 
     /*! 注册 data-load 事件行为 */
@@ -660,5 +657,5 @@ $(function () {
 
     /*! 初始化 */
     $.menu.listen();
-    $.validate.listen(this);
+    $.vali.listen();
 });

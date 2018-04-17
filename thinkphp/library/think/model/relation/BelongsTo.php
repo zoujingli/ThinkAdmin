@@ -52,6 +52,7 @@ class BelongsTo extends OneToOne
         $foreignKey = $this->foreignKey;
 
         $relationModel = $this->query
+            ->removeWhereField($this->localKey)
             ->where($this->localKey, $this->parent->$foreignKey)
             ->relation($subRelation)
             ->find();
@@ -69,9 +70,10 @@ class BelongsTo extends OneToOne
      * @param  string  $operator 比较操作符
      * @param  integer $count    个数
      * @param  string  $id       关联表的统计字段
+     * @param  string  $joinType JOIN类型
      * @return Query
      */
-    public function has($operator = '>=', $count = 1, $id = '*')
+    public function has($operator = '>=', $count = 1, $id = '*', $joinType = 'INNER')
     {
         return $this->parent;
     }
@@ -125,6 +127,8 @@ class BelongsTo extends OneToOne
         }
 
         if (!empty($range)) {
+            $this->query->removeWhereField($localKey);
+
             $data = $this->eagerlyWhere([
                 [$localKey, 'in', $range],
             ], $localKey, $relation, $subRelation, $closure);
@@ -167,6 +171,8 @@ class BelongsTo extends OneToOne
     {
         $localKey   = $this->localKey;
         $foreignKey = $this->foreignKey;
+
+        $this->query->removeWhereField($localKey);
 
         $data = $this->eagerlyWhere([
             [$localKey, '=', $result->$foreignKey],
@@ -220,5 +226,22 @@ class BelongsTo extends OneToOne
         $this->parent->save();
 
         return $this->parent->setRelation($this->relation, null);
+    }
+
+    /**
+     * 执行基础查询（仅执行一次）
+     * @access protected
+     * @return void
+     */
+    protected function baseQuery()
+    {
+        if (empty($this->baseQuery)) {
+            if (isset($this->parent->{$this->foreignKey})) {
+                // 关联查询带入关联条件
+                $this->query->where($this->localKey, '=', $this->parent->{$this->foreignKey});
+            }
+
+            $this->baseQuery = true;
+        }
     }
 }

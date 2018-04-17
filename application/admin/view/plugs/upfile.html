@@ -47,35 +47,34 @@
                 top.$('[name="{$field}"]').map(function () {
                     top.$(this).attr('data-srcs', ret.url).attr('data-md5', file.md5).val(url).trigger('change');
                 });
-                var index = top.layer.getFrameIndex(window.name);
-                top.layer.close(index);
-                /*{/if} {$mode}*/
+                top.layer.close(top.layer.getFrameIndex(window.name));
+                /*{/if}*/
             }
 
-            function confirmSelected() {
-                var srcs = new Array(), md5s = new Array();
-                $('[data-md5] .success').map(function () {
-                    var $li = $(this).parents('[data-md5]');
-                    md5s.push($li.attr('data-md5'));
-                    srcs.push($li.attr('data-src'));
-                });
-                if (srcs.length < 1) {
-                    return top.$.msg.tips('还没有选择文件,请勾选需要使用的文件！');
-                }
-                top.$('[name="{$field}"]').map(function () {
-                    top.$(this).attr('data-srcs', srcs.join('|')).attr('data-md5', md5s.join('|')).val(srcs.join('|')).trigger('change');
-                });
-                var index = top.layer.getFrameIndex(window.name);
-                top.layer.close(index);
-            }
+            var isSuccessState = false;
 
             function completed() {
                 var btnHTML = '完成上传';
-                $('.uploadBtn').on('click', function () {
-                    if (this.innerHTML === btnHTML) {
-                        confirmSelected.call(this);
+                $('.uploadBtn').html(btnHTML).on('click', successSelected);
+
+                function successSelected() {
+                    if (!isSuccessState && this.innerHTML === btnHTML) {
+                        isSuccessState = true;
+                        var srcs = [], md5s = [];
+                        $('[data-md5] .success').map(function () {
+                            var $li = $(this).parents('[data-md5]');
+                            md5s.push($li.attr('data-md5'));
+                            srcs.push($li.attr('data-src'));
+                        });
+                        if (srcs.length < 1) {
+                            return top.$.msg.tips('还没有选择文件,请勾选需要使用的文件！');
+                        }
+                        top.$('[name="{$field}"]').map(function () {
+                            top.$(this).attr('data-srcs', srcs.join('|')).attr('data-md5', md5s.join('|')).val(srcs.join('|')).trigger('change');
+                        });
+                        top.layer.close(top.layer.getFrameIndex(window.name));
                     }
-                }).html(btnHTML);
+                }
             }
 
             // 当domReady的时候开始初始化

@@ -97,15 +97,13 @@ class Response
      */
     public static function create($data = '', $type = '', $code = 200, array $header = [], $options = [])
     {
-        $type = empty($type) ? 'null' : strtolower($type);
-
-        $class = false !== strpos($type, '\\') ? $type : '\\think\\response\\' . ucfirst($type);
+        $class = false !== strpos($type, '\\') ? $type : '\\think\\response\\' . ucfirst(strtolower($type));
 
         if (class_exists($class)) {
             return new $class($data, $code, $header, $options);
-        } else {
-            return new static($data, $code, $header, $options);
         }
+
+        return new static($data, $code, $header, $options);
     }
 
     /**
@@ -123,7 +121,7 @@ class Response
         $data = $this->getContent();
 
         // Trace调试注入
-        if (Container::get('env')->get('app_trace', Container::get('app')->config('app.app_trace'))) {
+        if ('cli' != PHP_SAPI && Container::get('env')->get('app_trace', Container::get('app')->config('app.app_trace'))) {
             Container::get('debug')->inject($this, $data);
         }
 
@@ -352,9 +350,9 @@ class Response
     {
         if (!empty($name)) {
             return isset($this->header[$name]) ? $this->header[$name] : null;
-        } else {
-            return $this->header;
         }
+
+        return $this->header;
     }
 
     /**

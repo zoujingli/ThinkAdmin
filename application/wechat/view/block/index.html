@@ -1,15 +1,12 @@
 {extend name='admin@public/content'}
 
 {block name="button"}
-
 <!--{if auth('wechat/block/backdel')}-->
 <button data-update="" data-action="{:url('backdel')}" class='layui-btn layui-btn-sm'>移出黑名单</button>
 <!--{/if}-->
-
 <!--{if auth('wechat/fans/sync')}-->
 <button data-load="{:url('wechat/fans/sync')}" class='layui-btn layui-btn-sm'>远程获取粉丝</button>
 <!--{/if}-->
-
 {/block}
 
 {block name="content"}
@@ -94,12 +91,12 @@
     <!--{if empty($list)}-->
     <p class="help-block text-center well">没 有 记 录 哦！</p>
     <!--{else}-->
-    <input type="hidden" value="resort" name="action"/>
+    <input type="hidden" value="resort" name="action">
     <table class="layui-table" lay-skin="line">
         <thead>
         <tr>
             <th class='list-table-check-td'>
-                <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'/>
+                <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'>
             </th>
             <th class='text-left'>用户昵称</th>
             <th class='text-left'>性别</th>
@@ -113,10 +110,10 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
             </td>
             <td class='text-left nowrap'>
-                <img data-tips-image class="headimg" src="{$vo.headimgurl}"/>
+                <img data-tips-image class="headimg" src="{$vo.headimgurl}">
                 {$vo.nickname|default='<span class="color-desc">未设置微信昵称</span>'}
             </td>
             <td class='text-left'>

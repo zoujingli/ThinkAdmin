@@ -196,7 +196,7 @@ class Pay
     public function createTransfers(array $options)
     {
         $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
-        return $this->callPostApi($url, $options, true);
+        return $this->callPostApi($url, $options, true, 'MD5', false);
     }
 
     /**
@@ -208,7 +208,7 @@ class Pay
     public function queryTransfers($partner_trade_no)
     {
         $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/gettransferinfo';
-        return $this->callPostApi($url, ['partner_trade_no' => $partner_trade_no], true);
+        return $this->callPostApi($url, ['partner_trade_no' => $partner_trade_no], true, 'MD5', false);
     }
 
     /**
@@ -230,15 +230,19 @@ class Pay
     /**
      * 生成支付签名
      * @param array $data
+     * @param string $signType
      * @return string
      */
-    public function getPaySign(array $data)
+    public function getPaySign(array $data, $signType = 'MD5')
     {
         unset($data['sign']);
         ksort($data);
         list($key, $str) = [$this->config->get('mch_key'), ''];
         foreach ($data as $k => $v) {
             $str .= "{$k}={$v}&";
+        }
+        if ($signType === 'MD5') {
+            return strtoupper(md5("{$str}key={$key}"));
         }
         return strtoupper(hash_hmac('SHA256', "{$str}key={$key}", $key));
     }
@@ -248,10 +252,12 @@ class Pay
      * @param string $url 请求
      * @param array $data 接口参数
      * @param bool $isCert 是否需要使用双向证书
+     * @param string $signType 数据签名类型 MD5|SHA256
+     * @param bool $needSignType 是否需要传签名类型参数
      * @return array
      * @throws InvalidResponseException
      */
-    public function callPostApi($url, array $data, $isCert = false)
+    public function callPostApi($url, array $data, $isCert = false, $signType = 'HMAC-SHA256', $needSignType = true)
     {
         $option = [];
         if ($isCert) {
@@ -264,8 +270,10 @@ class Pay
             $option['ssl_key'] = $this->config->get('ssl_key');
         }
         $params = $this->params->merge($data);
-        $params['sign_type'] = 'HMAC-SHA256';
-        $params['sign'] = $this->getPaySign($params);
+        if ($needSignType) {
+            $params['sign_type'] = strtoupper($signType);
+        }
+        $params['sign'] = $this->getPaySign($params, $signType);
         $result = Tools::xml2arr(Tools::post($url, Tools::arr2xml($params), $option));
         if ($result['return_code'] !== 'SUCCESS') {
             throw new InvalidResponseException($result['return_msg'], '0');

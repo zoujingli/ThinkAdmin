@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* +----------------------------------------------------------------------
-// | ThinkAdmin
+// | ThinkService
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
@@ -9,10 +9,10 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkService
 // +--------------------------------------------------------------------*/
 
-html{overflow:auto}body{width:100%;font-size:13px;font-family:'微软雅黑','Microsoft YaHei','Helvetica Neue','Luxi Sans','DejaVu Sans','Hiragino Sans GB',serif}
+html{overflow:auto}body{width:100%;font-size:12px;font-family:'微软雅黑','Microsoft YaHei','Helvetica Neue','Luxi Sans','DejaVu Sans','Hiragino Sans GB',serif}
 a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}button{border-radius:0!important}
 .text-left{text-align:left!important}.text-right{text-align:right!important}.text-center{text-align:center!important}.text-top{vertical-align:top!important}
 .color-desc{color:#999!important}.color-text{color:#333!important}.color-blue{color:#2494f2!important}.color-red{color:#ec494e!important}.color-green{color:#090!important}
@@ -44,11 +44,12 @@ a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}but
 
 /** 页面加载进度 */
 .pace-inactive{display:none}
+.modal-form-box{padding:30px 60px 15px 0}
 .pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}
 .pace .pace-progress{background:#22df80;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}
 .uploadimage{display:inline-block;width:80px;height:80px;background: url('../img/image.png') no-repeat center center;background-size:cover;cursor:pointer}
 .uploadimagemtl{margin-right:8px;}
-.uploadimagemtl a{color:#fff;width:20px;height:20px;float:right;display:none;line-height:20px;text-align:center;background:rgba(0, 0, 0, 0.5)}
+.uploadimagemtl a{color:#fff;width:20px;height:20px;float:right;display:none;line-height:22px;text-align:center;background:rgba(0, 0, 0, 0.5)}
 .uploadimagemtl:hover a{display:inline-block;cursor:pointer}
 .uploadimagemtl:hover a:hover{color:#fff;text-decoration:none}
 .hr-line-dashed{border-top:1px dashed #e7eaec;color:#fff;background-color:#fff;height:1px;margin:20px 0}
@@ -68,14 +69,14 @@ legend{width:auto!important;border-bottom:none!important}
 .layui-form-label{padding:9px 15px 9px 0;width:95px}
 .layui-input,.layui-select{line-height:38px}
 .layui-table.notevent tbody tr:hover {background-color: inherit;}
-.layui-table th,.layui-table td{font-size:13px}
+.layui-table th,.layui-table td{font-size:12px}
 .layui-table td .text-explode:first-child{opacity:0;display:none}
 .layui-table td .text-explode{color:#ccc!important;font-weight:normal!important;margin:0px 4px!important}
 .layui-table .list-table-image{width:22px;cursor:pointer}
 .layui-table .list-table-sort-td{width:60px!important;text-align:center!important}
 .layui-table .list-table-sort-td button{width:50px}
 .layui-table .list-table-sort-td input{width:50px;text-align:center;line-height:14px;padding:2px;border:1px solid #e6e6e6}
-.layui-table .list-table-check-td{width:30px!important;text-align:center;padding:0}
+.layui-table .list-table-check-td{width:30px!important;text-align:center;}
 .layui-table .list-table-check-td input{margin:0;vertical-align:middle}
 
 /** checkbox 优化 */
@@ -152,7 +153,7 @@ input[type=checkbox]:focus,input[type=radio]:focus{outline:none}
 
 /* 右则内容搜索样式 */
 .framework-body .form-search{background:#fff;padding-top:15px}
-.framework-body .form-search .layui-btn{height:32px;line-height:30px;font-size:13px;padding:0 10px}
+.framework-body .form-search .layui-btn{height:32px;line-height:30px;font-size:12px;padding:0 10px}
 .framework-body .form-search .layui-form-label{width:auto!important;border-radius:0;padding:0 6px;height:32px;line-height:30px}
 .framework-body .form-search .layui-input-inline{width:170px}
 .framework-body .form-search .layui-input-inline input,
