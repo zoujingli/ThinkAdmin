@@ -65,6 +65,7 @@ class Spec extends BasicAdmin
     {
         foreach ($data as &$vo) {
             $vo['spec_param'] = json_decode($vo['spec_param'], true);
+            $vo['spec_param'] = is_array($vo['spec_param']) ? $vo['spec_param'] : [];
         }
     }
 
