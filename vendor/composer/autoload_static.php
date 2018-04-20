@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
+class ComposerStaticInit634fe4faf75443ee005458ef619df6f4
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -24,6 +24,7 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
         'W' => 
         array (
             'WeOpen\\' => 7,
+            'WeMini\\' => 7,
             'WeChat\\' => 7,
         ),
         'S' => 
@@ -60,6 +61,10 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
         'WeOpen\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen',
+        ),
+        'WeMini\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini',
         ),
         'WeChat\\' => 
         array (
@@ -217,6 +222,12 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
         'WeChat\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Template.php',
         'WeChat\\User' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/User.php',
         'WeChat\\Wifi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Wifi.php',
+        'WeMini\\Crypt' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Crypt.php',
+        'WeMini\\Plugs' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Plugs.php',
+        'WeMini\\Poi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Poi.php',
+        'WeMini\\Qrcode' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Qrcode.php',
+        'WeMini\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Template.php',
+        'WeMini\\Total' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Total.php',
         'WeOpen\\Service' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Service.php',
         'app\\admin\\controller\\Auth' => __DIR__ . '/../..' . '/application/admin/controller/Auth.php',
         'app\\admin\\controller\\Config' => __DIR__ . '/../..' . '/application/admin/controller/Config.php',
@@ -258,9 +269,9 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit634fe4faf75443ee005458ef619df6f4::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit634fe4faf75443ee005458ef619df6f4::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit634fe4faf75443ee005458ef619df6f4::$classMap;
 
         }, null, ClassLoader::class);
     }

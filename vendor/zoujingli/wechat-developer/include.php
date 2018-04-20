@@ -14,8 +14,14 @@
 
 // 动态注册SDK自动加载
 spl_autoload_register(function ($classname) {
-    $filename = __DIR__ . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';
-    if (stripos($classname, 'WeChat') === 0 && file_exists($filename)) {
-        include $filename;
+    $separator = DIRECTORY_SEPARATOR;
+    $filename = __DIR__ . $separator . str_replace('\\', $separator, $classname) . '.php';
+    if (file_exists($filename)) {
+        if (stripos($classname, 'WeChat') === 0) {
+            include $filename;
+        }
+        if (stripos($classname, 'WeMini') === 0) {
+            include $filename;
+        }
     }
 });

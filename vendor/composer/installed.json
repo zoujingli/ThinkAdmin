@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.0.5",
-        "version_normalized": "1.0.5.0",
+        "version": "v1.1.1",
+        "version_normalized": "1.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "e05fe6bb24438d15259a6af4915bd0638dc3914a"
+            "reference": "d0877f695a45a911a4a40b6ef8e59e5c261c1b6c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/e05fe6bb24438d15259a6af4915bd0638dc3914a.zip",
-            "reference": "e05fe6bb24438d15259a6af4915bd0638dc3914a",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/d0877f695a45a911a4a40b6ef8e59e5c261c1b6c.zip",
+            "reference": "d0877f695a45a911a4a40b6ef8e59e5c261c1b6c",
             "shasum": ""
         },
         "require": {
@@ -98,12 +98,13 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-04-09T11:07:00+00:00",
+        "time": "2018-04-19T10:18:10+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "WeChat\\": "WeChat"
+                "WeChat\\": "WeChat",
+                "WeMini\\": "WeMini"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -175,17 +176,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.10",
-        "version_normalized": "5.1.10.0",
+        "version": "v5.1.11",
+        "version_normalized": "5.1.11.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "66b546f7cac130712d1e08fe2620105228f4bd8a"
+            "reference": "3156528b80dfa004109dfbfdbeb770b376a13f01"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/66b546f7cac130712d1e08fe2620105228f4bd8a.zip",
-            "reference": "66b546f7cac130712d1e08fe2620105228f4bd8a",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/3156528b80dfa004109dfbfdbeb770b376a13f01.zip",
+            "reference": "3156528b80dfa004109dfbfdbeb770b376a13f01",
             "shasum": ""
         },
         "require": {
@@ -201,7 +202,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-04-16T05:33:00+00:00",
+        "time": "2018-04-19T10:12:09+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",

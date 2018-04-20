@@ -16,20 +16,20 @@ PHP开发技术交流（QQ群 513350915）
 
 [![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
 
-> WeChatDeveloper 是基于官方接口封装，在做微信开发前，必需先阅读微信官方文档。
->* 微信官方文档：http://mp.weixin.qq.com/wiki
->* 商户支付文档：https://pay.weixin.qq.com/wiki/doc/api/index.html
+WeChatDeveloper 是基于官方接口封装，在做微信开发前，必需先阅读微信官方文档。
+* 微信官方文档：https://mp.weixin.qq.com/wiki
+* 商户支付文档：https://pay.weixin.qq.com/wiki/doc/api/index.html
 
-> 针对 WeChatDeveloper 也有一准备了帮助资料可供参考。
->* 开发文档地址：http://www.kancloud.cn/zoujingli/wechat-developer
->* Think.Admin：https://github.com/zoujingli/Think.Admin
+针对 WeChatDeveloper 也有一准备了帮助资料可供参考。
+* ThinkAdmin：https://github.com/zoujingli/Think.Admin
+* 开发文档地址：https://www.kancloud.cn/zoujingli/wechat-developer
 
 
 Repositorie
 --
- WeChatDeveloper 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
->* GitHub 托管地址：https://github.com/zoujingli/WeChatDeveloper
->* OSChina 托管地址：http://git.oschina.net/zoujingli/WeChatDeveloper
+WeChatDeveloper 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
+* Gitee 托管地址：https://gitee.com/zoujingli/WeChatDeveloper
+* GitHub 托管地址：https://github.com/zoujingli/WeChatDeveloper
 
 
 Install
@@ -39,7 +39,7 @@ Install
 # 首次安装 线上版本（稳定）
 composer require zoujingli/wechat-developer
 
-# 首次安装 开发版本 
+# 首次安装 开发版本（开发）
 composer require zoujingli/wechat-developer dev-master
 
 # 更新 WeChatDeveloper

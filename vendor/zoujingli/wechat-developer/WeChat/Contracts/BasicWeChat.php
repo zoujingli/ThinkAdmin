@@ -122,6 +122,7 @@ class BasicWeChat
      * 以GET获取接口数据并转为数组
      * @param string $url 接口地址
      * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
      */
     protected function httpGetForJson($url)
     {
@@ -133,6 +134,7 @@ class BasicWeChat
                 $this->isTry = true;
                 return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
             }
+            throw new InvalidResponseException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -142,6 +144,7 @@ class BasicWeChat
      * @param array $data 请求数据
      * @param bool $buildToJson
      * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
      */
     protected function httpPostForJson($url, array $data, $buildToJson = true)
     {
@@ -149,10 +152,10 @@ class BasicWeChat
             return Tools::json2arr(Tools::post($url, $buildToJson ? Tools::arr2json($data) : $data));
         } catch (InvalidResponseException $e) {
             if (!$this->isTry && in_array($e->getCode(), ['40014', '40001', '41001', '42001'])) {
-                $this->delAccessToken();
-                $this->isTry = true;
+                [$this->delAccessToken(), $this->isTry = true];
                 return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
             }
+            throw new InvalidResponseException($e->getMessage(), $e->getCode());
         }
     }
 
