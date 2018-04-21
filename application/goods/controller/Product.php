@@ -50,8 +50,11 @@ class Product extends BasicAdmin
         $this->title = '产品管理';
         $get = $this->request->get();
         $db = Db::name($this->table)->where(['is_deleted' => '0']);
-        foreach (['tags_id', 'goods_title'] as $field) {
-            (isset($get[$field]) && $get[$field] !== '') && $db->whereLike($field, "%,{$get[$field]},%");
+        if (isset($get['tags_id']) && $get['tags_id'] !== '') {
+            $db->whereLike('tags_id', "%,{$get['tags_id']},%");
+        }
+        if (isset($get['goods_title']) && $get['goods_title'] !== '') {
+            $db->whereLike('goods_title', "%{$get['goods_title']}%");
         }
         foreach (['cate_id', 'brand_id'] as $field) {
             (isset($get[$field]) && $get[$field] !== '') && $db->where($field, $get[$field]);
