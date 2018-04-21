@@ -62,7 +62,7 @@ class ProductService
         // 产品数据组装
         foreach ($goodsList as $key => $vo) {
             // 产品内容处理
-            $goodsList[$key]['goods_content'] = htmlspecialchars_decode($vo['goods_content']);
+            $goodsList[$key]['goods_content'] = $vo['goods_content'];
             // 产品品牌处理
             $goodsList[$key]['brand'] = isset($brandList[$vo['brand_id']]) ? $brandList[$vo['brand_id']] : [];
             // 产品分类关联

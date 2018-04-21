@@ -11,7 +11,7 @@
                 {foreach $brands as $brand}
                 <!--{eq name='$brand.id' value='$vo.brand_id|default=0'}-->
                 <option selected="selected" value="{$brand.id}">{$brand.brand_title}</option>
-                <!--{elseif empty($vo.brand_id)}-->
+                <!--{else}-->
                 <option value="{$brand.id}">{$brand.brand_title}</option>
                 <!--{/eq}-->
                 {/foreach}

@@ -89,7 +89,7 @@ class Product extends BasicAdmin
      */
     public function add()
     {
-        if (!$this->request->isPost()) {
+        if ($this->request->isGet()) {
             $this->title = '添加产品';
             $this->_form_assign();
             return $this->_form($this->table, 'form');
