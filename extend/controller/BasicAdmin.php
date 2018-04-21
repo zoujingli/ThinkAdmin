@@ -115,7 +115,7 @@ class BasicAdmin extends Controller
             $rows = intval($this->request->get('rows', cookie('page-rows')));
             cookie('page-rows', $rows = $rows >= 10 ? $rows : 20);
             // 分页数据处理
-            $query = $this->request->get('', '', 'urlencode');
+            $query = $this->request->get();
             $page = $db->paginate($rows, $total, ['query' => $query]);
             if (($totalNum = $page->total()) > 0) {
                 list($rowsHTML, $pageHTML, $maxNum) = [[], [], $page->lastPage()];

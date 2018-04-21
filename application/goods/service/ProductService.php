@@ -36,8 +36,8 @@ class ProductService
         $cateWhere = ['status' => '1', 'is_deleted' => '0'];
         $cateList = Db::name('GoodsCate')->where($cateWhere)->order('sort asc,id desc')->column($cateField);
         // 产品品牌处理
-        $brandField = 'id,brand_logo,brand_cover,brand_title,brand_desc,brand_detail';
         $brandWhere = ['status' => '1', 'is_deleted' => '0'];
+        $brandField = 'id,brand_logo,brand_cover,brand_title,brand_desc,brand_detail';
         $brandList = Db::name('GoodsBrand')->where($brandWhere)->order('sort asc,id desc')->column($brandField);
         // 无产品列表时
         if (empty($goodsList)) {
