@@ -93,6 +93,12 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     protected static $initialized = [];
 
     /**
+     * 是否从主库读取（主从分布式有效）
+     * @var array
+     */
+    protected static $readMaster;
+
+    /**
      * 查询对象实例
      * @var Query
      */
@@ -186,6 +192,21 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 是否从主库读取数据（主从分布有效）
+     * @access public
+     * @param  bool     $all 是否所有模型有效
+     * @return $this
+     */
+    public function readMaster($all = false)
+    {
+        $model = $all ? '*' : static::class;
+
+        static::$readMaster[$model] = true;
+
+        return $this;
+    }
+
+    /**
      * 创建新的模型实例
      * @access public
      * @param  array|object $data 数据
@@ -211,6 +232,10 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             ->model($this)
             ->json($this->json)
             ->setJsonFieldType($this->jsonType);
+
+        if (isset(static::$readMaster['*']) || isset(static::$readMaster[static::class])) {
+            $query->master(true);
+        }
 
         // 设置当前数据表和模型名
         if (!empty($this->table)) {
