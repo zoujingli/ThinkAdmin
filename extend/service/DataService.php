@@ -76,11 +76,11 @@ class DataService
     public static function save($dbQuery, $data, $key = 'id', $where = [])
     {
         $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
-        $where[] = [$key, 'eq', isset($data[$key]) ? $data[$key] : ''];
-        if (Db::table($db->getTable())->where($where)->count() > 0) {
-            return Db::table($db->getTable())->strict(false)->where($where)->update($data) !== false;
+        list($table, $map) = [$db->getTable(), [$key => isset($data[$key]) ? $data[$key] : '']];
+        if (Db::table($table)->where($where)->where($map)->count() > 0) {
+            return Db::table($table)->strict(false)->where($where)->where($map)->update($data) !== false;
         }
-        return Db::table($db->getTable())->strict(false)->insert($data) !== false;
+        return Db::table($table)->strict(false)->insert($data) !== false;
     }
 
     /**
