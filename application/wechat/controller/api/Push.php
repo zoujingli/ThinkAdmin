@@ -49,7 +49,7 @@ class Push
     protected $receive;
 
     /**
-     * 微信消息接口（通过ThinkService推送）
+     * 微信消息接口（来自ThinkService授权的消息推送）
      * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
@@ -63,11 +63,11 @@ class Push
         if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
             throw new Exception('微信API实例缺失必要参数[appid,openid,receive].');
         }
-        return $this->call($this->appid, $this->openid, $this->receive);
+        return $this->init();
     }
 
     /**
-     * 公众号直接对接（通过参数对接推送）
+     * 微信消息接口（来自在公众号官方的消息推送）
      * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
@@ -75,21 +75,20 @@ class Push
     public function notify()
     {
         $wechat = WechatService::receive();
-        return $this->call(WechatService::getAppid(), $wechat->getOpenid(), $wechat->getReceive());
+        $this->openid = $wechat->getOpenid();
+        $this->receive = $wechat->getReceive();
+        $this->appid = WechatService::getAppid();
+        return $this->init();
     }
 
     /**
      * 初始化接口
-     * @param string $appid 公众号APPID
-     * @param string $openid 公众号OPENID
-     * @param array $revice 消息对象
      * @return string
-     * @throws \think\Exception
+     * @throws Exception
      * @throws \think\exception\PDOException
      */
-    private function call($appid, $openid, $revice)
+    private function init()
     {
-        list($this->appid, $this->openid, $this->receive) = [$appid, $openid, $revice];
         if ($this->appid !== WechatService::getAppid()) {
             throw new Exception('微信API实例APPID验证失败.');
         }
