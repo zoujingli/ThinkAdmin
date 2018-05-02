@@ -61,7 +61,7 @@ class Push
         $this->openid = $request->post('openid', '', null);
         $this->receive = unserialize($request->post('receive', '', null));
         if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
-            throw new Exception('微信API实例缺失必要参数[appid,openid,event].');
+            throw new Exception('微信API实例缺失必要参数[appid,openid,receive].');
         }
         return $this->call($this->appid, $this->openid, $this->receive);
     }
@@ -87,7 +87,7 @@ class Push
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    protected function call($appid, $openid, $revice)
+    private function call($appid, $openid, $revice)
     {
         list($this->appid, $this->openid, $this->receive) = [$appid, $openid, $revice];
         if ($this->appid !== WechatService::getAppid()) {
