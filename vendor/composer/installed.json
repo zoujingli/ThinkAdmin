@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.1",
-        "version_normalized": "1.1.1.0",
+        "version": "v1.1.2",
+        "version_normalized": "1.1.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "d0877f695a45a911a4a40b6ef8e59e5c261c1b6c"
+            "reference": "8a2030216b066b78b7b89505f2ee33fe679d54dc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/d0877f695a45a911a4a40b6ef8e59e5c261c1b6c.zip",
-            "reference": "d0877f695a45a911a4a40b6ef8e59e5c261c1b6c",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/8a2030216b066b78b7b89505f2ee33fe679d54dc.zip",
+            "reference": "8a2030216b066b78b7b89505f2ee33fe679d54dc",
             "shasum": ""
         },
         "require": {
@@ -98,7 +98,7 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-04-19T10:18:10+00:00",
+        "time": "2018-05-02T02:22:46+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -270,27 +270,27 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.3.6",
-        "version_normalized": "3.3.6.0",
+        "version": "v3.4.9",
+        "version_normalized": "3.4.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0"
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/ff48982d295bcac1fd861f934f041ebc73ae40f0.zip",
-            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0",
+            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/f3109a6aedd20e35c3a33190e932c2b063b7b50e.zip",
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.5.9"
+            "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2017-04-12T14:14:56+00:00",
+        "time": "2018-01-11T07:56:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.3-dev"
+                "dev-master": "3.4-dev"
             }
         },
         "installation-source": "dist",
