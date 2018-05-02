@@ -74,15 +74,15 @@ class Order extends BasicAdmin
         // =============== 收货地址过滤 ===============
         $expressWhere = [];
         if (isset($get['express_title']) && $get['express_title'] !== '') {
-            $expressWhere[] = ['real_express_title|express_title', 'like', "%{$get['express_title']}%"];
+            $expressWhere[] = ['send_company_title|company_title', 'like', "%{$get['express_title']}%"];
         }
-        foreach (['real_express_no', 'express_province', 'express_city', 'express_area', 'express_username', 'express_phone'] as $field) {
+        foreach (['send_no', 'username', 'phone', 'province', 'city', 'area', 'address'] as $field) {
             if (isset($get[$field]) && $get[$field] !== '') {
                 $expressWhere[] = [$field, 'like', "%{$get[$field]}%"];
             }
         }
         if (isset($get['send_status']) && $get['send_status'] !== '') {
-            $expressWhere[] = empty($get['send_status']) ? ['real_express_no', 'eq', ''] : ['real_express_no', 'neq', ''];
+            $expressWhere[] = empty($get['send_status']) ? ['send_no', 'eq', ''] : ['send_no', 'neq', ''];
         }
         if (!empty($expressWhere)) {
             $sql = Db::name('StoreOrderExpress')->field('order_no')->where($expressWhere)->buildSql(true);
@@ -138,14 +138,14 @@ class Order extends BasicAdmin
             return $this->fetch('', $orderExpress);
         }
         $data = [
-            'order_no'         => $order_no,
-            'express_username' => $this->request->post('express_username'),
-            'express_phone'    => $this->request->post('express_phone'),
-            'express_province' => $this->request->post('form_express_province'),
-            'express_city'     => $this->request->post('form_express_city'),
-            'express_area'     => $this->request->post('form_express_area'),
-            'express_address'  => $this->request->post('express_address'),
-            'express_desc'     => $this->request->post('express_desc'),
+            'order_no' => $order_no,
+            'username' => $this->request->post('express_username'),
+            'phone'    => $this->request->post('express_phone'),
+            'province' => $this->request->post('form_express_province'),
+            'city'     => $this->request->post('form_express_city'),
+            'area'     => $this->request->post('form_express_area'),
+            'address'  => $this->request->post('express_address'),
+            'desc'     => $this->request->post('express_desc'),
         ];
         if (DataService::save('StoreOrderExpress', $data, 'order_no')) {
             $this->success('收货地址修改成功！', '');
