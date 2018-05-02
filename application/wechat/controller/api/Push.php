@@ -280,7 +280,7 @@ class Push
 
     /**
      * 更新推荐二维码关系
-     * @param string $key
+     * @param string $openid
      * @return bool
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -288,10 +288,10 @@ class Push
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    protected function updateSpread($key)
+    protected function updateSpread($openid)
     {
         // 检测推荐是否有效
-        $fans = Db::name('WechatFans')->where(['openid' => $key])->find();
+        $fans = Db::name('WechatFans')->where('openid', $openid)->find();
         if (empty($fans['openid']) || $fans['openid'] === $this->openid) {
             return false;
         }
@@ -318,7 +318,7 @@ class Push
             FansService::set($userInfo);
         } else {
             $fans = ['subscribe' => '0', 'openid' => $this->openid, 'appid' => $this->appid];
-            DataService::save('WechatFans', $fans, 'openid', ['appid' => $this->appid]);
+            DataService::save('WechatFans', $fans, 'openid', [['appid', 'eq', $this->appid]]);
         }
     }
 
