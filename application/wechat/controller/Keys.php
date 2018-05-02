@@ -151,8 +151,7 @@ class Keys extends BasicAdmin
     public function subscribe()
     {
         $this->assign('title', '编辑默认回复');
-        $extend = ['keys' => 'subscribe'];
-        return $this->_form($this->table, 'form', 'keys', $extend, $extend);
+        return $this->_form($this->table, 'form', 'keys', [], ['keys' => 'subscribe']);
     }
 
 
@@ -167,8 +166,7 @@ class Keys extends BasicAdmin
     public function defaults()
     {
         $this->assign('title', '编辑无配置默认回复');
-        $extend = ['keys' => 'default'];
-        return $this->_form($this->table, 'form', 'keys', $extend, $extend);
+        return $this->_form($this->table, 'form', 'keys', [], ['keys' => 'default']);
     }
 
     /**

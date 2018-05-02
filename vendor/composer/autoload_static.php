@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit634fe4faf75443ee005458ef619df6f4
+class ComposerStaticInit6bdafcea0aae51264a9f8f289803db99
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -184,13 +184,11 @@ class ComposerStaticInit634fe4faf75443ee005458ef619df6f4
         'Qiniu\\Storage\\ResumeUploader' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/ResumeUploader.php',
         'Qiniu\\Storage\\UploadManager' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/UploadManager.php',
         'Qiniu\\Zone' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Zone.php',
-        'Symfony\\Component\\OptionsResolver\\Debug\\OptionsResolverIntrospector' => __DIR__ . '/..' . '/symfony/options-resolver/Debug/OptionsResolverIntrospector.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\AccessException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/AccessException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/ExceptionInterface.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidArgumentException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\InvalidOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidOptionsException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\MissingOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/MissingOptionsException.php',
-        'Symfony\\Component\\OptionsResolver\\Exception\\NoConfigurationException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoConfigurationException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\NoSuchOptionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoSuchOptionException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\OptionDefinitionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/OptionDefinitionException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\UndefinedOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/UndefinedOptionsException.php',
@@ -244,6 +242,9 @@ class ComposerStaticInit634fe4faf75443ee005458ef619df6f4
         'app\\goods\\controller\\Spec' => __DIR__ . '/../..' . '/application/goods/controller/Spec.php',
         'app\\goods\\service\\ProductService' => __DIR__ . '/../..' . '/application/goods/service/ProductService.php',
         'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/application/index/controller/Index.php',
+        'app\\store\\controller\\Express' => __DIR__ . '/../..' . '/application/store/controller/Express.php',
+        'app\\store\\controller\\Order' => __DIR__ . '/../..' . '/application/store/controller/Order.php',
+        'app\\store\\service\\OrderService' => __DIR__ . '/../..' . '/application/store/service/OrderService.php',
         'app\\wechat\\controller\\Block' => __DIR__ . '/../..' . '/application/wechat/controller/Block.php',
         'app\\wechat\\controller\\Config' => __DIR__ . '/../..' . '/application/wechat/controller/Config.php',
         'app\\wechat\\controller\\Fans' => __DIR__ . '/../..' . '/application/wechat/controller/Fans.php',
@@ -269,9 +270,9 @@ class ComposerStaticInit634fe4faf75443ee005458ef619df6f4
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit634fe4faf75443ee005458ef619df6f4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit634fe4faf75443ee005458ef619df6f4::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit634fe4faf75443ee005458ef619df6f4::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6bdafcea0aae51264a9f8f289803db99::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6bdafcea0aae51264a9f8f289803db99::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6bdafcea0aae51264a9f8f289803db99::$classMap;
 
         }, null, ClassLoader::class);
     }

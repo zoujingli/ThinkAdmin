@@ -55,6 +55,7 @@ class Config extends BasicAdmin
             if ($this->request->get('appid', false)) {
                 sysconf('wechat_thr_appid', $data['appid']);
                 sysconf('wechat_thr_appkey', $data['appkey']);
+                sysconf('wechat_type', 'thr');
                 WechatService::config()->setApiNotifyUri($thrNotifyUrl);
             }
             try {

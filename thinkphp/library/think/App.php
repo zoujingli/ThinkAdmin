@@ -20,7 +20,7 @@ use think\route\Dispatch;
  */
 class App implements \ArrayAccess
 {
-    const VERSION = '5.1.11';
+    const VERSION = '5.1.12';
 
     /**
      * 当前模块路径
@@ -891,7 +891,7 @@ class App implements \ArrayAccess
 
     public function __unset($name)
     {
-        $this->container->__unset($name);
+        $this->container->delete($name);
     }
 
     public function offsetExists($key)
