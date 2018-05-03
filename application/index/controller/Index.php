@@ -14,7 +14,9 @@
 
 namespace app\index\controller;
 
+use service\WechatService;
 use think\Controller;
+use WeChat\Pay;
 
 /**
  * 应用入口控制器
@@ -26,6 +28,50 @@ class Index extends Controller
     public function index()
     {
         $this->redirect('@admin/login');
+    }
+
+    public function pay()
+    {
+        $wechat = new Pay(config('wechat.'));
+        $options = [
+            'body'             => '测试商品',
+            'out_trade_no'     => time(),
+            'total_fee'        => '1',
+            'openid'           => 'o38gpszoJoC9oJYz3UHHf6bEp0Lo',
+            'trade_type'       => 'JSAPI',
+            'notify_url'       => 'http://a.com/text.html',
+            'spbill_create_ip' => '127.0.0.1',
+        ];
+        // 生成预支付码
+        $result = $wechat->createOrder($options);
+        // 创建JSAPI参数签名
+        $options = $wechat->createParamsForJsApi($result['prepay_id']);
+        $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
+        $configJSON = json_encode(WechatService::webJsSDK(), JSON_UNESCAPED_UNICODE);
+
+        echo '<pre>';
+        echo "\n--- 创建预支付码 ---\n";
+        var_export($result);
+        echo '</pre>';
+
+        echo '<pre>';
+        echo "\n\n--- JSAPI 及 H5 参数 ---\n";
+        var_export($options);
+        echo '</pre>';
+        echo "<button id='paytest' type='button'>支付</button>";
+        echo "
+        <script src='//res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
+        <script>
+            wx.config($configJSON);
+            document.getElementById('paytest').onclick = function(){
+                var options = $optionJSON;
+                alert(JSON.stringify(options));
+                options.success = function(){
+                    alert('支付成功');
+                }
+                wx.chooseWXPay(options);
+            }
+        </script>";
     }
 
 }
