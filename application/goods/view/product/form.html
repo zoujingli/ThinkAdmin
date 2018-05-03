@@ -282,7 +282,7 @@
                         for (var j in lines) {
                             var line = lines[].split(':');
                             specAttrs.push({name: line[0], value: (line[1] || '').split(',')});
-                        }j
+                        }
                         list.push({
                             spec_name: specName, spec_title: specTitle, spec_attrs: specAttrs,
                             market_price: parseFloat(this.getData(specs[i], 'market_price') || '0').toFixed(2),
