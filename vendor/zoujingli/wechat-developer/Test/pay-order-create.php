@@ -33,9 +33,17 @@ try {
         'notify_url'       => 'http://a.com/text.html',
         'spbill_create_ip' => '127.0.0.1',
     ];
+    // 生成预支付码
     $result = $wechat->createOrder($options);
+    // 创建JSAPI参数签名
+    $options = $wechat->createParamsForJsApi($result['prepay_id']);
 
+    echo '<pre>';
+    echo "\n--- 创建预支付码 ---\n";
     var_export($result);
+
+    echo "\n\n--- JSAPI 及 H5 参数 ---\n";
+    var_export($options);
 
 } catch (Exception $e) {
 

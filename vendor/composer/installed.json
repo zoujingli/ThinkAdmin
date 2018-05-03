@@ -10,7 +10,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-installer/1be326e68f63de4e95977ed50f46ae75f017556d.zip",
+            "url": "https://api.github.com/repos/top-think/think-installer/zipball/1be326e68f63de4e95977ed50f46ae75f017556d",
             "reference": "1be326e68f63de4e95977ed50f46ae75f017556d",
             "shasum": ""
         },
@@ -53,7 +53,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/ip2region/5d981fbf3b574bad7fe9652e7aecba0920f54325.zip",
+            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/5d981fbf3b574bad7fe9652e7aecba0920f54325",
             "reference": "5d981fbf3b574bad7fe9652e7aecba0920f54325",
             "shasum": ""
         },
@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.2",
-        "version_normalized": "1.1.2.0",
+        "version": "v1.1.3",
+        "version_normalized": "1.1.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "8a2030216b066b78b7b89505f2ee33fe679d54dc"
+            "reference": "4b1112e8d4723ce5e6ef0d6eee41a02e588b60ab"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/8a2030216b066b78b7b89505f2ee33fe679d54dc.zip",
-            "reference": "8a2030216b066b78b7b89505f2ee33fe679d54dc",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/4b1112e8d4723ce5e6ef0d6eee41a02e588b60ab",
+            "reference": "4b1112e8d4723ce5e6ef0d6eee41a02e588b60ab",
             "shasum": ""
         },
         "require": {
@@ -98,7 +98,7 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-05-02T02:22:46+00:00",
+        "time": "2018-05-03T07:30:54+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -137,7 +137,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/8bb75bc08488a43964c00f027b21b93ed58e8d5a.zip",
+            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/8bb75bc08488a43964c00f027b21b93ed58e8d5a",
             "reference": "8bb75bc08488a43964c00f027b21b93ed58e8d5a",
             "shasum": ""
         },
@@ -185,7 +185,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/f879603ee321af8fde56d8855445cf98bc81b042.zip",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/f879603ee321af8fde56d8855445cf98bc81b042",
             "reference": "f879603ee321af8fde56d8855445cf98bc81b042",
             "shasum": ""
         },
@@ -238,7 +238,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-captcha/54c8a51552f99ff9ea89ea9c272383a8f738ceee.zip",
+            "url": "https://api.github.com/repos/top-think/think-captcha/zipball/54c8a51552f99ff9ea89ea9c272383a8f738ceee",
             "reference": "54c8a51552f99ff9ea89ea9c272383a8f738ceee",
             "shasum": ""
         },
@@ -279,7 +279,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/f3109a6aedd20e35c3a33190e932c2b063b7b50e.zip",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/f3109a6aedd20e35c3a33190e932c2b063b7b50e",
             "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e",
             "shasum": ""
         },
@@ -335,7 +335,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/endroid/qr-code/c9644bec2a9cc9318e98d1437de3c628dcd1ef93.zip",
+            "url": "https://api.github.com/repos/endroid/qr-code/zipball/c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
             "reference": "c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
             "shasum": ""
         },
@@ -397,7 +397,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/aliyun/aliyun-oss-php-sdk/e69f57916678458642ac9d2fd341ae78a56996c8.zip",
+            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/e69f57916678458642ac9d2fd341ae78a56996c8",
             "reference": "e69f57916678458642ac9d2fd341ae78a56996c8",
             "shasum": ""
         },
@@ -440,7 +440,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/67852ba9cdd7f48e0e080961abebafee134fb329.zip",
+            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/67852ba9cdd7f48e0e080961abebafee134fb329",
             "reference": "67852ba9cdd7f48e0e080961abebafee134fb329",
             "shasum": ""
         },

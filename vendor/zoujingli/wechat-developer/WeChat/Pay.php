@@ -75,7 +75,7 @@ class Pay
     public function createOrder(array $options)
     {
         $url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
-        return $this->callPostApi($url, $options);
+        return $this->callPostApi($url, $options, false, 'MD5');
     }
 
 
@@ -266,22 +266,23 @@ class Pay
 
     /**
      * 生成支付签名
-     * @param array $data
-     * @param string $signType
+     * @param array $data 参与签名的数据
+     * @param string $signType 参与签名的类型
+     * @param string $buff 参与签名字符串前缀
      * @return string
      */
-    public function getPaySign(array $data, $signType = 'MD5')
+    public function getPaySign(array $data, $signType = 'MD5', $buff = '')
     {
         unset($data['sign']);
         ksort($data);
-        list($key, $str) = [$this->config->get('mch_key'), ''];
         foreach ($data as $k => $v) {
-            $str .= "{$k}={$v}&";
+            $buff .= "{$k}={$v}&";
         }
-        if ($signType === 'MD5') {
-            return strtoupper(md5("{$str}key={$key}"));
+        $buff .= ("key=" . $this->config->get('mch_key'));
+        if (strtoupper($signType) === 'MD5') {
+            return strtoupper(md5($buff));
         }
-        return strtoupper(hash_hmac('SHA256', "{$str}key={$key}", $key));
+        return strtoupper(hash_hmac('SHA256', $buff, $this->config->get('mch_key')));
     }
 
     /**
@@ -307,9 +308,7 @@ class Pay
             $option['ssl_key'] = $this->config->get('ssl_key');
         }
         $params = $this->params->merge($data);
-        if ($needSignType) {
-            $params['sign_type'] = strtoupper($signType);
-        }
+        $needSignType && ($params['sign_type'] = strtoupper($signType));
         $params['sign'] = $this->getPaySign($params, $signType);
         $result = Tools::xml2arr(Tools::post($url, Tools::arr2xml($params), $option));
         if ($result['return_code'] !== 'SUCCESS') {

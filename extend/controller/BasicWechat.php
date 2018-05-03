@@ -39,7 +39,8 @@ class BasicWechat extends Controller
      */
     protected function getOpenid()
     {
-        return WechatService::webOauth(0)['openid'];
+        $url = $this->request->url(true);
+        return WechatService::webOauth($url, 0)['openid'];
     }
 
     /**
@@ -51,7 +52,8 @@ class BasicWechat extends Controller
      */
     protected function getFansinfo()
     {
-        return WechatService::webOauth(1)['fansinfo'];
+        $url = $this->request->url(true);
+        return WechatService::webOauth($url, 1)['fansinfo'];
     }
 
 }

@@ -33,7 +33,7 @@ class Index extends Controller
     public function pay()
     {
         $wechat = new Pay(config('wechat.'));
-        $openid = WechatService::webOauth(0)['openid'];
+        $openid = WechatService::webOauth($this->request->url(true), 0)['openid'];
         $options = [
             'body'             => '测试商品',
             'out_trade_no'     => time(),
