@@ -52,6 +52,7 @@ class Index extends Controller
         $configJSON = json_encode(WechatService::webJsSDK(), JSON_UNESCAPED_UNICODE);
 
         echo '<pre>';
+        echo "当前用户OPENID: {$openid}";
         echo "\n--- 创建预支付码 ---\n";
         var_export($result);
         echo '</pre>';
