@@ -47,6 +47,7 @@ class Index extends Controller
         // 创建JSAPI参数签名
         $options = $wechat->createParamsForJsApi($result['prepay_id']);
         $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
+        // JSSDK 签名配置
         $configJSON = json_encode(WechatService::webJsSDK(), JSON_UNESCAPED_UNICODE);
 
         echo '<pre>';
@@ -58,7 +59,7 @@ class Index extends Controller
         echo "\n\n--- JSAPI 及 H5 参数 ---\n";
         var_export($options);
         echo '</pre>';
-        echo "<button id='paytest' type='button'>支付</button>";
+        echo "<button id='paytest' type='button'>JSAPI支付</button>";
         echo "
         <script src='//res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
         <script>
