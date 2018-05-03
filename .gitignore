@@ -5,7 +5,7 @@
 *.svn
 *.git
 *nbproject
-!composer.json
 /runtime
+!composer.json
 /composer.lock
 /static/upload
