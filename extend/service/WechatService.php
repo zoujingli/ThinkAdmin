@@ -135,12 +135,12 @@ class WechatService
                 if (isset($token['openid'])) {
                     session("{$appid}_openid", $openid = $token['openid']);
                     if (empty($fullMode) && request()->get('rcode')) {
-                        redirect(decode(request()->get('rcode')))->send();
+                        redirect(decode(request()->get('rcode')), [], 301)->send();
                     }
                     session("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
                     empty($fansinfo) || FansService::set($fansinfo);
                 }
-                redirect(decode(request()->get('rcode')))->send();
+                redirect(decode(request()->get('rcode')), [], 301)->send();
                 break;
             case 'thr':
             default:
