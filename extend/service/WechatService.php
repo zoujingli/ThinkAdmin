@@ -88,19 +88,21 @@ class WechatService
      * 获取微信网页JSSDK
      * @param null|string $url JS签名地址
      * @return array
-     * @throws Exception
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
     public static function webJsSDK($url = null)
     {
+        $signUrl = is_null($url) ? app('request')->url(true) : $url;
         switch (strtolower(sysconf('wechat_type'))) {
             case 'api':
-                return WechatService::script()->getJsSign(is_null($url) ? app('request')->url(true) : $url);
+                return WechatService::script()->getJsSign($signUrl);
             case 'thr':
+                return WechatService::wechat()->jsSign($signUrl);
             default:
-                return WechatService::wechat()->jsSign(is_null($url) ? app('request')->url(true) : $url);
+                throw new Exception('请在后面配置微信对接授权模式！');
         }
     }
 
