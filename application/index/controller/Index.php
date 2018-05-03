@@ -33,11 +33,12 @@ class Index extends Controller
     public function pay()
     {
         $wechat = new Pay(config('wechat.'));
+        $openid = WechatService::webOauth(0)['openid'];
         $options = [
             'body'             => '测试商品',
             'out_trade_no'     => time(),
             'total_fee'        => '1',
-            'openid'           => 'o38gps3vNdCqaggFfrBRCRikwlWY',
+            'openid'           => $openid,
             'trade_type'       => 'JSAPI',
             'notify_url'       => 'http://a.com/text.html',
             'spbill_create_ip' => '127.0.0.1',
