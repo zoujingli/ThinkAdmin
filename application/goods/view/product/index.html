@@ -3,7 +3,7 @@
 {block name="button"}
 
 <!--{if auth("$classuri/add")}-->
-<button data-open='{:url("$classuri/add")}' data-title="添加产品" class='layui-btn layui-btn-sm'>添加产品</button>
+<button data-open='{:url("$classuri/add")}' data-title="添加产品" class='layui-btn layui-btn-sm layui-btn-primary'>添加产品</button>
 <!--{/if}-->
 
 <!--{if auth("$classuri/forbid")}-->
@@ -15,7 +15,7 @@
 <!--{/if}-->
 
 <!--{if auth("$classuri/del")}-->
-<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-danger'>批量删除</button>
+<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
 
 {/block}

@@ -244,9 +244,9 @@ class Product extends BasicAdmin
     public function forbid()
     {
         if (DataService::update($this->table)) {
-            $this->success("产品禁用成功！", '');
+            $this->success("产品下架成功！", '');
         }
-        $this->error("产品禁用失败，请稍候再试！");
+        $this->error("产品下架失败，请稍候再试！");
     }
 
     /**
@@ -257,9 +257,9 @@ class Product extends BasicAdmin
     public function resume()
     {
         if (DataService::update($this->table)) {
-            $this->success("产品启用成功！", '');
+            $this->success("产品上架成功！", '');
         }
-        $this->error("产品启用失败，请稍候再试！");
+        $this->error("产品上架失败，请稍候再试！");
     }
 
 }
