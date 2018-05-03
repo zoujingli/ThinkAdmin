@@ -279,10 +279,10 @@
                         var specName = specs[i];
                         var specTitle = (specName === 'default:default') ? '默认规格' : specName.replace(/,/ig, ';').replace(/:/ig, ':');
                         var specAttrs = [], lines = specTitle.split(';');
-                        for (var i in lines) {
-                            var line = lines[i].split(':');
+                        for (var j in lines) {
+                            var line = lines[].split(':');
                             specAttrs.push({name: line[0], value: (line[1] || '').split(',')});
-                        }
+                        }j
                         list.push({
                             spec_name: specName, spec_title: specTitle, spec_attrs: specAttrs,
                             market_price: parseFloat(this.getData(specs[i], 'market_price') || '0').toFixed(2),
