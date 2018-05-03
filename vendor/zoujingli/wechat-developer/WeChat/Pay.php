@@ -91,8 +91,8 @@ class Pay
         $option["timeStamp"] = (string)time();
         $option["nonceStr"] = Tools::createNoncestr();
         $option["package"] = "prepay_id={$prepay_id}";
-        $option["signType"] = "MD5";
-        $option["paySign"] = $this->getPaySign($option, 'MD5');
+        $option["signType"] = "HMAC-SHA256";
+        $option["paySign"] = $this->getPaySign($option, 'HMAC-SHA256');
         $option['timestamp'] = $option['timeStamp'];
         return $option;
     }
