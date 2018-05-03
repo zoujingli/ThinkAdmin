@@ -294,7 +294,7 @@ class Pay
      * @return array
      * @throws InvalidResponseException
      */
-    public function callPostApi($url, array $data, $isCert = false, $signType = 'MD5', $needSignType = true)
+    public function callPostApi($url, array $data, $isCert = false, $signType = 'HMAC-SHA256', $needSignType = true)
     {
         $option = [];
         if ($isCert) {
