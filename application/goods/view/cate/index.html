@@ -2,10 +2,10 @@
 
 {block name="button"}
 <!--{if auth("$classuri/add")}-->
-<button data-modal='{:url("@$classuri/add")}' data-title="添加分类" class='layui-btn layui-btn-sm'>添加分类</button>
+<button data-modal='{:url("@$classuri/add")}' data-title="添加分类" class='layui-btn layui-btn-sm layui-btn-primary'>添加分类</button>
 <!--{/if}-->
 <!--{if auth("$classuri/del")}-->
-<button data-update="" data-field='delete' data-action='{:url("@$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-danger'>删除分类</button>
+<button data-update="" data-field='delete' data-action='{:url("@$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>删除分类</button>
 <!--{/if}-->
 {/block}
 
