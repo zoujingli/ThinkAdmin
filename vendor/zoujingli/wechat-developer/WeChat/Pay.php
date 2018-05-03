@@ -91,8 +91,8 @@ class Pay
         $option["timeStamp"] = (string)time();
         $option["nonceStr"] = Tools::createNoncestr();
         $option["package"] = "prepay_id={$prepay_id}";
-        $option["signType"] = "HMAC-SHA256";
-        $option["paySign"] = $this->getPaySign($option, 'HMAC-SHA256');
+        $option["signType"] = "MD5";
+        $option["paySign"] = $this->getPaySign($option, 'MD5');
         $option['timestamp'] = $option['timeStamp'];
         return $option;
     }
@@ -294,7 +294,7 @@ class Pay
      * @return array
      * @throws InvalidResponseException
      */
-    public function callPostApi($url, array $data, $isCert = false, $signType = 'HMAC-SHA256', $needSignType = true)
+    public function callPostApi($url, array $data, $isCert = false, $signType = 'MD5', $needSignType = true)
     {
         $option = [];
         if ($isCert) {
