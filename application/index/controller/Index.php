@@ -37,7 +37,7 @@ class Index extends Controller
             'body'             => '测试商品',
             'out_trade_no'     => time(),
             'total_fee'        => '1',
-            'openid'           => 'o38gpszoJoC9oJYz3UHHf6bEp0Lo',
+            'openid'           => 'o38gps3vNdCqaggFfrBRCRikwlWY',
             'trade_type'       => 'JSAPI',
             'notify_url'       => 'http://a.com/text.html',
             'spbill_create_ip' => '127.0.0.1',
