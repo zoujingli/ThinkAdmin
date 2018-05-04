@@ -27,6 +27,25 @@ class Demo
 {
 
     /**
+     * 微信扫码支付模式一
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    public function scanOneQrc()
+    {
+        $wechat = new Pay(config('wechat.'));
+        $result = $wechat->createParamsForRuleQrc('8888888');
+        return $this->createQrc($result);
+    }
+
+    public function scanOneNotify()
+    {
+        p(file_get_contents('php://input'));
+    }
+
+    /**
      * 扫码支付测试
      * @return \think\Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
@@ -119,7 +138,7 @@ class Demo
     }
 
     /**
-     * 支付通过接收处理
+     * 支付通知接收处理
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      */
