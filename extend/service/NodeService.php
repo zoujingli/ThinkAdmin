@@ -73,7 +73,7 @@ class NodeService
     public static function checkAuthNode($node)
     {
         list($module, $controller, $action) = explode('/', str_replace(['?', '=', '&'], '/', $node . '///'));
-        $currentNode = self::parseNodeStr("{$module}/{$controller}/{$action}");
+        $currentNode = self::parseNodeStr("{$module}/{$controller}") . strtolower("/{$action}");
         if (session('user.username') === 'admin' || stripos($node, 'admin/index') === 0) {
             return true;
         }
@@ -129,7 +129,7 @@ class NodeService
             }
             foreach (get_class_methods($className) as $funcName) {
                 if (strpos($funcName, '_') !== 0 && $funcName !== 'initialize') {
-                    $nodes[] = self::parseNodeStr("{$matches[1]}/{$matches[2]}/{$funcName}");
+                    $nodes[] = self::parseNodeStr("{$matches[1]}/{$matches[2]}/") . strtolower($funcName);
                 }
             }
         }
