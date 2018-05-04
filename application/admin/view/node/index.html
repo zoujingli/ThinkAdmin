@@ -24,7 +24,7 @@
         $('.layui-tab ul.layui-tab-title li:first').trigger('click');
     });
 </script>
-<div class="layui-tab layui-box">
+<div class="layui-tab layui-tab-card layui-box">
     <ul class="layui-tab-title">
         <!--{foreach $groups as $key=>$group}-->
         <li>{$group.node.title|default='<span class="color-desc">未配置名称</span>'|raw}（{$key}）</li>
