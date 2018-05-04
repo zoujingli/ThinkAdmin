@@ -40,9 +40,43 @@ class Demo
         return $this->createQrc($result);
     }
 
+    /**
+     * 通过处理
+     * @return string
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     */
     public function scanOneNotify()
     {
-        p(file_get_contents('php://input'));
+        $notify = \WeChat\Tools::xml2arr(file_get_contents('php://input'));
+        p('======= 来自扫码支付1的数据 ======');
+        p($notify);
+        // 微信统一下单处理
+        $options = [
+            'body'             => '测试商品',
+            'out_trade_no'     => time(),
+            'total_fee'        => '1',
+            'trade_type'       => 'NATIVE',
+            'notify_url'       => url('@wx-demo-notify', '', true, true),
+            'spbill_create_ip' => request()->ip(),
+        ];
+        $wechat = new Pay(config('wechat.'));
+        $order = $wechat->createOrder($options);
+        p('======= 来自扫码支付1统一下单结果 ======');
+        p($order);
+        // 回复XML文本
+        $result = [
+            'return_code' => 'SUCCESS',
+            'return_msg'  => '处理成功',
+            'appid'       => $notify['appid'],
+            'mch_id'      => $notify['mch_id'],
+            'nonce_str'   => \WeChat\Tools::createNoncestr(),
+            'prepay_id'   => $order['prepay_id'],
+            'result_code' => 'SUCCESS',
+        ];
+        $result['sign'] = $wechat->getPaySign($result);
+        p('======= 来自扫码支付1返回的结果 ======');
+        p($result);
+        return \WeChat\Tools::arr2xml($result);
     }
 
     /**
