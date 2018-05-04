@@ -27,7 +27,7 @@ class Demo
 {
 
     /**
-     * 微信扫码支付模式一
+     * 微信扫码支付模式一二维码显示
      * @return \think\Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
@@ -41,7 +41,7 @@ class Demo
     }
 
     /**
-     * 通过处理
+     * 微信扫码支付模式一通知处理
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      */
@@ -82,7 +82,7 @@ class Demo
     }
 
     /**
-     * 扫码支付测试
+     * 扫码支付模式二测试二维码
      * @return \think\Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
