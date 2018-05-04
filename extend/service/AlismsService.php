@@ -68,16 +68,11 @@ class AlismsService
     public static function batchSend(array $PhoneNumbers, $TemplateCode, array $SignNames, array $TemplateParams, $SmsUpExtendCodes = [])
     {
         $params = [];
-        $params["SignNameJson"] = $SignNames;
         $params["TemplateCode"] = $TemplateCode;
-        $params["PhoneNumberJson"] = $PhoneNumbers;
-        $params["TemplateParamJson"] = $TemplateParams;
-        if (!empty($SmsUpExtendCodes)) {
-            $params["SmsUpExtendCodeJson"] = json_encode($SmsUpExtendCodes);
-        }
-        $params["TemplateParamJson"] = json_encode($params["TemplateParamJson"], JSON_UNESCAPED_UNICODE);
-        $params["SignNameJson"] = json_encode($params["SignNameJson"], JSON_UNESCAPED_UNICODE);
-        $params["PhoneNumberJson"] = json_encode($params["PhoneNumberJson"], JSON_UNESCAPED_UNICODE);
+        !empty($SmsUpExtendCodes) && $params["SmsUpExtendCodeJson"] = json_encode($SmsUpExtendCodes);
+        $params["TemplateParamJson"] = json_encode($TemplateParams, JSON_UNESCAPED_UNICODE);
+        $params["SignNameJson"] = json_encode($SignNames, JSON_UNESCAPED_UNICODE);
+        $params["PhoneNumberJson"] = json_encode($PhoneNumbers, JSON_UNESCAPED_UNICODE);
         if (!empty($params["SmsUpExtendCodeJson"]) && is_array($params["SmsUpExtendCodeJson"])) {
             $params["SmsUpExtendCodeJson"] = json_encode($params["SmsUpExtendCodeJson"], JSON_UNESCAPED_UNICODE);
         }
