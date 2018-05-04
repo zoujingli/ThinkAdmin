@@ -1,17 +1,40 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://think.ctolog.com
+// +----------------------------------------------------------------------
+// | 开源协议 ( http://www.apache.org/licenses/LICENSE-2.0 )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
 namespace service;
 
 /**
  * 阿里云短信服务
  * Class AlismsService
  * @package service
- * @config 需要在config目录定义配置文件
+ *
+ * @config 需要在config目录定义aliyun.php配置文件
  * @configParam aliyun.SmsAppid 阿里云短信APPID
  * @configParam aliyun.SmsAppkey 阿里云短信APPKEY
  */
 class AlismsService
 {
+
+    /**
+     * 短信SDK版本信息
+     * @var array
+     */
+    private static $sdkVersion = [
+        "RegionId" => "cn-hangzhou",
+        "Action"   => "SendBatchSms",
+        "Version"  => "2017-05-25",
+    ];
 
     /**
      * 短信发送记录查询
@@ -30,11 +53,7 @@ class AlismsService
         $params["CurrentPage"] = $CurrentPage;
         $params["PhoneNumber"] = $PhoneNumber;
         is_null($BizId) || $params["BizId"] = $BizId;
-        return self::request("dysmsapi.aliyuncs.com", array_merge($params, [
-            "RegionId" => "cn-hangzhou",
-            "Action"   => "QuerySendDetails",
-            "Version"  => "2017-05-25",
-        ]), true);
+        return self::request("dysmsapi.aliyuncs.com", array_merge($params, self::$sdkVersion), true);
     }
 
     /**
@@ -62,11 +81,7 @@ class AlismsService
         if (!empty($params["SmsUpExtendCodeJson"]) && is_array($params["SmsUpExtendCodeJson"])) {
             $params["SmsUpExtendCodeJson"] = json_encode($params["SmsUpExtendCodeJson"], JSON_UNESCAPED_UNICODE);
         }
-        return self::request("dysmsapi.aliyuncs.com", array_merge($params, [
-            "RegionId" => "cn-hangzhou",
-            "Action"   => "SendBatchSms",
-            "Version"  => "2017-05-25",
-        ]), true);
+        return self::request("dysmsapi.aliyuncs.com", array_merge($params, self::$sdkVersion), true);
     }
 
     /**
@@ -91,11 +106,7 @@ class AlismsService
         if (!empty($params["TemplateParam"]) && is_array($params["TemplateParam"])) {
             $params["TemplateParam"] = json_encode($params["TemplateParam"], JSON_UNESCAPED_UNICODE);
         }
-        return self::request("dysmsapi.aliyuncs.com", array_merge($params, [
-            "RegionId" => "cn-hangzhou",
-            "Action"   => "SendSms",
-            "Version"  => "2017-05-25",
-        ]), true);
+        return self::request("dysmsapi.aliyuncs.com", array_merge($params, self::$sdkVersion), true);
     }
 
     /**
