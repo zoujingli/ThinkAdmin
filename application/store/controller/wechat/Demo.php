@@ -47,7 +47,8 @@ class Demo
      */
     public function scanOneNotify()
     {
-        $notify = \WeChat\Contracts\Tools::xml2arr(file_get_contents('php://input'));
+        $wechat = new Pay(config('wechat.'));
+        $notify = $wechat->getNotify();
         p('======= 来自扫码支付1的数据 ======');
         p($notify);
         // 产品ID @todo 你的业务，并实现下面的统一下单操作
@@ -61,7 +62,6 @@ class Demo
             'notify_url'       => url('@wx-demo-notify', '', true, true),
             'spbill_create_ip' => request()->ip(),
         ];
-        $wechat = new Pay(config('wechat.'));
         $order = $wechat->createOrder($options);
         p('======= 来自扫码支付1统一下单结果 ======');
         p($order);
