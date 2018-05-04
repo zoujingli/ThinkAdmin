@@ -72,7 +72,7 @@ class MediaService
             WechatService::wechat()->rmFile($local_url);
         }
         $data = ['local_url' => $local_url, 'media_url' => $info['url'], 'md5' => $map['md5']];
-        DataService::save('WechatNewsImage', $data, 'md5', ['type' => 'image']);
+        DataService::save('WechatNewsImage', $data, 'md5');
         return $info['url'];
     }
 
