@@ -47,7 +47,7 @@ class Demo
      */
     public function scanOneNotify()
     {
-        $notify = \WeChat\Tools::xml2arr(file_get_contents('php://input'));
+        $notify = \WeChat\Contracts\Tools::xml2arr(file_get_contents('php://input'));
         p('======= 来自扫码支付1的数据 ======');
         p($notify);
         // 微信统一下单处理
@@ -69,14 +69,14 @@ class Demo
             'return_msg'  => '处理成功',
             'appid'       => $notify['appid'],
             'mch_id'      => $notify['mch_id'],
-            'nonce_str'   => \WeChat\Tools::createNoncestr(),
+            'nonce_str'   => \WeChat\Contracts\Tools::createNoncestr(),
             'prepay_id'   => $order['prepay_id'],
             'result_code' => 'SUCCESS',
         ];
         $result['sign'] = $wechat->getPaySign($result);
         p('======= 来自扫码支付1返回的结果 ======');
         p($result);
-        return \WeChat\Tools::arr2xml($result);
+        return \WeChat\Contracts\Tools::arr2xml($result);
     }
 
     /**
