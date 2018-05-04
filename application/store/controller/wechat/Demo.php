@@ -42,7 +42,7 @@ class Demo
             'total_fee'        => '1',
             'openid'           => $openid,
             'trade_type'       => 'JSAPI',
-            'notify_url'       => 'http://a.com/text.html',
+            'notify_url'       => url('@wx-demo-notify', '', true, true),
             'spbill_create_ip' => '127.0.0.1',
         ];
         // 生成预支付码
@@ -76,6 +76,18 @@ class Demo
                 wx.chooseWXPay(options);
             }
         </script>";
+    }
+
+    /**
+     * 支付通过接收处理
+     * @return string
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     */
+    public function notify()
+    {
+        $wechat = new Pay(config('wechat.'));
+        p($wechat->getNotify());
+        return 'SUCCESS';
     }
 
 }
