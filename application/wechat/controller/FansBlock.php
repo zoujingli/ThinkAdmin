@@ -26,7 +26,7 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/27 14:43
  */
-class Block extends BasicAdmin
+class FansBlock extends BasicAdmin
 {
 
     /**

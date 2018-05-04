@@ -14,6 +14,7 @@
 
 namespace think;
 
+use service\NodeService;
 use think\exception\HttpResponseException;
 
 return [
@@ -21,7 +22,7 @@ return [
     'action_begin' => function () {
         $request = app('request');
         list($module, $controller, $action) = [$request->module(), $request->controller(), $request->action()];
-        $node = strtolower("{$module}/{$controller}/{$action}");
+        $node = NodeService::parseNodeStr("{$module}/{$controller}/{$action}");
         $info = Db::name('SystemNode')->cache(true, 30)->where(['node' => $node])->find();
         $access = ['is_menu' => intval(!empty($info['is_menu'])), 'is_auth' => intval(!empty($info['is_auth'])), 'is_login' => empty($info['is_auth']) ? intval(!empty($info['is_login'])) : 1];
         // 登录状态检查
@@ -34,6 +35,6 @@ return [
             throw new HttpResponseException(json(['code' => 0, 'msg' => '抱歉，您没有访问该模块的权限！']));
         }
         // 模板常量声明
-        app('view')->init(config('template.'))->assign(['classuri' => "{$module}/{$controller}"]);
+        app('view')->init(config('template.'))->assign(['classuri' => NodeService::parseNodeStr("{$module}/{$controller}")]);
     },
 ];

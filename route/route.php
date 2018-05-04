@@ -12,9 +12,17 @@
 // | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
+use think\facade\App;
 use think\facade\Route;
+use think\Request;
 
-/* 去除下面注释可启用禁用功能 */
+/* 注册微信端路由支持 */
+Route::rule('wx-<controller>-<action>', function (Request $request, $controller, $action) {
+    $params = explode('-', $request->pathinfo());
+    [array_shift($params), array_shift($params), array_shift($params)];
+    return App::action("store/wechat.{$controller}/{$action}", $params);
+});
+
 return [];
 
 /*  测试环境禁止操作路由绑定 */

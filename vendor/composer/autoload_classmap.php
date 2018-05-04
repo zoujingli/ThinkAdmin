@@ -163,6 +163,7 @@ return array(
     'app\\index\\controller\\Index' => $baseDir . '/application/index/controller/Index.php',
     'app\\store\\controller\\Express' => $baseDir . '/application/store/controller/Express.php',
     'app\\store\\controller\\Order' => $baseDir . '/application/store/controller/Order.php',
+    'app\\store\\controller\\wechat\\Index' => $baseDir . '/application/store/controller/wechat/Index.php',
     'app\\store\\service\\OrderService' => $baseDir . '/application/store/service/OrderService.php',
     'app\\wechat\\controller\\Block' => $baseDir . '/application/wechat/controller/Block.php',
     'app\\wechat\\controller\\Config' => $baseDir . '/application/wechat/controller/Config.php',
