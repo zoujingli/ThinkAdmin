@@ -254,8 +254,7 @@ class News extends BasicAdmin
                     $data['filter'] = ['is_to_all' => false, 'tag_id' => join(',', $post['fans_tags'])];
                     $data['mpnews'] = ['media_id' => $newsinfo['media_id']];
                 }
-                $wechat = WechatService::custom();
-                if (false !== $wechat->massSendAll($data)) {
+                if (WechatService::custom()->massSendAll($data)) {
                     LogService::write('微信管理', "图文[{$news_id}]推送成功");
                     $this->success('微信图文推送成功！', '');
                 }
