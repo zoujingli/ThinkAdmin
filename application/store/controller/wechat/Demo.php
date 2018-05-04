@@ -14,6 +14,7 @@
 
 namespace app\store\controller\wechat;
 
+use Endroid\QrCode\QrCode;
 use service\WechatService;
 use WeChat\Pay;
 
@@ -24,6 +25,45 @@ use WeChat\Pay;
  */
 class Demo
 {
+
+    /**
+     * 扫码支付测试
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     */
+    public function scan()
+    {
+        $wechat = new Pay(config('wechat.'));
+        $options = [
+            'body'             => '测试商品',
+            'out_trade_no'     => time(),
+            'total_fee'        => '1',
+            'trade_type'       => 'NATIVE',
+            'notify_url'       => url('@wx-demo-notify', '', true, true),
+            'spbill_create_ip' => request()->ip(),
+        ];
+        // 生成预支付码
+        $result = $wechat->createOrder($options);
+        return $this->createQrc($result['code_url']);
+    }
+
+
+    /**
+     * 公众号JSAPI支付二维码
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    public function jsapiQrc()
+    {
+        $url = url('@wx-demo-jsapi', '', true, true);
+        return $this->createQrc($url);
+    }
+
     /**
      * 公众号JSAPI支付测试
      * @link wx-demo-jsapi
@@ -43,7 +83,7 @@ class Demo
             'openid'           => $openid,
             'trade_type'       => 'JSAPI',
             'notify_url'       => url('@wx-demo-notify', '', true, true),
-            'spbill_create_ip' => '127.0.0.1',
+            'spbill_create_ip' => request()->ip(),
         ];
         // 生成预支付码
         $result = $wechat->createOrder($options);
@@ -88,6 +128,21 @@ class Demo
         $wechat = new Pay(config('wechat.'));
         p($wechat->getNotify());
         return 'SUCCESS';
+    }
+
+    /**
+     * 显示二维码
+     * @param string $url
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    protected function createQrc($url)
+    {
+        $qrCode = new QrCode();
+        $qrCode->setText($url)->setSize(300)->setPadding(20)->setImageType(QrCode::IMAGE_TYPE_PNG);
+        return \think\facade\Response::header('Content-Type', 'image/png')->data($qrCode->get());
     }
 
 }
