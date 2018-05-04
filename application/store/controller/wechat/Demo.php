@@ -34,7 +34,7 @@ class Demo
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      * @throws \WeChat\Exceptions\InvalidResponseException
      */
-    public function scan()
+    public function scanQrc()
     {
         $wechat = new Pay(config('wechat.'));
         $options = [
