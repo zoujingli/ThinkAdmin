@@ -50,9 +50,11 @@ class Demo
         $notify = \WeChat\Contracts\Tools::xml2arr(file_get_contents('php://input'));
         p('======= 来自扫码支付1的数据 ======');
         p($notify);
+        // 产品ID @todo 你的业务，并实现下面的统一下单操作
+        $product_id = $notify['product_id'];
         // 微信统一下单处理
         $options = [
-            'body'             => '测试商品',
+            'body'             => '测试商品，产品ID：' . $product_id,
             'out_trade_no'     => time(),
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
