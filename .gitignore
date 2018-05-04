@@ -4,8 +4,8 @@
 *.idea
 *.svn
 *.git
-*nbproject
 /runtime
+/nbproject
 !composer.json
 /composer.lock
 /static/upload
