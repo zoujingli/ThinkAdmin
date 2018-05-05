@@ -23,6 +23,7 @@ Route::rule('wx-<controller>-<action>', function (Request $request, $controller,
     return App::action("store/wechat.{$controller}/{$action}", $params);
 });
 
+// 微信菜单链接配置
 $GLOBALS['WechatMenuLink'][] = [
     'link'  => 'wx-demo-jsapi',
     'title' => '微信JSAPI支付测试',
