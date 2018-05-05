@@ -1,47 +1,5 @@
 {extend name='admin@public/content'}
 
-{block name="style"}
-<style>
-    .menu-editor {
-        left: 317px;
-        width: 500px;
-        height: 580px;
-        display: block;
-        max-width: 500px;
-        border-radius: 0;
-        box-shadow: none;
-        border-color: #e7e7eb;
-    }
-
-    .menu-editor textarea:active, .menu-editor textarea:focus {
-        box-shadow: none
-    }
-
-    .menu-editor .arrow {
-        top: auto !important;
-        bottom: 15px
-    }
-
-    .menu-editor .popover-title {
-        margin-top: 0
-    }
-
-    .menu-editor textarea, .menu-editor input[type=text] {
-        border-radius: 0
-    }
-
-    .menu-editor .menu-item-deleted {
-        font-weight: 400;
-        font-size: 12px
-    }
-
-    .menu-submit-container {
-        width: 780px;
-        padding-top: 40px
-    }
-</style>
-{/block}
-
 {block name='content'}
 <div class='mobile-preview pull-left notselect'>
     <div class='mobile-header'>公众号</div>
@@ -80,8 +38,10 @@
     <div class="popover fade right up in menu-editor">
         <div class="arrow"></div>
         <h3 class="popover-title">
-            菜单名称
-            {if auth("$classuri/edit")}<a class="pull-right menu-item-deleted">删除</a>{/if}
+            微信菜单编辑
+            {if auth("$classuri/edit")}
+            <button type="button" class="pull-right menu-item-deleted layui-btn layui-btn-sm layui-btn-danger">移除菜单项</button>
+            {/if}
         </h3>
         <div class="popover-content menu-content"></div>
     </div>
@@ -91,9 +51,9 @@
     <form class="form-horizontal">
         <p class="help-block text-center">已添加子菜单，仅可设置菜单名称。</p>
         <div class="form-group margin-top-20">
-            <label class="col-xs-3 control-label">菜单名称</label>
+            <label class="col-xs-3 control-label label-required">菜单名称</label>
             <div class="col-xs-8">
-                <input name="menu-name" class="layui-input block">
+                <input name="menu-name" class="layui-input">
                 <span class="help-block m-b-none">字数不超过5个汉字或16个字母</span>
             </div>
         </div>
@@ -242,13 +202,10 @@
                 $html.find('input[name="menu-type"]').on('click', function () {
                     var type = this.value, content = $span.data('content') || '请输入内容';
                     $span.attr('data-type', this.value || 'text').data('content', content);
-                    var html = (function () {
+                    var $edit = $((function () {
                         switch (type) {
                             case 'miniprogram':
-                                var tpl = '<div>\
-<div>appid<input class="layui-input block margin-bottom-10" value="{appid}" name="appid"></div>\
-<div>url<input class="layui-input block margin-bottom-10" value="{url}" name="url"></div>\
-<div>pagepath<input name="pagepath" class="layui-input block" value={pagepath}></div></div>';
+                                var tpl = '<div><div>小程序的appid<input class="layui-input block margin-bottom-10" value="{appid}" name="appid"></div><div>小程序网页链接<input class="layui-input block margin-bottom-10" value="{url}" name="url"></div><div>小程序的页面路径<input name="pagepath" class="layui-input block" value={pagepath}></div></div>';
                                 var _appid = '', _pagepath = '', _url = '';
                                 if (content.indexOf(',') > 0) {
                                     _appid = content.split(',')[0] || '';
@@ -261,7 +218,12 @@
                             case 'text':
                                 return '<div>回复内容<textarea style="resize:none;height:225px" name="content" class="form-control input-sm">{content}</textarea></div>'.replace('{content}', content);
                             case 'view':
-                                return '<div>跳转地址<textarea style="resize:none;height:225px" name="content" class="form-control input-sm">{content}</textarea></div>'.replace('{content}', content);
+                                var wxMenu = eval('{$GLOBALS.WechatMenuLink|default=[]|json_encode|raw}');
+                                var wxMenuHtml = '<div>常用链接<select id="wxMenuLinkSelecter" class="layui-select full-width"><option value="">自定义地址</option>';
+                                for (var i in wxMenu) {
+                                    wxMenuHtml += '<option value="' + wxMenu[i].link + '">' + wxMenu[i].title + '</option>';
+                                }
+                                return wxMenuHtml + '</select>跳转链接<textarea id="wxMenuLinkContent" style="resize:none;height:167px" name="content" class="form-control input-sm">{content}</textarea></div>'.replace('{content}', content);
                             case 'keys':
                                 return '<div>匹配内容<textarea style="resize:none;height:225px" name="content" class="form-control input-sm">{content}</textarea></div>'.replace('{content}', content);
                             case 'event':
@@ -283,20 +245,34 @@
                                 }
                                 return select.join('');
                         }
-                    }).call(this);
-                    var $html = $(html), $input = $html.find('input,textarea');
-                    $input.on('change keyup click', function () {
-                        // 将input值写入到span上
+                    })());
+                    // 参数编辑器数据输入绑定
+                    $edit.find('input,textarea').on('keyup', function () {
                         $span.data(this.name, $(this).val() || $(this).html());
-                        // 如果是小程序，合并内容到span的content上
                         if (type === 'miniprogram') {
-                            $span.data('content', $span.data('appid') + ',' + $span.data('url') + ',' + $span.data('pagepath'));
+                            // 打开小程序，拼接参数并绑定
+                            $span.data('content', [$span.data('appid'), $span.data('url'), $span.data('pagepath')].join(','));
+                        } else if (type === 'view') {
+                            // 跳转网页，自定义链接自动切换选择
+                            $('#wxMenuLinkSelecter option').map(function () {
+                                this.selected = this.value === $span.data('content');
+                            });
                         }
                     });
-                    $('.editor-content-input').html($html);
-                }).filter('input[value="{type}"]'.replace('{type}', type)).trigger('click');
+                    // 显示参数编辑器
+                    $('.editor-content-input').html($edit);
+                    // 跳转网页处理选择器切换，事件监听
+                    if (type === 'view') {
+                        $('#wxMenuLinkSelecter option').map(function () {
+                            this.selected = this.value === content;
+                        });
+                        $('body').off('change', '#wxMenuLinkSelecter').on('change', '#wxMenuLinkSelecter', function () {
+                            $('#wxMenuLinkContent').val(this.options[this.selectedIndex].value || '#').trigger('keyup');
+                        });
+                    }
+                }).filter('input[value="' + type + '"]').trigger('click');
             };
-
+            // 提交微信菜单数据
             this.submit = function () {
                 var data = [];
                 $('li.parent-menu').map(function (index, item) {
@@ -330,4 +306,50 @@
         };
     });
 </script>
+{/block}
+
+{block name="style"}
+<style>
+    .menu-editor {
+        left: 317px;
+        width: 500px;
+        height: 580px;
+        display: block;
+        max-width: 500px;
+        border-radius: 0;
+        box-shadow: none;
+        border-color: #e7e7eb;
+    }
+
+    .menu-editor textarea:active, .menu-editor textarea:focus {
+        box-shadow: none
+    }
+
+    .menu-editor .arrow {
+        top: auto !important;
+        bottom: 15px
+    }
+
+    .menu-editor .popover-title {
+        height: 58px;
+        padding: 12px;
+        margin-top: 0;
+        font-size: 14px;
+        line-height: 40px;
+    }
+
+    .menu-editor textarea, .menu-editor input[type=text] {
+        border-radius: 0
+    }
+
+    .menu-editor .menu-item-deleted {
+        font-weight: 400;
+        font-size: 12px
+    }
+
+    .menu-submit-container {
+        width: 780px;
+        padding-top: 40px
+    }
+</style>
 {/block}

@@ -22,3 +22,10 @@ Route::rule('wx-<controller>-<action>', function (Request $request, $controller,
     [array_shift($params), array_shift($params), array_shift($params)];
     return App::action("store/wechat.{$controller}/{$action}", $params);
 });
+
+$GLOBALS['WechatMenuLink'][] = [
+    'link'  => 'wx-demo-jsapi',
+    'title' => '微信JSAPI支付测试',
+];
+
+// @todo 模块处理机制将写在下面（包括模块初始化及升级）
