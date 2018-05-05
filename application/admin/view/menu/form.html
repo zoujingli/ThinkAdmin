@@ -30,6 +30,14 @@
     </div>
 
     <div class="layui-form-item">
+        <label class="layui-form-label">链接参数</label>
+        <div class="layui-input-block">
+            <input type="text" name="params" autocomplete="off" title="请输入链接参数" placeholder="请输入链接参数" value="{$vo.params|default=''}" class="layui-input typeahead">
+            <p class="help-block">（可选）设置菜单链接参数，如：name=1&age=3</p>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
         <label class="layui-form-label">菜单图标</label>
         <div class="layui-input-inline" style='width:300px'>
             <input placeholder="请输入或选择图标" onchange="$('#icon-preview').get(0).className = this.value" type="text" name="icon" value='{$vo.icon|default=""}' class="layui-input">
