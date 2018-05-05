@@ -12,16 +12,13 @@
 // | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-/**
- * 模块路由及配置检测并加载
- * @include module/init.php
- * @author Anyon<zoujingli@qq.com>
- */
-foreach (scandir(env('app_path')) as $dir) {
-    if ($dir[0] !== '.') {
-        $filename = realpath(env('app_path') . "{$dir}/init.php");
-        $filename && file_exists($filename) && include($filename);
-    }
-}
+use think\facade\App;
+use think\facade\Route;
+use think\Request;
 
-return [];
+/* 注册微信端路由支持 */
+Route::rule('wx-<controller>-<action>', function (Request $request, $controller, $action) {
+    $params = explode('-', $request->pathinfo());
+    [array_shift($params), array_shift($params), array_shift($params)];
+    return App::action("store/wechat.{$controller}/{$action}", $params);
+});

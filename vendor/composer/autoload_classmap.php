@@ -162,6 +162,7 @@ return array(
     'app\\store\\controller\\GoodsCate' => $baseDir . '/application/store/controller/GoodsCate.php',
     'app\\store\\controller\\GoodsSpec' => $baseDir . '/application/store/controller/GoodsSpec.php',
     'app\\store\\controller\\Order' => $baseDir . '/application/store/controller/Order.php',
+    'app\\store\\controller\\wechat\\Demo' => $baseDir . '/application/store/controller/wechat/Demo.php',
     'app\\store\\controller\\wechat\\Index' => $baseDir . '/application/store/controller/wechat/Index.php',
     'app\\store\\service\\GoodsService' => $baseDir . '/application/store/service/GoodsService.php',
     'app\\store\\service\\OrderService' => $baseDir . '/application/store/service/OrderService.php',
