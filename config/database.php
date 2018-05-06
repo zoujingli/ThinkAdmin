@@ -16,13 +16,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'server.cuci.cc',
+    'hostname'        => '127.0.0.1',
     // 数据库名
     'database'        => 'admin_v3',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'admin_v3',
     // 密码
-    'password'        => 'Test12345',
+    'password'        => 'FbYBHcWKr2',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
