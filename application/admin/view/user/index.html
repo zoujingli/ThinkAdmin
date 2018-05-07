@@ -88,9 +88,7 @@
             <td class='text-left nowrap'>
                 {$vo.mail|default="<span class='color-desc'>还没有设置邮箱</span>"|raw}
             </td>
-            <td class='text-left nowrap'>
-                {$vo.login_num|default="<span class='color-desc'>从未登录</span>"|raw}
-            </td>
+            <td class='text-left nowrap'>{$vo.login_num|default=0}</td>
             <td class='text-left nowrap'>
                 {$vo.login_at|format_datetime|default="<span class='color-desc'>从未登录</span>"|raw}
             </td>
