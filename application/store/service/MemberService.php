@@ -12,13 +12,26 @@
 // | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace think;
+namespace app\store\service;
 
-// 加载基础文件
-require __DIR__ . '/thinkphp/base.php';
+use service\DataService;
 
-// think文件检查，防止TP目录计算异常
-file_exists('think') || touch('think');
-
-// 执行应用并响应
-Container::get('app', [__DIR__ . '/application/'])->run()->send();
+/**
+ * 会员数据初始化
+ * Class MemberService
+ * @package app\store\service
+ */
+class MemberService
+{
+    /**
+     * 创建会员数据
+     * @param array $data 会员数据
+     * @return bool
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public static function create($data)
+    {
+        return DataService::save('StoreMember', $data, 'id');
+    }
+}

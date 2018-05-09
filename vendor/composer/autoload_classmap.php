@@ -165,6 +165,7 @@ return array(
     'app\\store\\controller\\wechat\\Demo' => $baseDir . '/application/store/controller/wechat/Demo.php',
     'app\\store\\controller\\wechat\\Index' => $baseDir . '/application/store/controller/wechat/Index.php',
     'app\\store\\service\\GoodsService' => $baseDir . '/application/store/service/GoodsService.php',
+    'app\\store\\service\\MemberService' => $baseDir . '/application/store/service/MemberService.php',
     'app\\store\\service\\OrderService' => $baseDir . '/application/store/service/OrderService.php',
     'app\\wechat\\controller\\Config' => $baseDir . '/application/wechat/controller/Config.php',
     'app\\wechat\\controller\\Fans' => $baseDir . '/application/wechat/controller/Fans.php',

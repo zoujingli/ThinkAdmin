@@ -159,6 +159,11 @@
                 <a data-open='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
                 <!--{/if}-->
 
+                <!--{if auth("$classuri/stock")}-->
+                <span class="text-explode">|</span>
+                <a data-title="商品入库" data-modal='{:url("$classuri/stock")}?id={$vo.id}'>入库</a>
+                <!--{/if}-->
+
                 <!--{if $vo.status eq 1 and auth("$classuri/forbid")}-->
                 <span class="text-explode">|</span>
                 <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>下架</a>

@@ -1,0 +1,52 @@
+<form class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-block">
+            <input value='[{$vo.id}] {$vo.goods_title|default=""}' disabled="disabled" class="layui-input layui-bg-gray">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label label-required">商品库存</label>
+        <div class="layui-input-block">
+            <table class="layui-table" lay-size="sm">
+                <thead>
+                <tr>
+                    <th>商品规格</th>
+                    <th class="text-right">入库数量</th>
+                </tr>
+                </thead>
+                {foreach $vo.list as $spec}
+                <tr>
+                    <td>
+                        {$spec.goods_spec|str_replace=['default:default',',',':'],['默认规格','，','：'],###}
+                    </td>
+                    <td style="padding:0">
+                        <input name="spec[]" value="{$spec.goods_spec}" type="hidden">
+                        <input name="stock[]" value="0" onblur="this.value=parseInt(this.value)||0"
+                               class="layui-input text-right padding-right-10 border-none">
+                    </td>
+                </tr>
+                {/foreach}
+            </table>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">入库描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入入库描述" title="请输入入库描述" class="layui-textarea" name="desc"></textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+    <script>window.form.render();</script>
+</form>
