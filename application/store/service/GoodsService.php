@@ -111,11 +111,10 @@ class GoodsService
         $saleWhere = ['status' => '1', 'is_deleted' => '0', 'goods_id' => $goods_id, 'mch_id' => $mch_id];
         $saleList = (array)Db::name('StoreOrderList')->field($saleField)->where($saleWhere)->group('goods_id,goods_spec')->select();
         // 库存置零
-        list($where, $total_stock, $total_sale) = [['goods_id' => $goods_id], 0, 0];
+        list($where, $total_sale) = [['goods_id' => $goods_id], 0];
         Db::name('StoreGoodsList')->where($where)->update(['goods_stock' => 0, 'goods_sale' => 0, 'mch_id' => $mch_id]);
         // 更新商品库存
         foreach ($stockList as $stock) {
-            $total_stock += intval($stock['goods_stock']);
             $where = ['goods_id' => $goods_id, 'goods_spec' => $stock['goods_spec'], 'mch_id' => $mch_id];
             Db::name('StoreGoodsList')->where($where)->update(['goods_stock' => $stock['goods_stock']]);
         }
@@ -125,9 +124,6 @@ class GoodsService
             $where = ['goods_id' => $goods_id, 'goods_spec' => $sale['goods_spec'], 'mch_id' => $mch_id];
             Db::name('StoreGoodsList')->where($where)->update(['goods_sale' => $sale['goods_sale']]);
         }
-        // 更新总库存及总销量
-        $update = ['package_stock' => $total_stock, 'package_sale' => $total_sale, 'mch_id' => $mch_id];
-        Db::name('Goods')->where(['id' => $goods_id])->update($update);
         return ['code' => 1, 'msg' => '同步商品库存成功！'];
     }
 
