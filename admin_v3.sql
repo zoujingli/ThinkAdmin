@@ -924,6 +924,19 @@ CREATE TABLE `wechat_news_media` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信素材表';
 
+CREATE TABLE `store_goods_stock` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `goods_id` bigint(20) unsigned DEFAULT '0' COMMENT '商品ID',
+  `goods_spec` varchar(255) DEFAULT '' COMMENT '商品属性',
+  `goods_stock` bigint(20) unsigned DEFAULT '0' COMMENT '商品库存',
+  `stock_desc` varchar(255) DEFAULT '' COMMENT '商品库存描述',
+  `sort` bigint(20) unsigned DEFAULT '0' COMMENT '数据排序',
+  `status` bigint(1) unsigned DEFAULT '1' COMMENT '商品状态(1有效,0无效)',
+  `is_deleted` bigint(1) unsigned DEFAULT '0' COMMENT '删除状态(1删除,0未删除)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='商城商品库存';
+
 -- ----------------------------
 -- Records of wechat_news_media
 -- ----------------------------
