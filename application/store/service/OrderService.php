@@ -14,7 +14,6 @@
 
 namespace app\store\service;
 
-use Pay\Pay;
 use service\DataService;
 use service\ToolsService;
 use think\Db;
@@ -40,18 +39,18 @@ class OrderService
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public static function create($mid, $params, $addressId = 0, $expressId = 0, $orderDesc = '', $orderType = 1, $from = 'wechat')
+    public static function create($mid, $params, $addressId, $expressId, $orderDesc = '', $orderType = 1, $from = 'wechat')
     {
         // 会员数据获取与检验
         if (!($member = Db::name('StoreMember')->where(['id' => $mid])->find())) {
             return ['code' => 0, 'msg' => '会员数据处理异常，请刷新重试！'];
         }
         // 订单数据生成
-        list($order_no, $orderList) = [[], DataService::createSequence(10, 'ORDER'), []];
-        $order = ['mid' => $mid, 'order_no' => $order_no, 'real_price' => 0, 'total_price' => 0, 'desc' => $orderDesc, 'type' => $orderType, 'from' => $from,];
+        list($order_no, $orderList) = [DataService::createSequence(10, 'ORDER'), []];
+        $order = ['mid' => $mid, 'order_no' => $order_no, 'real_price' => 0, 'goods_price' => 0, 'desc' => $orderDesc, 'type' => $orderType, 'from' => $from];
         foreach (explode(';', trim($params, ',;@')) as $param) {
             list($goods_id, $goods_spec, $number) = explode('@', "{$param}@@");
-            $item = ['mid' => $mid, 'type' => $orderType, 'order_no' => $order_no, 'goods_id' => $goods_id, 'goods_spec' => $goods_spec, 'goods_number' => $number,];
+            $item = ['mid' => $mid, 'type' => $orderType, 'order_no' => $order_no, 'goods_id' => $goods_id, 'goods_spec' => $goods_spec, 'goods_number' => $number];
             $goodsResult = self::buildOrderData($item, $order, $orderList, 'selling_price');
             if (empty($goodsResult['code'])) {
                 return $goodsResult;
@@ -132,13 +131,15 @@ class OrderService
         }
         // 商品规格信息
         $specField = 'goods_id,goods_spec,market_price,selling_price,goods_stock,goods_sale';
-        $specWhere = ['status' => '1', 'is_deleted' => '0', 'package_id' => '0', 'goods_id' => $goods_id, 'goods_spec' => $goods_spec];
+        $specWhere = ['status' => '1', 'is_deleted' => '0', 'goods_id' => $goods_id, 'goods_spec' => $goods_spec];
         if (!($goodsSpec = Db::name('StoreGoodsList')->field($specField)->where($specWhere)->find())) {
             return ['code' => 0, 'msg' => '无效的商品规格信息！', 'data' => "{$goods_id}, {$goods_spec}, {$number}"];
         }
+        // 商品库存检查
         if ($goodsSpec['goods_stock'] - $goodsSpec['goods_sale'] < $number) {
             return ['code' => 0, 'msg' => '商品库存不足，请更换其它商品！', 'data' => "{$goods_id}, {$goods_spec}, {$number}"];
         }
+        // 订单价格处理
         $goodsSpec['price_field'] = $price_field;
         $orderList[] = array_merge($goods, $goodsSpec, ['mid' => $mid, 'number' => $number, 'order_no' => $order_no, 'type' => $type]);
         $order['goods_price'] += floatval($goodsSpec[$price_field]) * $number;
