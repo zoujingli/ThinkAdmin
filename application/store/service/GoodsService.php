@@ -104,24 +104,24 @@ class GoodsService
         }
         // 统计入库信息
         $stockField = 'goods_id,goods_spec,ifnull(sum(goods_stock), 0) goods_stock';
-        $stockWhere = ['status' => '1', 'is_deleted' => '0', 'goods_id' => $goods_id, 'mch_id' => $mch_id];
+        $stockWhere = ['status' => '1', 'is_deleted' => '0', 'goods_id' => $goods_id];
         $stockList = (array)Db::name('StoreGoodsStock')->field($stockField)->where($stockWhere)->group('goods_id,goods_spec')->select();
         // 统计销售信息
         $saleField = 'goods_id,goods_spec,ifnull(sum(number), 0) goods_sale';
-        $saleWhere = ['status' => '1', 'is_deleted' => '0', 'goods_id' => $goods_id, 'mch_id' => $mch_id];
+        $saleWhere = ['status' => '1', 'is_deleted' => '0', 'goods_id' => $goods_id];
         $saleList = (array)Db::name('StoreOrderList')->field($saleField)->where($saleWhere)->group('goods_id,goods_spec')->select();
         // 库存置零
         list($where, $total_sale) = [['goods_id' => $goods_id], 0];
-        Db::name('StoreGoodsList')->where($where)->update(['goods_stock' => 0, 'goods_sale' => 0, 'mch_id' => $mch_id]);
+        Db::name('StoreGoodsList')->where($where)->update(['goods_stock' => 0, 'goods_sale' => 0]);
         // 更新商品库存
         foreach ($stockList as $stock) {
-            $where = ['goods_id' => $goods_id, 'goods_spec' => $stock['goods_spec'], 'mch_id' => $mch_id];
+            $where = ['goods_id' => $goods_id, 'goods_spec' => $stock['goods_spec']];
             Db::name('StoreGoodsList')->where($where)->update(['goods_stock' => $stock['goods_stock']]);
         }
         // 更新商品销量
         foreach ($saleList as $sale) {
             $total_sale += intval($sale['goods_sale']);
-            $where = ['goods_id' => $goods_id, 'goods_spec' => $sale['goods_spec'], 'mch_id' => $mch_id];
+            $where = ['goods_id' => $goods_id, 'goods_spec' => $sale['goods_spec']];
             Db::name('StoreGoodsList')->where($where)->update(['goods_sale' => $sale['goods_sale']]);
         }
         return ['code' => 1, 'msg' => '同步商品库存成功！'];
