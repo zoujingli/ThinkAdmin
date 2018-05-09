@@ -299,13 +299,13 @@ class Pay
     {
         $option = [];
         if ($isCert) {
+            $option['ssl_cer'] = $this->config->get('ssl_cer');
+            $option['ssl_key'] = $this->config->get('ssl_key');
             foreach (['ssl_cer', 'ssl_key'] as $key) {
-                if (empty($option[$key])) {
+                if (empty($option[$key]) || !file_exists($option[$key])) {
                     throw new InvalidArgumentException("Missing Config -- [{$key}]", '0');
                 }
             }
-            $option['ssl_cer'] = $this->config->get('ssl_cer');
-            $option['ssl_key'] = $this->config->get('ssl_key');
         }
         $params = $this->params->merge($data);
         $needSignType && ($params['sign_type'] = strtoupper($signType));

@@ -85,12 +85,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "011e4608726fa83cb495dfa1f4d4f56c154ada21"
+            "reference": "e72fb2f166ee1a3b4889845cd932a1ab9d2005ee"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/011e4608726fa83cb495dfa1f4d4f56c154ada21.zip",
-            "reference": "011e4608726fa83cb495dfa1f4d4f56c154ada21",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/e72fb2f166ee1a3b4889845cd932a1ab9d2005ee.zip",
+            "reference": "e72fb2f166ee1a3b4889845cd932a1ab9d2005ee",
             "shasum": ""
         },
         "require": {
@@ -98,7 +98,7 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-05-09T04:22:21+00:00",
+        "time": "2018-05-09T05:38:00+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
