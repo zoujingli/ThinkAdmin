@@ -924,6 +924,11 @@ CREATE TABLE `wechat_news_media` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信素材表';
 
+
+-- ----------------------------
+-- Table structure for store_goods_stock
+-- ----------------------------
+DROP TABLE IF EXISTS `store_goods_stock`;
 CREATE TABLE `store_goods_stock` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `goods_id` bigint(20) unsigned DEFAULT '0' COMMENT '商品ID',
