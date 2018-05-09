@@ -68,7 +68,10 @@ class OrderService
                 Db::name('StoreOrderGoods')->insertAll($orderList); // 订单关联的商品信息
                 Db::name('storeOrderExpress')->insert($expressResult['data']); // 快递信息
             });
-            // @todo 同步相关商品库存
+            // 同步商品库存列表
+            foreach (array_unique(array_column($orderList, 'goods_id')) as $stock_goods_id) {
+                GoodsService::syncGoodsStock($stock_goods_id);
+            }
         } catch (\Exception $e) {
             return ['code' => 0, 'msg' => '商城订单创建失败，请稍候再试！' . $e->getLine() . $e->getFile() . $e->getMessage()];
         }

@@ -86,7 +86,7 @@ class GoodsService
     }
 
     /**
-     * 同步更新商品库存及售出（@todo 需要重新做库存统计）
+     * 同步更新商品库存及售出
      * @param int $goods_id 商品ID
      * @return array
      * @throws \think\Exception
