@@ -224,6 +224,45 @@ class Goods extends BasicAdmin
     }
 
     /**
+     * 商品库存信息更新
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    public function stock()
+    {
+        if (!$this->request->post()) {
+            $goods_id = $this->request->get('id');
+            $goods = Db::name('StoreGoods')->where(['id' => $goods_id, 'is_deleted' => '0'])->find();
+            empty($goods) && $this->error('该商品无法操作入库操作！');
+            $where = ['goods_id' => $goods_id, 'status' => '1', 'is_deleted' => '0'];
+            $goods['list'] = Db::name('StoreGoodsList')->where($where)->select();
+            return $this->fetch('', ['vo' => $goods]);
+        }
+        // 入库保存
+        $goods_id = $this->request->post('id');
+        list($post, $data) = [$this->request->post(), []];
+        foreach ($post['spec'] as $key => $spec) {
+            if ($post['stock'][$key] > 0) {
+                $data[] = [
+                    'goods_stock' => $post['stock'][$key],
+                    'stock_desc'  => $this->request->post('desc'),
+                    'goods_spec'  => $spec, 'goods_id' => $goods_id,
+                ];
+            }
+        }
+        empty($data) && $this->error('无需入库的数据哦！');
+        if (Db::name('StoreGoodsStock')->insertAll($data) !== false) {
+            GoodsService::syncGoodsStock($goods_id);
+            $this->success('商品入库成功！', '');
+        }
+        $this->error('商品入库失败，请稍候再试！');
+    }
+
+    /**
      * 删除商品
      * @throws \think\Exception
      * @throws \think\exception\PDOException
