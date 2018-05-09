@@ -105,7 +105,7 @@ class BasicWeChat
         if (!empty($result['access_token'])) {
             Tools::setCache($cache, $result['access_token'], 7000);
         }
-        return $result['access_token'];
+        return $this->access_token = $result['access_token'];
     }
 
     /**

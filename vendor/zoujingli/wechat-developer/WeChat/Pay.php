@@ -300,7 +300,7 @@ class Pay
         $option = [];
         if ($isCert) {
             foreach (['ssl_cer', 'ssl_key'] as $key) {
-                if (empty($options[$key])) {
+                if (empty($option[$key])) {
                     throw new InvalidArgumentException("Missing Config -- [{$key}]", '0');
                 }
             }
