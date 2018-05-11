@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit1fdfee53212f11ec783007c682345a6b
+class ComposerStaticInita33eeddf73f94e102eeb54914d7e1903
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -276,9 +276,9 @@ class ComposerStaticInit1fdfee53212f11ec783007c682345a6b
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit1fdfee53212f11ec783007c682345a6b::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit1fdfee53212f11ec783007c682345a6b::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit1fdfee53212f11ec783007c682345a6b::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInita33eeddf73f94e102eeb54914d7e1903::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInita33eeddf73f94e102eeb54914d7e1903::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInita33eeddf73f94e102eeb54914d7e1903::$classMap;
 
         }, null, ClassLoader::class);
     }

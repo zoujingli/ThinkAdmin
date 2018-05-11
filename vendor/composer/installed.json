@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.4",
-        "version_normalized": "1.1.4.0",
+        "version": "v1.1.5",
+        "version_normalized": "1.1.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "e72fb2f166ee1a3b4889845cd932a1ab9d2005ee"
+            "reference": "4598856a9e19c81f76f7f7076c80acff8dc67644"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/e72fb2f166ee1a3b4889845cd932a1ab9d2005ee.zip",
-            "reference": "e72fb2f166ee1a3b4889845cd932a1ab9d2005ee",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/4598856a9e19c81f76f7f7076c80acff8dc67644.zip",
+            "reference": "4598856a9e19c81f76f7f7076c80acff8dc67644",
             "shasum": ""
         },
         "require": {
@@ -98,7 +98,7 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-05-09T05:38:00+00:00",
+        "time": "2018-05-10T10:34:26+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -431,17 +431,17 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.4",
-        "version_normalized": "7.2.4.0",
+        "version": "v7.2.5",
+        "version_normalized": "7.2.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "e5605b20aa4cab7d7ad38c2a510e7086d0d85534"
+            "reference": "0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/e5605b20aa4cab7d7ad38c2a510e7086d0d85534.zip",
-            "reference": "e5605b20aa4cab7d7ad38c2a510e7086d0d85534",
+            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0.zip",
+            "reference": "0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0",
             "shasum": ""
         },
         "require": {
@@ -451,7 +451,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2018-05-09T08:33:46+00:00",
+        "time": "2018-05-10T09:26:30+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

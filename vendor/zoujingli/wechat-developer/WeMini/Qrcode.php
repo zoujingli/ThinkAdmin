@@ -32,17 +32,21 @@ class Qrcode extends BasicWeChat
      * @param integer $width 二维码的宽度
      * @param bool $auto_color 自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
      * @param array $line_color auto_color 为 false 时生效
+     * @param null|string $outType 输出类型
      * @return array|string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function createMiniPath($path, $width = 430, $auto_color = false, $line_color = ["r" => "0", "g" => "0", "b" => "0"])
+    public function createMiniPath($path, $width = 430, $auto_color = false, $line_color = ["r" => "0", "g" => "0", "b" => "0"], $outType = null)
     {
         $url = 'https://api.weixin.qq.com/wxa/getwxacode?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
         $data = ['path' => $path, 'width' => $width, 'auto_color' => $auto_color, 'line_color' => $line_color];
         $result = Tools::post($url, Tools::arr2json($data));
-        return strlen($result) > 256 ? $result : Tools::json2arr($result);
+        if (json_decode($result)) {
+            return Tools::json2arr($result);
+        }
+        return is_null($outType) ? $result : $outType($result);
     }
 
     /**
@@ -53,17 +57,21 @@ class Qrcode extends BasicWeChat
      * @param integer $width 二维码的宽度
      * @param bool $auto_color 自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
      * @param array $line_color auto_color 为 false 时生效
+     * @param null|string $outType 输出类型
      * @return array|string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function createMiniScene($scene, $page, $width = 430, $auto_color = false, $line_color = ["r" => "0", "g" => "0", "b" => "0"])
+    public function createMiniScene($scene, $page, $width = 430, $auto_color = false, $line_color = ["r" => "0", "g" => "0", "b" => "0"], $outType = null)
     {
         $url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=ACCESS_TOKEN';
         $data = ['scene' => $scene, 'width' => $width, 'auto_color' => $auto_color, 'page' => $page, 'line_color' => $line_color];
         $this->registerApi($url, __FUNCTION__, func_get_args());
         $result = Tools::post($url, Tools::arr2json($data));
-        return strlen($result) > 256 ? $result : Tools::json2arr($result);
+        if (json_decode($result)) {
+            return Tools::json2arr($result);
+        }
+        return is_null($outType) ? $result : $outType($result);
     }
 
     /**
@@ -71,16 +79,20 @@ class Qrcode extends BasicWeChat
      * 接口C：适用于需要的码数量较少的业务场景
      * @param string $path 不能为空，最大长度 128 字节
      * @param integer $width 二维码的宽度
+     * @param null|string $outType 输出类型
      * @return array|string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function createDefault($path, $width = 430)
+    public function createDefault($path, $width = 430, $outType = null)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
         $result = Tools::post($url, Tools::arr2json(['path' => $path, 'width' => $width]));
-        return strlen($result) > 256 ? $result : Tools::json2arr($result);
+        if (json_decode($result)) {
+            return Tools::json2arr($result);
+        }
+        return is_null($outType) ? $result : $outType($result);
     }
 
 }
