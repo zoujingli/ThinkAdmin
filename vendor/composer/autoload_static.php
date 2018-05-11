@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita33eeddf73f94e102eeb54914d7e1903
+class ComposerStaticInite29f1d41f74bbc25b33cf82965146bdc
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -65,6 +65,7 @@ class ComposerStaticInita33eeddf73f94e102eeb54914d7e1903
         'WeMini\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini',
+            1 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini',
         ),
         'WeChat\\' => 
         array (
@@ -223,12 +224,19 @@ class ComposerStaticInita33eeddf73f94e102eeb54914d7e1903
         'WeChat\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Template.php',
         'WeChat\\User' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/User.php',
         'WeChat\\Wifi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Wifi.php',
+        'WeMini\\Basic' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Basic.php',
+        'WeMini\\Code' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Code.php',
         'WeMini\\Crypt' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Crypt.php',
+        'WeMini\\Domain' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Domain.php',
         'WeMini\\Plugs' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Plugs.php',
         'WeMini\\Poi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Poi.php',
         'WeMini\\Qrcode' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Qrcode.php',
         'WeMini\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Template.php',
+        'WeMini\\Tester' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Tester.php',
         'WeMini\\Total' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Total.php',
+        'WeMini\\User' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/User.php',
+        'WeOpen\\Login' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Login.php',
+        'WeOpen\\MiniApp' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/MiniApp.php',
         'WeOpen\\Service' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Service.php',
         'app\\admin\\controller\\Auth' => __DIR__ . '/../..' . '/application/admin/controller/Auth.php',
         'app\\admin\\controller\\Config' => __DIR__ . '/../..' . '/application/admin/controller/Config.php',
@@ -276,9 +284,9 @@ class ComposerStaticInita33eeddf73f94e102eeb54914d7e1903
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita33eeddf73f94e102eeb54914d7e1903::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita33eeddf73f94e102eeb54914d7e1903::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInita33eeddf73f94e102eeb54914d7e1903::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite29f1d41f74bbc25b33cf82965146bdc::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite29f1d41f74bbc25b33cf82965146bdc::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite29f1d41f74bbc25b33cf82965146bdc::$classMap;
 
         }, null, ClassLoader::class);
     }

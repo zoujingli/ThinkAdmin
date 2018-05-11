@@ -130,17 +130,21 @@ class Container
     /**
      * 绑定一个类实例当容器
      * @access public
-     * @param  string    $abstract    类名或者标识
-     * @param  object    $instance    类的实例
+     * @param  string           $abstract    类名或者标识
+     * @param  object|\Closure  $instance    类的实例
      * @return $this
      */
     public function instance($abstract, $instance)
     {
-        if (isset($this->bind[$abstract])) {
-            $abstract = $this->bind[$abstract];
-        }
+        if ($instance instanceof \Closure) {
+            $this->bind[$abstract] = $instance;
+        } else {
+            if (isset($this->bind[$abstract])) {
+                $abstract = $this->bind[$abstract];
+            }
 
-        $this->instances[$abstract] = $instance;
+            $this->instances[$abstract] = $instance;
+        }
 
         return $this;
     }
@@ -252,7 +256,7 @@ class Container
 
             $args = $this->bindParams($reflect, $vars);
 
-            return $reflect->invokeArgs($args);
+            return call_user_func_array($function, $args);
         } catch (ReflectionException $e) {
             throw new Exception('function not exists: ' . $function . '()');
         }
@@ -280,6 +284,10 @@ class Container
 
             return $reflect->invokeArgs(isset($class) ? $class : null, $args);
         } catch (ReflectionException $e) {
+            if (is_array($method) && is_object($method[0])) {
+                $method[0] = get_class($method[0]);
+            }
+
             throw new Exception('method not exists: ' . (is_array($method) ? $method[0] . '::' . $method[1] : $method) . '()');
         }
     }
@@ -327,11 +335,21 @@ class Container
         try {
             $reflect = new ReflectionClass($class);
 
+            if ($reflect->hasMethod('__make')) {
+                $method = new ReflectionMethod($class, '__make');
+
+                if ($method->isPublic() && $method->isStatic()) {
+                    $args = $this->bindParams($method, $vars);
+                    return $method->invokeArgs(null, $args);
+                }
+            }
+
             $constructor = $reflect->getConstructor();
 
             $args = $constructor ? $this->bindParams($constructor, $vars) : [];
 
             return $reflect->newInstanceArgs($args);
+
         } catch (ReflectionException $e) {
             throw new ClassNotFoundException('class not exists: ' . $class, $class);
         }

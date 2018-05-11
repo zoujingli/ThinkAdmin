@@ -105,7 +105,7 @@ class Url
             $url = $match[0];
 
             if (!empty($match[1])) {
-                $host = $this->app['config']->get('app_host') ?: $this->app['request']->host();
+                $host = $this->app['config']->get('app_host') ?: $this->app['request']->host(true);
                 if ($domain || $match[1] != $host) {
                     $domain = $match[1];
                 }
@@ -134,6 +134,11 @@ class Url
                 }
             }
 
+            if (!$matchAlias) {
+                // 路由标识不存在 直接解析
+                $url = $this->parseUrl($url);
+            }
+
             // 检测URL绑定
             if (!$this->bindCheck) {
                 $bind = $this->app['route']->getBind($domain && is_string($domain) ? $domain : null);
@@ -151,11 +156,6 @@ class Url
                         }
                     }
                 }
-            }
-
-            if (!$matchAlias) {
-                // 路由标识不存在 直接解析
-                $url = $this->parseUrl($url);
             }
 
             if (isset($info['query'])) {
@@ -264,9 +264,8 @@ class Url
 
         $rootDomain = $this->app['request']->rootDomain();
         if (true === $domain) {
-
             // 自动判断域名
-            $domain = $this->app['config']->get('app_host') ?: $this->app['request']->host();
+            $domain = $this->app['config']->get('app_host') ?: $this->app['request']->host(true);
 
             $domains = $this->app['route']->getDomains();
 

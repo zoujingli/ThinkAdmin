@@ -404,19 +404,24 @@ class Request
     /**
      * 设置或获取当前包含协议的域名
      * @access public
-     * @param  string $domain 域名
+     * @param  string|bool $domain 域名
      * @return string|$this
      */
     public function domain($domain = null)
     {
-        if (!is_null($domain)) {
-            $this->domain = $domain;
-            return $this;
-        } elseif (!$this->domain) {
-            $this->domain = $this->scheme() . '://' . $this->host();
+        if (is_null($domain)) {
+            if (!$this->domain) {
+                $this->domain = $this->scheme() . '://' . $this->host();
+            }
+            return $this->domain;
         }
 
-        return $this->domain;
+        if (true === $domain) {
+            return $this->scheme() . '://' . $this->host(true);
+        }
+
+        $this->domain = $domain;
+        return $this;
     }
 
     /**
@@ -429,7 +434,7 @@ class Request
         $root = $this->config->get('app.url_domain_root');
 
         if (!$root) {
-            $item  = explode('.', $this->host());
+            $item  = explode('.', $this->host(true));
             $count = count($item);
             $root  = $count > 1 ? $item[$count - 2] . '.' . $item[$count - 1] : $item[0];
         }
@@ -450,9 +455,9 @@ class Request
 
             if ($rootDomain) {
                 // 配置域名根 例如 thinkphp.cn 163.com.cn 如果是国家级域名 com.cn net.cn 之类的域名需要配置
-                $domain = explode('.', rtrim(stristr($this->host(), $rootDomain, true), '.'));
+                $domain = explode('.', rtrim(stristr($this->host(true), $rootDomain, true), '.'));
             } else {
-                $domain = explode('.', $this->host(), -2);
+                $domain = explode('.', $this->host(true), -2);
             }
 
             $this->subDomain = implode('.', $domain);
@@ -1647,15 +1652,18 @@ class Request
     /**
      * 当前请求的host
      * @access public
+     * @param bool $strict  true 仅仅获取HOST
      * @return string
      */
-    public function host()
+    public function host($strict = false)
     {
         if (isset($_SERVER['HTTP_X_REAL_HOST'])) {
-            return $_SERVER['HTTP_X_REAL_HOST'];
+            $host = $_SERVER['HTTP_X_REAL_HOST'];
+        } else {
+            $host = $this->server('HTTP_HOST');
         }
 
-        return $this->server('HTTP_HOST');
+        return true === $strict && strpos($host, ':') ? strstr($host, ':', true) : $host;
     }
 
     /**

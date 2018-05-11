@@ -1,17 +1,17 @@
 [
     {
         "name": "topthink/think-installer",
-        "version": "v1.0.12",
-        "version_normalized": "1.0.12.0",
+        "version": "v2.0.0",
+        "version_normalized": "2.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-installer.git",
-            "reference": "1be326e68f63de4e95977ed50f46ae75f017556d"
+            "reference": "f5400a12c60e513911aef41fe443fa6920952675"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-installer/1be326e68f63de4e95977ed50f46ae75f017556d.zip",
-            "reference": "1be326e68f63de4e95977ed50f46ae75f017556d",
+            "url": "https://files.phpcomposer.com/files/top-think/think-installer/f5400a12c60e513911aef41fe443fa6920952675.zip",
+            "reference": "f5400a12c60e513911aef41fe443fa6920952675",
             "shasum": ""
         },
         "require": {
@@ -20,7 +20,7 @@
         "require-dev": {
             "composer/composer": "1.0.*@dev"
         },
-        "time": "2017-05-27T06:58:09+00:00",
+        "time": "2018-05-11T06:45:42+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "think\\composer\\Plugin"
@@ -133,26 +133,27 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "8bb75bc08488a43964c00f027b21b93ed58e8d5a"
+            "reference": "602ef0a4742744dd19f52e610e3aa873942a188f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/8bb75bc08488a43964c00f027b21b93ed58e8d5a.zip",
-            "reference": "8bb75bc08488a43964c00f027b21b93ed58e8d5a",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/602ef0a4742744dd19f52e610e3aa873942a188f.zip",
+            "reference": "602ef0a4742744dd19f52e610e3aa873942a188f",
             "shasum": ""
         },
         "require": {
             "ext-curl": "*",
             "ext-openssl": "*",
             "php": ">=5.4",
-            "zoujingli/wechat-developer": "^1.0.0"
+            "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2018-03-21T05:06:35+00:00",
+        "time": "2018-05-11T03:49:36+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "WeOpen\\": "WeOpen"
+                "WeOpen\\": "WeOpen",
+                "WeMini\\": "WeMini"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -176,22 +177,22 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.12",
-        "version_normalized": "5.1.12.0",
+        "version": "v5.1.13",
+        "version_normalized": "5.1.13.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "f879603ee321af8fde56d8855445cf98bc81b042"
+            "reference": "1cc81707dab128e360405aa4811a27b7a5403a78"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/f879603ee321af8fde56d8855445cf98bc81b042.zip",
-            "reference": "f879603ee321af8fde56d8855445cf98bc81b042",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/1cc81707dab128e360405aa4811a27b7a5403a78.zip",
+            "reference": "1cc81707dab128e360405aa4811a27b7a5403a78",
             "shasum": ""
         },
         "require": {
             "php": ">=5.6.0",
-            "topthink/think-installer": "~1.0"
+            "topthink/think-installer": "2.*"
         },
         "require-dev": {
             "johnkary/phpunit-speedtrap": "^1.0",
@@ -202,7 +203,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-04-26T03:46:41+00:00",
+        "time": "2018-05-11T07:50:00+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",

@@ -814,11 +814,8 @@ abstract class Connection
         $options = $query->getOptions();
         $pk      = $query->getPk($options);
 
-        if (!empty($options['cache']) && true === $options['cache']['key'] && is_string($pk) && isset($options['where']['AND'][$pk])) {
-            $key = $this->getCacheKey($query, $options['where']['AND'][$pk]);
-        }
-
         $data = $options['data'];
+        $query->setOption('limit', 1);
 
         if (empty($options['fetch_sql']) && !empty($options['cache'])) {
             // 判断查询缓存
@@ -826,7 +823,7 @@ abstract class Connection
 
             if (is_string($cache['key'])) {
                 $key = $cache['key'];
-            } elseif (!isset($key)) {
+            } else {
                 $key = $this->getCacheKey($query, $data);
             }
 
@@ -848,7 +845,6 @@ abstract class Connection
         }
 
         $query->setOption('data', $data);
-        $query->setOption('limit', 1);
 
         // 生成查询SQL
         $sql = $this->builder->select($query);
@@ -983,7 +979,7 @@ abstract class Connection
         }
 
         // 执行操作
-        $result = $this->execute($sql, $bind, $query);
+        $result = '' == $sql ? 0 : $this->execute($sql, $bind, $query);
 
         if ($result) {
             $sequence  = $sequence ?: (isset($options['sequence']) ? $options['sequence'] : null);
@@ -1145,8 +1141,12 @@ abstract class Connection
                 $options['where']['AND'] = $where;
                 $query->setOption('where', ['AND' => $where]);
             }
-        } elseif (!isset($key) && is_string($pk) && isset($options['where']['AND'][$pk])) {
-            $key = $this->getCacheKey($query, $options['where']['AND'][$pk]);
+        } elseif (!isset($key) && is_string($pk) && isset($options['where']['AND'])) {
+            foreach ($options['where']['AND'] as $val) {
+                if (is_array($val) && $val[0] == $pk) {
+                    $key = $this->getCacheKey($query, $val);
+                }
+            }
         }
 
         // 更新数据
@@ -1208,8 +1208,12 @@ abstract class Connection
             $key = $options['cache']['key'];
         } elseif (!is_null($data) && true !== $data && !is_array($data)) {
             $key = $this->getCacheKey($query, $data);
-        } elseif (is_string($pk) && isset($options['where']['AND'][$pk])) {
-            $key = $this->getCacheKey($query, $options['where']['AND'][$pk]);
+        } elseif (is_string($pk) && isset($options['where']['AND'])) {
+            foreach ($options['where']['AND'] as $val) {
+                if (is_array($val) && $val[0] == $pk) {
+                    $key = $this->getCacheKey($query, $val);
+                }
+            }
         }
 
         if (true !== $data && empty($options['where'])) {
@@ -1269,7 +1273,7 @@ abstract class Connection
 
         if (empty($options['fetch_sql']) && !empty($options['cache'])) {
             $cache  = $options['cache'];
-            $result = $this->getCacheData($query, $cache, $field, $key);
+            $result = $this->getCacheData($query, $cache, null, $key);
 
             if (false !== $result) {
                 return $result;
@@ -1621,6 +1625,42 @@ abstract class Connection
             throw $e;
         }
     }
+
+    /**
+     * 启动XA事务
+     * @access public
+     * @param  string $xid XA事务id
+     * @return void
+     */
+    public function startTransXa($xid)
+    {}
+
+    /**
+     * 预编译XA事务
+     * @access public
+     * @param  string $xid XA事务id
+     * @return void
+     */
+    public function prepareXa($xid)
+    {}
+
+    /**
+     * 提交XA事务
+     * @access public
+     * @param  string $xid XA事务id
+     * @return void
+     */
+    public function commitXa($xid)
+    {}
+
+    /**
+     * 回滚XA事务
+     * @access public
+     * @param  string $xid XA事务id
+     * @return void
+     */
+    public function rollbackXa($xid)
+    {}
 
     /**
      * 启动事务

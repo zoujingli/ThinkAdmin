@@ -177,6 +177,11 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             $this->connection = array_merge($config->pull('database'), $this->connection);
         }
 
+        if ($this->observerClass) {
+            // 注册模型观察者
+            static::observe($this->observerClass);
+        }
+
         // 执行初始化操作
         $this->initialize();
     }
@@ -595,11 +600,19 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         // 读取更新条件
         $where = $this->getWhere();
 
+        // 事件回调
+        if (false === $this->trigger('before_update')) {
+            return false;
+        }
+
         $result = $this->db(false)->where($where)->setInc($field, $step, $lazyTime);
 
         if (true !== $result) {
             $this->data[$field] += $step;
         }
+
+        // 更新回调
+        $this->trigger('after_update');
 
         return $result;
     }
@@ -618,11 +631,19 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         // 读取更新条件
         $where = $this->getWhere();
 
+        // 事件回调
+        if (false === $this->trigger('before_update')) {
+            return false;
+        }
+
         $result = $this->db(false)->where($where)->setDec($field, $step, $lazyTime);
 
         if (true !== $result) {
             $this->data[$field] -= $step;
         }
+
+        // 更新回调
+        $this->trigger('after_update');
 
         return $result;
     }

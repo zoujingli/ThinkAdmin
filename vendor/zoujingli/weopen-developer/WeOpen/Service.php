@@ -275,13 +275,14 @@ class Service
 
     /**
      * 创建指定授权公众号接口实例
-     * @param string $type 需要加载的接口实例名称
+     * @param string $name 需要加载的接口实例名称
      * @param string $authorizer_appid 授权公众号的appid
+     * @param string $type 加载SDK类型 WeChat|WeMini
      * @return \WeChat\Card|\WeChat\Custom|\WeChat\Media|\WeChat\Menu|\WeChat\Oauth|\WeChat\Pay|\WeChat\Product|\WeChat\Qrcode|\WeChat\Receive|\WeChat\Scan|\WeChat\Script|\WeChat\Shake|\WeChat\Tags|\WeChat\Template|\WeChat\User|\WeChat\Wifi
      */
-    public function instance($type, $authorizer_appid)
+    public function instance($name, $authorizer_appid, $type = 'WeChat')
     {
-        $className = 'WeChat\\' . ucfirst(strtolower($type));
+        $className = "{$type}\\" . ucfirst(strtolower($name));
         return new $className($this->getConfig($authorizer_appid));
     }
 

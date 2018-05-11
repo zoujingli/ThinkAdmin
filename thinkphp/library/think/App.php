@@ -20,7 +20,7 @@ use think\route\Dispatch;
  */
 class App implements \ArrayAccess
 {
-    const VERSION = '5.1.12';
+    const VERSION = '5.1.13';
 
     /**
      * 当前模块路径
@@ -128,6 +128,12 @@ class App implements \ArrayAccess
     {
         $this->appPath   = $appPath ? realpath($appPath) . DIRECTORY_SEPARATOR : $this->getAppPath();
         $this->container = Container::getInstance();
+
+        $this->thinkPath   = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
+        $this->rootPath    = dirname($this->appPath) . DIRECTORY_SEPARATOR;
+        $this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
+        $this->routePath   = $this->rootPath . 'route' . DIRECTORY_SEPARATOR;
+        $this->configPath  = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -161,13 +167,8 @@ class App implements \ArrayAccess
      */
     public function initialize()
     {
-        $this->beginTime   = microtime(true);
-        $this->beginMem    = memory_get_usage();
-        $this->thinkPath   = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
-        $this->rootPath    = dirname($this->appPath) . DIRECTORY_SEPARATOR;
-        $this->runtimePath = $this->rootPath . 'runtime' . DIRECTORY_SEPARATOR;
-        $this->routePath   = $this->rootPath . 'route' . DIRECTORY_SEPARATOR;
-        $this->configPath  = $this->rootPath . 'config' . DIRECTORY_SEPARATOR;
+        $this->beginTime = microtime(true);
+        $this->beginMem  = memory_get_usage();
 
         // 设置路径环境变量
         $this->env->set([
@@ -303,6 +304,8 @@ class App implements \ArrayAccess
                 }
             }
         }
+
+        $this->setModulePath($path);
 
         $this->request->filter($this->config('app.default_filter'));
     }
