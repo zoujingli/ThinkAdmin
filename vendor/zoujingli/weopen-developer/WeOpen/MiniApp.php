@@ -40,4 +40,33 @@ class MiniApp extends Service
         return json_decode(Tools::get($url), true);
     }
 
+    /**
+     * 1.注册流程及接口说明
+     * @param string $authorizerAppid 公众号的appid
+     * @param integer $copyWxVerify 是否复用公众号的资质进行微信认证(1:申请复用资质进行微信 认证 0:不申请)
+     * @param string $redirectUri 用户扫码授权后，MP 扫码页面将跳转到该地址(注:1.链接需 urlencode 2.Host 需和第三方平台在微信开放平台上面填写的登 录授权的发起页域名一致)
+     * @return string
+     */
+    public function getCopyRegisterMiniUrl($authorizerAppid, $copyWxVerify, $redirectUri)
+    {
+        $redirectUri = urlencode($redirectUri);
+        $componentAppid = $this->config->get('component_appid');
+        return "https://mp.weixin.qq.com/cgi-bin/fastregisterauth?appid={$authorizerAppid}&component_appid={$componentAppid}&copy_wx_verify={$copyWxVerify}&redirect_uri={$redirectUri}";
+    }
+
+
+    /**
+     * 2.7.1 从第三方平台跳转至微信公众平台授权注册页面
+     * @param string $authorizerAppid 公众号的 appid
+     * @param string $redirectUri 新管理员信息填写完成点击提交后，将跳转到该地址
+     * @return string
+     */
+    public function getComponentreBindAdmin($authorizerAppid, $redirectUri)
+    {
+        $redirectUri = urlencode($redirectUri);
+        $componentAppid = $this->config->get('component_appid');
+        return "https://mp.weixin.qq.com/wxopen/componentrebindadmin?appid={$authorizerAppid}&component_appid={$componentAppid}&redirect_uri={$redirectUri}";
+    }
+
+
 }

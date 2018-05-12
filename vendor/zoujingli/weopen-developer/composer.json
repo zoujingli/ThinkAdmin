@@ -25,6 +25,7 @@
   "autoload": {
     "psr-4": {
       "WeOpen\\": "WeOpen",
+	  "WeChat\\": "WeChat",
       "WeMini\\": "WeMini"
     }
   }

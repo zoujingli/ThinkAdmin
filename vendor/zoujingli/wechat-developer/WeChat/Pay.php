@@ -17,6 +17,7 @@ namespace WeChat;
 use WeChat\Contracts\DataArray;
 use WeChat\Contracts\Tools;
 use WeChat\Exceptions\InvalidArgumentException;
+use WeChat\Exceptions\InvalidDecryptException;
 use WeChat\Exceptions\InvalidResponseException;
 
 /**
@@ -228,10 +229,14 @@ class Pay
      * 企业付款到零钱
      * @param array $options
      * @return array
-     * @throws InvalidResponseException
+     * @throws Exceptions\InvalidResponseException
      */
     public function createTransfers(array $options)
     {
+        $this->params->set('mchid', $this->config->get('mch_id'));
+        $this->params->set('mch_appid', $this->config->get('appid'));
+        $this->params->offsetUnset('appid');
+        $this->params->offsetUnset('mch_id');
         $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
         return $this->callPostApi($url, $options, true, 'MD5', false);
     }
@@ -246,6 +251,98 @@ class Pay
     {
         $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/gettransferinfo';
         return $this->callPostApi($url, ['partner_trade_no' => $partner_trade_no], true, 'MD5', false);
+    }
+
+    /**
+     * 企业付款到银行卡
+     * @param array $options
+     * @return array
+     * @throws Exceptions\LocalCacheException
+     * @throws Exceptions\InvalidDecryptException
+     * @throws Exceptions\InvalidResponseException
+     */
+    public function createTransfersBank(array $options)
+    {
+        if (!isset($options['partner_trade_no'])) {
+            throw new InvalidArgumentException('Missing Options -- [partner_trade_no]');
+        }
+        if (!isset($options['enc_bank_no'])) {
+            throw new InvalidArgumentException('Missing Options -- [enc_bank_no]');
+        }
+        if (!isset($options['enc_true_name'])) {
+            throw new InvalidArgumentException('Missing Options -- [enc_true_name]');
+        }
+        if (!isset($options['bank_code'])) {
+            throw new InvalidArgumentException('Missing Options -- [bank_code]');
+        }
+        if (!isset($options['amount'])) {
+            throw new InvalidArgumentException('Missing Options -- [amount]');
+        }
+        isset($options['desc']) && $this->config['desc'] = $options['desc'];
+        $this->params->offsetUnset('appid');
+        return $this->callPostApi('https://api.mch.weixin.qq.com/mmpaysptrans/pay_bank', [
+            'amount'           => $options['amount'],
+            'bank_code'        => $options['bank_code'],
+            'partner_trade_no' => $options['partner_trade_no'],
+            'enc_bank_no'      => $this->rsaEncode($options['enc_bank_no']),
+            'enc_true_name'    => $this->rsaEncode($options['enc_true_name']),
+        ], true, 'MD5', false);
+    }
+
+    /**
+     * 商户企业付款到银行卡操作进行结果查询
+     * @param string $partner_trade_no 商户订单号，需保持唯一
+     * @return array
+     * @throws InvalidResponseException
+     */
+    public function queryTransFresBank($partner_trade_no)
+    {
+        $url = 'https://api.mch.weixin.qq.com/mmpaysptrans/query_bank';
+        return $this->callPostApi($url, ['partner_trade_no' => $partner_trade_no], true, 'MD5', false);
+    }
+
+    /**
+     * RSA加密处理
+     * @param string $string
+     * @param string $encrypted
+     * @return string
+     * @throws Exceptions\LocalCacheException
+     * @throws Exceptions\InvalidDecryptException
+     * @throws Exceptions\InvalidResponseException
+     */
+    private function rsaEncode($string, $encrypted = '')
+    {
+        $search = ['-----BEGIN RSA PUBLIC KEY-----', '-----END RSA PUBLIC KEY-----', "\n", "\r"];
+        $pkc1 = str_replace($search, '', $this->getRsaContent());
+        $publicKey = '-----BEGIN PUBLIC KEY-----' . PHP_EOL .
+            wordwrap('MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A' . $pkc1, 64, PHP_EOL, true) . PHP_EOL .
+            '-----END PUBLIC KEY-----';
+        if (!openssl_public_encrypt("{$string}", $encrypted, $publicKey, OPENSSL_PKCS1_OAEP_PADDING)) {
+            throw new InvalidDecryptException('Rsa Encrypt Error.');
+        }
+        return base64_encode($encrypted);
+    }
+
+    /**
+     * 获取签名文件内容
+     * @return string
+     * @throws Exceptions\LocalCacheException
+     * @throws Exceptions\InvalidResponseException
+     */
+    private function getRsaContent()
+    {
+        $cacheKey = "pub_ras_key_" . $this->config->get('mch_id');
+        if (($pub_key = Tools::getCache($cacheKey))) {
+            return $pub_key;
+        }
+        $data = $this->callPostApi('https://fraud.mch.weixin.qq.com/risk/getpublickey', [], true, 'MD5');
+        if (!isset($data['return_code']) || $data['return_code'] !== 'SUCCESS' || $data['result_code'] !== 'SUCCESS') {
+            $error = 'ResultError:' . $data['return_msg'];
+            $error .= isset($data['err_code_des']) ? ' - ' . $data['err_code_des'] : '';
+            throw new InvalidResponseException($error, 20000, $data);
+        }
+        Tools::setCache($cacheKey, $data['pub_key'], 600);
+        return $data['pub_key'];
     }
 
     /**
@@ -301,11 +398,10 @@ class Pay
         if ($isCert) {
             $option['ssl_cer'] = $this->config->get('ssl_cer');
             $option['ssl_key'] = $this->config->get('ssl_key');
-            foreach (['ssl_cer', 'ssl_key'] as $key) {
-                if (empty($option[$key]) || !file_exists($option[$key])) {
-                    throw new InvalidArgumentException("Missing Config -- [{$key}]", '0');
-                }
-            }
+            if (empty($option['ssl_cer']) || !file_exists($option['ssl_cer']))
+                throw new InvalidArgumentException("Missing Config -- ssl_cer", '0');
+            if (empty($option['ssl_key']) || !file_exists($option['ssl_key']))
+                throw new InvalidArgumentException("Missing Config -- ssl_key", '0');
         }
         $params = $this->params->merge($data);
         $needSignType && ($params['sign_type'] = strtoupper($signType));

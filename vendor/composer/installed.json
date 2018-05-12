@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.5",
-        "version_normalized": "1.1.5.0",
+        "version": "v1.1.6",
+        "version_normalized": "1.1.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "4598856a9e19c81f76f7f7076c80acff8dc67644"
+            "reference": "095471bdc61e3389135f69b1849069c19d439f22"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/4598856a9e19c81f76f7f7076c80acff8dc67644.zip",
-            "reference": "4598856a9e19c81f76f7f7076c80acff8dc67644",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/095471bdc61e3389135f69b1849069c19d439f22.zip",
+            "reference": "095471bdc61e3389135f69b1849069c19d439f22",
             "shasum": ""
         },
         "require": {
@@ -98,7 +98,7 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-05-10T10:34:26+00:00",
+        "time": "2018-05-11T09:54:48+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -133,12 +133,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "602ef0a4742744dd19f52e610e3aa873942a188f"
+            "reference": "fac7e7596edecd2abb7aad2168db3f253566cbf8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/602ef0a4742744dd19f52e610e3aa873942a188f.zip",
-            "reference": "602ef0a4742744dd19f52e610e3aa873942a188f",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/fac7e7596edecd2abb7aad2168db3f253566cbf8.zip",
+            "reference": "fac7e7596edecd2abb7aad2168db3f253566cbf8",
             "shasum": ""
         },
         "require": {
@@ -147,12 +147,13 @@
             "php": ">=5.4",
             "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2018-05-11T03:49:36+00:00",
+        "time": "2018-05-12T07:54:53+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "WeOpen\\": "WeOpen",
+                "WeChat\\": "WeChat",
                 "WeMini\\": "WeMini"
             }
         },
@@ -271,27 +272,27 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.9",
-        "version_normalized": "3.4.9.0",
+        "version": "v3.3.6",
+        "version_normalized": "3.3.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e"
+            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/f3109a6aedd20e35c3a33190e932c2b063b7b50e.zip",
-            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e",
+            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/ff48982d295bcac1fd861f934f041ebc73ae40f0.zip",
+            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0",
             "shasum": ""
         },
         "require": {
-            "php": "^5.5.9|>=7.0.8"
+            "php": ">=5.5.9"
         },
-        "time": "2018-01-11T07:56:07+00:00",
+        "time": "2017-04-12T14:14:56+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.4-dev"
+                "dev-master": "3.3-dev"
             }
         },
         "installation-source": "dist",
