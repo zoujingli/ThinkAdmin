@@ -33,9 +33,21 @@
                 <img class="notselect" data-tips-image src="{:url('@wechat/api.tools/oauth_qrc')}" style="width:80px;margin-left:-4px">
                 <p class="text-center" style="margin-left:-10px">网页授权</p>
             </div>
-            <div class="pull-left padding-left-0">
+            <div class="pull-left padding-left-0 padding-right-15">
                 <img class="notselect" data-tips-image src="{:url('@wechat/api.tools/jssdk_qrc')}" style="width:80px;">
                 <p class="text-center">JSSDK签名</p>
+            </div>
+            <div class="pull-left padding-left-0 padding-right-15">
+                <img class="notselect" data-tips-image src="{:url('@wx-demo-jsapiqrc')}" style="width:80px;">
+                <p class="text-center">JSAPI支付</p>
+            </div>
+            <div class="pull-left padding-left-0 padding-right-15">
+                <img class="notselect" data-tips-image src="{:url('@wx-demo-scanoneqrc')}" style="width:80px;">
+                <p class="text-center">扫码支付①</p>
+            </div>
+            <div class="pull-left padding-left-0">
+                <img class="notselect" data-tips-image src="{:url('@wx-demo-scanqrc')}" style="width:80px;">
+                <p class="text-center">扫码支付②</p>
             </div>
         </div>
     </div>
@@ -92,7 +104,7 @@
                 </div>
                 <div class="pull-left padding-left-10">
                     <p class="margin-bottom-2 nowrap">微信昵称：{$wechat.nick_name}</p>
-                    <p class="margin-bottom-2 nowrap">微信类型：{$wechat.service_type_info == 2 ? '服务号' : '订阅号'} /
+                    <p class="margin-bottom-2 nowrap">微信类型：{if $wechat.service_type eq 2}服务号{elseif $wechat.service_type eq 3}小程序{else}订阅号{/if} /
                         {$wechat.verify_type_info == -1 ? '未认证' : '<span class="color-green">已认证</span>'}</p>
                     <p class="margin-bottom-2 nowrap">注册公司：{$wechat.principal_name}</p>
                     <p class=" nowrap">授权绑定：{$wechat.create_at|format_datetime}</p>

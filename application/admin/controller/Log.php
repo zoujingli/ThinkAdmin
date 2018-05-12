@@ -76,30 +76,6 @@ class Log extends BasicAdmin
     }
 
     /**
-     * 短信发送记录
-     * @return array|string
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function sms()
-    {
-        // 日志数据库对象
-        $this->title = '短信发送日志';
-        $get = $this->request->get();
-        $db = Db::name('MemberSmsHistory');
-        foreach (['phone', 'content', 'result'] as $key) {
-            (isset($get[$key]) && $get[$key] !== '') && $db->whereLike($key, "%{$get[$key]}%");
-        }
-        if (isset($get['date']) && $get['date'] !== '') {
-            list($start, $end) = explode(' - ', $get['date']);
-            $db->whereBetween('create_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
-        }
-        return parent::_list($db->order('id desc'));
-    }
-
-    /**
      * 日志删除操作
      * @throws \think\Exception
      * @throws \think\exception\PDOException

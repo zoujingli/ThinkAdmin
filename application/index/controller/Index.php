@@ -27,5 +27,4 @@ class Index extends Controller
     {
         $this->redirect('@admin/login');
     }
-
 }

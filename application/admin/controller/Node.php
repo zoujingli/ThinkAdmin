@@ -43,7 +43,15 @@ class Node extends BasicAdmin
     public function index()
     {
         $nodes = ToolsService::arr2table(NodeService::get(), 'node', 'pnode');
-        return $this->fetch('', ['title' => '系统节点管理', 'nodes' => $nodes]);
+        $groups = [];
+        foreach ($nodes as $node) {
+            $pnode = explode('/', $node['node'])[0];
+            if ($node['node'] === $pnode) {
+                $groups[$pnode]['node'] = $node;
+            }
+            $groups[$pnode]['list'][] = $node;
+        }
+        return $this->fetch('', ['title' => '系统节点管理', 'nodes' => $nodes, 'groups' => $groups]);
     }
 
     /**

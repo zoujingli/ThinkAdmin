@@ -150,8 +150,7 @@ class Menu extends BasicAdmin
                 } else {
                     $row['url'] = url($row['content'], '', true, true);
                 }
-            } elseif
-            ($row['type'] === 'event') {
+            } elseif ($row['type'] === 'event') {
                 if (isset($this->menuType[$row['content']])) {
                     list($row['type'], $row['key']) = [$row['content'], "wechat_menu#id#{$row['id']}"];
                 }

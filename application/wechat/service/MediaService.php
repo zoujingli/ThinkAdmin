@@ -64,7 +64,7 @@ class MediaService
     public static function uploadImage($local_url)
     {
         $map = ['md5' => md5($local_url)];
-        if (!($media_url = Db::name('WechatNewsImage')->where($map)->value('media_url'))) {
+        if (($media_url = Db::name('WechatNewsImage')->where($map)->value('media_url'))) {
             return $media_url;
         }
         $info = WechatService::media()->uploadImg(self::getServerPath($local_url));
@@ -72,7 +72,7 @@ class MediaService
             WechatService::wechat()->rmFile($local_url);
         }
         $data = ['local_url' => $local_url, 'media_url' => $info['url'], 'md5' => $map['md5']];
-        DataService::save('WechatNewsImage', $data, 'md5', ['type' => 'image']);
+        DataService::save('WechatNewsImage', $data, 'md5');
         return $info['url'];
     }
 

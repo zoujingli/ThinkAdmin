@@ -2,10 +2,11 @@
 
 {block name="button"}
 <!--{if auth("$classuri/add")}-->
-<button data-modal='{:url("$classuri/add")}' data-title="添加用户" class='layui-btn layui-btn-sm'>添加用户</button>
+<button data-modal='{:url("$classuri/add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
 <!--{/if}-->
+
 <!--{if auth("$classuri/del")}-->
-<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-danger'>删除用户</button>
+<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>删除用户</button>
 <!--{/if}-->
 {/block}
 
@@ -87,9 +88,7 @@
             <td class='text-left nowrap'>
                 {$vo.mail|default="<span class='color-desc'>还没有设置邮箱</span>"|raw}
             </td>
-            <td class='text-left nowrap'>
-                {$vo.login_num|default="<span class='color-desc'>从未登录</span>"|raw}
-            </td>
+            <td class='text-left nowrap'>{$vo.login_num|default=0}</td>
             <td class='text-left nowrap'>
                 {$vo.login_at|format_datetime|default="<span class='color-desc'>从未登录</span>"|raw}
             </td>

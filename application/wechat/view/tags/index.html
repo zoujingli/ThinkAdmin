@@ -3,15 +3,15 @@
 {block name="button"}
 
 <!--{if auth("$classuri/add")}-->
-<button data-modal="{:url('add')}" data-title="添加标签" class='layui-btn layui-btn-sm'> 添加标签</button>
+<button data-modal="{:url('add')}" data-title="添加标签" class='layui-btn layui-btn-sm layui-btn-primary'> 添加标签</button>
 <!--{/if}-->
 
 <!--{if auth("$classuri/del")}-->
-<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-danger'> 删除标签</button>
+<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'> 删除标签</button>
 <!--{/if}-->
 
 <!--{if auth("$classuri/sync")}-->
-<button data-load="{:url('sync')}" class='layui-btn layui-btn-sm'> 远程获取标签</button>
+<button data-load="{:url('sync')}" class='layui-btn layui-btn-sm layui-btn-primary'> 远程获取标签</button>
 <!--{/if}-->
 
 {/block}

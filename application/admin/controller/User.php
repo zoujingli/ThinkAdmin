@@ -133,6 +133,8 @@ class User extends BasicAdmin
         if ($this->request->isPost()) {
             if (isset($data['authorize']) && is_array($data['authorize'])) {
                 $data['authorize'] = join(',', $data['authorize']);
+            } else {
+                $data['authorize'] = '';
             }
             if (isset($data['id'])) {
                 unset($data['username']);

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit4621279012993c03ca2d0ad074d7ad05
+class ComposerStaticInit27146d5859a40193f6e6a960dc07477e
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -248,15 +248,21 @@ class ComposerStaticInit4621279012993c03ca2d0ad074d7ad05
         'app\\admin\\controller\\Node' => __DIR__ . '/../..' . '/application/admin/controller/Node.php',
         'app\\admin\\controller\\Plugs' => __DIR__ . '/../..' . '/application/admin/controller/Plugs.php',
         'app\\admin\\controller\\User' => __DIR__ . '/../..' . '/application/admin/controller/User.php',
-        'app\\goods\\controller\\Brand' => __DIR__ . '/../..' . '/application/goods/controller/Brand.php',
-        'app\\goods\\controller\\Cate' => __DIR__ . '/../..' . '/application/goods/controller/Cate.php',
-        'app\\goods\\controller\\Product' => __DIR__ . '/../..' . '/application/goods/controller/Product.php',
-        'app\\goods\\controller\\Spec' => __DIR__ . '/../..' . '/application/goods/controller/Spec.php',
-        'app\\goods\\service\\ProductService' => __DIR__ . '/../..' . '/application/goods/service/ProductService.php',
         'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/application/index/controller/Index.php',
-        'app\\wechat\\controller\\Block' => __DIR__ . '/../..' . '/application/wechat/controller/Block.php',
+        'app\\store\\controller\\Express' => __DIR__ . '/../..' . '/application/store/controller/Express.php',
+        'app\\store\\controller\\Goods' => __DIR__ . '/../..' . '/application/store/controller/Goods.php',
+        'app\\store\\controller\\GoodsBrand' => __DIR__ . '/../..' . '/application/store/controller/GoodsBrand.php',
+        'app\\store\\controller\\GoodsCate' => __DIR__ . '/../..' . '/application/store/controller/GoodsCate.php',
+        'app\\store\\controller\\GoodsSpec' => __DIR__ . '/../..' . '/application/store/controller/GoodsSpec.php',
+        'app\\store\\controller\\Order' => __DIR__ . '/../..' . '/application/store/controller/Order.php',
+        'app\\store\\controller\\wechat\\Demo' => __DIR__ . '/../..' . '/application/store/controller/wechat/Demo.php',
+        'app\\store\\controller\\wechat\\Index' => __DIR__ . '/../..' . '/application/store/controller/wechat/Index.php',
+        'app\\store\\service\\GoodsService' => __DIR__ . '/../..' . '/application/store/service/GoodsService.php',
+        'app\\store\\service\\MemberService' => __DIR__ . '/../..' . '/application/store/service/MemberService.php',
+        'app\\store\\service\\OrderService' => __DIR__ . '/../..' . '/application/store/service/OrderService.php',
         'app\\wechat\\controller\\Config' => __DIR__ . '/../..' . '/application/wechat/controller/Config.php',
         'app\\wechat\\controller\\Fans' => __DIR__ . '/../..' . '/application/wechat/controller/Fans.php',
+        'app\\wechat\\controller\\FansBlock' => __DIR__ . '/../..' . '/application/wechat/controller/FansBlock.php',
         'app\\wechat\\controller\\Keys' => __DIR__ . '/../..' . '/application/wechat/controller/Keys.php',
         'app\\wechat\\controller\\Menu' => __DIR__ . '/../..' . '/application/wechat/controller/Menu.php',
         'app\\wechat\\controller\\News' => __DIR__ . '/../..' . '/application/wechat/controller/News.php',
@@ -279,9 +285,9 @@ class ComposerStaticInit4621279012993c03ca2d0ad074d7ad05
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit4621279012993c03ca2d0ad074d7ad05::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit4621279012993c03ca2d0ad074d7ad05::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit4621279012993c03ca2d0ad074d7ad05::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit27146d5859a40193f6e6a960dc07477e::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit27146d5859a40193f6e6a960dc07477e::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit27146d5859a40193f6e6a960dc07477e::$classMap;
 
         }, null, ClassLoader::class);
     }

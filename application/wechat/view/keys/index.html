@@ -3,11 +3,11 @@
 {block name="button"}
 
 <!--{if auth("$classuri/add")}-->
-<button data-open="{:url('add')}" class='layui-btn layui-btn-sm'>添加规则</button>
+<button data-open="{:url('add')}" class='layui-btn layui-btn-sm layui-btn-primary'>添加规则</button>
 <!--{/if}-->
 
 <!--{if auth("$classuri/del")}-->
-<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-danger'>删除规则</button>
+<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>删除规则</button>
 <!--{/if}-->
 
 {/block}

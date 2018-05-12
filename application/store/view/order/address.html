@@ -1,0 +1,60 @@
+<form class="layui-form layui-box" style='padding:25px 30px 20px 0' action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">收货人姓名</label>
+        <div class="layui-input-block">
+            <input class="layui-input" required placeholder="请输入收货人姓名" title="请输入收货人姓名" name="username" value="{$username}">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">收货人手机</label>
+        <div class="layui-input-block">
+            <input class="layui-input" pattern="^1\d{10}$" required placeholder="请输入收货人手机" title="请输入收货人手机" name="phone" value="{$phone}">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label label-required">收货省市区</label>
+        <div class="layui-input-block">
+            <div class="layui-col-xs4 padding-right-5">
+                <select name="form_express_province" class="layui-select block full-width" lay-ignore></select>
+            </div>
+            <div class="layui-col-xs4 padding-right-5">
+                <select name="form_express_city" class="layui-select block full-width" lay-ignore></select>
+            </div>
+            <div class="layui-col-xs4">
+                <select name="form_express_area" class="layui-select block full-width" lay-ignore></select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">详细地址</label>
+        <div class="layui-input-block">
+            <textarea required placeholder="请输入详细地址" title="请输入详细地址" name="address" class="layui-textarea">{$address|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea required placeholder="请输入备注" title="请输入备注" name="desc" class="layui-textarea">{$desc|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($order_no)}<input type='hidden' value='{$order_no}' name='order_no'>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+    <script>
+        require(['pcasunzips'], function () {
+            new PCAS('form_express_province', 'form_express_city', 'form_express_area', '{$province}', '{$city}', '{$area}');
+        });
+    </script>
+</form>

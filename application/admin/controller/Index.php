@@ -65,7 +65,7 @@ class Index extends BasicAdmin
                 continue;
             } elseif ($menu['url'] !== '#') {
                 $node = join('/', array_slice(explode('/', preg_replace('/[\W]/', '/', $menu['url'])), 0, 3));
-                $menu['url'] = url($menu['url']);
+                $menu['url'] = url($menu['url']) . (empty($menu['params']) ? '' : "?{$menu['params']}");
                 if (isset($nodes[$node]) && $nodes[$node]['is_login'] && empty($isLogin)) {
                     unset($menus[$key]);
                 } elseif (isset($nodes[$node]) && $nodes[$node]['is_auth'] && $isLogin && !auth($node)) {

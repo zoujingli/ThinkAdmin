@@ -75,12 +75,13 @@ class WechatService
                 }
                 throw new Exception("Class '{$class}' not found");
             case 'thr':
-            default:
                 list($appid, $appkey) = [sysconf('wechat_thr_appid'), sysconf('wechat_thr_appkey')];
                 $token = strtolower("{$name}-{$appid}-{$appkey}");
                 $location = config('wechat.service_url') . "/wechat/api.client/soap/{$token}.html";
                 $params = ['uri' => strtolower($name), 'location' => $location, 'trace' => true];
                 return new SoapService(null, $params);
+            default:
+                throw new Exception('请在后台配置微信对接授权模式！');
         }
     }
 
@@ -88,19 +89,21 @@ class WechatService
      * 获取微信网页JSSDK
      * @param null|string $url JS签名地址
      * @return array
-     * @throws Exception
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
     public static function webJsSDK($url = null)
     {
+        $signUrl = is_null($url) ? app('request')->url(true) : $url;
         switch (strtolower(sysconf('wechat_type'))) {
             case 'api':
-                return WechatService::script()->getJsSign(is_null($url) ? app('request')->url(true) : $url);
+                return WechatService::script()->getJsSign($signUrl);
             case 'thr':
+                return WechatService::wechat()->jsSign($signUrl);
             default:
-                return WechatService::wechat()->jsSign(is_null($url) ? app('request')->url(true) : $url);
+                throw new Exception('请在后台配置微信对接授权模式！');
         }
     }
 
@@ -135,15 +138,14 @@ class WechatService
                 if (isset($token['openid'])) {
                     session("{$appid}_openid", $openid = $token['openid']);
                     if (empty($fullMode) && request()->get('rcode')) {
-                        redirect(decode(request()->get('rcode')))->send();
+                        redirect(decode(request()->get('rcode')), [], 301)->send();
                     }
                     session("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
                     empty($fansinfo) || FansService::set($fansinfo);
                 }
-                redirect(decode(request()->get('rcode')))->send();
+                redirect(decode(request()->get('rcode')), [], 301)->send();
                 break;
             case 'thr':
-            default:
                 $service = self::wechat();
                 $result = $service->oauth(session_id(), $url, $fullMode);
                 session("{$appid}_openid", $openid = $result['openid']);
@@ -156,6 +158,9 @@ class WechatService
                     redirect($result['url'], [], 301)->send();
                 }
                 exit("window.location.href='{$result['url']}'");
+            default:
+                throw new Exception('请在后台配置微信对接授权模式！');
+
         }
     }
 
@@ -173,7 +178,7 @@ class WechatService
             case 'thr':
                 return sysconf('wechat_thr_appid');
             default:
-                return '';
+                throw new Exception('请在后台配置微信对接授权模式！');
         }
     }
 

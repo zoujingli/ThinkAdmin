@@ -50,6 +50,7 @@ class SoapService
      * @param string $name SOAP调用方法名
      * @param array|string $arguments SOAP调用参数
      * @return array|string|bool
+     * @throws \think\Exception
      */
     public function __call($name, $arguments)
     {
@@ -57,8 +58,8 @@ class SoapService
             return $this->soap->__soapCall($name, $arguments);
         } catch (\Exception $e) {
             Log::error("Soap Error. Call {$name} Method --- " . $e->getMessage());
+            throw new Exception($e->getMessage(), $e->getCode());
         }
-        return false;
     }
 
 }
