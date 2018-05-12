@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
+class ComposerStaticInit4621279012993c03ca2d0ad074d7ad05
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -24,6 +24,7 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
         'W' => 
         array (
             'WeOpen\\' => 7,
+            'WeMini\\' => 7,
             'WeChat\\' => 7,
         ),
         'S' => 
@@ -61,9 +62,15 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
         array (
             0 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen',
         ),
+        'WeMini\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini',
+            1 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini',
+        ),
         'WeChat\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat',
+            1 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeChat',
         ),
         'Symfony\\Component\\OptionsResolver\\' => 
         array (
@@ -174,18 +181,17 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
         'Qiniu\\Processing\\ImageUrlBuilder' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Processing/ImageUrlBuilder.php',
         'Qiniu\\Processing\\Operation' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Processing/Operation.php',
         'Qiniu\\Processing\\PersistentFop' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Processing/PersistentFop.php',
+        'Qiniu\\Rtc\\AppClient' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Rtc/AppClient.php',
         'Qiniu\\Storage\\BucketManager' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/BucketManager.php',
         'Qiniu\\Storage\\FormUploader' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/FormUploader.php',
         'Qiniu\\Storage\\ResumeUploader' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/ResumeUploader.php',
         'Qiniu\\Storage\\UploadManager' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/UploadManager.php',
         'Qiniu\\Zone' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Zone.php',
-        'Symfony\\Component\\OptionsResolver\\Debug\\OptionsResolverIntrospector' => __DIR__ . '/..' . '/symfony/options-resolver/Debug/OptionsResolverIntrospector.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\AccessException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/AccessException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/ExceptionInterface.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidArgumentException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\InvalidOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidOptionsException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\MissingOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/MissingOptionsException.php',
-        'Symfony\\Component\\OptionsResolver\\Exception\\NoConfigurationException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoConfigurationException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\NoSuchOptionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoSuchOptionException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\OptionDefinitionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/OptionDefinitionException.php',
         'Symfony\\Component\\OptionsResolver\\Exception\\UndefinedOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/UndefinedOptionsException.php',
@@ -205,6 +211,7 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
         'WeChat\\Limit' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Limit.php',
         'WeChat\\Media' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Media.php',
         'WeChat\\Menu' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Menu.php',
+        'WeChat\\Mini' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeChat/Mini.php',
         'WeChat\\Oauth' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Oauth.php',
         'WeChat\\Pay' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Pay.php',
         'WeChat\\Product' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Product.php',
@@ -217,6 +224,20 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
         'WeChat\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Template.php',
         'WeChat\\User' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/User.php',
         'WeChat\\Wifi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Wifi.php',
+        'WeMini\\Account' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Account.php',
+        'WeMini\\Basic' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Basic.php',
+        'WeMini\\Code' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Code.php',
+        'WeMini\\Crypt' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Crypt.php',
+        'WeMini\\Domain' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Domain.php',
+        'WeMini\\Plugs' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Plugs.php',
+        'WeMini\\Poi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Poi.php',
+        'WeMini\\Qrcode' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Qrcode.php',
+        'WeMini\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Template.php',
+        'WeMini\\Tester' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Tester.php',
+        'WeMini\\Total' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Total.php',
+        'WeMini\\User' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/User.php',
+        'WeOpen\\Login' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Login.php',
+        'WeOpen\\MiniApp' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/MiniApp.php',
         'WeOpen\\Service' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Service.php',
         'app\\admin\\controller\\Auth' => __DIR__ . '/../..' . '/application/admin/controller/Auth.php',
         'app\\admin\\controller\\Config' => __DIR__ . '/../..' . '/application/admin/controller/Config.php',
@@ -258,9 +279,9 @@ class ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit7f21c27a120d47e6491fd4a016f044cb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit4621279012993c03ca2d0ad074d7ad05::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit4621279012993c03ca2d0ad074d7ad05::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit4621279012993c03ca2d0ad074d7ad05::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -1,17 +1,17 @@
 [
     {
         "name": "topthink/think-installer",
-        "version": "v1.0.12",
-        "version_normalized": "1.0.12.0",
+        "version": "v2.0.0",
+        "version_normalized": "2.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-installer.git",
-            "reference": "1be326e68f63de4e95977ed50f46ae75f017556d"
+            "reference": "f5400a12c60e513911aef41fe443fa6920952675"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-installer/1be326e68f63de4e95977ed50f46ae75f017556d.zip",
-            "reference": "1be326e68f63de4e95977ed50f46ae75f017556d",
+            "url": "https://files.phpcomposer.com/files/top-think/think-installer/f5400a12c60e513911aef41fe443fa6920952675.zip",
+            "reference": "f5400a12c60e513911aef41fe443fa6920952675",
             "shasum": ""
         },
         "require": {
@@ -20,7 +20,7 @@
         "require-dev": {
             "composer/composer": "1.0.*@dev"
         },
-        "time": "2017-05-27T06:58:09+00:00",
+        "time": "2018-05-11T06:45:42+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "think\\composer\\Plugin"
@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.0.5",
-        "version_normalized": "1.0.5.0",
+        "version": "v1.1.6",
+        "version_normalized": "1.1.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "e05fe6bb24438d15259a6af4915bd0638dc3914a"
+            "reference": "095471bdc61e3389135f69b1849069c19d439f22"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/e05fe6bb24438d15259a6af4915bd0638dc3914a.zip",
-            "reference": "e05fe6bb24438d15259a6af4915bd0638dc3914a",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/095471bdc61e3389135f69b1849069c19d439f22.zip",
+            "reference": "095471bdc61e3389135f69b1849069c19d439f22",
             "shasum": ""
         },
         "require": {
@@ -98,12 +98,13 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-04-09T11:07:00+00:00",
+        "time": "2018-05-11T09:54:48+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "WeChat\\": "WeChat"
+                "WeChat\\": "WeChat",
+                "WeMini\\": "WeMini"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -132,26 +133,28 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "8bb75bc08488a43964c00f027b21b93ed58e8d5a"
+            "reference": "fac7e7596edecd2abb7aad2168db3f253566cbf8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/8bb75bc08488a43964c00f027b21b93ed58e8d5a.zip",
-            "reference": "8bb75bc08488a43964c00f027b21b93ed58e8d5a",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/fac7e7596edecd2abb7aad2168db3f253566cbf8.zip",
+            "reference": "fac7e7596edecd2abb7aad2168db3f253566cbf8",
             "shasum": ""
         },
         "require": {
             "ext-curl": "*",
             "ext-openssl": "*",
             "php": ">=5.4",
-            "zoujingli/wechat-developer": "^1.0.0"
+            "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2018-03-21T05:06:35+00:00",
+        "time": "2018-05-12T07:54:53+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "WeOpen\\": "WeOpen"
+                "WeOpen\\": "WeOpen",
+                "WeChat\\": "WeChat",
+                "WeMini\\": "WeMini"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -175,22 +178,22 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.10",
-        "version_normalized": "5.1.10.0",
+        "version": "v5.1.13",
+        "version_normalized": "5.1.13.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "66b546f7cac130712d1e08fe2620105228f4bd8a"
+            "reference": "1cc81707dab128e360405aa4811a27b7a5403a78"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/66b546f7cac130712d1e08fe2620105228f4bd8a.zip",
-            "reference": "66b546f7cac130712d1e08fe2620105228f4bd8a",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/1cc81707dab128e360405aa4811a27b7a5403a78.zip",
+            "reference": "1cc81707dab128e360405aa4811a27b7a5403a78",
             "shasum": ""
         },
         "require": {
             "php": ">=5.6.0",
-            "topthink/think-installer": "~1.0"
+            "topthink/think-installer": "2.*"
         },
         "require-dev": {
             "johnkary/phpunit-speedtrap": "^1.0",
@@ -201,7 +204,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-04-16T05:33:00+00:00",
+        "time": "2018-05-11T07:50:00+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -269,27 +272,27 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.8",
-        "version_normalized": "3.4.8.0",
+        "version": "v3.3.6",
+        "version_normalized": "3.3.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e"
+            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/f3109a6aedd20e35c3a33190e932c2b063b7b50e.zip",
-            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e",
+            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/ff48982d295bcac1fd861f934f041ebc73ae40f0.zip",
+            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0",
             "shasum": ""
         },
         "require": {
-            "php": "^5.5.9|>=7.0.8"
+            "php": ">=5.5.9"
         },
-        "time": "2018-01-11T07:56:07+00:00",
+        "time": "2017-04-12T14:14:56+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.4-dev"
+                "dev-master": "3.3-dev"
             }
         },
         "installation-source": "dist",
@@ -430,17 +433,17 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.3",
-        "version_normalized": "7.2.3.0",
+        "version": "v7.2.5",
+        "version_normalized": "7.2.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "67852ba9cdd7f48e0e080961abebafee134fb329"
+            "reference": "0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/67852ba9cdd7f48e0e080961abebafee134fb329.zip",
-            "reference": "67852ba9cdd7f48e0e080961abebafee134fb329",
+            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0.zip",
+            "reference": "0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0",
             "shasum": ""
         },
         "require": {
@@ -450,7 +453,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2018-02-20T13:59:54+00:00",
+        "time": "2018-05-10T09:26:30+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

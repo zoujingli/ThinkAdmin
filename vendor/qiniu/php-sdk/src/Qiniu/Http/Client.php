@@ -13,6 +13,12 @@ final class Client
         return self::sendRequest($request);
     }
 
+    public static function delete($url, array $headers = array())
+    {
+        $request = new Request('DELETE', $url, $headers);
+        return self::sendRequest($request);
+    }
+
     public static function post($url, $body, array $headers = array())
     {
         $request = new Request('POST', $url, $headers, $body);
@@ -129,7 +135,7 @@ final class Client
             $headerLine = trim($line);
             $kv = explode(':', $headerLine);
             if (count($kv) > 1) {
-                $kv[0] = ucwords($kv[0], '-');
+                $kv[0] =self::ucwordsHyphen($kv[0]);
                 $headers[$kv[0]] = trim($kv[1]);
             }
         }
@@ -141,5 +147,10 @@ final class Client
         $find = array("\\", "\"");
         $replace = array("\\\\", "\\\"");
         return str_replace($find, $replace, $str);
+    }
+    
+    private static function ucwordsHyphen($str)
+    {
+        return str_replace('- ', '-', ucwords(str_replace('-', '- ', $str)));
     }
 }

@@ -59,9 +59,6 @@ class Menu extends BasicWeChat
      */
     public function create(array $data)
     {
-        try {
-        } catch (\Exception $e) {
-        }
         $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
         $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->httpPostForJson($url, $data);

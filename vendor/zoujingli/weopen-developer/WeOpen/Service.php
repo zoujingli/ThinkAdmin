@@ -269,19 +269,39 @@ class Service
         $component_appid = $this->config->get('component_appid');
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid={$authorizer_appid}&code={$_GET['code']}&grant_type=authorization_code&component_appid={$component_appid}&component_access_token={$component_access_token}";
-        $result = $this->httpGetForJson($url);
-        return $result !== false ? $result : false;
+        return $this->httpGetForJson($url);
+    }
+
+    /**
+     * 取当前所有已授权的帐号基本信息
+     * @param integer $count 拉取数量，最大为500
+     * @param integer $offset 偏移位置/起始位置
+     * @return array|bool
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function getAuthorizerList($count = 500, $offset = 0)
+    {
+        $component_appid = $this->config->get('component_appid');
+        $component_access_token = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_list?component_access_token={$component_access_token}";
+        return $this->httpPostForJson($url, [
+            'count'           => $count,
+            'offset'          => $offset,
+            'component_appid' => $component_appid,
+        ]);
     }
 
     /**
      * 创建指定授权公众号接口实例
-     * @param string $type 需要加载的接口实例名称
+     * @param string $name 需要加载的接口实例名称
      * @param string $authorizer_appid 授权公众号的appid
+     * @param string $type 加载SDK类型 WeChat|WeMini
      * @return \WeChat\Card|\WeChat\Custom|\WeChat\Media|\WeChat\Menu|\WeChat\Oauth|\WeChat\Pay|\WeChat\Product|\WeChat\Qrcode|\WeChat\Receive|\WeChat\Scan|\WeChat\Script|\WeChat\Shake|\WeChat\Tags|\WeChat\Template|\WeChat\User|\WeChat\Wifi
      */
-    public function instance($type, $authorizer_appid)
+    public function instance($name, $authorizer_appid, $type = 'WeChat')
     {
-        $className = 'WeChat\\' . ucfirst(strtolower($type));
+        $className = "{$type}\\" . ucfirst(strtolower($name));
         return new $className($this->getConfig($authorizer_appid));
     }
 

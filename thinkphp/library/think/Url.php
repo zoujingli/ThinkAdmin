@@ -105,7 +105,7 @@ class Url
             $url = $match[0];
 
             if (!empty($match[1])) {
-                $host = $this->app['config']->get('app_host') ?: $this->app['request']->host();
+                $host = $this->app['config']->get('app_host') ?: $this->app['request']->host(true);
                 if ($domain || $match[1] != $host) {
                     $domain = $match[1];
                 }
@@ -139,6 +139,25 @@ class Url
                 $url = $this->parseUrl($url);
             }
 
+            // 检测URL绑定
+            if (!$this->bindCheck) {
+                $bind = $this->app['route']->getBind($domain && is_string($domain) ? $domain : null);
+
+                if ($bind && 0 === strpos($url, $bind)) {
+                    $url = substr($url, strlen($bind) + 1);
+                } else {
+                    $binds = $this->app['route']->getBind(true);
+
+                    foreach ($binds as $key => $val) {
+                        if (is_string($val) && 0 === strpos($url, $val) && substr_count($val, '/') > 1) {
+                            $url    = substr($url, strlen($val) + 1);
+                            $domain = $key;
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (isset($info['query'])) {
                 // 解析地址里面参数 合并到vars
                 parse_str($info['query'], $params);
@@ -146,15 +165,6 @@ class Url
             }
         }
 
-        // 检测URL绑定
-        if (!$this->bindCheck) {
-            $bind = $this->app['route']->getBind($domain ?: null);
-
-            if ($bind && 0 === strpos($url, $bind)) {
-                $url = substr($url, strlen($bind) + 1);
-            }
-
-        }
         // 还原URL分隔符
         $depr = $this->app['config']->get('pathinfo_depr');
         $url  = str_replace('/', $depr, $url);
@@ -254,9 +264,8 @@ class Url
 
         $rootDomain = $this->app['request']->rootDomain();
         if (true === $domain) {
-
             // 自动判断域名
-            $domain = $this->app['config']->get('app_host') ?: $this->app['request']->host();
+            $domain = $this->app['config']->get('app_host') ?: $this->app['request']->host(true);
 
             $domains = $this->app['route']->getDomains();
 

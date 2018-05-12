@@ -122,7 +122,7 @@ class Route
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->host    = $this->request->host();
+        $this->host    = $this->request->host(true);
 
         $this->setDefaultDomain();
     }
@@ -313,6 +313,8 @@ class Route
     {
         if (is_null($domain)) {
             $domain = $this->domain;
+        } elseif (true === $domain) {
+            return $this->bind;
         } elseif (!strpos($domain, '.')) {
             $domain .= '.' . $this->request->rootDomain();
         }

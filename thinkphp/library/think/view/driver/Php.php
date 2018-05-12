@@ -31,6 +31,9 @@ class Php
         'view_depr'   => DIRECTORY_SEPARATOR,
     ];
 
+    protected $template;
+    protected $content;
+
     public function __construct($config = [])
     {
         $this->config = array_merge($this->config, (array) $config);
@@ -71,18 +74,14 @@ class Php
             throw new TemplateNotFoundException('template not exists:' . $template, $template);
         }
 
+        $this->template = $template;
+
         // 记录视图信息
         Container::get('app')
             ->log('[ VIEW ] ' . $template . ' [ ' . var_export(array_keys($data), true) . ' ]');
 
-        if (isset($data['template'])) {
-            $__template__ = $template;
-            extract($data, EXTR_OVERWRITE);
-            include $__template__;
-        } else {
-            extract($data, EXTR_OVERWRITE);
-            include $template;
-        }
+        extract($data, EXTR_OVERWRITE);
+        include $this->template;
     }
 
     /**
@@ -94,14 +93,10 @@ class Php
      */
     public function display($content, $data = [])
     {
-        if (isset($data['content'])) {
-            $__content__ = $content;
-            extract($data, EXTR_OVERWRITE);
-            eval('?>' . $__content__);
-        } else {
-            extract($data, EXTR_OVERWRITE);
-            eval('?>' . $content);
-        }
+        $this->content = $content;
+
+        extract($data, EXTR_OVERWRITE);
+        eval('?>' . $this->content);
     }
 
     /**
