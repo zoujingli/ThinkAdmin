@@ -133,12 +133,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "fac7e7596edecd2abb7aad2168db3f253566cbf8"
+            "reference": "a6739da337a0c0b6e2da8103b353a42044b4a0c7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/fac7e7596edecd2abb7aad2168db3f253566cbf8.zip",
-            "reference": "fac7e7596edecd2abb7aad2168db3f253566cbf8",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/a6739da337a0c0b6e2da8103b353a42044b4a0c7.zip",
+            "reference": "a6739da337a0c0b6e2da8103b353a42044b4a0c7",
             "shasum": ""
         },
         "require": {
@@ -147,7 +147,7 @@
             "php": ">=5.4",
             "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2018-05-12T07:54:53+00:00",
+        "time": "2018-05-12T14:10:32+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -272,27 +272,27 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.3.6",
-        "version_normalized": "3.3.6.0",
+        "version": "v3.4.9",
+        "version_normalized": "3.4.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0"
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/ff48982d295bcac1fd861f934f041ebc73ae40f0.zip",
-            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0",
+            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/f3109a6aedd20e35c3a33190e932c2b063b7b50e.zip",
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.5.9"
+            "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2017-04-12T14:14:56+00:00",
+        "time": "2018-01-11T07:56:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.3-dev"
+                "dev-master": "3.4-dev"
             }
         },
         "installation-source": "dist",
