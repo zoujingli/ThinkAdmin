@@ -89,7 +89,7 @@ class FileService
             case 'oss':
                 return self::getBaseUriOss() . $filename;
         }
-        return false;
+        throw new \think\Exception('未设置存储方式，无法获取到文件对应URL地址');
     }
 
     /**
@@ -129,11 +129,12 @@ class FileService
                 }
                 return $isClient ? 'http://upload-na0.qiniup.com' : 'http://up-na0.qiniup.com';
             case '华南':
-            default:
                 if ($isHttps) {
                     return $isClient ? 'https://upload-z2.qiniup.com' : 'https://up-z2.qiniup.com';
                 }
                 return $isClient ? 'http://upload-z2.qiniup.com' : 'http://up-z2.qiniup.com';
+            default:
+                throw new \think\Exception('未配置七牛云存储区域');
         }
     }
 
@@ -173,8 +174,10 @@ class FileService
                 return 'https://' . sysconf('storage_qiniu_domain') . '/';
             case 'http':
                 return 'http://' . sysconf('storage_qiniu_domain') . '/';
-            default:
+            case 'auto':
                 return '//' . sysconf('storage_qiniu_domain') . '/';
+            default:
+                throw new \think\Exception('未设置七牛云文件地址协议');
         }
     }
 
@@ -191,8 +194,10 @@ class FileService
                 return 'https://' . sysconf('storage_oss_domain') . '/';
             case 'http':
                 return 'http://' . sysconf('storage_oss_domain') . '/';
-            default:
+            case 'auto':
                 return '//' . sysconf('storage_oss_domain') . '/';
+            default:
+                throw new \think\Exception('未设置阿里云文件地址协议');
         }
     }
 
@@ -256,9 +261,9 @@ class FileService
             case 'oss':
                 $ossClient = new OssClient(sysconf('storage_oss_keyid'), sysconf('storage_oss_secret'), self::getBaseUriOss(), true);
                 return $ossClient->getObject(sysconf('storage_oss_bucket'), $filename);
+            default:
+                throw new \think\Exception('未配置读取文件的存储方法');
         }
-        Log::error("通过{$storage}读取文件{$filename}的不存在！");
-        return null;
     }
 
     /**
