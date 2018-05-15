@@ -48,14 +48,40 @@ class WechatService
 {
 
     /**
+     * 接口类型模式
+     * @var string
+     */
+    public static $type = 'WeChat';
+
+    /**
+     * 切换接口为服务号模式
+     */
+    public static function setWeChatState()
+    {
+        self::$type = 'WeChat';
+    }
+
+    /**
+     * 切换接口为小程序模式
+     */
+    public function setWeMiniState()
+    {
+        self::$type = 'WeMini';
+    }
+
+    /**
      * 获取微信实例ID
      * @param string $name 实例对象名称
+     * @param string $type 接口实例类型
      * @return SoapService|string
-     * @throws \think\Exception
+     * @throws Exception
      * @throws \think\exception\PDOException
      */
-    public static function instance($name)
+    public static function instance($name, $type = null)
     {
+        if (!in_array($type, ['WeChat', 'WeMini'])) {
+            $type = self::$type;
+        }
         switch (strtolower(sysconf('wechat_type'))) {
             case 'api':
                 $config = [
@@ -69,14 +95,14 @@ class WechatService
                     'ssl_key'        => sysconf('wechat_cert_key'),
                     'cachepath'      => env('cache_path') . 'wechat' . DIRECTORY_SEPARATOR,
                 ];
-                $class = '\\WeChat\\' . ucfirst(strtolower($name));
+                $class = "\\{$type}\\" . ucfirst(strtolower($name));
                 if (class_exists($class)) {
                     return new $class($config);
                 }
                 throw new Exception("Class '{$class}' not found");
             case 'thr':
                 list($appid, $appkey) = [sysconf('wechat_thr_appid'), sysconf('wechat_thr_appkey')];
-                $token = strtolower("{$name}-{$appid}-{$appkey}");
+                $token = strtolower("{$name}-{$appid}-{$appkey}-{$type}");
                 $location = config('wechat.service_url') . "/wechat/api.client/soap/{$token}.html";
                 $params = ['uri' => strtolower($name), 'location' => $location, 'trace' => true];
                 return new SoapService(null, $params);
