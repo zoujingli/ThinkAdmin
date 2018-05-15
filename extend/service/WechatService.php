@@ -41,8 +41,24 @@ use think\Exception;
  * @method \WeChat\Template template() static 模板消息
  * @method \WeChat\User user() static 微信粉丝管理
  * @method \WeChat\Wifi wifi() static 门店WIFI管理
+ * --- 小程序SDK加载 开始 ---
+ * @method \WeMini\Account miniAccount() static 小程序账号管理
+ * @method \WeMini\Basic miniBasic() static 小程序基础信息设置
+ * @method \WeMini\Code miniCode() static 小程序代码管理
+ * @method \WeMini\Domain miniDomain() static 小程序域名管理
+ * @method \WeMini\Tester minitester() static 小程序成员管理
+ * @method \WeMini\User miniUser() static 小程序帐号管理
+ * @method \WeMini\Crypt miniCrypt() static 小程序数据加密处理管理
+ * @method \WeMini\Plugs miniPlugs() static 小程序插件管理
+ * @method \WeMini\Poi miniPoi() static 小程地址管理
+ * @method \WeMini\Qrcode miniQrcode() static 小程二维码管理
+ * @method \WeMini\Template miniTemplate() static 小程序模板消息
+ * @method \WeMini\Total miniTotal() static 小程序数据接口
+ * --- 小程序SDK加载 结束 ---
  * @method void wechat() static 第三方微信工具
  * @method void config() static 第三方配置工具
+ * @method \WeOpen\Login login() static 第三方微信登录
+ * @method \WeOpen\Service service() static 第三方服务
  */
 class WechatService
 {
@@ -51,7 +67,7 @@ class WechatService
      * 接口类型模式
      * @var string
      */
-    public static $type = 'WeChat';
+    private static $type = 'WeChat';
 
     /**
      * 切换接口为服务号模式
@@ -64,7 +80,7 @@ class WechatService
     /**
      * 切换接口为小程序模式
      */
-    public function setWeMiniState()
+    public static function setWeMiniState()
     {
         self::$type = 'WeMini';
     }
@@ -218,6 +234,12 @@ class WechatService
      */
     public static function __callStatic($name, $arguments)
     {
+        if (substr($name, 0, 4) === 'mini') {
+            self::setWeMiniState();
+            $name = substr($name, 4);
+        } else {
+            self::setWeChatState();
+        }
         return self::instance($name);
     }
 
