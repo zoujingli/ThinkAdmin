@@ -39,11 +39,13 @@ class BasicApi
      */
     public function __construct()
     {
+        // Cors跨域Options请求处理
         Session::init(config('session.'));
         ToolsService::corsOptionsHandler();
+        // Cors跨域会话切换及初始化
+        $this->request = app('request');
         $sessionName = $this->request->header(session_name());
         empty($sessionName) || session_id($sessionName);
-        $this->request = app('request');
     }
 
     /**
