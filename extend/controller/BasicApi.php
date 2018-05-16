@@ -39,11 +39,11 @@ class BasicApi
      */
     public function __construct()
     {
-        ToolsService::corsOptionsHandler();
-        $this->request = app('request');
         Session::init(config('session.'));
+        ToolsService::corsOptionsHandler();
         $sessionName = $this->request->header(session_name());
         empty($sessionName) || session_id($sessionName);
+        $this->request = app('request');
     }
 
     /**
