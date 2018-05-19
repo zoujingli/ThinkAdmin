@@ -15,9 +15,6 @@
 namespace controller;
 
 use service\ToolsService;
-use think\exception\HttpResponseException;
-use think\facade\Response;
-use think\facade\Session;
 
 /**
  * 基础接口类
@@ -39,13 +36,8 @@ class BasicApi
      */
     public function __construct()
     {
-        // Cors跨域Options请求处理
-        Session::init(config('session.'));
         ToolsService::corsOptionsHandler();
-        // Cors跨域会话切换及初始化
         $this->request = app('request');
-        $sessionName = $this->request->header(session_name());
-        empty($sessionName) || session_id($sessionName);
     }
 
     /**
@@ -55,8 +47,7 @@ class BasicApi
      */
     protected function success($msg, $data = [])
     {
-        $result = ['code' => 1, 'msg' => $msg, 'data' => $data, 'token' => session_name() . '=' . session_id()];
-        throw new HttpResponseException(Response::create($result, 'json', 200, ToolsService::corsRequestHander()));
+        ToolsService::success($msg, $data);
     }
 
     /**
@@ -66,8 +57,7 @@ class BasicApi
      */
     protected function error($msg, $data = [])
     {
-        $result = ['code' => 0, 'msg' => $msg, 'data' => $data, 'token' => session_name() . '=' . session_id()];
-        throw new HttpResponseException(Response::create($result, 'json', 200, ToolsService::corsRequestHander()));
+        ToolsService::success($msg, $data);
     }
 
 }
