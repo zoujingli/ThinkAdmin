@@ -15,8 +15,8 @@ return [
         'app_trace'              => false,
         // 应用模式状态
         'app_status'             => '',
-        // 是否支持多模块
-        'app_multi_module'       => true,
+        // 是否HTTPS
+        'is_https'               => false,
         // 入口自动绑定模块
         'auto_bind_module'       => false,
         // 注册的根命名空间
@@ -33,56 +33,81 @@ return [
         'default_timezone'       => 'Asia/Shanghai',
         // 是否开启多语言
         'lang_switch_on'         => false,
-        // 默认全局过滤方法 用逗号分隔多个
-        'default_filter'         => '',
+        // 默认验证器
+        'default_validate'       => '',
         // 默认语言
         'default_lang'           => 'zh-cn',
-        // 应用类库后缀
-        'class_suffix'           => false,
-        // 控制器类后缀
-        'controller_suffix'      => false,
 
         // +----------------------------------------------------------------------
         // | 模块设置
         // +----------------------------------------------------------------------
 
+        // 自动搜索控制器
+        'controller_auto_search' => false,
+        // 操作方法前缀
+        'use_action_prefix'      => false,
+        // 操作方法后缀
+        'action_suffix'          => '',
+        // 默认的空控制器名
+        'empty_controller'       => 'Error',
+        // 默认的空模块名
+        'empty_module'           => '',
         // 默认模块名
         'default_module'         => 'index',
+        // 是否支持多模块
+        'app_multi_module'       => true,
         // 禁止访问模块
         'deny_module_list'       => ['common'],
         // 默认控制器名
         'default_controller'     => 'Index',
         // 默认操作名
         'default_action'         => 'index',
-        // 默认验证器
-        'default_validate'       => '',
-        // 默认的空模块名
-        'empty_module'           => '',
-        // 默认的空控制器名
-        'empty_controller'       => 'Error',
-        // 操作方法前缀
-        'use_action_prefix'      => false,
-        // 操作方法后缀
-        'action_suffix'          => '',
-        // 自动搜索控制器
-        'controller_auto_search' => false,
+        // 是否自动转换URL中的控制器和操作名
+        'url_convert'            => true,
+        // 默认的访问控制器层
+        'url_controller_layer'   => 'controller',
+        // 应用类库后缀
+        'class_suffix'           => false,
+        // 控制器类后缀
+        'controller_suffix'      => false,
 
         // +----------------------------------------------------------------------
-        // | URL设置
+        // | URL请求设置
         // +----------------------------------------------------------------------
 
+        // 默认全局过滤方法 用逗号分隔多个
+        'default_filter'         => '',
         // PATHINFO变量名 用于兼容模式
         'var_pathinfo'           => 's',
         // 兼容PATH_INFO获取
         'pathinfo_fetch'         => ['ORIG_PATH_INFO', 'REDIRECT_PATH_INFO', 'REDIRECT_URL'],
-        // pathinfo分隔符
-        'pathinfo_depr'          => '/',
         // HTTPS代理标识
         'https_agent_name'       => '',
         // IP代理获取标识
         'http_agent_ip'          => 'X-REAL-IP',
         // URL伪静态后缀
         'url_html_suffix'        => 'html',
+        // 域名根，如thinkphp.cn
+        'url_domain_root'        => '',
+        // 表单请求类型伪装变量
+        'var_method'             => '_method',
+        // 表单ajax伪装变量
+        'var_ajax'               => '_ajax',
+        // 表单pjax伪装变量
+        'var_pjax'               => '_pjax',
+        // 是否开启请求缓存 true自动缓存 支持设置请求缓存规则
+        'request_cache'          => false,
+        // 请求缓存有效期
+        'request_cache_expire'   => null,
+        // 全局请求缓存排除规则
+        'request_cache_except'   => [],
+
+        // +----------------------------------------------------------------------
+        // | 路由设置
+        // +----------------------------------------------------------------------
+
+        // pathinfo分隔符
+        'pathinfo_depr'          => '/',
         // URL普通方式参数 用于自动生成
         'url_common_param'       => false,
         // URL参数方式 0 按名称成对解析 1 按顺序解析
@@ -97,36 +122,22 @@ return [
         'route_complete_match'   => false,
         // 使用注解路由
         'route_annotation'       => false,
-        // 域名根，如thinkphp.cn
-        'url_domain_root'        => '',
-        // 是否自动转换URL中的控制器和操作名
-        'url_convert'            => true,
-        // 默认的访问控制器层
-        'url_controller_layer'   => 'controller',
-        // 表单请求类型伪装变量
-        'var_method'             => '_method',
-        // 表单ajax伪装变量
-        'var_ajax'               => '_ajax',
-        // 表单pjax伪装变量
-        'var_pjax'               => '_pjax',
-        // 是否开启请求缓存 true自动缓存 支持设置请求缓存规则
-        'request_cache'          => false,
-        // 请求缓存有效期
-        'request_cache_expire'   => null,
-        // 全局请求缓存排除规则
-        'request_cache_except'   => [],
-
-        // 默认跳转页面对应的模板文件
-        'dispatch_success_tmpl'  => __DIR__ . '/tpl/dispatch_jump.tpl',
-        'dispatch_error_tmpl'    => __DIR__ . '/tpl/dispatch_jump.tpl',
+        // 默认的路由变量规则
+        'default_route_pattern'  => '\w+',
+        // 是否开启路由缓存
+        'route_check_cache'      => false,
+        // 路由缓存的Key自定义设置（闭包），默认为当前URL和请求类型的md5
+        'route_check_cache_key'  => '',
 
         // +----------------------------------------------------------------------
         // | 异常及错误设置
         // +----------------------------------------------------------------------
 
+        // 默认跳转页面对应的模板文件
+        'dispatch_success_tmpl'  => __DIR__ . '/tpl/dispatch_jump.tpl',
+        'dispatch_error_tmpl'    => __DIR__ . '/tpl/dispatch_jump.tpl',
         // 异常页面的模板文件
         'exception_tmpl'         => __DIR__ . '/tpl/think_exception.tpl',
-
         // 错误显示信息,非调试模式有效
         'error_message'          => '页面错误！请稍后再试～',
         // 显示错误信息
@@ -180,6 +191,7 @@ return [
     // +----------------------------------------------------------------------
     // | Trace设置 开启 app_trace 后 有效
     // +----------------------------------------------------------------------
+
     'trace'    => [
         // 内置Html Console 支持扩展
         'type' => 'Html',
@@ -222,6 +234,7 @@ return [
     // +----------------------------------------------------------------------
     // | Cookie设置
     // +----------------------------------------------------------------------
+
     'cookie'   => [
         // cookie 名称前缀
         'prefix'    => '',

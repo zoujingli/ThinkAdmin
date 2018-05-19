@@ -178,17 +178,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.13",
-        "version_normalized": "5.1.13.0",
+        "version": "v5.1.14",
+        "version_normalized": "5.1.14.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "1cc81707dab128e360405aa4811a27b7a5403a78"
+            "reference": "1adc81f2d59cd99e69d38c058527cd759531e8a8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/1cc81707dab128e360405aa4811a27b7a5403a78.zip",
-            "reference": "1cc81707dab128e360405aa4811a27b7a5403a78",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/1adc81f2d59cd99e69d38c058527cd759531e8a8.zip",
+            "reference": "1adc81f2d59cd99e69d38c058527cd759531e8a8",
             "shasum": ""
         },
         "require": {
@@ -204,7 +204,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-05-11T07:50:00+00:00",
+        "time": "2018-05-19T04:16:33+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -433,17 +433,17 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.5",
-        "version_normalized": "7.2.5.0",
+        "version": "v7.2.6",
+        "version_normalized": "7.2.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0"
+            "reference": "305ce1c1c0c71f794661fe45a96facf61ef96c5d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0.zip",
-            "reference": "0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0",
+            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/305ce1c1c0c71f794661fe45a96facf61ef96c5d.zip",
+            "reference": "305ce1c1c0c71f794661fe45a96facf61ef96c5d",
             "shasum": ""
         },
         "require": {
@@ -453,7 +453,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2018-05-10T09:26:30+00:00",
+        "time": "2018-05-18T04:37:29+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

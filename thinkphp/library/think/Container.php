@@ -19,7 +19,7 @@ use ReflectionFunction;
 use ReflectionMethod;
 use think\exception\ClassNotFoundException;
 
-class Container
+class Container implements \ArrayAccess
 {
     /**
      * 容器对象实例
@@ -37,7 +37,14 @@ class Container
      * 容器绑定标识
      * @var array
      */
-    protected $bind = [];
+    protected $bind = [
+        'app'      => 'think\App',
+        'config'   => 'think\Config',
+        'lang'     => 'think\Lang',
+        'log'      => 'think\Log',
+        'request'  => 'think\Request',
+        'response' => 'think\Response',
+    ];
 
     /**
      * 容器标识别名
@@ -57,6 +64,17 @@ class Container
         }
 
         return static::$instance;
+    }
+
+    /**
+     * 设置当前容器的实例
+     * @access public
+     * @param  object        $instance
+     * @return void
+     */
+    public static function setInstance($instance)
+    {
+        static::$instance = $instance;
     }
 
     /**
@@ -81,7 +99,7 @@ class Container
      */
     public static function set($abstract, $concrete = null)
     {
-        return static::getInstance()->bind($abstract, $concrete);
+        return static::getInstance()->bindTo($abstract, $concrete);
     }
 
     /**
@@ -112,7 +130,7 @@ class Container
      * @param  mixed         $concrete    要绑定的类、闭包或者实例
      * @return $this
      */
-    public function bind($abstract, $concrete = null)
+    public function bindTo($abstract, $concrete = null)
     {
         if (is_array($abstract)) {
             $this->bind = array_merge($this->bind, $abstract);
@@ -378,8 +396,7 @@ class Container
             $class = $param->getClass();
 
             if ($class) {
-                $className = $class->getName();
-                $args[]    = $this->make($className);
+                $args[] = $this->getObjectParam($class->getName(), $vars);
             } elseif (1 == $type && !empty($vars)) {
                 $args[] = array_shift($vars);
             } elseif (0 == $type && isset($vars[$name])) {
@@ -394,4 +411,64 @@ class Container
         return $args;
     }
 
+    /**
+     * 获取对象类型的参数值
+     * @access protected
+     * @param  string   $className  类名
+     * @param  array    $vars       参数
+     * @return mixed
+     */
+    protected function getObjectParam($className, &$vars)
+    {
+        $value = array_shift($vars);
+
+        if ($value instanceof $className) {
+            $result = $value;
+        } else {
+            array_unshift($vars, $value);
+            $result = $this->make($className);
+        }
+
+        return $result;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->bindTo($name, $value);
+    }
+
+    public function __get($name)
+    {
+        return $this->make($name);
+    }
+
+    public function __isset($name)
+    {
+        return $this->bound($name);
+    }
+
+    public function __unset($name)
+    {
+        $this->delete($name);
+    }
+
+    public function offsetExists($key)
+    {
+        return $this->__isset($key);
+    }
+
+    public function offsetGet($key)
+    {
+        return $this->__get($key);
+    }
+
+    public function offsetSet($key, $value)
+    {
+        $this->__set($key, $value);
+    }
+
+    public function offsetUnset($key)
+    {
+        $this->__unset($key);
+    }
 }

@@ -16,6 +16,12 @@ use think\exception\ClassNotFoundException;
 class Session
 {
     /**
+     * 配置参数
+     * @var array
+     */
+    protected $config = [];
+
+    /**
      * 前缀
      * @var string
      */
@@ -51,6 +57,11 @@ class Session
      */
     protected $lock = false;
 
+    public function __construct(array $config = [])
+    {
+        $this->config = $config;
+    }
+
     /**
      * 设置或者获取session作用域（前缀）
      * @access public
@@ -68,6 +79,22 @@ class Session
         }
     }
 
+    public static function __make(Config $config)
+    {
+        return new static($config->pull('session'));
+    }
+
+    /**
+     * 配置
+     * @access public
+     * @param  array $config
+     * @return void
+     */
+    public function setConfig(array $config = [])
+    {
+        $this->config = array_merge($this->config, array_change_key_case($config));
+    }
+
     /**
      * session初始化
      * @access public
@@ -77,12 +104,8 @@ class Session
      */
     public function init(array $config = [])
     {
-        if (empty($config)) {
-            $config = Container::get('config')->pull('session');
-        }
+        $config = $config ?: $this->config;
 
-        // 记录初始化信息
-        Container::get('app')->log('[ SESSION ] INIT ' . var_export($config, true));
         $isDoStart = false;
         if (isset($config['use_trans_sid'])) {
             ini_set('session.use_trans_sid', $config['use_trans_sid'] ? 1 : 0);
@@ -161,6 +184,8 @@ class Session
         } else {
             $this->init = false;
         }
+
+        return $this;
     }
 
     /**
@@ -253,8 +278,7 @@ class Session
      */
     protected function initDriver()
     {
-        // 不在 init 方法中实例化lockDriver，是因为 init 方法不一定先于 set 或 get 方法调用
-        $config = Container::get('config')->pull('session');
+        $config = $this->config;
 
         if (!empty($config['type']) && isset($config['use_lock']) && $config['use_lock']) {
             // 读取session驱动

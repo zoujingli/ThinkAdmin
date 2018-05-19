@@ -48,10 +48,10 @@ class Route
     ];
 
     /**
-     * 配置对象
-     * @var Config
+     * 应用对象
+     * @var App
      */
-    protected $config;
+    protected $app;
 
     /**
      * 请求对象
@@ -76,6 +76,12 @@ class Route
      * @var RuleGroup
      */
     protected $group;
+
+    /**
+     * 配置参数
+     * @var array
+     */
+    protected $config = [];
 
     /**
      * 路由绑定
@@ -119,12 +125,35 @@ class Route
      */
     protected $autoSearchController = true;
 
-    public function __construct(Request $request)
+    public function __construct(App $app, array $config = [])
     {
-        $this->request = $request;
+        $this->app     = $app;
+        $this->request = $app['request'];
+        $this->config  = $config;
         $this->host    = $this->request->host(true);
 
         $this->setDefaultDomain();
+    }
+
+    public function config($name = null)
+    {
+        if (is_null($name)) {
+            return $this->config;
+        }
+
+        return isset($this->config[$name]) ? $this->config[$name] : null;
+    }
+
+    public static function __make(App $app, Config $config)
+    {
+        $config = $config->pull('app');
+        $route  = new static($app, $config);
+
+        $route->lazy($config['url_lazy_route'])
+            ->autoSearchController($config['controller_auto_search'])
+            ->mergeRuleRegex($config['route_rule_merge']);
+
+        return $route;
     }
 
     /**
@@ -346,7 +375,7 @@ class Route
      */
     public function getName($name = null)
     {
-        return Container::get('rule_name')->get($name);
+        return $this->app['rule_name']->get($name);
     }
 
     /**
@@ -357,7 +386,7 @@ class Route
      */
     public function setName($name)
     {
-        Container::get('rule_name')->import($name);
+        $this->app['rule_name']->import($name);
         return $this;
     }
 
@@ -761,23 +790,23 @@ class Route
      * 检测URL路由
      * @access public
      * @param  string    $url URL地址
-     * @param  string    $depr URL分隔符
      * @param  bool      $must 是否强制路由
-     * @param  bool      $completeMatch   路由是否完全匹配
      * @return Dispatch
      * @throws RouteNotFoundException
      */
-    public function check($url, $depr = '/', $must = false, $completeMatch = false)
+    public function check($url, $must = false)
     {
         // 自动检测域名路由
         $domain = $this->checkDomain();
-        $url    = str_replace($depr, '|', $url);
+        $url    = str_replace($this->config['pathinfo_depr'], '|', $url);
 
-        $result = $domain->check($this->request, $url, $depr, $completeMatch);
+        $completeMatch = $this->config['route_complete_match'];
+
+        $result = $domain->check($this->request, $url, $completeMatch);
 
         if (false === $result && !empty($this->cross)) {
             // 检测跨域路由
-            $result = $this->cross->check($this->request, $url, $depr, $completeMatch);
+            $result = $this->cross->check($this->request, $url, $completeMatch);
         }
 
         if (false !== $result) {
@@ -789,7 +818,9 @@ class Route
         }
 
         // 默认路由解析
-        return new UrlDispatch($url, ['depr' => $depr, 'auto_search' => $this->autoSearchController]);
+        $ruleItem = new RuleItem($this, $this->group, '', '', $url);
+
+        return new UrlDispatch($this->request, $ruleItem, $url, ['auto_search' => $this->autoSearchController]);
     }
 
     /**

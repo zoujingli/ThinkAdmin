@@ -14,6 +14,7 @@ namespace think\db;
 use PDO;
 use think\Collection;
 use think\Container;
+use think\Db;
 use think\db\exception\BindParamException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
@@ -28,12 +29,6 @@ use think\Paginator;
 
 class Query
 {
-    /**
-     * 数据库连接对象列表
-     * @var array
-     */
-    protected static $connections = [];
-
     /**
      * 当前数据库连接对象
      * @var Connection
@@ -122,7 +117,7 @@ class Query
     public function __construct(Connection $connection = null)
     {
         if (is_null($connection)) {
-            $this->connection = Connection::instance();
+            $this->connection = Db::connect();
         } else {
             $this->connection = $connection;
         }
@@ -300,29 +295,6 @@ class Query
         $name = $name ?: $this->name;
 
         return $this->prefix . Loader::parseName($name);
-    }
-
-    /**
-     * 切换数据库连接
-     * @access public
-     * @param  mixed         $config 连接配置
-     * @param  bool|string   $name 连接标识 true 强制重新连接
-     * @return $this|object
-     * @throws Exception
-     */
-    public function connect($config = [], $name = false)
-    {
-        $this->connection = Connection::instance($config, $name);
-
-        $query = $this->connection->getConfig('query');
-
-        if (__CLASS__ != trim($query, '\\')) {
-            return new $query($this->connection);
-        }
-
-        $this->prefix = $this->connection->getConfig('prefix');
-
-        return $this;
     }
 
     /**
@@ -653,7 +625,7 @@ class Query
         if (!empty($this->options['fetch_sql'])) {
             return $result;
         } elseif ($force) {
-            $result += 0;
+            $result = (float) $result;
         }
 
         return $result;
