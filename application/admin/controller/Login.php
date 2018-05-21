@@ -59,7 +59,7 @@ class Login extends BasicAdmin
         strlen($username) < 4 && $this->error('登录账号长度不能少于4位有效字符!');
         strlen($password) < 4 && $this->error('登录密码长度不能少于4位有效字符!');
         // 用户信息验证
-        $user = Db::name('SystemUser')->where('username', $username)->find();
+        $user = Db::name('SystemUser')->where('is_deleted', '0')->where('username', $username)->find();
         empty($user) && $this->error('登录账号不存在，请重新输入!');
         ($user['password'] !== md5($password)) && $this->error('登录密码与账号不匹配，请重新输入!');
         empty($user['is_deleted']) || $this->error('账号已经被删除，请联系管理！');
