@@ -202,14 +202,23 @@ class Pay
 
     /**
      * 下载对账单
-     * @param array $options
-     * @return array
+     * @param array $options 静音参数
+     * @param null|string $outType 输出类型
+     * @return bool|string
      * @throws InvalidResponseException
      */
-    public function billDownload(array $options)
+    public function billDownload(array $options, $outType = null)
     {
-        $url = 'https://api.mch.weixin.qq.com/pay/downloadbill';
-        return $this->callPostApi($url, $options);
+        $this->params->set('sign_type', 'MD5');
+        $params = $this->params->merge($options);
+        $params['sign'] = $this->getPaySign($params, 'MD5');
+        $result = Tools::post('https://api.mch.weixin.qq.com/pay/downloadbill', Tools::arr2xml($params));
+        if (($jsonData = Tools::xml2arr($result))) {
+            if ($jsonData['return_code'] !== 'SUCCESS') {
+                throw new InvalidResponseException($jsonData['return_msg'], '0');
+            }
+        }
+        return is_null($outType) ? $result : $outType($result);
     }
 
 
@@ -250,6 +259,10 @@ class Pay
     public function queryTransfers($partner_trade_no)
     {
         $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/gettransferinfo';
+        $this->params->set('appid', $this->config->get('appid'));
+        $this->params->set('mch_id', $this->config->get('mch_id'));
+        $this->params->offsetUnset('mchid');
+        $this->params->offsetUnset('mch_appid');
         return $this->callPostApi($url, ['partner_trade_no' => $partner_trade_no], true, 'MD5', false);
     }
 
@@ -297,6 +310,7 @@ class Pay
      */
     public function queryTransFresBank($partner_trade_no)
     {
+        $this->params->offsetUnset('appid');
         $url = 'https://api.mch.weixin.qq.com/mmpaysptrans/query_bank';
         return $this->callPostApi($url, ['partner_trade_no' => $partner_trade_no], true, 'MD5', false);
     }

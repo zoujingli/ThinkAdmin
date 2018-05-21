@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.6",
-        "version_normalized": "1.1.6.0",
+        "version": "v1.1.7",
+        "version_normalized": "1.1.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "095471bdc61e3389135f69b1849069c19d439f22"
+            "reference": "f01ac5dafc85cb408fd3e0bafc462437785ae178"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/095471bdc61e3389135f69b1849069c19d439f22.zip",
-            "reference": "095471bdc61e3389135f69b1849069c19d439f22",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/f01ac5dafc85cb408fd3e0bafc462437785ae178.zip",
+            "reference": "f01ac5dafc85cb408fd3e0bafc462437785ae178",
             "shasum": ""
         },
         "require": {
@@ -98,7 +98,7 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-05-11T09:54:48+00:00",
+        "time": "2018-05-16T05:48:16+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -183,12 +183,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "1adc81f2d59cd99e69d38c058527cd759531e8a8"
+            "reference": "6448c4b42599d58125ba1307aa6d3defa044aeb9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/1adc81f2d59cd99e69d38c058527cd759531e8a8.zip",
-            "reference": "1adc81f2d59cd99e69d38c058527cd759531e8a8",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/6448c4b42599d58125ba1307aa6d3defa044aeb9.zip",
+            "reference": "6448c4b42599d58125ba1307aa6d3defa044aeb9",
             "shasum": ""
         },
         "require": {
@@ -204,7 +204,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-05-19T04:16:33+00:00",
+        "time": "2018-05-19T13:37:11+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
