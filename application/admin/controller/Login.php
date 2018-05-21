@@ -62,6 +62,7 @@ class Login extends BasicAdmin
         $user = Db::name('SystemUser')->where('username', $username)->find();
         empty($user) && $this->error('登录账号不存在，请重新输入!');
         ($user['password'] !== md5($password)) && $this->error('登录密码与账号不匹配，请重新输入!');
+        empty($user['is_deleted']) || $this->error('账号已经被删除，请联系管理！');
         empty($user['status']) && $this->error('账号已经被禁用，请联系管理!');
         // 更新登录信息
         $data = ['login_at' => Db::raw('now()'), 'login_num' => Db::raw('login_num+1')];
