@@ -58,7 +58,7 @@
     <table class="layui-table" lay-skin="line" lay-size="sm">
         <thead>
         <tr>
-            <th class='list-table-check-td'>
+            <th class='list-table-check-td think-checkbox'>
                 <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'/>
             </th>
             <th class='list-table-sort-td'>
@@ -75,7 +75,7 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+                <input class="list-check-box think-checkbox" value='{$vo.id}' type='checkbox'/>
             </td>
             <td class='list-table-sort-td'>
                 <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
