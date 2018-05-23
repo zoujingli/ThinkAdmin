@@ -133,12 +133,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "a6739da337a0c0b6e2da8103b353a42044b4a0c7"
+            "reference": "21273dc11c4fb3de4ab07d74a696bf0e4661cea3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/a6739da337a0c0b6e2da8103b353a42044b4a0c7.zip",
-            "reference": "a6739da337a0c0b6e2da8103b353a42044b4a0c7",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/21273dc11c4fb3de4ab07d74a696bf0e4661cea3.zip",
+            "reference": "21273dc11c4fb3de4ab07d74a696bf0e4661cea3",
             "shasum": ""
         },
         "require": {
@@ -147,7 +147,7 @@
             "php": ">=5.4",
             "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2018-05-12T14:10:32+00:00",
+        "time": "2018-05-23T07:08:07+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -272,8 +272,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.9",
-        "version_normalized": "3.4.9.0",
+        "version": "v3.4.10",
+        "version_normalized": "3.4.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
