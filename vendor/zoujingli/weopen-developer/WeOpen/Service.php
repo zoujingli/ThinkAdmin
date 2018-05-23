@@ -128,6 +128,27 @@ class Service
     }
 
     /**
+     * 确认接受公众号将某权限集高级权限的授权
+     * @param string $authorizerAppid 授权公众号或小程序的appid
+     * @param string $funcscopeCategoryId 权限集ID
+     * @param string $confirmValue 是否确认(1.确认授权, 2.取消确认)
+     * @return array
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function setAuthorization($authorizerAppid, $funcscopeCategoryId, $confirmValue)
+    {
+        $componentAccessToken = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/cgi-bin/component/api_confirm_authorization?component_access_token={$componentAccessToken}";
+        return $this->httpPostForJson($url, [
+            'confirm_value'         => $confirmValue,
+            'authorizer_appid'      => $authorizerAppid,
+            'funcscope_category_id' => $funcscopeCategoryId,
+            'component_appid'       => $this->config->get('component_appid'),
+        ]);
+    }
+
+    /**
      * 设置授权方的选项信息
      * @param string $authorizerAppid 授权公众号或小程序的appid
      * @param string $optionName 选项名称
@@ -140,13 +161,31 @@ class Service
     {
         $componentAccessToken = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_set_authorizer_option?component_access_token={$componentAccessToken}";
-        $result = $this->httpPostForJson($url, [
+        return $this->httpPostForJson($url, [
             'option_name'      => $optionName,
             'option_value'     => $optionValue,
             'authorizer_appid' => $authorizerAppid,
             'component_appid'  => $this->config->get('component_appid'),
         ]);
-        return $result;
+    }
+
+    /**
+     * 获取授权方的选项设置信息
+     * @param string $authorizerAppid 授权公众号或小程序的appid
+     * @param string $optionName 选项名称
+     * @return array
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function getAuthorizerOption($authorizerAppid, $optionName)
+    {
+        $componentAccessToken = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_option?component_access_token={$componentAccessToken}";
+        return $this->httpPostForJson($url, [
+            'option_name'      => $optionName,
+            'authorizer_appid' => $authorizerAppid,
+            'component_appid'  => $this->config->get('component_appid'),
+        ]);
     }
 
     /**
