@@ -69,8 +69,8 @@ class FileService
 
     /**
      * 获取文件当前URL地址
-     * @param string $filename
-     * @param string|null $storage
+     * @param string $filename 文件HASH名称
+     * @param string|null $storage 文件存储引擎
      * @return bool|string
      * @throws OssException
      * @throws \think\Exception
@@ -93,7 +93,7 @@ class FileService
     }
 
     /**
-     * 根据配置获取到七牛云文件上传目标地址
+     * 根据配置获取到本地上传的目标地址
      * @return string
      */
     public static function getUploadLocalUrl()
@@ -156,7 +156,7 @@ class FileService
      */
     public static function getBaseUriLocal()
     {
-        $appRoot = request()->root(true);
+        $appRoot = request()->root(true); // 如果你想获取相对url地址，这里改成 false
         $uriRoot = preg_match('/\.php$/', $appRoot) ? dirname($appRoot) : $appRoot;
         return "{$uriRoot}/static/upload/";
     }
