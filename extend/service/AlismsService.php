@@ -32,7 +32,6 @@ class AlismsService
      */
     private static $sdkVersion = [
         "RegionId" => "cn-hangzhou",
-        "Action"   => "SendBatchSms",
         "Version"  => "2017-05-25",
     ];
 
@@ -52,6 +51,7 @@ class AlismsService
         $params["PageSize"] = $PageSize;
         $params["CurrentPage"] = $CurrentPage;
         $params["PhoneNumber"] = $PhoneNumber;
+        $params['Action'] = 'QuerySendDetails';
         is_null($BizId) || $params["BizId"] = $BizId;
         return self::request("dysmsapi.aliyuncs.com", array_merge($params, self::$sdkVersion), true);
     }
@@ -68,6 +68,7 @@ class AlismsService
     public static function batchSend(array $PhoneNumbers, $TemplateCode, array $SignNames, array $TemplateParams, $SmsUpExtendCodes = [])
     {
         $params = [];
+        $params["Action"] = 'SendBatchSms';
         $params["TemplateCode"] = $TemplateCode;
         !empty($SmsUpExtendCodes) && $params["SmsUpExtendCodeJson"] = json_encode($SmsUpExtendCodes);
         $params["TemplateParamJson"] = json_encode($TemplateParams, JSON_UNESCAPED_UNICODE);
@@ -92,6 +93,7 @@ class AlismsService
     public static function send($PhoneNumbers, $TemplateCode, $SignName, array $TemplateParam, $OutId = null, $SmsUpExtendCode = null)
     {
         $params = [];
+        $params['Action'] = 'SendSms';
         $params["SignName"] = $SignName;
         $params["TemplateCode"] = $TemplateCode;
         $params["PhoneNumbers"] = $PhoneNumbers;
