@@ -14,6 +14,7 @@
 
 namespace app\wechat\controller;
 
+use app\wechat\controller\api\Tools;
 use app\wechat\service\MediaService;
 use controller\BasicAdmin;
 use service\DataService;
@@ -145,7 +146,10 @@ class News extends BasicAdmin
         $id = $this->request->get('id', '');
         if ($this->request->isGet()) {
             empty($id) && $this->error('参数错误，请稍候再试！');
-            return $this->fetch('form', ['title' => '编辑图文', 'vo' => MediaService::getNewsById($id)]);
+            if ($this->request->get('output') === 'json') {
+                ToolsService::success('获取数据成功', MediaService::getNewsById($id));
+            }
+            return $this->fetch('form', ['title' => '编辑图文']);
         }
         $data = $this->request->post();
         $ids = $this->_apply_news_article($data['data']);
