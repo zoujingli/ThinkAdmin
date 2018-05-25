@@ -12,21 +12,29 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
-spl_autoload_register(function ($classname) {
-    $separator = DIRECTORY_SEPARATOR;
-    $filename = __DIR__ . $separator . str_replace('\\', $separator, $classname) . '.php';
-    if (file_exists($filename)) {
-        if (stripos($classname, 'WeChat') === 0) {
-            include $filename;
-        }
-        if (stripos($classname, 'WeMini') === 0) {
-            include $filename;
-        }
-        if (stripos($classname, 'WePay') === 0) {
-            include $filename;
-        }
-        if ($classname === 'We') {
-            include $filename;
-        }
+namespace WeChat\Exceptions;
+
+/**
+ * 加载类异常
+ * Class InvalidInstanceException
+ * @package WeChat\Exceptions
+ */
+class InvalidInstanceException extends \Exception
+{
+    /**
+     * @var array
+     */
+    public $raw = [];
+
+    /**
+     * InvalidResponseException constructor.
+     * @param string $message
+     * @param integer $code
+     * @param array $raw
+     */
+    public function __construct($message, $code = 0, $raw = [])
+    {
+        parent::__construct($message, intval($code));
+        $this->raw = $raw;
     }
-});
+}

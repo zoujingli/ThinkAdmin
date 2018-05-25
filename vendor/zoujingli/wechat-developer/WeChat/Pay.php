@@ -14,58 +14,21 @@
 
 namespace WeChat;
 
-use WeChat\Contracts\DataArray;
-use WeChat\Contracts\Tools;
-use WeChat\Exceptions\InvalidArgumentException;
-use WeChat\Exceptions\InvalidDecryptException;
+use WeChat\Contracts\BasicPay;
 use WeChat\Exceptions\InvalidResponseException;
+use WePay\Bill;
+use WePay\Order;
+use WePay\Refund;
+use WePay\Transfers;
+use WePay\TransFresBank;
 
 /**
  * 微信支付商户
  * Class Pay
  * @package WeChat\Contracts
  */
-class Pay
+class Pay extends BasicPay
 {
-
-    /**
-     * 商户配置
-     * @var DataArray
-     */
-    protected $config;
-
-    /**
-     * 当前请求数据
-     * @var DataArray
-     */
-    protected $params;
-
-
-    /**
-     * WeChat constructor.
-     * @param array $options
-     */
-    public function __construct(array $options)
-    {
-        if (empty($options['appid'])) {
-            throw new InvalidArgumentException("Missing Config -- [appid]");
-        }
-        if (empty($options['mch_id'])) {
-            throw new InvalidArgumentException("Missing Config -- [mch_id]");
-        }
-        if (empty($options['mch_key'])) {
-            throw new InvalidArgumentException("Missing Config -- [mch_key]");
-        }
-        if (!empty($options['cache_path'])) {
-            Tools::$cache_path = $options['cache_path'];
-        }
-        $this->config = new DataArray($options);
-        $this->params = new DataArray([
-            'appid'     => $this->config->get('appid'),
-            'mch_id'    => $this->config->get('mch_id'),
-            'nonce_str' => Tools::createNoncestr(),
-        ]);
-    }
 
     /**
      * 统一下单
@@ -75,8 +38,8 @@ class Pay
      */
     public function createOrder(array $options)
     {
-        $url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
-        return $this->callPostApi($url, $options, false, 'MD5');
+        $pay = new Order($this->config->get());
+        return $pay->create($options);
     }
 
 
@@ -87,15 +50,8 @@ class Pay
      */
     public function createParamsForJsApi($prepay_id)
     {
-        $option = [];
-        $option["appId"] = $this->config->get('appid');
-        $option["timeStamp"] = (string)time();
-        $option["nonceStr"] = Tools::createNoncestr();
-        $option["package"] = "prepay_id={$prepay_id}";
-        $option["signType"] = "MD5";
-        $option["paySign"] = $this->getPaySign($option, 'MD5');
-        $option['timestamp'] = $option['timeStamp'];
-        return $option;
+        $pay = new Order($this->config->get());
+        return $pay->jsapiParams($prepay_id);
     }
 
     /**
@@ -105,15 +61,8 @@ class Pay
      */
     public function createParamsForRuleQrc($product_id)
     {
-        $data = [
-            'appid'      => $this->config->get('appid'),
-            'mch_id'     => $this->config->get('mch_id'),
-            'time_stamp' => (string)time(),
-            'nonce_str'  => Tools::createNoncestr(),
-            'product_id' => (string)$product_id,
-        ];
-        $data['sign'] = $this->getPaySign($data, 'MD5');
-        return "weixin://wxpay/bizpayurl?" . http_build_query($data);
+        $pay = new Order($this->config->get());
+        return $pay->qrcParams($product_id);
     }
 
     /**
@@ -124,8 +73,8 @@ class Pay
      */
     public function queryOrder(array $options)
     {
-        $url = 'https://api.mch.weixin.qq.com/pay/orderquery';
-        return $this->callPostApi($url, $options);
+        $pay = new Order($this->config->get());
+        return $pay->query($options);
     }
 
     /**
@@ -136,8 +85,8 @@ class Pay
      */
     public function closeOrder($out_trade_no)
     {
-        $url = 'https://api.mch.weixin.qq.com/pay/closeorder';
-        return $this->callPostApi($url, ['out_trade_no' => $out_trade_no]);
+        $pay = new Order($this->config->get());
+        return $pay->close($out_trade_no);
     }
 
     /**
@@ -148,8 +97,8 @@ class Pay
      */
     public function createRefund(array $options)
     {
-        $url = 'https://api.mch.weixin.qq.com/secapi/pay/refund';
-        return $this->callPostApi($url, $options, true);
+        $pay = new Refund($this->config->get());
+        return $pay->create($options);
     }
 
     /**
@@ -160,8 +109,8 @@ class Pay
      */
     public function queryRefund(array $options)
     {
-        $url = 'https://api.mch.weixin.qq.com/pay/refundquery';
-        return $this->callPostApi($url, $options);
+        $pay = new Refund($this->config->get());
+        return $pay->query($options);
     }
 
     /**
@@ -172,8 +121,8 @@ class Pay
      */
     public function report(array $options)
     {
-        $url = 'https://api.mch.weixin.qq.com/payitil/report';
-        return $this->callPostApi($url, $options);
+        $pay = new Order($this->config->get());
+        return $pay->report($options);
     }
 
     /**
@@ -184,20 +133,8 @@ class Pay
      */
     public function queryAuthCode($authCode)
     {
-        $url = 'https://api.mch.weixin.qq.com/tools/authcodetoopenid';
-        return $this->callPostApi($url, ['auth_code' => $authCode]);
-    }
-
-    /**
-     * 转换短链接
-     * @param string $longUrl 需要转换的URL，签名用原串，传输需URLencode
-     * @return array
-     * @throws InvalidResponseException
-     */
-    public function shortUrl($longUrl)
-    {
-        $url = 'https://api.mch.weixin.qq.com/tools/shorturl';
-        return $this->callPostApi($url, ['long_url' => $longUrl]);
+        $pay = new Order($this->config->get());
+        return $pay->queryAuthCode($authCode);
     }
 
     /**
@@ -209,16 +146,8 @@ class Pay
      */
     public function billDownload(array $options, $outType = null)
     {
-        $this->params->set('sign_type', 'MD5');
-        $params = $this->params->merge($options);
-        $params['sign'] = $this->getPaySign($params, 'MD5');
-        $result = Tools::post('https://api.mch.weixin.qq.com/pay/downloadbill', Tools::arr2xml($params));
-        if (($jsonData = Tools::xml2arr($result))) {
-            if ($jsonData['return_code'] !== 'SUCCESS') {
-                throw new InvalidResponseException($jsonData['return_msg'], '0');
-            }
-        }
-        return is_null($outType) ? $result : $outType($result);
+        $pay = new Bill($this->config->get());
+        return $pay->download($options, $outType);
     }
 
 
@@ -230,8 +159,8 @@ class Pay
      */
     public function billCommtent(array $options)
     {
-        $url = 'https://api.mch.weixin.qq.com/billcommentsp/batchquerycomment';
-        return $this->callPostApi($url, $options, true);
+        $pay = new Bill($this->config->get());
+        return $pay->commtent($options);
     }
 
     /**
@@ -242,12 +171,8 @@ class Pay
      */
     public function createTransfers(array $options)
     {
-        $this->params->set('mchid', $this->config->get('mch_id'));
-        $this->params->set('mch_appid', $this->config->get('appid'));
-        $this->params->offsetUnset('appid');
-        $this->params->offsetUnset('mch_id');
-        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
-        return $this->callPostApi($url, $options, true, 'MD5', false);
+        $pay = new Transfers($this->config->get());
+        return $pay->create($options);
     }
 
     /**
@@ -258,12 +183,8 @@ class Pay
      */
     public function queryTransfers($partner_trade_no)
     {
-        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/gettransferinfo';
-        $this->params->set('appid', $this->config->get('appid'));
-        $this->params->set('mch_id', $this->config->get('mch_id'));
-        $this->params->offsetUnset('mchid');
-        $this->params->offsetUnset('mch_appid');
-        return $this->callPostApi($url, ['partner_trade_no' => $partner_trade_no], true, 'MD5', false);
+        $pay = new Transfers($this->config->get());
+        return $pay->query($partner_trade_no);
     }
 
     /**
@@ -276,30 +197,8 @@ class Pay
      */
     public function createTransfersBank(array $options)
     {
-        if (!isset($options['partner_trade_no'])) {
-            throw new InvalidArgumentException('Missing Options -- [partner_trade_no]');
-        }
-        if (!isset($options['enc_bank_no'])) {
-            throw new InvalidArgumentException('Missing Options -- [enc_bank_no]');
-        }
-        if (!isset($options['enc_true_name'])) {
-            throw new InvalidArgumentException('Missing Options -- [enc_true_name]');
-        }
-        if (!isset($options['bank_code'])) {
-            throw new InvalidArgumentException('Missing Options -- [bank_code]');
-        }
-        if (!isset($options['amount'])) {
-            throw new InvalidArgumentException('Missing Options -- [amount]');
-        }
-        isset($options['desc']) && $this->config['desc'] = $options['desc'];
-        $this->params->offsetUnset('appid');
-        return $this->callPostApi('https://api.mch.weixin.qq.com/mmpaysptrans/pay_bank', [
-            'amount'           => $options['amount'],
-            'bank_code'        => $options['bank_code'],
-            'partner_trade_no' => $options['partner_trade_no'],
-            'enc_bank_no'      => $this->rsaEncode($options['enc_bank_no']),
-            'enc_true_name'    => $this->rsaEncode($options['enc_true_name']),
-        ], true, 'MD5', false);
+        $pay = new TransFresBank($this->config->get());
+        return $pay->create($options);
     }
 
     /**
@@ -310,120 +209,7 @@ class Pay
      */
     public function queryTransFresBank($partner_trade_no)
     {
-        $this->params->offsetUnset('appid');
-        $url = 'https://api.mch.weixin.qq.com/mmpaysptrans/query_bank';
-        return $this->callPostApi($url, ['partner_trade_no' => $partner_trade_no], true, 'MD5', false);
-    }
-
-    /**
-     * RSA加密处理
-     * @param string $string
-     * @param string $encrypted
-     * @return string
-     * @throws Exceptions\LocalCacheException
-     * @throws Exceptions\InvalidDecryptException
-     * @throws Exceptions\InvalidResponseException
-     */
-    private function rsaEncode($string, $encrypted = '')
-    {
-        $search = ['-----BEGIN RSA PUBLIC KEY-----', '-----END RSA PUBLIC KEY-----', "\n", "\r"];
-        $pkc1 = str_replace($search, '', $this->getRsaContent());
-        $publicKey = '-----BEGIN PUBLIC KEY-----' . PHP_EOL .
-            wordwrap('MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A' . $pkc1, 64, PHP_EOL, true) . PHP_EOL .
-            '-----END PUBLIC KEY-----';
-        if (!openssl_public_encrypt("{$string}", $encrypted, $publicKey, OPENSSL_PKCS1_OAEP_PADDING)) {
-            throw new InvalidDecryptException('Rsa Encrypt Error.');
-        }
-        return base64_encode($encrypted);
-    }
-
-    /**
-     * 获取签名文件内容
-     * @return string
-     * @throws Exceptions\LocalCacheException
-     * @throws Exceptions\InvalidResponseException
-     */
-    private function getRsaContent()
-    {
-        $cacheKey = "pub_ras_key_" . $this->config->get('mch_id');
-        if (($pub_key = Tools::getCache($cacheKey))) {
-            return $pub_key;
-        }
-        $data = $this->callPostApi('https://fraud.mch.weixin.qq.com/risk/getpublickey', [], true, 'MD5');
-        if (!isset($data['return_code']) || $data['return_code'] !== 'SUCCESS' || $data['result_code'] !== 'SUCCESS') {
-            $error = 'ResultError:' . $data['return_msg'];
-            $error .= isset($data['err_code_des']) ? ' - ' . $data['err_code_des'] : '';
-            throw new InvalidResponseException($error, 20000, $data);
-        }
-        Tools::setCache($cacheKey, $data['pub_key'], 600);
-        return $data['pub_key'];
-    }
-
-    /**
-     * 获取微信支付通知
-     * @return array
-     * @throws InvalidResponseException
-     */
-    public function getNotify()
-    {
-        $data = Tools::xml2arr(file_get_contents('php://input'));
-        if (!empty($data['sign'])) {
-            if ($this->getPaySign($data) === $data['sign']) {
-                return $data;
-            }
-        }
-        throw new InvalidResponseException('Invalid Notify.', '0');
-    }
-
-    /**
-     * 生成支付签名
-     * @param array $data 参与签名的数据
-     * @param string $signType 参与签名的类型
-     * @param string $buff 参与签名字符串前缀
-     * @return string
-     */
-    public function getPaySign(array $data, $signType = 'MD5', $buff = '')
-    {
-        unset($data['sign']);
-        ksort($data);
-        foreach ($data as $k => $v) {
-            $buff .= "{$k}={$v}&";
-        }
-        $buff .= ("key=" . $this->config->get('mch_key'));
-        if (strtoupper($signType) === 'MD5') {
-            return strtoupper(md5($buff));
-        }
-        return strtoupper(hash_hmac('SHA256', $buff, $this->config->get('mch_key')));
-    }
-
-    /**
-     * 以Post请求接口
-     * @param string $url 请求
-     * @param array $data 接口参数
-     * @param bool $isCert 是否需要使用双向证书
-     * @param string $signType 数据签名类型 MD5|SHA256
-     * @param bool $needSignType 是否需要传签名类型参数
-     * @return array
-     * @throws InvalidResponseException
-     */
-    public function callPostApi($url, array $data, $isCert = false, $signType = 'HMAC-SHA256', $needSignType = true)
-    {
-        $option = [];
-        if ($isCert) {
-            $option['ssl_cer'] = $this->config->get('ssl_cer');
-            $option['ssl_key'] = $this->config->get('ssl_key');
-            if (empty($option['ssl_cer']) || !file_exists($option['ssl_cer']))
-                throw new InvalidArgumentException("Missing Config -- ssl_cer", '0');
-            if (empty($option['ssl_key']) || !file_exists($option['ssl_key']))
-                throw new InvalidArgumentException("Missing Config -- ssl_key", '0');
-        }
-        $params = $this->params->merge($data);
-        $needSignType && ($params['sign_type'] = strtoupper($signType));
-        $params['sign'] = $this->getPaySign($params, $signType);
-        $result = Tools::xml2arr(Tools::post($url, Tools::arr2xml($params), $option));
-        if ($result['return_code'] !== 'SUCCESS') {
-            throw new InvalidResponseException($result['return_msg'], '0');
-        }
-        return $result;
+        $pay = new TransFresBank($this->config->get());
+        return $pay->query($partner_trade_no);
     }
 }

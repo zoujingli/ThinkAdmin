@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite0d2dad2bed8969160696ec97729e10a
+class ComposerStaticInit6588b91efff19d88b158b1c18209b5f4
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -23,6 +23,7 @@ class ComposerStaticInite0d2dad2bed8969160696ec97729e10a
         ),
         'W' => 
         array (
+            'WePay\\' => 6,
             'WeOpen\\' => 7,
             'WeMini\\' => 7,
             'WeChat\\' => 7,
@@ -57,6 +58,10 @@ class ComposerStaticInite0d2dad2bed8969160696ec97729e10a
         'app\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application',
+        ),
+        'WePay\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay',
         ),
         'WeOpen\\' => 
         array (
@@ -199,7 +204,9 @@ class ComposerStaticInite0d2dad2bed8969160696ec97729e10a
         'Symfony\\Component\\OptionsResolver\\Exception\\UndefinedOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/UndefinedOptionsException.php',
         'Symfony\\Component\\OptionsResolver\\Options' => __DIR__ . '/..' . '/symfony/options-resolver/Options.php',
         'Symfony\\Component\\OptionsResolver\\OptionsResolver' => __DIR__ . '/..' . '/symfony/options-resolver/OptionsResolver.php',
+        'We' => __DIR__ . '/..' . '/zoujingli/wechat-developer/We.php',
         'WeChat\\Card' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Card.php',
+        'WeChat\\Contracts\\BasicPay' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/BasicPay.php',
         'WeChat\\Contracts\\BasicPushEvent' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/BasicPushEvent.php',
         'WeChat\\Contracts\\BasicWeChat' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/BasicWeChat.php',
         'WeChat\\Contracts\\DataArray' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/DataArray.php',
@@ -208,6 +215,7 @@ class ComposerStaticInite0d2dad2bed8969160696ec97729e10a
         'WeChat\\Custom' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Custom.php',
         'WeChat\\Exceptions\\InvalidArgumentException' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Exceptions/InvalidArgumentException.php',
         'WeChat\\Exceptions\\InvalidDecryptException' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Exceptions/InvalidDecryptException.php',
+        'WeChat\\Exceptions\\InvalidInstanceException' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Exceptions/InvalidInstanceException.php',
         'WeChat\\Exceptions\\InvalidResponseException' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Exceptions/InvalidResponseException.php',
         'WeChat\\Exceptions\\LocalCacheException' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Exceptions/LocalCacheException.php',
         'WeChat\\Limit' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Limit.php',
@@ -241,6 +249,13 @@ class ComposerStaticInite0d2dad2bed8969160696ec97729e10a
         'WeOpen\\Login' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Login.php',
         'WeOpen\\MiniApp' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/MiniApp.php',
         'WeOpen\\Service' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Service.php',
+        'WePay\\Bill' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Bill.php',
+        'WePay\\Coupon' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Coupon.php',
+        'WePay\\Order' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Order.php',
+        'WePay\\Redpack' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Redpack.php',
+        'WePay\\Refund' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Refund.php',
+        'WePay\\TransFresBank' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/TransFresBank.php',
+        'WePay\\Transfers' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Transfers.php',
         'app\\admin\\controller\\Auth' => __DIR__ . '/../..' . '/application/admin/controller/Auth.php',
         'app\\admin\\controller\\Config' => __DIR__ . '/../..' . '/application/admin/controller/Config.php',
         'app\\admin\\controller\\Index' => __DIR__ . '/../..' . '/application/admin/controller/Index.php',
@@ -287,9 +302,9 @@ class ComposerStaticInite0d2dad2bed8969160696ec97729e10a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite0d2dad2bed8969160696ec97729e10a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite0d2dad2bed8969160696ec97729e10a::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInite0d2dad2bed8969160696ec97729e10a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6588b91efff19d88b158b1c18209b5f4::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6588b91efff19d88b158b1c18209b5f4::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6588b91efff19d88b158b1c18209b5f4::$classMap;
 
         }, null, ClassLoader::class);
     }

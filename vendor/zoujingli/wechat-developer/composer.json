@@ -12,6 +12,8 @@
     }
   ],
   "keywords": [
+    "WePay",
+    "WeMini",
     "WeChat",
     "WeChatPay",
     "WeChatDeveloper"
@@ -22,7 +24,11 @@
     "ext-openssl": "*"
   },
   "autoload": {
+    "classmap": [
+      "We.php"
+    ],
     "psr-4": {
+      "WePay\\": "WePay",
       "WeChat\\": "WeChat",
       "WeMini\\": "WeMini"
     }

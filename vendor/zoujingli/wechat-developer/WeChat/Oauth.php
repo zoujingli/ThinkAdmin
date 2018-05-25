@@ -41,6 +41,7 @@ class Oauth extends BasicWeChat
     /**
      * 通过 code 获取 AccessToken 和 openid
      * @return bool|array
+     * @throws Exceptions\InvalidResponseException
      */
     public function getOauthAccessToken()
     {
@@ -55,6 +56,7 @@ class Oauth extends BasicWeChat
      * 刷新AccessToken并续期
      * @param string $refresh_token
      * @return bool|array
+     * @throws Exceptions\InvalidResponseException
      */
     public function getOauthRefreshToken($refresh_token)
     {
@@ -68,6 +70,7 @@ class Oauth extends BasicWeChat
      * @param string $access_token 网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
      * @param string $openid 用户的唯一标识
      * @return array
+     * @throws Exceptions\InvalidResponseException
      */
     public function checkOauthAccessToken($access_token, $openid)
     {
@@ -81,6 +84,7 @@ class Oauth extends BasicWeChat
      * @param string $openid 用户的唯一标识
      * @param string $lang 返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
      * @return array
+     * @throws Exceptions\InvalidResponseException
      */
     public function getUserInfo($access_token, $openid, $lang = 'zh_CN')
     {

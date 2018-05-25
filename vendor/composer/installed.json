@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.7",
-        "version_normalized": "1.1.7.0",
+        "version": "v1.1.9",
+        "version_normalized": "1.1.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "f01ac5dafc85cb408fd3e0bafc462437785ae178"
+            "reference": "26419890645299e1850c648ed620f23069949271"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/f01ac5dafc85cb408fd3e0bafc462437785ae178.zip",
-            "reference": "f01ac5dafc85cb408fd3e0bafc462437785ae178",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/26419890645299e1850c648ed620f23069949271.zip",
+            "reference": "26419890645299e1850c648ed620f23069949271",
             "shasum": ""
         },
         "require": {
@@ -98,11 +98,15 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-05-16T05:48:16+00:00",
+        "time": "2018-05-25T02:47:12+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
+            "classmap": [
+                "We.php"
+            ],
             "psr-4": {
+                "WePay\\": "WePay",
                 "WeChat\\": "WeChat",
                 "WeMini\\": "WeMini"
             }
@@ -122,8 +126,10 @@
         "homepage": "https://github.com/zoujingli/WeChatDeveloper",
         "keywords": [
             "WeChatDeveloper",
+            "WeMini",
             "wechat",
-            "wechatpay"
+            "wechatpay",
+            "wepay"
         ]
     },
     {
