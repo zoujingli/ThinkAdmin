@@ -74,7 +74,6 @@ use think\Exception;
  * ----- ThinkService -----
  * @method mixed wechat() static 第三方微信工具
  * @method mixed config() static 第三方配置工具
- *
  */
 class WechatService
 {
