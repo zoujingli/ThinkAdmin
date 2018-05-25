@@ -28,6 +28,7 @@ class Tools extends BasicAdmin
     /**
      * 网页授权测试
      * @return string
+     * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */

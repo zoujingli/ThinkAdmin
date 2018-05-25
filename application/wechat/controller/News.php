@@ -14,7 +14,6 @@
 
 namespace app\wechat\controller;
 
-use app\wechat\controller\api\Tools;
 use app\wechat\service\MediaService;
 use controller\BasicAdmin;
 use service\DataService;
@@ -258,7 +257,7 @@ class News extends BasicAdmin
                     $data['filter'] = ['is_to_all' => false, 'tag_id' => join(',', $post['fans_tags'])];
                     $data['mpnews'] = ['media_id' => $newsinfo['media_id']];
                 }
-                if (WechatService::custom()->massSendAll($data)) {
+                if (WechatService::WeChatCustom()->massSendAll($data)) {
                     LogService::write('微信管理', "图文[{$news_id}]推送成功");
                     $this->success('微信图文推送成功！', '');
                 }
@@ -284,7 +283,7 @@ class News extends BasicAdmin
                 return "<img{$matches[1]}src=\"{$src}\"{$matches[3]}/>";
             }, $article['content']);
         }
-        $wechat = WechatService::media();
+        $wechat = WechatService::WeChatMedia();
         // 如果已经上传过，先删除之前的历史记录
         !empty($news['media_id']) && $wechat->delMaterial($news['media_id']);
         // 上传图文到微信服务器

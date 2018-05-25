@@ -16,6 +16,7 @@ namespace app\admin\controller;
 
 use controller\BasicAdmin;
 use service\LogService;
+use service\WechatService;
 
 /**
  * 后台参数配置控制器

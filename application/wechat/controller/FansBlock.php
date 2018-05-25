@@ -89,7 +89,7 @@ class FansBlock extends BasicAdmin
     {
         $openids = $this->_getActionOpenids();
         try {
-            WechatService::user()->batchUnblackList($openids);
+            WechatService::WeChatUser()->batchUnblackList($openids);
             Db::name($this->table)->whereIn('openid', $openids)->setField('is_black', '0');
         } catch (\Exception $e) {
             $this->error("设备黑名单失败，请稍候再试！" . $e->getMessage());

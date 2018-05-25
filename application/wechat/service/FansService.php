@@ -77,7 +77,7 @@ class FansService
      */
     public static function sync($next_openid = '')
     {
-        $wechat = WechatService::user();
+        $wechat = WechatService::WeChatUser();
         $result = $wechat->getUserList($next_openid);
         if (empty($result['data']['openid'])) {
             return false;
@@ -106,7 +106,7 @@ class FansService
      */
     public static function syncBlack($next_openid = '')
     {
-        $wechat = WechatService::user();
+        $wechat = WechatService::WeChatUser();
         $result = $wechat->getBlackList($next_openid);
         foreach (array_chunk($result['data']['openid'], 100) as $openids) {
             $info = $wechat->getBatchUserInfo($openids);

@@ -49,7 +49,7 @@ class Keys extends BasicAdmin
     {
         // 关键字二维码显示
         if ($this->request->get('action') === 'qrc') {
-            $wechat = WechatService::qrcode();
+            $wechat = WechatService::WeChatQrcode();
             $result = $wechat->create($this->request->get('keys', ''));
             $this->redirect($wechat->url($result['ticket']));
         }

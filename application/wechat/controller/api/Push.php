@@ -74,7 +74,7 @@ class Push
      */
     public function notify()
     {
-        $wechat = WechatService::receive();
+        $wechat = WechatService::WeChatReceive();
         $this->openid = $wechat->getOpenid();
         $this->receive = $wechat->getReceive();
         $this->appid = WechatService::getAppid();
@@ -251,7 +251,7 @@ class Push
         $msgData = ['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data];
         switch (strtolower(sysconf('wechat_type'))) {
             case 'api': // 参数对接，直接回复XML来实现消息回复
-                $wechat = WechatService::receive();
+                $wechat = WechatService::WeChatReceive();
                 switch (strtolower($type)) {
                     case 'text':
                         return $wechat->text($data['content'])->reply([], true);
@@ -272,7 +272,7 @@ class Push
                         return 'success';
                 }
             case 'thr': // 第三方平台，使用客服消息来实现
-                return WechatService::custom()->send($msgData);
+                return WechatService::WeChatCustom()->send($msgData);
             default:
                 return 'success';
         }
@@ -313,7 +313,7 @@ class Push
     protected function updateFansinfo($subscribe = true)
     {
         if ($subscribe) {
-            $userInfo = WechatService::user()->getUserInfo($this->openid);
+            $userInfo = WechatService::WeChatUser()->getUserInfo($this->openid);
             $userInfo['subscribe'] = intval($subscribe);
             FansService::set($userInfo);
         } else {
