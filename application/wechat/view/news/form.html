@@ -7,14 +7,18 @@
         <div class="panel-heading">图文列表</div>
         <div class="panel-body news-box">
             <div ng-if="list.length > 0" ng-repeat="x in list">
-                <div class="news-item transition" ng-click="setItem($index)" style="{{x.style}}" ng-class="x.active?'active':''">
-                    <a class="upload-multiple-close layui-icon hide">&#x1006;</a>
+                <div class="news-item transition" ng-click="setItem($index,$event)" style="{{x.style}}" ng-class="x.active?'active':''">
+                    <a ng-click="delItem($index, $event)" class="upload-multiple-close layui-icon hide">&#x1006;</a>
+                    <a ng-click="dnItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe61a;</a>
+                    <a ng-click="upItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe619;</a>
                     <span class="news-title" ng-bind="x.title"></span>
                 </div>
                 <hr/>
             </div>
-            <div ng-if="list.length<1" class="news-item transition  news-image">
-                <a class="upload-multiple-close layui-icon hide">&#x1006;</a>
+            <div ng-if="list.length<1" class="news-item transition active news-image">
+                <a ng-click="delItem($index, $event)" class="upload-multiple-close layui-icon hide">&#x1006;</a>
+                <a ng-click="dnItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe61a;</a>
+                <a ng-click="upItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe619;</a>
                 <span class="news-title"></span>
                 <hr/>
             </div>
@@ -143,7 +147,43 @@
                 $form.vali();
             }
 
-            $rootScope.setItem = function (index) {
+            $rootScope.upItem = function (index, $event) {
+                $event.stopPropagation();
+                var tmp = [], cur = $rootScope.list[index];
+                if (index < 1) {
+                    return false;
+                }
+                for (var i in $rootScope.list) {
+                    (parseInt(i) === parseInt(index) - 1) && tmp.push(cur);
+                    (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
+                }
+                apply(tmp);
+            };
+
+            $rootScope.dnItem = function (index, $event) {
+                $event.stopPropagation();
+                var tmp = [], cur = $rootScope.list[index];
+                if (index > $rootScope.list.length - 2) {
+                    return false;
+                }
+                for (var i in $rootScope.list) {
+                    (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
+                    (parseInt(i) === parseInt(index) + 1) && tmp.push(cur);
+                }
+                apply(tmp);
+            };
+
+            $rootScope.delItem = function (index, $event) {
+                $event.stopPropagation();
+                var list = $rootScope.list, temp = [];
+                for (var i in list) {
+                    (parseInt(i) !== parseInt(index)) && temp.push(list[i]);
+                }
+                apply(temp);
+            };
+
+            $rootScope.setItem = function (index, $event) {
+                $event.stopPropagation();
                 $form.vali();
                 if ($form.find('.validate-error').size() > 0) {
                     return 0;
@@ -243,6 +283,10 @@
         background-position: center center;
     }
 
+    .news-left .news-item:hover .upload-multiple-close {
+        display: inline-block !important;
+    }
+
     .news-left .news-item.active {
         border: 1px solid #44b549 !important;
     }
@@ -301,7 +345,7 @@
         height: 30px;
         float: right;
         margin-top: -1px;
-        line-height: 30px;
+        line-height: 34px;
         text-align: center;
         margin-right: -1px;
         background-color: rgba(0, 0, 0, .5);
