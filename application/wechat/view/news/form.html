@@ -138,6 +138,7 @@
                 for (var i in data) {
                     data[i].active = false;
                     data[i].style = "background-image:url('" + data[i].local_url + "?imageView2/1/w/338/h/190/interlace/1')";
+                    data[i].show_cover_pic = !!data[i].show_cover_pic;
                 }
                 $rootScope.list = data;
                 $rootScope.item = $rootScope.list[0];
