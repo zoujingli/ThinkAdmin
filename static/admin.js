@@ -616,7 +616,7 @@ $(function () {
 
     /*! 注册 data-tips-image 事件行为 */
     $body.on('click', '[data-tips-image]', function () {
-        var img = new Image(), src = this.getAttribute('data-tips-image') || this.src;
+        var img = new Image(), index = $.msg.loading();
         var imgWidth = this.getAttribute('data-width') || '480px';
         img.onload = function () {
             var $content = $(img).appendTo('body').css({background: '#fff', width: imgWidth, height: 'auto'});
@@ -625,10 +625,13 @@ $(function () {
                 skin: 'layui-layer-nobg', shadeClose: true, content: $content,
                 end: function () {
                     $(img).remove();
+                },
+                success: function () {
+                    $.msg.close(index);
                 }
             });
         };
-        img.src = src;
+        img.src = this.getAttribute('data-tips-image') || this.src;
     });
 
     /*! 注册 data-tips-text 事件行为 */
