@@ -57,7 +57,7 @@ class BasicApi
      */
     protected function error($msg, $data = [])
     {
-        ToolsService::success($msg, $data);
+        ToolsService::error($msg, $data);
     }
 
 }
