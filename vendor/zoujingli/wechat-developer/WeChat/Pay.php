@@ -20,7 +20,7 @@ use WePay\Bill;
 use WePay\Order;
 use WePay\Refund;
 use WePay\Transfers;
-use WePay\TransFresBank;
+use WePay\TransfersBank;
 
 /**
  * 微信支付商户
@@ -197,7 +197,7 @@ class Pay extends BasicPay
      */
     public function createTransfersBank(array $options)
     {
-        $pay = new TransFresBank($this->config->get());
+        $pay = new TransfersBank($this->config->get());
         return $pay->create($options);
     }
 
@@ -209,7 +209,7 @@ class Pay extends BasicPay
      */
     public function queryTransFresBank($partner_trade_no)
     {
-        $pay = new TransFresBank($this->config->get());
+        $pay = new TransfersBank($this->config->get());
         return $pay->query($partner_trade_no);
     }
 }

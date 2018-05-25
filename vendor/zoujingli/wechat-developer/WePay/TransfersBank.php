@@ -25,7 +25,7 @@ use WeChat\Exceptions\InvalidResponseException;
  * Class TransFresBank
  * @package WePay
  */
-class TransFresBank extends BasicPay
+class TransfersBank extends BasicPay
 {
 
     /**
