@@ -146,7 +146,7 @@ label.think-radio,label.think-checkbox{font-size:100%;font-weight:500;margin-bot
 /* 右则内容 */
 .framework-body{right:0;bottom:0;top:50px;left:220px;position:fixed;overflow-y:scroll;z-index:1}
 .framework-body>.layui-card{box-shadow:none}
-.framework-body>.layui-card>.layui-header{height:50px;line-height:50px;font-size:14px;background:#fff;padding-left:15px;box-shadow:0 1px 3px 0 rgba(0,0,0,.08);z-index:2;position:relative}
+.framework-body>.layui-card>.layui-header{height:50px;line-height:50px;font-size:14px;background:#fff;padding-left:15px;box-shadow:0 2px 3px 0 rgba(0,0,0,.1);z-index:2;position:relative}
 .framework-body>.layui-card>.layui-header span{color:#333;padding:3px 0;}
 .framework-body>.layui-card>.layui-header span:after{content:'/';padding-left:3px;padding-right:3px;}
 .framework-body>.layui-card>.layui-header span:last-child:after{content:''}
