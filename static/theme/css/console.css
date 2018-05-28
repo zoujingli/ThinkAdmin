@@ -47,9 +47,9 @@ a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}but
 .modal-form-box{padding:30px 60px 15px 0}
 .pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}
 .pace .pace-progress{background:#22df80;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}
-.uploadimage{display:inline-block;width:80px;height:80px;background: url('../img/image.png') no-repeat center center;background-size:cover;cursor:pointer}
+.uploadimage{display:inline-block;width:80px;height:80px;background:url('../img/image.png') no-repeat center center;background-size:cover;cursor:pointer}
 .uploadimagemtl{margin-right:8px;}
-.uploadimagemtl a{color:#fff;width:20px;height:20px;float:right;display:none;line-height:22px;text-align:center;background:rgba(0, 0, 0, 0.5)}
+.uploadimagemtl a{color:#fff;width:20px;height:20px;float:right;display:none;line-height:22px;text-align:center;background:rgba(0,0,0,0.5)}
 .uploadimagemtl:hover a{display:inline-block;cursor:pointer}
 .uploadimagemtl:hover a:hover{color:#fff;text-decoration:none}
 .hr-line-dashed{border-top:1px dashed #e7eaec;color:#fff;background-color:#fff;height:1px;margin:20px 0}
@@ -68,7 +68,7 @@ a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}but
 legend{width:auto!important;border-bottom:none!important}
 .layui-form-label{padding:9px 15px 9px 0;width:95px}
 .layui-input,.layui-select{line-height:38px}
-.layui-table.notevent tbody tr:hover {background-color: inherit;}
+.layui-table.notevent tbody tr:hover{background-color:inherit;}
 .layui-table th,.layui-table td{font-size:12px}
 .layui-table td .text-explode:first-child{opacity:0;display:none}
 .layui-table td .text-explode{color:#ccc!important;font-weight:normal!important;margin:0px 4px!important}
@@ -81,15 +81,15 @@ legend{width:auto!important;border-bottom:none!important}
 
 /** checkbox 优化 */
 label{font-size:100%;font-weight:500;margin-bottom:0}
-label.think-radio,label.think-checkbox{cursor:pointer;margin-top:8px;line-height:18px;margin-right:10px}
-input[type=checkbox],input[type=radio]{appearance:none;-webkit-appearance:none;display:inline-block!important;margin:0;width:18px;height:18px;cursor:pointer;background:#fff;border-radius:1px;position:relative;vertical-align:bottom;-moz-border-radius:1px;border:1px solid #dcdcdc;-webkit-border-radius:1px;box-sizing:border-box!important;-moz-box-sizing:border-box!important;-webkit-box-sizing:border-box!important}
-input[type=checkbox]:active,input[type=radio]:active{background:#ebebeb;border-color:#c6c6c6}
-input[type=checkbox]:hover{border-color:#c6c6c6;box-shadow:inset 0 1px 1px rgba(0,0,0,0.1);-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,0.1);-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.1)}
-input[type=radio]{width:18px;height:18px;border-radius:1em;-moz-border-radius:1em;-webkit-border-radius:1em}
-input[type=checkbox]:checked,input[type=radio]:checked{background:#fff}
-input[type=radio]:checked::after{top:4px;left:4px;width:8px;height:8px;content:'';display:block;background:#666;position:relative;border-radius:1em;-moz-border-radius:1em;-webkit-border-radius:1em}
-input[type=checkbox]:checked::after{top:-2px;left:-4px;display:block;position:absolute;content:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAtklEQVQ4y2P4//8/A7Ux1Q0cxoaCADIbCUgCMTvVXAoE5kA8CYidyXYpGrAH4iVAHIXiCwoMDQTimUBcBsRMlBrKCsTpUANzkC0j11BuIK6EGlgKsoAkQ4FgChD7AzELVI8YEDdDDawDYk6YQaQY6gg1oAqILYC4D8oHGcyLbBAphoJAKtQgGO4EYiHk2CLHUJAXm6AG9gCxNHoSIMdQEJCFGqiALaGSayjMxQwUGzq0S6nhZygA2ojsbh6J67kAAAAASUVORK5CYII=')}
-input[type=checkbox]:focus,input[type=radio]:focus{outline:none}
+.think-radio,.think-checkbox{cursor:pointer;margin-top:10px;line-height:18px;margin-right:10px;font-weight: normal}
+.think-checkbox input[type=checkbox],.think-radio input[type=radio]{appearance:none;-webkit-appearance:none;display:inline-block!important;margin:0;width:18px;height:18px;cursor:pointer;background:#fff;border-radius:1px;position:relative;vertical-align:bottom;-moz-border-radius:1px;border:1px solid #dcdcdc;-webkit-border-radius:1px;box-sizing:border-box !important;-moz-box-sizing:border-box!important;-webkit-box-sizing:border-box!important}
+.think-checkbox input[type=checkbox]:active,.think-radio input[type=radio]:active{background:#ebebeb;border-color:#c6c6c6}
+.think-checkbox input[type=checkbox]:hover{border-color:#c6c6c6;box-shadow:inset 0 1px 1px rgba(0,0,0,0.1);-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,0.1);-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.1)}
+.think-radio input[type=radio]{width:18px;height:18px;border-radius:1em;-moz-border-radius:1em;-webkit-border-radius:1em}
+.think-checkbox input[type=checkbox]:checked,.think-radio input[type=radio]:checked{background:#fff}
+.think-radio input[type=radio]:checked::after{top:4px;left:4px;width:8px;height:8px;content:'';display:block;background:#666;position:relative;border-radius:1em;-moz-border-radius:1em;-webkit-border-radius:1em}
+.think-checkbox input[type=checkbox]:checked::after{top:-2px;left:-4px;display:block;position:absolute;content:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAtklEQVQ4y2P4//8/A7Ux1Q0cxoaCADIbCUgCMTvVXAoE5kA8CYidyXYpGrAH4iVAHIXiCwoMDQTimUBcBsRMlBrKCsTpUANzkC0j11BuIK6EGlgKsoAkQ4FgChD7AzELVI8YEDdDDawDYk6YQaQY6gg1oAqILYC4D8oHGcyLbBAphoJAKtQgGO4EYiHk2CLHUJAXm6AG9gCxNHoSIMdQEJCFGqiALaGSayjMxQwUGzq0S6nhZygA2ojsbh6J67kAAAAASUVORK5CYII=')}
+.think-checkbox input[type=checkbox]:focus,.think-radio input[type=radio]:focus{outline:none}
 
 /** 手机盒子及微信菜单 */
 .mobile-preview{position:relative;width:317px;height:580px;background:url('../img/wechat/mobile_head.png') no-repeat 0 0}
@@ -146,7 +146,7 @@ input[type=checkbox]:focus,input[type=radio]:focus{outline:none}
 /* 右则内容 */
 .framework-body{right:0;bottom:0;top:50px;left:220px;position:fixed;overflow-y:scroll;z-index:1}
 .framework-body>.layui-card{box-shadow:none}
-.framework-body>.layui-card>.layui-header{height:50px;line-height:50px;font-size:14px;background:#fff;padding-left:15px;box-shadow:0 1px 3px 0 rgba(0,0,0,.08);z-index:2;position:relative}
+.framework-body>.layui-card>.layui-header{height:50px;line-height:50px;font-size:14px;background:#fff;padding-left:15px;box-shadow:0 2px 3px 0 rgba(0,0,0,.1);z-index:2;position:relative}
 .framework-body>.layui-card>.layui-header span{color:#333;padding:3px 0;}
 .framework-body>.layui-card>.layui-header span:after{content:'/';padding-left:3px;padding-right:3px;}
 .framework-body>.layui-card>.layui-header span:last-child:after{content:''}

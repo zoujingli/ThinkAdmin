@@ -1,6 +1,7 @@
-/.idea
 /.git
+/.idea
 /.DS_Store
 /vendor
 /Cache
 /Test/cert
+/composer.lock

@@ -20,10 +20,21 @@ class Config implements \ArrayAccess
     private $config = [];
 
     /**
-     * 缓存前缀
+     * 配置前缀
      * @var string
      */
     private $prefix = 'app';
+
+    /**
+     * 应用对象
+     * @var App
+     */
+    protected $app;
+
+    public function __construct(App $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * 设置配置参数默认前缀
@@ -50,9 +61,9 @@ class Config implements \ArrayAccess
             $type = pathinfo($config, PATHINFO_EXTENSION);
         }
 
-        $class = false !== strpos($type, '\\') ? $type : '\\think\\config\\driver\\' . ucwords($type);
+        $object = Loader::factory($type, '\\think\\config\\driver\\', $config);
 
-        return $this->set((new $class())->parse($config), $name);
+        return $this->set($object->parse(), $name);
     }
 
     /**
@@ -88,15 +99,14 @@ class Config implements \ArrayAccess
     protected function autoLoad($name)
     {
         // 如果尚未载入 则动态加载配置文件
-        $module = Container::get('request')->module();
+        $module = $this->app->request->module();
         $module = $module ? $module . DIRECTORY_SEPARATOR : '';
-        $app    = Container::get('app');
-        $path   = $app->getAppPath() . $module;
+        $path   = $this->app->getAppPath() . $module;
 
         if (is_dir($path . 'config')) {
-            $file = $path . 'config' . DIRECTORY_SEPARATOR . $name . $app->getConfigExt();
-        } elseif (is_dir($app->getConfigPath() . $module)) {
-            $file = $app->getConfigPath() . $module . $name . $app->getConfigExt();
+            $file = $path . 'config' . DIRECTORY_SEPARATOR . $name . $this->app->getConfigExt();
+        } elseif (is_dir($this->app->getConfigPath() . $module)) {
+            $file = $this->app->getConfigPath() . $module . $name . $this->app->getConfigExt();
         }
 
         if (isset($file) && is_file($file)) {

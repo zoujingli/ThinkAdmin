@@ -118,20 +118,14 @@ class BasicAdmin extends Controller
             $query = $this->request->get();
             $page = $db->paginate($rows, $total, ['query' => $query]);
             if (($totalNum = $page->total()) > 0) {
-                list($rowsHTML, $pageHTML, $maxNum) = [[], [], $page->lastPage()];
+                list($rowHTML, $curPage, $maxNum) = [[], $page->currentPage(), $page->lastPage()];
                 foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
                     list($query['rows'], $query['page']) = [$num, '1'];
                     $url = url('@admin') . '#' . $this->request->baseUrl() . '?' . http_build_query($query);
-                    $rowsHTML[] = "<option data-url='{$url}' " . ($rows === $num ? 'selected' : '') . " value='{$num}'>{$num}</option>";
-                }
-                for ($i = 1; $i <= $maxNum; $i++) {
-                    list($query['rows'], $query['page']) = [$rows, $i];
-                    $url = url('@admin') . '#' . $this->request->baseUrl() . '?' . http_build_query($query);
-                    $selected = $i === intval($page->currentPage()) ? 'selected' : '';
-                    $pageHTML[] = "<option data-url='{$url}' {$selected} value='{$i}'>{$i}</option>";
+                    $rowHTML[] = "<option data-url='{$url}' " . ($rows === $num ? 'selected' : '') . " value='{$num}'>{$num}</option>";
                 }
                 list($pattern, $replacement) = [['|href="(.*?)"|', '|pagination|'], ['data-open="$1"', 'pagination pull-right']];
-                $html = "<span class='pagination-trigger nowrap'>共 {$totalNum} 条记录，每页显示 <select data-auto-none>" . join('', $rowsHTML) . "</select> 条，共 " . ceil($totalNum / $rows) . " 页当前显示第 <select>" . join('', $pageHTML) . "</select> 页。</span>";
+                $html = "<span class='pagination-trigger nowrap'>共 {$totalNum} 条记录，每页显示 <select data-auto-none>" . join('', $rowHTML) . "</select> 条，共 {$maxNum} 页当前显示第 {$curPage} 页。</span>";
                 list($result['total'], $result['list'], $result['page']) = [$totalNum, $page->all(), $html . preg_replace($pattern, $replacement, $page->render())];
             } else {
                 list($result['total'], $result['list'], $result['page']) = [$totalNum, $page->all(), $page->render()];

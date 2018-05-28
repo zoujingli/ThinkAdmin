@@ -67,7 +67,7 @@ class MediaService
         if (($media_url = Db::name('WechatNewsImage')->where($map)->value('media_url'))) {
             return $media_url;
         }
-        $info = WechatService::media()->uploadImg(self::getServerPath($local_url));
+        $info = WechatService::WeChatMedia()->uploadImg(self::getServerPath($local_url));
         if (strtolower(sysconf('wechat_type')) === 'thr') {
             WechatService::wechat()->rmFile($local_url);
         }
@@ -93,7 +93,7 @@ class MediaService
         if (($media_id = Db::name('WechatNewsMedia')->where($map)->value('media_id'))) {
             return $media_id;
         }
-        $result = WechatService::media()->addMaterial(self::getServerPath($local_url), $type, $video_info);
+        $result = WechatService::WeChatMedia()->addMaterial(self::getServerPath($local_url), $type, $video_info);
         if (strtolower(sysconf('wechat_type')) === 'thr') {
             WechatService::wechat()->rmFile($local_url);
         }

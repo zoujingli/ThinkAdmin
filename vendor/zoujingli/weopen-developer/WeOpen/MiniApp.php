@@ -68,5 +68,58 @@ class MiniApp extends Service
         return "https://mp.weixin.qq.com/wxopen/componentrebindadmin?appid={$authorizerAppid}&component_appid={$componentAppid}&redirect_uri={$redirectUri}";
     }
 
+    /**
+     * 1、获取草稿箱内的所有临时代码草稿
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function getTemplateDraftList()
+    {
+        $component_access_token = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/wxa/gettemplatedraftlist?access_token={$component_access_token}";
+        return $this->httpGetForJson($url);
+    }
 
+    /**
+     * 2、获取代码模版库中的所有小程序代码模版
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function getTemplateList()
+    {
+        $component_access_token = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/wxa/gettemplatelist?access_token={$component_access_token}";
+        return $this->httpGetForJson($url);
+    }
+
+    /**
+     * 3、将草稿箱的草稿选为小程序代码模版
+     * @param integer $draft_id 草稿ID，本字段可通过“ 获取草稿箱内的所有临时代码草稿 ”接口获得
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function addToTemplate($draft_id)
+    {
+        $component_access_token = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/wxa/addtotemplate?access_token={$component_access_token}";
+        return $this->httpPostForJson($url, ['draft_id' => $draft_id]);
+    }
+
+    /**
+     * 4、删除指定小程序代码模版
+     * @param integer $template_id 要删除的模版ID
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function deleteTemplate($template_id)
+    {
+        $component_access_token = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/wxa/deletetemplate?access_token={$component_access_token}";
+        return $this->httpPostForJson($url, ['template_id' => $template_id]);
+    }
+    
 }

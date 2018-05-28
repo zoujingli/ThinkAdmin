@@ -33,8 +33,6 @@ class RuleGroup extends Rule
         'options' => [],
     ];
 
-    protected $rule;
-
     // MISS路由
     protected $miss;
 
@@ -111,11 +109,10 @@ class RuleGroup extends Rule
      * @access public
      * @param  Request      $request  请求对象
      * @param  string       $url      访问地址
-     * @param  string       $depr     路径分隔符
      * @param  bool         $completeMatch   路由是否完全匹配
      * @return Dispatch|false
      */
-    public function check($request, $url, $depr = '/', $completeMatch = false)
+    public function check($request, $url, $completeMatch = false)
     {
         if ($dispatch = $this->checkCrossDomain($request)) {
             // 跨域OPTIONS请求
@@ -132,7 +129,7 @@ class RuleGroup extends Rule
             $this->buildResourceRule($this->resource, $this->option);
         } elseif ($this->rule) {
             if ($this->rule instanceof Response) {
-                return new ResponseDispatch($this->rule);
+                return new ResponseDispatch($request, $this, $this->rule);
             }
 
             $this->parseGroupRule($this->rule);
@@ -159,7 +156,7 @@ class RuleGroup extends Rule
 
         if (!empty($this->option['merge_rule_regex'])) {
             // 合并路由正则规则进行路由匹配检查
-            $result = $this->checkMergeRuleRegex($request, $rules, $url, $depr, $completeMatch);
+            $result = $this->checkMergeRuleRegex($request, $rules, $url, $completeMatch);
 
             if (false !== $result) {
                 return $result;
@@ -168,7 +165,7 @@ class RuleGroup extends Rule
 
         // 检查分组路由
         foreach ($rules as $key => $item) {
-            $result = $item->check($request, $url, $depr, $completeMatch);
+            $result = $item->check($request, $url, $completeMatch);
 
             if (false !== $result) {
                 return $result;
@@ -177,10 +174,10 @@ class RuleGroup extends Rule
 
         if ($this->auto) {
             // 自动解析URL地址
-            $result = new UrlDispatch($this->auto . '/' . $url, ['depr' => $depr, 'auto_search' => false]);
+            $result = new UrlDispatch($request, $this, $this->auto . '/' . $url, ['auto_search' => false]);
         } elseif ($this->miss && in_array($this->miss->getMethod(), ['*', $method])) {
             // 未匹配所有路由的路由规则处理
-            $result = $this->parseRule($request, '', $this->miss->getRoute(), $url, $this->miss->getOption());
+            $result = $this->miss->parseRule($request, '', $this->miss->getRoute(), $url, $this->miss->getOption());
         } else {
             $result = false;
         }
@@ -268,13 +265,13 @@ class RuleGroup extends Rule
      * @param  Request      $request  请求对象
      * @param  array        $rules    路由规则
      * @param  string       $url      访问地址
-     * @param  string       $depr     路径分隔符
      * @param  bool         $completeMatch   路由是否完全匹配
      * @return Dispatch|false
      */
-    protected function checkMergeRuleRegex($request, &$rules, $url, $depr, $completeMatch)
+    protected function checkMergeRuleRegex($request, &$rules, $url, $completeMatch)
     {
-        $url = $depr . str_replace('|', $depr, $url);
+        $depr = $this->router->config('pathinfo_depr');
+        $url  = $depr . str_replace('|', $depr, $url);
 
         foreach ($rules as $key => $item) {
             if ($item instanceof RuleItem) {

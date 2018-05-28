@@ -8,7 +8,11 @@ $config = [
     'appsecret' => '78b7b8d65bd67b078babf951d4342b42',
 ];
 
-$mini = new WeMini\Qrcode($config);
+//We::config($config);
+
+$mini = We::WeMiniQrcode($config);
+
+//$mini = new WeMini\Qrcode($config);
 
 //echo '<pre>';
 try {

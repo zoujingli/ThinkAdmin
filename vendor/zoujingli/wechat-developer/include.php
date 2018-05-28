@@ -12,7 +12,6 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
-// 动态注册SDK自动加载
 spl_autoload_register(function ($classname) {
     $separator = DIRECTORY_SEPARATOR;
     $filename = __DIR__ . $separator . str_replace('\\', $separator, $classname) . '.php';
@@ -21,6 +20,12 @@ spl_autoload_register(function ($classname) {
             include $filename;
         }
         if (stripos($classname, 'WeMini') === 0) {
+            include $filename;
+        }
+        if (stripos($classname, 'WePay') === 0) {
+            include $filename;
+        }
+        if ($classname === 'We') {
             include $filename;
         }
     }

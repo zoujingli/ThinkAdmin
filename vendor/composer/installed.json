@@ -10,7 +10,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-installer/f5400a12c60e513911aef41fe443fa6920952675.zip",
+            "url": "https://api.github.com/repos/top-think/think-installer/zipball/f5400a12c60e513911aef41fe443fa6920952675",
             "reference": "f5400a12c60e513911aef41fe443fa6920952675",
             "shasum": ""
         },
@@ -53,7 +53,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/ip2region/5d981fbf3b574bad7fe9652e7aecba0920f54325.zip",
+            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/5d981fbf3b574bad7fe9652e7aecba0920f54325",
             "reference": "5d981fbf3b574bad7fe9652e7aecba0920f54325",
             "shasum": ""
         },
@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.6",
-        "version_normalized": "1.1.6.0",
+        "version": "v1.1.10",
+        "version_normalized": "1.1.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "095471bdc61e3389135f69b1849069c19d439f22"
+            "reference": "fd179277a64b5435140617ef2fa3a2420d55795e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/095471bdc61e3389135f69b1849069c19d439f22.zip",
-            "reference": "095471bdc61e3389135f69b1849069c19d439f22",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/fd179277a64b5435140617ef2fa3a2420d55795e",
+            "reference": "fd179277a64b5435140617ef2fa3a2420d55795e",
             "shasum": ""
         },
         "require": {
@@ -98,11 +98,15 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-05-11T09:54:48+00:00",
+        "time": "2018-05-27T14:38:28+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
+            "classmap": [
+                "We.php"
+            ],
             "psr-4": {
+                "WePay\\": "WePay",
                 "WeChat\\": "WeChat",
                 "WeMini\\": "WeMini"
             }
@@ -122,8 +126,10 @@
         "homepage": "https://github.com/zoujingli/WeChatDeveloper",
         "keywords": [
             "WeChatDeveloper",
+            "WeMini",
             "wechat",
-            "wechatpay"
+            "wechatpay",
+            "wepay"
         ]
     },
     {
@@ -133,12 +139,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "fac7e7596edecd2abb7aad2168db3f253566cbf8"
+            "reference": "d5fb9d2b307251c7faedcb61758119bcb5b836d0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/fac7e7596edecd2abb7aad2168db3f253566cbf8.zip",
-            "reference": "fac7e7596edecd2abb7aad2168db3f253566cbf8",
+            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/d5fb9d2b307251c7faedcb61758119bcb5b836d0",
+            "reference": "d5fb9d2b307251c7faedcb61758119bcb5b836d0",
             "shasum": ""
         },
         "require": {
@@ -147,7 +153,7 @@
             "php": ">=5.4",
             "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2018-05-12T07:54:53+00:00",
+        "time": "2018-05-23T07:29:30+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -178,17 +184,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.13",
-        "version_normalized": "5.1.13.0",
+        "version": "v5.1.14",
+        "version_normalized": "5.1.14.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "1cc81707dab128e360405aa4811a27b7a5403a78"
+            "reference": "6448c4b42599d58125ba1307aa6d3defa044aeb9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/1cc81707dab128e360405aa4811a27b7a5403a78.zip",
-            "reference": "1cc81707dab128e360405aa4811a27b7a5403a78",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/6448c4b42599d58125ba1307aa6d3defa044aeb9",
+            "reference": "6448c4b42599d58125ba1307aa6d3defa044aeb9",
             "shasum": ""
         },
         "require": {
@@ -204,7 +210,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-05-11T07:50:00+00:00",
+        "time": "2018-05-19T13:37:11+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -240,7 +246,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/think-captcha/54c8a51552f99ff9ea89ea9c272383a8f738ceee.zip",
+            "url": "https://api.github.com/repos/top-think/think-captcha/zipball/54c8a51552f99ff9ea89ea9c272383a8f738ceee",
             "reference": "54c8a51552f99ff9ea89ea9c272383a8f738ceee",
             "shasum": ""
         },
@@ -272,27 +278,27 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.3.6",
-        "version_normalized": "3.3.6.0",
+        "version": "v3.4.11",
+        "version_normalized": "3.4.11.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0"
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/symfony/options-resolver/ff48982d295bcac1fd861f934f041ebc73ae40f0.zip",
-            "reference": "ff48982d295bcac1fd861f934f041ebc73ae40f0",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/f3109a6aedd20e35c3a33190e932c2b063b7b50e",
+            "reference": "f3109a6aedd20e35c3a33190e932c2b063b7b50e",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.5.9"
+            "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2017-04-12T14:14:56+00:00",
+        "time": "2018-01-11T07:56:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.3-dev"
+                "dev-master": "3.4-dev"
             }
         },
         "installation-source": "dist",
@@ -337,7 +343,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/endroid/qr-code/c9644bec2a9cc9318e98d1437de3c628dcd1ef93.zip",
+            "url": "https://api.github.com/repos/endroid/qr-code/zipball/c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
             "reference": "c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
             "shasum": ""
         },
@@ -399,7 +405,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/aliyun/aliyun-oss-php-sdk/e69f57916678458642ac9d2fd341ae78a56996c8.zip",
+            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/e69f57916678458642ac9d2fd341ae78a56996c8",
             "reference": "e69f57916678458642ac9d2fd341ae78a56996c8",
             "shasum": ""
         },
@@ -433,17 +439,17 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.5",
-        "version_normalized": "7.2.5.0",
+        "version": "v7.2.6",
+        "version_normalized": "7.2.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0"
+            "reference": "305ce1c1c0c71f794661fe45a96facf61ef96c5d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/qiniu/php-sdk/0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0.zip",
-            "reference": "0a6e6c75cbc0429fac69ba9aaadb1f5d6c676fb0",
+            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/305ce1c1c0c71f794661fe45a96facf61ef96c5d",
+            "reference": "305ce1c1c0c71f794661fe45a96facf61ef96c5d",
             "shasum": ""
         },
         "require": {
@@ -453,7 +459,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2018-05-10T09:26:30+00:00",
+        "time": "2018-05-18T04:37:29+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

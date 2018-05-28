@@ -182,7 +182,7 @@
     <table class="layui-table" lay-size="sm">
         <thead>
         <tr>
-            <th class='list-table-check-td'>
+            <th class='list-table-check-td think-checkbox'>
                 <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'/>
             </th>
             <th class="text-left">会员信息</th>
@@ -206,7 +206,7 @@
         <tbody>
         {foreach $list as $key=>$vo}
         <tr>
-            <td class='list-table-check-td text-top'>
+            <td class='list-table-check-td text-top think-checkbox'>
                 <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
             </td>
             <td class="text-left text-top nowrap">

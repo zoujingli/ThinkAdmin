@@ -31,6 +31,7 @@ require.config({
         'angular': ['plugs/angular/angular.min'],
         'ckeditor': ['plugs/ckeditor/ckeditor'],
         'websocket': ['plugs/socket/websocket'],
+        'clipboard': ['plugs/clipboard/clipboard.min'],
         // jQuery
         'jquery.ztree': ['plugs/ztree/jquery.ztree.all.min'],
         'jquery.masonry': ['plugs/jquery/masonry.min'],

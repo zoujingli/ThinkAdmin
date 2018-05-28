@@ -15,7 +15,7 @@
         config.format_tags = 'p;h1;h2;h3;pre';
         config.removeButtons = 'Underline,Subscript,Superscript';
         config.removeDialogTabs = 'image:advanced;link:advanced';
-        config.font_names = '宋体/SimSun;新宋体/NSimSun;仿宋_GB2312/FangSong_GB2312;楷体_GB2312/KaiTi_GB2312;黑体/SimHei;微软雅黑/Microsoft YaHei;' + config.font_names;
+        config.font_names = '宋体/SimSun;新宋体/NSimSun;仿宋/FangSong;楷体/KaiTi;黑体/SimHei;微软雅黑/Microsoft YaHei;' + config.font_names;
     };
 
     // 自定义图片上传插件

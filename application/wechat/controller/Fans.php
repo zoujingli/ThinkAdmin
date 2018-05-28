@@ -92,7 +92,7 @@ class Fans extends BasicAdmin
     {
         try {
             $openids = $this->_getActionOpenids();
-            WechatService::user()->batchBlackList($openids);
+            WechatService::WeChatUser()->batchBlackList($openids);
             Db::name($this->table)->whereIn('openid', $openids)->setField('is_black', '1');
         } catch (\Exception $e) {
             $this->error("设置黑名单失败，请稍候再试！");
@@ -113,7 +113,7 @@ class Fans extends BasicAdmin
         $fans = Db::name('WechatFans')->where(['id' => $fans_id])->find();
         empty($fans) && $this->error('需要操作的数据不存在!');
         try {
-            $wechat = WechatService::tags();
+            $wechat = WechatService::WeChatTags();
             foreach (explode(',', $fans['tagid_list']) as $tagid) {
                 is_numeric($tagid) && $wechat->batchUntagging([$fans['openid']], $tagid);
             }
@@ -136,7 +136,7 @@ class Fans extends BasicAdmin
         empty($tagid) && $this->error('没有可能操作的标签ID');
         try {
             $openids = $this->_getActionOpenids();
-            WechatService::tags()->batchTagging($openids, $tagid);
+            WechatService::WeChatTags()->batchTagging($openids, $tagid);
         } catch (\Exception $e) {
             $this->error("设置粉丝标签失败, 请稍候再试! " . $e->getMessage());
         }
@@ -152,7 +152,7 @@ class Fans extends BasicAdmin
         empty($tagid) && $this->error('没有可能操作的标签ID');
         try {
             $openids = $this->_getActionOpenids();
-            WechatService::tags()->batchUntagging($openids, $tagid);
+            WechatService::WeChatTags()->batchUntagging($openids, $tagid);
         } catch (\Exception $e) {
             $this->error("删除粉丝标签失败, 请稍候再试! ");
         }
