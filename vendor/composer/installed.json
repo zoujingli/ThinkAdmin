@@ -80,17 +80,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.9",
-        "version_normalized": "1.1.9.0",
+        "version": "v1.1.10",
+        "version_normalized": "1.1.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "12052df1505dfb3a6c95ab8892a6c228ae3a366a"
+            "reference": "fd179277a64b5435140617ef2fa3a2420d55795e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/12052df1505dfb3a6c95ab8892a6c228ae3a366a",
-            "reference": "12052df1505dfb3a6c95ab8892a6c228ae3a366a",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/fd179277a64b5435140617ef2fa3a2420d55795e",
+            "reference": "fd179277a64b5435140617ef2fa3a2420d55795e",
             "shasum": ""
         },
         "require": {
@@ -98,7 +98,7 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-05-25T08:14:33+00:00",
+        "time": "2018-05-27T14:38:28+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -278,8 +278,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.10",
-        "version_normalized": "3.4.10.0",
+        "version": "v3.4.11",
+        "version_normalized": "3.4.11.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",

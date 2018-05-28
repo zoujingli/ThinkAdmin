@@ -65,7 +65,7 @@ use think\Exception;
  * @method \WePay\Coupon WePayCoupon() static 微信商户代金券
  * @method \WePay\Redpack WePayRedpack() static 微信红包支持
  * @method \WePay\Transfers WePayTransfers() static 微信商户打款到零钱
- * @method \WePay\TransfersBank WePayTransFresBank() static 微信商户打款到银行卡
+ * @method \WePay\TransfersBank WePayTransfersBank() static 微信商户打款到银行卡
  *
  * ----- WeOpen -----
  * @method \WeOpen\Login login() static 第三方微信登录

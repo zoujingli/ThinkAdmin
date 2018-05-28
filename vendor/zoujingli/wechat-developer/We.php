@@ -57,13 +57,13 @@ use WeChat\Exceptions\InvalidInstanceException;
  * @method \WePay\Coupon WePayCoupon($options = []) static 微信商户代金券
  * @method \WePay\Redpack WePayRedpack($options = []) static 微信红包支持
  * @method \WePay\Transfers WePayTransfers($options = []) static 微信商户打款到零钱
- * @method \WePay\TransfersBank WePayTransFresBank($options = []) static 微信商户打款到银行卡
+ * @method \WePay\TransfersBank WePayTransfersBank($options = []) static 微信商户打款到银行卡
  */
 class We
 {
     /**
      * 静态配置
-     * @var array
+     * @var DataArray
      */
     private static $config;
 

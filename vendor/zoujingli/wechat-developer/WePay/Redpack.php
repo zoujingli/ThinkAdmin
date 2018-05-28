@@ -35,7 +35,7 @@ class Redpack extends BasicPay
         $this->params->offsetUnset('appid');
         $this->params->set('wxappid', $this->config->get('appid'));
         $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
-        return $this->callPostApi($url, $options, true);
+        return $this->callPostApi($url, $options, true, 'MD5', false);
     }
 
     /**
@@ -49,21 +49,21 @@ class Redpack extends BasicPay
         $this->params->offsetUnset('appid');
         $this->params->set('wxappid', $this->config->get('appid'));
         $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendgroupredpack";
-        return $this->callPostApi($url, $options, true);
+        return $this->callPostApi($url, $options, true, 'MD5', false);
     }
 
     /**
      * 查询红包记录
-     * @param array $options
+     * @param string $mchBillno 商户发放红包的商户订单号
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      */
-    public function query(array $options)
+    public function query($mchBillno)
     {
         $this->params->offsetUnset('wxappid');
         $this->params->set('appid', $this->config->get('appid'));
         $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo";
-        return $this->callPostApi($url, $options, true);
+        return $this->callPostApi($url, ['mch_billno' => $mchBillno, 'bill_type' => 'MCHT'], true, 'MD5', false);
     }
 
 }
