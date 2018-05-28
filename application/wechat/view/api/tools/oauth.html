@@ -58,7 +58,7 @@
     {if isset($fans.fansinfo.privilege.0)}
     <div class="weui-cell">
         <div class="weui-cell__bd">设备网络</div>
-        <div class="weui-cell__ft">{$fans.fansinfo.privilege.0}</div>
+        <div class="weui-cell__ft">{$fans.fansinfo.privilege.0|default='未获取到网络信息'}</div>
     </div>
     {/if}
 </div>
