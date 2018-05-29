@@ -210,8 +210,8 @@
                 <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
             </td>
             <td class="text-left text-top nowrap">
-                会员昵称：{$vo.member.nickname|default='<span class="color-desc">未设置会员昵称</span>'}<br>
-                会员手机：{$vo.member.phone|default='<span class="color-desc">未设置会员手机</span>'}
+                会员昵称：{$vo.member.nickname|default='<span class="color-desc">未设置会员昵称</span>'|raw}<br>
+                会员手机：{$vo.member.phone|default='<span class="color-desc">未设置会员手机</span>'|raw}
             </td>
             <td class="text-left text-top nowrap">
                 订单单号：<b>{$vo.order_no}</b> {if $vo.type eq 3}<span class="layui-badge-rim">套餐</span> {/if}
