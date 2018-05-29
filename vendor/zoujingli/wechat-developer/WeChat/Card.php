@@ -388,6 +388,65 @@ class Card extends BasicWeChat
         return $this->httpPostForJson($url, $data);
     }
 
+
+    /**
+     * 激活会员卡
+     * @param array $data
+     * @return array
+     * @throws Exceptions\InvalidResponseException
+     * @throws Exceptions\LocalCacheException
+     */
+    public function activateMemberCard(array $data)
+    {
+        $url = 'https://api.weixin.qq.com/card/membercard/activate?access_token=ACCESS_TOKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->httpPostForJson($url, $data);
+    }
+
+    /**
+     * 设置开卡字段接口
+     * 用户激活时需要填写的选项
+     * @param array $data
+     * @return array
+     * @throws Exceptions\InvalidResponseException
+     * @throws Exceptions\LocalCacheException
+     */
+    public function setActivateMemberCardUser(array $data)
+    {
+        $url = 'https://api.weixin.qq.com/card/membercard/activateuserform/set?access_token=ACCESS_TOKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->httpPostForJson($url, $data);
+    }
+
+    /**
+     * 获取用户提交资料
+     * 根据activate_ticket获取到用户填写的信息
+     * @param string $activate_ticket
+     * @return array
+     * @throws Exceptions\InvalidResponseException
+     * @throws Exceptions\LocalCacheException
+     */
+    public function getActivateMemberCardTempinfo($activate_ticket)
+    {
+        $url = 'https://api.weixin.qq.com/card/membercard/activatetempinfo/get?access_token=ACCESS_TOKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->httpPostForJson($url, ['activate_ticket' => $activate_ticket]);
+    }
+
+    /**
+     * 更新会员信息
+     * @param array $data
+     * @return array
+     * @throws Exceptions\InvalidResponseException
+     * @throws Exceptions\LocalCacheException
+     */
+    public function updateMemberCardUser(array $data)
+    {
+        $url = 'https://api.weixin.qq.com/card/membercard/updateuser?access_token=ACCESS_TOKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->httpPostForJson($url, $data);
+    }
+
     /**
      * 拉取会员卡概况数据接口
      * @param string $begin_date 查询数据的起始时间
@@ -610,7 +669,6 @@ class Card extends BasicWeChat
         $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->httpPostForJson($url, $data);
     }
-
 
 
 }

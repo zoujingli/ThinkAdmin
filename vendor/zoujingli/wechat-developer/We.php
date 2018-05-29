@@ -100,7 +100,7 @@ class We
             $class = 'WePay\\' . substr($name, 5);
         }
         if (!empty($class) && class_exists($class)) {
-            $option = array_pop($arguments);
+            $option = array_shift($arguments);
             $config = is_array($option) ? $option : self::$config->get();
             return new $class($config);
         }
