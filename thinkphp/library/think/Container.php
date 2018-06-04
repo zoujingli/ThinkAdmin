@@ -179,6 +179,21 @@ class Container implements \ArrayAccess
     }
 
     /**
+     * 判断容器中是否存在对象实例
+     * @access public
+     * @param  string    $abstract    类名或者标识
+     * @return bool
+     */
+    public function exists($abstract)
+    {
+        if (isset($this->bind[$abstract])) {
+            $abstract = $this->bind[$abstract];
+        }
+
+        return isset($this->instances[$abstract]);
+    }
+
+    /**
      * 判断容器中是否存在类及标识
      * @access public
      * @param  string    $name    类名或者标识
@@ -420,12 +435,13 @@ class Container implements \ArrayAccess
      */
     protected function getObjectParam($className, &$vars)
     {
-        $value = array_shift($vars);
+        $array = $vars;
+        $value = array_shift($array);
 
         if ($value instanceof $className) {
             $result = $value;
+            array_shift($vars);
         } else {
-            array_unshift($vars, $value);
             $result = $this->make($className);
         }
 

@@ -17,29 +17,26 @@ use think\route\Dispatch;
 
 class Url extends Dispatch
 {
-    protected function init()
+    public function init()
     {
         // 解析默认的URL规则
-        $depr   = $this->rule->getConfig('pathinfo_depr');
-        $result = $this->parseUrl($this->dispatch, $depr);
+        $result = $this->parseUrl($this->dispatch);
 
-        $this->dispatch = new Module($this->request, $this->rule, $result);
+        return (new Module($this->request, $this->rule, $result))->init();
     }
 
     public function exec()
-    {
-        return $this->dispatch->exec();
-    }
+    {}
 
     /**
      * 解析URL地址
      * @access protected
      * @param  string   $url URL
-     * @param  string   $depr 分隔符
      * @return array
      */
-    protected function parseUrl($url, $depr)
+    protected function parseUrl($url)
     {
+        $depr = $this->rule->getConfig('pathinfo_depr');
         $bind = $this->rule->getRouter()->getBind();
 
         if (!empty($bind) && preg_match('/^[a-z]/is', $bind)) {

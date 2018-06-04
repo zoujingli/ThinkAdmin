@@ -89,7 +89,7 @@ abstract class Rule
      */
     protected $doAfter;
 
-    abstract public function check($request, $url, $depr = '/');
+    abstract public function check($request, $url, $completeMatch = false);
 
     /**
      * 获取Name
@@ -257,6 +257,19 @@ abstract class Rule
     public function name($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * 设置变量
+     * @access public
+     * @param  array  $vars 变量
+     * @return $this
+     */
+    public function vars($vars)
+    {
+        $this->vars = $vars;
 
         return $this;
     }
@@ -879,9 +892,6 @@ abstract class Rule
                 }, $url);
             }
         }
-
-        // 设置当前请求的参数
-        $request->route($var);
     }
 
     /**
@@ -1040,5 +1050,15 @@ abstract class Rule
         array_unshift($args, $method);
 
         return call_user_func_array([$this, 'option'], $args);
+    }
+
+    public function __sleep()
+    {
+        return ['name', 'rule', 'route', 'method', 'vars', 'option', 'pattern', 'doAfter'];
+    }
+
+    public function __wakeup()
+    {
+        $this->router = Container::get('route');
     }
 }

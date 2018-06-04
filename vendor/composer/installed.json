@@ -49,18 +49,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ip2region.git",
-            "reference": "5d981fbf3b574bad7fe9652e7aecba0920f54325"
+            "reference": "0a55d6c1ab6b4cbaa204824557aa950aaaefda0e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/ip2region/5d981fbf3b574bad7fe9652e7aecba0920f54325.zip",
-            "reference": "5d981fbf3b574bad7fe9652e7aecba0920f54325",
+            "url": "https://files.phpcomposer.com/files/zoujingli/ip2region/0a55d6c1ab6b4cbaa204824557aa950aaaefda0e.zip",
+            "reference": "0a55d6c1ab6b4cbaa204824557aa950aaaefda0e",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.3"
+            "php": ">=5.3"
         },
-        "time": "2017-11-09T03:36:17+00:00",
+        "time": "2018-06-01T02:21:05+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -70,9 +70,16 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "Apache 2.0"
+            "Apache-2.0"
         ],
-        "description": "Ip2Region",
+        "authors": [
+            {
+                "name": "Anyon",
+                "email": "zoujingli@qq.com",
+                "homepage": "http://ctolog.com"
+            }
+        ],
+        "description": "Ip2Region for PHP",
         "homepage": "https://github.com/zoujingli/Ip2Region",
         "keywords": [
             "Ip2Region"
@@ -184,17 +191,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.14",
-        "version_normalized": "5.1.14.0",
+        "version": "v5.1.15",
+        "version_normalized": "5.1.15.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "6448c4b42599d58125ba1307aa6d3defa044aeb9"
+            "reference": "04d8180148fe11610a9601ed6a7d7320998d21f1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/6448c4b42599d58125ba1307aa6d3defa044aeb9.zip",
-            "reference": "6448c4b42599d58125ba1307aa6d3defa044aeb9",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/04d8180148fe11610a9601ed6a7d7320998d21f1.zip",
+            "reference": "04d8180148fe11610a9601ed6a7d7320998d21f1",
             "shasum": ""
         },
         "require": {
@@ -210,7 +217,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-05-19T13:37:11+00:00",
+        "time": "2018-06-01T03:56:50+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
