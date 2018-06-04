@@ -631,6 +631,9 @@ $(function () {
                 }
             });
         };
+        img.onerror = function (e) {
+            $.msg.close(index);
+        };
         img.src = this.getAttribute('data-tips-image') || this.src;
     });
 
