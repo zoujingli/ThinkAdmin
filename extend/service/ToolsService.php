@@ -70,23 +70,25 @@ class ToolsService
 
     /**
      * 返回成功的操作
-     * @param string $msg 消息内容
+     * @param mixed $msg 消息内容
      * @param array $data 返回数据
+     * @param integer $code 返回代码
      */
-    public static function success($msg, $data = [])
+    public static function success($msg, $data = [], $code = 1)
     {
-        $result = ['code' => 1, 'msg' => $msg, 'data' => $data, 'token' => encode(session_name() . '=' . session_id())];
+        $result = ['code' => $code, 'msg' => $msg, 'data' => $data, 'token' => encode(session_name() . '=' . session_id())];
         throw new HttpResponseException(Response::create($result, 'json', 200, self::corsRequestHander()));
     }
 
     /**
      * 返回失败的请求
-     * @param string $msg 消息内容
+     * @param mixed $msg 消息内容
      * @param array $data 返回数据
+     * @param integer $code 返回代码
      */
-    public static function error($msg, $data = [])
+    public static function error($msg, $data = [], $code = 0)
     {
-        $result = ['code' => 0, 'msg' => $msg, 'data' => $data, 'token' => encode(session_name() . '=' . session_id())];
+        $result = ['code' => $code, 'msg' => $msg, 'data' => $data, 'token' => encode(session_name() . '=' . session_id())];
         throw new HttpResponseException(Response::create($result, 'json', 200, self::corsRequestHander()));
     }
 
