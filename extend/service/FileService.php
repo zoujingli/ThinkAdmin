@@ -156,8 +156,9 @@ class FileService
      */
     public static function getBaseUriLocal()
     {
-        $appRoot = request()->root(true); // 如果你想获取相对url地址，这里去掉参数 true
+        $appRoot = request()->root(true);  // 去掉参数 true 将获得相对地址
         $uriRoot = preg_match('/\.php$/', $appRoot) ? dirname($appRoot) : $appRoot;
+        $uriRoot = in_array($uriRoot, ['/', '\\']) ? '' : $uriRoot;
         return "{$uriRoot}/static/upload/";
     }
 
