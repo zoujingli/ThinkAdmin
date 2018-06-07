@@ -1,4 +1,7 @@
-[![Latest Stable Version](https://poser.pugx.org/zoujingli/weopen-developer/v/stable)](https://packagist.org/packages/weopen-developer) [![Latest Unstable Version](https://poser.pugx.org/zoujingli/weopen-developer/v/unstable)](https://packagist.org/packages/zoujingli/weopen-developer) [![Total Downloads](https://poser.pugx.org/zoujingli/weopen-developer/downloads)](https://packagist.org/packages/weopen-developer) [![License](https://poser.pugx.org/zoujingli/weopen-developer/license)](https://packagist.org/packages/weopen-developer)
+[![Latest Stable Version](https://poser.pugx.org/zoujingli/weopen-developer/v/stable)](https://packagist.org/packages/zoujingli/weopen-developer) 
+[![Latest Unstable Version](https://poser.pugx.org/zoujingli/weopen-developer/v/unstable)](https://packagist.org/packages/zoujingli/weopen-developer) 
+[![Total Downloads](https://poser.pugx.org/zoujingli/weopen-developer/downloads)](https://packagist.org/packages/zoujingli/weopen-developer) 
+[![License](https://poser.pugx.org/zoujingli/weopen-developer/license)](https://packagist.org/packages/zoujingli/weopen-developer)
 
 # WeOpenDeveloper
 WeOpenDeveloper 为微信开放平台服务开发工具，基于 WeChatDeveloper 可对公众号进行管理。
