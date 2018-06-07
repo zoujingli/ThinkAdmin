@@ -21,9 +21,9 @@ return [
     'path'      => '/',
     // cookie 有效域名
     'domain'    => '',
-    // cookie 启用安全传输
+    //  cookie 启用安全传输
     'secure'    => false,
-    // httponly 设置
+    // httponly设置
     'httponly'  => '',
     // 是否使用 setcookie
     'setcookie' => true,
