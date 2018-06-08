@@ -33,7 +33,7 @@ class ToolsService
      */
     public static function corsOptionsHandler()
     {
-        if (PHP_SESSION_ACTIVE === session_status()) {
+        if (PHP_SESSION_ACTIVE !== session_status()) {
             Session::init(config('session.'));
         }
         $token = request()->header('token', '');
