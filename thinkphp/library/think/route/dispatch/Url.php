@@ -52,6 +52,7 @@ class Url extends Dispatch
 
         // 解析模块
         $module = $this->rule->getConfig('app_multi_module') ? array_shift($path) : null;
+
         if ($this->param['auto_search']) {
             $controller = $this->autoFindController($module, $path);
         } else {
@@ -74,13 +75,14 @@ class Url extends Dispatch
         }
 
         $panDomain = $this->request->panDomain();
+
         if ($panDomain && $key = array_search('*', $var)) {
             // 泛域名赋值
             $var[$key] = $panDomain;
         }
 
         // 设置当前请求的参数
-        $this->request->route($var);
+        $this->request->setRouteVars($var);
 
         // 封装路由
         $route = [$module, $controller, $action];
@@ -112,7 +114,9 @@ class Url extends Dispatch
             $name2 = strtolower(Loader::parseName($controller, 1) . '/' . $action);
         }
 
-        if ($this->rule->getRouter()->getName($name) || $this->rule->getRouter()->getName($name2)) {
+        $host = $this->request->host(true);
+
+        if ($this->rule->getRouter()->getName($name, $host) || $this->rule->getRouter()->getName($name2, $host)) {
             return true;
         }
 

@@ -72,11 +72,11 @@ trait SoftDelete
      * 删除当前的记录
      * @access public
      * @param  bool  $force 是否强制删除
-     * @return integer
+     * @return bool
      */
     public function delete($force = false)
     {
-        if (false === $this->trigger('before_delete', $this)) {
+        if (!$this->exists || false === $this->trigger('before_delete', $this)) {
             return false;
         }
 
@@ -104,11 +104,9 @@ trait SoftDelete
 
         $this->trigger('after_delete', $this);
 
-        // 清空数据
-        $this->data   = [];
-        $this->origin = [];
+        $this->exists = false;
 
-        return $result;
+        return true;
     }
 
     /**
@@ -116,7 +114,7 @@ trait SoftDelete
      * @access public
      * @param  mixed $data 主键列表 支持闭包查询条件
      * @param  bool  $force 是否强制删除
-     * @return integer 成功删除的记录数
+     * @return bool
      */
     public static function destroy($data, $force = false)
     {
@@ -130,20 +128,18 @@ trait SoftDelete
             call_user_func_array($data, [ & $query]);
             $data = null;
         } elseif (is_null($data)) {
-            return 0;
+            return false;
         }
 
         $resultSet = $query->select($data);
-        $count     = 0;
 
         if ($resultSet) {
             foreach ($resultSet as $data) {
-                $result = $data->delete($force);
-                $count += $result;
+                $data->delete($force);
             }
         }
 
-        return $count;
+        return true;
     }
 
     /**
@@ -176,7 +172,6 @@ trait SoftDelete
             $this->trigger('after_restore');
 
             return $result;
-
         }
 
         return 0;
