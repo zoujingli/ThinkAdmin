@@ -236,7 +236,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         // 设置当前模型 确保查询返回模型对象
         $query = Db::connect($this->connection, false, $this->query);
         $query->model($this)
-            ->json($this->json)
+            ->json($this->json, $this->jsonAssoc)
             ->setJsonFieldType($this->jsonType);
 
         if (isset(static::$readMaster['*']) || isset(static::$readMaster[static::class])) {
@@ -284,7 +284,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         $query = $this->buildQuery();
 
         // 软删除
-        if (method_exists($this, 'withNoTrashed')) {
+        if (property_exists($this, 'withTrashed') && !$this->withTrashed) {
             $this->withNoTrashed($query);
         }
 
@@ -750,8 +750,6 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      */
     public function saveAll($dataSet, $replace = true)
     {
-        $result = [];
-
         $db = $this->db(false);
         $db->startTrans();
 
@@ -761,6 +759,8 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             if (is_string($pk) && $replace) {
                 $auto = true;
             }
+
+            $result = [];
 
             foreach ($dataSet as $key => $data) {
                 if ($this->exists || (!empty($auto) && isset($data[$pk]))) {

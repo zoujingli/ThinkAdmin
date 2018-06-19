@@ -128,6 +128,7 @@ class RuleItem extends Rule
             $value = [$this->rule, $vars, $this->parent->getDomain(), $suffix, $this->method];
 
             Container::get('rule_name')->set($name, $value, $first);
+            Container::get('rule_name')->setRule($this->rule, $this);
         }
     }
 
@@ -242,7 +243,7 @@ class RuleItem extends Rule
         }
 
         if (false === strpos($rule, '<')) {
-            if (0 === strcasecmp($rule, $url) || (!$completeMatch && 0 === strncasecmp($rule, $url, strlen($rule)))) {
+            if (0 === strcasecmp($rule, $url) || (!$completeMatch && 0 === strncasecmp($rule . $depr, $url . $depr, strlen($rule . $depr)))) {
                 return $var;
             }
             return false;

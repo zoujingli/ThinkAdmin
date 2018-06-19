@@ -17,7 +17,7 @@ use think\facade\Route;
 use think\Request;
 
 /* 注册微信端路由支持 */
-Route::rule('wx', function (Request $request) {
+Route::rule('wx<_?>', function (Request $request) {
     $params = explode('-', $request->path());
     array_shift($params);
     $controller = array_shift($params) ?: config('app.default_controller');
