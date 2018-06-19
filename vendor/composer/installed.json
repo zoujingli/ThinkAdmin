@@ -87,17 +87,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.11",
-        "version_normalized": "1.1.11.0",
+        "version": "v1.1.12",
+        "version_normalized": "1.1.12.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "ff36d0b26848eef5aa9d507eae44d7c8dafb04eb"
+            "reference": "9957f449f7109f7b30574120aaed4c46a9ddd8fb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/ff36d0b26848eef5aa9d507eae44d7c8dafb04eb.zip",
-            "reference": "ff36d0b26848eef5aa9d507eae44d7c8dafb04eb",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeChatDeveloper/9957f449f7109f7b30574120aaed4c46a9ddd8fb.zip",
+            "reference": "9957f449f7109f7b30574120aaed4c46a9ddd8fb",
             "shasum": ""
         },
         "require": {
@@ -105,7 +105,7 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-05-29T02:10:45+00:00",
+        "time": "2018-06-13T09:04:11+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -146,12 +146,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "f0b34848d75147b16632bdec1583172936c2fff4"
+            "reference": "32aa04ad346790cd6ac7672c888e22e15cb007fe"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/f0b34848d75147b16632bdec1583172936c2fff4.zip",
-            "reference": "f0b34848d75147b16632bdec1583172936c2fff4",
+            "url": "https://files.phpcomposer.com/files/zoujingli/WeOpenDeveloper/32aa04ad346790cd6ac7672c888e22e15cb007fe.zip",
+            "reference": "32aa04ad346790cd6ac7672c888e22e15cb007fe",
             "shasum": ""
         },
         "require": {
@@ -160,7 +160,7 @@
             "php": ">=5.4",
             "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2018-06-04T09:19:16+00:00",
+        "time": "2018-06-14T08:11:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -191,17 +191,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.16",
-        "version_normalized": "5.1.16.0",
+        "version": "v5.1.17",
+        "version_normalized": "5.1.17.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "e0a8bdc52957a8f9774353fbfa0b9fd6ee206188"
+            "reference": "b851761979a219c92285fee691030aca50bcb5bc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/top-think/framework/e0a8bdc52957a8f9774353fbfa0b9fd6ee206188.zip",
-            "reference": "e0a8bdc52957a8f9774353fbfa0b9fd6ee206188",
+            "url": "https://files.phpcomposer.com/files/top-think/framework/b851761979a219c92285fee691030aca50bcb5bc.zip",
+            "reference": "b851761979a219c92285fee691030aca50bcb5bc",
             "shasum": ""
         },
         "require": {
@@ -217,7 +217,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-06-08T04:10:59+00:00",
+        "time": "2018-06-17T14:11:40+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",

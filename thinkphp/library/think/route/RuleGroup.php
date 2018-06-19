@@ -312,33 +312,50 @@ class RuleGroup extends Rule
             }
         }
 
-        try {
-            if (!empty($regex) && preg_match('/^(?:' . implode('|', $regex) . ')/u', $url, $match)) {
-                $var = [];
-                foreach ($match as $key => $val) {
-                    if (is_string($key) && '' !== $val) {
-                        list($name, $pos) = explode('_THINK_', $key);
-
-                        $var[$name] = $val;
-                    }
-                }
-
-                if (!isset($pos)) {
-                    foreach ($regex as $key => $item) {
-                        if (0 === strpos(str_replace(['\/', '\-', '\\' . $depr], ['/', '-', $depr], $item), $match[0])) {
-                            $pos = $key;
-                            break;
-                        }
-                    }
-                }
-
-                return $items[$pos]->checkRule($request, $url, $var);
-            }
-
+        if (empty($regex)) {
             return false;
+        }
+
+        try {
+            $result = preg_match('/^(?:' . implode('|', $regex) . ')/u', $url, $match);
         } catch (\Exception $e) {
             throw new Exception('route pattern error');
         }
+
+        if ($result) {
+            $var = [];
+            foreach ($match as $key => $val) {
+                if (is_string($key) && '' !== $val) {
+                    list($name, $pos) = explode('_THINK_', $key);
+
+                    $var[$name] = $val;
+                }
+            }
+
+            if (!isset($pos)) {
+                foreach ($regex as $key => $item) {
+                    if (0 === strpos(str_replace(['\/', '\-', '\\' . $depr], ['/', '-', $depr], $item), $match[0])) {
+                        $pos = $key;
+                        break;
+                    }
+                }
+            }
+
+            $rule  = $items[$pos]->getRule();
+            $array = $this->router->getRule($rule);
+
+            foreach ($array as $item) {
+                if (in_array($item->getMethod(), ['*', strtolower($request->method())])) {
+                    $result = $item->checkRule($request, $url, $var);
+
+                    if (false !== $result) {
+                        return $result;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -413,6 +430,11 @@ class RuleGroup extends Rule
         }
 
         $method = strtolower($method);
+
+        if ('/' === $rule || '' === $rule) {
+            // 首页自动完整匹配
+            $rule .= '$';
+        }
 
         // 创建路由规则实例
         $ruleItem = new RuleItem($this->router, $this, $name, $rule, $route, $method, $option, $pattern);

@@ -11,6 +11,9 @@
 
 namespace think;
 
+use think\facade\Cookie;
+use think\facade\Session;
+
 class Request
 {
     /**
@@ -310,7 +313,6 @@ class Request
     {
         $request = new static($config->pull('app'));
 
-        $request->cookie = $app['cookie']->get();
         $request->server = $_SERVER;
         $request->env    = $app['env']->get();
 
@@ -761,18 +763,19 @@ class Request
     /**
      * 当前的请求类型
      * @access public
-     * @param  bool $method  true 获取原始请求类型
+     * @param  bool $origin  是否获取原始请求类型
      * @return string
      */
-    public function method($method = false)
+    public function method($origin = false)
     {
-        if (true === $method) {
+        if ($origin) {
             // 获取原始请求类型
             return $this->isCli() ? 'GET' : $this->server('REQUEST_METHOD');
         } elseif (!$this->method) {
             if (isset($_POST[$this->config['var_method']])) {
-                $this->method = strtoupper($_POST[$this->config['var_method']]);
-                $this->{$this->method}($_POST);
+                $this->method    = strtoupper($_POST[$this->config['var_method']]);
+                $method          = strtolower($this->method);
+                $this->{$method} = $_POST;
             } elseif ($this->server('HTTP_X_HTTP_METHOD_OVERRIDE')) {
                 $this->method = strtoupper($this->server('HTTP_X_HTTP_METHOD_OVERRIDE'));
             } else {
@@ -910,6 +913,7 @@ class Request
             // 获取包含文件上传信息的数组
             $file = $this->file();
             $data = is_array($file) ? array_merge($this->param, $file) : $this->param;
+
             return $this->input($data, '', $default, $filter);
         }
 
@@ -1060,14 +1064,16 @@ class Request
     public function session($name = '', $default = null)
     {
         if (empty($this->session)) {
-            $this->session = facade\Session::get();
+            $this->session = Session::get();
         }
 
         if ('' === $name) {
             return $this->session;
         }
 
-        return isset($this->session[$name]) ? $this->session[$name] : $default;
+        $data = $this->getData($this->session, $name);
+
+        return is_null($data) ? $default : $data;
     }
 
     /**
@@ -1080,8 +1086,12 @@ class Request
      */
     public function cookie($name = '', $default = null, $filter = '')
     {
+        if (empty($this->cookie)) {
+            $this->cookie = Cookie::get();
+        }
+
         if (!empty($name)) {
-            $data = isset($this->cookie[$name]) ? $this->cookie[$name] : $default;
+            $data = Cookie::has($name) ? Cookie::get($name) : $default;
         } else {
             $data = $this->cookie;
         }
@@ -1272,14 +1282,10 @@ class Request
                 list($name, $type) = explode('/', $name);
             }
 
-            // 按.拆分成多维数组进行判断
-            foreach (explode('.', $name) as $val) {
-                if (isset($data[$val])) {
-                    $data = $data[$val];
-                } else {
-                    // 无输入数据，返回默认值
-                    return $default;
-                }
+            $data = $this->getData($data, $name);
+
+            if (is_null($data)) {
+                return $default;
             }
 
             if (is_object($data)) {
@@ -1300,6 +1306,26 @@ class Request
         if (isset($type) && $data !== $default) {
             // 强制类型转换
             $this->typeCast($data, $type);
+        }
+
+        return $data;
+    }
+
+    /**
+     * 获取数据
+     * @access public
+     * @param  array         $data 数据源
+     * @param  string|false  $name 字段名
+     * @return mixed
+     */
+    protected function getData(array $data, $name)
+    {
+        foreach (explode('.', $name) as $val) {
+            if (isset($data[$val])) {
+                $data = $data[$val];
+            } else {
+                return;
+            }
         }
 
         return $data;

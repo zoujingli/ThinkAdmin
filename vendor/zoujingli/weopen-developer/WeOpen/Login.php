@@ -55,7 +55,7 @@ class Login
     {
         $appid = $this->config->get('appid');
         $redirectUri = urlencode($redirectUri);
-        return "https://open.weixin.qq.com/connect/qrconnect?appid={$appid}&redirect_uri=${$redirectUri}&response_type=code&scope=snsapi_login&state={$appid}#wechat_redirect";
+        return "https://open.weixin.qq.com/connect/qrconnect?appid={$appid}&redirect_uri={$redirectUri}&response_type=code&scope=snsapi_login&state={$appid}#wechat_redirect";
     }
 
     /**

@@ -22,7 +22,7 @@ use WeChat\Exceptions\InvalidResponseException;
 
 /**
  * 微信商户打款到银行卡
- * Class TransFresBank
+ * Class TransfersBank
  * @package WePay
  */
 class TransfersBank extends BasicPay

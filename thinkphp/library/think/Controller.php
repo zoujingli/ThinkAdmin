@@ -43,10 +43,16 @@ class Controller
     protected $batchValidate = false;
 
     /**
-     * 前置操作方法列表
+     * 前置操作方法列表（即将废弃）
      * @var array $beforeActionList
      */
     protected $beforeActionList = [];
+
+    /**
+     * 控制器中间件
+     * @var array
+     */
+    protected $middleware = [];
 
     /**
      * 构造方法
@@ -61,7 +67,24 @@ class Controller
         // 控制器初始化
         $this->initialize();
 
-        // 前置操作方法
+        // 控制器中间件
+        if ($this->middleware) {
+            foreach ($this->middleware as $key => $val) {
+                if (!is_int($key)) {
+                    if (isset($val['only']) && !in_array($this->request->action(), $val['only'])) {
+                        continue;
+                    } elseif (isset($val['except']) && in_array($this->request->action(), $val['except'])) {
+                        continue;
+                    } else {
+                        $val = $key;
+                    }
+                }
+
+                $this->app['middleware']->controller($val);
+            }
+        }
+
+        // 前置操作方法 即将废弃
         foreach ((array) $this->beforeActionList as $method => $options) {
             is_numeric($method) ?
             $this->beforeAction($options) :

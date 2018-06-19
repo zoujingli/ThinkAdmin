@@ -62,6 +62,12 @@ use WeChat\Exceptions\InvalidInstanceException;
 class We
 {
     /**
+     * 定义当前版本
+     * @var string
+     */
+    const VERSION = '1.1.12';
+
+    /**
      * 静态配置
      * @var DataArray
      */

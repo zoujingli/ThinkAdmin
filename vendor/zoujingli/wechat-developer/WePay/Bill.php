@@ -53,7 +53,7 @@ class Bill extends BasicPay
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      */
-    public function commtent(array $options)
+    public function comment(array $options)
     {
         $url = 'https://api.mch.weixin.qq.com/billcommentsp/batchquerycomment';
         return $this->callPostApi($url, $options, true);
