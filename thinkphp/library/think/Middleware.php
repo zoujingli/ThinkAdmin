@@ -39,95 +39,62 @@ class Middleware
         $this->config = array_merge($this->config, $config);
     }
 
-    /**
-     * 导入中间件
-     * @access public
-     * @param  array  $middlewares
-     * @param  string $type  中间件类型
-     */
-    public function import(array $middlewares = [], $type = 'route')
+    public function import(array $middlewares = [])
     {
         foreach ($middlewares as $middleware) {
-            $this->add($middleware, $type);
+            $this->add($middleware);
         }
     }
 
     /**
-     * 注册中间件
-     * @access public
-     * @param  mixed  $middleware
-     * @param  string $type  中间件类型
+     * {@inheritdoc}
      */
-    public function add($middleware, $type = 'route')
+    public function add($middleware)
     {
         if (is_null($middleware)) {
             return;
         }
 
-        $middleware = $this->buildMiddleware($middleware, $type);
+        $middleware = $this->buildMiddleware($middleware);
 
         if ($middleware) {
-            $this->queue[$type][] = $middleware;
+            $this->queue[] = $middleware;
         }
     }
 
     /**
-     * 注册控制器中间件
-     * @access public
-     * @param  mixed  $middleware
+     * {@inheritdoc}
      */
-    public function controller($middleware)
-    {
-        return $this->add($middleware, 'controller');
-    }
-
-    /**
-     * 移除中间件
-     * @access public
-     * @param  mixed  $middleware
-     * @param  string $type  中间件类型
-     */
-    public function unshift($middleware, $type = 'route')
+    public function unshift($middleware)
     {
         if (is_null($middleware)) {
             return;
         }
 
-        $middleware = $this->buildMiddleware($middleware, $type);
+        $middleware = $this->buildMiddleware($middleware);
 
         if ($middleware) {
-            array_unshift($this->queue[$type], $middleware);
+            array_unshift($this->queue, $middleware);
         }
     }
 
     /**
-     * 获取注册的中间件
-     * @access public
-     * @param  string $type  中间件类型
+     * {@inheritdoc}
      */
-    public function all($type = 'route')
+    public function all()
     {
-        return $this->queue[$type] ?: [];
+        return $this->queue;
     }
 
     /**
-     * 中间件调度
-     * @access public
-     * @param  Request  $request
-     * @param  string   $type  中间件类型
+     * {@inheritdoc}
      */
-    public function dispatch(Request $request, $type = 'route')
+    public function dispatch(Request $request)
     {
-        return call_user_func($this->resolve($type), $request);
+        return call_user_func($this->resolve(), $request);
     }
 
-    /**
-     * 解析中间件
-     * @access protected
-     * @param  mixed  $middleware
-     * @param  string $type  中间件类型
-     */
-    protected function buildMiddleware($middleware, $type = 'route')
+    protected function buildMiddleware($middleware)
     {
         if (is_array($middleware)) {
             list($middleware, $param) = $middleware;
@@ -150,7 +117,7 @@ class Middleware
         }
 
         if (is_array($middleware)) {
-            return $this->import($middleware, $type);
+            return $this->import($middleware);
         }
 
         if (strpos($middleware, ':')) {
@@ -160,11 +127,10 @@ class Middleware
         return [[$this->app->make($middleware), 'handle'], isset($param) ? $param : null];
     }
 
-    protected function resolve($type = 'route')
+    protected function resolve()
     {
-        return function (Request $request) use ($type) {
-
-            $middleware = array_shift($this->queue[$type]);
+        return function (Request $request) {
+            $middleware = array_shift($this->queue);
 
             if (null === $middleware) {
                 throw new InvalidArgumentException('The queue was exhausted, with no response returned');
@@ -173,7 +139,7 @@ class Middleware
             list($call, $param) = $middleware;
 
             try {
-                $response = call_user_func_array($call, [$request, $this->resolve($type), $param]);
+                $response = call_user_func_array($call, [$request, $this->resolve(), $param]);
             } catch (HttpResponseException $exception) {
                 $response = $exception->getResponse();
             }
