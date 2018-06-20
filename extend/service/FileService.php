@@ -115,9 +115,9 @@ class FileService
         switch ($region) {
             case '华东':
                 if ($isHttps) {
-                    return $isClient ? 'https:///upload.qiniup.com' : 'https://upload.qiniup.com';
+                    return $isClient ? 'https://upload.qiniup.com' : 'https://upload.qiniup.com';
                 }
-                return $isClient ? 'http:///upload.qiniup.com' : 'http://upload.qiniup.com';
+                return $isClient ? 'http://upload.qiniup.com' : 'http://upload.qiniup.com';
             case '华北':
                 if ($isHttps) {
                     return $isClient ? 'https://upload-z1.qiniup.com' : 'https://up-z1.qiniup.com';
