@@ -266,7 +266,7 @@ class Push
                     case 'news':
                         return $wechat->news($data['articles'])->reply([], true);
                     case 'customservice':
-                        WechatService::custom()->send(['touser' => $this->openid, 'msgtype' => 'text', "text" => $data['content']]);
+                        WechatService::WeChatCustom()->send(['touser' => $this->openid, 'msgtype' => 'text', "text" => $data['content']]);
                         return $wechat->transferCustomerService()->reply([], true);
                     default:
                         return 'success';
