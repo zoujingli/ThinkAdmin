@@ -130,7 +130,8 @@ class Route
         $this->app     = $app;
         $this->request = $app['request'];
         $this->config  = $config;
-        $this->host    = $this->request->host(true);
+
+        $this->host = $this->request->host(true) ?: $config['app_host'];
 
         $this->setDefaultDomain();
     }
@@ -165,6 +166,17 @@ class Route
             ->mergeRuleRegex($config['route_rule_merge']);
 
         return $route;
+    }
+
+    /**
+     * 设置路由的请求对象实例
+     * @access public
+     * @param  Request     $request   请求对象实例
+     * @return void
+     */
+    public function setRequest($request)
+    {
+        $this->request = $request;
     }
 
     /**

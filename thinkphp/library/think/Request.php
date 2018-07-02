@@ -50,6 +50,12 @@ class Request
     protected $method;
 
     /**
+     * 主机名（含端口）
+     * @var string
+     */
+    protected $host;
+
+    /**
      * 域名（含协议及端口）
      * @var string
      */
@@ -635,6 +641,12 @@ class Request
         return $root;
     }
 
+    public function setPathinfo($pathinfo)
+    {
+        $this->pathinfo = $pathinfo;
+        return $this;
+    }
+
     /**
      * 获取当前请求URL的pathinfo信息（含URL后缀）
      * @access public
@@ -683,6 +695,7 @@ class Request
         if (is_null($this->path)) {
             $suffix   = $this->config['url_html_suffix'];
             $pathinfo = $this->pathinfo();
+
             if (false === $suffix) {
                 // 禁止伪静态访问
                 $this->path = $pathinfo;
@@ -1681,6 +1694,19 @@ class Request
     }
 
     /**
+     * 设置当前请求的host（包含端口）
+     * @access public
+     * @param  string $host 主机名（含端口）
+     * @return $this
+     */
+    public function setHost($host)
+    {
+        $this->host = $host;
+
+        return $this;
+    }
+
+    /**
      * 当前请求的host
      * @access public
      * @param bool $strict  true 仅仅获取HOST
@@ -1688,9 +1714,11 @@ class Request
      */
     public function host($strict = false)
     {
-        $host = $this->server('HTTP_X_REAL_HOST') ?: $this->server('HTTP_HOST');
+        if (!$this->host) {
+            $this->host = $this->server('HTTP_X_REAL_HOST') ?: $this->server('HTTP_HOST');
+        }
 
-        return true === $strict && strpos($host, ':') ? strstr($host, ':', true) : $host;
+        return true === $strict && strpos($this->host, ':') ? strstr($this->host, ':', true) : $this->host;
     }
 
     /**
@@ -2001,6 +2029,90 @@ class Request
     public function getCache()
     {
         return $this->cache;
+    }
+
+    /**
+     * 设置GET数据
+     * @access public
+     * @param  array $get 数据
+     * @return $this
+     */
+    public function withGet(array $get)
+    {
+        $this->get = $get;
+        return $this;
+    }
+
+    /**
+     * 设置POST数据
+     * @access public
+     * @param  array $post 数据
+     * @return $this
+     */
+    public function withPost(array $post)
+    {
+        $this->post = $post;
+        return $this;
+    }
+
+    /**
+     * 设置COOKIE数据
+     * @access public
+     * @param  array $cookie 数据
+     * @return $this
+     */
+    public function withCookie(array $cookie)
+    {
+        $this->cookie = $cookie;
+        return $this;
+    }
+
+    /**
+     * 设置SERVER数据
+     * @access public
+     * @param  array $server 数据
+     * @return $this
+     */
+    public function withServer(array $server)
+    {
+        $this->server = array_change_key_case($server, CASE_UPPER);
+        return $this;
+    }
+
+    /**
+     * 设置HEADER数据
+     * @access public
+     * @param  array $header 数据
+     * @return $this
+     */
+    public function withHeader(array $header)
+    {
+        $this->header = array_change_key_case($header);
+        return $this;
+    }
+
+    /**
+     * 设置ENV数据
+     * @access public
+     * @param  array $env 数据
+     * @return $this
+     */
+    public function withEnv(array $env)
+    {
+        $this->env = $env;
+        return $this;
+    }
+
+    /**
+     * 设置ROUTE变量
+     * @access public
+     * @param  array $route 数据
+     * @return $this
+     */
+    public function withRoute(array $route)
+    {
+        $this->route = $route;
+        return $this;
     }
 
     /**
