@@ -120,6 +120,22 @@ class BasicPay
         return $this->callPostApi($url, ['long_url' => $longUrl]);
     }
 
+
+    /**
+     * 数组直接转xml数据输出
+     * @param array $data
+     * @param bool $isReturn
+     * @return string
+     */
+    public function toXml(array $data, $isReturn = false)
+    {
+        $xml = Tools::arr2xml($data);
+        if ($isReturn) {
+            return $xml;
+        }
+        echo $xml;
+    }
+
     /**
      * 以Post请求接口
      * @param string $url 请求

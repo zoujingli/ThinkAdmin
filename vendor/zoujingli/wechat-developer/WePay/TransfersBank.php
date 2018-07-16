@@ -53,7 +53,7 @@ class TransfersBank extends BasicPay
         if (!isset($options['amount'])) {
             throw new InvalidArgumentException('Missing Options -- [amount]');
         }
-        isset($options['desc']) && $this->config['desc'] = $options['desc'];
+        isset($options['desc']) && $this->params->set('desc', $options['desc']);
         $this->params->offsetUnset('appid');
         return $this->callPostApi('https://api.mch.weixin.qq.com/mmpaysptrans/pay_bank', [
             'amount'           => $options['amount'],
