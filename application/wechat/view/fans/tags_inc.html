@@ -41,32 +41,32 @@
 
 <script>
     // 添加标签
-    $('body').find('[data-add-tag]').map(function () {
-        var self = this;
-        var fans_id = this.getAttribute('data-add-tag');
-        var used_ids = (this.getAttribute('data-used-id') || '').split(',');
-        var $content = $(document.getElementById('tags-box').innerHTML);
-        for (var i in used_ids) {
-            $content.find('[value="' + used_ids[i] + '"]').attr('checked', 'checked');
-        }
-        $content.attr('fans_id', fans_id);
-        // 标签面板关闭
-        $content.on('click', '[data-event="cancel"]', function () {
-            $(self).popover('hide');
-        });
-        // 标签面板确定
-        $content.on('click', '[data-event="confirm"]', function () {
-            var tags = [];
-            $content.find('input:checked').map(function () {
-                tags.push(this.value);
+    require(['bootstrap'], function () {
+        $('body').find('[data-add-tag]').map(function () {
+            var self = this;
+            var fans_id = this.getAttribute('data-add-tag');
+            var used_ids = (this.getAttribute('data-used-id') || '').split(',');
+            var $content = $(document.getElementById('tags-box').innerHTML);
+            for (var i in used_ids) {
+                $content.find('[value="' + used_ids[i] + '"]').attr('checked', 'checked');
+            }
+            $content.attr('fans_id', fans_id);
+            // 标签面板关闭
+            $content.on('click', '[data-event="cancel"]', function () {
+                $(self).popover('hide');
             });
-            $.form.load('{:url("@wechat/fans/tagset")}', {fans_id: $content.attr('fans_id'), 'tags': tags.join(',')}, 'post');
-        });
-        // 限制每个表单最多只能选择三个
-        $content.on('click', 'input', function () {
-            ($content.find('input:checked').size() > 3) && (this.checked = false);
-        });
-        require(['bootstrap'], function () {
+            // 标签面板确定
+            $content.on('click', '[data-event="confirm"]', function () {
+                var tags = [];
+                $content.find('input:checked').map(function () {
+                    tags.push(this.value);
+                });
+                $.form.load('{:url("@wechat/fans/tagset")}', {fans_id: $content.attr('fans_id'), 'tags': tags.join(',')}, 'post');
+            });
+            // 限制每个表单最多只能选择三个
+            $content.on('click', 'input', function () {
+                ($content.find('input:checked').size() > 3) && (this.checked = false);
+            });
             // 标签选择面板
             $(this).data('content', $content).on('shown.bs.popover', function () {
                 $('[data-add-tag]').not(this).popover('hide');
