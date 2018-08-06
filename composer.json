@@ -1,8 +1,8 @@
 {
   "type": "project",
   "name": "zoujingli/thinkadmin",
-  "description": "ThinkAdmin Developer CMF",
   "homepage": "http://demo.thinkadmin.top",
+  "description": "ThinkAdmin Developer CMF",
   "keywords": [
     "thinkphp",
     "thinkadmin"
@@ -34,5 +34,11 @@
   },
   "config": {
     "preferred-install": "dist"
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.laravel-china.org"
+    }
   }
 }

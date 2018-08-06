@@ -522,6 +522,18 @@ class Request
     }
 
     /**
+     * 设置当前完整URL 包括QUERY_STRING
+     * @access public
+     * @param  string $url URL
+     * @return $this
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
      * 获取当前完整URL 包括QUERY_STRING
      * @access public
      * @param  bool $complete 是否包含域名
@@ -544,6 +556,18 @@ class Request
         }
 
         return $complete ? $this->domain() . $this->url : $this->url;
+    }
+
+    /**
+     * 设置当前完整URL 不包括QUERY_STRING
+     * @access public
+     * @param  string $url URL
+     * @return $this
+     */
+    public function setBaseUrl($url)
+    {
+        $this->baseUrl = $url;
+        return $this;
     }
 
     /**
@@ -1576,7 +1600,9 @@ class Request
             return $result;
         }
 
-        return $this->param($this->config['var_ajax']) ? true : $result;
+        $result           = $this->param($this->config['var_ajax']) ? true : $result;
+        $this->mergeParam = false;
+        return $result;
     }
 
     /**
@@ -1593,7 +1619,9 @@ class Request
             return $result;
         }
 
-        return $this->param($this->config['var_pjax']) ? true : $result;
+        $result           = $this->param($this->config['var_pjax']) ? true : $result;
+        $this->mergeParam = false;
+        return $result;
     }
 
     /**
@@ -2166,5 +2194,13 @@ class Request
     public function __isset($name)
     {
         return isset($this->param[$name]);
+    }
+
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['dispatch'], $data['config']);
+
+        return $data;
     }
 }

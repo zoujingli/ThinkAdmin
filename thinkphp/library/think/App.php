@@ -20,7 +20,7 @@ use think\route\Dispatch;
  */
 class App extends Container
 {
-    const VERSION = '5.1.19';
+    const VERSION = '5.1.21';
 
     /**
      * 当前模块路径
@@ -557,7 +557,8 @@ class App extends Container
         if ($this->route->config('route_annotation')) {
             // 自动生成路由定义
             if ($this->appDebug) {
-                $this->build->buildRoute($this->route->config('controller_suffix'));
+                $suffix = $this->route->config('controller_suffix') || $this->route->config('class_suffix');
+                $this->build->buildRoute($suffix);
             }
 
             $filename = $this->runtimePath . 'build_route.php';
