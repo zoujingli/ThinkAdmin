@@ -121,7 +121,7 @@ class BasicAdmin extends Controller
                 list($rowHTML, $curPage, $maxNum) = [[], $page->currentPage(), $page->lastPage()];
                 foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
                     list($query['rows'], $query['page']) = [$num, '1'];
-                    $url = url('@admin') . '#' . $this->request->baseUrl() . '?' . http_build_query($query);
+                    $url = url('@admin') . '#' . $this->request->baseUrl() . '?' . urldecode(http_build_query($query));
                     $rowHTML[] = "<option data-url='{$url}' " . ($rows === $num ? 'selected' : '') . " value='{$num}'>{$num}</option>";
                 }
                 list($pattern, $replacement) = [['|href="(.*?)"|', '|pagination|'], ['data-open="$1"', 'pagination pull-right']];
