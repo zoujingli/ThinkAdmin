@@ -49,171 +49,6 @@
         ]
     },
     {
-        "name": "zoujingli/ip2region",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zoujingli/ip2region.git",
-            "reference": "0a55d6c1ab6b4cbaa204824557aa950aaaefda0e"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/0a55d6c1ab6b4cbaa204824557aa950aaaefda0e",
-            "reference": "0a55d6c1ab6b4cbaa204824557aa950aaaefda0e",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
-        },
-        "require": {
-            "php": ">=5.3"
-        },
-        "time": "2018-06-01T02:21:05+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "Ip2Region.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "Anyon",
-                "email": "zoujingli@qq.com",
-                "homepage": "http://ctolog.com"
-            }
-        ],
-        "description": "Ip2Region for PHP",
-        "homepage": "https://github.com/zoujingli/Ip2Region",
-        "keywords": [
-            "Ip2Region"
-        ]
-    },
-    {
-        "name": "zoujingli/wechat-developer",
-        "version": "v1.1.13",
-        "version_normalized": "1.1.13.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "39682a047e5c8f9c66107924dfed4e2080e97eb4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/39682a047e5c8f9c66107924dfed4e2080e97eb4",
-            "reference": "39682a047e5c8f9c66107924dfed4e2080e97eb4",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
-        },
-        "require": {
-            "ext-curl": "*",
-            "ext-openssl": "*",
-            "php": ">=5.4"
-        },
-        "time": "2018-07-11T02:02:41+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "We.php"
-            ],
-            "psr-4": {
-                "WePay\\": "WePay",
-                "WeChat\\": "WeChat",
-                "WeMini\\": "WeMini"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Anyon",
-                "email": "zoujingli@qq.com",
-                "homepage": "http://ctolog.com"
-            }
-        ],
-        "description": "WeChat platform and WeChat payment development tools",
-        "homepage": "https://github.com/zoujingli/WeChatDeveloper",
-        "keywords": [
-            "WeChatDeveloper",
-            "WeMini",
-            "wechat",
-            "wechatpay",
-            "wepay"
-        ]
-    },
-    {
-        "name": "zoujingli/weopen-developer",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "32aa04ad346790cd6ac7672c888e22e15cb007fe"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/32aa04ad346790cd6ac7672c888e22e15cb007fe",
-            "reference": "32aa04ad346790cd6ac7672c888e22e15cb007fe",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
-        },
-        "require": {
-            "ext-curl": "*",
-            "ext-openssl": "*",
-            "php": ">=5.4",
-            "zoujingli/wechat-developer": "^1.0"
-        },
-        "time": "2018-06-14T08:11:03+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "WeOpen\\": "WeOpen",
-                "WeChat\\": "WeChat",
-                "WeMini\\": "WeMini"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Anyon",
-                "email": "zoujingli@qq.com",
-                "homepage": "http://ctolog.com"
-            }
-        ],
-        "description": "WeChat Open development of SDK",
-        "homepage": "https://github.com/zoujingli/WeOpenDeveloper",
-        "keywords": [
-            "WeChatOpen",
-            "WeChatOpenDeveloper",
-            "wechat"
-        ]
-    },
-    {
         "name": "topthink/framework",
         "version": "v5.1.21",
         "version_normalized": "5.1.21.0",
@@ -509,6 +344,55 @@
         ]
     },
     {
+        "name": "zoujingli/ip2region",
+        "version": "v1.0.4",
+        "version_normalized": "1.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zoujingli/ip2region.git",
+            "reference": "0a55d6c1ab6b4cbaa204824557aa950aaaefda0e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/0a55d6c1ab6b4cbaa204824557aa950aaaefda0e",
+            "reference": "0a55d6c1ab6b4cbaa204824557aa950aaaefda0e",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "time": "2018-06-01T02:21:05+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "Ip2Region.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Anyon",
+                "email": "zoujingli@qq.com",
+                "homepage": "http://ctolog.com"
+            }
+        ],
+        "description": "Ip2Region for PHP",
+        "homepage": "https://github.com/zoujingli/Ip2Region",
+        "keywords": [
+            "Ip2Region"
+        ]
+    },
+    {
         "name": "aliyuncs/oss-sdk-php",
         "version": "v2.3.0",
         "version_normalized": "2.3.0.0",
@@ -556,5 +440,121 @@
         ],
         "description": "Aliyun OSS SDK for PHP",
         "homepage": "http://www.aliyun.com/product/oss/"
+    },
+    {
+        "name": "zoujingli/wechat-developer",
+        "version": "v1.1.13",
+        "version_normalized": "1.1.13.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zoujingli/WeChatDeveloper.git",
+            "reference": "39682a047e5c8f9c66107924dfed4e2080e97eb4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/39682a047e5c8f9c66107924dfed4e2080e97eb4",
+            "reference": "39682a047e5c8f9c66107924dfed4e2080e97eb4",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-openssl": "*",
+            "php": ">=5.4"
+        },
+        "time": "2018-07-11T02:02:41+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "We.php"
+            ],
+            "psr-4": {
+                "WePay\\": "WePay",
+                "WeChat\\": "WeChat",
+                "WeMini\\": "WeMini"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Anyon",
+                "email": "zoujingli@qq.com",
+                "homepage": "http://ctolog.com"
+            }
+        ],
+        "description": "WeChat platform and WeChat payment development tools",
+        "homepage": "https://github.com/zoujingli/WeChatDeveloper",
+        "keywords": [
+            "WeChatDeveloper",
+            "WeMini",
+            "wechat",
+            "wechatpay",
+            "wepay"
+        ]
+    },
+    {
+        "name": "zoujingli/weopen-developer",
+        "version": "v1.1.3",
+        "version_normalized": "1.1.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
+            "reference": "32aa04ad346790cd6ac7672c888e22e15cb007fe"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/32aa04ad346790cd6ac7672c888e22e15cb007fe",
+            "reference": "32aa04ad346790cd6ac7672c888e22e15cb007fe",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-openssl": "*",
+            "php": ">=5.4",
+            "zoujingli/wechat-developer": "^1.0"
+        },
+        "time": "2018-06-14T08:11:03+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "WeOpen\\": "WeOpen",
+                "WeChat\\": "WeChat",
+                "WeMini\\": "WeMini"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Anyon",
+                "email": "zoujingli@qq.com",
+                "homepage": "http://ctolog.com"
+            }
+        ],
+        "description": "WeChat Open development of SDK",
+        "homepage": "https://github.com/zoujingli/WeOpenDeveloper",
+        "keywords": [
+            "WeChatOpen",
+            "WeChatOpenDeveloper",
+            "wechat"
+        ]
     }
 ]
