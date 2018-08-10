@@ -1034,17 +1034,6 @@ class Query
     }
 
     /**
-     * 设置数据排除字段
-     * @access public
-     * @param  mixed $field 字段名或者数据
-     * @return $this
-     */
-    public function hidden($field)
-    {
-        return $this->field($field, true);
-    }
-
-    /**
      * 设置数据
      * @access public
      * @param  mixed $field 字段名或者数据
@@ -2124,6 +2113,46 @@ class Query
     }
 
     /**
+     * 设置需要隐藏的输出属性
+     * @access public
+     * @param  mixed $hidden 需要隐藏的字段名
+     * @return $this
+     */
+    public function hidden($hidden)
+    {
+        if ($this->model) {
+            $this->options['hidden'] = $hidden;
+            return $this;
+        }
+
+        return $this->field($hidden, true);
+    }
+
+    /**
+     * 设置需要输出的属性
+     * @access public
+     * @param  array $visible 需要输出的属性
+     * @return $this
+     */
+    public function visible(array $visible)
+    {
+        $this->options['visible'] = $visible;
+        return $this;
+    }
+
+    /**
+     * 设置需要追加输出的属性
+     * @access public
+     * @param  array $append 需要追加的属性
+     * @return $this
+     */
+    public function append(array $append)
+    {
+        $this->options['append'] = $append;
+        return $this;
+    }
+
+    /**
      * 设置数据字段获取器
      * @access public
      * @param  string|array $name       字段名
@@ -2133,14 +2162,8 @@ class Query
     public function withAttr($name, $callback = null)
     {
         if (is_array($name)) {
-            foreach ($name as $key => $val) {
-                $key = Loader::parseName($key);
-
-                $this->options['with_attr'][$key] = $val;
-            }
+            $this->options['with_attr'] = $name;
         } else {
-            $name = Loader::parseName($name);
-
             $this->options['with_attr'][$name] = $callback;
         }
 
@@ -2212,6 +2235,31 @@ class Query
 
                 if (method_exists($this->model, $method)) {
                     call_user_func_array([$this->model, $method], $args);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * 使用搜索器条件搜索字段
+     * @access public
+     * @param  array $fields 搜索字段
+     * @param  array $data   搜索数据
+     * @return $this
+     */
+    public function withSearch(array $fields, array $data = [])
+    {
+        foreach ($fields as $key => $field) {
+            if ($field instanceof \Closure) {
+                $field($this, isset($data[$key]) ? $data[$key] : null, $data);
+            } elseif ($this->model) {
+                // 检测搜索器
+                $method = 'search' . Loader::parseName($field, 1) . 'Attr';
+
+                if (method_exists($this->model, $method)) {
+                    $this->model->$method($this, isset($data[$field]) ? $data[$field] : null, $data);
                 }
             }
         }
@@ -2441,20 +2489,15 @@ class Query
         /** @var Model $class */
         $class = $this->model;
         foreach ($with as $key => $relation) {
-            $subRelation = '';
-            $closure     = false;
+            $closure = null;
 
             if ($relation instanceof \Closure) {
                 // 支持闭包查询过滤关联条件
-                $closure    = $relation;
-                $relation   = $key;
-                $with[$key] = $key;
+                $closure  = $relation;
+                $relation = $key;
             } elseif (is_array($relation)) {
-                $subRelation = $relation;
-                $relation    = $key;
+                $relation = $key;
             } elseif (is_string($relation) && strpos($relation, '.')) {
-                $with[$key] = $relation;
-
                 list($relation, $subRelation) = explode('.', $relation, 2);
             }
 
@@ -2463,19 +2506,73 @@ class Query
             $model    = $class->$relation();
 
             if ($model instanceof OneToOne && 0 == $model->getEagerlyType()) {
-                $model->removeOption()->eagerly($this, $relation, $subRelation, $closure, $first);
+                $table = $model->getTable();
+                $model->removeOption()
+                    ->table($table)
+                    ->eagerly($this, $relation, true, '', $closure, $first);
                 $first = false;
-            } elseif ($closure) {
-                $with[$key] = $closure;
             }
         }
+
         $this->via();
 
-        if (isset($this->options['with'])) {
-            $this->options['with'] = array_merge($this->options['with'], $with);
-        } else {
-            $this->options['with'] = $with;
+        $this->options['with'] = $with;
+
+        return $this;
+    }
+
+    /**
+     * 关联预载入 JOIN方式（不支持嵌套）
+     * @access protected
+     * @param  string|array $with 关联方法名
+     * @param  string       $joinType JOIN方式
+     * @return $this
+     */
+    public function withJoin($with, $joinType = '')
+    {
+        if (empty($with)) {
+            return $this;
         }
+
+        if (is_string($with)) {
+            $with = explode(',', $with);
+        }
+
+        $first = true;
+
+        /** @var Model $class */
+        $class = $this->model;
+        foreach ($with as $key => $relation) {
+            $closure = null;
+            $field   = true;
+
+            if ($relation instanceof \Closure) {
+                // 支持闭包查询过滤关联条件
+                $closure  = $relation;
+                $relation = $key;
+            } elseif (is_array($relation)) {
+                $field    = $relation;
+                $relation = $key;
+            } elseif (is_string($relation) && strpos($relation, '.')) {
+                list($relation, $subRelation) = explode('.', $relation, 2);
+            }
+
+            /** @var Relation $model */
+            $relation = Loader::parseName($relation, 1, false);
+            $model    = $class->$relation();
+
+            if ($model instanceof OneToOne) {
+                $model->eagerly($this, $relation, $field, $joinType, $closure, $first);
+                $first = false;
+            } else {
+                // 不支持其它关联
+                unset($with[$key]);
+            }
+        }
+
+        $this->via();
+
+        $this->options['with_join'] = $with;
 
         return $this;
     }
@@ -2501,7 +2598,7 @@ class Query
             }
 
             foreach ($relations as $key => $relation) {
-                $closure = false;
+                $closure = null;
                 if ($relation instanceof \Closure) {
                     $closure  = $relation;
                     $relation = $key;
@@ -2866,6 +2963,11 @@ class Query
                     $result->eagerlyResultSet($resultSet, $this->options['with'], $withRelationAttr);
                 }
 
+                if (!empty($this->options['with_join'])) {
+                    // JOIN预载入
+                    $result->eagerlyResultSet($resultSet, $this->options['with_join'], $withRelationAttr, true);
+                }
+
                 // 模型数据集转换
                 $resultSet = $result->toCollection($resultSet);
             } else {
@@ -3069,6 +3171,8 @@ class Query
     protected function getResultAttr(&$result, $withAttr = [])
     {
         foreach ($withAttr as $name => $closure) {
+            $name = Loader::parseName($name);
+
             if (strpos($name, '.')) {
                 // 支持JSON字段 获取器定义
                 list($key, $field) = explode('.', $name);
@@ -3139,7 +3243,18 @@ class Query
 
         // 动态获取器
         if (!empty($options['with_attr'])) {
-            $result->setModelAttrs($options['with_attr']);
+            $result->withAttribute($options['with_attr']);
+        }
+
+        // 输出属性控制
+        if (!empty($options['visible'])) {
+            $result->visible($options['visible']);
+        } elseif (!empty($options['hidden'])) {
+            $result->hidden($options['hidden']);
+        }
+
+        if (!empty($options['append'])) {
+            $result->append($options['append']);
         }
 
         // 关联查询
@@ -3150,6 +3265,11 @@ class Query
         // 预载入查询
         if (!$resultSet && !empty($options['with'])) {
             $result->eagerlyResult($result, $options['with'], $withRelationAttr);
+        }
+
+        // JOIN预载入查询
+        if (!$resultSet && !empty($options['with_join'])) {
+            $result->eagerlyResult($result, $options['with_join'], $withRelationAttr, true);
         }
 
         // 关联统计

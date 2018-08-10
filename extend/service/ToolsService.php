@@ -37,8 +37,8 @@ class ToolsService
             Session::init(config('session.'));
         }
         $token = request()->header('token', '');
-        empty($token) && $token = request()->post('token', '');
         empty($token) && $token = request()->get('token', '');
+        empty($token) && $token = request()->post('token', '');
         list($name, $value) = explode('=', decode($token) . '=');
         if (!empty($value) && session_name() === $name) {
             session_id($value);
@@ -48,7 +48,7 @@ class ToolsService
             header('Access-Control-Allow-Credentials:true');
             header('Access-Control-Allow-Methods:GET,POST,OPTIONS');
             header("Access-Control-Allow-Headers:Accept,Referer,Host,Keep-Alive,User-Agent,X-Requested-With,Cache-Control,Cookie,token");
-            header('Content-Type:text/plain charset=UTF-8');
+            header('Content-Type:text/plain charset=utf-8');
             header('Access-Control-Max-Age:1728000');
             header('HTTP/1.0 204 No Content');
             header('Content-Length:0');
