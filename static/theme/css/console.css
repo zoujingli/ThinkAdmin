@@ -59,6 +59,7 @@ a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}but
 .label-required:after{content:'*';color:red;position:absolute;margin-left:4px;font-weight:bold;line-height:1.8em;top:6px;right:5px}
 
 /** Layui样式调整 */
+.layui-btn-sm.layui-btn-primary{line-height:28px!important;}
 .think-inner-table{border:none!important;margin:0!important}
 .think-inner-table tr:first-child td{padding-top:5px!important}
 .think-inner-table tr:last-child td{padding-bottom:5px!important}
