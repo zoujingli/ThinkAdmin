@@ -323,9 +323,8 @@ abstract class Connection
     public function parseSqlTable($sql)
     {
         if (false !== strpos($sql, '__')) {
-            $prefix = $this->getConfig('prefix');
-            $sql    = preg_replace_callback("/__([A-Z0-9_-]+)__/sU", function ($match) use ($prefix) {
-                return $prefix . strtolower($match[1]);
+            $sql = preg_replace_callback("/__([A-Z0-9_-]+)__/sU", function ($match) {
+                return $this->getConfig('prefix') . strtolower($match[1]);
             }, $sql);
         }
 
@@ -825,6 +824,8 @@ abstract class Connection
         // 生成查询SQL
         $sql = $this->builder->select($query);
 
+        $query->removeOption('limit');
+
         $bind = $query->getBind();
 
         if (!empty($options['fetch_sql'])) {
@@ -902,6 +903,8 @@ abstract class Connection
 
         // 生成查询SQL
         $sql = $this->builder->select($query);
+
+        $query->removeOption('limit');
 
         $bind = $query->getBind();
 
@@ -1270,6 +1273,14 @@ abstract class Connection
         // 生成查询SQL
         $sql = $this->builder->select($query);
 
+        if (isset($options['field'])) {
+            $query->setOption('field', $options['field']);
+        } else {
+            $query->removeOption('field');
+        }
+
+        $query->removeOption('limit');
+
         $bind = $query->getBind();
 
         if (!empty($options['fetch_sql'])) {
@@ -1345,6 +1356,12 @@ abstract class Connection
 
         // 生成查询SQL
         $sql = $this->builder->select($query);
+
+        if (isset($options['field'])) {
+            $query->setOption('field', $options['field']);
+        } else {
+            $query->removeOption('field');
+        }
 
         $bind = $query->getBind();
 
