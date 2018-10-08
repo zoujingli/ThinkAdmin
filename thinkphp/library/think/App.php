@@ -20,7 +20,7 @@ use think\route\Dispatch;
  */
 class App extends Container
 {
-    const VERSION = '5.1.24';
+    const VERSION = '5.1.25';
 
     /**
      * 当前模块路径
@@ -606,14 +606,9 @@ class App extends Container
         if (!empty($routeKey)) {
             try {
                 if ($option) {
-                    $this->cache
-                        ->connect($option)
-                        ->tag('route_cache')
-                        ->set($routeKey, $dispatch);
+                    $this->cache->connect($option)->tag('route_cache')->set($routeKey, $dispatch);
                 } else {
-                    $this->cache
-                        ->tag('route_cache')
-                        ->set($routeKey, $dispatch);
+                    $this->cache->tag('route_cache')->set($routeKey, $dispatch);
                 }
             } catch (\Exception $e) {
                 // 存在闭包的时候缓存无效
