@@ -33,15 +33,12 @@ class ToolsService
      */
     public static function corsOptionsHandler()
     {
-        if (PHP_SESSION_ACTIVE !== session_status()) {
-            Session::init(config('session.'));
-        }
-        $token = request()->header('token', '');
-        empty($token) && $token = request()->get('token', '');
-        empty($token) && $token = request()->post('token', '');
-        list($name, $value) = explode('=', decode($token) . '=');
-        if (!empty($value) && session_name() === $name) {
-            session_id($value);
+        if (PHP_SESSION_ACTIVE !== session_status()) Session::init(config('session.'));
+        try {
+            $token = request()->header('token', input('token', ''));
+            list($name, $value) = explode('=', decode($token) . '=');
+            if (!empty($value) && session_name() === $name) session_id($value);
+        } catch (\Exception $e) {
         }
         if (request()->isOptions()) {
             header('Access-Control-Allow-Origin:*');
@@ -129,16 +126,10 @@ class ToolsService
     public static function arr2tree($list, $id = 'id', $pid = 'pid', $son = 'sub')
     {
         list($tree, $map) = [[], []];
-        foreach ($list as $item) {
-            $map[$item[$id]] = $item;
-        }
-        foreach ($list as $item) {
-            if (isset($item[$pid]) && isset($map[$item[$pid]])) {
-                $map[$item[$pid]][$son][] = &$map[$item[$id]];
-            } else {
-                $tree[] = &$map[$item[$id]];
-            }
-        }
+        foreach ($list as $item) $map[$item[$id]] = $item;
+        foreach ($list as $item) if (isset($item[$pid]) && isset($map[$item[$pid]])) {
+            $map[$item[$pid]][$son][] = &$map[$item[$id]];
+        } else $tree[] = &$map[$item[$id]];
         unset($map);
         return $tree;
     }
@@ -163,9 +154,7 @@ class ToolsService
             $sub = $attr['sub'];
             unset($attr['sub']);
             $tree[] = $attr;
-            if (!empty($sub)) {
-                $tree = array_merge($tree, self::arr2table($sub, $id, $pid, $path, $attr[$path]));
-            }
+            if (!empty($sub)) $tree = array_merge($tree, self::arr2table($sub, $id, $pid, $path, $attr[$path]));
         }
         return $tree;
     }
@@ -181,10 +170,8 @@ class ToolsService
     public static function getArrSubIds($list, $id = 0, $key = 'id', $pkey = 'pid')
     {
         $ids = [intval($id)];
-        foreach ($list as $vo) {
-            if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) === intval($id)) {
-                $ids = array_merge($ids, self::getArrSubIds($list, intval($vo[$key]), $key, $pkey));
-            }
+        foreach ($list as $vo) if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) === intval($id)) {
+            $ids = array_merge($ids, self::getArrSubIds($list, intval($vo[$key]), $key, $pkey));
         }
         return $ids;
     }
@@ -228,9 +215,7 @@ class ToolsService
     private static function parseKeyDot(array $data, $rule)
     {
         list($temp, $attr) = [$data, explode('.', trim($rule, '.'))];
-        while ($key = array_shift($attr)) {
-            $temp = isset($temp[$key]) ? $temp[$key] : $temp;
-        }
+        while ($key = array_shift($attr)) $temp = isset($temp[$key]) ? $temp[$key] : $temp;
         return (is_string($temp) || is_numeric($temp)) ? str_replace('"', '""', "\t{$temp}") : '';
     }
 

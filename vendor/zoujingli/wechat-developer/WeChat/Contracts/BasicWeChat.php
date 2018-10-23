@@ -109,6 +109,25 @@ class BasicWeChat
     }
 
     /**
+     * 设置外部接口 AccessToken
+     * @param string $access_token
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @author 高一平 <iam@gaoyiping.com>
+     *
+     * 当用户使用自己的缓存驱动时，直接实例化对象后可直接设置 AccessToekn
+     * - 多用于分布式项目时保持 AccessToken 统一
+     * - 使用此方法后就由用户来保证传入的 AccessToekn 为有效 AccessToekn
+     */
+    public function setAccessToken($access_token)
+    {
+        if (!is_string($access_token)) {
+            throw new InvalidArgumentException("Invalid AccessToken type, need string.");
+        }
+        $cache = $this->config->get('appid') . '_access_token';
+        Tools::setCache($cache, $this->access_token = $access_token);
+    }
+
+    /**
      * 清理删除accessToken
      * @return bool
      */
