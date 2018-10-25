@@ -20,6 +20,7 @@
   ],
   "require": {
     "php": ">=5.4",
+    "ext-json": "*",
     "ext-curl": "*",
     "ext-openssl": "*"
   },

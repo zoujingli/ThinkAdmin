@@ -113,6 +113,10 @@ abstract class Builder
         $result = [];
 
         foreach ($data as $key => $val) {
+            if ('*' != $options['field'] && !in_array($key, $fields, true)) {
+                continue;
+            }
+
             $item = $this->parseKey($query, $key, true);
 
             if ($val instanceof Expression) {
@@ -129,7 +133,7 @@ abstract class Builder
                 list($key, $name) = explode('->', $key);
                 $item             = $this->parseKey($query, $key);
                 $result[$item]    = 'json_set(' . $item . ', \'$.' . $name . '\', ' . $this->parseDataBind($query, $key, $val, $bind) . ')';
-            } elseif (false === strpos($key, '.') && !in_array($key, $fields, true)) {
+            } elseif ('*' == $options['field'] && false === strpos($key, '.') && !in_array($key, $fields, true)) {
                 if ($options['strict']) {
                     throw new Exception('fields not exists:[' . $key . ']');
                 }
@@ -788,16 +792,10 @@ abstract class Builder
      */
     protected function parseOrder(Query $query, $order)
     {
-        if (empty($order)) {
-            return '';
-        }
-
-        $array = [];
-
         foreach ($order as $key => $val) {
             if ($val instanceof Expression) {
                 $array[] = $val->getValue();
-            } elseif (is_array($val) && !preg_match('/\W/', $key)) {
+            } elseif (is_array($val) && preg_match('/^[\w\.]+$/', $key)) {
                 $array[] = $this->parseOrderField($query, $key, $val);
             } elseif ('[rand]' == $val) {
                 $array[] = $this->parseRand($query);
@@ -808,15 +806,17 @@ abstract class Builder
                     $sort = $val;
                 }
 
-                if (false === strpos($key, ')') && false === strpos($key, '#')) {
+                if (preg_match('/^[\w\.]+$/', $key)) {
                     $sort    = strtoupper($sort);
                     $sort    = in_array($sort, ['ASC', 'DESC'], true) ? ' ' . $sort : '';
                     $array[] = $this->parseKey($query, $key, true) . $sort;
+                } else {
+                    throw new Exception('order express error:' . $key);
                 }
             }
         }
 
-        return ' ORDER BY ' . implode(',', $array);
+        return empty($array) ? '' : ' ORDER BY ' . implode(',', $array);
     }
 
     /**
