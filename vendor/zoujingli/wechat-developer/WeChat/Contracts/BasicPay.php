@@ -95,9 +95,8 @@ class BasicPay
     public function getPaySign(array $data, $signType = 'MD5', $buff = '')
     {
         ksort($data);
-        foreach ($data as $k => $v) {
-            $buff .= "{$k}={$v}&";
-        }
+        if (isset($data['sign'])) unset($data['sign']);
+        foreach ($data as $k => $v) $buff .= "{$k}={$v}&";
         $buff .= ("key=" . $this->config->get('mch_key'));
         if (strtoupper($signType) === 'MD5') {
             return strtoupper(md5($buff));
@@ -109,7 +108,7 @@ class BasicPay
      * 转换短链接
      * @param string $longUrl 需要转换的URL，签名用原串，传输需URLencode
      * @return array
-     * @throws \WeChat\Exceptions\ExcInvalidResponseException
+     * @throws InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function shortUrl($longUrl)
