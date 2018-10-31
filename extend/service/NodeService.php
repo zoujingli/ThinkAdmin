@@ -124,11 +124,9 @@ class NodeService
                 continue;
             }
             $className = env('app_namespace') . str_replace('/', '\\', $matches[0]);
-            if (!class_exists($className)) {
-                continue;
-            }
+            if (!class_exists($className)) continue;
             foreach (get_class_methods($className) as $funcName) {
-                if (strpos($funcName, '_') !== 0 && $funcName !== 'initialize') {
+                if (strpos($funcName, '_') !== 0 && $funcName !== 'initialize' && $funcName !== 'registerMiddleware') {
                     $nodes[] = self::parseNodeStr("{$matches[1]}/{$matches[2]}") . '/' . strtolower($funcName);
                 }
             }
