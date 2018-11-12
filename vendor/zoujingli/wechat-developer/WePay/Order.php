@@ -14,7 +14,7 @@
 
 namespace WePay;
 
-use WeChat\Contracts\BasicPay;
+use WeChat\Contracts\BasicWePay;
 use WeChat\Contracts\Tools;
 
 /**
@@ -22,7 +22,7 @@ use WeChat\Contracts\Tools;
  * Class Order
  * @package WePay
  */
-class Order extends BasicPay
+class Order extends BasicWePay
 {
 
     /**
@@ -30,6 +30,7 @@ class Order extends BasicPay
      * @param array $options
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function create(array $options)
     {
@@ -42,6 +43,7 @@ class Order extends BasicPay
      * @param array $options
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function query(array $options)
     {
@@ -54,6 +56,7 @@ class Order extends BasicPay
      * @param string $outTradeNo 商户订单号
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function close($outTradeNo)
     {
@@ -102,6 +105,7 @@ class Order extends BasicPay
      * @param array $options
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function reverse(array $options)
     {
@@ -114,6 +118,7 @@ class Order extends BasicPay
      * @param string $authCode 扫码支付授权码，设备读取用户微信中的条码或者二维码信息
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function queryAuthCode($authCode)
     {
@@ -126,6 +131,7 @@ class Order extends BasicPay
      * @param array $options
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function report(array $options)
     {

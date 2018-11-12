@@ -165,7 +165,7 @@ class HasMany extends Relation
 
         if ($closure) {
             $return = $closure($this->query);
-            if ($resturn && is_string($return)) {
+            if ($return && is_string($return)) {
                 $name = $return;
             }
         }
@@ -195,7 +195,7 @@ class HasMany extends Relation
         }
 
         return $this->query
-            ->whereExp($this->foreignKey, '=' . $this->parent->getTable() . '.' . $this->parent->getPk())
+            ->whereExp($this->foreignKey, '=' . $this->parent->getTable() . '.' . $this->localKey)
             ->fetchSql()
             ->$aggregate($field);
     }

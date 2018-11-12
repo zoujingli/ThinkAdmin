@@ -50,17 +50,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.28",
-        "version_normalized": "5.1.28.0",
+        "version": "v5.1.29",
+        "version_normalized": "5.1.29.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "8102ec96136a66f926bae89faea540b91687de37"
+            "reference": "f1d8ee3a91e8f504507edb5dcc49c50c47b4500f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/8102ec96136a66f926bae89faea540b91687de37",
-            "reference": "8102ec96136a66f926bae89faea540b91687de37",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/f1d8ee3a91e8f504507edb5dcc49c50c47b4500f",
+            "reference": "f1d8ee3a91e8f504507edb5dcc49c50c47b4500f",
             "shasum": "",
             "mirrors": [
                 {
@@ -82,7 +82,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2018-10-28T12:24:29+00:00",
+        "time": "2018-11-11T01:17:33+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -156,17 +156,17 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.6",
-        "version_normalized": "7.2.6.0",
+        "version": "v7.2.7",
+        "version_normalized": "7.2.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "305ce1c1c0c71f794661fe45a96facf61ef96c5d"
+            "reference": "88d11a5857ebc6871204e9be6ceec54bf5f381e6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/305ce1c1c0c71f794661fe45a96facf61ef96c5d",
-            "reference": "305ce1c1c0c71f794661fe45a96facf61ef96c5d",
+            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/88d11a5857ebc6871204e9be6ceec54bf5f381e6",
+            "reference": "88d11a5857ebc6871204e9be6ceec54bf5f381e6",
             "shasum": "",
             "mirrors": [
                 {
@@ -182,7 +182,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2018-05-18T04:37:29+00:00",
+        "time": "2018-11-06T13:34:32+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -215,8 +215,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.17",
-        "version_normalized": "3.4.17.0",
+        "version": "v3.4.18",
+        "version_normalized": "3.4.18.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
@@ -443,17 +443,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.1.17",
-        "version_normalized": "1.1.17.0",
+        "version": "v1.2.2",
+        "version_normalized": "1.2.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "7438d3b7081ddbdb8320cf7762896d705710cf28"
+            "reference": "7e89f110da89e44e32b1abf5a15b2d107e3b30d5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/7438d3b7081ddbdb8320cf7762896d705710cf28",
-            "reference": "7438d3b7081ddbdb8320cf7762896d705710cf28",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/7e89f110da89e44e32b1abf5a15b2d107e3b30d5",
+            "reference": "7e89f110da89e44e32b1abf5a15b2d107e3b30d5",
             "shasum": "",
             "mirrors": [
                 {
@@ -468,7 +468,7 @@
             "ext-openssl": "*",
             "php": ">=5.4"
         },
-        "time": "2018-10-27T07:50:34+00:00",
+        "time": "2018-11-03T01:01:29+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -477,8 +477,9 @@
             ],
             "psr-4": {
                 "WePay\\": "WePay",
+                "WeMini\\": "WeMini",
                 "WeChat\\": "WeChat",
-                "WeMini\\": "WeMini"
+                "AliPay\\": "AliPay"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -497,6 +498,7 @@
         "keywords": [
             "WeChatDeveloper",
             "WeMini",
+            "alipay",
             "wechat",
             "wechatpay",
             "wepay"

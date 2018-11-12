@@ -13,20 +13,12 @@
 // +----------------------------------------------------------------------
 
 spl_autoload_register(function ($classname) {
-    $separator = DIRECTORY_SEPARATOR;
-    $filename = __DIR__ . $separator . str_replace('\\', $separator, $classname) . '.php';
+    $filename = __DIR__ . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';
     if (file_exists($filename)) {
-        if (stripos($classname, 'WeChat') === 0) {
-            include $filename;
-        }
-        if (stripos($classname, 'WeMini') === 0) {
-            include $filename;
-        }
-        if (stripos($classname, 'WePay') === 0) {
-            include $filename;
-        }
-        if ($classname === 'We') {
-            include $filename;
-        }
+        if (stripos($classname, 'WeChat') === 0) include $filename;
+        elseif (stripos($classname, 'WeMini') === 0) include $filename;
+        elseif (stripos($classname, 'AliPay') === 0) include $filename;
+        elseif (stripos($classname, 'WePay') === 0) include $filename;
+        elseif ($classname === 'We') include $filename;
     }
 });

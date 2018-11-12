@@ -6,6 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AliPay\\App' => $vendorDir . '/zoujingli/wechat-developer/AliPay/App.php',
+    'AliPay\\Bill' => $vendorDir . '/zoujingli/wechat-developer/AliPay/Bill.php',
+    'AliPay\\Pos' => $vendorDir . '/zoujingli/wechat-developer/AliPay/Pos.php',
+    'AliPay\\Scan' => $vendorDir . '/zoujingli/wechat-developer/AliPay/Scan.php',
+    'AliPay\\Transfer' => $vendorDir . '/zoujingli/wechat-developer/AliPay/Transfer.php',
+    'AliPay\\Wap' => $vendorDir . '/zoujingli/wechat-developer/AliPay/Wap.php',
+    'AliPay\\Web' => $vendorDir . '/zoujingli/wechat-developer/AliPay/Web.php',
     'Endroid\\QrCode\\Bundle\\Controller\\QrCodeController' => $vendorDir . '/endroid/qr-code/src/Bundle/Controller/QrCodeController.php',
     'Endroid\\QrCode\\Bundle\\DependencyInjection\\Configuration' => $vendorDir . '/endroid/qr-code/src/Bundle/DependencyInjection/Configuration.php',
     'Endroid\\QrCode\\Bundle\\DependencyInjection\\EndroidQrCodeExtension' => $vendorDir . '/endroid/qr-code/src/Bundle/DependencyInjection/EndroidQrCodeExtension.php',
@@ -97,6 +104,7 @@ return array(
     'Qiniu\\Processing\\Operation' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Processing/Operation.php',
     'Qiniu\\Processing\\PersistentFop' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Processing/PersistentFop.php',
     'Qiniu\\Rtc\\AppClient' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Rtc/AppClient.php',
+    'Qiniu\\Storage\\ArgusManager' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Storage/ArgusManager.php',
     'Qiniu\\Storage\\BucketManager' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Storage/BucketManager.php',
     'Qiniu\\Storage\\FormUploader' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Storage/FormUploader.php',
     'Qiniu\\Storage\\ResumeUploader' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/Storage/ResumeUploader.php',
@@ -116,9 +124,10 @@ return array(
     'Symfony\\Component\\OptionsResolver\\OptionsResolver' => $vendorDir . '/symfony/options-resolver/OptionsResolver.php',
     'We' => $vendorDir . '/zoujingli/wechat-developer/We.php',
     'WeChat\\Card' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Card.php',
-    'WeChat\\Contracts\\BasicPay' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicPay.php',
+    'WeChat\\Contracts\\BasicAliPay' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicAliPay.php',
     'WeChat\\Contracts\\BasicPushEvent' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicPushEvent.php',
     'WeChat\\Contracts\\BasicWeChat' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicWeChat.php',
+    'WeChat\\Contracts\\BasicWePay' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicWePay.php',
     'WeChat\\Contracts\\DataArray' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/DataArray.php',
     'WeChat\\Contracts\\DataError' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/DataError.php',
     'WeChat\\Contracts\\Tools' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/Tools.php',

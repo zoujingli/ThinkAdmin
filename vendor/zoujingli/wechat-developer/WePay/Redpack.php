@@ -14,14 +14,14 @@
 
 namespace WePay;
 
-use WeChat\Contracts\BasicPay;
+use WeChat\Contracts\BasicWePay;
 
 /**
  * 微信红包支持
  * Class Redpack
  * @package WePay
  */
-class Redpack extends BasicPay
+class Redpack extends BasicWePay
 {
 
     /**
@@ -29,6 +29,7 @@ class Redpack extends BasicPay
      * @param array $options
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function create(array $options)
     {
@@ -43,6 +44,7 @@ class Redpack extends BasicPay
      * @param array $options
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function groups(array $options)
     {
@@ -57,6 +59,7 @@ class Redpack extends BasicPay
      * @param string $mchBillno 商户发放红包的商户订单号
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function query($mchBillno)
     {

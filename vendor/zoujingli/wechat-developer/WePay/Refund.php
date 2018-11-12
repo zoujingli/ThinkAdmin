@@ -14,7 +14,7 @@
 
 namespace WePay;
 
-use WeChat\Contracts\BasicPay;
+use WeChat\Contracts\BasicWePay;
 use WeChat\Contracts\Tools;
 use WeChat\Exceptions\InvalidResponseException;
 
@@ -23,14 +23,15 @@ use WeChat\Exceptions\InvalidResponseException;
  * Class Refund
  * @package WePay
  */
-class Refund extends BasicPay
+class Refund extends BasicWePay
 {
 
     /**
      * 创建退款订单
      * @param array $options
      * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function create(array $options)
     {
@@ -42,7 +43,8 @@ class Refund extends BasicPay
      * 查询退款
      * @param array $options
      * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function query(array $options)
     {

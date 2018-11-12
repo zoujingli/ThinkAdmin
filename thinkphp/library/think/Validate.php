@@ -331,10 +331,10 @@ class Validate
      * 移除某个字段的验证规则
      * @access public
      * @param  string|array  $field  字段名
-     * @param  mixed         $rule   验证规则 true 移除所有规则
+     * @param  mixed         $rule   验证规则 null 移除所有规则
      * @return $this
      */
-    public function remove($field, $rule = true)
+    public function remove($field, $rule = null)
     {
         if (is_array($field)) {
             foreach ($field as $key => $rule) {
@@ -419,7 +419,7 @@ class Validate
                 continue;
             }
 
-            // 获取数据 支持二维数组
+            // 获取数据 支持多维数组
             $value = $this->getDataValue($data, $key);
 
             // 字段验证
@@ -548,7 +548,7 @@ class Validate
                 if (!empty($msg[$i])) {
                     $message = $msg[$i];
                     if (is_string($message) && strpos($message, '{%') === 0) {
-                        $message = Lang::get(substr($message, 2, -1));
+                        $message = facade\Lang::get(substr($message, 2, -1));
                     }
                 } else {
                     $message = $this->getRuleMsg($field, $title, $info, $rule);
@@ -1404,7 +1404,7 @@ class Validate
      * 获取数据值
      * @access protected
      * @param  array     $data  数据
-     * @param  string    $key  数据标识 支持二维
+     * @param  string    $key  数据标识 支持多维
      * @return mixed
      */
     protected function getDataValue($data, $key)
@@ -1412,9 +1412,14 @@ class Validate
         if (is_numeric($key)) {
             $value = $key;
         } elseif (strpos($key, '.')) {
-            // 支持二维数组验证
-            list($name1, $name2) = explode('.', $key);
-            $value               = isset($data[$name1][$name2]) ? $data[$name1][$name2] : null;
+            // 支持多维数组验证
+            foreach (explode('.', $key) as $key) {
+                if (!isset($data[$key])) {
+                    $value = null;
+                    break;
+                }
+                $value = $data = $data[$key];
+            }
         } else {
             $value = isset($data[$key]) ? $data[$key] : null;
         }

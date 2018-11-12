@@ -14,14 +14,14 @@
 
 namespace WePay;
 
-use WeChat\Contracts\BasicPay;
+use WeChat\Contracts\BasicWePay;
 
 /**
  * 微信商户打款到零钱
  * Class Transfers
  * @package WePay
  */
-class Transfers extends BasicPay
+class Transfers extends BasicWePay
 {
 
     /**
@@ -29,6 +29,7 @@ class Transfers extends BasicPay
      * @param array $options
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function create(array $options)
     {
@@ -45,6 +46,7 @@ class Transfers extends BasicPay
      * @param string $partnerTradeNo 商户调用企业付款API时使用的商户订单号
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function query($partnerTradeNo)
     {

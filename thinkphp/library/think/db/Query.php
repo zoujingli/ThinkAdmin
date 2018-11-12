@@ -1417,23 +1417,18 @@ class Query
      * 指定Exp查询条件
      * @access public
      * @param  mixed  $field     查询字段
-     * @param  string $condition 查询条件
+     * @param  string $where     查询条件
      * @param  array  $bind      参数绑定
      * @param  string $logic     查询逻辑 and or xor
      * @return $this
      */
-    public function whereExp($field, $condition, $bind = [], $logic = 'AND')
+    public function whereExp($field, $where, $bind = [], $logic = 'AND')
     {
         if ($bind) {
-            foreach ($bind as $key => $value) {
-                if (!is_numeric($key)) {
-                    $where = str_replace(':' . $key, '?', $where);
-                }
-            }
-            $this->bind(array_values($bind));
+            $this->bindParams($where, $bind);
         }
 
-        $this->options['where'][$logic][] = [$field, 'EXP', $this->raw($condition)];
+        $this->options['where'][$logic][] = [$field, 'EXP', $this->raw($where)];
 
         return $this;
     }
@@ -1449,18 +1444,36 @@ class Query
     public function whereRaw($where, $bind = [], $logic = 'AND')
     {
         if ($bind) {
-            foreach ($bind as $key => $value) {
-                if (!is_numeric($key)) {
-                    $where = str_replace(':' . $key, '?', $where);
-                }
-            }
-
-            $this->bind(array_values($bind));
+            $this->bindParams($where, $bind);
         }
 
         $this->options['where'][$logic][] = $this->raw($where);
 
         return $this;
+    }
+
+    /**
+     * 参数绑定
+     * @access public
+     * @param  string $sql    绑定的sql表达式
+     * @param  array  $bind   参数绑定
+     * @return void
+     */
+    protected function bindParams(&$sql, array $bind = [])
+    {
+        foreach ($bind as $key => $value) {
+            if (is_array($value)) {
+                $name = $this->bind($value[0], $value[1], isset($value[2]) ? $value[2] : null);
+            } else {
+                $name = $this->bind($value);
+            }
+
+            if (is_numeric($key)) {
+                $sql = substr_replace($sql, ':' . $name, strpos($sql, '?'), 1);
+            } else {
+                $sql = str_replace(':' . $key, ':' . $name, $sql);
+            }
+        }
     }
 
     /**
@@ -1500,7 +1513,7 @@ class Query
             return $this;
         }
 
-        if (is_string($field) && !empty($this->options['via']) && !strpos($field, '.')) {
+        if (is_string($field) && !empty($this->options['via']) && false === strpos($field, '.')) {
             $field = $this->options['via'] . '.' . $field;
         }
 
@@ -1893,13 +1906,7 @@ class Query
     public function orderRaw($field, $bind = [])
     {
         if ($bind) {
-            foreach ($bind as $key => $value) {
-                if (!is_numeric($key)) {
-                    $field = str_replace(':' . $key, '?', $field);
-                }
-            }
-
-            $this->bind(array_values($bind));
+            $this->bindParams($field, $bind);
         }
 
         $this->options['order'][] = $this->raw($field);
@@ -2444,14 +2451,18 @@ class Query
      * @access public
      * @param  mixed   $value 绑定变量值
      * @param  integer $type  绑定类型
-     * @return $this
+     * @param  string  $name  绑定名称
+     * @return $this|string
      */
-    public function bind($value = false, $type = PDO::PARAM_STR)
+    public function bind($value, $type = PDO::PARAM_STR, $name = null)
     {
         if (is_array($value)) {
             $this->bind = array_merge($this->bind, $value);
         } else {
-            $this->bind[] = [$value, $type];
+            $name = $name ?: 'ThinkBind_' . (count($this->bind) + 1) . '_';
+
+            $this->bind[$name] = [$value, $type];
+            return $name;
         }
 
         return $this;
@@ -3648,7 +3659,7 @@ class Query
             $options['field'] = '*';
         }
 
-        foreach (['data', 'order'] as $name) {
+        foreach (['data', 'order', 'join', 'union'] as $name) {
             if (!isset($options[$name])) {
                 $options[$name] = [];
             }
@@ -3668,7 +3679,7 @@ class Query
             $options['master'] = true;
         }
 
-        foreach (['join', 'union', 'group', 'having', 'limit', 'force', 'comment'] as $name) {
+        foreach (['group', 'having', 'limit', 'force', 'comment'] as $name) {
             if (!isset($options[$name])) {
                 $options[$name] = '';
             }

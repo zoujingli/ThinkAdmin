@@ -58,6 +58,15 @@ use WeChat\Exceptions\InvalidInstanceException;
  * @method \WePay\Redpack WePayRedpack($options = []) static 微信红包支持
  * @method \WePay\Transfers WePayTransfers($options = []) static 微信商户打款到零钱
  * @method \WePay\TransfersBank WePayTransfersBank($options = []) static 微信商户打款到银行卡
+ *
+ * ----- AliPay ----
+ * @method \AliPay\App AliPayApp($options) static 支付宝App支付网关
+ * @method \AliPay\Bill AliPayBill($options) static 支付宝电子面单下载
+ * @method \AliPay\Pos AliPayPos($options) static 支付宝刷卡支付
+ * @method \AliPay\Scan AliPayScan($options) static 支付宝扫码支付
+ * @method \AliPay\Transfer AliPayTransfer($options) static 支付宝转账到账户
+ * @method \AliPay\Wap AliPayWap($options) static 支付宝手机网站支付
+ * @method \AliPay\Web AliPayWeb($options) static 支付宝网站支付
  */
 class We
 {
@@ -65,7 +74,7 @@ class We
      * 定义当前版本
      * @var string
      */
-    const VERSION = '1.1.12';
+    const VERSION = '1.2.2';
 
     /**
      * 静态配置
@@ -104,6 +113,8 @@ class We
             $class = 'WeMini\\' . substr($name, 6);
         } elseif (substr($name, 0, 5) === 'WePay') {
             $class = 'WePay\\' . substr($name, 5);
+        } elseif (substr($name, 0, 6) === 'AliPay') {
+            $class = 'AliPay\\' . substr($name, 6);
         }
         if (!empty($class) && class_exists($class)) {
             $option = array_shift($arguments);
