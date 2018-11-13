@@ -41,6 +41,6 @@ class Bill extends BasicAliPay
      */
     public function apply($options)
     {
-        return $this->getResult($options);
+        return $this->getResult($options, 'get');
     }
 }

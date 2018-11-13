@@ -24,7 +24,7 @@ try {
     // $pay = new \AliPay\Bill($config);
     // 请参考（请求参数）：https://docs.open.alipay.com/api_15/alipay.data.dataservice.bill.downloadurl.query
     $result = $pay->apply([
-        'bill_date' => '2017-11-03', // 账单时间(日账单yyyy-MM-dd,月账单 yyyy-MM)
+        'bill_date' => '2018-10-03', // 账单时间(日账单yyyy-MM-dd,月账单 yyyy-MM)
         'bill_type' => 'signcustomer', // 账单类型(trade指商户基于支付宝交易收单的业务账单,signcustomer是指基于商户支付宝余额收入及支出等资金变动的帐务账单)
     ]);
     echo '<pre>';
@@ -32,5 +32,3 @@ try {
 } catch (Exception $e) {
     echo $e->getMessage();
 }
-
-

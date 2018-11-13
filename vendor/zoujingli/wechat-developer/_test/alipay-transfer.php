@@ -24,7 +24,7 @@ try {
     // $pay = new \AliPay\Scan($config);
     // 参考链接：https://docs.open.alipay.com/api_28/alipay.fund.trans.toaccount.transfer
     $result = $pay->apply([
-        'out_biz_no'      => '', // 订单号
+        'out_biz_no'      => time(), // 订单号
         'payee_type'      => 'ALIPAY_LOGONID', // 收款方账户类型(ALIPAY_LOGONID | ALIPAY_USERID)
         'payee_account'   => 'demo@sandbox.com', // 收款方账户
         'amount'          => '10', // 转账金额

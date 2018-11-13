@@ -148,10 +148,12 @@ class BasicWeChat
         try {
             return Tools::json2arr(Tools::get($url));
         } catch (InvalidResponseException $e) {
-            if (!$this->isTry && in_array($e->getCode(), ['40014', '40001', '41001', '42001'])) {
-                $this->delAccessToken();
-                $this->isTry = true;
-                return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
+            if (isset($this->currentMethod['method']) && empty($this->isTry)) {
+                if (in_array($e->getCode(), ['40014', '40001', '41001', '42001'])) {
+                    $this->delAccessToken();
+                    $this->isTry = true;
+                    return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
+                }
             }
             throw new InvalidResponseException($e->getMessage(), $e->getCode());
         }

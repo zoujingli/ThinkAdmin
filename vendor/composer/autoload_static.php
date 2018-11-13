@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitbe36bc09417ef093d568a98d90fda606
+class ComposerStaticInitef946a60869007e79afc4c4e78c26e16
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -282,7 +282,7 @@ class ComposerStaticInitbe36bc09417ef093d568a98d90fda606
         'app\\admin\\controller\\Node' => __DIR__ . '/../..' . '/application/admin/controller/Node.php',
         'app\\admin\\controller\\Plugs' => __DIR__ . '/../..' . '/application/admin/controller/Plugs.php',
         'app\\admin\\controller\\User' => __DIR__ . '/../..' . '/application/admin/controller/User.php',
-        'app\\admin\\middleware\\Auth' => __DIR__ . '/../..' . '/application/admin/middleware/Auth.php',
+        'app\\admin\\logic\\Auth' => __DIR__ . '/../..' . '/application/admin/logic/Auth.php',
         'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/application/index/controller/Index.php',
         'app\\store\\controller\\Express' => __DIR__ . '/../..' . '/application/store/controller/Express.php',
         'app\\store\\controller\\Goods' => __DIR__ . '/../..' . '/application/store/controller/Goods.php',
@@ -320,9 +320,9 @@ class ComposerStaticInitbe36bc09417ef093d568a98d90fda606
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitbe36bc09417ef093d568a98d90fda606::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitbe36bc09417ef093d568a98d90fda606::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitbe36bc09417ef093d568a98d90fda606::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitef946a60869007e79afc4c4e78c26e16::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitef946a60869007e79afc4c4e78c26e16::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitef946a60869007e79afc4c4e78c26e16::$classMap;
 
         }, null, ClassLoader::class);
     }

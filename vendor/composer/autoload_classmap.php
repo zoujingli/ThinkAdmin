@@ -184,7 +184,7 @@ return array(
     'app\\admin\\controller\\Node' => $baseDir . '/application/admin/controller/Node.php',
     'app\\admin\\controller\\Plugs' => $baseDir . '/application/admin/controller/Plugs.php',
     'app\\admin\\controller\\User' => $baseDir . '/application/admin/controller/User.php',
-    'app\\admin\\middleware\\Auth' => $baseDir . '/application/admin/middleware/Auth.php',
+    'app\\admin\\logic\\Auth' => $baseDir . '/application/admin/logic/Auth.php',
     'app\\index\\controller\\Index' => $baseDir . '/application/index/controller/Index.php',
     'app\\store\\controller\\Express' => $baseDir . '/application/store/controller/Express.php',
     'app\\store\\controller\\Goods' => $baseDir . '/application/store/controller/Goods.php',
