@@ -31,8 +31,7 @@ try {
         'total_amount' => '1', // 支付金额
         'subject'      => '支付订单描述', // 支付订单描述
     ]);
-    echo '<pre>';
-    var_export($result);
+    echo $result;
 } catch (Exception $e) {
     echo $e->getMessage();
 }

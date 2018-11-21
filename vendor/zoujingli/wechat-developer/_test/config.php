@@ -15,7 +15,7 @@
 return [
     'token'          => 'test',
     'appid'          => 'wx60a43dd8161666d4',
-    'appsecret'      => '71308e96a204296c57d7cd4b21b883e8',
+    'appsecret'      => 'b4e28746f1bd73b5c6684f5e01883c36',
     'encodingaeskey' => 'BJIUzE0gqlWy0GxfPp4J1oPTBmOrNDIGPNav1YFH5Z5',
     // 配置商户支付参数
     'mch_id'         => "1332187001",

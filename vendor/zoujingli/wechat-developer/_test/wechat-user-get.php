@@ -26,6 +26,7 @@ try {
     // 4. 获取用户列表
     $result = $wechat->getUserList();
 
+    echo '<pre>';
     var_export($result);
 
     // 5. 批量获取用户资料

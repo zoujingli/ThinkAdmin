@@ -15,6 +15,7 @@
 namespace WeChat\Contracts;
 
 use WeChat\Exceptions\InvalidArgumentException;
+use WeChat\Exceptions\InvalidResponseException;
 
 /**
  * 支付宝支付基类
@@ -91,11 +92,11 @@ abstract class BasicAliPay
      * 查询支付宝订单状态
      * @param string $out_trade_no
      * @return array|boolean
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
      */
     public function query($out_trade_no = '')
     {
-        $this->options['method'] = 'alipay.trade.query';
+        $this->options->set('method', 'alipay.trade.query');
         return $this->getResult(['out_trade_no' => $out_trade_no]);
     }
 
@@ -104,12 +105,12 @@ abstract class BasicAliPay
      * @param array|string $options 退款参数或退款商户订单号
      * @param null $refund_amount 退款金额
      * @return array|boolean
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
      */
     public function refund($options, $refund_amount = null)
     {
         if (!is_array($options)) $options = ['out_trade_no' => $options, 'refund_amount' => $refund_amount];
-        $this->options['method'] = 'alipay.trade.refund';
+        $this->options->set('method', 'alipay.trade.refund');
         return $this->getResult($options);
     }
 
@@ -117,32 +118,51 @@ abstract class BasicAliPay
      * 关闭支付宝进行中的订单
      * @param array|string $options
      * @return array|boolean
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
      */
     public function close($options)
     {
         if (!is_array($options)) $options = ['out_trade_no' => $options];
-        $this->options['method'] = 'alipay.trade.close';
+        $this->options->set('method', 'alipay.trade.close');
         return $this->getResult($options);
     }
 
     /**
-     * 验证支付宝支付宝通知
-     * @param array $data 通知数据
-     * @param null $sign 数据签名
-     * @param boolean $sync
-     * @return array|bool
+     * 获取通知数据
+     * @param boolean $needSignType 是否需要sign_type字段
+     * @return boolean|array
+     * @throws InvalidResponseException
      */
-    public function verify($data, $sign = null, $sync = false)
+    public function notify($needSignType = false)
     {
-        if (is_null($this->config->get('public_key'))) {
-            throw new InvalidArgumentException('Missing Config -- [public_key]');
+        $data = $_POST;
+        if (empty($data) || empty($data['sign'])) {
+            throw new InvalidResponseException('Illegal push request.', 0, $data);
         }
-        $sign = is_null($sign) ? $data['sign'] : $sign;
+        $string = $this->getSignContent($data, $needSignType);
         $content = wordwrap($this->config->get('public_key'), 64, "\n", true);
-        $string = $sync ? json_encode($data) : $this->getSignContent($data, true);
         $res = "-----BEGIN PUBLIC KEY-----\n{$content}\n-----END PUBLIC KEY-----";
-        return openssl_verify($string, base64_decode($sign), $res, OPENSSL_ALGO_SHA256) === 1 ? $data : false;
+        if (openssl_verify($string, base64_decode($data['sign']), $res, OPENSSL_ALGO_SHA256) !== 1) {
+            throw new InvalidResponseException('Data signature verification failed.', 0, $data);
+        }
+        return $data;
+    }
+
+    /**
+     * 验证接口返回的数据签名
+     * @param array $data 通知数据
+     * @param null|string $sign 数据签名
+     * @return array|boolean
+     * @throws InvalidResponseException
+     */
+    protected function verify($data, $sign)
+    {
+        $content = wordwrap($this->config->get('public_key'), 64, "\n", true);
+        $res = "-----BEGIN PUBLIC KEY-----\n{$content}\n-----END PUBLIC KEY-----";
+        if (openssl_verify(json_encode($data, 256), base64_decode($sign), $res, OPENSSL_ALGO_SHA256) !== 1) {
+            throw new InvalidResponseException('Data signature verification failed.');
+        }
+        return $data;
     }
 
     /**
@@ -151,30 +171,28 @@ abstract class BasicAliPay
      */
     protected function getSign()
     {
-        if (is_null($this->config->get('private_key'))) {
-            throw new InvalidArgumentException('Missing Config -- [private_key]');
-        }
         $content = wordwrap($this->config->get('private_key'), 64, "\n", true);
         $string = "-----BEGIN RSA PRIVATE KEY-----\n{$content}\n-----END RSA PRIVATE KEY-----";
-        openssl_sign($this->getSignContent($this->options->get()), $sign, $string, OPENSSL_ALGO_SHA256);
+        openssl_sign($this->getSignContent($this->options->get(), true), $sign, $string, OPENSSL_ALGO_SHA256);
         return base64_encode($sign);
     }
 
     /**
      * 数据签名处理
-     * @param array $data
-     * @param boolean $verify
-     * @param array $strs
+     * @param array $data 需要进行签名数据
+     * @param boolean $needSignType 是否需要sign_type字段
      * @return bool|string
      */
-    private function getSignContent(array $data, $verify = false, $strs = [])
+    private function getSignContent(array $data, $needSignType = false)
     {
-        ksort($data);
-        foreach ($data as $k => $v) if ($v !== '') {
-            if ($verify && $k != 'sign' && $k != 'sign_type') array_push($strs, "{$k}={$v}");
-            if (!$verify && $v !== '' && !is_null($v) && $k != 'sign' && '@' != substr($v, 0, 1)) array_push($strs, "{$k}={$v}");
+        list($attrs,) = [[], ksort($data)];
+        if (isset($data['sign'])) unset($data['sign']);
+        if (empty($needSignType)) unset($data['sign_type']);
+        foreach ($data as $key => $value) {
+            if ($value === '' || is_null($value)) continue;
+            array_push($attrs, "{$key}={$value}");
         }
-        return join('&', $strs);
+        return join('&', $attrs);
     }
 
     /**
@@ -183,15 +201,15 @@ abstract class BasicAliPay
      */
     protected function applyData($options)
     {
-        $this->options['biz_content'] = json_encode($options, JSON_UNESCAPED_UNICODE);
-        $this->options['sign'] = $this->getSign();
+        $this->options->set('biz_content', json_encode($this->params->merge($options), 256));
+        $this->options->set('sign', $this->getSign());
     }
 
     /**
      * 请求接口并验证访问数据
      * @param array $options
      * @return array|boolean
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
      */
     protected function getResult($options)
     {
@@ -199,24 +217,24 @@ abstract class BasicAliPay
         $method = str_replace('.', '_', $this->options['method']) . '_response';
         $data = json_decode(Tools::get($this->gateway, $this->options->get()), true);
         if (!isset($data[$method]['code']) || $data[$method]['code'] !== '10000') {
-            throw new \WeChat\Exceptions\InvalidResponseException(
+            throw new InvalidResponseException(
                 "Error: " .
                 (empty($data[$method]['code']) ? '' : "{$data[$method]['msg']} [{$data[$method]['code']}]\r\n") .
                 (empty($data[$method]['sub_code']) ? '' : "{$data[$method]['sub_msg']} [{$data[$method]['sub_code']}]\r\n"),
                 $data[$method]['code'], $data
             );
         }
-        return $this->verify($data[$method], $data['sign'], true);
+        return $this->verify($data[$method], $data['sign']);
     }
 
     /**
-     * 生成支付html代码
+     * 生成支付HTML代码
      * @return string
      */
     protected function buildPayHtml()
     {
         $html = "<form id='alipaysubmit' name='alipaysubmit' action='{$this->gateway}' method='post'>";
-        foreach ($this->params->get() as $key => $value) {
+        foreach ($this->options->get() as $key => $value) {
             $value = str_replace("'", '&apos;', $value);
             $html .= "<input type='hidden' name='{$key}' value='{$value}'/>";
         }
