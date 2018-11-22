@@ -259,6 +259,13 @@
                             });
                         }
                     });
+                    //解决菜单选事件提交后菜单总是变成扫描二维码的错误
+                    $edit.find('input').on('click', function () {
+                        $span.data(this.name, $(this).val() || $(this).html());
+                        if (type === 'event') {
+                            this.value === $span.data('content');
+                        }
+                    });
                     // 显示参数编辑器
                     $('.editor-content-input').html($edit);
                     // 跳转网页处理选择器切换，事件监听
