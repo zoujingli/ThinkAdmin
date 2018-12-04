@@ -1309,12 +1309,12 @@ abstract class Connection
      * @access public
      * @param  Query     $query     查询对象
      * @param  string    $aggregate 聚合方法
-     * @param  string    $field     字段名
+     * @param  mixed     $field     字段名
      * @return mixed
      */
     public function aggregate(Query $query, $aggregate, $field)
     {
-        if (0 === stripos($field, 'DISTINCT ')) {
+        if (is_string($field) && 0 === stripos($field, 'DISTINCT ')) {
             list($distinct, $field) = explode(' ', $field);
         }
 
@@ -1463,10 +1463,12 @@ abstract class Connection
             $value = is_array($val) ? $val[0] : $val;
             $type  = is_array($val) ? $val[1] : PDO::PARAM_STR;
 
-            if (PDO::PARAM_INT == $type || self::PARAM_FLOAT == $type) {
+            if (self::PARAM_FLOAT == $type) {
                 $value = (float) $value;
             } elseif (PDO::PARAM_STR == $type) {
                 $value = '\'' . addslashes($value) . '\'';
+            } elseif (PDO::PARAM_INT == $type && '' === $value) {
+                $value = 0;
             }
 
             // 判断占位符
