@@ -63,6 +63,10 @@ class MediaService
      */
     public static function uploadImage($local_url)
     {
+        //干掉url地址后的？一堆，以免basename拿错
+        if(strstr($local_url,'?')) {
+            $local_url = substr($local_url, 0, strpos($local_url, "?"));
+        }
         $map = ['md5' => md5($local_url)];
         if (($media_url = Db::name('WechatNewsImage')->where($map)->value('media_url'))) {
             return $media_url;
@@ -119,7 +123,8 @@ class MediaService
                 }
                 return FileService::download($local)['file'];
             case 'thr':
-                return WechatService::wechat()->upFile(base64_encode(file_get_contents($local)), $local)['file'];
+                //不要传base64了，不如在service里还得获取，
+                return WechatService::wechat()->upFile($local)['file'];
             default:
                 return $local;
         }
