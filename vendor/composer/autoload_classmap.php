@@ -130,6 +130,7 @@ return array(
     'WeChat\\Contracts\\BasicWePay' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicWePay.php',
     'WeChat\\Contracts\\DataArray' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/DataArray.php',
     'WeChat\\Contracts\\DataError' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/DataError.php',
+    'WeChat\\Contracts\\MyCurlFile' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/MyCurlFile.php',
     'WeChat\\Contracts\\Tools' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/Tools.php',
     'WeChat\\Custom' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Custom.php',
     'WeChat\\Exceptions\\InvalidArgumentException' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Exceptions/InvalidArgumentException.php',

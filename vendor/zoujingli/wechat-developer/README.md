@@ -45,13 +45,13 @@ WeChatDeveloper 为开源项目，允许把它用于任何地方，不受任何�
 
 |文件名|类名|描述|类型|加载 ①|
 |---|---|---|---|---|
-|  App.php  |  AliPay\App  |  支付宝App支付  |  支付宝  |  \We::AliPayApp() |
-|  Bill.php  |  AliPay\Bill  |  支付宝账单下载  |  支付宝  |  \We::AliPayBill() |
-|  Pos.php  |  AliPay\Pos  |  支付宝刷卡支付  |  支付宝  |  \We::AliPayPos() |
-|  Scan.php  |  AliPay\Scan  |  支付宝扫码支付  |  支付宝  |  \We::AliPayScan() |
-|  Transfer.php  |  AliPay\Transfer  |  支付宝转账  |  支付宝  |  \We::AliPayTransfer() |
-|  Wap.php  |  AliPay\Wap  |  支付宝Wap支付  |  支付宝  |  \We::AliPayWap() |
-|  Web.php  |  AliPay\Web  |  支付宝Web支付  |  支付宝  |  \We::AliPayWeb() |
+|  App.php  |  AliPay\App  |  支付宝App支付  |  支付宝支付  |  \We::AliPayApp() |
+|  Bill.php  |  AliPay\Bill  |  支付宝账单下载  |  支付宝支付  |  \We::AliPayBill() |
+|  Pos.php  |  AliPay\Pos  |  支付宝刷卡支付  |  支付宝支付  |  \We::AliPayPos() |
+|  Scan.php  |  AliPay\Scan  |  支付宝扫码支付  |  支付宝支付  |  \We::AliPayScan() |
+|  Transfer.php  |  AliPay\Transfer  |  支付宝转账  |  支付宝支付  |  \We::AliPayTransfer() |
+|  Wap.php  |  AliPay\Wap  |  支付宝Wap支付  |  支付宝支付  |  \We::AliPayWap() |
+|  Web.php  |  AliPay\Web  |  支付宝Web支付  |  支付宝支付  |  \We::AliPayWeb() |
 |  Card.php  |  WeChat\Card  |  微信卡券接口支持  |  认证服务号  |  \We::WeChatCard() |
 |  Custom.php  | WeChat\Custom   |  微信客服消息接口支持   |  认证服务号 | \We::WeChatCustom() |
 |  Media.php  | WeChat\Media   |  微信媒体素材接口支持  |  认证服务号 | \We::WeChatMedia() |
@@ -232,17 +232,20 @@ $config['notify_url'] = 'http://pay.thinkadmin.top/test/alipay-notify.php';
 $config['return_url'] = 'http://pay.thinkadmin.top/test/alipay-success.php';
 
 try {
+
     // 实例支付对象
     $pay = We::AliPayWap($config);
     // $pay = new \AliPay\Wap($config);
-    
+
     // 参考链接：https://docs.open.alipay.com/api_1/alipay.trade.wap.pay
     $result = $pay->apply([
         'out_trade_no' => time(), // 商户订单号
         'total_amount' => '1',    // 支付金额
         'subject'      => '支付订单描述', // 支付订单描述
     ]);
+
     echo $result; // 直接输出HTML（提交表单跳转)
+
 } catch (Exception $e) {
 
     // 异常处理

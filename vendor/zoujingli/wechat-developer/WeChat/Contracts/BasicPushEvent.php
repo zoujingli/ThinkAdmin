@@ -165,10 +165,7 @@ class BasicPushEvent
         $signature = empty($msg_signature) ? $this->params->get('signature') : $msg_signature;
         $tmpArr = [$this->config->get('token'), $timestamp, $nonce, $str];
         sort($tmpArr, SORT_STRING);
-        if (sha1(implode($tmpArr)) == $signature) {
-            return true;
-        }
-        return false;
+        return sha1(implode($tmpArr)) === $signature;
     }
 
     /**

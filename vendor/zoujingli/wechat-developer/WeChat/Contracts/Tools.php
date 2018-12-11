@@ -31,6 +31,11 @@ class Tools
      */
     public static $cache_path = null;
 
+    /**
+     * 网络缓存
+     * @var array
+     */
+    private static $cache_curl = [];
 
     /**
      * 产生随机字符串
@@ -49,8 +54,8 @@ class Tools
 
 
     /**
-     * 根据文件后缀获取文件MINE
-     * @param array $ext 文件后缀
+     * 根据文件后缀获取文件类型
+     * @param string|array $ext 文件后缀
      * @param array $mine 文件后缀MINE信息
      * @return string
      * @throws LocalCacheException
@@ -65,7 +70,7 @@ class Tools
     }
 
     /**
-     * 获取所有文件扩展的mine
+     * 获取所有文件扩展的类型
      * @return array
      * @throws LocalCacheException
      */
@@ -75,9 +80,7 @@ class Tools
         if (empty($mines)) {
             $content = file_get_contents('http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types');
             preg_match_all('#^([^\s]{2,}?)\s+(.+?)$#ism', $content, $matches, PREG_SET_ORDER);
-            foreach ($matches as $match) foreach (explode(" ", $match[2]) as $ext) {
-                $mines[$ext] = $match[1];
-            }
+            foreach ($matches as $match) foreach (explode(" ", $match[2]) as $ext) $mines[$ext] = $match[1];
             self::setCache('all_ext_mine', $mines);
         }
         return $mines;
@@ -93,8 +96,8 @@ class Tools
      */
     public static function createCurlFile($filename, $mimetype = null, $postname = null)
     {
-        is_null($postname) && $postname = basename($filename);
-        is_null($mimetype) && $mimetype = self::getExtMine(pathinfo($filename, 4));
+        if (is_null($postname)) $postname = basename($filename);
+        if (is_null($mimetype)) $mimetype = self::getExtMine(pathinfo($filename, 4));
         if (function_exists('curl_file_create')) {
             return curl_file_create($filename, $mimetype, $postname);
         }
@@ -182,7 +185,8 @@ class Tools
      * @param string $url 访问URL
      * @param array $query GET数
      * @param array $options
-     * @return bool|string
+     * @return boolean|string
+     * @throws LocalCacheException
      */
     public static function get($url, $query = [], $options = [])
     {
@@ -195,7 +199,8 @@ class Tools
      * @param string $url 访问URL
      * @param array $data POST数据
      * @param array $options
-     * @return bool|string
+     * @return boolean|string
+     * @throws LocalCacheException
      */
     public static function post($url, $data = [], $options = [])
     {
@@ -208,9 +213,10 @@ class Tools
      * @param string $method 请求方法
      * @param string $url 请求方法
      * @param array $options 请求参数[headers,data,ssl_cer,ssl_key]
-     * @return bool|string
+     * @return boolean|string
+     * @throws LocalCacheException
      */
-    protected static function doRequest($method, $url, $options = [])
+    public static function doRequest($method, $url, $options = [])
     {
         $curl = curl_init();
         // GET参数设置
@@ -224,34 +230,56 @@ class Tools
         // POST数据设置
         if (strtolower($method) === 'post') {
             curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $options['data']);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, self::_buildHttpData($options['data']));
         }
         // 证书文件设置
-        if (!empty($options['ssl_cer'])) {
-            if (file_exists($options['ssl_cer'])) {
-                curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
-                curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cer']);
-            } else {
-                throw new InvalidArgumentException("Certificate files that do not exist. --- [ssl_cer]");
-            }
-        }
+        if (!empty($options['ssl_cer'])) if (file_exists($options['ssl_cer'])) {
+            curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
+            curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cer']);
+        } else throw new InvalidArgumentException("Certificate files that do not exist. --- [ssl_cer]");
         // 证书文件设置
-        if (!empty($options['ssl_key'])) {
-            if (file_exists($options['ssl_key'])) {
-                curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
-                curl_setopt($curl, CURLOPT_SSLKEY, $options['ssl_key']);
-            } else {
-                throw new InvalidArgumentException("Certificate files that do not exist. --- [ssl_key]");
-            }
-        }
+        if (!empty($options['ssl_key'])) if (file_exists($options['ssl_key'])) {
+            curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
+            curl_setopt($curl, CURLOPT_SSLKEY, $options['ssl_key']);
+        } else throw new InvalidArgumentException("Certificate files that do not exist. --- [ssl_key]");
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        list($content, $status) = [curl_exec($curl), curl_getinfo($curl), curl_close($curl)];
-        return (intval($status["http_code"]) === 200) ? $content : false;
+        list($content) = [curl_exec($curl), curl_close($curl)];
+        // 清理 CURL 缓存文件
+        if (!empty(self::$cache_curl)) foreach (self::$cache_curl as $key => $file) {
+            Tools::delCache($file);
+            unset(self::$cache_curl[$key]);
+        }
+        return $content;
+    }
+
+    /**
+     * POST数据过滤处理
+     * @param array $data 需要处理的数据
+     * @param boolean $build 是否编译数据
+     * @return array|string
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    private static function _buildHttpData($data, $build = true)
+    {
+        if (!is_array($data)) return $data;
+        foreach ($data as $key => $value) if (is_object($value) && $value instanceof \CURLFile) {
+            $build = false;
+        } elseif (is_object($value) && isset($value->datatype) && $value->datatype === 'MY_CURL_FILE') {
+            $build = false;
+            $data[$key] = ($myCurlFile = new MyCurlFile((array)$value))->get();
+            array_push(self::$cache_curl, $myCurlFile->tempname);
+        } elseif (is_string($value) && class_exists('CURLFile', false) && stripos($value, '@') === 0) {
+            if (($filename = realpath(trim($value, '@'))) && file_exists($filename)) {
+                $build = false;
+                $data[$key] = self::createCurlFile($filename);
+            }
+        }
+        return $build ? http_build_query($data) : $data;
     }
 
     /**
@@ -263,8 +291,10 @@ class Tools
      */
     public static function pushFile($name, $content)
     {
-        $file = self::getCacheName($name);
-        if (!file_put_contents($file, $content)) throw new LocalCacheException('local file write error.', '0');
+        $file = self::_getCacheName($name);
+        if (!file_put_contents($file, $content)) {
+            throw new LocalCacheException('local file write error.', '0');
+        }
         return $file;
     }
 
@@ -278,9 +308,10 @@ class Tools
      */
     public static function setCache($name, $value = '', $expired = 3600)
     {
-        $file = self::getCacheName($name);
-        $content = serialize(['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)]);
-        if (!file_put_contents($file, $content)) throw new LocalCacheException('local cache error.', '0');
+        $file = self::_getCacheName($name);
+        if (!file_put_contents($file, serialize(['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)]))) {
+            throw new LocalCacheException('local cache error.', '0');
+        }
         return $file;
     }
 
@@ -291,7 +322,7 @@ class Tools
      */
     public static function getCache($name)
     {
-        $file = self::getCacheName($name);
+        $file = self::_getCacheName($name);
         if (file_exists($file) && ($content = file_get_contents($file))) {
             $data = unserialize($content);
             if (isset($data['expired']) && (intval($data['expired']) === 0 || intval($data['expired']) >= time())) {
@@ -305,11 +336,11 @@ class Tools
     /**
      * 移除缓存文件
      * @param string $name 缓存名称
-     * @return bool
+     * @return boolean
      */
     public static function delCache($name)
     {
-        $file = self::getCacheName($name);
+        $file = self::_getCacheName($name);
         return file_exists($file) ? unlink($file) : true;
     }
 
@@ -318,7 +349,7 @@ class Tools
      * @param string $name
      * @return string
      */
-    private static function getCacheName($name)
+    private static function _getCacheName($name)
     {
         if (empty(self::$cache_path)) {
             self::$cache_path = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Cache' . DIRECTORY_SEPARATOR;

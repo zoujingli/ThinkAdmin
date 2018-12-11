@@ -162,12 +162,13 @@ class Pay extends BasicWePay
      * 拉取订单评价数据
      * @param array $options
      * @return array
+     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
      */
     public function billCommtent(array $options)
     {
         $pay = new Bill($this->config->get());
-        return $pay->commtent($options);
+        return $pay->comment($options);
     }
 
     /**

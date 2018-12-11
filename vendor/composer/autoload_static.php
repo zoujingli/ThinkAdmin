@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf061ffbd27d2aca36162b5280255ea57
+class ComposerStaticInit372f99933a0353fdad4eccea136beb65
 {
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
@@ -228,6 +228,7 @@ class ComposerStaticInitf061ffbd27d2aca36162b5280255ea57
         'WeChat\\Contracts\\BasicWePay' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/BasicWePay.php',
         'WeChat\\Contracts\\DataArray' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/DataArray.php',
         'WeChat\\Contracts\\DataError' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/DataError.php',
+        'WeChat\\Contracts\\MyCurlFile' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/MyCurlFile.php',
         'WeChat\\Contracts\\Tools' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/Tools.php',
         'WeChat\\Custom' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Custom.php',
         'WeChat\\Exceptions\\InvalidArgumentException' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Exceptions/InvalidArgumentException.php',
@@ -320,9 +321,9 @@ class ComposerStaticInitf061ffbd27d2aca36162b5280255ea57
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf061ffbd27d2aca36162b5280255ea57::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf061ffbd27d2aca36162b5280255ea57::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf061ffbd27d2aca36162b5280255ea57::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit372f99933a0353fdad4eccea136beb65::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit372f99933a0353fdad4eccea136beb65::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit372f99933a0353fdad4eccea136beb65::$classMap;
 
         }, null, ClassLoader::class);
     }

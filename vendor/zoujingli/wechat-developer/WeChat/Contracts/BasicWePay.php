@@ -86,6 +86,15 @@ class BasicWePay
     }
 
     /**
+     * 获取微信支付通知回复内容
+     * @return string
+     */
+    public function getNotifySuccessReply()
+    {
+        return Tools::arr2xml(['return_code' => 'SUCCESS', 'return_msg' => 'OK']);
+    }
+
+    /**
      * 生成支付签名
      * @param array $data 参与签名的数据
      * @param string $signType 参与签名的类型
