@@ -96,12 +96,15 @@ class Tools
      */
     public static function createCurlFile($filename, $mimetype = null, $postname = null)
     {
-        if (is_null($postname)) $postname = basename($filename);
-        if (is_null($mimetype)) $mimetype = self::getExtMine(pathinfo($filename, 4));
-        if (function_exists('curl_file_create')) {
-            return curl_file_create($filename, $mimetype, $postname);
+        if (is_string($filename) && file_exists($filename)) {
+            if (is_null($postname)) $postname = basename($filename);
+            if (is_null($mimetype)) $mimetype = self::getExtMine(pathinfo($filename, 4));
+            if (function_exists('curl_file_create')) {
+                return curl_file_create($filename, $mimetype, $postname);
+            }
+            return "@{$filename};filename={$postname};type={$mimetype}";
         }
-        return "@{$filename};filename={$postname};type={$mimetype}";
+        return $filename;
     }
 
     /**
@@ -271,8 +274,9 @@ class Tools
             $build = false;
         } elseif (is_object($value) && isset($value->datatype) && $value->datatype === 'MY_CURL_FILE') {
             $build = false;
-            $data[$key] = ($myCurlFile = new MyCurlFile((array)$value))->get();
-            array_push(self::$cache_curl, $myCurlFile->tempname);
+            $mycurl = new MyCurlFile((array)$value);
+            $data[$key] = $mycurl->get();
+            array_push(self::$cache_curl, $mycurl->tempname);
         } elseif (is_string($value) && class_exists('CURLFile', false) && stripos($value, '@') === 0) {
             if (($filename = realpath(trim($value, '@'))) && file_exists($filename)) {
                 $build = false;

@@ -101,6 +101,25 @@ class Order extends BasicWePay
     }
 
     /**
+     * 获取微信App支付秘需参数
+     * @param string $prepayId 统一下单预支付码
+     * @return array
+     */
+    public function appParams($prepayId)
+    {
+        $data = [
+            'appid'     => $this->config->get('appid'),
+            'partnerid' => $this->config->get('mch_id'),
+            'prepayid'  => (string)$prepayId,
+            'package'   => 'Sign=WXPay',
+            'timestamp' => (string)time(),
+            'noncestr'  => Tools::createNoncestr(),
+        ];
+        $data['sign'] = $this->getPaySign($data, 'MD5');
+        return $data;
+    }
+
+    /**
      * 刷卡支付 撤销订单
      * @param array $options
      * @return array

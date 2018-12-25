@@ -56,6 +56,17 @@ class Pay extends BasicWePay
     }
 
     /**
+     * 获取APP支付参数
+     * @param string $prepay_id 统一下单预支付码
+     * @return array
+     */
+    public function createParamsForApp($prepay_id)
+    {
+        $pay = new Order($this->config->get());
+        return $pay->appParams($prepay_id);
+    }
+
+    /**
      * 获取支付规则二维码
      * @param string $product_id 商户定义的商品id 或者订单号
      * @return string

@@ -93,6 +93,7 @@ abstract class BasicAliPay
      * @param string $out_trade_no
      * @return array|boolean
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function query($out_trade_no = '')
     {
@@ -106,6 +107,7 @@ abstract class BasicAliPay
      * @param null $refund_amount 退款金额
      * @return array|boolean
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function refund($options, $refund_amount = null)
     {
@@ -119,6 +121,7 @@ abstract class BasicAliPay
      * @param array|string $options
      * @return array|boolean
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function close($options)
     {
@@ -210,6 +213,7 @@ abstract class BasicAliPay
      * @param array $options
      * @return array|boolean
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     protected function getResult($options)
     {
