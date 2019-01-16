@@ -74,7 +74,7 @@ abstract class BasicAliPay
             'charset'   => empty($options['charset']) ? 'utf-8' : $options['charset'],
             'format'    => 'JSON',
             'version'   => '1.0',
-            'sign_type' => 'RSA2',
+            'sign_type' => empty($options['sign_type']) ? 'RSA2' : $options['sign_type'],
             'timestamp' => date('Y-m-d H:i:s'),
         ]);
         if (isset($options['notify_url']) && $options['notify_url'] !== '') {
@@ -162,8 +162,14 @@ abstract class BasicAliPay
     {
         $content = wordwrap($this->config->get('public_key'), 64, "\n", true);
         $res = "-----BEGIN PUBLIC KEY-----\n{$content}\n-----END PUBLIC KEY-----";
-        if (openssl_verify(json_encode($data, 256), base64_decode($sign), $res, OPENSSL_ALGO_SHA256) !== 1) {
-            throw new InvalidResponseException('Data signature verification failed.');
+        if ($this->options->get('sign_type') === 'RSA2') {
+            if (openssl_verify(json_encode($data, 256), base64_decode($sign), $res, OPENSSL_ALGO_SHA256) !== 1) {
+                throw new InvalidResponseException('Data signature verification failed.');
+            }
+        } else {
+            if (openssl_verify(json_encode($data, 256), base64_decode($sign), $res, OPENSSL_ALGO_SHA1) !== 1) {
+                throw new InvalidResponseException('Data signature verification failed.');
+            }
         }
         return $data;
     }
@@ -176,7 +182,11 @@ abstract class BasicAliPay
     {
         $content = wordwrap($this->config->get('private_key'), 64, "\n", true);
         $string = "-----BEGIN RSA PRIVATE KEY-----\n{$content}\n-----END RSA PRIVATE KEY-----";
-        openssl_sign($this->getSignContent($this->options->get(), true), $sign, $string, OPENSSL_ALGO_SHA256);
+        if ($this->options->get('sign_type') === 'RSA2') {
+            openssl_sign($this->getSignContent($this->options->get(), true), $sign, $string, OPENSSL_ALGO_SHA256);
+        } else {
+            openssl_sign($this->getSignContent($this->options->get(), true), $sign, $string, OPENSSL_ALGO_SHA1);
+        }
         return base64_encode($sign);
     }
 
@@ -228,7 +238,9 @@ abstract class BasicAliPay
                 $data[$method]['code'], $data
             );
         }
-        return $this->verify($data[$method], $data['sign']);
+        return $data[$method];
+        // 去除返回结果签名检查
+        // return $this->verify($data[$method], $data['sign']);
     }
 
     /**

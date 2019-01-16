@@ -39,6 +39,7 @@ class Pos extends BasicAliPay
      * @param array $options
      * @return mixed
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function apply($options)
     {
