@@ -11,15 +11,41 @@
 
 namespace think;
 
+use ArrayAccess;
+use ArrayIterator;
 use Closure;
+use Countable;
 use InvalidArgumentException;
+use IteratorAggregate;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use think\exception\ClassNotFoundException;
 
-class Container implements \ArrayAccess
+/**
+ * @package think
+ * @property Build          $build
+ * @property Cache          $cache
+ * @property Config         $config
+ * @property Cookie         $cookie
+ * @property Debug          $debug
+ * @property Env            $env
+ * @property Hook           $hook
+ * @property Lang           $lang
+ * @property Middleware     $middleware
+ * @property Request        $request
+ * @property Response       $response
+ * @property Route          $route
+ * @property Session        $session
+ * @property Template       $template
+ * @property Url            $url
+ * @property Validate       $validate
+ * @property View           $view
+ * @property route\RuleName $rule_name
+ * @property Log            $log
+ */
+class Container implements ArrayAccess, IteratorAggregate, Countable
 {
     /**
      * 容器对象实例
@@ -38,12 +64,28 @@ class Container implements \ArrayAccess
      * @var array
      */
     protected $bind = [
-        'app'      => 'think\App',
-        'config'   => 'think\Config',
-        'lang'     => 'think\Lang',
-        'log'      => 'think\Log',
-        'request'  => 'think\Request',
-        'response' => 'think\Response',
+        'app'                   => App::class,
+        'build'                 => Build::class,
+        'cache'                 => Cache::class,
+        'config'                => Config::class,
+        'cookie'                => Cookie::class,
+        'debug'                 => Debug::class,
+        'env'                   => Env::class,
+        'hook'                  => Hook::class,
+        'lang'                  => Lang::class,
+        'log'                   => Log::class,
+        'middleware'            => Middleware::class,
+        'request'               => Request::class,
+        'response'              => Response::class,
+        'route'                 => Route::class,
+        'session'               => Session::class,
+        'template'              => Template::class,
+        'url'                   => Url::class,
+        'validate'              => Validate::class,
+        'view'                  => View::class,
+        'rule_name'             => route\RuleName::class,
+        // 接口依赖注入
+        'think\LoggerInterface' => Log::class,
     ];
 
     /**
@@ -137,6 +179,9 @@ class Container implements \ArrayAccess
         } elseif ($concrete instanceof Closure) {
             $this->bind[$abstract] = $concrete;
         } elseif (is_object($concrete)) {
+            if (isset($this->bind[$abstract])) {
+                $abstract = $this->bind[$abstract];
+            }
             $this->instances[$abstract] = $concrete;
         } else {
             $this->bind[$abstract] = $concrete;
@@ -176,6 +221,21 @@ class Container implements \ArrayAccess
     public function bound($abstract)
     {
         return isset($this->bind[$abstract]) || isset($this->instances[$abstract]);
+    }
+
+    /**
+     * 判断容器中是否存在对象实例
+     * @access public
+     * @param  string    $abstract    类名或者标识
+     * @return bool
+     */
+    public function exists($abstract)
+    {
+        if (isset($this->bind[$abstract])) {
+            $abstract = $this->bind[$abstract];
+        }
+
+        return isset($this->instances[$abstract]);
     }
 
     /**
@@ -246,6 +306,16 @@ class Container implements \ArrayAccess
                 unset($this->instances[$name]);
             }
         }
+    }
+
+    /**
+     * 获取容器中的对象实例
+     * @access public
+     * @return array
+     */
+    public function all()
+    {
+        return $this->instances;
     }
 
     /**
@@ -392,8 +462,9 @@ class Container implements \ArrayAccess
         $params = $reflect->getParameters();
 
         foreach ($params as $param) {
-            $name  = $param->getName();
-            $class = $param->getClass();
+            $name      = $param->getName();
+            $lowerName = Loader::parseName($name);
+            $class     = $param->getClass();
 
             if ($class) {
                 $args[] = $this->getObjectParam($class->getName(), $vars);
@@ -401,6 +472,8 @@ class Container implements \ArrayAccess
                 $args[] = array_shift($vars);
             } elseif (0 == $type && isset($vars[$name])) {
                 $args[] = $vars[$name];
+            } elseif (0 == $type && isset($vars[$lowerName])) {
+                $args[] = $vars[$lowerName];
             } elseif ($param->isDefaultValueAvailable()) {
                 $args[] = $param->getDefaultValue();
             } else {
@@ -420,12 +493,13 @@ class Container implements \ArrayAccess
      */
     protected function getObjectParam($className, &$vars)
     {
-        $value = array_shift($vars);
+        $array = $vars;
+        $value = array_shift($array);
 
         if ($value instanceof $className) {
             $result = $value;
+            array_shift($vars);
         } else {
-            array_unshift($vars, $value);
             $result = $this->make($className);
         }
 
@@ -470,5 +544,25 @@ class Container implements \ArrayAccess
     public function offsetUnset($key)
     {
         $this->__unset($key);
+    }
+
+    //Countable
+    public function count()
+    {
+        return count($this->instances);
+    }
+
+    //IteratorAggregate
+    public function getIterator()
+    {
+        return new ArrayIterator($this->instances);
+    }
+
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['instances'], $data['instance']);
+
+        return $data;
     }
 }

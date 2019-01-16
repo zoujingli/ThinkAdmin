@@ -15,7 +15,7 @@
 {block name="content"}
 
 <!-- 表单搜索 开始 -->
-<form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+<form autocomplete="off" class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
 
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label">快递公司</label>
@@ -50,7 +50,7 @@
 </script>
 <!-- 表单搜索 结束 -->
 
-<form onsubmit="return false;" data-auto="true" method="post">
+<form autocomplete="off" onsubmit="return false;" data-auto="true" method="post">
     <input type="hidden" value="resort" name="action"/>
     {if empty($list)}
     <p class="help-block text-center well">没 有 记 录 哦！</p>

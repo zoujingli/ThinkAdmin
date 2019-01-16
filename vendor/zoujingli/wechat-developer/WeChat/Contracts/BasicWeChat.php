@@ -109,6 +109,25 @@ class BasicWeChat
     }
 
     /**
+     * 设置外部接口 AccessToken
+     * @param string $access_token
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @author 高一平 <iam@gaoyiping.com>
+     *
+     * 当用户使用自己的缓存驱动时，直接实例化对象后可直接设置 AccessToekn
+     * - 多用于分布式项目时保持 AccessToken 统一
+     * - 使用此方法后就由用户来保证传入的 AccessToekn 为有效 AccessToekn
+     */
+    public function setAccessToken($access_token)
+    {
+        if (!is_string($access_token)) {
+            throw new InvalidArgumentException("Invalid AccessToken type, need string.");
+        }
+        $cache = $this->config->get('appid') . '_access_token';
+        Tools::setCache($cache, $this->access_token = $access_token);
+    }
+
+    /**
      * 清理删除accessToken
      * @return bool
      */
@@ -122,17 +141,20 @@ class BasicWeChat
      * 以GET获取接口数据并转为数组
      * @param string $url 接口地址
      * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     protected function httpGetForJson($url)
     {
         try {
             return Tools::json2arr(Tools::get($url));
         } catch (InvalidResponseException $e) {
-            if (!$this->isTry && in_array($e->getCode(), ['40014', '40001', '41001', '42001'])) {
-                $this->delAccessToken();
-                $this->isTry = true;
-                return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
+            if (isset($this->currentMethod['method']) && empty($this->isTry)) {
+                if (in_array($e->getCode(), ['40014', '40001', '41001', '42001'])) {
+                    $this->delAccessToken();
+                    $this->isTry = true;
+                    return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
+                }
             }
             throw new InvalidResponseException($e->getMessage(), $e->getCode());
         }
@@ -144,7 +166,8 @@ class BasicWeChat
      * @param array $data 请求数据
      * @param bool $buildToJson
      * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     protected function httpPostForJson($url, array $data, $buildToJson = true)
     {

@@ -13,6 +13,7 @@
   ],
   "keywords": [
     "WePay",
+    "AliPay",
     "WeMini",
     "WeChat",
     "WeChatPay",
@@ -20,6 +21,7 @@
   ],
   "require": {
     "php": ">=5.4",
+    "ext-json": "*",
     "ext-curl": "*",
     "ext-openssl": "*"
   },
@@ -29,8 +31,9 @@
     ],
     "psr-4": {
       "WePay\\": "WePay",
+      "WeMini\\": "WeMini",
       "WeChat\\": "WeChat",
-      "WeMini\\": "WeMini"
+      "AliPay\\": "AliPay"
     }
   }
 }

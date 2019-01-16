@@ -48,7 +48,7 @@ use think\Exception;
  * @method \WeMini\Basic WeMiniBasic() static 小程序基础信息设置
  * @method \WeMini\Code WeMiniCode() static 小程序代码管理
  * @method \WeMini\Domain WeMiniDomain() static 小程序域名管理
- * @method \WeMini\Tester WeMinitester() static 小程序成员管理
+ * @method \WeMini\Tester WeMiniTester() static 小程序成员管理
  * @method \WeMini\User WeMiniUser() static 小程序帐号管理
  * --------------------
  * @method \WeMini\Crypt WeMiniCrypt() static 小程序数据加密处理

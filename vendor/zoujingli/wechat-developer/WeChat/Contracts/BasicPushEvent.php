@@ -44,16 +44,16 @@ class BasicPushEvent
     protected $encryptType;
 
     /**
+     * 公众号的推送请求参数
+     * @var DataArray
+     */
+    protected $input;
+
+    /**
      * 当前公众号配置对象
      * @var DataArray
      */
     protected $config;
-
-    /**
-     * 公众号的推送请求参数
-     * @var DataArray
-     */
-    protected $params;
 
     /**
      * 公众号推送内容对象
@@ -85,13 +85,13 @@ class BasicPushEvent
         }
         // 参数初始化
         $this->config = new DataArray($options);
-        $this->params = new DataArray($_REQUEST);
+        $this->input = new DataArray($_REQUEST);
         $this->appid = $this->config->get('appid');
         // 推送消息处理
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $this->postxml = file_get_contents("php://input");
-            $this->encryptType = $this->params->get('encrypt_type');
-            if ($this->encryptType == 'aes') {
+            $this->encryptType = $this->input->get('encrypt_type');
+            if ($this->isEncrypt()) {
                 if (empty($options['encodingaeskey'])) {
                     throw new InvalidArgumentException("Missing Config -- [encodingaeskey]");
                 }
@@ -109,23 +109,33 @@ class BasicPushEvent
             $this->receive = new DataArray(Tools::xml2arr($this->postxml));
         } elseif ($_SERVER['REQUEST_METHOD'] == "GET" && $this->checkSignature()) {
             @ob_clean();
-            exit($this->params->get('echostr'));
+            exit($this->input->get('echostr'));
         } else {
             throw new InvalidResponseException('Invalid interface request.', '0');
         }
     }
 
     /**
+     * 消息是否需要加密
+     * @return boolean
+     */
+    public function isEncrypt()
+    {
+        return $this->encryptType === 'aes';
+    }
+
+    /**
      * 回复消息
      * @param array $data 消息内容
-     * @param bool $return 是否返回XML内容
+     * @param boolean $return 是否返回XML内容
+     * @param boolean $isEncrypt 是否加密内容
      * @return string
      * @throws InvalidDecryptException
      */
-    public function reply(array $data = [], $return = false)
+    public function reply(array $data = [], $return = false, $isEncrypt = false)
     {
         $xml = Tools::arr2xml(empty($data) ? $this->message : $data);
-        if ($this->encryptType == 'aes') {
+        if ($this->isEncrypt() || $isEncrypt) {
             if (!class_exists('Prpcrypt', false)) {
                 require __DIR__ . '/Prpcrypt.php';
             }
@@ -134,9 +144,7 @@ class BasicPushEvent
             $component_appid = $this->config->get('component_appid');
             $appid = empty($component_appid) ? $this->appid : $component_appid;
             $array = $prpcrypt->encrypt($xml, $appid);
-            if ($array[0] > 0) {
-                throw new InvalidDecryptException('Encrypt Error.', '0');
-            }
+            if ($array[0] > 0) throw new InvalidDecryptException('Encrypt Error.', '0');
             list($timestamp, $encrypt) = [time(), $array[1]];
             $nonce = rand(77, 999) * rand(605, 888) * rand(11, 99);
             $tmpArr = [$this->config->get('token'), $timestamp, $nonce, $encrypt];
@@ -145,9 +153,7 @@ class BasicPushEvent
             $format = "<xml><Encrypt><![CDATA[%s]]></Encrypt><MsgSignature><![CDATA[%s]]></MsgSignature><TimeStamp>%s</TimeStamp><Nonce><![CDATA[%s]]></Nonce></xml>";
             $xml = sprintf($format, $encrypt, $signature, $timestamp, $nonce);
         }
-        if ($return) {
-            return $xml;
-        }
+        if ($return) return $xml;
         @ob_clean();
         echo $xml;
     }
@@ -159,16 +165,13 @@ class BasicPushEvent
      */
     private function checkSignature($str = '')
     {
-        $nonce = $this->params->get('nonce');
-        $timestamp = $this->params->get('timestamp');
-        $msg_signature = $this->params->get('msg_signature');
-        $signature = empty($msg_signature) ? $this->params->get('signature') : $msg_signature;
+        $nonce = $this->input->get('nonce');
+        $timestamp = $this->input->get('timestamp');
+        $msg_signature = $this->input->get('msg_signature');
+        $signature = empty($msg_signature) ? $this->input->get('signature') : $msg_signature;
         $tmpArr = [$this->config->get('token'), $timestamp, $nonce, $str];
         sort($tmpArr, SORT_STRING);
-        if (sha1(implode($tmpArr)) == $signature) {
-            return true;
-        }
-        return false;
+        return sha1(implode($tmpArr)) === $signature;
     }
 
     /**

@@ -14,7 +14,7 @@
 
 namespace WePay;
 
-use WeChat\Contracts\BasicPay;
+use WeChat\Contracts\BasicWePay;
 use WeChat\Contracts\Tools;
 use WeChat\Exceptions\InvalidResponseException;
 
@@ -23,14 +23,15 @@ use WeChat\Exceptions\InvalidResponseException;
  * Class Bill
  * @package WePay
  */
-class Bill extends BasicPay
+class Bill extends BasicWePay
 {
     /**
      * 下载对账单
      * @param array $options 静音参数
      * @param null|string $outType 输出类型
      * @return bool|string
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function download(array $options, $outType = null)
     {
@@ -51,9 +52,10 @@ class Bill extends BasicPay
      * 拉取订单评价数据
      * @param array $options
      * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function commtent(array $options)
+    public function comment(array $options)
     {
         $url = 'https://api.mch.weixin.qq.com/billcommentsp/batchquerycomment';
         return $this->callPostApi($url, $options, true);

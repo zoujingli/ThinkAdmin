@@ -115,9 +115,9 @@ class FileService
         switch ($region) {
             case '华东':
                 if ($isHttps) {
-                    return $isClient ? 'https:///upload.qiniup.com' : 'https://upload.qiniup.com';
+                    return $isClient ? 'https://upload.qiniup.com' : 'https://upload.qiniup.com';
                 }
-                return $isClient ? 'http:///upload.qiniup.com' : 'http://upload.qiniup.com';
+                return $isClient ? 'http://upload.qiniup.com' : 'http://upload.qiniup.com';
             case '华北':
                 if ($isHttps) {
                     return $isClient ? 'https://upload-z1.qiniup.com' : 'https://up-z1.qiniup.com';
@@ -156,8 +156,9 @@ class FileService
      */
     public static function getBaseUriLocal()
     {
-        $appRoot = request()->root(true); // 如果你想获取相对url地址，这里改成 false
+        $appRoot = request()->root(true);  // 去掉参数 true 将获得相对地址
         $uriRoot = preg_match('/\.php$/', $appRoot) ? dirname($appRoot) : $appRoot;
+        $uriRoot = in_array($uriRoot, ['/', '\\']) ? '' : $uriRoot;
         return "{$uriRoot}/static/upload/";
     }
 

@@ -264,9 +264,13 @@ class Push
                     case 'music':
                         return $wechat->music($data['title'], $data['description'], $data['musicurl'], $data['hqmusicurl'], $data['thumb_media_id'])->reply([], true);
                     case 'news':
-                        return $wechat->news($data['articles'])->reply([], true);
+                        $articles = [];
+                        foreach ($data['articles'] as $article) {
+                            $articles[] = ['Url' => $article['url'], 'Title' => $article['title'], 'PicUrl' => $article['picurl'], 'Description' => $article['description']];
+                        }
+                        return $wechat->news($articles)->reply([], true);
                     case 'customservice':
-                        WechatService::custom()->send(['touser' => $this->openid, 'msgtype' => 'text', "text" => $data['content']]);
+                        WechatService::WeChatCustom()->send(['touser' => $this->openid, 'msgtype' => 'text', "text" => $data['content']]);
                         return $wechat->transferCustomerService()->reply([], true);
                     default:
                         return 'success';

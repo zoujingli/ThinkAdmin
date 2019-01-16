@@ -14,8 +14,8 @@
 
 namespace WeChat;
 
-use WeChat\Contracts\Tools;
 use WeChat\Contracts\BasicWeChat;
+use WeChat\Contracts\Tools;
 use WeChat\Exceptions\InvalidResponseException;
 
 /**
@@ -87,15 +87,11 @@ class Script extends BasicWeChat
             "timestamp" => $data['timestamp'],
             "signature" => $this->getSignature($data, 'sha1'),
             'jsApiList' => [
-                'onWXDeviceBluetoothStateChange', 'onWXDeviceStateChange',
-                'openProductSpecificView', 'addCard', 'chooseCard', 'openCard',
-                'translateVoice', 'getNetworkType', 'openLocation', 'getLocation',
-                'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone',
-                'chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'closeWindow', 'scanQRCode', 'chooseWXPay',
-                'hideOptionMenu', 'showOptionMenu', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem',
-                'startScanWXDevice', 'stopScanWXDevice', 'onWXDeviceBindStateChange', 'onScanWXDeviceResult', 'onReceiveDataFromWXDevice',
+                'updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareWeibo', 'onMenuShareQZone',
                 'startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice', 'pauseVoice', 'stopVoice', 'onVoicePlayEnd', 'uploadVoice', 'downloadVoice',
-                'openWXDeviceLib', 'closeWXDeviceLib', 'getWXDeviceInfos', 'sendDataToWXDevice', 'disconnectWXDevice', 'getWXDeviceTicket', 'connectWXDevice',
+                'chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'translateVoice', 'getNetworkType', 'openLocation', 'getLocation',
+                'hideOptionMenu', 'showOptionMenu', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem',
+                'closeWindow', 'scanQRCode', 'chooseWXPay', 'openProductSpecificView', 'addCard', 'chooseCard', 'openCard',
             ],
         ];
     }
@@ -104,18 +100,14 @@ class Script extends BasicWeChat
      * 数据生成签名
      * @param array $data 签名数组
      * @param string $method 签名方法
+     * @param array $params 签名参数
      * @return bool|string 签名值
      */
-    protected function getSignature($data, $method = "sha1")
+    protected function getSignature($data, $method = "sha1", $params = [])
     {
-        if (!function_exists($method)) {
-            return false;
-        }
         ksort($data);
-        $params = [];
-        foreach ($data as $key => $value) {
-            $params[] = "{$key}={$value}";
-        }
+        if (!function_exists($method)) return false;
+        foreach ($data as $k => $v) array_push($params, "{$k}={$v}");
         return $method(join('&', $params));
     }
 }

@@ -91,6 +91,7 @@ class Demo
      */
     public function scanQrc()
     {
+
         $wechat = new Pay(config('wechat.'));
         $options = [
             'body'             => '测试商品',

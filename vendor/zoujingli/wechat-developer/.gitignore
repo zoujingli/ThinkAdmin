@@ -4,4 +4,5 @@
 /vendor
 /Cache
 /Test/cert
+/nbproject
 /composer.lock

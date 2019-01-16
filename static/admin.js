@@ -186,7 +186,7 @@ $(function () {
         };
         // 打开一个iframe窗口
         this.iframe = function (url, title) {
-            return layer.open({title: title || '窗口', type: 2, area: ['800px', '530px'], fix: true, maxmin: false, content: url});
+            return layer.open({title: title || '窗口', type: 2, area: ['800px', '550px'], fix: true, maxmin: false, content: url});
         };
         // 加载HTML到弹出层
         this.modal = function (url, data, title, callback, loading, tips) {
@@ -630,6 +630,9 @@ $(function () {
                     $.msg.close(index);
                 }
             });
+        };
+        img.onerror = function (e) {
+            $.msg.close(index);
         };
         img.src = this.getAttribute('data-tips-image') || this.src;
     });

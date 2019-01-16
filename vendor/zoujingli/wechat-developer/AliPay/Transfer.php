@@ -12,17 +12,36 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
-return [
-    'token'          => 'test',
-    'appid'          => 'wx60a43dd8161666d4',
-    'appsecret'      => '71308e96a204296c57d7cd4b21b883e8',
-    'encodingaeskey' => 'BJIUzE0gqlWy0GxfPp4J1oPTBmOrNDIGPNav1YFH5Z5',
-    // 配置商户支付参数
-    'mch_id'         => "1332187001",
-    'mch_key'        => 'A82DC5BD1F3359081049C568D8502BC5',
-    // 配置商户支付双向证书目录
-    'ssl_key'        => __DIR__ . DIRECTORY_SEPARATOR . 'cert' . DIRECTORY_SEPARATOR . 'apiclient_key.pem',
-    'ssl_cer'        => __DIR__ . DIRECTORY_SEPARATOR . 'cert' . DIRECTORY_SEPARATOR . 'apiclient_cert.pem',
-    // 配置缓存目录，需要拥有写权限
-    'cache_path'     => '',
-];
+namespace AliPay;
+
+use WeChat\Contracts\BasicAliPay;
+
+/**
+ * 支付宝转账到账户
+ * Class Transfer
+ * @package AliPay
+ */
+class Transfer extends BasicAliPay
+{
+
+    /**
+     * Transfer constructor.
+     * @param array $options
+     */
+    public function __construct(array $options)
+    {
+        parent::__construct($options);
+        $this->options->set('method', 'alipay.fund.trans.toaccount.transfer');
+    }
+
+    /**
+     * 创建数据操作
+     * @param array $options
+     * @return mixed
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     */
+    public function apply($options)
+    {
+        return $this->getResult($options);
+    }
+}

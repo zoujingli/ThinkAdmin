@@ -39,16 +39,16 @@
         <div class="arrow"></div>
         <h3 class="popover-title">
             微信菜单编辑
-            {if auth("$classuri/edit")}
+            <!--{if auth("$classuri/edit")}-->
             <button type="button" class="pull-right menu-item-deleted layui-btn layui-btn-sm layui-btn-danger">移除菜单项</button>
-            {/if}
+            <!--{/if}-->
         </h3>
         <div class="popover-content menu-content"></div>
     </div>
 </div>
 
 <div class="hide menu-editor-parent-tpl">
-    <form class="form-horizontal">
+    <form class="form-horizontal" autocomplete="off">
         <p class="help-block text-center">已添加子菜单，仅可设置菜单名称。</p>
         <div class="form-group margin-top-20">
             <label class="col-xs-3 control-label label-required">菜单名称</label>
@@ -61,7 +61,7 @@
 </div>
 
 <div class="hide menu-editor-content-tpl">
-    <form class="form-horizontal">
+    <form class="form-horizontal" autocomplete="off">
         <div class="form-group margin-top-20">
             <label class="col-xs-3 control-label label-required">菜单名称</label>
             <div class="col-xs-8">
@@ -73,23 +73,23 @@
             <label class="col-xs-3 control-label label-required">菜单内容</label>
             <div class="col-xs-8">
                 <div class="row padding-top-5">
-                    <label class="col-xs-5 margin-bottom-10 pointer">
-                        <input class="cuci-radio" type="radio" name="menu-type" value="text"> 文字消息
+                    <label class="col-xs-5 margin-bottom-10 pointer think-radio">
+                        <input type="radio" name="menu-type" value="text"> 文字消息
                     </label>
-                    <label class="col-xs-5 margin-bottom-10 pointer">
-                        <input class="cuci-radio" type="radio" name="menu-type" value="keys"> 关键字
+                    <label class="col-xs-5 margin-bottom-10 pointer think-radio">
+                        <input type="radio" name="menu-type" value="keys"> 关键字
                     </label>
-                    <label class="col-xs-5 margin-bottom-10 pointer">
-                        <input class="cuci-radio" type="radio" name="menu-type" value="view"> 跳转网页
+                    <label class="col-xs-5 margin-bottom-10 pointer think-radio">
+                        <input type="radio" name="menu-type" value="view"> 跳转网页
                     </label>
-                    <label class="col-xs-5 margin-bottom-10 pointer">
-                        <input class="cuci-radio" type="radio" name="menu-type" value="event"> 事件功能
+                    <label class="col-xs-5 margin-bottom-10 pointer think-radio">
+                        <input type="radio" name="menu-type" value="event"> 事件功能
                     </label>
-                    <label class="col-xs-5 margin-bottom-10 pointer">
-                        <input class="cuci-radio" type="radio" name="menu-type" value="miniprogram"> 小程序
+                    <label class="col-xs-5 margin-bottom-10 pointer think-radio">
+                        <input type="radio" name="menu-type" value="miniprogram"> 小程序
                     </label>
-                    <label class="col-xs-5 margin-bottom-10 pointer">
-                        <input class="cuci-radio" type="radio" name="menu-type" value="customservice"> 多客服
+                    <label class="col-xs-5 margin-bottom-10 pointer think-radio">
+                        <input type="radio" name="menu-type" value="customservice"> 多客服
                     </label>
                 </div>
             </div>
@@ -236,7 +236,7 @@
                                     'location_select': '弹出地理位置选择器'
                                 };
                                 var select = [];
-                                var tpl = '<p class="margin-bottom-10"><label class="font-noraml pointer"><input class="cuci-radio" name="content" type="radio" {checked} value="{value}"> {title}</label></p>';
+                                var tpl = '<p class="margin-bottom-10"><label class="font-noraml pointer think-radio"><input name="content" type="radio" {checked} value="{value}"> {title}</label></p>';
                                 if (!(options[content] || false)) {
                                     (content = 'scancode_push'), $span.data('content', content);
                                 }
@@ -257,6 +257,13 @@
                             $('#wxMenuLinkSelecter option').map(function () {
                                 this.selected = this.value === $span.data('content');
                             });
+                        }
+                    });
+                    //解决菜单选事件提交后菜单总是变成扫描二维码的错误
+                    $edit.find('input').on('click', function () {
+                        $span.data(this.name, $(this).val() || $(this).html());
+                        if (type === 'event') {
+                            this.value === $span.data('content');
                         }
                     });
                     // 显示参数编辑器

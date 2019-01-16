@@ -93,6 +93,24 @@ class Session
     public function setConfig(array $config = [])
     {
         $this->config = array_merge($this->config, array_change_key_case($config));
+
+        if (isset($config['prefix'])) {
+            $this->prefix = $config['prefix'];
+        }
+
+        if (isset($config['use_lock'])) {
+            $this->lock = $config['use_lock'];
+        }
+    }
+
+    /**
+     * 设置已经初始化
+     * @access public
+     * @return void
+     */
+    public function inited()
+    {
+        $this->init = true;
     }
 
     /**
@@ -179,8 +197,7 @@ class Session
         }
 
         if ($isDoStart) {
-            session_start();
-            $this->init = true;
+            $this->start();
         } else {
             $this->init = false;
         }
@@ -197,9 +214,11 @@ class Session
     {
         if (is_null($this->init)) {
             $this->init();
-        } elseif (false === $this->init) {
+        }
+
+        if (false === $this->init) {
             if (PHP_SESSION_ACTIVE != session_status()) {
-                session_start();
+                $this->start();
             }
             $this->init = true;
         }
@@ -468,16 +487,21 @@ class Session
     public function has($name, $prefix = null)
     {
         empty($this->init) && $this->boot();
+
         $prefix = !is_null($prefix) ? $prefix : $this->prefix;
+        $value  = $prefix ? (!empty($_SESSION[$prefix]) ? $_SESSION[$prefix] : []) : $_SESSION;
 
-        if (strpos($name, '.')) {
-            // 支持数组
-            list($name1, $name2) = explode('.', $name);
+        $name = explode('.', $name);
 
-            return $prefix ? isset($_SESSION[$prefix][$name1][$name2]) : isset($_SESSION[$name1][$name2]);
-        } else {
-            return $prefix ? isset($_SESSION[$prefix][$name]) : isset($_SESSION[$name]);
+        foreach ($name as $val) {
+            if (!isset($value[$val])) {
+                return false;
+            } else {
+                $value = $value[$val];
+            }
         }
+
+        return true;
     }
 
     /**

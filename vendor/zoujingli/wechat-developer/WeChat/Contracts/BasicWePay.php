@@ -22,7 +22,7 @@ use WeChat\Exceptions\InvalidResponseException;
  * Class BasicPay
  * @package WeChat\Contracts
  */
-class BasicPay
+class BasicWePay
 {
     /**
      * 商户配置
@@ -79,12 +79,19 @@ class BasicPay
     public function getNotify()
     {
         $data = Tools::xml2arr(file_get_contents('php://input'));
-        if (!empty($data['sign'])) {
-            if ($this->getPaySign($data) === $data['sign']) {
-                return $data;
-            }
+        if (isset($data['sign']) && $this->getPaySign($data) === $data['sign']) {
+            return $data;
         }
         throw new InvalidResponseException('Invalid Notify.', '0');
+    }
+
+    /**
+     * 获取微信支付通知回复内容
+     * @return string
+     */
+    public function getNotifySuccessReply()
+    {
+        return Tools::arr2xml(['return_code' => 'SUCCESS', 'return_msg' => 'OK']);
     }
 
     /**
@@ -96,11 +103,9 @@ class BasicPay
      */
     public function getPaySign(array $data, $signType = 'MD5', $buff = '')
     {
-        unset($data['sign']);
         ksort($data);
-        foreach ($data as $k => $v) {
-            $buff .= "{$k}={$v}&";
-        }
+        if (isset($data['sign'])) unset($data['sign']);
+        foreach ($data as $k => $v) $buff .= "{$k}={$v}&";
         $buff .= ("key=" . $this->config->get('mch_key'));
         if (strtoupper($signType) === 'MD5') {
             return strtoupper(md5($buff));
@@ -113,11 +118,28 @@ class BasicPay
      * @param string $longUrl 需要转换的URL，签名用原串，传输需URLencode
      * @return array
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function shortUrl($longUrl)
     {
         $url = 'https://api.mch.weixin.qq.com/tools/shorturl';
         return $this->callPostApi($url, ['long_url' => $longUrl]);
+    }
+
+
+    /**
+     * 数组直接转xml数据输出
+     * @param array $data
+     * @param bool $isReturn
+     * @return string
+     */
+    public function toXml(array $data, $isReturn = false)
+    {
+        $xml = Tools::arr2xml($data);
+        if ($isReturn) {
+            return $xml;
+        }
+        echo $xml;
     }
 
     /**
@@ -129,17 +151,28 @@ class BasicPay
      * @param bool $needSignType 是否需要传签名类型参数
      * @return array
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     protected function callPostApi($url, array $data, $isCert = false, $signType = 'HMAC-SHA256', $needSignType = true)
     {
         $option = [];
         if ($isCert) {
+            $option['ssl_p12'] = $this->config->get('ssl_p12');
             $option['ssl_cer'] = $this->config->get('ssl_cer');
             $option['ssl_key'] = $this->config->get('ssl_key');
-            if (empty($option['ssl_cer']) || !file_exists($option['ssl_cer']))
+            if (is_string($option['ssl_p12']) && file_exists($option['ssl_p12'])) {
+                $content = file_get_contents($option['ssl_p12']);
+                if (openssl_pkcs12_read($content, $certs, $this->config->get('mch_id'))) {
+                    $option['ssl_key'] = Tools::pushFile(md5($certs['pkey']) . '.pem', $certs['pkey']);
+                    $option['ssl_cer'] = Tools::pushFile(md5($certs['cert']) . '.pem', $certs['cert']);
+                } else throw new InvalidArgumentException("P12 certificate does not match MCH_ID --- ssl_p12");
+            }
+            if (empty($option['ssl_cer']) || !file_exists($option['ssl_cer'])) {
                 throw new InvalidArgumentException("Missing Config -- ssl_cer", '0');
-            if (empty($option['ssl_key']) || !file_exists($option['ssl_key']))
+            }
+            if (empty($option['ssl_key']) || !file_exists($option['ssl_key'])) {
                 throw new InvalidArgumentException("Missing Config -- ssl_key", '0');
+            }
         }
         $params = $this->params->merge($data);
         $needSignType && ($params['sign_type'] = strtoupper($signType));

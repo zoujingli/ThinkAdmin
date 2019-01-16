@@ -110,7 +110,7 @@ class File extends Driver
      */
     public function has($name)
     {
-        return $this->get($name) ? true : false;
+        return false !== $this->get($name) ? true : false;
     }
 
     /**
@@ -266,7 +266,7 @@ class File extends Driver
             foreach ($keys as $key) {
                 $this->unlink($key);
             }
-            $this->rm('tag_' . md5($tag));
+            $this->rm($this->getTagKey($tag));
             return true;
         }
 

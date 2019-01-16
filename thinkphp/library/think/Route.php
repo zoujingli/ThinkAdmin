@@ -28,11 +28,11 @@ class Route
     protected $rest = [
         'index'  => ['get', '', 'index'],
         'create' => ['get', '/create', 'create'],
-        'edit'   => ['get', '/:id/edit', 'edit'],
-        'read'   => ['get', '/:id', 'read'],
+        'edit'   => ['get', '/<id>/edit', 'edit'],
+        'read'   => ['get', '/<id>', 'read'],
         'save'   => ['post', '', 'save'],
-        'update' => ['put', '/:id', 'update'],
-        'delete' => ['delete', '/:id', 'delete'],
+        'update' => ['put', '/<id>', 'update'],
+        'delete' => ['delete', '/<id>', 'delete'],
     ];
 
     /**
@@ -114,6 +114,12 @@ class Route
     protected $lazy = true;
 
     /**
+     * 路由是否测试模式
+     * @var bool
+     */
+    protected $isTest;
+
+    /**
      * （分组）路由规则是否合并解析
      * @var bool
      */
@@ -130,7 +136,8 @@ class Route
         $this->app     = $app;
         $this->request = $app['request'];
         $this->config  = $config;
-        $this->host    = $this->request->host(true);
+
+        $this->host = $this->request->host(true) ?: $config['app_host'];
 
         $this->setDefaultDomain();
     }
@@ -142,6 +149,17 @@ class Route
         }
 
         return isset($this->config[$name]) ? $this->config[$name] : null;
+    }
+
+    /**
+     * 配置
+     * @access public
+     * @param  array $config
+     * @return void
+     */
+    public function setConfig(array $config = [])
+    {
+        $this->config = array_merge($this->config, array_change_key_case($config));
     }
 
     public static function __make(App $app, Config $config)
@@ -157,6 +175,17 @@ class Route
     }
 
     /**
+     * 设置路由的请求对象实例
+     * @access public
+     * @param  Request     $request   请求对象实例
+     * @return void
+     */
+    public function setRequest($request)
+    {
+        $this->request = $request;
+    }
+
+    /**
      * 设置路由域名及分组（包括资源路由）是否延迟解析
      * @access public
      * @param  bool     $lazy   路由是否延迟解析
@@ -166,6 +195,27 @@ class Route
     {
         $this->lazy = $lazy;
         return $this;
+    }
+
+    /**
+     * 设置路由为测试模式
+     * @access public
+     * @param  bool     $test   路由是否测试模式
+     * @return void
+     */
+    public function setTestMode($test)
+    {
+        $this->isTest = $test;
+    }
+
+    /**
+     * 检查路由是否为测试模式
+     * @access public
+     * @return bool
+     */
+    public function isTest()
+    {
+        return $this->isTest;
     }
 
     /**
@@ -276,7 +326,7 @@ class Route
         // 支持多个域名使用相同路由规则
         $domainName = is_array($name) ? array_shift($name) : $name;
 
-        if ('*' != $domainName && !strpos($domainName, '.')) {
+        if ('*' != $domainName && false === strpos($domainName, '.')) {
             $domainName .= '.' . $this->request->rootDomain();
         }
 
@@ -294,7 +344,7 @@ class Route
         if (is_array($name) && !empty($name)) {
             $root = $this->request->rootDomain();
             foreach ($name as $item) {
-                if (!strpos($item, '.')) {
+                if (false === strpos($item, '.')) {
                     $item .= '.' . $root;
                 }
 
@@ -344,7 +394,7 @@ class Route
             $domain = $this->domain;
         } elseif (true === $domain) {
             return $this->bind;
-        } elseif (!strpos($domain, '.')) {
+        } elseif (false === strpos($domain, '.')) {
             $domain .= '.' . $this->request->rootDomain();
         }
 
@@ -371,11 +421,39 @@ class Route
      * 读取路由标识
      * @access public
      * @param  string    $name 路由标识
+     * @param  string    $domain 域名
      * @return mixed
      */
-    public function getName($name = null)
+    public function getName($name = null, $domain = null, $method = '*')
     {
-        return $this->app['rule_name']->get($name);
+        return $this->app['rule_name']->get($name, $domain, $method);
+    }
+
+    /**
+     * 读取路由
+     * @access public
+     * @param  string    $rule 路由规则
+     * @param  string    $domain 域名
+     * @return array
+     */
+    public function getRule($rule, $domain = null)
+    {
+        if (is_null($domain)) {
+            $domain = $this->domain;
+        }
+
+        return $this->app['rule_name']->getRule($rule, $domain);
+    }
+
+    /**
+     * 读取路由
+     * @access public
+     * @param  string    $domain 域名
+     * @return array
+     */
+    public function getRuleList($domain = null)
+    {
+        return $this->app['rule_name']->getRuleList($domain);
     }
 
     /**
@@ -415,7 +493,9 @@ class Route
 
         // 检查路由别名
         if (isset($rules['__alias__'])) {
-            $this->alias($rules['__alias__']);
+            foreach ($rules['__alias__'] as $key => $val) {
+                $this->alias($key, $val);
+            }
             unset($rules['__alias__']);
         }
 
@@ -818,9 +898,9 @@ class Route
         }
 
         // 默认路由解析
-        $ruleItem = new RuleItem($this, $this->group, '', '', $url);
-
-        return new UrlDispatch($this->request, $ruleItem, $url, ['auto_search' => $this->autoSearchController]);
+        return new UrlDispatch($this->request, $this->group, $url, [
+            'auto_search' => $this->autoSearchController,
+        ]);
     }
 
     /**
@@ -861,7 +941,7 @@ class Route
 
             if (isset($panDomain)) {
                 // 保存当前泛域名
-                $this->request->panDomain($panDomain);
+                $this->request->setPanDomain($panDomain);
             }
         }
 
@@ -878,6 +958,17 @@ class Route
     }
 
     /**
+     * 清空路由规则
+     * @access public
+     * @return void
+     */
+    public function clear()
+    {
+        $this->app['rule_name']->clear();
+        $this->group->clear();
+    }
+
+    /**
      * 设置全局的路由分组参数
      * @access public
      * @param  string    $method     方法名
@@ -887,5 +978,13 @@ class Route
     public function __call($method, $args)
     {
         return call_user_func_array([$this->group, $method], $args);
+    }
+
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['app'], $data['request']);
+
+        return $data;
     }
 }

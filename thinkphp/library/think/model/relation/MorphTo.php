@@ -112,7 +112,7 @@ class MorphTo extends Relation
 
     /**
      * 解析模型的完整命名空间
-     * @access public
+     * @access protected
      * @param  string $model 模型名（或者完整类名）
      * @return string
      */
@@ -198,14 +198,14 @@ class MorphTo extends Relation
                     if ($key == $result->$morphType) {
                         // 关联模型
                         if (!isset($data[$result->$morphKey])) {
-                            throw new Exception('relation data not exists :' . $this->model);
+                            $relationModel = null;
                         } else {
                             $relationModel = $data[$result->$morphKey];
                             $relationModel->setParent(clone $result);
                             $relationModel->isUpdate(true);
-
-                            $result->setRelation($attr, $relationModel);
                         }
+
+                        $result->setRelation($attr, $relationModel);
                     }
                 }
             }
@@ -238,9 +238,10 @@ class MorphTo extends Relation
      * @param  \Closure $closure 闭包
      * @param  string   $aggregate 聚合查询方法
      * @param  string   $field 字段
+     * @param  string   $name 统计字段别名
      * @return integer
      */
-    public function relationCount($result, $closure, $aggregate = 'count', $field = '*')
+    public function relationCount($result, $closure, $aggregate = 'count', $field = '*', &$name = '')
     {}
 
     /**

@@ -26,8 +26,8 @@ use think\Facade;
  * @method void setName(string $name) static 批量导入路由标识
  * @method void import(array $rules, string $type = '*') static 导入配置文件的路由规则
  * @method \think\route\RuleItem rule(string $rule, mixed $route, string $method = '*', array $option = [], array $pattern = []) static 注册路由规则
- * @method void rules(string $rules, string $method = '*', array $option = [], array $pattern = []) static 批量注册路由规则
- * @method \think\route\RuleGroup group(string $name, mixed $route, string $method = '*', array $option = [], array $pattern = []) static 注册路由分组
+ * @method void rules(array $rules, string $method = '*', array $option = [], array $pattern = []) static 批量注册路由规则
+ * @method \think\route\RuleGroup group(string|array $name, mixed $route, string $method = '*', array $option = [], array $pattern = []) static 注册路由分组
  * @method \think\route\RuleItem any(string $rule, mixed $route, array $option = [], array $pattern = []) static 注册路由
  * @method \think\route\RuleItem get(string $rule, mixed $route, array $option = [], array $pattern = []) static 注册路由
  * @method \think\route\RuleItem post(string $rule, mixed $route, array $option = [], array $pattern = []) static 注册路由
@@ -45,4 +45,13 @@ use think\Facade;
  */
 class Route extends Facade
 {
+    /**
+     * 获取当前Facade对应类名（或者已经绑定的容器对象标识）
+     * @access protected
+     * @return string
+     */
+    protected static function getFacadeClass()
+    {
+        return 'route';
+    }
 }

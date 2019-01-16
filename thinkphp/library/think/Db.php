@@ -16,7 +16,6 @@ use think\db\Connection;
 /**
  * Class Db
  * @package think
- * @method \think\db\Query connect(array $config =[], mixed $name = false) static 连接/切换数据库连接
  * @method \think\db\Query master() static 从主服务器读取数据
  * @method \think\db\Query readMaster(bool $all = false) static 后续从主服务器读取数据
  * @method \think\db\Query table(string $table) static 指定数据表（含前缀）
@@ -35,6 +34,7 @@ use think\db\Connection;
  * @method \think\db\Query order(mixed $field, string $order = null) static 查询ORDER
  * @method \think\db\Query orderRaw(string $field, array $bind = []) static 查询ORDER
  * @method \think\db\Query cache(mixed $key = null , integer $expire = null) static 设置查询缓存
+ * @method \think\db\Query withAttr(string $name,callable $callback = null) static 使用获取器获取数据
  * @method mixed value(string $field) static 获取某个字段的值
  * @method array column(string $field, string $key = '') static 获取某个列的值
  * @method mixed find(mixed $data = null) static 查询单个记录
@@ -55,7 +55,6 @@ use think\db\Connection;
  * @method void rollback() static 事务回滚
  * @method boolean batchQuery(array $sqlArray) static 批处理执行SQL语句
  * @method string getLastInsID(string $sequence = null) static 获取最近插入的ID
- * @method mixed getConfig(string $name = '') static 获取数据库的配置参数
  */
 class Db
 {
@@ -101,11 +100,16 @@ class Db
     /**
      * 获取数据库配置
      * @access public
-     * @return array
+     * @param  string $config 配置名称
+     * @return mixed
      */
-    public static function getConfig()
+    public static function getConfig($name = '')
     {
-        return self::$config;
+        if ('' === $name) {
+            return self::$config;
+        }
+
+        return isset(self::$config[$name]) ? self::$config[$name] : null;
     }
 
     /**
@@ -121,7 +125,8 @@ class Db
     {
         // 解析配置参数
         $options = self::parseConfig($config ?: self::$config);
-        $query   = $query ?: self::$config['query'];
+
+        $query = $query ?: $options['query'];
 
         // 创建数据库连接对象实例
         self::$connection = Connection::instance($options, $name);
@@ -142,11 +147,13 @@ class Db
             $config = isset(self::$config[$config]) ? self::$config[$config] : self::$config;
         }
 
-        if (is_string($config)) {
-            return self::parseDsnConfig($config);
-        } else {
-            return $config;
+        $result = is_string($config) ? self::parseDsnConfig($config) : $config;
+
+        if (empty($result['query'])) {
+            $result['query'] = self::$config['query'];
         }
+
+        return $result;
     }
 
     /**

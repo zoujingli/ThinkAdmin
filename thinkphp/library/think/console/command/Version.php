@@ -8,23 +8,24 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+namespace think\console\command;
 
-namespace think\log\driver;
+use think\console\Command;
+use think\console\Input;
+use think\console\Output;
+use think\facade\App;
 
-/**
- * 模拟测试输出
- */
-class Test
+class Version extends Command
 {
-    /**
-     * 日志写入接口
-     * @access public
-     * @param  array $log 日志信息
-     * @return bool
-     */
-    public function save(array $log = [])
+    protected function configure()
     {
-        return true;
+        // 指令配置
+        $this->setName('version')
+            ->setDescription('show thinkphp framework version');
     }
 
+    protected function execute(Input $input, Output $output)
+    {
+        $output->writeln('v' . App::version());
+    }
 }

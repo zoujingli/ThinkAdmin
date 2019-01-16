@@ -88,6 +88,21 @@ class User extends BasicWeChat
     }
 
     /**
+     * 获取标签下粉丝列表
+     * @param integer $tagid 标签ID
+     * @param string $next_openid 第一个拉取的OPENID
+     * @return array
+     * @throws Exceptions\InvalidResponseException
+     * @throws Exceptions\LocalCacheException
+     */
+    public function getUserListByTag($tagid, $next_openid = '')
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/tag/get?access_token=ACCESS_TOKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->httpPostForJson($url, ['tagid' => $tagid, 'next_openid' => $next_openid]);
+    }
+
+    /**
      * 获取公众号的黑名单列表
      * @param string $begin_openid
      * @return array

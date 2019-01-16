@@ -42,22 +42,24 @@ class BasicApi
 
     /**
      * 返回成功的操作
-     * @param string $msg 消息内容
+     * @param mixed $msg 消息内容
      * @param array $data 返回数据
+     * @param integer $code 返回代码
      */
-    protected function success($msg, $data = [])
+    protected function success($msg, $data = [], $code = 1)
     {
-        ToolsService::success($msg, $data);
+        ToolsService::success($msg, $data, $code);
     }
 
     /**
      * 返回失败的请求
-     * @param string $msg 消息内容
+     * @param mixed $msg 消息内容
      * @param array $data 返回数据
+     * @param integer $code 返回代码
      */
-    protected function error($msg, $data = [])
+    protected function error($msg, $data = [], $code = 0)
     {
-        ToolsService::error($msg, $data);
+        ToolsService::error($msg, $data, $code);
     }
 
 }

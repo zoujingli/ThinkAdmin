@@ -112,7 +112,10 @@ class Url
         }
 
         if ($url) {
-            $rule = $this->app['route']->getName(isset($name) ? $name : $url . (isset($info['query']) ? '?' . $info['query'] : ''));
+            $checkName   = isset($name) ? $name : $url . (isset($info['query']) ? '?' . $info['query'] : '');
+            $checkDomain = $domain && is_string($domain) ? $domain : null;
+
+            $rule = $this->app['route']->getName($checkName, $checkDomain);
 
             if (is_null($rule) && isset($info['query'])) {
                 $rule = $this->app['route']->getName($url);
@@ -123,16 +126,11 @@ class Url
             }
         }
 
-        if (!empty($rule) && $match = $this->getRuleUrl($rule, $vars)) {
+        if (!empty($rule) && $match = $this->getRuleUrl($rule, $vars, $domain)) {
             // 匹配路由命名标识
             $url = $match[0];
 
-            if (!empty($match[1])) {
-                $host = $this->config['app_host'] ?: $this->app['request']->host(true);
-                if ($domain || $match[1] != $host) {
-                    $domain = $match[1];
-                }
-            }
+            $domain = $match[1];
 
             if (!is_null($match[2])) {
                 $suffix = $match[2];
@@ -288,7 +286,7 @@ class Url
         $rootDomain = $this->app['request']->rootDomain();
         if (true === $domain) {
             // 自动判断域名
-            $domain = $this->config['app_host'] ?: $this->app['request']->host(true);
+            $domain = $this->config['app_host'] ?: $this->app['request']->host();
 
             $domains = $this->app['route']->getDomains();
 
@@ -318,7 +316,7 @@ class Url
                     }
                 }
             }
-        } elseif (!strpos($domain, '.')) {
+        } elseif (0 !== strpos($domain, $rootDomain) && false === strpos($domain, '.')) {
             $domain .= '.' . $rootDomain;
         }
 
@@ -347,10 +345,19 @@ class Url
     }
 
     // 匹配路由地址
-    public function getRuleUrl($rule, &$vars = [])
+    public function getRuleUrl($rule, &$vars = [], $allowDomain = '')
     {
         foreach ($rule as $item) {
-            list($url, $pattern, $domain, $suffix) = $item;
+            list($url, $pattern, $domain, $suffix, $method) = $item;
+
+            if (is_string($allowDomain) && $domain != $allowDomain) {
+                continue;
+            }
+
+            if (!in_array($this->app['request']->port(), [80, 443])) {
+                $domain .= ':' . $this->app['request']->port();
+            }
+
             if (empty($pattern)) {
                 return [rtrim($url, '?/-'), $domain, $suffix];
             }
@@ -384,6 +391,14 @@ class Url
     public function root($root)
     {
         $this->root = $root;
-        $this->app['request']->root($root);
+        $this->app['request']->setRoot($root);
+    }
+
+    public function __debugInfo()
+    {
+        $data = get_object_vars($this);
+        unset($data['app']);
+
+        return $data;
     }
 }

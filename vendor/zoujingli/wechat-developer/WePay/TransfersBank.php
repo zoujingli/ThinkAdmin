@@ -14,7 +14,7 @@
 
 namespace WePay;
 
-use WeChat\Contracts\BasicPay;
+use WeChat\Contracts\BasicWePay;
 use WeChat\Contracts\Tools;
 use WeChat\Exceptions\InvalidArgumentException;
 use WeChat\Exceptions\InvalidDecryptException;
@@ -22,10 +22,10 @@ use WeChat\Exceptions\InvalidResponseException;
 
 /**
  * 微信商户打款到银行卡
- * Class TransFresBank
+ * Class TransfersBank
  * @package WePay
  */
-class TransfersBank extends BasicPay
+class TransfersBank extends BasicWePay
 {
 
     /**
@@ -53,7 +53,6 @@ class TransfersBank extends BasicPay
         if (!isset($options['amount'])) {
             throw new InvalidArgumentException('Missing Options -- [amount]');
         }
-        isset($options['desc']) && $this->config['desc'] = $options['desc'];
         $this->params->offsetUnset('appid');
         return $this->callPostApi('https://api.mch.weixin.qq.com/mmpaysptrans/pay_bank', [
             'amount'           => $options['amount'],
@@ -61,6 +60,7 @@ class TransfersBank extends BasicPay
             'partner_trade_no' => $options['partner_trade_no'],
             'enc_bank_no'      => $this->rsaEncode($options['enc_bank_no']),
             'enc_true_name'    => $this->rsaEncode($options['enc_true_name']),
+            'desc'             => isset($options['desc']) ? $options['desc'] : '',
         ], true, 'MD5', false);
     }
 
@@ -68,7 +68,8 @@ class TransfersBank extends BasicPay
      * 商户企业付款到银行卡操作进行结果查询
      * @param string $partnerTradeNo 商户订单号，需保持唯一
      * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function query($partnerTradeNo)
     {

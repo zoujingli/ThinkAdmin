@@ -1,39 +1,28 @@
 {
-  "name": "topthink/think",
-  "description": "the new thinkphp framework",
   "type": "project",
-  "keywords": [
-    "framework",
-    "thinkphp",
-    "ORM"
-  ],
-  "homepage": "http://thinkphp.cn/",
-  "license": "Apache-2.0",
-  "authors": [
-    {
-      "name": "liu21st",
-      "email": "liu21st@gmail.com"
-    }
-  ],
+  "name": "zoujingli/thinkadmin",
+  "license": "MIT",
+  "keywords": ["thinkphp", "thinkadmin"],
+  "homepage": "http://demo.thinkadmin.top",
+  "description": "ThinkAdmin Developer CMF",
+  "authors": [{"name": "Anyon", "email": "zoujingli@qq.com"}],
+  "extra": {"think-path": "thinkphp"},
+  "config": {"preferred-install": "dist"},
+  "autoload": {"psr-4": {"app\\": "application"}},
   "require": {
     "php": ">=5.6.0",
+    "qiniu/php-sdk": "^7.2",
     "endroid/qr-code": "^1.9",
-    "topthink/framework": "5.1.*",
-    "zoujingli/ip2region": "dev-master",
+    "topthink/framework": "^5.1",
+    "zoujingli/ip2region": "^1.0",
     "aliyuncs/oss-sdk-php": "^2.2",
-    "zoujingli/weopen-developer": "dev-master",
     "topthink/think-captcha": "^2.0",
-    "qiniu/php-sdk": "^7.2"
+    "zoujingli/weopen-developer": "^1.1"
   },
-  "autoload": {
-    "psr-4": {
-      "app\\": "application"
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.laravel-china.org"
     }
-  },
-  "extra": {
-    "think-path": "thinkphp"
-  },
-  "config": {
-    "preferred-install": "dist"
   }
 }

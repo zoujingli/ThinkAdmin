@@ -12,31 +12,26 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
+// 1. 手动加载入口文件
+include "../include.php";
+
+// 2. 准备公众号配置参数
+$config = include "./alipay.php";
+
 try {
-
-    // 1. 手动加载入口文件
-    include "../include.php";
-
-    // 2. 准备公众号配置参数
-    $config = include "./config.php";
-
-    // 3. 创建接口实例
-    $wechat = new \WeChat\User($config);
-
-    // 4. 获取用户列表
-    $result = $wechat->getUserList();
-
+    // 实例支付对象
+    $pay = We::AliPayScan($config);
+    // $pay = new \AliPay\Scan($config);
+    // 参考链接：https://docs.open.alipay.com/api_1/alipay.trade.precreate
+    $result = $pay->apply([
+        'out_trade_no' => '14321412', // 订单号
+        'total_amount' => '13', // 订单金额，单位：元
+        'subject'      => '订单商品标题', // 订单商品标题
+    ]);
+    echo '<pre>';
     var_export($result);
-
-    // 5. 批量获取用户资料
-    foreach (array_chunk($result['data']['openid'], 100) as $item) {
-        $userList = $wechat->getBatchUserInfo($item);
-        var_export($userList);
-    }
-
 } catch (Exception $e) {
-
-    // 出错啦，处理下吧
-    echo $e->getMessage() . PHP_EOL;
-
+    echo $e->getMessage();
 }
+
+
