@@ -177,17 +177,17 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.21",
-        "version_normalized": "3.4.21.0",
+        "version": "v3.4.22",
+        "version_normalized": "3.4.22.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "8a10e36ffd04c0c551051594952304d34ecece71"
+            "reference": "0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/8a10e36ffd04c0c551051594952304d34ecece71",
-            "reference": "8a10e36ffd04c0c551051594952304d34ecece71",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793",
+            "reference": "0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793",
             "shasum": "",
             "mirrors": [
                 {
@@ -199,7 +199,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2019-01-01T13:45:19+00:00",
+        "time": "2019-01-16T09:39:14+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -239,17 +239,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.33",
-        "version_normalized": "5.1.33.0",
+        "version": "v5.1.34",
+        "version_normalized": "5.1.34.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "477e1cef91290a36398ecbcdffcec7268d80f0dd"
+            "reference": "7c8cd1ea2bd4683a6ef46af415334260c6e2cc15"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/477e1cef91290a36398ecbcdffcec7268d80f0dd",
-            "reference": "477e1cef91290a36398ecbcdffcec7268d80f0dd",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/7c8cd1ea2bd4683a6ef46af415334260c6e2cc15",
+            "reference": "7c8cd1ea2bd4683a6ef46af415334260c6e2cc15",
             "shasum": "",
             "mirrors": [
                 {
@@ -271,7 +271,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2019-01-16T06:10:52+00:00",
+        "time": "2019-01-30T06:38:38+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -394,17 +394,17 @@
     },
     {
         "name": "zoujingli/ip2region",
-        "version": "v1.0.4",
-        "version_normalized": "1.0.4.0",
+        "version": "v1.0.5",
+        "version_normalized": "1.0.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ip2region.git",
-            "reference": "0a55d6c1ab6b4cbaa204824557aa950aaaefda0e"
+            "reference": "944dc687304133027c4586a35ff78b57e56dd659"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/0a55d6c1ab6b4cbaa204824557aa950aaaefda0e",
-            "reference": "0a55d6c1ab6b4cbaa204824557aa950aaaefda0e",
+            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/944dc687304133027c4586a35ff78b57e56dd659",
+            "reference": "944dc687304133027c4586a35ff78b57e56dd659",
             "shasum": "",
             "mirrors": [
                 {
@@ -416,7 +416,7 @@
         "require": {
             "php": ">=5.3"
         },
-        "time": "2018-06-01T02:21:05+00:00",
+        "time": "2019-01-23T06:23:53+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

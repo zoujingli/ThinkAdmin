@@ -2,13 +2,14 @@
   "type": "project",
   "name": "zoujingli/thinkadmin",
   "license": "MIT",
-  "keywords": ["thinkphp", "thinkadmin"],
   "homepage": "http://demo.thinkadmin.top",
   "description": "ThinkAdmin Developer CMF",
-  "authors": [{"name": "Anyon", "email": "zoujingli@qq.com"}],
-  "extra": {"think-path": "thinkphp"},
-  "config": {"preferred-install": "dist"},
-  "autoload": {"psr-4": {"app\\": "application"}},
+  "authors": [
+    {
+      "name": "Anyon",
+      "email": "zoujingli@qq.com"
+    }
+  ],
   "require": {
     "php": ">=5.6.0",
     "qiniu/php-sdk": "^7.2",

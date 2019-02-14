@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3453515942e444a26be0d4b35ca72189
+class ComposerStaticInit53186b8f9ced5efc2d0ef0e9b2b040f3
 {
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
@@ -16,10 +16,6 @@ class ComposerStaticInit3453515942e444a26be0d4b35ca72189
         array (
             'think\\composer\\' => 15,
             'think\\captcha\\' => 14,
-        ),
-        'a' => 
-        array (
-            'app\\' => 4,
         ),
         'W' => 
         array (
@@ -58,10 +54,6 @@ class ComposerStaticInit3453515942e444a26be0d4b35ca72189
         'think\\captcha\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-captcha/src',
-        ),
-        'app\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/application',
         ),
         'WePay\\' => 
         array (
@@ -274,42 +266,6 @@ class ComposerStaticInit3453515942e444a26be0d4b35ca72189
         'WePay\\Refund' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Refund.php',
         'WePay\\Transfers' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Transfers.php',
         'WePay\\TransfersBank' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/TransfersBank.php',
-        'app\\admin\\controller\\Auth' => __DIR__ . '/../..' . '/application/admin/controller/Auth.php',
-        'app\\admin\\controller\\Config' => __DIR__ . '/../..' . '/application/admin/controller/Config.php',
-        'app\\admin\\controller\\Index' => __DIR__ . '/../..' . '/application/admin/controller/Index.php',
-        'app\\admin\\controller\\Log' => __DIR__ . '/../..' . '/application/admin/controller/Log.php',
-        'app\\admin\\controller\\Login' => __DIR__ . '/../..' . '/application/admin/controller/Login.php',
-        'app\\admin\\controller\\Menu' => __DIR__ . '/../..' . '/application/admin/controller/Menu.php',
-        'app\\admin\\controller\\Node' => __DIR__ . '/../..' . '/application/admin/controller/Node.php',
-        'app\\admin\\controller\\Plugs' => __DIR__ . '/../..' . '/application/admin/controller/Plugs.php',
-        'app\\admin\\controller\\User' => __DIR__ . '/../..' . '/application/admin/controller/User.php',
-        'app\\admin\\middleware\\Auth' => __DIR__ . '/../..' . '/application/admin/middleware/Auth.php',
-        'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/application/index/controller/Index.php',
-        'app\\store\\controller\\Express' => __DIR__ . '/../..' . '/application/store/controller/Express.php',
-        'app\\store\\controller\\Goods' => __DIR__ . '/../..' . '/application/store/controller/Goods.php',
-        'app\\store\\controller\\GoodsBrand' => __DIR__ . '/../..' . '/application/store/controller/GoodsBrand.php',
-        'app\\store\\controller\\GoodsCate' => __DIR__ . '/../..' . '/application/store/controller/GoodsCate.php',
-        'app\\store\\controller\\GoodsSpec' => __DIR__ . '/../..' . '/application/store/controller/GoodsSpec.php',
-        'app\\store\\controller\\Order' => __DIR__ . '/../..' . '/application/store/controller/Order.php',
-        'app\\store\\controller\\wechat\\Demo' => __DIR__ . '/../..' . '/application/store/controller/wechat/Demo.php',
-        'app\\store\\controller\\wechat\\Index' => __DIR__ . '/../..' . '/application/store/controller/wechat/Index.php',
-        'app\\store\\service\\GoodsService' => __DIR__ . '/../..' . '/application/store/service/GoodsService.php',
-        'app\\store\\service\\MemberService' => __DIR__ . '/../..' . '/application/store/service/MemberService.php',
-        'app\\store\\service\\OrderService' => __DIR__ . '/../..' . '/application/store/service/OrderService.php',
-        'app\\wechat\\controller\\Config' => __DIR__ . '/../..' . '/application/wechat/controller/Config.php',
-        'app\\wechat\\controller\\Fans' => __DIR__ . '/../..' . '/application/wechat/controller/Fans.php',
-        'app\\wechat\\controller\\FansBlock' => __DIR__ . '/../..' . '/application/wechat/controller/FansBlock.php',
-        'app\\wechat\\controller\\Keys' => __DIR__ . '/../..' . '/application/wechat/controller/Keys.php',
-        'app\\wechat\\controller\\Menu' => __DIR__ . '/../..' . '/application/wechat/controller/Menu.php',
-        'app\\wechat\\controller\\News' => __DIR__ . '/../..' . '/application/wechat/controller/News.php',
-        'app\\wechat\\controller\\Review' => __DIR__ . '/../..' . '/application/wechat/controller/Review.php',
-        'app\\wechat\\controller\\Tags' => __DIR__ . '/../..' . '/application/wechat/controller/Tags.php',
-        'app\\wechat\\controller\\api\\Js' => __DIR__ . '/../..' . '/application/wechat/controller/api/Js.php',
-        'app\\wechat\\controller\\api\\Push' => __DIR__ . '/../..' . '/application/wechat/controller/api/Push.php',
-        'app\\wechat\\controller\\api\\Tools' => __DIR__ . '/../..' . '/application/wechat/controller/api/Tools.php',
-        'app\\wechat\\service\\FansService' => __DIR__ . '/../..' . '/application/wechat/service/FansService.php',
-        'app\\wechat\\service\\MediaService' => __DIR__ . '/../..' . '/application/wechat/service/MediaService.php',
-        'app\\wechat\\service\\TagsService' => __DIR__ . '/../..' . '/application/wechat/service/TagsService.php',
         'think\\captcha\\Captcha' => __DIR__ . '/..' . '/topthink/think-captcha/src/Captcha.php',
         'think\\captcha\\CaptchaController' => __DIR__ . '/..' . '/topthink/think-captcha/src/CaptchaController.php',
         'think\\composer\\Plugin' => __DIR__ . '/..' . '/topthink/think-installer/src/Plugin.php',
@@ -321,9 +277,9 @@ class ComposerStaticInit3453515942e444a26be0d4b35ca72189
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3453515942e444a26be0d4b35ca72189::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3453515942e444a26be0d4b35ca72189::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit3453515942e444a26be0d4b35ca72189::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit53186b8f9ced5efc2d0ef0e9b2b040f3::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit53186b8f9ced5efc2d0ef0e9b2b040f3::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit53186b8f9ced5efc2d0ef0e9b2b040f3::$classMap;
 
         }, null, ClassLoader::class);
     }
