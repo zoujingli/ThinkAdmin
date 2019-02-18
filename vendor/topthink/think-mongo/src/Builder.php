@@ -354,6 +354,8 @@ class Builder
     public function insertAll($dataSet, $options = [])
     {
         $bulk = new BulkWrite;
+
+        $this->insertId = [];
         foreach ($dataSet as $data) {
             // 分析并处理数据
             $data = $this->parseData($data, $options);
@@ -460,7 +462,7 @@ class Builder
             'aggregate'    => $options['table'],
             'allowDiskUse' => true,
             'pipeline'     => $pipeline,
-            'cursor'       => \stdClass,
+            'cursor'       => new \stdClass,
         ];
 
         foreach (['explain', 'collation', 'bypassDocumentValidation', 'readConcern'] as $option) {

@@ -36,7 +36,7 @@ class Listen extends Command
 
     public function initialize(Input $input, Output $output)
     {
-        $this->listener = new Listener(getcwd());
+        $this->listener = new Listener($this->findCommandPath());
         $this->listener->setSleep($input->getOption('sleep'));
         $this->listener->setMaxTries($input->getOption('tries'));
 
@@ -56,5 +56,10 @@ class Listen extends Command
         $queue = $input->getOption('queue') ?: 'default';
 
         $this->listener->listen($queue, $delay, $memory, $timeout);
+    }
+    
+    protected function findCommandPath()
+    {
+        return defined('ROOT_PATH') ? ROOT_PATH : dirname($_SERVER['argv'][0]);
     }
 }

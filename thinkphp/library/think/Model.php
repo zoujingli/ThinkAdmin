@@ -94,6 +94,8 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     protected $type = [];
     // 是否为更新数据
     protected $isUpdate = false;
+    // 是否使用Replace
+    protected $replace = false;
     // 是否强制更新所有数据
     protected $force = false;
     // 更新条件
@@ -115,6 +117,12 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * @var array
      */
     protected static $initialized = [];
+
+    /**
+     * 是否从主库读取（主从分布式有效）
+     * @var array
+     */
+    protected static $readMaster;
 
     /**
      * 构造方法
@@ -172,6 +180,20 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 是否从主库读取数据（主从分布有效）
+     * @access public
+     * @param  bool     $all 是否所有模型生效
+     * @return $this
+     */
+    public function readMaster($all = false)
+    {
+        $model = $all ? '*' : $this->class;
+
+        static::$readMaster[$model] = true;
+        return $this;
+    }
+
+    /**
      * 创建模型的查询对象
      * @access protected
      * @return Query
@@ -193,6 +215,10 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         // 设置当前模型 确保查询返回模型对象
         $queryClass = $this->query ?: $con->getConfig('query');
         $query      = new $queryClass($con, $this);
+
+        if (isset(static::$readMaster['*']) || isset(static::$readMaster[$this->class])) {
+            $query->master(true);
+        }
 
         // 设置当前数据表和模型名
         if (!empty($this->table)) {
@@ -679,7 +705,11 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
                 $value = empty($value) ? new \stdClass() : json_decode($value);
                 break;
             case 'serialize':
-                $value = unserialize($value);
+                try {
+                    $value = unserialize($value);
+                } catch (\Exception $e) {
+                    $value = null;
+                }
                 break;
             default:
                 if (false !== strpos($type, '\\')) {
@@ -986,6 +1016,18 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 新增数据是否使用Replace
+     * @access public
+     * @param  bool $replace
+     * @return $this
+     */
+    public function replace($replace = true)
+    {
+        $this->replace = $replace;
+        return $this;
+    }
+
+    /**
      * 保存当前数据对象
      * @access public
      * @param array  $data     数据
@@ -1000,19 +1042,21 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             $data     = [];
         }
 
+        // 数据自动验证
         if (!empty($data)) {
-            // 数据自动验证
             if (!$this->validateData($data)) {
                 return false;
             }
+
             // 数据对象赋值
             foreach ($data as $key => $value) {
                 $this->setAttr($key, $value, $data);
             }
-            if (!empty($where)) {
-                $this->isUpdate    = true;
-                $this->updateWhere = $where;
-            }
+        }
+
+        if (!empty($where)) {
+            $this->isUpdate    = true;
+            $this->updateWhere = $where;
         }
 
         // 自动关联写入
@@ -1135,9 +1179,9 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             // 检测字段
             $allowFields = $this->checkAllowField(array_merge($this->auto, $this->insert));
             if (!empty($allowFields)) {
-                $result = $this->getQuery()->strict(false)->field($allowFields)->insert($this->data, false, false, $sequence);
+                $result = $this->getQuery()->strict(false)->field($allowFields)->insert($this->data, $this->replace, false, $sequence);
             } else {
-                $result = $this->getQuery()->insert($this->data, false, false, $sequence);
+                $result = $this->getQuery()->insert($this->data, $this->replace, false, $sequence);
             }
 
             // 获取自动增长主键

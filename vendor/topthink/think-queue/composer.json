@@ -21,6 +21,9 @@
         "topthink/think-helper": ">=1.0.4",
         "topthink/think-installer": ">=1.0.10"
     },
+    "require-dev": {
+        "topthink/framework": "~5.0.0"
+    },
     "extra": {
         "think-config": {
             "queue": "src/config.php"

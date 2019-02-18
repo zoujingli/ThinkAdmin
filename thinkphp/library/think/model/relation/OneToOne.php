@@ -304,6 +304,8 @@ abstract class OneToOne extends Relation
      */
     protected function eagerlyWhere($model, $where, $key, $relation, $subRelation = '', $closure = false)
     {
+        $this->baseQuery = true;
+
         // 预载入关联查询 支持嵌套预载入
         if ($closure) {
             call_user_func_array($closure, [ & $model]);
@@ -321,4 +323,15 @@ abstract class OneToOne extends Relation
         return $data;
     }
 
+    /**
+     * 创建关联统计子查询
+     * @access public
+     * @param \Closure $closure 闭包
+     * @param string   $name    统计数据别名
+     * @return string
+     */
+    public function getRelationCountQuery($closure, &$name = null)
+    {
+        throw new Exception('relation not support: withCount');
+    }
 }

@@ -7,7 +7,7 @@ $ip = '101.105.35.57';
 
 $info = $ip2region->btreeSearch($ip);
 
-var_export($info, true);
+var_export($info);
 
 // array (
 //     'city_id' => 2163,

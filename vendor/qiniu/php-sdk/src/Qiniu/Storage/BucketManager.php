@@ -225,6 +225,23 @@ final class BucketManager
         return $error;
     }
 
+    /**
+     * 修改文件的存储状态，即禁用状态和启用状态间的的互相转换
+     *
+     * @param $bucket     待操作资源所在空间
+     * @param $key        待操作资源文件名
+     * @param $status       待操作文件目标文件类型
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     * @link  https://developer.qiniu.com/kodo/api/4173/modify-the-file-status
+     */
+    public function changeStatus($bucket, $key, $status)
+    {
+        $resource = \Qiniu\entry($bucket, $key);
+        $path = '/chstatus/' . $resource . '/status/' . $status;
+        list(, $error) = $this->rsPost($path);
+        return $error;
+    }
 
     /**
      * 从指定URL抓取资源，并将该资源存储到指定空间中

@@ -1,4 +1,4 @@
-# Qiniu Resource Storage SDK for PHP
+# Qiniu Cloud SDK for PHP
 [![doxygen.io](http://doxygen.io/github.com/qiniu/php-sdk/?status.svg)](http://doxygen.io/github.com/qiniu/php-sdk/)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/qiniu/php-sdk.svg)](https://travis-ci.org/qiniu/php-sdk)
