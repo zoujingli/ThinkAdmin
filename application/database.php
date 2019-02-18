@@ -18,11 +18,11 @@ return [
     // 服务器地址
     'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => 'think.admin',
+    'database'        => 'admin_v1',
     // 用户名
-    'username'        => 'think.admin',
+    'username'        => 'admin_v1',
     // 密码
-    'password'        => '',
+    'password'        => 'FbYBHcWKr2',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
