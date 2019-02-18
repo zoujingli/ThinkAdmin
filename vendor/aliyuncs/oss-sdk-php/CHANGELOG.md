@@ -1,5 +1,15 @@
 # ChangeLog - Aliyun OSS SDK for PHP
 
+## v2.3.0 / 2018-01-05
+
+* 修复：putObject支持创建空文件
+* 修复：createBucket支持IA/Archive
+* 增加：支持restoreObject
+* 增加：支持Symlink功能
+* 增加：支持getBucketLocation
+* 增加：支持getBucketMeta
+* 增加：支持代理服务器Proxy
+
 ## v2.2.4 / 2017-04-25
 
 * fix getObject to local file bug

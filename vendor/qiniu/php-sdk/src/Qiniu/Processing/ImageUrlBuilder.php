@@ -57,39 +57,39 @@ final class ImageUrlBuilder
         $quality = null,
         $ignoreError = 1
     ) {
-    
+
         // url合法效验
-        if (! $this->isUrl($url)) {
+        if (!$this->isUrl($url)) {
             return $url;
         }
 
         // 参数合法性效验
-        if (! in_array(intval($mode), $this->modeArr, true)) {
+        if (!in_array(intval($mode), $this->modeArr, true)) {
             return $url;
         }
 
-        if (! $width || ! $height) {
+        if (!$width || !$height) {
             return $url;
         }
 
         $thumbStr = 'imageView2/' . $mode . '/w/' . $width . '/h/' . $height . '/';
 
         // 拼接输出格式
-        if (! is_null($format)
+        if (!is_null($format)
             && in_array($format, $this->formatArr)
         ) {
             $thumbStr .= 'format/' . $format . '/';
         }
 
         // 拼接渐进显示
-        if (! is_null($interlace)
+        if (!is_null($interlace)
             && in_array(intval($interlace), array(0, 1), true)
         ) {
             $thumbStr .= 'interlace/' . $interlace . '/';
         }
 
         // 拼接图片质量
-        if (! is_null($quality)
+        if (!is_null($quality)
             && intval($quality) >= 0
             && intval($quality) <= 100
         ) {
@@ -126,7 +126,7 @@ final class ImageUrlBuilder
         $watermarkScale = null
     ) {
         // url合法效验
-        if (! $this->isUrl($url)) {
+        if (!$this->isUrl($url)) {
             return $url;
         }
 
@@ -145,21 +145,21 @@ final class ImageUrlBuilder
         }
 
         // 拼接横轴边距
-        if (! is_null($dx)
+        if (!is_null($dx)
             && is_numeric($dx)
         ) {
             $waterStr .= 'dx/' . $dx . '/';
         }
 
         // 拼接纵轴边距
-        if (! is_null($dy)
+        if (!is_null($dy)
             && is_numeric($dy)
         ) {
             $waterStr .= 'dy/' . $dy . '/';
         }
 
         // 拼接自适应原图的短边比例
-        if (! is_null($watermarkScale)
+        if (!is_null($watermarkScale)
             && is_numeric($watermarkScale)
             && $watermarkScale > 0
             && $watermarkScale < 1
@@ -199,7 +199,7 @@ final class ImageUrlBuilder
         $dy = null
     ) {
         // url合法效验
-        if (! $this->isUrl($url)) {
+        if (!$this->isUrl($url)) {
             return $url;
         }
 
@@ -213,7 +213,7 @@ final class ImageUrlBuilder
         }
 
         // 拼接文字颜色
-        if (! is_null($fontColor)
+        if (!is_null($fontColor)
             && $fontColor
         ) {
             $waterStr .= 'fill/' . \Qiniu\base64_urlSafeEncode($fontColor) . '/';
@@ -232,14 +232,14 @@ final class ImageUrlBuilder
         }
 
         // 拼接横轴边距
-        if (! is_null($dx)
+        if (!is_null($dx)
             && is_numeric($dx)
         ) {
             $waterStr .= 'dx/' . $dx . '/';
         }
 
         // 拼接纵轴边距
-        if (! is_null($dy)
+        if (!is_null($dy)
             && is_numeric($dy)
         ) {
             $waterStr .= 'dy/' . $dy . '/';
@@ -261,9 +261,9 @@ final class ImageUrlBuilder
         $urlArr = parse_url($url);
 
         return $urlArr['scheme']
-            && in_array($urlArr['scheme'], array('http', 'https'))
-            && $urlArr['host']
-            && $urlArr['path'];
+        && in_array($urlArr['scheme'], array('http', 'https'))
+        && $urlArr['host']
+        && $urlArr['path'];
     }
 
     /**
@@ -277,6 +277,6 @@ final class ImageUrlBuilder
     {
         $urlArr = parse_url($url);
 
-        return ! empty($urlArr['query']);
+        return !empty($urlArr['query']);
     }
 }

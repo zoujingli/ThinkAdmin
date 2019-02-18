@@ -104,7 +104,7 @@ final class Response
         if (self::isJson($headers)) {
             try {
                 $jsonData = self::bodyJson($body);
-                if ($code >=400) {
+                if ($code >= 400) {
                     $this->error = $body;
                     if ($jsonData['error'] !== null) {
                         $this->error = $jsonData['error'];
@@ -117,7 +117,7 @@ final class Response
                     $this->error = $e->getMessage();
                 }
             }
-        } elseif ($code >=400) {
+        } elseif ($code >= 400) {
             $this->error = $body;
         }
         return;
@@ -163,7 +163,7 @@ final class Response
     public function needRetry()
     {
         $code = $this->statusCode;
-        if ($code< 0 || ($code / 100 === 5 and $code !== 579) || $code === 996) {
+        if ($code < 0 || ($code / 100 === 5 and $code !== 579) || $code === 996) {
             return true;
         }
     }

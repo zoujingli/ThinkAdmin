@@ -14,6 +14,7 @@ use MongoDB\BSON\ObjectID;
 use MongoDB\BSON\Regex;
 use MongoDB\Driver\BulkWrite;
 use MongoDB\Driver\Command;
+use MongoDB\Driver\Exception\InvalidArgumentException;
 use MongoDB\Driver\Query as MongoQuery;
 use think\Exception;
 
@@ -69,7 +70,11 @@ class Builder
     protected function parseValue($value, $field = '')
     {
         if ('_id' == $field && 'ObjectID' == $this->connection->getConfig('pk_type') && is_string($value)) {
-            return new ObjectID($value);
+            try {
+                return new ObjectID($value);
+            } catch (InvalidArgumentException $e) {
+                return new ObjectID();
+            }
         }
         return $value;
     }
@@ -119,7 +124,7 @@ class Builder
         $result = [];
         foreach ($data as $key => $val) {
             $item = $this->parseKey($key);
-            if (is_array($val) && isset($val[0]) && in_array($val[0], ['$inc', '$set', '$unset', '$push', '$pushall', '$addtoset', '$pop', '$pull', '$pullall'])) {
+            if (is_array($val) && isset($val[0]) && is_string($val[0]) && 0 === strpos($val[0], '$')) {
                 $result[$val[0]][$item] = $this->parseValue($val[1], $key);
             } else {
                 $result['$set'][$item] = $this->parseValue($val, $key);
@@ -134,7 +139,7 @@ class Builder
      * @param mixed $where
      * @return array
      */
-    public function parseWhere($where)
+    public function parseWhere($where, $options = [])
     {
         if (empty($where)) {
             $where = [];
@@ -147,7 +152,7 @@ class Builder
                     // 使用闭包查询
                     $query = new Query($this->connection);
                     call_user_func_array($value, [ & $query]);
-                    $filter[$logic][] = $this->parseWhere($query->getOptions('where'));
+                    $filter[$logic][] = $this->parseWhere($query->getOptions('where'), $options);
                 } else {
                     if (strpos($field, '|')) {
                         // 不同字段使用相同查询条件（OR）
@@ -169,6 +174,14 @@ class Builder
                 }
             }
         }
+
+        if (!empty($options['soft_delete'])) {
+            // 附加软删除条件
+            list($field, $condition) = $options['soft_delete'];
+
+            $filter['$and'][] = $this->parseWhereItem($field, $condition);
+        }
+
         return $filter;
     }
 
@@ -341,6 +354,8 @@ class Builder
     public function insertAll($dataSet, $options = [])
     {
         $bulk = new BulkWrite;
+
+        $this->insertId = [];
         foreach ($dataSet as $data) {
             // 分析并处理数据
             $data = $this->parseData($data, $options);
@@ -362,7 +377,7 @@ class Builder
     public function update($data, $options = [])
     {
         $data  = $this->parseSet($data, $options);
-        $where = $this->parseWhere($options['where']);
+        $where = $this->parseWhere($options['where'], $options);
 
         if (1 == $options['limit']) {
             $updateOptions = ['multi' => false];
@@ -383,7 +398,7 @@ class Builder
      */
     public function delete($options)
     {
-        $where = $this->parseWhere($options['where']);
+        $where = $this->parseWhere($options['where'], $options);
         $bulk  = new BulkWrite;
         if (1 == $options['limit']) {
             $deleteOptions = ['limit' => 1];
@@ -403,7 +418,7 @@ class Builder
      */
     public function select($options)
     {
-        $where = $this->parseWhere($options['where']);
+        $where = $this->parseWhere($options['where'], $options);
         $query = new MongoQuery($where, $options);
         $this->log('find', $where, $options);
         return $query;
@@ -418,7 +433,7 @@ class Builder
     public function count($options)
     {
         $cmd['count'] = $options['table'];
-        $cmd['query'] = $this->parseWhere($options['where']);
+        $cmd['query'] = $this->parseWhere($options['where'], $options);
         foreach (['hint', 'limit', 'maxTimeMS', 'skip'] as $option) {
             if (isset($options[$option])) {
                 $cmd[$option] = $options[$option];
@@ -440,13 +455,14 @@ class Builder
     {
         list($fun, $field) = $extra;
         $pipeline          = [
-            ['$match' => (object) $this->parseWhere($options['where'])],
+            ['$match' => (object) $this->parseWhere($options['where'], $options)],
             ['$group' => ['_id' => null, 'aggregate' => ['$' . $fun => '$' . $field]]],
         ];
         $cmd = [
             'aggregate'    => $options['table'],
             'allowDiskUse' => true,
             'pipeline'     => $pipeline,
+            'cursor'       => new \stdClass,
         ];
 
         foreach (['explain', 'collation', 'bypassDocumentValidation', 'readConcern'] as $option) {
@@ -456,6 +472,45 @@ class Builder
         }
         $command = new Command($cmd);
         $this->log('aggregate', $cmd);
+        return $command;
+    }
+
+    /**
+     * 多聚合查询命令, 可以对多个字段进行 group by 操作
+     *
+     * @param array $options 参数
+     * @param array $extra 指令和字段
+     * @return Command
+     */
+    public function multiAggregate($options, $extra)
+    {
+        list($aggregate, $groupBy) = $extra;
+        $groups                    = ['_id' => []];
+        foreach ($groupBy as $field) {
+            $groups['_id'][$field] = '$' . $field;
+        }
+
+        foreach ($aggregate as $fun => $field) {
+            $groups[$field . '_' . $fun] = ['$' . $fun => '$' . $field];
+        }
+        $pipeline = [
+            ['$match' => (object) $this->parseWhere($options['where'], $options)],
+            ['$group' => $groups],
+        ];
+        $cmd = [
+            'aggregate'    => $options['table'],
+            'allowDiskUse' => true,
+            'pipeline'     => $pipeline,
+            'cursor'       => new \stdClass,
+        ];
+
+        foreach (['explain', 'collation', 'bypassDocumentValidation', 'readConcern'] as $option) {
+            if (isset($options[$option])) {
+                $cmd[$option] = $options[$option];
+            }
+        }
+        $command = new Command($cmd);
+        $this->log('group', $cmd);
         return $command;
     }
 
@@ -474,7 +529,7 @@ class Builder
         ];
 
         if (!empty($options['where'])) {
-            $cmd['query'] = $this->parseWhere($options['where']);
+            $cmd['query'] = $this->parseWhere($options['where'], $options);
         }
 
         if (isset($options['maxTimeMS'])) {

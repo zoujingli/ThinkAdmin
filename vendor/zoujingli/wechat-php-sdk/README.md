@@ -13,6 +13,8 @@
 
 此`SDK`已历经数个线上项目验证与考验，可靠性与稳定性极高，欢迎`fork`或`star`此项目。
 
+# 新微信开发工具推荐
+WeChatDeveloper：https://github.com/zoujingli/WeChatDeveloper
 
 **微信SDK开发帮助及交流**
 --
@@ -26,7 +28,7 @@
 
 **若对您有帮助，可以赞助并支持下作者哦，谢谢！**
 --
-![](https://git.kancloud.cn/repos/zoujingli/wechat-php-sdk/raw/master/image/%E8%B5%9E%E5%8A%A9.png?access-token=49255b63935edafaf42aec9376136528&v1)
+![](http://plugs.ctolog.com/pay.png)
 
 
 **官方接口文档链接**
@@ -85,4 +87,3 @@
 --
 * 此SDK基于`MIT`协议发布，任何人可以用在任何地方，不受约束
 * 此SDK部分代码来自互联网，若有异议，可以联系作者进行删除
-

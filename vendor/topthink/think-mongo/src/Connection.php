@@ -12,7 +12,6 @@ namespace think\mongo;
 use MongoDB\BSON\ObjectID;
 use MongoDB\Driver\BulkWrite;
 use MongoDB\Driver\Command;
-use MongoDB\Driver\Cursor;
 use MongoDB\Driver\Exception\AuthenticationException;
 use MongoDB\Driver\Exception\BulkWriteException;
 use MongoDB\Driver\Exception\ConnectionException;
@@ -22,7 +21,6 @@ use MongoDB\Driver\Manager;
 use MongoDB\Driver\Query as MongoQuery;
 use MongoDB\Driver\ReadPreference;
 use MongoDB\Driver\WriteConcern;
-use think\Collection;
 use think\Db;
 use think\Debug;
 use think\Exception;
@@ -151,7 +149,7 @@ class Connection
             if ($config['pk_convert_id'] && '_id' == $config['pk']) {
                 $this->config['pk'] = 'id';
             }
-            $host = 'mongodb://' . ($config['username'] ? "{$config['username']}" : '') . ($config['password'] ? ":{$config['password']}@" : '') . $config['hostname'] . ($config['hostport'] ? ":{$config['hostport']}" : '') . '/' . ($config['database'] ? "{$config['database']}" : '');
+            $host = 'mongodb://' . ($config['username'] ? "{$config['username']}" : '') . ($config['password'] ? ":{$config['password']}@" : '') . $config['hostname'] . ($config['hostport'] ? ":{$config['hostport']}" : '');
             if ($config['debug']) {
                 $startTime = microtime(true);
             }
@@ -302,7 +300,7 @@ class Connection
      * @throws ConnectionException
      * @throws RuntimeException
      */
-    public function command(Command $command, $dbName = '', ReadPreference $readPreference = null, $class = false, $typeMap)
+    public function command(Command $command, $dbName = '', ReadPreference $readPreference = null, $class = false, $typeMap = null)
     {
         $this->initConnect(false);
         Db::$queryTimes++;
@@ -638,6 +636,34 @@ class Connection
         }
         return rtrim($url, ",") . '/';
     }
+
+    /**
+     * 启动事务
+     * @access public
+     * @return void
+     * @throws \PDOException
+     * @throws \Exception
+     */
+    public function startTrans()
+    {}
+
+    /**
+     * 用于非自动提交状态下面的查询提交
+     * @access public
+     * @return void
+     * @throws PDOException
+     */
+    public function commit()
+    {}
+
+    /**
+     * 事务回滚
+     * @access public
+     * @return void
+     * @throws PDOException
+     */
+    public function rollback()
+    {}
 
     /**
      * 析构方法

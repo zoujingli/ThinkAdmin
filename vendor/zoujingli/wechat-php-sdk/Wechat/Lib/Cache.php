@@ -1,5 +1,18 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方文档: https://www.kancloud.cn/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/wechat-php-sdk
+// +----------------------------------------------------------------------
+
+
 namespace Wechat\Lib;
 
 use Wechat\Loader;
@@ -10,7 +23,8 @@ use Wechat\Loader;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016-08-20 17:50
  */
-class Cache {
+class Cache
+{
 
     /**
      * 缓存位置
@@ -25,7 +39,8 @@ class Cache {
      * @param int $expired
      * @return mixed
      */
-    static public function set($name, $value, $expired = 0) {
+    static public function set($name, $value, $expired = 0)
+    {
         if (isset(Loader::$callback['CacheSet'])) {
             return call_user_func_array(Loader::$callback['CacheSet'], func_get_args());
         }
@@ -38,7 +53,8 @@ class Cache {
      * @param string $name
      * @return mixed
      */
-    static public function get($name) {
+    static public function get($name)
+    {
         if (isset(Loader::$callback['CacheGet'])) {
             return call_user_func_array(Loader::$callback['CacheGet'], func_get_args());
         }
@@ -56,7 +72,8 @@ class Cache {
      * @param string $name
      * @return mixed
      */
-    static public function del($name) {
+    static public function del($name)
+    {
         if (isset(Loader::$callback['CacheDel'])) {
             return call_user_func_array(Loader::$callback['CacheDel'], func_get_args());
         }
@@ -69,7 +86,8 @@ class Cache {
      * @param string $filename
      * @return mixed
      */
-    static public function put($line, $filename = '') {
+    static public function put($line, $filename = '')
+    {
         if (isset(Loader::$callback['CachePut'])) {
             return call_user_func_array(Loader::$callback['CachePut'], func_get_args());
         }
@@ -81,13 +99,48 @@ class Cache {
      * 检查缓存目录
      * @return bool
      */
-    static protected function check() {
+    static protected function check()
+    {
         empty(self::$cachepath) && self::$cachepath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Cache' . DIRECTORY_SEPARATOR;
         self::$cachepath = rtrim(self::$cachepath, '/\\') . DIRECTORY_SEPARATOR;
-        if (!is_dir(self::$cachepath) && !mkdir(self::$cachepath, 0755, TRUE)) {
-            return FALSE;
+        if (!is_dir(self::$cachepath) && !mkdir(self::$cachepath, 0755, true)) {
+            return false;
         }
-        return TRUE;
+        return true;
+    }
+
+    /**
+     * 文件缓存，成功返回文件路径
+     * @param string $content 文件内容
+     * @param string $filename 文件名称
+     * @return bool|string
+     */
+    static public function file($content, $filename = '')
+    {
+        if (isset(Loader::$callback['CacheFile'])) {
+            return call_user_func_array(Loader::$callback['CacheFile'], func_get_args());
+        }
+        empty($filename) && $filename = md5($content) . '.' . self::getFileExt($content);
+        if (self::check() && file_put_contents(self::$cachepath . $filename, $content)) {
+            return self::$cachepath . $filename;
+        }
+        return false;
+    }
+
+    /**
+     * 根据文件流读取文件后缀
+     * @param string $content
+     * @return string
+     */
+    static public function getFileExt($content)
+    {
+        $types = array(
+            255216 => 'jpg', 7173 => 'gif', 6677 => 'bmp', 13780 => 'png',
+            7368   => 'mp3', 4838 => 'wma', 7784 => 'mid', 6063 => 'xml',
+        );
+        $typeInfo = @unpack("C2chars", substr($content, 0, 2));
+        $typeCode = intval($typeInfo['chars1'] . $typeInfo['chars2']);
+        return isset($types[$typeCode]) ? $types[$typeCode] : 'mp4';
     }
 
 }

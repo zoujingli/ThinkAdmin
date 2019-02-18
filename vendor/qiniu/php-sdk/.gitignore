@@ -9,3 +9,4 @@ phpunit.functional.xml
 composer.lock
 vendor
 src/package.xml
+.idea/
