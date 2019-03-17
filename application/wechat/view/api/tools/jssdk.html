@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSSDK 功能测试</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link href="__STATIC__/mobile/library.min.css" rel="stylesheet">
+    <script src="__STATIC__/mobile/library.min.js"></script>
+    <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>wx.config(JSON.parse('{$options|json_encode|raw}'));</script>
+</head>
+
+<body>
+
+<header style="padding: 35px 0">
+    <h1 style=" text-align: center;font-size: 34px;color: #3cc51f;font-weight:400;">JSSDK 功能测试</h1>
+</header>
+
+<div style="padding:15px">
+    <a id='show-alert' class="weui-btn weui-btn_primary weui-btn_disabled">调起摄像头扫码</a>
+</div>
+
+<script>
+    wx.error(function (err) {
+        $.toptip(err.errMsg, 100000, 'error');
+    });
+    wx.ready(function () {
+        $('#show-alert').removeClass('weui-btn_disabled').on('click', function () {
+            wx.scanQRCode({
+                needResult: 1,
+                scanType: ["qrCode", "barCode"],
+                success: function (res) {
+                    $.toptip(res.resultStr, 'success');
+                }
+            });
+        });
+    });
+</script>
+</body>
+
+</html>

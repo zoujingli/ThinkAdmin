@@ -1,0 +1,4 @@
+.git
+.idea
+vendor
+composer.lock

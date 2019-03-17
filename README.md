@@ -1,34 +1,59 @@
-Think.Admin
----
+ThinkAdmin for PHP
+--
+## 大道至简 · 悟在天成
 
-`Think.Admin`是一个基于`Thinkphp5`开发的后台管理系统，集成后台系统常用功能。
+* ThinkAdmin 是一个基于 Thinkphp 5.1.x 开发的后台管理系统，集成后台系统常用功能。
+* 项目安装及二次开发请参考 ThinkPHP 官方文档及下面的服务环境说明，数据库 sql 文件存放于项目根目录下。
+>* 注意：项目测试请另行搭建环境并创建数据库（数据库配置 config/database.php）, 切勿直接使用测试环境数据！
+>* 如果系统提示“测试系统禁止操作等字样”，可以删除项目演示路由配置（route/demo.php）或清空里面的路由记录。
+>* 当前版本使用 ThinkPHP 5.1.x 版本，对PHP版本要求不低于php5.6，具体请查阅ThinkPHP官方文档。
 
-项目安装请参考`ThinkPHP`官方文档及下面的服务环境说明，数据库`sql`文件存放于项目根目录下。
 
-注意：项目测试请另行搭建环境并创建数据库（数据库配置`application/database.php`）, 切勿直接使用测试环境数据！
+Documentation
+--
+认真看看文档可能会对你的开发有所帮助哦！
 
-`Think.Admin`及`微信开发`技术交流QQ群
-[![QQ群](http://pub.idqqimg.com/wpa/images/group.png "QQ群")](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a)
+文档地址：[ThinkAdmin 开发文档](https://www.kancloud.cn/zoujingli/thinkadmin/content)
 
-**`Think.Admin`开发手册 ( 撰写中 )** : http://doc.think.ctolog.com
 
-`Think.Admin`已集成模块
----
+PHP开发技术交流（QQ群 513350915）
+
+[![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
+
+
+Repositorie
+--
+ ThinkAdmin 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
+* Gitee  托管地址：https://gitee.com/zoujingli/Think.Admin
+* GitHub 托管地址：https://github.com/zoujingli/ThinkAdmin
+
+对于新版本的微信模块使用的是授权模式，需要用到 ThinkService 项目。
+* Gitee  托管地址：https://gitee.com/zoujingli/ThinkService
+* GitHub 托管地址：https://github.com/zoujingli/ThinkService
+
+其安装与 ThinkAdmin 相似，这里就不多说了。具体可以参见微信开放平台官网
+https://open.weixin.qq.com ，ThinkService 后台具体可以配置对应参数。
+
+ThinkAdmin 与 ThinkService 对接是通过 WebService 通信的，因此运行环境需要安装 Soap 模块支持。
+
+
+Module
+--
 * 简易`RBAC`权限管理（用户、权限、节点、菜单控制）
 * 自建秒传文件上载组件（本地存储、七牛云存储，阿里云OSS存储）
 * 基站数据服务组件（唯一随机序号、表单更新）
 * `Http`服务组件（原生`CURL`封装，兼容PHP多版本）
-* 微信公众号服务组件（基于[wechat-php-sdk](https://github.com/zoujingli/wechat-php-sdk)，微信网页授权获取用户信息、已关注粉丝管理、自定义菜单管理等等）
-* 微信商户支付服务组件（基于[wechat-php-sdk](https://github.com/zoujingli/wechat-php-sdk)，支持JSAPI支付、扫码模式一支付、扫码模式二支付）
-* 测试公众号名称：思过崖思过 （大家可以关注它来进行简单的测试）
+* 微信公众号服务组件（基于[WeChatDeveloper](https://github.com/zoujingli/WeChatDeveloper)，微信网页授权获取用户信息、已关注粉丝管理、自定义菜单管理等等）
+* 微信商户支付服务组件（基于[WeChatDeveloper](https://github.com/zoujingli/WeChatDeveloper)，支持JSAPI支付、扫码模式一支付、扫码模式二支付）
 * 更多组件开发中...
 
 
-服务器环境
+Environment
 ---
-* `PHP`版本不低于`PHP5.4`，推荐使用`PHP7`以达到最优效果
-* 项目运行需支持`PATHINFO`，项目不支持`ThinkPHP`的`URL`兼容模式运行（源于如何优雅的展示）
-* `Apache`：已在项目根目录加入`.htaccess`文件，只需开启`rewrite`模块
+>1. PHP 版本不低于 PHP5.6，推荐使用 PHP7 以达到最优效果；
+>2. 需开启 PATHINFO，不再支持 ThinkPHP 的 URL 兼容模式运行（源于如何优雅的展示）。
+
+* Apache
 
 ```xml
 <IfModule mod_rewrite.c>
@@ -40,13 +65,13 @@ Think.Admin
 </IfModule>
 ```
 
-* `Nginx`：配置参考下面的`demo`代码
+* Nginx
 
 ```
 server {
 	listen 80;
 	server_name wealth.demo.cuci.cc;
-	root /home/wwwroot/Think.Admin;
+	root /home/wwwroot/ThinkAdmin;
 	index index.php index.html index.htm;
 	
 	add_header X-Powered-Host $hostname;
@@ -87,3 +112,13 @@ server {
 	}
 }
 ```
+
+Copyright
+--
+* ThinkAdmin 基于`MIT`协议发布，任何人可以用在任何地方，不受约束
+* ThinkAdmin 部分代码来自互联网，若有异议，可以联系作者进行删除
+
+
+Sponsor
+--
+![赞助](http://zoujingli.oschina.io/static/pay.png)

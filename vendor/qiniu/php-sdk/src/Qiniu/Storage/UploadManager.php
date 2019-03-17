@@ -46,8 +46,9 @@ final class UploadManager
         $data,
         $params = null,
         $mime = 'application/octet-stream',
-        $checkCrc = false
+        $fname = null
     ) {
+    
         $params = self::trimParams($params);
         return FormUploader::put(
             $upToken,
@@ -56,7 +57,7 @@ final class UploadManager
             $this->config,
             $params,
             $mime,
-            $checkCrc
+            $fname
         );
     }
 
@@ -86,6 +87,7 @@ final class UploadManager
         $mime = 'application/octet-stream',
         $checkCrc = false
     ) {
+    
         $file = fopen($filePath, 'rb');
         if ($file === false) {
             throw new \Exception("file can not open", 1);
@@ -106,7 +108,7 @@ final class UploadManager
                 $this->config,
                 $params,
                 $mime,
-                $checkCrc
+                basename($filePath)
             );
         }
 
@@ -119,7 +121,7 @@ final class UploadManager
             $mime,
             $this->config
         );
-        $ret = $up->upload();
+        $ret = $up->upload(basename($filePath));
         fclose($file);
         return $ret;
     }
@@ -131,8 +133,9 @@ final class UploadManager
         }
         $ret = array();
         foreach ($params as $k => $v) {
-            $pos = strpos($k, 'x:');
-            if ($pos === 0 && !empty($v)) {
+            $pos1 = strpos($k, 'x:');
+            $pos2 = strpos($k, 'x-qn-meta-');
+            if (($pos1 === 0 || $pos2 === 0) && !empty($v)) {
                 $ret[$k] = $v;
             }
         }

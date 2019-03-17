@@ -14,6 +14,8 @@ use think\console\Command;
 use think\console\Input;
 use think\console\input\Option;
 use think\console\Output;
+use think\facade\App;
+use think\facade\Cache;
 
 class Clear extends Command
 {
@@ -23,31 +25,45 @@ class Clear extends Command
         $this
             ->setName('clear')
             ->addOption('path', 'd', Option::VALUE_OPTIONAL, 'path to clear', null)
+            ->addOption('cache', 'c', Option::VALUE_NONE, 'clear cache file')
+            ->addOption('route', 'u', Option::VALUE_NONE, 'clear route cache')
+            ->addOption('log', 'l', Option::VALUE_NONE, 'clear log file')
+            ->addOption('dir', 'r', Option::VALUE_NONE, 'clear empty dir')
             ->setDescription('Clear runtime file');
     }
 
     protected function execute(Input $input, Output $output)
     {
-        $path = $input->getOption('path') ?: RUNTIME_PATH;
+        if ($input->getOption('route')) {
+            Cache::clear('route_cache');
+        } else {
+            if ($input->getOption('cache')) {
+                $path = App::getRuntimePath() . 'cache';
+            } elseif ($input->getOption('log')) {
+                $path = App::getRuntimePath() . 'log';
+            } else {
+                $path = $input->getOption('path') ?: App::getRuntimePath();
+            }
 
-        if (is_dir($path)) {
-            $this->clearPath($path);
+            $rmdir = $input->getOption('dir') ? true : false;
+            $this->clear(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR, $rmdir);
         }
 
         $output->writeln("<info>Clear Successed</info>");
     }
 
-    protected function clearPath($path)
+    protected function clear($path, $rmdir)
     {
-        $path  = realpath($path) . DS;
-        $files = scandir($path);
-        if ($files) {
-            foreach ($files as $file) {
-                if ('.' != $file && '..' != $file && is_dir($path . $file)) {
-                    $this->clearPath($path . $file);
-                } elseif ('.gitignore' != $file && is_file($path . $file)) {
-                    unlink($path . $file);
+        $files = is_dir($path) ? scandir($path) : [];
+
+        foreach ($files as $file) {
+            if ('.' != $file && '..' != $file && is_dir($path . $file)) {
+                array_map('unlink', glob($path . $file . DIRECTORY_SEPARATOR . '*.*'));
+                if ($rmdir) {
+                    rmdir($path . $file);
                 }
+            } elseif ('.gitignore' != $file && is_file($path . $file)) {
+                unlink($path . $file);
             }
         }
     }

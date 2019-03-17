@@ -13,7 +13,7 @@ final class Etag
 
     private static function blockCount($fsize)
     {
-        return (($fsize + (Config::BLOCK_SIZE - 1)) / Config::BLOCK_SIZE);
+        return intval(($fsize + (Config::BLOCK_SIZE - 1)) / Config::BLOCK_SIZE);
     }
 
     private static function calcSha1($data)
@@ -38,7 +38,7 @@ final class Etag
 
         $fstat = fstat($fhandler);
         $fsize = $fstat['size'];
-        if ((int) $fsize === 0) {
+        if ((int)$fsize === 0) {
             fclose($fhandler);
             return array('Fto5o-5ea0sNMlW_75VgGJCv2AcJ', null);
         }
@@ -52,12 +52,12 @@ final class Etag
                 fclose($fhandler);
                 return array(null, $err);
             }
-            list($sha1Code, ) = self::calcSha1($fdata);
+            list($sha1Code,) = self::calcSha1($fdata);
             $sha1Buf = array_merge($sha1Buf, $sha1Code);
         } else {
             array_push($sha1Buf, 0x96);
             $sha1BlockBuf = array();
-            for ($i=0; $i < $blockCnt; $i++) {
+            for ($i = 0; $i < $blockCnt; $i++) {
                 $fdata = fread($fhandler, Config::BLOCK_SIZE);
                 list($sha1Code, $err) = self::calcSha1($fdata);
                 if ($err !== null) {
@@ -67,7 +67,7 @@ final class Etag
                 $sha1BlockBuf = array_merge($sha1BlockBuf, $sha1Code);
             }
             $tmpData = self::packArray('C*', $sha1BlockBuf);
-            list($sha1Final, ) = self::calcSha1($tmpData);
+            list($sha1Final,) = self::calcSha1($tmpData);
             $sha1Buf = array_merge($sha1Buf, $sha1Final);
         }
         $etag = \Qiniu\base64_urlSafeEncode(self::packArray('C*', $sha1Buf));

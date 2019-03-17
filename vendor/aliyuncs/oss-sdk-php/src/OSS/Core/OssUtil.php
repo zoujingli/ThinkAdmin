@@ -171,6 +171,19 @@ class OssUtil
     }
 
     /**
+     * 生成createBucketXmlBody接口的xml消息
+     *
+     * @param string $storageClass
+     * @return string
+     */
+    public static function createBucketXmlBody($storageClass)
+    {
+        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><CreateBucketConfiguration></CreateBucketConfiguration>');
+        $xml->addChild('StorageClass',  $storageClass);
+        return $xml->asXML();
+    }
+
+    /**
      * 检验$options
      *
      * @param array $options

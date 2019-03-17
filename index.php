@@ -1,7 +1,7 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | Think.Admin
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
@@ -9,17 +9,16 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/Think.Admin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-/* SESSION会话名称 */
-session_name('s' . substr(md5(__FILE__), 0, 8));
+namespace think;
 
-/* 定义应用目录 */
-define('APP_PATH', __DIR__ . '/application/');
+// 加载基础文件
+require __DIR__ . '/thinkphp/base.php';
 
-/* 定义Runtime运行目录 */
-define('RUNTIME_PATH', __DIR__ . '/runtime/');
+// think文件检查，防止TP目录计算异常
+file_exists('think') || touch('think');
 
-/* 加载框架引导文件 */
-require __DIR__ . '/thinkphp/start.php';
+// 执行应用并响应
+Container::get('app', [__DIR__ . '/application/'])->run()->send();

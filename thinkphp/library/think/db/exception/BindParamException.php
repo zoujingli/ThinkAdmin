@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -21,11 +21,12 @@ class BindParamException extends DbException
 
     /**
      * BindParamException constructor.
-     * @param string $message
-     * @param array  $config
-     * @param string $sql
-     * @param array    $bind
-     * @param int    $code
+     * @access public
+     * @param  string $message
+     * @param  array  $config
+     * @param  string $sql
+     * @param  array    $bind
+     * @param  int    $code
      */
     public function __construct($message, $config, $sql, $bind, $code = 10502)
     {

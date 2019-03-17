@@ -12,23 +12,26 @@
 namespace think\exception;
 
 use Exception;
-use think\App;
-use think\Config;
 use think\console\Output;
-use think\Lang;
-use think\Log;
+use think\Container;
 use think\Response;
 
 class Handle
 {
-
+    protected $render;
     protected $ignoreReport = [
         '\\think\\exception\\HttpException',
     ];
 
+    public function setRender($render)
+    {
+        $this->render = $render;
+    }
+
     /**
      * Report or log an exception.
      *
+     * @access public
      * @param  \Exception $exception
      * @return void
      */
@@ -36,7 +39,7 @@ class Handle
     {
         if (!$this->isIgnoreReport($exception)) {
             // 收集异常数据
-            if (App::$debug) {
+            if (Container::get('app')->isDebug()) {
                 $data = [
                     'file'    => $exception->getFile(),
                     'line'    => $exception->getLine(),
@@ -52,7 +55,11 @@ class Handle
                 $log = "[{$data['code']}]{$data['message']}";
             }
 
-            Log::record($log, 'error');
+            if (Container::get('app')->config('log.record_trace')) {
+                $log .= "\r\n" . $exception->getTraceAsString();
+            }
+
+            Container::get('log')->record($log, 'error');
         }
     }
 
@@ -63,17 +70,27 @@ class Handle
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * Render an exception into an HTTP response.
      *
+     * @access public
      * @param  \Exception $e
      * @return Response
      */
     public function render(Exception $e)
     {
+        if ($this->render && $this->render instanceof \Closure) {
+            $result = call_user_func_array($this->render, [$e]);
+
+            if ($result) {
+                return $result;
+            }
+        }
+
         if ($e instanceof HttpException) {
             return $this->renderHttpException($e);
         } else {
@@ -82,26 +99,30 @@ class Handle
     }
 
     /**
-     * @param Output    $output
-     * @param Exception $e
+     * @access public
+     * @param  Output    $output
+     * @param  Exception $e
      */
     public function renderForConsole(Output $output, Exception $e)
     {
-        if (App::$debug) {
+        if (Container::get('app')->isDebug()) {
             $output->setVerbosity(Output::VERBOSITY_DEBUG);
         }
+
         $output->renderException($e);
     }
 
     /**
-     * @param HttpException $e
+     * @access protected
+     * @param  HttpException $e
      * @return Response
      */
     protected function renderHttpException(HttpException $e)
     {
         $status   = $e->getStatusCode();
-        $template = Config::get('http_exception_template');
-        if (!App::$debug && !empty($template[$status])) {
+        $template = Container::get('app')->config('http_exception_template');
+
+        if (!Container::get('app')->isDebug() && !empty($template[$status])) {
             return Response::create($template[$status], 'view', $status)->assign(['e' => $e]);
         } else {
             return $this->convertExceptionToResponse($e);
@@ -109,13 +130,14 @@ class Handle
     }
 
     /**
-     * @param Exception $exception
+     * @access protected
+     * @param  Exception $exception
      * @return Response
      */
     protected function convertExceptionToResponse(Exception $exception)
     {
         // 收集异常数据
-        if (App::$debug) {
+        if (Container::get('app')->isDebug()) {
             // 调试模式，获取详细的错误信息
             $data = [
                 'name'    => get_class($exception),
@@ -144,9 +166,9 @@ class Handle
                 'message' => $this->getMessage($exception),
             ];
 
-            if (!Config::get('show_error_msg')) {
+            if (!Container::get('app')->config('show_error_msg')) {
                 // 不显示详细错误信息
-                $data['message'] = Config::get('error_message');
+                $data['message'] = Container::get('app')->config('error_message');
             }
         }
 
@@ -159,10 +181,11 @@ class Handle
 
         ob_start();
         extract($data);
-        include Config::get('exception_tmpl');
+        include Container::get('app')->config('exception_tmpl');
+
         // 获取并清空缓存
         $content  = ob_get_clean();
-        $response = new Response($content, 'html');
+        $response = Response::create($content, 'html');
 
         if ($exception instanceof HttpException) {
             $statusCode = $exception->getStatusCode();
@@ -173,52 +196,62 @@ class Handle
             $statusCode = 500;
         }
         $response->code($statusCode);
+
         return $response;
     }
 
     /**
      * 获取错误编码
      * ErrorException则使用错误级别作为错误编码
+     * @access protected
      * @param  \Exception $exception
      * @return integer                错误编码
      */
     protected function getCode(Exception $exception)
     {
         $code = $exception->getCode();
+
         if (!$code && $exception instanceof ErrorException) {
             $code = $exception->getSeverity();
         }
+
         return $code;
     }
 
     /**
      * 获取错误信息
      * ErrorException则使用错误级别作为错误编码
+     * @access protected
      * @param  \Exception $exception
      * @return string                错误信息
      */
     protected function getMessage(Exception $exception)
     {
         $message = $exception->getMessage();
-        if (IS_CLI) {
+
+        if (PHP_SAPI == 'cli') {
             return $message;
         }
 
+        $lang = Container::get('lang');
+
         if (strpos($message, ':')) {
             $name    = strstr($message, ':', true);
-            $message = Lang::has($name) ? Lang::get($name) . strstr($message, ':') : $message;
+            $message = $lang->has($name) ? $lang->get($name) . strstr($message, ':') : $message;
         } elseif (strpos($message, ',')) {
             $name    = strstr($message, ',', true);
-            $message = Lang::has($name) ? Lang::get($name) . ':' . substr(strstr($message, ','), 1) : $message;
-        } elseif (Lang::has($message)) {
-            $message = Lang::get($message);
+            $message = $lang->has($name) ? $lang->get($name) . ':' . substr(strstr($message, ','), 1) : $message;
+        } elseif ($lang->has($message)) {
+            $message = $lang->get($message);
         }
+
         return $message;
     }
 
     /**
      * 获取出错文件内容
      * 获取错误的前9行和后9行
+     * @access protected
      * @param  \Exception $exception
      * @return array                 错误文件内容
      */
@@ -237,30 +270,37 @@ class Handle
         } catch (Exception $e) {
             $source = [];
         }
+
         return $source;
     }
 
     /**
      * 获取异常扩展信息
      * 用于非调试模式html返回类型显示
+     * @access protected
      * @param  \Exception $exception
      * @return array                 异常类定义的扩展数据
      */
     protected function getExtendData(Exception $exception)
     {
         $data = [];
+
         if ($exception instanceof \think\Exception) {
             $data = $exception->getData();
         }
+
         return $data;
     }
 
     /**
      * 获取常量列表
+     * @access private
      * @return array 常量列表
      */
     private static function getConst()
     {
-        return get_defined_constants(true)['user'];
+        $const = get_defined_constants(true);
+
+        return isset($const['user']) ? $const['user'] : [];
     }
 }

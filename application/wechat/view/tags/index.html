@@ -1,0 +1,89 @@
+{extend name='admin@public/content'}
+
+{block name="button"}
+
+<!--{if auth("$classuri/add")}-->
+<button data-modal="{:url('add')}" data-title="添加标签" class='layui-btn layui-btn-sm layui-btn-primary'> 添加标签</button>
+<!--{/if}-->
+
+<!--{if auth("$classuri/del")}-->
+<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'> 删除标签</button>
+<!--{/if}-->
+
+<!--{if auth("$classuri/sync")}-->
+<button data-load="{:url('sync')}" class='layui-btn layui-btn-sm layui-btn-primary'> 远程获取标签</button>
+<!--{/if}-->
+
+{/block}
+
+{block name="content"}
+<!-- 表单搜索 开始 -->
+<form autocomplete="off" class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">标 签</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" value="{$Think.get.name|default=''}" placeholder="请输入标签" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+    </div>
+</form>
+<!-- 表单搜索 结束 -->
+
+<form onsubmit="return false;" data-auto="true" method="post">
+    {if empty($list)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action"/>
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='text-center'>ID</th>
+            <th class='text-left'>标签名称</th>
+            <th class='text-left'>标签类型</th>
+            <th class='text-right'>粉丝数</th>
+            <th class='text-center'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class='text-center'>{$vo.id|default='0'}</td>
+            <td class='text-left'>{$vo.name|default=''}</td>
+            <td class='text-left'>{$vo.id < 100 ? "系统标签" : "自定义标签"}</td>
+            <td class='text-right'>{$vo.count|default=''}</td>
+            <td class='text-center nowrap'>
+
+                {if auth("$classuri/edit")}
+                <span class="text-explode">|</span>
+                <!--{if $vo.id >= 100}-->
+                <a data-modal='{:url("$classuri/edit")}?id={$vo.id}' data-title="编辑标签">编辑</a>
+                <!--{else}-->
+                <a class="color-desc">编辑</a>
+                <!--{/if}-->
+                {/if}
+
+                {if auth("$classuri/del")}
+                <span class="text-explode">|</span>
+                <!--{if $vo.id >= 100}-->
+                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
+                <!--{else}-->
+                <a class="color-desc">删除</a>
+                <!--{/if}-->
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    {/if}
+</form>
+{/block}

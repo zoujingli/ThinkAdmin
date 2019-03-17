@@ -1,7 +1,7 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | Think.Admin
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
@@ -9,11 +9,13 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/Think.Admin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\wechat\controller;
 
+use app\wechat\service\FansService;
+use app\wechat\service\TagsService;
 use controller\BasicAdmin;
 use service\LogService;
 use service\ToolsService;
@@ -27,7 +29,8 @@ use think\Db;
  * @author Anyon <zoujingli@qq.com>
  * @date 2017/03/27 14:43
  */
-class Fans extends BasicAdmin {
+class Fans extends BasicAdmin
+{
 
     /**
      * 定义当前默认数据表
@@ -38,32 +41,39 @@ class Fans extends BasicAdmin {
     /**
      * 显示粉丝列表
      * @return array|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\Exception
      */
-    public function index() {
+    public function index()
+    {
         $this->title = '微信粉丝管理';
-        $db = Db::name($this->table)->where('is_back', '0')->order('subscribe_time desc');
         $get = $this->request->get();
-        !empty($get['sex']) && $db->where('sex', $get['sex']);
+        $db = Db::name($this->table)->where(['is_black' => '0']);
+        (isset($get['sex']) && $get['sex'] !== '') && $db->where('sex', $get['sex']);
         foreach (['nickname', 'country', 'province', 'city'] as $key) {
-            if (isset($get[$key]) && $get[$key] !== '') {
-                $db->where($key, 'like', "%{$get[$key]}%");
-            }
+            (isset($get[$key]) && $get[$key] !== '') && $db->whereLike($key, "%{$get[$key]}%");
         }
         if (isset($get['tag']) && $get['tag'] !== '') {
             $db->where("concat(',',tagid_list,',') like :tag", ['tag' => "%,{$get['tag']},%"]);
         }
-        return parent::_list($db);
+        if (isset($get['create_at']) && $get['create_at'] !== '') {
+            list($start, $end) = explode(' - ', $get['create_at']);
+            $db->whereBetween('subscribe_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
+        }
+        return parent::_list($db->order('subscribe_time desc'));
     }
 
     /**
      * 列表数据处理
-     * @param type $list
+     * @param array $list
      */
-    protected function _data_filter(&$list) {
+    protected function _data_filter(&$list)
+    {
         $tags = Db::name('WechatFansTags')->column('id,name');
         foreach ($list as &$vo) {
-            $vo['nickname'] = ToolsService::emojiDecode($vo['nickname']);
-            $vo['tags_list'] = [];
+            list($vo['tags_list'], $vo['nickname']) = [[], ToolsService::emojiDecode($vo['nickname'])];
             foreach (explode(',', $vo['tagid_list']) as $tag) {
                 if ($tag !== '' && isset($tags[$tag])) {
                     $vo['tags_list'][$tag] = $tags[$tag];
@@ -76,107 +86,88 @@ class Fans extends BasicAdmin {
     }
 
     /**
-     * 黑名单列表
-     */
-    public function back() {
-        $this->title = '微信粉丝黑名单管理';
-        $db = Db::name($this->table)->where('is_back', '1')->order('subscribe_time desc');
-        $get = $this->request->get();
-        !empty($get['sex']) && $db->where('sex', $get['sex']);
-        foreach (['nickname', 'country', 'province', 'city'] as $key) {
-            if (isset($get[$key]) && $get[$key] !== '') {
-                $db->where($key, 'like', "%{$get[$key]}%");
-            }
-        }
-        if (isset($get['tag']) && $get['tag'] !== '') {
-            $db->where("concat(',',tagid_list,',') like :tag", ['tag' => "%,{$get['tag']},%"]);
-        }
-        return parent::_list($db);
-    }
-
-    /**
      * 设置黑名单
      */
-    public function backadd() {
-        $wechat = & load_wechat('User');
-        $openids = $this->_getActionOpenids();
-        if (false !== $wechat->addBacklist($openids)) {
-            Db::name($this->table)->where('openid', 'in', $openids)->setField('is_back', '1');
-            $this->success("已成功将 " . count($openids) . " 名粉丝移到黑名单!", '');
+    public function backadd()
+    {
+        try {
+            $openids = $this->_getActionOpenids();
+            WechatService::WeChatUser()->batchBlackList($openids);
+            Db::name($this->table)->whereIn('openid', $openids)->setField('is_black', '1');
+        } catch (\Exception $e) {
+            $this->error("设置黑名单失败，请稍候再试！");
         }
-        $this->error("设备黑名单失败，请稍候再试！{$wechat->errMsg}[{$wechat->errCode}]");
+        $this->success('设置黑名单成功！', '');
     }
 
     /**
      * 标签选择
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    public function tagset() {
+    public function tagset()
+    {
         $tags = $this->request->post('tags', '');
         $fans_id = $this->request->post('fans_id', '');
-        $fans = Db::name('WechatFans')->where('id', $fans_id)->find();
+        $fans = Db::name('WechatFans')->where(['id' => $fans_id])->find();
         empty($fans) && $this->error('需要操作的数据不存在!');
-        $wechat = & load_wechat('User');
-        foreach (explode(',', $fans['tagid_list']) as $tagid) {
-            is_numeric($tagid) && $wechat->batchDeleteUserTag($tagid, [$fans['openid']]);
+        try {
+            $wechat = WechatService::WeChatTags();
+            foreach (explode(',', $fans['tagid_list']) as $tagid) {
+                is_numeric($tagid) && $wechat->batchUntagging([$fans['openid']], $tagid);
+            }
+            foreach (explode(',', $tags) as $tagid) {
+                is_numeric($tagid) && $wechat->batchTagging([$fans['openid']], $tagid);
+            }
+            Db::name('WechatFans')->where(['id' => $fans_id])->setField('tagid_list', $tags);
+        } catch (\Exception $e) {
+            $this->error('粉丝标签设置失败, 请稍候再试!');
         }
-        foreach (explode(',', $tags) as $tagid) {
-            is_numeric($tagid) && $wechat->batchAddUserTag($tagid, [$fans['openid']]);
-        }
-        if (false !== Db::name('WechatFans')->where('id', $fans_id)->setField('tagid_list', $tags)) {
-            $this->success('粉丝标签成功!', '');
-        }
-        $this->error('粉丝标签设置失败, 请稍候再试!');
-    }
-
-    /**
-     * 取消黑名
-     */
-    public function backdel() {
-        $wechat = & load_wechat('User');
-        $openids = $this->_getActionOpenids();
-        if (false !== $wechat->delBacklist($openids)) {
-            Db::name($this->table)->where('openid', 'in', $openids)->setField('is_back', '0');
-            $this->success("已成功将 " . count($openids) . " 名粉丝从黑名单中移除!", '');
-        }
-        $this->error("设备黑名单失败，请稍候再试！{$wechat->errMsg}[{$wechat->errCode}]");
+        $this->success('粉丝标签成功!', '');
     }
 
     /**
      * 给粉丝增加标签
      */
-    public function tagadd() {
+    public function tagadd()
+    {
         $tagid = $this->request->post('tag_id', 0);
         empty($tagid) && $this->error('没有可能操作的标签ID');
-        $openids = $this->_getActionOpenids();
-        $wechat = & load_wechat('User');
-        if (false !== $wechat->batchAddUserTag($tagid, $openids)) {
-            $this->success('设置粉丝标签成功!', '');
+        try {
+            $openids = $this->_getActionOpenids();
+            WechatService::WeChatTags()->batchTagging($openids, $tagid);
+        } catch (\Exception $e) {
+            $this->error("设置粉丝标签失败, 请稍候再试! " . $e->getMessage());
         }
-        $this->error("设置粉丝标签失败, 请稍候再试! {$wechat->errMsg}[{$wechat->errCode}]");
+        $this->success('设置粉丝标签成功!', '');
     }
 
     /**
      * 移除粉丝标签
      */
-    public function tagdel() {
+    public function tagdel()
+    {
         $tagid = $this->request->post('tag_id', 0);
         empty($tagid) && $this->error('没有可能操作的标签ID');
-        $openids = $this->_getActionOpenids();
-        $wechat = & load_wechat('User');
-        if (false !== $wechat->batchDeleteUserTag($tagid, $openids)) {
-            $this->success('删除粉丝标签成功!', '');
+        try {
+            $openids = $this->_getActionOpenids();
+            WechatService::WeChatTags()->batchUntagging($openids, $tagid);
+        } catch (\Exception $e) {
+            $this->error("删除粉丝标签失败, 请稍候再试! ");
         }
-        $this->error("删除粉丝标签失败, 请稍候再试! {$wechat->errMsg}[{$wechat->errCode}]");
+        $this->success('删除粉丝标签成功!', '');
     }
 
     /**
      * 获取当前操作用户openid数组
      * @return array
      */
-    private function _getActionOpenids() {
+    private function _getActionOpenids()
+    {
         $ids = $this->request->post('id', '');
         empty($ids) && $this->error('没有需要操作的数据!');
-        $openids = Db::name($this->table)->where('id', 'in', explode(',', $ids))->column('openid');
+        $openids = Db::name($this->table)->whereIn('id', explode(',', $ids))->column('openid');
         empty($openids) && $this->error('没有需要操作的数据!');
         return $openids;
     }
@@ -184,14 +175,16 @@ class Fans extends BasicAdmin {
     /**
      * 同步粉丝列表
      */
-    public function sync() {
-        Db::name($this->table)->where('1=1')->delete();
-        if (WechatService::syncAllFans('')) {
-            WechatService::syncBlackFans('');
+    public function sync()
+    {
+        try {
+            Db::name($this->table)->where('1=1')->delete();
+            [FansService::sync(), TagsService::sync()];
             LogService::write('微信管理', '同步全部微信粉丝成功');
-            $this->success('同步获取所有粉丝成功！', '');
+        } catch (\Exception $e) {
+            $this->error('同步粉丝记录失败，请稍候再试！' . $e->getMessage());
         }
-        $this->error('同步获取粉丝失败，请稍候再试！');
+        $this->success('同步获取所有粉丝成功！', '');
     }
 
 }

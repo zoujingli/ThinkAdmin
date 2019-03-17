@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+/* +----------------------------------------------------------------------
+// | ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://think.ctolog.com
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// +--------------------------------------------------------------------*/
+
+html,body{height:100%;width:100%;overflow:hidden!important;min-width:0}
+
+.login-container{height:100%;background-color:#2494F2;overflow:hidden;font-size:9pt}
+.login-container ul{display:block;margin:0;padding:0;list-style:none}
+.login-container ul li{display:block;margin:0;padding:0;list-style:none}
+.login-container .clouds-container{position:absolute;overflow:hidden;height:100%;width:100%}
+.login-container .clouds{background:url("../img/login/cloud_two.png") repeat-x left 15%;position:absolute;left:0;top:0;height:100%;width:300%;-webkit-animation:cloudmove 200s linear infinite;-moz-animation:cloudmove 200s linear infinite;-o-animation:cloudmove 200s linear infinite;animation:cloudmove 200s linear infinite;-webkit-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
+.login-container .clouds-fast{background:url("../img/login/cloud.png") no-repeat 0 40%;-webkit-animation:cloudmove 30s linear infinite;-moz-animation:cloudmove 30s linear infinite;-o-animation:cloudmove 30s linear infinite;animation:cloudmove 30s linear infinite}
+.login-container .clouds-footer{background:url("../img/login/cloud_one.png") no-repeat left 100%;animation:none}
+
+@keyframes cloudmove{0%{left:-50%}100%{left:150%}}
+@-moz-keyframes cloudmove{0%{left:-50%}100%{left:150%}}
+@-webkit-keyframes cloudmove{0%{left:-50%}100%{left:150%}}
+
+.login-container .header{height:47px;position:absolute;top:0;z-index:100;width:100%}
+.login-container .header a,
+.login-container .header a:hover,
+.login-container .header a:focus{text-decoration:none;color:#eee;outline:none}
+.login-container .header a:hover{color:#fff}
+.login-container .header span.title{line-height:47px;text-indent:44px;float:left;color:#fff;font-size:16px}
+.login-container .header ul{float:right;padding-right:30px}
+.login-container .header ul li{float:left;margin-left:20px;line-height:47px;}
+.login-container .container{background:url(../img/login/bg.png) no-repeat center center;width:100%;height:585px;overflow:hidden;position:relative;top:50%;margin-top:-300px}
+
+/* 表单 */
+.login-container .content{width:692px;height:336px;background:url(../img/login/bg_form.png) no-repeat;margin:80px auto auto auto;position:relative;display:block}
+.login-container .content ul{margin-left:285px;margin-right:60px}
+.login-container .content ul li{margin-bottom:25px;position:relative}
+.login-container .content ul li input{position:relative;padding-left:40px;z-index:1;width:100%;height:38px;line-height:38px;border:1px solid #e6e6e6;background-color:#fff;border-radius:2px}
+.login-container .content ul li i{position:absolute;background:url(../img/icon.png) #fff no-repeat;background-size:20px;width:34px;height:38px;z-index:2;border:1px solid #e6e6e6;border-right:none;border-radius:2px}
+.login-container .content ul li.username i{background-position:8px 8px}
+.login-container .content ul li.password i{background-position:8px -20px}
+.login-container .content a{color:#666;position:absolute;display:block;}
+.login-container .content a:hover{color:#333}
+.login-container .content a.forget{right:0}
+
+/* 头像 */
+.login-container .people{width:165px;height:96px;position:relative;top:8px;left:-70px}
+.login-container .people .tou{background:url("../img/login/hand_tou.png") no-repeat;width:97px;height:92px;position:absolute;top:-87px;left:140px}
+.login-container .people .left_hand{background:url("../img/login/hand_left.png") no-repeat;width:32px;height:37px;position:absolute;top:-38px;left:150px}
+.login-container .people .right_hand{background:url("../img/login/hand_right.png") no-repeat;width:32px;height:37px;position:absolute;top:-38px;right:-64px}
+.login-container .people .initial_left_hand{background:url("../img/login/hand.png") no-repeat;width:30px;height:20px;position:absolute;top:-12px;left:100px}
+.login-container .people .initial_right_hand{background:url("../img/login/hand.png") no-repeat;width:30px;height:20px;position:absolute;top:-12px;right:-112px}
+
+/* 底部版权 */
+.login-container .footer{height:50px;line-height:50px;text-align:center;position:absolute;bottom:0;width:100%;color:#fff;;letter-spacing:0.5px}
+.login-container .footer span{display:inline-block;height:10px;overflow:hidden;line-height:10px;padding-left:1px;padding-right:1px}
+.login-container .footer a{color:#fff}
+.login-container .footer a:hover{color:#fff}

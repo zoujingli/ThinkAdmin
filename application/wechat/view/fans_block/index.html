@@ -1,0 +1,84 @@
+{extend name='admin@public/content'}
+
+{block name="button"}
+<!--{if auth('wechat/block/backdel')}-->
+<button data-update="" data-action="{:url('backdel')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量移出粉丝</button>
+<!--{/if}-->
+<!--{if auth('wechat/fans/sync')}-->
+<button data-load="{:url('wechat/fans/sync')}" class='layui-btn layui-btn-sm layui-btn-primary'>远程获取粉丝</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<!-- 表单搜索 开始 -->
+{include file='wechat@fans/search_inc'}
+<!-- 表单搜索 结束 -->
+
+<form onsubmit="return false;" data-auto="true" method="post">
+    <!--{if empty($list)}-->
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    <!--{else}-->
+    <input type="hidden" value="resort" name="action">
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='text-left'>用户昵称</th>
+            <th class='text-left'>性别</th>
+            <th class='text-left'>用户标签</th>
+            <th class='text-left'>所在区域</th>
+            <th class='text-left'>关注时间</th>
+            <th class='text-center'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class='text-left nowrap'>
+                <img data-tips-image class="headimg" src="{$vo.headimgurl}">
+                {$vo.nickname|default='<span class="color-desc">未设置微信昵称</span>'}
+            </td>
+            <td class='text-left'>
+                {$vo.sex==1?'男':($vo.sex==2?'女':'未知')}
+            </td>
+            <td class="nowrap">
+                {if auth("$classuri/tagset")}
+                <span><a data-add-tag='{$vo.id}' data-used-id='{:join(",",array_keys($vo.tags_list))}' id="tag-fans-{$vo.id}" class='label label-default add-tag'>+</a></span>
+                {/if}
+                {if empty($vo.tags_list)}
+                <span class="color-desc">尚未设置标签</span>
+                {else}
+                {foreach $vo.tags_list as $k=>$tag}<span class="layui-badge layui-bg-gray margin-right-5">{$tag}</span>{/foreach}
+                {/if}
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.country|default='<span class="color-desc">未设置区域信息</span>'|raw}{$vo.province}{$vo.city}
+            </td>
+            <td class='text-left nowrap'>{$vo.subscribe_at|format_datetime}</td>
+            <td class="text-center nowrap">
+                {if auth("$classuri/backdel")}<a data-update="{$vo.id}" data-action="{:url('backdel')}">移出黑名单</a>{/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    <!--{/if}-->
+</form>
+{/block}
+
+{block name="script"}
+<!--表单初始化-->
+<script>
+    window.laydate.render({range: true, elem: '#create_at'});
+    window.form.render();
+</script>
+<!--引入标签设置-->
+{if auth("$classuri/tagset")}{include file='wechat@fans/tags_inc'}{/if}
+{/block}
+

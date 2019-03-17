@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -11,10 +11,10 @@
 
 namespace think\session\driver;
 
-use SessionHandler;
+use SessionHandlerInterface;
 use think\Exception;
 
-class Memcached extends SessionHandler
+class Memcached implements SessionHandlerInterface
 {
     protected $handler = null;
     protected $config  = [
@@ -35,8 +35,8 @@ class Memcached extends SessionHandler
     /**
      * 打开Session
      * @access public
-     * @param string    $savePath
-     * @param mixed     $sessName
+     * @param  string    $savePath
+     * @param  mixed     $sessName
      */
     public function open($savePath, $sessName)
     {
@@ -44,27 +44,35 @@ class Memcached extends SessionHandler
         if (!extension_loaded('memcached')) {
             throw new Exception('not support:memcached');
         }
+
         $this->handler = new \Memcached;
+
         // 设置连接超时时间（单位：毫秒）
         if ($this->config['timeout'] > 0) {
             $this->handler->setOption(\Memcached::OPT_CONNECT_TIMEOUT, $this->config['timeout']);
         }
+
         // 支持集群
         $hosts = explode(',', $this->config['host']);
         $ports = explode(',', $this->config['port']);
+
         if (empty($ports[0])) {
             $ports[0] = 11211;
         }
+
         // 建立连接
         $servers = [];
         foreach ((array) $hosts as $i => $host) {
             $servers[] = [$host, (isset($ports[$i]) ? $ports[$i] : $ports[0]), 1];
         }
+
         $this->handler->addServers($servers);
+
         if ('' != $this->config['username']) {
             $this->handler->setOption(\Memcached::OPT_BINARY_PROTOCOL, true);
             $this->handler->setSaslAuthData($this->config['username'], $this->config['password']);
         }
+
         return true;
     }
 
@@ -77,13 +85,14 @@ class Memcached extends SessionHandler
         $this->gc(ini_get('session.gc_maxlifetime'));
         $this->handler->quit();
         $this->handler = null;
+
         return true;
     }
 
     /**
      * 读取Session
      * @access public
-     * @param string $sessID
+     * @param  string $sessID
      */
     public function read($sessID)
     {
@@ -93,8 +102,8 @@ class Memcached extends SessionHandler
     /**
      * 写入Session
      * @access public
-     * @param string $sessID
-     * @param String $sessData
+     * @param  string $sessID
+     * @param  string $sessData
      * @return bool
      */
     public function write($sessID, $sessData)
@@ -105,7 +114,7 @@ class Memcached extends SessionHandler
     /**
      * 删除Session
      * @access public
-     * @param string $sessID
+     * @param  string $sessID
      * @return bool
      */
     public function destroy($sessID)
@@ -116,7 +125,7 @@ class Memcached extends SessionHandler
     /**
      * Session 垃圾回收
      * @access public
-     * @param string $sessMaxLifeTime
+     * @param  string $sessMaxLifeTime
      * @return true
      */
     public function gc($sessMaxLifeTime)

@@ -1,0 +1,8 @@
+/.git
+/.idea
+/.DS_Store
+/vendor
+/Cache
+/Test/cert
+/nbproject
+/composer.lock

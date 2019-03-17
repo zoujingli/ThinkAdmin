@@ -30,6 +30,15 @@ Common::println($result['body']);
 $content = $ossClient->getObject($bucket, "b.file");
 Common::println("b.file is fetched, the content is: " . $content);
 
+// 给object添加symlink
+$content = $ossClient->putSymlink($bucket, "test-symlink", "b.file");
+Common::println("test-symlink is created");
+Common::println($result['x-oss-request-id']);
+Common::println($result['etag']);
+
+// 获取symlink
+$content = $ossClient->getSymlink($bucket, "test-symlink");
+Common::println("test-symlink refer to : " . $content[OssClient::OSS_SYMLINK_TARGET]);
 
 // 下载object到本地文件
 $options = array(
@@ -81,7 +90,8 @@ getObjectMeta($ossClient, $bucket);
 deleteObject($ossClient, $bucket);
 deleteObjects($ossClient, $bucket);
 doesObjectExist($ossClient, $bucket);
-
+getSymlink($ossClient, $bucket);
+putSymlink($ossClient, $bucket);
 /**
  * 创建虚拟目录
  *
@@ -263,6 +273,62 @@ function getObject($ossClient, $bucket)
         print(__FUNCTION__ . ": FileContent checked OK" . "\n");
     } else {
         print(__FUNCTION__ . ": FileContent checked FAILED" . "\n");
+    }
+}
+
+/**
+ * put symlink
+ *
+ * @param OssClient $ossClient OssClient实例
+ * @param string $bucket 存储空间名称
+ * @return null
+ */
+function putSymlink($ossClient, $bucket)
+{
+    $symlink = "test-samples-symlink";
+    $object = "test-samples-object";
+    try {
+        $ossClient->putObject($bucket, $object, 'test-content');
+        $ossClient->putSymlink($bucket, $symlink, $object);
+        $content = $ossClient->getObject($bucket, $symlink);
+    } catch (OssException $e) {
+        printf(__FUNCTION__ . ": FAILED\n");
+        printf($e->getMessage() . "\n");
+        return;
+    }
+    print(__FUNCTION__ . ": OK" . "\n");
+    if ($content == 'test-content') {
+        print(__FUNCTION__ . ": putSymlink checked OK" . "\n");
+    } else {
+        print(__FUNCTION__ . ": putSymlink checked FAILED" . "\n");
+    }
+}
+
+/**
+ * 获取symlink
+ *
+ * @param OssClient $ossClient OssClient实例
+ * @param string $bucket 存储空间名称
+ * @return null
+ */
+function getSymlink($ossClient, $bucket)
+{
+    $symlink = "test-samples-symlink";
+    $object = "test-samples-object";
+    try {
+        $ossClient->putObject($bucket, $object, 'test-content');
+        $ossClient->putSymlink($bucket, $symlink, $object);
+        $content = $ossClient->getSymlink($bucket, $symlink);
+    } catch (OssException $e) {
+        printf(__FUNCTION__ . ": FAILED\n");
+        printf($e->getMessage() . "\n");
+        return;
+    }
+    print(__FUNCTION__ . ": OK" . "\n");
+    if ($content[OssClient::OSS_SYMLINK_TARGET]) {
+        print(__FUNCTION__ . ": getSymlink checked OK" . "\n");
+    } else {
+        print(__FUNCTION__ . ": getSymlink checked FAILED" . "\n");
     }
 }
 

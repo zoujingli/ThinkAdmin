@@ -1,0 +1,361 @@
+{extend name='admin@public/content'}
+
+{block name='content'}
+<div id="NewsEditor">
+    <!--左侧图文列表 开始-->
+    <div class="panel panel-default news-left">
+        <div class="panel-heading">图文列表</div>
+        <div class="panel-body news-box">
+            <div ng-if="list.length > 0" ng-repeat="x in list">
+                <div class="news-item transition" ng-click="setItem($index,$event)" style="{{x.style}}" ng-class="x.active?'active':''">
+                    <a ng-click="delItem($index, $event)" class="upload-multiple-close layui-icon hide">&#x1006;</a>
+                    <a ng-click="dnItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe61a;</a>
+                    <a ng-click="upItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe619;</a>
+                    <span class="news-title" ng-bind="x.title"></span>
+                </div>
+                <hr/>
+            </div>
+            <div ng-if="list.length<1" class="news-item transition active news-image">
+                <a ng-click="delItem($index, $event)" class="upload-multiple-close layui-icon hide">&#x1006;</a>
+                <a ng-click="dnItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe61a;</a>
+                <a ng-click="upItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe619;</a>
+                <span class="news-title"></span>
+                <hr/>
+            </div>
+            <a class='article-add transition' ng-click="addItem()" data-text-tip="添加图文">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
+    </div>
+    <!--左侧图文列表 结束-->
+    <!--右侧编辑区 开始-->
+    <div class="panel panel-default news-right">
+        <div class="panel-heading">图文内容编辑</div>
+        <div class="panel-body">
+            <form class="form-horizontal" role="form" name="news" onsubmit="return false;">
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">文章标题</span>
+                            <input maxlength="64" ng-model="item.title" required title="文章的标题不能为空哦" placeholder="请在这里输入标题" name='title' class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">文章作者</span>
+                            <input maxlength="8" ng-model="item.author" required title="文章的作者不能为空哦" placeholder="请输入作者" name='author' class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="form-control border-radius-none" style="height:auto">
+                            <label class="color-desc font-s12 margin-bottom-5">图文封面大图片设置</label>
+                            <div class="row nowrap">
+                                <div class="col-xs-3" style="width:160px">
+                                    <div class="upload-image-box transition">
+                                        <input ng-model="item.local_url" value="__STATIC__/plugs/uploader/theme/image.png" type="hidden" name="local_url">
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 padding-top-10">
+                                    <button type="button" data-title="上传图片" data-file="one" data-type="jpg,png,jpeg" data-field="local_url" class="layui-btn layui-btn-sm layui-btn-primary">上传图片</button>
+                                    <button type="button" data-title="选择图片" data-iframe='{:url("image")}?field=local_url' class="layui-btn layui-btn-sm layui-btn-primary">选择图片</button>
+                                    <br>
+                                    <label class="think-checkbox notselect margin-top-15">
+                                        <input ng-model="item.show_cover_pic" ng-checked="!!item.show_cover_pic" data-auto-none type="checkbox" value="1" name="show_cover_pic"> 在正文中显示此图片
+                                    </label>
+                                </div>
+                            </div>
+                            <p class="help-block margin-top-5 color-desc">封面大图片建议尺寸：900像素 * 500像素</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12"><textarea ng-model="item.content" name='content'></textarea></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="color-desc">摘要选填，如果不填写会默认抓取正文前54个字</label>
+                        <textarea ng-model="item.digest" name="digest" class="layui-textarea" style="height:80px;line-height:18px;resize:none"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="color-desc">原文链接<b>选填</b>，填写之后在图文左下方会出现此链接</label>
+                        <input ng-model="item.content_source_url" maxlength="200" name='content_source_url' class="layui-input">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-4 col-md-9">
+                            <button ng-click="submit()" type="button" class="layui-btn">保存图文</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--右侧编辑区 结束-->
+</div>
+{/block}
+
+
+{block name='script'}
+<script>
+    require(['angular', 'ckeditor'], function () {
+
+        var $form = $('form[name="news"]');
+        var editor = window.createEditor('[name="content"]');
+
+        var app = angular.module("NewsEditor", []).run(callback);
+        angular.bootstrap(document.getElementById(app.name), [app.name]);
+
+        function callback($rootScope) {
+            $rootScope.list = [];
+            $rootScope.item = {};
+
+            $.form.load('{:request()->url()}', {output: 'json'}, 'get', function (ret) {
+                return $rootScope.$apply(function () {
+                    apply((ret.data || {articles: []}).articles || []);
+                }), false;
+            });
+
+            function apply(data) {
+                if (data.length < 1) {
+                    data.push({
+                        title: '新建图文',
+                        local_url: '__STATIC__/plugs/uploader/theme/image.png',
+                        style: "background-image:url('__STATIC__/plugs/uploader/theme/image.png?imageView2/1/w/338/h/190/interlace/1')"
+                    });
+                }
+                for (var i in data) {
+                    data[i].active = false;
+                    data[i].style = "background-image:url('" + data[i].local_url + "?imageView2/1/w/338/h/190/interlace/1')";
+                    data[i].show_cover_pic = !!data[i].show_cover_pic;
+                }
+                $rootScope.list = data;
+                $rootScope.item = $rootScope.list[0];
+                $rootScope.setItemValue('active', true);
+                setTimeout(function () {
+                    editor.setData($rootScope.item.content);
+                }, 100);
+                $form.vali();
+            }
+
+            $rootScope.upItem = function (index, $event) {
+                $event.stopPropagation();
+                var tmp = [], cur = $rootScope.list[index];
+                if (index < 1) {
+                    return false;
+                }
+                for (var i in $rootScope.list) {
+                    (parseInt(i) === parseInt(index) - 1) && tmp.push(cur);
+                    (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
+                }
+                apply(tmp);
+            };
+
+            $rootScope.dnItem = function (index, $event) {
+                $event.stopPropagation();
+                var tmp = [], cur = $rootScope.list[index];
+                if (index > $rootScope.list.length - 2) {
+                    return false;
+                }
+                for (var i in $rootScope.list) {
+                    (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
+                    (parseInt(i) === parseInt(index) + 1) && tmp.push(cur);
+                }
+                apply(tmp);
+            };
+
+            $rootScope.delItem = function (index, $event) {
+                $event.stopPropagation();
+                var list = $rootScope.list, temp = [];
+                for (var i in list) {
+                    (parseInt(i) !== parseInt(index)) && temp.push(list[i]);
+                }
+                apply(temp);
+            };
+
+            $rootScope.setItem = function (index, $event) {
+                $event.stopPropagation();
+                $form.vali();
+                if ($form.find('.validate-error').size() > 0) {
+                    return 0;
+                }
+                if (editor.getData().length < 1) {
+                    return $.msg.tips('请输入文章内容');
+                }
+                for (var i in $rootScope.list) {
+                    if (parseInt(i) !== parseInt(index)) {
+                        $rootScope.list[i].active = false;
+                        continue;
+                    }
+                    $rootScope.item.content = editor.getData();
+                    $rootScope.item = $rootScope.list[i];
+                    editor.setData($rootScope.item.content);
+                    $rootScope.setItemValue('active', true);
+                }
+            };
+
+            $rootScope.setItemValue = function (name, value) {
+                $rootScope.item[name] = value;
+                var localUrl = $rootScope.item.local_url;
+                $('[name="local_url"]').parent().css('background-image', 'url(' + localUrl + ')');
+                $rootScope.item.style = "background-image:url('" + localUrl + "?imageView2/1/w/338/h/190/interlace/1')";
+            };
+
+            $rootScope.addItem = function () {
+                if ($rootScope.list.length > 7) {
+                    return $.msg.tips('最多允许增加7篇文章哦！');
+                }
+                $rootScope.list.push({
+                    title: '新建图文',
+                    local_url: '__STATIC__/plugs/uploader/theme/image.png',
+                    style: "background-image:url('__STATIC__/plugs/uploader/theme/image.png?imageView2/1/w/338/h/190/interlace/1')"
+                });
+            };
+
+            $rootScope.submit = function () {
+                $form.vali();
+                if ($form.find('.validate-error').size() > 0) {
+                    return $.msg.tips('表单验证不成功，请输入需要的内容！');
+                }
+                $rootScope.item.content = editor.getData();
+                var data = [];
+                for (var i in $rootScope.list) {
+                    data.push({
+                        id: $rootScope.list[i].id,
+                        title: $rootScope.list[i].title,
+                        author: $rootScope.list[i].author,
+                        digest: $rootScope.list[i].digest,
+                        content: $rootScope.list[i].content,
+                        local_url: $rootScope.list[i].local_url,
+                        show_cover_pic: $rootScope.list[i].show_cover_pic ? 1 : 0,
+                        content_source_url: $rootScope.list[i].content_source_url,
+                    })
+                }
+                $.form.load('{:request()->url()}', {data: data}, "post");
+            };
+            $('body').off('change', '[name="local_url"]').on('change', '[name="local_url"]', function () {
+                var value = this.value;
+                $rootScope.$apply(function () {
+                    $rootScope.setItemValue('local_url', value);
+                });
+            });
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .panel {
+        border-radius: 0
+    }
+
+    .news-left {
+        left: 20px;
+        width: 300px;
+        position: absolute;
+    }
+
+    .news-right {
+        left: 330px;
+        right: 20px;
+        overflow: hidden;
+        position: absolute;
+    }
+
+    .news-left .news-item {
+        width: 280px;
+        height: 150px;
+        cursor: pointer;
+        max-width: 270px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid #ccc;
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .news-left .news-item:hover .upload-multiple-close {
+        display: inline-block !important;
+    }
+
+    .news-left .news-item.active {
+        border: 1px solid #44b549 !important;
+    }
+
+    .news-left .article-add {
+        color: #999;
+        display: block;
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .news-left .article-add:hover {
+        color: #666;
+    }
+
+    .news-left .news-title {
+        bottom: 0;
+        color: #fff;
+        width: 272px;
+        display: block;
+        padding: 0 5px;
+        max-height: 6em;
+        overflow: hidden;
+        margin-left: -1px;
+        position: absolute;
+        text-overflow: ellipsis;
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .news-right .layui-input {
+        border-radius: 0;
+        border: 1px solid #e5e6e7;
+    }
+
+    .news-right .layui-input:hover, .news-right .layui-input:focus {
+        border-color: #e5e6e7 !important;
+    }
+
+    .news-right .input-group-addon {
+        background: #fff;
+        border-radius: 0;
+        border-color: #e5e6e7;
+    }
+
+    .news-right .upload-image-box {
+        width: 130px;
+        height: 90px;
+        background-size: cover;
+        background-position: center center;
+        border: 1px solid rgba(125, 125, 125, 0.1);
+    }
+
+    .news-item .upload-multiple-close {
+        color: #fff;
+        width: 30px;
+        height: 30px;
+        float: right;
+        margin-top: -1px;
+        line-height: 34px;
+        text-align: center;
+        margin-right: -1px;
+        background-color: rgba(0, 0, 0, .5);
+    }
+
+    .news-item .upload-multiple-close:hover {
+        text-decoration: none
+    }
+</style>
+{/block}

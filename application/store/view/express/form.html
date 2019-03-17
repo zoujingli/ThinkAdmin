@@ -1,0 +1,36 @@
+<form autocomplete="off" class="layui-form layui-box" style='padding:25px 30px 20px 0' action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">快递公司名称</label>
+        <div class="layui-input-block">
+            <input autofocus name="express_title" value='{$vo.express_title|default=""}' required="required"
+                   title="请输入快递公司名称" placeholder="请输入快递公司名称" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">快递公司代码</label>
+        <div class="layui-input-block">
+            <input autofocus name="express_code" value='{$vo.express_code|default=""}' required="required"
+                   title="请输入快递公司代码" placeholder="请输入快递公司代码" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">快递公司描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入快递公司描述" title="请输入快递公司描述"
+                      class="layui-textarea" name="express_desc">{$vo.express_desc|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+    <script>window.form.render();</script>
+</form>

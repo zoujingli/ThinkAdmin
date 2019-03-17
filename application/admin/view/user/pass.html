@@ -1,0 +1,45 @@
+<form autocomplete="off" class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户账号</label>
+        <div class="layui-input-block">
+            {if $vo and $vo.username}
+            <input readonly="readonly" disabled="disabled" name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input layui-bg-gray">
+            {else}
+            <input name="username" value='{$vo.username|default=""}' required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input">
+            {/if}
+        </div>
+    </div>
+
+    <!--{if $verify}-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">旧的密码</label>
+        <div class="layui-input-block">
+            <input autofocus name="oldpassword" value='' pattern="^\S{1,}$" required="" title="请输入旧的密码" placeholder="请输入旧的密码" class="layui-input">
+        </div>
+    </div>
+    <!--{/if}-->
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">新的密码</label>
+        <div class="layui-input-block">
+            <input name="password" value='' pattern="^\S{1,}$" required="" title="请输入新的密码" placeholder="请输入新的密码" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">重复密码</label>
+        <div class="layui-input-block">
+            <input name="repassword" value='' pattern="^\S{1,}$" required="" title="请输入重复密码" placeholder="请输入重复密码" class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+</form>
