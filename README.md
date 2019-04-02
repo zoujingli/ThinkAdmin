@@ -14,6 +14,8 @@ ThinkAdmin V4.0 是一个基于 ThinkPHP5.1 开发的后台管理系统，集成
 --
 开发前认真阅读 ThinkPHP 官方文档会对您有帮助哦！
 
+本地开发命令`php think run`
+
 PHP 开发技术交流（ QQ 群 513350915）
 
 [![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
@@ -25,7 +27,7 @@ PHP 开发技术交流（ QQ 群 513350915）
  
  部分代码来自互联网，若有异议可以联系作者进行删除。
  
- * 在线体验地址：https://v4.thinkadmin.top （体验账号和密码都是 admin ）
+ * 在线体验地址：https://demo.thinkadmin.top （账号和密码都是 admin ）
  * Gitee仓库地址：https://gitee.com/zoujingli/Think.Admin
  * GitHub仓库地址：https://github.com/zoujingli/ThinkAdmin
  
