@@ -39,7 +39,7 @@ PHP 开发技术交流（ QQ 群 513350915）
 |---|---|---|---|
 |Layui|2.4.5|UI组件库|https://github.com/sentsin/layui|
 |Ckeditor|4.10.1|富文件编辑器|https://github.com/ckeditor/ckeditor-dev|
-|PluPloader|3.1.2|文件上传工具1|https://github.com/fex-team/webuploader|
+|PluPloader|3.1.2|文件上传工具1|https://www.plupload.com|
 |WebUploader|0.1.5|文件上传工具2|https://github.com/fex-team/webuploader|
 |Font-Awesome|4.7.0|字体图标库|https://github.com/FortAwesome/Font-Awesome|
 |ThinkPHP|5.1.35|PHP基础框架|https://github.com/top-think/framework|
