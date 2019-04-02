@@ -177,17 +177,17 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.22",
-        "version_normalized": "3.4.22.0",
+        "version": "v3.4.23",
+        "version_normalized": "3.4.23.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793"
+            "reference": "926e3b797e6bb66c0e4d7da7eff3a174f7378bcf"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793",
-            "reference": "0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/926e3b797e6bb66c0e4d7da7eff3a174f7378bcf",
+            "reference": "926e3b797e6bb66c0e4d7da7eff3a174f7378bcf",
             "shasum": "",
             "mirrors": [
                 {
@@ -199,7 +199,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2019-01-16T09:39:14+00:00",
+        "time": "2019-02-23T15:06:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -239,17 +239,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.34",
-        "version_normalized": "5.1.34.0",
+        "version": "v5.1.35",
+        "version_normalized": "5.1.35.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "7c8cd1ea2bd4683a6ef46af415334260c6e2cc15"
+            "reference": "c53c0c6132022a87e8ee9c4109939eaf9a8a7adb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/7c8cd1ea2bd4683a6ef46af415334260c6e2cc15",
-            "reference": "7c8cd1ea2bd4683a6ef46af415334260c6e2cc15",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/c53c0c6132022a87e8ee9c4109939eaf9a8a7adb",
+            "reference": "c53c0c6132022a87e8ee9c4109939eaf9a8a7adb",
             "shasum": "",
             "mirrors": [
                 {
@@ -271,7 +271,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2019-01-30T06:38:38+00:00",
+        "time": "2019-03-03T00:44:44+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -443,17 +443,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.9",
-        "version_normalized": "1.2.9.0",
+        "version": "v1.2.10",
+        "version_normalized": "1.2.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "def818b7df403c7a00a5070a722e531161f68835"
+            "reference": "f68a378fc931f434b8e4044c5539bb24ed85038c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/def818b7df403c7a00a5070a722e531161f68835",
-            "reference": "def818b7df403c7a00a5070a722e531161f68835",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/f68a378fc931f434b8e4044c5539bb24ed85038c",
+            "reference": "f68a378fc931f434b8e4044c5539bb24ed85038c",
             "shasum": "",
             "mirrors": [
                 {
@@ -465,10 +465,13 @@
         "require": {
             "ext-curl": "*",
             "ext-json": "*",
+            "ext-libxml": "*",
+            "ext-mbstring": "*",
             "ext-openssl": "*",
+            "ext-simplexml": "*",
             "php": ">=5.4"
         },
-        "time": "2019-01-12T11:40:04+00:00",
+        "time": "2019-03-30T07:30:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

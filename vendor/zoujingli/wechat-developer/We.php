@@ -74,7 +74,7 @@ class We
      * 定义当前版本
      * @var string
      */
-    const VERSION = '1.2.5';
+    const VERSION = '1.2.9';
 
     /**
      * 静态配置
@@ -111,10 +111,10 @@ class We
             $class = 'WeChat\\' . substr($name, 6);
         } elseif (substr($name, 0, 6) === 'WeMini') {
             $class = 'WeMini\\' . substr($name, 6);
-        } elseif (substr($name, 0, 5) === 'WePay') {
-            $class = 'WePay\\' . substr($name, 5);
         } elseif (substr($name, 0, 6) === 'AliPay') {
             $class = 'AliPay\\' . substr($name, 6);
+        } elseif (substr($name, 0, 5) === 'WePay') {
+            $class = 'WePay\\' . substr($name, 5);
         }
         if (!empty($class) && class_exists($class)) {
             $option = array_shift($arguments);

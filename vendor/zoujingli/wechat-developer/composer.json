@@ -23,7 +23,10 @@
     "php": ">=5.4",
     "ext-json": "*",
     "ext-curl": "*",
-    "ext-openssl": "*"
+    "ext-libxml": "*",
+    "ext-openssl": "*",
+    "ext-mbstring": "*",
+    "ext-simplexml": "*"
   },
   "autoload": {
     "classmap": [
