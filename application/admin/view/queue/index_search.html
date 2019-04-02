@@ -1,0 +1,68 @@
+{if session('user.username') eq 'admin'}
+<fieldset class="margin-bottom-10">
+    <legend class="layui-bg-cyan">进程守护</legend>
+    <div class="layui-code border-0 margin-top-0">
+        <p class="color-desc margin-top-10">当前消息队列守护进程运行状态</p>
+        {$message|raw|default='--'}
+        <p class="color-desc margin-top-10">配置定时任务来检查并启动进程（建议每分钟执行）</p>
+        {$cmd|default='--'}
+    </div>
+</fieldset>
+{/if}
+<fieldset>
+    <legend class="layui-bg-cyan">条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">任务名称</label>
+            <div class="layui-input-inline">
+                <input name="title" value="{$Think.get.title|default=''}" placeholder="请输入任务名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">任务指令</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="uri" lay-search>
+                    <option value="">-- 全部 --</option>
+                    {foreach $uris as $uri}
+                    <!--{eq name='Think.get.uri' value='$uri'}-->
+                    <option selected value="{$uri}">{$uri}</option>
+                    <!--{else}-->
+                    <option value="{$uri}">{$uri}</option>
+                    <!--{/eq}-->
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">任务状态</label>
+            <div class="layui-input-inline">
+                <select name="status" class="layui-select">
+                    {foreach [''=>'-- 全部 --','1'=>'待处理','2'=>'处理中','3'=>'处理完成','4'=>'处理失败'] as $k=>$v}
+                    <!--{if $Think.get.status eq $k}-->
+                    <option selected value="{$k}">{$v}</option>
+                    <!--{else}-->
+                    <option value="{$k}">{$v}</option>
+                    <!--{/if}-->
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">跟进时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="status_at" value="{$Think.get.status_at|default=''}" placeholder="请选择跟进时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+</fieldset>
+
+<script>form.render()</script>

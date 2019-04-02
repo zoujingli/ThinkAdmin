@@ -1,11 +1,11 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | framework
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
+// | 官方网站: http://framework.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
@@ -14,79 +14,85 @@
 
 namespace app\wechat\controller;
 
-use controller\BasicAdmin;
-use service\LogService;
-use service\WechatService;
-use think\Exception;
+use app\wechat\service\Wechat;
+use library\Controller;
+use library\File;
 
 /**
- * 微信配置管理
+ * 模板配置
  * Class Config
  * @package app\wechat\controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/03/27 14:43
  */
-class Config extends BasicAdmin
+class Config extends Controller
 {
-
     /**
-     * 定义当前操作表名
-     * @var string
-     */
-    public $table = 'SystemConfig';
-
-    /**
-     * 微信基础参数配置
-     * @return string
+     * 公众号授权绑定
+     * @return mixed
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function index()
+    public function options()
     {
-        $thrNotifyUrl = url('@wechat/api.push', '', true, true);
+        $this->applyCsrfToken();
+        $this->thrNotify = url('@wechat/api.push', '', false, true);
         if ($this->request->isGet()) {
+            $this->title = '公众号授权绑定';
+            if (!($this->geoip = cache('mygeoip'))) {
+                cache('mygeoip', $this->geoip = gethostbyname($this->request->host()), 360);
+            }
             $code = encode(url('@admin', '', true, true) . '#' . $this->request->url());
-            $data = [
-                'title'   => '微信接口配置',
-                'appid'   => $this->request->get('appid', sysconf('wechat_thr_appid')),
-                'appkey'  => $this->request->get('appkey', sysconf('wechat_thr_appkey')),
-                'authurl' => config('wechat.service_url') . "/wechat/api.push/auth/{$code}.html",
-            ];
-            if ($this->request->get('appid', false)) {
-                sysconf('wechat_thr_appid', $data['appid']);
-                sysconf('wechat_thr_appkey', $data['appkey']);
+            $this->authurl = config('wechat.service_url') . "/service/api.push/auth/{$code}";
+            if ($this->request->has('appid', 'get', true) && $this->request->has('appkey', 'get', true)) {
                 sysconf('wechat_type', 'thr');
-                WechatService::config()->setApiNotifyUri($thrNotifyUrl);
+                sysconf('wechat_thr_appid', input('appid'));
+                sysconf('wechat_thr_appkey', input('appkey'));
+                Wechat::wechat()->setApiNotifyUri($this->thrNotify);
             }
             try {
-                $data['wechat'] = WechatService::config()->getConfig();
-            } catch (Exception $e) {
-                $data['wechat'] = [];
+                $this->wechat = Wechat::wechat()->getConfig();
+            } catch (\Exception $e) {
+                $this->wechat = [];
             }
-            return $this->fetch('', $data);
+            return $this->fetch();
         }
-        try {
-            // 接口对接类型
-            sysconf('wechat_type', $this->request->post('wechat_type'));
-            // 直接参数对应
-            sysconf('wechat_token', $this->request->post('wechat_token'));
-            sysconf('wechat_appid', $this->request->post('wechat_appid'));
-            sysconf('wechat_appsecret', $this->request->post('wechat_appsecret'));
-            sysconf('wechat_encodingaeskey', $this->request->post('wechat_encodingaeskey'));
-            // 第三方平台配置
-            sysconf('wechat_thr_appid', $this->request->post('wechat_thr_appid'));
-            sysconf('wechat_thr_appkey', $this->request->post('wechat_thr_appkey'));
-            // 第三方平台时设置远程平台通知接口
-            if ($this->request->post('wechat_type') === 'thr') {
-                if (!WechatService::config()->setApiNotifyUri($thrNotifyUrl)) {
-                    $this->error('远程服务端接口更新失败，请稍候再试！');
+        foreach ($this->request->post() as $k => $v) sysconf($k, $v);
+        if ($this->request->post('wechat_type') === 'thr') {
+            Wechat::wechat()->setApiNotifyUri($this->thrNotify);
+        }
+        $this->success('公众号参数获取成功！', url('@admin') . '#' . url('wechat/config/options'));
+    }
+
+    /**
+     * 公众号支付配置
+     * @return mixed
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function payment()
+    {
+        $this->applyCsrfToken();
+        $this->title = '公众号支付配置';
+        if ($this->request->isGet()) {
+            $file = File::instance('local');
+            $this->wechat_mch_ssl_cer = sysconf('wechat_mch_ssl_cer');
+            $this->wechat_mch_ssl_key = sysconf('wechat_mch_ssl_key');
+            $this->wechat_mch_ssl_p12 = sysconf('wechat_mch_ssl_p12');
+            if (!$file->has($this->wechat_mch_ssl_cer, true)) $this->wechat_mch_ssl_cer = '';
+            if (!$file->has($this->wechat_mch_ssl_key, true)) $this->wechat_mch_ssl_key = '';
+            if (!$file->has($this->wechat_mch_ssl_p12, true)) $this->wechat_mch_ssl_p12 = '';
+            return $this->fetch();
+        }
+        if ($this->request->post('wechat_mch_ssl_type') === 'p12') {
+            if (!($sslp12 = $this->request->post('wechat_mch_ssl_p12'))) {
+                $mchid = $this->request->post('wechat_mch_id');
+                $content = File::instance('local')->get($sslp12, true);
+                if (!openssl_pkcs12_read($content, $certs, $mchid)) {
+                    $this->error('商户MCH_ID与支付P12证书不匹配！');
                 }
             }
-            LogService::write('微信管理', '修改微信接口参数成功');
-        } catch (\Exception $e) {
-            $this->error('微信授权保存成功, 但授权验证失败 ! <br>' . $e->getMessage());
         }
-        $this->success('微信授权数据修改成功！', url('@admin') . "#" . url('@wechat/config/index'));
+        foreach ($this->request->post() as $k => $v) sysconf($k, $v);
+        $this->success('公众号支付配置成功！');
     }
 
 }

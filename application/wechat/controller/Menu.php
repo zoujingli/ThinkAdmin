@@ -1,11 +1,11 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | framework
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
+// | 官方网站: http://framework.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
@@ -14,41 +14,27 @@
 
 namespace app\wechat\controller;
 
-use controller\BasicAdmin;
-use service\LogService;
-use service\ToolsService;
-use service\WechatService;
+use app\admin\service\Log;
+use app\wechat\service\Wechat;
+use library\Controller;
 use think\Db;
 
 /**
  * 微信菜单管理
  * Class Menu
  * @package app\wechat\controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/03/27 14:43
  */
-class Menu extends BasicAdmin
+class Menu extends Controller
 {
-
-    /**
-     * 指定当前页面标题
-     * @var string
-     */
-    public $title = '微信菜单定制';
-
-    /**
-     * 指定默认操作的数据表
-     * @var string
-     */
-    public $table = 'WechatMenu';
-
     /**
      * 微信菜单的类型
      * @var array
      */
     protected $menuType = [
-        'view'               => '跳转URL',
-        'click'              => '点击推事件',
+        'click'              => '匹配规则',
+        'view'               => '跳转网页',
+        'miniprogram'        => '打开小程序',
+        // 'customservice'      => '转多客服',
         'scancode_push'      => '扫码推事件',
         'scancode_waitmsg'   => '扫码推事件且弹出“消息接收中”提示框',
         'pic_sysphoto'       => '弹出系统拍照发图',
@@ -59,24 +45,23 @@ class Menu extends BasicAdmin
 
     /**
      * 显示菜单列表
-     * @return array|string
+     * @return array
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
-     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function index()
     {
-        return parent::_list(Db::name($this->table), false, true);
-    }
-
-    /**
-     * 列表数据处理
-     * @param array $data
-     */
-    protected function _index_data_filter(&$data)
-    {
-        $data = ToolsService::arr2tree($data, 'index', 'pindex');
+        if ($this->request->get('output') === 'json') {
+            $where = [['keys', 'notin', ['subscribe', 'default']], ['status', 'eq', '1']];
+            $keys = Db::name('WechatKeys')->where($where)->order('sort asc,id desc')->select();
+            $this->success('获取数据成功!', ['menudata' => sysdata('menudata'), 'keysdata' => $keys]);
+        }
+        $this->title = '微信菜单定制';
+        $this->menuTypes = $this->menuType;
+        return $this->fetch();
     }
 
     /**
@@ -85,33 +70,72 @@ class Menu extends BasicAdmin
     public function edit()
     {
         if ($this->request->isPost()) {
-            $post = $this->request->post();
-            !isset($post['data']) && $this->error('访问出错，请稍候再试！');
-            // 删除菜单
-            if (empty($post['data'])) {
+            $data = $this->request->post('data');
+            if (empty($data)) { // 删除菜单
                 try {
-                    Db::name($this->table)->where('1=1')->delete();
-                    WechatService::WeChatMenu()->delete();
+                    Wechat::WeChatMenu()->delete();
                 } catch (\Exception $e) {
                     $this->error('删除取消微信菜单失败，请稍候再试！' . $e->getMessage());
                 }
                 $this->success('删除并取消微信菜单成功！', '');
             }
-            // 数据过滤处理
             try {
-                foreach ($post['data'] as &$vo) {
-                    isset($vo['content']) && ($vo['content'] = str_replace('"', "'", $vo['content']));
-                }
-                Db::transaction(function () use ($post) {
-                    Db::name($this->table)->where('1=1')->delete();
-                    Db::name($this->table)->insertAll($post['data']);
-                });
-                $this->_push();
+                sysdata('menudata', $this->buildMenu($menudata = json_decode($data, true)));
+                Wechat::WeChatMenu()->create(['button' => sysdata('menudata')]);
             } catch (\Exception $e) {
-                $this->error('微信菜单发布失败，请稍候再试！' . $e->getMessage());
+                $this->error("微信菜单发布失败，请稍候再试！<br> {$e->getMessage()}");
             }
-            LogService::write('微信管理', '发布微信菜单成功');
+            _syslog('微信管理', '发布微信菜单成功');
             $this->success('保存发布菜单成功！', '');
+        }
+    }
+
+    /**
+     * @param array $list
+     * @return mixed
+     */
+    private function buildMenu(array $list)
+    {
+        foreach ($list as &$vo) {
+            unset($vo['active'], $vo['show']);
+            if (empty($vo['sub_button'])) {
+                $vo = $this->build_menu_item($vo);
+            } else {
+                $item = ['name' => $vo['name'], 'sub_button' => []];
+                foreach ($vo['sub_button'] as &$sub) {
+                    unset($sub['active'], $sub['show']);
+                    array_push($item['sub_button'], $this->build_menu_item($sub));
+                }
+                $vo = $item;
+            }
+        }
+        return $list;
+    }
+
+    /**
+     * 单个微信菜单数据过滤处理
+     * @param array $item
+     * @return array
+     */
+    private function build_menu_item(array $item)
+    {
+        switch (strtolower($item['type'])) {
+            case 'pic_weixin':
+            case 'pic_sysphoto':
+            case 'scancode_push':
+            case 'location_select':
+            case 'scancode_waitmsg':
+            case 'pic_photo_or_album':
+                return ['name' => $item['name'], 'type' => $item['type'], 'key' => isset($item['key']) ? $item['key'] : $item['type']];
+            case 'click':
+                return ['name' => $item['name'], 'type' => $item['type'], 'key' => $item['key']];
+            case 'view':
+                return ['name' => $item['name'], 'type' => $item['type'], 'url' => $item['url']];
+            case 'miniprogram':
+                return [
+                    'name'  => $item['name'], 'type' => $item['type'], 'url' => $item['url'],
+                    'appid' => $item['appid'], 'pagepath' => $item['pagepath'],
+                ];
         }
     }
 
@@ -121,60 +145,11 @@ class Menu extends BasicAdmin
     public function cancel()
     {
         try {
-            WechatService::WeChatMenu()->delete();
+            Wechat::WeChatMenu()->delete();
         } catch (\Exception $e) {
-            $this->error('菜单取消失败');
+            $this->error("菜单取消失败，请稍候再试！<br> {$e->getMessage()}");
         }
         $this->success('菜单取消成功，重新关注可立即生效！', '');
-    }
-
-    /**
-     * 菜单推送
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    private function _push()
-    {
-        list($map, $field) = [['status' => '1'], 'id,index,pindex,name,type,content'];
-        $result = (array)Db::name($this->table)->field($field)->where($map)->order('sort ASC,id ASC')->select();
-        foreach ($result as &$row) {
-            empty($row['content']) && $row['content'] = uniqid();
-            if ($row['type'] === 'miniprogram') {
-                list($row['appid'], $row['url'], $row['pagepath']) = explode(',', "{$row['content']},,");
-            } elseif ($row['type'] === 'view') {
-                if (preg_match('#^(\w+:)?//#', $row['content'])) {
-                    $row['url'] = $row['content'];
-                } else {
-                    $row['url'] = url($row['content'], '', true, true);
-                }
-            } elseif ($row['type'] === 'event') {
-                if (isset($this->menuType[$row['content']])) {
-                    list($row['type'], $row['key']) = [$row['content'], "wechat_menu#id#{$row['id']}"];
-                }
-            } elseif ($row['type'] === 'media_id') {
-                $row['media_id'] = $row['content'];
-            } else {
-                $row['key'] = "wechat_menu#id#{$row['id']}";
-                !in_array($row['type'], $this->menuType) && $row['type'] = 'click';
-            }
-            unset($row['content']);
-        }
-        $menus = ToolsService::arr2tree($result, 'index', 'pindex', 'sub_button');
-        //去除无效的字段
-        foreach ($menus as &$menu) {
-            unset($menu['index'], $menu['pindex'], $menu['id']);
-            if (empty($menu['sub_button'])) {
-                continue;
-            }
-            foreach ($menu['sub_button'] as &$submenu) {
-                unset($submenu['index'], $submenu['pindex'], $submenu['id']);
-            }
-            unset($menu['type']);
-        }
-        WechatService::WeChatMenu()->create(['button' => $menus]);
     }
 
 }

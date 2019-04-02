@@ -1,117 +1,71 @@
-{extend name='admin@public/content'}
+{extend name='admin@main'}
 
 {block name="button"}
-
-<!--{if auth("$classuri/add")}-->
-<button data-modal='{:url("$classuri/add")}' data-title="添加快递" class='layui-btn layui-btn-sm layui-btn-primary'>添加快递</button>
-<!--{/if}-->
-
-<!--{if auth("$classuri/del")}-->
-<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>删除快递</button>
-<!--{/if}-->
-
+{if auth("store/express/add")}
+<button data-modal='{:url("add")}' data-title="添加快递" class='layui-btn layui-btn-sm layui-btn-primary'>添加快递</button>
+{/if}
+{if auth("store/express/del")}
+<button data-action='{:url("del")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除快递</button>
+{/if}
 {/block}
 
 {block name="content"}
+<table class="layui-table" lay-skin="line">
+    <caption class="margin-bottom-10 text-left">{include file='express/index_search'}</caption>
+    <!--{notempty name='list'}-->
+    <thead>
+    <tr>
+        <th class='list-table-check-td think-checkbox'>
+            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+        </th>
+        <th class='list-table-sort-td'>
+            <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+        </th>
+        <th class='text-left nowrap'>快递名称</th>
+        <th class='text-left nowrap'>快递编码</th>
+        <th class="text-center">记录状态</th>
+        <th class="text-center">创建时间</th>
+        <th></th>
+    </tr>
+    </thead>
+    <!--{/notempty}-->
+    <tbody>
+    <!--{foreach $list as $key=>$vo}-->
+    <tr data-dbclick>
+        <td class='list-table-check-td think-checkbox'>
+            <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+        </td>
+        <td class='list-table-sort-td'>
+            <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
+        </td>
+        <td class='text-left nowrap'>{$vo.express_title|default=''}</td>
+        <td class='text-left nowrap'>{$vo.express_code|default=''}</td>
+        <td class='text-center nowrap'>
+            {eq name='vo.status' value='0'}<span class="layui-badge">已禁用</span>{else}<span class="layui-badge layui-bg-green">使用中</span>{/eq}<br>
+        </td>
+        <td class='text-center nowrap'>{$vo.create_at|format_datetime}</td>
+        <td class='text-left nowrap'>
 
-<!-- 表单搜索 开始 -->
-<form autocomplete="off" class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+            {if auth("store/express/edit")}
+            <a data-dbclick data-title="编辑快递" class="layui-btn layui-btn-xs" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+            {/if}
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">快递公司</label>
-        <div class="layui-input-inline">
-            <input name="express_title" value="{$Think.get.express_title}" placeholder="请输入快递名称" class="layui-input">
-        </div>
-    </div>
+            {if $vo.status eq 1 and auth("store/express/forbid")}
+            <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">禁 用</a>
+            {elseif auth("store/express/resume")}
+            <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1">启 用</a>
+            {/if}
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">快递代码</label>
-        <div class="layui-input-inline">
-            <input name="express_code" value="{$Think.get.express_code}" placeholder="请输入快递代码" class="layui-input">
-        </div>
-    </div>
+            {if auth("store/express/del")}
+            <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('del')}" data-value="id#{$vo.id}">删 除</a>
+            {/if}
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">添加时间</label>
-        <div class="layui-input-inline">
-            <input name="date" id="range-date" value="{$Think.get.date}" placeholder="请选择添加时间" class="layui-input">
-        </div>
-    </div>
+        </td>
+    </tr>
+    <!--{/foreach}-->
+    </tbody>
+</table>
 
-    <div class="layui-form-item layui-inline">
-        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
-    </div>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 
-</form>
-
-<script>
-    window.laydate.render({range: true, elem: '#range-date'});
-    window.form.render();
-</script>
-<!-- 表单搜索 结束 -->
-
-<form autocomplete="off" onsubmit="return false;" data-auto="true" method="post">
-    <input type="hidden" value="resort" name="action"/>
-    {if empty($list)}
-    <p class="help-block text-center well">没 有 记 录 哦！</p>
-    {else}
-    <table class="layui-table" lay-skin="line" lay-size="sm">
-        <thead>
-        <tr>
-            <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'/>
-            </th>
-            <th class='list-table-sort-td'>
-                <button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>
-            </th>
-            <th class='text-left'>快递公司</th>
-            <th class='text-left'>快递代码</th>
-            <th class='text-left'>添加时间</th>
-            <th class='text-left'>快递状态</th>
-            <th class='text-left'>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        {foreach $list as $key=>$vo}
-        <tr>
-            <td class='list-table-check-td think-checkbox'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
-            </td>
-            <td class='list-table-sort-td'>
-                <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
-            </td>
-            <td class='text-left'>{$vo.express_title}</td>
-            <td class='text-left'>{$vo.express_code}</td>
-            <td class='text-left'>{$vo.create_at|format_datetime}</td>
-            <td class='text-left'>
-                {if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}
-            </td>
-            <td class='text-left nowrap'>
-
-                <!--{if auth("$classuri/edit")}-->
-                <span class="text-explode">|</span>
-                <a data-title="编辑快递" data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
-                <!--{/if}-->
-
-                <!--{if $vo.status eq 1 and auth("$classuri/forbid")}-->
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>禁用</a>
-                <!--{elseif auth("$classuri/resume")}-->
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>启用</a>
-                <!--{/if}-->
-
-                {if auth("$classuri/del")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
-                {/if}
-
-            </td>
-        </tr>
-        {/foreach}
-        </tbody>
-    </table>
-    {if isset($page)}<p>{$page|raw}</p>{/if}
-    {/if}
-</form>
 {/block}

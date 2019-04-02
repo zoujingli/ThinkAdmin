@@ -1,7 +1,6 @@
-{extend name='admin@public/content'}
+{extend name='main'}
 
-{block name="content"}
-
+{block name='content'}
 <table class="layui-table" lay-even lay-skin="line">
     <colgroup>
         <col width="20%">
@@ -17,66 +16,66 @@
     </thead>
     <tbody>
     <tr>
-        <td style="max-width:200px" class="nowrap">ThinkAdmin 版本</td>
-        <td class="nowrap">{:sysconf('app_version')}</td>
-        <td style="max-width:200px" class="nowrap">产品名称</td>
-        <td class="nowrap">ThinkAdmin 管理框架</td>
+        <td style="max-width:200px">framework 版本</td>
+        <td>{:sysconf('app_version')}</td>
+        <td style="max-width:200px">产品名称</td>
+        <td>framework</td>
     </tr>
     <tr>
-        <td class="nowrap">ThinkPHP 版本</td>
-        <td class="nowrap">{$think_ver}</td>
-        <td class="nowrap">产品名称</td>
-        <td class="nowrap">ThinkAdmin 管理框架</td>
-    </tr>
-    <tr>
-        <td class="nowrap">服务器操作系统</td>
-        <td class="nowrap">{:php_uname('s')}</td>
-        <td class="nowrap">产品DEMO体验</td>
-        <td class="nowrap">
-            <a target="_blank" href="http://demo.thinkadmin.top">http://demo.thinkadmin.top</a>
+        <td>ThinkPHP 版本</td>
+        <td>{$think_ver}</td>
+        <td>在线体验</td>
+        <td>
+            <a target="_blank" href="http://framework.thinkadmin.top">http://framework.thinkadmin.top</a>
         </td>
     </tr>
     <tr>
-        <td class="nowrap">WEB运行环境</td>
-        <td class="nowrap">{:php_sapi_name()}</td>
-        <td class="nowrap">官方QQ群</td>
-        <td class="nowrap">
+        <td>服务器操作系统</td>
+        <td>{:php_uname('s')}</td>
+        <td>官方QQ群</td>
+        <td>
             <a href="http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a">
                 <img src="//pub.idqqimg.com/wpa/images/group.png" style="height:18px;width:auto" target="_blank">
             </a>
         </td>
     </tr>
     <tr>
-        <td class="nowrap">MySQL数据库版本</td>
-        <td class="nowrap">{$mysql_ver}</td>
-        <td class="nowrap">BUG反馈</td>
-        <td class="nowrap">
-            <a target="_blank" href="https://github.com/zoujingli/ThinkAdmin/issues">
-                https://github.com/zoujingli/ThinkAdmin/issues
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td class="nowrap">运行PHP版本</td>
-        <td class="nowrap">{$Think.PHP_VERSION}</td>
-        <td class="nowrap">项目地址</td>
-        <td class="nowrap">
+        <td>WEB运行环境</td>
+        <td>{:php_sapi_name()}</td>
+        <td>项目地址</td>
+        <td>
             <a target="_blank" href="https://github.com/zoujingli/ThinkAdmin">
                 https://github.com/zoujingli/ThinkAdmin
             </a>
         </td>
     </tr>
     <tr>
-        <td class="nowrap">上传大小限制</td>
-        <td class="nowrap">{:ini_get('upload_max_filesize')}</td>
-        <td class="nowrap">公司官网</td>
-        <td class="nowrap"><a target="_blank" href="http://www.cuci.cc">http://www.cuci.cc</a></td>
+        <td>MySQL数据库版本</td>
+        <td>{$mysql_ver}</td>
+        <td>BUG反馈</td>
+        <td>
+            <a target="_blank" href="https://github.com/zoujingli/ThinkAdmin/issues">
+                https://github.com/zoujingli/ThinkAdmin/issues
+            </a>
+        </td>
     </tr>
     <tr>
-        <td class="nowrap">POST大小限制</td>
-        <td class="nowrap">{:ini_get('post_max_size')}</td>
-        <td class="nowrap">公司地址</td>
-        <td class="nowrap">广州市天河区东圃一横路东泷商贸中心C座316</td>
+        <td>运行PHP版本</td>
+        <td>{$Think.PHP_VERSION}</td>
+        <td>开发团队</td>
+        <td><a href="http://www.cuci.cc" target="_blank">广州楚才信息科技有限公司</a></td>
+    </tr>
+    <tr>
+        <td>上传大小限制</td>
+        <td>{:ini_get('upload_max_filesize')}</td>
+        <td>团队官网</td>
+        <td><a target="_blank" href="http://www.cuci.cc">http://www.cuci.cc</a></td>
+    </tr>
+    <tr>
+        <td>POST大小限制</td>
+        <td>{:ini_get('post_max_size')}</td>
+        <td>办公地址</td>
+        <td>广州市天河区东圃一横路东泷商贸中心C座316</td>
     </tr>
     </tbody>
 </table>

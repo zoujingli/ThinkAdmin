@@ -1,0 +1,25 @@
+{
+  "type": "library",
+  "name": "zoujingli/think-library",
+  "license": "MIT",
+  "homepage": "http://library.thinkadmin.top",
+  "description": "ThinkPHP Basic Development Library",
+  "require": {
+    "php": ">=5.4",
+    "ext-json": "*",
+    "ext-curl": "*",
+    "ext-iconv": "*",
+    "ext-openssl": "*",
+    "qiniu/php-sdk": "^7.2",
+    "topthink/framework": "5.1.*",
+    "aliyuncs/oss-sdk-php": "^2.3"
+  },
+  "autoload": {
+    "files": [
+      "common.php"
+    ],
+    "psr-4": {
+      "library\\": "src"
+    }
+  }
+}

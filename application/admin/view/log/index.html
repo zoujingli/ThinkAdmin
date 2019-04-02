@@ -1,100 +1,61 @@
-{extend name='admin@public/content'}
+{extend name='main'}
 
 {block name="button"}
-<!--{if auth("$classuri/del")}-->
-<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
-<!--{/if}-->
+
+{if auth("admin/log/del")}
+<button data-action='{:url("del")}' data-rule="id#{key}" data-csrf="{:systoken('admin/log/del')}" data-confirm="确定要删除日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
+{/if}
+
 {/block}
 
 {block name="content"}
+<table class="layui-table" lay-skin="line">
+    <caption class="margin-bottom-10 text-left">{include file='log/index_search'}</caption>
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='list-table-check-td think-checkbox'>
+            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+        </th>
+        <th class='text-left nowrap' width="20%">操作</th>
+        <th class='text-left nowrap' width="20%">权限</th>
+        <th class='text-left nowrap' width="20%">位置</th>
+        <th class='text-left nowrap' width="20%">操作时间</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--{foreach $list as $key=>$vo}-->
+    <tr data-dbclick>
+        <td class='list-table-check-td think-checkbox'>
+            <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+        </td>
+        <td class='text-left nowrap'>
+            行为：<strong>{$vo.action|default='--'}</strong><br>
+            描述：{$vo.content|default='--'}
+        </td>
+        <td class='text-left nowrap'>
+            账号：{$vo.username|default='--'}<br>
+            节点：{$vo.node|default='--'}
+        </td>
+        <td class='text-left nowrap'>
+            地址：{$vo.geoip|default='--'}<br>
+            位置：{$vo.isp|default='--'}
+        </td>
+        <td class='text-left nowrap'>
+            日期：{$vo.create_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
+        </td>
+        <td class='text-left nowrap'>
+            {if auth("admin/log/del")}
+            <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/log/del')}">删 除</a>
+            {/if}
+        </td>
+    </tr>
+    <!--{/foreach}-->
+    </tbody>
+    {/notempty}
+</table>
 
-<!-- 表单搜索 开始 -->
-<form autocomplete="off" class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">操作账号</label>
-        <div class="layui-input-inline">
-            <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入操作者" class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">操作行为</label>
-        <div class="layui-input-inline">
-            <select name='action' class='layui-select' lay-search="">
-                <option value=''> - 所有记录 -</option>
-                <!--{foreach $actions as $action}-->
-                <!--{if $action===$Think.get.action}-->
-                <option selected="selected" value='{$action}'>{$action}</option>
-                <!--{else}-->
-                <option value='{$action}'>{$action}</option>
-                <!--{/if}-->
-                <!--{/foreach}-->
-            </select>
-        </div>
-    </div>
-
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">操作内容</label>
-        <div class="layui-input-inline">
-            <input name="content" value="{$Think.get.content|default=''}" placeholder="请输入操作内容" class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">操作时间</label>
-        <div class="layui-input-inline">
-            <input name="create_at" id='create_at' value="{$Think.get.create_at|default=''}" placeholder="请选择操作时间" class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item layui-inline">
-        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
-    </div>
-
-</form>
-<script>
-    window.form.render();
-    window.laydate.render({range: true, elem: '#create_at'});
-</script>
-<!-- 表单搜索 结束 -->
-
-<form onsubmit="return false;" data-auto="true" method="post">
-    <!--{empty name='list'}-->
-    <p class="help-block text-center well">没 有 记 录 哦！</p>
-    <!--{else}-->
-    <input type="hidden" value="resort" name="action">
-    <table class="layui-table" lay-skin="line">
-        <thead>
-        <tr>
-            <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'>
-            </th>
-            <th class='text-left nowrap'>操作账号</th>
-            <th class='text-left nowrap'>权限节点</th>
-            <th class='text-left nowrap'>操作行为</th>
-            <th class='text-left nowrap'>操作内容</th>
-            <th class='text-left nowrap'>操作位置</th>
-            <th class='text-left nowrap'>操作时间</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!--{foreach $list as $key=>$vo}-->
-        <tr>
-            <td class='list-table-check-td think-checkbox'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
-            </td>
-            <td class='text-left nowrap'>{$vo.username}</td>
-            <td class='text-left nowrap'>{$vo.node}</td>
-            <td class='text-left nowrap'>{$vo.action}</td>
-            <td class='text-left nowrap'>{$vo.content}</td>
-            <td class='text-left nowrap'>{$vo.isp|default=$vo.ip}</td>
-            <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>
-        </tr>
-        <!--{/foreach}-->
-        </tbody>
-    </table>
-    {if isset($page)}<p>{$page|raw}</p>{/if}
-    <!--{/empty}-->
-</form>
 {/block}

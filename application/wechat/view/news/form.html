@@ -1,104 +1,84 @@
-{extend name='admin@public/content'}
+{extend name='admin@main'}
 
 {block name='content'}
 <div id="NewsEditor">
     <!--左侧图文列表 开始-->
-    <div class="panel panel-default news-left">
-        <div class="panel-heading">图文列表</div>
-        <div class="panel-body news-box">
+    <div class="layui-card news-left">
+        <div class="layui-card-header">图文列表</div>
+        <div class="layui-card-body layui-hide">
             <div ng-if="list.length > 0" ng-repeat="x in list">
                 <div class="news-item transition" ng-click="setItem($index,$event)" style="{{x.style}}" ng-class="x.active?'active':''">
-                    <a ng-click="delItem($index, $event)" class="upload-multiple-close layui-icon hide">&#x1006;</a>
-                    <a ng-click="dnItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe61a;</a>
-                    <a ng-click="upItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe619;</a>
+                    <a ng-click="delItem($index, $event)" class="transition layui-icon layui-hide">&#x1006;</a>
+                    <a ng-click="dnItem($index, $event)" class="transition layui-icon layui-hide">&#xe61a;</a>
+                    <a ng-click="upItem($index, $event)" class="transition layui-icon layui-hide">&#xe619;</a>
                     <span class="news-title" ng-bind="x.title"></span>
                 </div>
-                <hr/>
+                <hr>
             </div>
-            <div ng-if="list.length<1" class="news-item transition active news-image">
-                <a ng-click="delItem($index, $event)" class="upload-multiple-close layui-icon hide">&#x1006;</a>
-                <a ng-click="dnItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe61a;</a>
-                <a ng-click="upItem($index, $event)" class="upload-multiple-close layui-icon hide">&#xe619;</a>
+            <div ng-if="list.length<1" class="news-item transition active">
+                <a ng-click="delItem($index, $event)" class="transition layui-icon layui-hide">&#x1006;</a>
+                <a ng-click="dnItem($index, $event)" class="transition layui-icon layui-hide">&#xe61a;</a>
+                <a ng-click="upItem($index, $event)" class="transition layui-icon layui-hide">&#xe619;</a>
                 <span class="news-title"></span>
-                <hr/>
+                <hr>
             </div>
-            <a class='article-add transition' ng-click="addItem()" data-text-tip="添加图文">
-                <i class="fa fa-plus"></i>
-            </a>
+            <a class='article-add transition' ng-click="addItem()" data-text-tip="添加图文"><i class="fa fa-plus"></i></a>
         </div>
     </div>
     <!--左侧图文列表 结束-->
     <!--右侧编辑区 开始-->
-    <div class="panel panel-default news-right">
-        <div class="panel-heading">图文内容编辑</div>
-        <div class="panel-body">
-            <form class="form-horizontal" role="form" name="news" onsubmit="return false;">
+    <div class="layui-card news-right">
+        <div class="layui-card-header">内容编辑</div>
+        <div class="layui-card-body">
+            <form class="layui-form" role="form" name="news" onsubmit="return false">
 
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <span class="input-group-addon">文章标题</span>
-                            <input maxlength="64" ng-model="item.title" required title="文章的标题不能为空哦" placeholder="请在这里输入标题" name='title' class="layui-input">
+                <label class="layui-form-item relative block">
+                    <span class="help-block">文章标题<sup class="color-red padding-left-5">*</sup></span>
+                    <input maxlength="64" ng-model="item.title" required placeholder="请在这里输入标题" name='title' class="layui-input">
+                </label>
+
+                <label class="layui-form-item relative block">
+                    <span class="help-block">文章作者<sup class="color-red padding-left-5">*</sup></span>
+                    <input maxlength="64" ng-model="item.author" required placeholder="请输入文章作者" name='author' class="layui-input">
+                </label>
+
+                <div class="layui-form-item">
+                    <span class="help-block">图文封面大图片<sup class="color-red padding-left-5">*</sup></span>
+                    <div class="layui-clear">
+                        <div class="upload-image-box pull-left transition" data-tips-image="{{item.local_url}}" style="{{item.style}}">
+                            <input ng-model="item.local_url" data-auto-none value="{{item.local_url}}" type="hidden" name="local_url">
+                        </div>
+                        <div class="pull-left padding-top-15 padding-left-15">
+                            <button type="button" data-title="上传图片" data-file="btn" data-type="jpg,png,jpeg" data-field="local_url" class="layui-btn layui-btn-sm layui-btn-primary">上传图片</button>
+                            <br>
+                            <label class="think-checkbox notselect margin-top-15">
+                                <input ng-model="item.show_cover_pic" ng-checked="!!item.show_cover_pic" data-auto-none type="checkbox" value="1" name="show_cover_pic"> 在正文顶部显示此图片
+                            </label>
                         </div>
                     </div>
+                    <p class="color-desc">封面大图片建议尺寸 900像素 * 500像素</p>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <span class="input-group-addon">文章作者</span>
-                            <input maxlength="8" ng-model="item.author" required title="文章的作者不能为空哦" placeholder="请输入作者" name='author' class="layui-input">
-                        </div>
-                    </div>
+                <div class="layui-form-item">
+                    <span class="help-block">图文文章内容<sup class="color-red padding-left-5">*</sup></span>
+                    <textarea ng-model="item.content" name='content'></textarea>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="form-control border-radius-none" style="height:auto">
-                            <label class="color-desc font-s12 margin-bottom-5">图文封面大图片设置</label>
-                            <div class="row nowrap">
-                                <div class="col-xs-3" style="width:160px">
-                                    <div class="upload-image-box transition">
-                                        <input ng-model="item.local_url" value="__STATIC__/plugs/uploader/theme/image.png" type="hidden" name="local_url">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 padding-top-10">
-                                    <button type="button" data-title="上传图片" data-file="one" data-type="jpg,png,jpeg" data-field="local_url" class="layui-btn layui-btn-sm layui-btn-primary">上传图片</button>
-                                    <button type="button" data-title="选择图片" data-iframe='{:url("image")}?field=local_url' class="layui-btn layui-btn-sm layui-btn-primary">选择图片</button>
-                                    <br>
-                                    <label class="think-checkbox notselect margin-top-15">
-                                        <input ng-model="item.show_cover_pic" ng-checked="!!item.show_cover_pic" data-auto-none type="checkbox" value="1" name="show_cover_pic"> 在正文中显示此图片
-                                    </label>
-                                </div>
-                            </div>
-                            <p class="help-block margin-top-5 color-desc">封面大图片建议尺寸：900像素 * 500像素</p>
-                        </div>
-                    </div>
+                <label class="layui-form-item relative block">
+                    <span class="help-block">摘要选填，如果不填写会默认抓取正文前54个字</span>
+                    <textarea ng-model="item.digest" name="digest" class="layui-textarea" style="height:80px;line-height:18px;resize:none"></textarea>
+                </label>
+
+                <label class="layui-form-item relative block">
+                    <span class="help-block">原文链接 <span class="color-blue">选填</span>，填写之后在图文左下方会出现此链接</span>
+                    <input pattern="^(http:\/\/|^https:\/\/|^\/\/)((\w|=|\?|\.|\/|&|-)+)" placeholder="请输入跳转链接地址" ng-model="item.content_source_url" maxlength="200" name='content_source_url' class="layui-input">
+                </label>
+
+                <div class="layui-form-item text-center">
+                    <input ng-model="x.read_num" type="hidden">
+                    <button ng-click="submit()" type="button" class="layui-btn">保存图文</button>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-12"><textarea ng-model="item.content" name='content'></textarea></div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <label class="color-desc">摘要选填，如果不填写会默认抓取正文前54个字</label>
-                        <textarea ng-model="item.digest" name="digest" class="layui-textarea" style="height:80px;line-height:18px;resize:none"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <label class="color-desc">原文链接<b>选填</b>，填写之后在图文左下方会出现此链接</label>
-                        <input ng-model="item.content_source_url" maxlength="200" name='content_source_url' class="layui-input">
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <div class="row">
-                        <div class="col-md-offset-4 col-md-9">
-                            <button ng-click="submit()" type="button" class="layui-btn">保存图文</button>
-                        </div>
-                    </div>
-                </div>
             </form>
         </div>
     </div>
@@ -112,6 +92,7 @@
     require(['angular', 'ckeditor'], function () {
 
         var $form = $('form[name="news"]');
+        var $vali = $form.vali().data('validate');
         var editor = window.createEditor('[name="content"]');
 
         var app = angular.module("NewsEditor", []).run(callback);
@@ -127,34 +108,32 @@
                 }), false;
             });
 
-            function apply(data) {
-                if (data.length < 1) {
-                    data.push({
-                        title: '新建图文',
-                        local_url: '__STATIC__/plugs/uploader/theme/image.png',
-                        style: "background-image:url('__STATIC__/plugs/uploader/theme/image.png?imageView2/1/w/338/h/190/interlace/1')"
-                    });
+            function apply(list) {
+                if (list.length < 1) list.push({
+                    title: '新建图文',
+                    author: '管理员',
+                    content: '文章内容',
+                    read_num: 0,
+                    local_url: '__ROOT__/static/plugs/uploader/theme/image.png',
+                });
+                for (var i in list) {
+                    list[i].active = false;
+                    list[i].style = "background-image:url('" + list[i].local_url + "')";
                 }
-                for (var i in data) {
-                    data[i].active = false;
-                    data[i].style = "background-image:url('" + data[i].local_url + "?imageView2/1/w/338/h/190/interlace/1')";
-                    data[i].show_cover_pic = !!data[i].show_cover_pic;
-                }
-                $rootScope.list = data;
+                $rootScope.list = list;
                 $rootScope.item = $rootScope.list[0];
                 $rootScope.setItemValue('active', true);
                 setTimeout(function () {
+                    $vali.checkAllInput();
                     editor.setData($rootScope.item.content);
+                    $('.layui-card-body.layui-hide').removeClass('layui-hide');
                 }, 100);
-                $form.vali();
             }
 
             $rootScope.upItem = function (index, $event) {
                 $event.stopPropagation();
                 var tmp = [], cur = $rootScope.list[index];
-                if (index < 1) {
-                    return false;
-                }
+                if (index < 1) return false;
                 for (var i in $rootScope.list) {
                     (parseInt(i) === parseInt(index) - 1) && tmp.push(cur);
                     (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
@@ -165,9 +144,7 @@
             $rootScope.dnItem = function (index, $event) {
                 $event.stopPropagation();
                 var tmp = [], cur = $rootScope.list[index];
-                if (index > $rootScope.list.length - 2) {
-                    return false;
-                }
+                if (index > $rootScope.list.length - 2) return false;
                 for (var i in $rootScope.list) {
                     (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
                     (parseInt(i) === parseInt(index) + 1) && tmp.push(cur);
@@ -178,73 +155,66 @@
             $rootScope.delItem = function (index, $event) {
                 $event.stopPropagation();
                 var list = $rootScope.list, temp = [];
-                for (var i in list) {
-                    (parseInt(i) !== parseInt(index)) && temp.push(list[i]);
-                }
+                for (var i in list) (parseInt(i) !== parseInt(index)) && temp.push(list[i]);
                 apply(temp);
             };
 
             $rootScope.setItem = function (index, $event) {
                 $event.stopPropagation();
-                $form.vali();
-                if ($form.find('.validate-error').size() > 0) {
-                    return 0;
-                }
-                if (editor.getData().length < 1) {
-                    return $.msg.tips('请输入文章内容');
-                }
+                $vali.checkAllInput();
+                if ($form.find('.validate-error').size() > 0) return 0;
+                if (editor.getData().length < 1) return $.msg.tips('文章内容不能为空，请输入文章内容！');
                 for (var i in $rootScope.list) {
                     if (parseInt(i) !== parseInt(index)) {
                         $rootScope.list[i].active = false;
-                        continue;
+                    } else {
+                        $rootScope.item.content = editor.getData();
+                        $rootScope.item = $rootScope.list[i];
+                        editor.setData($rootScope.item.content);
+                        $rootScope.setItemValue('active', true);
                     }
-                    $rootScope.item.content = editor.getData();
-                    $rootScope.item = $rootScope.list[i];
-                    editor.setData($rootScope.item.content);
-                    $rootScope.setItemValue('active', true);
                 }
             };
 
             $rootScope.setItemValue = function (name, value) {
                 $rootScope.item[name] = value;
-                var localUrl = $rootScope.item.local_url;
-                $('[name="local_url"]').parent().css('background-image', 'url(' + localUrl + ')');
-                $rootScope.item.style = "background-image:url('" + localUrl + "?imageView2/1/w/338/h/190/interlace/1')";
+                $rootScope.item.style = "background-image:url('" + $rootScope.item.local_url + "')";
             };
 
             $rootScope.addItem = function () {
-                if ($rootScope.list.length > 7) {
-                    return $.msg.tips('最多允许增加7篇文章哦！');
-                }
+                if ($rootScope.list.length > 7) return $.msg.tips('最多允许增加7篇文章哦！');
                 $rootScope.list.push({
                     title: '新建图文',
-                    local_url: '__STATIC__/plugs/uploader/theme/image.png',
-                    style: "background-image:url('__STATIC__/plugs/uploader/theme/image.png?imageView2/1/w/338/h/190/interlace/1')"
+                    author: '管理员',
+                    content: '文章内容',
+                    read_num: 0,
+                    local_url: '__ROOT__/static/plugs/uploader/theme/image.png',
+                    style: "background-image:url('__ROOT__/static/plugs/uploader/theme/image.png')"
                 });
             };
 
             $rootScope.submit = function () {
-                $form.vali();
+                $vali.checkAllInput();
                 if ($form.find('.validate-error').size() > 0) {
                     return $.msg.tips('表单验证不成功，请输入需要的内容！');
                 }
                 $rootScope.item.content = editor.getData();
                 var data = [];
-                for (var i in $rootScope.list) {
-                    data.push({
-                        id: $rootScope.list[i].id,
-                        title: $rootScope.list[i].title,
-                        author: $rootScope.list[i].author,
-                        digest: $rootScope.list[i].digest,
-                        content: $rootScope.list[i].content,
-                        local_url: $rootScope.list[i].local_url,
-                        show_cover_pic: $rootScope.list[i].show_cover_pic ? 1 : 0,
-                        content_source_url: $rootScope.list[i].content_source_url,
-                    })
-                }
+                for (var i in $rootScope.list) data.push({
+                    id: $rootScope.list[i].id,
+                    title: $rootScope.list[i].title,
+                    author: $rootScope.list[i].author,
+                    digest: $rootScope.list[i].digest,
+                    content: $rootScope.list[i].content,
+                    read_num: $rootScope.list[i].read_num,
+                    local_url: $rootScope.list[i].local_url,
+                    show_cover_pic: $rootScope.list[i].show_cover_pic ? 1 : 0,
+                    content_source_url: $rootScope.list[i].content_source_url,
+                });
                 $.form.load('{:request()->url()}', {data: data}, "post");
             };
-            $('body').off('change', '[name="local_url"]').on('change', '[name="local_url"]', function () {
+
+            $('[name="local_url"]').on('change', function () {
                 var value = this.value;
                 $rootScope.$apply(function () {
                     $rootScope.setItemValue('local_url', value);
@@ -257,8 +227,21 @@
 
 {block name="style"}
 <style>
-    .panel {
-        border-radius: 0
+
+    .label-required:after {
+        content: ''
+    }
+
+    .news-right.layui-card .layui-card-header,
+    .news-left.layui-card .layui-card-header {
+        border: none;
+        background: #eee;
+    }
+
+    .news-right.layui-card .layui-card-body,
+    .news-left.layui-card .layui-card-body {
+        margin-bottom: 30px;
+        border: 1px solid #eee;
     }
 
     .news-left {
@@ -284,10 +267,6 @@
         border: 1px solid #ccc;
         background-size: cover;
         background-position: center center;
-    }
-
-    .news-left .news-item:hover .upload-multiple-close {
-        display: inline-block !important;
     }
 
     .news-left .news-item.active {
@@ -319,34 +298,12 @@
         background: rgba(0, 0, 0, 0.7);
     }
 
-    .news-right .layui-input {
-        border-radius: 0;
-        border: 1px solid #e5e6e7;
-    }
-
-    .news-right .layui-input:hover, .news-right .layui-input:focus {
-        border-color: #e5e6e7 !important;
-    }
-
-    .news-right .input-group-addon {
-        background: #fff;
-        border-radius: 0;
-        border-color: #e5e6e7;
-    }
-
-    .news-right .upload-image-box {
-        width: 130px;
-        height: 90px;
-        background-size: cover;
-        background-position: center center;
-        border: 1px solid rgba(125, 125, 125, 0.1);
-    }
-
-    .news-item .upload-multiple-close {
+    .news-left .news-item a {
         color: #fff;
         width: 30px;
         height: 30px;
         float: right;
+        font-size: 12px;
         margin-top: -1px;
         line-height: 34px;
         text-align: center;
@@ -354,8 +311,22 @@
         background-color: rgba(0, 0, 0, .5);
     }
 
-    .news-item .upload-multiple-close:hover {
-        text-decoration: none
+    .news-left .news-item:hover a {
+        display: inline-block !important;
     }
+
+    .news-left .news-item a:hover {
+        text-decoration: none;
+        background-color: #0C0C0C;
+    }
+
+    .news-right .upload-image-box {
+        width: 130px;
+        height: 90px;
+        background: url('__ROOT__/static/plugs/uploader/theme/image.png') no-repeat center center;
+        background-size: cover;
+        border: 1px solid rgba(125, 125, 125, 0.1);
+    }
+
 </style>
 {/block}

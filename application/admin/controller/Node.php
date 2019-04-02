@@ -1,11 +1,11 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | framework
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
+// | 官方网站: http://framework.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
@@ -14,62 +14,57 @@
 
 namespace app\admin\controller;
 
-use controller\BasicAdmin;
-use service\DataService;
-use service\NodeService;
-use service\ToolsService;
+use library\Controller;
+use library\tools\Data;
 use think\Db;
 
 /**
- * 系统功能节点管理
+ * 系统节点管理
  * Class Node
  * @package app\admin\controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/02/15 18:13
  */
-class Node extends BasicAdmin
+class Node extends Controller
 {
-
     /**
-     * 指定当前默认模型
+     * 指定当前数据表
      * @var string
      */
-    public $table = 'SystemNode';
+    protected $table = 'SystemNode';
 
     /**
      * 显示节点列表
-     * @return string
+     * @return mixed
      */
     public function index()
     {
-        $nodes = ToolsService::arr2table(NodeService::get(), 'node', 'pnode');
-        $groups = [];
-        foreach ($nodes as $node) {
+        $this->title = '系统节点管理';
+        list($nodes, $groups) = [\app\admin\service\Auth::get(), []];
+        $this->nodes = Data::arr2table($nodes, 'node', 'pnode');
+        foreach ($this->nodes as $node) {
             $pnode = explode('/', $node['node'])[0];
-            if ($node['node'] === $pnode) {
-                $groups[$pnode]['node'] = $node;
-            }
+            if ($node['node'] === $pnode) $groups[$pnode]['node'] = $node;
             $groups[$pnode]['list'][] = $node;
         }
-        return $this->fetch('', ['title' => '系统节点管理', 'nodes' => $nodes, 'groups' => $groups]);
+        $this->groups = $groups;
+        $this->fetch();
     }
 
     /**
-     * 清理无效的节点记录
+     * 清理无效的节点数据
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
     public function clear()
     {
-        $nodes = array_keys(NodeService::get());
+        $nodes = array_unique(array_column(\app\admin\service\Auth::get(), 'node'));
         if (false !== Db::name($this->table)->whereNotIn('node', $nodes)->delete()) {
-            $this->success('清理无效节点记录成功！', '');
+            $this->success('清理无效的节点配置成功！', '');
         }
-        $this->error('清理无效记录失败，请稍候再试！');
+        $this->error('清理无效的节点配置，请稍候再试！');
     }
 
     /**
-     * 保存节点变更
+     * 更新数据记录
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -77,14 +72,12 @@ class Node extends BasicAdmin
     {
         if ($this->request->isPost()) {
             list($post, $data) = [$this->request->post(), []];
-            foreach ($post['list'] as $vo) {
-                if (!empty($vo['node'])) {
-                    $data['node'] = $vo['node'];
-                    $data[$vo['name']] = $vo['value'];
-                }
+            foreach ($post['list'] as $vo) if (!empty($vo['node'])) {
+                $data['node'] = $vo['node'];
+                $data[$vo['name']] = $vo['value'];
             }
-            !empty($data) && DataService::save($this->table, $data, 'node');
-            $this->success('参数保存成功！', '');
+            empty($data) || data_save($this->table, $data, 'node');
+            $this->success('节点配置保存成功！', '');
         }
         $this->error('访问异常，请重新进入...');
     }

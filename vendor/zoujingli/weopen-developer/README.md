@@ -21,7 +21,7 @@ PHP开发技术交流（QQ群 513350915）
 > 针对 WeChatDeveloper 也有一准备了帮助资料可供参考。
 >* WeChatDeveloper 文档：http://www.kancloud.cn/zoujingli/wechat-developer
 
-Repositorie
+Repository
 --
  WeOpenDeveloper 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
 >* GitHub 托管地址：https://github.com/zoujingli/WeOpenDeveloper

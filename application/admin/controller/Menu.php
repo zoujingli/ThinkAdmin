@@ -1,11 +1,11 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | framework
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
+// | 官方网站: http://framework.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
@@ -14,86 +14,68 @@
 
 namespace app\admin\controller;
 
-use controller\BasicAdmin;
-use service\DataService;
-use service\NodeService;
-use service\ToolsService;
+use library\Controller;
+use library\tools\Data;
 use think\Db;
 
 /**
- * 系统后台管理管理
+ * 系统菜单管理
  * Class Menu
  * @package app\admin\controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/02/15
  */
-class Menu extends BasicAdmin
+class Menu extends Controller
 {
 
     /**
-     * 绑定操作模型
+     * 当前操作数据库
      * @var string
      */
-    public $table = 'SystemMenu';
+    protected $table = 'SystemMenu';
 
     /**
-     * 菜单列表
-     * @return array|string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\Exception
+     * 系统菜单显示
      */
     public function index()
     {
-        $this->title = '后台菜单管理';
-        $db = Db::name($this->table)->order('sort asc,id asc');
-        return parent::_list($db, false);
+        $this->title = '系统菜单管理';
+        $this->_page($this->table, false);
     }
 
     /**
      * 列表数据处理
      * @param array $data
      */
-    protected function _index_data_filter(&$data)
+    protected function _index_page_filter(&$data)
     {
         foreach ($data as &$vo) {
             if ($vo['url'] !== '#') {
                 $vo['url'] = url($vo['url']) . (empty($vo['params']) ? '' : "?{$vo['params']}");
             }
-            $vo['ids'] = join(',', ToolsService::getArrSubIds($data, $vo['id']));
+            $vo['ids'] = join(',', Data::getArrSubIds($data, $vo['id']));
         }
-        $data = ToolsService::arr2table($data);
-    }
-
-    /**
-     * 添加菜单
-     * @return array|string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\Exception
-     */
-    public function add()
-    {
-        return $this->_form($this->table, 'form');
+        $data = Data::arr2table($data);
     }
 
     /**
      * 编辑菜单
-     * @return array|string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\Exception
      */
     public function edit()
     {
-        return $this->_form($this->table, 'form');
+        $this->applyCsrfToken();
+        $this->_form($this->table, 'form');
     }
 
     /**
-     * 表单数据前缀方法
+     * 添加菜单
+     */
+    public function add()
+    {
+        $this->applyCsrfToken();
+        $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 表单数据
      * @param array $vo
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -105,72 +87,47 @@ class Menu extends BasicAdmin
             // 上级菜单处理
             $_menus = Db::name($this->table)->where(['status' => '1'])->order('sort asc,id asc')->select();
             $_menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
-            $menus = ToolsService::arr2table($_menus);
-            foreach ($menus as $key => &$menu) {
-                if (substr_count($menu['path'], '-') > 3) {
-                    unset($menus[$key]);
-                    continue;
-                }
-                if (isset($vo['pid'])) {
-                    $current_path = "-{$vo['pid']}-{$vo['id']}";
-                    if ($vo['pid'] !== '' && (stripos("{$menu['path']}-", "{$current_path}-") !== false || $menu['path'] === $current_path)) {
-                        unset($menus[$key]);
-                        continue;
-                    }
-                }
-            }
+            $menus = Data::arr2table($_menus);
+            foreach ($menus as $key => &$menu) if (substr_count($menu['path'], '-') > 3) unset($menus[$key]); # 移除三级以下的菜单
+            elseif (isset($vo['pid']) && $vo['pid'] !== '' && $cur = "-{$vo['pid']}-{$vo['id']}")
+                if (stripos("{$menu['path']}-", "{$cur}-") !== false || $menu['path'] === $cur) unset($menus[$key]); # 移除与自己相关联的菜单
+            // 选择自己的上级菜单
+            if (!isset($vo['pid']) && $this->request->get('pid', '0')) $vo['pid'] = $this->request->get('pid', '0');
             // 读取系统功能节点
-            $nodes = NodeService::get();
+            $nodes = \app\admin\service\Auth::get();
             foreach ($nodes as $key => $node) {
-                if (empty($node['is_menu'])) {
-                    unset($nodes[$key]);
-                }
+                if (empty($node['is_menu'])) unset($nodes[$key]);
+                unset($nodes[$key]['pnode'], $nodes[$key]['is_login'], $nodes[$key]['is_menu'], $nodes[$key]['is_auth']);
             }
-            // 设置上级菜单
-            if (!isset($vo['pid']) && $this->request->get('pid', '0')) {
-                $vo['pid'] = $this->request->get('pid', '0');
-            }
-            $this->assign(['nodes' => array_column($nodes, 'node'), 'menus' => $menus]);
+            list($this->menus, $this->nodes) = [$menus, array_values($nodes)];
         }
+    }
+
+    /**
+     * 启用菜单
+     */
+    public function resume()
+    {
+        $this->applyCsrfToken();
+        $this->_save($this->table, ['status' => '1']);
+    }
+
+    /**
+     * 禁用菜单
+     */
+    public function forbid()
+    {
+        $this->applyCsrfToken();
+        $this->_save($this->table, ['status' => '0']);
     }
 
     /**
      * 删除菜单
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
      */
     public function del()
     {
-        if (DataService::update($this->table)) {
-            $this->success("菜单删除成功!", '');
-        }
-        $this->error("菜单删除失败, 请稍候再试!");
-    }
-
-    /**
-     * 菜单禁用
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
-     */
-    public function forbid()
-    {
-        if (DataService::update($this->table)) {
-            $this->success("菜单禁用成功!", '');
-        }
-        $this->error("菜单禁用失败, 请稍候再试!");
-    }
-
-    /**
-     * 菜单禁用
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
-     */
-    public function resume()
-    {
-        if (DataService::update($this->table)) {
-            $this->success("菜单启用成功!", '');
-        }
-        $this->error("菜单启用失败, 请稍候再试!");
+        $this->applyCsrfToken();
+        $this->_delete($this->table);
     }
 
 }

@@ -1,0 +1,86 @@
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body padding-0">
+        <div class="color-blue padding-left-40 padding-bottom-20">
+            文件将上传到阿里云OSS空间，需要配置OSS公开访问及跨域策略（目前已实现自动创建空间及配置访问策略）。
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                Protocol<br><span class="nowrap color-desc">访问协议</span>
+            </label>
+            <div class="layui-input-block">
+                <!--{foreach ['http','https','auto'] as $pro}-->
+                <label class="think-radio">
+                    <!--{if sysconf('storage_oss_is_https') eq $pro}-->
+                    <input checked type="radio" name="storage_oss_is_https" value="{$pro}" lay-ignore> {$pro}
+                    <!--{else}-->
+                    <input type="radio" name="storage_oss_is_https" value="{$pro}" lay-ignore> {$pro}
+                    <!--{/if}-->
+                </label>
+                <!--{/foreach}-->
+                <p class="help-block">阿里云对象存储访问协议（http、https、auto），其中 https 需要配置证书才能使用，auto 为相对协议自动根据域名切换http与https。</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                Bucket<br><span class="nowrap color-desc">空间名称</span>
+            </label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_oss_bucket" required value="{:sysconf('storage_oss_bucket')}" placeholder="请输入OSS Bucket (空间名称)" class="layui-input">
+                <p class="help-block">填写OSS存储空间名称，如：think-admin-oss（需要是全区唯一的值，不存在时会自动创建）</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                EndPoint<br><span class="nowrap color-desc">数据中心</span>
+            </label>
+            <div class="layui-input-block">
+                <select required name="storage_oss_endpoint" class="layui-select">
+                    {foreach $point as $k=>$p}
+                    <!--{if sysconf('storage_oss_endpoint') eq $k}-->
+                    <option selected value="{$k}">{$p} <span class="font-s10 color-desc">({$k})</span></option>
+                    <!--{else}-->
+                    <option value="{$k}">{$p} <span class="font-s10 color-desc">({$k})</span></option>
+                    <!--{/if}-->
+                    {/foreach}
+                </select>
+                <p class="help-block">请选择OSS数据中心访问节点，有效值如：oss-cn-shenzhen.aliyuncs.com</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                AccessKey<br><span class="nowrap color-desc">访问密钥</span>
+            </label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_oss_keyid" required value="{:sysconf('storage_oss_keyid')}" maxlength="16" placeholder="请输入OSS AccessKey (访问密钥)" class="layui-input">
+                <p class="help-block">可以在 [ 阿里云 > 个人中心 ] 设置并获取到访问密钥。</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                SecretKey<br><span class="nowrap color-desc">安全密钥</span>
+            </label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_oss_secret" required value="{:sysconf('storage_oss_secret')}" maxlength="30" placeholder="请输入OSS SecretKey (安全密钥)" class="layui-input">
+                <p class="help-block">可以在 [ 阿里云 > 个人中心 ] 设置并获取到安全密钥。</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                Domain<br><span class="nowrap color-desc">访问域名</span>
+            </label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_oss_domain" value="{:sysconf('storage_oss_domain')}" placeholder="请输入OSS存储 Domain (访问域名)" class="layui-input">
+                <p class="help-block">填写OSS存储外部访问域名，如：think-admin-oss.oss-cn-shenzhen.aliyuncs.com（正常情况下是自动获取的）</p>
+            </div>
+        </div>
+        <div class="hr-line-dashed margin-left-40"></div>
+        <div class="layui-form-item text-center">
+            <div class="layui-row">
+                <div class="layui-col-sm8 layui-col-md6">
+                    <input type="hidden" name="storage_type" value="oss">
+                    <button class="layui-btn" type="submit">保存配置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

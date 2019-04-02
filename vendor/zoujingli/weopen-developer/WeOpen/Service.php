@@ -328,6 +328,20 @@ class Service
     }
 
     /**
+     * 对第三方平台所有API调用次数清零
+     * @return array
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function clearQuota()
+    {
+        $componentAppid = $this->config->get('component_appid');
+        $componentAccessToken = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/cgi-bin/component/clear_quota?component_access_token={$componentAccessToken}";
+        return $this->httpPostForJson($url, ['component_appid' => $componentAppid]);
+    }
+
+    /**
      * 创建指定授权公众号接口实例
      * @param string $name 需要加载的接口实例名称
      * @param string $authorizerAppid 授权公众号的appid

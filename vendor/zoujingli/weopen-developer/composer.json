@@ -19,13 +19,14 @@
   "require": {
     "php": ">=5.4",
     "ext-curl": "*",
+    "ext-json": "*",
     "ext-openssl": "*",
     "zoujingli/wechat-developer": "^1.0"
   },
   "autoload": {
     "psr-4": {
       "WeOpen\\": "WeOpen",
-	  "WeChat\\": "WeChat",
+      "WeChat\\": "WeChat",
       "WeMini\\": "WeMini"
     }
   }

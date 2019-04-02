@@ -1,87 +1,80 @@
-{extend name='admin@public/content'}
+{extend name='main'}
 
 {block name="button"}
-<!--{if auth("$classuri/add")}-->
-<button data-modal='{:url("$classuri/add")}' data-title="添加菜单" class='layui-btn layui-btn-sm layui-btn-primary'>添加菜单</button>
+
+<!--{if auth("admin/menu/add")}-->
+<button data-modal='{:url("add")}' data-title="添加菜单" class='layui-btn layui-btn-sm layui-btn-primary'>添加菜单</button>
 <!--{/if}-->
-<!--{if auth("$classuri/del")}-->
-<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>删除菜单</button>
+
+<!--{if auth("admin/menu/del")}-->
+<button data-action='{:url("del")}' data-csrf="{:systoken('admin/menu/del')}" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除菜单</button>
 <!--{/if}-->
+
 {/block}
 
 {block name="content"}
-<form autocomplete="off" onsubmit="return false;" data-auto="true" method="post">
-    <!--{empty name='list'}-->
-    <p class="help-block text-center well">没 有 记 录 哦！</p>
-    <!--{else}-->
-    <input type="hidden" value="resort" name="action">
-    <table id="test" class="layui-table" lay-skin="line">
-        <thead>
-        <tr>
-            <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'>
-            </th>
-            <th class='list-table-sort-td'>
-                <button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>
-            </th>
-            <th class='text-center'></th>
-            <th></th>
-            <th class='visible-lg'></th>
-            <th class='text-center'></th>
-            <th class='text-center'></th>
-        </tr>
-        </thead>
-        <tbody>
-        <!--{foreach $list as $key=>$vo}-->
-        <tr>
-            <td class='list-table-check-td think-checkbox'>
-                <input class="list-check-box" value='{$vo.ids}' type='checkbox'>
-            </td>
-            <td class='list-table-sort-td'>
-                <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input">
-            </td>
-            <td class='text-center'>
-                <i class="{$vo.icon} font-s18"></i>
-            </td>
-            <td class="nowrap"><span class="color-desc">{$vo.spl|raw}</span>{$vo.title}</td>
-            <td class='visible-lg'>{$vo.url}</td>
-            <td class='text-center nowrap'>
-                {if $vo.status eq 0}<span>已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}
-            </td>
-            <td class='text-center nowrap notselect'>
+<!--{empty name='list'}-->
+<blockquote class="layui-elem-quote">没 有 记 录 哦！</blockquote>
+<!--{else}-->
+<input type="hidden" value="resort" name="action">
+<table class="layui-table" lay-skin="line">
+    <thead>
+    <tr>
+        <th class='list-table-check-td think-checkbox'>
+            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+        </th>
+        <th class='list-table-sort-td'>
+            <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+        </th>
+        <th class='text-center' style="width:30px"></th>
+        <th style="width:180px"></th>
+        <th class='layui-hide-xs' style="width:180px"></th>
+        <th style="width:100px"></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--{foreach $list as $key=>$vo}-->
+    <tr data-dbclick>
+        <td class='list-table-check-td think-checkbox'>
+            <input class="list-check-box" value='{$vo.ids}' type='checkbox'>
+        </td>
+        <td class='list-table-sort-td'>
+            <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
+        </td>
+        <td class='text-center'><i class="{$vo.icon} font-s18"></i></td>
+        <td class="nowrap"><span class="color-desc">{$vo.spl|raw}</span>{$vo.title}</td>
+        <td class='layui-hide-xs'>{$vo.url}</td>
+        <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="layui-badge">已禁用</span>{else}<span class="layui-badge layui-bg-green">使用中</span>{/eq}</td>
+        <td class='text-center nowrap notselect'>
 
-                {if auth("$classuri/add")}
-                <span class="text-explode">|</span>
-                <!--{if $vo.spt<2}-->
-                <a data-title="添加菜单" data-modal='{:url("$classuri/add")}?pid={$vo.id}'>添加下级</a>
-                <!--{else}-->
-                <a class="color-desc">添加下级</a>
-                <!--{/if}-->
-                {/if}
+            {if auth("admin/menu/add")}
+            <span class="text-explode">|</span>
+            <!--{if $vo.spt<2}-->
+            <a class="layui-btn layui-btn-xs layui-btn-primary" data-tips-text="添加子菜单" data-modal='{:url("add")}?pid={$vo.id}'>添 加</a>
+            <!--{else}-->
+            <a class="layui-btn layui-btn-xs layui-btn-disabled">添 加</a>
+            <!--{/if}-->
+            {/if}
 
-                {if auth("$classuri/edit")}
-                <span class="text-explode">|</span>
-                <a data-title="编辑菜单" data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
-                {/if}
+            {if auth("admin/menu/edit")}
+            <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑菜单" data-modal='{:url("admin/menu/edit")}?id={$vo.id}'>编 辑</a>
+            {/if}
 
-                {if $vo.status eq 1 and auth("$classuri/forbid")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.ids}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>禁用</a>
-                {elseif auth("$classuri/resume")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.ids}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>启用</a>
-                {/if}
+            {if $vo.status eq 1 and auth("admin/menu/forbid")}
+            <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('forbid')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('admin/menu/forbid')}">禁 用</a>
+            {elseif auth("admin/menu/resume")}
+            <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('resume')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('admin/menu/resume')}">启 用</a>
+            {/if}
 
-                {if auth("$classuri/del")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.ids}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
-                {/if}
+            {if auth("admin/menu/del")}
+            <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除数据吗?" data-action="{:url('del')}" data-value="id#{$vo.ids}" data-csrf="{:systoken('admin/menu/del')}">删 除</a>
+            {/if}
 
-            </td>
-        </tr>
-        <!--{/foreach}-->
-        </tbody>
-    </table>
-    <!--{/empty}-->
-</form>
+        </td>
+    </tr>
+    <!--{/foreach}-->
+    </tbody>
+</table>
+<!--{/empty}-->
 {/block}

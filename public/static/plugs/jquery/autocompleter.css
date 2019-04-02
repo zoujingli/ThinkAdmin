@@ -1,0 +1,79 @@
+.autocompleter {
+    left: 0;
+    top: 37px;
+    width: 100%;
+    z-index: 100;
+    background: #fff;
+    position: absolute;
+}
+
+.autocompleter, .autocompleter-hint {
+    position: absolute
+}
+
+.autocompleter-focus .autocompleter-list {
+    border: 1px solid #c9c9c9;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.autocompleter-list {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    list-style: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.autocompleter-item {
+    color: #444;
+    cursor: pointer;
+    padding: 6px 12px;
+}
+
+.autocompleter-item strong {
+    color: #00B83F;
+    font-weight: 400;
+}
+
+.autocompleter-item span {
+    color: #aaa
+}
+
+.autocompleter-item:hover,
+.autocompleter-item-selected {
+    color: #fff;
+    background: #009688 !important;
+}
+
+.autocompleter-item:hover span,
+.autocompleter-item:hover strong,
+.autocompleter-item-selected span,
+.autocompleter-item-selected strong {
+    color: #fff;
+}
+
+.autocompleter-hint {
+    left: 0;
+    top: -56px;
+    width: 100%;
+    color: #ccc;
+    display: none;
+    font-size: 24px;
+    text-align: left;
+    font-weight: 400;
+    padding: 12px 12px 12px 13px;
+}
+
+.autocompleter-hint span {
+    color: transparent
+}
+
+.autocompleter-hint-show {
+    display: block
+}
+
+.autocompleter-closed {
+    display: none
+}

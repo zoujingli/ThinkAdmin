@@ -1,0 +1,34 @@
+<fieldset>
+    <legend>条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">发送手机</label>
+            <div class="layui-input-inline">
+                <input name="phone" value="{$Think.get.phone|default=''}" placeholder="请输入会员手机" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">短信内容</label>
+            <div class="layui-input-inline">
+                <input name="content" value="{$Think.get.content|default=''}" placeholder="请输入短信内容" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">返回结果</label>
+            <div class="layui-input-inline">
+                <input name="result" value="{$Think.get.result|default=''}" placeholder="请输入返回结果" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">发送时间</label>
+            <div class="layui-input-inline">
+                <input name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择发送时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button type="button" data-export-list class="layui-btn layui-btn-primary layui-hide"><i class="layui-icon layui-icon-export"></i> 导 出</button>
+        </div>
+    </form>
+    <script>window.laydate.render({range: true, elem: '[name="create_at"]'})</script>
+</fieldset>

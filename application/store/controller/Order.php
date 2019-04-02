@@ -1,157 +1,119 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | Think.Admin
+// | framework
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
+// | 官方网站: http://framework.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/Think.Admin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\store\controller;
 
-use app\store\service\OrderService;
-use controller\BasicAdmin;
-use service\DataService;
+use library\Controller;
 use think\Db;
 
 /**
- * 商店订单管理
+ * 商城订单管理
  * Class Order
  * @package app\store\controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/03/27 14:43
  */
-class Order extends BasicAdmin
+class Order extends Controller
 {
-
     /**
-     * 定义当前操作表名
+     * 绑定数据表
      * @var string
      */
-    public $table = 'StoreOrder';
+    protected $table = 'StoreOrder';
 
     /**
-     * 订单列表
-     * @return array|string
+     * 商城订单列表显示
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function index()
     {
-        $this->title = '订单管理';
-        $db = Db::name($this->table);
-        $get = $this->request->get();
-        // 会员信息查询过滤
-        $memberWhere = [];
-        foreach (['phone', 'nickname'] as $field) {
-            if (isset($get[$field]) && $get[$field] !== '') {
-                $memberWhere[] = [$field, 'like', "%{$get[$field]}%"];
-            }
-        }
-        if (!empty($memberWhere)) {
-            $memberWhere['status'] = '1';
-            $sql = Db::name('Member')->field('id')->where($memberWhere)->buildSql(true);
-            $db->where("mid in {$sql}");
-        }
-        // =============== 商品信息查询过滤 ===============
-        $goodsWhere = [];
-        foreach (['goods_title'] as $field) {
-            if (isset($get[$field]) && $get[$field] !== '') {
-                $goodsWhere[] = [$field, 'like', "%{$get[$field]}%"];
-            }
-        }
-        if (!empty($goodsWhere)) {
-            $sql = Db::name('StoreOrderList')->field('order_no')->where($goodsWhere)->buildSql(true);
-            $db->where("order_no in {$sql}");
-        }
-        // =============== 收货地址过滤 ===============
-        $expressWhere = [];
-        if (isset($get['express_title']) && $get['express_title'] !== '') {
-            $expressWhere[] = ['send_company_title|company_title', 'like', "%{$get['express_title']}%"];
-        }
-        foreach (['send_no', 'username', 'phone', 'province', 'city', 'area', 'address'] as $field) {
-            if (isset($get[$field]) && $get[$field] !== '') {
-                $expressWhere[] = [$field, 'like', "%{$get[$field]}%"];
-            }
-        }
-        if (isset($get['send_status']) && $get['send_status'] !== '') {
-            $expressWhere[] = empty($get['send_status']) ? ['send_no', 'eq', ''] : ['send_no', 'neq', ''];
-        }
-        if (!empty($expressWhere)) {
-            $sql = Db::name('StoreOrderExpress')->field('order_no')->where($expressWhere)->buildSql(true);
-            $db->where("order_no in {$sql}");
-        }
-        // =============== 主订单过滤 ===============
-        foreach (['order_no', 'desc'] as $field) {
-            (isset($get[$field]) && $get[$field] !== '') && $db->whereLike($field, "%{$get[$field]}%");
-        }
-        (isset($get['status']) && $get['status'] !== '') && $db->where('status', $get['status']);
-        // 订单是否包邮状态检索
-        if (isset($get['express_zero']) && $get['express_zero'] !== '') {
-            empty($get['express_zero']) ? $db->where('freight_price', '>', '0') : $db->where('freight_price', '0');
-        }
-        // 订单时间过滤
-        foreach (['create_at', 'pay_at'] as $field) {
-            if (isset($get[$field]) && $get[$field] !== '') {
-                list($start, $end) = explode(' - ', $get[$field]);
-                $db->whereBetween($field, ["{$start} 00:00:00", "{$end} 23:59:59"]);
-            }
-        }
-        return parent::_list($db);
+        $this->title = '商城订单管理';
+        $this->_query($this->table)->order('id desc')->page();
     }
 
     /**
-     * 订单列表数据处理
+     * 商城订单列表处理
      * @param array $data
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    protected function _data_filter(&$data)
+    protected function _page_filter(array &$data)
     {
-        OrderService::buildOrderList($data);
+        $goodsList = Db::name('StoreOrderList')->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
+        $mids = array_unique(array_merge(array_column($data, 'mid'), array_column($data, 'from_mid')));
+        $memberList = Db::name('StoreMember')->whereIn('id', $mids)->select();
+        foreach ($data as &$vo) {
+            list($vo['member'], $vo['from_member'], $vo['list']) = [[], [], []];
+            foreach ($goodsList as $goods) if ($goods['order_no'] === $vo['order_no']) {
+                $vo['list'][] = $goods;
+            }
+            foreach ($memberList as $member) if ($member['id'] === $vo['mid']) {
+                $member['nickname'] = emoji_decode($member['nickname']);
+                $vo['member'] = $member;
+            }
+        }
     }
 
     /**
-     * 订单地址修改
-     * @return string
+     * 快递管理
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
-     * @throws \think\Exception
      */
-    public function address()
+    public function express()
     {
-        $order_no = $this->request->get('order_no');
         if ($this->request->isGet()) {
-            $order = Db::name('StoreOrder')->where(['order_no' => $order_no])->find();
-            empty($order) && $this->error('该订单无法进行地址修改，订单数据不存在！');
-            $orderExpress = Db::name('StoreOrderExpress')->where(['order_no' => $order_no])->find();
-            empty($orderExpress) && $this->error('该订单无法进行地址修改！');
-            return $this->fetch('', $orderExpress);
+            $where = ['is_deleted' => '0', 'status' => '1'];
+            $this->expressList = Db::name('StoreExpress')->where($where)->order('sort asc,id desc')->select();
         }
-        $data = [
-            'order_no' => $order_no,
-            'username' => $this->request->post('express_username'),
-            'phone'    => $this->request->post('express_phone'),
-            'province' => $this->request->post('form_express_province'),
-            'city'     => $this->request->post('form_express_city'),
-            'area'     => $this->request->post('form_express_area'),
-            'address'  => $this->request->post('express_address'),
-            'desc'     => $this->request->post('express_desc'),
-        ];
-        if (DataService::save('StoreOrderExpress', $data, 'order_no')) {
-            $this->success('收货地址修改成功！', '');
-        }
-        $this->error('收货地址修改失败，请稍候再试！');
+        $this->_form($this->table);
     }
 
+    /***
+     * 快递追踪查询
+     */
+    public function expressQuery()
+    {
+        list($code, $no) = [input('code', ''), input('no', '')];
+        if (empty($no)) $this->error('快递编号不能为空！');
+        if (empty($code)) $this->error('快递公司编码不能为空！');
+        $this->result = \library\tools\Express::query($code, $no);
+        $this->fetch();
+    }
+
+    /**
+     * 快递表单处理
+     * @param array $vo
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    protected function _express_form_filter(&$vo)
+    {
+        if ($this->request->isPost()) {
+            $order = Db::name($this->table)->where(['id' => $vo['id']])->find();
+            if (empty($order)) $this->error('订单查询异常，请稍候再试！');
+            $express = Db::name('StoreExpress')->where(['express_code' => $vo['express_company_code']])->find();
+            if (empty($express)) $this->error('发货快递公司异常，请重新选择快递公司！');
+            $vo['express_company_title'] = $express['express_title'];
+            $vo['express_send_at'] = empty($order['express_send_at']) ? date('Y-m-d H:i:s') : $order['express_send_at'];
+            $vo['express_state'] = '1';
+            $vo['status'] = '4';
+        }
+    }
 
 }

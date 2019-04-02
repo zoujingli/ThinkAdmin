@@ -1,136 +1,78 @@
-{extend name='admin@public/content'}
+{extend name='main'}
 
 {block name="button"}
-<!--{if auth("$classuri/add")}-->
-<button data-modal='{:url("$classuri/add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
-<!--{/if}-->
 
-<!--{if auth("$classuri/del")}-->
-<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>删除用户</button>
-<!--{/if}-->
+{if auth("admin/user/add")}
+<button data-modal='{:url("add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
+{/if}
+
+{if auth("admin/user/del")}
+<button data-action='{:url("del")}' data-rule="id#{key}" data-csrf="{:systoken('admin/user/del')}" data-confirm="确定要删除这些用户吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除用户</button>
+{/if}
+
 {/block}
 
 {block name="content"}
+<table class="layui-table" lay-skin="line">
+    <caption class="margin-bottom-10 text-left">{include file='user/index_search'}</caption>
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='list-table-check-td think-checkbox'>
+            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+        </th>
+        <th class='text-left nowrap' style="width:120px">用户名</th>
+        <th class='text-left nowrap' style="width:120px">账号状态</th>
+        <th class='text-left nowrap' style="width:180px">创建时间</th>
+        <th class='text-left nowrap' style="width:150px">最后登录</th>
+        <th class='text-left nowrap'></th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr data-dbclick>
+        <td class='list-table-check-td think-checkbox'><input class="list-check-box" value='{$vo.id}' type='checkbox'></td>
+        <td class='text-left nowrap'>
+            用户账号：{$vo.username|default=''}<br>
+            联系手机：{$vo.phone|default='--'}
+        </td>
+        <td class='text-left nowrap'>
+            登录次数：{$vo.login_num|default=0}<br>
+            使用状态：{eq name='vo.status' value='0'}<span class="layui-badge">已禁用</span>{else}<span class="layui-badge layui-bg-green">使用中</span>{/eq}
+        </td>
+        <td class='text-left nowrap'>日期：{$vo.create_at|format_datetime|str_replace=' ','<br>时间：',###|raw}</td>
+        <td class='text-left nowrap'>{if $vo.login_num>0}日期：{$vo.login_at|format_datetime|str_replace=' ','<br>时间：',###|raw}{else} -- {/if}</td>
+        <td class='text-left nowrap'>
 
-<!-- 表单搜索 开始 -->
-<form autocomplete="off" class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+            {if auth("admin/user/auth")}
+            <a class="layui-btn layui-btn-primary layui-btn-sm" data-title="用户授权" data-modal='{:url("auth")}?id={$vo.id}'>授 权</a>
+            {/if}
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">用户账号</label>
-        <div class="layui-input-inline">
-            <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入用户名" class="layui-input">
-        </div>
-    </div>
+            {if auth("admin/user/pass")}
+            <a class="layui-btn layui-btn-normal layui-btn-sm" data-title="设置密码" data-modal='{:url("pass")}?id={$vo.id}'>密 码</a>
+            {/if}
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">联系手机</label>
-        <div class="layui-input-inline">
-            <input name="phone" value="{$Think.get.phone|default=''}" placeholder="请输入联系手机" class="layui-input">
-        </div>
-    </div>
+            {if auth("admin/user/edit")}
+            <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+            {/if}
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">电子邮箱</label>
-        <div class="layui-input-inline">
-            <input name="mail" value="{$Think.get.mail|default=''}" placeholder="请输入电子邮箱" class="layui-input">
-        </div>
-    </div>
+            {if $vo.status eq 1 and auth("admin/user/forbid")}
+            <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('admin/user/forbid')}">禁 用</a>
+            {elseif auth("admin/user/resume")}
+            <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('admin/user/resume')}">启 用</a>
+            {/if}
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">登录时间</label>
-        <div class="layui-input-inline">
-            <input name="date" id='range-date' value="{$Think.get.date|default=''}" placeholder="请选择登录时间" class="layui-input">
-        </div>
-    </div>
+            {if auth("admin/user/del")}
+            <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该用户吗？" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/user/del')}">删 除</a>
+            {/if}
 
-    <div class="layui-form-item layui-inline">
-        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
-    </div>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
 
-</form>
-<script>
-    window.laydate.render({range: true, elem: '#range-date'});
-</script>
-<!-- 表单搜索 结束 -->
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 
-<form onsubmit="return false;" data-auto="true" method="post">
-    <!--{empty name='list'}-->
-    <p class="help-block text-center well">没 有 记 录 哦！</p>
-    <!--{else}-->
-    <input type="hidden" value="resort" name="action">
-    <table class="layui-table" lay-skin="line">
-        <thead>
-        <tr>
-            <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'>
-            </th>
-            <th class='text-left nowrap'>用户名</th>
-            <th class='text-left nowrap'>手机号</th>
-            <th class='text-left nowrap'>电子邮箱</th>
-            <th class='text-left nowrap'>登录次数</th>
-            <th class='text-left nowrap'>最后登录</th>
-            <th class='text-left nowrap'>状态</th>
-            <th class='text-left nowrap'></th>
-        </tr>
-        </thead>
-        <tbody>
-        <!--{foreach $list as $key=>$vo}-->
-        <tr>
-            <td class='list-table-check-td think-checkbox'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
-            </td>
-            <td class='text-left nowrap'>
-                {$vo.username}
-            </td>
-            <td class='text-left nowrap'>
-                {$vo.phone|default="<span class='color-desc'>还没有设置手机号</span>"|raw}
-            </td>
-            <td class='text-left nowrap'>
-                {$vo.mail|default="<span class='color-desc'>还没有设置邮箱</span>"|raw}
-            </td>
-            <td class='text-left nowrap'>{$vo.login_num|default=0}</td>
-            <td class='text-left nowrap'>
-                {$vo.login_at|format_datetime|default="<span class='color-desc'>从未登录</span>"|raw}
-            </td>
-            <td class='text-left nowrap'>
-                {if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}
-            </td>
-            <td class='text-left nowrap'>
-
-                {if auth("$classuri/edit")}
-                <span class="text-explode">|</span>
-                <a data-title="编辑用户" data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
-                {/if}
-
-                {if auth("$classuri/auth")}
-                <span class="text-explode">|</span>
-                <a data-title="用户授权" data-modal='{:url("$classuri/auth")}?id={$vo.id}'>授权</a>
-                {/if}
-
-                {if auth("$classuri/pass")}
-                <span class="text-explode">|</span>
-                <a data-title="设置密码" data-modal='{:url("$classuri/pass")}?id={$vo.id}'>密码</a>
-                {/if}
-
-                {if $vo.status eq 1 and auth("$classuri/forbid")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>禁用</a>
-                {elseif auth("$classuri/resume")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>启用</a>
-                {/if}
-
-                {if auth("$classuri/del")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
-                {/if}
-
-            </td>
-        </tr>
-        <!--{/foreach}-->
-        </tbody>
-    </table>
-    {if isset($page)}<p>{$page|raw}</p>{/if}
-    <!--{/empty}-->
-</form>
 {/block}

@@ -1,0 +1,78 @@
+{extend name='main'}
+
+{block name="button"}
+
+<!--{if auth("admin/queue/del")}-->
+<button data-action='{:url("del")}' data-confirm="确定要删除这些任务吗？" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除任务</button>
+<!--{/if}-->
+
+{/block}
+
+{block name="content"}
+<table class="layui-table" lay-skin="line">
+    <caption class="margin-bottom-10 text-left">{include file='queue/index_search'}</caption>
+    <!--{notempty name='list'}-->
+    <thead>
+    <tr>
+        <th class='list-table-check-td think-checkbox'>
+            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+        </th>
+        <th class='text-left nowrap'>任务信息</th>
+        <th class='text-left nowrap'>任务时间</th>
+        <th class='text-left nowrap'>任务状态</th>
+    </tr>
+    </thead>
+    <!--{/notempty}-->
+    <tbody>
+    <!--{foreach $list as $key=>$vo}-->
+    <tr>
+        <td class='list-table-check-td think-checkbox'>
+            <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+        </td>
+        <td class='text-left nowrap'>
+            任务名称：{$vo.title}
+            <br>
+            任务指令：{$vo.uri}
+        </td>
+        <td class='text-left nowrap'>
+            创建时间：<span class="layui-badge layui-bg-gray">{$vo.create_at|format_datetime|raw}</span>
+            <br>
+            跟进时间：<span class="layui-badge layui-bg-gray">{$vo.status_at|format_datetime|raw}</span>
+        </td>
+        <td class='text-left nowrap'>
+            任务状态：
+            {eq name='vo.double' value='1'}
+            <span class="layui-badge layui-bg-green margin-right-5">复</span>
+            {else}
+            <span class="layui-badge layui-bg-blue margin-right-5">单</span>
+            {/eq}
+
+            {eq name='vo.status' value='1'}
+            <span class="layui-badge layui-bg-black">待处理</span>
+            {elseif $vo.status eq 2}
+            <span class="layui-badge layui-bg-green">处理中</span>
+            {elseif $vo.status eq 3}
+            <span class="layui-badge layui-bg-blue">处理完成</span>
+            {elseif $vo.status eq 4}
+            <span class="layui-badge layui-bg-red margin-right-5">处理失败</span>
+            <a class="layui-badge layui-bg-green" data-tips-text="重置该任务" data-action="{:url('redo')}" data-value="id#{$vo.id}">
+                <i class="layui-icon font-s12">&#xe669;</i>
+            </a>
+            {/eq}
+            <!--{if auth("admin/queue/del") and in_array($vo.status,[1,3,4])}-->
+            <a data-action='{:url("del")}' data-confirm="确定要删除该任务吗？" data-value="id#{$vo.id}" data-tips-text="删除该任务" class='layui-badge layui-bg-red margin-left-5'>
+                <i class="layui-icon">&#xe640;</i>
+            </a>
+            <!--{/if}-->
+            <br>
+            状态描述：
+            <span class="layui-badge layui-bg-gray">{$vo.status_desc|raw|default="<span class='color-desc'>没有获取到状态描述</span>"}</span>
+        </td>
+    </tr>
+    <!--{/foreach}-->
+    </tbody>
+</table>
+
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+{/block}

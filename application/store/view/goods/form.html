@@ -1,357 +1,364 @@
-{extend name='admin@public/content'}
+{extend name='admin@main'}
 
 {block name="content"}
-<form autocomplete="off" onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" id="ProductForm" class='form-horizontal layui-form padding-top-20'>
+<form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
 
-    <!--{if !empty($brands)}-->
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品品牌</label>
-        <div class='col-sm-8'>
-            <select required class="layui-select full-width" name="brand_id">
-                {foreach $brands as $brand}
-                <!--{eq name='$brand.id' value='$vo.brand_id|default=0'}-->
-                <option selected="selected" value="{$brand.id}">{$brand.brand_title}</option>
-                <!--{else}-->
-                <option value="{$brand.id}">{$brand.brand_title}</option>
-                <!--{/eq}-->
-                {/foreach}
-            </select>
-        </div>
-    </div>
-    <!--{/if}-->
+    <div class="layui-card-body padding-left-40">
 
-    <!--{if !empty($cates)}-->
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品分类</label>
-        <div class='col-sm-8 text-top'>
-            <select required class="layui-select full-width" name="cate_id">
+        <div class="layui-form-item block relative">
+            <h3 class="color-green"><sup class='color-red font-s14 absolute' style="margin-left:-10px">*</sup>商品分类</h3>
+            <select class="layui-select" name="cate_id" lay-search>
                 {foreach $cates as $cate}
-                <!--{if isset($vo.cate_id) and $cate.id eq $vo.cate_id}-->
-                <option selected value="{$cate.id}">{$cate.spl|raw}{$cate.cate_title}</option>
-                <!--{else}-->
-                <option value="{$cate.id}">{$cate.spl|raw}{$cate.cate_title}</option>
-                <!--{/if}-->
+                {if isset($vo.cate_id) and $vo.cate_id eq $cate.id}
+                <option selected value="{$cate.id}">{$cate.title|default=''}</option>
+                {else}
+                <option value="{$cate.id}">{$cate.title|default=''}</option>
+                {/if}
                 {/foreach}
             </select>
         </div>
-    </div>
-    <!--{/if}-->
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品名称</label>
-        <div class='col-sm-8'>
-            <input name="goods_title" required value="{$vo.goods_title|default=''}" class="layui-input" title="请输入商品名称" placeholder="请输入商品名称">
+        <div class="layui-form-item block relative">
+            <h3 class="color-green"><sup class='color-red font-s14 absolute' style="margin-left:-10px">*</sup>商品名称</h3>
+            <input name="title" required class="layui-input" placeholder="请输入商品名称" value="{$vo.title|default=''}">
         </div>
-    </div>
 
-    {if !empty($tags)}
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品标签</label>
-        <div class='col-sm-8'>
-            <div class="background-item">
-                {foreach $tags as $tag}
-                <label class="nowrap margin-right-10 line-height-18">
-                    <!--{if isset($vo.tags_id) && in_array($tag.id,$vo.tags_id)}-->
-                    <input type="checkbox" value="{$tag.id}" name="tags_id[]" checked="checked" lay-ignore>
-                    <!--{else}-->
-                    <input type="checkbox" value="{$tag.id}" name="tags_id[]" lay-ignore>
-                    <!--{/if}-->
-                    {$tag.tags_title}
-                </label>
-                {/foreach}
-            </div>
-        </div>
-    </div>
-    {/if}
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label label-required">商品图片</label>
-        <div class='col-sm-8'>
-            <table class="layui-table background-item margin-none" lay-size="sm" lay-skin="nob">
+        <div class="layui-form-item">
+            <h3 class="color-green"><sup class='color-red font-s14 absolute' style="margin-left:-10px">*</sup>商品图片</h3>
+            <table class="layui-table">
                 <thead>
                 <tr>
-                    <td>商品LOGO</td>
-                    <td>商品图片</td>
+                    <th class="text-center">LOGO</th>
+                    <th class="text-left">商品图片</th>
+                </tr>
+                <tr>
+                    <td width="90px" class="text-center"><input name="logo" type="hidden" value="{$vo.logo|default=''}"></td>
+                    <td width="auto" class="text-left"><input name="image" type="hidden" value="{$vo.image|default=''}"></td>
+                </tr>
+                </thead>
+            </table>
+            <script>$('[name="logo"]').uploadOneImage(), $('[name="image"]').uploadMultipleImage()</script>
+        </div>
+
+        <fieldset class="margin-bottom-15">
+            <legend>快递运费及分成比例</legend>
+            <div>
+                <div class="layui-form-item block relative">
+                    <div class="inline-block">
+                        <div class="layui-unselect layui-form-radio">
+                            <label>快递运费 <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" name="price_express" value="{$vo.price_express|default='0.00'}" class="inline-block text-center font-s12 inner-input"> 元，</label>
+                            <label>分成比例 <input onblur="this.value=(parseFloat(this.value)||0).toFixed(4)" name="price_rate" value="{$vo.price_rate|default='0.00'}" class="inline-block text-center font-s12 inner-input"> %；</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="layui-form-item">
+            <h3 class="color-green">
+                <sup class='color-red font-s14 absolute' style="margin-left:-10px">*</sup>
+                商品规格<span class="color-desc font-s10">（最多支持3个规格分组，每个分组最多支持5个规格属性；仅添加商品时可编辑内容）</span>
+            </h3>
+            <div ng-repeat="x in specs track by $index" style="display:none" class="margin-bottom-10" ng-class="{true:'layui-show'}[isAddMode&&specs.length>0]">
+                <div class="goods-spec-box padding-10 margin-0 relative" style="background:#ddd">
+                    <span class="text-center goods-spec-title">名称</span>
+                    <input ng-model="x.name" required placeholder="请输入分组">
+                    <div class="fa-pull-right">
+                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-bg-gray'}[$index>0]" ng-click="upSpecRow(specs,$index)">上移</a>
+                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-bg-gray'}[$index<specs.length-1]" ng-click="dnSpecRow(specs,$index)">下移</a>
+                        <a ng-if="specs.length>1" class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-click="delSpecRow(specs,$index)">删除</a>
+                    </div>
+                </div>
+                <div class="block padding-10 layui-bg-gray" ng-if="x.list && x.list.length > 0">
+                    <label class="goods-spec-box inline-block nowrap margin-bottom-0" ng-repeat="xx in x.list">
+                        <input type="checkbox" lay-ignore ng-model="xx.check" ng-click="xx.check=checkListChecked(x.list,$event.target.checked)">
+                        <input type="text" ng-model="xx.name" ng-keyup="xx.name=$event.target.value" required placeholder="请输入规格">
+                        <a ng-if="x.list.length>1" ng-click="x.list=delSpecVal(x.list,$index)" class="layui-icon layui-icon-close font-s12 goods-spec-close"></a>
+                    </label>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-if="x.list.length<5" ng-click="addSpecVal(x.list)">增加</a>
+                </div>
+            </div>
+            <a ng-if="isAddMode&&specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加分组</a>
+            <table class="layui-table margin-top-10">
+                <thead>
+                <tr>
+                    <th ng-repeat="x in specsTreeNava track by $index" class="nowrap" ng-bind="x"></th>
+                    <th width="10%" class="text-center nowrap">市场价格 <a ng-click="batchSet('market',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+                    <th width="10%" class="text-center nowrap">销售价格 <a ng-click="batchSet('selling',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+                    <th width="10%" class="text-center nowrap">虚拟销量 <a ng-click="batchSet('virtual',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+                    <th width="10%" class="text-center nowrap">销售状态</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td class="text-top" style="width:100px">
-                        <input type="hidden" name="goods_logo" value="{$vo.goods_logo|default=''}">
+                <tr ng-repeat="rows in specsTreeData track by $index">
+                    <td class="layui-bg-gray" ng-if="td.show" rowspan="{{td.span}}" ng-repeat="td in rows" ng-bind="td.name"></td>
+                    <td class="padding-0">
+                        <label class="padding-0 margin-0">
+                            <input ng-blur="rows[0].market=setValue(rows[0].key,'market',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].market">
+                        </label>
                     </td>
-                    <td class="text-top">
-                        <input type="hidden" name="goods_image" value="{$vo.goods_image|default=''}">
+                    <td class="padding-0">
+                        <label class="padding-0 margin-0">
+                            <input ng-blur="rows[0].selling=setValue(rows[0].key,'selling',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].selling">
+                        </label>
+                    </td>
+                    <td class="padding-0">
+                        <label class="padding-0 margin-0">
+                            <input ng-blur="rows[0].virtual=setValue(rows[0].key,'virtual',$event.target.value,'(parseInt(_)||0)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].virtual">
+                        </label>
+                    </td>
+                    <td class="text-center layui-bg-gray">
+                        <label class="think-checkbox margin-0 full-width full-height block"><input lay-ignore type="checkbox" ng-model="rows[0].status"></label>
                     </td>
                 </tr>
                 </tbody>
             </table>
+            <textarea class="layui-textarea layui-hide" name="specs">{{specs}}</textarea>
+            <textarea class="layui-textarea layui-hide" name="lists">{{specsTreeData}}</textarea>
         </div>
-    </div>
 
-    <!-- 普通商品及积分商品 开始 -->
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品规格</label>
-        <div class='col-sm-8'>
-            <select required class="layui-select full-width block" name="spec_id" lay-ignore>
-                {foreach $specs as $spec}
-                {php}$param=str_replace('"',"'",$spec['spec_param']);{/php}
-                <!--{eq name='spec.id' value='$vo.spec_id|default=0'}-->
-                <option data-param="{$param}" selected="selected" value="{$spec.id}">{$spec.spec_title}</option>
-                <!--{else}-->
-                <option data-param="{$param}" value="{$spec.id}">{$spec.spec_title}</option>
-                <!--{/eq}-->
-                {/foreach}
-            </select>
-            <table class="layui-table notevent" lay-size="sm" ng-if="specs.length>0">
-                <tr>
-                    <th>可选规格</th>
-                    <th>规格内容</th>
-                </tr>
-                <tr ng-repeat="x in specs">
-                    <td ng-bind="x.name"></td>
-                    <td>
-                        <label ng-repeat="m in x.param" class="nowrap margin-right-10 line-height-18">
-                            <input data-spec="{{x.name}}_{{m.value}}" ng-model="m.checked" class="inline-block" type="checkbox" lay-ignore>
-                            <span ng-bind="m.value"></span>
-                        </label>
-                    </td>
-                </tr>
-            </table>
-            <table class="layui-table notevent" lay-size="sm">
-                <thead>
-                <tr>
-                    <th>商品规格</th>
-                    <th>市场价格</th>
-                    <th>销售价格</th>
-                    <th>规格状态</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-class="x.status?'':'layui-bg-gray'" ng-repeat="x in specdata">
-                    <td class="nowrap">
-                        <input type="hidden" name="goods_spec[]" value="{{x.spec_name}}">
-                        <span ng-repeat="a in x.spec_attrs">
-                            <span class="layui-badge layui-bg-blue" ng-bind="a.name"></span>
-                            <span ng-if="b" class="layui-badge layui-bg-green" ng-repeat="b in a.value" ng-bind="b"></span>
-                        </span>
-                    </td>
-                    <td class="price-input-td">
-                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="market_price[]" value="{{x.market_price}}">
-                    </td>
-                    <td class="price-input-td">
-                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="selling_price[]" value="{{x.selling_price}}">
-                    </td>
-                    <td>
-                        <label class="nowrap line-height-18">
-                            <input type="hidden" name="spec_status[]" value="{{x.status?1:0}}">
-                            <input ng-checked="x.status" ng-model="x.status" value="1" lay-ignore class="inline-block" type="checkbox"/> 启用
-                        </label>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="layui-form-item block">
+            <h3 class="color-green"><sup class='color-red font-s14 absolute' style="margin-left:-10px">*</sup>商品内容</h3>
+            <textarea name="content">{$vo.content|default=''|raw}</textarea>
         </div>
-    </div>
-    <!-- 普通商品及积分商品 结束 -->
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label">视频展示</label>
-        <div class='col-sm-8'>
-            <div class="row">
-                <div class="col-sm-10 padding-right-0">
-                    <input style="border-right:none" name="goods_video" value="{$vo.goods_video|default=''}" class="layui-input" title="请输入链接或上传视频展示文件" placeholder="请输入链接或上传视频展示文件">
-                </div>
-                <div class="col-sm-2 padding-left-0">
-                    <button data-file="one" data-type="mp4" data-field="goods_video" type="button" class="layui-btn layui-btn-sm" style="height:38px;line-height:38px;width:100%">上传视频文件</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">展示描述</label>
-        <div class='col-sm-8'>
-            <textarea class="layui-textarea" name="goods_desc" placeholder="请输入展示描述">{$vo.goods_desc|default=''}</textarea>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label label-required">商品内容</label>
-        <div class='col-sm-8'>
-            <textarea name="goods_content">{$vo.goods_content|default=''|htmlspecialchars_decode}</textarea>
-        </div>
-    </div>
-
-    <div class="hr-line-dashed"></div>
-
-    <div class="col-sm-7 col-sm-offset-2">
         <div class="layui-form-item text-center">
-            {if !empty($vo.id)}<input type="hidden" name="id" value="{$vo.id}">{/if}
-            <button class="layui-btn" type="submit">保存配置</button>
-            <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+            {notempty name='vo.id'}<input type="hidden" name="id" value="{$vo.id}">{/notempty}
+            <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">取消编辑</button>
+            <button class="layui-btn" type="submit">保存商品</button>
         </div>
-    </div>
 
+    </div>
 </form>
 
+<style>
+
+    .inner-input {
+        width: 80px;
+        height: 14px;
+        padding: 1px 5px;
+        line-height: 12px;
+    }
+
+    .goods-spec-box {
+        position: relative;
+        margin: 0 10px 10px 0;
+        vertical-align: middle;
+    }
+
+    .goods-spec-title {
+        z-index: 2;
+        width: 40px;
+        color: #fff;
+        height: 28px;
+        position: absolute;
+        background: #999;
+        line-height: 28px;
+    }
+
+    .goods-spec-close {
+        right: 8px;
+        z-index: 2;
+        line-height: 28px;
+        position: absolute;
+        display: inline-block
+    }
+
+    .goods-spec-btn {
+        height: 28px;
+        margin-left: 5px !important;
+        line-height: 26px !important;
+    }
+
+    .goods-spec-box input {
+        z-index: 1;
+        width: 120px;
+        position: relative;
+        border: 1px solid #999;
+        padding: 5px 0 5px 45px;
+        display: inline-block !important;
+    }
+
+    .goods-spec-box input[type=checkbox] {
+        z-index: 2;
+        width: 40px;
+        height: 28px;
+        border: none;
+        cursor: pointer;
+        appearance: none;
+        position: absolute;
+        -webkit-appearance: none;
+    }
+
+    .goods-spec-box input[type=checkbox]:before {
+        top: 1px;
+        left: 1px;
+        width: 40px;
+        height: 26px;
+        content: ' ';
+        position: absolute;
+        background: #c9c9c9;
+    }
+
+    .goods-spec-box input[type=checkbox]:after {
+        top: 1px;
+        left: 1px;
+        color: #999;
+        width: 40px;
+        height: 26px;
+        content: '\e63f';
+        font-size: 16px;
+        line-height: 26px;
+        position: absolute;
+        text-align: center;
+        font-family: 'layui-icon';
+    }
+
+    .goods-spec-box input[type=checkbox]:checked:after {
+        color: #333;
+        content: '\e605';
+    }
+</style>
+
+{/block}
+
+{block name='script'}
 <script>
-    require(['jquery', 'ckeditor', 'angular'], function () {
-        window.form.render();
-        window.createEditor('[name="goods_content"]', {height: 500});
-        var app = angular.module("ProductForm", []).run(callback);
+    window.form.render();
+    require(['ckeditor', 'angular'], function () {
+        window.createEditor('[name="content"]', {height: 500});
+        let app = angular.module("GoodsForm", []).run(callback);
         angular.bootstrap(document.getElementById(app.name), [app.name]);
 
         function callback($rootScope) {
-            // 绑定规格列表
-            $rootScope.specs = [];
-            // 规格默认数据
-            var specdata = JSON.parse('{$vo.list|default=[]|json_encode=###,256|raw}');
-            // 单图片上传处理
-            $('#ProductForm [name="goods_logo"]').uploadOneImage();
-            // 多图片上传处理
-            $('#ProductForm [name="goods_image"]').uploadMultipleImage();
-            // 规格显示切换
-            $('#ProductForm').on('click', '[data-spec]', applySpecData);
-            // 商品规格切换
-            $('#ProductForm').on('change', '[name="spec_id"]', function () {
-                var specs = eval(this.options[this.selectedIndex].getAttribute('data-param'));
-                for (var i in specs) {
-                    specs[i].param = [];
-                    var values = specs[i].value.split(' ');
-                    for (var j in values) {
-                        specs[i].param.push({
-                            name: specs[i].name, value: values[j],
-                            checked: getSpecStatus(specs[i].name, values[j])
-                        });
-                    }
-                }
-                $rootScope.$apply(function () {
-                    $rootScope.specs = specs;
-                    setTimeout(applySpecData, 10);
+            $rootScope.isAddMode = parseInt('{$isAddMode|default=0}');
+            let defaultValues = angular.fromJson('{$defaultValues|raw|default=0}') || {};
+            $rootScope.specs = angular.fromJson('{$vo.specs|raw|default=0}') || [{name: '默认分组', list: [{name: '默认规格', check: true}]}];
+            // 批量设置数值
+            $rootScope.batchSet = function (type, fixed) {
+                layer.prompt({title: '请输入数值', formType: 0}, function (value, index) {
+                    $rootScope.$apply(function () {
+                        var val = (parseFloat(value) || 0).toFixed(fixed);
+                        for (var i in $rootScope.specsTreeData) for (var j in $rootScope.specsTreeData[i]) {
+                            $rootScope.specsTreeData[i][j][type] = val;
+                        }
+                    });
+                    layer.close(index);
                 });
-            }).find('[name="spec_id"]').trigger('change');
-
-            // 规格属性切换
-            function applySpecData() {
-                var params = {};
-                for (var i in $rootScope.specs) {
-                    var isChecked = false;
-                    for (var j in $rootScope.specs[i].param) {
-                        if ($rootScope.specs[i].param[j].checked) {
-                            isChecked = true;
-                            var name = $rootScope.specs[i].param[j].name;
-                            var value = $rootScope.specs[i].param[j].value;
-                            (params[name] || (params[name] = [])).push({name: name, value: value});
-                        }
-                    }
-                    if (!isChecked) {
-                        $rootScope.specs[i].param[0].checked = true;
-                        var name = $rootScope.specs[i].param[0].name;
-                        var value = $rootScope.specs[i].param[0].value;
-                        (params[name] || (params[name] = [])).push({name: name, value: value});
-                    }
-                }
-                $rootScope.$apply(function () {
-                    $rootScope.specdata = DataArray.render(params);
+            };
+            // 返回商品列表
+            $rootScope.hsitoryBack = function () {
+                $.msg.confirm('确定要取消编辑吗？', function (index) {
+                    history.back(), $.msg.close(index);
                 });
-            }
-
-            // 获取规格选择状态
-            function getSpecStatus(name, spec) {
-                for (var i in specdata) {
-                    if (specdata[i].goods_spec.indexOf(name + ':' + spec) > -1) {
-                        return true;
+            };
+            // 设置默认值
+            $rootScope.setValue = function (key, type, value, call) {
+                defaultValues[key] || (defaultValues[key] = {});
+                return defaultValues[key][type] = eval(call.replace('_', "'" + value + "'"));
+            };
+            // 读取默认值
+            let getValue = function (key, callback) {
+                if (typeof callback === 'function') return callback(defaultValues[key] || {});
+            };
+            // 生成交叉表格数据
+            $rootScope.specsTreeData = [];
+            $rootScope.specsTreeNava = [];
+            // 当前商品规格发生变化时重新计算规格列表
+            $rootScope.$watch('specs', function () {
+                let list = [], nava = [], table = [[]];
+                let data = angular.fromJson(angular.toJson($rootScope.specs));
+                // 过滤无效记录
+                for (let o of data) {
+                    let tmp = [];
+                    for (let x of o.list) (x.check && typeof x.name === 'string' && x.name.length > 0) && tmp.push(x);
+                    if (tmp.length > 0) for (let x of tmp) x.group = o.name, x.span = 1, x.show = true;
+                    if (tmp.length > 0) list.push(tmp), nava.push(o.name);
+                    $rootScope.specsTreeNava = nava;
+                }
+                // 表格交叉
+                for (let i in list) {
+                    let temp = [];
+                    for (let j in table) for (let k in list[i]) temp.push(table[j].concat(list[i][k]));
+                    table = temp;
+                }
+                // 表格合并
+                list = angular.fromJson(angular.toJson(table));
+                for (let row in list) {
+                    let key = [], _key = '';
+                    for (let td in list[row]) key.push(list[row][td].group + '::' + list[row][td].name);
+                    for (let td in list[row]) {
+                        if (_key.length === 0) {
+                            list[row][0].key = _key = key.join(';;');
+                            list[row][0].virtual = getValue(_key, function (data) {
+                                return data.virtual || '0';
+                            });
+                            list[row][0].market = getValue(_key, function (data) {
+                                return data.market || '0.00';
+                            });
+                            list[row][0].selling = getValue(_key, function (data) {
+                                return data.selling || '0.00';
+                            });
+                            list[row][0].status = getValue(_key, function (data) {
+                                return !!(typeof data.status !== 'undefined' ? data.status : true);
+                            });
+                        }
+                        // 表格TD处理
+                        for (let dow = 1 + parseInt(row); dow < list.length; dow++)
+                            if (list[row][td].name === list[dow][td].name) {
+                                list[row][td].span++;
+                                list[dow][td].show = false;
+                            } else break;
                     }
                 }
-                return false;
-            }
-
-            // 数据处理
-            var DataArray = new function () {
-                // 编译生成规格数据
-                this.render = function (data) {
-                    var specs = [], list = [];
-                    for (var i in data) {
-                        specs = this.joinArray(data[i], specs, i);
-                    }
-                    (specs.length < 1) && (specs = ['default:default']);
-                    for (var i in specs) {
-                        var specName = specs[i];
-                        var specTitle = (specName === 'default:default') ? '默认规格' : specName.replace(/,/ig, ';').replace(/:/ig, ':');
-                        var specAttrs = [], lines = specTitle.split(';');
-                        for (var j in lines) {
-                            var line = lines[j].split(':');
-                            specAttrs.push({name: line[0], value: (line[1] || '').split(',')});
-                        }
-                        list.push({
-                            spec_name: specName, spec_title: specTitle, spec_attrs: specAttrs,
-                            market_price: parseFloat(this.getData(specs[i], 'market_price') || '0').toFixed(2),
-                            selling_price: parseFloat(this.getData(specs[i], 'selling_price') || '0').toFixed(2),
-                            status: this.getData(specName, 'status') !== '0'
-                        });
-                    }
-                    return list;
-                };
-                // 读取规格默认数据
-                this.getData = function (spec, field) {
-                    for (var i in specdata) {
-                        if (specdata[i].goods_spec === spec) {
-                            return specdata[i][field] || '0';
-                        }
-                    }
-                    return '1';
-                };
-                // 数组交叉计算
-                this.joinArray = function (item, list, pk) {
-                    var _list = [];
-                    for (var i in item) {
-                        if (list.length > 0) {
-                            for (var j in list) {
-                                _list.push(list[j] + ',' + pk + ':' + item[i].value);
-                            }
-                        } else {
-                            _list.push(pk + ':' + item[i].value);
-                        }
-                    }
-                    return _list;
+                $rootScope.specsTreeData = list;
+            }, true);
+            // 判断规则是否能取消选择
+            $rootScope.checkListChecked = function (list, check) {
+                for (let o of  list) if (o.check) return check;
+                return true;
+            };
+            // 增加整行规格分组
+            $rootScope.addSpecRow = function (data) {
+                data.push({name: '规格分组', list: [{name: '规格属性', check: true}]})
+            };
+            // 下移整行规格分组
+            $rootScope.dnSpecRow = function (data, $index) {
+                let tmp = [], cur = data[$index];
+                if ($index > data.length - 2) return false;
+                for (let i in data) {
+                    (parseInt(i) !== parseInt($index)) && tmp.push(data[i]);
+                    (parseInt(i) === parseInt($index) + 1) && tmp.push(cur);
                 }
+                return $rootScope.specs = tmp;
+            };
+            // 上移整行规格分组
+            $rootScope.upSpecRow = function (data, $index) {
+                let tmp = [], cur = data[$index];
+                if ($index < 1) return false;
+                for (let i in data) {
+                    (parseInt(i) === parseInt($index) - 1) && tmp.push(cur);
+                    (parseInt(i) !== parseInt($index)) && tmp.push(data[i]);
+                }
+                return $rootScope.specs = tmp;
+            };
+            // 移除整行规格分组
+            $rootScope.delSpecRow = function (data, $index) {
+                let tmp = [];
+                for (let i in data) if (parseInt(i) !== parseInt($index)) tmp.push(data[i]);
+                return $rootScope.specs = tmp;
+            };
+            // 增加分组的属性
+            $rootScope.addSpecVal = function (list) {
+                list.push({name: '规格属性', check: true});
+            };
+            // 移除分组的属性
+            $rootScope.delSpecVal = function (data, $index) {
+                let temp = [];
+                for (let i in data) if (parseInt(i) !== parseInt($index)) temp.push(data[i]);
+                return temp;
             };
         }
-    });
+    })
 </script>
-{/block}
-
-{block name="style"}
-<style>
-
-    .background-item {
-        padding: 15px;
-        background: #efefef;
-    }
-
-    .background-item thead tr {
-        background: #e0e0e0
-    }
-
-    .price-input-td {
-        padding: 0 !important;
-    }
-
-    .price-input-td:before {
-        margin: 4px;
-        width: 35px;
-        height: 22px;
-        content: "金额";
-        line-height: 20px;
-        text-align: center;
-        position: absolute;
-        background: #e2e2e2;
-    }
-
-    .price-input-td input {
-        height: 30px;
-        padding-left: 50px;
-        border: none !important;
-    }
-</style>
 {/block}

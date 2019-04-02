@@ -1,0 +1,57 @@
+<fieldset>
+
+    <legend class="layui-bg-cyan">条件搜索</legend>
+
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">用户账号</label>
+            <div class="layui-input-inline">
+                <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入用户名" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">联系手机</label>
+            <div class="layui-input-inline">
+                <input name="phone" value="{$Think.get.phone|default=''}" placeholder="请输入联系手机" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">电子邮箱</label>
+            <div class="layui-input-inline">
+                <input name="mail" value="{$Think.get.mail|default=''}" placeholder="请输入电子邮箱" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">使用状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="status">
+                    {foreach [''=>'-- 全部 --','0'=>'已禁用的账号','1'=>'使用中的账号'] as $k=>$v}
+                    {eq name='Think.get.status' value='$k.""'}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">登录时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="login_at" value="{$Think.get.login_at|default=''}" placeholder="请选择登录时间" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+
+</fieldset>
+
+<script>form.render()</script>

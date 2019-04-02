@@ -1,0 +1,71 @@
+{extend name="admin@main"}
+
+{block name="content"}
+<form onsubmit="return false;" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
+
+    <div class="layui-card-body" style="padding-left:40px">
+
+        <fieldset>
+
+            <legend class="layui-bg-cyan">平台短信配置</legend>
+
+            {if empty($query.code)}
+            <div class="layui-code border-0">{$query.msg|default=''}</div>
+            {elseif $query.code eq 1}
+            <div class="layui-code border-0">平台剩余 {$query.num|default=0} 条可用短信，{$query.msg|default=''}</div>
+            {/if}
+
+            <div class="layui-form-item">
+                <label>
+                    <span class="color-green margin-right-10 font-s14">短信平台账号</span><span class="nowrap color-desc">Username</span>
+                    <span class="block relative">
+                        <input name="sms_zt_username" required placeholder="请输入助通短信平台账号" value="{:sysconf('sms_zt_username')}" class="layui-input">
+                    </span>
+                </label>
+                <p class="help-block">助通短信平台账号，可以联系客服获取账号与密码。</p>
+            </div>
+
+            <div class="layui-form-item">
+                <label>
+                    <span class="color-green margin-right-10 font-s14">短信平台密码</span><span class="nowrap color-desc">Password</span>
+                    <span class="block relative">
+                        <input name="sms_zt_password" required placeholder="请输入助通短信平台密码" value="{:sysconf('sms_zt_password')}" class="layui-input">
+                    </span>
+                </label>
+                <p class="help-block">助通短信平台账号，可以联系客服获取账号与密码。</p>
+            </div>
+
+            <div class="layui-form-item">
+                <label>
+                    <span class="color-green margin-right-10 font-s14">短信发送安全码</span><span class="nowrap color-desc">Secure</span>
+                    <span class="block relative">
+                        <input name="sms_secure" required placeholder="请输入短信发送安全码" value="{:sysconf('sms_secure')}" class="layui-input">
+                    </span>
+                </label>
+                <p class="help-block">短信发送安全码，调用接口发短信时需要传入此参数。</p>
+            </div>
+
+            <div class="layui-form-item">
+                <label>
+                    <span class="color-green margin-right-10 font-s14">注册短信模板</span><span class="nowrap color-desc">Template</span>
+                    <span class="block relative">
+                    <textarea class="layui-textarea" required name="sms_reg_template" placeholder="请输入助通短信平台密码">{:sysconf('sms_reg_template')}</textarea>
+                    </span>
+                </label>
+                <p class="help-block">会员注册短信模板，验证码变量使用 {code} 代替。</p>
+            </div>
+
+
+            <div class="layui-form-item text-center margin-top-20">
+                <div class="layui-row">
+                    <div class="layui-col-sm8 layui-col-md6">
+                        <button class="layui-btn" type="submit">保存配置</button>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+
+    </div>
+</form>
+{/block}

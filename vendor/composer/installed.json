@@ -297,18 +297,18 @@
         ]
     },
     {
-        "name": "topthink/think-captcha",
-        "version": "v2.0.2",
-        "version_normalized": "2.0.2.0",
+        "name": "topthink/think-helper",
+        "version": "v3.0.0",
+        "version_normalized": "3.0.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/top-think/think-captcha.git",
-            "reference": "54c8a51552f99ff9ea89ea9c272383a8f738ceee"
+            "url": "https://github.com/top-think/think-helper.git",
+            "reference": "8ba5f66e68106369fcc3211e7d2dbaf7bc9ce455"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-captcha/zipball/54c8a51552f99ff9ea89ea9c272383a8f738ceee",
-            "reference": "54c8a51552f99ff9ea89ea9c272383a8f738ceee",
+            "url": "https://api.github.com/repos/top-think/think-helper/zipball/8ba5f66e68106369fcc3211e7d2dbaf7bc9ce455",
+            "reference": "8ba5f66e68106369fcc3211e7d2dbaf7bc9ce455",
             "shasum": "",
             "mirrors": [
                 {
@@ -317,15 +317,12 @@
                 }
             ]
         },
-        "require": {
-            "topthink/framework": "5.1.*"
-        },
-        "time": "2017-12-31T16:37:49+00:00",
+        "time": "2019-03-14T09:28:59+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "think\\captcha\\": "src/"
+                "think\\helper\\": "src"
             },
             "files": [
                 "src/helper.php"
@@ -341,7 +338,7 @@
                 "email": "448901948@qq.com"
             }
         ],
-        "description": "captcha package for thinkphp5"
+        "description": "The ThinkPHP5 Helper Package"
     },
     {
         "name": "topthink/think-installer",
@@ -393,6 +390,60 @@
         ]
     },
     {
+        "name": "topthink/think-queue",
+        "version": "v2.0.4",
+        "version_normalized": "2.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/top-think/think-queue.git",
+            "reference": "d9b8f38c7af8ad770257b0d7db711ce8b12a6969"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/top-think/think-queue/zipball/d9b8f38c7af8ad770257b0d7db711ce8b12a6969",
+            "reference": "d9b8f38c7af8ad770257b0d7db711ce8b12a6969",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "topthink/framework": "5.1.*",
+            "topthink/think-helper": ">=1.0.4",
+            "topthink/think-installer": "^2.0"
+        },
+        "time": "2018-05-11T06:55:55+00:00",
+        "type": "think-extend",
+        "extra": {
+            "think-config": {
+                "queue": "src/config.php"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "think\\": "src"
+            },
+            "files": [
+                "src/common.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "yunwuxin",
+                "email": "448901948@qq.com"
+            }
+        ],
+        "description": "The ThinkPHP5 Queue Package"
+    },
+    {
         "name": "zoujingli/ip2region",
         "version": "v1.0.5",
         "version_normalized": "1.0.5.0",
@@ -440,6 +491,55 @@
         "keywords": [
             "Ip2Region"
         ]
+    },
+    {
+        "name": "zoujingli/think-library",
+        "version": "v5.1.x-dev",
+        "version_normalized": "5.1.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zoujingli/ThinkLibrary.git",
+            "reference": "9ba43129ddcfd571c88b78071ad1f347b106ff26"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/9ba43129ddcfd571c88b78071ad1f347b106ff26",
+            "reference": "9ba43129ddcfd571c88b78071ad1f347b106ff26",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "aliyuncs/oss-sdk-php": "^2.3",
+            "ext-curl": "*",
+            "ext-iconv": "*",
+            "ext-json": "*",
+            "ext-openssl": "*",
+            "php": ">=5.4",
+            "qiniu/php-sdk": "^7.2",
+            "topthink/framework": "5.1.*"
+        },
+        "time": "2019-04-01T02:03:01+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "common.php"
+            ],
+            "psr-4": {
+                "library\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "ThinkPHP Basic Development Library",
+        "homepage": "http://library.thinkadmin.top"
     },
     {
         "name": "zoujingli/wechat-developer",
@@ -509,17 +609,17 @@
     },
     {
         "name": "zoujingli/weopen-developer",
-        "version": "v1.1.3",
-        "version_normalized": "1.1.3.0",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "32aa04ad346790cd6ac7672c888e22e15cb007fe"
+            "reference": "99a8daa7458a9c5421ecc44daba6783278fc5a6d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/32aa04ad346790cd6ac7672c888e22e15cb007fe",
-            "reference": "32aa04ad346790cd6ac7672c888e22e15cb007fe",
+            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/99a8daa7458a9c5421ecc44daba6783278fc5a6d",
+            "reference": "99a8daa7458a9c5421ecc44daba6783278fc5a6d",
             "shasum": "",
             "mirrors": [
                 {
@@ -530,11 +630,12 @@
         },
         "require": {
             "ext-curl": "*",
+            "ext-json": "*",
             "ext-openssl": "*",
             "php": ">=5.4",
             "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2018-06-14T08:11:03+00:00",
+        "time": "2019-03-30T05:58:15+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

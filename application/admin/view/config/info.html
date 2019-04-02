@@ -1,0 +1,61 @@
+{extend name="main"}
+
+{block name="content"}
+
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label">Name<br><span class="nowrap color-desc">程序名称</span></label>
+            <div class="layui-input-block">
+                <input name="app_name" required placeholder="请输入程序名称" value="{:sysconf('app_name')}" class="layui-input">
+                <p class="help-block">当前程序名称，在后台主标题上显示</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">Version<br><span class="nowrap color-desc">程序版本</span></label>
+            <div class="layui-input-block">
+                <input name="app_version" placeholder="请输入程序版本" value="{:sysconf('app_version')}" class="layui-input">
+                <p class="help-block">当前程序版本号，在后台主标题上标显示</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">Website<br><span class="nowrap color-desc">网站名称</span></label>
+            <div class="layui-input-block">
+                <input name="site_name" required placeholder="请输入网站名称" value="{:sysconf('site_name')}" class="layui-input">
+                <p class="help-block">网站名称，显示在浏览器标签上</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">Copyright<br><span class="nowrap color-desc">版权信息</span></label>
+            <div class="layui-input-block">
+                <input name="site_copy" required placeholder="请输入版权信息" value="{:sysconf('site_copy')}" class="layui-input">
+                <p class="help-block">程序的版权信息设置，在后台登录页面显示</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">Browser<br><span class="nowrap color-desc">浏览器图标</span></label>
+            <div class="layui-input-block">
+                <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('site_icon')}"/>
+                <input type="hidden" name="site_icon" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('site_icon')}" class="layui-input">
+                <a class="margin-left-10" data-file="btn" data-uptype="local" data-type="ico,png" data-field="site_icon">上传图片</a>
+                <p class="help-block">建议上传ICO图标的尺寸为128x128px，此图标用于网站标题前，<a href="http://www.favicon-icon-generator.com/" target="_blank">ICON在线制作</a></p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">Miitbeian<br><span class="nowrap color-desc">网站备案</span></label>
+            <div class="layui-input-block">
+                <input name="miitbeian" placeholder="请输入网站备案号" value="{:sysconf('miitbeian')}" class="layui-input">
+                <p class="help-block">网站备案号，可以在<a target="_blank" href="http://www.miitbeian.gov.cn">备案管理中心</a>查询获取</p>
+            </div>
+        </div>
+        <div class="hr-line-dashed margin-left-40"></div>
+        <div class="layui-form-item text-center">
+            <div class="layui-row">
+                <div class="layui-col-sm8 layui-col-md6">
+                    <button class="layui-btn" type="submit">保存配置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{/block}

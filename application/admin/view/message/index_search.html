@@ -1,0 +1,57 @@
+<fieldset>
+
+    <legend class="layui-bg-cyan">条件搜索</legend>
+
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">消息标题</label>
+            <div class="layui-input-inline">
+                <input name="title" value="{$Think.get.title|default=''}" placeholder="请输入消息标题" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">消息描述</label>
+            <div class="layui-input-inline">
+                <input name="desc" value="{$Think.get.desc|default=''}" placeholder="请输入消息描述" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">读取状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="read_state">
+                    {foreach [''=>'-- 全部 --','0'=>'未读取消息','1'=>'已读取消息'] as $k=>$v}
+                    {eq name='Think.get.read_state' value='$k.""'}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">读取时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="read_at" value="{$Think.get.read_at|default=''}" placeholder="请输入读取时间" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+
+</fieldset>
+
+<script>form.render()</script>

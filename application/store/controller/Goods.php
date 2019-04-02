@@ -1,11 +1,11 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | framework
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
+// | 官方网站: http://framework.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
@@ -14,218 +14,59 @@
 
 namespace app\store\controller;
 
-use app\store\service\GoodsService;
-use controller\BasicAdmin;
-use service\DataService;
-use service\ToolsService;
+use library\Controller;
+use library\tools\Data;
 use think\Db;
-use think\exception\HttpResponseException;
 
 /**
- * 商店商品管理
+ * 商城商品管理
  * Class Goods
  * @package app\store\controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/03/27 14:43
  */
-class Goods extends BasicAdmin
+class Goods extends Controller
 {
-
     /**
-     * 定义当前操作表名
+     * 指定数据表
      * @var string
      */
-    public $table = 'StoreGoods';
+    protected $table = 'StoreGoods';
 
     /**
-     * 普通商品
-     * @return array|string
+     * 商品列表
+     * @return mixed
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function index()
     {
         $this->title = '商品管理';
-        $get = $this->request->get();
-        $db = Db::name($this->table)->where(['is_deleted' => '0']);
-        if (isset($get['tags_id']) && $get['tags_id'] !== '') {
-            $db->whereLike('tags_id', "%,{$get['tags_id']},%");
-        }
-        if (isset($get['goods_title']) && $get['goods_title'] !== '') {
-            $db->whereLike('goods_title', "%{$get['goods_title']}%");
-        }
-        foreach (['cate_id', 'brand_id'] as $field) {
-            (isset($get[$field]) && $get[$field] !== '') && $db->where($field, $get[$field]);
-        }
-        if (isset($get['create_at']) && $get['create_at'] !== '') {
-            list($start, $end) = explode(' - ', $get['create_at']);
-            $db->whereBetween('create_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
-        }
-        return parent::_list($db->order('status desc,sort asc,id desc'));
+        return $this->_query($this->table)->equal('status,vip_mod,cate_id')->like('title')->where(['is_deleted' => '0'])->order('sort asc,id desc')->page();
     }
 
     /**
-     * 商城数据处理
+     * 数据列表处理
      * @param array $data
-     */
-    protected function _data_filter(&$data)
-    {
-        $result = GoodsService::buildGoodsList($data);
-        $this->assign([
-            'brands' => $result['brand'],
-            'cates'  => ToolsService::arr2table($result['cate']),
-        ]);
-    }
-
-    /**
-     * 添加商品
-     * @return array|string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\Exception
-     */
-    public function add()
-    {
-        if ($this->request->isGet()) {
-            $this->title = '添加商品';
-            $this->_form_assign();
-            return $this->_form($this->table, 'form');
-        }
-        try {
-            $data = $this->_form_build_data();
-            Db::transaction(function () use ($data) {
-                $goodsID = Db::name($this->table)->insertGetId($data['main']);
-                foreach ($data['list'] as &$vo) {
-                    $vo['goods_id'] = $goodsID;
-                }
-                Db::name('StoreGoodsList')->insertAll($data['list']);
-            });
-        } catch (HttpResponseException $exception) {
-            return $exception->getResponse();
-        } catch (\Exception $e) {
-            $this->error('商品添加失败，请稍候再试！');
-        }
-        list($base, $spm, $url) = [url('@admin'), $this->request->get('spm'), url('store/goods/index')];
-        $this->success('添加商品成功！', "{$base}#{$url}?spm={$spm}");
-    }
-
-    /**
-     * 编辑商品
-     * @return array|string
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function edit()
+    protected function _index_page_filter(&$data)
     {
-        if (!$this->request->isPost()) {
-            $goods_id = $this->request->get('id');
-            $goods = Db::name($this->table)->where(['id' => $goods_id, 'is_deleted' => '0'])->find();
-            empty($goods) && $this->error('需要编辑的商品不存在！');
-            $goods['list'] = Db::name('StoreGoodsList')->where(['goods_id' => $goods_id, 'is_deleted' => '0'])->select();
-            $this->_form_assign();
-            return $this->fetch('form', ['vo' => $goods, 'title' => '编辑商品']);
+        $this->clist = Db::name('StoreGoodsCate')->where(['is_deleted' => '0', 'status' => '1'])->select();
+        $list = Db::name('StoreGoodsList')->where('status', '1')->whereIn('goods_id', array_unique(array_column($data, 'id')))->select();
+        foreach ($data as &$vo) {
+            list($vo['list'], $vo['cate']) = [[], []];
+            foreach ($list as $goods) if ($goods['goods_id'] === $vo['id']) array_push($vo['list'], $goods);
+            foreach ($this->clist as $cate) if ($cate['id'] === $vo['cate_id']) $vo['cate'] = $cate;
         }
-        try {
-            $data = $this->_form_build_data();
-            $goods_id = $this->request->post('id');
-            $goods = Db::name($this->table)->where(['id' => $goods_id, 'is_deleted' => '0'])->find();
-            empty($goods) && $this->error('商品编辑失败，请稍候再试！');
-            foreach ($data['list'] as &$vo) {
-                $vo['goods_id'] = $goods_id;
-            }
-            Db::transaction(function () use ($data, $goods_id, $goods) {
-                // 更新商品主表
-                $where = ['id' => $goods_id, 'is_deleted' => '0'];
-                Db::name('StoreGoods')->where($where)->update(array_merge($goods, $data['main']));
-                // 更新商品详细
-                Db::name('StoreGoodsList')->where(['goods_id' => $goods_id])->delete();
-                Db::name('StoreGoodsList')->insertAll($data['list']);
-            });
-        } catch (HttpResponseException $exception) {
-            return $exception->getResponse();
-        } catch (\Exception $e) {
-            $this->error('商品编辑失败，请稍候再试！' . $e->getMessage());
-        }
-        list($base, $spm, $url) = [url('@admin'), $this->request->get('spm'), url('store/goods/index')];
-        $this->success('商品编辑成功！', "{$base}#{$url}?spm={$spm}");
     }
 
     /**
-     * 表单数据处理
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    protected function _form_assign()
-    {
-        list($where, $order) = [['status' => '1', 'is_deleted' => '0'], 'sort asc,id desc'];
-        $specs = (array)Db::name('StoreGoodsSpec')->where($where)->order($order)->select();
-        $brands = (array)Db::name('StoreGoodsBrand')->where($where)->order($order)->select();
-        $cates = (array)Db::name('StoreGoodsCate')->where($where)->order($order)->select();
-        // 所有的商品信息
-        $where = ['is_deleted' => '0', 'status' => '1'];
-        $goodsListField = 'goods_id,goods_spec,goods_stock,goods_sale';
-        $goods = Db::name('StoreGoods')->field('id,goods_title')->where($where)->select();
-        $list = Db::name('StoreGoodsList')->field($goodsListField)->where($where)->select();
-        foreach ($goods as $k => $g) {
-            $goods[$k]['list'] = [];
-            foreach ($list as $v) {
-                ($g['id'] === $v['goods_id']) && $goods[$k]['list'][] = $v;
-            }
-        }
-        array_unshift($specs, ['spec_title' => ' - 不使用规格模板 -', 'spec_param' => '[]', 'id' => '0']);
-        $this->assign([
-            'specs'  => $specs,
-            'cates'  => ToolsService::arr2table($cates),
-            'brands' => $brands,
-            'all'    => $goods,
-        ]);
-    }
-
-    /**
-     * 读取POST表单数据
-     * @return array
-     */
-    protected function _form_build_data()
-    {
-        list($main, $list, $post, $verify) = [[], [], $this->request->post(), false];
-        empty($post['goods_logo']) && $this->error('商品LOGO不能为空，请上传后再提交数据！');
-        // 商品主数据组装
-        $main['cate_id'] = $this->request->post('cate_id', '0');
-        $main['spec_id'] = $this->request->post('spec_id', '0');
-        $main['brand_id'] = $this->request->post('brand_id', '0');
-        $main['goods_logo'] = $this->request->post('goods_logo', '');
-        $main['goods_title'] = $this->request->post('goods_title', '');
-        $main['goods_video'] = $this->request->post('goods_video', '');
-        $main['goods_image'] = $this->request->post('goods_image', '');
-        $main['goods_desc'] = $this->request->post('goods_desc', '', null);
-        $main['goods_content'] = $this->request->post('goods_content', '');
-        $main['tags_id'] = ',' . join(',', isset($post['tags_id']) ? $post['tags_id'] : []) . ',';
-        // 商品从数据组装
-        if (!empty($post['goods_spec'])) {
-            foreach ($post['goods_spec'] as $key => $value) {
-                $goods = [];
-                $goods['goods_spec'] = $value;
-                $goods['market_price'] = $post['market_price'][$key];
-                $goods['selling_price'] = $post['selling_price'][$key];
-                $goods['status'] = intval(!empty($post['spec_status'][$key]));
-                !empty($goods['status']) && $verify = true;
-                $list[] = $goods;
-            }
-        } else {
-            $this->error('没有商品规格或套餐信息哦！');
-        }
-        !$verify && $this->error('没有设置有效的商品规格！');
-        return ['main' => $main, 'list' => $list];
-    }
-
-    /**
-     * 商品库存信息更新
-     * @return string
+     * 商品库存入库
+     * @return mixed
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -234,71 +75,113 @@ class Goods extends BasicAdmin
      */
     public function stock()
     {
-        if (!$this->request->post()) {
-            $goods_id = $this->request->get('id');
-            $goods = Db::name('StoreGoods')->where(['id' => $goods_id, 'is_deleted' => '0'])->find();
-            empty($goods) && $this->error('该商品无法操作入库操作！');
-            $where = ['goods_id' => $goods_id, 'status' => '1', 'is_deleted' => '0'];
-            $goods['list'] = Db::name('StoreGoodsList')->where($where)->select();
+        if ($this->request->isGet()) {
+            $GoodsId = $this->request->get('id');
+            $goods = Db::name('StoreGoods')->where(['id' => $GoodsId])->find();
+            empty($goods) && $this->error('无效的商品信息，请稍候再试！');
+            $goods['list'] = Db::name('StoreGoodsList')->where(['goods_id' => $GoodsId])->select();
             return $this->fetch('', ['vo' => $goods]);
         }
-        // 入库保存
-        $goods_id = $this->request->post('id');
         list($post, $data) = [$this->request->post(), []];
-        foreach ($post['spec'] as $key => $spec) {
-            if ($post['stock'][$key] > 0) {
-                $data[] = [
-                    'goods_stock' => $post['stock'][$key],
-                    'stock_desc'  => $this->request->post('desc'),
-                    'goods_spec'  => $spec, 'goods_id' => $goods_id,
-                ];
+        if (isset($post['id']) && isset($post['spec']) && is_array($post['spec'])) {
+            foreach ($post['spec'] as $k => $v) if ($v > 0) array_push($data, [
+                'goods_id' => $post['id'], 'goods_spec' => $k, 'number_stock' => $v,
+            ]);
+            if (!empty($data)) {
+                Db::name('StoreGoodsStock')->insertAll($data);
+                \app\store\service\Goods::syncStock($post['id']);
+                $this->success('商品信息入库成功！');
             }
         }
-        empty($data) && $this->error('无需入库的数据哦！');
-        if (Db::name('StoreGoodsStock')->insertAll($data) !== false) {
-            GoodsService::syncGoodsStock($goods_id);
-            $this->success('商品入库成功！', '');
+        $this->error('没有需要商品入库的数据！');
+    }
+
+    /**
+     * 添加商品信息
+     * @return mixed
+     */
+    public function add()
+    {
+        $this->title = '添加商品';
+        $this->isAddMode = '1';
+        return $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 编辑商品信息
+     * @return mixed
+     */
+    public function edit()
+    {
+        $this->title = '编辑商品';
+        $this->isAddMode = '0';
+        return $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 表单数据处理
+     * @param array $data
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    protected function _form_filter(&$data)
+    {
+        // 生成商品ID
+        if (empty($data['id'])) $data['id'] = Data::uniqidNumberCode(10);
+        if ($this->request->isGet()) {
+            $fields = 'goods_spec,goods_id,status,price_market market,price_selling selling,number_virtual `virtual`';
+            $defaultValues = Db::name('StoreGoodsList')->where(['goods_id' => $data['id']])->column($fields);
+            $this->defaultValues = json_encode($defaultValues, JSON_UNESCAPED_UNICODE);
+            $this->cates = Db::name('StoreGoodsCate')->where(['is_deleted' => '0', 'status' => '1'])->order('sort asc,id desc')->select();
+        } elseif ($this->request->isPost()) {
+            Db::name('StoreGoodsList')->where(['goods_id' => $data['id']])->update(['status' => '0']);
+            foreach (json_decode($data['lists'], true) as $vo) Data::save('StoreGoodsList', [
+                'goods_id'       => $data['id'],
+                'goods_spec'     => $vo[0]['key'],
+                'price_market'   => $vo[0]['market'],
+                'price_selling'  => $vo[0]['selling'],
+                'number_virtual' => $vo[0]['virtual'],
+                'status'         => $vo[0]['status'] ? 1 : 0,
+            ], 'goods_spec', ['goods_id' => $data['id']]);
         }
-        $this->error('商品入库失败，请稍候再试！');
+    }
+
+    /**
+     * 表单结果处理
+     * @param boolean $result
+     */
+    protected function _form_result($result)
+    {
+        if ($result && $this->request->isPost()) {
+            $this->success('商品编辑成功！', 'javascript:history.back()');
+        }
+    }
+
+    /**
+     * 商品禁用
+     */
+    public function forbid()
+    {
+        $this->_save($this->table, ['status' => '0']);
+    }
+
+    /**
+     * 商品禁用
+     */
+    public function resume()
+    {
+        $this->_save($this->table, ['status' => '1']);
     }
 
     /**
      * 删除商品
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
      */
     public function del()
     {
-        if (DataService::update($this->table)) {
-            $this->success("商品删除成功！", '');
-        }
-        $this->error("商品删除失败，请稍候再试！");
-    }
-
-    /**
-     * 商品禁用
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
-     */
-    public function forbid()
-    {
-        if (DataService::update($this->table)) {
-            $this->success("商品下架成功！", '');
-        }
-        $this->error("商品下架失败，请稍候再试！");
-    }
-
-    /**
-     * 商品禁用
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
-     */
-    public function resume()
-    {
-        if (DataService::update($this->table)) {
-            $this->success("商品上架成功！", '');
-        }
-        $this->error("商品上架失败，请稍候再试！");
+        $this->_delete($this->table);
     }
 
 }

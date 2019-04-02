@@ -1,0 +1,42 @@
+<fieldset>
+    <legend class="layui-bg-cyan">条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">权限名称</label>
+            <div class="layui-input-inline">
+                <input name="title" value="{$Think.get.title|default=''}" placeholder="请输入权限名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">权限描述</label>
+            <div class="layui-input-inline">
+                <input name="desc" value="{$Think.get.desc|default=''}" placeholder="请输入权限描述" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">使用状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="status">
+                    {foreach [''=>'-- 全部 --','0'=>'已禁用的权限','1'=>'使用中的权限'] as $k=>$v}
+                    {eq name='Think.get.status' value='$k.""'}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+</fieldset>
+
+<script>form.render()</script>

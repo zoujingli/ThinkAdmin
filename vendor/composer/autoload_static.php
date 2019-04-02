@@ -4,18 +4,25 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0f92db73f9e6460de5691c8b6fdb91d6
+class ComposerStaticInit9cdb8abddb73e11ef3cbbe26d18b69af
 {
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
-        '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
+        '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
+        'cc56288302d9df745d97c934d6a6e5f0' => __DIR__ . '/..' . '/topthink/think-queue/src/common.php',
+        '6bfa2db14bcd36db12d0b2121e50b8f2' => __DIR__ . '/..' . '/zoujingli/think-library/common.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (
+            'think\\helper\\' => 13,
             'think\\composer\\' => 15,
-            'think\\captcha\\' => 14,
+            'think\\' => 6,
+        ),
+        'l' => 
+        array (
+            'library\\' => 8,
         ),
         'W' => 
         array (
@@ -47,13 +54,21 @@ class ComposerStaticInit0f92db73f9e6460de5691c8b6fdb91d6
     );
 
     public static $prefixDirsPsr4 = array (
+        'think\\helper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/topthink/think-helper/src',
+        ),
         'think\\composer\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-installer/src',
         ),
-        'think\\captcha\\' => 
+        'think\\' => 
         array (
-            0 => __DIR__ . '/..' . '/topthink/think-captcha/src',
+            0 => __DIR__ . '/..' . '/topthink/think-queue/src',
+        ),
+        'library\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zoujingli/think-library/src',
         ),
         'WePay\\' => 
         array (
@@ -213,6 +228,7 @@ class ComposerStaticInit0f92db73f9e6460de5691c8b6fdb91d6
         'Symfony\\Component\\OptionsResolver\\Options' => __DIR__ . '/..' . '/symfony/options-resolver/Options.php',
         'Symfony\\Component\\OptionsResolver\\OptionsResolver' => __DIR__ . '/..' . '/symfony/options-resolver/OptionsResolver.php',
         'We' => __DIR__ . '/..' . '/zoujingli/wechat-developer/We.php',
+        'WeChat\\Bind' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeChat/Bind.php',
         'WeChat\\Card' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Card.php',
         'WeChat\\Contracts\\BasicAliPay' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/BasicAliPay.php',
         'WeChat\\Contracts\\BasicPushEvent' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/BasicPushEvent.php',
@@ -266,20 +282,73 @@ class ComposerStaticInit0f92db73f9e6460de5691c8b6fdb91d6
         'WePay\\Refund' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Refund.php',
         'WePay\\Transfers' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Transfers.php',
         'WePay\\TransfersBank' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/TransfersBank.php',
-        'think\\captcha\\Captcha' => __DIR__ . '/..' . '/topthink/think-captcha/src/Captcha.php',
-        'think\\captcha\\CaptchaController' => __DIR__ . '/..' . '/topthink/think-captcha/src/CaptchaController.php',
+        'library\\Controller' => __DIR__ . '/..' . '/zoujingli/think-library/src/Controller.php',
+        'library\\File' => __DIR__ . '/..' . '/zoujingli/think-library/src/File.php',
+        'library\\command\\Sess' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Sess.php',
+        'library\\command\\Sync' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Sync.php',
+        'library\\command\\Task' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Task.php',
+        'library\\command\\sync\\Admin' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/sync/Admin.php',
+        'library\\command\\sync\\Config' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/sync/Config.php',
+        'library\\command\\sync\\Plugs' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/sync/Plugs.php',
+        'library\\command\\sync\\Service' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/sync/Service.php',
+        'library\\command\\sync\\Wechat' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/sync/Wechat.php',
+        'library\\command\\task\\Reset' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/task/Reset.php',
+        'library\\command\\task\\Start' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/task/Start.php',
+        'library\\command\\task\\State' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/task/State.php',
+        'library\\command\\task\\Stop' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/task/Stop.php',
+        'library\\driver\\Local' => __DIR__ . '/..' . '/zoujingli/think-library/src/driver/Local.php',
+        'library\\driver\\Oss' => __DIR__ . '/..' . '/zoujingli/think-library/src/driver/Oss.php',
+        'library\\driver\\Qiniu' => __DIR__ . '/..' . '/zoujingli/think-library/src/driver/Qiniu.php',
+        'library\\logic\\Delete' => __DIR__ . '/..' . '/zoujingli/think-library/src/logic/Delete.php',
+        'library\\logic\\Form' => __DIR__ . '/..' . '/zoujingli/think-library/src/logic/Form.php',
+        'library\\logic\\Input' => __DIR__ . '/..' . '/zoujingli/think-library/src/logic/Input.php',
+        'library\\logic\\Logic' => __DIR__ . '/..' . '/zoujingli/think-library/src/logic/Logic.php',
+        'library\\logic\\Page' => __DIR__ . '/..' . '/zoujingli/think-library/src/logic/Page.php',
+        'library\\logic\\Query' => __DIR__ . '/..' . '/zoujingli/think-library/src/logic/Query.php',
+        'library\\logic\\Save' => __DIR__ . '/..' . '/zoujingli/think-library/src/logic/Save.php',
+        'library\\tools\\Cors' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Cors.php',
+        'library\\tools\\Crypt' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Crypt.php',
+        'library\\tools\\Csrf' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Csrf.php',
+        'library\\tools\\Csv' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Csv.php',
+        'library\\tools\\Data' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Data.php',
+        'library\\tools\\Express' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Express.php',
+        'library\\tools\\Http' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Http.php',
+        'library\\tools\\Node' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Node.php',
+        'library\\tools\\Options' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Options.php',
+        'think\\Queue' => __DIR__ . '/..' . '/topthink/think-queue/src/Queue.php',
         'think\\composer\\Plugin' => __DIR__ . '/..' . '/topthink/think-installer/src/Plugin.php',
         'think\\composer\\ThinkExtend' => __DIR__ . '/..' . '/topthink/think-installer/src/ThinkExtend.php',
         'think\\composer\\ThinkFramework' => __DIR__ . '/..' . '/topthink/think-installer/src/ThinkFramework.php',
         'think\\composer\\ThinkTesting' => __DIR__ . '/..' . '/topthink/think-installer/src/ThinkTesting.php',
+        'think\\helper\\Arr' => __DIR__ . '/..' . '/topthink/think-helper/src/Arr.php',
+        'think\\helper\\Str' => __DIR__ . '/..' . '/topthink/think-helper/src/Str.php',
+        'think\\queue\\CallQueuedHandler' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/CallQueuedHandler.php',
+        'think\\queue\\Connector' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Connector.php',
+        'think\\queue\\Job' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Job.php',
+        'think\\queue\\Listener' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Listener.php',
+        'think\\queue\\Queueable' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Queueable.php',
+        'think\\queue\\ShouldQueue' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/ShouldQueue.php',
+        'think\\queue\\Worker' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Worker.php',
+        'think\\queue\\command\\Listen' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/command/Listen.php',
+        'think\\queue\\command\\Restart' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/command/Restart.php',
+        'think\\queue\\command\\Subscribe' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/command/Subscribe.php',
+        'think\\queue\\command\\Work' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/command/Work.php',
+        'think\\queue\\connector\\Database' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/connector/Database.php',
+        'think\\queue\\connector\\Redis' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/connector/Redis.php',
+        'think\\queue\\connector\\Sync' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/connector/Sync.php',
+        'think\\queue\\connector\\Topthink' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/connector/Topthink.php',
+        'think\\queue\\job\\Database' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/job/Database.php',
+        'think\\queue\\job\\Redis' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/job/Redis.php',
+        'think\\queue\\job\\Sync' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/job/Sync.php',
+        'think\\queue\\job\\Topthink' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/job/Topthink.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit0f92db73f9e6460de5691c8b6fdb91d6::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit0f92db73f9e6460de5691c8b6fdb91d6::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit0f92db73f9e6460de5691c8b6fdb91d6::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9cdb8abddb73e11ef3cbbe26d18b69af::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9cdb8abddb73e11ef3cbbe26d18b69af::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9cdb8abddb73e11ef3cbbe26d18b69af::$classMap;
 
         }, null, ClassLoader::class);
     }

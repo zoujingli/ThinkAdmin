@@ -1,0 +1,86 @@
+{extend name='main'}
+
+{block name="button"}
+
+{if auth("admin/message/onoff")}
+<form class="layui-form inline-block StatusSwitch" action="">
+    <!--{if sysconf('system_message_state')}-->
+    <input type="checkbox" checked lay-skin="switch" lay-filter="StatusSwitch" lay-text="开启|关闭">
+    <!--{else}-->
+    <input type="checkbox" lay-skin="switch" lay-filter="StatusSwitch" lay-text="开启|关闭">
+    <!--{/if}-->
+    <script>
+        form.on('switch(StatusSwitch)', function () {
+            $.form.load('{:url("onoff")}', {}, 'get', function () {
+                return false;
+            });
+        });
+    </script>
+    <style>
+        form.StatusSwitch .layui-form-switch {
+            margin: 0 10px 0 0;
+        }
+    </style>
+</form>
+{/if}
+
+{if auth("admin/message/clear")}
+<button data-load='{:url("clear")}' data-confirm="确定要清理所有消息记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理消息</button>
+{/if}
+
+{if auth("admin/message/del")}
+<button data-action='{:url("del")}' data-rule="id#{key}" data-confirm="确定要删除这些消息吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+{/if}
+
+{/block}
+
+{block name="content"}
+<table class="layui-table" lay-skin="line">
+    <caption class="margin-bottom-10 text-left">{include file='message/index_search'}</caption>
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='list-table-check-td think-checkbox'>
+            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+        </th>
+        <th class='text-left nowrap'>消息信息</th>
+        <th class='text-left nowrap'>消息状态</th>
+        <th class='text-left nowrap'>创建时间</th>
+        <th class='text-left nowrap'></th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='list-table-check-td think-checkbox'><input class="list-check-box" value='{$vo.id}' type='checkbox'></td>
+        <td class='text-left nowrap'>
+            <a class="color-text" href="{:url('@admin')}?messagecode={$vo.code}#{$vo.url|default=''}">{$vo.title|default=''}</a><br>
+            <span class="color-desc">{$vo.desc|default=''}</span><br>
+        </td>
+        <td class='text-left nowrap'>
+            消息状态：{if $vo.read_state}<span class="layui-badge layui-bg-green">已读取</span>{else}<span class="layui-badge layui-bg-blue">未读取</span>{/if}<br>
+            读取时间：{$vo.read_at|default='<span class="layui-badge layui-bg-blue">未读取</span>'|raw}<br>
+        </td>
+        <td class='text-left nowrap'>日期：{$vo.create_at|format_datetime|str_replace=' ','<br>时间：',###|raw}</td>
+        <td class='text-left nowrap'>
+
+            {if $vo.read_state eq 1 and auth("admin/message/state")}
+            <a class="layui-btn layui-btn-sm layui-btn-disabled">已 读</a>
+            {elseif auth("admin/message/state")}
+            <a class="layui-btn layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};read_state#1">已 读</a>
+            {/if}
+
+            {if auth("admin/message/del")}
+            <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该消息吗？" data-action="{:url('del')}" data-value="id#{$vo.id}">删 除</a>
+            {/if}
+
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+{/block}

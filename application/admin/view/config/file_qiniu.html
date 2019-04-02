@@ -1,0 +1,87 @@
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body padding-0">
+        <div class="color-blue padding-left-40 padding-bottom-20">
+            文件将上传到七牛云空间（<a target="_blank" href="https://portal.qiniu.com/signup?code=3lhz6nmnwbple">点击这里免费申请10G存储</a>），申请成功后添加公开bucket并配置接口密钥。
+        </div>
+        <div class="layui-form-item" data-storage-type="qiniu">
+            <label class="layui-form-label">
+                Protocol<br><span class="nowrap color-desc">访问协议</span>
+            </label>
+            <div class="layui-input-block">
+                <!--{foreach ['http','https','auto'] as $pro}-->
+                <label class="think-radio">
+                    <!--{if sysconf('storage_qiniu_is_https') eq $pro}-->
+                    <input checked type="radio" name="storage_qiniu_is_https" value="{$pro}" lay-ignore> {$pro}
+                    <!--{else}-->
+                    <input type="radio" name="storage_qiniu_is_https" value="{$pro}" lay-ignore> {$pro}
+                    <!--{/if}-->
+                </label>
+                <!--{/foreach}-->
+                <p class="help-block">七牛云存储访问协议（http、https、auto），其中 https 需要配置证书才能使用，auto 为相对协议自动根据域名切换http与https。</p>
+            </div>
+        </div>
+        <div class="layui-form-item" data-storage-type="qiniu">
+            <label class="layui-form-label">
+                Region<br><span class="nowrap color-desc">存储区域</span>
+            </label>
+            <div class="layui-input-block">
+                {foreach ['华东','华北','华南','北美'] as $area}
+                <label class="think-radio">
+                    <!--{if sysconf('storage_qiniu_region') eq $area}-->
+                    <input checked type="radio" name="storage_qiniu_region" value="{$area}" lay-ignore>
+                    <!--{else}-->
+                    <input type="radio" name="storage_qiniu_region" value="{$area}" lay-ignore>
+                    <!--{/if}-->
+                    {$area}
+                </label>
+                {/foreach}
+                <p class="help-block">七牛云存储空间所在区域，需要严格对应储存所在区域才能上传文件。</p>
+            </div>
+        </div>
+        <div class="layui-form-item" data-storage-type="qiniu">
+            <label class="layui-form-label">
+                Bucket<br><span class="nowrap color-desc">空间名称</span>
+            </label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_qiniu_bucket" required value="{:sysconf('storage_qiniu_bucket')}" placeholder="请输入七牛云存储 Bucket (空间名称)" class="layui-input">
+                <p class="help-block">填写七牛云存储空间名称，如：static</p>
+            </div>
+        </div>
+        <div class="layui-form-item" data-storage-type="qiniu">
+            <label class="layui-form-label">
+                Domain<br><span class="nowrap color-desc">访问域名</span>
+            </label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_qiniu_domain" required value="{:sysconf('storage_qiniu_domain')}" placeholder="请输入七牛云存储 Domain (访问域名)" class="layui-input">
+                <p class="help-block">填写七牛云存储访问域名，如：static.ctolog.cc</p>
+            </div>
+        </div>
+        <div class="layui-form-item" data-storage-type="qiniu">
+            <label class="layui-form-label">
+                AccessKey<br><span class="nowrap color-desc">访问密钥</span>
+            </label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_qiniu_access_key" required value="{:sysconf('storage_qiniu_access_key')}" placeholder="请输入七牛云 AccessKey (访问密钥)" class="layui-input">
+                <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到访问密钥。</p>
+            </div>
+        </div>
+        <div class="layui-form-item" data-storage-type="qiniu">
+            <label class="layui-form-label">
+                SecretKey<br><span class="nowrap color-desc">安全密钥</span>
+            </label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_qiniu_secret_key" required value="{:sysconf('storage_qiniu_secret_key')}" maxlength="43" placeholder="请输入七牛云 SecretKey (安全密钥)" class="layui-input">
+                <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到安全密钥。</p>
+            </div>
+        </div>
+        <div class="hr-line-dashed margin-left-40"></div>
+        <div class="layui-form-item text-center">
+            <div class="layui-row">
+                <div class="layui-col-sm8 layui-col-md6">
+                    <input type="hidden" name="storage_type" value="qiniu">
+                    <button class="layui-btn" type="submit">保存配置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

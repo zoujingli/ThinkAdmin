@@ -1,11 +1,8 @@
-!.gitignore
-!.gitattributes
-*.DS_Store
-*.idea
-*.svn
-*.git
+/.git
+/.svn
+/.idea
 /runtime
+/safefile
 /nbproject
-!composer.json
 /composer.lock
-/static/upload
+/public/upload

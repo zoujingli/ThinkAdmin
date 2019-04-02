@@ -1,9 +1,6 @@
 {
   "type": "project",
-  "name": "zoujingli/thinkadmin",
-  "license": "MIT",
-  "homepage": "http://demo.thinkadmin.top",
-  "description": "ThinkAdmin Developer CMF",
+  "name": "zoujingli/ThinkAdmin",
   "authors": [
     {
       "name": "Anyon",
@@ -11,14 +8,19 @@
     }
   ],
   "require": {
-    "php": ">=5.6.0",
-    "qiniu/php-sdk": "^7.2",
+    "php": ">=5.6",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-soap": "*",
+    "ext-iconv": "*",
+    "ext-openssl": "*",
+    "ext-mbstring": "*",
     "endroid/qr-code": "^1.9",
-    "topthink/framework": "^5.1",
+    "topthink/framework": "5.1.*",
     "zoujingli/ip2region": "^1.0",
-    "aliyuncs/oss-sdk-php": "^2.2",
-    "topthink/think-captcha": "^2.0",
-    "zoujingli/weopen-developer": "^1.1"
+    "topthink/think-queue": "^2.0",
+    "zoujingli/think-library": "5.1.*-dev",
+    "zoujingli/weopen-developer": "dev-master"
   },
   "repositories": {
     "packagist": {

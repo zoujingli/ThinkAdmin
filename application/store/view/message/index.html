@@ -1,0 +1,34 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<table class="layui-table" lay-skin="line">
+    <caption class="margin-bottom-10 text-left">{include file='message/index_search'}</caption>
+    <!--{notempty name='list'}-->
+    <thead>
+    <tr>
+        <th class='list-table-check-td think-checkbox'>
+            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+        </th>
+        <th class='text-left nowrap'>发送手机</th>
+        <th class='text-left nowrap'>短信内容</th>
+        <th class='text-left nowrap'>返回结果</th>
+        <th class='text-left nowrap'>发送时间</th>
+    </tr>
+    </thead>
+    <!--{/notempty}-->
+    <tbody>
+    <!--{foreach $list as $key=>$vo}-->
+    <tr>
+        <td class='list-table-check-td think-checkbox'><input class="list-check-box" value='{$vo.id}' type='checkbox'></td>
+        <td>{$vo.phone|default=''}</td>
+        <td>{$vo.content|default=''}</td>
+        <td>{$vo.result|default=''}</td>
+        <td>{$vo.create_at|default=''}<br></td>
+    </tr>
+    <!--{/foreach}-->
+    </tbody>
+</table>
+
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+{/block}

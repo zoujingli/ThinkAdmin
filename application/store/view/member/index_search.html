@@ -1,0 +1,45 @@
+<fieldset>
+    <legend>条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">会员昵称</label>
+            <div class="layui-input-inline">
+                <input name="nickname" value="{$Think.get.nickname|default=''}" placeholder="请输入微信昵称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">会员手机</label>
+            <div class="layui-input-inline">
+                <input name="phone" value="{$Think.get.phone|default=''}" placeholder="请输入会员手机" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">会员级别</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="vip_level">
+                    {foreach [''=>'- 全部会员 -','0'=>'游客会员','1'=>'临时会员','2'=>'VIP1会员','3'=>'VIP2会员'] as $k=>$v}
+                    <!--{eq name='Think.get.vip_level' value='$k.""'}-->
+                    <option selected value="{$k}">{$v}</option>
+                    <!--{else}-->
+                    <option value="{$k}">{$v}</option>
+                    <!--{/eq}-->
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">注册时间</label>
+            <div class="layui-input-inline">
+                <input name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择发送时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button type="button" data-export-list class="layui-btn layui-btn-primary layui-hide"><i class="layui-icon layui-icon-export"></i> 导 出</button>
+        </div>
+    </form>
+    <script>
+        form.render();
+        laydate.render({range: true, elem: '[name="create_at"]'})
+    </script>
+</fieldset>
