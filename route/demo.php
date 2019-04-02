@@ -13,7 +13,7 @@
 // +----------------------------------------------------------------------
 
 use think\facade\Route;
-return [];
+
 /*  测试环境禁止操作路由绑定 */
 Route::post('admin/user/pass', function () {
     return json(['code' => 0, 'info' => '测试环境禁修改用户密码！']);
