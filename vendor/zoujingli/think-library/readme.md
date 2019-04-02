@@ -22,8 +22,8 @@ ThinkLibrary 是针对 ThinkPHP5.1 版本封装的一套工具类库，方便快
 * 更新功能等待您来发现哦....
 
 ## 参考项目
-* Gitee 仓库：https://gitee.com/zoujingli/ThinkAdmin
-* Github 仓库：https://github.com/zoujingli/ThinkAdmin
+* Gitee 仓库：https://gitee.com/zoujingli/framework
+* Github 仓库：https://github.com/zoujingli/framework
 
 代码仓库
 --
