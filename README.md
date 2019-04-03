@@ -41,9 +41,9 @@ PHP 开发技术交流（ QQ 群 513350915）
 * 线上代码更新
 >* 执行 `php think xsync:admin` 从线上服务更新 `admin` 模块的所有文件（注意文件安全）
 >* 执行 `php think xsync:wechat` 从线上服务更新 `wechat` 模块的所有文件（注意文件安全）
->* 执行 `php think xysnc:service` 从线上服务更新 `service` 模块的所有文件（注意文件安全）
->* 执行 `php think xysnc:plugs` 从线上服务更新 `plugs` 静态插件的部分文件（注意文件安全）
->* 执行 `php think xysnc:config` 从线上服务更新 `config` 项目配置的部分文件（注意文件安全）
+>* 执行 `php think xsync:service` 从线上服务更新 `service` 模块的所有文件（注意文件安全）
+>* 执行 `php think xsync:plugs` 从线上服务更新 `plugs` 静态插件的部分文件（注意文件安全）
+>* 执行 `php think xsync:config` 从线上服务更新 `config` 项目配置的部分文件（注意文件安全）
 
 * 微信资料管理
 >* 执行 `php think xfans:all` 更新已经对接的公众号粉丝全部列表
