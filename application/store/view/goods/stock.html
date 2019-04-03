@@ -41,7 +41,9 @@
                             <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.number_stock-$goods.number_sales} ">
                         </td>
                         <td class="padding-0" width="10%">
-                            <input class="layui-input text-center border-0 padding-left-0" onblur="this.value=parseInt(this.value)||0" name="spec[{$goods.goods_spec}]" value="0">
+                            <input type="hidden" name="goods_id[]" value="{$goods.goods_id|default=''}">
+                            <input type="hidden" name="goods_spec[]" value="{$goods.goods_spec|default=''}">
+                            <input class="layui-input text-center border-0 padding-left-0" onblur="this.value=parseInt(this.value)||0" name="number[]" value="0">
                         </td>
                     </tr>
                     <!--{/foreach}-->

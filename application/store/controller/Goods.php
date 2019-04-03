@@ -83,9 +83,11 @@ class Goods extends Controller
             return $this->fetch('', ['vo' => $goods]);
         }
         list($post, $data) = [$this->request->post(), []];
-        if (isset($post['id']) && isset($post['spec']) && is_array($post['spec'])) {
-            foreach ($post['spec'] as $k => $v) if ($v > 0) array_push($data, [
-                'goods_id' => $post['id'], 'goods_spec' => $k, 'number_stock' => $v,
+        if (isset($post['id']) && isset($post['goods_id']) && is_array($post['goods_id'])) {
+            foreach (array_keys($post['goods_id']) as $key) if ($post['number'][$key] > 0) array_push($data, [
+                'goods_id'     => $post['goods_id'][$key],
+                'goods_spec'   => $post['goods_spec'][$key],
+                'number_stock' => $post['number'][$key],
             ]);
             if (!empty($data)) {
                 Db::name('StoreGoodsStock')->insertAll($data);
