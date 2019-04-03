@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -75,8 +75,9 @@ class Menu extends Controller
     }
 
     /**
-     * 表单数据
+     * 表单数据处理
      * @param array $vo
+     * @throws \ReflectionException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException

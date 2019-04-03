@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -29,6 +29,7 @@ class Index extends Controller
 
     /**
      * 显示后台首页
+     * @throws \ReflectionException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException

@@ -96,7 +96,7 @@ class Sync extends Command
     private static function removeEmptyDir($dir)
     {
         if (is_dir($dir) && count(scandir($dir)) === 2) {
-            rmdir($dir);
+            if (rmdir($dir)) self::removeEmptyDir(dirname($dir));
         }
     }
 

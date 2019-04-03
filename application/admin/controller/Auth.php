@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -47,6 +47,7 @@ class Auth extends Controller
     /**
      * 权限授权节点
      * @return mixed
+     * @throws \ReflectionException
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */

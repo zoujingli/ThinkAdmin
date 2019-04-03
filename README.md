@@ -33,6 +33,32 @@ PHP 开发技术交流（ QQ 群 513350915）
  * Gitee仓库地址：https://gitee.com/zoujingli/Think.Admin
  * GitHub仓库地址：https://github.com/zoujingli/ThinkAdmin
  
+ 框架指令
+ --
+ * 执行 `build.cmd` 可更新 `Composer` 插件，会删除并替换 `vendor` 目录
+ * 执行 `php think run` 启用本地开发环境，访问 `http://127.0.0.1:8000`
+ 
+ * 线上代码更新
+ >* 执行 `php think xsync:admin` 从线上服务更新 `admin` 模块的所有文件（注意文件安全）
+ >* 执行 `php think xsync:wechat` 从线上服务更新 `wehcat` 模块的所有文件（注意文件安全）
+ >* 执行 `php think xysnc:service` 从线上服务更新 `service` 模块的所有文件（注意文件安全）
+ >* 执行 `php think xysnc:plugs` 从线上服务更新 `plugs` 静态插件的部分文件（注意文件安全）
+ >* 执行 `php think xysnc:config` 从线上服务更新 `config` 项目配置的部分文件（注意文件安全）
+ 
+ * 微信资料管理
+ >* 执行 `php think xfans:all` 更新已经对接的公众号粉丝全部列表
+ >* 执行 `php think xfans:black` 更新已经对接的公众号黑名单列表
+ >* 执行 `php think xfans:list` 更新已经对接的公众号粉丝列表
+ >* 执行 `php think xfans:tags` 更新已经对接的公众号煯标签列表
+ >* 执行 `php think xclean:session` 清理无效的会话文件
+ >* 执行 `php think xclean:store` 清理无效的订单信息及定时任务
+ 
+ * 守护进程管理
+ >* 执行 `php think xtask:reset` 重启消息任务守护进程
+ >* 执行 `php think xtask:start` 启动消息任务守护进程
+ >* 执行 `php think xtask:state` 查询消息任务守护进程
+ >* 执行 `php think xtask:stop` 暂停消息任务守护进程
+ 
 特别感谢
 --
 |名称|版本|描述|链接|

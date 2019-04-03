@@ -35,7 +35,7 @@ class Cors
             header('Access-Control-Allow-Methods:GET,POST,OPTIONS');
             header('Access-Control-Allow-Origin:' . self::getOrigin($request));
             header('Access-Control-Allow-Headers:' . self::getAllows($request));
-            header('Access-Control-Expose-Headers: User-Token-Csrf');
+            header('Access-Control-Expose-Headers:User-Token-Csrf');
             header('Content-Type:text/plain charset=UTF-8');
             header('Access-Control-Max-Age:1728000');
             header('HTTP/1.0 204 No Content');

@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\admin\service;
@@ -30,7 +30,7 @@ class Auth
      * 权限检查中间件入口
      * @param \think\Request $request
      * @param \Closure $next
-     * @return mixed|\think\response\Json|\think\response\Redirect
+     * @return mixed
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -72,18 +72,19 @@ class Auth
      * 获取系统代码节点
      * @param array $nodes
      * @return array
+     * @throws \ReflectionException
      */
     public static function get($nodes = [])
     {
-        $ignore = self::getIgnore();
+        list($ignore, $map) = [self::getIgnore(), Node::getClassTreeNode(env('app_path'))];
         $alias = Db::name('SystemNode')->column('node,is_menu,is_auth,is_login,title');
-        foreach (Node::getTree(env('app_path')) as $thr) {
+        foreach (Node::getMethodTreeNode(env('app_path')) as $thr => $title) {
             foreach ($ignore as $str) if (stripos($thr, $str) === 0) continue 2;
             $tmp = explode('/', $thr);
             list($one, $two) = ["{$tmp[0]}", "{$tmp[0]}/{$tmp[1]}"];
             $nodes[$one] = array_merge(isset($alias[$one]) ? $alias[$one] : ['node' => $one, 'title' => '', 'is_menu' => 0, 'is_auth' => 0, 'is_login' => 0], ['pnode' => '']);
-            $nodes[$two] = array_merge(isset($alias[$two]) ? $alias[$two] : ['node' => $two, 'title' => '', 'is_menu' => 0, 'is_auth' => 0, 'is_login' => 0], ['pnode' => $one]);
-            $nodes[$thr] = array_merge(isset($alias[$thr]) ? $alias[$thr] : ['node' => $thr, 'title' => '', 'is_menu' => 0, 'is_auth' => 0, 'is_login' => 0], ['pnode' => $two]);
+            $nodes[$two] = array_merge(isset($alias[$two]) ? $alias[$two] : ['node' => $two, 'title' => isset($map[$two]) ? $map[$two] : '', 'is_menu' => 0, 'is_auth' => 0, 'is_login' => 0], ['pnode' => $one]);
+            $nodes[$thr] = array_merge(isset($alias[$thr]) ? $alias[$thr] : ['node' => $thr, 'title' => $title, 'is_menu' => 0, 'is_auth' => 0, 'is_login' => 0], ['pnode' => $two]);
         }
         foreach ($nodes as &$node) list($node['is_auth'], $node['is_menu'], $node['is_login']) = [intval($node['is_auth']), intval($node['is_menu']), empty($node['is_auth']) ? intval($node['is_login']) : 1];
         return $nodes;
@@ -124,7 +125,7 @@ class Auth
 
     /**
      * 应用用户权限节点
-     * @return bool
+     * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -153,6 +154,7 @@ class Auth
     /**
      * 获取授权后的菜单
      * @return array
+     * @throws \ReflectionException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
