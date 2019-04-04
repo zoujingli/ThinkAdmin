@@ -41,7 +41,7 @@ class Config extends Controller
         $this->title = '系统参数配置';
         if ($this->request->isGet()) return $this->fetch();
         foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-        $this->success('系统参数配置保存成功！');
+        $this->success('系统参数配置成功！');
     }
 
     /**
@@ -101,7 +101,7 @@ class Config extends Controller
                     $this->error("阿里云OSS存储配置失效，{$e->getMessage()}");
                 }
             } else {
-                $this->success('文件存储配置保存成功！');
+                $this->success('文件存储配置成功！');
             }
         }
     }

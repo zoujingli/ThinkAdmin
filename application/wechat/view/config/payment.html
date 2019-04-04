@@ -1,7 +1,7 @@
 {extend name="admin@main"}
 
 {block name="content"}
-<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off" lay-filter="payment">
 
     <div class="layui-card-body">
 
@@ -21,48 +21,42 @@
             </div>
         </div>
 
+        <div class="hr-line-dashed"></div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">MchCert<br><span class="nowrap color-desc">微信商户证书</span></label>
             <div class="layui-input-block">
-                <div class="layui-tab layui-tab-card">
-                    <ul class="layui-tab-title">
-                        <!--{foreach ['p12','pem'] as $v}-->
-                        <li data-mch-type="{$v}" class="padding-0">
-                            <label class="margin-0 padding-left-15 padding-right-15 inline-block pointer" style="height:40px">
-                                <input style="opacity:0" data-auto-none name="wechat_mch_ssl_type" value="{$v}" type="radio">上传 {$v|strtoupper} 证书
-                            </label>
-                        </li>
-                        <!--{/foreach}-->
-                    </ul>
-                    <div class="layui-tab-content">
-                        <div class="layui-tab-item padding-top-15 padding-bottom-15">
-                            <input name="wechat_mch_ssl_p12" value="{$wechat_mch_ssl_p12|default=''}" type="hidden">
-                            <button data-file="btn" data-uptype="local" data-safe="true" data-type="p12" data-field="wechat_mch_ssl_p12" type="button" class="layui-btn layui-btn-primary">
-                                <i class="layui-icon layui-icon-vercode font-s14"></i> 上传P12证书
-                            </button>
-                            <p class="help-block margin-top-10">微信商户支付P12证书，可以在商户平台下载工具并使用工具生成。</p>
-                        </div>
-                        <div class="layui-tab-item padding-top-15 padding-bottom-15">
-                            <input name="wechat_mch_ssl_key" value="{$wechat_mch_ssl_key|default=''}" type="hidden">
-                            <button data-file="btn" data-uptype="local" data-safe="true" data-type="pem" data-field="wechat_mch_ssl_key" type="button" class="layui-btn layui-btn-primary margin-right-5">
-                                <i class="layui-icon layui-icon-vercode font-s14"></i> 上传KEY证书
-                            </button>
-                            <input name="wechat_mch_ssl_cer" value="{$wechat_mch_ssl_cer|default=''}" type="hidden">
-                            <button data-file="btn" data-uptype="local" data-safe="true" data-type="pem" data-field="wechat_mch_ssl_cer" type="button" class="layui-btn layui-btn-primary">
-                                <i class="layui-icon layui-icon-vercode font-s14"></i> 上传CERT证书
-                            </button>
-                            <p class="help-block margin-top-10">微信商户支付PEM双向证书，实现订单退款、打款、发红包等支出功能都使用证书。</p>
-                        </div>
-                    </div>
+                {foreach ['p12'=>'上传 P12 证书','pem'=>'上传 PEM 证书'] as $k=>$v}
+                <input type="radio" data-pem-type="{$k}" name="wechat_mch_ssl_type" value="{$k}" title="{$v}" lay-filter="data-mch-type">
+                {/foreach}
+                <p class="help-block">请选择需要上传证书类型，P12 和 PEM 二选一，证书需要从微信商户平台获取！</p>
+                <div data-mch-type="p12" class="layui-tab-item padding-top-15 padding-bottom-15">
+                    <input name="wechat_mch_ssl_p12" value="{$wechat_mch_ssl_p12|default=''}" type="hidden">
+                    <button data-file="btn" data-uptype="local" data-safe="true" data-type="p12" data-field="wechat_mch_ssl_p12" type="button" class="layui-btn layui-btn-primary">
+                        <i class="layui-icon layui-icon-vercode font-s14"></i> 上传 P12 证书
+                    </button>
+                    <p class="help-block margin-top-10">微信商户支付 P12 证书，实现订单退款、打款、发红包等支出功能都使用证书。</p>
+                </div>
+                <div data-mch-type="pem" class="layui-tab-item padding-top-15 padding-bottom-15">
+                    <input name="wechat_mch_ssl_key" value="{$wechat_mch_ssl_key|default=''}" type="hidden">
+                    <button data-file="btn" data-uptype="local" data-safe="true" data-type="pem" data-field="wechat_mch_ssl_key" type="button" class="layui-btn layui-btn-primary margin-right-5">
+                        <i class="layui-icon layui-icon-vercode font-s14"></i> 上传 KEY 证书
+                    </button>
+                    <input name="wechat_mch_ssl_cer" value="{$wechat_mch_ssl_cer|default=''}" type="hidden">
+                    <button data-file="btn" data-uptype="local" data-safe="true" data-type="pem" data-field="wechat_mch_ssl_cer" type="button" class="layui-btn layui-btn-primary">
+                        <i class="layui-icon layui-icon-vercode font-s14"></i> 上传CERT证书
+                    </button>
+                    <p class="help-block margin-top-10">微信商户支付 PEM 双向证书，实现订单退款、打款、发红包等支出功能都使用证书。</p>
                 </div>
             </div>
         </div>
 
-        <div class="layui-form-item text-center">
-            <div class="layui-row">
-                <div class="layui-col-sm8 layui-col-md6">
-                    <button class="layui-btn" type="submit">保存配置</button>
-                </div>
+        <div class="hr-line-dashed"></div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block text-center" style="max-width:300px">
+                <button class="layui-btn" type="submit">保存配置</button>
             </div>
         </div>
 
@@ -73,17 +67,21 @@
 
 {block name="script"}
 <script>
-    $(function () {
-        $('li[data-mch-type]').map(function () {
-            var type = "{:sysconf('wechat_mch_ssl_type')}" || 'p12';
-            if ($(this).attr('data-mch-type') === type) {
-                $(this).trigger('click').find('input').get(0).checked = true;
-            } else {
-                $(this).find('input').get(0).checked = false;
-            }
+    (function () {
+        form.render();
+        this.type = "{:sysconf('wechat_mch_ssl_type')}" || 'p12';
+        form.val('payment', {wechat_mch_ssl_type: this.type});
+        form.on('radio(data-mch-type)', function (data) {
+            apply(data.value);
         });
-        var types = ['wechat_mch_ssl_p12', 'wechat_mch_ssl_key', 'wechat_mch_ssl_cer'];
-        for (var i in types) $('input[name="' + types[i] + '"]').on('change', function () {
+        apply.call(this, this.type);
+
+        function apply(type) {
+            $('[data-mch-type="' + type + '"]').show().siblings('[data-mch-type]').hide();
+        };
+        // 证书文件上传控制
+        this.types = ['wechat_mch_ssl_p12', 'wechat_mch_ssl_key', 'wechat_mch_ssl_cer'];
+        for (var i in this.types) $('input[name="' + this.types[i] + '"]').on('change', function () {
             var input = this, $button = $(this).next('button');
             setTimeout(function () {
                 if (typeof input.value === 'string' && input.value.length > 5) {
@@ -93,6 +91,6 @@
                 }
             }, 300);
         }).trigger('change');
-    });
+    })({});
 </script>
 {/block}
