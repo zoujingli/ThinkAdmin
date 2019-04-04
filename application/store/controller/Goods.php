@@ -84,7 +84,7 @@ class Goods extends Controller
         }
         list($post, $data) = [$this->request->post(), []];
         if (isset($post['id']) && isset($post['goods_id']) && is_array($post['goods_id'])) {
-            foreach (array_keys($post['goods_id']) as $key) if ($post['number'][$key] > 0) array_push($data, [
+            foreach (array_keys($post['goods_id']) as $key) if ($post['goods_number'][$key] > 0) array_push($data, [
                 'goods_id'     => $post['goods_id'][$key],
                 'goods_spec'   => $post['goods_spec'][$key],
                 'number_stock' => $post['goods_number'][$key],
