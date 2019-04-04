@@ -46,10 +46,10 @@ PHP 开发技术交流（ QQ 群 513350915）
 >* 执行 `php think xsync:config` 从线上服务更新 `config` 项目配置的部分文件（注意文件安全）
 
 * 微信资料管理
->* 执行 `php think xfans:all` 更新已经对接的公众号粉丝全部列表
->* 执行 `php think xfans:black` 更新已经对接的公众号黑名单列表
+>* 执行 `php think xfans:all` 更新已经对接的公众号全部列表
 >* 执行 `php think xfans:list` 更新已经对接的公众号粉丝列表
->* 执行 `php think xfans:tags` 更新已经对接的公众号煯标签列表
+>* 执行 `php think xfans:tags` 更新已经对接的公众号标签列表
+>* 执行 `php think xfans:black` 更新已经对接的公众号黑名单列表
 
 * 守护进程管理
 >* 执行 `php think xtask:reset` 重启消息任务守护进程
