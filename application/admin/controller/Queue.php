@@ -19,7 +19,7 @@ use think\Console;
 use think\Db;
 
 /**
- * 系统消息任务管理
+ * 系统消息任务
  * Class Queue
  * @package app\admin\controller
  */
@@ -32,7 +32,7 @@ class Queue extends Controller
     protected $table = 'SystemJobsLog';
 
     /**
-     * 任务列表
+     * 系统消息任务
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException

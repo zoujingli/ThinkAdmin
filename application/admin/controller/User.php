@@ -19,7 +19,7 @@ use library\tools\Data;
 use think\Db;
 
 /**
- * 系统用户管理控制器
+ * 系统用户管理
  * Class User
  * @package app\admin\controller
  * @author Anyon <zoujingli@qq.com>
@@ -35,7 +35,7 @@ class User extends Controller
     public $table = 'SystemUser';
 
     /**
-     * 用户列表
+     * 系统用户管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -49,7 +49,7 @@ class User extends Controller
     }
 
     /**
-     * 授权管理
+     * 用户授权管理
      * @return mixed
      */
     public function auth()
@@ -59,7 +59,7 @@ class User extends Controller
     }
 
     /**
-     * 用户添加
+     * 添加系统用户
      * @return mixed
      */
     public function add()
@@ -69,7 +69,7 @@ class User extends Controller
     }
 
     /**
-     * 用户编辑
+     * 编辑系统用户
      * @return mixed
      */
     public function edit()
@@ -79,7 +79,7 @@ class User extends Controller
     }
 
     /**
-     * 用户密码修改
+     * 修改用户密码
      * @return mixed
      * @throws \think\Exception
      * @throws \think\exception\PDOException
@@ -107,7 +107,7 @@ class User extends Controller
     }
 
     /**
-     * 表单数据默认处理
+     * 表单数据处理
      * @param array $data
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -128,7 +128,7 @@ class User extends Controller
     }
 
     /**
-     * 删除用户
+     * 删除系统用户
      */
     public function del()
     {
@@ -140,7 +140,7 @@ class User extends Controller
     }
 
     /**
-     * 用户禁用
+     * 禁用系统用户
      */
     public function forbid()
     {
@@ -152,7 +152,7 @@ class User extends Controller
     }
 
     /**
-     * 用户禁用
+     * 启用系统用户
      */
     public function resume()
     {

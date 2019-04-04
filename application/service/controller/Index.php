@@ -27,13 +27,13 @@ class Index extends Controller
 {
 
     /**
-     * 定义当前操作表名
+     * 绑定数据表
      * @var string
      */
     public $table = 'WechatServiceConfig';
 
     /**
-     * 微信基础参数配置
+     * 授权公众号管理
      * @return string
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -52,7 +52,7 @@ class Index extends Controller
     }
 
     /**
-     * 清理接口调用测试
+     * 清理调用次数
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
@@ -70,7 +70,7 @@ class Index extends Controller
     }
 
     /**
-     * 同步获取权限
+     * 同步指定授权公众号
      */
     public function sync()
     {
@@ -92,7 +92,7 @@ class Index extends Controller
     }
 
     /**
-     * 同步获取所有授权公众号记录
+     * 同步所有授权公众号
      */
     public function syncall()
     {
@@ -118,7 +118,7 @@ class Index extends Controller
     }
 
     /**
-     * 删除微信
+     * 删除公众号授权
      */
     public function del()
     {
@@ -127,7 +127,7 @@ class Index extends Controller
     }
 
     /**
-     * 微信禁用
+     * 禁用公众号授权
      */
     public function forbid()
     {
@@ -136,7 +136,7 @@ class Index extends Controller
     }
 
     /**
-     * 微信启用
+     * 启用公众号授权
      */
     public function resume()
     {

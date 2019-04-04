@@ -18,7 +18,7 @@ use library\Controller;
 use think\Db;
 
 /**
- * 权限管理
+ * 系统权限管理
  * Class Auth
  * @package app\admin\controller
  */
@@ -31,7 +31,7 @@ class Auth extends Controller
     public $table = 'SystemAuth';
 
     /**
-     * 权限列表
+     * 系统权限管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -45,7 +45,7 @@ class Auth extends Controller
     }
 
     /**
-     * 权限授权节点
+     * 权限配置节点
      * @return mixed
      * @throws \ReflectionException
      * @throws \think\Exception
@@ -53,7 +53,7 @@ class Auth extends Controller
      */
     public function apply()
     {
-        $this->title = '权限授权配置';
+        $this->title = '权限配置节点';
         $auth = $this->request->post('id', '0');
         switch (strtolower($this->request->post('action'))) {
             case 'get': // 获取权限配置
@@ -88,7 +88,7 @@ class Auth extends Controller
     }
 
     /**
-     * 权限添加
+     * 添加系统权限
      * @return array|string
      */
     public function add()
@@ -98,7 +98,7 @@ class Auth extends Controller
     }
 
     /**
-     * 权限编辑
+     * 编辑系统权限
      * @return array|string
      */
     public function edit()
@@ -108,7 +108,7 @@ class Auth extends Controller
     }
 
     /**
-     * 权限禁用
+     * 禁用系统权限
      */
     public function forbid()
     {
@@ -117,7 +117,7 @@ class Auth extends Controller
     }
 
     /**
-     * 权限恢复
+     * 启用系统权限
      */
     public function resume()
     {
@@ -126,7 +126,7 @@ class Auth extends Controller
     }
 
     /**
-     * 权限删除
+     * 删除系统权限
      */
     public function del()
     {

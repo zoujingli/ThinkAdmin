@@ -63,7 +63,7 @@ class Login extends Controller
             if (empty($user)) $this->error('登录账号或密码错误，请重新输入!');
             if (empty($user['status'])) $this->error('账号已经被禁用，请联系管理!');
             // 账号锁定消息
-            $cache = cache('user_login_' . $user['username']);
+            $cache = cache("user_login_{$user['username']}");
             if (is_array($cache) && !empty($cache['number']) && !empty($cache['time'])) {
                 if ($cache['number'] >= 10 && ($diff = $cache['time'] + 3600 - time()) > 0) {
                     list($m, $s, $info) = [floor($diff / 60), floor($diff % 60), ''];
@@ -77,7 +77,7 @@ class Login extends Controller
                 } elseif ($cache['number'] + 1 <= 10) {
                     $cache = ['time' => time(), 'number' => $cache['number'] + 1, 'geoip' => $this->request->ip()];
                 }
-                cache('user_login_' . $user['username'], $cache);
+                cache("user_login_{$user['username']}", $cache);
                 if (($diff = 10 - $cache['number']) > 0) {
                     $this->error("<strong class='color-red'>登录账号或密码错误！</strong><p class='nowrap'>还有 {$diff} 次尝试机会，将锁定一小时内禁止登录！</p>");
                 } else {
@@ -86,7 +86,7 @@ class Login extends Controller
                 }
             }
             // 登录成功并更新账号
-            cache('user_login_' . $user['username'], null);
+            cache("user_login_{$user['username']}", null);
             Db::name('SystemUser')->where(['id' => $user['id']])->update([
                 'login_at'  => Db::raw('now()'),
                 'login_ip'  => $this->request->ip(),
@@ -94,7 +94,7 @@ class Login extends Controller
             ]);
             session('user', $user);
             session('loginskey', null);
-            empty($user['authorize']) || \app\admin\service\Auth::applyNode();
+            if (!empty($user['authorize'])) \app\admin\service\Auth::applyNode();
             _syslog('系统管理', '用户登录系统成功');
             $this->success('登录成功，正在进入系统...', url('@admin'));
         }

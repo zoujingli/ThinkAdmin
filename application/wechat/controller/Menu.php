@@ -14,7 +14,6 @@
 
 namespace app\wechat\controller;
 
-use app\admin\service\Log;
 use app\wechat\service\Wechat;
 use library\Controller;
 use think\Db;
@@ -44,7 +43,7 @@ class Menu extends Controller
     ];
 
     /**
-     * 显示菜单列表
+     * 微信菜单管理
      * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -65,7 +64,7 @@ class Menu extends Controller
     }
 
     /**
-     * 微信菜单编辑
+     * 编辑微信菜单
      */
     public function edit()
     {
@@ -91,6 +90,7 @@ class Menu extends Controller
     }
 
     /**
+     * 菜单数据处理
      * @param array $list
      * @return mixed
      */
@@ -113,7 +113,7 @@ class Menu extends Controller
     }
 
     /**
-     * 单个微信菜单数据过滤处理
+     * 单个微信菜单数据处理
      * @param array $item
      * @return array
      */
@@ -140,7 +140,7 @@ class Menu extends Controller
     }
 
     /**
-     * 取消菜单
+     * 取消微信菜单
      */
     public function cancel()
     {

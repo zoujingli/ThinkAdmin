@@ -17,7 +17,7 @@ namespace app\admin\controller;
 use library\Controller;
 
 /**
- * 系统配置
+ * 系统参数配置
  * Class Config
  * @package app\admin\controller
  */

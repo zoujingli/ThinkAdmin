@@ -31,10 +31,9 @@ class Config extends Controller
      * @var string
      */
     public $table = 'WechatServiceConfig';
-
+    
     /**
-     * 微信基础参数配置
-     * @return array|string
+     * 开放平台参数配置
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */

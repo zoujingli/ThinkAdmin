@@ -31,7 +31,7 @@ class Message extends Controller
     protected $table = 'SystemMessage';
 
     /***
-     * 获取消息列表
+     * 系统消息管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -45,7 +45,7 @@ class Message extends Controller
     }
 
     /**
-     * 消息状态
+     * 设置消息状态
      */
     public function state()
     {
@@ -53,7 +53,7 @@ class Message extends Controller
     }
 
     /**
-     * 删除消息
+     * 删除系统消息
      */
     public function del()
     {
@@ -75,7 +75,7 @@ class Message extends Controller
     }
 
     /**
-     * 系统消息开关处理
+     * 设置消息开关
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */

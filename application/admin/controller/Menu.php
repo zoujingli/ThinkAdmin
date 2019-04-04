@@ -33,7 +33,7 @@ class Menu extends Controller
     protected $table = 'SystemMenu';
 
     /**
-     * 系统菜单显示
+     * 系统菜单管理
      */
     public function index()
     {
@@ -57,18 +57,18 @@ class Menu extends Controller
     }
 
     /**
-     * 编辑菜单
+     * 添加系统菜单
      */
-    public function edit()
+    public function add()
     {
         $this->applyCsrfToken();
         $this->_form($this->table, 'form');
     }
 
     /**
-     * 添加菜单
+     * 编辑系统菜单
      */
-    public function add()
+    public function edit()
     {
         $this->applyCsrfToken();
         $this->_form($this->table, 'form');
@@ -105,7 +105,7 @@ class Menu extends Controller
     }
 
     /**
-     * 启用菜单
+     * 启用系统菜单
      */
     public function resume()
     {
@@ -114,7 +114,7 @@ class Menu extends Controller
     }
 
     /**
-     * 禁用菜单
+     * 禁用系统菜单
      */
     public function forbid()
     {
@@ -123,7 +123,7 @@ class Menu extends Controller
     }
 
     /**
-     * 删除菜单
+     * 删除系统菜单
      */
     public function del()
     {

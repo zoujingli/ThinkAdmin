@@ -42,7 +42,7 @@ class Keys extends Controller
     ];
 
     /**
-     * 显示关键字列表
+     * 回复规则管理
      * @return array|string
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException

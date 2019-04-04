@@ -31,7 +31,7 @@ class Log extends Controller
     public $table = 'SystemLog';
 
     /**
-     * 日志列表
+     * 系统操作日志
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -59,7 +59,7 @@ class Log extends Controller
     }
 
     /**
-     * 日志删除操作
+     * 删除系统日志
      */
     public function del()
     {

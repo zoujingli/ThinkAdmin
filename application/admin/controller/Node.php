@@ -32,7 +32,7 @@ class Node extends Controller
     protected $table = 'SystemNode';
 
     /**
-     * 显示节点列表
+     * 系统节点管理
      * @throws \ReflectionException
      */
     public function index()
@@ -50,7 +50,7 @@ class Node extends Controller
     }
 
     /**
-     * 清理无效的节点数据
+     * 清理无效的节点
      * @throws \ReflectionException
      * @throws \think\Exception
      * @throws \think\exception\PDOException
@@ -65,7 +65,7 @@ class Node extends Controller
     }
 
     /**
-     * 更新数据记录
+     * 更新节点数据
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */

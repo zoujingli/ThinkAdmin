@@ -50,7 +50,7 @@ class Fans extends Controller
     }
 
     /**
-     * 微信粉丝列表处理
+     * 列表数据处理
      * @param array $data
      */
     protected function _index_page_filter(array &$data)
@@ -87,7 +87,7 @@ class Fans extends Controller
     }
 
     /**
-     *批量取消拉黑粉丝
+     * 取消拉黑粉丝
      */
     public function delBlack()
     {
@@ -121,7 +121,7 @@ class Fans extends Controller
     }
 
     /**
-     * 删除粉丝
+     * 删除粉丝信息
      */
     public function del()
     {

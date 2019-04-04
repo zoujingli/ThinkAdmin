@@ -33,7 +33,7 @@ class News extends Controller
     protected $table = 'WechatNews';
 
     /**
-     * 图文列表
+     * 微信图文管理
      * @return array|string
      */
     public function index()
@@ -77,7 +77,7 @@ class News extends Controller
     }
 
     /**
-     * 添加图文
+     * 添加微信图文
      * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
@@ -99,7 +99,7 @@ class News extends Controller
     }
 
     /**
-     * 编辑图文
+     * 编辑微信图文
      * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
@@ -150,7 +150,7 @@ class News extends Controller
     }
 
     /**
-     * 删除用户
+     * 删除微信图文
      */
     public function del()
     {
