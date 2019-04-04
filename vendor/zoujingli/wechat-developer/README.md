@@ -30,7 +30,7 @@ WeChatDeveloper 是基于官方接口封装，在做微信开发前，必需先�
 * 商户支付文档：https://pay.weixin.qq.com/wiki/doc/api/index.html
 
 针对 WeChatDeveloper 也有一准备了帮助资料可供参考。
-* ThinkAdmin：https://github.com/zoujingli/Think.Admin
+* ThinkAdmin：https://github.com/zoujingli/ThinkAdmin
 * WeChatDeveloper：https://www.kancloud.cn/zoujingli/wechat-developer
 
 
