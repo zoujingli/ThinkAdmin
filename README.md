@@ -16,7 +16,7 @@ Repositorie
 --
  ThinkAdmin 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
 >* GitHub 托管地址：https://github.com/zoujingli/ThinkAdmin
->* OSChina 托管地址：http://git.oschina.net/zoujingli/Think.Admin
+>* OSChina 托管地址：http://git.oschina.net/zoujingli/ThinkAdmin
 
 
 Module
