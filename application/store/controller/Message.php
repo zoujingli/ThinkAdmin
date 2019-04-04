@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\store\controller;
@@ -30,7 +30,7 @@ class Message extends Controller
     protected $table = 'StoreMemberSmsHistory';
 
     /**
-     * 短信消息列表
+     * 短信消息管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException

@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\store\controller;
@@ -19,7 +19,7 @@ use library\tools\Data;
 use think\Db;
 
 /**
- * 商城商品管理
+ * 商品信息管理
  * Class Goods
  * @package app\store\controller
  */
@@ -32,7 +32,7 @@ class Goods extends Controller
     protected $table = 'StoreGoods';
 
     /**
-     * 商品列表
+     * 商品信息管理
      * @return mixed
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -42,8 +42,8 @@ class Goods extends Controller
      */
     public function index()
     {
-        $this->title = '商品管理';
-        $this->_query($this->table)->equal('status,vip_mod,cate_id')->like('title')->where(['is_deleted' => '0'])->order('sort asc,id desc')->page();
+        $this->title = '商城商品管理';
+        $this->_query($this->table)->equal('status,cate_id')->like('title')->where(['is_deleted' => '0'])->order('sort asc,id desc')->page();
     }
 
     /**
@@ -163,7 +163,7 @@ class Goods extends Controller
     }
 
     /**
-     * 商品禁用
+     * 禁用商品信息
      */
     public function forbid()
     {
@@ -171,7 +171,7 @@ class Goods extends Controller
     }
 
     /**
-     * 商品禁用
+     * 启用商品信息
      */
     public function resume()
     {
@@ -179,7 +179,7 @@ class Goods extends Controller
     }
 
     /**
-     * 删除商品
+     * 删除商品信息
      */
     public function del()
     {

@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\store\controller\api;
@@ -33,7 +33,7 @@ class Goods extends Controller
      */
     public function gets()
     {
-        $where = [['status', 'eq', '1'], ['vip_mod', 'eq', '0'], ['is_deleted', 'eq', '0']];
+        $where = [['status', 'eq', '1'], ['is_deleted', 'eq', '0']];
         $this->success('获取商品列表成功！', ['list' => $this->_getGoodsList($where)]);
     }
 
@@ -45,7 +45,7 @@ class Goods extends Controller
      */
     public function vips()
     {
-        $where = [['status', 'eq', '1'], ['vip_mod', 'neq', '0'], ['is_deleted', 'eq', '0']];
+        $where = [['status', 'eq', '1'], ['is_deleted', 'eq', '0']];
         $this->success('获取礼包列表成功！', ['list' => $this->_getGoodsList($where)]);
     }
 
@@ -65,7 +65,7 @@ class Goods extends Controller
         if ($this->request->has('cate_id', 'post', true)) {
             $where[] = ['cate_id', 'eq', $this->request->post('cate_id')];
         }
-        $field = 'id,title,logo,cate_id,image,number_sales,number_stock,vip_mod,vip_month,vip_discount,content,specs,lists';
+        $field = 'id,title,logo,cate_id,image,number_sales,number_stock,content,specs,lists';
         $list = Db::name('StoreGoods')->field($field)->where($where)->order('sort asc,id desc')->select();
         $goodsList = Db::name('StoreGoodsList')->whereIn('goods_id', array_unique(array_column($list, 'id')))->select();
         foreach ($list as &$vo) {
@@ -90,7 +90,7 @@ class Goods extends Controller
     {
         $goods_id = input('goods_id');
         $where = ['is_deleted' => '0', 'status' => '1', 'id' => $goods_id];
-        $field = 'id,title,logo,cate_id,image,number_sales,number_stock,vip_mod,vip_month,vip_discount,content,specs,lists';
+        $field = 'id,title,logo,cate_id,image,number_sales,number_stock,content,specs,lists';
         $goods = Db::name('StoreGoods')->field($field)->where($where)->find();
         if (empty($goods)) $this->error('指定商品不存在，请更换商品ID重试！');
         $goods['image'] = explode('|', $goods['image']);

@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\store\controller;
@@ -31,7 +31,7 @@ class Order extends Controller
     protected $table = 'StoreOrder';
 
     /**
-     * 商城订单列表显示
+     * 商城订单管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -45,13 +45,13 @@ class Order extends Controller
     }
 
     /**
-     * 商城订单列表处理
+     * 订单列表处理
      * @param array $data
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    protected function _page_filter(array &$data)
+    protected function _index_page_filter(array &$data)
     {
         $goodsList = Db::name('StoreOrderList')->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
         $mids = array_unique(array_merge(array_column($data, 'mid'), array_column($data, 'from_mid')));
@@ -69,7 +69,7 @@ class Order extends Controller
     }
 
     /**
-     * 快递管理
+     * 修改快递管理
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException

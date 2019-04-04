@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\store\controller;
@@ -17,6 +17,7 @@ namespace app\store\controller;
 use library\Controller;
 
 /**
+ * 商品分类管理
  * Class GoodsCate
  * @package app\store\controller
  */
@@ -29,7 +30,7 @@ class GoodsCate extends Controller
     protected $table = 'StoreGoodsCate';
 
     /**
-     * @return mixed
+     * 商品分类管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -39,11 +40,11 @@ class GoodsCate extends Controller
     public function index()
     {
         $this->title = '商品分类管理';
-        return $this->_query($this->table)->like('title')->equal('status')->order('sort asc,id desc')->page();
+        $this->_query($this->table)->like('title')->equal('status')->order('sort asc,id desc')->page();
     }
 
     /**
-     * 添加商品分类信息
+     * 添加商品分类
      * @return mixed
      */
     public function add()
@@ -53,7 +54,7 @@ class GoodsCate extends Controller
     }
 
     /**
-     * 编辑商品分类信息
+     * 编辑添加商品分类
      * @return mixed
      */
     public function edit()
@@ -63,7 +64,7 @@ class GoodsCate extends Controller
     }
 
     /**
-     * 商品分类禁用
+     * 禁用添加商品分类
      */
     public function forbid()
     {
@@ -71,7 +72,7 @@ class GoodsCate extends Controller
     }
 
     /**
-     * 商品分类禁用
+     * 启用商品分类
      */
     public function resume()
     {

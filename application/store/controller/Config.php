@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
 namespace app\store\controller;
@@ -35,10 +35,11 @@ class Config extends Controller
         $this->title = '商城参数配置';
         if ($this->request->isGet()) {
             $this->query = Extend::querySmsBalance();
-            return $this->fetch();
+            $this->fetch();
+        } else {
+            foreach ($this->request->post() as $k => $v) sysconf($k, $v);
+            $this->success('商城参数配置保存成功！');
         }
-        foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-        $this->success('商城参数配置保存成功！');
     }
 
 }

@@ -51,7 +51,7 @@
         </td>
         <td class='text-left nowrap'>
             快递费用：{$vo.price_express|default='0.00'} 元<br>
-            分成比例：{$vo.price_rate|default='0.0000'} %<br>
+            分成比例：{$vo.price_rate+0} %<br>
             销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
         </td>
         <td class='text-left nowrap padding-0 relative'>
