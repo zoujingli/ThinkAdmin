@@ -43,7 +43,7 @@ class Goods extends Controller
     public function index()
     {
         $this->title = '商品管理';
-        return $this->_query($this->table)->equal('status,vip_mod,cate_id')->like('title')->where(['is_deleted' => '0'])->order('sort asc,id desc')->page();
+        $this->_query($this->table)->equal('status,vip_mod,cate_id')->like('title')->where(['is_deleted' => '0'])->order('sort asc,id desc')->page();
     }
 
     /**
@@ -87,7 +87,7 @@ class Goods extends Controller
             foreach (array_keys($post['goods_id']) as $key) if ($post['number'][$key] > 0) array_push($data, [
                 'goods_id'     => $post['goods_id'][$key],
                 'goods_spec'   => $post['goods_spec'][$key],
-                'number_stock' => $post['number'][$key],
+                'number_stock' => $post['goods_number'][$key],
             ]);
             if (!empty($data)) {
                 Db::name('StoreGoodsStock')->insertAll($data);
