@@ -37,7 +37,7 @@ class Log
             'geoip'    => PHP_SAPI === 'cli' ? '127.0.0.1' : request()->ip(),
             'action'   => $action,
             'content'  => $content,
-            'username' => PHP_SAPI === 'cli' ? 'cli' : session('user.username'),
+            'username' => PHP_SAPI === 'cli' ? 'cli' : (string)session('user.username'),
         ];
         return Db::name('SystemLog')->insert($data) !== false;
     }
