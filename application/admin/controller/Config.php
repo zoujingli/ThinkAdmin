@@ -38,10 +38,13 @@ class Config extends Controller
     public function info()
     {
         $this->applyCsrfToken();
-        $this->title = '系统参数配置';
-        if ($this->request->isGet()) return $this->fetch();
-        foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-        $this->success('系统参数配置成功！');
+        if ($this->request->isGet()) {
+            $this->title = '系统参数配置';
+            $this->fetch();
+        } else {
+            foreach ($this->request->post() as $k => $v) sysconf($k, $v);
+            $this->success('系统参数配置成功！');
+        }
     }
 
     /**

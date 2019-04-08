@@ -16,6 +16,7 @@ namespace app\admin\controller;
 
 use library\Controller;
 use think\Db;
+use think\Session;
 
 /**
  * 用户登录管理
@@ -97,7 +98,8 @@ class Login extends Controller
      */
     public function out()
     {
-        [session_unset(), session_destroy()];
+        \think\facade\Session::clear();
+        \think\facade\Session::destroy();
         $this->success('退出登录成功！', url('@admin/login'));
     }
 
