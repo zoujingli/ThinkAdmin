@@ -13,8 +13,12 @@
 // +----------------------------------------------------------------------
 
 return [
-    'type'        => 'file',
-    'max_files'   => '500',
-    'level'       => ['error', 'alert', 'sql'],
-    'apart_level' => ['error', 'alert', 'sql'],
+    // 启用JSON日志
+    'json'      => true,
+    // 设置日志文件名
+    'single'    => 'signle',
+    // 最多保留100个文件
+    'max_files' => 50,
+    // 日志每10兆分割文件
+    'file_size' => 10485760,
 ];
