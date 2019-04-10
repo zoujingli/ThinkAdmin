@@ -40,15 +40,15 @@ class Express
 
     /**
      * 查询物流信息
-     * @param string $express_code 快递公司编辑
-     * @param string $express_no 快递物流编号
+     * @param string $expressCode 快递公司编辑
+     * @param string $expressNo 快递物流编号
      * @return array
      */
-    public static function query($express_code, $express_no)
+    public static function query($expressCode, $expressNo)
     {
-        list($microtime, $client_ip) = [microtime(true), request()->ip()];
-        $header = ['Host' => 'www.kuaidi100.com', 'CLIENT-IP' => $client_ip, 'X-FORWARDED-FOR' => $client_ip];
-        $location = "http://www.kuaidi100.com/query?type={$express_code}&postid={$express_no}&phone=&temp={$microtime}";
+        list($microtime, $clientIp) = [microtime(true), request()->ip()];
+        $header = ['Host' => 'www.kuaidi100.com', 'CLIENT-IP' => $clientIp, 'X-FORWARDED-FOR' => $clientIp];
+        $location = "http://www.kuaidi100.com/query?type={$expressCode}&postid={$expressNo}&phone=&temp={$microtime}";
         return json_decode(Http::get($location, [], ['header' => $header, 'timeout' => 30]), true);
     }
 

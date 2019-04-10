@@ -38,7 +38,7 @@ class Data
         $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
         list($table, $value) = [$db->getTable(), isset($data[$key]) ? $data[$key] : null];
         $map = isset($where[$key]) ? [] : (is_string($value) ? [[$key, 'in', explode(',', $value)]] : [$key => $value]);
-        if (Db::table($table)->where($where)->where($map)->count() > 0) {
+        if (Db::table($table)->master()->where($where)->where($map)->count() > 0) {
             return Db::table($table)->strict(false)->where($where)->where($map)->update($data) !== false;
         }
         return Db::table($table)->strict(false)->insert($data) !== false;
@@ -137,5 +137,18 @@ class Data
         $string = ($time[0] + $time[1]) . substr($time, 2) . rand(0, 9);
         while (strlen($string) < $length) $string .= rand(0, 9);
         return $string;
+    }
+
+    /**
+     * 文件大小显示转换
+     * @param integer $size
+     * @param integer $dec
+     * @return string
+     */
+    public static function toFileSize($size, $dec = 2)
+    {
+        list($pos, $map) = [0, ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB']];
+        while ($size >= 1024 && $pos < 6) if (++$pos) $size /= 1024;
+        return round($size, $dec) . ' ' . $map[$pos];
     }
 }

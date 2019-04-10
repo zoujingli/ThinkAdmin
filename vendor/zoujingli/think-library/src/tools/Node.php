@@ -137,12 +137,32 @@ class Node
      */
     public static function scanDir($dir, $data = [], $ext = 'php')
     {
-        foreach (scandir($dir) as $_dir) if (strpos($_dir, '.') !== 0) {
-            $path = realpath($dir . DIRECTORY_SEPARATOR . $_dir);
+        foreach (scandir($dir) as $curr) if (strpos($curr, '.') !== 0) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $curr);
             if (is_dir($path)) $data = array_merge($data, self::scanDir($path));
-            elseif (pathinfo($path, 4) === $ext) $data[] = $path;
+            elseif (pathinfo($path, PATHINFO_EXTENSION) === $ext) $data[] = $path;
         }
         return $data;
+    }
+
+    /**
+     * 递归统计目录大小
+     * @param string $path 目录
+     * @return integer
+     */
+    public static function totalDirSize($path)
+    {
+        list($total, $path) = [0, realpath($path)];
+        if (!file_exists($path)) return $total;
+        if (!is_dir($path)) return filesize($path);
+        if ($handle = opendir($path)) {
+            while ($file = readdir($handle)) if (!in_array($file, ['.', '..'])) {
+                $temp = $path . DIRECTORY_SEPARATOR . $file;
+                $total += (is_dir($temp) ? self::totalDirSize($temp) : filesize($temp));
+            }
+            if (is_resource($handle)) closedir($handle);
+        }
+        return $total;
     }
 
 }
