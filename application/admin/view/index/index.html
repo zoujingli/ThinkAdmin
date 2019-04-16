@@ -115,22 +115,16 @@
 {if session('user.id') and sysconf('system_message_state')}
 <script>
     require(['spop'], function () {
-        syncMessage();
-
-        function syncMessage() {
-            $.get('{:url("@admin/api.message/gets")}', function (ret) {
-                if (ret.code && ret.data.length > 0) for (var i in ret.data) {
-                    var item = ret.data[i];
-                    if ($('[data-message-code=' + item.code + ']').size() < 1) spop({
-                        template: '<h4 data-message-code="' + item.code + '" class="spop-title">' + item.title + '</h4>' + item.desc + '<span class="font-s10 color-desc pull-right"> ' + item.create_at + ' </span>',
-                        position: 'bottom-right', style: 'success', group: item.code, onClose: function () {
-                            $.post('{:url("@admin/api.message/set")}', {code: this.group});
-                        }
-                    });
-                }
+        (function syncMessage() {
+            $.get('{:url("@admin/api.message/gets")}').then(function (ret) {
+                if (ret.code && ret.data.length > 0) for (var i in ret.data) if ($('[data-message-code=' + ret.data[i].code + ']').size() < 1) spop({
+                    template: '<h4 data-message-code="' + ret.data[i].code + '" class="spop-title">' + ret.data[i].title + '</h4>' + ret.data[i].desc + '<span class="font-s10 color-desc pull-right"> ' + ret.data[i].create_at + ' </span>', position: 'bottom-right', style: 'success', group: ret.data[i].code, onClose: function () {
+                        $.post('{:url("@admin/api.message/set")}', {code: this.group});
+                    }
+                });
                 setTimeout(syncMessage, 3000)
             });
-        }
+        })();
     });
 </script>
 {/if}
