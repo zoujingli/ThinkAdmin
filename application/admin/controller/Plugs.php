@@ -57,6 +57,12 @@ class Plugs extends BasicAdmin
         if (!in_array($ext, explode(',', strtolower(sysconf('storage_local_exts'))))) {
             return json(['code' => 'ERROR', 'msg' => '文件上传类型受限']);
         }
+        if (!session('user')) {
+            $this->error('只有登录后才能上传文件哦！');
+        }
+        if ($file->checkExt('php')) {
+            $this->error('可执行文件禁止上传到本地服务器！');
+        }
         // 文件上传Token验证
         if ($this->request->post('token') !== md5($filename . session_id())) {
             return json(['code' => 'ERROR', 'msg' => '文件上传验证失败']);
