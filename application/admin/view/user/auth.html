@@ -13,24 +13,26 @@
         <div class="layui-form-item">
             <label class="layui-form-label">访问授权</label>
             <div class="layui-input-block">
+                {if isset($vo.username) and $vo.username eq 'admin'}
+                <span class="color-desc" style="line-height:36px">超级用户不需要配置权限</span>
+                {else}
                 {foreach $authorizes as $authorize}
                 <label class="think-checkbox">
-                    <!--{if in_array($authorize['id'],$vo['authorize'])}-->
+                    {if in_array($authorize.id, $vo.authorize)}
                     <input type="checkbox" checked name="authorize[]" value="{$authorize.id}" lay-ignore> {$authorize.title}
-                    <!--{else}-->
+                    {else}
                     <input type="checkbox" name="authorize[]" value="{$authorize.id}" lay-ignore> {$authorize.title}
-                    <!--{/if}-->
+                    {/if}
                 </label>
                 {/foreach}
-                {if empty($authorizes)}<span class="color-desc" style="line-height:36px">未配置权限</span>{/if}
+                {empty name='authorizes'}<span class="color-desc" style="line-height:36px">未配置权限</span>{/empty}
+                {/if}
             </div>
         </div>
     </div>
     <div class="hr-line-dashed"></div>
     <div class="layui-form-item text-center">
-        <!--{notempty name='vo.id'}-->
-        <input type='hidden' value='{$vo.id}' name='id'>
-        <!--{/notempty}-->
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>

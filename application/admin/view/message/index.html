@@ -4,11 +4,11 @@
 
 {if auth("admin/message/onoff")}
 <form class="layui-form inline-block StatusSwitch" action="">
-    <!--{if sysconf('system_message_state')}-->
-    <input type="checkbox" checked lay-skin="switch" lay-filter="StatusSwitch" lay-text="开启|关闭">
-    <!--{else}-->
-    <input type="checkbox" lay-skin="switch" lay-filter="StatusSwitch" lay-text="开启|关闭">
-    <!--{/if}-->
+    {if sysconf('system_message_state')}
+    <input type="checkbox" checked lay-skin="switch" lay-filter="StatusSwitch" lay-text="开 启|关 闭">
+    {else}
+    <input type="checkbox" lay-skin="switch" lay-filter="StatusSwitch" lay-text="开 启|关 闭">
+    {/if}
     <script>
         form.on('switch(StatusSwitch)', function () {
             $.form.load('{:url("onoff")}', {}, 'get', function () {
@@ -18,7 +18,14 @@
     </script>
     <style>
         form.StatusSwitch .layui-form-switch {
+            height: 28px;
+            line-height: 28px;
+            border-radius: 2px;
             margin: 0 10px 0 0;
+        }
+
+        form.StatusSwitch .layui-form-switch i {
+            top: 6px;
         }
     </style>
 </form>

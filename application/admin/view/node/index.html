@@ -1,9 +1,9 @@
 {extend name='main'}
 
 {block name='button'}
-<!--{if auth("admin/node/clear")}-->
+{if auth("admin/node/clear")}
 <button data-load='{:url("clear")}' class='layui-btn layui-btn-sm layui-btn-primary'>清理无效记录</button>
-<!--{/if}-->
+{/if}
 {/block}
 
 {block name='style'}

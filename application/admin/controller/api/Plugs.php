@@ -200,18 +200,4 @@ class Plugs extends Controller
         $this->fetch();
     }
 
-    /**
-     * 系统消息展示
-     * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function message()
-    {
-        $this->title = '系统消息';
-        $this->list = Db::name('SystemMessage')->where(['read_state' => '0'])->order('id desc')->select();
-        $this->fetch();
-    }
-
 }

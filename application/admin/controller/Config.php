@@ -31,7 +31,6 @@ class Config extends Controller
 
     /**
      * 系统参数配置
-     * @return mixed
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -49,7 +48,6 @@ class Config extends Controller
 
     /**
      * 文件存储配置
-     * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
