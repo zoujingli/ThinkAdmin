@@ -55,7 +55,13 @@ class Plugs extends BasicAdmin
      */
     public function upload()
     {
+        if (!session('user')) {
+            $this->error('只有登录后才能上传文件哦！');
+        }
         $file = $this->request->file('file');
+        if ($file->checkExt('php')) {
+            $this->error('可执行文件禁止上传到本地服务器！');
+        }
         if (!$file->checkExt(strtolower(sysconf('storage_local_exts')))) {
             return json(['code' => 'ERROR', 'msg' => '文件上传类型受限']);
         }
