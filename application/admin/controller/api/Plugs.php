@@ -16,7 +16,6 @@ namespace app\admin\controller\api;
 
 use library\Controller;
 use library\File;
-use think\Db;
 
 /**
  * 后台插件管理

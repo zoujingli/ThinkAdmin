@@ -25,40 +25,7 @@ use think\Db;
  */
 class Auth
 {
-
-    /**
-     * 权限检查中间件入口
-     * @param \think\Request $request
-     * @param \Closure $next
-     * @return mixed
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
-     */
-    public function handle(\think\Request $request, \Closure $next)
-    {
-        // 系统消息处理
-        if (($code = $request->get('messagecode')) > 0) Message::set($code);
-        // 节点忽略跳过
-        $node = Node::current();
-        foreach (self::getIgnore() as $str) if (stripos($node, $str) === 0) return $next($request);
-        // 节点权限查询
-        $auth = Db::name('SystemNode')->cache(true, 60)->field('is_auth,is_login')->where(['node' => $node])->find();
-        $info = ['is_auth' => $auth['is_auth'], 'is_login' => $auth['is_auth'] ? 1 : $auth['is_login']];
-        // 登录状态检查
-        if (!empty($info['is_login']) && !self::isLogin()) {
-            $message = ['code' => 0, 'msg' => '抱歉，您还没有登录获取访问权限！', 'url' => url('@admin/login')];
-            return $request->isAjax() ? json($message) : redirect($message['url']);
-        }
-        // 访问权限检查
-        if (!empty($info['is_auth']) && !self::checkAuthNode($node)) {
-            return json(['code' => 0, 'msg' => '抱歉，您没有访问该模块的权限！']);
-        }
-        return $next($request);
-    }
-
+    
     /**
      * 权限节点忽略规则
      * @return array
