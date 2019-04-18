@@ -14,7 +14,6 @@
 
 namespace library;
 
-use library\tools\Cors;
 use library\tools\Csrf;
 
 /**
@@ -43,7 +42,7 @@ class Controller extends \stdClass
     public $request;
 
     /**
-     * 表单CSRF验证
+     * 表单CSRF验证状态
      * @var boolean
      */
     private $_isCsrf = false;
@@ -53,8 +52,12 @@ class Controller extends \stdClass
      */
     public function __construct()
     {
+        // 获取当前请求对象
         $this->request = request();
-        Cors::setOptionHandler($this->request);
+        // 禁用访问内部方法
+        if (in_array($this->request->method(), get_class_methods(__CLASS__))) {
+            $this->error('Access without permission.');
+        }
     }
 
     /**
@@ -86,7 +89,7 @@ class Controller extends \stdClass
     {
         $result = ['code' => $code, 'info' => $info, 'data' => $data];
         if ($this->_isCsrf) Csrf::clearFormToken(Csrf::getToken());
-        throw new \think\exception\HttpResponseException(json($result, 200, Cors::getRequestHeader($this->request)));
+        throw new \think\exception\HttpResponseException(json($result));
     }
 
     /**
@@ -98,7 +101,7 @@ class Controller extends \stdClass
     public function error($info, $data = [], $code = 0)
     {
         $result = ['code' => $code, 'info' => $info, 'data' => $data];
-        throw new \think\exception\HttpResponseException(json($result, 200, Cors::getRequestHeader($this->request)));
+        throw new \think\exception\HttpResponseException(json($result));
     }
 
     /**

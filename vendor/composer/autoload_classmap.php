@@ -201,7 +201,6 @@ return array(
     'library\\logic\\Page' => $vendorDir . '/zoujingli/think-library/src/logic/Page.php',
     'library\\logic\\Query' => $vendorDir . '/zoujingli/think-library/src/logic/Query.php',
     'library\\logic\\Save' => $vendorDir . '/zoujingli/think-library/src/logic/Save.php',
-    'library\\tools\\Cors' => $vendorDir . '/zoujingli/think-library/src/tools/Cors.php',
     'library\\tools\\Crypt' => $vendorDir . '/zoujingli/think-library/src/tools/Crypt.php',
     'library\\tools\\Csrf' => $vendorDir . '/zoujingli/think-library/src/tools/Csrf.php',
     'library\\tools\\Csv' => $vendorDir . '/zoujingli/think-library/src/tools/Csv.php',
