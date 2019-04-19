@@ -17,9 +17,8 @@ namespace library\command\sync;
 use library\command\Sync;
 
 /**
- * 更新插件指令
- * Class UpdatePlugs
- * @package app\admin\logic\update
+ * Class Plugs
+ * @package library\command\sync
  */
 class Plugs extends Sync
 {

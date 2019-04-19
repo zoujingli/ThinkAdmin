@@ -17,8 +17,8 @@ namespace library\command;
 use think\console\Command;
 
 /**
- * 清理无效的会话文件
- * Class Session
+ * 清理会话文件
+ * Class Sess
  * @package library\command
  */
 class Sess extends Command

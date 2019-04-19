@@ -17,7 +17,7 @@ namespace library\command\task;
 use library\command\Task;
 
 /**
- * Class TaskState
+ * Class State
  * @package library\command\task
  */
 class State extends Task
@@ -27,7 +27,7 @@ class State extends Task
     {
         $this->setName('xtask:state')->setDescription('view message queue daemon');
     }
-    
+
     protected function execute(\think\console\Input $input, \think\console\Output $output)
     {
         if (($pid = $this->checkProcess()) > 0) {

@@ -17,9 +17,8 @@ namespace library\command\sync;
 use library\command\Sync;
 
 /**
- * 更新微信模块指令
- * Class UpdateWechat
- * @package app\admin\logic\update
+ * Class Wechat
+ * @package library\command\sync
  */
 class Wechat extends Sync
 {

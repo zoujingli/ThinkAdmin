@@ -17,7 +17,7 @@ namespace library\command\task;
 use library\command\Task;
 
 /**
- * Class TaskStart
+ * Class Start
  * @package library\command\task
  */
 class Start extends Task
@@ -27,7 +27,7 @@ class Start extends Task
     {
         $this->setName('xtask:start')->setDescription('start message queue daemon');
     }
-    
+
     protected function execute(\think\console\Input $input, \think\console\Output $output)
     {
         if (($pid = $this->checkProcess()) > 0) {

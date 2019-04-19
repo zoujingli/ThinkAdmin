@@ -17,9 +17,8 @@ namespace library\command\sync;
 use library\command\Sync;
 
 /**
- * 更新系统配置指令
- * Class UpdateConfig
- * @package library\command\update
+ * Class Config
+ * @package library\command\sync
  */
 class Config extends Sync
 {

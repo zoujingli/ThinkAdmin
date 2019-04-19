@@ -17,7 +17,7 @@ namespace library\command\task;
 use library\command\Task;
 
 /**
- * Class TaskStop
+ * Class Stop
  * @package library\command\task
  */
 class Stop extends Task

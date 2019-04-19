@@ -77,7 +77,7 @@ if (!function_exists('sysconf')) {
             $data = \think\facade\Cache::tag('system')->get('_sysconf_', []);
             if (empty($data)) {
                 $data = \think\Db::name('SystemConfig')->column('name,value');
-                \think\facade\Cache::tag('system')->set('_sysconf_', $data, 3600);
+                \think\facade\Cache::tag('system')->set('_sysconf_', $data, 60);
             }
         }
         return isset($data[$field]) ? (strtolower($raw) === 'raw' ? $data[$field] : htmlspecialchars($data[$field])) : '';
@@ -215,7 +215,7 @@ if (!function_exists('emoji_clear')) {
         header('Access-Control-Expose-Headers:User-Token-Csrf');
         header('Access-Control-Allow-Headers:Content-Type,X-Requested-With');
     }
-    return $request->isOptions() ? \think\facade\Response::create() : $next($request);
+    return $request->isOptions() ? response() : $next($request);
 });
 
 // 注册系统常用指令

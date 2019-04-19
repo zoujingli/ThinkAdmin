@@ -17,9 +17,8 @@ namespace library\command\sync;
 use library\command\Sync;
 
 /**
- * 系统模块更新指令
- * Class UpdateAdmin
- * @package app\admin\logic\update
+ * Class Admin
+ * @package library\command\sync
  */
 class Admin extends Sync
 {

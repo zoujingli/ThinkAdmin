@@ -17,8 +17,7 @@ namespace library\command\task;
 use library\command\Task;
 
 /**
- * 守护进程重启
- * Class TaskRestart
+ * Class Reset
  * @package library\command\task
  */
 class Reset extends Task
@@ -28,7 +27,7 @@ class Reset extends Task
     {
         $this->setName('xtask:reset')->setDescription('reset message queue daemon');
     }
-    
+
     protected function execute(\think\console\Input $input, \think\console\Output $output)
     {
         if (($pid = $this->checkProcess()) > 0) {

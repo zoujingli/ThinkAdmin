@@ -17,8 +17,8 @@ namespace library\command\sync;
 use library\command\Sync;
 
 /**
- * Class UpdateService
- * @package app\admin\logic\update
+ * Class Service
+ * @package library\command\sync
  */
 class Service extends Sync
 {

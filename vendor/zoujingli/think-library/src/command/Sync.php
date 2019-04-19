@@ -20,8 +20,8 @@ use think\console\Output;
 
 /**
  * 文件比对支持
- * Class update
- * @package app\admin\logic
+ * Class Sync
+ * @package library\command
  */
 class Sync extends Command
 {
