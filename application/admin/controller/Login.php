@@ -24,22 +24,42 @@ use think\Db;
  */
 class Login extends Controller
 {
+
     /**
-     * 用户登录
+     * 后台登录入口
+     */
+    public function index()
+    {
+        $this->title = '系统登录';
+    }
+
+    /**
+     * 后台登录页面显示
+     */
+    protected function _index_get()
+    {
+        if (\app\admin\service\Auth::isLogin()) {
+            $this->redirect('@admin');
+        } else {
+            $this->loginskey = session('loginskey');
+            if (empty($this->loginskey)) {
+                $this->loginskey = uniqid();
+                session('loginskey', $this->loginskey);
+            }
+            $this->fetch();
+        }
+    }
+
+    /**
+     * 后台登录数据处理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    public function index()
+    protected function _index_post()
     {
-        $this->title = '管理登录';
-        $this->applyCsrfToken();
-        if ($this->request->isGet()) {
-            session('loginskey', $this->skey = session('loginskey') ? session('loginskey') : uniqid());
-            return $this->fetch();
-        }
         $data = $this->_input([
             'username' => $this->request->post('username'),
             'password' => $this->request->post('password'),

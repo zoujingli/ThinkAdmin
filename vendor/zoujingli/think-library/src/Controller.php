@@ -28,9 +28,6 @@ use library\tools\Csrf;
  * @method mixed _save($dbQuery, $data = [], $pkField = '', $where = [])
  * @method mixed _form($dbQuery, $tplFile = '', $pkField = '', $where = [], $data = [])
  * @method array _page($dbQuery, $isPage = true, $isDisplay = true, $total = false, $limit = 0)
- * --------------------------------
- * @author Anyon <zoujingli@qq.com>
- * @date 2018/08/10 11:31
  */
 class Controller extends \stdClass
 {
@@ -45,18 +42,30 @@ class Controller extends \stdClass
      * 表单CSRF验证状态
      * @var boolean
      */
-    private $_isCsrf = false;
+    private $_csrf = false;
 
     /**
      * Controller constructor.
+     * @throws \think\Exception
      */
     public function __construct()
     {
-        // 获取当前请求对象
         $this->request = request();
-        // 禁用访问内部方法
-        if (in_array($this->request->method(), get_class_methods(__CLASS__))) {
+        if (in_array($this->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
+        }
+    }
+
+    /**
+     * Controller destruct
+     */
+    public function __destruct()
+    {
+        $this->request = request();
+        $action = $this->request->action();
+        $method = strtolower($this->request->method());
+        if (method_exists($this, $callback = "_{$action}_{$method}")) {
+            call_user_func_array([$this, $callback], $this->request->route());
         }
     }
 
@@ -73,27 +82,11 @@ class Controller extends \stdClass
         if (class_exists($name = "library\\logic\\" . ucfirst(ltrim($method, '_')))) {
             return (new \ReflectionClass($name))->newInstanceArgs($arguments)->init($this);
         }
-        if (method_exists($this, $method)) {
-            return call_user_func_array([$this, $method], $arguments);
-        }
         throw new \think\Exception('method not exists:' . get_class($this) . '->' . $method);
     }
 
     /**
-     * 返回成功的操作
-     * @param mixed $info 消息内容
-     * @param array $data 返回数据
-     * @param integer $code 返回代码
-     */
-    public function success($info, $data = [], $code = 1)
-    {
-        $result = ['code' => $code, 'info' => $info, 'data' => $data];
-        if ($this->_isCsrf) Csrf::clearFormToken(Csrf::getToken());
-        throw new \think\exception\HttpResponseException(json($result));
-    }
-
-    /**
-     * 返回失败的请求
+     * 返回失败的操作
      * @param mixed $info 消息内容
      * @param array $data 返回数据
      * @param integer $code 返回代码
@@ -105,14 +98,27 @@ class Controller extends \stdClass
     }
 
     /**
-     * URL重定向
-     * @param string $url 重定向跳转链接
-     * @param array $params 重定向链接参数
-     * @param integer $code 重定向跳转代码
+     * 返回成功的操作
+     * @param mixed $info 消息内容
+     * @param array $data 返回数据
+     * @param integer $code 返回代码
      */
-    public function redirect($url, $params = [], $code = 301)
+    public function success($info, $data = [], $code = 1)
     {
-        throw new \think\exception\HttpResponseException(redirect($url, $params, $code));
+        $result = ['code' => $code, 'info' => $info, 'data' => $data];
+        if ($this->_csrf) Csrf::clearFormToken(Csrf::getToken());
+        throw new \think\exception\HttpResponseException(json($result));
+    }
+
+    /**
+     * URL重定向
+     * @param string $url 跳转链接
+     * @param array $vars 跳转参数
+     * @param integer $code 跳转代码
+     */
+    public function redirect($url, $vars = [], $code = 301)
+    {
+        throw new \think\exception\HttpResponseException(redirect($url, $vars, $code));
     }
 
     /**
@@ -124,8 +130,11 @@ class Controller extends \stdClass
     public function fetch($tpl = '', $vars = [], $node = null)
     {
         foreach ($this as $name => $value) $vars[$name] = $value;
-        if ($this->_isCsrf) Csrf::fetchTemplate($tpl, $vars, $node);
-        else throw new \think\exception\HttpResponseException(view($tpl, $vars));
+        if ($this->_csrf) {
+            Csrf::fetchTemplate($tpl, $vars, $node);
+        } else {
+            throw new \think\exception\HttpResponseException(view($tpl, $vars));
+        }
     }
 
     /**
@@ -153,26 +162,33 @@ class Controller extends \stdClass
      */
     public function callback($name, &$one = [], &$two = [])
     {
-        $methods = [$name, "_{$this->request->action()}{$name}"];
-        foreach ($methods as $method) if (method_exists($this, $method)) {
-            if (false === $this->$method($one, $two)) return false;
+        if (is_callable($name)) {
+            return call_user_func($name, $this, $one, $two);
+        }
+        foreach ([$name, "_{$this->request->action()}{$name}"] as $method) {
+            if (method_exists($this, $method)) {
+                if (false === $this->$method($one, $two)) {
+                    return false;
+                }
+            }
         }
         return true;
     }
 
     /**
      * 检查表单令牌验证
-     * @param boolean $isRutrun
+     * @param boolean $return 是否返回结果
      * @return boolean
      */
-    protected function applyCsrfToken($isRutrun = false)
+    protected function applyCsrfToken($return = false)
     {
-        $this->_isCsrf = true;
+        $this->_csrf = true;
         if ($this->request->isPost() && !Csrf::checkFormToken()) {
-            if ($isRutrun) return false;
+            if ($return) return false;
             $this->error('表单令牌验证失败，请刷新页面再试！');
+        } else {
+            return true;
         }
-        return true;
     }
 
 }

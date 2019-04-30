@@ -41,44 +41,25 @@ class Crypt
     public static function decode($encode)
     {
         $chars = '';
-        foreach (str_split($encode, 2) as $char) $chars .= chr(intval(base_convert($char, 36, 10)));
+        foreach (str_split($encode, 2) as $char) {
+            $chars .= chr(intval(base_convert($char, 36, 10)));
+        }
         return iconv('GBK//TRANSLIT', 'UTF-8', $chars);
     }
 
     /**
-     * Emoji原形转换为String
-     * @param string $content
-     * @return string
+     * 静态调用方法处理
+     * @param string $name
+     * @param string $args
+     * @return mixed
      */
-    public static function emojiEncode($content)
+    public static function __callStatic($name, $args)
     {
-        return json_decode(preg_replace_callback("/(\\\u[ed][0-9a-f]{3})/i", function ($string) {
-            return addslashes($string[0]);
-        }, json_encode($content)));
+        if (stripos($name, 'emoji') === 0) {
+            $method = str_replace('emoji', '', strtolower($name));
+            if (in_array($method, ['encode', 'decode', 'clear'])) {
+                return Emoji::$method($args[0]);
+            }
+        }
     }
-
-    /**
-     * Emoji字符串转换为原形
-     * @param string $content
-     * @return string
-     */
-    public static function emojiDecode($content)
-    {
-        return json_decode(preg_replace_callback('/\\\\\\\\/i', function () {
-            return '\\';
-        }, json_encode($content)));
-    }
-
-    /**
-     * Emoji字符串清清理
-     * @param string $content
-     * @return string
-     */
-    public static function emojiClear($content)
-    {
-        return preg_replace_callback('/./u', function (array $match) {
-            return strlen($match[0]) >= 4 ? '' : $match[0];
-        }, $content);
-    }
-
 }

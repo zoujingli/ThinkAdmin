@@ -127,7 +127,7 @@ $(function () {
     $.form = new function () {
         var that = this;
         // 内容区选择器
-        this.targetClass = '.layui-layout-admin>.layui-body';
+        this.selecter = '.layui-layout-admin>.layui-body';
         // 刷新当前页面
         this.reload = function () {
             window.onhashchange.call(this);
@@ -135,8 +135,14 @@ $(function () {
         // 内容区域动态加载后初始化
         this.reInit = function ($dom) {
             $.vali.listen(this);
-            $dom = $dom || $(this.targetClass);
-            $dom.find('[required]').parent().prevAll('label').addClass('label-required');
+            $dom = $dom || $(this.selecter);
+            $dom.find('[required]').map(function ($parent) {
+                if (($parent = $(this).parent()) && $parent.is('label')) {
+                    $parent.addClass('label-required-prev')
+                } else {
+                    $parent.prevAll('label').addClass('label-required-next')
+                }
+            });
             $dom.find('[data-date-range]').map(function () {
                 laydate.render({range: true, elem: this});
                 this.setAttribute('autocomplete', 'off');
@@ -151,8 +157,10 @@ $(function () {
         };
         // 在内容区显示视图
         this.show = function (html) {
-            $(this.targetClass).html(html);
-            this.reInit(), setTimeout(this.reInit, 500), setTimeout(this.reInit, 1000);
+            $(this.selecter).html(html);
+            $([0, 500, 1000]).map(function (index, time) {
+                setTimeout(that.reInit, time)
+            });
         };
         // 以hash打开网页
         this.href = function (url, obj) {
@@ -569,6 +577,7 @@ $(function () {
         var checked = !!this.checked;
         $($(this).attr('data-check-target')).map(function () {
             this.checked = checked;
+            $(this).trigger('change');
         });
     });
 
@@ -687,6 +696,21 @@ $(function () {
         $(this).attr('index', layer.tips($(this).attr('data-tips-text'), this, {tips: [$(this).attr('data-tips-type') || 3, '#78BA32']}));
     }).on('mouseleave', '[data-tips-text]', function () {
         layer.close($(this).attr('index'));
+    });
+
+    /*! 表单编辑返回操作 */
+    $body.on('click', '[data-history-back]', function () {
+        var title = this.getAttribute('data-history-back') || '确定要返回上一页吗？';
+        $.msg.confirm(title, function (index) {
+            history.back();
+            $.msg.close(index);
+        })
+    });
+
+    /*! 表单元素失去焦点处理 */
+    $body.on('blur', '[data-blur-number]', function () {
+        var fiexd = this.getAttribute('data-blur-number') || 0;
+        this.value = (parseFloat(this.value) || 0).toFixed(fiexd);
     });
 
     /*! 后台加密登录处理 */

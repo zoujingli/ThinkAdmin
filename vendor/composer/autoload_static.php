@@ -4,13 +4,13 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit369934dfb865b90eedef5b9c19990239
+class ComposerStaticIniteec25c7bb7e8a3ad5cc9d508adb65132
 {
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         'cc56288302d9df745d97c934d6a6e5f0' => __DIR__ . '/..' . '/topthink/think-queue/src/common.php',
-        '6bfa2db14bcd36db12d0b2121e50b8f2' => __DIR__ . '/..' . '/zoujingli/think-library/common.php',
+        '8dafcc6956460bc297e00381fed53e11' => __DIR__ . '/..' . '/zoujingli/think-library/src/common.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -310,6 +310,7 @@ class ComposerStaticInit369934dfb865b90eedef5b9c19990239
         'library\\tools\\Csrf' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Csrf.php',
         'library\\tools\\Csv' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Csv.php',
         'library\\tools\\Data' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Data.php',
+        'library\\tools\\Emoji' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Emoji.php',
         'library\\tools\\Express' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Express.php',
         'library\\tools\\Http' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Http.php',
         'library\\tools\\Node' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Node.php',
@@ -345,9 +346,9 @@ class ComposerStaticInit369934dfb865b90eedef5b9c19990239
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit369934dfb865b90eedef5b9c19990239::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit369934dfb865b90eedef5b9c19990239::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit369934dfb865b90eedef5b9c19990239::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticIniteec25c7bb7e8a3ad5cc9d508adb65132::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticIniteec25c7bb7e8a3ad5cc9d508adb65132::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticIniteec25c7bb7e8a3ad5cc9d508adb65132::$classMap;
 
         }, null, ClassLoader::class);
     }

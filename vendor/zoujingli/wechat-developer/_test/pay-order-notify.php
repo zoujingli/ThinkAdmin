@@ -25,7 +25,7 @@ try {
 
     // 4. 获取通知参数
     $data = $wechat->getNotify();
-    if ($data['result_code'] === 'SUCCESS' && $data['result_code'] === 'SUCCESS') {
+    if ($data['return_code'] === 'SUCCESS' && $data['result_code'] === 'SUCCESS') {
         // @todo 去更新下原订单的支付状态
         $order_no = $data['out_trade_no'];
 

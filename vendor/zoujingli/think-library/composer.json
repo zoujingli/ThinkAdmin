@@ -2,7 +2,7 @@
   "type": "library",
   "name": "zoujingli/think-library",
   "license": "MIT",
-  "homepage": "http://library.thinkadmin.top",
+  "homepage": "http://framework.thinkadmin.top",
   "description": "ThinkPHP Basic Development Library",
   "require": {
     "php": ">=5.4",
@@ -16,7 +16,7 @@
   },
   "autoload": {
     "files": [
-      "common.php"
+      "src/common.php"
     ],
     "psr-4": {
       "library\\": "src"

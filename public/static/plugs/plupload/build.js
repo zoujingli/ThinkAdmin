@@ -39,7 +39,7 @@ define(['plupload'], function (plupload) {
                         $('[name="' + field + '"]').val(ret.url).trigger('change');
                     }
                 } else {
-                    $.msg.error(ret.error.message || '文件上传出错！');
+                    $.msg.error(ret.info || ret.error.message || '文件上传出错！');
                 }
             }
         });

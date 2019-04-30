@@ -15,17 +15,9 @@
 body,html{height:100%}
 body{background:url(../img/login/bg1.jpg) no-repeat center center;background-size:cover}
 
-.login-container form input,
-.login-container form input:-webkit-autofill,
-.login-container form input:-webkit-autofill:focus,
-.login-container form input:-webkit-autofill:active,
-.login-container form input:-webkit-autofill:hover {
-    -webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;
-    -webkit-text-fill-color: #fff !important;
-    -webkit-transition-delay: 9999s !important;
-}
+.login-container form input,.login-container form input:-webkit-autofill,.login-container form input:-webkit-autofill:active,.login-container form input:-webkit-autofill:focus,.login-container form input:-webkit-autofill:hover{-webkit-transition:color 9999s ease-out,background-color 9999s ease-out!important;-webkit-text-fill-color:#fff!important;-webkit-transition-delay:9999s!important}
 .login-container .header{position:absolute;top:0;left:0;width:100%;height:47px;text-shadow:#000 .1em .1em .1em}
-.login-container .header a, .login-container .header a:focus, .login-container .header a:hover{color:#fff;text-decoration:none;letter-spacing:1px}
+.login-container .header a,.login-container .header a:focus,.login-container .header a:hover{color:#fff;text-decoration:none;letter-spacing:1px}
 .login-container .header .title{float:left;color:#fff;text-indent:40px;letter-spacing:1px;font-size:18px;line-height:47px}
 .login-container .header ul{float:right;padding-right:30px}
 .login-container .header ul li{float:left;margin-left:20px;line-height:47px}
@@ -36,10 +28,11 @@ body{background:url(../img/login/bg1.jpg) no-repeat center center;background-siz
 .login-container form ul li input{padding:0 15px;letter-spacing:1px;height:45px;border-radius:6px;background:rgba(0,0,0,.1);box-shadow:0 2px 3px 0 rgba(0,0,0,.3) inset;color:#fff;text-indent:35px;font-size:14px;line-height:42px;text-shadow:#000 .1em .1em .1em}
 .login-container form ul li input:focus,.login-container form ul li input:hover{border:1px solid #fff!important}
 .login-container form ul li input::placeholder{color:rgba(255,255,255,.2)!important;letter-spacing:1px}
-.login-container form ul li span{color:yellow!important;;letter-spacing:1px}
+.login-container form ul li span{color:#ff0!important;letter-spacing:1px}
 .login-container form ul li button{height:45px!important;border-radius:4px!important;background:#fff!important;box-shadow:0 15px 30px 0 hsla(0,0%,100%,.25) inset,0 2px 7px 0 rgba(0,0,0,.2);color:#333!important;letter-spacing:1px!important}
 .login-container .footer{position:absolute;bottom:0;left:0;width:100%;height:50px;color:#fff;text-align:center;text-shadow:#000 .1em .1em .1em;letter-spacing:1px;line-height:50px}
-.login-container .footer span,.login-container .footer a{color:#fff}.login-container .footer a:hover{color:#ccc}
+.login-container .footer a,.login-container .footer span{color:#fff}
+.login-container .footer a:hover{color:#ccc}
 
 #supersized{position:fixed;top:0;left:0;z-index:-999;display:block;overflow:hidden;width:100%;height:100%}
 #supersized img{position:relative;display:none;width:auto;height:auto;outline:0;border:0}

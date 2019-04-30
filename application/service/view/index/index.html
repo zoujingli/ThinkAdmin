@@ -24,7 +24,7 @@
     <tr>
         <td class='text-left nowrap'>
             <div class="inline-block text-top margin-right-5">
-                <img onerror="this.src='__STATIC__/theme/img/404_icon.png'" style="width:60px;height:60px" data-tips-text="微信头像" data-tips-image src="{$vo.head_img|default=''}">
+                <img onerror="this.src='__ROOT__/static/theme/img/404_icon.png'" style="width:60px;height:60px" data-tips-text="微信头像" data-tips-image src="{$vo.head_img|default=''}">
             </div>
             <div class="inline-block">
                 公众号APPID：{$vo.authorizer_appid}&nbsp;&nbsp;&nbsp;&nbsp;调用次数：{$vo.total}<br>
@@ -34,7 +34,7 @@
         </td>
         <td class='text-left nowrap'>
             <div class="inline-block text-top margin-right-5">
-                <img onerror="this.src='__STATIC__/theme/img/404_icon.png'" style="width:60px;height:60px" data-tips-text="微信二维码" data-tips-image src="{$vo.qrcode_url|local_image}">
+                <img onerror="this.src='__ROOT__/static/theme/img/404_icon.png'" style="width:60px;height:60px" data-tips-text="微信二维码" data-tips-image src="{$vo.qrcode_url|local_image}">
             </div>
             <div class="inline-block">
                 昵称：{$vo.nick_name|default='<span class="color-desc">未获取到公众号昵称</span>'|raw}<br>

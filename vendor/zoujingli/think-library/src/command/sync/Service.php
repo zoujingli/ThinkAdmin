@@ -15,6 +15,8 @@
 namespace library\command\sync;
 
 use library\command\Sync;
+use think\console\Input;
+use think\console\Output;
 
 /**
  * Class Service
@@ -26,5 +28,15 @@ class Service extends Sync
     {
         $this->modules = ['application/service/'];
         $this->setName('xsync:service')->setDescription('synchronize update service module files');
+    }
+
+    protected function execute(Input $input, Output $output)
+    {
+        $root = str_replace('\\', '/', env('root_path'));
+        if (file_exists("{$root}/application/service/sync.lock")) {
+            $this->output->error('service module has been locked');
+        } else {
+            parent::execute($input, $output);
+        }
     }
 }

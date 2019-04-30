@@ -97,15 +97,17 @@ class Code extends BasicWeChat
     /**
      * 5. 将第三方提交的代码包提交审核（仅供第三方开发者代小程序调用）
      * @param array $itemList 提交审核项的一个列表
+     * @param string $feedbackInfo 反馈内容不超过200字
+     * @param string $feedbackStuff 图片 media_id 列表
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function submitAudit(array $itemList)
+    public function submitAudit(array $itemList, $feedbackInfo = '', $feedbackStuff = '')
     {
         $url = 'https://api.weixin.qq.com/wxa/submit_audit?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->httpPostForJson($url, ['item_list' => $itemList], true);
+        return $this->httpPostForJson($url, ['item_list' => $itemList, 'feedback_info' => '', 'feedback_stuff' => $feedbackStuff], true);
     }
 
     /**

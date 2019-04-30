@@ -63,19 +63,17 @@ class Input extends Logic
     private function parse($data, $result = [])
     {
         if (is_array($data)) return $data;
-        if (is_string($data)) {
-            foreach (explode(',', $data) as $field) {
-                if (strpos($field, '|') === false) {
-                    $array = explode('.', $field);
-                    $result[array_pop($array)] = input($field);
-                } else {
-                    list($key, $value) = explode('|', $field);
-                    $array = explode('.', $key);
-                    $result[array_pop($array)] = input($key, $value);
-                }
+        if (is_string($data)) foreach (explode(',', $data) as $field) {
+            if (strpos($field, '#') === false) {
+                $array = explode('.', $field);
+                $result[end($array)] = input($field);
+            } else {
+                list($name, $value) = explode('#', $field);
+                $array = explode('.', $name);
+                $result[end($array)] = input($name, $value);
             }
-            return $result;
         }
+        return $result;
     }
 
     /**
@@ -87,8 +85,11 @@ class Input extends Logic
     {
         $this->controller = $controller;
         $validate = \think\Validate::make($this->rule, $this->info);
-        if ($validate->check($this->data)) return $this->data;
-        $this->controller->error($validate->getError());
+        if ($validate->check($this->data)) {
+            return $this->data;
+        } else {
+            $this->controller->error($validate->getError());
+        }
     }
 
 }

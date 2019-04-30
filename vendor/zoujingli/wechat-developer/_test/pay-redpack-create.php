@@ -27,7 +27,7 @@ try {
     $options = [
         'mch_billno'   => time(),
         're_openid'    => 'o38gps3vNdCqaggFfrBRCRikwlWY',
-        'send_name'    => '商户名称',
+        'send_name'    => '商户名称😍',
         'act_name'     => '活动名称',
         'total_amount' => '100',
         'total_num'    => '1',

@@ -205,6 +205,7 @@ return array(
     'library\\tools\\Csrf' => $vendorDir . '/zoujingli/think-library/src/tools/Csrf.php',
     'library\\tools\\Csv' => $vendorDir . '/zoujingli/think-library/src/tools/Csv.php',
     'library\\tools\\Data' => $vendorDir . '/zoujingli/think-library/src/tools/Data.php',
+    'library\\tools\\Emoji' => $vendorDir . '/zoujingli/think-library/src/tools/Emoji.php',
     'library\\tools\\Express' => $vendorDir . '/zoujingli/think-library/src/tools/Express.php',
     'library\\tools\\Http' => $vendorDir . '/zoujingli/think-library/src/tools/Http.php',
     'library\\tools\\Node' => $vendorDir . '/zoujingli/think-library/src/tools/Node.php',

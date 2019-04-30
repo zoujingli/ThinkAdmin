@@ -15,6 +15,8 @@
 namespace library\command\sync;
 
 use library\command\Sync;
+use think\console\Input;
+use think\console\Output;
 
 /**
  * Class Admin
@@ -27,4 +29,15 @@ class Admin extends Sync
         $this->modules = ['application/admin/', 'think'];
         $this->setName('xsync:admin')->setDescription('synchronize update admin module files');
     }
+
+    protected function execute(Input $input, Output $output)
+    {
+        $root = str_replace('\\', '/', env('root_path'));
+        if (file_exists("{$root}/application/admin/sync.lock")) {
+            $this->output->error('admin module has been locked');
+        } else {
+            parent::execute($input, $output);
+        }
+    }
+
 }

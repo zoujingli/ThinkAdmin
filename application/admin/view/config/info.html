@@ -35,9 +35,9 @@
         <div class="layui-form-item">
             <label class="layui-form-label">Browser<br><span class="nowrap color-desc">浏览器图标</span></label>
             <div class="layui-input-block">
-                <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('site_icon')}"/>
+                <img alt="icon" data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('site_icon')}"/>
                 <input type="hidden" name="site_icon" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('site_icon')}" class="layui-input">
-                <a class="margin-left-10" data-file="btn" data-uptype="local" data-type="ico,png" data-field="site_icon">上传图片</a>
+                <a class="margin-left-10" data-file="btn" data-type="ico,png" data-field="site_icon">上传图片</a>
                 <p class="help-block">建议上传ICO图标的尺寸为128x128px，此图标用于网站标题前，<a href="http://www.favicon-icon-generator.com/" target="_blank">ICON在线制作</a></p>
             </div>
         </div>

@@ -31,7 +31,7 @@ class Config extends Controller
      * @var string
      */
     public $table = 'WechatServiceConfig';
-    
+
     /**
      * 开放平台参数配置
      * @throws \think\Exception
@@ -41,9 +41,12 @@ class Config extends Controller
     {
         $this->applyCsrfToken();
         $this->title = '开放平台接口配置';
-        if ($this->request->isGet()) return $this->fetch();
-        foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-        $this->success('开放平台数据修改成功！', '');
+        if ($this->request->isGet()) {
+            return $this->fetch();
+        } else {
+            foreach ($this->request->post() as $k => $v) sysconf($k, $v);
+            $this->success('开放平台参数修改成功！', '');
+        }
     }
 
 }

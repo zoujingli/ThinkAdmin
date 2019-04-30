@@ -12,6 +12,22 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
+// 配置缓存处理函数
+//\WeChat\Contracts\Tools::$cache_callable = [
+//    'set' => function ($name, $value, $expired = 360) {
+//        var_dump(func_get_args());
+//    },
+//    'get' => function ($name) {
+//        var_dump(func_get_args());
+//    },
+//    'del' => function ($name) {
+//        var_dump(func_get_args());
+//    },
+//    'put' => function ($name) {
+//        var_dump(func_get_args());
+//    },
+//];
+
 return [
     'token'          => 'test',
     'appid'          => 'wx60a43dd8161666d4',

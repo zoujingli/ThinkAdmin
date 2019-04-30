@@ -15,6 +15,8 @@
 namespace library\command\sync;
 
 use library\command\Sync;
+use think\console\Input;
+use think\console\Output;
 
 /**
  * Class Wechat
@@ -26,5 +28,15 @@ class Wechat extends Sync
     {
         $this->modules = ['application/wechat/'];
         $this->setName('xsync:wechat')->setDescription('synchronize update wechat module files');
+    }
+
+    protected function execute(Input $input, Output $output)
+    {
+        $root = str_replace('\\', '/', env('root_path'));
+        if (file_exists("{$root}/application/wechat/sync.lock")) {
+            $this->output->error('wechat module has been locked');
+        } else {
+            parent::execute($input, $output);
+        }
     }
 }

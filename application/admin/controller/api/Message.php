@@ -22,6 +22,16 @@ use library\Controller;
  */
 class Message extends Controller
 {
+    /**
+     * Message constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        if (!\app\admin\service\Auth::isLogin()) {
+            $this->error('访问授权失败，请重新登录授权再试！');
+        }
+    }
 
     /**
      * 获取系统消息列表

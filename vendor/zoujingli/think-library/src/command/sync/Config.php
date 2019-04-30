@@ -15,6 +15,8 @@
 namespace library\command\sync;
 
 use library\command\Sync;
+use think\console\Input;
+use think\console\Output;
 
 /**
  * Class Config
@@ -26,5 +28,15 @@ class Config extends Sync
     {
         $this->modules = ['config/'];
         $this->setName('xsync:config')->setDescription('synchronize update config php files');
+    }
+
+    protected function execute(Input $input, Output $output)
+    {
+        $root = str_replace('\\', '/', env('root_path'));
+        if (file_exists("{$root}/config/sync.lock")) {
+            $this->output->error('config files has been locked');
+        } else {
+            parent::execute($input, $output);
+        }
     }
 }

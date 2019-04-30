@@ -44,11 +44,9 @@ class Index extends Controller
     {
         $this->applyCsrfToken();
         $this->title = '微信授权管理';
-        $this->_query($this->table)
-            ->like('authorizer_appid,nick_name,principal_name')
-            ->equal('service_type,status')->dateBetween('create_at')
-            ->where(['is_deleted' => '0'])->order('id desc')->page();
-
+        $query = $this->_query($this->table)->like('authorizer_appid,nick_name,principal_name');
+        $query = $query->equal('service_type,status')->dateBetween('create_at');
+        $query->where(['is_deleted' => '0'])->order('id desc')->page();
     }
 
     /**

@@ -84,6 +84,7 @@ class Config extends Controller
             if (isset($post['storage_type']) && $post['storage_type'] === 'local') {
                 $exts = array_unique(explode(',', $post['storage_local_exts']));
                 if (in_array('php', $exts)) $this->error('禁止上传可执行文件到本地服务器！');
+                sort($exts);
                 $post['storage_local_exts'] = join(',', $exts);
             }
             foreach ($post as $key => $value) sysconf($key, $value);

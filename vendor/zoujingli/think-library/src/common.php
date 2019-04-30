@@ -42,19 +42,6 @@ if (!function_exists('format_datetime')) {
     }
 }
 
-if (!function_exists('systoken')) {
-    /**
-     * 生成CSRF-TOKEN参数
-     * @param string $node
-     * @return string
-     */
-    function systoken($node = null)
-    {
-        $csrf = \library\tools\Csrf::buildFormToken($node);
-        return $csrf['token'];
-    }
-}
-
 if (!function_exists('sysconf')) {
     /**
      * 设备或配置系统参数
@@ -81,6 +68,19 @@ if (!function_exists('sysconf')) {
             }
         }
         return isset($data[$field]) ? (strtolower($raw) === 'raw' ? $data[$field] : htmlspecialchars($data[$field])) : '';
+    }
+}
+
+if (!function_exists('systoken')) {
+    /**
+     * 生成CSRF-TOKEN参数
+     * @param string $node
+     * @return string
+     */
+    function systoken($node = null)
+    {
+        $csrf = \library\tools\Csrf::buildFormToken($node);
+        return $csrf['token'];
     }
 }
 
@@ -129,7 +129,6 @@ if (!function_exists('data_save')) {
     }
 }
 
-
 if (!function_exists('data_batch_save')) {
     /**
      * 批量更新数据
@@ -149,93 +148,91 @@ if (!function_exists('data_batch_save')) {
 
 if (!function_exists('encode')) {
     /**
-     * UTF8 字符串加密
-     * @param string $string
+     * 加密 UTF8 字符串
+     * @param string $content
      * @return string
      */
-    function encode($string)
+    function encode($content)
     {
-        return \library\tools\Crypt::encode($string);
+        return \library\tools\Crypt::encode($content);
     }
 }
 
 if (!function_exists('decode')) {
     /**
-     * UTF8 字符串解密
-     * @param string $string
+     * 解密 UTF8 字符串
+     * @param string $content
      * @return string
      */
-    function decode($string)
+    function decode($content)
     {
-        return \library\tools\Crypt::decode($string);
+        return \library\tools\Crypt::decode($content);
     }
 }
 
 if (!function_exists('emoji_encode')) {
     /**
-     * Emoji 表情编码
-     * @param string $string
+     * 编码 Emoji 表情
+     * @param string $content
      * @return string
      */
-    function emoji_encode($string)
+    function emoji_encode($content)
     {
-        return \library\tools\Crypt::emojiEncode($string);
+        return \library\tools\Emoji::encode($content);
     }
 }
 
 if (!function_exists('emoji_decode')) {
     /**
-     * Emoji 表情解析
-     * @param string $string
+     * 解析 Emoji 表情
+     * @param string $content
      * @return string
      */
-    function emoji_decode($string)
+    function emoji_decode($content)
     {
-        return \library\tools\Crypt::emojiDecode($string);
+        return \library\tools\Emoji::decode($content);
     }
 }
 
 if (!function_exists('emoji_clear')) {
     /**
-     * Emoji 表情清除
-     * @param string $string
+     * 清除 Emoji 表情
+     * @param string $content
      * @return string
      */
-    function emoji_clear($string)
+    function emoji_clear($content)
     {
-        return \library\tools\Crypt::emojiClear($string);
+        return \library\tools\Emoji::clear($content);
     }
 }
 
 // 注册跨域中间键
-\think\facade\Middleware::add(function (\think\Request $request, \Closure $next) {
+\think\facade\Middleware::add(function (\think\Request $request, \Closure $next, $header = []) {
     if (($origin = $request->header('origin', '*')) !== '*') {
-        header("Access-Control-Allow-Origin:{$origin}");
-        header('Access-Control-Allow-Methods:GET,POST');
-        header('Access-Control-Expose-Headers:User-Token-Csrf');
-        header('Access-Control-Allow-Headers:Content-Type,X-Requested-With');
+        $header['Access-Control-Allow-Origin'] = $origin;
+        $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
+        $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
+        $header['Access-Control-Expose-Headers'] = 'User-Token-Csrf';
     }
-    return $request->isOptions() ? response() : $next($request);
+    if ($request->isOptions()) {
+        return \think\Response::create()->code(204)->header($header);
+    } else {
+        return $next($request)->header($header);
+    }
 });
 
 // 注册系统常用指令
 \think\Console::addDefaultCommands([
     'library\command\Sess',
-    'library\command\task\Stop',
-    'library\command\task\State',
-    'library\command\task\Start',
-    'library\command\task\Reset',
+    'library\command\task\Stop', 'library\command\task\State',
+    'library\command\task\Start', 'library\command\task\Reset',
     'library\command\sync\Admin',
-    'library\command\sync\Plugs',
-    'library\command\sync\Config',
-    'library\command\sync\Wechat',
-    'library\command\sync\Service',
+    'library\command\sync\Plugs', 'library\command\sync\Config',
+    'library\command\sync\Wechat', 'library\command\sync\Service',
 ]);
 
-// 动态加载模块配置文件
+// 动态加载模块配置
 if (function_exists('think\__include_file')) {
-    $ds = DIRECTORY_SEPARATOR;
-    foreach (glob(env('app_path') . "{$ds}*{$ds}sys.php") as $file) {
-        \think\__include_file($file);
-    }
+    $root = rtrim(str_replace('\\', '/', env('app_path')), '/');
+    foreach (glob("{$root}/*/sys.php") as $file) \think\__include_file($file);
 }
