@@ -26,7 +26,7 @@ class Review extends Controller
 {
 
     /**
-     * 显示图文列表
+     * 图文展示
      * @param integer $id
      * @return mixed
      * @throws \think\db\exception\DataNotFoundException
@@ -40,7 +40,7 @@ class Review extends Controller
     }
 
     /**
-     * 显示图文内容
+     * 文章展示
      * @param integer $id
      * @return mixed
      * @throws \think\Exception
@@ -56,29 +56,52 @@ class Review extends Controller
         return $this->fetch('', ['info' => Db::name('WechatNewsArticle')->where($where)->find()]);
     }
 
+    /**
+     * 文本展示
+     */
     public function text()
     {
-        return $this->fetch();
+        $this->content = strip_tags(input('content', ''), '<a><img>');
+        $this->fetch();
     }
 
+    /**
+     * 图片展示
+     */
     public function image()
     {
-        return $this->fetch();
+        $this->content = strip_tags(input('content', ''), '<a><img>');
+        $this->fetch();
     }
 
+    /**
+     * 视频展示
+     */
     public function video()
     {
-        return $this->fetch();
+        $this->url = strip_tags(input('url', ''), '<a><img>');
+        $this->title = strip_tags(input('title', ''), '<a><img>');
+        $this->fetch();
     }
 
+    /**
+     * 语音展示
+     */
     public function voice()
     {
-        return $this->fetch();
+        $this->url = strip_tags(input('url', ''), '<a><img>');
+        $this->fetch();
     }
 
+    /**
+     * 音乐展示
+     */
     public function music()
     {
-        return $this->fetch();
+        $this->url = strip_tags(input('url', ''), '<a><img>');
+        $this->desc = strip_tags(input('desc', ''), '<a><img>');
+        $this->title = strip_tags(input('title', ''), '<a><img>');
+        $this->fetch();
     }
 
 }

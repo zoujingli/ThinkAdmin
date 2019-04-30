@@ -154,7 +154,6 @@ $(function () {
                     $($this.data('input')).val(url).trigger('change');
                 });
             });
-            console.log('init')
         };
         // 在内容区显示视图
         this.show = function (html) {
