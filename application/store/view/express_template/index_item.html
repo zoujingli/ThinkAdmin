@@ -1,0 +1,81 @@
+<fieldset class="margin-bottom-20 relative" data-max-index="{$index}">
+
+    <legend class="color-green font-s14">
+        {$group_title|default='邮费规则分组'} <span class="color-desc font-s12"> RuleGroup</span>
+    </legend>
+
+    {empty name='is_default'}
+    <a onclick="delRuleItem(this)" class="layui-btn layui-btn-xs layui-btn-danger text-center layui-icon layui-icon-close" data-tips-text="移除规则" style="position:absolute;top:15px;right:5px;padding:0 5px"></a>
+    {/empty}
+
+    <div class="layui-form-item block relative">
+        <span class="color-desc font-s14">订单总金额满足条件时将减免该订单的所有邮费（请谨慎配置）</span>
+        <table>
+            <tr>
+                <td>
+                    <div class="layui-input text-center" style="width:150px">
+                        {php}isset($item['order_reduction_state']) or $item['order_reduction_state']=0;{/php}
+                        {foreach ['0' => '关闭','1' => '开启'] as $k => $v}
+                        <!--{eq name='item.order_reduction_state' value='$k'}-->
+                        <label class="think-radio"><input type="radio" value="{$k}" name="order_reduction_state_{$index}" title="{$v}" checked lay-ignore> {$v}</label>
+                        <!--{else}-->
+                        <label class="think-radio"><input type="radio" value="{$k}" name="order_reduction_state_{$index}" title="{$v}" lay-ignore> {$v}</label>
+                        <!--{/eq}-->
+                        {/foreach}
+                    </div>
+                </td>
+                <td width='20px'></td>
+                <td><label class="text-center nowrap">订单满 <input style="width:130px" class="layui-input inline-block text-center padding-left-0" name="order_reduction_price_{$index}" data-blur-number="2" value="{$item.order_reduction_price|default='0.00'}"> 元免邮费</label></td>
+            </tr>
+        </table>
+        <!--<span class="color-desc block">订单总金额达到这个金额时，将减免该订单的所有邮费，请谨慎配置。</span>-->
+    </div>
+
+    <div class="layui-form-item">
+        {notempty name='is_default'}
+        <input type="hidden" name="is_default_{$index}" value="1">
+        <input type="hidden" name="rule_{$index}[]" value="{$group_title|default='邮费规则分组'}">
+        {else}
+        <input type="hidden" name="is_default_{$index}" value="0">
+        <span class="color-desc font-s14">根据配送目的地的省份进行运费计算邮费（不在规则内的将使用默认邮费规则）</span>
+        <table class="layui-table" lay-skin="line">
+            <tr class="layui-bg-gray">
+                <th class="text-center">
+                    <label class="think-checkbox pull-left margin-top-0 notselect"><input type="checkbox" data-check-target="[data-template-province-{$index}]" lay-ignore> 全选</label>
+                    <span>可配送区域</span>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    {foreach $provinces as $p}
+                    <label class="think-checkbox layui-elip" style="width:115px">
+                        {if is_numeric($index) and isset($item.rule) and is_array($item.rule) and in_array($p,$item.rule)}
+                        <input data-province-input data-template-province-{$index} checked type="checkbox" name="rule_{$index}[]" value="{$p}" lay-ignore> {$p|default=''}
+                        {else}
+                        <input data-province-input data-template-province-{$index} type="checkbox" name="rule_{$index}[]" value="{$p}" lay-ignore> {$p|default=''}
+                        {/if}
+                    </label>
+                    {/foreach}
+                </td>
+            </tr>
+        </table>
+        {/notempty}
+
+        <table class="layui-table" lay-skin="line">
+            <tr class="layui-bg-gray">
+                <th class="text-center" width="80px">首件（个）</th>
+                <th class="text-center" width="80px">运费（元）</th>
+                <th class="text-center" width="80px">续件（个）</th>
+                <th class="text-center" width="80px">续费（元）</th>
+            </tr>
+            <tr>
+                <td class="text-center"><label><input name="first_number_{$index}" value="{$item.first_number|default='1'}" data-blur-number="0" class="layui-input text-center padding-left-0"></label></td>
+                <td class="text-center"><label><input name="first_price_{$index}" value="{$item.first_price|default='0.00'}" data-blur-number="2" class="layui-input text-center padding-left-0"></label></td>
+                <td class="text-center"><label><input name="next_number_{$index}" value="{$item.next_number|default='1'}" data-blur-number="0" class="layui-input text-center padding-left-0"></label></td>
+                <td class="text-center"><label><input name="next_price_{$index}" value="{$item.next_price|default='0.00'}" data-blur-number="2" class="layui-input text-center padding-left-0"></label></td>
+            </tr>
+        </table>
+    </div>
+
+
+</fieldset>

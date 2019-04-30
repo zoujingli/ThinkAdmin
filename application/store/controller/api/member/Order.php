@@ -70,11 +70,12 @@ class Order extends Member
                 'from_mid'          => $order['from_mid'],
                 'order_no'          => $order['order_no'],
                 // 商品信息字段管理
-                'number'            => $number,
                 'goods_id'          => $goods_id,
                 'goods_spec'        => $goods_spec,
                 'goods_logo'        => $goods['logo'],
                 'goods_title'       => $goods['title'],
+                'number_goods'      => $number,
+                'number_express'    => $spec['number_express'],
                 // 费用字段处理
                 'price_market'      => $spec['price_market'],
                 'price_selling'     => $spec['price_selling'],
@@ -222,7 +223,7 @@ class Order extends Member
             list($vo['goods_count'], $vo['list']) = [0, []];
             foreach ($glist as $goods) if ($vo['order_no'] === $goods['order_no']) {
                 $vo['list'][] = $goods;
-                $vo['goods_count'] += $goods['number'];
+                $vo['goods_count'] += $goods['number_goods'];
             }
         }
         $this->success('获取订单列表成功！', $result);

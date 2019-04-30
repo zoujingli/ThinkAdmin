@@ -33,7 +33,7 @@ class Order
      */
     public static function update($order_no)
     {
-
+        // @todo 更新订单状态
     }
 
     /**
@@ -48,9 +48,9 @@ class Order
      */
     public static function syncStock($order_no)
     {
-        foreach (array_unique(Db::name('StoreOrderList')->where(['order_no' => $order_no])->column('goods_id')) as $goods_id) {
-            if (!Goods::syncStock($goods_id)) return false;
-        }
+        $map = ['order_no' => $order_no];
+        $goodsIds = Db::name('StoreOrderList')->where($map)->column('goods_id');
+        foreach (array_unique($goodsIds) as $goodsId) if (!Goods::syncStock($goodsId)) return false;
         return true;
     }
 
@@ -61,11 +61,6 @@ class Order
      */
     public static function profit($order_no = '')
     {
-        $where = ['order_no' => $order_no];
-        if (Db::name('StoreProfitRecord')->where($where)->count() > 0) {
-            return false;
-        }
-
-
+        // @todo 计算订单返佣
     }
 }

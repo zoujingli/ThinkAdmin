@@ -15,22 +15,23 @@
 namespace app\store\controller;
 
 use library\Controller;
+use think\Db;
 
 /**
- * 商品分类管理
- * Class GoodsCate
+ * 快递公司管理
+ * Class Express
  * @package app\store\controller
  */
-class GoodsCate extends Controller
+class ExpressCompany extends Controller
 {
     /**
-     * 绑定数据表
+     * 指定数据表
      * @var string
      */
-    protected $table = 'StoreGoodsCate';
+    protected $table = 'StoreExpressCompany';
 
     /**
-     * 商品分类管理
+     * 快递公司管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -39,33 +40,44 @@ class GoodsCate extends Controller
      */
     public function index()
     {
-        $this->title = '商品分类管理';
-        $where = ['is_deleted' => '0'];
-        $this->_query($this->table)->like('title')->equal('status')->where($where)->order('sort asc,id desc')->page();
+        $this->title = '快递公司管理';
+        $query = $this->_query($this->table)->equal('status')->like('express_title,express_code');
+        $query->dateBetween('create_at')->order('status desc,sort asc,id desc')->page();
     }
 
     /**
-     * 添加商品分类
-     * @return mixed
+     * 添加快递公司
      */
     public function add()
     {
-        $this->title = '添加商品分类';
-        return $this->_form($this->table, 'form');
+        $this->_form($this->table, 'form');
     }
 
     /**
-     * 编辑添加商品分类
-     * @return mixed
+     * 编辑快递公司
      */
     public function edit()
     {
-        $this->title = '编辑商品分类';
-        return $this->_form($this->table, 'form');
+        $this->_form($this->table, 'form');
     }
 
     /**
-     * 禁用添加商品分类
+     * 表单数据处理
+     * @param array $data
+     */
+    protected function _form_filter(array $data)
+    {
+        if ($this->request->isPost()) {
+            $where = [['express_code', 'eq', $data['express_code']], ['is_deleted', 'eq', '0']];
+            if (!empty($data['id'])) $where[] = ['id ', 'neq', $data['id']];
+            if (Db::name($this->table)->where($where)->count() > 0) {
+                $this->error('该快递编码已经存在，请使用其它编码！');
+            }
+        }
+    }
+
+    /**
+     * 禁用快递公司
      */
     public function forbid()
     {
@@ -73,7 +85,7 @@ class GoodsCate extends Controller
     }
 
     /**
-     * 启用商品分类
+     * 启用快递公司
      */
     public function resume()
     {
@@ -81,7 +93,7 @@ class GoodsCate extends Controller
     }
 
     /**
-     * 删除商品分类
+     * 删除快递公司
      */
     public function del()
     {

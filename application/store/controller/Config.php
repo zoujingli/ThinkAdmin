@@ -18,14 +18,15 @@ use app\store\service\Extend;
 use library\Controller;
 
 /**
- * 微信商城配置
+ * 商城参数配置
  * Class Config
  * @package app\store\controller
  */
 class Config extends Controller
 {
+
     /**
-     * 微信商城配置
+     * 商城参数配置
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */

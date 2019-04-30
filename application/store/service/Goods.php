@@ -40,7 +40,7 @@ class Goods
         $stockList = Db::name('StoreGoodsStock')->field($fields)->where(['goods_id' => $goodsId])->group('goods_id,goods_spec')->select();
         // 商品销量统计
         $where = [['b.goods_id', 'eq', $goodsId], ['a.status', 'in', ['1', '2', '3', '4', '5']]];
-        $fields = 'b.goods_id,b.goods_spec,ifnull(sum(b.number),0) number_sales';
+        $fields = 'b.goods_id,b.goods_spec,ifnull(sum(b.number_goods),0) number_sales';
         $salesList = Db::table('store_order a')->field($fields)->leftJoin('store_order_list b', 'a.order_no=b.order_no')->where($where)->group('b.goods_id,b.goods_spec')->select();
         // 组装更新数据
         $dataList = [];
@@ -53,9 +53,11 @@ class Goods
         unset($salesList, $stockList);
         // 更新商品规格销量及库存
         foreach ($dataList as $vo) Db::name('StoreGoodsList')->where([
-            'goods_id' => $goodsId, 'goods_spec' => $vo['goods_spec'],
+            'goods_id'   => $goodsId,
+            'goods_spec' => $vo['goods_spec'],
         ])->update([
-            'number_stock' => $vo['number_stock'], 'number_sales' => $vo['number_sales'],
+            'number_stock' => $vo['number_stock'],
+            'number_sales' => $vo['number_sales'],
         ]);
         // 更新商品主体销量及库存
         Db::name('StoreGoods')->where(['id' => $goodsId])->update([

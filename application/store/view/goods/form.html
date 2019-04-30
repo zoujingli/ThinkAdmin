@@ -83,9 +83,10 @@
                 <thead>
                 <tr>
                     <th ng-repeat="x in specsTreeNava track by $index" class="nowrap" ng-bind="x"></th>
+                    <th width="10%" class="text-center nowrap">快递数量 <a ng-click="batchSet('express',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+                    <th width="10%" class="text-center nowrap">虚拟销量 <a ng-click="batchSet('virtual',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">市场价格 <a ng-click="batchSet('market',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">销售价格 <a ng-click="batchSet('selling',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">虚拟销量 <a ng-click="batchSet('virtual',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">销售状态</th>
                 </tr>
                 </thead>
@@ -94,17 +95,22 @@
                     <td class="layui-bg-gray" ng-if="td.show" rowspan="{{td.span}}" ng-repeat="td in rows" ng-bind="td.name"></td>
                     <td class="padding-0">
                         <label class="padding-0 margin-0">
+                            <input ng-blur="rows[0].express=setValue(rows[0].key,'express',$event.target.value,'(parseFloat(_)||0).toFixed(0)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].express">
+                        </label>
+                    </td>
+                    <td class="padding-0">
+                        <label class="padding-0 margin-0">
+                            <input ng-blur="rows[0].virtual=setValue(rows[0].key,'virtual',$event.target.value,'(parseInt(_)||0)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].virtual">
+                        </label>
+                    </td>
+                    <td class="padding-0">
+                        <label class="padding-0 margin-0">
                             <input ng-blur="rows[0].market=setValue(rows[0].key,'market',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].market">
                         </label>
                     </td>
                     <td class="padding-0">
                         <label class="padding-0 margin-0">
                             <input ng-blur="rows[0].selling=setValue(rows[0].key,'selling',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].selling">
-                        </label>
-                    </td>
-                    <td class="padding-0">
-                        <label class="padding-0 margin-0">
-                            <input ng-blur="rows[0].virtual=setValue(rows[0].key,'virtual',$event.target.value,'(parseInt(_)||0)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].virtual">
                         </label>
                     </td>
                     <td class="text-center layui-bg-gray">
@@ -290,6 +296,9 @@
                     for (let td in list[row]) {
                         if (_key.length === 0) {
                             list[row][0].key = _key = key.join(';;');
+                            list[row][0].express = getValue(_key, function (data) {
+                                return data.express || '1';
+                            });
                             list[row][0].virtual = getValue(_key, function (data) {
                                 return data.virtual || '0';
                             });
@@ -299,6 +308,7 @@
                             list[row][0].selling = getValue(_key, function (data) {
                                 return data.selling || '0.00';
                             });
+
                             list[row][0].status = getValue(_key, function (data) {
                                 return !!(typeof data.status !== 'undefined' ? data.status : true);
                             });

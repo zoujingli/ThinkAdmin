@@ -17,7 +17,7 @@ namespace app\store\controller;
 use library\Controller;
 
 /**
- * 商城会员管理
+ * 会员信息管理
  * Class Member
  * @package app\store\controller
  */
@@ -30,7 +30,7 @@ class Member extends Controller
     protected $table = 'StoreMember';
 
     /**
-     * 商城会员管理
+     * 会员信息管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -39,7 +39,7 @@ class Member extends Controller
      */
     public function index()
     {
-        $this->title = '商城会员管理';
+        $this->title = '会员信息管理';
         $this->_query($this->table)->like('nickname,phone')->equal('vip_level')->dateBetween('create_at')->order('id desc')->page();
     }
 

@@ -67,7 +67,7 @@
         <td class="nowrap">
             {foreach $vo.list as $g}
             <div class="nowrap">
-                <p class="text-right">{$g.goods_title|default=''} x{$g.number|default=0}</p>
+                <p class="text-right">{$g.goods_title|default=''} x{$g.number_goods|default=0}</p>
                 <p class="text-right color-desc">
                     售价 {$g.price_real} 元,分成比例 {$g.price_rate+0}%，分成金额 {$g.price_rate_amount+0} 元
                 </p>

@@ -18,7 +18,7 @@ use library\Controller;
 use think\Db;
 
 /**
- * 商城订单管理
+ * 订单记录管理
  * Class Order
  * @package app\store\controller
  */
@@ -31,7 +31,7 @@ class Order extends Controller
     protected $table = 'StoreOrder';
 
     /**
-     * 商城订单管理
+     * 订单记录管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -40,7 +40,7 @@ class Order extends Controller
      */
     public function index()
     {
-        $this->title = '商城订单管理';
+        $this->title = '订单记录管理';
         $this->_query($this->table)->order('id desc')->page();
     }
 

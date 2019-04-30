@@ -42,7 +42,7 @@ class Goods extends Controller
      */
     public function index()
     {
-        $this->title = '商城商品管理';
+        $this->title = '商品信息管理';
         $this->_query($this->table)->equal('status,cate_id')->like('title')->where(['is_deleted' => '0'])->order('sort asc,id desc')->page();
     }
 
@@ -134,7 +134,7 @@ class Goods extends Controller
         // 生成商品ID
         if (empty($data['id'])) $data['id'] = Data::uniqidNumberCode(10);
         if ($this->request->isGet()) {
-            $fields = 'goods_spec,goods_id,status,price_market market,price_selling selling,number_virtual `virtual`';
+            $fields = 'goods_spec,goods_id,status,price_market market,price_selling selling,number_virtual `virtual`,number_express express';
             $defaultValues = Db::name('StoreGoodsList')->where(['goods_id' => $data['id']])->column($fields);
             $this->defaultValues = json_encode($defaultValues, JSON_UNESCAPED_UNICODE);
             $this->cates = Db::name('StoreGoodsCate')->where(['is_deleted' => '0', 'status' => '1'])->order('sort asc,id desc')->select();
@@ -146,6 +146,7 @@ class Goods extends Controller
                 'price_market'   => $vo[0]['market'],
                 'price_selling'  => $vo[0]['selling'],
                 'number_virtual' => $vo[0]['virtual'],
+                'number_express' => $vo[0]['express'],
                 'status'         => $vo[0]['status'] ? 1 : 0,
             ], 'goods_spec', ['goods_id' => $data['id']]);
         }

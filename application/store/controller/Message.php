@@ -17,7 +17,7 @@ namespace app\store\controller;
 use library\Controller;
 
 /**
- * 短信消息管理
+ * 短信发送管理
  * Class Message
  * @package app\store\controller
  */
@@ -30,7 +30,7 @@ class Message extends Controller
     protected $table = 'StoreMemberSmsHistory';
 
     /**
-     * 短信消息管理
+     * 短信发送管理
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -39,7 +39,7 @@ class Message extends Controller
      */
     public function index()
     {
-        $this->title = '手机短信记录';
+        $this->title = '短信发送管理';
         $this->_query($this->table)->like('phone,content,result')->dateBetween('create_at')->order('id desc')->page();
     }
 

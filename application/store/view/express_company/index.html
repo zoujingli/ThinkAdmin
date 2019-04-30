@@ -1,17 +1,17 @@
 {extend name='admin@main'}
 
 {block name="button"}
-{if auth("store/express/add")}
+{if auth("store/express_company/add")}
 <button data-modal='{:url("add")}' data-title="添加快递" class='layui-btn layui-btn-sm layui-btn-primary'>添加快递</button>
 {/if}
-{if auth("store/express/del")}
+{if auth("store/express_company/del")}
 <button data-action='{:url("del")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除快递</button>
 {/if}
 {/block}
 
 {block name="content"}
 <table class="layui-table" lay-skin="line">
-    <caption class="margin-bottom-10 text-left">{include file='express/index_search'}</caption>
+    <caption class="margin-bottom-10 text-left">{include file='express_company/index_search'}</caption>
     <!--{notempty name='list'}-->
     <thead>
     <tr>
@@ -46,17 +46,17 @@
         <td class='text-center nowrap'>{$vo.create_at|format_datetime}</td>
         <td class='text-left nowrap'>
 
-            {if auth("store/express/edit")}
+            {if auth("store/express_company/edit")}
             <a data-dbclick data-title="编辑快递" class="layui-btn layui-btn-xs" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
             {/if}
 
-            {if $vo.status eq 1 and auth("store/express/forbid")}
+            {if $vo.status eq 1 and auth("store/express_company/forbid")}
             <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">禁 用</a>
-            {elseif auth("store/express/resume")}
+            {elseif auth("store/express_company/resume")}
             <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1">启 用</a>
             {/if}
 
-            {if auth("store/express/del")}
+            {if auth("store/express_company/del")}
             <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('del')}" data-value="id#{$vo.id}">删 除</a>
             {/if}
 
