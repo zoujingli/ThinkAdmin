@@ -154,13 +154,15 @@ $(function () {
                     $($this.data('input')).val(url).trigger('change');
                 });
             });
+            console.log('init')
         };
         // 在内容区显示视图
         this.show = function (html) {
             $(this.selecter).html(html);
-            $([0, 500, 1000]).map(function (index, time) {
-                setTimeout(that.reInit, time)
-            });
+            this.reInit($(this.selecter));
+            setTimeout(function () {
+                that.reInit($(that.selecter));
+            }, 500);
         };
         // 以hash打开网页
         this.href = function (url, obj) {
