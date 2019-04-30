@@ -22,7 +22,7 @@
             <label class="layui-form-label">读取状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="read_state">
-                    {foreach [''=>'-- 全部 --','0'=>'未读取消息','1'=>'已读取消息'] as $k=>$v}
+                    {foreach [''=>'-- 全部状态 --','0'=>'未读取消息','1'=>'已读取消息'] as $k=>$v}
                     {eq name='Think.get.read_state' value='$k.""'}
                     <option selected value="{$k}">{$v}</option>
                     {else}

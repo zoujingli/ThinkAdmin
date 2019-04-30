@@ -159,7 +159,6 @@ $(function () {
         this.show = function (html) {
             $(this.selecter).html(html);
             $([0, 500, 1000]).map(function (index, time) {
-                console.log(arguments)
                 setTimeout(that.reInit, time)
             });
         };

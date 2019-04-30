@@ -22,7 +22,7 @@
             <label class="layui-form-label">任务指令</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="uri" lay-search>
-                    <option value="">-- 全部 --</option>
+                    <option value="">-- 全部指令 --</option>
                     {foreach $uris as $uri}
                     <!--{eq name='Think.get.uri' value='$uri'}-->
                     <option selected value="{$uri}">{$uri}</option>
@@ -37,7 +37,7 @@
             <label class="layui-form-label">任务状态</label>
             <div class="layui-input-inline">
                 <select name="status" class="layui-select">
-                    {foreach [''=>'-- 全部 --','1'=>'待处理','2'=>'处理中','3'=>'处理完成','4'=>'处理失败'] as $k=>$v}
+                    {foreach [''=>'-- 全部状态 --','1'=>'待处理','2'=>'处理中','3'=>'处理完成','4'=>'处理失败'] as $k=>$v}
                     <!--{if $Think.get.status eq $k}-->
                     <option selected value="{$k}">{$v}</option>
                     <!--{else}-->

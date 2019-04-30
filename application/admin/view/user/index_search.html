@@ -29,7 +29,7 @@
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    {foreach [''=>'-- 全部 --','0'=>'已禁用的账号','1'=>'使用中的账号'] as $k=>$v}
+                    {foreach [''=>'-- 全部状态 --','0'=>'已禁用的账号','1'=>'使用中的账号'] as $k=>$v}
                     {eq name='Think.get.status' value='$k.""'}
                     <option selected value="{$k}">{$v}</option>
                     {else}
