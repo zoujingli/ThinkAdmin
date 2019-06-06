@@ -33,17 +33,17 @@
             <form class="layui-form" role="form" name="news" onsubmit="return false">
 
                 <label class="layui-form-item relative block">
-                    <span class="help-block">文章标题<sup class="color-red padding-left-5">*</sup></span>
+                    <span class="color-green">文章标题</span>
                     <input maxlength="64" ng-model="item.title" required placeholder="请在这里输入标题" name='title' class="layui-input">
                 </label>
 
                 <label class="layui-form-item relative block">
-                    <span class="help-block">文章作者<sup class="color-red padding-left-5">*</sup></span>
+                    <span class="color-green">文章作者</span>
                     <input maxlength="64" ng-model="item.author" required placeholder="请输入文章作者" name='author' class="layui-input">
                 </label>
 
-                <div class="layui-form-item">
-                    <span class="help-block">图文封面大图片<sup class="color-red padding-left-5">*</sup></span>
+                <div class="layui-form-item label-required-prev">
+                    <span class="color-green">图文封面大图片</span>
                     <div class="layui-clear">
                         <div class="upload-image-box pull-left transition" data-tips-image="{{item.local_url}}" style="{{item.style}}">
                             <input ng-model="item.local_url" data-auto-none value="{{item.local_url}}" type="hidden" name="local_url">
@@ -59,8 +59,8 @@
                     <p class="color-desc">封面大图片建议尺寸 900像素 * 500像素</p>
                 </div>
 
-                <div class="layui-form-item">
-                    <span class="help-block">图文文章内容<sup class="color-red padding-left-5">*</sup></span>
+                <div class="layui-form-item label-required-prev">
+                    <span class="color-green">图文文章内容</span>
                     <textarea ng-model="item.content" name='content'></textarea>
                 </div>
 
@@ -225,21 +225,4 @@
 </script>
 {/block}
 
-{block name="style"}
-<style>
-    .label-required:after{content:''}
-    .news-left.layui-card .layui-card-header,.news-right.layui-card .layui-card-header{border:none;background:#eee}
-    .news-left.layui-card .layui-card-body,.news-right.layui-card .layui-card-body{margin-bottom:30px;border:1px solid #eee}
-    .news-left{left:20px;width:300px;position:absolute}
-    .news-right{left:330px;right:20px;overflow:hidden;position:absolute}
-    .news-left .news-item{width:280px;height:150px;cursor:pointer;max-width:270px;overflow:hidden;position:relative;border:1px solid #ccc;background-size:cover;background-position:center center}
-    .news-left .news-item.active{border:1px solid #44b549!important}
-    .news-left .article-add{color:#999;display:block;font-size:22px;text-align:center}
-    .news-left .article-add:hover{color:#666}
-    .news-left .news-title{bottom:0;color:#fff;width:272px;display:block;padding:0 5px;max-height:6em;overflow:hidden;margin-left:-1px;position:absolute;text-overflow:ellipsis;background:rgba(0,0,0,.7)}
-    .news-left .news-item a{color:#fff;width:30px;height:30px;float:right;font-size:12px;margin-top:-1px;line-height:34px;text-align:center;margin-right:-1px;background-color:rgba(0,0,0,.5)}
-    .news-left .news-item:hover a{display:inline-block!important}
-    .news-left .news-item a:hover{text-decoration:none;background-color:#0C0C0C}
-    .news-right .upload-image-box{width:130px;height:90px;background:url(__ROOT__/static/plugs/uploader/theme/image.png) no-repeat center center;background-size:cover;border:1px solid rgba(125,125,125,.1)}
-</style>
-{/block}
+{block name="style"}{include file='wechat@news/form_style'}{/block}

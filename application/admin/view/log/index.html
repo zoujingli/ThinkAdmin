@@ -2,6 +2,10 @@
 
 {block name="button"}
 
+{if auth("admin/log/clear")}
+<button data-load='{:url("clear")}' data-confirm="确定要消除所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理日志</button>
+{/if}
+
 {if auth("admin/log/del")}
 <button data-action='{:url("del")}' data-rule="id#{key}" data-csrf="{:systoken('admin/log/del')}" data-confirm="确定要删除日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
 {/if}
@@ -9,53 +13,56 @@
 {/block}
 
 {block name="content"}
-<table class="layui-table" lay-skin="line">
-    <caption class="margin-bottom-10 text-left">{include file='log/index_search'}</caption>
-    {notempty name='list'}
-    <thead>
-    <tr>
-        <th class='list-table-check-td think-checkbox'>
-            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
-        </th>
-        <th class='text-left nowrap' width="20%">操作</th>
-        <th class='text-left nowrap' width="20%">权限</th>
-        <th class='text-left nowrap' width="20%">位置</th>
-        <th class='text-left nowrap' width="20%">操作时间</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <!--{foreach $list as $key=>$vo}-->
-    <tr data-dbclick>
-        <td class='list-table-check-td think-checkbox'>
-            <input class="list-check-box" value='{$vo.id}' type='checkbox'>
-        </td>
-        <td class='text-left nowrap'>
-            行为：<strong>{$vo.action|default='--'}</strong><br>
-            描述：{$vo.content|default='--'}
-        </td>
-        <td class='text-left nowrap'>
-            账号：{$vo.username|default='--'}<br>
-            节点：{$vo.node|default='--'}
-        </td>
-        <td class='text-left nowrap'>
-            地址：{$vo.geoip|default='--'}<br>
-            位置：{$vo.isp|default='--'}
-        </td>
-        <td class='text-left nowrap'>
-            日期：{$vo.create_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
-        </td>
-        <td class='text-left nowrap'>
-            {if auth("admin/log/del")}
-            <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/log/del')}">删 除</a>
-            {/if}
-        </td>
-    </tr>
-    <!--{/foreach}-->
-    </tbody>
-    {/notempty}
-</table>
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='log/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='text-left nowrap' width="20%">操作</th>
+            <th class='text-left nowrap' width="20%">权限</th>
+            <th class='text-left nowrap' width="20%">位置</th>
+            <th class='text-left nowrap' width="20%">操作时间</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{foreach $list as $key=>$vo}-->
+        <tr data-dbclick>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class='text-left nowrap'>
+                行为：<strong>{$vo.action|default='--'}</strong><br>
+                描述：{$vo.content|default='--'}
+            </td>
+            <td class='text-left nowrap'>
+                账号：{$vo.username|default='--'}<br>
+                节点：{$vo.node|default='--'}
+            </td>
+            <td class='text-left nowrap'>
+                地址：{$vo.geoip|default='--'}<br>
+                位置：{$vo.isp|default='--'}
+            </td>
+            <td class='text-left nowrap'>
+                日期：{$vo.create_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
+            </td>
+            <td class='text-left nowrap'>
+                {if auth("admin/log/del")}
+                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/log/del')}">删 除</a>
+                {/if}
+            </td>
+        </tr>
+        <!--{/foreach}-->
+        </tbody>
+        {/notempty}
+    </table>
 
-{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
 
 {/block}

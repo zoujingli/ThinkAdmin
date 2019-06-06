@@ -14,7 +14,7 @@
 
 namespace app\service\controller\api;
 
-use app\service\logic\Wechat;
+use app\service\service\Wechat;
 use think\Controller;
 use think\Db;
 

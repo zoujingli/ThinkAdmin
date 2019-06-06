@@ -14,7 +14,7 @@
 
 namespace app\service\handler;
 
-use app\service\logic\Wechat as WechatLogic;
+use app\service\service\Wechat as WechatLogic;
 use think\Db;
 
 /**
@@ -62,15 +62,6 @@ class Wechat
     {
         if (!empty($this->config)) return true;
         throw new \think\Exception('Wechat Please bind Wechat first');
-    }
-
-    /**
-     * 接口测试
-     * @return integer
-     */
-    public function test()
-    {
-        return time();
     }
 
     /**

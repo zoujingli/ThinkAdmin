@@ -45,8 +45,8 @@ class User extends Controller
     public function index()
     {
         $this->title = '系统用户管理';
-        $query = $this->_query($this->table)->like('username,phone,mail')->dateBetween('login_at')->equal('status');
-        $query->where(['is_deleted' => '0'])->order('id desc')->page();
+        $query = $this->_query($this->table)->like('username,phone,mail')->dateBetween('login_at');
+        $query->equal('status')->where(['is_deleted' => '0'])->order('id desc')->page();
     }
 
     /**
@@ -129,18 +129,6 @@ class User extends Controller
     }
 
     /**
-     * 删除系统用户
-     */
-    public function del()
-    {
-        if (in_array('10000', explode(',', $this->request->post('id')))) {
-            $this->error('系统超级账号禁止删除！');
-        }
-        $this->applyCsrfToken();
-        $this->_delete($this->table);
-    }
-
-    /**
      * 禁用系统用户
      */
     public function forbid()
@@ -159,6 +147,18 @@ class User extends Controller
     {
         $this->applyCsrfToken();
         $this->_save($this->table, ['status' => '1']);
+    }
+
+    /**
+     * 删除系统用户
+     */
+    public function del()
+    {
+        if (in_array('10000', explode(',', $this->request->post('id')))) {
+            $this->error('系统超级账号禁止删除！');
+        }
+        $this->applyCsrfToken();
+        $this->_delete($this->table);
     }
 
 }

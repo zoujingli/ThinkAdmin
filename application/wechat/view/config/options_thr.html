@@ -1,6 +1,6 @@
 <form onsubmit="return false" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
 
-    <div class="layui-card-body padding-0">
+    <div class="layui-card-body">
 
         <div class="color-blue padding-left-40 padding-bottom-20">
             使用第三方授权时，需要单独搭建 SERVICE 服务并将域名配置到 WECHAT 文件，二者需要使用 Yar 或 Soap 通信！
@@ -59,12 +59,8 @@
         <div class="hr-line-dashed"></div>
 
         <div class="layui-form-item text-center">
-            <div class="layui-row">
-                <div class="layui-col-sm8 layui-col-md6">
-                    <input type="hidden" name="wechat_type" value="thr">
-                    <button class="layui-btn" type="submit">保存配置</button>
-                </div>
-            </div>
+            <input type="hidden" name="wechat_type" value="thr">
+            <button class="layui-btn" type="submit">保存配置</button>
         </div>
 
     </div>

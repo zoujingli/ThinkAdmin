@@ -2,23 +2,26 @@
 
 {block name="content"}
 
-<form class="layui-card layui-form">
-    <div class="layui-card-body">
-        <div class="layui-form-item">
-            <label class="layui-form-label">Type<br><span class="nowrap color-desc">对接方式</span></label>
-            <div class="layui-input-block">
-                {foreach ['api'=>'公众号平台API模式','thr'=>'第三方平台授权模式','test'=>'接口功能测试'] as $k=>$v}
-                <input type="radio" data-wechat-type="{$k}" name="wechat_type" value="{$k}" title="{$v}" lay-filter="wechat_type">
-                {/foreach}
-                <p class="help-block">请选择微信对接方式，其中第三方平台授权需要微信开放平台支持，同时需要搭建 SERVICE 服务！</p>
+<div style="max-width:1000px">
+    <form class="layui-card layui-form">
+        <div class="layui-card-body think-box-shadow padding-bottom-5">
+            <div class="layui-form-item">
+                <label class="layui-form-label">Type<br><span class="nowrap color-desc">对接方式</span></label>
+                <div class="layui-input-block">
+                    {foreach ['api'=>'公众号平台API模式','thr'=>'第三方平台授权模式','test'=>'接口功能测试'] as $k=>$v}
+                    <input type="radio" data-wechat-type="{$k}" name="wechat_type" value="{$k}" title="{$v}" lay-filter="wechat_type">
+                    {/foreach}
+                    <p class="help-block">请选择微信对接方式，其中第三方平台授权需要微信开放平台支持，同时需要搭建 SERVICE 服务！</p>
+                </div>
             </div>
         </div>
+    </form>
+    <div class="think-box-shadow">
+        <div data-type="api">{include file='config/options_api'}</div>
+        <div data-type="thr">{include file='config/options_thr'}</div>
+        <div data-type="test">{include file='config/options_help'}</div>
     </div>
-</form>
-
-<div data-type="api">{include file='config/options_api'}</div>
-<div data-type="thr">{include file='config/options_thr'}</div>
-<div data-type="test">{include file='config/options_help'}</div>
+</div>
 
 {/block}
 

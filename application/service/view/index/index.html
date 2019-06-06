@@ -7,73 +7,77 @@
 {/block}
 
 {block name="content"}
-<table class="layui-table" lay-skin="line">
-    <caption class="margin-bottom-10 text-left">{include file='index/index_search'}</caption>
-    {notempty name='list'}
-    <thead>
-    <tr>
-        <th class='text-left nowrap' style="width:390px">接口信息</th>
-        <th class='text-left nowrap' style="width:120px">服务号信息</th>
-        <th class='text-left nowrap'></th>
-        <th class='text-left nowrap'></th>
-    </tr>
-    </thead>
-    {/notempty}
-    <tbody>
-    {foreach $list as $key=>$vo}
-    <tr>
-        <td class='text-left nowrap'>
-            <div class="inline-block text-top margin-right-5">
-                <img onerror="this.src='__ROOT__/static/theme/img/404_icon.png'" style="width:60px;height:60px" data-tips-text="微信头像" data-tips-image src="{$vo.head_img|default=''}">
-            </div>
-            <div class="inline-block">
-                公众号APPID：{$vo.authorizer_appid}&nbsp;&nbsp;&nbsp;&nbsp;调用次数：{$vo.total}<br>
-                接口授权密钥：{$vo.appkey|default='<span class="color-desc">未生成接口服务密码, 请稍候授权绑定</span>'|raw}<br>
-                消息推送接口：{$vo.appuri|default='<span class="color-desc">未配置消息推送接口</span>'|raw}
-            </div>
-        </td>
-        <td class='text-left nowrap'>
-            <div class="inline-block text-top margin-right-5">
-                <img onerror="this.src='__ROOT__/static/theme/img/404_icon.png'" style="width:60px;height:60px" data-tips-text="微信二维码" data-tips-image src="{$vo.qrcode_url|local_image}">
-            </div>
-            <div class="inline-block">
-                昵称：{$vo.nick_name|default='<span class="color-desc">未获取到公众号昵称</span>'|raw}<br>
-                公司：{$vo.principal_name|default='<span class="color-desc">未获取到公司名字</span>'|raw}<br>
-                状态：{if $vo.service_type eq 2}服务号{elseif $vo.service_type eq 3}小程序{else}订阅号{/if} /
-                {$vo.verify_type == -1 ? '<span class="color-red">未认证</span>' : '<span class="color-green">已认证</span>'} /
-                {if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}
-            </div>
-        </td>
-        <td class="text-left nowrap">
-            账号：{$vo.user_name|default='--'}<br>
-            日期：{$vo.create_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
-        </td>
-        <td class='text-left nowrap'>
+<div class="think-box-shadow">
 
-            {if $vo.status eq 1 and auth("servce/index/forbid")}
-            <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-csrf="{:systoken('service/index/forbid')}" data-value="id#{$vo.id};status#0">禁 用</a>
-            {elseif auth("servce/index/resume")}
-            <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-csrf="{:systoken('service/index/resume')}" data-value="id#{$vo.id};status#1">启 用</a>
-            {/if}
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='index/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap' style="width:390px">接口信息</th>
+            <th class='text-left nowrap' style="width:120px">服务号信息</th>
+            <th class='text-left nowrap'></th>
+            <th class='text-left nowrap'></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-left nowrap'>
+                <div class="inline-block text-top margin-right-5">
+                    <img onerror="this.src='__ROOT__/static/theme/img/404_icon.png'" style="width:60px;height:60px" data-tips-text="微信头像" data-tips-image src="{$vo.head_img|default=''}">
+                </div>
+                <div class="inline-block">
+                    公众号APPID：{$vo.authorizer_appid}&nbsp;&nbsp;&nbsp;&nbsp;调用次数：{$vo.total}<br>
+                    接口授权密钥：{$vo.appkey|default='<span class="color-desc">未生成接口服务密码, 请稍候授权绑定</span>'|raw}<br>
+                    消息推送接口：{$vo.appuri|default='<span class="color-desc">未配置消息推送接口</span>'|raw}
+                </div>
+            </td>
+            <td class='text-left nowrap'>
+                <div class="inline-block text-top margin-right-5">
+                    <img onerror="this.src='__ROOT__/static/theme/img/404_icon.png'" style="width:60px;height:60px" data-tips-text="微信二维码" data-tips-image src="{$vo.qrcode_url|local_image}">
+                </div>
+                <div class="inline-block">
+                    昵称：{$vo.nick_name|default='<span class="color-desc">未获取到公众号昵称</span>'|raw}<br>
+                    公司：{$vo.principal_name|default='<span class="color-desc">未获取到公司名字</span>'|raw}<br>
+                    状态：{if $vo.service_type eq 2}服务号{elseif $vo.service_type eq 3}小程序{else}订阅号{/if} /
+                    {$vo.verify_type == -1 ? '<span class="color-red">未认证</span>' : '<span class="color-green">已认证</span>'} /
+                    {if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}
+                </div>
+            </td>
+            <td class="text-left nowrap">
+                账号：{$vo.user_name|default='--'}<br>
+                日期：{$vo.create_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
+            </td>
+            <td class='text-left nowrap'>
 
-            {if auth("service/index/sync")}
-            <a class="layui-btn layui-btn-sm" data-load='{:url("service/index/sync")}?appid={$vo.authorizer_appid}'>同 步</a>
-            {/if}
+                {if $vo.status eq 1 and auth("servce/index/forbid")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-csrf="{:systoken('service/index/forbid')}" data-value="id#{$vo.id};status#0">禁 用</a>
+                {elseif auth("servce/index/resume")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-csrf="{:systoken('service/index/resume')}" data-value="id#{$vo.id};status#1">启 用</a>
+                {/if}
 
-            {if auth("service/index/del")}
-            <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该公众号吗？" data-action="{:url('del')}" data-csrf="{:systoken('service/index/del')}" data-value="id#{$vo.id}">删 除</a>
-            {/if}
+                {if auth("service/index/sync")}
+                <a class="layui-btn layui-btn-sm" data-load='{:url("service/index/sync")}?appid={$vo.authorizer_appid}'>同 步</a>
+                {/if}
 
-            {if auth("service/index/clearquota")}
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="每个公众号每个月有10次清零机会，请谨慎使用！" data-load='{:url("service/index/clearquota")}?appid={$vo.authorizer_appid}'>清 零</a>
-            {/if}
+                {if auth("service/index/del")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该公众号吗？" data-action="{:url('del')}" data-csrf="{:systoken('service/index/del')}" data-value="id#{$vo.id}">删 除</a>
+                {/if}
 
-        </td>
-    </tr>
-    {/foreach}
-    </tbody>
-</table>
+                {if auth("service/index/clearquota")}
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="每个公众号每个月有10次清零机会，请谨慎使用！" data-load='{:url("service/index/clearquota")}?appid={$vo.authorizer_appid}'>清 零</a>
+                {/if}
 
-{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
 
 {/block}

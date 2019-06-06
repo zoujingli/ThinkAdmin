@@ -44,7 +44,6 @@ class Menu extends Controller
 
     /**
      * 微信菜单管理
-     * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -57,10 +56,11 @@ class Menu extends Controller
             $where = [['keys', 'notin', ['subscribe', 'default']], ['status', 'eq', '1']];
             $keys = Db::name('WechatKeys')->where($where)->order('sort asc,id desc')->select();
             $this->success('获取数据成功!', ['menudata' => sysdata('menudata'), 'keysdata' => $keys]);
+        } else {
+            $this->title = '微信菜单定制';
+            $this->menuTypes = $this->menuType;
+            $this->fetch();
         }
-        $this->title = '微信菜单定制';
-        $this->menuTypes = $this->menuType;
-        return $this->fetch();
     }
 
     /**
@@ -74,9 +74,9 @@ class Menu extends Controller
                 try {
                     Wechat::WeChatMenu()->delete();
                 } catch (\Exception $e) {
-                    $this->error('删除取消微信菜单失败，请稍候再试！' . $e->getMessage());
+                    $this->error('删除微信菜单失败，请稍候再试！' . $e->getMessage());
                 }
-                $this->success('删除并取消微信菜单成功！', '');
+                $this->success('删除微信菜单成功！', '');
             }
             try {
                 sysdata('menudata', $this->buildMenu($menudata = json_decode($data, true)));
@@ -132,10 +132,7 @@ class Menu extends Controller
             case 'view':
                 return ['name' => $item['name'], 'type' => $item['type'], 'url' => $item['url']];
             case 'miniprogram':
-                return [
-                    'name'  => $item['name'], 'type' => $item['type'], 'url' => $item['url'],
-                    'appid' => $item['appid'], 'pagepath' => $item['pagepath'],
-                ];
+                return ['name' => $item['name'], 'type' => $item['type'], 'url' => $item['url'], 'appid' => $item['appid'], 'pagepath' => $item['pagepath']];
         }
     }
 

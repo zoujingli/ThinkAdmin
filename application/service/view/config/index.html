@@ -2,8 +2,10 @@
 
 {block name="content"}
 <div class="nowrap" style="width:1295px">
-    <div class="layui-code margin-bottom-20">强烈建议安装 YAR 扩展来实现接口通信，SOAP 不能正常显示接口的异常信息。</div>
-    <fieldset class="margin-bottom-15 margin-right-10 pull-left" style="width:600px">
+    <div class="layui-code margin-top-0 margin-bottom-20 think-box-shadow" style="border-left-width:1px">
+        强烈建议安装 YAR 扩展来实现接口通信，SOAP 不能正常显示接口的异常信息。
+    </div>
+    <fieldset class="margin-bottom-15 margin-right-10 pull-left think-box-shadow wechat-box">
         <legend class="layui-bg-cyan">授权参数</legend>
         <form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
             <div class="layui-form-item">
@@ -41,7 +43,7 @@
         </form>
     </fieldset>
 
-    <fieldset class="margin-bottom-15 pull-left" style="width:600px">
+    <fieldset class="margin-bottom-15 pull-left think-box-shadow wechat-box">
         <legend class="layui-bg-cyan">对接信息</legend>
         <div class="layui-form-item">
             <p class="color-green">授权发起页域名</p>
@@ -83,6 +85,10 @@
 
 {block name='style'}
 <style>
+    fieldset.wechat-box {
+        width: 600px
+    }
+
     .right-btn {
         top: 0;
         right: 0;

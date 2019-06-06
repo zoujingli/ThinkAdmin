@@ -14,13 +14,13 @@
 
 namespace app\service\controller;
 
-use app\service\logic\Build;
-use app\service\logic\Wechat;
+use app\service\service\Build;
+use app\service\service\Wechat;
 use library\Controller;
 use think\Db;
 
 /**
- * Class Index
+ * 公众授权管理
  * @package app\service\controller
  */
 class Index extends Controller
@@ -33,7 +33,7 @@ class Index extends Controller
     public $table = 'WechatServiceConfig';
 
     /**
-     * 授权公众号管理
+     * 公众授权管理
      * @return string
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -43,7 +43,7 @@ class Index extends Controller
     public function index()
     {
         $this->applyCsrfToken();
-        $this->title = '微信授权管理';
+        $this->title = '公众授权管理';
         $query = $this->_query($this->table)->like('authorizer_appid,nick_name,principal_name');
         $query = $query->equal('service_type,status')->dateBetween('create_at');
         $query->where(['is_deleted' => '0'])->order('id desc')->page();

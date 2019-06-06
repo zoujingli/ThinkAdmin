@@ -15,6 +15,7 @@
 namespace app\admin\controller;
 
 use library\Controller;
+use think\Db;
 
 /**
  * 系统日志管理
@@ -40,7 +41,8 @@ class Log extends Controller
     public function index()
     {
         $this->title = '系统操作日志';
-        $this->_query($this->table)->like('action,node,content,username,geoip')->dateBetween('create_at')->order('id desc')->page();
+        $query = $this->_query($this->table)->like('action,node,content,username,geoip');
+        $query->dateBetween('create_at')->order('id desc')->page();
     }
 
     /**
@@ -55,6 +57,20 @@ class Log extends Controller
             $result = $ip->btreeSearch($vo['geoip']);
             $vo['isp'] = isset($result['region']) ? $result['region'] : '';
             $vo['isp'] = str_replace(['内网IP', '0', '|'], '', $vo['isp']);
+        }
+    }
+
+    /**
+     * 清理系统日志
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function clear()
+    {
+        if (Db::name($this->table)->whereRaw('1=1')->delete() !== false) {
+            $this->success('日志清理成功！');
+        } else {
+            $this->error('日志清理失败，请稍候再试！');
         }
     }
 

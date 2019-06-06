@@ -26,44 +26,44 @@
 {/block}
 
 {block name="content"}
-<div class="layui-tab layui-tab-card layui-box">
-    <ul class="layui-tab-title">
+<div class="layui-tab layui-tab-card layui-box" style="background:#fff">
+    <ul class="layui-tab-title notselect">
         {foreach $groups as $key=>$group}
-        <li data-type='{$key}'>
-            {$group.node.title|default='<span class="color-desc">未配置名称</span>'|raw}（{$key}）
-        </li>
+        <li data-type='{$key}'>{$group.node.title|default='<span class="color-desc">未配置名称</span>'|raw}（{$key}）</li>
         {/foreach}
     </ul>
-    <div class="layui-tab-content">
+    <div class="layui-tab-content padding-0">
         {foreach $groups as $key=>$group}
         <div class="layui-tab-item">
-            <table class="layui-table border-0 block layui-elip" lay-skin="line">
+            <table class="layui-table border-0 margin-0" lay-skin="line">
                 <!--{empty name='nodes'}-->
                 <p class="help-block text-center well">没 有 记 录 哦！</p>
                 <!--{else}-->
                 <!--{foreach $group.list as $key=>$vo}-->
                 <tr>
                     <td class='text-left nowrap'>
-                        <span class="color-desc">{$vo.spl|raw}</span> {$vo.node}
-                        {if auth("admin/node/save")}&nbsp;<input autocomplete="off" class='layui-input inline-block title-input' name='title' data-node="{$vo.node}" value="{$vo.title}">{/if}
+                        <span class="color-desc">{$vo.spl|raw}</span>{$vo.node}
+                        {if auth("admin/node/save")}
+                        <label class="margin-left-5 color-text">
+                            <input autocomplete="off" class='layui-input inline-block title-input' name='title' data-node="{$vo.node}" value="{$vo.title}">
+                        </label>
+                        {/if}
                     </td>
                     <td class='text-left nowrap text-middle'>
                         {if auth("admin/node/save") and $vo.spt eq 1}
                         <label class="color-desc think-checkbox">
                             <input data-login-group="{$vo.node}" type="checkbox"> 全部加入登录控制
                         </label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <label class="notselect margin-left-15 color-desc think-checkbox">
+                        <label class="notselect margin-left-20 color-desc think-checkbox">
                             <input data-auth-group="{$vo.node}" type="checkbox"> 全部加入权限控制
                         </label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <label class="notselect margin-left-15 color-desc think-checkbox">
+                        <label class="notselect margin-left-20 color-desc think-checkbox">
                             <input data-menu-group="{$vo.node}" type="checkbox"> 全部加入菜单节点选择器
                         </label>
                         {/if}
                         {if auth("admin/node/save") and $vo.spt eq 2}
-                        <span class="color-desc">&nbsp;├&nbsp;&nbsp;&nbsp;</span>
-                        <label class="notselect margin-right-15 think-checkbox">
+                        <span class="color-desc">　├　</span>
+                        <label class="notselect margin-right-20 think-checkbox">
                             <!--{notempty name='vo.is_login'}-->
                             <input data-login-filter="{$vo.pnode}" checked='checked' class="check-box login_{$key}" type='checkbox' value='1' name='is_login' data-node="{$vo.node}" onclick="!this.checked && ($('.auth_{$key}')[0].checked = !!this.checked)">
                             <!--{else}-->
@@ -71,8 +71,8 @@
                             <!--{/notempty}-->
                             加入登录控制
                         </label>
-                        <span class="color-desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├&nbsp;&nbsp;&nbsp;</span>
-                        <label class="notselect margin-right-15 think-checkbox">
+                        <span class="color-desc">　├　</span>
+                        <label class="notselect margin-right-20 think-checkbox">
                             <!--{notempty name='vo.is_auth'}-->
                             <input data-auth-filter="{$vo.pnode}" name='is_auth' data-node="{$vo.node}" checked='checked' class="check-box auth_{$key}" type='checkbox' onclick="this.checked && ($('.login_{$key}')[0].checked = !!this.checked)" value='1'>
                             <!--{else}-->
@@ -80,7 +80,7 @@
                             <!--{/notempty}-->
                             加入权限控制
                         </label>
-                        <span class="color-desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├&nbsp;&nbsp;&nbsp;</span>
+                        <span class="color-desc">　├　</span>
                         <label class="notselect think-checkbox">
                             <!--{notempty name='vo.is_menu'}-->
                             <input data-menu-filter="{$vo.pnode}" name='is_menu' data-node="{$vo.node}" checked='checked' class='check-box menu_{$key}' type='checkbox' value='1'>

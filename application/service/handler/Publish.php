@@ -14,7 +14,7 @@
 
 namespace app\service\handler;
 
-use app\service\logic\Wechat;
+use app\service\service\Wechat;
 
 /**
  * 第三方平台测试上线

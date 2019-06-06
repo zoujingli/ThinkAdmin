@@ -13,83 +13,83 @@
 {/block}
 
 {block name='content'}
-<table class="layui-table" lay-skin="line">
-    <caption class="margin-bottom-10 text-left">{include file='keys/index_search'}</caption>
-    <!--{notempty name='list'}-->
-    <thead>
-    <tr>
-        <th class='list-table-check-td think-checkbox'>
-            <input data-auto-none data-check-target='.list-check-box' type='checkbox'/>
-        </th>
-        <th class='list-table-sort-td'>
-            <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
-        </th>
-        <th class="text-left nowrap">关键字</th>
-        <th class="text-left nowrap">类型</th>
-        <th class="text-left nowrap">预览</th>
-        <th class="text-left nowrap">添加时间</th>
-        <th class="text-left nowrap">状态</th>
-        <th></th>
-    </tr>
-    </thead>
-    <!--{/notempty}-->
-    <tbody>
-    {foreach $list as $key=>$vo}
-    <tr>
-        <td class='list-table-check-td think-checkbox'>
-            <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
-        </td>
-        <td class='list-table-sort-td'>
-            <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
-        </td>
-        <td class="text-left nowrap">
-            {notempty name='vo.qrc'}<i class="fa fa-qrcode fa-lg pointer margin-right-5" data-load="{$vo.qrc}" data-time="false" data-tips-text="生成关键字二维码"></i>{/notempty}
-            {$vo.keys}
-        </td>
-        <td class="text-left nowrap">{$vo.type}</td>
-        <td class="text-left nowrap">
-            {if $vo.type eq '音乐'}
-            <a data-phone-view='{:url("@wechat/api.review/music")}?title={$vo.music_title|urlencode}&desc={$vo.music_desc|urlencode}'>预览 <i class="fa fa-eye"></i></a>
-            {elseif in_array($vo.type,['文字','转客服'])}
-            <a data-phone-view='{:url("@wechat/api.review/text")}?content={$vo.content|urlencode}'>预览 <i class="fa fa-eye"></i></a>
-            {elseif $vo.type eq '图片'}
-            <a data-phone-view='{:url("@wechat/api.review/image")}?content={$vo.image_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
-            {elseif $vo.type eq '图文'}
-            <a data-phone-view='{:url("@wechat/api.review/news/".$vo.news_id)}'>预览 <i class="fa fa-eye"></i></a>
-            {elseif $vo.type eq '视频'}
-            <a data-phone-view='{:url("@wechat/api.review/video")}?title={$vo.video_title|urlencode}&desc={$vo.video_desc|urlencode}&url={$vo.video_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
-            {elseif $vo.type eq '语音'}
-            <a data-phone-view='{:url("@wechat/api.review/voice")}?content={$vo.voice_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
-            {else}
-            {$vo.content}
-            {/if}
-        </td>
-        <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
-        <td class='text-left nowrap'>{if $vo.status eq 0}<span class="color-desc">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}</td>
-        <td class='text-left nowrap'>
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='keys/index_search'}</caption>
+        <!--{notempty name='list'}-->
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='list-table-sort-td'>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+            </th>
+            <th class="text-left nowrap">关键字</th>
+            <th class="text-left nowrap">类型</th>
+            <th class="text-left nowrap">预览</th>
+            <th class="text-left nowrap">添加时间</th>
+            <th class="text-left nowrap">状态</th>
+            <th></th>
+        </tr>
+        </thead>
+        <!--{/notempty}-->
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='list-table-sort-td'>
+                <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
+            </td>
+            <td class="text-left nowrap">
+                {notempty name='vo.qrc'}<i class="fa fa-qrcode fa-lg pointer margin-right-5" data-load="{$vo.qrc}" data-time="false" data-tips-text="生成关键字二维码"></i>{/notempty}
+                {$vo.keys}
+            </td>
+            <td class="text-left nowrap">{$vo.type}</td>
+            <td class="text-left nowrap">
+                {if $vo.type eq '音乐'}
+                <a data-phone-view='{:url("@wechat/api.review/music")}?title={$vo.music_title|urlencode}&desc={$vo.music_desc|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                {elseif in_array($vo.type,['文字','转客服'])}
+                <a data-phone-view='{:url("@wechat/api.review/text")}?content={$vo.content|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                {elseif $vo.type eq '图片'}
+                <a data-phone-view='{:url("@wechat/api.review/image")}?content={$vo.image_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                {elseif $vo.type eq '图文'}
+                <a data-phone-view='{:url("@wechat/api.review/news/".$vo.news_id)}'>预览 <i class="fa fa-eye"></i></a>
+                {elseif $vo.type eq '视频'}
+                <a data-phone-view='{:url("@wechat/api.review/video")}?title={$vo.video_title|urlencode}&desc={$vo.video_desc|urlencode}&url={$vo.video_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                {elseif $vo.type eq '语音'}
+                <a data-phone-view='{:url("@wechat/api.review/voice")}?content={$vo.voice_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                {else}
+                {$vo.content}
+                {/if}
+            </td>
+            <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
+            <td class='text-left nowrap'>{if $vo.status eq 0}<span class="color-desc">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}</td>
+            <td class='text-left nowrap'>
 
-            {if auth("wechat/keys/edit")}
-            <a class="layui-btn layui-btn-sm" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
-            {/if}
+                {if auth("wechat/keys/edit")}
+                <a class="layui-btn layui-btn-sm" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                {/if}
 
-            {if $vo.status eq 1 and auth("wechat/keys/forbid")}
-            <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('wechat/keys/forbid')}">禁 用</a>
-            {elseif auth("wechat/keys/resume")}
-            <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('wechat/keys/resume')}">启 用</a>
-            {/if}
+                {if $vo.status eq 1 and auth("wechat/keys/forbid")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('wechat/keys/forbid')}">禁 用</a>
+                {elseif auth("wechat/keys/resume")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('wechat/keys/resume')}">启 用</a>
+                {/if}
 
-            {if auth("wechat/keys/del")}
-            <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('wechat/keys/del')}">删 除</a>
-            {/if}
+                {if auth("wechat/keys/del")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('wechat/keys/del')}">删 除</a>
+                {/if}
 
-        </td>
-    </tr>
-    {/foreach}
-    </tbody>
-</table>
-
-{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
-
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
 {/block}
 
 {block name="script"}

@@ -160,6 +160,7 @@ class Pay extends BasicWePay
      * @param array $options 静音参数
      * @param null|string $outType 输出类型
      * @return bool|string
+     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
      */
     public function billDownload(array $options, $outType = null)

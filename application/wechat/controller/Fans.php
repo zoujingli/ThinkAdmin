@@ -45,8 +45,8 @@ class Fans extends Controller
     public function index()
     {
         $this->title = '微信粉丝管理';
-        $this->_query($this->table)->like('nickname')->equal('subscribe,is_black')
-            ->dateBetween('subscribe_at')->order('subscribe_time desc')->page();
+        $query = $this->_query($this->table)->like('nickname')->equal('subscribe,is_black');
+        $query->dateBetween('subscribe_at')->order('subscribe_time desc')->page();
     }
 
     /**

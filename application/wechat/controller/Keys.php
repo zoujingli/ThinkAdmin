@@ -18,7 +18,6 @@ use app\wechat\service\Wechat;
 use library\Controller;
 use think\Db;
 
-
 /**
  * 回复规则管理
  * Class Keys
@@ -66,7 +65,8 @@ class Keys extends Controller
         }
         // 关键字列表显示
         $this->title = '回复规则管理';
-        return $this->_query($this->table)->like('keys,type')->equal('status')->dateBetween('create_at')->whereNotIn('keys', ['subscribe', 'default'])->order('sort asc,id desc')->page();
+        $query = $this->_query($this->table)->like('keys,type')->equal('status')->dateBetween('create_at');
+        $query->whereNotIn('keys', ['subscribe', 'default'])->order('sort asc,id desc')->page();
     }
 
     /**
@@ -135,7 +135,7 @@ class Keys extends Controller
     }
 
     /**
-     * 关注默认回复
+     * 配置关注回复
      * @return array|string
      */
     public function subscribe()
@@ -147,7 +147,7 @@ class Keys extends Controller
 
 
     /**
-     * 无配置默认回复
+     * 配置默认回复
      * @return array|string
      */
     public function defaults()
@@ -176,8 +176,8 @@ class Keys extends Controller
     }
 
     /**
-     * 编辑结果处理
-     * @param $result
+     * 表单结果处理
+     * @param boolean $result
      */
     protected function _form_result($result)
     {
@@ -187,8 +187,9 @@ class Keys extends Controller
                 $url = url('@admin') . '#' . url('wechat/keys/index') . '?spm=' . $this->request->get('spm');
             }
             $this->success('恭喜, 关键字保存成功!', $url);
+        } else {
+            $this->error('关键字保存失败, 请稍候再试!');
         }
-        $this->error('关键字保存失败, 请稍候再试!');
     }
 
 }

@@ -119,8 +119,9 @@ class Wechat extends \We
      * 接口对象实例化
      * @param string $name 接口名称
      * @param string $type 接口类型
-     * @param array $config
+     * @param array $config 微信配置
      * @return mixed
+     * @throws \SoapFault
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -147,7 +148,7 @@ class Wechat extends \We
 
     /**
      * 获取微信网页JSSDK
-     * @param null|string $url JS签名地址
+     * @param string $url JS签名地址
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException

@@ -10,20 +10,20 @@
 // | github开源项目：https://github.com/zoujingli/framework
 // +----------------------------------------------------------------------
 
-// IE兼容提示
+// 浏览器兼容提示
 (function (w) {
     if (!("WebSocket" in w && 2 === w.WebSocket.CLOSING)) {
         document.body.innerHTML = '<div class="version-debug">您使用的浏览器已经<strong>过时</strong>，建议使用最新版本的谷歌浏览器。<a target="_blank" href="https://pc.qq.com/detail/1/detail_2661.html" class="layui-btn layui-btn-primary">立即下载</a></div>';
     }
 }(window));
 
-// Layui及jQuery兼容处理
+// Layui & jQuery
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
 
 // 当前资源URL目录
-window.baseRoot = (function () {
-    var src = document.scripts[document.scripts.length - 1].src;
+window.baseRoot = (function (src) {
+    src = document.scripts[document.scripts.length - 1].src;
     return src.substring(0, src.lastIndexOf("/") + 1);
 })();
 
@@ -63,8 +63,8 @@ define('jquery', [], function () {
 $(function () {
     window.$body = $('body');
     /*! 消息组件实例 */
-    $.msg = new function () {
-        var that = this;
+    $.msg = new function (that) {
+        that = this;
         this.indexs = [];
         this.shade = [0.02, '#000'];
         // 关闭消息框
@@ -124,8 +124,8 @@ $(function () {
     };
 
     /*! 表单自动化组件 */
-    $.form = new function () {
-        var that = this;
+    $.form = new function (that) {
+        that = this;
         // 内容区选择器
         this.selecter = '.layui-layout-admin>.layui-body';
         // 刷新当前页面
@@ -138,14 +138,18 @@ $(function () {
             $dom = $dom || $(this.selecter);
             $dom.find('[required]').map(function ($parent) {
                 if (($parent = $(this).parent()) && $parent.is('label')) {
-                    $parent.addClass('label-required-prev')
+                    $parent.addClass('label-required-prev');
                 } else {
-                    $parent.prevAll('label').addClass('label-required-next')
+                    $parent.prevAll('label').addClass('label-required-next');
                 }
             });
-            $dom.find('[data-date-range]').map(function () {
-                laydate.render({range: true, elem: this});
+            $dom.find('input[data-date-range]').map(function () {
                 this.setAttribute('autocomplete', 'off');
+                laydate.render({
+                    range: true, elem: this, done: function (value) {
+                        $(this.elem).val(value).trigger('change');
+                    }
+                });
             });
             $dom.find('[data-file]:not([data-inited])').map(function (index, elem, $this, field) {
                 $this = $(elem), field = $this.attr('data-field') || 'file';
@@ -163,12 +167,11 @@ $(function () {
                 that.reInit($(that.selecter));
             }, 500);
         };
-        // 以hash打开网页
+        // 以HASH打开新网页
         this.href = function (url, obj) {
             if (url !== '#') window.location.href = '#' + $.menu.parseUri(url, obj);
             else if (obj && obj.getAttribute('data-menu-node')) {
-                var node = obj.getAttribute('data-menu-node');
-                $('[data-menu-node^="' + node + '-"][data-open!="#"]:first').trigger('click');
+                $('[data-menu-node^="' + obj.getAttribute('data-menu-node') + '-"][data-open!="#"]:first').trigger('click');
             }
         };
         // 异步加载的数据
@@ -197,17 +200,17 @@ $(function () {
         // 加载HTML到目标位置
         this.open = function (url, data, callback, loading, tips) {
             this.load(url, data, 'get', function (ret) {
-                return typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret);
+                return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)), false;
             }, loading, tips);
         };
         // 打开一个iframe窗口
         this.iframe = function (url, title, area) {
-            return layer.open({title: title || '窗口', type: 2, area: area || ['800px', '550px'], fix: true, maxmin: false, content: url});
+            return layer.open({title: title || '窗口', type: 2, area: area || ['800px', '580px'], fix: true, maxmin: false, content: url});
         };
         // 加载HTML到弹出层
         this.modal = function (url, data, title, callback, loading, tips) {
             this.load(url, data, 'GET', function (res) {
-                if (typeof (res) === 'object') return $.msg.auto(res);
+                if (typeof (res) === 'object') return $.msg.auto(res), false;
                 var index = layer.open({
                     type: 1, btn: false, area: "800px", content: res, title: title || '', success: function (dom, index) {
                         $(dom).find('[data-close]').off('click').on('click', function () {
@@ -220,14 +223,14 @@ $(function () {
                     }
                 });
                 $.msg.indexs.push(index);
-                return (typeof callback === 'function') && callback.call(this);
+                return (typeof callback === 'function') && callback.call(that);
             }, loading, tips);
         };
     };
 
     /*! 后台菜单辅助插件 */
-    $.menu = new function () {
-        var self = this;
+    $.menu = new function (that) {
+        that = this;
         // 计算URL地址中有效的URI
         this.getUri = function (uri) {
             uri = uri || window.location.href;
@@ -250,7 +253,7 @@ $(function () {
                 var attrs = uri.split('?')[1].split('&');
                 for (var i in attrs) if (attrs[i].indexOf('=') > -1) {
                     var tmp = attrs[i].split('=').slice();
-                    params[tmp[0]] = decodeURI(tmp[1].replace(/%2B/ig, '%20'));
+                    params[tmp[0]] = decodeURIComponent(tmp[1].replace(/%2B/ig, '%20'));
                 }
             }
             delete params[""];
@@ -282,7 +285,7 @@ $(function () {
             })($('.layui-layout-admin'), 'layui-layout-left-mini');
             // 左则二级菜单展示
             $('[data-submenu-layout]>a').on('click', function () {
-                self.syncOpenStatus(1);
+                that.syncOpenStatus(1);
             });
             // 同步二级菜单展示状态
             this.syncOpenStatus = function (mode) {
@@ -295,9 +298,9 @@ $(function () {
             window.onhashchange = function () {
                 var hash = window.location.hash || '';
                 if (hash.length < 1) return $('[data-menu-node][data-open!="#"]:first').trigger('click');
-                $.form.load(hash), self.syncOpenStatus(2);
+                $.form.load(hash), that.syncOpenStatus(2);
                 // 菜单选择切换
-                var node = self.queryNode(self.getUri());
+                var node = that.queryNode(that.getUri());
                 if (/^m-/.test(node)) {
                     var $all = $('a[data-menu-node]').parent(), tmp = node.split('-'), tmpNode = tmp.shift();
                     while (tmp.length > 0) {
@@ -312,7 +315,7 @@ $(function () {
                         $('[data-menu-node="' + node + '"]').parent().parent().parent().addClass('layui-nav-itemed');
                         $('.layui-layout-admin').removeClass('layui-layout-left-hide');
                     } else $('.layui-layout-admin').addClass('layui-layout-left-hide');
-                    self.syncOpenStatus(1);
+                    that.syncOpenStatus(1);
                 }
             };
             // URI初始化动作
@@ -322,8 +325,8 @@ $(function () {
 
     /*! 注册对象到Jq */
     $.vali = function (form, callback, options) {
-        return (new function () {
-            var that = this;
+        return (new function (that) {
+            that = this;
             // 表单元素
             this.tags = 'input,textarea,select';
             // 检测元素事件
@@ -344,17 +347,16 @@ $(function () {
             };
             // 判断表单元素是否为空
             this.isEmpty = function (ele, value) {
-                var trimValue = this.trim(ele.value);
+                var trim = this.trim(ele.value);
                 value = value || ele.getAttribute('placeholder');
-                return (trimValue === "" || trimValue === value);
+                return (trim === "" || trim === value);
             };
             // 正则验证表单元素
             this.isRegex = function (ele, regex, params) {
-                var inputValue = $(ele).val();
-                var realValue = this.trim(inputValue);
+                var input = $(ele).val(), real = this.trim(input);
                 regex = regex || ele.getAttribute('pattern');
-                if (realValue === "" || !regex) return true;
-                return new RegExp(regex, params || 'i').test(realValue);
+                if (real === "" || !regex) return true;
+                return new RegExp(regex, params || 'i').test(real);
             };
             // 检侧所的表单元素
             this.checkAllInput = function () {
@@ -584,8 +586,7 @@ $(function () {
 
     /*! 注册 data-action 事件行为 */
     $body.on('click', '[data-action]', function () {
-        var $this = $(this), data = {};
-        var time = $this.attr('data-time'), action = $this.attr('data-action');
+        var $this = $(this), data = {}, time = $this.attr('data-time'), action = $this.attr('data-action');
         var loading = $this.attr('data-loading'), method = $this.attr('data-method') || 'post';
         var rule = $this.attr('data-value') || (function (rule, ids) {
             $($this.attr('data-target') || 'input[type=checkbox].list-check-box').map(function () {
@@ -662,6 +663,13 @@ $(function () {
         }, 100);
     };
 
+    /*! 注册 data-tips-text 事件行为 */
+    $body.on('mouseenter', '[data-tips-text]', function () {
+        $(this).attr('index', layer.tips($(this).attr('data-tips-text'), this, {tips: [$(this).attr('data-tips-type') || 3, '#78BA32']}));
+    }).on('mouseleave', '[data-tips-text]', function () {
+        layer.close($(this).attr('index'));
+    });
+
     /*! 注册 data-tips-image 事件行为 */
     $body.on('click', '[data-tips-image]', function () {
         $.previewImage(this.getAttribute('data-tips-image') || this.src, this.getAttribute('data-width'));
@@ -692,13 +700,6 @@ $(function () {
         layer.style(layer.open({type: true, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: $(tpl.replace('_TITLE_', title || '公众号').replace('_URL_', href)).html(),}), {boxShadow: 'none'});
     };
 
-    /*! 注册 data-tips-text 事件行为 */
-    $body.on('mouseenter', '[data-tips-text]', function () {
-        $(this).attr('index', layer.tips($(this).attr('data-tips-text'), this, {tips: [$(this).attr('data-tips-type') || 3, '#78BA32']}));
-    }).on('mouseleave', '[data-tips-text]', function () {
-        layer.close($(this).attr('index'));
-    });
-
     /*! 表单编辑返回操作 */
     $body.on('click', '[data-history-back]', function () {
         var title = this.getAttribute('data-history-back') || '确定要返回上一页吗？';
@@ -724,6 +725,14 @@ $(function () {
             });
         });
     });
+
+    /*! 图片加载异常处理 */
+    document.addEventListener('error', function (e, elem) {
+        elem = e.target;
+        if (elem.tagName.toLowerCase() === 'img') {
+            elem.src = baseRoot + 'theme/img/404_icon.png';
+        }
+    }, true);
 
     /*! 初始化事件 */
     $.menu.listen();

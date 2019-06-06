@@ -1,72 +1,98 @@
 {extend name='main'}
 
 {block name='content'}
-<table class="layui-table" lay-even lay-skin="line">
-    <colgroup>
-        <col width="20%">
-        <col width="30%">
-        <col width="20%">
-        <col width="30%">
-    </colgroup>
-    <thead>
-    <tr>
-        <th class="text-left" colspan="2">系统信息</th>
-        <th class="text-left" colspan="2">产品团队</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td style="max-width:200px">应用组件版本</td>
-        <td>{:sysconf('app_version')}</td>
-        <td style="max-width:200px">产品名称</td>
-        <td>framework</td>
-    </tr>
-    <tr>
-        <td>ThinkPHP版本</td>
-        <td>{$think_ver}</td>
-        <td>在线体验</td>
-        <td><a target="_blank" href="http://framework.thinkadmin.top">http://framework.thinkadmin.top</a></td>
-    </tr>
-    <tr>
-        <td>服务器操作系统</td>
-        <td>{:php_uname('s')}</td>
-        <td>官方QQ群</td>
-        <td>
-            <a href="http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a">
-                <img src="//pub.idqqimg.com/wpa/images/group.png" style="height:18px;width:auto" target="_blank">
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>WEB运行环境</td>
-        <td>{:php_sapi_name()}</td>
-        <td>项目地址</td>
-        <td><a target="_blank" href="https://github.com/zoujingli/framework">https://github.com/zoujingli/framework</a></td>
-    </tr>
-    <tr>
-        <td>MySQL数据库版本</td>
-        <td>{$mysql_ver}</td>
-        <td>BUG反馈</td>
-        <td><a target="_blank" href="https://github.com/zoujingli/framework/issues">https://github.com/zoujingli/framework/issues</a></td>
-    </tr>
-    <tr>
-        <td>运行PHP版本</td>
-        <td>{$Think.PHP_VERSION}</td>
-        <td>开发团队</td>
-        <td><a href="http://www.cuci.cc" target="_blank">广州楚才信息科技有限公司</a></td>
-    </tr>
-    <tr>
-        <td>上传大小限制</td>
-        <td>{:ini_get('upload_max_filesize')}</td>
-        <td>团队官网</td>
-        <td><a target="_blank" href="http://www.cuci.cc">http://www.cuci.cc</a></td>
-    </tr>
-    <tr>
-        <td>POST大小限制</td>
-        <td>{:ini_get('post_max_size')}</td>
-        <td>办公地址</td>
-        <td>广州市天河区东圃一横路东泷商贸中心G02</td>
-    </tr>
-    </tbody>
-</table>
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-md6">
+        <fieldset class="think-box-shadow">
+            <legend class="layui-bg-cyan">系统信息</legend>
+            <table class="layui-table" lay-skin="line" lay-even>
+                <colgroup>
+                    <col width="30%">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>当前程序版本</td>
+                    <td>{:sysconf('app_version')}</td>
+                </tr>
+                <tr>
+                    <td>运行PHP版本</td>
+                    <td>{$Think.PHP_VERSION}</td>
+                </tr>
+                <tr>
+                    <td>ThinkPHP版本</td>
+                    <td>{$think_ver}</td>
+                </tr>
+                <tr>
+                    <td>MySQL数据库版本</td>
+                    <td>{$mysql_ver}</td>
+                </tr>
+                <tr>
+                    <td>服务器操作系统</td>
+                    <td>{:php_uname('s')}</td>
+                </tr>
+                <tr>
+                    <td>WEB运行环境</td>
+                    <td>{:php_sapi_name()}</td>
+                </tr>
+                <tr>
+                    <td>上传大小限制</td>
+                    <td>{:ini_get('upload_max_filesize')}</td>
+                </tr>
+                <tr>
+                    <td>POST大小限制</td>
+                    <td>{:ini_get('post_max_size')}</td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+    <div class="layui-col-md6">
+        <fieldset class="think-box-shadow">
+            <legend class="layui-bg-cyan">产品团队</legend>
+            <table class="layui-table" lay-skin="line" lay-even>
+                <colgroup>
+                    <col width="30%">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>产品名称</td>
+                    <td>framework</td>
+                </tr>
+                <tr>
+                    <td>在线体验</td>
+                    <td><a target="_blank" href="http://framework.thinkadmin.top">http://framework.thinkadmin.top</a></td>
+                </tr>
+                <tr>
+                    <td>官方QQ群</td>
+                    <td>
+                        <a href="http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a">
+                            <img src="//pub.idqqimg.com/wpa/images/group.png" style="height:18px;width:auto" target="_blank">
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>项目地址</td>
+                    <td><a target="_blank" href="https://github.com/zoujingli/framework">https://github.com/zoujingli/framework</a></td>
+                </tr>
+                <tr>
+                    <td>BUG反馈</td>
+                    <td><a target="_blank" href="https://github.com/zoujingli/framework/issues">https://github.com/zoujingli/framework/issues</a></td>
+                </tr>
+                <tr>
+                    <td>开发团队</td>
+                    <td><a href="http://www.cuci.cc" target="_blank">广州楚才信息科技有限公司</a></td>
+                </tr>
+                <tr>
+                    <td>团队官网</td>
+                    <td><a target="_blank" href="http://www.cuci.cc">http://www.cuci.cc</a></td>
+                </tr>
+                <tr>
+                    <td>办公地址</td>
+                    <td>广州市天河区东圃一横路东泷商贸中心G02</td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+</div>
 {/block}

@@ -60,8 +60,9 @@ class Node extends Controller
         $nodes = array_unique(array_column(\app\admin\service\Auth::get(), 'node'));
         if (false !== Db::name($this->table)->whereNotIn('node', $nodes)->delete()) {
             $this->success('清理无效的节点配置成功！', '');
+        } else {
+            $this->error('清理无效的节点配置，请稍候再试！');
         }
-        $this->error('清理无效的节点配置，请稍候再试！');
     }
 
     /**
@@ -79,8 +80,9 @@ class Node extends Controller
             }
             empty($data) || data_save($this->table, $data, 'node');
             $this->success('节点配置保存成功！', '');
+        } else {
+            $this->error('访问异常，请重新进入...');
         }
-        $this->error('访问异常，请重新进入...');
     }
 
 }

@@ -159,7 +159,7 @@ class Index extends Controller
     {
         $this->applyCsrfToken();
         if (intval($id) === intval(session('user.id'))) {
-            $this->_form('SystemUser', 'user/form', 'id', [], ['id' => $id]);
+            $this->_form('SystemUser', 'admin@user/form', 'id', [], ['id' => $id]);
         } else {
             $this->error('只能修改登录用户的资料！');
         }

@@ -27,6 +27,7 @@ class Plugs extends Controller
 
     /**
      * Plugs constructor.
+     * @throws \think\Exception
      */
     public function __construct()
     {

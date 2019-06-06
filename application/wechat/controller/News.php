@@ -35,12 +35,16 @@ class News extends Controller
     /**
      * 微信图文管理
      * @return array|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function index()
     {
         $this->title = '微信图文列表';
-        $db = Db::name($this->table)->where(['is_deleted' => '0']);
-        return parent::_page($db->order('id desc'));
+        $this->_query($this->table)->where(['is_deleted' => '0'])->order('id desc')->page();
     }
 
     /**
@@ -58,6 +62,11 @@ class News extends Controller
     /**
      * 图文选择器
      * @return string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function select()
     {
@@ -78,7 +87,6 @@ class News extends Controller
 
     /**
      * 添加微信图文
-     * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -86,21 +94,21 @@ class News extends Controller
     {
         if ($this->request->isGet()) {
             $this->title = '新建图文';
-            return $this->fetch('form');
-        }
-        $data = $this->request->post();
-        if (($ids = $this->_apply_news_article($data['data'])) && !empty($ids)) {
-            if (data_save($this->table, ['article_id' => $ids, 'create_by' => session('user.id')], 'id') !== false) {
-                $url = url('@admin') . '#' . url('@wechat/news/index') . '?spm=' . $this->request->get('spm');
-                $this->success('图文添加成功！', $url);
+            $this->fetch('form');
+        } else {
+            $data = $this->request->post();
+            if (($ids = $this->_apply_news_article($data['data'])) && !empty($ids)) {
+                if (data_save($this->table, ['article_id' => $ids, 'create_by' => session('user.id')], 'id') !== false) {
+                    $url = url('@admin') . '#' . url('@wechat/news/index') . '?spm=' . $this->request->get('spm');
+                    $this->success('图文添加成功！', $url);
+                }
             }
+            $this->error('图文添加失败，请稍候再试！');
         }
-        $this->error('图文添加失败，请稍候再试！');
     }
 
     /**
      * 编辑微信图文
-     * @return string
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -112,15 +120,16 @@ class News extends Controller
             if ($this->request->get('output') === 'json') {
                 $this->success('获取数据成功！', Media::news($id));
             }
-            return $this->fetch('form', ['title' => '编辑图文']);
-        }
-        $post = $this->request->post();
-        if (isset($post['data']) && ($ids = $this->_apply_news_article($post['data']))) {
-            if (data_save('wechat_news', ['id' => $id, 'article_id' => $ids], 'id')) {
-                $this->success('图文更新成功！', url('@admin') . '#' . url('@wechat/news/index'));
+            $this->fetch('form', ['title' => '编辑图文']);
+        } else {
+            $post = $this->request->post();
+            if (isset($post['data']) && ($ids = $this->_apply_news_article($post['data']))) {
+                if (data_save('wechat_news', ['id' => $id, 'article_id' => $ids], 'id')) {
+                    $this->success('图文更新成功！', url('@admin') . '#' . url('@wechat/news/index'));
+                }
             }
+            $this->error('图文更新失败，请稍候再试！');
         }
-        $this->error('图文更新失败，请稍候再试！');
     }
 
     /**

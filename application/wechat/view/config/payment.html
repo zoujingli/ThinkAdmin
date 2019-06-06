@@ -1,11 +1,11 @@
 {extend name="admin@main"}
 
 {block name="content"}
-<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off" lay-filter="payment">
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card ' autocomplete="off" lay-filter="payment" style="max-width:1000px">
 
-    <div class="layui-card-body">
+    <div class="layui-card-body think-box-shadow padding-bottom-20">
 
-        <div class="layui-form-item">
+        <div class="layui-form-item margin-top-20">
             <label class="layui-form-label">MchId<br><span class="nowrap color-desc">微信商户ID</span></label>
             <div class="layui-input-block">
                 <input name="wechat_mch_id" required placeholder="请输入微信商户ID（必填）" value="{:sysconf('wechat_mch_id')}" class="layui-input">
@@ -53,11 +53,8 @@
 
         <div class="hr-line-dashed"></div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label"></label>
-            <div class="layui-input-block text-center" style="max-width:300px">
-                <button class="layui-btn" type="submit">保存配置</button>
-            </div>
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">保存配置</button>
         </div>
 
     </div>

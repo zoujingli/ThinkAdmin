@@ -41,7 +41,8 @@ class Auth extends Controller
     public function index()
     {
         $this->title = '系统权限管理';
-        $this->_query($this->table)->dateBetween('create_at')->like('title,desc')->equal('status')->order('sort asc,id desc')->page();
+        $query = $this->_query($this->table)->dateBetween('create_at');
+        $query->like('title,desc')->equal('status')->order('sort asc,id desc')->page();
     }
 
     /**
@@ -61,13 +62,15 @@ class Auth extends Controller
                 $checked = Db::name('SystemAuthNode')->where(['auth' => $auth])->column('node');
                 foreach ($nodes as &$node) $node['checked'] = in_array($node['node'], $checked);
                 $data = $this->_apply_filter(\library\tools\Data::arr2tree($nodes, 'node', 'pnode', '_sub_'));
-                return $this->success('获取权限配置成功！', $data);
+                return $this->success('获取权限节点成功！', $data);
             case 'save': // 保存权限配置
                 list($post, $data) = [$this->request->post(), []];
-                foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) $data[] = ['auth' => $auth, 'node' => $node];
+                foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
+                    $data[] = ['auth' => $auth, 'node' => $node];
+                }
                 Db::name('SystemAuthNode')->where(['auth' => $auth])->delete();
                 Db::name('SystemAuthNode')->insertAll($data);
-                return $this->success('权限授权配置更新成功！');
+                return $this->success('权限授权更新成功！');
             default:
                 return $this->_form($this->table, 'apply');
         }

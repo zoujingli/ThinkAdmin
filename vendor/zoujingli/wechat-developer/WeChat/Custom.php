@@ -79,7 +79,7 @@ class Custom extends BasicWeChat
      * @throws Exceptions\InvalidResponseException
      * @throws Exceptions\LocalCacheException
      */
-    public function inviteworker($kf_account, $invite_wx)
+    public function inviteWorker($kf_account, $invite_wx)
     {
         $url = 'https://api.weixin.qq.com/customservice/kfaccount/inviteworker?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());

@@ -12,20 +12,21 @@
 // | github开源项目：https://github.com/zoujingli/framework
 // +--------------------------------------------------------------------*/
 
-::-webkit-input-placeholder {color: #aaa}
-::-webkit-scrollbar {width: 3px;height: 3px}
-::-webkit-scrollbar-track {background: #ccc !important}
-::-webkit-scrollbar-thumb {background-color: #666 !important}
-::selection {color: #fff !important;background-color: #ec494e !important}
-::-moz-selection {color: #fff !important;background-color: #ec494e !important}
-:-webkit-autofill, :-webkit-autofill:active, :-webkit-autofill:focus, :-webkit-autofill:hover {box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1) inset !important;-webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;-webkit-transition-delay: 9999s !important;-webkit-text-fill-color: #333 !important}
+::-webkit-input-placeholder{color:#aaa}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:#ccc!important}
+::-webkit-scrollbar-thumb{background-color:#666!important}
+::selection{color:#fff!important;background-color:#ec494e!important}
+::-moz-selection{color:#fff!important;background-color:#ec494e!important}
+:-webkit-autofill, :-webkit-autofill:active, :-webkit-autofill:focus, :-webkit-autofill:hover{box-shadow:0 2px 3px 0 rgba(0, 0, 0, .1) inset!important;-webkit-transition:color 9999s ease-out, background-color 9999s ease-out!important;-webkit-transition-delay:9999s!important;-webkit-text-fill-color:#333!important}
 body{color:#333;font-size:12px;font-family:'\5FAE\8F6F\96C5\9ED1','Microsoft YaHei','Helvetica Neue','Luxi Sans','DejaVu Sans','Hiragino Sans GB',serif}
 a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}.moxie-shim{display:none!important}
 .version-debug{width:100%;color:#fff;height:100px;font-size:20px;text-align:center;line-height:100px;margin-bottom:40px;background-color:#E90D24}
 /* 页面布局 - 全局 */
-.layui-layout>.layui-body,.layui-layout>.layui-side{top:50px;bottom:0;overflow:auto}
 .layui-layout>.layui-body>.layui-card{box-shadow:none}
-.layui-layout>.layui-body>.layui-card>.layui-card-header{height:50px;border:none;line-height:50px;box-shadow:0 2px 3px 0 rgba(0,0,0,.1)}
+.layui-layout>.layui-body>.layui-card>.layui-card-body{padding:15px 15px}
+.layui-layout>.layui-body,.layui-layout>.layui-side{top:50px;bottom:0;overflow:auto}
+.layui-layout>.layui-body>.layui-card>.layui-card-header{height:50px;border:none;line-height:50px;box-shadow:0 2px 3px 0 rgba(0,0,0,.1);background:#fff}
 /* 页面布局 - 头部 */
 .layui-header{height:50px;background:#009688!important}
 .layui-header .layui-layout-left,.layui-header .layui-layout-right{padding:0}
@@ -58,7 +59,7 @@ a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}.mo
 .layui-layout.layui-layout-left-mini>.layui-side .layui-nav-item .layui-nav-child{padding:0;display:block!important;background-color:rgba(0,0,0,.3)!important}
 .layui-layout.layui-layout-left-mini>.layui-side .layui-nav-tree-top i{display:inline-block;-webkit-transform:rotate(180deg);transform:rotate(180deg);-ms-transform:rotate(180deg)}
 .layui-layout.layui-layout-left-mini>.layui-side .layui-nav-more{display:none!important}
-/* 下拉 */
+/* 下拉样式 */
 .layui-nav .layui-nav-item .layui-nav-more{top:0;border:none;right:15px;width:auto;height:auto;margin-top:0;font-size:14px;font-style:normal;font-family:layui-icon!important;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
 .layui-nav .layui-nav-item .layui-nav-mored,.layui-nav .layui-nav-itemed .layui-nav-more{border:none;margin-top:0;transform:rotate(180deg);-o-transform:rotate(180deg);-ms-transform:rotate(180deg);-moz-transform:rotate(180deg);-webkit-transform:rotate(180deg)}
 .layui-nav .layui-nav-item .layui-nav-more::before{content:"\e619"}
@@ -99,9 +100,9 @@ fieldset{margin:0;border:1px solid #e6e6e6;padding:10px 20px 5px 20px}
 /* 分隔线条 */
 .hr-line-dashed{color:#fff;height:1px;margin:20px 0;background-color:#fff;border-top:1px dashed #e7eaec}
 .hr-line-solid{margin-top:15px;margin-bottom:15px;border-bottom:1px solid #e7eaec;background-color:rgba(0,0,0,0)}
-.label-required-prev{text-indent:-5px}
-.label-required-prev:before{width:5px;color:red;content:'*';display:inline-block;position:relative;text-align:left;font-weight:700;line-height:1.8em}
-.label-required-next:after{top:6px;right:5px;color:red;content:'*';position:absolute;margin-left:4px;font-weight:700;line-height:1.8em}
+.label-required-prev:before{width:1em;margin-left:-0.8em;color:red;content:'*';display:inline-block;position:absolute;text-align:left;font-weight:700;line-height:1.6em}
+.label-required:after,.label-required-next:after{top:6px;right:5px;color:red;content:'*';position:absolute;margin-left:4px;font-weight:700;line-height:1.8em}
+.label-required-null:before,.label-required-null:before{content:none!important}
 /* 通用分页 */
 .pagination-container{line-height:40px}
 .pagination-container>span{color:#666;font-size:9pt}
@@ -119,20 +120,22 @@ fieldset{margin:0;border:1px solid #e6e6e6;padding:10px 20px 5px 20px}
 .uploadimagemtl:hover a{cursor:pointer;display:inline-block}
 .uploadimagemtl:hover a:hover{color:#fff;text-decoration:none}
 /** Layui样式调整 */
-.layui-btn-sm.layui-btn-primary{line-height:28px}
-.layui-btn-xs.layui-btn-primary{line-height:20px}
 .layui-input,.layui-select{line-height:38px}
 .layui-table td,.layui-table th{font-size:12px}
+.layui-btn-sm.layui-btn-primary{line-height:28px}
+.layui-btn-xs.layui-btn-primary{line-height:20px}
+.laydate-footer-btns span{line-height:24px!important}
 .layui-table td .text-explode{color:#ccc!important;margin:0 4px!important}
 .layui-table td .text-explode:first-child{display:none;opacity:0}
 .layui-table td .background-image{float:left;width:40px;height:40px;display:inline-block;margin-right:5px;background:no-repeat center center;background-size:cover;vertical-align:middle}
 .layui-table .list-table-image{width:22px;cursor:pointer}
-.layui-table .list-table-sort-td{width:60px!important;text-align:center!important}
+.layui-table .list-table-sort-td{width:10px!important;text-align:center!important;padding-left:5px!important;padding-right:5px!important}
 .layui-table .list-table-sort-td button{width:56px;background:#009688}
 .layui-table .list-table-sort-td input{width:50px;color:#666;padding:2px;border:1px solid #e6e6e6;text-align:center;font-size:9pt;line-height:18px}
-.layui-table .list-table-check-td{width:30px!important;text-align:center}
+.layui-table .list-table-check-td{width:10px!important;text-align:center;padding-left:15px!important;padding-right:15px!important}
 .layui-table .list-table-check-td input{margin:0!important;vertical-align:middle}
-/** checkbox 优化 */
+.think-box-shadow{box-shadow:0 2px 3px 0 rgba(0,0,0,.1);background:#fff;padding:20px!important}
+/** checkbox & radio */
 label.think-checkbox,label.think-radio{display:inline-block;margin-right:10px}
 .think-checkbox,.think-radio{margin-top:10px;font-weight:400;line-height:17px;cursor:pointer}
 .think-checkbox input[type=checkbox]{width:18px;height:18px;border:1px solid #dcdcdc;cursor:pointer;margin:0 5px 0 0;position:relative;display:inline-block!important;background:#fff;appearance:none;box-sizing:border-box!important;border-radius:1px;vertical-align:bottom;-webkit-appearance:none}

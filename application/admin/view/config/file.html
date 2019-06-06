@@ -2,23 +2,26 @@
 
 {block name="content"}
 
-<form class="layui-card layui-form">
-    <div class="layui-card-body">
-        <div class="layui-form-item">
-            <label class="layui-form-label">Storage<br><span class="nowrap color-desc">存储类型</span></label>
-            <div class="layui-input-block">
-                {foreach ['local'=>'本地服务器存储','oss'=>'阿里云OSS存储','qiniu'=>'七牛云存储'] as $k=>$v}
-                <input type="radio" data-storagetype="{$k}" name="storage_type" value="{$k}" title="{$v}" lay-filter="storage_type">
-                {/foreach}
-                <p class="help-block">请选择文件存储类型，其它云储存需要配置正确的参数才可以上传文件哦！</p>
+<div style="max-width:1000px">
+    <form class="layui-card layui-form">
+        <div class="layui-card-body padding-bottom-5 think-box-shadow">
+            <div class="layui-form-item">
+                <label class="layui-form-label">Storage<br><span class="nowrap color-desc">存储类型</span></label>
+                <div class="layui-input-block">
+                    {foreach ['local'=>'本地服务器存储','oss'=>'阿里云OSS存储','qiniu'=>'七牛云存储'] as $k=>$v}
+                    <input type="radio" data-storagetype="{$k}" name="storage_type" value="{$k}" title="{$v}" lay-filter="storage_type">
+                    {/foreach}
+                    <p class="help-block">请选择文件存储类型，其它云储存需要配置正确的参数才可以上传文件哦！</p>
+                </div>
             </div>
         </div>
+    </form>
+    <div class="padding-top-15 padding-bottom-10 think-box-shadow">
+        <div data-type="oss">{include file='config/file_oss'}</div>
+        <div data-type="local">{include file='config/file_local'}</div>
+        <div data-type="qiniu">{include file='config/file_qiniu'}</div>
     </div>
-</form>
-
-<div data-type="oss">{include file='config/file_oss'}</div>
-<div data-type="local">{include file='config/file_local'}</div>
-<div data-type="qiniu">{include file='config/file_qiniu'}</div>
+</div>
 
 {/block}
 

@@ -5,35 +5,34 @@
 {/block}
 
 {block name='content'}
-
-<div id="news-box" class="layui-clear">
-    {foreach $list as $vo}
-    <div class="news-item">
-        <div class='news-tools layui-hide'>
-            <a data-phone-view="{:url('@wechat/api.review/news/'.$vo.id)}" href='javascript:void(0)'>预览</a>
-            <a data-open='{:url("edit")}?id={$vo.id}' href='javascript:void(0)'>编辑</a>
-            <a data-news-del="{$vo.id}" href='javascript:void(0)'>删除</a>
+<div class="think-box-shadow">
+    <div id="news-box" class="layui-clear">
+        {foreach $list as $vo}
+        <div class="news-item">
+            <div class='news-tools layui-hide'>
+                <a data-phone-view="{:url('@wechat/api.review/news/'.$vo.id)}" href='javascript:void(0)'>预览</a>
+                <a data-open='{:url("edit")}?id={$vo.id}' href='javascript:void(0)'>编辑</a>
+                <a data-news-del="{$vo.id}" href='javascript:void(0)'>删除</a>
+            </div>
+            {foreach $vo.articles as $k => $v}
+            {if $k < 1}
+            <div data-tips-image='{$v.local_url}' class='news-articel-item' style='background-image:url("{$v.local_url}")'>
+                {if $v.title}<p>{$v.title}</p>{/if}
+            </div>
+            <div class="hr-line-dashed"></div>
+            {else}
+            <div class='news-articel-item other'>
+                <span>{$v.title}</span>
+                <div data-tips-image='{$v.local_url}' style='background-image:url("{$v.local_url}");'></div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            {/if}
+            {/foreach}
         </div>
-        {foreach $vo.articles as $k => $v}
-        {if $k < 1}
-        <div data-tips-image='{$v.local_url}' class='news-articel-item' style='background-image:url("{$v.local_url}")'>
-            {if $v.title}<p>{$v.title}</p>{/if}
-        </div>
-        <div class="hr-line-dashed"></div>
-        {else}
-        <div class='news-articel-item other'>
-            <span>{$v.title}</span>
-            <div data-tips-image='{$v.local_url}' style='background-image:url("{$v.local_url}");'></div>
-        </div>
-        <div class="hr-line-dashed"></div>
-        {/if}
         {/foreach}
     </div>
-    {/foreach}
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 </div>
-
-{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
-
 {/block}
 
 {block name='script'}

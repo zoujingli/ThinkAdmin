@@ -17,11 +17,9 @@ namespace app\service\controller;
 use library\Controller;
 
 /**
- * 微信配置管理
- * Class Index
- * @package app\wechat\controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/03/27 14:43
+ * 开放平台参数配置
+ * Class Config
+ * @package app\service\controller
  */
 class Config extends Controller
 {
@@ -42,10 +40,11 @@ class Config extends Controller
         $this->applyCsrfToken();
         $this->title = '开放平台接口配置';
         if ($this->request->isGet()) {
-            return $this->fetch();
+            $this->fetch();
         } else {
-            foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-            $this->success('开放平台参数修改成功！', '');
+            $post = $this->request->post();
+            foreach ($post as $k => $v) sysconf($k, $v);
+            $this->success('开放平台参数修改成功！');
         }
     }
 

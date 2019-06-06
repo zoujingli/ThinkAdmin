@@ -24,6 +24,7 @@ class Message extends Controller
 {
     /**
      * Message constructor.
+     * @throws \think\Exception
      */
     public function __construct()
     {

@@ -56,7 +56,11 @@ class Media extends BasicWeChat
         $url = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id={$media_id}";
         $this->registerApi($url, __FUNCTION__, func_get_args());
         $result = Tools::get($url);
-        if (json_decode($result)) {
+        if (is_array($json = json_decode($result, true))) {
+            if (!$this->isTry && isset($json['errcode']) && in_array($json['errcode'], ['40014', '40001', '41001', '42001'])) {
+                [$this->delAccessToken(), $this->isTry = true];
+                return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
+            }
             return Tools::json2arr($result);
         }
         return is_null($outType) ? $result : $outType($result);
@@ -139,7 +143,11 @@ class Media extends BasicWeChat
         $url = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=ACCESS_TOKEN";
         $this->registerApi($url, __FUNCTION__, func_get_args());
         $result = Tools::post($url, ['media_id' => $media_id]);
-        if (json_decode($result)) {
+        if (is_array($json = json_decode($result, true))) {
+            if (!$this->isTry && isset($json['errcode']) && in_array($json['errcode'], ['40014', '40001', '41001', '42001'])) {
+                [$this->delAccessToken(), $this->isTry = true];
+                return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
+            }
             return Tools::json2arr($result);
         }
         return is_null($outType) ? $result : $outType($result);

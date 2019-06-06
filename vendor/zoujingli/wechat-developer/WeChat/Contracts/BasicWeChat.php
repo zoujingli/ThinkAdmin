@@ -40,19 +40,19 @@ class BasicWeChat
      * 当前请求方法参数
      * @var array
      */
-    private $currentMethod = [];
+    protected $currentMethod = [];
 
     /**
      * 当前模式
      * @var bool
      */
-    private $isTry = false;
+    protected $isTry = false;
 
     /**
      * 注册代替函数
      * @var string
      */
-    private $GetAccessTokenCallback;
+    protected $GetAccessTokenCallback;
 
     /**
      * BasicWeChat constructor.
@@ -128,7 +128,7 @@ class BasicWeChat
     }
 
     /**
-     * 清理删除accessToken
+     * 清理删除 AccessToken
      * @return bool
      */
     public function delAccessToken()

@@ -36,7 +36,7 @@ class Review extends Controller
     public function news($id = 0)
     {
         $this->news = Media::news(empty($id) ? input('id') : $id);
-        return $this->fetch();
+        $this->fetch();
     }
 
     /**
@@ -53,7 +53,8 @@ class Review extends Controller
     {
         $where = ['id' => empty($id) ? input('id') : $id];
         Db::name('WechatNewsArticle')->where($where)->update(['read_num' => Db::raw('read_num+1')]);
-        return $this->fetch('', ['info' => Db::name('WechatNewsArticle')->where($where)->find()]);
+        $this->info = Db::name('WechatNewsArticle')->where($where)->find();
+        $this->fetch();
     }
 
     /**

@@ -1,11 +1,13 @@
 {extend name='main'}
 
 {block name="content"}
-<ul id="zTree" class="ztree notselect"></ul>
-<div class="hr-line-dashed"></div>
-<div class="layui-form-item text-center">
-    <button class="layui-btn" data-submit-role type='button'>保存数据</button>
-    <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+<div class="think-box-shadow">
+    <ul id="zTree" class="ztree notselect"></ul>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" data-submit-role type='button'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+    </div>
 </div>
 {/block}
 
@@ -68,13 +70,39 @@
 <link href="__ROOT__/static/plugs/ztree/zTreeStyle/zTreeStyle.css" rel="stylesheet">
 <script src="__ROOT__/static/plugs/ztree/ztree.all.min.js"></script>
 <style>
-    ul.ztree li{white-space:normal!important;}
-    ul.ztree li span.button.switch{margin-right:5px;}
-    ul.ztree ul ul li{display:inline-block;white-space:normal;}
-    ul.ztree>li{padding:15px 25px 15px 15px;}
-    ul.ztree>li>ul{margin-top:12px;border-top:1px solid rgba(0,0,0,.1);}
-    ul.ztree>li>ul>li{padding:5px;}
-    ul.ztree>li>a>span{font-weight:700;font-size:15px;}
-    ul.ztree .level2 .button.level2{background:0 0;}
+    ul.ztree li {
+        white-space: normal !important;
+    }
+
+    ul.ztree li span.button.switch {
+        margin-right: 5px;
+    }
+
+    ul.ztree ul ul li {
+        display: inline-block;
+        white-space: normal;
+    }
+
+    ul.ztree > li {
+        padding: 15px 25px 15px 15px;
+    }
+
+    ul.ztree > li > ul {
+        margin-top: 12px;
+        border-top: 1px solid rgba(0, 0, 0, .1);
+    }
+
+    ul.ztree > li > ul > li {
+        padding: 5px;
+    }
+
+    ul.ztree > li > a > span {
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    ul.ztree .level2 .button.level2 {
+        background: 0 0;
+    }
 </style>
 {/block}

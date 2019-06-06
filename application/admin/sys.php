@@ -20,6 +20,9 @@ if (!function_exists('auth')) {
      */
     function auth($node)
     {
+        list($req, $num) = [request(), count(explode('/', $node))];
+        if ($num === 1) $node = "{$req->module()}/{$req->controller()}/{$node}";
+        if ($num === 2) $node = "{$req->module()}/{$node}";
         return \app\admin\service\Auth::checkAuthNode($node);
     }
 }
@@ -39,7 +42,7 @@ if (!function_exists('sysdata')) {
             $data = json_decode(\think\Db::name('SystemData')->where('name', $name)->value('value'), true);
             return empty($data) ? [] : $data;
         }
-        return data_save('SystemData', ['name' => $name, 'value' => json_encode($value, 256)], 'name');
+        return data_save('SystemData', ['name' => $name, 'value' => json_encode($value, JSON_UNESCAPED_UNICODE)], 'name');
     }
 }
 

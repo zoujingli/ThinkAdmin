@@ -14,7 +14,7 @@
 
 namespace app\service\handler;
 
-use app\service\logic\Wechat;
+use app\service\service\Wechat;
 use think\Db;
 
 /**

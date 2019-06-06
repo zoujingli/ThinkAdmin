@@ -21,7 +21,7 @@ CKEDITOR.plugins.add("uimage", {
     init: function (editor) {
         editor.ui.addButton("UploadImage", {label: "上传本地图片", command: 'uimage', icon: 'image', toolbar: 'insert,10'});
         setTimeout(function () {
-            $('.cke_button__uploadimage_label').parent().map(function () {
+            $('#cke_' + editor.name).find('.cke_button__uploadimage_label').parent().map(function () {
                 $(this).attr('data-type', 'png,jpg,gif').uploadFile(function (url) {
                     editor.insertElement(CKEDITOR.dom.element.createFromHtml('<img style="max-width:100%" src="' + url + '" border="0" title="image">'));
                 });
@@ -35,7 +35,7 @@ CKEDITOR.plugins.add('umusic', {
     init: function (editor) {
         editor.ui.addButton("UploadMusic", {label: "上传MP3文件", command: 'umusic', icon: 'specialchar', toolbar: 'insert,10'});
         setTimeout(function () {
-            $('.cke_button__uploadmusic_label').parent().map(function () {
+            $('#cke_' + editor.name).find('.cke_button__uploadmusic_label').parent().map(function () {
                 $(this).attr('data-type', 'mp3').uploadFile(function (url) {
                     editor.insertElement(CKEDITOR.dom.element.createFromHtml('<audio controls="controls"><source src="' + url + '" type="audio/mpeg"></audio>'));
                 });
@@ -49,7 +49,7 @@ CKEDITOR.plugins.add('uvideo', {
     init: function (editor) {
         editor.ui.addButton("UploadVideo", {label: "上传MP4文件", command: 'uvideo', icon: 'flash', toolbar: 'insert,10'});
         setTimeout(function () {
-            $('.cke_button__uploadvideo_label').parent().map(function () {
+            $('#cke_' + editor.name).find('.cke_button__uploadvideo_label').parent().map(function () {
                 $(this).attr('data-type', 'mp4').uploadFile(function (url) {
                     editor.insertElement(CKEDITOR.dom.element.createFromHtml('<video width="100%" controls="controls"><source src="' + url + '" type="audio/mp4"></video>'));
                 });
@@ -72,4 +72,3 @@ CKEDITOR.plugins.add('uhtml', {
         });
     }
 });
-

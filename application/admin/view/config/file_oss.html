@@ -1,5 +1,5 @@
 <form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
-    <div class="layui-card-body padding-0">
+    <div class="layui-card-body">
         <div class="color-blue padding-left-40 padding-bottom-20">
             文件将上传到阿里云OSS空间，需要配置OSS公开访问及跨域策略（目前已实现自动创建空间及配置访问策略）。
         </div>
@@ -70,12 +70,8 @@
         </div>
         <div class="hr-line-dashed margin-left-40"></div>
         <div class="layui-form-item text-center">
-            <div class="layui-row">
-                <div class="layui-col-sm8 layui-col-md6">
-                    <input type="hidden" name="storage_type" value="oss">
-                    <button class="layui-btn" type="submit">保存配置</button>
-                </div>
-            </div>
+            <input type="hidden" name="storage_type" value="oss">
+            <button class="layui-btn" type="submit">保存配置</button>
         </div>
     </div>
 </form>
