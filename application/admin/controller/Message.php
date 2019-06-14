@@ -48,17 +48,9 @@ class Message extends Controller
     /**
      * 设置消息状态
      */
-    public function state()
+    public function read()
     {
         $this->_save($this->table, ['read_state' => '1', 'read_at' => date('Y-m-d H:i:s')]);
-    }
-
-    /**
-     * 删除系统消息
-     */
-    public function del()
-    {
-        $this->_delete($this->table);
     }
 
     /**
@@ -80,7 +72,7 @@ class Message extends Controller
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function onoff()
+    public function state()
     {
         sysconf('system_message_state', sysconf('system_message_state') ? 0 : 1);
         if (sysconf('system_message_state')) {
@@ -88,6 +80,14 @@ class Message extends Controller
         } else {
             $this->success('系统消息提示关闭成功！');
         }
+    }
+
+    /**
+     * 删除系统消息
+     */
+    public function remove()
+    {
+        $this->_delete($this->table);
     }
 
 }

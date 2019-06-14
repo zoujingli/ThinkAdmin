@@ -4,11 +4,11 @@
 
 <div style="max-width:1000px">
     <form class="layui-card layui-form">
-        <div class="layui-card-body padding-bottom-5 think-box-shadow">
-            <div class="layui-form-item">
+        <div class="layui-card-body think-box-shadow">
+            <div class="layui-form-item margin-bottom-0">
                 <label class="layui-form-label">Storage<br><span class="nowrap color-desc">存储类型</span></label>
                 <div class="layui-input-block">
-                    {foreach ['local'=>'本地服务器存储','oss'=>'阿里云OSS存储','qiniu'=>'七牛云存储'] as $k=>$v}
+                    {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','oss'=>'阿里云OSS存储'] as $k=>$v}
                     <input type="radio" data-storagetype="{$k}" name="storage_type" value="{$k}" title="{$v}" lay-filter="storage_type">
                     {/foreach}
                     <p class="help-block">请选择文件存储类型，其它云储存需要配置正确的参数才可以上传文件哦！</p>
@@ -17,9 +17,9 @@
         </div>
     </form>
     <div class="padding-top-15 padding-bottom-10 think-box-shadow">
-        <div data-type="oss">{include file='config/file_oss'}</div>
-        <div data-type="local">{include file='config/file_local'}</div>
-        <div data-type="qiniu">{include file='config/file_qiniu'}</div>
+        <div class="layui-anim layui-anim-upbit" data-type="oss">{include file='config/file_oss'}</div>
+        <div class="layui-anim layui-anim-upbit" data-type="local">{include file='config/file_local'}</div>
+        <div class="layui-anim layui-anim-upbit" data-type="qiniu">{include file='config/file_qiniu'}</div>
     </div>
 </div>
 
@@ -30,14 +30,13 @@
     $(function () {
         apply('{:sysconf("storage_type")}');
         window.form.render();
-
         window.form.on('radio(storage_type)', function (data) {
             apply(data.value);
         });
 
         function apply(value) {
-            var $active = $("[data-storagetype='" + value + "']").trigger('click');
-            if ($active.size() < 1) $("[data-storagetype]:first").trigger('click');
+            this.$active = $("[data-storagetype='" + value + "']").trigger('click');
+            if (this.$active.size() < 1) $("[data-storagetype]:first").trigger('click');
             $('[data-type="' + value + '"]').show().siblings('[data-type]').hide();
         }
     });

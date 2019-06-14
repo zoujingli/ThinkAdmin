@@ -5,8 +5,8 @@
 <button data-modal='{:url("add")}' data-title="添加权限" class='layui-btn layui-btn-sm layui-btn-primary'>添加权限</button>
 <!--{/if}-->
 
-<!--{if auth("admin/auth/del")}-->
-<button data-action='{:url("del")}' data-rule="id#{key}" data-csrf="{:systoken('admin/auth/del')}" data-confirm="确定要删除这些权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除权限</button>
+<!--{if auth("admin/auth/remove")}-->
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('admin/auth/remove')}" data-confirm="确定要删除这些权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除权限</button>
 <!--{/if}-->
 {/block}
 
@@ -16,7 +16,7 @@
 
     <table class="layui-table" lay-skin="line">
         <caption class="margin-bottom-10 text-left">{include file='auth/index_search'}</caption>
-        <!--{notempty name='list'}-->
+        {notempty name='list'}
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
@@ -28,9 +28,9 @@
             <th></th>
         </tr>
         </thead>
-        <!--{/notempty}-->
+        {/notempty}
         <tbody>
-        <!--{foreach $list as $key=>$vo}-->
+        {foreach $list as $key=>$vo}
         <tr data-dbclick>
             <td class='list-table-check-td think-checkbox'><input class="list-check-box" value='{$vo.id}' type='checkbox'></td>
             <td class='text-left'>
@@ -60,13 +60,13 @@
                 <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('admin/auth/resume')}">启 用</a>
                 {/if}
 
-                {if auth("admin/auth/del")}
-                <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除数据吗?" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/auth/del')}">删 除</a>
+                {if auth("admin/auth/remove")}
+                <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/auth/remove')}">删 除</a>
                 {/if}
 
             </td>
         </tr>
-        <!--{/foreach}-->
+        {/foreach}
         </tbody>
     </table>
 

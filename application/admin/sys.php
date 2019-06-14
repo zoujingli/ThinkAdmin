@@ -20,10 +20,8 @@ if (!function_exists('auth')) {
      */
     function auth($node)
     {
-        list($req, $num) = [request(), count(explode('/', $node))];
-        if ($num === 1) $node = "{$req->module()}/{$req->controller()}/{$node}";
-        if ($num === 2) $node = "{$req->module()}/{$node}";
-        return \app\admin\service\Auth::checkAuthNode($node);
+        $real = \library\tools\Node::get($node);
+        return \app\admin\service\AuthService::checkAuthNode($real);
     }
 }
 
@@ -39,10 +37,11 @@ if (!function_exists('sysdata')) {
     function sysdata($name, array $value = null)
     {
         if (is_null($value)) {
-            $data = json_decode(\think\Db::name('SystemData')->where('name', $name)->value('value'), true);
+            $data = json_decode(\think\Db::name('SystemData')->where(['name' => $name])->value('value'), true);
             return empty($data) ? [] : $data;
+        } else {
+            return data_save('SystemData', ['name' => $name, 'value' => json_encode($value, JSON_UNESCAPED_UNICODE)], 'name');
         }
-        return data_save('SystemData', ['name' => $name, 'value' => json_encode($value, JSON_UNESCAPED_UNICODE)], 'name');
     }
 }
 
@@ -57,7 +56,7 @@ if (!function_exists('_sysmsg')) {
      */
     function _sysmsg($title, $desc, $url, $node)
     {
-        return \app\admin\service\Message::add($title, $desc, $url, $node);
+        return \app\admin\service\MessageService::add($title, $desc, $url, $node);
     }
 }
 
@@ -70,7 +69,7 @@ if (!function_exists('_syslog')) {
      */
     function _syslog($action, $content)
     {
-        return \app\admin\service\Log::write($action, $content);
+        return \app\admin\service\OplogService::write($action, $content);
     }
 }
 
@@ -83,8 +82,11 @@ if (!function_exists('local_image')) {
     function local_image($url)
     {
         $result = \library\File::down($url);
-        if (isset($result['url'])) return $result['url'];
-        return $url;
+        if (isset($result['url'])) {
+            return $result['url'];
+        } else {
+            return $url;
+        }
     }
 }
 
@@ -102,8 +104,9 @@ if (!function_exists('base64_image')) {
                 list($ext, $base) = explode('|||', preg_replace('|^data:image/(.*?);base64,|i', '$1|||', $content));
                 $info = \library\File::save($predir . md5($base) . '.' . (empty($ext) ? 'tmp' : $ext), base64_decode($base));
                 return $info['url'];
+            } else {
+                return $content;
             }
-            return $content;
         } catch (\Exception $e) {
             return $content;
         }
@@ -113,21 +116,22 @@ if (!function_exists('base64_image')) {
 // 系统权限检查中间键
 \think\facade\Middleware::add(function (\think\Request $request, \Closure $next) {
     // 系统消息处理
-    if (($code = $request->get('messagecode')) > 0) \app\admin\service\Message::set($code);
+    if (($code = $request->get('messagecode')) > 0) \app\admin\service\MessageService::set($code);
     // 节点忽略跳过
     $node = \library\tools\Node::current();
-    foreach (\app\admin\service\Auth::getIgnore() as $str) if (stripos($node, $str) === 0) return $next($request);
+    foreach (\app\admin\service\AuthService::getIgnore() as $str) if (stripos($node, $str) === 0) return $next($request);
     // 节点权限查询
     $auth = \think\Db::name('SystemNode')->cache(true, 60)->field('is_auth,is_login')->where(['node' => $node])->find();
     $info = ['is_auth' => $auth['is_auth'], 'is_login' => $auth['is_auth'] ? 1 : $auth['is_login']];
     // 登录状态检查
-    if (!empty($info['is_login']) && !\app\admin\service\Auth::isLogin()) {
+    if (!empty($info['is_login']) && !\app\admin\service\AuthService::isLogin()) {
         $message = ['code' => 0, 'msg' => '抱歉，您还没有登录获取访问权限！', 'url' => url('@admin/login')];
         return $request->isAjax() ? json($message) : redirect($message['url']);
     }
     // 访问权限检查
-    if (!empty($info['is_auth']) && !\app\admin\service\Auth::checkAuthNode($node)) {
+    if (!empty($info['is_auth']) && !\app\admin\service\AuthService::checkAuthNode($node)) {
         return json(['code' => 0, 'msg' => '抱歉，您没有访问该模块的权限！']);
+    } else {
+        return $next($request);
     }
-    return $next($request);
 });

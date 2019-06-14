@@ -95,7 +95,7 @@ class Menu extends Controller
             // 选择自己的上级菜单
             if (!isset($vo['pid']) && $this->request->get('pid', '0')) $vo['pid'] = $this->request->get('pid', '0');
             // 读取系统功能节点
-            $nodes = \app\admin\service\Auth::get();
+            $nodes = \app\admin\service\AuthService::get();
             foreach ($nodes as $key => $node) {
                 if (empty($node['is_menu'])) unset($nodes[$key]);
                 unset($nodes[$key]['pnode'], $nodes[$key]['is_login'], $nodes[$key]['is_menu'], $nodes[$key]['is_auth']);
@@ -125,7 +125,7 @@ class Menu extends Controller
     /**
      * 删除系统菜单
      */
-    public function del()
+    public function remove()
     {
         $this->applyCsrfToken();
         $this->_delete($this->table);

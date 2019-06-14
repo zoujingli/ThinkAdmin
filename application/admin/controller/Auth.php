@@ -58,7 +58,7 @@ class Auth extends Controller
         $auth = $this->request->post('id', '0');
         switch (strtolower($this->request->post('action'))) {
             case 'get': // 获取权限配置
-                $nodes = \app\admin\service\Auth::get();
+                $nodes = \app\admin\service\AuthService::get();
                 $checked = Db::name('SystemAuthNode')->where(['auth' => $auth])->column('node');
                 foreach ($nodes as &$node) $node['checked'] = in_array($node['node'], $checked);
                 $data = $this->_apply_filter(\library\tools\Data::arr2tree($nodes, 'node', 'pnode', '_sub_'));
@@ -131,7 +131,7 @@ class Auth extends Controller
     /**
      * 删除系统权限
      */
-    public function del()
+    public function remove()
     {
         $this->applyCsrfToken();
         $this->_delete($this->table);
@@ -143,7 +143,7 @@ class Auth extends Controller
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    protected function _del_delete_result($result)
+    protected function _remove_delete_result($result)
     {
         if ($result) {
             $where = ['auth' => $this->request->post('id')];

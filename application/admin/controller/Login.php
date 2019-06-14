@@ -14,6 +14,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\service\AuthService;
 use library\Controller;
 use think\Db;
 
@@ -38,7 +39,7 @@ class Login extends Controller
      */
     protected function _index_get()
     {
-        if (\app\admin\service\Auth::isLogin()) {
+        if (AuthService::isLogin()) {
             $this->redirect('@admin');
         } else {
             $this->loginskey = session('loginskey');
@@ -108,7 +109,7 @@ class Login extends Controller
         session('user', $user);
         session('loginskey', null);
         _syslog('系统管理', '用户登录系统成功');
-        empty($user['authorize']) || \app\admin\service\Auth::applyNode();
+        empty($user['authorize']) || AuthService::applyNode();
         $this->success('登录成功，正在进入系统...', url('@admin'));
     }
 

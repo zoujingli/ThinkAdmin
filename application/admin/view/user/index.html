@@ -6,8 +6,8 @@
 <button data-modal='{:url("add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
 {/if}
 
-{if auth("admin/user/del")}
-<button data-action='{:url("del")}' data-rule="id#{key}" data-csrf="{:systoken('admin/user/del')}" data-confirm="确定要删除这些用户吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除用户</button>
+{if auth("admin/user/remove")}
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('admin/user/remove')}" data-confirm="确定要删除这些用户吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除用户</button>
 {/if}
 
 {/block}
@@ -65,8 +65,8 @@
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('admin/user/resume')}">启 用</a>
                 {/if}
 
-                {if auth("admin/user/del")}
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该用户吗？" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/user/del')}">删 除</a>
+                {if auth("admin/user/remove")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该用户吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/user/remove')}">删 除</a>
                 {/if}
 
             </td>

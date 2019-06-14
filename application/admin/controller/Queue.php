@@ -42,10 +42,11 @@ class Queue extends Controller
     public function index()
     {
         $this->title = '消息任务管理';
-        $this->uris = Db::name($this->table)->distinct(true)->column('uri');
         $this->cmd = 'php ' . env('root_path') . 'think xtask:start';
         $this->message = Console::call('xtask:state')->fetch();
-        $this->_query($this->table)->equal('status,title,uri')->dateBetween('create_at,status_at')->order('id desc')->page();
+        $this->uris = Db::name($this->table)->distinct(true)->column('uri');
+        $query = $this->_query($this->table)->dateBetween('create_at,status_at');
+        $query->equal('status,title,uri')->order('id desc')->page();
     }
 
     /**
@@ -58,7 +59,7 @@ class Queue extends Controller
             $info = Db::name($this->table)->where($where)->find();
             if (empty($info)) $this->error('需要重置的任务获取异常！');
             $data = isset($info['data']) ? json_decode($info['data'], true) : '[]';
-            \app\admin\service\Queue::add($info['title'], $info['uri'], $info['later'], $data, $info['double'], $info['desc']);
+            \app\admin\service\QueueService::add($info['title'], $info['uri'], $info['later'], $data, $info['double'], $info['desc']);
             $this->success('任务重置成功！', url('@admin') . '#' . url('@admin/queue/index'));
         } catch (\think\exception\HttpResponseException $exception) {
             throw $exception;
@@ -70,12 +71,12 @@ class Queue extends Controller
     /**
      * 删除消息任务
      */
-    public function del()
+    public function remove()
     {
         try {
             $isNot = false;
             foreach (explode(',', $this->request->post('id', '0')) as $id) {
-                if (!\app\admin\service\Queue::del($id)) $isNot = true;
+                if (!\app\admin\service\QueueService::del($id)) $isNot = true;
             }
             if (empty($isNot)) $this->_delete($this->table);
             $this->success($isNot ? '部分任务删除成功！' : '任务删除成功！');

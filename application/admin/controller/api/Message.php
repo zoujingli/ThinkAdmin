@@ -29,7 +29,7 @@ class Message extends Controller
     public function __construct()
     {
         parent::__construct();
-        if (!\app\admin\service\Auth::isLogin()) {
+        if (!\app\admin\service\AuthService::isLogin()) {
             $this->error('访问授权失败，请重新登录授权再试！');
         }
     }
@@ -42,7 +42,7 @@ class Message extends Controller
      */
     public function gets()
     {
-        $list = \app\admin\service\Message::gets();
+        $list = \app\admin\service\MessageService::gets();
         $this->success('获取系统消息成功！', $list);
     }
 
@@ -54,7 +54,7 @@ class Message extends Controller
     public function set()
     {
         $code = $this->request->post('code');
-        if (\app\admin\service\Message::set($code)) {
+        if (\app\admin\service\MessageService::set($code)) {
             $this->success('系统消息状态更新成功！');
         } else {
             $this->error('系统消息状态更新失败，请稍候再试！');

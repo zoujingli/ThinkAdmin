@@ -32,7 +32,7 @@ class Plugs extends Controller
     public function __construct()
     {
         parent::__construct();
-        if (!\app\admin\service\Auth::isLogin()) {
+        if (!\app\admin\service\AuthService::isLogin()) {
             $this->error('访问授权失败，请重新登录授权再试！');
         }
     }

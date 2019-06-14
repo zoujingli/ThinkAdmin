@@ -11,7 +11,6 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/zoujingli/framework
 // +--------------------------------------------------------------------*/
-
 ::-webkit-input-placeholder{color:#aaa}
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-track{background:#ccc!important}
@@ -68,16 +67,16 @@ a{color:#06C;cursor:pointer}a:hover{color:#039}input::-ms-clear{display:none}.mo
 .text-top{vertical-align:top!important}.text-left{text-align:left!important}.text-right{text-align:right!important}.text-center{text-align:center!important}.text-middle{vertical-align:middle!important}.text-bottom{vertical-align:bottom!important}
 .nowrap{white-space:nowrap!important}.help-block{color:#999;font-size:12px}.inline-block{display:inline-block!important}.block{display:block!important}.pointer{cursor:pointer!important}
 .full-width{width:100%!important}.full-height{height:100%!important}.color-red{color:#ec494e!important}.color-blue{color:#2494f2!important}.color-desc{color:#999!important}.color-text{color:#333!important}.color-green{color:#090!important}
-.notdata{display:block;margin-bottom:10px;padding:15px;border:1px solid #e6e6e6;border-radius:0 2px 2px 0;background-color:#f2f2f2;text-align:center;letter-spacing:8px;font-size:13px;line-height:22px}
+.notdata{display:block;padding:15px;border:1px solid #e6e6e6;border-radius:0 2px 2px 0;background-color:#f2f2f2;text-align:center;letter-spacing:8px;font-size:13px;line-height:22px}
 [data-tips-image]{cursor:zoom-in!important}.notselect{user-select:none;-ms-user-select:none;-moz-user-select:none;-webkit-user-select:none}.transition{-webkit-transition:all .2s linear;-moz-transition:all .2s linear;-o-transition:all .2s linear;transition:all .2s linear}
 /* 文字大小 */
-.font-s10{font-size:10px!important}.font-s11{font-size:11px!important}.font-s12{font-size:12px!important}.font-s13{font-size:13px!important}.font-s14{font-size:14px!important}.font-s16{font-size:16px!important}.font-s18{font-size:18px!important}.font-s20{font-size:20px!important}
+.font-s10{font-size:10px!important}.font-s11{font-size:11px!important}.font-s12{font-size:12px!important}.font-s13{font-size:13px!important}.font-s14{font-size:14px!important}.font-s16{font-size:16px!important}.font-s18{font-size:18px!important}.font-s20{font-size:20px!important}.font-s30{font-size:30px!important}
 .border-0{border:0!important}.border-radius-0{border-radius:0!important}
 .padding-0{padding:0!important}.padding-5{padding:5px!important}.padding-10{padding:10px!important}.padding-15{padding:15px!important}.padding-20{padding:20px!important}.padding-25{padding:25px!important}.padding-30{padding:30px!important}
-.padding-top-0{padding-top:0!important}.padding-top-5{padding-top:5px!important}.padding-top-10{padding-top:10px!important}.padding-top-15{padding-top:15px!important}.padding-top-20{padding-top:20px!important}
+.padding-top-0{padding-top:0!important}.padding-top-5{padding-top:5px!important}.padding-top-10{padding-top:10px!important}.padding-top-15{padding-top:15px!important}.padding-top-20{padding-top:20px!important}.padding-top-30{padding-top:30px!important}
 .padding-left-0{padding-left:0!important}.padding-left-5{padding-left:5px!important}.padding-left-10{padding-left:10px!important}.padding-left-15{padding-left:15px!important}.padding-left-20{padding-left:20px!important}.padding-left-40{padding-left:40px!important}
-.padding-right-0{padding-right:0!important}.padding-right-5{padding-right:5px!important}.padding-right-10{padding-right:10px!important}.padding-right-15{padding-right:15px!important}.padding-right-20{padding-right:20px!important}
-.padding-bottom-0{padding-bottom:0!important}.padding-bottom-5{padding-bottom:5px!important}.padding-bottom-10{padding-bottom:10px!important}.padding-bottom-15{padding-bottom:15px!important}.padding-bottom-20{padding-bottom:20px!important}
+.padding-right-0{padding-right:0!important}.padding-right-5{padding-right:5px!important}.padding-right-10{padding-right:10px!important}.padding-right-15{padding-right:15px!important}.padding-right-20{padding-right:20px!important}.padding-right-30{padding-right:30px!important}
+.padding-bottom-0{padding-bottom:0!important}.padding-bottom-5{padding-bottom:5px!important}.padding-bottom-10{padding-bottom:10px!important}.padding-bottom-15{padding-bottom:15px!important}.padding-bottom-20{padding-bottom:20px!important}.padding-bottom-30{padding-bottom:30px!important}
 .margin-0{margin:0!important}.margin-5{margin:5px!important}.margin-10{margin:10px!important}.margin-15{margin:15px!important}.margin-20{margin:20px!important}.margin-25{margin:25px!important}.margin-30{margin:30px!important}
 .margin-top-0{margin-top:0!important}.margin-top-5{margin-top:5px!important}.margin-top-10{margin-top:10px!important}.margin-top-15{margin-top:15px!important}.margin-top-20{margin-top:20px!important}
 .margin-left-0{margin-left:0!important}.margin-left-5{margin-left:5px!important}.margin-left-10{margin-left:10px!important}.margin-left-15{margin-left:15px!important}.margin-left-20{margin-left:20px!important}.margin-left-40{margin-left:40px!important}
@@ -134,7 +133,11 @@ fieldset{margin:0;border:1px solid #e6e6e6;padding:10px 20px 5px 20px}
 .layui-table .list-table-sort-td input{width:50px;color:#666;padding:2px;border:1px solid #e6e6e6;text-align:center;font-size:9pt;line-height:18px}
 .layui-table .list-table-check-td{width:10px!important;text-align:center;padding-left:15px!important;padding-right:15px!important}
 .layui-table .list-table-check-td input{margin:0!important;vertical-align:middle}
-.think-box-shadow{box-shadow:0 2px 3px 0 rgba(0,0,0,.1);background:#fff;padding:20px!important}
+/** 自定义表单样式 */
+.think-form-label{padding:9px 15px;font-weight:400;line-height:20px;text-align:right}
+.think-form-group-right{border-top-left-radius:0;border-bottom-left-radius:0;border-left:none}
+.think-form-group-left input{border-top-right-radius:0;border-bottom-right-radius:0;border-right:none}
+.think-box-shadow{box-shadow:0 2px 3px 0 rgba(0,0,0,.1);background:#fff;padding:20px 30px!important}
 /** checkbox & radio */
 label.think-checkbox,label.think-radio{display:inline-block;margin-right:10px}
 .think-checkbox,.think-radio{margin-top:10px;font-weight:400;line-height:17px;cursor:pointer}
