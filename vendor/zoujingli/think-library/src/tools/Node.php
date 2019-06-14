@@ -14,6 +14,8 @@
 
 namespace library\tools;
 
+use think\facade\Request;
+
 /**
  * 控制器节点管理器
  * Class Node
@@ -29,14 +31,31 @@ class Node
     protected static $ignore = ['initialize', 'success', 'error', 'redirect', 'fetch', 'assign', 'callback'];
 
     /**
+     * 获取标准访问节点
+     * @param string $node
+     * @return string
+     */
+    public static function get($node = null)
+    {
+        if (empty($node)) return self::current();
+        if (count(explode('/', $node)) === 1) {
+            $preNode = Request::module() . '/' . Request::controller();
+            return self::parseString($preNode) . '/' . strtolower($node);
+        }
+        if (count($attr = explode('/', $node)) >= 3) {
+            $attr[1] = self::parseString($attr[1]);
+        }
+        return strtolower(join('/', $attr));
+    }
+
+    /**
      * 获取当前访问节点
      * @return string
      */
     public static function current()
     {
-        $request = request();
-        list($module, $controller, $action) = [$request->module(), $request->controller(), $request->action()];
-        return self::parseString("{$module}/{$controller}") . '/' . strtolower($action);
+        $preNode = Request::module() . '/' . Request::controller();
+        return self::parseString($preNode) . '/' . strtolower(Request::action());
     }
 
     /**

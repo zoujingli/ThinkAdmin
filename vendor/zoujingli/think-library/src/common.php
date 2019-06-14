@@ -80,7 +80,8 @@ if (!function_exists('systoken')) {
      */
     function systoken($node = null)
     {
-        $csrf = \library\tools\Csrf::buildFormToken($node);
+        $real = \library\tools\Node::get($node);
+        $csrf = \library\tools\Csrf::buildFormToken($real);
         return $csrf['token'];
     }
 }
