@@ -1,0 +1,65 @@
+{extend name='main'}
+
+{block name="button"}
+
+{if auth("admin/oplog/clear")}
+<button data-load='{:url("clear")}' data-confirm="确定要消除所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理日志</button>
+{/if}
+
+{if auth("admin/oplog/remove")}
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('admin/oplog/remove')}" data-confirm="确定要删除日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
+{/if}
+
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='oplog/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='text-left nowrap'>操作账号</th>
+            <th class='text-left nowrap'>权限节点</th>
+            <th class='text-left nowrap'>操作行为</th>
+            <th class='text-left nowrap'>地理位置</th>
+            <th class='text-left nowrap'>操作时间</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class="text-left nowrap">{$vo.username|default='-'}</td>
+            <td class="text-left nowrap">{$vo.node|default='-'}</td>
+            <td class='text-left nowrap'>
+                <p class="color-text">{$vo.action|default='-'}</p>
+                <p class="color-desc">{$vo.content|default='-'}</p>
+            </td>
+            <td class='text-left nowrap'>
+                <p class="color-text">{$vo.geoip|default='-'}</p>
+                <p class="color-desc">{$vo.isp|default='-'}</p>
+            </td>
+            <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>
+            <td class='text-left nowrap'>
+                {if auth("admin/oplog/remove")}
+                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/oplog/remove')}">删 除</a>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+        {/notempty}
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+
+{/block}

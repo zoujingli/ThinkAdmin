@@ -14,9 +14,6 @@
 
 namespace app\store\command;
 
-use think\console\Command;
-use think\console\Input;
-use think\console\Output;
 use think\Db;
 
 /**
@@ -24,7 +21,7 @@ use think\Db;
  * Class AutoRun
  * @package app\store\command
  */
-class AutoRun extends Command
+class AutoRun extends \think\console\Command
 {
 
     protected function configure()
@@ -34,20 +31,20 @@ class AutoRun extends Command
 
     /**
      * 业务指令执行
-     * @param Input $input
-     * @param Output $output
+     * @param \think\console\Input $input
+     * @param \think\console\Output $output
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    protected function execute(Input $input, Output $output)
+    protected function execute(\think\console\Input $input, \think\console\Output $output)
     {
         // 自动取消30分钟未支付的订单
         $this->autoCancelOrder();
         // 清理一天前未支付的订单
-        $this->autoCleanOrder();
+        $this->autoRemoveOrder();
         // 订单自动退款处理
         // $this->autoRefundOrder();
         // 提现自动打款处理
@@ -61,8 +58,9 @@ class AutoRun extends Command
      */
     private function autoCancelOrder()
     {
-        $where = [['create_at', '<', date('Y-m-d H:i:s', strtotime('-30 minutes'))]];
-        $count = Db::name('StoreOrder')->where(['pay_state' => '0'])->whereIn('status', ['1', '2'])->where($where)->update([
+        $datetime = $this->getDatetime('store_order_wait_time');
+        $where = [['status', 'in', ['1', '2']], ['pay_state', 'eq', '0'], ['create_at', '<', $datetime]];
+        $count = Db::name('StoreOrder')->where($where)->update([
             'status'       => '0',
             'cancel_state' => '1',
             'cancel_at'    => date('Y-m-d H:i:s'),
@@ -83,14 +81,15 @@ class AutoRun extends Command
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    private function autoCleanOrder()
+    private function autoRemoveOrder()
     {
-        $where = [['create_at', '<', date('Y-m-d H:i:s', strtotime('-1 day'))]];
-        $list = Db::name('StoreOrder')->where(['pay_state' => '0'])->where($where)->limit(20)->select();
-        if (count($order_nos = array_unique(array_column($list, 'order_no'))) > 0) {
-            $this->output->info("自动删除前一天已经取消的订单：\n\t" . join(',' . PHP_EOL . "\t", $order_nos));
-            Db::name('StoreOrder')->whereIn('order_no', $order_nos)->delete();
-            Db::name('StoreOrderList')->whereIn('order_no', $order_nos)->delete();
+        $datetime = $this->getDatetime('store_order_clear_time');
+        $where = [['status', 'eq', '0'], ['pay_state', 'eq', '0'], ['create_at', '<', $datetime]];
+        $list = Db::name('StoreOrder')->where($where)->limit(20)->select();
+        if (count($orderNos = array_unique(array_column($list, 'order_no'))) > 0) {
+            $this->output->info("自动删除前一天已经取消的订单：" . PHP_EOL . join(',' . PHP_EOL, $orderNos));
+            Db::name('StoreOrder')->whereIn('order_no', $orderNos)->delete();
+            Db::name('StoreOrderList')->whereIn('order_no', $orderNos)->delete();
         } else {
             $this->output->comment('没有需要自动删除前一天已经取消的订单！');
         }
@@ -170,6 +169,19 @@ class AutoRun extends Command
                 Db::name('StoreProfitUsed')->where(['trs_no' => $vo['trs_no']])->update(['pay_desc' => $e->getMessage()]);
             }
         }
+    }
+
+    /**
+     * 获取配置时间
+     * @param string $code
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    private function getDatetime($code)
+    {
+        $minutes = intval(sysconf($code) * 60);
+        return date('Y-m-d H:i:s', strtotime("-{$minutes} minutes"));
     }
 
 }

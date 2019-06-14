@@ -19,10 +19,10 @@ use think\Db;
 
 /**
  * 业务扩展服务
- * Class Extend
+ * Class ExtendService
  * @package app\store\service
  */
-class Extend
+class ExtendService
 {
 
     /**

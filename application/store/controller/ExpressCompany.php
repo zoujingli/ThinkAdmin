@@ -95,7 +95,7 @@ class ExpressCompany extends Controller
     /**
      * 删除快递公司
      */
-    public function del()
+    public function remove()
     {
         $this->_delete($this->table);
     }

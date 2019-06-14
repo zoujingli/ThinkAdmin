@@ -18,10 +18,10 @@ use think\Db;
 
 /**
  * 商品数据管理
- * Class Goods
+ * Class GoodsService
  * @package app\store\logic
  */
-class Goods
+class GoodsService
 {
     /**
      * 同步商品库存信息

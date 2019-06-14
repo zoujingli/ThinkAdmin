@@ -18,10 +18,10 @@ use think\Db;
 
 /**
  * 订单服务管理器
- * Class Order
+ * Class OrderService
  * @package app\store\service
  */
-class Order
+class OrderService
 {
     /**
      * 根据订单号升级会员等级
@@ -50,7 +50,7 @@ class Order
     {
         $map = ['order_no' => $order_no];
         $goodsIds = Db::name('StoreOrderList')->where($map)->column('goods_id');
-        foreach (array_unique($goodsIds) as $goodsId) if (!Goods::syncStock($goodsId)) return false;
+        foreach (array_unique($goodsIds) as $goodsId) if (!GoodsService::syncStock($goodsId)) return false;
         return true;
     }
 

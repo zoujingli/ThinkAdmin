@@ -6,10 +6,10 @@ use think\Db;
 
 /**
  * 商城邮费服务
- * Class Express
+ * Class ExpressService
  * @package app\store\service
  */
-class Express
+class ExpressService
 {
 
     /**

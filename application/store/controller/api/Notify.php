@@ -14,7 +14,7 @@
 
 namespace app\store\controller\api;
 
-use app\store\service\Order;
+use app\store\service\OrderService;
 use think\Db;
 
 /**
@@ -64,7 +64,7 @@ class Notify
             'pay_price' => $pay_price, 'pay_state' => '1', 'pay_at' => date('Y-m-d H:i:s'),
         ]);
         // 调用会员升级机制
-        Order::update($order['order_no']);
+        OrderService::update($order['order_no']);
         return $result !== false;
     }
 
