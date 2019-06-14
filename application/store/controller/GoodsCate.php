@@ -83,7 +83,7 @@ class GoodsCate extends Controller
     /**
      * 删除商品分类
      */
-    public function del()
+    public function remove()
     {
         $this->_delete($this->table);
     }

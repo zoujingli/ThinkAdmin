@@ -15,7 +15,7 @@
 namespace app\store\controller\api\member;
 
 use app\store\controller\api\Member;
-use app\store\service\Goods;
+use app\store\service\GoodsService;
 use library\tools\Data;
 use think\Db;
 
@@ -95,7 +95,7 @@ class Order extends Member
             Db::name('StoreOrder')->insert($order);
             Db::name('StoreOrderList')->insertAll($orderList);
             // 同步商品库存及销量
-            foreach (array_unique(array_column($orderList, 'goods_id')) as $goodsId) Goods::syncStock($goodsId);
+            foreach (array_unique(array_column($orderList, 'goods_id')) as $goodsId) GoodsService::syncStock($goodsId);
             $this->success('订单创建成功，请补全收货信息后支付！', ['order' => $order]);
         } catch (\think\exception\HttpResponseException $exception) {
             throw $exception;
@@ -252,7 +252,7 @@ class Order extends Member
                 'cancel_at'    => date('Y-m-d H:i:s'),
                 'cancel_desc'  => '用户主动取消订单！',
             ]);
-            if ($result !== false && \app\store\service\Order::syncStock($order['order_no'])) {
+            if ($result !== false && \app\store\service\OrderService::syncStock($order['order_no'])) {
                 $this->success('订单取消成功！');
             }
             $this->error('订单取消失败，请稍候再试！');

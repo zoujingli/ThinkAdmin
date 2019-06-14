@@ -83,7 +83,7 @@ class Order extends Controller
         $this->_form($this->table);
     }
 
-    /***
+    /**
      * 快递追踪查询
      */
     public function expressQuery()

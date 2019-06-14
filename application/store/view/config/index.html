@@ -1,71 +1,40 @@
 {extend name="admin@main"}
 
 {block name="content"}
-<form onsubmit="return false;" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
+<form onsubmit="return false;" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' style="max-width:1000px" autocomplete="off">
 
-    <div class="layui-card-body" style="padding-left:40px">
+    <div class="layui-card-body think-box-shadow padding-left-40">
+        <div style="padding:20px 40px">
 
-        <fieldset>
+            <label class="layui-form-item margin-top-20 block relative">
+                <span class="color-green margin-right-10">商城展示名称</span><span class="nowrap color-desc">StoreTitle</span>
+                <input name="store_title" required placeholder="请输入商城展示名称" value="{:sysconf('store_title')}" class="layui-input">
+                <p class="help-block">订单支付等待时长，新下订单未在此时间内容完成支付将会被自动取消</p>
+            </label>
 
-            <legend class="layui-bg-cyan">平台短信配置</legend>
+            <label class="layui-form-item margin-top-20 block relative">
+                <span class="color-green margin-right-10">未订单的支付等待时长（小时）</span><span class="nowrap color-desc">OrderWaitTime</span>
+                <input onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" name="store_order_wait_time" required placeholder="请输入订单支付等待时长" value="{:sysconf('store_order_wait_time')}" class="layui-input">
+                <p class="help-block">订单支付等待时长，新下订单未在此时间内容完成支付将会被自动取消</p>
+            </label>
 
-            {if empty($query.code)}
-            <div class="layui-code border-0">{$query.msg|default=''}</div>
-            {elseif $query.code eq 1}
-            <div class="layui-code border-0">平台剩余 {$query.num|default=0} 条可用短信，{$query.msg|default=''}</div>
-            {/if}
+            <label class="layui-form-item margin-top-20 block relative">
+                <span class="color-green margin-right-10">已取消的订单清理时长（小时）</span><span class="nowrap color-desc">OrderClearTime</span>
+                <input onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" name="store_order_clear_time" required placeholder="请输入已取消订单清理时长" value="{:sysconf('store_order_clear_time')}" class="layui-input">
+                <p class="help-block">已取消订单清理时长，已取消未支付订单将在此时间点将被自动清理掉</p>
+            </label>
 
-            <div class="layui-form-item">
-                <label>
-                    <span class="color-green margin-right-10 font-s14">短信平台账号</span><span class="nowrap color-desc">Username</span>
-                    <span class="block relative">
-                        <input name="sms_zt_username" required placeholder="请输入助通短信平台账号" value="{:sysconf('sms_zt_username')}" class="layui-input">
-                    </span>
-                </label>
-                <p class="help-block">助通短信平台账号，可以联系客服获取账号与密码。</p>
+            <label class="layui-form-item margin-top-20 block relative">
+                <span class="color-green margin-right-10">已发货订单自动确认收货时长（小时）</span><span class="nowrap color-desc">OrderConfirmTime</span>
+                <input onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" name="store_order_confirm_time" required placeholder="请输入已发货订单自动确认收货时长" value="{:sysconf('store_order_confirm_time')}" class="layui-input">
+                <p class="help-block">已取消订单清理时长，已取消未支付订单将在此时间点将被自动清理掉</p>
+            </label>
+
+            <div class="layui-form-item text-center margin-top-20 padding-bottom-20">
+                <button class="layui-btn" type="submit">保存配置</button>
             </div>
 
-            <div class="layui-form-item">
-                <label>
-                    <span class="color-green margin-right-10 font-s14">短信平台密码</span><span class="nowrap color-desc">Password</span>
-                    <span class="block relative">
-                        <input name="sms_zt_password" required placeholder="请输入助通短信平台密码" value="{:sysconf('sms_zt_password')}" class="layui-input">
-                    </span>
-                </label>
-                <p class="help-block">助通短信平台账号，可以联系客服获取账号与密码。</p>
-            </div>
-
-            <div class="layui-form-item">
-                <label>
-                    <span class="color-green margin-right-10 font-s14">短信发送安全码</span><span class="nowrap color-desc">Secure</span>
-                    <span class="block relative">
-                        <input name="sms_secure" required placeholder="请输入短信发送安全码" value="{:sysconf('sms_secure')}" class="layui-input">
-                    </span>
-                </label>
-                <p class="help-block">短信发送安全码，调用接口发短信时需要传入此参数。</p>
-            </div>
-
-            <div class="layui-form-item">
-                <label>
-                    <span class="color-green margin-right-10 font-s14">注册短信模板</span><span class="nowrap color-desc">Template</span>
-                    <span class="block relative">
-                    <textarea class="layui-textarea" required name="sms_reg_template" placeholder="请输入助通短信平台密码">{:sysconf('sms_reg_template')}</textarea>
-                    </span>
-                </label>
-                <p class="help-block">会员注册短信模板，验证码变量使用 {code} 代替。</p>
-            </div>
-
-
-            <div class="layui-form-item text-center margin-top-20">
-                <div class="layui-row">
-                    <div class="layui-col-sm8 layui-col-md6">
-                        <button class="layui-btn" type="submit">保存配置</button>
-                    </div>
-                </div>
-            </div>
-
-        </fieldset>
-
+        </div>
     </div>
 </form>
 {/block}

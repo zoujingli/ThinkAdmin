@@ -15,7 +15,7 @@
 namespace app\store\controller\api\member;
 
 use app\store\controller\api\Member;
-use app\store\service\Extend;
+use app\store\service\ExtendService;
 use think\Db;
 
 /**
@@ -79,7 +79,7 @@ class Center extends Member
             $this->error('获取短信模板失败，联系管理员配置！');
         }
         $cache = cache($cachekey);
-        if (Extend::sendSms($this->mid, $phone, str_replace('{code}', $code, $content))) {
+        if (ExtendService::sendSms($this->mid, $phone, str_replace('{code}', $code, $content))) {
             $dtime = ($cache['time'] + 120 < time()) ? 0 : (120 - time() + $cache['time']);
             $this->success('短信验证码发送成功！', ['time' => $dtime]);
         }

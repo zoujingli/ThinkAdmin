@@ -40,7 +40,8 @@ class Member extends Controller
     public function index()
     {
         $this->title = '会员信息管理';
-        $this->_query($this->table)->like('nickname,phone')->equal('vip_level')->dateBetween('create_at')->order('id desc')->page();
+        $query = $this->_query($this->table)->like('nickname,phone')->equal('vip_level');
+        $query->dateBetween('create_at')->order('id desc')->page();
     }
 
     /**

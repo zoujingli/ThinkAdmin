@@ -1,9 +1,9 @@
 {extend name="admin@main"}
 
 {block name="content"}
-<form onsubmit="return false;" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
+<form onsubmit="return false;" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' style="max-width:1000px" autocomplete="off">
 
-    <div class="layui-card-body" style="padding-left:40px">
+    <div class="layui-card-body think-box-shadow padding-bottom-20" style="padding-left:40px">
 
         <div data-item-container>
             {foreach $list as $index=>$item}

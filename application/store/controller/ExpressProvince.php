@@ -83,7 +83,7 @@ class ExpressProvince extends Controller
     /**
      * 删除配送省份
      */
-    public function del()
+    public function remove()
     {
         $this->applyCsrfToken();
         $this->_delete($this->table);
