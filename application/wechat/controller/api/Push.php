@@ -14,9 +14,9 @@
 
 namespace app\wechat\controller\api;
 
-use app\wechat\service\Fans;
-use app\wechat\service\Media;
-use app\wechat\service\Wechat;
+use app\wechat\service\FansService;
+use app\wechat\service\MediaService;
+use app\wechat\service\WechatService;
 use library\Controller;
 use think\Db;
 
@@ -87,8 +87,8 @@ class Push extends Controller
     public function index()
     {
         try {
-            $this->wechat = Wechat::WeChatReceive();
-            if ($this->request->has('receive', 'post') && Wechat::getType() === 'thr') {
+            $this->wechat = WechatService::WeChatReceive();
+            if ($this->request->has('receive', 'post') && WechatService::getType() === 'thr') {
                 $this->forceCustom = true;
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
@@ -99,7 +99,7 @@ class Push extends Controller
                 }
             } else {
                 $this->forceCustom = false;
-                $this->appid = Wechat::getAppid();
+                $this->appid = WechatService::getAppid();
                 $this->openid = $this->wechat->getOpenid();
                 $this->encrypt = $this->wechat->isEncrypt();
                 $this->receive = $this->toLower($this->wechat->getReceive());
@@ -217,13 +217,13 @@ class Push extends Controller
             case 'customservice':
                 return $this->sendMessage('customservice', ['content' => $data['content']], false);
             case 'voice':
-                if (empty($data['voice_url']) || !($mediaId = Media::upload($data['voice_url'], 'voice'))) return false;
+                if (empty($data['voice_url']) || !($mediaId = MediaService::upload($data['voice_url'], 'voice'))) return false;
                 return $this->sendMessage('voice', ['media_id' => $mediaId], $isCustom);
             case 'image':
-                if (empty($data['image_url']) || !($mediaId = Media::upload($data['image_url'], 'image'))) return false;
+                if (empty($data['image_url']) || !($mediaId = MediaService::upload($data['image_url'], 'image'))) return false;
                 return $this->sendMessage('image', ['media_id' => $mediaId], $isCustom);
             case 'news':
-                list($news, $articles) = [Media::news($data['news_id']), []];
+                list($news, $articles) = [MediaService::news($data['news_id']), []];
                 if (empty($news['articles'])) return false;
                 foreach ($news['articles'] as $vo) array_push($articles, [
                     'url'   => url("@wechat/api.review/view", '', false, true) . "?id={$vo['id']}",
@@ -233,14 +233,14 @@ class Push extends Controller
             case 'music':
                 if (empty($data['music_url']) || empty($data['music_title']) || empty($data['music_desc'])) return false;
                 return $this->sendMessage('music', [
-                    'thumb_media_id' => empty($data['music_image']) ? '' : Media::upload($data['music_image'], 'image'),
+                    'thumb_media_id' => empty($data['music_image']) ? '' : MediaService::upload($data['music_image'], 'image'),
                     'description'    => $data['music_desc'], 'title' => $data['music_title'],
                     'hqmusicurl'     => $data['music_url'], 'musicurl' => $data['music_url'],
                 ], $isCustom);
             case 'video':
                 if (empty($data['video_url']) || empty($data['video_desc']) || empty($data['video_title'])) return false;
                 $videoData = ['title' => $data['video_title'], 'introduction' => $data['video_desc']];
-                if (!($mediaId = Media::upload($data['video_url'], 'video', $videoData))) return false;
+                if (!($mediaId = MediaService::upload($data['video_url'], 'video', $videoData))) return false;
                 return $this->sendMessage('video', ['media_id' => $mediaId, 'title' => $data['video_title'], 'description' => $data['video_desc']], $isCustom);
             default:
                 return false;
@@ -262,7 +262,7 @@ class Push extends Controller
     private function sendMessage($type, $data, $isCustom = false)
     {
         if ($isCustom) {
-            Wechat::WeChatCustom()->send(['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data]);
+            WechatService::WeChatCustom()->send(['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data]);
         } else switch (strtolower($type)) {
             case 'text': // 发送文本消息
                 return $this->wechat->reply(['CreateTime' => time(), 'MsgType' => 'text', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Content' => $data['content']], true, $this->encrypt);
@@ -311,8 +311,8 @@ class Push extends Controller
     {
         if ($subscribe) {
             try {
-                $user = Wechat::WeChatUser()->getUserInfo($this->openid);
-                return Fans::set(array_merge($user, ['subscribe' => '1']));
+                $user = WechatService::WeChatUser()->getUserInfo($this->openid);
+                return FansService::set(array_merge($user, ['subscribe' => '1']));
             } catch (\Exception $e) {
                 \think\facade\Log::error(__METHOD__ . " {$this->openid} 粉丝信息获取失败，{$e->getMessage()}");
                 return false;

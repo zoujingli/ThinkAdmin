@@ -14,7 +14,7 @@
 
 namespace app\wechat\command;
 
-use app\wechat\service\Wechat;
+use app\wechat\service\WechatService;
 use think\console\Command;
 use think\console\Input;
 use think\console\Output;
@@ -61,8 +61,8 @@ class Fans extends Command
      */
     protected function _list($next = '', $index = 0)
     {
-        $appid = Wechat::getAppid();
-        $wechat = Wechat::WeChatUser();
+        $appid = WechatService::getAppid();
+        $wechat = WechatService::WeChatUser();
         $this->output->comment('preparing synchronize fans list ...');
         while (true) if (is_array($result = $wechat->getUserList($next)) && !empty($result['data']['openid'])) {
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
@@ -70,7 +70,7 @@ class Fans extends Command
                     foreach ($list['user_info_list'] as $user) {
                         $indexString = str_pad(++$index, strlen($result['total']), '0', STR_PAD_LEFT);
                         $this->output->writeln("({$indexString}/{$result['total']}) updating wechat user {$user['openid']} {$user['nickname']}");
-                        \app\wechat\service\Fans::set($user, $appid);
+                        \app\wechat\service\FansService::set($user, $appid);
                     }
                 }
             }
@@ -91,7 +91,7 @@ class Fans extends Command
      */
     public function _black($next = '', $index = 0)
     {
-        $wechat = Wechat::WeChatUser();
+        $wechat = WechatService::WeChatUser();
         $this->output->comment('prepare synchronize fans black ...');
         while (true) if (is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
@@ -118,8 +118,8 @@ class Fans extends Command
      */
     public function _tags($index = 0)
     {
-        $appid = Wechat::getAppid();
-        $wechat = Wechat::WeChatTags();
+        $appid = WechatService::getAppid();
+        $wechat = WechatService::WeChatTags();
         $this->output->comment('prepare synchronize fans tags ...');
         if (is_array($list = $wechat->getTags()) && !empty($list['tags'])) {
             $count = count($list['tags']);

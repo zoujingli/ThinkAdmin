@@ -14,7 +14,7 @@
 
 namespace app\wechat\controller\api;
 
-use app\wechat\service\Media;
+use app\wechat\service\MediaService;
 use library\Controller;
 use think\Db;
 
@@ -35,7 +35,7 @@ class Review extends Controller
      */
     public function news($id = 0)
     {
-        $this->news = Media::news(empty($id) ? input('id') : $id);
+        $this->news = MediaService::news(empty($id) ? input('id') : $id);
         $this->fetch();
     }
 

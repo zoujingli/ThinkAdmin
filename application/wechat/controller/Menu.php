@@ -14,7 +14,7 @@
 
 namespace app\wechat\controller;
 
-use app\wechat\service\Wechat;
+use app\wechat\service\WechatService;
 use library\Controller;
 use think\Db;
 
@@ -72,7 +72,7 @@ class Menu extends Controller
             $data = $this->request->post('data');
             if (empty($data)) { // 删除菜单
                 try {
-                    Wechat::WeChatMenu()->delete();
+                    WechatService::WeChatMenu()->delete();
                 } catch (\Exception $e) {
                     $this->error('删除微信菜单失败，请稍候再试！' . $e->getMessage());
                 }
@@ -80,7 +80,7 @@ class Menu extends Controller
             }
             try {
                 sysdata('menudata', $this->buildMenu($menudata = json_decode($data, true)));
-                Wechat::WeChatMenu()->create(['button' => sysdata('menudata')]);
+                WechatService::WeChatMenu()->create(['button' => sysdata('menudata')]);
             } catch (\Exception $e) {
                 $this->error("微信菜单发布失败，请稍候再试！<br> {$e->getMessage()}");
             }
@@ -142,7 +142,7 @@ class Menu extends Controller
     public function cancel()
     {
         try {
-            Wechat::WeChatMenu()->delete();
+            WechatService::WeChatMenu()->delete();
         } catch (\Exception $e) {
             $this->error("菜单取消失败，请稍候再试！<br> {$e->getMessage()}");
         }

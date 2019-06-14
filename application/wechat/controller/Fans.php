@@ -14,9 +14,9 @@
 
 namespace app\wechat\controller;
 
-use app\admin\service\Queue;
-use app\wechat\queue\Jobs;
-use app\wechat\service\Wechat;
+use app\admin\service\QueueService;
+use app\wechat\queue\WechatQueue;
+use app\wechat\service\WechatService;
 use library\Controller;
 use think\Db;
 use think\exception\HttpResponseException;
@@ -75,7 +75,7 @@ class Fans extends Controller
         $this->applyCsrfToken();
         try {
             foreach (array_chunk(explode(',', $this->request->post('openid')), 20) as $openids) {
-                Wechat::WeChatUser()->batchBlackList($openids);
+                WechatService::WeChatUser()->batchBlackList($openids);
                 Db::name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '1']);
             }
             $this->success('拉黑粉丝信息成功！');
@@ -94,7 +94,7 @@ class Fans extends Controller
         $this->applyCsrfToken();
         try {
             foreach (array_chunk(explode(',', $this->request->post('openid')), 20) as $openids) {
-                Wechat::WeChatUser()->batchUnblackList($openids);
+                WechatService::WeChatUser()->batchUnblackList($openids);
                 Db::name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '0']);
             }
             $this->success('取消拉黑粉丝信息成功！');
@@ -111,7 +111,7 @@ class Fans extends Controller
     public function sync()
     {
         try {
-            Queue::add('同步粉丝列表', Jobs::URI, 0, [], 0);
+            QueueService::add('同步粉丝列表', WechatQueue::URI, 0, [], 0);
             $this->success('创建同步粉丝任务成功，需要时间来完成。<br>请到系统任务管理查看进度！');
         } catch (HttpResponseException $exception) {
             throw $exception;

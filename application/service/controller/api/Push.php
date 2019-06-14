@@ -14,8 +14,8 @@
 
 namespace app\service\controller\api;
 
-use app\service\service\Build;
-use app\service\service\Wechat;
+use app\service\service\BuildService;
+use app\service\service\WechatService;
 use library\Controller;
 use think\Db;
 
@@ -41,12 +41,13 @@ class Push extends Controller
      */
     public function notify($appid)
     {
-        /* 全网发布接口测试 */
         if ($appid === 'wx570bc396a51b8ff8') {
-            return \app\service\handler\Publish::handler($appid);
+            # 全网发布接口测试
+            return \app\service\handler\PublishHandler::handler($appid);
+        } else {
+            # 接口类正常服务
+            return \app\service\handler\ReceiveHandler::handler($appid);
         }
-        /* 接口类正常服务 */
-        return \app\service\handler\Receive::handler($appid);
     }
 
     /**
@@ -61,7 +62,7 @@ class Push extends Controller
     public function ticket()
     {
         try {
-            $server = Wechat::service();
+            $server = WechatService::service();
             if (!($data = $server->getComonentTicket())) {
                 return "Ticket event handling failed.";
             }
@@ -98,7 +99,7 @@ class Push extends Controller
             $this->request->get('mode'), $this->request->get('state'),
             $this->request->get('enurl'), $this->request->get('sessid'),
         ];
-        $service = Wechat::service();
+        $service = WechatService::service();
         $result = $service->getOauthAccessToken($appid);
         if (empty($result['openid'])) throw new \think\Exception('网页授权失败, 无法进一步操作！');
         cache("{$appid}_{$sessid}_openid", $result['openid'], 3600);
@@ -127,7 +128,7 @@ class Push extends Controller
             return '请传入回跳Redirect参数 ( 请使用ENCODE加密 )';
         }
         # 预授权码不为空，则表示可以进行授权处理
-        $service = Wechat::service();
+        $service = WechatService::service();
         if (($auth_code = $this->request->get('auth_code'))) {
             return $this->applyAuth($service, $fromRedirect);
         }
@@ -164,7 +165,7 @@ class Push extends Controller
             return '获取授权数据失败, 请稍候再试!';
         }
         // 生成公众号授权参数
-        $update = array_merge(Build::filter($update), [
+        $update = array_merge(BuildService::filter($update), [
             'status' => '1', 'is_deleted' => '0', 'expires_in' => time() + 7000, 'create_at' => date('y-m-d H:i:s'),
         ]);
         // 微信接口APPKEY处理与更新

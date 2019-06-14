@@ -14,8 +14,8 @@
 
 namespace app\service\controller;
 
-use app\service\service\Build;
-use app\service\service\Wechat;
+use app\service\service\BuildService;
+use app\service\service\WechatService;
 use library\Controller;
 use think\Db;
 
@@ -57,7 +57,7 @@ class Index extends Controller
     public function clearQuota()
     {
         $appid = input('appid');
-        $result = Wechat::WeChatLimit($appid)->clearQuota();
+        $result = WechatService::WeChatLimit($appid)->clearQuota();
         if (empty($result['errcode']) && $result['errmsg'] === 'ok') {
             $this->success('接口调用次数清零成功！');
         } elseif (isset($result['errmsg'])) {
@@ -77,7 +77,7 @@ class Index extends Controller
             $where = ['authorizer_appid' => $appid, 'is_deleted' => '0', 'status' => '1'];
             $author = Db::name('WechatServiceConfig')->where($where)->find();
             empty($author) && $this->error('无效的授权信息，请同步其它公众号！');
-            $data = Build::filter(Wechat::service()->getAuthorizerInfo($appid));
+            $data = BuildService::filter(WechatService::service()->getAuthorizerInfo($appid));
             $data['authorizer_appid'] = $appid;
             $where = ['authorizer_appid' => $data['authorizer_appid']];
             $appkey = Db::name('WechatServiceConfig')->where($where)->value('appkey');
@@ -98,10 +98,10 @@ class Index extends Controller
     public function syncall()
     {
         try {
-            $wechat = Wechat::service();
+            $wechat = WechatService::service();
             $result = $wechat->getAuthorizerList();
             foreach ($result['list'] as $item) if (!empty($item['refresh_token']) && !empty($item['auth_time'])) {
-                $data = Build::filter($wechat->getAuthorizerInfo($item['authorizer_appid']));
+                $data = BuildService::filter($wechat->getAuthorizerInfo($item['authorizer_appid']));
                 $data['is_deleted'] = '0';
                 $data['authorizer_appid'] = $item['authorizer_appid'];
                 $data['authorizer_refresh_token'] = $item['refresh_token'];

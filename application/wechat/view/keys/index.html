@@ -16,7 +16,7 @@
 <div class="think-box-shadow">
     <table class="layui-table" lay-skin="line">
         <caption class="margin-bottom-10 text-left">{include file='keys/index_search'}</caption>
-        <!--{notempty name='list'}-->
+        {notempty name='list'}
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
@@ -33,7 +33,7 @@
             <th></th>
         </tr>
         </thead>
-        <!--{/notempty}-->
+        {/notempty}
         <tbody>
         {foreach $list as $key=>$vo}
         <tr>

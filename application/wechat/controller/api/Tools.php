@@ -14,7 +14,7 @@
 
 namespace app\wechat\controller\api;
 
-use app\wechat\service\Wechat;
+use app\wechat\service\WechatService;
 use library\Controller;
 
 /**
@@ -34,8 +34,9 @@ class Tools extends Controller
      */
     public function oauth()
     {
-        $this->fans = Wechat::getWebOauthInfo($this->request->url(true), 1);
-        return $this->fetch();
+        $this->url = $this->request->url(true);
+        $this->fans = WechatService::getWebOauthInfo($this->url, 1);
+        $this->fetch();
     }
 
     /**
@@ -61,7 +62,8 @@ class Tools extends Controller
      */
     public function jssdk()
     {
-        return $this->fetch('', ['options' => Wechat::getWebJssdkSign()]);
+        $this->options = WechatService::getWebJssdkSign();
+        $this->fetch();
     }
 
     /**
@@ -73,8 +75,8 @@ class Tools extends Controller
      */
     public function jssdk_qrc()
     {
-        $url = url('@wechat/api.tools/jssdk', '', true, true);
-        return $this->createQrc($url);
+        $this->url = url('@wechat/api.tools/jssdk', '', true, true);
+        return $this->createQrc($this->url);
     }
 
     /**
@@ -101,7 +103,7 @@ class Tools extends Controller
      */
     public function scanOneQrc()
     {
-        $pay = Wechat::WePayOrder();
+        $pay = WechatService::WePayOrder();
         $result = $pay->qrcParams('8888888');
         return $this->createQrc($result);
     }
@@ -114,7 +116,7 @@ class Tools extends Controller
      */
     public function scanOneNotify()
     {
-        $pay = Wechat::WePayOrder();
+        $pay = WechatService::WePayOrder();
         $notify = $pay->getNotify();
         p('======= 来自扫码支付1的数据 ======');
         p($notify);
@@ -159,7 +161,7 @@ class Tools extends Controller
      */
     public function scanQrc()
     {
-        $pay = Wechat::WePayOrder();
+        $pay = WechatService::WePayOrder();
         $result = $pay->create([
             'body'             => '测试商品',
             'out_trade_no'     => time(),
@@ -181,8 +183,8 @@ class Tools extends Controller
      */
     public function jsapiQrc()
     {
-        $url = url('@wechat/api.tools/jsapi', '', true, true);
-        return $this->createQrc($url);
+        $this->url = url('@wechat/api.tools/jsapi', '', true, true);
+        return $this->createQrc($this->url);
     }
 
     /**
@@ -195,8 +197,8 @@ class Tools extends Controller
      */
     public function jsapi()
     {
-        $pay = Wechat::WePayOrder();
-        $openid = Wechat::getWebOauthInfo(request()->url(true), 0)['openid'];
+        $pay = WechatService::WePayOrder();
+        $openid = WechatService::getWebOauthInfo(request()->url(true), 0)['openid'];
         $options = [
             'body'             => '测试商品',
             'out_trade_no'     => time(),
@@ -212,7 +214,7 @@ class Tools extends Controller
         $options = $pay->jsapiParams($result['prepay_id']);
         $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
         // JSSDK 签名配置
-        $configJSON = json_encode(Wechat::getWebJssdkSign(), JSON_UNESCAPED_UNICODE);
+        $configJSON = json_encode(WechatService::getWebJssdkSign(), JSON_UNESCAPED_UNICODE);
 
         echo '<pre>';
         echo "当前用户OPENID: {$openid}";
@@ -246,7 +248,7 @@ class Tools extends Controller
      */
     public function notify()
     {
-        $wechat = Wechat::WePayOrder();
+        $wechat = WechatService::WePayOrder();
         p($wechat->getNotify());
         return 'SUCCESS';
     }

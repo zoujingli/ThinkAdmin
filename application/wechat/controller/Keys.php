@@ -14,7 +14,7 @@
 
 namespace app\wechat\controller;
 
-use app\wechat\service\Wechat;
+use app\wechat\service\WechatService;
 use library\Controller;
 use think\Db;
 
@@ -54,7 +54,7 @@ class Keys extends Controller
         // 关键字二维码生成
         if ($this->request->get('action') === 'qrc') {
             try {
-                $wechat = Wechat::WeChatQrcode();
+                $wechat = WechatService::WeChatQrcode();
                 $result = $wechat->create($this->request->get('keys', ''));
                 $this->success('生成二维码成功！', "javascript:$.previewImage('{$wechat->url($result['ticket'])}')");
             } catch (\think\exception\HttpResponseException $exception) {

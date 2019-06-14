@@ -14,7 +14,7 @@
 
 namespace app\wechat\controller;
 
-use app\wechat\service\Wechat;
+use app\wechat\service\WechatService;
 use library\Controller;
 use library\File;
 
@@ -45,10 +45,10 @@ class Config extends Controller
                 sysconf('wechat_type', 'thr');
                 sysconf('wechat_thr_appid', input('appid'));
                 sysconf('wechat_thr_appkey', input('appkey'));
-                Wechat::wechat()->setApiNotifyUri($this->thrNotify);
+                WechatService::wechat()->setApiNotifyUri($this->thrNotify);
             }
             try {
-                $this->wechat = Wechat::wechat()->getConfig();
+                $this->wechat = WechatService::wechat()->getConfig();
             } catch (\Exception $e) {
                 $this->wechat = [];
             }
@@ -56,7 +56,7 @@ class Config extends Controller
         } else {
             foreach ($this->request->post() as $k => $v) sysconf($k, $v);
             if ($this->request->post('wechat_type') === 'thr') {
-                Wechat::wechat()->setApiNotifyUri($this->thrNotify);
+                WechatService::wechat()->setApiNotifyUri($this->thrNotify);
             }
             $uri = url('wechat/config/options');
             $this->success('公众号参数获取成功！', url('@admin') . "#{$uri}");

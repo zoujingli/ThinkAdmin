@@ -3,10 +3,10 @@
 {block name="content"}
 
 <div style="max-width:1000px">
-    <form class="layui-card layui-form">
+    <div class="layui-card layui-form">
         <div class="layui-card-body think-box-shadow padding-bottom-5">
-            <div class="layui-form-item">
-                <label class="layui-form-label">Type<br><span class="nowrap color-desc">对接方式</span></label>
+            <div class="layui-form-item margin-bottom-0">
+                <label class="layui-form-label">Auth<br><span class="nowrap color-desc">授权方式</span></label>
                 <div class="layui-input-block">
                     {foreach ['api'=>'公众号平台API模式','thr'=>'第三方平台授权模式','test'=>'接口功能测试'] as $k=>$v}
                     <input type="radio" data-wechat-type="{$k}" name="wechat_type" value="{$k}" title="{$v}" lay-filter="wechat_type">
@@ -15,11 +15,11 @@
                 </div>
             </div>
         </div>
-    </form>
-    <div class="think-box-shadow">
-        <div data-type="api">{include file='config/options_api'}</div>
-        <div data-type="thr">{include file='config/options_thr'}</div>
-        <div data-type="test">{include file='config/options_help'}</div>
+    </div>
+    <div class="think-box-shadow ">
+        <div class="layui-anim layui-anim-upbit" data-type="api">{include file='config/options_api'}</div>
+        <div class="layui-anim layui-anim-upbit" data-type="thr">{include file='config/options_thr'}</div>
+        <div class="layui-anim layui-anim-upbit" data-type="test">{include file='config/options_help'}</div>
     </div>
 </div>
 
@@ -35,8 +35,8 @@
         });
 
         function apply(value) {
-            var $active = $("[data-wechat-type='" + value + "']").trigger('click');
-            if ($active.size() < 1) $("[data-wechat-type]:first").trigger('click');
+            this.$active = $("[data-wechat-type='" + value + "']").trigger('click');
+            if (this.$active.size() < 1) $("[data-wechat-type]:first").trigger('click');
             $('[data-type="' + value + '"]').show().siblings('[data-type]').hide();
         }
     });

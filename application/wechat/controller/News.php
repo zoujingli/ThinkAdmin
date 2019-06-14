@@ -14,7 +14,7 @@
 
 namespace app\wechat\controller;
 
-use app\wechat\service\Media;
+use app\wechat\service\MediaService;
 use library\Controller;
 use think\Db;
 
@@ -56,7 +56,7 @@ class News extends Controller
      */
     protected function _index_page_filter(&$data)
     {
-        foreach ($data as &$vo) $vo = Media::news($vo['id']);
+        foreach ($data as &$vo) $vo = MediaService::news($vo['id']);
     }
 
     /**
@@ -82,7 +82,7 @@ class News extends Controller
      */
     protected function _select_page_filter(&$data)
     {
-        foreach ($data as &$vo) $vo = Media::news($vo['id']);
+        foreach ($data as &$vo) $vo = MediaService::news($vo['id']);
     }
 
     /**
@@ -118,7 +118,7 @@ class News extends Controller
         if ($this->request->isGet()) {
             empty($id) && $this->error('参数错误，请稍候再试！');
             if ($this->request->get('output') === 'json') {
-                $this->success('获取数据成功！', Media::news($id));
+                $this->success('获取数据成功！', MediaService::news($id));
             }
             $this->fetch('form', ['title' => '编辑图文']);
         } else {

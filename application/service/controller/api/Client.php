@@ -14,7 +14,7 @@
 
 namespace app\service\controller\api;
 
-use app\service\service\Wechat;
+use app\service\service\WechatService;
 use think\Controller;
 use think\Db;
 
@@ -104,13 +104,13 @@ class Client extends Controller
             $weminiClassName = 'Account,Basic,Code,Domain,Tester,User,Crypt,Plugs,Poi,Qrcode,Template,Total';
             $wechatClassName = 'Card,Custom,Limit,Media,Menu,Oauth,Pay,Product,Qrcode,Receive,Scan,Script,Shake,Tags,Template,User,Wifi';
             if ($this->type === 'wechat' && stripos($wechatClassName, $this->name) !== false) {
-                $instance = Wechat::instance($this->name, $this->appid, 'WeChat');
+                $instance = WechatService::instance($this->name, $this->appid, 'WeChat');
             } elseif ($this->type === 'wemini' && stripos($weminiClassName, $this->name) !== false) {
-                $instance = Wechat::instance($this->name, $this->appid, 'WeMini');
+                $instance = WechatService::instance($this->name, $this->appid, 'WeMini');
             } elseif (stripos('Service,MiniApp', $this->name) !== false) {
-                $instance = Wechat::instance($this->name, $this->appid, 'WeOpen');
+                $instance = WechatService::instance($this->name, $this->appid, 'WeOpen');
             } elseif (stripos('Wechat,Config,Handler', $this->name) !== false) {
-                $className = "\\app\\service\\handler\\Wechat";
+                $className = "\\app\\service\\handler\\WechatHandler";
                 $instance = new $className($this->config);
             }
             if (!empty($instance)) return $instance;
