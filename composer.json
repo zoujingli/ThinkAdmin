@@ -1,6 +1,7 @@
 {
   "type": "project",
   "name": "zoujingli/thinkadmin",
+  "license": "MIT",
   "authors": [
     {
       "name": "Anyon",

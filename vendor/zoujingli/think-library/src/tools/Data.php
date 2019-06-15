@@ -154,22 +154,22 @@ class Data
 
     /**
      * 获取随机字符串编码
-     * @param integer $length
-     * @param integer $type
+     * @param integer $length 字符串长度
+     * @param integer $type 字符串类型(1纯数字,2纯字母,3数字字母)
      * @return string
      */
     public static function randomCode($length = 10, $type = 1)
     {
-        list($nchars, $schars) = [join('', range(0, 9)), join('', range('a', 'z'))];
-        if (intval($type) === 1) list($strs, $chars) = [range(1, 9), $nchars];
-        if (intval($type) === 2) list($strs, $chars) = ['', $schars];
-        if (intval($type) === 3) list($strs, $chars) = ['', $nchars . $schars];
-        if (isset($strs) && isset($chars)) {
-            while (strlen($strs) < $length) $strs .= $chars[rand(0, strlen($chars) - 1)];
-            return $strs;
-        } else {
-            return self::uniqidNumberCode();
+        $numbs = '0123456789';
+        $chars = 'abcdefghijklmnopqrstuvwxyz';
+        if (intval($type) === 1) $chars = $numbs;
+        if (intval($type) === 2) $chars = "a{$chars}";
+        if (intval($type) === 3) $chars = "{$numbs}{$chars}";
+        $string = $chars[rand(1, strlen($chars) - 1)];
+        if (isset($chars)) while (strlen($string) < $length) {
+            $string .= $chars[rand(0, strlen($chars) - 1)];
         }
+        return $string;
     }
 
     /**
