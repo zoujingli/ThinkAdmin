@@ -2,6 +2,8 @@
 
 namespace Qiniu\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * imageprocess test
  *
@@ -9,7 +11,7 @@ namespace Qiniu\Tests;
  * @subpackage test
  * @author Sherlock Ren <sherlock_ren@icloud.com>
  */
-class ImageUrlBuilderTest extends \PHPUnit_Framework_TestCase
+class ImageUrlBuilderTest extends TestCase
 {
     /**
      * 缩略图测试

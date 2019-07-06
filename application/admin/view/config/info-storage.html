@@ -1,0 +1,32 @@
+<div class="layui-card layui-form">
+    <div class="layui-card-body">
+        <div class="layui-form-item padding-top-20">
+            <label class="layui-form-label">Storage<br><span class="nowrap color-desc">存储类型</span></label>
+            <div class="layui-input-block">
+                {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','oss'=>'阿里云OSS存储'] as $k=>$v}
+                <input type="radio" data-storagetype="{$k}" name="storage_type" value="{$k}" title="{$v}" lay-filter="storage_type">
+                {/foreach}
+                <p class="help-block">请选择文件存储类型，其它云储存需要配置正确的参数才可以上传文件哦！</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="padding-bottom-10">
+    <div data-type="oss">{include file='config/info-storage-oss'}</div>
+    <div data-type="local">{include file='config/info-storage-local'}</div>
+    <div data-type="qiniu">{include file='config/info-storage-qiniu'}</div>
+</div>
+
+<script>
+    apply('{:sysconf("storage_type")}');
+    form.render().on('radio(storage_type)', function (data) {
+        apply(data.value);
+    });
+
+    function apply(value) {
+        this.$active = $("[data-storagetype='" + value + "']").trigger('click');
+        if (this.$active.size() < 1) $("[data-storagetype]:first").trigger('click');
+        $('[data-type="' + value + '"]').show().siblings('[data-type]').hide();
+    }
+</script>

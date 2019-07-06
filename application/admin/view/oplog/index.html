@@ -14,8 +14,8 @@
 
 {block name="content"}
 <div class="think-box-shadow">
-    <table class="layui-table" lay-skin="line">
-        <caption class="margin-bottom-10 text-left">{include file='oplog/index_search'}</caption>
+    {include file='oplog/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>
@@ -46,7 +46,9 @@
                 <p class="color-text">{$vo.geoip|default='-'}</p>
                 <p class="color-desc">{$vo.isp|default='-'}</p>
             </td>
-            <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>
+            <td class='text-left nowrap'>
+                日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">时间：',###|raw}</span>
+            </td>
             <td class='text-left nowrap'>
                 {if auth("admin/oplog/remove")}
                 <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/oplog/remove')}">删 除</a>

@@ -2,24 +2,24 @@
 
 {block name="button"}
 
-<!--{if auth("wechat/fans/setblack")}-->
+{if auth("wechat/fans/setblack")}
 <button data-action='{:url("setblack")}' data-rule="openid#{key}" data-csrf="{:systoken('wechat/fans/setblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量拉黑</button>
-<!--{/if}-->
+{/if}
 
-<!--{if auth("wechat/fans/delblack")}-->
+{if auth("wechat/fans/delblack")}
 <button data-action='{:url("delblack")}' data-rule="openid#{key}" data-csrf="{:systoken('wechat/fans/delblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>取消拉黑</button>
-<!--{/if}-->
+{/if}
 
-<!--{if auth("wechat/fans/sync")}-->
+{if auth("wechat/fans/sync")}
 <button data-load='{:url("sync")}' class='layui-btn layui-btn-sm layui-btn-primary'>同步粉丝</button>
-<!--{/if}-->
+{/if}
 
 {/block}
 
 {block name="content"}
 <div class="think-box-shadow">
-    <table class="layui-table" lay-skin="line">
-        <caption class="margin-bottom-10 text-left">{include file='fans/index_search'}</caption>
+    {include file='fans/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>
@@ -72,6 +72,7 @@
                 {/eq}
             </td>
             <td class="nowrap">
+
                 {eq name='vo.is_black' value='0'}
                 <!--{if auth("wechat/fans/setblack")}-->
                 <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('setblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('wechat/fans/setblack')}">拉 黑</a>
@@ -81,9 +82,10 @@
                 <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('delblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('wechat/fans/delblack')}">拉 白</a>
                 <!--{/if}-->
                 {/eq}
-                <!--{if auth("wechat/fans/del")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该粉丝吗？" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('wechat/fans/del')}">删 除</a>
-                <!--{/if}-->
+
+                {if auth("wechat/fans/remove")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该粉丝吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('wechat/fans/remove')}">删 除</a>
+                {/if}
             </td>
         </tr>
         {/foreach}

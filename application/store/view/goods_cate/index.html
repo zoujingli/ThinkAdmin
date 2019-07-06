@@ -11,8 +11,8 @@
 
 {block name="content"}
 <div class="think-box-shadow">
-    <table class="layui-table" lay-skin="line">
-        <caption class="margin-bottom-10 text-left">{include file='goods_cate/index_search'}</caption>
+    {include file='goods_cate/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>

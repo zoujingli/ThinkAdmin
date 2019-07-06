@@ -1,24 +1,26 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\queue;
 
 use app\admin\service\QueueService;
+use think\console\Output;
 
 /**
  * 基础指令公共类
- * Class QueueBase
+ * Class JobsQueue
  * @package app\admin
  */
 class JobsQueue
@@ -68,7 +70,7 @@ class JobsQueue
     protected $status;
 
     /**
-     * @var \think\console\Output
+     * @var Output
      */
     protected $output;
 
@@ -88,7 +90,7 @@ class JobsQueue
     public function fire(\think\queue\Job $job, $data = [])
     {
         $this->data = $data;
-        $this->output = new \think\console\Output();
+        $this->output = new Output();
         $this->id = isset($data['_job_id_']) ? $data['_job_id_'] : '';
         $this->title = isset($data['_job_title_']) ? $data['_job_title_'] : '';
         $this->output->newLine();

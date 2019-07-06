@@ -1,0 +1,133 @@
+.layui-form.layui-card {
+  box-shadow: none
+}
+
+.layui-layer-content .layui-form.layui-card .layui-card-body {
+  padding: 20px 40px 0 0
+}
+
+.layui-layer-dialog .layui-layer-content .layui-layer-ico {
+  top: 50% !important;
+  margin-top: -15px !important
+}
+
+.laydate-footer-btns span {
+  line-height: 24px !important
+}
+
+/** Layui样式调整 */
+.layui-input, .layui-select {
+  line-height: 38px
+}
+
+.layui-btn-primary {
+  &.layui-btn-xs {
+    line-height: 20px
+  }
+
+  &.layui-btn-sm {
+    line-height: 28px
+  }
+}
+
+/* 下拉样式 */
+.layui-nav {
+  .layui-nav-item {
+    .layui-nav-more {
+      top: 0;
+      border: none;
+      right: 15px;
+      width: auto;
+      height: auto;
+      margin-top: 0;
+      font-size: 14px;
+      font-style: normal;
+      font-family: layui-icon !important;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+
+      &::before {
+        content: "\e619"
+      }
+    }
+
+    & .layui-nav-mored, &ed .layui-nav-more {
+      border: none;
+      margin-top: 0;
+      transform: rotate(180deg);
+      -o-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg)
+    }
+  }
+}
+
+.layui-table {
+
+  td, th {
+    font-size: 12px
+  }
+
+  .list-table-image {
+    width: 22px;
+    cursor: pointer
+  }
+
+  .list-table-sort-td {
+    width: 10px !important;
+    text-align: center !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+
+    button {
+      width: 56px;
+      background: #009688
+    }
+
+    input {
+      width: 50px;
+      color: #666;
+      padding: 2px;
+      border: 1px solid #e6e6e6;
+      text-align: center;
+      font-size: 9pt;
+      line-height: 18px
+    }
+  }
+
+  .list-table-check-td {
+    width: 10px !important;
+    text-align: center;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+
+    input {
+      margin: 0 !important;
+      vertical-align: middle
+    }
+  }
+
+  td {
+    .text-explode {
+      color: #ccc !important;
+      margin: 0 4px !important;
+
+      &:first-child {
+        display: none;
+        opacity: 0
+      }
+    }
+
+    .background-image {
+      float: left;
+      width: 40px;
+      height: 40px;
+      display: inline-block;
+      margin-right: 5px;
+      background: no-repeat center center;
+      background-size: cover;
+      vertical-align: middle
+    }
+  }
+}

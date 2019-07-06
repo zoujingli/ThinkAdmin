@@ -1,27 +1,29 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
 
-use app\admin\service\AuthService;
+use app\admin\service\NodeService;
 use library\Controller;
 use library\tools\Data;
 use think\Console;
 use think\Db;
+use think\exception\HttpResponseException;
 
 /**
- * 后台入口管理
+ * 系统公共操作
  * Class Index
  * @package app\admin\controller
  */
@@ -38,8 +40,9 @@ class Index extends Controller
     public function index()
     {
         $this->title = '系统管理后台';
-        $this->menus = AuthService::getAuthMenu();
-        if (empty($this->menus) && !session('user.id')) {
+        NodeService::applyUserAuth(true);
+        $this->menus = NodeService::getMenuNodeTree();
+        if (empty($this->menus) && !NodeService::islogin()) {
             $this->redirect('@admin/login');
         } else {
             $this->fetch();
@@ -48,59 +51,12 @@ class Index extends Controller
 
     /**
      * 后台环境信息
-     * @return mixed
      */
     public function main()
     {
         $this->think_ver = \think\App::VERSION;
         $this->mysql_ver = Db::query('select version() as ver')[0]['ver'];
         $this->fetch();
-    }
-
-    /**
-     * 清理系统运行缓存
-     */
-    public function clearRuntime()
-    {
-        if (!AuthService::isLogin()) {
-            $this->error('需要登录才能操作哦！');
-        }
-        $this->list = [
-            [
-                'title'   => 'Clean up running cached files',
-                'message' => nl2br(Console::call('clear')->fetch()),
-            ], [
-                'title'   => 'Clean up invalid session files',
-                'message' => nl2br(Console::call('xclean:session')->fetch()),
-            ],
-        ];
-        $this->fetch('admin@index/command');
-    }
-
-    /**
-     * 压缩发布系统
-     */
-    public function buildOptimize()
-    {
-        if (!AuthService::isLogin()) {
-            $this->error('需要登录才能操作哦！');
-        }
-        $this->list = [
-            [
-                'title'   => 'Build route cache',
-                'message' => nl2br(Console::call('optimize:route')->fetch()),
-            ], [
-                'title'   => 'Build database schema cache',
-                'message' => nl2br(Console::call('optimize:schema')->fetch()),
-            ], [
-                'title'   => 'Optimizes PSR0 and PSR4 packages',
-                'message' => nl2br(Console::call('optimize:autoload')->fetch()),
-            ], [
-                'title'   => 'Build config and common file cache',
-                'message' => nl2br(Console::call('optimize:config')->fetch()),
-            ],
-        ];
-        $this->fetch('admin@index/command');
     }
 
     /**
@@ -115,8 +71,11 @@ class Index extends Controller
     public function pass($id)
     {
         $this->applyCsrfToken();
-        if (intval($id) !== intval(session('user.id'))) {
+        if (intval($id) !== intval(session('admin_user.id'))) {
             $this->error('只能修改当前用户的密码！');
+        }
+        if (!NodeService::islogin()) {
+            $this->error('需要登录才能操作哦！');
         }
         if ($this->request->isGet()) {
             $this->verify = true;
@@ -141,7 +100,7 @@ class Index extends Controller
             if (md5($data['oldpassword']) !== $user['password']) {
                 $this->error('旧密码验证失败，请重新输入！');
             }
-            $result = AuthService::checkPassword($data['password']);
+            $result = NodeService::checkpwd($data['password']);
             if (empty($result['code'])) $this->error($result['msg']);
             if (Data::save('SystemUser', ['id' => $user['id'], 'password' => md5($data['password'])])) {
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
@@ -157,11 +116,50 @@ class Index extends Controller
      */
     public function info($id = 0)
     {
+        if (!NodeService::islogin()) {
+            $this->error('需要登录才能操作哦！');
+        }
         $this->applyCsrfToken();
-        if (intval($id) === intval(session('user.id'))) {
+        if (intval($id) === intval(session('admin_user.id'))) {
             $this->_form('SystemUser', 'admin@user/form', 'id', [], ['id' => $id]);
         } else {
             $this->error('只能修改登录用户的资料！');
+        }
+    }
+
+    /**
+     * 清理运行缓存
+     * @auth true
+     */
+    public function clearRuntime()
+    {
+        try {
+            Console::call('clear');
+            Console::call('xclean:session');
+            $this->success('清理运行缓存成功！');
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $e) {
+            $this->error("清理运行缓存失败，{$e->getMessage()}");
+        }
+    }
+
+    /**
+     * 压缩发布系统
+     * @auth true
+     */
+    public function buildOptimize()
+    {
+        try {
+            Console::call('optimize:route');
+            Console::call('optimize:schema');
+            Console::call('optimize:autoload');
+            Console::call('optimize:config');
+            $this->success('压缩发布成功！');
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $e) {
+            $this->error("压缩发布失败，{$e->getMessage()}");
         }
     }
 

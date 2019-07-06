@@ -1,40 +1,28 @@
 {extend name="admin@main"}
 
 {block name="content"}
-<form onsubmit="return false;" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' style="max-width:1000px" autocomplete="off">
 
-    <div class="layui-card-body think-box-shadow padding-left-40">
-        <div style="padding:20px 40px">
-
-            <label class="layui-form-item margin-top-20 block relative">
-                <span class="color-green margin-right-10">商城展示名称</span><span class="nowrap color-desc">StoreTitle</span>
-                <input name="store_title" required placeholder="请输入商城展示名称" value="{:sysconf('store_title')}" class="layui-input">
-                <p class="help-block">订单支付等待时长，新下订单未在此时间内容完成支付将会被自动取消</p>
-            </label>
-
-            <label class="layui-form-item margin-top-20 block relative">
-                <span class="color-green margin-right-10">未订单的支付等待时长（小时）</span><span class="nowrap color-desc">OrderWaitTime</span>
-                <input onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" name="store_order_wait_time" required placeholder="请输入订单支付等待时长" value="{:sysconf('store_order_wait_time')}" class="layui-input">
-                <p class="help-block">订单支付等待时长，新下订单未在此时间内容完成支付将会被自动取消</p>
-            </label>
-
-            <label class="layui-form-item margin-top-20 block relative">
-                <span class="color-green margin-right-10">已取消的订单清理时长（小时）</span><span class="nowrap color-desc">OrderClearTime</span>
-                <input onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" name="store_order_clear_time" required placeholder="请输入已取消订单清理时长" value="{:sysconf('store_order_clear_time')}" class="layui-input">
-                <p class="help-block">已取消订单清理时长，已取消未支付订单将在此时间点将被自动清理掉</p>
-            </label>
-
-            <label class="layui-form-item margin-top-20 block relative">
-                <span class="color-green margin-right-10">已发货订单自动确认收货时长（小时）</span><span class="nowrap color-desc">OrderConfirmTime</span>
-                <input onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" name="store_order_confirm_time" required placeholder="请输入已发货订单自动确认收货时长" value="{:sysconf('store_order_confirm_time')}" class="layui-input">
-                <p class="help-block">已取消订单清理时长，已取消未支付订单将在此时间点将被自动清理掉</p>
-            </label>
-
-            <div class="layui-form-item text-center margin-top-20 padding-bottom-20">
-                <button class="layui-btn" type="submit">保存配置</button>
-            </div>
-
-        </div>
+<div class="layui-tab layui-tab-card" style="background:#fff">
+    <ul class="layui-tab-title notselect">
+        <li data-type='store-config-type-params'>商城参数设置</li>
+        <li data-type="store-config-type-sms">商城短信设置</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item">{include file='config/index-store-config'}</div>
+        <div class="layui-tab-item">{include file='config/index-store-message'}</div>
     </div>
-</form>
+</div>
+
+<script>
+    (function (storage) {
+        (function (type, $default, $checked) {
+            $default = $('.layui-tab ul.layui-tab-title li:first');
+            $checked = $('.layui-tab ul.layui-tab-title li[data-type="' + type + '"]');
+            ($checked.length > 0 ? $checked : $default).trigger('click');
+        })(layui.data(storage)['type'] || '');
+        $('.layui-tab ul.layui-tab-title li[data-type]').on('click', function () {
+            layui.data(storage, {key: 'type', value: this.getAttribute('data-type')});
+        });
+    })('store-config-type');
+</script>
 {/block}

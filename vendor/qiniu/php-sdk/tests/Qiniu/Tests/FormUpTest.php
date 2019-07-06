@@ -4,14 +4,15 @@ namespace Qiniu\Tests;
 use Qiniu\Storage\FormUploader;
 use Qiniu\Storage\UploadManager;
 use Qiniu\Config;
+use PHPUnit\Framework\TestCase;
 
-class FormUpTest extends \PHPUnit_Framework_TestCase
+class FormUpTest extends TestCase
 {
     protected $bucketName;
     protected $auth;
     protected $cfg;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         global $bucketName;
         $this->bucketName = $bucketName;
@@ -24,7 +25,16 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
     public function testData()
     {
         $token = $this->auth->uploadToken($this->bucketName);
-        list($ret, $error) = FormUploader::put($token, 'formput', 'hello world', $this->cfg, null, 'text/plain', null);
+        list($ret, $error) = FormUploader::put(
+            $token,
+            'formput',
+            'hello world',
+            $this->cfg,
+            null,
+            'text/plain',
+            null,
+            false
+        );
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
     }
@@ -33,7 +43,7 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
     {
         $upManager = new UploadManager();
         $token = $this->auth->uploadToken($this->bucketName);
-        list($ret, $error) = $upManager->put($token, 'formput', 'hello world', null, 'text/plain', null);
+        list($ret, $error) = $upManager->put($token, 'formput', 'hello world', null, 'text/plain', null, false);
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
     }
@@ -42,7 +52,7 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
     {
         $key = 'formPutFile';
         $token = $this->auth->uploadToken($this->bucketName, $key);
-        list($ret, $error) = FormUploader::putFile($token, $key, __file__, $this->cfg, null, 'text/plain', null);
+        list($ret, $error) = FormUploader::putFile($token, $key, __file__, $this->cfg, null, 'text/plain', null, false);
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
     }
@@ -52,7 +62,7 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
         $key = 'formPutFile';
         $token = $this->auth->uploadToken($this->bucketName, $key);
         $upManager = new UploadManager();
-        list($ret, $error) = $upManager->putFile($token, $key, __file__, null, 'text/plain', null);
+        list($ret, $error) = $upManager->putFile($token, $key, __file__, null, 'text/plain', null, false);
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
     }

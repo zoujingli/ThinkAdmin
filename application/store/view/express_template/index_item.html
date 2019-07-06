@@ -25,7 +25,11 @@
                     </div>
                 </td>
                 <td width='20px'></td>
-                <td><label class="text-center nowrap">订单满 <input style="width:130px" class="layui-input inline-block text-center padding-left-0" name="order_reduction_price_{$index}" data-blur-number="2" value="{$item.order_reduction_price|default='0.00'}"> 元免邮费</label></td>
+                <td>
+                    <label class="text-center nowrap">
+                        订单满 <input style="width:130px" class="layui-input inline-block text-center padding-left-0" name="order_reduction_price_{$index}" data-blur-number="2" value="{$item.order_reduction_price|default='0.00'}"> 元免邮费
+                    </label>
+                </td>
             </tr>
         </table>
         <!--<span class="color-desc block">订单总金额达到这个金额时，将减免该订单的所有邮费，请谨慎配置。</span>-->
@@ -41,14 +45,16 @@
         <table class="layui-table" lay-skin="line">
             <tr class="layui-bg-gray">
                 <th class="text-center">
-                    <label class="think-checkbox pull-left margin-top-0 notselect"><input type="checkbox" data-check-target="[data-template-province-{$index}]" lay-ignore> 全选</label>
+                    <label class="think-checkbox pull-left margin-top-0 notselect">
+                        <input type="checkbox" data-check-target="[data-template-province-{$index}]" lay-ignore> 全选
+                    </label>
                     <span>可配送区域</span>
                 </th>
             </tr>
             <tr>
                 <td>
                     {foreach $provinces as $p}
-                    <label class="think-checkbox layui-elip" style="width:115px">
+                    <label class="think-checkbox layui-elip notselect" style="width:115px">
                         {if is_numeric($index) and isset($item.rule) and is_array($item.rule) and in_array($p,$item.rule)}
                         <input data-province-input data-template-province-{$index} checked type="checkbox" name="rule_{$index}[]" value="{$p}" lay-ignore> {$p|default=''}
                         {else}
@@ -69,13 +75,20 @@
                 <th class="text-center" width="80px">续费（元）</th>
             </tr>
             <tr>
-                <td class="text-center"><label><input name="first_number_{$index}" value="{$item.first_number|default='1'}" data-blur-number="0" class="layui-input text-center padding-left-0"></label></td>
-                <td class="text-center"><label><input name="first_price_{$index}" value="{$item.first_price|default='0.00'}" data-blur-number="2" class="layui-input text-center padding-left-0"></label></td>
-                <td class="text-center"><label><input name="next_number_{$index}" value="{$item.next_number|default='1'}" data-blur-number="0" class="layui-input text-center padding-left-0"></label></td>
-                <td class="text-center"><label><input name="next_price_{$index}" value="{$item.next_price|default='0.00'}" data-blur-number="2" class="layui-input text-center padding-left-0"></label></td>
+                <td class="text-center">
+                    <label><input name="first_number_{$index}" value="{$item.first_number|default='1'}" data-blur-number="0" class="layui-input text-center padding-left-0"></label>
+                </td>
+                <td class="text-center">
+                    <label><input name="first_price_{$index}" value="{$item.first_price|default='0.00'}" data-blur-number="2" class="layui-input text-center padding-left-0"></label>
+                </td>
+                <td class="text-center">
+                    <label><input name="next_number_{$index}" value="{$item.next_number|default='1'}" data-blur-number="0" class="layui-input text-center padding-left-0"></label>
+                </td>
+                <td class="text-center">
+                    <label><input name="next_price_{$index}" value="{$item.next_price|default='0.00'}" data-blur-number="2" class="layui-input text-center padding-left-0"></label>
+                </td>
             </tr>
         </table>
     </div>
-
 
 </fieldset>

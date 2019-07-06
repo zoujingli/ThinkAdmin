@@ -1,30 +1,31 @@
 {extend name='main'}
 
 {block name="button"}
-<!--{if auth("admin/auth/add")}-->
-<button data-modal='{:url("add")}' data-title="添加权限" class='layui-btn layui-btn-sm layui-btn-primary'>添加权限</button>
-<!--{/if}-->
 
-<!--{if auth("admin/auth/remove")}-->
+{if auth("admin/auth/add")}
+<button data-modal='{:url("add")}' data-title="添加权限" class='layui-btn layui-btn-sm layui-btn-primary'>添加权限</button>
+{/if}
+
+{if auth("admin/auth/remove")}
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('admin/auth/remove')}" data-confirm="确定要删除这些权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除权限</button>
-<!--{/if}-->
+{/if}
+
 {/block}
 
 {block name="content"}
 
 <div class="think-box-shadow">
-
-    <table class="layui-table" lay-skin="line">
-        <caption class="margin-bottom-10 text-left">{include file='auth/index_search'}</caption>
+    {include file='auth/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='text-left nowrap'>权限信息</th>
             <th class='text-left nowrap'>创建时间</th>
-            <th class="text-center">状态</th>
+            <th class="text-center nowrap">使用状态</th>
             <th></th>
         </tr>
         </thead>
@@ -32,13 +33,15 @@
         <tbody>
         {foreach $list as $key=>$vo}
         <tr data-dbclick>
-            <td class='list-table-check-td think-checkbox'><input class="list-check-box" value='{$vo.id}' type='checkbox'></td>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
             <td class='text-left'>
                 权限名称：{$vo.title|default='-'}<br>
-                权限描述：{$vo.desc|default="<span class='color-desc'>没有写描述哦！</span>"}
+                <p class="color-desc">权限描述：{$vo.desc|default="没有写描述哦！"}</p>
             </td>
             <td class="text-left nowrap">
-                日期：{$vo.create_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
+                日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">时间：',###|raw}</span>
             </td>
             <td class='text-center nowrap'>
                 {eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq}
@@ -56,7 +59,7 @@
 
                 {if $vo.status eq 1 and auth("admin/auth/forbid")}
                 <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('admin/auth/forbid')}">禁 用</a>
-                {elseif auth("admin/auth/resume")}
+                {elseif $vo.status eq 0 and auth("admin/auth/resume")}
                 <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('admin/auth/resume')}">启 用</a>
                 {/if}
 

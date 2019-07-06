@@ -21,7 +21,7 @@ use library\Controller;
 use think\Db;
 
 /**
- * 公众号消息推送处理
+ * 微信消息推送处理
  * Class Push
  * @package app\wechat\controller\api
  */
@@ -29,7 +29,7 @@ class Push extends Controller
 {
 
     /**
-     * 公众号APPID
+     * 微信APPID
      * @var string
      */
     protected $appid;
@@ -48,7 +48,7 @@ class Push extends Controller
 
 
     /**
-     * 公众号OPENID
+     * 微信OPENID
      * @var string
      */
     protected $fromOpenid;
@@ -248,7 +248,7 @@ class Push extends Controller
     }
 
     /**
-     * 发送消息到公众号
+     * 发送消息到微信
      * @param string $type 消息类型（text|image|voice|video|music|news|mpnews|wxcard）
      * @param array $data 消息内容数据对象
      * @param boolean $isCustom 是否使用客服消息发送

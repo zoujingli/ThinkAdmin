@@ -12,6 +12,18 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+use library\tools\Crypt;
+use library\tools\Csrf;
+use library\tools\Data;
+use library\tools\Emoji;
+use library\tools\Http;
+use library\tools\Node;
+use think\Db;
+use think\facade\Cache;
+use think\facade\Middleware;
+use think\facade\Response;
+use think\Request;
+
 if (!function_exists('p')) {
     /**
      * 打印输出数据到文件
@@ -21,7 +33,7 @@ if (!function_exists('p')) {
      */
     function p($data, $force = false, $file = null)
     {
-        is_null($file) && $file = env('runtime_path') . date('Ymd') . '.txt';
+        if (is_null($file)) $file = env('runtime_path') . date('Ymd') . '.txt';
         $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true)) . PHP_EOL;
         $force ? file_put_contents($file, $str) : file_put_contents($file, $str, FILE_APPEND);
     }
@@ -37,8 +49,11 @@ if (!function_exists('format_datetime')) {
     function format_datetime($datetime, $format = 'Y年m月d日 H:i:s')
     {
         if (empty($datetime)) return '-';
-        if (is_numeric($datetime)) return date($format, $datetime);
-        return date($format, strtotime($datetime));
+        if (is_numeric($datetime)) {
+            return date($format, $datetime);
+        } else {
+            return date($format, strtotime($datetime));
+        }
     }
 }
 
@@ -57,18 +72,26 @@ if (!function_exists('sysconf')) {
         list($field, $raw) = explode('|', "{$name}|");
         $key = md5(config('database.hostname') . '#' . config('database.database'));
         if ($value !== null) {
-            \think\facade\Cache::tag('system')->rm("_sysconfig_{$key}");
+            Cache::tag('system')->rm("_sysconfig_{$key}");
             list($row, $data) = [['name' => $field, 'value' => $value], []];
-            return \library\tools\Data::save('SystemConfig', $row, 'name');
+            return Data::save('SystemConfig', $row, 'name');
         }
         if (empty($data)) {
-            $data = \think\facade\Cache::tag('system')->get("_sysconfig_{$key}", []);
+            $data = Cache::tag('system')->get("_sysconfig_{$key}", []);
             if (empty($data)) {
-                $data = \think\Db::name('SystemConfig')->column('name,value');
-                \think\facade\Cache::tag('system')->set("_sysconfig_{$key}", $data, 60);
+                $data = Db::name('SystemConfig')->column('name,value');
+                Cache::tag('system')->set("_sysconfig_{$key}", $data, 60);
             }
         }
-        return isset($data[$field]) ? (strtolower($raw) === 'raw' ? $data[$field] : htmlspecialchars($data[$field])) : '';
+        if (isset($data[$field])) {
+            if (strtolower($raw) === 'raw') {
+                return $data[$field];
+            } else {
+                return htmlspecialchars($data[$field]);
+            }
+        } else {
+            return '';
+        }
     }
 }
 
@@ -80,8 +103,7 @@ if (!function_exists('systoken')) {
      */
     function systoken($node = null)
     {
-        $real = \library\tools\Node::get($node);
-        $csrf = \library\tools\Csrf::buildFormToken($real);
+        $csrf = Csrf::buildFormToken(Node::get($node));
         return $csrf['token'];
     }
 }
@@ -96,7 +118,7 @@ if (!function_exists('http_get')) {
      */
     function http_get($url, $query = [], $options = [])
     {
-        return \library\tools\Http::get($url, $query, $options);
+        return Http::get($url, $query, $options);
     }
 }
 
@@ -110,7 +132,7 @@ if (!function_exists('http_post')) {
      */
     function http_post($url, $data, $options = [])
     {
-        return \library\tools\Http::post($url, $data, $options);
+        return Http::post($url, $data, $options);
     }
 }
 
@@ -127,7 +149,7 @@ if (!function_exists('data_save')) {
      */
     function data_save($dbQuery, $data, $key = 'id', $where = [])
     {
-        return \library\tools\Data::save($dbQuery, $data, $key, $where);
+        return Data::save($dbQuery, $data, $key, $where);
     }
 }
 
@@ -144,7 +166,7 @@ if (!function_exists('data_batch_save')) {
      */
     function data_batch_save($dbQuery, $data, $key = 'id', $where = [])
     {
-        return \library\tools\Data::batchSave($dbQuery, $data, $key, $where);
+        return Data::batchSave($dbQuery, $data, $key, $where);
     }
 }
 
@@ -156,7 +178,7 @@ if (!function_exists('encode')) {
      */
     function encode($content)
     {
-        return \library\tools\Crypt::encode($content);
+        return Crypt::encode($content);
     }
 }
 
@@ -168,7 +190,7 @@ if (!function_exists('decode')) {
      */
     function decode($content)
     {
-        return \library\tools\Crypt::decode($content);
+        return Crypt::decode($content);
     }
 }
 
@@ -180,7 +202,7 @@ if (!function_exists('emoji_encode')) {
      */
     function emoji_encode($content)
     {
-        return \library\tools\Emoji::encode($content);
+        return Emoji::encode($content);
     }
 }
 
@@ -192,7 +214,7 @@ if (!function_exists('emoji_decode')) {
      */
     function emoji_decode($content)
     {
-        return \library\tools\Emoji::decode($content);
+        return Emoji::decode($content);
     }
 }
 
@@ -204,12 +226,12 @@ if (!function_exists('emoji_clear')) {
      */
     function emoji_clear($content)
     {
-        return \library\tools\Emoji::clear($content);
+        return Emoji::clear($content);
     }
 }
 
 // 注册跨域中间键
-\think\facade\Middleware::add(function (\think\Request $request, \Closure $next, $header = []) {
+Middleware::add(function (Request $request, \Closure $next, $header = []) {
     if (($origin = $request->header('origin', '*')) !== '*') {
         $header['Access-Control-Allow-Origin'] = $origin;
         $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
@@ -217,7 +239,7 @@ if (!function_exists('emoji_clear')) {
         $header['Access-Control-Expose-Headers'] = 'User-Token-Csrf';
     }
     if ($request->isOptions()) {
-        return \think\Response::create()->code(204)->header($header);
+        return Response::create()->code(204)->header($header);
     } else {
         return $next($request)->header($header);
     }

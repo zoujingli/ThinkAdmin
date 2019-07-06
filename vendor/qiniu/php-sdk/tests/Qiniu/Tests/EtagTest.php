@@ -2,8 +2,9 @@
 namespace Qiniu\Tests;
 
 use Qiniu\Etag;
+use PHPUnit\Framework\TestCase;
 
-class EtagTest extends \PHPUnit_Framework_TestCase
+class EtagTest extends TestCase
 {
     public function test0M()
     {

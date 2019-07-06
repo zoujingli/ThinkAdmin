@@ -39,9 +39,14 @@ class Data
         list($table, $value) = [$db->getTable(), isset($data[$key]) ? $data[$key] : null];
         $map = isset($where[$key]) ? [] : (is_string($value) ? [[$key, 'in', explode(',', $value)]] : [$key => $value]);
         if (is_array($info = Db::table($table)->master()->where($where)->where($map)->find()) && !empty($info)) {
-            return Db::table($table)->strict(false)->where($where)->where($map)->update($data) !== false ? $info[$key] : false;
+            if (Db::table($table)->strict(false)->where($where)->where($map)->update($data) !== false) {
+                return isset($info[$key]) ? $info[$key] : true;
+            } else {
+                return false;
+            }
+        } else {
+            return Db::table($table)->strict(false)->insertGetId($data);
         }
-        return Db::table($table)->strict(false)->insertGetId($data);
     }
 
     /**

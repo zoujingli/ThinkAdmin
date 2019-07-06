@@ -27,7 +27,7 @@ class Js extends Controller
 {
     /**
      * 返回生成的JS内容
-     * @return \think\response
+     * @return \think\Response
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
@@ -42,7 +42,7 @@ class Js extends Controller
         $configJson = json_encode(WechatService::getWebJssdkSign($url), JSON_UNESCAPED_UNICODE);
         $fansinfoJson = json_encode(isset($wechat['fansinfo']) ? $wechat['fansinfo'] : [], JSON_UNESCAPED_UNICODE);
         $html = <<<EOF
-if(typeof wx==='object'){
+if(typeof wx === 'object'){
     wx.openid="{$openid}";
     wx.unionid="{$unionid}";
     wx.config({$configJson});

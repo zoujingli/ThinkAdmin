@@ -5,13 +5,14 @@ use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\UploadManager;
 use Qiniu\Config;
 use Qiniu\Zone;
+use PHPUnit\Framework\TestCase;
 
-class ResumeUpTest extends \PHPUnit_Framework_TestCase
+class ResumeUpTest extends TestCase
 {
     protected $bucketName;
     protected $auth;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         global $bucketName;
         $this->bucketName = $bucketName;

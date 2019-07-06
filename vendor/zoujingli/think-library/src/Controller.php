@@ -15,6 +15,7 @@
 namespace library;
 
 use library\tools\Csrf;
+use think\exception\HttpResponseException;
 
 /**
  * 标准控制器基类
@@ -42,11 +43,10 @@ class Controller extends \stdClass
      * 表单CSRF验证状态
      * @var boolean
      */
-    private $_csrf = false;
+    private $csrf = false;
 
     /**
      * Controller constructor.
-     * @throws \think\Exception
      */
     public function __construct()
     {
@@ -94,7 +94,7 @@ class Controller extends \stdClass
     public function error($info, $data = [], $code = 0)
     {
         $result = ['code' => $code, 'info' => $info, 'data' => $data];
-        throw new \think\exception\HttpResponseException(json($result));
+        throw new HttpResponseException(json($result));
     }
 
     /**
@@ -106,8 +106,8 @@ class Controller extends \stdClass
     public function success($info, $data = [], $code = 1)
     {
         $result = ['code' => $code, 'info' => $info, 'data' => $data];
-        if ($this->_csrf) Csrf::clearFormToken(Csrf::getToken());
-        throw new \think\exception\HttpResponseException(json($result));
+        if ($this->csrf) Csrf::clearFormToken(Csrf::getToken());
+        throw new HttpResponseException(json($result));
     }
 
     /**
@@ -118,7 +118,7 @@ class Controller extends \stdClass
      */
     public function redirect($url, $vars = [], $code = 301)
     {
-        throw new \think\exception\HttpResponseException(redirect($url, $vars, $code));
+        throw new HttpResponseException(redirect($url, $vars, $code));
     }
 
     /**
@@ -130,10 +130,10 @@ class Controller extends \stdClass
     public function fetch($tpl = '', $vars = [], $node = null)
     {
         foreach ($this as $name => $value) $vars[$name] = $value;
-        if ($this->_csrf) {
+        if ($this->csrf) {
             Csrf::fetchTemplate($tpl, $vars, $node);
         } else {
-            throw new \think\exception\HttpResponseException(view($tpl, $vars));
+            throw new HttpResponseException(view($tpl, $vars));
         }
     }
 
@@ -182,7 +182,7 @@ class Controller extends \stdClass
      */
     protected function applyCsrfToken($return = false)
     {
-        $this->_csrf = true;
+        $this->csrf = true;
         if ($this->request->isPost() && !Csrf::checkFormToken()) {
             if ($return) return false;
             $this->error('表单令牌验证失败，请刷新页面再试！');

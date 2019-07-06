@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\service;
@@ -32,18 +33,15 @@ class OplogService
      */
     public static function write($action = '行为', $content = "内容描述")
     {
-        $data = [
-            'node'     => Node::current(),
+        return Db::name('SystemLog')->insert([
+            'node'     => Node::current(), 'action' => $action, 'content' => $content,
             'geoip'    => PHP_SAPI === 'cli' ? '127.0.0.1' : request()->ip(),
-            'action'   => $action,
-            'content'  => $content,
-            'username' => PHP_SAPI === 'cli' ? 'cli' : (string)session('user.username'),
-        ];
-        return Db::name('SystemLog')->insert($data) !== false;
+            'username' => PHP_SAPI === 'cli' ? 'cli' : (string)session('admin_user.username'),
+        ]);
     }
 
     /**
-     * 清理系统日志数据
+     * 清理系统日志
      * @return boolean
      * @throws \think\Exception
      * @throws \think\exception\PDOException

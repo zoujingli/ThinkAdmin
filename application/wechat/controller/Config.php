@@ -19,14 +19,16 @@ use library\Controller;
 use library\File;
 
 /**
- * 模板配置
+ * 微信授权绑定
  * Class Config
  * @package app\wechat\controller
  */
 class Config extends Controller
 {
     /**
-     * 公众号授权绑定
+     * 微信授权绑定
+     * @auth true
+     * @menu true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -35,13 +37,13 @@ class Config extends Controller
         $this->applyCsrfToken();
         $this->thrNotify = url('@wechat/api.push', '', false, true);
         if ($this->request->isGet()) {
-            $this->title = '公众号授权绑定';
+            $this->title = '微信授权绑定';
             if (!($this->geoip = cache('mygeoip'))) {
                 cache('mygeoip', $this->geoip = gethostbyname($this->request->host()), 360);
             }
             $code = encode(url('@admin', '', true, true) . '#' . $this->request->url());
             $this->authurl = config('wechat.service_url') . "/service/api.push/auth/{$code}";
-            if ($this->request->has('appid', 'get', true) && $this->request->has('appkey', 'get', true)) {
+            if (input('?appid') && input('?appkey')) {
                 sysconf('wechat_type', 'thr');
                 sysconf('wechat_thr_appid', input('appid'));
                 sysconf('wechat_thr_appkey', input('appkey'));
@@ -58,14 +60,16 @@ class Config extends Controller
             if ($this->request->post('wechat_type') === 'thr') {
                 WechatService::wechat()->setApiNotifyUri($this->thrNotify);
             }
+            sysoplog('微信管理', '修改微信授权配置成功');
             $uri = url('wechat/config/options');
-            $this->success('公众号参数获取成功！', url('@admin') . "#{$uri}");
+            $this->success('微信参数修改成功！', url('@admin') . "#{$uri}");
         }
     }
 
     /**
-     * 公众号支付配置
-     * @return mixed
+     * 微信支付配置
+     * @auth true
+     * @menu true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -73,7 +77,7 @@ class Config extends Controller
     {
         $this->applyCsrfToken();
         if ($this->request->isGet()) {
-            $this->title = '公众号支付配置';
+            $this->title = '微信支付配置';
             $file = File::instance('local');
             $this->wechat_mch_ssl_cer = sysconf('wechat_mch_ssl_cer');
             $this->wechat_mch_ssl_key = sysconf('wechat_mch_ssl_key');
@@ -93,7 +97,8 @@ class Config extends Controller
                 }
             }
             foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-            $this->success('公众号支付配置成功！');
+            sysoplog('微信管理', '修改微信支付配置成功');
+            $this->success('微信支付配置成功！');
         }
     }
 

@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -33,6 +34,8 @@ class Oplog extends Controller
 
     /**
      * 系统操作日志
+     * @auth true
+     * @menu true
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -47,6 +50,7 @@ class Oplog extends Controller
 
     /**
      * 列表数据处理
+     * @auth true
      * @param array $data
      * @throws \Exception
      */
@@ -62,6 +66,7 @@ class Oplog extends Controller
 
     /**
      * 清理系统日志
+     * @auth true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -76,6 +81,7 @@ class Oplog extends Controller
 
     /**
      * 删除系统日志
+     * @auth true
      */
     public function remove()
     {

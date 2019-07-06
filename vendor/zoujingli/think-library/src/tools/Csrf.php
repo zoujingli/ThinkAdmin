@@ -14,6 +14,8 @@
 
 namespace library\tools;
 
+use think\exception\HttpResponseException;
+
 /**
  * 表单CSRF表单令牌
  * Class Csrf
@@ -81,7 +83,7 @@ class Csrf
      */
     public static function fetchTemplate($tpl = '', $vars = [], $node = null)
     {
-        throw new \think\exception\HttpResponseException(view($tpl, $vars, 200, function ($html) use ($node) {
+        throw new HttpResponseException(view($tpl, $vars, 200, function ($html) use ($node) {
             return preg_replace_callback('/<\/form>/i', function () use ($node) {
                 $csrf = self::buildFormToken($node);
                 return "<input type='hidden' name='_csrf_' value='{$csrf['token']}'></form>";

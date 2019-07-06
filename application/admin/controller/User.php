@@ -1,19 +1,21 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
 
+use app\admin\service\NodeService;
 use library\Controller;
 use library\tools\Data;
 use think\Db;
@@ -22,8 +24,6 @@ use think\Db;
  * 系统用户管理
  * Class User
  * @package app\admin\controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/02/15 18:12
  */
 class User extends Controller
 {
@@ -36,6 +36,8 @@ class User extends Controller
 
     /**
      * 系统用户管理
+     * @auth true
+     * @menu true
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -45,23 +47,13 @@ class User extends Controller
     public function index()
     {
         $this->title = '系统用户管理';
-        $query = $this->_query($this->table)->like('username,phone,mail')->dateBetween('login_at');
-        $query->equal('status')->where(['is_deleted' => '0'])->order('id desc')->page();
-    }
-
-    /**
-     * 用户授权管理
-     * @return mixed
-     */
-    public function auth()
-    {
-        $this->applyCsrfToken();
-        $this->_form($this->table, 'auth');
+        $query = $this->_query($this->table)->like('username,phone,mail')->equal('status');
+        $query->dateBetween('login_at')->where(['is_deleted' => '0'])->order('id desc')->page();
     }
 
     /**
      * 添加系统用户
-     * @return mixed
+     * @auth true
      */
     public function add()
     {
@@ -71,7 +63,7 @@ class User extends Controller
 
     /**
      * 编辑系统用户
-     * @return mixed
+     * @auth true
      */
     public function edit()
     {
@@ -81,7 +73,7 @@ class User extends Controller
 
     /**
      * 修改用户密码
-     * @return mixed
+     * @auth true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -96,10 +88,9 @@ class User extends Controller
             if ($post['password'] !== $post['repassword']) {
                 $this->error('两次输入的密码不一致！');
             }
-            $result = \app\admin\service\AuthService::checkPassword($post['password']);
+            $result = NodeService::checkpwd($post['password']);
             if (empty($result['code'])) $this->error($result['msg']);
-            $data = ['id' => $post['id'], 'password' => md5($post['password'])];
-            if (Data::save($this->table, $data, 'id')) {
+            if (Data::save($this->table, ['id' => $post['id'], 'password' => md5($post['password'])], 'id')) {
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {
                 $this->error('密码修改失败，请稍候再试！');
@@ -117,19 +108,22 @@ class User extends Controller
     public function _form_filter(&$data)
     {
         if ($this->request->isPost()) {
+            NodeService::applyUserAuth();
             $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
-            if (isset($data['id'])) unset($data['username']);
-            elseif (Db::name($this->table)->where(['username' => $data['username']])->count() > 0) {
+            if (isset($data['id'])) {
+                unset($data['username']);
+            } elseif (Db::name($this->table)->where(['username' => $data['username']])->count() > 0) {
                 $this->error('用户账号已经存在，请使用其它账号！');
             }
         } else {
             $data['authorize'] = explode(',', isset($data['authorize']) ? $data['authorize'] : '');
-            $this->assign('authorizes', Db::name('SystemAuth')->where(['status' => '1'])->select());
+            $this->authorizes = Db::name('SystemAuth')->where(['status' => '1'])->order('sort desc,id desc')->select();
         }
     }
 
     /**
      * 禁用系统用户
+     * @auth true
      */
     public function forbid()
     {
@@ -142,6 +136,7 @@ class User extends Controller
 
     /**
      * 启用系统用户
+     * @auth true
      */
     public function resume()
     {
@@ -151,6 +146,7 @@ class User extends Controller
 
     /**
      * 删除系统用户
+     * @auth true
      */
     public function remove()
     {

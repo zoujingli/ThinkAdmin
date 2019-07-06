@@ -1,13 +1,14 @@
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站:http://think.ctolog.com
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 // 浏览器兼容提示
@@ -38,6 +39,7 @@ require.config({
         'json': ['plugs/jquery/json.min'],
         'upload': ['plugs/plupload/build'],
         'base64': ['plugs/jquery/base64.min'],
+        'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
         'ckeditor': ['plugs/ckeditor/ckeditor'],
         'plupload': ['plugs/plupload/plupload.full.min'],
@@ -146,6 +148,7 @@ $(function () {
             $dom.find('input[data-date-range]').map(function () {
                 this.setAttribute('autocomplete', 'off');
                 laydate.render({
+                    type: this.getAttribute('data-date-range') || 'date',
                     range: true, elem: this, done: function (value) {
                         $(this.elem).val(value).trigger('change');
                     }
@@ -169,8 +172,9 @@ $(function () {
         };
         // 以HASH打开新网页
         this.href = function (url, obj) {
-            if (url !== '#') window.location.href = '#' + $.menu.parseUri(url, obj);
-            else if (obj && obj.getAttribute('data-menu-node')) {
+            if (url !== '#') {
+                window.location.href = '#' + $.menu.parseUri(url, obj);
+            } else if (obj && obj.getAttribute('data-menu-node')) {
                 $('[data-menu-node^="' + obj.getAttribute('data-menu-node') + '-"][data-open!="#"]:first').trigger('click');
             }
         };
@@ -209,9 +213,9 @@ $(function () {
         };
         // 加载HTML到弹出层
         this.modal = function (url, data, title, callback, loading, tips) {
-            this.load(url, data, 'GET', function (res) {
+            this.load(url, data, 'GET', function (res, index) {
                 if (typeof (res) === 'object') return $.msg.auto(res), false;
-                var index = layer.open({
+                index = layer.open({
                     type: 1, btn: false, area: "800px", content: res, title: title || '', success: function (dom, index) {
                         $(dom).find('[data-close]').off('click').on('click', function () {
                             if ($(this).attr('data-confirm')) return $.msg.confirm($(this).attr('data-confirm'), function (_index) {
@@ -238,8 +242,8 @@ $(function () {
             return (uri.indexOf('#') > -1 ? uri.split('#')[1] : uri).split('?')[0];
         };
         // 通过URI查询最有可能的菜单NODE
-        this.queryNode = function (url) {
-            var node = location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1');
+        this.queryNode = function (url, node) {
+            node = node || location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1');
             if (!/^m-/.test(node)) {
                 var $menu = $('[data-menu-node][data-open*="' + url.replace(/\.html$/ig, '') + '"]');
                 return $menu.size() ? $menu.get(0).getAttribute('data-menu-node') : '';
@@ -253,13 +257,16 @@ $(function () {
                 var attrs = uri.split('?')[1].split('&');
                 for (var i in attrs) if (attrs[i].indexOf('=') > -1) {
                     var tmp = attrs[i].split('=').slice();
-                    params[tmp[0]] = decodeURIComponent(tmp[1].replace(/%2B/ig, '%20'));
+                    if (typeof tmp[0] === 'string' && tmp[0].length > 0) {
+                        params[tmp[0]] = decodeURIComponent(tmp[1].replace(/%2B/ig, '%20'));
+                    }
                 }
             }
-            delete params[""];
             uri = this.getUri(uri);
-            params.spm = obj && obj.getAttribute('data-menu-node') || this.queryNode(uri);
-            if (params.spm === '' || typeof params.spm !== 'string') delete params.spm;
+            if (typeof params.spm !== 'string') {
+                params.spm = obj && obj.getAttribute('data-menu-node') || this.queryNode(uri);
+            }
+            if (typeof params.spm !== 'string' || params.spm.length < 1) delete params.spm;
             var query = '?' + $.param(params);
             return uri + (query === '?' ? '' : query);
         };
@@ -268,17 +275,22 @@ $(function () {
             // 菜单模式切换
             (function ($menu, miniClass) {
                 // Mini 菜单模式切换及显示
-                if (layui.data('menu')['type-min']) $menu.addClass(miniClass);
+                if (layui.data('admin-menu-type')['type-min']) $menu.addClass(miniClass);
                 $body.on('click', '[data-target-menu-type]', function () {
                     $menu.toggleClass(miniClass);
-                    layui.data('menu', {key: 'type-min', value: $menu.hasClass(miniClass)});
+                    layui.data('admin-menu-type', {key: 'type-min', value: $menu.hasClass(miniClass)});
                 }).on('resize', function () {
-                    var isMini = $('.layui-layout-left-mini').size() > 0;
-                    $body.width() > 1000 ? isMini && $menu.toggleClass(miniClass) : isMini || $menu.toggleClass(miniClass);
+                    if ($body.width() > 1000) {
+                        layui.data('admin-menu-type')['type-min'] ? $menu.addClass(miniClass) : $menu.removeClass(miniClass);
+                    } else {
+                        $menu.addClass(miniClass);
+                    }
                 }).trigger('resize');
                 //  Mini 菜单模式时TIPS文字显示
                 $('[data-target-tips]').mouseenter(function () {
-                    if ($menu.hasClass(miniClass)) $(this).attr('index', layer.tips($(this).attr('data-target-tips') || '', this));
+                    if ($menu.hasClass(miniClass)) {
+                        $(this).attr('index', layer.tips($(this).attr('data-target-tips') || '', this));
+                    }
                 }).mouseleave(function () {
                     layer.close($(this).attr('index'));
                 });
@@ -289,18 +301,18 @@ $(function () {
             });
             // 同步二级菜单展示状态
             this.syncOpenStatus = function (mode) {
-                $('[data-submenu-layout]').map(function () {
-                    var node = $(this).attr('data-submenu-layout');
+                $('[data-submenu-layout]').map(function (node) {
+                    node = $(this).attr('data-submenu-layout');
                     if (mode === 1) layui.data('menu', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
                     else if ((layui.data('menu')[node] || 2) === 2) $(this).addClass('layui-nav-itemed');
                 });
             };
-            window.onhashchange = function () {
-                var hash = window.location.hash || '';
+            window.onhashchange = function (hash, node) {
+                hash = window.location.hash || '';
                 if (hash.length < 1) return $('[data-menu-node][data-open!="#"]:first').trigger('click');
                 $.form.load(hash), that.syncOpenStatus(2);
                 // 菜单选择切换
-                var node = that.queryNode(that.getUri());
+                node = that.queryNode(that.getUri());
                 if (/^m-/.test(node)) {
                     var $all = $('a[data-menu-node]').parent(), tmp = node.split('-'), tmpNode = tmp.shift();
                     while (tmp.length > 0) {
@@ -631,21 +643,21 @@ $(function () {
     });
 
     /*! 注册 data-href 事件行为 */
-    $body.on('click', '[data-href]', function () {
-        var href = $(this).attr('data-href');
+    $body.on('click', '[data-href]', function (href) {
+        href = $(this).attr('data-href');
         if (href && href.indexOf('#') !== 0) window.location.href = href;
     });
 
     /*! 注册 data-iframe 事件行为 */
-    $body.on('click', '[data-iframe]', function () {
-        var index = $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口');
+    $body.on('click', '[data-iframe]', function (index) {
+        index = $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口');
         $(this).attr('data-index', index);
     });
 
     /*! 注册 data-icon 事件行为 */
-    $body.on('click', '[data-icon]', function () {
-        var field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
-        var location = window.ROOT_URL + '?s=admin/api.plugs/icon.html&field=' + field;
+    $body.on('click', '[data-icon]', function (field, location) {
+        field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
+        location = window.ROOT_URL + '?s=admin/api.plugs/icon.html&field=' + field;
         $.form.iframe(location, '图标选择');
     });
 
@@ -653,8 +665,8 @@ $(function () {
     $body.on('click', '[data-copy]', function () {
         $.copyToClipboard(this.getAttribute('data-copy'));
     });
-    $.copyToClipboard = function (content) {
-        var input = document.createElement('textarea');
+    $.copyToClipboard = function (content, input) {
+        input = document.createElement('textarea');
         input.style.position = 'absolute', input.style.left = '-100000px';
         input.style.width = '1px', input.style.height = '1px', input.innerText = content;
         document.body.appendChild(input), input.select(), setTimeout(function () {
@@ -701,8 +713,8 @@ $(function () {
     };
 
     /*! 表单编辑返回操作 */
-    $body.on('click', '[data-history-back]', function () {
-        var title = this.getAttribute('data-history-back') || '确定要返回上一页吗？';
+    $body.on('click', '[data-history-back]', function (title) {
+        title = this.getAttribute('data-history-back') || '确定要返回上一页吗？';
         $.msg.confirm(title, function (index) {
             history.back();
             $.msg.close(index);
@@ -710,8 +722,8 @@ $(function () {
     });
 
     /*! 表单元素失去焦点处理 */
-    $body.on('blur', '[data-blur-number]', function () {
-        var fiexd = this.getAttribute('data-blur-number') || 0;
+    $body.on('blur', '[data-blur-number]', function (fiexd) {
+        fiexd = this.getAttribute('data-blur-number') || 0;
         this.value = (parseFloat(this.value) || 0).toFixed(fiexd);
     });
 

@@ -10,14 +10,15 @@ namespace Qiniu\Tests;
 
 use Qiniu\Cdn\CdnManager;
 use Qiniu\Http\Client;
+use PHPUnit\Framework\TestCase;
 
-class CdnManagerTest extends \PHPUnit_Framework_TestCase
+class CdnManagerTest extends TestCase
 {
     protected $cdnManager;
     protected $encryptKey;
     protected $imgUrl;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         global $timestampAntiLeechEncryptKey;
         global $customDomain;

@@ -34,7 +34,8 @@ class News extends Controller
 
     /**
      * 微信图文管理
-     * @return array|string
+     * @auth true
+     * @menu true
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -62,6 +63,7 @@ class News extends Controller
     /**
      * 图文选择器
      * @return string
+     * @auth true
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -70,7 +72,7 @@ class News extends Controller
      */
     public function select()
     {
-        return $this->index();
+        $this->index();
     }
 
     /**
@@ -87,6 +89,7 @@ class News extends Controller
 
     /**
      * 添加微信图文
+     * @auth true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -109,22 +112,25 @@ class News extends Controller
 
     /**
      * 编辑微信图文
+     * @auth true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
     public function edit()
     {
-        $id = $this->request->get('id', '');
+        if (($this->id = $this->request->get('id')) < 1) {
+            $this->error('参数错误，请稍候再试！');
+        }
         if ($this->request->isGet()) {
-            empty($id) && $this->error('参数错误，请稍候再试！');
             if ($this->request->get('output') === 'json') {
-                $this->success('获取数据成功！', MediaService::news($id));
+                $this->success('获取数据成功！', MediaService::news($this->id));
+            } else {
+                $this->fetch('form', ['title' => '编辑图文']);
             }
-            $this->fetch('form', ['title' => '编辑图文']);
         } else {
             $post = $this->request->post();
             if (isset($post['data']) && ($ids = $this->_apply_news_article($post['data']))) {
-                if (data_save('wechat_news', ['id' => $id, 'article_id' => $ids], 'id')) {
+                if (data_save('wechat_news', ['id' => $this->id, 'article_id' => $ids], 'id')) {
                     $this->success('图文更新成功！', url('@admin') . '#' . url('@wechat/news/index'));
                 }
             }
@@ -143,17 +149,19 @@ class News extends Controller
     private function _apply_news_article($data, $ids = [])
     {
         foreach ($data as &$vo) {
-            $vo['create_at'] = date('Y-m-d H:i:s');
             if (empty($vo['digest'])) {
                 $vo['digest'] = mb_substr(strip_tags(str_replace(["\s", '　'], '', $vo['content'])), 0, 120);
             }
+            $vo['create_at'] = date('Y-m-d H:i:s');
             if (empty($vo['id'])) {
                 $result = $id = Db::name('WechatNewsArticle')->insertGetId($vo);
             } else {
                 $id = intval($vo['id']);
                 $result = Db::name('WechatNewsArticle')->where('id', $id)->update($vo);
             }
-            if ($result !== false) array_push($ids, $id);
+            if ($result !== false) {
+                array_push($ids, $id);
+            }
         }
         return join(',', $ids);
     }
@@ -161,7 +169,7 @@ class News extends Controller
     /**
      * 删除微信图文
      */
-    public function del()
+    public function remove()
     {
         $this->_delete($this->table);
     }

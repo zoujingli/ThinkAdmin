@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\service\controller;
@@ -34,6 +35,8 @@ class Index extends Controller
 
     /**
      * 公众授权管理
+     * @auth true
+     * @menu true
      * @return string
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -51,6 +54,7 @@ class Index extends Controller
 
     /**
      * 清理调用次数
+     * @auth true
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
@@ -69,6 +73,7 @@ class Index extends Controller
 
     /**
      * 同步指定授权公众号
+     * @auth true
      */
     public function sync()
     {
@@ -94,6 +99,7 @@ class Index extends Controller
 
     /**
      * 同步所有授权公众号
+     * @auth true
      */
     public function syncall()
     {
@@ -123,8 +129,9 @@ class Index extends Controller
 
     /**
      * 删除公众号授权
+     * @auth true
      */
-    public function del()
+    public function remove()
     {
         $this->applyCsrfToken();
         $this->_delete($this->table);
@@ -132,6 +139,7 @@ class Index extends Controller
 
     /**
      * 禁用公众号授权
+     * @auth true
      */
     public function forbid()
     {
@@ -141,6 +149,7 @@ class Index extends Controller
 
     /**
      * 启用公众号授权
+     * @auth true
      */
     public function resume()
     {

@@ -27,8 +27,7 @@ class Review extends Controller
 
     /**
      * 图文展示
-     * @param integer $id
-     * @return mixed
+     * @param integer $id 图文ID
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -41,8 +40,7 @@ class Review extends Controller
 
     /**
      * 文章展示
-     * @param integer $id
-     * @return mixed
+     * @param integer $id 文章ID
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException

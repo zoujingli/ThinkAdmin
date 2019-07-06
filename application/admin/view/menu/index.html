@@ -2,18 +2,18 @@
 
 {block name="button"}
 
-<!--{if auth("admin/menu/add")}-->
+{if auth("admin/menu/add")}
 <button data-modal='{:url("add")}' data-title="添加菜单" class='layui-btn layui-btn-sm layui-btn-primary'>添加菜单</button>
-<!--{/if}-->
+{/if}
 
-<!--{if auth("admin/menu/remove")}-->
+{if auth("admin/menu/remove")}
 <button data-action='{:url("remove")}' data-csrf="{:systoken('admin/menu/remove')}" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除菜单</button>
-<!--{/if}-->
+{/if}
 
 {/block}
 
 {block name="content"}
-<div style="background:#fff">
+<div class="think-bg-white">
     {empty name='list'}
     <blockquote class="layui-elem-quote">没 有 记 录 哦！</blockquote>
     {else}

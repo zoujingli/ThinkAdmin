@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\service\controller;
@@ -31,20 +32,32 @@ class Config extends Controller
     public $table = 'WechatServiceConfig';
 
     /**
-     * 开放平台参数配置
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
+     * 开放平台配置
+     * @auth true
+     * @menu true
      */
     public function index()
     {
-        $this->applyCsrfToken();
-        $this->title = '开放平台接口配置';
-        if ($this->request->isGet()) {
-            $this->fetch();
-        } else {
+        $this->applyCsrfToken('save');
+        $this->title = '开放平台配置';
+        $this->fetch();
+    }
+
+    /**
+     * 保存参数数据
+     * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function save()
+    {
+        $this->applyCsrfToken('save');
+        if ($this->request->post()) {
             $post = $this->request->post();
             foreach ($post as $k => $v) sysconf($k, $v);
             $this->success('开放平台参数修改成功！');
+        } else {
+            $this->error('开放平台参数修改失败！');
         }
     }
 

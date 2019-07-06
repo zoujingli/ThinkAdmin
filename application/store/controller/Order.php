@@ -1,20 +1,22 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\store\controller;
 
 use library\Controller;
+use library\tools\Express;
 use think\Db;
 
 /**
@@ -32,6 +34,8 @@ class Order extends Controller
 
     /**
      * 订单记录管理
+     * @auth true
+     * @menu true
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -70,6 +74,7 @@ class Order extends Controller
 
     /**
      * 修改快递管理
+     * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -78,20 +83,21 @@ class Order extends Controller
     {
         if ($this->request->isGet()) {
             $where = ['is_deleted' => '0', 'status' => '1'];
-            $this->expressList = Db::name('StoreExpress')->where($where)->order('sort asc,id desc')->select();
+            $this->expressList = Db::name('StoreExpress')->where($where)->order('sort desc,id desc')->select();
         }
         $this->_form($this->table);
     }
 
     /**
      * 快递追踪查询
+     * @auth true
      */
     public function expressQuery()
     {
         list($code, $no) = [input('code', ''), input('no', '')];
         if (empty($no)) $this->error('快递编号不能为空！');
         if (empty($code)) $this->error('快递公司编码不能为空！');
-        $this->result = \library\tools\Express::query($code, $no);
+        $this->result = Express::query($code, $no);
         $this->fetch();
     }
 

@@ -1,5 +1,13 @@
 {extend name='main'}
 
+{block name="button"}
+
+{if auth("admin/auth/refresh")}
+<button data-load='{:url("refresh")}' class='layui-btn layui-btn-sm layui-btn-primary'>刷新权限</button>
+{/if}
+
+{/block}
+
 {block name="content"}
 <div class="think-box-shadow">
     <ul id="zTree" class="ztree notselect"></ul>

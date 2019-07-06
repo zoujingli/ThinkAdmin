@@ -32,7 +32,7 @@ class Fans extends Command
      * 需要处理的模块
      * @var array
      */
-    protected $module = ['list', 'black', 'tags'];
+    protected $module = ['list', 'tags', 'black'];
 
     /**
      * 执行指令

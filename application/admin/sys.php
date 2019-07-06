@@ -1,27 +1,35 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
+
+use app\admin\service\NodeService;
+use app\admin\service\OplogService;
+use library\File;
+use think\Db;
+use think\facade\Middleware;
+use think\Request;
 
 if (!function_exists('auth')) {
     /**
      * 节点访问权限检查
      * @param string $node
      * @return boolean
+     * @throws ReflectionException
      */
     function auth($node)
     {
-        $real = \library\tools\Node::get($node);
-        return \app\admin\service\AuthService::checkAuthNode($real);
+        return NodeService::checkAuth($node);
     }
 }
 
@@ -37,7 +45,7 @@ if (!function_exists('sysdata')) {
     function sysdata($name, array $value = null)
     {
         if (is_null($value)) {
-            $data = json_decode(\think\Db::name('SystemData')->where(['name' => $name])->value('value'), true);
+            $data = json_decode(Db::name('SystemData')->where(['name' => $name])->value('value'), true);
             return empty($data) ? [] : $data;
         } else {
             return data_save('SystemData', ['name' => $name, 'value' => json_encode($value, JSON_UNESCAPED_UNICODE)], 'name');
@@ -45,31 +53,16 @@ if (!function_exists('sysdata')) {
     }
 }
 
-if (!function_exists('_sysmsg')) {
-    /**
-     * 增加系统消息
-     * @param string $title 消息标题
-     * @param string $desc 消息描述
-     * @param string $url 访问链接
-     * @param string $node 权限节点
-     * @return boolean
-     */
-    function _sysmsg($title, $desc, $url, $node)
-    {
-        return \app\admin\service\MessageService::add($title, $desc, $url, $node);
-    }
-}
-
-if (!function_exists('_syslog')) {
+if (!function_exists('sysoplog')) {
     /**
      * 写入系统日志
      * @param string $action 日志行为
      * @param string $content 日志内容
      * @return boolean
      */
-    function _syslog($action, $content)
+    function sysoplog($action, $content)
     {
-        return \app\admin\service\OplogService::write($action, $content);
+        return OplogService::write($action, $content);
     }
 }
 
@@ -81,7 +74,7 @@ if (!function_exists('local_image')) {
      */
     function local_image($url)
     {
-        $result = \library\File::down($url);
+        $result = File::down($url);
         if (isset($result['url'])) {
             return $result['url'];
         } else {
@@ -102,7 +95,7 @@ if (!function_exists('base64_image')) {
         try {
             if (preg_match('|^data:image/(.*?);base64,|i', $content)) {
                 list($ext, $base) = explode('|||', preg_replace('|^data:image/(.*?);base64,|i', '$1|||', $content));
-                $info = \library\File::save($predir . md5($base) . '.' . (empty($ext) ? 'tmp' : $ext), base64_decode($base));
+                $info = File::save($predir . md5($base) . '.' . (empty($ext) ? 'tmp' : $ext), base64_decode($base));
                 return $info['url'];
             } else {
                 return $content;
@@ -113,25 +106,16 @@ if (!function_exists('base64_image')) {
     }
 }
 
-// 系统权限检查中间键
-\think\facade\Middleware::add(function (\think\Request $request, \Closure $next) {
-    // 系统消息处理
-    if (($code = $request->get('messagecode')) > 0) \app\admin\service\MessageService::set($code);
-    // 节点忽略跳过
-    $node = \library\tools\Node::current();
-    foreach (\app\admin\service\AuthService::getIgnore() as $str) if (stripos($node, $str) === 0) return $next($request);
-    // 节点权限查询
-    $auth = \think\Db::name('SystemNode')->cache(true, 60)->field('is_auth,is_login')->where(['node' => $node])->find();
-    $info = ['is_auth' => $auth['is_auth'], 'is_login' => $auth['is_auth'] ? 1 : $auth['is_login']];
-    // 登录状态检查
-    if (!empty($info['is_login']) && !\app\admin\service\AuthService::isLogin()) {
-        $message = ['code' => 0, 'msg' => '抱歉，您还没有登录获取访问权限！', 'url' => url('@admin/login')];
-        return $request->isAjax() ? json($message) : redirect($message['url']);
-    }
+// 访问权限检查中间键
+Middleware::add(function (Request $request, \Closure $next) {
     // 访问权限检查
-    if (!empty($info['is_auth']) && !\app\admin\service\AuthService::checkAuthNode($node)) {
-        return json(['code' => 0, 'msg' => '抱歉，您没有访问该模块的权限！']);
-    } else {
+    if (NodeService::checkAuth()) {
         return $next($request);
+    } else {
+        if (NodeService::islogin()) {
+            return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！']);
+        } else {
+            return json(['code' => 0, 'msg' => '抱歉，您还没有登录获取访问权限！', 'url' => url('@admin/login')]);
+        }
     }
 });

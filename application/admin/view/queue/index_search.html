@@ -1,6 +1,6 @@
-{if session('user.username') eq 'admin'}
+{if session('admin_user.username') eq 'admin'}
 <fieldset class="margin-bottom-10">
-    <legend class="layui-bg-cyan">进程守护</legend>
+    <legend>进程守护</legend>
     <div class="layui-code border-0 margin-top-0">
         <p class="color-desc margin-top-10">当前消息队列守护进程运行状态</p>
         {$message|raw|default='--'}
@@ -10,7 +10,7 @@
 </fieldset>
 {/if}
 <fieldset>
-    <legend class="layui-bg-cyan">条件搜索</legend>
+    <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">任务名称</label>

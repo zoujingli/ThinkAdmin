@@ -375,6 +375,7 @@ class Service
      * @param array $data 请求数据
      * @param bool $buildToJson
      * @return array
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     protected function httpPostForJson($url, array $data, $buildToJson = true)
     {
@@ -385,6 +386,7 @@ class Service
      * 以GET获取接口数据并转为数组
      * @param string $url 接口地址
      * @return array
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     protected function httpGetForJson($url)
     {

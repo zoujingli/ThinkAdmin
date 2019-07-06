@@ -3645,8 +3645,8 @@
 <script src="__ROOT__/static/plugs/jquery/jquery.min.js" type="text/javascript"></script>
 <script>
     $(function () {
-        $('li').on('click', function () {
-            var className = $(this).find('i').get(0).className;
+        $('li').on('click', function (className) {
+            className = $(this).find('i').get(0).className;
             if (className) {
                 top.$('[name="{$field}"]').val(className).trigger('change');
                 top.layer.close(top.layer.getFrameIndex(window.name));

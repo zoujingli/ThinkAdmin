@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+// +----------------------------------------------------------------------
+// | ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://demo.thinkadmin.top
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
+::selection {
+  color: #fff !important;
+  background-color: #ec494e !important
+}
+
+::-moz-selection {
+  color: #fff !important;
+  background-color: #ec494e !important
+}
+
+::-webkit-input-placeholder {
+  color: #aaa
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+
+  &-track {
+    background: #ccc !important
+  }
+
+  &-thumb {
+    background-color: #666 !important
+  }
+}
+
+:-webkit-autofill {
+  &, &:hover, &:focus, &:active {
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1) inset !important;
+    -webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;
+    -webkit-transition-delay: 9999s !important;
+    -webkit-text-fill-color: #333 !important
+  }
+}
+
+body {
+  color: #333;
+  font-size: 12px;
+  font-family: '\5FAE\8F6F\96C5\9ED1', 'Microsoft YaHei', 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB', serif;
+
+  a {
+    color: #06C;
+    cursor: pointer;
+
+    &:hover {
+      color: #039;
+    }
+  }
+
+  input::-ms-clear {
+    display: none
+  }
+}
+
+@import "less.console/layout";
+@import "less.console/form";
+@import "less.console/layui";
+@import "less.console/custom";
+@import "less.console/mobile";

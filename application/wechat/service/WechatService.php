@@ -38,12 +38,6 @@ class WechatService extends \We
 {
 
     /**
-     * 接口类型模式
-     * @var string
-     */
-    private static $type = 'WeChat';
-
-    /**
      * 获取微信支付配置
      * @param array|null $options
      * @return array
@@ -91,6 +85,7 @@ class WechatService extends \We
      * @param string $name 静态类名
      * @param array $arguments 参数集合
      * @return mixed
+     * @throws \SoapFault
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -111,8 +106,9 @@ class WechatService extends \We
             return self::instance(substr($name, 5), 'WePay', $config);
         } elseif (substr($name, 0, 6) === 'AliPay') {
             return self::instance(substr($name, 6), 'AliPay', $config);
+        } else {
+            throw new \think\Exception("class {$name} not found");
         }
-        throw new \think\Exception("class {$name} not found");
     }
 
     /**
@@ -121,29 +117,29 @@ class WechatService extends \We
      * @param string $type 接口类型
      * @param array $config 微信配置
      * @return mixed
-     * @throws \SoapFault
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
     public static function instance($name, $type = 'WeChat', $config = [])
     {
-        if (!in_array($type, ['WeChat', 'WeMini', 'WePay', 'AliPay'])) $type = self::$type;
-        if (self::getType() === 'api' || in_array($type, ['WePay', 'AliPay'])) {
-            $class = "\\{$type}\\" . ucfirst(strtolower($name));
-            if (class_exists($class)) return new $class(empty($config) ? self::config() : $config);
-            throw new \think\Exception("Class '{$class}' not found");
+        if (in_array($type, ['WePay', 'AliPay']) || "{$type}{$name}" === 'WeChatPay') {
+            if (class_exists($class = "\\{$type}\\" . ucfirst(strtolower($name)))) {
+                return new $class(empty($config) ? self::config() : $config);
+            } else {
+                throw new \think\Exception("Class {$class} not found");
+            }
         }
         set_time_limit(3600);
         list($appid, $appkey) = [sysconf('wechat_thr_appid'), sysconf('wechat_thr_appkey')];
         $token = strtolower("{$name}-{$appid}-{$appkey}-{$type}");
         if (class_exists('Yar_Client')) {
             return new \Yar_Client(config('wechat.service_url') . "/service/api.client/yar/{$token}");
-        }
-        if (class_exists('SoapClient')) {
+        } elseif (class_exists('SoapClient')) {
             $location = config('wechat.service_url') . "/service/api.client/soap/{$token}";
             return new \SoapClient(null, ['uri' => strtolower($name), 'location' => $location]);
+        } else {
+            throw new \think\Exception("Yar or Soap extensions are not installed.");
         }
-        throw new \think\Exception("Yar or soap extensions are not installed.");
     }
 
     /**
@@ -168,7 +164,7 @@ class WechatService extends \We
     /**
      * 初始化进入授权
      * @param string $url 授权页面URL地址
-     * @param integer $isfull 授权公众号模式
+     * @param integer $isfull 授权微信模式
      * @param boolean $isRedirect 是否进行跳转
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
@@ -218,7 +214,7 @@ class WechatService extends \We
     }
 
     /**
-     * 获取当前公众号APPID
+     * 获取当前微信APPID
      * @return bool|string
      * @throws \think\Exception
      * @throws \think\exception\PDOException

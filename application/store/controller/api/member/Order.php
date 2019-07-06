@@ -1,23 +1,26 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\store\controller\api\member;
 
 use app\store\controller\api\Member;
 use app\store\service\GoodsService;
+use app\store\service\OrderService;
 use library\tools\Data;
 use think\Db;
+use think\exception\HttpResponseException;
 
 /**
  * 订单接口管理
@@ -97,7 +100,7 @@ class Order extends Member
             // 同步商品库存及销量
             foreach (array_unique(array_column($orderList, 'goods_id')) as $goodsId) GoodsService::syncStock($goodsId);
             $this->success('订单创建成功，请补全收货信息后支付！', ['order' => $order]);
-        } catch (\think\exception\HttpResponseException $exception) {
+        } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
             $this->error("创建订单失败，请稍候再试！{$e->getMessage()}");
@@ -141,8 +144,9 @@ class Order extends Member
         if (Db::name('StoreOrder')->where($map)->update($update) !== false) {
             $params = $this->getPayParams($order['order_no'], $order['price_total']);
             $this->success('更新订单会员信息成功！', $params);
+        } else {
+            $this->error('更新订单会员信息失败，请稍候再试！');
         }
-        $this->error('更新订单会员信息失败，请稍候再试！');
     }
 
     /**
@@ -161,7 +165,7 @@ class Order extends Member
         try {
             $param = $this->getPayParams($order['order_no'], $order['price_total']);
             $this->success('获取订单支付参数成功！', $param);
-        } catch (\think\exception\HttpResponseException $exception) {
+        } catch (HttpResponseException $exception) {
             throw  $exception;
         } catch (\Exception $e) {
             $this->error("获取订单支付参数失败，{$e->getMessage()}");
@@ -192,7 +196,9 @@ class Order extends Member
             if ($info['return_code'] === 'SUCCESS' && $info['result_code'] === 'SUCCESS') {
                 return $pay->jsapiParams($info['prepay_id']);
             }
-            if (isset($info['err_code_des'])) throw new \think\Exception($info['err_code_des']);
+            if (isset($info['err_code_des'])) {
+                throw new \think\Exception($info['err_code_des']);
+            }
         } catch (\Exception $e) {
             $this->error("创建订单失败参数失败，{$e->getMessage()}");
         }
@@ -252,12 +258,14 @@ class Order extends Member
                 'cancel_at'    => date('Y-m-d H:i:s'),
                 'cancel_desc'  => '用户主动取消订单！',
             ]);
-            if ($result !== false && \app\store\service\OrderService::syncStock($order['order_no'])) {
+            if ($result !== false && OrderService::syncStock($order['order_no'])) {
                 $this->success('订单取消成功！');
+            } else {
+                $this->error('订单取消失败，请稍候再试！');
             }
-            $this->error('订单取消失败，请稍候再试！');
+        } else {
+            $this->error('该订单状态不允许取消哦~');
         }
-        $this->error('该订单状态不允许取消哦~');
     }
 
     /**
@@ -277,11 +285,14 @@ class Order extends Member
         $order = Db::name('StoreOrder')->where($where)->find();
         if (empty($order)) $this->error('待确认的订单不存在，请稍候再试！');
         if (in_array($order['status'], ['4'])) {
-            $result = Db::name('StoreOrder')->where($where)->update(['status' => '5']);
-            if ($result !== false) $this->success('订单确认成功！');
-            $this->error('订单取确认失败，请稍候再试！');
+            if (Db::name('StoreOrder')->where($where)->update(['status' => '5']) !== false) {
+                $this->success('订单确认成功！');
+            } else {
+                $this->error('订单取确认失败，请稍候再试！');
+            }
+        } else {
+            $this->error('该订单状态不允许确认哦~');
         }
-        $this->error('该订单状态不允许确认哦~');
     }
 
     /**
@@ -292,8 +303,11 @@ class Order extends Member
      */
     public function total()
     {
-        $result = Db::name('StoreOrder')->fieldRaw('mid,status,count(1) count')
-            ->where(['mid' => $this->mid])->group('status')->select();
+        $result = Db::name('StoreOrder')
+            ->fieldRaw('mid,status,count(1) count')
+            ->where(['mid' => $this->mid])
+            ->group('status')
+            ->select();
         $this->success('获取订单统计记录！', $result);
     }
 }

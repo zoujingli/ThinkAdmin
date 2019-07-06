@@ -1,10 +1,10 @@
 {extend name='admin@main'}
 
+{block name="style"}{include file='wechat@news/form-style'}{/block}
+
 {block name='content'}
-<div id="NewsEditor">
-    <!--左侧图文列表 开始-->
+<div id="NewsEditor" class="layui-clear nowrap padding-bottom-30">
     <div class="layui-card news-left">
-        <div class="layui-card-header">图文列表</div>
         <div class="layui-card-body layui-hide">
             <div ng-if="list.length > 0" ng-repeat="x in list">
                 <div class="news-item transition" ng-click="setItem($index,$event)" style="{{x.style}}" ng-class="x.active?'active':''">
@@ -25,23 +25,17 @@
             <a class='article-add transition' ng-click="addItem()" data-text-tip="添加图文"><i class="fa fa-plus"></i></a>
         </div>
     </div>
-    <!--左侧图文列表 结束-->
-    <!--右侧编辑区 开始-->
     <div class="layui-card news-right">
-        <div class="layui-card-header">内容编辑</div>
         <div class="layui-card-body">
-            <form class="layui-form" role="form" name="news" onsubmit="return false">
-
+            <form class="layui-form padding-20" role="form" name="news" onsubmit="return false">
                 <label class="layui-form-item relative block">
                     <span class="color-green">文章标题</span>
                     <input maxlength="64" ng-model="item.title" required placeholder="请在这里输入标题" name='title' class="layui-input">
                 </label>
-
                 <label class="layui-form-item relative block">
                     <span class="color-green">文章作者</span>
                     <input maxlength="64" ng-model="item.author" required placeholder="请输入文章作者" name='author' class="layui-input">
                 </label>
-
                 <div class="layui-form-item label-required-prev">
                     <span class="color-green">图文封面大图片</span>
                     <div class="layui-clear">
@@ -58,32 +52,27 @@
                     </div>
                     <p class="color-desc">封面大图片建议尺寸 900像素 * 500像素</p>
                 </div>
-
                 <div class="layui-form-item label-required-prev">
                     <span class="color-green">图文文章内容</span>
                     <textarea ng-model="item.content" name='content'></textarea>
                 </div>
-
                 <label class="layui-form-item relative block">
                     <span class="help-block">摘要选填，如果不填写会默认抓取正文前54个字</span>
-                    <textarea ng-model="item.digest" name="digest" class="layui-textarea" style="height:80px;line-height:18px;resize:none"></textarea>
+                    <textarea ng-model="item.digest" name="digest" class="layui-textarea" style="height:80px;line-height:18px"></textarea>
                 </label>
-
                 <label class="layui-form-item relative block">
                     <span class="help-block">原文链接 <span class="color-blue">选填</span>，填写之后在图文左下方会出现此链接</span>
                     <input pattern="^(http:\/\/|^https:\/\/|^\/\/)((\w|=|\?|\.|\/|&|-)+)" placeholder="请输入跳转链接地址" ng-model="item.content_source_url" maxlength="200" name='content_source_url' class="layui-input">
                 </label>
-
-                <div class="layui-form-item text-center">
+                <div class="layui-form-item text-center padding-top-30">
                     <input ng-model="x.read_num" type="hidden">
                     <button ng-click="submit()" type="button" class="layui-btn">保存图文</button>
                 </div>
-
             </form>
         </div>
     </div>
-    <!--右侧编辑区 结束-->
 </div>
+
 {/block}
 
 
@@ -224,5 +213,3 @@
     });
 </script>
 {/block}
-
-{block name="style"}{include file='wechat@news/form_style'}{/block}

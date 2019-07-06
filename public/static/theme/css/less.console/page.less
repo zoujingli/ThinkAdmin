@@ -1,0 +1,53 @@
+/* 通用分页 */
+.pagination-container {
+  line-height: 40px;
+
+  > span {
+    color: #666;
+    font-size: 9pt
+  }
+
+  > ul {
+    float: right;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      z-index: 1;
+      display: inline-block;
+
+      &.active {
+        z-index: 2;
+
+        > span {
+          color: #fff;
+          border-color: #098;
+          padding-right: 1px;
+          background: #009688 !important
+        }
+      }
+
+      > a, > span {
+        color: #333;
+        width: 33px;
+        height: 30px;
+        border: 1px solid #dcdcdc;
+        display: inline-block;
+        margin-left: -1px;
+        text-align: center;
+        line-height: 28px
+      }
+
+      > span {
+        background: #dcdcdc;
+        cursor: default
+      }
+
+      > a:hover {
+        background: #dcdcdc;
+        border-color: #dcdcdc
+      }
+    }
+  }
+}

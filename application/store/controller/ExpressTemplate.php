@@ -1,9 +1,21 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://demo.thinkadmin.top
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
 namespace app\store\controller;
 
 use library\Controller;
-use library\tools\Data;
 use think\Db;
 
 /**
@@ -21,21 +33,17 @@ class ExpressTemplate extends Controller
 
     /**
      * 邮费模板管理
-     */
-    public function index()
-    {
-        $this->title = '邮费模板管理';
-    }
-
-    /**
-     * 显示邮费模板
+     * @auth true
+     * @menu true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    protected function _index_get()
+    public function index()
     {
-        $this->provinces = Db::name('StoreExpressProvince')->where(['status' => '1'])->order('sort asc,id desc')->column('title');
+        $this->title = '邮费模板管理';
+        $filename = env('root_path') . 'public/static/plugs/jquery/area/area.json';
+        $this->provinces = array_column(json_decode(file_get_contents($filename), true), 'name');
         $this->list = Db::name($this->table)->where(['is_default' => '0'])->select();
         foreach ($this->list as &$item) $item['rule'] = explode(',', $item['rule']);
         $this->default = Db::name($this->table)->where(['is_default' => '1'])->find();
@@ -44,10 +52,11 @@ class ExpressTemplate extends Controller
 
     /**
      * 保存邮费模板
+     * @auth true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    protected function _index_post()
+    public function save()
     {
         list($list, $idxs, $post) = [[], [], $this->request->post()];
         foreach (array_keys($post) as $key) if (stripos($key, 'order_reduction_state_') !== false) {

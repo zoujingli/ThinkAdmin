@@ -49,7 +49,7 @@
             <label class="layui-form-label">菜单图标</label>
             <div class="layui-input-block">
                 <div class="layui-input-inline">
-                    <input placeholder="请输入或选择图标" onchange="$(this).parent().next().find('i').get(0).className=this.value" name="icon" value='{$vo.icon|default=""}' class="layui-input">
+                    <input placeholder="请输入或选择图标" name="icon" value='{$vo.icon|default=""}' class="layui-input">
                 </div>
                 <span style="padding:0 12px;min-width:45px" class='layui-btn layui-btn-primary'>
                     <i style="font-size:1.2em" class='{$vo.icon|default=""} margin-0'></i>
@@ -74,6 +74,9 @@
 {block name='script'}
 <script>
     require(['jquery.autocompleter'], function () {
+        $('[name="icon"]').on('change', function () {
+            $(this).parent().next().find('i').get(0).className = this.value
+        });
         $('input[name=url]').autocompleter({
             limit: 6, highlightMatches: true, template: '{{ label }} <span> {{ title }} </span>', source: (function (subjects, data) {
                 for (var i in subjects) data.push({value: subjects[i].node, label: subjects[i].node, title: subjects[i].title});

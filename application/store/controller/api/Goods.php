@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\store\controller\api;
@@ -66,7 +67,7 @@ class Goods extends Controller
             $where[] = ['cate_id', 'eq', $this->request->post('cate_id')];
         }
         $field = 'id,title,logo,cate_id,image,number_sales,number_stock,content,specs,lists';
-        $list = Db::name('StoreGoods')->field($field)->where($where)->order('sort asc,id desc')->select();
+        $list = Db::name('StoreGoods')->field($field)->where($where)->order('sort desc,id desc')->select();
         $goodsList = Db::name('StoreGoodsList')->whereIn('goods_id', array_unique(array_column($list, 'id')))->select();
         foreach ($list as &$vo) {
             $vo['list'] = [];
@@ -97,8 +98,11 @@ class Goods extends Controller
         $goods['specs'] = json_decode($goods['specs'], true);
         $goods['lists'] = json_decode($goods['lists'], true);
         $goods['list'] = Db::name('StoreGoodsList')->where(['goods_id' => $goods_id])->select();
-        if (empty($goods['list'])) $this->error('指定商品规格不存在，请更换商品ID重试！');
-        $this->success('获取商品信息成功！', $goods);
+        if (empty($goods['list'])) {
+            $this->error('指定商品规格不存在，请更换商品ID重试！');
+        } else {
+            $this->success('获取商品信息成功！', $goods);
+        }
     }
 
     /**
@@ -111,7 +115,7 @@ class Goods extends Controller
     {
         $where = ['is_deleted' => '0', 'status' => '1'];
         $field = 'id cate_id,logo cate_logo,title cate_title';
-        $list = Db::name('StoreGoodsCate')->field($field)->where($where)->order('sort asc,id desc')->select();
+        $list = Db::name('StoreGoodsCate')->field($field)->where($where)->order('sort desc,id desc')->select();
         $this->success('获取商品分类成功！', ['list' => $list]);
     }
 

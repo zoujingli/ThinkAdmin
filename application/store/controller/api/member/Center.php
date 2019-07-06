@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\store\controller\api\member;
@@ -43,10 +44,11 @@ class Center extends Member
             $data['username'] = emoji_encode($this->request->post('username'));
         }
         if (empty($data)) $this->error('没有需要修改的数据哦！');
-        if (data_save('StoreMember', array_merge($data, ['id' => $this->mid]), 'id')) {
+        if (data_save('StoreMember', array_merge($data, ['id' => $this->mid]), 'id') !== false) {
             $this->success('会员资料更新成功！', $this->getMember());
+        } else {
+            $this->error('会员资料更新失败，请稍候再试！');
         }
-        $this->error('会员资料更新失败，请稍候再试！');
     }
 
     /**
@@ -82,8 +84,9 @@ class Center extends Member
         if (ExtendService::sendSms($this->mid, $phone, str_replace('{code}', $code, $content))) {
             $dtime = ($cache['time'] + 120 < time()) ? 0 : (120 - time() + $cache['time']);
             $this->success('短信验证码发送成功！', ['time' => $dtime]);
+        } else {
+            $this->error('短信发送失败，请稍候再试！');
         }
-        $this->error('短信发送失败，请稍候再试！');
     }
 
     /**
@@ -100,9 +103,12 @@ class Center extends Member
             $where = ['id' => $this->member['id']];
             if (Db::name('StoreMember')->where($where)->update(['phone' => $phone]) !== false) {
                 $this->success('手机绑定登录成功！');
+            } else {
+                $this->error('手机绑定登录失败，请稍候再试！');
             }
-        } else $this->error('短信验证码验证失败！');
-        $this->error('手机绑定登录失败，请稍候再试！');
+        } else {
+            $this->error('短信验证码验证失败！');
+        }
     }
 
     /**

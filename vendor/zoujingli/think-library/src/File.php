@@ -15,22 +15,30 @@
 namespace library;
 
 use library\tools\Options;
+use think\Exception;
+use think\facade\Log;
 
 /**
  * 文件管理逻辑
  * Class File
  * @package library
- * @method bool has($name) static 判断文件上否已经上传
- * @method array save($name, $content) static 保存二进制文件
- * @method string url($name) static 获取文件对应地址
- * @method string get($name) static 获取文件二进制内容
- * @method string base($name) static 获取文件存储基础目录
- * @method string remove($name) static 删除已经上传的文件
- * @method string upload($client) static 获取文件上传地址
- * @method string setBucket($name) static 动态创建指定空间名称
+ * @method bool has($name, $safe = false) static 判断文件是否已经上传
+ * @method array save($name, $content, $safe = false) static 保存二进制文件
+ * @method array info($name, $safe = false) static 获取文件信息
+ * @method string url($name, $safe = false) static 获取文件URL地址
+ * @method string get($name, $safe = false) static 获取文件二进制内容
+ * @method string base($name, $safe = false) static 获取文件存储根目录
+ * @method string path($name, $safe = false) static 获取文件存储物理路径
+ * @method string remove($name, $safe = false) static 删除已经上传的文件
+ * @method string upload($client = false) static 获取文件上传目标地址
+ * @method string setBucket($name) static 阿里云OSS专属创建Bucket空间
  */
 class File
 {
+    const DEVER_LOCAL = 'local';
+    const DERVER_QINIU = 'qiniu';
+    const DERVER_ALIOSS = 'oss';
+
     /**
      * 当前配置对象
      * @var Options
@@ -77,21 +85,21 @@ class File
      * @param string $name
      * @param array $arguments
      * @return mixed
-     * @throws \think\Exception
+     * @throws Exception
      */
     public static function __callStatic($name, $arguments)
     {
         if (method_exists($class = self::instance(self::$config->get('storage_type')), $name)) {
             return call_user_func_array([$class, $name], $arguments);
         }
-        throw new \think\Exception("File driver method not exists: " . get_class($class) . "->{$name}");
+        throw new Exception("File driver method not exists: " . get_class($class) . "->{$name}");
     }
 
     /**
      * 设置文件驱动名称
      * @param string $name
      * @return \library\driver\Local
-     * @throws \think\Exception
+     * @throws Exception
      */
     public static function instance($name)
     {
@@ -101,7 +109,7 @@ class File
         if (class_exists($object = __NAMESPACE__ . "\\driver\\{$class}")) {
             return self::$object[$class] = new $object;
         }
-        throw new \think\Exception("File driver [{$class}] does not exist.");
+        throw new Exception("File driver [{$class}] does not exist.");
     }
 
     /**
@@ -167,7 +175,7 @@ class File
             if (empty($force) && $file->has($name)) return $file->info($name);
             return $file->save($name, file_get_contents($url));
         } catch (\Exception $e) {
-            \think\facade\Log::error(__METHOD__ . " File download failed [ {$url} ] {$e->getMessage()}");
+            Log::error(__METHOD__ . " File download failed [ {$url} ] {$e->getMessage()}");
             return ['url' => $url, 'hash' => md5($url), 'key' => $url, 'file' => $url];
         }
     }
@@ -175,13 +183,17 @@ class File
     /**
      * 文件储存初始化
      * @param array $data
-     * @throws \think\Exception
+     * @throws Exception
      * @throws \think\exception\PDOException
      */
     public static function init($data = [])
     {
         if (empty(self::$config) && function_exists('sysconf')) {
-            foreach (self::$params as $arr) foreach (array_keys($arr) as $key) $data[$key] = sysconf($key);
+            foreach (self::$params as $arr) {
+                foreach (array_keys($arr) as $key) {
+                    $data[$key] = sysconf($key);
+                }
+            }
         }
         self::$config = new Options($data);
     }
@@ -193,5 +205,5 @@ try {
     File::init();
     // \think\facade\Log::info(__METHOD__ . ' File storage initialization success');
 } catch (\Exception $e) {
-    \think\facade\Log::error(__METHOD__ . " File storage initialization exception. [{$e->getMessage()}]");
+    Log::error(__METHOD__ . " File storage initialization exception. [{$e->getMessage()}]");
 }

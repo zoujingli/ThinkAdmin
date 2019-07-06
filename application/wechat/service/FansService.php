@@ -27,7 +27,7 @@ class FansService
     /**
      * 增加或更新粉丝信息
      * @param array $user 粉丝信息
-     * @param string $appid 公众号APPID
+     * @param string $appid 微信APPID
      * @return boolean
      * @throws \think\Exception
      * @throws \think\exception\PDOException

@@ -1,0 +1,32 @@
+<form onsubmit="return false;" data-auto="true" action="{:url('save')}" method="post" class='layui-form layui-card' autocomplete="off">
+
+    <div class="layui-card-body padding-40">
+        <label class="layui-form-item block relative">
+            <span class="color-green margin-right-10">商城展示名称</span><span class="nowrap color-desc">StoreTitle</span>
+            <input name="store_title" required placeholder="请输入商城展示名称" value="{:sysconf('store_title')}" class="layui-input">
+            <p class="help-block">订单支付等待时长，新下订单未在此时间内容完成支付将会被自动取消</p>
+        </label>
+
+        <label class="layui-form-item margin-top-20 block relative">
+            <span class="color-green margin-right-10">未订单的支付等待时长（小时）</span><span class="nowrap color-desc">OrderWaitTime</span>
+            <input onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" name="store_order_wait_time" required placeholder="请输入订单支付等待时长" value="{:sysconf('store_order_wait_time')}" class="layui-input">
+            <p class="help-block">订单支付等待时长，新下订单未在此时间内容完成支付将会被自动取消</p>
+        </label>
+
+        <label class="layui-form-item margin-top-20 block relative">
+            <span class="color-green margin-right-10">已取消的订单清理时长（小时）</span><span class="nowrap color-desc">OrderClearTime</span>
+            <input onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" name="store_order_clear_time" required placeholder="请输入已取消订单清理时长" value="{:sysconf('store_order_clear_time')}" class="layui-input">
+            <p class="help-block">已取消订单清理时长，已取消未支付订单将在此时间点将被自动清理掉</p>
+        </label>
+
+        <label class="layui-form-item margin-top-20 block relative">
+            <span class="color-green margin-right-10">已发货订单自动确认收货时长（小时）</span><span class="nowrap color-desc">OrderConfirmTime</span>
+            <input onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" name="store_order_confirm_time" required placeholder="请输入已发货订单自动确认收货时长" value="{:sysconf('store_order_confirm_time')}" class="layui-input">
+            <p class="help-block">已取消订单清理时长，已取消未支付订单将在此时间点将被自动清理掉</p>
+        </label>
+
+        <div class="layui-form-item text-center margin-top-20">
+            <button class="layui-btn" type="submit">保存配置</button>
+        </div>
+    </div>
+</form>

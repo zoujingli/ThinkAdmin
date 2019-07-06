@@ -1,13 +1,12 @@
 {extend name="admin@index/index"}
 
 {block name="body"}
-<div class="login-container full-height" data-supersized="__ROOT__/static/theme/img/login/bg1.jpg,__ROOT__/static/theme/img/login/bg2.jpg">
+<div class="login-container" data-supersized="__ROOT__/static/theme/img/login/bg1.jpg,__ROOT__/static/theme/img/login/bg2.jpg">
     <div class="header notselect layui-hide-xs">
-        <a href="{:url('@')}" class="title">{:sysconf('app_name')} <span class="padding-left-5 font-s10">{:sysconf('app_version')}</span></a>
-        <ul>
-            <li class="layui-hide"><a target="_blank" href="http://document.framework.thinkadmin.top">在线帮助</a></li>
-            <li><a target="_blank" href="https://www.google.cn/chrome">推荐使用谷歌浏览器</a></li>
-        </ul>
+        <a href="{:url('@')}" class="title">{:sysconf('app_name')}<span class="padding-left-5 font-s10">{:sysconf('app_version')}</span></a>
+        <a class="pull-right layui-anim layui-anim-fadein" href='https://gitee.com/zoujingli/ThinkAdmin'>
+            <img src='https://gitee.com/zoujingli/ThinkAdmin/widgets/widget_1.svg' alt='Fork me on Gitee'>
+        </a>
     </div>
     <form data-login-form onsubmit="return false;" method="post" class="layui-anim layui-anim-upbit" autocomplete="off">
         <h2 class="notselect">系统管理</h2>
@@ -31,8 +30,9 @@
         </ul>
     </form>
     <div class="footer notselect">
+        <p class="layui-hide-xs"><a target="_blank" href="https://www.google.cn/chrome">推荐使用谷歌浏览器</a></p>
         {:sysconf('site_copy')}
-        {if sysconf('miitbeian')}<span>&nbsp;|&nbsp;</span><a target="_blank" href="http://www.miitbeian.gov.cn">{:sysconf('miitbeian')}</a>{/if}
+        {if sysconf('miitbeian')}<span class="padding-5">|</span><a target="_blank" href="http://www.miitbeian.gov.cn">{:sysconf('miitbeian')}</a>{/if}
     </div>
 </div>
 {/block}

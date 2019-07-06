@@ -2,8 +2,8 @@
 
 {block name="content"}
 <div class="think-box-shadow">
-    <table class="layui-table" lay-skin="line">
-        <caption class="margin-bottom-10 text-left">{include file='member/index_search'}</caption>
+    {include file='member/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>
@@ -20,7 +20,9 @@
         <tbody>
         {foreach $list as $key=>$vo}
         <tr>
-            <td class='list-table-check-td think-checkbox'><input class="list-check-box" value='{$vo.id}' type='checkbox'></td>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
             <td class='text-left nowrap'>
                 {notempty name='vo.headimg'}
                 <img data-tips-image style="width:20px;height:20px;vertical-align:top" src="{$vo.headimg|default=''}" class="margin-right-5">

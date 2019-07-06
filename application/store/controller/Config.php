@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 开源项目：https://gitee.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\store\controller;
@@ -27,35 +28,29 @@ class Config extends Controller
 
     /**
      * 商城参数配置
+     * @auth true
+     * @menu true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
     public function index()
     {
-        $this->applyCsrfToken();
         $this->title = '商城参数配置';
-        if ($this->request->isGet()) {
-            $this->query = ExtendService::querySmsBalance();
-            $this->fetch();
-        } else {
-            foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-            $this->success('商城参数配置保存成功！');
-        }
+        $this->applyCsrfToken('save');
+        $this->query = ExtendService::querySmsBalance();
+        $this->fetch();
     }
 
     /**
-     * 商城短信配置
+     * 保存商城参数
+     * @auth true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function sms()
+    public function save()
     {
-        $this->applyCsrfToken();
-        $this->title = '商城短信配置';
-        if ($this->request->isGet()) {
-            $this->query = ExtendService::querySmsBalance();
-            $this->fetch();
-        } else {
+        if ($this->request->isPost()) {
+            $this->applyCsrfToken('save');
             foreach ($this->request->post() as $k => $v) sysconf($k, $v);
             $this->success('商城短信配置保存成功！');
         }

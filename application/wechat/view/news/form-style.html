@@ -1,0 +1,84 @@
+<style>
+    .news-left {
+        width: 300px;
+        float: left;
+        margin-right: 15px;
+    }
+
+    .news-right {
+        overflow: hidden;
+        width: 980px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .news-left .news-item {
+        height: 150px;
+        cursor: pointer;
+        max-width: 270px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid #ccc;
+        background-size: cover;
+        background-position: center center
+    }
+
+    .news-left .news-item.active {
+        border: 1px solid #44b549 !important
+    }
+
+    .news-left .article-add {
+        color: #999;
+        display: block;
+        font-size: 22px;
+        text-align: center
+    }
+
+    .news-left .article-add:hover {
+        color: #666
+    }
+
+    .news-left .news-title {
+        bottom: 0;
+        color: #fff;
+        width: 272px;
+        display: block;
+        padding: 0 5px;
+        max-height: 6em;
+        overflow: hidden;
+        margin-left: -1px;
+        position: absolute;
+        text-overflow: ellipsis;
+        background: rgba(0, 0, 0, .7)
+    }
+
+    .news-left .news-item a {
+        color: #fff;
+        width: 30px;
+        height: 30px;
+        float: right;
+        font-size: 12px;
+        margin-top: -1px;
+        line-height: 34px;
+        text-align: center;
+        margin-right: -1px;
+        background-color: rgba(0, 0, 0, .5)
+    }
+
+    .news-left .news-item:hover a {
+        display: inline-block !important
+    }
+
+    .news-left .news-item a:hover {
+        text-decoration: none;
+        background-color: #0C0C0C
+    }
+
+    .news-right .upload-image-box {
+        width: 130px;
+        height: 90px;
+        border: 1px solid rgba(125, 125, 125, .1);
+        background: url("__ROOT__/static/plugs/uploader/theme/image.png") no-repeat center center;
+        background-size: cover;
+    }
+</style>

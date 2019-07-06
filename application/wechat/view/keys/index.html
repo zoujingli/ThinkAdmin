@@ -2,20 +2,20 @@
 
 {block name="button"}
 
-<!--{if auth("wechat/keys/add")}-->
+{if auth("wechat/keys/add")}
 <button data-open="{:url('add')}" class='layui-btn layui-btn-sm layui-btn-primary'>添加规则</button>
-<!--{/if}-->
+{/if}
 
-<!--{if auth("wechat/keys/del")}-->
-<button data-action='{:url("del")}' data-rule="id#{key}" data-csrf="{:systoken('wechat/keys/del')}" data-confirm="确定要删除这些规则吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除规则</button>
-<!--{/if}-->
+{if auth("wechat/keys/remove")}
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('wechat/keys/remove')}" data-confirm="确定要删除这些规则吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除规则</button>
+{/if}
 
 {/block}
 
 {block name='content'}
 <div class="think-box-shadow">
-    <table class="layui-table" lay-skin="line">
-        <caption class="margin-bottom-10 text-left">{include file='keys/index_search'}</caption>
+    {include file='keys/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>
@@ -79,8 +79,8 @@
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('wechat/keys/resume')}">启 用</a>
                 {/if}
 
-                {if auth("wechat/keys/del")}
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('del')}" data-value="id#{$vo.id}" data-csrf="{:systoken('wechat/keys/del')}">删 除</a>
+                {if auth("wechat/keys/remove")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('wechat/keys/remove')}">删 除</a>
                 {/if}
 
             </td>

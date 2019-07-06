@@ -1,7 +1,7 @@
 {extend name="admin@main"}
 
 {block name="content"}
-<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card ' autocomplete="off" lay-filter="payment" style="max-width:1000px">
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card ' autocomplete="off" lay-filter="payment">
 
     <div class="layui-card-body think-box-shadow">
         <div class="padding-left-40 padding-right-30">
@@ -55,7 +55,7 @@
 
 {block name="script"}
 <script>
-    (function () {
+    (new function () {
         form.render();
         this.type = "{:sysconf('wechat_mch_ssl_type')}" || 'p12';
         form.val('payment', {wechat_mch_ssl_type: this.type});
@@ -79,6 +79,6 @@
                 }
             }, 300);
         }).trigger('change');
-    })({});
+    });
 </script>
 {/block}

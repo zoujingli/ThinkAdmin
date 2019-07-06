@@ -3,13 +3,14 @@ namespace Qiniu\Tests;
 
 use Qiniu\Processing\Operation;
 use Qiniu\Processing\PersistentFop;
+use PHPUnit\Framework\TestCase;
 
-class FopTest extends \PHPUnit_Framework_TestCase
+class FopTest extends TestCase
 {
     public function testExifPub()
     {
-        $fop = new Operation('testres.qiniudn.com');
-        list($exif, $error) = $fop->execute('gogopher.jpg', 'exif');
+        $fop = new Operation('7xkv1q.com1.z0.glb.clouddn.com');
+        list($exif, $error) = $fop->execute('grape.jpg', 'exif');
         $this->assertNull($error);
         $this->assertNotNull($exif);
     }
@@ -26,12 +27,12 @@ class FopTest extends \PHPUnit_Framework_TestCase
     public function testbuildUrl()
     {
         $fops = 'imageView2/2/h/200';
-        $fop = new Operation('testres.qiniudn.com');
-        $url = $fop->buildUrl('gogopher.jpg', $fops);
-        $this->assertEquals($url, 'http://testres.qiniudn.com/gogopher.jpg?imageView2/2/h/200');
+        $fop = new Operation('7xkv1q.com1.z0.glb.clouddn.com');
+        $url = $fop->buildUrl('grape.jpg', $fops);
+        $this->assertEquals($url, 'http://7xkv1q.com1.z0.glb.clouddn.com/grape.jpg?imageView2/2/h/200');
 
         $fops = array('imageView2/2/h/200', 'imageInfo');
-        $url = $fop->buildUrl('gogopher.jpg', $fops);
-        $this->assertEquals($url, 'http://testres.qiniudn.com/gogopher.jpg?imageView2/2/h/200|imageInfo');
+        $url = $fop->buildUrl('grape.jpg', $fops);
+        $this->assertEquals($url, 'http://7xkv1q.com1.z0.glb.clouddn.com/grape.jpg?imageView2/2/h/200|imageInfo');
     }
 }

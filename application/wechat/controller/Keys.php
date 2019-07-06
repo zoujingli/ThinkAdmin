@@ -17,6 +17,7 @@ namespace app\wechat\controller;
 use app\wechat\service\WechatService;
 use library\Controller;
 use think\Db;
+use think\exception\HttpResponseException;
 
 /**
  * 回复规则管理
@@ -42,7 +43,8 @@ class Keys extends Controller
 
     /**
      * 回复规则管理
-     * @return array|string
+     * @auth true
+     * @menu true
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -57,7 +59,7 @@ class Keys extends Controller
                 $wechat = WechatService::WeChatQrcode();
                 $result = $wechat->create($this->request->get('keys', ''));
                 $this->success('生成二维码成功！', "javascript:$.previewImage('{$wechat->url($result['ticket'])}')");
-            } catch (\think\exception\HttpResponseException $exception) {
+            } catch (HttpResponseException $exception) {
                 throw  $exception;
             } catch (\Exception $e) {
                 $this->error("生成二维码失败，请稍候再试！<br> {$e->getMessage()}");
@@ -66,7 +68,7 @@ class Keys extends Controller
         // 关键字列表显示
         $this->title = '回复规则管理';
         $query = $this->_query($this->table)->like('keys,type')->equal('status')->dateBetween('create_at');
-        $query->whereNotIn('keys', ['subscribe', 'default'])->order('sort asc,id desc')->page();
+        $query->whereNotIn('keys', ['subscribe', 'default'])->order('sort desc,id desc')->page();
     }
 
     /**
@@ -75,42 +77,39 @@ class Keys extends Controller
      */
     protected function _index_page_filter(&$data)
     {
-        try {
-            foreach ($data as &$vo) {
-                $vo['qrc'] = url('@wechat/keys/index') . "?action=qrc&keys={$vo['keys']}";
-                $vo['type'] = isset($this->types[$vo['type']]) ? $this->types[$vo['type']] : $vo['type'];
-            }
-        } catch (\Exception $e) {
-            $this->error($e->getMessage());
+        foreach ($data as &$vo) {
+            $vo['qrc'] = url('@wechat/keys/index') . "?action=qrc&keys={$vo['keys']}";
+            $vo['type'] = isset($this->types[$vo['type']]) ? $this->types[$vo['type']] : $vo['type'];
         }
     }
 
     /**
      * 添加关键字
-     * @return string
+     * @auth true
      */
     public function add()
     {
         $this->applyCsrfToken();
         $this->title = '添加关键字规则';
-        return $this->_form($this->table, 'form');
+        $this->_form($this->table, 'form');
     }
 
     /**
      * 编辑关键字
-     * @return string
+     * @auth true
      */
     public function edit()
     {
         $this->applyCsrfToken();
         $this->title = '编辑关键字规则';
-        return $this->_form($this->table, 'form');
+        $this->_form($this->table, 'form');
     }
 
     /**
      * 删除关键字
+     * @auth true
      */
-    public function del()
+    public function remove()
     {
         $this->applyCsrfToken();
         $this->_delete($this->table);
@@ -118,6 +117,7 @@ class Keys extends Controller
 
     /**
      * 禁用关键字
+     * @auth true
      */
     public function forbid()
     {
@@ -127,6 +127,7 @@ class Keys extends Controller
 
     /**
      * 启用关键字
+     * @auth true
      */
     public function resume()
     {
@@ -136,25 +137,24 @@ class Keys extends Controller
 
     /**
      * 配置关注回复
-     * @return array|string
+     * @auth true
      */
     public function subscribe()
     {
         $this->applyCsrfToken();
         $this->title = '编辑关注回复规则';
-        return $this->_form($this->table, 'form', 'keys', [], ['keys' => 'subscribe']);
+        $this->_form($this->table, 'form', 'keys', [], ['keys' => 'subscribe']);
     }
-
 
     /**
      * 配置默认回复
-     * @return array|string
+     * @auth true
      */
     public function defaults()
     {
         $this->applyCsrfToken();
         $this->title = '编辑默认回复规则';
-        return $this->_form($this->table, 'form', 'keys', [], ['keys' => 'default']);
+        $this->_form($this->table, 'form', 'keys', [], ['keys' => 'default']);
     }
 
     /**
@@ -166,7 +166,9 @@ class Keys extends Controller
         if ($this->request->isPost() && isset($data['keys'])) {
             $db = Db::name($this->table)->where('keys', $data['keys']);
             empty($data['id']) || $db->where('id', 'neq', $data['id']);
-            if ($db->count() > 0) $this->error('关键字已经存在，请使用其它关键字！');
+            if ($db->count() > 0) {
+                $this->error('关键字已经存在，请使用其它关键字！');
+            }
         }
         if ($this->request->isGet()) {
             $this->msgTypes = $this->types;

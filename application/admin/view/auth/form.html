@@ -14,8 +14,8 @@
         </div>
     </div>
     <div class="hr-line-dashed"></div>
+    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
     <div class="layui-form-item text-center">
-        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>

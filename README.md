@@ -3,7 +3,7 @@
 
 大道至简 · 原生框架
 --
-ThinkAdmin V4.0 是一个基于 ThinkPHP5.1 开发的后台管理系统。
+ThinkAdmin V4.1 是一个基于 ThinkPHP5.1 开发的后台管理系统。
 
 我们致力于二次开发底层框架，提供完整的组件及API，基于此框架可以快速开发应用。
 
@@ -25,6 +25,22 @@ PHP 开发技术交流（ QQ 群 513350915）
 
 [![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
 
+
+#### 权限管理
+* 此版本的权限使用注解实现管理
+* 注释必需使用标准的块注释，如：
+```php
+/**
+* 操作的名称
+* @auth true  # 表示需要验证权限
+* @menu true  # 在菜单编辑的节点可选项
+*/
+public function index(){
+   // @todo
+}
+```
+* 其中`@auth true`表示需要权限验证
+* 其中`@menu true`显示在菜单编辑的节点可选项
 
 代码仓库
 --

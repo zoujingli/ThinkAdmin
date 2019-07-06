@@ -2,8 +2,9 @@
 namespace Qiniu\Tests;
 
 use Qiniu;
+use PHPUnit\Framework\TestCase;
 
-class Crc32Test extends \PHPUnit_Framework_TestCase
+class Crc32Test extends TestCase
 {
     public function testData()
     {
