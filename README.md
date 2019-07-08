@@ -97,7 +97,7 @@ public function index(){
 
 赞助打赏
 --
-![赞助](http://zoujingli.oschina.io/static/pay.png)
+![赞助](http://static.thinkadmin.top/pay.png)
 
 项目版本
 --
