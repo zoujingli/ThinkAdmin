@@ -26,9 +26,12 @@ PHP 开发技术交流（ QQ 群 513350915）
 [![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
 
 
-#### 权限管理
+权限管理
+--
 * 此版本的权限使用注解实现管理
-* 注释必需使用标准的块注释，如：
+* 注释必需使用标准的块注释，如下案例
+* 其中`@auth true`表示访问需要权限验证
+* 其中`@menu true`显示在菜单编辑的节点可选项
 ```php
 /**
 * 操作的名称
@@ -39,8 +42,6 @@ public function index(){
    // @todo
 }
 ```
-* 其中`@auth true`表示需要权限验证
-* 其中`@menu true`显示在菜单编辑的节点可选项
 
 代码仓库
 --
@@ -97,7 +98,6 @@ public function index(){
 赞助打赏
 --
 ![赞助](http://zoujingli.oschina.io/static/pay.png)
-
 
 项目版本
 --
