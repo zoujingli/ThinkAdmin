@@ -7,3 +7,5 @@
 /nbproject
 /composer.lock
 /static/upload
+/public/upload
+/safefile
