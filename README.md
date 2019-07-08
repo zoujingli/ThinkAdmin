@@ -101,6 +101,7 @@ public function index(){
 
 项目版本
 --
+体验账号及密码都是`admin`
 * v1 基于 ThinkPHP5.0 开发
 >* 在线体验地址：https://v1.thinkadmin.top
 >* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v1
