@@ -26,16 +26,6 @@ body {
 .login-container {
   height: 100%;
 
-  form input {
-    &, &:-webkit-autofill, &:-webkit-autofill:active,
-    &:-webkit-autofill:focus, &:-webkit-autofill:hover {
-      box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .3) inset;
-      -webkit-text-fill-color: #fff !important;
-      -webkit-transition-delay: 9999s !important;
-      -webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;
-    }
-  }
-
   .header {
     top: 0;
     left: 0;
@@ -102,23 +92,29 @@ body {
         padding: 12px 15px 13px 20px;
       }
 
+      input {
+        &, &:-webkit-autofill, &:-webkit-autofill:active,
+        &:-webkit-autofill:focus, &:-webkit-autofill:hover {
+          color: #fff;
+          height: 45px;
+          padding: 0 15px;
+          font-size: 14px;
+          line-height: 1em;
+          text-indent: 35px;
+          border-radius: 6px;
+          letter-spacing: 1px;
+          background: rgba(0, 0, 0, .1);
+          text-shadow: #000 .1em .1em .1em;
+          -webkit-text-fill-color: #fff !important;
+          -webkit-transition-delay: 9999s !important;
+          box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .3) inset !important;
+          -webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;
+        }
+      }
+
       span {
         letter-spacing: 1px;
         color: #ff0 !important;
-      }
-
-      input {
-        color: #fff;
-        height: 45px;
-        padding: 0 15px;
-        font-size: 14px;
-        text-indent: 35px;
-        line-height: 1em;
-        border-radius: 6px;
-        letter-spacing: 1px;
-        background: rgba(0, 0, 0, .1);
-        text-shadow: #000 .1em .1em .1em;
-        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .3) inset;
       }
 
       button {
@@ -135,8 +131,8 @@ body {
   .footer {
     left: 0;
     bottom: 0;
-    width: 100%;
     color: #fff;
+    width: 100%;
     position: absolute;
     text-align: center;
     line-height: 30px;
