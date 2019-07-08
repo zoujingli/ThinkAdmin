@@ -237,8 +237,8 @@ fieldset legend {
   top: 31px;
   padding: 0;
 }
-.layui-form .layui-input,
-.layui-form .layui-select {
+.layui-form input.layui-input,
+.layui-form select.layui-select {
   line-height: 1em;
 }
 /* 表单验证异常提示 */
