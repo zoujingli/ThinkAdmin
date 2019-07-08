@@ -9,3 +9,5 @@
 !composer.json
 /composer.lock
 /static/upload
+/public/upload
+/safefile
