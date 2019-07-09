@@ -93,21 +93,26 @@ body {
       }
 
       input {
-        &, &:-webkit-autofill, &:-webkit-autofill:active,
-        &:-webkit-autofill:focus, &:-webkit-autofill:hover {
-          color: #fff;
-          height: 45px;
-          padding: 0 15px;
-          font-size: 14px;
-          line-height: 1em;
-          text-indent: 35px;
-          border-radius: 6px;
-          letter-spacing: 1px;
-          background: rgba(0, 0, 0, .1);
+        color: #fff;
+        height: 45px;
+        padding: 0 15px;
+        font-size: 14px;
+        line-height: 1em;
+        text-indent: 35px;
+        border-radius: 6px;
+        letter-spacing: 1px;
+        background: rgba(0, 0, 0, .12);
+        text-shadow: #000 .1em .1em .1em;
+        -webkit-text-fill-color: #fff !important;
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .3) inset !important;
+
+        &:hover, &:focus, &:active,
+        &:-webkit-autofill, &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus, &:-webkit-autofill:active {
           text-shadow: #000 .1em .1em .1em;
+          box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .3) inset !important;
           -webkit-text-fill-color: #fff !important;
           -webkit-transition-delay: 9999s !important;
-          box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .3) inset !important;
           -webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;
         }
       }

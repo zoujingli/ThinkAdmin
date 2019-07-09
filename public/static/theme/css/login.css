@@ -70,11 +70,7 @@ body {
   position: absolute;
   padding: 12px 15px 13px 20px;
 }
-.login-container form ul li input,
-.login-container form ul li input:-webkit-autofill,
-.login-container form ul li input:-webkit-autofill:active,
-.login-container form ul li input:-webkit-autofill:focus,
-.login-container form ul li input:-webkit-autofill:hover {
+.login-container form ul li input {
   color: #fff;
   height: 45px;
   padding: 0 15px;
@@ -83,11 +79,22 @@ body {
   text-indent: 35px;
   border-radius: 6px;
   letter-spacing: 1px;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.12);
   text-shadow: #000 0.1em 0.1em 0.1em;
   -webkit-text-fill-color: #fff !important;
-  -webkit-transition-delay: 9999s !important;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3) inset !important;
+}
+.login-container form ul li input:hover,
+.login-container form ul li input:focus,
+.login-container form ul li input:active,
+.login-container form ul li input:-webkit-autofill,
+.login-container form ul li input:-webkit-autofill:hover,
+.login-container form ul li input:-webkit-autofill:focus,
+.login-container form ul li input:-webkit-autofill:active {
+  text-shadow: #000 0.1em 0.1em 0.1em;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3) inset !important;
+  -webkit-text-fill-color: #fff !important;
+  -webkit-transition-delay: 9999s !important;
   -webkit-transition: color 9999s ease-out, background-color 9999s ease-out !important;
 }
 .login-container form ul li span {
