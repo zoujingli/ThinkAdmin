@@ -38,7 +38,7 @@ if (in_array(request()->rootDomain(), ['ctolog.com', 'thinkadmin.top'])) {
     Route::post('admin/menu/forbid', function () {
         return json(['code' => 0, 'info' => '测试环境禁止禁用菜单操作！']);
     });
-    Route::post('admin/menu/del', function () {
+    Route::post('admin/menu/remove', function () {
         return json(['code' => 0, 'info' => '测试环境禁止删除菜单操作！']);
     });
     Route::post('admin/node/save', function () {
