@@ -23,7 +23,7 @@ if (in_array(request()->rootDomain(), ['ctolog.com', 'thinkadmin.top'])) {
     Route::post('admin/index/pass', function () {
         return json(['code' => 0, 'info' => '演示环境禁止修改用户密码！']);
     });
-    Route::post('admin/config/info', function () {
+    Route::post('admin/config/save', function () {
         return json(['code' => 0, 'info' => '演示环境禁止修改系统配置！']);
     });
     Route::post('admin/menu/index', function () {
