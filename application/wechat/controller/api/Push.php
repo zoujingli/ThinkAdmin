@@ -94,7 +94,6 @@ class Push extends Controller
     public function index()
     {
         try {
-            $this->wechat = WechatService::WeChatReceive();
             if ($this->request->has('receive', 'post') && WechatService::getType() === 'thr') {
                 $this->forceJson = true; // 强制返回JSON到服务端再转发
                 $this->forceCustom = false; // 暂停使用客户消息模式
@@ -108,6 +107,7 @@ class Push extends Controller
             } else {
                 $this->forceJson = false; // 暂停返回JSON消息对象
                 $this->forceCustom = false; // 暂停使用客户消息模式
+                $this->wechat = WechatService::WeChatReceive();
                 $this->appid = WechatService::getAppid();
                 $this->openid = $this->wechat->getOpenid();
                 $this->encrypt = $this->wechat->isEncrypt();

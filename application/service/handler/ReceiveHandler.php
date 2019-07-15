@@ -59,7 +59,9 @@ class ReceiveHandler
                 if (is_array($json = json_decode($result, true))) {
                     p('===== 已返回xml加密内容 =====');
                     p($json);
-                    return $service->reply($json, true, $service->isEncrypt());
+                    $xml = $service->reply($json, true, $service->isEncrypt());
+                    p($xml);
+                    return $xml;
                 } else {
                     p('===== 直接回复返回的内容 =====');
                     return $result;
