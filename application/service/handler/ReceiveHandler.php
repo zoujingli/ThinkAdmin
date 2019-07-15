@@ -39,7 +39,7 @@ class ReceiveHandler
     public static function handler($appid)
     {
         try {
-            $service = WechatService::WeChatReceive($appid);
+            $wechat = WechatService::WeChatReceive($appid);
         } catch (\Exception $e) {
             return "Wechat message handling failed, {$e->getMessage()}";
         }
@@ -50,12 +50,12 @@ class ReceiveHandler
             return $message;
         }
         try {
-            list($data, $openid) = [$service->getReceive(), $service->getOpenid()];
+            list($data, $openid) = [$wechat->getReceive(), $wechat->getOpenid()];
             if (isset($data['EventKey']) && is_object($data['EventKey'])) $data['EventKey'] = (array)$data['EventKey'];
-            $input = ['openid' => $openid, 'appid' => $appid, 'receive' => serialize($data), 'encrypt' => intval($service->isEncrypt())];
+            $input = ['openid' => $openid, 'appid' => $appid, 'receive' => serialize($data), 'encrypt' => intval($wechat->isEncrypt())];
             if (is_string($result = http_post($config['appuri'], $input, ['timeout' => 30]))) {
                 if (is_array($json = json_decode($result, true))) {
-                    $xml = $service->reply($json, true, true);
+                    $xml = $wechat->reply($json, true, $wechat->isEncrypt());
                     p("");
                     p("====== 准备回复的内容如下 ========");
                     p($xml);

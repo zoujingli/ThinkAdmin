@@ -52,11 +52,15 @@ class PublishHandler
             case 'text':
                 $receive = $wechat->getReceive();
                 if ($receive['Content'] === 'TESTCOMPONENT_MSG_TYPE_TEXT') {
-                    return $wechat->text('TESTCOMPONENT_MSG_TYPE_TEXT_callback')->reply([], true);
+                    $xml = $wechat->text('TESTCOMPONENT_MSG_TYPE_TEXT_callback')->reply([], true);
+                    p('====测试回复文本======');
+                    p($xml);
+                    return $xml;
+                } else {
+                    $key = str_replace("QUERY_AUTH_CODE:", '', $receive['Content']);
+                    WechatService::instance('Service')->getQueryAuthorizerInfo($key);
+                    return $wechat->text("{$key}_from_api")->reply([], true);
                 }
-                $key = str_replace("QUERY_AUTH_CODE:", '', $receive['Content']);
-                WechatService::instance('Service')->getQueryAuthorizerInfo($key);
-                return $wechat->text("{$key}_from_api")->reply([], true);
             case 'event':
                 $receive = $wechat->getReceive();
                 return $wechat->text("{$receive['Event']}from_callback")->reply([], true);
