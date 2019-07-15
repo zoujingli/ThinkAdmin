@@ -55,7 +55,10 @@ class ReceiveHandler
             $input = ['openid' => $openid, 'appid' => $appid, 'receive' => serialize($data), 'encrypt' => intval($service->isEncrypt())];
             if (is_string($result = http_post($config['appuri'], $input, ['timeout' => 30]))) {
                 if (is_array($json = json_decode($result, true))) {
-                    return $service->reply($json, true, true);
+                    $xml = $service->reply($json, true, true);
+                    p("");
+                    p("====== 准备回复的内容如下 ========");
+                    p($xml);
                 } else {
                     return $result;
                 }
