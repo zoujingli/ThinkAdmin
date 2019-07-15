@@ -63,6 +63,8 @@ class ReceiveHandler
                     p('===== 直接回复返回的内容 =====');
                     return $result;
                 }
+            } else {
+                p('服务端没有任何内容返回');
             }
         } catch (\Exception $e) {
             \think\facade\Log::error("微信{$appid}接口调用异常，{$e->getMessage()}");
