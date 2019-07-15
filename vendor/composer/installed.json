@@ -298,17 +298,17 @@
     },
     {
         "name": "topthink/think-helper",
-        "version": "v3.0.0",
-        "version_normalized": "3.0.0.0",
+        "version": "v3.1.2",
+        "version_normalized": "3.1.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-helper.git",
-            "reference": "8ba5f66e68106369fcc3211e7d2dbaf7bc9ce455"
+            "reference": "a629c4271fdf3d7e7c6d89089791417cb4796a2c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-helper/zipball/8ba5f66e68106369fcc3211e7d2dbaf7bc9ce455",
-            "reference": "8ba5f66e68106369fcc3211e7d2dbaf7bc9ce455",
+            "url": "https://api.github.com/repos/top-think/think-helper/zipball/a629c4271fdf3d7e7c6d89089791417cb4796a2c",
+            "reference": "a629c4271fdf3d7e7c6d89089791417cb4796a2c",
             "shasum": "",
             "mirrors": [
                 {
@@ -317,12 +317,15 @@
                 }
             ]
         },
-        "time": "2019-03-14T09:28:59+00:00",
+        "require": {
+            "php": ">=7.1.0"
+        },
+        "time": "2019-07-11T04:35:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "think\\helper\\": "src"
+                "think\\": "src"
             },
             "files": [
                 "src/helper.php"
@@ -338,7 +341,7 @@
                 "email": "448901948@qq.com"
             }
         ],
-        "description": "The ThinkPHP5 Helper Package"
+        "description": "The ThinkPHP6 Helper Package"
     },
     {
         "name": "topthink/think-installer",
@@ -499,12 +502,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "bcd443b8408ac772eddc163c6b9663dad8f3aee8"
+            "reference": "12cc9a956969fa6716cb7da75fe6e5fc5fa8985d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/bcd443b8408ac772eddc163c6b9663dad8f3aee8",
-            "reference": "bcd443b8408ac772eddc163c6b9663dad8f3aee8",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/12cc9a956969fa6716cb7da75fe6e5fc5fa8985d",
+            "reference": "12cc9a956969fa6716cb7da75fe6e5fc5fa8985d",
             "shasum": "",
             "mirrors": [
                 {
@@ -523,7 +526,7 @@
             "qiniu/php-sdk": "^7.2",
             "topthink/framework": "5.1.*"
         },
-        "time": "2019-07-08T02:32:45+00:00",
+        "time": "2019-07-08T02:34:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -614,12 +617,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "3adfc5140c3fb3310facbd6a44f3b52061918d1f"
+            "reference": "629f14c1586ac51bdcef47b17d68a70b89d28897"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/3adfc5140c3fb3310facbd6a44f3b52061918d1f",
-            "reference": "3adfc5140c3fb3310facbd6a44f3b52061918d1f",
+            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/629f14c1586ac51bdcef47b17d68a70b89d28897",
+            "reference": "629f14c1586ac51bdcef47b17d68a70b89d28897",
             "shasum": "",
             "mirrors": [
                 {
@@ -635,7 +638,7 @@
             "php": ">=5.4",
             "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2019-07-03T07:16:52+00:00",
+        "time": "2019-07-08T07:11:04+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

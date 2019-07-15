@@ -25,10 +25,10 @@ class Str
      * @param string|array $needles
      * @return bool
      */
-    public static function contains($haystack, $needles)
+    public static function contains(string $haystack, $needles): bool
     {
         foreach ((array) $needles as $needle) {
-            if ($needle != '' && mb_strpos($haystack, $needle) !== false) {
+            if ('' != $needle && mb_strpos($haystack, $needle) !== false) {
                 return true;
             }
         }
@@ -43,7 +43,7 @@ class Str
      * @param  string|array $needles
      * @return bool
      */
-    public static function endsWith($haystack, $needles)
+    public static function endsWith(string $haystack, $needles): bool
     {
         foreach ((array) $needles as $needle) {
             if ((string) $needle === static::substr($haystack, -static::length($needle))) {
@@ -61,10 +61,10 @@ class Str
      * @param  string|array $needles
      * @return bool
      */
-    public static function startsWith($haystack, $needles)
+    public static function startsWith(string $haystack, $needles): bool
     {
         foreach ((array) $needles as $needle) {
-            if ($needle != '' && mb_strpos($haystack, $needle) === 0) {
+            if ('' != $needle && mb_strpos($haystack, $needle) === 0) {
                 return true;
             }
         }
@@ -78,7 +78,7 @@ class Str
      * @param  int $length
      * @return string
      */
-    public static function random($length = 16)
+    public static function random(int $length = 16): string
     {
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -91,7 +91,7 @@ class Str
      * @param  string $value
      * @return string
      */
-    public static function lower($value)
+    public static function lower(string $value): string
     {
         return mb_strtolower($value, 'UTF-8');
     }
@@ -102,7 +102,7 @@ class Str
      * @param  string $value
      * @return string
      */
-    public static function upper($value)
+    public static function upper(string $value): string
     {
         return mb_strtoupper($value, 'UTF-8');
     }
@@ -113,7 +113,7 @@ class Str
      * @param  string $value
      * @return int
      */
-    public static function length($value)
+    public static function length(string $value): string
     {
         return mb_strlen($value);
     }
@@ -126,7 +126,7 @@ class Str
      * @param  int|null $length
      * @return string
      */
-    public static function substr($string, $start, $length = null)
+    public static function substr(string $string, int $start, int $length = null): string
     {
         return mb_substr($string, $start, $length, 'UTF-8');
     }
@@ -138,7 +138,7 @@ class Str
      * @param  string $delimiter
      * @return string
      */
-    public static function snake($value, $delimiter = '_')
+    public static function snake(string $value, string $delimiter = '_'): string
     {
         $key = $value;
 
@@ -161,7 +161,7 @@ class Str
      * @param  string $value
      * @return string
      */
-    public static function camel($value)
+    public static function camel(string $value): string
     {
         if (isset(static::$camelCache[$value])) {
             return static::$camelCache[$value];
@@ -176,7 +176,7 @@ class Str
      * @param  string $value
      * @return string
      */
-    public static function studly($value)
+    public static function studly(string $value): string
     {
         $key = $value;
 
@@ -195,7 +195,7 @@ class Str
      * @param  string $value
      * @return string
      */
-    public static function title($value)
+    public static function title(string $value): string
     {
         return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
     }

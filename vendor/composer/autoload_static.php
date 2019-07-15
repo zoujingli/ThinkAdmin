@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit4e7d8a24dc5124bf8819757abb2b16a4
+class ComposerStaticInitcd810a1640b6294256452cfc7e3e3b69
 {
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
@@ -16,7 +16,6 @@ class ComposerStaticInit4e7d8a24dc5124bf8819757abb2b16a4
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (
-            'think\\helper\\' => 13,
             'think\\composer\\' => 15,
             'think\\' => 6,
         ),
@@ -54,17 +53,14 @@ class ComposerStaticInit4e7d8a24dc5124bf8819757abb2b16a4
     );
 
     public static $prefixDirsPsr4 = array (
-        'think\\helper\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-helper/src',
-        ),
         'think\\composer\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-installer/src',
         ),
         'think\\' => 
         array (
-            0 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            0 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            1 => __DIR__ . '/..' . '/topthink/think-queue/src',
         ),
         'library\\' => 
         array (
@@ -317,13 +313,16 @@ class ComposerStaticInit4e7d8a24dc5124bf8819757abb2b16a4
         'library\\tools\\Http' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Http.php',
         'library\\tools\\Node' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Node.php',
         'library\\tools\\Options' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Options.php',
+        'think\\Collection' => __DIR__ . '/..' . '/topthink/think-helper/src/Collection.php',
         'think\\Queue' => __DIR__ . '/..' . '/topthink/think-queue/src/Queue.php',
         'think\\composer\\Plugin' => __DIR__ . '/..' . '/topthink/think-installer/src/Plugin.php',
         'think\\composer\\ThinkExtend' => __DIR__ . '/..' . '/topthink/think-installer/src/ThinkExtend.php',
         'think\\composer\\ThinkFramework' => __DIR__ . '/..' . '/topthink/think-installer/src/ThinkFramework.php',
         'think\\composer\\ThinkTesting' => __DIR__ . '/..' . '/topthink/think-installer/src/ThinkTesting.php',
-        'think\\helper\\Arr' => __DIR__ . '/..' . '/topthink/think-helper/src/Arr.php',
-        'think\\helper\\Str' => __DIR__ . '/..' . '/topthink/think-helper/src/Str.php',
+        'think\\contract\\Arrayable' => __DIR__ . '/..' . '/topthink/think-helper/src/contract/Arrayable.php',
+        'think\\contract\\Jsonable' => __DIR__ . '/..' . '/topthink/think-helper/src/contract/Jsonable.php',
+        'think\\helper\\Arr' => __DIR__ . '/..' . '/topthink/think-helper/src/helper/Arr.php',
+        'think\\helper\\Str' => __DIR__ . '/..' . '/topthink/think-helper/src/helper/Str.php',
         'think\\queue\\CallQueuedHandler' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/CallQueuedHandler.php',
         'think\\queue\\Connector' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Connector.php',
         'think\\queue\\Job' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Job.php',
@@ -348,9 +347,9 @@ class ComposerStaticInit4e7d8a24dc5124bf8819757abb2b16a4
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit4e7d8a24dc5124bf8819757abb2b16a4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit4e7d8a24dc5124bf8819757abb2b16a4::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit4e7d8a24dc5124bf8819757abb2b16a4::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitcd810a1640b6294256452cfc7e3e3b69::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitcd810a1640b6294256452cfc7e3e3b69::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitcd810a1640b6294256452cfc7e3e3b69::$classMap;
 
         }, null, ClassLoader::class);
     }
