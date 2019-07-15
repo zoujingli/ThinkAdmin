@@ -59,6 +59,8 @@ class ReceiveHandler
                     p("");
                     p("====== 准备回复的内容如下 ========");
                     p($xml);
+                    ob_clean();
+                    exit($xml);
                 } else {
                     return $result;
                 }
