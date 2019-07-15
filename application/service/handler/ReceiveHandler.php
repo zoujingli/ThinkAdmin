@@ -55,12 +55,7 @@ class ReceiveHandler
             $input = ['openid' => $openid, 'appid' => $appid, 'receive' => serialize($data), 'encrypt' => intval($wechat->isEncrypt())];
             if (is_string($result = http_post($config['appuri'], $input, ['timeout' => 30]))) {
                 if (is_array($json = json_decode($result, true))) {
-                    $xml = $wechat->reply($json, true, $wechat->isEncrypt());
-                    p("");
-                    p("====== 准备回复的内容如下 ========");
-                    p($xml);
-                    ob_clean();
-                    exit($xml);
+                    return $wechat->reply($json, true, $wechat->isEncrypt());
                 } else {
                     return $result;
                 }
