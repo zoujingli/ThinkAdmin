@@ -42,7 +42,7 @@ class Push extends Controller
      */
     public function notify($appid)
     {
-        if ($appid === 'wx570bc396a51b8ff8') {
+        if (in_array($appid, ['wx570bc396a51b8ff8', 'wxd101a85aa106f53e'])) {
             # 全网发布接口测试
             return \app\service\handler\PublishHandler::handler($appid);
         } else {

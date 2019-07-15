@@ -54,20 +54,11 @@ class ReceiveHandler
             if (isset($data['EventKey']) && is_object($data['EventKey'])) $data['EventKey'] = (array)$data['EventKey'];
             $input = ['openid' => $openid, 'appid' => $appid, 'receive' => serialize($data), 'encrypt' => intval($service->isEncrypt())];
             if (is_string($result = http_post($config['appuri'], $input, ['timeout' => 30]))) {
-                p('---- Service 收到 Client 的http返回 ---- ');
-                p($result);
                 if (is_array($json = json_decode($result, true))) {
-                    p('===== 已返回xml加密内容 =====');
-                    p($json);
-                    $xml = $service->reply($json, true, $service->isEncrypt());
-                    p($xml);
-                    return $xml;
+                    return $service->reply($json, true, true);
                 } else {
-                    p('===== 直接回复返回的内容 =====');
                     return $result;
                 }
-            } else {
-                p('服务端没有任何内容返回');
             }
         } catch (\Exception $e) {
             \think\facade\Log::error("微信{$appid}接口调用异常，{$e->getMessage()}");
