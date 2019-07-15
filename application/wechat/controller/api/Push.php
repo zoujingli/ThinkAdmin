@@ -67,16 +67,16 @@ class Push extends Controller
     protected $wechat;
 
     /**
+     * 强制返回JSON消息
+     * @var boolean
+     */
+    protected $forceJson = false;
+
+    /**
      * 强制客服消息回复
      * @var boolean
      */
     protected $forceCustom = false;
-
-    /**
-     * 强制返回JSON回复
-     * @var boolean
-     */
-    protected $forceJson = false;
 
     /**
      * 获取网络出口IP
@@ -97,7 +97,7 @@ class Push extends Controller
             $this->wechat = WechatService::WeChatReceive();
             if ($this->request->has('receive', 'post') && WechatService::getType() === 'thr') {
                 $this->forceJson = true; // 强制返回JSON到服务端再转发
-                $this->forceCustom = false; // 暂时使用客户消息模式
+                $this->forceCustom = false; // 暂停使用客户消息模式
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
                 $this->encrypt = boolval($this->request->post('encrypt', 0));
@@ -106,8 +106,8 @@ class Push extends Controller
                     throw new \think\Exception('微信API实例缺失必要参数[appid,openid,receive]');
                 }
             } else {
-                $this->forceJson = false; // 强制返回JSON仅对第三方有效
-                $this->forceCustom = false; // 暂时使用客户消息模式
+                $this->forceJson = false; // 暂停返回JSON消息对象
+                $this->forceCustom = false; // 暂停使用客户消息模式
                 $this->appid = WechatService::getAppid();
                 $this->openid = $this->wechat->getOpenid();
                 $this->encrypt = $this->wechat->isEncrypt();
