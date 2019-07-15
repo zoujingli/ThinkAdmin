@@ -95,8 +95,8 @@ class Push extends Controller
     {
         try {
             if ($this->request->has('receive', 'post') && WechatService::getType() === 'thr') {
-                $this->forceJson = false; // 强制返回JSON到服务端再转发
-                $this->forceCustom = true; // 强制使用客户消息模式
+                $this->forceJson = true; // 强制返回JSON到Service转发
+                $this->forceCustom = false; // 强制使用客服消息模式推送
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
                 $this->encrypt = boolval($this->request->post('encrypt', 0));
