@@ -73,6 +73,12 @@ class Push extends Controller
     protected $forceCustom = false;
 
     /**
+     * 强制返回JSON回复
+     * @var boolean
+     */
+    protected $forceJson = false;
+
+    /**
      * 获取网络出口IP
      * @return mixed
      */
@@ -90,7 +96,8 @@ class Push extends Controller
         try {
             $this->wechat = WechatService::WeChatReceive();
             if ($this->request->has('receive', 'post') && WechatService::getType() === 'thr') {
-                $this->forceCustom = true;
+                $this->forceJson = true; // 强制返回JSON到服务端再转发
+                $this->forceCustom = false; // 暂时使用客户消息模式
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
                 $this->encrypt = boolval($this->request->post('encrypt', 0));
@@ -99,7 +106,8 @@ class Push extends Controller
                     throw new \think\Exception('微信API实例缺失必要参数[appid,openid,receive]');
                 }
             } else {
-                $this->forceCustom = false;
+                $this->forceJson = false; // 强制返回JSON仅对第三方有效
+                $this->forceCustom = false; // 暂时使用客户消息模式
                 $this->appid = WechatService::getAppid();
                 $this->openid = $this->wechat->getOpenid();
                 $this->encrypt = $this->wechat->isEncrypt();
@@ -266,7 +274,8 @@ class Push extends Controller
             WechatService::WeChatCustom()->send(['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data]);
         } else switch (strtolower($type)) {
             case 'text': // 发送文本消息
-                return $this->wechat->reply(['CreateTime' => time(), 'MsgType' => 'text', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Content' => $data['content']], true, $this->encrypt);
+                $reply = ['CreateTime' => time(), 'MsgType' => 'text', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Content' => $data['content']];
+                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : $this->wechat->reply($reply, true, $this->encrypt);
             case 'image': // 发送图片消息
                 return $this->buildMessage($type, ['MediaId' => $data['media_id']]);
             case 'voice': // 发送语言消息
@@ -281,7 +290,8 @@ class Push extends Controller
             case 'news': // 发送图文消息
                 $articles = [];
                 foreach ($data['articles'] as $article) array_push($articles, ['PicUrl' => $article['picurl'], 'Title' => $article['title'], 'Description' => $article['description'], 'Url' => $article['url']]);
-                return $this->wechat->reply(['CreateTime' => time(), 'MsgType' => 'news', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Articles' => $articles, 'ArticleCount' => count($articles)], true, $this->encrypt);
+                $reply = ['CreateTime' => time(), 'MsgType' => 'news', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Articles' => $articles, 'ArticleCount' => count($articles)];
+                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : $this->wechat->reply($reply, true, $this->encrypt);
             default:
                 return 'success';
         }
@@ -289,8 +299,8 @@ class Push extends Controller
 
     /**
      * 消息数据生成
-     * @param string $type
-     * @param string|array $data
+     * @param string $type 消息类型
+     * @param string|array $data 消息数据
      * @return string
      * @throws \WeChat\Exceptions\InvalidDecryptException
      */
@@ -298,7 +308,7 @@ class Push extends Controller
     {
         $reply = ['CreateTime' => time(), 'MsgType' => strtolower($type), 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid];
         if (!empty($data)) $reply[ucfirst(strtolower($type))] = $data;
-        return $this->wechat->reply($reply, true, $this->encrypt);
+        return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : $this->wechat->reply($reply, true, $this->encrypt);
     }
 
     /**
