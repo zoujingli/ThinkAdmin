@@ -44,7 +44,7 @@ if (in_array(request()->rootDomain(), ['ctolog.com', 'thinkadmin.top'])) {
     Route::post('wechat/config/options', function () {
         return json(['code' => 0, 'info' => '演示环境禁止修改微信配置！']);
     });
-    Route::post('service/config/index', function () {
+    Route::post('service/config/save', function () {
         return json(['code' => 0, 'info' => '演示环境禁止修改开放配置！']);
     });
 }
