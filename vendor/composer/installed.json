@@ -118,17 +118,17 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.8",
-        "version_normalized": "7.2.8.0",
+        "version": "v7.2.9",
+        "version_normalized": "7.2.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "464f3eb3b0f51586d274733aee67f372fc6276ef"
+            "reference": "afe7d8715d8a688b1d8d8cdf031240d2363dad90"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/464f3eb3b0f51586d274733aee67f372fc6276ef",
-            "reference": "464f3eb3b0f51586d274733aee67f372fc6276ef",
+            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/afe7d8715d8a688b1d8d8cdf031240d2363dad90",
+            "reference": "afe7d8715d8a688b1d8d8cdf031240d2363dad90",
             "shasum": "",
             "mirrors": [
                 {
@@ -141,10 +141,10 @@
             "php": ">=5.3.3"
         },
         "require-dev": {
-            "phpunit/phpunit": "~8.0",
+            "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2019-06-21T06:22:05+00:00",
+        "time": "2019-07-09T07:55:07+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -502,12 +502,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "12cc9a956969fa6716cb7da75fe6e5fc5fa8985d"
+            "reference": "861a56cda1b7a0b6ae9a781aa4bd834491d2d03b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/12cc9a956969fa6716cb7da75fe6e5fc5fa8985d",
-            "reference": "12cc9a956969fa6716cb7da75fe6e5fc5fa8985d",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/861a56cda1b7a0b6ae9a781aa4bd834491d2d03b",
+            "reference": "861a56cda1b7a0b6ae9a781aa4bd834491d2d03b",
             "shasum": "",
             "mirrors": [
                 {
@@ -526,7 +526,7 @@
             "qiniu/php-sdk": "^7.2",
             "topthink/framework": "5.1.*"
         },
-        "time": "2019-07-08T02:34:45+00:00",
+        "time": "2019-07-15T06:16:28+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

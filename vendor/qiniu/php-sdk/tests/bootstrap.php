@@ -9,8 +9,8 @@ $secretKey = getenv('QINIU_SECRET_KEY');
 $testAuth = new Auth($accessKey, $secretKey);
 
 $bucketName = 'phpsdk';
-$key = '1503385451.png';
-$key2 = '1503385568.png';
+$key = 'php-logo.png';
+$key2 = 'niu.jpg';
 
 $bucketNameBC = 'phpsdk-bc';
 $bucketNameNA = 'phpsdk-na';
@@ -21,7 +21,7 @@ $dummyAuth = new Auth($dummyAccessKey, $dummySecretKey);
 
 //cdn
 $timestampAntiLeechEncryptKey = getenv('QINIU_TIMESTAMP_ENCRPTKEY');
-$customDomain = "http://phpsdk.support2technical.me";
+$customDomain = "http://phpsdk.peterpy.cn";
 
 $tid = getenv('TRAVIS_JOB_NUMBER');
 if (!empty($tid)) {

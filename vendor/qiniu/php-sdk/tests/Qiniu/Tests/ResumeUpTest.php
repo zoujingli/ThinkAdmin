@@ -5,14 +5,13 @@ use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\UploadManager;
 use Qiniu\Config;
 use Qiniu\Zone;
-use PHPUnit\Framework\TestCase;
 
-class ResumeUpTest extends TestCase
+class ResumeUpTest extends \PHPUnit_Framework_TestCase
 {
     protected $bucketName;
     protected $auth;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         global $bucketName;
         $this->bucketName = $bucketName;
@@ -36,7 +35,7 @@ class ResumeUpTest extends TestCase
     public function test4ML2()
     {
         $key = 'resumePutFile4ML';
-        $zone = new Zone(array('up.qiniup.com'));
+        $zone = new Zone(array('up.fake.qiniu.com'), array('up.qiniup.com'));
         $cfg = new Config($zone);
         $upManager = new UploadManager($cfg);
         $token = $this->auth->uploadToken($this->bucketName, $key);

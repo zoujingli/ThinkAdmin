@@ -2,9 +2,8 @@
 namespace Qiniu\Tests;
 
 use Qiniu\Http\Client;
-use PHPUnit\Framework\TestCase;
 
-class HttpTest extends TestCase
+class HttpTest extends \PHPUnit_Framework_TestCase
 {
     public function testGet()
     {

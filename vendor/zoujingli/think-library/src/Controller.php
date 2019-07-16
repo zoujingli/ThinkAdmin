@@ -43,7 +43,13 @@ class Controller extends \stdClass
      * 表单CSRF验证状态
      * @var boolean
      */
-    private $csrf = false;
+    private $csrf_state = false;
+
+    /**
+     * 表单CSRF验证失败提示消息
+     * @var string
+     */
+    protected $csrf_message = '表单令牌验证失败，请刷新页面再试！';
 
     /**
      * Controller constructor.
@@ -106,7 +112,7 @@ class Controller extends \stdClass
     public function success($info, $data = [], $code = 1)
     {
         $result = ['code' => $code, 'info' => $info, 'data' => $data];
-        if ($this->csrf) Csrf::clearFormToken(Csrf::getToken());
+        if ($this->csrf_state) Csrf::clearFormToken(Csrf::getToken());
         throw new HttpResponseException(json($result));
     }
 
@@ -130,7 +136,7 @@ class Controller extends \stdClass
     public function fetch($tpl = '', $vars = [], $node = null)
     {
         foreach ($this as $name => $value) $vars[$name] = $value;
-        if ($this->csrf) {
+        if ($this->csrf_state) {
             Csrf::fetchTemplate($tpl, $vars, $node);
         } else {
             throw new HttpResponseException(view($tpl, $vars));
@@ -182,10 +188,10 @@ class Controller extends \stdClass
      */
     protected function applyCsrfToken($return = false)
     {
-        $this->csrf = true;
+        $this->csrf_state = true;
         if ($this->request->isPost() && !Csrf::checkFormToken()) {
             if ($return) return false;
-            $this->error('表单令牌验证失败，请刷新页面再试！');
+            $this->error($this->csrf_message);
         } else {
             return true;
         }

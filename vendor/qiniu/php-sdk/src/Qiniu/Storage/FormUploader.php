@@ -31,8 +31,7 @@ final class FormUploader
         $config,
         $params,
         $mime,
-        $fname,
-        $checkCrc
+        $fname
     ) {
         $fields = array('token' => $upToken);
         if ($key === null) {

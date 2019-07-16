@@ -2,9 +2,8 @@
 namespace Qiniu\Tests;
 
 use Qiniu;
-use PHPUnit\Framework\TestCase;
 
-class Base64Test extends TestCase
+class Base64Test extends \PHPUnit_Framework_TestCase
 {
     public function testUrlSafe()
     {

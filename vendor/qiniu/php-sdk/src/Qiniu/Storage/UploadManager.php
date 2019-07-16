@@ -46,8 +46,7 @@ final class UploadManager
         $data,
         $params = null,
         $mime = 'application/octet-stream',
-        $fname = null,
-        $checkCrc = false
+        $fname = null
     ) {
     
         $params = self::trimParams($params);
@@ -58,8 +57,7 @@ final class UploadManager
             $this->config,
             $params,
             $mime,
-            $fname,
-            $checkCrc
+            $fname
         );
     }
 
@@ -110,8 +108,7 @@ final class UploadManager
                 $this->config,
                 $params,
                 $mime,
-                basename($filePath),
-                $checkCrc
+                basename($filePath)
             );
         }
 

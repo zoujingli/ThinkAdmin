@@ -2,9 +2,8 @@
 namespace Qiniu\Tests;
 
 use Qiniu\Storage\BucketManager;
-use PHPUnit\Framework\TestCase;
 
-class BucketTest extends TestCase
+class BucketTest extends \PHPUnit_Framework_TestCase
 {
     protected $bucketManager;
     protected $dummyBucketManager;
@@ -12,7 +11,7 @@ class BucketTest extends TestCase
     protected $key;
     protected $key2;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         global $bucketName;
         global $key;
