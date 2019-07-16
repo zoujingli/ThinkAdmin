@@ -108,14 +108,12 @@ if (!function_exists('base64_image')) {
 
 // 访问权限检查中间键
 Middleware::add(function (Request $request, \Closure $next) {
-    // 访问权限检查
-    if (NodeService::checkAuth()) {
+    // 验证访问节点权限
+    if (NodeService::forceAuth()) {
         return $next($request);
+    } elseif (NodeService::islogin()) {
+        return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！']);
     } else {
-        if (NodeService::islogin()) {
-            return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！']);
-        } else {
-            return json(['code' => 0, 'msg' => '抱歉，您还没有登录获取访问权限！', 'url' => url('@admin/login')]);
-        }
+        return json(['code' => 0, 'msg' => '抱歉，您还没有登录获取访问权限！', 'url' => url('@admin/login')]);
     }
 });

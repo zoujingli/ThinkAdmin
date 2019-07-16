@@ -18,6 +18,7 @@ namespace app\admin\service;
 use library\tools\Data;
 use library\tools\Node;
 use think\Db;
+use think\facade\App;
 use think\facade\Cache;
 use think\facade\Request;
 
@@ -150,7 +151,34 @@ class NodeService
     }
 
     /**
-     * 检查节点授权
+     * 强制验证访问权限
+     * --- 需要加载对应的控制器
+     * @param null|string $node
+     * @return boolean
+     * @throws \ReflectionException
+     */
+    public static function forceAuth($node = null)
+    {
+        if (session('admin_user.username') === 'admin') return true;
+        $real = is_null($node) ? self::current() : self::full($node);
+        list($module, $controller, $action) = explode('/', $real);
+        if (class_exists($class = App::parseClass($module, 'controller', $controller))) {
+            $reflection = new \ReflectionClass($class);
+            if ($reflection->hasMethod($action)) {
+                $comment = preg_replace("/\s/", '', $reflection->getMethod($action)->getDocComment());
+                if (stripos($comment, '@authtrue') === false) {
+                    return true;
+                } else {
+                    return in_array($real, (array)session('admin_user.nodes'));
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 检查指定节点授权
+     * --- 需要读取缓存或扫描所有节点
      * @param null|string $node
      * @return boolean
      * @throws \ReflectionException
