@@ -20,6 +20,7 @@ use app\wechat\service\MediaService;
 use app\wechat\service\WechatService;
 use library\Controller;
 use think\Db;
+use think\facade\Log;
 
 /**
  * 微信消息推送处理
@@ -119,7 +120,7 @@ class Push extends Controller
                 if (is_string(($result = $this->$method()))) return $result;
             }
         } catch (\Exception $e) {
-            \think\facade\Log::error(__METHOD__ . ":{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
+            Log::error("{$e->getFile()}:{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
         }
         return 'success';
     }
@@ -275,7 +276,7 @@ class Push extends Controller
         } else switch (strtolower($type)) {
             case 'text': // 发送文本消息
                 $reply = ['CreateTime' => time(), 'MsgType' => 'text', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Content' => $data['content']];
-                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : $this->wechat->reply($reply, true, $this->encrypt);
+                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($reply, true, $this->encrypt);
             case 'image': // 发送图片消息
                 return $this->buildMessage($type, ['MediaId' => $data['media_id']]);
             case 'voice': // 发送语言消息
@@ -291,7 +292,7 @@ class Push extends Controller
                 $articles = [];
                 foreach ($data['articles'] as $article) array_push($articles, ['PicUrl' => $article['picurl'], 'Title' => $article['title'], 'Description' => $article['description'], 'Url' => $article['url']]);
                 $reply = ['CreateTime' => time(), 'MsgType' => 'news', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Articles' => $articles, 'ArticleCount' => count($articles)];
-                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : $this->wechat->reply($reply, true, $this->encrypt);
+                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($reply, true, $this->encrypt);
             default:
                 return 'success';
         }
@@ -308,7 +309,7 @@ class Push extends Controller
     {
         $reply = ['CreateTime' => time(), 'MsgType' => strtolower($type), 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid];
         if (!empty($data)) $reply[ucfirst(strtolower($type))] = $data;
-        return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : $this->wechat->reply($reply, true, $this->encrypt);
+        return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($reply, true, $this->encrypt);
     }
 
     /**
@@ -325,7 +326,7 @@ class Push extends Controller
                 $user = WechatService::WeChatUser()->getUserInfo($this->openid);
                 return FansService::set(array_merge($user, ['subscribe' => '1']));
             } catch (\Exception $e) {
-                \think\facade\Log::error(__METHOD__ . " {$this->openid} 粉丝信息获取失败，{$e->getMessage()}");
+                Log::error(__METHOD__ . " {$this->openid} 粉丝信息获取失败，{$e->getMessage()}");
                 return false;
             }
         }
