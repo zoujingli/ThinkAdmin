@@ -18,7 +18,6 @@ namespace app\admin\controller;
 use app\admin\service\NodeService;
 use library\Controller;
 use think\Db;
-use think\exception\HttpResponseException;
 
 /**
  * 系统权限管理
@@ -118,7 +117,7 @@ class Auth extends Controller
         try {
             NodeService::applyUserAuth(true);
             $this->success('刷新系统授权成功！');
-        } catch (HttpResponseException $exception) {
+        } catch (\think\exception\HttpResponseException $exception) {
             throw  $exception;
         } catch (\Exception $e) {
             $this->error("刷新系统授权失败<br>{$e->getMessage()}");
