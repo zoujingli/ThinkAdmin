@@ -124,7 +124,7 @@ class WechatService extends \We
      */
     public static function instance($name, $type = 'WeChat', $config = [])
     {
-        if (in_array($type, ['WePay', 'AliPay']) || "{$type}{$name}" === 'WeChatPay') {
+        if (self::getType() === 'api' || in_array($type, ['WePay', 'AliPay']) || "{$type}{$name}" === 'WeChatPay') {
             if (class_exists($class = "\\{$type}\\" . ucfirst(strtolower($name)))) {
                 return new $class(empty($config) ? self::config() : $config);
             } else {
