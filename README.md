@@ -102,34 +102,23 @@ public function index(){
 项目版本
 --
 体验账号及密码都是`admin`
-* v1 基于 ThinkPHP5.0 开发
 
-> 在线体验地址：https://v1.thinkadmin.top
+### ThinkAdmin v1 基于 ThinkPHP 5.0 开发
+* 在线体验地址：https://v1.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v1
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v1
 
-> Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v1
+### ThinkAdmin v2 基于 ThinkPHP 5.0 开发
+* 在线体验地址：https://v2.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v2
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v2
 
-> Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v1
+### ThinkAdmin v3 基于 ThinkPHP 5.1 开发
+* 在线体验地址：https://v3.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v3
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v3
 
-* v2 基于 ThinkPHP5.0 开发
-
-> 在线体验地址：https://v2.thinkadmin.top
-
-> Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v2
-
-> Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v2
-
-* v3 基于 ThinkPHP5.1 开发
-
-> 在线体验地址：https://v3.thinkadmin.top
-
-> Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v3
-
-> Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v3
-
-* v4 基于 ThinkPHP5.1 开发
-
-> 在线体验地址：https://v4.thinkadmin.top
-
-> Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v4
-
-> Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v4
+### ThinkAdmin v4 基于 ThinkPHP 5.1 开发
+* 在线体验地址：https://v4.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v4
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v4
