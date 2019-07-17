@@ -9,6 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -26,7 +27,7 @@ class Sess extends Command
 
     protected function configure()
     {
-        $this->setName('xclean:session')->setDescription('clean up invalid session files');
+        $this->setName('xclean:session')->setDescription('清理失效过期的会话文件');
     }
 
     protected function execute(\think\console\Input $input, \think\console\Output $output)

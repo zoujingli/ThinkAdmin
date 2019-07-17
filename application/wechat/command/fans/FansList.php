@@ -30,7 +30,7 @@ class FansList extends Fans
     protected function configure()
     {
         $this->module = ['list'];
-        $this->setName('xfans:list')->setDescription('synchronize list of fans');
+        $this->setName('xfans:list')->setDescription('从微信获取所有的粉丝信息记录');
     }
 
 }

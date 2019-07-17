@@ -9,6 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ class Wechat extends Sync
     protected function configure()
     {
         $this->modules = ['application/wechat/'];
-        $this->setName('xsync:wechat')->setDescription('synchronize update wechat module files');
+        $this->setName('xsync:wechat')->setDescription('从远程覆盖本地Wechat模块的所有代码');
     }
 
     protected function execute(Input $input, Output $output)

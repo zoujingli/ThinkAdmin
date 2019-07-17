@@ -9,6 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -25,7 +26,7 @@ class Reset extends Task
 
     protected function configure()
     {
-        $this->setName('xtask:reset')->setDescription('reset message queue daemon');
+        $this->setName('xtask:reset')->setDescription('重新启动消息队列守护进程');
     }
 
     protected function execute(\think\console\Input $input, \think\console\Output $output)

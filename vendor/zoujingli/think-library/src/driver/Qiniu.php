@@ -9,6 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -163,7 +164,8 @@ class Qiniu extends File
 
     /**
      * 获取空间列表
-     * @return array
+     * @return string
+     * @throws \Exception
      */
     public function getBucketList()
     {

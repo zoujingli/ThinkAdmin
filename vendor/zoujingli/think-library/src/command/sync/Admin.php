@@ -9,6 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ class Admin extends Sync
     protected function configure()
     {
         $this->modules = ['application/admin/', 'think'];
-        $this->setName('xsync:admin')->setDescription('synchronize update admin module files');
+        $this->setName('xsync:admin')->setDescription('从远程覆盖本地Admin模块的所有代码');
     }
 
     protected function execute(Input $input, Output $output)

@@ -9,6 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ use library\tools\Data;
 use library\tools\Emoji;
 use library\tools\Http;
 use library\tools\Node;
+use think\Console;
 use think\Db;
 use think\facade\Cache;
 use think\facade\Middleware;
@@ -246,7 +248,7 @@ Middleware::add(function (Request $request, \Closure $next, $header = []) {
 });
 
 // 注册系统常用指令
-\think\Console::addDefaultCommands([
+Console::addDefaultCommands([
     'library\command\Sess',
     'library\command\task\Stop',
     'library\command\task\State',

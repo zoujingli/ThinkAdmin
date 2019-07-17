@@ -25,9 +25,12 @@ use think\Db;
 class AutoRun extends \think\console\Command
 {
 
+    /**
+     * 配置指令信息
+     */
     protected function configure()
     {
-        $this->setName('xclean:store')->setDescription('clean up invalid store records');
+        $this->setName('xclean:store')->setDescription('清理过期无效的订单记录');
     }
 
     /**

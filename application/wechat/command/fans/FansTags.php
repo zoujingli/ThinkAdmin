@@ -30,6 +30,6 @@ class FansTags extends Fans
     protected function configure()
     {
         $this->module = ['tags'];
-        $this->setName('xfans:tags')->setDescription('synchronize tags of fans');
+        $this->setName('xfans:tags')->setDescription('从微信获取所有的粉丝标签记录');
     }
 }

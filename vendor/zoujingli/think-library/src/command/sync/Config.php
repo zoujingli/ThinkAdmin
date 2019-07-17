@@ -9,6 +9,7 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ class Config extends Sync
     protected function configure()
     {
         $this->modules = ['config/'];
-        $this->setName('xsync:config')->setDescription('synchronize update config php files');
+        $this->setName('xsync:config')->setDescription('从远程覆盖本地Config的部分配置文件');
     }
 
     protected function execute(Input $input, Output $output)
