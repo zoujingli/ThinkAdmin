@@ -15,7 +15,7 @@
 
 return [
     // 微信开放平台接口
-    'service_url' => 'https://framework.thinkadmin.top',
+    'service_url' => 'https://demo.thinkadmin.top',
     // 小程序支付参数
     'miniapp'     => [
         'appid'      => 'wx8c108930fe12b7ef',
