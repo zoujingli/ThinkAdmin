@@ -85,11 +85,11 @@ public function index(){
 --
 |名称|版本|描述|链接|
 |---|---|---|---|
-|Layui|2.4.5|UI组件库|https://github.com/sentsin/layui|
-|Ckeditor|4.10.1|富文件编辑器|https://github.com/ckeditor/ckeditor-dev|
-|PluPloader|3.1.2|文件上传工具|https://www.plupload.com|
-|WebUploader|0.1.5|暂时不使用了|https://github.com/fex-team/webuploader|
-|Font-Awesome|4.7.0|字体图标库|https://github.com/FortAwesome/Font-Awesome|
+|layui|2.4.5|UI组件库|https://github.com/sentsin/layui|
+|ckeditor|4.10.1|富文件编辑器|https://github.com/ckeditor/ckeditor-dev|
+|pluploader|3.1.2|文件上传工具|https://www.plupload.com|
+|webuploader|0.1.5|暂时不使用了|https://github.com/fex-team/webuploader|
+|font-awesome|4.7.0|字体图标库|https://github.com/FortAwesome/Font-Awesome|
 |ThinkPHP|5.1.37|PHP基础框架|https://github.com/top-think/framework|
 |ThinkLibrary|5.1.x-dev|ThinkPHP扩展组件|https://github.com/zoujingli/ThinkLibrary|
 |WeChatDeveloper|1.2.9|微信公众号组件|https://github.com/zoujingli/WeChatDeveloper|
