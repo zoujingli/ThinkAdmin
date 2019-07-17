@@ -893,8 +893,8 @@ label.think-radio {
   height: 5pc;
   cursor: pointer;
   display: inline-block;
-  background-size: cover;
   background: url('../img/image.png') no-repeat center center;
+  background-size: cover;
 }
 .uploadimagemtl {
   margin-right: 8px;
