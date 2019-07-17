@@ -20,7 +20,7 @@ use think\Console;
 use think\Db;
 
 /**
- * 系统消息任务
+ * 系统系统任务
  * Class Queue
  * @package app\admin\controller
  */
@@ -33,7 +33,7 @@ class Queue extends Controller
     protected $table = 'SystemJobsLog';
 
     /**
-     * 系统消息任务
+     * 系统系统任务
      * @auth true
      * @menu true
      * @throws \think\Exception
@@ -44,7 +44,7 @@ class Queue extends Controller
      */
     public function index()
     {
-        $this->title = '消息任务管理';
+        $this->title = '系统任务管理';
         if (session('admin_user.username') === 'admin') {
             $this->cmd = 'php ' . env('root_path') . 'think xtask:start';
             $this->message = Console::call('xtask:state')->fetch();
@@ -75,7 +75,7 @@ class Queue extends Controller
     }
 
     /**
-     * 删除消息任务
+     * 删除系统任务
      * @auth true
      */
     public function remove()

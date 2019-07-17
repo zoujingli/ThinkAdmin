@@ -82,6 +82,8 @@ class Oplog extends Controller
     /**
      * 删除系统日志
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {

@@ -55,7 +55,7 @@ class Plugs extends Controller
         if ($file->checkExt('php')) {
             return json(['uploaded' => false, 'error' => ['message' => '可执行文件禁止上传到本地服务器']]);
         }
-        $this->safe = $this->getUploadSafe();
+        $this->safe = boolval(input('safe'));
         $this->uptype = $this->getUploadType();
         $this->extend = pathinfo($file->getInfo('name'), PATHINFO_EXTENSION);
         $name = File::name($file->getPathname(), $this->extend, '', 'md5_file');
@@ -80,15 +80,6 @@ class Plugs extends Controller
             $this->uptype = sysconf('storage_type');
         }
         return $this->uptype;
-    }
-
-    /**
-     * 获取上传安全模式
-     * @return boolean
-     */
-    private function getUploadSafe()
-    {
-        return $this->safe = boolval(input('safe'));
     }
 
     /**

@@ -82,6 +82,11 @@ class Auth extends Controller
     /**
      * 添加系统权限
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function add()
     {
@@ -92,6 +97,11 @@ class Auth extends Controller
     /**
      * 编辑系统权限
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function edit()
     {
@@ -118,6 +128,8 @@ class Auth extends Controller
     /**
      * 禁用系统权限
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -128,6 +140,8 @@ class Auth extends Controller
     /**
      * 启用系统权限
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {
@@ -138,6 +152,8 @@ class Auth extends Controller
     /**
      * 删除系统权限
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {

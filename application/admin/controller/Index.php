@@ -113,6 +113,11 @@ class Index extends Controller
     /**
      * 修改用户资料
      * @param integer $id 会员ID
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function info($id = 0)
     {
@@ -133,6 +138,9 @@ class Index extends Controller
      */
     public function clearRuntime()
     {
+        if (!NodeService::islogin()) {
+            $this->error('需要登录才能操作哦！');
+        }
         try {
             Console::call('clear');
             Console::call('xclean:session');
@@ -150,6 +158,9 @@ class Index extends Controller
      */
     public function buildOptimize()
     {
+        if (!NodeService::islogin()) {
+            $this->error('需要登录才能操作哦！');
+        }
         try {
             Console::call('optimize:route');
             Console::call('optimize:schema');

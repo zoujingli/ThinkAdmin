@@ -38,6 +38,11 @@ class Menu extends Controller
      * 系统菜单管理
      * @auth true
      * @menu true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function index()
     {
@@ -63,6 +68,11 @@ class Menu extends Controller
     /**
      * 添加系统菜单
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function add()
     {
@@ -73,6 +83,11 @@ class Menu extends Controller
     /**
      * 编辑系统菜单
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function edit()
     {
@@ -111,6 +126,8 @@ class Menu extends Controller
     /**
      * 启用系统菜单
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {
@@ -121,6 +138,8 @@ class Menu extends Controller
     /**
      * 禁用系统菜单
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -131,6 +150,8 @@ class Menu extends Controller
     /**
      * 删除系统菜单
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {
