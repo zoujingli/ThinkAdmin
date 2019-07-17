@@ -130,17 +130,18 @@ class WechatService extends \We
             } else {
                 throw new \think\Exception("Class {$class} not found");
             }
-        }
-        set_time_limit(3600);
-        list($appid, $appkey) = [sysconf('wechat_thr_appid'), sysconf('wechat_thr_appkey')];
-        $token = strtolower("{$name}-{$appid}-{$appkey}-{$type}");
-        if (class_exists('Yar_Client')) {
-            return new \Yar_Client(config('wechat.service_url') . "/service/api.client/yar/{$token}");
-        } elseif (class_exists('SoapClient')) {
-            $location = config('wechat.service_url') . "/service/api.client/soap/{$token}";
-            return new \SoapClient(null, ['uri' => strtolower($name), 'location' => $location]);
         } else {
-            throw new \think\Exception("Yar or Soap extensions are not installed.");
+            set_time_limit(3600);
+            list($appid, $appkey) = [sysconf('wechat_thr_appid'), sysconf('wechat_thr_appkey')];
+            $token = strtolower("{$name}-{$appid}-{$appkey}-{$type}");
+            if (class_exists('Yar_Client')) {
+                return new \Yar_Client(config('wechat.service_url') . "/service/api.client/yar/{$token}");
+            } elseif (class_exists('SoapClient')) {
+                $location = config('wechat.service_url') . "/service/api.client/soap/{$token}";
+                return new \SoapClient(null, ['uri' => strtolower($name), 'location' => $location]);
+            } else {
+                throw new \think\Exception("Yar or Soap extensions are not installed.");
+            }
         }
     }
 
