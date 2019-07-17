@@ -114,6 +114,6 @@ Middleware::add(function (Request $request, \Closure $next) {
     } elseif (NodeService::islogin()) {
         return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！']);
     } else {
-        return json(['code' => 0, 'msg' => '抱歉，您还没有登录获取访问权限！', 'url' => url('@admin/login')]);
+        return json(['code' => 0, 'msg' => '抱歉，需要登录获取访问权限！', 'url' => url('@admin/login')]);
     }
 });
