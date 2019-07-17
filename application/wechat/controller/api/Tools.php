@@ -94,6 +94,7 @@ class Tools extends Controller
 
     /**
      * 微信扫码支付模式一通知处理
+     * -- 注意，需要在微信商户配置支付通知地址
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
