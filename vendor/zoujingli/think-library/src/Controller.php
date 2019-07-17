@@ -16,6 +16,7 @@
 namespace library;
 
 use library\logic\Delete;
+use library\logic\Form;
 use library\logic\Input;
 use library\logic\Page;
 use library\logic\Query;
@@ -206,6 +207,25 @@ class Controller extends \stdClass
     protected function _page($dbQuery, $isPage = true, $isDisplay = true, $total = false, $limit = 0)
     {
         return (new Page($dbQuery, $isPage, $isDisplay, $total, $limit))->init($this);
+    }
+
+    /**
+     * 快捷表单逻辑器
+     * @param string|\think\db\Query $dbQuery
+     * @param string $tpl 模板名称
+     * @param string $pkField 指定数据对象主键
+     * @param array $where 额外更新条件
+     * @param array $data 表单扩展数据
+     * @return array|boolean
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    protected function _form($dbQuery, $tpl = '', $pkField = '', $where = [], $data = [])
+    {
+        return (new Form($dbQuery, $tpl, $pkField, $where, $data))->init($this);
     }
 
     /**
