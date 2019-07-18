@@ -57,7 +57,6 @@ class FansService
     public static function get($openid)
     {
         return Db::name('WechatFans')->where(['openid' => $openid])->find();
-        return $user;
     }
 
 }

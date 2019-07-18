@@ -21,5 +21,5 @@ return [
     // URL参数方式 0 按名称成对解析 1 按顺序解析
     'url_param_type' => 1,
     // 当前 ThinkAdmin 版本号
-    'thinkadmin_ver' => 'demo',
+    'thinkadmin_ver' => 'v5',
 ];
