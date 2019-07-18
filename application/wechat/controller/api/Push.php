@@ -324,14 +324,15 @@ class Push extends Controller
         if ($subscribe) {
             try {
                 $user = WechatService::WeChatUser()->getUserInfo($this->openid);
-                return FansService::set(array_merge($user, ['subscribe' => '1']));
+                return FansService::set(array_merge($user, ['subscribe' => '1', 'appid' => $this->appid]));
             } catch (\Exception $e) {
-                Log::error(__METHOD__ . " {$this->openid} 粉丝信息获取失败，{$e->getMessage()}");
+                Log::error(__METHOD__ . " {$this->openid} get userinfo faild. {$e->getMessage()}");
                 return false;
             }
+        } else {
+            $user = ['subscribe' => '0', 'openid' => $this->openid, 'appid' => $this->appid];
+            return data_save('WechatFans', $user, 'openid', ['appid' => $this->appid]);
         }
-        $user = ['subscribe' => '0', 'openid' => $this->openid, 'appid' => $this->appid];
-        return data_save('WechatFans', $user, 'openid', ['appid' => $this->appid]);
     }
 
 }
