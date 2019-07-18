@@ -2,14 +2,16 @@
 
 {block name="content"}
 
-<div class="layui-tab layui-tab-card" style="background:#fff">
+<div class="layui-tab layui-tab-card think-bg-white">
     <ul class="layui-tab-title notselect">
         <li data-type='store-config-type-params'>商城参数设置</li>
-        <li data-type="store-config-type-sms">商城短信设置</li>
+        <li data-type="store-config-type-sms1">国内短信设置</li>
+        <li data-type="store-config-type-sms2">国际短信设置</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item">{include file='config/index-store-config'}</div>
-        <div class="layui-tab-item">{include file='config/index-store-message'}</div>
+        <div class="layui-tab-item">{include file='config/index-store-message1'}</div>
+        <div class="layui-tab-item">{include file='config/index-store-message2'}</div>
     </div>
 </div>
 
