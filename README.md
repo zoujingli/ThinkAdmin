@@ -119,3 +119,8 @@ public function index(){
 * 在线体验地址：https://v4.thinkadmin.top
 * Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v4
 * Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v4
+
+#### ThinkAdmin v5 基于 ThinkPHP 5.1 开发（后台权限基于注解实现）
+* 在线体验地址：https://v5.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v5
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v5
