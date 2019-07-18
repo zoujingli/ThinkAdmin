@@ -47,15 +47,4 @@ class Member extends Controller
         $query->dateBetween('create_at')->order('id desc')->page();
     }
 
-    /**
-     * 数据列表处理
-     * @param array $data
-     */
-    protected function _page_filter(&$data = [])
-    {
-        foreach ($data as &$vo) {
-            $vo['nickname'] = emoji_decode($vo['nickname']);
-        }
-    }
-
 }

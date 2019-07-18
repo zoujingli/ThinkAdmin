@@ -71,7 +71,6 @@ class Member extends Controller
         $where = ['id' => $this->mid, 'openid' => $this->openid];
         $this->member = Db::name('StoreMember')->where($where)->find();
         if (empty($this->member)) $this->error('无效的会员信息，请重新登录授权！');
-        $this->member['nickname'] = emoji_decode($this->member['nickname']);
         // 会员当前已经领取次数
         $where = [['mid', 'eq', $this->mid], ['status', 'in', ['2', '3', '4', '5']]];
         $this->member['times_used'] = Db::name('StoreOrder')->where($where)->count();

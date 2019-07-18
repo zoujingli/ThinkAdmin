@@ -64,9 +64,6 @@ class Fans extends Controller
             foreach (explode(',', $user['tagid_list']) as $tagid) {
                 if (isset($tags[$tagid])) $user['tags'][] = $tags[$tagid];
             }
-            foreach (['country', 'province', 'city', 'nickname', 'remark'] as $k) {
-                if (isset($user[$k])) $user[$k] = emoji_decode($user[$k]);
-            }
         }
     }
 

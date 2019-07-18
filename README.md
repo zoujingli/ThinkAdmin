@@ -3,14 +3,14 @@
 
 ## 大道至简 · 原生框架
 
-ThinkAdmin V4.1 是一个基于 ThinkPHP 5.1 开发的后台管理系统。
+ThinkAdmin V5 是一个基于 ThinkPHP 5.1 开发的后台管理系统。
 
 我们致力于二次开发底层框架，提供完整的组件及API，基于此框架可以快速开发应用。
 
 另外项目安装及二次开发可以参考 ThinkPHP 官方文档，数据库文件摆放在项目根目录下。
 
 #### 注意事项 
-* 项目测试需要自行搭建环境导入数据库( admin_v4.sql )并修改配置( config/database.php )；
+* 项目测试需要自行搭建环境导入数据库( admin_v5.sql )并修改配置( config/database.php )；
 * 若操作提示“测试系统禁止操作”等字样，需要删除演示路由配置( route/demo.php )或清空路由文件；
 * 当前版本使用 ThinkPHP5.1.x，对 PHP 版本标注不低于 PHP5.6，具体请阅读 ThinkPHP 官方文档；
 * 环境需开启 PATHINFO，不再支持 ThinkPHP 的 URL 兼容模式运行（源于如何优雅的展示）；
@@ -119,3 +119,8 @@ public function index(){
 * 在线体验地址：https://v4.thinkadmin.top
 * Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v4
 * Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v4
+
+#### ThinkAdmin v5 基于 ThinkPHP 5.1 开发（后台权限基于注解实现）
+* 在线体验地址：https://v5.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v5
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v5

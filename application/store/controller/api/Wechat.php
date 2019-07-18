@@ -75,7 +75,7 @@ class Wechat extends Controller
                 data_save('StoreMember', [
                     'openid'   => $result['openId'],
                     'headimg'  => $result['avatarUrl'],
-                    'nickname' => emoji_encode($result['nickName']),
+                    'nickname' => $result['nickName'],
                 ], 'openid');
                 $result['member'] = Db::name('StoreMember')->where(['openid' => $result['openId']])->find();
                 $this->success('小程序加密数据解密成功！', $result);
