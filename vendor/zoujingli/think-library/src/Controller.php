@@ -245,7 +245,7 @@ class Controller extends \stdClass
 
     /**
      * 快捷输入逻辑器
-     * @param array $data 验证数据
+     * @param array|string $data 验证数据
      * @param array $rule 验证规则
      * @param array $info 验证消息
      * @return array
