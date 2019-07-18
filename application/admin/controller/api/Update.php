@@ -14,7 +14,7 @@
 
 namespace app\admin\controller\api;
 
-use library\command\Sync as UpdateLogic;
+use library\command\Sync;
 use library\Controller;
 
 /**
@@ -35,7 +35,8 @@ class Update extends Controller
      */
     public function tree()
     {
-        $this->success('获取当前文件列表成功！', UpdateLogic::build());
+        $sync = new Sync();
+        $this->success('获取当前文件列表成功！', $sync->build());
     }
 
     /**
