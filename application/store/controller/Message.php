@@ -50,6 +50,8 @@ class Message extends Controller
     /**
      * 删除短信记录
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {
