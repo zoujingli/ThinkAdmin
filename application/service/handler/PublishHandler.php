@@ -37,8 +37,8 @@ class PublishHandler
      * @param string $appid
      * @return string
      * @throws \WeChat\Exceptions\InvalidDecryptException
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public static function handler($appid)
     {
@@ -55,7 +55,7 @@ class PublishHandler
                     return $wechat->text('TESTCOMPONENT_MSG_TYPE_TEXT_callback')->reply([], true);
                 } else {
                     $key = str_replace("QUERY_AUTH_CODE:", '', $receive['Content']);
-                    WechatService::instance('Service')->getQueryAuthorizerInfo($key);
+                    WechatService::service()->getQueryAuthorizerInfo($key);
                     return $wechat->text("{$key}_from_api")->reply([], true);
                 }
             case 'event':
