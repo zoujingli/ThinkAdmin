@@ -78,7 +78,10 @@ class MediaService
      */
     private static function getServerPath($local)
     {
-        if (file_exists($local)) return new MyCurlFile($local);
-        return new MyCurlFile(File::down($local)['file']);
+        if (file_exists($local)) {
+            return new MyCurlFile($local);
+        } else {
+            return new MyCurlFile(File::down($local)['file']);
+        }
     }
 }
