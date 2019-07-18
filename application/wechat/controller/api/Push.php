@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\wechat\controller\api;
@@ -19,9 +20,10 @@ use app\wechat\service\MediaService;
 use app\wechat\service\WechatService;
 use library\Controller;
 use think\Db;
+use think\facade\Log;
 
 /**
- * 公众号消息推送处理
+ * 微信消息推送处理
  * Class Push
  * @package app\wechat\controller\api
  */
@@ -29,7 +31,7 @@ class Push extends Controller
 {
 
     /**
-     * 公众号APPID
+     * 微信APPID
      * @var string
      */
     protected $appid;
@@ -48,7 +50,7 @@ class Push extends Controller
 
 
     /**
-     * 公众号OPENID
+     * 微信OPENID
      * @var string
      */
     protected $fromOpenid;
@@ -64,6 +66,12 @@ class Push extends Controller
      * @var \WeChat\Receive
      */
     protected $wechat;
+
+    /**
+     * 强制返回JSON消息
+     * @var boolean
+     */
+    protected $forceJson = false;
 
     /**
      * 强制客服消息回复
@@ -87,9 +95,9 @@ class Push extends Controller
     public function index()
     {
         try {
-            $this->wechat = WechatService::WeChatReceive();
             if ($this->request->has('receive', 'post') && WechatService::getType() === 'thr') {
-                $this->forceCustom = true;
+                $this->forceJson = true; // 强制返回JSON到Service转发
+                $this->forceCustom = false; // 强制使用客服消息模式推送
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
                 $this->encrypt = boolval($this->request->post('encrypt', 0));
@@ -98,7 +106,9 @@ class Push extends Controller
                     throw new \think\Exception('微信API实例缺失必要参数[appid,openid,receive]');
                 }
             } else {
-                $this->forceCustom = false;
+                $this->forceJson = false; // 暂停返回JSON消息对象
+                $this->forceCustom = false; // 暂停使用客户消息模式
+                $this->wechat = WechatService::WeChatReceive();
                 $this->appid = WechatService::getAppid();
                 $this->openid = $this->wechat->getOpenid();
                 $this->encrypt = $this->wechat->isEncrypt();
@@ -110,7 +120,7 @@ class Push extends Controller
                 if (is_string(($result = $this->$method()))) return $result;
             }
         } catch (\Exception $e) {
-            \think\facade\Log::error(__METHOD__ . ":{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
+            Log::error("{$e->getFile()}:{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
         }
         return 'success';
     }
@@ -248,7 +258,7 @@ class Push extends Controller
     }
 
     /**
-     * 发送消息到公众号
+     * 发送消息到微信
      * @param string $type 消息类型（text|image|voice|video|music|news|mpnews|wxcard）
      * @param array $data 消息内容数据对象
      * @param boolean $isCustom 是否使用客服消息发送
@@ -265,7 +275,8 @@ class Push extends Controller
             WechatService::WeChatCustom()->send(['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data]);
         } else switch (strtolower($type)) {
             case 'text': // 发送文本消息
-                return $this->wechat->reply(['CreateTime' => time(), 'MsgType' => 'text', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Content' => $data['content']], true, $this->encrypt);
+                $reply = ['CreateTime' => time(), 'MsgType' => 'text', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Content' => $data['content']];
+                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($reply, true, $this->encrypt);
             case 'image': // 发送图片消息
                 return $this->buildMessage($type, ['MediaId' => $data['media_id']]);
             case 'voice': // 发送语言消息
@@ -280,7 +291,8 @@ class Push extends Controller
             case 'news': // 发送图文消息
                 $articles = [];
                 foreach ($data['articles'] as $article) array_push($articles, ['PicUrl' => $article['picurl'], 'Title' => $article['title'], 'Description' => $article['description'], 'Url' => $article['url']]);
-                return $this->wechat->reply(['CreateTime' => time(), 'MsgType' => 'news', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Articles' => $articles, 'ArticleCount' => count($articles)], true, $this->encrypt);
+                $reply = ['CreateTime' => time(), 'MsgType' => 'news', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Articles' => $articles, 'ArticleCount' => count($articles)];
+                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($reply, true, $this->encrypt);
             default:
                 return 'success';
         }
@@ -288,8 +300,8 @@ class Push extends Controller
 
     /**
      * 消息数据生成
-     * @param string $type
-     * @param string|array $data
+     * @param string $type 消息类型
+     * @param string|array $data 消息数据
      * @return string
      * @throws \WeChat\Exceptions\InvalidDecryptException
      */
@@ -297,7 +309,7 @@ class Push extends Controller
     {
         $reply = ['CreateTime' => time(), 'MsgType' => strtolower($type), 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid];
         if (!empty($data)) $reply[ucfirst(strtolower($type))] = $data;
-        return $this->wechat->reply($reply, true, $this->encrypt);
+        return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($reply, true, $this->encrypt);
     }
 
     /**
@@ -312,14 +324,15 @@ class Push extends Controller
         if ($subscribe) {
             try {
                 $user = WechatService::WeChatUser()->getUserInfo($this->openid);
-                return FansService::set(array_merge($user, ['subscribe' => '1']));
+                return FansService::set(array_merge($user, ['subscribe' => '1', 'appid' => $this->appid]));
             } catch (\Exception $e) {
-                \think\facade\Log::error(__METHOD__ . " {$this->openid} 粉丝信息获取失败，{$e->getMessage()}");
+                Log::error(__METHOD__ . " {$this->openid} get userinfo faild. {$e->getMessage()}");
                 return false;
             }
+        } else {
+            $user = ['subscribe' => '0', 'openid' => $this->openid, 'appid' => $this->appid];
+            return data_save('WechatFans', $user, 'openid', ['appid' => $this->appid]);
         }
-        $user = ['subscribe' => '0', 'openid' => $this->openid, 'appid' => $this->appid];
-        return data_save('WechatFans', $user, 'openid', ['appid' => $this->appid]);
     }
 
 }
