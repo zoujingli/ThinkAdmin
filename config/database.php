@@ -21,9 +21,9 @@ return [
     // 服务器地址
     'hostname'    => '127.0.0.1',
     // 数据库名
-    'database'    => 'admin_v4_1',
+    'database'    => 'admin_master',
     // 用户名
-    'username'    => 'admin_v4_1',
+    'username'    => 'admin_master',
     // 密码
     'password'    => 'FbYBHcWKr2',
     // 编码
