@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | framework
+// | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://framework.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/framework
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
 namespace app\service\handler;
@@ -38,7 +39,7 @@ class ReceiveHandler
     public static function handler($appid)
     {
         try {
-            $service = WechatService::WeChatReceive($appid);
+            $wechat = WechatService::WeChatReceive($appid);
         } catch (\Exception $e) {
             return "Wechat message handling failed, {$e->getMessage()}";
         }
@@ -49,11 +50,15 @@ class ReceiveHandler
             return $message;
         }
         try {
-            list($data, $openid) = [$service->getReceive(), $service->getOpenid()];
+            list($data, $openid) = [$wechat->getReceive(), $wechat->getOpenid()];
             if (isset($data['EventKey']) && is_object($data['EventKey'])) $data['EventKey'] = (array)$data['EventKey'];
-            $input = ['openid' => $openid, 'appid' => $appid, 'receive' => serialize($data), 'encrypt' => intval($service->isEncrypt())];
+            $input = ['openid' => $openid, 'appid' => $appid, 'receive' => serialize($data), 'encrypt' => intval($wechat->isEncrypt())];
             if (is_string($result = http_post($config['appuri'], $input, ['timeout' => 30]))) {
-                return $result;
+                if (is_array($json = json_decode($result, true))) {
+                    return $wechat->reply($json, true, $wechat->isEncrypt());
+                } else {
+                    return $result;
+                }
             }
         } catch (\Exception $e) {
             \think\facade\Log::error("微信{$appid}接口调用异常，{$e->getMessage()}");
