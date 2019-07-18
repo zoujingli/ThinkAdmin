@@ -410,7 +410,7 @@ CREATE TABLE `system_config`  (
 -- ----------------------------
 INSERT INTO `system_config` VALUES (1, 'app_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES (2, 'site_name', 'ThinkAdmin');
-INSERT INTO `system_config` VALUES (3, 'app_version', 'v4.1');
+INSERT INTO `system_config` VALUES (3, 'app_version', 'v5');
 INSERT INTO `system_config` VALUES (4, 'site_copy', '©版权所有 2014-2018 楚才科技');
 INSERT INTO `system_config` VALUES (5, 'site_icon', '/upload/decb0fe26fa3f486/b3f6521bf29403c8.png');
 INSERT INTO `system_config` VALUES (7, 'miitbeian', '粤ICP备16006642号-2');
