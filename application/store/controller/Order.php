@@ -66,7 +66,6 @@ class Order extends Controller
                 $vo['list'][] = $goods;
             }
             foreach ($memberList as $member) if ($member['id'] === $vo['mid']) {
-                $member['nickname'] = emoji_decode($member['nickname']);
                 $vo['member'] = $member;
             }
         }

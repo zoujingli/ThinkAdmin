@@ -38,10 +38,10 @@ class Center extends Member
             $data['headimg'] = $this->request->post('headimg');
         }
         if ($this->request->has('nickname', 'post', true)) {
-            $data['nickname'] = emoji_encode($this->request->post('nickname'));
+            $data['nickname'] = $this->request->post('nickname');
         }
         if ($this->request->has('username', 'post', true)) {
-            $data['username'] = emoji_encode($this->request->post('username'));
+            $data['username'] = $this->request->post('username');
         }
         if (empty($data)) $this->error('没有需要修改的数据哦！');
         if (data_save('StoreMember', array_merge($data, ['id' => $this->mid]), 'id') !== false) {
