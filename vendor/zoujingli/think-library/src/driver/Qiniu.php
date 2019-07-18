@@ -3,12 +3,13 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://library.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ class Qiniu extends File
 
     /**
      * 根据Key读取文件内容
-     * @param string $name
+     * @param string $name 文件名称
      * @return string
      * @throws \think\Exception
      */
@@ -51,8 +52,8 @@ class Qiniu extends File
 
     /**
      * 获取文件当前URL地址
-     * @param string $name
-     * @return boolean|string
+     * @param string $name 文件名称
+     * @return boolean|string|null
      * @throws \think\Exception
      */
     public function url($name)
@@ -66,7 +67,7 @@ class Qiniu extends File
      * @return string
      * @throws \think\Exception
      */
-    public function upload($client = true)
+    public function upload($client = false)
     {
         $isHttps = !!self::$config->get('storage_qiniu_is_https');
         switch (self::$config->get('storage_qiniu_region')) {
@@ -89,7 +90,7 @@ class Qiniu extends File
 
     /**
      * 获取七牛云URL前缀
-     * @param string $name
+     * @param string $name 文件名称
      * @return string
      * @throws \think\Exception
      */
@@ -103,14 +104,15 @@ class Qiniu extends File
                 return "http://{$domain}/{$name}";
             case 'auto':
                 return "//{$domain}/{$name}";
+            default:
+                throw new \think\Exception('未配置七牛云URL前缀');
         }
-        throw new \think\Exception('未设置七牛云文件地址协议');
     }
 
     /**
-     * 七牛云存储
-     * @param string $name
-     * @param string $content
+     * 七牛云存储文件
+     * @param string $name 文件名称
+     * @param string $content 文件内容
      * @return array|null
      * @throws \think\Exception
      */
@@ -125,7 +127,7 @@ class Qiniu extends File
 
     /**
      * 获取文件路径
-     * @param string $name
+     * @param string $name 文件名称
      * @return string
      */
     public function path($name)
@@ -135,7 +137,7 @@ class Qiniu extends File
 
     /**
      * 获取文件信息
-     * @param string $name
+     * @param string $name 文件名称
      * @return array|null
      * @throws \think\Exception
      */
@@ -150,7 +152,7 @@ class Qiniu extends File
 
     /**
      * 删除文件
-     * @param string $name
+     * @param string $name 文件名称
      * @return boolean
      */
     public function remove($name)
@@ -158,6 +160,36 @@ class Qiniu extends File
         $bucket = self::$config->get('storage_qiniu_bucket');
         $err = (new BucketManager($this->getAuth()))->delete($bucket, $name);
         return empty($err);
+    }
+
+    /**
+     * 获取空间列表
+     * @return string
+     * @throws \Exception
+     */
+    public function getBucketList()
+    {
+        list($list, $err) = (new BucketManager($this->getAuth()))->buckets(true);
+        if (!empty($err)) throw new \Exception($err);
+        foreach ($list as &$bucket) {
+            list($domain, $err) = $this->getDomainList($bucket);
+            if (empty($err)) {
+                $bucket = ['bucket' => $bucket, 'domain' => $domain];
+            } else {
+                throw new \Exception($err);
+            }
+        }
+        return $list;
+    }
+
+    /**
+     * 获取空间绑定的域名列表
+     * @param string $bucket 空间名称
+     * @return array
+     */
+    public function getDomainList($bucket)
+    {
+        return (new BucketManager($this->getAuth()))->domains($bucket);
     }
 
     /**

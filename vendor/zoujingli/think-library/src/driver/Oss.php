@@ -3,12 +3,13 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://library.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ class Oss extends File
 
     /**
      * 检查文件是否已经存在
-     * @param string $name
+     * @param string $name 文件名称
      * @return boolean
      * @throws \OSS\Core\OssException
      */
@@ -41,7 +42,7 @@ class Oss extends File
 
     /**
      * 根据Key读取文件内容
-     * @param string $name
+     * @param string $name 文件名称
      * @return string
      * @throws \OSS\Core\OssException
      */
@@ -53,7 +54,7 @@ class Oss extends File
 
     /**
      * 获取文件当前URL地址
-     * @param string $name 文件HASH名称
+     * @param string $name 文件名称
      * @return boolean|string
      * @throws \OSS\Core\OssException
      * @throws \think\Exception
@@ -75,7 +76,7 @@ class Oss extends File
 
     /**
      * 获取阿里云对象存储URL前缀
-     * @param string $name
+     * @param string $name 文件名称
      * @return string
      * @throws \think\Exception
      */
@@ -89,14 +90,15 @@ class Oss extends File
                 return "http://{$domain}/{$name}";
             case 'auto':
                 return "//{$domain}/{$name}";
+            default:
+                throw new \think\Exception('未设置阿里云文件地址协议');
         }
-        throw new \think\Exception('未设置阿里云文件地址协议');
     }
 
     /**
-     * 阿里云OSS
-     * @param string $name
-     * @param string $content
+     * 阿里云OSS保存文件
+     * @param string $name 文件名称
+     * @param string $content 文件内容
      * @return array|null
      */
     public function save($name, $content)
@@ -108,6 +110,47 @@ class Oss extends File
         } catch (\Exception $e) {
             \think\facade\Log::error("阿里云OSS文件上传失败，{$e->getMessage()}");
             return null;
+        }
+    }
+
+    /**
+     * 获取文件路径
+     * @param string $name 文件名称
+     * @return string
+     */
+    public function path($name)
+    {
+        return $name;
+    }
+
+    /**
+     * 获取文件信息
+     * @param string $name 文件名称
+     * @return array|null
+     * @throws \OSS\Core\OssException
+     * @throws \think\Exception
+     */
+    public function info($name)
+    {
+        $bucket = self::$config->get('storage_oss_bucket');
+        $result = $this->getOssClient()->getObjectMeta($bucket, $name);
+        if (empty($result) || !isset($result['content-md5'])) return null;
+        return ['file' => $name, 'hash' => $result['content-md5'], 'url' => $this->base($name), 'key' => $name];
+    }
+
+    /**
+     * 删除文件
+     * @param string $name 文件名称
+     * @return boolean
+     */
+    public function remove($name)
+    {
+        try {
+            $bucket = self::$config->get('storage_oss_bucket');
+            $this->getOssClient()->deleteObject($bucket, $name);
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 
@@ -141,48 +184,6 @@ class Oss extends File
         $corsConfig->addRule($corsRule);
         $client->putBucketCors($bucket, $corsConfig);
         return pathinfo($result['oss-request-url'], PATHINFO_BASENAME);
-    }
-
-    /**
-     * 获取文件路径
-     * @param string $name
-     * @return string
-     */
-    public function path($name)
-    {
-        return $name;
-    }
-
-    /**
-     * 获取文件信息
-     * @param string $name
-     * @return array|null
-     * @throws \OSS\Core\OssException
-     * @throws \think\Exception
-     */
-    public function info($name)
-    {
-        $bucket = self::$config->get('storage_oss_bucket');
-        $result = $this->getOssClient()->getObjectMeta($bucket, $name);
-        if (empty($result) || !isset($result['content-md5'])) return null;
-        return ['file' => $name, 'hash' => $result['content-md5'], 'url' => $this->base($name), 'key' => $name];
-    }
-
-    /**
-     * 删除文件
-     * @param string $name
-     * @return boolean
-     * @throws \Exception
-     */
-    public function remove($name)
-    {
-        try {
-            $bucket = self::$config->get('storage_oss_bucket');
-            $this->getOssClient()->deleteObject($bucket, $name);
-        } catch (\Exception $e) {
-            return false;
-        }
-        return true;
     }
 
     /**

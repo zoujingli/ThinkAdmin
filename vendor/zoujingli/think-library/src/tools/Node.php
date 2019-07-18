@@ -3,12 +3,13 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://library.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
@@ -25,10 +26,21 @@ class Node
 {
 
     /**
-     * 控制器忽略函数
+     * 忽略控制名的前缀
      * @var array
      */
-    protected static $ignore = ['initialize', 'success', 'error', 'redirect', 'fetch', 'assign', 'callback'];
+    private static $ignoreController = [
+        'api.', 'wap.', 'web.',
+    ];
+
+    /**
+     * 忽略控制的方法名
+     * @var array
+     */
+    private static $ignoreAction = [
+        '_', 'redirect', 'assign', 'callback',
+        'initialize', 'success', 'error', 'fetch',
+    ];
 
     /**
      * 获取标准访问节点
@@ -39,13 +51,9 @@ class Node
     {
         if (empty($node)) return self::current();
         if (count(explode('/', $node)) === 1) {
-            $preNode = Request::module() . '/' . Request::controller();
-            return self::parseString($preNode) . '/' . strtolower($node);
+            $node = Request::module() . '/' . Request::controller() . '/' . $node;
         }
-        if (count($attr = explode('/', $node)) >= 3) {
-            $attr[1] = self::parseString($attr[1]);
-        }
-        return strtolower(join('/', $attr));
+        return self::parseString(trim($node));
     }
 
     /**
@@ -54,34 +62,25 @@ class Node
      */
     public static function current()
     {
-        $preNode = Request::module() . '/' . Request::controller();
-        return self::parseString($preNode) . '/' . strtolower(Request::action());
+        return self::parseString(Request::module() . '/' . Request::controller() . '/' . Request::action());
     }
 
     /**
-     * 获取方法节点列表
+     * 获取节点列表
      * @param string $dir 控制器根路径
      * @param array $nodes 额外数据
      * @return array
      * @throws \ReflectionException
      */
-    public static function getMethodTreeNode($dir, $nodes = [])
+    public static function getTree($dir, $nodes = [])
     {
-        foreach (self::scanDir($dir) as $file) {
-            list($matches, $filename) = [[], str_replace(DIRECTORY_SEPARATOR, '/', $file)];
-            if (!preg_match('|/(\w+)/controller/(.+)|', $filename, $matches)) continue;
-            if (class_exists($classname = env('app_namespace') . str_replace('/', '\\', substr($matches[0], 0, -4)))) {
-                foreach ((new \ReflectionClass($classname))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                    list($function, $comment) = [$method->getName(), $method->getDocComment()];
-                    if (stripos($function, '_') === 0 || in_array($function, self::$ignore)) continue;
-                    $controller = str_replace('/', '.', substr($matches[2], 0, -4));
-                    if (stripos($controller, 'api.') !== false || stripos($controller, 'wap.') !== false) continue;
-                    $node = self::parseString("{$matches[1]}/{$controller}") . '/' . strtolower($function);
-                    $nodes[$node] = preg_replace('/^\/\*\*\*(.*?)\*.*?$/', '$1', preg_replace("/\s/", '', $comment));
-                    if (stripos($nodes[$node], '@') !== false) $nodes[$node] = '';
-                }
-            }
-        }
+        self::eachController($dir, function (\ReflectionClass $reflection, $prenode) use (&$nodes) {
+            foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                $action = strtolower($method->getName());
+                foreach (self::$ignoreAction as $ignore) if (stripos($action, $ignore) === 0) continue 2;
+                $nodes[] = $prenode . $action;
+            };
+        });
         return $nodes;
     }
 
@@ -94,41 +93,51 @@ class Node
      */
     public static function getClassTreeNode($dir, $nodes = [])
     {
-        foreach (self::scanDir($dir) as $file) {
-            list($matches, $filename) = [[], str_replace(DIRECTORY_SEPARATOR, '/', $file)];
-            if (!preg_match('|/(\w+)/controller/(.+)|', $filename, $matches)) continue;
-            if (class_exists($classname = env('app_namespace') . str_replace('/', '\\', substr($matches[0], 0, -4)))) {
-                $controller = str_replace('/', '.', substr($matches[2], 0, -4));
-                if (stripos($controller, 'api.') !== false || stripos($controller, 'wap.') !== false) continue;
-                $node = self::parseString("{$matches[1]}/{$controller}");
-                $comment = (new \ReflectionClass($classname))->getDocComment();
-                $nodes[$node] = preg_replace('/^\/\*\*\*(.*?)\*.*?$/', '$1', preg_replace("/\s/", '', $comment));
-                if (stripos($nodes[$node], '@') !== false) $nodes[$node] = '';
-            }
-        }
+        self::eachController($dir, function (\ReflectionClass $reflection, $prenode) use (&$nodes) {
+            list($node, $comment) = [trim($prenode, '/'), $reflection->getDocComment()];
+            $nodes[$node] = preg_replace('/^\/\*\*\*(.*?)\*.*?$/', '$1', preg_replace("/\s/", '', $comment));
+            if (stripos($nodes[$node], '@') !== false) $nodes[$node] = '';
+        });
         return $nodes;
     }
 
     /**
-     * 获取节点列表
+     * 获取方法节点列表
      * @param string $dir 控制器根路径
      * @param array $nodes 额外数据
      * @return array
+     * @throws \ReflectionException
      */
-    public static function getTree($dir, $nodes = [])
+    public static function getMethodTreeNode($dir, $nodes = [])
     {
-        foreach (self::scanDir($dir) as $file) {
-            list($matches, $filename) = [[], str_replace(DIRECTORY_SEPARATOR, '/', $file)];
-            if (!preg_match('|/(\w+)/controller/(.+)|', $filename, $matches)) continue;
-            $classname = env('app_namespace') . str_replace('/', '\\', substr($matches[0], 0, -4));
-            if (class_exists($classname)) foreach (get_class_methods($classname) as $function) {
-                if (stripos($function, '_') === 0 || in_array($function, self::$ignore)) continue;
-                $controller = str_replace('/', '.', substr($matches[2], 0, -4));
-                if (stripos($controller, 'api.') !== false || stripos($controller, 'wap.') !== false) continue;
-                $nodes[] = self::parseString("{$matches[1]}/{$controller}") . '/' . strtolower($function);
+        self::eachController($dir, function (\ReflectionClass $reflection, $prenode) use (&$nodes) {
+            foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                $action = strtolower($method->getName());
+                foreach (self::$ignoreAction as $ignore) if (stripos($action, $ignore) === 0) continue 2;
+                $node = $prenode . $action;
+                $nodes[$node] = preg_replace('/^\/\*\*\*(.*?)\*.*?$/', '$1', preg_replace("/\s/", '', $method->getDocComment()));
+                if (stripos($nodes[$node], '@') !== false) $nodes[$node] = '';
+            }
+        });
+        return $nodes;
+    }
+
+    /**
+     * 控制器扫描回调
+     * @param string $dir
+     * @param callable $callable
+     * @throws \ReflectionException
+     */
+    public static function eachController($dir, $callable)
+    {
+        foreach (Node::scanDir($dir) as $file) {
+            if (!preg_match("|/(\w+)/controller/(.+)\.php$|", strtr($file, '\\', '/'), $matches)) continue;
+            list($module, $controller) = [$matches[1], strtr($matches[2], '/', '.')];
+            foreach (self::$ignoreController as $ignore) if (stripos($controller, $ignore) === 0) continue 2;
+            if (class_exists($class = substr(strtr(env('app_namespace') . $matches[0], '/', '\\'), 0, -4))) {
+                call_user_func($callable, new \ReflectionClass($class), Node::parseString("{$module}/{$controller}/"));
             }
         }
-        return $nodes;
     }
 
     /**
@@ -138,13 +147,14 @@ class Node
      */
     public static function parseString($node)
     {
-        $nodes = [];
-        foreach (explode('/', $node) as $str) {
+        if (count($nodes = explode('/', $node)) > 1) {
             $dots = [];
-            foreach (explode('.', $str) as $dot) array_push($dots, strtolower(trim(preg_replace("/[A-Z]/", "_\\0", $dot), "_")));
-            $nodes[] = join('.', $dots);
+            foreach (explode('.', $nodes[1]) as $dot) {
+                $dots[] = trim(preg_replace("/[A-Z]/", "_\\0", $dot), "_");
+            }
+            $nodes[1] = join('.', $dots);
         }
-        return trim(join('/', $nodes), '/');
+        return strtolower(join('/', $nodes));
     }
 
     /**

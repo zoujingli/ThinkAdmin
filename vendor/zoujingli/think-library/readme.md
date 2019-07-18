@@ -3,7 +3,7 @@
 # ThinkLibrary for ThinkPHP5.1
 ThinkLibrary 是针对 ThinkPHP5.1 版本封装的一套工具类库，方便快速构建 WEB 应用。
 
-## 主要包含内容
+## 包含组件
 * 数据列表展示（可带高级搜索器）
 * FORM表单处理器（表单展示及数据入库）
 * 数据状态快速处理（数据指定字段更新，支持多字段同时）
@@ -11,29 +11,36 @@ ThinkLibrary 是针对 ThinkPHP5.1 版本封装的一套工具类库，方便快
 * 文件存储通用组件（本地服务存储 + 阿里云OSS存储 + 七牛云存储）
 * 通用数据保存更新（通过 key 值及 where 判定是否存在，存在则更新，不存在则新增）
 * 通用网络请求 （支持 get 及 post，可配置请求证书等）
-* emoji 表情转义处理（部分数据库不支持保存 Emoji 表情，可用这个方法哦）
+* Emoji 表情转义处理（部分数据库不支持保存 Emoji 表情，可用这个方法哦）
 * 系统参数通用 k-v 配置（快速参数长久化配置）
 * UTF8加密算法支持（安全URL参数传参数）
 * 接口 CORS 跨域默认支持（输出 JSON 标准化）
-* 支持表单CSRF安全验证（自动化form标签替换）
+* 支持表单CSRF安全验证（自动化 FORM 标签替换）
 * 更新功能等待您来发现哦....
 
 ## 参考项目
-* Gitee 仓库：https://gitee.com/zoujingli/framework
-* Github 仓库：https://github.com/zoujingli/framework
 
-代码仓库
---
+#### framework - V1.0 / V2.0
+* Gitee 仓库 https://gitee.com/zoujingli/framework
+* Github 仓库 https://github.com/zoujingli/framework
+* 体验地址（账号密码都是admin）https://framework.thinkadmin.top
+
+#### ThinkAdmin - V4.0 / V4.1
+* Gitee 仓库 https://gitee.com/zoujingli/ThinkAdmin
+* Github 仓库 https://github.com/zoujingli/ThinkAdmin
+* 体验地址（账号密码都是admin）https://demo.thinkadmin.top
+
+## 代码仓库
  ThinkLibrary 为 MIT 协议开源项目，安装使用或二次开发不受约束，欢迎 fork 项目。
  
  部分代码来自互联网，若有异议可以联系作者进行删除。
  
- * 在线体验地址：https://framework.thinkadmin.top （账号和密码都是 admin ）
+ * 在线体验地址：https://demo.thinkadmin.top （账号和密码都是 admin ）
  * Gitee仓库地址：https://gitee.com/zoujingli/ThinkLibrary
  * GitHub仓库地址：https://github.com/zoujingli/ThinkLibrary
 
 ## 使用说明
-* ThinkLibrary 需要Composer支持
+* ThinkLibrary 需要 Composer 支持
 * 安装命令 ` composer require zoujingli/think-library 5.1.x-dev`
 * 案例代码：
 控制器需要继承 `library\Controller`，然后`$this`就可能使用全部功能
@@ -69,7 +76,7 @@ CREATE TABLE `system_config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统配置';
 ```
 
-## 列表处理
+#### 列表处理
 ```php
 // 列表展示
 $this->_page($dbQuery, $isPage, $isDisplay, $total);
@@ -83,19 +90,19 @@ $db = $query->db(); // @todo 这里可以对db进行操作
 $this->_page($db); // 显示列表分页
 ```
 
-## 表单处理
+#### 表单处理
 ```php
 // 表单显示及数据更新
 $this->_form($dbQuery, $tplFile, $pkField , $where, $data);
 ```
 
-## 删除处理
+#### 删除处理
 ```php
 // 数据删除处理
 $this->_deleted($dbQuery);
 ```
 
-## 禁用启用处理
+#### 禁用启用处理
 ```php
 // 数据禁用处理
 $this->_save($dbQuery,['status'=>'0']);
@@ -104,7 +111,7 @@ $this->_save($dbQuery,['status'=>'0']);
 $this->_save($dbQuery,['status'=>'1']);
 ```
 
-## 文件存储组件（ oss 及 qiniu 需要配置参数）
+#### 文件存储组件（ oss 及 qiniu 需要配置参数）
 ```php
 
 // 配置默认存储方式    
@@ -160,13 +167,13 @@ $resutl = \library\File::instance('local')->info($filename);
 $resutl = \library\File::instance('qiniu')->info($filename);
 ```
 
-## 通用数据保存
+#### 通用数据保存
 ```php
 // 指定关键列更新（$where 为扩展条件）
 boolean data_save($dbQuery,$data,'pkname',$where);
 ```
 
-## 通用网络请求
+#### 通用网络请求
 ```php
 // 发起get请求
 $result = http_get($url,$query,$options);
@@ -177,7 +184,7 @@ $result = http_post($url,$data,$options);
 $result = \library\tools\Http::post($url,$data,$options);
 ```
 
-## emoji 表情转义（部分数据库不支持可以用这个）
+#### emoji 表情转义（部分数据库不支持可以用这个）
 ```php
 // 输入数据库前转义
 $content = emoji_encode($content);
@@ -186,7 +193,7 @@ $content = emoji_encode($content);
 $content = emoji_decode($content); 
 ```
 
-## 系统参数配置（基于 system_config 数据表）
+#### 系统参数配置（基于 system_config 数据表）
 ```php
 // 设置参数
 sysconf($keyname,$keyvalue);
@@ -195,7 +202,7 @@ sysconf($keyname,$keyvalue);
 $keyvalue = sysconf($kename);
 ```
 
-## UTF8加密算法
+#### UTF8加密算法
 ```php
 // 字符串加密操作
 $string = encode($content);
@@ -203,3 +210,7 @@ $string = encode($content);
 // 加密字符串解密
 $content = decode($string);
 ```
+
+## 赞助打赏
+
+![赞助](http://static.thinkadmin.top/pay.png)

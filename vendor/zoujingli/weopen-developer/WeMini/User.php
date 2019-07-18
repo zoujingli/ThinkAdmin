@@ -76,7 +76,7 @@ class User extends BasicWeChat
      */
     public function get($appid)
     {
-        $url = "https://api.weixin.qq.com/cgi-bin/open/unbind?access_token=ACCESS_TOKEN";
+        $url = "https://api.weixin.qq.com/cgi-bin/open/get?access_token=ACCESS_TOKEN";
         $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->httpPostForJson($url, ['appid' => $appid]);
     }

@@ -3,16 +3,19 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://library.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
+// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
 namespace library\tools;
+
+use think\exception\HttpResponseException;
 
 /**
  * 表单CSRF表单令牌
@@ -81,7 +84,7 @@ class Csrf
      */
     public static function fetchTemplate($tpl = '', $vars = [], $node = null)
     {
-        throw new \think\exception\HttpResponseException(view($tpl, $vars, 200, function ($html) use ($node) {
+        throw new HttpResponseException(view($tpl, $vars, 200, function ($html) use ($node) {
             return preg_replace_callback('/<\/form>/i', function () use ($node) {
                 $csrf = self::buildFormToken($node);
                 return "<input type='hidden' name='_csrf_' value='{$csrf['token']}'></form>";
