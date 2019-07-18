@@ -19,9 +19,19 @@ use library\tools\Http;
 use think\Db;
 
 /**
- * 业务扩展服务
+ * 短信业务扩展服务
  * Class ExtendService
  * @package app\store\service
+ * -------------------------
+ * 发送国内短信需要给产品码 [productid]
+ * --- 验证短信的产品码为：676767
+ * --- 营销短信的产品码为：333333
+ * 发送国际短信需要给国家代码 [code]
+ * --- 国家代码见 getRegionMap
+ * -------------------------
+ * 需要开通短信账号请联系客服
+ * --- 客服电话：18122377655
+ * =========================
  */
 class ExtendService
 {
@@ -81,30 +91,41 @@ class ExtendService
     }
 
     /**
+     * 错误消息处理
+     * @var array
+     */
+    private static $messageMap2 = [
+        2  => '用户账号为空', 3 => '用户账号错误', 4 => '授权密码为空', 5 => '授权密码错误',
+        6  => '当前时间为空', 7 => '当前时间错误', 8 => '用户类型错误', 9 => '用户鉴权错误',
+        10 => '请求IP已被列入黑名单',
+    ];
+
+    /**
      * 发送国际短信内容
-     * @param string $mid
+     * @param string $mid 会员编号
      * @param string $code 国家代码
-     * @param string $phone 手机号码
+     * @param string $mobile 手机号码
      * @param string $content 发送内容
      * @return boolean
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function sendSms2($mid, $code, $phone, $content)
+    public static function sendSms2($mid, $code, $mobile, $content)
     {
         $tkey = date("YmdHis");
         $data = [
             'tkey'     => $tkey,
             'code'     => $code,
-            'mobile'   => $phone,
+            'mobile'   => $mobile,
             'content'  => $content,
             'username' => sysconf('sms_zt_username2'),
             'password' => md5(md5(sysconf('sms_zt_password2')) . $tkey),
         ];
         $result = Http::post('http://intl.zthysms.com/intSendSms.do', $data);
-        $insert = ['mid' => $mid, 'phone' => $phone, 'content' => $content, 'result' => $result];
-        Db::name('StoreMemberSmsHistory')->insert($insert);
-        return intval($code) === 1;
+        Db::name('StoreMemberSmsHistory')->insert([
+            'mid' => $mid, 'region' => $code, 'phone' => $mobile, 'content' => $content, 'result' => $result,
+        ]);
+        return intval($result) === 1;
     }
 
     /**
@@ -121,14 +142,11 @@ class ExtendService
             'password' => md5(md5(sysconf('sms_zt_password2')) . $tkey),
         ];
         $result = Http::post('http://intl.zthysms.com/intBalance.do', $data);
-        if ($result > -1) {
-            return ['code' => 1, 'num' => $result, 'msg' => '获取短信剩余条数成功！'];
-        } elseif ($result > -2) {
-            return ['code' => 0, 'num' => '0', 'msg' => '用户名或者密码不正确！'];
-        } elseif ($result > -3) {
-            return ['code' => 0, 'num' => '0', 'msg' => 'tkey不正确！'];
-        } elseif ($result > -4) {
-            return ['code' => 0, 'num' => '0', 'msg' => '用户不存在或用户停用！'];
+
+        if (!is_numeric($result) && ($state = intval($result)) && isset(self::$messageMap2[$state])) {
+            return ['code' => 0, 'num' => 0, 'msg' => self::$messageMap2[$state]];
+        } else {
+            return ['code' => 1, 'num' => $result, 'msg' => '查询成功'];
         }
     }
 
