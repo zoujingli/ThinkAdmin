@@ -36,7 +36,8 @@ class Update extends Controller
      */
     public function tree()
     {
-        $this->success('获取当前文件列表成功！', Sync::build());
+        $sync = new Sync();
+        $this->success('获取当前文件列表成功！', $sync->build());
     }
 
     /**
