@@ -53,9 +53,7 @@ class Sync extends Command
         $this->version = config('app.thinkadmin_ver');
         if (empty($this->version)) $this->version = 'v4';
         $this->uri = "https://{$this->version}.thinkadmin.top";
-        if (is_string($name) && !empty($name)) {
-            parent::__construct($name);
-        }
+        parent::__construct($name);
     }
 
     /**
@@ -65,18 +63,14 @@ class Sync extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $output->newLine();
-        $output->comment("=== 准备从代码仓库下载更新{$this->version}版本文件 ===");
-        $output->newLine();
         $files = [];
-        foreach ($this->getDiff() as $file) foreach ($this->modules as $module) {
-            if (stripos($file['name'], $module) === 0) $files[] = $file;
+        $output->comment("=== 准备从代码仓库下载更新{$this->version}版本文件 ===");
+        foreach ($this->getDiff() as $file) if (in_array($file['type'], ['add', 'del', 'mod'])) {
+            foreach ($this->modules as $module) if (stripos($file['name'], $module) === 0) $files[] = $file;
         }
-        if (empty($files)) $output->info('--- 本地文件与线上文件一致，无需要下载及更新文件');
+        if (empty($files)) $output->info('--- 本地文件与线上文件一致，无需更新文件');
         else foreach ($files as $file) $this->syncFile($file, $output);
-        $output->newLine();
-        $output->comment("=== 从代码仓库下载{$this->version}版本并更新文件成功 ===");
-        $output->newLine();
+        $output->comment("=== 从代码仓库下载{$this->version}版本同步更新成功 ===");
     }
 
     /**
@@ -137,9 +131,9 @@ class Sync extends Command
                 $output->error("--- 下载 {$file['name']} 更新失败");
             }
         } elseif (in_array($file['type'], ['del'])) {
-            $realfile = realpath(env('root_path') . $file['name']);
-            if (is_file($realfile) && unlink($realfile)) {
-                $this->delEmptyDir(dirname($realfile));
+            $real = realpath(env('root_path') . $file['name']);
+            if (is_file($real) && unlink($real)) {
+                $this->delEmptyDir(dirname($real));
                 $output->writeln("--- 删除 {$file['name']} 文件成功");
             } else {
                 $output->error("--- 删除 {$file['name']} 文件失败");
