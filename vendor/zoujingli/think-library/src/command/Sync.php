@@ -62,13 +62,13 @@ class Sync extends Command
      * 执行指令
      * @param Input $input
      * @param Output $output
-     * @param array $files
      */
-    protected function execute(Input $input, Output $output, $files = [])
+    protected function execute(Input $input, Output $output)
     {
         $output->newLine();
         $output->comment("=== 准备从代码仓库下载更新{$this->version}版本文件 ===");
         $output->newLine();
+        $files = [];
         foreach ($this->getDiff() as $file) foreach ($this->modules as $module) {
             if (stripos($file['name'], $module) === 0) $files[] = $file;
         }
