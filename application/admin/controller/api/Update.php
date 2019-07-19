@@ -36,7 +36,7 @@ class Update extends Controller
      */
     public function tree()
     {
-        $sync = new Sync('update');
+        $sync = new Sync('Update');
         $this->success('获取当前文件列表成功！', $sync->build());
     }
 
@@ -46,13 +46,14 @@ class Update extends Controller
      */
     public function read($encode)
     {
-        $file = env('root_path') . decode($encode);
-        if (!file_exists($file)) {
-            $this->error('获取文件内容失败！');
-        } else {
-            $this->success('获取文件内容成功！', [
-                'format' => 'base64', 'content' => base64_encode(file_get_contents($file)),
+        $this->file = env('root_path') . decode($encode);
+        if (file_exists($this->file)) {
+            $this->success('读取文件成功！', [
+                'format'  => 'base64',
+                'content' => base64_encode(file_get_contents($this->file)),
             ]);
+        } else {
+            $this->error('获取文件内容失败！');
         }
     }
 
