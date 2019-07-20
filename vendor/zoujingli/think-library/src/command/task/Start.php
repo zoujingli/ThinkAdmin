@@ -16,6 +16,8 @@
 namespace library\command\task;
 
 use library\command\Task;
+use think\console\Input;
+use think\console\Output;
 
 /**
  * Class Start
@@ -24,12 +26,20 @@ use library\command\Task;
 class Start extends Task
 {
 
+    /**
+     * 指令属性配置
+     */
     protected function configure()
     {
         $this->setName('xtask:start')->setDescription('开始启动消息队列守护进程');
     }
 
-    protected function execute(\think\console\Input $input, \think\console\Output $output)
+    /**
+     * 执行启动操作
+     * @param Input $input
+     * @param Output $output
+     */
+    protected function execute(Input $input, Output $output)
     {
         if (($pid = $this->checkProcess()) > 0) {
             $output->info("The message queue daemon {$pid} already exists!");

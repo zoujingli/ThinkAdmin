@@ -28,14 +28,13 @@ class Plugs extends Controller
 {
 
     /**
-     * Plugs constructor.
+     * 系统选择器图标
      */
-    public function __construct()
+    public function icon()
     {
-        parent::__construct();
-        if (!NodeService::islogin()) {
-            $this->error('访问授权失败，请重新登录授权再试！');
-        }
+        $this->title = '图标选择器';
+        $this->field = input('field', 'icon');
+        $this->fetch();
     }
 
     /**
@@ -46,13 +45,16 @@ class Plugs extends Controller
      */
     public function plupload()
     {
+        if (!NodeService::islogin()) {
+            $this->error('访问授权失败，请重新登录授权再试！');
+        }
         if (!($file = $this->getUploadFile()) || empty($file)) {
             return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件可能过大或未上传']]);
         }
         if (!$file->checkExt(strtolower(sysconf('storage_local_exts')))) {
             return json(['uploaded' => false, 'error' => ['message' => '文件上传类型受限，请在后台配置']]);
         }
-        if ($file->checkExt('php')) {
+        if ($file->checkExt('php,sh')) {
             return json(['uploaded' => false, 'error' => ['message' => '可执行文件禁止上传到本地服务器']]);
         }
         $this->safe = boolval(input('safe'));
@@ -93,16 +95,6 @@ class Plugs extends Controller
         } catch (\Exception $e) {
             $this->error(lang($e->getMessage()));
         }
-    }
-
-    /**
-     * 系统选择器图标
-     */
-    public function icon()
-    {
-        $this->title = '图标选择器';
-        $this->field = input('field', 'icon');
-        $this->fetch();
     }
 
 }

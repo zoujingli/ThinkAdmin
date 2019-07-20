@@ -235,14 +235,10 @@ class NodeService
         if (($uid = session('admin_user.id'))) {
             session('admin_user', Db::name('SystemUser')->where(['id' => $uid])->find());
         }
-        $authorize = session('admin_user.authorize');
-        if (!empty($authorize) && $authids = explode(',', $authorize)) {
-            $auths = Db::name('SystemAuth')->where(['status' => '1'])->whereIn('id', $authids)->column('id');
-            if (empty($auths)) {
-                session('admin_user.nodes', []);
-            } else {
-                session('admin_user.nodes', array_unique(Db::name('SystemAuthNode')->whereIn('auth', $auths)->column('node')));
-            }
+        if (($aids = session('admin_user.authorize'))) {
+            $where = [['status', 'eq', '1'], ['id', 'in', explode(',', $aids)]];
+            $subsql = Db::name('SystemAuth')->field('id')->where($where)->buildSql();
+            session('admin_user.nodes', array_unique(Db::name('SystemAuthNode')->whereRaw("auth in {$subsql}")->column('node')));
         } else {
             session('admin_user.nodes', []);
         }

@@ -16,6 +16,8 @@
 namespace library\command\task;
 
 use library\command\Task;
+use think\console\Input;
+use think\console\Output;
 
 /**
  * Class State
@@ -24,12 +26,20 @@ use library\command\Task;
 class State extends Task
 {
 
+    /**
+     * 指令属性配置
+     */
     protected function configure()
     {
         $this->setName('xtask:state')->setDescription('查看消息队列守护进程状态');
     }
 
-    protected function execute(\think\console\Input $input, \think\console\Output $output)
+    /**
+     * 执行查询操作
+     * @param Input $input
+     * @param Output $output
+     */
+    protected function execute(Input $input, Output $output)
     {
         if (($pid = $this->checkProcess()) > 0) {
             $output->info("message queue daemon {$pid} is runing.");

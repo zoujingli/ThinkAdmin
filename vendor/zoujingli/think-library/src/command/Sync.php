@@ -57,7 +57,7 @@ class Sync extends Command
     }
 
     /**
-     * 执行指令
+     * 执行更新操作
      * @param Input $input
      * @param Output $output
      */
