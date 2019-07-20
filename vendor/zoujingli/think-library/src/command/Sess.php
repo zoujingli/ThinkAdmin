@@ -16,6 +16,8 @@
 namespace library\command;
 
 use think\console\Command;
+use think\console\Input;
+use think\console\Output;
 
 /**
  * 清理会话文件
@@ -25,22 +27,30 @@ use think\console\Command;
 class Sess extends Command
 {
 
+    /**
+     * 指令属性配置
+     */
     protected function configure()
     {
         $this->setName('xclean:session')->setDescription('清理失效过期的会话文件');
     }
 
-    protected function execute(\think\console\Input $input, \think\console\Output $output)
+    /**
+     * 执行清理操作
+     * @param Input $input
+     * @param Output $output
+     */
+    protected function execute(Input $input, Output $output)
     {
-        $output->writeln('Start cleaning up invalid session files');
+        $output->comment('=== 准备清理无效的会话文件 ===');
         foreach (glob(config('session.path') . 'sess_*') as $file) {
             list($fileatime, $filesize) = [fileatime($file), filesize($file)];
             if ($filesize < 1 || $fileatime < time() - 3600) {
-                $output->writeln('clear session file -> [ ' . date('Y-m-d H:i:s', $fileatime) . ' ] ' . basename($file) . " {$filesize}");
+                $output->info('clear session file -> [ ' . date('Y-m-d H:i:s', $fileatime) . ' ] ' . basename($file) . " {$filesize}");
                 @unlink($file);
             }
         }
-        $output->writeln('Complete cleaning of invalid session files');
+        $output->comment('=== 成功清理无效的会话文件 ===');
     }
 
 }
