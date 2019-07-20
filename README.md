@@ -12,7 +12,7 @@ ThinkAdmin V5 是一个基于 ThinkPHP 5.1 开发的后台管理系统。
 #### 注意事项 
 * 项目测试需要自行搭建环境导入数据库( admin_v5.sql )并修改配置( config/database.php )；
 * 若操作提示“测试系统禁止操作”等字样，需要删除演示路由配置( route/demo.php )或清空路由文件；
-* 当前版本使用 ThinkPHP5.1.x，对 PHP 版本标注不低于 PHP5.6，具体请阅读 ThinkPHP 官方文档；
+* 当前版本使用 ThinkPHP 5.1.x，对 PHP 版本标注不低于 PHP 5.6，具体请阅读 ThinkPHP 官方文档；
 * 环境需开启 PATHINFO，不再支持 ThinkPHP 的 URL 兼容模式运行（源于如何优雅的展示）；
 
 ## 技术支持
@@ -26,8 +26,13 @@ PHP 开发技术交流（ QQ 群 513350915）
 [![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
 
 
-## 权限管理
-* 此版本的权限使用注解实现管理
+## 注解权限
+
+注解权限是指通过方法注释来实现后台RBAC授权管理，用注解来管理功能节点。
+
+开发人员只需要写好注释，RBAC的节点会自动生成，只需要配置角色及用户就可以使用RBAC权限。
+
+* 此版本的权限使用注解实现
 * 注释必需使用标准的块注释，如下案例
 * 其中`@auth true`表示访问需要权限验证
 * 其中`@menu true`显示在菜单编辑的节点可选项
