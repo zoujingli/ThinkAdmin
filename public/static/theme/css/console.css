@@ -95,6 +95,7 @@ body input::-ms-clear {
   line-height: 9px;
 }
 .layui-header .layui-nav-item {
+  height: 50px;
   line-height: 50px;
 }
 .layui-header .layui-nav-item.layui-this {
