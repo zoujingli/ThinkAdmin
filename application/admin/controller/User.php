@@ -48,7 +48,7 @@ class User extends Controller
     {
         $this->title = '系统用户管理';
         $query = $this->_query($this->table)->like('username,phone,mail')->equal('status');
-        $query->dateBetween('login_at')->where(['is_deleted' => '0'])->order('id desc')->page();
+        $query->dateBetween('login_at,create_at')->where(['is_deleted' => '0'])->order('id desc')->page();
     }
 
     /**
