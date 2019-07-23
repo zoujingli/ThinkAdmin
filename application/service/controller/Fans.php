@@ -138,8 +138,8 @@ class Fans extends Controller
     public function sync()
     {
         try {
-            sysoplog('微信管理', "创建微信{$this->appid}粉丝同步任务");
-            QueueService::add("同步{$this->appid}粉丝列表", WechatQueue::URI, 0, ['appid' => $this->appid], 0);
+            sysoplog('微信管理', "创建微信[{$this->appid}]粉丝同步任务");
+            QueueService::add("同步[{$this->appid}]粉丝列表", WechatQueue::URI, 0, ['appid' => $this->appid], 0);
             $this->success('创建同步粉丝任务成功，需要时间来完成。<br>请到系统任务管理查看进度！');
         } catch (HttpResponseException $exception) {
             throw $exception;
