@@ -55,7 +55,8 @@ class Fans extends Controller
             session('current_appid', $this->appid);
         }
         if ($this->request->isGet()) {
-            $this->wechats = Db::name('WechatServiceConfig')->where(['status' => '1'])->column('authorizer_appid,nick_name');
+            $this->where = ['status' => '1', 'service_type' => '2', 'is_deleted' => '0'];
+            $this->wechats = Db::name('WechatServiceConfig')->where($this->where)->column('authorizer_appid,nick_name');
         }
     }
 
