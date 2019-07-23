@@ -1,0 +1,98 @@
+{extend name='admin@main'}
+
+{block name="button"}
+
+{if auth("service/fans/setblack")}
+<button data-action='{:url("setblack")}' data-rule="openid#{key}" data-csrf="{:systoken('service/fans/setblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量拉黑</button>
+{/if}
+
+{if auth("service/fans/delblack")}
+<button data-action='{:url("delblack")}' data-rule="openid#{key}" data-csrf="{:systoken('service/fans/delblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>取消拉黑</button>
+{/if}
+
+{if auth("service/fans/sync")}
+<button data-load='{:url("sync")}' class='layui-btn layui-btn-sm layui-btn-primary'>同步粉丝</button>
+{/if}
+
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='fans/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'><input data-auto-none data-check-target='.list-check-box' type='checkbox'></th>
+            <th width="180px" class='text-left nowrap'>微信昵称</th>
+            <th width="180px" class="text-left nowrap">粉丝标签</th>
+            <th width="150px" class='text-left nowrap'>性别语言</th>
+            <th width="180px" class='text-left nowrap'>关注时间</th>
+            <th width="80px"></th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.openid}' type='checkbox'>
+            </td>
+            <td class='text-left nowrap relative layui-elip'>
+                <img src="{$vo.headimgurl|default=''}" onerror="$(this).remove()" data-tips-image class="inline-block" style="width:40px;height:40px;vertical-align:top;margin-right:5px">
+                <div class="inline-block">
+                    昵称：{$vo.nickname|default='--'}
+                    <br>
+                    区域：{$vo.country|default='--'} {$vo.province} {$vo.city}
+                </div>
+            </td>
+            <td class="text-left padding-0">
+                <div style="max-height:60px;overflow:auto">{foreach $vo.tags as $t}<p><span class="layui-badge layui-bg-cyan margin-right-5">{$t|default='--'}</span></p>{/foreach}</div>
+            </td>
+            <td class='text-left nowrap'>
+                性别：{switch name='vo.sex'}{case value='1'}男{/case}{case value='2'}女{/case}{default}未知{/switch}
+                <br>
+                语言：{$vo.language|raw}
+            </td>
+            <td class='text-left nowrap'>
+                日期：{$vo.subscribe_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
+            </td>
+            <td class='text-center nowrap'>
+                {eq name='vo.subscribe' value='0'}
+                <span class="layui-badge">未关注</span>
+                {else}
+                <span class="layui-badge layui-bg-green">已关注</span>
+                {/eq}
+                <br>
+                {eq name='vo.is_black' value='0'}
+                <span class="layui-badge layui-bg-green">未拉黑</span>
+                {else}
+                <span class="layui-badge">已拉黑</span>
+                {/eq}
+            </td>
+            <td class="nowrap">
+
+                {eq name='vo.is_black' value='0'}
+                <!--{if auth("service/fans/setblack")}-->
+                <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('setblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('service/fans/setblack')}">拉 黑</a>
+                <!--{/if}-->
+                {else}
+                <!--{if auth("service/fans/delblack")}-->
+                <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('delblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('service/fans/delblack')}">拉 白</a>
+                <!--{/if}-->
+                {/eq}
+
+                {if auth("service/fans/remove")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该粉丝吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('service/fans/remove')}">删 除</a>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

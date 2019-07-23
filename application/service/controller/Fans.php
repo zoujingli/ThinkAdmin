@@ -13,11 +13,11 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\wechat\controller;
+namespace app\service\controller;
 
 use app\admin\service\QueueService;
-use app\wechat\queue\WechatQueue;
-use app\wechat\service\WechatService;
+use app\service\service\WechatService;
+use app\service\queue\WechatQueue;
 use library\Controller;
 use think\Db;
 use think\exception\HttpResponseException;
@@ -29,11 +29,35 @@ use think\exception\HttpResponseException;
  */
 class Fans extends Controller
 {
+
+    protected $appid = '';
+
     /**
      * 绑定数据表
      * @var string
      */
     protected $table = 'WechatFans';
+
+    /**
+     * 初始化函数
+     * Fans constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->appid = input('appid', session('current_appid'));
+        if (empty($this->appid)) {
+            $this->appid = Db::name('WechatServiceConfig')->value('authorizer_appid');
+        }
+        if (empty($this->appid)) {
+            $this->fetch('/not-auth');
+        } else {
+            session('current_appid', $this->appid);
+        }
+        if ($this->request->isGet()) {
+            $this->wechats = Db::name('WechatServiceConfig')->where(['status' => '1'])->column('authorizer_appid,nick_name');
+        }
+    }
 
     /**
      * 微信粉丝管理
@@ -48,9 +72,8 @@ class Fans extends Controller
     public function index()
     {
         $this->title = '微信粉丝管理';
-        $this->where = ['appid' => WechatService::getAppid()];
         $query = $this->_query($this->table)->like('nickname')->equal('subscribe,is_black');
-        $query->dateBetween('subscribe_at')->where($this->where)->order('subscribe_time desc')->page();
+        $query->dateBetween('subscribe_at')->where(['appid' => $this->appid])->order('subscribe_time desc')->page();
     }
 
     /**
@@ -77,7 +100,7 @@ class Fans extends Controller
         $this->applyCsrfToken();
         try {
             foreach (array_chunk(explode(',', $this->request->post('openid')), 20) as $openids) {
-                WechatService::WeChatUser()->batchBlackList($openids);
+                WechatService::WeChatUser($this->appid)->batchBlackList($openids);
                 Db::name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '1']);
             }
             $this->success('拉黑粉丝信息成功！');
@@ -94,10 +117,10 @@ class Fans extends Controller
      */
     public function delBlack()
     {
-        $this->applyCsrfToken();
         try {
+            $this->applyCsrfToken();
             foreach (array_chunk(explode(',', $this->request->post('openid')), 20) as $openids) {
-                WechatService::WeChatUser()->batchUnblackList($openids);
+                WechatService::WeChatUser($this->appid)->batchUnblackList($openids);
                 Db::name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '0']);
             }
             $this->success('取消拉黑粉丝信息成功！');
@@ -115,8 +138,8 @@ class Fans extends Controller
     public function sync()
     {
         try {
-            sysoplog('微信管理', '创建微信粉丝同步任务');
-            QueueService::add("同步粉丝列表", WechatQueue::URI, 0, [], 0);
+            sysoplog('微信管理', "创建微信{$this->appid}粉丝同步任务");
+            QueueService::add("同步{$this->appid}粉丝列表", WechatQueue::URI, 0, ['appid' => $this->appid], 0);
             $this->success('创建同步粉丝任务成功，需要时间来完成。<br>请到系统任务管理查看进度！');
         } catch (HttpResponseException $exception) {
             throw $exception;
@@ -128,6 +151,8 @@ class Fans extends Controller
     /**
      * 删除粉丝信息
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {
