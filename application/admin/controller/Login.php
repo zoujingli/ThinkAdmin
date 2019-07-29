@@ -39,6 +39,14 @@ class Login extends Controller
     {
         $this->title = '系统登录';
         if ($this->request->isGet()) {
+            // 运行环境检查
+            list($host,) = explode(':', $this->request->host());
+            if (in_array($host, ['127.0.0.1', 'localhost', 'thinkadmin.top', 'ctolog.com'])) {
+                $this->devMode = true;
+            } else {
+                $this->devMode = false;
+            }
+            // 登录状态检查
             if (NodeService::islogin()) {
                 $this->redirect('@admin');
             } else {
