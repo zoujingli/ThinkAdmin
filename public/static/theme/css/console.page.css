@@ -1,0 +1,47 @@
+/* 通用分页 */
+.pagination-container {
+  line-height: 40px;
+}
+.pagination-container > span {
+  color: #666;
+  font-size: 9pt;
+}
+.pagination-container > ul {
+  float: right;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+.pagination-container > ul > li {
+  z-index: 1;
+  display: inline-block;
+}
+.pagination-container > ul > li.active {
+  z-index: 2;
+}
+.pagination-container > ul > li.active > span {
+  color: #fff;
+  border-color: #098;
+  padding-right: 1px;
+  background: #009688 !important;
+}
+.pagination-container > ul > li > a,
+.pagination-container > ul > li > span {
+  color: #333;
+  width: 33px;
+  height: 30px;
+  border: 1px solid #dcdcdc;
+  display: inline-block;
+  margin-left: -1px;
+  text-align: center;
+  line-height: 28px;
+}
+.pagination-container > ul > li > span {
+  background: #dcdcdc;
+  cursor: default;
+}
+.pagination-container > ul > li > a:hover {
+  background: #dcdcdc;
+  border-color: #dcdcdc;
+}
+/*# sourceMappingURL=console.page.css.map */

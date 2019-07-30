@@ -1,0 +1,107 @@
+.layui-form.layui-card {
+  box-shadow: none;
+}
+.layui-layer-content .layui-form.layui-card .layui-card-body {
+  padding: 20px 40px 0 0;
+}
+.layui-layer-dialog .layui-layer-content .layui-layer-ico {
+  top: 50% !important;
+  margin-top: -15px !important;
+}
+.laydate-footer-btns span {
+  line-height: 24px !important;
+}
+/** Layui样式调整 */
+.layui-input,
+.layui-select {
+  line-height: 38px;
+}
+.layui-btn-primary.layui-btn-xs {
+  line-height: 20px;
+}
+.layui-btn-primary.layui-btn-sm {
+  line-height: 28px;
+}
+/* 下拉样式 */
+.layui-nav .layui-nav-item .layui-nav-more {
+  top: 0;
+  border: none;
+  right: 15px;
+  width: auto;
+  height: auto;
+  margin-top: 0;
+  font-size: 14px;
+  font-style: normal;
+  font-family: layui-icon !important;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+.layui-nav .layui-nav-item .layui-nav-more::before {
+  content: "\e619";
+}
+.layui-nav .layui-nav-item .layui-nav-mored,
+.layui-nav .layui-nav-itemed .layui-nav-more {
+  border: none;
+  margin-top: 0;
+  transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+}
+.layui-table td,
+.layui-table th {
+  font-size: 12px;
+}
+.layui-table .list-table-image {
+  width: 22px;
+  cursor: pointer;
+}
+.layui-table .list-table-sort-td {
+  width: 10px !important;
+  text-align: center !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+.layui-table .list-table-sort-td button {
+  width: 56px;
+  background: #009688;
+}
+.layui-table .list-table-sort-td input {
+  width: 50px;
+  color: #666;
+  padding: 2px;
+  border: 1px solid #e6e6e6;
+  text-align: center;
+  font-size: 9pt;
+  line-height: 18px;
+}
+.layui-table .list-table-check-td {
+  width: 10px !important;
+  text-align: center;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+.layui-table .list-table-check-td input {
+  margin: 0 !important;
+  vertical-align: middle;
+}
+.layui-table td .text-explode {
+  color: #ccc !important;
+  margin: 0 4px !important;
+}
+.layui-table td .text-explode:first-child {
+  display: none;
+  opacity: 0;
+}
+.layui-table td .background-image {
+  float: left;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  margin-right: 5px;
+  background: no-repeat center center;
+  background-size: cover;
+  vertical-align: middle;
+}
+/*# sourceMappingURL=console.layui.css.map */

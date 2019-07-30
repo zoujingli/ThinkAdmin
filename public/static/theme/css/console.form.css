@@ -1,0 +1,157 @@
+/* 弹框层表单 */
+fieldset {
+  margin: 0;
+  border: 1px solid #e6e6e6;
+  padding: 10px 20px 5px 20px;
+}
+fieldset legend {
+  color: #666;
+  padding: 0 10px;
+  font-size: 14px;
+}
+.form-search .layui-btn {
+  height: 32px;
+  line-height: 28px;
+  font-size: 12px;
+  padding: 0 10px;
+}
+.form-search .layui-form-label {
+  width: auto !important;
+  padding: 0 8px;
+  height: 32px;
+  line-height: 30px;
+}
+.form-search .layui-input-inline {
+  width: 170px;
+}
+.form-search .layui-input-inline input,
+.form-search .layui-input-inline select {
+  width: 100%;
+  height: 32px;
+  padding: 2px 8px;
+  line-height: 1em;
+}
+.form-search .layui-form-select dl {
+  top: 31px;
+  padding: 0;
+}
+.layui-form input.layui-input,
+.layui-form select.layui-select {
+  line-height: 1em;
+}
+/* 表单验证异常提示 */
+.label-required-prev:before {
+  width: 1em;
+  color: red;
+  content: '*';
+  display: inline-block;
+  position: absolute;
+  text-align: left;
+  font-weight: 700;
+  line-height: 1.6em;
+  margin-left: -0.8em;
+}
+.label-required:after,
+.label-required-next:after {
+  top: 6px;
+  right: 5px;
+  color: red;
+  content: '*';
+  position: absolute;
+  margin-left: 4px;
+  font-weight: 700;
+  line-height: 1.8em;
+}
+.label-required-null:before {
+  content: none !important;
+}
+/** 自定义表单样式 */
+.think-form-label {
+  padding: 9px 15px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: right;
+}
+.think-form-group-right {
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.think-form-group-left input {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.think-box-shadow {
+  background: #fff;
+  padding: 20px 20px !important;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+}
+/** checkbox & radio */
+label.think-checkbox,
+label.think-radio {
+  margin-right: 10px;
+  display: inline-block;
+}
+.think-checkbox,
+.think-radio {
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: 400;
+  line-height: 17px;
+}
+.think-checkbox input[type=checkbox] {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #dcdcdc;
+  cursor: pointer;
+  margin: 0 5px 0 0;
+  position: relative;
+  display: inline-block !important;
+  background: #fff;
+  appearance: none;
+  box-sizing: border-box !important;
+  border-radius: 1px;
+  vertical-align: bottom;
+  -webkit-appearance: none;
+}
+.think-checkbox input[type=checkbox]:checked:after {
+  color: #666;
+  padding: 2px;
+  display: block;
+  content: "\e605";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  position: absolute;
+  font-family: layui-icon !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.think-radio input[type=radio] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  margin: 0 5px 0 0;
+  position: relative;
+  border: 1px solid #dcdcdc;
+  display: inline-block !important;
+  box-sizing: border-box !important;
+  appearance: none;
+  background: #fff;
+  border-radius: 1em;
+  vertical-align: bottom;
+  -webkit-appearance: none;
+}
+.think-radio input[type=radio]:checked:after {
+  top: 4px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  content: '';
+  display: block;
+  position: relative;
+  background: #666;
+  border-radius: 1em;
+}
+/*# sourceMappingURL=console.form.css.map */

@@ -1,0 +1,158 @@
+/* 页面布局 - 全局 */
+.layui-layout > .layui-side {
+  top: 50px;
+  bottom: 0;
+  overflow: auto;
+}
+.layui-layout > .layui-body {
+  top: 50px;
+  bottom: 0;
+  overflow: auto;
+}
+.layui-layout > .layui-body > .layui-card {
+  box-shadow: none;
+}
+.layui-layout > .layui-body > .layui-card > .layui-card-body {
+  padding: 15px 15px;
+}
+.layui-layout > .layui-body > .layui-card > .layui-card-header {
+  height: 50px;
+  border: none;
+  line-height: 50px;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+/* 页面布局 - 头部 */
+.layui-header {
+  height: 50px;
+  background: #393D49 !important;
+}
+.layui-header [data-target-menu-type] {
+  border-left: 1px solid rgba(0, 0, 0, 0);
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+}
+.layui-header .layui-layout-left,
+.layui-header .layui-layout-right {
+  padding: 0;
+}
+.layui-header .layui-logo {
+  color: #fff;
+  width: 199px;
+  height: auto;
+  font-size: 18px;
+  line-height: 49px;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+.layui-header .layui-logo sup {
+  font-size: 9px;
+  line-height: 9px;
+}
+.layui-header .layui-nav-item {
+  height: 50px;
+  line-height: 50px;
+}
+.layui-header .layui-nav-item.layui-this {
+  background: #009688;
+}
+.layui-header .layui-nav-item > a {
+  color: #fff !important;
+}
+.layui-header .layui-nav-item .layui-nav-child {
+  top: 49px;
+  padding: 0;
+  border: none;
+  line-height: 45px;
+}
+.layui-header .layui-nav-item .layui-nav-child + a {
+  padding-right: 35px;
+}
+.layui-header .layui-nav-item .layui-nav-child.layui-show + a {
+  background: #fff;
+}
+.layui-header .layui-nav-item .layui-nav-child.layui-show + a span {
+  color: #333;
+}
+.layui-header .layui-nav-item .layui-nav-child dd a {
+  padding: 0;
+  color: #333;
+  text-align: center;
+  border-top: 1px solid #eaedf1;
+}
+.layui-header .layui-nav-bar,
+.layui-header .layui-nav-item:after {
+  display: none !important;
+}
+.layui-header .layui-layout-right > li > a {
+  border-left: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0);
+}
+/* 页面布局 - 左则 */
+.layui-layout > .layui-side .layui-nav-bar {
+  display: none !important;
+}
+.layui-layout > .layui-side .layui-side-scroll {
+  width: 100% !important;
+}
+.layui-layout > .layui-side .layui-nav-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.layui-layout > .layui-side .layui-nav-item a {
+  height: 45px;
+  display: block;
+  line-height: 45px;
+  color: #fff !important;
+}
+.layui-layout > .layui-side .layui-nav-item a:hover {
+  background: hsla(0, 0%, 39%, 0.2) !important;
+}
+.layui-layout > .layui-side .layui-nav-itemed {
+  border-bottom: none !important;
+}
+.layui-layout > .layui-side .layui-nav-tree-top a {
+  height: 28px !important;
+  line-height: 28px !important;
+}
+.layui-layout.layui-layout-left-mini > .layui-body {
+  left: 50px;
+}
+.layui-layout.layui-layout-left-mini > .layui-side .layui-nav-more {
+  display: none !important;
+}
+.layui-layout.layui-layout-left-mini > .layui-side .layui-nav-item a {
+  padding: 0;
+}
+.layui-layout.layui-layout-left-mini > .layui-side .layui-nav-item .nav-text {
+  display: none;
+}
+.layui-layout.layui-layout-left-mini > .layui-side .layui-nav-item .nav-icon {
+  display: inline-block !important;
+  padding: 0 !important;
+}
+.layui-layout.layui-layout-left-mini > .layui-side .layui-nav-item .layui-nav-child {
+  padding: 0;
+  display: block !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+.layui-layout.layui-layout-left-mini > .layui-side,
+.layui-layout.layui-layout-left-mini > .layui-side .layui-nav-tree,
+.layui-layout.layui-layout-left-mini > .layui-side .layui-side-scroll {
+  width: 50px;
+  text-align: center;
+}
+.layui-layout.layui-layout-left-mini [data-target-menu-type] i {
+  display: inline-block;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+}
+.layui-layout.layui-layout-left-hide > .layui-body {
+  left: 0 !important;
+}
+.layui-layout.layui-layout-left-hide > .layui-side {
+  display: none;
+}
+.layui-layout.layui-layout-left-hide [data-target-menu-type] {
+  display: none;
+}
+/*# sourceMappingURL=console.layout.css.map */
