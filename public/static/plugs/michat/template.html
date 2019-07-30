@@ -1,0 +1,29 @@
+<div id="michat">
+    <ul class="michat-left layui-unselect">
+        <li ng-repeat="u in list" ng-class="{true:'michat-this'}[u.active]" ng-click="switchUser(u)">
+            <img alt="img" ng-src="{{u.headimg}}">
+            <span ng-bind="u.nickname"></span>
+            <i ng-click="removeUser(u)" class="layui-icon layui-icon-close-fill" ng-if="!u.active"></i>
+        </li>
+    </ul>
+    <div class="michat-right">
+        <div class="michat-right-header layui-layer-title layui-unselect">
+            <img alt="img" ng-src="{{user.headimg}}">
+            <span class="michat-right-header-username" ng-bind="user.nickname"></span>
+        </div>
+        <ul class="michat-right-list">
+            <li ng-repeat="m in user.message" ng-class="{right:'michat-right-list-right'}[m.float]">
+                <div class="michat-right-list-item-user"><img alt="img" ng-src="{{m.headimg}}"></div>
+                <div class="michat-right-list-item-text" ng-bind="m.content"></div>
+            </li>
+        </ul>
+        <div class="michat-right-footer">
+            <label class="michat-right-footer-textarea">
+                <textarea placeholder="请输入回复内容" ng-model="text" name="content"></textarea>
+            </label>
+            <div class="michat-right-footer-bottom">
+                <span class="layui-unselect" ng-click="replyUser()">发 送</span>
+            </div>
+        </div>
+    </div>
+</div>

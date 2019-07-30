@@ -1,0 +1,321 @@
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+
+  &-track {
+    border-radius: 2px;
+    background: #ccc !important;
+  }
+
+  &-thumb {
+    border-radius: 5%;
+    background-color: #666 !important;
+  }
+}
+
+.michat-message-icon {
+  width: 60px;
+  height: 60px;
+  right: 50px;
+  bottom: 50px;
+  padding: 0;
+  z-index: 998;
+  position: fixed;
+  line-height: 60px;
+  border-radius: 50%;
+
+  .layui-icon {
+    color: #fff;
+    margin: 0;
+    font-size: 28px;
+  }
+
+  .michat-message-number {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+    background: red;
+    font-weight: 400;
+    line-height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    margin: -3px 5px 0 0;
+  }
+}
+
+.michat {
+  color: #333;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  font-family: \5FAE\8F6F\96C5\9ED1, serif;
+  background: #fff url(image/bg.jpg) no-repeat center center;
+  background-size: cover;
+
+  .layui-layer-title {
+    background-color: rgba(245, 245, 245, 0.8)
+  }
+
+  .layui-layer-content {
+    height: auto !important;
+    overflow: visible;
+  }
+}
+
+.michat-left {
+  &:hover {
+    overflow-y: auto
+  }
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 220px;
+  z-index: 1000;
+  overflow: hidden;
+  position: absolute;
+  background-color: rgba(220, 220, 220, 0.9);
+
+  li {
+    &:hover {
+      background-color: #E2E2E2;
+
+      .layui-icon {
+        display: inline-block
+      }
+    }
+
+    &.michat-this {
+      background-color: #F3F3F3
+    }
+
+    .layui-icon {
+      top: 7px;
+      right: 5px;
+      color: #555;
+      display: none;
+      font-size: 22px;
+      position: absolute;
+
+      &:hover {
+        color: #c00
+      }
+    }
+
+    margin: 5px;
+    cursor: pointer;
+    position: relative;
+    line-height: 40px;
+    white-space: nowrap;
+    border-radius: 3px;
+    padding: 5px 30px 5px 5px;
+
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10%
+    }
+
+    span {
+      width: 130px;
+      font-size: 14px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    * {
+      font-size: 14px;
+      vertical-align: top;
+      display: inline-block;
+      *display: inline;
+      *zoom: 1;
+    }
+  }
+}
+
+.michat-right {
+  position: relative;
+  margin-left: 220px;
+  background-color: rgba(255, 255, 255, .9);
+
+  &-header {
+    height: 80px;
+    cursor: default;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      top: 15px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      border-radius: 100%
+    }
+
+    &-username {
+      top: 20px;
+      left: 60px;
+      font-size: 16px;
+      position: relative;
+    }
+  }
+
+  &-list {
+    height: 300px;
+    padding: 15px 15px 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-bottom: 1px solid #ccc;
+
+    li {
+      position: relative;
+      font-size: 0;
+      min-height: 68px;
+      padding-left: 60px;
+      margin-bottom: 10px;
+    }
+
+    &-item-user {
+      left: 3px;
+      position: absolute;
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 100%
+      }
+    }
+
+    &-item-text {
+      &:hover {
+        opacity: .9
+      }
+
+      &:after {
+        top: 8px;
+        left: -16px;
+        width: 0;
+        height: 0;
+        content: '';
+        overflow: hidden;
+        position: absolute;
+        border-width: 10px;
+        border-style: solid dashed dashed;
+        border-color: transparent #e2e2e2 transparent transparent;
+      }
+
+      display: inline-block;
+      *display: inline;
+      *zoom: 1;
+      color: #333;
+      padding: 8px 15px;
+      position: relative;
+      font-size: 14px;
+      line-height: 22px;
+      border-radius: 3px;
+      vertical-align: top;
+      word-break: break-all;
+      background-color: #e2e2e2;
+
+      a {
+        color: #33DF83
+      }
+
+      img {
+        max-width: 100%;
+        vertical-align: middle
+      }
+    }
+
+    &-right {
+      text-align: right;
+      padding-left: 0;
+      padding-right: 60px;
+
+      .michat-right-list-item {
+        &-user {
+          left: auto;
+          right: 3px;
+        }
+
+        &-text {
+          &:after {
+            left: auto;
+            right: -16px;
+            border-color: transparent transparent transparent #5FB878;
+          }
+
+          color: #fff;
+          text-align: left;
+          margin-left: 0;
+          background-color: #5FB878;
+
+          a {
+            color: #fff
+          }
+        }
+      }
+    }
+  }
+
+
+  &-footer {
+    &-textarea {
+      display: block;
+      margin-left: 10px;
+
+      textarea {
+
+        &:focus {
+          outline: 0
+        }
+
+        &::-webkit-input-placeholder {
+          color: #ccc;
+        }
+
+        width: 100%;
+        height: 110px;
+        border: none;
+        resize: none;
+        display: block;
+        padding: 8px 0 0;
+        overflow: auto;
+        background: 0 0;
+        line-height: 22px;
+      }
+    }
+
+    &-bottom {
+      right: 10px;
+      height: 32px;
+      bottom: 10px;
+      cursor: pointer;
+      font-size: 0;
+      position: absolute;
+      line-height: 32px;
+
+      span {
+        &:hover {
+          background-color: #69BC80
+        }
+
+        &:active {
+          background-color: #59B573
+        }
+
+        display: inline-block;
+        *display: inline;
+        *zoom: 1;
+        color: #fff;
+        padding: 0 20px;
+        font-size: 14px;
+        margin-left: 5px;
+        line-height: 32px;
+        border-radius: 3px;
+        vertical-align: top;
+        background-color: #5FB878;
+      }
+    }
+  }
+}

@@ -37,6 +37,7 @@ require.config({
         'md5': ['plugs/jquery/md5.min'],
         'spop': ['plugs/spop/spop.min'],
         'json': ['plugs/jquery/json.min'],
+        'michat': ['plugs/michat/michat'],
         'upload': ['plugs/plupload/build'],
         'base64': ['plugs/jquery/base64.min'],
         'echarts': ['plugs/echarts/echarts.min'],
