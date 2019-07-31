@@ -165,15 +165,21 @@ class File
     /**
      * 下载文件到本地
      * @param string $url 文件URL地址
-     * @param boolean $force 是否强制重新下载文件
+     * @param boolean $force 是否强制下载
+     * @param integer $expire 文件保留时间
      * @return array
      */
-    public static function down($url, $force = false)
+    public static function down($url, $force = false, $expire = 0)
     {
         try {
             $file = self::instance('local');
             $name = self::name($url, '', 'down/');
-            if (empty($force) && $file->has($name)) return $file->info($name);
+            if ($file->has($name) && empty($force)) {
+                if (empty($expire)) return $file->info($name);
+                if (filemtime($file->path($name)) + $expire > time()) {
+                    return $file->info($name);
+                }
+            }
             return $file->save($name, file_get_contents($url));
         } catch (\Exception $e) {
             Log::error(__METHOD__ . " File download failed [ {$url} ] {$e->getMessage()}");
