@@ -40,7 +40,8 @@ class Login extends Controller
         $this->title = '系统登录';
         if ($this->request->isGet()) {
             // 运行环境检查
-            if (in_array($this->request->rootDomain(), ['127.0.0.1', 'localhost', 'thinkadmin.top', 'ctolog.com'])) {
+            $devDomains = ['0.1', 'localhost', 'thinkadmin.top', 'ctolog.com'];
+            if (in_array($this->request->rootDomain(), $devDomains)) {
                 $this->devMode = true;
             } else {
                 $this->devMode = false;
