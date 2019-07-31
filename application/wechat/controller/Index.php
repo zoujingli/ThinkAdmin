@@ -15,6 +15,7 @@
 
 namespace app\wechat\controller;
 
+use app\wechat\service\WechatService;
 use library\Controller;
 use think\Db;
 
@@ -29,9 +30,11 @@ class Index extends Controller
      * 微信数据统计
      * @auth true
      * @menu true
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function index()
     {
@@ -46,8 +49,9 @@ class Index extends Controller
             $this->totalJson['ys']['_0'][] = $item['_0'];
             $this->totalJson['ys']['_1'][] = $item['_1'];
         }
-        $this->totalFans = Db::name('WechatFans')->where(['is_black' => '0'])->count();
-        $this->totalBlack = Db::name('WechatFans')->where(['is_black' => '1'])->count();
+        $map = ['appid' => WechatService::getAppid()];
+        $this->totalFans = Db::name('WechatFans')->where(['is_black' => '0'])->where($map)->count();
+        $this->totalBlack = Db::name('WechatFans')->where(['is_black' => '1'])->where($map)->count();
         $this->totalNews = Db::name('WechatNews')->where(['is_deleted' => '0'])->count();
         $this->totalRule = Db::name('WechatKeys')->count();
         $this->fetch();
