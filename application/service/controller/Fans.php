@@ -47,7 +47,8 @@ class Fans extends Controller
         parent::__construct();
         $this->appid = input('appid', session('current_appid'));
         if (empty($this->appid)) {
-            $this->appid = Db::name('WechatServiceConfig')->value('authorizer_appid');
+            $this->where = ['status' => '1', 'service_type' => '2', 'is_deleted' => '0', 'verify_type' => '0'];
+            $this->appid = Db::name('WechatServiceConfig')->where($this->where)->value('authorizer_appid');
         }
         if (empty($this->appid)) {
             $this->fetch('/not-auth');
