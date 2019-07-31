@@ -102,7 +102,7 @@ class Fans extends Controller
         try {
             foreach (array_chunk(explode(',', $this->request->post('openid')), 20) as $openids) {
                 WechatService::WeChatUser($this->appid)->batchBlackList($openids);
-                Db::name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '1']);
+                Db::name('WechatFans')->where(['appid' => $this->appid])->whereIn('openid', $openids)->update(['is_black' => '1']);
             }
             $this->success('拉黑粉丝信息成功！');
         } catch (HttpResponseException $exception) {
@@ -122,7 +122,7 @@ class Fans extends Controller
             $this->applyCsrfToken();
             foreach (array_chunk(explode(',', $this->request->post('openid')), 20) as $openids) {
                 WechatService::WeChatUser($this->appid)->batchUnblackList($openids);
-                Db::name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '0']);
+                Db::name('WechatFans')->where(['appid' => $this->appid])->whereIn('openid', $openids)->update(['is_black' => '0']);
             }
             $this->success('取消拉黑粉丝信息成功！');
         } catch (HttpResponseException $exception) {
