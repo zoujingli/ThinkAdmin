@@ -1,4 +1,3 @@
-<!-- 表单搜索 开始 -->
 <fieldset>
     <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
@@ -6,7 +5,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">当前微信</label>
             <div class="layui-input-inline">
-                <select class="layui-select" name="appid" lay-search>
+                <select class="layui-select" name="appid" lay-filter="appid" lay-search>
                     <!--{foreach $wechats as $k=>$v}-->
                     <!--{if $k eq $appid}-->
                     <option selected value="{$k}">{$v}</option>
@@ -63,14 +62,15 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button id="SearchButton" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
         </div>
     </form>
 
 </fieldset>
 
 <script>
-    window.form.render();
-    window.laydate.render({range: true, elem: '[name="subscribe_at"]'});
+    form.render();
+    form.on('select(appid)', function () {
+        $('#SearchButton').trigger('click');
+    });
 </script>
-<!-- 表单搜索 结束 -->
