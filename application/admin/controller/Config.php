@@ -94,14 +94,14 @@ class Config extends Controller
                 if (empty($local) || stripos($local, '.aliyuncs.com') !== false) {
                     sysconf('storage_oss_domain', $domain);
                 }
-                $this->success('阿里云OSS存储动态配置成功！');
+                $this->success('阿里云OSS存储配置成功！');
             } catch (HttpResponseException $exception) {
                 throw $exception;
             } catch (\Exception $e) {
                 $this->error("阿里云OSS存储配置失效，{$e->getMessage()}");
             }
         } else {
-            $this->success('系统参数配置成功！');
+            $this->success('参数配置成功！');
         }
     }
 

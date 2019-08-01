@@ -59,7 +59,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">授权时间</label>
             <div class="layui-input-inline">
-                <input id="create_at" name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择授权时间" class="layui-input">
+                <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择授权时间" class="layui-input">
             </div>
         </div>
 
@@ -73,5 +73,4 @@
 
 <script>
     window.form.render();
-    window.laydate.render({range: true, elem: '#create_at'});
 </script>
