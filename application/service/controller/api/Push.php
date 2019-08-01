@@ -33,12 +33,13 @@ class Push extends Controller
      * 微信API推送事件处理
      * @param string $appid
      * @return string
-     * @throws \think\Exception
      * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
      */
     public function notify($appid)
     {
