@@ -130,6 +130,8 @@ class Index extends Controller
     /**
      * 删除公众号授权
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {
@@ -140,6 +142,8 @@ class Index extends Controller
     /**
      * 禁用公众号授权
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -150,6 +154,8 @@ class Index extends Controller
     /**
      * 启用公众号授权
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {
