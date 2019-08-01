@@ -32,7 +32,7 @@ class Config extends Controller
     public $table = 'WechatServiceConfig';
 
     /**
-     * 开放平台配置
+     * 显示平台配置
      * @auth true
      * @menu true
      */
@@ -43,7 +43,9 @@ class Config extends Controller
     }
 
     /**
-     * 编辑平台配置
+     * 修改平台配置
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function edit()
     {
