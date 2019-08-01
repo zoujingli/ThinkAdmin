@@ -71,9 +71,7 @@ class MichatService
     {
         $result = json_decode(Http::request('post', self::URI . $api, [
             'data'    => json_encode($data, JSON_UNESCAPED_UNICODE),
-            'headers' => [
-                'Content-Type: application/json',
-            ],
+            'headers' => ['Content-Type: application/json'],
         ]), true);
         if (isset($result['code']) && intval($result['code']) === 200) {
             return $result['data'];
