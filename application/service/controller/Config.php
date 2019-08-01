@@ -55,7 +55,7 @@ class Config extends Controller
         } else {
             $post = $this->request->post();
             foreach ($post as $k => $v) sysconf($k, $v);
-            $this->success('开放平台参数修改成功！');
+            $this->success('参数修改成功！');
         }
     }
 
