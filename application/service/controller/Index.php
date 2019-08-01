@@ -81,14 +81,14 @@ class Index extends Controller
             $appid = $this->request->get('appid');
             $where = ['authorizer_appid' => $appid, 'is_deleted' => '0', 'status' => '1'];
             $author = Db::name('WechatServiceConfig')->where($where)->find();
-            empty($author) && $this->error('无效的授权信息，请同步其它公众号！');
+            if (empty($author)) $this->error('无效的授权信息，请同步其它公众号！');
             $data = BuildService::filter(WechatService::service()->getAuthorizerInfo($appid));
             $data['authorizer_appid'] = $appid;
             $where = ['authorizer_appid' => $data['authorizer_appid']];
             $appkey = Db::name('WechatServiceConfig')->where($where)->value('appkey');
             if (empty($appkey)) $data['appkey'] = md5(uniqid('', true));
             if (data_save('WechatServiceConfig', $data, 'authorizer_appid')) {
-                $this->success('更新公众号授权信息成功！', '');
+                $this->success('更新公众号授权成功！', '');
             }
         } catch (\think\exception\HttpResponseException $exception) {
             throw $exception;
