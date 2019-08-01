@@ -846,6 +846,12 @@ label.think-radio {
 .font-s40 {
   font-size: 40px !important;
 }
+.font-w400 {
+  font-weight: 400 !important;
+}
+.font-w700 {
+  font-weight: 700 !important;
+}
 .padding-0 {
   padding: 0 !important;
 }
@@ -1180,3 +1186,4 @@ label.think-radio {
 [data-tips-image] {
   cursor: zoom-in !important;
 }
+/*# sourceMappingURL=console.css.map */

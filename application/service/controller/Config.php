@@ -38,26 +38,22 @@ class Config extends Controller
      */
     public function index()
     {
-        $this->applyCsrfToken('save');
         $this->title = '开放平台配置';
         $this->fetch();
     }
 
     /**
-     * 保存参数数据
-     * @auth true
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
+     * 编辑平台配置
      */
-    public function save()
+    public function edit()
     {
-        $this->applyCsrfToken('save');
-        if ($this->request->post()) {
+        $this->applyCsrfToken();
+        if ($this->request->isGet()) {
+            $this->fetch('form');
+        } else {
             $post = $this->request->post();
             foreach ($post as $k => $v) sysconf($k, $v);
             $this->success('开放平台参数修改成功！');
-        } else {
-            $this->error('开放平台参数修改失败！');
         }
     }
 
