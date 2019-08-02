@@ -40,12 +40,9 @@ class Login extends Controller
         $this->title = '系统登录';
         if ($this->request->isGet()) {
             // 运行环境检查
-            $devDomains = ['0.1', 'localhost', 'thinkadmin.top', 'ctolog.com'];
-            if (in_array($this->request->rootDomain(), $devDomains)) {
-                $this->devMode = true;
-            } else {
-                $this->devMode = false;
-            }
+            $this->devMode = in_array($this->request->rootDomain(), [
+                '0.1', 'localhost', 'thinkadmin.top', 'ctolog.com',
+            ]);
             // 登录状态检查
             if (NodeService::islogin()) {
                 $this->redirect('@admin');
