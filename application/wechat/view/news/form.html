@@ -99,7 +99,10 @@
 
             function apply(list) {
                 if (list.length < 1) list.push({
-                    title: '新建图文', author: '管理员', content: '文章内容', read_num: 0,
+                    title: '新建图文',
+                    author: '管理员',
+                    content: '文章内容',
+                    read_num: 0,
                     local_url: '__ROOT__/static/plugs/uploader/theme/image.png',
                 });
                 for (var i in list) {
@@ -170,7 +173,10 @@
             $rootScope.addItem = function () {
                 if ($rootScope.list.length > 7) return $.msg.tips('最多允许增加7篇文章哦！');
                 $rootScope.list.push({
-                    title: '新建图文', author: '管理员', content: '文章内容', read_num: 0,
+                    title: '新建图文',
+                    author: '管理员',
+                    content: '文章内容',
+                    read_num: 0,
                     local_url: '__ROOT__/static/plugs/uploader/theme/image.png',
                     style: "background-image:url('__ROOT__/static/plugs/uploader/theme/image.png')"
                 });
