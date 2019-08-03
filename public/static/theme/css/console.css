@@ -846,11 +846,32 @@ label.think-radio {
 .font-s40 {
   font-size: 40px !important;
 }
-.font-w400 {
+.font-w1 {
+  font-weight: 100 !important;
+}
+.font-w2 {
+  font-weight: 200 !important;
+}
+.font-w3 {
+  font-weight: 300 !important;
+}
+.font-w4 {
   font-weight: 400 !important;
 }
-.font-w700 {
+.font-w5 {
+  font-weight: 500 !important;
+}
+.font-w6 {
+  font-weight: 600 !important;
+}
+.font-w7 {
   font-weight: 700 !important;
+}
+.font-w8 {
+  font-weight: 800 !important;
+}
+.font-w9 {
+  font-weight: 900 !important;
 }
 .padding-0 {
   padding: 0 !important;
