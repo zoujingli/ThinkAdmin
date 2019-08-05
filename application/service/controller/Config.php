@@ -32,18 +32,18 @@ class Config extends Controller
     public $table = 'WechatServiceConfig';
 
     /**
-     * 显示平台配置
+     * 显示参数配置
      * @auth true
      * @menu true
      */
     public function index()
     {
-        $this->title = '开放平台配置';
+        $this->title = '开放平台参数配置';
         $this->fetch();
     }
 
     /**
-     * 修改平台配置
+     * 修改参数配置
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
