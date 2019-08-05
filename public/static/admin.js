@@ -192,8 +192,18 @@ $(function () {
                     if (typeof Pace === 'object') Pace.restart();
                     if (typeof headers === 'object') for (var i in headers) xhr.setRequestHeader(i, headers[i]);
                 }, error: function (XMLHttpRequest) {
-                    if (parseInt(XMLHttpRequest.status) === 200) this.success(XMLHttpRequest.responseText);
-                    else $.msg.tips('E' + XMLHttpRequest.status + ' - 服务器繁忙，请稍候再试！');
+                    layer.open({
+                        type: 2, area: ["800px", "500px"], content: 'javascript:void(0)',
+                        title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText,
+                        success: function ($element) {
+                            $element.find('iframe')[0].contentWindow.document.write(XMLHttpRequest.responseText)
+                        }
+                    });
+                    if (parseInt(XMLHttpRequest.status) === 200) {
+                        this.success(XMLHttpRequest.responseText);
+                    } else {
+                        $.msg.tips('E' + XMLHttpRequest.status + ' - 服务器繁忙，请稍候再试！');
+                    }
                 }, success: function (ret) {
                     if (typeof callback === 'function' && callback.call(that, ret) === false) return false;
                     return typeof ret === 'object' ? $.msg.auto(ret, time || ret.wait || undefined) : that.show(ret);
