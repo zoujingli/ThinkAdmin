@@ -193,8 +193,8 @@ $(function () {
                     if (typeof headers === 'object') for (var i in headers) xhr.setRequestHeader(i, headers[i]);
                 }, error: function (XMLHttpRequest) {
                     if (XMLHttpRequest.responseText.indexOf('exception') > -1) layer.open({
-                        title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText + "（返回状态异常详情）",
-                        type: 2, area: ["800px", "500px"], content: ['javascript:void(0)'],
+                        type: 2, area: ["800px", "500px"], content: 'javascript:void(0)',
+                        title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText,
                         success: function ($element, index) {
                             layer.full(index);
                             $element.find('iframe')[0].contentWindow.document.write(XMLHttpRequest.responseText);
