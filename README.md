@@ -17,6 +17,8 @@ ThinkAdmin V5 是一个基于 ThinkPHP 5.1 开发的后台管理系统。
 
 ## 技术支持
 
+开发文档：http://doc.thinkadmin.top/thinkadmin-v5
+
 开发前请认真阅读 ThinkPHP 官方文档会对您有帮助哦！
 
 本地开发命令`php think run`，使用`http://127.0.0.1:8000`访问项目。
