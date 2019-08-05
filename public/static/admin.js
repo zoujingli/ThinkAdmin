@@ -192,7 +192,7 @@ $(function () {
                     if (typeof Pace === 'object') Pace.restart();
                     if (typeof headers === 'object') for (var i in headers) xhr.setRequestHeader(i, headers[i]);
                 }, error: function (XMLHttpRequest) {
-                    layer.open({
+                    if (XMLHttpRequest.responseText.indexOf('exception') > -1) layer.open({
                         title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText + "（返回状态异常详情）",
                         type: 2, area: ["800px", "500px"], content: ['javascript:void(0)'],
                         success: function ($element, index) {
