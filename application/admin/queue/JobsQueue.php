@@ -17,6 +17,7 @@ namespace app\admin\queue;
 
 use app\admin\service\QueueService;
 use think\console\Output;
+use think\queue\Job;
 
 /**
  * 基础指令公共类
@@ -82,12 +83,12 @@ class JobsQueue
 
     /**
      * 启动任务处理
-     * @param \think\queue\Job $job 当前任务对象
+     * @param Job $job 当前任务对象
      * @param array $data 任务执行对象
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function fire(\think\queue\Job $job, $data = [])
+    public function fire(Job $job, $data = [])
     {
         $this->data = $data;
         $this->output = new Output();
