@@ -14,7 +14,7 @@
 // 浏览器兼容提示
 (function (w) {
     if (!("WebSocket" in w && 2 === w.WebSocket.CLOSING)) {
-        document.body.innerHTML = '<div class="version-debug">您使用的浏览器已经<strong>过时</strong>，建议使用最新版本的谷歌浏览器。<a target="_blank" href="https://pc.qq.com/detail/1/detail_2661.html" class="layui-btn layui-btn-primary">立即下载</a></div>';
+        document.body.innerHTML = '<div class="version-debug">您使用的浏览器已经<strong>过时</strong>，建议使用最新版本的谷歌浏览器。<a target="_blank" href="https://www.google.cn/chrome" class="layui-btn layui-btn-primary">立即下载</a></div>';
     }
 }(window));
 
@@ -22,7 +22,7 @@
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
 
-// 当前资源URL目录
+// 资源URL目录
 window.baseRoot = (function (src) {
     src = document.scripts[document.scripts.length - 1].src;
     return src.substring(0, src.lastIndexOf("/") + 1);
@@ -193,12 +193,16 @@ $(function () {
                     if (typeof headers === 'object') for (var i in headers) xhr.setRequestHeader(i, headers[i]);
                 }, error: function (XMLHttpRequest) {
                     if (XMLHttpRequest.responseText.indexOf('exception') > -1) layer.open({
-                        type: 2, area: ["800px", "500px"], content: 'javascript:void(0)',
-                        title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText,
-                        success: function ($element, index) {
-                            layer.full(index);
-                            $element.find('iframe')[0].contentWindow.document.write(XMLHttpRequest.responseText);
-                            $element.find('.layui-layer-title').addClass('font-s16 font-w7 text-center color-red')
+                        title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText, type: 2,
+                        area: '800px', content: 'javascript:void(0)', success: function ($element, index) {
+                            try {
+                                layer.full(index);
+                                $element.find('iframe')[0].contentWindow.document.write(XMLHttpRequest.responseText);
+                                $element.find('.layui-layer-setwin').css({right: '35px', top: '28px'}).find('a').css({marginLeft: 0});
+                                $element.find('.layui-layer-title').css({color: 'red', height: '70px', lineHeight: '70px', fontSize: '22px', textAlign: 'center', fontWeight: 700});
+                            } catch (e) {
+                                layer.close(index);
+                            }
                         }
                     });
                     if (parseInt(XMLHttpRequest.status) === 200) {
