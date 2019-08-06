@@ -61,7 +61,7 @@
                 {/if}
 
                 {if $vo.status eq 1 and auth("admin/menu/forbid")}
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('forbid')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('admin/menu/forbid')}">禁 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定要禁用菜单吗？" data-action="{:url('forbid')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('admin/menu/forbid')}">禁 用</a>
                 {elseif auth("admin/menu/resume")}
                 <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('resume')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('admin/menu/resume')}">启 用</a>
                 {/if}
