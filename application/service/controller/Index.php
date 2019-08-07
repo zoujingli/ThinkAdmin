@@ -19,6 +19,7 @@ use app\service\service\BuildService;
 use app\service\service\WechatService;
 use library\Controller;
 use think\Db;
+use think\exception\HttpResponseException;
 
 /**
  * 公众授权管理
@@ -90,7 +91,7 @@ class Index extends Controller
             if (data_save('WechatServiceConfig', $data, 'authorizer_appid')) {
                 $this->success('更新公众号授权成功！', '');
             }
-        } catch (\think\exception\HttpResponseException $exception) {
+        } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
             $this->error("获取授权信息失败，请稍候再试！<br>{$e->getMessage()}");
@@ -120,7 +121,7 @@ class Index extends Controller
                 }
             }
             $this->success('同步所有授权信息成功！', '');
-        } catch (\think\exception\HttpResponseException $exception) {
+        } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
             $this->error("同步授权失败，请稍候再试！<br>{$e->getMessage()}");
