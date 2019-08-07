@@ -44,6 +44,7 @@ class Config extends Controller
 
     /**
      * 修改参数配置
+     * @auth true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
