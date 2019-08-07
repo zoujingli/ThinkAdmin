@@ -74,8 +74,8 @@ class Fans extends Controller
      */
     public function setBlack()
     {
-        $this->applyCsrfToken();
         try {
+            $this->applyCsrfToken();
             foreach (array_chunk(explode(',', $this->request->post('openid')), 20) as $openids) {
                 WechatService::WeChatUser()->batchBlackList($openids);
                 Db::name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '1']);
@@ -94,8 +94,8 @@ class Fans extends Controller
      */
     public function delBlack()
     {
-        $this->applyCsrfToken();
         try {
+            $this->applyCsrfToken();
             foreach (array_chunk(explode(',', $this->request->post('openid')), 20) as $openids) {
                 WechatService::WeChatUser()->batchUnblackList($openids);
                 Db::name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '0']);
@@ -129,6 +129,8 @@ class Fans extends Controller
     /**
      * 删除粉丝信息
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {

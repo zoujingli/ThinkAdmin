@@ -264,5 +264,7 @@ Console::addDefaultCommands([
 // 动态加载模块配置
 if (function_exists('think\__include_file')) {
     $root = rtrim(str_replace('\\', '/', env('app_path')), '/');
-    foreach (glob("{$root}/*/sys.php") as $file) \think\__include_file($file);
+    foreach (glob("{$root}/*/sys.php") as $file) {
+        \think\__include_file($file);
+    }
 }
