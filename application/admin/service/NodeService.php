@@ -152,7 +152,7 @@ class NodeService
 
     /**
      * 强制验证访问权限
-     * --- 需要加载对应的控制器
+     * --- 需要加载控制器解析注释
      * @param null|string $node
      * @return boolean
      * @throws \ReflectionException
@@ -166,11 +166,8 @@ class NodeService
             $reflection = new \ReflectionClass($class);
             if ($reflection->hasMethod($action)) {
                 $comment = preg_replace("/\s/", '', $reflection->getMethod($action)->getDocComment());
-                if (stripos($comment, '@authtrue') === false) {
-                    return true;
-                } else {
-                    return in_array($real, (array)session('admin_user.nodes'));
-                }
+                if (stripos($comment, '@authtrue') === false) return true;
+                return in_array($real, (array)session('admin_user.nodes'));
             }
         }
         return true;

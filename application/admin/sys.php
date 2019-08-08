@@ -23,7 +23,7 @@ use think\Request;
 if (!function_exists('auth')) {
     /**
      * 节点访问权限检查
-     * @param string $node
+     * @param string $node 需要检查的节点
      * @return boolean
      * @throws ReflectionException
      */
@@ -70,11 +70,13 @@ if (!function_exists('local_image')) {
     /**
      * 下载远程文件到本地
      * @param string $url 远程图片地址
+     * @param boolean $force 是否强制重新下载
+     * @param integer $expire 强制本地存储时间
      * @return string
      */
-    function local_image($url)
+    function local_image($url, $force = false, $expire = 0)
     {
-        $result = File::down($url);
+        $result = File::down($url, $force, $expire);
         if (isset($result['url'])) {
             return $result['url'];
         } else {
@@ -86,16 +88,16 @@ if (!function_exists('local_image')) {
 if (!function_exists('base64_image')) {
     /**
      * base64 图片上传接口
-     * @param string $content
-     * @param string $predir
+     * @param string $content 图片base64内容
+     * @param string $dirname 图片存储目录
      * @return string
      */
-    function base64_image($content, $predir = 'base64/')
+    function base64_image($content, $dirname = 'base64/')
     {
         try {
             if (preg_match('|^data:image/(.*?);base64,|i', $content)) {
                 list($ext, $base) = explode('|||', preg_replace('|^data:image/(.*?);base64,|i', '$1|||', $content));
-                $info = File::save($predir . md5($base) . '.' . (empty($ext) ? 'tmp' : $ext), base64_decode($base));
+                $info = File::save($dirname . md5($base) . '.' . (empty($ext) ? 'tmp' : $ext), base64_decode($base));
                 return $info['url'];
             } else {
                 return $content;
@@ -108,7 +110,6 @@ if (!function_exists('base64_image')) {
 
 // 访问权限检查中间键
 Middleware::add(function (Request $request, \Closure $next) {
-    // 验证访问节点权限
     if (NodeService::forceAuth()) {
         return $next($request);
     } elseif (NodeService::islogin()) {
