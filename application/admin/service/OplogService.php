@@ -17,6 +17,7 @@ namespace app\admin\service;
 
 use library\tools\Node;
 use think\Db;
+use think\facade\Request;
 
 /**
  * 系统日志服务管理
@@ -35,7 +36,7 @@ class OplogService
     {
         return Db::name('SystemLog')->insert([
             'node'     => Node::current(), 'action' => $action, 'content' => $content,
-            'geoip'    => PHP_SAPI === 'cli' ? '127.0.0.1' : request()->ip(),
+            'geoip'    => PHP_SAPI === 'cli' ? '127.0.0.1' : Request::ip(),
             'username' => PHP_SAPI === 'cli' ? 'cli' : (string)session('admin_user.username'),
         ]);
     }
