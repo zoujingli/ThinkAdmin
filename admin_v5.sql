@@ -1,21 +1,89 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local.ctolog.com
+ Source Server         : local.server.cuci.cc
  Source Server Type    : MySQL
  Source Server Version : 50562
- Source Host           : 127.0.0.1:3306
- Source Schema         : admin_v4_1
+ Source Host           : server.cuci.cc:3306
+ Source Schema         : admin_v5
 
  Target Server Type    : MySQL
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 06/07/2019 19:07:04
+ Date: 09/08/2019 16:14:13
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for company_user
+-- ----------------------------
+DROP TABLE IF EXISTS `company_user`;
+CREATE TABLE `company_user`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '员工姓名',
+  `svn_username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '员工账号',
+  `svn_password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '员工密码',
+  `svn_authorize` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '权限授权',
+  `user_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '员工身份',
+  `entry_date` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '入职日期',
+  `leave_date` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '离职日期',
+  `become_date` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '转正日期',
+  `contact_qq` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '联系QQ',
+  `contact_mail` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '联系邮箱',
+  `contact_phone` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '联系手机',
+  `mobile_macs` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '打卡手机',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '状态(0禁用,1正常,2离职)',
+  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
+  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `index_company_user_nickname`(`nickname`) USING BTREE,
+  INDEX `index_company_user_svn_username`(`svn_username`) USING BTREE,
+  INDEX `index_company_user_deleted`(`is_deleted`) USING BTREE,
+  INDEX `index_company_user_status`(`status`) USING BTREE,
+  INDEX `index_company_user_type`(`user_type`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '企业-员工信息';
+
+-- ----------------------------
+-- Table structure for company_user_auth
+-- ----------------------------
+DROP TABLE IF EXISTS `company_user_auth`;
+CREATE TABLE `company_user_auth`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '权限名称',
+  `path` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '权限路径',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '状态(0禁用,1正常)',
+  `desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '权限描述',
+  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
+  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `index_company_user_auth_status`(`status`) USING BTREE,
+  INDEX `index_company_user_auth_deleted`(`is_deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '企业-仓库权限';
+
+-- ----------------------------
+-- Table structure for company_user_clock
+-- ----------------------------
+DROP TABLE IF EXISTS `company_user_clock`;
+CREATE TABLE `company_user_clock`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '用户ID',
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户姓名',
+  `ip` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限名称',
+  `mac` char(17) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '状态(1:禁用,2:启用)',
+  `desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注说明',
+  `date` date NULL DEFAULT NULL,
+  `start_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `end_at` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `index_company_user_clock_date`(`date`) USING BTREE,
+  INDEX `index_company_user_clock_uid`(`uid`) USING BTREE,
+  INDEX `index_company_user_clock_name`(`name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '企业-打卡记录';
 
 -- ----------------------------
 -- Table structure for store_express_company
@@ -403,14 +471,14 @@ CREATE TABLE `system_config`  (
   `value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_system_config_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 74 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-配置';
+) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-配置';
 
 -- ----------------------------
 -- Records of system_config
 -- ----------------------------
 INSERT INTO `system_config` VALUES (1, 'app_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES (2, 'site_name', 'ThinkAdmin');
-INSERT INTO `system_config` VALUES (3, 'app_version', 'v5');
+INSERT INTO `system_config` VALUES (3, 'app_version', 'dev');
 INSERT INTO `system_config` VALUES (4, 'site_copy', '©版权所有 2014-2018 楚才科技');
 INSERT INTO `system_config` VALUES (5, 'site_icon', '/upload/decb0fe26fa3f486/b3f6521bf29403c8.png');
 INSERT INTO `system_config` VALUES (7, 'miitbeian', '粤ICP备16006642号-2');
@@ -441,10 +509,10 @@ INSERT INTO `system_config` VALUES (54, 'wechat_encodingaeskey', '');
 INSERT INTO `system_config` VALUES (55, 'wechat_push_url', '消息推送地址：http://127.0.0.1:8000/wechat/api.push');
 INSERT INTO `system_config` VALUES (56, 'wechat_type', 'thr');
 INSERT INTO `system_config` VALUES (57, 'wechat_thr_appid', 'wx60a43dd8161666d4');
-INSERT INTO `system_config` VALUES (58, 'wechat_thr_appkey', 'd2c0139213d7a27898ca047d81a617be');
+INSERT INTO `system_config` VALUES (58, 'wechat_thr_appkey', '5caf4b0727f6e46a7e6ccbe773cc955d');
 INSERT INTO `system_config` VALUES (60, 'wechat_thr_appurl', '消息推送地址：http://127.0.0.1:8000/wechat/api.push');
 INSERT INTO `system_config` VALUES (61, 'component_appid', 'wx28b58798480874f9');
-INSERT INTO `system_config` VALUES (62, 'component_appsecret', '87ddce1cc24e4cd691039f926febd942');
+INSERT INTO `system_config` VALUES (62, 'component_appsecret', '8d0e1ec14ea0adc5027dd0ad82c64bc9');
 INSERT INTO `system_config` VALUES (63, 'component_token', 'P8QHTIxpBEq88IrxatqhgpBm2OAQROkI');
 INSERT INTO `system_config` VALUES (64, 'component_encodingaeskey', 'L5uFIa0U6KLalPyXckyqoVIJYLhsfrg8k9YzybZIHsx');
 INSERT INTO `system_config` VALUES (65, 'system_message_state', '0');
@@ -456,6 +524,13 @@ INSERT INTO `system_config` VALUES (70, 'store_title', '测试商城');
 INSERT INTO `system_config` VALUES (71, 'store_order_wait_time', '0.50');
 INSERT INTO `system_config` VALUES (72, 'store_order_clear_time', '24.00');
 INSERT INTO `system_config` VALUES (73, 'store_order_confirm_time', '60.00');
+INSERT INTO `system_config` VALUES (74, 'sms_zt_username2', '可以找CUCI申请2');
+INSERT INTO `system_config` VALUES (75, 'sms_zt_password2', '可以找CUCI申请2');
+INSERT INTO `system_config` VALUES (76, 'sms_secure2', '可以找CUCI申请2');
+INSERT INTO `system_config` VALUES (77, 'sms_reg_template2', '您的验证码为{code}，请在十分钟内完成操作！2');
+INSERT INTO `system_config` VALUES (78, 'michat_appid', '2882303761518074614');
+INSERT INTO `system_config` VALUES (79, 'michat_appkey', '5861807470614');
+INSERT INTO `system_config` VALUES (80, 'michat_appsecert', 'CP/WUTUgDuyOxgLQ5ztesg==');
 
 -- ----------------------------
 -- Table structure for system_data
@@ -467,7 +542,12 @@ CREATE TABLE `system_data`  (
   `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_system_data_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据';
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据';
+
+-- ----------------------------
+-- Records of system_data
+-- ----------------------------
+INSERT INTO `system_data` VALUES (1, 'menudata', '[{\"name\":\"请输入名称\",\"type\":\"scancode_push\",\"key\":\"scancode_push\"}]');
 
 -- ----------------------------
 -- Table structure for system_jobs
@@ -545,7 +625,7 @@ CREATE TABLE `system_menu`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_system_menu_node`(`node`(191)) USING BTREE,
   INDEX `index_system_menu_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单';
+) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单';
 
 -- ----------------------------
 -- Records of system_menu
@@ -587,6 +667,12 @@ INSERT INTO `system_menu` VALUES (49, 4, '系统日志管理', '', 'layui-icon l
 INSERT INTO `system_menu` VALUES (50, 47, '快递公司管理', '', 'layui-icon layui-icon-form', 'store/express_company/index', '', '_self', 3, 1, '2019-04-01 17:10:59');
 INSERT INTO `system_menu` VALUES (52, 47, '邮费模板管理', '', 'layui-icon layui-icon-fonts-clear', 'store/express_template/index', '', '_self', 1, 1, '2019-04-23 13:17:10');
 INSERT INTO `system_menu` VALUES (55, 17, '微信数据统计', '', 'layui-icon layui-icon-chart-screen', 'wechat/index/index', '', '_self', 3, 1, '2019-06-15 15:03:51');
+INSERT INTO `system_menu` VALUES (56, 40, '微信粉丝管理', '', 'layui-icon layui-icon-username', 'service/fans/index', '', '_self', 0, 1, '2019-07-23 09:57:24');
+INSERT INTO `system_menu` VALUES (57, 0, '企业管理', '', '', '#', '', '_self', 150, 1, '2019-08-08 17:20:29');
+INSERT INTO `system_menu` VALUES (58, 57, '基础管理', '', '', '#', '', '_self', 0, 1, '2019-08-08 17:20:42');
+INSERT INTO `system_menu` VALUES (59, 58, '企业员工管理', '', 'layui-icon layui-icon-username', 'company/user/index', '', '_self', 0, 1, '2019-08-08 17:20:59');
+INSERT INTO `system_menu` VALUES (60, 58, '仓库权限管理', '', 'layui-icon layui-icon-template-1', 'company/auth/index', '', '_self', 0, 1, '2019-08-08 18:39:37');
+INSERT INTO `system_menu` VALUES (61, 58, '网络打卡管理', '', 'layui-icon layui-icon-engine', 'company/clock/index', '', '_self', 0, 1, '2019-08-09 14:44:23');
 
 -- ----------------------------
 -- Table structure for system_user
@@ -603,9 +689,10 @@ CREATE TABLE `system_user`  (
   `login_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录IP',
   `login_num` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '登录次数',
   `authorize` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '权限授权',
+  `tags` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户标签',
   `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注说明',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '状态(0:禁用,1:启用)',
-  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1:删除,0:未删)',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '状态(0禁用,1启用)',
+  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `index_system_user_username`(`username`) USING BTREE,
@@ -616,7 +703,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-07-06 18:29:31', '127.0.0.1', 611, '', '', 1, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-08-09 15:19:41', '10.1.1.10', 655, '', '', '', 1, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

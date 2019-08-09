@@ -155,6 +155,15 @@ $(function () {
                     }
                 });
             });
+            $dom.find('input[data-date-input]').map(function () {
+                this.setAttribute('autocomplete', 'off');
+                laydate.render({
+                    type: this.getAttribute('data-date-input') || 'date',
+                    range: false, elem: this, done: function (value) {
+                        $(this.elem).val(value).trigger('change');
+                    }
+                });
+            });
             $dom.find('[data-file]:not([data-inited])').map(function (index, elem, $this, field) {
                 $this = $(elem), field = $this.attr('data-field') || 'file';
                 if (!$this.data('input')) $this.data('input', $('[name="' + field + '"]').get(0));
