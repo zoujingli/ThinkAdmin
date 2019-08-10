@@ -40,7 +40,7 @@ CREATE TABLE `company_user`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `index_company_user_nickname`(`nickname`) USING BTREE,
+  INDEX `index_company_user_nickname`(`nickname`) USING BTREE,
   INDEX `index_company_user_svn_username`(`svn_username`) USING BTREE,
   INDEX `index_company_user_deleted`(`is_deleted`) USING BTREE,
   INDEX `index_company_user_status`(`status`) USING BTREE,
