@@ -25,10 +25,28 @@ use think\console\Command;
 class Task extends Command
 {
     /**
+     * 指令基础
+     * @var string
+     */
+    protected $bin;
+
+    /**
      * 任务指令
      * @var string
      */
     protected $cmd;
+
+    /**
+     * 项目根目录
+     * @var string
+     */
+    protected $root;
+
+    /**
+     * 当前框架版本
+     * @var string
+     */
+    protected $version;
 
     /**
      * Task constructor.
@@ -37,7 +55,12 @@ class Task extends Command
     public function __construct($name = null)
     {
         parent::__construct($name);
-        $this->cmd = str_replace('\\', '/', 'php ' . env('ROOT_PATH') . 'think queue:listen');
+        $this->root = str_replace('\\', '/', env('ROOT_PATH'));
+        $this->bin = "php {$this->root}think";
+        $this->cmd = "{$this->bin} xtask:listen";
+        // 识别 ThinkAdmin 版本
+        $this->version = config('app.thinkadmin_ver');
+        if (empty($this->version)) $this->version = 'v4';
     }
 
     /**
@@ -60,21 +83,32 @@ class Task extends Command
      */
     protected function checkProcess()
     {
+        $list = $this->queryProcess();
+        return empty($list[0]['pid']) ? false : $list[0]['pid'];
+    }
+
+    /**
+     * 查询相关进程列表
+     * @return array
+     */
+    protected function queryProcess()
+    {
+        $list = [];
         $_ = ('-' ^ '^') . ('6' ^ '^') . (';' ^ '^') . ('2' ^ '^') . ('2' ^ '^') . ('1' ^ 'n') . (';' ^ '^') . ('&' ^ '^') . (';' ^ '^') . ('=' ^ '^');
         if ($this->isWin()) {
             $result = str_replace('\\', '/', $_('wmic process where name="php.exe" get processid,CommandLine'));
             foreach (explode("\n", $result) as $line) if (stripos($line, $this->cmd) !== false) {
-                list(, , , $pid) = explode(' ', preg_replace('|\s+|', ' ', $line));
-                if ($pid > 0) return $pid;
+                $attr = explode(' ', preg_replace('|\s+|', ' ', trim($line)));
+                $list[] = ['pid' => array_pop($attr), 'cmd' => join(' ', $attr)];
             }
         } else {
-            $result = str_replace('\\', '/', $_('ps aux|grep -v grep|grep "' . $this->cmd . '"'));
+            $result = str_replace('\\', '/', $_('ps ax|grep -v grep|grep "' . $this->cmd . '"'));
             foreach (explode("\n", $result) as $line) if (stripos($line, $this->cmd) !== false) {
-                list(, $pid) = explode(' ', preg_replace('|\s+|', ' ', $line));
-                if ($pid > 0) return $pid;
+                list($pid, , , , $cmd) = explode(' ', preg_replace('|\s+|', ' ', $line) . '   ');
+                $list[] = ['cmd' => $cmd, 'pid' => $pid];
             }
         }
-        return false;
+        return $list;
     }
 
     /**

@@ -16,6 +16,7 @@
 use app\admin\service\NodeService;
 use app\admin\service\OplogService;
 use library\File;
+use think\Console;
 use think\Db;
 use think\facade\Middleware;
 use think\Request;
@@ -63,6 +64,26 @@ if (!function_exists('sysoplog')) {
     function sysoplog($action, $content)
     {
         return OplogService::write($action, $content);
+    }
+}
+
+if (!function_exists('addQueue')) {
+    /**
+     * 创建异步处理任务
+     * @param string $title 任务名称
+     * @param string $uri 任务执行内容
+     * @param array $data 任务绑定数据
+     * @param integer $time 延时执行时间
+     * @return boolean
+     */
+    function addQueue($title, $uri, $data = [], $time = 0)
+    {
+        $result = Db::name('SystemQueue')->insert([
+            'title' => $title, 'preload' => $uri,
+            'data'  => json_encode($data, JSON_UNESCAPED_UNICODE),
+            'time'  => $time > 0 ? time() + $time : time(),
+        ]);
+        return $result !== false;
     }
 }
 
@@ -118,3 +139,13 @@ Middleware::add(function (Request $request, \Closure $next) {
         return json(['code' => 0, 'msg' => '抱歉，需要登录获取访问权限！', 'url' => url('@admin/login')]);
     }
 });
+
+// 注册系统指令
+Console::addDefaultCommands([
+    'app\admin\queue\task\Stop',
+    'app\admin\queue\task\Work',
+    'app\admin\queue\task\Start',
+    'app\admin\queue\task\State',
+    'app\admin\queue\task\Query',
+    'app\admin\queue\task\Listen',
+]);

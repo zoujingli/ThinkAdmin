@@ -1,0 +1,74 @@
+<?php
+
+// +----------------------------------------------------------------------
+// | ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// +----------------------------------------------------------------------
+// | 官方网站: http://demo.thinkadmin.top
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
+namespace app\admin\queue\task;
+
+use Exception;
+use library\command\Task;
+use think\console\Input;
+use think\console\Output;
+use think\Db;
+
+/**
+ * 启动监听异步任务守护的主进程
+ * Class Listen
+ * @package library\command\task
+ */
+class Listen extends Task
+{
+    /**
+     * 配置指定信息
+     */
+    protected function configure()
+    {
+        $this->setName('xqueue:listen')->setDescription('启动监听异步任务守护的主进程');
+    }
+
+    /**
+     * 执行进程守护监听
+     * @param Input $input
+     * @param Output $output
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    protected function execute(Input $input, Output $output)
+    {
+        $output->comment('============ 异步任务监听中 ============');
+        cli_set_process_title("ThinkAdmin {$this->version} 异步任务监听主进程");
+        while (true) {
+            $map = [['status', 'eq', '1'], ['time', '<=', time()]];
+            foreach (Db::name('SystemQueue')->where($map)->order('time asc')->select() as $item) {
+                try {
+                    Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '2', 'start_at' => date('Y-m-d H:i:s')]);
+                    $this->cmd = "{$this->bin} xqueue:_work {$item['id']}";
+                    if ($this->checkProcess()) {
+                        throw new Exception("该任务{$item['id']}的处理子进程已经存在");
+                    } else {
+                        $this->createProcess();
+                        $output->comment(">>> 创建任务{$item['id']}的处理子进程成功");
+                    }
+                } catch (Exception $e) {
+                    Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '4', 'desc' => $e->getMessage()]);
+                    $output->comment(">>> 创建任务{$item['id']}的处理进程失败，{$e->getMessage()}");
+                }
+            }
+            sleep(3);
+        }
+    }
+
+}

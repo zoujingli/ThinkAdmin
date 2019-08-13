@@ -13,27 +13,39 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\index\controller;
+namespace app\admin\queue\task;
 
-use library\Controller;
+use library\command\Task;
+use think\console\Input;
+use think\console\Output;
 
 /**
- * 应用入口
- * Class Index
- * @package app\index\controller
+ * 查看异步任务监听的主进程状态
+ * Class State
+ * @package app\admin\queue\task
  */
-class Index extends Controller
+class State extends Task
 {
     /**
-     * 入口跳转链接
+     * 指令属性配置
      */
-    public function index()
+    protected function configure()
     {
-        $this->redirect('@admin/login');
+        $this->setName('xqueue:state')->setDescription('查看异步任务监听主进程的状态');
     }
 
-    public function test()
+    /**
+     * 指令执行
+     * @param Input $input
+     * @param Output $output
+     */
+    protected function execute(Input $input, Output $output)
     {
-        addQueue('同步粉丝记录', 'xfans:list');
+        $this->cmd = "{$this->bin} xqueue:listen";
+        if (($pid = $this->checkProcess()) > 0) {
+            $output->comment(">>> 异步任务监听主进程{$pid}正在运行...");
+        } else {
+            $output->comment(">>> 异步任务监听主进程没有运行哦^.^");
+        }
     }
 }

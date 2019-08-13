@@ -13,27 +13,38 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\index\controller;
+namespace app\admin\queue\task;
 
-use library\Controller;
+use library\command\Task;
+use think\console\Input;
+use think\console\Output;
 
 /**
- * 应用入口
- * Class Index
- * @package app\index\controller
+ * 查询正在执行中的进程PID信息
+ * Class Query
+ * @package app\admin\queue\task
  */
-class Index extends Controller
+class Query extends Task
 {
     /**
-     * 入口跳转链接
+     * 指令属性配置
      */
-    public function index()
+    protected function configure()
     {
-        $this->redirect('@admin/login');
+        $this->setName('xqueue:query')->setDescription('查询正在执行中的进程PID信息');
     }
 
-    public function test()
+    /**
+     * 执行相关进程查询
+     * @param Input $input
+     * @param Output $output
+     * @return int|void|null
+     */
+    protected function execute(Input $input, Output $output)
     {
-        addQueue('同步粉丝记录', 'xfans:list');
+        $this->cmd = "{$this->bin} xqueue:";
+        foreach ($this->queryProcess() as $item) {
+            $output->writeln("{$item['pid']}\t'{$item['cmd']}'");
+        }
     }
 }

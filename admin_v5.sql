@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 09/08/2019 16:14:13
+ Date: 13/08/2019 18:20:43
 */
 
 SET NAMES utf8mb4;
@@ -40,7 +40,7 @@ CREATE TABLE `company_user`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_company_user_nickname`(`nickname`) USING BTREE,
+  UNIQUE INDEX `index_company_user_nickname`(`nickname`) USING BTREE,
   INDEX `index_company_user_svn_username`(`svn_username`) USING BTREE,
   INDEX `index_company_user_deleted`(`is_deleted`) USING BTREE,
   INDEX `index_company_user_status`(`status`) USING BTREE,
@@ -510,7 +510,7 @@ INSERT INTO `system_config` VALUES (55, 'wechat_push_url', '消息推送地址�
 INSERT INTO `system_config` VALUES (56, 'wechat_type', 'thr');
 INSERT INTO `system_config` VALUES (57, 'wechat_thr_appid', 'wx60a43dd8161666d4');
 INSERT INTO `system_config` VALUES (58, 'wechat_thr_appkey', '5caf4b0727f6e46a7e6ccbe773cc955d');
-INSERT INTO `system_config` VALUES (60, 'wechat_thr_appurl', '消息推送地址：http://127.0.0.1:8000/wechat/api.push');
+INSERT INTO `system_config` VALUES (60, 'wechat_thr_appurl', '消息推送地址：http://127.0.0.1:2314/wechat/api.push');
 INSERT INTO `system_config` VALUES (61, 'component_appid', 'wx28b58798480874f9');
 INSERT INTO `system_config` VALUES (62, 'component_appsecret', '8d0e1ec14ea0adc5027dd0ad82c64bc9');
 INSERT INTO `system_config` VALUES (63, 'component_token', 'P8QHTIxpBEq88IrxatqhgpBm2OAQROkI');
@@ -675,6 +675,27 @@ INSERT INTO `system_menu` VALUES (60, 58, '仓库权限管理', '', 'layui-icon 
 INSERT INTO `system_menu` VALUES (61, 58, '网络打卡管理', '', 'layui-icon layui-icon-engine', 'company/clock/index', '', '_self', 0, 1, '2019-08-09 14:44:23');
 
 -- ----------------------------
+-- Table structure for system_queue
+-- ----------------------------
+DROP TABLE IF EXISTS `system_queue`;
+CREATE TABLE `system_queue`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务名称',
+  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '执行参数',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '任务状态(1新任务,2处理中,3成功,4失败)',
+  `preload` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '执行内容',
+  `time` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '执行时间',
+  `desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '状态描述',
+  `start_at` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '开始时间',
+  `end_at` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '结束时间',
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `index_system_jobs_attempts`(`time`) USING BTREE,
+  INDEX `index_system_jobs_create_at`(`create_at`) USING BTREE,
+  INDEX `index_system_jobs_queue`(`title`(191)) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务';
+
+-- ----------------------------
 -- Table structure for system_user
 -- ----------------------------
 DROP TABLE IF EXISTS `system_user`;
@@ -703,7 +724,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-08-09 15:19:41', '10.1.1.10', 655, '', '', '', 1, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-08-13 16:01:30', '127.0.0.1', 657, '', '', '', 1, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

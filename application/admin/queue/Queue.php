@@ -13,27 +13,17 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\index\controller;
+namespace app\admin\queue;
 
-use library\Controller;
+use think\console\Input;
+use think\console\Output;
 
 /**
- * 应用入口
- * Class Index
- * @package app\index\controller
+ * 基础任务基类
+ * Class Queue
+ * @package app\admin\queue
  */
-class Index extends Controller
+abstract class Queue
 {
-    /**
-     * 入口跳转链接
-     */
-    public function index()
-    {
-        $this->redirect('@admin/login');
-    }
-
-    public function test()
-    {
-        addQueue('同步粉丝记录', 'xfans:list');
-    }
+    abstract function execute(Input $input, Output $output, array $data);
 }
