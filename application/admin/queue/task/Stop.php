@@ -32,7 +32,7 @@ class Stop extends Task
      */
     protected function configure()
     {
-        $this->setName('xqueue:stop')->setDescription('平滑停止异步任务守护的主进程');
+        $this->setName('xqueue:stop')->setDescription('平滑停止异步任务守护主进程');
     }
 
     /**
@@ -43,10 +43,11 @@ class Stop extends Task
     protected function execute(Input $input, Output $output)
     {
         $this->cmd = "{$this->bin} xqueue:";
-        foreach ($this->queryProcess() as $item) {
+        if (count($processList = $this->queryProcess()) < 1) {
+            $output->writeln("没有需要结束的任务进程哦！");
+        } else foreach ($processList as $item) {
             $this->closeProcess($item['pid']);
-            $output->writeln(">>> 发送结束进程{$item['pid']}指令成功");
+            $output->writeln("发送结束任务进程{$item['pid']}指令成功！");
         }
-        $output->info(">>> 所有异步任务进程的结束指令发送成功");
     }
 }

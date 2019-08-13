@@ -62,11 +62,11 @@ class Listen extends Task
                         throw new Exception("该任务{$item['id']}的处理子进程已经存在");
                     } else {
                         $this->createProcess();
-                        $output->info(">>> 创建任务{$item['id']}的处理子进程成功");
+                        $output->info("创建任务{$item['id']}的处理子进程成功");
                     }
                 } catch (Exception $e) {
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '4', 'desc' => $e->getMessage()]);
-                    $output->error(">>> 创建任务{$item['id']}的处理进程失败，{$e->getMessage()}");
+                    $output->error("创建任务{$item['id']}的处理进程失败，{$e->getMessage()}");
                 }
             }
             sleep(3);

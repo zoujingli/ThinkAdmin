@@ -32,7 +32,7 @@ class Start extends Task
      */
     protected function configure()
     {
-        $this->setName('xqueue:start')->setDescription('检查并创建异步任务监听主进程');
+        $this->setName('xqueue:start')->setDescription('创建异步任务监听守护主进程');
     }
 
     /**
@@ -44,7 +44,7 @@ class Start extends Task
     {
         $this->cmd = "{$this->bin} xqueue:listen";
         if (($pid = $this->checkProcess()) > 0) {
-            $output->writeln("异步任务监听主进程{$pid}已经启动！");
+            $output->info("异步任务监听主进程{$pid}已经启动！");
         } else {
             $this->createProcess();
             if (($pid = $this->checkProcess()) > 0) {

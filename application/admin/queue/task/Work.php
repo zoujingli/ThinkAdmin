@@ -67,10 +67,10 @@ class Work extends Task
             if (empty($this->id)) throw new Exception("执行任务需要指定任务编号！");
             $queue = Db::name('SystemQueue')->where(['id' => $this->id, 'status' => '2'])->find();
             if (empty($queue)) throw new Exception("执行任务{$this->id}的信息或状态异常！");
+            // 设置进程标题
             if ($this->isWin() && function_exists('cli_set_process_title')) {
                 cli_set_process_title("ThinkAdmin {$this->version} 异步任务执行子进程 - {$queue['title']}");
             }
-            // 设置进程标题
             // 执行任务内容
             if (class_exists($queue['preload'])) {
                 if (method_exists($class = new $queue['preload'], 'execute')) {
