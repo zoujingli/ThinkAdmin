@@ -104,8 +104,9 @@ class Task extends Command
         } else {
             $result = str_replace('\\', '/', $_('ps ax|grep -v grep|grep "' . $this->cmd . '"'));
             foreach (explode("\n", $result) as $line) if (stripos($line, $this->cmd) !== false) {
-                list($pid, , , , $cmd) = explode(' ', preg_replace('|\s+|', ' ', $line) . '   ');
-                $list[] = ['cmd' => $cmd, 'pid' => $pid];
+                $attr = explode(' ', preg_replace('|\s+|', ' ', trim($line)));
+                list($pid) = [array_shift($attr), array_shift($attr), array_shift($attr), array_shift($attr)];
+                $list[] = ['pid' => $pid, 'cmd' => join(' ', $attr)];
             }
         }
         return $list;
