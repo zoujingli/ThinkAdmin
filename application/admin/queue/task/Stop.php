@@ -32,7 +32,7 @@ class Stop extends Task
      */
     protected function configure()
     {
-        $this->setName('xqueue:stop')->setDescription('平滑停止异步任务守护主进程');
+        $this->setName('xqueue:stop')->setDescription('平滑停止异步任务所有的进程');
     }
 
     /**
