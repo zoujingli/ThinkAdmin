@@ -45,8 +45,8 @@ class Stop extends Task
         $this->cmd = "{$this->bin} xqueue:";
         foreach ($this->queryProcess() as $item) {
             $this->closeProcess($item['pid']);
-            $output->comment(">>> 给进程{$item['pid']}发送结束指令成功");
+            $output->writeln(">>> 发送结束进程{$item['pid']}指令成功");
         }
-        $output->comment(">>> 所有异步任务进程的结束指令发送成功");
+        $output->info(">>> 所有异步任务进程的结束指令发送成功");
     }
 }

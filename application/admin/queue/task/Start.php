@@ -44,13 +44,13 @@ class Start extends Task
     {
         $this->cmd = "{$this->bin} xqueue:listen";
         if (($pid = $this->checkProcess()) > 0) {
-            $output->comment("异步任务监听主进程{$pid}已经启动！");
+            $output->writeln("异步任务监听主进程{$pid}已经启动！");
         } else {
             $this->createProcess();
             if (($pid = $this->checkProcess()) > 0) {
-                $output->comment("异步任务监听主进程{$pid}启动成功！");
+                $output->info("异步任务监听主进程{$pid}启动成功！");
             } else {
-                $output->comment('异步任务监听主进程创建失败！');
+                $output->error('异步任务监听主进程创建失败！');
             }
         }
     }

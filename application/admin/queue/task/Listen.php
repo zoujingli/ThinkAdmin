@@ -33,7 +33,7 @@ class Listen extends Task
      */
     protected function configure()
     {
-        $this->setName('xqueue:listen')->setDescription('启动监听异步任务守护的主进程');
+        $this->setName('xqueue:listen')->setDescription('启动异步任务监听守护主进程');
     }
 
     /**
@@ -62,11 +62,11 @@ class Listen extends Task
                         throw new Exception("该任务{$item['id']}的处理子进程已经存在");
                     } else {
                         $this->createProcess();
-                        $output->comment(">>> 创建任务{$item['id']}的处理子进程成功");
+                        $output->info(">>> 创建任务{$item['id']}的处理子进程成功");
                     }
                 } catch (Exception $e) {
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '4', 'desc' => $e->getMessage()]);
-                    $output->comment(">>> 创建任务{$item['id']}的处理进程失败，{$e->getMessage()}");
+                    $output->error(">>> 创建任务{$item['id']}的处理进程失败，{$e->getMessage()}");
                 }
             }
             sleep(3);

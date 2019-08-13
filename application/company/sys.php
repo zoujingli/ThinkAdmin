@@ -14,8 +14,8 @@
 // +----------------------------------------------------------------------
 
 // 注册系统指令
-use think\Console;
+// use think\Console;
 
-Console::addDefaultCommands([
-    'app\company\command\Subversion',
-]);
+// Console::addDefaultCommands([
+//    'app\company\command\Subversion',
+// ]);

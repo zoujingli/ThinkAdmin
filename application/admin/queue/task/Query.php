@@ -31,7 +31,7 @@ class Query extends Task
      */
     protected function configure()
     {
-        $this->setName('xqueue:query')->setDescription('查询正在执行中的进程PID信息');
+        $this->setName('xqueue:query')->setDescription('查询正在执行的所有任务进程');
     }
 
     /**

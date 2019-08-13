@@ -43,9 +43,9 @@ class State extends Task
     {
         $this->cmd = "{$this->bin} xqueue:listen";
         if (($pid = $this->checkProcess()) > 0) {
-            $output->comment(">>> 异步任务监听主进程{$pid}正在运行...");
+            $output->info(">>> 异步任务监听主进程{$pid}正在运行...");
         } else {
-            $output->comment(">>> 异步任务监听主进程没有运行哦^.^");
+            $output->error(">>> 异步任务监听主进程没有运行哦^.^");
         }
     }
 }
