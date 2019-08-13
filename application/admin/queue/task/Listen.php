@@ -49,7 +49,9 @@ class Listen extends Task
     protected function execute(Input $input, Output $output)
     {
         $output->comment('============ 异步任务监听中 ============');
-        cli_set_process_title("ThinkAdmin {$this->version} 异步任务监听主进程");
+        if ($this->isWin() && function_exists('cli_set_process_title')) {
+            cli_set_process_title("ThinkAdmin {$this->version} 异步任务监听主进程");
+        }
         while (true) {
             $map = [['status', 'eq', '1'], ['time', '<=', time()]];
             foreach (Db::name('SystemQueue')->where($map)->order('time asc')->select() as $item) {
