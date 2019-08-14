@@ -19,7 +19,6 @@
     "endroid/qr-code": "^1.9",
     "topthink/framework": "5.1.*",
     "zoujingli/ip2region": "^1.0",
-    "topthink/think-queue": "^2.0",
     "zoujingli/think-library": "5.1.*-dev",
     "zoujingli/weopen-developer": "dev-master"
   },

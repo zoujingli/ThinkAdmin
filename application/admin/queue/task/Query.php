@@ -31,7 +31,7 @@ class Query extends Task
      */
     protected function configure()
     {
-        $this->setName('xqueue:query')->setDescription('查询正在执行的所有任务进程');
+        $this->setName('xtask:query')->setDescription('查询正在执行的所有任务进程');
     }
 
     /**
@@ -42,7 +42,7 @@ class Query extends Task
      */
     protected function execute(Input $input, Output $output)
     {
-        $this->cmd = "{$this->bin} xqueue:";
+        $this->cmd = "{$this->bin} xtask:";
         foreach ($this->queryProcess() as $item) {
             $output->writeln("{$item['pid']}\t'{$item['cmd']}'");
         }

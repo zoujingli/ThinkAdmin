@@ -31,7 +31,7 @@ class State extends Task
      */
     protected function configure()
     {
-        $this->setName('xqueue:state')->setDescription('查看异步任务监听主进程状态');
+        $this->setName('xtask:state')->setDescription('查看异步任务监听主进程状态');
     }
 
     /**
@@ -41,7 +41,7 @@ class State extends Task
      */
     protected function execute(Input $input, Output $output)
     {
-        $this->cmd = "{$this->bin} xqueue:listen";
+        $this->cmd = "{$this->bin} xtask:listen";
         if (($pid = $this->checkProcess()) > 0) {
             $output->info("异步任务监听主进程{$pid}正在运行...");
         } else {

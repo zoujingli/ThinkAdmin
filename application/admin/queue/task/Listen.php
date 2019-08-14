@@ -33,7 +33,7 @@ class Listen extends Task
      */
     protected function configure()
     {
-        $this->setName('xqueue:listen')->setDescription('启动异步任务监听守护主进程');
+        $this->setName('xtask:listen')->setDescription('启动异步任务监听守护主进程');
     }
 
     /**
@@ -53,20 +53,19 @@ class Listen extends Task
             cli_set_process_title("ThinkAdmin {$this->version} 异步任务监听主进程");
         }
         while (true) {
-            $map = [['status', 'eq', '1'], ['time', '<=', time()]];
-            foreach (Db::name('SystemQueue')->where($map)->order('time asc')->select() as $item) {
+            foreach (Db::name('SystemQueue')->where([['status', 'eq', '1'], ['time', '<=', time()]])->order('time asc')->select() as $item) {
                 try {
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '2', 'start_at' => date('Y-m-d H:i:s')]);
-                    $this->cmd = "{$this->bin} xqueue:_work {$item['id']}";
+                    $this->cmd = "{$this->bin} xtask:_work {$item['id']}";
                     if ($this->checkProcess()) {
-                        throw new Exception("该任务{$item['id']}的处理子进程已经存在");
+                        throw new Exception("处理任务的子进程已经存在 --> [{$item['id']}] {$item['title']}");
                     } else {
                         $this->createProcess();
-                        $output->info("创建任务{$item['id']}的处理子进程成功");
+                        $output->info("创建处理任务的子进程成功 --> [{$item['id']}] {$item['title']}");
                     }
                 } catch (Exception $e) {
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '4', 'desc' => $e->getMessage()]);
-                    $output->error("创建任务{$item['id']}的处理进程失败，{$e->getMessage()}");
+                    $output->error("创建处理任务的子进程失败 --> [{$item['id']}] {$item['title']}，{$e->getMessage()}");
                 }
             }
             sleep(3);

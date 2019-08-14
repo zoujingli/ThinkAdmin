@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 13/08/2019 18:20:43
+ Date: 14/08/2019 10:33:20
 */
 
 SET NAMES utf8mb4;
@@ -550,48 +550,6 @@ CREATE TABLE `system_data`  (
 INSERT INTO `system_data` VALUES (1, 'menudata', '[{\"name\":\"请输入名称\",\"type\":\"scancode_push\",\"key\":\"scancode_push\"}]');
 
 -- ----------------------------
--- Table structure for system_jobs
--- ----------------------------
-DROP TABLE IF EXISTS `system_jobs`;
-CREATE TABLE `system_jobs`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `queue` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `attempts` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
-  `reserved` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
-  `reserved_at` int(10) UNSIGNED NULL DEFAULT NULL,
-  `available_at` int(10) UNSIGNED NOT NULL,
-  `created_at` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_jobs_reserved`(`reserved`) USING BTREE,
-  INDEX `index_system_jobs_attempts`(`attempts`) USING BTREE,
-  INDEX `index_system_jobs_reserved_at`(`reserved_at`) USING BTREE,
-  INDEX `index_system_jobs_available_at`(`available_at`) USING BTREE,
-  INDEX `index_system_jobs_create_at`(`created_at`) USING BTREE,
-  INDEX `index_system_jobs_queue`(`queue`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务';
-
--- ----------------------------
--- Table structure for system_jobs_log
--- ----------------------------
-DROP TABLE IF EXISTS `system_jobs_log`;
-CREATE TABLE `system_jobs_log`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '任务名称',
-  `uri` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '任务对象',
-  `later` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '任务延时',
-  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '任务数据',
-  `desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '任务描述',
-  `double` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '任务多开',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '任务状态(1新任务,2任务进行中,3任务成功,4任务失败)',
-  `status_at` datetime NULL DEFAULT NULL COMMENT '任务状态时间',
-  `status_desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '任务状态描述',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_jobs_log_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务-日志';
-
--- ----------------------------
 -- Table structure for system_log
 -- ----------------------------
 DROP TABLE IF EXISTS `system_log`;
@@ -680,19 +638,21 @@ INSERT INTO `system_menu` VALUES (61, 58, '网络打卡管理', '', 'layui-icon 
 DROP TABLE IF EXISTS `system_queue`;
 CREATE TABLE `system_queue`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务名称',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务名称',
   `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '执行参数',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '任务状态(1新任务,2处理中,3成功,4失败)',
   `preload` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '执行内容',
   `time` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '执行时间',
+  `double` tinyint(1) NULL DEFAULT 1 COMMENT '单例模式',
   `desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '状态描述',
   `start_at` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '开始时间',
   `end_at` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '结束时间',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_jobs_attempts`(`time`) USING BTREE,
-  INDEX `index_system_jobs_create_at`(`create_at`) USING BTREE,
-  INDEX `index_system_jobs_queue`(`title`(191)) USING BTREE
+  INDEX `index_system_queue_double`(`double`) USING BTREE,
+  INDEX `index_system_queue_time`(`time`) USING BTREE,
+  INDEX `index_system_queue_title`(`title`) USING BTREE,
+  INDEX `index_system_queue_create_at`(`create_at`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务';
 
 -- ----------------------------
@@ -724,7 +684,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-08-13 16:01:30', '127.0.0.1', 657, '', '', '', 1, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-08-14 10:07:34', '127.0.0.1', 659, '', '', '', 1, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

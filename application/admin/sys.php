@@ -67,25 +67,32 @@ if (!function_exists('sysoplog')) {
     }
 }
 
-if (!function_exists('addQueue')) {
+if (!function_exists('sysqueue')) {
     /**
      * 创建异步处理任务
      * @param string $title 任务名称
-     * @param string $uri 任务执行内容
-     * @param array $data 任务绑定数据
-     * @param integer $time 延时执行时间
+     * @param string $loade 执行内容
+     * @param integer $later 延时执行时间
+     * @param array $data 任务附加数据
+     * @param integer $double 任务多开
      * @return boolean
+     * @throws \think\Exception
      */
-    function addQueue($title, $uri, $data = [], $time = 0)
+    function sysqueue($title, $loade, $later = 0, $data = [], $double = 1)
     {
+        $map = [['title', 'eq', $title], ['status', 'in', [1, 2]]];
+        if (empty($double) && Db::name('SystemQueue')->where($map)->count() > 0) {
+            throw new \think\Exception('该任务已经创建，请耐心等待处理完成！');
+        }
         $result = Db::name('SystemQueue')->insert([
-            'title' => $title, 'preload' => $uri,
+            'title' => $title, 'preload' => $loade,
             'data'  => json_encode($data, JSON_UNESCAPED_UNICODE),
-            'time'  => $time > 0 ? time() + $time : time(),
+            'time'  => $later > 0 ? time() + $later : time(), 'double' => intval($double),
         ]);
         return $result !== false;
     }
 }
+
 
 if (!function_exists('local_image')) {
     /**

@@ -34,6 +34,6 @@ class Index extends Controller
 
     public function test()
     {
-        addQueue('同步粉丝记录', 'xfans:list');
+        sysqueue('同步粉丝记录', 'xfans:list');
     }
 }

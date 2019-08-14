@@ -32,14 +32,12 @@
                 <input class="list-check-box" value='{$vo.id}' type='checkbox'>
             </td>
             <td class='text-left nowrap'>
-                任务名称：{$vo.title}
-                <br>
-                任务指令：{$vo.uri}
+                任务名称：{$vo.title}<br>
+                <span class="color-desc">任务指令：{$vo.preload}</span>
             </td>
             <td class='text-left nowrap'>
-                创建时间：{$vo.create_at|format_datetime|raw}
-                <br>
-                跟进时间：{$vo.status_at|format_datetime|raw}
+                创建时间：{$vo.create_at|format_datetime|raw}<br>
+                跟进时间：{$vo.end_at|format_datetime|raw}
             </td>
             <td class='text-left nowrap'>
                 任务状态：{eq name='vo.double' value='1'}
