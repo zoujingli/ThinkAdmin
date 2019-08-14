@@ -78,10 +78,11 @@ public function index(){
 * 执行 `php think xfans:black` 更新已经对接的公众号黑名单列表
 
 #### 3. 守护进程管理
-* 执行 `php think xtask:reset` 重启消息任务守护进程
-* 执行 `php think xtask:start` 启动消息任务守护进程
-* 执行 `php think xtask:state` 查询消息任务守护进程
-* 执行 `php think xtask:stop` 暂停消息任务守护进程
+* 执行 `php think xtask:listen` 启动异步任务监听守护主进程
+* 执行 `php think xtask:query` 查询正在执行的所有任务进程
+* 执行 `php think xtask:start` 创建异步任务监听守护主进程
+* 执行 `php think xtask:state` 查看异步任务监听主进程状态
+* 执行 `php think xtask:stop` 平滑停止异步任务所有的进程
 
 #### 4. 其它自定工具
 * 执行 `php think xclean:session` 清理无效的会话SESSION文件
