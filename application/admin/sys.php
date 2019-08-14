@@ -85,9 +85,10 @@ if (!function_exists('sysqueue')) {
             throw new \think\Exception('该任务已经创建，请耐心等待处理完成！');
         }
         $result = Db::name('SystemQueue')->insert([
-            'title' => $title, 'preload' => $loade,
-            'data'  => json_encode($data, JSON_UNESCAPED_UNICODE),
-            'time'  => $later > 0 ? time() + $later : time(), 'double' => intval($double),
+            'title'  => $title, 'preload' => $loade,
+            'data'   => json_encode($data, JSON_UNESCAPED_UNICODE),
+            'time'   => ($later > 0 ? time() + $later : time()) - 3,
+            'double' => intval($double),
         ]);
         return $result !== false;
     }

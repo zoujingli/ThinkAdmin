@@ -43,7 +43,9 @@ class Query extends Task
     protected function execute(Input $input, Output $output)
     {
         $this->cmd = "{$this->bin} xtask:";
-        foreach ($this->queryProcess() as $item) {
+        if (count($this->queryProcess()) < 1) {
+            $output->writeln('没有查询到相关任务进程');
+        } else foreach ($this->queryProcess() as $item) {
             $output->writeln("{$item['pid']}\t'{$item['cmd']}'");
         }
     }

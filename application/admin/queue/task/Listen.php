@@ -68,7 +68,7 @@ class Listen extends Task
                     $output->error("创建处理任务的子进程失败 --> [{$item['id']}] {$item['title']}，{$e->getMessage()}");
                 }
             }
-            sleep(3);
+            sleep(2);
         }
     }
 
