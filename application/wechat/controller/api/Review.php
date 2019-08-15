@@ -35,7 +35,8 @@ class Review extends Controller
      */
     public function news($id = 0)
     {
-        $this->news = MediaService::news(empty($id) ? input('id') : $id);
+        $this->id = empty($id) ? input('id') : $id;
+        $this->news = MediaService::news($this->id);
         $this->fetch();
     }
 
