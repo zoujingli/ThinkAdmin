@@ -32,7 +32,7 @@ class Stop extends Task
      */
     protected function configure()
     {
-        $this->setName('xtask:stop')->setDescription('平滑停止异步任务所有的进程');
+        $this->setName('xtask:stop')->setDescription('[指令]平滑停止所有的异步任务进程');
     }
 
     /**

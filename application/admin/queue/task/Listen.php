@@ -33,7 +33,7 @@ class Listen extends Task
      */
     protected function configure()
     {
-        $this->setName('xtask:listen')->setDescription('启动异步任务监听守护主进程');
+        $this->setName('xtask:listen')->setDescription('[监听]常驻异步任务循环监听主进程');
     }
 
     /**
@@ -58,7 +58,7 @@ class Listen extends Task
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '2', 'start_at' => date('Y-m-d H:i:s')]);
                     $this->cmd = "{$this->bin} xtask:_work {$item['id']}";
                     if ($this->checkProcess()) {
-                        throw new Exception("处理任务的子进程已经存在 --> [{$item['id']}] {$item['title']}");
+                        $output->comment("处理任务的子进程已经存在 --> [{$item['id']}] {$item['title']}");
                     } else {
                         $this->createProcess();
                         $output->info("创建处理任务的子进程成功 --> [{$item['id']}] {$item['title']}");

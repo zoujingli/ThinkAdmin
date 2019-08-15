@@ -31,7 +31,7 @@ class Query extends Task
      */
     protected function configure()
     {
-        $this->setName('xtask:query')->setDescription('查询正在执行的所有任务进程');
+        $this->setName('xtask:query')->setDescription('[指令]查询正在执行的所有任务进程');
     }
 
     /**
