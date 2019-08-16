@@ -56,7 +56,7 @@ class Listen extends Task
             foreach (Db::name('SystemQueue')->where([['status', 'eq', '1'], ['time', '<=', time()]])->order('time asc')->select() as $item) {
                 try {
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '2', 'start_at' => date('Y-m-d H:i:s')]);
-                    $this->cmd = "{$this->bin} xtask:_work {$item['id']}";
+                    $this->cmd = "{$this->bin} xtask:_work {$item['id']} -";
                     if ($this->checkProcess()) {
                         $output->comment("处理任务的子进程已经存在 --> [{$item['id']}] {$item['title']}");
                     } else {

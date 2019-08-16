@@ -51,6 +51,7 @@ class Work extends Task
         // 执行任务配置
         $this->setName('xtask:_work')->setDescription('[执行]创建执行单个指定任务的进程');
         $this->addArgument('id', Argument::OPTIONAL, '指定任务ID');
+        $this->addArgument('sp', Argument::OPTIONAL, '指令结束符');
     }
 
     /**
