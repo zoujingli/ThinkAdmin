@@ -32,7 +32,7 @@ class Start extends Task
      */
     protected function configure()
     {
-        $this->setName('xtask:start')->setDescription('[指令]创建异步任务守护监听主进程');
+        $this->setName('xtask:start')->setDescription('[控制]创建异步任务守护监听主进程');
     }
 
     /**

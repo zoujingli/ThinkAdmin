@@ -31,7 +31,7 @@ class State extends Task
      */
     protected function configure()
     {
-        $this->setName('xtask:state')->setDescription('[指令]查看异步任务监听主进程状态');
+        $this->setName('xtask:state')->setDescription('[控制]查看异步任务监听主进程状态');
     }
 
     /**
