@@ -32,7 +32,7 @@ class Sess extends Command
      */
     protected function configure()
     {
-        $this->setName('xclean:session')->setDescription('清理失效过期的会话文件');
+        $this->setName('xclean:session')->setDescription('[清理]删除失效的会话文件');
     }
 
     /**

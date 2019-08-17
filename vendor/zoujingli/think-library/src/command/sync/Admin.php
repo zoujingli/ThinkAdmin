@@ -32,7 +32,7 @@ class Admin extends Sync
     protected function configure()
     {
         $this->modules = ['application/admin/', 'think'];
-        $this->setName('xsync:admin')->setDescription('从远程覆盖本地Admin模块的所有代码');
+        $this->setName('xsync:admin')->setDescription('[同步]覆盖本地Admin模块代码');
     }
 
     /**

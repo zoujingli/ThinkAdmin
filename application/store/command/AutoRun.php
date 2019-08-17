@@ -30,7 +30,7 @@ class AutoRun extends \think\console\Command
      */
     protected function configure()
     {
-        $this->setName('xclean:store')->setDescription('清理过期无效的订单记录');
+        $this->setName('xclean:store')->setDescription('[清理]检查并处理商城任务');
     }
 
     /**
