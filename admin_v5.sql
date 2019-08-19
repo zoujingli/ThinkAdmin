@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 14/08/2019 10:33:20
+ Date: 19/08/2019 10:34:31
 */
 
 SET NAMES utf8mb4;
@@ -676,7 +676,7 @@ CREATE TABLE `system_user`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `index_system_user_username`(`username`) USING BTREE,
+  INDEX `index_system_user_username`(`username`) USING BTREE,
   INDEX `index_system_user_status`(`status`) USING BTREE,
   INDEX `index_system_user_deleted`(`is_deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 10001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户';
@@ -684,7 +684,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-08-14 10:07:34', '127.0.0.1', 659, '', '', '', 1, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-08-18 18:34:14', '127.0.0.1', 661, '', '', '', 1, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

@@ -15,14 +15,23 @@
 
 namespace app\store\command;
 
+use think\console\Command;
+use think\console\Input;
+use think\console\Output;
 use think\Db;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\Exception;
+use think\exception\DbException;
+use think\exception\PDOException;
+use We;
 
 /**
  * 商城数据处理指令
  * Class AutoRun
  * @package app\store\command
  */
-class AutoRun extends \think\console\Command
+class AutoRun extends Command
 {
 
     /**
@@ -35,15 +44,15 @@ class AutoRun extends \think\console\Command
 
     /**
      * 业务指令执行
-     * @param \think\console\Input $input
-     * @param \think\console\Output $output
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
+     * @param Input $input
+     * @param Output $output
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
+     * @throws PDOException
      */
-    protected function execute(\think\console\Input $input, \think\console\Output $output)
+    protected function execute(Input $input, Output $output)
     {
         // 自动取消30分钟未支付的订单
         $this->autoCancelOrder();
@@ -57,8 +66,8 @@ class AutoRun extends \think\console\Command
 
     /**
      * 自动取消30分钟未支付的订单
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
+     * @throws Exception
+     * @throws PDOException
      */
     private function autoCancelOrder()
     {
@@ -79,11 +88,11 @@ class AutoRun extends \think\console\Command
 
     /**
      * 清理一天前未支付的订单
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
+     * @throws PDOException
      */
     private function autoRemoveOrder()
     {
@@ -101,77 +110,73 @@ class AutoRun extends \think\console\Command
 
     /**
      * 订单自动退款操作
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
+     * @throws PDOException
      */
     private function autoRefundOrder()
     {
         // 未完成退款的订单，执行微信退款操作
-        foreach (Db::name('StoreOrder')->where(['refund_state' => '1'])->select() as $order) {
-            try {
-                $this->output->writeln("正在为 {$order['order_no']} 执行退款操作...");
-                $result = \We::WePayRefund(config('wechat.wxpay'))->create([
-                    'transaction_id' => $order['pay_no'],
-                    'out_refund_no'  => $order['refund_no'],
-                    'total_fee'      => $order['price_total'] * 100,
-                    'refund_fee'     => $order['pay_price'] * 100,
-                    'refund_account' => 'REFUND_SOURCE_UNSETTLED_FUNDS',
+        foreach (Db::name('StoreOrder')->where(['refund_state' => '1'])->select() as $order) try {
+            $this->output->writeln("正在为 {$order['order_no']} 执行退款操作...");
+            $result = We::WePayRefund(config('wechat.wxpay'))->create([
+                'transaction_id' => $order['pay_no'],
+                'out_refund_no'  => $order['refund_no'],
+                'total_fee'      => $order['price_total'] * 100,
+                'refund_fee'     => $order['pay_price'] * 100,
+                'refund_account' => 'REFUND_SOURCE_UNSETTLED_FUNDS',
+            ]);
+            if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
+                Db::name('StoreOrder')->where(['order_no' => $order['order_no']])->update([
+                    'refund_state' => '2', 'refund_desc' => '自动退款成功！',
                 ]);
-                if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
-                    Db::name('StoreOrder')->where(['order_no' => $order['order_no']])->update([
-                        'refund_state' => '2', 'refund_desc' => '自动退款成功！',
-                    ]);
-                } else {
-                    Db::name('StoreOrder')->where(['order_no' => $order['order_no']])->update([
-                        'refund_desc' => isset($result['err_code_des']) ? $result['err_code_des'] : '自动退款失败',
-                    ]);
-                }
-            } catch (\Exception $e) {
-                $this->output->writeln("订单 {$order['order_no']} 执行退款失败，{$e->getMessage()}！");
-                Db::name('StoreOrder')->where(['order_no' => $order['order_no']])->update(['refund_desc' => $e->getMessage()]);
+            } else {
+                Db::name('StoreOrder')->where(['order_no' => $order['order_no']])->update([
+                    'refund_desc' => isset($result['err_code_des']) ? $result['err_code_des'] : '自动退款失败',
+                ]);
             }
+        } catch (\Exception $e) {
+            $this->output->writeln("订单 {$order['order_no']} 执行退款失败，{$e->getMessage()}！");
+            Db::name('StoreOrder')->where(['order_no' => $order['order_no']])->update(['refund_desc' => $e->getMessage()]);
         }
         $this->output->writeln('自动检测退款订单执行完成！');
     }
 
     /**
      * 自动企业打款操作
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
+     * @throws PDOException
      */
     private function autoTransfer()
     {
         # 批量企业打款
-        foreach (Db::name('StoreProfitUsed')->where(['status' => '1'])->select() as $vo) {
-            try {
-                $wechat = \We::WePayTransfers(config('wechat.wxpay'));
-                $result = $wechat->create([
-                    'partner_trade_no' => $vo['trs_no'],
-                    'openid'           => $vo['openid'],
-                    'check_name'       => 'NO_CHECK',
-                    'amount'           => $vo['pay_price'] * 100,
-                    'desc'             => '营销活动拥金提现',
-                    'spbill_create_ip' => '127.0.0.1',
+        foreach (Db::name('StoreProfitUsed')->where(['status' => '1'])->select() as $vo) try {
+            $wechat = We::WePayTransfers(config('wechat.wxpay'));
+            $result = $wechat->create([
+                'partner_trade_no' => $vo['trs_no'],
+                'openid'           => $vo['openid'],
+                'check_name'       => 'NO_CHECK',
+                'amount'           => $vo['pay_price'] * 100,
+                'desc'             => '营销活动拥金提现',
+                'spbill_create_ip' => '127.0.0.1',
+            ]);
+            if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
+                Db::name('StoreProfitUsed')->where(['trs_no' => $vo['trs_no']])->update([
+                    'status' => '2', 'pay_desc' => '拥金提现成功！', 'pay_no' => $result['payment_no'], 'pay_at' => date('Y-m-d H:i:s'),
                 ]);
-                if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
-                    Db::name('StoreProfitUsed')->where(['trs_no' => $vo['trs_no']])->update([
-                        'status' => '2', 'pay_desc' => '拥金提现成功！', 'pay_no' => $result['payment_no'], 'pay_at' => date('Y-m-d H:i:s'),
-                    ]);
-                } else {
-                    Db::name('StoreProfitUsed')->where(['trs_no' => $vo['trs_no']])->update([
-                        'pay_desc' => isset($result['err_code_des']) ? $result['err_code_des'] : '自动打款失败', 'last_at' => date('Y-m-d H:i:s'),
-                    ]);
-                }
-            } catch (\Exception $e) {
-                $this->output->writeln("订单 {$vo['trs_no']} 执行提现失败，{$e->getMessage()}！");
-                Db::name('StoreProfitUsed')->where(['trs_no' => $vo['trs_no']])->update(['pay_desc' => $e->getMessage()]);
+            } else {
+                Db::name('StoreProfitUsed')->where(['trs_no' => $vo['trs_no']])->update([
+                    'pay_desc' => isset($result['err_code_des']) ? $result['err_code_des'] : '自动打款失败', 'last_at' => date('Y-m-d H:i:s'),
+                ]);
             }
+        } catch (\Exception $e) {
+            $this->output->writeln("订单 {$vo['trs_no']} 执行提现失败，{$e->getMessage()}！");
+            Db::name('StoreProfitUsed')->where(['trs_no' => $vo['trs_no']])->update(['pay_desc' => $e->getMessage()]);
         }
     }
 
@@ -179,8 +184,8 @@ class AutoRun extends \think\console\Command
      * 获取配置时间
      * @param string $code
      * @return string
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
+     * @throws Exception
+     * @throws PDOException
      */
     private function getDatetime($code)
     {
