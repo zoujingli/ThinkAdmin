@@ -55,6 +55,17 @@ class Queue extends Controller
     }
 
     /**
+     * 重启系统任务
+     * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function redo()
+    {
+        $this->_save($this->table, ['status' => '1']);
+    }
+
+    /**
      * 删除系统任务
      * @auth true
      * @throws \think\Exception
