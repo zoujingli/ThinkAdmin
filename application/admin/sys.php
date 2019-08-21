@@ -87,13 +87,12 @@ if (!function_exists('sysqueue')) {
         $result = Db::name('SystemQueue')->insert([
             'title'  => $title, 'preload' => $loade,
             'data'   => json_encode($data, JSON_UNESCAPED_UNICODE),
-            'time'   => ($later > 0 ? time() + $later : time()) - 3,
-            'double' => intval($double),
+            'time'   => $later > 0 ? time() + $later : time(),
+            'double' => intval($double), 'create_at' => date('Y-m-d H:i:s'),
         ]);
         return $result !== false;
     }
 }
-
 
 if (!function_exists('local_image')) {
     /**

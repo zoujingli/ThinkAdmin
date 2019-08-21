@@ -17,6 +17,7 @@ namespace app\admin\controller;
 
 use library\Controller;
 use think\Console;
+use think\exception\HttpResponseException;
 
 /**
  * 系统系统任务
@@ -50,6 +51,7 @@ class Queue extends Controller
             $this->message = $exception->getMessage();
         }
         $this->title = '系统任务管理';
+        $this->iswin = PATH_SEPARATOR === ';';
         $query = $this->_query($this->table)->dateBetween('create_at,end_at');
         $query->like('title,preload')->equal('status')->order('id desc')->page();
     }
@@ -63,6 +65,36 @@ class Queue extends Controller
     public function redo()
     {
         $this->_save($this->table, ['status' => '1']);
+    }
+
+    /**
+     * (WIN)创建任务监听进程
+     * @auth true
+     */
+    public function processStart()
+    {
+        try {
+            $this->success(nl2br(Console::call('xtask:start')->fetch()));
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * (WIN)停止任务监听进程
+     * @auth true
+     */
+    public function processStop()
+    {
+        try {
+            $this->success(nl2br(Console::call('xtask:stop')->fetch()));
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
     }
 
     /**
