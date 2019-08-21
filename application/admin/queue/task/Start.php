@@ -52,7 +52,7 @@ class Start extends Task
             $this->createProcess();
             $this->setBaseProcess();
             $output->writeln('正在检查异步任务监听主进程状态...');
-            sleep(2);
+            sleep(1);
             if (($pid = $this->checkProcess()) > 0) {
                 $output->info("异步任务监听主进程{$pid}启动成功！");
             } else {
