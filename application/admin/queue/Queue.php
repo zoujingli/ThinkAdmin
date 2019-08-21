@@ -25,5 +25,14 @@ use think\console\Output;
  */
 abstract class Queue
 {
+    /**
+     * 判断是否为WIN环境
+     * @return boolean
+     */
+    protected function isWin()
+    {
+        return PATH_SEPARATOR === ';';
+    }
+
     abstract function execute(Input $input, Output $output, array $data);
 }

@@ -31,9 +31,4 @@ class Index extends Controller
     {
         $this->redirect('@admin/login');
     }
-
-    public function test()
-    {
-        sysqueue('同步粉丝记录', 'xfans:list');
-    }
 }

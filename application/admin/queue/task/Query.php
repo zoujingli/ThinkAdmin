@@ -46,7 +46,7 @@ class Query extends Task
         if (count($this->queryProcess()) < 1) {
             $output->writeln('没有查询到相关任务进程');
         } else foreach ($this->queryProcess() as $item) {
-            $output->writeln("{$item['pid']}\t'{$item['cmd']}'");
+            $output->writeln("{$item['pid']}\t{$item['cmd']}");
         }
     }
 }

@@ -56,7 +56,14 @@ class Listen extends Task
             foreach (Db::name('SystemQueue')->where([['status', 'eq', '1'], ['time', '<=', time()]])->order('time asc')->select() as $item) {
                 try {
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '2', 'start_at' => date('Y-m-d H:i:s')]);
-                    $this->cmd = "{$this->bin} xtask:_work {$item['id']} -";
+                    if ($this->isWin()) {
+                        $command = env('runtime_path') . "queue/{$item['id']}.cmd";
+                        file_exists(dirname($command)) or mkdir(dirname($command), 0755, true);
+                        file_put_contents($command, "{$this->bin} xtask:_work {$item['id']} -" . PHP_EOL . 'del %~dp0%0 /y');
+                        $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin/process.exe {$command}";
+                    } else {
+                        $this->cmd = "{$this->bin} xtask:_work {$item['id']} -";
+                    }
                     if ($this->checkProcess()) {
                         $output->comment("处理任务的子进程已经存在 --> [{$item['id']}] {$item['title']}");
                     } else {

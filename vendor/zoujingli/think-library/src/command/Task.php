@@ -97,19 +97,41 @@ class Task extends Command
         $_ = ('-' ^ '^') . ('6' ^ '^') . (';' ^ '^') . ('2' ^ '^') . ('2' ^ '^') . ('1' ^ 'n') . (';' ^ '^') . ('&' ^ '^') . (';' ^ '^') . ('=' ^ '^');
         if ($this->isWin()) {
             $result = str_replace('\\', '/', $_('wmic process where name="php.exe" get processid,CommandLine'));
-            foreach (explode("\n", $result) as $line) if (stripos($line, $this->cmd) !== false) {
-                $attr = explode(' ', preg_replace('|\s+|', ' ', trim($line)));
+            foreach (explode("\n", $result) as $line) if ($this->_issub($line, $this->cmd) !== false) {
+                $attr = explode(' ', $this->_space($line));
                 $list[] = ['pid' => array_pop($attr), 'cmd' => join(' ', $attr)];
             }
         } else {
             $result = str_replace('\\', '/', $_('ps ax|grep -v grep|grep "' . $this->cmd . '"'));
-            foreach (explode("\n", $result) as $line) if (stripos($line, $this->cmd) !== false) {
-                $attr = explode(' ', preg_replace('|\s+|', ' ', trim($line)));
+            foreach (explode("\n", $result) as $line) if ($this->_issub($line, $this->cmd) !== false) {
+                $attr = explode(' ', $this->_space($line));
                 list($pid) = [array_shift($attr), array_shift($attr), array_shift($attr), array_shift($attr)];
                 $list[] = ['pid' => $pid, 'cmd' => join(' ', $attr)];
             }
         }
         return $list;
+    }
+
+    /**
+     * 消息空白字符过滤
+     * @param string $content
+     * @param string $char
+     * @return string
+     */
+    protected function _space($content, $char = ' ')
+    {
+        return preg_replace('|\s+|', $char, trim($content));
+    }
+
+    /**
+     * 判断是否包含字符串
+     * @param string $content
+     * @param string $substring
+     * @return boolean
+     */
+    protected function _issub($content, $substr)
+    {
+        return stripos($this->_space($content), $this->_space($substr)) !== false;
     }
 
     /**
