@@ -48,6 +48,7 @@ class Listen extends Task
      */
     protected function execute(Input $input, Output $output)
     {
+        Db::name('SystemQueue')->count();
         $output->comment('============ 异步任务监听中 ============');
         if ($this->isWin() && function_exists('cli_set_process_title')) {
             cli_set_process_title("ThinkAdmin {$this->version} 异步任务监听主进程");
@@ -60,7 +61,7 @@ class Listen extends Task
                         $command = env('runtime_path') . "queue/{$item['id']}.cmd";
                         file_exists(dirname($command)) or mkdir(dirname($command), 0755, true);
                         file_put_contents($command, "{$this->bin} xtask:_work {$item['id']} -" . PHP_EOL . 'del %~dp0%0 /y');
-                        $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin/process.exe {$command}";
+                        $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin" . DIRECTORY_SEPARATOR . "process.exe {$command}";
                     } else {
                         $this->cmd = "{$this->bin} xtask:_work {$item['id']} -";
                     }
