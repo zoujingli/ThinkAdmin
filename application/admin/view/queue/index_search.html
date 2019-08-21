@@ -45,6 +45,12 @@
             </div>
         </div>
         <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="start_at" value="{$Think.get.start_at|default=''}" placeholder="请选择开始时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
             <label class="layui-form-label">跟进时间</label>
             <div class="layui-input-inline">
                 <input data-date-range name="end_at" value="{$Think.get.end_at|default=''}" placeholder="请选择跟进时间" class="layui-input">
