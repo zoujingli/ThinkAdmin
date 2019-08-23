@@ -58,9 +58,18 @@ class Task extends Command
         $this->root = str_replace('\\', '/', env('ROOT_PATH'));
         $this->bin = "php {$this->root}think";
         $this->cmd = "{$this->bin} xtask:listen";
-        // 识别 ThinkAdmin 版本
         $this->version = config('app.thinkadmin_ver');
         if (empty($this->version)) $this->version = 'v4';
+    }
+
+    /**
+     * 检查进程是否存在
+     * @return boolean|integer
+     */
+    protected function checkProcess()
+    {
+        $list = $this->queryProcess();
+        return empty($list[0]['pid']) ? false : $list[0]['pid'];
     }
 
     /**
@@ -75,16 +84,6 @@ class Task extends Command
         } else {
             $__($_("{$this->cmd} &", 'r'));
         }
-    }
-
-    /**
-     * 检查进程是否存在
-     * @return boolean|integer
-     */
-    protected function checkProcess()
-    {
-        $list = $this->queryProcess();
-        return empty($list[0]['pid']) ? false : $list[0]['pid'];
     }
 
     /**
@@ -112,27 +111,6 @@ class Task extends Command
         return $list;
     }
 
-    /**
-     * 消息空白字符过滤
-     * @param string $content
-     * @param string $char
-     * @return string
-     */
-    protected function _space($content, $char = ' ')
-    {
-        return preg_replace('|\s+|', $char, trim($content));
-    }
-
-    /**
-     * 判断是否包含字符串
-     * @param string $content
-     * @param string $substring
-     * @return boolean
-     */
-    protected function _issub($content, $substr)
-    {
-        return stripos($this->_space($content), $this->_space($substr)) !== false;
-    }
 
     /**
      * 关闭任务进程
@@ -157,6 +135,28 @@ class Task extends Command
     protected function isWin()
     {
         return PATH_SEPARATOR === ';';
+    }
+
+    /**
+     * 消息空白字符过滤
+     * @param string $content
+     * @param string $char
+     * @return string
+     */
+    protected function _space($content, $char = ' ')
+    {
+        return preg_replace('|\s+|', $char, trim($content));
+    }
+
+    /**
+     * 判断是否包含字符串
+     * @param string $content
+     * @param string $substr
+     * @return boolean
+     */
+    protected function _issub($content, $substr)
+    {
+        return stripos($this->_space($content), $this->_space($substr)) !== false;
     }
 
 }
