@@ -51,7 +51,6 @@ class Start extends Task
             $this->setWinProcess();
             $this->createProcess();
             $this->setBaseProcess();
-            $output->writeln('正在检查异步任务监听主进程状态...');
             sleep(1);
             if (($pid = $this->checkProcess()) > 0) {
                 $output->info("异步任务监听主进程{$pid}启动成功！");
@@ -69,10 +68,7 @@ class Start extends Task
     private function setWinProcess()
     {
         if ($this->isWin()) {
-            $command = env('runtime_path') . "queue" . DIRECTORY_SEPARATOR . "listen.cmd";
-            file_exists(dirname($command)) or mkdir(dirname($command), 0755, true);
-            file_put_contents($command, $this->cmd . PHP_EOL . 'del %~dp0%0 /y');
-            $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin" . DIRECTORY_SEPARATOR . "process.exe {$command}";
+            $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin" . DIRECTORY_SEPARATOR . "process.exe {$this->bin} xtask:listen";
         }
     }
 }
