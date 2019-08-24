@@ -1,6 +1,3 @@
-[![Latest Stable Version](https://poser.pugx.org/zoujingli/thinkadmin/v/stable)](https://packagist.org/packages/zoujingli/thinkadmin) [![Total Downloads](https://poser.pugx.org/zoujingli/thinkadmin/downloads)](https://packagist.org/packages/zoujingli/thinkadmin) [![Latest Unstable Version](https://poser.pugx.org/zoujingli/thinkadmin/v/unstable)](https://packagist.org/packages/zoujingli/thinkadmin) [![License](https://poser.pugx.org/zoujingli/thinkadmin/license)](https://packagist.org/packages/zoujingli/thinkadmin)
-
-
 ## 大道至简 · 原生框架
 
 ThinkAdmin V5 是一个基于 ThinkPHP 5.1 开发的后台管理系统。
@@ -9,9 +6,12 @@ ThinkAdmin V5 是一个基于 ThinkPHP 5.1 开发的后台管理系统。
 
 另外项目安装及二次开发可以参考 ThinkPHP 官方文档，数据库文件摆放在项目根目录下。
 
+ThinkAdmin 非常适用快速二次开发，默认集成 微信开发组件，支持微信服务号、微信支付、支付宝支付、阿里云OSS存储、七牛云存储、本地服务器存储等。
+后台UI基于最新版本的Layui及RequireJs加载第三方插件（建议自行了解LayUI及RequireJs）。
+
 #### 注意事项 
 * 项目测试需要自行搭建环境导入数据库( admin_v5.sql )并修改配置( config/database.php )；
-* 若操作提示“测试系统禁止操作”等字样，需要删除演示路由配置( route/demo.php )或清空路由文件；
+* 若操作提示“演示系统禁止操作”等字样，需要删除演示路由配置( route/demo.php )或清空路由文件；
 * 当前版本使用 ThinkPHP 5.1.x，对 PHP 版本标注不低于 PHP 5.6，具体请阅读 ThinkPHP 官方文档；
 * 环境需开启 PATHINFO，不再支持 ThinkPHP 的 URL 兼容模式运行（源于如何优雅的展示）；
 
