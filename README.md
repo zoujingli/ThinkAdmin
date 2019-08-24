@@ -7,7 +7,7 @@ ThinkAdmin V5 是一个基于 ThinkPHP 5.1 开发的后台管理系统。
 另外项目安装及二次开发可以参考 ThinkPHP 官方文档，数据库文件摆放在项目根目录下。
 
 ThinkAdmin 非常适用快速二次开发，默认集成 微信开发组件，支持微信服务号、微信支付、支付宝支付、阿里云OSS存储、七牛云存储、本地服务器存储等。
-后台UI基于最新版本的Layui及RequireJs加载第三方插件（建议自行了解LayUI及RequireJs）。
+后台UI基于最新版本的 LayUI 及 RequireJs 加载第三方插件（建议自行了解 LayUI 及 RequireJs）。
 
 #### 注意事项 
 * 项目测试需要自行搭建环境导入数据库( admin_v5.sql )并修改配置( config/database.php )；
