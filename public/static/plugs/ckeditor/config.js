@@ -64,9 +64,10 @@ CKEDITOR.plugins.add('uhtml', {
         editor.ui.addButton("UploadHtml", {label: "插入HTML代码", command: 'uhtml', icon: 'creatediv', toolbar: 'insert,10'});
         editor.addCommand('uhtml', {
             exec: function (editor) {
-                layer.prompt({title: '插入HTML代码', formType: 2, area: ['600px', '300px']}, function (html, index) {
-                    var element = CKEDITOR.dom.element.createFromHtml('<div data-type="insert-html">' + html + '</div>');
-                    editor.insertElement(element), layer.close(index);
+                layer.prompt({title: '插入HTML代码', formType: 2, area: ['600px', '300px']}, function (html, index, element) {
+                    element = CKEDITOR.dom.element.createFromHtml('<div data-type="insert-html">' + html + '</div>');
+                    editor.insertElement(element);
+                    layer.close(index);
                 });
             }
         });
