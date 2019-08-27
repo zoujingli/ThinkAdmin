@@ -1,51 +1,55 @@
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
 
-    <div class="layui-card-body">
+    <div class="layui-card-body padding-left-40">
 
         <div class="layui-form-item">
-            <label class="layui-form-label label-required">用户账号</label>
-            <div class="layui-input-block">
-                <!--{if $vo and isset($vo.username)}-->
+            <label class="relative block">
+                <span class="color-green font-w7">用户账号</span>
+                <span class="color-desc margin-left-5">Username</span>
+                <!--{if isset($vo) and isset($vo.username)}-->
                 <input disabled value='{$vo.username|default=""}' class="layui-input layui-bg-gray">
-                <p class="help-block">用户账号创建后，不允许再次修改。</p>
                 <!--{else}-->
                 <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" placeholder="请输入4位及以上字符用户名称" class="layui-input">
                 <!--{/if}-->
-            </div>
+            </label>
+            <p class="help-block">用户账号创建后，不允许再次修改。</p>
         </div>
 
         <!--{if $verify}-->
         <div class="layui-form-item">
-            <label class="layui-form-label">旧的密码</label>
-            <div class="layui-input-block">
+            <label class="relative block">
+                <span class="color-green font-w7">旧的密码</span>
+                <span class="color-desc margin-left-5">Old Password</span>
                 <input type="password" autofocus name="oldpassword" value='' pattern="^\S{1,}$" required placeholder="请输入旧的密码" class="layui-input">
-                <p class="help-block">请输入旧密码来验证修改权限，旧密码不限制格式。</p>
-            </div>
+            </label>
+            <p class="color-desc">请输入旧密码来验证修改权限，旧密码不限制格式。</p>
         </div>
         <!--{/if}-->
 
         <div class="layui-form-item">
-            <label class="layui-form-label">新的密码</label>
-            <div class="layui-input-block">
+            <label class="relative block">
+                <span class="color-green font-w7">新的密码</span>
+                <span class="color-desc margin-left-5">New Password</span>
                 <input type="password" name="password" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required placeholder="请输入新的密码" class="layui-input">
-                <p class="help-block">密码必需包含大小写字母、数字、符号的任意两者组合。</p>
-            </div>
+            </label>
+            <p class="color-desc">密码必需包含大小写字母、数字、符号的任意两者组合。</p>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">重复密码</label>
-            <div class="layui-input-block">
+            <label class="relative block">
+                <span class="color-green font-w7">重复密码</span>
+                <span class="color-desc margin-left-5">Retype Password</span>
                 <input type="password" name="repassword" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required placeholder="请输入重复密码" class="layui-input">
-                <p class="help-block">密码必需包含大小写字母、数字、符号的任意两者组合。</p>
-            </div>
+            </label>
+            <p class="color-desc">密码必需包含大小写字母、数字、符号的任意两者组合。</p>
         </div>
 
     </div>
 
     <div class="hr-line-dashed"></div>
+    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
 
     <div class="layui-form-item text-center">
-        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>

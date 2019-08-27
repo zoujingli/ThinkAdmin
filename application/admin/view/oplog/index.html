@@ -2,12 +2,12 @@
 
 {block name="button"}
 
-{if auth("admin/oplog/clear")}
+{if auth("clear")}
 <button data-load='{:url("clear")}' data-confirm="确定要消除所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理日志</button>
 {/if}
 
-{if auth("admin/oplog/remove")}
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('admin/oplog/remove')}" data-confirm="确定要删除日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
+{if auth("remove")}
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
 {/if}
 
 {/block}
@@ -51,8 +51,8 @@
                 日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">时间：',###|raw}</span>
             </td>
             <td class='text-left nowrap'>
-                {if auth("admin/oplog/remove")}
-                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/oplog/remove')}">删 除</a>
+                {if auth("remove")}
+                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                 {/if}
             </td>
         </tr>
