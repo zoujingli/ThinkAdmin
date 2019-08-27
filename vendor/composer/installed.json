@@ -177,17 +177,17 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.30",
-        "version_normalized": "3.4.30.0",
+        "version": "v3.4.31",
+        "version_normalized": "3.4.31.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "ed3b397f9c07c8ca388b2a1ef744403b4d4ecc44"
+            "reference": "a7c00586a9ef70acf0f17085e51c399bf9620e03"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/ed3b397f9c07c8ca388b2a1ef744403b4d4ecc44",
-            "reference": "ed3b397f9c07c8ca388b2a1ef744403b4d4ecc44",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/a7c00586a9ef70acf0f17085e51c399bf9620e03",
+            "reference": "a7c00586a9ef70acf0f17085e51c399bf9620e03",
             "shasum": "",
             "mirrors": [
                 {
@@ -199,7 +199,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2019-04-10T16:00:48+00:00",
+        "time": "2019-08-03T21:15:25+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

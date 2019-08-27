@@ -48,24 +48,27 @@ class WechatQueue extends Queue
     {
         $appid = WechatService::getAppid();
         $wechat = WechatService::WeChatUser();
-        $next = ''; // 获取远程粉丝
+        // 获取远程粉丝
+        list($next, $done) = ['', 0];
         $output->writeln('Start synchronizing fans from the Wechat server');
-        while (is_array($result = $wechat->getUserList($next)) && !empty($result['data']['openid'])) {
-            foreach (array_chunk($result['data']['openid'], 100) as $chunk)
-                if (is_array($list = $wechat->getBatchUserInfo($chunk)) && !empty($list['user_info_list']))
-                    foreach ($list['user_info_list'] as $user) FansService::set($user, $appid);
-            if (in_array($result['next_openid'], $result['data']['openid'])) break;
-            $next = $result['next_openid'];
-        }
-        $next = ''; // 同步粉丝黑名单
-        $output->writeln('Start synchronizing black from the Wechat server');
-        while (is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
+        while ($next !== null && is_array($result = $wechat->getUserList($next)) && !empty($result['data']['openid'])) {
+            $done += $result['count'];
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
-                $where = [['is_black', 'eq', '0'], ['openid', 'in', $chunk]];
-                Db::name('WechatFans')->where($where)->update(['is_black' => '1']);
+                if (is_array($list = $wechat->getBatchUserInfo($chunk)) && !empty($list['user_info_list'])) {
+                    foreach ($list['user_info_list'] as $user) FansService::set($user, $appid);
+                }
             }
-            if (in_array($result['next_openid'], $result['data']['openid'])) break;
-            $next = $result['next_openid'];
+            $next = $result['total'] > $done ? $result['next_openid'] : null;
+        }
+        // 同步粉丝黑名单
+        list($next, $done) = ['', 0];
+        $output->writeln('Start synchronizing black from the Wechat server');
+        while ($next !== null && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
+            $done += $result['count'];
+            foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
+                Db::name('WechatFans')->where(['is_black' => '0'])->whereIn('openid', $chunk)->update(['is_black' => '1']);
+            }
+            $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
         // 同步粉丝标签列表
         $output->writeln('Start synchronizing tags from the Wechat server');
