@@ -2,15 +2,15 @@
 
 {block name="button"}
 
-{if auth("wechat/fans/setblack")}
-<button data-action='{:url("setblack")}' data-rule="openid#{key}" data-csrf="{:systoken('wechat/fans/setblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量拉黑</button>
+{if auth("setblack")}
+<button data-action='{:url("setblack")}' data-rule="openid#{key}" data-csrf="{:systoken('setblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量拉黑</button>
 {/if}
 
-{if auth("wechat/fans/delblack")}
-<button data-action='{:url("delblack")}' data-rule="openid#{key}" data-csrf="{:systoken('wechat/fans/delblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>取消拉黑</button>
+{if auth("delblack")}
+<button data-action='{:url("delblack")}' data-rule="openid#{key}" data-csrf="{:systoken('delblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>取消拉黑</button>
 {/if}
 
-{if auth("wechat/fans/sync")}
+{if auth("sync")}
 <button data-load='{:url("sync")}' class='layui-btn layui-btn-sm layui-btn-primary'>同步粉丝</button>
 {/if}
 
@@ -74,17 +74,17 @@
             <td class="nowrap">
 
                 {eq name='vo.is_black' value='0'}
-                <!--{if auth("wechat/fans/setblack")}-->
-                <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('setblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('wechat/fans/setblack')}">拉 黑</a>
+                <!--{if auth("setblack")}-->
+                <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('setblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('setblack')}">拉 黑</a>
                 <!--{/if}-->
                 {else}
-                <!--{if auth("wechat/fans/delblack")}-->
-                <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('delblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('wechat/fans/delblack')}">拉 白</a>
+                <!--{if auth("delblack")}-->
+                <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('delblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('delblack')}">拉 白</a>
                 <!--{/if}-->
                 {/eq}
 
-                {if auth("wechat/fans/remove")}
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该粉丝吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('wechat/fans/remove')}">删 除</a>
+                {if auth("remove")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该粉丝吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                 {/if}
             </td>
         </tr>

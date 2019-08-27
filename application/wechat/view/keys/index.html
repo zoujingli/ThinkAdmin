@@ -2,12 +2,12 @@
 
 {block name="button"}
 
-{if auth("wechat/keys/add")}
+{if auth("add")}
 <button data-open="{:url('add')}" class='layui-btn layui-btn-sm layui-btn-primary'>添加规则</button>
 {/if}
 
-{if auth("wechat/keys/remove")}
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('wechat/keys/remove')}" data-confirm="确定要删除这些规则吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除规则</button>
+{if auth("remove")}
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除这些规则吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除规则</button>
 {/if}
 
 {/block}
@@ -69,18 +69,18 @@
             <td class='text-left nowrap'>{if $vo.status eq 0}<span class="color-desc">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}</td>
             <td class='text-left nowrap'>
 
-                {if auth("wechat/keys/edit")}
+                {if auth("edit")}
                 <a class="layui-btn layui-btn-sm" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 {/if}
 
-                {if $vo.status eq 1 and auth("wechat/keys/forbid")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('wechat/keys/forbid')}">禁 用</a>
-                {elseif auth("wechat/keys/resume")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('wechat/keys/resume')}">启 用</a>
+                {if $vo.status eq 1 and auth("forbid")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">禁 用</a>
+                {elseif auth("resume")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">启 用</a>
                 {/if}
 
-                {if auth("wechat/keys/remove")}
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('wechat/keys/remove')}">删 除</a>
+                {if auth("remove")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                 {/if}
 
             </td>
