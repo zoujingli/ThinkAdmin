@@ -29,8 +29,6 @@ use think\Db;
 class WechatQueue extends Queue
 {
 
-    const URI = self::class;
-
     /**
      * 执行任务
      * @param Input $input

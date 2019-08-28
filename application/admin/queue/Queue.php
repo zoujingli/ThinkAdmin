@@ -25,6 +25,11 @@ use think\console\Output;
  */
 abstract class Queue
 {
+    /**
+     * 当前类名
+     * @var string
+     */
+    const URI = self::class;
 
     /**
      * 判断是否WIN环境
