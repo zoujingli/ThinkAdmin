@@ -30,6 +30,12 @@ class WechatQueue extends Queue
 {
 
     /**
+     * 当前类名
+     * @var string
+     */
+    const URI = self::class;
+
+    /**
      * 执行任务
      * @param Input $input
      * @param Output $output
