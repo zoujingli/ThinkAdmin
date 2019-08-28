@@ -28,6 +28,8 @@ use think\Db;
  */
 class WechatQueue extends Queue
 {
+    const URI = self::class;
+
     /**
      * 当前操作APPID
      * @var string
