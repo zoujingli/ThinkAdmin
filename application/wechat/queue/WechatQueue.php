@@ -28,17 +28,12 @@ use think\Db;
  */
 class WechatQueue extends Queue
 {
-    /**
-     * 当前任务URI
-     */
-    const URI = self::class;
 
     /**
      * 执行任务
      * @param Input $input
      * @param Output $output
      * @param array $data
-     * @return boolean
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
@@ -50,8 +45,7 @@ class WechatQueue extends Queue
         $wechat = WechatService::WeChatUser();
         // 获取远程粉丝
         list($next, $done) = ['', 0];
-        $output->writeln('Start synchronizing fans from the Wechat server');
-        while ($next !== null && is_array($result = $wechat->getUserList($next)) && !empty($result['data']['openid'])) {
+        while (!is_null($next) && is_array($result = $wechat->getUserList($next)) && !empty($result['data']['openid'])) {
             $done += $result['count'];
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 if (is_array($list = $wechat->getBatchUserInfo($chunk)) && !empty($list['user_info_list'])) {
@@ -62,16 +56,14 @@ class WechatQueue extends Queue
         }
         // 同步粉丝黑名单
         list($next, $done) = ['', 0];
-        $output->writeln('Start synchronizing black from the Wechat server');
-        while ($next !== null && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
+        while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
             $done += $result['count'];
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 Db::name('WechatFans')->where(['is_black' => '0'])->whereIn('openid', $chunk)->update(['is_black' => '1']);
             }
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        // 同步粉丝标签列表
-        $output->writeln('Start synchronizing tags from the Wechat server');
+        // 同步粉丝标签
         if (is_array($list = WechatService::WeChatTags()->getTags()) && !empty($list['tags'])) {
             foreach ($list['tags'] as &$tag) $tag['appid'] = $appid;
             Db::name('WechatFansTags')->where('1=1')->delete();
