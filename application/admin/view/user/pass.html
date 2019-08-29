@@ -4,23 +4,23 @@
 
         <div class="layui-form-item">
             <label class="relative block">
-                <span class="color-green font-w7">用户账号</span>
+                <span class="color-green font-w7">登录用户账号</span>
                 <span class="color-desc margin-left-5">Username</span>
                 <!--{if isset($vo) and isset($vo.username)}-->
                 <input disabled value='{$vo.username|default=""}' class="layui-input layui-bg-gray">
                 <!--{else}-->
-                <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" placeholder="请输入4位及以上字符用户名称" class="layui-input">
+                <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" placeholder="请输入4位及以上字符登录用户账号" class="layui-input">
                 <!--{/if}-->
             </label>
-            <p class="help-block">用户账号创建后，不允许再次修改。</p>
+            <p class="help-block">登录用户账号创建后，不允许再次修改。</p>
         </div>
 
         <!--{if $verify}-->
         <div class="layui-form-item">
             <label class="relative block">
-                <span class="color-green font-w7">旧的密码</span>
+                <span class="color-green font-w7">旧的登录密码</span>
                 <span class="color-desc margin-left-5">Old Password</span>
-                <input type="password" autofocus name="oldpassword" value='' pattern="^\S{1,}$" required placeholder="请输入旧的密码" class="layui-input">
+                <input type="password" autofocus name="oldpassword" value='' pattern="^\S{1,}$" required placeholder="请输入旧的登录密码" class="layui-input">
             </label>
             <p class="color-desc">请输入旧密码来验证修改权限，旧密码不限制格式。</p>
         </div>
@@ -28,18 +28,18 @@
 
         <div class="layui-form-item">
             <label class="relative block">
-                <span class="color-green font-w7">新的密码</span>
+                <span class="color-green font-w7">新的登录密码</span>
                 <span class="color-desc margin-left-5">New Password</span>
-                <input type="password" name="password" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required placeholder="请输入新的密码" class="layui-input">
+                <input type="password" name="password" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required placeholder="请输入新的登录密码" class="layui-input">
             </label>
             <p class="color-desc">密码必需包含大小写字母、数字、符号的任意两者组合。</p>
         </div>
 
         <div class="layui-form-item">
             <label class="relative block">
-                <span class="color-green font-w7">重复密码</span>
+                <span class="color-green font-w7">重复登录密码</span>
                 <span class="color-desc margin-left-5">Retype Password</span>
-                <input type="password" name="repassword" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required placeholder="请输入重复密码" class="layui-input">
+                <input type="password" name="repassword" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required placeholder="请输入重复登录密码" class="layui-input">
             </label>
             <p class="color-desc">密码必需包含大小写字母、数字、符号的任意两者组合。</p>
         </div>
