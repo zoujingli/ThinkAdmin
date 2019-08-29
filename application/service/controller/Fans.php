@@ -99,8 +99,8 @@ class Fans extends Controller
      */
     public function setBlack()
     {
-        $this->applyCsrfToken();
         try {
+            $this->applyCsrfToken();
             foreach (array_chunk(explode(',', $this->request->post('openid')), 20) as $openids) {
                 WechatService::WeChatUser($this->appid)->batchBlackList($openids);
                 Db::name('WechatFans')->where(['appid' => $this->appid])->whereIn('openid', $openids)->update(['is_black' => '1']);
