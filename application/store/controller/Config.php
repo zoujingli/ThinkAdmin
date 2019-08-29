@@ -15,7 +15,6 @@
 
 namespace app\store\controller;
 
-use app\store\service\Extend;
 use app\store\service\ExtendService;
 use library\Controller;
 
