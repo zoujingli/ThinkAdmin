@@ -19,6 +19,7 @@ use library\File;
 use OSS\Model\CorsConfig;
 use OSS\Model\CorsRule;
 use OSS\OssClient;
+use think\facade\Request;
 
 /**
  * AliOss文件存储
@@ -70,7 +71,7 @@ class Oss extends File
      */
     public function upload()
     {
-        $protocol = request()->isSsl() ? 'https' : 'http';
+        $protocol = Request::isSsl() ? 'https' : 'http';
         return "{$protocol}://" . self::$config->get('storage_oss_domain');
     }
 

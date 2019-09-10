@@ -38,7 +38,7 @@ require.config({
         'spop': ['plugs/spop/spop.min'],
         'json': ['plugs/jquery/json.min'],
         'michat': ['plugs/michat/michat'],
-        'upload': ['plugs/plupload/build'],
+        'upload': ['plugs/jquery/uploader'],
         'base64': ['plugs/jquery/base64.min'],
         'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
@@ -293,7 +293,10 @@ $(function () {
                 params.spm = obj && obj.getAttribute('data-menu-node') || this.queryNode(uri);
             }
             if (typeof params.spm !== 'string' || params.spm.length < 1) delete params.spm;
-            var query = '?' + $.param(params);
+            // 生成新的 URL 参数
+            var attrs = [];
+            for (var i in params) attrs.push([i, params[i]].join('='));
+            var query = '?' + attrs.join('&');
             return uri + (query === '?' ? '' : query);
         };
         // 后台菜单动作初始化

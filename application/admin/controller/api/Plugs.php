@@ -70,6 +70,40 @@ class Plugs extends Controller
     }
 
     /**
+     * 获取文件上传参数
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function check()
+    {
+        $diff1 = explode(',', strtolower(input('exts')));
+        $diff2 = explode(',', strtolower(sysconf('storage_local_exts')));
+        $exts = array_intersect($diff1, $diff2);
+        $this->success('获取文件上传参数', [
+            'exts' => join('|', $exts),
+            'mime' => File::mine($exts),
+            'type' => $this->getUploadType(),
+            'push' => $this->getUploadPush(),
+        ]);
+    }
+
+    /**
+     * 生成文件上传参数
+     * @return array
+     * @throws \think\Exception
+     */
+    protected function getUploadPush()
+    {
+        switch ($this->getUploadType()) {
+            case 'oss':
+            case 'local':
+                return ['url' => '?s=admin/api.plugs/plupload', 'token' => uniqid('local_upload_')];
+            case 'qiniu':
+                return ['url' => File::instance('qiniu')->upload(true), 'token' => File::instance('qiniu')->buildUploadToken()];
+        }
+    }
+
+    /**
      * 获取文件上传方式
      * @return string
      * @throws \think\Exception
