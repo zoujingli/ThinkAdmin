@@ -38,6 +38,24 @@ class Plugs extends Controller
     }
 
     /**
+     * 获取文件上传参数
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function check()
+    {
+        $diff1 = explode(',', strtolower(input('exts')));
+        $diff2 = explode(',', strtolower(sysconf('storage_local_exts')));
+        $exts = array_intersect($diff1, $diff2);
+        $this->success('获取文件上传参数', [
+            'exts' => join('|', $exts),
+            'mime' => File::mine($exts),
+            'type' => $this->getUploadType(),
+            'data' => $this->getUploadData(),
+        ]);
+    }
+
+    /**
      * 后台通用文件上传
      * @return \think\response\Json
      * @throws \think\Exception
@@ -67,24 +85,6 @@ class Plugs extends Controller
         } else {
             return json(['uploaded' => false, 'error' => ['message' => '文件处理失败，请稍候再试！']]);
         }
-    }
-
-    /**
-     * 获取文件上传参数
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
-     */
-    public function check()
-    {
-        $diff1 = explode(',', strtolower(input('exts')));
-        $diff2 = explode(',', strtolower(sysconf('storage_local_exts')));
-        $exts = array_intersect($diff1, $diff2);
-        $this->success('获取文件上传参数', [
-            'exts' => join('|', $exts),
-            'mime' => File::mine($exts),
-            'type' => $this->getUploadType(),
-            'data' => $this->getUploadData(),
-        ]);
     }
 
     /**
