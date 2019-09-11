@@ -18,7 +18,7 @@ define(function () {
                 headers: headers || {},
                 multiple: $(element).attr('data-multiple') > 0,
                 before: function () {
-                    this.proindex = $.msg.loading('上传进度 <span data-upload-progress></span>');
+                    this.proindex = $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
                 },
                 progress: function (n) {
                     $('[data-upload-progress]').html(n + '%');
