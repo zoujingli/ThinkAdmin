@@ -5,18 +5,18 @@ define(function () {
 
         // 检查可以上传的文件后缀
         $.form.load('?s=admin/api.plugs/check', {exts: exts, uptype: uptype}, 'post', function (ret, options) {
-            options = {url: ret.data.push.url, exts: ret.data.exts, acceptMime: ret.data.mime, data: {token: ret.data.push.token}};
+            options = {url: ret.data.data.url, exts: ret.data.exts, acceptMime: ret.data.mime, data: ret.data.data};
             if (exts.indexOf('*') > -1) delete options.exts, delete options.acceptMime;
             return renderUploader(options), false;
         }, false, false, 0);
 
         // 初始化上传组件
-        function renderUploader(options) {
+        function renderUploader(options, headers) {
             this.options = {
                 proindex: 0,
                 elem: element,
+                headers: headers || {},
                 multiple: $(element).attr('data-multiple') > 0,
-                url: '?s=admin/api.plugs/plupload',
                 before: function () {
                     this.proindex = $.msg.loading('上传进度 <span data-upload-progress></span>');
                 },

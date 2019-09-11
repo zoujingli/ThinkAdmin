@@ -28,7 +28,7 @@ class Plugs extends Controller
 {
 
     /**
-     * 系统选择器图标
+     * 系统图标选择器
      */
     public function icon()
     {
@@ -38,12 +38,12 @@ class Plugs extends Controller
     }
 
     /**
-     * Plupload 插件上传文件
+     * 后台通用文件上传
      * @return \think\response\Json
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function plupload()
+    public function upload()
     {
         if (!NodeService::islogin()) {
             $this->error('访问授权失败，请重新登录授权再试！');
@@ -83,7 +83,7 @@ class Plugs extends Controller
             'exts' => join('|', $exts),
             'mime' => File::mine($exts),
             'type' => $this->getUploadType(),
-            'push' => $this->getUploadPush(),
+            'data' => $this->getUploadData(),
         ]);
     }
 
@@ -92,14 +92,13 @@ class Plugs extends Controller
      * @return array
      * @throws \think\Exception
      */
-    protected function getUploadPush()
+    private function getUploadData()
     {
-        switch ($this->getUploadType()) {
-            case 'oss':
-            case 'local':
-                return ['url' => '?s=admin/api.plugs/plupload', 'token' => uniqid('local_upload_')];
-            case 'qiniu':
-                return ['url' => File::instance('qiniu')->upload(true), 'token' => File::instance('qiniu')->buildUploadToken()];
+        if ($this->getUploadType() === 'qiniu') {
+            $file = File::instance('qiniu');
+            return ['url' => $file->upload(true), 'token' => $file->buildUploadToken()];
+        } else {
+            return ['url' => '?s=admin/api.plugs/upload', 'token' => uniqid('local_upload_')];
         }
     }
 
