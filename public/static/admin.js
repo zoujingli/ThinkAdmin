@@ -11,13 +11,6 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-// 浏览器兼容提示
-(function (w) {
-    if (!("WebSocket" in w && 2 === w.WebSocket.CLOSING)) {
-        document.body.innerHTML = '<div class="version-debug">您使用的浏览器已经<strong>过时</strong>，建议使用最新版本的谷歌浏览器。<a target="_blank" href="https://www.google.cn/chrome" class="layui-btn layui-btn-primary">立即下载</a></div>';
-    }
-}(window));
-
 // Layui & jQuery
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
@@ -42,7 +35,6 @@ require.config({
         'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
         'ckeditor': ['plugs/ckeditor/ckeditor'],
-        'plupload': ['plugs/plupload/plupload.full.min'],
         'websocket': ['plugs/socket/websocket'],
         'pcasunzips': ['plugs/jquery/pcasunzips'],
         'jquery.ztree': ['plugs/ztree/ztree.all.min'],
@@ -66,7 +58,7 @@ $(function () {
     /*! 消息组件实例 */
     $.msg = new function (that) {
         that = this;
-        this.indexs = [];
+        this.idx = [];
         this.shade = [0.02, '#000'];
         // 关闭消息框
         this.close = function (index) {
