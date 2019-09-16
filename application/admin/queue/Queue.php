@@ -34,5 +34,5 @@ abstract class Queue
         return PATH_SEPARATOR === ';';
     }
 
-    abstract function execute(Input $input, Output $output, array $data);
+    abstract function execute(Input $input, Output $output, array $data = []);
 }
