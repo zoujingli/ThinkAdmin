@@ -50,6 +50,7 @@ class Crypt extends BasicWeChat
      * 登录凭证校验
      * @param string $code 登录时获取的 code
      * @return array
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function session($code)
     {
@@ -67,6 +68,7 @@ class Crypt extends BasicWeChat
      * @return array
      * @throws InvalidDecryptException
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function userInfo($code, $iv, $encryptedData)
     {
@@ -76,8 +78,28 @@ class Crypt extends BasicWeChat
         }
         $userinfo = $this->decode($iv, $result['session_key'], $encryptedData);
         if (empty($userinfo)) {
-            throw  new InvalidDecryptException('用户信息解析失败', 403);
+            throw new InvalidDecryptException('用户信息解析失败', 403);
         }
         return array_merge($result, $userinfo);
+    }
+
+    /**
+     * 用户支付完成后，获取该用户的 UnionId
+     * @param string $openid 支付用户唯一标识
+     * @param null|string $transaction_id 微信支付订单号
+     * @param null|string $mch_id 微信支付分配的商户号，和商户订单号配合使用
+     * @param null|string $out_trade_no 微信支付商户订单号，和商户号配合使用
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function getPaidUnionId($openid, $transaction_id = null, $mch_id = null, $out_trade_no = null)
+    {
+        $url = "https://api.weixin.qq.com/wxa/getpaidunionid?access_token=ACCESS_TOKEN&openid={$openid}";
+        if (is_null($mch_id)) $url .= "&mch_id={$mch_id}";
+        if (is_null($out_trade_no)) $url .= "&out_trade_no={$out_trade_no}";
+        if (is_null($transaction_id)) $url .= "&transaction_id={$transaction_id}";
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->callGetApi($url);
     }
 }

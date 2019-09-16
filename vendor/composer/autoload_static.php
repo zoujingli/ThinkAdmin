@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit45a3f05918f1aefa496038363a905f7d
+class ComposerStaticInit30c23152ab1f46cbdb2c99acd02893eb
 {
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
@@ -254,10 +254,17 @@ class ComposerStaticInit45a3f05918f1aefa496038363a905f7d
         'WeMini\\Basic' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Basic.php',
         'WeMini\\Code' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Code.php',
         'WeMini\\Crypt' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Crypt.php',
+        'WeMini\\Delivery' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Delivery.php',
         'WeMini\\Domain' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Domain.php',
+        'WeMini\\Image' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Image.php',
+        'WeMini\\Logistics' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Logistics.php',
+        'WeMini\\Message' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Message.php',
+        'WeMini\\Ocr' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Ocr.php',
         'WeMini\\Plugs' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Plugs.php',
         'WeMini\\Poi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Poi.php',
         'WeMini\\Qrcode' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Qrcode.php',
+        'WeMini\\Security' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Security.php',
+        'WeMini\\Soter' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Soter.php',
         'WeMini\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Template.php',
         'WeMini\\Tester' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Tester.php',
         'WeMini\\Total' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Total.php',
@@ -314,9 +321,9 @@ class ComposerStaticInit45a3f05918f1aefa496038363a905f7d
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit45a3f05918f1aefa496038363a905f7d::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit45a3f05918f1aefa496038363a905f7d::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit45a3f05918f1aefa496038363a905f7d::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit30c23152ab1f46cbdb2c99acd02893eb::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit30c23152ab1f46cbdb2c99acd02893eb::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit30c23152ab1f46cbdb2c99acd02893eb::$classMap;
 
         }, null, ClassLoader::class);
     }

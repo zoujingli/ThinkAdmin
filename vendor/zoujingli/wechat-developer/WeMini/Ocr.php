@@ -17,96 +17,94 @@ namespace WeMini;
 use WeChat\Contracts\BasicWeChat;
 
 /**
- * 微信小程序插件管理
- * Class Plugs
+ * 小程序ORC服务
+ * Class Ocr
  * @package WeMini
  */
-class Plugs extends BasicWeChat
+class Ocr extends BasicWeChat
 {
     /**
-     * 1.申请使用插件
-     * @param string $plugin_appid 插件appid
-     * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     */
-    public function apply($plugin_appid)
-    {
-        $url = 'https://api.weixin.qq.com/wxa/plugin?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->callPostApi($url, ['action' => 'apply', 'plugin_appid' => $plugin_appid], true);
-    }
-
-    /**
-     * 2.查询已添加的插件
-     * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     */
-    public function getList()
-    {
-        $url = 'https://api.weixin.qq.com/wxa/plugin?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->callPostApi($url, ['action' => 'list'], true);
-    }
-
-    /**
-     * 3.删除已添加的插件
-     * @param string $plugin_appid 插件appid
-     * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     */
-    public function unbind($plugin_appid)
-    {
-        $url = 'https://api.weixin.qq.com/wxa/plugin?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->callPostApi($url, ['action' => 'unbind', 'plugin_appid' => $plugin_appid], true);
-    }
-
-    /**
-     * 获取当前所有插件使用方
-     * 修改插件使用申请的状态
+     * 本接口提供基于小程序的银行卡 OCR 识别
      * @param array $data
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function devplugin($data)
+    public function bankcard($data)
     {
-        $url = 'https://api.weixin.qq.com/wxa/devplugin?access_token=ACCESS_TOKEN';
+        $url = 'https://api.weixin.qq.com/cv/ocr/bankcard?access_token=ACCESS_TOCKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
     /**
-     * 4.获取当前所有插件使用方（供插件开发者调用）
-     * @param integer $page 拉取第page页的数据
-     * @param integer $num 表示每页num条记录
+     * 本接口提供基于小程序的营业执照 OCR 识别
+     * @param array $data
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function devApplyList($page = 1, $num = 10)
+    public function businessLicense($data)
     {
-        $url = 'https://api.weixin.qq.com/wxa/plugin?access_token=ACCESS_TOKEN';
+        $url = 'https://api.weixin.qq.com/cv/ocr/bizlicense?access_token=ACCESS_TOCKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        $data = ['action' => 'dev_apply_list', 'page' => $page, 'num' => $num];
         return $this->callPostApi($url, $data, true);
     }
 
     /**
-     * 5.修改插件使用申请的状态（供插件开发者调用）
-     * @param string $action dev_agree：同意申请；dev_refuse：拒绝申请；dev_delete：删除已拒绝的申请者
+     * 本接口提供基于小程序的驾驶证 OCR 识别
+     * @param array $data
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function devAgree($action = 'dev_agree')
+    public function driverLicense($data)
     {
-        $url = 'https://api.weixin.qq.com/wxa/plugin?access_token=ACCESS_TOKEN';
+        $url = 'https://api.weixin.qq.com/cv/ocr/drivinglicense?access_token=ACCESS_TOCKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->callPostApi($url, ['action' => $action], true);
+        return $this->callPostApi($url, $data, true);
+    }
+
+    /**
+     * 本接口提供基于小程序的身份证 OCR 识别
+     * @param array $data
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function idcard($data)
+    {
+        $url = 'https://api.weixin.qq.com/cv/ocr/idcard?access_token=ACCESS_TOCKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->callPostApi($url, $data, true);
+    }
+
+    /**
+     * 本接口提供基于小程序的通用印刷体 OCR 识别
+     * @param array $data
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function printedText($data)
+    {
+        $url = 'https://api.weixin.qq.com/cv/ocr/comm?access_token=ACCESS_TOCKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->callPostApi($url, $data, true);
+    }
+
+    /**
+     * 本接口提供基于小程序的行驶证 OCR 识别
+     * @param array $data
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function vehicleLicense($data)
+    {
+        $url = 'https://api.weixin.qq.com/cv/ocr/driving?access_token=ACCESS_TOCKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->callPostApi($url, $data, true);
     }
 
 }
