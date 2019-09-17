@@ -45,7 +45,7 @@ class WechatQueue extends Queue
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function execute(Input $input, Output $output, array $data)
+    public function execute(Input $input, Output $output, array $data = [])
     {
         $appid = WechatService::getAppid();
         $wechat = WechatService::WeChatUser();
