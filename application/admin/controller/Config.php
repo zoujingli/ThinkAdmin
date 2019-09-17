@@ -17,6 +17,7 @@ namespace app\admin\controller;
 
 use library\Controller;
 use think\exception\HttpResponseException;
+use think\facade\Request;
 
 /**
  * 系统参数配置
@@ -61,24 +62,35 @@ class Config extends Controller
      * 系统参数配置
      * @auth true
      * @menu true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function info()
     {
-        $this->title = '系统参数配置';
-        $this->applyCsrfToken('save');
-        $this->fetch();
+        $this->applyCsrfToken();
+        if (Request::isGet()) {
+            $this->title = '系统参数配置';
+            $this->fetch();
+        }
+        $post = $this->request->post();
+        foreach ($post as $key => $value) sysconf($key, $value);
+        $this->success('系统参数配置成功！');
     }
 
     /**
-     * 保存参数到服务器
+     * 文件存储引擎
      * @auth true
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function save()
+    public function file()
     {
-        $this->applyCsrfToken('save');
-        $post = $this->request->post();
+        $this->applyCsrfToken();
+        if (Request::isGet()) {
+            $this->type = input('type', 'local');
+            $this->fetch("storage-{$this->type}");
+        }
+        $post = Request::post();
         if (isset($post['storage_type']) && isset($post['storage_local_exts'])) {
             $exts = array_unique(explode(',', strtolower($post['storage_local_exts'])));
             sort($exts);
@@ -101,7 +113,7 @@ class Config extends Controller
                 $this->error("阿里云OSS存储配置失效，{$e->getMessage()}");
             }
         } else {
-            $this->success('参数配置成功！');
+            $this->success('文件存储配置成功！');
         }
     }
 

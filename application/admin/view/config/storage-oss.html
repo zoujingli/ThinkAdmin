@@ -1,8 +1,8 @@
-<form onsubmit="return false;" data-auto="true" action="{:url('save')}" method="post" class='layui-form layui-card' autocomplete="off">
+<form onsubmit="return false;" data-auto="true" action="{:url()}" method="post" class='layui-form layui-card' autocomplete="off">
     <div class="layui-card-body">
         <div class="padding-right-40">
             <div class="color-blue padding-left-40 padding-bottom-20">
-                文件将上传到阿里云OSS空间，需要配置OSS公开访问及跨域策略（目前已实现自动创建空间及配置访问策略）。
+                文件将上传到阿里云OSS空间，需要配置OSS公开访问及跨域策略（目前已实现自动创建空间及配置访问策略）！
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">AllowExts<br><span class="nowrap color-desc">允许类型</span></label>
@@ -73,7 +73,9 @@
             <div class="layui-form-item text-center">
                 <input type="hidden" name="storage_type" value="oss">
                 <button class="layui-btn" type="submit">保存配置</button>
+                <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消修改吗？" data-close>取消修改</button>
             </div>
         </div>
     </div>
+    <script>form.render()</script>
 </form>

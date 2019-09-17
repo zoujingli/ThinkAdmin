@@ -2,8 +2,8 @@
 
 {block name="button"}
 
-{if auth("service/config/edit")}
-<button data-modal="{:url('edit')}" class='layui-btn layui-btn-sm layui-btn-primary'>参数配置</button>
+{if auth("edit")}
+<button data-modal="{:url('edit')}" class='layui-btn layui-btn-sm layui-btn-primary'>配置平台参数</button>
 {/if}
 
 {/block}
@@ -11,7 +11,7 @@
 {block name="content"}
 <div class="relative">
 
-    <div class="think-box-shadow border-0 margin-bottom-15">
+    <div class="think-box-shadow border-0 margin-bottom-20">
         强烈建议安装 YAR 扩展来实现接口通信，SOAP 不能正常显示接口的异常信息
     </div>
 
@@ -19,7 +19,8 @@
         <div class="layui-row layui-col-space18">
             <div class="layui-col-md6">
                 <div class="layui-form-item">
-                    <p class="color-green font-w7">开放平台服务 AppID</p>
+                    <span class="color-green font-w7">开放平台服务</span>
+                    <span class="color-desc margin-left-5">AppID</span>
                     <label class="relative block">
                         <input disabled class="layui-input layui-bg-gray" value="{:sysconf('component_appid')}">
                         <a data-copy="{:sysconf('component_appid')}" class="fa fa-copy right-btn"></a>
@@ -27,7 +28,8 @@
                     <p class="help-block">开放平台服务 AppID，需要在微信开放平台获取</p>
                 </div>
                 <div class="layui-form-item">
-                    <p class="color-green font-w7">开放平台服务 AppSecret</p>
+                    <span class="color-green font-w7">开放平台服务</span>
+                    <span class="color-desc margin-left-5">AppSecret</span>
                     <label class="relative block">
                         <input disabled class="layui-input layui-bg-gray" value="{:sysconf('component_appsecret')}">
                         <a data-copy="{:sysconf('component_appsecret')}" class="fa fa-copy right-btn"></a>
@@ -35,7 +37,8 @@
                     <p class="help-block">开放平台服务 AppSecret，需要在微信开放平台获取</p>
                 </div>
                 <div class="layui-form-item">
-                    <p class="color-green font-w7">开放平台消息校验 Token</p>
+                    <span class="color-green font-w7">开放平台消息校验</span>
+                    <span class="color-desc margin-left-5">Token</span>
                     <label class="relative block">
                         <input disabled class="layui-input layui-bg-gray" value="{:sysconf('component_token')}">
                         <a data-copy="{:sysconf('component_token')}" class="fa fa-copy right-btn"></a>
@@ -43,7 +46,8 @@
                     <p class="help-block">开发者在代替微信接收到消息时，用此 Token 来校验消息</p>
                 </div>
                 <div class="layui-form-item">
-                    <p class="color-green font-w7">开放平台消息加解密 AesKey</p>
+                    <span class="color-green font-w7">开放平台消息加解密</span>
+                    <span class="color-desc margin-left-5">AesKey</span>
                     <label class="relative block">
                         <input disabled class="layui-input layui-bg-gray" value="{:sysconf('component_encodingaeskey')}">
                         <a data-copy="{:sysconf('component_encodingaeskey')}" class="fa fa-copy right-btn"></a>
@@ -62,7 +66,7 @@
                     <p class="help-block">从本域名跳转到登录授权页才可以完成登录授权，无需填写域名协议前缀</p>
                 </div>
                 <div class="layui-form-item">
-                    <p class="color-green font-w7">授权事件接收 URL</p>
+                    <span class="color-green font-w7">授权事件接收地址</span>
                     <label class="relative block">
                         <input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.push/ticket','',false,true)}">
                         <a data-copy="{:url('@service/api.push/ticket','',false,true)}" class="fa fa-copy right-btn"></a>
@@ -70,7 +74,7 @@
                     <p class="help-block">用于接收取消授权通知、授权成功通知、授权更新通知、接收 TICKET 凭据</p>
                 </div>
                 <div class="layui-form-item">
-                    <p class="color-green font-w7">微信消息与事件接收 URL</p>
+                    <span class="color-green font-w7">微信消息与事件接收</span>
                     <label class="relative block">
                         <input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.push/notify/\$APPID\$','',false,true)}">
                         <a data-copy="{:url('@service/api.push/notify/\$APPID\$','',false,true)}" class="fa fa-copy right-btn"></a>
@@ -90,7 +94,6 @@
             </div>
         </div>
     </div>
-
 </div>
 {/block}
 
