@@ -44,7 +44,7 @@ class Plugs extends Controller
      */
     public function check()
     {
-        $diff1 = explode(',', strtolower(input('exts')));
+        $diff1 = explode(',', strtolower(input('exts', '')));
         $diff2 = explode(',', strtolower(sysconf('storage_local_exts')));
         $exts = array_intersect($diff1, $diff2);
         $this->success('获取文件上传参数', [

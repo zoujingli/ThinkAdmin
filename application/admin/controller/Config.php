@@ -71,10 +71,12 @@ class Config extends Controller
         if (Request::isGet()) {
             $this->title = '系统参数配置';
             $this->fetch();
+        } else {
+            foreach (Request::post() as $key => $value) {
+                sysconf($key, $value);
+            }
+            $this->success('系统参数配置成功！');
         }
-        $post = $this->request->post();
-        foreach ($post as $key => $value) sysconf($key, $value);
-        $this->success('系统参数配置成功！');
     }
 
     /**
