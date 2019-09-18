@@ -342,17 +342,18 @@ CREATE TABLE `store_member_address`  (
 -- Table structure for store_member_sms_history
 -- ----------------------------
 DROP TABLE IF EXISTS `store_member_sms_history`;
-CREATE TABLE `store_member_sms_history`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `mid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '会员ID',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '目标手机',
-  `content` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '短信内容',
-  `result` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '返回结果',
+CREATE TABLE `store_member_sms_history` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `mid` bigint(20) unsigned DEFAULT '0' COMMENT '会员ID',
+  `phone` varchar(20) DEFAULT '' COMMENT '目标手机',
+  `content` varchar(512) DEFAULT '' COMMENT '短信内容',
+  `region` varchar(100) DEFAULT '' COMMENT '区域编码',
+  `result` varchar(100) DEFAULT '' COMMENT '返回结果',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_member_sms_history_phone`(`phone`) USING BTREE,
-  INDEX `index_store_member_sms_history_mid`(`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员-短信';
+  KEY `index_store_member_sms_history_phone` (`phone`) USING BTREE,
+  KEY `index_store_member_sms_history_mid` (`mid`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员-短信';
 
 -- ----------------------------
 -- Table structure for store_order
