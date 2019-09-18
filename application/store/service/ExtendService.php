@@ -22,17 +22,20 @@ use think\Db;
  * 短信业务扩展服务
  * Class ExtendService
  * @package app\store\service
- * =========================
+ * =================================
+ * =================================
  * 发送国内短信需要给产品码 [productid]
  * --- 验证短信的产品码为：676767
  * --- 营销短信的产品码为：333333
- * -------------------------
+ * ---------------------------------
+ * ---------------------------------
  * 发送国际短信需要给国家代码 [code]
- * --- 国家代码见 getRegionMap
- * -------------------------
+ * --- 国家代码见 getGlobeRegionMap
+ * ---------------------------------
+ * ---------------------------------
  * 需要开通短信账号请联系客服
  * --- 客服电话：18122377655
- * =========================
+ * =================================
  */
 class ExtendService
 {
@@ -60,8 +63,7 @@ class ExtendService
         ];
         $result = Http::post('http://www.ztsms.cn/sendNSms.do', $data);
         list($code, $msg) = explode(',', $result . ',');
-        $insert = ['mid' => $mid, 'phone' => $phone, 'content' => $content, 'result' => $result];
-        Db::name('StoreMemberSmsHistory')->insert($insert);
+        Db::name('StoreMemberSmsHistory')->insert(['mid' => $mid, 'phone' => $phone, 'content' => $content, 'result' => $result]);
         return intval($code) === 1;
     }
 
@@ -95,9 +97,15 @@ class ExtendService
      * 错误消息处理
      * @var array
      */
-    private static $messageMap2 = [
-        2  => '用户账号为空', 3 => '用户账号错误', 4 => '授权密码为空', 5 => '授权密码错误',
-        6  => '当前时间为空', 7 => '当前时间错误', 8 => '用户类型错误', 9 => '用户鉴权错误',
+    private static $globeMessageMap = [
+        2  => '用户账号为空',
+        3  => '用户账号错误',
+        4  => '授权密码为空',
+        5  => '授权密码错误',
+        6  => '当前时间为空',
+        7  => '当前时间错误',
+        8  => '用户类型错误',
+        9  => '用户鉴权错误',
         10 => '请求IP已被列入黑名单',
     ];
 
@@ -111,7 +119,7 @@ class ExtendService
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function sendSms2($mid, $code, $mobile, $content)
+    public static function sendGlobeSms($mid, $code, $mobile, $content)
     {
         $tkey = date("YmdHis");
         $data = [
@@ -135,7 +143,7 @@ class ExtendService
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function querySmsBalance2()
+    public static function queryGlobeSmsBalance()
     {
         $tkey = date("YmdHis");
         $data = [
@@ -145,7 +153,7 @@ class ExtendService
         $result = Http::post('http://intl.zthysms.com/intBalance.do', $data);
 
         if (!is_numeric($result) && ($state = intval($result)) && isset(self::$messageMap2[$state])) {
-            return ['code' => 0, 'num' => 0, 'msg' => self::$messageMap2[$state]];
+            return ['code' => 0, 'num' => 0, 'msg' => self::$globeMessageMap[$state]];
         } else {
             return ['code' => 1, 'num' => $result, 'msg' => '查询成功'];
         }
@@ -155,7 +163,7 @@ class ExtendService
      * 获取国际地域编号
      * @return array
      */
-    public static function getRegionMap()
+    public static function getGlobeRegionMap()
     {
         return [
             ['title' => '中国 台湾', 'english' => 'Taiwan', 'code' => 886],
