@@ -151,8 +151,7 @@ class ExtendService
             'password' => md5(md5(sysconf('sms_zt_password2')) . $tkey),
         ];
         $result = Http::post('http://intl.zthysms.com/intBalance.do', $data);
-
-        if (!is_numeric($result) && ($state = intval($result)) && isset(self::$messageMap2[$state])) {
+        if (!is_numeric($result) && ($state = intval($result)) && isset(self::$globeMessageMap[$state])) {
             return ['code' => 0, 'num' => 0, 'msg' => self::$globeMessageMap[$state]];
         } else {
             return ['code' => 1, 'num' => $result, 'msg' => '查询成功'];
