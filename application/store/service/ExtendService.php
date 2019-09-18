@@ -41,7 +41,7 @@ class ExtendService
 {
 
     /**
-     * 发送短信验证码
+     * 发送国内短信验证码
      * @param string $mid 会员ID
      * @param string $phone 手机号
      * @param string $content 短信内容
@@ -50,7 +50,7 @@ class ExtendService
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function sendSms($mid, $phone, $content, $productid = '676767')
+    public static function sendChinaSms($mid, $phone, $content, $productid = '676767')
     {
         $tkey = date("YmdHis");
         $data = [
@@ -68,12 +68,12 @@ class ExtendService
     }
 
     /**
-     * 查询短信余额
+     * 查询国内短信余额
      * @return array
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function querySmsBalance()
+    public static function queryChinaSmsBalance()
     {
         $tkey = date("YmdHis");
         $data = [
