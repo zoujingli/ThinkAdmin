@@ -35,7 +35,7 @@ class State extends Task
     }
 
     /**
-     * 指令执行
+     * 指令执行状态
      * @param Input $input
      * @param Output $output
      */
