@@ -40,11 +40,11 @@ CREATE TABLE `company_user`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `index_company_user_nickname`(`nickname`) USING BTREE,
-  INDEX `index_company_user_svn_username`(`svn_username`) USING BTREE,
-  INDEX `index_company_user_deleted`(`is_deleted`) USING BTREE,
-  INDEX `index_company_user_status`(`status`) USING BTREE,
-  INDEX `index_company_user_type`(`user_type`) USING BTREE
+  UNIQUE INDEX `idx_company_user_nickname`(`nickname`) USING BTREE,
+  INDEX `idx_company_user_svn_username`(`svn_username`) USING BTREE,
+  INDEX `idx_company_user_deleted`(`is_deleted`) USING BTREE,
+  INDEX `idx_company_user_status`(`status`) USING BTREE,
+  INDEX `idx_company_user_type`(`user_type`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '企业-员工信息';
 
 -- ----------------------------
@@ -61,8 +61,8 @@ CREATE TABLE `company_user_auth`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_company_user_auth_status`(`status`) USING BTREE,
-  INDEX `index_company_user_auth_deleted`(`is_deleted`) USING BTREE
+  INDEX `idx_company_user_auth_status`(`status`) USING BTREE,
+  INDEX `idx_company_user_auth_deleted`(`is_deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '企业-仓库权限';
 
 -- ----------------------------
@@ -80,9 +80,9 @@ CREATE TABLE `company_user_clock`  (
   `start_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `end_at` datetime NULL DEFAULT NULL COMMENT '结束时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_company_user_clock_date`(`date`) USING BTREE,
-  INDEX `index_company_user_clock_uid`(`uid`) USING BTREE,
-  INDEX `index_company_user_clock_name`(`name`) USING BTREE
+  INDEX `idx_company_user_clock_date`(`date`) USING BTREE,
+  INDEX `idx_company_user_clock_uid`(`uid`) USING BTREE,
+  INDEX `idx_company_user_clock_name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '企业-打卡记录';
 
 -- ----------------------------
@@ -211,7 +211,7 @@ CREATE TABLE `store_express_template`  (
   `is_default` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '默认规则',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_express_template_is_default`(`is_default`) USING BTREE
+  INDEX `idx_store_express_template_is_default`(`is_default`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-快递-模板';
 
 -- ----------------------------
@@ -236,9 +236,9 @@ CREATE TABLE `store_goods`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_goods_status`(`status`) USING BTREE,
-  INDEX `index_store_goods_cate_id`(`cate_id`) USING BTREE,
-  INDEX `index_store_goods_is_deleted`(`is_deleted`) USING BTREE
+  INDEX `idx_store_goods_status`(`status`) USING BTREE,
+  INDEX `idx_store_goods_cate_id`(`cate_id`) USING BTREE,
+  INDEX `idx_store_goods_is_deleted`(`is_deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品-记录';
 
 -- ----------------------------
@@ -255,8 +255,8 @@ CREATE TABLE `store_goods_cate`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_goods_cate_is_deleted`(`is_deleted`) USING BTREE,
-  INDEX `index_store_goods_cate_status`(`status`) USING BTREE
+  INDEX `idx_store_goods_cate_is_deleted`(`is_deleted`) USING BTREE,
+  INDEX `idx_store_goods_cate_status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品-分类';
 
 -- ----------------------------
@@ -277,10 +277,10 @@ CREATE TABLE `store_goods_list`  (
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '商品状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_goods_list_id`(`goods_id`) USING BTREE,
-  INDEX `index_store_goods_list_spec`(`goods_spec`) USING BTREE,
-  INDEX `index_store_goods_list_status`(`status`) USING BTREE,
-  INDEX `index_store_goods_list_sku`(`sku`) USING BTREE
+  INDEX `idx_store_goods_list_id`(`goods_id`) USING BTREE,
+  INDEX `idx_store_goods_list_spec`(`goods_spec`) USING BTREE,
+  INDEX `idx_store_goods_list_status`(`status`) USING BTREE,
+  INDEX `idx_store_goods_list_sku`(`sku`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品-详情';
 
 -- ----------------------------
@@ -294,8 +294,8 @@ CREATE TABLE `store_goods_stock`  (
   `number_stock` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '商品库存',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_goods_stock_gid`(`goods_id`) USING BTREE,
-  INDEX `index_store_goods_stock_spec`(`goods_spec`(191)) USING BTREE
+  INDEX `idx_store_goods_stock_gid`(`goods_id`) USING BTREE,
+  INDEX `idx_store_goods_stock_spec`(`goods_spec`(191)) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品-入库';
 
 -- ----------------------------
@@ -313,9 +313,9 @@ CREATE TABLE `store_member`  (
   `vip_date` date NULL DEFAULT NULL COMMENT '保级日期',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_member_openid`(`openid`) USING BTREE,
-  INDEX `index_store_member_phone`(`phone`) USING BTREE,
-  INDEX `index_store_member_vip_level`(`vip_level`) USING BTREE
+  INDEX `idx_store_member_openid`(`openid`) USING BTREE,
+  INDEX `idx_store_member_phone`(`phone`) USING BTREE,
+  INDEX `idx_store_member_vip_level`(`vip_level`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员-记录';
 
 -- ----------------------------
@@ -334,8 +334,8 @@ CREATE TABLE `store_member_address`  (
   `is_default` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '默认地址',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_member_address_mid`(`mid`) USING BTREE,
-  INDEX `index_store_member_address_is_default`(`is_default`) USING BTREE
+  INDEX `idx_store_member_address_mid`(`mid`) USING BTREE,
+  INDEX `idx_store_member_address_is_default`(`is_default`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '会员-地址';
 
 -- ----------------------------
@@ -351,8 +351,8 @@ CREATE TABLE `store_member_sms_history` (
   `result` varchar(100) DEFAULT '' COMMENT '返回结果',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `index_store_member_sms_history_phone` (`phone`) USING BTREE,
-  KEY `index_store_member_sms_history_mid` (`mid`) USING BTREE
+  KEY `idx_store_member_sms_history_phone` (`phone`) USING BTREE,
+  KEY `idx_store_member_sms_history_mid` (`mid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员-短信';
 
 -- ----------------------------
@@ -397,13 +397,13 @@ CREATE TABLE `store_order`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_groups_order_mid`(`mid`) USING BTREE,
-  INDEX `index_store_groups_order_order_no`(`order_no`) USING BTREE,
-  INDEX `index_store_groups_order_pay_state`(`pay_state`) USING BTREE,
-  INDEX `index_store_groups_order_cancel_state`(`cancel_state`) USING BTREE,
-  INDEX `index_store_groups_order_refund_state`(`refund_state`) USING BTREE,
-  INDEX `index_store_groups_order_status`(`status`) USING BTREE,
-  INDEX `index_store_groups_order_pay_no`(`pay_no`) USING BTREE
+  INDEX `idx_store_groups_order_mid`(`mid`) USING BTREE,
+  INDEX `idx_store_groups_order_order_no`(`order_no`) USING BTREE,
+  INDEX `idx_store_groups_order_pay_state`(`pay_state`) USING BTREE,
+  INDEX `idx_store_groups_order_cancel_state`(`cancel_state`) USING BTREE,
+  INDEX `idx_store_groups_order_refund_state`(`refund_state`) USING BTREE,
+  INDEX `idx_store_groups_order_status`(`status`) USING BTREE,
+  INDEX `idx_store_groups_order_pay_no`(`pay_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单-记录';
 
 -- ----------------------------
@@ -429,8 +429,8 @@ CREATE TABLE `store_order_list`  (
   `number_express` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '快递数量',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_store_goods_list_id`(`goods_id`) USING BTREE,
-  INDEX `index_store_goods_list_spec`(`goods_spec`) USING BTREE
+  INDEX `idx_store_goods_list_id`(`goods_id`) USING BTREE,
+  INDEX `idx_store_goods_list_spec`(`goods_spec`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单-详情';
 
 -- ----------------------------
@@ -445,8 +445,8 @@ CREATE TABLE `system_auth`  (
   `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注说明',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_auth_status`(`status`) USING BTREE,
-  INDEX `index_system_auth_title`(`title`) USING BTREE
+  INDEX `idx_system_auth_status`(`status`) USING BTREE,
+  INDEX `idx_system_auth_title`(`title`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-权限';
 
 -- ----------------------------
@@ -458,8 +458,8 @@ CREATE TABLE `system_auth_node`  (
   `auth` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '角色',
   `node` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '节点',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_auth_auth`(`auth`) USING BTREE,
-  INDEX `index_system_auth_node`(`node`(191)) USING BTREE
+  INDEX `idx_system_auth_auth`(`auth`) USING BTREE,
+  INDEX `idx_system_auth_node`(`node`(191)) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-权限-授权';
 
 -- ----------------------------
@@ -471,7 +471,7 @@ CREATE TABLE `system_config`  (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置名',
   `value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_config_name`(`name`) USING BTREE
+  INDEX `idx_system_config_name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-配置';
 
 -- ----------------------------
@@ -542,7 +542,7 @@ CREATE TABLE `system_data`  (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '配置名',
   `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_data_name`(`name`) USING BTREE
+  INDEX `idx_system_data_name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据';
 
 -- ----------------------------
@@ -582,8 +582,8 @@ CREATE TABLE `system_menu`  (
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '状态(0:禁用,1:启用)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_menu_node`(`node`(191)) USING BTREE,
-  INDEX `index_system_menu_status`(`status`) USING BTREE
+  INDEX `idx_system_menu_node`(`node`(191)) USING BTREE,
+  INDEX `idx_system_menu_status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单';
 
 -- ----------------------------
@@ -650,10 +650,10 @@ CREATE TABLE `system_queue`  (
   `end_at` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '结束时间',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_queue_double`(`double`) USING BTREE,
-  INDEX `index_system_queue_time`(`time`) USING BTREE,
-  INDEX `index_system_queue_title`(`title`) USING BTREE,
-  INDEX `index_system_queue_create_at`(`create_at`) USING BTREE
+  INDEX `idx_system_queue_double`(`double`) USING BTREE,
+  INDEX `idx_system_queue_time`(`time`) USING BTREE,
+  INDEX `idx_system_queue_title`(`title`) USING BTREE,
+  INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务';
 
 -- ----------------------------
@@ -677,9 +677,9 @@ CREATE TABLE `system_user`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_system_user_username`(`username`) USING BTREE,
-  INDEX `index_system_user_status`(`status`) USING BTREE,
-  INDEX `index_system_user_deleted`(`is_deleted`) USING BTREE
+  INDEX `idx_system_user_username`(`username`) USING BTREE,
+  INDEX `idx_system_user_status`(`status`) USING BTREE,
+  INDEX `idx_system_user_deleted`(`is_deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 10001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户';
 
 -- ----------------------------
@@ -714,10 +714,10 @@ CREATE TABLE `wechat_fans`  (
   `qr_scene_str` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '二维码场景内容',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_fans_openid`(`openid`) USING BTREE,
-  INDEX `index_wechat_fans_unionid`(`unionid`) USING BTREE,
-  INDEX `index_wechat_fans_is_back`(`is_black`) USING BTREE,
-  INDEX `index_wechat_fans_subscribe`(`subscribe`) USING BTREE
+  INDEX `idx_wechat_fans_openid`(`openid`) USING BTREE,
+  INDEX `idx_wechat_fans_unionid`(`unionid`) USING BTREE,
+  INDEX `idx_wechat_fans_is_back`(`is_black`) USING BTREE,
+  INDEX `idx_wechat_fans_subscribe`(`subscribe`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-粉丝';
 
 -- ----------------------------
@@ -730,8 +730,8 @@ CREATE TABLE `wechat_fans_tags`  (
   `name` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签名称',
   `count` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '总数',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
-  INDEX `index_wechat_fans_tags_id`(`id`) USING BTREE,
-  INDEX `index_wechat_fans_tags_appid`(`appid`) USING BTREE
+  INDEX `idx_wechat_fans_tags_id`(`id`) USING BTREE,
+  INDEX `idx_wechat_fans_tags_appid`(`appid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-粉丝-标签';
 
 -- ----------------------------
@@ -759,9 +759,9 @@ CREATE TABLE `wechat_keys`  (
   `create_by` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '创建人',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_keys_appid`(`appid`) USING BTREE,
-  INDEX `index_wechat_keys_type`(`type`) USING BTREE,
-  INDEX `index_wechat_keys_keys`(`keys`) USING BTREE
+  INDEX `idx_wechat_keys_appid`(`appid`) USING BTREE,
+  INDEX `idx_wechat_keys_type`(`type`) USING BTREE,
+  INDEX `idx_wechat_keys_keys`(`keys`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-关键字';
 
 -- ----------------------------
@@ -778,10 +778,10 @@ CREATE TABLE `wechat_media`  (
   `media_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '远程图片链接',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_media_appid`(`appid`) USING BTREE,
-  INDEX `index_wechat_media_md5`(`md5`) USING BTREE,
-  INDEX `index_wechat_media_type`(`type`) USING BTREE,
-  INDEX `index_wechat_media_media_id`(`media_id`) USING BTREE
+  INDEX `idx_wechat_media_appid`(`appid`) USING BTREE,
+  INDEX `idx_wechat_media_md5`(`md5`) USING BTREE,
+  INDEX `idx_wechat_media_type`(`type`) USING BTREE,
+  INDEX `idx_wechat_media_media_id`(`media_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-素材';
 
 -- ----------------------------
@@ -797,8 +797,8 @@ CREATE TABLE `wechat_news`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `create_by` bigint(20) NULL DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_news_artcle_id`(`article_id`) USING BTREE,
-  INDEX `index_wechat_news_media_id`(`media_id`) USING BTREE
+  INDEX `idx_wechat_news_artcle_id`(`article_id`) USING BTREE,
+  INDEX `idx_wechat_news_media_id`(`media_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-图文';
 
 -- ----------------------------
@@ -851,9 +851,9 @@ CREATE TABLE `wechat_service_config`  (
   `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态(0未删除,1已删除)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `index_wechat_service_config_authorizer_appid`(`authorizer_appid`) USING BTREE,
-  INDEX `index_wechat_service_config_status`(`status`) USING BTREE,
-  INDEX `index_wechat_service_config_is_deleted`(`is_deleted`) USING BTREE
+  UNIQUE INDEX `idx_wechat_service_config_authorizer_appid`(`authorizer_appid`) USING BTREE,
+  INDEX `idx_wechat_service_config_status`(`status`) USING BTREE,
+  INDEX `idx_wechat_service_config_is_deleted`(`is_deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-授权';
 
 SET FOREIGN_KEY_CHECKS = 1;
