@@ -147,7 +147,7 @@ Middleware::add(function (Request $request, \Closure $next) {
     }
 });
 
-// 注册系统指令
+// 注册系统服务指令
 Console::addDefaultCommands([
     'app\admin\queue\task\Stop',
     'app\admin\queue\task\Work',
