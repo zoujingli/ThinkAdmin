@@ -38,7 +38,7 @@ class Config extends Controller
         $this->title = '商城参数配置';
         $this->applyCsrfToken('save');
         $this->query = ExtendService::queryChinaSmsBalance();
-        $this->query2 = ExtendService::querySmsBalance2();
+        $this->query2 = ExtendService::queryGlobeSmsBalance();
         $this->fetch();
     }
 
