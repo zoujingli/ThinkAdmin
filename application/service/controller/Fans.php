@@ -15,7 +15,6 @@
 
 namespace app\service\controller;
 
-use app\admin\service\QueueService;
 use app\service\queue\WechatQueue;
 use app\service\service\WechatService;
 use library\Controller;
