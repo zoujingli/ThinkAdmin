@@ -14,15 +14,15 @@
             <div class="layui-form-item" data-storage-type="qiniu">
                 <label class="layui-form-label label-required">Protocol<br><span class="nowrap color-desc">访问协议</span></label>
                 <div class="layui-input-block">
-                    <!--{foreach ['http','https','auto'] as $pro}-->
+                    {foreach ['http','https','auto'] as $pro}
                     <label class="think-radio">
-                        <!--{if sysconf('storage_qiniu_is_https') eq $pro}-->
+                        {if sysconf('storage_qiniu_is_https') eq $pro}
                         <input checked type="radio" name="storage_qiniu_is_https" value="{$pro}" lay-ignore> {$pro}
-                        <!--{else}-->
+                        {else}
                         <input type="radio" name="storage_qiniu_is_https" value="{$pro}" lay-ignore> {$pro}
-                        <!--{/if}-->
+                        {/if}
                     </label>
-                    <!--{/foreach}-->
+                    {/foreach}
                     <p class="help-block">七牛云存储访问协议（http、https、auto），其中 https 需要配置证书才能使用，auto 为相对协议自动根据域名切换http与https。</p>
                 </div>
             </div>
@@ -31,11 +31,11 @@
                 <div class="layui-input-block">
                     {foreach ['华东','华北','华南','北美'] as $area}
                     <label class="think-radio">
-                        <!--{if sysconf('storage_qiniu_region') eq $area}-->
+                        {if sysconf('storage_qiniu_region') eq $area}
                         <input checked type="radio" name="storage_qiniu_region" value="{$area}" lay-ignore>
-                        <!--{else}-->
+                        {else}
                         <input type="radio" name="storage_qiniu_region" value="{$area}" lay-ignore>
-                        <!--{/if}-->
+                        {/if}
                         {$area}
                     </label>
                     {/foreach}

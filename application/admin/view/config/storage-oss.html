@@ -14,15 +14,15 @@
             <div class="layui-form-item">
                 <label class="layui-form-label label-required">Protocol<br><span class="nowrap color-desc">访问协议</span></label>
                 <div class="layui-input-block">
-                    <!--{foreach ['http','https','auto'] as $pro}-->
+                    {foreach ['http','https','auto'] as $pro}
                     <label class="think-radio">
-                        <!--{if sysconf('storage_oss_is_https') eq $pro}-->
+                        {if sysconf('storage_oss_is_https') eq $pro}
                         <input checked type="radio" name="storage_oss_is_https" value="{$pro}" lay-ignore> {$pro}
-                        <!--{else}-->
+                        {else}
                         <input type="radio" name="storage_oss_is_https" value="{$pro}" lay-ignore> {$pro}
-                        <!--{/if}-->
+                        {/if}
                     </label>
-                    <!--{/foreach}-->
+                    {/foreach}
                     <p class="help-block">阿里云对象存储访问协议（http、https、auto），其中 https 需要配置证书才能使用，auto 为相对协议自动根据域名切换http与https。</p>
                 </div>
             </div>
@@ -38,11 +38,11 @@
                 <div class="layui-input-block">
                     <select required name="storage_oss_endpoint" class="layui-select" lay-search>
                         {foreach $ossPoints as $k=>$p}
-                        <!--{if sysconf('storage_oss_endpoint') eq $k}-->
+                        {if sysconf('storage_oss_endpoint') eq $k}
                         <option selected value="{$k}">{$p} <span class="font-s10 color-desc">({$k})</span></option>
-                        <!--{else}-->
+                        {else}
                         <option value="{$k}">{$p} <span class="font-s10 color-desc">({$k})</span></option>
-                        <!--{/if}-->
+                        {/if}
                         {/foreach}
                     </select>
                     <p class="help-block">请选择OSS数据中心访问节点，有效值如：oss-cn-shenzhen.aliyuncs.com</p>
