@@ -59,7 +59,7 @@ class Listen extends Task
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '2', 'start_at' => date('Y-m-d H:i:s')]);
                     $this->cmd = "{$this->bin} xtask:_work {$item['id']} -";
                     if ($this->isWin()) {
-                        $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin" . DIRECTORY_SEPARATOR . "process.exe {$this->cmd}";
+                        $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin" . DIRECTORY_SEPARATOR . "ThinkAdmin.exe {$this->cmd}";
                     }
                     if ($this->checkProcess()) {
                         $output->comment("处理任务的子进程已经存在 --> [{$item['id']}] {$item['title']}");

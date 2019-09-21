@@ -68,7 +68,7 @@ class Start extends Task
     private function setWinProcess()
     {
         if ($this->isWin()) {
-            $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin" . DIRECTORY_SEPARATOR . "process.exe {$this->bin} xtask:listen";
+            $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin" . DIRECTORY_SEPARATOR . "ThinkAdmin.exe {$this->bin} xtask:listen";
         }
     }
 }
