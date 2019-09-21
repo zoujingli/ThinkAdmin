@@ -3,7 +3,7 @@
 {block name="button"}
 
 {if auth("remove")}
-<button data-action='{:url("remove")}' data-confirm="确定要删除这些任务吗？" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除任务记录</button>
+<button data-action='{:url("remove")}' data-confirm="确定要批量删除任务吗？" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除任务</button>
 {/if}
 
 {if auth("processstart") && $iswin}
