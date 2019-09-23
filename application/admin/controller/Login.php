@@ -39,17 +39,12 @@ class Login extends Controller
     public function index()
     {
         if (Request::isGet()) {
-            // 登录状态检查
             if (NodeService::islogin()) {
-                // 已经登录，跳转到后面首页
                 $this->redirect('@admin');
             } else {
-                // 定义运行环境模式
                 $this->domain = Request::host(true);
                 $this->devmode = in_array($this->domain, ['127.0.0.1', 'localhost']) or stripos($this->domain, 'thinkadmin.top') <> false;
-                // 创建登录安全通道
                 if (!($this->loginskey = session('loginskey'))) session('loginskey', $this->loginskey = uniqid());
-                // 显示后台登录页面
                 $this->title = '系统登录';
                 $this->fetch();
             }
