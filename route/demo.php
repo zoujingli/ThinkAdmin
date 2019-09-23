@@ -13,10 +13,12 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
+use think\facade\Request;
 use think\facade\Route;
 
-/*  演示环境禁止操作路由绑定 */
-if (in_array(request()->rootDomain(), ['ctolog.com', 'thinkadmin.top'])) {
+/* 演示环境禁止操作路由绑定 */
+$domain = Request::host(true);
+if (in_array($domain, ['127.0.0.1', 'localhost']) or stripos($domain, 'thinkadmin.top') <> false) {
     Route::post('admin/user/pass', function () {
         return json(['code' => 0, 'info' => '演示环境禁止修改用户密码！']);
     });
