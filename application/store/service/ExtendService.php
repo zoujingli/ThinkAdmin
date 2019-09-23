@@ -59,7 +59,9 @@ class ExtendService
             'password' => md5(md5(sysconf('sms_zt_password')) . $tkey),
         ]);
         list($code, $msg) = explode(',', $result . ',');
-        Db::name('StoreMemberSmsHistory')->insert(['mid' => $mid, 'phone' => $phone, 'content' => $content, 'result' => $result]);
+        Db::name('StoreMemberSmsHistory')->insert([
+            'mid' => $mid, 'phone' => $phone, 'content' => $content, 'result' => $result
+        ]);
         return intval($code) === 1;
     }
 
