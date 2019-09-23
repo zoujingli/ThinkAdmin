@@ -43,7 +43,7 @@ class Login extends Controller
                 $this->redirect('@admin');
             } else {
                 $this->domain = Request::host(true);
-                $this->devmode = in_array($this->domain, ['127.0.0.1', 'localhost']) or stripos($this->domain, 'thinkadmin.top') <> false;
+                $this->devmode = in_array($this->domain, ['127.0.0.1', 'localhost']) or stripos($this->domain, 'thinkadmin.top') !== false;
                 if (!($this->loginskey = session('loginskey'))) session('loginskey', $this->loginskey = uniqid());
                 $this->title = '系统登录';
                 $this->fetch();
