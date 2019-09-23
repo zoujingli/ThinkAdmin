@@ -18,6 +18,7 @@ namespace app\admin\controller;
 use app\admin\service\NodeService;
 use library\Controller;
 use think\Db;
+use think\facade\Request;
 
 /**
  * 用户登录管理
@@ -37,30 +38,26 @@ class Login extends Controller
      */
     public function index()
     {
-        $this->title = '系统登录';
-        if ($this->request->isGet()) {
-            // 运行环境检查
-            $this->devMode = in_array($this->request->rootDomain(), [
-                '0.1', 'localhost', 'thinkadmin.top', 'ctolog.com',
-            ]);
+        if (Request::isGet()) {
             // 登录状态检查
             if (NodeService::islogin()) {
+                // 已经登录，跳转到后面首页
                 $this->redirect('@admin');
             } else {
-                $this->loginskey = session('loginskey');
-                if (empty($this->loginskey)) {
-                    $this->loginskey = uniqid();
-                    session('loginskey', $this->loginskey);
-                }
+                // 定义运行环境模式
+                $this->domain = Request::host(true);
+                $this->devmode = in_array($this->domain, ['127.0.0.1', 'localhost']) or stripos($this->domain, 'thinkadmin.top') <> false;
+                // 创建登录安全通道
+                if (!($this->loginskey = session('loginskey'))) session('loginskey', $this->loginskey = uniqid());
+                // 显示后台登录页面
+                $this->title = '系统登录';
                 $this->fetch();
             }
         } else {
             $data = $this->_input([
-                'username' => $this->request->post('username'),
-                'password' => $this->request->post('password'),
+                'username' => input('username'), 'password' => input('password'),
             ], [
-                'username' => 'require|min:4',
-                'password' => 'require|min:4',
+                'username' => 'require|min:4', 'password' => 'require|min:4',
             ], [
                 'username.require' => '登录账号不能为空！',
                 'password.require' => '登录密码不能为空！',
@@ -98,13 +95,15 @@ class Login extends Controller
             // 登录成功并更新账号
             cache("user_login_{$user['username']}", null);
             Db::name('SystemUser')->where(['id' => $user['id']])->update([
-                'login_at' => Db::raw('now()'), 'login_ip' => $this->request->ip(), 'login_num' => Db::raw('login_num+1'),
+                'login_at'  => Db::raw('now()'),
+                'login_ip'  => $this->request->ip(),
+                'login_num' => Db::raw('login_num+1'),
             ]);
             session('loginskey', null);
             session('admin_user', $user);
-            NodeService::applyUserAuth();
+            NodeService::applyUserAuth(true);
             sysoplog('系统管理', '用户登录系统成功');
-            $this->success('登录成功，正在进入系统...', url('@admin'));
+            $this->success('登录成功', url('@admin'));
         }
     }
 
