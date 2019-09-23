@@ -84,11 +84,7 @@ class ExtendService
         if (empty($content) || stripos($content, '{code}') === false) {
             $content = '您的验证码为{code}，请在十分钟内完成操作！';
         }
-        cache($ckey, ['phone' => $phone, 'code' => $code, 'time' => time()], 600);
-        if (empty($content) || strpos($content, '{code}') === false) {
-            return [0, '获取短信模板失败，联系管理员配置！', []];
-        }
-        $cache = cache($ckey);
+        cache($ckey, $cache = ['phone' => $phone, 'code' => $code, 'time' => time()], 600);
         if (self::sendChinaSms($mid, $phone, str_replace('{code}', $code, $content))) {
             $dtime = ($cache['time'] + $wait < time()) ? 0 : ($wait - time() + $cache['time']);
             return [1, '短信验证码发送成功！', ['time' => $dtime]];
