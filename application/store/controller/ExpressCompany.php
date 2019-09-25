@@ -51,6 +51,11 @@ class ExpressCompany extends Controller
     /**
      * 添加快递公司
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function add()
     {
@@ -60,6 +65,11 @@ class ExpressCompany extends Controller
     /**
      * 编辑快递公司
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function edit()
     {
@@ -85,6 +95,8 @@ class ExpressCompany extends Controller
     /**
      * 禁用快递公司
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -94,6 +106,8 @@ class ExpressCompany extends Controller
     /**
      * 启用快递公司
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {
@@ -103,6 +117,8 @@ class ExpressCompany extends Controller
     /**
      * 删除快递公司
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {
