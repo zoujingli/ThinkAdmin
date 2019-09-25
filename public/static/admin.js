@@ -755,7 +755,6 @@ $(function () {
                 if (data['skey']) delete data['skey'];
                 $.form.load(location.href, data, "post", function (ret) {
                     if (parseInt(ret.code) !== 1) {
-                        $(that).find('[name=verify]').val('');
                         $(that).find('.verify.layui-hide').removeClass('layui-hide');
                         $(that).find('[data-refresh-captcha]').trigger('click');
                     }
@@ -769,9 +768,9 @@ $(function () {
         image = this, uniqid = this.getAttribute('data-uniqid-field') || 'uniqid';
         verify = this.getAttribute('data-refresh-captcha') || this.getAttribute('data-verify-field') || 'verify';
         $.form.load('?s=think/admin/captcha', {}, 'get', function (ret) {
-            image.src = ret.image;
-            $(image).parents('form').find('[name=' + verify + ']').val('');
-            $(image).parents('form').find('[name=' + uniqid + ']').val(ret.uniqid);
+            image.src = ret.data.image;
+            $(image).parents('form').find('[name=' + verify + ']').attr('value', '');
+            $(image).parents('form').find('[name=' + uniqid + ']').val(ret.data.uniqid);
             return false;
         }, false);
     });

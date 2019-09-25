@@ -162,5 +162,7 @@ Console::addDefaultCommands([
 // ThinkAdmin 图形验证码
 Route::get('/think/admin/captcha', function () {
     $image = new CaptchaService();
-    return json(['uniqid' => $image->getUniqid(), 'image' => $image->getData()]);
+    return json(['code' => '1', 'info' => '生成验证码', 'data' => [
+        'uniqid' => $image->getUniqid(), 'image' => $image->getData()
+    ]]);
 });
