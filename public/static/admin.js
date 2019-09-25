@@ -747,14 +747,33 @@ $(function () {
     });
 
     /*! 后台加密登录处理 */
-    $body.find('[data-login-form]').map(function () {
+    $body.find('[data-login-form]').map(function (that) {
+        that = this;
         require(["md5"], function (md5) {
             $("form").vali(function (data) {
                 data['password'] = md5.hash(md5.hash(data['password']) + data['skey']);
                 if (data['skey']) delete data['skey'];
-                $.form.load(location.href, data, "post", null, null, null, 'false');
+                $.form.load(location.href, data, "post", function (ret) {
+                    if (parseInt(ret.code) !== 1) {
+                        $(that).find('[name=verify]').val('');
+                        $(that).find('.verify.layui-hide').removeClass('layui-hide');
+                        $(that).find('[data-refresh-captcha]').trigger('click');
+                    }
+                }, null, null, 'false');
             });
         });
+    });
+
+    /*! 后台图形验证码刷新 */
+    $body.on('click', '[data-refresh-captcha]', function (image, verify, uniqid) {
+        image = this, uniqid = this.getAttribute('data-uniqid-field') || 'uniqid';
+        verify = this.getAttribute('data-refresh-captcha') || this.getAttribute('data-verify-field') || 'verify';
+        $.form.load('?s=think/admin/captcha', {}, 'get', function (ret) {
+            image.src = ret.image;
+            $(image).parents('form').find('[name=' + verify + ']').val('');
+            $(image).parents('form').find('[name=' + uniqid + ']').val(ret.uniqid);
+            return false;
+        }, false);
     });
 
     /*! 图片加载异常处理 */

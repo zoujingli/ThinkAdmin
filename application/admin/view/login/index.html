@@ -16,14 +16,22 @@
             <li class="username">
                 <label>
                     <i class="layui-icon layui-icon-username"></i>
-                    <input class="layui-input" required pattern="^\S{4,}$" name="username" autofocus autocomplete="off" placeholder="请输入账号">
+                    <input class="layui-input" required pattern="^\S{4,}$" name="username" autofocus autocomplete="off" placeholder="登录账号" title="请输入登录账号">
                 </label>
             </li>
             <li class="password">
                 <label>
                     <i class="layui-icon layui-icon-password"></i>
-                    <input class="layui-input" required pattern="^\S{4,}$" name="password" maxlength="32" type="password" autocomplete="off" placeholder="请输入密码">
+                    <input class="layui-input" required pattern="^\S{4,}$" name="password" maxlength="32" type="password" autocomplete="off" placeholder="登录密码" title="请输入登录密码">
                 </label>
+            </li>
+            <li class="verify layui-hide">
+                <label class="inline-block relative">
+                    <i class="layui-icon layui-icon-picture-fine"></i>
+                    <input class="layui-input" required pattern="^\S{4,}$" name="verify" value="{$captcha->getCode()}" maxlength="4" autocomplete="off" placeholder="验证码" title="请输入验证码">
+                </label>
+                <img data-refresh-captcha alt="img" src="{$captcha->getData()}">
+                <input type="hidden" name="uniqid" value="{$captcha->getUniqid()}">
             </li>
             <li class="text-center padding-top-20">
                 <input type="hidden" name="skey" value="{$loginskey|default=''}">

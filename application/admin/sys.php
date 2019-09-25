@@ -13,12 +13,14 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
+use app\admin\service\CaptchaService;
 use app\admin\service\NodeService;
 use app\admin\service\OplogService;
 use library\File;
 use think\Console;
 use think\Db;
 use think\facade\Middleware;
+use think\facade\Route;
 use think\Request;
 
 if (!function_exists('auth')) {
@@ -156,3 +158,9 @@ Console::addDefaultCommands([
     'app\admin\queue\task\Query',
     'app\admin\queue\task\Listen',
 ]);
+
+// ThinkAdmin 图形验证码
+Route::get('/think/admin/captcha', function () {
+    $image = new CaptchaService();
+    return json(['uniqid' => $image->getUniqid(), 'image' => $image->getData()]);
+});

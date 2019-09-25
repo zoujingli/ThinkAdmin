@@ -15,6 +15,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\service\CaptchaService;
 use app\admin\service\NodeService;
 use library\Controller;
 use think\Db;
@@ -46,6 +47,7 @@ class Login extends Controller
                 $this->domain = Request::host(true);
                 if (!($this->loginskey = session('loginskey'))) session('loginskey', $this->loginskey = uniqid());
                 $this->devmode = in_array($this->domain, ['127.0.0.1', 'localhost']) || is_numeric(stripos($this->domain, 'thinkadmin.top'));
+                $this->captcha = new CaptchaService();
                 $this->fetch();
             }
         } else {
@@ -59,40 +61,19 @@ class Login extends Controller
                 'username.min'     => '登录账号长度不能少于4位有效字符！',
                 'password.min'     => '登录密码长度不能少于4位有效字符！',
             ]);
+            if (!CaptchaService::check(input('verify'), input('uniqid'))) {
+                $this->error('图形验证码验证失败，请重新输入！');
+            }
             // 用户信息验证
             $map = ['is_deleted' => '0', 'username' => $data['username']];
             $user = Db::name('SystemUser')->where($map)->order('id desc')->find();
             if (empty($user)) $this->error('登录账号或密码错误，请重新输入!');
-            if (empty($user['status'])) $this->error('账号已经被禁用，请联系管理员!');
-            // 账号锁定消息
-            $cache = cache("user_login_{$user['username']}");
-            if (is_array($cache) && !empty($cache['number']) && !empty($cache['time'])) {
-                if ($cache['number'] >= 10 && ($diff = $cache['time'] + 3600 - time()) > 0) {
-                    list($m, $s, $info) = [floor($diff / 60), floor($diff % 60), ''];
-                    if ($m > 0) $info = "{$m} 分";
-                    $this->error("<strong class='color-red'>抱歉，该账号已经被锁定！</strong><p class='nowrap'>连续 10 次登录错误，请 {$info} {$s} 秒后再登录！</p>");
-                }
-            }
             if (md5($user['password'] . session('loginskey')) !== $data['password']) {
-                if (empty($cache) || empty($cache['time']) || empty($cache['number']) || $cache['time'] + 3600 < time()) {
-                    $cache = ['time' => time(), 'number' => 1, 'geoip' => $this->request->ip()];
-                } elseif ($cache['number'] + 1 <= 10) {
-                    $cache = ['time' => time(), 'number' => $cache['number'] + 1, 'geoip' => $this->request->ip()];
-                }
-                cache("user_login_{$user['username']}", $cache);
-                if (($diff = 10 - $cache['number']) > 0) {
-                    $this->error("<strong class='color-red'>登录账号或密码错误！</strong><p class='nowrap'>还有 {$diff} 次尝试机会，将锁定一小时内禁止登录！</p>");
-                } else {
-                    sysoplog('系统管理', "账号{$user['username']}连续10次登录密码错误，请注意账号安全！");
-                    $this->error("<strong class='color-red'>登录账号或密码错误！</strong><p class='nowrap'>尝试次数达到上限，锁定一小时内禁止登录！</p>");
-                }
+                $this->error('登录账号或密码错误，请重新输入!');
             }
-            // 登录成功并更新账号
-            cache("user_login_{$user['username']}", null);
+            if (empty($user['status'])) $this->error('账号已经被禁用，请联系管理员!');
             Db::name('SystemUser')->where(['id' => $user['id']])->update([
-                'login_at'  => Db::raw('now()'),
-                'login_ip'  => $this->request->ip(),
-                'login_num' => Db::raw('login_num+1'),
+                'login_at' => Db::raw('now()'), 'login_ip' => Request::ip(), 'login_num' => Db::raw('login_num+1'),
             ]);
             session('loginskey', null);
             session('admin_user', $user);
