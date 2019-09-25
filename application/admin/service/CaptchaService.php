@@ -44,18 +44,17 @@ class CaptchaService
     {
         // 动态配置属性
         foreach ($config as $k => $v) if (isset($this->$k)) $this->$k = $v;
-        // 设置字体文件路径
-        $this->font = __DIR__ . '/font/icon.ttf';
         // 生成验证码序号
         $this->uniqid = uniqid('captcha');
         // 生成验证码字符串
-        $_len = strlen($this->charset) - 1;
+        $length = strlen($this->charset) - 1;
         for ($i = 0; $i < $this->codelen; $i++) {
-            $this->code .= $this->charset[mt_rand(0, $_len)];
+            $this->code .= $this->charset[mt_rand(0, $length)];
         }
         // 缓存验证码字符串
         Cache::tag('captcha')->set($this->uniqid, $this->code, 360);
-        p([$this->uniqid, $this->code]);
+        // 设置字体文件路径
+        $this->font = __DIR__ . '/font/icon.ttf';
     }
 
     /**
@@ -137,8 +136,8 @@ class CaptchaService
     public static function check($code, $uniqid = null)
     {
         $_uni = is_string($uniqid) ? $uniqid : input('uniqid', '-');
-        $_ver = Cache::tag('captcha')->get($_uni);
-        if (is_string($_ver) && strtolower($_ver) === strtolower($code)) {
+        $_val = Cache::tag('captcha')->get($_uni);
+        if (is_string($_val) && strtolower($_val) === strtolower($code)) {
             Cache::tag('captcha')->rm($_uni);
             return true;
         } else return false;
