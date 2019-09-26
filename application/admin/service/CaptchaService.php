@@ -137,9 +137,7 @@ class CaptchaService
     {
         $_uni = is_string($uniqid) ? $uniqid : input('uniqid', '-');
         $_val = Cache::tag('captcha')->get($_uni);
-        if (is_string($_val) && strtolower($_val) === strtolower($code)) {
-            Cache::tag('captcha')->rm($_uni);
-            return true;
-        } else return false;
+        Cache::tag('captcha')->rm($_uni);
+        return is_string($_val) && strtolower($_val) === strtolower($code);
     }
 }
