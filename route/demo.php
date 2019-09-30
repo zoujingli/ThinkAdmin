@@ -27,7 +27,7 @@ if (stripos(Request::host(true), 'thinkadmin.top') !== false) {
     Route::post('admin/config/file', function () {
         return json(['code' => 0, 'info' => '演示环境禁止修改系统配置！']);
     });
-    Route::post('admin/config/info', function () {
+    Route::post('admin/config/config', function () {
         return json(['code' => 0, 'info' => '演示环境禁止修改系统配置！']);
     });
     Route::post('admin/menu/index', function () {
