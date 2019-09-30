@@ -62,21 +62,29 @@ class Config extends Controller
      * 系统参数配置
      * @auth true
      * @menu true
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
      */
     public function info()
     {
+        $this->title = '系统参数配置';
+        $this->fetch();
+    }
+
+    /**
+     * 修改系统能数配置
+     * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function config()
+    {
         $this->applyCsrfToken();
         if (Request::isGet()) {
-            $this->title = '系统参数配置';
-            $this->fetch();
-        } else {
-            foreach (Request::post() as $key => $value) {
-                sysconf($key, $value);
-            }
-            $this->success('系统参数配置成功！');
+            $this->fetch('system-config');
         }
+        foreach (Request::post() as $key => $value) {
+            sysconf($key, $value);
+        }
+        $this->success('系统参数配置成功！');
     }
 
     /**
