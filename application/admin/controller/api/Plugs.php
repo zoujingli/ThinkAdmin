@@ -96,9 +96,9 @@ class Plugs extends Controller
     {
         if ($this->getUploadType() === 'qiniu') {
             $file = File::instance('qiniu');
-            return ['url' => $file->upload(true), 'token' => $file->buildUploadToken()];
+            return ['url' => $file->upload(true), 'token' => $file->buildUploadToken(), 'uptype' => $this->getUploadType()];
         } else {
-            return ['url' => '?s=admin/api.plugs/upload', 'token' => uniqid('local_upload_')];
+            return ['url' => '?s=admin/api.plugs/upload', 'token' => uniqid('local_upload_'), 'uptype' => $this->getUploadType()];
         }
     }
 

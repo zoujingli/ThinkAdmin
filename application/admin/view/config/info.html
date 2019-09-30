@@ -13,25 +13,19 @@
 
 {if auth('config')}
 <div class="think-box-shadow margin-bottom-15">
-    <span class="color-green font-w7">系统配置参数：</span>
+    <span class="color-green font-w7">系统参数配置：</span>
     <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('config')}">修改系统配置</a>
 </div>
 {/if}
 
 <div class="think-box-shadow padding-40">
     <div class="layui-form-item">
-        <div class="absolute" style="width:100px;overflow:hidden">
-            <span class="color-green font-w7">网站图标</span>
-            <img alt="icon" data-tips-image style="height:auto;max-height:55px;min-width:55px" src="{:sysconf('site_icon')}"/>
-        </div>
-        <div style="padding-left:80px">
-            <span class="color-green font-w7">网站名称 Website</span>
-            <label class="relative block">
-                <input readonly value="{:sysconf('site_name')}" class="layui-input layui-bg-gray">
-                <a data-copy="{:sysconf('site_name')}" class="fa fa-copy right-btn"></a>
-            </label>
-            <p class="help-block">网站名称及网站图标，将显示在浏览器的标签上</p>
-        </div>
+        <span class="color-green font-w7">网站名称 Website</span>
+        <label class="relative block">
+            <input readonly value="{:sysconf('site_name')}" class="layui-input layui-bg-gray">
+            <a data-copy="{:sysconf('site_name')}" class="fa fa-copy right-btn"></a>
+        </label>
+        <p class="help-block">网站名称及网站图标，将显示在浏览器的标签上</p>
     </div>
     <div class="layui-form-item">
         <span class="color-green font-w7">管理程序名称 Name</span>
