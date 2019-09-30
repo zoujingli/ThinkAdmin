@@ -76,8 +76,12 @@ class Work extends Task
             if (class_exists($queue['preload'])) {
                 if (method_exists($class = new $queue['preload'], 'execute')) {
                     $data = json_decode($queue['data'], true);
+                    if (isset($class->jobid)) $class->jobid = $this->id;
+                    if (isset($class->title)) $class->title = $queue['title'];
                     $this->update('3', $class->execute($input, $output, is_array($data) ? $data : []));
-                } else throw new Exception("任务处理类 {$queue['preload']} 未定义 execute 入口！");
+                } else {
+                    throw new Exception("任务处理类 {$queue['preload']} 未定义 execute 入口！");
+                }
             } else {
                 $this->update('3', Console::call($queue['preload'], [], 'console'));
             }
