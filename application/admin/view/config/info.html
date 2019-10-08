@@ -2,21 +2,21 @@
 
 {block name="content"}
 
+{if auth('config')}
 <div class="think-box-shadow margin-bottom-15">
-    <span class="color-green font-w7">文件存储引擎：</span>
+    <span class="color-green font-w7 text-middle">系统参数配置：</span>
+    <a class="layui-btn layui-btn-sm" data-modal="{:url('config')}">修改系统配置</a>
+</div>
+{/if}
+
+<div class="think-box-shadow margin-bottom-15">
+    <span class="color-green font-w7 text-middle">文件存储引擎：</span>
     {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','oss'=>'阿里云OSS存储'] as $k=>$v}
     {if sysconf('storage_type') eq $k}
     {if auth('file')}<a data-modal="{:url('file')}?type={$k}" class="layui-btn layui-btn-sm">{$v}</a>{else}<a class="layui-btn layui-btn-sm">{$v}</a>{/if}
     {elseif auth('file')}<a data-modal="{:url('file')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
     {/foreach}
 </div>
-
-{if auth('config')}
-<div class="think-box-shadow margin-bottom-15">
-    <span class="color-green font-w7">系统参数配置：</span>
-    <a class="layui-btn layui-btn-sm" data-modal="{:url('config')}">修改系统配置</a>
-</div>
-{/if}
 
 <div class="think-box-shadow padding-40">
     <div class="layui-form-item">
