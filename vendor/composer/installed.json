@@ -516,12 +516,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-            "reference": "629f14c1586ac51bdcef47b17d68a70b89d28897"
+            "reference": "4d0d3c064e54556621453845fc65ba52de58a880"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/629f14c1586ac51bdcef47b17d68a70b89d28897",
-            "reference": "629f14c1586ac51bdcef47b17d68a70b89d28897",
+            "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/4d0d3c064e54556621453845fc65ba52de58a880",
+            "reference": "4d0d3c064e54556621453845fc65ba52de58a880",
             "shasum": "",
             "mirrors": [
                 {
@@ -537,7 +537,7 @@
             "php": ">=5.4",
             "zoujingli/wechat-developer": "^1.0"
         },
-        "time": "2019-07-08T07:11:04+00:00",
+        "time": "2019-10-10T10:18:05+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
