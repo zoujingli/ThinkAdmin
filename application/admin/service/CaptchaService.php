@@ -67,12 +67,12 @@ class CaptchaService
         $this->img = imagecreatetruecolor($this->width, $this->height);
         $color = imagecolorallocate($this->img, mt_rand(220, 255), mt_rand(220, 255), mt_rand(220, 255));
         imagefilledrectangle($this->img, 0, $this->height, $this->width, 0, $color);
-        // 线条
+        // 生成线条
         for ($i = 0; $i < 6; $i++) {
             $color = imagecolorallocate($this->img, mt_rand(0, 50), mt_rand(0, 50), mt_rand(0, 50));
             imageline($this->img, mt_rand(0, $this->width), mt_rand(0, $this->height), mt_rand(0, $this->width), mt_rand(0, $this->height), $color);
         }
-        // 雪花
+        // 生成雪花
         for ($i = 0; $i < 100; $i++) {
             $color = imagecolorallocate($this->img, mt_rand(200, 255), mt_rand(200, 255), mt_rand(200, 255));
             imagestring($this->img, mt_rand(1, 5), mt_rand(0, $this->width), mt_rand(0, $this->height), '*', $color);
@@ -97,7 +97,11 @@ class CaptchaService
      */
     public function getAttr()
     {
-        return ['code' => $this->code, 'uniq' => $this->uniqid, 'data' => $this->getData()];
+        return [
+            'code' => $this->code,
+            'uniq' => $this->uniqid,
+            'data' => $this->getData()
+        ];
     }
 
     /**
