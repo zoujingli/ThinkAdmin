@@ -16,7 +16,6 @@ namespace WeMini;
 
 use WeChat\Contracts\BasicWeChat;
 use WeChat\Contracts\Tools;
-use WeChat\Exceptions\InvalidResponseException;
 
 /**
  * 微信小程序二维码管理

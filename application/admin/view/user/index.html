@@ -2,12 +2,12 @@
 
 {block name="button"}
 
-{if auth("admin/user/add")}
+{if auth("add")}
 <button data-modal='{:url("add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
 {/if}
 
-{if auth("admin/user/remove")}
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('admin/user/remove')}" data-confirm="确定要删除这些用户吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除用户</button>
+{if auth("remove")}
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除这些用户吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除用户</button>
 {/if}
 
 {/block}
@@ -46,22 +46,22 @@
             <td class='text-left nowrap'>{if $vo.login_num>0}{$vo.login_at|format_datetime}{else} - {/if}</td>
             <td class='text-left nowrap'>
 
-                {if auth("admin/user/pass")}
+                {if auth("pass")}
                 <a class="layui-btn layui-btn-normal layui-btn-sm" data-title="设置密码" data-modal='{:url("pass")}?id={$vo.id}'>密 码</a>
                 {/if}
 
-                {if auth("admin/user/edit")}
+                {if auth("edit")}
                 <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 {/if}
 
-                {if $vo.status eq 1 and auth("admin/user/forbid")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('admin/user/forbid')}">禁 用</a>
-                {elseif $vo.status eq 0 and auth("admin/user/resume")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('admin/user/resume')}">启 用</a>
+                {if $vo.status eq 1 and auth("forbid")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">禁 用</a>
+                {elseif $vo.status eq 0 and auth("resume")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">启 用</a>
                 {/if}
 
-                {if auth("admin/user/remove")}
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该用户吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/user/remove')}">删 除</a>
+                {if auth("remove")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该用户吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                 {/if}
 
             </td>

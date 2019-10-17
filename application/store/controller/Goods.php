@@ -105,6 +105,11 @@ class Goods extends Controller
     /**
      * 添加商品信息
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function add()
     {
@@ -116,6 +121,11 @@ class Goods extends Controller
     /**
      * 编辑商品信息
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function edit()
     {
@@ -136,13 +146,15 @@ class Goods extends Controller
     protected function _form_filter(&$data)
     {
         // 生成商品ID
-        if (empty($data['id'])) $data['id'] = Data::uniqidNumberCode(10);
+        if (empty($data['id'])) $data['id'] = Data::uniqidNumberCode(14);
         if ($this->request->isGet()) {
             $fields = 'goods_spec,goods_id,status,price_market market,price_selling selling,number_virtual `virtual`,number_express express';
             $defaultValues = Db::name('StoreGoodsList')->where(['goods_id' => $data['id']])->column($fields);
             $this->defaultValues = json_encode($defaultValues, JSON_UNESCAPED_UNICODE);
             $this->cates = Db::name('StoreGoodsCate')->where(['is_deleted' => '0', 'status' => '1'])->order('sort desc,id desc')->select();
         } elseif ($this->request->isPost()) {
+            if (empty($data['logo'])) $this->error('商品LOGO不能为空，请上传图片');
+            if (empty($data['image'])) $this->error('商品展示图片不能为空，请上传图片');
             Db::name('StoreGoodsList')->where(['goods_id' => $data['id']])->update(['status' => '0']);
             foreach (json_decode($data['lists'], true) as $vo) Data::save('StoreGoodsList', [
                 'goods_id'       => $data['id'],
@@ -170,6 +182,8 @@ class Goods extends Controller
     /**
      * 禁用商品信息
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -179,6 +193,8 @@ class Goods extends Controller
     /**
      * 启用商品信息
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {
@@ -188,6 +204,8 @@ class Goods extends Controller
     /**
      * 删除商品信息
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {

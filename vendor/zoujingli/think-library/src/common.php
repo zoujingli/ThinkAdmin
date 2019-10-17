@@ -253,7 +253,7 @@ Console::addDefaultCommands([
     'library\command\task\Stop',
     'library\command\task\State',
     'library\command\task\Start',
-    'library\command\task\Reset',
+    // 'library\command\task\Reset',
     'library\command\sync\Admin',
     'library\command\sync\Plugs',
     'library\command\sync\Config',

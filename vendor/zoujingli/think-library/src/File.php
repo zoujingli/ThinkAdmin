@@ -15,6 +15,9 @@
 
 namespace library;
 
+use library\driver\Local;
+use library\driver\Oss;
+use library\driver\Qiniu;
 use library\tools\Options;
 use think\Exception;
 use think\facade\Log;
@@ -99,7 +102,7 @@ class File
     /**
      * 设置文件驱动名称
      * @param string $name
-     * @return \library\driver\Local
+     * @return Local|Qiniu|Oss
      * @throws Exception
      */
     public static function instance($name)
@@ -112,7 +115,7 @@ class File
         }
         throw new Exception("File driver [{$class}] does not exist.");
     }
-
+    
     /**
      * 根据文件后缀获取文件MINE
      * @param array $ext 文件后缀

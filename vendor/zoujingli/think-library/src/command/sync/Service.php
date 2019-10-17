@@ -31,7 +31,7 @@ class Service extends Sync
     protected function configure()
     {
         $this->modules = ['application/service/'];
-        $this->setName('xsync:service')->setDescription('从远程覆盖本地Service模块的所有代码');
+        $this->setName('xsync:service')->setDescription('[同步]覆盖本地Service模块代码');
     }
 
     /**

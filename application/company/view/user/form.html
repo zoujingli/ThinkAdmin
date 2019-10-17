@@ -1,0 +1,89 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">员工姓名</label>
+            <div class="layui-input-block">
+                <input name="nickname" value='{$vo.nickname|default=""}' required placeholder="请输入公司员工姓名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">员工身份</label>
+            <div class="layui-input-block">
+                <input name="user_type" value='{$vo.user_type|default=""}' required placeholder="请输入公司员工身份" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">仓库账号</label>
+            <div class="layui-input-block">
+                <input name="svn_username" value='{$vo.svn_username|default=""}' required placeholder="请输入SVN授权账号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">仓库密码</label>
+            <div class="layui-input-block">
+                <input name="svn_password" value='{$vo.svn_password|default=""}' required placeholder="请输入SVN授权密码" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">仓库权限</label>
+            <div class="layui-input-block">
+                <div class="layui-textarea padding-bottom-10" style="min-height:auto">
+                    {foreach $auths as $auth}
+                    <label class="think-checkbox layui-unselect">
+                        {if isset($vo.svn_authorize) and in_array($auth.id, $vo.svn_authorize)}
+                        <input type="checkbox" name="svn_authorize[]" value="{$auth.id}" checked lay-ignore> {$auth.title}
+                        {else}
+                        <input type="checkbox" name="svn_authorize[]" value="{$auth.id}" lay-ignore> {$auth.title}
+                        {/if}
+                    </label>
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item nowrap">
+            <label class="layui-form-label">入职日期</label>
+            <div class="layui-input-inline margin-right-0" style="width:164px">
+                <input type="text" data-date-input="date" name="entry_date" value='{$vo.entry_date|default=""}' placeholder="请输入入职日期" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="width:auto">转正日期</label>
+            <div class="layui-input-inline margin-right-0" style="width:164px">
+                <input type="text" data-date-input="date" name="become_date" value='{$vo.become_date|default=""}' placeholder="请输入转正日期" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="width:auto">离职日期</label>
+            <div class="layui-input-inline margin-right-0" style="width:164px">
+                <input type="text" data-date-input="date" name="leave_date" value='{$vo.leave_date|default=""}' placeholder="请输入离职日期" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系ＱＱ</label>
+            <div class="layui-input-inline margin-right-0" style="width:164px">
+                <input type="tel" autocomplete="off" name="contact_qq" value='{$vo.contact_qq|default=""}' pattern="^\d{6,}$" placeholder="请输入联系ＱＱ号码" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="width:auto">联系手机</label>
+            <div class="layui-input-inline margin-right-0" style="width:164px">
+                <input type="tel" maxlength="11" autocomplete="off" name="contact_phone" value='{$vo.contact_phone|default=""}' pattern="^1[3-9][0-9]{9}$" placeholder="请输入联系手机" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="width:auto">联系邮箱</label>
+            <div class="layui-input-inline margin-right-0" style="width:164px">
+                <input name="contact_mail" autocomplete="off" pattern="^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$" value='{$vo.contact_mail|default=""}' placeholder="请输入联系邮箱" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">打卡绑定</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入绑定手机" class="layui-textarea" name="mobile_macs">{$vo.mobile_macs|default=""}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+    <script>window.form.render();</script>
+
+</form>

@@ -56,6 +56,9 @@
                     {if auth('admin/index/clearruntime')}
                     <dd lay-unselect><a data-modal="{:url('admin/index/clearRuntime')}"><i class="layui-icon layui-icon-fonts-clear margin-right-5"></i>清理缓存</a></dd>
                     {/if}
+                    {notempty name='GLOBALS.AdminUserRightOption'}{foreach $GLOBALS.AdminUserRightOption as $option}{if auth($option.node)}
+                    <dd lay-unselect><a data-{$option.type}="{$option.action}"><i class="{$option.icon} margin-right-5"></i>{$option.title}</a></dd>
+                    {/if}{/foreach}{/notempty}
                     <dd lay-unselect><a data-confirm="确定要退出登录吗？" data-load="{:url('admin/login/out')}"><i class="layui-icon layui-icon-release margin-right-5"></i>退出登录</a></dd>
                 </dl>
                 <a><span><i class="layui-icon layui-icon-username margin-right-5"></i> {:session('admin_user.username')}</span></a>

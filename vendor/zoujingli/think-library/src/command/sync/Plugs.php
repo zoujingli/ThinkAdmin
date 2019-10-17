@@ -32,7 +32,7 @@ class Plugs extends Sync
     protected function configure()
     {
         $this->modules = ['public/static/'];
-        $this->setName('xsync:plugs')->setDescription('从远程覆盖本地Plugs资源插件所有代码');
+        $this->setName('xsync:plugs')->setDescription('[同步]覆盖本地Plugs插件代码');
     }
 
     /**

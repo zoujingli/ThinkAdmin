@@ -85,11 +85,31 @@ body {
       margin-top: 20px;
       text-shadow: #000 .1em .1em .1em;
 
+      &.verify {
+        label {
+          width: 200px;
+        }
+
+        input.layui-input {
+          text-transform: uppercase
+        }
+
+        img {
+          width: 95px;
+          height: 44px;
+          cursor: pointer;
+          position: absolute;
+          margin-left: 5px;
+          border-radius: 5px;
+          box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .1);
+        }
+      }
+
       i.layui-icon {
         color: #fff;
         font-size: 18px;
         position: absolute;
-        padding: 12px 15px 13px 20px;
+        padding: 14px 15px 13px 20px;
       }
 
       input {

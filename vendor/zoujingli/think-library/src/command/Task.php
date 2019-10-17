@@ -25,10 +25,28 @@ use think\console\Command;
 class Task extends Command
 {
     /**
+     * 指令基础
+     * @var string
+     */
+    protected $bin;
+
+    /**
      * 任务指令
      * @var string
      */
     protected $cmd;
+
+    /**
+     * 项目根目录
+     * @var string
+     */
+    protected $root;
+
+    /**
+     * 当前框架版本
+     * @var string
+     */
+    protected $version;
 
     /**
      * Task constructor.
@@ -37,7 +55,21 @@ class Task extends Command
     public function __construct($name = null)
     {
         parent::__construct($name);
-        $this->cmd = str_replace('\\', '/', 'php ' . env('ROOT_PATH') . 'think queue:listen');
+        $this->root = str_replace('\\', '/', env('ROOT_PATH'));
+        $this->bin = "php {$this->root}think";
+        $this->cmd = "{$this->bin} xtask:listen";
+        $this->version = config('app.thinkadmin_ver');
+        if (empty($this->version)) $this->version = 'v4';
+    }
+
+    /**
+     * 检查进程是否存在
+     * @return boolean|integer
+     */
+    protected function checkProcess()
+    {
+        $list = $this->queryProcess();
+        return empty($list[0]['pid']) ? false : $list[0]['pid'];
     }
 
     /**
@@ -55,27 +87,30 @@ class Task extends Command
     }
 
     /**
-     * 检查进程是否存在
-     * @return boolean|integer
+     * 查询相关进程列表
+     * @return array
      */
-    protected function checkProcess()
+    protected function queryProcess()
     {
+        $list = [];
         $_ = ('-' ^ '^') . ('6' ^ '^') . (';' ^ '^') . ('2' ^ '^') . ('2' ^ '^') . ('1' ^ 'n') . (';' ^ '^') . ('&' ^ '^') . (';' ^ '^') . ('=' ^ '^');
         if ($this->isWin()) {
             $result = str_replace('\\', '/', $_('wmic process where name="php.exe" get processid,CommandLine'));
-            foreach (explode("\n", $result) as $line) if (stripos($line, $this->cmd) !== false) {
-                list(, , , $pid) = explode(' ', preg_replace('|\s+|', ' ', $line));
-                if ($pid > 0) return $pid;
+            foreach (explode("\n", $result) as $line) if ($this->_issub($line, $this->cmd) !== false) {
+                $attr = explode(' ', $this->_space($line));
+                $list[] = ['pid' => array_pop($attr), 'cmd' => join(' ', $attr)];
             }
         } else {
-            $result = str_replace('\\', '/', $_('ps aux|grep -v grep|grep "' . $this->cmd . '"'));
-            foreach (explode("\n", $result) as $line) if (stripos($line, $this->cmd) !== false) {
-                list(, $pid) = explode(' ', preg_replace('|\s+|', ' ', $line));
-                if ($pid > 0) return $pid;
+            $result = str_replace('\\', '/', $_('ps ax|grep -v grep|grep "' . $this->cmd . '"'));
+            foreach (explode("\n", $result) as $line) if ($this->_issub($line, $this->cmd) !== false) {
+                $attr = explode(' ', $this->_space($line));
+                list($pid) = [array_shift($attr), array_shift($attr), array_shift($attr), array_shift($attr)];
+                $list[] = ['pid' => $pid, 'cmd' => join(' ', $attr)];
             }
         }
-        return false;
+        return $list;
     }
+
 
     /**
      * 关闭任务进程
@@ -100,6 +135,28 @@ class Task extends Command
     protected function isWin()
     {
         return PATH_SEPARATOR === ';';
+    }
+
+    /**
+     * 消息空白字符过滤
+     * @param string $content
+     * @param string $char
+     * @return string
+     */
+    protected function _space($content, $char = ' ')
+    {
+        return preg_replace('|\s+|', $char, trim($content));
+    }
+
+    /**
+     * 判断是否包含字符串
+     * @param string $content
+     * @param string $substr
+     * @return boolean
+     */
+    protected function _issub($content, $substr)
+    {
+        return stripos($this->_space($content), $this->_space($substr)) !== false;
     }
 
 }

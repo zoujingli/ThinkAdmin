@@ -4,7 +4,7 @@
 <div class="login-container" data-supersized="__ROOT__/static/theme/img/login/bg1.jpg,__ROOT__/static/theme/img/login/bg2.jpg">
     <div class="header notselect layui-hide-xs">
         <a href="{:url('@')}" class="title">{:sysconf('app_name')}<span class="padding-left-5 font-s10">{:sysconf('app_version')}</span></a>
-        {notempty name='devMode'}
+        {notempty name='devmode'}
         <a class="pull-right layui-anim layui-anim-fadein" href='https://gitee.com/zoujingli/ThinkAdmin'>
             <img src='https://gitee.com/zoujingli/ThinkAdmin/widgets/widget_1.svg' alt='Fork me on Gitee'>
         </a>
@@ -16,14 +16,22 @@
             <li class="username">
                 <label>
                     <i class="layui-icon layui-icon-username"></i>
-                    <input class="layui-input" required pattern="^\S{4,}$" name="username" autofocus autocomplete="off" placeholder="请输入账号">
+                    <input class="layui-input" required pattern="^\S{4,}$" name="username" autofocus autocomplete="off" placeholder="登录账号" title="请输入登录账号">
                 </label>
             </li>
             <li class="password">
                 <label>
                     <i class="layui-icon layui-icon-password"></i>
-                    <input class="layui-input" required pattern="^\S{4,}$" name="password" maxlength="32" type="password" autocomplete="off" placeholder="请输入密码">
+                    <input class="layui-input" required pattern="^\S{4,}$" name="password" maxlength="32" type="password" autocomplete="off" placeholder="登录密码" title="请输入登录密码">
                 </label>
+            </li>
+            <li class="verify layui-hide">
+                <label class="inline-block relative">
+                    <i class="layui-icon layui-icon-picture-fine"></i>
+                    <input class="layui-input" required pattern="^\S{4,}$" name="verify" value="{$captcha->getCode()}" maxlength="4" autocomplete="off" placeholder="验证码" title="请输入验证码">
+                </label>
+                <img data-refresh-captcha alt="img" src="{$captcha->getData()}">
+                <input type="hidden" name="uniqid" value="{$captcha->getUniqid()}">
             </li>
             <li class="text-center padding-top-20">
                 <input type="hidden" name="skey" value="{$loginskey|default=''}">
@@ -34,7 +42,7 @@
     <div class="footer notselect">
         <p class="layui-hide-xs"><a target="_blank" href="https://www.google.cn/chrome">推荐使用谷歌浏览器</a></p>
         {:sysconf('site_copy')}
-        {if sysconf('miitbeian')}<span class="padding-5">|</span><a target="_blank" href="http://www.miitbeian.gov.cn">{:sysconf('miitbeian')}</a>{/if}
+        {if sysconf('miitbeian')}<span class="padding-5">|</span><a target="_blank" href="http://beian.miit.gov.cn">{:sysconf('miitbeian')}</a>{/if}
     </div>
 </div>
 {/block}

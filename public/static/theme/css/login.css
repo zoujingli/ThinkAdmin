@@ -64,11 +64,26 @@ body {
   margin-top: 20px;
   text-shadow: #000 0.1em 0.1em 0.1em;
 }
+.login-container form ul li.verify label {
+  width: 200px;
+}
+.login-container form ul li.verify input.layui-input {
+  text-transform: uppercase;
+}
+.login-container form ul li.verify img {
+  width: 95px;
+  height: 44px;
+  cursor: pointer;
+  position: absolute;
+  margin-left: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+}
 .login-container form ul li i.layui-icon {
   color: #fff;
   font-size: 18px;
   position: absolute;
-  padding: 12px 15px 13px 20px;
+  padding: 14px 15px 13px 20px;
 }
 .login-container form ul li input {
   color: #fff;

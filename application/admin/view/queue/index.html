@@ -2,8 +2,16 @@
 
 {block name="button"}
 
-{if auth("admin/queue/remove")}
-<button data-action='{:url("remove")}' data-confirm="确定要删除这些任务吗？" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除任务</button>
+{if auth("remove")}
+<button data-action='{:url("remove")}' data-confirm="确定要批量删除任务吗？" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除任务</button>
+{/if}
+
+{if auth("processstart") && $iswin}
+<button data-load='{:url("processstart")}' class='layui-btn layui-btn-sm layui-btn-primary'>创建监听进程</button>
+{/if}
+
+{if auth("processstop") && $iswin}
+<button data-load='{:url("processstop")}' class='layui-btn layui-btn-sm layui-btn-primary'>停止监听进程</button>
 {/if}
 
 {/block}
@@ -32,14 +40,12 @@
                 <input class="list-check-box" value='{$vo.id}' type='checkbox'>
             </td>
             <td class='text-left nowrap'>
-                任务名称：{$vo.title}
-                <br>
-                任务指令：{$vo.uri}
+                任务名称：{$vo.title}<br>
+                <span class="color-desc">任务指令：{$vo.preload}</span>
             </td>
             <td class='text-left nowrap'>
-                创建时间：{$vo.create_at|format_datetime|raw}
-                <br>
-                跟进时间：{$vo.status_at|format_datetime|raw}
+                创建时间：{$vo.create_at|format_datetime} / {$vo.time|format_datetime}<br>
+                执行时间：{$vo.start_at|format_datetime} / {$vo.end_at|format_datetime}
             </td>
             <td class='text-left nowrap'>
                 任务状态：{eq name='vo.double' value='1'}
@@ -66,7 +72,7 @@
                 </a>
                 {/if}
                 <br>
-                状态描述：<span class="color-desc">{$vo.status_desc|raw|default="没有获取到状态描述"}</span>
+                状态描述：<span class="color-desc">{$vo.desc|raw|default="没有获取到状态描述"}</span>
             </td>
         </tr>
         {/foreach}

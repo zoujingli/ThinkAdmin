@@ -13,11 +13,14 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
+use app\admin\service\CaptchaService;
 use app\admin\service\NodeService;
 use app\admin\service\OplogService;
 use library\File;
+use think\Console;
 use think\Db;
 use think\facade\Middleware;
+use think\facade\Route;
 use think\Request;
 
 if (!function_exists('auth')) {
@@ -63,6 +66,33 @@ if (!function_exists('sysoplog')) {
     function sysoplog($action, $content)
     {
         return OplogService::write($action, $content);
+    }
+}
+
+if (!function_exists('sysqueue')) {
+    /**
+     * 创建异步处理任务
+     * @param string $title 任务名称
+     * @param string $loade 执行内容
+     * @param integer $later 延时执行时间
+     * @param array $data 任务附加数据
+     * @param integer $double 任务多开
+     * @return boolean
+     * @throws \think\Exception
+     */
+    function sysqueue($title, $loade, $later = 0, $data = [], $double = 1)
+    {
+        $map = [['title', 'eq', $title], ['status', 'in', [1, 2]]];
+        if (empty($double) && Db::name('SystemQueue')->where($map)->count() > 0) {
+            throw new \think\Exception('该任务已经创建，请耐心等待处理完成！');
+        }
+        $result = Db::name('SystemQueue')->insert([
+            'title'  => $title, 'preload' => $loade,
+            'data'   => json_encode($data, JSON_UNESCAPED_UNICODE),
+            'time'   => $later > 0 ? time() + $later : time(),
+            'double' => intval($double), 'create_at' => date('Y-m-d H:i:s'),
+        ]);
+        return $result !== false;
     }
 }
 
@@ -117,4 +147,22 @@ Middleware::add(function (Request $request, \Closure $next) {
     } else {
         return json(['code' => 0, 'msg' => '抱歉，需要登录获取访问权限！', 'url' => url('@admin/login')]);
     }
+});
+
+// 注册系统服务指令
+Console::addDefaultCommands([
+    'app\admin\queue\task\Stop',
+    'app\admin\queue\task\Work',
+    'app\admin\queue\task\Start',
+    'app\admin\queue\task\State',
+    'app\admin\queue\task\Query',
+    'app\admin\queue\task\Listen',
+]);
+
+// ThinkAdmin 图形验证码
+Route::get('/think/admin/captcha', function () {
+    $image = new CaptchaService();
+    return json(['code' => '1', 'info' => '生成验证码', 'data' => [
+        'uniqid' => $image->getUniqid(), 'image' => $image->getData()
+    ]]);
 });

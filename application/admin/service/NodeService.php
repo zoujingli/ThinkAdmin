@@ -322,7 +322,7 @@ class NodeService
     }
 
     /**
-     * 获取所有PHP文件
+     * 获取所有PHP文件列表
      * @param string $dirname 扫描目录
      * @param array $data 额外数据
      * @param string $ext 有文件后缀

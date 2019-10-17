@@ -28,8 +28,8 @@ class OplogService
 {
     /**
      * 写入操作日志
-     * @param string $action
-     * @param string $content
+     * @param string $action 日志行为
+     * @param string $content 日志内容
      * @return bool
      */
     public static function write($action = '行为', $content = "内容描述")

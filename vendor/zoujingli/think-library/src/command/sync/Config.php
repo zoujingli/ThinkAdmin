@@ -32,7 +32,7 @@ class Config extends Sync
     protected function configure()
     {
         $this->modules = ['config/'];
-        $this->setName('xsync:config')->setDescription('从远程覆盖本地Config的部分配置文件');
+        $this->setName('xsync:config')->setDescription('[同步]覆盖本地Config应用配置');
     }
 
     /**

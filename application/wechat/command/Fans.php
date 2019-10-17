@@ -43,70 +43,65 @@ class Fans extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        # $output->writeln('preparing for synchronization of fan command...');
         foreach ($this->module as $m) {
             if (method_exists($this, $fun = "_{$m}")) $this->$fun();
         }
-        # $output->writeln('synchronized fans command completion.');
     }
 
 
     /**
      * 同步微信粉丝列表
      * @param string $next
-     * @param integer $index
+     * @param integer $done
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    protected function _list($next = '', $index = 0)
+    protected function _list($next = '', $done = 0)
     {
         $appid = WechatService::getAppid();
         $wechat = WechatService::WeChatUser();
-        $this->output->comment('preparing synchronize fans list ...');
-        while (true) if (is_array($result = $wechat->getUserList($next)) && !empty($result['data']['openid'])) {
+        $this->output->comment('开始同步微信粉丝数据 ...');
+        while (!is_null($next) && is_array($result = $wechat->getUserList($next)) && !empty($result['data']['openid'])) {
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 if (is_array($list = $wechat->getBatchUserInfo($chunk)) && !empty($list['user_info_list'])) {
                     foreach ($list['user_info_list'] as $user) {
-                        $indexString = str_pad(++$index, strlen($result['total']), '0', STR_PAD_LEFT);
-                        $this->output->writeln("({$indexString}/{$result['total']}) updating wechat user {$user['openid']} {$user['nickname']}");
+                        $indexString = str_pad(++$done, strlen($result['total']), '0', STR_PAD_LEFT);
+                        $this->output->writeln("({$indexString}/{$result['total']}) 正在更新粉丝 {$user['openid']} {$user['nickname']}");
                         \app\wechat\service\FansService::set($user, $appid);
                     }
                 }
             }
-            if (in_array($result['next_openid'], $result['data']['openid'])) break;
-            else $next = $result['next_openid'];
+            $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->output->comment('synchronized fans list successful.');
+        $this->output->comment('微信粉丝数据同步完成');
+        $this->output->newLine();
     }
 
     /**
      * 同步粉丝黑名单列表
      * @param string $next
-     * @param integer $index
+     * @param integer $done
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function _black($next = '', $index = 0)
+    public function _black($next = '', $done = 0)
     {
         $wechat = WechatService::WeChatUser();
-        $this->output->comment('prepare synchronize fans black ...');
-        while (true) if (is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
+        $this->output->comment('开始同步微信黑名单数据 ...');
+        while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
+            $done += $result['count'];
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
-                foreach ($chunk as $openid) {
-                    $indexString = str_pad(++$index, strlen($result['total']), '0', STR_PAD_LEFT);
-                    $this->output->writeln("({$indexString}/{$result['total']}) updating wechat black {$openid}");
-                }
-                $where = [['is_black', 'eq', '0'], ['openid', 'in', $chunk]];
-                Db::name('WechatFans')->where($where)->update(['is_black' => '1']);
+                Db::name('WechatFans')->where(['is_black' => '0'])->whereIn('openid', $chunk)->update(['is_black' => '1']);
             }
-            if (in_array($result['next_openid'], $result['data']['openid'])) break;
-            else $next = $result['next_openid'];
+            $this->output->writeln("--> 共计同步微信黑名单{$result['total']}人");
+            $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->output->comment('synchronized fans black successful.');
+        $this->output->comment('微信黑名单数据同步完成');
+        $this->output->newLine();
     }
 
     /**
@@ -121,18 +116,19 @@ class Fans extends Command
     {
         $appid = WechatService::getAppid();
         $wechat = WechatService::WeChatTags();
-        $this->output->comment('prepare synchronize fans tags ...');
+        $this->output->comment('同步微信粉丝标签数据...');
         if (is_array($list = $wechat->getTags()) && !empty($list['tags'])) {
             $count = count($list['tags']);
             foreach ($list['tags'] as &$tag) {
                 $tag['appid'] = $appid;
                 $indexString = str_pad(++$index, strlen($count), '0', STR_PAD_LEFT);
-                $this->output->writeln("({$indexString}/{$count}) updating wechat tags {$tag['name']}");
+                $this->output->writeln("({$indexString}/{$count}) 更新粉丝标签 {$tag['name']}");
             }
             Db::name('WechatFansTags')->where(['appid' => $appid])->delete();
             Db::name('WechatFansTags')->insertAll($list['tags']);
         }
-        $this->output->comment('synchronized fans tags successful.');
+        $this->output->comment('微信粉丝标签数据同步完成');
+        $this->output->newLine();
     }
 
 }

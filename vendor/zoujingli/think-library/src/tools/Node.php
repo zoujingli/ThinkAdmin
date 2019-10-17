@@ -29,18 +29,13 @@ class Node
      * 忽略控制名的前缀
      * @var array
      */
-    private static $ignoreController = [
-        'api.', 'wap.', 'web.',
-    ];
+    private static $ignoreController = ['api.', 'wap.', 'web.'];
 
     /**
      * 忽略控制的方法名
      * @var array
      */
-    private static $ignoreAction = [
-        '_', 'redirect', 'assign', 'callback',
-        'initialize', 'success', 'error', 'fetch',
-    ];
+    private static $ignoreAction = ['_', 'redirect', 'assign', 'callback', 'initialize', 'success', 'error', 'fetch'];
 
     /**
      * 获取标准访问节点

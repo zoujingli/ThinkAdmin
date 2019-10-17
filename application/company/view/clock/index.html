@@ -1,0 +1,41 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='clock/index_search'}
+    <table class="layui-table" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
+            <th class='text-left nowrap'>员工姓名</th>
+            <th class='text-left nowrap'>打卡日期</th>
+            <th class='text-left nowrap'>内网地址</th>
+            <th class='text-left nowrap'>首次打卡</th>
+            <th class='text-left nowrap'>最后打卡</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
+            <td class='text-left nowrap'>{$vo.name|default=''}</td>
+            <td class='text-left nowrap'>{$vo.date|default='-'}</td>
+            <td class='text-left nowrap'>{$vo.ip|default='-'}</td>
+            <td class='text-left nowrap'>{$vo.start_at|format_datetime}</td>
+            <td class='text-left nowrap'>{$vo.end_at|format_datetime}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+
+{/block}

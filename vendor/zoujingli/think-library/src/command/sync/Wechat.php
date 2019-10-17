@@ -32,7 +32,7 @@ class Wechat extends Sync
     protected function configure()
     {
         $this->modules = ['application/wechat/'];
-        $this->setName('xsync:wechat')->setDescription('从远程覆盖本地Wechat模块的所有代码');
+        $this->setName('xsync:wechat')->setDescription('[同步]覆盖本地Wechat模块代码');
     }
 
     /**

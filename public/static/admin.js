@@ -11,13 +11,6 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-// 浏览器兼容提示
-(function (w) {
-    if (!("WebSocket" in w && 2 === w.WebSocket.CLOSING)) {
-        document.body.innerHTML = '<div class="version-debug">您使用的浏览器已经<strong>过时</strong>，建议使用最新版本的谷歌浏览器。<a target="_blank" href="https://www.google.cn/chrome" class="layui-btn layui-btn-primary">立即下载</a></div>';
-    }
-}(window));
-
 // Layui & jQuery
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
@@ -35,15 +28,13 @@ require.config({
     map: {'*': {css: baseRoot + 'plugs/require/css.js'}},
     paths: {
         'md5': ['plugs/jquery/md5.min'],
-        'spop': ['plugs/spop/spop.min'],
         'json': ['plugs/jquery/json.min'],
         'michat': ['plugs/michat/michat'],
-        'upload': ['plugs/plupload/build'],
+        'upload': ['plugs/jquery/uploader'],
         'base64': ['plugs/jquery/base64.min'],
         'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
         'ckeditor': ['plugs/ckeditor/ckeditor'],
-        'plupload': ['plugs/plupload/plupload.full.min'],
         'websocket': ['plugs/socket/websocket'],
         'pcasunzips': ['plugs/jquery/pcasunzips'],
         'jquery.ztree': ['plugs/ztree/ztree.all.min'],
@@ -51,7 +42,6 @@ require.config({
         'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
     },
     shim: {
-        'spop': {deps: ['css!' + baseRoot + 'plugs/spop/spop.min.css']},
         'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
         'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
         'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
@@ -68,7 +58,7 @@ $(function () {
     /*! 消息组件实例 */
     $.msg = new function (that) {
         that = this;
-        this.indexs = [];
+        this.idx = [];
         this.shade = [0.02, '#000'];
         // 关闭消息框
         this.close = function (index) {
@@ -77,7 +67,7 @@ $(function () {
         // 弹出警告框
         this.alert = function (msg, callback) {
             var index = layer.alert(msg, {end: callback, scrollbar: false});
-            return this.indexs.push(index), index;
+            return this.idx.push(index), index;
         };
         // 确认对话框
         this.confirm = function (msg, ok, no) {
@@ -92,22 +82,22 @@ $(function () {
         // 显示成功类型的消息
         this.success = function (msg, time, callback) {
             var index = layer.msg(msg, {icon: 1, shade: this.shade, scrollbar: false, end: callback, time: (time || 2) * 1000, shadeClose: true});
-            return this.indexs.push(index), index;
+            return this.idx.push(index), index;
         };
         // 显示失败类型的消息
         this.error = function (msg, time, callback) {
             var index = layer.msg(msg, {icon: 2, shade: this.shade, scrollbar: false, time: (time || 3) * 1000, end: callback, shadeClose: true});
-            return this.indexs.push(index), index;
+            return this.idx.push(index), index;
         };
         // 状态消息提示
         this.tips = function (msg, time, callback) {
             var index = layer.msg(msg, {time: (time || 3) * 1000, shade: this.shade, end: callback, shadeClose: true});
-            return this.indexs.push(index), index;
+            return this.idx.push(index), index;
         };
         // 显示正在加载中的提示
         this.loading = function (msg, callback) {
             var index = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: callback}) : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: callback});
-            return this.indexs.push(index), index;
+            return this.idx.push(index), index;
         };
         // 自动处理显示Think返回的Json数据
         this.auto = function (ret, time) {
@@ -118,8 +108,8 @@ $(function () {
             }
             return (parseInt(ret.code) === 1) ? this.success(msg, time, function () {
                 url ? (window.location.href = url) : $.form.reload();
-                for (var i in that.indexs) layer.close(that.indexs[i]);
-                that.indexs = [];
+                for (var i in that.idx) layer.close(that.idx[i]);
+                that.idx = [];
             }) : this.error(msg, 3, function () {
                 url ? window.location.href = url : '';
             });
@@ -151,6 +141,15 @@ $(function () {
                 laydate.render({
                     type: this.getAttribute('data-date-range') || 'date',
                     range: true, elem: this, done: function (value) {
+                        $(this.elem).val(value).trigger('change');
+                    }
+                });
+            });
+            $dom.find('input[data-date-input]').map(function () {
+                this.setAttribute('autocomplete', 'off');
+                laydate.render({
+                    type: this.getAttribute('data-date-input') || 'date',
+                    range: false, elem: this, done: function (value) {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
@@ -243,7 +242,7 @@ $(function () {
                         $.form.reInit($(dom));
                     }
                 });
-                $.msg.indexs.push(index);
+                $.msg.idx.push(index);
                 return (typeof callback === 'function') && callback.call(that);
             }, loading, tips);
         };
@@ -284,7 +283,10 @@ $(function () {
                 params.spm = obj && obj.getAttribute('data-menu-node') || this.queryNode(uri);
             }
             if (typeof params.spm !== 'string' || params.spm.length < 1) delete params.spm;
-            var query = '?' + $.param(params);
+            // 生成新的 URL 参数
+            var attrs = [];
+            for (var i in params) attrs.push([i, params[i]].join('='));
+            var query = '?' + attrs.join('&');
             return uri + (query === '?' ? '' : query);
         };
         // 后台菜单动作初始化
@@ -745,14 +747,32 @@ $(function () {
     });
 
     /*! 后台加密登录处理 */
-    $body.find('[data-login-form]').map(function () {
+    $body.find('[data-login-form]').map(function (that) {
+        that = this;
         require(["md5"], function (md5) {
             $("form").vali(function (data) {
                 data['password'] = md5.hash(md5.hash(data['password']) + data['skey']);
                 if (data['skey']) delete data['skey'];
-                $.form.load(location.href, data, "post", null, null, null, 'false');
+                $.form.load(location.href, data, "post", function (ret) {
+                    if (parseInt(ret.code) !== 1) {
+                        $(that).find('.verify.layui-hide').removeClass('layui-hide');
+                        $(that).find('[data-refresh-captcha]').trigger('click');
+                    }
+                }, null, null, 'false');
             });
         });
+    });
+
+    /*! 后台图形验证码刷新 */
+    $body.on('click', '[data-refresh-captcha]', function (image, verify, uniqid) {
+        image = this, uniqid = this.getAttribute('data-uniqid-field') || 'uniqid';
+        verify = this.getAttribute('data-refresh-captcha') || this.getAttribute('data-verify-field') || 'verify';
+        $.form.load('?s=think/admin/captcha', {}, 'get', function (ret) {
+            image.src = ret.data.image;
+            $(image).parents('form').find('[name=' + verify + ']').attr('value', '');
+            $(image).parents('form').find('[name=' + uniqid + ']').val(ret.data.uniqid);
+            return false;
+        }, false);
     });
 
     /*! 图片加载异常处理 */

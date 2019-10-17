@@ -1,6 +1,3 @@
-[![Latest Stable Version](https://poser.pugx.org/zoujingli/thinkadmin/v/stable)](https://packagist.org/packages/zoujingli/thinkadmin) [![Total Downloads](https://poser.pugx.org/zoujingli/thinkadmin/downloads)](https://packagist.org/packages/zoujingli/thinkadmin) [![Latest Unstable Version](https://poser.pugx.org/zoujingli/thinkadmin/v/unstable)](https://packagist.org/packages/zoujingli/thinkadmin) [![License](https://poser.pugx.org/zoujingli/thinkadmin/license)](https://packagist.org/packages/zoujingli/thinkadmin)
-
-
 ## 大道至简 · 原生框架
 
 ThinkAdmin V5 是一个基于 ThinkPHP 5.1 开发的后台管理系统。
@@ -9,9 +6,12 @@ ThinkAdmin V5 是一个基于 ThinkPHP 5.1 开发的后台管理系统。
 
 另外项目安装及二次开发可以参考 ThinkPHP 官方文档，数据库文件摆放在项目根目录下。
 
+ThinkAdmin 非常适用快速二次开发，默认集成 微信开发组件，支持微信服务号、微信支付、支付宝支付、阿里云OSS存储、七牛云存储、本地服务器存储等。
+后台UI基于最新版本的 LayUI 及 RequireJs 加载第三方插件（建议自行了解 LayUI 及 RequireJs）。
+
 #### 注意事项 
 * 项目测试需要自行搭建环境导入数据库( admin_v5.sql )并修改配置( config/database.php )；
-* 若操作提示“测试系统禁止操作”等字样，需要删除演示路由配置( route/demo.php )或清空路由文件；
+* 若操作提示“演示系统禁止操作”等字样，需要删除演示路由配置( route/demo.php )或清空路由文件；
 * 当前版本使用 ThinkPHP 5.1.x，对 PHP 版本标注不低于 PHP 5.6，具体请阅读 ThinkPHP 官方文档；
 * 环境需开启 PATHINFO，不再支持 ThinkPHP 的 URL 兼容模式运行（源于如何优雅的展示）；
 
@@ -78,10 +78,11 @@ public function index(){
 * 执行 `php think xfans:black` 更新已经对接的公众号黑名单列表
 
 #### 3. 守护进程管理
-* 执行 `php think xtask:reset` 重启消息任务守护进程
-* 执行 `php think xtask:start` 启动消息任务守护进程
-* 执行 `php think xtask:state` 查询消息任务守护进程
-* 执行 `php think xtask:stop` 暂停消息任务守护进程
+* 执行 `php think xtask:listen` 启动异步任务监听守护主进程
+* 执行 `php think xtask:query` 查询正在执行的所有任务进程
+* 执行 `php think xtask:start` 创建异步任务监听守护主进程
+* 执行 `php think xtask:state` 查看异步任务监听主进程状态
+* 执行 `php think xtask:stop` 平滑停止异步任务所有的进程
 
 #### 4. 其它自定工具
 * 执行 `php think xclean:session` 清理无效的会话SESSION文件
@@ -89,17 +90,16 @@ public function index(){
  
 ## 特别感谢
 
-|名称|版本|描述|链接|
-|---|---|---|---|
-|layui|2.4.5|UI组件库|https://github.com/sentsin/layui|
-|ckeditor|4.10.1|富文件编辑器|https://github.com/ckeditor/ckeditor-dev|
-|pluploader|3.1.2|文件上传工具|https://www.plupload.com|
-|webuploader|0.1.5|暂时不使用了|https://github.com/fex-team/webuploader|
-|font-awesome|4.7.0|字体图标库|https://github.com/FortAwesome/Font-Awesome|
-|ThinkPHP|5.1.37|PHP基础框架|https://github.com/top-think/framework|
-|ThinkLibrary|5.1.x-dev|ThinkPHP扩展组件|https://github.com/zoujingli/ThinkLibrary|
-|WeChatDeveloper|1.2.9|微信公众号组件|https://github.com/zoujingli/WeChatDeveloper|
-|WeOpenDeveloper|dev-master|微信开放平台组件|https://github.com/zoujingli/WeOpenDeveloper|
+|名称|描述|
+|---|---|
+|layui|后台基础UI组件库|
+|ckeditor|后台富文本编辑器|
+|awesome|后台扩展字体图标库|
+|pluploader|后台文件上传工具|
+|ThinkPHP|PHP基础支持框架|
+|ThinkLibrary|ThinkPHP扩展组件|
+|WeChatDeveloper|微信开放工具组件|
+|WeOpenDeveloper|微信开放平台组件|
 
 ## 赞助打赏
 ![赞助](http://static.thinkadmin.top/pay.png)

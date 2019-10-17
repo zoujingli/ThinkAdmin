@@ -32,7 +32,7 @@ class Sess extends Command
      */
     protected function configure()
     {
-        $this->setName('xclean:session')->setDescription('清理失效过期的会话文件');
+        $this->setName('xclean:session')->setDescription('[清理]删除失效的会话文件');
     }
 
     /**
@@ -46,7 +46,7 @@ class Sess extends Command
         foreach (glob(config('session.path') . 'sess_*') as $file) {
             list($fileatime, $filesize) = [fileatime($file), filesize($file)];
             if ($filesize < 1 || $fileatime < time() - 3600) {
-                $output->info('clear session file -> [ ' . date('Y-m-d H:i:s', $fileatime) . ' ] ' . basename($file) . " {$filesize}");
+                $output->info('移除会话文件 -> [ ' . date('Y-m-d H:i:s', $fileatime) . ' ] ' . basename($file) . " {$filesize}");
                 @unlink($file);
             }
         }

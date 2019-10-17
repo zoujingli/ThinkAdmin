@@ -102,7 +102,7 @@ class Client extends Controller
     private function create($token)
     {
         if ($this->auth($token)) {
-            $weminiClassName = 'Account,Basic,Code,Domain,Tester,User,Crypt,Plugs,Poi,Qrcode,Template,Total';
+            $weminiClassName = 'Account,Basic,Code,Domain,Tester,User,Crypt,Plugs,Poi,Qrcode,Template,Total,Delivery,Image,Logistics,Message,Ocr,Security,Soter';
             $wechatClassName = 'Card,Custom,Limit,Media,Menu,Oauth,Pay,Product,Qrcode,Receive,Scan,Script,Shake,Tags,Template,User,Wifi';
             if ($this->type === 'wechat' && stripos($wechatClassName, $this->name) !== false) {
                 $instance = WechatService::instance($this->name, $this->appid, 'WeChat');
