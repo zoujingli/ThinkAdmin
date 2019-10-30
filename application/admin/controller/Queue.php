@@ -17,7 +17,7 @@ namespace app\admin\controller;
 
 use library\Controller;
 use think\Console;
-use think\Db;
+use think\exception\HttpResponseException;
 
 /**
  * 系统系统任务
@@ -30,7 +30,7 @@ class Queue extends Controller
      * 绑定数据表
      * @var string
      */
-    protected $table = 'SystemJobsLog';
+    protected $table = 'SystemQueue';
 
     /**
      * 系统系统任务
@@ -44,54 +44,68 @@ class Queue extends Controller
      */
     public function index()
     {
-        $this->title = '系统任务管理';
-        if (session('admin_user.username') === 'admin') {
+        if (session('admin_user.username') === 'admin') try {
             $this->cmd = 'php ' . env('root_path') . 'think xtask:start';
             $this->message = Console::call('xtask:state')->fetch();
+        } catch (\Exception $exception) {
+            $this->message = $exception->getMessage();
         }
-        $this->uris = Db::name($this->table)->distinct(true)->column('uri');
-        $query = $this->_query($this->table)->dateBetween('create_at,status_at');
-        $query->equal('status,title,uri')->order('id desc')->page();
+        $this->title = '系统任务管理';
+        $this->iswin = PATH_SEPARATOR === ';';
+        $query = $this->_query($this->table)->dateBetween('create_at,start_at,end_at');
+        $query->like('title,preload')->equal('status')->order('id desc')->page();
     }
 
     /**
-     * 重置失败任务
+     * 重启系统任务
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function redo()
     {
+        $this->_save($this->table, ['status' => '1']);
+    }
+
+    /**
+     * (WIN)创建任务监听进程
+     * @auth true
+     */
+    public function processStart()
+    {
         try {
-            $where = ['id' => $this->request->post('id')];
-            $info = Db::name($this->table)->where($where)->find();
-            if (empty($info)) $this->error('需要重置的任务获取异常！');
-            $data = isset($info['data']) ? json_decode($info['data'], true) : '[]';
-            \app\admin\service\QueueService::add($info['title'], $info['uri'], $info['later'], $data, $info['double'], $info['desc']);
-            $this->success('任务重置成功！', url('@admin') . '#' . url('@admin/queue/index'));
-        } catch (\think\exception\HttpResponseException $exception) {
+            $this->success(nl2br(Console::call('xtask:start')->fetch()));
+        } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
-            $this->error("任务重置失败，请稍候再试！<br> {$e->getMessage()}");
+            $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * (WIN)停止任务监听进程
+     * @auth true
+     */
+    public function processStop()
+    {
+        try {
+            $this->success(nl2br(Console::call('xtask:stop')->fetch()));
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
         }
     }
 
     /**
      * 删除系统任务
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {
-        try {
-            $isNot = false;
-            foreach (explode(',', $this->request->post('id', '0')) as $id) {
-                if (!\app\admin\service\QueueService::del($id)) $isNot = true;
-            }
-            if (empty($isNot)) $this->_delete($this->table);
-            $this->success($isNot ? '部分任务删除成功！' : '任务删除成功！');
-        } catch (\think\exception\HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $e) {
-            $this->error("任务删除失败，请稍候再试！<br> {$e->getMessage()}");
-        }
+        $this->_delete($this->table);
     }
 
 }

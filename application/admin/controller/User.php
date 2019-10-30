@@ -118,12 +118,14 @@ class User extends Controller
     public function _form_filter(&$data)
     {
         if ($this->request->isPost()) {
+            // 刷新系统授权
             NodeService::applyUserAuth();
+            // 用户权限处理
             $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
-            if (isset($data['id'])) {
-                unset($data['username']);
-            } elseif (Db::name($this->table)->where(['username' => $data['username']])->count() > 0) {
-                $this->error('用户账号已经存在，请使用其它账号！');
+            // 用户账号重复检查
+            if (isset($data['id'])) unset($data['username']);
+            elseif (Db::name($this->table)->where(['username' => $data['username'], 'is_deleted' => '0'])->count() > 0) {
+                $this->error("账号{$data['username']}已经存在，请使用其它账号！");
             }
         } else {
             $data['authorize'] = explode(',', isset($data['authorize']) ? $data['authorize'] : '');

@@ -14,7 +14,7 @@
                     <!--{/eq}-->
                     <!--{/foreach}-->
                 </select>
-                <p class="help-block"><b>必选</b>，请选择上级菜单或顶级菜单（目前最多支持三级菜单）</p>
+                <p class="help-block">必选，请选择上级菜单或顶级菜单（目前最多支持三级菜单）</p>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
             <label class="layui-form-label">菜单名称</label>
             <div class="layui-input-block">
                 <input name="title" value='{$vo.title|default=""}' required placeholder="请输入菜单名称" class="layui-input">
-                <p class="help-block"><b>必填</b>，请填写菜单名称（如：系统管理），建议字符不要太长，一般4-6个汉字</p>
+                <p class="help-block">必填，请填写菜单名称（如：系统管理），建议字符不要太长，一般4-6个汉字</p>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
             <div class="layui-input-block">
                 <input onblur="this.value=this.value === ''?'#':this.value" name="url" required placeholder="请输入菜单链接" value="{$vo.url|default='#'}" class="layui-input">
                 <p class="help-block">
-                    <b>必填</b>，请填写系统节点（如：admin/user/index），节点加入权限管理时菜单才会自动隐藏，非规则内的不会隐藏；
+                    必填，请填写系统节点（如：admin/user/index），节点加入权限管理时菜单才会自动隐藏，非规则内的不会隐藏；
                     <br>正常情况下，在输入的时候会有自动提示。如果是上级菜单时，请填写"#"符号，不要填写地址或节点地址
                 </p>
             </div>
@@ -41,7 +41,7 @@
             <label class="layui-form-label">链接参数</label>
             <div class="layui-input-block">
                 <input name="params" placeholder="请输入链接参数" value="{$vo.params|default=''}" class="layui-input">
-                <p class="help-block"><b>可选</b>，设置菜单链接的GET访问参数（如：name=1&age=3）</p>
+                <p class="help-block">可选，设置菜单链接的GET访问参数（如：name=1&age=3）</p>
             </div>
         </div>
 
@@ -55,16 +55,16 @@
                     <i style="font-size:1.2em;margin:0" class='{$vo.icon|default=""}'></i>
                 </span>
                 <button data-icon='icon' type='button' class='layui-btn layui-btn-primary'>选择图标</button>
-                <p class="help-block"><b>可选</b>，设置菜单选项前置图标，目前只支持 Font Awesome 5.2.0 字体图标</p>
+                <p class="help-block">可选，设置菜单选项前置图标，目前只支持 Font Awesome 5.2.0 字体图标</p>
             </div>
         </div>
 
     </div>
 
     <div class="hr-line-dashed"></div>
+    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
 
     <div class="layui-form-item text-center">
-        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>

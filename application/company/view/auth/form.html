@@ -1,0 +1,35 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">权限名称</label>
+            <div class="layui-input-block">
+                <input name="title" value='{$vo.title|default=""}' required placeholder="请输入权限名称" class="layui-input">
+                <p class="help-block">权限名称将出现在员工SVN授权处，请根据需求准确填写权限名称。</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">权限路径</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="path" placeholder="请输入权限路径">{$vo.path|default=''}</textarea>
+                <p class="help-block">权限路径将配置到SVN权限分组上，务必要保证路径与SVN文件路径一致。</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限描述</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="desc" placeholder="请输入权限描述">{$vo.desc|default=''}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+    <script>window.form.render();</script>
+
+</form>

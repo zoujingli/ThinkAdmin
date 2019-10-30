@@ -30,6 +30,6 @@ class FansAll extends Fans
     protected function configure()
     {
         $this->module = ['list', 'black', 'tags'];
-        $this->setName('xfans:all')->setDescription('从微信获取所有粉丝记录和标签');
+        $this->setName('xfans:all')->setDescription('[同步]所有微信粉丝的数据');
     }
 }

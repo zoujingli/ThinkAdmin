@@ -30,9 +30,9 @@ class Csv
     public static function header($filename, array $headers)
     {
         header('Content-Type: application/octet-stream');
-        header("Content-Disposition: attachment; filename=" . iconv('utf-8', 'gbk//TRANSLIT', $filename));
+        header("Content-Disposition: attachment; filename=" . iconv('UTF-8', 'GB2312//IGNORE', $filename));
         $handle = fopen('php://output', 'w');
-        foreach ($headers as $key => $value) $headers[$key] = iconv("utf-8", "gbk//TRANSLIT", $value);
+        foreach ($headers as $key => $value) $headers[$key] = iconv("UTF-8", "GB2312//IGNORE", $value);
         fputcsv($handle, $headers);
         if (is_resource($handle)) fclose($handle);
     }
@@ -63,6 +63,6 @@ class Csv
     {
         list($temp, $attr) = [$data, explode('.', trim($rule, '.'))];
         while ($key = array_shift($attr)) $temp = isset($temp[$key]) ? $temp[$key] : $temp;
-        return (is_string($temp) || is_numeric($temp)) ? @iconv('utf-8', 'gbk//TRANSLIT', "{$temp}") : '';
+        return (is_string($temp) || is_numeric($temp)) ? @iconv('UTF-8', 'GB2312//IGNORE', "{$temp}") : '';
     }
 }

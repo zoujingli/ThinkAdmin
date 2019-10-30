@@ -19,6 +19,7 @@ use library\File;
 use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\UploadManager;
 use think\facade\Log;
+use think\facade\Request;
 
 /**
  * 七牛云文件驱动
@@ -62,27 +63,25 @@ class Qiniu extends File
     }
 
     /**
-     * 根据配置获取到七牛云文件上传目标地址
+     * 根据请求计算七牛云文件上传目标地址
      * @param boolean $client
      * @return string
      * @throws \think\Exception
      */
     public function upload($client = false)
     {
-        $isHttps = !!self::$config->get('storage_qiniu_is_https');
+        $protocol = Request::isSsl() ? 'https' : 'http';
         switch (self::$config->get('storage_qiniu_region')) {
             case '华东':
-                if ($isHttps) return $client ? 'https://upload.qiniup.com' : 'https://upload.qiniup.com';
-                return $client ? 'http://upload.qiniup.com' : 'http://upload.qiniup.com';
+                return $client ? "{$protocol}://up.qiniup.com" : "{$protocol}://upload.qiniup.com";
             case '华北':
-                if ($isHttps) return $client ? 'https://upload-z1.qiniup.com' : 'https://up-z1.qiniup.com';
-                return $client ? 'http://upload-z1.qiniup.com' : 'http://up-z1.qiniup.com';
+                return $client ? "{$protocol}://up-z1.qiniup.com" : "{$protocol}://upload-z1.qiniup.com";
             case '北美':
-                if ($isHttps) return $client ? 'https://upload-na0.qiniup.com' : 'https://up-na0.qiniup.com';
-                return $client ? 'http://upload-na0.qiniup.com' : 'http://up-na0.qiniup.com';
+                return $client ? "{$protocol}://up-na0.qiniup.com" : "{$protocol}://upload-na0.qiniup.com";
             case '华南':
-                if ($isHttps) return $client ? 'https://upload-z2.qiniup.com' : 'https://up-z2.qiniup.com';
-                return $client ? 'http://upload-z2.qiniup.com' : 'http://up-z2.qiniup.com';
+                return $client ? "{$protocol}://up-z2.qiniup.com" : "{$protocol}://upload-z2.qiniup.com";
+            case "东南亚":
+                return $client ? "{$protocol}://up-as0.qiniup.com" : "{$protocol}://upload-as0.qiniup.com";
             default:
                 throw new \think\Exception('未配置七牛云存储区域');
         }
@@ -202,6 +201,21 @@ class Qiniu extends File
             self::$config->get('storage_qiniu_access_key'),
             self::$config->get('storage_qiniu_secret_key')
         );
+    }
+
+    /**
+     * 生成文件上传TOKEN
+     * @param null|string $key 指定保存名称
+     * @param integer $expires 指定令牌有效时间
+     * @return string
+     * @throws \think\Exception
+     */
+    public function buildUploadToken($key = null, $expires = 3600)
+    {
+        $location = $this->base();
+        $bucket = self::$config->get('storage_qiniu_bucket');
+        $policy = ['returnBody' => '{"uploaded":true,"filename":"$(key)","url":"' . $location . '$(key)"}'];
+        return $this->getAuth()->uploadToken($bucket, $key, $expires, $policy, true);
     }
 
 }

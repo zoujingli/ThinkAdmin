@@ -21,16 +21,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">任务指令</label>
             <div class="layui-input-inline">
-                <select class="layui-select" name="uri" lay-search>
-                    <option value="">-- 全部指令 --</option>
-                    {foreach $uris as $uri}
-                    <!--{eq name='Think.get.uri' value='$uri'}-->
-                    <option selected value="{$uri}">{$uri}</option>
-                    <!--{else}-->
-                    <option value="{$uri}">{$uri}</option>
-                    <!--{/eq}-->
-                    {/foreach}
-                </select>
+                <input name="preload" value="{$Think.get.preload|default=''}" placeholder="请输入任务指令" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
@@ -54,9 +45,15 @@
             </div>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">跟进时间</label>
+            <label class="layui-form-label">开始时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="status_at" value="{$Think.get.status_at|default=''}" placeholder="请选择跟进时间" class="layui-input">
+                <input data-date-range name="start_at" value="{$Think.get.start_at|default=''}" placeholder="请选择开始时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="end_at" value="{$Think.get.end_at|default=''}" placeholder="请选择结束时间" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">

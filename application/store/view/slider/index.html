@@ -1,0 +1,135 @@
+{extend name="admin@main"}
+
+{block name="content"}
+<form onsubmit="return false;" id="SliderForm" class='layui-form layui-card' autocomplete="off">
+
+    <div class="layui-card think-box-shadow">
+        <div class="layui-card-header text-center">
+            轮播图管理<span class="font-s12 color-desc">（ 尺寸 {$size} ）</span>
+        </div>
+        <div class="layui-card-body padding-bottom-15 padding-right-0 padding-left-0" data-slider-box>
+            {foreach $list as $key => $vo}
+            <div class="layui-row margin-top-10" data-slider-item>
+                <div class="layui-col-xs3 text-right">
+                    <input data-upload-image name="img[]" type="hidden" value="{$vo.img|default='#'}">
+                </div>
+                <div class="layui-col-xs6 relative">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">图片标题</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" name="title[]" value="{$vo.title|default='#'}" required placeholder="请输入图片标题">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">跳转页面</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" name="url[]" value="{$vo.url|default='#'}" required placeholder="请输入跳转页面">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs2">
+                    <div>
+                        <a data-item-up class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-up margin-0"></i></a>
+                        <a data-item-dn class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-down margin-0"></i></a>
+                    </div>
+                    <div class="margin-top-15">
+                        <a data-item-rm class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-close margin-0"></i></a>
+                    </div>
+                </div>
+            </div>
+            {/foreach}
+            <div class="layui-form-item text-center">
+                <div class="hr-line-dashed"></div>
+                <p class="help-block text-center">{$desc}</p>
+                <a data-item-add class="layui-btn layui-btn-primary">添加图片</a>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" data-submit>保存数据</button>
+        </div>
+    </div>
+
+</form>
+
+<div data-item-tpl class="layui-hide">
+    <div class="layui-row margin-top-10" data-slider-item>
+        <div class="layui-col-xs3 text-right">
+            <input data-upload-image name="img[]" type="hidden">
+        </div>
+        <div class="layui-col-xs6 relative">
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片标题</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" name="title[]" value="#" required placeholder="请输入图片标题">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">跳转页面</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" name="url[]" value="#" required placeholder="请输入跳转页面">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-xs2">
+            <div>
+                <a data-item-up class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-up margin-0"></i></a>
+                <a data-item-dn class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-down margin-0"></i></a>
+            </div>
+            <div class="margin-top-15">
+                <a data-item-rm class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-close margin-0"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        // 初始化上传插件
+        (function initUpload() {
+            $('[data-slider-box] input[data-upload-image]').map(function () {
+                if (!$(this).attr('inited')) $(this).attr('inited', true).uploadOneImage();
+            });
+            setTimeout(initUpload, 100);
+        })();
+        $('[data-slider-box]').on('click', '[data-item-add]', function () {
+            // 添加图片选项
+            $(this).parent().before($('[data-item-tpl]').html()), setTimeout(function () {
+                $.form.reInit();
+            }, 100);
+        }).on('click', '[data-item-rm]', function () {
+            // 移除图片选项
+            $(this).parents('[data-slider-item]').remove();
+        }).on('click', '[data-item-up]', function () {
+            // 上移图片选项
+            var item = $(this).parents('[data-slider-item]');
+            var prev = item.prev('[data-slider-item]');
+            if (item.index() > 0) item.insertBefore(prev);
+        }).on('click', '[data-item-dn]', function () {
+            // 下移图片选项
+            var item = $(this).parents('[data-slider-item]');
+            var next = item.next('[data-slider-item]');
+            if (next) item.insertAfter(next);
+        });
+        // 表单提交处理
+        $('form#SliderForm').vali(function (ret) {
+            var data = [];
+            for (var i in ret.img) {
+                if (!ret.img[i]) return $.msg.tips('请上传展示图片哦！');
+                data.push({img: ret.img[i], url: ret.url[i], title: ret.title[i]});
+            }
+            $.form.load('{:url()}', {data: JSON.stringify(data)}, 'post');
+        });
+    });
+</script>
+
+{/block}
+
+{block name='style'}
+<style>
+    .uploadimage {
+        width: 160px;
+        height: 98px;
+    }
+</style>
+{/block}

@@ -47,12 +47,19 @@ use think\Db;
  * @method \WeMini\Tester WeMinitester($appid) static 小程序成员管理
  * @method \WeMini\User WeMiniUser($appid) static 小程序帐号管理
  * --------------------
- * @method \WeMini\Crypt WeMiniCrypt($appid) static 小程序数据加密处理
- * @method \WeMini\Plugs WeMiniPlugs($appid) static 小程序插件管理
- * @method \WeMini\Poi WeMiniPoi($appid) static 小程序地址管理
- * @method \WeMini\Qrcode WeMiniQrcode($appid) static 小程序二维码管理
- * @method \WeMini\Template WeMiniTemplate($appid) static 小程序模板消息支持
- * @method \WeMini\Total WeMiniTotal($appid) static 小程序数据接口
+ * @method \WeMini\Crypt WeMiniCrypt($options = []) static 小程序数据加密处理
+ * @method \WeMini\Delivery WeMiniDelivery($options = []) static 小程序即时配送
+ * @method \WeMini\Image WeMiniImage($options = []) static 小程序图像处理
+ * @method \WeMini\Logistics WeMiniLogistics($options = []) static 小程序物流助手
+ * @method \WeMini\Message WeMiniMessage($options = []) static 小程序动态消息
+ * @method \WeMini\Ocr WeMiniOcr($options = []) static 小程序ORC服务
+ * @method \WeMini\Plugs WeMiniPlugs($options = []) static 小程序插件管理
+ * @method \WeMini\Poi WeMiniPoi($options = []) static 小程序地址管理
+ * @method \WeMini\Qrcode WeMiniQrcode($options = []) static 小程序二维码管理
+ * @method \WeMini\Security WeMiniSecurity($options = []) static 小程序内容安全
+ * @method \WeMini\Soter WeMiniSoter($options = []) static 小程序生物认证
+ * @method \WeMini\Template WeMiniTemplate($options = []) static 小程序模板消息支持
+ * @method \WeMini\Total WeMiniTotal($options = []) static 小程序数据接口
  *
  * ----- WePay -----
  * @method \WePay\Bill WePayBill($appid) static 微信商户账单及评论

@@ -50,6 +50,11 @@ class GoodsCate extends Controller
     /**
      * 添加商品分类
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function add()
     {
@@ -60,6 +65,11 @@ class GoodsCate extends Controller
     /**
      * 编辑商品分类
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function edit()
     {
@@ -70,6 +80,8 @@ class GoodsCate extends Controller
     /**
      * 禁用商品分类
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -79,6 +91,8 @@ class GoodsCate extends Controller
     /**
      * 启用商品分类
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {
@@ -88,6 +102,8 @@ class GoodsCate extends Controller
     /**
      * 删除商品分类
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {

@@ -18,7 +18,7 @@ namespace app\store\controller\api;
 use library\Controller;
 
 /**
- * 快递查询结果
+ * 快递查询接口
  * Class Express
  * @package app\store\controller\api
  */
@@ -29,9 +29,9 @@ class Express extends Controller
      */
     public function query()
     {
-        $express_no = $this->request->post('express_no', '');
-        $express_code = $this->request->post('express_code', '');
-        $result = \library\tools\Express::query($express_code, $express_no);
+        $this->expressNo = input('express_no', '');
+        $this->expressCode = input('express_code', '');
+        $result = \library\tools\Express::query($this->expressCode, $this->expressNo);
         $this->success('获取物流查询结果！', $result);
     }
 

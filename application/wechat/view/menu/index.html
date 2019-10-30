@@ -96,13 +96,14 @@
     </div>
 
     <div class="text-center margin-top-20">
-        <!--{if auth("wechat/menu/edit")}-->
+        {if auth("edit")}
         <button class="layui-btn menu-submit" ng-click="submit()">保存发布</button>
-        <!--{/if}-->
-        <!--{if auth("wechat/menu/cancel")}-->
-        <button data-load='{:url("wechat/menu/cancel")}' class="layui-btn layui-btn-danger">取消发布</button>
-        <!--{/if}-->
+        {/if}
+        {if auth("cancel")}
+        <button data-load='{:url("cancel")}' class="layui-btn layui-btn-danger">取消发布</button>
+        {/if}
     </div>
+
 </div>
 
 <script>

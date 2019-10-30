@@ -1,0 +1,20 @@
+<form onsubmit="return false;" data-auto="true" action="{:url()}" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body">
+        <div class="color-text margin-left-40 margin-bottom-20 layui-code" style="border-left-width:1px;background:none">
+            <p>文件将存储在本地服务器，需确保服务器的 public/upload 目录有写入权限，有足够的存储空间！</p>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">AllowExts<br><span class="nowrap color-desc">允许类型</span></label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_local_exts" required value="{:sysconf('storage_local_exts')}" placeholder="请输入系统文件上传后缀" class="layui-input">
+                <p class="help-block">设置系统允许上传文件的后缀，多个以英文逗号隔开。如：png,jpg,rar,doc</p>
+            </div>
+        </div>
+        <div class="hr-line-dashed margin-left-40"></div>
+        <div class="layui-form-item text-center padding-left-40">
+            <input type="hidden" name="storage_type" value="local">
+            <button class="layui-btn" type="submit">保存配置</button>
+            <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消修改吗？" data-close>取消修改</button>
+        </div>
+    </div>
+</form>

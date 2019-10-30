@@ -47,6 +47,7 @@ class Menu extends Controller
     /**
      * 微信菜单管理
      * @auth true
+     * @menu true
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException

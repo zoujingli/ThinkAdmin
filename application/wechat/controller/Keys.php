@@ -87,6 +87,11 @@ class Keys extends Controller
     /**
      * 添加关键字
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function add()
     {
@@ -98,6 +103,11 @@ class Keys extends Controller
     /**
      * 编辑关键字
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function edit()
     {
@@ -109,6 +119,8 @@ class Keys extends Controller
     /**
      * 删除关键字
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {
@@ -119,6 +131,8 @@ class Keys extends Controller
     /**
      * 禁用关键字
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -129,6 +143,8 @@ class Keys extends Controller
     /**
      * 启用关键字
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {
@@ -139,6 +155,11 @@ class Keys extends Controller
     /**
      * 配置关注回复
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function subscribe()
     {
@@ -150,6 +171,11 @@ class Keys extends Controller
     /**
      * 配置默认回复
      * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function defaults()
     {

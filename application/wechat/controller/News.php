@@ -169,6 +169,8 @@ class News extends Controller
 
     /**
      * 删除微信图文
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {

@@ -253,7 +253,7 @@ Console::addDefaultCommands([
     'library\command\task\Stop',
     'library\command\task\State',
     'library\command\task\Start',
-    'library\command\task\Reset',
+    // 'library\command\task\Reset',
     'library\command\sync\Admin',
     'library\command\sync\Plugs',
     'library\command\sync\Config',
@@ -264,5 +264,7 @@ Console::addDefaultCommands([
 // 动态加载模块配置
 if (function_exists('think\__include_file')) {
     $root = rtrim(str_replace('\\', '/', env('app_path')), '/');
-    foreach (glob("{$root}/*/sys.php") as $file) \think\__include_file($file);
+    foreach (glob("{$root}/*/sys.php") as $file) {
+        \think\__include_file($file);
+    }
 }

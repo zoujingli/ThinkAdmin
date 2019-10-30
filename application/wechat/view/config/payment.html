@@ -6,19 +6,19 @@
     <div class="layui-card-body think-box-shadow">
         <div class="padding-left-40 padding-right-30">
             <label class="layui-form-item margin-top-20 block relative">
-                <span class="color-green margin-right-10">微信商户ID</span><span class="nowrap color-desc">MCH_ID</span>
+                <span class="color-green margin-right-10 font-w7">微信商户ID</span><span class="nowrap color-desc">MCH_ID</span>
                 <input name="wechat_mch_id" required placeholder="请输入微信商户ID（必填）" value="{:sysconf('wechat_mch_id')}" class="layui-input">
                 <p class="help-block">微信商户ID，需要在微信商户平台获取，MCH_ID 与 APPID 匹配</p>
             </label>
             <label class="layui-form-item margin-top-20 block relative">
-                <span class="color-green margin-right-10">微信商户KEY</span><span class="nowrap color-desc">MCH_KEY</span>
+                <span class="color-green margin-right-10 font-w7">微信商户KEY</span><span class="nowrap color-desc">MCH_KEY</span>
                 <input name="wechat_mch_key" placeholder="请输入微信商户密钥（必填）" maxlength="32" required value="{:sysconf('wechat_mch_key')}" class="layui-input">
                 <p class="help-block">微信商户密钥，需要在微信商户平台操作设置密码并获取密钥</p>
             </label>
         </div>
         <div class="hr-line-dashed"></div>
         <div class="padding-left-40 padding-right-30">
-            <span class="color-green margin-right-10">微信商户证书</span><span class="nowrap color-desc">MCH_CERT</span>
+            <span class="color-green margin-right-10 font-w7">微信商户证书</span><span class="nowrap color-desc">MCH_CERT</span>
             <div class="">
                 {foreach ['p12'=>'上传 P12 证书','pem'=>'上传 PEM 证书'] as $k=>$v}
                 <input type="radio" data-pem-type="{$k}" name="wechat_mch_ssl_type" value="{$k}" title="{$v}" lay-filter="data-mch-type">

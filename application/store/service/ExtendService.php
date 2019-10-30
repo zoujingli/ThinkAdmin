@@ -22,23 +22,26 @@ use think\Db;
  * 短信业务扩展服务
  * Class ExtendService
  * @package app\store\service
- * =========================
+ * =================================
+ * =================================
  * 发送国内短信需要给产品码 [productid]
  * --- 验证短信的产品码为：676767
  * --- 营销短信的产品码为：333333
- * -------------------------
+ * ---------------------------------
+ * ---------------------------------
  * 发送国际短信需要给国家代码 [code]
- * --- 国家代码见 getRegionMap
- * -------------------------
+ * --- 国家代码见 getGlobeRegionMap
+ * ---------------------------------
+ * ---------------------------------
  * 需要开通短信账号请联系客服
  * --- 客服电话：18122377655
- * =========================
+ * =================================
  */
 class ExtendService
 {
 
     /**
-     * 发送短信验证码
+     * 发送国内短信验证码
      * @param string $mid 会员ID
      * @param string $phone 手机号
      * @param string $content 短信内容
@@ -47,39 +50,77 @@ class ExtendService
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function sendSms($mid, $phone, $content, $productid = '676767')
+    public static function sendChinaSms($mid, $phone, $content, $productid = '676767')
     {
         $tkey = date("YmdHis");
-        $data = [
-            'tkey'      => $tkey,
-            'mobile'    => $phone,
-            'content'   => $content,
-            'username'  => sysconf('sms_zt_username'),
-            'productid' => $productid,
-            'password'  => md5(md5(sysconf('sms_zt_password')) . $tkey),
-        ];
-        $result = Http::post('http://www.ztsms.cn/sendNSms.do', $data);
+        $result = Http::post('http://www.ztsms.cn/sendNSms.do', [
+            'tkey'     => $tkey, 'mobile' => $phone, 'content' => $content,
+            'username' => sysconf('sms_zt_username'), 'productid' => $productid,
+            'password' => md5(md5(sysconf('sms_zt_password')) . $tkey),
+        ]);
         list($code, $msg) = explode(',', $result . ',');
-        $insert = ['mid' => $mid, 'phone' => $phone, 'content' => $content, 'result' => $result];
-        Db::name('StoreMemberSmsHistory')->insert($insert);
+        Db::name('StoreMemberSmsHistory')->insert([
+            'mid' => $mid, 'phone' => $phone, 'content' => $content, 'result' => $result
+        ]);
         return intval($code) === 1;
     }
 
     /**
-     * 查询短信余额
+     * 发送国内短信验证码
+     * @param string $mid 会员ID
+     * @param string $phone 目标手机
+     * @param integer $wait 等待时间
+     * @param string $type 短信模板
      * @return array
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function querySmsBalance()
+    public static function sendChinaSmsByCode($mid, $phone, $wait = 120, $type = 'sms_reg_template')
+    {
+        $cache = cache($ckey = "{$type}_{$phone}");
+        if (is_array($cache) && isset($cache['time']) && $cache['time'] > time() - $wait) {
+            $dtime = ($cache['time'] + $wait < time()) ? 0 : ($wait - time() + $cache['time']);
+            return [1, '短信验证码已经发送！', ['time' => $dtime]];
+        }
+        list($code, $content) = [rand(1000, 9999), sysconf($type)];
+        if (empty($content) || stripos($content, '{code}') === false) {
+            $content = '您的验证码为{code}，请在十分钟内完成操作！';
+        }
+        cache($ckey, $cache = ['phone' => $phone, 'code' => $code, 'time' => time()], 600);
+        if (self::sendChinaSms($mid, $phone, str_replace('{code}', $code, $content))) {
+            $dtime = ($cache['time'] + $wait < time()) ? 0 : ($wait - time() + $cache['time']);
+            return [1, '短信验证码发送成功！', ['time' => $dtime]];
+        } else {
+            return [0, '短信发送失败，请稍候再试！', []];
+        }
+    }
+
+    /**
+     * 验证手机短信验证码
+     * @param string $phone 目标手机
+     * @param string $code 短信验证码
+     * @param string $type 短信模板
+     * @return boolean
+     */
+    public static function checkChinaSmsByCode($phone, $code, $type = 'sms_reg_template')
+    {
+        $cache = cache($cachekey = "{$type}_{$phone}");
+        return is_array($cache) && isset($cache['code']) && $cache['code'] == $code;
+    }
+
+    /**
+     * 查询国内短信余额
+     * @return array
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public static function queryChinaSmsBalance()
     {
         $tkey = date("YmdHis");
-        $data = [
-            'tkey'     => $tkey,
-            'username' => sysconf('sms_zt_username'),
+        $result = Http::post('http://www.ztsms.cn/balanceN.do', [
+            'username' => sysconf('sms_zt_username'), 'tkey' => $tkey,
             'password' => md5(md5(sysconf('sms_zt_password')) . $tkey),
-        ];
-        $result = Http::post('http://www.ztsms.cn/balanceN.do', $data);
+        ]);
         if ($result > -1) {
             return ['code' => 1, 'num' => $result, 'msg' => '获取短信剩余条数成功！'];
         } elseif ($result > -2) {
@@ -95,9 +136,15 @@ class ExtendService
      * 错误消息处理
      * @var array
      */
-    private static $messageMap2 = [
-        2  => '用户账号为空', 3 => '用户账号错误', 4 => '授权密码为空', 5 => '授权密码错误',
-        6  => '当前时间为空', 7 => '当前时间错误', 8 => '用户类型错误', 9 => '用户鉴权错误',
+    private static $globeMessageMap = [
+        2  => '用户账号为空',
+        3  => '用户账号错误',
+        4  => '授权密码为空',
+        5  => '授权密码错误',
+        6  => '当前时间为空',
+        7  => '当前时间错误',
+        8  => '用户类型错误',
+        9  => '用户鉴权错误',
         10 => '请求IP已被列入黑名单',
     ];
 
@@ -111,18 +158,14 @@ class ExtendService
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function sendSms2($mid, $code, $mobile, $content)
+    public static function sendGlobeSms($mid, $code, $mobile, $content)
     {
         $tkey = date("YmdHis");
-        $data = [
-            'tkey'     => $tkey,
-            'code'     => $code,
-            'mobile'   => $mobile,
-            'content'  => $content,
-            'username' => sysconf('sms_zt_username2'),
+        $result = Http::post('http://intl.zthysms.com/intSendSms.do', [
+            'tkey'     => $tkey, 'code' => $code, 'mobile' => $mobile,
+            'content'  => $content, 'username' => sysconf('sms_zt_username2'),
             'password' => md5(md5(sysconf('sms_zt_password2')) . $tkey),
-        ];
-        $result = Http::post('http://intl.zthysms.com/intSendSms.do', $data);
+        ]);
         Db::name('StoreMemberSmsHistory')->insert([
             'mid' => $mid, 'region' => $code, 'phone' => $mobile, 'content' => $content, 'result' => $result,
         ]);
@@ -135,17 +178,15 @@ class ExtendService
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function querySmsBalance2()
+    public static function queryGlobeSmsBalance()
     {
         $tkey = date("YmdHis");
-        $data = [
+        $result = Http::post('http://intl.zthysms.com/intBalance.do', [
             'username' => sysconf('sms_zt_username2'), 'tkey' => $tkey,
             'password' => md5(md5(sysconf('sms_zt_password2')) . $tkey),
-        ];
-        $result = Http::post('http://intl.zthysms.com/intBalance.do', $data);
-
-        if (!is_numeric($result) && ($state = intval($result)) && isset(self::$messageMap2[$state])) {
-            return ['code' => 0, 'num' => 0, 'msg' => self::$messageMap2[$state]];
+        ]);
+        if (!is_numeric($result) && ($state = intval($result)) && isset(self::$globeMessageMap[$state])) {
+            return ['code' => 0, 'num' => 0, 'msg' => self::$globeMessageMap[$state]];
         } else {
             return ['code' => 1, 'num' => $result, 'msg' => '查询成功'];
         }
@@ -155,7 +196,7 @@ class ExtendService
      * 获取国际地域编号
      * @return array
      */
-    public static function getRegionMap()
+    public static function getGlobeRegionMap()
     {
         return [
             ['title' => '中国 台湾', 'english' => 'Taiwan', 'code' => 886],

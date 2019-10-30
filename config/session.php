@@ -23,5 +23,4 @@ return [
     'prefix' => 'fw',
     'path'   => $_path_,
     'name'   => $_name_,
-    // 'var_session_id' => $_name_,
 ];

@@ -4,6 +4,7 @@
 /runtime
 /safefile
 /nbproject
+/config/cert
 /composer.lock
 /public/upload
 /public/static/theme/css/console.custom.css
