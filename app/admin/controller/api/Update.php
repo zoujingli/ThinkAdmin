@@ -38,7 +38,6 @@ class Update extends Controller
 
     /**
      * 读取线上文件数据
-     * @param string $encode
      */
     public function get()
     {
