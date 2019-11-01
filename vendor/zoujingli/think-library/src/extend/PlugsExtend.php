@@ -141,7 +141,7 @@ class PlugsExtend
      */
     private function downloadFile($encode)
     {
-        $result = json_decode(http_get("{$this->uri}?s=admin/api.update/get/{$encode}"), true);
+        $result = json_decode(HttpExtend::get("{$this->uri}?s=admin/api.update/get&encode={$encode}"), true);
         if (empty($result['code'])) return false;
         $filename = $this->path . decode($encode);
         file_exists(dirname($filename)) || mkdir(dirname($filename), 0755, true);
