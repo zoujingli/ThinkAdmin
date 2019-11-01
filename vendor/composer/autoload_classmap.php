@@ -162,6 +162,7 @@ return array(
     'think\\admin\\helper\\TokenHelper' => $vendorDir . '/zoujingli/think-library/src/helper/TokenHelper.php',
     'think\\admin\\plugs\\AdminPlugs' => $vendorDir . '/zoujingli/think-library/src/plugs/AdminPlugs.php',
     'think\\admin\\plugs\\Plugs' => $vendorDir . '/zoujingli/think-library/src/plugs/Plugs.php',
+    'think\\admin\\plugs\\StaticPlugs' => $vendorDir . '/zoujingli/think-library/src/plugs/StaticPlugs.php',
     'think\\admin\\queue\\ListenQueue' => $vendorDir . '/zoujingli/think-library/src/queue/ListenQueue.php',
     'think\\admin\\queue\\QueryQueue' => $vendorDir . '/zoujingli/think-library/src/queue/QueryQueue.php',
     'think\\admin\\queue\\StartQueue' => $vendorDir . '/zoujingli/think-library/src/queue/StartQueue.php',

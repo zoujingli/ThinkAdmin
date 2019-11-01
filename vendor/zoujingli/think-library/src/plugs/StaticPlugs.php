@@ -16,20 +16,16 @@
 namespace think\admin\plugs;
 
 /**
- * Class AdminPlugs
+ * Class StaticPlugs
  * @package think\admin\plugs
  */
-class AdminPlugs extends Plugs
+class StaticPlugs extends Plugs
 {
-    /**
-     * 文件规则
-     * @var array
-     */
-    protected $rules = ['think', 'app/admin'];
+    protected $rules = ['public/static'];
+    protected $ignore = ['public/static/self'];
 
     protected function configure()
     {
-        $this->setName('xplugs:admin')->setDescription('[同步]覆盖本地Admin模块代码');
+        $this->setName('xplugs:static')->setDescription('[同步]覆盖本地Static插件代码');
     }
-
 }

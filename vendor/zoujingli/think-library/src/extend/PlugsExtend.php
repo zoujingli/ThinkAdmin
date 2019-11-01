@@ -16,6 +16,7 @@
 namespace think\admin\extend;
 
 use think\App;
+use think\console\Output;
 
 /**
  * Class PlugsExtend
@@ -46,6 +47,12 @@ class PlugsExtend
      * @var string
      */
     protected $version;
+
+    /**
+     * 输出对象
+     * @var Output
+     */
+    protected $output;
 
     /**
      * 文件规则
@@ -85,6 +92,7 @@ class PlugsExtend
     public function __construct(App $app)
     {
         $this->app = $app;
+        $this->output = new Output();
         // 应用框架版本号
         $this->version = $this->app->config->get('app.thinkadmin_ver');
         if (empty($this->version)) $this->version = 'v4';

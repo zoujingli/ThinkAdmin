@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc7690ef5c13b95d953f61a4e48e6692c
+class ComposerStaticInitffc2be5fa4eeca372758d66dc6beeaae
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -253,6 +253,7 @@ class ComposerStaticInitc7690ef5c13b95d953f61a4e48e6692c
         'think\\admin\\helper\\TokenHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/TokenHelper.php',
         'think\\admin\\plugs\\AdminPlugs' => __DIR__ . '/..' . '/zoujingli/think-library/src/plugs/AdminPlugs.php',
         'think\\admin\\plugs\\Plugs' => __DIR__ . '/..' . '/zoujingli/think-library/src/plugs/Plugs.php',
+        'think\\admin\\plugs\\StaticPlugs' => __DIR__ . '/..' . '/zoujingli/think-library/src/plugs/StaticPlugs.php',
         'think\\admin\\queue\\ListenQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/ListenQueue.php',
         'think\\admin\\queue\\QueryQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/QueryQueue.php',
         'think\\admin\\queue\\StartQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/StartQueue.php',
@@ -469,9 +470,9 @@ class ComposerStaticInitc7690ef5c13b95d953f61a4e48e6692c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc7690ef5c13b95d953f61a4e48e6692c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc7690ef5c13b95d953f61a4e48e6692c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc7690ef5c13b95d953f61a4e48e6692c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitffc2be5fa4eeca372758d66dc6beeaae::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitffc2be5fa4eeca372758d66dc6beeaae::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitffc2be5fa4eeca372758d66dc6beeaae::$classMap;
 
         }, null, ClassLoader::class);
     }

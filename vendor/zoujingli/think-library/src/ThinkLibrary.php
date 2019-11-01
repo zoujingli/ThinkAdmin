@@ -67,6 +67,7 @@ class ThinkLibrary extends Service
             'think\admin\queue\QueryQueue',
             'think\admin\queue\ListenQueue',
             'think\admin\plugs\AdminPlugs',
+            'think\admin\plugs\StaticPlugs',
         ]);
     }
 
