@@ -1,0 +1,8 @@
+.idea
+!.gitignore
+!composer.json
+composer.lock
+app
+config
+vendor
+public

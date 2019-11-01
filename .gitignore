@@ -1,7 +1,6 @@
 .env
 .idea
-*.log
 .vscode
-vendor
+*.log
 runtime
 public/upload
