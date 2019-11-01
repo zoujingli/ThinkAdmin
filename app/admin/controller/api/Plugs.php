@@ -121,7 +121,7 @@ class Plugs extends Controller
         $this->uptype = input('uptype');
         if (!in_array($this->uptype, ['local', 'oss', 'qiniu'])) {
             $this->uptype = sysconf('storage.type');
-        }
+        }2
         return $this->uptype;
     }
 
