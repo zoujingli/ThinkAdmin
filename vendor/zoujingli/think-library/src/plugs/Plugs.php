@@ -22,7 +22,7 @@ class Plugs extends Command
      * 项目根目录
      * @var string
      */
-    protected $root;
+    protected $path;
 
     /**
      * 当前版本号
@@ -36,13 +36,17 @@ class Plugs extends Command
      */
     protected $modules = [];
 
-    public function __construct()
+    /**
+     * 插件指令初始化
+     * @param Input $input
+     * @param Output $output
+     */
+    protected function initialize(Input $input, Output $output)
     {
-        parent::__construct();
         $this->version = $this->app->config->get('app.thinkadmin_ver');
         if (empty($this->version)) $this->version = 'v4';
         $this->uri = "https://{$this->version}.thinkadmin.top";
-        $this->root = strtr(dirname($this->app->getAppPath()) . '/', '\\', '/');
+        $this->path = strtr($this->app->getAppPath(), '\\', '/');
     }
 
     protected function execute(Input $input, Output $output)

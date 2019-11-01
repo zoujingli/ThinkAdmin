@@ -25,31 +25,26 @@ use think\admin\Controller;
 class Update extends Controller
 {
     /**
-     * 基础URL地址
-     * @var string
-     */
-    protected $baseUri = 'https://demo.thinkadmin.top';
-
-    /**
      * 获取文件列表
      */
     public function tree()
     {
-        $sync = new Sync('Update');
-        $this->success('获取当前文件列表成功！', $sync->build());
+        $plugs = new \think\admin\plugs\Plugs();
+        $this->success('获取当前文件列表成功！', $plugs->buildFileList([
+            'think', 'app/admin', 'public/static',
+        ], ['public/static/self']));
     }
 
     /**
      * 读取线上文件数据
      * @param string $encode
      */
-    public function read($encode)
+    public function get($encode)
     {
-        $this->file = env('root_path') . decode($encode);
+        $this->file = dirname($this->app->getAppPath()) . '/' . decode($encode);
         if (file_exists($this->file)) {
             $this->success('读取文件成功！', [
-                'format'  => 'base64',
-                'content' => base64_encode(file_get_contents($this->file)),
+                'format' => 'base64', 'content' => base64_encode(file_get_contents($this->file)),
             ]);
         } else {
             $this->error('获取文件内容失败！');
