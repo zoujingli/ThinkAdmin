@@ -48,10 +48,16 @@ class PlugsExtend
     protected $version;
 
     /**
-     * 指定文件规则
+     * 文件规则
      * @var array
      */
-    protected $modules = [];
+    protected $rules = [];
+
+    /**
+     * 忽略规则
+     * @var array
+     */
+    protected $ignore = [];
 
     /**
      * 当前实例
@@ -79,9 +85,12 @@ class PlugsExtend
     public function __construct(App $app)
     {
         $this->app = $app;
+        // 应用框架版本号
         $this->version = $this->app->config->get('app.thinkadmin_ver');
         if (empty($this->version)) $this->version = 'v4';
+        // 线上应用代码
         $this->uri = "https://{$this->version}.thinkadmin.top";
+        // 当前应用根目录
         $this->path = strtr($this->app->getRootPath(), '\\', '/');
     }
 
@@ -117,13 +126,12 @@ class PlugsExtend
         }
     }
 
-
     /**
      * 下载更新文件内容
      * @param string $encode
      * @return boolean|integer
      */
-    public function downloadFile($encode)
+    private function downloadFile($encode)
     {
         $result = json_decode(http_get("{$this->uri}?s=admin/api.update/get/{$encode}"), true);
         if (empty($result['code'])) return false;
@@ -136,7 +144,7 @@ class PlugsExtend
      * 清理空目录
      * @param string $path
      */
-    public function removeEmptyDirectory($path)
+    private function removeEmptyDirectory($path)
     {
         if (is_dir($path) && count(scandir($path)) === 2 && rmdir($path)) {
             $this->removeEmptyDirectory(dirname($path));
@@ -145,20 +153,21 @@ class PlugsExtend
 
     /**
      * 获取文件差异数据
+     * @param array $rules 文件规则
+     * @param array $ignore 忽略规则
      * @return array
      */
-    public function grenerateDifference($modules = [], $data = [])
+    public function grenerateDifference($rules = [], $ignore = [])
     {
-        $this->modules = $modules;
-        $result = json_decode(HttpExtend::get("{$this->uri}?s=/admin/api.update/tree"), true);
-        if (empty($result['code'])) return [];
-        $new = $this->buildFileList($result['data']['paths'], $result['data']['ignores']);
-        foreach ($this->grenerateDifferenceContrast($result['data']['list'], $new['list']) as $file) {
-            if (in_array($file['type'], ['add', 'del', 'mod'])) {
-                foreach ($this->modules as $module) {
-                    if (stripos($file['name'], $module) === 0) {
-                        $data[] = $file;
-                    }
+        list($this->rules, $this->ignore, $data) = [$rules, $ignore, []];
+        $result = json_decode(HttpExtend::post("{$this->uri}?s=/admin/api.update/tree", [
+            'rules' => serialize($this->rules), 'ignore' => serialize($this->ignore),
+        ]), true);
+        if (!empty($result['code'])) {
+            $new = $this->buildFileList($result['data']['rules'], $result['data']['ignore']);
+            foreach ($this->grenerateDifferenceContrast($result['data']['list'], $new['list']) as $file) {
+                if (in_array($file['type'], ['add', 'del', 'mod'])) foreach ($this->rules as $rule) {
+                    if (stripos($file['name'], $rule) === 0) $data[] = $file;
                 }
             }
         }
@@ -194,22 +203,22 @@ class PlugsExtend
 
     /**
      * 获取文件信息列表
-     * @param array $paths 需要扫描的目录
-     * @param array $ignores 忽略扫描的文件
-     * @param array $maps 扫描结果列表
+     * @param array $rules 文件规则
+     * @param array $ignore 忽略规则
+     * @param array $data 扫描结果列表
      * @return array
      */
-    public function buildFileList(array $paths, array $ignores = [], array $data = [])
+    public function buildFileList(array $rules, array $ignore = [], array $data = [])
     {
         // 扫描规则文件
-        foreach ($paths as $key => $path) {
-            $data = array_merge($data, $this->scanFileList(strtr("{$this->path}{$path}", '\\', '/')));
+        foreach ($rules as $key => $rule) {
+            $data = array_merge($data, $this->scanFileList(strtr("{$this->path}{$rule}", '\\', '/')));
         }
         // 清除忽略文件
-        foreach ($data as $key => $map) foreach ($ignores as $ingore) {
+        foreach ($data as $key => $map) foreach ($ignore as $ingore) {
             if (stripos($map['name'], $ingore) === 0) unset($data[$key]);
         }
-        return ['paths' => $paths, 'ignores' => $ignores, 'list' => $data];
+        return ['rules' => $rules, 'ignore' => $ignore, 'list' => $data];
     }
 
     /**
