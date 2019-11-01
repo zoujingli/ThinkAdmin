@@ -1,7 +1,7 @@
 [![Latest Stable Version](https://poser.pugx.org/zoujingli/think-library/v/stable)](https://packagist.org/packages/zoujingli/think-library) [![Total Downloads](https://poser.pugx.org/zoujingli/think-library/downloads)](https://packagist.org/packages/zoujingli/think-library) [![Latest Unstable Version](https://poser.pugx.org/zoujingli/think-library/v/unstable)](https://packagist.org/packages/zoujingli/think-library) [![License](https://poser.pugx.org/zoujingli/think-library/license)](https://packagist.org/packages/zoujingli/think-library)
 
-# ThinkLibrary for ThinkPHP5.1
-ThinkLibrary 是针对 ThinkPHP5.1 版本封装的一套工具类库，方便快速构建 WEB 应用。
+# ThinkLibrary 6.0 for ThinkPHP 6.0
+ThinkLibrary 6.0 是针对 ThinkPHP 6.0 版本封装的一套工具类库，方便快速构建 WEB 应用。
 
 ## 包含组件
 * 数据列表展示（可带高级搜索器）
@@ -11,8 +11,7 @@ ThinkLibrary 是针对 ThinkPHP5.1 版本封装的一套工具类库，方便快
 * 文件存储通用组件（本地服务存储 + 阿里云OSS存储 + 七牛云存储）
 * 通用数据保存更新（通过 key 值及 where 判定是否存在，存在则更新，不存在则新增）
 * 通用网络请求 （支持 get 及 post，可配置请求证书等）
-* Emoji 表情转义处理（部分数据库不支持保存 Emoji 表情，可用这个方法哦）
-* 系统参数通用 k-v 配置（快速参数长久化配置）
+* 系统参数通用 g-k-v 配置（快速参数长久化配置） 
 * UTF8加密算法支持（安全URL参数传参数）
 * 接口 CORS 跨域默认支持（输出 JSON 标准化）
 * 支持表单CSRF安全验证（自动化 FORM 标签替换）
@@ -20,12 +19,7 @@ ThinkLibrary 是针对 ThinkPHP5.1 版本封装的一套工具类库，方便快
 
 ## 参考项目
 
-#### framework - V1.0 / V2.0
-* Gitee 仓库 https://gitee.com/zoujingli/framework
-* Github 仓库 https://github.com/zoujingli/framework
-* 体验地址（账号密码都是admin）https://framework.thinkadmin.top
-
-#### ThinkAdmin - V4.0 / V4.1
+#### ThinkAdmin - V6.0
 * Gitee 仓库 https://gitee.com/zoujingli/ThinkAdmin
 * Github 仓库 https://github.com/zoujingli/ThinkAdmin
 * 体验地址（账号密码都是admin）https://demo.thinkadmin.top
@@ -41,12 +35,12 @@ ThinkLibrary 是针对 ThinkPHP5.1 版本封装的一套工具类库，方便快
 
 ## 使用说明
 * ThinkLibrary 需要 Composer 支持
-* 安装命令 ` composer require zoujingli/think-library 5.1.x-dev`
+* 安装命令 ` composer require zoujingli/think-library 6.0.x-dev`
 * 案例代码：
-控制器需要继承 `library\Controller`，然后`$this`就可能使用全部功能
+控制器需要继承 `think\admin\Controller`，然后`$this`就可能使用全部功能
 ```php
 // 定义 MyController 控制器
-class MyController extend \library\Controller {
+class MyController extend \think\admin\Controller {
 
     // 指定当前数据表名
     protected $dbQuery = '数据表名';
@@ -69,11 +63,36 @@ class MyController extend \library\Controller {
 ```sql
 CREATE TABLE `system_config` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) DEFAULT NULL COMMENT '配置名',
-  `value` varchar(500) DEFAULT NULL COMMENT '配置值',
+  `type` varchar(20) DEFAULT '' COMMENT '分类',
+  `name` varchar(100) DEFAULT '' COMMENT '配置名',
+  `value` varchar(500) DEFAULT '' COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `index_system_config_name` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统配置';
+  KEY `idx_system_config_type` (`type`),
+  KEY `idx_system_config_name` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COMMENT='系统-配置';
+```
+* 系统任务列队支持需要的数据表
+```sql
+CREATE TABLE `system_queue` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '任务名称',
+  `command` varchar(500) DEFAULT '' COMMENT '执行指令',
+  `exec_data` longtext COMMENT '执行参数',
+  `exec_time` bigint(20) unsigned DEFAULT '0' COMMENT '执行时间',
+  `exec_desc` varchar(500) DEFAULT '' COMMENT '状态描述',
+  `enter_time` bigint(20) DEFAULT '0' COMMENT '开始时间',
+  `outer_time` bigint(20) DEFAULT '0' COMMENT '结束时间',
+  `attempts` bigint(20) DEFAULT '0' COMMENT '执行次数',
+  `rscript` tinyint(1) DEFAULT '1' COMMENT '单例模式',
+  `status` tinyint(1) DEFAULT '1' COMMENT '任务状态(1新任务,2处理中,3成功,4失败)',
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_system_queue_title` (`title`) USING BTREE,
+  KEY `idx_system_queue_status` (`status`) USING BTREE,
+  KEY `idx_system_queue_rscript` (`rscript`) USING BTREE,
+  KEY `idx_system_queue_create_at` (`create_at`) USING BTREE,
+  KEY `idx_system_queue_exec_time` (`exec_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统-任务';
 ```
 
 #### 列表处理
@@ -85,7 +104,7 @@ $this->_page($dbQuery, $isPage, $isDisplay, $total);
 $this->_query($dbQuery)->like('name,title')->equal('status')->page();
 
 // 对列表查询器进行二次处理
-$query->_query($dbQuery)->like('name,title')->equal('status');
+$query = $this->_query($dbQuery)->like('name,title')->equal('status');
 $db = $query->db(); // @todo 这里可以对db进行操作
 $this->_page($db); // 显示列表分页
 ```
@@ -135,36 +154,35 @@ sysconf('storage_qiniu_secret_key', '接口授权SecretKey');
 
 
 // 生成文件名称(链接url或文件md5)
-$filename = \library\File::name($url,$ext,$prv,$fun);
+$filename = \think\admin\Storage::name($url,$ext,$prv,$fun);
 
 // 获取文件内容（自动存储方式）
-$result = \library\File::get($filename)
+$result = \think\admin\Storage::get($filename)
 
 // 保存内容到文件（自动存储方式）
-boolean \library\File::save($filename,$content);
+boolean \think\admin\Storage::save($filename,$content);
 
 // 判断文件是否存在
-boolean \library\File::has($filename);
+boolean \think\admin\Storage::has($filename);
 
 // 获取文件信息
-$result = \library\File::info($filename);
+$result = \think\admin\Storage::info($filename);
 
 //指定存储类型（调用方法）
-boolean \library\File::instance('oss')->save($filename,$content);
-boolean \library\File::instance('local')->save($filename,$content);
-boolean \library\File::instance('qiniu')->save($filename,$content);
+boolean \think\admin\Storage::instance('local')->save($filename,$content);
+boolean \think\admin\Storage::instance('qiniu')->save($filename,$content);
 
-$result = \library\File::instance('oss')->get($filename);
-$result = \library\File::instance('local')->get($filename);
-$result = \library\File::instance('qiniu')->get($filename);
+$result = \think\admin\Storage::instance('oss')->get($filename);
+$result = \think\admin\Storage::instance('local')->get($filename);
+$result = \think\admin\Storage::instance('qiniu')->get($filename);
 
-boolean \library\File::instance('oss')->has($filename);
-boolean \library\File::instance('local')->has($filename);
-boolean \library\File::instance('qiniu')->has($filename);
+boolean \think\admin\Storage::instance('oss')->has($filename);
+boolean \think\admin\Storage::instance('local')->has($filename);
+boolean \think\admin\Storage::instance('qiniu')->has($filename);
 
-$resutl = \library\File::instance('oss')->info($filename);
-$resutl = \library\File::instance('local')->info($filename);
-$resutl = \library\File::instance('qiniu')->info($filename);
+$resutl = \think\admin\Storage::instance('oss')->info($filename);
+$resutl = \think\admin\Storage::instance('local')->info($filename);
+$resutl = \think\admin\Storage::instance('qiniu')->info($filename);
 ```
 
 #### 通用数据保存
@@ -182,15 +200,6 @@ $result = \library\tools\Http::get($url,$query,$options);
 // 发起post请求
 $result = http_post($url,$data,$options);
 $result = \library\tools\Http::post($url,$data,$options);
-```
-
-#### emoji 表情转义（部分数据库不支持可以用这个）
-```php
-// 输入数据库前转义
-$content = emoji_encode($content);
-
-// 输出数据库后转义
-$content = emoji_decode($content); 
 ```
 
 #### 系统参数配置（基于 system_config 数据表）

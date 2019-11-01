@@ -1,0 +1,58 @@
+{extend name="index/index"}
+
+{block name="body"}
+<div class="login-container" data-supersized="__ROOT__/static/theme/img/login/bg1.jpg,__ROOT__/static/theme/img/login/bg2.jpg">
+    <div class="header notselect layui-hide-xs">
+        <a href="{:url('@')}" class="title">{:sysconf('app_name')}<span class="padding-left-5 font-s10">{:sysconf('app_version')}</span></a>
+        {notempty name='devmode'}
+        <a class="pull-right layui-anim layui-anim-fadein" href='https://gitee.com/zoujingli/ThinkAdmin'>
+            <img src='https://gitee.com/zoujingli/ThinkAdmin/widgets/widget_1.svg' alt='Fork me on Gitee'>
+        </a>
+        {/notempty}
+    </div>
+    <form data-login-form onsubmit="return false" method="post" class="layui-anim layui-anim-upbit" autocomplete="off">
+        <h2 class="notselect">系统管理</h2>
+        <ul>
+            <li class="username">
+                <label>
+                    <i class="layui-icon layui-icon-username"></i>
+                    <input class="layui-input" required pattern="^\S{4,}$" name="username" autofocus autocomplete="off" placeholder="登录账号" title="请输入登录账号">
+                </label>
+            </li>
+            <li class="password">
+                <label>
+                    <i class="layui-icon layui-icon-password"></i>
+                    <input class="layui-input" required pattern="^\S{4,}$" name="password" maxlength="32" type="password" autocomplete="off" placeholder="登录密码" title="请输入登录密码">
+                </label>
+            </li>
+            <li class="verify layui-hide">
+                <label class="inline-block relative">
+                    <i class="layui-icon layui-icon-picture-fine"></i>
+                    <input class="layui-input" required pattern="^\S{4,}$" name="verify" value="{$captcha->getCode()}" maxlength="4" autocomplete="off" placeholder="验证码" title="请输入验证码">
+                </label>
+                <img data-captcha alt="img" src="{$captcha->getData()}">
+                <input type="hidden" name="uniqid" value="{$captcha->getUniqid()}">
+            </li>
+            <li class="text-center padding-top-20">
+                <button type="submit" class="layui-btn layui-disabled full-width" data-form-loaded="立即登入">正在载入</button>
+            </li>
+        </ul>
+    </form>
+    <div class="footer notselect">
+        <p class="layui-hide-xs"><a target="_blank" href="https://www.google.cn/chrome">推荐使用谷歌浏览器</a></p>
+        {:sysconf('site_copy')}
+        {if sysconf('miitbeian')}<span class="padding-5">|</span><a target="_blank" href="http://beian.miit.gov.cn">{:sysconf('miitbeian')}</a>{/if}
+    </div>
+</div>
+{/block}
+
+{block name='style'}
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<script>if (location.href.indexOf('#') > -1) location.replace(location.href.split('#')[0])</script>
+<link rel="stylesheet" href="__ROOT__/static/theme/css/login.css">
+{/block}
+
+{block name='script'}
+<script src="__ROOT__/static/login.js"></script>
+<script src="__ROOT__/static/plugs/supersized/supersized.3.2.7.min.js"></script>
+{/block}

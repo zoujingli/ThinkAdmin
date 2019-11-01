@@ -16,10 +16,8 @@
 
 namespace think;
 
-chdir(__DIR__);
+// 加载基础文件
+require __DIR__ . '/vendor/autoload.php';
 
-require __DIR__ . '/thinkphp/base.php';
-
-Container::get('app')->path(__DIR__ . '/application/')->initialize();
-
-Console::init();
+// 应用初始化
+(new App())->console->run();

@@ -5,7 +5,7 @@ define(function () {
 
         // 检查可以上传的文件后缀
         $.form.load('?s=admin/api.plugs/check', {exts: exts, uptype: uptype}, 'post', function (ret, options) {
-            options = {url: ret.data.data.url, exts: ret.data.exts, acceptMime: ret.data.mime, data: ret.data.data};
+            options = {url: ret.data.data.url, exts: ret.data.exts, acceptMime: ret.data.mine, data: ret.data.data};
             if (exts.indexOf('*') > -1) delete options.exts, delete options.acceptMime;
             return renderUploader(options), false;
         }, false, false, 0);

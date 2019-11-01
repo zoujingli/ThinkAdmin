@@ -181,10 +181,10 @@ $(function () {
         // 异步加载的数据
         this.load = function (url, data, method, callback, loading, tips, time, headers) {
             var index = loading !== false ? $.msg.loading(tips) : 0;
-            if (typeof data === 'object' && typeof data['_csrf_'] === 'string') {
+            if (typeof data === 'object' && typeof data['_token_'] === 'string') {
                 headers = headers || {};
-                headers['User-Token-Csrf'] = data['_csrf_'];
-                delete data['_csrf_'];
+                headers['User-Form-Token'] = data['_token_'];
+                delete data['_token_'];
             }
             $.ajax({
                 data: data || {}, type: method || 'GET', url: $.menu.parseUri(url), beforeSend: function (xhr) {
@@ -631,7 +631,7 @@ $(function () {
             if (rules[i].length < 2) return $.msg.tips('异常的数据操作规则，请修改规则！');
             data[rules[i].split('#')[0]] = rules[i].split('#')[1];
         }
-        data['_csrf_'] = $this.attr('data-token') || $this.attr('data-csrf') || '--';
+        data['_token_'] = $this.attr('data-token') || $this.attr('data-csrf') || '--';
         var load = loading !== 'false', tips = typeof loading === 'string' ? loading : undefined;
         if (!$this.attr('data-confirm')) $.form.load(action, data, method, false, load, tips, time);
         else $.msg.confirm($this.attr('data-confirm'), function () {
@@ -654,7 +654,7 @@ $(function () {
             $this.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red');
             return false;
         };
-        data['_csrf_'] = $this.attr('data-token') || $this.attr('data-csrf') || '--';
+        data['_token_'] = $this.attr('data-token') || $this.attr('data-csrf') || '--';
         if (!confirm) return $.form.load(action, data, method, that.callback, load, tips, time);
         $.msg.confirm(confirm, function () {
             $.form.load(action, data, method, that.callback, load, tips, time);
@@ -746,34 +746,7 @@ $(function () {
         this.value = (parseFloat(this.value) || 0).toFixed(fiexd);
     });
 
-    /*! 后台加密登录处理 */
-    $body.find('[data-login-form]').map(function (that) {
-        that = this;
-        require(["md5"], function (md5) {
-            $("form").vali(function (data) {
-                data['password'] = md5.hash(md5.hash(data['password']) + data['skey']);
-                if (data['skey']) delete data['skey'];
-                $.form.load(location.href, data, "post", function (ret) {
-                    if (parseInt(ret.code) !== 1) {
-                        $(that).find('.verify.layui-hide').removeClass('layui-hide');
-                        $(that).find('[data-refresh-captcha]').trigger('click');
-                    }
-                }, null, null, 'false');
-            });
-        });
-    });
-
-    /*! 后台图形验证码刷新 */
-    $body.on('click', '[data-refresh-captcha]', function (image, verify, uniqid) {
-        image = this, uniqid = this.getAttribute('data-uniqid-field') || 'uniqid';
-        verify = this.getAttribute('data-refresh-captcha') || this.getAttribute('data-verify-field') || 'verify';
-        $.form.load('?s=think/admin/captcha', {}, 'get', function (ret) {
-            image.src = ret.data.image;
-            $(image).parents('form').find('[name=' + verify + ']').attr('value', '');
-            $(image).parents('form').find('[name=' + uniqid + ']').val(ret.data.uniqid);
-            return false;
-        }, false);
-    });
+   
 
     /*! 图片加载异常处理 */
     document.addEventListener('error', function (e, elem) {

@@ -306,6 +306,9 @@ label.think-radio {
   background-size: cover;
   vertical-align: middle;
 }
+.layui-badge {
+  line-height: 20px;
+}
 /* 页面布局 - 全局 */
 .layui-layout > .layui-side {
   top: 50px;

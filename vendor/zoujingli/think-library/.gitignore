@@ -1,5 +1,8 @@
 .idea
-vendor
 !.gitignore
 !composer.json
 composer.lock
+app
+config
+vendor
+public

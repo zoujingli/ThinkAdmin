@@ -2,6 +2,14 @@
   "type": "project",
   "name": "zoujingli/thinkadmin",
   "license": "MIT",
+  "homepage": "http://demo.thinkadmin.top",
+  "description": "Application development framework",
+  "keywords": [
+    "ThinkAdmin",
+    "ThinkLibrary",
+    "WeChatDeveloper",
+    "WeOpenDeveloper"
+  ],
   "authors": [
     {
       "name": "Anyon",
@@ -9,19 +17,25 @@
     }
   ],
   "require": {
-    "php": ">=5.6",
+    "php": ">=7.1.0",
     "ext-gd": "*",
-    "ext-curl": "*",
     "ext-json": "*",
-    "ext-soap": "*",
-    "ext-iconv": "*",
-    "ext-openssl": "*",
-    "ext-mbstring": "*",
-    "endroid/qr-code": "^1.9",
-    "topthink/framework": "5.1.*",
+    "topthink/framework": "^6.0",
+    "topthink/think-view": "^1.0",
+    "topthink/think-multi-app": "^1.0",
     "zoujingli/ip2region": "^1.0",
-    "zoujingli/think-library": "5.1.*-dev",
-    "zoujingli/weopen-developer": "dev-master"
+    "zoujingli/think-library": "6.0.*-dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "app"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "@php think service:discover",
+      "@php think vendor:publish"
+    ]
   },
   "repositories": {
     "packagist": {

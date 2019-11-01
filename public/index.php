@@ -15,6 +15,12 @@
 
 namespace think;
 
-require __DIR__ . '/../thinkphp/base.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-Container::get('app')->run()->send();
+$http = (new App())->http;
+
+$response = $http->run();
+
+$response->send();
+
+$http->end($response);

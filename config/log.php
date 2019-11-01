@@ -14,14 +14,39 @@
 // +----------------------------------------------------------------------
 
 return [
-    // 设置日志文件名
-    'single'      => 'single',
-    // 最多保留50个文件
-    'max_files'   => 50,
-    // 日志每10兆分割文件
-    'file_size'   => 10485760,
-    // 设置记录目录的类型
-    // 'level'       => ['error'],
-    // 日志类型分别写入文件
-    'apart_level' => ['error', 'sql'],
+    // 默认日志记录通道
+    'default'      => 'file',
+    // 日志记录级别
+    'level'        => [],
+    // 日志类型记录的通道 ['error'=>'email',...]
+    'type_channel' => [],
+    // 关闭全局日志写入
+    'close'        => true,
+    // 全局日志处理 支持闭包
+    'processor'    => null,
+    // 日志通道列表
+    'channels'     => [
+        'file' => [
+            // 日志记录方式
+            'type'           => 'File',
+            // 日志保存目录
+            'path'           => '',
+            // 单文件日志写入
+            'single'         => true,
+            // 独立日志级别
+            'apart_level'    => [],
+            // 最大日志文件数量
+            'max_files'      => 0,
+            // 使用JSON格式记录php
+            'json'           => false,
+            // 日志处理
+            'processor'      => null,
+            // 关闭通道日志写入
+            'close'          => false,
+            // 日志输出格式化
+            'format'         => '[%s][%s] %s',
+            // 是否实时写入
+            'realtime_write' => false,
+        ],
+    ],
 ];

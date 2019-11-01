@@ -5,7 +5,7 @@
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://library.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
@@ -13,28 +13,39 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace library;
+namespace think\admin;
 
-use library\logic\Delete;
-use library\logic\Form;
-use library\logic\Input;
-use library\logic\Page;
-use library\logic\Query;
-use library\logic\Save;
-use library\tools\Csrf;
+use think\admin\helper\DeleteHelper;
+use think\admin\helper\FormHelper;
+use think\admin\helper\PageHelper;
+use think\admin\helper\QueryHelper;
+use think\admin\helper\SaveHelper;
+use think\admin\helper\TokenHelper;
+use think\App;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
+use think\db\Query;
 use think\exception\HttpResponseException;
+use think\Request;
 
 /**
  * 标准控制器基类
- * --------------------------------
  * Class Controller
+ * @package think\admin
  */
 class Controller extends \stdClass
 {
 
     /**
-     * 当前请求对象
-     * @var \think\Request
+     * 应用容器
+     * @var App
+     */
+    public $app;
+
+    /**
+     * 请求对象
+     * @var Request
      */
     public $request;
 
@@ -42,36 +53,33 @@ class Controller extends \stdClass
      * 表单CSRF验证状态
      * @var boolean
      */
-    private $csrf_state = false;
+    public $csrf_state = false;
 
     /**
-     * 表单CSRF验证失败提示消息
+     * 表单CSRF验证失败提示
      * @var string
      */
-    protected $csrf_message = '表单令牌验证失败，请刷新页面再试！';
+    public $csrf_message = '表单令牌验证失败，请刷新页面再试！';
 
     /**
      * Controller constructor.
+     * @param App $app
      */
-    public function __construct()
+    public function __construct(App $app)
     {
-        $this->request = request();
-        if (in_array($this->request->action(), get_class_methods(__CLASS__))) {
+        $this->app = $app;
+        $this->request = $app->request;
+        if (in_array($this->app->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
         }
+        $this->initialize();
     }
 
     /**
-     * Controller destruct
+     * 控制器初始化
      */
-    public function __destruct()
+    protected function initialize()
     {
-        $this->request = request();
-        $action = $this->request->action();
-        $method = strtolower($this->request->method());
-        if (method_exists($this, $callback = "_{$action}_{$method}")) {
-            call_user_func_array([$this, $callback], $this->request->route());
-        }
     }
 
     /**
@@ -82,8 +90,9 @@ class Controller extends \stdClass
      */
     public function error($info, $data = [], $code = 0)
     {
-        $result = ['code' => $code, 'info' => $info, 'data' => $data];
-        throw new HttpResponseException(json($result));
+        throw new HttpResponseException(json([
+            'code' => $code, 'info' => $info, 'data' => $data,
+        ]));
     }
 
     /**
@@ -94,20 +103,22 @@ class Controller extends \stdClass
      */
     public function success($info, $data = [], $code = 1)
     {
-        $result = ['code' => $code, 'info' => $info, 'data' => $data];
-        if ($this->csrf_state) Csrf::clearFormToken(Csrf::getToken());
-        throw new HttpResponseException(json($result));
+        if ($this->csrf_state) {
+            TokenHelper::instance($this, $this->app)->clear();
+        }
+        throw new HttpResponseException(json([
+            'code' => $code, 'info' => $info, 'data' => $data,
+        ]));
     }
 
     /**
      * URL重定向
      * @param string $url 跳转链接
-     * @param array $vars 跳转参数
      * @param integer $code 跳转代码
      */
-    public function redirect($url, $vars = [], $code = 301)
+    public function redirect($url, $code = 301)
     {
-        throw new HttpResponseException(redirect($url, $vars, $code));
+        throw new HttpResponseException(redirect($url, $code));
     }
 
     /**
@@ -120,7 +131,7 @@ class Controller extends \stdClass
     {
         foreach ($this as $name => $value) $vars[$name] = $value;
         if ($this->csrf_state) {
-            Csrf::fetchTemplate($tpl, $vars, $node);
+            TokenHelper::instance($this, $this->app)->fetchTemplate($tpl, $vars, $node);
         } else {
             throw new HttpResponseException(view($tpl, $vars));
         }
@@ -136,8 +147,12 @@ class Controller extends \stdClass
     {
         if (is_string($name)) {
             $this->$name = $value;
-        } elseif (is_array($name)) foreach ($name as $k => $v) {
-            if (is_string($k)) $this->$k = $v;
+        } elseif (is_array($name)) {
+            foreach ($name as $k => $v) {
+                if (is_string($k)) {
+                    $this->$k = $v;
+                }
+            }
         }
         return $this;
     }
@@ -151,17 +166,84 @@ class Controller extends \stdClass
      */
     public function callback($name, &$one = [], &$two = [])
     {
-        if (is_callable($name)) {
-            return call_user_func($name, $this, $one, $two);
-        }
-        foreach ([$name, "_{$this->request->action()}{$name}"] as $method) {
-            if (method_exists($this, $method)) {
-                if (false === $this->$method($one, $two)) {
-                    return false;
-                }
+        if (is_callable($name)) return call_user_func($name, $this, $one, $two);
+        foreach ([$name, "_{$this->app->request->action()}{$name}"] as $method) {
+            if (method_exists($this, $method) && false === $this->$method($one, $two)) {
+                return false;
             }
         }
         return true;
+    }
+
+    /**
+     * 快捷查询逻辑器
+     * @param string|Query $dbQuery
+     * @return QueryHelper
+     */
+    protected function _query($dbQuery)
+    {
+        return QueryHelper::instance($this, $this->app)->init($dbQuery);
+    }
+
+    /**
+     * 快捷分页逻辑器
+     * @param string|Query $dbQuery
+     * @param boolean $page 是否启用分页
+     * @param boolean $display 是否渲染模板
+     * @param boolean $total 集合分页记录数
+     * @param integer $limit 集合每页记录数
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    protected function _page($dbQuery, $page = true, $display = true, $total = false, $limit = 0)
+    {
+        return PageHelper::instance($this, $this->app)->init($dbQuery, $page, $display, $total, $limit);
+    }
+
+    /**
+     * 快捷表单逻辑器
+     * @param string|Query $dbQuery
+     * @param string $template 模板名称
+     * @param string $field 指定数据对象主键
+     * @param array $where 额外更新条件
+     * @param array $data 表单扩展数据
+     * @return array|boolean
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    protected function _form($dbQuery, $template = '', $field = '', $where = [], $data = [])
+    {
+        return FormHelper::instance($this, $this->app)->init($dbQuery, $template, $field, $where, $data);
+    }
+
+    /**
+     * 快捷更新逻辑器
+     * @param string|Query $dbQuery
+     * @param array $data 表单扩展数据
+     * @param string $field 数据对象主键
+     * @param array $where 额外更新条件
+     * @return boolean
+     * @throws DbException
+     */
+    protected function _save($dbQuery, $data = [], $field = '', $where = [])
+    {
+        return SaveHelper::instance($this, $this->app)->init($dbQuery, $data, $field, $where);
+    }
+
+    /**
+     * 快捷删除逻辑器
+     * @param string|Query $dbQuery
+     * @param string $field 数据对象主键
+     * @param array $where 额外更新条件
+     * @return boolean|null
+     * @throws DbException
+     */
+    protected function _delete($dbQuery, $field = '', $where = [])
+    {
+        return DeleteHelper::instance($this, $this->app)->init($dbQuery, $field, $where);
     }
 
     /**
@@ -169,104 +251,9 @@ class Controller extends \stdClass
      * @param boolean $return 是否返回结果
      * @return boolean
      */
-    protected function applyCsrfToken($return = false)
+    protected function _applyFormToken($return = false)
     {
-        $this->csrf_state = true;
-        if ($this->request->isPost() && !Csrf::checkFormToken()) {
-            if ($return) return false;
-            $this->error($this->csrf_message);
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * 快捷查询逻辑器
-     * @param string|\think\db\Query $dbQuery
-     * @return Query
-     */
-    protected function _query($dbQuery)
-    {
-        return (new Query($dbQuery))->init($this);
-    }
-
-    /**
-     * 快捷分页逻辑器
-     * @param string|\think\db\Query $dbQuery
-     * @param boolean $isPage 是否启用分页
-     * @param boolean $isDisplay 是否渲染模板
-     * @param boolean $total 集合分页记录数
-     * @param integer $limit 集合每页记录数
-     * @return array
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
-     */
-    protected function _page($dbQuery, $isPage = true, $isDisplay = true, $total = false, $limit = 0)
-    {
-        return (new Page($dbQuery, $isPage, $isDisplay, $total, $limit))->init($this);
-    }
-
-    /**
-     * 快捷表单逻辑器
-     * @param string|\think\db\Query $dbQuery
-     * @param string $tpl 模板名称
-     * @param string $pkField 指定数据对象主键
-     * @param array $where 额外更新条件
-     * @param array $data 表单扩展数据
-     * @return array|boolean
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
-     */
-    protected function _form($dbQuery, $tpl = '', $pkField = '', $where = [], $data = [])
-    {
-        return (new Form($dbQuery, $tpl, $pkField, $where, $data))->init($this);
-    }
-
-    /**
-     * 快捷更新逻辑器
-     * @param string|\think\db\Query $dbQuery
-     * @param array $data 表单扩展数据
-     * @param string $pkField 数据对象主键
-     * @param array $where 额外更新条件
-     * @return boolean
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
-     */
-    protected function _save($dbQuery, $data = [], $pkField = '', $where = [])
-    {
-        return (new Save($dbQuery, $data, $pkField, $where))->init($this);
-    }
-
-    /**
-     * 快捷输入逻辑器
-     * @param array|string $data 验证数据
-     * @param array $rule 验证规则
-     * @param array $info 验证消息
-     * @return array
-     */
-    protected function _input($data, $rule = [], $info = [])
-    {
-        return (new Input($data, $rule, $info))->init($this);
-    }
-
-    /**
-     * 快捷删除逻辑器
-     * @param string|\think\db\Query $dbQuery
-     * @param string $pkField 数据对象主键
-     * @param array $where 额外更新条件
-     * @return boolean|null
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
-     */
-    protected function _delete($dbQuery, $pkField = '', $where = [])
-    {
-        return (new Delete($dbQuery, $pkField, $where))->init($this);
+        return TokenHelper::instance($this, $this->app)->init($return);
     }
 
 }

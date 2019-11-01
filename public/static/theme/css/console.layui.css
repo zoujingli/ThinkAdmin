@@ -104,4 +104,7 @@
   background-size: cover;
   vertical-align: middle;
 }
+.layui-badge {
+  line-height: 20px
+}
 /*# sourceMappingURL=console.layui.css.map */
