@@ -41,5 +41,5 @@ return [
     // 显示错误信息
     'show_error_msg'   => true,
     // 当前应用版本号
-    'thinkadmin_ver'   => 'v6.0',
+    'thinkadmin_ver'   => 'v6',
 ];
