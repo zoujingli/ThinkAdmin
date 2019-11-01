@@ -105,7 +105,8 @@ class Plugs extends Controller
             $file = Storage::instance('qiniu');
             return ['url' => $file->upload(), 'token' => $file->buildUploadToken(), 'uptype' => $this->getUploadType()];
         } else {
-            return ['url' => '?s=admin/api.plugs/upload', 'token' => uniqid('local_upload_'), 'uptype' => $this->getUploadType()];
+            $file = Storage::instance('local');
+            return ['url' => $file->upload(), 'token' => uniqid('local_upload_'), 'uptype' => $this->getUploadType()];
         }
     }
 
@@ -119,9 +120,9 @@ class Plugs extends Controller
     private function getUploadType()
     {
         $this->uptype = input('uptype');
-        if (!in_array($this->uptype, ['local', 'oss', 'qiniu'])) {
+        if (!in_array($this->uptype, ['local', 'qiniu'])) {
             $this->uptype = sysconf('storage.type');
-        }2
+        }
         return $this->uptype;
     }
 
