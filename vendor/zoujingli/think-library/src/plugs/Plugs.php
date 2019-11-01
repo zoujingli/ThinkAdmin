@@ -33,6 +33,7 @@ class Plugs extends Command
                 }
             }
         }
+        dump($data);
         if (empty($data)) {
             $output->info('--- 本地文件与线上文件一致，无需更新文件');
         } else {

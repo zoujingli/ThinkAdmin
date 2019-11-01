@@ -30,11 +30,13 @@ class Update extends Controller
      */
     public function tree()
     {
-        $this->success('获取当前文件列表成功！', PlugsExtend::instance($this->app)->buildFileList([
+        $modules = PlugsExtend::instance($this->app)->buildFileList([
             'think', 'app/admin', 'public/static',
-        ], [
+        ]);
+        dump($modules);
+        $this->success('获取当前文件列表成功！', $modules, [
             'public/static/self'
-        ]));
+        ]);
     }
 
     /**

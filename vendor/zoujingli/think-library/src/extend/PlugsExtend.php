@@ -147,13 +147,22 @@ class PlugsExtend
      * 获取文件差异数据
      * @return array
      */
-    public function grenerateDifference($modules = [])
+    public function grenerateDifference($modules = [], $data = [])
     {
         $this->modules = $modules;
         $result = json_decode(HttpExtend::get("{$this->uri}?s=/admin/api.update/tree"), true);
         if (empty($result['code'])) return [];
         $new = $this->buildFileList($result['data']['paths'], $result['data']['ignores']);
-        return $this->grenerateDifferenceContrast($result['data']['list'], $new['list']);
+        foreach ($this->grenerateDifferenceContrast($result['data']['list'], $new['list']) as $file) {
+            if (in_array($file['type'], ['add', 'del', 'mod'])) {
+                foreach ($this->modules as $module) {
+                    if (stripos($file['name'], $module) === 0) {
+                        $data[] = $file;
+                    }
+                }
+            }
+        }
+        return $data;
     }
 
     /**
@@ -194,7 +203,7 @@ class PlugsExtend
     {
         // 扫描规则文件
         foreach ($paths as $key => $path) {
-            $data = array_merge($data, $this->getFileList("{$this->path}{$path}"));
+            $data = array_merge($data, $this->scanFileList(strtr("{$this->path}{$path}", '\\', '/')));
         }
         // 清除忽略文件
         foreach ($data as $key => $map) foreach ($ignores as $ingore) {
@@ -209,11 +218,11 @@ class PlugsExtend
      * @param array $data 扫描结果
      * @return array
      */
-    private function getFileList($path, $data = [])
+    private function scanFileList($path, $data = [])
     {
         if (file_exists($path)) if (is_dir($path)) foreach (scandir($path) as $sub) {
             if (strpos($sub, '.') !== 0) if (is_dir($temp = "{$path}/{$sub}")) {
-                $data = array_merge($data, $this->getFileList($temp));
+                $data = array_merge($data, $this->scanFileList($temp));
             } else {
                 array_push($data, $this->getFileInfo($temp));
             }
@@ -231,8 +240,8 @@ class PlugsExtend
     private function getFileInfo($filename)
     {
         return [
+            'name' => str_replace($this->path, '', $filename),
             'hash' => md5(preg_replace('/\s+/', '', file_get_contents($filename))),
-            'name' => strtr(strtr(realpath($filename), '\\', '/'), $this->path, ''),
         ];
     }
 }
