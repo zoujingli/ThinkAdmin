@@ -15,8 +15,9 @@ class AdminPlugs extends Plugs
 
     protected function execute(Input $input, Output $output)
     {
-        $this->modules['admin'];
-        dump($this->uri);
+        $this->modules[] = 'admin';
+        parent::execute($input, $output);
+
     }
 
 }

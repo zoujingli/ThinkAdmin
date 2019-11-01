@@ -16,6 +16,7 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
+use think\admin\extend\PlugsExtend;
 
 /**
  * 系统更新接口
@@ -29,10 +30,11 @@ class Update extends Controller
      */
     public function tree()
     {
-        $plugs = new \think\admin\plugs\Plugs();
-        $this->success('获取当前文件列表成功！', $plugs->buildFileList([
+        $this->success('获取当前文件列表成功！', PlugsExtend::instance($this->app)->buildFileList([
             'think', 'app/admin', 'public/static',
-        ], ['public/static/self']));
+        ], [
+            'public/static/self'
+        ]));
     }
 
     /**
