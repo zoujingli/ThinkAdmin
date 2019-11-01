@@ -16,21 +16,22 @@
 namespace think\admin\plugs;
 
 /**
+ * 后台Admin模块更新
  * Class AdminPlugs
  * @package think\admin\plugs
  */
 class AdminPlugs extends Plugs
 {
     /**
-     * 文件规则
+     * 查询规则
      * @var array
      */
     protected $rules = ['think', 'app/admin'];
 
     protected function configure()
     {
-        $this->rules = ['application/admin/', 'think'];
-        $this->setName('xplugs:admin')->setDescription('[同步]覆盖本地Admin模块代码');
+        $this->setName('xplugs:admin');
+        $this->setDescription('[同步]覆盖本地Admin模块代码');
     }
 
 }
