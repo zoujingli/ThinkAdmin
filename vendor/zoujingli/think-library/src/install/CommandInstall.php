@@ -68,9 +68,9 @@ class CommandInstall extends Command
 
     protected function configure()
     {
-        $this->setName('xtask:plugs');
+        $this->setName('xtask:install');
         $this->addArgument('name', Argument::OPTIONAL, '模块名称');
-        $this->setDescription('[同步]在线安装指定功能模块');
+        $this->setDescription('[同步]在线安装更新指定模块');
     }
 
     /**
