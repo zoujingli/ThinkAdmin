@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita51eb218b1f5b76290775d4f6b984645
+class ComposerStaticInitf141db0785048027c24f92d1492ab3c5
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -241,7 +241,6 @@ class ComposerStaticInita51eb218b1f5b76290775d4f6b984645
         'think\\admin\\extend\\ExpressExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/ExpressExtend.php',
         'think\\admin\\extend\\HttpExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/HttpExtend.php',
         'think\\admin\\extend\\NodeExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/NodeExtend.php',
-        'think\\admin\\extend\\PlugsExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/PlugsExtend.php',
         'think\\admin\\extend\\ProcessExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/ProcessExtend.php',
         'think\\admin\\extend\\TokenExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/TokenExtend.php',
         'think\\admin\\helper\\DeleteHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/DeleteHelper.php',
@@ -251,9 +250,8 @@ class ComposerStaticInita51eb218b1f5b76290775d4f6b984645
         'think\\admin\\helper\\QueryHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/QueryHelper.php',
         'think\\admin\\helper\\SaveHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/SaveHelper.php',
         'think\\admin\\helper\\TokenHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/TokenHelper.php',
-        'think\\admin\\plugs\\AdminPlugs' => __DIR__ . '/..' . '/zoujingli/think-library/src/plugs/AdminPlugs.php',
-        'think\\admin\\plugs\\Plugs' => __DIR__ . '/..' . '/zoujingli/think-library/src/plugs/Plugs.php',
-        'think\\admin\\plugs\\StaticPlugs' => __DIR__ . '/..' . '/zoujingli/think-library/src/plugs/StaticPlugs.php',
+        'think\\admin\\install\\CommandInstall' => __DIR__ . '/..' . '/zoujingli/think-library/src/install/CommandInstall.php',
+        'think\\admin\\install\\ExtendInstall' => __DIR__ . '/..' . '/zoujingli/think-library/src/install/ExtendInstall.php',
         'think\\admin\\queue\\ListenQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/ListenQueue.php',
         'think\\admin\\queue\\QueryQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/QueryQueue.php',
         'think\\admin\\queue\\StartQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/StartQueue.php',
@@ -470,9 +468,9 @@ class ComposerStaticInita51eb218b1f5b76290775d4f6b984645
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita51eb218b1f5b76290775d4f6b984645::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita51eb218b1f5b76290775d4f6b984645::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInita51eb218b1f5b76290775d4f6b984645::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf141db0785048027c24f92d1492ab3c5::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf141db0785048027c24f92d1492ab3c5::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitf141db0785048027c24f92d1492ab3c5::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -17,6 +17,7 @@ namespace app\admin\controller\api;
 
 use think\admin\Controller;
 use think\admin\extend\PlugsExtend;
+use think\admin\install\ExtendInstall;
 
 /**
  * 系统更新接口
@@ -30,7 +31,7 @@ class Update extends Controller
      */
     public function tree()
     {
-        $extend = PlugsExtend::instance($this->app);
+        $extend = ExtendInstall::instance($this->app);
         $this->rules = unserialize($this->request->post('rules', 'a:0:{}', ''));
         $this->ignore = unserialize($this->request->post('ignore', 'a:0:{}', ''));
         $this->success('获取当前文件列表成功！', $extend->buildFileList($this->rules, $this->ignore));

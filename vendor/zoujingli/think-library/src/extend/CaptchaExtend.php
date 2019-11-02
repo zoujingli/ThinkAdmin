@@ -50,7 +50,7 @@ class CaptchaExtend
             $this->code .= $this->charset[mt_rand(0, $length)];
         }
         // 设置字体文件路径
-        $this->font = __DIR__ . '/font/icon.ttf';
+        $this->font = __DIR__ . '/bin/font.ttf';
         // 缓存验证码字符串
         app()->cache->set($this->uniqid, $this->code, 360);
     }

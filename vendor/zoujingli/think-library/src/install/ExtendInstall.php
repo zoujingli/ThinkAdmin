@@ -13,16 +13,17 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\extend;
+namespace think\admin\install;
 
+use think\admin\extend\HttpExtend;
 use think\App;
-use think\console\Output;
 
 /**
- * Class PlugsExtend
- * @package think\admin\extend
+ * 模块安装服务扩展
+ * Class ExtendInstall
+ * @package think\admin\install
  */
-class PlugsExtend
+class ExtendInstall
 {
     /**
      * 当前应用
@@ -47,12 +48,6 @@ class PlugsExtend
      * @var string
      */
     protected $version;
-
-    /**
-     * 输出对象
-     * @var Output
-     */
-    protected $output;
 
     /**
      * 文件规则
@@ -92,8 +87,7 @@ class PlugsExtend
     public function __construct(App $app)
     {
         $this->app = $app;
-        $this->output = new Output();
-        // 应用框架版本号
+        // 应用框架版本
         $this->version = $this->app->config->get('app.thinkadmin_ver');
         if (empty($this->version)) $this->version = 'v4';
         // 线上应用代码
@@ -112,24 +106,25 @@ class PlugsExtend
     }
 
     /**
-     * 同步指定文件
+     * 同步更新文件
      * @param array $file
+     * @return array
      */
     public function fileSynchronization($file)
     {
         if (in_array($file['type'], ['add', 'mod'])) {
             if ($this->downloadFile(encode($file['name']))) {
-                $this->output->writeln("--- 下载 {$file['name']} 更新成功");
+                return [true, $file['type'], $file['name']];
             } else {
-                $this->output->writeln("--- 下载 {$file['name']} 更新失败");
+                return [false, $file['type'], $file['name']];
             }
         } elseif (in_array($file['type'], ['del'])) {
             $real = $this->path . $file['name'];
             if (is_file($real) && unlink($real)) {
                 $this->removeEmptyDirectory(dirname($real));
-                $this->output->writeln("--- 删除 {$file['name']} 文件成功");
+                return [true, $file['type'], $file['name']];
             } else {
-                $this->output->error("--- 删除 {$file['name']} 文件失败");
+                return [false, $file['type'], $file['name']];
             }
         }
     }
@@ -220,11 +215,12 @@ class PlugsExtend
     {
         // 扫描规则文件
         foreach ($rules as $key => $rule) {
-            $data = array_merge($data, $this->scanFileList(strtr("{$this->path}{$rule}", '\\', '/')));
+            $name = strtr(trim($rule, '\\/'), '\\', '/');
+            $data = array_merge($data, $this->scanFileList("{$this->path}{$name}"));
         }
         // 清除忽略文件
-        foreach ($data as $key => $map) foreach ($ignore as $ingore) {
-            if (stripos($map['name'], $ingore) === 0) unset($data[$key]);
+        foreach ($data as $key => $item) foreach ($ignore as $ingore) {
+            if (stripos($item['name'], $ingore) === 0) unset($data[$key]);
         }
         return ['rules' => $rules, 'ignore' => $ignore, 'list' => $data];
     }
