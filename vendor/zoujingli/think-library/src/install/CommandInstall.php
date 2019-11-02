@@ -70,7 +70,7 @@ class CommandInstall extends Command
     {
         $this->setName('xtask:install');
         $this->addArgument('name', Argument::OPTIONAL, '模块名称');
-        $this->setDescription('[同步]在线安装更新指定模块');
+        $this->setDescription("[安装]在线安装或更新指定模块文件");
     }
 
     /**
@@ -81,18 +81,16 @@ class CommandInstall extends Command
     {
         $this->name = trim($input->getArgument('name'));
         if (empty($this->name)) {
-            $this->output->error('=== 在线安装模块名称不能为空');
+            $this->output->error('在线安装的模块名称不能为空！');
         } else {
             $this->extend = ExtendInstall::instance($this->app);
             if (isset($this->bind[$this->name])) {
                 $this->rules = empty($this->bind[$this->name]['rules']) ? [] : $this->bind[$this->name]['rules'];
                 $this->ignore = empty($this->bind[$this->name]['ignore']) ? [] : $this->bind[$this->name]['ignore'];
-                $this->output->comment("=== 准备下载安装{$this->name}模块{$this->extend->getVersion()} ===");
                 $this->installFile();
-                $this->output->comment("=== 下载安装{$this->name}模块{$this->extend->getVersion()}完成 ===");
                 $this->installDatabase();
             } else {
-                $this->output->error("指定模块 {$this->name} 未配置安装规则");
+                $this->output->error("指定模块 {$this->name} 未配置安装规则！");
             }
         }
     }
@@ -100,7 +98,7 @@ class CommandInstall extends Command
     protected function installFile()
     {
         $data = $this->extend->grenerateDifference($this->rules, $this->ignore);
-        if (empty($data)) $this->output->info('--- 本地文件与线上文件一致，无需更新文件');
+        if (empty($data)) $this->output->info('文件比对一致不需更新文件！');
         else foreach ($data as $file) {
             list($state, $mode, $name) = $this->extend->fileSynchronization($file);
             if ($state) {
