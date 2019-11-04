@@ -44,7 +44,7 @@ class Update extends Controller
         $this->file = $this->app->getRootPath() . decode(input('encode', '0'));
         file_exists($this->file) ? $this->success('读取文件成功！', [
             'content' => base64_encode(file_get_contents($this->file)),
-        ]) : $this->error('获取文件内容失败！');
+        ]) : $this->error('读取文件内容失败！');
     }
 
 }
