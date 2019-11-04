@@ -16,11 +16,10 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
-use think\admin\extend\PlugsExtend;
 use think\admin\install\ExtendInstall;
 
 /**
- * 系统更新接口
+ * 安装服务端支持
  * Class Update
  * @package app\admin\controller\api
  */
