@@ -40,16 +40,16 @@ class CommandInstall extends Command
     protected $ignore = [];
 
     /**
-     * 插件工具实例
-     * @var ExtendInstall
-     */
-    protected $extend;
-
-    /**
      * 指定模块名称
      * @var string
      */
     protected $name;
+
+    /**
+     * 插件工具实例
+     * @var ExtendInstall
+     */
+    protected $extend;
 
     /**
      * 规则配置
@@ -69,8 +69,8 @@ class CommandInstall extends Command
     protected function configure()
     {
         $this->setName('xtask:install');
-        $this->addArgument('name', Argument::OPTIONAL, '模块名称');
         $this->setDescription("[安装]在线安装或更新指定模块文件");
+        $this->addArgument('name', Argument::OPTIONAL, '模块名称', '');
     }
 
     /**

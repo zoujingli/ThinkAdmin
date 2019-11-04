@@ -167,7 +167,7 @@ class ExtendInstall
             'rules' => serialize($this->rules), 'ignore' => serialize($this->ignore),
         ]), true);
         if (!empty($result['code'])) {
-            $new = $this->buildFileList($result['data']['rules'], $result['data']['ignore']);
+            $new = $this->getList($result['data']['rules'], $result['data']['ignore']);
             foreach ($this->grenerateDifferenceContrast($result['data']['list'], $new['list']) as $file) {
                 if (in_array($file['type'], ['add', 'del', 'mod'])) foreach ($this->rules as $rule) {
                     if (stripos($file['name'], $rule) === 0) $data[] = $file;
@@ -211,12 +211,12 @@ class ExtendInstall
      * @param array $data 扫描结果列表
      * @return array
      */
-    public function buildFileList(array $rules, array $ignore = [], array $data = [])
+    public function getList(array $rules, array $ignore = [], array $data = [])
     {
         // 扫描规则文件
         foreach ($rules as $key => $rule) {
             $name = strtr(trim($rule, '\\/'), '\\', '/');
-            $data = array_merge($data, $this->scanFileList("{$this->path}{$name}"));
+            $data = array_merge($data, $this->scanList("{$this->path}{$name}"));
         }
         // 清除忽略文件
         foreach ($data as $key => $item) foreach ($ignore as $ingore) {
@@ -231,16 +231,16 @@ class ExtendInstall
      * @param array $data 扫描结果
      * @return array
      */
-    private function scanFileList($path, $data = [])
+    private function scanList($path, $data = [])
     {
         if (file_exists($path)) if (is_dir($path)) foreach (scandir($path) as $sub) {
             if (strpos($sub, '.') !== 0) if (is_dir($temp = "{$path}/{$sub}")) {
-                $data = array_merge($data, $this->scanFileList($temp));
+                $data = array_merge($data, $this->scanList($temp));
             } else {
-                array_push($data, $this->getFileInfo($temp));
+                array_push($data, $this->getInfo($temp));
             }
         } else {
-            return [$this->getFileInfo($path)];
+            return [$this->getInfo($path)];
         }
         return $data;
     }
@@ -250,7 +250,7 @@ class ExtendInstall
      * @param string $filename
      * @return array
      */
-    private function getFileInfo($filename)
+    private function getInfo($filename)
     {
         return [
             'name' => str_replace($this->path, '', $filename),

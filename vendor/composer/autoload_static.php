@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit86df1673e77272f489819ff9f281822c
+class ComposerStaticInitbb2a3f4400fe342cca606415142844d9
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -196,6 +196,7 @@ class ComposerStaticInit86df1673e77272f489819ff9f281822c
         'app\\admin\\controller\\User' => __DIR__ . '/../..' . '/app/admin/controller/User.php',
         'app\\admin\\controller\\api\\Plugs' => __DIR__ . '/../..' . '/app/admin/controller/api/Plugs.php',
         'app\\admin\\controller\\api\\Update' => __DIR__ . '/../..' . '/app/admin/controller/api/Update.php',
+        'app\\admin\\controller\\api\\Upload' => __DIR__ . '/../..' . '/app/admin/controller/api/Upload.php',
         'app\\admin\\service\\AuthService' => __DIR__ . '/../..' . '/app/admin/service/AuthService.php',
         'app\\admin\\service\\MenuService' => __DIR__ . '/../..' . '/app/admin/service/MenuService.php',
         'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/app/index/controller/Index.php',
@@ -468,9 +469,9 @@ class ComposerStaticInit86df1673e77272f489819ff9f281822c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit86df1673e77272f489819ff9f281822c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit86df1673e77272f489819ff9f281822c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit86df1673e77272f489819ff9f281822c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitbb2a3f4400fe342cca606415142844d9::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitbb2a3f4400fe342cca606415142844d9::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitbb2a3f4400fe342cca606415142844d9::$classMap;
 
         }, null, ClassLoader::class);
     }

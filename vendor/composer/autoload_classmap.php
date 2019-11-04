@@ -105,6 +105,7 @@ return array(
     'app\\admin\\controller\\User' => $baseDir . '/app/admin/controller/User.php',
     'app\\admin\\controller\\api\\Plugs' => $baseDir . '/app/admin/controller/api/Plugs.php',
     'app\\admin\\controller\\api\\Update' => $baseDir . '/app/admin/controller/api/Update.php',
+    'app\\admin\\controller\\api\\Upload' => $baseDir . '/app/admin/controller/api/Upload.php',
     'app\\admin\\service\\AuthService' => $baseDir . '/app/admin/service/AuthService.php',
     'app\\admin\\service\\MenuService' => $baseDir . '/app/admin/service/MenuService.php',
     'app\\index\\controller\\Index' => $baseDir . '/app/index/controller/Index.php',
