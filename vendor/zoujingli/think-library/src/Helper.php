@@ -13,20 +13,18 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\helper;
+namespace think\admin;
 
-use think\admin\Controller;
 use think\App;
 use think\db\Query;
 
 /**
- * 基础管理器
+ * 控制器挂件
  * Class Helper
- * @package think\admin\helper
+ * @package think\admin
  */
-class Helper
+abstract class Helper
 {
-
     /**
      * 当前应用容器
      * @var App
@@ -70,11 +68,10 @@ class Helper
      * 实例对象反射
      * @param Controller $controller
      * @param App $app
-     * @return $this
+     * @return static
      */
     public static function instance(Controller $controller, App $app)
     {
         return new static($controller, $app);
     }
-
 }

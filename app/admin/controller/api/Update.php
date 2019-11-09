@@ -16,7 +16,7 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
-use think\admin\install\ExtendInstall;
+use think\admin\service\InstallService;
 
 /**
  * 安装服务端支持
@@ -32,7 +32,7 @@ class Update extends Controller
     {
         $this->rules = unserialize($this->request->post('rules', 'a:0:{}', ''));
         $this->ignore = unserialize($this->request->post('ignore', 'a:0:{}', ''));
-        $this->success('获取文件列表成功！', ExtendInstall::instance($this->app)->getList($this->rules, $this->ignore));
+        $this->success('获取文件列表成功！', InstallService::instance($this->app)->getList($this->rules, $this->ignore));
     }
 
     /**

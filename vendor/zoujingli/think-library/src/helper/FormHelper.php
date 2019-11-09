@@ -16,6 +16,7 @@
 namespace think\admin\helper;
 
 use think\admin\extend\DataExtend;
+use think\admin\Helper;
 use think\db\Query;
 
 /**

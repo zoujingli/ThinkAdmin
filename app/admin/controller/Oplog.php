@@ -16,7 +16,6 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
-use think\Db;
 
 /**
  * 系统日志管理

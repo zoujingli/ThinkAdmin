@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "387856954688245acf7e8623d243fb5d",
+    "content-hash": "44a6bc247971794be9edd9df4f3dd0b9",
     "packages": [
         {
             "name": "league/flysystem",
@@ -783,12 +783,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "8fe807f96681e800b32c5fe775e2b92def2396d3"
+                "reference": "e561d021e18776a9851646236e6af556c77eec6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/8fe807f96681e800b32c5fe775e2b92def2396d3",
-                "reference": "8fe807f96681e800b32c5fe775e2b92def2396d3",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/e561d021e18776a9851646236e6af556c77eec6a",
+                "reference": "e561d021e18776a9851646236e6af556c77eec6a",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -832,7 +832,7 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://framework.thinkadmin.top",
-            "time": "2019-11-04T11:04:29+00:00"
+            "time": "2019-11-09T08:03:23+00:00"
         }
     ],
     "packages-dev": [],
@@ -846,7 +846,9 @@
     "platform": {
         "php": ">=7.1.0",
         "ext-gd": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-curl": "*",
+        "ext-iconv": "*"
     },
     "platform-dev": []
 }

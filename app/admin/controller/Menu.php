@@ -15,9 +15,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\service\MenuService;
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
+use think\admin\service\MenuService;
 
 /**
  * 系统菜单管理
@@ -111,7 +111,7 @@ class Menu extends Controller
                 $vo['pid'] = $this->request->get('pid', '0');
             }
             // 读取系统功能节点
-            $this->nodes = MenuService::getList();
+            $this->nodes = MenuService::instance($this->app)->getList();
         }
     }
 

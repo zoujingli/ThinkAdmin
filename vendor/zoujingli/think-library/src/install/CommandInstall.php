@@ -15,6 +15,7 @@
 
 namespace think\admin\install;
 
+use think\admin\service\InstallService;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
@@ -47,9 +48,9 @@ class CommandInstall extends Command
 
     /**
      * 插件工具实例
-     * @var ExtendInstall
+     * @var InstallService
      */
-    protected $extend;
+    protected $service;
 
     /**
      * 规则配置
@@ -83,7 +84,7 @@ class CommandInstall extends Command
         if (empty($this->name)) {
             $this->output->error('在线安装的模块名称不能为空！');
         } else {
-            $this->extend = ExtendInstall::instance($this->app);
+            $this->service = InstallService::instance($this->app);
             if (isset($this->bind[$this->name])) {
                 $this->rules = empty($this->bind[$this->name]['rules']) ? [] : $this->bind[$this->name]['rules'];
                 $this->ignore = empty($this->bind[$this->name]['ignore']) ? [] : $this->bind[$this->name]['ignore'];
@@ -97,10 +98,10 @@ class CommandInstall extends Command
 
     protected function installFile()
     {
-        $data = $this->extend->grenerateDifference($this->rules, $this->ignore);
+        $data = $this->service->grenerateDifference($this->rules, $this->ignore);
         if (empty($data)) $this->output->info('文件比对一致不需更新文件！');
         else foreach ($data as $file) {
-            list($state, $mode, $name) = $this->extend->fileSynchronization($file);
+            list($state, $mode, $name) = $this->service->fileSynchronization($file);
             if ($state) {
                 if ($mode === 'add') $this->output->info("--- 下载 {$name} 添加成功");
                 if ($mode === 'mod') $this->output->info("--- 下载 {$name} 更新成功");

@@ -13,26 +13,26 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\admin\service;
+namespace think\admin\service;
 
-use library\tools\Data;
 use think\admin\extend\DataExtend;
-use think\admin\extend\NodeExtend;
+use think\admin\Service;
 
 /**
- * 系统授权服务
- * Class MenuService
- * @package app\admin\service
+ * 系统权限管理服务
+ * Class AuthService
+ * @package think\admin\service
  */
-class AuthService
+class AuthService extends Service
 {
+
     /**
      * 判断是否已经登录
      * @return boolean
      */
-    public static function isLogin()
+    public function isLogin()
     {
-        return app()->session->get('user.id') ? true : false;
+        return $this->app->session->get('user.id') ? true : false;
     }
 
     /**
@@ -42,12 +42,13 @@ class AuthService
      * @return boolean
      * @throws \ReflectionException
      */
-    public static function check($node = '')
+    public function check($node = '')
     {
-        if (app()->session->get('user.username') === 'admin') return true;
-        list($real, $nodes) = [NodeExtend::fullnode($node), NodeExtend::getMethods()];
+        $service = NodeService::instance($this->app);
+        if ($this->app->session->get('user.username') === 'admin') return true;
+        list($real, $nodes) = [$service->fullnode($node), $service->getMethods()];
         if (!empty($nodes[$real]['isauth'])) {
-            return in_array($real, app()->session->get('user.nodes', []));
+            return in_array($real, $this->app->session->get('user.nodes', []));
         }
         return !(!empty($nodes[$real]['islogin']) && !self::isLogin());
     }
@@ -58,9 +59,10 @@ class AuthService
      * @return array
      * @throws \ReflectionException
      */
-    public static function getTree($checkeds = [])
+    public function getTree($checkeds = [])
     {
-        list($nodes, $pnodes, $methods) = [[], [], array_reverse(NodeExtend::getMethods())];
+        list($nodes, $pnodes) = [[], []];
+        $methods = array_reverse(NodeService::instance($this->app)->getMethods());
         foreach ($methods as $node => $method) {
             $count = substr_count($node, '/');
             $pnode = substr($node, 0, strripos($node, '/'));
@@ -81,25 +83,24 @@ class AuthService
 
     /**
      * 初始化用户权限
-     * @param boolean $force 是否重置系统权限
+     * @param boolean $force 强刷权限
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function apply($force = false)
+    public function apply($force = false)
     {
-        $app = app();
-        if ($force) $app->cache->delete('system_auth_node');
-        if (($uid = $app->session->get('user.id'))) {
-            $user = $app->db->name('SystemUser')->where(['id' => $uid])->find();
+        if ($force) $this->app->cache->delete('system_auth_node');
+        if (($uid = $this->app->session->get('user.id'))) {
+            $user = $this->app->db->name('SystemUser')->where(['id' => $uid])->find();
             if (($aids = $user['authorize'])) {
                 $where = [['status', 'eq', '1'], ['id', 'in', explode(',', $aids)]];
-                $subsql = $app->db->name('SystemAuth')->field('id')->where($where)->buildSql();
-                $user['nodes'] = array_unique($app->db->name('SystemAuthNode')->whereRaw("auth in {$subsql}")->column('node'));
-                $app->session->set('user', $user);
+                $subsql = $this->app->db->name('SystemAuth')->field('id')->where($where)->buildSql();
+                $user['nodes'] = array_unique($this->app->db->name('SystemAuthNode')->whereRaw("auth in {$subsql}")->column('node'));
+                $this->app->session->set('user', $user);
             } else {
                 $user['nodes'] = [];
-                $app->session->set('user', $user);
+                $this->app->session->set('user', $user);
             }
         }
     }

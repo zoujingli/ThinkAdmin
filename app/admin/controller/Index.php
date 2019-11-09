@@ -15,10 +15,10 @@
 
 namespace app\admin\controller;
 
-use app\admin\service\AuthService;
-use app\admin\service\MenuService;
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
+use think\admin\service\AuthService;
+use think\admin\service\MenuService;
 
 /**
  * 后台界面入口
@@ -38,9 +38,9 @@ class Index extends Controller
     public function index()
     {
         $this->title = '系统管理后台';
-        AuthService::apply(true);
-        $this->menus = MenuService::getTree();
-        if (empty($this->menus) && !AuthService::isLogin()) {
+        AuthService::instance($this->app)->apply(true);
+        $this->menus = MenuService::instance($this->app)->getTree();
+        if (empty($this->menus) && !AuthService::instance($this->app)->isLogin()) {
             $this->redirect(url('@admin/login'));
         } else {
             $this->fetch();
@@ -59,6 +59,7 @@ class Index extends Controller
 
     /**
      * 修改用户资料
+     * @login true
      * @param integer $id 会员ID
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -66,9 +67,6 @@ class Index extends Controller
      */
     public function info($id = 0)
     {
-        if (!AuthService::isLogin()) {
-            $this->error('需要登录才能操作哦！');
-        }
         $this->_applyFormToken();
         if (intval($this->app->session->get('user.id')) === intval($id)) {
             $this->_form('SystemUser', 'admin@user/form', 'id', [], ['id' => $id]);
@@ -79,6 +77,7 @@ class Index extends Controller
 
     /**
      * 修改当前用户密码
+     * @login true
      * @param integer $id
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -86,9 +85,6 @@ class Index extends Controller
      */
     public function pass($id = 0)
     {
-        if (!AuthService::isLogin()) {
-            $this->error('需要登录才能操作哦！');
-        }
         $this->_applyFormToken();
         if (intval($this->app->session->get('user.id')) !== intval($id)) {
             $this->error('只能修改当前用户的密码！');

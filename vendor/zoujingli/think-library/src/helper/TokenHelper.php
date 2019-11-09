@@ -15,7 +15,8 @@
 
 namespace think\admin\helper;
 
-use think\admin\extend\TokenExtend;
+use think\admin\Helper;
+use think\admin\service\TokenService;
 use think\exception\HttpResponseException;
 
 /**
@@ -40,7 +41,7 @@ class TokenHelper extends Helper
     {
         $this->class->csrf_state = true;
         $this->token = $this->app->request->header('user-form-token', input('_csrf_', ''));
-        if ($this->app->request->isPost() && !TokenExtend::checkFormToken($this->token)) {
+        if ($this->app->request->isPost() && !TokenService::instance($this->app)->checkFormToken($this->token)) {
             if ($return) return false;
             $this->class->error($this->class->csrf_message);
         } else {
@@ -54,7 +55,7 @@ class TokenHelper extends Helper
     public function clear()
     {
         $this->token = $this->app->request->header('user-form-token', input('_csrf_', ''));
-        if (!empty($this->token)) TokenExtend::clearFormToken($this->token);
+        if (!empty($this->token)) TokenService::instance($this->app)->clearFormToken($this->token);
     }
 
     /**
@@ -67,7 +68,7 @@ class TokenHelper extends Helper
     {
         throw new HttpResponseException(view($tpl, $vars, 200, function ($html) use ($node) {
             return preg_replace_callback('/<\/form>/i', function () use ($node) {
-                $csrf = TokenExtend::buildFormToken($node);
+                $csrf = TokenService::instance($this->app)->buildFormToken($node);
                 return "<input type='hidden' name='_token_' value='{$csrf['token']}'></form>";
             }, $html);
         }));

@@ -20,6 +20,8 @@
     "php": ">=7.1.0",
     "ext-gd": "*",
     "ext-json": "*",
+    "ext-curl": "*",
+    "ext-iconv": "*",
     "topthink/framework": "^6.0",
     "topthink/think-view": "^1.0",
     "topthink/think-multi-app": "^1.0",

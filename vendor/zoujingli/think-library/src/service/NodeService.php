@@ -1,7 +1,7 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | Library for ThinkAdmin
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
@@ -9,26 +9,27 @@
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
-// | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace think\admin\extend;
+namespace think\admin\service;
+
+use think\admin\Service;
 
 /**
- * 应用节点管理扩展
- * Class NodeExtend
- * @package think\admin\extend
+ * 应用节点服务管理
+ * Class NodeService
+ * @package think\admin\service
  */
-class NodeExtend
+class NodeService extends Service
 {
-
     /**
      * 驼峰转下划线规则
      * @param string $name
      * @return string
      */
-    public static function nameTolower($name)
+    public function nameTolower($name)
     {
         $dots = [];
         foreach (explode('.', strtr($name, '/', '.')) as $dot) {
@@ -42,11 +43,11 @@ class NodeExtend
      * @param string $type
      * @return string
      */
-    public static function getCurrent($type = '')
+    public function getCurrent($type = '')
     {
-        $prefix = app()->getNamespace();
-        $middle = '\\' . self::nameTolower(app()->request->controller());
-        $suffix = ($type === 'controller') ? '' : ('\\' . app()->request->action());
+        $prefix = $this->app->getNamespace();
+        $middle = '\\' . self::nameTolower($this->app->request->controller());
+        $suffix = ($type === 'controller') ? '' : ('\\' . $this->app->request->action());
         return strtr(substr($prefix, stripos($prefix, '\\') + 1) . $middle . $suffix, '\\', '/');
     }
 
@@ -55,7 +56,7 @@ class NodeExtend
      * @param string $node
      * @return string
      */
-    public static function fullnode($node)
+    public function fullnode($node)
     {
         if (empty($node)) return self::getCurrent();
         if (count($attrs = explode('/', $node)) === 1) {
@@ -72,18 +73,18 @@ class NodeExtend
      * @return array
      * @throws \ReflectionException
      */
-    public static function getMethods($force = false)
+    public function getMethods($force = false)
     {
         static $data = [];
         if (empty($force)) {
             if (count($data) > 0) return $data;
-            $data = app()->cache->get('system_auth_node', []);
+            $data = $this->app->cache->get('system_auth_node', []);
             if (count($data) > 0) return $data;
         } else {
             $data = [];
         }
         $ignore = get_class_methods('\think\admin\Controller');
-        foreach (self::scanDirectory(dirname(app()->getAppPath())) as $file) {
+        foreach (self::scanDirectory(dirname($this->app->getAppPath())) as $file) {
             if (preg_match("|/(\w+)/(\w+)/controller/(.+)\.php$|i", $file, $matches)) {
                 list(, $namespace, $application, $baseclass) = $matches;
                 $class = new \ReflectionClass(strtr("{$namespace}/{$application}/controller/{$baseclass}", '/', '\\'));
@@ -95,7 +96,7 @@ class NodeExtend
                 }
             }
         }
-        app()->cache->set('system_auth_node', $data);
+        $this->app->cache->set('system_auth_node', $data);
         return $data;
     }
 
@@ -105,7 +106,7 @@ class NodeExtend
      * @param string $default
      * @return array
      */
-    private static function parseComment($comment, $default = '')
+    private function parseComment($comment, $default = '')
     {
         $text = strtr($comment, "\n", ' ');
         $title = preg_replace('/^\/\*\s*\*\s*\*\s*(.*?)\s*\*.*?$/', '$1', $text);
@@ -124,7 +125,7 @@ class NodeExtend
      * @param string $ext 有文件后缀
      * @return array
      */
-    private static function scanDirectory($path, $data = [], $ext = 'php')
+    private function scanDirectory($path, $data = [], $ext = 'php')
     {
         foreach (glob("{$path}*") as $item) {
             if (is_dir($item)) {

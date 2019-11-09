@@ -15,11 +15,8 @@
 
 namespace app\admin\controller;
 
-use app\admin\service\AuthService;
-use app\admin\service\MenuService;
-use app\admin\service\NodeService;
 use think\admin\Controller;
-use think\Db;
+use think\admin\service\AuthService;
 
 /**
  * 系统权限管理
@@ -112,7 +109,7 @@ class Auth extends Controller
         $action = strtolower(input('action', ''));
         if ($action === 'get') {
             $checkeds = $this->app->db->name('SystemAuthNode')->where($map)->column('node');
-            $this->success('获取权限节点成功！', AuthService::getTree($checkeds));
+            $this->success('获取权限节点成功！', AuthService::instance($this->app)->getTree($checkeds));
         } elseif ($action === 'save') {
             list($post, $data) = [$this->request->post(), []];
             foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
@@ -120,7 +117,7 @@ class Auth extends Controller
             }
             $this->app->db->name('SystemAuthNode')->where($map)->delete();
             $this->app->db->name('SystemAuthNode')->insertAll($data);
-            AuthService::apply(true);
+            AuthService::instance($this->app)->apply(true);
             $this->success('权限授权更新成功！', 'javascript:history.back()');
         } else {
             $this->title = '权限配置节点';

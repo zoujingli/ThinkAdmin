@@ -15,9 +15,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\service\AuthService;
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
+use think\admin\service\AuthService;
 
 /**
  * 系统用户管理
@@ -111,7 +111,7 @@ class User extends Controller
     {
         if ($this->request->isPost()) {
             // 刷新系统授权
-            AuthService::apply();
+            AuthService::instance($this->app)->apply();
             // 用户权限处理
             $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
             // 用户账号重复检查

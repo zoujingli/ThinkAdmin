@@ -13,24 +13,18 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\install;
+namespace think\admin\service;
 
 use think\admin\extend\HttpExtend;
-use think\App;
+use think\admin\Service;
 
 /**
- * 模块安装服务扩展
- * Class ExtendInstall
- * @package think\admin\install
+ * 模块安装服务管理
+ * Class InstallService
+ * @package think\admin\service
  */
-class ExtendInstall
+class InstallService extends Service
 {
-    /**
-     * 当前应用
-     * @var App
-     */
-    private $app;
-
     /**
      * 目录地址
      * @var string
@@ -62,31 +56,10 @@ class ExtendInstall
     protected $ignore = [];
 
     /**
-     * 当前实例
-     * @var $this
+     * 服务初始化
      */
-    private static $class;
-
-    /**
-     * 静态反射对象
-     * @param App $app
-     * @return $this
-     */
-    public static function instance(App $app)
+    protected function init()
     {
-        if (empty(self::$class)) {
-            self::$class = new static($app);
-        }
-        return self::$class;
-    }
-
-    /**
-     * PlugsExtend constructor.
-     * @param App $app
-     */
-    public function __construct(App $app)
-    {
-        $this->app = $app;
         // 应用框架版本
         $this->version = $this->app->config->get('app.thinkadmin_ver');
         if (empty($this->version)) $this->version = 'v4';

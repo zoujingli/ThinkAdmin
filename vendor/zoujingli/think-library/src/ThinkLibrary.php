@@ -15,6 +15,8 @@
 
 namespace think\admin;
 
+use think\admin\service\AuthService;
+use think\middleware\SessionInit;
 use think\Request;
 use think\Service;
 
@@ -31,7 +33,7 @@ class ThinkLibrary extends Service
     public function register()
     {
         // 注册会话中间键
-        $this->app->middleware->add(\think\middleware\SessionInit::class);
+        $this->app->middleware->add(SessionInit::class);
         // 动态加入应用函数
         foreach (glob($this->app->getAppPath() . '*/sys.php') as $file) {
             \Composer\Autoload\includeFile($file);
@@ -43,7 +45,7 @@ class ThinkLibrary extends Service
      */
     public function boot()
     {
-        // 注册访问跨域中间键
+        // 注册访问中间键
         $this->app->middleware->add(function (Request $request, \Closure $next) {
             $header = [];
             if (($origin = $request->header('origin', '*')) !== '*') {
@@ -52,10 +54,15 @@ class ThinkLibrary extends Service
                 $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
                 $header['Access-Control-Expose-Headers'] = 'User-Form-Token';
             }
+            // 访问模式及访问权限检查
             if ($request->isOptions()) {
                 return response()->code(204)->header($header);
-            } else {
+            } elseif (AuthService::instance($this->app)->check()) {
                 return $next($request)->header($header);
+            } elseif (AuthService::instance($this->app)->isLogin()) {
+                return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！'])->header($header);
+            } else {
+                return json(['code' => 0, 'msg' => '抱歉，需要登录获取访问权限！', 'url' => url('@admin/login')])->header($header);
             }
         });
         // 注册系统任务指令

@@ -13,29 +13,45 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\admin\service;
+namespace think\admin\service;
 
 use think\admin\extend\DataExtend;
-use think\admin\extend\NodeExtend;
+use think\admin\Service;
 
 /**
- * 系统菜单服务
+ * 系统菜单管理服务
  * Class MenuService
  * @package app\admin\service
  */
-class MenuService
+class MenuService extends Service
 {
+
+    /**
+     * 应用节点服务
+     * @var NodeService
+     */
+    protected $nodeService;
+
+    /**
+     * 服务初始化
+     * @return $this
+     */
+    protected function init()
+    {
+        $this->nodeService = NodeService::instance($this->app);
+        return $this;
+    }
 
     /**
      * 获取可选菜单节点
      * @return array
      * @throws \ReflectionException
      */
-    public static function getList()
+    public function getList()
     {
         static $nodes = [];
         if (count($nodes) > 0) return $nodes;
-        foreach (NodeExtend::getMethods() as $node => $method) if ($method['ismenu']) {
+        foreach ($this->nodeService->getMethods() as $node => $method) if ($method['ismenu']) {
             $nodes[] = ['node' => $node, 'title' => $method['title']];
         }
         return $nodes;
@@ -49,10 +65,10 @@ class MenuService
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function getTree()
+    public function getTree()
     {
         $result = app()->db->name('SystemMenu')->where(['status' => '1'])->order('sort desc,id asc')->select();
-        return self::buildData(DataExtend::arr2tree($result->toArray()), NodeExtend::getMethods());
+        return self::buildData(DataExtend::arr2tree($result->toArray()), $this->nodeService->getMethods());
     }
 
     /**
@@ -62,7 +78,7 @@ class MenuService
      * @return array
      * @throws \ReflectionException
      */
-    private static function buildData($menus, $nodes)
+    private function buildData($menus, $nodes)
     {
         foreach ($menus as $key => &$menu) {
             if (!empty($menu['sub'])) {
@@ -74,7 +90,7 @@ class MenuService
             else {
                 $node = join('/', array_slice(explode('/', preg_replace('/[\W]/', '/', $menu['url'])), 0, 3));
                 $menu['url'] = url($menu['url']) . (empty($menu['params']) ? '' : "?{$menu['params']}");
-                if (!AuthService::check($node)) unset($menus[$key]);
+                if (!AuthService::instance($this->app)->check($node)) unset($menus[$key]);
             }
         }
         return $menus;

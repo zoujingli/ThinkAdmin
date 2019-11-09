@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
@@ -12,21 +13,7 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-use app\admin\service\AuthService;
-use think\admin\extend\NodeExtend;
-
-if (!function_exists('auth')) {
-    /**
-     * 访问权限检查
-     * @param string $node
-     * @return boolean
-     * @throws ReflectionException
-     */
-    function auth($node)
-    {
-        return AuthService::check($node);
-    }
-}
+use think\admin\service\NodeService;
 
 if (!function_exists('sysdata')) {
     /**
@@ -59,7 +46,7 @@ if (!function_exists('sysoplog')) {
     function sysoplog($action, $content)
     {
         return app()->db->name('SystemOplog')->insert([
-            'node'     => NodeExtend::getCurrent(),
+            'node'     => NodeService::instance()->getCurrent(),
             'action'   => $action, 'content' => $content,
             'geoip'    => PHP_SAPI === 'cli' ? '127.0.0.1' : app()->request->ip(),
             'username' => PHP_SAPI === 'cli' ? 'cli' : app()->session->get('user.username'),

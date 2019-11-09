@@ -48,7 +48,7 @@ class Config extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function config()
+    public function system()
     {
         $this->_applyFormToken();
         if ($this->request->isGet()) {
