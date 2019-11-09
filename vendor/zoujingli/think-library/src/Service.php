@@ -34,7 +34,7 @@ abstract class Service
      * 实例缓存
      * @var $this
      */
-    protected static $cache;
+    protected static $cache = [];
 
     /**
      * Service constructor.
@@ -52,7 +52,7 @@ abstract class Service
     protected function init()
     {
     }
-    
+
     /**
      * 静态实例对象
      * @param App $app
