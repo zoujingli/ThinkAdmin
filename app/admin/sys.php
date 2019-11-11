@@ -13,8 +13,6 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-use think\admin\service\NodeService;
-
 if (!function_exists('sysdata')) {
     /**
      * JSON 数据读取与存储
@@ -45,11 +43,13 @@ if (!function_exists('sysoplog')) {
      */
     function sysoplog($action, $content)
     {
-        return app()->db->name('SystemOplog')->insert([
-            'node'     => NodeService::instance()->getCurrent(),
-            'action'   => $action, 'content' => $content,
-            'geoip'    => PHP_SAPI === 'cli' ? '127.0.0.1' : app()->request->ip(),
-            'username' => PHP_SAPI === 'cli' ? 'cli' : app()->session->get('user.username'),
+        $app = app();
+        return $app->db->name('SystemOplog')->insert([
+            'node'     => \think\admin\service\NodeService::instance($app)->getCurrent(),
+            'geoip'    => PHP_SAPI === 'cli' ? '127.0.0.1' : $app->request->ip(),
+            'action'   => $action,
+            'content'  => $content,
+            'username' => PHP_SAPI === 'cli' ? 'cli' : $app->session->get('user.username'),
         ]);
     }
 }
