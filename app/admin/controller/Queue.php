@@ -16,7 +16,7 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
-use think\admin\extend\ProcessExtend;
+use think\admin\service\ProcessService;
 use think\exception\HttpResponseException;
 
 /**
@@ -44,8 +44,8 @@ class Queue extends Controller
     {
         if ($this->app->session->get('user.username') === 'admin') {
             try {
-                $this->command = ProcessExtend::think('xtask:start');
                 $this->message = $this->app->console->call('xtask:state')->fetch();
+                $this->command = ProcessService::instance($this->app)->think('xtask:start');
             } catch (\Exception $exception) {
                 $this->message = $exception->getMessage();
             }
