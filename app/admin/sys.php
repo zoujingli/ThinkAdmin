@@ -46,10 +46,9 @@ if (!function_exists('sysoplog')) {
         $app = app();
         return $app->db->name('SystemOplog')->insert([
             'node'     => \think\admin\service\NodeService::instance($app)->getCurrent(),
-            'geoip'    => PHP_SAPI === 'cli' ? '127.0.0.1' : $app->request->ip(),
-            'action'   => $action,
-            'content'  => $content,
-            'username' => PHP_SAPI === 'cli' ? 'cli' : $app->session->get('user.username'),
+            'geoip'    => $app->request->isCli() ? '127.0.0.1' : $app->request->ip(),
+            'action'   => $action, 'content' => $content,
+            'username' => $app->request->isCli() ? 'cli' : $app->session->get('user.username', ''),
         ]);
     }
 }
