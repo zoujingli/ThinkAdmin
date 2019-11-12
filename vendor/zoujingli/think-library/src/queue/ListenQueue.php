@@ -55,14 +55,14 @@ class ListenQueue extends Command
                 try {
                     $this->app->db->name('SystemQueue')->where(['id' => $vo['id']])->update(['status' => '2', 'enter_time' => time(), 'attempts' => $vo['attempts'] + 1]);
                     if ($process->query($command = $process->think("xtask:_work {$vo['id']} -"))) {
-                        $output->comment("任务正在执行 --> [{$vo['id']}] {$vo['title']}");
+                        $output->comment("正在执行 --> [{$vo['id']}] {$vo['title']}");
                     } else {
                         $process->create($command);
-                        $output->info("任务创建成功 --> [{$vo['id']}] {$vo['title']}");
+                        $output->info("创建成功 --> [{$vo['id']}] {$vo['title']}");
                     }
                 } catch (\Exception $e) {
                     $this->app->db->name('SystemQueue')->where(['id' => $vo['id']])->update(['status' => '4', 'outer_time' => time(), 'exec_desc' => $e->getMessage()]);
-                    $output->error("任务创建失败 --> [{$vo['id']}] {$vo['title']}，{$e->getMessage()}");
+                    $output->error("创建失败 --> [{$vo['id']}] {$vo['title']}，{$e->getMessage()}");
                 }
             }
             sleep(1);

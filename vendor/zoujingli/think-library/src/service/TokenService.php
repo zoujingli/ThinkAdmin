@@ -25,14 +25,26 @@ use think\admin\Service;
 class TokenService extends Service
 {
     /**
+     * 获取当前请求令牌
+     * @return array|string
+     */
+    public function getInputToken()
+    {
+        return $this->app->request->header('user-form-token', input('_csrf_', ''));
+    }
+
+    /**
      * 验证表单令牌是否有效
      * @param string $token 表单令牌
+     * @param string $node 授权节点
      * @return boolean
      */
-    public function checkFormToken($token)
+    public function checkFormToken($token = null, $node = null)
     {
-        $service = NodeService::instance($this->app);
-        list($node, $cache) = [$service->getCurrent(), $this->app->session->get($token, [])];
+        if (is_null($token)) $token = $this->getInputToken();
+        if (is_null($node)) $node = NodeService::instance($this->app)->getCurrent();
+        // 读取缓存并检查是否有效
+        $cache = $this->app->session->get($token, []);
         if (empty($cache['node']) || empty($cache['time']) || empty($cache['token'])) return false;
         if ($cache['token'] !== $token || $cache['time'] + 600 < time() || $cache['node'] !== $node) return false;
         return true;
@@ -40,11 +52,12 @@ class TokenService extends Service
 
     /**
      * 清理表单CSRF信息
-     * @param string $name
+     * @param string $token
      */
-    public function clearFormToken($name = null)
+    public function clearFormToken($token = null)
     {
-        $this->app->session->delete($name);
+        if (is_null($token)) $token = $this->getInputToken();
+        $this->app->session->delete($token);
     }
 
     /**

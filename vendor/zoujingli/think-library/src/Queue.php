@@ -17,8 +17,6 @@ namespace think\admin;
 
 use think\admin\service\ProcessService;
 use think\App;
-use think\console\Input;
-use think\console\Output;
 
 /**
  * 基础任务基类
@@ -31,25 +29,31 @@ class Queue
      * 应用实例
      * @var App
      */
-    public $app;
+    protected $app;
 
     /**
      * 当前任务ID
      * @var integer
      */
-    public $jobid = 0;
+    protected $jobid = 0;
 
     /**
      * 当前任务标题
      * @var string
      */
-    public $title = '';
+    protected $title = '';
 
     /**
-     * 当前任务内容
+     * 当前任务参数
      * @var array
      */
-    public $queue = [];
+    protected $data = [];
+
+    /**
+     * 当前任务数据
+     * @var array
+     */
+    protected $queue = [];
 
     /**
      * Queue constructor.
@@ -96,6 +100,7 @@ class Queue
             $this->queue = $this->app->db->name('SystemQueue')->where(['id' => $this->jobid])->find();
             if (empty($this->queue)) throw new \think\Exception("Queue {$jobid} Not found.");
             $this->title = $this->queue['title'];
+            $this->data = json_decode($this->queue['exec_data'], true) ?: [];
         }
         return $this;
     }
@@ -142,7 +147,7 @@ class Queue
      */
     public function register($title, $command, $later = 0, $data = [], $rscript = 1)
     {
-        $map = [['title', 'eq', $title], ['status', 'in', ['1', '2']]];
+        $map = [['title', '=', $title], ['status', 'in', ['1', '2']]];
         if (empty($rscript) && $this->app->db->name('SystemQueue')->where($map)->count() > 0) {
             throw new \think\Exception('该任务已经创建，请耐心等待处理完成！');
         }
@@ -161,12 +166,10 @@ class Queue
 
     /**
      * 执行任务处理
-     * @param Input $input 输入对象
-     * @param Output $output 输出对象
      * @param array $data 任务参数
      * @return mixed
      */
-    public function execute(Input $input, Output $output, array $data = [])
+    public function execute(array $data = [])
     {
     }
 

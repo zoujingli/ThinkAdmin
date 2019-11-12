@@ -56,7 +56,7 @@ class WorkQueue extends Command
      * 任务执行
      * @param Input $input
      * @param Output $output
-     * @throws \Exception
+     * @throws \think\db\exception\DbException
      */
     protected function execute(Input $input, Output $output)
     {
@@ -73,12 +73,13 @@ class WorkQueue extends Command
             if (class_exists($command = $queue['command'])) {
                 if ($command instanceof Queue) {
                     $data = json_decode($queue['data'], true) ?: [];
-                    $this->update('3', $command::instance($this->app, $this->id)->execute($input, $output, $data));
+                    $this->update('3', $command::instance($this->app, $this->id)->execute($data));
                 } else {
                     throw new \think\Exception("任务处理类 {$command} 未继承 think\\admin\\Queue");
                 }
             } else {
-                $this->update('3', $this->app->console->call($queue['command'], [], 'console'));
+                $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $queue['command'])));
+                $this->update('3', $this->app->console->call(array_shift($attr), $attr, 'console'));
             }
         } catch (\Exception $e) {
             $this->update('4', $e->getMessage());
@@ -94,8 +95,9 @@ class WorkQueue extends Command
      */
     protected function update($status, $message)
     {
+        $desc = explode("\n", trim(is_string($message) ? $message : ''));
         $result = $this->app->db->name('SystemQueue')->where(['id' => $this->id])->update([
-            'status' => $status, 'outer_time' => date('Y-m-d H:i:s'), 'exec_desc' => is_string($message) ? $message : '',
+            'status' => $status, 'outer_time' => time(), 'exec_desc' => $desc[0],
         ]);
         $this->output->writeln(is_string($message) ? $message : '');
         return $result !== false;

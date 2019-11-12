@@ -26,11 +26,6 @@ use think\exception\HttpResponseException;
  */
 class TokenHelper extends Helper
 {
-    /**
-     * 获取当前令牌值
-     * @var string
-     */
-    protected $token;
 
     /**
      * 初始化验证码器
@@ -40,8 +35,7 @@ class TokenHelper extends Helper
     public function init($return = false)
     {
         $this->class->csrf_state = true;
-        $this->token = $this->app->request->header('user-form-token', input('_csrf_', ''));
-        if ($this->app->request->isPost() && !TokenService::instance($this->app)->checkFormToken($this->token)) {
+        if ($this->app->request->isPost() && !TokenService::instance($this->app)->checkFormToken()) {
             if ($return) return false;
             $this->class->error($this->class->csrf_message);
         } else {
@@ -54,8 +48,7 @@ class TokenHelper extends Helper
      */
     public function clear()
     {
-        $this->token = $this->app->request->header('user-form-token', input('_csrf_', ''));
-        if (!empty($this->token)) TokenService::instance($this->app)->clearFormToken($this->token);
+        TokenService::instance($this->app)->clearFormToken();
     }
 
     /**

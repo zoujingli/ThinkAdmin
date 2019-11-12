@@ -44,11 +44,11 @@
                 <span class="color-desc">任务指令：{$vo.command|default=''}</span>
             </td>
             <td class='text-left nowrap'>
-                创建时间：{$vo.create_at|format_datetime} / {$vo.time|format_datetime}<br>
-                执行时间：{$vo.start_at|format_datetime} / {$vo.end_at|format_datetime}
+                创建时间：{$vo.create_at|format_datetime} / {$vo.exec_time|format_datetime}<br>
+                执行时间：{$vo.enter_time|format_datetime} / {$vo.outer_time|format_datetime}
             </td>
             <td class='text-left nowrap'>
-                任务状态：{eq name='vo.double' value='1'}
+                任务状态：{eq name='vo.rscript' value='1'}
                 <span class="layui-badge layui-bg-green margin-right-5">复</span>
                 {else}
                 <span class="layui-badge layui-bg-blue margin-right-5">单</span>
@@ -72,7 +72,7 @@
                 </a>
                 {/if}
                 <br>
-                状态描述：<span class="color-desc">{$vo.desc|raw|default="没有获取到状态描述"}</span>
+                状态描述：<span class="color-desc">{$vo.exec_desc|raw|default="没有获取到状态描述"}</span>
             </td>
         </tr>
         {/foreach}
