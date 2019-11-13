@@ -89,16 +89,14 @@ class PageHelper extends Helper
             $limit = intval($this->app->request->get('limit', cookie('page-limit')));
             cookie('page-limit', $limit = $limit >= 10 ? $limit : 20);
             if ($this->limit > 0) $limit = $this->limit;
-            $rows = [];
-            // $paginate = $this->query->paginate($limit, $this->total, ['query' => ($query = $this->app->request->get())]);
-            $query = $this->app->request->get();
-            $paginate = $this->query->paginate($limit, $this->total);
+            list($options, $query) = [[], $this->app->request->get()];
+            $paginate = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $this->total);
             foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
                 list($query['limit'], $query['page'], $selected) = [$num, '1', $limit === $num ? 'selected' : ''];
                 $url = url('@admin') . '#' . $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
-                array_push($rows, "<option data-num='{$num}' value='{$url}' {$selected}>{$num}</option>");
+                array_push($options, "<option data-num='{$num}' value='{$url}' {$selected}>{$num}</option>");
             }
-            $select = "<select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>" . join('', $rows) . "</select>";
+            $select = "<select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>" . join('', $options) . "</select>";
             $html = "<div class='pagination-container nowrap'><span>共 {$paginate->total()} 条记录，每页显示 {$select} 条，共 {$paginate->lastPage()} 页当前显示第 {$paginate->currentPage()} 页。</span>{$paginate->render()}</div>";
             $this->class->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $html));
             $result = ['page' => ['limit' => intval($limit), 'total' => intval($paginate->total()), 'pages' => intval($paginate->lastPage()), 'current' => intval($paginate->currentPage())], 'list' => $paginate->items()];

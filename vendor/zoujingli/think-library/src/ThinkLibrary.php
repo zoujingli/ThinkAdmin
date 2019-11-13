@@ -46,8 +46,9 @@ class ThinkLibrary extends Service
     public function boot()
     {
         // 注册访问中间键
-        if (in_array($this->app->request->method(), ['get', 'post', 'options'])) {
-            $this->app->middleware->add(function (Request $request, \Closure $next, $header = []) {
+        if (stripos('get,post,options', $this->app->request->method()) !== false) {
+            $this->app->middleware->add(function (Request $request, \Closure $next) {
+                $header = [];
                 if (($origin = $request->header('origin', '*')) !== '*') {
                     $header['Access-Control-Allow-Origin'] = $origin;
                     $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
@@ -58,7 +59,7 @@ class ThinkLibrary extends Service
                 if ($request->isOptions()) {
                     return response()->code(204)->header($header);
                 } elseif (AuthService::instance($this->app)->check()) {
-                    return $next($request)->header($header);
+                    return $next($request)->code(200)->header($header);
                 } elseif (AuthService::instance($this->app)->isLogin()) {
                     return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！'])->header($header);
                 } else {
