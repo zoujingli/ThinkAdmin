@@ -42,7 +42,7 @@ class Config extends Controller
     }
 
     /**
-     * 修改系统能数配置
+     * 修改系统参数配置
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -52,7 +52,7 @@ class Config extends Controller
     {
         $this->_applyFormToken();
         if ($this->request->isGet()) {
-            $this->title = '系统参数配置';
+            $this->title = '修改系统参数配置';
             $this->fetch();
         }
         foreach ($this->request->post() as $key => $value) {
@@ -62,7 +62,7 @@ class Config extends Controller
     }
 
     /**
-     * 文件存储引擎
+     * 修改文件存储引擎
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException

@@ -73,7 +73,7 @@ class Auth extends Controller
     }
 
     /**
-     * 修改系统权限状态
+     * 修改权限状态
      * @auth true
      * @throws \think\db\exception\DbException
      */
@@ -81,17 +81,6 @@ class Auth extends Controller
     {
         $this->_applyFormToken();
         $this->_save($this->table, ['status' => input('status')]);
-    }
-
-    /**
-     * 删除系统权限
-     * @auth true
-     * @throws \think\db\exception\DbException
-     */
-    public function remove()
-    {
-        $this->_applyFormToken();
-        $this->_delete($this->table);
     }
 
     /**
@@ -123,6 +112,17 @@ class Auth extends Controller
             $this->title = '权限配置节点';
             $this->_form($this->table, 'apply');
         }
+    }
+    
+    /**
+     * 删除系统权限
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function remove()
+    {
+        $this->_applyFormToken();
+        $this->_delete($this->table);
     }
 
     /**
