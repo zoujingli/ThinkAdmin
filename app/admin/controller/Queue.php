@@ -57,6 +57,16 @@ class Queue extends Controller
     }
 
     /**
+     * 删除系统任务
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function remove()
+    {
+        $this->_delete($this->table);
+    }
+
+    /**
      * 重启系统任务
      * @auth true
      * @throws \think\db\exception\DbException
@@ -67,7 +77,16 @@ class Queue extends Controller
     }
 
     /**
-     * (WIN)创建任务监听进程
+     * 重启任务结果处理
+     * @param boolean $state
+     */
+    protected function _redo_save_result($state)
+    {
+        if ($state) $this->success('重启任务成功！');
+    }
+
+    /**
+     * WIN创建监听进程
      * @auth true
      */
     public function start()
@@ -82,7 +101,7 @@ class Queue extends Controller
     }
 
     /**
-     * (WIN)停止任务监听进程
+     * WIN停止监听进程
      * @auth true
      */
     public function stop()
@@ -94,17 +113,6 @@ class Queue extends Controller
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
-    }
-
-
-    /**
-     * 删除系统任务
-     * @auth true
-     * @throws \think\db\exception\DbException
-     */
-    public function remove()
-    {
-        $this->_delete($this->table);
     }
 
 }

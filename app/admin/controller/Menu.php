@@ -116,7 +116,7 @@ class Menu extends Controller
     }
 
     /**
-     * 修改系统菜单状态
+     * 修改菜单状态
      * @auth true
      * @throws \think\db\exception\DbException
      */

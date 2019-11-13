@@ -113,7 +113,7 @@ class Auth extends Controller
             $this->_form($this->table, 'apply');
         }
     }
-    
+
     /**
      * 删除系统权限
      * @auth true

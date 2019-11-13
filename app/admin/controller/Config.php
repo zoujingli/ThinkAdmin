@@ -31,7 +31,7 @@ class Config extends Controller
     protected $table = 'SystemConfig';
 
     /**
-     * 绑定数据表
+     * 系统参数配置
      * @auth true
      * @menu true
      */
@@ -42,7 +42,7 @@ class Config extends Controller
     }
 
     /**
-     * 修改系统参数配置
+     * 修改系统参数
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -52,17 +52,17 @@ class Config extends Controller
     {
         $this->_applyFormToken();
         if ($this->request->isGet()) {
-            $this->title = '修改系统参数配置';
+            $this->title = '修改系统参数';
             $this->fetch();
         }
         foreach ($this->request->post() as $key => $value) {
             sysconf($key, $value);
         }
-        $this->success('系统参数配置成功！');
+        $this->success('修改系统参数成功！');
     }
 
     /**
-     * 修改文件存储引擎
+     * 修改文件存储
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -83,7 +83,7 @@ class Config extends Controller
             $post['storage']['allow_exts'] = join(',', $exts);
         }
         foreach ($post as $key => $value) sysconf($key, $value);
-        $this->success('文件存储配置成功！');
+        $this->success('修改文件存储成功！');
     }
 
 }

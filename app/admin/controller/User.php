@@ -126,7 +126,7 @@ class User extends Controller
     }
 
     /**
-     * 修改系统用户状态
+     * 修改用户状态
      * @auth true
      * @throws \think\db\exception\DbException
      */
