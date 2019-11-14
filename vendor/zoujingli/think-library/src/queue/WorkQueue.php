@@ -23,7 +23,7 @@ use think\console\input\Argument;
 use think\console\Output;
 
 /**
- * 启动指定独立执行的任务子进程
+ * 启动独立执行进程
  * Class WorkQueue
  * @package think\admin\queue
  */
@@ -31,10 +31,10 @@ class WorkQueue extends Command
 {
 
     /**
-     * 当前任务ID
+     * 当前任务编号
      * @var integer
      */
-    protected $id;
+    protected $code;
 
     /**
      * 绑定数据表
@@ -48,8 +48,8 @@ class WorkQueue extends Command
     protected function configure()
     {
         $this->setName('xtask:_work')->setDescription('[执行]创建执行单个指定任务的进程');
-        $this->addArgument('id', Argument::OPTIONAL, '指定任务ID');
-        $this->addArgument('sp', Argument::OPTIONAL, '指令结束符');
+        $this->addArgument('code', Argument::OPTIONAL, '任务编号');
+        $this->addArgument('splt', Argument::OPTIONAL, '指令结束符');
     }
 
     /**
@@ -61,10 +61,10 @@ class WorkQueue extends Command
     protected function execute(Input $input, Output $output)
     {
         try {
-            $this->id = trim($input->getArgument('id')) ?: 0;
-            if (empty($this->id)) throw new \think\Exception("执行任务需要指定任务编号！");
-            $queue = $this->app->db->name('SystemQueue')->where(['id' => $this->id, 'status' => '2'])->find();
-            if (empty($queue)) throw new \think\Exception("执行任务{$this->id}的信息或状态异常！");;
+            $this->code = trim($input->getArgument('code'));
+            if (empty($this->code)) throw new \think\Exception("执行任务需要指定任务编号！");
+            $queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code, 'status' => '2'])->find();
+            if (empty($queue)) throw new \think\Exception("执行任务{$this->code}的信息或状态异常！");;
             // 设置进程标题
             if (($process = ProcessService::instance($this->app))->iswin()) {
                 $this->setProcessTitle("ThinkAdmin {$process->version()} 执行任务 - {$queue['title']}");
@@ -73,7 +73,7 @@ class WorkQueue extends Command
             if (class_exists($command = $queue['command'])) {
                 if ($command instanceof Queue) {
                     $data = json_decode($queue['data'], true) ?: [];
-                    $this->update('3', $command::instance($this->app, $this->id)->execute($data));
+                    $this->update('3', $command::instance($this->app, $this->code)->execute($data));
                 } else {
                     throw new \think\Exception("任务处理类 {$command} 未继承 think\\admin\\Queue");
                 }
@@ -96,7 +96,7 @@ class WorkQueue extends Command
     protected function update($status, $message)
     {
         $desc = explode("\n", trim(is_string($message) ? $message : ''));
-        $result = $this->app->db->name('SystemQueue')->where(['id' => $this->id])->update([
+        $result = $this->app->db->name('SystemQueue')->where(['code' => $this->code])->update([
             'status' => $status, 'outer_time' => time(), 'exec_desc' => $desc[0],
         ]);
         $this->output->writeln(is_string($message) ? $message : '');

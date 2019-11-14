@@ -28,7 +28,7 @@
   "extra": {
     "think": {
       "services": [
-        "think\\admin\\ThinkLibrary"
+        "think\\admin\\Library"
       ]
     }
   }

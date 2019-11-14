@@ -47,22 +47,22 @@ class ListenQueue extends Command
     {
         $this->app->db->name('SystemQueue')->count();
         if (($process = ProcessService::instance($this->app))->iswin()) {
-            $this->setProcessTitle("ThinkAdmin 异步任务监听主进程 {$process->version()}");
+            $this->setProcessTitle("ThinkAdmin 监听主进程 {$process->version()}");
         }
         $output->comment('============ 异步任务监听中 ============');
         while (true) {
-            foreach ($this->app->db->name('SystemQueue')->where([['status', '=', '1'], ['exec_time', '<=', time()]])->order('exec_time asc')->select() as $vo) {
+            foreach ($this->app->db->name('SystemQueue')->where([['status', '=', '1'], ['exec_time', '<=', time()]])->order('exec_time asc')->limit(100)->select() as $vo) {
                 try {
-                    $this->app->db->name('SystemQueue')->where(['id' => $vo['id']])->update(['status' => '2', 'enter_time' => time(), 'exec_desc' => '', 'attempts' => $vo['attempts'] + 1]);
-                    if ($process->query($command = $process->think("xtask:_work {$vo['id']} -"))) {
-                        $output->comment("正在执行 -> [{$vo['id']}] {$vo['title']}");
+                    $this->app->db->name('SystemQueue')->where(['code' => $vo['code']])->update(['status' => '2', 'enter_time' => time(), 'exec_desc' => '', 'attempts' => $vo['attempts'] + 1]);
+                    if ($process->query($command = $process->think("xtask:_work {$vo['code']} -"))) {
+                        $output->comment("正在执行 -> [{$vo['code']}] {$vo['title']}");
                     } else {
                         $process->create($command);
-                        $output->info("创建成功 -> [{$vo['id']}] {$vo['title']}");
+                        $output->info("创建成功 -> [{$vo['code']}] {$vo['title']}");
                     }
                 } catch (\Exception $e) {
-                    $this->app->db->name('SystemQueue')->where(['id' => $vo['id']])->update(['status' => '4', 'outer_time' => time(), 'exec_desc' => $e->getMessage()]);
-                    $output->error("创建失败 -> [{$vo['id']}] {$vo['title']}，{$e->getMessage()}");
+                    $this->app->db->name('SystemQueue')->where(['code' => $vo['code']])->update(['status' => '4', 'outer_time' => time(), 'exec_desc' => $e->getMessage()]);
+                    $output->error("创建失败 -> [{$vo['code']}] {$vo['title']}，{$e->getMessage()}");
                 }
             }
             sleep(1);

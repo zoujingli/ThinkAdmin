@@ -47,12 +47,6 @@ class Install extends Command
     protected $name;
 
     /**
-     * 插件工具实例
-     * @var InstallService
-     */
-    protected $service;
-
-    /**
      * 规则配置
      * @var array
      */
@@ -84,7 +78,7 @@ class Install extends Command
         if (empty($this->name)) {
             $this->output->error('在线安装的模块名称不能为空！');
         } else {
-            $this->service = InstallService::instance($this->app);
+
             if (isset($this->bind[$this->name])) {
                 $this->rules = empty($this->bind[$this->name]['rules']) ? [] : $this->bind[$this->name]['rules'];
                 $this->ignore = empty($this->bind[$this->name]['ignore']) ? [] : $this->bind[$this->name]['ignore'];
@@ -98,10 +92,11 @@ class Install extends Command
 
     protected function installFile()
     {
-        $data = $this->service->grenerateDifference($this->rules, $this->ignore);
+        $service = InstallService::instance($this->app);
+        $data = $service->grenerateDifference($this->rules, $this->ignore);
         if (empty($data)) $this->output->info('文件比对一致不需更新文件！');
         else foreach ($data as $file) {
-            list($state, $mode, $name) = $this->service->fileSynchronization($file);
+            list($state, $mode, $name) = $service->fileSynchronization($file);
             if ($state) {
                 if ($mode === 'add') $this->output->info("--- 下载 {$name} 添加成功");
                 if ($mode === 'mod') $this->output->info("--- 下载 {$name} 更新成功");

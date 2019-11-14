@@ -44,7 +44,7 @@ class QiniuStorage extends Storage
         $this->accessKey = sysconf('storage.qiniu_access_key');
         $this->secretKey = sysconf('storage.qiniu_secret_key');
         $this->domain = strtolower(sysconf('storage.qiniu_http_domain'));
-        // 计算前置链接
+        // 计算链接前缀
         $type = strtolower(sysconf('storage.qiniu_http_protocol'));
         if ($type === 'auto') $this->prefix = "//{$this->domain}/";
         elseif ($type === 'http') $this->prefix = "http://{$this->domain}/";

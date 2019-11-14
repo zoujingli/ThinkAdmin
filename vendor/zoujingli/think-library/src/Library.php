@@ -22,13 +22,13 @@ use think\Service;
 
 /**
  * 模块注册服务
- * Class ThinkLibrary
+ * Class Library
  * @package think\admin
  */
-class ThinkLibrary extends Service
+class Library extends Service
 {
     /**
-     * 依赖服务注册
+     * 服务注册
      */
     public function register()
     {
@@ -41,7 +41,7 @@ class ThinkLibrary extends Service
     }
 
     /**
-     * 服务启动方法
+     * 服务启动
      */
     public function boot()
     {

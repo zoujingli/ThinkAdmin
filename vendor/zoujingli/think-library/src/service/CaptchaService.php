@@ -55,7 +55,7 @@ class CaptchaService extends Service
         // 缓存验证码字符串
         $this->app->cache->set($this->uniqid, $this->code, 360);
     }
-    
+
     /**
      * 获取验证码值
      * @return string

@@ -49,8 +49,9 @@ class AuthService extends Service
         list($real, $nodes) = [$service->fullnode($node), $service->getMethods()];
         if (!empty($nodes[$real]['isauth'])) {
             return in_array($real, $this->app->session->get('user.nodes', []));
+        } else {
+            return !(!empty($nodes[$real]['islogin']) && !$this->isLogin());
         }
-        return !(!empty($nodes[$real]['islogin']) && !$this->isLogin());
     }
 
     /**

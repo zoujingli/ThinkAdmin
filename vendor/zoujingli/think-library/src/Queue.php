@@ -15,6 +15,7 @@
 
 namespace think\admin;
 
+use think\admin\extend\CodeExtend;
 use think\admin\service\ProcessService;
 use think\App;
 
@@ -32,10 +33,10 @@ class Queue
     protected $app;
 
     /**
-     * 当前任务ID
+     * 当前任务编号
      * @var integer
      */
-    protected $jobid = 0;
+    protected $code = 0;
 
     /**
      * 当前任务标题
@@ -58,47 +59,48 @@ class Queue
     /**
      * Queue constructor.
      * @param App $app
-     * @param int $jobid
+     * @param int $code
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function __construct(App $app, $jobid = 0)
+    public function __construct(App $app, $code = 0)
     {
         $this->app = $app;
-        if ($jobid > 0) $this->init($jobid);
+        if ($code > 0) $this->init($code);
     }
 
     /**
      * 静态获取实例
      * @param App $app
-     * @param int $jobid
+     * @param int $code
      * @return static
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function instance(App $app, $jobid = 0)
+    public static function instance(App $app, $code = 0)
     {
-        return new static($app, $jobid);
+        return new static($app, $code);
     }
 
     /**
      * 数据初始化
-     * @param integer $jobid
+     * @param integer $code
      * @return Queue
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function init($jobid = 0)
+    public function init($code = 0)
     {
-        if ($jobid > 0) {
-            $this->queue = $this->app->db->name('SystemQueue')->where(['id' => $this->jobid])->find();
-            if (empty($this->queue)) throw new \think\Exception("Queue {$jobid} Not found.");
+        if ($code > 0) {
+            $this->queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code])->find();
+            if (empty($this->queue)) throw new \think\Exception("Queue {$code} Not found.");
+            $this->code = $this->queue['code'];
             $this->title = $this->queue['title'];
             $this->data = json_decode($this->queue['exec_data'], true) ?: [];
         }
@@ -126,10 +128,10 @@ class Queue
     public function reset($wait = 0)
     {
         if (empty($this->queue)) throw new \think\Exception('Queue data cannot be empty!');
-        $this->app->db->name('SystemQueue')->where(['id' => $this->jobid])->failException(true)->update([
+        $this->app->db->name('SystemQueue')->where(['code' => $this->code])->failException(true)->update([
             'exec_time' => time() + $wait, 'attempts' => $this->queue['attempts'] + 1, 'status' => '1',
         ]);
-        return $this->init($this->jobid);
+        return $this->init($this->code);
     }
 
     /**
@@ -151,7 +153,9 @@ class Queue
         if (empty($rscript) && $this->app->db->name('SystemQueue')->where($map)->count() > 0) {
             throw new \think\Exception('该任务已经创建，请耐心等待处理完成！');
         }
-        $this->jobid = $this->app->db->name('SystemQueue')->failException(true)->insertGetId([
+        $this->code = CodeExtend::uniqidDate(16);
+        $this->app->db->name('SystemQueue')->failException(true)->insert([
+            'code'       => $this->code,
             'title'      => $title,
             'command'    => $command,
             'attempts'   => '0',
@@ -161,7 +165,7 @@ class Queue
             'enter_time' => '0',
             'outer_time' => '0',
         ]);
-        return $this->init($this->jobid);
+        return $this->init($this->code);
     }
 
     /**

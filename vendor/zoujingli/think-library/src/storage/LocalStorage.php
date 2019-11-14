@@ -18,7 +18,7 @@ namespace think\admin\storage;
 use think\admin\Storage;
 
 /**
- * 本地服务文件存储支持
+ * 本地存储支持
  * Class LocalStorage
  * @package think\admin\storage
  */
