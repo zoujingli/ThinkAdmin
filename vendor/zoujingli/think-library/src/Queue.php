@@ -113,7 +113,7 @@ class Queue
      */
     protected function iswin()
     {
-        return ProcessService::instance($this->app)->iswin();
+        return ProcessService::instance()->iswin();
     }
 
     /**

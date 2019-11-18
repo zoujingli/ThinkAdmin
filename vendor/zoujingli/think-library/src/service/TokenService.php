@@ -53,11 +53,13 @@ class TokenService extends Service
     /**
      * 清理表单CSRF信息
      * @param string $token
+     * @return TokenService
      */
     public function clearFormToken($token = null)
     {
         if (is_null($token)) $token = $this->getInputToken();
         $this->app->session->delete($token);
+        return $this;
     }
 
     /**

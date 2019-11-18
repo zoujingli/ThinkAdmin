@@ -98,6 +98,13 @@ class Menu extends Controller
     protected function _form_filter(&$vo)
     {
         if ($this->request->isGet()) {
+            // 选择自己的上级菜单
+            if (empty($vo['pid']) && $this->request->get('pid', '0')) {
+                $vo['pid'] = $this->request->get('pid', '0');
+            }
+            // 读取系统功能节点
+            $this->nodes = MenuService::instance()->getList();
+            // 列出可选上级菜单
             $menus = $this->app->db->name($this->table)->where(['status' => '1'])->order('sort desc,id asc')->select()->toArray();
             $menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
             foreach ($this->menus = DataExtend::arr2table($menus) as $key => &$menu) {
@@ -106,12 +113,6 @@ class Menu extends Controller
                     if (stripos("{$menu['path']}-", "{$cur}-") !== false || $menu['path'] === $cur) unset($this->menus[$key]); # 移除与自己相关联的菜单
                 }
             }
-            // 选择自己的上级菜单
-            if (empty($vo['pid']) && $this->request->get('pid', '0')) {
-                $vo['pid'] = $this->request->get('pid', '0');
-            }
-            // 读取系统功能节点
-            $this->nodes = MenuService::instance()->getList();
         }
     }
 

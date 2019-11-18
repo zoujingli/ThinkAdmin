@@ -48,6 +48,7 @@ class ProcessService extends Service
     /**
      * 创建异步进程
      * @param string $command 任务指令
+     * @return ProcessService
      */
     public function create($command)
     {
@@ -57,6 +58,7 @@ class ProcessService extends Service
         } else {
             pclose(popen("{$command} &", 'r'));
         }
+        return $this;
     }
 
     /**

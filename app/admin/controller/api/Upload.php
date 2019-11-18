@@ -15,7 +15,6 @@
 
 namespace app\admin\controller\api;
 
-use app\admin\service\AuthService;
 use think\admin\Controller;
 use think\admin\Storage;
 
@@ -56,9 +55,6 @@ class Upload extends Controller
      */
     public function file()
     {
-        if (!AuthService::isLogin()) {
-            $this->error('访问授权失败，请重新登录授权再试！');
-        }
         if (!($file = $this->getFile()) || empty($file)) {
             return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件可能过大或未上传']]);
         }
