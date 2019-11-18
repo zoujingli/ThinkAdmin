@@ -16,6 +16,7 @@
 namespace think\admin;
 
 use think\App;
+use think\Container;
 use think\db\Query;
 
 /**
@@ -66,12 +67,11 @@ abstract class Helper
 
     /**
      * 实例对象反射
-     * @param Controller $controller
-     * @param App $app
+     * @param array $args 额外参数
      * @return static
      */
-    public static function instance(Controller $controller, App $app)
+    public static function instance($args = [])
     {
-        return new static($controller, $app);
+        return Container::getInstance()->invokeClass(static::class, $args);
     }
 }

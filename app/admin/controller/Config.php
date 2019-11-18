@@ -54,11 +54,12 @@ class Config extends Controller
         if ($this->request->isGet()) {
             $this->title = '修改系统参数';
             $this->fetch();
+        } else {
+            foreach ($this->request->post() as $name => $value) {
+                sysconf($name, $value);
+            }
+            $this->success('修改系统参数成功！');
         }
-        foreach ($this->request->post() as $key => $value) {
-            sysconf($key, $value);
-        }
-        $this->success('修改系统参数成功！');
     }
 
     /**

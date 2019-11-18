@@ -16,6 +16,7 @@
 namespace think\admin;
 
 use think\App;
+use think\Container;
 
 /**
  * 自定义服务接口
@@ -42,29 +43,24 @@ abstract class Service
      */
     public function __construct(App $app)
     {
+
         $this->app = $app;
-        $this->init();
+        $this->initialize();
     }
 
     /**
      * 服务初始化
      */
-    protected function init()
+    protected function initialize()
     {
     }
 
     /**
      * 静态实例对象
-     * @param App $app
      * @return static
      */
-    public static function instance(App $app = null)
+    public static function instance()
     {
-        if (is_null($app)) $app = app();
-        $key = md5(get_called_class());
-        if (!isset(self::$cache[$key])) {
-            self::$cache[$key] = new static($app);
-        }
-        return self::$cache[$key];
+        return Container::getInstance()->make(static::class);
     }
 }

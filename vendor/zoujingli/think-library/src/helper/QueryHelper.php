@@ -222,6 +222,6 @@ class QueryHelper extends Helper
      */
     public function page($isPage = true, $isDisplay = true, $total = false, $limit = 0)
     {
-        return PageHelper::instance($this->class, $this->app)->init($this->query, $isPage, $isDisplay, $total, $limit);
+        return PageHelper::instance()->init($this->query, $isPage, $isDisplay, $total, $limit);
     }
 }

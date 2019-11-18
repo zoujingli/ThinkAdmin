@@ -38,9 +38,9 @@ class Index extends Controller
     public function index()
     {
         $this->title = '系统管理后台';
-        AuthService::instance($this->app)->apply(true);
-        $this->menus = MenuService::instance($this->app)->getTree();
-        if (empty($this->menus) && !AuthService::instance($this->app)->isLogin()) {
+        AuthService::instance()->apply(true);
+        $this->menus = MenuService::instance()->getTree();
+        if (empty($this->menus) && !AuthService::instance()->isLogin()) {
             $this->redirect(url('@admin/login'));
         } else {
             $this->fetch();
@@ -107,7 +107,7 @@ class Index extends Controller
             if (md5($data['oldpassword']) !== $user['password']) {
                 $this->error('旧密码验证失败，请重新输入！');
             }
-            if (DataExtend::save('SystemUser', ['id' => $user['id'], 'password' => md5($data['password'])])) {
+            if (data_save('SystemUser', ['id' => $user['id'], 'password' => md5($data['password'])])) {
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {
                 $this->error('密码修改失败，请稍候再试！');

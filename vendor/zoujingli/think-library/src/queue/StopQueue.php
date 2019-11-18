@@ -43,7 +43,7 @@ class StopQueue extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $process = ProcessService::instance($this->app);
+        $process = ProcessService::instance();
         $command = $process->think('xtask:');
         if (count($result = $process->query($command)) < 1) {
             $output->writeln("没有需要结束的任务进程哦！");

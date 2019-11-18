@@ -46,7 +46,7 @@ class Library extends Service
     public function boot()
     {
         // 注册访问中间键
-        if (stripos('get,post,options', $this->app->request->method()) !== false) {
+        if (!$this->app->request->isCli()) {
             $this->app->middleware->add(function (Request $request, \Closure $next) {
                 $header = [];
                 if (($origin = $request->header('origin', '*')) !== '*') {
@@ -58,9 +58,9 @@ class Library extends Service
                 // 访问模式及访问权限检查
                 if ($request->isOptions()) {
                     return response()->code(204)->header($header);
-                } elseif (AuthService::instance($this->app)->check()) {
+                } elseif (AuthService::instance()->check()) {
                     return $next($request)->code(200)->header($header);
-                } elseif (AuthService::instance($this->app)->isLogin()) {
+                } elseif (AuthService::instance()->isLogin()) {
                     return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！'])->header($header);
                 } else {
                     return json(['code' => 0, 'msg' => '抱歉，需要登录获取访问权限！', 'url' => url('@admin/login')->build()])->header($header);

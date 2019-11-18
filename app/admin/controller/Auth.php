@@ -98,7 +98,7 @@ class Auth extends Controller
         $action = strtolower(input('action', ''));
         if ($action === 'get') {
             $checkeds = $this->app->db->name('SystemAuthNode')->where($map)->column('node');
-            $this->success('获取权限节点成功！', AuthService::instance($this->app)->getTree($checkeds));
+            $this->success('获取权限节点成功！', AuthService::instance()->getTree($checkeds));
         } elseif ($action === 'save') {
             list($post, $data) = [$this->request->post(), []];
             foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
@@ -106,7 +106,7 @@ class Auth extends Controller
             }
             $this->app->db->name('SystemAuthNode')->where($map)->delete();
             $this->app->db->name('SystemAuthNode')->insertAll($data);
-            AuthService::instance($this->app)->apply(true);
+            AuthService::instance()->apply(true);
             $this->success('权限授权更新成功！', 'javascript:history.back()');
         } else {
             $this->title = '权限配置节点';

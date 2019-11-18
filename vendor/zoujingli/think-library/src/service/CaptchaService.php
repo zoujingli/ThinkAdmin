@@ -39,7 +39,7 @@ class CaptchaService extends Service
      * 服务初始化
      * @param array $config
      */
-    protected function init($config = [])
+    protected function initialize($config = [])
     {
         // 动态配置属性
         foreach ($config as $k => $v) if (isset($this->$k)) $this->$k = $v;
@@ -82,7 +82,6 @@ class CaptchaService extends Service
     {
         return $this->uniqid;
     }
-
 
     /**
      * 检查验证码是否正确

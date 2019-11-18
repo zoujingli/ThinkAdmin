@@ -18,6 +18,8 @@ namespace think\admin;
 use think\admin\storage\LocalStorage;
 use think\admin\storage\QiniuStorage;
 use think\App;
+use think\Container;
+use think\Exception;
 
 /**
  * 文件存储引擎管理
@@ -32,7 +34,7 @@ use think\App;
  * @method string set($name, $content, $safe = false) static 文件储存
  * @method string upload() static 上传目录地址
  */
-class Storage
+abstract class Storage
 {
     /**
      * 应用实例
@@ -47,17 +49,12 @@ class Storage
     protected $prefix;
 
     /**
-     * 存储对象缓存
-     * @var array
-     */
-    protected static $object = [];
-
-    /**
      * Storage constructor.
+     * @param App $app
      */
-    public function __construct()
+    public function __construct(App $app)
     {
-        $this->app = app();
+        $this->app = $app;
         $this->initialize();
     }
 
@@ -69,41 +66,41 @@ class Storage
     }
 
     /**
-     * 静态访问
+     * 静态访问启用
      * @param string $method 方法名称
      * @param array $arguments 调用参数
      * @return mixed
-     * @throws \think\Exception
+     * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public static function __callStatic($method, $arguments)
     {
-        $class = self::instance();
-        if (method_exists($class, $method)) return call_user_func_array([$class, $method], $arguments);
-        throw new \think\Exception("method not exists: " . get_class($class) . "->{$method}()");
+        if (method_exists($class = self::instance(), $method)) {
+            return call_user_func_array([$class, $method], $arguments);
+        } else {
+            throw new Exception("method not exists: " . get_class($class) . "->{$method}()");
+        }
     }
 
     /**
      * 设置文件驱动名称
      * @param string $name 驱动名称
      * @return LocalStorage|QiniuStorage|static
-     * @throws \think\Exception
+     * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public static function instance($name = null)
     {
-        if (is_null($name)) $name = sysconf('storage.type');
-        if (isset(self::$object[$class = ucfirst(strtolower($name))])) {
-            return self::$object[$class];
+        $class = ucfirst(strtolower(is_null($name) ? sysconf('storage.type') : $name));
+        if (class_exists($object = "think\\admin\\storage\\{$class}Storage")) {
+            return Container::getInstance()->make($object);
+        } else {
+            throw new Exception("File driver [{$class}] does not exist.");
         }
-        if (class_exists($object = __NAMESPACE__ . "\\storage\\{$class}Storage")) {
-            return self::$object[$class] = new $object;
-        }
-        throw new \think\Exception("File driver [{$class}] does not exist.");
     }
 
     /**
@@ -133,7 +130,7 @@ class Storage
     {
         $mimes = self::mimes();
         foreach (is_string($exts) ? explode(',', $exts) : $exts as $e) {
-            $mime[] = isset($mimes[strtolower($e)]) ? $mimes[strtolower($e)] : 'application/octet-stream';
+            $mime[] = isset($mimes[strtolower($e)]) ? $mimes[strtolower($e)] : '';
         }
         return join(',', array_unique($mime));
     }

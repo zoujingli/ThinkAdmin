@@ -41,7 +41,7 @@ class Upload extends Controller
         $exts = array_intersect($diff1, $diff2);
         $this->success('获取文件上传参数', [
             'type' => $this->getType(), 'data' => $this->getData(),
-            'exts' => join('|', $exts), 'mine' => Storage::mime($exts),
+            'exts' => join('|', $exts), 'mime' => Storage::mime($exts),
         ]);
     }
 

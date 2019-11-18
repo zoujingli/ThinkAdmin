@@ -42,7 +42,7 @@ class StateQueue extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $process = ProcessService::instance($this->app);
+        $process = ProcessService::instance();
         $command = $process->think('xtask:listen');
         if (count($result = $process->query($command)) > 0) {
             $output->info("异步任务监听主进程{$result[0]['pid']}正在运行...");

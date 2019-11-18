@@ -45,7 +45,7 @@ if (!function_exists('sysoplog')) {
     {
         $app = app();
         return $app->db->name('SystemOplog')->insert([
-            'node'     => \think\admin\service\NodeService::instance($app)->getCurrent(),
+            'node'     => \think\admin\service\NodeService::instance()->getCurrent(),
             'geoip'    => $app->request->isCli() ? '127.0.0.1' : $app->request->ip(),
             'action'   => $action, 'content' => $content,
             'username' => $app->request->isCli() ? 'cli' : $app->session->get('user.username', ''),

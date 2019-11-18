@@ -21,6 +21,7 @@ use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
+use think\Container;
 
 /**
  * 启动独立执行进程
@@ -66,7 +67,7 @@ class WorkQueue extends Command
             $queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code, 'status' => '2'])->find();
             if (empty($queue)) throw new \think\Exception("执行任务{$this->code}的信息或状态异常！");;
             // 设置进程标题
-            if (($process = ProcessService::instance($this->app))->iswin()) {
+            if (($process = ProcessService::instance())->iswin()) {
                 $this->setProcessTitle("ThinkAdmin {$process->version()} 执行任务 - {$queue['title']}");
             }
             // 执行任务内容

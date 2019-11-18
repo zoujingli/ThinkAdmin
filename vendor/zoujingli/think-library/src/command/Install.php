@@ -92,7 +92,7 @@ class Install extends Command
 
     protected function installFile()
     {
-        $service = InstallService::instance($this->app);
+        $service = InstallService::instance();
         $data = $service->grenerateDifference($this->rules, $this->ignore);
         if (empty($data)) $this->output->info('文件比对一致不需更新文件！');
         else foreach ($data as $file) {

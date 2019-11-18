@@ -111,7 +111,7 @@ class Menu extends Controller
                 $vo['pid'] = $this->request->get('pid', '0');
             }
             // 读取系统功能节点
-            $this->nodes = MenuService::instance($this->app)->getList();
+            $this->nodes = MenuService::instance()->getList();
         }
     }
 

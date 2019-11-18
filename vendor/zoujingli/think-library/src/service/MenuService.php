@@ -36,9 +36,9 @@ class MenuService extends Service
      * 服务初始化
      * @return $this
      */
-    protected function init()
+    protected function initialize()
     {
-        $this->nodeService = NodeService::instance($this->app);
+        $this->nodeService = NodeService::instance();
         return $this;
     }
 
@@ -67,7 +67,7 @@ class MenuService extends Service
      */
     public function getTree()
     {
-        $result = app()->db->name('SystemMenu')->where(['status' => '1'])->order('sort desc,id asc')->select();
+        $result = $this->app->db->name('SystemMenu')->where(['status' => '1'])->order('sort desc,id asc')->select();
         return $this->buildData(DataExtend::arr2tree($result->toArray()), $this->nodeService->getMethods());
     }
 

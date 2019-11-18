@@ -21,6 +21,7 @@ use think\admin\helper\PageHelper;
 use think\admin\helper\QueryHelper;
 use think\admin\helper\SaveHelper;
 use think\admin\helper\TokenHelper;
+use think\admin\service\NodeService;
 use think\App;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -69,6 +70,8 @@ class Controller extends \stdClass
     {
         $this->app = $app;
         $this->request = $app->request;
+        $this->app->bind('think\admin\Controller', $this);
+        TokenHelper::instance();
         if (in_array($this->app->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
         }
@@ -104,7 +107,7 @@ class Controller extends \stdClass
     public function success($info, $data = [], $code = 1)
     {
         if ($this->csrf_state) {
-            TokenHelper::instance($this, $this->app)->clear();
+            TokenHelper::instance()->clear();
         }
         throw new HttpResponseException(json([
             'code' => $code, 'info' => $info, 'data' => $data,
@@ -131,7 +134,7 @@ class Controller extends \stdClass
     {
         foreach ($this as $name => $value) $vars[$name] = $value;
         if ($this->csrf_state) {
-            TokenHelper::instance($this, $this->app)->fetchTemplate($tpl, $vars, $node);
+            TokenHelper::instance()->fetchTemplate($tpl, $vars, $node);
         } else {
             throw new HttpResponseException(view($tpl, $vars));
         }
@@ -182,7 +185,7 @@ class Controller extends \stdClass
      */
     protected function _query($dbQuery)
     {
-        return QueryHelper::instance($this, $this->app)->init($dbQuery);
+        return QueryHelper::instance()->init($dbQuery);
     }
 
     /**
@@ -199,7 +202,7 @@ class Controller extends \stdClass
      */
     protected function _page($dbQuery, $page = true, $display = true, $total = false, $limit = 0)
     {
-        return PageHelper::instance($this, $this->app)->init($dbQuery, $page, $display, $total, $limit);
+        return PageHelper::instance()->init($dbQuery, $page, $display, $total, $limit);
     }
 
     /**
@@ -216,7 +219,7 @@ class Controller extends \stdClass
      */
     protected function _form($dbQuery, $template = '', $field = '', $where = [], $data = [])
     {
-        return FormHelper::instance($this, $this->app)->init($dbQuery, $template, $field, $where, $data);
+        return FormHelper::instance()->init($dbQuery, $template, $field, $where, $data);
     }
 
     /**
@@ -230,7 +233,7 @@ class Controller extends \stdClass
      */
     protected function _save($dbQuery, $data = [], $field = '', $where = [])
     {
-        return SaveHelper::instance($this, $this->app)->init($dbQuery, $data, $field, $where);
+        return SaveHelper::instance()->init($dbQuery, $data, $field, $where);
     }
 
     /**
@@ -243,7 +246,7 @@ class Controller extends \stdClass
      */
     protected function _delete($dbQuery, $field = '', $where = [])
     {
-        return DeleteHelper::instance($this, $this->app)->init($dbQuery, $field, $where);
+        return DeleteHelper::instance()->init($dbQuery, $field, $where);
     }
 
     /**
@@ -253,7 +256,7 @@ class Controller extends \stdClass
      */
     protected function _applyFormToken($return = false)
     {
-        return TokenHelper::instance($this, $this->app)->init($return);
+        return TokenHelper::instance()->init($return);
     }
 
 }

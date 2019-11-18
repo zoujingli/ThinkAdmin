@@ -35,21 +35,21 @@ class Login extends Controller
     public function index()
     {
         if ($this->app->request->isGet()) {
-            if (AuthService::instance($this->app)->isLogin()) {
+            if (AuthService::instance()->isLogin()) {
                 $this->redirect(url('@admin')->suffix(false)->build());
             } else {
                 $this->title = '系统登录';
                 $this->domain = $this->app->request->host(true);
                 $this->devmode = in_array($this->domain, ['127.0.0.1', 'localhost']);
                 $this->devmode = $this->devmode ?: is_numeric(stripos($this->domain, 'thinkadmin.top'));
-                $this->captcha = CaptchaService::instance($this->app);
+                $this->captcha = CaptchaService::instance();
                 $this->fetch();
             }
         } elseif ($this->app->request->isPost()) {
             $data = ['username' => input('username'), 'password' => input('password')];
             if (empty($data['username'])) $this->error('登录账号不能为空!');
             if (empty($data['password'])) $this->error('登录密码不能为空!');
-            if (!CaptchaService::instance($this->app)->check(input('verify'), input('uniqid'))) {
+            if (!CaptchaService::instance()->check(input('verify'), input('uniqid'))) {
                 $this->error('图形验证码验证失败，请重新输入!');
             }
             // 用户信息验证
@@ -80,7 +80,7 @@ class Login extends Controller
      */
     public function captcha()
     {
-        $image = CaptchaService::instance($this->app);
+        $image = CaptchaService::instance();
         $this->success('生成验证码成功', [
             'image'  => $image->getData(),
             'uniqid' => $image->getUniqid(),

@@ -44,7 +44,7 @@ class AuthService extends Service
      */
     public function check($node = '')
     {
-        $service = NodeService::instance($this->app);
+        $service = NodeService::instance();
         if ($this->app->session->get('user.username') === 'admin') return true;
         list($real, $nodes) = [$service->fullnode($node), $service->getMethods()];
         if (!empty($nodes[$real]['isauth'])) {
@@ -63,7 +63,7 @@ class AuthService extends Service
     public function getTree($checkeds = [])
     {
         list($nodes, $pnodes) = [[], []];
-        $methods = array_reverse(NodeService::instance($this->app)->getMethods());
+        $methods = array_reverse(NodeService::instance()->getMethods());
         foreach ($methods as $node => $method) {
             $count = substr_count($node, '/');
             $pnode = substr($node, 0, strripos($node, '/'));

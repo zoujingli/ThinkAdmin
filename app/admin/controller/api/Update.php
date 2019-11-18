@@ -32,11 +32,11 @@ class Update extends Controller
     {
         $this->rules = unserialize($this->request->post('rules', 'a:0:{}', ''));
         $this->ignore = unserialize($this->request->post('ignore', 'a:0:{}', ''));
-        $this->success('获取文件列表成功！', InstallService::instance($this->app)->getList($this->rules, $this->ignore));
+        $this->success('获取文件列表成功！', InstallService::instance()->getList($this->rules, $this->ignore));
     }
 
     /**
-     * 读取线上文件数据
+     * 读取文件内容
      */
     public function get()
     {
