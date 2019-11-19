@@ -75,8 +75,8 @@ class Oracle extends Builder
 
         if (strpos($key, '->') && false === strpos($key, '(')) {
             // JSON字段支持
-            list($field, $name) = explode($key, '->');
-            $key                = $field . '."' . $name . '"';
+            [$field, $name] = explode($key, '->');
+            $key            = $field . '."' . $name . '"';
         }
 
         return $key;

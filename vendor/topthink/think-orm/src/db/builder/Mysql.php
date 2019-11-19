@@ -315,10 +315,10 @@ class Mysql extends Builder
 
         if (strpos($key, '->') && false === strpos($key, '(')) {
             // JSON字段支持
-            list($field, $name) = explode('->', $key, 2);
+            [$field, $name] = explode('->', $key, 2);
             return 'json_extract(' . $this->parseKey($query, $field) . ', \'$' . (strpos($name, '[') === 0 ? '' : '.') . str_replace('->', '.', $name) . '\')';
         } elseif (strpos($key, '.') && !preg_match('/[,\'\"\(\)`\s]/', $key)) {
-            list($table, $key) = explode('.', $key, 2);
+            [$table, $key] = explode('.', $key, 2);
 
             $alias = $query->getOptions('alias');
 

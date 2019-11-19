@@ -303,7 +303,7 @@ class Fetch
 
         if (!empty($options['soft_delete'])) {
             // 软删除
-            list($field, $condition) = $options['soft_delete'];
+            [$field, $condition] = $options['soft_delete'];
             if ($condition) {
                 $this->query->setOption('soft_delete', null);
                 $this->query->setOption('data', [$field => $condition]);

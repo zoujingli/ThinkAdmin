@@ -130,7 +130,7 @@ trait ResultOperation
 
             if (strpos($name, '.')) {
                 // 支持JSON字段 获取器定义
-                list($key, $field) = explode('.', $name);
+                [$key, $field] = explode('.', $name);
 
                 if (isset($result[$key])) {
                     $result[$key][$field] = $closure($result[$key][$field] ?? null, $result[$key]);

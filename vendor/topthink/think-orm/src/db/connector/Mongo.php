@@ -1011,6 +1011,17 @@ class Mongo extends Connection implements ConnectionInterface
 
         return $this->command($command, $db);
     }
+    
+    /**
+     * 获取数据库字段
+     * @access public
+     * @param mixed $tableName 数据表名
+     * @return array
+     */
+    public function getTableFields($tableName): array
+    {
+        return [];
+    }
 
     /**
      * 执行数据库事务

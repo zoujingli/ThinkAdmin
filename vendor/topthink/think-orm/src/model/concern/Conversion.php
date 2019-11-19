@@ -132,7 +132,7 @@ trait Conversion
         foreach ($this->visible as $key => $val) {
             if (is_string($val)) {
                 if (strpos($val, '.')) {
-                    list($relation, $name)      = explode('.', $val);
+                    [$relation, $name]          = explode('.', $val);
                     $this->visible[$relation][] = $name;
                 } else {
                     $this->visible[$val] = true;
@@ -145,7 +145,7 @@ trait Conversion
         foreach ($this->hidden as $key => $val) {
             if (is_string($val)) {
                 if (strpos($val, '.')) {
-                    list($relation, $name)     = explode('.', $val);
+                    [$relation, $name]         = explode('.', $val);
                     $this->hidden[$relation][] = $name;
                 } else {
                     $this->hidden[$val] = true;
@@ -192,7 +192,7 @@ trait Conversion
             $item[$key] = $relation ? $relation->append($name)
                 ->toArray() : [];
         } elseif (strpos($name, '.')) {
-            list($key, $attr) = explode('.', $name);
+            [$key, $attr] = explode('.', $name);
             // 追加关联对象属性
             $relation   = $this->getRelation($key, true);
             $item[$key] = $relation ? $relation->append([$attr])

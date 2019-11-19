@@ -74,7 +74,7 @@ class Sqlite extends Builder
         $key = trim($key);
 
         if (strpos($key, '.')) {
-            list($table, $key) = explode('.', $key, 2);
+            [$table, $key] = explode('.', $key, 2);
 
             $alias = $query->getOptions('alias');
 

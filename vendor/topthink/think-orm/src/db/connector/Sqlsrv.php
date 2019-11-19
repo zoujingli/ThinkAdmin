@@ -55,7 +55,7 @@ class Sqlsrv extends PDOConnection
      */
     public function getFields(string $tableName): array
     {
-        list($tableName) = explode(' ', $tableName);
+        [$tableName] = explode(' ', $tableName);
 
         $sql = "SELECT   column_name,   data_type,   column_default,   is_nullable
         FROM    information_schema.tables AS t

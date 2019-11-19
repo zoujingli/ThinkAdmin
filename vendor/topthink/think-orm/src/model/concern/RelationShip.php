@@ -148,7 +148,7 @@ trait RelationShip
                 $subRelation = $relation;
                 $relation    = $key;
             } elseif (strpos($relation, '.')) {
-                list($relation, $subRelation) = explode('.', $relation, 2);
+                [$relation, $subRelation] = explode('.', $relation, 2);
             }
 
             $method       = Str::camel($relation);
@@ -263,7 +263,7 @@ trait RelationShip
                 $subRelation = $relation;
                 $relation    = $key;
             } elseif (strpos($relation, '.')) {
-                list($relation, $subRelation) = explode('.', $relation, 2);
+                [$relation, $subRelation] = explode('.', $relation, 2);
 
                 $subRelation = [$subRelation];
             }
@@ -312,7 +312,7 @@ trait RelationShip
                 $subRelation = $relation;
                 $relation    = $key;
             } elseif (strpos($relation, '.')) {
-                list($relation, $subRelation) = explode('.', $relation, 2);
+                [$relation, $subRelation] = explode('.', $relation, 2);
 
                 $subRelation = [$subRelation];
             }
@@ -549,7 +549,7 @@ trait RelationShip
         }
 
         if (is_array($morph)) {
-            list($morphType, $foreignKey) = $morph;
+            [$morphType, $foreignKey] = $morph;
         } else {
             $morphType  = $morph . '_type';
             $foreignKey = $morph . '_id';
@@ -581,7 +581,7 @@ trait RelationShip
         $type = $type ?: get_class($this);
 
         if (is_array($morph)) {
-            list($morphType, $foreignKey) = $morph;
+            [$morphType, $foreignKey] = $morph;
         } else {
             $morphType  = $morph . '_type';
             $foreignKey = $morph . '_id';
@@ -608,7 +608,7 @@ trait RelationShip
 
         // 记录当前关联信息
         if (is_array($morph)) {
-            list($morphType, $foreignKey) = $morph;
+            [$morphType, $foreignKey] = $morph;
         } else {
             $morphType  = $morph . '_type';
             $foreignKey = $morph . '_id';

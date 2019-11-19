@@ -48,7 +48,7 @@ class WorkQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:_work')->setDescription('[执行]创建执行单个指定任务的进程');
+        $this->setName('xtask:_work')->setDescription('[执行]创建指令任务的进程');
         $this->addArgument('code', Argument::OPTIONAL, '任务编号');
         $this->addArgument('splt', Argument::OPTIONAL, '指令结束符');
     }

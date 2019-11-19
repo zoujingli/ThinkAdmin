@@ -156,9 +156,9 @@ abstract class Builder
             }
 
             if (false !== strpos($key, '->')) {
-                list($key, $name) = explode('->', $key, 2);
-                $item             = $this->parseKey($query, $key);
-                $result[$item]    = 'json_set(' . $item . ', \'$.' . $name . '\', ' . $this->parseDataBind($query, $key . '->' . $name, $val, $bind) . ')';
+                [$key, $name]  = explode('->', $key, 2);
+                $item          = $this->parseKey($query, $key);
+                $result[$item] = 'json_set(' . $item . ', \'$.' . $name . '\', ' . $this->parseDataBind($query, $key . '->' . $name, $val, $bind) . ')';
             } elseif (false === strpos($key, '.') && !in_array($key, $fields, true)) {
                 if ($options['strict']) {
                     throw new Exception('fields not exists:[' . $key . ']');
@@ -300,7 +300,7 @@ abstract class Builder
 
         if (!empty($options['soft_delete'])) {
             // 附加软删除条件
-            list($field, $condition) = $options['soft_delete'];
+            [$field, $condition] = $options['soft_delete'];
 
             $binds    = $query->getFieldsBindType();
             $whereStr = $whereStr ? '( ' . $whereStr . ' ) AND ' : '';
@@ -591,7 +591,7 @@ abstract class Builder
     protected function parseColumn(Query $query, string $key, $exp, array $value, string $field, int $bindType): string
     {
         // 字段比较查询
-        list($op, $field) = $value;
+        [$op, $field] = $value;
 
         if (!in_array(trim($op), ['=', '<>', '>', '>=', '<', '<='])) {
             throw new Exception('where express error:' . var_export($value, true));
@@ -802,7 +802,7 @@ abstract class Builder
 
         // 获取时间字段类型
         if (strpos($key, '.')) {
-            list($table, $key) = explode('.', $key);
+            [$table, $key] = explode('.', $key);
 
             if (isset($options['alias']) && $pos = array_search($table, $options['alias'])) {
                 $table = $pos;
@@ -858,10 +858,10 @@ abstract class Builder
         $joinStr = '';
 
         foreach ($join as $item) {
-            list($table, $type, $on) = $item;
+            [$table, $type, $on] = $item;
 
             if (strpos($on, '=')) {
-                list($val1, $val2) = explode('=', $on, 2);
+                [$val1, $val2] = explode('=', $on, 2);
 
                 $condition = $this->parseKey($query, $val1) . '=' . $this->parseKey($query, $val2);
             } else {

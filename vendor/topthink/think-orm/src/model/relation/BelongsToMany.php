@@ -133,7 +133,7 @@ class BelongsToMany extends Relation
 
             foreach ($model->getData() as $key => $val) {
                 if (strpos($key, '__')) {
-                    list($name, $attr) = explode('__', $key, 2);
+                    [$name, $attr] = explode('__', $key, 2);
 
                     if ('pivot' == $name) {
                         $pivot[$attr] = $val;
@@ -206,12 +206,11 @@ class BelongsToMany extends Relation
      * @access public
      * @param  int|array $listRows
      * @param  int|bool  $simple
-     * @param  array     $config
      * @return Paginator
      */
-    public function paginate($listRows = null, $simple = false, $config = []): Paginator
+    public function paginate($listRows = null, $simple = false): Paginator
     {
-        $result = $this->buildQuery()->paginate($listRows, $simple, $config);
+        $result = $this->buildQuery()->paginate($listRows, $simple);
         $this->hydratePivot($result);
 
         return $result;
@@ -448,7 +447,7 @@ class BelongsToMany extends Relation
             $pivot = [];
             foreach ($set->getData() as $key => $val) {
                 if (strpos($key, '__')) {
-                    list($name, $attr) = explode('__', $key, 2);
+                    [$name, $attr] = explode('__', $key, 2);
                     if ('pivot' == $name) {
                         $pivot[$attr] = $val;
                         unset($set->$key);

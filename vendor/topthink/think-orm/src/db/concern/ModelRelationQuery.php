@@ -414,7 +414,7 @@ trait ModelRelationQuery
         if (!empty($this->options['with_attr'])) {
             foreach ($this->options['with_attr'] as $name => $val) {
                 if (strpos($name, '.')) {
-                    list($relation, $field) = explode('.', $name);
+                    [$relation, $field] = explode('.', $name);
 
                     $withRelationAttr[$relation][$field] = $val;
                     unset($this->options['with_attr'][$name]);
@@ -458,7 +458,7 @@ trait ModelRelationQuery
         if (!empty($options['with_attr']) && empty($withRelationAttr)) {
             foreach ($options['with_attr'] as $name => $val) {
                 if (strpos($name, '.')) {
-                    list($relation, $field) = explode('.', $name);
+                    [$relation, $field] = explode('.', $name);
 
                     $withRelationAttr[$relation][$field] = $val;
                     unset($options['with_attr'][$name]);

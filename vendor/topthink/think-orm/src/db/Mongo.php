@@ -615,7 +615,7 @@ class Mongo extends BaseQuery
             $query = $this->options($options)->limit($count);
 
             if (strpos($column, '.')) {
-                list($alias, $key) = explode('.', $column);
+                [$alias, $key] = explode('.', $column);
             } else {
                 $key = $column;
             }
@@ -712,4 +712,30 @@ class Mongo extends BaseQuery
         return $options;
     }
 
+    /**
+     * 获取字段类型信息
+     * @access public
+     * @return array
+     */
+    public function getFieldsType(): array
+    {
+        if (!empty($this->options['field_type'])) {
+            return $this->options['field_type'];
+        }
+
+        return [];
+    }
+
+    /**
+     * 获取字段类型信息
+     * @access public
+     * @param string $field 字段名
+     * @return string|null
+     */
+    public function getFieldType(string $field)
+    {
+        $fieldType = $this->getFieldsType();
+
+        return $fieldType[$field] ?? null;
+    }
 }

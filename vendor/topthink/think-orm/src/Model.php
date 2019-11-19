@@ -86,6 +86,12 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     protected $name;
 
     /**
+     * 主键值
+     * @var string
+     */
+    protected $key;
+
+    /**
      * 数据表名称
      * @var string
      */
@@ -575,9 +581,13 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         $db->startTrans();
 
         try {
-            $where  = $this->getWhere();
+            $this->key = null;
+            $where     = $this->getWhere();
+
             $result = $db->where($where)
                 ->strict(false)
+                ->cache(true)
+                ->setOption('key', $this->key)
                 ->field($allowFields)
                 ->update($data);
 
@@ -635,14 +645,15 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
             $result = $db->strict(false)
                 ->field($allowFields)
                 ->replace($this->replace)
-                ->insert($this->data, false, $sequence);
+                ->sequence($sequence)
+                ->insert($this->data, true);
 
             // 获取自动增长主键
-            if ($result && $insertId = $db->getLastInsID($sequence)) {
+            if ($result) {
                 $pk = $this->getPk();
 
                 if (is_string($pk) && (!isset($this->data[$pk]) || '' == $this->data[$pk])) {
-                    $this->data[$pk] = $insertId;
+                    $this->data[$pk] = $result;
                 }
             }
 
@@ -676,7 +687,8 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         $pk = $this->getPk();
 
         if (is_string($pk) && isset($this->data[$pk])) {
-            $where = [[$pk, '=', $this->data[$pk]]];
+            $where     = [[$pk, '=', $this->data[$pk]]];
+            $this->key = $this->data[$pk];
         } elseif (is_array($pk)) {
             foreach ($pk as $field) {
                 if (isset($this->data[$field])) {

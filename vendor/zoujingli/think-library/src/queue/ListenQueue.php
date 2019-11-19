@@ -32,7 +32,7 @@ class ListenQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:listen')->setDescription('[监听]常驻异步任务循环监听主进程');
+        $this->setName('xtask:listen')->setDescription('[监听]启动任务监听主进程');
     }
 
     /**
@@ -46,10 +46,10 @@ class ListenQueue extends Command
     protected function execute(Input $input, Output $output)
     {
         $this->app->db->name('SystemQueue')->count();
-        if (($process = ProcessService::instance($this->app))->iswin()) {
+        if (($process = ProcessService::instance())->iswin()) {
             $this->setProcessTitle("ThinkAdmin 监听主进程 {$process->version()}");
         }
-        $output->comment('============ 异步任务监听中 ============');
+        $output->comment('============ 任务监听中 ============');
         while (true) {
             foreach ($this->app->db->name('SystemQueue')->where([['status', '=', '1'], ['exec_time', '<=', time()]])->order('exec_time asc')->limit(100)->select() as $vo) {
                 try {

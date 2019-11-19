@@ -28,32 +28,21 @@ use think\Service;
 class Library extends Service
 {
     /**
-     * 服务注册
+     * 注册服务
      */
     public function register()
     {
-        // 注册会话中间键
-        $this->app->middleware->add(SessionInit::class);
-        // 动态加入应用函数
-        foreach (glob($this->app->getAppPath() . '*/sys.php') as $file) {
-            \Composer\Autoload\includeFile($file);
-        }
-    }
-
-    /**
-     * 服务启动
-     */
-    public function boot()
-    {
-        // 注册访问中间键
-        if (!$this->app->request->isCli()) {
+        if (PHP_SAPI !== 'cli') {
+            // 注册会话中间键
+            $this->app->middleware->add(SessionInit::class);
+            // 注册访问中间键
             $this->app->middleware->add(function (Request $request, \Closure $next) {
                 $header = [];
                 if (($origin = $request->header('origin', '*')) !== '*') {
                     $header['Access-Control-Allow-Origin'] = $origin;
                     $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
                     $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
-                    $header['Access-Control-Expose-Headers'] = 'User-Form-Token';
+                    $header['Access-Control-Expose-Headers'] = 'User-Form-Token,User-Token,Token';
                 }
                 // 访问模式及访问权限检查
                 if ($request->isOptions()) {
@@ -67,6 +56,17 @@ class Library extends Service
                 }
             }, 'route');
         }
+        // 动态加入应用函数
+        foreach (glob($this->app->getAppPath() . '*/sys.php') as $file) {
+            \Composer\Autoload\includeFile($file);
+        }
+    }
+
+    /**
+     * 启动服务
+     */
+    public function boot()
+    {
         // 注册系统任务指令
         $this->commands([
             'think\admin\queue\WorkQueue',
@@ -78,5 +78,4 @@ class Library extends Service
             'think\admin\command\Install',
         ]);
     }
-
 }

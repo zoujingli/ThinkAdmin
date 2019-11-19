@@ -76,10 +76,10 @@ class Pgsql extends Builder
 
         if (strpos($key, '->') && false === strpos($key, '(')) {
             // JSON字段支持
-            list($field, $name) = explode('->', $key);
-            $key                = '"' . $field . '"' . '->>\'' . $name . '\'';
+            [$field, $name] = explode('->', $key);
+            $key            = '"' . $field . '"' . '->>\'' . $name . '\'';
         } elseif (strpos($key, '.')) {
-            list($table, $key) = explode('.', $key, 2);
+            [$table, $key] = explode('.', $key, 2);
 
             $alias = $query->getOptions('alias');
 

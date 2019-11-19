@@ -32,7 +32,7 @@ class QueryQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:query')->setDescription('[控制]查询正在执行的所有任务进程');
+        $this->setName('xtask:query')->setDescription('[控制]查询正在运行的进程');
     }
 
     /**

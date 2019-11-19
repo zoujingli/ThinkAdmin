@@ -33,7 +33,7 @@ class StopQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:stop')->setDescription('[控制]平滑停止所有的异步任务进程');
+        $this->setName('xtask:stop')->setDescription('[控制]平滑停止所有的进程');
     }
 
     /**

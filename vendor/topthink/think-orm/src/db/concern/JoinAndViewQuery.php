@@ -109,7 +109,7 @@ trait JoinAndViewQuery
             // 使用别名
             if (strpos($join, ' ')) {
                 // 使用别名
-                list($table, $alias) = explode(' ', $join);
+                [$table, $alias] = explode(' ', $join);
             } else {
                 $table = $join;
                 if (false === strpos($join, '.')) {
@@ -209,7 +209,7 @@ trait JoinAndViewQuery
             foreach ($options['order'] as $key => $val) {
                 if (is_numeric($key) && is_string($val)) {
                     if (strpos($val, ' ')) {
-                        list($field, $sort) = explode(' ', $val);
+                        [$field, $sort] = explode(' ', $val);
                         if (array_key_exists($field, $options['map'])) {
                             $options['order'][$options['map'][$field]] = $sort;
                             unset($options['order'][$key]);

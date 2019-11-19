@@ -234,7 +234,7 @@ abstract class OneToOne extends Relation
         // 重新组装模型数据
         foreach ($result->getData() as $key => $val) {
             if (strpos($key, '__')) {
-                list($name, $attr) = explode('__', $key, 2);
+                [$name, $attr] = explode('__', $key, 2);
                 if ($name == $relation) {
                     $list[$name][$attr] = $val;
                     unset($result->$key);
