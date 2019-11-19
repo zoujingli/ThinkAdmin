@@ -16,7 +16,6 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
-use think\admin\extend\DataExtend;
 
 /**
  * 系统用户管理
