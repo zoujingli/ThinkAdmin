@@ -91,7 +91,7 @@ class User extends Controller
             if ($post['password'] !== $post['repassword']) {
                 $this->error('两次输入的密码不一致！');
             }
-            if (DataExtend::save($this->table, ['id' => $post['id'], 'password' => md5($post['password'])], 'id')) {
+            if (data_save($this->table, ['id' => $post['id'], 'password' => md5($post['password'])], 'id')) {
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {
                 $this->error('密码修改失败，请稍候再试！');
