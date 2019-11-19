@@ -93,7 +93,8 @@ class Queue extends Controller
     public function start()
     {
         try {
-            $this->success(nl2br($this->app->console->call('xtask:start')->fetch()));
+            $message = nl2br($this->app->console->call('xtask:start')->fetch());
+            stripos($message, '成功') !== false ? $this->success($message) : $this->error($message);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
@@ -108,7 +109,8 @@ class Queue extends Controller
     public function stop()
     {
         try {
-            $this->success(nl2br($this->app->console->call('xtask:stop')->fetch()));
+            $message = nl2br($this->app->console->call('xtask:stop')->fetch());
+            stripos($message, '成功') !== false ? $this->success($message) : $this->error($message);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
