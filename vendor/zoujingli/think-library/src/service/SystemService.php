@@ -115,7 +115,7 @@ class SystemService extends Service
     private function parse($rule, $type = 'base')
     {
         if (stripos($rule, '.') !== false) {
-            list($rule, $type) = explode('.', $rule);
+            list($type, $rule) = explode('.', $rule);
         }
         list($field, $outer) = explode('|', "{$rule}|");
         return [$type, $field, strtolower($outer)];
