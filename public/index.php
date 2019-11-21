@@ -17,7 +17,7 @@ namespace think;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$http = (new App())->http;
+$http = (new App())->debug(true)->http;
 
 $response = $http->run();
 
