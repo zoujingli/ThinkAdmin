@@ -21,7 +21,9 @@ try {
     $config = include "./config.php";
 
     // 3. 创建接口实例
-    $wechat = new \WeChat\Script($config);
+    // $wechat = \We::WeChatScript($config);
+    // $wechat = new \WeChat\Script($config);
+    $wechat = \WeChat\Script::instance($config);
 
     // 4. 获取JSSDK网址签名配置
     $result = $wechat->getJsSign('http://a.com/test.php');

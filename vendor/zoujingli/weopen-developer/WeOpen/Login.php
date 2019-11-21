@@ -61,6 +61,7 @@ class Login
     /**
      * 第二步：通过code获取access_token
      * @return mixed
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function getAccessToken()
     {
@@ -75,6 +76,7 @@ class Login
      * 刷新AccessToken有效期
      * @param string $refreshToken
      * @return array
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function refreshToken($refreshToken)
     {
@@ -88,6 +90,7 @@ class Login
      * @param string $accessToken 调用凭证
      * @param string $openid 普通用户的标识，对当前开发者帐号唯一
      * @return array
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function checkAccessToken($accessToken, $openid)
     {
@@ -100,6 +103,7 @@ class Login
      * @param string $accessToken 调用凭证
      * @param string $openid 普通用户的标识，对当前开发者帐号唯一
      * @return array
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function getUserinfo($accessToken, $openid)
     {

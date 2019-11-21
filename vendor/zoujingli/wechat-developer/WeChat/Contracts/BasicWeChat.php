@@ -40,19 +40,25 @@ class BasicWeChat
      * 当前请求方法参数
      * @var array
      */
-    private $currentMethod = [];
+    protected $currentMethod = [];
 
     /**
      * 当前模式
      * @var bool
      */
-    private $isTry = false;
+    protected $isTry = false;
+
+    /**
+     * 静态缓存
+     * @var static
+     */
+    protected static $cache;
 
     /**
      * 注册代替函数
      * @var string
      */
-    private $GetAccessTokenCallback;
+    protected $GetAccessTokenCallback;
 
     /**
      * BasicWeChat constructor.
@@ -73,6 +79,18 @@ class BasicWeChat
             Tools::$cache_path = $options['cache_path'];
         }
         $this->config = new DataArray($options);
+    }
+
+    /**
+     * 静态创建对象
+     * @param array $config
+     * @return static
+     */
+    public static function instance(array $config)
+    {
+        $key = md5(get_called_class() . serialize($config));
+        if (isset(self::$cache[$key])) return self::$cache[$key];
+        return self::$cache[$key] = new static($config);
     }
 
     /**
@@ -128,7 +146,7 @@ class BasicWeChat
     }
 
     /**
-     * 清理删除accessToken
+     * 清理删除 AccessToken
      * @return bool
      */
     public function delAccessToken()

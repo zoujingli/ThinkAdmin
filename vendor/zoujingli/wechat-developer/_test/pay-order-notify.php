@@ -21,11 +21,13 @@ try {
     $config = include "./config.php";
 
     // 3. 创建接口实例
-    $wechat = new \WeChat\Pay($config);
+    // $wechat = new \WeChat\Pay($config);
+    // $wechat = \We::WeChatPay($config);
+    $wechat = \WeChat\Pay::instance($config);
 
     // 4. 获取通知参数
     $data = $wechat->getNotify();
-    if ($data['result_code'] === 'SUCCESS' && $data['result_code'] === 'SUCCESS') {
+    if ($data['return_code'] === 'SUCCESS' && $data['result_code'] === 'SUCCESS') {
         // @todo 去更新下原订单的支付状态
         $order_no = $data['out_trade_no'];
 

@@ -21,11 +21,13 @@ try {
     $config = include "./config.php";
 
     // 3. 创建接口实例
-    $menu = new \WeChat\Menu($config);
+    // $menu = \We::WeChatMenu($config);
+    // $menu = new \WeChat\Menu($config);
+    $menu = \WeChat\Menu::instance($config);
 
     // 4. 获取菜单数据
     $result = $menu->get();
-    
+
     var_export($result);
 
 } catch (Exception $e) {

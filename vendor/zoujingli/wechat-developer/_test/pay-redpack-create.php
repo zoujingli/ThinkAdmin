@@ -21,13 +21,15 @@ try {
     $config = include "./config.php";
 
     // 3. 创建接口实例
-    $wechat = new \WePay\Redpack($config);
+    // $wechat = new \WePay\Redpack($config);
+    // $wechat = \We::WePayRedpack($config);
+    $wechat = \WePay\Redpack::instance($config);
 
     // 4. 组装参数，可以参考官方商户文档
     $options = [
         'mch_billno'   => time(),
         're_openid'    => 'o38gps3vNdCqaggFfrBRCRikwlWY',
-        'send_name'    => '商户名称',
+        'send_name'    => '商户名称😍',
         'act_name'     => '活动名称',
         'total_amount' => '100',
         'total_num'    => '1',

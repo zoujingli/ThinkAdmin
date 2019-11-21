@@ -64,6 +64,20 @@ class Plugs extends BasicWeChat
         return $this->callPostApi($url, ['action' => 'unbind', 'plugin_appid' => $plugin_appid], true);
     }
 
+    /**
+     * 获取当前所有插件使用方
+     * 修改插件使用申请的状态
+     * @param array $data
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function devplugin($data)
+    {
+        $url = 'https://api.weixin.qq.com/wxa/devplugin?access_token=ACCESS_TOKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->callPostApi($url, $data, true);
+    }
 
     /**
      * 4.获取当前所有插件使用方（供插件开发者调用）

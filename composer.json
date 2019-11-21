@@ -3,7 +3,7 @@
   "name": "zoujingli/thinkadmin",
   "license": "MIT",
   "homepage": "http://demo.thinkadmin.top",
-  "description": "ThinkAdmin Developer CMF",
+  "description": "ThinkAdmin Developer Framework",
   "authors": [
     {
       "name": "Anyon",
@@ -19,11 +19,5 @@
     "aliyuncs/oss-sdk-php": "^2.2",
     "topthink/think-captcha": "^2.0",
     "zoujingli/weopen-developer": "^1.1"
-  },
-  "repositories": {
-    "packagist": {
-      "type": "composer",
-      "url": "https://packagist.laravel-china.org"
-    }
   }
 }

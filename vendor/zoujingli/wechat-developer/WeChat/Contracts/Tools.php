@@ -32,6 +32,17 @@ class Tools
     public static $cache_path = null;
 
     /**
+     * 缓存写入操作
+     * @var array
+     */
+    public static $cache_callable = [
+        'set' => null, // 写入缓存
+        'get' => null, // 获取缓存
+        'del' => null, // 删除缓存
+        'put' => null, // 写入文件
+    ];
+
+    /**
      * 网络缓存
      * @var array
      */
@@ -356,6 +367,9 @@ class Tools
      */
     public static function pushFile($name, $content)
     {
+        if (is_callable(self::$cache_callable['put'])) {
+            return call_user_func_array(self::$cache_callable['put'], func_get_args());
+        }
         $file = self::_getCacheName($name);
         if (!file_put_contents($file, $content)) {
             throw new LocalCacheException('local file write error.', '0');
@@ -373,8 +387,12 @@ class Tools
      */
     public static function setCache($name, $value = '', $expired = 3600)
     {
+        if (is_callable(self::$cache_callable['set'])) {
+            return call_user_func_array(self::$cache_callable['set'], func_get_args());
+        }
         $file = self::_getCacheName($name);
-        if (!file_put_contents($file, serialize(['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)]))) {
+        $data = ['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)];
+        if (!file_put_contents($file, serialize($data))) {
             throw new LocalCacheException('local cache error.', '0');
         }
         return $file;
@@ -387,6 +405,9 @@ class Tools
      */
     public static function getCache($name)
     {
+        if (is_callable(self::$cache_callable['get'])) {
+            return call_user_func_array(self::$cache_callable['get'], func_get_args());
+        }
         $file = self::_getCacheName($name);
         if (file_exists($file) && ($content = file_get_contents($file))) {
             $data = unserialize($content);
@@ -405,6 +426,9 @@ class Tools
      */
     public static function delCache($name)
     {
+        if (is_callable(self::$cache_callable['del'])) {
+            return call_user_func_array(self::$cache_callable['del'], func_get_args());
+        }
         $file = self::_getCacheName($name);
         return file_exists($file) ? unlink($file) : true;
     }
