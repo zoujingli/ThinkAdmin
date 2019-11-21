@@ -6,10 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'think\\queue\\' => array($vendorDir . '/topthink/think-queue/src'),
     'think\\mongo\\' => array($vendorDir . '/topthink/think-mongo/src'),
     'think\\composer\\' => array($vendorDir . '/topthink/think-installer/src'),
     'think\\captcha\\' => array($vendorDir . '/topthink/think-captcha/src'),
-    'think\\' => array($baseDir . '/thinkphp/library/think', $vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-queue/src'),
+    'think\\' => array($baseDir . '/thinkphp/library/think'),
     'Wechat\\' => array($vendorDir . '/zoujingli/wechat-php-sdk/Wechat'),
     'Symfony\\Component\\OptionsResolver\\' => array($vendorDir . '/symfony/options-resolver'),
     'Qiniu\\' => array($vendorDir . '/qiniu/php-sdk/src/Qiniu'),

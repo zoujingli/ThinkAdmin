@@ -2,6 +2,8 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
+// | Copyright (c) 2006~2016 http://thinkphp.cn All rights reserved.
+// +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
@@ -9,9 +11,9 @@
 
 namespace think\mongo;
 
-use MongoDB\BSON\ObjectID;
 use MongoDB\Driver\BulkWrite;
 use MongoDB\Driver\Command;
+use MongoDB\Driver\Cursor;
 use MongoDB\Driver\Exception\AuthenticationException;
 use MongoDB\Driver\Exception\BulkWriteException;
 use MongoDB\Driver\Exception\ConnectionException;
@@ -21,10 +23,12 @@ use MongoDB\Driver\Manager;
 use MongoDB\Driver\Query as MongoQuery;
 use MongoDB\Driver\ReadPreference;
 use MongoDB\Driver\WriteConcern;
+use think\Collection;
 use think\Db;
 use think\Debug;
 use think\Exception;
 use think\Log;
+use think\mongo\Query as Query;
 
 /**
  * Mongo数据库驱动
@@ -34,6 +38,8 @@ class Connection
     protected $dbName = ''; // dbName
     /** @var string 当前SQL指令 */
     protected $queryStr = '';
+    // 查询数据集类型
+    protected $resultSetType = 'array';
     // 查询数据类型
     protected $typeMap = 'array';
     protected $mongo; // MongoDb Object
@@ -59,57 +65,51 @@ class Connection
     // 数据库连接参数配置
     protected $config = [
         // 数据库类型
-        'type'            => '',
+        'type'           => '',
         // 服务器地址
-        'hostname'        => '',
+        'hostname'       => '',
         // 数据库名
-        'database'        => '',
-        // 是否是复制集
-        'is_replica_set'  => false,
+        'database'       => '',
         // 用户名
-        'username'        => '',
+        'username'       => '',
         // 密码
-        'password'        => '',
+        'password'       => '',
         // 端口
-        'hostport'        => '',
+        'hostport'       => '',
         // 连接dsn
-        'dsn'             => '',
+        'dsn'            => '',
         // 数据库连接参数
-        'params'          => [],
+        'params'         => [],
         // 数据库编码默认采用utf8
-        'charset'         => 'utf8',
+        'charset'        => 'utf8',
         // 主键名
-        'pk'              => '_id',
-        // 主键类型
-        'pk_type'         => 'ObjectID',
+        'pk'             => '_id',
         // 数据库表前缀
-        'prefix'          => '',
+        'prefix'         => '',
         // 数据库调试模式
-        'debug'           => false,
+        'debug'          => false,
         // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)
-        'deploy'          => 0,
+        'deploy'         => 0,
         // 数据库读写是否分离 主从式有效
-        'rw_separate'     => false,
+        'rw_separate'    => false,
         // 读写分离后 主服务器数量
-        'master_num'      => 1,
+        'master_num'     => 1,
         // 指定从服务器序号
-        'slave_no'        => '',
+        'slave_no'       => '',
         // 是否严格检查字段是否存在
-        'fields_strict'   => true,
+        'fields_strict'  => true,
         // 数据集返回类型
-        'resultset_type'  => 'array',
+        'resultset_type' => 'array',
         // 自动写入时间戳字段
-        'auto_timestamp'  => false,
-        // 时间字段取出后的默认时间格式
-        'datetime_format' => 'Y-m-d H:i:s',
+        'auto_timestamp' => false,
         // 是否需要进行SQL性能分析
-        'sql_explain'     => false,
+        'sql_explain'    => false,
         // 是否_id转换为id
-        'pk_convert_id'   => false,
+        'pk_convert_id'  => false,
         // typeMap
-        'type_map'        => ['root' => 'array', 'document' => 'array'],
+        'type_map'       => ['root' => 'array', 'document' => 'array'],
         // Query对象
-        'query'           => '\\think\\mongo\\Query',
+        'query'          => '\\think\\mongo\\Query',
     ];
 
     /**
@@ -145,11 +145,14 @@ class Connection
             }
             $this->dbName  = $config['database'];
             $this->typeMap = $config['type_map'];
-
+            // 记录数据集返回类型
+            if (isset($config['resultset_type'])) {
+                $this->resultSetType = $config['resultset_type'];
+            }
             if ($config['pk_convert_id'] && '_id' == $config['pk']) {
                 $this->config['pk'] = 'id';
             }
-            $host = 'mongodb://' . ($config['username'] ? "{$config['username']}" : '') . ($config['password'] ? ":{$config['password']}@" : '') . $config['hostname'] . ($config['hostport'] ? ":{$config['hostport']}" : '');
+            $host = 'mongodb://' . ($config['username'] ? "{$config['username']}" : '') . ($config['password'] ? ":{$config['password']}@" : '') . $config['hostname'] . ($config['hostport'] ? ":{$config['hostport']}" : '') . '/' . ($config['database'] ? "{$config['database']}" : '');
             if ($config['debug']) {
                 $startTime = microtime(true);
             }
@@ -163,29 +166,17 @@ class Connection
     }
 
     /**
-     * 指定当前使用的查询对象
-     * @access public
-     * @param Query $query 查询对象
-     * @return $this
-     */
-    public function setQuery($query, $model = 'db')
-    {
-        $this->query[$model] = $query;
-        return $this;
-    }
-
-    /**
      * 创建指定模型的查询对象
      * @access public
      * @param string $model 模型类名称
      * @param string $queryClass 查询对象类名
      * @return Query
      */
-    public function getQuery($model = 'db', $queryClass = '')
+    public function model($model, $queryClass = '')
     {
         if (!isset($this->query[$model])) {
             $class               = $queryClass ?: $this->config['query'];
-            $this->query[$model] = new $class($this, 'db' == $model ? '' : $model);
+            $this->query[$model] = new $class($this, $model);
         }
         return $this->query[$model];
     }
@@ -199,7 +190,11 @@ class Connection
      */
     public function __call($method, $args)
     {
-        return call_user_func_array([$this->getQuery(), $method], $args);
+        if (!isset($this->query['database'])) {
+            $class                   = $this->config['query'];
+            $this->query['database'] = new $class($this);
+        }
+        return call_user_func_array([$this->query['database'], $method], $args);
     }
 
     /**
@@ -233,7 +228,7 @@ class Connection
     public function getMongo()
     {
         if (!$this->mongo) {
-            return;
+            return null;
         } else {
             return $this->mongo;
         }
@@ -300,7 +295,7 @@ class Connection
      * @throws ConnectionException
      * @throws RuntimeException
      */
-    public function command(Command $command, $dbName = '', ReadPreference $readPreference = null, $class = false, $typeMap = null)
+    public function command(Command $command, $dbName = '', ReadPreference $readPreference = null, $class = false, $typeMap)
     {
         $this->initConnect(false);
         Db::$queryTimes++;
@@ -308,7 +303,7 @@ class Connection
         $this->debug(true);
         $dbName = $dbName ?: $this->dbName;
         if ($this->config['debug'] && !empty($this->queryStr)) {
-            $this->queryStr = 'db.' . $this->queryStr;
+            $this->queryStr = 'db.' . $dbName . '.' . $this->queryStr;
         }
         $this->cursor = $this->mongo->executeCommand($dbName, $command, $readPreference);
         $this->debug(false);
@@ -344,7 +339,13 @@ class Connection
             }
         }
         $this->numRows = count($result);
-
+        if (!empty($class)) {
+            // 返回指定数据集对象类
+            $result = new $class($result);
+        } elseif ('collection' == $this->resultSetType) {
+            // 返回数据集Collection对象
+            $result = new Collection($result);
+        }
         return $result;
     }
 
@@ -415,9 +416,6 @@ class Connection
             });
         }
         switch (strtolower($type)) {
-            case 'aggregate':
-                $this->queryStr = 'runCommand(' . ($data ? json_encode($data) : '') . ');';
-                break;
             case 'find':
                 $this->queryStr = $type . '(' . ($data ? json_encode($data) : '') . ')';
                 if (isset($options['sort'])) {
@@ -524,11 +522,10 @@ class Connection
      */
     public function close()
     {
-        $this->mongo     = null;
-        $this->cursor    = null;
-        $this->linkRead  = null;
-        $this->linkWrite = null;
-        $this->links     = [];
+        if ($this->mongo) {
+            $this->mongo  = null;
+            $this->cursor = null;
+        }
     }
 
     /**
@@ -579,11 +576,7 @@ class Connection
             // 主从式采用读写分离
             if ($master) // 主服务器写入
             {
-                if ($this->config['is_replica_set']) {
-                    return $this->replicaSetConnect();
-                } else {
-                    $r = $m;
-                }
+                $r = $m;
             } elseif (is_numeric($this->config['slave_no'])) {
                 // 指定服务器读
                 $r = $this->config['slave_no'];
@@ -601,69 +594,6 @@ class Connection
         }
         return $this->connect($dbConfig, $r);
     }
-
-    /**
-     * 创建基于复制集的连接
-     * @return Manager
-     */
-    public function replicaSetConnect()
-    {
-        $this->dbName  = $this->config['database'];
-        $this->typeMap = $this->config['type_map'];
-        if ($this->config['debug']) {
-            $startTime = microtime(true);
-        }
-        $this->config['params']['replicaSet'] = $this->config['database'];
-        $manager                              = new Manager($this->buildUrl(), $this->config['params']);
-        if ($this->config['debug']) {
-            // 记录数据库连接信息
-            Log::record('[ DB ] CONNECT:[ UseTime:' . number_format(microtime(true) - $startTime, 6) . 's ] ' . $this->config['dsn'], 'sql');
-        }
-        return $manager;
-    }
-
-    /**
-     * 根据配置信息 生成适用于链接复制集的 URL
-     * @return string
-     */
-    private function buildUrl()
-    {
-        $url      = 'mongodb://' . ($this->config['username'] ? "{$this->config['username']}" : '') . ($this->config['password'] ? ":{$this->config['password']}@" : '');
-        $hostList = explode(',', $this->config['hostname']);
-        $portList = explode(',', $this->config['hostport']);
-        for ($i = 0; $i < count($hostList); $i++) {
-            $url = $url . $hostList[$i] . ':' . $portList[0] . ',';
-        }
-        return rtrim($url, ",") . '/';
-    }
-
-    /**
-     * 启动事务
-     * @access public
-     * @return void
-     * @throws \PDOException
-     * @throws \Exception
-     */
-    public function startTrans()
-    {}
-
-    /**
-     * 用于非自动提交状态下面的查询提交
-     * @access public
-     * @return void
-     * @throws PDOException
-     */
-    public function commit()
-    {}
-
-    /**
-     * 事务回滚
-     * @access public
-     * @return void
-     * @throws PDOException
-     */
-    public function rollback()
-    {}
 
     /**
      * 析构方法

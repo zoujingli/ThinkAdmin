@@ -8,35 +8,40 @@
 // +----------------------------------------------------------------------
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
+
 namespace think\queue\job;
 
+
 use think\queue\Job;
-use think\queue\connector\Database as DatabaseQueue;
+use think\queue\driver\Topthink as TopthinkQueue;
 
-class Database extends Job
+class Topthink extends Job
 {
-    /**
-     * The database queue instance.
-     * @var DatabaseQueue
-     */
-    protected $database;
 
     /**
-     * The database job payload.
-     * @var Object
+     * The Iron queue instance.
+     *
+     * @var TopthinkQueue
+     */
+    protected $topthink;
+
+    /**
+     * The IronMQ message instance.
+     *
+     * @var object
      */
     protected $job;
 
-    public function __construct(DatabaseQueue $database, $job, $queue)
+    public function __construct(TopthinkQueue $topthink, $job, $queue)
     {
+        $this->topthink      = $topthink;
         $this->job           = $job;
         $this->queue         = $queue;
-        $this->database      = $database;
         $this->job->attempts = $this->job->attempts + 1;
     }
 
     /**
-     * 执行任务
+     * Fire the job.
      * @return void
      */
     public function fire()
@@ -45,36 +50,28 @@ class Database extends Job
     }
 
     /**
-     * 删除任务
-     * @return void
+     * Get the number of times the job has been attempted.
+     * @return int
      */
+    public function attempts()
+    {
+        return (int)$this->job->attempts;
+    }
+
     public function delete()
     {
         parent::delete();
-        $this->database->deleteReserved($this->job->id);
+
+        $this->topthink->deleteMessage($this->queue, $this->job->id);
     }
 
-    /**
-     * 重新发布任务
-     * @param  int $delay
-     * @return void
-     */
     public function release($delay = 0)
     {
         parent::release($delay);
 
         $this->delete();
 
-        $this->database->release($this->queue, $this->job, $delay);
-    }
-
-    /**
-     * 获取当前任务尝试次数
-     * @return int
-     */
-    public function attempts()
-    {
-        return (int) $this->job->attempts;
+        $this->topthink->release($this->queue, $this->job, $delay);
     }
 
     /**
@@ -85,4 +82,5 @@ class Database extends Job
     {
         return $this->job->payload;
     }
+
 }

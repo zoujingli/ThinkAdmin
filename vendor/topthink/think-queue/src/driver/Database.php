@@ -9,13 +9,12 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-namespace think\queue\connector;
+namespace think\queue\driver;
 
 use think\Db;
-use think\queue\Connector;
 use think\queue\job\Database as DatabaseJob;
 
-class Database extends Connector
+class Database
 {
     protected $db;
 
@@ -43,6 +42,12 @@ class Database extends Connector
     public function later($delay, $job, $data = '', $queue = null)
     {
         return $this->pushToDatabase($delay, $queue, $this->createPayload($job, $data));
+    }
+
+
+    protected function createPayload($job, $data)
+    {
+        return json_encode(['job' => $job, 'data' => $data]);
     }
 
     public function pop($queue = null)
@@ -116,7 +121,7 @@ class Database extends Connector
             ->order('id', 'asc')
             ->find();
 
-        return $job ? (object) $job : null;
+        return $job ? (object)$job : null;
     }
 
     /**
@@ -150,7 +155,7 @@ class Database extends Connector
             ->update([
                 'reserved'    => 0,
                 'reserved_at' => null,
-                'attempts'    => ['inc', 1]
+                'attempts'    => ['exp', 'attempts + 1']
             ]);
     }
 

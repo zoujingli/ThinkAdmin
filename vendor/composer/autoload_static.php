@@ -4,18 +4,18 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0
+class ComposerStaticInitc1cac3a0444716bb820c298f6d3202fd
 {
     public static $files = array (
-        '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
-        'cc56288302d9df745d97c934d6a6e5f0' => __DIR__ . '/..' . '/topthink/think-queue/src/common.php',
+        '9e05116ddaa5b1d244b68c3993908acd' => __DIR__ . '/..' . '/topthink/think-queue/src/config.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (
+            'think\\queue\\' => 12,
             'think\\mongo\\' => 12,
             'think\\composer\\' => 15,
             'think\\captcha\\' => 14,
@@ -44,6 +44,10 @@ class ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0
     );
 
     public static $prefixDirsPsr4 = array (
+        'think\\queue\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/topthink/think-queue/src',
+        ),
         'think\\mongo\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-mongo/src',
@@ -59,8 +63,6 @@ class ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0
         'think\\' => 
         array (
             0 => __DIR__ . '/../..' . '/thinkphp/library/think',
-            1 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            2 => __DIR__ . '/..' . '/topthink/think-queue/src',
         ),
         'Wechat\\' => 
         array (
@@ -236,7 +238,6 @@ class ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0
         'think\\Model' => __DIR__ . '/../..' . '/thinkphp/library/think/Model.php',
         'think\\Paginator' => __DIR__ . '/../..' . '/thinkphp/library/think/Paginator.php',
         'think\\Process' => __DIR__ . '/../..' . '/thinkphp/library/think/Process.php',
-        'think\\Queue' => __DIR__ . '/..' . '/topthink/think-queue/src/Queue.php',
         'think\\Request' => __DIR__ . '/../..' . '/thinkphp/library/think/Request.php',
         'think\\Response' => __DIR__ . '/../..' . '/thinkphp/library/think/Response.php',
         'think\\Route' => __DIR__ . '/../..' . '/thinkphp/library/think/Route.php',
@@ -292,8 +293,6 @@ class ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0
         'think\\console\\output\\formatter\\Style' => __DIR__ . '/../..' . '/thinkphp/library/think/console/output/formatter/Style.php',
         'think\\console\\output\\question\\Choice' => __DIR__ . '/../..' . '/thinkphp/library/think/console/output/question/Choice.php',
         'think\\console\\output\\question\\Confirmation' => __DIR__ . '/../..' . '/thinkphp/library/think/console/output/question/Confirmation.php',
-        'think\\contract\\Arrayable' => __DIR__ . '/..' . '/topthink/think-helper/src/contract/Arrayable.php',
-        'think\\contract\\Jsonable' => __DIR__ . '/..' . '/topthink/think-helper/src/contract/Jsonable.php',
         'think\\controller\\Rest' => __DIR__ . '/../..' . '/thinkphp/library/think/controller/Rest.php',
         'think\\controller\\Yar' => __DIR__ . '/../..' . '/thinkphp/library/think/controller/Yar.php',
         'think\\db\\Builder' => __DIR__ . '/../..' . '/thinkphp/library/think/db/Builder.php',
@@ -324,8 +323,6 @@ class ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0
         'think\\exception\\TemplateNotFoundException' => __DIR__ . '/../..' . '/thinkphp/library/think/exception/TemplateNotFoundException.php',
         'think\\exception\\ThrowableError' => __DIR__ . '/../..' . '/thinkphp/library/think/exception/ThrowableError.php',
         'think\\exception\\ValidateException' => __DIR__ . '/../..' . '/thinkphp/library/think/exception/ValidateException.php',
-        'think\\helper\\Arr' => __DIR__ . '/..' . '/topthink/think-helper/src/helper/Arr.php',
-        'think\\helper\\Str' => __DIR__ . '/..' . '/topthink/think-helper/src/helper/Str.php',
         'think\\log\\driver\\File' => __DIR__ . '/../..' . '/thinkphp/library/think/log/driver/File.php',
         'think\\log\\driver\\Socket' => __DIR__ . '/../..' . '/thinkphp/library/think/log/driver/Socket.php',
         'think\\log\\driver\\Test' => __DIR__ . '/../..' . '/thinkphp/library/think/log/driver/Test.php',
@@ -353,25 +350,22 @@ class ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0
         'think\\process\\pipes\\Pipes' => __DIR__ . '/../..' . '/thinkphp/library/think/process/pipes/Pipes.php',
         'think\\process\\pipes\\Unix' => __DIR__ . '/../..' . '/thinkphp/library/think/process/pipes/Unix.php',
         'think\\process\\pipes\\Windows' => __DIR__ . '/../..' . '/thinkphp/library/think/process/pipes/Windows.php',
-        'think\\queue\\CallQueuedHandler' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/CallQueuedHandler.php',
-        'think\\queue\\Connector' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Connector.php',
-        'think\\queue\\Job' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Job.php',
-        'think\\queue\\Listener' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Listener.php',
-        'think\\queue\\Queueable' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Queueable.php',
-        'think\\queue\\ShouldQueue' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/ShouldQueue.php',
-        'think\\queue\\Worker' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/Worker.php',
-        'think\\queue\\command\\Listen' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/command/Listen.php',
-        'think\\queue\\command\\Restart' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/command/Restart.php',
-        'think\\queue\\command\\Subscribe' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/command/Subscribe.php',
-        'think\\queue\\command\\Work' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/command/Work.php',
-        'think\\queue\\connector\\Database' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/connector/Database.php',
-        'think\\queue\\connector\\Redis' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/connector/Redis.php',
-        'think\\queue\\connector\\Sync' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/connector/Sync.php',
-        'think\\queue\\connector\\Topthink' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/connector/Topthink.php',
-        'think\\queue\\job\\Database' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/job/Database.php',
-        'think\\queue\\job\\Redis' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/job/Redis.php',
-        'think\\queue\\job\\Sync' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/job/Sync.php',
-        'think\\queue\\job\\Topthink' => __DIR__ . '/..' . '/topthink/think-queue/src/queue/job/Topthink.php',
+        'think\\queue\\Job' => __DIR__ . '/..' . '/topthink/think-queue/src/Job.php',
+        'think\\queue\\Listener' => __DIR__ . '/..' . '/topthink/think-queue/src/Listener.php',
+        'think\\queue\\Queue' => __DIR__ . '/..' . '/topthink/think-queue/src/Queue.php',
+        'think\\queue\\Worker' => __DIR__ . '/..' . '/topthink/think-queue/src/Worker.php',
+        'think\\queue\\command\\Listen' => __DIR__ . '/..' . '/topthink/think-queue/src/command/Listen.php',
+        'think\\queue\\command\\Restart' => __DIR__ . '/..' . '/topthink/think-queue/src/command/Restart.php',
+        'think\\queue\\command\\Subscribe' => __DIR__ . '/..' . '/topthink/think-queue/src/command/Subscribe.php',
+        'think\\queue\\command\\Work' => __DIR__ . '/..' . '/topthink/think-queue/src/command/Work.php',
+        'think\\queue\\driver\\Database' => __DIR__ . '/..' . '/topthink/think-queue/src/driver/Database.php',
+        'think\\queue\\driver\\Redis' => __DIR__ . '/..' . '/topthink/think-queue/src/driver/Redis.php',
+        'think\\queue\\driver\\Sync' => __DIR__ . '/..' . '/topthink/think-queue/src/driver/Sync.php',
+        'think\\queue\\driver\\Topthink' => __DIR__ . '/..' . '/topthink/think-queue/src/driver/Topthink.php',
+        'think\\queue\\job\\Database' => __DIR__ . '/..' . '/topthink/think-queue/src/job/Database.php',
+        'think\\queue\\job\\Redis' => __DIR__ . '/..' . '/topthink/think-queue/src/job/Redis.php',
+        'think\\queue\\job\\Sync' => __DIR__ . '/..' . '/topthink/think-queue/src/job/Sync.php',
+        'think\\queue\\job\\Topthink' => __DIR__ . '/..' . '/topthink/think-queue/src/job/Topthink.php',
         'think\\response\\Json' => __DIR__ . '/../..' . '/thinkphp/library/think/response/Json.php',
         'think\\response\\Jsonp' => __DIR__ . '/../..' . '/thinkphp/library/think/response/Jsonp.php',
         'think\\response\\Redirect' => __DIR__ . '/../..' . '/thinkphp/library/think/response/Redirect.php',
@@ -390,9 +384,9 @@ class ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc1cac3a0444716bb820c298f6d3202fd::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc1cac3a0444716bb820c298f6d3202fd::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitc1cac3a0444716bb820c298f6d3202fd::$classMap;
 
         }, null, ClassLoader::class);
     }

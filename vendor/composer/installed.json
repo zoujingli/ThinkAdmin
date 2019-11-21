@@ -309,47 +309,6 @@
         "description": "captcha package for thinkphp5"
     },
     {
-        "name": "topthink/think-helper",
-        "version": "v3.1.3",
-        "version_normalized": "3.1.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/top-think/think-helper.git",
-            "reference": "4d85dfd3778623bbb1de3648f1dcd0c82f4439f4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-helper/zipball/4d85dfd3778623bbb1de3648f1dcd0c82f4439f4",
-            "reference": "4d85dfd3778623bbb1de3648f1dcd0c82f4439f4",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=7.1.0"
-        },
-        "time": "2019-09-30T02:36:48+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "think\\": "src"
-            },
-            "files": [
-                "src/helper.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "yunwuxin",
-                "email": "448901948@qq.com"
-            }
-        ],
-        "description": "The ThinkPHP6 Helper Package"
-    },
-    {
         "name": "topthink/think-installer",
         "version": "v1.0.12",
         "version_normalized": "1.0.12.0",
@@ -394,20 +353,20 @@
     },
     {
         "name": "topthink/think-mongo",
-        "version": "v1.8.5",
-        "version_normalized": "1.8.5.0",
+        "version": "v1.1",
+        "version_normalized": "1.1.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-mongo.git",
-            "reference": "657cc79bd5f090a58b0cc83776073dd69c83a3d1"
+            "reference": "04548b89d283a15e4b3fc040cd0b3832efba15c5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-mongo/zipball/657cc79bd5f090a58b0cc83776073dd69c83a3d1",
-            "reference": "657cc79bd5f090a58b0cc83776073dd69c83a3d1",
+            "url": "https://api.github.com/repos/top-think/think-mongo/zipball/04548b89d283a15e4b3fc040cd0b3832efba15c5",
+            "reference": "04548b89d283a15e4b3fc040cd0b3832efba15c5",
             "shasum": ""
         },
-        "time": "2018-06-03T01:51:27+00:00",
+        "time": "2016-11-04T02:10:44+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -430,40 +389,28 @@
     },
     {
         "name": "topthink/think-queue",
-        "version": "v1.1.6",
-        "version_normalized": "1.1.6.0",
+        "version": "v1.0.2",
+        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-queue.git",
-            "reference": "250650eb0e8ea5af4cfdc7ae46f3f4e0a24ac245"
+            "reference": "bd0cf0f18146fafd4314c30a26b105d8b71f72b2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-queue/zipball/250650eb0e8ea5af4cfdc7ae46f3f4e0a24ac245",
-            "reference": "250650eb0e8ea5af4cfdc7ae46f3f4e0a24ac245",
+            "url": "https://api.github.com/repos/top-think/think-queue/zipball/bd0cf0f18146fafd4314c30a26b105d8b71f72b2",
+            "reference": "bd0cf0f18146fafd4314c30a26b105d8b71f72b2",
             "shasum": ""
         },
-        "require": {
-            "topthink/think-helper": ">=1.0.4",
-            "topthink/think-installer": ">=1.0.10"
-        },
-        "require-dev": {
-            "topthink/framework": "~5.0.0"
-        },
-        "time": "2018-10-15T10:16:55+00:00",
-        "type": "think-extend",
-        "extra": {
-            "think-config": {
-                "queue": "src/config.php"
-            }
-        },
+        "time": "2016-11-25T03:41:00+00:00",
+        "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "think\\": "src"
+                "think\\queue\\": "src"
             },
             "files": [
-                "src/common.php"
+                "src/config.php"
             ]
         },
         "notification-url": "https://packagist.org/downloads/",

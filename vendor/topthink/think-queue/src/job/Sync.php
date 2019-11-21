@@ -11,32 +11,21 @@
 
 namespace think\queue\job;
 
+
 use think\queue\Job;
-use think\queue\connector\Topthink as TopthinkQueue;
 
-class Topthink extends Job
+class Sync extends Job
 {
-
     /**
-     * The Iron queue instance.
+     * The queue message data.
      *
-     * @var TopthinkQueue
+     * @var string
      */
-    protected $topthink;
+    protected $payload;
 
-    /**
-     * The IronMQ message instance.
-     *
-     * @var object
-     */
-    protected $job;
-
-    public function __construct(TopthinkQueue $topthink, $job, $queue)
+    public function __construct($payload)
     {
-        $this->topthink      = $topthink;
-        $this->job           = $job;
-        $this->queue         = $queue;
-        $this->job->attempts = $this->job->attempts + 1;
+        $this->payload = $payload;
     }
 
     /**
@@ -45,7 +34,7 @@ class Topthink extends Job
      */
     public function fire()
     {
-        $this->resolveAndFire(json_decode($this->job->payload, true));
+        $this->resolveAndFire(json_decode($this->payload, true));
     }
 
     /**
@@ -54,23 +43,7 @@ class Topthink extends Job
      */
     public function attempts()
     {
-        return (int) $this->job->attempts;
-    }
-
-    public function delete()
-    {
-        parent::delete();
-
-        $this->topthink->deleteMessage($this->queue, $this->job->id);
-    }
-
-    public function release($delay = 0)
-    {
-        parent::release($delay);
-
-        $this->delete();
-
-        $this->topthink->release($this->queue, $this->job, $delay);
+        return 1;
     }
 
     /**
@@ -79,7 +52,6 @@ class Topthink extends Job
      */
     public function getRawBody()
     {
-        return $this->job->payload;
+        return $this->payload;
     }
-
 }

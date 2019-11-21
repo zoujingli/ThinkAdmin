@@ -11,6 +11,7 @@
 
 namespace think\queue;
 
+
 use Closure;
 use think\Process;
 
@@ -77,6 +78,7 @@ class Listener
         $process->run(function ($type, $line) {
             $this->handleWorkerOutput($type, $line);
         });
+
 
         if ($this->memoryExceeded($memory)) {
             $this->stop();

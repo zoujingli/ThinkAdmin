@@ -9,14 +9,13 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-namespace think\queue\connector;
+namespace think\queue\driver;
+
 
 use Exception;
-use think\helper\Str;
-use think\queue\Connector;
 use think\queue\job\Redis as RedisJob;
 
-class Redis extends Connector
+class Redis
 {
     /** @var  \Redis */
     protected $redis;
@@ -48,7 +47,7 @@ class Redis extends Connector
         if ('' != $this->options['password']) {
             $this->redis->auth($this->options['password']);
         }
-
+        
         if (0 != $this->options['select']) {
             $this->redis->select($this->options['select']);
         }
@@ -72,10 +71,8 @@ class Redis extends Connector
 
         $queue = $this->getQueue($queue);
 
-        $this->migrateExpiredJobs($queue . ':delayed', $queue, false);
-
         if (!is_null($this->options['expire'])) {
-            $this->migrateExpiredJobs($queue . ':reserved', $queue);
+            $this->migrateAllExpiredJobs($queue);
         }
 
         $job = $this->redis->lPop($queue);
@@ -110,11 +107,12 @@ class Redis extends Connector
         return json_decode($payload, true)['id'];
     }
 
-    protected function createPayload($job, $data = '', $queue = null)
+
+    protected function createPayload($job, $data)
     {
-        $payload = $this->setMeta(
-            parent::createPayload($job, $data), 'id', $this->getRandomId()
-        );
+        $payload = json_encode(['job' => $job, 'data' => $data]);
+
+        $payload = $this->setMeta($payload, 'id', $this->getRandomId());
 
         return $this->setMeta($payload, 'attempts', 1);
     }
@@ -129,6 +127,19 @@ class Redis extends Connector
     public function deleteReserved($queue, $job)
     {
         $this->redis->zRem($this->getQueue($queue) . ':reserved', $job);
+    }
+
+    /**
+     * 移动所有任务
+     *
+     * @param  string $queue
+     * @return void
+     */
+    protected function migrateAllExpiredJobs($queue)
+    {
+        $this->migrateExpiredJobs($queue . ':delayed', $queue, false);
+
+        $this->migrateExpiredJobs($queue . ':reserved', $queue);
     }
 
     /**
@@ -171,6 +182,7 @@ class Redis extends Connector
         }
     }
 
+
     /**
      * 获取所有到期任务
      *
@@ -182,6 +194,7 @@ class Redis extends Connector
     {
         return $this->redis->zRangeByScore($from, '-inf', $time);
     }
+
 
     /**
      * 删除过期任务
@@ -220,7 +233,14 @@ class Redis extends Connector
      */
     protected function getRandomId()
     {
-        return Str::random(32);
+        return uniqid();
+    }
+
+    protected function setMeta($payload, $key, $value)
+    {
+        $payload       = json_decode($payload, true);
+        $payload[$key] = $value;
+        return json_encode($payload);
     }
 
     /**

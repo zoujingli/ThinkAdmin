@@ -9,14 +9,13 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-namespace think\queue\connector;
+namespace think\queue\driver;
 
 use Exception;
-use think\queue\Connector;
 use think\queue\job\Sync as SyncJob;
 use Throwable;
 
-class Sync extends Connector
+class Sync
 {
 
     public function push($job, $data = '', $queue = null)
@@ -54,4 +53,8 @@ class Sync extends Connector
         return new SyncJob($payload);
     }
 
+    protected function createPayload($job, $data = '', $queue = null)
+    {
+        return json_encode(['job' => $job, 'data' => $data]);
+    }
 }

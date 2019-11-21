@@ -11,11 +11,13 @@
 
 namespace think\queue\job;
 
+
 use think\queue\Job;
-use think\queue\connector\Redis as RedisQueue;
+use think\queue\driver\Redis as RedisQueue;
 
 class Redis extends Job
 {
+
 
     /**
      * The redis queue instance.
@@ -62,6 +64,7 @@ class Redis extends Job
     {
         return $this->job;
     }
+
 
     /**
      * 删除任务

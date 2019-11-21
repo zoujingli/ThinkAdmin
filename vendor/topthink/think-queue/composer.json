@@ -1,7 +1,6 @@
 {
     "name": "topthink/think-queue",
     "description": "The ThinkPHP5 Queue Package",
-    "type": "think-extend",
     "authors": [
         {
             "name": "yunwuxin",
@@ -9,24 +8,13 @@
         }
     ],
     "license": "Apache-2.0",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "think\\": "src"
+            "think\\queue\\": "src"
         },
         "files": [
-            "src/common.php"
+            "src/config.php"
         ]
-    },
-    "require": {
-        "topthink/think-helper": ">=1.0.4",
-        "topthink/think-installer": ">=1.0.10"
-    },
-    "require-dev": {
-        "topthink/framework": "~5.0.0"
-    },
-    "extra": {
-        "think-config": {
-            "queue": "src/config.php"
-        }
     }
 }

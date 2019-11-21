@@ -21,6 +21,3 @@ Db::name('demo')
     ->order('id','desc')
     ->select();
 ~~~
-
-1.*版本支持ThinkPHP 5.0
-2.*版本支持ThinkPHP 5.1 
