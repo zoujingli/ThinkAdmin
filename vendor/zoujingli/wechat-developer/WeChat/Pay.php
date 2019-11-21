@@ -18,7 +18,6 @@ use WeChat\Contracts\BasicWePay;
 use WeChat\Exceptions\InvalidResponseException;
 use WePay\Bill;
 use WePay\Order;
-use WePay\Refund;
 use WePay\Transfers;
 use WePay\TransfersBank;
 
@@ -39,10 +38,20 @@ class Pay extends BasicWePay
      */
     public function createOrder(array $options)
     {
-        $pay = new Order($this->config->get());
-        return $pay->create($options);
+        return Order::instance($this->config->get())->create($options);
     }
 
+    /**
+     * 刷卡支付
+     * @param array $options
+     * @return array
+     * @throws Exceptions\LocalCacheException
+     * @throws InvalidResponseException
+     */
+    public function createMicropay($options)
+    {
+        return Order::instance($this->config->get())->micropay($options);
+    }
 
     /**
      * 创建JsApi及H5支付参数
@@ -51,8 +60,7 @@ class Pay extends BasicWePay
      */
     public function createParamsForJsApi($prepay_id)
     {
-        $pay = new Order($this->config->get());
-        return $pay->jsapiParams($prepay_id);
+        return Order::instance($this->config->get())->jsapiParams($prepay_id);
     }
 
     /**
@@ -62,8 +70,7 @@ class Pay extends BasicWePay
      */
     public function createParamsForApp($prepay_id)
     {
-        $pay = new Order($this->config->get());
-        return $pay->appParams($prepay_id);
+        return Order::instance($this->config->get())->appParams($prepay_id);
     }
 
     /**
@@ -73,8 +80,7 @@ class Pay extends BasicWePay
      */
     public function createParamsForRuleQrc($product_id)
     {
-        $pay = new Order($this->config->get());
-        return $pay->qrcParams($product_id);
+        return Order::instance($this->config->get())->qrcParams($product_id);
     }
 
     /**
@@ -86,8 +92,7 @@ class Pay extends BasicWePay
      */
     public function queryOrder(array $options)
     {
-        $pay = new Order($this->config->get());
-        return $pay->query($options);
+        return Order::instance($this->config->get())->query($options);
     }
 
     /**
@@ -99,8 +104,7 @@ class Pay extends BasicWePay
      */
     public function closeOrder($out_trade_no)
     {
-        $pay = new Order($this->config->get());
-        return $pay->close($out_trade_no);
+        return Order::instance($this->config->get())->close($out_trade_no);
     }
 
     /**
@@ -112,8 +116,7 @@ class Pay extends BasicWePay
      */
     public function createRefund(array $options)
     {
-        $pay = new Refund($this->config->get());
-        return $pay->create($options);
+        return Order::instance($this->config->get())->create($options);
     }
 
     /**
@@ -125,8 +128,7 @@ class Pay extends BasicWePay
      */
     public function queryRefund(array $options)
     {
-        $pay = new Refund($this->config->get());
-        return $pay->query($options);
+        return Order::instance($this->config->get())->query($options);
     }
 
     /**
@@ -138,8 +140,7 @@ class Pay extends BasicWePay
      */
     public function report(array $options)
     {
-        $pay = new Order($this->config->get());
-        return $pay->report($options);
+        return Order::instance($this->config->get())->report($options);
     }
 
     /**
@@ -151,8 +152,7 @@ class Pay extends BasicWePay
      */
     public function queryAuthCode($authCode)
     {
-        $pay = new Order($this->config->get());
-        return $pay->queryAuthCode($authCode);
+        return Order::instance($this->config->get())->queryAuthCode($authCode);
     }
 
     /**
@@ -165,10 +165,8 @@ class Pay extends BasicWePay
      */
     public function billDownload(array $options, $outType = null)
     {
-        $pay = new Bill($this->config->get());
-        return $pay->download($options, $outType);
+        return Bill::instance($this->config->get())->download($options, $outType);
     }
-
 
     /**
      * 拉取订单评价数据
@@ -179,8 +177,7 @@ class Pay extends BasicWePay
      */
     public function billCommtent(array $options)
     {
-        $pay = new Bill($this->config->get());
-        return $pay->comment($options);
+        return Bill::instance($this->config->get())->comment($options);
     }
 
     /**
@@ -192,8 +189,7 @@ class Pay extends BasicWePay
      */
     public function createTransfers(array $options)
     {
-        $pay = new Transfers($this->config->get());
-        return $pay->create($options);
+        return Transfers::instance($this->config->get())->create($options);
     }
 
     /**
@@ -205,8 +201,7 @@ class Pay extends BasicWePay
      */
     public function queryTransfers($partner_trade_no)
     {
-        $pay = new Transfers($this->config->get());
-        return $pay->query($partner_trade_no);
+        return Transfers::instance($this->config->get())->query($partner_trade_no);
     }
 
     /**
@@ -219,8 +214,7 @@ class Pay extends BasicWePay
      */
     public function createTransfersBank(array $options)
     {
-        $pay = new TransfersBank($this->config->get());
-        return $pay->create($options);
+        return TransfersBank::instance($this->config->get())->create($options);
     }
 
     /**
@@ -232,7 +226,6 @@ class Pay extends BasicWePay
      */
     public function queryTransFresBank($partner_trade_no)
     {
-        $pay = new TransfersBank($this->config->get());
-        return $pay->query($partner_trade_no);
+        return TransfersBank::instance($this->config->get())->query($partner_trade_no);
     }
 }

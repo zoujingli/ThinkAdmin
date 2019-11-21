@@ -181,7 +181,7 @@ class Code extends BasicWeChat
      */
     public function revertCodeRelease()
     {
-        $url = 'https://api.weixin.qq.com/wxa/revertcoderelease?access_token=TOKEN';
+        $url = 'https://api.weixin.qq.com/wxa/revertcoderelease?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->httpGetForJson($url);
     }

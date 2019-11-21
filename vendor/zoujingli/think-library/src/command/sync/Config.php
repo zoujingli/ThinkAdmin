@@ -25,17 +25,26 @@ use think\console\Output;
  */
 class Config extends Sync
 {
+
+    /**
+     * 指令属性配置
+     */
     protected function configure()
     {
         $this->modules = ['config/'];
-        $this->setName('xsync:config')->setDescription('从远程覆盖本地Config的部分配置文件');
+        $this->setName('xsync:config')->setDescription('[同步]覆盖本地Config应用配置');
     }
 
+    /**
+     * 执行更新操作
+     * @param Input $input
+     * @param Output $output
+     */
     protected function execute(Input $input, Output $output)
     {
         $root = str_replace('\\', '/', env('root_path'));
         if (file_exists("{$root}/config/sync.lock")) {
-            $this->output->error('config files has been locked');
+            $this->output->error("--- Config 配置已经被锁定，不能继续更新");
         } else {
             parent::execute($input, $output);
         }

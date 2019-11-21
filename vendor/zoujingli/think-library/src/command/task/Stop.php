@@ -16,6 +16,8 @@
 namespace library\command\task;
 
 use library\command\Task;
+use think\console\Input;
+use think\console\Output;
 
 /**
  * Class Stop
@@ -24,12 +26,20 @@ use library\command\Task;
 class Stop extends Task
 {
 
+    /**
+     * 指令属性配置
+     */
     protected function configure()
     {
         $this->setName('xtask:stop')->setDescription('立即停止消息队列守护进程');
     }
 
-    protected function execute(\think\console\Input $input, \think\console\Output $output)
+    /**
+     * 执行停止操作
+     * @param Input $input
+     * @param Output $output
+     */
+    protected function execute(Input $input, Output $output)
     {
         if (($pid = $this->checkProcess()) > 0) {
             $this->closeProcess($pid);

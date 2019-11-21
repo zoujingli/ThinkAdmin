@@ -15,6 +15,9 @@
 
 namespace library;
 
+use library\driver\Local;
+use library\driver\Oss;
+use library\driver\Qiniu;
 use library\tools\Options;
 use think\Exception;
 use think\facade\Log;
@@ -99,7 +102,7 @@ class File
     /**
      * 设置文件驱动名称
      * @param string $name
-     * @return \library\driver\Local
+     * @return Local|Qiniu|Oss
      * @throws Exception
      */
     public static function instance($name)
@@ -134,16 +137,10 @@ class File
      */
     public static function mines()
     {
-        $mines = cache('all_ext_mine');
-        if (empty($mines)) {
-            $content = file_get_contents('http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types');
-            preg_match_all('#^([^\s]{2,}?)\s+(.+?)$#ism', $content, $matches, PREG_SET_ORDER);
-            foreach ($matches as $match) foreach (explode(" ", $match[2]) as $ext) $mines[$ext] = $match[1];
-            cache('all_ext_mine', $mines);
-        }
-        return $mines;
+        static $mimes = [];
+        if (count($mimes) > 0) return $mimes;
+        return $mimes = include __DIR__ . '/driver/_mime.php';
     }
-
 
     /**
      * 获取文件相对名称
@@ -165,15 +162,20 @@ class File
     /**
      * 下载文件到本地
      * @param string $url 文件URL地址
-     * @param boolean $force 是否强制重新下载文件
+     * @param boolean $force 是否强制下载
+     * @param integer $expire 文件保留时间
      * @return array
      */
-    public static function down($url, $force = false)
+    public static function down($url, $force = false, $expire = 0)
     {
         try {
             $file = self::instance('local');
             $name = self::name($url, '', 'down/');
-            if (empty($force) && $file->has($name)) return $file->info($name);
+            if (empty($force) && $file->has($name)) {
+                if ($expire < 1 || filemtime($file->path($name)) + $expire > time()) {
+                    return $file->info($name);
+                }
+            }
             return $file->save($name, file_get_contents($url));
         } catch (\Exception $e) {
             Log::error(__METHOD__ . " File download failed [ {$url} ] {$e->getMessage()}");
@@ -204,7 +206,7 @@ class File
 try {
     // 初始化存储
     File::init();
-    // \think\facade\Log::info(__METHOD__ . ' File storage initialization success');
+    // Log::info(__METHOD__ . ' File storage initialization success');
 } catch (\Exception $e) {
     Log::error(__METHOD__ . " File storage initialization exception. [{$e->getMessage()}]");
 }

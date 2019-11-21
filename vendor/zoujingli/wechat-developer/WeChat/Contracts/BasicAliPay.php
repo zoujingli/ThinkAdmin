@@ -44,6 +44,12 @@ abstract class BasicAliPay
     protected $params;
 
     /**
+     * 静态缓存
+     * @var static
+     */
+    protected static $cache;
+
+    /**
      * 正常请求网关
      * @var string
      */
@@ -86,6 +92,18 @@ abstract class BasicAliPay
         if (isset($options['app_auth_token']) && $options['app_auth_token'] !== '') {
             $this->options->set('app_auth_token', $options['app_auth_token']);
         }
+    }
+
+    /**
+     * 静态创建对象
+     * @param array $config
+     * @return static
+     */
+    public static function instance(array $config)
+    {
+        $key = md5(get_called_class() . serialize($config));
+        if (isset(self::$cache[$key])) return self::$cache[$key];
+        return self::$cache[$key] = new static($config);
     }
 
     /**

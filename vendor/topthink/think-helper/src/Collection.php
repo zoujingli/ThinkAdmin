@@ -360,7 +360,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
                 $result = $data[$field] ?? null;
             }
 
-            switch ($operator) {
+            switch (strtolower($operator)) {
                 case '===':
                     return $result === $value;
                 case '!==':

@@ -16,6 +16,8 @@
 namespace library\command\task;
 
 use library\command\Task;
+use think\console\Input;
+use think\console\Output;
 
 /**
  * Class Reset
@@ -24,12 +26,21 @@ use library\command\Task;
 class Reset extends Task
 {
 
+    /**
+     * 指令属性配置
+     */
     protected function configure()
     {
         $this->setName('xtask:reset')->setDescription('重新启动消息队列守护进程');
     }
 
-    protected function execute(\think\console\Input $input, \think\console\Output $output)
+    /**
+     * 执行重置操作
+     * @param Input $input
+     * @param Output $output
+     * @return int|void|null
+     */
+    protected function execute(Input $input, Output $output)
     {
         if (($pid = $this->checkProcess()) > 0) {
             $this->closeProcess($pid);

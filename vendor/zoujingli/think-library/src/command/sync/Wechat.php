@@ -25,17 +25,26 @@ use think\console\Output;
  */
 class Wechat extends Sync
 {
+
+    /**
+     * 指令属性配置
+     */
     protected function configure()
     {
         $this->modules = ['application/wechat/'];
-        $this->setName('xsync:wechat')->setDescription('从远程覆盖本地Wechat模块的所有代码');
+        $this->setName('xsync:wechat')->setDescription('[同步]覆盖本地Wechat模块代码');
     }
 
+    /**
+     * 执行更新操作
+     * @param Input $input
+     * @param Output $output
+     */
     protected function execute(Input $input, Output $output)
     {
         $root = str_replace('\\', '/', env('root_path'));
         if (file_exists("{$root}/application/wechat/sync.lock")) {
-            $this->output->error('wechat module has been locked');
+            $this->output->error("--- Wechat 模块已经被锁定，不能继续更新");
         } else {
             parent::execute($input, $output);
         }

@@ -62,12 +62,14 @@ class Data
      */
     public static function batchSave($dbQuery, $data, $key = 'id', $where = [])
     {
-        list($case, $_data) = [[], []];
-        foreach ($data as $row) foreach ($row as $k => $v) $case[$k][] = "WHEN '{$row[$key]}' THEN '{$v}'";
+        list($case, $input) = [[], []];
+        foreach ($data as $row) foreach ($row as $key => $value) {
+            $case[$key][] = "WHEN '{$row[$key]}' THEN '{$value}'";
+        }
         if (isset($case[$key])) unset($case[$key]);
         $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
-        foreach ($case as $k => $v) $_data[$k] = $db->raw("CASE `{$key}` " . join(' ', $v) . ' END');
-        return $db->whereIn($key, array_unique(array_column($data, $key)))->where($where)->update($_data) !== false;
+        foreach ($case as $key => $value) $input[$key] = $db->raw("CASE `{$key}` " . join(' ', $value) . ' END');
+        return $db->whereIn($key, array_unique(array_column($data, $key)))->where($where)->update($input) !== false;
     }
 
     /**
@@ -181,13 +183,13 @@ class Data
     /**
      * 文件大小显示转换
      * @param integer $size 文件大小
-     * @param integer $dec
+     * @param integer $deci 小数位数
      * @return string
      */
-    public static function toFileSize($size, $dec = 2)
+    public static function toFileSize($size, $deci = 2)
     {
         list($pos, $map) = [0, ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB']];
         while ($size >= 1024 && $pos < 6) if (++$pos) $size /= 1024;
-        return round($size, $dec) . ' ' . $map[$pos];
+        return round($size, $deci) . ' ' . $map[$pos];
     }
 }

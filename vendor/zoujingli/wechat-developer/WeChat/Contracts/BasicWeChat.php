@@ -49,6 +49,12 @@ class BasicWeChat
     protected $isTry = false;
 
     /**
+     * 静态缓存
+     * @var static
+     */
+    protected static $cache;
+
+    /**
      * 注册代替函数
      * @var string
      */
@@ -73,6 +79,18 @@ class BasicWeChat
             Tools::$cache_path = $options['cache_path'];
         }
         $this->config = new DataArray($options);
+    }
+
+    /**
+     * 静态创建对象
+     * @param array $config
+     * @return static
+     */
+    public static function instance(array $config)
+    {
+        $key = md5(get_called_class() . serialize($config));
+        if (isset(self::$cache[$key])) return self::$cache[$key];
+        return self::$cache[$key] = new static($config);
     }
 
     /**
