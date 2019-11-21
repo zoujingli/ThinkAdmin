@@ -9,41 +9,75 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-namespace think;
+namespace think\queue;
 
-use think\helper\Str;
-use think\queue\Connector;
+use think\Config;
 
-/**
- * Class Queue
- * @package think\queue
- *
- * @method static push($job, $data = '', $queue = null)
- * @method static later($delay, $job, $data = '', $queue = null)
- * @method static pop($queue = null)
- * @method static marshal()
- */
 class Queue
 {
-    /** @var Connector */
-    protected static $connector;
+    protected static $instance = [];
 
-    private static function buildConnector()
+    /**
+     * 添加任务到队列
+     * @param        $job
+     * @param string $data
+     * @param null   $queue
+     */
+    public static function push($job, $data = '', $queue = null)
+    {
+        self::handle()->push($job, $data, $queue);
+
+    }
+
+    /**
+     * 添加延迟任务到队列
+     * @param        $delay
+     * @param        $job
+     * @param string $data
+     * @param null   $queue
+     */
+    public static function later($delay, $job, $data = '', $queue = null)
+    {
+        self::handle()->later($delay, $job, $data, $queue);
+    }
+
+    /**
+     * 获取第一个任务
+     * @param null $queue
+     * @return mixed
+     */
+    public static function pop($queue = null)
+    {
+        if (!method_exists(self::handle(), 'pop'))
+            throw new \RuntimeException('pop queues not support for this type');
+        
+        return self::handle()->pop($queue);
+    }
+
+
+    /**
+     * 由订阅的推送执行任务
+     */
+    public static function marshal()
+    {
+        if (!method_exists(self::handle(), 'marshal'))
+            throw new \RuntimeException('push queues not support for this type');
+
+        self::handle()->marshal();
+    }
+
+    private static function handle()
     {
         $options = Config::get('queue');
-        $type    = !empty($options['connector']) ? $options['connector'] : 'Sync';
+        $type    = !empty($options['type']) ? $options['type'] : 'Sync';
 
-        if (!isset(self::$connector)) {
+        if (!isset(self::$instance[$type])) {
 
-            $class = false !== strpos($type, '\\') ? $type : '\\think\\queue\\connector\\' . Str::studly($type);
+            $class = false !== strpos($type, '\\') ? $type : '\\think\\queue\\driver\\' . ucwords($type);
 
-            self::$connector = new $class($options);
+            self::$instance[$type] = new $class($options);
         }
-        return self::$connector;
+        return self::$instance[$type];
     }
 
-    public static function __callStatic($name, $arguments)
-    {
-        return call_user_func_array([self::buildConnector(), $name], $arguments);
-    }
 }

@@ -25,7 +25,7 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->cdnManager = new CdnManager($testAuth);
         $this->encryptKey = $timestampAntiLeechEncryptKey;
-        $this->imgUrl = $customDomain . '/24.jpg';
+        $this->imgUrl = $customDomain . '/sdktest.png';
     }
 
     public function testCreateTimestampAntiLeechUrl()
@@ -34,17 +34,8 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
         $signUrl = $this->cdnManager->createTimestampAntiLeechUrl($this->imgUrl, $this->encryptKey, 3600);
 
         $response = Client::get($signUrl);
+        
         $this->assertEquals($response->statusCode, 200);
-        $this->assertNull($response->error);
-
-        $url2 = $this->imgUrl . '?imageInfo';
-        $signUrl2 = $this->cdnManager->createTimestampAntiLeechUrl($url2, $this->encryptKey, 3600);
-
-        $response = Client::get($signUrl2);
-        $imgInfo = $response->json();
-
-        $this->assertEquals($response->statusCode, 200);
-        $this->assertEquals($imgInfo['size'], 2196145);
         $this->assertNull($response->error);
     }
 }

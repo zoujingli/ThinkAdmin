@@ -1,24 +1,18 @@
 [
     {
         "name": "aliyuncs/oss-sdk-php",
-        "version": "v2.3.0",
-        "version_normalized": "2.3.0.0",
+        "version": "v2.3.1",
+        "version_normalized": "2.3.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-            "reference": "e69f57916678458642ac9d2fd341ae78a56996c8"
+            "reference": "053d7ba9e798e4c09b9c5c1edab153d25ea9643a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/e69f57916678458642ac9d2fd341ae78a56996c8",
-            "reference": "e69f57916678458642ac9d2fd341ae78a56996c8",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
+            "reference": "053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3"
@@ -27,7 +21,7 @@
             "phpunit/phpunit": "~4.0",
             "satooshi/php-coveralls": "~1.0"
         },
-        "time": "2018-01-08T06:59:35+00:00",
+        "time": "2019-11-15T11:05:42+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -61,13 +55,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/endroid/qr-code/zipball/c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
             "reference": "c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "ext-gd": "*",
@@ -118,24 +106,18 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.7",
-        "version_normalized": "7.2.7.0",
+        "version": "v7.2.10",
+        "version_normalized": "7.2.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "88d11a5857ebc6871204e9be6ceec54bf5f381e6"
+            "reference": "d89987163f560ebf9dfa5bb25de9bd9b1a3b2bd8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/88d11a5857ebc6871204e9be6ceec54bf5f381e6",
-            "reference": "88d11a5857ebc6871204e9be6ceec54bf5f381e6",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/d89987163f560ebf9dfa5bb25de9bd9b1a3b2bd8",
+            "reference": "d89987163f560ebf9dfa5bb25de9bd9b1a3b2bd8",
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
@@ -144,7 +126,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2018-11-06T13:34:32+00:00",
+        "time": "2019-10-28T10:23:23+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -177,29 +159,23 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.24",
-        "version_normalized": "3.4.24.0",
+        "version": "v3.4.35",
+        "version_normalized": "3.4.35.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "926e3b797e6bb66c0e4d7da7eff3a174f7378bcf"
+            "reference": "b224d20be60e6f7b55cd66914379a13a0b28651a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/926e3b797e6bb66c0e4d7da7eff3a174f7378bcf",
-            "reference": "926e3b797e6bb66c0e4d7da7eff3a174f7378bcf",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/b224d20be60e6f7b55cd66914379a13a0b28651a",
+            "reference": "b224d20be60e6f7b55cd66914379a13a0b28651a",
+            "shasum": ""
         },
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2019-02-23T15:06:07+00:00",
+        "time": "2019-10-26T11:02:01+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -250,13 +226,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/top-think/framework/zipball/c255c22b2f5fa30f320ecf6c1d29f7740eb3e8be",
             "reference": "c255c22b2f5fa30f320ecf6c1d29f7740eb3e8be",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "php": ">=5.4.0",
@@ -309,13 +279,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/top-think/think-captcha/zipball/1d64363c814c92f6086c4fa5e3223fe7e23db09d",
             "reference": "1d64363c814c92f6086c4fa5e3223fe7e23db09d",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "topthink/framework": "~5.0.0",
@@ -345,50 +309,6 @@
         "description": "captcha package for thinkphp5"
     },
     {
-        "name": "topthink/think-helper",
-        "version": "v3.0.0",
-        "version_normalized": "3.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/top-think/think-helper.git",
-            "reference": "8ba5f66e68106369fcc3211e7d2dbaf7bc9ce455"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-helper/zipball/8ba5f66e68106369fcc3211e7d2dbaf7bc9ce455",
-            "reference": "8ba5f66e68106369fcc3211e7d2dbaf7bc9ce455",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
-        },
-        "time": "2019-03-14T09:28:59+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "think\\helper\\": "src"
-            },
-            "files": [
-                "src/helper.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "yunwuxin",
-                "email": "448901948@qq.com"
-            }
-        ],
-        "description": "The ThinkPHP5 Helper Package"
-    },
-    {
         "name": "topthink/think-installer",
         "version": "v1.0.12",
         "version_normalized": "1.0.12.0",
@@ -401,13 +321,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/top-think/think-installer/zipball/1be326e68f63de4e95977ed50f46ae75f017556d",
             "reference": "1be326e68f63de4e95977ed50f46ae75f017556d",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "composer-plugin-api": "^1.0"
@@ -450,13 +364,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/top-think/think-mongo/zipball/657cc79bd5f090a58b0cc83776073dd69c83a3d1",
             "reference": "657cc79bd5f090a58b0cc83776073dd69c83a3d1",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "time": "2018-06-03T01:51:27+00:00",
         "type": "library",
@@ -481,46 +389,28 @@
     },
     {
         "name": "topthink/think-queue",
-        "version": "v1.1.6",
-        "version_normalized": "1.1.6.0",
+        "version": "v1.0.2",
+        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-queue.git",
-            "reference": "250650eb0e8ea5af4cfdc7ae46f3f4e0a24ac245"
+            "reference": "bd0cf0f18146fafd4314c30a26b105d8b71f72b2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-queue/zipball/250650eb0e8ea5af4cfdc7ae46f3f4e0a24ac245",
-            "reference": "250650eb0e8ea5af4cfdc7ae46f3f4e0a24ac245",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "url": "https://api.github.com/repos/top-think/think-queue/zipball/bd0cf0f18146fafd4314c30a26b105d8b71f72b2",
+            "reference": "bd0cf0f18146fafd4314c30a26b105d8b71f72b2",
+            "shasum": ""
         },
-        "require": {
-            "topthink/think-helper": ">=1.0.4",
-            "topthink/think-installer": ">=1.0.10"
-        },
-        "require-dev": {
-            "topthink/framework": "~5.0.0"
-        },
-        "time": "2018-10-15T10:16:55+00:00",
-        "type": "think-extend",
-        "extra": {
-            "think-config": {
-                "queue": "src/config.php"
-            }
-        },
+        "time": "2016-11-25T03:41:00+00:00",
+        "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "think\\": "src"
+                "think\\queue\\": "src"
             },
             "files": [
-                "src/common.php"
+                "src/config.php"
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -537,29 +427,23 @@
     },
     {
         "name": "zoujingli/ip2region",
-        "version": "v1.0.5",
-        "version_normalized": "1.0.5.0",
+        "version": "v1.0.7",
+        "version_normalized": "1.0.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ip2region.git",
-            "reference": "944dc687304133027c4586a35ff78b57e56dd659"
+            "reference": "f898a7d90cfacd54433de4028190c336164f2ae4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/944dc687304133027c4586a35ff78b57e56dd659",
-            "reference": "944dc687304133027c4586a35ff78b57e56dd659",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/f898a7d90cfacd54433de4028190c336164f2ae4",
+            "reference": "f898a7d90cfacd54433de4028190c336164f2ae4",
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3"
         },
-        "time": "2019-01-23T06:23:53+00:00",
+        "time": "2019-10-29T09:03:57+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -591,24 +475,21 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/wechat-php-sdk.git",
-            "reference": "afb0dfd1a0fd71cfe58b6811d559b6b0fc8f9de0"
+            "reference": "d37d0c1919ede2ee54e65100ac3792e947b1e0ef"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/wechat-php-sdk/zipball/afb0dfd1a0fd71cfe58b6811d559b6b0fc8f9de0",
-            "reference": "afb0dfd1a0fd71cfe58b6811d559b6b0fc8f9de0",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "url": "https://api.github.com/repos/zoujingli/wechat-php-sdk/zipball/d37d0c1919ede2ee54e65100ac3792e947b1e0ef",
+            "reference": "d37d0c1919ede2ee54e65100ac3792e947b1e0ef",
+            "shasum": ""
         },
         "require": {
+            "ext-json": "*",
+            "ext-libxml": "*",
+            "ext-simplexml": "*",
             "php": ">=5.3.3"
         },
-        "time": "2018-10-23T09:57:56+00:00",
+        "time": "2019-10-10T09:42:15+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
