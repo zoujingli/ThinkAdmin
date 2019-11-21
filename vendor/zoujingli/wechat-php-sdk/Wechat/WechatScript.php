@@ -122,7 +122,7 @@ class WechatScript extends Common
             "timestamp" => $data['timestamp'],
             "signature" => Tools::getSignature($data, 'sha1'),
             'jsApiList' => array(
-                'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone',
+                'updateTimelineShareData', 'updateAppMessageShareData', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone',
                 'hideOptionMenu', 'showOptionMenu', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem',
                 'chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'closeWindow', 'scanQRCode', 'chooseWXPay',
                 'translateVoice', 'getNetworkType', 'openLocation', 'getLocation',

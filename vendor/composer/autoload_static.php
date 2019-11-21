@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7
+class ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -17,7 +17,6 @@ class ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7
         't' => 
         array (
             'think\\mongo\\' => 12,
-            'think\\helper\\' => 13,
             'think\\composer\\' => 15,
             'think\\captcha\\' => 14,
             'think\\' => 6,
@@ -49,10 +48,6 @@ class ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7
         array (
             0 => __DIR__ . '/..' . '/topthink/think-mongo/src',
         ),
-        'think\\helper\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-helper/src',
-        ),
         'think\\composer\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-installer/src',
@@ -64,7 +59,8 @@ class ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7
         'think\\' => 
         array (
             0 => __DIR__ . '/../..' . '/thinkphp/library/think',
-            1 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            1 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            2 => __DIR__ . '/..' . '/topthink/think-queue/src',
         ),
         'Wechat\\' => 
         array (
@@ -179,7 +175,9 @@ class ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7
         'Qiniu\\Processing\\ImageUrlBuilder' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Processing/ImageUrlBuilder.php',
         'Qiniu\\Processing\\Operation' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Processing/Operation.php',
         'Qiniu\\Processing\\PersistentFop' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Processing/PersistentFop.php',
+        'Qiniu\\Region' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Region.php',
         'Qiniu\\Rtc\\AppClient' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Rtc/AppClient.php',
+        'Qiniu\\Sms\\Sms' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Sms/Sms.php',
         'Qiniu\\Storage\\ArgusManager' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/ArgusManager.php',
         'Qiniu\\Storage\\BucketManager' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/BucketManager.php',
         'Qiniu\\Storage\\FormUploader' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/Storage/FormUploader.php',
@@ -294,6 +292,8 @@ class ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7
         'think\\console\\output\\formatter\\Style' => __DIR__ . '/../..' . '/thinkphp/library/think/console/output/formatter/Style.php',
         'think\\console\\output\\question\\Choice' => __DIR__ . '/../..' . '/thinkphp/library/think/console/output/question/Choice.php',
         'think\\console\\output\\question\\Confirmation' => __DIR__ . '/../..' . '/thinkphp/library/think/console/output/question/Confirmation.php',
+        'think\\contract\\Arrayable' => __DIR__ . '/..' . '/topthink/think-helper/src/contract/Arrayable.php',
+        'think\\contract\\Jsonable' => __DIR__ . '/..' . '/topthink/think-helper/src/contract/Jsonable.php',
         'think\\controller\\Rest' => __DIR__ . '/../..' . '/thinkphp/library/think/controller/Rest.php',
         'think\\controller\\Yar' => __DIR__ . '/../..' . '/thinkphp/library/think/controller/Yar.php',
         'think\\db\\Builder' => __DIR__ . '/../..' . '/thinkphp/library/think/db/Builder.php',
@@ -324,8 +324,8 @@ class ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7
         'think\\exception\\TemplateNotFoundException' => __DIR__ . '/../..' . '/thinkphp/library/think/exception/TemplateNotFoundException.php',
         'think\\exception\\ThrowableError' => __DIR__ . '/../..' . '/thinkphp/library/think/exception/ThrowableError.php',
         'think\\exception\\ValidateException' => __DIR__ . '/../..' . '/thinkphp/library/think/exception/ValidateException.php',
-        'think\\helper\\Arr' => __DIR__ . '/..' . '/topthink/think-helper/src/Arr.php',
-        'think\\helper\\Str' => __DIR__ . '/..' . '/topthink/think-helper/src/Str.php',
+        'think\\helper\\Arr' => __DIR__ . '/..' . '/topthink/think-helper/src/helper/Arr.php',
+        'think\\helper\\Str' => __DIR__ . '/..' . '/topthink/think-helper/src/helper/Str.php',
         'think\\log\\driver\\File' => __DIR__ . '/../..' . '/thinkphp/library/think/log/driver/File.php',
         'think\\log\\driver\\Socket' => __DIR__ . '/../..' . '/thinkphp/library/think/log/driver/Socket.php',
         'think\\log\\driver\\Test' => __DIR__ . '/../..' . '/thinkphp/library/think/log/driver/Test.php',
@@ -390,9 +390,9 @@ class ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd96d28d57212ec2c3c4e4cff03cf97d7::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitb1bfee82f75c4c17ecc734b1a1dad3c0::$classMap;
 
         }, null, ClassLoader::class);
     }

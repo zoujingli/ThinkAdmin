@@ -25,7 +25,7 @@ use Wechat\Lib\Cache;
 spl_autoload_register(function ($class) {
     if (0 === stripos($class, 'Wechat\\')) {
         $filename = dirname(__DIR__) . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-        file_exists($filename) && require($filename);
+        if (file_exists($filename)) require $filename;
     }
 });
 
@@ -76,7 +76,7 @@ class Loader
      * @param array $config SDK配置(token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img)
      * @return WechatCard|WechatCustom|WechatDevice|WechatExtends|WechatMedia|WechatMenu|WechatOauth|WechatPay|WechatPoi|WechatReceive|WechatScript|WechatService|WechatUser
      */
-    static public function & get_instance($type, $config = array())
+    static public function get_instance($type, $config = array())
     {
         return self::get($type, $config);
     }
@@ -87,7 +87,7 @@ class Loader
      * @param array $config SDK配置(token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img)
      * @return WechatCard|WechatCustom|WechatDevice|WechatExtends|WechatMedia|WechatMenu|WechatOauth|WechatPay|WechatPoi|WechatReceive|WechatScript|WechatService|WechatUser
      */
-    static public function & get($type, $config = array())
+    static public function get($type, $config = array())
     {
         $index = md5(strtolower($type) . md5(json_encode(self::$config)));
         if (!isset(self::$cache[$index])) {
