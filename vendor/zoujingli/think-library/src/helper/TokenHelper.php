@@ -34,10 +34,10 @@ class TokenHelper extends Helper
      */
     public function init($return = false)
     {
-        $this->class->csrf_state = true;
+        $this->controller->csrf_state = true;
         if ($this->app->request->isPost() && !TokenService::instance()->checkFormToken()) {
             if ($return) return false;
-            $this->class->error($this->class->csrf_message);
+            $this->controller->error($this->controller->csrf_message);
         } else {
             return true;
         }
@@ -48,7 +48,7 @@ class TokenHelper extends Helper
      */
     public function clear()
     {
-        TokenService::instance($this->app)->clearFormToken();
+        TokenService::instance()->clearFormToken();
     }
 
     /**
@@ -61,7 +61,7 @@ class TokenHelper extends Helper
     {
         throw new HttpResponseException(view($tpl, $vars, 200, function ($html) use ($node) {
             return preg_replace_callback('/<\/form>/i', function () use ($node) {
-                $csrf = TokenService::instance($this->app)->buildFormToken($node);
+                $csrf = TokenService::instance()->buildFormToken($node);
                 return "<input type='hidden' name='_token_' value='{$csrf['token']}'></form>";
             }, $html);
         }));

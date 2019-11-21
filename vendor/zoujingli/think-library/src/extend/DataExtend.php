@@ -15,8 +15,6 @@
 
 namespace think\admin\extend;
 
-use think\db\Query;
-
 /**
  * 数据处理扩展
  * Class DataExtend
@@ -24,33 +22,6 @@ use think\db\Query;
  */
 class DataExtend
 {
-    /**
-     * 数据增量保存
-     * @param Query|string $dbQuery 数据查询对象
-     * @param array $data 需要保存或更新的数据
-     * @param string $key 条件主键限制
-     * @param array $where 其它的where条件
-     * @return boolean|integer
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public static function save($dbQuery, $data, $key = 'id', $where = [])
-    {
-        $app = app();
-        $db = is_string($dbQuery) ? $app->db->name($dbQuery) : $dbQuery;
-        list($table, $value) = [$db->getTable(), isset($data[$key]) ? $data[$key] : null];
-        $map = isset($where[$key]) ? [] : (is_string($value) ? [[$key, 'in', explode(',', $value)]] : [$key => $value]);
-        if (is_array($info = $app->db->table($table)->master()->where($where)->where($map)->find()) && !empty($info)) {
-            if ($app->db->table($table)->strict(false)->where($where)->where($map)->update($data) !== false) {
-                return isset($info[$key]) ? $info[$key] : true;
-            } else {
-                return false;
-            }
-        } else {
-            return $app->db->table($table)->strict(false)->insertGetId($data);
-        }
-    }
 
     /**
      * 一维数据数组生成数据树

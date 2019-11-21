@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit927a7ea59f5590e9e57c74d6ecc97142
+class ComposerStaticInitde704791b19bdb4a7631ea3b6593cd21
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -259,6 +259,7 @@ class ComposerStaticInit927a7ea59f5590e9e57c74d6ecc97142
         'think\\admin\\service\\MenuService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/MenuService.php',
         'think\\admin\\service\\NodeService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/NodeService.php',
         'think\\admin\\service\\ProcessService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/ProcessService.php',
+        'think\\admin\\service\\SystemService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/SystemService.php',
         'think\\admin\\service\\TokenService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/TokenService.php',
         'think\\admin\\storage\\LocalStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/LocalStorage.php',
         'think\\admin\\storage\\QiniuStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/QiniuStorage.php',
@@ -470,9 +471,9 @@ class ComposerStaticInit927a7ea59f5590e9e57c74d6ecc97142
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit927a7ea59f5590e9e57c74d6ecc97142::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit927a7ea59f5590e9e57c74d6ecc97142::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit927a7ea59f5590e9e57c74d6ecc97142::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitde704791b19bdb4a7631ea3b6593cd21::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitde704791b19bdb4a7631ea3b6593cd21::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitde704791b19bdb4a7631ea3b6593cd21::$classMap;
 
         }, null, ClassLoader::class);
     }

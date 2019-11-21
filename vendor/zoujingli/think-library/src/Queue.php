@@ -153,9 +153,8 @@ class Queue
         if (empty($rscript) && $this->app->db->name('SystemQueue')->where($map)->count() > 0) {
             throw new \think\Exception('该任务已经创建，请耐心等待处理完成！');
         }
-        $this->code = CodeExtend::uniqidDate(16);
         $this->app->db->name('SystemQueue')->failException(true)->insert([
-            'code'       => $this->code,
+            'code'       => $this->code = CodeExtend::uniqidDate(16),
             'title'      => $title,
             'command'    => $command,
             'attempts'   => '0',

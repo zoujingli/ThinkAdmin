@@ -92,11 +92,10 @@ class Install extends Command
 
     protected function installFile()
     {
-        $service = InstallService::instance();
-        $data = $service->grenerateDifference($this->rules, $this->ignore);
+        $data = InstallService::instance()->grenerateDifference($this->rules, $this->ignore);
         if (empty($data)) $this->output->info('文件比对一致不需更新文件！');
         else foreach ($data as $file) {
-            list($state, $mode, $name) = $service->fileSynchronization($file);
+            list($state, $mode, $name) = InstallService::instance()->fileSynchronization($file);
             if ($state) {
                 if ($mode === 'add') $this->output->info("--- 下载 {$name} 添加成功");
                 if ($mode === 'mod') $this->output->info("--- 下载 {$name} 更新成功");

@@ -75,9 +75,9 @@ class PageHelper extends Helper
             $sort = intval(isset($post['sort']) ? $post['sort'] : 0);
             unset($post['action'], $post['sort']);
             if ($this->app->db->table($this->query->getTable())->where($post)->update(['sort' => $sort]) !== false) {
-                return $this->class->success('排序参数修改成功！', '');
+                return $this->controller->success('排序参数修改成功！', '');
             }
-            return $this->class->error('排序参数修改失败，请稍候再试！');
+            return $this->controller->error('排序参数修改失败，请稍候再试！');
         }
         // 未配置 order 规则时自动按 sort 字段排序
         if (!$this->query->getOptions('order') && method_exists($this->query, 'getTableFields')) {
@@ -98,13 +98,13 @@ class PageHelper extends Helper
             }
             $select = "<select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>" . join('', $options) . "</select>";
             $html = "<div class='pagination-container nowrap'><span>共 {$paginate->total()} 条记录，每页显示 {$select} 条，共 {$paginate->lastPage()} 页当前显示第 {$paginate->currentPage()} 页。</span>{$paginate->render()}</div>";
-            $this->class->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $html));
+            $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $html));
             $result = ['page' => ['limit' => intval($limit), 'total' => intval($paginate->total()), 'pages' => intval($paginate->lastPage()), 'current' => intval($paginate->currentPage())], 'list' => $paginate->items()];
         } else {
             $result = ['list' => $this->query->select()->toArray()];
         }
-        if (false !== $this->class->callback('_page_filter', $result['list']) && $this->display) {
-            return $this->class->fetch('', $result);
+        if (false !== $this->controller->callback('_page_filter', $result['list']) && $this->display) {
+            return $this->controller->fetch('', $result);
         }
         return $result;
     }

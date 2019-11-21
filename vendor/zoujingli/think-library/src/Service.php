@@ -32,12 +32,6 @@ abstract class Service
     protected $app;
 
     /**
-     * 实例缓存
-     * @var $this
-     */
-    protected static $cache = [];
-
-    /**
      * Service constructor.
      * @param App $app
      */

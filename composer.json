@@ -38,11 +38,5 @@
       "@php think service:discover",
       "@php think vendor:publish"
     ]
-  },
-  "repositories": {
-    "packagist": {
-      "type": "composer",
-      "url": "https://mirrors.aliyun.com/composer"
-    }
   }
 }

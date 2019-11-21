@@ -70,7 +70,6 @@ class Controller extends \stdClass
         $this->app = $app;
         $this->request = $app->request;
         $this->app->bind('think\admin\Controller', $this);
-        TokenHelper::instance();
         if (in_array($this->app->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
         }
@@ -151,9 +150,7 @@ class Controller extends \stdClass
             $this->$name = $value;
         } elseif (is_array($name)) {
             foreach ($name as $k => $v) {
-                if (is_string($k)) {
-                    $this->$k = $v;
-                }
+                if (is_string($k)) $this->$k = $v;
             }
         }
         return $this;

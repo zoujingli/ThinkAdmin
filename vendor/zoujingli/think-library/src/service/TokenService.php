@@ -42,7 +42,7 @@ class TokenService extends Service
     public function checkFormToken($token = null, $node = null)
     {
         if (is_null($token)) $token = $this->getInputToken();
-        if (is_null($node)) $node = NodeService::instance($this->app)->getCurrent();
+        if (is_null($node)) $node = NodeService::instance()->getCurrent();
         // 读取缓存并检查是否有效
         $cache = $this->app->session->get($token, []);
         if (empty($cache['node']) || empty($cache['time']) || empty($cache['token'])) return false;
@@ -75,7 +75,7 @@ class TokenService extends Service
                 if ($item['time'] + 600 < $time) $this->clearFormToken($key);
             }
         }
-        $data = ['node' => NodeService::instance($this->app)->fullnode($node), 'token' => $token, 'time' => $time];
+        $data = ['node' => NodeService::instance()->fullnode($node), 'token' => $token, 'time' => $time];
         $this->app->session->set($token, $data);
         return $data;
     }

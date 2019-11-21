@@ -71,20 +71,20 @@ class SaveHelper extends Helper
             if (isset($this->data)) unset($this->data[$this->pkField]);
         }
         // 前置回调处理
-        if (false === $this->class->callback('_save_filter', $this->query, $this->data)) {
+        if (false === $this->controller->callback('_save_filter', $this->query, $this->data)) {
             return false;
         }
         // 执行更新操作
         $result = $this->query->where($this->where)->update($this->data) !== false;
         // 结果回调处理
-        if (false === $this->class->callback('_save_result', $result)) {
+        if (false === $this->controller->callback('_save_result', $result)) {
             return $result;
         }
         // 回复前端结果
         if ($result !== false) {
-            $this->class->success('数据更新成功!', '');
+            $this->controller->success('数据更新成功!', '');
         } else {
-            $this->class->error('数据更新失败, 请稍候再试!');
+            $this->controller->error('数据更新失败, 请稍候再试!');
         }
     }
 

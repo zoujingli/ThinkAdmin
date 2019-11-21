@@ -15,7 +15,6 @@
 
 namespace think\admin\helper;
 
-use think\admin\extend\DataExtend;
 use think\admin\Helper;
 use think\db\Query;
 
@@ -81,19 +80,19 @@ class FormHelper extends Helper
                 $data = (array)$this->query->where($where)->where($this->where)->find();
             }
             $data = array_merge($data, $this->data);
-            if (false !== $this->class->callback('_form_filter', $data)) {
-                return $this->class->fetch($this->template, ['vo' => $data]);
+            if (false !== $this->controller->callback('_form_filter', $data)) {
+                return $this->controller->fetch($this->template, ['vo' => $data]);
             }
             return $data;
         }
         // POST请求, 数据自动存库处理
         if ($this->app->request->isPost()) {
             $data = array_merge($this->app->request->post(), $this->data);
-            if (false !== $this->class->callback('_form_filter', $data, $this->where)) {
-                $result = DataExtend::save($this->query, $data, $this->pkField, $this->where);
-                if (false !== $this->class->callback('_form_result', $result, $data)) {
-                    if ($result !== false) $this->class->success('恭喜, 数据保存成功!', '');
-                    $this->class->error('数据保存失败, 请稍候再试!');
+            if (false !== $this->controller->callback('_form_filter', $data, $this->where)) {
+                $result = data_save($this->query, $data, $this->pkField, $this->where);
+                if (false !== $this->controller->callback('_form_result', $result, $data)) {
+                    if ($result !== false) $this->controller->success('恭喜, 数据保存成功!', '');
+                    $this->controller->error('数据保存失败, 请稍候再试!');
                 }
                 return $result;
             }

@@ -92,8 +92,7 @@ class QiniuStorage extends Storage
      */
     public function get($name, $safe = false)
     {
-        $time = time();
-        $url = $this->url($name, $safe) . "?e={$time}";
+        $url = $this->url($name, $safe) . "?e=" . time();
         $token = "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', $url, $this->secretKey, true))}";
         return file_get_contents("{$url}&token={$token}");
     }

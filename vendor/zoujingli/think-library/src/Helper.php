@@ -33,16 +33,16 @@ abstract class Helper
     public $app;
 
     /**
-     * 当前控制器实例
-     * @var Controller
-     */
-    public $class;
-
-    /**
      * 数据库实例
      * @var Query
      */
     protected $query;
+
+    /**
+     * 当前控制器实例
+     * @var Controller
+     */
+    public $controller;
 
     /**
      * Helper constructor.
@@ -52,11 +52,11 @@ abstract class Helper
     public function __construct(Controller $controller, App $app)
     {
         $this->app = $app;
-        $this->class = $controller;
+        $this->controller = $controller;
     }
 
     /**
-     * 获取数据库查询对象
+     * 获取数据库对象
      * @param string|Query $dbQuery
      * @return Query
      */

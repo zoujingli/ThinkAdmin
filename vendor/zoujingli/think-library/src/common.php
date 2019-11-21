@@ -13,9 +13,9 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-use think\admin\extend\DataExtend;
 use think\admin\extend\HttpExtend;
 use think\admin\service\AuthService;
+use think\admin\service\SystemService;
 use think\admin\service\TokenService;
 use think\db\Query;
 
@@ -47,6 +47,26 @@ if (!function_exists('auth')) {
     }
 }
 
+if (!function_exists('sysconf')) {
+    /**
+     * 获取或配置系统参数
+     * @param string $name 参数名称
+     * @param string $value 参数内容
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    function sysconf($name = '', $value = null)
+    {
+        if (is_null($value) && is_string($name)) {
+            return SystemService::instance()->get($name);
+        } else {
+            return SystemService::instance()->set($name, $value);
+        }
+    }
+}
+
 if (!function_exists('systoken')) {
     /**
      * 生成 CSRF-TOKEN 参数
@@ -60,63 +80,33 @@ if (!function_exists('systoken')) {
     }
 }
 
-if (!function_exists('format_datetime')) {
+if (!function_exists('encode')) {
     /**
-     * 日期格式标准输出
-     * @param string $datetime 输入日期
-     * @param string $format 输出格式
-     * @return false|string
+     * 加密 UTF8 字符串
+     * @param string $content
+     * @return string
      */
-    function format_datetime($datetime, $format = 'Y年m月d日 H:i:s')
+    function encode($content)
     {
-        if (empty($datetime)) return '-';
-        if (is_numeric($datetime)) {
-            return date($format, $datetime);
-        } else {
-            return date($format, strtotime($datetime));
-        }
+        list($chars, $length) = ['', strlen($string = iconv('UTF-8', 'GBK//TRANSLIT', $content))];
+        for ($i = 0; $i < $length; $i++) $chars .= str_pad(base_convert(ord($string[$i]), 10, 36), 2, 0, 0);
+        return $chars;
     }
 }
 
-if (!function_exists('sysconf')) {
+if (!function_exists('decode')) {
     /**
-     * 设备或配置系统参数
-     * @param string $name 参数名称
-     * @param string $value 参数内容
-     * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * 解密 UTF8 字符串
+     * @param string $content
+     * @return string
      */
-    function sysconf($name = '', $value = null)
+    function decode($content)
     {
-        $type = 'base';
-        static $data = [];
-        if (stripos($name, '.') !== false) {
-            list($type, $name) = explode('.', $name);
+        $chars = '';
+        foreach (str_split($content, 2) as $char) {
+            $chars .= chr(intval(base_convert($char, 36, 10)));
         }
-        list($field, $filter) = explode('|', "{$name}|");
-        if (!empty($field) && !empty($value)) {
-            if (is_array($value)) {
-                foreach ($value as $k => $v) sysconf("{$field}.{$k}", $v);
-            } else {
-                list($row, $data) = [['name' => $field, 'value' => $value, 'type' => $type], []];
-                return DataExtend::save('SystemConfig', $row, 'name', ['type' => $type]);
-            }
-        } else {
-            if (empty($data)) foreach (app()->db->name('SystemConfig')->select()->toArray() as $vo) {
-                $data[$vo['type']][$vo['name']] = $vo['value'];
-            }
-            if (empty($name)) {
-                return empty($data[$type]) ? [] : (strtolower($filter) === 'raw' ? $data[$type] : array_map(function ($value) {
-                    return htmlspecialchars($value);
-                }, $data[$type]));
-            } else {
-                if (isset($data[$type]) && isset($data[$type][$field])) {
-                    return strtolower($filter) === 'raw' ? $data[$type][$field] : htmlspecialchars($data[$type][$field]);
-                } else return '';
-            }
-        }
+        return iconv('GBK//TRANSLIT', 'UTF-8', $chars);
     }
 }
 
@@ -162,36 +152,24 @@ if (!function_exists('data_save')) {
      */
     function data_save($dbQuery, $data, $key = 'id', $where = [])
     {
-        return DataExtend::save($dbQuery, $data, $key, $where);
+        return SystemService::instance()->save($dbQuery, $data, $key, $where);
     }
 }
 
-if (!function_exists('encode')) {
+if (!function_exists('format_datetime')) {
     /**
-     * 加密 UTF8 字符串
-     * @param string $content
-     * @return string
+     * 日期格式标准输出
+     * @param string $datetime 输入日期
+     * @param string $format 输出格式
+     * @return false|string
      */
-    function encode($content)
+    function format_datetime($datetime, $format = 'Y年m月d日 H:i:s')
     {
-        list($chars, $length) = ['', strlen($string = iconv('UTF-8', 'GBK//TRANSLIT', $content))];
-        for ($i = 0; $i < $length; $i++) $chars .= str_pad(base_convert(ord($string[$i]), 10, 36), 2, 0, 0);
-        return $chars;
-    }
-}
-
-if (!function_exists('decode')) {
-    /**
-     * 解密 UTF8 字符串
-     * @param string $content
-     * @return string
-     */
-    function decode($content)
-    {
-        $chars = '';
-        foreach (str_split($content, 2) as $char) {
-            $chars .= chr(intval(base_convert($char, 36, 10)));
+        if (empty($datetime)) return '-';
+        if (is_numeric($datetime)) {
+            return date($format, $datetime);
+        } else {
+            return date($format, strtotime($datetime));
         }
-        return iconv('GBK//TRANSLIT', 'UTF-8', $chars);
     }
 }
