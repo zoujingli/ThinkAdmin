@@ -78,12 +78,11 @@ class Install extends Command
         if (empty($this->name)) {
             $this->output->error('在线安装的模块名称不能为空！');
         } else {
-
             if (isset($this->bind[$this->name])) {
                 $this->rules = empty($this->bind[$this->name]['rules']) ? [] : $this->bind[$this->name]['rules'];
                 $this->ignore = empty($this->bind[$this->name]['ignore']) ? [] : $this->bind[$this->name]['ignore'];
                 $this->installFile();
-                $this->installDatabase();
+                $this->installData();
             } else {
                 $this->output->error("指定模块 {$this->name} 未配置安装规则！");
             }
@@ -108,7 +107,7 @@ class Install extends Command
         }
     }
 
-    protected function installDatabase()
+    protected function installData()
     {
 
     }

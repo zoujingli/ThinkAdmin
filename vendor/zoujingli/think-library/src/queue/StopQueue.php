@@ -49,7 +49,7 @@ class StopQueue extends Command
             $output->writeln("没有需要结束的任务进程哦！");
         } else foreach ($result as $item) {
             $process->close($item['pid']);
-            $output->writeln("发送结束任务进程{$item['pid']}指令成功！");
+            $output->writeln("发送结束进程{$item['pid']}信号成功！");
         }
     }
 }

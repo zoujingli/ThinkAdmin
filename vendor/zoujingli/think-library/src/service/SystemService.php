@@ -121,4 +121,59 @@ class SystemService extends Service
         return [$type, $field, strtolower($outer)];
     }
 
+    /**
+     * 保存数据内容
+     * @param string $name
+     * @param array $value
+     * @return boolean
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function setData($name, $value)
+    {
+        $data = ['name' => $name, 'value' => json_encode($value, 256)];
+        return $this->save('SystemData', $data, 'name');
+    }
+
+    /**
+     * 读取数据内容
+     * @param string $name
+     * @return mixed
+     */
+    public function getData($name)
+    {
+        $value = $this->app->db->name('SystemData')->where(['name' => $name])->value('value');
+        return empty($value) ? '' : json_encode($value, true);
+    }
+
+    /**
+     * 写入系统日志
+     * @param string $action
+     * @param string $content
+     * @return integer
+     */
+    public function setOplog($action, $content)
+    {
+        return $this->app->db->name('SystemOplog')->insert([
+            'node'     => NodeService::instance()->getCurrent(),
+            'action'   => $action, 'content' => $content,
+            'geoip'    => $this->app->request->isCli() ? '127.0.0.1' : $this->app->request->ip(),
+            'username' => $this->app->request->isCli() ? 'cli' : $this->app->session->get('user.username', ''),
+        ]);
+    }
+
+    /**
+     * 打印输出数据到文件
+     * @param mixed $data 输出的数据
+     * @param boolean $new 强制替换文件
+     * @param string|null $file 文件名称
+     */
+    public function putDebug($data, $new = false, $file = null)
+    {
+        if (is_null($file)) $file = $this->app->getRuntimePath() . date('Ymd') . '.txt';
+        $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true)) . PHP_EOL;
+        $new ? file_put_contents($file, $str) : file_put_contents($file, $str, FILE_APPEND);
+    }
+
 }

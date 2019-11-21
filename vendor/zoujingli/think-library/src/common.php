@@ -23,14 +23,12 @@ if (!function_exists('p')) {
     /**
      * 打印输出数据到文件
      * @param mixed $data 输出的数据
-     * @param boolean $replace 强制替换
-     * @param string|null $file 文件名称
+     * @param boolean $new 强制替换文件
+     * @param string $file 保存文件名称
      */
-    function p($data, $replace = false, $file = null)
+    function p($data, $new = false, $file = null)
     {
-        if (is_null($file)) $file = app()->getRuntimePath() . date('Ymd') . '.txt';
-        $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true)) . PHP_EOL;
-        $replace ? file_put_contents($file, $str) : file_put_contents($file, $str, FILE_APPEND);
+        SystemService::instance()->putDebug($data, $new, $file);
     }
 }
 
@@ -64,6 +62,40 @@ if (!function_exists('sysconf')) {
         } else {
             return SystemService::instance()->set($name, $value);
         }
+    }
+}
+
+
+if (!function_exists('sysdata')) {
+    /**
+     * JSON 数据读取与存储
+     * @param string $name 数据名称
+     * @param mixed $value 数据内容
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    function sysdata($name, $value = null)
+    {
+        if (is_null($value)) {
+            return SystemService::instance()->get($name);
+        } else {
+            return SystemService::instance()->set($name, $value);
+        }
+    }
+}
+
+if (!function_exists('sysoplog')) {
+    /**
+     * 写入系统日志
+     * @param string $action 日志行为
+     * @param string $content 日志内容
+     * @return boolean
+     */
+    function sysoplog($action, $content)
+    {
+        return SystemService::instance()->setOplog($action, $content);
     }
 }
 
