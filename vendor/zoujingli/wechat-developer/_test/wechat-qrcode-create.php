@@ -21,7 +21,9 @@ try {
     $config = include "./config.php";
 
     // 3. 创建接口实例
-    $wechat = new \WeChat\Qrcode($config);
+    // $wechat = \We::WeChatQrcode($config);
+    // $wechat = new \WeChat\Qrcode($config);
+    $wechat = \WeChat\Qrcode::instance($config);
 
     // 4. 获取用户列表
     $result = $wechat->create('场景内容');

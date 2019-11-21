@@ -10,13 +10,13 @@ $config = [
 
 //We::config($config);
 
-$mini = We::WeMiniQrcode($config);
-
-//$mini = new WeMini\Qrcode($config);
+// $mini = We::WeMiniQrcode($config);
+// $mini = new WeMini\Qrcode($config);
+$mini = \WeMini\Qrcode::instance($config);
 
 //echo '<pre>';
 try {
-    header('Content-type:image/jpeg');//输出的类型
+    header('Content-type:image/jpeg'); //输出的类型
 //    echo $mini->createDefault('pages/index?query=1');
 //    echo $mini->createMiniScene('432432', 'pages/index/index');
     echo $mini->createMiniPath('pages/index?query=1');

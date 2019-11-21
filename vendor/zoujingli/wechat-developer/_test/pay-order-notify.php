@@ -21,7 +21,9 @@ try {
     $config = include "./config.php";
 
     // 3. 创建接口实例
-    $wechat = new \WeChat\Pay($config);
+    // $wechat = new \WeChat\Pay($config);
+    // $wechat = \We::WeChatPay($config);
+    $wechat = \WeChat\Pay::instance($config);
 
     // 4. 获取通知参数
     $data = $wechat->getNotify();

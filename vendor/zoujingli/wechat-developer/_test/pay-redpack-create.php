@@ -21,7 +21,9 @@ try {
     $config = include "./config.php";
 
     // 3. 创建接口实例
-    $wechat = new \WePay\Redpack($config);
+    // $wechat = new \WePay\Redpack($config);
+    // $wechat = \We::WePayRedpack($config);
+    $wechat = \WePay\Redpack::instance($config);
 
     // 4. 组装参数，可以参考官方商户文档
     $options = [
