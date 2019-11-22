@@ -130,7 +130,7 @@ abstract class Storage
     {
         $mimes = self::mimes();
         foreach (is_string($exts) ? explode(',', $exts) : $exts as $e) {
-            $mime[] = isset($mimes[strtolower($e)]) ? $mimes[strtolower($e)] : '';
+            $mime[] = isset($mimes[strtolower($e)]) ? $mimes[strtolower($e)] : 'application/octet-stream';
         }
         return join(',', array_unique($mime));
     }
