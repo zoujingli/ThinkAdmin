@@ -54,6 +54,7 @@ class ProcessService extends Service
     {
         if ($this->iswin()) {
             $command = __DIR__ . "/bin/console.exe {$command}";
+            echo $command."<br>";
             pclose(popen("wmic process call create \"{$command}\"", 'r'));
         } else {
             pclose(popen("{$command} &", 'r'));
