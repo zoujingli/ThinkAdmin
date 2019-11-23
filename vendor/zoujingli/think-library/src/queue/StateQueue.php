@@ -21,7 +21,7 @@ use think\console\Input;
 use think\console\Output;
 
 /**
- * 查看异步任务监听的主进程状态
+ * 查看任务监听的主进程状态
  * Class StateQueue
  * @package think\admin\queue
  */

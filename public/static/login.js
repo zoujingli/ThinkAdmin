@@ -18,8 +18,7 @@ $(function () {
         that = this;
         require(["md5"], function (md5) {
             $("form").vali(function (data) {
-                data['password'] = md5.hash(md5.hash(data['password']) + data['username']);
-                if (data['skey']) delete data['skey'];
+                data['password'] = md5.hash(md5.hash(data['password']) + data['uniqid']);
                 $.form.load(location.href, data, "post", function (ret) {
                     if (parseInt(ret.code) !== 1) {
                         $(that).find('.verify.layui-hide').removeClass('layui-hide');

@@ -997,4 +997,5 @@ return [
     'movie'       => 'video/x-sgi-movie',
     'smv'         => 'video/x-smv',
     'ice'         => 'x-conference/x-cooltalk',
+    'pem'         => 'application/x-pem-file',
 ];

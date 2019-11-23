@@ -37,9 +37,7 @@ abstract class Service
      */
     public function __construct(App $app)
     {
-
         $this->app = $app;
-        $this->initialize();
     }
 
     /**
@@ -55,6 +53,8 @@ abstract class Service
      */
     public static function instance()
     {
-        return Container::getInstance()->make(static::class);
+        $service = Container::getInstance()->make(static::class);
+        $service->initialize();
+        return $service;
     }
 }

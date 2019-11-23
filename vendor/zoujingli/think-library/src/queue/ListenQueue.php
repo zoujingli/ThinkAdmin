@@ -21,7 +21,7 @@ use think\console\Input;
 use think\console\Output;
 
 /**
- * 启动监听异步任务守护的主进程
+ * 启动监听任务的主进程
  * Class ListenQueue
  * @package think\admin\queue
  */

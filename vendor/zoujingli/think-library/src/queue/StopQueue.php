@@ -21,7 +21,7 @@ use think\console\Input;
 use think\console\Output;
 
 /**
- * 平滑停止异步任务守护的主进程
+ * 平滑停止任务的所有进程
  * Class StopQueue
  * @package think\admin\queue
  */

@@ -176,4 +176,20 @@ class SystemService extends Service
         $new ? file_put_contents($file, $str) : file_put_contents($file, $str, FILE_APPEND);
     }
 
+    /**
+     * 判断运行环境
+     * @param string $type 运行模式（dev|demo|local）
+     * @return boolean
+     */
+    public function checkRunMode($type = 'dev')
+    {
+        $domain = $this->app->request->host(true);
+        $isDemo = is_numeric(stripos($domain, 'thinkadmin.top'));
+        $isLocal = in_array($domain, ['127.0.0.1', 'localhost']);
+        if ($type === 'dev') return $isLocal || $isDemo;
+        if ($type === 'demo') return $isDemo;
+        if ($type === 'local') return $isLocal;
+        return true;
+    }
+
 }

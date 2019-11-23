@@ -21,7 +21,7 @@ use think\console\Input;
 use think\console\Output;
 
 /**
- * 查询正在执行中的进程PID信息
+ * 查询正在执行的进程PID
  * Class QueryQueue
  * @package think\admin\queue
  */

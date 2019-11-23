@@ -70,7 +70,7 @@ class Controller extends \stdClass
         $this->app = $app;
         $this->request = $app->request;
         $this->app->bind('think\admin\Controller', $this);
-        if (in_array($this->app->request->action(), get_class_methods(__CLASS__))) {
+        if (in_array($this->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
         }
         $this->initialize();
@@ -216,6 +216,37 @@ class Controller extends \stdClass
     protected function _form($dbQuery, $template = '', $field = '', $where = [], $data = [])
     {
         return FormHelper::instance()->init($dbQuery, $template, $field, $where, $data);
+    }
+
+    /**
+     * 快捷输入并验证（ 支持 规则 # 别名 ）
+     * @param array $rules 验证规则（ 验证信息数组 ）
+     * @param string $type 输入方式 ( post. 或 get. )
+     * @return array
+     */
+    protected function _vali(array $rules, $type = '')
+    {
+        list($data, $rule, $info) = [[], [], []];
+        foreach ($rules as $name => $message) {
+            if (stripos($name, '#') !== false) {
+                list($name, $alias) = explode('#', $name);
+            }
+            if (stripos($name, '.') === false) {
+                $data[$name] = empty($alias) ? $name : $alias;
+            } else {
+                list($_rgx) = explode(':', $name);
+                list($_key, $_rule) = explode('.', $name);
+                $info[$_rgx] = $message;
+                $data[$_key] = empty($alias) ? $_key : $alias;
+                $rule[$_key] = empty($rule[$_key]) ? $_rule : "{$rule[$_key]}|{$_rule}";
+            }
+        }
+        foreach ($data as $key => $name) $data[$key] = input("{$type}{$name}");
+        if ($this->app->validate->rule($rule)->message($info)->check($data)) {
+            return $data;
+        } else {
+            $this->error($this->app->validate->getError());
+        }
     }
 
     /**
