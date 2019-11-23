@@ -146,7 +146,11 @@ class CaptchaService extends Service
         $_x = $this->width / $this->codelen;
         for ($i = 0; $i < $this->codelen; $i++) {
             $this->fontcolor = imagecolorallocate($this->img, mt_rand(0, 156), mt_rand(0, 156), mt_rand(0, 156));
-            imagettftext($this->img, $this->fontsize, mt_rand(-30, 30), $_x * $i + mt_rand(1, 5), $this->height / 1.4, $this->fontcolor, $this->font, $this->code[$i]);
+            if (function_exists('imagettftext')) {
+                imagettftext($this->img, $this->fontsize, mt_rand(-30, 30), $_x * $i + mt_rand(1, 5), $this->height / 1.4, $this->fontcolor, $this->font, $this->code[$i]);
+            } else {
+                imagestring($this->img, 15, $_x * $i + mt_rand(10, 15), mt_rand(10, 30), $this->code[$i], $this->fontcolor);
+            }
         }
         ob_start();
         imagepng($this->img);
