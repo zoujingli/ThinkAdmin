@@ -52,9 +52,9 @@ class Queue extends Controller
         }
         $this->title = '系统任务管理';
         $this->iswin = ProcessService::instance()->iswin();
-        $query = $this->_query($this->table)->dateBetween('create_at');
-        $query->timeBetween('enter_time,outer_time')->like('title,command');
-        $query->equal('status')->order('id desc')->page();
+        // 任务列表查询分页处理
+        $query = $this->_query($this->table)->dateBetween('create_at')->timeBetween('enter_time,outer_time');
+        $query->like('title,command')->equal('status')->order('id desc')->page();
     }
 
     /**
