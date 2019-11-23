@@ -13,8 +13,11 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-/* 演示环境禁止操作路由绑定 */
-if (stripos(app()->request->rootDomain(), 'thinkadmin.top') !== false) {
+
+use think\admin\service\SystemService;
+
+// 演示环境禁止操作路由绑定
+if (SystemService::instance()->checkRunMode('demo')) {
     app()->route->post('index/pass', function () {
         return json(['code' => 0, 'info' => '演示环境禁止修改用户密码！']);
     });
