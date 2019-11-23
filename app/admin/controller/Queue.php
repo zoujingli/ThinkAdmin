@@ -84,7 +84,7 @@ class Queue extends Controller
     {
         try {
             $message = nl2br($this->app->console->call('xtask:start')->fetch());
-            stripos($message, '成功') !== false ? $this->success($message) : $this->error($message);
+            preg_match('/主进程\d+/', $message, $attr) ? $this->success($message) : $this->error($message);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
