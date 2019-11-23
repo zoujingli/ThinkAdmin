@@ -32,7 +32,11 @@ class Library extends Service
      */
     public function register()
     {
-        if (PHP_SAPI !== 'cli') {
+        if ($this->app->request->isCli()) {
+            if (empty($_SERVER['REQUEST_URI']) && isset($_SERVER['argv'][1])) {
+                $this->app->request->setPathinfo($_SERVER['argv'][1]);
+            }
+        } else {
             // 注册会话中间键
             $this->app->middleware->add(SessionInit::class);
             // 注册访问中间键
