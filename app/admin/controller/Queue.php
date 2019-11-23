@@ -58,16 +58,6 @@ class Queue extends Controller
     }
 
     /**
-     * 删除系统任务
-     * @auth true
-     * @throws \think\db\exception\DbException
-     */
-    public function remove()
-    {
-        $this->_delete($this->table);
-    }
-
-    /**
      * 重启系统任务
      * @auth true
      * @throws \think\db\exception\DbException
@@ -116,6 +106,16 @@ class Queue extends Controller
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
+    }
+
+    /**
+     * 删除系统任务
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function remove()
+    {
+        $this->_delete($this->table);
     }
 
 }
