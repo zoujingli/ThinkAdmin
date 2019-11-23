@@ -7,7 +7,11 @@
         <span class="layui-badge layui-bg-blue notselect margin-left-5">popen</span>
         <span class="layui-badge layui-bg-blue notselect margin-left-5">shell_exe</span>
         <h4 class="color-desc margin-top-10">当前消息队列守护进程运行状态</h4>
-        <span class="layui-badge layui-bg-blue">{$message|raw|default='--'}</span>
+        {if $listen}
+        <span class="layui-badge layui-bg-green">{$message|raw|default='--'}</span>
+        {else}
+        <span class="layui-badge layui-bg-red">{$message|raw|default='--'}</span>
+        {/if}
         <h4 class="color-desc margin-top-10">配置定时任务来检查并启动进程（建议每分钟执行）</h4>
         <span class="layui-badge layui-bg-blue">{$command|default='--'}</span>
     </div>
