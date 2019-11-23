@@ -11,7 +11,7 @@
 {/if}
 
 {if auth("stop") && $iswin}
-<button data-load='{:url("stop")}' class='layui-btn layui-btn-sm layui-btn-primary'>停止监听</button>
+<button data-load='{:url("stop")}' data-confirm="确定要停止主进程监听吗？" class='layui-btn layui-btn-sm layui-btn-primary'>停止监听</button>
 {/if}
 
 {/block}
