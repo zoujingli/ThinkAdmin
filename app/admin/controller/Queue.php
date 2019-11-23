@@ -51,7 +51,7 @@ class Queue extends Controller
             }
         }
         $this->title = '系统任务管理';
-        $this->iswin = PATH_SEPARATOR === ';';
+        $this->iswin = ProcessService::instance()->iswin();
         $query = $this->_query($this->table)->dateBetween('create_at');
         $query->timeBetween('enter_time,outer_time')->like('title,command');
         $query->equal('status')->order('id desc')->page();

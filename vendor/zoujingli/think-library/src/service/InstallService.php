@@ -57,8 +57,9 @@ class InstallService extends Service
 
     /**
      * 服务初始化
+     * @return static
      */
-    protected function initialize()
+    public function initialize(): Service
     {
         // 应用框架版本
         $this->version = $this->app->config->get('app.thinkadmin_ver');
@@ -67,6 +68,7 @@ class InstallService extends Service
         $this->uri = "https://{$this->version}.thinkadmin.top";
         // 当前应用根目录
         $this->path = strtr($this->app->getRootPath(), '\\', '/');
+        return $this;
     }
 
     /**

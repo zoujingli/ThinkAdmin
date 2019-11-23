@@ -31,7 +31,7 @@ use think\Exception;
  * @method string path($name, $safe = false) static 文件存储路径
  * @method boolean del($name, $safe = false) static 删除存储文件
  * @method boolean has($name, $safe = false) static 检查文件是否存在
- * @method string set($name, $content, $safe = false) static 文件储存
+ * @method string set($name, $file, $safe = false) static 文件储存
  * @method string upload() static 上传目录地址
  */
 abstract class Storage
@@ -55,14 +55,15 @@ abstract class Storage
     public function __construct(App $app)
     {
         $this->app = $app;
-        $this->initialize();
     }
 
     /**
      * 存储初始化
+     * @return Storage
      */
-    protected function initialize()
+    protected function initialize(): Storage
     {
+        return $this;
     }
 
     /**
@@ -87,17 +88,17 @@ abstract class Storage
     /**
      * 设置文件驱动名称
      * @param string $name 驱动名称
-     * @return LocalStorage|QiniuStorage|static
+     * @return static
      * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function instance($name = null)
+    public static function instance($name = null): Storage
     {
         $class = ucfirst(strtolower(is_null($name) ? sysconf('storage.type') : $name));
         if (class_exists($object = "think\\admin\\storage\\{$class}Storage")) {
-            return Container::getInstance()->make($object);
+            return Container::getInstance()->make($object)->initialize();
         } else {
             throw new Exception("File driver [{$class}] does not exist.");
         }

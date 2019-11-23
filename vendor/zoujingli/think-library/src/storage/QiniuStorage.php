@@ -32,12 +32,13 @@ class QiniuStorage extends Storage
 
     /**
      * 存储引擎初始化
+     * @return QiniuStorage
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function initialize()
+    protected function initialize(): Storage
     {
         // 读取配置文件
         $this->bucket = sysconf('storage.qiniu_bucket');
@@ -50,12 +51,13 @@ class QiniuStorage extends Storage
         elseif ($type === 'http') $this->prefix = "http://{$this->domain}/";
         elseif ($type === 'https') $this->prefix = "https://{$this->domain}/";
         else throw new \think\Exception('未配置七牛云URL域名哦');
+        return $this;
     }
 
     /**
      * 上传文件内容
      * @param string $name 文件名称
-     * @param string $content 文件内容
+     * @param string $file 文件内容
      * @param boolean $safe 安全模式
      * @return array
      * @throws \think\Exception
@@ -63,7 +65,7 @@ class QiniuStorage extends Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function set($name, $content, $safe = false)
+    public function set($name, $file, $safe = false)
     {
         $token = $this->buildUploadToken($name);
         list($attrs, $frontier) = [[], uniqid()];
@@ -76,7 +78,7 @@ class QiniuStorage extends Storage
         $attrs[] = "--{$frontier}";
         $attrs[] = "Content-Disposition:form-data; name=\"file\"; filename=\"{$name}\"";
         $attrs[] = "";
-        $attrs[] = $content;
+        $attrs[] = $file;
         $attrs[] = "--{$frontier}--";
         return json_decode(HttpExtend::post($this->upload(), join("\r\n", $attrs), [
             'headers' => ["Content-type:multipart/form-data;boundary={$frontier}"],

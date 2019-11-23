@@ -38,8 +38,9 @@ class CaptchaService extends Service
     /**
      * 服务初始化
      * @param array $config
+     * @return static
      */
-    protected function initialize($config = [])
+    public function initialize($config = []): Service
     {
         // 动态配置属性
         foreach ($config as $k => $v) if (isset($this->$k)) $this->$k = $v;
@@ -54,6 +55,8 @@ class CaptchaService extends Service
         $this->font = __DIR__ . '/bin/font.ttf';
         // 缓存验证码字符串
         $this->app->cache->set($this->uniqid, $this->code, 360);
+        // 返回当前对象
+        return $this;
     }
 
     /**

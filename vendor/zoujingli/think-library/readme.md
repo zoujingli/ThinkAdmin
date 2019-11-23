@@ -59,22 +59,46 @@ class MyController extend \think\admin\Controller {
     
 }
 ```
+
+* 必要数据库表SQL（sysdata 函数需要用这个表）
+```sql
+CREATE TABLE `system_data` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL COMMENT '配置名',
+  `value` longtext COMMENT '配置值',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_system_data_name` (`name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统-数据';
+```
+
+* 必要数据库表SQl（sysoplog 函数需要用的这个表）
+```sql
+CREATE TABLE `system_oplog` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `node` varchar(200) NOT NULL DEFAULT '' COMMENT '当前操作节点',
+  `geoip` varchar(15) NOT NULL DEFAULT '' COMMENT '操作者IP地址',
+  `action` varchar(200) NOT NULL DEFAULT '' COMMENT '操作行为名称',
+  `content` varchar(1024) NOT NULL DEFAULT '' COMMENT '操作内容描述',
+  `username` varchar(50) NOT NULL DEFAULT '' COMMENT '操作人用户名',
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统-日志';
+```
 * 必要数据库表SQL（sysconf 函数需要用到这个表）
 ```sql
 CREATE TABLE `system_config` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(20) DEFAULT '' COMMENT '分类',
   `name` varchar(100) DEFAULT '' COMMENT '配置名',
   `value` varchar(500) DEFAULT '' COMMENT '配置值',
-  PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_system_config_type` (`type`),
   KEY `idx_system_config_name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COMMENT='系统-配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统-配置';
 ```
 * 系统任务列队支持需要的数据表
 ```sql
 CREATE TABLE `system_queue` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` varchar(20) DEFAULT '' COMMENT '任务编号',
   `title` varchar(50) NOT NULL DEFAULT '' COMMENT '任务名称',
   `command` varchar(500) DEFAULT '' COMMENT '执行指令',
   `exec_data` longtext COMMENT '执行参数',
@@ -87,6 +111,7 @@ CREATE TABLE `system_queue` (
   `status` tinyint(1) DEFAULT '1' COMMENT '任务状态(1新任务,2处理中,3成功,4失败)',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_system_queue_code` (`code`),
   KEY `idx_system_queue_title` (`title`) USING BTREE,
   KEY `idx_system_queue_status` (`status`) USING BTREE,
   KEY `idx_system_queue_rscript` (`rscript`) USING BTREE,

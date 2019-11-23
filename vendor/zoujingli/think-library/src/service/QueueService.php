@@ -13,24 +13,18 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace think\admin;
+namespace think\admin\service;
 
 use think\admin\extend\CodeExtend;
-use think\admin\service\ProcessService;
-use think\App;
+use think\admin\Service;
 
 /**
- * 基础任务基类
- * Class Queue
- * @package think\admin
+ * 任务基础服务
+ * Class QueueService
+ * @package think\admin\service
  */
-class Queue
+class QueueService extends Service
 {
-    /**
-     * 应用实例
-     * @var App
-     */
-    protected $app;
 
     /**
      * 当前任务编号
@@ -57,45 +51,15 @@ class Queue
     protected $queue = [];
 
     /**
-     * Queue constructor.
-     * @param App $app
-     * @param int $code
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function __construct(App $app, $code = 0)
-    {
-        $this->app = $app;
-        if ($code > 0) $this->init($code);
-    }
-
-    /**
-     * 静态获取实例
-     * @param App $app
-     * @param int $code
+     * 数据初始化
+     * @param integer $code
      * @return static
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function instance(App $app, $code = 0)
-    {
-        return new static($app, $code);
-    }
-
-    /**
-     * 数据初始化
-     * @param integer $code
-     * @return Queue
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function init($code = 0)
+    public function initialize($code = 0): Service
     {
         if ($code > 0) {
             $this->queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code])->find();
@@ -119,7 +83,7 @@ class Queue
     /**
      * 重发异步任务
      * @param integer $wait 等待时间
-     * @return Queue
+     * @return $this
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -131,7 +95,7 @@ class Queue
         $this->app->db->name('SystemQueue')->where(['code' => $this->code])->failException(true)->update([
             'exec_time' => time() + $wait, 'attempts' => $this->queue['attempts'] + 1, 'status' => '1',
         ]);
-        return $this->init($this->code);
+        return $this->initialize($this->code);
     }
 
     /**
@@ -141,7 +105,7 @@ class Queue
      * @param integer $later 延时执行时间
      * @param array $data 任务附加数据
      * @param integer $rscript 任务多开
-     * @return Queue
+     * @return $this
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -164,7 +128,7 @@ class Queue
             'enter_time' => '0',
             'outer_time' => '0',
         ]);
-        return $this->init($this->code);
+        return $this->initialize($this->code);
     }
 
     /**

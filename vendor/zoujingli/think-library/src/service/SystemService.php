@@ -36,7 +36,7 @@ class SystemService extends Service
      * 设置配置数据
      * @param string $name 配置名称
      * @param string $value 配置内容
-     * @return SystemService
+     * @return static
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

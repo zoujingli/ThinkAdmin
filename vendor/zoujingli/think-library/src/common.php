@@ -15,6 +15,7 @@
 
 use think\admin\extend\HttpExtend;
 use think\admin\service\AuthService;
+use think\admin\service\QueueService;
 use think\admin\service\SystemService;
 use think\admin\service\TokenService;
 use think\db\Query;
@@ -65,6 +66,25 @@ if (!function_exists('sysconf')) {
     }
 }
 
+if (!function_exists('sysqueue')) {
+    /**
+     * 注册异步处理任务
+     * @param string $title 任务名称
+     * @param string $command 执行内容
+     * @param integer $later 延时执行时间
+     * @param array $data 任务附加数据
+     * @param integer $rscript 任务多开
+     * @return QueueService
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    function sysqueue($title, $command, $later = 0, $data = [], $rscript = 1)
+    {
+        return QueueService::instance()->register($title, $command, $later, $data, $rscript);
+    }
+}
 
 if (!function_exists('sysdata')) {
     /**

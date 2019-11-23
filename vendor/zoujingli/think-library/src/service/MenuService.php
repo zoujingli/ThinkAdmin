@@ -27,22 +27,6 @@ class MenuService extends Service
 {
 
     /**
-     * 应用节点服务
-     * @var NodeService
-     */
-    protected $nodeService;
-
-    /**
-     * 服务初始化
-     * @return $this
-     */
-    protected function initialize()
-    {
-        $this->nodeService = NodeService::instance();
-        return $this;
-    }
-
-    /**
      * 获取可选菜单节点
      * @return array
      * @throws \ReflectionException
@@ -51,8 +35,8 @@ class MenuService extends Service
     {
         static $nodes = [];
         if (count($nodes) > 0) return $nodes;
-        foreach ($this->nodeService->getMethods() as $node => $method) if ($method['ismenu']) {
-            $nodes[] = ['node' => $node, 'title' => $method['title']];
+        foreach (NodeService::instance()->getMethods() as $node => $method) {
+            if ($method['ismenu']) $nodes[] = ['node' => $node, 'title' => $method['title']];
         }
         return $nodes;
     }
@@ -68,7 +52,7 @@ class MenuService extends Service
     public function getTree()
     {
         $result = $this->app->db->name('SystemMenu')->where(['status' => '1'])->order('sort desc,id asc')->select();
-        return $this->buildData(DataExtend::arr2tree($result->toArray()), $this->nodeService->getMethods());
+        return $this->buildData(DataExtend::arr2tree($result->toArray()), NodeService::instance()->getMethods());
     }
 
     /**

@@ -26,26 +26,28 @@ class LocalStorage extends Storage
 {
     /**
      * 存储引擎初始化
+     * @return LocalStorage
      */
-    protected function initialize()
+    protected function initialize(): Storage
     {
         $this->prefix = rtrim($this->app->getRootPath(), '\\/');
+        return $this;
     }
 
     /**
      * 文件储存在本地
      * @param string $name 文件名称
-     * @param string $content 文件内容
+     * @param string $file 文件内容
      * @param boolean $safe 安全模式
      * @return array|null
      * @throws \think\Exception
      */
-    public function set($name, $content, $safe = false)
+    public function set($name, $file, $safe = false)
     {
         try {
             $file = $this->path($name, $safe);
             file_exists(dirname($file)) || mkdir(dirname($file), 0755, true);
-            if (file_put_contents($file, $content)) return $this->info($name, $safe);
+            if (file_put_contents($file, $file)) return $this->info($name, $safe);
         } catch (\Exception $e) {
             throw new \think\Exception("本地文件存储失败，{$e->getMessage()}");
         }

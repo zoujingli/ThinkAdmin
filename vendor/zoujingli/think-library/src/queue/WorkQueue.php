@@ -15,12 +15,13 @@
 
 namespace think\admin\queue;
 
-use think\admin\Queue;
 use think\admin\service\ProcessService;
+use think\admin\service\QueueService;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
+use think\Exception;
 
 /**
  * 启动独立执行进程
@@ -62,20 +63,20 @@ class WorkQueue extends Command
     {
         try {
             $this->code = trim($input->getArgument('code'));
-            if (empty($this->code)) throw new \think\Exception("执行任务需要指定任务编号！");
+            if (empty($this->code)) throw new Exception("执行任务需要指定任务编号！");
             $queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code, 'status' => '2'])->find();
-            if (empty($queue)) throw new \think\Exception("执行任务{$this->code}的信息或状态异常！");;
+            if (empty($queue)) throw new Exception("执行任务{$this->code}的信息或状态异常！");;
             // 设置进程标题
             if (($process = ProcessService::instance())->iswin()) {
                 $this->setProcessTitle("ThinkAdmin {$process->version()} 执行任务 - {$queue['title']}");
             }
             // 执行任务内容
             if (class_exists($command = $queue['command'])) {
-                if ($command instanceof Queue) {
+                if ($command instanceof QueueService) {
                     $data = json_decode($queue['data'], true) ?: [];
-                    $this->update('3', $command::instance($this->app, $this->code)->execute($data));
+                    $this->update('3', $command::instance()->initialize($this->code)->execute($data));
                 } else {
-                    throw new \think\Exception("任务处理类 {$command} 未继承 think\\admin\\Queue");
+                    throw new Exception("任务处理类 {$command} 未继承 think\\admin\\service\\QueueService");
                 }
             } else {
                 $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $queue['command'])));

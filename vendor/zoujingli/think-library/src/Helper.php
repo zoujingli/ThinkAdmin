@@ -70,7 +70,7 @@ abstract class Helper
      * @param array $args 额外参数
      * @return static
      */
-    public static function instance(array $args = [])
+    public static function instance(array $args = []): Helper
     {
         return Container::getInstance()->invokeClass(static::class, $args);
     }
