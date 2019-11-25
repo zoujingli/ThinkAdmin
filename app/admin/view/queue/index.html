@@ -25,7 +25,7 @@
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='text-left nowrap'>任务信息</th>
             <th class='text-left nowrap'>任务时间</th>
@@ -37,7 +37,7 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td class='text-left nowrap'>
                 任务名称：{$vo.title|default=''}<br>
