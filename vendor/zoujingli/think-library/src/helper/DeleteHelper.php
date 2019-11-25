@@ -13,19 +13,18 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace library\logic;
+namespace library\helper;
 
-use library\Controller;
+use library\Helper;
 use think\db\Query;
 
 /**
  * 通用删除管理器
- * Class Delete
- * @package library\logic
+ * Class DeleteHelper
+ * @package library\helper
  */
-class Delete extends Logic
+class DeleteHelper extends Helper
 {
-
     /**
      * 表单额外更新条件
      * @var array
@@ -45,29 +44,20 @@ class Delete extends Logic
     protected $pkValue;
 
     /**
-     * Delete constructor.
-     * @param string|Query $dbQuery
-     * @param string $pkField 数据对象主键
-     * @param array $where 额外更新条件
-     */
-    public function __construct($dbQuery, $pkField = '', $where = [])
-    {
-        $this->where = $where;
-        $this->query = $this->buildQuery($dbQuery);
-        $this->pkField = empty($pkField) ? $this->query->getPk() : $pkField;
-        $this->pkValue = request()->post($this->pkField, null);
-    }
-
-    /**
      * 逻辑器初始化
-     * @param Controller $controller
+     * @param string|Query $dbQuery
+     * @param string $field 操作数据主键
+     * @param array $where 额外更新条件
      * @return boolean|null
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public function init(Controller $controller)
+    public function init($dbQuery, $field = '', $where = [])
     {
-        $this->controller = $controller;
+        $this->where = $where;
+        $this->query = $this->buildQuery($dbQuery);
+        $this->pkField = empty($field) ? $this->query->getPk() : $field;
+        $this->pkValue = $this->app->request->post($this->pkField, null);
         // 主键限制处理
         if (!isset($this->where[$this->pkField]) && is_string($this->pkValue)) {
             $this->query->whereIn($this->pkField, explode(',', $this->pkValue));
@@ -93,5 +83,4 @@ class Delete extends Logic
             $this->controller->error('数据删除失败, 请稍候再试！');
         }
     }
-
 }

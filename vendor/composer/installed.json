@@ -12,7 +12,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
             "reference": "053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "php": ">=5.3"
@@ -55,7 +61,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/endroid/qr-code/zipball/c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
             "reference": "c9644bec2a9cc9318e98d1437de3c628dcd1ef93",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "ext-gd": "*",
@@ -117,7 +129,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/d89987163f560ebf9dfa5bb25de9bd9b1a3b2bd8",
             "reference": "d89987163f560ebf9dfa5bb25de9bd9b1a3b2bd8",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "php": ">=5.3.3"
@@ -170,7 +188,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/symfony/options-resolver/zipball/b224d20be60e6f7b55cd66914379a13a0b28651a",
             "reference": "b224d20be60e6f7b55cd66914379a13a0b28651a",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "php": "^5.5.9|>=7.0.8"
@@ -226,7 +250,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/top-think/framework/zipball/5762858f3d58faafb3a39427f8788884b2927007",
             "reference": "5762858f3d58faafb3a39427f8788884b2927007",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "php": ">=5.6.0",
@@ -279,7 +309,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/top-think/think-helper/zipball/4d85dfd3778623bbb1de3648f1dcd0c82f4439f4",
             "reference": "4d85dfd3778623bbb1de3648f1dcd0c82f4439f4",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "php": ">=7.1.0"
@@ -320,7 +356,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/top-think/think-installer/zipball/f5400a12c60e513911aef41fe443fa6920952675",
             "reference": "f5400a12c60e513911aef41fe443fa6920952675",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "composer-plugin-api": "^1.0"
@@ -363,7 +405,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/top-think/think-queue/zipball/d9b8f38c7af8ad770257b0d7db711ce8b12a6969",
             "reference": "d9b8f38c7af8ad770257b0d7db711ce8b12a6969",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "topthink/framework": "5.1.*",
@@ -411,7 +459,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/f898a7d90cfacd54433de4028190c336164f2ae4",
             "reference": "f898a7d90cfacd54433de4028190c336164f2ae4",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "php": ">=5.3"
@@ -448,17 +502,24 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "6dbcbc8ae1bcca6b18db58085deaa8f918b242da"
+            "reference": "c76003332a6c0277186507429baca6dfea6f9d15"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/6dbcbc8ae1bcca6b18db58085deaa8f918b242da",
-            "reference": "6dbcbc8ae1bcca6b18db58085deaa8f918b242da",
-            "shasum": ""
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/c76003332a6c0277186507429baca6dfea6f9d15",
+            "reference": "c76003332a6c0277186507429baca6dfea6f9d15",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "aliyuncs/oss-sdk-php": "^2.3",
             "ext-curl": "*",
+            "ext-gd": "*",
             "ext-iconv": "*",
             "ext-json": "*",
             "ext-openssl": "*",
@@ -466,7 +527,7 @@
             "qiniu/php-sdk": "^7.2",
             "topthink/framework": "5.1.*"
         },
-        "time": "2019-11-20T07:43:10+00:00",
+        "time": "2019-11-25T10:59:35+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -486,18 +547,24 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.14",
-        "version_normalized": "1.2.14.0",
+        "version": "v1.2.15",
+        "version_normalized": "1.2.15.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "39d53dd91040517a01d7c7423235f56b47deefa3"
+            "reference": "4b81e72cff7a3acfde2cca919bd8e173355bc53c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/39d53dd91040517a01d7c7423235f56b47deefa3",
-            "reference": "39d53dd91040517a01d7c7423235f56b47deefa3",
-            "shasum": ""
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/4b81e72cff7a3acfde2cca919bd8e173355bc53c",
+            "reference": "4b81e72cff7a3acfde2cca919bd8e173355bc53c",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "ext-curl": "*",
@@ -508,7 +575,7 @@
             "ext-simplexml": "*",
             "php": ">=5.4"
         },
-        "time": "2019-11-05T02:35:27+00:00",
+        "time": "2019-11-25T10:40:50+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -557,7 +624,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/4d0d3c064e54556621453845fc65ba52de58a880",
             "reference": "4d0d3c064e54556621453845fc65ba52de58a880",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "ext-curl": "*",
