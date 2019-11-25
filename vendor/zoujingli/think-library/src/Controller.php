@@ -22,18 +22,18 @@ use library\helper\PageHelper;
 use library\helper\QueryHelper;
 use library\helper\SaveHelper;
 use library\helper\TokenHelper;
+use library\helper\ValidateHelper;
 use think\App;
 use think\Container;
 use think\db\Query;
 use think\exception\HttpResponseException;
-use think\Validate;
 
 /**
  * 标准控制器基类
  * Class Controller
  * @package library
  */
-class Controller extends \stdClass
+abstract class Controller extends \stdClass
 {
 
     /**
@@ -72,6 +72,16 @@ class Controller extends \stdClass
         if (in_array($this->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
         }
+        $this->initialize();
+    }
+
+    /**
+     * 控制器初始化
+     * @return $this
+     */
+    protected function initialize()
+    {
+        return $this;
     }
 
     /**
@@ -191,7 +201,7 @@ class Controller extends \stdClass
     /**
      * 快捷查询逻辑器
      * @param string|Query $dbQuery
-     * @return Query
+     * @return QueryHelper
      */
     protected function _query($dbQuery)
     {
@@ -206,6 +216,11 @@ class Controller extends \stdClass
      * @param boolean $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @return array
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     protected function _page($dbQuery, $isPage = true, $isDisplay = true, $total = false, $limit = 0)
     {
@@ -220,6 +235,9 @@ class Controller extends \stdClass
      * @param array $where 额外更新条件
      * @param array $data 表单扩展数据
      * @return array|boolean
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _form($dbQuery, $tpl = '', $pkField = '', $where = [], $data = [])
     {
@@ -233,6 +251,8 @@ class Controller extends \stdClass
      * @param string $pkField 数据对象主键
      * @param array $where 额外更新条件
      * @return boolean
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     protected function _save($dbQuery, $data = [], $pkField = '', $where = [])
     {
@@ -247,28 +267,7 @@ class Controller extends \stdClass
      */
     protected function _vali(array $rules, $type = '')
     {
-        list($data, $rule, $info) = [[], [], []];
-        foreach ($rules as $name => $message) {
-            if (stripos($name, '#') !== false) {
-                list($name, $alias) = explode('#', $name);
-            }
-            if (stripos($name, '.') === false) {
-                $data[$name] = empty($alias) ? $name : $alias;
-            } else {
-                list($_rgx) = explode(':', $name);
-                list($_key, $_rule) = explode('.', $name);
-                $info[$_rgx] = $message;
-                $data[$_key] = empty($alias) ? $_key : $alias;
-                $rule[$_key] = empty($rule[$_key]) ? $_rule : "{$rule[$_key]}|{$_rule}";
-            }
-        }
-        foreach ($data as $key => $name) $data[$key] = input("{$type}{$name}");
-        $validate = Validate::make($rule, $info);
-        if ($validate->check($data)) {
-            return $this->data;
-        } else {
-            $this->error($validate->getError());
-        }
+        return ValidateHelper::instance()->init($rules, $type);
     }
 
     /**
@@ -289,6 +288,9 @@ class Controller extends \stdClass
      * @param string $pkField 数据对象主键
      * @param array $where 额外更新条件
      * @return boolean|null
+     * @return boolean|null
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     protected function _delete($dbQuery, $pkField = '', $where = [])
     {

@@ -21,6 +21,8 @@ use think\db\Query;
 /**
  * Class QueryHelper
  * @package library\helper
+ * @see think\db\Query
+ * @mixin think\db\Query
  */
 class QueryHelper extends Helper
 {
@@ -51,7 +53,7 @@ class QueryHelper extends Helper
 
     /**
      * 获取当前Db操作对象
-     * @return \think\db\Query
+     * @return Query
      */
     public function db()
     {
@@ -212,6 +214,11 @@ class QueryHelper extends Helper
      * @param boolean $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @return mixed
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function page($isPage = true, $isDisplay = true, $total = false, $limit = 0)
     {

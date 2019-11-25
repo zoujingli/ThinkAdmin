@@ -46,41 +46,44 @@ class FormHelper extends Helper
     /**
      * 逻辑器初始化
      * @param string|Query $dbQuery
-     * @param string $field 操作数据主键
+     * @param string $template 模板名称
+     * @param string $field 指定数据主键
      * @param array $where 额外更新条件
-     * @return boolean|null
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
+     * @param array $data 表单扩展数据
+     * @return array|boolean
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function init($dbQuery, $field = '', $where = [])
+    public function init($dbQuery, $template = '', $field = '', $where = [], $data = [])
     {
-        $this->where = $where;
         $this->query = $this->buildQuery($dbQuery);
-        $this->pkField = empty($field) ? $this->query->getPk() : $field;
-        $this->pkValue = $this->app->request->post($this->pkField, null);
-        // 主键限制处理
-        if (!isset($this->where[$this->pkField]) && is_string($this->pkValue)) {
-            $this->query->whereIn($this->pkField, explode(',', $this->pkValue));
+        list($this->template, $this->where, $this->data) = [$template, $where, $data];
+        $this->pkField = empty($field) ? ($this->query->getPk() ? $this->query->getPk() : 'id') : $field;;
+        $this->pkValue = input($this->pkField, isset($data[$this->pkField]) ? $data[$this->pkField] : null);
+        // GET请求, 获取数据并显示表单页面
+        if ($this->app->request->isGet()) {
+            if ($this->pkValue !== null) {
+                $where = [$this->pkField => $this->pkValue];
+                $data = (array)$this->query->where($where)->where($this->where)->find();
+            }
+            $data = array_merge($data, $this->data);
+            if (false !== $this->controller->callback('_form_filter', $data)) {
+                return $this->controller->fetch($this->template, ['vo' => $data]);
+            }
+            return $data;
         }
-        // 前置回调处理
-        if (false === $this->controller->callback('_delete_filter', $this->query, $where)) {
-            return null;
-        }
-        // 执行删除操作
-        if (method_exists($this->query, 'getTableFields') && in_array('is_deleted', $this->query->getTableFields())) {
-            $result = $this->query->where($this->where)->update(['is_deleted' => '1']);
-        } else {
-            $result = $this->query->where($this->where)->delete();
-        }
-        // 结果回调处理
-        if (false === $this->controller->callback('_delete_result', $result)) {
-            return $result;
-        }
-        // 回复前端结果
-        if ($result !== false) {
-            $this->controller->success('数据删除成功！', '');
-        } else {
-            $this->controller->error('数据删除失败, 请稍候再试！');
+        // POST请求, 数据自动存库处理
+        if ($this->app->request->isPost()) {
+            $data = array_merge($this->app->request->post(), $this->data);
+            if (false !== $this->controller->callback('_form_filter', $data, $this->where)) {
+                $result = data_save($this->query, $data, $this->pkField, $this->where);
+                if (false !== $this->controller->callback('_form_result', $result, $data)) {
+                    if ($result !== false) $this->controller->success('恭喜, 数据保存成功!', '');
+                    $this->controller->error('数据保存失败, 请稍候再试!');
+                }
+                return $result;
+            }
         }
     }
 }

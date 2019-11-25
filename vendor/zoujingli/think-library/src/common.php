@@ -21,6 +21,7 @@ use library\tools\Http;
 use library\tools\Node;
 use think\Console;
 use think\Db;
+use think\db\Query;
 use think\facade\Cache;
 use think\facade\Middleware;
 use think\facade\Response;
@@ -141,7 +142,7 @@ if (!function_exists('http_post')) {
 if (!function_exists('data_save')) {
     /**
      * 数据增量保存
-     * @param \think\db\Query|string $dbQuery 数据查询对象
+     * @param Query|string $dbQuery 数据查询对象
      * @param array $data 需要保存或更新的数据
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
@@ -158,7 +159,7 @@ if (!function_exists('data_save')) {
 if (!function_exists('data_batch_save')) {
     /**
      * 批量更新数据
-     * @param \think\db\Query|string $dbQuery 数据查询对象
+     * @param Query|string $dbQuery 数据查询对象
      * @param array $data 需要更新的数据(二维数组)
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
@@ -249,14 +250,19 @@ if (PHP_SAPI !== 'cli') {
     });
 }
 
-
 // 注册系统常用指令
 if (class_exists('think\Console')) {
     Console::addDefaultCommands([
+        // 注册清理无效会话
         'library\command\Sess',
-        'library\command\task\Stop',
-        'library\command\task\State',
-        'library\command\task\Start',
+        // 注册系统任务指令
+        'library\queue\WorkQueue',
+        'library\queue\StopQueue',
+        'library\queue\StateQueue',
+        'library\queue\StartQueue',
+        'library\queue\QueryQueue',
+        'library\queue\ListenQueue',
+        // 注册系统更新指令
         'library\command\sync\Admin',
         'library\command\sync\Plugs',
         'library\command\sync\Config',

@@ -44,7 +44,7 @@ class Queue extends Controller
      */
     public function index()
     {
-        if (session('admin_user.username') === 'admin') try {
+        if (session('user.username') === 'admin') try {
             $this->cmd = 'php ' . env('root_path') . 'think xtask:start';
             $this->message = Console::call('xtask:state')->fetch();
         } catch (\Exception $exception) {
@@ -68,7 +68,7 @@ class Queue extends Controller
     }
 
     /**
-     * (WIN)创建任务监听进程
+     * WIN开始监听任务
      * @auth true
      */
     public function processStart()
@@ -83,7 +83,7 @@ class Queue extends Controller
     }
 
     /**
-     * (WIN)停止任务监听进程
+     * WIN停止监听任务
      * @auth true
      */
     public function processStop()

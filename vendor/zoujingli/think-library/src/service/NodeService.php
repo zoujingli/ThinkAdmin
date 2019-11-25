@@ -86,8 +86,9 @@ class NodeService extends Service
         }
         $ignore = get_class_methods('\library\Controller');
         foreach ($this->scanDirectory($this->app->getAppPath()) as $file) {
-            if (preg_match("|/(\w+)/(\w+)/controller/(.+)\.php$|i", $file, $matches)) {
-                list(, $namespace, $application, $baseclass) = $matches;
+            if (preg_match("|/(\w+)/controller/(.+)\.php$|i", $file, $matches)) {
+                list(, $application, $baseclass) = $matches;
+                $namespace = $this->app->env->get('APP_NAMESPACE');
                 $class = new \ReflectionClass(strtr("{$namespace}/{$application}/controller/{$baseclass}", '/', '\\'));
                 $prefix = strtr("{$application}/" . $this->nameTolower($baseclass), '\\', '/');
                 $data[$prefix] = $this->parseComment($class->getDocComment(), $baseclass);

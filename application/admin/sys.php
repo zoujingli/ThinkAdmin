@@ -13,11 +13,10 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-use app\admin\service\CaptchaService;
-use app\admin\service\NodeService;
-use app\admin\service\OplogService;
 use library\File;
-use think\Console;
+use library\service\AuthService;
+use library\service\CaptchaService;
+use library\service\SystemService;
 use think\Db;
 use think\facade\Middleware;
 use think\facade\Route;
@@ -32,7 +31,7 @@ if (!function_exists('auth')) {
      */
     function auth($node)
     {
-        return NodeService::checkAuth($node);
+        return AuthService::instance()->check($node);
     }
 }
 
@@ -40,18 +39,17 @@ if (!function_exists('sysdata')) {
     /**
      * JSON 数据读取与存储
      * @param string $name 数据名称
-     * @param array|null $value 数据内容
+     * @param mixed $value 数据内容
      * @return mixed
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    function sysdata($name, array $value = null)
+    function sysdata($name, $value = null)
     {
         if (is_null($value)) {
-            $data = json_decode(Db::name('SystemData')->where(['name' => $name])->value('value'), true);
-            return empty($data) ? [] : $data;
+            return SystemService::instance()->getData($name);
         } else {
-            return data_save('SystemData', ['name' => $name, 'value' => json_encode($value, JSON_UNESCAPED_UNICODE)], 'name');
+            return SystemService::instance()->setData($name, $value);
         }
     }
 }
@@ -65,7 +63,7 @@ if (!function_exists('sysoplog')) {
      */
     function sysoplog($action, $content)
     {
-        return OplogService::write($action, $content);
+        return SystemService::instance()->setOplog($action, $content);
     }
 }
 
@@ -140,28 +138,18 @@ if (!function_exists('base64_image')) {
 
 // 访问权限检查中间键
 Middleware::add(function (Request $request, \Closure $next) {
-    if (NodeService::forceAuth()) {
+    if (AuthService::instance()->check()) {
         return $next($request);
-    } elseif (NodeService::islogin()) {
+    } elseif (AuthService::instance()->isLogin()) {
         return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！']);
     } else {
         return json(['code' => 0, 'msg' => '抱歉，需要登录获取访问权限！', 'url' => url('@admin/login')]);
     }
 });
 
-// 注册系统服务指令
-Console::addDefaultCommands([
-    'app\admin\queue\task\Stop',
-    'app\admin\queue\task\Work',
-    'app\admin\queue\task\Start',
-    'app\admin\queue\task\State',
-    'app\admin\queue\task\Query',
-    'app\admin\queue\task\Listen',
-]);
-
 // ThinkAdmin 图形验证码
 Route::get('/think/admin/captcha', function () {
-    $image = new CaptchaService();
+    $image = CaptchaService::instance();
     return json(['code' => '1', 'info' => '生成验证码', 'data' => [
         'uniqid' => $image->getUniqid(), 'image' => $image->getData()
     ]]);

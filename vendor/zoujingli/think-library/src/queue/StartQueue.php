@@ -13,40 +13,50 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\admin\queue\task;
+namespace library\queue;
 
-use library\command\Task;
+use library\service\ProcessService;
+use think\console\Command;
 use think\console\Input;
 use think\console\Output;
+use think\Db;
 
 /**
- * 查询正在执行中的进程PID信息
- * Class Query
- * @package app\admin\queue\task
+ * 检查并创建监听主进程
+ * Class StartQueue
+ * @package library\queue
  */
-class Query extends Task
+class StartQueue extends Command
 {
+
     /**
      * 指令属性配置
      */
     protected function configure()
     {
-        $this->setName('xtask:query')->setDescription('[控制]查询正在执行的所有任务进程');
+        $this->setName('xtask:start')->setDescription('[控制]创建守护监听主进程');
     }
 
     /**
-     * 执行相关进程查询
+     * 执行启动操作
      * @param Input $input
      * @param Output $output
-     * @return int|void|null
      */
     protected function execute(Input $input, Output $output)
     {
-        $this->cmd = "{$this->bin} xtask:";
-        if (count($this->queryProcess()) < 1) {
-            $output->writeln('没有查询到相关任务进程');
-        } else foreach ($this->queryProcess() as $item) {
-            $output->writeln("{$item['pid']}\t{$item['cmd']}");
+        Db::name('SystemQueue')->count();
+        $process = ProcessService::instance();
+        $command = $process->think("xtask:listen");
+        if (count($result = $process->query($command)) > 0) {
+            $output->info("监听主进程{$result['0']['pid']}已经启动！");
+        } else {
+            $process->create($command);
+            sleep(1);
+            if (count($result = $process->query($command)) > 0) {
+                $output->info("监听主进程{$result['0']['pid']}启动成功！");
+            } else {
+                $output->error('监听主进程创建失败！');
+            }
         }
     }
 }

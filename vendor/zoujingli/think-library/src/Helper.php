@@ -68,7 +68,7 @@ abstract class Helper
     /**
      * 实例对象反射
      * @param array $args 额外参数
-     * @return Helper
+     * @return $this
      */
     public static function instance(array $args = [])
     {

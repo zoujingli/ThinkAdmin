@@ -6,6 +6,7 @@
   "description": "ThinkPHP Basic Development Library",
   "require": {
     "php": ">=5.4",
+    "ext-gd": "*",
     "ext-json": "*",
     "ext-curl": "*",
     "ext-iconv": "*",

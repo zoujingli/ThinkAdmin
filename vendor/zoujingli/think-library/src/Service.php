@@ -60,7 +60,7 @@ abstract class Service
 
     /**
      * 静态实例对象
-     * @return static
+     * @return $this
      */
     public static function instance()
     {

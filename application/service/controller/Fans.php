@@ -39,11 +39,10 @@ class Fans extends Controller
 
     /**
      * 初始化函数
-     * Fans constructor.
+     * @return Controller|void
      */
-    public function __construct()
+    protected function initialize()
     {
-        parent::__construct();
         $this->appid = input('appid', session('current_appid'));
         if (empty($this->appid)) {
             $this->where = ['status' => '1', 'service_type' => '2', 'is_deleted' => '0', 'verify_type' => '0'];
