@@ -92,16 +92,12 @@ class Index extends Controller
             $this->verify = true;
             $this->_form('SystemUser', 'admin@user/pass', 'id', [], ['id' => $id]);
         } else {
-            $data = [
-                'password'    => $this->app->request->post('password'),
-                'repassword'  => $this->app->request->post('repassword'),
-                'oldpassword' => $this->app->request->post('oldpassword'),
-            ];
-            if (empty($data['password'])) $this->error('登录密码不能为空！');
-            if (empty($data['oldpassword'])) $this->error('旧密码不能为空！');
-            if ($data['repassword'] !== $data['password']) {
-                $this->error('重复密码与登录密码不匹配，请重新输入！');
-            }
+            $data = $this->_vali([
+                'password.require'            => '登录密码不能为空！',
+                'repassword.require'          => '重复密码不能为空！',
+                'oldpassword.require'         => '旧密码不能为空！',
+                'password.confirm:repassword' => '验证密码与新密码不匹配！',
+            ]);
             $user = $this->app->db->name('SystemUser')->where(['id' => $id])->find();
             if (md5($data['oldpassword']) !== $user['password']) {
                 $this->error('旧密码验证失败，请重新输入！');
