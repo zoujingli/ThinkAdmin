@@ -13,18 +13,25 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace library\logic;
+namespace library\helper;
 
-use library\Controller;
+use library\Helper;
 use think\Db;
+use think\db\Query;
 
 /**
- * 列表处理管理器
- * Class Page
- * @package library\logic
+ *
+ * Class PageHelper
+ * @package library\helper
  */
-class Page extends Logic
+class PageHelper extends Helper
 {
+    /**
+     * 是否启用分页
+     * @var boolean
+     */
+    protected $page;
+
     /**
      * 集合分页记录数
      * @var integer
@@ -38,37 +45,18 @@ class Page extends Logic
     protected $limit;
 
     /**
-     * 是否启用分页
-     * @var boolean
-     */
-    protected $isPage;
-
-    /**
      * 是否渲染模板
      * @var boolean
      */
-    protected $isDisplay;
-
-    /**
-     * Page constructor.
-     * @param string $dbQuery 数据库查询对象
-     * @param boolean $isPage 是否启用分页
-     * @param boolean $isDisplay 是否渲染模板
-     * @param boolean $total 集合分页记录数
-     * @param integer $limit 集合每页记录数
-     */
-    public function __construct($dbQuery, $isPage = true, $isDisplay = true, $total = false, $limit = 0)
-    {
-        $this->total = $total;
-        $this->limit = $limit;
-        $this->isPage = $isPage;
-        $this->isDisplay = $isDisplay;
-        $this->query = $this->buildQuery($dbQuery);
-    }
+    protected $display;
 
     /**
      * 逻辑器初始化
-     * @param Controller $controller
+     * @param string|Query $dbQuery
+     * @param boolean $page 是否启用分页
+     * @param boolean $display 是否渲染模板
+     * @param boolean $total 集合分页记录数
+     * @param integer $limit 集合每页记录数
      * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -76,9 +64,13 @@ class Page extends Logic
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    public function init(Controller $controller)
+    public function init($dbQuery, $page = true, $display = true, $total = false, $limit = 0)
     {
-        $this->controller = $controller;
+        $this->page = $page;
+        $this->total = $total;
+        $this->limit = $limit;
+        $this->display = $display;
+        $this->query = $this->buildQuery($dbQuery);
         // 列表排序操作
         if ($this->controller->request->isPost()) $this->_sort();
         // 未配置 order 规则时自动按 sort 字段排序
@@ -86,7 +78,7 @@ class Page extends Logic
             if (in_array('sort', $this->query->getTableFields())) $this->query->order('sort desc');
         }
         // 列表分页及结果集处理
-        if ($this->isPage) {
+        if ($this->page) {
             // 分页每页显示记录数
             $limit = intval($this->controller->request->get('limit', cookie('page-limit')));
             cookie('page-limit', $limit = $limit >= 10 ? $limit : 20);
@@ -105,7 +97,7 @@ class Page extends Logic
         } else {
             $result = ['list' => $this->query->select()];
         }
-        if (false !== $this->controller->callback('_page_filter', $result['list']) && $this->isDisplay) {
+        if (false !== $this->controller->callback('_page_filter', $result['list']) && $this->display) {
             return $this->controller->fetch('', $result);
         }
         return $result;

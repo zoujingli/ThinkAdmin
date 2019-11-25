@@ -99,7 +99,7 @@ if (!function_exists('sysconf')) {
 
 if (!function_exists('systoken')) {
     /**
-     * 生成CSRF-TOKEN参数
+     * 生成 CSRF-TOKEN 参数
      * @param string $node
      * @return string
      */
@@ -112,7 +112,7 @@ if (!function_exists('systoken')) {
 
 if (!function_exists('http_get')) {
     /**
-     * 以get模拟网络请求
+     * 以 get 模拟网络请求
      * @param string $url HTTP请求URL地址
      * @param array $query GET请求参数
      * @param array $options CURL参数
@@ -126,7 +126,7 @@ if (!function_exists('http_get')) {
 
 if (!function_exists('http_post')) {
     /**
-     * 以get模拟网络请求
+     * 以 post 模拟网络请求
      * @param string $url HTTP请求URL地址
      * @param array $data POST请求数据
      * @param array $options CURL参数
@@ -232,24 +232,26 @@ if (!function_exists('emoji_clear')) {
     }
 }
 
-try {
+if (PHP_SAPI !== 'cli') {
     // 注册跨域中间键
-    if (PHP_SAPI !== 'cli') {
-        Middleware::add(function (Request $request, \Closure $next, $header = []) {
-            if (($origin = $request->header('origin', '*')) !== '*') {
-                $header['Access-Control-Allow-Origin'] = $origin;
-                $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
-                $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
-                $header['Access-Control-Expose-Headers'] = 'User-Token-Csrf';
-            }
-            if ($request->isOptions()) {
-                return Response::create()->code(204)->header($header);
-            } else {
-                return $next($request)->header($header);
-            }
-        });
-    }
-    // 注册系统常用指令
+    Middleware::add(function (Request $request, \Closure $next, $header = []) {
+        if (($origin = $request->header('origin', '*')) !== '*') {
+            $header['Access-Control-Allow-Origin'] = $origin;
+            $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
+            $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
+            $header['Access-Control-Expose-Headers'] = 'User-Token-Csrf';
+        }
+        if ($request->isOptions()) {
+            return Response::create()->code(204)->header($header);
+        } else {
+            return $next($request)->header($header);
+        }
+    });
+}
+
+
+// 注册系统常用指令
+if (class_exists('think\Console')) {
     Console::addDefaultCommands([
         'library\command\Sess',
         'library\command\task\Stop',
@@ -261,7 +263,6 @@ try {
         'library\command\sync\Wechat',
         'library\command\sync\Service',
     ]);
-} catch (\Exception $exception) {
 }
 
 // 动态加载模块配置

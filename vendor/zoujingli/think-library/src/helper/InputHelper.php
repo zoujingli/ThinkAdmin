@@ -5,7 +5,7 @@
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://library.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
@@ -13,19 +13,17 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace library\logic;
+namespace library\helper;
 
-use library\Controller;
+use library\Helper;
 use think\Validate;
 
 /**
- * 输入管理器
- * Class Input
- * @package library\logic
+ * Class InputHelper
+ * @package library\helper
  */
-class Input extends Logic
+class InputHelper extends Helper
 {
-
     /**
      * 验证器规则
      * @var array
@@ -45,15 +43,22 @@ class Input extends Logic
     protected $info;
 
     /**
-     * Validate constructor.
-     * @param array $data 验证数据
-     * @param array $rule 验证规则
-     * @param array $info 验证消息
+     * 输入验证器
+     * @param array $data
+     * @param array $rule
+     * @param array $info
+     * @return array
      */
-    public function __construct($data, $rule = [], $info = [])
+    public function init($data, $rule, $info)
     {
         list($this->rule, $this->info) = [$rule, $info];
         $this->data = $this->parse($data);
+        $validate = Validate::make($this->rule, $this->info);
+        if ($validate->check($this->data)) {
+            return $this->data;
+        } else {
+            $this->controller->error($validate->getError());
+        }
     }
 
     /**
@@ -76,22 +81,6 @@ class Input extends Logic
             }
         }
         return $result;
-    }
-
-    /**
-     * 应用初始化
-     * @param Controller $controller
-     * @return array
-     */
-    public function init(Controller $controller)
-    {
-        $this->controller = $controller;
-        $validate = Validate::make($this->rule, $this->info);
-        if ($validate->check($this->data)) {
-            return $this->data;
-        } else {
-            $this->controller->error($validate->getError());
-        }
     }
 
 }

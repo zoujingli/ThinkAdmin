@@ -22,5 +22,11 @@
     "zoujingli/ip2region": "^1.0",
     "zoujingli/think-library": "5.1.*-dev",
     "zoujingli/weopen-developer": "dev-master"
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://mirrors.aliyun.com/composer"
+    }
   }
 }
