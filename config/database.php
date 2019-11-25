@@ -19,7 +19,7 @@ return [
     // 数据库类型
     'type'        => 'mysql',
     // 服务器地址
-    'hostname'    => 'server.cuci.cc',
+    'hostname'    => '127.0.0.1',
     // 数据库名
     'database'    => 'admin_v5',
     // 用户名
