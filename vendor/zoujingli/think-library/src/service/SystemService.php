@@ -33,32 +33,6 @@ class SystemService extends Service
      */
     protected $data = [];
 
-    /**
-     * 设置配置数据
-     * @param string $name 配置名称
-     * @param string $value 配置内容
-     * @return static
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function set($name, $value = '')
-    {
-
-    }
-
-    /**
-     * 读取配置数据
-     * @param string $name
-     * @return array|mixed|string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function get($name)
-    {
-
-    }
 
     /**
      * 数据增量保存
@@ -67,9 +41,11 @@ class SystemService extends Service
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
      * @return bool|int|mixed|string
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function save($dbQuery, $data, $key = 'id', $where = [])
     {
@@ -92,9 +68,11 @@ class SystemService extends Service
      * @param string $name 数据名称
      * @param mixed $value 数据内容
      * @return boolean
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function setData($name, $value)
     {

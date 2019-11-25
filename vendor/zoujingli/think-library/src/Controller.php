@@ -86,14 +86,17 @@ abstract class Controller extends \stdClass
 
     /**
      * Controller destruct
+     * @throws \Exception
      */
     public function __destruct()
     {
-        $this->request = request();
-        $action = $this->request->action();
-        $method = strtolower($this->request->method());
-        if (method_exists($this, $callback = "_{$action}_{$method}")) {
-            call_user_func_array([$this, $callback], $this->request->route());
+        $method = "_{$this->request->action()}_{$this->request->method()}";
+        if (method_exists($this, $method)) try {
+            call_user_func_array([$this, $method], $this->request->route());
+        } catch (HttpResponseException $exception) {
+            $exception->getResponse()->send();
+        } catch (\Exception $exception) {
+            throw $exception;
         }
     }
 
