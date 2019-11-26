@@ -45,9 +45,9 @@ class LocalStorage extends Storage
     public function set($name, $file, $safe = false)
     {
         try {
-            $file = $this->path($name, $safe);
-            file_exists(dirname($file)) || mkdir(dirname($file), 0755, true);
-            if (file_put_contents($file, $file)) return $this->info($name, $safe);
+            $path = $this->path($name, $safe);
+            file_exists(dirname($path)) || mkdir(dirname($path), 0755, true);
+            if (file_put_contents($path, $file)) return $this->info($name, $safe);
         } catch (\Exception $e) {
             throw new \think\Exception("本地文件存储失败，{$e->getMessage()}");
         }

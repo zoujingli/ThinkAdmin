@@ -245,6 +245,7 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
         'think\\admin\\helper\\QueryHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/QueryHelper.php',
         'think\\admin\\helper\\SaveHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/SaveHelper.php',
         'think\\admin\\helper\\TokenHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/TokenHelper.php',
+        'think\\admin\\helper\\ValidateHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/ValidateHelper.php',
         'think\\admin\\queue\\ListenQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/ListenQueue.php',
         'think\\admin\\queue\\QueryQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/QueryQueue.php',
         'think\\admin\\queue\\StartQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/StartQueue.php',

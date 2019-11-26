@@ -21,6 +21,7 @@ use think\admin\helper\PageHelper;
 use think\admin\helper\QueryHelper;
 use think\admin\helper\SaveHelper;
 use think\admin\helper\TokenHelper;
+use think\admin\helper\ValidateHelper;
 use think\App;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -226,27 +227,7 @@ class Controller extends \stdClass
      */
     protected function _vali(array $rules, $type = '')
     {
-        list($data, $rule, $info) = [[], [], []];
-        foreach ($rules as $name => $message) {
-            if (stripos($name, '#') !== false) {
-                list($name, $alias) = explode('#', $name);
-            }
-            if (stripos($name, '.') === false) {
-                $data[$name] = empty($alias) ? $name : $alias;
-            } else {
-                list($_rgx) = explode(':', $name);
-                list($_key, $_rule) = explode('.', $name);
-                $info[$_rgx] = $message;
-                $data[$_key] = empty($alias) ? $_key : $alias;
-                $rule[$_key] = empty($rule[$_key]) ? $_rule : "{$rule[$_key]}|{$_rule}";
-            }
-        }
-        foreach ($data as $key => $name) $data[$key] = input("{$type}{$name}");
-        if ($this->app->validate->rule($rule)->message($info)->check($data)) {
-            return $data;
-        } else {
-            $this->error($this->app->validate->getError());
-        }
+        return ValidateHelper::instance()->init($rules, $type);
     }
 
     /**

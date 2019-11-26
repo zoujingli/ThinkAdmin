@@ -36,7 +36,7 @@ abstract class Helper
      * 数据库实例
      * @var Query
      */
-    protected $query;
+    public $query;
 
     /**
      * 当前控制器实例
@@ -67,11 +67,10 @@ abstract class Helper
 
     /**
      * 实例对象反射
-     * @param array $args 额外参数
      * @return static
      */
-    public static function instance(array $args = []): Helper
+    public static function instance(): Helper
     {
-        return Container::getInstance()->invokeClass(static::class, $args);
+        return Container::getInstance()->make(static::class);
     }
 }
