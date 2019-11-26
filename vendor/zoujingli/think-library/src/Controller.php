@@ -238,9 +238,11 @@ abstract class Controller extends \stdClass
      * @param array $where 额外更新条件
      * @param array $data 表单扩展数据
      * @return array|boolean
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     protected function _form($dbQuery, $tpl = '', $pkField = '', $where = [], $data = [])
     {
