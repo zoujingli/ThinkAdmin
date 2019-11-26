@@ -15,7 +15,6 @@
 
 namespace app\admin\controller;
 
-use app\admin\service\NodeService;
 use library\Controller;
 use library\tools\Data;
 use think\Db;
@@ -98,8 +97,6 @@ class User extends Controller
             if ($post['password'] !== $post['repassword']) {
                 $this->error('两次输入的密码不一致！');
             }
-            $result = NodeService::checkpwd($post['password']);
-            if (empty($result['code'])) $this->error($result['msg']);
             if (Data::save($this->table, ['id' => $post['id'], 'password' => md5($post['password'])], 'id')) {
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {
@@ -118,8 +115,6 @@ class User extends Controller
     public function _form_filter(&$data)
     {
         if ($this->request->isPost()) {
-            // 刷新系统授权
-            NodeService::applyUserAuth();
             // 用户权限处理
             $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
             // 用户账号重复检查

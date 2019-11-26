@@ -15,9 +15,10 @@
 
 namespace app\admin\controller;
 
-use app\admin\service\CaptchaService;
-use app\admin\service\NodeService;
 use library\Controller;
+use library\service\AuthService;
+use library\service\CaptchaService;
+use library\service\SystemService;
 use think\Db;
 use think\facade\Request;
 
@@ -40,29 +41,28 @@ class Login extends Controller
     public function index()
     {
         if (Request::isGet()) {
-            if (NodeService::islogin()) {
+            if (AuthService::instance()->isLogin()) {
                 $this->redirect('@admin');
             } else {
                 $this->title = '系统登录';
-                $this->domain = Request::host(true);
-                if (!($this->loginskey = session('loginskey'))) session('loginskey', $this->loginskey = uniqid());
-                $this->devmode = in_array($this->domain, ['127.0.0.1', 'localhost']) || is_numeric(stripos($this->domain, 'thinkadmin.top'));
-                $this->captcha = new CaptchaService();
+                if (!($this->loginskey = session('loginskey'))) {
+                    session('loginskey', $this->loginskey = uniqid());
+                }
+                $this->devmode = SystemService::instance()->checkRunMode('dev');
+                $this->captcha = CaptchaService::instance()->getAttrs();
                 $this->fetch();
             }
         } else {
-            $data = $this->_input([
-                'username' => input('username'), 'password' => input('password'),
-            ], [
-                'username' => 'require|min:4', 'password' => 'require|min:4',
-            ], [
-                'username.require' => '登录账号不能为空！',
+            $data = $this->_vali([
+                'username.require' => '登录账号不能为空!',
+                'username.min:4'   => '登录账号长度不能少于4位有效字符！',
                 'password.require' => '登录密码不能为空！',
-                'username.min'     => '登录账号长度不能少于4位有效字符！',
-                'password.min'     => '登录密码长度不能少于4位有效字符！',
+                'password.min:4'   => '登录密码长度不能少于4位有效字符！',
+                'verify.require'   => '图形验证码不能为空！',
+                'uniqid.require'   => '图形验证标识不能为空！'
             ]);
-            if (!CaptchaService::check(input('verify'), input('uniqid'))) {
-                $this->error('图形验证码验证失败，请重新输入！');
+            if (!CaptchaService::instance()->check($data['verify'], $data['uniqid'])) {
+                $this->error('图形验证码验证失败，请重新输入!');
             }
             // 用户信息验证
             $map = ['is_deleted' => '0', 'username' => $data['username']];
@@ -75,9 +75,9 @@ class Login extends Controller
             Db::name('SystemUser')->where(['id' => $user['id']])->update([
                 'login_at' => Db::raw('now()'), 'login_ip' => Request::ip(), 'login_num' => Db::raw('login_num+1'),
             ]);
+            session('user', $user);
             session('loginskey', null);
-            session('admin_user', $user);
-            NodeService::applyUserAuth(true);
+            AuthService::instance()->apply(true);
             sysoplog('系统管理', '用户登录系统成功');
             $this->success('登录成功', url('@admin'));
         }
@@ -88,8 +88,8 @@ class Login extends Controller
      */
     public function out()
     {
-        \think\facade\Session::clear();
-        \think\facade\Session::destroy();
+        $this->app->session->clear();
+        $this->app->session->destroy();
         $this->success('退出登录成功！', url('@admin/login'));
     }
 

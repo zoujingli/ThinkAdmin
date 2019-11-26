@@ -15,8 +15,8 @@
 
 namespace app\admin\controller;
 
-use app\admin\service\NodeService;
 use library\Controller;
+use library\service\MenuService;
 use library\tools\Data;
 use think\Db;
 
@@ -58,7 +58,7 @@ class Menu extends Controller
     {
         foreach ($data as &$vo) {
             if ($vo['url'] !== '#') {
-                $vo['url'] = url($vo['url']) . (empty($vo['params']) ? '' : "?{$vo['params']}");
+                $vo['url'] = trim(url($vo['url']) . (empty($vo['params']) ? '' : "?{$vo['params']}"), '/\\');
             }
             $vo['ids'] = join(',', Data::getArrSubIds($data, $vo['id']));
         }
@@ -119,7 +119,7 @@ class Menu extends Controller
                 $vo['pid'] = $this->request->get('pid', '0');
             }
             // 读取系统功能节点
-            $this->nodes = NodeService::getMenuNodeList();
+            $this->nodes = MenuService::instance()->getList();
         }
     }
 

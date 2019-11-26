@@ -13,18 +13,19 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\admin\queue\task;
+namespace library\queue;
 
-use library\command\Task;
+use library\service\ProcessService;
+use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 
 /**
- * 平滑停止异步任务守护的主进程
- * Class Stop
- * @package app\admin\queue\task
+ * 平滑停止任务的所有进程
+ * Class StopQueue
+ * @package library\queue
  */
-class Stop extends Task
+class StopQueue extends Command
 {
 
     /**
@@ -32,7 +33,7 @@ class Stop extends Task
      */
     protected function configure()
     {
-        $this->setName('xtask:stop')->setDescription('[控制]平滑停止所有的异步任务进程');
+        $this->setName('xtask:stop')->setDescription('[控制]平滑停止所有的进程');
     }
 
     /**
@@ -42,12 +43,13 @@ class Stop extends Task
      */
     protected function execute(Input $input, Output $output)
     {
-        $this->cmd = "{$this->bin} xtask:";
-        if (count($processList = $this->queryProcess()) < 1) {
+        $process = ProcessService::instance();
+        $command = $process->think('xtask:');
+        if (count($result = $process->query($command)) < 1) {
             $output->writeln("没有需要结束的任务进程哦！");
-        } else foreach ($processList as $item) {
-            $this->closeProcess($item['pid']);
-            $output->writeln("发送结束任务进程{$item['pid']}指令成功！");
+        } else foreach ($result as $item) {
+            $process->close($item['pid']);
+            $output->writeln("发送结束进程{$item['pid']}信号成功！");
         }
     }
 }

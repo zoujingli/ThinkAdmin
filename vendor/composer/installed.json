@@ -1,17 +1,17 @@
 [
     {
         "name": "aliyuncs/oss-sdk-php",
-        "version": "v2.3.0",
-        "version_normalized": "2.3.0.0",
+        "version": "v2.3.1",
+        "version_normalized": "2.3.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-            "reference": "e69f57916678458642ac9d2fd341ae78a56996c8"
+            "reference": "053d7ba9e798e4c09b9c5c1edab153d25ea9643a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/e69f57916678458642ac9d2fd341ae78a56996c8",
-            "reference": "e69f57916678458642ac9d2fd341ae78a56996c8",
+            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
+            "reference": "053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
             "shasum": "",
             "mirrors": [
                 {
@@ -27,7 +27,7 @@
             "phpunit/phpunit": "~4.0",
             "satooshi/php-coveralls": "~1.0"
         },
-        "time": "2018-01-08T06:59:35+00:00",
+        "time": "2019-11-15T11:05:42+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -118,17 +118,17 @@
     },
     {
         "name": "qiniu/php-sdk",
-        "version": "v7.2.9",
-        "version_normalized": "7.2.9.0",
+        "version": "v7.2.10",
+        "version_normalized": "7.2.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/qiniu/php-sdk.git",
-            "reference": "afe7d8715d8a688b1d8d8cdf031240d2363dad90"
+            "reference": "d89987163f560ebf9dfa5bb25de9bd9b1a3b2bd8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/afe7d8715d8a688b1d8d8cdf031240d2363dad90",
-            "reference": "afe7d8715d8a688b1d8d8cdf031240d2363dad90",
+            "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/d89987163f560ebf9dfa5bb25de9bd9b1a3b2bd8",
+            "reference": "d89987163f560ebf9dfa5bb25de9bd9b1a3b2bd8",
             "shasum": "",
             "mirrors": [
                 {
@@ -144,7 +144,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2019-07-09T07:55:07+00:00",
+        "time": "2019-10-28T10:23:23+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -177,17 +177,17 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.32",
-        "version_normalized": "3.4.32.0",
+        "version": "v3.4.35",
+        "version_normalized": "3.4.35.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "a7c00586a9ef70acf0f17085e51c399bf9620e03"
+            "reference": "b224d20be60e6f7b55cd66914379a13a0b28651a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/a7c00586a9ef70acf0f17085e51c399bf9620e03",
-            "reference": "a7c00586a9ef70acf0f17085e51c399bf9620e03",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/b224d20be60e6f7b55cd66914379a13a0b28651a",
+            "reference": "b224d20be60e6f7b55cd66914379a13a0b28651a",
             "shasum": "",
             "mirrors": [
                 {
@@ -199,7 +199,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2019-08-03T21:15:25+00:00",
+        "time": "2019-10-26T11:02:01+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -239,17 +239,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.1.38.1",
-        "version_normalized": "5.1.38.1",
+        "version": "v5.1.39",
+        "version_normalized": "5.1.39.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "12d15c29d5d6a972fc8bfc8db005d64d4786028c"
+            "reference": "5762858f3d58faafb3a39427f8788884b2927007"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/12d15c29d5d6a972fc8bfc8db005d64d4786028c",
-            "reference": "12d15c29d5d6a972fc8bfc8db005d64d4786028c",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/5762858f3d58faafb3a39427f8788884b2927007",
+            "reference": "5762858f3d58faafb3a39427f8788884b2927007",
             "shasum": "",
             "mirrors": [
                 {
@@ -271,7 +271,7 @@
             "sebastian/phpcpd": "2.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2019-08-12T00:58:30+00:00",
+        "time": "2019-11-17T23:22:02+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -347,17 +347,17 @@
     },
     {
         "name": "zoujingli/ip2region",
-        "version": "v1.0.6",
-        "version_normalized": "1.0.6.0",
+        "version": "v1.0.7",
+        "version_normalized": "1.0.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ip2region.git",
-            "reference": "054b6580f4e1f441ca700939fbddd6c0b8488f7a"
+            "reference": "f898a7d90cfacd54433de4028190c336164f2ae4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/054b6580f4e1f441ca700939fbddd6c0b8488f7a",
-            "reference": "054b6580f4e1f441ca700939fbddd6c0b8488f7a",
+            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/f898a7d90cfacd54433de4028190c336164f2ae4",
+            "reference": "f898a7d90cfacd54433de4028190c336164f2ae4",
             "shasum": "",
             "mirrors": [
                 {
@@ -369,7 +369,7 @@
         "require": {
             "php": ">=5.3"
         },
-        "time": "2019-05-18T06:44:34+00:00",
+        "time": "2019-10-29T09:03:57+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -401,12 +401,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "770c7466638da1910ccdd99aaf1b8747f7bf53ad"
+            "reference": "10b94d3b9dc3b0bea5e5c759b7f00a3fc057280b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/770c7466638da1910ccdd99aaf1b8747f7bf53ad",
-            "reference": "770c7466638da1910ccdd99aaf1b8747f7bf53ad",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/10b94d3b9dc3b0bea5e5c759b7f00a3fc057280b",
+            "reference": "10b94d3b9dc3b0bea5e5c759b7f00a3fc057280b",
             "shasum": "",
             "mirrors": [
                 {
@@ -418,6 +418,7 @@
         "require": {
             "aliyuncs/oss-sdk-php": "^2.3",
             "ext-curl": "*",
+            "ext-gd": "*",
             "ext-iconv": "*",
             "ext-json": "*",
             "ext-openssl": "*",
@@ -425,7 +426,7 @@
             "qiniu/php-sdk": "^7.2",
             "topthink/framework": "5.1.*"
         },
-        "time": "2019-10-08T03:10:52+00:00",
+        "time": "2019-11-26T02:19:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -445,17 +446,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.13",
-        "version_normalized": "1.2.13.0",
+        "version": "v1.2.15",
+        "version_normalized": "1.2.15.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "5789420f58eb4a506b6dca12bdcf094efd66f892"
+            "reference": "4b81e72cff7a3acfde2cca919bd8e173355bc53c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/5789420f58eb4a506b6dca12bdcf094efd66f892",
-            "reference": "5789420f58eb4a506b6dca12bdcf094efd66f892",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/4b81e72cff7a3acfde2cca919bd8e173355bc53c",
+            "reference": "4b81e72cff7a3acfde2cca919bd8e173355bc53c",
             "shasum": "",
             "mirrors": [
                 {
@@ -473,7 +474,7 @@
             "ext-simplexml": "*",
             "php": ">=5.4"
         },
-        "time": "2019-09-16T05:20:21+00:00",
+        "time": "2019-11-25T10:40:50+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

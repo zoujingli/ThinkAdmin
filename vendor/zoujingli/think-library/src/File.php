@@ -115,7 +115,7 @@ class File
         }
         throw new Exception("File driver [{$class}] does not exist.");
     }
-    
+
     /**
      * 根据文件后缀获取文件MINE
      * @param array $ext 文件后缀
@@ -137,16 +137,10 @@ class File
      */
     public static function mines()
     {
-        $mines = cache('all_ext_mine');
-        if (empty($mines)) {
-            $content = file_get_contents('http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types');
-            preg_match_all('#^([^\s]{2,}?)\s+(.+?)$#ism', $content, $matches, PREG_SET_ORDER);
-            foreach ($matches as $match) foreach (explode(" ", $match[2]) as $ext) $mines[$ext] = $match[1];
-            cache('all_ext_mine', $mines);
-        }
-        return $mines;
+        static $mimes = [];
+        if (count($mimes) > 0) return $mimes;
+        return $mimes = include __DIR__ . '/driver/_mime.php';
     }
-
 
     /**
      * 获取文件相对名称

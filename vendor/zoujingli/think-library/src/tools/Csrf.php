@@ -67,8 +67,8 @@ class Csrf
      */
     public static function buildFormToken($node = null)
     {
-        list($token, $time) = [uniqid(), time()];
         if (is_null($node)) $node = Node::current();
+        list($token, $time) = [uniqid() . rand(10000, 9999), time()];
         session($token, ['node' => $node, 'token' => $token, 'time' => $time], 'csrf');
         foreach (session('', '', 'csrf') as $key => $item) if (isset($item['time'])) {
             if ($item['time'] + 600 < $time) self::clearFormToken($key);

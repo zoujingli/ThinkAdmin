@@ -21,6 +21,7 @@ use library\tools\Http;
 use library\tools\Node;
 use think\Console;
 use think\Db;
+use think\db\Query;
 use think\facade\Cache;
 use think\facade\Middleware;
 use think\facade\Response;
@@ -99,7 +100,7 @@ if (!function_exists('sysconf')) {
 
 if (!function_exists('systoken')) {
     /**
-     * 生成CSRF-TOKEN参数
+     * 生成 CSRF-TOKEN 参数
      * @param string $node
      * @return string
      */
@@ -112,7 +113,7 @@ if (!function_exists('systoken')) {
 
 if (!function_exists('http_get')) {
     /**
-     * 以get模拟网络请求
+     * 以 get 模拟网络请求
      * @param string $url HTTP请求URL地址
      * @param array $query GET请求参数
      * @param array $options CURL参数
@@ -126,7 +127,7 @@ if (!function_exists('http_get')) {
 
 if (!function_exists('http_post')) {
     /**
-     * 以get模拟网络请求
+     * 以 post 模拟网络请求
      * @param string $url HTTP请求URL地址
      * @param array $data POST请求数据
      * @param array $options CURL参数
@@ -141,7 +142,7 @@ if (!function_exists('http_post')) {
 if (!function_exists('data_save')) {
     /**
      * 数据增量保存
-     * @param \think\db\Query|string $dbQuery 数据查询对象
+     * @param Query|string $dbQuery 数据查询对象
      * @param array $data 需要保存或更新的数据
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
@@ -158,7 +159,7 @@ if (!function_exists('data_save')) {
 if (!function_exists('data_batch_save')) {
     /**
      * 批量更新数据
-     * @param \think\db\Query|string $dbQuery 数据查询对象
+     * @param Query|string $dbQuery 数据查询对象
      * @param array $data 需要更新的数据(二维数组)
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
@@ -232,34 +233,43 @@ if (!function_exists('emoji_clear')) {
     }
 }
 
-// 注册跨域中间键
-Middleware::add(function (Request $request, \Closure $next, $header = []) {
-    if (($origin = $request->header('origin', '*')) !== '*') {
-        $header['Access-Control-Allow-Origin'] = $origin;
-        $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
-        $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
-        $header['Access-Control-Expose-Headers'] = 'User-Token-Csrf';
-    }
-    if ($request->isOptions()) {
-        return Response::create()->code(204)->header($header);
-    } else {
-        return $next($request)->header($header);
-    }
-});
+if (PHP_SAPI !== 'cli') {
+    // 注册跨域中间键
+    Middleware::add(function (Request $request, \Closure $next, $header = []) {
+        if (($origin = $request->header('origin', '*')) !== '*') {
+            $header['Access-Control-Allow-Origin'] = $origin;
+            $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
+            $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
+            $header['Access-Control-Expose-Headers'] = 'User-Token-Csrf';
+        }
+        if ($request->isOptions()) {
+            return Response::create()->code(204)->header($header);
+        } else {
+            return $next($request)->header($header);
+        }
+    });
+}
 
 // 注册系统常用指令
-Console::addDefaultCommands([
-    'library\command\Sess',
-    'library\command\task\Stop',
-    'library\command\task\State',
-    'library\command\task\Start',
-    // 'library\command\task\Reset',
-    'library\command\sync\Admin',
-    'library\command\sync\Plugs',
-    'library\command\sync\Config',
-    'library\command\sync\Wechat',
-    'library\command\sync\Service',
-]);
+if (class_exists('think\Console')) {
+    Console::addDefaultCommands([
+        // 注册清理无效会话
+        'library\command\Sess',
+        // 注册系统任务指令
+        'library\queue\WorkQueue',
+        'library\queue\StopQueue',
+        'library\queue\StateQueue',
+        'library\queue\StartQueue',
+        'library\queue\QueryQueue',
+        'library\queue\ListenQueue',
+        // 注册系统更新指令
+        'library\command\sync\Admin',
+        'library\command\sync\Plugs',
+        'library\command\sync\Config',
+        'library\command\sync\Wechat',
+        'library\command\sync\Service',
+    ]);
+}
 
 // 动态加载模块配置
 if (function_exists('think\__include_file')) {

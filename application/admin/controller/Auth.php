@@ -15,8 +15,8 @@
 
 namespace app\admin\controller;
 
-use app\admin\service\NodeService;
 use library\Controller;
+use library\service\AuthService;
 use think\Db;
 
 /**
@@ -58,23 +58,23 @@ class Auth extends Controller
      */
     public function apply()
     {
-        $this->title = '权限配置节点';
-        $auth = $this->request->post('id', '0');
-        switch (strtolower($this->request->post('action'))) {
-            case 'get': // 获取权限配置
-                $checks = Db::name('SystemAuthNode')->where(['auth' => $auth])->column('node');
-                return $this->success('获取权限节点成功！', NodeService::getAuthTree($checks));
-            case 'save': // 保存权限配置
-                list($post, $data) = [$this->request->post(), []];
-                foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
-                    $data[] = ['auth' => $auth, 'node' => $node];
-                }
-                Db::name('SystemAuthNode')->where(['auth' => $auth])->delete();
-                Db::name('SystemAuthNode')->insertAll($data);
-                NodeService::applyUserAuth();
-                return $this->success('权限授权更新成功！');
-            default:
-                return $this->_form($this->table, 'apply');
+        $map = ['auth' => input('id', '0')];
+        $action = strtolower(input('action', ''));
+        if ($action === 'get') {
+            $checkeds = Db::name('SystemAuthNode')->where($map)->column('node');
+            $this->success('获取权限节点成功！', AuthService::instance()->getTree($checkeds));
+        } elseif ($action === 'save') {
+            list($post, $data) = [$this->request->post(), []];
+            foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
+                $data[] = ['auth' => $map['auth'], 'node' => $node];
+            }
+            Db::name('SystemAuthNode')->where($map)->delete();
+            Db::name('SystemAuthNode')->insertAll($data);
+            AuthService::instance()->apply(true);
+            $this->success('权限授权更新成功！', 'javascript:history.back()');
+        } else {
+            $this->title = '权限配置节点';
+            $this->_form($this->table, 'apply');
         }
     }
 
@@ -115,7 +115,7 @@ class Auth extends Controller
     public function refresh()
     {
         try {
-            NodeService::applyUserAuth(true);
+            AuthService::instance()->apply(true);
             $this->success('刷新系统授权成功！');
         } catch (\think\exception\HttpResponseException $exception) {
             throw  $exception;

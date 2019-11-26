@@ -21,7 +21,9 @@ try {
     $config = include "./config.php";
 
     // 3. 创建接口实例
-    $wechat = new \WeChat\User($config);
+    // $wechat = \We::WeChatUser($config);
+    // $wechat = new \WeChat\User($config);
+    $wechat = \WeChat\User::instance($config);
 
     // 4. 获取用户列表
     $result = $wechat->getUserList();

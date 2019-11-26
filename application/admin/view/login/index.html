@@ -28,10 +28,10 @@
             <li class="verify layui-hide">
                 <label class="inline-block relative">
                     <i class="layui-icon layui-icon-picture-fine"></i>
-                    <input class="layui-input" required pattern="^\S{4,}$" name="verify" value="{$captcha->getCode()}" maxlength="4" autocomplete="off" placeholder="验证码" title="请输入验证码">
+                    <input class="layui-input" required pattern="^\S{4,}$" name="verify" value="{$captcha.code}" maxlength="4" autocomplete="off" placeholder="验证码" title="请输入验证码">
                 </label>
-                <img data-refresh-captcha alt="img" src="{$captcha->getData()}">
-                <input type="hidden" name="uniqid" value="{$captcha->getUniqid()}">
+                <img data-refresh-captcha alt="img" src="{$captcha.data}">
+                <input type="hidden" name="uniqid" value="{$captcha.uniqid}">
             </li>
             <li class="text-center padding-top-20">
                 <input type="hidden" name="skey" value="{$loginskey|default=''}">

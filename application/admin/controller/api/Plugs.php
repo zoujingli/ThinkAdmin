@@ -15,7 +15,6 @@
 
 namespace app\admin\controller\api;
 
-use app\admin\service\NodeService;
 use library\Controller;
 use library\File;
 
@@ -57,15 +56,13 @@ class Plugs extends Controller
 
     /**
      * 后台通用文件上传
+     * @login true
      * @return \think\response\Json
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
     public function upload()
     {
-        if (!NodeService::islogin()) {
-            $this->error('访问授权失败，请重新登录授权再试！');
-        }
         if (!($file = $this->getUploadFile()) || empty($file)) {
             return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件可能过大或未上传']]);
         }

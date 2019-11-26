@@ -20,8 +20,9 @@ $config = include "./alipay.php";
 
 try {
     // 实例支付对象
-    $pay = \We::AliPayApp($config);
+    // $pay = \We::AliPayApp($config);
     // $pay = new \AliPay\App($config);
+    $pay = \AliPay\App::instance($config);
 
     // 请参考（请求参数）：https://docs.open.alipay.com/api_1/alipay.trade.app.pay
     $result = $pay->apply([

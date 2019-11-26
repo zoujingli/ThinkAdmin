@@ -13,39 +13,58 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\admin\queue\task;
+namespace library;
 
-use library\command\Task;
-use think\console\Input;
-use think\console\Output;
+use think\App;
+use think\Container;
+use think\Request;
 
 /**
- * 查看异步任务监听的主进程状态
- * Class State
- * @package app\admin\queue\task
+ * 自定义服务接口
+ * Class Service
+ * @package library
  */
-class State extends Task
+abstract class Service
 {
     /**
-     * 指令属性配置
+     * 当前实例应用
+     * @var App
      */
-    protected function configure()
+    protected $app;
+
+    /**
+     * 当前请求对象
+     * @var \think\Request
+     */
+    protected $request;
+
+    /**
+     * Service constructor.
+     * @param App $app
+     * @param Request $request
+     */
+    public function __construct(App $app, Request $request)
     {
-        $this->setName('xtask:state')->setDescription('[控制]查看异步任务监听主进程状态');
+        $this->app = $app;
+        $this->request = $request;
     }
 
     /**
-     * 指令执行状态
-     * @param Input $input
-     * @param Output $output
+     * 初始化服务
+     * @return $this
      */
-    protected function execute(Input $input, Output $output)
+    public function initialize()
     {
-        $this->cmd = "{$this->bin} xtask:listen";
-        if (($pid = $this->checkProcess()) > 0) {
-            $output->info("异步任务监听主进程{$pid}正在运行...");
-        } else {
-            $output->error("异步任务监听主进程没有运行哦!");
-        }
+        return $this;
     }
+
+    /**
+     * 静态实例对象
+     * @return $this
+     */
+    public static function instance()
+    {
+        return Container::getInstance()->make(static::class)->initialize();
+    }
+
 }

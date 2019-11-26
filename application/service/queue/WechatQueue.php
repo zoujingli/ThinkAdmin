@@ -15,7 +15,6 @@
 
 namespace app\service\queue;
 
-use app\admin\queue\Queue;
 use app\service\service\WechatService;
 use app\wechat\service\FansService;
 use think\console\Input;
@@ -26,7 +25,7 @@ use think\Db;
  * Class Jobs
  * @package app\wechat
  */
-class WechatQueue extends Queue
+class WechatQueue
 {
     /**
      * 当前类名

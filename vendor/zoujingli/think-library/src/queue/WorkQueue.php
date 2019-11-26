@@ -13,22 +13,23 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\admin\queue\task;
+namespace library\queue;
 
-use Exception;
-use library\command\Task;
+use library\service\ProcessService;
 use think\Console;
+use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
 use think\Db;
+use think\Exception;
 
 /**
- * 启动指定独立执行的任务子进程
- * Class Work
- * @package library\command\task
+ * 启动独立执行进程
+ * Class WorkQueue
+ * @package library\queue
  */
-class Work extends Task
+class WorkQueue extends Command
 {
 
     /**
@@ -48,8 +49,7 @@ class Work extends Task
      */
     protected function configure()
     {
-        // 执行任务配置
-        $this->setName('xtask:_work')->setDescription('[执行]创建执行单个指定任务的进程');
+        $this->setName('xtask:_work')->setDescription('[执行]创建执行任务的进程');
         $this->addArgument('id', Argument::OPTIONAL, '指定任务ID');
         $this->addArgument('sp', Argument::OPTIONAL, '指令结束符');
     }
@@ -58,7 +58,7 @@ class Work extends Task
      * 任务执行
      * @param Input $input
      * @param Output $output
-     * @throws \think\Exception
+     * @throws Exception
      * @throws \think\exception\PDOException
      */
     protected function execute(Input $input, Output $output)
@@ -67,10 +67,10 @@ class Work extends Task
             $this->id = trim($input->getArgument('id')) ?: 0;
             if (empty($this->id)) throw new Exception("执行任务需要指定任务编号！");
             $queue = Db::name('SystemQueue')->where(['id' => $this->id, 'status' => '2'])->find();
-            if (empty($queue)) throw new Exception("执行任务{$this->id}的信息或状态异常！");
+            if (empty($queue)) throw new Exception("执行任务{$this->id}的信息或状态异常！");;
             // 设置进程标题
-            if ($this->isWin() && function_exists('cli_set_process_title')) {
-                cli_set_process_title("ThinkAdmin {$this->version} 异步任务执行子进程 - {$queue['title']}");
+            if (($process = ProcessService::instance())->iswin() && function_exists('cli_set_process_title')) {
+                cli_set_process_title("ThinkAdmin {$process->version()} 执行任务 - {$queue['title']}");
             }
             // 执行任务内容
             if (class_exists($queue['preload'])) {
@@ -83,9 +83,10 @@ class Work extends Task
                     throw new Exception("任务处理类 {$queue['preload']} 未定义 execute 入口！");
                 }
             } else {
-                $this->update('3', Console::call($queue['preload'], [], 'console'));
+                $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $queue['command'])));
+                $this->update('3', Console::call(array_shift($attr), $attr, 'console'));
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->update('4', $e->getMessage());
         }
     }

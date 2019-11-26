@@ -13,27 +13,27 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\admin\queue\task;
+namespace library\queue;
 
-use Exception;
-use library\command\Task;
+use library\service\ProcessService;
+use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 use think\Db;
 
 /**
- * 启动监听异步任务守护的主进程
- * Class Listen
- * @package library\command\task
+ * 启动监听任务的主进程
+ * Class ListenQueue
+ * @package library\queue
  */
-class Listen extends Task
+class ListenQueue extends Command
 {
     /**
      * 配置指定信息
      */
     protected function configure()
     {
-        $this->setName('xtask:listen')->setDescription('[监听]常驻异步任务循环监听主进程');
+        $this->setName('xtask:listen')->setDescription('[监听]启动任务监听主进程');
     }
 
     /**
@@ -49,30 +49,26 @@ class Listen extends Task
     protected function execute(Input $input, Output $output)
     {
         Db::name('SystemQueue')->count();
-        $output->comment('============ 异步任务监听中 ============');
-        if ($this->isWin() && function_exists('cli_set_process_title')) {
-            cli_set_process_title("ThinkAdmin {$this->version} 异步任务监听主进程");
+        if (($process = ProcessService::instance())->iswin() && function_exists('cli_set_process_title')) {
+            cli_set_process_title("ThinkAdmin 监听主进程 {$process->version()}");
         }
+        $output->comment('============ 任务监听中 ============');
         while (true) {
             foreach (Db::name('SystemQueue')->where([['status', 'eq', '1'], ['time', '<=', time()]])->order('time asc')->select() as $item) {
                 try {
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '2', 'start_at' => date('Y-m-d H:i:s')]);
-                    $this->cmd = "{$this->bin} xtask:_work {$item['id']} -";
-                    if ($this->isWin()) {
-                        $this->cmd = __DIR__ . DIRECTORY_SEPARATOR . "bin" . DIRECTORY_SEPARATOR . "ThinkAdmin.exe {$this->cmd}";
-                    }
-                    if ($this->checkProcess()) {
-                        $output->comment("处理任务的子进程已经存在 --> [{$item['id']}] {$item['title']}");
+                    if ($process->query($command = $process->think("xtask:_work {$item['id']} -"))) {
+                        $output->comment("正在执行 -> [{$item['id']}] {$item['title']}");
                     } else {
-                        $this->createProcess();
-                        $output->info("创建处理任务的子进程成功 --> [{$item['id']}] {$item['title']}");
+                        $process->create($command);
+                        $output->info("创建成功 -> [{$item['id']}] {$item['title']}");
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '4', 'desc' => $e->getMessage()]);
                     $output->error("创建处理任务的子进程失败 --> [{$item['id']}] {$item['title']}，{$e->getMessage()}");
                 }
             }
-            sleep(2);
+            sleep(1);
         }
     }
 

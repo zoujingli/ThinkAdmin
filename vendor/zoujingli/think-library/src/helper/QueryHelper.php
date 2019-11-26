@@ -13,34 +13,24 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace library\logic;
+namespace library\helper;
 
-use library\Controller;
+use library\Helper;
+use think\db\Query;
 
 /**
- * 搜索条件处理器
- * Class Query
- * @package library\logic
- * @see \think\Db\Query
- * @mixin \think\Db\Query
+ * Class QueryHelper
+ * @package library\helper
+ * @see \think\db\Query
+ * @mixin \think\db\Query
  */
-class Query extends Logic
+class QueryHelper extends Helper
 {
-
-    /**
-     * Query constructor.
-     * @param \think\db\Query|string $dbQuery
-     */
-    public function __construct($dbQuery)
-    {
-        $this->query = $this->buildQuery($dbQuery);
-    }
-
     /**
      * Query call.
      * @param string $name 调用方法名称
      * @param array $args 调用参数内容
-     * @return $this
+     * @return QueryHelper
      */
     public function __call($name, $args)
     {
@@ -52,18 +42,18 @@ class Query extends Logic
 
     /**
      * 逻辑器初始化
-     * @param Controller $controller
+     * @param string|Query $dbQuery
      * @return $this
      */
-    public function init(Controller $controller)
+    public function init($dbQuery)
     {
-        $this->controller = $controller;
+        $this->query = $this->buildQuery($dbQuery);
         return $this;
     }
 
     /**
      * 获取当前Db操作对象
-     * @return \think\db\Query
+     * @return Query
      */
     public function db()
     {
@@ -79,7 +69,7 @@ class Query extends Logic
      */
     public function like($fields, $input = 'request', $alias = '#')
     {
-        $data = $this->controller->request->$input();
+        $data = $this->app->request->$input();
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
             list($dk, $qk) = [$field, $field];
             if (stripos($field, $alias) !== false) {
@@ -101,7 +91,7 @@ class Query extends Logic
      */
     public function equal($fields, $input = 'request', $alias = '#')
     {
-        $data = $this->controller->request->$input();
+        $data = $this->app->request->$input();
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
             list($dk, $qk) = [$field, $field];
             if (stripos($field, $alias) !== false) {
@@ -124,7 +114,7 @@ class Query extends Logic
      */
     public function in($fields, $split = ',', $input = 'request', $alias = '#')
     {
-        $data = $this->controller->request->$input();
+        $data = $this->app->request->$input();
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
             list($dk, $qk) = [$field, $field];
             if (stripos($field, $alias) !== false) {
@@ -199,7 +189,7 @@ class Query extends Logic
      */
     private function setBetweenWhere($fields, $split = ' ', $input = 'request', $alias = '#', $callback = null)
     {
-        $data = $this->controller->request->$input();
+        $data = $this->app->request->$input();
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
             list($dk, $qk) = [$field, $field];
             if (stripos($field, $alias) !== false) {
@@ -219,8 +209,8 @@ class Query extends Logic
 
     /**
      * 实例化分页管理器
-     * @param boolean $isPage 是否启用分页
-     * @param boolean $isDisplay 是否渲染模板
+     * @param boolean $page 是否启用分页
+     * @param boolean $display 是否渲染模板
      * @param boolean $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @return mixed
@@ -230,8 +220,8 @@ class Query extends Logic
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    public function page($isPage = true, $isDisplay = true, $total = false, $limit = 0)
+    public function page($page = true, $display = true, $total = false, $limit = 0)
     {
-        return (new Page($this->query, $isPage, $isDisplay, $total, $limit))->init($this->controller);
+        return PageHelper::instance()->init($this->query, $page, $display, $total, $limit);
     }
 }

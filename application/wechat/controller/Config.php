@@ -71,6 +71,7 @@ class Config extends Controller
      * 微信支付配置
      * @auth true
      * @menu true
+     * @throws \OSS\Core\OssException
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */

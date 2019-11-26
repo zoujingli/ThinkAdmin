@@ -15,8 +15,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\service\NodeService;
 use library\Controller;
+use library\service\AuthService;
+use library\service\MenuService;
 use library\tools\Data;
 use think\Console;
 use think\Db;
@@ -40,9 +41,9 @@ class Index extends Controller
     public function index()
     {
         $this->title = '系统管理后台';
-        NodeService::applyUserAuth(true);
-        $this->menus = NodeService::getMenuNodeTree();
-        if (empty($this->menus) && !NodeService::islogin()) {
+        $auth = AuthService::instance()->apply(true);
+        $this->menus = MenuService::instance()->getTree();
+        if (empty($this->menus) && !$auth->isLogin()) {
             $this->redirect('@admin/login');
         } else {
             $this->fetch();
@@ -61,6 +62,7 @@ class Index extends Controller
 
     /**
      * 修改密码
+     * @login true
      * @param integer $id
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -71,10 +73,10 @@ class Index extends Controller
     public function pass($id)
     {
         $this->applyCsrfToken();
-        if (intval($id) !== intval(session('admin_user.id'))) {
+        if (intval($id) !== intval(session('user.id'))) {
             $this->error('只能修改当前用户的密码！');
         }
-        if (!NodeService::islogin()) {
+        if (!AuthService::instance()->isLogin()) {
             $this->error('需要登录才能操作哦！');
         }
         if ($this->request->isGet()) {
@@ -100,8 +102,6 @@ class Index extends Controller
             if (md5($data['oldpassword']) !== $user['password']) {
                 $this->error('旧密码验证失败，请重新输入！');
             }
-            $result = NodeService::checkpwd($data['password']);
-            if (empty($result['code'])) $this->error($result['msg']);
             if (Data::save('SystemUser', ['id' => $user['id'], 'password' => md5($data['password'])])) {
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {
@@ -112,6 +112,7 @@ class Index extends Controller
 
     /**
      * 修改用户资料
+     * @login true
      * @param integer $id 会员ID
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -121,11 +122,11 @@ class Index extends Controller
      */
     public function info($id = 0)
     {
-        if (!NodeService::islogin()) {
+        if (!AuthService::instance()->isLogin()) {
             $this->error('需要登录才能操作哦！');
         }
         $this->applyCsrfToken();
-        if (intval($id) === intval(session('admin_user.id'))) {
+        if (intval($id) === intval(session('user.id'))) {
             $this->_form('SystemUser', 'admin@user/form', 'id', [], ['id' => $id]);
         } else {
             $this->error('只能修改登录用户的资料！');
@@ -138,9 +139,6 @@ class Index extends Controller
      */
     public function clearRuntime()
     {
-        if (!NodeService::islogin()) {
-            $this->error('需要登录才能操作哦！');
-        }
         try {
             Console::call('clear');
             Console::call('xclean:session');
@@ -158,9 +156,6 @@ class Index extends Controller
      */
     public function buildOptimize()
     {
-        if (!NodeService::islogin()) {
-            $this->error('需要登录才能操作哦！');
-        }
         try {
             Console::call('optimize:route');
             Console::call('optimize:schema');
