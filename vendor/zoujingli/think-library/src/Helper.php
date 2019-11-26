@@ -67,12 +67,11 @@ abstract class Helper
 
     /**
      * 实例对象反射
-     * @param array $args 额外参数
-     * @return $this
+     * @return static
      */
-    public static function instance(array $args = [])
+    public static function instance()
     {
-        return Container::getInstance()->invokeClass(static::class, $args);
+        return Container::getInstance()->invokeClass(static::class);
     }
 
 }

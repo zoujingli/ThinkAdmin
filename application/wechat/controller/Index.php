@@ -42,7 +42,7 @@ class Index extends Controller
         $this->totalJson = ['xs' => [], 'ys' => []];
         for ($i = 5; $i >= 0; $i--) {
             $time = strtotime("-{$i} months");
-            $where = [['subscribe_at', '<', date('Y-m-32 00:00:00', $time)]];
+            $where = [['subscribe_at', '<=', date('Y-m-t 23:59:59', $time)]];
             $this->totalJson['xs'][] = date('Y年m月', $time);
             $item = ['_0' => 0, '_1' => 0];
             $list = Db::name('WechatFans')->field('count(1) count,is_black black')->where($map)->where($where)->group('is_black')->select();
