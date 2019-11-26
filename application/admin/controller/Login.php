@@ -61,17 +61,11 @@ class Login extends Controller
      */
     protected function _index_post()
     {
-        $data = $this->_input([
-            'username' => $this->request->post('username'),
-            'password' => $this->request->post('password'),
-        ], [
-            'username' => 'require|min:4',
-            'password' => 'require|min:4',
-        ], [
+        $data = $this->_vali([
             'username.require' => '登录账号不能为空！',
             'password.require' => '登录密码不能为空！',
-            'username.min'     => '登录账号长度不能少于4位有效字符！',
-            'password.min'     => '登录密码长度不能少于4位有效字符！',
+            'username.min:4'   => '登录账号长度不能少于4位有效字符！',
+            'password.min:4'   => '登录密码长度不能少于4位有效字符！',
         ]);
         // 用户信息验证
         $map = ['is_deleted' => '0', 'username' => $data['username']];
@@ -118,8 +112,8 @@ class Login extends Controller
      */
     public function out()
     {
-        \think\facade\Session::clear();
-        \think\facade\Session::destroy();
+        $this->app->session->clear();
+        $this->app->session->destroy();
         $this->success('退出登录成功！', url('@admin/login'));
     }
 
