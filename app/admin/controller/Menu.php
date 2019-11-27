@@ -91,27 +91,19 @@ class Menu extends Controller
      * 表单数据处理
      * @param array $vo
      * @throws \ReflectionException
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _form_filter(&$vo)
     {
         if ($this->request->isGet()) {
-            // 选择自己的上级菜单
-            if (empty($vo['pid']) && $this->request->get('pid', '0')) {
-                $vo['pid'] = $this->request->get('pid', '0');
-            }
             // 读取系统功能节点
             $this->nodes = MenuService::instance()->getList();
+            // 选择自己的上级菜单
+            if (empty($vo['pid']) && $this->request->get('pid', '0')) $vo['pid'] = $this->request->get('pid', '0');
             // 列出可选上级菜单
-            $menus = $this->app->db->name($this->table)->where(['status' => '1'])->order('sort desc,id asc')->select()->toArray();
-            $menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
+            $menus = $this->app->db->name($this->table)->where(['status' => '1'])->order('sort desc,id asc')->column('id,pid,title');
+            $menus[] = ['title' => '顶部菜单', 'id' => '0', 'pid' => '-1'];
             foreach ($this->menus = DataExtend::arr2table($menus) as $key => &$menu) {
-                if (substr_count($menu['path'], '-') > 3) unset($this->menus[$key]); # 移除三级以下的菜单
-                elseif (isset($vo['pid']) && $vo['pid'] !== '' && $cur = "-{$vo['pid']}-{$vo['id']}") {
-                    if (stripos("{$menu['path']}-", "{$cur}-") !== false || $menu['path'] === $cur) unset($this->menus[$key]); # 移除与自己相关联的菜单
-                }
+                if ($menu['spt'] >= 3) unset($this->menus[$key]);
             }
         }
     }
