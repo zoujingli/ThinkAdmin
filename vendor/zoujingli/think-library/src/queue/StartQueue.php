@@ -47,14 +47,14 @@ class StartQueue extends Command
         $process = ProcessService::instance();
         $command = $process->think("xtask:listen");
         if (count($result = $process->query($command)) > 0) {
-            $output->info("监听主进程{$result['0']['pid']}已经启动！");
+            $output->writeln("监听主进程{$result['0']['pid']}已经启动！");
         } else {
             $process->create($command);
             sleep(1);
             if (count($result = $process->query($command)) > 0) {
-                $output->info("监听主进程{$result['0']['pid']}启动成功！");
+                $output->writeln("监听主进程{$result['0']['pid']}启动成功！");
             } else {
-                $output->error('监听主进程创建失败！');
+                $output->writeln('监听主进程创建失败！');
             }
         }
     }

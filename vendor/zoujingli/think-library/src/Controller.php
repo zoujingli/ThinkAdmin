@@ -35,7 +35,7 @@ use think\Request;
  * Class Controller
  * @package think\admin
  */
-class Controller extends \stdClass
+abstract class Controller extends \stdClass
 {
 
     /**

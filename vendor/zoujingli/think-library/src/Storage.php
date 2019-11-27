@@ -138,7 +138,7 @@ abstract class Storage
      * 获取所有文件扩展的MINES
      * @return array
      */
-    public static function mimes()
+    public static function mimes(): array
     {
         static $mimes = [];
         if (count($mimes) > 0) return $mimes;

@@ -163,28 +163,6 @@ class QiniuStorage extends Storage
     }
 
     /**
-     * URL安全的Base64编码
-     * @param string $content
-     * @return string
-     */
-    private function safeBase64($content)
-    {
-        return str_replace(['+', '/'], ['-', '_'], base64_encode($content));
-    }
-
-    /**
-     * 获取对象管理凭证
-     * @param string $name 文件名称
-     * @param string $type 操作类型
-     * @return array
-     */
-    private function getAccessToken($name, $type = 'state')
-    {
-        $EncodedEntryURI = $this->safeBase64("{$this->bucket}:{$name}");
-        return [$EncodedEntryURI, "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', "/{$type}/{$EncodedEntryURI}\n", $this->secretKey, true))}"];
-    }
-
-    /**
      * 获取文件上传地址
      * @return string
      * @throws \think\Exception
@@ -224,5 +202,27 @@ class QiniuStorage extends Storage
             'returnBody' => json_encode(['uploaded' => true, 'filename' => '$(key)', 'url' => "{$this->prefix}/$(key)"], JSON_UNESCAPED_UNICODE),
         ]));
         return "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', $policy, $this->secretKey, true))}:{$policy}";
+    }
+
+    /**
+     * URL安全的Base64编码
+     * @param string $content
+     * @return string
+     */
+    private function safeBase64($content)
+    {
+        return str_replace(['+', '/'], ['-', '_'], base64_encode($content));
+    }
+
+    /**
+     * 获取对象管理凭证
+     * @param string $name 文件名称
+     * @param string $type 操作类型
+     * @return array
+     */
+    private function getAccessToken($name, $type = 'state')
+    {
+        $EncodedEntryURI = $this->safeBase64("{$this->bucket}:{$name}");
+        return [$EncodedEntryURI, "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', "/{$type}/{$EncodedEntryURI}\n", $this->secretKey, true))}"];
     }
 }

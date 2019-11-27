@@ -52,12 +52,20 @@ class Install extends Command
      */
     protected $bind = [
         'admin'  => [
-            'rules'  => ['think', 'app/admin'],
+            'rules'  => [
+                'think',
+                'app/admin',
+            ],
             'ignore' => [],
         ],
         'static' => [
-            'rules'  => ['public/static'],
-            'ignore' => ['public/static/self'],
+            'rules'  => [
+                'public/static/plugs',
+                'public/static/theme',
+                'public/static/admin.js',
+                'public/static/login.js',
+            ],
+            'ignore' => [],
         ],
     ];
 
@@ -76,7 +84,7 @@ class Install extends Command
     {
         $this->name = trim($input->getArgument('name'));
         if (empty($this->name)) {
-            $this->output->error('在线安装的模块名称不能为空！');
+            $this->output->writeln('在线安装的模块名称不能为空！');
         } else {
             if (isset($this->bind[$this->name])) {
                 $this->rules = empty($this->bind[$this->name]['rules']) ? [] : $this->bind[$this->name]['rules'];
@@ -84,7 +92,7 @@ class Install extends Command
                 $this->installFile();
                 $this->installData();
             } else {
-                $this->output->error("指定模块 {$this->name} 未配置安装规则！");
+                $this->output->writeln("指定模块 {$this->name} 未配置安装规则！");
             }
         }
     }
@@ -92,17 +100,17 @@ class Install extends Command
     protected function installFile()
     {
         $data = InstallService::instance()->grenerateDifference($this->rules, $this->ignore);
-        if (empty($data)) $this->output->info('文件比对一致不需更新文件！');
+        if (empty($data)) $this->output->writeln('文件比对一致不需更新文件！');
         else foreach ($data as $file) {
             list($state, $mode, $name) = InstallService::instance()->fileSynchronization($file);
             if ($state) {
-                if ($mode === 'add') $this->output->info("--- 下载 {$name} 添加成功");
-                if ($mode === 'mod') $this->output->info("--- 下载 {$name} 更新成功");
-                if ($mode === 'del') $this->output->info("--- 删除 {$name} 文件成功");
+                if ($mode === 'add') $this->output->writeln("--- 下载 {$name} 添加成功");
+                if ($mode === 'mod') $this->output->writeln("--- 下载 {$name} 更新成功");
+                if ($mode === 'del') $this->output->writeln("--- 删除 {$name} 文件成功");
             } else {
-                if ($mode === 'add') $this->output->error("--- 下载 {$name} 添加失败");
-                if ($mode === 'mod') $this->output->error("--- 下载 {$name} 更新失败");
-                if ($mode === 'del') $this->output->error("--- 删除 {$name} 文件失败");
+                if ($mode === 'add') $this->output->writeln("--- 下载 {$name} 添加失败");
+                if ($mode === 'mod') $this->output->writeln("--- 下载 {$name} 更新失败");
+                if ($mode === 'del') $this->output->writeln("--- 删除 {$name} 文件失败");
             }
         }
     }

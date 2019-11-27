@@ -53,10 +53,9 @@ class ProcessService extends Service
     public function create($command)
     {
         if ($this->iswin()) {
-            $command = __DIR__ . "/bin/console.exe {$command}";
-            pclose(popen("wmic process call create \"{$command}\"", 'r'));
+            $this->exec(__DIR__ . "/bin/console.exe {$command}");
         } else {
-            pclose(popen("{$command} &", 'r'));
+            $this->exec("{$command} &");
         }
         return $this;
     }
@@ -70,14 +69,14 @@ class ProcessService extends Service
     {
         $list = [];
         if ($this->iswin()) {
-            $result = $this->exec('wmic process where name="php.exe" get processid,CommandLine');
-            foreach (explode("\n", $result) as $line) if ($this->_issub($line, $command) !== false) {
+            $lines = $this->exec('wmic process where name="php.exe" get processid,CommandLine', true);
+            foreach ($lines as $line) if ($this->_issub($line, $command) !== false) {
                 $attr = explode(' ', $this->_space($line));
                 $list[] = ['pid' => array_pop($attr), 'cmd' => join(' ', $attr)];
             }
         } else {
-            $result = $this->exec("ps ax|grep -v grep|grep \"{$command}\"");
-            foreach (explode("\n", $result) as $line) if ($this->_issub($line, $command) !== false) {
+            $lines = $this->exec("ps ax|grep -v grep|grep \"{$command}\"", true);
+            foreach ($lines as $line) if ($this->_issub($line, $command) !== false) {
                 $attr = explode(' ', $this->_space($line));
                 list($pid) = [array_shift($attr), array_shift($attr), array_shift($attr), array_shift($attr)];
                 $list[] = ['pid' => $pid, 'cmd' => join(' ', $attr)];
@@ -104,11 +103,13 @@ class ProcessService extends Service
     /**
      * 立即执行指令
      * @param string $command 执行指令
-     * @return string
+     * @param boolean $outarr 返回类型
+     * @return string|array
      */
-    public function exec($command)
+    public function exec($command, $outarr = false)
     {
-        return shell_exec($command);
+        exec($command, $output);
+        return $outarr ? $output : join("\n", $output);
     }
 
     /**

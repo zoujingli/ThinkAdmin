@@ -60,7 +60,7 @@ abstract class Helper
      * @param string|Query $dbQuery
      * @return Query
      */
-    protected function buildQuery($dbQuery)
+    protected function buildQuery($dbQuery): Query
     {
         return is_string($dbQuery) ? $this->app->db->name($dbQuery) : $dbQuery;
     }
