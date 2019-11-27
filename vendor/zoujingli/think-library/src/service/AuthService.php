@@ -53,7 +53,7 @@ class AuthService extends Service
         if (empty($nodes[$real]['isauth'])) {
             return empty($nodes[$real]['islogin']) ? true : $this->isLogin();
         } else {
-            return in_array($real, $this->app->session->get('user.nodes'));
+            return in_array($real, (array)$this->app->session->get('user.nodes'));
         }
     }
 

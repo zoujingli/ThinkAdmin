@@ -72,7 +72,22 @@ abstract class Controller extends \stdClass
         if (in_array($this->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
         }
+        // 初始化控制器
         $this->initialize();
+        // 控制器后置操作
+        if (method_exists($this, $method = "_{$this->request->action()}_{$this->request->method()}")) {
+            $this->app->hook->add('app_end', function (\think\Response $response) use ($method) {
+                try {
+                    [ob_start(), ob_clean()];
+                    call_user_func_array([$this, $method], $this->request->route());
+                } catch (HttpResponseException $exception) {
+                    $end = $exception->getResponse();
+                    $response->code($end->getCode())->header($end->getHeader())->content($response->getContent() . $end->getContent());
+                } catch (\Exception $exception) {
+                    throw $exception;
+                }
+            });
+        }
     }
 
     /**
@@ -82,22 +97,6 @@ abstract class Controller extends \stdClass
     protected function initialize()
     {
         return $this;
-    }
-
-    /**
-     * Controller destruct
-     * @throws \Exception
-     */
-    public function __destruct()
-    {
-        $method = "_{$this->request->action()}_{$this->request->method()}";
-        if (method_exists($this, $method)) try {
-            call_user_func_array([$this, $method], $this->request->route());
-        } catch (HttpResponseException $exception) {
-            $exception->getResponse()->send();
-        } catch (\Exception $exception) {
-            throw $exception;
-        }
     }
 
     /**
