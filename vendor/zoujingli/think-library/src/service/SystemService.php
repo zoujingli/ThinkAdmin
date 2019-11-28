@@ -86,10 +86,14 @@ class SystemService extends Service
      * @param mixed $default 默认值
      * @return mixed
      */
-    public function getData($name, $default = null)
+    public function getData($name, $default = [])
     {
-        $value = Db::name('SystemData')->where(['name' => $name])->value('value');
-        return empty($value) ? $default : unserialize($value);
+        try {
+            $value = Db::name('SystemData')->where(['name' => $name])->value('value');
+            return empty($value) ? $default : unserialize($value);
+        } catch (\Exception $e) {
+            return $default;
+        }
     }
 
     /**
