@@ -20,10 +20,10 @@ use think\admin\Service;
 
 /**
  * 系统权限管理服务
- * Class AuthService
+ * Class AdminService
  * @package think\admin\service
  */
-class AuthService extends Service
+class AdminService extends Service
 {
 
     /**
@@ -85,7 +85,7 @@ class AuthService extends Service
     /**
      * 初始化用户权限
      * @param boolean $force 强刷权限
-     * @return AuthService
+     * @return AdminService
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

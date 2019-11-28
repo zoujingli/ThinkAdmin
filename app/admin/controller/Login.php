@@ -16,7 +16,7 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
-use think\admin\service\AuthService;
+use think\admin\service\AdminService;
 use think\admin\service\CaptchaService;
 use think\admin\service\SystemService;
 
@@ -36,7 +36,7 @@ class Login extends Controller
     public function index()
     {
         if ($this->app->request->isGet()) {
-            if (AuthService::instance()->isLogin()) {
+            if (AdminService::instance()->isLogin()) {
                 $this->redirect(url('@admin')->build());
             } else {
                 $this->title = '系统登录';

@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------
 
 use think\admin\extend\HttpExtend;
-use think\admin\service\AuthService;
+use think\admin\service\AdminService;
 use think\admin\service\QueueService;
 use think\admin\service\SystemService;
 use think\admin\service\TokenService;
@@ -42,7 +42,7 @@ if (!function_exists('auth')) {
      */
     function auth($node)
     {
-        return AuthService::instance()->check($node);
+        return AdminService::instance()->check($node);
     }
 }
 

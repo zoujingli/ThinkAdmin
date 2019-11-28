@@ -15,7 +15,7 @@
 
 namespace think\admin;
 
-use think\admin\service\AuthService;
+use think\admin\service\AdminService;
 use think\middleware\SessionInit;
 use think\Request;
 use think\Service;
@@ -51,9 +51,9 @@ class Library extends Service
                 // 访问模式及访问权限检查
                 if ($request->isOptions()) {
                     return response()->code(204)->header($header);
-                } elseif (AuthService::instance()->check()) {
+                } elseif (AdminService::instance()->check()) {
                     return $next($request)->code(200)->header($header);
-                } elseif (AuthService::instance()->isLogin()) {
+                } elseif (AdminService::instance()->isLogin()) {
                     return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！'])->header($header);
                 } else {
                     return json(['code' => 0, 'msg' => '抱歉，需要登录获取访问权限！', 'url' => url('@admin/login')->build()])->header($header);

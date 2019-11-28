@@ -253,7 +253,7 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
         'think\\admin\\queue\\StateQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/StateQueue.php',
         'think\\admin\\queue\\StopQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/StopQueue.php',
         'think\\admin\\queue\\WorkQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/WorkQueue.php',
-        'think\\admin\\service\\AuthService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/AuthService.php',
+        'think\\admin\\service\\AdminService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/AdminService.php',
         'think\\admin\\service\\CaptchaService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/CaptchaService.php',
         'think\\admin\\service\\ExpressService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/ExpressService.php',
         'think\\admin\\service\\InstallService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/InstallService.php',

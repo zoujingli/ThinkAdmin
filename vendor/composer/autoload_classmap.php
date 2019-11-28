@@ -162,7 +162,7 @@ return array(
     'think\\admin\\queue\\StateQueue' => $vendorDir . '/zoujingli/think-library/src/queue/StateQueue.php',
     'think\\admin\\queue\\StopQueue' => $vendorDir . '/zoujingli/think-library/src/queue/StopQueue.php',
     'think\\admin\\queue\\WorkQueue' => $vendorDir . '/zoujingli/think-library/src/queue/WorkQueue.php',
-    'think\\admin\\service\\AuthService' => $vendorDir . '/zoujingli/think-library/src/service/AuthService.php',
+    'think\\admin\\service\\AdminService' => $vendorDir . '/zoujingli/think-library/src/service/AdminService.php',
     'think\\admin\\service\\CaptchaService' => $vendorDir . '/zoujingli/think-library/src/service/CaptchaService.php',
     'think\\admin\\service\\ExpressService' => $vendorDir . '/zoujingli/think-library/src/service/ExpressService.php',
     'think\\admin\\service\\InstallService' => $vendorDir . '/zoujingli/think-library/src/service/InstallService.php',
