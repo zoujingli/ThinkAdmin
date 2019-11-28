@@ -22,7 +22,7 @@ use think\console\Input;
 use think\console\Output;
 
 /**
- * 获取当前框架版本号
+ * 获取框架版本号
  * Class Version
  * @package think\admin\command
  */

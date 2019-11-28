@@ -29,7 +29,7 @@ ThinkLibrary 6.0 是针对 ThinkPHP 6.0 版本封装的一套工具类库，方�
  
  部分代码来自互联网，若有异议可以联系作者进行删除。
  
- * 在线体验地址：https://demo.thinkadmin.top （账号和密码都是 admin ）
+ * 在线体验地址：https://v6.thinkadmin.top （账号和密码都是 admin ）
  * Gitee仓库地址：https://gitee.com/zoujingli/ThinkLibrary
  * GitHub仓库地址：https://github.com/zoujingli/ThinkLibrary
 
@@ -129,7 +129,7 @@ $this->_page($dbQuery, $isPage, $isDisplay, $total);
 $this->_query($dbQuery)->like('name,title')->equal('status')->page();
 
 // 对列表查询器进行二次处理
-$query = $this->_query($dbQuery)->like('name,title')->equal('status');
+$query = $this->_query($dbQuery)->like('name, title')->equal('status');
 $db = $query->db(); // @todo 这里可以对db进行操作
 $this->_page($db); // 显示列表分页
 ```
@@ -149,43 +149,35 @@ $this->_deleted($dbQuery);
 #### 禁用启用处理
 ```php
 // 数据禁用处理
-$this->_save($dbQuery,['status'=>'0']);
+$this->_save($dbQuery, ['status'=>'0']);
 
 // 数据启用处理
-$this->_save($dbQuery,['status'=>'1']);
+$this->_save($dbQuery, ['status'=>'1']);
 ```
 
 #### 文件存储组件（ oss 及 qiniu 需要配置参数）
 ```php
 
 // 配置默认存储方式    
-sysconf('storage_type','文件存储类型');
-
-// OSS存储配置
-sysconf('storage_oss_domain', '文件访问域名');
-sysconf('storage_oss_keyid', '接口授权AppId');
-sysconf('storage_oss_secret', '接口授权AppSecret');
-sysconf('storage_oss_bucket', '文件存储空间名称');
-sysconf('storage_oss_is_https', '文件HTTP访问协议');
-sysconf('storage_oss_endpoint', '文件存储节点域名');
+sysconf('storage.type','文件存储类型');
 
 // 七牛云存储配置
-sysconf('storage_qiniu_region', '文件存储节点');
-sysconf('storage_qiniu_domain', '文件访问域名');
-sysconf('storage_qiniu_bucket', '文件存储空间名称');
-sysconf('storage_qiniu_is_https', '文件HTTP访问协议');
-sysconf('storage_qiniu_access_key', '接口授权AccessKey');
-sysconf('storage_qiniu_secret_key', '接口授权SecretKey');
+sysconf('storage.qiniu_region', '文件存储节点');
+sysconf('storage.qiniu_domain', '文件访问域名');
+sysconf('storage.qiniu_bucket', '文件存储空间名称');
+sysconf('storage.qiniu_is_https', '文件HTTP访问协议');
+sysconf('storage.qiniu_access_key', '接口授权AccessKey');
+sysconf('storage.qiniu_secret_key', '接口授权SecretKey');
 
 
 // 生成文件名称(链接url或文件md5)
-$filename = \think\admin\Storage::name($url,$ext,$prv,$fun);
+$filename = \think\admin\Storage::name($url, $ext, $prv, $fun);
 
 // 获取文件内容（自动存储方式）
 $result = \think\admin\Storage::get($filename)
 
 // 保存内容到文件（自动存储方式）
-boolean \think\admin\Storage::save($filename,$content);
+boolean \think\admin\Storage::save($filename, $content);
 
 // 判断文件是否存在
 boolean \think\admin\Storage::has($filename);
@@ -194,18 +186,15 @@ boolean \think\admin\Storage::has($filename);
 $result = \think\admin\Storage::info($filename);
 
 //指定存储类型（调用方法）
-boolean \think\admin\Storage::instance('local')->save($filename,$content);
-boolean \think\admin\Storage::instance('qiniu')->save($filename,$content);
+boolean \think\admin\Storage::instance('local')->save($filename, $content);
+boolean \think\admin\Storage::instance('qiniu')->save($filename, $content);
 
-$result = \think\admin\Storage::instance('oss')->get($filename);
 $result = \think\admin\Storage::instance('local')->get($filename);
 $result = \think\admin\Storage::instance('qiniu')->get($filename);
 
-boolean \think\admin\Storage::instance('oss')->has($filename);
 boolean \think\admin\Storage::instance('local')->has($filename);
 boolean \think\admin\Storage::instance('qiniu')->has($filename);
 
-$resutl = \think\admin\Storage::instance('oss')->info($filename);
 $resutl = \think\admin\Storage::instance('local')->info($filename);
 $resutl = \think\admin\Storage::instance('qiniu')->info($filename);
 ```
@@ -213,24 +202,22 @@ $resutl = \think\admin\Storage::instance('qiniu')->info($filename);
 #### 通用数据保存
 ```php
 // 指定关键列更新（$where 为扩展条件）
-boolean data_save($dbQuery,$data,'pkname',$where);
+boolean data_save($dbQuery, $data, 'pkname', $where);
 ```
 
 #### 通用网络请求
 ```php
 // 发起get请求
-$result = http_get($url,$query,$options);
-$result = \library\tools\Http::get($url,$query,$options);
+$result = http_get($url, $query, $options);
 
 // 发起post请求
-$result = http_post($url,$data,$options);
-$result = \library\tools\Http::post($url,$data,$options);
+$result = http_post($url, $data, $options);
 ```
 
 #### 系统参数配置（基于 system_config 数据表）
 ```php
 // 设置参数
-sysconf($keyname,$keyvalue);
+sysconf($keyname, $keyvalue);
 
 // 获取参数
 $keyvalue = sysconf($kename);
