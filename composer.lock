@@ -783,12 +783,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "4a616d7c4852a46b4d4038a6715c9d62303e5d99"
+                "reference": "8d5bb74a4956debf5a37fa1e04d81723910cb889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/4a616d7c4852a46b4d4038a6715c9d62303e5d99",
-                "reference": "4a616d7c4852a46b4d4038a6715c9d62303e5d99",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/8d5bb74a4956debf5a37fa1e04d81723910cb889",
+                "reference": "8d5bb74a4956debf5a37fa1e04d81723910cb889",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -832,7 +832,7 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://framework.thinkadmin.top",
-            "time": "2019-11-28T08:04:45+00:00"
+            "time": "2019-11-28T09:07:59+00:00"
         }
     ],
     "packages-dev": [],

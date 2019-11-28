@@ -139,13 +139,17 @@ class SystemService extends Service
     /**
      * 读取数据内容
      * @param string $name
-     * @param string $default
+     * @param mixed $default
      * @return mixed
      */
-    public function getData($name, $default = null)
+    public function getData($name, $default = [])
     {
-        $value = $this->app->db->name('SystemData')->where(['name' => $name])->value('value', null);
-        return is_null($value) ? $default : unserialize($value);
+        try {
+            $value = $this->app->db->name('SystemData')->where(['name' => $name])->value('value', null);
+            return is_null($value) ? $default : unserialize($value);
+        } catch (\Exception $e) {
+            return $default;
+        }
     }
 
     /**
