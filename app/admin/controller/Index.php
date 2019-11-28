@@ -120,7 +120,7 @@ class Index extends Controller
         try {
             $this->app->console->call('optimize:route');
             $this->app->console->call('optimize:schema');
-            $this->success('网站压缩加速成功！');
+            $this->success('网站缓存加速成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
