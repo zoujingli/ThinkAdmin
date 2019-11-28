@@ -79,8 +79,8 @@ class NodeService extends Service
         static $data = [];
         if (empty($force)) {
             if (count($data) > 0) return $data;
-            $data = (array)$this->app->cache->get('system_auth_node');
-            if (count($data) > 0) return $data;
+            $data = $this->app->cache->get('system_auth_node');
+            if (is_array($data) && count($data) > 0) return $data;
         } else {
             $data = [];
         }
