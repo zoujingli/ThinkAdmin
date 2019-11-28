@@ -746,8 +746,6 @@ $(function () {
         this.value = (parseFloat(this.value) || 0).toFixed(fiexd);
     });
 
-   
-
     /*! 图片加载异常处理 */
     document.addEventListener('error', function (e, elem) {
         elem = e.target;
