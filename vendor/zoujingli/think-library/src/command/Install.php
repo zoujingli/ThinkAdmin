@@ -72,7 +72,7 @@ class Install extends Command
     protected function configure()
     {
         $this->setName('xadmin:install');
-        $this->setDescription("[安装]安装或更新指定模块");
+        $this->setDescription("[系统]安装或更新指定模块");
         $this->addArgument('name', Argument::OPTIONAL, '模块名称', '');
     }
 
