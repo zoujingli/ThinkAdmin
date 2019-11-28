@@ -80,6 +80,7 @@ class Library extends Service
             'think\admin\queue\QueryQueue',
             'think\admin\queue\ListenQueue',
             'think\admin\command\Install',
+            'think\admin\command\Version',
         ]);
     }
 }

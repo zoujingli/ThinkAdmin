@@ -22,8 +22,8 @@ use think\db\Query;
  * 搜索条件处理器
  * Class QueryHelper
  * @package think\admin\helper
- * @see \think\Db\Query
- * @mixin \think\Db\Query
+ * @see \think\db\Query
+ * @mixin \think\db\Query
  */
 class QueryHelper extends Helper
 {
@@ -211,8 +211,8 @@ class QueryHelper extends Helper
 
     /**
      * 实例化分页管理器
-     * @param boolean $isPage 是否启用分页
-     * @param boolean $isDisplay 是否渲染模板
+     * @param boolean $page 是否启用分页
+     * @param boolean $display 是否渲染模板
      * @param boolean $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @return mixed
@@ -220,8 +220,8 @@ class QueryHelper extends Helper
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function page($isPage = true, $isDisplay = true, $total = false, $limit = 0)
+    public function page($page = true, $display = true, $total = false, $limit = 0)
     {
-        return PageHelper::instance()->init($this->query, $isPage, $isDisplay, $total, $limit);
+        return PageHelper::instance()->init($this->query, $page, $display, $total, $limit);
     }
 }

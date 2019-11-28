@@ -35,13 +35,13 @@ class DeleteHelper extends Helper
      * 数据对象主键名称
      * @var string
      */
-    protected $pkField;
+    protected $field;
 
     /**
      * 数据对象主键值
      * @var string
      */
-    protected $pkValue;
+    protected $value;
 
     /**
      * 逻辑器初始化
@@ -55,11 +55,11 @@ class DeleteHelper extends Helper
     {
         $this->where = $where;
         $this->query = $this->buildQuery($dbQuery);
-        $this->pkField = empty($field) ? $this->query->getPk() : $field;
-        $this->pkValue = $this->app->request->post($this->pkField, null);
+        $this->field = empty($field) ? $this->query->getPk() : $field;
+        $this->value = $this->app->request->post($this->field, null);
         // 主键限制处理
-        if (!isset($this->where[$this->pkField]) && is_string($this->pkValue)) {
-            $this->query->whereIn($this->pkField, explode(',', $this->pkValue));
+        if (!isset($this->where[$this->field]) && is_string($this->value)) {
+            $this->query->whereIn($this->field, explode(',', $this->value));
         }
         // 前置回调处理
         if (false === $this->controller->callback('_delete_filter', $this->query, $where)) {

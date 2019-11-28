@@ -235,6 +235,7 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
         'think\\admin\\Service' => __DIR__ . '/..' . '/zoujingli/think-library/src/Service.php',
         'think\\admin\\Storage' => __DIR__ . '/..' . '/zoujingli/think-library/src/Storage.php',
         'think\\admin\\command\\Install' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Install.php',
+        'think\\admin\\command\\Version' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Version.php',
         'think\\admin\\extend\\CodeExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/CodeExtend.php',
         'think\\admin\\extend\\DataExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/DataExtend.php',
         'think\\admin\\extend\\ExcelExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/ExcelExtend.php',

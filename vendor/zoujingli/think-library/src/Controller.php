@@ -180,7 +180,7 @@ abstract class Controller extends \stdClass
      * @param string|Query $dbQuery
      * @return QueryHelper
      */
-    protected function _query($dbQuery)
+    protected function _query($dbQuery): QueryHelper
     {
         return QueryHelper::instance()->init($dbQuery);
     }

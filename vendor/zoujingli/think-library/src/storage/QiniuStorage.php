@@ -172,7 +172,7 @@ class QiniuStorage extends Storage
      */
     public function upload()
     {
-        $protocol = request()->isSsl() ? 'https' : 'http';
+        $protocol = $this->app->request->isSsl() ? 'https' : 'http';
         switch (sysconf('storage.qiniu_region')) {
             case '华东':
                 return "{$protocol}://up.qiniup.com";

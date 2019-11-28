@@ -144,6 +144,7 @@ return array(
     'think\\admin\\Service' => $vendorDir . '/zoujingli/think-library/src/Service.php',
     'think\\admin\\Storage' => $vendorDir . '/zoujingli/think-library/src/Storage.php',
     'think\\admin\\command\\Install' => $vendorDir . '/zoujingli/think-library/src/command/Install.php',
+    'think\\admin\\command\\Version' => $vendorDir . '/zoujingli/think-library/src/command/Version.php',
     'think\\admin\\extend\\CodeExtend' => $vendorDir . '/zoujingli/think-library/src/extend/CodeExtend.php',
     'think\\admin\\extend\\DataExtend' => $vendorDir . '/zoujingli/think-library/src/extend/DataExtend.php',
     'think\\admin\\extend\\ExcelExtend' => $vendorDir . '/zoujingli/think-library/src/extend/ExcelExtend.php',

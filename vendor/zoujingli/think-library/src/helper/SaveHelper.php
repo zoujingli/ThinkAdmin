@@ -41,13 +41,13 @@ class SaveHelper extends Helper
      * 数据对象主键名称
      * @var array|string
      */
-    protected $pkField;
+    protected $field;
 
     /**
      * 数据对象主键值
      * @var string
      */
-    protected $pkValue;
+    protected $value;
 
     /**
      * 逻辑器初始化
@@ -63,12 +63,12 @@ class SaveHelper extends Helper
         $this->where = $where;
         $this->query = $this->buildQuery($dbQuery);
         $this->data = empty($data) ? $this->app->request->post() : $data;
-        $this->pkField = empty($field) ? $this->query->getPk() : $field;
-        $this->pkValue = $this->app->request->post($this->pkField, null);
+        $this->field = empty($field) ? $this->query->getPk() : $field;
+        $this->value = $this->app->request->post($this->field, null);
         // 主键限制处理
-        if (!isset($this->where[$this->pkField]) && is_string($this->pkValue)) {
-            $this->query->whereIn($this->pkField, explode(',', $this->pkValue));
-            if (isset($this->data)) unset($this->data[$this->pkField]);
+        if (!isset($this->where[$this->field]) && is_string($this->value)) {
+            $this->query->whereIn($this->field, explode(',', $this->value));
+            if (isset($this->data)) unset($this->data[$this->field]);
         }
         // 前置回调处理
         if (false === $this->controller->callback('_save_filter', $this->query, $this->data)) {
