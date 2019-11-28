@@ -57,10 +57,11 @@
                 <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("admin/auth/apply")}?id={$vo.id}'>授 权</a>
                 {/if}
 
-                {if $vo.status eq 1 and auth("admin/auth/forbid")}
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('admin/auth/forbid')}">禁 用</a>
-                {elseif $vo.status eq 0 and auth("admin/auth/resume")}
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('admin/auth/resume')}">启 用</a>
+                {if $vo.status eq 1 and auth("admin/auth/state")}
+                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('admin/auth/state')}">禁 用</a>
+                {/if}
+                {if $vo.status eq 0 and auth("admin/auth/state")}
+                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('admin/auth/state')}">启 用</a>
                 {/if}
 
                 {if auth("admin/auth/remove")}
