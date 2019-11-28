@@ -22,11 +22,5 @@
     "psr-4": {
       "library\\": "src"
     }
-  },
-  "repositories": {
-    "packagist": {
-      "type": "composer",
-      "url": "https://mirrors.aliyun.com/composer"
-    }
   }
 }

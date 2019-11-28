@@ -316,7 +316,7 @@ class ComposerStaticInitbf5dd43c242f2a86b1513b16fb281176
         'library\\queue\\StateQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/StateQueue.php',
         'library\\queue\\StopQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/StopQueue.php',
         'library\\queue\\WorkQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/WorkQueue.php',
-        'library\\service\\AuthService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/AuthService.php',
+        'library\\service\\AdminService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/AdminService.php',
         'library\\service\\CaptchaService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/CaptchaService.php',
         'library\\service\\MenuService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/MenuService.php',
         'library\\service\\NodeService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/NodeService.php',
