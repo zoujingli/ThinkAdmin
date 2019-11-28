@@ -16,7 +16,7 @@
 namespace app\admin\controller;
 
 use library\Controller;
-use library\service\AuthService;
+use library\service\AdminService;
 use library\service\CaptchaService;
 use library\service\SystemService;
 use think\Db;
@@ -41,7 +41,7 @@ class Login extends Controller
     public function index()
     {
         if (Request::isGet()) {
-            if (AuthService::instance()->isLogin()) {
+            if (AdminService::instance()->isLogin()) {
                 $this->redirect('@admin');
             } else {
                 $this->title = '系统登录';
@@ -77,7 +77,7 @@ class Login extends Controller
             ]);
             session('user', $user);
             session('loginskey', null);
-            AuthService::instance()->apply(true);
+            AdminService::instance()->apply(true);
             sysoplog('系统管理', '用户登录系统成功');
             $this->success('登录成功', url('@admin'));
         }

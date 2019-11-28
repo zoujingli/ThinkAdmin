@@ -16,7 +16,7 @@
 namespace app\admin\controller;
 
 use library\Controller;
-use library\service\AuthService;
+use library\service\AdminService;
 use think\Db;
 
 /**
@@ -62,7 +62,7 @@ class Auth extends Controller
         $action = strtolower(input('action', ''));
         if ($action === 'get') {
             $checkeds = Db::name('SystemAuthNode')->where($map)->column('node');
-            $this->success('获取权限节点成功！', AuthService::instance()->getTree($checkeds));
+            $this->success('获取权限节点成功！', AdminService::instance()->getTree($checkeds));
         } elseif ($action === 'save') {
             list($post, $data) = [$this->request->post(), []];
             foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
@@ -70,7 +70,7 @@ class Auth extends Controller
             }
             Db::name('SystemAuthNode')->where($map)->delete();
             Db::name('SystemAuthNode')->insertAll($data);
-            AuthService::instance()->apply(true);
+            AdminService::instance()->apply(true);
             $this->success('权限授权更新成功！', 'javascript:history.back()');
         } else {
             $this->title = '权限配置节点';
@@ -115,7 +115,7 @@ class Auth extends Controller
     public function refresh()
     {
         try {
-            AuthService::instance()->apply(true);
+            AdminService::instance()->apply(true);
             $this->success('刷新系统授权成功！');
         } catch (\think\exception\HttpResponseException $exception) {
             throw  $exception;

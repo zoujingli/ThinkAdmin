@@ -75,7 +75,7 @@ class MenuService extends Service
             else {
                 $node = join('/', array_slice(explode('/', preg_replace('/[\W]/', '/', $menu['url'])), 0, 3));
                 $menu['url'] = url($menu['url']) . (empty($menu['params']) ? '' : "?{$menu['params']}");
-                if (!AuthService::instance()->check($node)) unset($menus[$key]);
+                if (!AdminService::instance()->check($node)) unset($menus[$key]);
             }
         }
         return $menus;

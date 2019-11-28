@@ -215,7 +215,7 @@ return array(
     'library\\queue\\StateQueue' => $vendorDir . '/zoujingli/think-library/src/queue/StateQueue.php',
     'library\\queue\\StopQueue' => $vendorDir . '/zoujingli/think-library/src/queue/StopQueue.php',
     'library\\queue\\WorkQueue' => $vendorDir . '/zoujingli/think-library/src/queue/WorkQueue.php',
-    'library\\service\\AuthService' => $vendorDir . '/zoujingli/think-library/src/service/AuthService.php',
+    'library\\service\\AdminService' => $vendorDir . '/zoujingli/think-library/src/service/AdminService.php',
     'library\\service\\CaptchaService' => $vendorDir . '/zoujingli/think-library/src/service/CaptchaService.php',
     'library\\service\\MenuService' => $vendorDir . '/zoujingli/think-library/src/service/MenuService.php',
     'library\\service\\NodeService' => $vendorDir . '/zoujingli/think-library/src/service/NodeService.php',

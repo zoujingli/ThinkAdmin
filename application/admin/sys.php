@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------
 
 use library\File;
-use library\service\AuthService;
+use library\service\AdminService;
 use library\service\CaptchaService;
 use library\service\SystemService;
 use think\Db;
@@ -31,7 +31,7 @@ if (!function_exists('auth')) {
      */
     function auth($node)
     {
-        return AuthService::instance()->check($node);
+        return AdminService::instance()->check($node);
     }
 }
 
@@ -141,9 +141,9 @@ if (!function_exists('base64_image')) {
 
 // 访问权限检查中间键
 Middleware::add(function (Request $request, \Closure $next) {
-    if (AuthService::instance()->check()) {
+    if (AdminService::instance()->check()) {
         return $next($request);
-    } elseif (AuthService::instance()->isLogin()) {
+    } elseif (AdminService::instance()->isLogin()) {
         return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！']);
     } else {
         return json(['code' => 0, 'msg' => '抱歉，需要登录获取访问权限！', 'url' => url('@admin/login')]);

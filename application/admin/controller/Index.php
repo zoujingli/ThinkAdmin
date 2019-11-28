@@ -16,7 +16,7 @@
 namespace app\admin\controller;
 
 use library\Controller;
-use library\service\AuthService;
+use library\service\AdminService;
 use library\service\MenuService;
 use library\tools\Data;
 use think\Console;
@@ -41,7 +41,7 @@ class Index extends Controller
     public function index()
     {
         $this->title = '系统管理后台';
-        $auth = AuthService::instance()->apply(true);
+        $auth = AdminService::instance()->apply(true);
         $this->menus = MenuService::instance()->getTree();
         if (empty($this->menus) && !$auth->isLogin()) {
             $this->redirect('@admin/login');
@@ -76,7 +76,7 @@ class Index extends Controller
         if (intval($id) !== intval(session('user.id'))) {
             $this->error('只能修改当前用户的密码！');
         }
-        if (!AuthService::instance()->isLogin()) {
+        if (!AdminService::instance()->isLogin()) {
             $this->error('需要登录才能操作哦！');
         }
         if ($this->request->isGet()) {
@@ -122,7 +122,7 @@ class Index extends Controller
      */
     public function info($id = 0)
     {
-        if (!AuthService::instance()->isLogin()) {
+        if (!AdminService::instance()->isLogin()) {
             $this->error('需要登录才能操作哦！');
         }
         $this->applyCsrfToken();

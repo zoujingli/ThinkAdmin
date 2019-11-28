@@ -24,7 +24,6 @@ use think\Db;
 use think\db\Query;
 use think\facade\Cache;
 use think\facade\Middleware;
-use think\facade\Response;
 use think\Request;
 
 if (!function_exists('p')) {
@@ -243,7 +242,7 @@ if (PHP_SAPI !== 'cli') {
             $header['Access-Control-Expose-Headers'] = 'User-Token-Csrf';
         }
         if ($request->isOptions()) {
-            return Response::create()->code(204)->header($header);
+            return response()->code(204)->header($header);
         } else {
             return $next($request)->header($header);
         }
