@@ -76,7 +76,6 @@ class Login extends Controller
         $this->app->session->set('user', $user);
         sysoplog('用户登录', "用户登录系统后台成功");
         $this->success('登录成功', url('@admin')->build());
-
     }
 
     /**
