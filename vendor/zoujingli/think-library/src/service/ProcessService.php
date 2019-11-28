@@ -55,7 +55,7 @@ class ProcessService extends Service
         if ($this->iswin()) {
             $this->exec(__DIR__ . "/bin/console.exe {$command}");
         } else {
-            $this->exec("{$command} &");
+            $this->exec("{$command} > /dev/null &");
         }
         return $this;
     }
