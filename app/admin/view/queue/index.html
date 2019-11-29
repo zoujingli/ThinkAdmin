@@ -19,6 +19,41 @@
 {block name="content"}
 
 <div class="think-box-shadow">
+    <div class="layui-row layui-col-space15 portal-block-container">
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="portal-block-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2)">
+                <div>待处理</div>
+                <div>{$total.pre|default=0}</div>
+                <div>待处理的任务数量</div>
+            </div>
+            <i class="portal-block-icon layui-icon layui-icon-star"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="portal-block-item nowrap" style="background:linear-gradient(-125deg,#ff7d7d,#fb2c95)">
+                <div>处理中</div>
+                <div>{$totals.dos|default=0}</div>
+                <div>处理中的任务数量</div>
+            </div>
+            <i class="portal-block-icon layui-icon layui-icon-log"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="portal-block-item nowrap" style="background:linear-gradient(-113deg,#c543d8,#925cc3)">
+                <div>处理完成</div>
+                <div>{$total.oks|default=0}</div>
+                <div>处理完成的任务数量</div>
+            </div>
+            <i class="portal-block-icon layui-icon layui-icon-release"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="portal-block-item nowrap" style="background:linear-gradient(-141deg,#ecca1b,#f39526)">
+                <div>处理失败</div>
+                <div>{$total.ers|default=0}</div>
+                <div>处理失败的任务数量</div>
+            </div>
+            <i class="portal-block-icon layui-icon layui-icon-engine"></i>
+        </div>
+    </div>
+
     {include file='queue/index_search'}
     <table class="layui-table margin-top-15" lay-skin="line">
         {notempty name='list'}
