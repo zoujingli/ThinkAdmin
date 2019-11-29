@@ -154,6 +154,11 @@ class Index extends Controller
     /**
      * 修改用户资料
      * @param integer $id 会员ID
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function info($id = 0)
     {

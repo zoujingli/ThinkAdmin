@@ -22,8 +22,6 @@ use think\Db;
  * 系统用户管理
  * Class User
  * @package app\admin\controller
- * @author Anyon <zoujingli@qq.com>
- * @date 2017/02/15 18:12
  */
 class User extends Controller
 {
@@ -51,7 +49,11 @@ class User extends Controller
 
     /**
      * 用户授权管理
-     * @return mixed
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function auth()
     {
@@ -61,7 +63,11 @@ class User extends Controller
 
     /**
      * 添加系统用户
-     * @return mixed
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function add()
     {
@@ -71,7 +77,11 @@ class User extends Controller
 
     /**
      * 编辑系统用户
-     * @return mixed
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
      */
     public function edit()
     {
@@ -130,6 +140,8 @@ class User extends Controller
 
     /**
      * 禁用系统用户
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function forbid()
     {
@@ -142,6 +154,8 @@ class User extends Controller
 
     /**
      * 启用系统用户
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function resume()
     {
@@ -151,6 +165,8 @@ class User extends Controller
 
     /**
      * 删除系统用户
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {

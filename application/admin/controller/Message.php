@@ -47,6 +47,8 @@ class Message extends Controller
 
     /**
      * 设置消息状态
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function read()
     {
@@ -84,6 +86,8 @@ class Message extends Controller
 
     /**
      * 删除系统消息
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function remove()
     {
