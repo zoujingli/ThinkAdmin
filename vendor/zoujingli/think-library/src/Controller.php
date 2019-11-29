@@ -27,6 +27,7 @@ use think\App;
 use think\Container;
 use think\db\Query;
 use think\exception\HttpResponseException;
+use think\Response;
 
 /**
  * 标准控制器基类
@@ -68,6 +69,7 @@ abstract class Controller extends \stdClass
     {
         $this->app = $app;
         $this->request = $app->request;
+        // 控制器注入容器
         Container::set('library\Controller', $this);
         if (in_array($this->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
@@ -76,13 +78,17 @@ abstract class Controller extends \stdClass
         $this->initialize();
         // 控制器后置操作
         if (method_exists($this, $method = "_{$this->request->action()}_{$this->request->method()}")) {
-            $this->app->hook->add('app_end', function (\think\Response $response) use ($method) {
+            $this->app->hook->add('app_end', function (Response $response) use ($method) {
                 try {
                     [ob_start(), ob_clean()];
-                    call_user_func_array([$this, $method], $this->request->route());
+                    $return = call_user_func_array([$this, $method], $this->request->route());
+                    if (is_string($return)) {
+                        $response->content($response->getContent() . $return);
+                    } elseif ($return instanceof Response) {
+                        $this->__mergeResponse($response, $return);
+                    }
                 } catch (HttpResponseException $exception) {
-                    $end = $exception->getResponse();
-                    $response->code($end->getCode())->header($end->getHeader())->content($response->getContent() . $end->getContent());
+                    $this->__mergeResponse($response, $exception->getResponse());
                 } catch (\Exception $exception) {
                     throw $exception;
                 }
@@ -91,12 +97,23 @@ abstract class Controller extends \stdClass
     }
 
     /**
+     * 合并请求对象
+     * @param Response $response 目标响应对象
+     * @param Response $source 数据源响应对象
+     * @return Response
+     */
+    private function __mergeResponse(Response $response, Response $source)
+    {
+        $response->code($source->getCode())->content($response->getContent() . $source->getContent());
+        foreach ($source->getHeader() as $name => $value) if (!empty($name) && is_string($name)) $response->header($name, $value);
+        return $response;
+    }
+
+    /**
      * 控制器初始化
-     * @return $this
      */
     protected function initialize()
     {
-        return $this;
     }
 
     /**
@@ -213,8 +230,8 @@ abstract class Controller extends \stdClass
     /**
      * 快捷分页逻辑器
      * @param string|Query $dbQuery
-     * @param boolean $isPage 是否启用分页
-     * @param boolean $isDisplay 是否渲染模板
+     * @param boolean $page 是否启用分页
+     * @param boolean $display 是否渲染模板
      * @param boolean $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @return array
@@ -224,16 +241,16 @@ abstract class Controller extends \stdClass
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    protected function _page($dbQuery, $isPage = true, $isDisplay = true, $total = false, $limit = 0)
+    protected function _page($dbQuery, $page = true, $display = true, $total = false, $limit = 0)
     {
-        return PageHelper::instance()->init($dbQuery, $isPage, $isDisplay, $total, $limit);
+        return PageHelper::instance()->init($dbQuery, $page, $display, $total, $limit);
     }
 
     /**
      * 快捷表单逻辑器
      * @param string|Query $dbQuery
-     * @param string $tpl 模板名称
-     * @param string $pkField 指定数据对象主键
+     * @param string $template 模板名称
+     * @param string $field 指定数据对象主键
      * @param array $where 额外更新条件
      * @param array $data 表单扩展数据
      * @return array|boolean
@@ -243,24 +260,24 @@ abstract class Controller extends \stdClass
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    protected function _form($dbQuery, $tpl = '', $pkField = '', $where = [], $data = [])
+    protected function _form($dbQuery, $template = '', $field = '', $where = [], $data = [])
     {
-        return FormHelper::instance()->init($dbQuery, $tpl, $pkField, $where, $data);
+        return FormHelper::instance()->init($dbQuery, $template, $field, $where, $data);
     }
 
     /**
      * 快捷更新逻辑器
      * @param string|Query $dbQuery
      * @param array $data 表单扩展数据
-     * @param string $pkField 数据对象主键
+     * @param string $field 数据对象主键
      * @param array $where 额外更新条件
      * @return boolean
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    protected function _save($dbQuery, $data = [], $pkField = '', $where = [])
+    protected function _save($dbQuery, $data = [], $field = '', $where = [])
     {
-        return SaveHelper::instance()->init($dbQuery, $data, $pkField, $where);
+        return SaveHelper::instance()->init($dbQuery, $data, $field, $where);
     }
 
     /**
@@ -289,16 +306,16 @@ abstract class Controller extends \stdClass
     /**
      * 快捷删除逻辑器
      * @param string|Query $dbQuery
-     * @param string $pkField 数据对象主键
+     * @param string $field 数据对象主键
      * @param array $where 额外更新条件
      * @return boolean|null
      * @return boolean|null
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    protected function _delete($dbQuery, $pkField = '', $where = [])
+    protected function _delete($dbQuery, $field = '', $where = [])
     {
-        return DeleteHelper::instance()->init($dbQuery, $pkField, $where);
+        return DeleteHelper::instance()->init($dbQuery, $field, $where);
     }
 
 }
