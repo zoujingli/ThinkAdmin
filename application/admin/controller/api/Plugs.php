@@ -24,14 +24,9 @@ use library\File;
  */
 class Plugs extends Controller
 {
-
-    /**
-     * Plugs constructor.
-     * @throws \think\Exception
-     */
-    public function __construct()
+    
+    protected function initialize()
     {
-        parent::__construct();
         if (!\app\admin\service\AuthService::isLogin()) {
             $this->error('访问授权失败，请重新登录授权再试！');
         }
