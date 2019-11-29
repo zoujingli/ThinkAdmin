@@ -81,7 +81,7 @@
             <td class='text-left nowrap'>
                 计划执行：{$vo.exec_time|format_datetime}<br>
                 {if !empty($vo.enter_time) && !empty($vo.outer_time)}
-                开始时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{$vo.outer_time-$vo.enter_time}</b> 秒 ）
+                执行时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{$vo.outer_time-$vo.enter_time}</b> 秒 ）
                 {else}
                 创建时间：{$vo.create_at|format_datetime}
                 {/if}
