@@ -44,10 +44,15 @@
                 <span class="color-desc">任务指令：{$vo.command|default=''}</span>
             </td>
             <td class='text-left nowrap'>
-                创建时间：{$vo.create_at|format_datetime} / {$vo.exec_time|format_datetime}<br>
-                执行时间：{$vo.enter_time|format_datetime} / {$vo.outer_time|format_datetime}
+                计划执行：{$vo.exec_time|format_datetime}<br>
+                {if !empty($vo.enter_time) && !empty($vo.outer_time)}
+                开始时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{$vo.outer_time-$vo.enter_time}</b> 秒 ）
+                {else}
+                创建时间：{$vo.create_at|format_datetime}
+                {/if}
             </td>
             <td class='text-left nowrap'>
+
                 任务状态：{eq name='vo.rscript' value='1'}
                 <span class="layui-badge layui-bg-green margin-right-5">复</span>
                 {else}
@@ -66,6 +71,7 @@
                     <i class="layui-icon font-s12">&#xe669;</i>
                 </a>
                 {/eq}
+
                 {if auth("admin/queue/remove") and in_array($vo.status,[1,3,4])}
                 <a data-action='{:url("remove")}' data-confirm="确定要删除该任务吗？" data-value="id#{$vo.id}" data-tips-text="删除该任务" class='layui-badge layui-bg-red margin-left-5'>
                     <i class="layui-icon">&#xe640;</i>
