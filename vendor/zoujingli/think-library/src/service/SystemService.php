@@ -177,7 +177,7 @@ class SystemService extends Service
     public function putDebug($data, $new = false, $file = null)
     {
         if (is_null($file)) $file = $this->app->getRuntimePath() . date('Ymd') . '.txt';
-        $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true)) . PHP_EOL;
+        $str = (is_string($data) ? $data : ((is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true))) . PHP_EOL;
         $new ? file_put_contents($file, $str) : file_put_contents($file, $str, FILE_APPEND);
     }
 
