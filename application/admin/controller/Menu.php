@@ -106,20 +106,18 @@ class Menu extends Controller
     protected function _form_filter(&$vo)
     {
         if ($this->request->isGet()) {
-            $menus = Db::name($this->table)->where(['status' => '1'])->order('sort desc,id asc')->select();
-            $menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
-            foreach ($this->menus = Data::arr2table($menus) as $key => &$menu) {
-                if (substr_count($menu['path'], '-') > 3) unset($this->menus[$key]); # 移除三级以下的菜单
-                elseif (isset($vo['pid']) && $vo['pid'] !== '' && $cur = "-{$vo['pid']}-{$vo['id']}") {
-                    if (stripos("{$menu['path']}-", "{$cur}-") !== false || $menu['path'] === $cur) unset($this->menus[$key]); # 移除与自己相关联的菜单
-                }
-            }
-            // 选择自己的上级菜单
-            if (empty($vo['pid']) && $this->request->get('pid', '0')) {
-                $vo['pid'] = $this->request->get('pid', '0');
-            }
             // 读取系统功能节点
             $this->nodes = MenuService::instance()->getList();
+            // 选择自己的上级菜单
+            if (empty($vo['pid']) && $this->request->get('pid', '0')) $vo['pid'] = $this->request->get('pid', '0');
+            // 列出可选上级菜单
+            $menus = Db::name($this->table)->where(['status' => '1'])->order('sort desc,id asc')->column('id,pid,url,title');
+            $this->menus = Data::arr2table(array_merge($menus, [['id' => '0', 'pid' => '-1', 'url' => '#', 'title' => '顶部菜单']]));
+            if (isset($vo['id'])) foreach ($this->menus as $key => $menu) if ($menu['id'] === $vo['id']) $vo = $menu;
+            foreach ($this->menus as $key => &$menu) {
+                if ($menu['spt'] >= 3 || $menu['url'] !== '#') unset($this->menus[$key]);
+                if (isset($vo['spt']) && $vo['spt'] <= $menu['spt']) unset($this->menus[$key]);
+            }
         }
     }
 

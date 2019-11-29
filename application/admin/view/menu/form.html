@@ -5,7 +5,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">上级菜单</label>
             <div class="layui-input-block">
-                <select name='pid' class='layui-select full-width' lay-ignore>
+                <select name='pid' class='layui-select' lay-search>
                     <!--{foreach $menus as $menu}-->
                     <!--{eq name='menu.id' value='$vo.pid|default=0'}-->
                     <option selected value='{$menu.id}'>{$menu.spl|raw}{$menu.title}</option>
@@ -74,6 +74,7 @@
 {block name='script'}
 <script>
     require(['jquery.autocompleter'], function () {
+        form.render();
         $('[name="icon"]').on('change', function () {
             $(this).parent().next().find('i').get(0).className = this.value
         });
