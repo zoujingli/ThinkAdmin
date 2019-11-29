@@ -4,3 +4,4 @@
 *.log
 runtime
 public/upload
+/nbproject/private/

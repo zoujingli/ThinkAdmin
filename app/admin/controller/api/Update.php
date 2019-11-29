@@ -25,6 +25,7 @@ use think\admin\service\InstallService;
  */
 class Update extends Controller
 {
+
     /**
      * 获取文件列表
      */
@@ -41,9 +42,13 @@ class Update extends Controller
     public function get()
     {
         $this->file = $this->app->getRootPath() . decode(input('encode', '0'));
-        file_exists($this->file) ? $this->success('读取文件成功！', [
-            'content' => base64_encode(file_get_contents($this->file)),
-        ]) : $this->error('读取文件内容失败！');
+        if (file_exists($this->file)) {
+            $this->success('读取文件成功！', [
+                'content' => base64_encode(file_get_contents($this->file)),
+            ]);
+        } else {
+            $this->error('读取文件内容失败！');
+        }
     }
 
 }

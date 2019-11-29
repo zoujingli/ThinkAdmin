@@ -25,6 +25,7 @@ use think\admin\Storage;
  */
 class Upload extends Controller
 {
+
     /**
      * 上传安全检查
      * @login true
@@ -122,4 +123,5 @@ class Upload extends Controller
             $this->error(lang($e->getMessage()));
         }
     }
+
 }

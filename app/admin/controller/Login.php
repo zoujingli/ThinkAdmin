@@ -27,6 +27,7 @@ use think\admin\service\SystemService;
  */
 class Login extends Controller
 {
+
     /**
      * 后台登录入口
      * @throws \think\db\exception\DataNotFoundException

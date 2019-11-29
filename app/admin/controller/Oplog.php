@@ -86,4 +86,5 @@ class Oplog extends Controller
         $this->_applyFormToken();
         $this->_delete($this->table);
     }
+
 }

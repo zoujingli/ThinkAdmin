@@ -24,6 +24,7 @@ use think\admin\Controller;
  */
 class Config extends Controller
 {
+
     /**
      * 绑定数据表
      * @var string
@@ -80,7 +81,9 @@ class Config extends Controller
         if (!empty($post['storage']['allow_exts'])) {
             $exts = array_unique(explode(',', strtolower($post['storage']['allow_exts'])));
             sort($exts);
-            if (in_array('php', $exts)) $this->error('禁止上传可执行文件到本地服务器！');
+            if (in_array('php', $exts)) {
+                $this->error('禁止上传可执行文件到本地服务器！');
+            }
             $post['storage']['allow_exts'] = join(',', $exts);
         }
         foreach ($post as $key => $value) sysconf($key, $value);

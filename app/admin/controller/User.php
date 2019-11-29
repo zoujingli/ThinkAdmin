@@ -111,7 +111,8 @@ class User extends Controller
             // 用户权限处理
             $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
             // 用户账号重复检查
-            if (isset($data['id'])) unset($data['username']);
+            if (isset($data['id']))
+                unset($data['username']);
             elseif ($this->app->db->name($this->table)->where(['username' => $data['username'], 'is_deleted' => '0'])->count() > 0) {
                 $this->error("账号{$data['username']}已经存在，请使用其它账号！");
             }
@@ -148,4 +149,5 @@ class User extends Controller
         $this->_applyFormToken();
         $this->_delete($this->table);
     }
+
 }

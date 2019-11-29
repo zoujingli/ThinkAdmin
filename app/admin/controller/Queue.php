@@ -26,6 +26,7 @@ use think\exception\HttpResponseException;
  */
 class Queue extends Controller
 {
+
     /**
      * 绑定数据表
      * @var string
@@ -74,7 +75,9 @@ class Queue extends Controller
      */
     protected function _redo_save_result($state)
     {
-        if ($state) $this->success('重启任务成功！');
+        if ($state) {
+            $this->success('重启任务成功！');
+        }
     }
 
     /**

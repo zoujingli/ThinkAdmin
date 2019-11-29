@@ -25,6 +25,7 @@ use think\admin\service\AdminService;
  */
 class Auth extends Controller
 {
+
     /**
      * 绑定数据表
      * @var string
