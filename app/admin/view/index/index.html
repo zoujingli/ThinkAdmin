@@ -48,27 +48,11 @@
             {if session('user.username')}
             <li class="layui-nav-item">
                 <dl class="layui-nav-child">
-                    <dd lay-unselect>
-                        <a data-modal="{:url('admin/index/info',['id'=>session('user.id')])}">
-                            <i class="layui-icon layui-icon-set-fill margin-right-5"></i> 基本资料
-                        </a>
-                    </dd>
-                    <dd lay-unselect>
-                        <a data-modal="{:url('admin/index/pass',['id'=>session('user.id')])}">
-                            <i class="layui-icon layui-icon-component margin-right-5"></i> 安全设置
-                        </a>
-                    </dd>
-                    <dd lay-unselect>
-                        <a data-modal="{:url('admin/index/optimize')}"><i class="layui-icon layui-icon-template-1 margin-right-5"></i>缓存加速</a>
-                    </dd>
-                    <dd lay-unselect>
-                        <a data-modal="{:url('admin/index/clear')}"><i class="layui-icon layui-icon-fonts-clear margin-right-5"></i>清理缓存</a>
-                    </dd>
-                    <dd lay-unselect>
-                        <a data-load="{:url('admin/login/out')}" data-confirm="确定要退出登录吗？">
-                            <i class="layui-icon layui-icon-release margin-right-5"></i> 退出登录
-                        </a>
-                    </dd>
+                    <dd lay-unselect><a data-modal="{:url('admin/index/info',['id'=>session('user.id')])}"><i class="layui-icon layui-icon-set-fill margin-right-5"></i> 基本资料</a></dd>
+                    <dd lay-unselect><a data-modal="{:url('admin/index/pass',['id'=>session('user.id')])}"><i class="layui-icon layui-icon-component margin-right-5"></i> 安全设置</a></dd>
+                    <dd lay-unselect><a data-modal="{:url('admin/index/optimize')}"><i class="layui-icon layui-icon-template-1 margin-right-5"></i>缓存加速</a></dd>
+                    <dd lay-unselect><a data-modal="{:url('admin/index/clear')}"><i class="layui-icon layui-icon-fonts-clear margin-right-5"></i>清理缓存</a></dd>
+                    <dd lay-unselect><a data-load="{:url('admin/login/out')}" data-confirm="确定要退出登录吗？"><i class="layui-icon layui-icon-release margin-right-5"></i> 退出登录</a></dd>
                 </dl>
                 <a><span><i class="layui-icon layui-icon-username margin-right-5"></i> {:session('user.username')}</span></a>
             </li>
