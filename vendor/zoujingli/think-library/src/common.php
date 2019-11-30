@@ -13,6 +13,7 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+use library\service\TokenService;
 use library\tools\Crypt;
 use library\tools\Csrf;
 use library\tools\Data;
@@ -105,7 +106,7 @@ if (!function_exists('systoken')) {
      */
     function systoken($node = null)
     {
-        $csrf = Csrf::buildFormToken(Node::get($node));
+        $csrf = TokenService::instance()->buildFormToken($node);
         return $csrf['token'];
     }
 }
