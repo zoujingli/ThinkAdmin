@@ -108,7 +108,6 @@ class Auth extends Controller
             }
             $this->app->db->name('SystemAuthNode')->where($map)->delete();
             $this->app->db->name('SystemAuthNode')->insertAll($data);
-            AdminService::instance()->apply(true);
             $this->success('权限授权修改成功！', 'javascript:history.back()');
         } else {
             $this->title = '权限配置节点';
