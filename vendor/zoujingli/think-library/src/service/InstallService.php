@@ -56,8 +56,8 @@ class InstallService extends Service
     protected $ignore = [];
 
     /**
-     * 服务初始化
-     * @return static
+     * 初始化服务
+     * @return $this
      */
     public function initialize(): Service
     {

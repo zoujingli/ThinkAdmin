@@ -50,22 +50,26 @@ class WorkQueue extends Command
     {
         $this->setName('xtask:_work')->setDescription('[执行]创建执行任务的进程');
         $this->addArgument('code', Argument::OPTIONAL, '任务编号');
-        $this->addArgument('splt', Argument::OPTIONAL, '指令结束符');
+        $this->addArgument('spts', Argument::OPTIONAL, '指令结束符');
     }
 
     /**
-     * 任务执行
-     * @param Input $input
-     * @param Output $output
+     * @param Input $input 输入对象
+     * @param Output $output 输出对象
      * @throws \think\db\exception\DbException
      */
     protected function execute(Input $input, Output $output)
     {
         try {
+            set_time_limit(0);
             $this->code = trim($input->getArgument('code'));
             if (empty($this->code)) throw new Exception("执行任务需要指定任务编号！");
-            $queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code, 'status' => '2'])->find();
-            if (empty($queue)) throw new Exception("执行任务{$this->code}的信息或状态异常！");;
+            $queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code, 'status' => '1'])->find();
+            if (empty($queue)) throw new Exception("执行任务{$this->code}的信息或状态异常！");
+            // 锁定任务状态
+            $this->app->db->name('SystemQueue')->where(['code' => $this->code])->update([
+                'status' => '2', 'enter_time' => time(), 'exec_desc' => '', 'attempts' => $this->app->db->raw('attempts+1'),
+            ]);
             // 设置进程标题
             if (($process = ProcessService::instance())->iswin()) {
                 $this->setProcessTitle("ThinkAdmin {$process->version()} 执行任务 - {$queue['title']}");

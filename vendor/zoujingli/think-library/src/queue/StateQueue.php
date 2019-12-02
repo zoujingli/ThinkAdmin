@@ -45,9 +45,9 @@ class StateQueue extends Command
         $process = ProcessService::instance();
         $command = $process->think('xtask:listen');
         if (count($result = $process->query($command)) > 0) {
-            $output->writeln("任务监听主进程{$result[0]['pid']}正在运行...");
+            $output->info("任务监听主进程{$result[0]['pid']}正在运行...");
         } else {
-            $output->writeln("任务监听主进程没有运行哦!");
+            $output->warning("任务监听主进程没有运行哦!");
         }
     }
 }

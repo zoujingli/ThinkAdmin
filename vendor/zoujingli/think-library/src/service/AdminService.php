@@ -85,7 +85,7 @@ class AdminService extends Service
     /**
      * 初始化用户权限
      * @param boolean $force 强刷权限
-     * @return AdminService
+     * @return $this
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

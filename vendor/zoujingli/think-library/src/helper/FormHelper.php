@@ -62,7 +62,7 @@ class FormHelper extends Helper
      * @param string $field 指定数据主键
      * @param array $where 额外更新条件
      * @param array $data 表单扩展数据
-     * @return array|boolean
+     * @return array|boolean|mixed
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

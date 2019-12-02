@@ -148,17 +148,17 @@
     },
     {
         "name": "opis/closure",
-        "version": "3.4.1",
-        "version_normalized": "3.4.1.0",
+        "version": "3.5.1",
+        "version_normalized": "3.5.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/opis/closure.git",
-            "reference": "e79f851749c3caa836d7ccc01ede5828feb762c7"
+            "reference": "93ebc5712cdad8d5f489b500c59d122df2e53969"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/opis/closure/zipball/e79f851749c3caa836d7ccc01ede5828feb762c7",
-            "reference": "e79f851749c3caa836d7ccc01ede5828feb762c7",
+            "url": "https://api.github.com/repos/opis/closure/zipball/93ebc5712cdad8d5f489b500c59d122df2e53969",
+            "reference": "93ebc5712cdad8d5f489b500c59d122df2e53969",
             "shasum": "",
             "mirrors": [
                 {
@@ -174,11 +174,11 @@
             "jeremeamia/superclosure": "^2.0",
             "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
         },
-        "time": "2019-10-19T18:38:51+00:00",
+        "time": "2019-11-29T22:36:02+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.3.x-dev"
+                "dev-master": "3.5.x-dev"
             }
         },
         "installation-source": "dist",
@@ -805,12 +805,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "ba4fe10a27cff9fb5bbd2a4673e0c65fb3040e62"
+            "reference": "82a60f7d4b2362e27318e696a231a124e5c2c793"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/ba4fe10a27cff9fb5bbd2a4673e0c65fb3040e62",
-            "reference": "ba4fe10a27cff9fb5bbd2a4673e0c65fb3040e62",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/82a60f7d4b2362e27318e696a231a124e5c2c793",
+            "reference": "82a60f7d4b2362e27318e696a231a124e5c2c793",
             "shasum": "",
             "mirrors": [
                 {
@@ -826,7 +826,7 @@
             "ext-json": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2019-11-29T01:31:35+00:00",
+        "time": "2019-12-02T02:46:31+00:00",
         "type": "library",
         "extra": {
             "think": {

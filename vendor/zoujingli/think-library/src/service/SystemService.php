@@ -85,7 +85,7 @@ class SystemService extends Service
      * @param array $data 需要保存或更新的数据
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
-     * @return bool|int|mixed|string
+     * @return boolean|integer
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

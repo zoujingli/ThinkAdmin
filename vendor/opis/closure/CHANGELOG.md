@@ -1,6 +1,19 @@
 CHANGELOG
 ---------
 
+### v3.5.1, 2019.11.30
+
+- Bugfix. See #47
+
+### v3.5.0, 2019.11.29
+
+- Added support for short closures (arrow functions)
+- Added `isShortClosure` method to `Opis\Closure\ReflectionClosure`
+
+### v3.4.2, 2019.11.29
+
+- Added `stream_set_option()`
+
 ### v3.4.1, 2019.10.19
 
 - Fixed a [bug](https://github.com/opis/closure/issues/40) that prevented serialization to work correctly.

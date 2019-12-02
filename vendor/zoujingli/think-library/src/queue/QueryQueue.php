@@ -37,8 +37,8 @@ class QueryQueue extends Command
 
     /**
      * 执行相关进程查询
-     * @param Input $input
-     * @param Output $output
+     * @param Input $input 输入对象
+     * @param Output $output 输出对象
      */
     protected function execute(Input $input, Output $output)
     {

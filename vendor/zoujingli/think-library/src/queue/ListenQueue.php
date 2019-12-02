@@ -37,14 +37,15 @@ class ListenQueue extends Command
 
     /**
      * 执行进程守护监听
-     * @param Input $input
-     * @param Output $output
+     * @param Input $input 输入对象
+     * @param Output $output 输出对象
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     protected function execute(Input $input, Output $output)
     {
+        set_time_limit(0);
         $this->app->db->name('SystemQueue')->count();
         if (($process = ProcessService::instance())->iswin()) {
             $this->setProcessTitle("ThinkAdmin 监听主进程 {$process->version()}");
@@ -52,18 +53,18 @@ class ListenQueue extends Command
         $output->writeln('============ 任务监听中 ============');
         while (true) {
             $where = [['status', '=', '1'], ['exec_time', '<=', time()]];
-            $this->app->db->name('SystemQueue')->where($where)->order('exec_time asc')->limit(100)->select()->each(function ($vo) use ($process, $output) {
+            $this->app->db->name('SystemQueue')->where($where)->order('exec_time asc')->limit(100)->select()->each(function ($vo) use ($process) {
                 try {
-                    $this->update($vo['code'], ['status' => '2', 'enter_time' => time(), 'exec_desc' => '', 'attempts' => $vo['attempts'] + 1]);
-                    if ($process->query($command = $process->think("xtask:_work {$vo['code']} -"))) {
-                        $output->writeln("正在执行 -> [{$vo['code']}] {$vo['title']}");
+                    $command = $process->think("xtask:_work {$vo['code']} -");
+                    if (count($process->query($command)) > 0) {
+                        $this->output->warning("正在执行 -> [{$vo['code']}] {$vo['title']}");
                     } else {
                         $process->create($command);
-                        $output->writeln("创建成功 -> [{$vo['code']}] {$vo['title']}");
+                        $this->output->info("开始执行 -> [{$vo['code']}] {$vo['title']}");
                     }
                 } catch (\Exception $e) {
                     $this->update($vo['code'], ['status' => '4', 'outer_time' => time(), 'exec_desc' => $e->getMessage()]);
-                    $output->writeln("创建失败 -> [{$vo['code']}] {$vo['title']}，{$e->getMessage()}");
+                    $this->output->error("执行失败 -> [{$vo['code']}] {$vo['title']}，{$e->getMessage()}");
                 }
             });
             sleep(1);
