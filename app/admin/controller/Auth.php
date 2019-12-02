@@ -98,9 +98,8 @@ class Auth extends Controller
         $map = ['auth' => input('id', '0')];
         $action = strtolower(input('action', ''));
         if ($action === 'get') {
-            $this->app->cache->delete('system_auth_node');
             $checkeds = $this->app->db->name('SystemAuthNode')->where($map)->column('node');
-            $this->success('获取权限节点成功！', AdminService::instance()->getTree($checkeds));
+            $this->success('获取权限节点成功！', AdminService::instance()->clearCache()->getTree($checkeds));
         } elseif ($action === 'save') {
             list($post, $data) = [$this->request->post(), []];
             foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {

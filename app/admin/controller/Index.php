@@ -37,12 +37,12 @@ class Index extends Controller
      */
     public function index()
     {
-        $this->title = '系统管理后台';
-        $login = AdminService::instance()->apply(true)->isLogin();
+        $this->login = AdminService::instance()->apply(true)->isLogin();
         $this->menus = MenuService::instance()->getTree();
-        if (empty($this->menus) && empty($login)) {
+        if (empty($this->menus) && empty($this->login)) {
             $this->redirect(url('@admin/login'));
         } else {
+            $this->title = '系统管理后台';
             $this->fetch();
         }
     }

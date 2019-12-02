@@ -108,4 +108,14 @@ class AdminService extends Service
         return $this;
     }
 
+    /**
+     * 清理节点缓存
+     * @return $this
+     */
+    public function clearCache()
+    {
+        $this->app->cache->delete('system_auth_node');
+        return $this;
+    }
+
 }

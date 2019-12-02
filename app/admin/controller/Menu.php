@@ -17,6 +17,7 @@ namespace app\admin\controller;
 
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
+use think\admin\service\AdminService;
 use think\admin\service\MenuService;
 
 /**
@@ -97,7 +98,7 @@ class Menu extends Controller
     {
         if ($this->request->isGet()) {
             // 清理权限节点
-            $this->app->cache->delete('system_auth_node');
+            AdminService::instance()->clearCache();
             // 读取系统功能节点
             $this->nodes = MenuService::instance()->getList();
             // 选择自己的上级菜单
