@@ -96,6 +96,8 @@ class Menu extends Controller
     protected function _form_filter(&$vo)
     {
         if ($this->request->isGet()) {
+            // 清理权限节点
+            $this->app->cache->delete('system_auth_node');
             // 读取系统功能节点
             $this->nodes = MenuService::instance()->getList();
             // 选择自己的上级菜单
