@@ -71,6 +71,6 @@ abstract class Helper
      */
     public static function instance(): Helper
     {
-        return Container::getInstance()->make(static::class);
+        return Container::getInstance()->invokeClass(static::class);
     }
 }
