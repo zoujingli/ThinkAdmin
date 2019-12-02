@@ -526,4 +526,25 @@
 [data-tips-image] {
   cursor: zoom-in !important;
 }
+.portal-block-container {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.portal-block-container .portal-block-icon {
+  top: 45%;
+  right: 8%;
+  font-size: 65px;
+  position: absolute;
+  color: rgba(255, 255, 255, 0.4);
+}
+.portal-block-container .portal-block-item {
+  color: #fff;
+  line-height: 4em;
+  padding: 15px 25px;
+  position: relative;
+}
+.portal-block-container .portal-block-item > div:nth-child(2) {
+  font-size: 46px;
+  line-height: 46px;
+}
 /*# sourceMappingURL=console.custom.css.map */
