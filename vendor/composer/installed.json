@@ -177,8 +177,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.35",
-        "version_normalized": "3.4.35.0",
+        "version": "v3.4.36",
+        "version_normalized": "3.4.36.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
@@ -395,6 +395,56 @@
         ]
     },
     {
+        "name": "zoujingli/think-library",
+        "version": "v5.1.x-dev",
+        "version_normalized": "5.1.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zoujingli/ThinkLibrary.git",
+            "reference": "f9467058cbd283adf2ff97ec94713586162b83d9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/f9467058cbd283adf2ff97ec94713586162b83d9",
+            "reference": "f9467058cbd283adf2ff97ec94713586162b83d9",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "aliyuncs/oss-sdk-php": "^2.3",
+            "ext-curl": "*",
+            "ext-gd": "*",
+            "ext-iconv": "*",
+            "ext-json": "*",
+            "ext-openssl": "*",
+            "php": ">=5.4",
+            "qiniu/php-sdk": "^7.2",
+            "topthink/framework": "5.1.*"
+        },
+        "time": "2019-12-02T03:40:05+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "src/common.php"
+            ],
+            "psr-4": {
+                "library\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "ThinkPHP Basic Development Library",
+        "homepage": "http://framework.thinkadmin.top"
+    },
+    {
         "name": "zoujingli/wechat-developer",
         "version": "v1.2.15",
         "version_normalized": "1.2.15.0",
@@ -516,55 +566,5 @@
             "WeChatOpenDeveloper",
             "wechat"
         ]
-    },
-    {
-        "name": "zoujingli/think-library",
-        "version": "v5.1.x-dev",
-        "version_normalized": "5.1.9999999.9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "378899fdcddb3d7217783ba3ea8f2eca1767df12"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/378899fdcddb3d7217783ba3ea8f2eca1767df12",
-            "reference": "378899fdcddb3d7217783ba3ea8f2eca1767df12",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
-        },
-        "require": {
-            "aliyuncs/oss-sdk-php": "^2.3",
-            "ext-curl": "*",
-            "ext-gd": "*",
-            "ext-iconv": "*",
-            "ext-json": "*",
-            "ext-openssl": "*",
-            "php": ">=5.4",
-            "qiniu/php-sdk": "^7.2",
-            "topthink/framework": "5.1.*"
-        },
-        "time": "2019-11-30T05:43:13+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "src/common.php"
-            ],
-            "psr-4": {
-                "library\\": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "ThinkPHP Basic Development Library",
-        "homepage": "http://framework.thinkadmin.top"
     }
 ]
