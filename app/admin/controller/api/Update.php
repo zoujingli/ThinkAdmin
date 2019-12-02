@@ -25,17 +25,6 @@ use think\admin\service\InstallService;
  */
 class Update extends Controller
 {
-
-    /**
-     * 获取文件列表
-     */
-    public function tree()
-    {
-        $this->rules = unserialize($this->request->post('rules', 'a:0:{}', ''));
-        $this->ignore = unserialize($this->request->post('ignore', 'a:0:{}', ''));
-        $this->success('获取文件列表成功！', InstallService::instance()->getList($this->rules, $this->ignore));
-    }
-
     /**
      * 读取文件内容
      */
@@ -49,6 +38,16 @@ class Update extends Controller
         } else {
             $this->error('读取文件内容失败！');
         }
+    }
+
+    /**
+     * 获取文件列表
+     */
+    public function tree()
+    {
+        $this->rules = unserialize($this->request->post('rules', 'a:0:{}', ''));
+        $this->ignore = unserialize($this->request->post('ignore', 'a:0:{}', ''));
+        $this->success('获取文件列表成功！', InstallService::instance()->getList($this->rules, $this->ignore));
     }
 
 }
