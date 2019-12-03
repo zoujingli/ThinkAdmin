@@ -81,7 +81,7 @@
             <td class='text-left nowrap'>
                 计划时间：{$vo.exec_time|format_datetime}<br>
                 {if in_array($vo.status,['3','4'])}
-                执行时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{:round($vo.outer_time-$vo.enter_time,4)}</b> 秒 ）
+                执行时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{:sprintf("%.4f",$vo.outer_time-$vo.enter_time)}</b> 秒 ）
                 {else}
                 创建时间：{$vo.create_at|format_datetime}
                 {/if}
