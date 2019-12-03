@@ -2,12 +2,12 @@
 
 {block name="button"}
 
-{if auth("admin/auth/add")}
+{if auth("add")}
 <button data-modal='{:url("add")}' data-title="添加权限" class='layui-btn layui-btn-sm layui-btn-primary'>添加权限</button>
 {/if}
 
-{if auth("admin/auth/remove")}
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('admin/auth/remove')}" data-confirm="确定要删除这些权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除权限</button>
+{if auth("remove")}
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除这些权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除权限</button>
 {/if}
 
 {/block}
@@ -48,24 +48,25 @@
             </td>
             <td class='text-center nowrap'>
 
-                {if auth("admin/auth/edit")}
+                {if auth("edit")}
                 <span class="text-explode">|</span>
-                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑权限" data-modal='{:url("admin/auth/edit")}?id={$vo.id}'>编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑权限" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 {/if}
 
-                {if auth("admin/auth/apply")}
-                <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("admin/auth/apply")}?id={$vo.id}'>授 权</a>
+                {if auth("apply")}
+                <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("apply")}?id={$vo.id}'>授 权</a>
                 {/if}
 
-                {if $vo.status eq 1 and auth("admin/auth/state")}
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('admin/auth/state')}">禁 用</a>
-                {/if}
-                {if $vo.status eq 0 and auth("admin/auth/state")}
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('admin/auth/state')}">启 用</a>
+                {if $vo.status eq 1 and auth("state")}
+                <a class="layui-btn layui-btn-warm layui-btn-sm" data-confirm="确定禁用该权限吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
                 {/if}
 
-                {if auth("admin/auth/remove")}
-                <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('admin/auth/remove')}">删 除</a>
+                {if $vo.status eq 0 and auth("state")}
+                <a class="layui-btn layui-btn-warm layui-btn-sm" data-confirm="确定启用该权限吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
+                {/if}
+
+                {if auth("remove")}
+                <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除权限吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                 {/if}
 
             </td>

@@ -55,9 +55,10 @@
                 {/if}
 
                 {if $vo.status eq 1 and auth("state")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
-                {elseif $vo.status eq 0 and auth("state")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-confirm="确定要禁用该用户吗?" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
+                {/if}
+                {if $vo.status eq 0 and auth("state")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-confirm="确定要启用该用户吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
                 {/if}
 
                 {if auth("remove")}
