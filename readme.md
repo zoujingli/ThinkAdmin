@@ -62,7 +62,7 @@ public function index(){
   
 ## 框架指令
 
-* 执行 `build.cmd` 可更新 `Composer` 插件，会删除并替换 `vendor` 目录
+* 执行 `build.cmd` 可更新 `composer` 插件，会删除并替换 `vendor` 目录
 * 执行 `php think run` 启用本地开发环境，访问 `http://127.0.0.1:8000`
 
 #### 1. 线上代码更新
