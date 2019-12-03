@@ -61,10 +61,10 @@ CREATE TABLE `system_config`  (
 -- ----------------------------
 -- Records of system_config
 -- ----------------------------
-INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
-INSERT INTO `system_config` VALUES ('base', 'site_icon', 'http://static.ctolog.com//Fhx3kJQtSMjq26w96rAIb97tnGAO');
 INSERT INTO `system_config` VALUES ('base', 'app_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES ('base', 'app_version', 'v6.0');
+INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
+INSERT INTO `system_config` VALUES ('base', 'site_icon', 'http://static.ctolog.com//Fhx3kJQtSMjq26w96rAIb97tnGAO');
 INSERT INTO `system_config` VALUES ('base', 'miitbeian', '粤ICP备16006642号-2');
 INSERT INTO `system_config` VALUES ('base', 'site_copy', '©版权所有 2014-2020 楚才科技');
 INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
