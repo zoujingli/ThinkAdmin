@@ -94,7 +94,7 @@ CREATE TABLE `system_data`  (
 DROP TABLE IF EXISTS `system_menu`;
 CREATE TABLE `system_menu`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `pid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '父ID',
+  `pid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT 'PID',
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '名称',
   `node` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '节点代码',
   `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '菜单图标',
