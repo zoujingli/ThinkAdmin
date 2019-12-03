@@ -80,8 +80,10 @@
             </td>
             <td class='text-left nowrap'>
                 计划时间：{$vo.exec_time|format_datetime}<br>
-                {if in_array($vo.status,['3','4'])}
+                {if $vo.status eq 3 or $vo.status eq 4}
                 执行时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{:sprintf("%.4f",$vo.outer_time-$vo.enter_time)}</b> 秒 ）
+                {elseif $vo.status eq 2}
+                开始时间：{$vo.enter_time|format_datetime}
                 {else}
                 创建时间：{$vo.create_at|format_datetime}
                 {/if}
