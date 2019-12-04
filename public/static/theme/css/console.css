@@ -306,9 +306,6 @@ label.think-radio {
   background-size: cover;
   vertical-align: middle;
 }
-.layui-badge {
-  line-height: 20px;
-}
 /* 页面布局 - 全局 */
 .layui-layout > .layui-side {
   top: 50px;
@@ -1114,6 +1111,16 @@ label.think-radio {
   line-height: 100px;
   margin-bottom: 40px;
   background-color: #E90D24;
+}
+.input-right-icon {
+  top: 0;
+  right: 0;
+  width: 38px;
+  height: 38px;
+  display: inline-block;
+  position: absolute;
+  text-align: center;
+  line-height: 38px;
 }
 /** 加载进度 */
 .pace-inactive {
