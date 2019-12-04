@@ -17,7 +17,6 @@ namespace think\admin;
 
 use think\App;
 use think\Container;
-use think\Exception;
 
 /**
  * 文件存储引擎管理
@@ -69,7 +68,7 @@ abstract class Storage
      * @param string $method 方法名称
      * @param array $arguments 调用参数
      * @return mixed
-     * @throws Exception
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -79,7 +78,7 @@ abstract class Storage
         if (method_exists($class = self::instance(), $method)) {
             return call_user_func_array([$class, $method], $arguments);
         } else {
-            throw new Exception("method not exists: " . get_class($class) . "->{$method}()");
+            throw new \think\Exception("method not exists: " . get_class($class) . "->{$method}()");
         }
     }
 
@@ -87,7 +86,7 @@ abstract class Storage
      * 设置文件驱动名称
      * @param string $name 驱动名称
      * @return static
-     * @throws Exception
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -98,7 +97,7 @@ abstract class Storage
         if (class_exists($object = "think\\admin\\storage\\{$class}Storage")) {
             return Container::getInstance()->make($object)->initialize();
         } else {
-            throw new Exception("File driver [{$class}] does not exist.");
+            throw new \think\Exception("File driver [{$class}] does not exist.");
         }
     }
 
@@ -110,7 +109,7 @@ abstract class Storage
      * @param string $fun 名称规则方法
      * @return string
      */
-    public static function name($url, $ext = '', $pre = '', $fun = 'md5')
+    public static function name($url, $ext = '', $pre = '', $fun = 'md5'): string
     {
         empty($ext) && $ext = pathinfo($url, 4);
         empty($ext) || $ext = trim($ext, '.\\/');
@@ -122,10 +121,10 @@ abstract class Storage
     /**
      * 根据文件后缀获取文件MINE
      * @param array $exts 文件后缀
-     * @param array $mime 文件MINE信息
+     * @param array $mime 文件信息
      * @return string
      */
-    public static function mime($exts, $mime = [])
+    public static function mime($exts, $mime = []): string
     {
         $mimes = self::mimes();
         foreach (is_string($exts) ? explode(',', $exts) : $exts as $e) {
@@ -135,7 +134,7 @@ abstract class Storage
     }
 
     /**
-     * 获取所有文件扩展的MINES
+     * 获取所有文件的信息
      * @return array
      */
     public static function mimes(): array

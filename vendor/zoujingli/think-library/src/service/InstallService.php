@@ -59,7 +59,7 @@ class InstallService extends Service
      * 初始化服务
      * @return $this
      */
-    public function initialize(): Service
+    protected function initialize(): Service
     {
         // 应用框架版本
         $this->version = $this->app->config->get('app.thinkadmin_ver');
