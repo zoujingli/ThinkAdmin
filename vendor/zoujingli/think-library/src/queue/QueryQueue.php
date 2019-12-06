@@ -42,8 +42,8 @@ class QueryQueue extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $process = ProcessService::instance();
-        $result = $process->query($process->think("xtask:"));
+        $service = ProcessService::instance();
+        $result = $service->query($service->think("xtask:"));
         if (count($result) > 0) foreach ($result as $item) {
             $output->writeln("{$item['pid']}\t{$item['cmd']}");
         } else {

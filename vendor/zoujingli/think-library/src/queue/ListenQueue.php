@@ -36,7 +36,7 @@ class ListenQueue extends Command
     }
 
     /**
-     * 执行进程守护监听
+     * 启动进程守护监听
      * @param Input $input 输入对象
      * @param Output $output 输出对象
      * @throws \think\db\exception\DataNotFoundException

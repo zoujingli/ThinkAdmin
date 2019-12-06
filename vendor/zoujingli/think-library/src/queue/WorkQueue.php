@@ -54,6 +54,7 @@ class WorkQueue extends Command
     }
 
     /**
+     * 执行指令的任务
      * @param Input $input 输入对象
      * @param Output $output 输出对象
      * @throws \think\db\exception\DbException

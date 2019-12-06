@@ -225,3 +225,26 @@ if (!function_exists('format_datetime')) {
         }
     }
 }
+
+if (!function_exists('enbase64url')) {
+    /**
+     * Base64安全URL编码
+     * @param string $string
+     * @return string
+     */
+    function enbase64url(string $string): string
+    {
+        return rtrim(strtr(base64_encode($string), '+/', '-_'), '=');
+    }
+}
+if (!function_exists('debase64url')) {
+    /**
+     * Base64安全URL解码
+     * @param string $string
+     * @return string
+     */
+    function debase64url(string $string): string
+    {
+        return base64_decode(str_pad(strtr($string, '-_', '+/'), strlen($string) % 4, '=', STR_PAD_RIGHT));
+    }
+}

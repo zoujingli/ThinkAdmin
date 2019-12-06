@@ -42,7 +42,7 @@ abstract class Service
     }
 
     /**
-     * 服务初始化
+     * 初始化服务
      * @return $this
      */
     protected function initialize(): Service

@@ -43,12 +43,11 @@ class StopQueue extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $process = ProcessService::instance();
-        $command = $process->think('xtask:');
-        if (count($result = $process->query($command)) < 1) {
+        $service = ProcessService::instance();
+        if (count($result = $service->query($service->think('xtask:'))) < 1) {
             $output->warning("没有需要结束的任务进程哦！");
         } else foreach ($result as $item) {
-            $process->close($item['pid']);
+            $service->close($item['pid']);
             $output->info("发送结束进程{$item['pid']}信号成功！");
         }
     }

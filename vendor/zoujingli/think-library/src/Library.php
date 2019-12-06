@@ -38,7 +38,9 @@ class Library extends Service
             }
         } else {
             // 注册会话中间键
-            $this->app->middleware->add(SessionInit::class);
+            if ($this->app->request->request('not_init_session', 0) == 0) {
+                $this->app->middleware->add(SessionInit::class);
+            }
             // 注册访问中间键
             $this->app->middleware->add(function (Request $request, \Closure $next) {
                 $header = [];

@@ -44,14 +44,14 @@ class StartQueue extends Command
     protected function execute(Input $input, Output $output)
     {
         $this->app->db->name('SystemQueue')->count();
-        $process = ProcessService::instance();
-        $command = $process->think("xtask:listen");
-        if (count($result = $process->query($command)) > 0) {
+        $service = ProcessService::instance();
+        $command = $service->think("xtask:listen");
+        if (count($result = $service->query($command)) > 0) {
             $output->info("监听主进程{$result['0']['pid']}已经启动！");
         } else {
-            $process->create($command);
+            $service->create($command);
             sleep(1);
-            if (count($result = $process->query($command)) > 0) {
+            if (count($result = $service->query($command)) > 0) {
                 $output->info("监听主进程{$result['0']['pid']}启动成功！");
             } else {
                 $output->error('监听主进程创建失败！');
