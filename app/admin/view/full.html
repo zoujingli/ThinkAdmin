@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=0.4">
+    <link rel="shortcut icon" href="{:sysconf('site_icon')}">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/awesome/fonts.css?at={:date('md')}">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css?at={:date('md')}">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/console.css?at={:date('md')}">
+    {block name="style"}{/block}
+    <script>window.ROOT_URL = '__ROOT__';</script>
+    <script src="__ROOT__/static/plugs/jquery/pace.min.js"></script>
+</head>
+
+<body>
+{block name='body'}
+<!-- 主体内容 开始 -->
+{block name='content'}{/block}
+<!-- 主体内容 结束 -->
+{/block}
+<script src="__ROOT__/static/plugs/layui/layui.all.js"></script>
+<script src="__ROOT__/static/plugs/require/require.js"></script>
+<script src="__ROOT__/static/admin.js"></script>
+{block name='script'}{/block}
+</body>
+
+</html>

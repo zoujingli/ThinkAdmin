@@ -668,8 +668,8 @@ $(function () {
     });
 
     /*! 注册 data-iframe 事件行为 */
-    $body.on('click', '[data-iframe]', function (index) {
-        index = $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口');
+    $body.on('click', '[data-iframe]', function (index, href) {
+        index = $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口', $(this).attr('data-area') || undefined);
         $(this).attr('data-index', index);
     });
 
