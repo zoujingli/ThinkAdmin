@@ -65,6 +65,23 @@ class Fans extends Controller
     }
 
     /**
+     * 同步粉丝数据
+     * @auth true
+     */
+    public function sync()
+    {
+        try {
+            $appid = WechatService::instance()->getAppid();
+            sysqueue('同步粉丝数据', "xsync:fans {$appid} -", 1, [], 0);
+            $this->success('创建任务成功，请等待完成！');
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error("创建任务失败，{$exception->getMessage()}");
+        }
+    }
+
+    /**
      * 批量拉黑粉丝
      * @auth true
      */
