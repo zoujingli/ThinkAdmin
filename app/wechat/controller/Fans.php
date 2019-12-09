@@ -13,51 +13,35 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace app\service\controller;
+namespace app\wechat\controller;
 
 use think\admin\Controller;
 
 /**
- * 开放平台参数配置
- * Class Config
- * @package app\service\controller
+ * 微信粉丝管理
+ * Class Fans
+ * @package app\wechat\controller
  */
-class Config extends Controller
+class Fans extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    protected $table = 'WechatServiceConfig';
+    protected $table = 'wechatFans';
 
     /**
-     * 开放平台配置
+     * 微信粉丝管理
      * @auth true
      * @menu true
-     */
-    public function index()
-    {
-        $this->title = '开放平台参数配置';
-        $this->fetch();
-    }
-
-    /**
-     * 修改开放平台参数
-     * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function edit()
+    public function index()
     {
-        $this->_applyFormToken();
-        if ($this->request->isGet()) {
-            $this->fetch('form');
-        } else {
-            $post = $this->request->post();
-            foreach ($post as $k => $v) sysconf($k, $v);
-            $this->success('参数修改成功！');
-        }
+        $this->title = '微信粉丝管理';
+        $this->_query($this->table)->order('id desc')->page();
     }
 
 }
