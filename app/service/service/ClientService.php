@@ -37,15 +37,22 @@ class ClientService extends WechatService
         list($appid, $appkey) = $arguments;
         $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
         $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
-        $code = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
+        $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
         if (class_exists('Yar_Client')) {
-            $url = "http://127.0.0.1:1231/service/api.client/yar?not_init_session=1&code={$code}";
+            $url = "http://127.0.0.1:1231/service/api.client/yar?not_init_session=1&token={$token}";
             $client = new \Yar_Client($url);
         } else {
-            $url = "http://127.0.0.1:1231/service/api.client/soap?not_init_session=1&code={$code}";
+            $url = "http://127.0.0.1:1231/service/api.client/soap?not_init_session=1&token={$token}";
             $client = new \SoapClient(null, ['location' => $url, 'uri' => "thinkadmin"]);
         }
-        dump($client->getMessage());
+        try {
+            $exception = new \think\Exception($client->getMessage(), $client->getCode());
+        } catch (\Exception $exception) {
+            $exception = null;
+        }
+        if ($exception instanceof \Exception) {
+            throw $exception;
+        }
         return $client;
     }
 

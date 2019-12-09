@@ -72,7 +72,7 @@ class Client extends Controller
             }
             return WechatService::__callStatic($class, [$appid]);
         } catch (\Exception $exception) {
-            return new \Exception($exception->getMessage(), $exception->getCode());
+            return new \Exception($exception->getMessage(), 404);
         }
     }
 }
