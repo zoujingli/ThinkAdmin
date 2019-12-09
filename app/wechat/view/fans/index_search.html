@@ -1,0 +1,59 @@
+<fieldset>
+    <legend>条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">微信昵称</label>
+            <div class="layui-input-inline">
+                <input name="nickname" value="{$Think.get.nickname|default=''}" placeholder="请输入微信昵称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">关注状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="subscribe">
+                    {foreach [''=>'-- 全部 --','0'=>'显示未关注的粉丝','1'=>'显示已关注的粉丝'] as $k=>$v}
+                    {eq name='Think.get.subscribe' value='$k.""'}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">拉黑状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="is_black">
+                    {foreach [''=>'-- 全部 --','0'=>'显示未拉黑的粉丝','1'=>'显示已拉黑的粉丝'] as $k=>$v}
+                    {eq name='Think.get.is_black' value='$k.""'}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">关注时间</label>
+            <div class="layui-input-inline">
+                <input name="subscribe_at" value="{$Think.get.subscribe_at|default=''}" placeholder="请选择关注时间" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+
+</fieldset>
+
+<script>
+    window.form.render();
+    window.laydate.render({range: true, elem: '[name="subscribe_at"]'});
+</script>

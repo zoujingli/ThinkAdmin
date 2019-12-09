@@ -105,9 +105,12 @@ class WechatService extends Service
                 throw new \think\Exception("class {$name} not defined.");
             }
             $classname = "\\{$type}\\{$class}";
+            if ($type === 'ThinkAdmin') {
+                throw new \think\Exception("Interface mode cannot instance {$classname}");
+            }
             return new $classname(self::instance()->getConfig());
         } else {
-            list($appid, $appkey) = [sysconf('wechat.appid'), sysconf('wechat.appkey')];
+            list($appid, $appkey) = [sysconf('wechat.thr_appid'), sysconf('wechat.thr_appkey')];
             $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
             $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
             $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
@@ -131,6 +134,38 @@ class WechatService extends Service
     }
 
     /**
+     * 获取当前微信APPID
+     * @return bool|string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getAppid()
+    {
+        if ($this->getType() === 'api') {
+            return sysconf('wechat.appid');
+        } else {
+            return sysconf('wechat.thr_appid');
+        }
+    }
+
+    /**
+     * 获取接口授权模式
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getType()
+    {
+        $type = strtolower(sysconf('wechat.type'));
+        if (in_array($type, ['api', 'thr'])) return $type;
+        throw new \think\Exception('请在后台配置微信对接授权模式');
+    }
+
+    /**
      * 获取公众号配置参数
      * @return array
      * @throws \think\db\exception\DataNotFoundException
@@ -142,9 +177,84 @@ class WechatService extends Service
         return [
             'token'          => sysconf('wechat.token'),
             'appid'          => sysconf('wechat.appid'),
-            'appsecret'      => sysconf('service.appsecret'),
-            'encodingaeskey' => sysconf('service.encodingaeskey'),
+            'appsecret'      => sysconf('wechat.appsecret'),
+            'encodingaeskey' => sysconf('wechat.encodingaeskey'),
             'cache_path'     => $this->app->getRuntimePath() . 'wechat',
         ];
+    }
+
+    /**
+     * 获取网页授权信息
+     * @param string $url
+     * @param integer $isfull
+     * @param boolean $isRedirect
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getWebOauthInfo($url, $isfull = 0, $isRedirect = true)
+    {
+        $appid = $this->getAppid();
+        list($openid, $fansinfo) = [$this->app->session->get("{$appid}_openid"), $this->app->session->get("{$appid}_fansinfo")];
+        if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
+            empty($fansinfo) || FansService::instance()->set($fansinfo);
+            return ['openid' => $openid, 'fansinfo' => $fansinfo];
+        }
+        if ($this->getType() === 'api') {
+            $wechat = self::WeChatOauth();
+            if (input('state') !== $appid) {
+                $snsapi = empty($isfull) ? 'snsapi_base' : 'snsapi_userinfo';
+                $param = (strpos($url, '?') !== false ? '&' : '?') . 'rcode=' . encode($url);
+                $OauthUrl = $wechat->getOauthRedirect($url . $param, $appid, $snsapi);
+                if ($isRedirect) redirect($OauthUrl, 301)->send();
+                exit("window.location.href='{$OauthUrl}'");
+            }
+            if (($token = $wechat->getOauthAccessToken()) && isset($token['openid'])) {
+                $this->app->session->set("{$appid}_openid", $openid = $token['openid']);
+                if (empty($isfull) && input('rcode')) {
+                    redirect(enbase64url(input('rcode')), 301)->send();
+                }
+                $this->app->session->set("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
+                empty($fansinfo) || FansService::instance()->set($fansinfo);
+            }
+            redirect(enbase64url(input('rcode')), 301)->send();
+        } else {
+            $result = self::ThinkAdminConfig()->oauth(session_id(), $url, $isfull);
+            session("{$appid}_openid", $openid = $result['openid']);
+            session("{$appid}_fansinfo", $fansinfo = $result['fans']);
+            if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
+                empty($fansinfo) || FansService::instance()->set($fansinfo);
+                return ['openid' => $openid, 'fansinfo' => $fansinfo];
+            }
+            if ($isRedirect && !empty($result['url'])) {
+                redirect($result['url'], 301)->send();
+            }
+            exit("window.location.href='{$result['url']}'");
+        }
+    }
+
+    /**
+     * 获取微信网页JSSDK
+     * @param string $url JS签名地址
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getWebJssdkSign($url = null)
+    {
+        $url = is_null($url) ? $this->app->request->url(true) : $url;
+        if ($this->getType() === 'api') {
+            return self::WeChatScript()->getJsSign($url);
+        } else {
+            return self::ThinkAdminConfig($this->getAppid())->jsSign($url);
+        }
     }
 }

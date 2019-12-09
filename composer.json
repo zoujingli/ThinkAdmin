@@ -23,12 +23,14 @@
     "ext-json": "*",
     "ext-curl": "*",
     "ext-iconv": "*",
+    "ext-openssl": "*",
+    "ext-mbstring": "*",
     "topthink/framework": "^6.0",
     "topthink/think-view": "^1.0",
     "topthink/think-multi-app": "^1.0",
     "zoujingli/ip2region": "^1.0",
-    "zoujingli/think-library": "6.0.*-dev",
-    "zoujingli/weopen-developer": "dev-master"
+    "zoujingli/weopen-developer": "dev-master",
+    "zoujingli/think-library": "6.0.*-dev"
   },
   "autoload": {
     "psr-4": {
