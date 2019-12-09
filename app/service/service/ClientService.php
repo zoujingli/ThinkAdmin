@@ -34,15 +34,16 @@ class ClientService extends WechatService
         if (count($arguments) !== 2) {
             throw new \think\Exception('请按顺序传入APPID及APPKEY两个参数！');
         }
+        $serviceUri = 'http://127.0.0.1:1231';
         list($appid, $appkey) = $arguments;
         $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
         $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
         $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
         if (class_exists('Yar_Client')) {
-            $url = "http://127.0.0.1:1231/service/api.client/yar?not_init_session=1&token={$token}";
+            $url = "{$serviceUri}/service/api.client/yar?not_init_session=1&token={$token}";
             $client = new \Yar_Client($url);
         } else {
-            $url = "http://127.0.0.1:1231/service/api.client/soap?not_init_session=1&token={$token}";
+            $url = "{$serviceUri}/service/api.client/soap?not_init_session=1&token={$token}";
             $client = new \SoapClient(null, ['location' => $url, 'uri' => "thinkadmin"]);
         }
         try {
@@ -50,9 +51,7 @@ class ClientService extends WechatService
         } catch (\Exception $exception) {
             $exception = null;
         }
-        if ($exception instanceof \Exception) {
-            throw $exception;
-        }
+        if ($exception instanceof \Exception) throw $exception;
         return $client;
     }
 
