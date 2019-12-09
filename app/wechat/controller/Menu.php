@@ -34,7 +34,7 @@ class Menu extends Controller
         'click'              => '匹配规则',
         'view'               => '跳转网页',
         'miniprogram'        => '打开小程序',
-        // 'customservice'      => '转多客服',
+        'customservice'      => '转多客服',
         'scancode_push'      => '扫码推事件',
         'scancode_waitmsg'   => '扫码推事件且弹出“消息接收中”提示框',
         'pic_sysphoto'       => '弹出系统拍照发图',
