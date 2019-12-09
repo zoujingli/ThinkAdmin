@@ -1,7 +1,11 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
+
+{if auth('add')}
 <button data-open="{:url('add')}" class='layui-btn layui-btn-sm layui-btn-primary'>添加图文</button>
+{/if}
+
 {/block}
 
 {block name='content'}
