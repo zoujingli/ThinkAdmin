@@ -47,7 +47,7 @@ class Queue extends Controller
             try {
                 $this->command = ProcessService::instance()->think('xtask:start');
                 $this->message = $this->app->console->call('xtask:state')->fetch();
-                $this->listen = preg_match('/主进程\d+/', $this->message, $attr);
+                $this->listen = preg_match('/主进程.*?\d+/', $this->message, $attr);
             } catch (\Exception $exception) {
                 $this->message = $exception->getMessage();
             }

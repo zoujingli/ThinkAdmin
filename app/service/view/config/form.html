@@ -21,7 +21,7 @@
         <div class="layui-form-item">
             <label class="relative block">
                 <span class="color-green font-w7">开放平台消息校验 Token</span>
-                <input name="service.component_token" required placeholder="请输入微信消息校验Token" value="{:sysconf('service.component_token')}" class="layui-input">
+                <input name="service.component_token" required placeholder="请输入开放平台消息校验Token" value="{:sysconf('service.component_token')}" class="layui-input">
             </label>
             <p class="help-block">开发者在代替微信接收到消息时，用此 Token 来校验消息</p>
         </div>
@@ -29,7 +29,7 @@
         <div class="layui-form-item">
             <label class="relative block">
                 <span class="color-green font-w7">开放平台消息加解密 AesKey</span>
-                <input name="service.component_encodingaeskey" required pattern="^.{43}$" maxlength="43" placeholder="请输入43位微信消息加解密Key" value="{:sysconf('service.component_encodingaeskey')}" class="layui-input">
+                <input name="service.component_encodingaeskey" required pattern="^.{43}$" maxlength="43" placeholder="请输入43位开放平台消息加解密Key" value="{:sysconf('service.component_encodingaeskey')}" class="layui-input">
             </label>
             <p class="help-block">在代替微信收发消息时使用，必须是长度为43位字母和数字组合的字符串</p>
         </div>
