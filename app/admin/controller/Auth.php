@@ -95,12 +95,11 @@ class Auth extends Controller
      */
     public function apply()
     {
-        $map = ['auth' => input('id', '0')];
-        $action = strtolower(input('action', ''));
-        if ($action === 'get') {
+        $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);
+        if (input('action') === 'get') {
             $checkeds = $this->app->db->name('SystemAuthNode')->where($map)->column('node');
             $this->success('获取权限节点成功！', AdminService::instance()->clearCache()->getTree($checkeds));
-        } elseif ($action === 'save') {
+        } elseif (input('action') === 'save') {
             list($post, $data) = [$this->request->post(), []];
             foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
                 $data[] = ['auth' => $map['auth'], 'node' => $node];
@@ -133,9 +132,9 @@ class Auth extends Controller
     protected function _remove_delete_result($result)
     {
         if ($result) {
-            $map = ['auth' => $this->request->post('id')];
+            $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);
             $this->app->db->name('SystemAuthNode')->where($map)->delete();
-            $this->success("权限删除成功！", '');
+            $this->success("权限删除成功！");
         } else {
             $this->error("权限删除失败，请稍候再试！");
         }
