@@ -1,0 +1,76 @@
+<fieldset>
+
+    <legend>条件搜索</legend>
+
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">微信标识</label>
+            <div class="layui-input-inline">
+                <input name="authorizer_appid" value="{$Think.get.authorizer_appid|default=''}" placeholder="请输入微信APPID" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">微信名称</label>
+            <div class="layui-input-inline">
+                <input name="nick_name" value="{$Think.get.nick_name|default=''}" placeholder="请输入微信名称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">类型过滤</label>
+            <div class="layui-input-inline">
+                <select name="service_type" class="layui-select">
+                    <option value="">- 全部 -</option>
+                    {foreach ['0'=>'显示订阅号类型','2'=>'显示服务号类型','3'=>'显示小程序类型'] as $k=>$v}
+                    <!--{if $k.'' eq $Think.get.service_type}-->
+                    <option selected value="{$k}">{$v}</option>
+                    <!--{else}-->
+                    <option value="{$k}">{$v}</option>
+                    <!--{/if}-->
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">使用状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="status">
+                    {foreach [''=>'- 全部 -','0'=>'已禁用的账号','1'=>'使用中的账号'] as $k=>$v}
+                    {eq name='Think.get.status' value='$k.""'}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">注册公司</label>
+            <div class="layui-input-inline">
+                <input name="principal_name" value="{$Think.get.principal_name|default=''}" placeholder="请输入注册公司" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">授权时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择授权时间" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+
+    </form>
+
+</fieldset>
+
+<script>
+    window.form.render();
+</script>

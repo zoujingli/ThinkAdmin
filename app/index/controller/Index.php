@@ -15,6 +15,7 @@
 
 namespace app\index\controller;
 
+use app\service\service\ClientService;
 use think\admin\Controller;
 
 /**
@@ -26,5 +27,10 @@ class Index extends Controller
     public function index()
     {
         $this->redirect(url('@admin/login'));
+    }
+
+    public function test()
+    {
+        ClientService::WeChatCard(1, 2);
     }
 }

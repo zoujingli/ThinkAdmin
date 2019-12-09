@@ -19,6 +19,7 @@
   "require": {
     "php": ">=7.1.0",
     "ext-gd": "*",
+    "ext-soap": "*",
     "ext-json": "*",
     "ext-curl": "*",
     "ext-iconv": "*",
@@ -26,7 +27,8 @@
     "topthink/think-view": "^1.0",
     "topthink/think-multi-app": "^1.0",
     "zoujingli/ip2region": "^1.0",
-    "zoujingli/think-library": "6.0.*-dev"
+    "zoujingli/think-library": "6.0.*-dev",
+    "zoujingli/weopen-developer": "dev-master"
   },
   "autoload": {
     "psr-4": {

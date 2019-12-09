@@ -3,5 +3,6 @@
 .vscode
 *.log
 runtime
+composer.lock
 public/upload
 /nbproject/private/

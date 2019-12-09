@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44a6bc247971794be9edd9df4f3dd0b9",
+    "content-hash": "1b0862db0bebe6fd5b8f1edc448e3f5a",
     "packages": [
         {
             "name": "league/flysystem",
-            "version": "1.0.57",
+            "version": "1.0.61",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a"
+                "reference": "4fb13c01784a6c9f165a351e996871488ca2d8c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a",
-                "reference": "0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/4fb13c01784a6c9f165a351e996871488ca2d8c9",
+                "reference": "4fb13c01784a6c9f165a351e996871488ca2d8c9",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -94,7 +94,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-10-16T21:01:05+00:00"
+            "time": "2019-12-08T21:46:50+00:00"
         },
         {
             "name": "league/flysystem-cached-adapter",
@@ -833,19 +833,140 @@
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://framework.thinkadmin.top",
             "time": "2019-12-07T06:46:30+00:00"
+        },
+        {
+            "name": "zoujingli/wechat-developer",
+            "version": "v1.2.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zoujingli/WeChatDeveloper.git",
+                "reference": "4b81e72cff7a3acfde2cca919bd8e173355bc53c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/4b81e72cff7a3acfde2cca919bd8e173355bc53c",
+                "reference": "4b81e72cff7a3acfde2cca919bd8e173355bc53c",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "ext-simplexml": "*",
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "We.php"
+                ],
+                "psr-4": {
+                    "WePay\\": "WePay",
+                    "WeMini\\": "WeMini",
+                    "WeChat\\": "WeChat",
+                    "AliPay\\": "AliPay"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anyon",
+                    "email": "zoujingli@qq.com",
+                    "homepage": "http://ctolog.com"
+                }
+            ],
+            "description": "WeChat platform and WeChat payment development tools",
+            "homepage": "https://github.com/zoujingli/WeChatDeveloper",
+            "keywords": [
+                "WeChatDeveloper",
+                "WeMini",
+                "alipay",
+                "wechat",
+                "wechatpay",
+                "wepay"
+            ],
+            "time": "2019-11-25T10:40:50+00:00"
+        },
+        {
+            "name": "zoujingli/weopen-developer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
+                "reference": "4d0d3c064e54556621453845fc65ba52de58a880"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/4d0d3c064e54556621453845fc65ba52de58a880",
+                "reference": "4d0d3c064e54556621453845fc65ba52de58a880",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "php": ">=5.4",
+                "zoujingli/wechat-developer": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WeOpen\\": "WeOpen",
+                    "WeChat\\": "WeChat",
+                    "WeMini\\": "WeMini"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anyon",
+                    "email": "zoujingli@qq.com",
+                    "homepage": "http://ctolog.com"
+                }
+            ],
+            "description": "WeChat Open development of SDK",
+            "homepage": "https://github.com/zoujingli/WeOpenDeveloper",
+            "keywords": [
+                "WeChatOpen",
+                "WeChatOpenDeveloper",
+                "wechat"
+            ],
+            "time": "2019-10-10T10:18:05+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "zoujingli/think-library": 20
+        "zoujingli/think-library": 20,
+        "zoujingli/weopen-developer": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.1.0",
         "ext-gd": "*",
+        "ext-soap": "*",
         "ext-json": "*",
         "ext-curl": "*",
         "ext-iconv": "*"
