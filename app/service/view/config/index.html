@@ -84,12 +84,12 @@
                 <div class="layui-form-item">
                     <p class="color-green font-w7">客户端系统 Yar 模块接口</p>
                     <label class="relative block"><input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.client/yar',[],false,true)}?token=TOKEN"></label>
-                    <p class="help-block">客户端 Yar 接口，PARAM 规则 AppName-AppId-AppKey-AppType</p>
+                    <p class="help-block">客户端 Yar 接口，TOKEN 包含 class appid time nostr sign 的加密内容</p>
                 </div>
                 <div class="layui-form-item">
                     <p class="color-green font-w7">客户端系统 Soap 模块接口</p>
                     <label class="relative block"><input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.client/soap',[],false,true)}?token=TOKEN"></label>
-                    <p class="help-block">客户端 Soap 接口，PARAM 规则 AppName-AppId-AppKey-AppType</p>
+                    <p class="help-block">客户端 Soap 接口，TOKEN 包含 class appid time nostr sign 的加密内容</p>
                 </div>
             </div>
         </div>
