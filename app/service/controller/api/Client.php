@@ -62,15 +62,15 @@ class Client extends Controller
     private function instance()
     {
         try {
-            $code = $this->app->request->get('code', '');
-            $data = json_decode(debase64url($code), true);
-            list($class, $appid, $time, $sign) = [$data['class'], $data['appid'], $data['time'], $data['sign']];
-            $config = $this->app->db->name('WechatServiceConfig')->where(['authorizer_appid' => $appid])->find();
-            if (empty($config)) throw new Exception("抱歉，该公众号{$appid}未授权！");
-            if (md5("{$class}#{$appid}#{$config['appkey']}#{$time}") !== $sign) {
+            $data = json_decode(debase64url(input('token', '')), true);
+            list($class, $appid, $time, $nostr, $sign) = [$data['class'], $data['appid'], $data['time'], $data['nostr'], $data['sign']];
+            $wechat = $this->app->db->name('WechatServiceConfig')->where(['authorizer_appid' => $appid])->find();
+            if (empty($wechat)) throw new Exception("抱歉，该公众号{$appid}未授权！");
+            if (abs(time() - $data['time']) > 10) throw new Exception('抱歉，接口调用时差过大！');
+            if (md5("{$class}#{$appid}#{$wechat['appkey']}#{$time}#{$nostr}") !== $sign) {
                 throw new Exception("抱歉，该公众号{$appid}签名异常！");
             }
-            return WechatService::$class($appid);
+            return WechatService::__callStatic($class, [$appid]);
         } catch (\Exception $exception) {
             return new \Exception($exception->getMessage(), $exception->getCode());
         }

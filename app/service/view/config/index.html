@@ -76,19 +76,19 @@
                 <div class="layui-form-item">
                     <span class="color-green font-w7">微信消息与事件接收</span>
                     <label class="relative block">
-                        <input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.push/notify/\$APPID\$',[],false,true)}">
-                        <a data-copy="{:url('@service/api.push/notify/\$APPID\$',[],false,true)}" class="fa fa-copy input-right-icon"></a>
+                        <input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.push/notify/appid/\$APPID\$',[],false,true)}">
+                        <a data-copy="{:url('@service/api.push/notify/appid/\$APPID\$',[],false,true)}" class="fa fa-copy input-right-icon"></a>
                     </label>
                     <p class="help-block">通过该 URL 接收微信消息和事件推送，$APPID$ 将被替换为微信 AppId</p>
                 </div>
                 <div class="layui-form-item">
                     <p class="color-green font-w7">客户端系统 Yar 模块接口</p>
-                    <label class="relative block"><input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.client/yar/PARAM',[],false,true)}"></label>
+                    <label class="relative block"><input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.client/yar',[],false,true)}?token=TOKEN"></label>
                     <p class="help-block">客户端 Yar 接口，PARAM 规则 AppName-AppId-AppKey-AppType</p>
                 </div>
                 <div class="layui-form-item">
                     <p class="color-green font-w7">客户端系统 Soap 模块接口</p>
-                    <label class="relative block"><input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.client/soap/PARAM',[],false,true)}"></label>
+                    <label class="relative block"><input disabled class="layui-input layui-bg-gray" value="{:url('@service/api.client/soap',[],false,true)}?token=TOKEN"></label>
                     <p class="help-block">客户端 Soap 接口，PARAM 规则 AppName-AppId-AppKey-AppType</p>
                 </div>
             </div>

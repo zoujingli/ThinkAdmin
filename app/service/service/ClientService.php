@@ -35,8 +35,8 @@ class ClientService extends WechatService
             throw new \think\Exception('请按顺序传入APPID及APPKEY两个参数！');
         }
         list($appid, $appkey) = $arguments;
-        $data = ['class' => $name, 'appid' => $appid, 'time' => time()];
-        $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}");
+        $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
+        $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
         $code = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
         if (class_exists('Yar_Client')) {
             $url = "http://127.0.0.1:1231/service/api.client/yar?not_init_session=1&code={$code}";
