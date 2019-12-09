@@ -39,11 +39,11 @@ class Js extends Controller
     public function index()
     {
         $url = $this->request->server('http_referer', $this->request->url(true));
-        $wechat = WechatService::instance()->getWebOauthInfo($url, $this->request->get('mode', 1), false);
-        $openid = isset($wechat['openid']) ? $wechat['openid'] : '';
-        $unionid = empty($wechat['fansinfo']['unionid']) ? '' : $wechat['fansinfo']['unionid'];
+        $user = WechatService::instance()->getWebOauthInfo($url, $this->request->get('mode', 1), false);
+        $openid = isset($user['openid']) ? $user['openid'] : '';
+        $unionid = empty($user['fansinfo']['unionid']) ? '' : $user['fansinfo']['unionid'];
         $configJson = json_encode(WechatService::instance()->getWebJssdkSign($url), JSON_UNESCAPED_UNICODE);
-        $fansinfoJson = json_encode(isset($wechat['fansinfo']) ? $wechat['fansinfo'] : [], JSON_UNESCAPED_UNICODE);
+        $fansinfoJson = json_encode(isset($user['fansinfo']) ? $user['fansinfo'] : [], JSON_UNESCAPED_UNICODE);
         $html = <<<EOF
 if(typeof wx === 'object'){
     wx.openid="{$openid}";

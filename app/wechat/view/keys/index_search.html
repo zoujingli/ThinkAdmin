@@ -13,11 +13,11 @@
                 <select class="layui-select" name="type">
                     <option value="">-- 全部 --</option>
                     {foreach $types as $k=>$v}
-                    {eq name='Think.get.type' value='$k.""'}
+                    {if $k.'' eq input('type')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
-                    {/eq}
+                    {/if}
                     {/foreach}
                 </select>
             </div>
@@ -27,11 +27,11 @@
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
                     {foreach [''=>'-- 全部 --','0'=>'显示使用的规则','1'=>'显示禁止的规则'] as $k=>$v}
-                    {eq name='Think.get.status' value='$k.""'}
+                    {if $k.'' eq input('status')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
-                    {/eq}
+                    {/if}
                     {/foreach}
                 </select>
             </div>
@@ -39,7 +39,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">创建时间</label>
             <div class="layui-input-inline">
-                <input name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
+                <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
@@ -48,7 +48,4 @@
     </form>
 </fieldset>
 
-<script>
-    window.form.render();
-    window.laydate.render({range: true, elem: '[name="create_at"]'});
-</script>
+<script>window.form.render()</script>

@@ -145,6 +145,7 @@ class Push extends Controller
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     protected function text()
@@ -202,9 +203,8 @@ class Push extends Controller
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
      */
     private function keys($rule, $isLast = false, $isCustom = false)
     {
@@ -222,30 +222,30 @@ class Push extends Controller
             case 'customservice':
                 return $this->sendMessage('customservice', ['content' => $data['content']], false);
             case 'voice':
-                if (empty($data['voice_url']) || !($mediaId = MediaService::upload($data['voice_url'], 'voice'))) return false;
+                if (empty($data['voice_url']) || !($mediaId = MediaService::instance()->upload($data['voice_url'], 'voice'))) return false;
                 return $this->sendMessage('voice', ['media_id' => $mediaId], $isCustom);
             case 'image':
-                if (empty($data['image_url']) || !($mediaId = MediaService::upload($data['image_url'], 'image'))) return false;
+                if (empty($data['image_url']) || !($mediaId = MediaService::instance()->upload($data['image_url'], 'image'))) return false;
                 return $this->sendMessage('image', ['media_id' => $mediaId], $isCustom);
             case 'news':
-                list($news, $articles) = [MediaService::news($data['news_id']), []];
+                list($news, $articles) = [MediaService::instance()->news($data['news_id']), []];
                 if (empty($news['articles'])) return false;
                 foreach ($news['articles'] as $vo) array_push($articles, [
-                    'url'   => url("@wechat/api.review/view", '', false, true) . "?id={$vo['id']}",
+                    'url'   => url("@wechat/api.review/view", [], false, true) . "?id={$vo['id']}",
                     'title' => $vo['title'], 'picurl' => $vo['local_url'], 'description' => $vo['digest'],
                 ]);
                 return $this->sendMessage('news', ['articles' => $articles], $isCustom);
             case 'music':
                 if (empty($data['music_url']) || empty($data['music_title']) || empty($data['music_desc'])) return false;
                 return $this->sendMessage('music', [
-                    'thumb_media_id' => empty($data['music_image']) ? '' : MediaService::upload($data['music_image'], 'image'),
+                    'thumb_media_id' => empty($data['music_image']) ? '' : MediaService::instance()->upload($data['music_image'], 'image'),
                     'description'    => $data['music_desc'], 'title' => $data['music_title'],
                     'hqmusicurl'     => $data['music_url'], 'musicurl' => $data['music_url'],
                 ], $isCustom);
             case 'video':
                 if (empty($data['video_url']) || empty($data['video_desc']) || empty($data['video_title'])) return false;
                 $videoData = ['title' => $data['video_title'], 'introduction' => $data['video_desc']];
-                if (!($mediaId = MediaService::upload($data['video_url'], 'video', $videoData))) return false;
+                if (!($mediaId = MediaService::instance()->upload($data['video_url'], 'video', $videoData))) return false;
                 return $this->sendMessage('video', ['media_id' => $mediaId, 'title' => $data['video_title'], 'description' => $data['video_desc']], $isCustom);
             default:
                 return false;
@@ -261,8 +261,6 @@ class Push extends Controller
      * @throws \WeChat\Exceptions\InvalidDecryptException
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
      */
     private function sendMessage($type, $data, $isCustom = false)
     {
