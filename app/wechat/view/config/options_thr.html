@@ -10,7 +10,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">QRCode<br><span class="nowrap color-desc">公众号二维码</span></label>
             <div class="layui-input-block">
-                <div class="pull-left notselect"><img data-tips-image src="{$wechat.qrcode_url|local_image}" style="width:100px;margin-left:-7px"></div>
+                <div class="pull-left notselect"><img data-tips-image src="{$wechat.qrcode_url|down_file}" style="width:100px;margin-left:-7px"></div>
                 <div class="pull-left padding-left-10">
                     <p class="nowrap">微信昵称：{$wechat.nick_name|default=''}</p>
                     <p class="nowrap">微信类型：{if $wechat.service_type eq 2}服务号{elseif $wechat.service_type eq 3}小程序{else}订阅号{/if} / {$wechat.verify_type_info == -1 ? '未认证' : '<span class="color-green">已认证</span>'}</p>

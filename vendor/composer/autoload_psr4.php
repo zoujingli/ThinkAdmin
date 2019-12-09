@@ -15,6 +15,7 @@ return array(
     'WeOpen\\' => array($vendorDir . '/zoujingli/weopen-developer/WeOpen'),
     'WeMini\\' => array($vendorDir . '/zoujingli/wechat-developer/WeMini', $vendorDir . '/zoujingli/weopen-developer/WeMini'),
     'WeChat\\' => array($vendorDir . '/zoujingli/wechat-developer/WeChat', $vendorDir . '/zoujingli/weopen-developer/WeChat'),
+    'Symfony\\Component\\OptionsResolver\\' => array($vendorDir . '/symfony/options-resolver'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
@@ -22,5 +23,6 @@ return array(
     'Opis\\Closure\\' => array($vendorDir . '/opis/closure/src'),
     'League\\Flysystem\\Cached\\' => array($vendorDir . '/league/flysystem-cached-adapter/src'),
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
+    'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qr-code/src'),
     'AliPay\\' => array($vendorDir . '/zoujingli/wechat-developer/AliPay'),
 );

@@ -1,0 +1,36 @@
+{extend name='wechat@api/review/main'}
+
+{block name='content'}
+<div class="header"><span>{:date('H:i')}</span></div>
+<div class="container">
+    <div class="logo">A</div>
+    <div class="content arrow">
+        <div style="font-size:.6rem;overflow:hidden;width:7.5rem;text-overflow:ellipsis">{$title|default=''}</div>
+        <div style="font-size:.5rem;overflow:hidden;width:7.5rem;text-overflow:ellipsis;color:#ccc">{$desc|default=''}</div>
+        <a href="javascript:void(0)" style="float:right;top:1.4rem;position:absolute;right:0.8rem;" id="audio_btn" class="icon icon-play"></a>
+        <div style="clear:both"></div>
+        <audio id="audio">
+            <source src="{$url|default=''}">
+        </audio>
+        <script>
+            var audio = document.getElementById('audio');
+            var button = document.getElementById('audio_btn');
+            setInterval(function () {
+                button.className = audio.paused ? 'icon icon-play' : 'icon icon-pause';
+            }, 500);
+            button.onclick = function () {
+                audio.paused ? audio.play() : audio.pause()
+            }
+        </script>
+    </div>
+</div>
+{/block}
+
+{block name='style'}
+<style>
+    .icon{color:#fff;font-size:1.5rem}
+    .container .content{width:58vw!important;border:none!important;background:#080!important;white-space:nowrap!important}
+    .container .content:after,.container .content:before{border-color:transparent #080 transparent transparent!important}
+    .container .content{color:#fff}
+</style>
+{/block}

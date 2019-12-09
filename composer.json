@@ -25,12 +25,13 @@
     "ext-iconv": "*",
     "ext-openssl": "*",
     "ext-mbstring": "*",
+    "endroid/qr-code": "^1.9",
     "topthink/framework": "^6.0",
     "topthink/think-view": "^1.0",
     "topthink/think-multi-app": "^1.0",
     "zoujingli/ip2region": "^1.0",
-    "zoujingli/weopen-developer": "dev-master",
-    "zoujingli/think-library": "6.0.*-dev"
+    "zoujingli/think-library": "6.0.*-dev",
+    "zoujingli/weopen-developer": "dev-master"
   },
   "autoload": {
     "psr-4": {

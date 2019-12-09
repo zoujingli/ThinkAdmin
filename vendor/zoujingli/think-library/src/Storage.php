@@ -23,12 +23,12 @@ use think\Container;
  * Class Storage
  * @package think\admin
  * @method array info($name, $safe = false) static 文件存储信息
+ * @method array set($name, $file, $safe = false) static 文件储存
  * @method string get($name, $safe = false) static 读取文件内容
  * @method string url($name, $safe = false) static 获取文件链接
  * @method string path($name, $safe = false) static 文件存储路径
  * @method boolean del($name, $safe = false) static 删除存储文件
  * @method boolean has($name, $safe = false) static 检查文件是否存在
- * @method string set($name, $file, $safe = false) static 文件储存
  * @method string upload() static 上传目录地址
  */
 abstract class Storage
@@ -116,6 +116,29 @@ abstract class Storage
         empty($pre) || $pre = trim($pre, '.\\/');
         $splits = array_merge([$pre], str_split($fun($url), 16));
         return trim(join('/', $splits), '/') . '.' . strtolower($ext ? $ext : 'tmp');
+    }
+
+    /**
+     * 下载文件到本地
+     * @param string $url 文件URL地址
+     * @param boolean $force 是否强制下载
+     * @param integer $expire 文件保留时间
+     * @return array
+     */
+    public static function down($url, $force = false, $expire = 0)
+    {
+        try {
+            $file = self::instance();
+            $name = self::name($url, '', 'down/');
+            if (empty($force) && $file->has($name)) {
+                if ($expire < 1 || filemtime($file->path($name)) + $expire > time()) {
+                    return $file->info($name);
+                }
+            }
+            return $file->set($name, file_get_contents($url));
+        } catch (\Exception $e) {
+            return ['url' => $url, 'hash' => md5($url), 'key' => $url, 'file' => $url];
+        }
     }
 
     /**

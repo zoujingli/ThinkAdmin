@@ -1,0 +1,9 @@
+{extend name='wechat@api/review/main'}
+
+{block name='content'}
+<div class="header"><span>{:date('H:i')}</span></div>
+<div class="container">
+    <div class="logo">A</div>
+    <div class="content arrow">{$content|default=''}</div>
+</div>
+{/block}

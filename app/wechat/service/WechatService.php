@@ -75,7 +75,7 @@ use think\admin\Service;
  * @method \WeOpen\Service WeOpenService() static 第三方服务
  *
  * ----- ThinkService -----
- * @method mixed ThinkAdminConfig($appid) static 平台服务配置
+ * @method mixed ThinkAdminConfig() static 平台服务配置
  */
 class WechatService extends Service
 {
@@ -184,10 +184,10 @@ class WechatService extends Service
     }
 
     /**
-     * 获取网页授权信息
-     * @param string $url
-     * @param integer $isfull
-     * @param boolean $isRedirect
+     * 通过网页授权获取粉丝信息
+     * @param string $source 回跳URL地址
+     * @param integer $isfull 获取资料模式
+     * @param boolean $redirect 是否直接跳转
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
@@ -196,10 +196,11 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getWebOauthInfo($url, $isfull = 0, $isRedirect = true)
+    public function getWebOauthInfo($source, $isfull = 0, $redirect = true)
     {
         $appid = $this->getAppid();
-        list($openid, $fansinfo) = [$this->app->session->get("{$appid}_openid"), $this->app->session->get("{$appid}_fansinfo")];
+        $openid = $this->app->session->get("{$appid}_openid");
+        $fansinfo = $this->app->session->get("{$appid}_fansinfo");
         if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
             empty($fansinfo) || FansService::instance()->set($fansinfo);
             return ['openid' => $openid, 'fansinfo' => $fansinfo];
@@ -208,9 +209,9 @@ class WechatService extends Service
             $wechat = self::WeChatOauth();
             if (input('state') !== $appid) {
                 $snsapi = empty($isfull) ? 'snsapi_base' : 'snsapi_userinfo';
-                $param = (strpos($url, '?') !== false ? '&' : '?') . 'rcode=' . encode($url);
-                $OauthUrl = $wechat->getOauthRedirect($url . $param, $appid, $snsapi);
-                if ($isRedirect) redirect($OauthUrl, 301)->send();
+                $param = (strpos($source, '?') !== false ? '&' : '?') . 'rcode=' . encode($source);
+                $OauthUrl = $wechat->getOauthRedirect($source . $param, $appid, $snsapi);
+                if ($redirect) redirect($OauthUrl, 301)->send();
                 exit("window.location.href='{$OauthUrl}'");
             }
             if (($token = $wechat->getOauthAccessToken()) && isset($token['openid'])) {
@@ -223,14 +224,14 @@ class WechatService extends Service
             }
             redirect(enbase64url(input('rcode')), 301)->send();
         } else {
-            $result = self::ThinkAdminConfig()->oauth(session_id(), $url, $isfull);
-            session("{$appid}_openid", $openid = $result['openid']);
-            session("{$appid}_fansinfo", $fansinfo = $result['fans']);
+            $result = self::ThinkAdminConfig()->oauth($this->app->session->getId(), $source, $isfull);
+            $this->app->session->set("{$appid}_openid", $openid = $result['openid']);
+            $this->app->session->set("{$appid}_fansinfo", $fansinfo = $result['fans']);
             if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
                 empty($fansinfo) || FansService::instance()->set($fansinfo);
                 return ['openid' => $openid, 'fansinfo' => $fansinfo];
             }
-            if ($isRedirect && !empty($result['url'])) {
+            if ($redirect && !empty($result['url'])) {
                 redirect($result['url'], 301)->send();
             }
             exit("window.location.href='{$result['url']}'");
@@ -254,7 +255,7 @@ class WechatService extends Service
         if ($this->getType() === 'api') {
             return self::WeChatScript()->getJsSign($url);
         } else {
-            return self::ThinkAdminConfig($this->getAppid())->jsSign($url);
+            return self::ThinkAdminConfig()->jsSign($url);
         }
     }
 }

@@ -1,0 +1,21 @@
+{extend name='wechat@api/review/main'}
+
+{block name='content'}
+<div class="header"><span>{:date('H:i')}</span></div>
+<div class="container">
+    <div class="content">
+        <div>{$title|default=''}</div>
+        <div class="date">{:date('m月d日')}</div>
+        <video src="{$url|default=''}" width="100%" controls preload></video>
+    </div>
+</div>
+{/block}
+
+{block name='style'}
+<style>
+    .container .content{left:0!important;border:1px solid #ccc;padding:13px;position:relative;max-width:initial!important;background:#fff;line-height:1.5em;border-radius:5px}
+    .container .content div{width:100%;overflow:hidden;font-size:.8rem;line-height:1.5em;display:inline-block;text-overflow:ellipsis}
+    .container .content .date{color:#999;margin:10px 0;font-size:12px;line-height:1em}
+</style>
+
+{/block}

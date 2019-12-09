@@ -1,0 +1,43 @@
+{extend name='wechat@api/review/main'}
+
+{block name='content'}
+<div class="header"><span>{:date('H:i')}</span></div>
+<div class="container">
+    {notempty name='news.articles'}
+    {foreach $news.articles as $k => $v}
+    {if $k < 1}
+    <a href="{:url('@wechat/api.review/view/'.$v.id)}" style='background-image:url("{$v.local_url}")'>
+        {if $v.title}<span>{$v.title}</span>{/if}
+    </a>
+    <div class="hr-line-dashed"></div>
+    {else}
+    <a href="{:url('@wechat/api.review/view/'.$v.id)}" class='other'>
+        <span>{$v.title}</span>
+        <span style='background-image:url("{$v.local_url}");'></span>
+    </a>
+    <div class="hr-line-dashed"></div>
+    {/if}
+    {/foreach}
+    {else}
+    <div class="info"><h3>404</h3> 访问资源不存在哦！</div>
+    {/notempty}
+</div>
+{/block}
+
+{block name='style'}
+<style>
+    .header{margin-top:15px;text-align:center}
+    .header span{padding:5px;font-size:8px;background:#ccc;border-radius:10%}
+    .container{width:90%;display:block;margin:5vw auto;position:relative;box-shadow:0 0 3px #ccc}
+    .container a{height:50vw;display:block;position:relative;background:no-repeat center center;background-size:cover}
+    .container a span{left:0;right:0;bottom:0;color:#fff;padding:2vw;font-size:2vw;max-height:5em;overflow:hidden;position:absolute;line-height:1.5em;margin:0 -1px 0 -1px;text-overflow:ellipsis;background:rgba(0,0,0,.7)}
+    .container a.other{height:15vw;display:block;padding:1vw 2vw;position:relative}
+    .container a.other span:first-child{color:#333;float:left;width:60vw;height:10vw;overflow:hidden;max-height:none;position:relative;background:0 0;text-overflow:ellipsis}
+    .container a.other span:last-child{width:16vw;height:10vw;float:right;max-height:none;position:relative;background-size:cover;background-position:center center}
+    .info h3{color:#333;font-size:5vw;margin-bottom:1rem}
+    .info{color:#666;padding:2rem;font-size:.5rem;text-align:center;letter-spacing:1px}
+    .hr-line-dashed{color:#fff;height:1px;margin:3px 0;border-top:1px dashed #e7eaec}
+    .hr-line-dashed:last-child{display:none}
+</style>
+
+{/block}

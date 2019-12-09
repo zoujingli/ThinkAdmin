@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
+class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -31,6 +31,10 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
             'WeMini\\' => 7,
             'WeChat\\' => 7,
         ),
+        'S' => 
+        array (
+            'Symfony\\Component\\OptionsResolver\\' => 34,
+        ),
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
@@ -46,6 +50,10 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
         array (
             'League\\Flysystem\\Cached\\' => 24,
             'League\\Flysystem\\' => 17,
+        ),
+        'E' => 
+        array (
+            'Endroid\\QrCode\\' => 15,
         ),
         'A' => 
         array (
@@ -95,6 +103,10 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat',
             1 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeChat',
         ),
+        'Symfony\\Component\\OptionsResolver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/options-resolver',
+        ),
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
@@ -123,6 +135,10 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
         ),
+        'Endroid\\QrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qr-code/src',
+        ),
         'AliPay\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay',
@@ -137,6 +153,20 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
         'AliPay\\Transfer' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Transfer.php',
         'AliPay\\Wap' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Wap.php',
         'AliPay\\Web' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Web.php',
+        'Endroid\\QrCode\\Bundle\\Controller\\QrCodeController' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/Controller/QrCodeController.php',
+        'Endroid\\QrCode\\Bundle\\DependencyInjection\\Configuration' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/DependencyInjection/Configuration.php',
+        'Endroid\\QrCode\\Bundle\\DependencyInjection\\EndroidQrCodeExtension' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/DependencyInjection/EndroidQrCodeExtension.php',
+        'Endroid\\QrCode\\Bundle\\EndroidQrCodeBundle' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/EndroidQrCodeBundle.php',
+        'Endroid\\QrCode\\Bundle\\Twig\\Extension\\QrCodeExtension' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/Twig/Extension/QrCodeExtension.php',
+        'Endroid\\QrCode\\Exceptions\\DataDoesntExistsException' => __DIR__ . '/..' . '/endroid/qr-code/src/Exceptions/DataDoesntExistsException.php',
+        'Endroid\\QrCode\\Exceptions\\FreeTypeLibraryMissingException' => __DIR__ . '/..' . '/endroid/qr-code/src/Exceptions/FreeTypeLibraryMissingException.php',
+        'Endroid\\QrCode\\Exceptions\\ImageFunctionFailedException' => __DIR__ . '/..' . '/endroid/qr-code/src/Exceptions/ImageFunctionFailedException.php',
+        'Endroid\\QrCode\\Exceptions\\ImageFunctionUnknownException' => __DIR__ . '/..' . '/endroid/qr-code/src/Exceptions/ImageFunctionUnknownException.php',
+        'Endroid\\QrCode\\Exceptions\\ImageSizeTooLargeException' => __DIR__ . '/..' . '/endroid/qr-code/src/Exceptions/ImageSizeTooLargeException.php',
+        'Endroid\\QrCode\\Exceptions\\ImageTypeInvalidException' => __DIR__ . '/..' . '/endroid/qr-code/src/Exceptions/ImageTypeInvalidException.php',
+        'Endroid\\QrCode\\Exceptions\\VersionTooLargeException' => __DIR__ . '/..' . '/endroid/qr-code/src/Exceptions/VersionTooLargeException.php',
+        'Endroid\\QrCode\\Factory\\QrCodeFactory' => __DIR__ . '/..' . '/endroid/qr-code/src/Factory/QrCodeFactory.php',
+        'Endroid\\QrCode\\QrCode' => __DIR__ . '/..' . '/endroid/qr-code/src/QrCode.php',
         'Ip2Region' => __DIR__ . '/..' . '/zoujingli/ip2region/Ip2Region.php',
         'League\\Flysystem\\AdapterInterface' => __DIR__ . '/..' . '/league/flysystem/src/AdapterInterface.php',
         'League\\Flysystem\\Adapter\\AbstractAdapter' => __DIR__ . '/..' . '/league/flysystem/src/Adapter/AbstractAdapter.php',
@@ -226,6 +256,18 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
         'Psr\\SimpleCache\\CacheException' => __DIR__ . '/..' . '/psr/simple-cache/src/CacheException.php',
         'Psr\\SimpleCache\\CacheInterface' => __DIR__ . '/..' . '/psr/simple-cache/src/CacheInterface.php',
         'Psr\\SimpleCache\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/simple-cache/src/InvalidArgumentException.php',
+        'Symfony\\Component\\OptionsResolver\\Debug\\OptionsResolverIntrospector' => __DIR__ . '/..' . '/symfony/options-resolver/Debug/OptionsResolverIntrospector.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\AccessException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/AccessException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/ExceptionInterface.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidArgumentException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\InvalidOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\MissingOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/MissingOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\NoConfigurationException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoConfigurationException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\NoSuchOptionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoSuchOptionException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\OptionDefinitionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/OptionDefinitionException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\UndefinedOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/UndefinedOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Options' => __DIR__ . '/..' . '/symfony/options-resolver/Options.php',
+        'Symfony\\Component\\OptionsResolver\\OptionsResolver' => __DIR__ . '/..' . '/symfony/options-resolver/OptionsResolver.php',
         'We' => __DIR__ . '/..' . '/zoujingli/wechat-developer/We.php',
         'WeChat\\Bind' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeChat/Bind.php',
         'WeChat\\Card' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Card.php',
@@ -300,16 +342,18 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
         'app\\admin\\controller\\api\\Update' => __DIR__ . '/../..' . '/app/admin/controller/api/Update.php',
         'app\\admin\\controller\\api\\Upload' => __DIR__ . '/../..' . '/app/admin/controller/api/Upload.php',
         'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/app/index/controller/Index.php',
-        'app\\service\\controller\\Config' => __DIR__ . '/../..' . '/app/service/controller/Config.php',
-        'app\\service\\controller\\Fans' => __DIR__ . '/../..' . '/app/service/controller/Fans.php',
-        'app\\service\\controller\\Wechat' => __DIR__ . '/../..' . '/app/service/controller/Wechat.php',
-        'app\\service\\controller\\api\\Client' => __DIR__ . '/../..' . '/app/service/controller/api/Client.php',
-        'app\\service\\controller\\api\\Push' => __DIR__ . '/../..' . '/app/service/controller/api/Push.php',
-        'app\\service\\serivce\\ClientService' => __DIR__ . '/../..' . '/app/service/serivce/ClientService.php',
-        'app\\service\\serivce\\ConfigService' => __DIR__ . '/../..' . '/app/service/serivce/ConfigService.php',
-        'app\\service\\serivce\\PublishService' => __DIR__ . '/../..' . '/app/service/serivce/PublishService.php',
-        'app\\service\\serivce\\ReceiveService' => __DIR__ . '/../..' . '/app/service/serivce/ReceiveService.php',
-        'app\\service\\serivce\\WechatService' => __DIR__ . '/../..' . '/app/service/serivce/WechatService.php',
+        'app\\wechat\\controller\\Config' => __DIR__ . '/../..' . '/app/wechat/controller/Config.php',
+        'app\\wechat\\controller\\Fans' => __DIR__ . '/../..' . '/app/wechat/controller/Fans.php',
+        'app\\wechat\\controller\\Keys' => __DIR__ . '/../..' . '/app/wechat/controller/Keys.php',
+        'app\\wechat\\controller\\Menu' => __DIR__ . '/../..' . '/app/wechat/controller/Menu.php',
+        'app\\wechat\\controller\\News' => __DIR__ . '/../..' . '/app/wechat/controller/News.php',
+        'app\\wechat\\controller\\api\\Js' => __DIR__ . '/../..' . '/app/wechat/controller/api/Js.php',
+        'app\\wechat\\controller\\api\\Push' => __DIR__ . '/../..' . '/app/wechat/controller/api/Push.php',
+        'app\\wechat\\controller\\api\\Review' => __DIR__ . '/../..' . '/app/wechat/controller/api/Review.php',
+        'app\\wechat\\controller\\api\\Test' => __DIR__ . '/../..' . '/app/wechat/controller/api/Test.php',
+        'app\\wechat\\service\\FansService' => __DIR__ . '/../..' . '/app/wechat/service/FansService.php',
+        'app\\wechat\\service\\MediaService' => __DIR__ . '/../..' . '/app/wechat/service/MediaService.php',
+        'app\\wechat\\service\\WechatService' => __DIR__ . '/../..' . '/app/wechat/service/WechatService.php',
         'think\\App' => __DIR__ . '/..' . '/topthink/framework/src/think/App.php',
         'think\\Cache' => __DIR__ . '/..' . '/topthink/framework/src/think/Cache.php',
         'think\\Collection' => __DIR__ . '/..' . '/topthink/think-helper/src/Collection.php',
@@ -585,9 +629,9 @@ class ComposerStaticInit078c2496db47e2e94f2057948fdfa517
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit078c2496db47e2e94f2057948fdfa517::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit078c2496db47e2e94f2057948fdfa517::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit078c2496db47e2e94f2057948fdfa517::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c::$classMap;
 
         }, null, ClassLoader::class);
     }

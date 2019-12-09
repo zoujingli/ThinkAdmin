@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSSDK 功能测试</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/mobile.css">
+</head>
+
+<body>
+
+<header style="padding:35px 0">
+    <h1 style="text-align:center;font-size:34px;color:#3cc51f;font-weight:400;">JSSDK 功能测试</h1>
+</header>
+
+<div style="padding:15px;text-align:center">
+    <button type="button" style="padding:5px" id='show-alert'>调起摄像头扫码</button>
+</div>
+
+<script src="//res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    wx.error(function (err) {
+        alert(err.errMsg || '配置出错');
+    });
+    wx.config(JSON.parse('{$options|json_encode|raw}'));
+    wx.ready(function () {
+        alert('- 初始化成功 -');
+        document.getElementById('show-alert').onclick = function () {
+            wx.scanQRCode({
+                needResult: 1,
+                scanType: ["qrCode", "barCode"],
+                success: function (res) {
+                    alert(res.resultStr);
+                }
+            });
+        }
+    });
+</script>
+</body>
+
+</html>

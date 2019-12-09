@@ -37,7 +37,7 @@ class Config extends Controller
     public function options()
     {
         $this->_applyFormToken();
-        $this->thrNotify = url('@wechat/api.push', [], false, true);
+        $this->thrNotify = url('@wechat/api.push', [], false, true)->build();
         if ($this->request->isGet()) {
             $this->title = '微信授权绑定';
             $this->geoip = $this->app->cache->get('mygeoip', '');
@@ -46,15 +46,15 @@ class Config extends Controller
                 $this->app->cache->set('mygeoip', $this->geoip, 360);
             }
             try {
-                if (input('?appid') && input('?appkey')) {
-                    sysconf('wechat.type', 'thr');
-                    sysconf('wechat.appid', input('appid'));
-                    sysconf('wechat.appkey', input('appkey'));
-                    WechatService::ThinkAdminConfig(input('appid'))->setApiNotifyUri($this->thrNotify);
-                }
                 $source = enbase64url(url('@admin', [], false, true) . '#' . $this->request->url());
                 $this->authurl = "http://open.cuci.cc/service/api.push/auth?source={$source}";
-                $this->wechat = WechatService::ThinkAdminConfig(WechatService::instance()->getAppid())->getConfig();
+                if (input('?appid') && input('?appkey')) {
+                    sysconf('wechat.type', 'thr');
+                    sysconf('wechat.thr_appid', input('appid'));
+                    sysconf('wechat.thr_appkey', input('appkey'));
+                    WechatService::ThinkAdminConfig()->setApiNotifyUri($this->thrNotify);
+                }
+                $this->wechat = WechatService::ThinkAdminConfig()->getConfig();
             } catch (\Exception $e) {
                 $this->wechat = [];
             }
@@ -62,7 +62,7 @@ class Config extends Controller
         } else {
             foreach ($this->request->post() as $k => $v) sysconf($k, $v);
             if ($this->request->post('wechat.type') === 'thr') {
-                WechatService::ThinkAdminConfig(input('appid'))->setApiNotifyUri($this->thrNotify);
+                WechatService::ThinkAdminConfig()->setApiNotifyUri($this->thrNotify);
             }
             sysoplog('微信管理', '修改微信授权配置成功');
             $uri = url('wechat/config/options');

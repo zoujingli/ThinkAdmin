@@ -1,0 +1,17 @@
+{extend name='wechat@api/review/main'}
+
+{block name='content'}
+<div class="header"><span>{:date('H:i')}</span></div>
+<div class="container">
+    <div class="logo">A</div>
+    <div class="content">
+        <img style="max-width:100%" src="{$content|default=''}">
+    </div>
+</div>
+{/block}
+
+{block name='style'}
+<style>
+    .container .content{position:relative;border-radius:5px;border:none!important;display:inline-block;padding:0!important}
+</style>
+{/block}
