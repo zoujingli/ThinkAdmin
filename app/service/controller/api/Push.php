@@ -19,6 +19,7 @@ use app\service\handle\PublishHandle;
 use app\service\handle\ReceiveHandle;
 use app\service\service\WechatService;
 use think\admin\Controller;
+use think\admin\service\SystemService;
 use WeOpen\Service;
 
 /**
@@ -39,13 +40,14 @@ class Push extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function notify($appid)
+    public function notify($appid = '')
     {
+        $appid = empty($appid) ? input('appid') : $appid;
         if (in_array($appid, ['wx570bc396a51b8ff8', 'wxd101a85aa106f53e'])) {
             # 全网发布接口测试
             return PublishHandle::instance()->handler($appid);
         } else {
-            # 接口类正常服务
+            # 常归接口正常服务
             return ReceiveHandle::instance()->handler($appid);
         }
     }
@@ -166,7 +168,7 @@ class Push extends Controller
         }
         // 重新通过接口查询公众号参数
         if (!($update = array_merge($result, $service->getAuthorizerInfo($result['authorizer_appid'])))) {
-            return '获取授权数据失败, 请稍候再试!';
+            return '获取授权数据失败, 请稍候再试! ';
         }
         // 生成公众号授权参数
         $update = array_merge($this->buildAuthData($update), [
@@ -175,7 +177,7 @@ class Push extends Controller
         // 微信接口APPKEY处理与更新
         $config = $this->app->db->name('WechatServiceConfig')->where(['authorizer_appid' => $result['authorizer_appid']])->find();
         $update['appkey'] = empty($config['appkey']) ? md5(uniqid('', true)) : $config['appkey'];
-        data_save('WechatServiceConfig', $update, 'authorizer_appid');
+        SystemService::instance()->save('WechatServiceConfig', $update, 'authorizer_appid');
         if (!empty($redirect)) { // 带上appid与appkey跳转到应用
             $split = stripos($redirect, '?') > 0 ? '&' : '?';
             $realurl = preg_replace(['/appid=\w+/i', '/appkey=\w+/i', '/(\?\&)$/i'], ['', '', ''], $redirect);
