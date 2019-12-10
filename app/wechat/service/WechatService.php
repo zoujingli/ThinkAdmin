@@ -188,6 +188,10 @@ class WechatService extends Service
             'appid'          => sysconf('wechat.appid'),
             'appsecret'      => sysconf('wechat.appsecret'),
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
+            'mch_id'         => sysconf('wechat.mch_id'),
+            'mch_key'        => sysconf('wechat.mch_key'),
+            'ssl_key'        => sysconf('wechat.mch_ssl_key'),
+            'ssl_cer'        => sysconf('wechat.mch_ssl_cer'),
             'cache_path'     => $this->app->getRuntimePath() . 'wechat',
         ];
     }
