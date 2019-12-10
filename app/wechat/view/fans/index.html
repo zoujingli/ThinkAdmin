@@ -2,16 +2,16 @@
 
 {block name="button"}
 
-{if auth("setblack")}
-<button data-action='{:url("setblack")}' data-rule="openid#{key}" data-csrf="{:systoken('setblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量拉黑</button>
+{if auth("black_add")}
+<button data-action='{:url("black_add")}' data-rule="openid#{key}" data-csrf="{:systoken('black_add')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量拉入黑名单</button>
 {/if}
 
-{if auth("delblack")}
-<button data-action='{:url("delblack")}' data-rule="openid#{key}" data-csrf="{:systoken('delblack')}" class='layui-btn layui-btn-sm layui-btn-primary'>取消拉黑</button>
+{if auth("black_del")}
+<button data-action='{:url("black_del")}' data-rule="openid#{key}" data-csrf="{:systoken('black_del')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量移出黑名单</button>
 {/if}
 
 {if auth("sync")}
-<button data-load='{:url("sync")}' class='layui-btn layui-btn-sm layui-btn-primary'>同步粉丝</button>
+<button data-load='{:url("sync")}' class='layui-btn layui-btn-sm layui-btn-primary'>同步用户任务</button>
 {/if}
 
 {/block}
@@ -23,9 +23,11 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='list-table-check-td think-checkbox'><input data-auto-none data-check-target='.list-check-box' type='checkbox'></th>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
             <th width="180px" class='text-left nowrap'>微信昵称</th>
-            <th width="180px" class="text-left nowrap">粉丝标签</th>
+            <th width="180px"></th>
             <th width="150px" class='text-left nowrap'>性别语言</th>
             <th width="180px" class='text-left nowrap'>关注时间</th>
             <th width="80px"></th>
@@ -37,13 +39,12 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <input class="list-check-box" value='{$vo.openid}' type='checkbox'>
+                <label><input class="list-check-box" value='{$vo.openid}' type='checkbox'></label>
             </td>
             <td class='text-left nowrap relative layui-elip'>
-                <img src="{$vo.headimgurl|default=''}" onerror="$(this).remove()" data-tips-image class="inline-block" style="width:40px;height:40px;vertical-align:top;margin-right:5px">
+                <img alt="" src="{$vo.headimgurl|default=''}" data-tips-image class="inline-block text-top margin-right-5" style="width:40px;height:40px">
                 <div class="inline-block">
-                    昵称：{$vo.nickname|default='--'}
-                    <br>
+                    昵称：{$vo.nickname|default='--'}<br>
                     区域：{$vo.country|default='--'} {$vo.province} {$vo.city}
                 </div>
             </td>
@@ -51,41 +52,31 @@
                 <div style="max-height:60px;overflow:auto">{foreach $vo.tags as $t}<p><span class="layui-badge layui-bg-cyan margin-right-5">{$t|default='--'}</span></p>{/foreach}</div>
             </td>
             <td class='text-left nowrap'>
-                性别：{switch name='vo.sex'}{case value='1'}男{/case}{case value='2'}女{/case}{default}未知{/switch}
-                <br>
+                性别：{switch name='vo.sex'}{case value='1'}男{/case}{case value='2'}女{/case}{default}未知{/switch}<br>
                 语言：{$vo.language|raw}
             </td>
             <td class='text-left nowrap'>
                 日期：{$vo.subscribe_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
             </td>
             <td class='text-center nowrap'>
-                {eq name='vo.subscribe' value='0'}
-                <span class="layui-badge">未关注</span>
-                {else}
-                <span class="layui-badge layui-bg-green">已关注</span>
-                {/eq}
+                {eq name='vo.subscribe' value='0'}<span class="layui-badge">未关注</span>{else}<span class="layui-badge layui-bg-green">已关注</span>{/eq}
                 <br>
-                {eq name='vo.is_black' value='0'}
-                <span class="layui-badge layui-bg-green">未拉黑</span>
-                {else}
-                <span class="layui-badge">已拉黑</span>
-                {/eq}
+                {eq name='vo.is_black' value='0'}<span class="layui-badge layui-bg-green">未拉黑</span>{else}<span class="layui-badge">已拉黑</span>{/eq}
             </td>
             <td class="nowrap">
 
-                {eq name='vo.is_black' value='0'}
-                <!--{if auth("setblack")}-->
-                <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('setblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('setblack')}">拉 黑</a>
-                <!--{/if}-->
-                {else}
-                <!--{if auth("delblack")}-->
-                <a class="margin-left-10 layui-btn layui-btn-normal layui-btn-sm" data-action="{:url('delblack')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('delblack')}">拉 白</a>
-                <!--{/if}-->
-                {/eq}
+                {if auth('black_add') and $vo.is_black eq 0}
+                <a class="layui-btn layui-btn-sm" data-action="{:url('black_add')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('black_add')}">拉 黑</a>
+                {/if}
+
+                {if auth('black_del') and $vo.is_black eq 1}
+                <a class="layui-btn layui-btn-sm" data-action="{:url('black_del')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('black_del')}">移 出</a>
+                {/if}
 
                 {if auth("remove")}
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该粉丝吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除该用户吗？">删 除</a>
                 {/if}
+
             </td>
         </tr>
         {/foreach}

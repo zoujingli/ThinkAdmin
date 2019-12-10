@@ -55,11 +55,11 @@ class Fans extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        $tags = $this->app->db->name('WechatFansTags')->column('id,name');
-        foreach ($data as &$user) {
-            $user['tags'] = [];
-            foreach (explode(',', $user['tagid_list']) as $tagid) {
-                if (isset($tags[$tagid])) $user['tags'][] = $tags[$tagid];
+        $tags = $this->app->db->name('WechatFansTags')->column('name', 'id');
+        foreach ($data as &$vo) {
+            $vo['tags'] = [];
+            foreach (explode(',', $vo['tagid_list']) as $tagid) {
+                if (isset($tags[$tagid])) $vo['tags'][] = $tags[$tagid];
             }
         }
     }
@@ -71,7 +71,6 @@ class Fans extends Controller
     public function sync()
     {
         try {
-            $appid = WechatService::instance()->getAppid();
             sysqueue('同步粉丝数据', "xsync:fansall", 1, [], 0);
             $this->success('创建任务成功，请等待完成！');
         } catch (HttpResponseException $exception) {
@@ -82,10 +81,10 @@ class Fans extends Controller
     }
 
     /**
-     * 批量拉黑粉丝
+     * 用户拉入黑名单
      * @auth true
      */
-    public function setBlack()
+    public function black_add()
     {
         try {
             $this->_applyFormToken();
@@ -93,19 +92,19 @@ class Fans extends Controller
                 WechatService::WeChatUser()->batchBlackList($openids);
                 $this->app->db->name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '1']);
             }
-            $this->success('拉黑粉丝信息成功！');
+            $this->success('用户拉入黑名单成功！');
         } catch (HttpResponseException $exception) {
             throw  $exception;
         } catch (\Exception $e) {
-            $this->error("拉黑粉丝信息失败，请稍候再试！{$e->getMessage()}");
+            $this->error("用户拉入黑名单失败，请稍候再试！{$e->getMessage()}");
         }
     }
 
     /**
-     * 取消拉黑粉丝
+     * 用户移出黑名单
      * @auth true
      */
-    public function delBlack()
+    public function black_del()
     {
         try {
             $this->_applyFormToken();
@@ -113,14 +112,13 @@ class Fans extends Controller
                 WechatService::WeChatUser()->batchUnblackList($openids);
                 $this->app->db->name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '0']);
             }
-            $this->success('取消拉黑粉丝信息成功！');
+            $this->success('用户移出黑名单成功！');
         } catch (HttpResponseException $exception) {
             throw  $exception;
         } catch (\Exception $e) {
-            $this->error("取消拉黑粉丝信息失败，请稍候再试！{$e->getMessage()}");
+            $this->error("用户移出黑名单失败，请稍候再试！{$e->getMessage()}");
         }
     }
-
 
     /**
      * 删除粉丝信息
