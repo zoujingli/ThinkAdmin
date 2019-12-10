@@ -1,5 +1,9 @@
 <form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card padding-bottom-20' autocomplete="off">
 
+    <div class="layui-card-header color-desc">
+        这里对微信开发的常用功能做了些测试案例，请使用微信扫码进行测试。
+    </div>
+
     <div class="layui-card-body">
         <div class="layui-elem-quote border-0">
             <p class="font-s14 margin-bottom-10 color-text">
@@ -18,23 +22,23 @@
         </div>
         <div class="layui-clear">
             <div class="pull-left padding-right-15 notselect">
-                <img class="notselect" data-tips-image src="{:url('@wechat/api.test/oauth_qrc')}" style="width:120px">
+                <img alt="" class="notselect" data-tips-image src="{:url('@wechat/api.test/oauth_qrc')}" style="width:120px">
                 <p class="text-center">网页授权</p>
             </div>
             <div class="pull-left padding-left-0 padding-right-15">
-                <img class="notselect" data-tips-image src="{:url('@wechat/api.test/jssdk_qrc')}" style="width:120px;">
+                <img alt="" class="notselect" data-tips-image src="{:url('@wechat/api.test/jssdk_qrc')}" style="width:120px;">
                 <p class="text-center">JSSDK签名</p>
             </div>
             <div class="pull-left padding-left-0 padding-right-15">
-                <img onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('@wechat/api.test/jsapiqrc')}" style="width:120px;">
+                <img alt="" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('@wechat/api.test/jsapiqrc')}" style="width:120px;">
                 <p class="text-center">JSAPI支付</p>
             </div>
             <div class="pull-left padding-left-0 padding-right-15">
-                <img onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('@wechat/api.test/scanoneqrc')}" style="width:120px;">
+                <img alt="" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('@wechat/api.test/scanoneqrc')}" style="width:120px;">
                 <p class="text-center">扫码支付①</p>
             </div>
             <div class="pull-left padding-left-0">
-                <img onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('@wechat/api.test/scanqrc')}" style="width:120px;">
+                <img alt="" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('@wechat/api.test/scanqrc')}" style="width:120px;">
                 <p class="text-center">扫码支付②</p>
             </div>
         </div>

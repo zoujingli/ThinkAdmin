@@ -1,25 +1,25 @@
 <form onsubmit="return false" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
 
+    <div class="layui-card-header padding-left-40 color-desc">
+        使用第三方授权时，需要单独搭建楚才开放平台 Service 服务，二者需要使用 Yar 或 Soap 方式通信。
+    </div>
+
     <div class="layui-card-body">
 
-        <div class="color-blue padding-left-40 padding-bottom-20">
-            使用第三方授权时，需要单独搭建 SERVICE 服务并将域名配置到 WECHAT 文件，二者需要使用 Yar 或 Soap 通信！
-        </div>
-
-        <!--{if !empty($wechat)}-->
+        {if !empty($wechat)}
         <div class="layui-form-item">
             <label class="layui-form-label">QRCode<br><span class="nowrap color-desc">公众号二维码</span></label>
             <div class="layui-input-block">
                 <div class="pull-left notselect"><img data-tips-image src="{$wechat.qrcode_url|down_file}" style="width:100px;margin-left:-7px"></div>
                 <div class="pull-left padding-left-10">
-                    <p class="nowrap">微信昵称：{$wechat.nick_name|default=''}</p>
-                    <p class="nowrap">微信类型：{if $wechat.service_type eq 2}服务号{elseif $wechat.service_type eq 3}小程序{else}订阅号{/if} / {$wechat.verify_type_info == -1 ? '未认证' : '<span class="color-green">已认证</span>'}</p>
-                    <p class="nowrap">注册公司：{$wechat.principal_name}</p>
+                    <p class="nowrap">微信昵称：{$wechat.user_nickname|default='-'}</p>
+                    <p class="nowrap">微信类型：{$wechat.service_type|default='-'} / {$wechat.service_verify == '未认证' ? '未认证' : '<span class="color-green">已认证</span>'}</p>
+                    <p class="nowrap">注册公司：{$wechat.user_company|default='-'}</p>
                     <p class="nowrap">授权绑定：{$wechat.create_at|format_datetime}</p>
                 </div>
             </div>
         </div>
-        <!--{/if}-->
+        {/if}
 
         <div class="layui-form-item">
             <label class="layui-form-label">Authorize<br><span class="nowrap color-desc">公众号授权绑定</span></label>
