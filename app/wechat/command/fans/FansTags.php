@@ -27,6 +27,6 @@ class FansTags extends Fans
     protected function configure()
     {
         $this->module = ['tags'];
-        $this->setName('xfans:tags')->setDescription('[同步]粉丝的标签记录数据');
+        $this->setName('xsync:fanstags')->setDescription('[同步]粉丝的标签记录数据');
     }
 }

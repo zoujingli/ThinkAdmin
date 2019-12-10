@@ -72,7 +72,7 @@ class Fans extends Controller
     {
         try {
             $appid = WechatService::instance()->getAppid();
-            sysqueue('同步粉丝数据', "xsync:fans {$appid} -", 1, [], 0);
+            sysqueue('同步粉丝数据', "xsync:fansall", 1, [], 0);
             $this->success('创建任务成功，请等待完成！');
         } catch (HttpResponseException $exception) {
             throw $exception;

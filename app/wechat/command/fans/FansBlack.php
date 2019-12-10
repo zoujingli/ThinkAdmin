@@ -27,6 +27,6 @@ class FansBlack extends Fans
     protected function configure()
     {
         $this->module = ['black'];
-        $this->setName('xfans:black')->setDescription('[同步]微信黑名单粉丝数据');
+        $this->setName('xsync:fansblack')->setDescription('[同步]微信黑名单粉丝数据');
     }
 }
