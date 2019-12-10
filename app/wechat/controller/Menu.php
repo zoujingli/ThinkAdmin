@@ -30,7 +30,7 @@ class Menu extends Controller
      * 微信菜单的类型
      * @var array
      */
-    protected $menuType = [
+    protected $menuTypes = [
         'click'              => '匹配规则',
         'view'               => '跳转网页',
         'miniprogram'        => '打开小程序',
@@ -54,12 +54,11 @@ class Menu extends Controller
     public function index()
     {
         if ($this->request->get('output') === 'json') {
-            $where = [['keys', 'notin', ['subscribe', 'default']], ['status', 'eq', '1']];
+            $where = [['keys', 'notin', ['subscribe', 'default']], ['status', '=', '1']];
             $keys = $this->app->db->name('WechatKeys')->where($where)->order('sort desc,id desc')->select();
             $this->success('获取数据成功!', ['menudata' => sysdata('menudata'), 'keysdata' => $keys]);
         } else {
             $this->title = '微信菜单定制';
-            $this->menuTypes = $this->menuType;
             $this->fetch();
         }
     }
@@ -68,7 +67,7 @@ class Menu extends Controller
      * 编辑微信菜单
      * @auth true
      */
-    public function edit()
+    public function push()
     {
         if ($this->request->isPost()) {
             $data = $this->request->post('data');
@@ -85,7 +84,7 @@ class Menu extends Controller
                 }
             } else {
                 try {
-                    sysdata('menudata', $this->_buildMenuData($menudata = json_decode($data, true)));
+                    sysdata('menudata', $this->_buildMenuData(json_decode($data, true)));
                     WechatService::WeChatMenu()->create(['button' => sysdata('menudata')]);
                     sysoplog('微信管理', '发布微信菜单成功');
                     $this->success('保存发布菜单成功！', '');
@@ -104,7 +103,7 @@ class Menu extends Controller
      * @param array $list
      * @return array
      */
-    private function _buildMenuData(array $list)
+    private function _buildMenuData(array $list): array
     {
         foreach ($list as &$vo) {
             unset($vo['active'], $vo['show']);
@@ -155,12 +154,12 @@ class Menu extends Controller
     {
         try {
             WechatService::WeChatMenu()->delete();
-            $this->success('菜单取消成功，重新关注可立即生效！', '');
+            $this->success('菜单取消成功，重新关注可立即生效！');
         } catch (HttpResponseException $exception) {
             sysoplog('微信管理', '取消微信菜单成功');
             throw $exception;
-        } catch (\Exception $e) {
-            $this->error("菜单取消失败，请稍候再试！<br> {$e->getMessage()}");
+        } catch (\Exception $exception) {
+            $this->error("菜单取消失败，请稍候再试！<br> {$exception->getMessage()}");
         }
     }
 

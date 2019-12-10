@@ -96,7 +96,7 @@
     </div>
 
     <div class="text-center margin-top-20">
-        {if auth("edit")}
+        {if auth("push")}
         <button class="layui-btn menu-submit" ng-click="submit()">保存发布</button>
         {/if}
         {if auth("cancel")}
@@ -194,7 +194,7 @@
             $rootScope.submit = function () {
                 $vali.checkAllInput();
                 if ($form.find('.validate-error').size() > 0) return false;
-                $.form.load('{:url("edit")}', {data: angular.toJson($rootScope.list)}, 'post');
+                $.form.load('{:url("push")}', {data: angular.toJson($rootScope.list)}, 'post');
             }
         }
     })

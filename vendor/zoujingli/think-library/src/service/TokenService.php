@@ -46,7 +46,7 @@ class TokenService extends Service
         // 读取缓存并检查是否有效
         $cache = $this->app->session->get($token, []);
         if (empty($cache['node']) || empty($cache['time']) || empty($cache['token'])) return false;
-        if ($cache['token'] !== $token || $cache['time'] + 600 < time() || $cache['node'] !== $node) return false;
+        if ($cache['time'] + 600 < time() || strtolower($cache['node']) !== strtolower($node)) return false;
         return true;
     }
 

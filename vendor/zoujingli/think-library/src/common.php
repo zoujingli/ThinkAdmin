@@ -100,9 +100,9 @@ if (!function_exists('sysdata')) {
     function sysdata($name, $value = null)
     {
         if (is_null($value)) {
-            return SystemService::instance()->get($name);
+            return SystemService::instance()->getData($name);
         } else {
-            return SystemService::instance()->set($name, $value);
+            return SystemService::instance()->setData($name, $value);
         }
     }
 }
