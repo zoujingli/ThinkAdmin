@@ -93,20 +93,13 @@ class WechatService extends Service
      */
     public static function __callStatic($name, $arguments)
     {
-        if (sysconf('wechat.type') === 'api') {
-            list($type, $class) = ['-', '-'];
-            foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkAdmin'] as $type) {
-                if (strpos($name, $type) === 0) {
-                    list(, $class) = explode($type, $name);
-                    break;
-                }
-            }
-            if ("{$type}{$class}" !== $name) {
-                throw new \think\Exception("class {$name} not defined.");
-            }
-            $classname = "\\{$type}\\{$class}";
+        list($type, $class, $classname) = self::paraseName($name);
+        if ("{$type}{$class}" !== $name) {
+            throw new \think\Exception("抱歉，需要实例的 {$name} 不在符合规则！");
+        }
+        if (sysconf('wechat.type') === 'api' || $type === 'WePay') {
             if ($type === 'ThinkAdmin') {
-                throw new \think\Exception("Interface mode cannot instance {$classname}");
+                throw new \think\Exception("抱歉，接口模式不能实例 {$classname} 对象！");
             }
             return new $classname(self::instance()->getConfig());
         } else {
@@ -131,6 +124,22 @@ class WechatService extends Service
             }
             return $client;
         }
+    }
+
+    /**
+     * 解析调用对象名称
+     * @param string $name
+     * @return array
+     */
+    private static function paraseName($name)
+    {
+        foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkAdmin'] as $type) {
+            if (strpos($name, $type) === 0) {
+                list(, $class) = explode($type, $name);
+                return [$type, $class, "\\{$type}\\{$class}"];
+            }
+        }
+        return ['-', '-', $name];
     }
 
     /**
