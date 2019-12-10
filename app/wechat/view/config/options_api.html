@@ -42,11 +42,11 @@
             <label class="layui-form-label margin-top-15">PushApiUrl<br><span class="nowrap color-desc">消息推送接收</span></label>
             <div class="layui-input-block">
                 <div class="relative">
-                    <input name="wechat.push_url" value="服务器授权IP：{$geoip}" readonly class="layui-input layui-bg-gray border-0">
+                    <input value="服务器授权IP：{$geoip}" disabled class="layui-input layui-bg-gray border-0">
                     <a data-copy="{$geoip}" class="absolute layui-btn layui-bg-gray" style="top:0;right:0;background:none!important"><i class="fa fa-copy"></i></a>
                 </div>
                 <div class="relative margin-top-5">
-                    <input name="wechat.push_url" value="消息推送地址：{$thrNotify}" readonly class="layui-input layui-bg-gray border-0">
+                    <input value="消息推送地址：{$thrNotify}" disabled class="layui-input layui-bg-gray border-0">
                     <a data-copy="{$thrNotify}" class="absolute layui-btn layui-bg-gray" style="top:0;right:0;background:none!important"><i class="fa fa-copy"></i></a>
                 </div>
                 <p class="help-block">公众号服务平台消息推送接口及服务器授权IP地址，需在公众号接口开发处配置。</p>
