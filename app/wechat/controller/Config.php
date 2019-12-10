@@ -39,12 +39,6 @@ class Config extends Controller
         $this->_applyFormToken();
         $this->thrNotify = url('@wechat/api.push', [], false, true)->build();
         if ($this->request->isGet()) {
-            $this->title = '微信授权绑定';
-            $this->geoip = $this->app->cache->get('mygeoip', '');
-            if (empty($this->geoip)) {
-                $this->geoip = gethostbyname($this->request->host());
-                $this->app->cache->set('mygeoip', $this->geoip, 360);
-            }
             try {
                 $source = enbase64url(url('@admin', [], false, true) . '#' . $this->request->url());
                 $this->authurl = "http://open.cuci.cc/service/api.push/auth?source={$source}";
@@ -58,6 +52,12 @@ class Config extends Controller
             } catch (\Exception $e) {
                 $this->wechat = [];
             }
+            $this->geoip = $this->app->cache->get('mygeoip', '');
+            if (empty($this->geoip)) {
+                $this->geoip = gethostbyname($this->request->host());
+                $this->app->cache->set('mygeoip', $this->geoip, 360);
+            }
+            $this->title = '微信授权绑定';
             $this->fetch();
         } else {
             foreach ($this->request->post() as $k => $v) sysconf($k, $v);
@@ -65,8 +65,7 @@ class Config extends Controller
                 WechatService::ThinkAdminConfig()->setApiNotifyUri($this->thrNotify);
             }
             sysoplog('微信管理', '修改微信授权配置成功');
-            $uri = url('wechat/config/options');
-            $this->success('微信参数修改成功！', url('@admin') . "#{$uri}");
+            $this->success('微信参数修改成功！');
         }
     }
 

@@ -27,7 +27,7 @@
 {block name='script'}
 <script>
     $(function () {
-        apply('{:sysconf("wechat.type")}');
+        apply('{:sysconf("wechat.type")}' || 'api');
         window.form.render();
         window.form.on('radio(wechat_type)', function (data) {
             apply(data.value);
