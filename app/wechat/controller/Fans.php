@@ -20,7 +20,7 @@ use think\admin\Controller;
 use think\exception\HttpResponseException;
 
 /**
- * 微信粉丝管理
+ * 微信用户管理
  * Class Fans
  * @package app\wechat\controller
  */
@@ -33,7 +33,7 @@ class Fans extends Controller
     protected $table = 'WechatFans';
 
     /**
-     * 微信粉丝管理
+     * 微信用户管理
      * @auth true
      * @menu true
      * @throws \think\Exception
@@ -43,7 +43,7 @@ class Fans extends Controller
      */
     public function index()
     {
-        $this->title = '微信粉丝管理';
+        $this->title = '微信用户管理';
         $this->where = ['appid' => WechatService::instance()->getAppid()];
         $query = $this->_query($this->table)->like('nickname')->equal('subscribe,is_black');
         $query->dateBetween('subscribe_at')->where($this->where)->order('subscribe_time desc')->page();
@@ -65,13 +65,13 @@ class Fans extends Controller
     }
 
     /**
-     * 同步粉丝数据
+     * 同步用户数据
      * @auth true
      */
     public function sync()
     {
         try {
-            sysqueue('同步粉丝数据', "xsync:fansall", 1, [], 0);
+            sysqueue('同步用户数据', "xsync:fansall", 1, [], 0);
             $this->success('创建任务成功，请等待完成！');
         } catch (HttpResponseException $exception) {
             throw $exception;
@@ -92,11 +92,11 @@ class Fans extends Controller
                 WechatService::WeChatUser()->batchBlackList($openids);
                 $this->app->db->name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '1']);
             }
-            $this->success('用户拉入黑名单成功！');
+            $this->success('拉入黑名单成功！');
         } catch (HttpResponseException $exception) {
             throw  $exception;
         } catch (\Exception $e) {
-            $this->error("用户拉入黑名单失败，请稍候再试！{$e->getMessage()}");
+            $this->error("拉入黑名单失败，请稍候再试！{$e->getMessage()}");
         }
     }
 
@@ -112,16 +112,16 @@ class Fans extends Controller
                 WechatService::WeChatUser()->batchUnblackList($openids);
                 $this->app->db->name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => '0']);
             }
-            $this->success('用户移出黑名单成功！');
+            $this->success('移出黑名单成功！');
         } catch (HttpResponseException $exception) {
             throw  $exception;
         } catch (\Exception $e) {
-            $this->error("用户移出黑名单失败，请稍候再试！<br>{$e->getMessage()}");
+            $this->error("移出黑名单失败，请稍候再试！<br>{$e->getMessage()}");
         }
     }
 
     /**
-     * 删除粉丝信息
+     * 删除用户信息
      * @auth true
      * @throws \think\db\exception\DbException
      */
