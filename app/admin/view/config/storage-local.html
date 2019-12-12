@@ -4,7 +4,7 @@
             <p>文件将存储在本地服务器，需确保服务器的 public/upload 目录有写入权限，有足够的存储空间！</p>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">AllowExts<br><span class="nowrap color-desc">允许类型</span></label>
+            <label class="layui-form-label"><span class="color-green font-w7">AllowExts</span><br><span class="nowrap color-desc">允许类型</span></label>
             <div class="layui-input-block">
                 <input type="text" name="storage.allow_exts" required value="{:sysconf('storage.allow_exts')}" placeholder="请输入系统文件上传后缀" class="layui-input">
                 <p class="help-block">设置系统允许上传文件的后缀，多个以英文逗号隔开。如：png,jpg,rar,doc</p>
