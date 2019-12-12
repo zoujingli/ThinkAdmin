@@ -2,16 +2,16 @@
 
 {block name="button"}
 
-{if auth("remove")}
-<button data-action='{:url("remove")}' data-confirm="确定批量删除任务吗？" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
-{/if}
-
 {if auth("start") && $iswin}
 <button data-load='{:url("start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开始监听</button>
 {/if}
 
 {if auth("stop") && $iswin}
 <button data-load='{:url("stop")}' data-confirm="确定要停止主进程监听吗？" class='layui-btn layui-btn-sm layui-btn-primary'>停止监听</button>
+{/if}
+
+{if auth("remove")}
+<button data-action='{:url("remove")}' data-confirm="确定批量删除任务吗？" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 {/if}
 
 {/block}
