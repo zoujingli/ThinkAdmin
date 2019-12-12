@@ -71,7 +71,7 @@ class Fans extends Controller
     public function sync()
     {
         try {
-            sysqueue('同步用户数据', "xsync:fansall", 1, [], 0);
+            sysqueue('同步用户数据', "xadmin:fansall", 1, [], 0);
             $this->success('创建任务成功，请等待完成！');
         } catch (HttpResponseException $exception) {
             throw $exception;

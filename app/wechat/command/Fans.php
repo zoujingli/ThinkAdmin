@@ -33,6 +33,11 @@ class Fans extends Command
      */
     protected $module = ['list', 'tags', 'black'];
 
+    protected function configure()
+    {
+        $this->setName('xadmin:fansall')->setDescription('[获取]同步远程的微信用户');
+    }
+
     /**
      * 执行指令
      * @param Input $input
@@ -41,8 +46,11 @@ class Fans extends Command
      */
     protected function execute(Input $input, Output $output)
     {
+        $message = '';
         foreach ($this->module as $m) {
-            if (method_exists($this, $fun = "_{$m}")) $this->$fun();
+            if (method_exists($this, $fun = "_{$m}")) {
+                $message .= $this->$fun();
+            }
         }
     }
 
@@ -50,6 +58,7 @@ class Fans extends Command
      * 同步微信粉丝列表
      * @param string $next
      * @param integer $done
+     * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
@@ -75,12 +84,14 @@ class Fans extends Command
         }
         $this->output->comment('微信粉丝数据同步完成！');
         $this->output->newLine();
+        return '';
     }
 
     /**
      * 同步粉丝黑名单列表
      * @param string $next
      * @param integer $done
+     * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\db\exception\DbException
@@ -99,11 +110,17 @@ class Fans extends Command
         }
         $this->output->comment('微信黑名单数据同步完成！');
         $this->output->newLine();
+        if (empty($result['total'])) {
+            return '同步微信用户0人';
+        } else {
+            return "同步微信用户{$result['total']}人";
+        }
     }
 
     /**
      * 同步粉丝标签列表
      * @param integer $index
+     * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
@@ -128,6 +145,7 @@ class Fans extends Command
         }
         $this->output->comment('微信粉丝标签数据同步完成！');
         $this->output->newLine();
+        return '';
     }
 
 }
