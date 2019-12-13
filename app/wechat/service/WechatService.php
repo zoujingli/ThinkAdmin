@@ -107,20 +107,17 @@ class WechatService extends Service
             $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
             $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
             $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
+            $location = "http://open.cuci.cc/service/api.client/_TYPE_?not_init_session=1&token={$token}";
             if (class_exists('Yar_Client')) {
-                $url = "http://open.cuci.cc/service/api.client/yar?not_init_session=1&token={$token}";
-                $client = new \Yar_Client($url);
+                $client = new \Yar_Client(str_replace('_TYPE_', 'yar', $location));
+                try {
+                    $exception = new \think\Exception($client->getMessage(), $client->getCode());
+                } catch (\Exception  $exception) {
+                    $exception = null;
+                }
+                if ($exception instanceof \Exception) throw $exception;
             } else {
-                $url = "http://open.cuci.cc/service/api.client/soap?not_init_session=1&token={$token}";
-                $client = new \SoapClient(null, ['location' => $url, 'uri' => "thinkadmin"]);
-            }
-            try {
-                $exception = new \think\Exception($client->getMessage(), $client->getCode());
-            } catch (\Exception $exception) {
-                $exception = null;
-            }
-            if ($exception instanceof \Exception) {
-                throw $exception;
+                $client = new \SoapClient(null, ['uri' => 'thinkadmin', 'location' => str_replace('_TYPE_', 'soap', $location)]);
             }
             return $client;
         }
@@ -223,9 +220,9 @@ class WechatService extends Service
             if (input('state') !== $appid) {
                 $snsapi = empty($isfull) ? 'snsapi_base' : 'snsapi_userinfo';
                 $param = (strpos($source, '?') !== false ? '&' : '?') . 'rcode=' . encode($source);
-                $OauthUrl = $wechat->getOauthRedirect($source . $param, $appid, $snsapi);
-                if ($redirect) redirect($OauthUrl, 301)->send();
-                exit("window.location.href='{$OauthUrl}'");
+                $oauthurl = $wechat->getOauthRedirect($source . $param, $appid, $snsapi);
+                if ($redirect) redirect($oauthurl, 301)->send();
+                exit("window.location.href='{$oauthurl}'");
             }
             if (($token = $wechat->getOauthAccessToken()) && isset($token['openid'])) {
                 $this->app->session->set("{$appid}_openid", $openid = $token['openid']);
