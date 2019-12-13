@@ -11,7 +11,7 @@
 {/if}
 
 {if auth("remove")}
-<button data-action='{:url("remove")}' data-confirm="确定批量删除任务吗？" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定批量删除任务吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 {/if}
 
 {/block}
