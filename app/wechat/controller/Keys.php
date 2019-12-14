@@ -145,6 +145,7 @@ class Keys extends Controller
     /**
      * 配置关注回复
      * @auth true
+     * @menu true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -159,6 +160,7 @@ class Keys extends Controller
     /**
      * 配置默认回复
      * @auth true
+     * @menu true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -178,7 +180,7 @@ class Keys extends Controller
     {
         if ($this->request->isPost() && isset($data['keys'])) {
             $db = $this->app->db->name($this->table)->where('keys', $data['keys']);
-            empty($data['id']) || $db->where('id', 'neq', $data['id']);
+            empty($data['id']) || $db->where('id', '<>', $data['id']);
             if ($db->count() > 0) {
                 $this->error('关键字已经存在，请使用其它关键字！');
             }

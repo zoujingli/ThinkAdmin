@@ -4,7 +4,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">匹配规则</label>
             <div class="layui-input-inline">
-                <input name="keys" value="{$Think.get.keys|default=''}" placeholder="请输入匹配规则" class="layui-input">
+                <input name="keys" value="{:input('keys','')}" placeholder="请输入匹配规则" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
@@ -39,7 +39,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">创建时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
+                <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择创建时间" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
