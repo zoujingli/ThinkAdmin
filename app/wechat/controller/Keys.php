@@ -187,7 +187,7 @@ class Keys extends Controller
         }
         if ($this->request->isGet()) {
             $this->msgTypes = $this->types;
-            $root = rtrim(dirname(request()->basefile(true)), '\\/');
+            $root = rtrim(dirname($this->request->basefile(true)), '\\/');
             $this->defaultImage = "{$root}/static/theme/img/image.png";
         }
     }
@@ -201,7 +201,7 @@ class Keys extends Controller
         if ($result !== false) {
             list($url, $keys) = ['', $this->request->post('keys')];
             if (!in_array($keys, ['subscribe', 'default'])) {
-                $url = url('@admin') . '#' . url('wechat/keys/index') . '?spm=' . $this->request->get('spm');
+                $url = 'javascript:history.back()';
             }
             $this->success('恭喜, 关键字保存成功!', $url);
         } else {
