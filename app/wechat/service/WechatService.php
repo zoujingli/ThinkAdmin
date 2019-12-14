@@ -16,6 +16,7 @@
 namespace app\wechat\service;
 
 use think\admin\Service;
+use think\exception\HttpResponseException;
 
 /**
  * Class WechatService
@@ -221,28 +222,28 @@ class WechatService extends Service
                 $snsapi = empty($isfull) ? 'snsapi_base' : 'snsapi_userinfo';
                 $param = (strpos($source, '?') !== false ? '&' : '?') . 'rcode=' . encode($source);
                 $oauthurl = $wechat->getOauthRedirect($source . $param, $appid, $snsapi);
-                if ($redirect) redirect($oauthurl, 301)->send();
+                if ($redirect) throw new HttpResponseException(redirect($oauthurl, 301));
                 exit("window.location.href='{$oauthurl}'");
             }
             if (($token = $wechat->getOauthAccessToken()) && isset($token['openid'])) {
                 $this->app->session->set("{$appid}_openid", $openid = $token['openid']);
                 if (empty($isfull) && input('rcode')) {
-                    redirect(enbase64url(input('rcode')), 301)->send();
+                    throw new HttpResponseException(redirect(enbase64url(input('rcode')), 301));
                 }
                 $this->app->session->set("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
                 empty($fansinfo) || FansService::instance()->set($fansinfo);
             }
-            redirect(enbase64url(input('rcode')), 301)->send();
+            throw new HttpResponseException(redirect(enbase64url(input('rcode')), 301));
         } else {
             $result = self::ThinkAdminConfig()->oauth($this->app->session->getId(), $source, $isfull);
             $this->app->session->set("{$appid}_openid", $openid = $result['openid']);
             $this->app->session->set("{$appid}_fansinfo", $fansinfo = $result['fans']);
             if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
-                empty($fansinfo) || FansService::instance()->set($fansinfo);
+                if (!empty($fansinfo)) FansService::instance()->set($fansinfo);
                 return ['openid' => $openid, 'fansinfo' => $fansinfo];
             }
             if ($redirect && !empty($result['url'])) {
-                redirect($result['url'], 301)->send();
+                throw new HttpResponseException(redirect($result['url'], 301));
             }
             exit("window.location.href='{$result['url']}'");
         }
