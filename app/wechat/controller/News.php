@@ -50,12 +50,12 @@ class News extends Controller
      * 图文列表数据处理
      * @param array $data
      * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
     protected function _index_page_filter(&$data)
     {
-        foreach ($data as &$vo) $vo = MediaService::news($vo['id']);
+        foreach ($data as &$vo) $vo = MediaService::instance()->news($vo['id']);
     }
 
     /**
@@ -75,12 +75,12 @@ class News extends Controller
      * 图文列表数据处理
      * @param array $data
      * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
     protected function _select_page_filter(&$data)
     {
-        foreach ($data as &$vo) $vo = MediaService::news($vo['id']);
+        foreach ($data as &$vo) $vo = MediaService::instance()->news($vo['id']);
     }
 
     /**
@@ -98,7 +98,7 @@ class News extends Controller
             $this->fetch('form');
         } else {
             $data = $this->request->post();
-            if (($ids = $this->_apply_news_article($data['data'])) && !empty($ids)) {
+            if (($ids = $this->_buildArticle($data['data'])) && !empty($ids)) {
                 if (data_save($this->table, ['article_id' => $ids, 'create_by' => session('user.id')], 'id') !== false) {
                     $url = url('@admin') . '#' . url('@wechat/news/index') . '?spm=' . $this->request->get('spm');
                     $this->success('图文添加成功！', $url);
@@ -111,7 +111,6 @@ class News extends Controller
     /**
      * 编辑微信图文
      * @auth true
-     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -123,15 +122,15 @@ class News extends Controller
         }
         if ($this->request->isGet()) {
             if ($this->request->get('output') === 'json') {
-                $this->success('获取数据成功！', MediaService::news($this->id));
+                $this->success('获取数据成功！', MediaService::instance()->news($this->id));
             } else {
                 $this->fetch('form', ['title' => '编辑图文']);
             }
         } else {
             $post = $this->request->post();
-            if (isset($post['data']) && ($ids = $this->_apply_news_article($post['data']))) {
+            if (isset($post['data']) && ($ids = $this->_buildArticle($post['data']))) {
                 if (data_save('wechat_news', ['id' => $this->id, 'article_id' => $ids], 'id')) {
-                    $this->success('图文更新成功！', url('@admin') . '#' . url('@wechat/news/index'));
+                    $this->success('图文更新成功！', 'javascript:history.back()');
                 }
             }
             $this->error('图文更新失败，请稍候再试！');
@@ -143,8 +142,9 @@ class News extends Controller
      * @param array $data
      * @param array $ids
      * @return string
+     * @throws \think\db\exception\DbException
      */
-    private function _apply_news_article($data, $ids = [])
+    private function _buildArticle($data, $ids = [])
     {
         foreach ($data as &$vo) {
             if (empty($vo['digest'])) {
@@ -152,10 +152,10 @@ class News extends Controller
             }
             $vo['create_at'] = date('Y-m-d H:i:s');
             if (empty($vo['id'])) {
-                $result = $id = Db::name('WechatNewsArticle')->insertGetId($vo);
+                $result = $id = $this->app->db->name('WechatNewsArticle')->insertGetId($vo);
             } else {
                 $id = intval($vo['id']);
-                $result = Db::name('WechatNewsArticle')->where('id', $id)->update($vo);
+                $result = $this->app->db->name('WechatNewsArticle')->where('id', $id)->update($vo);
             }
             if ($result !== false) {
                 array_push($ids, $id);

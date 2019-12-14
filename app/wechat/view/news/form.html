@@ -99,11 +99,7 @@
 
             function apply(list) {
                 if (list.length < 1) list.push({
-                    title: '新建图文',
-                    author: '管理员',
-                    content: '文章内容',
-                    read_num: 0,
-                    local_url: '__ROOT__/static/theme/img/image.png',
+                    title: '新建图文', author: '管理员', content: '文章内容', read_num: 0, local_url: '__ROOT__/static/theme/img/image.png',
                 });
                 for (var i in list) {
                     list[i].active = false;
@@ -116,7 +112,7 @@
                     $vali.checkAllInput();
                     editor.setData($rootScope.item.content);
                     $('.layui-card-body.layui-hide').removeClass('layui-hide');
-                }, 100);
+                }, 200);
             }
 
             $rootScope.upItem = function (index, $event) {
@@ -171,7 +167,9 @@
             };
 
             $rootScope.addItem = function () {
-                if ($rootScope.list.length > 7) return $.msg.tips('最多允许增加7篇文章哦！');
+                if ($rootScope.list.length > 7) {
+                    return $.msg.tips('最多允许增加7篇文章哦！');
+                }
                 $rootScope.list.push({
                     title: '新建图文',
                     author: '管理员',
@@ -203,8 +201,8 @@
                 $.form.load('{:request()->url()}', {data: data}, "post");
             };
 
-            $('[name="local_url"]').on('change', function () {
-                var value = this.value;
+            $('[name="local_url"]').on('change', function (value) {
+                value = this.value;
                 $rootScope.$apply(function () {
                     $rootScope.setItemValue('local_url', value);
                 });
