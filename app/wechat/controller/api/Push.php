@@ -118,7 +118,7 @@ class Push extends Controller
                 if (is_string(($result = $this->$method()))) return $result;
             }
         } catch (\Exception $e) {
-            sysoplog('微信接口', "{$e->getFile()}:{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
+            $this->app->log->error("{$e->getFile()}:{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
         }
         return 'success';
     }
@@ -320,7 +320,7 @@ class Push extends Controller
                 $user = WechatService::WeChatUser()->getUserInfo($this->openid);
                 return FansService::instance()->set(array_merge($user, ['subscribe' => '1', 'appid' => $this->appid]));
             } catch (\Exception $e) {
-                sysoplog('微信接口', __METHOD__ . " {$this->openid} get userinfo faild. {$e->getMessage()}");
+                $this->app->log->error(__METHOD__ . " {$this->openid} get userinfo faild. {$e->getMessage()}");
                 return false;
             }
         } else {
