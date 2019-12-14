@@ -63,7 +63,11 @@ class Config extends Controller
         } else {
             foreach ($this->request->post() as $k => $v) sysconf($k, $v);
             if ($this->request->post('wechat.type') === 'thr') {
-                WechatService::ThinkAdminConfig()->setApiNotifyUri($this->thrNotify);
+                try {
+                    WechatService::ThinkAdminConfig()->setApiNotifyUri($this->thrNotify);
+                } catch (\Exception $exception) {
+                    $this->error($exception->getMessage());
+                }
             }
             sysoplog('微信管理', '修改微信授权配置成功');
             $this->success('微信参数修改成功！');
