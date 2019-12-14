@@ -76,7 +76,7 @@ use think\exception\HttpResponseException;
  * @method \WeOpen\Service WeOpenService() static 第三方服务
  *
  * ----- ThinkService -----
- * @method mixed ThinkAdminConfig() static 平台服务配置
+ * @method mixed ThinkServiceConfig() static 平台服务配置
  */
 class WechatService extends Service
 {
@@ -131,7 +131,7 @@ class WechatService extends Service
      */
     private static function paraseName($name)
     {
-        foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkAdmin'] as $type) {
+        foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkService'] as $type) {
             if (strpos($name, $type) === 0) {
                 list(, $class) = explode($type, $name);
                 return [$type, $class, "\\{$type}\\{$class}"];
@@ -235,7 +235,7 @@ class WechatService extends Service
             }
             throw new HttpResponseException(redirect(enbase64url(input('rcode')), 301));
         } else {
-            $result = self::ThinkAdminConfig()->oauth($this->app->session->getId(), $source, $isfull);
+            $result = self::ThinkServiceConfig()->oauth($this->app->session->getId(), $source, $isfull);
             $this->app->session->set("{$appid}_openid", $openid = $result['openid']);
             $this->app->session->set("{$appid}_fansinfo", $fansinfo = $result['fans']);
             if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
@@ -266,7 +266,7 @@ class WechatService extends Service
         if ($this->getType() === 'api') {
             return self::WeChatScript()->getJsSign($url);
         } else {
-            return self::ThinkAdminConfig()->jsSign($url);
+            return self::ThinkServiceConfig()->jsSign($url);
         }
     }
 }

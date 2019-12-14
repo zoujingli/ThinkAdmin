@@ -46,9 +46,9 @@ class Config extends Controller
                     sysconf('wechat.type', 'thr');
                     sysconf('wechat.thr_appid', input('appid'));
                     sysconf('wechat.thr_appkey', input('appkey'));
-                    WechatService::ThinkAdminConfig()->setApiNotifyUri($this->thrNotify);
+                    WechatService::ThinkServiceConfig()->setApiNotifyUri($this->thrNotify);
                 }
-                $this->wechat = WechatService::ThinkAdminConfig()->getConfig();
+                $this->wechat = WechatService::ThinkServiceConfig()->getConfig();
             } catch (\Exception $e) {
                 $this->message = $e->getMessage();
                 $this->wechat = [];
@@ -64,7 +64,7 @@ class Config extends Controller
             foreach ($this->request->post() as $k => $v) sysconf($k, $v);
             if ($this->request->post('wechat.type') === 'thr') {
                 try {
-                    WechatService::ThinkAdminConfig()->setApiNotifyUri($this->thrNotify);
+                    WechatService::ThinkServiceConfig()->setApiNotifyUri($this->thrNotify);
                 } catch (\Exception $exception) {
                     $this->error($exception->getMessage());
                 }
