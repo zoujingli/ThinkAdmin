@@ -50,6 +50,7 @@ class Config extends Controller
                 }
                 $this->wechat = WechatService::ThinkAdminConfig()->getConfig();
             } catch (\Exception $e) {
+                $this->message = $e->getMessage();
                 $this->wechat = [];
             }
             $this->geoip = $this->app->cache->get('mygeoip', '');

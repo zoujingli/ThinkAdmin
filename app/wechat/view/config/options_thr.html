@@ -26,6 +26,7 @@
             <div class="layui-input-block">
                 <button type="button" data-href="{$authurl|default=''}" class="layui-btn layui-btn-primary">重新绑定公众号</button>
                 <p class="help-block">点击连接将跳转到微信第三方平台进行公众号授权。</p>
+                {if !empty($message)}<p class="color-red">{$message|default=''}</p>{/if}
             </div>
         </div>
 
