@@ -209,7 +209,7 @@ class Push extends Controller
     private function keys($rule, $isLast = false, $isCustom = false)
     {
         list($table, $field, $value) = explode('#', $rule . '##');
-        $data = Db::name($table)->where([$field => $value])->find();
+        $data = $this->app->db->name($table)->where([$field => $value])->find();
         if (empty($data['type']) || (array_key_exists('status', $data) && empty($data['status']))) {
             return $isLast ? false : $this->keys('wechat_keys#keys#default', true, $isCustom);
         }
