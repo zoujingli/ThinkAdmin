@@ -50,7 +50,7 @@ class Test extends Controller
      */
     public function oauth_qrc()
     {
-        $url = url('@wechat/api.tools/oauth', [], false, true);
+        $url = url('@wechat/api.test/oauth', [], false, true);
         $this->showQrc($url);
     }
 
@@ -78,7 +78,7 @@ class Test extends Controller
      */
     public function jssdk_qrc()
     {
-        $this->url = url('@wechat/api.tools/jssdk', [], false, true);
+        $this->url = url('@wechat/api.test/jssdk', [], false, true);
         return $this->showQrc($this->url);
     }
 
@@ -114,7 +114,7 @@ class Test extends Controller
             'out_trade_no'     => time(),
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
-            'notify_url'       => url('@wechat/api.tools/notify', [], false, true),
+            'notify_url'       => url('@wechat/api.test/notify', [], false, true),
             'spbill_create_ip' => $this->request->ip(),
         ];
         $order = $pay->create($options);
@@ -133,7 +133,7 @@ class Test extends Controller
         $result['sign'] = $pay->getPaySign($result);
         p('======= 来自扫码支付1返回的结果 ======');
         p($result);
-        return \WeChat\Contracts\Tools::arr2xml($result);
+        return \WeChat\Contracts\test::arr2xml($result);
     }
 
     /**
@@ -152,7 +152,7 @@ class Test extends Controller
             'out_trade_no'     => time(),
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
-            'notify_url'       => url('@wechat/api.tools/notify', '', true, true),
+            'notify_url'       => url('@wechat/api.test/notify', [], true, true),
             'spbill_create_ip' => request()->ip(),
         ]);
         $this->showQrc($result['code_url']);
@@ -167,7 +167,7 @@ class Test extends Controller
      */
     public function jsapiQrc()
     {
-        $this->url = url('@wechat/api.tools/jsapi', [], false, true);
+        $this->url = url('@wechat/api.test/jsapi', [], false, true);
         $this->showQrc($this->url);
     }
 
@@ -191,7 +191,7 @@ class Test extends Controller
             'total_fee'        => '1',
             'openid'           => $user['openid'],
             'trade_type'       => 'JSAPI',
-            'notify_url'       => url('@wechat/api.tools/notify', [], false, true),
+            'notify_url'       => url('@wechat/api.test/notify', [], false, true),
             'spbill_create_ip' => request()->ip(),
         ];
         // 生成预支付码
