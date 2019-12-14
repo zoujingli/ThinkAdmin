@@ -1,14 +1,14 @@
 {if session('user.username') eq 'admin'}
 <fieldset class="margin-bottom-15">
-    <legend>守护状态</legend>
+    <legend class="notselect">守护状态</legend>
     <div class="layui-code border-0 margin-top-0">
-        <h4 class="color-desc margin-top-10">守护进程运行状态</h4>
+        <h4 class="color-desc margin-top-10 notselect">守护进程运行状态</h4>
         {if $listen}
         <span class="color-green">{$message|raw|default='--'}</span>
         {else}
         <span class="color-red">{$message|raw|default='--'}</span>
         {/if}
-        <h4 class="color-desc margin-top-10">配置定时任务来检查并启动进程（建议每分钟执行）</h4>
+        <h4 class="color-desc margin-top-10 notselect">配置定时任务来检查并启动进程（建议每分钟执行）</h4>
         <p>{$command|default='--'}</p>
     </div>
 </fieldset>
