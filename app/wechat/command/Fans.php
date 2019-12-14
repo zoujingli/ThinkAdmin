@@ -42,7 +42,7 @@ class Fans extends Command
      * 执行指令
      * @param Input $input
      * @param Output $output
-     * @return int|void|null
+     * @throws \think\Exception
      */
     protected function execute(Input $input, Output $output)
     {
@@ -52,6 +52,7 @@ class Fans extends Command
                 $message .= $this->$fun();
             }
         }
+        throw new \think\Exception($message, 3);
     }
 
     /**
@@ -130,10 +131,9 @@ class Fans extends Command
      */
     public function _tags($index = 0)
     {
-        $wechat = WechatService::WeChatTags();
         $appid = WechatService::instance()->getAppid();
         $this->output->comment('同步微信粉丝标签数据...');
-        if (is_array($list = $wechat->getTags()) && !empty($list['tags'])) {
+        if (is_array($list = WechatService::WeChatTags()->getTags()) && !empty($list['tags'])) {
             $count = count($list['tags']);
             foreach ($list['tags'] as &$tag) {
                 $tag['appid'] = $appid;
