@@ -99,7 +99,7 @@ class WechatService extends Service
             throw new \think\Exception("抱歉，需要实例的 {$name} 不在符合规则！");
         }
         if (sysconf('wechat.type') === 'api' || $type === 'WePay') {
-            if ($type === 'ThinkAdmin') {
+            if ($type === 'ThinkService') {
                 throw new \think\Exception("抱歉，接口模式不能实例 {$classname} 对象！");
             }
             return new $classname(self::instance()->getConfig());
