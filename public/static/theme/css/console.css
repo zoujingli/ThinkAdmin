@@ -10,10 +10,6 @@
 ::-webkit-input-placeholder {
   color: #aaa;
 }
-::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
-}
 ::-webkit-scrollbar-track {
   background: #ccc !important;
 }
