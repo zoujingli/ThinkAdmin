@@ -70,7 +70,8 @@ class Config extends Controller
                 }
             }
             sysoplog('微信管理', '修改微信授权配置成功');
-            $this->success('微信参数修改成功！');
+            $location = url('@admin') . '#' . url('@wechat/config/options');
+            $this->success('微信参数修改成功！', $location);
         }
     }
 
