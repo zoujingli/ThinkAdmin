@@ -118,7 +118,7 @@ class Push extends Controller
                 if (is_string(($result = $this->$method()))) return $result;
             }
         } catch (\Exception $e) {
-            $this->app->log->error("{$e->getFile()}:{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
+            $this->app->log->error("{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
         }
         return 'success';
     }
