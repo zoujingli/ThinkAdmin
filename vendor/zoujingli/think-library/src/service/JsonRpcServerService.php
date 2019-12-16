@@ -28,35 +28,35 @@ class JsonRpcServerService extends Service
     /**
      * 设置监听对象
      * @param mixed $object
-     * @return boolean
      * @throws \think\Exception
      */
     public function handle($object)
     {
         // Checks if a JSON-RCP request has been received
         if ($this->app->request->method() !== "POST" || $this->app->request->contentType() != 'application/json') {
-            foreach (get_class_methods($object) as $method) echo "<p>method {$method}()</p>";
-            return false;
-        }
-
-        // Reads the input data
-        $request = json_decode(file_get_contents('php://input'), true);
-        if (empty($request['id'])) {
-            throw new \think\Exception('JsonRpc Request id cannot be empty');
-        }
-
-        // Executes the task on local object
-        try {
-            if ($result = call_user_func_array([$object, $request['method']], $request['params'])) {
-                $response = ['id' => $request['id'], 'result' => $result, 'error' => null];
-            } else {
-                $response = ['id' => $request['id'], 'result' => null, 'error' => 'unknown method or incorrect parameters'];
+            echo "<h2>" . get_class($object) . "</h2>";
+            foreach (get_class_methods($object) as $method) {
+                if ($method[0] !== '_') echo "<p>method {$method}()</p>";
             }
-        } catch (\Exception $e) {
-            $response = ['id' => $request['id'], 'result' => null, 'error' => $e->getMessage()];
+        } else {
+            // Reads the input data
+            $request = json_decode(file_get_contents('php://input'), true);
+            if (empty($request['id'])) {
+                throw new \think\Exception('JsonRpc Request id cannot be empty');
+            }
+            // Executes the task on local object
+            try {
+                if ($result = @call_user_func_array([$object, $request['method']], $request['params'])) {
+                    $response = ['id' => $request['id'], 'result' => $result, 'error' => null];
+                } else {
+                    $response = ['id' => $request['id'], 'result' => null, 'error' => 'unknown method or incorrect parameters'];
+                }
+            } catch (\Exception $e) {
+                $response = ['id' => $request['id'], 'result' => null, 'error' => $e->getMessage()];
+            }
+            // Output the response
+            throw new HttpResponseException(json($response)->contentType('text/javascript'));
         }
-        // Output the response
-        throw new HttpResponseException(json($response)->contentType('text/javascript'));
     }
 
 }
