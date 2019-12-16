@@ -109,7 +109,7 @@ class WechatService extends Service
             $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
             $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
             $location = "http://open.cuci.cc/service/api.client/_TYPE_?not_init_session=1&token={$token}";
-            if (!class_exists('Yar_Client')) {
+            if (class_exists('Yar_Client')) {
                 $client = new \Yar_Client(str_replace('_TYPE_', 'yar', $location));
             } else {
                 $client = JsonRpcClientService::instance()->create(str_replace('_TYPE_', 'jsonrpc', $location));
