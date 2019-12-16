@@ -143,7 +143,7 @@ abstract class Storage
 
     /**
      * 根据文件后缀获取文件MINE
-     * @param array $exts 文件后缀
+     * @param array|string $exts 文件后缀
      * @param array $mime 文件信息
      * @return string
      */

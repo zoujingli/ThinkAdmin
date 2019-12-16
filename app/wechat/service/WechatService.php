@@ -16,6 +16,7 @@
 namespace app\wechat\service;
 
 use think\admin\Service;
+use think\admin\service\JsonRpcClientService;
 use think\exception\HttpResponseException;
 
 /**
@@ -86,7 +87,6 @@ class WechatService extends Service
      * @param string $name
      * @param array $arguments
      * @return mixed
-     * @throws \SoapFault
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -109,17 +109,17 @@ class WechatService extends Service
             $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
             $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
             $location = "http://open.cuci.cc/service/api.client/_TYPE_?not_init_session=1&token={$token}";
-            if (class_exists('Yar_Client')) {
+            if (!class_exists('Yar_Client')) {
                 $client = new \Yar_Client(str_replace('_TYPE_', 'yar', $location));
-                try {
-                    $exception = new \think\Exception($client->getMessage(), $client->getCode());
-                } catch (\Exception  $exception) {
-                    $exception = null;
-                }
-                if ($exception instanceof \Exception) throw $exception;
             } else {
-                $client = new \SoapClient(null, ['uri' => 'thinkadmin', 'location' => str_replace('_TYPE_', 'soap', $location)]);
+                $client = JsonRpcClientService::instance()->create(str_replace('_TYPE_', 'jsonrpc', $location));
             }
+            try {
+                $exception = new \think\Exception($client->getMessage(), $client->getCode());
+            } catch (\Exception  $exception) {
+                $exception = null;
+            }
+            if ($exception instanceof \Exception) throw $exception;
             return $client;
         }
     }

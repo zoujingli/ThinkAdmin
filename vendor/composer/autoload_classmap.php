@@ -274,6 +274,8 @@ return array(
     'think\\admin\\service\\CaptchaService' => $vendorDir . '/zoujingli/think-library/src/service/CaptchaService.php',
     'think\\admin\\service\\ExpressService' => $vendorDir . '/zoujingli/think-library/src/service/ExpressService.php',
     'think\\admin\\service\\InstallService' => $vendorDir . '/zoujingli/think-library/src/service/InstallService.php',
+    'think\\admin\\service\\JsonRpcClientService' => $vendorDir . '/zoujingli/think-library/src/service/JsonRpcClientService.php',
+    'think\\admin\\service\\JsonRpcServerService' => $vendorDir . '/zoujingli/think-library/src/service/JsonRpcServerService.php',
     'think\\admin\\service\\MenuService' => $vendorDir . '/zoujingli/think-library/src/service/MenuService.php',
     'think\\admin\\service\\NodeService' => $vendorDir . '/zoujingli/think-library/src/service/NodeService.php',
     'think\\admin\\service\\ProcessService' => $vendorDir . '/zoujingli/think-library/src/service/ProcessService.php',
