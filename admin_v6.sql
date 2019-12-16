@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local.server.cuci.cc
+ Source Server         : local.ctolog.com
  Source Server Type    : MySQL
  Source Server Version : 50562
- Source Host           : server.cuci.cc:3306
+ Source Host           : 127.0.0.1:3306
  Source Schema         : admin_v6
 
  Target Server Type    : MySQL
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 14/12/2019 14:34:07
+ Date: 16/12/2019 11:50:14
 */
 
 SET NAMES utf8mb4;
@@ -67,19 +67,19 @@ INSERT INTO `system_config` VALUES ('base', 'site_copy', '©版权所有 2014-20
 INSERT INTO `system_config` VALUES ('base', 'app_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES ('base', 'app_version', 'v6.0');
 INSERT INTO `system_config` VALUES ('base', 'miitbeian', '粤ICP备16006642号-2');
+INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_protocol', 'http');
 INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
 INSERT INTO `system_config` VALUES ('storage', 'allow_exts', 'doc,gif,icon,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');
-INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_protocol', 'http');
 INSERT INTO `system_config` VALUES ('storage', 'qiniu_region', '华东');
 INSERT INTO `system_config` VALUES ('storage', 'qiniu_bucket', 'static');
-INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_domain', '');
+INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_domain', 'static.ctolog.com');
 INSERT INTO `system_config` VALUES ('storage', 'qiniu_access_key', '');
 INSERT INTO `system_config` VALUES ('storage', 'qiniu_secret_key', '');
-INSERT INTO `system_config` VALUES ('wechat', 'token', '');
+INSERT INTO `system_config` VALUES ('wechat', 'token', 'mytoken');
 INSERT INTO `system_config` VALUES ('wechat', 'appsecret', '');
 INSERT INTO `system_config` VALUES ('wechat', 'encodingaeskey', '');
 INSERT INTO `system_config` VALUES ('wechat', 'appid', '');
-INSERT INTO `system_config` VALUES ('wechat', 'type', 'thr');
+INSERT INTO `system_config` VALUES ('wechat', 'type', 'api');
 INSERT INTO `system_config` VALUES ('wechat', 'appkey', '');
 INSERT INTO `system_config` VALUES ('wechat', 'thr_appid', '');
 INSERT INTO `system_config` VALUES ('wechat', 'thr_appkey', '');
@@ -100,7 +100,7 @@ CREATE TABLE `system_data`  (
   `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_data_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据';
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据';
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -219,7 +219,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-12-14 14:07:26', '127.0.0.1', 1024, '', '', '', 1, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', '', '', '2019-12-16 11:28:13', '221.217.23.91', 1051, '', '', '', 1, 0, '2015-11-13 15:14:22');
 -- ----------------------------
 -- Table structure for wechat_fans
 -- ----------------------------
