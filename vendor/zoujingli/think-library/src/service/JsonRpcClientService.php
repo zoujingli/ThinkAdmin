@@ -83,7 +83,7 @@ class JsonRpcClientService extends Service
         if (is_null($response['error'])) {
             return $response['result'];
         } else {
-            throw new \think\Exception("请求错误：[{$response['error']['code']}] {$response['error']['message']}");
+            throw new \think\Exception("请求错误：{$response['error']['message']}", $response['error']['code']);
         }
     }
 }
