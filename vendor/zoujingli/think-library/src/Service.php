@@ -47,24 +47,25 @@ abstract class Service
     {
         $this->app = $app;
         $this->request = $request;
+        $this->initialize();
     }
 
     /**
      * 初始化服务
      * @return $this
      */
-    public function initialize()
+    protected function initialize()
     {
         return $this;
     }
 
     /**
      * 静态实例对象
-     * @return $this
+     * @return static
      */
     public static function instance()
     {
-        return Container::getInstance()->make(static::class)->initialize();
+        return Container::getInstance()->make(static::class);
     }
 
 }

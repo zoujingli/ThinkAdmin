@@ -15,6 +15,8 @@
 
 namespace app\wechat\service;
 
+use library\service\JsonRpcClientService;
+
 /**
  * 微信处理管理
  * Class WechatService
@@ -86,7 +88,6 @@ class WechatService extends \We
      * @param string $name 静态类名
      * @param array $arguments 参数集合
      * @return mixed
-     * @throws \SoapFault
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -118,7 +119,6 @@ class WechatService extends \We
      * @param string $type 接口类型
      * @param array $config 微信配置
      * @return mixed
-     * @throws \SoapFault
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
@@ -136,11 +136,9 @@ class WechatService extends \We
             $token = strtolower("{$name}-{$appid}-{$appkey}-{$type}");
             if (class_exists('Yar_Client')) {
                 return new \Yar_Client(config('wechat.service_url') . "/service/api.client/yar/{$token}");
-            } elseif (class_exists('SoapClient')) {
-                $location = config('wechat.service_url') . "/service/api.client/soap/{$token}";
-                return new \SoapClient(null, ['uri' => strtolower($name), 'location' => $location]);
             } else {
-                throw new \think\Exception("Yar or Soap extensions are not installed.");
+                $location = config('wechat.service_url') . "/service/api.client/jsonrpc/{$token}";
+                return JsonRpcClientService::instance()->create($location);
             }
         }
     }

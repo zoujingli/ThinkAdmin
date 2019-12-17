@@ -217,6 +217,8 @@ return array(
     'library\\queue\\WorkQueue' => $vendorDir . '/zoujingli/think-library/src/queue/WorkQueue.php',
     'library\\service\\AdminService' => $vendorDir . '/zoujingli/think-library/src/service/AdminService.php',
     'library\\service\\CaptchaService' => $vendorDir . '/zoujingli/think-library/src/service/CaptchaService.php',
+    'library\\service\\JsonRpcClientService' => $vendorDir . '/zoujingli/think-library/src/service/JsonRpcClientService.php',
+    'library\\service\\JsonRpcServerService' => $vendorDir . '/zoujingli/think-library/src/service/JsonRpcServerService.php',
     'library\\service\\MenuService' => $vendorDir . '/zoujingli/think-library/src/service/MenuService.php',
     'library\\service\\NodeService' => $vendorDir . '/zoujingli/think-library/src/service/NodeService.php',
     'library\\service\\ProcessService' => $vendorDir . '/zoujingli/think-library/src/service/ProcessService.php',

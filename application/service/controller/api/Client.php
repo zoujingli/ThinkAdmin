@@ -16,8 +16,10 @@
 namespace app\service\controller\api;
 
 use app\service\service\WechatService;
+use library\service\JsonRpcServerService;
 use think\Controller;
 use think\Db;
+use think\exception\HttpResponseException;
 
 /**
  * 获取微信SDK实例对象
@@ -85,6 +87,23 @@ class Client extends Controller
             $service = new \SoapServer(null, ['uri' => strtolower($this->name)]);
             $service->setObject(empty($instance) ? $this : $instance);
             $service->handle();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * JsonRpc 接口标准
+     * @param string $param
+     * @return string
+     */
+    public function jsonrpc($param)
+    {
+        try {
+            $instance = $this->create($param);
+            JsonRpcServerService::instance()->create($instance);
+        } catch (HttpResponseException $exception) {
+            throw $exception;
         } catch (\Exception $e) {
             return $e->getMessage();
         }
