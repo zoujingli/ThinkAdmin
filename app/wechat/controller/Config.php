@@ -49,9 +49,9 @@ class Config extends Controller
                     WechatService::ThinkServiceConfig()->setApiNotifyUri($this->thrNotify);
                 }
                 $this->wechat = WechatService::ThinkServiceConfig()->getConfig();
-            } catch (\Exception $e) {
-                $this->message = $e->getMessage();
+            } catch (\Exception $exception) {
                 $this->wechat = [];
+                $this->message = $exception->getMessage();
             }
             $this->geoip = $this->app->cache->get('mygeoip', '');
             if (empty($this->geoip)) {
