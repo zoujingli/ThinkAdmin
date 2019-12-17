@@ -21,14 +21,13 @@ use think\exception\HttpResponseException;
 /**
  * JsonRpc 服务端服务
  * Class JsonRpcServerService
- * @package think\admin\service
+ * @package library\service
  */
 class JsonRpcServerService extends Service
 {
     /**
      * 设置监听对象
      * @param mixed $object
-     * @throws \think\Exception
      */
     public function handle($object)
     {
@@ -41,18 +40,23 @@ class JsonRpcServerService extends Service
         } else {
             // Reads the input data
             $request = json_decode(file_get_contents('php://input'), true);
-            if (empty($request['id'])) {
-                throw new \think\Exception('JsonRpc Request id cannot be empty');
-            }
-            // Executes the task on local object
-            try {
+            if (empty($request)) {
+                $error = ['code' => '-32700', 'message' => '语法解析错误', 'meaning' => '服务端接收到无效的JSON'];
+                $response = ['jsonrpc' => '2.0', 'id' => $request['id'], 'result' => null, 'error' => $error];
+            } elseif (!isset($request['id']) || !isset($request['method']) || !isset($request['params'])) {
+                $error = ['code' => '-32600', 'message' => '无效的请求', 'meaning' => '发送的JSON不是一个有效的请求对象'];
+                $response = ['jsonrpc' => '2.0', 'id' => $request['id'], 'result' => null, 'error' => $error];
+            } else try {
+                // Executes the task on local object
                 if ($result = @call_user_func_array([$object, $request['method']], $request['params'])) {
-                    $response = ['id' => $request['id'], 'result' => $result, 'error' => null];
+                    $response = ['jsonrpc' => '2.0', 'id' => $request['id'], 'result' => $result, 'error' => null];
                 } else {
-                    $response = ['id' => $request['id'], 'result' => null, 'error' => 'unknown method or incorrect parameters'];
+                    $error = ['code' => '-32601', 'message' => '找不到方法', 'meaning' => '该方法不存在或无效'];
+                    $response = ['jsonrpc' => '2.0', 'id' => $request['id'], 'result' => null, 'error' => $error];
                 }
             } catch (\Exception $e) {
-                $response = ['id' => $request['id'], 'result' => null, 'error' => $e->getMessage()];
+                $error = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+                $response = ['jsonrpc' => '2.0', 'id' => $request['id'], 'result' => null, 'error' => $error];
             }
             // Output the response
             throw new HttpResponseException(json($response)->contentType('text/javascript'));

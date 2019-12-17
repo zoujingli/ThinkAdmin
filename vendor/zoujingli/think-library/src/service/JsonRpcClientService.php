@@ -21,7 +21,7 @@ use library\tools\Data;
 /**
  * JsonRpc 客户端服务
  * Class JsonRpcClientService
- * @package think\admin\service
+ * @package library\service
  */
 class JsonRpcClientService extends Service
 {
@@ -44,35 +44,28 @@ class JsonRpcClientService extends Service
      */
     public function create($proxy)
     {
-        $this->proxy = $proxy;
         $this->requestid = Data::randomCode(16, 3);
+        $this->proxy = $proxy;
         return $this;
     }
 
     /**
-     * 执行 JsonRCP 请求
+     * 执行 JsonRpc 请求
      * @param string $method
      * @param array $params
-     * @return array|boolean
+     * @return mixed
      * @throws \think\Exception
      */
     public function __call($method, $params)
     {
-        // check
-        if (!is_scalar($method)) {
-            throw new \think\Exception('Method name has no scalar value');
-        }
-        // check
-        if (is_array($params)) {
-            $params = array_values($params);
-        } else {
-            throw new \think\Exception('Params must be given as array');
-        }
-        // performs the HTTP POST
+        // Performs the HTTP POST
         $options = [
             'http' => [
-                'method'  => 'POST', 'header' => 'Content-type: application/json',
-                'content' => json_encode(['method' => $method, 'params' => $params, 'id' => $this->requestid], JSON_UNESCAPED_UNICODE),
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/json',
+                'content' => json_encode([
+                    'jsonrpc' => '2.0', 'method' => $method, 'params' => $params, 'id' => $this->requestid,
+                ], JSON_UNESCAPED_UNICODE),
             ],
         ];
         if ($fp = fopen($this->proxy, 'r', false, stream_context_create($options))) {
@@ -81,16 +74,16 @@ class JsonRpcClientService extends Service
             fclose($fp);
             $response = json_decode($response, true);
         } else {
-            throw new \think\Exception("Unable to connect to {$this->proxy}");
+            throw new \think\Exception("无法连接到 {$this->proxy}");
         }
-        // final checks and return
+        // Final checks and return
         if ($response['id'] != $this->requestid) {
-            throw new \think\Exception("Incorrect response id (request id: {$this->requestid}, response id: {$response['id']}）");
+            throw new \think\Exception("错误的响应标记 (请求标记: {$this->requestid}, 响应标记: {$response['id']}）");
         }
         if (is_null($response['error'])) {
             return $response['result'];
         } else {
-            throw new \think\Exception("Request error: {$response['error']}");
+            throw new \think\Exception("请求错误：[{$response['error']['code']}] {$response['error']['message']}");
         }
     }
 }
