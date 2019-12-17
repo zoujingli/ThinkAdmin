@@ -166,10 +166,9 @@ class InstallService extends Service
         foreach ($local as $t) $_local[$t['name']] = $t;
         unset($serve, $local);
         // 线上数据差异计算
-        foreach ($_serve as $t) if (isset($_local[$t['name']])) array_push($_new, [
+        foreach ($_serve as $t) isset($_local[$t['name']]) ? array_push($_new, [
             'type' => $t['hash'] === $_local[$t['name']]['hash'] ? null : 'mod', 'name' => $t['name'],
-        ]);
-        else array_push($_new, ['type' => 'add', 'name' => $t['name']]);
+        ]) : array_push($_new, ['type' => 'add', 'name' => $t['name']]);
         // 本地数据增量计算
         foreach ($_local as $t) if (!isset($_serve[$t['name']])) array_push($_new, ['type' => 'del', 'name' => $t['name']]);
         unset($_serve, $_local);
