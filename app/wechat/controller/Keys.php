@@ -121,25 +121,14 @@ class Keys extends Controller
     }
 
     /**
-     * 禁用回复规则
+     * 修改回复规则状态
      * @auth true
      * @throws \think\db\exception\DbException
      */
-    public function forbid()
+    public function state()
     {
         $this->_applyFormToken();
-        $this->_save($this->table, ['status' => '0']);
-    }
-
-    /**
-     * 启用回复规则
-     * @auth true
-     * @throws \think\db\exception\DbException
-     */
-    public function resume()
-    {
-        $this->_applyFormToken();
-        $this->_save($this->table, ['status' => '1']);
+        $this->_save($this->table, ['status' => input('status')]);
     }
 
     /**

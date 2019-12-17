@@ -66,17 +66,17 @@
                 {/if}
             </td>
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
-            <td class='text-left nowrap'>{if $vo.status eq 0}<span class="color-desc">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}</td>
+            <td class='text-left nowrap'>{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}</td>
             <td class='text-left nowrap'>
 
                 {if auth("edit")}
                 <a class="layui-btn layui-btn-sm" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 {/if}
 
-                {if $vo.status eq 1 and auth("forbid")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">禁 用</a>
-                {elseif auth("resume")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">启 用</a>
+                {if $vo.status eq 1 and auth("state")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
+                {elseif auth("state")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
                 {/if}
 
                 {if auth("remove")}
