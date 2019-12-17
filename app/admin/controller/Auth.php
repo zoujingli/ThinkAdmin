@@ -87,7 +87,6 @@ class Auth extends Controller
     /**
      * 权限配置节点
      * @auth true
-     * @return mixed
      * @throws \ReflectionException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
