@@ -82,7 +82,7 @@ class Keys extends Controller
     }
 
     /**
-     * 添加关键字
+     * 添加回复规则
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -91,12 +91,12 @@ class Keys extends Controller
     public function add()
     {
         $this->_applyFormToken();
-        $this->title = '添加关键字规则';
+        $this->title = '添加回复规则';
         $this->_form($this->table, 'form');
     }
 
     /**
-     * 编辑关键字
+     * 编辑回复规则
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -105,12 +105,12 @@ class Keys extends Controller
     public function edit()
     {
         $this->_applyFormToken();
-        $this->title = '编辑关键字规则';
+        $this->title = '编辑回复规则';
         $this->_form($this->table, 'form');
     }
 
     /**
-     * 删除关键字
+     * 删除回复规则
      * @auth true
      * @throws \think\db\exception\DbException
      */
@@ -121,7 +121,7 @@ class Keys extends Controller
     }
 
     /**
-     * 禁用关键字
+     * 禁用回复规则
      * @auth true
      * @throws \think\db\exception\DbException
      */
@@ -132,7 +132,7 @@ class Keys extends Controller
     }
 
     /**
-     * 启用关键字
+     * 启用回复规则
      * @auth true
      * @throws \think\db\exception\DbException
      */
