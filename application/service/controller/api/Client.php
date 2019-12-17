@@ -101,7 +101,7 @@ class Client extends Controller
     {
         try {
             $instance = $this->create($param);
-            JsonRpcServerService::instance()->create($instance);
+            JsonRpcServerService::instance()->create(empty($instance) ? $this : $instance);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
