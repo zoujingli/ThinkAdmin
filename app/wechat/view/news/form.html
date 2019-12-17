@@ -80,9 +80,9 @@
 <script>
     require(['angular', 'ckeditor'], function () {
 
+        var editor;
         var $form = $('form[name="news"]');
         var $vali = $form.vali().data('validate');
-        var editor = window.createEditor('[name="content"]');
 
         var app = angular.module("NewsEditor", []).run(callback);
         angular.bootstrap(document.getElementById(app.name), [app.name]);
@@ -108,10 +108,11 @@
                 $rootScope.list = list;
                 $rootScope.item = $rootScope.list[0];
                 $rootScope.setItemValue('active', true);
+                $('.layui-card-body.layui-hide').removeClass('layui-hide');
                 setTimeout(function () {
-                    $vali.checkAllInput();
+                    editor = window.createEditor('[name="content"]');
                     editor.setData($rootScope.item.content);
-                    $('.layui-card-body.layui-hide').removeClass('layui-hide');
+                    $vali.checkAllInput();
                 }, 200);
             }
 
@@ -148,16 +149,16 @@
                 $event.stopPropagation();
                 $vali.checkAllInput();
                 if ($form.find('.validate-error').size() > 0) return 0;
-                if (editor.getData().length < 1) return $.msg.tips('文章内容不能为空，请输入文章内容！');
-                for (var i in $rootScope.list) {
-                    if (parseInt(i) !== parseInt(index)) {
-                        $rootScope.list[i].active = false;
-                    } else {
-                        $rootScope.item.content = editor.getData();
-                        $rootScope.item = $rootScope.list[i];
-                        editor.setData($rootScope.item.content);
-                        $rootScope.setItemValue('active', true);
-                    }
+                if (editor.getData().length < 1) {
+                    return $.msg.tips('文章内容不能为空，请输入文章内容！');
+                }
+                for (var i in $rootScope.list) if (parseInt(i) !== parseInt(index)) {
+                    $rootScope.list[i].active = false;
+                } else {
+                    $rootScope.item.content = editor.getData();
+                    $rootScope.item = $rootScope.list[i];
+                    editor.setData($rootScope.item.content);
+                    $rootScope.setItemValue('active', true);
                 }
             };
 
