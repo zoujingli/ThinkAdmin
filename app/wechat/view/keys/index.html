@@ -48,7 +48,7 @@
                 {$vo.keys}
             </td>
             <td class="text-left nowrap">{$vo.type}</td>
-            <td class="text-left nowrap">
+            <td class="text-left nowrap notselect">
                 {if $vo.type eq '音乐'}
                 <a data-phone-view='{:url("@wechat/api.review/music")}?title={$vo.music_title|urlencode}&desc={$vo.music_desc|urlencode}'>预览 <i class="fa fa-eye"></i></a>
                 {elseif in_array($vo.type,['文字','转客服'])}
