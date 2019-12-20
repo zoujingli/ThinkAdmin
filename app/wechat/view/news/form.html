@@ -99,7 +99,8 @@
 
             function apply(list) {
                 if (list.length < 1) list.push({
-                    title: '新建图文', author: '管理员', content: '文章内容', read_num: 0, local_url: '__ROOT__/static/theme/img/image.png',
+                    title: '新建图文', author: '管理员', content: '文章内容',
+                    read_num: 0, local_url: '__ROOT__/static/theme/img/image.png',
                 });
                 for (var i in list) {
                     list[i].active = false;
@@ -110,10 +111,11 @@
                 $rootScope.setItemValue('active', true);
                 $('.layui-card-body.layui-hide').removeClass('layui-hide');
                 setTimeout(function () {
+                    if (editor) editor.destroy();
                     editor = window.createEditor('[name="content"]');
                     editor.setData($rootScope.item.content);
                     $vali.checkAllInput();
-                }, 200);
+                }, 100);
             }
 
             $rootScope.upItem = function (index, $event) {
@@ -126,7 +128,6 @@
                 }
                 apply(tmp);
             };
-
             $rootScope.dnItem = function (index, $event) {
                 $event.stopPropagation();
                 var tmp = [], cur = $rootScope.list[index];
@@ -137,14 +138,12 @@
                 }
                 apply(tmp);
             };
-
             $rootScope.delItem = function (index, $event) {
                 $event.stopPropagation();
                 var list = $rootScope.list, temp = [];
                 for (var i in list) (parseInt(i) !== parseInt(index)) && temp.push(list[i]);
                 apply(temp);
             };
-
             $rootScope.setItem = function (index, $event) {
                 $event.stopPropagation();
                 $vali.checkAllInput();
@@ -161,12 +160,10 @@
                     $rootScope.setItemValue('active', true);
                 }
             };
-
             $rootScope.setItemValue = function (name, value) {
                 $rootScope.item[name] = value;
                 $rootScope.item.style = "background-image:url('" + $rootScope.item.local_url + "')";
             };
-
             $rootScope.addItem = function () {
                 if ($rootScope.list.length > 7) {
                     return $.msg.tips('最多允许增加7篇文章哦！');
@@ -180,7 +177,6 @@
                     style: "background-image:url('__ROOT__/static/theme/img/image.png')"
                 });
             };
-
             $rootScope.submit = function () {
                 $vali.checkAllInput();
                 if ($form.find('.validate-error').size() > 0) {
@@ -201,7 +197,6 @@
                 });
                 $.form.load('{:request()->url()}', {data: data}, "post");
             };
-
             $('[name="local_url"]').on('change', function (value) {
                 value = this.value;
                 $rootScope.$apply(function () {

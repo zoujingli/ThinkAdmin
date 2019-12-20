@@ -45,38 +45,39 @@ class Login extends Controller
                 $this->devmode = SystemService::instance()->checkRunMode('dev');
                 $this->fetch();
             }
+        } else {
+            $data = $this->_vali([
+                'username.require' => '登录账号不能为空!',
+                'username.min:4'   => '登录账号长度不能少于4位有效字符！',
+                'password.require' => '登录密码不能为空！',
+                'password.min:4'   => '登录密码长度不能少于4位有效字符！',
+                'verify.require'   => '图形验证码不能为空！',
+                'uniqid.require'   => '图形验证标识不能为空！'
+            ]);
+            if (!CaptchaService::instance()->check($data['verify'], $data['uniqid'])) {
+                $this->error('图形验证码验证失败，请重新输入!');
+            }
+            // 用户信息验证
+            $map = ['username' => $data['username'], 'is_deleted' => '0'];
+            $user = $this->app->db->name('SystemUser')->where($map)->order('id desc')->find();
+            if (empty($user)) {
+                $this->error('登录账号或密码错误，请重新输入!');
+            }
+            if (md5("{$user['password']}{$data['uniqid']}") !== $data['password']) {
+                $this->error('登录账号或密码错误，请重新输入!');
+            }
+            if (empty($user['status'])) {
+                $this->error('账号已经被禁用，请联系管理员!');
+            }
+            $this->app->db->name('SystemUser')->where(['id' => $user['id']])->update([
+                'login_ip'  => $this->app->request->ip(),
+                'login_at'  => $this->app->db->raw('now()'),
+                'login_num' => $this->app->db->raw('login_num+1'),
+            ]);
+            $this->app->session->set('user', $user);
+            sysoplog('用户登录', "用户登录系统后台成功");
+            $this->success('登录成功', url('@admin')->build());
         }
-        $data = $this->_vali([
-            'username.require' => '登录账号不能为空!',
-            'username.min:4'   => '登录账号长度不能少于4位有效字符！',
-            'password.require' => '登录密码不能为空！',
-            'password.min:4'   => '登录密码长度不能少于4位有效字符！',
-            'verify.require'   => '图形验证码不能为空！',
-            'uniqid.require'   => '图形验证标识不能为空！'
-        ]);
-        if (!CaptchaService::instance()->check($data['verify'], $data['uniqid'])) {
-            $this->error('图形验证码验证失败，请重新输入!');
-        }
-        // 用户信息验证
-        $map = ['username' => $data['username'], 'is_deleted' => '0'];
-        $user = $this->app->db->name('SystemUser')->where($map)->order('id desc')->find();
-        if (empty($user)) {
-            $this->error('登录账号或密码错误，请重新输入!');
-        }
-        if (md5("{$user['password']}{$data['uniqid']}") !== $data['password']) {
-            $this->error('登录账号或密码错误，请重新输入!');
-        }
-        if (empty($user['status'])) {
-            $this->error('账号已经被禁用，请联系管理员!');
-        }
-        $this->app->db->name('SystemUser')->where(['id' => $user['id']])->update([
-            'login_ip'  => $this->app->request->ip(),
-            'login_at'  => $this->app->db->raw('now()'),
-            'login_num' => $this->app->db->raw('login_num+1'),
-        ]);
-        $this->app->session->set('user', $user);
-        sysoplog('用户登录', "用户登录系统后台成功");
-        $this->success('登录成功', url('@admin')->build());
     }
 
     /**
