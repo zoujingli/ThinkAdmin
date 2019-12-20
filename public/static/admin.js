@@ -31,7 +31,7 @@ require.config({
         'json': ['plugs/jquery/json.min'],
         'michat': ['plugs/michat/michat'],
         'base64': ['plugs/jquery/base64.min'],
-        'upload': ['?s=admin/api.upload&.js'],
+        'upload': [baseRoot + '../?s=admin/api.upload&.js'],
         'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
         'ckeditor': ['plugs/ckeditor/ckeditor'],
