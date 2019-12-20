@@ -1,17 +1,15 @@
 define(['md5'], function (SparkMD5) {
+    var allowExtsMimes = JSON.parse('{$exts|raw}');
     return function (element, InitHandler, UploadedHandler) {
-        var exts = $(element).data('type') || '*';
+        var exts = [], mimes = [];
         var uptype = $(element).attr('data-uptype') || '';
         var multiple = $(element).attr('data-multiple') > 0;
+        var types = ($(element).data('type') || '').split(',');
+        for (var i in types) if (allowExtsMimes[types[i]]) {
+            mimes.push(allowExtsMimes[types[i]]), exts.push(types[i]);
+        }
 
-        // 检查可以上传的文件后缀
-        jQuery.ajax('?s=admin/api.upload/check', {
-            method: 'POST', data: {exts: exts, uptype: uptype}, success: function (ret, options) {
-                options = {exts: ret.data.exts, acceptMime: ret.data.mime, data: {}};
-                if (exts.indexOf('*') > -1) delete options.exts, delete options.acceptMime;
-                renderUploader(options)
-            }
-        });
+        renderUploader({exts: exts.join('|'), acceptMime: mimes.join(',')});
 
         // 初始化上传组件
         function renderUploader(options, headers, uploader) {

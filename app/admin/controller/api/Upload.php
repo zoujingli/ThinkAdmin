@@ -30,6 +30,23 @@ class Upload extends Controller
 {
 
     /**
+     * 文件上传JS支持
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function index()
+    {
+        $data = ['exts' => []];
+        foreach (explode(',', sysconf('storage.allow_exts')) as $ext) {
+            $data['exts'][$ext] = Storage::mime($ext);
+        }
+        $template = realpath(__DIR__ . '/../../view/api/plugs/upload.js');
+        $data['exts'] = json_encode($data['exts'], JSON_UNESCAPED_UNICODE);
+        return view($template, $data)->contentType('application/x-javascript');
+    }
+
+    /**
      * 上传安全检查
      * @login true
      * @throws \think\db\exception\DataNotFoundException

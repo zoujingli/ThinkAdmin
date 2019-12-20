@@ -30,7 +30,7 @@ require.config({
         'md5': ['plugs/jquery/md5.min'],
         'json': ['plugs/jquery/json.min'],
         'michat': ['plugs/michat/michat'],
-        'upload': ['plugs/jquery/uploader'],
+        'upload': ['../admin/api.upload?.js'],
         'base64': ['plugs/jquery/base64.min'],
         'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
