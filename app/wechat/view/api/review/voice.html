@@ -7,7 +7,9 @@
     <div class="content arrow">
         <a class="icon icon-volume left-text"></a>
         <a href="javascript:void(0)" id="audio_btn" class="icon icon-pause"></a>
-        <audio id="audio"><source src="{$url|default=''}"></audio>
+        <audio id="audio">
+            <source src="{$url|default=''}">
+        </audio>
         <script>
             var audio = document.getElementById('audio');
             var button = document.getElementById('audio_btn');
@@ -24,7 +26,16 @@
 
 {block name='style'}
 <style>
-    .left-text{margin:0!important;color:#ccc!important}
-    .icon{color:#666;font-size:1.5rem;margin-left:2.5rem;line-height:1.5rem}
+    .left-text {
+        margin: 0 !important;
+        color: #ccc !important
+    }
+
+    .icon {
+        color: #666;
+        font-size: 1.5rem;
+        margin-left: 2.5rem;
+        line-height: 1.5rem
+    }
 </style>
 {/block}
