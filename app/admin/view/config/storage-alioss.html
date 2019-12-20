@@ -1,8 +1,9 @@
 <form onsubmit="return false" data-auto="true" action="{:url()}" method="post" class='layui-form layui-card' autocomplete="off">
     <div class="layui-card-body">
 
-        <div class="color-text margin-left-40 margin-bottom-20 layui-code" style="border-left-width:1px;background:none">
-            <p class="margin-bottom-5 font-w7">文件将上传到阿里云OSS空间，需要配置OSS公开访问及跨域策略（目前已实现自动创建空间及配置访问策略）。</p>
+        <div class="color-text margin-left-40 margin-bottom-20 layui-code text-center layui-bg-gray" style="border-left-width:1px">
+            <p class="margin-bottom-5 font-w7">文件将上传到阿里云 OSS 存储，需要配置 OSS 公开访问及跨域策略。</p>
+            <p>直传需要配置跨域规则，设置来源为 *，允许 Methods 为 POST，允许 Headers 为 *</p>
         </div>
 
         <div class="layui-form-item">
