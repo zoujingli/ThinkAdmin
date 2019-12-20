@@ -17,6 +17,9 @@ namespace app\admin\controller\api;
 
 use think\admin\Controller;
 use think\admin\Storage;
+use think\admin\storage\AliossStorage;
+use think\admin\storage\LocalStorage;
+use think\admin\storage\QiniuStorage;
 
 /**
  * 文件上传接口
@@ -28,7 +31,6 @@ class Upload extends Controller
 
     /**
      * 上传安全检查
-     * @login true
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -36,18 +38,44 @@ class Upload extends Controller
      */
     public function check()
     {
-        $diff1 = explode(',', strtolower(input('exts', '')));
-        $diff2 = explode(',', strtolower(sysconf('storage.allow_exts')));
-        $exts = array_intersect($diff1, $diff2);
-        $this->success('获取文件上传参数', [
-            'type' => $this->getType(), 'data' => $this->getData(),
-            'exts' => join('|', $exts), 'mime' => Storage::mime($exts),
-        ]);
+        $exts = array_intersect(explode(',', input('exts', '')), explode(',', sysconf('storage.allow_exts')));
+        $this->success('获取文件上传参数', ['exts' => join('|', $exts), 'mime' => Storage::mime($exts)]);
+    }
+
+    /**
+     * 检查文件上传已经上传
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function state()
+    {
+        $data = ['uptype' => $this->getType(), 'xkey' => input('xkey')];
+        if ($info = Storage::instance($data['uptype'])->info($data['xkey'])) {
+            $data['url'] = $info['url'];
+            $data['pathinfo'] = $info['file'];
+            $this->success('文件已经上传', $data, 200);
+        } elseif ('local' === $data['uptype']) {
+            $data['url'] = LocalStorage::instance()->url($data['xkey']);
+            $data['server'] = LocalStorage::instance()->upload();
+        } elseif ('qiniu' === $data['uptype']) {
+            $data['url'] = QiniuStorage::instance()->url($data['xkey']);
+            $data['token'] = QiniuStorage::instance()->buildUploadToken($data['xkey']);
+            $data['server'] = QiniuStorage::instance()->upload();
+        } elseif ('alioss' === $data['uptype']) {
+            $token = AliossStorage::instance()->buildUploadToken($data['xkey']);
+            $data['server'] = AliossStorage::instance()->upload();
+            $data['url'] = $token['siteurl'];
+            $data['policy'] = $token['policy'];
+            $data['signature'] = $token['signature'];
+            $data['OSSAccessKeyId'] = $token['keyid'];
+        }
+        $this->success('获取上传参数', $data, 404);
     }
 
     /**
      * 文件上传入口
-     * @login true
      * @return \think\response\Json
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -77,25 +105,6 @@ class Upload extends Controller
     }
 
     /**
-     * 获取文件上传参数
-     * @return array
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    private function getData()
-    {
-        if ($this->getType() === 'qiniu') {
-            $file = Storage::instance('qiniu');
-            return ['url' => $file->upload(), 'token' => $file->buildUploadToken(), 'uptype' => $this->getType()];
-        } else {
-            $file = Storage::instance('local');
-            return ['url' => $file->upload(), 'token' => uniqid('local_upload_'), 'uptype' => $this->getType()];
-        }
-    }
-
-    /**
      * 获取文件上传方式
      * @return string
      * @throws \think\db\exception\DataNotFoundException
@@ -105,7 +114,7 @@ class Upload extends Controller
     private function getType()
     {
         $this->uptype = input('uptype');
-        if (!in_array($this->uptype, ['local', 'qiniu'])) {
+        if (!in_array($this->uptype, ['local', 'qiniu', 'alioss'])) {
             $this->uptype = sysconf('storage.type');
         }
         return $this->uptype;

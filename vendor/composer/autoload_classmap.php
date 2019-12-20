@@ -282,6 +282,7 @@ return array(
     'think\\admin\\service\\QueueService' => $vendorDir . '/zoujingli/think-library/src/service/QueueService.php',
     'think\\admin\\service\\SystemService' => $vendorDir . '/zoujingli/think-library/src/service/SystemService.php',
     'think\\admin\\service\\TokenService' => $vendorDir . '/zoujingli/think-library/src/service/TokenService.php',
+    'think\\admin\\storage\\AliossStorage' => $vendorDir . '/zoujingli/think-library/src/storage/AliossStorage.php',
     'think\\admin\\storage\\LocalStorage' => $vendorDir . '/zoujingli/think-library/src/storage/LocalStorage.php',
     'think\\admin\\storage\\QiniuStorage' => $vendorDir . '/zoujingli/think-library/src/storage/QiniuStorage.php',
     'think\\app\\MultiApp' => $vendorDir . '/topthink/think-multi-app/src/MultiApp.php',

@@ -53,19 +53,19 @@ class LocalStorage extends Storage
      * @param string $name 文件名称
      * @param string $file 文件内容
      * @param boolean $safe 安全模式
-     * @return array|null
-     * @throws \think\Exception
+     * @return array
      */
     public function set($name, $file, $safe = false)
     {
         try {
             $path = $this->path($name, $safe);
             file_exists(dirname($path)) || mkdir(dirname($path), 0755, true);
-            if (file_put_contents($path, $file)) return $this->info($name, $safe);
+            if (file_put_contents($path, $file)) {
+                return $this->info($name, $safe);
+            }
         } catch (\Exception $e) {
-            throw new \think\Exception("本地文件存储失败，{$e->getMessage()}");
+            return [];
         }
-        return null;
     }
 
     /**
@@ -110,7 +110,7 @@ class LocalStorage extends Storage
      * 获取文件当前URL地址
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
-     * @return boolean|string|null
+     * @return string|null
      */
     public function url($name, $safe = false)
     {
@@ -135,13 +135,12 @@ class LocalStorage extends Storage
      * 获取文件存储信息
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
-     * @return array|null
+     * @return array
      */
     public function info($name, $safe = false)
     {
         return $this->has($name, $safe) ? [
-            'file' => $this->path($name, $safe), 'url' => $this->url($name, $safe),
-            'hash' => md5_file($this->path($name, $safe)), 'key' => "upload/{$name}",
+            'file' => $this->path($name, $safe), 'url' => $this->url($name, $safe), 'key' => "upload/{$name}",
         ] : [];
     }
 
@@ -151,7 +150,7 @@ class LocalStorage extends Storage
      */
     public function upload()
     {
-        return url('@')->build() . '?s=admin/api.upload/file';
+        return url('@admin/api.upload/file', [], false, true)->build();
     }
 
 }

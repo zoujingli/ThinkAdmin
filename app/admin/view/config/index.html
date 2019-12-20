@@ -12,7 +12,7 @@
 
 <div class="think-box-shadow margin-bottom-15">
     <span class="color-green font-w7 text-middle">文件存储方式：</span>
-    {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储'] as $k => $v}
+    {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','alioss'=>'阿里云OSS存储'] as $k => $v}
     {if sysconf('storage.type') eq $k}
     {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm">{$v}</a>{else}<a class="layui-btn layui-btn-sm">{$v}</a>{/if}
     {else}

@@ -422,6 +422,7 @@ class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
         'think\\admin\\service\\QueueService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/QueueService.php',
         'think\\admin\\service\\SystemService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/SystemService.php',
         'think\\admin\\service\\TokenService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/TokenService.php',
+        'think\\admin\\storage\\AliossStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/AliossStorage.php',
         'think\\admin\\storage\\LocalStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/LocalStorage.php',
         'think\\admin\\storage\\QiniuStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/QiniuStorage.php',
         'think\\app\\MultiApp' => __DIR__ . '/..' . '/topthink/think-multi-app/src/MultiApp.php',

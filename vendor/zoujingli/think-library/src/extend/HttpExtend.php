@@ -24,43 +24,43 @@ class HttpExtend
 {
     /**
      * 以get模拟网络请求
-     * @param string $url HTTP请求地址
+     * @param string $location HTTP请求地址
      * @param array|string $query GET请求参数
      * @param array $options CURL请求参数
      * @return boolean|string
      */
-    public static function get($url, $query = [], $options = [])
+    public static function get($location, $query = [], $options = [])
     {
         $options['query'] = $query;
-        return self::request('get', $url, $options);
+        return self::request('get', $location, $options);
     }
 
     /**
      * 以post模拟网络请求
-     * @param string $url HTTP请求地址
+     * @param string $location HTTP请求地址
      * @param array|string $data POST请求数据
      * @param array $options CURL请求参数
      * @return boolean|string
      */
-    public static function post($url, $data = [], $options = [])
+    public static function post($location, $data = [], $options = [])
     {
         $options['data'] = $data;
-        return self::request('post', $url, $options);
+        return self::request('post', $location, $options);
     }
 
     /**
      * CURL模拟网络请求
      * @param string $method 请求方法
-     * @param string $url 请求方法
-     * @param array $options 请求参数[headers,data]
+     * @param string $location 请求地址
+     * @param array $options 请求参数[headers,data,cookie,cookie_file,timeout,returnHeader]
      * @return boolean|string
      */
-    public static function request($method, $url, $options = [])
+    public static function request($method, $location, $options = [])
     {
         $curl = curl_init();
         // GET 参数设置
         if (!empty($options['query'])) {
-            $url .= (stripos($url, '?') !== false ? '&' : '?') . http_build_query($options['query']);
+            $location .= (stripos($location, '?') !== false ? '&' : '?') . http_build_query($options['query']);
         }
         // 浏览器代理设置
         curl_setopt($curl, CURLOPT_USERAGENT, self::getUserAgent());
@@ -76,9 +76,11 @@ class HttpExtend
             curl_setopt($curl, CURLOPT_COOKIEJAR, $options['cookie_file']);
             curl_setopt($curl, CURLOPT_COOKIEFILE, $options['cookie_file']);
         }
-        // POST 数据设置
-        if (strtolower($method) === 'post') {
-            curl_setopt($curl, CURLOPT_POST, true);
+        // 设置请求方式
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+        if (strtolower($method) === 'head') {
+            curl_setopt($curl, CURLOPT_NOBODY, 1);
+        } elseif (isset($options['data'])) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, self::buildQueryData($options['data']));
         }
         // 请求超时设置
@@ -87,8 +89,13 @@ class HttpExtend
         } else {
             curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         }
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, false);
+        if (empty($options['returnHeader'])) {
+            curl_setopt($curl, CURLOPT_HEADER, false);
+        } else {
+            curl_setopt($curl, CURLOPT_HEADER, true);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        }
+        curl_setopt($curl, CURLOPT_URL, $location);
         curl_setopt($curl, CURLOPT_AUTOREFERER, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
