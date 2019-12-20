@@ -31,7 +31,7 @@ class Upload extends Controller
 
     /**
      * 上传安全检查
-     * @throws \think\Exception
+     * @login true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -44,6 +44,7 @@ class Upload extends Controller
 
     /**
      * 检查文件上传已经上传
+     * @login true
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -76,6 +77,7 @@ class Upload extends Controller
 
     /**
      * 文件上传入口
+     * @login true
      * @return \think\response\Json
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
