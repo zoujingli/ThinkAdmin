@@ -113,11 +113,11 @@ class Upload extends Controller
         if (in_array($this->extension, ['php', 'sh'])) {
             return json(['uploaded' => false, 'error' => ['message' => '可执行文件禁止上传到本地服务器']]);
         }
-        list($this->safe, $this->uptype) = [boolval(input('safe')), $this->getType()];
-        $name = Storage::name($file->getPathname(), $this->extension, '', 'md5_file');
-        $info = Storage::instance($this->uptype)->set($name, file_get_contents($file->getRealPath()), $this->safe);
+        list($this->safe, $this->uptype, $this->name) = [boolval(input('safe')), $this->getType(), input('xkey')];
+        if (empty($this->name)) $this->name = Storage::name($file->getPathname(), $this->extension, '', 'md5_file');
+        $info = Storage::instance($this->uptype)->set($this->name, file_get_contents($file->getRealPath()), $this->safe);
         if (is_array($info) && isset($info['url'])) {
-            return json(['uploaded' => true, 'filename' => $name, 'url' => $this->safe ? $name : $info['url']]);
+            return json(['uploaded' => true, 'filename' => $this->name, 'url' => $this->safe ? $this->name : $info['url']]);
         } else {
             return json(['uploaded' => false, 'error' => ['message' => '文件处理失败，请稍候再试！']]);
         }
