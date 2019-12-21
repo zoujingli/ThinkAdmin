@@ -114,7 +114,7 @@ class LocalStorage extends Storage
      */
     public function url($name, $safe = false)
     {
-        if ($safe) return null;
+        if ($safe) return $name;
         $root = rtrim(dirname($this->app->request->basefile(true)), '\\/');
         return "{$root}/upload/{$name}";
     }

@@ -69,10 +69,10 @@ class Upload extends Controller
      */
     public function state()
     {
+        $this->safe = boolval(input('safe'));
         $data = ['uptype' => $this->getType(), 'xkey' => input('xkey')];
-        if ($info = Storage::instance($data['uptype'])->info($data['xkey'])) {
+        if ($info = Storage::instance($data['uptype'])->info($data['xkey'], $this->safe)) {
             $data['url'] = $info['url'];
-            $data['pathinfo'] = $info['file'];
             $this->success('文件已经上传', $data, 200);
         } elseif ('local' === $data['uptype']) {
             $data['url'] = LocalStorage::instance()->url($data['xkey']);

@@ -152,7 +152,7 @@ class Test extends Controller
             'out_trade_no'     => time(),
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
-            'notify_url'       => url('@wechat/api.test/notify', [], true, true),
+            'notify_url'       => url('@wechat/api.test/notify', [], false, true),
             'spbill_create_ip' => request()->ip(),
         ]);
         $this->showQrc($result['code_url']);

@@ -2,6 +2,7 @@ define(['md5'], function (SparkMD5) {
     var allowExtsMimes = JSON.parse('{$exts|raw}');
     return function (element, InitHandler, UploadedHandler) {
         var exts = [], mimes = [];
+        var safe = $(element).attr('data-safe');
         var uptype = $(element).attr('data-uptype') || '';
         var multiple = $(element).attr('data-multiple') > 0;
         var types = ($(element).data('type') || '').split(',');
@@ -15,15 +16,16 @@ define(['md5'], function (SparkMD5) {
         function renderUploader(options, headers, uploader) {
             uploader = layui.upload.render({
                 idx: 0, urls: {}, auto: false, elem: element,
-                headers: headers || {}, multiple: multiple,
                 exts: options.exts, acceptMime: options.acceptMime,
+                headers: headers || {}, multiple: multiple, accept: 'file',
                 choose: function (object, files) {
                     files = object.pushFile();
                     for (var index in files) {
                         md5file(files[index]).then(function (file) {
                             jQuery.ajax("?s=admin/api.upload/state", {
-                                data: {xkey: file.xkey, uptype: uptype}, method: 'POST', success: function (ret) {
+                                data: {xkey: file.xkey, uptype: uptype, safe: safe}, method: 'POST', success: function (ret) {
                                     if (ret.code === 404) {
+                                        uploader.config.data.safe = safe;
                                         uploader.config.url = ret.data.server;
                                         uploader.config.urls[index] = ret.data.url;
                                         if (ret.data.uptype === 'qiniu') {

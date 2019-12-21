@@ -181,17 +181,21 @@ class WechatService extends Service
      */
     public function getConfig()
     {
-        return [
+        $options = [
             'token'          => sysconf('wechat.token'),
             'appid'          => sysconf('wechat.appid'),
             'appsecret'      => sysconf('wechat.appsecret'),
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
             'mch_id'         => sysconf('wechat.mch_id'),
-            'mch_key'        => sysconf('wechat.mch_key'),
-            'ssl_key'        => sysconf('wechat.mch_ssl_key'),
-            'ssl_cer'        => sysconf('wechat.mch_ssl_cer'),
             'cache_path'     => $this->app->getRuntimePath() . 'wechat',
         ];
+        if (sysconf('wechat.mch_ssl_type') === 'p12') {
+            $options['ssl_p12'] = sysconf('wechat.mch_ssl_p12');
+        } else {
+            $options['ssl_key'] = sysconf('wechat.mch_ssl_key');
+            $options['ssl_cer'] = sysconf('wechat.mch_ssl_cer');
+        }
+        return $options;
     }
 
     /**

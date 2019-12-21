@@ -90,17 +90,17 @@ class Config extends Controller
         if ($this->request->isGet()) {
             $this->title = '微信支付配置';
             $file = Storage::instance('local');
-            $this->wechat_mch_ssl_cer = sysconf('wechat_mch_ssl_cer');
-            $this->wechat_mch_ssl_key = sysconf('wechat_mch_ssl_key');
-            $this->wechat_mch_ssl_p12 = sysconf('wechat_mch_ssl_p12');
-            if (!$file->has($this->wechat_mch_ssl_cer, true)) $this->wechat_mch_ssl_cer = '';
-            if (!$file->has($this->wechat_mch_ssl_key, true)) $this->wechat_mch_ssl_key = '';
-            if (!$file->has($this->wechat_mch_ssl_p12, true)) $this->wechat_mch_ssl_p12 = '';
+            $this->mch_ssl_cer = sysconf('wechat.mch_ssl_cer');
+            $this->mch_ssl_key = sysconf('wechat.mch_ssl_key');
+            $this->mch_ssl_p12 = sysconf('wechat.mch_ssl_p12');
+            if (!$file->has($this->mch_ssl_cer, true)) $this->mch_ssl_cer = '';
+            if (!$file->has($this->mch_ssl_key, true)) $this->mch_ssl_key = '';
+            if (!$file->has($this->mch_ssl_p12, true)) $this->mch_ssl_p12 = '';
             $this->fetch();
         } else {
-            if ($this->request->post('wechat_mch_ssl_type') === 'p12') {
-                if (!($sslp12 = $this->request->post('wechat_mch_ssl_p12'))) {
-                    $mchid = $this->request->post('wechat_mch_id');
+            if ($this->request->post('wechat.mch_ssl_type') === 'p12') {
+                if (!($sslp12 = $this->request->post('wechat.mch_ssl_p12'))) {
+                    $mchid = $this->request->post('wechat.mch_id');
                     $content = Storage::instance('local')->get($sslp12, true);
                     if (!openssl_pkcs12_read($content, $certs, $mchid)) {
                         $this->error('商户MCH_ID与支付P12证书不匹配！');
