@@ -25,7 +25,7 @@ use think\admin\Storage;
 class LocalStorage extends Storage
 {
     /**
-     * 存储引擎初始化
+     * 初始化入口
      * @return LocalStorage
      */
     protected function initialize(): Storage

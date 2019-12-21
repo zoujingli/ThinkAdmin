@@ -23,7 +23,7 @@ namespace think\admin\extend;
 class HttpExtend
 {
     /**
-     * 以get模拟网络请求
+     * 以GET模拟网络请求
      * @param string $location HTTP请求地址
      * @param array|string $query GET请求参数
      * @param array $options CURL请求参数
@@ -36,7 +36,7 @@ class HttpExtend
     }
 
     /**
-     * 以post模拟网络请求
+     * 以 POST 模拟网络请求
      * @param string $location HTTP请求地址
      * @param array|string $data POST请求数据
      * @param array $options CURL请求参数
@@ -46,6 +46,23 @@ class HttpExtend
     {
         $options['data'] = $data;
         return self::request('post', $location, $options);
+    }
+
+    /**
+     * 以 FormData 模拟网络请求
+     * @param string $url 模拟请求地址
+     * @param array $data 模拟请求参数数据
+     * @param array $file 提交文件 [field,name,content]
+     * @param array $header 请求头部信息，默认带 Content-type
+     * @param string $method 模拟请求的方式 [GET,POST,PUT]
+     * @param boolean $returnHeader 是否返回头部信息
+     * @return boolean|string
+     */
+    public static function submit($url, array $data = [], array $file = [], array $header = [], $method = 'POST', $returnHeader = true)
+    {
+        list($boundary, $content) = self::buildFormData($data, $file);
+        $header[] = "Content-type:multipart/form-data;boundary={$boundary}";
+        return self::request($method, $url, ['data' => $content, 'returnHeader' => $returnHeader, 'headers' => $header]);
     }
 
     /**
@@ -107,7 +124,7 @@ class HttpExtend
     }
 
     /**
-     * POST数据过滤处理
+     * 对 POST 数据过滤处理
      * @param array $data 需要处理的数据
      * @param boolean $build 是否编译数据
      * @return array|string
@@ -115,16 +132,40 @@ class HttpExtend
     private static function buildQueryData($data, $build = true)
     {
         if (!is_array($data)) return $data;
-        foreach ($data as $key => $value) if (is_object($value) && $value instanceof \CURLFile) {
-            $build = false;
-        } elseif (is_string($value) && class_exists('CURLFile', false) && stripos($value, '@') === 0) {
-            if (($filename = realpath(trim($value, '@'))) && file_exists($filename)) {
-                list($build, $data[$key]) = [false, new \CURLFile($filename)];
-            }
+        foreach ($data as $key => $value) {
+            if (is_string($value) && stripos($value, '@') === 0 && class_exists('CURLFile')) {
+                if (file_exists($filename = realpath(ltrim($value, '@')))) {
+                    list($build, $data[$key]) = [false, new \CURLFile($filename)];
+                }
+            } elseif ($value instanceof \CURLFile) $build = false;
         }
         return $build ? http_build_query($data) : $data;
     }
 
+    /**
+     * 生成 FormData 格式数据内容
+     * @param array $data 表单提交的数据
+     * @param array $file 表单上传的文件
+     * @return array
+     */
+    private static function buildFormData(array $data = [], array $file = [])
+    {
+        list($line, $boundary) = [[], CodeExtend::random(18)];
+        foreach ($data as $key => $value) {
+            $line[] = "--{$boundary}";
+            $line[] = "Content-Disposition: form-data; name=\"{$key}\"";
+            $line[] = "";
+            $line[] = $value;
+        }
+        if (is_array($file) && isset($file['field']) && isset($file['name'])) {
+            $line[] = "--{$boundary}";
+            $line[] = "Content-Disposition: form-data; name=\"{$file['field']}\"; filename=\"{$file['name']}\"";
+            $line[] = "";
+            $line[] = $file['content'];
+        }
+        $line[] = "--{$boundary}--";
+        return [$boundary, join("\r\n", $line)];
+    }
 
     /**
      * 获取浏览器代理信息

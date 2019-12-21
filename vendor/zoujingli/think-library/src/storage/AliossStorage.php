@@ -56,6 +56,7 @@ class AliossStorage extends Storage
     private $secretKey;
 
     /**
+     * 初始化入口
      * @return $this
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -103,22 +104,13 @@ class AliossStorage extends Storage
     public function set($name, $file, $safe = false)
     {
         $token = $this->buildUploadToken($name);
-        list($attrs, $frontier) = [[], uniqid()];
-        foreach (['key' => $name, 'policy' => $token['policy'], 'success_action_status' => '200', 'OSSAccessKeyId' => $this->accessKey, 'Signature' => $token['signature']] as $key => $value) {
-            $attrs[] = "--{$frontier}";
-            $attrs[] = "Content-Disposition: form-data; name=\"{$key}\"";
-            $attrs[] = "";
-            $attrs[] = $value;
-        }
-        $attrs[] = "--{$frontier}";
-        $attrs[] = "Content-Disposition: form-data; name=\"file\"; filename=\"{$name}\"";
-        $attrs[] = "";
-        $attrs[] = $file;
-        $attrs[] = "--{$frontier}--";
-        $result = HttpExtend::request('POST', $this->upload(), [
-            'data' => join("\r\n", $attrs), 'returnHeader' => true, 'headers' => ["Content-type:multipart/form-data;boundary={$frontier}"],
-        ]);
-        if (is_numeric(stripos($result, '200 OK'))) {
+        $data = ['key' => $name];
+        $data['policy'] = $token['policy'];
+        $data['Signature'] = $token['signature'];
+        $data['OSSAccessKeyId'] = $this->accessKey;
+        $data['success_action_status'] = '200';
+        $file = ['field' => 'file', 'name' => $name, 'content' => $file];
+        if (is_numeric(stripos(HttpExtend::submit($this->upload(), $data, $file), '200 OK'))) {
             return ['file' => $this->path($name, $safe), 'url' => $this->url($name, $safe), 'key' => $name];
         } else {
             return [];
