@@ -134,7 +134,7 @@ class Upload extends Controller
     {
         $this->uptype = strtolower(input('uptype', ''));
         if (!in_array($this->uptype, ['local', 'qiniu', 'alioss'])) {
-            $this->uptype = sysconf('storage.type');
+            $this->uptype = strtolower(sysconf('storage.type'));
         }
         return strtolower($this->uptype);
     }
