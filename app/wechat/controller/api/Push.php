@@ -115,7 +115,7 @@ class Push extends Controller
             $this->fromOpenid = $this->receive['tousername'];
             // text, event, image, location
             if (method_exists($this, ($method = $this->receive['msgtype']))) {
-                if (is_string(($result = $this->$method()))) return $result;
+                if (is_string($result = $this->$method())) return $result;
             }
         } catch (\Exception $e) {
             $this->app->log->error("{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
