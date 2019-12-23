@@ -255,7 +255,7 @@ class WechatService extends Service
 
     /**
      * 获取微信网页JSSDK
-     * @param string $url JS签名地址
+     * @param string $location JS签名地址
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
@@ -264,13 +264,13 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getWebJssdkSign($url = null)
+    public function getWebJssdkSign($location = null)
     {
-        $url = is_null($url) ? $this->app->request->url(true) : $url;
+        $location = is_null($location) ? $this->app->request->url(true) : $location;
         if ($this->getType() === 'api') {
-            return self::WeChatScript()->getJsSign($url);
+            return self::WeChatScript()->getJsSign($location);
         } else {
-            return self::ThinkServiceConfig()->jsSign($url);
+            return self::ThinkServiceConfig()->jsSign($location);
         }
     }
 }
