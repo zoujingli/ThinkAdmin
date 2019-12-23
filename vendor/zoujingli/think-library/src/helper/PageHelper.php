@@ -75,9 +75,10 @@ class PageHelper extends Helper
             $sort = intval(isset($post['sort']) ? $post['sort'] : 0);
             unset($post['action'], $post['sort']);
             if ($this->app->db->table($this->query->getTable())->where($post)->update(['sort' => $sort]) !== false) {
-                return $this->controller->success('排序参数修改成功！', '');
+                return $this->controller->success('列表排序修改成功！', '');
+            } else {
+                return $this->controller->error('列表排序修改失败，请稍候再试！');
             }
-            return $this->controller->error('排序参数修改失败，请稍候再试！');
         }
         // 未配置 order 规则时自动按 sort 字段排序
         if (!$this->query->getOptions('order') && method_exists($this->query, 'getTableFields')) {
@@ -86,26 +87,28 @@ class PageHelper extends Helper
         // 列表分页及结果集处理
         if ($this->page) {
             // 分页每页显示记录数
-            $limit = intval($this->app->request->get('limit', cookie('page-limit')));
-            cookie('page-limit', $limit = $limit >= 10 ? $limit : 20);
-            if ($this->limit > 0) $limit = $this->limit;
-            list($options, $query) = [[], $this->app->request->get()];
+            if ($this->limit > 0) {
+                $limit = intval($this->limit);
+            } else {
+                $limit = $this->app->request->get('limit', $this->app->cookie->get('limit'));
+                $this->app->cookie->set('limit', $limit = intval($limit >= 10 ? $limit : 20));
+            }
+            list($select, $query) = ['', $this->app->request->get()];
             $paginate = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $this->total);
             foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
-                list($query['limit'], $query['page'], $selected) = [$num, '1', $limit === $num ? 'selected' : ''];
+                list($query['limit'], $query['page'], $selected) = [$num, 1, $limit === $num ? 'selected' : ''];
                 if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
                     $url = url('@admin') . '#' . $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
                 } else {
                     $url = $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
                 }
-                array_push($options, "<option data-num='{$num}' value='{$url}' {$selected}>{$num}</option>");
+                $select .= "<option data-num='{$num}' value='{$url}' {$selected}>{$num}</option>";
             }
-            $select = "<select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>" . join('', $options) . "</select>";
-            $html = "<div class='pagination-container nowrap'><span>共 {$paginate->total()} 条记录，每页显示 {$select} 条，共 {$paginate->lastPage()} 页当前显示第 {$paginate->currentPage()} 页。</span>{$paginate->render()}</div>";
+            $pagehtml = "<div class='pagination-container nowrap'><span>共 {$paginate->total()} 条记录，每页显示 <select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>{$select}</select> 条，共 {$paginate->lastPage()} 页当前显示第 {$paginate->currentPage()} 页。</span>{$paginate->render()}</div>";
             if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
-                $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $html));
+                $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $pagehtml));
             } else {
-                $this->controller->assign('pagehtml', $html);
+                $this->controller->assign('pagehtml', $pagehtml);
             }
             $result = ['page' => ['limit' => intval($limit), 'total' => intval($paginate->total()), 'pages' => intval($paginate->lastPage()), 'current' => intval($paginate->currentPage())], 'list' => $paginate->items()];
         } else {
@@ -113,8 +116,9 @@ class PageHelper extends Helper
         }
         if (false !== $this->controller->callback('_page_filter', $result['list']) && $this->display) {
             return $this->controller->fetch('', $result);
+        } else {
+            return $result;
         }
-        return $result;
     }
 
 }
