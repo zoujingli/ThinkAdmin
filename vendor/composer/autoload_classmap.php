@@ -277,6 +277,7 @@ return array(
     'think\\admin\\service\\JsonRpcClientService' => $vendorDir . '/zoujingli/think-library/src/service/JsonRpcClientService.php',
     'think\\admin\\service\\JsonRpcServerService' => $vendorDir . '/zoujingli/think-library/src/service/JsonRpcServerService.php',
     'think\\admin\\service\\MenuService' => $vendorDir . '/zoujingli/think-library/src/service/MenuService.php',
+    'think\\admin\\service\\MessageService' => $vendorDir . '/zoujingli/think-library/src/service/MessageService.php',
     'think\\admin\\service\\NodeService' => $vendorDir . '/zoujingli/think-library/src/service/NodeService.php',
     'think\\admin\\service\\ProcessService' => $vendorDir . '/zoujingli/think-library/src/service/ProcessService.php',
     'think\\admin\\service\\QueueService' => $vendorDir . '/zoujingli/think-library/src/service/QueueService.php',

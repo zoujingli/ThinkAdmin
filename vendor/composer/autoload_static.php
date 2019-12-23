@@ -417,6 +417,7 @@ class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
         'think\\admin\\service\\JsonRpcClientService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/JsonRpcClientService.php',
         'think\\admin\\service\\JsonRpcServerService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/JsonRpcServerService.php',
         'think\\admin\\service\\MenuService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/MenuService.php',
+        'think\\admin\\service\\MessageService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/MessageService.php',
         'think\\admin\\service\\NodeService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/NodeService.php',
         'think\\admin\\service\\ProcessService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/ProcessService.php',
         'think\\admin\\service\\QueueService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/QueueService.php',
