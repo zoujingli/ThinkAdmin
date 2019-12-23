@@ -147,8 +147,8 @@ class Upload extends Controller
     {
         try {
             return $this->request->file('file');
-        } catch (\Exception $e) {
-            $this->error(lang($e->getMessage()));
+        } catch (\Exception $exception) {
+            $this->error(lang($exception->getMessage()));
         }
     }
 
