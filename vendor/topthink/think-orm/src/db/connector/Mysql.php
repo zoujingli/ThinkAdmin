@@ -120,7 +120,7 @@ class Mysql extends PDOConnection
     public function startTransXa(string $xid)
     {
         $this->initConnect(true);
-        $this->linkID->execute("XA START '$xid'");
+        $this->linkID->exec("XA START '$xid'");
     }
 
     /**
@@ -132,8 +132,8 @@ class Mysql extends PDOConnection
     public function prepareXa(string $xid)
     {
         $this->initConnect(true);
-        $this->linkID->execute("XA END '$xid'");
-        $this->linkID->execute("XA PREPARE '$xid'");
+        $this->linkID->exec("XA END '$xid'");
+        $this->linkID->exec("XA PREPARE '$xid'");
     }
 
     /**
@@ -145,7 +145,7 @@ class Mysql extends PDOConnection
     public function commitXa(string $xid)
     {
         $this->initConnect(true);
-        $this->linkID->execute("XA COMMIT '$xid'");
+        $this->linkID->exec("XA COMMIT '$xid'");
     }
 
     /**
@@ -157,6 +157,6 @@ class Mysql extends PDOConnection
     public function rollbackXa(string $xid)
     {
         $this->initConnect(true);
-        $this->linkID->execute("XA ROLLBACK '$xid'");
+        $this->linkID->exec("XA ROLLBACK '$xid'");
     }
 }

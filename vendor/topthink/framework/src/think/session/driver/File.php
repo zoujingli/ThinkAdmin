@@ -152,7 +152,7 @@ class File implements SessionHandlerInterface
 
             if ($this->config['data_compress'] && function_exists('gzcompress')) {
                 //启用数据压缩
-                $content = gzuncompress($content);
+                $content = (string) gzuncompress($content);
             }
 
             return $content;

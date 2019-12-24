@@ -139,16 +139,16 @@ abstract class Dispatch
             $this->createBindModel($option['model'], $this->param);
         }
 
-        // 数据自动验证
-        if (isset($option['validate'])) {
-            $this->autoValidate($option['validate']);
-        }
-
         // 记录当前请求的路由规则
         $this->request->setRule($this->rule);
 
         // 记录路由变量
         $this->request->setRoute($this->param);
+
+        // 数据自动验证
+        if (isset($option['validate'])) {
+            $this->autoValidate($option['validate']);
+        }
     }
 
     /**
@@ -167,7 +167,7 @@ abstract class Dispatch
                 $fields = explode('&', $key);
 
                 if (is_array($val)) {
-                    list($model, $exception) = $val;
+                    [$model, $exception] = $val;
                 } else {
                     $model     = $val;
                     $exception = true;
@@ -206,7 +206,7 @@ abstract class Dispatch
      */
     protected function autoValidate(array $option): void
     {
-        list($validate, $scene, $message, $batch) = $option;
+        [$validate, $scene, $message, $batch] = $option;
 
         if (is_array($validate)) {
             // 指定验证规则

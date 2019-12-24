@@ -370,7 +370,7 @@ if (!function_exists('redirect')) {
      * @param int    $code 状态码
      * @return \think\response\Redirect
      */
-    function redirect(string $url, int $code = 302): Redirect
+    function redirect(string $url = '', int $code = 302): Redirect
     {
         return Response::create($url, 'redirect', $code);
     }
@@ -523,7 +523,7 @@ if (!function_exists('validate')) {
         } else {
             if (strpos($validate, '.')) {
                 // 支持场景
-                list($validate, $scene) = explode('.', $validate);
+                [$validate, $scene] = explode('.', $validate);
             }
 
             $class = false !== strpos($validate, '\\') ? $validate : app()->parseClass('validate', $validate);

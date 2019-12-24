@@ -569,17 +569,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v6.0.0",
-        "version_normalized": "6.0.0.0",
+        "version": "v6.0.1",
+        "version_normalized": "6.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "79c555aab0313d1a33ddcdb3c395f2c47f37f597"
+            "reference": "501f3dd17dc6266e17b7d8df3e9fd090bd2cc85f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/79c555aab0313d1a33ddcdb3c395f2c47f37f597",
-            "reference": "79c555aab0313d1a33ddcdb3c395f2c47f37f597",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/501f3dd17dc6266e17b7d8df3e9fd090bd2cc85f",
+            "reference": "501f3dd17dc6266e17b7d8df3e9fd090bd2cc85f",
             "shasum": "",
             "mirrors": [
                 {
@@ -606,7 +606,7 @@
             "mockery/mockery": "^1.2",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2019-10-23T23:28:43+00:00",
+        "time": "2019-12-24T07:57:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -738,17 +738,17 @@
     },
     {
         "name": "topthink/think-orm",
-        "version": "v2.0.28",
-        "version_normalized": "2.0.28.0",
+        "version": "v2.0.29",
+        "version_normalized": "2.0.29.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-orm.git",
-            "reference": "ff5f112f5559497222f2716385b5a709ab82741b"
+            "reference": "37cde31af3725cf5460ad8dc18032326b88e6310"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-orm/zipball/ff5f112f5559497222f2716385b5a709ab82741b",
-            "reference": "ff5f112f5559497222f2716385b5a709ab82741b",
+            "url": "https://api.github.com/repos/top-think/think-orm/zipball/37cde31af3725cf5460ad8dc18032326b88e6310",
+            "reference": "37cde31af3725cf5460ad8dc18032326b88e6310",
             "shasum": "",
             "mirrors": [
                 {
@@ -764,7 +764,7 @@
             "psr/simple-cache": "^1.0",
             "topthink/think-helper": "^3.1"
         },
-        "time": "2019-11-17T07:53:45+00:00",
+        "time": "2019-12-23T13:50:01+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -935,12 +935,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "60807fa6416e2b9d30ee785d37c0e90f4eab5ea2"
+            "reference": "9952e50062d5d8f447680cea4a557155b7353158"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/60807fa6416e2b9d30ee785d37c0e90f4eab5ea2",
-            "reference": "60807fa6416e2b9d30ee785d37c0e90f4eab5ea2",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/9952e50062d5d8f447680cea4a557155b7353158",
+            "reference": "9952e50062d5d8f447680cea4a557155b7353158",
             "shasum": "",
             "mirrors": [
                 {
@@ -956,7 +956,7 @@
             "ext-json": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2019-12-23T09:51:18+00:00",
+        "time": "2019-12-24T02:28:27+00:00",
         "type": "library",
         "extra": {
             "think": {
