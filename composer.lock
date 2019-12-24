@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "478fa0752e487da8e0e56bb8e664ea5b",
+    "content-hash": "c55d51d2e1cb52e013e7635caf4fb45c",
     "packages": [
         {
             "name": "endroid/qr-code",
@@ -1023,69 +1023,13 @@
                 "wepay"
             ],
             "time": "2019-11-25T10:40:50+00:00"
-        },
-        {
-            "name": "zoujingli/weopen-developer",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zoujingli/WeOpenDeveloper.git",
-                "reference": "4d0d3c064e54556621453845fc65ba52de58a880"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/WeOpenDeveloper/zipball/4d0d3c064e54556621453845fc65ba52de58a880",
-                "reference": "4d0d3c064e54556621453845fc65ba52de58a880",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "ext-openssl": "*",
-                "php": ">=5.4",
-                "zoujingli/wechat-developer": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "WeOpen\\": "WeOpen",
-                    "WeChat\\": "WeChat",
-                    "WeMini\\": "WeMini"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Anyon",
-                    "email": "zoujingli@qq.com",
-                    "homepage": "http://ctolog.com"
-                }
-            ],
-            "description": "WeChat Open development of SDK",
-            "homepage": "https://github.com/zoujingli/WeOpenDeveloper",
-            "keywords": [
-                "WeChatOpen",
-                "WeChatOpenDeveloper",
-                "wechat"
-            ],
-            "time": "2019-10-10T10:18:05+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "zoujingli/think-library": 20,
-        "zoujingli/weopen-developer": 20
+        "zoujingli/think-library": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

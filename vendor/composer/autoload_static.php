@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
+class ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -27,7 +27,6 @@ class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
         'W' => 
         array (
             'WePay\\' => 6,
-            'WeOpen\\' => 7,
             'WeMini\\' => 7,
             'WeChat\\' => 7,
         ),
@@ -89,19 +88,13 @@ class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay',
         ),
-        'WeOpen\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen',
-        ),
         'WeMini\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini',
-            1 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini',
         ),
         'WeChat\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat',
-            1 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeChat',
         ),
         'Symfony\\Component\\OptionsResolver\\' => 
         array (
@@ -269,7 +262,6 @@ class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
         'Symfony\\Component\\OptionsResolver\\Options' => __DIR__ . '/..' . '/symfony/options-resolver/Options.php',
         'Symfony\\Component\\OptionsResolver\\OptionsResolver' => __DIR__ . '/..' . '/symfony/options-resolver/OptionsResolver.php',
         'We' => __DIR__ . '/..' . '/zoujingli/wechat-developer/We.php',
-        'WeChat\\Bind' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeChat/Bind.php',
         'WeChat\\Card' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Card.php',
         'WeChat\\Contracts\\BasicAliPay' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/BasicAliPay.php',
         'WeChat\\Contracts\\BasicPushEvent' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Contracts/BasicPushEvent.php',
@@ -288,7 +280,6 @@ class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
         'WeChat\\Limit' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Limit.php',
         'WeChat\\Media' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Media.php',
         'WeChat\\Menu' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Menu.php',
-        'WeChat\\Mini' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeChat/Mini.php',
         'WeChat\\Oauth' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Oauth.php',
         'WeChat\\Pay' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Pay.php',
         'WeChat\\Product' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Product.php',
@@ -301,12 +292,8 @@ class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
         'WeChat\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Template.php',
         'WeChat\\User' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/User.php',
         'WeChat\\Wifi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat/Wifi.php',
-        'WeMini\\Account' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Account.php',
-        'WeMini\\Basic' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Basic.php',
-        'WeMini\\Code' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Code.php',
         'WeMini\\Crypt' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Crypt.php',
         'WeMini\\Delivery' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Delivery.php',
-        'WeMini\\Domain' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Domain.php',
         'WeMini\\Image' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Image.php',
         'WeMini\\Logistics' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Logistics.php',
         'WeMini\\Message' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Message.php',
@@ -317,12 +304,7 @@ class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
         'WeMini\\Security' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Security.php',
         'WeMini\\Soter' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Soter.php',
         'WeMini\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Template.php',
-        'WeMini\\Tester' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Tester.php',
         'WeMini\\Total' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Total.php',
-        'WeMini\\User' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/User.php',
-        'WeOpen\\Login' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Login.php',
-        'WeOpen\\MiniApp' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/MiniApp.php',
-        'WeOpen\\Service' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Service.php',
         'WePay\\Bill' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Bill.php',
         'WePay\\Coupon' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Coupon.php',
         'WePay\\Order' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Order.php',
@@ -634,9 +616,9 @@ class ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitada0e677dd8f1307ba83d0cf07626e6c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e::$classMap;
 
         }, null, ClassLoader::class);
     }

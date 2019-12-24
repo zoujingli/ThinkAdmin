@@ -187,6 +187,7 @@ class WechatService extends Service
             'appsecret'      => sysconf('wechat.appsecret'),
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
             'mch_id'         => sysconf('wechat.mch_id'),
+            'mch_key'        => sysconf('wechat.mch_key'),
             'cache_path'     => $this->app->getRuntimePath() . 'wechat',
         ];
         if (sysconf('wechat.mch_ssl_type') === 'p12') {

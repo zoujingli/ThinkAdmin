@@ -29,7 +29,7 @@
     "topthink/think-multi-app": "^1.0",
     "zoujingli/ip2region": "^1.0",
     "zoujingli/think-library": "6.0.*-dev",
-    "zoujingli/weopen-developer": "dev-master"
+    "zoujingli/wechat-developer": "^1.2"
   },
   "autoload": {
     "psr-4": {
