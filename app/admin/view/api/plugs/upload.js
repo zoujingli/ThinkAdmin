@@ -2,7 +2,7 @@ define(['md5'], function (SparkMD5) {
     var allowExtsMimes = JSON.parse('{$exts|raw}');
     return function (element, InitHandler, UploadedHandler) {
         var exts = [], mimes = [];
-        var safe = $(element).attr('data-safe');
+        var safe = $(element).attr('data-safe') || '';
         var uptype = $(element).attr('data-uptype') || '';
         var multiple = $(element).attr('data-multiple') > 0;
         var types = ($(element).data('type') || '').split(',');
