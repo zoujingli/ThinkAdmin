@@ -62,39 +62,30 @@ class PageHelper extends Helper
      * @throws \think\db\exception\ModelNotFoundException
      */
     public function init($dbQuery, $page = true, $display = true, $total = false, $limit = 0)
-
     {
         $this->page = $page;
         $this->total = $total;
         $this->limit = $limit;
         $this->display = $display;
         $this->query = $this->buildQuery($dbQuery);
-        // 数据列表排序处理
+        // 数据列表排序自动处理
         if ($this->app->request->isPost()) {
-            $post = $this->app->request->post();
-            $sort = intval(isset($post['sort']) ? $post['sort'] : 0);
-            unset($post['action'], $post['sort']);
-            if ($this->app->db->table($this->query->getTable())->where($post)->update(['sort' => $sort]) !== false) {
-                return $this->controller->success('列表排序修改成功！', '');
-            } else {
-                return $this->controller->error('列表排序修改失败，请稍候再试！');
-            }
+            $this->sortAction();
         }
-        // 未配置 order 规则时自动按 sort 字段排序
-        if (!$this->query->getOptions('order') && method_exists($this->query, 'getTableFields')) {
-            if (in_array('sort', $this->query->getTableFields())) $this->query->order('sort desc');
+        // 列表设置默认排序处理
+        if (!$this->query->getOptions('order')) {
+            $this->orderAction();
         }
         // 列表分页及结果集处理
         if ($this->page) {
-            // 分页每页显示记录数
             if ($this->limit > 0) {
                 $limit = intval($this->limit);
             } else {
                 $limit = $this->app->request->get('limit', $this->app->cookie->get('limit'));
                 $this->app->cookie->set('limit', $limit = intval($limit >= 10 ? $limit : 20));
             }
-            list($select, $query) = ['', $this->app->request->get()];
-            $paginate = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $this->total);
+            list($options, $query) = ['', $this->app->request->get()];
+            $pager = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $this->total);
             foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
                 list($query['limit'], $query['page'], $selected) = [$num, 1, $limit === $num ? 'selected' : ''];
                 if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
@@ -102,15 +93,15 @@ class PageHelper extends Helper
                 } else {
                     $url = $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
                 }
-                $select .= "<option data-num='{$num}' value='{$url}' {$selected}>{$num}</option>";
+                $options .= "<option data-num='{$num}' value='{$url}' {$selected}>{$num}</option>";
             }
-            $pagehtml = "<div class='pagination-container nowrap'><span>共 {$paginate->total()} 条记录，每页显示 <select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>{$select}</select> 条，共 {$paginate->lastPage()} 页当前显示第 {$paginate->currentPage()} 页。</span>{$paginate->render()}</div>";
+            $html = "<div class='pagination-container nowrap'><span>共 {$pager->total()} 条记录，每页显示 <select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>{$options}</select> 条，共 {$pager->lastPage()} 页当前显示第 {$pager->currentPage()} 页。</span>{$pager->render()}</div>";
             if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
-                $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $pagehtml));
+                $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $html));
             } else {
-                $this->controller->assign('pagehtml', $pagehtml);
+                $this->controller->assign('pagehtml', $html);
             }
-            $result = ['page' => ['limit' => intval($limit), 'total' => intval($paginate->total()), 'pages' => intval($paginate->lastPage()), 'current' => intval($paginate->currentPage())], 'list' => $paginate->items()];
+            $result = ['page' => ['limit' => intval($limit), 'total' => intval($pager->total()), 'pages' => intval($pager->lastPage()), 'current' => intval($pager->currentPage())], 'list' => $pager->items()];
         } else {
             $result = ['list' => $this->query->select()->toArray()];
         }
@@ -118,6 +109,41 @@ class PageHelper extends Helper
             return $this->controller->fetch('', $result);
         } else {
             return $result;
+        }
+    }
+
+    /**
+     * 执行列表排序操作
+     * POST 提交 {action:sort,PK:$PK,SORT:$SORT}
+     * @throws \think\db\exception\DbException
+     */
+    private function sortAction()
+    {
+        if ($this->app->request->post('action') === 'sort') {
+            if (method_exists($this->query, 'getTableFields') && in_array('sort', $this->query->getTableFields())) {
+                $pk = $this->query->getPk() ?? 'id';
+                if ($this->app->request->has($pk, 'post')) {
+                    $map = [$pk => $this->app->request->post($pk, 0)];
+                    $data = ['sort' => intval(isset($map['sort']) ?? 0)];
+                    if ($this->app->db->table($this->query->getTable())->where($map)->update($data) !== false) {
+                        $this->controller->success('列表排序修改成功！', '');
+                    }
+                }
+            }
+            $this->controller->error('列表排序修改失败，请稍候再试！');
+        }
+    }
+
+    /**
+     * 列表默认排序处理
+     * 未配置排序规则时自动按SORT排序
+     */
+    private function orderAction()
+    {
+        if (method_exists($this->query, 'getTableFields')) {
+            if (in_array('sort', $this->query->getTableFields())) {
+                $this->query->order('sort desc');
+            }
         }
     }
 

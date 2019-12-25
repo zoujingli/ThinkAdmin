@@ -35,16 +35,16 @@ class JsonRpcClientService extends Service
      * 请求ID
      * @var integer
      */
-    private $requestid;
+    private $id;
 
     /**
      * 创建连接对象
      * @param string $proxy
-     * @return $this
+     * @return mixed
      */
     public function create($proxy)
     {
-        $this->requestid = CodeExtend::uniqidNumber();
+        $this->id = CodeExtend::uniqidNumber();
         $this->proxy = $proxy;
         return $this;
     }
@@ -64,7 +64,7 @@ class JsonRpcClientService extends Service
                 'method'  => 'POST',
                 'header'  => 'Content-type: application/json',
                 'content' => json_encode([
-                    'jsonrpc' => '2.0', 'method' => $method, 'params' => $params, 'id' => $this->requestid,
+                    'jsonrpc' => '2.0', 'method' => $method, 'params' => $params, 'id' => $this->id,
                 ], JSON_UNESCAPED_UNICODE),
             ],
         ];
@@ -77,8 +77,8 @@ class JsonRpcClientService extends Service
             throw new \think\Exception("无法连接到 {$this->proxy}");
         }
         // Final checks and return
-        if ($response['id'] != $this->requestid) {
-            throw new \think\Exception("错误的响应标记 (请求标记: {$this->requestid}, 响应标记: {$response['id']}）");
+        if ($response['id'] != $this->id) {
+            throw new \think\Exception("错误的响应标记 (请求标记: {$this->id}, 响应标记: {$response['id']}）");
         }
         if (is_null($response['error'])) {
             return $response['result'];

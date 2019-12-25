@@ -249,8 +249,9 @@ class WechatService extends Service
             }
             if ($redirect && !empty($result['url'])) {
                 throw new HttpResponseException(redirect($result['url'], 301));
+            } else {
+                throw new HttpResponseException(response("window.location.href='{$result['url']}'"));
             }
-            exit("window.location.href='{$result['url']}'");
         }
     }
 
