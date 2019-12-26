@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>安装{$sitename|default=''}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="/static/plugs/layui/css/layui.css">
+    <style>
+        body {
+            background: #fff;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        a {
+            color: #18bc9c;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: normal;
+            color: #3C5675;
+            margin-bottom: 0;
+        }
+
+        .layui-form-label {
+            width: 200px;
+        }
+
+        .layui-input-block {
+            margin-left: 230px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h2>安装 {$sitename|default=''}</h2>
+    <div>
+        <form class="layui-form layui-card " data-auto="true" method="post">
+            <div class="layui-card-body  ">
+
+                <fieldset class="layui-elem-field layui-field-box" style="margin-top: 40px;">
+                    <legend>数据库信息</legend>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">MySQL 数据库地址：</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="mysql[type]" value="mysql">
+                            <input type="text" lay-verify="required" name="mysql[hostname]" autocomplete="off"
+                                   placeholder="请输入数据库地址" class="layui-input" value="127.0.0.1">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">MySQL 数据库名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" lay-verify="required" lay-reqText="亲，请填写数据库名！" name="mysql[database]"
+                                   autocomplete="off" placeholder="MySQL 数据库名" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">MySQL 用户名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" lay-verify="required" name="mysql[username]" autocomplete="off"
+                                   placeholder="请输入MySQL 用户名" lay-reqText="亲，请填写MySQL 用户名！" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">MySQL 密码：</label>
+                        <div class="layui-input-block">
+                            <input type="text" lay-verify="required" name="mysql[password]" autocomplete="off"
+                                   placeholder="请输入MySQL 密码" lay-reqText="亲，请填写MySQL 密码！" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">MySQL 端口号：</label>
+                        <div class="layui-input-block">
+                            <input type="text" lay-verify="required" name="mysql[hostport]" autocomplete="off"
+                                   placeholder="请输入MySQL 端口号" class="layui-input" lay-reqText="亲，端口号必填" value="3306">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">MySQL 字符集：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mysql[charset]" autocomplete="off" placeholder="请输入MySQL 端口号"
+                                   class="layui-input" value="utf8mb4">
+                        </div>
+                    </div>
+
+
+                </fieldset>
+
+                <fieldset class="layui-elem-field layui-field-box" style="margin-top: 20px;">
+                    <legend>管理员信息</legend>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">超管用户名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" autocomplete="off" class="layui-input" value="admin" readonly
+                                   title="因为代码已写死超管账号，所以不支持自定义！">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">超管密码：</label>
+                        <div class="layui-input-block">
+                            <input type="text" lay-verify="pass" name="admin[password]" autocomplete="off"
+                                   placeholder="请输入超管密码" minlength="6" lay-reqText="确认不填管理员密码吗？" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">超管Email：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="admin[mail]" autocomplete="off" placeholder="非必填"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">超管手机号：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="admin[phone]" autocomplete="off" placeholder="非必填"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">超管QQ：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="admin[qq]" autocomplete="off" placeholder="非必填"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+
+                </fieldset>
+                <div class="layui-form-item text-center">
+                    <div>
+                        <button class="layui-btn" lay-submit="">保存</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<script src="/static/plugs/layui/layui.all.js"></script>
+<script>
+    window.layui.use('form', function () {
+        var form = layui.form, $ = layui.$, layer = layui.layer;
+        form.verify({
+            pass: [
+                /^[\S]{6,12}$/
+                , '密码必须6到12位，且不能出现空格'
+            ]
+        });
+        form.on('submit', function (data) {
+            $.post('/install/execute', data.field, function (response) {
+                if (response.code !== 1) {
+                    layer.msg(response.msg, {icon: 2})
+                } else {
+                    layer.msg(response.msg, {
+                        icon: 1,
+                        time: 2000,
+                        end: function () {
+                            location.href = '{:url("admin/login/index")}';
+                        }
+                    });
+
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+</body>
+</html>
