@@ -463,7 +463,7 @@
   height: 5pc;
   cursor: pointer;
   display: inline-block;
-  background: url('../img/image.png') no-repeat center center;
+  background: url('../img/upimg.png') no-repeat center center;
   background-size: cover;
 }
 .uploadimagemtl {

@@ -84,10 +84,10 @@ class PageHelper extends Helper
                 $limit = $this->app->request->get('limit', $this->app->cookie->get('limit'));
                 $this->app->cookie->set('limit', $limit = intval($limit >= 10 ? $limit : 20));
             }
-            list($options, $query) = ['', $this->app->request->get()];
+            [$options, $query] = ['', $this->app->request->get()];
             $pager = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $this->total);
             foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
-                list($query['limit'], $query['page'], $selected) = [$num, 1, $limit === $num ? 'selected' : ''];
+                [$query['limit'], $query['page'], $selected] = [$num, 1, $limit === $num ? 'selected' : ''];
                 if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
                     $url = url('@admin') . '#' . $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
                 } else {
@@ -124,7 +124,7 @@ class PageHelper extends Helper
                 $pk = $this->query->getPk() ?? 'id';
                 if ($this->app->request->has($pk, 'post')) {
                     $map = [$pk => $this->app->request->post($pk, 0)];
-                    $data = ['sort' => intval(isset($map['sort']) ?? 0)];
+                    $data = ['sort' => intval($this->app->request->post('sort', 0))];
                     if ($this->app->db->table($this->query->getTable())->where($map)->update($data) !== false) {
                         $this->controller->success('列表排序修改成功！', '');
                     }

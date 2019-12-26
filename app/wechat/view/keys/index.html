@@ -20,7 +20,7 @@
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none data-check-target='.list-check-box' type='checkbox'/>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'/></label>
             </th>
             <th class='list-table-sort-td'>
                 <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
@@ -38,10 +38,10 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'/></label>
             </td>
             <td class='list-table-sort-td'>
-                <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
+                <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
             </td>
             <td class="text-left nowrap">
                 {notempty name='vo.qrc'}<i class="fa fa-qrcode fa-lg pointer margin-right-5" data-load="{$vo.qrc}" data-time="false" data-tips-text="生成关键字二维码"></i>{/notempty}

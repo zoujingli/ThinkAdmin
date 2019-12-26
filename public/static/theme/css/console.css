@@ -200,7 +200,7 @@ label.think-radio {
   box-shadow: none;
 }
 .layui-layer-content .layui-form.layui-card .layui-card-body {
-  padding: 20px 40px 0 0;
+  padding: 30px 40px 0 0;
 }
 .layui-layer-dialog .layui-layer-content .layui-layer-ico {
   top: 50% !important;
@@ -1140,7 +1140,8 @@ label.think-radio {
   height: 5pc;
   cursor: pointer;
   display: inline-block;
-  background: url('../img/image.png') no-repeat center center;
+  border: 1px dashed #e2e2e2;
+  background: url('../img/upimg.png') no-repeat center center;
   background-size: cover;
 }
 .uploadimagemtl {

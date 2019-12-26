@@ -22,13 +22,14 @@
             <th class='list-table-check-td think-checkbox'>
                 <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
-            <th class='text-left nowrap'>用户账号</th>
-            <th class='text-left nowrap'>联系手机</th>
-            <th class='text-center nowrap'>登录次数</th>
-            <th class='text-center nowrap'>使用状态</th>
-            <th class='text-left nowrap'>创建时间</th>
-            <th class='text-left nowrap'>登录时间</th>
-            <th class='text-left nowrap'></th>
+            <th class='list-table-sort-td'>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+            </th>
+            <th class='text-left nowrap'>用户信息</th>
+            <th class='text-left nowrap layui-hide-xs'>联系方式</th>
+            <th class='text-left nowrap layui-hide-xs'>最近登录</th>
+            <th class='text-left nowrap'>账号状态</th>
+            <th></th>
         </tr>
         </thead>
         {/notempty}
@@ -38,26 +39,43 @@
             <td class='list-table-check-td think-checkbox'>
                 <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
-            <td class='text-left nowrap'>{$vo.username|default=''}</td>
-            <td class='text-left nowrap'>{$vo.phone|default='-'}</td>
-            <td class='text-center nowrap'>{$vo.login_num|default=0}</td>
-            <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq}</td>
-            <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>
-            <td class='text-left nowrap'>{if $vo.login_num>0}{$vo.login_at|format_datetime}{else} - {/if}</td>
+            <td class='list-table-sort-td'>
+                <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
+            </td>
+            <td class='text-left nowrap'>
+                <img alt="img" width="40px" height="40px" class="text-top margin-right-10" data-tips-image src="{$vo.headimg|default=''}">
+                <div class="inline-block">
+                    登录账号：{$vo.username|default=''}<br>
+                    账号昵称：{$vo.nickname|default='<span class="color-desc">未配置账号昵称</span>'|raw}<br>
+                </div>
+            </td>
+            <td class='text-left nowrap layui-hide-xs'>
+                联系邮箱：{$vo.contact_mail|default='<span class="color-desc">未配置联系邮箱</span>'|raw}<br>
+                联系手机：{$vo.contact_phone|default='<span class="color-desc">未配置联系手机</span>'|raw}<br>
+            </td>
+            <td class='text-left nowrap layui-hide-xs'>
+                登录次数：{$vo.login_num|default=0}<br>
+                登录地址：{$vo.login_ip|default='--'}<br>
+            </td>
+            <td class='text-left nowrap'>
+                账号状态：{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq}<br>
+                创建时间：{$vo.create_at|format_datetime}
+            </td>
             <td class='text-left nowrap'>
 
                 {if auth("pass")}
-                <a class="layui-btn layui-btn-normal layui-btn-sm" data-title="设置密码" data-modal='{:url("pass")}?id={$vo.id}'>密 码</a>
+                <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="设置密码" data-modal='{:url("pass")}?id={$vo.id}'>密 码</a>
                 {/if}
 
                 {if auth("edit")}
-                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑用户资料" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 {/if}
 
-                {if $vo.status eq 1 and auth("state")}
+                {if auth("state") and $vo.status eq 1}
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-confirm="确定要禁用该用户吗?" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
                 {/if}
-                {if $vo.status eq 0 and auth("state")}
+
+                {if auth("state") and $vo.status eq 0}
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-confirm="确定要启用该用户吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
                 {/if}
 

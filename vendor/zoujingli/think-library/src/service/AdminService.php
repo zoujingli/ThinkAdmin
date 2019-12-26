@@ -36,6 +36,15 @@ class AdminService extends Service
     }
 
     /**
+     * 获取后台用户ID
+     * @return integer
+     */
+    public function getUserId()
+    {
+        return $this->app->session->get('user.id') ?? 0;
+    }
+
+    /**
      * 检查指定节点授权
      * --- 需要读取缓存或扫描所有节点
      * @param string $node
