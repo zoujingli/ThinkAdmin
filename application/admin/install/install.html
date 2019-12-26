@@ -181,7 +181,7 @@
             ]
         });
         form.on('submit', function (data) {
-            $.post('/install/execute', data.field, function (response) {
+            $.post('/index.php/install/execute', data.field, function (response) {
                 if (response.code !== 1) {
                     layer.msg(response.msg, {icon: 2})
                 } else {
