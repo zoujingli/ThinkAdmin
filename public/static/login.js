@@ -33,14 +33,14 @@ $(function () {
 
     /*! 登录图形验证码刷新 */
     $body.on('click', '[data-captcha]', function () {
-        var type, token, $that, verify, uniqid, captchaUrl;
-        $that = $(this), captchaUrl = this.getAttribute('data-captcha') || '';
-        if (captchaUrl.length < 5) return $.msg.tips('请设置验证码请求地址');
-        uniqid = this.getAttribute('data-field-uniqid') || 'uniqid';
-        verify = this.getAttribute('data-field-verify') || 'verify';
+        var type, token, $that, verify, uniqid, url;
+        $that = $(this), url = this.getAttribute('data-captcha') || '';
+        if (url.length < 5) return $.msg.tips('请设置验证码请求地址');
         type = this.getAttribute('data-captcha-type') || 'captcha-type';
         token = this.getAttribute('data-captcha-token') || 'captcha-token';
-        $.form.load(captchaUrl, {type: type, token: token}, 'post', function (ret) {
+        uniqid = this.getAttribute('data-field-uniqid') || 'uniqid';
+        verify = this.getAttribute('data-field-verify') || 'verify';
+        $.form.load(url, {type: type, token: token}, 'post', function (ret) {
             if (ret.code) {
                 $that.html('');
                 $that.append($('<img alt="img" src="">').attr('src', ret.data.image));
