@@ -68,6 +68,7 @@ public function index(){
 #### 1. 线上代码更新
 * 执行 `php think xadmin:install admin` 从线上服务更新 `admin` 模块的所有文件（注意文件安全）
 * 执行 `php think xadmin:install static` 从线上服务更新 `plugs` 静态资料文件（注意文件安全）
+* 执行 `php think xadmin:install wechat` 从线上服务更新 `wechat` 模块的所有文件（注意文件安全）
 
 #### 2. 守护进程管理
 * 执行 `php think xtask:listen` [监听]启动任务监听主进程
