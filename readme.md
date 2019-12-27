@@ -62,9 +62,10 @@ public function index(){
   
 ## 框架指令
 
-* 执行 `php think xadmin:version` 查看当前版本号
 * 执行 `build.cmd` 可更新 `composer` 插件，会删除并替换 `vendor` 目录
 * 执行 `php think run` 启用本地开发环境，访问 `http://127.0.0.1:8000`
+* 执行 `php think xadmin:fansall` 同步微信粉丝数据（依赖于 `wechat` 模块）
+* 执行 `php think xadmin:version` 查看当前版本号，显示 `ThinkPHP` 版本及 `ThinkLibrary` 版本
 
 #### 1. 线上代码更新
 * 执行 `php think xadmin:install admin` 从线上服务更新 `admin` 模块的所有文件（注意文件安全）
