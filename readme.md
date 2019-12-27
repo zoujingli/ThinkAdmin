@@ -74,10 +74,10 @@ public function index(){
 
 #### 2. 守护进程管理
 * 执行 `php think xtask:listen` [监听]启动任务监听主进程
-* 执行 `php think xtask:query` [控制]查询正在运行的进程
-* 执行 `php think xtask:start` [控制]查询正在运行的进程
-* 执行 `php think xtask:state` [控制]查看监听主进程状态
-* 执行 `php think xtask:stop`  [控制]平滑停止所有的进程 
+* 执行 `php think xtask:query`  [控制]查询正在运行的进程
+* 执行 `php think xtask:start`  [控制]创建守护监听主进程
+* 执行 `php think xtask:state`  [控制]查看监听主进程状态
+* 执行 `php think xtask:stop`   [控制]平滑停止所有的进程 
 
 ## 赞助打赏
 ![赞助](http://static.thinkadmin.top/pay.png)
