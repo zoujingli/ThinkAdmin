@@ -36,7 +36,7 @@ PHP 开发技术交流（ QQ 群 513350915）
 * 注释必需使用标准的块注释，如下案例
 * 其中`@auth true`表示访问需要权限验证
 * 其中`@menu true`显示在菜单编辑的节点可选项
-* 其中`@menu true`需要强制登录才可访问
+* 其中`@login true`需要强制登录才可访问
 ```php
 /**
 * 操作的名称
@@ -70,13 +70,11 @@ public function index(){
 * 执行 `php think xadmin:install static` 从线上服务更新 `plugs` 静态资料文件（注意文件安全）
 
 #### 2. 守护进程管理
-| 指令内容 | 功能描述 |
-| --- | --- |
-| `php think xtask:listen` | [监听]启动任务监听主进程 |
-| `php think xtask:query` | [控制]查询正在运行的进程 |
-| `php think xtask:start` | [控制]查询正在运行的进程 |
-| `php think xtask:state` | [控制]查看监听主进程状态 |
-| `php think xtask:stop` | [控制]平滑停止所有的进程 |
+* 执行 `php think xtask:listen` [监听]启动任务监听主进程
+* 执行 `php think xtask:query` [控制]查询正在运行的进程
+* 执行 `php think xtask:start` [控制]查询正在运行的进程
+* 执行 `php think xtask:state` [控制]查看监听主进程状态
+* 执行 `php think xtask:stop`  [控制]平滑停止所有的进程 
 
 ## 赞助打赏
 ![赞助](http://static.thinkadmin.top/pay.png)
