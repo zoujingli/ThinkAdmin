@@ -65,7 +65,7 @@ INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES ('base', 'site_icon', 'http://127.0.0.1:8000/upload/decb0fe26fa3f486/b3f6521bf29403c8.png');
 INSERT INTO `system_config` VALUES ('base', 'site_copy', '©版权所有 2019-2020 楚才科技');
 INSERT INTO `system_config` VALUES ('base', 'app_name', 'ThinkAdmin');
-INSERT INTO `system_config` VALUES ('base', 'app_version', 'v1.0');
+INSERT INTO `system_config` VALUES ('base', 'app_version', 'v6.0');
 INSERT INTO `system_config` VALUES ('base', 'miitbeian', '粤ICP备16006642号-2');
 INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
 INSERT INTO `system_config` VALUES ('storage', 'allow_exts', 'doc,gif,icon,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');
