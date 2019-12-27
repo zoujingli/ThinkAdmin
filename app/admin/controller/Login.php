@@ -16,6 +16,7 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
+use think\admin\extend\CodeExtend;
 use think\admin\service\AdminService;
 use think\admin\service\CaptchaService;
 use think\admin\service\SystemService;
@@ -41,7 +42,9 @@ class Login extends Controller
                 $this->redirect(url('@admin')->build());
             } else {
                 $this->title = '系统登录';
-                $this->captcha = CaptchaService::instance()->getAttrs();
+                $this->captcha_type = 'login_captcha';
+                $this->captcha_token = CodeExtend::uniqidDate(18);
+                $this->app->session->set($this->captcha_type, $this->captcha_token);
                 $this->devmode = SystemService::instance()->checkRunMode('dev');
                 $this->fetch();
             }
@@ -52,7 +55,7 @@ class Login extends Controller
                 'password.require' => '登录密码不能为空！',
                 'password.min:4'   => '登录密码长度不能少于4位有效字符！',
                 'verify.require'   => '图形验证码不能为空！',
-                'uniqid.require'   => '图形验证标识不能为空！'
+                'uniqid.require'   => '图形验证标识不能为空！',
             ]);
             if (!CaptchaService::instance()->check($data['verify'], $data['uniqid'])) {
                 $this->error('图形验证码验证失败，请重新输入!');
@@ -86,10 +89,14 @@ class Login extends Controller
     public function captcha()
     {
         $image = CaptchaService::instance();
-        $this->success('生成验证码成功', [
-            'image'  => $image->getData(),
-            'uniqid' => $image->getUniqid(),
-        ]);
+        $this->type = input('type', 'captcha-type');
+        $this->token = input('token', 'captcha-token');
+        $captcha = ['image' => $image->getData(), 'uniqid' => $image->getUniqid()];
+        if ($this->app->session->get($this->type) === $this->token) {
+            $captcha['code'] = $image->getCode();
+            $this->app->session->delete($this->type);
+        }
+        $this->success('生成验证码成功', $captcha);
     }
 
     /**

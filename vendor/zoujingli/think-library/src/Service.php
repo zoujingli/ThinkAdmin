@@ -19,7 +19,7 @@ use think\App;
 use think\Container;
 
 /**
- * 自定义服务接口
+ * 自定义服务基类
  * Class Service
  * @package think\admin
  */
