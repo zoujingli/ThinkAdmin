@@ -8,7 +8,7 @@ ThinkAdmin v6 依赖自制组件 ThinkLibrary v6，ThinkLibrary v6 是针对 Thi
 
 另外项目安装及二次开发可以参考 ThinkPHP 官方文档，数据库文件摆放在项目根目录下。
 
-ThinkAdmin 非常适用快速二次开发，默认集成 微信开发组件，支持微信服务号、微信支付、支付宝支付、七牛云存储、本地服务器存储等。 后台UI基于最新版本的 LayUI 及 RequireJs 加载第三方插件（建议自行了解 LayUI 及 RequireJs）。
+ThinkAdmin 非常适用快速二次开发，默认集成 微信开发组件，支持微信服务号、微信支付、支付宝支付、七牛云存储、本地服务器存储、阿里云OSS存储等。 后台UI基于最新版本的 LayUI 及 RequireJs 加载第三方插件（建议自行了解 LayUI 及 RequireJs）。
 
 #### 注意事项
 * 项目测试需要自行搭建环境导入数据库( admin_v6.sql )并修改配置( config/database.php )；
