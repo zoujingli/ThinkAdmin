@@ -12,7 +12,9 @@
 // +----------------------------------------------------------------------
 
 $(function () {
+
     window.$body = $('body');
+
     /*! 后台加密登录处理 */
     $body.find('[data-login-form]').map(function (that) {
         that = this;
@@ -30,14 +32,29 @@ $(function () {
     });
 
     /*! 登录图形验证码刷新 */
-    $body.on('click', '[data-captcha]', function (image, verify, uniqid) {
-        image = this, uniqid = this.getAttribute('data-uniqid-field') || 'uniqid';
-        verify = this.getAttribute('data-refresh-captcha') || this.getAttribute('data-verify-field') || 'verify';
-        $.form.load('?s=admin/login/captcha', {}, 'get', function (ret) {
-            image.src = ret.data.image;
-            $(image).parents('form').find('[name=' + verify + ']').attr('value', '');
-            $(image).parents('form').find('[name=' + uniqid + ']').val(ret.data.uniqid);
+    $body.on('click', '[data-captcha]', function () {
+        var type, token, $that, verifyField, uniqidField, captchaUrl;
+        $that = $(this), captchaUrl = this.getAttribute('data-captcha') || '';
+        if (captchaUrl.length < 5) return $.msg.tips('请设置验证码请求地址');
+        uniqidField = this.getAttribute('data-field-uniqid') || 'uniqid';
+        verifyField = this.getAttribute('data-field-verify') || 'verify';
+        type = this.getAttribute('data-captcha-type') || 'captcha-type';
+        token = this.getAttribute('data-captcha-token') || 'captcha-token';
+        $.form.load(captchaUrl, {type: type, token: token}, 'post', function (ret) {
+            $that.html('');
+            $that.append($('<img alt="img" src="">').attr('src', ret.data.image));
+            $that.append($('<input type="hidden">').attr('name', uniqidField || 'uniqid').val(ret.data.uniqid));
+            if (ret.data.code) {
+                $that.parents('form').find('[name=' + (verifyField || 'verify') + ']').attr('value', ret.data.code);
+            } else {
+                $that.parents('form').find('[name=' + (verifyField || 'verify') + ']').attr('value', '');
+            }
             return false;
         }, false);
     });
+
+    $('[data-captcha]').map(function () {
+        $(this).trigger('click')
+    });
+
 });
