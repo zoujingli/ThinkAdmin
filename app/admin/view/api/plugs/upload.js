@@ -28,12 +28,11 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                                 if (ret.code === 404) {
                                     uploader.config.data.safe = safe;
                                     uploader.config.url = ret.data.server;
+                                    uploader.config.data.key = ret.data.xkey;
                                     if (ret.data.uptype === 'qiniu') {
-                                        uploader.config.data.key = ret.data.xkey;
                                         uploader.config.data.token = ret.data.token;
                                     }
                                     if (ret.data.uptype === 'alioss') {
-                                        uploader.config.data.key = ret.data.xkey;
                                         uploader.config.data.policy = ret.data.policy;
                                         uploader.config.data.signature = ret.data.signature;
                                         uploader.config.data.OSSAccessKeyId = ret.data.OSSAccessKeyId;
