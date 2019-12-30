@@ -15,6 +15,7 @@
 
 namespace think\admin;
 
+use think\admin\storage\LocalStorage;
 use think\App;
 use think\Container;
 
@@ -128,7 +129,7 @@ abstract class Storage
     public static function down($url, $force = false, $expire = 0)
     {
         try {
-            $file = self::instance();
+            $file = LocalStorage::instance();
             $name = self::name($url, '', 'down/');
             if (empty($force) && $file->has($name)) {
                 if ($expire < 1 || filemtime($file->path($name)) + $expire > time()) {
