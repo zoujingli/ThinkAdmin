@@ -17,6 +17,8 @@ namespace app\wechat\controller\api;
 
 use app\wechat\service\WechatService;
 use think\admin\Controller;
+use think\admin\extend\CodeExtend;
+use WeChat\Contracts\Tools;
 
 /**
  * 微信测试工具
@@ -25,6 +27,82 @@ use think\admin\Controller;
  */
 class Test extends Controller
 {
+    /**
+     * 微信JSAPI支付二维码
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    public function jsapi_qrc()
+    {
+        $this->url = url('@wechat/api.test/jsapi', [], false, true);
+        return $this->showQrc($this->url);
+    }
+
+    /**
+     * 显示网页授权二维码
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    public function oauth_qrc()
+    {
+        $this->url = url('@wechat/api.test/oauth', [], false, true);
+        return $this->showQrc($this->url);
+    }
+
+    /**
+     * 显示网页授权二维码
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    public function jssdk_qrc()
+    {
+        $this->url = url('@wechat/api.test/jssdk', [], false, true);
+        return $this->showQrc($this->url);
+    }
+
+    /**
+     * 微信扫码支付模式一二维码显示
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     */
+    public function scan_one_qrc()
+    {
+        $pay = WechatService::WePayOrder();
+        $result = $pay->qrcParams('8888888');
+        return $this->showQrc($result);
+    }
+
+    /**
+     * 扫码支付模式二测试二维码
+     * @return \think\Response
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
+     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function scan_two_qrc()
+    {
+        $pay = WechatService::WePayOrder();
+        $result = $pay->create([
+            'body'             => '测试商品',
+            'total_fee'        => '1',
+            'trade_type'       => 'NATIVE',
+            'notify_url'       => url('@wechat/api.test/notify', [], false, true),
+            'out_trade_no'     => CodeExtend::uniqidNumber(18),
+            'spbill_create_ip' => $this->request->ip(),
+        ]);
+        return $this->showQrc($result['code_url']);
+    }
+
     /**
      * 网页授权测试
      * @return string
@@ -40,18 +118,6 @@ class Test extends Controller
         $this->url = $this->request->url(true);
         $this->fans = WechatService::instance()->getWebOauthInfo($this->url, 1);
         $this->fetch();
-    }
-
-    /**
-     * 显示网页授权二维码
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
-     */
-    public function oauth_qrc()
-    {
-        $url = url('@wechat/api.test/oauth', [], false, true);
-        $this->showQrc($url);
     }
 
     /**
@@ -71,38 +137,13 @@ class Test extends Controller
     }
 
     /**
-     * 显示网页授权二维码
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
-     */
-    public function jssdk_qrc()
-    {
-        $this->url = url('@wechat/api.test/jssdk', [], false, true);
-        return $this->showQrc($this->url);
-    }
-
-    /**
-     * 微信扫码支付模式一二维码显示
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
-     */
-    public function scanOneQrc()
-    {
-        $pay = WechatService::WePayOrder();
-        $result = $pay->qrcParams('8888888');
-        $this->showQrc($result);
-    }
-
-    /**
      * 微信扫码支付模式一通知处理
      * -- 注意，需要在微信商户配置支付通知地址
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function scanOneNotify()
+    public function scan_one_notify()
     {
         $pay = WechatService::WePayOrder();
         $notify = $pay->getNotify();
@@ -111,10 +152,10 @@ class Test extends Controller
         // 微信统一下单处理
         $options = [
             'body'             => "测试商品，产品ID：{$notify['product_id']}",
-            'out_trade_no'     => time(),
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
             'notify_url'       => url('@wechat/api.test/notify', [], false, true),
+            'out_trade_no'     => CodeExtend::uniqidDate(18),
             'spbill_create_ip' => $this->request->ip(),
         ];
         $order = $pay->create($options);
@@ -126,49 +167,14 @@ class Test extends Controller
             'return_msg'  => '处理成功',
             'appid'       => $notify['appid'],
             'mch_id'      => $notify['mch_id'],
-            'nonce_str'   => \WeChat\Contracts\Tools::createNoncestr(),
+            'nonce_str'   => Tools::createNoncestr(),
             'prepay_id'   => $order['prepay_id'],
             'result_code' => 'SUCCESS',
         ];
         $result['sign'] = $pay->getPaySign($result);
         p('======= 来自扫码支付1返回的结果 ======');
         p($result);
-        return \WeChat\Contracts\test::arr2xml($result);
-    }
-
-    /**
-     * 扫码支付模式二测试二维码
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     */
-    public function scanQrc()
-    {
-        $pay = WechatService::WePayOrder();
-        $result = $pay->create([
-            'body'             => '测试商品',
-            'out_trade_no'     => time(),
-            'total_fee'        => '1',
-            'trade_type'       => 'NATIVE',
-            'notify_url'       => url('@wechat/api.test/notify', [], false, true),
-            'spbill_create_ip' => request()->ip(),
-        ]);
-        $this->showQrc($result['code_url']);
-    }
-
-
-    /**
-     * 微信JSAPI支付二维码
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
-     */
-    public function jsapiQrc()
-    {
-        $this->url = url('@wechat/api.test/jsapi', [], false, true);
-        $this->showQrc($this->url);
+        return Tools::arr2xml($result);
     }
 
     /**
@@ -183,25 +189,24 @@ class Test extends Controller
      */
     public function jsapi()
     {
-        $url = $this->request->url(true);
-        $pay = WechatService::WePayOrder();
-        $user = WechatService::instance()->getWebOauthInfo($url, 0);
+        $this->url = $this->request->url(true);
+        $this->pay = WechatService::WePayOrder();
+        $user = WechatService::instance()->getWebOauthInfo($this->url, 0);
         if (empty($user['openid'])) return '<h3>网页授权获取OPENID失败！</h3>';
         // 生成预支付码
-        $result = $pay->create([
+        $result = $this->pay->create([
             'body'             => '测试商品',
-            'out_trade_no'     => time(),
-            'total_fee'        => '1',
             'openid'           => $user['openid'],
+            'total_fee'        => '1',
             'trade_type'       => 'JSAPI',
             'notify_url'       => url('@wechat/api.test/notify', [], false, true),
+            'out_trade_no'     => CodeExtend::uniqidDate(18),
             'spbill_create_ip' => $this->request->ip(),
         ]);
         // 创建JSAPI参数签名
-        $options = $pay->jsapiParams($result['prepay_id']);
-
-        $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
+        $options = $this->pay->jsapiParams($result['prepay_id']);
         // JSSDK 签名配置
+        $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
         $configJSON = json_encode(WechatService::instance()->getWebJssdkSign(), JSON_UNESCAPED_UNICODE);
 
         echo '<pre>';
@@ -244,6 +249,7 @@ class Test extends Controller
     /**
      * 创建二维码响应对应
      * @param string $url 二维码内容
+     * @return \think\Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
@@ -252,7 +258,7 @@ class Test extends Controller
     {
         $qrCode = new \Endroid\QrCode\QrCode();
         $qrCode->setText($url)->setSize(300)->setPadding(20)->setImageType('png');
-        response($qrCode->get(), 200, ['Content-Type' => 'image/png'])->send();
+        return response($qrCode->get(), 200, ['Content-Type' => 'image/png']);
     }
 
 }
