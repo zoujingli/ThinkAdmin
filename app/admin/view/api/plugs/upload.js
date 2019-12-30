@@ -22,7 +22,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                     files = object.pushFile(), $input.data('files', files);
                     for (index in files) md5file(files[index]).then(function (file) {
                         $input.data('file', file).data('index', index);
-                        jQuery.ajax("{:url('@admin/api.upload/state')}", {
+                        jQuery.ajax("{:url('@admin/api.upload/state',[],false)}", {
                             data: {xkey: file.xkey, uptype: uptype, safe: safe}, method: 'post', success: function (ret) {
                                 file.xurl = ret.data.url;
                                 if (ret.code === 404) {
