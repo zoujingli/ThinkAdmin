@@ -32,6 +32,11 @@ class Library extends Service
      */
     public function register()
     {
+        // 读取中文语言
+        if ($this->app->lang->getLangSet() === 'zh-cn') {
+            $this->app->lang->load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
+        }
+        // 判断访问模式
         if ($this->app->request->isCli()) {
             if (empty($_SERVER['REQUEST_URI']) && isset($_SERVER['argv'][1])) {
                 $this->app->request->setPathinfo($_SERVER['argv'][1]);
@@ -56,9 +61,9 @@ class Library extends Service
                 } elseif (AdminService::instance()->check()) {
                     return $next($request)->code(200)->header($header);
                 } elseif (AdminService::instance()->isLogin()) {
-                    return json(['code' => 0, 'msg' => '抱歉，没有访问该操作的权限！'])->header($header);
+                    return json(['code' => 0, 'msg' => lang('think_library_not_auth')])->header($header);
                 } else {
-                    return json(['code' => 0, 'msg' => '抱歉，需要登录获取访问权限！', 'url' => url('@admin/login')->build()])->header($header);
+                    return json(['code' => 0, 'msg' => lang('think_library_not_login'), 'url' => url('@admin/login')->build()])->header($header);
                 }
             }, 'route');
         }

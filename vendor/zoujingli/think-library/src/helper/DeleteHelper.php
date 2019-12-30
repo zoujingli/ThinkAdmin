@@ -77,9 +77,9 @@ class DeleteHelper extends Helper
         }
         // 回复前端结果
         if ($result !== false) {
-            $this->controller->success('数据删除成功！', '');
+            $this->controller->success(lang('think_library_delete_success'), '');
         } else {
-            $this->controller->error('数据删除失败, 请稍候再试！');
+            $this->controller->error(lang('think_library_delete_error'));
         }
     }
 

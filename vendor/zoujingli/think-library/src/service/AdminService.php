@@ -41,7 +41,16 @@ class AdminService extends Service
      */
     public function getUserId()
     {
-        return $this->app->session->get('user.id') ?? 0;
+        return $this->app->session->get('user.id', 0);
+    }
+
+    /**
+     * 获取后台用户名称
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->app->session->get('user.username', '');
     }
 
     /**

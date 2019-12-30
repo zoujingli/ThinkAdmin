@@ -87,19 +87,21 @@ class PageHelper extends Helper
             [$options, $query] = ['', $this->app->request->get()];
             $pager = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $this->total);
             foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
-                [$query['limit'], $query['page'], $selected] = [$num, 1, $limit === $num ? 'selected' : ''];
+                [$query['limit'], $query['page'], $selects] = [$num, 1, $limit === $num ? 'selected' : ''];
                 if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
                     $url = url('@admin') . '#' . $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
                 } else {
                     $url = $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
                 }
-                $options .= "<option data-num='{$num}' value='{$url}' {$selected}>{$num}</option>";
+                $options .= "<option data-num='{$num}' value='{$url}' {$selects}>{$num}</option>";
             }
-            $html = "<div class='pagination-container nowrap'><span>共 {$pager->total()} 条记录，每页显示 <select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>{$options}</select> 条，共 {$pager->lastPage()} 页当前显示第 {$pager->currentPage()} 页。</span>{$pager->render()}</div>";
+            $selects = "<select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>{$options}</select>";
+            $pagetext = lang('think_library_page_html', [$pager->total(), $selects, $pager->lastPage(), $pager->currentPage()]);
+            $pagehtml = "<div class='pagination-container nowrap'><span>{$pagetext}</span>{$pager->render()}</div>";
             if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
-                $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $html));
+                $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $pagehtml));
             } else {
-                $this->controller->assign('pagehtml', $html);
+                $this->controller->assign('pagehtml', $pagehtml);
             }
             $result = ['page' => ['limit' => intval($limit), 'total' => intval($pager->total()), 'pages' => intval($pager->lastPage()), 'current' => intval($pager->currentPage())], 'list' => $pager->items()];
         } else {
@@ -126,11 +128,11 @@ class PageHelper extends Helper
                     $map = [$pk => $this->app->request->post($pk, 0)];
                     $data = ['sort' => intval($this->app->request->post('sort', 0))];
                     if ($this->app->db->table($this->query->getTable())->where($map)->update($data) !== false) {
-                        $this->controller->success('列表排序修改成功！', '');
+                        $this->controller->success(lang('think_library_sort_success'), '');
                     }
                 }
             }
-            $this->controller->error('列表排序修改失败，请稍候再试！');
+            $this->controller->error($message ?? lang('think_library_sort_error'));
         }
     }
 
