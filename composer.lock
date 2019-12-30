@@ -909,12 +909,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "250e1994a747d37fb3c3be3804dac69f26694c6b"
+                "reference": "53c8d243412a6fafe4cec8aaf6795bea04455b78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/250e1994a747d37fb3c3be3804dac69f26694c6b",
-                "reference": "250e1994a747d37fb3c3be3804dac69f26694c6b",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/53c8d243412a6fafe4cec8aaf6795bea04455b78",
+                "reference": "53c8d243412a6fafe4cec8aaf6795bea04455b78",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -958,7 +958,7 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://framework.thinkadmin.top",
-            "time": "2019-12-30T03:58:19+00:00"
+            "time": "2019-12-30T06:41:04+00:00"
         },
         {
             "name": "zoujingli/wechat-developer",
