@@ -271,9 +271,8 @@ if (class_exists('think\Console')) {
 }
 
 // 加载对应的语言包
-if (Lang::range() === 'zh-cn') {
-    Lang::load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
-}
+Lang::load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
+Lang::load(__DIR__ . '/lang/en-us.php', 'en-us');
 
 // 动态加载模块配置
 if (function_exists('think\__include_file')) {
