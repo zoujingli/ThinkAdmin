@@ -59,7 +59,7 @@ abstract class Controller extends \stdClass
      * 表单CSRF验证失败提示消息
      * @var string
      */
-    public $csrf_message = '表单令牌验证失败，请刷新页面再试！';
+    public $csrf_message = '';
 
     /**
      * Controller constructor.
@@ -114,6 +114,9 @@ abstract class Controller extends \stdClass
      */
     protected function initialize()
     {
+        if (empty($this->csrf_message)) {
+            $this->csrf_message = lang('think_library_csrf_error');
+        }
     }
 
     /**

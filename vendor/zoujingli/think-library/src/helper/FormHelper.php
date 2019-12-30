@@ -62,7 +62,7 @@ class FormHelper extends Helper
      * @param string $field 指定数据主键
      * @param array $where 额外更新条件
      * @param array $data 表单扩展数据
-     * @return array|boolean
+     * @return array|mixed
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -84,8 +84,9 @@ class FormHelper extends Helper
             $data = array_merge($data, $this->data);
             if (false !== $this->controller->callback('_form_filter', $data)) {
                 return $this->controller->fetch($this->template, ['vo' => $data]);
+            } else {
+                return $data;
             }
-            return $data;
         }
         // POST请求, 数据自动存库处理
         if ($this->app->request->isPost()) {
@@ -93,8 +94,11 @@ class FormHelper extends Helper
             if (false !== $this->controller->callback('_form_filter', $data, $this->where)) {
                 $result = data_save($this->query, $data, $this->field, $this->where);
                 if (false !== $this->controller->callback('_form_result', $result, $data)) {
-                    if ($result !== false) $this->controller->success('恭喜, 数据保存成功!', '');
-                    $this->controller->error('数据保存失败, 请稍候再试!');
+                    if ($result !== false) {
+                        $this->controller->success(lang('think_library_form_success'), '');
+                    } else {
+                        $this->controller->error(lang('think_library_form_error'));
+                    }
                 }
                 return $result;
             }

@@ -15,15 +15,14 @@
 
 use library\service\TokenService;
 use library\tools\Crypt;
-use library\tools\Csrf;
 use library\tools\Data;
 use library\tools\Emoji;
 use library\tools\Http;
-use library\tools\Node;
 use think\Console;
 use think\Db;
 use think\db\Query;
 use think\facade\Cache;
+use think\facade\Lang;
 use think\facade\Middleware;
 use think\Request;
 
@@ -269,6 +268,11 @@ if (class_exists('think\Console')) {
         'library\command\sync\Wechat',
         'library\command\sync\Service',
     ]);
+}
+
+// 加载对应的语言包
+if (Lang::range() === 'zh-cn') {
+    Lang::load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
 }
 
 // 动态加载模块配置
