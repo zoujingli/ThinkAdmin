@@ -19,6 +19,7 @@ use think\admin\service\AdminService;
 use think\middleware\SessionInit;
 use think\Request;
 use think\Service;
+use function Composer\Autoload\includeFile;
 
 /**
  * 模块注册服务
@@ -33,9 +34,8 @@ class Library extends Service
     public function register()
     {
         // 读取中文语言
-        if ($this->app->lang->getLangSet() === 'zh-cn') {
-            $this->app->lang->load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
-        }
+        $this->app->lang->load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
+        $this->app->lang->load(__DIR__ . '/lang/en-us.php', 'en-us');
         // 判断访问模式
         if ($this->app->request->isCli()) {
             if (empty($_SERVER['REQUEST_URI']) && isset($_SERVER['argv'][1])) {
@@ -68,9 +68,8 @@ class Library extends Service
             }, 'route');
         }
         // 动态加入应用函数
-        foreach (glob($this->app->getAppPath() . '*/sys.php') as $file) {
-            \Composer\Autoload\includeFile($file);
-        }
+        $syspath = "{$this->app->getAppPath()}*/sys.php";
+        foreach (glob($syspath) as $file) includeFile($file);
     }
 
     /**
