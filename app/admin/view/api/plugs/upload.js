@@ -3,9 +3,10 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
     return function (element, InitHandler, UploadedHandler) {
         /*! 定义初始化变量 */
         var exts = [], mimes = [], safe, field, uptype, multiple, types, $input, index;
-        safe = $(element).attr('data-safe') || '', field = $(element).data('field') || 'file';
-        types = ($(element).data('type') || '').split(','), $input = $('[name="' + field + '"]');
-        uptype = $(element).attr('data-uptype') || '', multiple = $(element).attr('data-multiple') > 0;
+        safe = $(element).attr('data-safe') || '';
+        uptype = safe ? 'local' : $(element).attr('data-uptype') || '';
+        field = $(element).data('field') || 'file', $input = $('[name="' + field + '"]');
+        types = ($(element).data('type') || '').split(','), multiple = $(element).attr('data-multiple') > 0;
         /*! 设置文件选择筛选规则 */
         for (index in types) if (allowExtsMimes[types[index]]) {
             mimes.push(allowExtsMimes[types[index]]), exts.push(types[index]);
@@ -22,13 +23,14 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                     files = object.pushFile(), $input.data('files', files);
                     for (index in files) md5file(files[index]).then(function (file) {
                         $input.data('file', file).data('index', index);
-                        jQuery.ajax("{:url('@admin/api.upload/state',[],false)}", {
+                        jQuery.ajax("{:url('@admin/api.upload/state')}", {
                             data: {xkey: file.xkey, uptype: uptype, safe: safe}, method: 'post', success: function (ret) {
                                 file.xurl = ret.data.url;
                                 if (ret.code === 404) {
                                     uploader.config.data.safe = safe;
                                     uploader.config.url = ret.data.server;
                                     uploader.config.data.key = ret.data.xkey;
+                                    uploader.config.data.uptype = ret.data.uptype;
                                     if (ret.data.uptype === 'qiniu') {
                                         uploader.config.data.token = ret.data.token;
                                     }
