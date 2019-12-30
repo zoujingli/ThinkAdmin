@@ -183,21 +183,23 @@ class Test extends Controller
      */
     public function jsapi()
     {
+        $url = $this->request->url(true);
         $pay = WechatService::WePayOrder();
-        $user = WechatService::instance()->getWebOauthInfo($this->request->url(true), 0);
-        $options = [
+        $user = WechatService::instance()->getWebOauthInfo($url, 0);
+        if (empty($user['openid'])) return '<h3>网页授权获取OPENID失败！</h3>';
+        // 生成预支付码
+        $result = $pay->create([
             'body'             => '测试商品',
             'out_trade_no'     => time(),
             'total_fee'        => '1',
             'openid'           => $user['openid'],
             'trade_type'       => 'JSAPI',
             'notify_url'       => url('@wechat/api.test/notify', [], false, true),
-            'spbill_create_ip' => request()->ip(),
-        ];
-        // 生成预支付码
-        $result = $pay->create($options);
+            'spbill_create_ip' => $this->request->ip(),
+        ]);
         // 创建JSAPI参数签名
         $options = $pay->jsapiParams($result['prepay_id']);
+
         $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
         // JSSDK 签名配置
         $configJSON = json_encode(WechatService::instance()->getWebJssdkSign(), JSON_UNESCAPED_UNICODE);
