@@ -175,6 +175,7 @@ class WechatService extends Service
     /**
      * 获取公众号配置参数
      * @return array
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -183,7 +184,7 @@ class WechatService extends Service
     {
         $options = [
             'token'          => sysconf('wechat.token'),
-            'appid'          => sysconf('wechat.appid'),
+            'appid'          => $this->getAppid(),
             'appsecret'      => sysconf('wechat.appsecret'),
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
             'mch_id'         => sysconf('wechat.mch_id'),
