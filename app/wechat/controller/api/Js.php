@@ -38,25 +38,41 @@ class Js extends Controller
      */
     public function index()
     {
-        $url = $this->request->server('http_referer', $this->request->url(true));
-        $user = WechatService::instance()->getWebOauthInfo($url, $this->request->get('mode', 1), false);
-        $openid = isset($user['openid']) ? $user['openid'] : '';
-        $unionid = empty($user['fansinfo']['unionid']) ? '' : $user['fansinfo']['unionid'];
-        $configJson = json_encode(WechatService::instance()->getWebJssdkSign($url), JSON_UNESCAPED_UNICODE);
-        $fansinfoJson = json_encode(isset($user['fansinfo']) ? $user['fansinfo'] : [], JSON_UNESCAPED_UNICODE);
-        $html = <<<EOF
+        $this->mode = $this->request->get('mode', 1);
+        $this->source = $this->request->server('http_referer', $this->request->url(true));
+        $user = WechatService::instance()->getWebOauthInfo($this->source, $this->mode, false);
+        if (empty($user['openid'])) {
+            $content = 'alert("Wechat webOauth failed.")';
+        } else {
+            $this->openid = $user['openid'];
+            $this->config = json_encode(WechatService::instance()->getWebJssdkSign($this->source));
+            $this->fansinfo = json_encode(empty($user['fansinfo']) ? [] : $user['fansinfo'], JSON_UNESCAPED_UNICODE);
+            // 生成接口授权令牌
+            $this->token = uniqid('oauth') . rand(10000, 99999);
+            $this->app->cache->set($this->openid, $this->token, 3600);
+            $content = $this->_buildContent();
+        }
+        return Response::create($content)->contentType('application/x-javascript');
+    }
+
+    /**
+     * 生成授权内容
+     * @return string
+     */
+    private function _buildContent()
+    {
+        return <<<EOF
 if(typeof wx === 'object'){
-    wx.openid="{$openid}";
-    wx.unionid="{$unionid}";
-    wx.config({$configJson});
-    wx.fansinfo={$fansinfoJson};
+    wx.token="{$this->token}";
+    wx.openid="{$this->openid}";
+    wx.fansinfo={$this->fansinfo};
+    wx.config({$this->config});
     wx.ready(function(){
         wx.hideOptionMenu();
         wx.hideAllNonBaseMenuItem();
     });
 }
 EOF;
-        return Response::create($html)->contentType('application/x-javascript');
     }
 
 }
