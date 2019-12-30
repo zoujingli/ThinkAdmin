@@ -318,6 +318,8 @@ class ComposerStaticInitbf5dd43c242f2a86b1513b16fb281176
         'library\\queue\\WorkQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/WorkQueue.php',
         'library\\service\\AdminService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/AdminService.php',
         'library\\service\\CaptchaService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/CaptchaService.php',
+        'library\\service\\JsonRpcClientService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/JsonRpcClientService.php',
+        'library\\service\\JsonRpcServerService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/JsonRpcServerService.php',
         'library\\service\\MenuService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/MenuService.php',
         'library\\service\\NodeService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/NodeService.php',
         'library\\service\\ProcessService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/ProcessService.php',

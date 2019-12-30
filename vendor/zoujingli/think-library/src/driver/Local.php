@@ -123,8 +123,9 @@ class Local extends File
     {
         if ($this->has($name, $safe) && is_string($file = $this->path($name, $safe))) {
             return ['file' => $file, 'hash' => md5_file($file), 'url' => $this->base($name), 'key' => "upload/{$name}"];
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
@@ -137,8 +138,9 @@ class Local extends File
     {
         if ($this->has($name, $safe) && is_string($file = $this->path($name, $safe))) {
             return @unlink($file);
+        } else {
+            return true;
         }
-        return true;
     }
 
 }

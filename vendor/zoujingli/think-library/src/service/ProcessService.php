@@ -48,7 +48,7 @@ class ProcessService extends Service
     /**
      * 创建异步进程
      * @param string $command 任务指令
-     * @return ProcessService
+     * @return $this
      */
     public function create($command)
     {

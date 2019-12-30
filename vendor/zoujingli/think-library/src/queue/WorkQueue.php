@@ -63,38 +63,51 @@ class WorkQueue extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        try {
-            $this->id = trim($input->getArgument('id')) ?: 0;
-            if (empty($this->id)) throw new Exception("执行任务需要指定任务编号！");
-            $queue = Db::name('SystemQueue')->where(['id' => $this->id, 'status' => '2'])->find();
-            if (empty($queue)) throw new Exception("执行任务{$this->id}的信息或状态异常！");;
-            // 设置进程标题
-            if (($process = ProcessService::instance())->iswin() && function_exists('cli_set_process_title')) {
-                cli_set_process_title("ThinkAdmin {$process->version()} 执行任务 - {$queue['title']}");
-            }
-            // 执行任务内容
-            if (class_exists($queue['preload'])) {
-                if (method_exists($class = new $queue['preload'], 'execute')) {
-                    $data = json_decode($queue['data'], true);
-                    if (isset($class->jobid)) $class->jobid = $this->id;
-                    if (isset($class->title)) $class->title = $queue['title'];
-                    $this->update('3', $class->execute($input, $output, is_array($data) ? $data : []));
-                } else {
-                    throw new Exception("任务处理类 {$queue['preload']} 未定义 execute 入口！");
-                }
+        $this->id = trim($input->getArgument('id'));
+        if (empty($this->id)) {
+            $this->output->error("执行任务需要指定任务编号！");
+        } else try {
+            $queue = Db::name('SystemQueue')->where(['id' => $this->id, 'status' => '1'])->find();
+            if (empty($queue)) {
+                // 这里不做任何处理（该任务可能在其它地方已经在执行）
+                $this->output->warning("执行任务{$this->id}的信息或状态异常！");
             } else {
-                $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $queue['command'])));
-                $this->update('3', Console::call(array_shift($attr), $attr, 'console'));
+                // 锁定任务状态
+                Db::name('SystemQueue')->where(['id' => $queue['id']])->update(['status' => '2', 'start_at' => date('Y-m-d H:i:s')]);
+                // 设置进程标题
+                if (($process = ProcessService::instance())->iswin() && function_exists('cli_set_process_title')) {
+                    cli_set_process_title("ThinkAdmin {$process->version()} 执行任务 - {$queue['title']}");
+                }
+                // 执行任务内容
+                if (class_exists($queue['preload'])) {
+                    // 自定义文件，支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
+                    if (method_exists($class = new $queue['preload'], 'execute')) {
+                        $data = json_decode($queue['data'], true);
+                        if (isset($class->jobid)) $class->jobid = $this->id;
+                        if (isset($class->title)) $class->title = $queue['title'];
+                        $this->update('3', $class->execute($input, $output, is_array($data) ? $data : []));
+                    } else {
+                        throw new Exception("任务处理类 {$queue['preload']} 未定义 execute 入口！");
+                    }
+                } else {
+                    // 自定义指令，不支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
+                    $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $queue['command'])));
+                    $this->update('3', Console::call(array_shift($attr), $attr, 'console'));
+                }
             }
         } catch (\Exception $e) {
-            $this->update('4', $e->getMessage());
+            if (in_array($e->getCode(), ['3', '4'])) {
+                $this->update($e->getCode(), $e->getMessage());
+            } else {
+                $this->update('4', $e->getMessage());
+            }
         }
     }
 
     /**
      * 修改当前任务状态
-     * @param integer $status 任务状态
-     * @param string $message 消息内容
+     * @param mixed $status 任务状态
+     * @param mixed $message 消息内容
      * @return boolean
      * @throws \think\Exception
      * @throws \think\exception\PDOException

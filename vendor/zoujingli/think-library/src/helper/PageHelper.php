@@ -57,7 +57,7 @@ class PageHelper extends Helper
      * @param boolean $display 是否渲染模板
      * @param boolean $total 集合分页记录数
      * @param integer $limit 集合每页记录数
-     * @return array
+     * @return array|mixed
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -90,17 +90,19 @@ class PageHelper extends Helper
                 $url = url('@admin') . '#' . $this->controller->request->baseUrl() . '?' . urldecode(http_build_query($query));
                 array_push($rows, "<option data-num='{$num}' value='{$url}' {$selected}>{$num}</option>");
             }
-            $select = "<select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>" . join('', $rows) . "</select>";
-            $html = "<div class='pagination-container nowrap'><span>共 {$page->total()} 条记录，每页显示 {$select} 条，共 {$page->lastPage()} 页当前显示第 {$page->currentPage()} 页。</span>{$page->render()}</div>";
-            $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $html));
+            $selects = "<select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>" . join('', $rows) . "</select>";
+            $pagetext = lang('think_library_page_html', [$page->total(), $selects, $page->lastPage(), $page->currentPage()]);
+            $pagehtml = "<div class='pagination-container nowrap'><span>{$pagetext}</span>{$page->render()}</div>";
+            $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $pagehtml));
             $result = ['page' => ['limit' => intval($limit), 'total' => intval($page->total()), 'pages' => intval($page->lastPage()), 'current' => intval($page->currentPage())], 'list' => $page->items()];
         } else {
             $result = ['list' => $this->query->select()];
         }
         if (false !== $this->controller->callback('_page_filter', $result['list']) && $this->display) {
             return $this->controller->fetch('', $result);
+        } else {
+            return $result;
         }
-        return $result;
     }
 
     /**
@@ -116,19 +118,20 @@ class PageHelper extends Helper
                     if (preg_match('/^_\d{1,}$/', $key) && preg_match('/^\d{1,}$/', $value)) {
                         list($where, $update) = [['id' => trim($key, '_')], ['sort' => $value]];
                         if (false === Db::table($this->query->getTable())->where($where)->update($update)) {
-                            return $this->controller->error('排序失败, 请稍候再试！');
+                            return $this->controller->error(lang('think_library_sort_error'));
                         }
                     }
                 }
-                return $this->controller->success('排序成功, 正在刷新页面！', '');
+                return $this->controller->success(lang('think_library_sort_success'), '');
             case 'sort':
                 $where = $this->controller->request->post();
                 $sort = intval($this->controller->request->post('sort'));
                 unset($where['action'], $where['sort']);
                 if (Db::table($this->query->getTable())->where($where)->update(['sort' => $sort]) !== false) {
-                    return $this->controller->success('排序参数修改成功！', '');
+                    return $this->controller->success(lang('think_library_sort_success'), '');
+                } else {
+                    return $this->controller->error(lang('think_library_sort_error'));
                 }
-                return $this->controller->error('排序参数修改失败，请稍候再试！');
         }
     }
 

@@ -13,16 +13,16 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+use library\service\TokenService;
 use library\tools\Crypt;
-use library\tools\Csrf;
 use library\tools\Data;
 use library\tools\Emoji;
 use library\tools\Http;
-use library\tools\Node;
 use think\Console;
 use think\Db;
 use think\db\Query;
 use think\facade\Cache;
+use think\facade\Lang;
 use think\facade\Middleware;
 use think\Request;
 
@@ -105,7 +105,7 @@ if (!function_exists('systoken')) {
      */
     function systoken($node = null)
     {
-        $csrf = Csrf::buildFormToken(Node::get($node));
+        $csrf = TokenService::instance()->buildFormToken($node);
         return $csrf['token'];
     }
 }
@@ -269,6 +269,10 @@ if (class_exists('think\Console')) {
         'library\command\sync\Service',
     ]);
 }
+
+// 加载对应的语言包
+Lang::load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
+Lang::load(__DIR__ . '/lang/en-us.php', 'en-us');
 
 // 动态加载模块配置
 if (function_exists('think\__include_file')) {

@@ -49,7 +49,7 @@ class NodeService extends Service
         $prefix = $this->request->module();
         $middle = '\\' . $this->nameTolower($this->app->request->controller());
         $suffix = ($type === 'controller') ? '' : ('\\' . $this->app->request->action());
-        return strtr($prefix . $middle . $suffix, '\\', '/');
+        return strtolower(strtr($prefix . $middle . $suffix, '\\', '/'));
     }
 
     /**
@@ -61,10 +61,10 @@ class NodeService extends Service
     {
         if (empty($node)) return $this->getCurrent();
         if (count($attrs = explode('/', $node)) === 1) {
-            return $this->getCurrent('controller') . "/{$node}";
+            return strtolower($this->getCurrent('controller') . "/{$node}");
         } else {
             $attrs[1] = $this->nameTolower($attrs[1]);
-            return join('/', $attrs);
+            return strtolower(join('/', $attrs));
         }
     }
 

@@ -30,7 +30,7 @@ class TokenService extends Service
      */
     public function getInputToken()
     {
-        return $this->app->request->header('User-Token-Csrf', input('_token_', ''));
+        return $this->app->request->header('user-token-csrf', input('_token_', ''));
     }
 
     /**
@@ -53,7 +53,7 @@ class TokenService extends Service
     /**
      * 清理表单CSRF信息
      * @param string $token
-     * @return TokenService
+     * @return $this
      */
     public function clearFormToken($token = null)
     {
