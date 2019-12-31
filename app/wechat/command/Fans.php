@@ -85,7 +85,7 @@ class Fans extends Command
         }
         $this->output->comment('微信粉丝数据同步完成！');
         $this->output->newLine();
-        return '';
+        return "同步{$done}个用户数据";
     }
 
     /**
@@ -112,9 +112,9 @@ class Fans extends Command
         $this->output->comment('微信黑名单数据同步完成！');
         $this->output->newLine();
         if (empty($result['total'])) {
-            return '同步微信用户0人';
+            return '，其中黑名单0人';
         } else {
-            return "同步微信用户{$result['total']}人";
+            return "，其中黑名单{$result['total']}人";
         }
     }
 
