@@ -18,6 +18,7 @@ use WeChat\Contracts\BasicWePay;
 use WeChat\Exceptions\InvalidResponseException;
 use WePay\Bill;
 use WePay\Order;
+use WePay\Refund;
 use WePay\Transfers;
 use WePay\TransfersBank;
 
@@ -116,7 +117,7 @@ class Pay extends BasicWePay
      */
     public function createRefund(array $options)
     {
-        return Order::instance($this->config->get())->create($options);
+        return Refund::instance($this->config->get())->create($options);
     }
 
     /**
@@ -128,7 +129,7 @@ class Pay extends BasicWePay
      */
     public function queryRefund(array $options)
     {
-        return Order::instance($this->config->get())->query($options);
+        return Refund::instance($this->config->get())->query($options);
     }
 
     /**
