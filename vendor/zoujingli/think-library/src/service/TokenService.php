@@ -53,7 +53,7 @@ class TokenService extends Service
     /**
      * 清理表单CSRF信息
      * @param string $token
-     * @return TokenService
+     * @return $this
      */
     public function clearFormToken($token = null)
     {
