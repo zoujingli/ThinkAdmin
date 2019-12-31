@@ -83,19 +83,20 @@ class NodeService extends Service
         } else {
             $data = [];
         }
-        $ignore = get_class_methods('\think\admin\Controller');
-        foreach ($this->scanDirectory(dirname($this->app->getAppPath())) as $file) {
+        $ignores = get_class_methods('\think\admin\Controller');
+        foreach ($this->_scanDirectory(dirname($this->app->getAppPath())) as $file) {
             if (preg_match("|/(\w+)/(\w+)/controller/(.+)\.php$|i", $file, $matches)) {
-                list(, $namespace, $application, $baseclass) = $matches;
-                $class = new \ReflectionClass(strtr("{$namespace}/{$application}/controller/{$baseclass}", '/', '\\'));
-                $prefix = strtr("{$application}/" . $this->nameTolower($baseclass), '\\', '/');
-                $data[$prefix] = $this->parseComment($class->getDocComment(), $baseclass);
+                list(, $namespace, $appname, $classname) = $matches;
+                $class = new \ReflectionClass(strtr("{$namespace}/{$appname}/controller/{$classname}", '/', '\\'));
+                $prefix = strtr("{$appname}/{$this->nameTolower($classname)}", '\\', '/');
+                $data[$prefix] = $this->_parseComment($class->getDocComment(), $classname);
                 foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                    if (in_array($method->getName(), $ignore)) continue;
-                    $data["{$prefix}/{$method->getName()}"] = $this->parseComment($method->getDocComment(), $method->getName());
+                    if (in_array($metname = $method->getName(), $ignores)) continue;
+                    $data["{$prefix}/{$metname}"] = $this->_parseComment($method->getDocComment(), $metname);
                 }
             }
         }
+        $data = array_change_key_case($data, CASE_LOWER);
         $this->app->cache->set('system_auth_node', $data);
         return $data;
     }
@@ -106,10 +107,13 @@ class NodeService extends Service
      * @param string $default
      * @return array
      */
-    private function parseComment($comment, $default = '')
+    private function _parseComment($comment, $default = '')
     {
         $text = strtr($comment, "\n", ' ');
         $title = preg_replace('/^\/\*\s*\*\s*\*\s*(.*?)\s*\*.*?$/', '$1', $text);
+        foreach (['@auth', '@menu', '@login'] as $find) if (stripos($title, $find) === 0) {
+            $title = $default;
+        }
         return [
             'title'   => $title ? $title : $default,
             'isauth'  => intval(preg_match('/@auth\s*true/i', $text)),
@@ -125,11 +129,11 @@ class NodeService extends Service
      * @param string $ext 有文件后缀
      * @return array
      */
-    private function scanDirectory($path, $data = [], $ext = 'php')
+    private function _scanDirectory($path, $data = [], $ext = 'php')
     {
         foreach (glob("{$path}*") as $item) {
             if (is_dir($item)) {
-                $data = array_merge($data, $this->scanDirectory("{$item}/"));
+                $data = array_merge($data, $this->_scanDirectory("{$item}/"));
             } elseif (is_file($item) && pathinfo($item, PATHINFO_EXTENSION) === $ext) {
                 $data[] = strtr($item, '\\', '/');
             }

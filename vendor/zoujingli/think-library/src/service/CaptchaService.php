@@ -62,7 +62,7 @@ class CaptchaService extends Service
     /**
      * 动态切换配置
      * @param array $config
-     * @return $this|Service
+     * @return $this
      */
     public function config($config = [])
     {
@@ -118,9 +118,13 @@ class CaptchaService extends Service
     public function check($code, $uniqid = null)
     {
         $_uni = is_string($uniqid) ? $uniqid : input('uniqid', '-');
-        $_val = $this->app->cache->get($_uni);
-        $this->app->cache->delete($_uni);
-        return is_string($_val) && strtolower($_val) === strtolower($code);
+        $_val = $this->app->cache->get($_uni, '');
+        if (is_string($_val) && strtolower($_val) === strtolower($code)) {
+            $this->app->cache->delete($_uni);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -250,3 +250,16 @@ if (!function_exists('down_file')) {
         return isset($result['url']) ? $result['url'] : $source;
     }
 }
+if (!function_exists('format_bytes')) {
+    /**
+     * 文件字节单位转换
+     * @param integer $size
+     * @return string
+     */
+    function format_bytes($size)
+    {
+        $units = [' B', ' KB', ' MB', ' GB', ' TB'];
+        for ($i = 0; $size >= 1024 && $i < 4; $i++) $size /= 1024;
+        return round($size, 2) . $units[$i];
+    }
+}

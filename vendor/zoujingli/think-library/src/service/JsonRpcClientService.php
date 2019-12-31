@@ -26,16 +26,16 @@ use think\admin\Service;
 class JsonRpcClientService extends Service
 {
     /**
-     * 服务端地址
-     * @var string
-     */
-    private $proxy;
-
-    /**
      * 请求ID
      * @var integer
      */
     private $id;
+
+    /**
+     * 服务端地址
+     * @var string
+     */
+    private $proxy;
 
     /**
      * 创建连接对象

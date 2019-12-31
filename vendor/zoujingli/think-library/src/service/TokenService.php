@@ -69,7 +69,7 @@ class TokenService extends Service
      */
     public function buildFormToken($node = null)
     {
-        list($token, $time) = [uniqid('csrf'), time()];
+        list($token, $time) = [uniqid('csrf') . rand(1000, 9999), time()];
         foreach ($this->app->session->all() as $key => $item) {
             if (stripos($key, 'csrf') === 0 && isset($item['time'])) {
                 if ($item['time'] + 600 < $time) $this->clearFormToken($key);
