@@ -89,6 +89,7 @@ class Upload extends Controller
             $data['signature'] = $token['signature'];
             $data['OSSAccessKeyId'] = $token['keyid'];
         }
+        $data['safe'] = intval($this->safe);
         $this->success('获取上传参数', $data, 404);
     }
 
