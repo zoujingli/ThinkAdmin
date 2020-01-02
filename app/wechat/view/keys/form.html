@@ -213,7 +213,7 @@
         function showReview(params) {
             var src = '';
             if (params['type'] === 'news') {
-                src = '{:url("@wechat/api.review/news/_id_")}'.replace('_id_', params.content);
+                src = '{:url("@wechat/api.review/news")}?id=_id_'.replace('_id_', params.content);
             } else {
                 src = '{:url("@wechat/api.review/_type_")}?'.replace('_type_', params.type) + $.param(params || {});
             }
