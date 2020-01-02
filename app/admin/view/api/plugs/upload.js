@@ -1,32 +1,37 @@
-define(['md5'], function (SparkMD5, allowExtsMimes) {
-    allowExtsMimes = JSON.parse('{$exts|raw}');
-    return function (element, InitHandler, UploadedHandler) {
+define(['md5'], function (SparkMD5) {
+    return function (element, UploadedHandler) {
+        var that = this, index;
+
         /*! 定义初始化变量 */
-        var exts = [], mimes = [], safe, field, uptype, multiple, types, $input, index;
-        safe = $(element).attr('data-safe') || '';
-        uptype = safe ? 'local' : $(element).attr('data-uptype') || '';
-        field = $(element).data('field') || 'file', $input = $('[name="' + field + '"]');
-        types = ($(element).data('type') || '').split(','), multiple = $(element).attr('data-multiple') > 0;
-        /*! 设置文件选择筛选规则 */
-        for (index in types) if (allowExtsMimes[types[index]]) {
-            mimes.push(allowExtsMimes[types[index]]), exts.push(types[index]);
+        this.$ele = $(element);
+        this.safe = this.$ele.data('safe') || '';
+        this.field = this.$ele.data('field') || 'file';
+        this.input = $('[name="_FIELD_"]'.replace('_FIELD_', this.field));
+        this.uptype = this.safe ? 'local' : this.$ele.attr('data-uptype') || '';
+
+        /*! 文件的选择筛选 */
+        this.types = (this.$ele.data('type') || '').split(',');
+        this.mimes = [], this.exts = [], this.allowExtsMimes = JSON.parse('{$exts|raw}');
+        for (index in this.types) if (this.allowExtsMimes[this.types[index]]) {
+            this.exts.push(this.types[index]), this.mimes.push(this.allowExtsMimes[this.types[index]]);
         }
+
         /*! 调用初始化组件 */
-        renderUploader({exts: exts.join('|'), acceptMime: mimes.join(',')});
+        renderUploader({exts: this.exts.join('|'), acceptMime: this.mimes.join(',')});
 
         /*! 初始化上传组件 */
         function renderUploader(options, headers, uploader) {
             uploader = layui.upload.render({
-                idx: 0, auto: false, headers: headers || {}, multiple: multiple,
+                idx: 0, auto: false, headers: headers || {}, multiple: that.$ele.attr('data-multiple') > 0,
                 accept: 'file', elem: element, exts: options.exts, acceptMime: options.acceptMime,
                 choose: function (object, files) {
-                    files = object.pushFile(), $input.data('files', files);
+                    files = object.pushFile(), that.input.data('files', files), that.$ele.data('files', files);
                     for (index in files) md5file(files[index]).then(function (file) {
-                        $input.data('file', file).data('index', index);
+                        that.input.data('file', file).data('index', index), that.$ele.data('file', file).data('index', index);
                         jQuery.ajax("{:url('@admin/api.upload/state')}", {
-                            data: {xkey: file.xkey, uptype: uptype, safe: safe}, method: 'post', success: function (ret) {
+                            data: {xkey: file.xkey, uptype: that.uptype, safe: safe}, method: 'post', success: function (ret) {
                                 file.xurl = ret.data.url;
-                                if (ret.code === 404) {
+                                if (parseInt(ret.code) === 404) {
                                     uploader.config.data.safe = safe;
                                     uploader.config.url = ret.data.server;
                                     uploader.config.data.key = ret.data.xkey;
@@ -41,8 +46,8 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                                         uploader.config.data.success_action_status = 200;
                                     }
                                     object.upload(index, file);
-                                } else if (ret.code === 200) {
-                                    UploadedHandler(ret.data.url, file.xkey);
+                                } else if (parseInt(ret.code) === 200) {
+                                    UploadedHandler.call(that.$ele, ret.data.url, file);
                                 } else {
                                     $.msg.error(ret.info || ret.error.message || '文件上传出错！');
                                 }
@@ -58,23 +63,23 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                     $('[data-upload-progress]').html(n + '%');
                 },
                 done: function (ret, file) {
-                    file = $input.data('file');
+                    file = that.$ele.data('file');
                     this.multiple || $.msg.close(this.idx);
                     if (typeof ret.uploaded === 'undefined' && file.xurl) {
                         ret = {uploaded: true, url: file.xurl};
                     }
                     if (ret.uploaded) {
                         if (typeof UploadedHandler === 'function') {
-                            UploadedHandler(ret.url, file);
+                            UploadedHandler.call(that.$ele, ret.url, file);
                         } else {
-                            $input.val(ret.url).trigger('change');
+                            that.input.val(ret.url).trigger('change');
                         }
                     } else {
                         $.msg.error(ret.info || ret.error.message || '文件上传出错！');
                     }
                 },
                 allDone: function () {
-                    $.msg.close(this.idx), $(element).html($(element).data('html'));
+                    $.msg.close(this.idx), that.$ele.html(that.$ele.data('html'));
                 }
             });
         };

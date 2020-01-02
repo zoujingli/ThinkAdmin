@@ -511,7 +511,7 @@ $(function () {
         var that = this, mode = $(this).attr('data-file') || 'one';
         this.attr('data-inited', true).attr('data-multiple', (mode !== 'btn' && mode !== 'one') ? 1 : 0);
         require(['upload'], function (apply) {
-            apply(that, null, callback);
+            apply.call(this, that, callback);
         });
     };
 
