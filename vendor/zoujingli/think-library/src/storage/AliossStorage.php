@@ -73,9 +73,9 @@ class AliossStorage extends Storage
         $this->secretKey = sysconf('storage.alioss_secret_key');
         // 计算链接前缀
         $type = strtolower(sysconf('storage.alioss_http_protocol'));
-        if ($type === 'auto') $this->prefix = "//{$this->domain}/";
-        elseif ($type === 'http') $this->prefix = "http://{$this->domain}/";
-        elseif ($type === 'https') $this->prefix = "https://{$this->domain}/";
+        if ($type === 'auto') $this->prefix = "//{$this->domain}";
+        elseif ($type === 'http') $this->prefix = "http://{$this->domain}";
+        elseif ($type === 'https') $this->prefix = "https://{$this->domain}";
         else throw new \think\Exception('未配置阿里云URL域名哦');
         return $this;
     }
@@ -137,7 +137,7 @@ class AliossStorage extends Storage
     public function del($name, $safe = false)
     {
         $result = HttpExtend::request('DELETE', "http://{$this->bucket}.{$this->point}/{$name}", [
-            'returnHeader' => true, 'headers' => $this->_signHeader('DELETE', $name),
+            'returnHeader' => true, 'headers' => $this->headerSign('DELETE', $name),
         ]);
         return is_numeric(stripos($result, '204 No Content'));
     }
@@ -151,7 +151,7 @@ class AliossStorage extends Storage
     public function has($name, $safe = false)
     {
         $result = HttpExtend::request('HEAD', "http://{$this->bucket}.{$this->point}/{$name}", [
-            'returnHeader' => true, 'headers' => $this->_signHeader('HEAD', $name),
+            'returnHeader' => true, 'headers' => $this->headerSign('HEAD', $name),
         ]);
         return is_numeric(stripos($result, 'HTTP/1.1 200 OK'));
     }
@@ -164,7 +164,7 @@ class AliossStorage extends Storage
      */
     public function url($name, $safe = false)
     {
-        return $this->prefix . $name;
+        return "{$this->prefix}/{$name}";
     }
 
     /**
@@ -199,8 +199,8 @@ class AliossStorage extends Storage
      */
     public function upload()
     {
-        $protocol = $this->app->request->isSsl() ? 'https' : 'http';
-        return "{$protocol}://{$this->bucket}.{$this->point}";
+        $http = $this->app->request->isSsl() ? 'https' : 'http';
+        return "{$http}://{$this->bucket}.{$this->point}";
     }
 
     /**
@@ -230,7 +230,7 @@ class AliossStorage extends Storage
      * @param array $header 请求头信息
      * @return array
      */
-    private function _signHeader($method, $soruce, $header = [])
+    private function headerSign($method, $soruce, $header = [])
     {
         if (empty($header['Date'])) $header['Date'] = gmdate('D, d M Y H:i:s \G\M\T');
         if (empty($header['Content-Type'])) $header['Content-Type'] = 'application/xml';

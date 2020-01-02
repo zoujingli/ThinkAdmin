@@ -30,14 +30,14 @@ class LocalStorage extends Storage
      */
     protected function initialize(): Storage
     {
-        $this->prefix = rtrim($this->app->getRootPath(), '\\/');
+        $this->prefix = dirname($this->app->request->basefile(true));
         return $this;
     }
 
     /**
      * 获取当前实例对象
      * @param null $name
-     * @return static
+     * @return LocalStorage
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -115,8 +115,7 @@ class LocalStorage extends Storage
     public function url($name, $safe = false)
     {
         if ($safe) return $name;
-        $root = rtrim(dirname($this->app->request->basefile(true)), '\\/');
-        return "{$root}/upload/{$name}";
+        return "{$this->prefix}/upload/{$name}";
     }
 
     /**
@@ -127,8 +126,9 @@ class LocalStorage extends Storage
      */
     public function path($name, $safe = false)
     {
+        $root = $this->app->getRootPath();
         $path = $safe ? 'safefile' : 'public/upload';
-        return str_replace('\\', '/', "{$this->prefix}/{$path}/{$name}");
+        return strtr("{$root}{$path}/{$name}", '\\', '/');
     }
 
     /**
@@ -150,7 +150,7 @@ class LocalStorage extends Storage
      */
     public function upload()
     {
-        return url('@admin/api.upload/file', [], false, true)->build();
+        return url('@admin/api.upload/file')->build();
     }
 
 }

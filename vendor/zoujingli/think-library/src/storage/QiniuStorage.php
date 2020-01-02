@@ -47,9 +47,9 @@ class QiniuStorage extends Storage
         $this->secretKey = sysconf('storage.qiniu_secret_key');
         // 计算链接前缀
         $type = strtolower(sysconf('storage.qiniu_http_protocol'));
-        if ($type === 'auto') $this->prefix = "//{$this->domain}/";
-        elseif ($type === 'http') $this->prefix = "http://{$this->domain}/";
-        elseif ($type === 'https') $this->prefix = "https://{$this->domain}/";
+        if ($type === 'auto') $this->prefix = "//{$this->domain}";
+        elseif ($type === 'http') $this->prefix = "http://{$this->domain}";
+        elseif ($type === 'https') $this->prefix = "https://{$this->domain}";
         else throw new \think\Exception('未配置七牛云URL域名哦');
         return $this;
     }
@@ -136,7 +136,7 @@ class QiniuStorage extends Storage
      */
     public function url($name, $safe = false)
     {
-        return "{$this->prefix}{$name}";
+        return "{$this->prefix}/{$name}";
     }
 
     /**
@@ -201,7 +201,7 @@ class QiniuStorage extends Storage
         $policy = $this->safeBase64(json_encode([
             "deadline"   => time() + $expires, "scope" => is_null($name) ? $this->bucket : "{$this->bucket}:{$name}",
             'returnBody' => json_encode([
-                'uploaded' => true, 'filename' => '$(key)', 'file' => $name, 'url' => "{$this->prefix}$(key)", 'key' => $name,
+                'uploaded' => true, 'filename' => '$(key)', 'file' => $name, 'url' => "{$this->prefix}/$(key)", 'key' => $name,
             ], JSON_UNESCAPED_UNICODE),
         ]));
         return "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', $policy, $this->secretKey, true))}:{$policy}";
