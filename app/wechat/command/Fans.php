@@ -15,6 +15,7 @@
 
 namespace app\wechat\command;
 
+use app\wechat\service\FansService;
 use app\wechat\service\WechatService;
 use think\console\Command;
 use think\console\Input;
@@ -31,8 +32,11 @@ class Fans extends Command
      * 需要处理的模块
      * @var array
      */
-    protected $module = ['list', 'tags', 'black'];
+    protected $module = ['list', 'black', 'tags'];
 
+    /**
+     * 配置指令
+     */
     protected function configure()
     {
         $this->setName('xadmin:fansall')->setDescription('[获取]同步远程的微信用户');
@@ -70,20 +74,20 @@ class Fans extends Command
     protected function _list($next = '', $done = 0)
     {
         $appid = WechatService::instance()->getAppid();
-        $this->output->comment('开始同步微信粉丝数据');
+        $this->output->comment('--> 开始同步微信粉丝数据');
         while (!is_null($next) && is_array($result = WechatService::WeChatUser()->getUserList($next)) && !empty($result['data']['openid'])) {
             foreach (array_chunk($result['data']['openid'], 100) as $openids) {
                 if (is_array($list = WechatService::WeChatUser()->getBatchUserInfo($openids)) && !empty($list['user_info_list'])) {
                     foreach ($list['user_info_list'] as $user) {
                         $string = str_pad(++$done, strlen($result['total']), '0', STR_PAD_LEFT);
                         $this->output->writeln("({$string}/{$result['total']}) -> {$user['openid']} {$user['nickname']}");
-                        \app\wechat\service\FansService::instance()->set($user, $appid);
+                        FansService::instance()->set($user, $appid);
                     }
                 }
             }
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->output->comment('微信粉丝数据同步完成！');
+        $this->output->comment('--> 微信粉丝数据同步完成！');
         $this->output->newLine();
         return "同步{$done}个用户数据";
     }
@@ -100,16 +104,16 @@ class Fans extends Command
     public function _black($next = '', $done = 0)
     {
         $wechat = WechatService::WeChatUser();
-        $this->output->comment('开始同步微信黑名单数据 ...');
+        $this->output->comment('--> 开始同步微信黑名单数据');
         while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
             $done += $result['count'];
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 $this->app->db->name('WechatFans')->where(['is_black' => '0'])->whereIn('openid', $chunk)->update(['is_black' => '1']);
             }
-            $this->output->writeln("共计同步微信黑名单{$result['total']}人");
+            $this->output->writeln("--> 共计同步微信黑名单{$result['total']}人");
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->output->comment('微信黑名单数据同步完成！');
+        $this->output->comment('--> 微信黑名单数据同步完成！');
         $this->output->newLine();
         if (empty($result['total'])) {
             return '，其中黑名单0人';
@@ -132,7 +136,7 @@ class Fans extends Command
     public function _tags($index = 0)
     {
         $appid = WechatService::instance()->getAppid();
-        $this->output->comment('同步微信粉丝标签数据...');
+        $this->output->comment('--> 同步微信粉丝标签数据');
         if (is_array($list = WechatService::WeChatTags()->getTags()) && !empty($list['tags'])) {
             $count = count($list['tags']);
             foreach ($list['tags'] as &$tag) {
@@ -143,9 +147,9 @@ class Fans extends Command
             $this->app->db->name('WechatFansTags')->where(['appid' => $appid])->delete();
             $this->app->db->name('WechatFansTags')->insertAll($list['tags']);
         }
-        $this->output->comment('微信粉丝标签数据同步完成！');
+        $this->output->comment('--> 微信粉丝标签数据同步完成！');
         $this->output->newLine();
-        return '';
+        return "，同步{$index}个标签。";
     }
 
 }
