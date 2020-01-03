@@ -3,15 +3,15 @@
 {block name="button"}
 
 {if auth("black_add")}
-<button data-action='{:url("black_add")}' data-rule="openid#{key}" data-csrf="{:systoken('black_add')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量拉入黑名单</button>
+<button data-action='{:url("black_add")}' data-rule="openid#{key}" data-csrf="{:systoken('black_add')}" class='layui-btn layui-btn-sm layui-btn-primary'>拉入黑名单</button>
 {/if}
 
 {if auth("black_del")}
-<button data-action='{:url("black_del")}' data-rule="openid#{key}" data-csrf="{:systoken('black_del')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量移出黑名单</button>
+<button data-action='{:url("black_del")}' data-rule="openid#{key}" data-csrf="{:systoken('black_del')}" class='layui-btn layui-btn-sm layui-btn-primary'>移出黑名单</button>
 {/if}
 
 {if auth("sync")}
-<button data-load='{:url("sync")}' class='layui-btn layui-btn-sm layui-btn-primary'>创建用户同步任务</button>
+<button data-load='{:url("sync")}' data-confirm="是否要创建后台任务同步数据？" class='layui-btn layui-btn-sm layui-btn-primary'>同步数据</button>
 {/if}
 
 {/block}
