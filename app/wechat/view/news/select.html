@@ -57,7 +57,7 @@
             $(this).removeClass('active');
         });
         // 外部选择器
-        var seletor = '[name="{$Think.get.field|decode|default=0}"]';
+        var seletor = '[name="{:decode(input("get.field","0"))}"]';
         if (seletor) {
             $('[data-news-id]').on('click', function () {
                 window.top.$(seletor).val($(this).attr('data-news-id')).trigger('change');
