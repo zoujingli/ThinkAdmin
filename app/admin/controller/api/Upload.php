@@ -41,22 +41,9 @@ class Upload extends Controller
         foreach (explode(',', sysconf('storage.allow_exts')) as $ext) {
             $data['exts'][$ext] = Storage::mime($ext);
         }
-        $template = realpath(__DIR__ . '/../../view/api/plugs/upload.js');
+        $template = realpath(__DIR__ . '/../../view/api/upload.js');
         $data['exts'] = json_encode($data['exts'], JSON_UNESCAPED_UNICODE);
         return view($template, $data)->contentType('application/x-javascript');
-    }
-
-    /**
-     * 上传安全检查
-     * @login true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function check()
-    {
-        $exts = array_intersect(explode(',', input('exts', '')), explode(',', sysconf('storage.allow_exts')));
-        $this->success('获取文件上传参数', ['exts' => join('|', $exts), 'mime' => Storage::mime($exts)]);
     }
 
     /**
