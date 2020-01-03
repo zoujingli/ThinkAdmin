@@ -48,7 +48,7 @@
                     联系邮箱 <span class="color-blue">{$vo.contact_mail|default='<i class="color-desc">未配置联系邮箱</i>'|raw}</span>。
                 </div>
             </td>
-            <td class='text-left nowrap layui-hide-xs'>
+            <td class='text-left nowrap'>
                 账号创建于 <span class="color-blue">{$vo.create_at|format_datetime}</span>，共登录了 <span class="color-blue">{$vo.login_num|default=0}</span> 次<br>
                 {if $vo.login_at}
                 最近于 <span class="color-blue">{$vo.login_at|format_datetime}</span> 通过 <span class="color-blue">{$vo.login_ip|default='--'}</span> 登录，{else}
