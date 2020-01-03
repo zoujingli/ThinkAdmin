@@ -19,8 +19,8 @@
             <label class="layui-col-xs5 relative">
                 <span class="color-green font-w7">用户昵称</span>
                 <span class="color-desc margin-left-5">Nickname</span>
-                <input name="nickname" value='{$vo.nickname|default=""}' placeholder="请输入用户的昵称" class="layui-input">
-                <span class="help-block">可选，用于显示账号名称，请尽量保持不要重复</span>
+                <input name="nickname" value='{$vo.nickname|default=""}' required placeholder="请输入用户的昵称" class="layui-input">
+                <span class="help-block">用户展示的账号名称，请尽量保持不要重复</span>
             </label>
         </fieldset>
 

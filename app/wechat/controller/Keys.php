@@ -110,17 +110,6 @@ class Keys extends Controller
     }
 
     /**
-     * 删除回复规则
-     * @auth true
-     * @throws \think\db\exception\DbException
-     */
-    public function remove()
-    {
-        $this->_applyFormToken();
-        $this->_delete($this->table);
-    }
-
-    /**
      * 修改回复规则状态
      * @auth true
      * @throws \think\db\exception\DbException
@@ -129,6 +118,17 @@ class Keys extends Controller
     {
         $this->_applyFormToken();
         $this->_save($this->table, ['status' => input('status')]);
+    }
+
+    /**
+     * 删除回复规则
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function remove()
+    {
+        $this->_applyFormToken();
+        $this->_delete($this->table);
     }
 
     /**
@@ -188,13 +188,11 @@ class Keys extends Controller
     protected function _form_result($result)
     {
         if ($result !== false) {
-            list($url, $keys) = ['', $this->request->post('keys')];
-            if (!in_array($keys, ['subscribe', 'default'])) {
-                $url = 'javascript:history.back()';
-            }
-            $this->success('恭喜, 关键字保存成功!', $url);
+            $iskeys = in_array(input('keys'), ['subscribe', 'default']);
+            $location = $iskeys ? 'javascript:$.form.reload()' : 'javascript:history.back()';
+            $this->success('恭喜, 关键字保存成功！', $location);
         } else {
-            $this->error('关键字保存失败, 请稍候再试!');
+            $this->error('关键字保存失败, 请稍候再试！');
         }
     }
 

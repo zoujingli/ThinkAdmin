@@ -184,7 +184,7 @@
                         <div class="hr-line-dashed margin-top-10 margin-bottom-10"></div>
                         <button class="layui-btn menu-submit">保存数据</button>
                         <!--{if !isset($vo.keys) || !in_array($vo.keys,['default','subscribe'])}-->
-                        <button data-cancel-edit class="layui-btn layui-btn-danger" type='button'>取消编辑</button>
+                        <button data-history-back class="layui-btn layui-btn-danger" type='button'>取消编辑</button>
                         <!--{/if}-->
                         {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'>{/if}
                     </div>
@@ -202,16 +202,8 @@
 
         var $body = $('body');
 
-        // 取消编辑返回
-        $('[data-cancel-edit]').on('click', function () {
-            $.msg.confirm('确定取消编辑吗？', function (index) {
-                history.back(), $.msg.close(index);
-            });
-        });
-
         // 刷新预览显示
-        function showReview(params) {
-            var src = '';
+        function showReview(params, src) {
             if (params['type'] === 'news') {
                 src = '{:url("@wechat/api.review/news")}?id=_id_'.replace('_id_', params.content);
             } else {
@@ -220,23 +212,17 @@
             $('#phone-preview').attr('src', src);
         }
 
-        // 图文显示预览
         $body.off('change', '[name="news_id"]').on('change', '[name="news_id"]', function () {
+            // 图文显示预览
             showReview({type: 'news', content: this.value});
-        });
-
-        // 文字显示预览
-        $body.off('change', '[name="content"]').on('change', '[name="content"]', function () {
+        }).off('change', '[name="content"]').on('change', '[name="content"]', function () {
+            // 文字显示预览
             showReview({type: 'text', content: this.value});
-        });
-
-        // 图片显示预览
-        $body.off('change', '[name="image_url"]').on('change', '[name="image_url"]', function () {
+        }).off('change', '[name="image_url"]').on('change', '[name="image_url"]', function () {
+            // 图片显示预览
             showReview({type: 'image', content: this.value});
-        });
-
-        // 图片显示预览
-        $body.off('change', '[name="voice_url"]').on('change', '[name="voice_url"]', function () {
+        }).off('change', '[name="voice_url"]').on('change', '[name="voice_url"]', function () {
+            // 语音显示预览
             showReview({type: 'voice', content: this.value});
         });
 
@@ -271,6 +257,7 @@
                 case 'news':
                     return $('[name="news_id"]').trigger('change');
                 case 'text':
+                case 'customservice':
                     return $('[name="content"]').trigger('change');
                 case 'image':
                     return $('[name="image_url"]').trigger('change');
@@ -280,8 +267,6 @@
                     return $('[name="music_url"]').trigger('change');
                 case 'voice':
                     return $('[name="voice_url"]').trigger('change');
-                case 'customservice':
-                    return $('[name="content"]').trigger('change');
             }
         });
 
