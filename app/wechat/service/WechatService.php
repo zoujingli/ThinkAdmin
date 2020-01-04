@@ -62,6 +62,7 @@ use think\exception\HttpResponseException;
  * @method \WeMini\Soter WeMiniSoter() static 小程序生物认证
  * @method \WeMini\Template WeMiniTemplate() static 小程序模板消息支持
  * @method \WeMini\Total WeMiniTotal() static 小程序数据接口
+ * @method \WeMini\Newtmpl WeminiNewtmpl() static 小程序订阅消息支持
  *
  * ----- WePay -----
  * @method \WePay\Bill WePayBill() static 微信商户账单及评论
