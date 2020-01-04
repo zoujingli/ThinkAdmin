@@ -575,6 +575,7 @@ class ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e
         'think\\model\\relation\\MorphMany' => __DIR__ . '/..' . '/topthink/think-orm/src/model/relation/MorphMany.php',
         'think\\model\\relation\\MorphOne' => __DIR__ . '/..' . '/topthink/think-orm/src/model/relation/MorphOne.php',
         'think\\model\\relation\\MorphTo' => __DIR__ . '/..' . '/topthink/think-orm/src/model/relation/MorphTo.php',
+        'think\\model\\relation\\MorphToMany' => __DIR__ . '/..' . '/topthink/think-orm/src/model/relation/MorphToMany.php',
         'think\\model\\relation\\OneToOne' => __DIR__ . '/..' . '/topthink/think-orm/src/model/relation/OneToOne.php',
         'think\\paginator\\driver\\Bootstrap' => __DIR__ . '/..' . '/topthink/think-orm/src/paginator/driver/Bootstrap.php',
         'think\\response\\File' => __DIR__ . '/..' . '/topthink/framework/src/think/response/File.php',

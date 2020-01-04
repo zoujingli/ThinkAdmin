@@ -442,6 +442,7 @@ return array(
     'think\\model\\relation\\MorphMany' => $vendorDir . '/topthink/think-orm/src/model/relation/MorphMany.php',
     'think\\model\\relation\\MorphOne' => $vendorDir . '/topthink/think-orm/src/model/relation/MorphOne.php',
     'think\\model\\relation\\MorphTo' => $vendorDir . '/topthink/think-orm/src/model/relation/MorphTo.php',
+    'think\\model\\relation\\MorphToMany' => $vendorDir . '/topthink/think-orm/src/model/relation/MorphToMany.php',
     'think\\model\\relation\\OneToOne' => $vendorDir . '/topthink/think-orm/src/model/relation/OneToOne.php',
     'think\\paginator\\driver\\Bootstrap' => $vendorDir . '/topthink/think-orm/src/paginator/driver/Bootstrap.php',
     'think\\response\\File' => $vendorDir . '/topthink/framework/src/think/response/File.php',

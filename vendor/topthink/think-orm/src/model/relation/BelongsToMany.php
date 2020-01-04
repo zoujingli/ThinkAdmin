@@ -157,9 +157,7 @@ class BelongsToMany extends Relation
         $localKey   = $this->localKey;
 
         // 关联查询
-        $pk = $this->parent->getPk();
-
-        $condition = ['pivot.' . $localKey, '=', $this->parent->$pk];
+        $condition = ['pivot.' . $localKey, '=', $this->parent->getKey()];
 
         return $this->belongsToManyQuery($foreignKey, $localKey, [$condition]);
     }
@@ -454,7 +452,6 @@ class BelongsToMany extends Relation
                     }
                 }
             }
-
             $key = $pivot[$this->localKey];
 
             if ($this->withLimit && isset($data[$key]) && count($data[$key]) >= $this->withLimit) {
@@ -562,16 +559,14 @@ class BelongsToMany extends Relation
             $id = $data;
         } elseif ($data instanceof Model) {
             // 根据关联表主键直接写入中间表
-            $relationFk = $data->getPk();
-            $id         = $data->$relationFk;
+            $id = $data->getKey();
         }
 
         if (!empty($id)) {
             // 保存中间表数据
-            $pk                     = $this->parent->getPk();
-            $pivot[$this->localKey] = $this->parent->$pk;
-            $ids                    = (array) $id;
+            $pivot[$this->localKey] = $this->parent->getKey();
 
+            $ids = (array) $id;
             foreach ($ids as $id) {
                 $pivot[$this->foreignKey] = $id;
                 $this->pivot->replace()
@@ -630,14 +625,12 @@ class BelongsToMany extends Relation
             $id = $data;
         } elseif ($data instanceof Model) {
             // 根据关联表主键直接写入中间表
-            $relationFk = $data->getPk();
-            $id         = $data->$relationFk;
+            $id = $data->getKey();
         }
 
         // 删除中间表数据
-        $pk      = $this->parent->getPk();
         $pivot   = [];
-        $pivot[] = [$this->localKey, '=', $this->parent->$pk];
+        $pivot[] = [$this->localKey, '=', $this->parent->getKey()];
 
         if (isset($id)) {
             $pivot[] = [$this->foreignKey, is_array($id) ? 'in' : '=', $id];
@@ -669,10 +662,8 @@ class BelongsToMany extends Relation
             'updated'  => [],
         ];
 
-        $pk = $this->parent->getPk();
-
         $current = $this->pivot
-            ->where($this->localKey, $this->parent->$pk)
+            ->where($this->localKey, $this->parent->getKey())
             ->column($this->foreignKey);
 
         $records = [];

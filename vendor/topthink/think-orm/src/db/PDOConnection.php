@@ -906,7 +906,8 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
             return 0;
         }
 
-        $query->parseOptions();
+        $options = $query->parseOptions();
+        $replace = !empty($options['replace']);
 
         if (0 === $limit && count($dataSet) >= 5000) {
             $limit = 1000;
@@ -921,7 +922,7 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
                 $count = 0;
 
                 foreach ($array as $item) {
-                    $sql = $this->builder->insertAll($query, $item);
+                    $sql = $this->builder->insertAll($query, $item, $replace);
                     $count += $this->execute($query, $sql, $query->getBind());
                 }
 
@@ -935,7 +936,7 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
             return $count;
         }
 
-        $sql = $this->builder->insertAll($query, $dataSet);
+        $sql = $this->builder->insertAll($query, $dataSet, $replace);
 
         return $this->execute($query, $sql, $query->getBind());
     }
