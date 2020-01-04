@@ -20,7 +20,7 @@ return [
     'disks'   => [
         'local'  => [
             'type' => 'local',
-            'root' => app()->getRuntimePath() . 'storage',
+            'root' => app()->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'storage',
         ],
         'public' => [
             // 磁盘类型
