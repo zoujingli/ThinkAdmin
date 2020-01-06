@@ -32,7 +32,7 @@ class QueryQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:query')->setDescription('[控制]查询正在运行的进程');
+        $this->setName('xtask:query')->setDescription('Query all running task processes');
     }
 
     /**
@@ -47,7 +47,7 @@ class QueryQueue extends Command
         if (count($result) > 0) foreach ($result as $item) {
             $output->writeln("{$item['pid']}\t{$item['cmd']}");
         } else {
-            $output->writeln('没有查询到相关任务进程');
+            $output->writeln('No related task process found');
         }
     }
 }

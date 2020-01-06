@@ -28,6 +28,13 @@ use think\console\Output;
  */
 class Install extends Command
 {
+
+    /**
+     * 指定模块名称
+     * @var string
+     */
+    protected $name;
+
     /**
      * 查询规则
      * @var array
@@ -39,12 +46,6 @@ class Install extends Command
      * @var array
      */
     protected $ignore = [];
-
-    /**
-     * 指定模块名称
-     * @var string
-     */
-    protected $name;
 
     /**
      * 规则配置
@@ -73,41 +74,39 @@ class Install extends Command
     protected function configure()
     {
         $this->setName('xadmin:install');
-        $this->setDescription("[系统]安装或更新指定模块");
-        $this->addArgument('name', Argument::OPTIONAL, '模块名称', '');
+        $this->setDescription("Install or update thinkamdin module");
+        $this->addArgument('name', Argument::OPTIONAL, 'ModuleName', '');
     }
 
     protected function execute(Input $input, Output $output)
     {
         $this->name = trim($input->getArgument('name'));
         if (empty($this->name)) {
-            $this->output->writeln('在线安装的模块名称不能为空！');
+            $this->output->writeln('Module name of online installation cannot be empty');
+        } elseif (isset($this->bind[$this->name])) {
+            $this->rules = empty($this->bind[$this->name]['rules']) ? [] : $this->bind[$this->name]['rules'];
+            $this->ignore = empty($this->bind[$this->name]['ignore']) ? [] : $this->bind[$this->name]['ignore'];
+            $this->installFile();
+            $this->installData();
         } else {
-            if (isset($this->bind[$this->name])) {
-                $this->rules = empty($this->bind[$this->name]['rules']) ? [] : $this->bind[$this->name]['rules'];
-                $this->ignore = empty($this->bind[$this->name]['ignore']) ? [] : $this->bind[$this->name]['ignore'];
-                $this->installFile();
-                $this->installData();
-            } else {
-                $this->output->writeln("指定模块 {$this->name} 未配置安装规则！");
-            }
+            $this->output->writeln("The specified module {$this->name} is not configured with installation rules");
         }
     }
 
     protected function installFile()
     {
         $data = InstallService::instance()->grenerateDifference($this->rules, $this->ignore);
-        if (empty($data)) $this->output->writeln('文件比对一致不需更新文件！');
+        if (empty($data)) $this->output->writeln('No need to update the file if the file comparison is consistent');
         else foreach ($data as $file) {
             list($state, $mode, $name) = InstallService::instance()->fileSynchronization($file);
             if ($state) {
-                if ($mode === 'add') $this->output->writeln("--- 下载 {$name} 添加成功");
-                if ($mode === 'mod') $this->output->writeln("--- 下载 {$name} 更新成功");
-                if ($mode === 'del') $this->output->writeln("--- 删除 {$name} 文件成功");
+                if ($mode === 'add') $this->output->writeln("--- {$name} added successfully");
+                if ($mode === 'mod') $this->output->writeln("--- {$name} updated successfully");
+                if ($mode === 'del') $this->output->writeln("--- {$name} deleted successfully");
             } else {
-                if ($mode === 'add') $this->output->writeln("--- 下载 {$name} 添加失败");
-                if ($mode === 'mod') $this->output->writeln("--- 下载 {$name} 更新失败");
-                if ($mode === 'del') $this->output->writeln("--- 删除 {$name} 文件失败");
+                if ($mode === 'add') $this->output->writeln("--- {$name} add failed");
+                if ($mode === 'mod') $this->output->writeln("--- {$name} update failed");
+                if ($mode === 'del') $this->output->writeln("--- {$name} delete failed");
             }
         }
     }

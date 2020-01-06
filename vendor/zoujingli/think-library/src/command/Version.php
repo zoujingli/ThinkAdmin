@@ -31,7 +31,7 @@ class Version extends Command
     protected function configure()
     {
         $this->setName('xadmin:version');
-        $this->setDescription("[系统]查看当前框架版本号");
+        $this->setDescription("Query application framework version");
     }
 
     protected function execute(Input $input, Output $output)

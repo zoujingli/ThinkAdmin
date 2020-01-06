@@ -48,9 +48,9 @@ class WorkQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:_work')->setDescription('[执行]创建执行任务的进程');
-        $this->addArgument('code', Argument::OPTIONAL, '任务编号');
-        $this->addArgument('spts', Argument::OPTIONAL, '指令结束符');
+        $this->setName('xtask:_work')->setDescription('Create a process to execute a task');
+        $this->addArgument('code', Argument::OPTIONAL, 'TaskNumber');
+        $this->addArgument('spts', Argument::OPTIONAL, 'Separator');
     }
 
     /**
@@ -64,20 +64,21 @@ class WorkQueue extends Command
         set_time_limit(0);
         $this->code = trim($input->getArgument('code'));
         if (empty($this->code)) {
-            $this->output->error('执行任务需要指定任务编号！');
+            $this->output->error('Task number needs to be specified for task execution');
         } else try {
-            $queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code, 'status' => '1'])->find();
+            $queue = $this->app->db->name($this->table)->where(['code' => $this->code, 'status' => '1'])->find();
             if (empty($queue)) {
                 // 这里不做任何处理（该任务可能在其它地方已经在执行）
-                $this->output->warning($message = "执行任务{$this->code}的或状态异常！");
+                $this->output->warning($message = "The or status of task {$this->code} is abnormal");
             } else {
                 // 锁定任务状态
-                $this->app->db->name('SystemQueue')->where(['code' => $this->code])->update([
-                    'status' => '2', 'enter_time' => microtime(true), 'exec_desc' => '', 'attempts' => $this->app->db->raw('attempts+1'),
+                $this->app->db->name($this->table)->strict(false)->where(['code' => $this->code])->update([
+                    'status'   => '2', 'enter_time' => microtime(true), 'outer_time' => '0',
+                    'exec_pid' => getmygid(), 'exec_desc' => '', 'attempts' => $this->app->db->raw('attempts+1'),
                 ]);
                 // 设置进程标题
                 if (($process = ProcessService::instance())->iswin()) {
-                    $this->setProcessTitle("ThinkAdmin {$process->version()} 执行任务 - {$queue['title']}");
+                    $this->setProcessTitle("ThinkAdmin {$process->version()} Queue - {$queue['title']}");
                 }
                 // 执行任务内容
                 if (class_exists($command = $queue['command'])) {
@@ -86,7 +87,7 @@ class WorkQueue extends Command
                         $data = json_decode($queue['data'], true) ?: [];
                         $this->update('3', $command::instance()->initialize($this->code)->execute($data));
                     } else {
-                        throw new Exception("任务处理类 {$command} 未继承 think\\admin\\service\\QueueService");
+                        throw new Exception("Task processing class {$command} does not inherit class think\\admin\\service\\QueueService");
                     }
                 } else {
                     // 自定义指令，不支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
@@ -94,11 +95,11 @@ class WorkQueue extends Command
                     $this->update('3', $this->app->console->call(array_shift($attr), $attr, 'console'));
                 }
             }
-        } catch (\Exception $e) {
-            if (in_array($e->getCode(), ['3', '4'])) {
-                $this->update($e->getCode(), $e->getMessage());
+        } catch (\Exception $exception) {
+            if (in_array($exception->getCode(), ['3', '4'])) {
+                $this->update($exception->getCode(), $exception->getMessage());
             } else {
-                $this->update('4', $e->getMessage());
+                $this->update('4', $exception->getMessage());
             }
         }
     }
@@ -113,11 +114,11 @@ class WorkQueue extends Command
     protected function update($status, $message)
     {
         $desc = explode("\n", trim(is_string($message) ? $message : ''));
-        $result = $this->app->db->name('SystemQueue')->where(['code' => $this->code])->update([
-            'status' => $status, 'outer_time' => microtime(true), 'exec_desc' => $desc[0],
+        $result = $this->app->db->name($this->table)->strict(false)->where(['code' => $this->code])->update([
+            'status' => $status, 'outer_time' => microtime(true), 'exec_pid' => getmygid(), 'exec_desc' => $desc[0],
         ]);
         $this->output->writeln(is_string($message) ? $message : '');
-        return $result !== false;
+        return $result == false;
     }
 
 }

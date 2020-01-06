@@ -39,7 +39,7 @@ class Fans extends Command
      */
     protected function configure()
     {
-        $this->setName('xadmin:fansall')->setDescription('[获取]同步远程的微信用户');
+        $this->setName('xadmin:fansall')->setDescription('Synchronize all wechat user data');
     }
 
     /**
@@ -74,7 +74,7 @@ class Fans extends Command
     protected function _list($next = '', $done = 0)
     {
         $appid = WechatService::instance()->getAppid();
-        $this->output->comment('--> 开始同步微信粉丝数据');
+        $this->output->comment('--> Start to synchronize wechat user data');
         while (!is_null($next) && is_array($result = WechatService::WeChatUser()->getUserList($next)) && !empty($result['data']['openid'])) {
             foreach (array_chunk($result['data']['openid'], 100) as $openids) {
                 if (is_array($list = WechatService::WeChatUser()->getBatchUserInfo($openids)) && !empty($list['user_info_list'])) {
@@ -87,7 +87,7 @@ class Fans extends Command
             }
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->output->comment('--> 微信粉丝数据同步完成！');
+        $this->output->comment('--> Wechat user data synchronization completed');
         $this->output->newLine();
         return "同步{$done}个用户数据";
     }
@@ -104,7 +104,7 @@ class Fans extends Command
     public function _black($next = '', $done = 0)
     {
         $wechat = WechatService::WeChatUser();
-        $this->output->comment('--> 开始同步微信黑名单数据');
+        $this->output->comment('--> Start to synchronize wechat blacklist data');
         while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
             $done += $result['count'];
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
@@ -113,7 +113,7 @@ class Fans extends Command
             $this->output->writeln("--> 共计同步微信黑名单{$result['total']}人");
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->output->comment('--> 微信黑名单数据同步完成！');
+        $this->output->comment('--> Wechat blacklist data synchronization completed');
         $this->output->newLine();
         if (empty($result['total'])) {
             return '，其中黑名单0人';
@@ -136,7 +136,7 @@ class Fans extends Command
     public function _tags($index = 0)
     {
         $appid = WechatService::instance()->getAppid();
-        $this->output->comment('--> 同步微信粉丝标签数据');
+        $this->output->comment('--> Start to synchronize wechat tag data');
         if (is_array($list = WechatService::WeChatTags()->getTags()) && !empty($list['tags'])) {
             $count = count($list['tags']);
             foreach ($list['tags'] as &$tag) {
@@ -147,7 +147,7 @@ class Fans extends Command
             $this->app->db->name('WechatFansTags')->where(['appid' => $appid])->delete();
             $this->app->db->name('WechatFansTags')->insertAll($list['tags']);
         }
-        $this->output->comment('--> 微信粉丝标签数据同步完成！');
+        $this->output->comment('--> Wechat tag data synchronization completed');
         $this->output->newLine();
         return "，同步{$index}个标签。";
     }

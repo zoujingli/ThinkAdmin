@@ -16,6 +16,7 @@
 namespace think\admin\queue;
 
 use think\admin\service\ProcessService;
+use think\Collection;
 use think\console\Command;
 use think\console\Input;
 use think\console\Output;
@@ -27,44 +28,48 @@ use think\console\Output;
  */
 class ListenQueue extends Command
 {
+
+    /**
+     * 当前任务服务
+     * @var ProcessService
+     */
+    protected $process;
+
     /**
      * 配置指定信息
      */
     protected function configure()
     {
-        $this->setName('xtask:listen')->setDescription('[监听]启动任务监听主进程');
+        $this->setName('xtask:listen')->setDescription('Start task listening main process');
     }
 
     /**
      * 启动进程守护监听
      * @param Input $input 输入对象
      * @param Output $output 输出对象
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function execute(Input $input, Output $output)
     {
         set_time_limit(0);
         $this->app->db->name('SystemQueue')->count();
-        if (($process = ProcessService::instance())->iswin()) {
-            $this->setProcessTitle("ThinkAdmin 监听主进程 {$process->version()}");
+        if (($this->process = ProcessService::instance())->iswin()) {
+            $this->setProcessTitle("ThinkAdmin {$this->process->version()} Queue Listen");
         }
-        $output->writeln('============ 任务监听中 ============');
+        $output->writeln('============ LISTENING ============');
         while (true) {
             $where = [['status', '=', '1'], ['exec_time', '<=', time()]];
-            $this->app->db->name('SystemQueue')->where($where)->order('exec_time asc')->limit(100)->select()->each(function ($vo) use ($process) {
-                try {
-                    $command = $process->think("xtask:_work {$vo['code']} -");
-                    if (count($process->query($command)) > 0) {
-                        $this->output->warning("正在执行 -> [{$vo['code']}] {$vo['title']}");
+            $this->app->db->name('SystemQueue')->where($where)->order('exec_time asc')->chunk(100, function (Collection $list) {
+                foreach ($list as $vo) try {
+                    $command = $this->process->think("xtask:_work {$vo['code']} -");
+                    if (count($this->process->query($command)) > 0) {
+                        $this->output->writeln("Already in progress -> [{$vo['code']}] {$vo['title']}");
                     } else {
-                        $process->create($command);
-                        $this->output->info("开始执行 -> [{$vo['code']}] {$vo['title']}");
+                        $this->process->create($command);
+                        $this->output->writeln("Created new process -> [{$vo['code']}] {$vo['title']}");
                     }
-                } catch (\Exception $e) {
-                    $this->update($vo['code'], ['status' => '4', 'outer_time' => time(), 'exec_desc' => $e->getMessage()]);
-                    $this->output->error("执行失败 -> [{$vo['code']}] {$vo['title']}，{$e->getMessage()}");
+                } catch (\Exception $exception) {
+                    $this->update($vo['code'], ['status' => '4', 'outer_time' => time(), 'exec_desc' => $exception->getMessage()]);
+                    $this->output->error("Execution failed -> [{$vo['code']}] {$vo['title']}，{$exception->getMessage()}");
                 }
             });
             sleep(1);
