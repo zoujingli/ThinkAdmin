@@ -56,7 +56,9 @@ class News extends Controller
      */
     protected function _index_page_filter(&$data)
     {
-        foreach ($data as &$vo) $vo = MediaService::instance()->news($vo['id']);
+        foreach ($data as &$vo) {
+            $vo = MediaService::instance()->news($vo['id']);
+        }
     }
 
     /**
@@ -80,7 +82,9 @@ class News extends Controller
      */
     protected function _select_page_filter(&$data)
     {
-        foreach ($data as &$vo) $vo = MediaService::instance()->news($vo['id']);
+        foreach ($data as &$vo) {
+            $vo = MediaService::instance()->news($vo['id']);
+        }
     }
 
     /**
