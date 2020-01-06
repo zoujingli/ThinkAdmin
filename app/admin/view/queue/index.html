@@ -14,6 +14,10 @@
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定批量删除任务吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 {/if}
 
+{if auth("clear")}
+<button data-load='{:url("clear")}' data-confirm="确定要清理3天前的任务记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理记录</button>
+{/if}
+
 {/block}
 
 {block name="content"}

@@ -97,11 +97,31 @@ class Queue extends Controller
     {
         try {
             $message = nl2br($this->app->console->call('xtask:start')->fetch());
-            preg_match('/主进程\d+/', $message, $attr) ? $this->success($message) : $this->error($message);
+            if (preg_match('/process.*?\d+/', $message, $attr)) {
+                $this->success('任务监听主进程启动成功！');
+            } else {
+                $this->error($message);
+            }
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * 清理3天前的记录
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function clear()
+    {
+        $map = [['exec_time', '<', strtotime('-3days')]];
+        $result = $this->app->db->name($this->table)->where($map)->delete();
+        if ($result !== false) {
+            $this->success('成功清理3天前的任务记录！');
+        } else {
+            $this->error('清理3天前的任务记录失败！');
         }
     }
 
@@ -113,7 +133,13 @@ class Queue extends Controller
     {
         try {
             $message = nl2br($this->app->console->call('xtask:stop')->fetch());
-            stripos($message, '成功') !== false ? $this->success($message) : $this->error($message);
+            if (stripos($message, 'succeeded')) {
+                $this->success('停止任务监听主进程成功！');
+            } elseif (stripos($message, 'finish')) {
+                $this->success('没有找到需要停止的进程！');
+            } else {
+                $this->error($message);
+            }
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
