@@ -49,7 +49,8 @@ class ListenQueue extends Command
      * @param Output $output 输出对象
      */
     protected function execute(Input $input, Output $output)
-    {
+    {  $this->output->writeln('进程');
+        $this->output->writeln(getmypid());
         set_time_limit(0);
         $this->app->db->name('SystemQueue')->count();
         if (($this->process = ProcessService::instance())->iswin()) {
@@ -85,6 +86,8 @@ class ListenQueue extends Command
      */
     protected function update($code, array $data = [])
     {
+
+
         return $this->app->db->name('SystemQueue')->where(['code' => $code])->update($data);
     }
 
