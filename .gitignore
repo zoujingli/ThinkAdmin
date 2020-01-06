@@ -5,4 +5,5 @@
 runtime
 composer.lock
 public/upload
-/nbproject/private/
+/nbproject/
+/safefile/
