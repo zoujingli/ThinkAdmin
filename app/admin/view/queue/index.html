@@ -79,14 +79,11 @@
                 <span class="color-desc">任务指令：{$vo.command|default=''}</span>
             </td>
             <td class='text-left nowrap'>
-                计划时间：{$vo.exec_time|format_datetime}<br>
+                计划时间：{$vo.exec_time|format_datetime} {if isset($vo.exec_pid) and $vo.exec_pid>0}（ 进程 <b class="color-blue">{$vo.exec_pid|default='-'}</b> ）{/if}<br>
                 {if $vo.status eq 3 or $vo.status eq 4}
                 执行时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{:sprintf("%.4f",$vo.outer_time-$vo.enter_time)}</b> 秒 ）
-                {elseif $vo.status eq 2}
-                开始时间：{$vo.enter_time|format_datetime}
-                {else}
-                创建时间：{$vo.create_at|format_datetime}
-                {/if}
+                {elseif $vo.status eq 2} 开始时间：{$vo.enter_time|format_datetime}
+                {else} 创建时间：{$vo.create_at|format_datetime} {/if}
             </td>
             <td class='text-left nowrap'>
 

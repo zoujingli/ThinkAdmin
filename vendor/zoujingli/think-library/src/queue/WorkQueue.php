@@ -73,8 +73,7 @@ class WorkQueue extends Command
             } else {
                 // 锁定任务状态
                 $this->app->db->name($this->table)->strict(false)->where(['code' => $this->code])->update([
-                    'status'   => '2', 'enter_time' => microtime(true), 'outer_time' => '0',
-                    'exec_pid' => getmygid(), 'exec_desc' => '', 'attempts' => $this->app->db->raw('attempts+1'),
+                    'status' => '2', 'enter_time' => microtime(true), 'outer_time' => '0', 'exec_pid' => getmypid(), 'exec_desc' => '', 'attempts' => $this->app->db->raw('attempts+1'),
                 ]);
                 // 设置进程标题
                 if (($process = ProcessService::instance())->iswin()) {
@@ -115,7 +114,7 @@ class WorkQueue extends Command
     {
         $desc = explode("\n", trim(is_string($message) ? $message : ''));
         $result = $this->app->db->name($this->table)->strict(false)->where(['code' => $this->code])->update([
-            'status' => $status, 'outer_time' => microtime(true), 'exec_pid' => getmygid(), 'exec_desc' => $desc[0],
+            'status' => $status, 'outer_time' => microtime(true), 'exec_pid' => getmypid(), 'exec_desc' => $desc[0],
         ]);
         $this->output->writeln(is_string($message) ? $message : '');
         return $result == false;
