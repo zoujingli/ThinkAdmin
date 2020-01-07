@@ -27,6 +27,12 @@ use think\exception\HttpResponseException;
 class Menu extends Controller
 {
     /**
+     * 存储数据名称
+     * @var string
+     */
+    protected $ckey = 'wechat_menu_data';
+
+    /**
      * 微信菜单的类型
      * @var array
      */
@@ -56,7 +62,7 @@ class Menu extends Controller
         if ($this->request->get('output') === 'json') {
             $where = [['keys', 'notin', ['subscribe', 'default']], ['status', '=', '1']];
             $keys = $this->app->db->name('WechatKeys')->where($where)->order('sort desc,id desc')->select();
-            $this->success('获取数据成功!', ['wechat_menud_ata' => sysdata('wechat_menu_data'), 'keysdata' => $keys]);
+            $this->success('获取数据成功!', ['wechat_menud_ata' => sysdata($this->ckey), 'keysdata' => $keys]);
         } else {
             $this->title = '微信菜单定制';
             $this->fetch();
@@ -84,8 +90,8 @@ class Menu extends Controller
                 }
             } else {
                 try {
-                    sysdata('wechat_menu_data', $this->_buildMenuData(json_decode($data, true)));
-                    WechatService::WeChatMenu()->create(['button' => sysdata('wechat_menu_data')]);
+                    sysdata($this->ckey, $this->_buildMenuData(json_decode($data, true)));
+                    WechatService::WeChatMenu()->create(['button' => sysdata($this->ckey)]);
                     sysoplog('微信管理', '发布微信菜单成功');
                     $this->success('保存发布菜单成功！', '');
                 } catch (HttpResponseException $exception) {
