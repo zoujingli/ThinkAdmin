@@ -62,7 +62,7 @@ class Menu extends Controller
         if ($this->request->get('output') === 'json') {
             $where = [['keys', 'notin', ['subscribe', 'default']], ['status', '=', '1']];
             $keys = $this->app->db->name('WechatKeys')->where($where)->order('sort desc,id desc')->select();
-            $this->success('获取数据成功!', ['wechat_menud_ata' => sysdata($this->ckey), 'keysdata' => $keys]);
+            $this->success('获取数据成功!', ['menudata' => sysdata($this->ckey), 'keysdata' => $keys]);
         } else {
             $this->title = '微信菜单定制';
             $this->fetch();

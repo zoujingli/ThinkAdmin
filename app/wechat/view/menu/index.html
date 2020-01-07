@@ -183,6 +183,7 @@
             $rootScope.$watch('item', function () {
                 if ($rootScope.item.type === 'click') setTimeout(function () {
                     form.render('select');
+                    $rootScope.item.key = $('[lay-filter="key"]').val();
                 }, 50)
             }, true);
 
