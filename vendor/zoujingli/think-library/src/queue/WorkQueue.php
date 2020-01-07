@@ -49,9 +49,9 @@ class WorkQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:_work')->setDescription('[执行]创建执行任务的进程');
-        $this->addArgument('id', Argument::OPTIONAL, '指定任务ID');
-        $this->addArgument('sp', Argument::OPTIONAL, '指令结束符');
+        $this->setName('xtask:_work')->setDescription('Create a process to execute a task');
+        $this->addArgument('id', Argument::OPTIONAL, 'TaskNumber');
+        $this->addArgument('sp', Argument::OPTIONAL, 'Separator');
     }
 
     /**
@@ -65,18 +65,18 @@ class WorkQueue extends Command
     {
         $this->id = trim($input->getArgument('id'));
         if (empty($this->id)) {
-            $this->output->error("执行任务需要指定任务编号！");
+            $this->output->error('Task number needs to be specified for task execution');
         } else try {
             $queue = Db::name('SystemQueue')->where(['id' => $this->id, 'status' => '1'])->find();
             if (empty($queue)) {
                 // 这里不做任何处理（该任务可能在其它地方已经在执行）
-                $this->output->warning("执行任务{$this->id}的信息或状态异常！");
+                $this->output->warning("The or status of task {$this->id} is abnormal");
             } else {
                 // 锁定任务状态
                 Db::name('SystemQueue')->where(['id' => $queue['id']])->update(['status' => '2', 'start_at' => date('Y-m-d H:i:s')]);
                 // 设置进程标题
                 if (($process = ProcessService::instance())->iswin() && function_exists('cli_set_process_title')) {
-                    cli_set_process_title("ThinkAdmin {$process->version()} 执行任务 - {$queue['title']}");
+                    cli_set_process_title("ThinkAdmin {$process->version()} Queue - {$queue['title']}");
                 }
                 // 执行任务内容
                 if (class_exists($queue['preload'])) {
@@ -87,7 +87,7 @@ class WorkQueue extends Command
                         if (isset($class->title)) $class->title = $queue['title'];
                         $this->update('3', $class->execute($input, $output, is_array($data) ? $data : []));
                     } else {
-                        throw new Exception("任务处理类 {$queue['preload']} 未定义 execute 入口！");
+                        throw new Exception("Task processing class {$queue['preload']} not defined execute");
                     }
                 } else {
                     // 自定义指令，不支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
@@ -114,9 +114,9 @@ class WorkQueue extends Command
      */
     protected function update($status, $message)
     {
+        $desc = explode("\n", trim(is_string($message) ? $message : ''));
         $result = Db::name('SystemQueue')->where(['id' => $this->id])->update([
-            'status' => $status, 'end_at' => date('Y-m-d H:i:s'),
-            'desc'   => is_string($message) ? $message : '',
+            'status' => $status, 'end_at' => date('Y-m-d H:i:s'), 'desc' => $desc[0],
         ]);
         $this->output->writeln(is_string($message) ? $message : '');
         return $result !== false;

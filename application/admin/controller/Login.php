@@ -19,6 +19,7 @@ use library\Controller;
 use library\service\AdminService;
 use library\service\CaptchaService;
 use library\service\SystemService;
+use library\tools\Data;
 use think\Db;
 use think\facade\Request;
 
@@ -45,11 +46,10 @@ class Login extends Controller
                 $this->redirect('@admin');
             } else {
                 $this->title = '系统登录';
-                if (!($this->loginskey = session('loginskey'))) {
-                    session('loginskey', $this->loginskey = uniqid());
-                }
+                $this->captcha_type = 'login_captcha';
+                $this->captcha_token = Data::uniqidDateCode(18);
+                $this->app->session->set($this->captcha_type, $this->captcha_token);
                 $this->devmode = SystemService::instance()->checkRunMode('dev');
-                $this->captcha = CaptchaService::instance()->getAttrs();
                 $this->fetch();
             }
         } else {
@@ -59,7 +59,7 @@ class Login extends Controller
                 'password.require' => '登录密码不能为空！',
                 'password.min:4'   => '登录密码长度不能少于4位有效字符！',
                 'verify.require'   => '图形验证码不能为空！',
-                'uniqid.require'   => '图形验证标识不能为空！'
+                'uniqid.require'   => '图形验证标识不能为空！',
             ]);
             if (!CaptchaService::instance()->check($data['verify'], $data['uniqid'])) {
                 $this->error('图形验证码验证失败，请重新输入!');
@@ -67,20 +67,42 @@ class Login extends Controller
             // 用户信息验证
             $map = ['is_deleted' => '0', 'username' => $data['username']];
             $user = Db::name('SystemUser')->where($map)->order('id desc')->find();
-            if (empty($user)) $this->error('登录账号或密码错误，请重新输入!');
-            if (md5($user['password'] . session('loginskey')) !== $data['password']) {
-                $this->error('登录账号或密码错误，请重新输入!');
+            if (empty($user)) {
+                $this->error('登录账号或密码错误，请重新输入1!');
             }
-            if (empty($user['status'])) $this->error('账号已经被禁用，请联系管理员!');
+            if (md5("{$user['password']}{$data['uniqid']}") !== $data['password']) {
+                $this->error('登录账号或密码错误，请重新输入2!');
+            }
+            if (empty($user['status'])) {
+                $this->error('账号已经被禁用，请联系管理员!');
+            }
             Db::name('SystemUser')->where(['id' => $user['id']])->update([
-                'login_at' => Db::raw('now()'), 'login_ip' => Request::ip(), 'login_num' => Db::raw('login_num+1'),
+                'login_ip'  => Request::ip(),
+                'login_at'  => Db::raw('now()'),
+                'login_num' => Db::raw('login_num+1'),
             ]);
-            session('user', $user);
-            session('loginskey', null);
+            $this->app->session->set('user', $user);
             AdminService::instance()->apply(true);
-            sysoplog('系统管理', '用户登录系统成功');
+            sysoplog('系统管理', '用户登录系统后台成功');
             $this->success('登录成功', url('@admin'));
         }
+    }
+
+    /**
+     * 生成验证码
+     * 需要指定类型及令牌
+     */
+    public function captcha()
+    {
+        $image = CaptchaService::instance();
+        $this->type = input('type', 'captcha-type');
+        $this->token = input('token', 'captcha-token');
+        $captcha = ['image' => $image->getData(), 'uniqid' => $image->getUniqid()];
+        if ($this->app->session->get($this->type) === $this->token) {
+            $captcha['code'] = $image->getCode();
+            $this->app->session->delete($this->type);
+        }
+        $this->success('生成验证码成功', $captcha);
     }
 
     /**

@@ -108,9 +108,13 @@ class CaptchaService extends Service
     public function check($code, $uniqid = null)
     {
         $_uni = is_string($uniqid) ? $uniqid : input('uniqid', '-');
-        $_val = $this->app->cache->get($_uni);
-        $this->app->cache->rm($_uni);
-        return is_string($_val) && strtolower($_val) === strtolower($code);
+        $_val = $this->app->cache->get($_uni, '');
+        if (is_string($_val) && strtolower($_val) === strtolower($code)) {
+            $this->app->cache->rm($_uni);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

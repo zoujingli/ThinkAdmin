@@ -88,7 +88,7 @@ class ProcessService extends Service
     /**
      * 关闭任务进程
      * @param integer $pid 进程号
-     * @return boolean
+     * @return $this
      */
     public function close($pid)
     {
@@ -97,7 +97,7 @@ class ProcessService extends Service
         } else {
             $this->exec("kill -9 {$pid}");
         }
-        return true;
+        return $this;
     }
 
     /**

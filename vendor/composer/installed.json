@@ -401,12 +401,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "bc3a7d6203955f36f401e8286884a9aa7e6a4133"
+            "reference": "bc77d2ff2e4ff7fb18a3a5bb6436633fe3f6b4ad"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/bc3a7d6203955f36f401e8286884a9aa7e6a4133",
-            "reference": "bc3a7d6203955f36f401e8286884a9aa7e6a4133",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/bc77d2ff2e4ff7fb18a3a5bb6436633fe3f6b4ad",
+            "reference": "bc77d2ff2e4ff7fb18a3a5bb6436633fe3f6b4ad",
             "shasum": "",
             "mirrors": [
                 {
@@ -426,7 +426,7 @@
             "qiniu/php-sdk": "^7.2",
             "topthink/framework": "5.1.*"
         },
-        "time": "2019-12-30T09:51:14+00:00",
+        "time": "2020-01-07T02:14:58+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -446,17 +446,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.15",
-        "version_normalized": "1.2.15.0",
+        "version": "v1.2.16",
+        "version_normalized": "1.2.16.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "4b81e72cff7a3acfde2cca919bd8e173355bc53c"
+            "reference": "01fa1479e8c4d7a0875de96787a2bcaeacc755e9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/4b81e72cff7a3acfde2cca919bd8e173355bc53c",
-            "reference": "4b81e72cff7a3acfde2cca919bd8e173355bc53c",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/01fa1479e8c4d7a0875de96787a2bcaeacc755e9",
+            "reference": "01fa1479e8c4d7a0875de96787a2bcaeacc755e9",
             "shasum": "",
             "mirrors": [
                 {
@@ -474,7 +474,7 @@
             "ext-simplexml": "*",
             "php": ">=5.4"
         },
-        "time": "2019-11-25T10:40:50+00:00",
+        "time": "2020-01-04T08:51:50+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

@@ -34,7 +34,7 @@ class StartQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:start')->setDescription('[控制]创建守护监听主进程');
+        $this->setName('xtask:start')->setDescription('Create daemons to listening main process');
     }
 
     /**
@@ -48,14 +48,14 @@ class StartQueue extends Command
         $process = ProcessService::instance();
         $command = $process->think("xtask:listen");
         if (count($result = $process->query($command)) > 0) {
-            $output->info("监听主进程{$result['0']['pid']}已经启动！");
+            $output->info("Listening main process {$result['0']['pid']} has started");
         } else {
             $process->create($command);
             sleep(1);
             if (count($result = $process->query($command)) > 0) {
-                $output->info("监听主进程{$result['0']['pid']}启动成功！");
+                $output->info("Listening main process {$result['0']['pid']} started successfully");
             } else {
-                $output->error('监听主进程创建失败！');
+                $output->error('Failed to create listening main process');
             }
         }
     }
