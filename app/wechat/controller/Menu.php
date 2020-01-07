@@ -84,7 +84,7 @@ class Menu extends Controller
                 }
             } else {
                 try {
-                    sysdata('wechat_menud_ata', $this->_buildMenuData(json_decode($data, true)));
+                    sysdata('wechat_menu_data', $this->_buildMenuData(json_decode($data, true)));
                     WechatService::WeChatMenu()->create(['button' => sysdata('wechat_menu_data')]);
                     sysoplog('微信管理', '发布微信菜单成功');
                     $this->success('保存发布菜单成功！', '');
