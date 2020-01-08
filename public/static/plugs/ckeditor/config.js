@@ -1,4 +1,4 @@
-// 定义编辑器标准配置
+/*! 定义编辑器标准配置 */
 CKEDITOR.editorConfig = function (config) {
     config.language = 'zh-cn';
     config.toolbar = [
@@ -16,7 +16,7 @@ CKEDITOR.editorConfig = function (config) {
     config.font_names = '微软雅黑/Microsoft YaHei;宋体/SimSun;新宋体/NSimSun;仿宋/FangSong;楷体/KaiTi;黑体/SimHei;' + config.font_names;
 };
 
-// 自定义图片上传插件
+/*! 自定义图片上传插件 */
 CKEDITOR.plugins.add("uimage", {
     init: function (editor) {
         editor.ui.addButton("UploadImage", {label: "上传本地图片", command: 'uimage', icon: 'image', toolbar: 'insert,10'});
@@ -30,7 +30,7 @@ CKEDITOR.plugins.add("uimage", {
     }
 });
 
-// 自定义视频插入插件
+/*! 自定义视频插入插件 */
 CKEDITOR.plugins.add('umusic', {
     init: function (editor) {
         editor.ui.addButton("UploadMusic", {label: "上传MP3文件", command: 'umusic', icon: 'specialchar', toolbar: 'insert,10'});
@@ -44,7 +44,7 @@ CKEDITOR.plugins.add('umusic', {
     }
 });
 
-// 自定义视频插入插件
+/*! 自定义视频插入插件 */
 CKEDITOR.plugins.add('uvideo', {
     init: function (editor) {
         editor.ui.addButton("UploadVideo", {label: "上传MP4文件", command: 'uvideo', icon: 'flash', toolbar: 'insert,10'});
@@ -58,7 +58,7 @@ CKEDITOR.plugins.add('uvideo', {
     }
 });
 
-// 自定义视频插入插件
+/*! 自定义视频插入插件 */
 CKEDITOR.plugins.add('uhtml', {
     init: function (editor) {
         editor.ui.addButton("UploadHtml", {label: "插入HTML代码", command: 'uhtml', icon: 'creatediv', toolbar: 'insert,10'});
