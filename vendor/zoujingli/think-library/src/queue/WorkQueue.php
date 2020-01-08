@@ -48,7 +48,7 @@ class WorkQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:_work')->setDescription('Create a process to execute a task');
+        $this->setName('xtask:_work')->setDescription('Create a process to execute task');
         $this->addArgument('code', Argument::OPTIONAL, 'TaskNumber');
         $this->addArgument('spts', Argument::OPTIONAL, 'Separator');
     }
