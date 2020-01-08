@@ -103,7 +103,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
 
         function setFileXdata(file, xmd5) {
             file.xmd5 = xmd5;
-            file.xkey = file.xmd5.substr(0, 16) + '/' + file.xmd5.substr(16, 16) + '.' + file.xext;
+            file.xkey = file.xmd5.substr(0, 2) + '/' + file.xmd5.substr(2, 30) + '.' + file.xext;
             delete file.chunk_idx;
             delete file.chunk_size;
             delete file.chunk_total;

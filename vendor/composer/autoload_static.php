@@ -336,6 +336,7 @@ class ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e
         'app\\wechat\\controller\\Menu' => __DIR__ . '/../..' . '/app/wechat/controller/Menu.php',
         'app\\wechat\\controller\\News' => __DIR__ . '/../..' . '/app/wechat/controller/News.php',
         'app\\wechat\\controller\\api\\Js' => __DIR__ . '/../..' . '/app/wechat/controller/api/Js.php',
+        'app\\wechat\\controller\\api\\Login' => __DIR__ . '/../..' . '/app/wechat/controller/api/Login.php',
         'app\\wechat\\controller\\api\\Push' => __DIR__ . '/../..' . '/app/wechat/controller/api/Push.php',
         'app\\wechat\\controller\\api\\Review' => __DIR__ . '/../..' . '/app/wechat/controller/api/Review.php',
         'app\\wechat\\controller\\api\\Test' => __DIR__ . '/../..' . '/app/wechat/controller/api/Test.php',

@@ -203,6 +203,7 @@ return array(
     'app\\wechat\\controller\\Menu' => $baseDir . '/app/wechat/controller/Menu.php',
     'app\\wechat\\controller\\News' => $baseDir . '/app/wechat/controller/News.php',
     'app\\wechat\\controller\\api\\Js' => $baseDir . '/app/wechat/controller/api/Js.php',
+    'app\\wechat\\controller\\api\\Login' => $baseDir . '/app/wechat/controller/api/Login.php',
     'app\\wechat\\controller\\api\\Push' => $baseDir . '/app/wechat/controller/api/Push.php',
     'app\\wechat\\controller\\api\\Review' => $baseDir . '/app/wechat/controller/api/Review.php',
     'app\\wechat\\controller\\api\\Test' => $baseDir . '/app/wechat/controller/api/Test.php',
