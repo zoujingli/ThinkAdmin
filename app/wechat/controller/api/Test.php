@@ -96,7 +96,7 @@ class Test extends Controller
             'body'             => '测试商品',
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
-            'notify_url'       => url('@wechat/api.test/notify', [], false, true),
+            'notify_url'       => url('@wechat/api.test/notify', [], false, true)->build(),
             'out_trade_no'     => CodeExtend::uniqidNumber(18),
             'spbill_create_ip' => $this->request->ip(),
         ]);
@@ -154,7 +154,7 @@ class Test extends Controller
             'body'             => "测试商品，产品ID：{$notify['product_id']}",
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
-            'notify_url'       => url('@wechat/api.test/notify', [], false, true),
+            'notify_url'       => url('@wechat/api.test/notify', [], false, true)->build(),
             'out_trade_no'     => CodeExtend::uniqidDate(18),
             'spbill_create_ip' => $this->request->ip(),
         ];
