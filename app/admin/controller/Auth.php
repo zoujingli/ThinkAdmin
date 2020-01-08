@@ -17,7 +17,6 @@ namespace app\admin\controller;
 
 use think\admin\Controller;
 use think\admin\service\AdminService;
-use app\wechat\service\WechatService;
 
 /**
  * 系统权限管理
@@ -81,7 +80,7 @@ class Auth extends Controller
      */
     public function state()
     {
-       
+
         $this->_applyFormToken();
         $this->_save($this->table, ['status' => input('status')]);
     }
