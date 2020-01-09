@@ -33,11 +33,17 @@ return [
             'path'           => '',
             // 单文件日志写入
             'single'         => true,
+            // 指定日志类型
+            'level'          => ['error', 'alert', 'sql'],
             // 独立日志级别
             'apart_level'    => ['error', 'sql'],
+            // 每个文件大小 ( 10兆 )
+            'file_size'      => 1024 * 1024 * 10,
+            // 日志日期格式
+            'time_format'    => 'Y-m-d H:i:s',
             // 最大日志文件数量
-            'max_files'      => 200,
-            // 使用JSON格式记录php
+            'max_files'      => 100,
+            // 使用JSON格式记录
             'json'           => false,
             // 日志处理
             'processor'      => null,
