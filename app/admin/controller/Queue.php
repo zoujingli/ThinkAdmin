@@ -17,6 +17,7 @@ namespace app\admin\controller;
 
 use think\admin\Controller;
 use think\admin\service\ProcessService;
+use think\admin\service\QueueService;
 use think\exception\HttpResponseException;
 
 /**
@@ -109,22 +110,6 @@ class Queue extends Controller
     }
 
     /**
-     * 清理3天前的记录
-     * @auth true
-     * @throws \think\db\exception\DbException
-     */
-    public function clear()
-    {
-        $map = [['exec_time', '<', strtotime('-7days')]];
-        $result = $this->app->db->name($this->table)->where($map)->delete();
-        if ($result !== false) {
-            $this->success('成功清理7天前的任务记录！');
-        } else {
-            $this->error('清理7天前的任务记录失败！');
-        }
-    }
-
-    /**
      * WIN停止监听进程
      * @auth true
      */
@@ -144,6 +129,20 @@ class Queue extends Controller
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
+    }
+
+    /**
+     * 创建记录清理任务
+     * @auth true
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function clear()
+    {
+        QueueService::instance()->addCleanQueue();
+        $this->success('创建清理任务成功！');
     }
 
     /**

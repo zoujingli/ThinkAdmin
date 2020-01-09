@@ -56,7 +56,9 @@ class Fans extends Command
                 $message .= $this->$fun();
             }
         }
-        throw new \think\Exception($message, 3);
+        if (defined('WorkQueueCall')) {
+            throw new \think\Exception($message, 3);
+        }
     }
 
     /**
