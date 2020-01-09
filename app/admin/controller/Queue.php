@@ -64,7 +64,7 @@ class Queue extends Controller
         $this->iswin = ProcessService::instance()->iswin();
         // 任务列表查询分页处理
         $query = $this->_query($this->table)->dateBetween('create_at')->timeBetween('enter_time,exec_time');
-        $query->like('title,command')->equal('status')->order('id desc')->page();
+        $query->like('code,title,command')->equal('status')->order('id desc')->page();
     }
 
     /**

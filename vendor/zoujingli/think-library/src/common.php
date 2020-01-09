@@ -90,16 +90,18 @@ if (!function_exists('sysqueue')) {
      * @param string $command 执行内容
      * @param integer $later 延时执行时间
      * @param array $data 任务附加数据
-     * @param integer $rscript 任务多开
+     * @param integer $rscript 任务类型(0单例,1多例)
+     * @param integer $loops 循环等待时间
+     * @param integer $attempts 已执行次数
      * @return QueueService
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    function sysqueue($title, $command, $later = 0, $data = [], $rscript = 1)
+    function sysqueue($title, $command, $later = 0, $data = [], $rscript = 1, $loops = 0, $attempts = 0)
     {
-        return QueueService::instance()->register($title, $command, $later, $data, $rscript);
+        return QueueService::instance()->register($title, $command, $later, $data, $rscript, $loops, $attempts);
     }
 }
 if (!function_exists('systoken')) {

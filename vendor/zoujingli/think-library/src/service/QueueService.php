@@ -118,7 +118,7 @@ class QueueService extends Service
      * @param array $data 任务附加数据
      * @param integer $rscript 任务类型(0单例,1多例)
      * @param integer $loops 循环等待时间
-     * @param integer $attempts 执行次数
+     * @param integer $attempts 已执行次数
      * @return $this
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
