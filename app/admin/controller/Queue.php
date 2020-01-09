@@ -60,7 +60,6 @@ class Queue extends Controller
             if ($item['status'] === 3) $this->total['oks'] = $item['count'];
             if ($item['status'] === 4) $this->total['ers'] = $item['count'];
         });
-
         $this->title = '系统任务管理';
         $this->iswin = ProcessService::instance()->iswin();
         // 任务列表查询分页处理
@@ -116,12 +115,12 @@ class Queue extends Controller
      */
     public function clear()
     {
-        $map = [['exec_time', '<', strtotime('-3days')]];
+        $map = [['exec_time', '<', strtotime('-7days')]];
         $result = $this->app->db->name($this->table)->where($map)->delete();
         if ($result !== false) {
-            $this->success('成功清理3天前的任务记录！');
+            $this->success('成功清理7天前的任务记录！');
         } else {
-            $this->error('清理3天前的任务记录失败！');
+            $this->error('清理7天前的任务记录失败！');
         }
     }
 

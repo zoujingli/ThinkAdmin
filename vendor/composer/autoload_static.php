@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e
+class ComposerStaticInit9eebf462f38fc6a0db482795c8caf813
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -392,6 +392,7 @@ class ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e
         'think\\admin\\helper\\SaveHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/SaveHelper.php',
         'think\\admin\\helper\\TokenHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/TokenHelper.php',
         'think\\admin\\helper\\ValidateHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/ValidateHelper.php',
+        'think\\admin\\queue\\CleanQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/CleanQueue.php',
         'think\\admin\\queue\\ListenQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/ListenQueue.php',
         'think\\admin\\queue\\QueryQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/QueryQueue.php',
         'think\\admin\\queue\\StartQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/queue/StartQueue.php',
@@ -623,9 +624,9 @@ class ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit2b1316f37dd8fe5c4c25969e0b842e8e::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9eebf462f38fc6a0db482795c8caf813::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9eebf462f38fc6a0db482795c8caf813::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9eebf462f38fc6a0db482795c8caf813::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -259,6 +259,7 @@ return array(
     'think\\admin\\helper\\SaveHelper' => $vendorDir . '/zoujingli/think-library/src/helper/SaveHelper.php',
     'think\\admin\\helper\\TokenHelper' => $vendorDir . '/zoujingli/think-library/src/helper/TokenHelper.php',
     'think\\admin\\helper\\ValidateHelper' => $vendorDir . '/zoujingli/think-library/src/helper/ValidateHelper.php',
+    'think\\admin\\queue\\CleanQueue' => $vendorDir . '/zoujingli/think-library/src/queue/CleanQueue.php',
     'think\\admin\\queue\\ListenQueue' => $vendorDir . '/zoujingli/think-library/src/queue/ListenQueue.php',
     'think\\admin\\queue\\QueryQueue' => $vendorDir . '/zoujingli/think-library/src/queue/QueryQueue.php',
     'think\\admin\\queue\\StartQueue' => $vendorDir . '/zoujingli/think-library/src/queue/StartQueue.php',

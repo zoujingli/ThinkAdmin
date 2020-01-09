@@ -79,6 +79,7 @@ class Library extends Service
     {
         // 注册系统任务指令
         $this->commands([
+            'think\admin\queue\CleanQueue',
             'think\admin\queue\WorkQueue',
             'think\admin\queue\StopQueue',
             'think\admin\queue\StateQueue',
