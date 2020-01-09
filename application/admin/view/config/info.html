@@ -1,13 +1,14 @@
 {extend name="main"}
 
-{block name="content"}
+{block name="button"}
 
 {if auth('config')}
-<div class="think-box-shadow margin-bottom-15">
-    <span class="color-green font-w7 text-middle">系统参数配置：</span>
-    <a class="layui-btn layui-btn-sm" data-modal="{:url('config')}">修改系统配置</a>
-</div>
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('config')}">修改系统配置</a>
 {/if}
+
+{/block}
+
+{block name="content"}
 
 <div class="think-box-shadow margin-bottom-15">
     <span class="color-green font-w7 text-middle">文件存储引擎：</span>

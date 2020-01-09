@@ -2,16 +2,20 @@
 
 {block name="button"}
 
+{if auth("start") && $iswin}
+<button data-load='{:url("start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开始监听</button>
+{/if}
+
+{if auth("stop") && $iswin}
+<button data-load='{:url("stop")}' data-confirm="确定要停止主进程监听吗？" class='layui-btn layui-btn-sm layui-btn-primary'>停止监听</button>
+{/if}
+
 {if auth("remove")}
-<button data-action='{:url("remove")}' data-confirm="确定要批量删除任务吗？" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定批量删除任务吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 {/if}
 
-{if auth("processstart") && $iswin}
-<button data-load='{:url("processstart")}' class='layui-btn layui-btn-sm layui-btn-primary'>开始监听</button>
-{/if}
-
-{if auth("processstop") && $iswin}
-<button data-load='{:url("processstop")}' class='layui-btn layui-btn-sm layui-btn-primary'>停止监听</button>
+{if auth("clear")}
+<button data-load='{:url("clear")}' data-confirm="确定要清理3天前的任务记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理记录</button>
 {/if}
 
 {/block}
@@ -44,35 +48,40 @@
                 <span class="color-desc">任务指令：{$vo.preload}</span>
             </td>
             <td class='text-left nowrap'>
-                创建时间：{$vo.create_at|format_datetime} / {$vo.time|format_datetime}<br>
-                执行时间：{$vo.start_at|format_datetime} / {$vo.end_at|format_datetime}
+                计划时间：{$vo.time|format_datetime} {if isset($vo.exec_pid) and $vo.exec_pid>0}（ 进程 <b class="color-blue">{$vo.exec_pid|default='-'}</b> ）{/if}<br>
+                {if $vo.status eq 3 or $vo.status eq 4}
+                执行时间：{$vo.start_at|format_datetime}（ 耗时 <b class="color-blue">{:sprintf("%.4f",strtotime($vo.end_at)-strtotime($vo.start_at))}</b> 秒 ）
+                {elseif $vo.status eq 2} 开始时间：{$vo.start_at|format_datetime}
+                {else} 创建时间：{$vo.create_at|format_datetime} {/if}
             </td>
             <td class='text-left nowrap'>
-                任务状态：{eq name='vo.double' value='1'}
-                <span class="layui-badge layui-bg-green margin-right-5">复</span>
-                {else}
-                <span class="layui-badge layui-bg-blue margin-right-5">单</span>
-                {/eq}
+                <div>
+                    {eq name='vo.double' value='1'}
+                    <span class="layui-badge layui-bg-green margin-right-5">复</span>
+                    {else}
+                    <span class="layui-badge layui-bg-blue margin-right-5">单</span>
+                    {/eq}
 
-                {eq name='vo.status' value='1'}
-                <span class="layui-badge layui-bg-black">待处理</span>
-                {elseif $vo.status eq 2}
-                <span class="layui-badge layui-bg-green">处理中</span>
-                {elseif $vo.status eq 3}
-                <span class="layui-badge layui-bg-blue">处理完成</span>
-                {elseif $vo.status eq 4}
-                <span class="layui-badge layui-bg-red margin-right-5">处理失败</span>
-                <a class="layui-badge layui-bg-green" data-tips-text="重置该任务" data-action="{:url('redo')}" data-value="id#{$vo.id}">
-                    <i class="layui-icon font-s12">&#xe669;</i>
-                </a>
-                {/eq}
-                {if auth("admin/queue/remove") and in_array($vo.status,[1,3,4])}
-                <a data-action='{:url("remove")}' data-confirm="确定要删除该任务吗？" data-value="id#{$vo.id}" data-tips-text="删除该任务" class='layui-badge layui-bg-red margin-left-5'>
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
-                {/if}
-                <br>
-                状态描述：<span class="color-desc">{$vo.desc|raw|default="没有获取到状态描述"}</span>
+                    {eq name='vo.status' value='1'}
+                    <span class="layui-badge layui-bg-black">待处理</span>
+                    {elseif $vo.status eq 2}
+                    <span class="layui-badge layui-bg-green">处理中</span>
+                    {elseif $vo.status eq 3}
+                    <span class="layui-badge layui-bg-blue">处理完成</span>
+                    {elseif $vo.status eq 4}
+                    <span class="layui-badge layui-bg-red margin-right-5">处理失败</span>
+                    <a class="layui-badge layui-bg-green" data-tips-text="重置该任务" data-action="{:url('redo')}" data-value="id#{$vo.id}">
+                        <i class="layui-icon font-s12">&#xe669;</i>
+                    </a>
+                    {/eq}
+
+                    {if auth("admin/queue/remove") and in_array($vo.status,[1,3,4])}
+                    <a data-action='{:url("remove")}' data-confirm="确定要删除该任务吗？" data-value="id#{$vo.id}" data-tips-text="删除该任务" class='layui-badge layui-bg-red margin-left-5'>
+                        <i class="layui-icon">&#xe640;</i>
+                    </a>
+                    {/if}
+                </div>
+                <div class="color-desc">{$vo.desc|raw|default="没有获取到状态描述"}</div>
             </td>
         </tr>
         {/foreach}
