@@ -48,16 +48,6 @@ class Index extends Controller
     }
 
     /**
-     * 后台环境信息
-     */
-    public function main()
-    {
-        $this->think_ver = $this->app->version();
-        $this->mysql_ver = $this->app->db->query('select version() as ver')[0]['ver'];
-        $this->fetch();
-    }
-
-    /**
      * 修改用户资料
      * @login true
      * @param integer $id 会员ID
