@@ -85,10 +85,7 @@
             </td>
             <td class='text-left nowrap'>
                 计划时间：{$vo.exec_time|format_datetime} {if isset($vo.exec_pid) and $vo.exec_pid>0}（ 进程 <b class="color-blue">{$vo.exec_pid|default='-'}</b> ）{/if}<br>
-                {if $vo.status eq 3 or $vo.status eq 4}
-                执行时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{:sprintf("%.4f",$vo.outer_time-$vo.enter_time)}</b> 秒 ）
-                {elseif $vo.status eq 2} 执行时间：{$vo.enter_time|format_datetime}
-                {else}执行时间：<span class="color-desc">任务还没有执行，等待执行...</span> {/if}<br>
+                {if $vo.enter_time>0 and $vo.outer_time>0} 执行时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{:sprintf("%.4f",$vo.outer_time-$vo.enter_time)}</b> 秒 ）{elseif $vo.status eq 2} 执行时间：{$vo.enter_time|format_datetime}（ 任务执行中 ）{else}执行时间：<span class="color-desc">任务还没有执行，等待执行...</span> {/if}<br>
                 创建时间：{$vo.create_at|format_datetime} {if isset($vo.loops_time) and $vo.loops_time > 0}（ 每 <b class="color-blue">{$vo.loops_time|default='0'}</b> 秒执行，共 <b class="color-blue">{$vo.attempts}</b> 次）{else}（ 共执行 <b class="color-blue">{$vo.attempts}</b> 次 ）
                 {/if}
             </td>
