@@ -13,28 +13,20 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\queue;
+namespace think\admin\command\queue;
 
-use think\admin\service\ProcessService;
+use think\admin\command\Queue;
 use think\Collection;
-use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 
 /**
  * 启动监听任务的主进程
  * Class ListenQueue
- * @package think\admin\queue
+ * @package think\admin\command\queue
  */
-class ListenQueue extends Command
+class ListenQueue extends Queue
 {
-
-    /**
-     * 当前任务服务
-     * @var ProcessService
-     */
-    protected $process;
-
     /**
      * 配置指定信息
      */
@@ -51,14 +43,14 @@ class ListenQueue extends Command
     protected function execute(Input $input, Output $output)
     {
         set_time_limit(0);
-        $this->app->db->name('SystemQueue')->count();
-        if (($this->process = ProcessService::instance())->iswin()) {
+        $this->app->db->name($this->table)->count();
+        if ($this->process->iswin()) {
             $this->setProcessTitle("ThinkAdmin {$this->process->version()} Queue Listen");
         }
         $output->writeln('============ LISTENING ============');
         while (true) {
             $where = [['status', '=', '1'], ['exec_time', '<=', time()]];
-            $this->app->db->name('SystemQueue')->where($where)->order('exec_time asc')->chunk(100, function (Collection $list) {
+            $this->app->db->name($this->table)->where($where)->order('exec_time asc')->chunk(100, function (Collection $list) {
                 foreach ($list as $vo) try {
                     $command = $this->process->think("xtask:_work {$vo['code']} -");
                     if (count($this->process->query($command)) > 0) {
@@ -85,7 +77,7 @@ class ListenQueue extends Command
      */
     protected function update($code, array $data = [])
     {
-        return $this->app->db->name('SystemQueue')->where(['code' => $code])->update($data);
+        return $this->app->db->name($this->table)->where(['code' => $code])->update($data);
     }
 
 }

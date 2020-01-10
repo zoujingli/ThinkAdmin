@@ -60,6 +60,18 @@ class Install extends Command
             'rules'  => ['app/wechat'],
             'ignore' => [],
         ],
+        'config' => [
+            'rules'  => [
+                'config/app.php',
+                'config/cache.php',
+                'config/log.php',
+                'config/route.php',
+                'config/session.php',
+                'config/trace.php',
+                'config/view.php',
+            ],
+            'ignore' => [],
+        ],
         'static' => [
             'rules'  => [
                 'public/static/plugs',

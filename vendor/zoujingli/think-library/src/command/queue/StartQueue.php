@@ -13,19 +13,18 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\queue;
+namespace think\admin\command\queue;
 
-use think\admin\service\ProcessService;
-use think\console\Command;
+use think\admin\command\Queue;
 use think\console\Input;
 use think\console\Output;
 
 /**
  * 检查并创建监听主进程
  * Class StartQueue
- * @package think\admin\queue
+ * @package think\admin\command\queue
  */
-class StartQueue extends Command
+class StartQueue extends Queue
 {
 
     /**
@@ -43,15 +42,14 @@ class StartQueue extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $this->app->db->name('SystemQueue')->count();
-        $service = ProcessService::instance();
-        $command = $service->think("xtask:listen");
-        if (count($result = $service->query($command)) > 0) {
+        $this->app->db->name($this->table)->count();
+        $command = $this->process->think("xtask:listen");
+        if (count($result = $this->process->query($command)) > 0) {
             $output->info("Listening main process {$result['0']['pid']} has started");
         } else {
-            $service->create($command);
+            $this->process->create($command);
             sleep(1);
-            if (count($result = $service->query($command)) > 0) {
+            if (count($result = $this->process->query($command)) > 0) {
                 $output->info("Listening main process {$result['0']['pid']} started successfully");
             } else {
                 $output->error('Failed to create listening main process');

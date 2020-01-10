@@ -134,15 +134,17 @@ class Queue extends Controller
     /**
      * 创建记录清理任务
      * @auth true
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function clear()
     {
-        QueueService::instance()->addCleanQueue();
-        $this->success('创建清理任务成功！');
+        try {
+            QueueService::instance()->addCleanQueue();
+            $this->success('创建清理任务成功！');
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        }
     }
 
     /**

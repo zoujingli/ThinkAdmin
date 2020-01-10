@@ -26,4 +26,5 @@ return [
     'think_library_sort_error'     => 'Sorry, modification of list sort failed, please try again later.',
     'think_library_page_html'      => 'Total %s records, display %s per page, total %s page current display %s page.',
     'think_library_csrf_error'     => 'Form token validation failed, please refresh and try again later.',
+    'think_library_queue_exist'    => 'Task has been created, please wait for processing to complete.',
 ];

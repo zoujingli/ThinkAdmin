@@ -13,32 +13,25 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\queue;
+namespace think\admin\command\queue;
 
-use think\admin\service\QueueService;
-use think\console\Command;
+use think\admin\command\Queue;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
 
 /**
- * 清理历史任务记录
+ * 清理任务历史记录
  * Class CleanQueue
- * @package think\admin\queue
+ * @package think\admin\command\queue
  */
-class CleanQueue extends Command
+class CleanQueue extends Queue
 {
     /**
      * 截止时间
      * @var integer
      */
     protected $time;
-
-    /**
-     * 绑定数据表
-     * @var string
-     */
-    protected $table = 'SystemQueue';
 
     /**
      * 配置指定信息
@@ -65,13 +58,13 @@ class CleanQueue extends Command
             $map = [['exec_time', '<', time() - $this->time]];
             $count1 = $this->app->db->name($this->table)->where($map)->delete();
             $this->output->info("Successfully cleaned up {$count1} history task records");
-            // 重置超1小时无响应的记录
+            // 重置超60分钟无响应的记录
             $map = [['exec_time', '<', time() - 3600], ['status', '=', '2']];
-            $count2 = $this->app->db->name($this->table)->where($map)->update(['status' => '4', 'exec_desc' => '执行等待超过1小时无响应']);
-            $this->output->info("Failed {$count2} records without response after waiting for more than 1 hour");
+            $count2 = $this->app->db->name($this->table)->where($map)->update(['status' => '4', 'exec_desc' => '执行等待超过60分钟无响应']);
+            $this->output->info("Successfully processed {$count2} unresponsive records waiting for more than 1 hour");
             // 返回消息到任务状态描述
             if (defined('WorkQueueCall')) {
-                throw new \think\Exception("清理{$count1}条任务记录，标志{$count2}条超60分钟无响应的任务", 3);
+                throw new \think\Exception("清理七天前{$count1}条记录，标志{$count2}条超60分钟无响应的任务", 3);
             }
         }
     }

@@ -59,9 +59,10 @@ class QueueService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function initialize($code = 0): Service
+    public function initialize($code = 0): Service
     {
-        if ($code > 0) {
+        if (!empty($code)) {
+            $this->code = $code;
             $this->queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code])->find();
             if (empty($this->queue)) throw new \think\Exception("Queue {$code} Not found.");
             $this->code = $this->queue['code'];
@@ -118,24 +119,23 @@ class QueueService extends Service
      * @param array $data 任务附加数据
      * @param integer $rscript 任务类型(0单例,1多例)
      * @param integer $loops 循环等待时间
-     * @param integer $attempts 已执行次数
      * @return $this
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function register($title, $command, $later = 0, $data = [], $rscript = 1, $loops = 0, $attempts = 0)
+    public function register($title, $command, $later = 0, $data = [], $rscript = 1, $loops = 0)
     {
         $map = [['title', '=', $title], ['status', 'in', ['1', '2']]];
         if (empty($rscript) && $this->app->db->name('SystemQueue')->where($map)->count() > 0) {
-            throw new \think\Exception('该任务已经创建，请耐心等待处理完成！');
+            throw new \think\Exception(lang('think_library_queue_exist'));
         }
         $this->app->db->name('SystemQueue')->strict(false)->failException(true)->insert([
-            'code'       => $this->code = CodeExtend::uniqidDate(16),
+            'code'       => $this->code = 'QE' . CodeExtend::uniqidDate(16),
             'title'      => $title,
             'command'    => $command,
-            'attempts'   => $attempts,
+            'attempts'   => '0',
             'rscript'    => intval(boolval($rscript)),
             'exec_data'  => json_encode($data, JSON_UNESCAPED_UNICODE),
             'exec_time'  => $later > 0 ? time() + $later : time(),

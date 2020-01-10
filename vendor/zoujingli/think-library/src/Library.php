@@ -79,15 +79,15 @@ class Library extends Service
     {
         // 注册系统任务指令
         $this->commands([
-            'think\admin\queue\CleanQueue',
-            'think\admin\queue\WorkQueue',
-            'think\admin\queue\StopQueue',
-            'think\admin\queue\StateQueue',
-            'think\admin\queue\StartQueue',
-            'think\admin\queue\QueryQueue',
-            'think\admin\queue\ListenQueue',
             'think\admin\command\Install',
             'think\admin\command\Version',
+            'think\admin\command\queue\CleanQueue',
+            'think\admin\command\queue\WorkQueue',
+            'think\admin\command\queue\StopQueue',
+            'think\admin\command\queue\StateQueue',
+            'think\admin\command\queue\StartQueue',
+            'think\admin\command\queue\QueryQueue',
+            'think\admin\command\queue\ListenQueue',
         ]);
     }
 }

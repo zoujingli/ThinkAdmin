@@ -13,19 +13,18 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\queue;
+namespace think\admin\command\queue;
 
-use think\admin\service\ProcessService;
-use think\console\Command;
+use think\admin\command\Queue;
 use think\console\Input;
 use think\console\Output;
 
 /**
  * 查询正在执行的进程PID
  * Class QueryQueue
- * @package think\admin\queue
+ * @package think\admin\command\queue
  */
-class QueryQueue extends Command
+class QueryQueue extends Queue
 {
     /**
      * 指令属性配置
@@ -42,8 +41,7 @@ class QueryQueue extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $service = ProcessService::instance();
-        $result = $service->query($service->think("xtask:"));
+        $result = $this->process->query($this->process->think("xtask:"));
         if (count($result) > 0) foreach ($result as $item) {
             $output->writeln("{$item['pid']}\t{$item['cmd']}");
         } else {

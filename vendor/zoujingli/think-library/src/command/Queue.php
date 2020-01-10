@@ -13,7 +13,7 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\queue;
+namespace think\admin\command;
 
 use think\admin\service\ProcessService;
 use think\console\Command;
@@ -21,33 +21,31 @@ use think\console\Input;
 use think\console\Output;
 
 /**
- * 查看任务监听的主进程状态
- * Class StateQueue
- * @package think\admin\queue
+ * 系统任务基类
+ * Class Queue
+ * @package think\admin\command
  */
-class StateQueue extends Command
+abstract class Queue extends Command
 {
     /**
-     * 指令属性配置
+     * 绑定数据表
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('xtask:state')->setDescription('Check listening main process status');
-    }
+    protected $table = 'SystemQueue';
 
     /**
-     * 指令执行状态
+     * 进程服务对象
+     * @var ProcessService
+     */
+    protected $process;
+
+    /**
+     * 任务指令初始化
      * @param Input $input
      * @param Output $output
      */
-    protected function execute(Input $input, Output $output)
+    public function initialize(Input $input, Output $output)
     {
-        $service = ProcessService::instance();
-        $command = $service->think('xtask:listen');
-        if (count($result = $service->query($command)) > 0) {
-            $output->info("Listening for main process {$result[0]['pid']} running");
-        } else {
-            $output->warning("The Listening main process is not running");
-        }
+        $this->process = ProcessService::instance();
     }
 }

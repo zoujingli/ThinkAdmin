@@ -26,4 +26,5 @@ return [
     'think_library_sort_error'     => '抱歉，列表排序失败，请稍候再试！',
     'think_library_page_html'      => '共 %s 条记录，每页显示 %s 条，共 %s 页当前显示第 %s 页。',
     'think_library_csrf_error'     => '表单令牌验证失败，请刷新页面再试！',
+    'think_library_queue_exist'    => '任务已创建，请等待处理完成！',
 ];
