@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc21b96faf4dc0bfb30cb1c3216b9e935
+class ComposerStaticInit9497ee4ec47f887a8df8ef0872aa0e54
 {
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
@@ -256,6 +256,7 @@ class ComposerStaticInitc21b96faf4dc0bfb30cb1c3216b9e935
         'WeMini\\Image' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Image.php',
         'WeMini\\Logistics' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Logistics.php',
         'WeMini\\Message' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Message.php',
+        'WeMini\\Newtmpl' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Newtmpl.php',
         'WeMini\\Ocr' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Ocr.php',
         'WeMini\\Plugs' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Plugs.php',
         'WeMini\\Poi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Poi.php',
@@ -287,9 +288,9 @@ class ComposerStaticInitc21b96faf4dc0bfb30cb1c3216b9e935
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc21b96faf4dc0bfb30cb1c3216b9e935::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc21b96faf4dc0bfb30cb1c3216b9e935::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc21b96faf4dc0bfb30cb1c3216b9e935::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9497ee4ec47f887a8df8ef0872aa0e54::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9497ee4ec47f887a8df8ef0872aa0e54::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9497ee4ec47f887a8df8ef0872aa0e54::$classMap;
 
         }, null, ClassLoader::class);
     }
