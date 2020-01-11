@@ -2,6 +2,8 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
+// | Copyright (c) 2006~2016 http://thinkphp.cn All rights reserved.
+// +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
@@ -14,9 +16,10 @@ use MongoDB\BSON\ObjectID;
 use MongoDB\BSON\Regex;
 use MongoDB\Driver\BulkWrite;
 use MongoDB\Driver\Command;
-use MongoDB\Driver\Exception\InvalidArgumentException;
 use MongoDB\Driver\Query as MongoQuery;
 use think\Exception;
+use think\mongo\Connection;
+use think\mongo\Query;
 
 class Builder
 {
@@ -29,7 +32,7 @@ class Builder
     // 最后插入ID
     protected $insertId = [];
     // 查询表达式
-    protected $exp = ['<>' => 'ne', 'neq' => 'ne', '=' => 'eq', '>' => 'gt', '>=' => 'gte', '<' => 'lt', '<=' => 'lte', 'in' => 'in', 'not in' => 'nin', 'nin' => 'nin', 'mod' => 'mod', 'exists' => 'exists', 'null' => 'null', 'notnull' => 'not null', 'not null' => 'not null', 'regex' => 'regex', 'type' => 'type', 'all' => 'all', '> time' => '> time', '< time' => '< time', 'between' => 'between', 'not between' => 'not between', 'between time' => 'between time', 'not between time' => 'not between time', 'notbetween time' => 'not between time', 'like' => 'like', 'near' => 'near', 'size' => 'size'];
+    protected $exp = ['<>' => 'ne', 'neq' => 'ne', '=' => 'eq', '>' => 'gt', '>=' => 'gte', '<' => 'lt', '<=' => 'lte', 'in' => 'in', 'not in' => 'nin', 'nin' => 'nin', 'mod' => 'mod', 'exists' => 'exists', 'regex' => 'regex', 'type' => 'type', 'all' => 'all', '> time' => '> time', '< time' => '< time', 'between' => 'between', 'not between' => 'not between', 'between time' => 'between time', 'not between time' => 'not between time', 'notbetween time' => 'not between time', 'like' => 'like', 'near' => 'near'];
 
     /**
      * 架构函数
@@ -51,9 +54,6 @@ class Builder
      */
     protected function parseKey($key)
     {
-        if (0 === strpos($key, '__TABLE__.')) {
-            list($collection, $key) = explode('.', $key, 2);
-        }
         if ('id' == $key && $this->connection->getConfig('pk_convert_id')) {
             $key = '_id';
         }
@@ -69,12 +69,8 @@ class Builder
      */
     protected function parseValue($value, $field = '')
     {
-        if ('_id' == $field && 'ObjectID' == $this->connection->getConfig('pk_type') && is_string($value)) {
-            try {
-                return new ObjectID($value);
-            } catch (InvalidArgumentException $e) {
-                return new ObjectID();
-            }
+        if ('_id' == $field && !($value instanceof ObjectID)) {
+            return new ObjectID($value);
         }
         return $value;
     }
@@ -124,7 +120,7 @@ class Builder
         $result = [];
         foreach ($data as $key => $val) {
             $item = $this->parseKey($key);
-            if (is_array($val) && isset($val[0]) && is_string($val[0]) && 0 === strpos($val[0], '$')) {
+            if (is_array($val) && isset($val[0]) && in_array($val[0], ['$inc', '$set', '$unset', '$push', '$pushall', '$addtoset', '$pop', '$pull', '$pullall'])) {
                 $result[$val[0]][$item] = $this->parseValue($val[1], $key);
             } else {
                 $result['$set'][$item] = $this->parseValue($val, $key);
@@ -139,7 +135,7 @@ class Builder
      * @param mixed $where
      * @return array
      */
-    public function parseWhere($where, $options = [])
+    public function parseWhere($where)
     {
         if (empty($where)) {
             $where = [];
@@ -152,7 +148,7 @@ class Builder
                     // 使用闭包查询
                     $query = new Query($this->connection);
                     call_user_func_array($value, [ & $query]);
-                    $filter[$logic][] = $this->parseWhere($query->getOptions('where'), $options);
+                    $filter[$logic][] = $this->parseWhere($query->getOptions('where')[$logic]);
                 } else {
                     if (strpos($field, '|')) {
                         // 不同字段使用相同查询条件（OR）
@@ -174,14 +170,6 @@ class Builder
                 }
             }
         }
-
-        if (!empty($options['soft_delete'])) {
-            // 附加软删除条件
-            list($field, $condition) = $options['soft_delete'];
-
-            $filter['$and'][] = $this->parseWhereItem($field, $condition);
-        }
-
         return $filter;
     }
 
@@ -197,22 +185,14 @@ class Builder
 
         // 对一个字段使用多个查询条件
         if (is_array($exp)) {
-            $data = [];
-            foreach ($val as $value) {
-                $exp   = $value[0];
-                $value = $value[1];
-                if (!in_array($exp, $this->exp)) {
-                    $exp = strtolower($exp);
-                    if (isset($this->exp[$exp])) {
-                        $exp = $this->exp[$exp];
-                    }
-                }
-                $k        = '$' . $exp;
-                $data[$k] = $value;
+            foreach ($val as $item) {
+                $str[] = $this->parseWhereItem($key, $item);
             }
-            $query[$key] = $data;
-            return $query;
-        } elseif (!in_array($exp, $this->exp)) {
+            return $str;
+        }
+
+        // 检测操作符
+        if (!in_array($exp, $this->exp)) {
             $exp = strtolower($exp);
             if (isset($this->exp[$exp])) {
                 $exp = $this->exp[$exp];
@@ -229,11 +209,6 @@ class Builder
             // 比较运算
             $k           = '$' . $exp;
             $query[$key] = [$k => $this->parseValue($value, $key)];
-        } elseif ('null' == $exp) {
-            // NULL 查询
-            $query[$key] = null;
-        } elseif ('not null' == $exp) {
-            $query[$key] = ['$ne' => null];
         } elseif ('all' == $exp) {
             // 满足所有指定条件
             $query[$key] = ['$all', $this->parseValue($value, $key)];
@@ -281,9 +256,6 @@ class Builder
         } elseif ('near' == $exp) {
             // 经纬度查询
             $query[$key] = ['$near' => $this->parseValue($value, $key)];
-        } elseif ('size' == $exp) {
-            // 元素长度查询
-            $query[$key] = ['$size' => intval($value)];
         } else {
             // 普通查询
             $query[$key] = $this->parseValue($value, $key);
@@ -354,8 +326,6 @@ class Builder
     public function insertAll($dataSet, $options = [])
     {
         $bulk = new BulkWrite;
-
-        $this->insertId = [];
         foreach ($dataSet as $data) {
             // 分析并处理数据
             $data = $this->parseData($data, $options);
@@ -377,7 +347,7 @@ class Builder
     public function update($data, $options = [])
     {
         $data  = $this->parseSet($data, $options);
-        $where = $this->parseWhere($options['where'], $options);
+        $where = $this->parseWhere($options['where']);
 
         if (1 == $options['limit']) {
             $updateOptions = ['multi' => false];
@@ -398,7 +368,7 @@ class Builder
      */
     public function delete($options)
     {
-        $where = $this->parseWhere($options['where'], $options);
+        $where = $this->parseWhere($options['where']);
         $bulk  = new BulkWrite;
         if (1 == $options['limit']) {
             $deleteOptions = ['limit' => 1];
@@ -418,7 +388,7 @@ class Builder
      */
     public function select($options)
     {
-        $where = $this->parseWhere($options['where'], $options);
+        $where = $this->parseWhere($options['where']);
         $query = new MongoQuery($where, $options);
         $this->log('find', $where, $options);
         return $query;
@@ -433,7 +403,7 @@ class Builder
     public function count($options)
     {
         $cmd['count'] = $options['table'];
-        $cmd['query'] = $this->parseWhere($options['where'], $options);
+        $cmd['query'] = $this->parseWhere($options['where']);
         foreach (['hint', 'limit', 'maxTimeMS', 'skip'] as $option) {
             if (isset($options[$option])) {
                 $cmd[$option] = $options[$option];
@@ -441,76 +411,6 @@ class Builder
         }
         $command = new Command($cmd);
         $this->log('cmd', 'count', $cmd);
-        return $command;
-    }
-
-    /**
-     * 聚合查询命令
-     * @access public
-     * @param array $options 参数
-     * @param array $extra   指令和字段
-     * @return Command
-     */
-    public function aggregate($options, $extra)
-    {
-        list($fun, $field) = $extra;
-        $pipeline          = [
-            ['$match' => (object) $this->parseWhere($options['where'], $options)],
-            ['$group' => ['_id' => null, 'aggregate' => ['$' . $fun => '$' . $field]]],
-        ];
-        $cmd = [
-            'aggregate'    => $options['table'],
-            'allowDiskUse' => true,
-            'pipeline'     => $pipeline,
-            'cursor'       => new \stdClass,
-        ];
-
-        foreach (['explain', 'collation', 'bypassDocumentValidation', 'readConcern'] as $option) {
-            if (isset($options[$option])) {
-                $cmd[$option] = $options[$option];
-            }
-        }
-        $command = new Command($cmd);
-        $this->log('aggregate', $cmd);
-        return $command;
-    }
-
-    /**
-     * 多聚合查询命令, 可以对多个字段进行 group by 操作
-     *
-     * @param array $options 参数
-     * @param array $extra 指令和字段
-     * @return Command
-     */
-    public function multiAggregate($options, $extra)
-    {
-        list($aggregate, $groupBy) = $extra;
-        $groups                    = ['_id' => []];
-        foreach ($groupBy as $field) {
-            $groups['_id'][$field] = '$' . $field;
-        }
-
-        foreach ($aggregate as $fun => $field) {
-            $groups[$field . '_' . $fun] = ['$' . $fun => '$' . $field];
-        }
-        $pipeline = [
-            ['$match' => (object) $this->parseWhere($options['where'], $options)],
-            ['$group' => $groups],
-        ];
-        $cmd = [
-            'aggregate'    => $options['table'],
-            'allowDiskUse' => true,
-            'pipeline'     => $pipeline,
-            'cursor'       => new \stdClass,
-        ];
-
-        foreach (['explain', 'collation', 'bypassDocumentValidation', 'readConcern'] as $option) {
-            if (isset($options[$option])) {
-                $cmd[$option] = $options[$option];
-            }
-        }
-        $command = new Command($cmd);
-        $this->log('group', $cmd);
         return $command;
     }
 
@@ -529,7 +429,7 @@ class Builder
         ];
 
         if (!empty($options['where'])) {
-            $cmd['query'] = $this->parseWhere($options['where'], $options);
+            $cmd['query'] = $this->parseWhere($options['where']);
         }
 
         if (isset($options['maxTimeMS'])) {
