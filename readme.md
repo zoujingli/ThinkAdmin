@@ -82,3 +82,30 @@ public function index(){
 ## 赞助打赏
 ![赞助](http://static.thinkadmin.top/pay.png)
 
+## 项目版本
+体验账号及密码都是admin
+
+### ThinkAdmin v1 基于 ThinkPHP 5.0 开发
+* 在线体验地址：https://v1.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v1
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v1
+### ThinkAdmin v2 基于 ThinkPHP 5.0 开发
+* 在线体验地址：https://v2.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v2
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v2
+### ThinkAdmin v3 基于 ThinkPHP 5.1 开发
+* 在线体验地址：https://v3.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v3
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v3
+### ThinkAdmin v4 基于 ThinkPHP 5.1 开发
+* 在线体验地址：https://v4.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v4
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v4
+### ThinkAdmin v5 基于 ThinkPHP 5.1 开发（后台权限基于注解实现）
+* 在线体验地址：https://v5.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v5
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v5
+### ThinkAdmin v6 基于 ThinkPHP 6.0 开发（后台权限基于注解实现）
+* 在线体验地址：https://v6.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v6
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v6
