@@ -115,7 +115,7 @@ class QueueService extends Service
      */
     public function addCleanQueue()
     {
-        $this->register('清理7天前的记录及执行超时任务', "xtask:clean", 0, [], 0, 3600);
+        $this->register('清理7天前记录及执行超时的任务', "xtask:clean", 0, [], 0, 3600);
     }
 
     /**

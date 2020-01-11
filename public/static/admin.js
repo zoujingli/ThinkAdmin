@@ -581,7 +581,11 @@ $(function () {
     $body.on('submit', 'form.form-search', function () {
         var url = $(this).attr('action').replace(/&?page=\d+/g, ''), split = url.indexOf('?') === -1 ? '?' : '&';
         if ((this.method || 'get').toLowerCase() === 'get') {
-            return window.location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
+            if (location.href.indexOf('spm=') > -1) {
+                return window.location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
+            } else {
+                return window.location.href = $.menu.parseUri(url + split + $(this).serialize());
+            }
         }
         $.form.load(url, this, 'post');
     });

@@ -19,11 +19,11 @@
     <script src="__ROOT__/static/plugs/jquery/pace.min.js"></script>
 </head>
 
-<body>
+<body class="layui-layout-body">
 {block name='body'}
-<!-- 主体内容 开始 -->
-{block name='content'}{/block}
-<!-- 主体内容 结束 -->
+<div class="layui-layout layui-layout-admin layui-layout-left-hide">
+    <div class="layui-body" style="top:0">{block name='content'}{/block}</div>
+</div>
 {/block}
 <script src="__ROOT__/static/plugs/layui/layui.all.js"></script>
 <script src="__ROOT__/static/plugs/require/require.js"></script>
