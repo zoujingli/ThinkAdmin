@@ -16,6 +16,24 @@
             </div>
         </div>
 
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">
+                <span class="color-green font-w7">Protocol</span><br><span class="nowrap color-desc">访问协议</span>
+            </label>
+            <div class="layui-input-block">
+                {foreach ['follow','http','https','path','auto'] as $pro}
+                <label class="think-radio">
+                    {if sysconf('storage.local_http_protocol') eq $pro}
+                    <input checked type="radio" name="storage.local_http_protocol" value="{$pro}" lay-ignore> {$pro}
+                    {else}
+                    <input type="radio" name="storage.local_http_protocol" value="{$pro}" lay-ignore> {$pro}
+                    {/if}
+                </label>
+                {/foreach}
+                <p class="help-block">本地服务器访问协议，其中 https 需要配置证书才能使用（follow 为跟随系统，path 为文件路径，auto 为相对协议）</p>
+            </div>
+        </div>
+
         <div class="hr-line-dashed margin-left-40"></div>
         <input type="hidden" name="storage.type" value="local">
 

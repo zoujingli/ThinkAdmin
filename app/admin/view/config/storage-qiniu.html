@@ -2,7 +2,7 @@
     <div class="layui-card-body">
 
         <div class="color-text margin-left-40 margin-bottom-20 layui-code text-center layui-bg-gray" style="border-left-width:1px">
-            <p class="margin-bottom-5 font-w7">文件将上传到七牛云存储，对象存储需要配置为公开访问的 Bucket 空间。</p>
+            <p class="margin-bottom-5 font-w7">文件将上传到七牛云存储，对象存储需要配置为公开访问的 Bucket 空间</p>
             完成实名认证后可获得10G免费存储空间哦！<a target="_blank" href="https://portal.qiniu.com/signup?code=3lhz6nmnwbple">我要免费申请</a>
         </div>
 
@@ -12,7 +12,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.allow_exts" type="text" name="storage.allow_exts" required value="{:sysconf('storage.allow_exts')}" placeholder="请输入系统文件上传后缀" class="layui-input">
-                <p class="help-block">设置系统允许上传文件的后缀，多个以英文逗号隔开。如：png,jpg,rar,doc</p>
+                <p class="help-block">设置系统允许上传文件的后缀，多个以英文逗号隔开如：png,jpg,rar,doc</p>
             </div>
         </div>
 
@@ -30,7 +30,7 @@
                     {/if}
                 </label>
                 {/foreach}
-                <p class="help-block">七牛云存储访问协议，其中 https 需要配置证书才能使用，auto 为相对协议。</p>
+                <p class="help-block">七牛云存储访问协议，其中 https 需要配置证书才能使用（auto 为相对协议）</p>
             </div>
         </div>
 
@@ -49,7 +49,7 @@
                     {$area}
                 </label>
                 {/foreach}
-                <p class="help-block">七牛云存储空间所在区域，需要严格对应储存所在区域才能上传文件。</p>
+                <p class="help-block">七牛云存储空间所在区域，需要严格对应储存所在区域才能上传文件</p>
             </div>
         </div>
 
@@ -79,7 +79,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.qiniu_access_key" type="text" name="storage.qiniu_access_key" required value="{:sysconf('storage.qiniu_access_key')}" placeholder="请输入七牛云 AccessKey (访问密钥)" class="layui-input">
-                <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到访问密钥。</p>
+                <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到访问密钥</p>
             </div>
         </div>
 
@@ -89,7 +89,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.qiniu_secret_key" type="text" name="storage.qiniu_secret_key" required value="{:sysconf('storage.qiniu_secret_key')}" maxlength="43" placeholder="请输入七牛云 SecretKey (安全密钥)" class="layui-input">
-                <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到安全密钥。</p>
+                <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到安全密钥</p>
             </div>
         </div>
 
