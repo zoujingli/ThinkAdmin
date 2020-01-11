@@ -38,7 +38,7 @@ class LocalStorage extends Storage
         $type = strtolower(sysconf('storage.local_http_protocol'));
         if ($type === 'path') {
             $file = $this->app->request->baseFile(false);
-            $this->prefix = dirname(strtr($file, '\\', '/'));
+            $this->prefix = trim(dirname($file), '\\/');
         } else {
             $this->prefix = dirname($this->app->request->basefile(true));
             list(, $domain) = explode('://', strtr($this->prefix, '\\', '/'));
