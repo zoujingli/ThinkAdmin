@@ -166,6 +166,7 @@ return array(
     'WeMini\\Image' => $vendorDir . '/zoujingli/wechat-developer/WeMini/Image.php',
     'WeMini\\Logistics' => $vendorDir . '/zoujingli/wechat-developer/WeMini/Logistics.php',
     'WeMini\\Message' => $vendorDir . '/zoujingli/wechat-developer/WeMini/Message.php',
+    'WeMini\\Newtmpl' => $vendorDir . '/zoujingli/wechat-developer/WeMini/Newtmpl.php',
     'WeMini\\Ocr' => $vendorDir . '/zoujingli/wechat-developer/WeMini/Ocr.php',
     'WeMini\\Plugs' => $vendorDir . '/zoujingli/wechat-developer/WeMini/Plugs.php',
     'WeMini\\Poi' => $vendorDir . '/zoujingli/wechat-developer/WeMini/Poi.php',

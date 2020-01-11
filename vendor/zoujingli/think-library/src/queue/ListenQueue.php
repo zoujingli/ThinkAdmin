@@ -29,11 +29,17 @@ use think\Db;
 class ListenQueue extends Command
 {
     /**
+     * 当前任务服务
+     * @var ProcessService
+     */
+    protected $process;
+
+    /**
      * 配置指定信息
      */
     protected function configure()
     {
-        $this->setName('xtask:listen')->setDescription('[监听]启动任务监听主进程');
+        $this->setName('xtask:listen')->setDescription('Start task listening main process');
     }
 
     /**
@@ -48,23 +54,26 @@ class ListenQueue extends Command
      */
     protected function execute(Input $input, Output $output)
     {
+        set_time_limit(0);
         Db::name('SystemQueue')->count();
         if (($process = ProcessService::instance())->iswin() && function_exists('cli_set_process_title')) {
-            cli_set_process_title("ThinkAdmin 监听主进程 {$process->version()}");
+            cli_set_process_title("ThinkAdmin {$process->version()} Queue Listen");
         }
-        $output->comment('============ 任务监听中 ============');
+        $output->writeln('============ LISTENING ============');
         while (true) {
-            foreach (Db::name('SystemQueue')->where([['status', 'eq', '1'], ['time', '<=', time()]])->order('time asc')->select() as $item) {
+            $map = [['status', 'eq', '1'], ['time', '<=', time()]];
+            foreach (Db::name('SystemQueue')->where($map)->order('time asc')->select() as $vo) {
                 try {
-                    if ($process->query($command = $process->think("xtask:_work {$item['id']} -"))) {
-                        $output->comment("正在执行 -> [{$item['id']}] {$item['title']}");
+                    $command = $process->think("xtask:_work {$vo['id']} -");
+                    if (count($process->query($command)) > 0) {
+                        $this->output->writeln("Already in progress -> [{$vo['id']}] {$vo['title']}");
                     } else {
                         $process->create($command);
-                        $output->info("创建成功 -> [{$item['id']}] {$item['title']}");
+                        $this->output->writeln("Created new process -> [{$vo['id']}] {$vo['title']}");
                     }
                 } catch (\Exception $e) {
-                    Db::name('SystemQueue')->where(['id' => $item['id']])->update(['status' => '4', 'desc' => $e->getMessage()]);
-                    $output->error("创建处理任务的子进程失败 --> [{$item['id']}] {$item['title']}，{$e->getMessage()}");
+                    Db::name('SystemQueue')->where(['id' => $vo['id']])->update(['status' => '4', 'desc' => $e->getMessage()]);
+                    $output->error("Execution failed -> [{$vo['id']}] {$vo['title']}，{$e->getMessage()}");
                 }
             }
             sleep(1);

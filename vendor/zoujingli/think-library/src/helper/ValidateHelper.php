@@ -39,22 +39,30 @@ class ValidateHelper extends Helper
                 list($name, $alias) = explode('#', $name);
             }
             if (stripos($name, '.') === false) {
-                $data[$name] = empty($alias) ? $name : $alias;
+                if (is_numeric($name)) {
+                    $keys = $message;
+                    if (is_string($message) && stripos($message, '#') !== false) {
+                        list($name, $alias) = explode('#', $message);
+                        $keys = empty($alias) ? $name : $alias;
+                    }
+                    $data[$name] = input("{$type}{$keys}");
+                } else {
+                    $data[$name] = $message;
+                }
             } else {
                 list($_rgx) = explode(':', $name);
                 list($_key, $_rule) = explode('.', $name);
+                $keys = empty($alias) ? $_key : $alias;
                 $info[$_rgx] = $message;
-                $data[$_key] = empty($alias) ? $_key : $alias;
+                $data[$_key] = input("{$type}{$keys}");
                 $rule[$_key] = empty($rule[$_key]) ? $_rule : "{$rule[$_key]}|{$_rule}";
             }
         }
-        foreach ($data as $key => $name) $data[$key] = input("{$type}{$name}");
-        $validate = Validate::make($rule, $info);
-        if ($validate->check($data)) {
+        $validate = new Validate();
+        if ($validate->rule($rule)->message($info)->check($data)) {
             return $data;
         } else {
             $this->controller->error($validate->getError());
         }
     }
-
 }

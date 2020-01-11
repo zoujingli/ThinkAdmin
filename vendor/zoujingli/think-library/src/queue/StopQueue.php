@@ -33,7 +33,7 @@ class StopQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:stop')->setDescription('[控制]平滑停止所有的进程');
+        $this->setName('xtask:stop')->setDescription('Smooth stop of all task processes');
     }
 
     /**
@@ -46,10 +46,10 @@ class StopQueue extends Command
         $process = ProcessService::instance();
         $command = $process->think('xtask:');
         if (count($result = $process->query($command)) < 1) {
-            $output->writeln("没有需要结束的任务进程哦！");
+            $output->writeln("There is no task process to finish");
         } else foreach ($result as $item) {
             $process->close($item['pid']);
-            $output->writeln("发送结束进程{$item['pid']}信号成功！");
+            $output->writeln("Sending end process {$item['pid']} signal succeeded");
         }
     }
 }

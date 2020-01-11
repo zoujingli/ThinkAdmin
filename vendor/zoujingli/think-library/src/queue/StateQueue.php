@@ -32,7 +32,7 @@ class StateQueue extends Command
      */
     protected function configure()
     {
-        $this->setName('xtask:state')->setDescription('[控制]查看监听主进程状态');
+        $this->setName('xtask:state')->setDescription('Check listening main process status');
     }
 
     /**
@@ -45,9 +45,9 @@ class StateQueue extends Command
         $process = ProcessService::instance();
         $command = $process->think('xtask:listen');
         if (count($result = $process->query($command)) > 0) {
-            $output->info("异步任务监听主进程{$result[0]['pid']}正在运行...");
+            $output->info("Listening for main process {$result[0]['pid']} running");
         } else {
-            $output->error("异步任务监听主进程没有运行哦!");
+            $output->error("The Listening main process is not running");
         }
     }
 }

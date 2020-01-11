@@ -267,6 +267,7 @@ class ComposerStaticInitbf5dd43c242f2a86b1513b16fb281176
         'WeMini\\Image' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Image.php',
         'WeMini\\Logistics' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Logistics.php',
         'WeMini\\Message' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Message.php',
+        'WeMini\\Newtmpl' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Newtmpl.php',
         'WeMini\\Ocr' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Ocr.php',
         'WeMini\\Plugs' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Plugs.php',
         'WeMini\\Poi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Poi.php',
