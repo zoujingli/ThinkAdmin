@@ -91,8 +91,8 @@ class WorkQueue extends Command
                     }
                 } else {
                     // 自定义指令，不支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
-                    $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $queue['command'])));
-                    $this->update('3', Console::call(array_shift($attr), $attr, 'console'));
+                    $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $queue['preload'])));
+                    $this->update('3', Console::call(array_shift($attr), $attr)->fetch());
                 }
             }
         } catch (\Exception $e) {
