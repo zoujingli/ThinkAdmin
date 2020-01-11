@@ -5,20 +5,20 @@
     </div>
 
     <div class="layui-card-body">
-        <div class="layui-elem-quote border-0">
-            <p class="font-s14 margin-bottom-10 color-text">
-                <strong>第三方平台授权</strong><br>
-                JSSDK签名测试需要在开放平台配置当前的授权域名：<a data-copy="{:request()->host()}">{:request()->host()}</a>
-            </p>
-            <p class="font-s14 margin-bottom-10 color-text">
-                <strong>普通接口强制绑定</strong><br>
-                网页授权及JSSDK签名都需要在公众号平台配置授权域名：<a data-copy="{:request()->host()}">{:request()->host()}</a>
-            </p>
-            <p class="font-s14 color-text">
-                <strong>支付测试配置</strong><br>
-                JSAPI支付测试需要在微信商户平台配置支付目录：<a data-copy="{:url('@wechat/api.test/',[],'',true)}">{:url('@wechat/api.test/',[],'',true)}</a><br>
+        <div class="layui-bg-gray padding-20 margin-bottom-20">
+            <div class="margin-bottom-15">
+                <p class="font-w7">第三方平台授权</p>
+                JSSDK 签名测试需要在开放平台配置当前的授权域名：<a data-copy="{:request()->host()}">{:request()->host()}</a>
+            </div>
+            <div class="margin-bottom-15">
+                <p class="font-w7">普通接口强制绑定</p>
+                网页授权及 JSSDK 签名都需要在公众号平台配置授权域名：<a data-copy="{:request()->host()}">{:request()->host()}</a>
+            </div>
+            <div>
+                <p class="font-w7">支付测试配置</p>
+                JSAPI 支付测试需要在微信商户平台配置支付目录：<a data-copy="{:url('@wechat/api.test/',[],'',true)}">{:url('@wechat/api.test/',[],'',true)}</a><br>
                 扫码支付①需要在微信商户平台配置支付通知地址：<a data-copy="{:url('@wechat/api.test/scan_one_notify',[],'',true)}">{:url('@wechat/api.test/scan_one_notify',[],'',true)}</a>
-            </p>
+            </div>
         </div>
         <div class="layui-clear">
             <div class="pull-left padding-right-15 notselect">
