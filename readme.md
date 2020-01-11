@@ -1,6 +1,6 @@
 ## 大道至简 · 原生框架
 
-### 目前处理开发阶段，请匆应用到线上版本项目开发！！！
+### 目前 ThinkAdmin v6 处理调测阶段，请匆应用到生产版本的项目开发！！！
 
 ThinkAdmin v6 依赖自制组件 ThinkLibrary v6，ThinkLibrary v6 是针对 ThinkPHP 6.0 定制开发。
 
