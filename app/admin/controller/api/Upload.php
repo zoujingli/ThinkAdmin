@@ -56,9 +56,10 @@ class Upload extends Controller
      */
     public function state()
     {
+        $this->name = input('name', null);
         $this->safe = boolval(input('safe'));
         $data = ['uptype' => $this->getType(), 'xkey' => input('xkey')];
-        if ($info = Storage::instance($data['uptype'])->info($data['xkey'], $this->safe)) {
+        if ($info = Storage::instance($data['uptype'])->info($data['xkey'], $this->safe, $this->name)) {
             $data['url'] = $info['url'];
             $this->success('文件已经上传', $data, 200);
         } elseif ('local' === $data['uptype']) {
@@ -66,7 +67,7 @@ class Upload extends Controller
             $data['server'] = LocalStorage::instance()->upload();
         } elseif ('qiniu' === $data['uptype']) {
             $data['url'] = QiniuStorage::instance()->url($data['xkey']);
-            $data['token'] = QiniuStorage::instance()->buildUploadToken($data['xkey']);
+            $data['token'] = QiniuStorage::instance()->buildUploadToken($data['xkey'], 3600, $this->name);
             $data['server'] = QiniuStorage::instance()->upload();
         } elseif ('alioss' === $data['uptype']) {
             $token = AliossStorage::instance()->buildUploadToken($data['xkey']);

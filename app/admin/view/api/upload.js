@@ -23,12 +23,12 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                 idx: 0, auto: false, headers: headers || {}, multiple: opt.multiple,
                 accept: 'file', elem: element, exts: options.exts, acceptMime: options.acceptMime,
                 choose: function (object, files) {
-                    files = object.pushFile(), opt.input.data('files', files), opt.element.data('files', files);
+                    files = object.pushFile(), opt.element.data('files', files);
                     for (index in files) md5file(files[index]).then(function (file) {
-                        opt.input.data('file', file).data('index', index), opt.element.data('file', file).data('index', index);
+                        opt.element.data('file', file).data('index', index);
                         jQuery.ajax("{:url('@admin/api.upload/state')}", {
-                            data: {xkey: file.xkey, uptype: opt.uptype, safe: opt.safe}, method: 'post', success: function (ret) {
-                                file.xurl = ret.data.url + '?attname=' + encodeURIComponent(file.name);
+                            data: {xkey: file.xkey, uptype: opt.uptype, safe: opt.safe, name: file.name}, method: 'post', success: function (ret) {
+                                file.xurl = ret.data.url + (ret.data.url.indexOf('?attname=') > -1 ? '' : '?attname=' + encodeURIComponent(file.name));
                                 if (parseInt(ret.code) === 404) {
                                     uploader.config.url = ret.data.server;
                                     uploader.config.data.key = ret.data.xkey;
@@ -45,7 +45,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                                     }
                                     object.upload(index, file);
                                 } else if (parseInt(ret.code) === 200) {
-                                    UploadedHandler.call(opt.element, ret.data.url, file);
+                                    UploadedHandler.call(opt.element, file.xurl, file);
                                 } else {
                                     $.msg.error(ret.info || ret.error.message || '文件上传出错！');
                                 }
