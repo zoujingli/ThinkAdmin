@@ -184,15 +184,18 @@ abstract class Storage
      * 获取下载链接后缀
      * @param string $attname 下载名称
      * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function getSuffix($attname = null)
     {
-        if (is_string($attname) && strlen($attname) > 0) {
-            $attname = "?attname=" . urlencode($attname);
-        } else {
-            $attname = '';
+        if (sysconf('storage.link_type') === 'link_type_full') {
+            if (is_string($attname) && strlen($attname) > 0) {
+                return "?attname=" . urlencode($attname);
+            }
         }
-        return $attname;
+        return '';
     }
 
 }

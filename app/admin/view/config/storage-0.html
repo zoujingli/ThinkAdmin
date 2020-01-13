@@ -1,0 +1,27 @@
+<div class="layui-form-item">
+    <label class="layui-form-label label-required">
+        <span class="color-green font-w7">LinkType</span><br><span class="nowrap color-desc">链接类型</span>
+    </label>
+    <div class="layui-input-block">
+        {foreach ['link_type_none'=>'简洁链接','link_type_full'=>'完整链接'] as $k=>$v}
+        <label class="think-radio">
+            {if sysconf('storage.link_type') eq $k}
+            <input checked type="radio" name="storage.link_type" value="{$k}" lay-ignore> {$v}
+            {else}
+            <input type="radio" name="storage.link_type" value="{$k}" lay-ignore> {$v}
+            {/if}
+        </label>
+        {/foreach}
+        <p class="help-block">类型为“简洁链接”时链接将只返回 hash 地址，而“完整链接”将携带参数保留文件名称</p>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label" for="storage.allow_exts">
+        <span class="color-green font-w7">AllowExts</span><br><span class="nowrap color-desc">允许类型</span>
+    </label>
+    <div class="layui-input-block">
+        <input id="storage.allow_exts" type="text" name="storage.allow_exts" required value="{:sysconf('storage.allow_exts')}" placeholder="请输入系统文件上传后缀" class="layui-input">
+        <p class="help-block">设置系统允许上传文件的后缀，多个以英文逗号隔开如：png,jpg,rar,doc</p>
+    </div>
+</div>

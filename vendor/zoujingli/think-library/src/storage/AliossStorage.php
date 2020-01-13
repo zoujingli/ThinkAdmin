@@ -215,16 +215,17 @@ class AliossStorage extends Storage
      * 获取文件上传令牌
      * @param string $name 文件名称
      * @param integer $expires 有效时间
+     * @param string $attname 下载名称
      * @return array
      */
-    public function buildUploadToken($name = null, $expires = 3600)
+    public function buildUploadToken($name = null, $expires = 3600, $attname = null)
     {
         $data = [
             'policy'  => base64_encode(json_encode([
                 'conditions' => [['content-length-range', 0, 1048576000]],
                 'expiration' => date('Y-m-d\TH:i:s.000\Z', time() + $expires),
             ])),
-            'siteurl' => $this->url($name),
+            'siteurl' => $this->url($name, false, $attname),
             'keyid'   => $this->accessKey,
         ];
         $data['signature'] = base64_encode(hash_hmac('sha1', $data['policy'], $this->secretKey, true));

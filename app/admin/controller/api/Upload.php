@@ -63,19 +63,19 @@ class Upload extends Controller
             $data['url'] = $info['url'];
             $this->success('文件已经上传', $data, 200);
         } elseif ('local' === $data['uptype']) {
-            $data['url'] = LocalStorage::instance()->url($data['xkey']);
+            $data['url'] = LocalStorage::instance()->url($data['xkey'], $this->safe, $this->name);
             $data['server'] = LocalStorage::instance()->upload();
         } elseif ('qiniu' === $data['uptype']) {
-            $data['url'] = QiniuStorage::instance()->url($data['xkey']);
+            $data['url'] = QiniuStorage::instance()->url($data['xkey'], $this->safe, $this->name);
             $data['token'] = QiniuStorage::instance()->buildUploadToken($data['xkey'], 3600, $this->name);
             $data['server'] = QiniuStorage::instance()->upload();
         } elseif ('alioss' === $data['uptype']) {
-            $token = AliossStorage::instance()->buildUploadToken($data['xkey']);
-            $data['server'] = AliossStorage::instance()->upload();
+            $token = AliossStorage::instance()->buildUploadToken($data['xkey'], 3600, $this->name);
             $data['url'] = $token['siteurl'];
             $data['policy'] = $token['policy'];
             $data['signature'] = $token['signature'];
             $data['OSSAccessKeyId'] = $token['keyid'];
+            $data['server'] = AliossStorage::instance()->upload();
         }
         $data['safe'] = intval($this->safe);
         $this->success('获取上传参数', $data, 404);
