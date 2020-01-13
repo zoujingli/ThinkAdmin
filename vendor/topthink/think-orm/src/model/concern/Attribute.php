@@ -424,7 +424,7 @@ trait Attribute
                 break;
             case 'datetime':
                 $value = is_numeric($value) ? $value : strtotime($value);
-                $value = $this->formatDateTime('Y-m-d H:i:s.u', $value);
+                $value = $this->formatDateTime('Y-m-d H:i:s.u', $value, true);
                 break;
             case 'object':
                 if (is_object($value)) {

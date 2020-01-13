@@ -327,12 +327,14 @@ class Request
         }
 
         $request->header = array_change_key_case($header);
+        $request->server = $_SERVER;
+        $request->env    = $app->env;
 
-        $request->server  = $_SERVER;
-        $request->env     = $app->env;
+        $inputData = $request->getInputData($request->input);
+
         $request->get     = $_GET;
-        $request->post    = $_POST ?: $request->getInputData($request->input);
-        $request->put     = $request->getInputData($request->input);
+        $request->post    = $_POST ?: $inputData;
+        $request->put     = $inputData;
         $request->request = $_REQUEST;
         $request->cookie  = $_COOKIE;
         $request->file    = $_FILES ?? [];
@@ -982,11 +984,12 @@ class Request
 
     protected function getInputData($content): array
     {
-        if (false !== strpos($this->contentType(), 'json')) {
-            return (array) json_decode($content, true);
-        } elseif (strpos($content, '=')) {
+        $contentType = $this->contentType();
+        if ($contentType == 'application/x-www-form-urlencoded') {
             parse_str($content, $data);
             return $data;
+        } elseif (false !== strpos($contentType, 'json')) {
+            return (array) json_decode($content, true);
         }
 
         return [];
@@ -2051,15 +2054,18 @@ class Request
     /**
      * 设置php://input数据
      * @access public
-     * @param  string $input RAW数据
+     * @param string $input RAW数据
      * @return $this
      */
     public function withInput(string $input)
     {
         $this->input = $input;
         if (!empty($input)) {
-            $this->post = $this->getInputData($input);
-            $this->put  = $this->getInputData($input);
+            $inputData = $this->getInputData($input);
+            if (!empty($inputData)) {
+                $this->post = $inputData;
+                $this->put  = $inputData;
+            }
         }
         return $this;
     }

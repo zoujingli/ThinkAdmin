@@ -229,18 +229,6 @@ class Query extends BaseQuery
     }
 
     /**
-     * 设置自增序列名
-     * @access public
-     * @param string $sequence 自增序列名
-     * @return $this
-     */
-    public function sequence(string $sequence = null)
-    {
-        $this->options['sequence'] = $sequence;
-        return $this;
-    }
-
-    /**
      * 指定强制索引
      * @access public
      * @param string $force 索引名称

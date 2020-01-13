@@ -99,9 +99,10 @@ class AliossStorage extends Storage
      * @param string $name 文件名称
      * @param string $file 文件内容
      * @param boolean $safe 安全模式
+     * @param string $attachment 下载名称
      * @return array
      */
-    public function set($name, $file, $safe = false)
+    public function set($name, $file, $safe = false, $attachment = null)
     {
         $token = $this->buildUploadToken($name);
         $data = ['key' => $name];
@@ -109,6 +110,9 @@ class AliossStorage extends Storage
         $data['Signature'] = $token['signature'];
         $data['OSSAccessKeyId'] = $this->accessKey;
         $data['success_action_status'] = '200';
+        if (is_string($attachment) && strlen($attachment) > 0) {
+            $data['Content-Disposition'] = "attachment;filename=" . urlencode($attachment);
+        }
         $file = ['field' => 'file', 'name' => $name, 'content' => $file];
         if (is_numeric(stripos(HttpExtend::submit($this->upload(), $data, $file), '200 OK'))) {
             return ['file' => $this->path($name, $safe), 'url' => $this->url($name, $safe), 'key' => $name];

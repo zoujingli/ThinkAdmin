@@ -830,6 +830,18 @@ abstract class BaseQuery
     }
 
     /**
+     * 设置自增序列名
+     * @access public
+     * @param string $sequence 自增序列名
+     * @return $this
+     */
+    public function sequence(string $sequence = null)
+    {
+        $this->options['sequence'] = $sequence;
+        return $this;
+    }
+
+    /**
      * 设置JSON字段信息
      * @access public
      * @param array $json  JSON字段
