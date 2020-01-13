@@ -3,7 +3,7 @@
         <span class="color-green font-w7">LinkType</span><br><span class="nowrap color-desc">链接类型</span>
     </label>
     <div class="layui-input-block">
-        {foreach ['link_type_none'=>'简洁链接','link_type_full'=>'完整链接'] as $k=>$v}
+        {foreach ['none'=>'简洁链接','full'=>'完整链接'] as $k=>$v}
         <label class="think-radio">
             {if sysconf('storage.link_type') eq $k}
             <input checked type="radio" name="storage.link_type" value="{$k}" lay-ignore> {$v}

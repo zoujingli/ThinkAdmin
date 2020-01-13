@@ -190,7 +190,7 @@ abstract class Storage
      */
     protected function getSuffix($attname = null)
     {
-        if (sysconf('storage.link_type') === 'link_type_full') {
+        if (sysconf('storage.link_type') === 'full') {
             if (is_string($attname) && strlen($attname) > 0) {
                 return "?attname=" . urlencode($attname);
             }
