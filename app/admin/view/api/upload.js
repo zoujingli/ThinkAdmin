@@ -28,7 +28,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                         opt.input.data('file', file).data('index', index), opt.element.data('file', file).data('index', index);
                         jQuery.ajax("{:url('@admin/api.upload/state')}", {
                             data: {xkey: file.xkey, uptype: opt.uptype, safe: opt.safe}, method: 'post', success: function (ret) {
-                                file.xurl = ret.data.url;
+                                file.xurl = ret.data.url + '?attname=' + encodeURIComponent(file.name);
                                 if (parseInt(ret.code) === 404) {
                                     uploader.config.url = ret.data.server;
                                     uploader.config.data.key = ret.data.xkey;
