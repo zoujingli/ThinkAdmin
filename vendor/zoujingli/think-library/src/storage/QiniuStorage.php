@@ -73,15 +73,16 @@ class QiniuStorage extends Storage
      * @param string $name 文件名称
      * @param string $file 文件内容
      * @param boolean $safe 安全模式
+     * @param string $attname 下载名称
      * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function set($name, $file, $safe = false)
+    public function set($name, $file, $safe = false, $attname = null)
     {
-        $token = $this->buildUploadToken($name);
+        $token = $this->buildUploadToken($name, 3600, $attname);
         $data = ['key' => $name, 'token' => $token, 'fileName' => $name];
         $file = ['field' => "file", 'name' => $name, 'content' => $file];
         $result = HttpExtend::submit($this->upload(), $data, $file, [], 'POST', false);
@@ -132,11 +133,12 @@ class QiniuStorage extends Storage
      * 获取文件当前URL地址
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
+     * @param string $attname 下载名称
      * @return string
      */
-    public function url($name, $safe = false)
+    public function url($name, $safe = false, $attname = null)
     {
-        return "{$this->prefix}/{$name}";
+        return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
     }
 
     /**
@@ -154,13 +156,14 @@ class QiniuStorage extends Storage
      * 获取文件存储信息
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
+     * @param string $attname 下载名称
      * @return array
      */
-    public function info($name, $safe = false)
+    public function info($name, $safe = false, $attname = null)
     {
         list($entry, $token) = $this->getAccessToken($name);
         $data = json_decode(HttpExtend::get("http://rs.qiniu.com/stat/{$entry}", [], ['headers' => ["Authorization: QBox {$token}"]]), true);
-        return isset($data['md5']) ? ['file' => $name, 'url' => $this->url($name, $safe), 'key' => $name] : [];
+        return isset($data['md5']) ? ['file' => $name, 'url' => $this->url($name, $safe, $attname), 'key' => $name] : [];
     }
 
     /**
@@ -194,14 +197,15 @@ class QiniuStorage extends Storage
      * 获取文件上传令牌
      * @param string $name 文件名称
      * @param integer $expires 有效时间
+     * @param string $attname 下载名称
      * @return string
      */
-    public function buildUploadToken($name = null, $expires = 3600)
+    public function buildUploadToken($name = null, $expires = 3600, $attname = null)
     {
         $policy = $this->safeBase64(json_encode([
             "deadline"   => time() + $expires, "scope" => is_null($name) ? $this->bucket : "{$this->bucket}:{$name}",
             'returnBody' => json_encode([
-                'uploaded' => true, 'filename' => '$(key)', 'file' => $name, 'url' => "{$this->prefix}/$(key)", 'key' => $name,
+                'uploaded' => true, 'filename' => '$(key)', 'url' => "{$this->prefix}/$(key){$this->getSuffix($attname)}", 'key' => $name, 'file' => $name,
             ], JSON_UNESCAPED_UNICODE),
         ]));
         return "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', $policy, $this->secretKey, true))}:{$policy}";

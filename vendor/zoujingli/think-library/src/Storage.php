@@ -23,10 +23,10 @@ use think\Container;
  * 文件存储引擎管理
  * Class Storage
  * @package think\admin
- * @method array info($name, $safe = false) static 文件存储信息
- * @method array set($name, $file, $safe = false) static 储存文件
+ * @method array info($name, $safe = false, $attname = null) static 文件存储信息
+ * @method array set($name, $file, $safe = false, $attname = null) static 储存文件
+ * @method string url($name, $safe = false, $attname = null) static 获取文件链接
  * @method string get($name, $safe = false) static 读取文件内容
- * @method string url($name, $safe = false) static 获取文件链接
  * @method string path($name, $safe = false) static 文件存储路径
  * @method boolean del($name, $safe = false) static 删除存储文件
  * @method boolean has($name, $safe = false) static 检查是否存在
@@ -165,6 +165,34 @@ abstract class Storage
         static $mimes = [];
         if (count($mimes) > 0) return $mimes;
         return $mimes = include __DIR__ . '/storage/bin/mimes.php';
+    }
+
+    /**
+     * 获取文件基础名称
+     * @param string $name 文件名称
+     * @return string
+     */
+    protected function delSuffix($name)
+    {
+        if (strpos($name, '?') !== false) {
+            list($name) = explode('?', $name);
+        }
+        return $name;
+    }
+
+    /**
+     * 获取下载链接后缀
+     * @param string $attname 下载名称
+     * @return string
+     */
+    protected function getSuffix($attname = null)
+    {
+        if (is_string($attname) && strlen($attname) > 0) {
+            $attname = "?attname=" . urlencode($attname);
+        } else {
+            $attname = '';
+        }
+        return $attname;
     }
 
 }

@@ -68,15 +68,16 @@ class LocalStorage extends Storage
      * @param string $name 文件名称
      * @param string $file 文件内容
      * @param boolean $safe 安全模式
+     * @param string $attname 下载名称
      * @return array
      */
-    public function set($name, $file, $safe = false)
+    public function set($name, $file, $safe = false, $attname = null)
     {
         try {
             $path = $this->path($name, $safe);
             file_exists(dirname($path)) || mkdir(dirname($path), 0755, true);
             if (file_put_contents($path, $file)) {
-                return $this->info($name, $safe);
+                return $this->info($name, $safe, $attname);
             }
         } catch (\Exception $e) {
             return [];
@@ -125,12 +126,12 @@ class LocalStorage extends Storage
      * 获取文件当前URL地址
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
+     * @param string $attname 下载名称
      * @return string|null
      */
-    public function url($name, $safe = false)
+    public function url($name, $safe = false, $attname = null)
     {
-        if ($safe) return $name;
-        return "{$this->prefix}/upload/{$name}";
+        return $safe ? $name : "{$this->prefix}/upload/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
     }
 
     /**
@@ -143,19 +144,21 @@ class LocalStorage extends Storage
     {
         $root = $this->app->getRootPath();
         $path = $safe ? 'safefile' : 'public/upload';
-        return strtr("{$root}{$path}/{$name}", '\\', '/');
+        return strtr("{$root}{$path}/{$this->delSuffix($name)}", '\\', '/');
     }
 
     /**
      * 获取文件存储信息
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
+     * @param string $attname 下载名称
      * @return array
      */
-    public function info($name, $safe = false)
+    public function info($name, $safe = false, $attname = null)
     {
         return $this->has($name, $safe) ? [
-            'file' => $this->path($name, $safe), 'url' => $this->url($name, $safe), 'key' => "upload/{$name}",
+            'url' => $this->url($name, $safe, $attname),
+            'key' => "upload/{$name}", 'file' => $this->path($name, $safe),
         ] : [];
     }
 

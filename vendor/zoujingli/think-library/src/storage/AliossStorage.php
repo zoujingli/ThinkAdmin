@@ -99,10 +99,10 @@ class AliossStorage extends Storage
      * @param string $name 文件名称
      * @param string $file 文件内容
      * @param boolean $safe 安全模式
-     * @param string $attachment 下载名称
+     * @param string $attname 下载名称
      * @return array
      */
-    public function set($name, $file, $safe = false, $attachment = null)
+    public function set($name, $file, $safe = false, $attname = null)
     {
         $token = $this->buildUploadToken($name);
         $data = ['key' => $name];
@@ -110,12 +110,13 @@ class AliossStorage extends Storage
         $data['Signature'] = $token['signature'];
         $data['OSSAccessKeyId'] = $this->accessKey;
         $data['success_action_status'] = '200';
-        if (is_string($attachment) && strlen($attachment) > 0) {
-            $data['Content-Disposition'] = "attachment;filename=" . urlencode($attachment);
+        if (is_string($attname) && strlen($attname) > 0) {
+            $filename = urlencode($attname);
+            $data['Content-Disposition'] = "attachment;filename={$filename}";
         }
         $file = ['field' => 'file', 'name' => $name, 'content' => $file];
         if (is_numeric(stripos(HttpExtend::submit($this->upload(), $data, $file), '200 OK'))) {
-            return ['file' => $this->path($name, $safe), 'url' => $this->url($name, $safe), 'key' => $name];
+            return ['file' => $this->path($name, $safe), 'url' => $this->url($name, $safe, $attname), 'key' => $name];
         } else {
             return [];
         }
@@ -129,7 +130,7 @@ class AliossStorage extends Storage
      */
     public function get($name, $safe = false)
     {
-        return file_get_contents($this->url($name, $safe) . "?e=" . time());
+        return file_get_contents($this->url($name, $safe));
     }
 
     /**
@@ -140,8 +141,9 @@ class AliossStorage extends Storage
      */
     public function del($name, $safe = false)
     {
-        $result = HttpExtend::request('DELETE', "http://{$this->bucket}.{$this->point}/{$name}", [
-            'returnHeader' => true, 'headers' => $this->headerSign('DELETE', $name),
+        list($file) = explode('?', $name);
+        $result = HttpExtend::request('DELETE', "http://{$this->bucket}.{$this->point}/{$file}", [
+            'returnHeader' => true, 'headers' => $this->headerSign('DELETE', $file),
         ]);
         return is_numeric(stripos($result, '204 No Content'));
     }
@@ -154,8 +156,9 @@ class AliossStorage extends Storage
      */
     public function has($name, $safe = false)
     {
-        $result = HttpExtend::request('HEAD', "http://{$this->bucket}.{$this->point}/{$name}", [
-            'returnHeader' => true, 'headers' => $this->headerSign('HEAD', $name),
+        $file = $this->delSuffix($name);
+        $result = HttpExtend::request('HEAD', "http://{$this->bucket}.{$this->point}/{$file}", [
+            'returnHeader' => true, 'headers' => $this->headerSign('HEAD', $file),
         ]);
         return is_numeric(stripos($result, 'HTTP/1.1 200 OK'));
     }
@@ -164,11 +167,12 @@ class AliossStorage extends Storage
      * 获取文件当前URL地址
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
+     * @param string $attname 下载名称
      * @return string
      */
-    public function url($name, $safe = false)
+    public function url($name, $safe = false, $attname = null)
     {
-        return "{$this->prefix}/{$name}";
+        return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
     }
 
     /**
@@ -186,15 +190,15 @@ class AliossStorage extends Storage
      * 获取文件存储信息
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
+     * @param string $attname 下载名称
      * @return array
      */
-    public function info($name, $safe = false)
+    public function info($name, $safe = false, $attname = null)
     {
-        if ($this->has($name, $safe)) {
-            return ['file' => $this->path($name, $safe), 'url' => $this->url($name, $safe), 'key' => $name];
-        } else {
-            return [];
-        }
+        return $this->has($name, $safe) ? [
+            'url' => $this->url($name, $safe, $attname),
+            'key' => $name, 'file' => $this->path($name, $safe),
+        ] : [];
     }
 
     /**
