@@ -535,10 +535,10 @@ $(function () {
         return this.each(function () {
             var input = this, $input = $(this);
             var name = $input.attr('name') || 'umt-image', type = $input.data('type') || 'png,jpg,gif';
-            var $tpl = $('<a class="uploadimage"></a>'), imageSrcs = this.value ? this.value.split('|') : [];
+            var $tpl = $('<a class="uploadimage"></a>'), imgsrcs = this.value ? this.value.split('|') : [];
             $tpl.attr('data-type', type).attr('data-field', name).attr('data-file', 'mut').data('input', input);
             $input.attr('name', name).after($tpl), $tpl.uploadFile(function (src) {
-                imageSrcs.push(src), $input.val(imageSrcs.join('|')), input.showImageContainer([src]);
+                imgsrcs.push(src), $input.val(imgsrcs.join('|')), input.showImageContainer([src]);
             });
             input.showImageContainer = function (srcs) {
                 $(srcs).each(function (idx, src, $image) {
@@ -548,15 +548,15 @@ $(function () {
                         if (index === 0 && $current.index() !== prevs) $current.next().after($current);
                         if (index === 2 && $current.index() > 1) $current.prev().before($current);
                         if (index === 1) $current.remove();
-                        imageSrcs = [], $tpl.prevAll('.uploadimage').map(function () {
-                            imageSrcs.push($(this).attr('data-tips-image'));
+                        imgsrcs = [], $tpl.prevAll('.uploadimage').map(function () {
+                            imgsrcs.push($(this).attr('data-tips-image'));
                         });
-                        imageSrcs.reverse(), $input.val(imageSrcs.join('|'));
+                        imgsrcs.reverse(), $input.val(imgsrcs.join('|'));
                     });
                     $($tpl).before($image);
                 });
             };
-            if (imageSrcs.length > 0) input.showImageContainer(imageSrcs);
+            if (imgsrcs.length > 0) input.showImageContainer(imgsrcs);
         }), this;
     };
 
