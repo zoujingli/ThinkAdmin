@@ -533,29 +533,29 @@ $(function () {
     /*! 上传多张图片 */
     $.fn.uploadMultipleImage = function () {
         return this.each(function () {
-            var $template = $('<a class="uploadimage"></a>'), imgsrcs = this.value ? this.value.split('|') : [];
-            var input = this, $input = $(this), name = $input.attr('name') || 'umt-image', type = $input.data('type') || 'png,jpg,gif';
-            $template.attr('data-type', type).attr('data-field', name).attr('data-file', 'mut').data('input', input);
-            $input.attr('name', name).after($template), $template.uploadFile(function (src) {
-                imgsrcs.push(src), $input.val(imgsrcs.join('|')), input.showImageContainer([src]);
+            var $button = $('<a class="uploadimage"></a>'), images = this.value ? this.value.split('|') : [];
+            var $input = $(this), name = $input.attr('name') || 'umt-image', type = $input.data('type') || 'png,jpg,gif';
+            $button.attr('data-type', type).attr('data-field', name).attr('data-file', 'mut').data('input', this);
+            $input.attr('name', name).after($button), $button.uploadFile(function (src) {
+                images.push(src), $input.val(images.join('|')), showImageContainer([src]);
             });
-            input.showImageContainer = function (srcs) {
+            if (images.length > 0) showImageContainer(images);
+
+            function showImageContainer(srcs) {
                 $(srcs).each(function (idx, src, $image) {
                     $image = $('<div class="uploadimage uploadimagemtl"><a class="layui-icon margin-right-5">&#xe602;</a><a class="layui-icon margin-right-5">&#x1006;</a><a class="layui-icon margin-right-5">&#xe603;</a></div>');
-                    $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $current) {
-                        event.stopPropagation(), $current = $(this).parent(), index = $(this).index(), prevs = $template.prevAll('div.uploadimage').length;
-                        if (index === 0 && $current.index() !== prevs) $current.next().after($current);
-                        if (index === 2 && $current.index() > 1) $current.prev().before($current);
-                        if (index === 1) $current.remove();
-                        imgsrcs = [], $template.prevAll('.uploadimage').map(function () {
-                            imgsrcs.push($(this).attr('data-tips-image'));
+                    $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
+                        event.stopPropagation(), $item = $(this).parent(), index = $(this).index(), prevs = $button.prevAll('div.uploadimage').length;
+                        if (index === 0 && $item.index() !== prevs) $item.next().after($item);
+                        else if (index === 2 && $item.index() > 1) $item.prev().before($item);
+                        else if (index === 1) $item.remove();
+                        images = [], $button.prevAll('.uploadimage').map(function () {
+                            images.push($(this).attr('data-tips-image'));
                         });
-                        imgsrcs.reverse(), $input.val(imgsrcs.join('|'));
-                    });
-                    $($template).before($image);
+                        images.reverse(), $input.val(images.join('|'));
+                    }), $button.before($image);
                 });
             };
-            if (imgsrcs.length > 0) input.showImageContainer(imgsrcs);
         }), this;
     };
 
