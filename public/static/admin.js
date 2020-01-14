@@ -533,9 +533,8 @@ $(function () {
     /*! 上传多张图片 */
     $.fn.uploadMultipleImage = function () {
         return this.each(function () {
-            var input = this, $input = $(this);
-            var name = $input.attr('name') || 'umt-image', type = $input.data('type') || 'png,jpg,gif';
             var $template = $('<a class="uploadimage"></a>'), imgsrcs = this.value ? this.value.split('|') : [];
+            var input = this, $input = $(this), name = $input.attr('name') || 'umt-image', type = $input.data('type') || 'png,jpg,gif';
             $template.attr('data-type', type).attr('data-field', name).attr('data-file', 'mut').data('input', input);
             $input.attr('name', name).after($template), $template.uploadFile(function (src) {
                 imgsrcs.push(src), $input.val(imgsrcs.join('|')), input.showImageContainer([src]);
