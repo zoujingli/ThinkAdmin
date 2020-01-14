@@ -104,7 +104,7 @@ class Upload extends Controller
         }
         list($this->safe, $this->uptype, $this->name) = [boolval(input('safe')), $this->getType(), input('xkey')];
         if (empty($this->name)) $this->name = Storage::name($file->getPathname(), $this->extension, '', 'md5_file');
-        $info = Storage::instance($this->uptype)->set($this->name, file_get_contents($file->getRealPath()), $this->safe);
+        $info = Storage::instance($this->uptype)->set($this->name, file_get_contents($file->getRealPath()), $this->safe, $file->getOriginalName());
         if (is_array($info) && isset($info['url'])) {
             return json(['uploaded' => true, 'filename' => $this->name, 'url' => $this->safe ? $this->name : $info['url']]);
         } else {

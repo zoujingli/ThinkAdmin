@@ -1,86 +1,77 @@
 define(['md5'], function (SparkMD5, allowExtsMimes) {
     allowExtsMimes = JSON.parse('{$exts|raw}');
-    return function (element, UploadedHandler) {
+    return function (element, UploadedHandler, options) {
         /*! 定义初始化变量 */
-        var opt = {element: $(element)}, index;
-        opt.safe = opt.element.data('safe') || '';
-        opt.type = opt.element.data('type') || '';
-        opt.field = opt.element.data('field') || 'file';
-        opt.input = $('[name="_field_"]'.replace('_field_', opt.field));
-        opt.uptype = opt.safe ? 'local' : opt.element.attr('data-uptype') || '';
-        opt.multiple = opt.element.attr('data-multiple') > 0;
+        options = {element: $(element), exts: [], mimes: [], files: {}, loading: 0};
+        options.safe = options.element.data('safe') || '';
+        options.type = options.element.data('type') || '';
+        options.types = options.type ? options.type.split(',') : [];
+        options.field = options.element.data('field') || 'file';
+        options.input = $('[name="_field_"]'.replace('_field_', options.field));
+        options.uptype = options.safe ? 'local' : options.element.attr('data-uptype') || '';
+        options.multiple = options.element.attr('data-multiple') > 0;
         /*! 文件的选择筛选 */
-        this.mimes = [], this.exts = [], this.types = opt.type.split(',');
-        for (index in this.types) if (allowExtsMimes[this.types[index]]) {
-            this.exts.push(this.types[index]), this.mimes.push(allowExtsMimes[this.types[index]]);
+        for (var index in options.types) if (allowExtsMimes[options.types[index]]) {
+            options.exts.push(options.types[index]), options.mimes.push(allowExtsMimes[options.types[index]]);
         }
-        /*! 调用初始化组件 */
-        renderUploader({exts: this.exts.join('|'), acceptMime: this.mimes.join(',')});
-
         /*! 初始化上传组件 */
-        function renderUploader(options, headers, uploader) {
-            uploader = layui.upload.render({
-                idx: 0, auto: false, headers: headers || {}, multiple: opt.multiple,
-                accept: 'file', elem: element, exts: options.exts, acceptMime: options.acceptMime,
-                choose: function (object, files) {
-                    files = object.pushFile(), opt.element.data('files', files);
-                    for (index in files) md5file(files[index]).then(function (file) {
-                        opt.element.data('file', file).data('index', index);
+        options.uploader = layui.upload.render({
+            auto: false, multiple: options.multiple, accept: 'file', elem: element,
+            exts: options.exts.join('|'), acceptMime: options.mimes.join(','), choose: function (obj) {
+                for (var index in options.files = obj.pushFile()) {
+                    options.element.data('file', options.files[index]), md5file(options.files[index]).then(function (file) {
                         jQuery.ajax("{:url('@admin/api.upload/state')}", {
-                            data: {xkey: file.xkey, uptype: opt.uptype, safe: opt.safe, name: file.name}, method: 'post', success: function (ret) {
+                            data: {xkey: file.xkey, uptype: options.uptype, safe: options.safe, name: file.name}, method: 'post', success: function (ret) {
                                 file.xurl = ret.data.url;
                                 if (parseInt(ret.code) === 404) {
-                                    uploader.config.url = ret.data.server;
-                                    uploader.config.data.key = ret.data.xkey;
-                                    uploader.config.data.safe = ret.data.safe;
-                                    uploader.config.data.uptype = ret.data.uptype;
+                                    options.uploader.config.url = ret.data.server;
+                                    options.uploader.config.data.key = ret.data.xkey;
+                                    options.uploader.config.data.safe = ret.data.safe;
+                                    options.uploader.config.data.uptype = ret.data.uptype;
                                     if (ret.data.uptype === 'qiniu') {
-                                        uploader.config.data.token = ret.data.token;
+                                        options.uploader.config.data.token = ret.data.token;
                                     } else if (ret.data.uptype === 'alioss') {
-                                        uploader.config.data.policy = ret.data.policy;
-                                        uploader.config.data.signature = ret.data.signature;
-                                        uploader.config.data.OSSAccessKeyId = ret.data.OSSAccessKeyId;
-                                        uploader.config.data.success_action_status = 200;
-                                        uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);
+                                        options.uploader.config.data.policy = ret.data.policy;
+                                        options.uploader.config.data.signature = ret.data.signature;
+                                        options.uploader.config.data.OSSAccessKeyId = ret.data.OSSAccessKeyId;
+                                        options.uploader.config.data.success_action_status = 200;
+                                        options.uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);
                                     }
-                                    object.upload(index, file);
+                                    obj.upload(index, file);
                                 } else if (parseInt(ret.code) === 200) {
-                                    UploadedHandler.call(opt.element, file.xurl, file);
+                                    UploadedHandler.call(options.element, file.xurl, file);
                                 } else {
                                     $.msg.error(ret.info || ret.error.message || '文件上传出错！');
                                 }
                             }
                         });
-                        delete files[index];
                     });
-                },
-                before: function () {
-                    this.idx = $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
-                },
-                progress: function (n) {
-                    $('[data-upload-progress]').html(n + '%');
-                },
-                done: function (ret, file) {
-                    file = opt.element.data('file');
-                    this.multiple || $.msg.close(this.idx);
-                    if (typeof ret.uploaded === 'undefined' && file.xurl) {
-                        ret = {uploaded: true, url: file.xurl};
-                    }
-                    if (ret.uploaded) {
-                        if (typeof UploadedHandler === 'function') {
-                            UploadedHandler.call(opt.element, ret.url, file);
-                        } else {
-                            opt.input.val(ret.url).trigger('change');
-                        }
-                    } else {
-                        $.msg.error(ret.info || ret.error.message || '文件上传出错！');
-                    }
-                },
-                allDone: function () {
-                    $.msg.close(this.idx), opt.element.html(opt.element.data('html'));
+                    delete options.files[index];
                 }
-            });
-        };
+            }, before: function () {
+                options.loading = $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
+            }, progress: function (n) {
+                $('[data-upload-progress]').html(n + '%');
+            }, done: function (ret) {
+                this.file = options.element.data('file');
+                this.multiple || $.msg.close(options.loading);
+                if (typeof ret.uploaded === 'undefined' && this.file.xurl) {
+                    ret = {uploaded: true, url: this.file.xurl};
+                }
+                if (ret.uploaded) {
+                    if (typeof UploadedHandler === 'function') {
+                        UploadedHandler.call(options.element, ret.url, this.file);
+                    } else {
+                        options.input.val(ret.url).trigger('change');
+                    }
+                } else {
+                    $.msg.error(ret.info || ret.error.message || '文件上传出错！');
+                }
+            }, allDone: function () {
+                $.msg.close(options.loading);
+                options.element.html(options.element.data('html'));
+            }
+        });
     };
 
     function md5file(file) {
