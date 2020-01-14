@@ -20,9 +20,9 @@ ThinkLibrary 6.0 是针对 ThinkPHP 6.0 版本封装的一套工具类库，方�
 ## 参考项目
 
 #### ThinkAdmin - V6.0
-* Gitee 仓库 https://gitee.com/zoujingli/ThinkAdmin
-* Github 仓库 https://github.com/zoujingli/ThinkAdmin
-* 体验地址（账号密码都是admin）https://demo.thinkadmin.top
+* Gitee 仓库 https://gitee.com/zoujingli/ThinkAdmin/tree/v6
+* Github 仓库 https://github.com/zoujingli/ThinkAdmin/tree/v6
+* 体验地址（账号密码都是admin）https://v6.thinkadmin.top
 
 ## 代码仓库
  ThinkLibrary 为 MIT 协议开源项目，安装使用或二次开发不受约束，欢迎 fork 项目。
@@ -31,7 +31,7 @@ ThinkLibrary 6.0 是针对 ThinkPHP 6.0 版本封装的一套工具类库，方�
  
  * 在线体验地址：https://v6.thinkadmin.top （账号和密码都是 admin ）
  * Gitee仓库地址：https://gitee.com/zoujingli/ThinkLibrary
- * GitHub仓库地址：https://github.com/zoujingli/ThinkLibrary
+ * Github仓库地址：https://github.com/zoujingli/ThinkLibrary
 
 ## 使用说明
 * ThinkLibrary 需要 Composer 支持

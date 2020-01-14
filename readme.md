@@ -1,6 +1,6 @@
 ## 大道至简 · 原生框架
 
-### 目前 ThinkAdmin v6 处理调测阶段，请匆应用到生产版本的项目开发！！！
+### 目前 ThinkAdmin v6 处于调测阶段，请匆应用到生产版本的项目开发！！！
 
 ThinkAdmin v6 依赖自制组件 ThinkLibrary v6，ThinkLibrary v6 是针对 ThinkPHP 6.0 定制开发。
 
@@ -56,8 +56,8 @@ public function index(){
  部分代码来自互联网，若有异议可以联系作者进行删除。
  
  * 在线体验地址：https://v6.thinkadmin.top （账号和密码都是 admin ）
- * Gitee仓库地址：https://gitee.com/zoujingli/ThinkAdmin
- * GitHub仓库地址：https://github.com/zoujingli/ThinkAdmin
+ * Gitee仓库地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v6
+ * GitHub仓库地址：https://github.com/zoujingli/ThinkAdmin/tree/v6
  
   
 ## 框架指令
