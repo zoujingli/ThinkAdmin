@@ -515,57 +515,49 @@ $(function () {
         });
     };
 
-    /*! 上传单个图片 */
+    /*! 上传单张图片 */
     $.fn.uploadOneImage = function () {
-        var name = $(this).attr('name') || 'image', type = $(this).data('type') || 'png,jpg,gif';
-        var $tpl = $('<a data-file="btn" class="uploadimage"></a>').attr('data-field', name).attr('data-type', type);
-        $(this).attr('name', name).after($tpl.data('input', this)).on('change', function () {
-            if (this.value) $tpl.css('backgroundImage', 'url(' + this.value + ')');
-        }).trigger('change');
+        return this.each(function (input, template) {
+            input = $(this), template = $('<a data-file="one" class="uploadimage"><span class="layui-icon">&#x1006;</span></a>');
+            template.attr('data-type', input.data('type') || 'png,jpg,gif');
+            template.attr('data-field', input.attr('name') || 'image').data('input', this);
+            template.find('span').on('click', function (event) {
+                event.stopPropagation(), template.attr('style', ''), input.val('');
+            });
+            input.attr('name', template.attr('data-field')).after(template).on('change', function () {
+                if (this.value) template.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
+            }).trigger('change');
+        }), this;
     };
 
-    /*! 上传多个图片 */
+    /*! 上传多张图片 */
     $.fn.uploadMultipleImage = function () {
-        var type = $(this).data('type') || 'png,jpg,gif', name = $(this).attr('name') || 'umt-image';
-        var $tpl = $('<a class="uploadimage"></a>').attr('data-file', 'mul').attr('data-field', name).attr('data-type', type);
-        $(this).attr('name', name).after($tpl.data('input', this)).on('change', function () {
-            var input = this;
-            this.setImageData = function () {
-                input.value = input.getImageData().join('|');
-            };
-            this.getImageData = function () {
-                var values = [];
-                $(input).prevAll('.uploadimage').map(function () {
-                    values.push($(this).attr('data-tips-image'));
+        return this.each(function () {
+            var input = this, $input = $(this);
+            var name = $input.attr('name') || 'umt-image', type = $input.data('type') || 'png,jpg,gif';
+            var $tpl = $('<a class="uploadimage"></a>'), imageSrcs = this.value ? this.value.split('|') : [];
+            $tpl.attr('data-type', type).attr('data-field', name).attr('data-file', 'mut').data('input', input);
+            $input.attr('name', name).after($tpl), $tpl.uploadFile(function (src) {
+                imageSrcs.push(src), $input.val(imageSrcs.join('|')), input.showImageContainer([src]);
+            });
+            input.showImageContainer = function (srcs) {
+                $(srcs).each(function (idx, src, $image) {
+                    $image = $('<div class="uploadimage uploadimagemtl"><a class="layui-icon margin-right-5">&#xe602;</a><a class="layui-icon margin-right-5">&#x1006;</a><a class="layui-icon margin-right-5">&#xe603;</a></div>');
+                    $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $current) {
+                        event.stopPropagation(), $current = $(this).parent(), index = $(this).index(), prevs = $tpl.prevAll('div.uploadimage').length;
+                        if (index === 0 && $current.index() !== prevs) $current.next().after($current);
+                        if (index === 2 && $current.index() > 1) $current.prev().before($current);
+                        if (index === 1) $current.remove();
+                        imageSrcs = [], $tpl.prevAll('.uploadimage').map(function () {
+                            imageSrcs.push($(this).attr('data-tips-image'));
+                        });
+                        imageSrcs.reverse(), $input.val(imageSrcs.join('|'));
+                    });
+                    $($tpl).before($image);
                 });
-                return values.reverse(), values;
             };
-            var urls = this.getImageData(), srcs = this.value.split('|');
-            for (var i in srcs) if (srcs[i]) urls.push(srcs[i]);
-            $(this).prevAll('.uploadimage').remove();
-            this.value = urls.join('|');
-            for (var i in urls) {
-                var tpl = '<div class="uploadimage uploadimagemtl"><a class="layui-icon margin-right-5">&#xe602;</a><a class="layui-icon margin-right-5">&#x1006;</a><a class="layui-icon margin-right-5">&#xe603;</a></div>';
-                var $tpl = $(tpl).attr('data-tips-image', urls[i]).css('backgroundImage', 'url(' + urls[i] + ')').on('click', 'a', function (e) {
-                    e.stopPropagation();
-                    var $cur = $(this).parent();
-                    switch ($(this).index()) {
-                        case 1:// remove
-                            return $.msg.confirm('确定要移除这张图片吗？', function (index) {
-                                $cur.remove(), input.setImageData(), $.msg.close(index);
-                            });
-                        case 0: // right
-                            var lenght = $cur.siblings('div.uploadimagemtl').length;
-                            if ($cur.index() !== lenght) $cur.next().after($cur);
-                            return input.setImageData();
-                        case 2: // left
-                            if ($cur.index() !== 0) $cur.prev().before($cur);
-                            return input.setImageData();
-                    }
-                });
-                $(this).before($tpl);
-            }
-        }).trigger('change');
+            if (imageSrcs.length > 0) input.showImageContainer(imageSrcs);
+        }), this;
     };
 
     /*! 注册 data-load 事件行为 */

@@ -506,10 +506,25 @@ label.think-radio {
   width: 77px;
   height: 77px;
   cursor: pointer;
+  position: relative;
   display: inline-block;
   border: 1px dashed #e2e2e2;
   background: url('../img/upimg.png') no-repeat center center;
   background-size: cover;
+}
+.uploadimage:hover span.layui-icon {
+  display: inline-block;
+}
+.uploadimage span.layui-icon {
+  display: none;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 22px;
+  color: #fff;
+  right: 0;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
 }
 .uploadimagemtl {
   margin-right: 8px;
