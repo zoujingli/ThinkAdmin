@@ -1,10 +1,10 @@
 <div class="layui-form-item">
     <label class="layui-form-label label-required">
-        <span class="color-green font-w7">LinkType</span><br><span class="nowrap color-desc">链接类型</span>
+        <span class="color-green font-w7">链接类型</span><br><span class="nowrap color-desc">LinkType</span>
     </label>
     <div class="layui-input-block">
         {foreach ['none'=>'简洁链接','full'=>'完整链接'] as $k=>$v}
-        <label class="think-radio">
+        <label class="think-radio notselect">
             {if sysconf('storage.link_type') eq $k}
             <input checked type="radio" name="storage.link_type" value="{$k}" lay-ignore> {$v}
             {else}
@@ -18,7 +18,7 @@
 
 <div class="layui-form-item">
     <label class="layui-form-label" for="storage.allow_exts">
-        <span class="color-green font-w7">AllowExts</span><br><span class="nowrap color-desc">允许类型</span>
+        <span class="color-green font-w7">允许类型</span><br><span class="nowrap color-desc">AllowExts</span>
     </label>
     <div class="layui-input-block">
         <input id="storage.allow_exts" type="text" name="storage.allow_exts" required value="{:sysconf('storage.allow_exts')}" placeholder="请输入系统文件上传后缀" class="layui-input">
