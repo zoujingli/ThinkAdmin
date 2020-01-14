@@ -41,7 +41,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                                         uploader.config.data.signature = ret.data.signature;
                                         uploader.config.data.OSSAccessKeyId = ret.data.OSSAccessKeyId;
                                         uploader.config.data.success_action_status = 200;
-                                        uploader.config.data['Content-Disposition'] = 'attachment;filename=' + encodeURIComponent(file.name);
+                                        uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);
                                     }
                                     object.upload(index, file);
                                 } else if (parseInt(ret.code) === 200) {

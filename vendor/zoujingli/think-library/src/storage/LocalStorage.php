@@ -46,7 +46,8 @@ class LocalStorage extends Storage
             elseif ($type === 'http') $this->prefix = "http://{$domain}";
             elseif ($type === 'https') $this->prefix = "https://{$domain}";
         }
-        return $this;
+        // 初始化配置并返回当前实例
+        return parent::initialize();
     }
 
     /**

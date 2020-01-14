@@ -77,7 +77,8 @@ class AliossStorage extends Storage
         elseif ($type === 'http') $this->prefix = "http://{$this->domain}";
         elseif ($type === 'https') $this->prefix = "https://{$this->domain}";
         else throw new \think\Exception('未配置阿里云URL域名哦');
-        return $this;
+        // 初始化配置并返回当前实例
+        return parent::initialize();
     }
 
     /**
@@ -112,7 +113,7 @@ class AliossStorage extends Storage
         $data['success_action_status'] = '200';
         if (is_string($attname) && strlen($attname) > 0) {
             $filename = urlencode($attname);
-            $data['Content-Disposition'] = "attachment;filename={$filename}";
+            $data['Content-Disposition'] = "inline;filename={$filename}";
         }
         $file = ['field' => 'file', 'name' => $name, 'content' => $file];
         if (is_numeric(stripos(HttpExtend::submit($this->upload(), $data, $file), '200 OK'))) {

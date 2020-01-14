@@ -51,7 +51,8 @@ class QiniuStorage extends Storage
         elseif ($type === 'http') $this->prefix = "http://{$this->domain}";
         elseif ($type === 'https') $this->prefix = "https://{$this->domain}";
         else throw new \think\Exception('未配置七牛云URL域名哦');
-        return $this;
+        // 初始化配置并返回当前实例
+        return parent::initialize();
     }
 
     /**

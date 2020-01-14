@@ -41,10 +41,16 @@ abstract class Storage
     protected $app;
 
     /**
-     * 存储域名前缀
+     * 链接前缀
      * @var string
      */
     protected $prefix;
+
+    /**
+     * 链接类型
+     * @var string
+     */
+    protected $linkType;
 
     /**
      * Storage constructor.
@@ -58,9 +64,13 @@ abstract class Storage
     /**
      * 存储初始化
      * @return Storage
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function initialize(): Storage
     {
+        $this->linkType = sysconf('storage.link_type');
         return $this;
     }
 
@@ -168,29 +178,13 @@ abstract class Storage
     }
 
     /**
-     * 获取文件基础名称
-     * @param string $name 文件名称
-     * @return string
-     */
-    protected function delSuffix($name)
-    {
-        if (strpos($name, '?') !== false) {
-            list($name) = explode('?', $name);
-        }
-        return $name;
-    }
-
-    /**
      * 获取下载链接后缀
      * @param string $attname 下载名称
      * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function getSuffix($attname = null)
     {
-        if (sysconf('storage.link_type') === 'full') {
+        if ($this->linkType === 'full') {
             if (is_string($attname) && strlen($attname) > 0) {
                 return "?attname=" . urlencode($attname);
             }
@@ -198,4 +192,16 @@ abstract class Storage
         return '';
     }
 
+    /**
+     * 获取文件基础名称
+     * @param string $name 文件名称
+     * @return string
+     */
+    protected function delSuffix($name)
+    {
+        if (strpos($name, '?') !== false) {
+            return strstr($name, '?', true);
+        }
+        return $name;
+    }
 }
