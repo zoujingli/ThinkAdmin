@@ -535,25 +535,25 @@ $(function () {
         return this.each(function () {
             var input = this, $input = $(this);
             var name = $input.attr('name') || 'umt-image', type = $input.data('type') || 'png,jpg,gif';
-            var $tpl = $('<a class="uploadimage"></a>'), imgsrcs = this.value ? this.value.split('|') : [];
-            $tpl.attr('data-type', type).attr('data-field', name).attr('data-file', 'mut').data('input', input);
-            $input.attr('name', name).after($tpl), $tpl.uploadFile(function (src) {
+            var $template = $('<a class="uploadimage"></a>'), imgsrcs = this.value ? this.value.split('|') : [];
+            $template.attr('data-type', type).attr('data-field', name).attr('data-file', 'mut').data('input', input);
+            $input.attr('name', name).after($template), $template.uploadFile(function (src) {
                 imgsrcs.push(src), $input.val(imgsrcs.join('|')), input.showImageContainer([src]);
             });
             input.showImageContainer = function (srcs) {
                 $(srcs).each(function (idx, src, $image) {
                     $image = $('<div class="uploadimage uploadimagemtl"><a class="layui-icon margin-right-5">&#xe602;</a><a class="layui-icon margin-right-5">&#x1006;</a><a class="layui-icon margin-right-5">&#xe603;</a></div>');
                     $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $current) {
-                        event.stopPropagation(), $current = $(this).parent(), index = $(this).index(), prevs = $tpl.prevAll('div.uploadimage').length;
+                        event.stopPropagation(), $current = $(this).parent(), index = $(this).index(), prevs = $template.prevAll('div.uploadimage').length;
                         if (index === 0 && $current.index() !== prevs) $current.next().after($current);
                         if (index === 2 && $current.index() > 1) $current.prev().before($current);
                         if (index === 1) $current.remove();
-                        imgsrcs = [], $tpl.prevAll('.uploadimage').map(function () {
+                        imgsrcs = [], $template.prevAll('.uploadimage').map(function () {
                             imgsrcs.push($(this).attr('data-tips-image'));
                         });
                         imgsrcs.reverse(), $input.val(imgsrcs.join('|'));
                     });
-                    $($tpl).before($image);
+                    $($template).before($image);
                 });
             };
             if (imgsrcs.length > 0) input.showImageContainer(imgsrcs);
