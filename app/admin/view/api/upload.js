@@ -6,7 +6,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
         opt.safe = opt.element.data('safe') || '';
         opt.type = opt.element.data('type') || '';
         opt.field = opt.element.data('field') || 'file';
-        opt.input = $('[name="_FIELD_"]'.replace('_FIELD_', opt.field));
+        opt.input = $('[name="_field_"]'.replace('_field_', opt.field));
         opt.uptype = opt.safe ? 'local' : opt.element.attr('data-uptype') || '';
         opt.multiple = opt.element.attr('data-multiple') > 0;
         /*! 文件的选择筛选 */

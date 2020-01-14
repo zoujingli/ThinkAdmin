@@ -157,8 +157,8 @@ $(function () {
             $dom.find('[data-file]:not([data-inited])').map(function (index, elem, $this, field) {
                 $this = $(elem), field = $this.attr('data-field') || 'file';
                 if (!$this.data('input')) $this.data('input', $('[name="' + field + '"]').get(0));
-                $this.uploadFile(function (url) {
-                    $($this.data('input')).val(url).trigger('change');
+                $this.uploadFile(function (url, file) {
+                    $($this.data('input')).data('file', file).val(url).trigger('change');
                 });
             });
         };
