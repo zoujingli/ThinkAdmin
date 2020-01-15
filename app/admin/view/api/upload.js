@@ -2,7 +2,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
     allowExtsMimes = JSON.parse('{$exts|raw}');
     return function (element, UploadedHandler, options) {
         /*! 定义初始化变量 */
-        options = {element: $(element), exts: [], mimes: [], files: {}, loading: 0};
+        options = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, loading: 0};
         options.safe = options.element.data('safe') || '';
         options.type = options.element.data('type') || '';
         options.types = options.type ? options.type.split(',') : [];
@@ -19,7 +19,8 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
             auto: false, multiple: options.multiple, accept: 'file', elem: element,
             exts: options.exts.join('|'), acceptMime: options.mimes.join(','), choose: function (obj) {
                 for (var index in options.files = obj.pushFile()) {
-                    options.element.data('file', options.files[index]), md5file(options.files[index]).then(function (file) {
+                    options.files[index].index = index, options.cache[index] = options.files[index];
+                    md5file(options.files[index]).then(function (file) {
                         jQuery.ajax("{:url('@admin/api.upload/state')}", {
                             data: {xkey: file.xkey, uptype: options.uptype, safe: options.safe, name: file.name}, method: 'post', success: function (ret) {
                                 file.xurl = ret.data.url;
@@ -37,7 +38,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                                         options.uploader.config.data.success_action_status = 200;
                                         options.uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);
                                     }
-                                    obj.upload(index, file);
+                                    obj.upload(file.index, file);
                                 } else if (parseInt(ret.code) === 200) {
                                     UploadedHandler.call(options.element, file.xurl, file);
                                 } else {
@@ -52,15 +53,14 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                 options.loading = $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
             }, progress: function (n) {
                 $('[data-upload-progress]').html(n + '%');
-            }, done: function (ret) {
-                this.file = options.element.data('file');
+            }, done: function (ret, index) {
                 this.multiple || $.msg.close(options.loading);
-                if (typeof ret.uploaded === 'undefined' && this.file.xurl) {
-                    ret = {uploaded: true, url: this.file.xurl};
+                if (typeof ret.uploaded === 'undefined' && typeof options.cache[index].xurl === 'string') {
+                    ret = {uploaded: true, url: options.cache[index].xurl};
                 }
                 if (ret.uploaded) {
                     if (typeof UploadedHandler === 'function') {
-                        UploadedHandler.call(options.element, ret.url, this.file);
+                        UploadedHandler.call(options.element, ret.url, options.cache[index]);
                     } else {
                         options.input.val(ret.url).trigger('change');
                     }
@@ -77,6 +77,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
     function md5file(file) {
         var deferred = jQuery.Deferred();
         file.xext = file.name.indexOf('.') > -1 ? file.name.split('.').pop() : 'tmp';
+
         /*! 兼容不能计算文件 HASH 的情况 */
         if (!window.FileReader) return jQuery.when((function (date, chars) {
             date = new Date(), chars = 'abcdefhijkmnprstwxyz0123456789';
@@ -86,6 +87,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
             deferred.resolve(file, file.xmd5, file.xkey);
             return deferred;
         }).call(this));
+
         /*! 读取文件并计算 HASH 值 */
         var spark = new SparkMD5.ArrayBuffer();
         var slice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
