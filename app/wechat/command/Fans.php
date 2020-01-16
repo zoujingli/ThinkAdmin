@@ -106,16 +106,16 @@ class Fans extends Command
     public function _black($next = '', $done = 0)
     {
         $wechat = WechatService::WeChatUser();
-        $this->output->comment('--> Start to synchronize wechat blacklist data');
+        $this->output->comment('--> Start to synchronize wechat blacklist users');
         while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
             $done += $result['count'];
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 $this->app->db->name('WechatFans')->where(['is_black' => '0'])->whereIn('openid', $chunk)->update(['is_black' => '1']);
             }
-            $this->output->writeln("--> 共计同步微信黑名单{$result['total']}人");
+            $this->output->writeln("--> Successfully synchronized {$result['total']} wechat blacklist users in total");
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->output->comment('--> Wechat blacklist data synchronization completed');
+        $this->output->comment('--> Wechat blacklist users synchronization completed');
         $this->output->newLine();
         if (empty($result['total'])) {
             return '，其中黑名单0人';
