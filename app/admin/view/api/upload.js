@@ -53,13 +53,13 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
             }, progress: function (n) {
                 $('[data-upload-progress]').html(n + '%');
             }, done: function (ret, index, file) {
-                file = options.cache[index];
                 if (++options.count.uploaded >= options.count.total) {
                     layer.close(options.loading);
                 }
                 if (typeof ret.code === 'number' && parseInt(ret.code) === 0) {
                     return $.msg.tips(ret.info || '文件上传失败！');
                 }
+                file = options.cache[index];
                 if (typeof ret.uploaded === 'undefined' && typeof file.xurl === 'string') {
                     ret = {uploaded: true, url: file.xurl};
                 }
