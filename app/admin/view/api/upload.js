@@ -119,7 +119,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                 deferred.reject();
             };
             this.start = file.chunk_idx * file.chunk_size;
-            this.loaded = ((this.start + file.chunk_size) >= file.size) ? file.size : this.start + file.chunk_size;
+            this.loaded = (this.start + file.chunk_size >= file.size) ? file.size : this.start + file.chunk_size;
             this.reader.readAsArrayBuffer(slice.call(file, this.start, this.loaded));
             return deferred.notify(file, (this.loaded / file.size * 100).toFixed(2)), deferred;
         }
