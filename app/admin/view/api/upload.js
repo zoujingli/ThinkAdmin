@@ -94,16 +94,13 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
         /*! 读取文件并计算 HASH 值 */
         var spark = new SparkMD5.ArrayBuffer();
         var slice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
-        file.chunk_idx = 0, file.chunk_size = 2097152;
-        file.chunk_total = Math.ceil(this.size / this.chunk_size);
+        file.chunk_idx = 0, file.chunk_size = 2097152, file.chunk_total = Math.ceil(this.size / this.chunk_size);
         return jQuery.when(loadNextChunk(file));
 
         function setFileXdata(file, xmd5) {
             file.xmd5 = xmd5;
             file.xkey = file.xmd5.substr(0, 2) + '/' + file.xmd5.substr(2, 30) + '.' + file.xext;
-            delete file.chunk_idx;
-            delete file.chunk_size;
-            delete file.chunk_total;
+            delete file.chunk_idx, delete file.chunk_size, delete file.chunk_total;
             return file;
         }
 
