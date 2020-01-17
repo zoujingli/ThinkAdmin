@@ -3,6 +3,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
     return function (element, UploadedHandler, options) {
         /*! 定义初始化变量 */
         options = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, loading: 0};
+        options.count = {total: 0, uploaded: 0};
         options.safe = options.element.data('safe') || '';
         options.type = options.element.data('type') || '';
         options.types = options.type ? options.type.split(',') : [];
@@ -19,8 +20,9 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
             auto: false, multiple: options.multiple, accept: 'file', elem: element,
             exts: options.exts.join('|'), acceptMime: options.mimes.join(','), choose: function (obj) {
                 for (var index in options.files = obj.pushFile()) {
-                    options.files[index].index = index, options.cache[index] = options.files[index];
-                    md5file(options.files[index]).then(function (file) {
+                    options.loading = $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
+                    options.count.total++, options.files[index].index = index, options.cache[index] = options.files[index], delete options.files[index];
+                    md5file(options.cache[index]).then(function (file) {
                         jQuery.ajax("{:url('@admin/api.upload/state')}", {
                             data: {xkey: file.xkey, uptype: options.uptype, safe: options.safe, name: file.name}, method: 'post', success: function (ret) {
                                 file.xurl = ret.data.url;
@@ -40,32 +42,35 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                                     }
                                     obj.upload(file.index, file);
                                 } else if (parseInt(ret.code) === 200) {
-                                    UploadedHandler.call(options.element, file.xurl, file);
+                                    options.uploader.config.done({uploaded: true, url: file.xurl}, file.index);
                                 } else {
-                                    $.msg.error(ret.info || ret.error.message || '文件上传出错！');
+                                    $.msg.tips(ret.info || ret.error.message || '文件上传出错！');
                                 }
                             }
                         });
                     });
-                    delete options.files[index];
                 }
-            }, before: function () {
-                options.loading = $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
             }, progress: function (n) {
                 $('[data-upload-progress]').html(n + '%');
-            }, done: function (ret, index) {
-                this.multiple || $.msg.close(options.loading);
-                if (typeof ret.uploaded === 'undefined' && typeof options.cache[index].xurl === 'string') {
-                    ret = {uploaded: true, url: options.cache[index].xurl};
+            }, done: function (ret, index, file) {
+                file = options.cache[index];
+                if (++options.count.uploaded >= options.count.total) {
+                    layer.close(options.loading);
+                }
+                if (typeof ret.code === 'number' && parseInt(ret.code) === 0) {
+                    return $.msg.tips(ret.info || '文件上传失败！');
+                }
+                if (typeof ret.uploaded === 'undefined' && typeof file.xurl === 'string') {
+                    ret = {uploaded: true, url: file.xurl};
                 }
                 if (ret.uploaded) {
                     if (typeof UploadedHandler === 'function') {
-                        UploadedHandler.call(options.element, ret.url, options.cache[index]);
+                        UploadedHandler.call(options.element, ret.url, file);
                     } else {
                         options.input.val(ret.url).trigger('change');
                     }
                 } else {
-                    $.msg.error(ret.info || ret.error.message || '文件上传出错！');
+                    $.msg.tips(ret.info || ret.error.message || '文件上传出错！');
                 }
             }, allDone: function () {
                 $.msg.close(options.loading);
@@ -83,9 +88,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
             date = new Date(), chars = 'abcdefhijkmnprstwxyz0123456789';
             this.xmd5 = '' + date.getFullYear() + (date.getMonth() + 1) + date.getDay() + date.getHours() + date.getMinutes() + date.getSeconds();
             while (this.xmd5.length < 32) this.xmd5 += chars.charAt(Math.floor(Math.random() * chars.length));
-            setFileXdata(file, this.xmd5);
-            deferred.resolve(file, file.xmd5, file.xkey);
-            return deferred;
+            return setFileXdata(file, this.xmd5), deferred.resolve(file, file.xmd5, file.xkey), deferred;
         }).call(this));
 
         /*! 读取文件并计算 HASH 值 */
@@ -121,8 +124,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
             this.start = file.chunk_idx * file.chunk_size;
             this.loaded = ((this.start + file.chunk_size) >= file.size) ? file.size : this.start + file.chunk_size;
             this.reader.readAsArrayBuffer(slice.call(file, this.start, this.loaded));
-            deferred.notify(file, (this.loaded / file.size * 100).toFixed(2));
-            return deferred;
+            return deferred.notify(file, (this.loaded / file.size * 100).toFixed(2)), deferred;
         }
     }
 });
