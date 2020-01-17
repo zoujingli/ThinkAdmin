@@ -60,6 +60,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                     return $.msg.tips(ret.info || '文件上传失败！');
                 }
                 file = options.cache[index];
+                if (typeof file.xurl !== 'string') return $.msg.tips('无效的文件对象！');
                 if (typeof ret.uploaded === 'undefined' && typeof file.xurl === 'string') {
                     ret = {uploaded: true, url: file.xurl};
                 }
