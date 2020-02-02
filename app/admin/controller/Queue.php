@@ -50,6 +50,7 @@ class Queue extends Controller
                 $this->message = $this->app->console->call('xtask:state')->fetch();
                 $this->listen = preg_match('/process.*?\d+.*?running/', $this->message, $attr);
             } catch (\Exception $exception) {
+                $this->listen = false;
                 $this->message = $exception->getMessage();
             }
         }
