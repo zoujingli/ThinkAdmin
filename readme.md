@@ -8,7 +8,7 @@
 
 ### ThinkAdmin v6 经历了数个项目实践与测试，不停的调整，目前系统模块及微信模块已经趋于稳定，现将系统模块及微信定为 v6 内核两大模块发布，其他商城模块及相关辅助模块后续更进……
 
-### 再次感觉大家对 ThinkAdmin 的支持，同时也祝大家新年快乐！！！
+### 再次感谢大家对 ThinkAdmin 的支持，同时也祝大家新年快乐！！！
 
 ThinkAdmin v6 依赖自制组件 ThinkLibrary v6，ThinkLibrary v6 是针对 ThinkPHP 6.0 定制开发。
 
