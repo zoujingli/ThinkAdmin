@@ -146,10 +146,6 @@ class Think
             throw new TemplateNotFoundException('template not exists:' . $template, $template);
         }
 
-        // 记录视图信息
-        $this->app['log']
-            ->record('[ VIEW ] ' . $template . ' [ ' . var_export(array_keys($data), true) . ' ]');
-
         $this->template->fetch($template, $data);
     }
 

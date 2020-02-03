@@ -259,8 +259,12 @@ if (!function_exists('format_bytes')) {
      */
     function format_bytes($size)
     {
-        $units = [' B', ' KB', ' MB', ' GB', ' TB'];
-        for ($i = 0; $size >= 1024 && $i < 4; $i++) $size /= 1024;
-        return round($size, 2) . $units[$i];
+        if (is_numeric($size)) {
+            $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            for ($i = 0; $size >= 1024 && $i < 4; $i++) $size /= 1024;
+            return round($size, 2) . ' ' . $units[$i];
+        } else {
+            return $size;
+        }
     }
 }
