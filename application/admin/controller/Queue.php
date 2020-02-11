@@ -51,6 +51,7 @@ class Queue extends Controller
             $this->command = ProcessService::instance()->think('xtask:start');
             $this->listen = preg_match('/process.*?\d+.*?running/', $this->message, $attr);
         } catch (\Exception $exception) {
+            $this->listen = false;
             $this->message = $exception->getMessage();
         }
         $this->title = '系统任务管理';
