@@ -40,7 +40,7 @@ class CaptchaService extends Service
      * @param array $config
      * @return static
      */
-    public function initialize($config = []): Service
+    public function initialize($config = [])
     {
         // 动态配置属性
         foreach ($config as $k => $v) if (isset($this->$k)) $this->$k = $v;
