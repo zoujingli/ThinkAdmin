@@ -1,11 +1,11 @@
 <div class="layui-card layui-bg-gray">
     {block name='style'}{/block}
     {notempty name='title'}
-    <div class="layui-card-header layui-anim layui-anim-up notselect">
+    <div class="layui-card-header notselect">
         <span class="layui-icon layui-icon-next font-s10 color-desc margin-right-5"></span>{$title|default=''}
         <div class="pull-right">{block name='button'}{/block}</div>
     </div>
     {/notempty}
-    <div class="layui-card-body layui-anim layui-anim-upbit">{block name='content'}{/block}</div>
+    <div class="layui-card-body">{block name='content'}{/block}</div>
     {block name='script'}{/block}
 </div>
