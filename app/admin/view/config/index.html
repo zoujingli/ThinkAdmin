@@ -10,58 +10,97 @@
 
 {block name="content"}
 
-<div class="think-box-shadow margin-bottom-15">
-    <span class="color-green font-w7 text-middle">文件存储方式：</span>
-    {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','alioss'=>'阿里云OSS存储'] as $k => $v}
-    {if sysconf('storage.type') eq $k}
-    {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm">{$v}</a>{else}<a class="layui-btn layui-btn-sm">{$v}</a>{/if}
-    {else}
-    {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm">{$v}</a>{/if}
-    {/if}
-    {/foreach}
+<div class="think-box-shadow padding-40 padding-top-20 padding-bottom-20 margin-bottom-15">
+    <div class="layui-form-item margin-bottom-5">
+        <span class="color-green font-w7">存储引擎 Storage</span>
+        <div class="padding-top-5">
+            {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','alioss'=>'阿里云OSS存储'] as $k => $v}
+            {if sysconf('storage.type') eq $k}
+            {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm">{$v}</a>{else}<a class="layui-btn layui-btn-sm">{$v}</a>{/if}
+            {else}
+            {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm">{$v}</a>{/if}
+            {/if}
+            {/foreach}
+        </div>
+    </div>
 </div>
 
-<div class="think-box-shadow padding-40">
+<div class="think-box-shadow padding-40 padding-top-30 padding-bottom-20 margin-bottom-15">
     <div class="layui-form-item">
-        <span class="color-green font-w7">网站名称 Website</span>
+        <div class="color-green font-w7">网站名称 Website</div>
         <label class="relative block">
             <input readonly value="{:sysconf('site_name')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('site_name')}" class="fa fa-copy input-right-icon"></a>
         </label>
-        <p class="help-block">网站名称及网站图标，将显示在浏览器的标签上</p>
+        <div class="help-block">网站名称及网站图标，将显示在浏览器的标签上</div>
     </div>
     <div class="layui-form-item">
-        <span class="color-green font-w7">管理程序名称 Name</span>
+        <div class="color-green font-w7">管理程序名称 Name</div>
         <label class="relative block">
             <input readonly placeholder="请输入程序名称" value="{:sysconf('app_name')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('app_name')}" class="fa fa-copy input-right-icon"></a>
         </label>
-        <p class="help-block">管理程序名称，将显示在后台左上角标题</p>
+        <div class="help-block">管理程序名称，将显示在后台左上角标题</div>
     </div>
     <div class="layui-form-item">
-        <span class="color-green font-w7">管理程序版本 Version</span>
+        <div class="color-green font-w7">管理程序版本 Version</div>
         <label class="relative block">
             <input readonly value="{:sysconf('app_version')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('app_version')}" class="fa fa-copy input-right-icon"></a>
         </label>
-        <p class="help-block">管理程序版本，将显示在后台左上角标题</p>
+        <div class="help-block">管理程序版本，将显示在后台左上角标题</div>
     </div>
 
     <div class="layui-form-item">
-        <span class="color-green font-w7">网站备案号 Miitbeian</span>
+        <div class="color-green font-w7">网站备案号 Miitbeian</div>
         <label class="relative block">
             <input readonly value="{:sysconf('miitbeian')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('miitbeian')}" class="fa fa-copy input-right-icon"></a>
         </label>
-        <p class="help-block">网站备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将显示在登录页面下面</p>
+        <div class="help-block">网站备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将显示在登录页面下面</div>
     </div>
     <div class="layui-form-item">
-        <span class="color-green font-w7">网站版权信息 Copyright</span>
+        <div class="color-green font-w7">网站版权信息 Copyright</div>
         <label class="relative block">
             <input readonly value="{:sysconf('site_copy')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('site_copy')}" class="fa fa-copy input-right-icon"></a>
         </label>
-        <p class="help-block">网站版权信息，在后台登录页面显示版本信息并链接到备案到信息备案管理系统</p>
+        <div class="help-block">网站版权信息，在后台登录页面显示版本信息并链接到备案到信息备案管理系统</div>
     </div>
 </div>
+
+<div class="think-box-shadow padding-40 padding-top-30 padding-bottom-30">
+    <div class="color-green font-w7 text-left">系统信息 system information</div>
+    <table class="layui-table" lay-even>
+        <tbody>
+        <tr>
+            <td>后台程序</td>
+            <td>ThinkAdmin {$app->config->get('app.thinkadmin_ver','v6')}</td>
+        </tr>
+        <tr>
+            <td>核心框架</td>
+            <td>ThinkPHP {$app->version()}</td>
+        </tr>
+        <tr>
+            <td>服务器信息</td>
+            <td>{:php_uname()}</td>
+        </tr>
+        <tr>
+            <td>服务器软件</td>
+            <td>{$request->server('SERVER_SOFTWARE',php_sapi_name())}</td>
+        </tr>
+        <tr>
+            <td>当前PHP版本</td>
+            <td>PHP Version {$Think.const.PHP_VERSION}</td>
+        </tr>
+        <tr>
+            <td>MySQL版本</td>
+            <td>{$app->db->query('SELECT VERSION()')[0]['VERSION()']}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
 {/block}
