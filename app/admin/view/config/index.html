@@ -76,11 +76,11 @@
         <tbody>
         <tr>
             <td>管理程序</td>
-            <td>ThinkAdmin {$app->config->get('app.thinkadmin_ver','v6')}</td>
+            <td>ThinkAdmin Version {$app->config->get('app.thinkadmin_ver','v6')}</td>
         </tr>
         <tr>
             <td>核心框架</td>
-            <td>ThinkPHP {$app->version()}</td>
+            <td>ThinkPHP Version {$app->version()}</td>
         </tr>
         <tr>
             <td>服务器信息</td>
@@ -91,12 +91,12 @@
             <td>{$request->server('SERVER_SOFTWARE',php_sapi_name())}</td>
         </tr>
         <tr>
-            <td>PHP版本</td>
+            <td>PHP 版本</td>
             <td>PHP Version {$Think.const.PHP_VERSION}</td>
         </tr>
         <tr>
-            <td>MySQL版本</td>
-            <td>{$app->db->query('SELECT VERSION()')[0]['VERSION()']}</td>
+            <td>MySQL 版本</td>
+            <td>MySQL Version {$app->db->query('SELECT VERSION()')[0]['VERSION()']}</td>
         </tr>
         </tbody>
     </table>

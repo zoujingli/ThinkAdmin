@@ -33,20 +33,20 @@ class Library extends Service
      */
     public function register()
     {
-        // 读取中文语言
+        // 加载中文语言
         $this->app->lang->load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
         $this->app->lang->load(__DIR__ . '/lang/en-us.php', 'en-us');
-        // 判断访问模式
+        // 判断访问模式，兼容 CLI 访问控制器
         if ($this->app->request->isCli()) {
             if (empty($_SERVER['REQUEST_URI']) && isset($_SERVER['argv'][1])) {
                 $this->app->request->setPathinfo($_SERVER['argv'][1]);
             }
         } else {
-            // 注册会话中间键
+            // 注册会话初始化中间键
             if ($this->app->request->request('not_init_session', 0) == 0) {
                 $this->app->middleware->add(SessionInit::class);
             }
-            // 注册访问中间键
+            // 注册访问处理中间键
             $this->app->middleware->add(function (Request $request, \Closure $next) {
                 $header = [];
                 if (($origin = $request->header('origin', '*')) !== '*') {
@@ -54,6 +54,11 @@ class Library extends Service
                     $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
                     $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
                     $header['Access-Control-Expose-Headers'] = 'User-Form-Token,User-Token,Token';
+                }
+                // 未配置数据库，跳过所有检查
+                $host = $this->app->config->get('database.host', '[host]');
+                if (empty($host) || $host === '[host]') {
+                    return $next($request)->header($header);
                 }
                 // 访问模式及访问权限检查
                 if ($request->isOptions()) {
@@ -68,8 +73,8 @@ class Library extends Service
             }, 'route');
         }
         // 动态加入应用函数
-        $syspath = "{$this->app->getAppPath()}*/sys.php";
-        foreach (glob($syspath) as $file) includeFile($file);
+        $sysRule = "{$this->app->getAppPath()}*/sys.php";
+        foreach (glob($sysRule) as $file) includeFile($file);
     }
 
     /**

@@ -215,13 +215,14 @@ class QueryHelper extends Helper
      * @param boolean $display 是否渲染模板
      * @param boolean $total 集合分页记录数
      * @param integer $limit 集合每页记录数
+     * @param string $template 模板文件名称
      * @return mixed
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function page($page = true, $display = true, $total = false, $limit = 0)
+    public function page($page = true, $display = true, $total = false, $limit = 0, $template = '')
     {
-        return PageHelper::instance()->init($this->query, $page, $display, $total, $limit);
+        return PageHelper::instance()->init($this->query, $page, $display, $total, $limit, $template);
     }
 }

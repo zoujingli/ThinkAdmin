@@ -52,10 +52,11 @@ abstract class Service
 
     /**
      * 静态实例对象
+     * @param array $args
      * @return static
      */
-    public static function instance(): Service
+    public static function instance(...$args): Service
     {
-        return Container::getInstance()->make(static::class);
+        return Container::getInstance()->make(static::class, $args);
     }
 }
