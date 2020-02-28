@@ -1,0 +1,13 @@
+<ul class="layui-tab-title">
+    {foreach ['index'=>'用户账号','recycle'=>'回收站'] as $k=>$v}
+    {if $template eq $k}
+    <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}</li>
+    {else}
+    <li data-open="{:url('index')}?type={$k}">{$v}</li>
+    {/if}
+    {/foreach}
+</ul>
+
+<style>
+    body{min-width:1000}
+</style>

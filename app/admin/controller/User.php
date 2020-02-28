@@ -42,8 +42,19 @@ class User extends Controller
     public function index()
     {
         $this->title = '系统用户管理';
-        $query = $this->_query($this->table)->like('username,phone,mail')->equal('status');
-        $query->dateBetween('login_at,create_at')->where(['is_deleted' => '0'])->order('sort desc,id desc')->page();
+        $query = $this->_query($this->table)->like('username,phone,mail');
+        $query->equal('status')->dateBetween('login_at,create_at');
+        // 加载对应数据列表
+        $this->template = $this->request->get('type', 'index');
+        if ($this->template === 'index') {
+            $query->where(['is_deleted' => '0', 'status' => '1']);
+        } elseif ($this->template === 'recycle') {
+            $query->where(['is_deleted' => '0', 'status' => '0']);
+        } else {
+            $this->error("无法加载{$this->template}数据列表！");
+        }
+        // 列表排序并显示
+        $query->order('sort desc,id desc')->page(true, true, false, 0, $this->template);
     }
 
     /**
