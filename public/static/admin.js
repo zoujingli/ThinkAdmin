@@ -755,12 +755,8 @@ $(function () {
             }, content: '' +
                 '<div class="padding-30 padding-bottom-0" style="width:500px" data-queue-load="' + code + '">' +
                 '   <div class="layui-elip nowrap" data-message-title></div>' +
-                '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes">' +
-                '       <div class="layui-progress-bar transition" lay-percent="0.00%"></div>' +
-                '   </div>' +
-                '   <div class="margin-top-15">' +
-                '       <textarea class="layui-textarea layui-bg-black" disabled style="resize:none;color:#fff;overflow:hidden;height:190px"></textarea>' +
-                '   </div>' +
+                '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' +
+                '   <div class="margin-top-15"><textarea class="layui-textarea layui-bg-black border-0" disabled style="resize:none;overflow:hidden;height:190px"></textarea></div>' +
                 '</div>'
         });
         (function loadprocess(code, that) {
