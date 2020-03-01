@@ -4,8 +4,8 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
         /*! 定义初始化变量 */
         options = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, loading: 0};
         options.count = {total: 0, uploaded: 0};
-        options.safe = options.element.data('safe') || '';
         options.type = options.element.data('type') || '';
+        options.safe = parseInt(options.element.data('safe') || '');
         options.types = options.type ? options.type.split(',') : [];
         options.field = options.element.data('field') || 'file';
         options.input = $('[name="_field_"]'.replace('_field_', options.field));
