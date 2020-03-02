@@ -79,11 +79,7 @@ class MultiApp
      */
     protected function getRoutePath(): string
     {
-        if (is_dir($this->app->getAppPath() . 'route')) {
-            return $this->app->getAppPath() . 'route' . DIRECTORY_SEPARATOR;
-        }
-
-        return $this->app->getRootPath() . 'route' . DIRECTORY_SEPARATOR . $this->appName . DIRECTORY_SEPARATOR;
+        return $this->app->getAppPath() . 'route' . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -203,7 +199,7 @@ class MultiApp
         $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: 'app\\' . $appName);
 
         if (is_dir($appPath)) {
-            $this->app->setRuntimePath($this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $appName . DIRECTORY_SEPARATOR);
+            $this->app->setRuntimePath($this->app->getRuntimePath() . $appName . DIRECTORY_SEPARATOR);
             $this->app->http->setRoutePath($this->getRoutePath());
 
             //加载应用
@@ -222,15 +218,9 @@ class MultiApp
             include_once $appPath . 'common.php';
         }
 
-        $configPath = $this->app->getConfigPath();
-
         $files = [];
 
-        if (is_dir($appPath . 'config')) {
-            $files = array_merge($files, glob($appPath . 'config' . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt()));
-        } elseif (is_dir($configPath . $appName)) {
-            $files = array_merge($files, glob($configPath . $appName . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt()));
-        }
+        $files = array_merge($files, glob($appPath . 'config' . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt()));
 
         foreach ($files as $file) {
             $this->app->config->load($file, pathinfo($file, PATHINFO_FILENAME));

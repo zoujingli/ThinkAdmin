@@ -498,7 +498,7 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v3.4.37",
+            "version": "v3.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
@@ -671,16 +671,16 @@
         },
         {
             "name": "topthink/think-multi-app",
-            "version": "v1.0.11",
+            "version": "v1.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-multi-app.git",
-                "reference": "215f4a6bb88e53ad41b448c61957336eb55ce6f9"
+                "reference": "3c1914d2adc08c8753c7f67228885ca47fb9b3bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-multi-app/zipball/215f4a6bb88e53ad41b448c61957336eb55ce6f9",
-                "reference": "215f4a6bb88e53ad41b448c61957336eb55ce6f9",
+                "url": "https://api.github.com/repos/top-think/think-multi-app/zipball/3c1914d2adc08c8753c7f67228885ca47fb9b3bf",
+                "reference": "3c1914d2adc08c8753c7f67228885ca47fb9b3bf",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -717,7 +717,7 @@
                 }
             ],
             "description": "thinkphp6 multi app support",
-            "time": "2019-10-29T06:34:59+00:00"
+            "time": "2020-03-01T13:29:35+00:00"
         },
         {
             "name": "topthink/think-orm",

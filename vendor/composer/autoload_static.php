@@ -420,6 +420,7 @@ class ComposerStaticInit9eebf462f38fc6a0db482795c8caf813
         'think\\app\\Service' => __DIR__ . '/..' . '/topthink/think-multi-app/src/Service.php',
         'think\\app\\Url' => __DIR__ . '/..' . '/topthink/think-multi-app/src/Url.php',
         'think\\app\\command\\Build' => __DIR__ . '/..' . '/topthink/think-multi-app/src/command/Build.php',
+        'think\\app\\command\\Clear' => __DIR__ . '/..' . '/topthink/think-multi-app/src/command/Clear.php',
         'think\\cache\\Driver' => __DIR__ . '/..' . '/topthink/framework/src/think/cache/Driver.php',
         'think\\cache\\TagSet' => __DIR__ . '/..' . '/topthink/framework/src/think/cache/TagSet.php',
         'think\\cache\\driver\\File' => __DIR__ . '/..' . '/topthink/framework/src/think/cache/driver/File.php',

@@ -287,6 +287,7 @@ return array(
     'think\\app\\Service' => $vendorDir . '/topthink/think-multi-app/src/Service.php',
     'think\\app\\Url' => $vendorDir . '/topthink/think-multi-app/src/Url.php',
     'think\\app\\command\\Build' => $vendorDir . '/topthink/think-multi-app/src/command/Build.php',
+    'think\\app\\command\\Clear' => $vendorDir . '/topthink/think-multi-app/src/command/Clear.php',
     'think\\cache\\Driver' => $vendorDir . '/topthink/framework/src/think/cache/Driver.php',
     'think\\cache\\TagSet' => $vendorDir . '/topthink/framework/src/think/cache/TagSet.php',
     'think\\cache\\driver\\File' => $vendorDir . '/topthink/framework/src/think/cache/driver/File.php',

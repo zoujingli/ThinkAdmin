@@ -158,7 +158,7 @@ class Build extends Command
             file_put_contents($appPath . 'common.php', "<?php" . PHP_EOL . "// 这是系统自动生成的公共文件" . PHP_EOL);
         }
 
-        foreach (['event', 'middleware', 'provider'] as $name) {
+        foreach (['event', 'middleware', 'common'] as $name) {
             if (!is_file($appPath . $name . '.php')) {
                 file_put_contents($appPath . $name . '.php', "<?php" . PHP_EOL . "// 这是系统自动生成的{$name}定义文件" . PHP_EOL . "return [" . PHP_EOL . PHP_EOL . "];" . PHP_EOL);
             }
