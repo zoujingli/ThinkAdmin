@@ -15,8 +15,8 @@
 
 namespace app\wechat\service;
 
+use think\admin\extend\JsonRpcClient;
 use think\admin\Service;
-use think\admin\service\JsonRpcClientService;
 use think\exception\HttpResponseException;
 
 /**
@@ -113,7 +113,7 @@ class WechatService extends Service
             if (class_exists('Yar_Client')) {
                 $client = new \Yar_Client(str_replace('_TYPE_', 'yar', $location));
             } else {
-                $client = JsonRpcClientService::instance()->create(str_replace('_TYPE_', 'jsonrpc', $location));
+                $client = new JsonRpcClient(str_replace('_TYPE_', 'jsonrpc', $location));
             }
             try {
                 $exception = new \think\Exception($client->getMessage(), $client->getCode());

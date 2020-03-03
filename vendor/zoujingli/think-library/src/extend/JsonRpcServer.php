@@ -13,18 +13,44 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\service;
+namespace think\admin\extend;
 
-use think\admin\Service;
+use think\App;
+use think\Container;
 use think\exception\HttpResponseException;
 
 /**
- * JsonRpc 服务端服务
- * Class JsonRpcServerService
- * @package think\admin\service
+ * JsonRpc 服务端
+ * Class JsonRpcServer
+ * @package think\admin\extend
  */
-class JsonRpcServerService extends Service
+class JsonRpcServer
 {
+    /**
+     * 当前App对象
+     * @var App
+     */
+    protected $app;
+
+    /**
+     * JsonRpcServer constructor.
+     * @param App $app
+     */
+    public function __construct(App $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
+     * 静态实例对象
+     * @param array $args
+     * @return static
+     */
+    public static function instance(...$args): JsonRpcServer
+    {
+        return Container::getInstance()->make(static::class, $args);
+    }
+
     /**
      * 设置监听对象
      * @param mixed $object
@@ -62,5 +88,4 @@ class JsonRpcServerService extends Service
             throw new HttpResponseException(json($response)->contentType('text/javascript'));
         }
     }
-
 }

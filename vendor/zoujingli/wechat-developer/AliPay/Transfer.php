@@ -35,7 +35,7 @@ class Transfer extends BasicAliPay
     }
 
     /**
-     * 创建数据操作
+     * 旧版 向指定支付宝账户转账
      * @param array $options
      * @return mixed
      * @throws \WeChat\Exceptions\InvalidResponseException
@@ -43,6 +43,46 @@ class Transfer extends BasicAliPay
      */
     public function apply($options)
     {
+        return $this->getResult($options);
+    }
+
+    /**
+     * 新版 向指定支付宝账户转账
+     * @param array $options
+     * @return array|bool
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function create($options = [])
+    {
+        $this->options->set('method', 'alipay.fund.trans.uni.transfer');
+        return $this->getResult($options);
+    }
+
+    /**
+     * 新版 转账业务单据查询接口
+     * @param array $options
+     * @return array|bool
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function queryResult($options = [])
+    {
+        $this->options->set('method', 'alipay.fund.trans.common.query');
+        return $this->getResult($options);
+
+    }
+
+    /**
+     * 新版 支付宝资金账户资产查询接口
+     * @param array $options
+     * @return array|bool
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function queryAccount($options = [])
+    {
+        $this->options->set('method', 'alipay.fund.account.query');
         return $this->getResult($options);
     }
 }

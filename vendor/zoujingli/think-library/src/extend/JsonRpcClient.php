@@ -13,17 +13,14 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
-namespace think\admin\service;
-
-use think\admin\extend\CodeExtend;
-use think\admin\Service;
+namespace think\admin\extend;
 
 /**
- * JsonRpc 客户端服务
- * Class JsonRpcClientService
- * @package think\admin\service
+ * JsonRpc 客户端
+ * Class JsonRpcClient
+ * @package think\admin\extend
  */
-class JsonRpcClientService extends Service
+class JsonRpcClient
 {
     /**
      * 请求ID
@@ -38,15 +35,13 @@ class JsonRpcClientService extends Service
     private $proxy;
 
     /**
-     * 创建连接对象
-     * @param string $proxy
-     * @return mixed
+     * JsonRpcClient constructor.
+     * @param $proxy
      */
-    public function create($proxy)
+    public function __construct($proxy)
     {
         $this->id = CodeExtend::uniqidNumber();
         $this->proxy = $proxy;
-        return $this;
     }
 
     /**
