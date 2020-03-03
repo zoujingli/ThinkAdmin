@@ -15,7 +15,7 @@
 
 namespace app\wechat\service;
 
-use library\service\JsonRpcClientService;
+use library\tools\JsonRpcClient;
 
 /**
  * 微信处理管理
@@ -137,8 +137,7 @@ class WechatService extends \We
             if (class_exists('Yar_Client')) {
                 return new \Yar_Client(config('wechat.service_url') . "/service/api.client/yar/{$token}");
             } else {
-                $location = config('wechat.service_url') . "/service/api.client/jsonrpc/{$token}";
-                return JsonRpcClientService::instance()->create($location);
+                return new JsonRpcClient(config('wechat.service_url') . "/service/api.client/jsonrpc/{$token}");
             }
         }
     }

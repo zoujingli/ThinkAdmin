@@ -16,7 +16,7 @@
 namespace app\service\controller\api;
 
 use app\service\service\WechatService;
-use library\service\JsonRpcServerService;
+use library\tools\JsonRpcServer;
 use think\Controller;
 use think\Db;
 use think\exception\HttpResponseException;
@@ -101,7 +101,7 @@ class Client extends Controller
     {
         try {
             $instance = $this->create($param);
-            JsonRpcServerService::instance()->handle(empty($instance) ? $this : $instance);
+            JsonRpcServer::instance()->handle(empty($instance) ? $this : $instance);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
