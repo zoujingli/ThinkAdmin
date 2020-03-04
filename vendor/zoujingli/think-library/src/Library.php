@@ -55,11 +55,6 @@ class Library extends Service
                     $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
                     $header['Access-Control-Expose-Headers'] = 'User-Form-Token,User-Token,Token';
                 }
-                // 未配置数据库，跳过所有检查
-                $host = $this->app->config->get('database.host', '[host]');
-                if (empty($host) || $host === '[host]') {
-                    return $next($request)->header($header);
-                }
                 // 访问模式及访问权限检查
                 if ($request->isOptions()) {
                     return response()->code(204)->header($header);
