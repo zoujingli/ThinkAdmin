@@ -13,7 +13,6 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-
 use think\admin\service\SystemService;
 
 // 演示环境禁止操作路由绑定
