@@ -29,7 +29,7 @@ use Wechat\Loader;
 function p($data, $replace = false, $pathname = null)
 {
     is_null($pathname) && $pathname = RUNTIME_PATH . date('Ymd') . '.txt';
-    $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true)) . "\n";
+    $str = (is_string($data) ? $data : ((is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true))) . "\n";
     $replace ? file_put_contents($pathname, $str) : file_put_contents($pathname, $str, FILE_APPEND);
 }
 
