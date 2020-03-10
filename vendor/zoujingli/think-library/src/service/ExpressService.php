@@ -15,6 +15,7 @@
 
 namespace think\admin\service;
 
+use think\admin\extend\HttpExtend;
 use think\admin\Service;
 
 /**
@@ -25,6 +26,34 @@ use think\admin\Service;
 class ExpressService extends Service
 {
     /**
+     * 网络请求令牌
+     * @var string
+     */
+    protected $token;
+
+    /**
+     * 网络请求参数
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * 快递服务初始化
+     * @return Service
+     * @throws \think\Exception
+     */
+    protected function initialize(): Service
+    {
+        $id = $this->app->request->ip();
+        $this->options = [
+            'cookie_file' => $this->app->getRuntimePath() . '_express_kuaidi100_cookie.txt',
+            'headers'     => ['Host' => 'express.baidu.com', 'CLIENT-IP' => $id, 'X-FORWARDED-FOR' => $id],
+        ];
+        $this->token = $this->getExpressToken();
+        return $this;
+    }
+
+    /**
      * 通过百度快递100应用查询物流信息
      * @param string $code 快递公司编辑
      * @param string $number 快递物流编号
@@ -32,12 +61,14 @@ class ExpressService extends Service
      */
     public function express($code, $number)
     {
-        $list = [];
+        list($list, $cache) = [[], $this->app->cache->get($ckey = md5($code . $number))];
+        if (!empty($cache)) return ['message' => 'ok', 'com' => $code, 'nu' => $number, 'data' => $cache];
         for ($i = 0; $i < 6; $i++) if (is_array($result = $this->doExpress($code, $number))) {
             if (!empty($result['data']['info']['context'])) {
                 foreach ($result['data']['info']['context'] as $vo) $list[] = [
                     'time' => date('Y-m-d H:i:s', $vo['time']), 'context' => $vo['desc'],
                 ];
+                $this->app->cache->set($ckey, $list, 10);
                 return ['message' => 'ok', 'com' => $code, 'nu' => $number, 'data' => $list];
             }
         }
@@ -52,10 +83,50 @@ class ExpressService extends Service
      */
     private function doExpress($code, $number)
     {
-        list($microtime, $clientIp) = [time(), $this->app->request->ip()];
-        $url = "https://sp0.baidu.com/9_Q4sjW91Qh3otqbppnN2DJv/pae/channel/data/asyncqury?cb=callback&appid=4001&com={$code}&nu={$number}&vcode=&token=&_={$microtime}";
-        $options = ['cookie_file' => $this->app->getRuntimePath() . 'express_cookie.txt', 'headers' => ['Host' => 'www.kuaidi100.com', 'CLIENT-IP' => $clientIp, 'X-FORWARDED-FOR' => $clientIp],];
-        return json_decode(str_replace('/**/callback(', '', trim(http_get($url, [], $options), ')')), true);
+        $url = "https://express.baidu.com/express/api/express?tokenV2={$this->token}&appid=4001&nu={$number}&com={$code}&qid=&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
+        return json_decode(str_replace('/**/callback(', '', trim(HttpExtend::get($url, [], $this->options), ')')), true);
+    }
+
+    /**
+     * 获取接口请求令牌
+     * @return string
+     * @throws \think\Exception
+     */
+    public function getExpressToken()
+    {
+        if (preg_match('/express\?tokenV2=(.*?)",/', $this->getWapBaiduHtml(), $matches)) {
+            return $matches[1];
+        } else {
+            throw new \think\Exception('Failed to grab authorization token.');
+        }
+    }
+
+    /**
+     * 获取快递公司列表
+     * @return array
+     */
+    public function getExpressList()
+    {
+        $data = [];
+        if (preg_match('/"currentData":.*?\[(.*?)\],/', $this->getWapBaiduHtml(), $matches)) {
+            foreach (json_decode("[{$matches['1']}]") as $item) $data[$item->value] = $item->text;
+            unset($data['_auto']);
+        }
+        return $data;
+    }
+
+    /**
+     * 获取百度WAP快递HTML（用于后面的抓取关键值）
+     * @return string
+     */
+    protected function getWapBaiduHtml()
+    {
+        $content = $this->app->cache->get('express_baidu_kuaidi_100');
+        while (empty($content) || stristr($content, '百度安全验证') > -1 || stripos($content, 'tokenV2') === -1) {
+            $content = HttpExtend::get('https://m.baidu.com/s?word=73124161428372', [], $this->options);
+        }
+        $this->app->cache->set('express_baidu_kuaidi_100', $content, 3600);
+        return $content;
     }
 
 }
