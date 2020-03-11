@@ -935,12 +935,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "7dc1c9f49f0b5bdc187a29c0e8f4fd9b3af2d670"
+            "reference": "56bec8b70dd7eb4a40c03b59b5a20b85dfb8888d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/7dc1c9f49f0b5bdc187a29c0e8f4fd9b3af2d670",
-            "reference": "7dc1c9f49f0b5bdc187a29c0e8f4fd9b3af2d670",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/56bec8b70dd7eb4a40c03b59b5a20b85dfb8888d",
+            "reference": "56bec8b70dd7eb4a40c03b59b5a20b85dfb8888d",
             "shasum": "",
             "mirrors": [
                 {
@@ -956,7 +956,7 @@
             "ext-json": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-03-10T08:17:04+00:00",
+        "time": "2020-03-11T02:14:54+00:00",
         "type": "library",
         "extra": {
             "think": {
@@ -989,17 +989,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.17",
-        "version_normalized": "1.2.17.0",
+        "version": "v1.2.19",
+        "version_normalized": "1.2.19.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "98f6e82311a364220a677cdfd56dc9f97851ab24"
+            "reference": "c30e880bf70709a50e9b73c9dc574ed6ca2d6156"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/98f6e82311a364220a677cdfd56dc9f97851ab24",
-            "reference": "98f6e82311a364220a677cdfd56dc9f97851ab24",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/c30e880bf70709a50e9b73c9dc574ed6ca2d6156",
+            "reference": "c30e880bf70709a50e9b73c9dc574ed6ca2d6156",
             "shasum": "",
             "mirrors": [
                 {
@@ -1009,6 +1009,7 @@
             ]
         },
         "require": {
+            "ext-bcmath": "*",
             "ext-curl": "*",
             "ext-json": "*",
             "ext-libxml": "*",
@@ -1017,7 +1018,7 @@
             "ext-simplexml": "*",
             "php": ">=5.4"
         },
-        "time": "2020-03-02T11:08:34+00:00",
+        "time": "2020-03-11T09:50:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1026,8 +1027,8 @@
             ],
             "psr-4": {
                 "WePay\\": "WePay",
-                "WeMini\\": "WeMini",
                 "WeChat\\": "WeChat",
+                "WeMini\\": "WeMini",
                 "AliPay\\": "AliPay"
             }
         },
@@ -1039,7 +1040,7 @@
             {
                 "name": "Anyon",
                 "email": "zoujingli@qq.com",
-                "homepage": "http://ctolog.com"
+                "homepage": "https://thinkadmin.top"
             }
         ],
         "description": "WeChat platform and WeChat payment development tools",

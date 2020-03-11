@@ -39,15 +39,13 @@ class ExpressService extends Service
 
     /**
      * 快递服务初始化
-     * @return Service
-     * @throws \think\Exception
+     * @return $this
      */
-    protected function initialize(): Service
+    protected function initialize()
     {
-        $id = $this->app->request->ip();
         $this->options = [
-            'cookie_file' => $this->app->getRuntimePath() . '_express_kuaidi100_cookie.txt',
-            'headers'     => ['Host' => 'express.baidu.com', 'CLIENT-IP' => $id, 'X-FORWARDED-FOR' => $id],
+            'cookie_file' => $this->app->getRuntimePath() . '_express_cookie.txt',
+            'headers'     => ['Host' => 'express.baidu.com', 'X-FORWARDED-FOR' => $this->app->request->ip()],
         ];
         $this->token = $this->getExpressToken();
         return $this;
@@ -76,32 +74,6 @@ class ExpressService extends Service
     }
 
     /**
-     * 执行百度快递100应用查询请求
-     * @param string $code 快递公司编号
-     * @param string $number 快递单单号
-     * @return mixed
-     */
-    private function doExpress($code, $number)
-    {
-        $url = "https://express.baidu.com/express/api/express?tokenV2={$this->token}&appid=4001&nu={$number}&com={$code}&qid=&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
-        return json_decode(str_replace('/**/callback(', '', trim(HttpExtend::get($url, [], $this->options), ')')), true);
-    }
-
-    /**
-     * 获取接口请求令牌
-     * @return string
-     * @throws \think\Exception
-     */
-    public function getExpressToken()
-    {
-        if (preg_match('/express\?tokenV2=(.*?)",/', $this->getWapBaiduHtml(), $matches)) {
-            return $matches[1];
-        } else {
-            throw new \think\Exception('Failed to grab authorization token.');
-        }
-    }
-
-    /**
      * 获取快递公司列表
      * @return array
      */
@@ -111,21 +83,51 @@ class ExpressService extends Service
         if (preg_match('/"currentData":.*?\[(.*?)\],/', $this->getWapBaiduHtml(), $matches)) {
             foreach (json_decode("[{$matches['1']}]") as $item) $data[$item->value] = $item->text;
             unset($data['_auto']);
+            return $data;
+        } else {
+            $this->app->cache->delete('express_kuaidi_html');
+            return $this->getExpressList();
         }
-        return $data;
+    }
+
+    /**
+     * 执行百度快递100应用查询请求
+     * @param string $code 快递公司编号
+     * @param string $number 快递单单号
+     * @return mixed
+     */
+    private function doExpress($code, $number)
+    {
+        $uniqid = strtr(uniqid(), '.', '');
+        $url = "https://express.baidu.com/express/api/express?tokenV2={$this->token}&appid=4001&nu={$number}&com={$code}&qid={$uniqid}&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
+        return json_decode(str_replace('/**/callback(', '', trim(HttpExtend::get($url, [], $this->options), ')')), true);
+    }
+
+    /**
+     * 获取接口请求令牌
+     * @return string
+     */
+    private function getExpressToken()
+    {
+        if (preg_match('/express\?tokenV2=(.*?)",/', $this->getWapBaiduHtml(), $matches)) {
+            return $matches[1];
+        } else {
+            $this->app->cache->delete('express_kuaidi_html');
+            return $this->getExpressToken();
+        }
     }
 
     /**
      * 获取百度WAP快递HTML（用于后面的抓取关键值）
      * @return string
      */
-    protected function getWapBaiduHtml()
+    private function getWapBaiduHtml()
     {
-        $content = $this->app->cache->get('express_baidu_kuaidi_100');
+        $content = $this->app->cache->get('express_kuaidi_html');
         while (empty($content) || stristr($content, '百度安全验证') > -1 || stripos($content, 'tokenV2') === -1) {
-            $content = HttpExtend::get('https://m.baidu.com/s?word=73124161428372', [], $this->options);
+            $content = HttpExtend::get('https://m.baidu.com/s?word=73124161428372&rnd=' . uniqid(), [], $this->options);
         }
-        $this->app->cache->set('express_baidu_kuaidi_100', $content, 3600);
+        $this->app->cache->set('express_kuaidi_html', $content, 30);
         return $content;
     }
 

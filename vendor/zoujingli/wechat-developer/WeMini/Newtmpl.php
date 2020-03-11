@@ -74,7 +74,7 @@ class Newtmpl extends BasicWeChat
     {
         $url = 'https://api.weixin.qq.com/wxaapi/newtmpl/getpubtemplatetitles?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->callPostApi($url, ['ids'=>$ids,'start' => '0', 'limit' => '30'], true);
+        return $this->callPostApi($url, ['ids' => $ids, 'start' => '0', 'limit' => '30'], true);
     }
 
     /**

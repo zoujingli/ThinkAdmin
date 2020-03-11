@@ -205,7 +205,7 @@ if (!function_exists('format_datetime')) {
      * @param string $format 输出格式
      * @return false|string
      */
-    function format_datetime($datetime, $format = 'Y年m月d日 H:i:s'): string
+    function format_datetime($datetime, $format = 'Y年m月d日 H:i:s')
     {
         if (empty($datetime)) return '-';
         if (is_numeric($datetime)) {
@@ -221,7 +221,7 @@ if (!function_exists('enbase64url')) {
      * @param string $string
      * @return string
      */
-    function enbase64url(string $string): string
+    function enbase64url(string $string)
     {
         return rtrim(strtr(base64_encode($string), '+/', '-_'), '=');
     }
@@ -232,7 +232,7 @@ if (!function_exists('debase64url')) {
      * @param string $string
      * @return string
      */
-    function debase64url(string $string): string
+    function debase64url(string $string)
     {
         return base64_decode(str_pad(strtr($string, '-_', '+/'), strlen($string) % 4, '=', STR_PAD_RIGHT));
     }
@@ -245,7 +245,7 @@ if (!function_exists('down_file')) {
      * @param integer $expire 强制本地存储时间
      * @return string
      */
-    function down_file($source, $force = false, $expire = 0): string
+    function down_file($source, $force = false, $expire = 0)
     {
         $result = Storage::down($source, $force, $expire);
         return isset($result['url']) ? $result['url'] : $source;

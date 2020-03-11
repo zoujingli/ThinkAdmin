@@ -8,7 +8,7 @@
     {
       "name": "Anyon",
       "email": "zoujingli@qq.com",
-      "homepage": "http://ctolog.com"
+      "homepage": "https://thinkadmin.top"
     }
   ],
   "keywords": [
@@ -23,6 +23,7 @@
     "php": ">=5.4",
     "ext-json": "*",
     "ext-curl": "*",
+    "ext-bcmath": "*",
     "ext-libxml": "*",
     "ext-openssl": "*",
     "ext-mbstring": "*",
@@ -34,8 +35,8 @@
     ],
     "psr-4": {
       "WePay\\": "WePay",
-      "WeMini\\": "WeMini",
       "WeChat\\": "WeChat",
+      "WeMini\\": "WeMini",
       "AliPay\\": "AliPay"
     }
   }

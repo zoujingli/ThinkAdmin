@@ -59,7 +59,7 @@ class QueueService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function initialize($code = 0): Service
+    public function initialize($code = 0)
     {
         if (!empty($code)) {
             $this->code = $code;

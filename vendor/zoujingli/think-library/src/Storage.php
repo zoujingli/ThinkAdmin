@@ -68,7 +68,7 @@ abstract class Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function initialize(): Storage
+    protected function initialize()
     {
         $this->linkType = sysconf('storage.link_type');
         return $this;
@@ -102,7 +102,7 @@ abstract class Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function instance($name = null): Storage
+    public static function instance($name = null)
     {
         $class = ucfirst(strtolower(is_null($name) ? sysconf('storage.type') : $name));
         if (class_exists($object = "think\\admin\\storage\\{$class}Storage")) {
@@ -120,7 +120,7 @@ abstract class Storage
      * @param string $fun 名称规则方法
      * @return string
      */
-    public static function name($url, $ext = '', $pre = '', $fun = 'md5'): string
+    public static function name($url, $ext = '', $pre = '', $fun = 'md5')
     {
         if (empty($ext)) $ext = pathinfo($url, 4);
         list($xmd, $ext) = [$fun($url), trim($ext, '.\\/')];
@@ -157,7 +157,7 @@ abstract class Storage
      * @param array $mime 文件信息
      * @return string
      */
-    public static function mime($exts, $mime = []): string
+    public static function mime($exts, $mime = [])
     {
         $mimes = self::mimes();
         foreach (is_string($exts) ? explode(',', $exts) : $exts as $ext) {

@@ -63,7 +63,7 @@ class AliossStorage extends Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function initialize(): Storage
+    protected function initialize()
     {
         // 读取配置文件
         $this->point = sysconf('storage.alioss_point');
@@ -90,7 +90,7 @@ class AliossStorage extends Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function instance($name = null): Storage
+    public static function instance($name = null)
     {
         return parent::instance('alioss');
     }
