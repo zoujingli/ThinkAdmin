@@ -70,17 +70,16 @@
 </div>
 
 <div class="think-box-shadow padding-40 padding-top-30 padding-bottom-30">
-
     <table class="layui-table" lay-even>
         <caption class="color-green font-w7 text-left">系统信息 System Information</caption>
         <tbody>
         <tr>
-            <td>管理程序</td>
-            <td>ThinkAdmin Version {$app->config->get('app.thinkadmin_ver','v6')}</td>
-        </tr>
-        <tr>
             <td>核心框架</td>
             <td>ThinkPHP Version {$app->version()}</td>
+        </tr>
+        <tr>
+            <td>管理程序</td>
+            <td>ThinkAdmin Version {$app->config->get('app.thinkadmin_ver','v6')}</td>
         </tr>
         <tr>
             <td>服务器信息</td>
@@ -100,8 +99,6 @@
         </tr>
         </tbody>
     </table>
-
 </div>
-
 
 {/block}
