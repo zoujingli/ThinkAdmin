@@ -962,16 +962,16 @@
         },
         {
             "name": "zoujingli/wechat-developer",
-            "version": "v1.2.19",
+            "version": "v1.2.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-                "reference": "c30e880bf70709a50e9b73c9dc574ed6ca2d6156"
+                "reference": "9afb0a29c658d52dc7b9d46d2f848602124936b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/c30e880bf70709a50e9b73c9dc574ed6ca2d6156",
-                "reference": "c30e880bf70709a50e9b73c9dc574ed6ca2d6156",
+                "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/9afb0a29c658d52dc7b9d46d2f848602124936b7",
+                "reference": "9afb0a29c658d52dc7b9d46d2f848602124936b7",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1023,7 +1023,7 @@
                 "wechatpay",
                 "wepay"
             ],
-            "time": "2020-03-11T09:50:03+00:00"
+            "time": "2020-03-14T06:58:18+00:00"
         }
     ],
     "packages-dev": [],

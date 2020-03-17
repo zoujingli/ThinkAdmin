@@ -1,27 +1,24 @@
 <form onsubmit="return false" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
     <div class="layui-card-body padding-left-40">
 
-        <div class="layui-form-item">
-            <label class="relative block">
+        <div class="layui-form-item layui-row layui-col-space10">
+            <label class="layui-col-xs4 relative block">
                 <span class="color-green font-w7">网站名称 Website</span>
                 <input name="site_name" required placeholder="请输入网站名称" value="{:sysconf('site_name')}" class="layui-input">
+                <span class="help-block">网站名称将显示在浏览器的标签上</span>
             </label>
-            <p class="help-block">网站名称，将在浏览器的标签上显示名称</p>
-        </div>
-        <div class="layui-form-item">
-            <label class="relative block">
-                <span class="color-green font-w7">管理程序名称 Name</span>
+            <label class="layui-col-xs4 relative block">
+                <span class="color-green font-w7">后台程序名称 Name</span>
                 <input name="app_name" required placeholder="请输入程序名称" value="{:sysconf('app_name')}" class="layui-input">
+                <span class="help-block">管理程序名称显示在后台左上标题处</span>
             </label>
-            <p class="help-block">管理程序名称，在后台左上角标题处理显示</p>
-        </div>
-        <div class="layui-form-item">
-            <label class="relative block">
-                <span class="color-green font-w7">管理程序版本 Version</span>
+            <label class="layui-col-xs4 relative block">
+                <span class="color-green font-w7">后台程序版本 Version</span>
                 <input name="app_version" placeholder="请输入程序版本" value="{:sysconf('app_version')}" class="layui-input">
+                <span class="help-block">管理程序版本显示在后台左上标题处</span>
             </label>
-            <p class="help-block">管理程序版本，在后台左上角标题处理显示</p>
         </div>
+
         <div class="layui-form-item">
             <span class="color-green font-w7">浏览器图标 Browser</span>
             <div class="relative block">
@@ -30,6 +27,14 @@
                 <a class="margin-left-10" data-file="btn" data-type="ico,png" data-field="site_icon">上传图片</a>
                 <p class="help-block">建议上传 ICO 图标的尺寸为 128x128 <a href="http://www.favicon-icon-generator.com" target="_blank">ICON在线制作</a></p>
             </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="relative block">
+                <span class="color-green font-w7">公网备案号 Baian</span>
+                <input name="beian" required placeholder="请输入公网备案号" value="{:sysconf('beian')}" class="layui-input">
+            </label>
+            <p class="help-block">公网备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将在登录页面下面显示</p>
         </div>
         <div class="layui-form-item">
             <label class="relative block">

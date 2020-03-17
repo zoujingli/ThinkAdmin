@@ -40,6 +40,7 @@
     <div class="footer notselect">
         <p class="layui-hide-xs"><a target="_blank" href="https://www.google.cn/chrome">推荐使用谷歌浏览器</a></p>
         {:sysconf('site_copy')}
+        {if sysconf('beian')}<span class="padding-5">|</span><a target="_blank" href="http://beian.miit.gov.cn">{:sysconf('beian')}</a>{/if}
         {if sysconf('miitbeian')}<span class="padding-5">|</span><a target="_blank" href="http://beian.miit.gov.cn">{:sysconf('miitbeian')}</a>{/if}
     </div>
 </div>

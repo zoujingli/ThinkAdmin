@@ -50,7 +50,14 @@
         </label>
         <div class="help-block">管理程序版本，将显示在后台左上角标题</div>
     </div>
-
+    <div class="layui-form-item">
+        <span class="color-green font-w7">公网备案号 Baian</span>
+        <label class="relative block">
+            <input readonly value="{:sysconf('beian')}" placeholder="请输入公网备案号" class="layui-input layui-bg-gray">
+            <a data-copy="{:sysconf('beian')}" class="fa fa-copy input-right-icon"></a>
+        </label>
+        <p class="help-block">公网备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将在登录页面下面显示</p>
+    </div>
     <div class="layui-form-item">
         <div class="color-green font-w7">网站备案号 Miitbeian</div>
         <label class="relative block">
