@@ -925,6 +925,9 @@ label.think-radio {
 .border-0 {
   border: 0 !important;
 }
+.border-radius {
+  border-radius: 50% !important;
+}
 .border-radius-0 {
   border-radius: 0 !important;
 }
