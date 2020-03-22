@@ -11,7 +11,7 @@
 {/if}
 
 {if auth("sync")}
-<button data-load='{:url("sync")}' data-confirm="是否要创建后台任务同步用户数据？" class='layui-btn layui-btn-sm layui-btn-primary'>同步用户数据</button>
+<button data-queue='{:url("sync")}' data-confirm="是否要创建后台任务同步用户数据？" class='layui-btn layui-btn-sm layui-btn-primary'>同步用户数据</button>
 {/if}
 
 {/block}

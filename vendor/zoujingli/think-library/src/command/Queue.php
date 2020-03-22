@@ -15,8 +15,8 @@
 
 namespace think\admin\command;
 
+use think\admin\Command;
 use think\admin\service\ProcessService;
-use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 

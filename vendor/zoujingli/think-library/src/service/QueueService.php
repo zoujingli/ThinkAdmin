@@ -15,8 +15,10 @@
 
 namespace think\admin\service;
 
+use think\admin\Exception;
 use think\admin\extend\CodeExtend;
 use think\admin\Service;
+use think\exception\InvalidArgumentException;
 
 /**
  * 任务基础服务
@@ -28,7 +30,7 @@ class QueueService extends Service
 
     /**
      * 当前任务编号
-     * @var integer
+     * @var string
      */
     protected $code = 0;
 
@@ -76,6 +78,18 @@ class QueueService extends Service
     }
 
     /**
+     * 获取当前对象值
+     * @param string $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        if (isset($this->$name)) {
+            return $this->$name;
+        }
+    }
+
+    /**
      * 判断是否WIN环境
      * @return boolean
      */
@@ -108,6 +122,7 @@ class QueueService extends Service
 
     /**
      * 添加清理7天前的记录及超时任务
+     * @throws Exception
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -121,12 +136,13 @@ class QueueService extends Service
     /**
      * 注册异步处理任务
      * @param string $title 任务名称
-     * @param string $command 执行内容
+     * @param string $command 执行脚本
      * @param integer $later 延时时间
      * @param array $data 任务附加数据
      * @param integer $rscript 任务类型(0单例,1多例)
      * @param integer $loops 循环等待时间
      * @return $this
+     * @throws Exception
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -135,11 +151,11 @@ class QueueService extends Service
     public function register($title, $command, $later = 0, $data = [], $rscript = 1, $loops = 0)
     {
         $map = [['title', '=', $title], ['status', 'in', ['1', '2']]];
-        if (empty($rscript) && $this->app->db->name('SystemQueue')->where($map)->count() > 0) {
-            throw new \think\Exception(lang('think_library_queue_exist'));
+        if (empty($rscript) && ($queue = $this->app->db->name('SystemQueue')->where($map)->find())) {
+            throw new Exception(lang('think_library_queue_exist'), 0, $queue);
         }
         $this->app->db->name('SystemQueue')->strict(false)->failException(true)->insert([
-            'code'       => $this->code = 'QE' . CodeExtend::uniqidDate(16),
+            'code'       => $this->code = CodeExtend::uniqidDate(16, 'Q'),
             'title'      => $title,
             'command'    => $command,
             'attempts'   => '0',
@@ -150,7 +166,49 @@ class QueueService extends Service
             'outer_time' => '0',
             'loops_time' => $loops,
         ]);
+        $this->progress($this->code, 1, '>>> 任务创建成功！', 0.00);
         return $this->initialize($this->code);
+    }
+
+    /**
+     * 更新任务进度信息
+     * @param string $code 任务编号
+     * @param null|integer $status 任务状态
+     * @param null|string $message 进度消息
+     * @param null|integer $progress 进度数值
+     * @return array
+     */
+    public function progress($code, $status = null, $message = null, $progress = null)
+    {
+        $ckey = "queue_{$code}_progress";
+        $data = $this->app->cache->get($ckey, [
+            'code'     => $code,
+            'status'   => $status,
+            'message'  => $message,
+            'progress' => $progress,
+            'history'  => [],
+        ]);
+        if (is_numeric($progress)) {
+            $progress = sprintf("%.2f", $progress);
+        }
+        if (is_string($message) && is_null($progress)) {
+            $data['message'] = $message;
+            $data['history'][] = ['message' => $message, 'progress' => $data['progress']];
+        } elseif (is_null($message) && is_numeric($progress)) {
+            $data['progress'] = $progress;
+            $data['history'][] = ['message' => $data['message'], 'progress' => $progress];
+        } elseif (is_string($message) && is_numeric($progress)) {
+            $data['message'] = $message;
+            $data['progress'] = $progress;
+            $data['history'][] = ['message' => $message, 'progress' => $progress];
+        }
+        if (is_numeric($status)) {
+            $data['status'] = intval($status);
+        }
+        if (is_string($message) || is_numeric($progress)) {
+            $this->app->cache->set($ckey, $data);
+        }
+        return $data;
     }
 
     /**

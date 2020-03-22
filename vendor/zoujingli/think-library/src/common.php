@@ -92,15 +92,16 @@ if (!function_exists('sysqueue')) {
      * @param array $data 任务附加数据
      * @param integer $rscript 任务类型(0单例,1多例)
      * @param integer $loops 循环等待时间
-     * @return QueueService
+     * @return string
      * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     function sysqueue($title, $command, $later = 0, $data = [], $rscript = 1, $loops = 0)
     {
-        return QueueService::instance()->register($title, $command, $later, $data, $rscript, $loops);
+        return QueueService::instance()->register($title, $command, $later, $data, $rscript, $loops)->code;
     }
 }
 if (!function_exists('systoken')) {

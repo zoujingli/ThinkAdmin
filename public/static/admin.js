@@ -735,6 +735,66 @@ $(function () {
         })
     });
 
+    /*! 异步任务状态监听与展示 */
+    $body.on('click', '[data-queue]', function () {
+        this.action = this.getAttribute('data-queue') || '';
+        if (this.action.length < 1) return $.msg.tips('任务地址不能为空！');
+        $.form.load(this.action, {}, 'post', function (ret) {
+            if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
+                $.msg.tips(ret.msg);
+                return $.loadQueue(ret.data), false;
+            }
+        });
+    });
+    $.loadQueue = function (code) {
+        //自定页
+        layer.open({
+            type: 1, title: false, area: [500, 300], anim: 2, shadeClose: false, content: '' +
+                '<div class="padding-30" data-queue-code-loading="' + code + '" style="width:500px;height:300px">' +
+                '   <div class="margin-top-15" data-message-state></div>' +
+                '   <div class="margin-top-15" data-message-title></div>' +
+                '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes">' +
+                '       <div class="layui-progress-bar" lay-percent="0.00%"></div>' +
+                '   </div>' +
+                '   <textarea class="margin-top-15 layui-textarea transition color-text" disabled style="resize:none"></textarea>' +
+                '</div>'
+        });
+        (function loadprocess(code, $box) {
+            $box = $('[data-queue-code-loading=' + code + ']');
+            if ($box.length < 1) return false;
+            $.form.load(window.ROOT_URL + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
+                if (ret.code) {
+                    (function (lines) {
+                        this.lines = [];
+                        for (this.i in lines) {
+                            this.lines.push('[ ' + lines[this.i].progress + '% ] ' + lines[this.i].message);
+                        }
+                        this.$textarea = $box.find('textarea').val(this.lines.join("\n"));
+                        this.$textarea.animate({scrollTop: this.$textarea[0].scrollHeight + 'px'}, 800)
+                    })(ret.data.history);
+                    $box.find('.layui-progress div').attr('lay-percent', ret.data.progress + '%');
+                    $box.find('[data-message-title]').html(ret.data.message);
+                    layui.element.render();
+                    this.status = parseInt(ret.data.status);
+                    if (this.status === 1) {
+                        $box.find('[data-message-state]').html('处理状态：<b>任务创建成功</b>');
+                    } else if (this.status === 2) {
+                        $box.find('[data-message-state]').html('处理状态：<b class="color-blue">任务正在处理</b>');
+                    } else if (this.status === 3) {
+                        $box.find('[data-message-state]').html('处理状态：<b class="color-green">任务处理完成</b>');
+                        return false;
+                    } else if (this.status === 4) {
+                        $box.find('[data-message-state]').html('处理状态：<b class="color-red">任务处理失败</b>');
+                        return false;
+                    }
+                }
+                return setTimeout(function () {
+                    loadprocess(code);
+                }, 1000), false;
+            }, false);
+        })(code)
+    };
+
     /*! 表单元素失去焦点处理 */
     $body.on('blur', '[data-blur-number]', function (fiexd) {
         fiexd = this.getAttribute('data-blur-number') || 0;

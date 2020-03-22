@@ -74,11 +74,14 @@ class WorkQueue extends Queue
                     'enter_time' => microtime(true), 'attempts' => $this->app->db->raw('attempts+1'),
                     'outer_time' => '0', 'exec_pid' => getmypid(), 'exec_desc' => '', 'status' => '2',
                 ]);
+                QueueService::instance()->progress($this->code, 2, '>>> 任务处理开始！', 0);
                 // 设置进程标题
                 if ($this->process->iswin()) {
                     $this->setProcessTitle("ThinkAdmin {$this->process->version()} Queue - {$this->queue['title']}");
                 }
                 // 执行任务内容
+                defined('WorkQueueCall') or define('WorkQueueCall', true);
+                defined('WorkQueueCode') or define('WorkQueueCode', $this->code);
                 if (class_exists($command = $this->queue['command'])) {
                     // 自定义服务，支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
                     if ($command instanceof QueueService) {
@@ -89,7 +92,6 @@ class WorkQueue extends Queue
                     }
                 } else {
                     // 自定义指令，不支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
-                    defined('WorkQueueCall') or define('WorkQueueCall', true);
                     $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $this->queue['command'])));
                     $this->update('3', $this->app->console->call(array_shift($attr), $attr)->fetch(), false);
                 }
@@ -117,6 +119,15 @@ class WorkQueue extends Queue
             'status' => $status, 'outer_time' => microtime(true), 'exec_pid' => getmypid(), 'exec_desc' => $desc[0],
         ]);
         $this->output->writeln(is_string($message) ? $message : '');
+        // 任务进度标记
+        if (!empty($desc[0])) {
+            QueueService::instance()->progress($this->code, $status, ">>> {$desc[0]}");
+        }
+        if ($status == 3) {
+            QueueService::instance()->progress($this->code, $status, '>>> 任务处理完成！', 100);
+        } elseif ($status == 4) {
+            QueueService::instance()->progress($this->code, $status, '>>> 任务处理失败！');
+        }
         // 注册循环任务
         if (isset($this->queue['loops_time']) && $this->queue['loops_time'] > 0) {
             try {

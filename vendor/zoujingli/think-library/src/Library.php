@@ -36,6 +36,8 @@ class Library extends Service
         // 加载中文语言
         $this->app->lang->load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
         $this->app->lang->load(__DIR__ . '/lang/en-us.php', 'en-us');
+        // 输入变量默认过滤
+        $this->app->request->filter(['trim']);
         // 判断访问模式，兼容 CLI 访问控制器
         if ($this->app->request->isCli()) {
             if (empty($_SERVER['REQUEST_URI']) && isset($_SERVER['argv'][1])) {
@@ -59,7 +61,7 @@ class Library extends Service
                 if ($request->isOptions()) {
                     return response()->code(204)->header($header);
                 } elseif (AdminService::instance()->check()) {
-                    return $next($request)->code(200)->header($header);
+                    return $next($request)->header($header);
                 } elseif (AdminService::instance()->isLogin()) {
                     return json(['code' => 0, 'msg' => lang('think_library_not_auth')])->header($header);
                 } else {
