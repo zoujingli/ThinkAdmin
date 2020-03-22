@@ -74,8 +74,6 @@ class Fans extends Controller
         try {
             $code = sysqueue('同步微信用户数据', "xadmin:fansall", 1, [], 0);
             $this->success('创建任务成功，请等待完成！', $code);
-        } catch (HttpResponseException $exception) {
-            throw $exception;
         } catch (Exception $exception) {
             $queue = $exception->getData();
             if (isset($queue['code'])) {
@@ -83,6 +81,8 @@ class Fans extends Controller
             } else {
                 $this->error($exception->getMessage());
             }
+        } catch (HttpResponseException $exception) {
+            throw $exception;
         } catch (\Exception $exception) {
             $this->error("创建任务失败，{$exception->getMessage()}");
         }
