@@ -741,7 +741,6 @@ $(function () {
         if (this.action.length < 1) return $.msg.tips('任务地址不能为空！');
         $.form.load(this.action, {}, 'post', function (ret) {
             if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
-                $.msg.tips(ret.msg);
                 return $.loadQueue(ret.data), false;
             }
         });
@@ -756,7 +755,7 @@ $(function () {
                 '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes">' +
                 '       <div class="layui-progress-bar" lay-percent="0.00%"></div>' +
                 '   </div>' +
-                '   <textarea class="margin-top-15 layui-textarea transition color-text" disabled style="resize:none"></textarea>' +
+                '   <textarea class="margin-top-15 layui-textarea transition color-text" disabled style="resize:none;min-height:190px"></textarea>' +
                 '</div>'
         });
         (function loadprocess(code, $box) {
@@ -770,7 +769,7 @@ $(function () {
                             this.lines.push('[ ' + lines[this.i].progress + '% ] ' + lines[this.i].message);
                         }
                         this.$textarea = $box.find('textarea').val(this.lines.join("\n"));
-                        this.$textarea.animate({scrollTop: this.$textarea[0].scrollHeight + 'px'}, 800)
+                        this.$textarea.animate({scrollTop: this.$textarea[0].scrollHeight + 'px'}, 100)
                     })(ret.data.history);
                     $box.find('.layui-progress div').attr('lay-percent', ret.data.progress + '%');
                     $box.find('[data-message-title]').html(ret.data.message);
@@ -787,10 +786,10 @@ $(function () {
                         $box.find('[data-message-state]').html('处理状态：<b class="color-red">任务处理失败</b>');
                         return false;
                     }
+                    return setTimeout(function () {
+                        loadprocess(code);
+                    }, 200), false;
                 }
-                return setTimeout(function () {
-                    loadprocess(code);
-                }, 1000), false;
             }, false);
         })(code)
     };

@@ -24,7 +24,7 @@ class Exception extends \Exception
 {
     /**
      * 异常数据对象
-     * @var array
+     * @var mixed
      */
     protected $data = [];
 
@@ -32,7 +32,7 @@ class Exception extends \Exception
      * Exception constructor.
      * @param string $message
      * @param integer $code
-     * @param array $data
+     * @param array|mixed $data
      */
     public function __construct($message = "", $code = 0, $data = [])
     {
@@ -40,6 +40,24 @@ class Exception extends \Exception
         $this->code = $code;
         $this->message = $message;
         parent::__construct($message, $code);
+    }
+
+    /**
+     * 设置异常停止数据
+     * @param mixed $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * 获取异常停止数据
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
 }

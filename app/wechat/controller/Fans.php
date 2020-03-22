@@ -17,6 +17,7 @@ namespace app\wechat\controller;
 
 use app\wechat\service\WechatService;
 use think\admin\Controller;
+use think\admin\Exception;
 use think\exception\HttpResponseException;
 
 /**
@@ -75,6 +76,13 @@ class Fans extends Controller
             $this->success('创建任务成功，请等待完成！', $code);
         } catch (HttpResponseException $exception) {
             throw $exception;
+        } catch (Exception $exception) {
+            $queue = $exception->getData();
+            if (isset($queue['code'])) {
+                $this->success('任务已经存在，无需再次创建！', $queue['code']);
+            } else {
+                $this->error($exception->getMessage());
+            }
         } catch (\Exception $exception) {
             $this->error("创建任务失败，{$exception->getMessage()}");
         }
@@ -96,7 +104,7 @@ class Fans extends Controller
         } catch (HttpResponseException $exception) {
             throw  $exception;
         } catch (\Exception $e) {
-            $this->error("拉入黑名单失败，请稍候再试！{$e->getMessage()}");
+            $this->error("拉入黑名单失败，请稍候再试！<br>{$e->getMessage()}");
         }
     }
 
