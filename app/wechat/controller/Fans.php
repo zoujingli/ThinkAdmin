@@ -72,12 +72,12 @@ class Fans extends Controller
     public function sync()
     {
         try {
-            $code = sysqueue('同步微信用户数据', "xadmin:fansall", 1, [], 0);
+            $code = sysqueue('同步微信用户所有数据', "xadmin:fansall", 1, [], 0);
             $this->success('创建任务成功，请等待完成！', $code);
         } catch (Exception $exception) {
-            $queue = $exception->getData();
-            if (isset($queue['code'])) {
-                $this->success('任务已经存在，无需再次创建！', $queue['code']);
+            $code = $exception->getData();
+            if (is_string($code) && stripos($code, 'Q') === 0) {
+                $this->success('任务已经存在，无需再次创建！', $code);
             } else {
                 $this->error($exception->getMessage());
             }

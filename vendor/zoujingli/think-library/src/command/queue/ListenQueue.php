@@ -64,7 +64,7 @@ class ListenQueue extends Queue
                     $this->output->error("Execution failed -> [{$vo['code']}] {$vo['title']}，{$exception->getMessage()}");
                 }
             });
-            sleep(1);
+            usleep(500000);
         }
     }
 

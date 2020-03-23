@@ -32,7 +32,7 @@ class Exception extends \Exception
      * Exception constructor.
      * @param string $message
      * @param integer $code
-     * @param array|mixed $data
+     * @param mixed $data
      */
     public function __construct($message = "", $code = 0, $data = [])
     {

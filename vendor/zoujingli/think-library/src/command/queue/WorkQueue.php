@@ -74,7 +74,7 @@ class WorkQueue extends Queue
                     'enter_time' => microtime(true), 'attempts' => $this->app->db->raw('attempts+1'),
                     'outer_time' => '0', 'exec_pid' => getmypid(), 'exec_desc' => '', 'status' => '2',
                 ]);
-                QueueService::instance()->progress($this->code, 2, '>>> 任务处理开始！', 0);
+                QueueService::instance()->progress($this->code, 2, '>>> 任务处理开始 <<<', 0);
                 // 设置进程标题
                 if ($this->process->iswin()) {
                     $this->setProcessTitle("ThinkAdmin {$this->process->version()} Queue - {$this->queue['title']}");
@@ -121,12 +121,12 @@ class WorkQueue extends Queue
         $this->output->writeln(is_string($message) ? $message : '');
         // 任务进度标记
         if (!empty($desc[0])) {
-            QueueService::instance()->progress($this->code, $status, ">>> {$desc[0]}");
+            QueueService::instance()->progress($this->code, $status, ">>> {$desc[0]} <<<");
         }
         if ($status == 3) {
-            QueueService::instance()->progress($this->code, $status, '>>> 任务处理完成！', 100);
+            QueueService::instance()->progress($this->code, $status, '>>> 任务处理完成 <<<', 100);
         } elseif ($status == 4) {
-            QueueService::instance()->progress($this->code, $status, '>>> 任务处理失败！');
+            QueueService::instance()->progress($this->code, $status, '>>> 任务处理失败 <<<');
         }
         // 注册循环任务
         if (isset($this->queue['loops_time']) && $this->queue['loops_time'] > 0) {

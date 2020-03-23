@@ -52,11 +52,11 @@ class Fans extends Command
     {
         $message = '';
         foreach ($this->module as $m) {
-            if (method_exists($this, $fun = "_{$m}")) {
-                $message .= $this->$fun();
+            if (method_exists($this, $method = "_{$m}")) {
+                $message .= $this->$method();
             }
         }
-        $this->endQueueMessage(3, $message);
+        $this->queueProgressState(3, $message);
     }
 
     /**
@@ -80,8 +80,8 @@ class Fans extends Command
                 if (is_array($list = WechatService::WeChatUser()->getBatchUserInfo($openids)) && !empty($list['user_info_list'])) {
                     foreach ($list['user_info_list'] as $user) {
                         $string = str_pad(++$done, strlen($result['total']), '0', STR_PAD_LEFT);
-                        $this->setQueuePropress(2, "{$user['openid']} {$user['nickname']}", $done * 100 / $result['total']);
-                        $this->output->writeln("({$string}/{$result['total']}) -> {$user['openid']} {$user['nickname']}");
+                        $message = "({$string}/{$result['total']}) -> {$user['openid']} {$user['nickname']}";
+                        $this->queueProgressMessage(2, $message, $done * 100 / $result['total']);
                         FansService::instance()->set($user, $appid);
                     }
                 }

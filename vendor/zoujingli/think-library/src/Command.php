@@ -56,10 +56,12 @@ class Command extends ThinkCommand
      * @param null|integer $progress 进度数值
      * @return Command
      */
-    protected function setQueuePropress($status = null, $message = null, $progress = null)
+    protected function queueProgressMessage($status = null, $message = null, $progress = null)
     {
         if (defined('WorkQueueCode')) {
             $this->queue->progress(WorkQueueCode, $status, $message, $progress);
+        } elseif (is_string($message)) {
+            $this->output->writeln($message);
         }
         return $this;
     }
@@ -71,7 +73,7 @@ class Command extends ThinkCommand
      * @return Command
      * @throws Exception
      */
-    protected function endQueueMessage($status, $message)
+    protected function queueProgressState($status, $message)
     {
         if (defined('WorkQueueCode')) {
             throw new Exception($message, $status);

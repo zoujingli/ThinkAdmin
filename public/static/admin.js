@@ -188,7 +188,7 @@ $(function () {
             }
             $.ajax({
                 data: data || {}, type: method || 'GET', url: $.menu.parseUri(url), beforeSend: function (xhr) {
-                    if (typeof Pace === 'object') Pace.restart();
+                    if (typeof Pace === 'object' && loading !== false) Pace.restart();
                     if (typeof headers === 'object') for (var i in headers) xhr.setRequestHeader(i, headers[i]);
                 }, error: function (XMLHttpRequest) {
                     if (XMLHttpRequest.responseText.indexOf('exception') > -1) layer.open({
@@ -746,46 +746,49 @@ $(function () {
         });
     });
     $.loadQueue = function (code) {
-        //自定页
         layer.open({
-            type: 1, title: false, area: [500, 300], anim: 2, shadeClose: false, content: '' +
-                '<div class="padding-30" data-queue-code-loading="' + code + '" style="width:500px;height:300px">' +
-                '   <div class="margin-top-15" data-message-state></div>' +
-                '   <div class="margin-top-15" data-message-title></div>' +
+            type: 1, title: false, area: [500, 270], anim: 2, shadeClose: false, content: '' +
+                '<div class="padding-30" data-queue-load="' + code + '" style="width:500px;height:270px">' +
+                '   <div class="margin-top-15 layui-elip nowrap" data-message-title></div>' +
                 '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes">' +
                 '       <div class="layui-progress-bar" lay-percent="0.00%"></div>' +
                 '   </div>' +
                 '   <textarea class="margin-top-15 layui-textarea transition color-text" disabled style="resize:none;min-height:190px"></textarea>' +
                 '</div>'
         });
-        (function loadprocess(code, $box) {
-            $box = $('[data-queue-code-loading=' + code + ']');
-            if ($box.length < 1) return false;
+        (function loadprocess(code, that) {
+            that = this, this.$box = $('[data-queue-load=' + code + ']');
+            if (that.$box.length < 1) return false;
+            this.setState = function (status, message) {
+                if (status === 1) {
+                    that.$title.html('<b class="color-text">' + message + '</b>');
+                    that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
+                } else if (status === 2) {
+                    that.$title.html('<b class="color-blue">正在处理：</b>' + message);
+                    that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
+                } else if (status === 3) {
+                    that.$title.html('<b class="color-green">' + message + '</b>');
+                    that.$percent.addClass('layui-bg-green').removeClass('layui-bg-blue layui-bg-red');
+                } else if (status === 4) {
+                    that.$title.html('<b class="color-red">' + message + '</b>');
+                    that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
+                }
+            };
+            this.$area = that.$box.find('textarea'), this.$title = that.$box.find('[data-message-title]'), this.$percent = that.$box.find('.layui-progress div');
             $.form.load(window.ROOT_URL + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
                 if (ret.code) {
                     (function (lines) {
                         this.lines = [];
                         for (this.i in lines) {
-                            this.lines.push('[ ' + lines[this.i].progress + '% ] ' + lines[this.i].message);
+                            this.line = lines[this.i], this.percent = '[ ' + this.line.progress + '% ] ';
+                            this.lines.push(this.line.message.indexOf('>>>') > -1 ? this.line.message : this.percent + this.line.message);
                         }
-                        this.$textarea = $box.find('textarea').val(this.lines.join("\n"));
-                        this.$textarea.animate({scrollTop: this.$textarea[0].scrollHeight + 'px'}, 100)
+                        that.$area.val(this.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 50);
                     })(ret.data.history);
-                    $box.find('.layui-progress div').attr('lay-percent', ret.data.progress + '%');
-                    $box.find('[data-message-title]').html(ret.data.message);
-                    layui.element.render();
-                    this.status = parseInt(ret.data.status);
-                    if (this.status === 1) {
-                        $box.find('[data-message-state]').html('处理状态：<b>任务创建成功</b>');
-                    } else if (this.status === 2) {
-                        $box.find('[data-message-state]').html('处理状态：<b class="color-blue">任务正在处理</b>');
-                    } else if (this.status === 3) {
-                        $box.find('[data-message-state]').html('处理状态：<b class="color-green">任务处理完成</b>');
-                        return false;
-                    } else if (this.status === 4) {
-                        $box.find('[data-message-state]').html('处理状态：<b class="color-red">任务处理失败</b>');
-                        return false;
-                    }
+                    that.$percent.attr('lay-percent', (ret.data.progress || '0.00') + '%'), layui.element.render();
+                    if (ret.data.status > 0) that.setState(parseInt(ret.data.status), ret.data.message);
+                    else return that.setState(4, '获取任务详情失败！'), false;
+                    if (parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4) return false;
                     return setTimeout(function () {
                         loadprocess(code);
                     }, 200), false;

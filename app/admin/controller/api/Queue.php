@@ -3,7 +3,6 @@
 
 namespace app\admin\controller\api;
 
-
 use think\admin\Controller;
 use think\admin\service\QueueService;
 
