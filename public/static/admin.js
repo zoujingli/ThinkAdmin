@@ -736,22 +736,16 @@ $(function () {
     });
 
     /*! 异步任务状态监听与展示 */
-    $body.on('click', '[data-queue]', function () {
-        var action = this.getAttribute('data-queue') || '';
+    $body.on('click', '[data-queue]', function (action) {
+        action = this.getAttribute('data-queue') || '';
         if (action.length < 1) return $.msg.tips('任务地址不能为空！');
         this.loading = function (index) {
             $.form.load(action, {}, 'post', function (ret) {
-                if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
-                    return $.loadQueue(ret.data), false;
-                }
+                if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) return $.loadQueue(ret.data), false;
             });
             $.msg.close(index);
         };
-        if ($(this).attr('data-confirm')) {
-            return $.msg.confirm($(this).attr('data-confirm'), this.loading);
-        } else {
-            this.loading();
-        }
+        $(this).attr('data-confirm') ? $.msg.confirm($(this).attr('data-confirm'), this.loading) : this.loading(0);
     });
     $.loadQueue = function (code) {
         layer.open({
