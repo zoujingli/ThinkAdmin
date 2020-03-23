@@ -30,25 +30,25 @@ class QueueService extends Service
      * 当前任务编号
      * @var string
      */
-    protected $code = 0;
+    public $code = '';
 
     /**
      * 当前任务标题
      * @var string
      */
-    protected $title = '';
+    public $title = '';
 
     /**
      * 当前任务参数
      * @var array
      */
-    protected $data = [];
+    public $data = [];
 
     /**
      * 当前任务数据
      * @var array
      */
-    protected $queue = [];
+    public $queue = [];
 
     /**
      * 数据初始化
@@ -73,18 +73,6 @@ class QueueService extends Service
             $this->data = json_decode($this->queue['exec_data'], true) ?: [];
         }
         return $this;
-    }
-
-    /**
-     * 获取当前对象值
-     * @param string $name
-     * @return mixed
-     */
-    public function __get($name)
-    {
-        if (isset($this->$name)) {
-            return $this->$name;
-        }
     }
 
     /**
@@ -163,19 +151,18 @@ class QueueService extends Service
             'outer_time' => '0',
             'loops_time' => $loops,
         ]);
-        $this->progress($this->code, 1, '>>> 任务创建成功 <<<', 0.00);
+        $this->progress(1, '>>> 任务创建成功 <<<', 0.00);
         return $this->initialize($this->code);
     }
 
     /**
      * 设置任务进度信息
-     * @param string $code 任务编号
      * @param null|integer $status 任务状态
      * @param null|string $message 进度消息
      * @param null|integer $progress 进度数值
      * @return array
      */
-    public function progress($code, $status = null, $message = null, $progress = null)
+    public function progress($status = null, $message = null, $progress = null)
     {
         if (is_numeric($status) && intval($status) === 3) {
             if (!is_numeric($progress)) $progress = '100.00';
@@ -185,13 +172,13 @@ class QueueService extends Service
             if (!is_numeric($progress)) $progress = '0.00';
             if (is_null($message)) $message = '>>> 任务执行失败 <<<';
         }
-        $ckey = "queue_{$code}_progress";
+        $ckey = "queue_{$this->code}_progress";
         try {
             $data = $this->app->cache->get($ckey, [
-                'code' => $code, 'status' => $status, 'message' => $message, 'progress' => $progress, 'history' => [],
+                'code' => $this->code, 'status' => $status, 'message' => $message, 'progress' => $progress, 'history' => [],
             ]);
         } catch (\Exception|\TypeError $exception) {
-            return $this->progress($code, $status, $message, $progress);
+            return $this->progress($status, $message, $progress);
         }
         if (is_numeric($status)) $data['status'] = intval($status);
         if (is_numeric($progress)) $progress = sprintf("%.2f", $progress);

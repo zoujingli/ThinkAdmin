@@ -28,11 +28,15 @@ class Queue extends Controller
     /**
      * 任务进度查询
      * @login true
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function progress()
     {
         $input = $this->_vali(['code.require' => '任务编号不能为空！']);
-        $result = QueueService::instance()->progress($input['code']);
+        $result = QueueService::instance()->initialize($input['code'])->progress();
         $this->success('获取任务进度成功！', $result);
     }
 

@@ -56,7 +56,7 @@ class Fans extends Command
                 $message .= $this->$method();
             }
         }
-        $this->queueProgressState(3, $message);
+        $this->setQueueMessage(3, $message);
     }
 
     /**
@@ -67,6 +67,7 @@ class Fans extends Command
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -81,7 +82,7 @@ class Fans extends Command
                     foreach ($list['user_info_list'] as $user) {
                         $string = str_pad(++$done, strlen($result['total']), '0', STR_PAD_LEFT);
                         $message = "({$string}/{$result['total']}) -> {$user['openid']} {$user['nickname']}";
-                        $this->queueProgressMessage(2, $message, $done * 100 / $result['total']);
+                        $this->setQueueProgress(2, $message, $done * 100 / $result['total']);
                         FansService::instance()->set($user, $appid);
                     }
                 }

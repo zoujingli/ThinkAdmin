@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9eebf462f38fc6a0db482795c8caf813
+class ComposerStaticInitd7300eea771f6ce10908a45ed531efa1
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -336,7 +336,6 @@ class ComposerStaticInit9eebf462f38fc6a0db482795c8caf813
         'app\\admin\\controller\\api\\Upload' => __DIR__ . '/../..' . '/app/admin/controller/api/Upload.php',
         'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/app/index/controller/Index.php',
         'app\\wechat\\command\\Fans' => __DIR__ . '/../..' . '/app/wechat/command/Fans.php',
-        'app\\wechat\\command\\Tests' => __DIR__ . '/../..' . '/app/wechat/command/Tests.php',
         'app\\wechat\\controller\\Config' => __DIR__ . '/../..' . '/app/wechat/controller/Config.php',
         'app\\wechat\\controller\\Fans' => __DIR__ . '/../..' . '/app/wechat/controller/Fans.php',
         'app\\wechat\\controller\\Keys' => __DIR__ . '/../..' . '/app/wechat/controller/Keys.php',
@@ -635,9 +634,9 @@ class ComposerStaticInit9eebf462f38fc6a0db482795c8caf813
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9eebf462f38fc6a0db482795c8caf813::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9eebf462f38fc6a0db482795c8caf813::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit9eebf462f38fc6a0db482795c8caf813::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd7300eea771f6ce10908a45ed531efa1::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd7300eea771f6ce10908a45ed531efa1::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitd7300eea771f6ce10908a45ed531efa1::$classMap;
 
         }, null, ClassLoader::class);
     }

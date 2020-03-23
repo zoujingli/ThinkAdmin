@@ -49,7 +49,7 @@ class JsonRpcClient
      * @param string $method
      * @param array $params
      * @return mixed
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      */
     public function __call($method, $params)
     {
@@ -69,16 +69,16 @@ class JsonRpcClient
             fclose($fp);
             $response = json_decode($response, true);
         } else {
-            throw new \think\Exception("无法连接到 {$this->proxy}");
+            throw new \think\admin\Exception("无法连接到 {$this->proxy}");
         }
         // Final checks and return
         if ($response['id'] != $this->id) {
-            throw new \think\Exception("错误的响应标记 (请求标记: {$this->id}, 响应标记: {$response['id']}）");
+            throw new \think\admin\Exception("错误的响应标记 (请求标记: {$this->id}, 响应标记: {$response['id']}）");
         }
         if (is_null($response['error'])) {
             return $response['result'];
         } else {
-            throw new \think\Exception("请求错误：{$response['error']['message']}", $response['error']['code']);
+            throw new \think\admin\Exception("请求错误：{$response['error']['message']}", $response['error']['code']);
         }
     }
 }

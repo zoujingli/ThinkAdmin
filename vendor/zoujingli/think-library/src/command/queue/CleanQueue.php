@@ -46,8 +46,8 @@ class CleanQueue extends Queue
      * 清理历史任务
      * @param Input $input
      * @param Output $output
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DbException
-     * @throws \think\Exception
      */
     protected function execute(Input $input, Output $output)
     {
@@ -63,7 +63,7 @@ class CleanQueue extends Queue
             $count2 = $this->app->db->name($this->table)->where($map)->update(['status' => '4', 'exec_desc' => '执行等待超过60分钟无响应']);
             $this->output->info("Successfully processed {$count2} unresponsive records waiting for more than 1 hour");
             // 返回消息到任务状态描述
-            if (defined('WorkQueueCall')) throw new \think\Exception("清理 {$count1} 条 + 无响应 {$count2} 条", 3);
+            if (defined('WorkQueueCall')) throw new \think\admin\Exception("清理 {$count1} 条 + 无响应 {$count2} 条", 3);
         }
     }
 }

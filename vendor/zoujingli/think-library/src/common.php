@@ -93,7 +93,6 @@ if (!function_exists('sysqueue')) {
      * @param integer $rscript 任务类型(0单例,1多例)
      * @param integer $loops 循环等待时间
      * @return string
-     * @throws \think\Exception
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException

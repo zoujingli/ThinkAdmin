@@ -29,11 +29,13 @@ use think\console\Output;
 class Command extends ThinkCommand
 {
     /**
+     * 任务控制服务
      * @var QueueService
      */
     protected $queue;
 
     /**
+     * 进程控制服务
      * @var ProcessService
      */
     protected $process;
@@ -55,11 +57,18 @@ class Command extends ThinkCommand
      * @param null|string $message 进度消息
      * @param null|integer $progress 进度数值
      * @return Command
+     * @throws Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function queueProgressMessage($status = null, $message = null, $progress = null)
+    protected function setQueueProgress($status = null, $message = null, $progress = null)
     {
         if (defined('WorkQueueCode')) {
-            $this->queue->progress(WorkQueueCode, $status, $message, $progress);
+            if ($this->queue->code !== WorkQueueCode) {
+                $this->queue->initialize(WorkQueueCode);
+            }
+            $this->queue->progress($status, $message, $progress);
         } elseif (is_string($message)) {
             $this->output->writeln($message);
         }
@@ -73,10 +82,12 @@ class Command extends ThinkCommand
      * @return Command
      * @throws Exception
      */
-    protected function queueProgressState($status, $message)
+    protected function setQueueMessage($status, $message)
     {
         if (defined('WorkQueueCode')) {
             throw new Exception($message, $status);
+        } elseif (is_string($message)) {
+            $this->output->writeln($message);
         }
         return $this;
     }

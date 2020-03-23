@@ -739,14 +739,19 @@ $(function () {
     $body.on('click', '[data-queue]', function () {
         var action = this.getAttribute('data-queue') || '';
         if (action.length < 1) return $.msg.tips('任务地址不能为空！');
-        $.msg.confirm(title, function (index) {
+        this.loading = function () {
             $.form.load(action, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
                     return $.loadQueue(ret.data), false;
                 }
             });
             $.msg.close(index);
-        })
+        };
+        if ($(this).attr('data-confirm')) {
+            return $.msg.confirm($(this).attr('data-confirm'), this.loading);
+        } else {
+            this.loading();
+        }
     });
     $.loadQueue = function (code) {
         layer.open({

@@ -22,6 +22,7 @@ use think\admin\helper\QueryHelper;
 use think\admin\helper\SaveHelper;
 use think\admin\helper\TokenHelper;
 use think\admin\helper\ValidateHelper;
+use think\admin\service\QueueService;
 use think\App;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -271,6 +272,34 @@ abstract class Controller extends \stdClass
     protected function _applyFormToken($return = false)
     {
         return TokenHelper::instance()->init($return);
+    }
+
+    /**
+     * 创建异步任务并返回任务编号
+     * @param string $title 任务名称
+     * @param string $command 执行内容
+     * @param integer $later 延时执行时间
+     * @param array $data 任务附加数据
+     * @param integer $rscript 任务类型(0单例,1多例)
+     * @param integer $loops 循环等待时间
+     */
+    protected function _queue($title, $command, $later = 0, $data = [], $rscript = 1, $loops = 0)
+    {
+        try {
+            $queue = QueueService::instance()->register($title, $command, $later, $data, $rscript, $loops);
+            $this->success('创建任务成功！', $queue->code);
+        } catch (Exception $exception) {
+            $code = $exception->getData();
+            if (is_string($code) && stripos($code, 'Q') === 0) {
+                $this->success('任务已经存在，无需再次创建！', $code);
+            } else {
+                $this->error($exception->getMessage());
+            }
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error("创建任务失败，{$exception->getMessage()}");
+        }
     }
 
 }

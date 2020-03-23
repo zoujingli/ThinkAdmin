@@ -27,7 +27,7 @@ class LocalStorage extends Storage
 
     /**
      * 初始化入口
-     * @return LocalStorage
+     * @return Storage
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -53,7 +53,7 @@ class LocalStorage extends Storage
     /**
      * 获取当前实例对象
      * @param null $name
-     * @return LocalStorage
+     * @return Storage
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
