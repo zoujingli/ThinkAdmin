@@ -774,7 +774,7 @@ $(function () {
             this.setState = function (status, message) {
                 if (message.indexOf('javascript:') === 0) {
 
-                } else if (status === 1) {
+                } else if (status === 1 || (status === 2 && message.indexOf('>>>') > -1)) {
                     that.$title.html('<b class="color-text">' + message + '</b>');
                     that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
                 } else if (status === 2) {
