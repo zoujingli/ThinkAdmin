@@ -749,13 +749,15 @@ $(function () {
     });
     $.loadQueue = function (code) {
         layer.open({
-            type: 1, title: false, area: [500, 270], anim: 2, shadeClose: false, content: '' +
-                '<div class="padding-30" data-queue-load="' + code + '" style="width:500px;height:270px">' +
-                '   <div class="margin-top-15 layui-elip nowrap" data-message-title></div>' +
+            type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, content: '' +
+                '<div class="padding-30 padding-bottom-0" style="width:500px" data-queue-load="' + code + '">' +
+                '   <div class="layui-elip nowrap" data-message-title></div>' +
                 '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes">' +
-                '       <div class="layui-progress-bar" lay-percent="0.00%"></div>' +
+                '       <div class="layui-progress-bar transition" lay-percent="0.00%"></div>' +
                 '   </div>' +
-                '   <textarea class="margin-top-15 layui-textarea layui-bg-black" disabled style="resize:none;color:#fff;overflow:hidden;min-height:190px"></textarea>' +
+                '   <div class="margin-top-15">' +
+                '       <textarea class="layui-textarea layui-bg-black" disabled style="resize:none;color:#fff;overflow:hidden;height:190px"></textarea>' +
+                '   </div>' +
                 '</div>'
         });
         var scripts = {};
@@ -767,11 +769,15 @@ $(function () {
             this.$percent = that.$box.find('.layui-progress div');
             this.setState = function (status, message) {
                 if (message.indexOf('javascript:') === 0) {
-                } else if (status === 1 || (status === 2 && message.indexOf('>>>') > -1)) {
+                } else if (status === 1) {
                     that.$title.html('<b class="color-text">' + message + '</b>');
                     that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
                 } else if (status === 2) {
-                    that.$title.html('<b class="color-blue">正在处理：</b>' + message);
+                    if (message.indexOf('>>>') > -1) {
+                        that.$title.html('<b class="color-blue">' + message + '</b>');
+                    } else {
+                        that.$title.html('<b class="color-blue">正在处理：</b>' + message);
+                    }
                     that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
                 } else if (status === 3) {
                     that.$title.html('<b class="color-green">' + message + '</b>');
