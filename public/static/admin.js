@@ -759,8 +759,13 @@ $(function () {
         (function loadprocess(code, that) {
             that = this, this.$box = $('[data-queue-load=' + code + ']');
             if (that.$box.length < 1) return false;
+            this.$area = that.$box.find('textarea');
+            this.$title = that.$box.find('[data-message-title]');
+            this.$percent = that.$box.find('.layui-progress div');
             this.setState = function (status, message) {
-                if (status === 1) {
+                if (message.indexOf('javascript:') === 0) {
+                    window.location.href = message;
+                } else if (status === 1) {
                     that.$title.html('<b class="color-text">' + message + '</b>');
                     that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
                 } else if (status === 2) {
@@ -774,7 +779,6 @@ $(function () {
                     that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
                 }
             };
-            this.$area = that.$box.find('textarea'), this.$title = that.$box.find('[data-message-title]'), this.$percent = that.$box.find('.layui-progress div');
             $.form.load(window.ROOT_URL + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
                 if (ret.code) {
                     (function (lines) {
