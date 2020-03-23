@@ -764,6 +764,7 @@ $(function () {
                 '   <textarea class="margin-top-15 layui-textarea layui-bg-black" disabled style="resize:none;color:#fff;overflow:hidden;min-height:190px"></textarea>' +
                 '</div>'
         });
+        var scripts = {};
         (function loadprocess(code, that) {
             that = this, this.$box = $('[data-queue-load=' + code + ']');
             if (that.$box.length < 1) return false;
@@ -772,7 +773,7 @@ $(function () {
             this.$percent = that.$box.find('.layui-progress div');
             this.setState = function (status, message) {
                 if (message.indexOf('javascript:') === 0) {
-                    window.location.href = message;
+
                 } else if (status === 1) {
                     that.$title.html('<b class="color-text">' + message + '</b>');
                     that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
@@ -795,6 +796,9 @@ $(function () {
                             this.line = lines[this.i], this.percent = '[ ' + this.line.progress + '% ] ';
                             if (this.line.message.indexOf('javascript:') === -1) {
                                 this.lines.push(this.line.message.indexOf('>>>') > -1 ? this.line.message : this.percent + this.line.message);
+                            } else if (!scripts['_' + code + '_' + this.i]) {
+                                location.href = this.line.message;
+                                scripts['_' + code + '_' + this.i] = true;
                             }
                         }
                         that.$area.val(this.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 200);
