@@ -739,7 +739,7 @@ $(function () {
     $body.on('click', '[data-queue]', function () {
         var action = this.getAttribute('data-queue') || '';
         if (action.length < 1) return $.msg.tips('任务地址不能为空！');
-        this.loading = function () {
+        this.loading = function (index) {
             $.form.load(action, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
                     return $.loadQueue(ret.data), false;
