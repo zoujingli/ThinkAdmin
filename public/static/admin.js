@@ -737,13 +737,16 @@ $(function () {
 
     /*! 异步任务状态监听与展示 */
     $body.on('click', '[data-queue]', function () {
-        this.action = this.getAttribute('data-queue') || '';
-        if (this.action.length < 1) return $.msg.tips('任务地址不能为空！');
-        $.form.load(this.action, {}, 'post', function (ret) {
-            if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
-                return $.loadQueue(ret.data), false;
-            }
-        });
+        var action = this.getAttribute('data-queue') || '';
+        if (action.length < 1) return $.msg.tips('任务地址不能为空！');
+        $.msg.confirm(title, function (index) {
+            $.form.load(action, {}, 'post', function (ret) {
+                if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
+                    return $.loadQueue(ret.data), false;
+                }
+            });
+            $.msg.close(index);
+        })
     });
     $.loadQueue = function (code) {
         layer.open({
@@ -790,8 +793,11 @@ $(function () {
                         that.$area.val(this.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 200);
                     })(ret.data.history);
                     that.$percent.attr('lay-percent', (ret.data.progress || '0.00') + '%'), layui.element.render();
-                    if (ret.data.status > 0) that.setState(parseInt(ret.data.status), ret.data.message);
-                    else return that.setState(4, '获取任务详情失败！'), false;
+                    if (ret.data.status > 0) {
+                        that.setState(parseInt(ret.data.status), ret.data.message);
+                    } else {
+                        return that.setState(4, '获取任务详情失败！'), false;
+                    }
                     if (parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4) return false;
                     return setTimeout(function () {
                         loadprocess(code);
