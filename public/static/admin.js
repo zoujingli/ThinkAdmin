@@ -753,7 +753,7 @@ $(function () {
                 '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes">' +
                 '       <div class="layui-progress-bar" lay-percent="0.00%"></div>' +
                 '   </div>' +
-                '   <textarea class="margin-top-15 layui-textarea transition color-text" disabled style="resize:none;min-height:190px"></textarea>' +
+                '   <textarea class="margin-top-15 layui-textarea layui-bg-black" disabled style="resize:none;color:#fff;overflow:hidden;min-height:190px"></textarea>' +
                 '</div>'
         });
         (function loadprocess(code, that) {
@@ -783,7 +783,7 @@ $(function () {
                             this.line = lines[this.i], this.percent = '[ ' + this.line.progress + '% ] ';
                             this.lines.push(this.line.message.indexOf('>>>') > -1 ? this.line.message : this.percent + this.line.message);
                         }
-                        that.$area.val(this.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 50);
+                        that.$area.val(this.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 200);
                     })(ret.data.history);
                     that.$percent.attr('lay-percent', (ret.data.progress || '0.00') + '%'), layui.element.render();
                     if (ret.data.status > 0) that.setState(parseInt(ret.data.status), ret.data.message);
