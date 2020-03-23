@@ -783,19 +783,16 @@ $(function () {
             };
             $.form.load(window.ROOT_URL + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
                 if (ret.code) {
-                    (function (lines) {
-                        this.lines = [];
-                        for (this.i in lines) {
-                            this.line = lines[this.i], this.percent = '[ ' + this.line.progress + '% ] ';
-                            if (this.line.message.indexOf('javascript:') === -1) {
-                                this.lines.push(this.line.message.indexOf('>>>') > -1 ? this.line.message : this.percent + this.line.message);
-                            } else if (!scripts['_' + code + '_' + this.i]) {
-                                location.href = this.line.message;
-                                scripts['_' + code + '_' + this.i] = true;
-                            }
+                    that.lines = [];
+                    for (this.i in ret.data.history) {
+                        this.line = ret.data.history[this.i], this.percent = '[ ' + this.line.progress + '% ] ';
+                        if (this.line.message.indexOf('javascript:') === -1) {
+                            that.lines.push(this.line.message.indexOf('>>>') > -1 ? this.line.message : this.percent + this.line.message);
+                        } else if (!scripts['_' + code + '_' + this.i]) {
+                            location.href = this.line.message, scripts['_' + code + '_' + this.i] = true;
                         }
-                        that.$area.val(this.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 200);
-                    })(ret.data.history);
+                    }
+                    that.$area.val(that.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 200);
                     that.$percent.attr('lay-percent', (ret.data.progress || '0.00') + '%'), layui.element.render();
                     if (ret.data.status > 0) {
                         that.setState(parseInt(ret.data.status), ret.data.message);
