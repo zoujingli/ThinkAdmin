@@ -788,7 +788,9 @@ $(function () {
                         this.lines = [];
                         for (this.i in lines) {
                             this.line = lines[this.i], this.percent = '[ ' + this.line.progress + '% ] ';
-                            this.lines.push(this.line.message.indexOf('>>>') > -1 ? this.line.message : this.percent + this.line.message);
+                            if (this.line.message.indexOf('javascript:') === -1) {
+                                this.lines.push(this.line.message.indexOf('>>>') > -1 ? this.line.message : this.percent + this.line.message);
+                            }
                         }
                         that.$area.val(this.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 200);
                     })(ret.data.history);
