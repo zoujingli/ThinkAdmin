@@ -739,17 +739,20 @@ $(function () {
     $body.on('click', '[data-queue]', function (action) {
         action = this.getAttribute('data-queue') || '';
         if (action.length < 1) return $.msg.tips('任务地址不能为空！');
-        this.loading = function (index) {
+        this.doRuntime = function (index) {
             $.form.load(action, {}, 'post', function (ret) {
-                if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) return $.loadQueue(ret.data), false;
-            });
-            $.msg.close(index);
+                if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
+                    return $.loadQueue(ret.data, true), false;
+                }
+            }), $.msg.close(index);
         };
-        $(this).attr('data-confirm') ? $.msg.confirm($(this).attr('data-confirm'), this.loading) : this.loading(0);
+        $(this).attr('data-confirm') ? $.msg.confirm($(this).attr('data-confirm'), this.doRuntime) : this.doRuntime(0);
     });
-    $.loadQueue = function (code) {
+    $.loadQueue = function (code, doScript, doAjax) {
         layer.open({
-            type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, content: '' +
+            type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
+                doAjax = false;
+            }, content: '' +
                 '<div class="padding-30 padding-bottom-0" style="width:500px" data-queue-load="' + code + '">' +
                 '   <div class="layui-elip nowrap" data-message-title></div>' +
                 '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes">' +
@@ -760,51 +763,48 @@ $(function () {
                 '   </div>' +
                 '</div>'
         });
-        var scripts = {};
         (function loadprocess(code, that) {
             that = this, this.$box = $('[data-queue-load=' + code + ']');
-            if (that.$box.length < 1) return false;
-            this.$area = that.$box.find('textarea');
-            this.$title = that.$box.find('[data-message-title]');
-            this.$percent = that.$box.find('.layui-progress div');
+            if (doAjax === false || that.$box.length < 1) return false;
+            this.$area = that.$box.find('textarea'), this.$title = that.$box.find('[data-message-title]');
+            this.$percent = that.$box.find('.layui-progress div'), this.runCache = function (code, index, value) {
+                this.ckey = code + '_' + index, this.ctype = 'admin-queue-script';
+                return value !== undefined ? layui.data(this.ctype, {key: this.ckey, value: value}) : layui.data(this.ctype)[this.ckey] || 0;
+            };
             this.setState = function (status, message) {
-                if (message.indexOf('javascript:') === 0) {
-                } else if (status === 1) {
-                    that.$title.html('<b class="color-text">' + message + '</b>');
+                if (message.indexOf('javascript:') === -1) if (status === 1) {
+                    that.$title.html('<b class="color-text">' + message + '</b>').addClass('text-center');
                     that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
                 } else if (status === 2) {
                     if (message.indexOf('>>>') > -1) {
-                        that.$title.html('<b class="color-blue">' + message + '</b>');
+                        that.$title.html('<b class="color-blue">' + message + '</b>').addClass('text-center');
                     } else {
-                        that.$title.html('<b class="color-blue">正在处理：</b>' + message);
+                        that.$title.html('<b class="color-blue">正在处理：</b>' + message).removeClass('text-center');
                     }
                     that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
                 } else if (status === 3) {
-                    that.$title.html('<b class="color-green">' + message + '</b>');
+                    that.$title.html('<b class="color-green">' + message + '</b>').addClass('text-center');
                     that.$percent.addClass('layui-bg-green').removeClass('layui-bg-blue layui-bg-red');
                 } else if (status === 4) {
-                    that.$title.html('<b class="color-red">' + message + '</b>');
+                    that.$title.html('<b class="color-red">' + message + '</b>').addClass('text-center');
                     that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
                 }
             };
             $.form.load(window.ROOT_URL + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
                 if (ret.code) {
                     that.lines = [];
-                    for (this.i in ret.data.history) {
-                        this.line = ret.data.history[this.i], this.percent = '[ ' + this.line.progress + '% ] ';
+                    for (this.lineIndex in ret.data.history) {
+                        this.line = ret.data.history[this.lineIndex], this.percent = '[ ' + this.line.progress + '% ] ';
                         if (this.line.message.indexOf('javascript:') === -1) {
                             that.lines.push(this.line.message.indexOf('>>>') > -1 ? this.line.message : this.percent + this.line.message);
-                        } else if (!scripts['_' + code + '_' + this.i]) {
-                            location.href = this.line.message, scripts['_' + code + '_' + this.i] = true;
+                        } else if (!that.runCache(code, this.lineIndex) && doScript !== false) {
+                            that.runCache(code, this.lineIndex, 1), location.href = this.line.message;
                         }
                     }
                     that.$area.val(that.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 200);
                     that.$percent.attr('lay-percent', (ret.data.progress || '0.00') + '%'), layui.element.render();
-                    if (ret.data.status > 0) {
-                        that.setState(parseInt(ret.data.status), ret.data.message);
-                    } else {
-                        return that.setState(4, '获取任务详情失败！'), false;
-                    }
+                    if (ret.data.status > 0) that.setState(parseInt(ret.data.status), ret.data.message);
+                    else return that.setState(4, '获取任务详情失败！'), false;
                     if (parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4) return false;
                     return setTimeout(function () {
                         loadprocess(code);

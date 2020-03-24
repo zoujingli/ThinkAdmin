@@ -172,9 +172,8 @@ class QueueService extends Service
             if (!is_numeric($progress)) $progress = '0.00';
             if (is_null($message)) $message = '>>> 任务执行失败 <<<';
         }
-        $ckey = "queue_{$this->code}_progress";
         try {
-            $data = $this->app->cache->get($ckey, [
+            $data = $this->app->cache->get("queue_{$this->code}_progress", [
                 'code' => $this->code, 'status' => $status, 'message' => $message, 'progress' => $progress, 'history' => [],
             ]);
         } catch (\Exception|\TypeError $exception) {
@@ -194,7 +193,10 @@ class QueueService extends Service
             $data['history'][] = ['message' => $message, 'progress' => $progress];
         }
         if (is_string($message) || is_numeric($progress)) {
-            $this->app->cache->set($ckey, $data);
+            if (count($data['history']) > 10) {
+                $data['history'] = array_slice($data['history'], -10);
+            }
+            $this->app->cache->set("queue_{$this->code}_progress", $data);
         }
         return $data;
     }
