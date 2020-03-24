@@ -89,9 +89,6 @@ class Fans extends Command
             }
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-
-        $this->setQueueProgress(2, '执行前端代码');
-        $this->setQueueProgress(2, 'javascript:alert(1)');
         $this->output->comment('--> Wechat user data synchronization completed');
         $this->output->newLine();
         return "同步{$done}个用户数据";
