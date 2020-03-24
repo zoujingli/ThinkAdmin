@@ -53,17 +53,19 @@ class CleanQueue extends Queue
     {
         $this->time = $input->getArgument('time');
         if (empty($this->time) || !is_numeric($this->time) || $this->time <= 0) {
-            $this->output->error('Wrong parameter, the deadline needs to be an integer');
+            $this->setQueueMessage(4, "参数错误，需要传入任务超时时间");
         } else {
             $map = [['exec_time', '<', time() - $this->time]];
             $count1 = $this->app->db->name($this->table)->where($map)->delete();
-            $this->output->info("Successfully cleaned up {$count1} history task records");
+            $this->setQueueProgress(2, "清理 {$count1} 条历史任务成功", 50);
             // 重置超60分钟无响应的记录
             $map = [['exec_time', '<', time() - 3600], ['status', '=', '2']];
-            $count2 = $this->app->db->name($this->table)->where($map)->update(['status' => '4', 'exec_desc' => '执行等待超过60分钟无响应']);
-            $this->output->info("Successfully processed {$count2} unresponsive records waiting for more than 1 hour");
+            $count2 = $this->app->db->name($this->table)->where($map)->update([
+                'status' => '4', 'exec_desc' => '任务执行超时，已自动标识为失败！',
+            ]);
+            $this->setQueueProgress(2, "处理 {$count2} 条超时间任务成功", 100);
             // 返回消息到任务状态描述
-            if (defined('WorkQueueCall')) throw new \think\admin\Exception("清理 {$count1} 条 + 无响应 {$count2} 条", 3);
+            $this->setQueueMessage(3, "共清理 {$count1} 条 + 无响应 {$count2} 条");
         }
     }
 }

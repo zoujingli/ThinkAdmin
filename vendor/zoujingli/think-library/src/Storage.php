@@ -65,7 +65,7 @@ abstract class Storage
 
     /**
      * 存储初始化
-     * @return AliossStorage|LocalStorage|QiniuStorage
+     * @return Storage|AliossStorage|LocalStorage|QiniuStorage
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -81,7 +81,7 @@ abstract class Storage
      * @param string $method 方法名称
      * @param array $arguments 调用参数
      * @return mixed
-     * @throws \think\Exception
+     * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -91,7 +91,7 @@ abstract class Storage
         if (method_exists($class = self::instance(), $method)) {
             return call_user_func_array([$class, $method], $arguments);
         } else {
-            throw new \think\Exception("method not exists: " . get_class($class) . "->{$method}()");
+            throw new Exception("method not exists: " . get_class($class) . "->{$method}()");
         }
     }
 
@@ -99,7 +99,7 @@ abstract class Storage
      * 设置文件驱动名称
      * @param string $name 驱动名称
      * @return AliossStorage|LocalStorage|QiniuStorage
-     * @throws \think\Exception
+     * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -110,7 +110,7 @@ abstract class Storage
         if (class_exists($object = "think\\admin\\storage\\{$class}Storage")) {
             return Container::getInstance()->make($object)->initialize();
         } else {
-            throw new \think\Exception("File driver [{$class}] does not exist.");
+            throw new Exception("File driver [{$class}] does not exist.");
         }
     }
 

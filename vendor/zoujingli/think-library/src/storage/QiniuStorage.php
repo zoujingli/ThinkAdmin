@@ -59,7 +59,7 @@ class QiniuStorage extends Storage
      * 获取当前实例对象
      * @param null $name
      * @return AliossStorage|LocalStorage|QiniuStorage
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

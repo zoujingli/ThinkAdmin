@@ -29,7 +29,7 @@ use function Composer\Autoload\includeFile;
 class Library extends Service
 {
     /**
-     * 注册服务
+     * 注册初始化服务
      */
     public function register()
     {
