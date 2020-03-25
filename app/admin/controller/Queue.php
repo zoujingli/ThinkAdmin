@@ -72,17 +72,19 @@ class Queue extends Controller
     /**
      * 重启系统任务
      * @auth true
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function redo()
     {
-        $data = $this->_vali(['code.require' => '任务编号不能为空！']);
-        $queue = QueueService::instance()->initialize($data['code'])->reset();
-        $queue->progress(1, '>>> 任务重置成功 <<<', 0.00);
-        $this->success('任务重置成功！', $queue->code);
+        try {
+            $data = $this->_vali(['code.require' => '任务编号不能为空！']);
+            $queue = QueueService::instance()->initialize($data['code'])->reset();
+            $queue->progress(1, '>>> 任务重置成功 <<<', 0.00);
+            $this->success('任务重置成功！', $queue->code);
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        }
     }
 
     /**
