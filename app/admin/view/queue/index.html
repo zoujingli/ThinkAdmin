@@ -106,20 +106,14 @@
                     <span class="layui-badge layui-bg-green">处理中</span>
                     {elseif $vo.status eq 3}
                     <span class="layui-badge layui-bg-blue">处理完成</span>
-                    {elseif $vo.status eq 4}
+                    {elseif $vo.status eq 4 and auth('redo')}
                     <span class="layui-badge layui-bg-red margin-right-5">处理失败</span>
-                    <a class="layui-badge layui-bg-green" data-tips-text="重置该任务" data-action="{:url('redo')}" data-value="id#{$vo.id}">
-                        <i class="layui-icon font-s12">&#xe669;</i>
-                    </a>
+                    <a class="layui-badge layui-bg-green" data-confirm="确定要重置该任务吗？" data-tips-text="重置该任务" data-queue="{:url('redo')}?code={$vo.code}"><i class="layui-icon font-s12">&#xe669;</i></a>
                     {/eq}
                     {if auth("remove") }
-                    <a data-action='{:url("remove")}' data-confirm="确定要删除该任务吗？" data-value="id#{$vo.id}" data-tips-text="删除该任务" class='layui-badge layui-bg-red margin-left-5'>
-                        <i class="layui-icon">&#xe640;</i>
-                    </a>
+                    <a data-action='{:url("remove")}' data-confirm="确定要删除该任务吗？" data-value="id#{$vo.id}" data-tips-text="删除该任务" class='layui-badge layui-bg-red margin-left-5'><i class="layui-icon">&#xe640;</i></a>
                     {/if}
-                    <a onclick="$.loadQueue('{$vo.code}',false)" data-tips-text="任务进度信息" class='layui-badge layui-bg-orange margin-left-5'>
-                        <i class="layui-icon">&#xe705;</i>
-                    </a>
+                    <a onclick="$.loadQueue('{$vo.code}',false)" data-tips-text="任务进度信息" class='layui-badge layui-bg-orange margin-left-5'><i class="layui-icon">&#xe705;</i></a>
                 </div>
                 <div class="color-desc">{$vo.exec_desc|raw|default="没有获取到状态描述"}</div>
             </td>

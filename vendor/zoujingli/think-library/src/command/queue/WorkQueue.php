@@ -94,7 +94,7 @@ class WorkQueue extends Queue
                     if (method_exists($command, 'instance') && ($class = $command::instance()) instanceof QueueService) {
                         $this->update('3', $class->initialize($this->code)->execute(json_decode($this->queue['exec_data'], true) ?: []));
                     } else {
-                        throw new \think\Exception("自定义 {$command} 未继承 QueueService");
+                        throw new \think\admin\Exception("自定义 {$command} 未继承 QueueService");
                     }
                 } else {
                     // 自定义指令，不支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
@@ -102,7 +102,7 @@ class WorkQueue extends Queue
                     $this->update('3', $this->app->console->call(array_shift($attr), $attr)->fetch(), false);
                 }
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception|\Error $exception) {
             $code = $exception->getCode();
             if (intval($code) !== 3) $code = 4;
             $this->update($code, $exception->getMessage());

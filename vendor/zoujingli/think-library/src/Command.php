@@ -65,6 +65,9 @@ class Command extends ThinkCommand
     protected function setQueueProgress($status = null, $message = null, $progress = null)
     {
         if (defined('WorkQueueCode')) {
+            if (!$this->queue instanceof QueueService) {
+                $this->queue = QueueService::instance();
+            }
             if ($this->queue->code !== WorkQueueCode) {
                 $this->queue->initialize(WorkQueueCode);
             }
@@ -85,7 +88,7 @@ class Command extends ThinkCommand
     protected function setQueueMessage($status, $message)
     {
         if (defined('WorkQueueCode')) {
-            throw new Exception($message, $status);
+            throw new Exception($message, $status, WorkQueueCode);
         } elseif (is_string($message)) {
             $this->output->writeln($message);
         }

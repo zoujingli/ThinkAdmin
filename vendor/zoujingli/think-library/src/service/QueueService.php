@@ -107,7 +107,7 @@ class QueueService extends Service
     }
 
     /**
-     * 添加清理定时清理任务
+     * 添加定时清理任务
      * @return $this
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -116,7 +116,7 @@ class QueueService extends Service
      */
     public function addCleanQueue()
     {
-        return $this->register('清理7天前记录及执行超时的任务', "xtask:clean", 0, [], 0, 3600);
+        return $this->register('定时清理系统任务数据', "xtask:clean", 0, [], 0, 3600);
     }
 
     /**
@@ -176,21 +176,21 @@ class QueueService extends Service
             $data = $this->app->cache->get("queue_{$this->code}_progress", [
                 'code' => $this->code, 'status' => $status, 'message' => $message, 'progress' => $progress, 'history' => [],
             ]);
-        } catch (\Exception|\TypeError $exception) {
+        } catch (\Exception|\Error $exception) {
             return $this->progress($status, $message, $progress);
         }
         if (is_numeric($status)) $data['status'] = intval($status);
         if (is_numeric($progress)) $progress = sprintf("%.2f", $progress);
         if (is_string($message) && is_null($progress)) {
             $data['message'] = $message;
-            $data['history'][] = ['message' => $message, 'progress' => $data['progress']];
+            $data['history'][] = ['message' => $message, 'progress' => $data['progress'], 'datetime' => date('Y-m-d H:i:s')];
         } elseif (is_null($message) && is_numeric($progress)) {
             $data['progress'] = $progress;
-            $data['history'][] = ['message' => $data['message'], 'progress' => $progress];
+            $data['history'][] = ['message' => $data['message'], 'progress' => $progress, 'datetime' => date('Y-m-d H:i:s')];
         } elseif (is_string($message) && is_numeric($progress)) {
             $data['message'] = $message;
             $data['progress'] = $progress;
-            $data['history'][] = ['message' => $message, 'progress' => $progress];
+            $data['history'][] = ['message' => $message, 'progress' => $progress, 'datetime' => date('Y-m-d H:i:s')];
         }
         if (is_string($message) || is_numeric($progress)) {
             if (count($data['history']) > 10) {
