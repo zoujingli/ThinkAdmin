@@ -101,7 +101,10 @@ class Fans extends Command
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function _black($next = '', $done = 0)
     {
@@ -112,7 +115,7 @@ class Fans extends Command
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 $this->app->db->name('WechatFans')->where(['is_black' => '0'])->whereIn('openid', $chunk)->update(['is_black' => '1']);
             }
-            $this->output->writeln("--> 共计同步微信黑名单{$result['total']}人");
+            $this->setQueueProgress(2, "共计同步微信黑名单{$result['total']}人");
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
         $this->output->comment('--> Wechat blacklist data synchronization completed');
@@ -131,6 +134,7 @@ class Fans extends Command
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -143,8 +147,8 @@ class Fans extends Command
             $count = count($list['tags']);
             foreach ($list['tags'] as &$tag) {
                 $tag['appid'] = $appid;
-                $indexString = str_pad(++$index, strlen($count), '0', STR_PAD_LEFT);
-                $this->output->writeln("({$indexString}/{$count}) -> {$tag['name']}");
+                $progress = str_pad(++$index, strlen($count), '0', STR_PAD_LEFT);
+                $this->setQueueProgress(2, "({$progress}/{$count}) -> {$tag['name']}");
             }
             $this->app->db->name('WechatFansTags')->where(['appid' => $appid])->delete();
             $this->app->db->name('WechatFansTags')->insertAll($list['tags']);
