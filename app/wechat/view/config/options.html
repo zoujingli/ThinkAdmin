@@ -3,14 +3,12 @@
 {block name="content"}
 
 <div class="think-box-shadow layui-form">
-    <div class="layui-form-item">
-        <label class="layui-form-label">Auth<br><span class="nowrap color-desc">授权方式</span></label>
-        <div class="layui-input-block">
-            {foreach ['api'=>'公众号平台API模式','thr'=>'第三方平台授权模式','test'=>'接口功能测试'] as $k=>$v}
-            <input type="radio" data-wechat-type="{$k}" name="wechat.type" value="{$k}" title="{$v}" lay-filter="wechat_type">
-            {/foreach}
-            <p class="help-block">请选择微信对接方式，其中第三方平台授权需要微信开放平台支持，同时需要搭建 Service 服务！</p>
-        </div>
+    <label class="layui-form-label">Auth<br><span class="nowrap color-desc">授权方式</span></label>
+    <div class="layui-input-block">
+        {foreach ['api'=>'公众号平台API模式','thr'=>'第三方平台授权模式','test'=>'接口功能测试'] as $k=>$v}
+        <input type="radio" data-wechat-type="{$k}" name="wechat.type" value="{$k}" title="{$v}" lay-filter="wechat_type">
+        {/foreach}
+        <p class="help-block">请选择微信对接方式，其中第三方平台授权需要微信开放平台支持，同时需要搭建 Service 服务！</p>
     </div>
 </div>
 
