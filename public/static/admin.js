@@ -634,7 +634,7 @@ $(function () {
         });
     });
 
-    /*! 输入框失焦提交 */
+    /*! 表单元素失焦时提交 */
     $body.on('blur', '[data-action-blur]', function () {
         var data = {}, that = this, $this = $(this), action = $this.attr('data-action-blur');
         var time = $this.attr('data-time'), loading = $this.attr('data-loading') || false;
@@ -656,6 +656,12 @@ $(function () {
         });
     });
 
+    /*! 表单元素失去焦点时数字 */
+    $body.on('blur', '[data-blur-number]', function (fiexd) {
+        fiexd = this.getAttribute('data-blur-number') || 0;
+        this.value = (parseFloat(this.value) || 0).toFixed(fiexd);
+    });
+
     /*! 注册 data-href 事件行为 */
     $body.on('click', '[data-href]', function (href) {
         href = $(this).attr('data-href');
@@ -665,8 +671,7 @@ $(function () {
     /*! 注册 data-iframe 事件行为 */
     $body.on('click', '[data-iframe]', function () {
         $(this).attr('data-index', $.form.iframe(
-            $(this).attr('data-iframe'),
-            $(this).attr('data-title') || '窗口',
+            $(this).attr('data-iframe'), $(this).attr('data-title') || '窗口',
             $(this).attr('data-area') || undefined)
         );
     });
@@ -812,12 +817,6 @@ $(function () {
             }, false);
         })(code)
     };
-
-    /*! 表单元素失去焦点处理 */
-    $body.on('blur', '[data-blur-number]', function (fiexd) {
-        fiexd = this.getAttribute('data-blur-number') || 0;
-        this.value = (parseFloat(this.value) || 0).toFixed(fiexd);
-    });
 
     /*! 图片加载异常处理 */
     document.addEventListener('error', function (e, elem) {
