@@ -5,9 +5,9 @@
 <div class="container">
     <div class="logo">A</div>
     <div class="content arrow">
-        <div style="font-size:.6rem;overflow:hidden;width:7.5rem;text-overflow:ellipsis">{$title|default=''}</div>
-        <div style="font-size:.5rem;overflow:hidden;width:7.5rem;text-overflow:ellipsis;color:#ccc">{$desc|default=''}</div>
-        <a href="javascript:void(0)" style="float:right;top:1.4rem;position:absolute;right:0.8rem;" id="audio_btn" class="icon icon-play"></a>
+        <div class="content-title">{$title|default=''}</div>
+        <div class="content-content">{$desc|default=''}</div>
+        <a href="javascript:void(0)" id="audio_btn" class="content-button icon icon-play"></a>
         <div style="clear:both"></div>
         <audio id="audio">
             <source src="{$url|default=''}">
@@ -28,9 +28,46 @@
 
 {block name='style'}
 <style>
-    .icon{color:#fff;font-size:1.5rem}
-    .container .content{width:58vw!important;border:none!important;background:#080!important;white-space:nowrap!important}
-    .container .content:after,.container .content:before{border-color:transparent #080 transparent transparent!important}
-    .container .content{color:#fff}
+    .content-title {
+        width: 7.5rem;
+        overflow: hidden;
+        font-size: .6rem;
+        text-overflow: ellipsis
+    }
+
+    .content-button {
+        top: 1.4rem;
+        float: right;
+        right: 0.8rem;
+        position: absolute;
+    }
+
+    .content-content {
+        color: #ccc;
+        width: 7.5rem;
+        overflow: hidden;
+        font-size: .5rem;
+        text-overflow: ellipsis;
+    }
+
+    .icon {
+        color: #fff;
+        font-size: 1.5rem
+    }
+
+    .container .content {
+        width: 58vw !important;
+        border: none !important;
+        background: #080 !important;
+        white-space: nowrap !important
+    }
+
+    .container .content:after, .container .content:before {
+        border-color: transparent #080 transparent transparent !important
+    }
+
+    .container .content {
+        color: #fff
+    }
 </style>
 {/block}
