@@ -138,7 +138,7 @@ class WorkQueue extends Queue
         if (isset($this->queue['loops_time']) && $this->queue['loops_time'] > 0) {
             try {
                 $this->qService->initialize($this->code)->reset($this->queue['loops_time']);
-            } catch (\Exception $exception) {
+            } catch (\Exception|\Error $exception) {
                 $this->app->log->error("Queue {$this->queue['code']} Loops Failed. {$exception->getMessage()}");
             }
         }

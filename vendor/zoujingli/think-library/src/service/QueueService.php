@@ -139,8 +139,9 @@ class QueueService extends Service
         if (empty($rscript) && ($queue = $this->app->db->name('SystemQueue')->where($map)->find())) {
             throw new \think\admin\Exception(lang('think_library_queue_exist'), 0, $queue['code']);
         }
+        $this->code = CodeExtend::uniqidDate(16, 'Q');
         $this->app->db->name('SystemQueue')->strict(false)->failException(true)->insert([
-            'code'       => $this->code = CodeExtend::uniqidDate(16, 'Q'),
+            'code'       => $this->code,
             'title'      => $title,
             'command'    => $command,
             'attempts'   => '0',

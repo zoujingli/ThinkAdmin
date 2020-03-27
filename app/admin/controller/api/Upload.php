@@ -57,9 +57,8 @@ class Upload extends Controller
      */
     public function state()
     {
-        $this->name = input('name', null);
-        $this->safe = boolval(input('safe'));
-        $data = ['uptype' => $this->getType(), 'xkey' => input('xkey')];
+        list($this->name, $this->safe) = [input('name', null), boolval(input('safe'))];
+        $data = ['uptype' => $this->getType(), 'xkey' => input('xkey'), 'safe' => $this->safe];
         if ($info = Storage::instance($data['uptype'])->info($data['xkey'], $this->safe, $this->name)) {
             $data['url'] = $info['url'];
             $this->success('文件已经上传', $data, 200);
@@ -78,8 +77,7 @@ class Upload extends Controller
             $data['OSSAccessKeyId'] = $token['keyid'];
             $data['server'] = AliossStorage::instance()->upload();
         }
-        $data['safe'] = intval($this->safe);
-        $this->success('获取上传参数', $data, 404);
+        $this->success('获取授权参数', $data, 404);
     }
 
     /**
@@ -106,7 +104,16 @@ class Upload extends Controller
         }
         list($this->safe, $this->uptype, $this->name) = [boolval(input('safe')), $this->getType(), input('xkey')];
         if (empty($this->name)) $this->name = Storage::name($file->getPathname(), $this->extension, '', 'md5_file');
-        $info = Storage::instance($this->uptype)->set($this->name, file_get_contents($file->getRealPath()), $this->safe, $file->getOriginalName());
+        if ($this->uptype === 'local') {
+            $local = LocalStorage::instance();
+            $realpath = dirname($realname = $local->path($this->name, $this->safe));
+            file_exists($realpath) && is_dir($realpath) || mkdir($realpath, 0755, true);
+            @move_uploaded_file($file->getPathname(), $realname);
+            $info = $local->info($this->name, $this->safe, $file->getOriginalName());
+        } else {
+            $bina = file_get_contents($file->getRealPath());
+            $info = Storage::instance($this->uptype)->set($this->name, $bina, $this->safe, $file->getOriginalName());
+        }
         if (is_array($info) && isset($info['url'])) {
             return json(['uploaded' => true, 'filename' => $this->name, 'url' => $this->safe ? $this->name : $info['url']]);
         } else {
