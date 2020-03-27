@@ -56,28 +56,22 @@
 {block name="script"}
 <script>
     (new function () {
-        form.render();
         this.type = "{:sysconf('wechat.mch_ssl_type')}" || 'pem';
-        form.val('payment', {"wechat.mch_ssl_type": this.type});
-        form.on('radio(data-mch-type)', function (data) {
-            apply(data.value);
-        });
-        apply.call(this, this.type);
-        // 证书文件上传控制
         this.types = ['wechat.mch_ssl_p12', 'wechat.mch_ssl_key', 'wechat.mch_ssl_cer'];
-        for (var i in this.types) $('input[name="' + this.types[i] + '"]').on('change', function (that, $button) {
-            that = this, $button = $(this).next('button');
-            setTimeout(function () {
+        layui.form.render(), layui.form.val('payment', {"wechat.mch_ssl_type": this.type});
+        layui.form.on('radio(data-mch-type)', apply), apply.call(this, {value: this.type});
+        for (this.index in this.types) $('input[name="' + this.types[this.index] + '"]').on('change', function (that) {
+            that = this, that.$button = $(this).next('button'), setTimeout(function () {
                 if (typeof that.value === 'string' && that.value.length > 5) {
-                    $button.find('i').addClass('color-green layui-icon-vercode').removeClass('layui-icon-upload-drag');
+                    that.$button.find('i').addClass('color-green layui-icon-vercode').removeClass('layui-icon-upload-drag');
                 } else {
-                    $button.find('i').removeClass('color-green layui-icon-vercode').addClass('layui-icon-upload-drag');
+                    that.$button.find('i').removeClass('color-green layui-icon-vercode').addClass('layui-icon-upload-drag');
                 }
-            }, 300);
+            }, 100);
         }).trigger('change');
 
-        function apply(type) {
-            $('[data-mch-type="' + type + '"]').show().siblings('[data-mch-type]').hide();
+        function apply(data) {
+            $('[data-mch-type="' + data.value + '"]').show().siblings('[data-mch-type]').hide();
         }
     });
 </script>
