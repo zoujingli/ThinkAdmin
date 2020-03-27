@@ -107,7 +107,7 @@
                             <input class="layui-input" onchange="$(this).nextAll('img').attr('src', this.value)" value="{$vo.image_url|default=$defaultImage}" name="image_url" required placeholder="请上传图片或输入图片URL地址">
                             <a data-file="btn" data-type="bmp,png,jpeg,jpg,gif" data-field="image_url" class="input-group-addon"><i class="layui-icon layui-icon-upload"></i></a>
                             <p class="help-block">文件最大2Mb，支持bmp/png/jpeg/jpg/gif格式</p>
-                            <img data-tips-image src='{$vo.image_url|default=$defaultImage}'>
+                            <img data-tips-image src='{$vo.image_url|default=$defaultImage}' alt="img">
                         </div>
                     </div>
 
