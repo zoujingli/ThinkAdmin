@@ -15,11 +15,13 @@
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
 
-// 资源URL目录
+window.webRoot = (function (src) {
+    return src.pop(), src.pop(), src.join('/') + '/';
+})(document.scripts[document.scripts.length - 1].src.split('/'));
+
 window.baseRoot = (function (src) {
-    src = document.scripts[document.scripts.length - 1].src;
     return src.substring(0, src.lastIndexOf("/") + 1);
-})();
+})(document.scripts[document.scripts.length - 1].src);
 
 // require 配置参数
 require.config({
@@ -31,7 +33,7 @@ require.config({
         'json': ['plugs/jquery/json.min'],
         'michat': ['plugs/michat/michat'],
         'base64': ['plugs/jquery/base64.min'],
-        'upload': [baseRoot + '../?s=admin/api.upload&.js'],
+        'upload': [webRoot + '?s=admin/api.upload&.js'],
         'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
         'ckeditor': ['plugs/ckeditor/ckeditor'],
@@ -301,9 +303,7 @@ $(function () {
                 }).on('resize', function () {
                     if ($body.width() > 1000) {
                         layui.data('admin-menu-type')['type-min'] ? $menu.addClass(miniClass) : $menu.removeClass(miniClass);
-                    } else {
-                        $menu.addClass(miniClass);
-                    }
+                    } else $menu.addClass(miniClass);
                 }).trigger('resize');
                 //  Mini 菜单模式时TIPS文字显示
                 $('[data-target-tips]').mouseenter(function () {
@@ -663,15 +663,18 @@ $(function () {
     });
 
     /*! 注册 data-iframe 事件行为 */
-    $body.on('click', '[data-iframe]', function (index, href) {
-        index = $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口', $(this).attr('data-area') || undefined);
-        $(this).attr('data-index', index);
+    $body.on('click', '[data-iframe]', function () {
+        $(this).attr('data-index', $.form.iframe(
+            $(this).attr('data-iframe'),
+            $(this).attr('data-title') || '窗口',
+            $(this).attr('data-area') || undefined)
+        );
     });
 
     /*! 注册 data-icon 事件行为 */
     $body.on('click', '[data-icon]', function (field, location) {
         field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
-        location = window.ROOT_URL + '?s=admin/api.plugs/icon.html&field=' + field;
+        location = webRoot + '?s=admin/api.plugs/icon&field=' + field;
         $.form.iframe(location, '图标选择');
     });
 
@@ -721,9 +724,9 @@ $(function () {
     $body.on('click', '[data-phone-view]', function () {
         $.previewPhonePage(this.getAttribute('data-phone-view') || this.href);
     });
-    $.previewPhonePage = function (href, title) {
-        var tpl = '<div><div class="mobile-preview pull-left"><div class="mobile-header">_TITLE_</div><div class="mobile-body"><iframe id="phone-preview" src="_URL_" frameborder="0" marginheight="0" marginwidth="0"></iframe></div></div></div>';
-        layer.style(layer.open({type: true, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: $(tpl.replace('_TITLE_', title || '公众号').replace('_URL_', href)).html(),}), {boxShadow: 'none'});
+    $.previewPhonePage = function (href, title, template) {
+        template = '<div><div class="mobile-preview pull-left"><div class="mobile-header">_TITLE_</div><div class="mobile-body"><iframe id="phone-preview" src="_URL_" frameborder="0" marginheight="0" marginwidth="0"></iframe></div></div></div>';
+        layer.style(layer.open({type: true, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: $(template.replace('_TITLE_', title || '公众号').replace('_URL_', href)).html()}), {boxShadow: 'none'});
     };
 
     /*! 表单编辑返回操作 */
@@ -786,7 +789,7 @@ $(function () {
                     that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
                 }
             };
-            $.form.load(window.ROOT_URL + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
+            $.form.load(webRoot + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
                 if (ret.code) {
                     that.lines = [];
                     for (this.lineIndex in ret.data.history) {
