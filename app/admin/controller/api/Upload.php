@@ -57,7 +57,7 @@ class Upload extends Controller
      */
     public function state()
     {
-        list($this->name, $this->safe) = [input('name', null), boolval(input('safe'))];
+        list($this->name, $this->safe) = [input('name', null), intval(input('safe'))];
         $data = ['uptype' => $this->getType(), 'xkey' => input('xkey'), 'safe' => $this->safe];
         if ($info = Storage::instance($data['uptype'])->info($data['xkey'], $this->safe, $this->name)) {
             $data['url'] = $info['url'];
