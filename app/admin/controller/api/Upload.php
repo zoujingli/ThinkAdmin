@@ -57,8 +57,8 @@ class Upload extends Controller
      */
     public function state()
     {
-        list($this->name, $this->safe) = [input('name', null), intval(input('safe'))];
-        $data = ['uptype' => $this->getType(), 'xkey' => input('xkey'), 'safe' => $this->safe];
+        list($this->name, $this->safe) = [input('name', null), $this->getSafe()];
+        $data = ['uptype' => $this->getType(), 'xkey' => input('xkey'), 'safe' => intval($this->safe)];
         if ($info = Storage::instance($data['uptype'])->info($data['xkey'], $this->safe, $this->name)) {
             $data['url'] = $info['url'];
             $this->success('文件已经上传', $data, 200);
@@ -102,7 +102,7 @@ class Upload extends Controller
         if (in_array($this->extension, ['php', 'sh'])) {
             return json(['uploaded' => false, 'error' => ['message' => '可执行文件禁止上传到本地服务器']]);
         }
-        list($this->safe, $this->uptype, $this->name) = [boolval(input('safe')), $this->getType(), input('xkey')];
+        list($this->safe, $this->uptype, $this->name) = [$this->getSafe(), $this->getType(), input('xkey')];
         if (empty($this->name)) $this->name = Storage::name($file->getPathname(), $this->extension, '', 'md5_file');
         if ($this->uptype === 'local') {
             $local = LocalStorage::instance();
@@ -119,6 +119,15 @@ class Upload extends Controller
         } else {
             return json(['uploaded' => false, 'error' => ['message' => '文件处理失败，请稍候再试！']]);
         }
+    }
+
+    /**
+     * 获取文件上传类型
+     * @return boolean
+     */
+    private function getSafe()
+    {
+        return boolval(input('safe', '0'));
     }
 
     /**

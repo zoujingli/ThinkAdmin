@@ -51,7 +51,6 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                     });
                 }
             }, progress: function (n) {
-                console.log(arguments)
                 $('[data-upload-progress]').html(n + '%');
             }, done: function (ret, index, file) {
                 if (++options.count.uploaded >= options.count.total) {
