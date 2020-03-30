@@ -812,7 +812,7 @@ $(function () {
                     if (parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4) return false;
                     return setTimeout(function () {
                         loadprocess(code);
-                    }, 200), false;
+                    }, Math.floor(Math.random() * 200)), false;
                 }
             }, false);
         })(code)
