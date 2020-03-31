@@ -12,28 +12,30 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
-// 1. 手动加载入口文件
-include "../include.php";
+namespace WeMini;
 
-// 2. 准备公众号配置参数
-$config = include "./alipay.php";
+use WeChat\Contracts\BasicWeChat;
 
-// 原商户订单号
-$out_trade_no = '56737188841424';
-// 申请退款金额
-$refund_fee = '1.00';
+/**
+ * 小程序运维中心
+ * Class Operation
+ * @package WeMini
+ */
+class Operation extends BasicWeChat
+{
 
-try {
-    // 实例支付对象
-    // $pay = We::AliPayApp($config);
-    // $pay = new \AliPay\App($config);
-    $pay = \AliPay\App::instance($config);
+    /**
+     * 实时日志查询
+     * @param array $data
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function realtimelogSearch($data)
+    {
+        $url = 'https://api.weixin.qq.com/wxaapi/userlog/userlog_search?access_token=ACCESS_TOKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->callPostApi($url, $data, true);
+    }
 
-    // 参考链接：https://docs.open.alipay.com/api_1/alipay.trade.refund
-    $result = $pay->refund($out_trade_no, $refund_fee);
-
-    echo '<pre>';
-    var_export($result);
-} catch (Exception $e) {
-    echo $e->getMessage();
 }

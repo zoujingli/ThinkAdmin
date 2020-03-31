@@ -30,21 +30,88 @@ class Express
      */
     public static function query($code, $number)
     {
-        if (in_array($code, ['debangkuaidi'])) $code = 'debangwuliu';
-        list($microtime, $clientIp, $list) = [time(), request()->ip(), []];
-        $options = ['header' => ['Host' => 'www.kuaidi100.com', 'CLIENT-IP' => $clientIp, 'X-FORWARDED-FOR' => $clientIp], 'cookie_file' => env('runtime_path') . 'temp/cookie'];
-        $location = "https://sp0.baidu.com/9_Q4sjW91Qh3otqbppnN2DJv/pae/channel/data/asyncqury?cb=callback&appid=4001&com={$code}&nu={$number}&vcode=&token=&_={$microtime}";
-        $result = json_decode(str_replace('/**/callback(', '', trim(http_get($location, [], $options), ')')), true);
-        if (empty($result['data']['info']['context'])) { // 第一次可能失败，这里尝试第二次查询
-            $result = json_decode(str_replace('/**/callback(', '', trim(http_get($location, [], $options), ')')), true);
-            if (empty($result['data']['info']['context'])) {
+        list($list, $cache) = [[], app()->cache->get($ckey = md5($code . $number))];
+        if (!empty($cache)) return ['message' => 'ok', 'com' => $code, 'nu' => $number, 'data' => $cache];
+        for ($i = 0; $i < 6; $i++) if (is_array($result = self::doExpress($code, $number))) {
+            if (!empty($result['data']['info']['context'])) {
+                foreach ($result['data']['info']['context'] as $vo) $list[] = [
+                    'time' => date('Y-m-d H:i:s', $vo['time']), 'context' => $vo['desc'],
+                ];
+                app()->cache->set($ckey, $list, 10);
                 return ['message' => 'ok', 'com' => $code, 'nu' => $number, 'data' => $list];
             }
         }
-        foreach ($result['data']['info']['context'] as $vo) $list[] = [
-            'time' => date('Y-m-d H:i:s', $vo['time']), 'ftime' => date('Y-m-d H:i:s', $vo['time']), 'context' => $vo['desc'],
-        ];
         return ['message' => 'ok', 'com' => $code, 'nu' => $number, 'data' => $list];
+    }
+
+    /**
+     * 获取快递公司列表
+     * @return array
+     */
+    public static function getExpressList()
+    {
+        $data = [];
+        if (preg_match('/"currentData":.*?\[(.*?)\],/', self::getWapBaiduHtml(), $matches)) {
+            foreach (json_decode("[{$matches['1']}]") as $item) $data[$item->value] = $item->text;
+            unset($data['_auto']);
+            return $data;
+        } else {
+            app()->cache->delete('express_kuaidi_html');
+            return self::getExpressList();
+        }
+    }
+
+    /**
+     * 执行百度快递100应用查询请求
+     * @param string $code 快递公司编号
+     * @param string $number 快递单单号
+     * @return mixed
+     */
+    private static function doExpress($code, $number)
+    {
+        list($uniqid, $token) = [strtr(uniqid(), '.', ''), self::getExpressToken()];
+        $url = "https://express.baidu.com/express/api/express?tokenV2={$token}&appid=4001&nu={$number}&com={$code}&qid={$uniqid}&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
+        return json_decode(str_replace('/**/callback(', '', trim(Http::get($url, [], self::getOption()), ')')), true);
+    }
+
+    /**
+     * 获取接口请求令牌
+     * @return string
+     */
+    private static function getExpressToken()
+    {
+        if (preg_match('/express\?tokenV2=(.*?)",/', self::getWapBaiduHtml(), $matches)) {
+            return $matches[1];
+        } else {
+            app()->cache->delete('express_kuaidi_html');
+            return self::getExpressToken();
+        }
+    }
+
+    /**
+     * 获取百度WAP快递HTML
+     * @return string
+     */
+    private static function getWapBaiduHtml()
+    {
+        $content = app()->cache->get('express_kuaidi_html');
+        while (empty($content) || stristr($content, '百度安全验证') > -1 || stripos($content, 'tokenV2') === -1) {
+            $content = Http::get('https://m.baidu.com/s?word=快递查询&rnd=' . uniqid(), [], self::getOption());
+        }
+        app()->cache->set('express_kuaidi_html', $content, 30);
+        return $content;
+    }
+
+    /**
+     * 获取HTTP请求配置
+     * @return array
+     */
+    private static function getOption()
+    {
+        return [
+            'cookie_file' => app()->getRuntimePath() . '_express_cookie.txt',
+            'headers'     => ['Host' => 'express.baidu.com', 'X-FORWARDED-FOR' => request()->ip()],
+        ];
     }
 
 }

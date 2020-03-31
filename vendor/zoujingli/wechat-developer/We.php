@@ -23,6 +23,15 @@ use WeChat\Exceptions\InvalidInstanceException;
  * @author Anyon<zoujingli@qq.com>
  * @date 2018/05/24 13:23
  *
+ * ----- AliPay ----
+ * @method \AliPay\App AliPayApp($options) static 支付宝App支付网关
+ * @method \AliPay\Bill AliPayBill($options) static 支付宝电子面单下载
+ * @method \AliPay\Pos AliPayPos($options) static 支付宝刷卡支付
+ * @method \AliPay\Scan AliPayScan($options) static 支付宝扫码支付
+ * @method \AliPay\Transfer AliPayTransfer($options) static 支付宝转账到账户
+ * @method \AliPay\Wap AliPayWap($options) static 支付宝手机网站支付
+ * @method \AliPay\Web AliPayWeb($options) static 支付宝网站支付
+ *
  * ----- WeChat -----
  * @method \WeChat\Card WeChatCard($options = []) static 微信卡券管理
  * @method \WeChat\Custom WeChatCustom($options = []) static 微信客服消息
@@ -45,13 +54,17 @@ use WeChat\Exceptions\InvalidInstanceException;
  * ----- WeMini -----
  * @method \WeMini\Crypt WeMiniCrypt($options = []) static 小程序数据加密处理
  * @method \WeMini\Delivery WeMiniDelivery($options = []) static 小程序即时配送
+ * @method \WeMini\Guide WeMiniGuide($options = []) static 小程序导购助手
  * @method \WeMini\Image WeMiniImage($options = []) static 小程序图像处理
  * @method \WeMini\Logistics WeMiniLogistics($options = []) static 小程序物流助手
  * @method \WeMini\Message WeMiniMessage($options = []) static 小程序动态消息
+ * @method \WeMini\Newtmpl WeMiniNewtmpl($options = []) static 小程序订阅消息
  * @method \WeMini\Ocr WeMiniOcr($options = []) static 小程序ORC服务
+ * @method \WeMini\Operation WeMiniOperation($options = []) static 小程序运维中心
  * @method \WeMini\Plugs WeMiniPlugs($options = []) static 小程序插件管理
  * @method \WeMini\Poi WeMiniPoi($options = []) static 小程序地址管理
  * @method \WeMini\Qrcode WeMiniQrcode($options = []) static 小程序二维码管理
+ * @method \WeMini\Search WeMiniSearch($options = []) static 小程序搜索
  * @method \WeMini\Security WeMiniSecurity($options = []) static 小程序内容安全
  * @method \WeMini\Soter WeMiniSoter($options = []) static 小程序生物认证
  * @method \WeMini\Template WeMiniTemplate($options = []) static 小程序模板消息支持
@@ -59,21 +72,12 @@ use WeChat\Exceptions\InvalidInstanceException;
  *
  * ----- WePay -----
  * @method \WePay\Bill WePayBill($options = []) static 微信商户账单及评论
+ * @method \WePay\Coupon WePayCoupon($options = []) static 微信商户代金券
  * @method \WePay\Order WePayOrder($options = []) static 微信商户订单
  * @method \WePay\Refund WePayRefund($options = []) static 微信商户退款
- * @method \WePay\Coupon WePayCoupon($options = []) static 微信商户代金券
  * @method \WePay\Redpack WePayRedpack($options = []) static 微信红包支持
  * @method \WePay\Transfers WePayTransfers($options = []) static 微信商户打款到零钱
  * @method \WePay\TransfersBank WePayTransfersBank($options = []) static 微信商户打款到银行卡
- *
- * ----- AliPay ----
- * @method \AliPay\App AliPayApp($options) static 支付宝App支付网关
- * @method \AliPay\Bill AliPayBill($options) static 支付宝电子面单下载
- * @method \AliPay\Pos AliPayPos($options) static 支付宝刷卡支付
- * @method \AliPay\Scan AliPayScan($options) static 支付宝扫码支付
- * @method \AliPay\Transfer AliPayTransfer($options) static 支付宝转账到账户
- * @method \AliPay\Wap AliPayWap($options) static 支付宝手机网站支付
- * @method \AliPay\Web AliPayWeb($options) static 支付宝网站支付
  */
 class We
 {
@@ -81,7 +85,7 @@ class We
      * 定义当前版本
      * @var string
      */
-    const VERSION = '1.2.17';
+    const VERSION = '1.2.20';
 
     /**
      * 静态配置
