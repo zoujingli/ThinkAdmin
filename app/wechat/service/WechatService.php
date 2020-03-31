@@ -97,7 +97,7 @@ class WechatService extends Service
     {
         list($type, $class, $classname) = self::paraseName($name);
         if ("{$type}{$class}" !== $name) {
-            throw new \think\Exception("抱歉，需要实例的 {$name} 不在符合规则！");
+            throw new \think\Exception("抱歉，实例 {$name} 不在符合规则！");
         }
         if (sysconf('wechat.type') === 'api' || $type === 'WePay') {
             if ($type === 'ThinkService') {
@@ -109,7 +109,7 @@ class WechatService extends Service
             $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
             $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
             $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
-            $location = "http://open.cuci.cc/service/api.client/_TYPE_?not_init_session=1&token={$token}";
+            $location = "https://open.cuci.cc/service/api.client/_TYPE_?not_init_session=1&token={$token}";
             if (class_exists('Yar_Client')) {
                 $client = new \Yar_Client(str_replace('_TYPE_', 'yar', $location));
             } else {
