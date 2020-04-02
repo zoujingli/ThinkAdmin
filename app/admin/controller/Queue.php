@@ -44,15 +44,13 @@ class Queue extends Controller
      */
     public function index()
     {
-        if ($this->app->session->get('user.username') === 'admin') {
-            try {
-                $this->command = ProcessService::instance()->think('xtask:start');
-                $this->message = $this->app->console->call('xtask:state')->fetch();
-                $this->listen = preg_match('/process.*?\d+.*?running/', $this->message, $attr);
-            } catch (\Exception $exception) {
-                $this->listen = false;
-                $this->message = $exception->getMessage();
-            }
+        if ($this->app->session->get('user.username') === 'admin') try {
+            $this->command = ProcessService::instance()->think('xtask:start');
+            $this->message = $this->app->console->call('xtask:state')->fetch();
+            $this->listen = preg_match('/process.*?\d+.*?running/', $this->message, $attr);
+        } catch (\Exception $exception) {
+            $this->listen = false;
+            $this->message = $exception->getMessage();
         }
         // 任务状态统计
         $this->total = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
