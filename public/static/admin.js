@@ -806,7 +806,7 @@ $(function () {
                         }
                     }
                     that.$area.val(that.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 200);
-                    that.$percent.attr('lay-percent', (ret.data.progress || '0.00') + '%'), layui.element.render();
+                    that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
                     if (ret.data.status > 0) that.setState(parseInt(ret.data.status), ret.data.message);
                     else return that.setState(4, '获取任务详情失败！'), false;
                     if (parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4) return false;
