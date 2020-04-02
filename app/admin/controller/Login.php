@@ -42,7 +42,7 @@ class Login extends Controller
                 $this->redirect(url('@admin')->build());
             } else {
                 $this->title = '系统登录';
-                $this->captchaType = 'loginCaptcha';
+                $this->captchaType = 'LoginCaptcha';
                 $this->captchaToken = CodeExtend::uniqidDate(18);
                 $this->devmode = SystemService::instance()->checkRunMode('dev');
                 if (!$this->app->session->get('login_input_session_error')) {
