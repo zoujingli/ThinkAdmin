@@ -56,15 +56,16 @@ class Queue extends Controller
         }
         // 任务状态统计
         $this->total = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
-        $this->app->db->name($this->table)->field('status,count(1) count')->group('status')->select()->each(function ($item) {
+        $query = $this->app->db->name($this->table)->field('status,count(1) count');
+        foreach ($query->group('status')->select()->toArray() as $item) {
             if ($item['status'] === 1) $this->total['pre'] = $item['count'];
             if ($item['status'] === 2) $this->total['dos'] = $item['count'];
             if ($item['status'] === 3) $this->total['oks'] = $item['count'];
             if ($item['status'] === 4) $this->total['ers'] = $item['count'];
-        });
+        }
         $this->title = '系统任务管理';
         $this->iswin = ProcessService::instance()->iswin();
-        // 任务列表查询分页处理
+        // 任务列表查询及分页
         $query = $this->_query($this->table)->dateBetween('create_at')->timeBetween('enter_time,exec_time');
         $query->like('code,title,command')->equal('status')->order('loops_time desc,id desc')->page();
     }
@@ -113,8 +114,8 @@ class Queue extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $e) {
-            $this->error($e->getMessage());
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
         }
     }
 
@@ -135,8 +136,8 @@ class Queue extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $e) {
-            $this->error($e->getMessage());
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
         }
     }
 
