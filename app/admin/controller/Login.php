@@ -53,11 +53,11 @@ class Login extends Controller
         } else {
             $data = $this->_vali([
                 'username.require' => '登录账号不能为空!',
-                'username.min:4'   => '登录账号长度不能少于4位有效字符！',
-                'password.require' => '登录密码不能为空！',
-                'password.min:4'   => '登录密码长度不能少于4位有效字符！',
-                'verify.require'   => '图形验证码不能为空！',
-                'uniqid.require'   => '图形验证标识不能为空！',
+                'username.min:4'   => '登录账号不能少于4位有效字符!',
+                'password.require' => '登录密码不能为空!',
+                'password.min:4'   => '登录密码不能少于4位有效字符!',
+                'verify.require'   => '图形验证码不能为空!',
+                'uniqid.require'   => '图形验证标识不能为空!',
             ]);
             if (!CaptchaService::instance()->check($data['verify'], $data['uniqid'])) {
                 $this->error('图形验证码验证失败，请重新输入!');
@@ -93,13 +93,15 @@ class Login extends Controller
      */
     public function captcha()
     {
+        $input = $this->_vali([
+            'type.require'  => '验证码类型不能为空!',
+            'token.require' => '验证码标识不能为空!',
+        ]);
         $image = CaptchaService::instance();
-        $this->type = input('type', 'captcha-type');
-        $this->token = input('token', 'captcha-token');
         $captcha = ['image' => $image->getData(), 'uniqid' => $image->getUniqid()];
-        if ($this->app->session->get($this->type) === $this->token) {
+        if ($this->app->session->get($input['type']) === $input['token']) {
             $captcha['code'] = $image->getCode();
-            $this->app->session->delete($this->type);
+            $this->app->session->delete($input['type']);
         }
         $this->success('生成验证码成功', $captcha);
     }
