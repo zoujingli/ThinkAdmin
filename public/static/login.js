@@ -33,28 +33,23 @@ $(function () {
 
     /*! 登录图形验证码刷新 */
     $body.on('click', '[data-captcha]', function () {
-        var type, token, verify, uniqid, action, $that = $(this);
-        action = this.getAttribute('data-captcha') || location.href;
-        if (action.length < 5) return $.msg.tips('请设置验证码请求地址');
-        type = this.getAttribute('data-captcha-type') || 'captcha-type';
-        token = this.getAttribute('data-captcha-token') || 'captcha-token';
-        uniqid = this.getAttribute('data-field-uniqid') || 'uniqid';
-        verify = this.getAttribute('data-field-verify') || 'verify';
+        var $that = $(this), $form = $that.parents('form');
+        var action = this.getAttribute('data-captcha') || location.href;
+        if (action.length < 5) return $.msg.tips('请设置验证码请求及验证地址');
+        var type = this.getAttribute('data-captcha-type') || 'captcha-type';
+        var token = this.getAttribute('data-captcha-token') || 'captcha-token';
+        var uniqid = this.getAttribute('data-field-uniqid') || 'captcha-uniqid';
+        var verify = this.getAttribute('data-field-verify') || 'captcha-verify';
         $.form.load(action, {type: type, token: token}, 'post', function (ret) {
             if (ret.code) {
-                $that.html('');
-                $that.append($('<img alt="img" src="">').attr('src', ret.data.image));
-                $that.append($('<input type="hidden">').attr('name', uniqid).val(ret.data.uniqid));
-                if (ret.data.code) {
-                    $that.parents('form').find('[name=' + verify + ']').attr('value', ret.data.code);
-                } else {
-                    $that.parents('form').find('[name=' + verify + ']').attr('value', '');
-                }
-                return false;
+                $that.html('<img alt="img" src="' + ret.data.image + '"><input type="hidden">').find('input').attr('name', uniqid).val(ret.data.uniqid || '');
+                $form.find('[name="' + verify + '"]').attr('value', ret.data.code || '').val(ret.data.code || '');
+                return (ret.data.code || $form.find('.verify.layui-hide').removeClass('layui-hide')), false;
             }
         }, false);
     });
 
+    /*! 初始化登录图形 */
     $('[data-captcha]').map(function () {
         $(this).trigger('click')
     });

@@ -498,7 +498,7 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v3.4.38",
+            "version": "v3.4.39",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
@@ -909,12 +909,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "233e269155871ca9ef6b818536687d5862acef5b"
+                "reference": "e031f91b1c3d64b190f202e6e913bfa301d2ce14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/233e269155871ca9ef6b818536687d5862acef5b",
-                "reference": "233e269155871ca9ef6b818536687d5862acef5b",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/e031f91b1c3d64b190f202e6e913bfa301d2ce14",
+                "reference": "e031f91b1c3d64b190f202e6e913bfa301d2ce14",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -958,7 +958,7 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://framework.thinkadmin.top",
-            "time": "2020-03-26T10:28:21+00:00"
+            "time": "2020-04-01T08:17:31+00:00"
         },
         {
             "name": "zoujingli/wechat-developer",

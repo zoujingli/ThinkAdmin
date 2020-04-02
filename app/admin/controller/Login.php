@@ -42,10 +42,12 @@ class Login extends Controller
                 $this->redirect(url('@admin')->build());
             } else {
                 $this->title = '系统登录';
-                $this->captcha_type = 'login_captcha';
-                $this->captcha_token = CodeExtend::uniqidDate(18);
-                $this->app->session->set($this->captcha_type, $this->captcha_token);
+                $this->captchaType = 'loginCaptcha';
+                $this->captchaToken = CodeExtend::uniqidDate(18);
                 $this->devmode = SystemService::instance()->checkRunMode('dev');
+                if (!$this->app->session->get('login_input_session_error')) {
+                    $this->app->session->set($this->captchaType, $this->captchaToken);
+                }
                 $this->fetch();
             }
         } else {
@@ -64,21 +66,24 @@ class Login extends Controller
             $map = ['username' => $data['username'], 'is_deleted' => '0'];
             $user = $this->app->db->name('SystemUser')->where($map)->order('id desc')->find();
             if (empty($user)) {
+                $this->app->session->set("login_input_session_error", true);
                 $this->error('登录账号或密码错误，请重新输入!');
             }
             if (md5("{$user['password']}{$data['uniqid']}") !== $data['password']) {
+                $this->app->session->set("login_input_session_error", true);
                 $this->error('登录账号或密码错误，请重新输入!');
             }
             if (empty($user['status'])) {
                 $this->error('账号已经被禁用，请联系管理员!');
             }
+            $this->app->session->delete("login_input_session_error");
             $this->app->db->name('SystemUser')->where(['id' => $user['id']])->update([
                 'login_ip'  => $this->app->request->ip(),
                 'login_at'  => $this->app->db->raw('now()'),
                 'login_num' => $this->app->db->raw('login_num+1'),
             ]);
+            sysoplog('用户登录', '登录系统后台成功');
             $this->app->session->set('user', $user);
-            sysoplog('用户登录', "登录系统后台成功");
             $this->success('登录成功', url('@admin')->build());
         }
     }
