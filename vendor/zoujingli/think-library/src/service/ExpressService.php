@@ -26,17 +26,12 @@ use think\admin\Service;
  */
 class ExpressService extends Service
 {
-    /**
-     * 网络请求令牌
-     * @var string
-     */
-    protected $token;
 
     /**
      * 网络请求参数
      * @var array
      */
-    protected $config;
+    protected $options;
 
     /**
      * 快递服务初始化
@@ -47,8 +42,7 @@ class ExpressService extends Service
         $clentip = $this->app->request->ip();
         $cookies = "{$this->app->getRootPath()}runtime/.express.cookie";
         $headers = ['Host:express.baidu.com', "CLIENT-IP:{$clentip}", "X-FORWARDED-FOR:{$clentip}"];
-        $this->config = ['cookie_file' => $cookies, 'headers' => $headers];
-        $this->token = $this->getExpressToken();
+        $this->options = ['cookie_file' => $cookies, 'headers' => $headers];
         return $this;
     }
 
@@ -76,11 +70,11 @@ class ExpressService extends Service
 
     /**
      * 获取快递公司列表
+     * @param array $data
      * @return array
      */
-    public function getExpressList()
+    public function getExpressList($data = [])
     {
-        $data = [];
         if (preg_match('/"currentData":.*?\[(.*?)],/', $this->getWapBaiduHtml(), $matches)) {
             foreach (json_decode("[{$matches['1']}]") as $item) $data[$item->value] = $item->text;
             unset($data['_auto']);
@@ -100,21 +94,21 @@ class ExpressService extends Service
     private function doExpress($code, $number)
     {
         $qid = CodeExtend::uniqidNumber(19, '7740');
-        $url = "https://express.baidu.com/express/api/express?tokenV2={$this->token}&appid=4001&nu={$number}&com={$code}&qid={$qid}&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
-        return json_decode(str_replace('/**/callback(', '', trim(HttpExtend::get($url, [], $this->config), ')')), true);
+        $url = "{$this->getExpressQueryApi()}&appid=4001&nu={$number}&com={$code}&qid={$qid}&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
+        return json_decode(str_replace('/**/callback(', '', trim(HttpExtend::get($url, [], $this->options), ')')), true);
     }
 
     /**
-     * 获取接口请求令牌
+     * 获取快递查询接口
      * @return string
      */
-    private function getExpressToken()
+    private function getExpressQueryApi()
     {
-        if (preg_match('/express\?tokenV2=(.*?)",/', $this->getWapBaiduHtml(), $matches)) {
-            return $matches[1];
+        if (preg_match('/"expSearchApi":.*?"(.*?)",/', $this->getWapBaiduHtml(), $matches)) {
+            return str_replace('\\', '', $matches[1]);
         } else {
             $this->app->cache->delete('express_kuaidi_html');
-            return $this->getExpressToken();
+            return $this->getExpressQueryApi();
         }
     }
 
@@ -124,9 +118,10 @@ class ExpressService extends Service
      */
     private function getWapBaiduHtml()
     {
-        $content = $this->app->cache->get('express_kuaidi_html');
-        while (empty($content) || stristr($content, '百度安全验证') > -1 || stripos($content, 'tokenV2') === -1) {
-            $content = HttpExtend::get('https://m.baidu.com/s?word=快递查询&rand=' . microtime(true), [], $this->config);
+        $content = $this->app->cache->get('express_kuaidi_html', '');
+        while (empty($content) || stripos($content, '"expSearchApi":') === -1) {
+            $uniqid = str_replace('.', '', microtime(true));
+            $content = HttpExtend::get("https://m.baidu.com/s?word=快递查询&rand={$uniqid}", [], $this->options);
         }
         $this->app->cache->set('express_kuaidi_html', $content, 30);
         return $content;

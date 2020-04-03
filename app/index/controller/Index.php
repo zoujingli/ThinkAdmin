@@ -16,7 +16,6 @@
 namespace app\index\controller;
 
 use think\admin\Controller;
-use think\admin\service\QueueService;
 
 /**
  * Class Index
@@ -27,23 +26,5 @@ class Index extends Controller
     public function index()
     {
         $this->redirect(url('@admin/login'));
-    }
-
-    /**
-     * 创建测试进度任务
-     * @param null $code
-     * @throws \think\Exception
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function test($code = null)
-    {
-        if (empty($code)) {
-            $code = sysqueue('测试', 'xadmin:tests');
-            $this->redirect(url("@index/index/test/code/{$code}"));
-        }
-        dump(QueueService::instance()->progress($code));
     }
 }
