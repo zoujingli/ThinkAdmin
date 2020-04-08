@@ -2,19 +2,35 @@
 
 {block name="button"}
 
+{if isset($type) and $type eq 'all'}
 {if auth("add")}
 <button data-modal='{:url("add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
 {/if}
-
 {if auth("state")}
 <a data-confirm="确定要启用该用户吗？" data-action="{:url('state')}" data-rule="id#{key};status#0" data-csrf="{:systoken('state')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量禁用</a>
+{/if}
+{else}
+{if auth("state")}
+<a data-confirm="确定要恢复这些账号吗？" data-action="{:url('state')}" data-rule="id#{key};status#1" data-csrf="{:systoken('state')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量恢复</a>
+{/if}
+{if auth("remove")}
+<a data-confirm="确定要永久删除这些账号吗？" data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
+{/if}
 {/if}
 
 {/block}
 
 {block name="content"}
 <div class="layui-tab layui-tab-card think-bg-white">
-    {include file='user/index_tab'}
+    <ul class="layui-tab-title">
+        {foreach ['all'=>'系统用户','recycle'=>'回 收 站'] as $k=>$v}
+        {if isset($type) and $type eq $k}
+        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}</li>
+        {else}
+        <li data-open="{:url('index')}?type={$k}">{$v}</li>
+        {/if}
+        {/foreach}
+    </ul>
     <div class="layui-tab-content think-box-shadow">
         {include file='user/index_search'}
         <table class="layui-table margin-top-10" lay-skin="line">
@@ -27,8 +43,9 @@
                 <th class='list-table-sort-td'>
                     <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
                 </th>
-                <th class='text-left nowrap' width="25%">账号信息</th>
-                <th class='text-left nowrap'>账号状态</th>
+                <th class='text-left nowrap' width="150px"></th>
+                <th class='text-left nowrap' width="150px"></th>
+                <th class='text-left nowrap'></th>
                 <th></th>
             </tr>
             </thead>
@@ -43,35 +60,47 @@
                     <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
                 </td>
                 <td class='text-left nowrap'>
-                    <img alt="img" width="40px" height="40px" class="text-top margin-right-10" data-tips-image src="{$vo.headimg|default=''}">
-                    <div class="inline-block sub-span-blue">
-                        用户账号 <span><b>{$vo.username|default=''}</b></span> 用户昵称 <span><b>{$vo.nickname|default='-'|raw}</b></span><br>
-                        联系手机 <span>{$vo.contact_phone|default='<i class="color-desc">未配置</i>'|raw}</span>，
-                        联系邮箱 <span>{$vo.contact_mail|default='<i class="color-desc">未配置</i>'|raw}</span>
+                    <img alt="img" width="40px" height="40px" data-tips-image src="{$vo.headimg|default=''}">
+                    <div class="inline-block sub-span-blue text-middle margin-left-10">
+                        登录账号：<span><b>{$vo.username|default=''}</b></span><br>
+                        用户昵称：<span><b>{$vo.nickname|default='-'|raw}</b></span><br>
                     </div>
                 </td>
-                <td class='text-left nowrap sub-span-blue'>
-                    账号创建于 <span>{$vo.create_at|format_datetime}</span> 共登录了 <span>{$vo.login_num|default=0}</span> 次<br>
+                <td class='text-left nowrap'>
+                    联系手机：<span class="color-blue">{$vo.contact_phone|default='<i class="color-desc">未配置手机</i>'|raw}</span><br>
+                    联系邮箱：<span class="color-blue">{$vo.contact_mail|default='<i class="color-desc">未配置邮箱</i>'|raw}</span><br>
+                </td>
+                <td class='text-left nowrap'>
+                    创建时间：<span class="color-blue">{$vo.create_at|format_datetime}</span>（ {eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq} ）<br>
                     {if $vo.login_at}
-                    最近于 <span>{$vo.login_at|format_datetime}</span> 通过 <span>{$vo.login_ip|default='--'}</span> 登录，{else}
+                    最后登录：<span class="color-blue">{$vo.login_at|format_datetime}</span>（ 已登录 <span class="color-blue">{$vo.login_num|default=0}</span> 次 ）<br>
+                    {else}
                     <span class="color-desc">该账号还没有登录过哦，登录之后才会有记录！</span>
                     {/if}
-                    {eq name='vo.status' value='0'}<b class="color-red">已禁用</b>{else}<b class="color-green">使用中</b>{/eq}
                 </td>
                 <td class='text-left nowrap'>
 
+                    {if isset($type) and $type eq 'all'}
                     {if auth("pass")}
                     <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="设置密码" data-modal='{:url("pass")}?id={$vo.id}'>密 码</a>
                     {/if}
-
                     {if auth("edit")}
                     <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑资料" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                     {/if}
-
                     {if auth("state") and $vo.status eq 1}
                     <a class="layui-btn layui-btn-sm layui-btn-warm" data-confirm="确定要禁用该禁用账号吗?" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
                     {/if}
-
+                    {else}
+                    {if auth("edit")}
+                    <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑资料" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                    {/if}
+                    {if auth("state") and $vo.status eq 0}
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-confirm="确定要恢复该账号吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">恢 复</a>
+                    {/if}
+                    {if auth("remove")}
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要永久删除此账号吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                    {/if}
+                    {/if}
                 </td>
             </tr>
             {/foreach}
