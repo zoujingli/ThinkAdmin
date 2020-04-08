@@ -47,8 +47,7 @@ class StartQueue extends Queue
         if (count($result = $this->process->query($command)) > 0) {
             $output->info("Listening main process {$result['0']['pid']} has started");
         } else {
-            $this->process->create($command);
-            sleep(1);
+            [$this->process->create($command), sleep(1)];
             if (count($result = $this->process->query($command)) > 0) {
                 $output->info("Listening main process {$result['0']['pid']} started successfully");
             } else {

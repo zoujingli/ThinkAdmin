@@ -174,9 +174,8 @@ $(function () {
         };
         // 以HASH打开新网页
         this.href = function (url, obj) {
-            if (url !== '#') {
-                window.location.href = '#' + $.menu.parseUri(url, obj);
-            } else if (obj && obj.getAttribute('data-menu-node')) {
+            if (url !== '#') window.location.href = '#' + $.menu.parseUri(url, obj);
+            else if (obj && obj.getAttribute('data-menu-node')) {
                 $('[data-menu-node^="' + obj.getAttribute('data-menu-node') + '-"][data-open!="#"]:first').trigger('click');
             }
         };
@@ -184,32 +183,27 @@ $(function () {
         this.load = function (url, data, method, callback, loading, tips, time, headers) {
             var index = loading !== false ? $.msg.loading(tips) : 0;
             if (typeof data === 'object' && typeof data['_token_'] === 'string') {
-                headers = headers || {};
-                headers['User-Form-Token'] = data['_token_'];
-                delete data['_token_'];
+                headers = headers || {}, headers['User-Form-Token'] = data['_token_'], delete data['_token_'];
             }
             $.ajax({
-                data: data || {}, type: method || 'GET', url: $.menu.parseUri(url), beforeSend: function (xhr) {
+                data: data || {}, type: method || 'GET', url: $.menu.parseUri(url), beforeSend: function (xhr, i) {
                     if (typeof Pace === 'object' && loading !== false) Pace.restart();
-                    if (typeof headers === 'object') for (var i in headers) xhr.setRequestHeader(i, headers[i]);
-                }, error: function (XMLHttpRequest) {
-                    if (XMLHttpRequest.responseText.indexOf('exception') > -1) layer.open({
-                        title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText, type: 2,
-                        area: '800px', content: 'javascript:void(0)', success: function ($element, index) {
-                            try {
-                                layer.full(index);
-                                $element.find('iframe')[0].contentWindow.document.write(XMLHttpRequest.responseText);
-                                $element.find('.layui-layer-setwin').css({right: '35px', top: '28px'}).find('a').css({marginLeft: 0});
-                                $element.find('.layui-layer-title').css({color: 'red', height: '70px', lineHeight: '70px', fontSize: '22px', textAlign: 'center', fontWeight: 700});
-                            } catch (e) {
-                                layer.close(index);
-                            }
-                        }
-                    });
-                    if (parseInt(XMLHttpRequest.status) === 200) {
-                        this.success(XMLHttpRequest.responseText);
-                    } else {
+                    if (typeof headers === 'object') for (i in headers) xhr.setRequestHeader(i, headers[i]);
+                }, error: function (XMLHttpRequest, $dialog, dialogIdx, iframe) {
+                    if (parseInt(XMLHttpRequest.status) !== 200 && XMLHttpRequest.responseText.indexOf('Call Stack') > -1) try {
+                        dialogIdx = layer.open({title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText, type: 2, move: false, content: 'javascript:;'});
+                        layer.full(dialogIdx), $dialog = $('#layui-layer' + dialogIdx), iframe = $dialog.find('iframe').get(0);
+                        (iframe.contentDocument || iframe.contentWindow.document).write(XMLHttpRequest.responseText);
+                        $dialog.find('.layui-layer-setwin').css({right: '35px', top: '28px'}).find('a').css({marginLeft: 0});
+                        $dialog.find('.layui-layer-title').css({color: 'red', height: '70px', lineHeight: '70px', fontSize: '22px', textAlign: 'center', fontWeight: 700});
+                    } catch (e) {
+                        layer.close(dialogIdx);
+                    }
+                    layer.closeAll('loading');
+                    if (parseInt(XMLHttpRequest.status) !== 200) {
                         $.msg.tips('E' + XMLHttpRequest.status + ' - 服务器繁忙，请稍候再试！');
+                    } else {
+                        this.success(XMLHttpRequest.responseText);
                     }
                 }, success: function (ret) {
                     if (typeof callback === 'function' && callback.call(that, ret) === false) return false;
@@ -293,6 +287,11 @@ $(function () {
         };
         // 后台菜单动作初始化
         this.listen = function () {
+            /*! 初始化操作*/
+            layui.form.render();
+            layui.form.on('switch(ThinkAdminDebug)', function (data) {
+                jQuery.post(webRoot + '?s=admin/api.plugs/debug', {state: data.elem.checked ? 1 : 0});
+            });
             // 菜单模式切换
             (function ($menu, miniClass) {
                 // Mini 菜单模式切换及显示
@@ -829,4 +828,5 @@ $(function () {
     /*! 初始化事件 */
     $.menu.listen();
     $.vali.listen();
+
 });

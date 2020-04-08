@@ -16,6 +16,8 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
+use think\admin\service\SystemService;
+use think\exception\HttpResponseException;
 
 /**
  * 通用插件管理
@@ -33,6 +35,54 @@ class Plugs extends Controller
         $this->title = '图标选择器';
         $this->field = input('field', 'icon');
         $this->fetch(realpath(__DIR__ . '/../../view/api/icon.html'));
+    }
+
+    /**
+     * 网站压缩发布
+     * @login true
+     */
+    public function optimize()
+    {
+        try {
+            $this->app->console->call('optimize:route');
+            $this->app->console->call('optimize:schema');
+            $this->success('网站缓存加速成功！');
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * 清理运行缓存
+     * @login true
+     */
+    public function clear()
+    {
+        try {
+            $this->app->console->call('clear');
+            $this->success('清理网站缓存成功！');
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * 当前运行模式
+     * @login true
+     */
+    public function debug()
+    {
+        if (input('state')) {
+            SystemService::instance()->productMode(true);
+            $this->success('已切换为生产模式！');
+        } else {
+            SystemService::instance()->productMode(false);
+            $this->success('已切换为开发模式！');
+        }
     }
 
 }

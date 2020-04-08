@@ -197,4 +197,15 @@ class SystemService extends Service
         return true;
     }
 
+    /**
+     * 设置运行环境模式
+     * @param null|boolean $state
+     * @return boolean
+     */
+    public function productMode($state = null)
+    {
+        $lock = "{$this->app->getRootPath()}runtime/.product.mode";
+        return is_null($state) ? file_exists($lock) : ($state ? touch($lock) : @unlink($lock));
+    }
+
 }

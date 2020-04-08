@@ -50,8 +50,8 @@ class ListenQueue extends Queue
         $output->writeln('============ LISTENING ============');
         while (true) {
             $where = [['status', '=', '1'], ['exec_time', '<=', time()]];
-            $this->app->db->name($this->table)->where($where)->order('exec_time asc')->chunk(100, function (Collection $list) {
-                foreach ($list as $vo) try {
+            $this->app->db->name($this->table)->where($where)->order('exec_time asc')->chunk(100, function (Collection $result) {
+                foreach ($result->toArray() as $vo) try {
                     $command = $this->process->think("xtask:_work {$vo['code']} -");
                     if (count($this->process->query($command)) > 0) {
                         $this->output->writeln("Already in progress -> [{$vo['code']}] {$vo['title']}");

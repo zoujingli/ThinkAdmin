@@ -18,7 +18,6 @@ namespace app\admin\controller;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\MenuService;
-use think\exception\HttpResponseException;
 
 /**
  * 后台界面入口
@@ -98,39 +97,6 @@ class Index extends Controller
             } else {
                 $this->error('密码修改失败，请稍候再试！');
             }
-        }
-    }
-
-    /**
-     * 网站压缩发布
-     * @login true
-     */
-    public function optimize()
-    {
-        try {
-            $this->app->console->call('optimize:route');
-            $this->app->console->call('optimize:schema');
-            $this->success('网站缓存加速成功！');
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $e) {
-            $this->error($e->getMessage());
-        }
-    }
-
-    /**
-     * 清理运行缓存
-     * @login true
-     */
-    public function clear()
-    {
-        try {
-            $this->app->console->call('clear');
-            $this->success('清理网站缓存成功！');
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $e) {
-            $this->error($e->getMessage());
         }
     }
 

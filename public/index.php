@@ -15,12 +15,16 @@
 
 namespace think;
 
+use think\admin\service\SystemService;
+
 require __DIR__ . '/../vendor/autoload.php';
 
-$http = (new App())->debug(true)->http;
+$app = new App();
 
-$response = $http->run();
+$debug = !SystemService::instance()->productMode();
+
+$response = $app->debug($debug)->http->run();
 
 $response->send();
 
-$http->end($response);
+$app->http->end($response);
