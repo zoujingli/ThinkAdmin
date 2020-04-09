@@ -197,7 +197,6 @@ return array(
     'app\\admin\\controller\\Oplog' => $baseDir . '/app/admin/controller/Oplog.php',
     'app\\admin\\controller\\Queue' => $baseDir . '/app/admin/controller/Queue.php',
     'app\\admin\\controller\\User' => $baseDir . '/app/admin/controller/User.php',
-    'app\\admin\\controller\\api\\Config' => $baseDir . '/app/admin/controller/api/Config.php',
     'app\\admin\\controller\\api\\Plugs' => $baseDir . '/app/admin/controller/api/Plugs.php',
     'app\\admin\\controller\\api\\Queue' => $baseDir . '/app/admin/controller/api/Queue.php',
     'app\\admin\\controller\\api\\Update' => $baseDir . '/app/admin/controller/api/Update.php',

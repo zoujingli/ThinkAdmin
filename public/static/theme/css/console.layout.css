@@ -155,16 +155,8 @@
 .layui-layout.layui-layout-left-hide [data-target-menu-type] {
   display: none;
 }
-/* 浏览器DEBUG */
-.version-debug {
-  width: 100%;
-  color: #fff;
-  height: 100px;
-  font-size: 20px;
-  text-align: center;
-  line-height: 100px;
-  margin-bottom: 40px;
-  background-color: #E90D24;
+.think-switch-button .layui-form-switch {
+  margin-top: 0;
 }
 .input-right-icon {
   top: 0;

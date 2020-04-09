@@ -16,6 +16,7 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
+use think\admin\service\AdminService;
 use think\admin\service\SystemService;
 use think\exception\HttpResponseException;
 
@@ -44,6 +45,9 @@ class Plugs extends Controller
     public function optimize()
     {
         try {
+            if (AdminService::instance()->getUserName() !== 'admin') {
+                $this->error('只有超级管理员才能操作！');
+            }
             $this->app->console->call('optimize:route');
             $this->app->console->call('optimize:schema');
             $this->success('网站缓存加速成功！');
@@ -61,6 +65,9 @@ class Plugs extends Controller
     public function clear()
     {
         try {
+            if (AdminService::instance()->getUserName() !== 'admin') {
+                $this->error('只有超级管理员才能操作！');
+            }
             $this->app->console->call('clear');
             $this->success('清理网站缓存成功！');
         } catch (HttpResponseException $exception) {
@@ -77,6 +84,9 @@ class Plugs extends Controller
     public function debug()
     {
         if (input('state')) {
+            if (AdminService::instance()->getUserName() !== 'admin') {
+                $this->error('只有超级管理员才能操作！');
+            }
             SystemService::instance()->productMode(true);
             $this->success('已切换为生产模式！');
         } else {

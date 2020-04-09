@@ -2,8 +2,19 @@
 
 {block name="button"}
 
+{if session('user.username') eq 'admin'}
+<div class="layui-form inline-block think-switch-button margin-right-10">
+    <!--{if $app->isDebug()}-->
+    <input type="checkbox" lay-skin="switch" lay-text="生产模式|开发模式" lay-filter="ThinkAdminDebug">
+    <!--{else}-->
+    <input type="checkbox" lay-skin="switch" lay-text="生产模式|开发模式" lay-filter="ThinkAdminDebug" checked>
+    <!--{/if}-->
+</div>
+<script>form.render()</script>
+{/if}
+
 {if auth('system')}
-<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('system')}">修改系统配置</a>
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('system')}">修改系统参数</a>
 {/if}
 
 {/block}

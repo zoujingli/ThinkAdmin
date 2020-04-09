@@ -330,7 +330,6 @@ class ComposerStaticInit4ceee63a2cdf20349907f5909444af96
         'app\\admin\\controller\\Oplog' => __DIR__ . '/../..' . '/app/admin/controller/Oplog.php',
         'app\\admin\\controller\\Queue' => __DIR__ . '/../..' . '/app/admin/controller/Queue.php',
         'app\\admin\\controller\\User' => __DIR__ . '/../..' . '/app/admin/controller/User.php',
-        'app\\admin\\controller\\api\\Config' => __DIR__ . '/../..' . '/app/admin/controller/api/Config.php',
         'app\\admin\\controller\\api\\Plugs' => __DIR__ . '/../..' . '/app/admin/controller/api/Plugs.php',
         'app\\admin\\controller\\api\\Queue' => __DIR__ . '/../..' . '/app/admin/controller/api/Queue.php',
         'app\\admin\\controller\\api\\Update' => __DIR__ . '/../..' . '/app/admin/controller/api/Update.php',
