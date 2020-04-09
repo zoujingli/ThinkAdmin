@@ -76,6 +76,7 @@ class Login extends Controller
             if (empty($user['status'])) {
                 $this->error('账号已经被禁用，请联系管理员!');
             }
+            $this->app->session->set('user', $user);
             $this->app->session->delete("login_input_session_error");
             $this->app->db->name('SystemUser')->where(['id' => $user['id']])->update([
                 'login_ip'  => $this->app->request->ip(),
@@ -83,7 +84,6 @@ class Login extends Controller
                 'login_num' => $this->app->db->raw('login_num+1'),
             ]);
             sysoplog('用户登录', '登录系统后台成功');
-            $this->app->session->set('user', $user);
             $this->success('登录成功', url('@admin')->build());
         }
     }
