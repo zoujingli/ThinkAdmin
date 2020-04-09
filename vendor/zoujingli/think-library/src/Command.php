@@ -95,4 +95,26 @@ class Command extends ThinkCommand
         return $this;
     }
 
+    /**
+     * 设置成功的消息
+     * @param string $message 消息内容
+     * @return Command
+     * @throws Exception
+     */
+    protected function setQueueSuccessMessage($message)
+    {
+        return $this->setQueueMessage(3, $message);
+    }
+
+    /**
+     * 设置失败的消息
+     * @param string $message 消息内容
+     * @return Command
+     * @throws Exception
+     */
+    protected function setQueueErrorMessage($message)
+    {
+        return $this->setQueueMessage(4, $message);
+    }
+
 }

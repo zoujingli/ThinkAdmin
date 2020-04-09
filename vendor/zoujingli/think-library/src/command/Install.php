@@ -114,7 +114,7 @@ class Install extends Command
         else foreach ($data as $file) {
             list($state, $mode, $name) = InstallService::instance()->fileSynchronization($file);
             if ($state) {
-                if ($mode === 'add') $this->output->writeln("--- {$name} added successfully");
+                if ($mode === 'add') $this->output->writeln("--- {$name} add successfully");
                 if ($mode === 'mod') $this->output->writeln("--- {$name} update successfully");
                 if ($mode === 'del') $this->output->writeln("--- {$name} delete successfully");
             } else {
