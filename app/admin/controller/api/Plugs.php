@@ -42,7 +42,7 @@ class Plugs extends Controller
      * 网站压缩发布
      * @login true
      */
-    public function optimize()
+    public function online()
     {
         try {
             if (AdminService::instance()->getUserName() !== 'admin') {
@@ -93,6 +93,18 @@ class Plugs extends Controller
             SystemService::instance()->productMode(false);
             $this->success('已切换为开发模式！');
         }
+    }
+
+    /**
+     * 优化数据库
+     * @login true
+     */
+    public function optimize()
+    {
+        if (AdminService::instance()->getUserName() !== 'admin') {
+            $this->error('只有超级管理员才能操作！');
+        }
+        $this->_queue('优化数据库所有数据表', 'xadmin:dbOptimize', 0, [], 0, 0);
     }
 
 }
