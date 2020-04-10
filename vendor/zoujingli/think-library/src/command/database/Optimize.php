@@ -28,7 +28,7 @@ class Optimize extends Command
 {
     protected function configure()
     {
-        $this->setName('xadmin:optimize');
+        $this->setName('xadmin:dbOptimize');
         $this->setDescription("Attempt to optimize all data tables");
     }
 
