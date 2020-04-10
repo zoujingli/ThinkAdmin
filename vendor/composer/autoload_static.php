@@ -390,6 +390,8 @@ class ComposerStaticInit4ceee63a2cdf20349907f5909444af96
         'think\\admin\\command\\Install' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Install.php',
         'think\\admin\\command\\Queue' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Queue.php',
         'think\\admin\\command\\Version' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Version.php',
+        'think\\admin\\command\\database\\Optimize' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/database/Optimize.php',
+        'think\\admin\\command\\database\\Repair' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/database/Repair.php',
         'think\\admin\\command\\queue\\CleanQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/queue/CleanQueue.php',
         'think\\admin\\command\\queue\\ListenQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/queue/ListenQueue.php',
         'think\\admin\\command\\queue\\QueryQueue' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/queue/QueryQueue.php',

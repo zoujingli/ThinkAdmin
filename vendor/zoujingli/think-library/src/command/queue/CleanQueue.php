@@ -48,6 +48,7 @@ class CleanQueue extends Queue
      * @param Output $output
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     protected function execute(Input $input, Output $output)

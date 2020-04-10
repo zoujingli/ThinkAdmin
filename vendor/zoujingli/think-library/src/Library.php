@@ -83,6 +83,7 @@ class Library extends Service
         $this->commands([
             'think\admin\command\Install',
             'think\admin\command\Version',
+            // 系统异步任务指令
             'think\admin\command\queue\CleanQueue',
             'think\admin\command\queue\WorkQueue',
             'think\admin\command\queue\StopQueue',
@@ -90,6 +91,9 @@ class Library extends Service
             'think\admin\command\queue\StartQueue',
             'think\admin\command\queue\QueryQueue',
             'think\admin\command\queue\ListenQueue',
+            // 数据库表优化指令
+            'think\admin\command\database\Optimize',
+            'think\admin\command\database\Repair',
         ]);
     }
 }
