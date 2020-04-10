@@ -2,8 +2,8 @@
 .idea
 .vscode
 *.log
-runtime
-composer.lock
-public/upload
-/nbproject/
-/safefile/
+/runtime
+/safefile
+/nbproject
+/composer.lock
+/public/upload
