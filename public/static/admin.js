@@ -15,7 +15,7 @@
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
 
-window.webRoot = (function (src) {
+window.appRoot = (function (src) {
     return src.pop(), src.pop(), src.join('/') + '/';
 })(document.scripts[document.scripts.length - 1].src.split('/'));
 
@@ -33,7 +33,7 @@ require.config({
         'json': ['plugs/jquery/json.min'],
         'michat': ['plugs/michat/michat'],
         'base64': ['plugs/jquery/base64.min'],
-        'upload': [webRoot + '?s=admin/api.upload&.js'],
+        'upload': [appRoot + '?s=admin/api.upload&.js'],
         'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
         'ckeditor': ['plugs/ckeditor/ckeditor'],
@@ -287,41 +287,39 @@ $(function () {
         };
         // 后台菜单动作初始化
         this.listen = function () {
-            /*! 初始化操作*/
+            /*! 初始化操作 */
             layui.form.on('switch(ThinkAdminDebug)', function (data) {
-                jQuery.post(webRoot + '?s=admin/api.plugs/debug', {state: data.elem.checked ? 1 : 0});
+                jQuery.post(appRoot + '?s=admin/api.plugs/debug', {state: data.elem.checked ? 1 : 0});
             });
-            // 菜单模式切换
+            /*! 菜单模式切换 */
             (function ($menu, miniClass) {
-                // Mini 菜单模式切换及显示
-                if (layui.data('admin-menu-type')['type-min']) $menu.addClass(miniClass);
+                /*! Mini 菜单模式切换及显示 */
+                if (layui.data('admin-menu-type')['type-mini']) $menu.addClass(miniClass);
                 $body.on('click', '[data-target-menu-type]', function () {
-                    $menu.toggleClass(miniClass);
-                    layui.data('admin-menu-type', {key: 'type-min', value: $menu.hasClass(miniClass)});
+                    $menu.toggleClass(miniClass), layui.data('admin-menu-type', {key: 'type-mini', value: $menu.hasClass(miniClass)});
                 }).on('resize', function () {
-                    if ($body.width() > 1000) {
-                        layui.data('admin-menu-type')['type-min'] ? $menu.addClass(miniClass) : $menu.removeClass(miniClass);
-                    } else $menu.addClass(miniClass);
+                    $body.width() > 1000 ? (layui.data('admin-menu-type')['type-mini'] ? $menu.addClass(miniClass) : $menu.removeClass(miniClass)) : $menu.addClass(miniClass);
                 }).trigger('resize');
-                //  Mini 菜单模式时TIPS文字显示
+                /*! Mini 菜单模式时TIPS文字显示 */
                 $('[data-target-tips]').mouseenter(function () {
-                    if ($menu.hasClass(miniClass)) {
-                        $(this).attr('index', layer.tips($(this).attr('data-target-tips') || '', this));
-                    }
+                    if ($menu.hasClass(miniClass)) $(this).attr('index', layer.tips($(this).attr('data-target-tips') || '', this));
                 }).mouseleave(function () {
                     layer.close($(this).attr('index'));
                 });
             })($('.layui-layout-admin'), 'layui-layout-left-mini');
-            // 左则二级菜单展示
+            /*!  左则二级菜单展示 */
             $('[data-submenu-layout]>a').on('click', function () {
                 that.syncOpenStatus(1);
             });
-            // 同步二级菜单展示状态
+            /*! 同步二级菜单展示状态 */
             this.syncOpenStatus = function (mode) {
                 $('[data-submenu-layout]').map(function (node) {
                     node = $(this).attr('data-submenu-layout');
-                    if (mode === 1) layui.data('menu', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
-                    else if ((layui.data('menu')[node] || 2) === 2) $(this).addClass('layui-nav-itemed');
+                    if (mode === 1) {
+                        layui.data('admin-menu-stat', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
+                    } else if ((layui.data('admin-menu-stat')[node] || 2) === 2) {
+                        $(this).addClass('layui-nav-itemed');
+                    }
                 });
             };
             window.onhashchange = function (hash, node) {
@@ -677,7 +675,7 @@ $(function () {
     /*! 注册 data-icon 事件行为 */
     $body.on('click', '[data-icon]', function (field, location) {
         field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
-        location = webRoot + '?s=admin/api.plugs/icon&field=' + field;
+        location = appRoot + '?s=admin/api.plugs/icon&field=' + field;
         $.form.iframe(location, '图标选择');
     });
 
@@ -792,7 +790,7 @@ $(function () {
                     that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
                 }
             };
-            $.form.load(webRoot + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
+            $.form.load(appRoot + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
                 if (ret.code) {
                     that.lines = [];
                     for (this.lineIndex in ret.data.history) {
