@@ -215,7 +215,6 @@ class SystemService extends Service
      * 设置实时运行配置
      * @param array|null $map 应用映射
      * @param string|null $run 支持模式
-     * @return boolean
      */
     public function setRuntime($map = [], $run = null)
     {
@@ -226,7 +225,8 @@ class SystemService extends Service
         $file = "{$this->app->getRootPath()}runtime/config.json";
         $data['app_run'] = is_null($run) ? $data['app_run'] : $run;
         $data['app_map'] = is_null($map) ? [] : array_merge($data['app_map'], $map);
-        return file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        $this->bindRuntime($data);
     }
 
     /**
@@ -246,11 +246,12 @@ class SystemService extends Service
 
     /**
      * 绑定应用实时配置
+     * @param array $data 配置数据
      */
-    public function bindRuntime()
+    public function bindRuntime($data = [])
     {
         // 动态绑定应用映射
-        $data = $this->getRuntime();
+        if (empty($data)) $data = $this->getRuntime();
         if (!empty($data['app_map'])) {
             $maps = $this->app->config->get('app.app_map', []);
             if (is_array($maps) && count($maps) > 0 && count($data['app_map']) > 0) {
