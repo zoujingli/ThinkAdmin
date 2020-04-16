@@ -23,6 +23,8 @@ window.baseRoot = (function (src) {
     return src.substring(0, src.lastIndexOf("/") + 1);
 })(document.scripts[document.scripts.length - 1].src);
 
+window.tapiRoot = window.tapiRoot || window.baseRoot + "?s=admin"
+
 // require 配置参数
 require.config({
     waitSeconds: 60,
@@ -33,7 +35,7 @@ require.config({
         'json': ['plugs/jquery/json.min'],
         'michat': ['plugs/michat/michat'],
         'base64': ['plugs/jquery/base64.min'],
-        'upload': [appRoot + '?s=admin/api.upload&.js'],
+        'upload': [tapiRoot + '/api.upload&.js'],
         'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
         'ckeditor': ['plugs/ckeditor/ckeditor'],
@@ -289,7 +291,7 @@ $(function () {
         this.listen = function () {
             /*! 初始化操作 */
             layui.form.on('switch(ThinkAdminDebug)', function (data) {
-                jQuery.post(appRoot + '?s=admin/api.plugs/debug', {state: data.elem.checked ? 1 : 0});
+                jQuery.post(tapiRoot + '/api.plugs/debug', {state: data.elem.checked ? 1 : 0});
             });
             /*! 菜单模式切换 */
             (function ($menu, miniClass) {
@@ -674,9 +676,9 @@ $(function () {
 
     /*! 注册 data-icon 事件行为 */
     $body.on('click', '[data-icon]', function (field, location) {
+        location = tapiRoot + '/api.plugs/icon';
         field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
-        location = appRoot + '?s=admin/api.plugs/icon&field=' + field;
-        $.form.iframe(location, '图标选择');
+        $.form.iframe(location + (location.indexOf('?') > -1 ? '&' : '?') + 'field=' + field, '图标选择');
     });
 
     /*! 注册 data-copy 事件行为 */
@@ -790,7 +792,7 @@ $(function () {
                     that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
                 }
             };
-            $.form.load(appRoot + '?s=admin/api.queue/progress', {code: code}, 'post', function (ret) {
+            $.form.load(tapiRoot + '/api.queue/progress', {code: code}, 'post', function (ret) {
                 if (ret.code) {
                     that.lines = [];
                     for (this.lineIndex in ret.data.history) {

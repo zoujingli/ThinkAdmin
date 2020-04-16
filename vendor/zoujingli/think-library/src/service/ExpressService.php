@@ -34,15 +34,27 @@ class ExpressService extends Service
     protected $options;
 
     /**
+     *  当前COOKIE文件
+     * @var string
+     */
+    protected $cookies;
+
+    /**
      * 快递服务初始化
      * @return $this
      */
     protected function initialize()
     {
+        // 创建 CURL 请求模拟参数
         $clentip = $this->app->request->ip();
-        $cookies = "{$this->app->getRootPath()}runtime/.express.cookie";
-        $headers = ['Host:express.baidu.com', "CLIENT-IP:{$clentip}", "X-FORWARDED-FOR:{$clentip}"];
-        $this->options = ['cookie_file' => $cookies, 'headers' => $headers];
+        $this->cookies = "{$this->app->getRootPath()}runtime/.express.cookie";
+        $this->options = ['cookie_file' => $this->cookies, 'headers' => [
+            'Host:express.baidu.com', "CLIENT-IP:{$clentip}", "X-FORWARDED-FOR:{$clentip}",
+        ]];
+        // 每 10 秒重置 cookie 文件
+        if (file_exists($this->cookies) && filectime($this->cookies) + 10 < time()) {
+            @unlink($this->cookies);
+        }
         return $this;
     }
 
@@ -50,22 +62,27 @@ class ExpressService extends Service
      * 通过百度快递100应用查询物流信息
      * @param string $code 快递公司编辑
      * @param string $number 快递物流编号
+     * @param array $list 快递路径列表
      * @return array
      */
-    public function express($code, $number)
+    public function express($code, $number, $list = [])
     {
-        list($list, $cache) = [[], $this->app->cache->get($ckey = md5($code . $number))];
-        if (!empty($cache)) return ['message' => 'ok', 'com' => $code, 'nu' => $number, 'data' => $cache];
+        // 1-新订单,2-在途中,3-签收,4-问题件
+        // 0在途，1揽收，2疑难，3签收，4退签，5派件，6退回
+        $ckey = md5("{$code}{$number}");
+        $cache = $this->app->cache->get($ckey, []);
+        if (!empty($cache)) return $cache;
         for ($i = 0; $i < 6; $i++) if (is_array($result = $this->doExpress($code, $number))) {
-            if (!empty($result['data']['info']['context'])) {
-                foreach ($result['data']['info']['context'] as $vo) $list[] = [
-                    'time' => date('Y-m-d H:i:s', $vo['time']), 'context' => $vo['desc'],
-                ];
-                $this->app->cache->set($ckey, $list, 10);
-                return ['message' => 'ok', 'com' => $code, 'nu' => $number, 'data' => $list];
+            if (isset($result['data']['info']['context']) && isset($result['data']['info']['state'])) {
+                $state = intval($result['data']['info']['state']);
+                $status = in_array($state, [0, 1, 5]) ? 2 : ($state === 3 ? 3 : 4);
+                foreach ($result['data']['info']['context'] as $vo) $list[] = ['time' => date('Y-m-d H:i:s', $vo['time']), 'context' => $vo['desc']];
+                $result = ['message' => $result['msg'], 'status' => $status, 'express' => $code, 'number' => $number, 'data' => $list];
+                $this->app->cache->set($ckey, $result, 10);
+                return $result;
             }
         }
-        return ['message' => 'ok', 'com' => $code, 'nu' => $number, 'data' => $list];
+        return ['message' => '暂无轨迹信息', 'status' => 1, 'express' => $code, 'number' => $number, 'data' => $list];
     }
 
     /**
@@ -80,6 +97,7 @@ class ExpressService extends Service
             unset($data['_auto']);
             return $data;
         } else {
+            @unlink($this->cookies);
             $this->app->cache->delete('express_kuaidi_html');
             return $this->getExpressList();
         }
@@ -107,6 +125,7 @@ class ExpressService extends Service
         if (preg_match('/"expSearchApi":.*?"(.*?)",/', $this->getWapBaiduHtml(), $matches)) {
             return str_replace('\\', '', $matches[1]);
         } else {
+            @unlink($this->cookies);
             $this->app->cache->delete('express_kuaidi_html');
             return $this->getExpressQueryApi();
         }
@@ -123,7 +142,7 @@ class ExpressService extends Service
             $uniqid = str_replace('.', '', microtime(true));
             $content = HttpExtend::get("https://m.baidu.com/s?word=快递查询&rand={$uniqid}", [], $this->options);
         }
-        $this->app->cache->set('express_kuaidi_html', $content, 30);
+        $this->app->cache->set('express_kuaidi_html', $content, 10);
         return $content;
     }
 

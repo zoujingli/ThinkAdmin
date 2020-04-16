@@ -16,6 +16,7 @@
 namespace think\admin;
 
 use think\admin\service\AdminService;
+use think\admin\service\SystemService;
 use think\middleware\SessionInit;
 use think\Request;
 use think\Service;
@@ -79,6 +80,8 @@ class Library extends Service
      */
     public function boot()
     {
+        // 动态绑定运行配置
+        SystemService::instance()->bindRuntime();
         // 注册系统任务指令
         $this->commands([
             'think\admin\command\Install',

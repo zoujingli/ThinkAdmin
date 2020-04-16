@@ -204,8 +204,81 @@ class SystemService extends Service
      */
     public function productMode($state = null)
     {
-        $lock = "{$this->app->getRootPath()}runtime/.product.mode";
-        return is_null($state) ? file_exists($lock) : ($state ? touch($lock) : @unlink($lock));
+        if (is_null($state)) {
+            $this->app->debug($this->getRuntime('app_run') !== 'product');
+        } else {
+            $this->setRuntime($state ? 'product' : 'developoer');
+            $this->app->debug(empty($state));
+        }
+        return !$this->app->isDebug();
+    }
+
+    /**
+     * 设置实时运行配置
+     * @param string $run 支持模式
+     * @param array $map 应用映射
+     * @return boolean
+     */
+    public function setRuntime($run = null, $map = [])
+    {
+        $data = [];
+        if (file_exists($file = "{$this->app->getRootPath()}runtime/config.json")) {
+            $data = json_decode(file_get_contents($file), true);
+            if (!is_array($data)) $data = [];
+        }
+        if (empty($data['app_map']) || !is_array($data['app_map'])) {
+            $data['app_map'] = [];
+        }
+        $data['app_map'] = is_null($map) ? [] : array_merge($data['app_map'], $map);
+        $data['app_run'] = is_null($run) && isset($data['app_run']) ? $data['app_run'] : $run;
+        return file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * 获取实时运行配置
+     * @param null|string $key
+     * @return array
+     */
+    public function getRuntime($key = null)
+    {
+        $file = "{$this->app->getRootPath()}runtime/config.json";
+        if (file_exists($file) && is_array($data = json_decode(file_get_contents($file), true))) {
+            if (empty($data['app_run'])) $data['app_run'] = 'developoer';
+            if (empty($data['app_map']) || !is_array($data['app_map'])) $data['app_map'] = [];
+        } else {
+            $data = ['app_run' => 'developoer', 'app_map' => []];
+        }
+        return is_null($key) ? $data : (isset($data[$key]) ? $data[$key] : null);
+    }
+
+    /**
+     * 绑定应用实时配置
+     */
+    public function bindRuntime()
+    {
+        // 动态绑定应用映射
+        $data = $this->getRuntime();
+        if (!empty($data['app_map'])) {
+            $maps = $this->app->config->get('app.app_map', []);
+            $this->app->config->set(['app_map' => array_merge($maps, $data['app_map'])], 'app');
+        }
+        // 动态设置当前运行模式
+        $this->app->debug($data['app_run'] !== 'product');
+    }
+
+    /**
+     * 生成最短URL地址
+     * @param string $url 路由地址
+     * @param array $vars 变量
+     * @param boolean|string $suffix 后缀
+     * @param boolean|string $domain 域名
+     * @return string
+     */
+    public function sysuri($url = '', array $vars = [], $suffix = false, $domain = false)
+    {
+        $location = $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build();
+        list($d1, $d2, $d3) = [$this->app->config->get('app.default_app'), $this->app->config->get('route.default_controller'), $this->app->config->get('route.default_action'),];
+        return preg_replace(["|^/{$d1}/{$d2}/{$d3}(\.html)?$|i", "|/{$d2}/{$d3}(\.html)?$|i", "|/{$d3}(\.html)?$|i"], '', $location);
     }
 
 }

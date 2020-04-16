@@ -39,7 +39,7 @@ class Login extends Controller
     {
         if ($this->app->request->isGet()) {
             if (AdminService::instance()->isLogin()) {
-                $this->redirect(url('@admin')->build());
+                $this->redirect(sysuri('admin/index/index'));
             } else {
                 $this->title = '系统登录';
                 $this->captchaType = 'LoginCaptcha';
@@ -84,7 +84,7 @@ class Login extends Controller
                 'login_num' => $this->app->db->raw('login_num+1'),
             ]);
             sysoplog('用户登录', '登录系统后台成功');
-            $this->success('登录成功', url('@admin')->build());
+            $this->success('登录成功', sysuri('admin/index/index'));
         }
     }
 
@@ -113,7 +113,7 @@ class Login extends Controller
     {
         $this->app->session->clear();
         $this->app->session->destroy();
-        $this->success('退出登录成功!', url('@admin/login')->build());
+        $this->success('退出登录成功!', sysuri('admin/login/index'));
     }
 
 }
