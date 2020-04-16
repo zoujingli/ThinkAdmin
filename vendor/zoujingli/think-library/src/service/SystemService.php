@@ -43,7 +43,7 @@ class SystemService extends Service
      */
     public function set($name, $value = '')
     {
-        list($type, $field) = $this->parse($name);
+        [$type, $field] = $this->parse($name);
         if (is_array($value)) {
             foreach ($value as $k => $v) $this->set("{$field}.{$k}", $v);
         } else {
@@ -64,7 +64,7 @@ class SystemService extends Service
      */
     public function get($name)
     {
-        list($type, $field, $outer) = $this->parse($name);
+        [$type, $field, $outer] = $this->parse($name);
         if (empty($this->data)) foreach ($this->app->db->name('SystemConfig')->select() as $vo) {
             $this->data[$vo['type']][$vo['name']] = $vo['value'];
         }
@@ -93,7 +93,7 @@ class SystemService extends Service
     public function save($dbQuery, $data, $key = 'id', $where = [])
     {
         $db = is_string($dbQuery) ? $this->app->db->name($dbQuery) : $dbQuery;
-        list($table, $value) = [$db->getTable(), isset($data[$key]) ? $data[$key] : null];
+        [$table, $value] = [$db->getTable(), isset($data[$key]) ? $data[$key] : null];
         $map = isset($where[$key]) ? [] : (is_string($value) ? [[$key, 'in', explode(',', $value)]] : [$key => $value]);
         if (is_array($info = $this->app->db->table($table)->master()->where($where)->where($map)->find()) && !empty($info)) {
             if ($this->app->db->table($table)->strict(false)->where($where)->where($map)->update($data) !== false) {
@@ -115,9 +115,9 @@ class SystemService extends Service
     private function parse($rule, $type = 'base')
     {
         if (stripos($rule, '.') !== false) {
-            list($type, $rule) = explode('.', $rule);
+            [$type, $rule] = explode('.', $rule);
         }
-        list($field, $outer) = explode('|', "{$rule}|");
+        [$field, $outer] = explode('|', "{$rule}|");
         return [$type, $field, strtolower($outer)];
     }
 
@@ -207,7 +207,7 @@ class SystemService extends Service
         if (is_null($state)) {
             $this->app->debug($this->getRuntime('app_run') !== 'product');
         } else {
-            $this->setRuntime($state ? 'product' : 'developoer');
+            $this->setRuntime([], $state ? 'product' : 'developoer');
             $this->app->debug(empty($state));
         }
         return !$this->app->isDebug();
@@ -215,23 +215,31 @@ class SystemService extends Service
 
     /**
      * 设置实时运行配置
-     * @param string $run 支持模式
-     * @param array $map 应用映射
+     * @param array|null $map 应用映射
+     * @param string|null $run 支持模式
      * @return boolean
      */
-    public function setRuntime($run = null, $map = [])
+    public function setRuntime($map = [], $run = null)
     {
-        $data = [];
-        if (file_exists($file = "{$this->app->getRootPath()}runtime/config.json")) {
-            $data = json_decode(file_get_contents($file), true);
-            if (!is_array($data)) $data = [];
-        }
-        if (empty($data['app_map']) || !is_array($data['app_map'])) {
-            $data['app_map'] = [];
-        }
+        $data = $this->__Runtime();
+        $file = "{$this->app->getRootPath()}runtime/config.json";
+        $data['app_run'] = is_null($run) ? $data['app_run'] : $run;
         $data['app_map'] = is_null($map) ? [] : array_merge($data['app_map'], $map);
-        $data['app_run'] = is_null($run) && isset($data['app_run']) ? $data['app_run'] : $run;
         return file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * 读取原数据
+     * @return array
+     */
+    private function __Runtime()
+    {
+        $file = "{$this->app->getRootPath()}runtime/config.json";
+        $data = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
+        if (empty($data) || !is_array($data)) $data = [];
+        if (empty($data['app_map']) || !is_array($data['app_map'])) $data['app_map'] = [];
+        if (empty($data['app_run']) || !is_string($data['app_run'])) $data['app_run'] = 'developer';
+        return $data;
     }
 
     /**
@@ -241,13 +249,7 @@ class SystemService extends Service
      */
     public function getRuntime($key = null)
     {
-        $file = "{$this->app->getRootPath()}runtime/config.json";
-        if (file_exists($file) && is_array($data = json_decode(file_get_contents($file), true))) {
-            if (empty($data['app_run'])) $data['app_run'] = 'developoer';
-            if (empty($data['app_map']) || !is_array($data['app_map'])) $data['app_map'] = [];
-        } else {
-            $data = ['app_run' => 'developoer', 'app_map' => []];
-        }
+        $data = $this->__Runtime();
         return is_null($key) ? $data : (isset($data[$key]) ? $data[$key] : null);
     }
 
@@ -277,7 +279,7 @@ class SystemService extends Service
     public function sysuri($url = '', array $vars = [], $suffix = false, $domain = false)
     {
         $location = $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build();
-        list($d1, $d2, $d3) = [$this->app->config->get('app.default_app'), $this->app->config->get('route.default_controller'), $this->app->config->get('route.default_action'),];
+        [$d1, $d2, $d3] = [$this->app->config->get('app.default_app'), $this->app->config->get('route.default_controller'), $this->app->config->get('route.default_action'),];
         return preg_replace(["|^/{$d1}/{$d2}/{$d3}(\.html)?$|i", "|/{$d2}/{$d3}(\.html)?$|i", "|/{$d3}(\.html)?$|i"], '', $location);
     }
 

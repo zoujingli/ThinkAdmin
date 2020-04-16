@@ -29,7 +29,7 @@ return [
     // 默认时区
     'default_timezone' => 'Asia/Shanghai',
     // 应用映射（自动多应用模式有效）
-    'app_map'          => ['system' => 'admin'],
+    'app_map'          => [],
     // 域名绑定（自动多应用模式有效）
     'domain_bind'      => [],
     // 禁止URL访问的应用列表（自动多应用模式有效）
