@@ -204,13 +204,11 @@ class SystemService extends Service
      */
     public function productMode($state = null)
     {
-        if (is_null($state)) {
-            $this->app->debug($this->getRuntime('app_run') !== 'product');
-        } else {
+        if (is_string($state)) {
             $this->setRuntime([], $state ? 'product' : 'developoer');
-            $this->app->debug(empty($state));
+            return !$this->app->debug(empty($state))->isDebug();
         }
-        return !$this->app->isDebug();
+        return !$this->app->debug($this->getRuntime('app_run') !== 'product')->isDebug();
     }
 
     /**
@@ -221,25 +219,14 @@ class SystemService extends Service
      */
     public function setRuntime($map = [], $run = null)
     {
-        $data = $this->__Runtime();
+        $data = $this->getRuntime();
+        if (is_array($map)) foreach ($data['app_map'] as $kk => $vv) foreach ($map as $oo) {
+            if ($oo === $vv) unset($data['app_map'][$kk]);
+        }
         $file = "{$this->app->getRootPath()}runtime/config.json";
         $data['app_run'] = is_null($run) ? $data['app_run'] : $run;
         $data['app_map'] = is_null($map) ? [] : array_merge($data['app_map'], $map);
         return file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-    }
-
-    /**
-     * 读取原数据
-     * @return array
-     */
-    private function __Runtime()
-    {
-        $file = "{$this->app->getRootPath()}runtime/config.json";
-        $data = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
-        if (empty($data) || !is_array($data)) $data = [];
-        if (empty($data['app_map']) || !is_array($data['app_map'])) $data['app_map'] = [];
-        if (empty($data['app_run']) || !is_string($data['app_run'])) $data['app_run'] = 'developer';
-        return $data;
     }
 
     /**
@@ -249,7 +236,11 @@ class SystemService extends Service
      */
     public function getRuntime($key = null)
     {
-        $data = $this->__Runtime();
+        $file = "{$this->app->getRootPath()}runtime/config.json";
+        $data = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
+        if (empty($data) || !is_array($data)) $data = [];
+        if (empty($data['app_map']) || !is_array($data['app_map'])) $data['app_map'] = [];
+        if (empty($data['app_run']) || !is_string($data['app_run'])) $data['app_run'] = 'developer';
         return is_null($key) ? $data : (isset($data[$key]) ? $data[$key] : null);
     }
 

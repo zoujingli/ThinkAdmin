@@ -5,6 +5,16 @@
             <div class="layui-form-item padding-left-15 padding-right-15">
                 <div class="layui-form-item">
                     <label class="relative block">
+                        <span class="color-green font-w7">后台入口地址</span>
+                        <span class="color-blue margin-left-5">{:sysuri('admin/index/index',[],false,true)}</span>
+                        <span class="layui-input inline-block layui-clear">
+                            <b class="pull-left">{:sysuri('@',[],false,true)}</b>
+                            <input required pattern="[a-zA-Z_][a-zA-Z0-9_]+" placeholder="请完善后台入口地址" class="layui-input inline-block pull-left border-0" style="width:auto;background:none" value="{:trim(sysuri('admin/index/index'),'/')}" name="xpath">
+                        </span>
+                    </label>
+                </div>
+                <div class="layui-form-item">
+                    <label class="relative block">
                         <span class="color-green font-w7">浏览器图标</span>
                         <span class="color-desc margin-left-5">Icon</span>
                         <input class="layui-input" required pattern="^http" placeholder="请上传浏览器图标　　" value="{:sysconf('site_icon')}" name="site_icon">

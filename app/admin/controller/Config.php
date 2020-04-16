@@ -16,6 +16,7 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
+use think\admin\service\SystemService;
 
 /**
  * 系统参数配置
@@ -83,10 +84,17 @@ class Config extends Controller
             $this->title = '修改系统参数';
             $this->fetch();
         } else {
-            foreach ($this->request->post() as $name => $value) {
-                sysconf($name, $value);
+            if ($xpath = $this->request->post('xpath')) {
+                if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]+$/', $xpath)) {
+                    $this->error('后台入口名称需要是由英文字母开头！');
+                }
+                if ($xpath !== 'admin' && file_exists($this->app->getBasePath() . $xpath)) {
+                    $this->error("后台入口名称{$xpath}已经存在应用！");
+                }
+                SystemService::instance()->setRuntime([$xpath => 'admin']);
             }
-            $this->success('修改系统参数成功！');
+            foreach ($this->request->post() as $name => $value) sysconf($name, $value);
+            $this->success('修改系统参数成功！', sysuri("{$xpath}/index/index") . '#' . url("{$xpath}/config/index"));
         }
     }
 

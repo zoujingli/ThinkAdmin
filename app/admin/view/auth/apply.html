@@ -36,7 +36,7 @@
         };
         this.getData = function (that, index) {
             index = $.msg.loading();
-            $.form.load('{:url()}', {id: '{$vo.id}', action: 'get'}, 'post', function (ret) {
+            $.form.load('{:url("apply")}', {id: '{$vo.id}', action: 'get'}, 'post', function (ret) {
                 that.data = that.renderChildren(ret.data, 1);
                 return $.msg.close(index), that.showTree(), false;
             });
@@ -54,7 +54,7 @@
         this.submit = function () {
             var nodes = [], data = this.ztree.getCheckedNodes(true);
             for (var i in data) if (data[i].node) nodes.push(data[i].node);
-            $.form.load('{:url()}', {id: '{$vo.id}', action: 'save', nodes: nodes}, 'post');
+            $.form.load('{:url("apply")}', {id: '{$vo.id}', action: 'save', nodes: nodes}, 'post');
         };
         // 刷新数据
         this.getData(this);
