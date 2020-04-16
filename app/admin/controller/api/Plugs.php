@@ -68,7 +68,9 @@ class Plugs extends Controller
             if (AdminService::instance()->getUserName() !== 'admin') {
                 $this->error('只有超级管理员才能操作！');
             }
+            $data = SystemService::instance()->getRuntime();
             $this->app->console->call('clear');
+            SystemService::instance()->setRuntime($data['app_map'], $data['app_run']);
             $this->success('清理网站缓存成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
