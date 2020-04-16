@@ -220,8 +220,8 @@ class SystemService extends Service
     public function setRuntime($map = [], $run = null)
     {
         $data = $this->getRuntime();
-        if (is_array($map)) foreach ($data['app_map'] as $kk => $vv) foreach ($map as $oo) {
-            if ($oo === $vv) unset($data['app_map'][$kk]);
+        if (is_array($map) && count($map) > 0 && count($data['app_map']) > 0) {
+            foreach ($data['app_map'] as $kk => $vv) if (in_array($vv, $map)) unset($data['app_map'][$kk]);
         }
         $file = "{$this->app->getRootPath()}runtime/config.json";
         $data['app_run'] = is_null($run) ? $data['app_run'] : $run;
@@ -253,6 +253,9 @@ class SystemService extends Service
         $data = $this->getRuntime();
         if (!empty($data['app_map'])) {
             $maps = $this->app->config->get('app.app_map', []);
+            if (is_array($maps) && count($maps) > 0 && count($data['app_map']) > 0) {
+                foreach ($maps as $kk => $vv) if (in_array($vv, $data['app_map'])) unset($maps[$kk]);
+            }
             $this->app->config->set(['app_map' => array_merge($maps, $data['app_map'])], 'app');
         }
         // 动态设置当前运行模式
@@ -269,9 +272,11 @@ class SystemService extends Service
      */
     public function sysuri($url = '', array $vars = [], $suffix = false, $domain = false)
     {
+        $d1 = $this->app->config->get('app.default_app');
+        $d2 = $this->app->config->get('route.default_controller');
+        $d3 = $this->app->config->get('route.default_action');
         $location = $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build();
-        [$d1, $d2, $d3] = [$this->app->config->get('app.default_app'), $this->app->config->get('route.default_controller'), $this->app->config->get('route.default_action'),];
-        return preg_replace(["|^/{$d1}/{$d2}/{$d3}(\.html)?$|i", "|/{$d2}/{$d3}(\.html)?$|i", "|/{$d3}(\.html)?$|i"], '', $location);
+        return preg_replace(["|^/{$d1}/{$d2}/{$d3}(\.html)?$|i", "|/{$d2}/{$d3}(\.html)?$|i", "|/{$d3}(\.html)?$|i", '|/\.html$|'], ['$1', '$1', '$1', ''], $location);
     }
 
 }
