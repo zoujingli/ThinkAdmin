@@ -204,17 +204,18 @@ class SystemService extends Service
      */
     public function productMode($state = null)
     {
-        if (is_string($state)) {
-            $this->setRuntime([], $state ? 'product' : 'developoer');
-            return !$this->app->debug(empty($state))->isDebug();
+        if (is_null($state)) {
+            return $this->bindRuntime();
+        } else {
+            return $this->setRuntime([], $state ? 'product' : 'developoer');
         }
-        return !$this->app->debug($this->getRuntime('app_run') !== 'product')->isDebug();
     }
 
     /**
      * 设置实时运行配置
      * @param array|null $map 应用映射
      * @param string|null $run 支持模式
+     * @return boolean 是否调试模式
      */
     public function setRuntime($map = [], $run = null)
     {
@@ -226,7 +227,7 @@ class SystemService extends Service
         $data['app_run'] = is_null($run) ? $data['app_run'] : $run;
         $data['app_map'] = is_null($map) ? [] : array_merge($data['app_map'], $map);
         file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-        $this->bindRuntime($data);
+        return $this->bindRuntime($data);
     }
 
     /**
@@ -247,6 +248,7 @@ class SystemService extends Service
     /**
      * 绑定应用实时配置
      * @param array $data 配置数据
+     * @return boolean 是否调试模式
      */
     public function bindRuntime($data = [])
     {
@@ -260,7 +262,7 @@ class SystemService extends Service
             $this->app->config->set(['app_map' => array_merge($maps, $data['app_map'])], 'app');
         }
         // 动态设置当前运行模式
-        $this->app->debug($data['app_run'] !== 'product');
+        return $this->app->debug($data['app_run'] !== 'product')->isDebug();
     }
 
     /**
