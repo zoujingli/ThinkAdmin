@@ -273,7 +273,7 @@ class SystemService extends Service
      * @param boolean|string $domain 域名
      * @return string
      */
-    public function sysuri($url = '', array $vars = [], $suffix = false, $domain = false)
+    public function sysuri($url = '', array $vars = [], $suffix = true, $domain = false)
     {
         $d1 = $this->app->config->get('app.default_app');
         $d2 = $this->app->config->get('route.default_controller');

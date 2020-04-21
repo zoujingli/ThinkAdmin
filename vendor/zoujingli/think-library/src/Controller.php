@@ -64,6 +64,12 @@ abstract class Controller extends \stdClass
     public $csrf_message;
 
     /**
+     * 控制器中间键
+     * @var array
+     */
+    protected $middleware = [];
+
+    /**
      * Controller constructor.
      * @param App $app
      */

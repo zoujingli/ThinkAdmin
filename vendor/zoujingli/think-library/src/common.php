@@ -54,7 +54,7 @@ if (!function_exists('sysuri')) {
      * @param boolean|string $domain 域名
      * @return string
      */
-    function sysuri($url = '', array $vars = [], $suffix = false, $domain = false)
+    function sysuri($url = '', array $vars = [], $suffix = true, $domain = false)
     {
         return SystemService::instance()->sysuri($url, $vars, $suffix, $domain);
     }

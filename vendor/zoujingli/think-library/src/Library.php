@@ -66,7 +66,7 @@ class Library extends Service
                 } elseif (AdminService::instance()->isLogin()) {
                     return json(['code' => 0, 'msg' => lang('think_library_not_auth')])->header($header);
                 } else {
-                    return json(['code' => 0, 'msg' => lang('think_library_not_login'), 'url' => url('@admin/login')->build()])->header($header);
+                    return json(['code' => 0, 'msg' => lang('think_library_not_login'), 'url' => sysuri('admin/login/index')->build()])->header($header);
                 }
             }, 'route');
         }

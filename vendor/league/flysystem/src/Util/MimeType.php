@@ -102,6 +102,8 @@ class MimeType
         'txt' => 'text/plain',
         'text' => 'text/plain',
         'log' => 'text/plain',
+        'markdown' => 'text/markdown',
+        'md' => 'text/markdown',
         'rtx' => 'text/richtext',
         'rtf' => 'text/rtf',
         'xml' => 'application/xml',
