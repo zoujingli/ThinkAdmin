@@ -17,7 +17,6 @@ namespace app\wechat\controller;
 
 use app\wechat\service\WechatService;
 use think\admin\Controller;
-use think\admin\Exception;
 use think\exception\HttpResponseException;
 
 /**
