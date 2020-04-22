@@ -97,11 +97,17 @@ class Install extends Command
         $this->name = trim($input->getArgument('name'));
         if (empty($this->name)) {
             $this->output->writeln('Module name of online installation cannot be empty');
+        } elseif ($this->name === 'all') {
+            list($this->rules, $this->ignore) = [[], []];
+            foreach ($this->bind as $bind) {
+                $this->rules = array_merge($this->rules, $bind['rules']);
+                $this->ignore = array_merge($this->ignore, $bind['ignore']);
+            }
+            [$this->installFile(), $this->installData()];
         } elseif (isset($this->bind[$this->name])) {
             $this->rules = empty($this->bind[$this->name]['rules']) ? [] : $this->bind[$this->name]['rules'];
             $this->ignore = empty($this->bind[$this->name]['ignore']) ? [] : $this->bind[$this->name]['ignore'];
-            $this->installFile();
-            $this->installData();
+            [$this->installFile(), $this->installData()];
         } else {
             $this->output->writeln("The specified module {$this->name} is not configured with installation rules");
         }
