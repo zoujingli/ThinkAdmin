@@ -122,6 +122,23 @@ class SystemService extends Service
     }
 
     /**
+     * 生成最短URL地址
+     * @param string $url 路由地址
+     * @param array $vars PATH 变量
+     * @param boolean|string $suffix 后缀
+     * @param boolean|string $domain 域名
+     * @return string
+     */
+    public function sysuri($url = '', array $vars = [], $suffix = true, $domain = false)
+    {
+        $d1 = $this->app->config->get('app.default_app');
+        $d3 = $this->app->config->get('route.default_action');
+        $d2 = $this->app->config->get('route.default_controller');
+        $location = $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build();
+        return preg_replace('|/\.html$|', '', preg_replace(["|^/{$d1}/{$d2}/{$d3}(\.html)?$|i", "|/{$d2}/{$d3}(\.html)?$|i", "|/{$d3}(\.html)?$|i"], ['$1', '$1', '$1'], $location));
+    }
+
+    /**
      * 保存数据内容
      * @param string $name
      * @param mixed $value
@@ -215,18 +232,23 @@ class SystemService extends Service
      * 设置实时运行配置
      * @param array|null $map 应用映射
      * @param string|null $run 支持模式
+     * @param array|null $uri 域名映射
      * @return boolean 是否调试模式
      */
-    public function setRuntime($map = [], $run = null)
+    public function setRuntime($map = [], $run = null, $uri = [])
     {
         $data = $this->getRuntime();
         if (is_array($map) && count($map) > 0 && count($data['app_map']) > 0) {
             foreach ($data['app_map'] as $kk => $vv) if (in_array($vv, $map)) unset($data['app_map'][$kk]);
         }
+        if (is_array($uri) && count($uri) > 0 && count($data['app_uri']) > 0) {
+            foreach ($data['app_uri'] as $kk => $vv) if (in_array($vv, $uri)) unset($data['app_uri'][$kk]);
+        }
         $file = "{$this->app->getRootPath()}runtime/config.json";
         $data['app_run'] = is_null($run) ? $data['app_run'] : $run;
         $data['app_map'] = is_null($map) ? [] : array_merge($data['app_map'], $map);
-        file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        $data['app_uri'] = is_null($uri) ? [] : array_merge($data['app_uri'], $uri);
+        file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE));
         return $this->bindRuntime($data);
     }
 
@@ -241,6 +263,7 @@ class SystemService extends Service
         $data = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
         if (empty($data) || !is_array($data)) $data = [];
         if (empty($data['app_map']) || !is_array($data['app_map'])) $data['app_map'] = [];
+        if (empty($data['app_uri']) || !is_array($data['app_uri'])) $data['app_uri'] = [];
         if (empty($data['app_run']) || !is_string($data['app_run'])) $data['app_run'] = 'developer';
         return is_null($key) ? $data : (isset($data[$key]) ? $data[$key] : null);
     }
@@ -252,8 +275,8 @@ class SystemService extends Service
      */
     public function bindRuntime($data = [])
     {
-        // 动态绑定应用映射
         if (empty($data)) $data = $this->getRuntime();
+        // 动态绑定应用
         if (!empty($data['app_map'])) {
             $maps = $this->app->config->get('app.app_map', []);
             if (is_array($maps) && count($maps) > 0 && count($data['app_map']) > 0) {
@@ -261,25 +284,16 @@ class SystemService extends Service
             }
             $this->app->config->set(['app_map' => array_merge($maps, $data['app_map'])], 'app');
         }
-        // 动态设置当前运行模式
+        // 动态绑定域名
+        if (!empty($data['app_uri'])) {
+            $uris = $this->app->config->get('app.domain_bind', []);
+            if (is_array($uris) && count($uris) > 0 && count($data['app_uri']) > 0) {
+                foreach ($uris as $kk => $vv) if (in_array($vv, $data['app_uri'])) unset($uris[$kk]);
+            }
+            $this->app->config->set(['domain_bind' => array_merge($uris, $data['app_uri'])], 'app');
+        }
+        // 动态设置运行模式
         return $this->app->debug($data['app_run'] !== 'product')->isDebug();
-    }
-
-    /**
-     * 生成最短URL地址
-     * @param string $url 路由地址
-     * @param array $vars 变量
-     * @param boolean|string $suffix 后缀
-     * @param boolean|string $domain 域名
-     * @return string
-     */
-    public function sysuri($url = '', array $vars = [], $suffix = true, $domain = false)
-    {
-        $d1 = $this->app->config->get('app.default_app');
-        $d2 = $this->app->config->get('route.default_controller');
-        $d3 = $this->app->config->get('route.default_action');
-        $location = $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build();
-        return preg_replace(["|^/{$d1}/{$d2}/{$d3}(\.html)?$|i", "|/{$d2}/{$d3}(\.html)?$|i", "|/{$d3}(\.html)?$|i", '|/\.html$|'], ['$1', '$1', '$1', ''], $location);
     }
 
 }

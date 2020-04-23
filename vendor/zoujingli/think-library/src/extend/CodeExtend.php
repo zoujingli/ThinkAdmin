@@ -67,7 +67,7 @@ class CodeExtend
     {
         $time = time() . '';
         if ($size < 10) $size = 10;
-        $string = $prefix . ($time[0] + $time[1]) . substr($time, 2) . rand(0, 9);
+        $string = $prefix . (intval($time[0]) + intval($time[1])) . substr($time, 2) . rand(0, 9);
         while (strlen($string) < $size) $string .= rand(0, 9);
         return $string;
     }

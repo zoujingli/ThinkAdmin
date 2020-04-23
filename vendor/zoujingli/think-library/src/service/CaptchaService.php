@@ -27,13 +27,11 @@ class CaptchaService extends Service
     private $code; // 验证码
     private $uniqid; // 唯一序号
     private $charset = 'ABCDEFGHKMNPRSTUVWXYZ23456789'; // 随机因子
-    private $codelen = 4; // 验证码长度
-    private $width = 130; // 宽度
-    private $height = 50; // 高度
-    private $img; // 图形资源句柄
-    private $font; // 指定的字体
+    private $width = 130; // 图片宽度
+    private $height = 50; // 图片高度
+    private $length = 4; // 验证码长度
+    private $fontfile; // 指定字体文件
     private $fontsize = 20; // 指定字体大小
-    private $fontcolor; // 指定字体颜色
 
     /**
      * 服务初始化
@@ -48,11 +46,11 @@ class CaptchaService extends Service
         $this->uniqid = uniqid('captcha') . mt_rand(1000, 9999);
         // 生成验证码字符串
         $length = strlen($this->charset) - 1;
-        for ($i = 0; $i < $this->codelen; $i++) {
+        for ($i = 0; $i < $this->length; $i++) {
             $this->code .= $this->charset[mt_rand(0, $length)];
         }
         // 设置字体文件路径
-        $this->font = __DIR__ . '/bin/font.ttf';
+        $this->fontfile = __DIR__ . '/bin/font.ttf';
         // 缓存验证码字符串
         $this->app->cache->set($this->uniqid, $this->code, 360);
         // 返回当前对象
@@ -143,34 +141,34 @@ class CaptchaService extends Service
     private function createImage()
     {
         // 生成背景
-        $this->img = imagecreatetruecolor($this->width, $this->height);
-        $color = imagecolorallocate($this->img, mt_rand(220, 255), mt_rand(220, 255), mt_rand(220, 255));
-        imagefilledrectangle($this->img, 0, $this->height, $this->width, 0, $color);
+        $img = imagecreatetruecolor($this->width, $this->height);
+        $color = imagecolorallocate($img, mt_rand(220, 255), mt_rand(220, 255), mt_rand(220, 255));
+        imagefilledrectangle($img, 0, $this->height, $this->width, 0, $color);
         // 生成线条
         for ($i = 0; $i < 6; $i++) {
-            $color = imagecolorallocate($this->img, mt_rand(0, 50), mt_rand(0, 50), mt_rand(0, 50));
-            imageline($this->img, mt_rand(0, $this->width), mt_rand(0, $this->height), mt_rand(0, $this->width), mt_rand(0, $this->height), $color);
+            $color = imagecolorallocate($img, mt_rand(0, 50), mt_rand(0, 50), mt_rand(0, 50));
+            imageline($img, mt_rand(0, $this->width), mt_rand(0, $this->height), mt_rand(0, $this->width), mt_rand(0, $this->height), $color);
         }
         // 生成雪花
         for ($i = 0; $i < 100; $i++) {
-            $color = imagecolorallocate($this->img, mt_rand(200, 255), mt_rand(200, 255), mt_rand(200, 255));
-            imagestring($this->img, mt_rand(1, 5), mt_rand(0, $this->width), mt_rand(0, $this->height), '*', $color);
+            $color = imagecolorallocate($img, mt_rand(200, 255), mt_rand(200, 255), mt_rand(200, 255));
+            imagestring($img, mt_rand(1, 5), mt_rand(0, $this->width), mt_rand(0, $this->height), '*', $color);
         }
         // 生成文字
-        $_x = $this->width / $this->codelen;
-        for ($i = 0; $i < $this->codelen; $i++) {
-            $this->fontcolor = imagecolorallocate($this->img, mt_rand(0, 156), mt_rand(0, 156), mt_rand(0, 156));
+        $_x = $this->width / $this->length;
+        for ($i = 0; $i < $this->length; $i++) {
+            $fontcolor = imagecolorallocate($img, mt_rand(0, 156), mt_rand(0, 156), mt_rand(0, 156));
             if (function_exists('imagettftext')) {
-                imagettftext($this->img, $this->fontsize, mt_rand(-30, 30), $_x * $i + mt_rand(1, 5), $this->height / 1.4, $this->fontcolor, $this->font, $this->code[$i]);
+                imagettftext($img, $this->fontsize, mt_rand(-30, 30), $_x * $i + mt_rand(1, 5), $this->height / 1.4, $fontcolor, $this->fontfile, $this->code[$i]);
             } else {
-                imagestring($this->img, 15, $_x * $i + mt_rand(10, 15), mt_rand(10, 30), $this->code[$i], $this->fontcolor);
+                imagestring($img, 15, $_x * $i + mt_rand(10, 15), mt_rand(10, 30), $this->code[$i], $fontcolor);
             }
         }
         ob_start();
-        imagepng($this->img);
+        imagepng($img);
         $data = ob_get_contents();
         ob_end_clean();
-        imagedestroy($this->img);
+        imagedestroy($img);
         return base64_encode($data);
     }
 }

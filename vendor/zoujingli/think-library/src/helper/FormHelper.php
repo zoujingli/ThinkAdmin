@@ -39,7 +39,7 @@ class FormHelper extends Helper
 
     /**
      * 数据对象主键名称
-     * @var array|string
+     * @var string
      */
     protected $field;
 

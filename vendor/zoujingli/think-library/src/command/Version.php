@@ -36,7 +36,7 @@ class Version extends Command
 
     protected function execute(Input $input, Output $output)
     {
-        $output->writeln("ThinkAdmin " . ProcessService::instance()->version());
-        $output->writeln('ThinkPHPCore ' . App::VERSION);
+        $output->writeln('ThinkLib ' . ProcessService::instance()->version());
+        $output->writeln('ThinkPHP ' . App::VERSION);
     }
 }

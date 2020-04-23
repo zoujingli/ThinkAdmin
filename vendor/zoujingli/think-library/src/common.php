@@ -47,9 +47,9 @@ if (!function_exists('auth')) {
 }
 if (!function_exists('sysuri')) {
     /**
-     * 生成最短URL地址
+     * 生成最短 URL 地址
      * @param string $url 路由地址
-     * @param array $vars 变量
+     * @param array $vars PATH 变量
      * @param boolean|string $suffix 后缀
      * @param boolean|string $domain 域名
      * @return string
@@ -212,6 +212,23 @@ if (!function_exists('data_save')) {
         return SystemService::instance()->save($dbQuery, $data, $key, $where);
     }
 }
+if (!function_exists('format_bytes')) {
+    /**
+     * 文件字节单位转换
+     * @param integer $size
+     * @return string
+     */
+    function format_bytes($size)
+    {
+        if (is_numeric($size)) {
+            $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            for ($i = 0; $size >= 1024 && $i < 4; $i++) $size /= 1024;
+            return round($size, 2) . ' ' . $units[$i];
+        } else {
+            return $size;
+        }
+    }
+}
 if (!function_exists('format_datetime')) {
     /**
      * 日期格式标准输出
@@ -263,22 +280,5 @@ if (!function_exists('down_file')) {
     {
         $result = Storage::down($source, $force, $expire);
         return isset($result['url']) ? $result['url'] : $source;
-    }
-}
-if (!function_exists('format_bytes')) {
-    /**
-     * 文件字节单位转换
-     * @param integer $size
-     * @return string
-     */
-    function format_bytes($size)
-    {
-        if (is_numeric($size)) {
-            $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-            for ($i = 0; $size >= 1024 && $i < 4; $i++) $size /= 1024;
-            return round($size, 2) . ' ' . $units[$i];
-        } else {
-            return $size;
-        }
     }
 }

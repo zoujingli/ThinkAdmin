@@ -29,7 +29,7 @@ class QueryHelper extends Helper
 {
 
     /**
-     * Query call.
+     * QueryHelper call.
      * @param string $name 调用方法名称
      * @param array $args 调用参数内容
      * @return $this

@@ -26,7 +26,7 @@ use think\admin\Service;
 class InstallService extends Service
 {
     /**
-     * 目录地址
+     * 代码地址
      * @var string
      */
     protected $uri;

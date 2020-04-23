@@ -17,6 +17,7 @@ namespace think\admin;
 
 use think\App;
 use think\Container;
+use think\Db;
 use think\db\Query;
 
 /**
@@ -58,9 +59,9 @@ abstract class Helper
     /**
      * 获取数据库对象
      * @param string|Query $dbQuery
-     * @return Query
+     * @return Db|Query
      */
-    protected function buildQuery($dbQuery): Query
+    protected function buildQuery($dbQuery)
     {
         return is_string($dbQuery) ? $this->app->db->name($dbQuery) : $dbQuery;
     }
