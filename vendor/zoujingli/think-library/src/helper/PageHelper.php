@@ -90,7 +90,7 @@ class PageHelper extends Helper
             foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
                 [$query['limit'], $query['page'], $selects] = [$num, 1, $limit === $num ? 'selected' : ''];
                 if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
-                    $url = url('@admin') . '#' . $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
+                    $url = sysuri('admin/index/index') . '#' . $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
                 } else {
                     $url = $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
                 }

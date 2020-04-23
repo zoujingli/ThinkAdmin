@@ -6,12 +6,12 @@
     {notempty name='news.articles'}
     {foreach $news.articles as $k => $v}
     {if $k < 1}
-    <a href="{:url('@wechat/api.review/view')}?id={$v.id}" style='background-image:url("{$v.local_url}")'>
+    <a href="{:url('wechat/api.review/view')}?id={$v.id}" style='background-image:url("{$v.local_url}")'>
         {if $v.title}<span>{$v.title}</span>{/if}
     </a>
     <div class="hr-line-dashed"></div>
     {else}
-    <a href="{:url('@wechat/api.review/view')}?id={$v.id}" class='other'>
+    <a href="{:url('wechat/api.review/view')}?id={$v.id}" class='other'>
         <span>{$v.title}</span>
         <span style='background-image:url("{$v.local_url}");'></span>
     </a>

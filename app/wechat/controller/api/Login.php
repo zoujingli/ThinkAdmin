@@ -48,7 +48,7 @@ class Login extends Controller
     {
         $mode = intval(input('mode', '0'));
         $code = $this->prefix . md5(uniqid('t', true) . rand(10000, 99999));
-        $text = url('@wechat/api.login/oauth', [], false, true) . "?code={$code}&mode={$mode}";
+        $text = url('wechat/api.login/oauth', [], false, true) . "?code={$code}&mode={$mode}";
         // 生成二维码并返回结果
         $qrcode = new \Endroid\QrCode\QrCode();
         $qrcode->setText($text)->setSize(300)->setPadding(20);

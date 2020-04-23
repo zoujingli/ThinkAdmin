@@ -37,10 +37,10 @@ class Config extends Controller
     public function options()
     {
         $this->_applyFormToken();
-        $this->thrNotify = url('@wechat/api.push', [], false, true)->build();
+        $this->thrNotify = sysuri('wechat/api.push/index', [], false, true);
         if ($this->request->isGet()) {
             try {
-                $source = enbase64url(url('@admin', [], false, true) . '#' . $this->request->url());
+                $source = enbase64url(sysuri('admin/index/index', [], false, true) . '#' . $this->request->url());
                 $this->authurl = "http://open.cuci.cc/service/api.push/auth?source={$source}";
                 if (input('?appid') && input('?appkey')) {
                     sysconf('wechat.type', 'thr');
@@ -70,8 +70,8 @@ class Config extends Controller
                 }
             }
             sysoplog('微信管理', '修改微信授权配置成功');
-            $location = url('@wechat/config/options') . '?uniqid=' . uniqid();
-            $this->success('微信参数修改成功！', url('@admin') . "#{$location}");
+            $location = url('wechat/config/options') . '?uniqid=' . uniqid();
+            $this->success('微信参数修改成功！', sysuri('admin/index/index') . "#{$location}");
         }
     }
 

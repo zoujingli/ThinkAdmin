@@ -76,7 +76,7 @@ class Keys extends Controller
     protected function _index_page_filter(&$data)
     {
         foreach ($data as &$vo) {
-            $vo['qrc'] = url('@wechat/keys/index') . "?action=qrc&keys={$vo['keys']}";
+            $vo['qrc'] = url('wechat/keys/index') . "?action=qrc&keys={$vo['keys']}";
             $vo['type'] = isset($this->types[$vo['type']]) ? $this->types[$vo['type']] : $vo['type'];
         }
     }
