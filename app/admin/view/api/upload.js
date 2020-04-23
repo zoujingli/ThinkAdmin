@@ -23,7 +23,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                     options.loading = $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
                     options.count.total++, options.files[index].index = index, options.cache[index] = options.files[index], delete options.files[index];
                     md5file(options.cache[index]).then(function (file) {
-                        jQuery.ajax("{:url('@admin/api.upload/state')}", {
+                        jQuery.ajax("{:url('admin/api.upload/state')}", {
                             data: {xkey: file.xkey, uptype: options.uptype, safe: options.safe, name: file.name}, method: 'post', success: function (ret) {
                                 file.xurl = ret.data.url;
                                 if (parseInt(ret.code) === 404) {
