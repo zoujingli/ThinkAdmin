@@ -54,7 +54,6 @@ class Optimize extends Command
             $this->setQueueProgress(2, "[{$stridx}] 正在优化数据表 {$table}", $used / $total * 100);
             $this->app->db->query("OPTIMIZE TABLE `{$table}`");
         }
-        $this->setQueueMessage(3, '数据库优化完成！');
     }
 
 }
