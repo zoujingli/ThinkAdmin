@@ -42,10 +42,10 @@ class Plugs extends Controller
      * 网站压缩发布
      * @login true
      */
-    public function online()
+    public function push()
     {
         try {
-            if (AdminService::instance()->getUserName() !== 'admin') {
+            if (AdminService::instance()->isSuper()) {
                 $this->error('只有超级管理员才能操作！');
             }
             $this->app->console->call('optimize:route');
@@ -65,7 +65,7 @@ class Plugs extends Controller
     public function clear()
     {
         try {
-            if (AdminService::instance()->getUserName() !== 'admin') {
+            if (AdminService::instance()->isSuper()) {
                 $this->error('只有超级管理员才能操作！');
             }
             $data = SystemService::instance()->getRuntime();
@@ -86,7 +86,7 @@ class Plugs extends Controller
     public function debug()
     {
         if (input('state')) {
-            if (AdminService::instance()->getUserName() !== 'admin') {
+            if (AdminService::instance()->isSuper()) {
                 $this->error('只有超级管理员才能操作！');
             }
             SystemService::instance()->productMode(true);
@@ -103,7 +103,7 @@ class Plugs extends Controller
      */
     public function optimize()
     {
-        if (AdminService::instance()->getUserName() !== 'admin') {
+        if (AdminService::instance()->isSuper()) {
             $this->error('只有超级管理员才能操作！');
         }
         $this->_queue('优化数据库所有数据表', 'xadmin:dbOptimize', 0, [], 0, 0);

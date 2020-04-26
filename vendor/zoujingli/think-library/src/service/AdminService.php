@@ -27,12 +27,21 @@ class AdminService extends Service
 {
 
     /**
-     * 判断是否已经登录
+     * 是否已经登录
      * @return boolean
      */
     public function isLogin()
     {
-        return $this->app->session->get('user.id') ? true : false;
+        return $this->getUserId() > 0;
+    }
+
+    /**
+     * 是否为超级用户
+     * @return boolean
+     */
+    public function isSuper()
+    {
+        return $this->getUserName() === 'admin';
     }
 
     /**
@@ -62,8 +71,8 @@ class AdminService extends Service
      */
     public function check($node = '')
     {
+        if ($this->isSuper()) return true;
         $service = NodeService::instance();
-        if ($this->app->session->get('user.username') === 'admin') return true;
         list($real, $nodes) = [$service->fullnode($node), $service->getMethods()];
         if (!empty($nodes[$real]['isauth'])) {
             return in_array($real, $this->app->session->get('user.nodes', []));
@@ -80,11 +89,9 @@ class AdminService extends Service
      */
     public function getTree($checkeds = [])
     {
-        list($nodes, $pnodes) = [[], []];
-        $methods = array_reverse(NodeService::instance()->getMethods());
+        list($nodes, $pnodes, $methods) = [[], [], array_reverse(NodeService::instance()->getMethods())];
         foreach ($methods as $node => $method) {
-            $count = substr_count($node, '/');
-            $pnode = substr($node, 0, strripos($node, '/'));
+            list($count, $pnode) = [substr_count($node, '/'), substr($node, 0, strripos($node, '/'))];
             if ($count === 2 && !empty($method['isauth'])) {
                 in_array($pnode, $pnodes) or array_push($pnodes, $pnode);
                 $nodes[$node] = ['node' => $node, 'title' => $method['title'], 'pnode' => $pnode, 'checked' => in_array($node, $checkeds)];
@@ -110,7 +117,7 @@ class AdminService extends Service
      */
     public function apply($force = false)
     {
-        if ($force) $this->app->cache->delete('system_auth_node');
+        if ($force) $this->clearCache();
         if (($uid = $this->app->session->get('user.id'))) {
             $user = $this->app->db->name('SystemUser')->where(['id' => $uid])->find();
             if (($aids = $user['authorize'])) {

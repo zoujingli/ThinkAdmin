@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c55d51d2e1cb52e013e7635caf4fb45c",
+    "content-hash": "ca7a0ef3ca75a7287eb4c5ecf7e156f3",
     "packages": [
         {
             "name": "endroid/qr-code",
@@ -909,12 +909,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "e4c99cc5188f842c2842b0822e9e93328932900d"
+                "reference": "692d1f717a5010707d7bd4148d028602f0e3ba00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/e4c99cc5188f842c2842b0822e9e93328932900d",
-                "reference": "e4c99cc5188f842c2842b0822e9e93328932900d",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/692d1f717a5010707d7bd4148d028602f0e3ba00",
+                "reference": "692d1f717a5010707d7bd4148d028602f0e3ba00",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -958,7 +958,7 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://framework.thinkadmin.top",
-            "time": "2020-04-23T09:59:16+00:00"
+            "time": "2020-04-26T02:44:32+00:00"
         },
         {
             "name": "zoujingli/wechat-developer",
@@ -1037,12 +1037,14 @@
     "platform": {
         "php": ">=7.1.0",
         "ext-gd": "*",
+        "ext-xml": "*",
         "ext-soap": "*",
         "ext-json": "*",
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-openssl": "*",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "ext-simplexml": "*"
     },
     "platform-dev": []
 }
