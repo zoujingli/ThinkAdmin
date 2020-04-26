@@ -289,7 +289,7 @@ abstract class Controller extends \stdClass
      * @param integer $rscript 任务类型(0单例,1多例)
      * @param integer $loops 循环等待时间
      */
-    protected function _queue($title, $command, $later = 0, $data = [], $rscript = 1, $loops = 0)
+    protected function _queue($title, $command, $later = 0, $data = [], $rscript = 0, $loops = 0)
     {
         try {
             $queue = QueueService::instance()->register($title, $command, $later, $data, $rscript, $loops);

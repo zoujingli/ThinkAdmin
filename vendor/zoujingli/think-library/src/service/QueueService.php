@@ -133,7 +133,7 @@ class QueueService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function register($title, $command, $later = 0, $data = [], $rscript = 1, $loops = 0)
+    public function register($title, $command, $later = 0, $data = [], $rscript = 0, $loops = 0)
     {
         $map = [['title', '=', $title], ['status', 'in', ['1', '2']]];
         if (empty($rscript) && ($queue = $this->app->db->name('SystemQueue')->where($map)->find())) {
