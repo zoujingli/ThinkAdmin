@@ -16,6 +16,7 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
+use think\admin\service\AdminService;
 use think\admin\service\ProcessService;
 use think\admin\service\QueueService;
 use think\exception\HttpResponseException;
@@ -44,7 +45,7 @@ class Queue extends Controller
      */
     public function index()
     {
-        if ($this->app->session->get('user.username') === 'admin') try {
+        if (AdminService::instance()->isSuper()) try {
             $this->command = ProcessService::instance()->think('xtask:start');
             $this->message = $this->app->console->call('xtask:state')->fetch();
             $this->listen = preg_match('/process.*?\d+.*?running/', $this->message, $attr);
