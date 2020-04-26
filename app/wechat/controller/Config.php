@@ -41,7 +41,7 @@ class Config extends Controller
         if ($this->request->isGet()) {
             try {
                 $source = enbase64url(sysuri('admin/index/index', [], false, true) . '#' . $this->request->url());
-                $this->authurl = "http://open.cuci.cc/service/api.push/auth?source={$source}";
+                $this->authurl = "https://open.cuci.cc/service/api.push/auth?source={$source}";
                 if (input('?appid') && input('?appkey')) {
                     sysconf('wechat.type', 'thr');
                     sysconf('wechat.thr_appid', input('appid'));
