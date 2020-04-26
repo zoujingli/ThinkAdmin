@@ -21,6 +21,7 @@
   ],
   "require": {
     "php": ">=5.4",
+    "ext-xml": "*",
     "ext-json": "*",
     "ext-curl": "*",
     "ext-bcmath": "*",

@@ -32,9 +32,7 @@ class Update extends Controller
     {
         $this->file = $this->app->getRootPath() . decode(input('encode', '0'));
         if (file_exists($this->file)) {
-            $this->success('读取文件成功！', [
-                'content' => base64_encode(file_get_contents($this->file)),
-            ]);
+            $this->success('读取文件成功！', ['content' => base64_encode(file_get_contents($this->file))]);
         } else {
             $this->error('读取文件内容失败！');
         }

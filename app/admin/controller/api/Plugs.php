@@ -53,8 +53,8 @@ class Plugs extends Controller
             $this->success('网站缓存加速成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $e) {
-            $this->error($e->getMessage());
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
         }
     }
 
@@ -74,8 +74,8 @@ class Plugs extends Controller
             $this->success('清理网站缓存成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $e) {
-            $this->error($e->getMessage());
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
         }
     }
 

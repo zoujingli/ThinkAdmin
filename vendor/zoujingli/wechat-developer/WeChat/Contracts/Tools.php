@@ -165,6 +165,20 @@ class Tools
     }
 
     /**
+     * 解析XML文本内容
+     * @param string $xml
+     * @return boolean|mixed
+     */
+    public static function xml3arr($xml)
+    {
+        if (xml_parse($parser = xml_parser_create(), $xml, true)) {
+            return json_decode(json_encode(simplexml_load_string($xml)), true);
+        }
+        if (is_resource($parser)) xml_parser_free($parser);
+        return false;
+    }
+
+    /**
      * 数组转xml内容
      * @param array $data
      * @return null|string|string
