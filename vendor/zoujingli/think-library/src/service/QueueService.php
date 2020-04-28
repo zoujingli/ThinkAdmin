@@ -68,8 +68,7 @@ class QueueService extends Service
                 $this->app->log->error("Qeueu initialize failed, Queue {$code} not found.");
                 throw new \think\admin\Exception("Qeueu initialize failed, Queue {$code} not found.");
             }
-            $this->code = $this->queue['code'];
-            $this->title = $this->queue['title'];
+            list($this->code, $this->title) = [$this->queue['code'], $this->queue['title']];
             $this->data = json_decode($this->queue['exec_data'], true) ?: [];
         }
         return $this;
@@ -99,8 +98,7 @@ class QueueService extends Service
             $this->app->log->error("Qeueu reset failed, Queue {$this->code} data cannot be empty!");
             throw new \think\admin\Exception("Qeueu reset failed, Queue {$this->code} data cannot be empty!");
         }
-        $map = ['code' => $this->code];
-        $this->app->db->name('SystemQueue')->where($map)->strict(false)->failException(true)->update([
+        $this->app->db->name('SystemQueue')->where(['code' => $this->code])->strict(false)->failException(true)->update([
             'exec_pid' => '0', 'exec_time' => time() + $wait, 'status' => '1',
         ]);
         return $this->initialize($this->code);

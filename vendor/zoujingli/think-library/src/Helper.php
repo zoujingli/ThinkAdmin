@@ -28,7 +28,7 @@ use think\db\Query;
 abstract class Helper
 {
     /**
-     * 当前应用容器
+     * 应用容器
      * @var App
      */
     public $app;
@@ -40,7 +40,7 @@ abstract class Helper
     public $query;
 
     /**
-     * 当前控制器实例
+     * 控制器实例
      * @var Controller
      */
     public $controller;

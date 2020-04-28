@@ -54,6 +54,5 @@ class Repair extends Command
             $this->setQueueProgress(2, "[{$stridx}] 正在修复数据表 {$table}", $used / $total * 100);
             $this->app->db->query("REPAIR TABLE `{$table}`");
         }
-        $this->setQueueMessage(3, '数据库修复完成！');
     }
 }

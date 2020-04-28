@@ -66,8 +66,6 @@ class CleanQueue extends Queue
                 'status' => '4', 'exec_desc' => '任务执行超时，已自动标识为失败！',
             ]);
             $this->setQueueProgress(2, "处理 {$count2} 条超时间任务成功", 100);
-            // 返回消息到任务状态描述
-            $this->setQueueMessage(3, "共清理 {$count1} 条 + 无响应 {$count2} 条");
         }
     }
 }

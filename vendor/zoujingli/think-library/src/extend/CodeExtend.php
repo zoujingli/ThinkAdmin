@@ -34,7 +34,6 @@ class CodeExtend
         $numbs = '0123456789';
         $chars = 'abcdefghijklmnopqrstuvwxyz';
         if (intval($type) === 1) $chars = $numbs;
-        if (intval($type) === 2) $chars = "{$chars}";
         if (intval($type) === 3) $chars = "{$numbs}{$chars}";
         $string = $prefix . $chars[rand(1, strlen($chars) - 1)];
         if (isset($chars)) while (strlen($string) < $size) {
