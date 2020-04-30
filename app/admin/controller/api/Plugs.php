@@ -46,11 +46,12 @@ class Plugs extends Controller
     {
         try {
             if (AdminService::instance()->isSuper()) {
+                $this->app->console->call('optimize:route');
+                $this->app->console->call('optimize:schema');
+                $this->success('网站缓存加速成功！');
+            } else {
                 $this->error('只有超级管理员才能操作！');
             }
-            $this->app->console->call('optimize:route');
-            $this->app->console->call('optimize:schema');
-            $this->success('网站缓存加速成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
@@ -66,12 +67,13 @@ class Plugs extends Controller
     {
         try {
             if (AdminService::instance()->isSuper()) {
+                $data = SystemService::instance()->getRuntime();
+                $this->app->console->call('clear');
+                SystemService::instance()->setRuntime($data['app_map'], $data['app_run']);
+                $this->success('清理网站缓存成功！');
+            } else {
                 $this->error('只有超级管理员才能操作！');
             }
-            $data = SystemService::instance()->getRuntime();
-            $this->app->console->call('clear');
-            SystemService::instance()->setRuntime($data['app_map'], $data['app_run']);
-            $this->success('清理网站缓存成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
@@ -85,15 +87,16 @@ class Plugs extends Controller
      */
     public function debug()
     {
-        if (input('state')) {
-            if (AdminService::instance()->isSuper()) {
-                $this->error('只有超级管理员才能操作！');
+        if (AdminService::instance()->isSuper()) {
+            if (input('state')) {
+                SystemService::instance()->productMode(true);
+                $this->success('已切换为生产模式！');
+            } else {
+                SystemService::instance()->productMode(false);
+                $this->success('已切换为开发模式！');
             }
-            SystemService::instance()->productMode(true);
-            $this->success('已切换为生产模式！');
         } else {
-            SystemService::instance()->productMode(false);
-            $this->success('已切换为开发模式！');
+            $this->error('只有超级管理员才能操作！');
         }
     }
 
@@ -104,9 +107,10 @@ class Plugs extends Controller
     public function optimize()
     {
         if (AdminService::instance()->isSuper()) {
+            $this->_queue('优化数据库所有数据表', 'xadmin:dbOptimize', 0, [], 0, 0);
+        } else {
             $this->error('只有超级管理员才能操作！');
         }
-        $this->_queue('优化数据库所有数据表', 'xadmin:dbOptimize', 0, [], 0, 0);
     }
 
 }

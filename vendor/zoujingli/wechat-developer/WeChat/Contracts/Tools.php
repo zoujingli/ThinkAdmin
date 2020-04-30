@@ -171,17 +171,14 @@ class Tools
      */
     public static function xml3arr($xml)
     {
-        if (xml_parse($parser = xml_parser_create(), $xml, true)) {
-            return json_decode(json_encode(simplexml_load_string($xml)), true);
-        }
-        if (is_resource($parser)) xml_parser_free($parser);
-        return false;
+        $state = xml_parse($parser = xml_parser_create(), $xml, true);
+        return xml_parser_free($parser) && $state ? self::xml2arr($xml) : false;
     }
 
     /**
      * 数组转xml内容
      * @param array $data
-     * @return null|string|string
+     * @return null|string
      */
     public static function arr2json($data)
     {
