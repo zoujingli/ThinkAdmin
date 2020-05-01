@@ -214,11 +214,12 @@ abstract class Connection
      * 分析缓存Key
      * @access protected
      * @param BaseQuery $query 查询对象
+     * @param string    $method查询方法
      * @return string
      */
-    protected function getCacheKey(BaseQuery $query): string
+    protected function getCacheKey(BaseQuery $query, string $method = ''): string
     {
-        if (!empty($query->getOptions('key'))) {
+        if (!empty($query->getOptions('key')) && empty($method)) {
             $key = 'think:' . $this->getConfig('database') . '.' . $query->getTable() . '|' . $query->getOptions('key');
         } else {
             $key = $query->getQueryGuid();
@@ -231,10 +232,11 @@ abstract class Connection
      * 分析缓存
      * @access protected
      * @param BaseQuery $query 查询对象
-     * @param array $cache 缓存信息
+     * @param array     $cache 缓存信息
+     * @param string    $method查询方法
      * @return CacheItem
      */
-    protected function parseCache(BaseQuery $query, array $cache): CacheItem
+    protected function parseCache(BaseQuery $query, array $cache, string $method = ''): CacheItem
     {
         [$key, $expire, $tag] = $cache;
 
@@ -242,7 +244,7 @@ abstract class Connection
             $cacheItem = $key;
         } else {
             if (true === $key) {
-                $key = $this->getCacheKey($query);
+                $key = $this->getCacheKey($query, $method);
             }
 
             $cacheItem = new CacheItem($key);

@@ -1033,7 +1033,7 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
         $query->setOption('field', (array) $field);
 
         if (!empty($options['cache'])) {
-            $cacheItem = $this->parseCache($query, $options['cache']);
+            $cacheItem = $this->parseCache($query, $options['cache'], 'value');
             $key       = $cacheItem->getKey();
 
             if ($this->cache->has($key)) {
@@ -1118,7 +1118,7 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
 
         if (!empty($options['cache'])) {
             // 判断查询缓存
-            $cacheItem = $this->parseCache($query, $options['cache']);
+            $cacheItem = $this->parseCache($query, $options['cache'], 'column');
             $name      = $cacheItem->getKey();
 
             if ($this->cache->has($name)) {
@@ -1151,6 +1151,8 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
 
             if (strpos($column, ',')) {
                 $column = null;
+            } elseif (strpos($column, ' ')) {
+                $column = substr(strrchr(trim($column), ' '), 1);
             } elseif (strpos($column, '.')) {
                 [$alias, $column] = explode('.', $column);
             }

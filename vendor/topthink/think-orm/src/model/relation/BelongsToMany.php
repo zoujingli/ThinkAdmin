@@ -222,7 +222,7 @@ class BelongsToMany extends Relation
      */
     public function find($data = null)
     {
-        $result = $this->buildQuery()->find($data);
+        $result = $this->buildQuery()->findOrEmpty($data);
 
         if (!$result->isEmpty()) {
             $this->hydratePivot([$result]);

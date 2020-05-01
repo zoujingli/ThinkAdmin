@@ -228,7 +228,7 @@ abstract class Relation
 
         if (!empty($params)) {
             $type = $params[0]->getType();
-            return Relation::class == $type || is_null($type) ? $this : $this->query;
+            return is_null($type) || Relation::class == $type->getName() ? $this : $this->query;
         }
 
         return $this;

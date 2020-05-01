@@ -154,7 +154,7 @@ class HasManyThrough extends Relation
         $query      = $query ?: $this->parent->db()->alias($model);
 
         return $query->join($throughTable, $throughTable . '.' . $this->foreignKey . '=' . $model . '.' . $this->localKey)
-            ->join($modelTable, $modelTable . '.' . $throughKey . '=' . $throughTable . '.' . $this->throughPk)
+            ->join($modelTable, $modelTable . '.' . $throughKey . '=' . $throughTable . '.' . $this->throughPk, $joinType)
             ->when($softDelete, function ($query) use ($softDelete, $modelTable) {
                 $query->where($modelTable . strstr($softDelete[0], '.'), '=' == $softDelete[1][0] ? $softDelete[1][1] : null);
             })

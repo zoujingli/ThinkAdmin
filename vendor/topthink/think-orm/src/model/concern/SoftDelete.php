@@ -13,9 +13,11 @@ declare (strict_types = 1);
 namespace think\model\concern;
 
 use think\db\BaseQuery as Query;
+use think\Model;
 
 /**
  * 数据软删除
+ * @mixin Model
  */
 trait SoftDelete
 {
@@ -149,7 +151,7 @@ trait SoftDelete
     public static function destroy($data, bool $force = false): bool
     {
         // 包含软删除数据
-        $query = (new static())->db(false);
+        $query = (new static())->withTrashedData(true)->db(false);
 
         if (is_array($data) && key($data) !== 0) {
             $query->where($data);

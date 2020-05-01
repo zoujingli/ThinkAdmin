@@ -140,13 +140,19 @@ trait ModelRelationQuery
     /**
      * 使用搜索器条件搜索字段
      * @access public
-     * @param array  $fields 搜索字段
-     * @param array  $data   搜索数据
-     * @param string $prefix 字段前缀标识
+     * @param string|array  $fields 搜索字段
+     * @param mixed         $data   搜索数据
+     * @param string        $prefix 字段前缀标识
      * @return $this
      */
-    public function withSearch(array $fields, array $data = [], string $prefix = '')
+    public function withSearch($fields, $data = [], string $prefix = '')
     {
+        if (is_string($fields)) {
+            $fields = explode(',', $fields);
+        }
+
+        $likeFields = $this->getConfig('match_like_fields') ?: [];
+
         foreach ($fields as $key => $field) {
             if ($field instanceof Closure) {
                 $field($this, $data[$key] ?? null, $data, $prefix);
@@ -157,6 +163,8 @@ trait ModelRelationQuery
 
                 if (method_exists($this->model, $method)) {
                     $this->model->$method($this, $data[$field] ?? null, $data, $prefix);
+                } elseif (isset($data[$field])) {
+                    $this->where($fieldName, in_array($fieldName, $likeFields) ? 'like' : '=', in_array($fieldName, $likeFields) ? '%' . $data[$field] . '%' : $data[$field]);
                 }
             }
         }

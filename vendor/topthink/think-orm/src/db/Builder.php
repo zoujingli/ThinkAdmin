@@ -368,7 +368,10 @@ abstract class Builder
 
             if ($value instanceof Closure) {
                 // 使用闭包查询
-                $where[] = $this->parseClosureWhere($query, $value, $logic);
+                $whereClosureStr = $this->parseClosureWhere($query, $value, $logic);
+                if ($whereClosureStr) {
+                    $where[] = $whereClosureStr;
+                }
             } elseif (is_array($field)) {
                 $where[] = $this->parseMultiWhereField($query, $value, $field, $logic, $binds);
             } elseif ($field instanceof Raw) {
