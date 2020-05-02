@@ -56,7 +56,7 @@ class Fans extends Command
                 $message .= $this->$method();
             }
         }
-        $this->setQueueMessage(3, $message);
+        $this->setQueueSuccess($message);
     }
 
     /**
@@ -82,7 +82,7 @@ class Fans extends Command
                     foreach ($list['user_info_list'] as $user) {
                         $string = str_pad(++$done, strlen($result['total']), '0', STR_PAD_LEFT);
                         $message = "({$string}/{$result['total']}) -> {$user['openid']} {$user['nickname']}";
-                        $this->setQueueProgress(2, $message, $done * 100 / $result['total']);
+                        $this->setQueueProgress($message, $done * 100 / $result['total']);
                         FansService::instance()->set($user, $appid);
                     }
                 }
@@ -115,7 +115,7 @@ class Fans extends Command
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 $this->app->db->name('WechatFans')->where(['is_black' => '0'])->whereIn('openid', $chunk)->update(['is_black' => '1']);
             }
-            $this->setQueueProgress(2, "共计同步微信黑名单{$result['total']}人");
+            $this->setQueueProgress("共计同步微信黑名单{$result['total']}人");
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
         $this->output->comment('--> Wechat blacklist data synchronization completed');
@@ -148,7 +148,7 @@ class Fans extends Command
             foreach ($list['tags'] as &$tag) {
                 $tag['appid'] = $appid;
                 $progress = str_pad(++$index, strlen($count), '0', STR_PAD_LEFT);
-                $this->setQueueProgress(2, "({$progress}/{$count}) -> {$tag['name']}");
+                $this->setQueueProgress("({$progress}/{$count}) -> {$tag['name']}");
             }
             $this->app->db->name('WechatFansTags')->where(['appid' => $appid])->delete();
             $this->app->db->name('WechatFansTags')->insertAll($list['tags']);

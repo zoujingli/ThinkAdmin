@@ -43,15 +43,15 @@ class Repair extends Command
     protected function execute(Input $input, Output $output)
     {
         $tables = [];
-        $this->setQueueProgress(2, "正在获取需要修复的数据表", 0);
+        $this->setQueueProgress("正在获取需要修复的数据表", 0);
         foreach ($this->app->db->query("show tables") as $item) {
             $tables = array_merge($tables, array_values($item));
         }
-        list($total, $used) = [count($tables), 0];
-        $this->setQueueProgress(2, "总共需要修复 {$total} 张数据表", 0);
+        [$total, $used] = [count($tables), 0];
+        $this->setQueueProgress("总共需要修复 {$total} 张数据表", 0);
         foreach ($tables as $table) {
             $stridx = str_pad(++$used, strlen("{$total}"), '0', STR_PAD_LEFT) . "/{$total}";
-            $this->setQueueProgress(2, "[{$stridx}] 正在修复数据表 {$table}", $used / $total * 100);
+            $this->setQueueProgress("[{$stridx}] 正在修复数据表 {$table}", $used / $total * 100);
             $this->app->db->query("REPAIR TABLE `{$table}`");
         }
     }

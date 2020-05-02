@@ -15,7 +15,7 @@
 
 namespace think\admin\command\queue;
 
-use think\admin\command\Queue;
+use think\admin\Command;
 use think\console\Input;
 use think\console\Output;
 
@@ -24,7 +24,7 @@ use think\console\Output;
  * Class StopQueue
  * @package think\admin\command\queue
  */
-class StopQueue extends Queue
+class StopQueue extends Command
 {
 
     /**

@@ -16,7 +16,7 @@
 namespace think\admin\command\queue;
 
 use Psr\Log\NullLogger;
-use think\admin\command\Queue;
+use think\admin\Command;
 use think\Collection;
 use think\console\Input;
 use think\console\Output;
@@ -26,8 +26,14 @@ use think\console\Output;
  * Class ListenQueue
  * @package think\admin\command\queue
  */
-class ListenQueue extends Queue
+class ListenQueue extends Command
 {
+    /**
+     * 绑定数据表
+     * @var string
+     */
+    protected $table = 'SystemQueue';
+
     /**
      * 配置指定信息
      */

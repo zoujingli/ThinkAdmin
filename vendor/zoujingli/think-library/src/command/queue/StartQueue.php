@@ -15,7 +15,7 @@
 
 namespace think\admin\command\queue;
 
-use think\admin\command\Queue;
+use think\admin\Command;
 use think\console\Input;
 use think\console\Output;
 
@@ -24,8 +24,13 @@ use think\console\Output;
  * Class StartQueue
  * @package think\admin\command\queue
  */
-class StartQueue extends Queue
+class StartQueue extends Command
 {
+    /**
+     * 绑定数据表
+     * @var string
+     */
+    protected $table = 'SystemQueue';
 
     /**
      * 指令属性配置
