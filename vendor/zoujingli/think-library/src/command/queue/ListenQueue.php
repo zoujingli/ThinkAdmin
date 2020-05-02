@@ -15,6 +15,7 @@
 
 namespace think\admin\command\queue;
 
+use Psr\Log\NullLogger;
 use think\admin\command\Queue;
 use think\Collection;
 use think\console\Input;
@@ -33,6 +34,17 @@ class ListenQueue extends Queue
     protected function configure()
     {
         $this->setName('xtask:listen')->setDescription('Start task listening main process');
+    }
+
+    /**
+     * 初始化任务监听指令
+     * @param Input $input
+     * @param Output $output
+     */
+    protected function initialize(Input $input, Output $output)
+    {
+        parent::initialize($input, $output);
+        $this->app->db->setLog(new NullLogger());
     }
 
     /**

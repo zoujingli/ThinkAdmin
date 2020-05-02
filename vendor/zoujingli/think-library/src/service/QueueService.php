@@ -48,7 +48,7 @@ class QueueService extends Service
      * 当前任务数据
      * @var array
      */
-    public $queue = [];
+    public $record = [];
 
     /**
      * 数据初始化
@@ -63,24 +63,15 @@ class QueueService extends Service
     {
         if (!empty($code)) {
             $this->code = $code;
-            $this->queue = $this->app->db->name('SystemQueue')->where(['code' => $this->code])->find();
-            if (empty($this->queue)) {
+            $this->record = $this->app->db->name('SystemQueue')->where(['code' => $this->code])->find();
+            if (empty($this->record)) {
                 $this->app->log->error("Qeueu initialize failed, Queue {$code} not found.");
                 throw new \think\admin\Exception("Qeueu initialize failed, Queue {$code} not found.");
             }
-            list($this->code, $this->title) = [$this->queue['code'], $this->queue['title']];
-            $this->data = json_decode($this->queue['exec_data'], true) ?: [];
+            [$this->code, $this->title] = [$this->record['code'], $this->record['title']];
+            $this->data = json_decode($this->record['exec_data'], true) ?: [];
         }
         return $this;
-    }
-
-    /**
-     * 判断是否WIN环境
-     * @return boolean
-     */
-    protected function iswin()
-    {
-        return ProcessService::instance()->iswin();
     }
 
     /**
@@ -94,7 +85,7 @@ class QueueService extends Service
      */
     public function reset($wait = 0)
     {
-        if (empty($this->queue)) {
+        if (empty($this->record)) {
             $this->app->log->error("Qeueu reset failed, Queue {$this->code} data cannot be empty!");
             throw new \think\admin\Exception("Qeueu reset failed, Queue {$this->code} data cannot be empty!");
         }

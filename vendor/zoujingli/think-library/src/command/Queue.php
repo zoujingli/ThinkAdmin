@@ -15,11 +15,7 @@
 
 namespace think\admin\command;
 
-use Psr\Log\NullLogger;
 use think\admin\Command;
-use think\admin\service\ProcessService;
-use think\console\Input;
-use think\console\Output;
 
 /**
  * 系统任务基类
@@ -33,21 +29,4 @@ abstract class Queue extends Command
      * @var string
      */
     protected $table = 'SystemQueue';
-
-    /**
-     * 进程服务对象
-     * @var ProcessService
-     */
-    protected $process;
-
-    /**
-     * 任务指令初始化
-     * @param Input $input
-     * @param Output $output
-     */
-    protected function initialize(Input $input, Output $output)
-    {
-        $this->app->db->setLog(new NullLogger());
-        $this->process = ProcessService::instance();
-    }
 }

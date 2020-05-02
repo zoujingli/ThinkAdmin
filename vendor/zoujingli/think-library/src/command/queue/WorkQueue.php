@@ -28,24 +28,11 @@ use think\console\Output;
  */
 class WorkQueue extends Queue
 {
-
     /**
-     * 当前任务编号
+     * 执行任务编号
      * @var string
      */
     protected $code;
-
-    /**
-     * 当前任务数据
-     * @var array
-     */
-    protected $queue;
-
-    /**
-     * 当前任务服务
-     * @var QueueService
-     */
-    protected $qService;
 
     /**
      * 配置指定信息
@@ -70,35 +57,34 @@ class WorkQueue extends Queue
         if (empty($this->code)) {
             $this->output->error('Task number needs to be specified for task execution');
         } else try {
-            $this->queue = $this->app->db->name($this->table)->where(['code' => $this->code, 'status' => '1'])->find();
-            $this->qService = QueueService::instance()->initialize($this->code);
-            if (empty($this->queue)) {
+            $this->queue->initialize($this->code);
+            if (empty($this->queue->record) || intval($this->queue->record['status']) !== 1) {
                 // 这里不做任何处理（该任务可能在其它地方已经在执行）
                 $this->output->warning($message = "The or status of task {$this->code} is abnormal");
             } else {
-                // 锁定任务状态
+                // 锁定任务状态，防止任务再次被执行
                 $this->app->db->name($this->table)->strict(false)->where(['code' => $this->code])->update([
                     'enter_time' => microtime(true), 'attempts' => $this->app->db->raw('attempts+1'),
                     'outer_time' => '0', 'exec_pid' => getmypid(), 'exec_desc' => '', 'status' => '2',
                 ]);
-                $this->qService->progress(2, '>>> 任务处理开始 <<<', 0);
+                $this->queue->progress(2, '>>> 任务处理开始 <<<', 0);
                 // 设置进程标题
                 if ($this->process->iswin()) {
-                    $this->setProcessTitle("ThinkAdmin {$this->process->version()} Queue - {$this->queue['title']}");
+                    $this->setProcessTitle("ThinkAdmin {$this->process->version()} Queue - {$this->queue->title}");
                 }
                 // 执行任务内容
                 defined('WorkQueueCall') or define('WorkQueueCall', true);
                 defined('WorkQueueCode') or define('WorkQueueCode', $this->code);
-                if (class_exists($command = $this->queue['command'])) {
+                if (class_exists($command = $this->queue->record['command'])) {
                     // 自定义服务，支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
                     if (method_exists($command, 'instance') && ($class = $command::instance()) instanceof QueueService) {
-                        $this->update('3', $class->initialize($this->code)->execute(json_decode($this->queue['exec_data'], true) ?: []));
+                        $this->update('3', $class->initialize($this->code)->execute($this->queue->data));
                     } else {
                         throw new \think\admin\Exception("自定义 {$command} 未继承 QueueService");
                     }
                 } else {
                     // 自定义指令，不支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
-                    $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $this->queue['command'])));
+                    $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $this->queue->record['command'])));
                     $this->update('3', $this->app->console->call(array_shift($attr), $attr)->fetch(), false);
                 }
             }
@@ -127,19 +113,19 @@ class WorkQueue extends Queue
         $this->output->writeln(is_string($message) ? $message : '');
         // 任务进度标记
         if (!empty($desc[0])) {
-            $this->qService->progress($status, ">>> {$desc[0]} <<<");
+            $this->queue->progress($status, ">>> {$desc[0]} <<<");
         }
         if ($status == 3) {
-            $this->qService->progress($status, '>>> 任务处理完成 <<<', 100);
+            $this->queue->progress($status, '>>> 任务处理完成 <<<', 100);
         } elseif ($status == 4) {
-            $this->qService->progress($status, '>>> 任务处理失败 <<<');
+            $this->queue->progress($status, '>>> 任务处理失败 <<<');
         }
         // 注册循环任务
-        if (isset($this->queue['loops_time']) && $this->queue['loops_time'] > 0) {
+        if (isset($this->queue->record['loops_time']) && $this->queue->record['loops_time'] > 0) {
             try {
-                $this->qService->initialize($this->code)->reset($this->queue['loops_time']);
+                $this->queue->initialize($this->code)->reset($this->queue->record['loops_time']);
             } catch (\Exception|\Error $exception) {
-                $this->app->log->error("Queue {$this->queue['code']} Loops Failed. {$exception->getMessage()}");
+                $this->app->log->error("Queue {$this->queue->record['code']} Loops Failed. {$exception->getMessage()}");
             }
         }
     }
