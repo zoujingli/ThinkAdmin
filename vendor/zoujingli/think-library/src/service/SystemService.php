@@ -296,4 +296,13 @@ class SystemService extends Service
         return $this->app->debug($data['app_run'] !== 'product')->isDebug();
     }
 
+    /**
+     * 判断实时运行模式
+     * @return boolean
+     */
+    public function isDebug()
+    {
+        return $this->getRuntime('app_run') !== 'product';
+    }
+
 }

@@ -21,9 +21,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $app = new App();
 
-SystemService::instance()->productMode();
+$debug = SystemService::instance()->isDebug();
 
-$response = $app->http->run();
+$response = $app->debug($debug)->http->run();
 
 $response->send();
 
