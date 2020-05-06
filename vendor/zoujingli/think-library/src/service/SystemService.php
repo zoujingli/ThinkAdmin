@@ -305,4 +305,15 @@ class SystemService extends Service
         return $this->getRuntime('app_run') !== 'product';
     }
 
+    /**
+     * 初始化并运行应用
+     * @param \think\App $app
+     */
+    public function doInit(\think\App $app)
+    {
+        $app->debug($this->isDebug());
+        $response = $app->http->run();
+        $response->send();
+        $app->http->end($response);
+    }
 }

@@ -19,12 +19,4 @@ use think\admin\service\SystemService;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$app = new App();
-
-$debug = SystemService::instance()->isDebug();
-
-$response = $app->debug($debug)->http->run();
-
-$response->send();
-
-$app->http->end($response);
+SystemService::instance()->doInit(new App());
