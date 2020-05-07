@@ -74,6 +74,9 @@ class AdminService extends Service
         if ($this->isSuper()) return true;
         $service = NodeService::instance();
         list($real, $nodes) = [$service->fullnode($node), $service->getMethods()];
+        foreach ($nodes as $key => $rule) if (stripos($key, '_') !== false) {
+            $nodes[str_replace('_', '', $key)] = $rule;
+        }
         if (!empty($nodes[$real]['isauth'])) {
             return in_array($real, $this->app->session->get('user.nodes', []));
         } else {

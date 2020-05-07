@@ -15,9 +15,7 @@
 
 namespace think\admin\command;
 
-use think\admin\service\ProcessService;
-use think\App;
-use think\console\Command;
+use think\admin\Command;
 use think\console\Input;
 use think\console\Output;
 
@@ -36,7 +34,7 @@ class Version extends Command
 
     protected function execute(Input $input, Output $output)
     {
-        $output->writeln('ThinkLib ' . ProcessService::instance()->version());
-        $output->writeln('ThinkPHP ' . App::VERSION);
+        $output->writeln('ThinkLib ' . $this->process->version());
+        $output->writeln('ThinkPHP ' . $this->app->version());
     }
 }
