@@ -82,39 +82,43 @@ public function index(){
 * 执行 `php think xadmin:install config` 从线上服务更新 `config` 常用配置文件（注意文件安全）
 
 #### 2. 守护进程管理
-* 执行 `php think xtask:listen` [监听]启动任务监听主进程
-* 执行 `php think xtask:query`  [控制]查询正在运行的进程
-* 执行 `php think xtask:start`  [控制]创建守护监听主进程
-* 执行 `php think xtask:state`  [控制]查看监听主进程状态
-* 执行 `php think xtask:stop`   [控制]平滑停止所有的进程
+* 执行 `php think xadmin:queue listen` [监听]启动任务监听主进程
+* 执行 `php think xadmin:queue query`  [控制]查询正在运行的进程
+* 执行 `php think xadmin:queue start`  [控制]创建守护监听主进程
+* 执行 `php think xadmin:queue status`  [控制]查看监听主进程状态
+* 执行 `php think xadmin:queue stop`   [控制]平滑停止所有的进程
 
 ## 赞助打赏
 ![赞助](http://static.thinkadmin.top/pay.png)
 
 ## 项目版本
 体验账号及密码都是admin
-
-### ThinkAdmin v1 基于 ThinkPHP 5.0 开发
-* 在线体验地址：https://v1.thinkadmin.top
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v1
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v1
-### ThinkAdmin v2 基于 ThinkPHP 5.0 开发
-* 在线体验地址：https://v2.thinkadmin.top
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v2
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v2
-### ThinkAdmin v3 基于 ThinkPHP 5.1 开发
-* 在线体验地址：https://v3.thinkadmin.top
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v3
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v3
-### ThinkAdmin v4 基于 ThinkPHP 5.1 开发
-* 在线体验地址：https://v4.thinkadmin.top
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v4
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v4
-### ThinkAdmin v5 基于 ThinkPHP 5.1 开发（后台权限基于注解实现）
-* 在线体验地址：https://v5.thinkadmin.top
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v5
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v5
 ### ThinkAdmin v6 基于 ThinkPHP 6.0 开发（后台权限基于注解实现）
 * 在线体验地址：https://v6.thinkadmin.top
 * Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v6
 * Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v6
+
+### ThinkAdmin v5 基于 ThinkPHP 5.1 开发（后台权限基于注解实现）
+* 在线体验地址：https://v5.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v5
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v5
+
+### ThinkAdmin v4 基于 ThinkPHP 5.1 开发（不建议继续使用）
+* 在线体验地址：https://v4.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v4
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v4
+
+### ThinkAdmin v3 基于 ThinkPHP 5.1 开发（不建议继续使用）
+* 在线体验地址：https://v3.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v3
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v3
+
+### ThinkAdmin v2 基于 ThinkPHP 5.0 开发（不建议继续使用）
+* 在线体验地址：https://v2.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v2
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v2
+
+### ThinkAdmin v1 基于 ThinkPHP 5.0 开发（不建议继续使用）
+* 在线体验地址：https://v1.thinkadmin.top
+* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v1
+* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v1
