@@ -15,6 +15,7 @@
 
 namespace think\admin\command;
 
+use Psr\Log\NullLogger;
 use think\admin\Command;
 use think\Collection;
 use think\console\Input;
@@ -50,6 +51,7 @@ class Queue extends Command
         $this->setName('xadmin:queue');
         $this->addArgument('action', Argument::OPTIONAL, 'stop|start|status|query|listen|clean|dorun', 'listen');
         $this->addArgument('code', Argument::OPTIONAL, 'Taskcode');
+        $this->addArgument('spts', Argument::OPTIONAL, 'Separator');
         $this->addOption('daemon', 'd', Option::VALUE_NONE, 'Run the queue listen in daemon mode');
         $this->setDescription('Asynchronous Command Queue for ThinkAdmin');
     }
@@ -152,6 +154,7 @@ class Queue extends Command
     protected function listenAction()
     {
         set_time_limit(0);
+        $this->app->db->setLog(new NullLogger());
         $this->app->db->name($this->table)->count();
         if ($this->process->iswin()) {
             $this->setProcessTitle("ThinkAdmin {$this->process->version()} Queue Listen");

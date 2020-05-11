@@ -43,7 +43,7 @@ class Database extends Command
     {
         $action = $input->getArgument('action');
         if (in_array($action, ['repair', 'optimize'])) {
-            return $this->${"_{$action}"}();
+            return $this->{"_{$action}"}();
         }
         $this->output->error("Wrong operation, currently allow repair|optimize");
     }
