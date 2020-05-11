@@ -57,7 +57,7 @@ class Upload extends Controller
      */
     public function state()
     {
-        list($this->name, $this->safe) = [input('name', null), $this->getSafe()];
+        [$this->name, $this->safe] = [input('name', null), $this->getSafe()];
         $data = ['uptype' => $this->getType(), 'xkey' => input('xkey'), 'safe' => intval($this->safe)];
         if ($info = Storage::instance($data['uptype'])->info($data['xkey'], $this->safe, $this->name)) {
             $data['url'] = $info['url'];
@@ -102,13 +102,13 @@ class Upload extends Controller
         if (in_array($this->extension, ['php', 'sh'])) {
             return json(['uploaded' => false, 'error' => ['message' => '可执行文件禁止上传到本地服务器']]);
         }
-        list($this->safe, $this->uptype, $this->name) = [$this->getSafe(), $this->getType(), input('xkey')];
+        [$this->safe, $this->uptype, $this->name] = [$this->getSafe(), $this->getType(), input('xkey')];
         if (empty($this->name)) $this->name = Storage::name($file->getPathname(), $this->extension, '', 'md5_file');
         if ($this->uptype === 'local') {
             $local = LocalStorage::instance();
             $realpath = dirname($realname = $local->path($this->name, $this->safe));
             file_exists($realpath) && is_dir($realpath) || mkdir($realpath, 0755, true);
-            @move_uploaded_file($file->getPathname(), $realname);
+            rename($file->getPathname(), $realname);
             $info = $local->info($this->name, $this->safe, $file->getOriginalName());
         } else {
             $bina = file_get_contents($file->getRealPath());

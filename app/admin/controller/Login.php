@@ -97,7 +97,7 @@ class Login extends Controller
             'type.require'  => '验证码类型不能为空!',
             'token.require' => '验证码标识不能为空!',
         ]);
-        $image = CaptchaService::instance();
+        $image = CaptchaService::instance()->initialize();
         $captcha = ['image' => $image->getData(), 'uniqid' => $image->getUniqid()];
         if ($this->app->session->get($input['type']) === $input['token']) {
             $captcha['code'] = $image->getCode();

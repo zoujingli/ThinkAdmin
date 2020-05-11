@@ -180,8 +180,8 @@ class SystemService extends Service
         return $this->app->db->name('SystemOplog')->insert([
             'node'     => NodeService::instance()->getCurrent(),
             'action'   => $action, 'content' => $content,
-            'geoip'    => $this->app->request->isCli() ? '127.0.0.1' : $this->app->request->ip(),
-            'username' => $this->app->request->isCli() ? 'cli' : $this->app->session->get('user.username', ''),
+            'geoip'    => $this->app->request->ip() ?: '127.0.0.1',
+            'username' => AdminService::instance()->getUserName() ?: '-',
         ]);
     }
 

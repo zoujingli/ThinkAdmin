@@ -38,10 +38,11 @@ class CaptchaService extends Service
      * @param array $config
      * @return static
      */
-    protected function initialize($config = [])
+    public function initialize($config = [])
     {
         // 动态配置属性
         foreach ($config as $k => $v) if (isset($this->$k)) $this->$k = $v;
+        $this->code = '';
         // 生成验证码序号
         $this->uniqid = uniqid('captcha') . mt_rand(1000, 9999);
         // 生成验证码字符串
