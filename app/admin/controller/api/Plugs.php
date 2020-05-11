@@ -107,7 +107,7 @@ class Plugs extends Controller
     public function optimize()
     {
         if (AdminService::instance()->isSuper()) {
-            $this->_queue('优化数据库所有数据表', 'xadmin:dbOptimize', 0, [], 0, 0);
+            $this->_queue('优化数据库所有数据表', 'xadmin:database optimize', 0, [], 0, 0);
         } else {
             $this->error('只有超级管理员才能操作！');
         }

@@ -84,19 +84,10 @@ class Library extends Service
         SystemService::instance()->bindRuntime();
         // 注册系统任务指令
         $this->commands([
+            'think\admin\command\Queue',
             'think\admin\command\Install',
             'think\admin\command\Version',
-            // 系统异步任务指令
-            'think\admin\command\queue\CleanQueue',
-            'think\admin\command\queue\WorkQueue',
-            'think\admin\command\queue\StopQueue',
-            'think\admin\command\queue\StateQueue',
-            'think\admin\command\queue\StartQueue',
-            'think\admin\command\queue\QueryQueue',
-            'think\admin\command\queue\ListenQueue',
-            // 数据库表优化指令
-            'think\admin\command\database\Optimize',
-            'think\admin\command\database\Repair',
+            'think\admin\command\Database',
         ]);
     }
 }

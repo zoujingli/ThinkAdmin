@@ -105,7 +105,7 @@ class QueueService extends Service
      */
     public function addCleanQueue()
     {
-        return $this->register('定时清理系统任务数据', "xtask:clean", 0, [], 0, 3600);
+        return $this->register('定时清理系统任务数据', "xadmin:queue clean", 0, [], 0, 3600);
     }
 
     /**

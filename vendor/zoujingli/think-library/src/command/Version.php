@@ -20,7 +20,7 @@ use think\console\Input;
 use think\console\Output;
 
 /**
- * 获取框架版本号
+ * 框架版本号指令
  * Class Version
  * @package think\admin\command
  */
@@ -32,6 +32,10 @@ class Version extends Command
         $this->setDescription("Query application framework version");
     }
 
+    /**
+     * @param Input $input
+     * @param Output $output
+     */
     protected function execute(Input $input, Output $output)
     {
         $output->writeln('ThinkLib ' . $this->process->version());
