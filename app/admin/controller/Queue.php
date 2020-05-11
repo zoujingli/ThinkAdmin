@@ -46,8 +46,8 @@ class Queue extends Controller
     public function index()
     {
         if (AdminService::instance()->isSuper()) try {
-            $this->command = ProcessService::instance()->think('xtask:start');
-            $this->message = $this->app->console->call('xtask:state')->fetch();
+            $this->command = ProcessService::instance()->think('xadmin:queue start');
+            $this->message = $this->app->console->call('xadmin:queue', ['status'])->fetch();
             $this->listen = preg_match('/process.*?\d+.*?running/', $this->message, $attr);
         } catch (\Exception $exception) {
             $this->listen = false;
@@ -105,7 +105,7 @@ class Queue extends Controller
     public function start()
     {
         try {
-            $message = nl2br($this->app->console->call('xtask:start')->fetch());
+            $message = nl2br($this->app->console->call('xadmin:queue', ['start'])->fetch());
             if (preg_match('/process.*?\d+/', $message, $attr)) {
                 $this->success('任务监听主进程启动成功！');
             } else {
@@ -125,7 +125,7 @@ class Queue extends Controller
     public function stop()
     {
         try {
-            $message = nl2br($this->app->console->call('xtask:stop')->fetch());
+            $message = nl2br($this->app->console->call('xadmin:queue', ['stop'])->fetch());
             if (stripos($message, 'succeeded')) {
                 $this->success('停止任务监听主进程成功！');
             } elseif (stripos($message, 'finish')) {
