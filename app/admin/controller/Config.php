@@ -115,13 +115,11 @@ class Config extends Controller
         $post = $this->request->post();
         if (!empty($post['storage']['allow_exts'])) {
             $exts = array_unique(explode(',', strtolower($post['storage']['allow_exts'])));
+            if (in_array('php', $exts)) $this->error('禁止上传可执行文件到本地服务器！');
             sort($exts);
-            if (in_array('php', $exts)) {
-                $this->error('禁止上传可执行文件到本地服务器！');
-            }
             $post['storage']['allow_exts'] = join(',', $exts);
         }
-        foreach ($post as $key => $value) sysconf($key, $value);
+        foreach ($post as $name => $value) sysconf($name, $value);
         $this->success('修改文件存储成功！');
     }
 

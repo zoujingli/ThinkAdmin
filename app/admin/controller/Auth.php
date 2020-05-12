@@ -80,7 +80,6 @@ class Auth extends Controller
      */
     public function state()
     {
-
         $this->_applyFormToken();
         $this->_save($this->table, ['status' => input('status')]);
     }
