@@ -29,7 +29,7 @@ class Version extends Command
     protected function configure()
     {
         $this->setName('xadmin:version');
-        $this->setDescription("Application and Framework Version for ThinkAdmin");
+        $this->setDescription("ThinkLibrary and ThinkPHP Version for ThinkAdmin");
     }
 
     /**

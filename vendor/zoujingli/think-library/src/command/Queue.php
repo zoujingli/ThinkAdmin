@@ -53,7 +53,7 @@ class Queue extends Command
         $this->addArgument('code', Argument::OPTIONAL, 'Taskcode');
         $this->addArgument('spts', Argument::OPTIONAL, 'Separator');
         $this->addOption('daemon', 'd', Option::VALUE_NONE, 'Run the queue listen in daemon mode');
-        $this->setDescription('Asynchronous Command Queue for ThinkAdmin');
+        $this->setDescription('Asynchronous Command Queue Task for ThinkAdmin');
     }
 
     /**
