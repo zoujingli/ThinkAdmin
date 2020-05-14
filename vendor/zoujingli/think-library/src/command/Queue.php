@@ -124,15 +124,25 @@ class Queue extends Command
      */
     protected function cleanAction()
     {
+        // 清理 7 天前的历史任务记录
         $map = [['exec_time', '<', time() - 7 * 24 * 3600]];
-        $count1 = $this->app->db->name($this->table)->where($map)->delete();
-        $this->setQueueProgress("清理 {$count1} 条历史任务成功");
-        // 重置超60分钟无响应的记录
+        $count = $this->app->db->name($this->table)->where($map)->delete();
+        $this->setQueueProgress("本次清理了 {$count} 条历史任务记录");
+        // 标记超过 1 小时未完成的任务为失败状态
         $map = [['exec_time', '<', time() - 3600], ['status', '=', '2']];
-        $count2 = $this->app->db->name($this->table)->where($map)->update([
-            'status' => '4', 'exec_desc' => '任务执行超时，已自动标识为失败！',
-        ]);
-        $this->setQueueProgress("处理 {$count2} 条超时间任务成功", 100);
+        list($used, $total) = [0, $this->app->db->name($this->table)->where($map)->count()];
+        $this->app->db->name($this->table)->where($map)->chunk(100, function (Collection $result) use ($total, &$used) {
+            foreach ($result->toArray() as $item) {
+                $stridx = str_pad(++$used, strlen("{$total}"), '0', STR_PAD_LEFT) . "/{$total}";
+                $this->setQueueProgress("[{$stridx}] 正在标记任务 {$item['code']} 超时", $used / $total * 100);
+                $item['loops_time'] > 0 ? $this->app->db->name($this->table)->where(['id' => $item['id']])->update([
+                    'status' => 2, 'exec_desc' => '任务执行超时，已自动重置任务待！',
+                ]) : $this->app->db->name($this->table)->where(['id' => $item['id']])->update([
+                    'status' => 4, 'exec_desc' => '任务执行超时，已自动标识为失败！',
+                ]);
+            }
+        });
+        $this->setQueueSuccess("清理 {$count} 条历史任务，标识 {$total} 条超时任务");
     }
 
     /**

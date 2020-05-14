@@ -73,9 +73,19 @@ class SystemService extends Service
                 return htmlspecialchars($value);
             }, $this->data[$type]));
         } else {
-            if (isset($this->data[$type]) && isset($this->data[$type][$field])) {
-                return $outer === 'raw' ? $this->data[$type][$field] : htmlspecialchars($this->data[$type][$field]);
-            } else return '';
+            if (isset($this->data[$type])) {
+                if ($field) {
+                    if (isset($this->data[$type][$field])) {
+                        return $outer === 'raw' ? $this->data[$type][$field] : htmlspecialchars($this->data[$type][$field]);
+                    }
+                } else {
+                    if ($outer === 'raw') foreach ($this->data[$type] as $key => $vo) {
+                        $this->data[$type][$key] = htmlspecialchars($vo);
+                    }
+                    return $this->data[$type];
+                }
+            }
+            return '';
         }
     }
 

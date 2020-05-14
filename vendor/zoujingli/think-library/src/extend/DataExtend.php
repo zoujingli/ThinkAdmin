@@ -24,45 +24,42 @@ class DataExtend
 {
 
     /**
-     * 一维数据数组生成数据树
-     * @param array $list 数据列表
-     * @param string $key ID_KEY
-     * @param string $pkey PID_KEY
-     * @param string $skey 子数据名称
+     * 一维数组生成数据树
+     * @param array $list 待处理数据
+     * @param string $cid 自己的主键
+     * @param string $pid 上级的主键
+     * @param string $sub 子数组名称
      * @return array
      */
-    public static function arr2tree($list, $key = 'id', $pkey = 'pid', $skey = 'sub')
+    public static function arr2tree($list, $cid = 'id', $pid = 'pid', $sub = 'sub')
     {
-        list($tree, $map) = [[], []];
-        foreach ($list as $item) $map[$item[$key]] = $item;
-        foreach ($list as $item) if (isset($item[$pkey]) && isset($map[$item[$pkey]])) {
-            $map[$item[$pkey]][$skey][] = &$map[$item[$key]];
-        } else $tree[] = &$map[$item[$key]];
-        unset($map);
+        list($tree, $tmp) = [[], array_combine(array_column($list, $cid), array_values($list))];
+        foreach ($list as $vo) isset($vo[$pid]) && isset($tmp[$vo[$pid]]) ? $tmp[$vo[$pid]][$sub][] = &$tmp[$vo[$cid]] : $tree[] = &$tmp[$vo[$cid]];
+        unset($tmp, $list);
         return $tree;
     }
 
     /**
-     * 一维数据数组生成数据树
-     * @param array $list 数据列表
-     * @param string $key ID_KEY
-     * @param string $pkey PID_KEY
-     * @param string $path
-     * @param string $ppath
+     * 一维数组生成数据树
+     * @param array $list 待处理数据
+     * @param string $cid 自己的主键
+     * @param string $pid 上级的主键
+     * @param string $cpath 当前 PATH
+     * @param string $ppath 上级 PATH
      * @return array
      */
-    public static function arr2table(array $list, $key = 'id', $pkey = 'pid', $path = 'path', $ppath = '')
+    public static function arr2table(array $list, $cid = 'id', $pid = 'pid', $cpath = 'path', $ppath = '')
     {
         $tree = [];
-        foreach (self::arr2tree($list, $key, $pkey) as $attr) {
-            $attr[$path] = "{$ppath}-{$attr[$key]}";
+        foreach (self::arr2tree($list, $cid, $pid) as $attr) {
+            $attr[$cpath] = "{$ppath}-{$attr[$cid]}";
             $attr['sub'] = isset($attr['sub']) ? $attr['sub'] : [];
             $attr['spt'] = substr_count($ppath, '-');
             $attr['spl'] = str_repeat("　├　", $attr['spt']);
             $sub = $attr['sub'];
             unset($attr['sub']);
             $tree[] = $attr;
-            if (!empty($sub)) $tree = array_merge($tree, self::arr2table($sub, $key, $pkey, $path, $attr[$path]));
+            if (!empty($sub)) $tree = array_merge($tree, self::arr2table($sub, $cid, $pid, $cpath, $attr[$cpath]));
         }
         return $tree;
     }

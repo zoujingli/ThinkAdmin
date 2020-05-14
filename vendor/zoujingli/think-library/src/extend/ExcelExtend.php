@@ -16,7 +16,7 @@
 namespace think\admin\extend;
 
 /**
- * 转出CSV文件扩展
+ * 导出CSV文件扩展
  * Class ExcelExtend
  * @package think\admin\extend
  */

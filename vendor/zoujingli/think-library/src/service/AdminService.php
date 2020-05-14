@@ -50,7 +50,7 @@ class AdminService extends Service
      */
     public function getUserId()
     {
-        return $this->app->session->get('user.id', 0);
+        return intval($this->app->session->get('user.id', 0));
     }
 
     /**
