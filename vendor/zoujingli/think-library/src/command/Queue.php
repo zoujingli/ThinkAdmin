@@ -49,10 +49,12 @@ class Queue extends Command
     public function configure()
     {
         $this->setName('xadmin:queue');
-        $this->addArgument('action', Argument::OPTIONAL, 'stop|start|status|query|listen|clean|dorun', 'listen');
+        $this->addArgument('action', Argument::OPTIONAL, 'stop|start|status|query|listen|clean|dorun|webstop|webstart|webstatus', 'listen');
         $this->addArgument('code', Argument::OPTIONAL, 'Taskcode');
         $this->addArgument('spts', Argument::OPTIONAL, 'Separator');
         $this->addOption('daemon', 'd', Option::VALUE_NONE, 'Run the queue listen in daemon mode');
+        $this->addOption('host', '-H', Option::VALUE_OPTIONAL, 'The host of PHP WebServer.');
+        $this->addOption('port', '-p', Option::VALUE_OPTIONAL, 'The port of PHP WebServer.');
         $this->setDescription('Asynchronous Command Queue Task for ThinkAdmin');
     }
 
@@ -66,7 +68,61 @@ class Queue extends Command
     {
         $action = $this->input->hasOption('daemon') ? 'start' : $input->getArgument('action');
         if (method_exists($this, $method = "{$action}Action")) return $this->$method();
-        $this->output->error("Wrong operation, currently allow stop|start|status|query|listen|clean|dorun");
+        $this->output->error("Wrong operation, Allow stop|start|status|query|listen|clean|dorun|webstop|webstart|webstatus");
+    }
+
+    /**
+     * 停止 WebServer 调试进程
+     */
+    protected function webStopAction()
+    {
+        $keyword = $this->process->think('run -p');
+        if (count($result = $this->process->query($keyword)) < 1) {
+            $this->output->warning("There is no WebServer process to finish");
+        } else foreach ($result as $item) {
+            $this->process->close($item['pid']);
+            $this->output->info("Sending end process {$item['pid']} signal succeeded");
+        }
+    }
+
+    /**
+     * 启动 WebServer 调试进程
+     */
+    protected function webStartAction()
+    {
+        $port = $this->input->getOption('port') ?: '80';
+        $host = $this->input->getOption('host') ?: '127.0.0.1';
+        $command = $this->process->think("run -p {$port} -H {$host}");
+        if (count($result = $this->process->query($command)) > 0) {
+            if ($this->process->iswin()) {
+                $this->process->exec("start http://{$host}:{$port}");
+            }
+            $this->output->info("WebServer process {$result['0']['pid']} has started");
+        } else {
+            [$this->process->create($command), usleep(1000)];
+            if (count($result = $this->process->query($command)) > 0) {
+                $this->output->info("WebServer process {$result['0']['pid']} started successfully");
+                if ($this->process->iswin()) {
+                    $this->process->exec("start http://{$host}:{$port}");
+                }
+            } else {
+                $this->output->error('Failed to create WebServer process');
+            }
+        }
+    }
+
+    /**
+     * 查看 WebServer 调试进程
+     */
+    protected function webStatusAction()
+    {
+        $command = $this->process->think("run -p");
+        if (count($result = $this->process->query($command)) > 0) {
+            $this->output->info("WebServer process {$result[0]['pid']} running");
+            $this->output->write("># {$result[0]['cmd']}");
+        } else {
+            $this->output->warning("The WebServer process is not running");
+        }
     }
 
     /**
@@ -93,7 +149,7 @@ class Queue extends Command
         if (count($result = $this->process->query($command)) > 0) {
             $this->output->info("Listening main process {$result['0']['pid']} has started");
         } else {
-            [$this->process->create($command), sleep(1)];
+            [$this->process->create($command), usleep(1000)];
             if (count($result = $this->process->query($command)) > 0) {
                 $this->output->info("Listening main process {$result['0']['pid']} started successfully");
             } else {
@@ -197,7 +253,7 @@ class Queue extends Command
      * 执行任务内容
      * @throws \think\db\exception\DbException
      */
-    protected function dorunAction()
+    protected function doRunAction()
     {
         set_time_limit(0);
         $this->code = trim($this->input->getArgument('code'));
@@ -252,7 +308,7 @@ class Queue extends Command
      * @param boolean $issplit 是否分隔
      * @throws \think\db\exception\DbException
      */
-    protected function update($status, $message, $issplit = true)
+    protected function updateQueue($status, $message, $issplit = true)
     {
         // 更新当前任务
         $info = trim(is_string($message) ? $message : '');

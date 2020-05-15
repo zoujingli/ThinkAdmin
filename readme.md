@@ -81,12 +81,17 @@ public function index(){
 * 执行 `php think xadmin:install static` 从线上服务更新 `plugs` 静态资料文件（注意文件安全）
 * 执行 `php think xadmin:install config` 从线上服务更新 `config` 常用配置文件（注意文件安全）
 
-#### 2. 守护进程管理
-* 执行 `php think xadmin:queue listen` [监听]启动任务监听主进程
-* 执行 `php think xadmin:queue query`  [控制]查询正在运行的进程
-* 执行 `php think xadmin:queue start`  [控制]创建守护监听主进程
-* 执行 `php think xadmin:queue status`  [控制]查看监听主进程状态
-* 执行 `php think xadmin:queue stop`   [控制]平滑停止所有的进程
+#### 2. 守护进程管理（可自建定时任务去守护监听主进程）
+* 执行 `php think xadmin:queue listen` [监听]启动异步任务监听服务
+* 执行 `php think xadmin:queue start`  [控制]检查创建任务监听服务（建议定时任务执行）
+* 执行 `php think xadmin:queue query`  [控制]查询当前任务相关的进程
+* 执行 `php think xadmin:queue status`  [控制]查看异步任务监听状态
+* 执行 `php think xadmin:queue stop`   [控制]平滑停止所有任务进程
+
+#### 3. 本地调试管理（可自建定时任务去守护监听主进程）
+* 执行 `php think xadmin:queue webstop` [调试]停止本地调试服务
+* 执行 `php think xadmin:queue webstart` [调试]开启本地调试服务（建议定时任务执行）
+* 执行 `php think xadmin:queue webstatus` [调试]查看本地调试状态
 
 ## 赞助打赏
 ![赞助](http://static.thinkadmin.top/pay.png)
