@@ -71,8 +71,8 @@ class FormHelper extends Helper
     {
         $this->query = $this->buildQuery($dbQuery);
         list($this->template, $this->where, $this->data) = [$template, $where, $data];
-        $this->field = empty($field) ? ($this->query->getPk() ? $this->query->getPk() : 'id') : $field;;
-        $this->value = input($this->field, isset($data[$this->field]) ? $data[$this->field] : null);
+        $this->field = $field ?: ($this->query->getPk() ?: 'id');
+        $this->value = input($this->field, $data[$this->field] ?? null);
         // GET请求, 获取数据并显示表单页面
         if ($this->app->request->isGet()) {
             if ($this->value !== null) {

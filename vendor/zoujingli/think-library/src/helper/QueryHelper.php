@@ -153,11 +153,7 @@ class QueryHelper extends Helper
     public function dateBetween($fields, $split = ' - ', $input = 'request', $alias = '#')
     {
         return $this->setBetweenWhere($fields, $split, $input, $alias, function ($value, $type) {
-            if ($type === 'after') {
-                return "{$value} 23:59:59";
-            } else {
-                return "{$value} 00:00:00";
-            }
+            return $type === 'after' ? "{$value} 23:59:59" : "{$value} 00:00:00";
         });
     }
 
@@ -172,11 +168,7 @@ class QueryHelper extends Helper
     public function timeBetween($fields, $split = ' - ', $input = 'request', $alias = '#')
     {
         return $this->setBetweenWhere($fields, $split, $input, $alias, function ($value, $type) {
-            if ($type === 'after') {
-                return strtotime("{$value} 23:59:59");
-            } else {
-                return strtotime("{$value} 00:00:00");
-            }
+            return $type === 'after' ? strtotime("{$value} 23:59:59") : strtotime("{$value} 00:00:00");
         });
     }
 

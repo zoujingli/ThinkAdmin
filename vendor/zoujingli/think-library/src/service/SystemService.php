@@ -107,7 +107,7 @@ class SystemService extends Service
         $map = isset($where[$key]) ? [] : (is_string($value) ? [[$key, 'in', explode(',', $value)]] : [$key => $value]);
         if (is_array($info = $this->app->db->table($table)->master()->where($where)->where($map)->find()) && !empty($info)) {
             if ($this->app->db->table($table)->strict(false)->where($where)->where($map)->update($data) !== false) {
-                return isset($info[$key]) ? $info[$key] : true;
+                return $info[$key] ?? true;
             } else {
                 return false;
             }
@@ -275,7 +275,7 @@ class SystemService extends Service
         if (empty($data['app_map']) || !is_array($data['app_map'])) $data['app_map'] = [];
         if (empty($data['app_uri']) || !is_array($data['app_uri'])) $data['app_uri'] = [];
         if (empty($data['app_run']) || !is_string($data['app_run'])) $data['app_run'] = 'developer';
-        return is_null($key) ? $data : (isset($data[$key]) ? $data[$key] : null);
+        return is_null($key) ? $data : ($data[$key] ?? null);
     }
 
     /**

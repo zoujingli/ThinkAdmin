@@ -62,8 +62,8 @@ class SaveHelper extends Helper
     {
         $this->where = $where;
         $this->query = $this->buildQuery($dbQuery);
-        $this->data = empty($data) ? $this->app->request->post() : $data;
-        $this->field = empty($field) ? $this->query->getPk() : $field;
+        $this->field = $field ?: $this->query->getPk();
+        $this->data = $data ?: $this->app->request->post();
         $this->value = $this->app->request->post($this->field, null);
         // 主键限制处理
         if (!isset($this->where[$this->field]) && is_string($this->value)) {

@@ -265,8 +265,7 @@ class MessageService extends Service
     {
         $tkey = date("YmdHis");
         $result = HttpExtend::post('http://intl.zthysms.com/intBalance.do', [
-            'username' => $this->globe_username, 'tkey' => $tkey,
-            'password' => md5(md5($this->globe_password) . $tkey),
+            'username' => $this->globe_username, 'tkey' => $tkey, 'password' => md5(md5($this->globe_password) . $tkey),
         ]);
         if (!is_numeric($result) && ($state = intval($result)) && isset($this->globeMessageMap[$state])) {
             return ['code' => 0, 'num' => 0, 'msg' => $this->globeMessageMap[$state]];

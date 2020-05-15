@@ -81,6 +81,7 @@ abstract class Controller extends \stdClass
         if (in_array($this->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
         }
+        $this->csrf_message = lang('think_library_csrf_error');
         $this->initialize();
     }
 
@@ -89,9 +90,6 @@ abstract class Controller extends \stdClass
      */
     protected function initialize()
     {
-        if (empty($this->csrf_message)) {
-            $this->csrf_message = lang('think_library_csrf_error');
-        }
     }
 
     /**

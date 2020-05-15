@@ -70,13 +70,9 @@ class PageHelper extends Helper
         $this->display = $display;
         $this->query = $this->buildQuery($dbQuery);
         // 数据列表排序自动处理
-        if ($this->app->request->isPost()) {
-            $this->sortAction();
-        }
+        if ($this->app->request->isPost()) $this->sortAction();
         // 列表设置默认排序处理
-        if (!$this->query->getOptions('order')) {
-            $this->orderAction();
-        }
+        if (!$this->query->getOptions('order')) $this->orderAction();
         // 列表分页及结果集处理
         if ($this->page) {
             if ($this->limit > 0) {

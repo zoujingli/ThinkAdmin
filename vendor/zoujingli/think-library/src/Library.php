@@ -30,7 +30,23 @@ use function Composer\Autoload\includeFile;
 class Library extends Service
 {
     /**
-     * 注册初始化服务
+     * 启动服务
+     */
+    public function boot()
+    {
+        // 动态绑定运行配置
+        SystemService::instance()->bindRuntime();
+        // 注册系统任务指令
+        $this->commands([
+            'think\admin\command\Queue',
+            'think\admin\command\Install',
+            'think\admin\command\Version',
+            'think\admin\command\Database',
+        ]);
+    }
+
+    /**
+     * 初始化服务
      */
     public function register()
     {
@@ -73,21 +89,5 @@ class Library extends Service
         // 动态加入应用函数
         $sysRule = "{$this->app->getAppPath()}*/sys.php";
         foreach (glob($sysRule) as $file) includeFile($file);
-    }
-
-    /**
-     * 启动服务
-     */
-    public function boot()
-    {
-        // 动态绑定运行配置
-        SystemService::instance()->bindRuntime();
-        // 注册系统任务指令
-        $this->commands([
-            'think\admin\command\Queue',
-            'think\admin\command\Install',
-            'think\admin\command\Version',
-            'think\admin\command\Database',
-        ]);
     }
 }

@@ -126,7 +126,7 @@ if (!function_exists('systoken')) {
     function systoken($node = null)
     {
         $result = TokenService::instance()->buildFormToken($node);
-        return isset($result['token']) ? $result['token'] : '';
+        return $result['token'] ?? '';
     }
 }
 if (!function_exists('sysoplog')) {
@@ -279,6 +279,6 @@ if (!function_exists('down_file')) {
     function down_file($source, $force = false, $expire = 0)
     {
         $result = Storage::down($source, $force, $expire);
-        return isset($result['url']) ? $result['url'] : $source;
+        return $result['url'] ?? $source;
     }
 }
