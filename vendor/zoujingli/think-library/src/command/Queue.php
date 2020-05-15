@@ -76,12 +76,12 @@ class Queue extends Command
      */
     protected function webStopAction()
     {
-        $keyword = $this->process->think('run -p');
-        if (count($result = $this->process->query($keyword)) < 1) {
+        $root = "{$this->app->getRootPath()}public" . DIRECTORY_SEPARATOR;
+        if (count($result = $this->process->query("-t {$root} {$root}router.php")) < 1) {
             $this->output->warning("There is no WebServer process to finish");
         } else foreach ($result as $item) {
             $this->process->close($item['pid']);
-            $this->output->info("Sending end process {$item['pid']} signal succeeded");
+            $this->output->writeln("Sending end process {$item['pid']} signal succeeded");
         }
     }
 
@@ -92,14 +92,15 @@ class Queue extends Command
     {
         $port = $this->input->getOption('port') ?: '80';
         $host = $this->input->getOption('host') ?: '127.0.0.1';
-        $command = $this->process->think("run -p {$port} -H {$host}");
+        $root = "{$this->app->getRootPath()}public" . DIRECTORY_SEPARATOR;
+        $command = "php -S {$host}:{$port} -t {$root} {$root}router.php";
         if (count($result = $this->process->query($command)) > 0) {
             if ($this->process->iswin()) {
                 $this->process->exec("start http://{$host}:{$port}");
             }
             $this->output->info("WebServer process {$result['0']['pid']} has started");
         } else {
-            [$this->process->create($command), usleep(1000)];
+            [$this->process->create($command), usleep(2000)];
             if (count($result = $this->process->query($command)) > 0) {
                 $this->output->info("WebServer process {$result['0']['pid']} started successfully");
                 if ($this->process->iswin()) {
@@ -116,8 +117,8 @@ class Queue extends Command
      */
     protected function webStatusAction()
     {
-        $command = $this->process->think("run -p");
-        if (count($result = $this->process->query($command)) > 0) {
+        $root = "{$this->app->getRootPath()}public" . DIRECTORY_SEPARATOR;
+        if (count($result = $this->process->query("-t {$root} {$root}router.php")) > 0) {
             $this->output->info("WebServer process {$result[0]['pid']} running");
             $this->output->write("># {$result[0]['cmd']}");
         } else {
@@ -135,7 +136,7 @@ class Queue extends Command
             $this->output->warning("There is no task process to finish");
         } else foreach ($result as $item) {
             $this->process->close($item['pid']);
-            $this->output->info("Sending end process {$item['pid']} signal succeeded");
+            $this->output->writeln("Sending end process {$item['pid']} signal succeeded");
         }
     }
 
