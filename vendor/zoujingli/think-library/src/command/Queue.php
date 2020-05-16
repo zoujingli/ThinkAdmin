@@ -283,22 +283,22 @@ class Queue extends Command
                     // 自定义任务，支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
                     $class = $this->app->make($command, [], true);
                     if ($class instanceof \think\admin\Queue) {
-                        $this->update(3, $class->initialize($this->queue)->execute($this->queue->data));
+                        $this->updateQueue(3, $class->initialize($this->queue)->execute($this->queue->data));
                     } elseif ($class instanceof \think\admin\service\QueueService) {
-                        $this->update(3, $class->initialize($this->queue->code)->execute($this->queue->data));
+                        $this->updateQueue(3, $class->initialize($this->queue->code)->execute($this->queue->data));
                     } else {
                         throw new \think\admin\Exception("自定义 {$command} 未继承 Queue 或 QueueService");
                     }
                 } else {
                     // 自定义指令，不支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
                     $attr = explode(' ', trim(preg_replace('|\s+|', ' ', $this->queue->record['command'])));
-                    $this->update(3, $this->app->console->call(array_shift($attr), $attr)->fetch(), false);
+                    $this->updateQueue(3, $this->app->console->call(array_shift($attr), $attr)->fetch(), false);
                 }
             }
         } catch (\Exception|\Error $exception) {
             $code = $exception->getCode();
             if (intval($code) !== 3) $code = 4;
-            $this->update($code, $exception->getMessage());
+            $this->updateQueue($code, $exception->getMessage());
         }
     }
 

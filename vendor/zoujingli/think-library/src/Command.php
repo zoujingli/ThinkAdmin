@@ -44,11 +44,13 @@ class Command extends ThinkCommand
      * 初始化指令变量
      * @param Input $input
      * @param Output $output
+     * @return $this
      */
     protected function initialize(Input $input, Output $output)
     {
         $this->queue = QueueService::instance();
         $this->process = ProcessService::instance();
+        return $this;
     }
 
     /**
