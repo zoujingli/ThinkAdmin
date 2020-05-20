@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
     <title>{block name="title"}{$title|default=''}{if !empty($title)} · {/if}{:sysconf('site_name')}{/block}</title>
     <meta charset="utf-8">
@@ -18,11 +17,9 @@
     <script>window.tapiRoot = '{:sysuri("admin/index/index",[],false)}'</script>
     <script src="__ROOT__/static/plugs/jquery/pace.min.js"></script>
 </head>
-
 <body class="layui-layout-body">
 {block name='body'}
 <div class="layui-layout layui-layout-admin layui-layout-left-hide">
-
     <!-- 顶部菜单 开始 -->
     <div class="layui-header notselect">
         <a href="{:url('@')}" class="layui-logo layui-elip">
@@ -66,16 +63,12 @@
         </ul>
     </div>
     <!-- 顶部菜单 结束 -->
-
     <!-- 左则菜单 开始 -->
     <div class="layui-side layui-bg-black notselect">
         <div class="layui-side-scroll">
-
-            {foreach $menus as $one}
-            {notempty name='one.sub'}
+            {foreach $menus as $one}{notempty name='one.sub'}
             <ul class="layui-nav layui-nav-tree layui-hide" data-menu-layout="m-{$one.id}">
-                {foreach $one.sub as $two}
-                {empty name='two.sub'}
+                {foreach $one.sub as $two}{empty name='two.sub'}
                 <li class="layui-nav-item">
                     <a data-target-tips="{$two.title}" data-menu-node="m-{$one.id}-{$two.id}" data-open="{$two.url}">
                         <span class='{$two.icon|default="layui-icon layui-icon-link"}'></span>
@@ -99,19 +92,15 @@
                         {/foreach}
                     </dl>
                 </li>
-                {/empty}
-                {/foreach}
+                {/empty}{/foreach}
             </ul>
-            {/notempty}
-            {/foreach}
+            {/notempty}{/foreach}
         </div>
     </div>
     <!-- 左则菜单 结束 -->
-
     <!-- 主体内容 开始 -->
     <div class="layui-body layui-bg-gray">{block name='content'}{/block}</div>
     <!-- 主体内容 结束 -->
-
 </div>
 {/block}
 <script src="__ROOT__/static/plugs/layui/layui.all.js"></script>
@@ -119,5 +108,4 @@
 <script src="__ROOT__/static/admin.js"></script>
 {block name='script'}{/block}
 </body>
-
 </html>
