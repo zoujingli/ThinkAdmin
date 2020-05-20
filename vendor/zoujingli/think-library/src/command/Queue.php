@@ -52,9 +52,9 @@ class Queue extends Command
         $this->addArgument('action', Argument::OPTIONAL, 'stop|start|status|query|listen|clean|dorun|webstop|webstart|webstatus', 'listen');
         $this->addArgument('code', Argument::OPTIONAL, 'Taskcode');
         $this->addArgument('spts', Argument::OPTIONAL, 'Separator');
+        $this->addOption('host', '-H', Option::VALUE_OPTIONAL, 'The host of WebServer.');
+        $this->addOption('port', '-p', Option::VALUE_OPTIONAL, 'The port of WebServer.');
         $this->addOption('daemon', 'd', Option::VALUE_NONE, 'Run the queue listen in daemon mode');
-        $this->addOption('host', '-H', Option::VALUE_OPTIONAL, 'The host of PHP WebServer.');
-        $this->addOption('port', '-p', Option::VALUE_OPTIONAL, 'The port of PHP WebServer.');
         $this->setDescription('Asynchronous Command Queue Task for ThinkAdmin');
     }
 
@@ -78,10 +78,10 @@ class Queue extends Command
     {
         $root = "{$this->app->getRootPath()}public" . DIRECTORY_SEPARATOR;
         if (count($result = $this->process->query("-t {$root} {$root}router.php")) < 1) {
-            $this->output->warning("There is no WebServer process to finish");
+            $this->output->writeln("There are no WebServer processes to stop");
         } else foreach ($result as $item) {
             $this->process->close($item['pid']);
-            $this->output->writeln("Sending end process {$item['pid']} signal succeeded");
+            $this->output->writeln("Successfully sent end signal to process {$item['pid']}");
         }
     }
 
@@ -98,16 +98,16 @@ class Queue extends Command
             if ($this->process->iswin()) {
                 $this->process->exec("start http://{$host}:{$port}");
             }
-            $this->output->info("WebServer process {$result['0']['pid']} has started");
+            $this->output->writeln("WebServer process already exist for pid {$result['0']['pid']}");
         } else {
             [$this->process->create($command), usleep(2000)];
             if (count($result = $this->process->query($command)) > 0) {
-                $this->output->info("WebServer process {$result['0']['pid']} started successfully");
+                $this->output->writeln("WebServer process started successfully for pid {$result['0']['pid']}");
                 if ($this->process->iswin()) {
                     $this->process->exec("start http://{$host}:{$port}");
                 }
             } else {
-                $this->output->error('Failed to create WebServer process');
+                $this->output->writeln('WebServer process failed to start');
             }
         }
     }
@@ -133,10 +133,10 @@ class Queue extends Command
     {
         $keyword = $this->process->think('xadmin:queue');
         if (count($result = $this->process->query($keyword)) < 1) {
-            $this->output->warning("There is no task process to finish");
+            $this->output->writeln("There are no task processes to stop");
         } else foreach ($result as $item) {
             $this->process->close($item['pid']);
-            $this->output->writeln("Sending end process {$item['pid']} signal succeeded");
+            $this->output->writeln("Successfully sent end signal to process {$item['pid']}");
         }
     }
 
@@ -148,13 +148,13 @@ class Queue extends Command
         $this->app->db->name($this->table)->count();
         $command = $this->process->think("xadmin:queue listen");
         if (count($result = $this->process->query($command)) > 0) {
-            $this->output->info("Listening main process {$result['0']['pid']} has started");
+            $this->output->writeln("Asynchronous daemons already exist for pid {$result[0]['pid']}");
         } else {
             [$this->process->create($command), usleep(1000)];
             if (count($result = $this->process->query($command)) > 0) {
-                $this->output->info("Listening main process {$result['0']['pid']} started successfully");
+                $this->output->writeln("Asynchronous daemons started successfully for pid {$result[0]['pid']}");
             } else {
-                $this->output->error('Failed to create listening main process');
+                $this->output->writeln("Asynchronous daemons failed to start");
             }
         }
     }

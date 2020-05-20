@@ -111,16 +111,16 @@ class Config extends Controller
         if ($this->request->isGet()) {
             $this->type = input('type', 'local');
             $this->fetch("storage-{$this->type}");
+        } else {
+            $post = $this->request->post();
+            if (!empty($post['storage']['allow_exts'])) {
+                $exts = array_unique(explode(',', strtolower($post['storage']['allow_exts'])));
+                if (sort($exts) && in_array('php', $exts)) $this->error('禁止上传可执行的文件！');
+                $post['storage']['allow_exts'] = join(',', $exts);
+            }
+            foreach ($post as $name => $value) sysconf($name, $value);
+            $this->success('修改文件存储成功！');
         }
-        $post = $this->request->post();
-        if (!empty($post['storage']['allow_exts'])) {
-            $exts = array_unique(explode(',', strtolower($post['storage']['allow_exts'])));
-            if (in_array('php', $exts)) $this->error('禁止上传可执行文件到本地服务器！');
-            sort($exts);
-            $post['storage']['allow_exts'] = join(',', $exts);
-        }
-        foreach ($post as $name => $value) sysconf($name, $value);
-        $this->success('修改文件存储成功！');
     }
 
 }
