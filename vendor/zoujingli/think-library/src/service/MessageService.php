@@ -54,11 +54,11 @@ class MessageService extends Service
 
     private $table;
 
-    private $china_username;
-    private $china_password;
+    private $chinaUsername;
+    private $chinaPassword;
 
-    private $globe_username;
-    private $globe_password;
+    private $globeUsername;
+    private $globePassword;
 
     /**
      * @return $this
@@ -69,36 +69,36 @@ class MessageService extends Service
     protected function initialize()
     {
         $this->table = 'SystemMessageHistory';
-        $this->china_username = sysconf('sms_zt.china_username');
-        $this->china_password = sysconf('sms_zt.china_password');
-        $this->globe_username = sysconf('sms_zt.globe_username');
-        $this->globe_password = sysconf('sms_zt.globe_password');
+        $this->chinaUsername = sysconf('sms_zt.china_username');
+        $this->chinaPassword = sysconf('sms_zt.china_password');
+        $this->globeUsername = sysconf('sms_zt.globe_username');
+        $this->globePassword = sysconf('sms_zt.globe_password');
         return $this;
     }
 
     /**
      * 配置内陆短信认证
-     * @param string $username
-     * @param string $password
+     * @param string $username 账号名称
+     * @param string $password 账号密码
      * @return $this
      */
     public function configChina($username, $password): MessageService
     {
-        $this->china_username = $username;
-        $this->china_password = $password;
+        $this->chinaUsername = $username;
+        $this->chinaPassword = $password;
         return $this;
     }
 
     /**
      * 配置国际短信认证
-     * @param string $username
-     * @param string $password
+     * @param string $username 账号名称
+     * @param string $password 账号密码
      * @return $this
      */
     public function configGlobe($username, $password): MessageService
     {
-        $this->globe_username = $username;
-        $this->globe_password = $password;
+        $this->globeUsername = $username;
+        $this->globePassword = $password;
         return $this;
     }
 
@@ -131,7 +131,7 @@ class MessageService extends Service
      * 发送国内短信验证码
      * @param string $phone 手机号
      * @param string $content 短信内容
-     * @param string $productid 短信通道ID
+     * @param string $productid 短信通道
      * @return boolean
      */
     public function sendChinaSms($phone, $content, $productid = '676767')
@@ -141,9 +141,9 @@ class MessageService extends Service
             'tkey'      => $tkey,
             'mobile'    => $phone,
             'content'   => $content,
-            'username'  => $this->china_username,
+            'username'  => $this->chinaUsername,
             'productid' => $productid,
-            'password'  => md5(md5($this->china_password) . $tkey),
+            'password'  => md5(md5($this->chinaPassword) . $tkey),
         ]);
         list($code, $message) = explode(',', $result . ',');
         $this->app->db->name($this->table)->insert([
@@ -203,8 +203,8 @@ class MessageService extends Service
     {
         $tkey = date("YmdHis");
         $result = HttpExtend::post('http://www.ztsms.cn/balanceN.do', [
-            'username' => $this->china_username, 'tkey' => $tkey,
-            'password' => md5(md5($this->china_password) . $tkey),
+            'username' => $this->chinaUsername, 'tkey' => $tkey,
+            'password' => md5(md5($this->chinaPassword) . $tkey),
         ]);
         if ($result > -1) {
             return ['code' => 1, 'num' => $result, 'msg' => '获取短信剩余条数成功！'];
@@ -265,7 +265,7 @@ class MessageService extends Service
     {
         $tkey = date("YmdHis");
         $result = HttpExtend::post('http://intl.zthysms.com/intBalance.do', [
-            'username' => $this->globe_username, 'tkey' => $tkey, 'password' => md5(md5($this->globe_password) . $tkey),
+            'username' => $this->globeUsername, 'tkey' => $tkey, 'password' => md5(md5($this->globePassword) . $tkey),
         ]);
         if (!is_numeric($result) && ($state = intval($result)) && isset($this->globeMessageMap[$state])) {
             return ['code' => 0, 'num' => 0, 'msg' => $this->globeMessageMap[$state]];

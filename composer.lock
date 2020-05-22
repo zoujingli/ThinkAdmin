@@ -223,16 +223,16 @@
         },
         {
             "name": "opis/closure",
-            "version": "3.5.1",
+            "version": "3.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opis/closure.git",
-                "reference": "93ebc5712cdad8d5f489b500c59d122df2e53969"
+                "reference": "2e3299cea6f485ca64d19c540f46d7896c512ace"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opis/closure/zipball/93ebc5712cdad8d5f489b500c59d122df2e53969",
-                "reference": "93ebc5712cdad8d5f489b500c59d122df2e53969",
+                "url": "https://api.github.com/repos/opis/closure/zipball/2e3299cea6f485ca64d19c540f46d7896c512ace",
+                "reference": "2e3299cea6f485ca64d19c540f46d7896c512ace",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -286,7 +286,7 @@
                 "serialization",
                 "serialize"
             ],
-            "time": "2019-11-29T22:36:02+00:00"
+            "time": "2020-05-21T20:09:36+00:00"
         },
         {
             "name": "psr/cache",
@@ -915,12 +915,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "08dbda6ff99e8c4c531deaad340679b9366f7c0b"
+                "reference": "f654c159f0ecf03f34f8da433b98c40950696671"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/08dbda6ff99e8c4c531deaad340679b9366f7c0b",
-                "reference": "08dbda6ff99e8c4c531deaad340679b9366f7c0b",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/f654c159f0ecf03f34f8da433b98c40950696671",
+                "reference": "f654c159f0ecf03f34f8da433b98c40950696671",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -964,7 +964,7 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://framework.thinkadmin.top",
-            "time": "2020-05-19T08:03:38+00:00"
+            "time": "2020-05-21T09:42:50+00:00"
         },
         {
             "name": "zoujingli/wechat-developer",
