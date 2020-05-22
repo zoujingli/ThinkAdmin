@@ -46,11 +46,12 @@ class Queue extends Controller
     public function index()
     {
         if (AdminService::instance()->isSuper()) try {
-            $process = ProcessService::instance();
-            if ($process->iswin() || empty($_SERVER['USER'])) {
-                $this->command = $process->think('xadmin:queue start');
+            $this->process = ProcessService::instance();
+            if ($this->process->iswin()) {
+                $this->command = $this->process->think('xadmin:queue start');
             } else {
-                $this->command = "sudo -u {$_SERVER['USER']} {$process->think('xadmin:queue start')}";
+                $user = $this->request->server('user', 'www');
+                $this->command = "sudo -u {$user} {$this->process->think('xadmin:queue start')}";
             }
             $this->message = $this->app->console->call('xadmin:queue', ['status'])->fetch();
             $this->listen = preg_match('/process.*?\d+.*?running/', $this->message, $attr);
