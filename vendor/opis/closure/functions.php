@@ -26,12 +26,17 @@ function serialize($data)
  * Unserialize
  *
  * @param $data
+ * @param $options
  * @return mixed
  */
-function unserialize($data)
+function unserialize($data, array $options = null)
 {
     SerializableClosure::enterContext();
-    $data = \unserialize($data);
+    if ($options === null || PHP_MAJOR_VERSION < 7) {
+        $data = \unserialize($data);
+    } else {
+        $data = \unserialize($data, $options);
+    }
     SerializableClosure::unwrapClosures($data);
     SerializableClosure::exitContext();
     return $data;

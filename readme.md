@@ -30,6 +30,8 @@ ThinkAdmin 非常适用快速二次开发，默认集成 微信开发组件，�
 
 本地开发命令`php think run`，使用`http://127.0.0.1:8000`访问项目。
 
+官方地址及开发指南：https://thinkadmin.top
+
 PHP 开发技术交流（ QQ 群 513350915）
 
 [![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
