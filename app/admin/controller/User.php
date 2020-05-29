@@ -134,7 +134,7 @@ class User extends Controller
             // 账号权限绑定处理
             $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
         } else {
-            $data['authorize'] = explode(',', $data['authorize'] ?: '');
+            $data['authorize'] = explode(',', $data['authorize'] ?? '');
             $this->authorizes = $this->app->db->name('SystemAuth')->where(['status' => '1'])->order('sort desc,id desc')->select()->toArray();
         }
     }
