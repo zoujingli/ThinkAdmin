@@ -41,10 +41,8 @@ class Database extends Command
      */
     public function execute(Input $input, Output $output)
     {
-        $action = $input->getArgument('action');
-        if (in_array($action, ['repair', 'optimize'])) {
-            return $this->{"_{$action}"}();
-        }
+        $do = $input->getArgument('action');
+        if (in_array($do, ['repair', 'optimize'])) return $this->{"_{$do}"}();
         $this->output->error("Wrong operation, currently allow repair|optimize");
     }
 
@@ -58,8 +56,7 @@ class Database extends Command
     protected function _repair()
     {
         $this->setQueueProgress("正在获取需要修复的数据表", 0);
-        $tables = $this->getTables();
-        [$total, $used] = [count($tables), 0];
+        [$total, $used] = [count($tables = $this->getTables()), 0];
         $this->setQueueProgress("总共需要修复 {$total} 张数据表", 0);
         foreach ($tables as $table) {
             $stridx = str_pad(++$used, strlen("{$total}"), '0', STR_PAD_LEFT) . "/{$total}";
@@ -78,8 +75,7 @@ class Database extends Command
     protected function _optimize()
     {
         $this->setQueueProgress("正在获取需要优化的数据表", 0);
-        $tables = $this->getTables();
-        [$total, $used] = [count($tables), 0];
+        [$total, $used] = [count($tables = $this->getTables()), 0];
         $this->setQueueProgress("总共需要优化 {$total} 张数据表", 0);
         foreach ($tables as $table) {
             $stridx = str_pad(++$used, strlen("{$total}"), '0', STR_PAD_LEFT) . "/{$total}";

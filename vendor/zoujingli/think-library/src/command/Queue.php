@@ -295,7 +295,7 @@ class Queue extends Command
                     $this->updateQueue(3, $this->app->console->call(array_shift($attr), $attr)->fetch(), false);
                 }
             }
-        } catch (\Exception|\Error $exception) {
+        } catch (\Exception|\Error|\Throwable $exception) {
             $code = $exception->getCode();
             if (intval($code) !== 3) $code = 4;
             $this->updateQueue($code, $exception->getMessage());

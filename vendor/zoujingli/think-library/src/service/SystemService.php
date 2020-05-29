@@ -225,6 +225,15 @@ class SystemService extends Service
     }
 
     /**
+     * 判断实时运行模式
+     * @return boolean
+     */
+    public function isDebug()
+    {
+        return $this->getRuntime('run') !== 'product';
+    }
+
+    /**
      * 设置运行环境模式
      * @param null|boolean $state
      * @return boolean
@@ -248,16 +257,16 @@ class SystemService extends Service
     public function setRuntime($map = [], $run = null, $uri = [])
     {
         $data = $this->getRuntime();
-        if (is_array($map) && count($map) > 0 && count($data['app_map']) > 0) {
-            foreach ($data['app_map'] as $kk => $vv) if (in_array($vv, $map)) unset($data['app_map'][$kk]);
+        if (is_array($map) && count($map) > 0 && count($data['map']) > 0) {
+            foreach ($data['map'] as $kk => $vv) if (in_array($vv, $map)) unset($data['map'][$kk]);
         }
-        if (is_array($uri) && count($uri) > 0 && count($data['app_uri']) > 0) {
-            foreach ($data['app_uri'] as $kk => $vv) if (in_array($vv, $uri)) unset($data['app_uri'][$kk]);
+        if (is_array($uri) && count($uri) > 0 && count($data['uri']) > 0) {
+            foreach ($data['uri'] as $kk => $vv) if (in_array($vv, $uri)) unset($data['uri'][$kk]);
         }
         $file = "{$this->app->getRootPath()}runtime/config.json";
-        $data['app_run'] = is_null($run) ? $data['app_run'] : $run;
-        $data['app_map'] = is_null($map) ? [] : array_merge($data['app_map'], $map);
-        $data['app_uri'] = is_null($uri) ? [] : array_merge($data['app_uri'], $uri);
+        $data['run'] = is_null($run) ? $data['run'] : $run;
+        $data['map'] = is_null($map) ? [] : array_merge($data['map'], $map);
+        $data['uri'] = is_null($uri) ? [] : array_merge($data['uri'], $uri);
         file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE));
         return $this->bindRuntime($data);
     }
@@ -272,9 +281,9 @@ class SystemService extends Service
         $file = "{$this->app->getRootPath()}runtime/config.json";
         $data = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
         if (empty($data) || !is_array($data)) $data = [];
-        if (empty($data['app_map']) || !is_array($data['app_map'])) $data['app_map'] = [];
-        if (empty($data['app_uri']) || !is_array($data['app_uri'])) $data['app_uri'] = [];
-        if (empty($data['app_run']) || !is_string($data['app_run'])) $data['app_run'] = 'developer';
+        if (empty($data['map']) || !is_array($data['map'])) $data['map'] = [];
+        if (empty($data['uri']) || !is_array($data['uri'])) $data['uri'] = [];
+        if (empty($data['run']) || !is_string($data['run'])) $data['run'] = 'developer';
         return is_null($key) ? $data : ($data[$key] ?? null);
     }
 
@@ -286,33 +295,48 @@ class SystemService extends Service
     public function bindRuntime($data = [])
     {
         if (empty($data)) $data = $this->getRuntime();
-        // 动态绑定应用
-        if (!empty($data['app_map'])) {
+        // 动态设置应用绑定
+        if (!empty($data['map'])) {
             $maps = $this->app->config->get('app.app_map', []);
-            if (is_array($maps) && count($maps) > 0 && count($data['app_map']) > 0) {
-                foreach ($maps as $kk => $vv) if (in_array($vv, $data['app_map'])) unset($maps[$kk]);
+            if (is_array($maps) && count($maps) > 0 && count($data['map']) > 0) {
+                foreach ($maps as $kk => $vv) if (in_array($vv, $data['map'])) unset($maps[$kk]);
             }
-            $this->app->config->set(['app_map' => array_merge($maps, $data['app_map'])], 'app');
+            $this->app->config->set(['app_map' => array_merge($maps, $data['map'])], 'app');
         }
-        // 动态绑定域名
-        if (!empty($data['app_uri'])) {
+        // 动态设置域名绑定
+        if (!empty($data['uri'])) {
             $uris = $this->app->config->get('app.domain_bind', []);
-            if (is_array($uris) && count($uris) > 0 && count($data['app_uri']) > 0) {
-                foreach ($uris as $kk => $vv) if (in_array($vv, $data['app_uri'])) unset($uris[$kk]);
+            if (is_array($uris) && count($uris) > 0 && count($data['uri']) > 0) {
+                foreach ($uris as $kk => $vv) if (in_array($vv, $data['uri'])) unset($uris[$kk]);
             }
-            $this->app->config->set(['domain_bind' => array_merge($uris, $data['app_uri'])], 'app');
+            $this->app->config->set(['domain_bind' => array_merge($uris, $data['uri'])], 'app');
         }
         // 动态设置运行模式
-        return $this->app->debug($data['app_run'] !== 'product')->isDebug();
+        return $this->app->debug($data['run'] !== 'product')->isDebug();
     }
 
     /**
-     * 判断实时运行模式
-     * @return boolean
+     * 压缩发布项目
      */
-    public function isDebug()
+    public function pushRuntime()
     {
-        return $this->getRuntime('app_run') !== 'product';
+        $dbname = $this->app->db->getConnection()->getConfig('database');
+        $this->app->console->call("optimize:schema", ["--db={$dbname}"]);
+        foreach (NodeService::instance()->getModules() as $module) {
+            $path = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $module;
+            file_exists($path) && is_dir($path) or mkdir($path, 0755, true);
+            $this->app->console->call("optimize:route {$module}");
+        }
+    }
+
+    /**
+     * 清理运行缓存
+     */
+    public function clearRuntime()
+    {
+        $data = $this->getRuntime();
+        $this->app->console->call('clear');
+        $this->setRuntime($data['map'], $data['run']);
     }
 
     /**

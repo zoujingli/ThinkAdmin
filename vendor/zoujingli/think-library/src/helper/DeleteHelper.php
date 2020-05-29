@@ -55,7 +55,7 @@ class DeleteHelper extends Helper
     {
         $this->where = $where;
         $this->query = $this->buildQuery($dbQuery);
-        $this->field = empty($field) ? $this->query->getPk() : $field;
+        $this->field = $field ?: $this->query->getPk();
         $this->value = $this->app->request->post($this->field, null);
         // 主键限制处理
         if (!isset($this->where[$this->field]) && is_string($this->value)) {

@@ -46,9 +46,7 @@ class Plugs extends Controller
     {
         try {
             if (AdminService::instance()->isSuper()) {
-                $dbname = $this->app->db->getConnection()->getConfig('database');
-                $this->app->console->call("optimize:schema", ["--db={$dbname}"]);
-                $this->app->console->call('optimize:route');
+                SystemService::instance()->pushRuntime();
                 $this->success('网站缓存加速成功！');
             } else {
                 $this->error('只有超级管理员才能操作！');
@@ -68,10 +66,7 @@ class Plugs extends Controller
     {
         try {
             if (AdminService::instance()->isSuper()) {
-                $data = SystemService::instance()->getRuntime();
-                $path = strtr("{$this->app->getRootPath()}runtime/", '\\', '/');
-                $this->app->console->call('clear', ["--path={$path}"]);
-                SystemService::instance()->setRuntime($data['app_map'], $data['app_run']);
+                SystemService::instance()->clearRuntime();
                 $this->success('清理网站缓存成功！');
             } else {
                 $this->error('只有超级管理员才能操作！');
