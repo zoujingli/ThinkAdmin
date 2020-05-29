@@ -95,11 +95,13 @@ class User extends Controller
             $this->verify = false;
             $this->_form($this->table, 'pass');
         } else {
-            $post = $this->request->post();
-            if ($post['password'] !== $post['repassword']) {
-                $this->error('两次输入的密码不一致！');
-            }
-            if (data_save($this->table, ['id' => $post['id'], 'password' => md5($post['password'])], 'id')) {
+            $data = $this->_vali([
+                'id.require'                  => '用户ID不能为空！',
+                'password.require'            => '登录密码不能为空！',
+                'repassword.require'          => '重复密码不能为空！',
+                'repassword.confirm:password' => '两次输入的密码不一致！'
+            ]);
+            if (data_save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {
                 $this->error('密码修改失败，请稍候再试！');
@@ -117,16 +119,23 @@ class User extends Controller
     protected function _form_filter(&$data)
     {
         if ($this->request->isPost()) {
-            // 用户权限处理
-            $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
-            // 用户账号重复检查
-            if (isset($data['id'])) unset($data['username']);
-            elseif ($this->app->db->name($this->table)->where(['username' => $data['username'], 'is_deleted' => '0'])->count() > 0) {
-                $this->error("账号{$data['username']}已经存在，请使用其它账号！");
+            if (isset($data['id']) && $data['id'] > 0) {
+                unset($data['username']);
+            } else {
+                // 检查登录账号是否出现重复
+                if (empty($data['username'])) $this->error('登录账号不能为空！');
+                $where = ['username' => $data['username'], 'is_deleted' => 0];
+                if ($this->app->db->name($this->table)->where($where)->count() > 0) {
+                    $this->error("账号{$data['username']}已经存在，请使用其它账号！");
+                }
+                // 新添加的用户密码与账号相同
+                $data['password'] = md5($data['username']);
             }
+            // 账号权限绑定处理
+            $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
         } else {
-            $data['authorize'] = explode(',', isset($data['authorize']) ? $data['authorize'] : '');
-            $this->authorizes = $this->app->db->name('SystemAuth')->where(['status' => '1'])->order('sort desc,id desc')->select();
+            $data['authorize'] = explode(',', $data['authorize'] ?: '');
+            $this->authorizes = $this->app->db->name('SystemAuth')->where(['status' => '1'])->order('sort desc,id desc')->select()->toArray();
         }
     }
 

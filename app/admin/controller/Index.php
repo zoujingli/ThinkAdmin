@@ -85,8 +85,8 @@ class Index extends Controller
             $data = $this->_vali([
                 'password.require'            => '登录密码不能为空！',
                 'repassword.require'          => '重复密码不能为空！',
-                'oldpassword.require'         => '旧密码不能为空！',
-                'password.confirm:repassword' => '验证密码与新密码不匹配！',
+                'oldpassword.require'         => '旧的密码不能为空！',
+                'password.confirm:repassword' => '两次输入的密码不一致！',
             ]);
             $user = $this->app->db->name('SystemUser')->where(['id' => $id])->find();
             if (md5($data['oldpassword']) !== $user['password']) {
