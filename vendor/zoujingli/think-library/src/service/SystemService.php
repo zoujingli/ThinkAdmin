@@ -325,7 +325,7 @@ class SystemService extends Service
         foreach (NodeService::instance()->getModules() as $module) {
             $path = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $module;
             file_exists($path) && is_dir($path) or mkdir($path, 0755, true);
-            $this->app->console->call("optimize:route {$module}");
+            $this->app->console->call("optimize:route", [$module]);
         }
     }
 
