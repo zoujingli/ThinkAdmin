@@ -30,9 +30,8 @@ class Update extends Controller
      */
     public function get()
     {
-        $this->file = $this->app->getRootPath() . decode(input('encode', '0'));
-        if (file_exists($this->file)) {
-            $this->success('读取文件成功！', ['content' => base64_encode(file_get_contents($this->file))]);
+        if (file_exists($file = $this->app->getRootPath() . decode(input('encode', '0')))) {
+            $this->success('读取文件成功！', ['content' => base64_encode(file_get_contents($file))]);
         } else {
             $this->error('读取文件内容失败！');
         }
@@ -43,9 +42,10 @@ class Update extends Controller
      */
     public function tree()
     {
-        $this->rules = unserialize($this->request->post('rules', 'a:0:{}', ''));
-        $this->ignore = unserialize($this->request->post('ignore', 'a:0:{}', ''));
-        $this->success('获取文件列表成功！', InstallService::instance()->getList($this->rules, $this->ignore));
+        $this->success('获取文件列表成功！', InstallService::instance()->getList(
+            unserialize($this->request->post('rules', 'a:0:{}', '')),
+            unserialize($this->request->post('ignore', 'a:0:{}', ''))
+        ));
     }
 
 }
