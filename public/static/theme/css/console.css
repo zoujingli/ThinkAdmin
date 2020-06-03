@@ -380,6 +380,11 @@ label.think-radio {
 .layui-header .layui-nav-item .layui-nav-child + a {
   padding-right: 35px;
 }
+.layui-header .layui-nav-item .layui-nav-child + a img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
 .layui-header .layui-nav-item .layui-nav-child.layui-show + a {
   background: #fff;
 }

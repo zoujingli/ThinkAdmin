@@ -102,7 +102,7 @@ class User extends Controller
                 'repassword.confirm:password' => '两次输入的密码不一致！'
             ]);
             if (data_save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
-                $this->success('密码修改成功，下次请使用新密码登录！', '');
+                $this->success('密码修改成功，请使用新密码登录！', '');
             } else {
                 $this->error('密码修改失败，请稍候再试！');
             }

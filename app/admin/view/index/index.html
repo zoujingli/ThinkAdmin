@@ -53,7 +53,10 @@
                     {/if}
                     <dd lay-unselect><a data-load="{:url('admin/login/out')}" data-confirm="确定要退出登录吗？"><i class="layui-icon layui-icon-release margin-right-5"></i> 退出登录</a></dd>
                 </dl>
-                <a><span><i class="layui-icon layui-icon-username margin-right-5"></i> {:session('user.username')}</span></a>
+                <a class="layui-elip">
+                    <img alt="headimg" src="{:session('user.headimg')?:'__ROOT__/static/theme/img/headimg.png'}">
+                    <span class="padding-left-5">{:session('user.nickname')?:session('user.username')}</span>
+                </a>
             </li>
             {else}
             <li class="layui-nav-item">
@@ -72,21 +75,21 @@
                 <li class="layui-nav-item">
                     <a data-target-tips="{$two.title}" data-menu-node="m-{$one.id}-{$two.id}" data-open="{$two.url}">
                         <span class='{$two.icon|default="layui-icon layui-icon-link"}'></span>
-                        <span class="nav-text padding-left-5">{$two.title}</span>
+                        <span class="nav-text padding-left-5">{$two.title|default=''}</span>
                     </a>
                 </li>
                 {else}
                 <li class="layui-nav-item" data-submenu-layout='m-{$one.id}-{$two.id}'>
                     <a data-target-tips="{$two.title}" style="background:#393D49">
                         <span class='nav-icon layui-hide {$two.icon|default="layui-icon layui-icon-triangle-d"}'></span>
-                        <span class="nav-text padding-left-5">{$two.title}</span>
+                        <span class="nav-text padding-left-5">{$two.title|default=''}</span>
                     </a>
                     <dl class="layui-nav-child">
                         {foreach $two.sub as $thr}
                         <dd>
                             <a data-target-tips="{$thr.title}" data-open="{$thr.url}" data-menu-node="m-{$one.id}-{$two.id}-{$thr.id}">
                                 <span class='nav-icon padding-left-5 {$thr.icon|default="layui-icon layui-icon-link"}'></span>
-                                <span class="nav-text padding-left-5">{$thr.title}</span>
+                                <span class="nav-text padding-left-5">{$thr.title|default=''}</span>
                             </a>
                         </dd>
                         {/foreach}
