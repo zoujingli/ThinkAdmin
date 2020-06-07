@@ -18,7 +18,6 @@
     "php": ">=7.1.0",
     "ext-gd": "*",
     "ext-xml": "*",
-    "ext-soap": "*",
     "ext-json": "*",
     "ext-curl": "*",
     "ext-iconv": "*",

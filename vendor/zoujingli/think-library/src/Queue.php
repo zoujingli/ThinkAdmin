@@ -71,7 +71,7 @@ abstract class Queue
      * @param array $data
      * @return mixed
      */
-    abstract public function execute(array $data = []);
+    abstract public function execute($data = []);
 
     /**
      * 设置任务的进度
