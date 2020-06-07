@@ -124,9 +124,9 @@ class ReflectionClosure extends ReflectionFunction
 
         $tokens = $this->getTokens();
         $state = $lastState = 'start';
-        $inside_anonymous = false;
+        $inside_structure = false;
         $isShortClosure = false;
-        $anonymous_mark = 0;
+        $inside_structure_mark = 0;
         $open = 0;
         $code = '';
         $id_start = $id_start_ci = $id_name = $context = '';
@@ -278,7 +278,6 @@ class ReflectionClosure extends ReflectionFunction
                     switch ($token[0]){
                         case T_CURLY_OPEN:
                         case T_DOLLAR_OPEN_CURLY_BRACES:
-                        case T_STRING_VARNAME:
                         case '{':
                             $code .= '{';
                             $open++;
@@ -287,8 +286,8 @@ class ReflectionClosure extends ReflectionFunction
                             $code .= '}';
                             if(--$open === 0 && !$isShortClosure){
                                 break 3;
-                            } elseif ($inside_anonymous) {
-                                $inside_anonymous = !($open === $anonymous_mark);
+                            } elseif ($inside_structure) {
+                                $inside_structure = !($open === $inside_structure_mark);
                             }
                             break;
                         case '(':
@@ -328,13 +327,13 @@ class ReflectionClosure extends ReflectionFunction
                             $code .= $_namespace;
                             break;
                         case T_CLASS_C:
-                            $code .= $inside_anonymous ? $token[1] : $_class;
+                            $code .= $inside_structure ? $token[1] : $_class;
                             break;
                         case T_FUNC_C:
-                            $code .= $inside_anonymous ? $token[1] : $_function;
+                            $code .= $inside_structure ? $token[1] : $_function;
                             break;
                         case T_METHOD_C:
-                            $code .= $inside_anonymous ? $token[1] : $_method;
+                            $code .= $inside_structure ? $token[1] : $_method;
                             break;
                         case T_COMMENT:
                             if (substr($token[1], 0, 8) === '#trackme') {
@@ -350,17 +349,12 @@ class ReflectionClosure extends ReflectionFunction
                             }
                             break;
                         case T_VARIABLE:
-                            if($token[1] == '$this' && !$inside_anonymous){
+                            if($token[1] == '$this' && !$inside_structure){
                                 $isUsingThisObject = true;
                             }
                             $code .= $token[1];
                             break;
                         case T_STATIC:
-                            if (!$inside_anonymous) {
-                                $isUsingScope = true;
-                            }
-                            $code .= $token[1];
-                            break;
                         case T_NS_SEPARATOR:
                         case T_STRING:
                             $id_start = $token[1];
@@ -398,6 +392,10 @@ class ReflectionClosure extends ReflectionFunction
                         case T_FUNCTION:
                             $code .= $token[1];
                             $state = 'closure_args';
+                            if (!$inside_structure) {
+                                $inside_structure = true;
+                                $inside_structure_mark = $open;
+                            }
                             break;
                         case T_TRAIT_C:
                             if ($_trait === null) {
@@ -501,7 +499,11 @@ class ReflectionClosure extends ReflectionFunction
                                 $open++;
                             }
                             if($context === 'new' || false !== strpos($id_name, '\\')){
-                                if($id_start !== '\\' && !in_array($id_start_ci, $class_keywords)){
+                                if($id_start_ci === 'self' || $id_start_ci === 'static') {
+                                    if (!$inside_structure) {
+                                        $isUsingScope = true;
+                                    }
+                                } elseif ($id_start !== '\\' && !in_array($id_start_ci, $class_keywords)) {
                                     if ($classes === null) {
                                         $classes = $this->getClasses();
                                     }
@@ -528,9 +530,13 @@ class ReflectionClosure extends ReflectionFunction
                         case T_VARIABLE:
                         case T_DOUBLE_COLON:
                             if($id_start !== '\\') {
-                                if($id_start_ci === 'self' || $id_start_ci === 'static' || $id_start_ci === 'parent'){
-                                    if (!$inside_anonymous) {
+                                if($id_start_ci === 'self' || $id_start_ci === 'parent'){
+                                    if (!$inside_structure) {
                                         $isUsingScope = true;
+                                    }
+                                } elseif ($id_start_ci === 'static') {
+                                    if (!$inside_structure) {
+                                        $isUsingScope = $token[0] === T_DOUBLE_COLON;
                                     }
                                 } elseif (!($php7 && in_array($id_start_ci, $php7_types))){
                                     if ($classes === null) {
@@ -544,6 +550,7 @@ class ReflectionClosure extends ReflectionFunction
                                     }
                                 }
                             }
+
                             $code .= $id_start . $id_name . $token[1];
                             $state = $token[0] === T_DOUBLE_COLON ? 'ignore_next' : $lastState;
                             break;
@@ -562,7 +569,7 @@ class ReflectionClosure extends ReflectionFunction
                                     $context === 'root'
                                 ){
                                     if($id_start_ci === 'self' || $id_start_ci === 'static' || $id_start_ci === 'parent'){
-                                        if (!$inside_anonymous) {
+                                        if (!$inside_structure) {
                                             $isUsingScope = true;
                                         }
                                     } elseif (!($php7 && in_array($id_start_ci, $php7_types))){
@@ -596,9 +603,9 @@ class ReflectionClosure extends ReflectionFunction
                         break;
                         case '{':
                             $state = 'closure';
-                            if (!$inside_anonymous) {
-                                $inside_anonymous = true;
-                                $anonymous_mark = $open;
+                            if (!$inside_structure) {
+                                $inside_structure = true;
+                                $inside_structure_mark = $open;
                             }
                             $i--;
                             break;
@@ -982,7 +989,6 @@ class ReflectionClosure extends ReflectionFunction
                         case '{':
                         case T_CURLY_OPEN:
                         case T_DOLLAR_OPEN_CURLY_BRACES:
-                        case T_STRING_VARNAME:
                             $open++;
                             break;
                         case '}':

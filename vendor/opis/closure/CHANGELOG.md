@@ -1,10 +1,16 @@
 CHANGELOG
 ---------
+
+### v3.5.4, 2020.06.07
+
+- Fixed a false-positive when using `Opis\Closure\ReflectionClosure::isScopeRequired` method
+- Fixed a bug related to `T_STRING_VARNAME`
+
 ### v3.5.3, 2020.05.25
 
 - Improved parser
 - The class scope optimisation is no longer used. We always bind now to the closure's original class scope.
-If the class scope was `null`, then the optimisation didn't work as expected and kept the `SerializableClosure` scope.
+When the class scope was `null`, the optimisation failed to work as expected and kept the wrong `SerializableClosure` scope.
 
 ### v3.5.2, 2020.05.21
 
