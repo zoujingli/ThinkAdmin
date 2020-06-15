@@ -43,8 +43,8 @@ class Update extends Controller
     public function tree()
     {
         $this->success('获取文件列表成功！', InstallService::instance()->getList(
-            unserialize($this->request->post('rules', 'a:0:{}', '')),
-            unserialize($this->request->post('ignore', 'a:0:{}', ''))
+            unserialize($this->request->post('rules', 'a:0:{}', ''), ['allowed_classes' => false]),
+            unserialize($this->request->post('ignore', 'a:0:{}', ''), ['allowed_classes' => false])
         ));
     }
 

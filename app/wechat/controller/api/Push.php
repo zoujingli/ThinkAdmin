@@ -99,7 +99,8 @@ class Push extends Controller
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
                 $this->encrypt = boolval($this->request->post('encrypt', 0));
-                $this->receive = $this->toLower(unserialize($this->request->post('receive', '', null)));
+                $receive = $this->request->post('receive', '', null);
+                $this->receive = $this->toLower(unserialize($receive, ['allowed_classes' => false]));
                 if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
                     throw new \think\Exception('微信API实例缺失必要参数[appid,openid,receive]');
                 }
@@ -208,7 +209,7 @@ class Push extends Controller
      */
     private function keys($rule, $isLast = false, $isCustom = false)
     {
-        list($table, $field, $value) = explode('#', $rule . '##');
+        [$table, $field, $value] = explode('#', $rule . '##');
         $data = $this->app->db->name($table)->where([$field => $value])->find();
         if (empty($data['type']) || (array_key_exists('status', $data) && empty($data['status']))) {
             return $isLast ? false : $this->keys('wechat_keys#keys#default', true, $isCustom);
@@ -228,7 +229,7 @@ class Push extends Controller
                 if (empty($data['image_url']) || !($mediaId = MediaService::instance()->upload($data['image_url'], 'image'))) return false;
                 return $this->sendMessage('image', ['media_id' => $mediaId], $isCustom);
             case 'news':
-                list($news, $articles) = [MediaService::instance()->news($data['news_id']), []];
+                [$news, $articles] = [MediaService::instance()->news($data['news_id']), []];
                 if (empty($news['articles'])) return false;
                 foreach ($news['articles'] as $vo) array_push($articles, [
                     'url'   => url("@wechat/api.review/view", [], false, true) . "?id={$vo['id']}",
