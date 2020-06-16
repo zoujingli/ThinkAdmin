@@ -38,13 +38,13 @@ class Update extends Controller
     }
 
     /**
-     * 获取文件列表
+     * 读取文件列表
      */
-    public function tree()
+    public function node()
     {
         $this->success('获取文件列表成功！', InstallService::instance()->getList(
-            unserialize($this->request->post('rules', 'a:0:{}', ''), ['allowed_classes' => false]),
-            unserialize($this->request->post('ignore', 'a:0:{}', ''), ['allowed_classes' => false])
+            json_decode($this->request->post('rules', '[]', ''), true),
+            json_decode($this->request->post('ignore', '[]', ''), true)
         ));
     }
 
