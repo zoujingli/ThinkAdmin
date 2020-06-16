@@ -93,14 +93,13 @@ class Push extends Controller
     public function index()
     {
         try {
-            if ($this->request->has('receive', 'post') && WechatService::instance()->getType() === 'thr') {
-                $this->forceJson = true; // 强制返回JSON到Service转发
+            if ($this->request->has('json', 'post') && WechatService::instance()->getType() === 'thr') {
+                $this->forceJson = true; // 强制回复 JSON 到 SERVICE
                 $this->forceCustom = false; // 强制使用客服消息模式推送
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
                 $this->encrypt = boolval($this->request->post('encrypt', 0));
-                $receive = $this->request->post('receive', '', null);
-                $this->receive = $this->toLower(unserialize($receive, ['allowed_classes' => false]));
+                $this->receive = $this->toLower(json_decode(input('params', '[]'), true));
                 if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
                     throw new \think\Exception('微信API实例缺失必要参数[appid,openid,receive]');
                 }
