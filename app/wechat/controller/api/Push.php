@@ -93,7 +93,7 @@ class Push extends Controller
     public function index()
     {
         try {
-            if ($this->request->has('json', 'post') && WechatService::instance()->getType() === 'thr') {
+            if (WechatService::instance()->getType() === 'thr') {
                 $this->forceJson = true; // 强制回复 JSON 到 SERVICE
                 $this->forceCustom = false; // 强制使用客服消息模式推送
                 $this->appid = $this->request->post('appid', '', null);
