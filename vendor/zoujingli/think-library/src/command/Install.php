@@ -132,7 +132,6 @@ class Install extends Command
 
     protected function installData()
     {
-
     }
 
 }

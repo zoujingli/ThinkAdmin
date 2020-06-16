@@ -183,23 +183,27 @@ class Queue extends Command
     {
         // 清理 7 天前的历史任务记录
         $map = [['exec_time', '<', time() - 7 * 24 * 3600]];
-        $count = $this->app->db->name($this->table)->where($map)->delete();
-        $this->setQueueProgress("本次清理了 {$count} 条历史任务记录");
-        // 标记超过 1 小时未完成的任务为失败状态
-        $map = [['exec_time', '<', time() - 3600], ['status', '=', '2']];
-        list($used, $total) = [0, $this->app->db->name($this->table)->where($map)->count()];
-        $this->app->db->name($this->table)->where($map)->chunk(100, function (Collection $result) use ($total, &$used) {
+        $clear = $this->app->db->name($this->table)->where($map)->delete();
+        $this->setQueueProgress("本次清理了 {$clear} 条历史任务记录");
+        // 标记超过 1 小时未完成的任务为失败状态，循环任务失败重置
+        $map1 = [['loops_time', '>', 0], ['status', '=', 4]]; // 执行失败的循环任务
+        $map2 = [['exec_time', '<', time() - 3600], ['status', '=', 2]]; // 执行超时的任务
+        [$timeout, $loops, $total] = [0, 0, $this->app->db->name($this->table)->whereOr([$map1, $map2])->count()];
+        $this->app->db->name($this->table)->whereOr([$map1, $map2])->chunk(100, function (Collection $result) use ($total, &$loops, &$timeout) {
             foreach ($result->toArray() as $item) {
-                $stridx = str_pad(++$used, strlen("{$total}"), '0', STR_PAD_LEFT) . "/{$total}";
-                $this->setQueueProgress("[{$stridx}] 正在标记任务 {$item['code']} 超时", $used / $total * 100);
-                $item['loops_time'] > 0 ? $this->app->db->name($this->table)->where(['id' => $item['id']])->update([
-                    'status' => 2, 'exec_desc' => '任务执行超时，已自动重置任务待！',
-                ]) : $this->app->db->name($this->table)->where(['id' => $item['id']])->update([
-                    'status' => 4, 'exec_desc' => '任务执行超时，已自动标识为失败！',
-                ]);
+                $item['loops_time'] > 0 ? $loops++ : $timeout++;
+                $prefix = str_pad($timeout + $loops, strlen("{$total}"), '0', STR_PAD_LEFT);
+                if ($item['loops_time'] > 0) {
+                    $this->setQueueProgress("[{$prefix}/{$total}] 正在重置任务 {$item['code']} 为运行", ($timeout + $loops) * 100 / $total);
+                    [$status, $message] = [1, intval($item['status']) === 4 ? '任务执行失败，已自动重置任务！' : '任务执行超时，已自动重置任务！'];
+                } else {
+                    $this->setQueueProgress("[{$prefix}/{$total}] 正在标记任务 {$item['code']} 为超时", ($timeout + $loops) * 100 / $total);
+                    [$status, $message] = [4, '任务执行超时，已自动标识为失败！'];
+                }
+                $this->app->db->name($this->table)->where(['id' => $item['id']])->update(['status' => $status, 'exec_desc' => $message]);
             }
         });
-        $this->setQueueSuccess("清理 {$count} 条历史任务，标识 {$total} 条超时任务");
+        $this->setQueueSuccess("清理 {$clear} 条历史任务，关闭 {$timeout} 条超时任务，重置 {$loops} 条循环任务");
     }
 
     /**

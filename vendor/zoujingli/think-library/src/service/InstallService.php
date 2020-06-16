@@ -138,8 +138,8 @@ class InstallService extends Service
     public function grenerateDifference($rules = [], $ignore = [])
     {
         list($this->rules, $this->ignore, $data) = [$rules, $ignore, []];
-        $result = json_decode(HttpExtend::post("{$this->uri}?s=/admin/api.update/tree", [
-            'rules' => serialize($this->rules), 'ignore' => serialize($this->ignore),
+        $result = json_decode(HttpExtend::post("{$this->uri}?s=/admin/api.update/node", [
+            'rules' => json_encode($this->rules), 'ignore' => json_encode($this->ignore),
         ]), true);
         if (!empty($result['code'])) {
             $new = $this->getList($result['data']['rules'], $result['data']['ignore']);
