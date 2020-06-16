@@ -150,7 +150,7 @@ class Push extends Controller
      */
     protected function text()
     {
-        return $this->keys("wechat_keys#keys#{$this->receive['content']}", false, $this->forceCustom);
+        return $this->keys("WechatKeys#keys#{$this->receive['content']}", false, $this->forceCustom);
     }
 
     /**
@@ -171,22 +171,22 @@ class Push extends Controller
                 $this->updateFansinfo(true);
                 if (isset($this->receive['eventkey']) && is_string($this->receive['eventkey'])) {
                     if (($key = preg_replace('/^qrscene_/i', '', $this->receive['eventkey']))) {
-                        return $this->keys("wechat_keys#keys#{$key}", false, true);
+                        return $this->keys("WechatKeys#keys#{$key}", false, true);
                     }
                 }
-                return $this->keys('wechat_keys#keys#subscribe', true, $this->forceCustom);
+                return $this->keys('WechatKeys#keys#subscribe', true, $this->forceCustom);
             case 'unsubscribe':
                 return $this->updateFansinfo(false);
             case 'click':
-                return $this->keys("wechat_keys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
+                return $this->keys("WechatKeys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
             case 'scancode_push':
             case 'scancode_waitmsg':
                 if (empty($this->receive['scancodeinfo'])) return false;
                 if (empty($this->receive['scancodeinfo']['scanresult'])) return false;
-                return $this->keys("wechat_keys#keys#{$this->receive['scancodeinfo']['scanresult']}", false, $this->forceCustom);
+                return $this->keys("WechatKeys#keys#{$this->receive['scancodeinfo']['scanresult']}", false, $this->forceCustom);
             case 'scan':
                 if (empty($this->receive['eventkey'])) return false;
-                return $this->keys("wechat_keys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
+                return $this->keys("WechatKeys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
             default:
                 return false;
         }
@@ -211,12 +211,12 @@ class Push extends Controller
         [$table, $field, $value] = explode('#', $rule . '##');
         $data = $this->app->db->name($table)->where([$field => $value])->find();
         if (empty($data['type']) || (array_key_exists('status', $data) && empty($data['status']))) {
-            return $isLast ? false : $this->keys('wechat_keys#keys#default', true, $isCustom);
+            return $isLast ? false : $this->keys('WechatKeys#keys#default', true, $isCustom);
         }
         switch (strtolower($data['type'])) {
             case 'keys':
                 $content = empty($data['content']) ? $data['name'] : $data['content'];
-                return $this->keys("wechat_keys#keys#{$content}", $isLast, $isCustom);
+                return $this->keys("WechatKeys#keys#{$content}", $isLast, $isCustom);
             case 'text':
                 return $this->sendMessage('text', ['content' => $data['content']], $isCustom);
             case 'customservice':
