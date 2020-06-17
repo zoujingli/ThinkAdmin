@@ -61,9 +61,7 @@ $(function () {
     window.$body = $('body');
     /*! 消息组件实例 */
     $.msg = new function (that) {
-        that = this;
-        this.idx = [];
-        this.shade = [0.02, '#000'];
+        that = this, this.idx = [], this.shade = [0.02, '#000'];
         // 关闭消息框
         this.close = function (index) {
             return layer.close(index);
