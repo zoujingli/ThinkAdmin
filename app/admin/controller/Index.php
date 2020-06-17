@@ -57,7 +57,7 @@ class Index extends Controller
     public function info($id = 0)
     {
         $this->_applyFormToken();
-        if (intval($this->app->session->get('user.id')) === intval($id)) {
+        if (AdminService::instance()->getUserId() === intval($id)) {
             $this->_form('SystemUser', 'admin@user/form', 'id', [], ['id' => $id]);
         } else {
             $this->error('只能修改登录用户的资料！');
@@ -75,7 +75,7 @@ class Index extends Controller
     public function pass($id = 0)
     {
         $this->_applyFormToken();
-        if (intval($this->app->session->get('user.id')) !== intval($id)) {
+        if (AdminService::instance()->getUserId() !== intval($id)) {
             $this->error('只能修改当前用户的密码！');
         }
         if ($this->app->request->isGet()) {
