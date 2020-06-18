@@ -97,20 +97,12 @@
             var value = $(this).val(), $form = $(this).parents('form');
             var $current = $form.find('[data-keys-type="' + value + '"]').removeClass('hide');
             $form.find('[data-keys-type]').not($current).addClass('hide');
-            switch (value) {
-                case 'news':
-                    return $('[name="news_id"]').trigger('change');
-                case 'text':
-                    return $('[name="content"]').trigger('change');
-                case 'image':
-                    return $('[name="image_url"]').trigger('change');
-                case 'video':
-                    return $('[name="video_url"]').trigger('change');
-                case 'music':
-                    return $('[name="music_url"]').trigger('change');
-                case 'voice':
-                    return $('[name="voice_url"]').trigger('change');
-            }
+            if (value === 'news') return $('[name="news_id"]').trigger('change');
+            if (value === 'text') return $('[name="content"]').trigger('change');
+            if (value === 'image') return $('[name="image_url"]').trigger('change');
+            if (value === 'video') return $('[name="video_url"]').trigger('change');
+            if (value === 'voice') return $('[name="voice_url"]').trigger('change');
+            if (value === 'music') return $('[name="music_url"]').trigger('change');
         });
 
         function showReview(params) {
