@@ -61,26 +61,24 @@
                 <a data-phone-view='{:url("@wechat/api.review/video")}?title={$vo.video_title|urlencode}&desc={$vo.video_desc|urlencode}&url={$vo.video_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
                 {elseif $vo.type eq '语音'}
                 <a data-phone-view='{:url("@wechat/api.review/voice")}?content={$vo.voice_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
-                {else}
-                {$vo.content}
-                {/if}
+                {else} {$vo.content} {/if}
             </td>
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
             <td class='text-left nowrap'>{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}</td>
             <td class='text-left nowrap'>
 
                 {if auth("edit")}
-                <a class="layui-btn layui-btn-sm" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <a class="layui-btn layui-btn-xs" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 {/if}
 
                 {if $vo.status eq 1 and auth("state")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
+                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
                 {elseif auth("state")}
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
+                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
                 {/if}
 
                 {if auth("remove")}
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                 {/if}
 
             </td>
@@ -94,12 +92,7 @@
 
 {block name="script"}
 <script>
-
     $(function () {
-        /**
-         * 默认类型事件
-         * @type String
-         */
         $('body').off('change', 'select[name=type]').on('change', 'select[name=type]', function () {
             var value = $(this).val(), $form = $(this).parents('form');
             var $current = $form.find('[data-keys-type="' + value + '"]').removeClass('hide');
@@ -142,9 +135,9 @@
         $('body').off('change', musicSelector).on('change', musicSelector, function () {
             var params = {type: 'music'}, $parent = $(this).parents('form');
             params.title = $parent.find('[name="music_title"]').val();
-            params.url = $parent.find('[name="music_url"]').val();
             params.image = $parent.find('[name="music_image"]').val();
             params.desc = $parent.find('[name="music_desc"]').val();
+            params.url = $parent.find('[name="music_url"]').val();
             showReview(params);
         });
         // 视频显示预览
@@ -152,8 +145,8 @@
         $('body').off('change', videoSelector).on('change', videoSelector, function () {
             var params = {type: 'video'}, $parent = $(this).parents('form');
             params.title = $parent.find('[name="video_title"]').val();
-            params.url = $parent.find('[name="video_url"]').val();
             params.desc = $parent.find('[name="video_desc"]').val();
+            params.url = $parent.find('[name="video_url"]').val();
             showReview(params);
         });
 
