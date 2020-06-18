@@ -37,22 +37,22 @@ class MediaService extends Service
      */
     public function news($id, $where = [])
     {
+        // 文章主体数据
         $data = $this->app->db->name('WechatNews')->where(['id' => $id])->where($where)->find();
         list($data['articles'], $articleIds) = [[], explode(',', $data['article_id'])];
-        $articles = $this->app->db->name('WechatNewsArticle')->whereIn('id', $articleIds)->select();
-        foreach ($articleIds as $article_id) foreach ($articles as $article) {
-            if (intval($article['id']) === intval($article_id)) array_push($data['articles'], $article);
-            unset($article['create_by'], $article['create_at']);
-        }
+        if (empty($data['article_id']) || empty($articleIds)) return $data;
+        // 文章列表组合
+        $query = $this->app->db->name('WechatNewsArticle')->whereIn('id', $articleIds)->orderField('id', $articleIds);
+        $data['articles'] = $query->withoutField('create_by,create_at')->select()->toArray();
         return $data;
     }
 
     /**
-     * 上传图片永久素材，返回素材media_id
-     * @param string $url 文件URL地址
+     * 上传图片永久素材
+     * @param string $url 文件地址
      * @param string $type 文件类型
-     * @param array $videoInfo 视频信息
-     * @return string|null
+     * @param array $video 视频信息
+     * @return string media_id
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
@@ -60,15 +60,15 @@ class MediaService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function upload($url, $type = 'image', $videoInfo = [])
+    public function upload($url, $type = 'image', $video = [])
     {
-        $where = ['md5' => md5($url), 'appid' => WechatService::instance()->getAppid()];
-        if (($mediaId = $this->app->db->name('WechatMedia')->where($where)->value('media_id'))) return $mediaId;
-        $result = WechatService::WeChatMedia()->addMaterial(self::getServerPath($url), $type, $videoInfo);
+        $map = ['md5' => md5($url), 'appid' => WechatService::instance()->getAppid()];
+        if (($mediaId = $this->app->db->name('WechatMedia')->where($map)->value('media_id'))) return $mediaId;
+        $result = WechatService::WeChatMedia()->addMaterial(self::getServerPath($url), $type, $video);
         data_save('WechatMedia', [
-            'local_url' => $url, 'md5' => $where['md5'], 'appid' => $where['appid'], 'type' => $type,
+            'local_url' => $url, 'md5' => $map['md5'], 'appid' => $map['appid'], 'type' => $type,
             'media_url' => isset($result['url']) ? $result['url'] : '', 'media_id' => $result['media_id'],
-        ], 'type', $where);
+        ], 'type', $map);
         return $result['media_id'];
     }
 
