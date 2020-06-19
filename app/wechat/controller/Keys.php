@@ -58,9 +58,9 @@ class Keys extends Controller
                 $result = $wechat->create($this->request->get('keys', ''));
                 $this->success('生成二维码成功！', "javascript:$.previewImage('{$wechat->url($result['ticket'])}')");
             } catch (HttpResponseException $exception) {
-                throw  $exception;
-            } catch (\Exception $e) {
-                $this->error("生成二维码失败，请稍候再试！<br> {$e->getMessage()}");
+                throw $exception;
+            } catch (\Exception $exception) {
+                $this->error("生成二维码失败，请稍候再试！<br> {$exception->getMessage()}");
             }
         }
         // 关键字列表显示
@@ -76,8 +76,8 @@ class Keys extends Controller
     protected function _index_page_filter(&$data)
     {
         foreach ($data as &$vo) {
+            $vo['type'] = $this->types[$vo['type']] ?? $vo['type'];
             $vo['qrc'] = url('wechat/keys/index') . "?action=qrc&keys={$vo['keys']}";
-            $vo['type'] = isset($this->types[$vo['type']]) ? $this->types[$vo['type']] : $vo['type'];
         }
     }
 
