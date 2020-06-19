@@ -95,8 +95,8 @@ class Upload extends Controller
         if (!($file = $this->getFile()) || empty($file)) {
             return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件可能过大或未上传']]);
         }
-        $this->extension = $file->getOriginalExtension();
-        if (!in_array($this->extension, explode(',', sysconf('storage.allow_exts')))) {
+        $this->extension = strtolower($file->getOriginalExtension());
+        if (!in_array($this->extension, explode(',', strtolower(sysconf('storage.allow_exts'))))) {
             return json(['uploaded' => false, 'error' => ['message' => '文件上传类型受限，请在后台配置']]);
         }
         if (in_array($this->extension, ['php', 'sh'])) {
