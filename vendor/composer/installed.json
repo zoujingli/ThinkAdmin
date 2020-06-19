@@ -222,17 +222,17 @@
     },
     {
         "name": "opis/closure",
-        "version": "3.5.4",
-        "version_normalized": "3.5.4.0",
+        "version": "3.5.5",
+        "version_normalized": "3.5.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/opis/closure.git",
-            "reference": "1d0deef692f66dae5d70663caee2867d0971306b"
+            "reference": "dec9fc5ecfca93f45cd6121f8e6f14457dff372c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/opis/closure/zipball/1d0deef692f66dae5d70663caee2867d0971306b",
-            "reference": "1d0deef692f66dae5d70663caee2867d0971306b",
+            "url": "https://api.github.com/repos/opis/closure/zipball/dec9fc5ecfca93f45cd6121f8e6f14457dff372c",
+            "reference": "dec9fc5ecfca93f45cd6121f8e6f14457dff372c",
             "shasum": "",
             "mirrors": [
                 {
@@ -248,7 +248,7 @@
             "jeremeamia/superclosure": "^2.0",
             "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
         },
-        "time": "2020-06-07T11:41:29+00:00",
+        "time": "2020-06-17T14:59:55+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -955,12 +955,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "60e7ef58637b5efdf08d8a8dd5199c183272f655"
+            "reference": "b4b544f9e3ee8e5e3ed218f14eb442371a1de58c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/60e7ef58637b5efdf08d8a8dd5199c183272f655",
-            "reference": "60e7ef58637b5efdf08d8a8dd5199c183272f655",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/b4b544f9e3ee8e5e3ed218f14eb442371a1de58c",
+            "reference": "b4b544f9e3ee8e5e3ed218f14eb442371a1de58c",
             "shasum": "",
             "mirrors": [
                 {
@@ -976,7 +976,7 @@
             "ext-json": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-06-16T08:08:00+00:00",
+        "time": "2020-06-18T04:01:24+00:00",
         "type": "library",
         "extra": {
             "think": {

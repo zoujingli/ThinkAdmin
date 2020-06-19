@@ -29,7 +29,7 @@ class DeleteHelper extends Helper
      * 表单额外更新条件
      * @var array
      */
-    protected $where;
+    protected $map;
 
     /**
      * 数据对象主键名称
@@ -48,28 +48,34 @@ class DeleteHelper extends Helper
      * @param string|Query $dbQuery
      * @param string $field 操作数据主键
      * @param array $where 额外更新条件
-     * @return boolean|null
+     * @return boolean|null|void
      * @throws \think\db\exception\DbException
      */
     public function init($dbQuery, $field = '', $where = [])
     {
-        $this->where = $where;
+        $this->map = $where;
         $this->query = $this->buildQuery($dbQuery);
         $this->field = $field ?: $this->query->getPk();
         $this->value = $this->app->request->post($this->field, null);
         // 主键限制处理
-        if (!isset($this->where[$this->field]) && is_string($this->value)) {
+        if (!isset($this->map[$this->field]) && is_string($this->value)) {
             $this->query->whereIn($this->field, explode(',', $this->value));
         }
         // 前置回调处理
-        if (false === $this->controller->callback('_delete_filter', $this->query, $where)) {
+        if (false === $this->controller->callback('_delete_filter', $this->query, $this->map)) {
             return null;
         }
         // 执行删除操作
-        if (method_exists($this->query, 'getTableFields') && in_array('is_deleted', $this->query->getTableFields())) {
-            $result = $this->query->where($this->where)->update(['is_deleted' => '1']);
+        $data = [];
+        if (method_exists($this->query, 'getTableFields')) {
+            $fields = $this->query->getTableFields();
+            if (in_array('deleted', $fields)) $data['deleted'] = 1;
+            if (in_array('is_deleted', $fields)) $data['is_deleted'] = 1;
+        }
+        if (empty($data)) {
+            $result = $this->query->where($this->map)->update($data);
         } else {
-            $result = $this->query->where($this->where)->delete();
+            $result = $this->query->where($this->map)->delete();
         }
         // 结果回调处理
         if (false === $this->controller->callback('_delete_result', $result)) {
