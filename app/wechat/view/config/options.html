@@ -8,7 +8,7 @@
         {foreach ['api'=>'微信公众平台直接模式','thr'=>'微信开放平台授权模式','test'=>'微信接口功能测试'] as $k=>$v}
         <input type="radio" data-wechat-type="{$k}" name="wechat.type" value="{$k}" title="{$v}" lay-filter="wechat_type">
         {/foreach}
-        <p class="help-block">请选择微信对接方式，其中<b>微信开放平台授权模式</b>需要微信开放平台支持，同时需要搭建 Service 服务！</p>
+        <p class="help-block">请选择微信对接方式，其中微信开放平台授权模式是需要微信开放平台支持，还需要搭建微信授权服务！</p>
     </div>
 </div>
 

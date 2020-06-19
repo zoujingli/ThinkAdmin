@@ -1,7 +1,7 @@
 <form onsubmit="return false" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
 
     <div class="layui-card-header padding-left-40 color-desc sub-span-blue">
-        使用微信开放平台授权模式时，需要单独搭建楚才开放平台 <span>Service</span> 服务，接口需要使用 <span>YAR</span> 或 <span>JsonRpc</span> 模块通信。
+        使用微信开放平台授权模式时，需要使用楚才开放平台的 <span>微信授权</span> 服务，接口需要使用 <span>Yar</span> 或 <span>JsonRpc</span> 模块通信。
     </div>
 
     <div class="layui-card-body">
@@ -22,7 +22,7 @@
         {/if}
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><b>Authorize</b><br><span class="nowrap color-desc">公众号授权绑定</span></label>
+            <label class="layui-form-label"><b>Authorize</b><br><span class="nowrap color-desc">绑定微信授权</span></label>
             <div class="layui-input-block">
                 <button type="button" data-href="{$authurl|default=''}" class="layui-btn layui-btn-primary">重新绑定公众号</button>
                 <p class="help-block">点击连接将跳转到微信第三方平台进行公众号授权。</p>
@@ -31,7 +31,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><b>AppId</b><br><span class="nowrap color-desc">公众号APPID</span></label>
+            <label class="layui-form-label"><b>AppId</b><br><span class="nowrap color-desc">公众号 APPID</span></label>
             <div class="layui-input-block">
                 <input name="wechat.thr_appid" placeholder="请输入以wx开头的18位公众号APPID（必填）" pattern="^wx[0-9a-z]{16}$" maxlength="18" required value="{:sysconf('wechat.thr_appid')}" class="layui-input">
                 <p class="help-block">众号 appid 通过微信第三方授权自动获取. 若没有值请进行微信第三方授权。</p>

@@ -7,7 +7,7 @@
     <div class="layui-card-body">
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><b>Token</b><br><span class="nowrap color-desc">认证令牌</span></label>
+            <label class="layui-form-label"><b>Token</b><br><span class="nowrap color-desc">接口认证令牌</span></label>
             <div class="layui-input-block">
                 <input name="wechat.token" required placeholder="请输入消息推送对接认证Token（必填）" value="{:sysconf('wechat.token')}" class="layui-input">
                 <p class="help-block">公众号平台与系统对接认证Token，请优先填写此参数并保存，然后再在微信公众号平台操作对接。</p>
@@ -15,7 +15,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><b>AppId</b><br><span class="nowrap color-desc">公众号APPID</span></label>
+            <label class="layui-form-label"><b>AppId</b><br><span class="nowrap color-desc">公众号 APPID</span></label>
             <div class="layui-input-block">
                 <input name="wechat.appid" placeholder="请输入以wx开头的18位公众号APPID（必填）" pattern="^wx[0-9a-z]{16}$" maxlength="18" required="required" value="{:sysconf('wechat.appid')}" class="layui-input">
                 <p class="help-block">公众号APPID是所有接口必要参数，可以在公众号平台 [ 开发 > 基本配置 ] 页面获取。</p>
@@ -23,7 +23,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><b>AppSecret</b><br><span class="nowrap color-desc">公众号Secret</span></label>
+            <label class="layui-form-label"><b>AppSecret</b><br><span class="nowrap color-desc">公众号 Secret</span></label>
             <div class="layui-input-block">
                 <input name="wechat.appsecret" required placeholder="请输入32位公众号AppSecret（必填）" value="{:sysconf('wechat.appsecret')}" maxlength="32" pattern="^[0-9a-z]{32}$" class="layui-input">
                 <p class="help-block">公众号应用密钥是所有接口必要参数，可以在公众号平台 [ 开发 > 基本配置 ] 页面授权后获取。</p>
