@@ -77,29 +77,25 @@ class Menu extends Controller
     {
         if ($this->request->isPost()) {
             $data = $this->request->post('data');
-            if (empty($data)) { // 删除菜单
-                try {
-                    WechatService::WeChatMenu()->delete();
-                    sysoplog('微信管理', '删除微信菜单成功');
-                    $this->success('删除微信菜单成功！', '');
-                } catch (HttpResponseException $exception) {
-                    throw $exception;
-                } catch (\Exception $exception) {
-                    sysoplog('微信管理', "删除微信菜单失败：{$exception->getMessage()}");
-                    $this->error("删除微信菜单失败，请稍候再试！<br>{$exception->getMessage()}");
-                }
-            } else {
-                try {
-                    sysdata($this->ckey, $this->_buildMenuData(json_decode($data, true)));
-                    WechatService::WeChatMenu()->create(['button' => sysdata($this->ckey)]);
-                    sysoplog('微信管理', '发布微信菜单成功');
-                    $this->success('保存发布菜单成功！', '');
-                } catch (HttpResponseException $exception) {
-                    throw $exception;
-                } catch (\Exception $exception) {
-                    sysoplog('微信管理', "发布微信菜单失败：{$exception->getMessage()}");
-                    $this->error("微信菜单发布失败，请稍候再试！<br> {$exception->getMessage()}");
-                }
+            if (empty($data)) try {
+                WechatService::WeChatMenu()->delete();
+                sysoplog('微信管理', '删除微信菜单成功');
+                $this->success('删除微信菜单成功！', '');
+            } catch (HttpResponseException $exception) {
+                throw $exception;
+            } catch (\Exception $exception) {
+                sysoplog('微信管理', "删除微信菜单失败：{$exception->getMessage()}");
+                $this->error("删除微信菜单失败，请稍候再试！<br>{$exception->getMessage()}");
+            } else try {
+                sysdata($this->ckey, $this->_buildMenuData(json_decode($data, true)));
+                WechatService::WeChatMenu()->create(['button' => sysdata($this->ckey)]);
+                sysoplog('微信管理', '发布微信菜单成功');
+                $this->success('保存发布菜单成功！', '');
+            } catch (HttpResponseException $exception) {
+                throw $exception;
+            } catch (\Exception $exception) {
+                sysoplog('微信管理', "发布微信菜单失败：{$exception->getMessage()}");
+                $this->error("微信菜单发布失败，请稍候再试！<br> {$exception->getMessage()}");
             }
         }
     }
