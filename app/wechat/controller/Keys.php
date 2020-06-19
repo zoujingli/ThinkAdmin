@@ -52,18 +52,16 @@ class Keys extends Controller
     public function index()
     {
         // 关键字二维码生成
-        if ($this->request->get('action') === 'qrc') {
-            try {
-                $wechat = WechatService::WeChatQrcode();
-                $result = $wechat->create($this->request->get('keys', ''));
-                $this->success('生成二维码成功！', "javascript:$.previewImage('{$wechat->url($result['ticket'])}')");
-            } catch (HttpResponseException $exception) {
-                throw $exception;
-            } catch (\Exception $exception) {
-                $this->error("生成二维码失败，请稍候再试！<br> {$exception->getMessage()}");
-            }
+        if ($this->request->get('action') === 'qrc') try {
+            $wechat = WechatService::WeChatQrcode();
+            $result = $wechat->create($this->request->get('keys', ''));
+            $this->success('生成二维码成功！', "javascript:$.previewImage('{$wechat->url($result['ticket'])}')");
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error("生成二维码失败，请稍候再试！<br> {$exception->getMessage()}");
         }
-        // 关键字列表显示
+        // 数据列表分页处理
         $this->title = '回复规则管理';
         $query = $this->_query($this->table)->like('keys,type')->equal('status')->dateBetween('create_at');
         $query->whereNotIn('keys', ['subscribe', 'default'])->order('sort desc,id desc')->page();
