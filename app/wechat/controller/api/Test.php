@@ -76,8 +76,7 @@ class Test extends Controller
     public function scan_one_qrc()
     {
         $pay = WechatService::WePayOrder();
-        $result = $pay->qrcParams('8888888');
-        return $this->showQrc($result);
+        return $this->showQrc($pay->qrcParams('8888888'));
     }
 
     /**
@@ -91,8 +90,7 @@ class Test extends Controller
      */
     public function scan_two_qrc()
     {
-        $pay = WechatService::WePayOrder();
-        $result = $pay->create([
+        $result = WechatService::WePayOrder()->create([
             'body'             => '测试商品',
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
