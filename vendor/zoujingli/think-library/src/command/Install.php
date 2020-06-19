@@ -104,8 +104,8 @@ class Install extends Command
             }
             [$this->installFile(), $this->installData()];
         } elseif (isset($this->bind[$this->name])) {
-            $this->rules = empty($this->bind[$this->name]['rules']) ? [] : $this->bind[$this->name]['rules'];
-            $this->ignore = empty($this->bind[$this->name]['ignore']) ? [] : $this->bind[$this->name]['ignore'];
+            $this->rules = $this->bind[$this->name]['rules'] ?? [];
+            $this->ignore = $this->bind[$this->name]['ignore'] ?? [];
             [$this->installFile(), $this->installData()];
         } else {
             $this->output->writeln("The specified module {$this->name} is not configured with installation rules");

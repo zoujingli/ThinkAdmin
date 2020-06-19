@@ -335,7 +335,7 @@ class Queue extends Command
         if (isset($this->queue->record['loops_time']) && $this->queue->record['loops_time'] > 0) {
             try {
                 $this->queue->initialize($this->code)->reset($this->queue->record['loops_time']);
-            } catch (\Exception|\Error $exception) {
+            } catch (\Exception|\Error|\Throwable $exception) {
                 $this->app->log->error("Queue {$this->queue->record['code']} Loops Failed. {$exception->getMessage()}");
             }
         }
