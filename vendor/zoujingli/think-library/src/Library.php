@@ -87,7 +87,7 @@ class Library extends Service
             }, 'route');
         }
         // 动态加入应用函数
-        $sysRule = "{$this->app->getAppPath()}*/sys.php";
+        $sysRule = "{$this->app->getBasePath()}*/sys.php";
         foreach (glob($sysRule) as $file) includeFile($file);
     }
 }

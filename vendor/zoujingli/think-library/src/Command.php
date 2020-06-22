@@ -45,26 +45,15 @@ class Command extends ThinkCommand
      * @param Input $input
      * @param Output $output
      * @return $this
-     */
-    protected function initialize(Input $input, Output $output)
-    {
-        $this->queue = QueueService::instance();
-        $this->process = ProcessService::instance();
-        return $this;
-    }
-
-    /**
-     * 设置当前任务进度
-     * @param null|string $message 进度消息
-     * @param null|integer $progress 进度数值
-     * @return Command
      * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function setQueueProgress($message = null, $progress = null)
+    protected function initialize(Input $input, Output $output)
     {
+        $this->queue = QueueService::instance();
+        $this->process = ProcessService::instance();
         if (defined('WorkQueueCode')) {
             if (!$this->queue instanceof QueueService) {
                 $this->queue = QueueService::instance();
@@ -72,6 +61,19 @@ class Command extends ThinkCommand
             if ($this->queue->code !== WorkQueueCode) {
                 $this->queue->initialize(WorkQueueCode);
             }
+        }
+        return $this;
+    }
+
+    /**
+     * 设置进度消息并继续执行
+     * @param null|string $message 进度消息
+     * @param null|integer $progress 进度数值
+     * @return Command
+     */
+    protected function setQueueProgress($message = null, $progress = null)
+    {
+        if (defined('WorkQueueCode')) {
             $this->queue->progress(2, $message, $progress);
         } elseif (is_string($message)) {
             $this->output->writeln($message);
@@ -80,23 +82,7 @@ class Command extends ThinkCommand
     }
 
     /**
-     * 设置成功的消息
-     * @param string $message 消息内容
-     * @return Command
-     * @throws Exception
-     */
-    protected function setQueueSuccess($message)
-    {
-        if (defined('WorkQueueCode')) {
-            throw new Exception($message, 3, WorkQueueCode);
-        } elseif (is_string($message)) {
-            $this->output->writeln($message);
-        }
-        return $this;
-    }
-
-    /**
-     * 设置失败的消息
+     * 设置失败消息并结束进程
      * @param string $message 消息内容
      * @return Command
      * @throws Exception
@@ -105,6 +91,22 @@ class Command extends ThinkCommand
     {
         if (defined('WorkQueueCode')) {
             throw new Exception($message, 4, WorkQueueCode);
+        } elseif (is_string($message)) {
+            $this->output->writeln($message);
+        }
+        return $this;
+    }
+
+    /**
+     * 设置成功消息并结束进程
+     * @param string $message 消息内容
+     * @return Command
+     * @throws Exception
+     */
+    protected function setQueueSuccess($message)
+    {
+        if (defined('WorkQueueCode')) {
+            throw new Exception($message, 3, WorkQueueCode);
         } elseif (is_string($message)) {
             $this->output->writeln($message);
         }

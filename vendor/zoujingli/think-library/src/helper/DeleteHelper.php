@@ -29,7 +29,7 @@ class DeleteHelper extends Helper
      * 表单额外更新条件
      * @var array
      */
-    protected $map;
+    protected $where;
 
     /**
      * 数据对象主键名称
@@ -53,16 +53,16 @@ class DeleteHelper extends Helper
      */
     public function init($dbQuery, $field = '', $where = [])
     {
-        $this->map = $where;
+        $this->where = $where;
         $this->query = $this->buildQuery($dbQuery);
         $this->field = $field ?: $this->query->getPk();
         $this->value = $this->app->request->post($this->field, null);
         // 主键限制处理
-        if (!isset($this->map[$this->field]) && is_string($this->value)) {
+        if (!isset($this->where[$this->field]) && is_string($this->value)) {
             $this->query->whereIn($this->field, explode(',', $this->value));
         }
         // 前置回调处理
-        if (false === $this->controller->callback('_delete_filter', $this->query, $this->map)) {
+        if (false === $this->controller->callback('_delete_filter', $this->query, $this->where)) {
             return null;
         }
         // 执行删除操作
@@ -72,11 +72,8 @@ class DeleteHelper extends Helper
             if (in_array('deleted', $fields)) $data['deleted'] = 1;
             if (in_array('is_deleted', $fields)) $data['is_deleted'] = 1;
         }
-        if (empty($data)) {
-            $result = $this->query->where($this->map)->update($data);
-        } else {
-            $result = $this->query->where($this->map)->delete();
-        }
+        empty($this->where) or $this->query->where($this->where);
+        $result = empty($data) ? $this->query->delete() : $this->query->update($data);
         // 结果回调处理
         if (false === $this->controller->callback('_delete_result', $result)) {
             return $result;

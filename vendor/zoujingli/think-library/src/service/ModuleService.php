@@ -32,7 +32,7 @@ class ModuleService extends Service
      * @param ZipArchive $file 安装包
      * @return array
      */
-    public function install($name, ZipArchive $file)
+    public function install(string $name, ZipArchive $file): array
     {
         // 安装包检查
         list($state, $message) = $this->checkInstall($name, $file);
@@ -47,12 +47,17 @@ class ModuleService extends Service
 
     /**
      * 移除应用模块
-     * @param string $name
+     * @param string $name 模块名称
+     * @return array
      */
-    public function remove($name)
+    public function remove(string $name): array
     {
         $directory = $this->app->getBasePath() . $name;
-        $this->forceRemove($directory);
+        if (file_exists($directory) && is_dir($directory)) {
+            return [0, '提交移除应用模块指令成功'];
+        } else {
+            return [1, '待删除的应用模块不存在'];
+        }
     }
 
     /**
@@ -61,7 +66,7 @@ class ModuleService extends Service
      * @param ZipArchive $file 安装包
      * @return array
      */
-    private function checkInstall($name, ZipArchive $file)
+    private function checkInstall(string $name, ZipArchive $file): array
     {
         $directory = "{$file->filename}.files";
         file_exists($directory) || mkdir($directory, 0755, true);
@@ -82,7 +87,7 @@ class ModuleService extends Service
      * 强制删除指定的目录
      * @param string $directory
      */
-    private function forceRemove($directory)
+    private function forceRemove(string $directory)
     {
         if (file_exists($directory) && is_dir($directory) && $handle = opendir($directory)) {
             while (false !== ($item = readdir($handle))) if (!in_array($item, ['.', '..'])) {

@@ -62,7 +62,7 @@ class OpenService extends Service
      * @return array
      * @throws \think\admin\Exception
      */
-    public function doRequest(string $uri, array $data = [])
+    public function doRequest(string $uri, array $data = []): array
     {
         [$time, $nostr, $json] = [time(), uniqid(), json_encode($data)];
         $sign = md5($this->appid . '#' . $json . '#' . $time . '#' . $this->appkey . '#' . $nostr);
