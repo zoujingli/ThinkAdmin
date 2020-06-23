@@ -65,14 +65,19 @@ class DeleteHelper extends Helper
         if (false === $this->controller->callback('_delete_filter', $this->query, $this->where)) {
             return null;
         }
-        // 执行删除操作
+        // 组装执行数据
         $data = [];
         if (method_exists($this->query, 'getTableFields')) {
             $fields = $this->query->getTableFields();
             if (in_array('deleted', $fields)) $data['deleted'] = 1;
             if (in_array('is_deleted', $fields)) $data['is_deleted'] = 1;
         }
-        empty($this->where) or $this->query->where($this->where);
+        if (!empty($this->where)) $this->query->where($this->where);
+        // 阻止危险操作
+        if (!$this->query->getOptions('where')) {
+            $this->controller->error(lang('think_library_delete_error'));
+        }
+        // 执行删除操作
         $result = empty($data) ? $this->query->delete() : $this->query->update($data);
         // 结果回调处理
         if (false === $this->controller->callback('_delete_result', $result)) {
