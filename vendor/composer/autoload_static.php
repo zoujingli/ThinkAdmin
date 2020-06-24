@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit90877748d7744ab95f84f0842f77a41e
+class ComposerStaticInitda27ad7febee1d9cd74ec4563b8e1630
 {
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
@@ -100,6 +100,7 @@ class ComposerStaticInit90877748d7744ab95f84f0842f77a41e
         'AliPay\\Bill' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Bill.php',
         'AliPay\\Pos' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Pos.php',
         'AliPay\\Scan' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Scan.php',
+        'AliPay\\Trade' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Trade.php',
         'AliPay\\Transfer' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Transfer.php',
         'AliPay\\Wap' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Wap.php',
         'AliPay\\Web' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Web.php',
@@ -253,14 +254,18 @@ class ComposerStaticInit90877748d7744ab95f84f0842f77a41e
         'WeMini\\Crypt' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Crypt.php',
         'WeMini\\Delivery' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Delivery.php',
         'WeMini\\Domain' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeMini/Domain.php',
+        'WeMini\\Guide' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Guide.php',
         'WeMini\\Image' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Image.php',
+        'WeMini\\Live' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Live.php',
         'WeMini\\Logistics' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Logistics.php',
         'WeMini\\Message' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Message.php',
         'WeMini\\Newtmpl' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Newtmpl.php',
         'WeMini\\Ocr' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Ocr.php',
+        'WeMini\\Operation' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Operation.php',
         'WeMini\\Plugs' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Plugs.php',
         'WeMini\\Poi' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Poi.php',
         'WeMini\\Qrcode' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Qrcode.php',
+        'WeMini\\Search' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Search.php',
         'WeMini\\Security' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Security.php',
         'WeMini\\Soter' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Soter.php',
         'WeMini\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Template.php',
@@ -288,9 +293,9 @@ class ComposerStaticInit90877748d7744ab95f84f0842f77a41e
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit90877748d7744ab95f84f0842f77a41e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit90877748d7744ab95f84f0842f77a41e::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit90877748d7744ab95f84f0842f77a41e::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitda27ad7febee1d9cd74ec4563b8e1630::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitda27ad7febee1d9cd74ec4563b8e1630::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitda27ad7febee1d9cd74ec4563b8e1630::$classMap;
 
         }, null, ClassLoader::class);
     }

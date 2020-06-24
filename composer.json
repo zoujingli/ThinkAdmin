@@ -14,7 +14,7 @@
     "php": ">=5.6.0",
     "qiniu/php-sdk": "^7.2",
     "endroid/qr-code": "^1.9",
-    "topthink/framework": "^5.1",
+    "topthink/framework": "5.1.*",
     "zoujingli/ip2region": "^1.0",
     "aliyuncs/oss-sdk-php": "^2.2",
     "topthink/think-captcha": "^2.0",
