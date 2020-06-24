@@ -40,7 +40,7 @@ WeChatDeveloper 为开源项目，允许把它用于任何地方，不受任何�
 * Gitee 托管地址：https://gitee.com/zoujingli/WeChatDeveloper
 * GitHub 托管地址：https://github.com/zoujingli/WeChatDeveloper
 
-文件说明
+文件说明（后缀会根据官方文档增加文件）
 ----
 
 |文件名|类名|描述|类型|加载 ①|

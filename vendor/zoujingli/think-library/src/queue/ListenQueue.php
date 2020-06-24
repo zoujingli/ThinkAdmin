@@ -29,7 +29,7 @@ use think\Db;
 class ListenQueue extends Command
 {
     /**
-     * 当前任务服务
+     * 当前进程服务
      * @var ProcessService
      */
     protected $process;
@@ -40,6 +40,16 @@ class ListenQueue extends Command
     protected function configure()
     {
         $this->setName('xtask:listen')->setDescription('Start task listening main process');
+    }
+
+    /**
+     * 初始化进程服务
+     * @param Input $input
+     * @param Output $output
+     */
+    protected function initialize(Input $input, Output $output)
+    {
+        $this->process = ProcessService::instance();
     }
 
     /**
@@ -56,24 +66,24 @@ class ListenQueue extends Command
     {
         set_time_limit(0);
         Db::name('SystemQueue')->count();
-        if (($process = ProcessService::instance())->iswin() && function_exists('cli_set_process_title')) {
-            cli_set_process_title("ThinkAdmin {$process->version()} Queue Listen");
+        if ($this->process->iswin() && function_exists('cli_set_process_title')) {
+            cli_set_process_title("ThinkAdmin {$this->process->version()} Queue Listen");
         }
         $output->writeln('============ LISTENING ============');
         while (true) {
             $map = [['status', 'eq', '1'], ['time', '<=', time()]];
             foreach (Db::name('SystemQueue')->where($map)->order('time asc')->select() as $vo) {
                 try {
-                    $command = $process->think("xtask:_work {$vo['id']} -");
-                    if (count($process->query($command)) > 0) {
+                    $command = $this->process->think("xtask:_work {$vo['id']} -");
+                    if (count($this->process->query($command)) > 0) {
                         $this->output->writeln("Already in progress -> [{$vo['id']}] {$vo['title']}");
                     } else {
-                        $process->create($command);
+                        $this->process->create($command);
                         $this->output->writeln("Created new process -> [{$vo['id']}] {$vo['title']}");
                     }
-                } catch (\Exception $e) {
-                    Db::name('SystemQueue')->where(['id' => $vo['id']])->update(['status' => '4', 'desc' => $e->getMessage()]);
-                    $output->error("Execution failed -> [{$vo['id']}] {$vo['title']}，{$e->getMessage()}");
+                } catch (\Exception $exception) {
+                    Db::name('SystemQueue')->where(['id' => $vo['id']])->update(['status' => '4', 'desc' => $exception->getMessage()]);
+                    $output->error("Execution failed -> [{$vo['id']}] {$vo['title']}，{$exception->getMessage()}");
                 }
             }
             sleep(1);

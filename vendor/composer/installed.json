@@ -177,17 +177,17 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.38",
-        "version_normalized": "3.4.38.0",
+        "version": "v3.4.42",
+        "version_normalized": "3.4.42.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "730ef56164ed6c9356c159e9f5ff2b84d753b9ed"
+            "reference": "3b9fe6db7fe3694307d182dd73983584af77d5fd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/730ef56164ed6c9356c159e9f5ff2b84d753b9ed",
-            "reference": "730ef56164ed6c9356c159e9f5ff2b84d753b9ed",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/3b9fe6db7fe3694307d182dd73983584af77d5fd",
+            "reference": "3b9fe6db7fe3694307d182dd73983584af77d5fd",
             "shasum": "",
             "mirrors": [
                 {
@@ -199,7 +199,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2020-01-01T11:03:25+00:00",
+        "time": "2020-05-21T13:02:25+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -235,6 +235,20 @@
             "config",
             "configuration",
             "options"
+        ],
+        "funding": [
+            {
+                "url": "https://symfony.com/sponsor",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/fabpot",
+                "type": "github"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                "type": "tidelift"
+            }
         ]
     },
     {
@@ -298,17 +312,17 @@
     },
     {
         "name": "topthink/think-helper",
-        "version": "v3.1.3",
-        "version_normalized": "3.1.3.0",
+        "version": "v3.1.4",
+        "version_normalized": "3.1.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-helper.git",
-            "reference": "4d85dfd3778623bbb1de3648f1dcd0c82f4439f4"
+            "reference": "c28d37743bda4a0455286ca85b17b5791d626e10"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-helper/zipball/4d85dfd3778623bbb1de3648f1dcd0c82f4439f4",
-            "reference": "4d85dfd3778623bbb1de3648f1dcd0c82f4439f4",
+            "url": "https://api.github.com/repos/top-think/think-helper/zipball/c28d37743bda4a0455286ca85b17b5791d626e10",
+            "reference": "c28d37743bda4a0455286ca85b17b5791d626e10",
             "shasum": "",
             "mirrors": [
                 {
@@ -320,7 +334,7 @@
         "require": {
             "php": ">=7.1.0"
         },
-        "time": "2019-09-30T02:36:48+00:00",
+        "time": "2019-11-08T08:01:10+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -502,12 +516,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "997cf0eb09f433a42ab3fe7f61fb4448603557c2"
+            "reference": "15355674ad8878421dde91c15bb975fc4c47981a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/997cf0eb09f433a42ab3fe7f61fb4448603557c2",
-            "reference": "997cf0eb09f433a42ab3fe7f61fb4448603557c2",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/15355674ad8878421dde91c15bb975fc4c47981a",
+            "reference": "15355674ad8878421dde91c15bb975fc4c47981a",
             "shasum": "",
             "mirrors": [
                 {
@@ -523,11 +537,11 @@
             "ext-iconv": "*",
             "ext-json": "*",
             "ext-openssl": "*",
-            "php": ">=5.4",
+            "php": ">=5.5",
             "qiniu/php-sdk": "^7.2",
             "topthink/framework": "5.1.*"
         },
-        "time": "2020-03-03T03:03:27+00:00",
+        "time": "2020-05-22T02:55:01+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -547,17 +561,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.17",
-        "version_normalized": "1.2.17.0",
+        "version": "v1.2.21",
+        "version_normalized": "1.2.21.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "98f6e82311a364220a677cdfd56dc9f97851ab24"
+            "reference": "5cf008c37471f775ae28a23fd1ac06c91eac682f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/98f6e82311a364220a677cdfd56dc9f97851ab24",
-            "reference": "98f6e82311a364220a677cdfd56dc9f97851ab24",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/5cf008c37471f775ae28a23fd1ac06c91eac682f",
+            "reference": "5cf008c37471f775ae28a23fd1ac06c91eac682f",
             "shasum": "",
             "mirrors": [
                 {
@@ -567,15 +581,17 @@
             ]
         },
         "require": {
+            "ext-bcmath": "*",
             "ext-curl": "*",
             "ext-json": "*",
             "ext-libxml": "*",
             "ext-mbstring": "*",
             "ext-openssl": "*",
             "ext-simplexml": "*",
+            "ext-xml": "*",
             "php": ">=5.4"
         },
-        "time": "2020-03-03T01:38:07+00:00",
+        "time": "2020-04-26T03:22:09+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -584,8 +600,8 @@
             ],
             "psr-4": {
                 "WePay\\": "WePay",
-                "WeMini\\": "WeMini",
                 "WeChat\\": "WeChat",
+                "WeMini\\": "WeMini",
                 "AliPay\\": "AliPay"
             }
         },
@@ -597,7 +613,7 @@
             {
                 "name": "Anyon",
                 "email": "zoujingli@qq.com",
-                "homepage": "http://ctolog.com"
+                "homepage": "https://thinkadmin.top"
             }
         ],
         "description": "WeChat platform and WeChat payment development tools",

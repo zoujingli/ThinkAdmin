@@ -353,7 +353,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 
         return $this->filter(function ($data) use ($field, $operator, $value) {
             if (strpos($field, '.')) {
-                list($field, $relation) = explode('.', $field);
+                [$field, $relation] = explode('.', $field);
 
                 $result = $data[$field][$relation] ?? null;
             } else {
@@ -385,10 +385,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
                 case 'not in':
                     return is_scalar($result) && !in_array($result, $value, true);
                 case 'between':
-                    list($min, $max) = is_string($value) ? explode(',', $value) : $value;
+                    [$min, $max] = is_string($value) ? explode(',', $value) : $value;
                     return is_scalar($result) && $result >= $min && $result <= $max;
                 case 'not between':
-                    list($min, $max) = is_string($value) ? explode(',', $value) : $value;
+                    [$min, $max] = is_string($value) ? explode(',', $value) : $value;
                     return is_scalar($result) && $result > $max || $result < $min;
                 case '==':
                 case '=':
@@ -473,11 +473,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     /**
      * 返回数据中指定的一列
      * @access public
-     * @param string $columnKey 键名
-     * @param string $indexKey  作为索引值的列
+     * @param string|null $columnKey 键名
+     * @param string|null $indexKey  作为索引值的列
      * @return array
      */
-    public function column(string $columnKey, string $indexKey = null)
+    public function column(?string $columnKey, string $indexKey = null)
     {
         return array_column($this->items, $columnKey, $indexKey);
     }
@@ -509,13 +509,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * @param string $order 排序
      * @return $this
      */
-    public function order(string $field, string $order = null)
+    public function order(string $field, string $order = 'asc')
     {
         return $this->sort(function ($a, $b) use ($field, $order) {
             $fieldA = $a[$field] ?? null;
             $fieldB = $b[$field] ?? null;
 
-            return 'desc' == strtolower($order) ? strcmp($fieldB, $fieldA) : strcmp($fieldA, $fieldB);
+            return 'desc' == strtolower($order) ? $fieldB > $fieldA : $fieldA > $fieldB;
         });
     }
 
@@ -535,7 +535,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
-     * 获取最后一个单元数据
+     * 获取最第一个单元数据
      *
      * @access public
      * @param callable|null $callback
@@ -548,7 +548,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
-     * 获取第一个单元数据
+     * 获取最后一个单元数据
      *
      * @access public
      * @param callable|null $callback
