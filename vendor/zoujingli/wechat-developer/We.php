@@ -56,6 +56,7 @@ use WeChat\Exceptions\InvalidInstanceException;
  * @method \WeMini\Delivery WeMiniDelivery($options = []) static 小程序即时配送
  * @method \WeMini\Guide WeMiniGuide($options = []) static 小程序导购助手
  * @method \WeMini\Image WeMiniImage($options = []) static 小程序图像处理
+ * @method \WeMini\Live WeMiniLive($options = []) static 小程序直播接口
  * @method \WeMini\Logistics WeMiniLogistics($options = []) static 小程序物流助手
  * @method \WeMini\Message WeMiniMessage($options = []) static 小程序动态消息
  * @method \WeMini\Newtmpl WeMiniNewtmpl($options = []) static 小程序订阅消息
@@ -85,7 +86,7 @@ class We
      * 定义当前版本
      * @var string
      */
-    const VERSION = '1.2.20';
+    const VERSION = '1.2.21';
 
     /**
      * 静态配置

@@ -5,7 +5,7 @@
   "homepage": "http://framework.thinkadmin.top",
   "description": "ThinkPHP Basic Development Library",
   "require": {
-    "php": ">=5.4",
+    "php": ">=5.5",
     "ext-gd": "*",
     "ext-json": "*",
     "ext-curl": "*",

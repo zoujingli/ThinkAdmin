@@ -177,17 +177,17 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.39",
-        "version_normalized": "3.4.39.0",
+        "version": "v3.4.42",
+        "version_normalized": "3.4.42.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "730ef56164ed6c9356c159e9f5ff2b84d753b9ed"
+            "reference": "3b9fe6db7fe3694307d182dd73983584af77d5fd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/730ef56164ed6c9356c159e9f5ff2b84d753b9ed",
-            "reference": "730ef56164ed6c9356c159e9f5ff2b84d753b9ed",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/3b9fe6db7fe3694307d182dd73983584af77d5fd",
+            "reference": "3b9fe6db7fe3694307d182dd73983584af77d5fd",
             "shasum": "",
             "mirrors": [
                 {
@@ -199,7 +199,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2020-01-01T11:03:25+00:00",
+        "time": "2020-05-21T13:02:25+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -235,6 +235,20 @@
             "config",
             "configuration",
             "options"
+        ],
+        "funding": [
+            {
+                "url": "https://symfony.com/sponsor",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/fabpot",
+                "type": "github"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                "type": "tidelift"
+            }
         ]
     },
     {
@@ -401,12 +415,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "c9c2f06884ce0b5085bedde8c41620d75b126079"
+            "reference": "15355674ad8878421dde91c15bb975fc4c47981a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/c9c2f06884ce0b5085bedde8c41620d75b126079",
-            "reference": "c9c2f06884ce0b5085bedde8c41620d75b126079",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/15355674ad8878421dde91c15bb975fc4c47981a",
+            "reference": "15355674ad8878421dde91c15bb975fc4c47981a",
             "shasum": "",
             "mirrors": [
                 {
@@ -422,11 +436,11 @@
             "ext-iconv": "*",
             "ext-json": "*",
             "ext-openssl": "*",
-            "php": ">=5.4",
+            "php": ">=5.5",
             "qiniu/php-sdk": "^7.2",
             "topthink/framework": "5.1.*"
         },
-        "time": "2020-03-12T10:21:24+00:00",
+        "time": "2020-05-22T02:55:01+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -446,17 +460,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.20",
-        "version_normalized": "1.2.20.0",
+        "version": "v1.2.21",
+        "version_normalized": "1.2.21.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "9afb0a29c658d52dc7b9d46d2f848602124936b7"
+            "reference": "5cf008c37471f775ae28a23fd1ac06c91eac682f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/9afb0a29c658d52dc7b9d46d2f848602124936b7",
-            "reference": "9afb0a29c658d52dc7b9d46d2f848602124936b7",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/5cf008c37471f775ae28a23fd1ac06c91eac682f",
+            "reference": "5cf008c37471f775ae28a23fd1ac06c91eac682f",
             "shasum": "",
             "mirrors": [
                 {
@@ -473,9 +487,10 @@
             "ext-mbstring": "*",
             "ext-openssl": "*",
             "ext-simplexml": "*",
+            "ext-xml": "*",
             "php": ">=5.4"
         },
-        "time": "2020-03-14T06:58:18+00:00",
+        "time": "2020-04-26T03:22:09+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

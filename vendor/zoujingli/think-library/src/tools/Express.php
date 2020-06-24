@@ -46,12 +46,12 @@ class Express
 
     /**
      * 获取快递公司列表
+     * @param array $data
      * @return array
      */
-    public static function getExpressList()
+    public static function getExpressList($data = [])
     {
-        $data = [];
-        if (preg_match('/"currentData":.*?\[(.*?)\],/', self::getWapBaiduHtml(), $matches)) {
+        if (preg_match('/"currentData":.*?\[(.*?)],/', self::getWapBaiduHtml(), $matches)) {
             foreach (json_decode("[{$matches['1']}]") as $item) $data[$item->value] = $item->text;
             unset($data['_auto']);
             return $data;
@@ -69,22 +69,22 @@ class Express
      */
     private static function doExpress($code, $number)
     {
-        list($uniqid, $token) = [strtr(uniqid(), '.', ''), self::getExpressToken()];
-        $url = "https://express.baidu.com/express/api/express?tokenV2={$token}&appid=4001&nu={$number}&com={$code}&qid={$uniqid}&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
+        list($api, $qid) = [self::getExpressQueryApi(), '7740' . Data::uniqidNumberCode(15)];
+        $url = "{$api}&appid=4001&nu={$number}&com={$code}&qid={$qid}&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
         return json_decode(str_replace('/**/callback(', '', trim(Http::get($url, [], self::getOption()), ')')), true);
     }
 
     /**
-     * 获取接口请求令牌
+     * 获取快递查询接口
      * @return string
      */
-    private static function getExpressToken()
+    private static function getExpressQueryApi()
     {
-        if (preg_match('/express\?tokenV2=(.*?)",/', self::getWapBaiduHtml(), $matches)) {
-            return $matches[1];
+        if (preg_match('/"expSearchApi":.*?"(.*?)",/', self::getWapBaiduHtml(), $matches)) {
+            return str_replace('\\', '', $matches[1]);
         } else {
             app()->cache->delete('express_kuaidi_html');
-            return self::getExpressToken();
+            return self::getExpressQueryApi();
         }
     }
 
@@ -95,8 +95,9 @@ class Express
     private static function getWapBaiduHtml()
     {
         $content = app()->cache->get('express_kuaidi_html');
-        while (empty($content) || stristr($content, '百度安全验证') > -1 || stripos($content, 'tokenV2') === -1) {
-            $content = Http::get('https://m.baidu.com/s?word=快递查询&rnd=' . uniqid(), [], self::getOption());
+        while (empty($content) || stripos($content, '"expSearchApi":') === -1) {
+            $uniqid = str_replace('.', '', microtime(true));
+            $content = Http::get("https://m.baidu.com/s?word=快递查询&rand={$uniqid}", [], self::getOption());
         }
         app()->cache->set('express_kuaidi_html', $content, 30);
         return $content;
@@ -108,10 +109,9 @@ class Express
      */
     private static function getOption()
     {
-        return [
-            'cookie_file' => app()->getRuntimePath() . '_express_cookie.txt',
-            'headers'     => ['Host' => 'express.baidu.com', 'X-FORWARDED-FOR' => request()->ip()],
-        ];
+        list($clentip, $cookies) = [request()->ip(), app()->getRuntimePath() . ".express.cookie"];
+        $headers = ['Host:express.baidu.com', "CLIENT-IP:{$clentip}", "X-FORWARDED-FOR:{$clentip}"];
+        return ['cookie_file' => $cookies, 'headers' => $headers];
     }
 
 }

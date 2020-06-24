@@ -13,7 +13,6 @@
     "ext-gd": "*",
     "ext-curl": "*",
     "ext-json": "*",
-    "ext-soap": "*",
     "ext-iconv": "*",
     "ext-openssl": "*",
     "ext-mbstring": "*",
