@@ -239,6 +239,10 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
         static::$currentPathResolver = $resolver;
     }
 
+    /**
+     * 获取数据总条数
+     * @return int
+     */
     public function total(): int
     {
         if ($this->simple) {
@@ -248,16 +252,28 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
         return $this->total;
     }
 
+    /**
+     * 获取每页数量
+     * @return int
+     */
     public function listRows(): int
     {
         return $this->listRows;
     }
 
+    /**
+     * 获取当前页页码
+     * @return int
+     */
     public function currentPage(): int
     {
         return $this->currentPage;
     }
 
+    /**
+     * 获取最后一页页码
+     * @return int
+     */
     public function lastPage(): int
     {
         if ($this->simple) {
@@ -445,7 +461,8 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
     }
 
     /**
-     * Count elements of an object
+     * 统计数据集条数
+     * @return int
      */
     public function count(): int
     {
@@ -457,6 +474,10 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
         return (string) $this->render();
     }
 
+    /**
+     * 转换为数组
+     * @return array
+     */
     public function toArray(): array
     {
         try {

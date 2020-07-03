@@ -69,8 +69,9 @@ class Fetch
     /**
      * 得到某个字段的值
      * @access public
-     * @param  string $field   字段名
-     * @param  mixed  $default 默认值
+     * @param string $field 字段名
+     * @param mixed $default 默认值
+     * @param bool $one
      * @return string
      */
     public function value(string $field, $default = null, bool $one = true): string

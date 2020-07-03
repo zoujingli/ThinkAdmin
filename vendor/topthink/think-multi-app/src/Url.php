@@ -59,6 +59,7 @@ class Url extends UrlBuild
             $bind = $this->app->config->get('app.domain_bind', []);
 
             if ($key = array_search($app, $bind)) {
+                isset($bind[$_SERVER['SERVER_NAME']]) && $domain = $_SERVER['SERVER_NAME'];
                 $domain = is_bool($domain) ? $key : $domain;
             } else {
                 $map = $this->app->config->get('app.app_map', []);

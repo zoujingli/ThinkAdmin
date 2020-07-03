@@ -71,7 +71,7 @@ trait ParamsBind
      * @param array  $bind 参数绑定
      * @return void
      */
-    protected function bindParams(string &$sql, array $bind = []): void
+    public function bindParams(string &$sql, array $bind = []): void
     {
         foreach ($bind as $key => $value) {
             if (is_array($value)) {

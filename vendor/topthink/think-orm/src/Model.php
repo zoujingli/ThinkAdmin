@@ -632,9 +632,8 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
 
         // 模型更新
         $db = $this->db();
-        $db->startTrans();
 
-        try {
+        $db->transaction(function () use ($data, $allowFields, $db) {
             $this->key = null;
             $where     = $this->getWhere();
 
@@ -651,17 +650,12 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
             if (!empty($this->relationWrite)) {
                 $this->autoRelationUpdate();
             }
+        });
 
-            $db->commit();
+        // 更新回调
+        $this->trigger('AfterUpdate');
 
-            // 更新回调
-            $this->trigger('AfterUpdate');
-
-            return true;
-        } catch (\Exception $e) {
-            $db->rollback();
-            throw $e;
-        }
+        return true;
     }
 
     /**
@@ -693,9 +687,8 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         $allowFields = $this->checkAllowFields();
 
         $db = $this->db();
-        $db->startTrans();
 
-        try {
+        $db->transaction(function () use ($sequence, $allowFields, $db) {
             $result = $db->strict(false)
                 ->field($allowFields)
                 ->replace($this->replace)
@@ -715,20 +708,15 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
             if (!empty($this->relationWrite)) {
                 $this->autoRelationInsert();
             }
+        });
 
-            $db->commit();
+        // 标记数据已经存在
+        $this->exists = true;
 
-            // 标记数据已经存在
-            $this->exists = true;
+        // 新增回调
+        $this->trigger('AfterInsert');
 
-            // 新增回调
-            $this->trigger('AfterInsert');
-
-            return true;
-        } catch (\Exception $e) {
-            $db->rollback();
-            throw $e;
-        }
+        return true;
     }
 
     /**
@@ -769,9 +757,9 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     public function saveAll(iterable $dataSet, bool $replace = true): Collection
     {
         $db = $this->db();
-        $db->startTrans();
 
-        try {
+        $result = $db->transaction(function () use ($replace, $dataSet) {
+
             $pk = $this->getPk();
 
             if (is_string($pk) && $replace) {
@@ -790,13 +778,10 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
                 }
             }
 
-            $db->commit();
+            return $result;
+        });
 
-            return $this->toCollection($result);
-        } catch (\Exception $e) {
-            $db->rollback();
-            throw $e;
-        }
+        return $this->toCollection($result);
     }
 
     /**
@@ -814,9 +799,8 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         $where = $this->getWhere();
 
         $db = $this->db();
-        $db->startTrans();
 
-        try {
+        $db->transaction(function () use ($where, $db) {
             // 删除当前模型数据
             $db->where($where)->delete();
 
@@ -824,19 +808,14 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
             if (!empty($this->relationWrite)) {
                 $this->autoRelationDelete();
             }
+        });
 
-            $db->commit();
+        $this->trigger('AfterDelete');
 
-            $this->trigger('AfterDelete');
+        $this->exists   = false;
+        $this->lazySave = false;
 
-            $this->exists   = false;
-            $this->lazySave = false;
-
-            return true;
-        } catch (\Exception $e) {
-            $db->rollback();
-            throw $e;
-        }
+        return true;
     }
 
     /**

@@ -9,38 +9,24 @@
 declare (strict_types = 1);
 namespace think\db;
 
-use MongoDB\Driver\BulkWrite;
 use MongoDB\Driver\Command;
 use MongoDB\Driver\Cursor;
 use MongoDB\Driver\Exception\AuthenticationException;
-use MongoDB\Driver\Exception\BulkWriteException;
 use MongoDB\Driver\Exception\ConnectionException;
 use MongoDB\Driver\Exception\InvalidArgumentException;
 use MongoDB\Driver\Exception\RuntimeException;
-use MongoDB\Driver\Query as MongoQuery;
 use MongoDB\Driver\ReadPreference;
 use MongoDB\Driver\WriteConcern;
-use think\Collection;
-use think\db\connector\Mongo as Connection;
 use think\db\exception\DbException as Exception;
 use think\Paginator;
 
 class Mongo extends BaseQuery
 {
     /**
-     * 执行查询 返回数据集
-     * @access public
-     * @param  MongoQuery $query 查询对象
-     * @return mixed
-     * @throws AuthenticationException
-     * @throws InvalidArgumentException
-     * @throws ConnectionException
-     * @throws RuntimeException
+     * 当前数据库连接对象
+     * @var \think\db\connector\Mongo
      */
-    public function query(MongoQuery $query)
-    {
-        return $this->connection->query($this, $query);
-    }
+    protected $connection;
 
     /**
      * 执行指令 返回数据集
@@ -58,22 +44,6 @@ class Mongo extends BaseQuery
     public function command(Command $command, string $dbName = '', ReadPreference $readPreference = null, $typeMap = null)
     {
         return $this->connection->command($command, $dbName, $readPreference, $typeMap);
-    }
-
-    /**
-     * 执行语句
-     * @access public
-     * @param  BulkWrite $bulk
-     * @return int
-     * @throws AuthenticationException
-     * @throws InvalidArgumentException
-     * @throws ConnectionException
-     * @throws RuntimeException
-     * @throws BulkWriteException
-     */
-    public function execute(BulkWrite $bulk)
-    {
-        return $this->connection->execute($this, $bulk);
     }
 
     /**
@@ -699,12 +669,13 @@ class Mongo extends BaseQuery
 
         if (isset($options['page'])) {
             // 根据页数计算limit
-            list($page, $listRows) = $options['page'];
-            $page                  = $page > 0 ? $page : 1;
-            $listRows              = $listRows > 0 ? $listRows : (is_numeric($options['limit']) ? $options['limit'] : 20);
-            $offset                = $listRows * ($page - 1);
-            $options['skip']       = intval($offset);
-            $options['limit']      = intval($listRows);
+            [$page, $listRows] = $options['page'];
+
+            $page             = $page > 0 ? $page : 1;
+            $listRows         = $listRows > 0 ? $listRows : (is_numeric($options['limit']) ? $options['limit'] : 20);
+            $offset           = $listRows * ($page - 1);
+            $options['skip']  = intval($offset);
+            $options['limit'] = intval($listRows);
         }
 
         $this->options = $options;

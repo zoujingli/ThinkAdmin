@@ -589,17 +589,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v6.0.2",
-        "version_normalized": "6.0.2.0",
+        "version": "v6.0.3",
+        "version_normalized": "6.0.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "1444cce94b40a836958380b160a5fb7bfc165daf"
+            "reference": "b4046fb21e6163ba23a792b694162693dbe71b4b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/1444cce94b40a836958380b160a5fb7bfc165daf",
-            "reference": "1444cce94b40a836958380b160a5fb7bfc165daf",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/b4046fb21e6163ba23a792b694162693dbe71b4b",
+            "reference": "b4046fb21e6163ba23a792b694162693dbe71b4b",
             "shasum": "",
             "mirrors": [
                 {
@@ -626,7 +626,7 @@
             "mockery/mockery": "^1.2",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2020-01-13T05:48:05+00:00",
+        "time": "2020-06-26T16:03:10+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -706,17 +706,17 @@
     },
     {
         "name": "topthink/think-multi-app",
-        "version": "v1.0.12",
-        "version_normalized": "1.0.12.0",
+        "version": "v1.0.13",
+        "version_normalized": "1.0.13.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-multi-app.git",
-            "reference": "3c1914d2adc08c8753c7f67228885ca47fb9b3bf"
+            "reference": "21ac02a99bd69e29444963841e09c5d39b2bcecb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-multi-app/zipball/3c1914d2adc08c8753c7f67228885ca47fb9b3bf",
-            "reference": "3c1914d2adc08c8753c7f67228885ca47fb9b3bf",
+            "url": "https://api.github.com/repos/top-think/think-multi-app/zipball/21ac02a99bd69e29444963841e09c5d39b2bcecb",
+            "reference": "21ac02a99bd69e29444963841e09c5d39b2bcecb",
             "shasum": "",
             "mirrors": [
                 {
@@ -729,7 +729,7 @@
             "php": ">=7.1.0",
             "topthink/framework": "^6.0.0"
         },
-        "time": "2020-03-01T13:29:35+00:00",
+        "time": "2020-04-24T08:53:21+00:00",
         "type": "library",
         "extra": {
             "think": {
@@ -758,17 +758,17 @@
     },
     {
         "name": "topthink/think-orm",
-        "version": "v2.0.32",
-        "version_normalized": "2.0.32.0",
+        "version": "v2.0.33",
+        "version_normalized": "2.0.33.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-orm.git",
-            "reference": "03aaaa4d8c4475115b3acaa5aa2498bf5792e017"
+            "reference": "35ca511a1e4d671b39f7afb4c887703c16ef6957"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-orm/zipball/03aaaa4d8c4475115b3acaa5aa2498bf5792e017",
-            "reference": "03aaaa4d8c4475115b3acaa5aa2498bf5792e017",
+            "url": "https://api.github.com/repos/top-think/think-orm/zipball/35ca511a1e4d671b39f7afb4c887703c16ef6957",
+            "reference": "35ca511a1e4d671b39f7afb4c887703c16ef6957",
             "shasum": "",
             "mirrors": [
                 {
@@ -784,7 +784,7 @@
             "psr/simple-cache": "^1.0",
             "topthink/think-helper": "^3.1"
         },
-        "time": "2020-04-26T13:54:48+00:00",
+        "time": "2020-06-22T14:57:28+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -955,12 +955,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "c72947dcdfe84b488dd5721f65266a7c00e082c6"
+            "reference": "327c1f1e995bc6344dc938e71c07f33f134c3dd5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/c72947dcdfe84b488dd5721f65266a7c00e082c6",
-            "reference": "c72947dcdfe84b488dd5721f65266a7c00e082c6",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/327c1f1e995bc6344dc938e71c07f33f134c3dd5",
+            "reference": "327c1f1e995bc6344dc938e71c07f33f134c3dd5",
             "shasum": "",
             "mirrors": [
                 {
@@ -976,7 +976,7 @@
             "ext-json": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-06-22T10:03:12+00:00",
+        "time": "2020-06-24T09:42:59+00:00",
         "type": "library",
         "extra": {
             "think": {

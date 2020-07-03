@@ -270,7 +270,7 @@ class Mysql extends Builder
     protected function parseRegexp(Query $query, string $key, string $exp, $value, string $field): string
     {
         if ($value instanceof Raw) {
-            $value = $value->getValue();
+            $value = $this->parseRaw($query, $value);
         }
 
         return $key . ' ' . $exp . ' ' . $value;
@@ -289,7 +289,7 @@ class Mysql extends Builder
     protected function parseFindInSet(Query $query, string $key, string $exp, $value, string $field): string
     {
         if ($value instanceof Raw) {
-            $value = $value->getValue();
+            $value = $this->parseRaw($query, $value);
         }
 
         return 'FIND_IN_SET(' . $value . ', ' . $key . ')';
@@ -308,7 +308,7 @@ class Mysql extends Builder
         if (is_int($key)) {
             return (string) $key;
         } elseif ($key instanceof Raw) {
-            return $key->getValue();
+            return $this->parseRaw($query, $key);
         }
 
         $key = trim($key);
@@ -396,7 +396,7 @@ class Mysql extends Builder
         }
 
         if ($duplicate instanceof Raw) {
-            return ' ON DUPLICATE KEY UPDATE ' . $duplicate->getValue() . ' ';
+            return ' ON DUPLICATE KEY UPDATE ' . $this->parseRaw($query, $duplicate) . ' ';
         }
 
         if (is_string($duplicate)) {
@@ -409,7 +409,7 @@ class Mysql extends Builder
                 $val       = $this->parseKey($query, $val);
                 $updates[] = $val . ' = VALUES(' . $val . ')';
             } elseif ($val instanceof Raw) {
-                $updates[] = $this->parseKey($query, $key) . " = " . $val->getValue();
+                $updates[] = $this->parseKey($query, $key) . " = " . $this->parseRaw($query, $val);
             } else {
                 $name      = $query->bindValue($val, $query->getConnection()->getFieldBindType($key));
                 $updates[] = $this->parseKey($query, $key) . " = :" . $name;

@@ -14,12 +14,11 @@ namespace think\db;
 
 use Psr\SimpleCache\CacheInterface;
 use think\DbManager;
-use think\db\CacheItem;
 
 /**
  * 数据库连接基础类
  */
-abstract class Connection
+abstract class Connection implements ConnectionInterface
 {
 
     /**
@@ -90,7 +89,7 @@ abstract class Connection
 
     /**
      * Db对象
-     * @var Db
+     * @var DbManager
      */
     protected $db;
 
@@ -108,9 +107,26 @@ abstract class Connection
 
     /**
      * 缓存对象
-     * @var Cache
+     * @var CacheInterface
      */
     protected $cache;
+
+    /**
+     * 架构函数 读取数据库配置信息
+     * @access public
+     * @param array $config 数据库配置数组
+     */
+    public function __construct(array $config = [])
+    {
+        if (!empty($config)) {
+            $this->config = array_merge($this->config, $config);
+        }
+
+        // 创建Builder对象
+        $class = $this->getBuilderClass();
+
+        $this->builder = new $class($this);
+    }
 
     /**
      * 获取当前的builder实例对象
@@ -120,6 +136,45 @@ abstract class Connection
     public function getBuilder()
     {
         return $this->builder;
+    }
+
+
+    /**
+     * 创建查询对象
+     */
+    public function newQuery()
+    {
+        $class = $this->getQueryClass();
+
+        /** @var BaseQuery $query */
+        $query = new $class($this);
+
+        $timeRule = $this->db->getConfig('time_query_rule');
+        if (!empty($timeRule)) {
+            $query->timeRule($timeRule);
+        }
+
+        return $query;
+    }
+
+    /**
+     * 指定表名开始查询
+     * @param $table
+     * @return BaseQuery
+     */
+    public function table($table)
+    {
+        return $this->newQuery()->table($table);
+    }
+
+    /**
+     * 指定表名开始查询(不带前缀)
+     * @param $name
+     * @return BaseQuery
+     */
+    public function name($name)
+    {
+        return $this->newQuery()->name($name);
     }
 
     /**
@@ -214,7 +269,7 @@ abstract class Connection
      * 分析缓存Key
      * @access protected
      * @param BaseQuery $query 查询对象
-     * @param string    $method查询方法
+     * @param string    $method 查询方法
      * @return string
      */
     protected function getCacheKey(BaseQuery $query, string $method = ''): string
@@ -233,7 +288,7 @@ abstract class Connection
      * @access protected
      * @param BaseQuery $query 查询对象
      * @param array     $cache 缓存信息
-     * @param string    $method查询方法
+     * @param string    $method 查询方法
      * @return CacheItem
      */
     protected function parseCache(BaseQuery $query, array $cache, string $method = ''): CacheItem

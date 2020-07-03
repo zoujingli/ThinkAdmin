@@ -290,11 +290,7 @@ trait WhereQuery
      */
     public function whereExp(string $field, string $where, array $bind = [], string $logic = 'AND')
     {
-        if (!empty($bind)) {
-            $this->bindParams($where, $bind);
-        }
-
-        $this->options['where'][$logic][] = [$field, 'EXP', new Raw($where)];
+        $this->options['where'][$logic][] = [$field, 'EXP', new Raw($where, $bind)];
 
         return $this;
     }
@@ -329,11 +325,7 @@ trait WhereQuery
      */
     public function whereRaw(string $where, array $bind = [], string $logic = 'AND')
     {
-        if (!empty($bind)) {
-            $this->bindParams($where, $bind);
-        }
-
-        $this->options['where'][$logic][] = new Raw($where);
+        $this->options['where'][$logic][] = new Raw($where, $bind);
 
         return $this;
     }

@@ -69,7 +69,7 @@ class Pgsql extends Builder
         if (is_int($key)) {
             return (string) $key;
         } elseif ($key instanceof Raw) {
-            return $key->getValue();
+            return $this->parseRaw($query, $key);
         }
 
         $key = trim($key);

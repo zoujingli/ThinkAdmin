@@ -253,8 +253,8 @@ abstract class OneToOne extends Relation
                 $relationModel->exists(true);
             }
 
-            if ($relationModel && !empty($this->bindAttr)) {
-                $this->bindAttr($relationModel, $result);
+            if (!empty($this->bindAttr)) {
+                $this->bindAttr($result, $relationModel);
             }
         } else {
             $relationModel = null;
@@ -266,12 +266,12 @@ abstract class OneToOne extends Relation
     /**
      * 绑定关联属性到父模型
      * @access protected
-     * @param  Model $model  关联模型对象
      * @param  Model $result 父模型对象
+     * @param  Model $model  关联模型对象
      * @return void
      * @throws Exception
      */
-    protected function bindAttr(Model $model, Model $result): void
+    protected function bindAttr(Model $result, Model $model = null): void
     {
         foreach ($this->bindAttr as $key => $attr) {
             $key   = is_numeric($key) ? $attr : $key;

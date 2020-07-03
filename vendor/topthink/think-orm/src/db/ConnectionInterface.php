@@ -28,6 +28,20 @@ interface ConnectionInterface
     public function getQueryClass(): string;
 
     /**
+     * 指定表名开始查询
+     * @param $table
+     * @return BaseQuery
+     */
+    public function table($table);
+
+    /**
+     * 指定表名开始查询(不带前缀)
+     * @param $name
+     * @return BaseQuery
+     */
+    public function name($name);
+
+    /**
      * 连接数据库方法
      * @access public
      * @param array   $config  接参数
@@ -72,9 +86,6 @@ interface ConnectionInterface
      * @access public
      * @param BaseQuery $query 查询对象
      * @return array
-     * @throws DbException
-     * @throws ModelNotFoundException
-     * @throws DataNotFoundException
      */
     public function find(BaseQuery $query): array;
 
@@ -83,9 +94,6 @@ interface ConnectionInterface
      * @access public
      * @param BaseQuery $query 查询对象
      * @return array
-     * @throws DbException
-     * @throws ModelNotFoundException
-     * @throws DataNotFoundException
      */
     public function select(BaseQuery $query): array;
 
@@ -104,8 +112,6 @@ interface ConnectionInterface
      * @param BaseQuery   $query   查询对象
      * @param mixed   $dataSet 数据集
      * @return integer
-     * @throws \Exception
-     * @throws \Throwable
      */
     public function insertAll(BaseQuery $query, array $dataSet = []): int;
 
@@ -114,8 +120,6 @@ interface ConnectionInterface
      * @access public
      * @param BaseQuery $query 查询对象
      * @return integer
-     * @throws Exception
-     * @throws PDOException
      */
     public function update(BaseQuery $query): int;
 
@@ -124,8 +128,6 @@ interface ConnectionInterface
      * @access public
      * @param BaseQuery $query 查询对象
      * @return int
-     * @throws Exception
-     * @throws PDOException
      */
     public function delete(BaseQuery $query): int;
 
@@ -135,7 +137,6 @@ interface ConnectionInterface
      * @param BaseQuery  $query   查询对象
      * @param string $field   字段名
      * @param mixed  $default 默认值
-     * @param bool   $one     返回一个值
      * @return mixed
      */
     public function value(BaseQuery $query, string $field, $default = null);
@@ -155,9 +156,6 @@ interface ConnectionInterface
      * @access public
      * @param callable $callback 数据操作方法回调
      * @return mixed
-     * @throws PDOException
-     * @throws \Exception
-     * @throws \Throwable
      */
     public function transaction(callable $callback);
 
@@ -165,8 +163,6 @@ interface ConnectionInterface
      * 启动事务
      * @access public
      * @return void
-     * @throws \PDOException
-     * @throws \Exception
      */
     public function startTrans();
 
@@ -174,7 +170,6 @@ interface ConnectionInterface
      * 用于非自动提交状态下面的查询提交
      * @access public
      * @return void
-     * @throws PDOException
      */
     public function commit();
 
@@ -182,7 +177,6 @@ interface ConnectionInterface
      * 事务回滚
      * @access public
      * @return void
-     * @throws PDOException
      */
     public function rollback();
 
