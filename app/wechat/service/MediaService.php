@@ -39,7 +39,8 @@ class MediaService extends Service
     {
         // 文章主体数据
         $data = $this->app->db->name('WechatNews')->where(['id' => $id])->where($where)->find();
-        list($data['articles'], $articleIds) = [[], explode(',', $data['article_id'])];
+        if (empty($data)) return [];
+        [$data['articles'], $articleIds] = [[], explode(',', $data['article_id'])];
         if (empty($data['article_id']) || empty($articleIds)) return $data;
         // 文章列表组合
         $query = $this->app->db->name('WechatNewsArticle')->whereIn('id', $articleIds)->orderField('id', $articleIds);
