@@ -38,6 +38,7 @@ class MediaService
     public static function news($id, $where = [])
     {
         $data = Db::name('WechatNews')->where(['id' => $id])->where($where)->find();
+        if (empty($data)) return [];
         list($data['articles'], $articleIds) = [[], explode(',', $data['article_id'])];
         $articles = Db::name('WechatNewsArticle')->whereIn('id', $articleIds)->select();
         foreach ($articleIds as $article_id) foreach ($articles as $article) {

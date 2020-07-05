@@ -205,17 +205,15 @@ class BasicWeChat
      * @param string $url 接口地址
      * @param string $method 当前接口方法
      * @param array $arguments 请求参数
-     * @return mixed
+     * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
     protected function registerApi(&$url, $method, $arguments = [])
     {
         $this->currentMethod = ['method' => $method, 'arguments' => $arguments];
-        if (empty($this->access_token)) {
-            $this->access_token = $this->getAccessToken();
-        }
-        return $url = str_replace('ACCESS_TOKEN', $this->access_token, $url);
+        if (empty($this->access_token)) $this->access_token = $this->getAccessToken();
+        return $url = str_replace('ACCESS_TOKEN', urlencode($this->access_token), $url);
     }
 
     /**
