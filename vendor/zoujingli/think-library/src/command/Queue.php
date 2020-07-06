@@ -233,7 +233,7 @@ class Queue extends Command
         $this->output->writeln("\tYou can exit with <info>`CTRL-C`</info>");
         $this->output->writeln('============== LISTENING ==============');
         while (true) {
-            list($last, $where) = [microtime(true), [['status', '=', 1], ['exec_time', '<=', time()]]];
+            [$start, $where] = [microtime(true), [['status', '=', 1], ['exec_time', '<=', time()]]];
             $this->app->db->name($this->table)->where($where)->order('exec_time asc')->chunk(100, function (Collection $result) {
                 foreach ($result->toArray() as $vo) try {
                     $command = $this->process->think("xadmin:queue dorun {$vo['code']} -");
@@ -250,7 +250,7 @@ class Queue extends Command
                     $this->output->error("Execution failed -> [{$vo['code']}] {$vo['title']}，{$exception->getMessage()}");
                 }
             });
-            if (microtime(true) - $last < 0.5000) {
+            if (microtime(true) - $start < 0.5000) {
                 usleep(500000);
             }
         }

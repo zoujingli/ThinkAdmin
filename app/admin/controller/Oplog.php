@@ -56,9 +56,8 @@ class Oplog extends Controller
     {
         $ip = new \Ip2Region();
         foreach ($data as &$vo) {
-            $result = $ip->btreeSearch($vo['geoip']);
-            $vo['isp'] = isset($result['region']) ? $result['region'] : '';
-            $vo['isp'] = str_replace(['内网IP', '0', '|'], '', $vo['isp']);
+            $isp = $ip->btreeSearch($vo['geoip']);
+            $vo['isp'] = str_replace(['内网IP', '0', '|'], '', $isp['region'] ?? '');
         }
     }
 

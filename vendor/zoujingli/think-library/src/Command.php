@@ -26,7 +26,7 @@ use think\console\Output;
  * Class Command
  * @package think\admin
  */
-class Command extends ThinkCommand
+abstract class Command extends ThinkCommand
 {
     /**
      * 任务控制服务
