@@ -36,8 +36,8 @@ require.config({
         'michat': ['plugs/michat/michat'],
         'base64': ['plugs/jquery/base64.min'],
         'upload': [tapiRoot + '/api.upload?.js'],
-        'echarts': ['plugs/echarts/echarts.min'],
         'angular': ['plugs/angular/angular.min'],
+        'echarts': ['plugs/echarts/echarts.min'],
         'ckeditor': ['plugs/ckeditor/ckeditor'],
         'websocket': ['plugs/socket/websocket'],
         'pcasunzips': ['plugs/jquery/pcasunzips'],
@@ -474,15 +474,14 @@ $(function () {
 
     /*! 表单转JSON */
     $.fn.formToJson = function () {
-        var self = this, data = {}, pushCounters = {};
+        var self = this, data = {}, push = {};
         var patterns = {"key": /[a-zA-Z0-9_]+|(?=\[\])/g, "push": /^$/, "fixed": /^\d+$/, "named": /^[a-zA-Z0-9_]+$/};
         this.build = function (base, key, value) {
-            base[key] = value;
-            return base;
+            return (base[key] = value), base;
         };
         this.pushCounter = function (name) {
-            if (pushCounters[name] === undefined) pushCounters[name] = 0;
-            return pushCounters[name]++;
+            if (push[name] === undefined) push[name] = 0;
+            return push[name]++;
         };
         $.each($(this).serializeArray(), function () {
             var key, keys = this.name.match(patterns.key), merge = this.value, name = this.name;
@@ -601,8 +600,7 @@ $(function () {
     $body.on('click', '[data-check-target]', function () {
         var checked = !!this.checked;
         $($(this).attr('data-check-target')).map(function () {
-            this.checked = checked;
-            $(this).trigger('change');
+            (this.checked = checked), $(this).trigger('change');
         });
     });
 
@@ -642,8 +640,7 @@ $(function () {
             data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
         }
         that.callback = function (ret) {
-            $this.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red');
-            return false;
+            return $this.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red'), false;
         };
         data['_token_'] = $this.attr('data-token') || $this.attr('data-csrf') || '--';
         if (!confirm) return $.form.load(action, data, method, that.callback, load, tips, time);
@@ -734,8 +731,7 @@ $(function () {
     $body.on('click', '[data-history-back]', function (title) {
         title = this.getAttribute('data-history-back') || '确定要返回上一页吗？';
         $.msg.confirm(title, function (index) {
-            history.back();
-            $.msg.close(index);
+            history.back(), $.msg.close(index);
         })
     });
 
