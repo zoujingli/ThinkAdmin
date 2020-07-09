@@ -8,6 +8,6 @@
   },
   "scripts": {
     "install": "npm install -g less less-plugin-clean-css",
-    "build": "lessc --clean-css --source-map console.less console.css;\n  lessc --clean-css --source-map login.less login.css"
+    "build": "lessc --clean-css --source-map console.less console.css \n lessc --clean-css --source-map login.less login.css"
   }
 }

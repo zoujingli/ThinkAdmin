@@ -16,6 +16,7 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
+use think\admin\service\AdminService;
 use think\admin\service\SystemService;
 
 /**
@@ -56,7 +57,7 @@ class Config extends Controller
         'oss-ap-south-1.aliyuncs.com'     => '亚太南部 1（孟买）',
         'oss-eu-central-1.aliyuncs.com'   => '欧洲中部 1（法兰克福）',
         'oss-eu-west-1.aliyuncs.com'      => '英国（伦敦）',
-        'oss-me-east-1.aliyuncs.com'      => '中东东部 1（迪拜）'
+        'oss-me-east-1.aliyuncs.com'      => '中东东部 1（迪拜）',
     ];
 
     /**
@@ -67,6 +68,7 @@ class Config extends Controller
     public function index()
     {
         $this->title = '系统参数配置';
+        $this->isSuper = AdminService::instance()->isSuper();
         $this->fetch();
     }
 
