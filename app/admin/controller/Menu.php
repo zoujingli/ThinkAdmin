@@ -99,15 +99,15 @@ class Menu extends Controller
         if ($this->request->isGet()) {
             // 清理权限节点
             AdminService::instance()->clearCache();
+            // 选择自己的上级菜单
+            $vo['pid'] = $vo['pid'] ?? input('pid', '0');
             // 读取系统功能节点
             $this->nodes = MenuService::instance()->getList();
-            // 选择自己的上级菜单
-            if (empty($vo['pid']) && $this->request->get('pid', '0')) $vo['pid'] = $this->request->get('pid', '0');
             // 列出可选上级菜单
-            $menus = $this->app->db->name($this->table)->where(['status' => '1'])->order('sort desc,id asc')->column('id,pid,icon,url,title,params', 'id');
+            $menus = $this->app->db->name($this->table)->order('sort desc,id asc')->column('id,pid,icon,url,title,params', 'id');
             $this->menus = DataExtend::arr2table(array_merge($menus, [['id' => '0', 'pid' => '-1', 'url' => '#', 'title' => '顶部菜单']]));
             if (isset($vo['id'])) foreach ($this->menus as $key => $menu) if ($menu['id'] === $vo['id']) $vo = $menu;
-            foreach ($this->menus as $key => &$menu) {
+            foreach ($this->menus as $key => $menu) {
                 if ($menu['spt'] >= 3 || $menu['url'] !== '#') unset($this->menus[$key]);
                 if (isset($vo['spt']) && $vo['spt'] <= $menu['spt']) unset($this->menus[$key]);
             }

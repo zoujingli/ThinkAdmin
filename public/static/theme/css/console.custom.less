@@ -189,26 +189,43 @@
   }
 }
 
-/* 文字大小 */
-.border-0 {
-  border: 0 !important
-}
-
-.border-radius {
-  border-radius: 50% !important;
-
+.border {
   &-0 {
-    border-radius: 0 !important
+    border: 0 !important
+  }
+
+  &-top-0 {
+    border-top: 0 !important;
   }
 
   &-left-0 {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important
+    border-left: 0 !important;
   }
 
   &-right-0 {
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important
+    border-right: 0 !important;
+  }
+
+  &-bottom-0 {
+    border-bottom: 0 !important;
+  }
+
+  &-radius {
+    border-radius: 50% !important;
+
+    &-0 {
+      border-radius: 0 !important
+    }
+
+    &-left-0 {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important
+    }
+
+    &-right-0 {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important
+    }
   }
 }
 
