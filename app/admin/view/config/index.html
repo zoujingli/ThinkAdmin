@@ -16,36 +16,40 @@
 
 {notempty name='isSuper'}
 <div class="layui-card padding-20">
-    <div class="layui-card-header">
+    <div class="layui-card-header notselect">
         <b>运行模式</b><span class="color-desc font-s12 padding-left-5">Run Mode</span>
     </div>
     <div class="layui-card-body nowrap">
-        {if $app->isDebug()}
-        <a class="layui-btn layui-btn-sm" data-tips-text="当前以开发模式运行中...">以开发模式运行</a>
-        <a class="layui-btn layui-btn-sm layui-btn-primary" data-tips-text="立即切换到生产模式" data-load="{:url('admin/api.plugs/debug')}?state=1">以生产模式运行</a>
-        {else}
-        <a class="layui-btn layui-btn-sm layui-btn-primary" data-tips-text="立即切换到开发模式" data-load="{:url('admin/api.plugs/debug')}?state=0">以开发模式运行</a>
-        <a class="layui-btn layui-btn-sm" data-tips-text="当前以生产模式运行中...">以生产模式运行</a>
-        {/if}
+        <div class="layui-btn-group">
+            {if $app->isDebug()}
+            <a class="layui-btn layui-btn-sm" data-tips-text="当前以开发模式运行中...">以开发模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-tips-text="立即切换到生产模式运行" data-load="{:url('admin/api.plugs/debug')}?state=1">以生产模式运行</a>
+            {else}
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-tips-text="立即切换到开发模式运行" data-load="{:url('admin/api.plugs/debug')}?state=0">以开发模式运行</a>
+            <a class="layui-btn layui-btn-sm" data-tips-text="当前以生产模式运行中...">以生产模式运行</a>
+            {/if}
+        </div>
     </div>
 </div>
 {/notempty}
 
 <div class="layui-card padding-20">
-    <div class="layui-card-header">
+    <div class="layui-card-header notselect">
         <b>存储引擎</b><span class="color-desc font-s12 padding-left-5">Storage Engine</span>
     </div>
     <div class="layui-card-body nowrap">
-        {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','alioss'=>'阿里云OSS存储'] as $k => $v} {if sysconf('storage.type') eq $k}
-        {if auth('storage')}<a data-title="配置{$v}" data-tips-text="配置当前的{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-sm">{$v}</a>{/if}
-        {else}
-        {if auth('storage')}<a data-title="配置{$v}" data-tips-text="切换并配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm">{$v}</a>{/if}
-        {/if} {/foreach}
+        <div class="layui-btn-group">
+            {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','alioss'=>'阿里云OSS存储'] as $k => $v} {if sysconf('storage.type') eq $k}
+            {if auth('storage')}<a data-title="配置{$v}" data-tips-text="切换并配置以{$v}文件" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-sm">{$v}</a>{/if}
+            {else}
+            {if auth('storage')}<a data-title="配置{$v}" data-tips-text="切换并配置以{$v}文件" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm">{$v}</a>{/if}
+            {/if}{/foreach}
+        </div>
     </div>
 </div>
 
 <div class="layui-card padding-20">
-    <div class="layui-card-header">
+    <div class="layui-card-header notselect">
         <b>系统参数</b><span class="color-desc font-s12 padding-left-5">System Parameter</span>
     </div>
     <div class="layui-card-body">
@@ -101,7 +105,7 @@
 </div>
 
 <div class="layui-card padding-20">
-    <div class="layui-card-header">
+    <div class="layui-card-header notselect">
         <b>系统信息</b><span class="color-desc font-s12 padding-left-5">System Information</span>
     </div>
     <div class="layui-card-body">
