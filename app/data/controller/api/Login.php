@@ -28,7 +28,6 @@ class Login extends Controller
     public function in()
     {
         $data = $this->_vali([
-            'code.require'     => '验证码不能为空！',
             'phone.mobile'     => '手机号码格式错误！',
             'phone.require'    => '手机号码不能为空！',
             'password.require' => '登录密码不能为空！',
