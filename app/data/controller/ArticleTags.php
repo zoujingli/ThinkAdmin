@@ -1,0 +1,80 @@
+<?php
+
+namespace app\data\controller;
+
+use think\admin\Controller;
+
+/**
+ * 文章标签管理
+ * Class ArticleTags
+ * @package app\data\controller
+ */
+class ArticleTags extends Controller
+{
+    /**
+     * 绑定数据表
+     * @var string
+     */
+    private $table = 'DataArticleTags';
+
+    /**
+     * 文章标签管理
+     * @auth true
+     * @menu true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function index()
+    {
+        $this->title = '文章标签管理';
+        $query = $this->_query($this->table);
+        $query->like('title')->equal('status')->dateBetween('create_at');
+        $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
+    }
+
+    /**
+     * 添加文章标签
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function add()
+    {
+        $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 编辑文章标签
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function edit()
+    {
+        $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 修改文章标签状态
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function state()
+    {
+        $this->_save($this->table);
+    }
+
+    /**
+     * 删除文章标签
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function remove()
+    {
+        $this->_delete($this->table);
+    }
+
+}
