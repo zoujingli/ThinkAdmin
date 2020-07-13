@@ -2,7 +2,6 @@
 
 namespace app\data\service;
 
-use think\admin\extend\CodeExtend;
 use think\admin\Service;
 
 /**
@@ -19,53 +18,66 @@ class MemberService extends Service
     protected $table = 'DataMember';
 
     /**
-     * 获取商品会员资料
-     * @param string $openid
-     * @param array $data
+     * 获取会员资料
+     * @param string $token 接口认证
+     * @param array $data 额外数据
      * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function get($openid, $data = [])
+    public function get(string $token, array $data = []): array
     {
-        $map = ['id|openid' => $openid, 'deleted' => 0];
+        $map = ['token' => $token, 'deleted' => 0];
         $query = $this->app->db->name($this->table)->where($map);
         $member = $query->withoutField('status,deleted')->find();
         if (empty($member)) throw new \think\Exception('会员查询失败');
+        if ($member['tokenv'] !== $this->buildTokenVerify()) {
+            throw new \think\Exception('请重新登录授权');
+        }
         return array_merge($member, $data);
     }
 
     /**
-     * 刷新会员授权token
-     * @param string $openid
-     * @param array $data
+     * 刷新会员授权 TOKEN
+     * @param int $mid 会员MID
+     * @param array $data 额外数据
      * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function token($openid, $data = [])
+    public function token(int $mid, array $data = []): array
     {
-        $map = ['id|openid' => $openid, 'deleted' => 0];
-        $this->app->db->name($this->table)->where($map)->update([
-            'token' => CodeExtend::random(20, 3, 't'),
+        do $up = ['token' => md5(uniqid("{$mid}#", true) . rand(100, 999))];
+        while ($this->app->db->name($this->table)->where($up)->count() > 0);
+        $count = $this->app->db->name($this->table)->where(['id' => $mid, 'deleted' => 0])->update([
+            'token' => $up['token'], 'tokenv' => $this->buildTokenVerify(),
         ]);
-        return $this->get($openid, $data);
+        if ($count < 1) throw new \think\Exception('生成授权TOKEN失败');
+        return $this->get($up['token'], $data);
+    }
+
+    /**
+     * 获取认证信息编码
+     * @return string
+     */
+    protected function buildTokenVerify(): string
+    {
+        return md5($this->app->request->server('user-agent', '-'));
     }
 
     /**
      * 获取会员数据统计
-     * @param integer $mid
+     * @param int $mid 会员MID
      * @return array
      */
-    public function total($mid)
+    public function total(int $mid): array
     {
-        return [
-            'myinvited' => $this->app->db->name($this->table)->where(['from' => $mid])->count(),
-        ];
+        $query = $this->app->db->name($this->table);
+        return ['myinvited' => $query->where(['from' => $mid])->count()];
     }
 
 }

@@ -20,6 +20,12 @@ abstract class Member extends Controller
     protected $mid;
 
     /**
+     * 接口授权TOKEN
+     * @var string
+     */
+    protected $token;
+
+    /**
      * 当前会员数据
      * @var array
      */
@@ -27,30 +33,22 @@ abstract class Member extends Controller
 
     /**
      * 控制器初始化
-     * @return $this
      */
     protected function initialize()
     {
-        $this->mid = input('mid', '');
         $this->token = input('token', '');
-        if (empty($this->mid)) $this->error('请求会员MID无效！');
         if (empty($this->token)) $this->error('接口授权TOKEN无效！');
         $this->member = $this->getMember();
-        return $this;
     }
 
     /**
      * 获取会员数据
      * @return array
      */
-    protected function getMember()
+    protected function getMember(): array
     {
         try {
-            $this->member = MemberService::instance()->get($this->mid);
-            if ($this->member['token'] !== $this->token) {
-                $this->error('无效的授权，请重新登录授权！');
-            }
-            return $this->member;
+            return MemberService::instance()->get($this->token);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

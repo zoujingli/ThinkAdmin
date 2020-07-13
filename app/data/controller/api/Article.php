@@ -4,6 +4,11 @@ namespace app\data\controller\api;
 
 use think\admin\Controller;
 
+/**
+ * 文章接口控制器
+ * Class Article
+ * @package app\data\controller\api
+ */
 class Article extends Controller
 {
     /**

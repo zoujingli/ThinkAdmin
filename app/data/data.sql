@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 13/07/2020 14:50:12
+ Date: 13/07/2020 16:11:40
 */
 
 SET NAMES utf8mb4;
@@ -72,7 +72,7 @@ CREATE TABLE `data_article_content`  (
   INDEX `idx_data_article_content_type`(`type`) USING BTREE,
   INDEX `idx_data_article_content_status`(`status`) USING BTREE,
   INDEX `idx_data_article_content_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-内容' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-内容' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for data_article_history
@@ -117,7 +117,7 @@ CREATE TABLE `data_article_tags`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_article_tags_status`(`status`) USING BTREE,
   INDEX `idx_data_article_tags_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标签' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标签' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for data_member
@@ -127,6 +127,7 @@ CREATE TABLE `data_member`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `from` bigint(20) NULL DEFAULT 0 COMMENT '邀请者MID',
   `token` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权TOKEN',
+  `tokenv` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权TOKEN验证',
   `openid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '小程序OPENID',
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '会员手机',
   `headimg` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '会员头像',
