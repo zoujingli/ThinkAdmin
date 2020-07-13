@@ -38,6 +38,7 @@ abstract class Member extends Controller
     {
         $this->token = input('token', '');
         $this->member = $this->getMember();
+        $this->mid = $this->member['id'];
     }
 
     /**

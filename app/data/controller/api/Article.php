@@ -43,7 +43,7 @@ class Article extends Controller
                 $this->app->db->name('DataArticleHistory')->insert($history);
             }
         }
-        $query = $this->_query('DataArticleContent')->equal('type,id')->like('title,tags,type');
+        $query = $this->_query('DataArticleContent')->equal('type,id')->like('title,tags');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(false, false);
         foreach ($result['list'] as &$vo) $vo['tags'] = trim($vo['tags'], ',');
