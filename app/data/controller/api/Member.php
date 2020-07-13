@@ -31,7 +31,8 @@ abstract class Member extends Controller
      */
     protected function initialize()
     {
-        [$this->mid, $this->token] = [input('mid', ''), input('token', '')];
+        $this->mid = input('mid', '');
+        $this->token = input('token', '');
         if (empty($this->mid)) $this->error('请求会员MID无效！');
         if (empty($this->token)) $this->error('接口授权TOKEN无效！');
         $this->member = $this->getMember();

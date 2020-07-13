@@ -37,7 +37,7 @@ class Login extends Controller
         $user = $this->app->db->name('DataMember')->where($map)->find();
         if (empty($user)) $this->error('该手机号还没有注册哦！');
         if (empty($user['status'])) $this->error('该会员账号状态异常！');
-        if (md5($data['password']) !== $user['password']) {
+        if (md5($data['password']) === $user['password']) {
             $this->success('手机登录成功！', MemberService::instance()->token($user['id']));
         } else {
             $this->error('账号登录失败，请稍候再试！');
