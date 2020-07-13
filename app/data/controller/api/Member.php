@@ -2,8 +2,8 @@
 
 namespace app\data\controller\api;
 
-use think\admin\Controller;
 use app\data\service\MemberService;
+use think\admin\Controller;
 use think\exception\HttpResponseException;
 
 /**
@@ -14,8 +14,8 @@ use think\exception\HttpResponseException;
 abstract class Member extends Controller
 {
     /**
-     * 当前会员ID
-     * @var integer
+     * 当前会员MID
+     * @var int
      */
     protected $mid;
 
@@ -37,7 +37,6 @@ abstract class Member extends Controller
     protected function initialize()
     {
         $this->token = input('token', '');
-        if (empty($this->token)) $this->error('接口授权TOKEN无效！');
         $this->member = $this->getMember();
     }
 
@@ -45,9 +44,12 @@ abstract class Member extends Controller
      * 获取会员数据
      * @return array
      */
-    protected function getMember(): array
+    protected function getMember()
     {
         try {
+            if (empty($this->token)) {
+                $this->error('接口授权TOKEN无效');
+            }
             return MemberService::instance()->get($this->token);
         } catch (HttpResponseException $exception) {
             throw $exception;
