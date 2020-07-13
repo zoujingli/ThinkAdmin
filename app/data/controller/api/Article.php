@@ -45,7 +45,7 @@ class Article extends Controller
         }
         $query = $this->_query('DataArticleContent')->equal('type,id')->like('title,tags');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
-        $result = $query->order('sort desc,id desc')->page(false, false);
+        $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
         foreach ($result['list'] as &$vo) $vo['tags'] = trim($vo['tags'], ',');
         $this->success('获取文章内容列表', $result);
     }
