@@ -66,7 +66,7 @@ class MemberService extends Service
      */
     protected function buildTokenVerify(): string
     {
-        return md5($this->app->request->server('user-agent', '-'));
+        return md5($this->app->request->server('HTTP_USER_AGENT', '-'));
     }
 
     /**
