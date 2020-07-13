@@ -30,9 +30,9 @@ class MemberService extends Service
      */
     public function get($openid, $data = [])
     {
-        $map = ['id|openid' => $openid];
-        $query = $this->app->db->name($this->table)->where(['deleted' => 0]);
-        $member = $query->withoutField('status,deleted')->where($map)->find();
+        $map = ['id|openid' => $openid, 'deleted' => 0];
+        $query = $this->app->db->name($this->table)->where($map);
+        $member = $query->withoutField('status,deleted')->find();
         if (empty($member)) throw new \think\Exception('会员查询失败');
         return array_merge($member, $data);
     }
@@ -49,7 +49,8 @@ class MemberService extends Service
      */
     public function token($openid, $data = [])
     {
-        $this->app->db->name($this->table)->where(['id|openid' => $openid])->update([
+        $map = ['id|openid' => $openid, 'deleted' => 0];
+        $this->app->db->name($this->table)->where($map)->update([
             'token' => CodeExtend::random(20, 3, 't'),
         ]);
         return $this->get($openid, $data);
@@ -63,7 +64,7 @@ class MemberService extends Service
     public function total($mid)
     {
         return [
-            'myinvited' => $this->app->db->name('DataMember')->where(['from' => $mid])->count(),
+            'myinvited' => $this->app->db->name($this->table)->where(['from' => $mid])->count(),
         ];
     }
 
