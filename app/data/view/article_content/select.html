@@ -2,12 +2,12 @@
 
 {block name='content'}
 <div class="padding-25" data-select-container>
-    {include file='attack_content/select_search'}
+    {include file='article_content/select_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>
-            <th class="text-left nowrap">文章信息</th>
+            <th class="text-left nowrap">文章标题</th>
             <th class="text-left nowrap">文章状态</th>
             <th class="text-left nowrap">创建时间</th>
             <th class="text-left nowrap"></th>
@@ -36,7 +36,6 @@
 {block name='script'}
 <script>
     $(function () {
-
         layui.form.render();
         $('[data-article]').on('click', function () {
             top.setAttackId(this.getAttribute('data-article') || '');

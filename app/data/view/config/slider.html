@@ -1,0 +1,105 @@
+{extend name="../../admin/view/main"}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <form onsubmit="return false;" id="SliderForm" class='layui-form' autocomplete="off" style="width:750px">
+        <div class="text-center font-s14 font-w7">轮播图管理<span class="color-desc font-s12">（建议尺寸：690px  250px）</span></div>
+        <div class="hr-line-dashed"></div>
+        <div class="padding-bottom-15" data-slider-box>
+            <div class="layui-form-item text-center">
+                <a data-item-add class="layui-btn layui-btn-primary">添加图片</a>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" data-submit>保存数据</button>
+        </div>
+    </form>
+</div>
+
+<div data-item-tpl class="layui-hide">
+    <div class="layui-form-item padding-left-40 margin-left-40" data-slider-item>
+        <div class="layui-input-inline nowrap" style="width:120px">
+            <input data-upload-image name="img[]" type="hidden">
+        </div>
+        <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
+            <span>图片标题 </span>
+            <input class="layui-input inline-block" style="width:240px" name="title[]" value="#" required placeholder="请输入图片标题">
+            <a data-item-up class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-up margin-0"></i></a>
+            <a data-item-dn class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-down margin-0"></i></a>
+            <a data-item-rm class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-close margin-0"></i></a>
+        </label>
+        <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
+            <span>跳转活动 </span>
+            <input class="layui-input inline-block" style="width:240px" name="url[]" value="#" required placeholder="请输入跳转活动">
+            <a data-item-article class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择文章</a>
+            <span class="help-block block">若要跳转页面，请填写正确的 URL 地址，不跳转以“#”号表示。</span>
+        </label>
+    </div>
+</div>
+
+<label class="layui-hide">
+    <textarea id="default-data">{$data|default=[]|json_encode}</textarea>
+</label>
+
+<style>
+    [data-item-dn], [data-item-up], [data-item-rm], [data-item-goods], [data-item-cate] {
+        margin-top: -4px;
+    }
+</style>
+
+<script>
+    (function (data) {
+        /*! 默认数据处理 */
+        if (data.length < 1) addItem();
+        for (this.index in data) addItem(data[this.index]);
+        /*! 初始化上传插件 */
+        (function initUpload() {
+            $('[data-slider-box] input[data-upload-image]').map(function () {
+                if (!$(this).attr('inited')) $(this).attr('inited', true).uploadOneImage();
+            });
+            setTimeout(initUpload, 100);
+        })();
+        /*! 轮播选项操作 */
+        $('[data-slider-box]').on('click', '[data-item-article]', function ($that) {
+            $that = $(this), top.setAttackId = function (id) {
+                $that.prevAll('input').val('article#{v}'.replace('{v}', id));
+            };
+            $.form.iframe('{:url("data/article_content/select")}', '选择文章', ['930px', '600px']);
+        }).on('click', '[data-item-add]', function () {
+            addItem();
+        }).on('click', '[data-item-rm]', function () {
+            $(this).parents('[data-slider-item]').remove();
+        }).on('click', '[data-item-up]', function () {
+            this.item = $(this).parents('[data-slider-item]');
+            this.prev = this.item.prev('[data-slider-item]');
+            if (this.item.index() > 0) this.item.insertBefore(this.prev);
+        }).on('click', '[data-item-dn]', function () {
+            this.item = $(this).parents('[data-slider-item]');
+            this.next = this.item.next('[data-slider-item]');
+            if (this.next) this.item.insertAfter(this.next);
+        });
+        /*! 表单提交处理 */
+        $('form#SliderForm').vali(function (ret) {
+            this.data = [];
+            for (this.index in ret.img) {
+                if (!ret.img[this.index]) return $.msg.tips('请上传展示图片哦！');
+                this.data.push({img: ret.img[this.index], url: ret.url[this.index], title: ret.title[this.index]});
+            }
+            $.form.load('{$request->url()}', {data: JSON.stringify(this.data)}, 'post');
+        });
+
+    })(JSON.parse(document.getElementById('default-data').innerHTML || '[]') || []);
+
+    /*! 添加轮播项 */
+    function addItem(data) {
+        this.$html = $($('[data-item-tpl]').html());
+        if (data) for (this.index in data) this.$html.find('[name^="' + this.index + '"]').val(data[this.index]);
+        $('[data-item-add]').parent().before(this.$html), setTimeout(function () {
+            $.form.reInit();
+        }, 100);
+    }
+
+</script>
+
+{/block}
