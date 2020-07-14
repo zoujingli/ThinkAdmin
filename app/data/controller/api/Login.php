@@ -33,7 +33,7 @@ class Login extends Controller
             'password.require' => '登录密码不能为空！',
         ]);
         $map = ['deleted' => 0, 'phone' => $data['phone']];
-        $user = $this->app->db->name('DataMember')->where($map)->find();
+        $user = $this->app->db->name($this->table)->where($map)->find();
         if (empty($user)) $this->error('该手机号还没有注册哦！');
         if (empty($user['status'])) $this->error('该会员账号状态异常！');
         if (md5($data['password']) === $user['password']) {

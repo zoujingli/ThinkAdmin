@@ -19,8 +19,7 @@ class Article extends Controller
      */
     public function getTags()
     {
-        $table = 'DataArticleTags';
-        $query = $this->_query($table)->like('title');
+        $query = $this->_query('DataArticleTags')->like('title');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $this->success('获取文章标签列表', $query->order('sort desc,id desc')->page(false, false));
     }

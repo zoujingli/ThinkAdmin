@@ -12,6 +12,11 @@ use app\data\service\MemberService;
  */
 class Center extends Member
 {
+    /**
+     * 绑定数据表
+     * @var string
+     */
+    protected $table = 'DataMember';
 
     /**
      * 更新会员资料
@@ -30,7 +35,7 @@ class Center extends Member
         ]);
         foreach ($data as $key => $vo) if ($vo === '') unset($data[$key]);
         if (empty($data)) $this->error('没有需要修改的数据！');
-        if ($this->app->db->name('DataMember')->where(['id' => $this->mid])->update($data) !== false) {
+        if ($this->app->db->name($this->table)->where(['id' => $this->mid])->update($data) !== false) {
             $this->success('更新会员资料成功！', $this->getMember());
         } else {
             $this->error('更新会员资料失败！');
@@ -65,10 +70,10 @@ class Center extends Member
         if ($data['from'] == $this->mid) {
             $this->error('邀请人不能是自己哦', MemberService::instance()->total($this->mid));
         }
-        $from = $this->app->db->name('DataMember')->where(['id' => $data['from']])->find();
+        $from = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
         if (empty($from)) $this->error('邀请人状态异常', MemberService::instance()->total($this->mid));
         if ($this->member['from'] > 0) $this->error('您已经绑定了邀请人', MemberService::instance()->total($this->mid));
-        if ($this->app->db->name('DataMember')->where(['id' => $this->mid])->update($data) !== false) {
+        if ($this->app->db->name($this->table)->where(['id' => $this->mid])->update($data) !== false) {
             $this->success('绑定邀请人成功！', MemberService::instance()->total($this->mid));
         } else {
             $this->error('绑定邀请人失败！', MemberService::instance()->total($this->mid));
@@ -83,7 +88,7 @@ class Center extends Member
      */
     public function getFrom()
     {
-        $query = $this->_query('DataMember');
+        $query = $this->_query($this->table);
         $query->where(['from' => $this->mid])->field('id,from,user,nickname,headimg,create_at');
         $this->success('获取我邀请的朋友', $query->order('id desc')->page(true, false, false, 15));
     }

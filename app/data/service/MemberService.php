@@ -29,8 +29,8 @@ class MemberService extends Service
      */
     public function get(string $token, array $data = []): array
     {
-        $map = ['token' => $token, 'deleted' => 0];
-        $query = $this->app->db->name($this->table)->where($map);
+        $query = $this->app->db->name($this->table);
+        $query->where(['token' => $token, 'deleted' => 0]);
         $member = $query->withoutField('status,deleted')->find();
         if (empty($member)) throw new \think\Exception('会员查询失败');
         if ($member['tokenv'] !== $this->buildTokenVerify()) {
@@ -61,15 +61,6 @@ class MemberService extends Service
     }
 
     /**
-     * 获取认证信息编码
-     * @return string
-     */
-    protected function buildTokenVerify(): string
-    {
-        return md5($this->app->request->server('HTTP_USER_AGENT', '-'));
-    }
-
-    /**
      * 获取会员数据统计
      * @param int $mid 会员MID
      * @return array
@@ -78,6 +69,15 @@ class MemberService extends Service
     {
         $query = $this->app->db->name($this->table);
         return ['myinvited' => $query->where(['from' => $mid])->count()];
+    }
+
+    /**
+     * 获取认证信息编码
+     * @return string
+     */
+    private function buildTokenVerify(): string
+    {
+        return md5($this->app->request->server('HTTP_USER_AGENT', '-'));
     }
 
 }
