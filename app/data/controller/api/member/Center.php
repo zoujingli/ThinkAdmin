@@ -31,7 +31,6 @@ class Center extends Member
         foreach ($data as $key => $vo) if ($vo === '') unset($data[$key]);
         if (empty($data)) $this->error('没有需要修改的数据！');
         if ($this->app->db->name('DataMember')->where(['id' => $this->mid])->update($data) !== false) {
-            // 绑定资源完成检查的任务
             $this->success('更新会员资料成功！', $this->getMember());
         } else {
             $this->error('更新会员资料失败！');
