@@ -3,9 +3,7 @@
 {block name='content'}
 <div class="header"><span>{:date('H:i')}</span></div>
 <div class="container">
-    {notempty name='news.articles'}
-    {foreach $news.articles as $k => $v}
-    {if $k < 1}
+    {notempty name='news.articles'} {foreach $news.articles as $k => $v} {if $k < 1}
     <a href="{:url('wechat/api.review/view')}?id={$v.id}" style='background-image:url("{$v.local_url}")'>
         {if $v.title}<span>{$v.title}</span>{/if}
     </a>
@@ -16,9 +14,7 @@
         <span style='background-image:url("{$v.local_url}");'></span>
     </a>
     <div class="hr-line-dashed"></div>
-    {/if}
-    {/foreach}
-    {else}
+    {/if} {/foreach} {else}
     <div class="info"><h3>404</h3> 访问资源不存在哦！</div>
     {/notempty}
 </div>
@@ -32,10 +28,11 @@
     }
 
     .header span {
-        padding: 5px;
-        font-size: 8px;
-        background: #ccc;
-        border-radius: 10%
+        padding: 1px 5px;
+        font-size: 12px;
+        line-height: 12px;
+        background: #aaa;
+        box-shadow: 0 0 3px #666
     }
 
     .container {
@@ -43,7 +40,7 @@
         display: block;
         margin: 5vw auto;
         position: relative;
-        box-shadow: 0 0 3px #ccc
+        box-shadow: 0 0 3px #333
     }
 
     .container a {

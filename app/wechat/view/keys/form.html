@@ -37,8 +37,8 @@
 <div class="nowrap think-box-shadow" style="width:910px">
     <div class='mobile-preview inline-block'>
         <div class='mobile-header'>公众号</div>
-        <div class='mobile-body'>
-            <iframe id="phone-preview" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+        <div class='mobile-body' data-iframe-box>
+            <!--            <iframe id="phone-preview" frameborder="0" marginheight="0" marginwidth="0"></iframe>-->
         </div>
     </div>
     <div class="keys-container inline-block absolute margin-left-10 margin-right-15">
@@ -203,13 +203,14 @@
         var $body = $('body');
 
         // 刷新预览显示
-        function showReview(params, src) {
+        function showReview(params, location) {
             if (params['type'] === 'news') {
-                src = '{:url("@wechat/api.review/news")}?id=_id_'.replace('_id_', params.content);
+                location = '{:url("@wechat/api.review/news")}?id=_id_'.replace('_id_', params.content);
             } else {
-                src = '{:url("@wechat/api.review/_type_")}?'.replace('_type_', params.type) + $.param(params || {});
+                location = '{:url("@wechat/api.review/_type_")}?'.replace('_type_', params.type) + $.param(params || {});
             }
-            $('#phone-preview').attr('src', src);
+            var iframe = '<iframe id="phone-preview" frameborder="0" marginheight="0" marginwidth="0"></iframe>';
+            $('[data-iframe-box]').empty().append($(iframe).attr('src', location));
         }
 
         $body.off('change', '[name="news_id"]').on('change', '[name="news_id"]', function () {
