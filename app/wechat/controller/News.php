@@ -130,7 +130,7 @@ class News extends Controller
             }
         } else {
             $ids = $this->_buildArticle($this->request->post('data', []));
-            list($map, $data) = [['id' => $this->id], ['article_id' => $ids]];
+            [$map, $data] = [['id' => $this->id], ['article_id' => $ids]];
             if ($this->app->db->name($this->table)->where($map)->update($data) !== false) {
                 $this->success('图文更新成功！', 'javascript:history.back()');
             } else {

@@ -47,9 +47,9 @@ class User extends Controller
         // 加载对应数据列表
         $this->type = input('type', 'all');
         if ($this->type === 'all') {
-            $query->where(['is_deleted' => '0', 'status' => '1']);
+            $query->where(['is_deleted' => 0, 'status' => 1]);
         } elseif ($this->type = 'recycle') {
-            $query->where(['is_deleted' => '0', 'status' => '0']);
+            $query->where(['is_deleted' => 0, 'status' => 0]);
         }
         // 列表排序并显示
         $query->order('sort desc,id desc')->page();
@@ -99,7 +99,7 @@ class User extends Controller
                 'id.require'                  => '用户ID不能为空！',
                 'password.require'            => '登录密码不能为空！',
                 'repassword.require'          => '重复密码不能为空！',
-                'repassword.confirm:password' => '两次输入的密码不一致！'
+                'repassword.confirm:password' => '两次输入的密码不一致！',
             ]);
             if (data_save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
                 $this->success('密码修改成功，请使用新密码登录！', '');
@@ -135,7 +135,7 @@ class User extends Controller
             $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
         } else {
             $data['authorize'] = explode(',', $data['authorize'] ?? '');
-            $this->authorizes = $this->app->db->name('SystemAuth')->where(['status' => '1'])->order('sort desc,id desc')->select()->toArray();
+            $this->authorizes = $this->app->db->name('SystemAuth')->where(['status' => 1])->order('sort desc,id desc')->select()->toArray();
         }
     }
 
@@ -146,11 +146,12 @@ class User extends Controller
      */
     public function state()
     {
-        if (in_array('10000', explode(',', $this->request->post('id')))) {
-            $this->error('系统超级账号禁止操作！');
-        }
+        $this->_checkInput();
         $this->_applyFormToken();
-        $this->_save($this->table, ['status' => intval(input('status'))]);
+        $this->_save($this->table, $this->_vali([
+            'status.in:0,1'  => '状态值范围异常！',
+            'status.require' => '状态值不能为空！',
+        ]));
     }
 
     /**
@@ -160,11 +161,19 @@ class User extends Controller
      */
     public function remove()
     {
-        if (in_array('10000', explode(',', $this->request->post('id')))) {
-            $this->error('系统超级账号禁止删除！');
-        }
+        $this->_checkInput();
         $this->_applyFormToken();
         $this->_delete($this->table);
+    }
+
+    /**
+     * 检查输入变量
+     */
+    private function _checkInput()
+    {
+        if (in_array('10000', explode(',', input('id', '')))) {
+            $this->error('系统超级账号禁止删除！');
+        }
     }
 
 }

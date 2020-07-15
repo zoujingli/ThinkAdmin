@@ -108,8 +108,8 @@ class Fans extends Controller
             $this->success('移出黑名单成功！');
         } catch (HttpResponseException $exception) {
             throw  $exception;
-        } catch (\Exception $e) {
-            $this->error("移出黑名单失败，请稍候再试！<br>{$e->getMessage()}");
+        } catch (\Exception $exception) {
+            $this->error("移出黑名单失败，请稍候再试！<br>{$exception->getMessage()}");
         }
     }
 

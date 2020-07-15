@@ -45,6 +45,7 @@ class Queue extends Controller
      */
     public function index()
     {
+        // 检查进程状态
         if (AdminService::instance()->isSuper()) try {
             $this->process = ProcessService::instance();
             if ($this->process->iswin() || empty($_SERVER['USER'])) {
@@ -110,8 +111,6 @@ class Queue extends Controller
     public function start()
     {
         try {
-            // Asynchronous daemons already exist for pid 1680
-            // Asynchronous daemons started successfully for pid 15740
             $message = nl2br($this->app->console->call('xadmin:queue', ['start'])->fetch());
             if (stripos($message, 'daemons started successfully for pid')) {
                 $this->success('任务监听主进程启动成功！');

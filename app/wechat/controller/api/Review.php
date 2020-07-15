@@ -50,7 +50,7 @@ class Review extends Controller
     {
         $where = ['id' => empty($id) ? input('id') : $id];
         $this->app->db->name('WechatNewsArticle')->where($where)->update([
-            'read_num' => $this->app->db->raw('read_num+1')
+            'read_num' => $this->app->db->raw('read_num+1'),
         ]);
         $this->info = $this->app->db->name('WechatNewsArticle')->where($where)->find();
         $this->fetch();

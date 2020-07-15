@@ -81,7 +81,10 @@ class Auth extends Controller
     public function state()
     {
         $this->_applyFormToken();
-        $this->_save($this->table, ['status' => input('status')]);
+        $this->_save($this->table, $this->_vali([
+            'status.in:0,1'  => '状态值范围异常！',
+            'status.require' => '状态值不能为空！',
+        ]));
     }
 
     /**
@@ -99,8 +102,8 @@ class Auth extends Controller
             $checkeds = $this->app->db->name('SystemAuthNode')->where($map)->column('node');
             $this->success('获取权限节点成功！', AdminService::instance()->clearCache()->getTree($checkeds));
         } elseif (input('action') === 'save') {
-            list($post, $data) = [$this->request->post(), []];
-            foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
+            [$post, $data] = [$this->request->post(), []];
+            foreach ($post['nodes'] ?? [] as $node) {
                 $data[] = ['auth' => $map['auth'], 'node' => $node];
             }
             $this->app->db->name('SystemAuthNode')->where($map)->delete();

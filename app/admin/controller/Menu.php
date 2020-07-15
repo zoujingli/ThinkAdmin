@@ -122,7 +122,10 @@ class Menu extends Controller
     public function state()
     {
         $this->_applyFormToken();
-        $this->_save($this->table, ['status' => intval(input('status'))]);
+        $this->_save($this->table, $this->_vali([
+            'status.in:0,1'  => '状态值范围异常！',
+            'status.require' => '状态值不能为空！',
+        ]));
     }
 
     /**
