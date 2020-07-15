@@ -58,6 +58,7 @@
                 $.form.load('{:url("remove")}', {value: 0, field: 'delete', id: that.getAttribute('data-news-del')}, 'post', function (ret) {
                     if (ret.code) {
                         $(that).parents('.news-item').remove();
+                        msnry = new Masonry(item, {itemSelector: '.news-item', columnWidth: 0});
                         return $.msg.success(ret.msg), msnry.layout(), false;
                     }
                     return $.msg.error(ret.msg), false;
