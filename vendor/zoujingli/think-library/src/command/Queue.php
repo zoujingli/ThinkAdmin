@@ -175,16 +175,13 @@ class Queue extends Command
     /**
      * 清理所有任务
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function cleanAction()
     {
         // 清理 7 天前的历史任务记录
         $map = [['exec_time', '<', time() - 7 * 24 * 3600]];
         $clear = $this->app->db->name($this->table)->where($map)->delete();
-        $this->setQueueProgress("本次清理了 {$clear} 条历史任务记录");
         // 标记超过 1 小时未完成的任务为失败状态，循环任务失败重置
         $map1 = [['loops_time', '>', 0], ['status', '=', 4]]; // 执行失败的循环任务
         $map2 = [['exec_time', '<', time() - 3600], ['status', '=', 2]]; // 执行超时的任务
