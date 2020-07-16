@@ -353,9 +353,8 @@ $(function () {
     /*! 注册对象到Jq */
     $.vali = function (form, callback, options) {
         return (new function (that) {
-            that = this;
             // 表单元素
-            this.tags = 'input,textarea,select';
+            that = this, this.tags = 'input,textarea,select';
             // 检测元素事件
             this.checkEvent = {change: true, blur: true, keyup: false};
             // 去除字符串两头的空格

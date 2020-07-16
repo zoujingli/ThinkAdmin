@@ -17,8 +17,7 @@ $(function () {
 
     /*! 后台加密登录处理 */
     $body.find('[data-login-form]').map(function (that) {
-        that = this;
-        require(["md5"], function (md5) {
+        (that = this), require(["md5"], function (md5) {
             $("form").vali(function (data) {
                 data['password'] = md5.hash(md5.hash(data['password']) + data['uniqid']);
                 $.form.load(location.href, data, "post", function (ret) {
@@ -51,7 +50,7 @@ $(function () {
 
     /*! 初始化登录图形 */
     $('[data-captcha]').map(function () {
-        $(this).trigger('click')
+        $(this).trigger('click');
     });
 
 });
