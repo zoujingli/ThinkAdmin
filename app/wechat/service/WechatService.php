@@ -17,6 +17,7 @@ namespace app\wechat\service;
 
 use think\admin\extend\JsonRpcClient;
 use think\admin\Service;
+use think\admin\storage\LocalStorage;
 use think\exception\HttpResponseException;
 
 /**
@@ -89,13 +90,14 @@ class WechatService extends Service
      * @param array $arguments
      * @return mixed
      * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public static function __callStatic($name, $arguments)
     {
-        list($type, $class, $classname) = self::paraseName($name);
+        [$type, $class, $classname] = self::paraseName($name);
         if ("{$type}{$class}" !== $name) {
             throw new \think\Exception("抱歉，实例 {$name} 不在符合规则！");
         }
@@ -105,7 +107,7 @@ class WechatService extends Service
             }
             return new $classname(self::instance()->getConfig());
         } else {
-            list($appid, $appkey) = [sysconf('wechat.thr_appid'), sysconf('wechat.thr_appkey')];
+            [$appid, $appkey] = [sysconf('wechat.thr_appid'), sysconf('wechat.thr_appkey')];
             $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
             $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
             $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
@@ -134,7 +136,7 @@ class WechatService extends Service
     {
         foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkService'] as $type) {
             if (strpos($name, $type) === 0) {
-                list(, $class) = explode($type, $name);
+                [, $class] = explode($type, $name);
                 return [$type, $class, "\\{$type}\\{$class}"];
             }
         }
@@ -177,6 +179,7 @@ class WechatService extends Service
      * 获取公众号配置参数
      * @return array
      * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -193,10 +196,10 @@ class WechatService extends Service
             'cache_path'     => $this->app->getRuntimePath() . 'wechat',
         ];
         if (sysconf('wechat.mch_ssl_type') === 'p12') {
-            $options['ssl_p12'] = sysconf('wechat.mch_ssl_p12');
+            $options['ssl_p12'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_p12'), true);
         } else {
-            $options['ssl_key'] = sysconf('wechat.mch_ssl_key');
-            $options['ssl_cer'] = sysconf('wechat.mch_ssl_cer');
+            $options['ssl_key'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_key'), true);
+            $options['ssl_cer'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_cer'), true);
         }
         return $options;
     }
