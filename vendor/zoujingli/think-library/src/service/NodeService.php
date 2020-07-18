@@ -90,7 +90,7 @@ class NodeService extends Service
                 list(, $application, $baseclass) = $matches;
                 $namespace = $this->app->env->get('APP_NAMESPACE');
                 $class = new \ReflectionClass(strtr("{$namespace}/{$application}/controller/{$baseclass}", '/', '\\'));
-                $prefix = strtr("{$application}/" . $this->nameTolower($baseclass), '\\', '/');
+                $prefix = strtr("{$application}/{$this->nameTolower($baseclass)}", '\\', '/');
                 $data[$prefix] = $this->parseComment($class->getDocComment(), $baseclass);
                 foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
                     if (in_array($method->getName(), $ignore)) continue;
@@ -98,6 +98,7 @@ class NodeService extends Service
                 }
             }
         }
+        $data = array_change_key_case($data, CASE_LOWER);
         $this->app->cache->set('system_auth_node', $data);
         return $data;
     }

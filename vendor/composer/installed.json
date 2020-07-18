@@ -361,17 +361,17 @@
     },
     {
         "name": "zoujingli/ip2region",
-        "version": "v1.0.7",
-        "version_normalized": "1.0.7.0",
+        "version": "v1.0.8",
+        "version_normalized": "1.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ip2region.git",
-            "reference": "f898a7d90cfacd54433de4028190c336164f2ae4"
+            "reference": "d6be3ab9da1a1ab7e3cd51c4aa634a34de358ce6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/f898a7d90cfacd54433de4028190c336164f2ae4",
-            "reference": "f898a7d90cfacd54433de4028190c336164f2ae4",
+            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/d6be3ab9da1a1ab7e3cd51c4aa634a34de358ce6",
+            "reference": "d6be3ab9da1a1ab7e3cd51c4aa634a34de358ce6",
             "shasum": "",
             "mirrors": [
                 {
@@ -383,7 +383,7 @@
         "require": {
             "php": ">=5.3"
         },
-        "time": "2019-10-29T09:03:57+00:00",
+        "time": "2020-07-06T05:33:26+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -415,12 +415,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "15355674ad8878421dde91c15bb975fc4c47981a"
+            "reference": "bcc628e4258a716b3569d6b7511ab01144d98cd5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/15355674ad8878421dde91c15bb975fc4c47981a",
-            "reference": "15355674ad8878421dde91c15bb975fc4c47981a",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/bcc628e4258a716b3569d6b7511ab01144d98cd5",
+            "reference": "bcc628e4258a716b3569d6b7511ab01144d98cd5",
             "shasum": "",
             "mirrors": [
                 {
@@ -440,7 +440,7 @@
             "qiniu/php-sdk": "^7.2",
             "topthink/framework": "5.1.*"
         },
-        "time": "2020-05-22T02:55:01+00:00",
+        "time": "2020-07-14T01:51:17+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
