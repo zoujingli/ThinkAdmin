@@ -94,7 +94,7 @@ class LocalStorage extends Storage
     public function get($name, $safe = false)
     {
         if (!$this->has($name, $safe)) return '';
-        return file_get_contents($this->path($name, $safe));
+        return self::getCurl($this->path($name, $safe));
     }
 
     /**

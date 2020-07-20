@@ -147,8 +147,8 @@ abstract class Storage
                     return $file->info($name);
                 }
             }
-            return $file->set($name, file_get_contents($url));
-        } catch (\Exception $e) {
+            return $file->set($name, self::getCurl($url));
+        } catch (\Exception $exception) {
             return ['url' => $url, 'hash' => md5($url), 'key' => $url, 'file' => $url];
         }
     }
@@ -177,6 +177,24 @@ abstract class Storage
         static $mimes = [];
         if (count($mimes) > 0) return $mimes;
         return $mimes = include __DIR__ . '/storage/bin/mimes.php';
+    }
+
+    /**
+     * 使用CURL读取网络资源
+     * @param string $url
+     * @return string
+     */
+    public static function getCurl($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        list($content) = [curl_exec($ch), curl_close($ch)];
+        return $content;
     }
 
     /**

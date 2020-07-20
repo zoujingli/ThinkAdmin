@@ -21,7 +21,6 @@ use think\route\Url as UrlBuild;
  */
 class Url extends UrlBuild
 {
-
     /**
      * 直接解析URL地址
      * @access protected
@@ -43,34 +42,25 @@ class Url extends UrlBuild
             // 解析到控制器
             $url = substr($url, 1);
         } elseif ('' === $url) {
-            $url = $this->app->http->getName() . '/' . $request->controller() . '/' . $request->action();
+            $url = $this->getAppName() . '/' . $request->controller() . '/' . $request->action();
         } else {
             // 解析到 应用/控制器/操作
             $controller = $request->controller();
-            $app        = $this->app->http->getName();
-
+            $app        = $this->getAppName();
             $path       = explode('/', $url);
             $action     = array_pop($path);
             $controller = empty($path) ? $controller : array_pop($path);
             $app        = empty($path) ? $app : array_pop($path);
+            $url        = $controller . '/' . $action;
+            $bind       = $this->app->config->get('app.domain_bind', []);
 
-            $url = $controller . '/' . $action;
-
-            $bind = $this->app->config->get('app.domain_bind', []);
-
-            if ($key = array_search($app, $bind)) {
+            if ($key = array_search($this->app->http->getName(), $bind)) {
                 isset($bind[$_SERVER['SERVER_NAME']]) && $domain = $_SERVER['SERVER_NAME'];
+
                 $domain = is_bool($domain) ? $key : $domain;
             } else {
-                $map = $this->app->config->get('app.app_map', []);
-
-                if ($key = array_search($app, $map)) {
-                    $url = $key . '/' . $url;
-                } else {
-                    $url = $app . '/' . $url;
-                }
+                $url = $app . '/' . $url;
             }
-
         }
 
         return $url;
@@ -142,7 +132,8 @@ class Url extends UrlBuild
             }
 
             if (!$this->app->http->isBind()) {
-                $url = $this->app->http->getName() . '/' . $url;
+                $app = $this->getAppName();
+                $url = $app . '/' . $url;
             }
         } elseif (!empty($rule) && isset($name)) {
             throw new \InvalidArgumentException('route name not exists:' . $name);
@@ -222,4 +213,20 @@ class Url extends UrlBuild
         return $domain . rtrim($this->root, '/') . '/' . ltrim($url, '/');
     }
 
+    /**
+     * 获取URL的应用名
+     * @access protected
+     * @return string
+     */
+    protected function getAppName()
+    {
+        $app = $this->app->http->getName();
+        $map = $this->app->config->get('app.app_map', []);
+
+        if ($key = array_search($app, $map)) {
+            $app = $key;
+        }
+
+        return $app;
+    }
 }
