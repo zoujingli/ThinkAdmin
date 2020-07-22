@@ -263,7 +263,6 @@ return array(
     'think\\admin\\Exception' => $vendorDir . '/zoujingli/think-library/src/Exception.php',
     'think\\admin\\Helper' => $vendorDir . '/zoujingli/think-library/src/Helper.php',
     'think\\admin\\Library' => $vendorDir . '/zoujingli/think-library/src/Library.php',
-    'think\\admin\\Module' => $vendorDir . '/zoujingli/think-library/src/Module.php',
     'think\\admin\\Queue' => $vendorDir . '/zoujingli/think-library/src/Queue.php',
     'think\\admin\\Service' => $vendorDir . '/zoujingli/think-library/src/Service.php',
     'think\\admin\\Storage' => $vendorDir . '/zoujingli/think-library/src/Storage.php',

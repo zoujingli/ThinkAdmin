@@ -51,7 +51,7 @@ class DataExtend
     public static function arr2table(array $list, $cid = 'id', $pid = 'pid', $cpath = 'path', $ppath = '')
     {
         $tree = [];
-        foreach (self::arr2tree($list, $cid, $pid) as $attr) {
+        foreach (static::arr2tree($list, $cid, $pid) as $attr) {
             $attr[$cpath] = "{$ppath}-{$attr[$cid]}";
             $attr['sub'] = $attr['sub'] ?? [];
             $attr['spt'] = substr_count($ppath, '-');
@@ -59,7 +59,7 @@ class DataExtend
             $sub = $attr['sub'];
             unset($attr['sub']);
             $tree[] = $attr;
-            if (!empty($sub)) $tree = array_merge($tree, self::arr2table($sub, $cid, $pid, $cpath, $attr[$cpath]));
+            if (!empty($sub)) $tree = array_merge($tree, static::arr2table($sub, $cid, $pid, $cpath, $attr[$cpath]));
         }
         return $tree;
     }
@@ -76,7 +76,7 @@ class DataExtend
     {
         $ids = [intval($id)];
         foreach ($list as $vo) if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) === intval($id)) {
-            $ids = array_merge($ids, self::getArrSubIds($list, intval($vo[$key]), $key, $pkey));
+            $ids = array_merge($ids, static::getArrSubIds($list, intval($vo[$key]), $key, $pkey));
         }
         return $ids;
     }

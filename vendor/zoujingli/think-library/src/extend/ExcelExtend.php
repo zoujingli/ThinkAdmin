@@ -49,7 +49,7 @@ class ExcelExtend
         foreach ($list as $data) {
             $rows = [];
             foreach ($rules as $rule) {
-                $rows[] = self::parseKeyDotValue($data, $rule);
+                $rows[] = static::parseKeyDotValue($data, $rule);
             }
             fputcsv($handle, $rows);
         }

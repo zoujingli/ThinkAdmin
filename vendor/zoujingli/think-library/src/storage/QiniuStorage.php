@@ -101,7 +101,7 @@ class QiniuStorage extends Storage
     {
         $url = $this->url($name, $safe) . "?e=" . time();
         $token = "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', $url, $this->secretKey, true))}";
-        return self::getCurl("{$url}&token={$token}");
+        return static::curlGet("{$url}&token={$token}");
     }
 
     /**

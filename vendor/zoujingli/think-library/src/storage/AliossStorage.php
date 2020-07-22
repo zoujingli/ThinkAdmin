@@ -131,7 +131,7 @@ class AliossStorage extends Storage
      */
     public function get($name, $safe = false)
     {
-        return self::getCurl($this->url($name, $safe));
+        return static::curlGet($this->url($name, $safe));
     }
 
     /**

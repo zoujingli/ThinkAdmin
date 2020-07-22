@@ -90,7 +90,7 @@ class QueueService extends Service
             throw new \think\admin\Exception("Qeueu reset failed, Queue {$this->code} data cannot be empty!");
         }
         $this->app->db->name('SystemQueue')->where(['code' => $this->code])->strict(false)->failException(true)->update([
-            'exec_pid' => '0', 'exec_time' => time() + $wait, 'status' => '1',
+            'exec_pid' => 0, 'exec_time' => time() + $wait, 'status' => 1,
         ]);
         return $this->initialize($this->code);
     }
@@ -124,7 +124,7 @@ class QueueService extends Service
      */
     public function register($title, $command, $later = 0, $data = [], $rscript = 0, $loops = 0)
     {
-        $map = [['title', '=', $title], ['status', 'in', ['1', '2']]];
+        $map = [['title', '=', $title], ['status', 'in', [1, 2]]];
         if (empty($rscript) && ($queue = $this->app->db->name('SystemQueue')->where($map)->find())) {
             throw new \think\admin\Exception(lang('think_library_queue_exist'), 0, $queue['code']);
         }
@@ -133,12 +133,12 @@ class QueueService extends Service
             'code'       => $this->code,
             'title'      => $title,
             'command'    => $command,
-            'attempts'   => '0',
+            'attempts'   => 0,
             'rscript'    => intval(boolval($rscript)),
             'exec_data'  => json_encode($data, JSON_UNESCAPED_UNICODE),
             'exec_time'  => $later > 0 ? time() + $later : time(),
-            'enter_time' => '0',
-            'outer_time' => '0',
+            'enter_time' => 0,
+            'outer_time' => 0,
             'loops_time' => $loops,
         ]);
         $this->progress(1, '>>> 任务创建成功 <<<', 0.00);

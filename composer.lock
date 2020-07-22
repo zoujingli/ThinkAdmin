@@ -929,12 +929,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "84f463dd9e1f30421c430f570c0abde3861c4959"
+                "reference": "e03639f80bccd83c9ab5bb1f1001ea1d62d85afa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/84f463dd9e1f30421c430f570c0abde3861c4959",
-                "reference": "84f463dd9e1f30421c430f570c0abde3861c4959",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/e03639f80bccd83c9ab5bb1f1001ea1d62d85afa",
+                "reference": "e03639f80bccd83c9ab5bb1f1001ea1d62d85afa",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -978,20 +978,20 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://framework.thinkadmin.top",
-            "time": "2020-07-17T08:39:58+00:00"
+            "time": "2020-07-22T06:32:55+00:00"
         },
         {
             "name": "zoujingli/wechat-developer",
-            "version": "v1.2.22",
+            "version": "v1.2.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-                "reference": "7eb7f6a2d8aa4a105208c7dff6428dcecd0c7059"
+                "reference": "f070dd076a4137ff4e86600b63d1ccfe2f744a92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/7eb7f6a2d8aa4a105208c7dff6428dcecd0c7059",
-                "reference": "7eb7f6a2d8aa4a105208c7dff6428dcecd0c7059",
+                "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/f070dd076a4137ff4e86600b63d1ccfe2f744a92",
+                "reference": "f070dd076a4137ff4e86600b63d1ccfe2f744a92",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1044,7 +1044,7 @@
                 "wechatpay",
                 "wepay"
             ],
-            "time": "2020-07-04T07:24:41+00:00"
+            "time": "2020-07-20T06:55:26+00:00"
         }
     ],
     "packages-dev": [],

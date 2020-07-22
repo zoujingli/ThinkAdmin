@@ -336,7 +336,7 @@ class SystemService extends Service
     {
         $data = $this->getRuntime();
         $this->app->console->call('clear');
-        $this->setRuntime($data['map'], $data['run']);
+        $this->setRuntime($data['map'], $data['run'], $data['uri']);
     }
 
     /**

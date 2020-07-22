@@ -396,7 +396,6 @@ class ComposerStaticInitb911c14a0826c73d9f097343fd33a252
         'think\\admin\\Exception' => __DIR__ . '/..' . '/zoujingli/think-library/src/Exception.php',
         'think\\admin\\Helper' => __DIR__ . '/..' . '/zoujingli/think-library/src/Helper.php',
         'think\\admin\\Library' => __DIR__ . '/..' . '/zoujingli/think-library/src/Library.php',
-        'think\\admin\\Module' => __DIR__ . '/..' . '/zoujingli/think-library/src/Module.php',
         'think\\admin\\Queue' => __DIR__ . '/..' . '/zoujingli/think-library/src/Queue.php',
         'think\\admin\\Service' => __DIR__ . '/..' . '/zoujingli/think-library/src/Service.php',
         'think\\admin\\Storage' => __DIR__ . '/..' . '/zoujingli/think-library/src/Storage.php',
