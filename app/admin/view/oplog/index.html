@@ -52,7 +52,7 @@
             </td>
             <td class='text-left nowrap'>
                 {if auth("remove")}
-                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                 {/if}
             </td>
         </tr>

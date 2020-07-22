@@ -13,7 +13,6 @@
 {/block}
 
 {block name="content"}
-
 <div class="think-box-shadow table-block">
     {include file='auth/index_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
@@ -23,7 +22,8 @@
             <th class='list-table-check-td think-checkbox'>
                 <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
-            <th class='text-left nowrap'>权限信息</th>
+            <th class='text-left nowrap'>权限名称</th>
+            <th class='text-left nowrap'>权限描述</th>
             <th class='text-left nowrap'>创建时间</th>
             <th class="text-center nowrap">使用状态</th>
             <th></th>
@@ -31,42 +31,35 @@
         </thead>
         {/notempty}
         <tbody>
-        {foreach $list as $key=>$vo}
+        {foreach $list as $key => $vo}
         <tr data-dbclick>
             <td class='list-table-check-td think-checkbox'>
                 <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
-            <td class='text-left'>
-                权限名称：{$vo.title|default='-'}<br>
-                <p class="color-desc">权限描述：{$vo.desc|default="没有写描述哦！"}</p>
-            </td>
-            <td class="text-left nowrap">
-                日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">时间：',###|raw}</span>
-            </td>
-            <td class='text-center nowrap'>
-                {eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq}
-            </td>
+            <td class='text-left'>{$vo.title|default='-'}</td>
+            <td class='text-left'>{$vo.desc|default="没有写描述哦！"}</td>
+            <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
+            <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq}</td>
             <td class='text-center nowrap'>
 
                 {if auth("edit")}
-                <span class="text-explode">|</span>
-                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑权限" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑权限" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 {/if}
 
                 {if auth("apply")}
-                <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("apply")}?id={$vo.id}'>授 权</a>
+                <a class="layui-btn layui-btn-normal layui-btn-xs" data-open='{:url("apply")}?id={$vo.id}'>授 权</a>
                 {/if}
 
                 {if $vo.status eq 1 and auth("state")}
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-confirm="确定禁用该权限吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定禁用该权限吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
                 {/if}
 
                 {if $vo.status eq 0 and auth("state")}
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-confirm="确定启用该权限吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定启用该权限吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
                 {/if}
 
                 {if auth("remove")}
-                <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除权限吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除权限吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                 {/if}
 
             </td>

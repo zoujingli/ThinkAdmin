@@ -81,23 +81,23 @@
                 <td class='text-left nowrap'>
                     {if isset($type) and $type eq 'all'}
                     <!--{if auth("pass")}-->
-                    <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="设置密码" data-modal='{:url("pass")}?id={$vo.id}'>密 码</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" data-title="设置密码" data-modal='{:url("pass")}?id={$vo.id}'>密 码</a>
                     <!--{/if}-->
                     <!--{if auth("edit")}-->
-                    <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                    <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑用户" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                     <!--{/if}-->
                     <!--{if auth("state") and $vo.status eq 1}-->
-                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-confirm="确定要禁用该禁用账号吗?" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm" data-confirm="确定要禁用该禁用账号吗?" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
                     <!--{/if}-->
                     {else}
                     <!--{if auth("edit")}-->
-                    <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                    <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑用户" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                     <!--{/if}-->
                     <!--{if auth("state") and $vo.status eq 0}-->
-                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-confirm="确定要恢复该账号吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">恢 复</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm" data-confirm="确定要恢复该账号吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">恢 复</a>
                     <!--{/if}-->
                     <!--{if auth("remove")}-->
-                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要永久删除此账号吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要永久删除此账号吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                     <!--{/if}-->
                     {/if}
                 </td>
