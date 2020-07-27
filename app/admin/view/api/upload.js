@@ -19,6 +19,7 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                     options.loading = $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
                     options.count.total++, options.files[i].index = i, options.cache[i] = options.files[i], delete options.files[i];
                     md5file(options.cache[i]).then(function (file) {
+                        options.element.trigger('upHash', md5file);
                         jQuery.ajax("{:url('admin/api.upload/state')}", {
                             data: {xkey: file.xkey, uptype: options.uptype, safe: options.safe, name: file.name}, method: 'post', success: function (ret) {
                                 file.xurl = ret.data.url;
@@ -47,8 +48,10 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                     });
                 }
             }, progress: function (n) {
+                options.element.trigger('upProgress', arguments[3]);
                 $('[data-upload-progress]').html(n + '%');
             }, done: function (ret, index) {
+                options.element.trigger('upDone', options.cache[index], ret);
                 if (++options.count.uploaded >= options.count.total) layer.close(options.loading);
                 if (typeof ret.code === 'number' && parseInt(ret.code) === 0) return $.msg.tips(ret.info || '文件上传失败！');
                 if (typeof options.cache[index].xurl !== 'string') return $.msg.tips('无效的文件对象！');
