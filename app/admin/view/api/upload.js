@@ -1,45 +1,45 @@
-define(['md5'], function (SparkMD5, allowExtsMimes) {
-    allowExtsMimes = JSON.parse('{$exts|raw}');
-    return function (element, UploadedHandler, options) {
+define(['md5'], function (SparkMD5, allowMime) {
+    allowMime = JSON.parse('{$exts|raw}');
+    return function (element, UploadedHandler, option) {
         /*! 初始化变量 */
-        options = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, loading: 0};
-        options.count = {total: 0, uploaded: 0}, options.type = options.element.data('type') || '';
-        options.safe = options.element.data('safe') ? 1 : 0, options.types = options.type ? options.type.split(',') : [];
-        options.field = options.element.data('field') || 'file', options.input = $('[name="_field_"]'.replace('_field_', options.field));
-        options.uptype = options.safe ? 'local' : options.element.attr('data-uptype') || '', options.multiple = options.element.attr('data-multiple') > 0;
-        /*! 文件的选择筛选 */
-        for (var i in options.types) if (allowExtsMimes[options.types[i]]) {
-            options.exts.push(options.types[i]), options.mimes.push(allowExtsMimes[options.types[i]]);
+        option = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, load: 0, count: {total: 0, uploaded: 0}};
+        option.type = option.element.data('type') || '', option.safe = option.element.data('safe') ? 1 : 0;
+        option.types = option.type ? option.type.split(',') : [], option.field = option.element.data('field') || 'file';
+        option.hload = option.element.data('hide-load') ? 1 : 0, option.input = $('[name="_field_"]'.replace('_field_', option.field));
+        option.uptype = option.safe ? 'local' : option.element.attr('data-uptype') || '', option.multiple = option.element.attr('data-multiple') > 0;
+        /*! 文件选择筛选 */
+        for (var i in option.types) if (allowMime[option.types[i]]) {
+            option.exts.push(option.types[i]), option.mimes.push(allowMime[option.types[i]]);
         }
         /*! 初始化上传组件 */
-        options.uploader = layui.upload.render({
-            auto: false, elem: element, accept: 'file', multiple: options.multiple,
-            exts: options.exts.join('|'), acceptMime: options.mimes.join(','), choose: function (obj) {
-                for (var i in (options.files = obj.pushFile())) {
-                    options.loading = $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
-                    options.count.total++, options.files[i].index = i, options.cache[i] = options.files[i], delete options.files[i];
-                    md5file(options.cache[i]).then(function (file) {
-                        options.element.trigger('upHash', md5file);
+        option.uploader = layui.upload.render({
+            auto: false, elem: element, accept: 'file', multiple: option.multiple,
+            exts: option.exts.join('|'), acceptMime: option.mimes.join(','), choose: function (obj) {
+                for (var i in (option.files = obj.pushFile())) {
+                    option.load = option.hload || $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
+                    option.count.total++, option.files[i].index = i, option.cache[i] = option.files[i], delete option.files[i];
+                    md5file(option.cache[i]).then(function (file) {
+                        option.element.triggerHandler('upload.hash', file);
                         jQuery.ajax("{:url('admin/api.upload/state')}", {
-                            data: {xkey: file.xkey, uptype: options.uptype, safe: options.safe, name: file.name}, method: 'post', success: function (ret) {
+                            data: {xkey: file.xkey, uptype: option.uptype, safe: option.safe, name: file.name}, method: 'post', success: function (ret) {
                                 file.xurl = ret.data.url;
                                 if (parseInt(ret.code) === 404) {
-                                    options.uploader.config.url = ret.data.server;
-                                    options.uploader.config.data.key = ret.data.xkey;
-                                    options.uploader.config.data.safe = ret.data.safe;
-                                    options.uploader.config.data.uptype = ret.data.uptype;
+                                    option.uploader.config.url = ret.data.server;
+                                    option.uploader.config.data.key = ret.data.xkey;
+                                    option.uploader.config.data.safe = ret.data.safe;
+                                    option.uploader.config.data.uptype = ret.data.uptype;
                                     if (ret.data.uptype === 'qiniu') {
-                                        options.uploader.config.data.token = ret.data.token;
+                                        option.uploader.config.data.token = ret.data.token;
                                     } else if (ret.data.uptype === 'alioss') {
-                                        options.uploader.config.data.policy = ret.data.policy;
-                                        options.uploader.config.data.signature = ret.data.signature;
-                                        options.uploader.config.data.OSSAccessKeyId = ret.data.OSSAccessKeyId;
-                                        options.uploader.config.data.success_action_status = 200;
-                                        options.uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);
+                                        option.uploader.config.data.policy = ret.data.policy;
+                                        option.uploader.config.data.signature = ret.data.signature;
+                                        option.uploader.config.data.OSSAccessKeyId = ret.data.OSSAccessKeyId;
+                                        option.uploader.config.data.success_action_status = 200;
+                                        option.uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);
                                     }
                                     obj.upload(file.index, file);
                                 } else if (parseInt(ret.code) === 200) {
-                                    options.uploader.config.done({uploaded: true, url: file.xurl}, file.index);
+                                    option.uploader.config.done({uploaded: true, url: file.xurl}, file.index);
                                 } else {
                                     $.msg.tips(ret.info || ret.error.message || '文件上传出错！');
                                 }
@@ -47,29 +47,30 @@ define(['md5'], function (SparkMD5, allowExtsMimes) {
                         });
                     });
                 }
-            }, progress: function (n) {
-                options.element.trigger('upProgress', arguments[3]);
-                $('[data-upload-progress]').html(n + '%');
+            }, progress: function (number) {
+                option.element.triggerHandler('upload.progress', {event: arguments[2], file: arguments[3]});
+                $('[data-upload-progress]').html(number + '%');
             }, done: function (ret, index) {
-                options.element.trigger('upDone', options.cache[index], ret);
-                if (++options.count.uploaded >= options.count.total) layer.close(options.loading);
+                option.element.triggerHandler('upload.done', {file: option.cache[index], data: ret});
+                if (++option.count.uploaded >= option.count.total && !option.hload) layer.close(option.load);
                 if (typeof ret.code === 'number' && parseInt(ret.code) === 0) return $.msg.tips(ret.info || '文件上传失败！');
-                if (typeof options.cache[index].xurl !== 'string') return $.msg.tips('无效的文件对象！');
-                if (typeof ret.uploaded === 'undefined' && typeof options.cache[index].xurl === 'string') {
-                    ret = {uploaded: true, url: options.cache[index].xurl};
+                if (typeof option.cache[index].xurl !== 'string') return $.msg.tips('无效的文件对象！');
+                if (typeof ret.uploaded === 'undefined' && typeof option.cache[index].xurl === 'string') {
+                    ret = {uploaded: true, url: option.cache[index].xurl};
                 }
                 if (ret.uploaded) {
                     if (typeof UploadedHandler === 'function') {
-                        UploadedHandler.call(options.element, ret.url, options.cache[index]);
+                        UploadedHandler.call(option.element, ret.url, option.cache[index]);
                     } else {
-                        options.input.val(ret.url).trigger('change');
+                        option.input.val(ret.url).trigger('change');
                     }
                 } else {
                     $.msg.tips(ret.info || ret.error.message || '文件上传出错！');
                 }
             }, allDone: function () {
-                $.msg.close(options.loading);
-                options.element.html(options.element.data('html'));
+                option.hload || $.msg.close(option.load);
+                option.element.triggerHandler('upload.complete', {});
+                option.element.html(option.element.data('html'));
             }
         });
     };
