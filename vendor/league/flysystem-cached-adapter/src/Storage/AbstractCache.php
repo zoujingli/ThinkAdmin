@@ -328,6 +328,7 @@ abstract class AbstractCache implements CacheInterface
         $cachedProperties = array_flip([
             'path', 'dirname', 'basename', 'extension', 'filename',
             'size', 'mimetype', 'visibility', 'timestamp', 'type',
+            'md5',
         ]);
 
         foreach ($contents as $path => $object) {

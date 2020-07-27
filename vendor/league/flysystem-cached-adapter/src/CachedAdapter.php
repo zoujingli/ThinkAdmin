@@ -238,6 +238,28 @@ class CachedAdapter implements AdapterInterface
     }
 
     /**
+     * Get the path prefix.
+     *
+     * @return string|null path prefix or null if pathPrefix is empty
+     */
+    public function getPathPrefix()
+    {
+        return $this->adapter->getPathPrefix();
+    }
+
+    /**
+     * Prefix a path.
+     *
+     * @param string $path
+     *
+     * @return string prefixed path
+     */
+    public function applyPathPrefix($path)
+    {
+        return $this->adapter->applyPathPrefix($path);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function listContents($directory = '', $recursive = false)
