@@ -22,8 +22,8 @@ $(function () {
                 data['password'] = md5.hash(md5.hash(data['password']) + data['uniqid']);
                 $.form.load(location.href, data, "post", function (ret) {
                     if (parseInt(ret.code) !== 1) {
-                        $(that).find('.verify.layui-hide').removeClass('layui-hide');
                         $(that).find('[data-captcha]').trigger('click');
+                        $(that).find('.verify.layui-hide').removeClass('layui-hide');
                     }
                 }, null, null, 'false');
             });

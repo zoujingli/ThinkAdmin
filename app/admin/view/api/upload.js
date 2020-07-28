@@ -1,16 +1,15 @@
 define(['md5'], function (SparkMD5, allowMime) {
     allowMime = JSON.parse('{$exts|raw}');
-    return function (element, UploadedHandler, option) {
+    return function (element, callable, option) {
         /*! 初始化变量 */
         option = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, load: 0, count: {total: 0, uploaded: 0}};
-        option.type = option.element.data('type') || '', option.safe = option.element.data('safe') ? 1 : 0;
-        option.types = option.type ? option.type.split(',') : [], option.field = option.element.data('field') || 'file';
+        option.safe = option.element.data('safe') ? 1 : 0, option.field = option.element.data('field') || 'file';
         option.hload = option.element.data('hide-load') ? 1 : 0, option.input = $('[name="_field_"]'.replace('_field_', option.field));
         option.uptype = option.safe ? 'local' : option.element.attr('data-uptype') || '', option.multiple = option.element.attr('data-multiple') > 0;
         /*! 文件选择筛选 */
-        for (var i in option.types) if (allowMime[option.types[i]]) {
-            option.exts.push(option.types[i]), option.mimes.push(allowMime[option.types[i]]);
-        }
+        $((option.element.data('type') || '').split(',')).map(function (i, ext) {
+            if (allowMime[ext]) option.exts.push(ext), option.mimes.push(allowMime[ext]);
+        });
         /*! 初始化上传组件 */
         option.uploader = layui.upload.render({
             auto: false, elem: element, accept: 'file', multiple: option.multiple,
@@ -59,8 +58,8 @@ define(['md5'], function (SparkMD5, allowMime) {
                     ret = {uploaded: true, url: option.cache[index].xurl};
                 }
                 if (ret.uploaded) {
-                    if (typeof UploadedHandler === 'function') {
-                        UploadedHandler.call(option.element, ret.url, option.cache[index]);
+                    if (typeof callable === 'function') {
+                        callable.call(option.element, ret.url, option.cache[index]);
                     } else {
                         option.input.val(ret.url).trigger('change');
                     }
@@ -68,9 +67,9 @@ define(['md5'], function (SparkMD5, allowMime) {
                     $.msg.tips(ret.info || ret.error.message || '文件上传出错！');
                 }
             }, allDone: function () {
-                option.hload || $.msg.close(option.load);
                 option.element.triggerHandler('upload.complete', {});
                 option.element.html(option.element.data('html'));
+                option.hload || $.msg.close(option.load);
             }
         });
     };
@@ -100,8 +99,8 @@ define(['md5'], function (SparkMD5, allowMime) {
 
         function loadNextChunk(file) {
             this.reader = new FileReader();
-            this.reader.onload = function (e) {
-                spark.append(e.target.result);
+            this.reader.onload = function (event) {
+                spark.append(event.target.result);
                 if (++file.chunk_idx < file.chunk_total) {
                     loadNextChunk(file);
                 } else {
