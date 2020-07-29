@@ -30,11 +30,12 @@ class ValidateHelper extends Helper
      * @param array $rules 验证规则（ 验证信息数组 ）
      * @param string $type 输入方式 ( post. 或 get. )
      * @return array
-     *  name.require => message
-     *  age.max:100 => message
-     *  name.between:1,120 => message
-     *  name.value => value
+     *  age.max:100 => message // 最大值限定
+     *  name.require => message // 必填内容
+     *  name.between:1,120 => message // 范围限定
+     *  name.value => value // 固定字段数值内容
      *  name.default => 100 // 获取并设置默认值
+     *  更多规则参照 ThinkPHP 官方的验证类
      */
     public function init(array $rules, $type = '')
     {
