@@ -186,7 +186,7 @@ class QueueService extends Service
             if (count($data['history']) > 10) {
                 $data['history'] = array_slice($data['history'], -10);
             }
-            $this->app->cache->set("queue_{$this->code}_progress", $data);
+            $this->app->cache->set("queue_{$this->code}_progress", $data, 86400);
         }
         return $data;
     }
