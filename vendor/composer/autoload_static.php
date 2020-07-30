@@ -16,7 +16,6 @@ class ComposerStaticInitb911c14a0826c73d9f097343fd33a252
         't' => 
         array (
             'think\\view\\driver\\' => 18,
-            'think\\app\\' => 10,
             'think\\admin\\' => 12,
             'think\\' => 6,
         ),
@@ -64,10 +63,6 @@ class ComposerStaticInitb911c14a0826c73d9f097343fd33a252
         'think\\view\\driver\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-view/src',
-        ),
-        'think\\app\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-multi-app/src',
         ),
         'think\\admin\\' => 
         array (
@@ -416,6 +411,10 @@ class ComposerStaticInitb911c14a0826c73d9f097343fd33a252
         'think\\admin\\helper\\SaveHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/SaveHelper.php',
         'think\\admin\\helper\\TokenHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/TokenHelper.php',
         'think\\admin\\helper\\ValidateHelper' => __DIR__ . '/..' . '/zoujingli/think-library/src/helper/ValidateHelper.php',
+        'think\\admin\\multiple\\App' => __DIR__ . '/..' . '/zoujingli/think-library/src/multiple/App.php',
+        'think\\admin\\multiple\\Url' => __DIR__ . '/..' . '/zoujingli/think-library/src/multiple/Url.php',
+        'think\\admin\\multiple\\command\\Build' => __DIR__ . '/..' . '/zoujingli/think-library/src/multiple/command/Build.php',
+        'think\\admin\\multiple\\command\\Clear' => __DIR__ . '/..' . '/zoujingli/think-library/src/multiple/command/Clear.php',
         'think\\admin\\service\\AdminService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/AdminService.php',
         'think\\admin\\service\\CaptchaService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/CaptchaService.php',
         'think\\admin\\service\\ExpressService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/ExpressService.php',
@@ -431,11 +430,6 @@ class ComposerStaticInitb911c14a0826c73d9f097343fd33a252
         'think\\admin\\storage\\AliossStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/AliossStorage.php',
         'think\\admin\\storage\\LocalStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/LocalStorage.php',
         'think\\admin\\storage\\QiniuStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/QiniuStorage.php',
-        'think\\app\\MultiApp' => __DIR__ . '/..' . '/topthink/think-multi-app/src/MultiApp.php',
-        'think\\app\\Service' => __DIR__ . '/..' . '/topthink/think-multi-app/src/Service.php',
-        'think\\app\\Url' => __DIR__ . '/..' . '/topthink/think-multi-app/src/Url.php',
-        'think\\app\\command\\Build' => __DIR__ . '/..' . '/topthink/think-multi-app/src/command/Build.php',
-        'think\\app\\command\\Clear' => __DIR__ . '/..' . '/topthink/think-multi-app/src/command/Clear.php',
         'think\\cache\\Driver' => __DIR__ . '/..' . '/topthink/framework/src/think/cache/Driver.php',
         'think\\cache\\TagSet' => __DIR__ . '/..' . '/topthink/framework/src/think/cache/TagSet.php',
         'think\\cache\\driver\\File' => __DIR__ . '/..' . '/topthink/framework/src/think/cache/driver/File.php',

@@ -1,4 +1,6 @@
 <?php
+
+// 以下代码来自 topthink/think-multi-app，有部分修改以兼容 ThinkAdmin 的需求
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -8,23 +10,24 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-declare (strict_types = 1);
 
-namespace think\app;
+namespace think\admin\multiple;
 
 use Closure;
-use think\App;
 use think\exception\HttpException;
 use think\Request;
 use think\Response;
 
 /**
- * 多应用模式支持
+ * 多应用支持
+ * Class MultiApp
+ * @package think\admin\multiple
  */
-class MultiApp
+class App
 {
-
-    /** @var App */
+    /**
+     * @var \think\App
+     */
     protected $app;
 
     /**
@@ -34,20 +37,18 @@ class MultiApp
     protected $name;
 
     /**
-     * 应用名称
-     * @var string
-     */
-    protected $appName;
-
-    /**
      * 应用路径
      * @var string
      */
     protected $path;
 
-    public function __construct(App $app)
+    /**
+     * App constructor.
+     * @param \think\App $app
+     */
+    public function __construct(\think\App $app)
     {
-        $this->app  = $app;
+        $this->app = $app;
         $this->name = $this->app->http->getName();
         $this->path = $this->app->http->getPath();
     }
@@ -61,15 +62,10 @@ class MultiApp
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->parseMultiApp()) {
+        if (!$this->parseMultiApp()) return $next($request);
+        return $this->app->middleware->pipeline('app')->send($request)->then(function ($request) use ($next) {
             return $next($request);
-        }
-
-        return $this->app->middleware->pipeline('app')
-            ->send($request)
-            ->then(function ($request) use ($next) {
-                return $next($request);
-            });
+        });
     }
 
     /**
@@ -90,23 +86,17 @@ class MultiApp
     {
         $scriptName = $this->getScriptName();
         $defaultApp = $this->app->config->get('app.default_app') ?: 'index';
-
         if ($this->name || ($scriptName && !in_array($scriptName, ['index', 'router', 'think']))) {
             $appName = $this->name ?: $scriptName;
             $this->app->http->setBind();
         } else {
             // 自动多应用识别
             $this->app->http->setBind(false);
-            $appName       = null;
-            $this->appName = '';
-
+            $appName = null;
             $bind = $this->app->config->get('app.domain_bind', []);
-
             if (!empty($bind)) {
-                // 获取当前子域名
+                $domain = $this->app->request->host(true);
                 $subDomain = $this->app->request->subDomain();
-                $domain    = $this->app->request->host(true);
-
                 if (isset($bind[$domain])) {
                     $appName = $bind[$domain];
                     $this->app->http->setBind();
@@ -118,21 +108,17 @@ class MultiApp
                     $this->app->http->setBind();
                 }
             }
-
             if (!$this->app->http->isBind()) {
                 $path = $this->app->request->pathinfo();
-                $map  = $this->app->config->get('app.app_map', []);
+                $map = $this->app->config->get('app.app_map', []);
                 $deny = $this->app->config->get('app.deny_app_list', []);
                 $name = current(explode('/', $path));
-
                 if (strpos($name, '.')) {
                     $name = strstr($name, '.', true);
                 }
-
                 if (isset($map[$name])) {
                     if ($map[$name] instanceof Closure) {
-                        $result  = call_user_func_array($map[$name], [$this->app]);
-                        $appName = $result ?: $name;
+                        $appName = call_user_func_array($map[$name], [$this->app]) ?: $name;
                     } else {
                         $appName = $map[$name];
                     }
@@ -143,7 +129,6 @@ class MultiApp
                 } else {
                     $appName = $name ?: $defaultApp;
                     $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
-
                     if (!is_dir($appPath)) {
                         $express = $this->app->config->get('app.app_express', false);
                         if ($express) {
@@ -154,14 +139,12 @@ class MultiApp
                         }
                     }
                 }
-
                 if ($name) {
                     $this->app->request->setRoot('/' . $name);
                     $this->app->request->setPathinfo(strpos($path, '/') ? ltrim(strstr($path, '/'), '/') : '');
                 }
             }
         }
-
         $this->setApp($appName ?: $defaultApp);
         return true;
     }
@@ -179,7 +162,6 @@ class MultiApp
         } elseif (isset($_SERVER['argv'][0])) {
             $file = realpath($_SERVER['argv'][0]);
         }
-
         return isset($file) ? pathinfo($file, PATHINFO_FILENAME) : '';
     }
 
@@ -189,57 +171,33 @@ class MultiApp
      */
     protected function setApp(string $appName): void
     {
-        $this->appName = $appName;
         $this->app->http->name($appName);
-
         $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
-
         $this->app->setAppPath($appPath);
         // 设置应用命名空间
         $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: 'app\\' . $appName);
-
         if (is_dir($appPath)) {
             $this->app->setRuntimePath($this->app->getRuntimePath() . $appName . DIRECTORY_SEPARATOR);
             $this->app->http->setRoutePath($this->getRoutePath());
-
-            //加载应用
-            $this->loadApp($appName, $appPath);
+            $this->loadApp($appPath);
         }
     }
 
     /**
      * 加载应用文件
-     * @param string $appName 应用名
+     * @param string $appPath
      * @return void
      */
-    protected function loadApp(string $appName, string $appPath): void
+    protected function loadApp(string $appPath): void
     {
-        if (is_file($appPath . 'common.php')) {
-            include_once $appPath . 'common.php';
-        }
-
-        $files = [];
-
-        $files = array_merge($files, glob($appPath . 'config' . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt()));
-
-        foreach ($files as $file) {
+        if (is_file($appPath . 'common.php')) \Composer\Autoload\includeFile($appPath . 'common.php');
+        foreach (glob($appPath . 'config' . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt()) as $file) {
             $this->app->config->load($file, pathinfo($file, PATHINFO_FILENAME));
         }
-
-        if (is_file($appPath . 'event.php')) {
-            $this->app->loadEvent(include $appPath . 'event.php');
-        }
-
-        if (is_file($appPath . 'middleware.php')) {
-            $this->app->middleware->import(include $appPath . 'middleware.php', 'app');
-        }
-
-        if (is_file($appPath . 'provider.php')) {
-            $this->app->bind(include $appPath . 'provider.php');
-        }
-
+        if (is_file($appPath . 'event.php')) $this->app->loadEvent(include $appPath . 'event.php');
+        if (is_file($appPath . 'provider.php')) $this->app->bind(include $appPath . 'provider.php');
+        if (is_file($appPath . 'middleware.php')) $this->app->middleware->import(include $appPath . 'middleware.php', 'app');
         // 加载应用默认语言包
         $this->app->loadLangPack($this->app->lang->defaultLangSet());
     }
-
 }

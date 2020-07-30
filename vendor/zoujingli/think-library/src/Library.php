@@ -15,8 +15,16 @@
 
 namespace think\admin;
 
+use think\admin\command\Database;
+use think\admin\command\Install;
+use think\admin\command\Version;
+use think\admin\multiple\App;
+use think\admin\multiple\command\Build;
+use think\admin\multiple\command\Clear;
+use think\admin\multiple\Url;
 use think\admin\service\AdminService;
 use think\admin\service\SystemService;
+use think\middleware\LoadLangPack;
 use think\middleware\SessionInit;
 use think\Request;
 use think\Service;
@@ -34,15 +42,18 @@ class Library extends Service
      */
     public function boot()
     {
+        // 多应用中间键
+        $this->app->event->listen('HttpRun', function () {
+            $this->app->middleware->add(App::class);
+        });
+        // 替换 ThinkPHP 指令
+        $this->commands(['build' => Build::class, 'clear' => Clear::class]);
+        // 注册 ThinkAdmin 指令
+        $this->commands([Queue::class, Install::class, Version::class, Database::class]);
         // 动态绑定运行配置
+        $this->app->bind('think\route\Url', Url::class);
+        // 动态应用配置参数
         SystemService::instance()->bindRuntime();
-        // 注册系统任务指令
-        $this->commands([
-            'think\admin\command\Queue',
-            'think\admin\command\Install',
-            'think\admin\command\Version',
-            'think\admin\command\Database',
-        ]);
     }
 
     /**
@@ -61,6 +72,8 @@ class Library extends Service
                 $this->app->request->setPathinfo($_SERVER['argv'][1]);
             }
         } else {
+            // 注册语言包处理中间键
+            $this->app->middleware->add(LoadLangPack::class);
             // 注册会话初始化中间键
             if ($this->app->request->request('not_init_session', 0) == 0) {
                 $this->app->middleware->add(SessionInit::class);
@@ -87,7 +100,7 @@ class Library extends Service
             }, 'route');
         }
         // 动态加入应用函数
-        $sysRule = "{$this->app->getBasePath()}*/sys.php";
-        foreach (glob($sysRule) as $file) includeFile($file);
+        $SysRule = "{$this->app->getBasePath()}*/sys.php";
+        foreach (glob($SysRule) as $file) includeFile($file);
     }
 }

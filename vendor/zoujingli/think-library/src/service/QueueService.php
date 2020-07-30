@@ -170,7 +170,7 @@ class QueueService extends Service
             return $this->progress($status, $message, $progress);
         }
         if (is_numeric($status)) $data['status'] = intval($status);
-        if (is_numeric($progress)) $progress = str_pad(sprintf("%.2f", $progress), 6, "0", STR_PAD_LEFT);
+        if (is_numeric($progress)) $progress = str_pad(sprintf("%.2f", $progress), 6, '0', STR_PAD_LEFT);
         if (is_string($message) && is_null($progress)) {
             $data['message'] = $message;
             $data['history'][] = ['message' => $message, 'progress' => $data['progress'], 'datetime' => date('Y-m-d H:i:s')];

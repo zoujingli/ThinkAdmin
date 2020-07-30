@@ -1,4 +1,5 @@
 <?php
+// 以下代码来自 topthink/think-multi-app，有部分修改以兼容 ThinkAdmin 的需求
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
@@ -8,7 +9,8 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-namespace think\app\command;
+
+namespace think\admin\multiple\command;
 
 use think\console\Command;
 use think\console\Input;
@@ -20,20 +22,17 @@ class Clear extends Command
 {
     protected function configure()
     {
-        // 指令配置
-        $this->setName('clear')
-            ->addArgument('app', Argument::OPTIONAL, 'app name .')
-            ->addOption('cache', 'c', Option::VALUE_NONE, 'clear cache file')
-            ->addOption('log', 'l', Option::VALUE_NONE, 'clear log file')
-            ->addOption('dir', 'r', Option::VALUE_NONE, 'clear empty dir')
-            ->setDescription('Clear runtime file');
+        $this->setName('clear')->addArgument('app', Argument::OPTIONAL, 'app name .');
+        $this->addOption('cache', 'c', Option::VALUE_NONE, 'clear cache file');
+        $this->addOption('log', 'l', Option::VALUE_NONE, 'clear log file');
+        $this->addOption('dir', 'r', Option::VALUE_NONE, 'clear empty dir');
+        $this->setDescription('Clear runtime file');
     }
 
     protected function execute(Input $input, Output $output)
     {
-        $app         = $input->getArgument('app') ?: '';
+        $app = $input->getArgument('app') ?: '';
         $runtimePath = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . ($app ? $app . DIRECTORY_SEPARATOR : '');
-
         if ($input->getOption('cache')) {
             $path = $runtimePath . 'cache';
         } elseif ($input->getOption('log')) {
@@ -41,23 +40,18 @@ class Clear extends Command
         } else {
             $path = $runtimePath;
         }
-
         $rmdir = $input->getOption('dir') ? true : false;
         $this->clear(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR, $rmdir);
-
         $output->writeln("<info>Clear Successed</info>");
     }
 
     protected function clear(string $path, bool $rmdir): void
     {
         $files = is_dir($path) ? scandir($path) : [];
-
         foreach ($files as $file) {
             if ('.' != $file && '..' != $file && is_dir($path . $file)) {
                 array_map('unlink', glob($path . $file . DIRECTORY_SEPARATOR . '*.*'));
-                if ($rmdir) {
-                    rmdir($path . $file);
-                }
+                if ($rmdir) rmdir($path . $file);
             } elseif ('.gitignore' != $file && is_file($path . $file)) {
                 unlink($path . $file);
             }

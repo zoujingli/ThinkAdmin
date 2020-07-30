@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "06e0d937a455706ec9c4ca9a8315962b",
+    "content-hash": "8037e81a3aec4e25e2cb08d241087287",
     "packages": [
         {
             "name": "endroid/qr-code",
@@ -690,56 +690,6 @@
             "time": "2019-11-08T08:01:10+00:00"
         },
         {
-            "name": "topthink/think-multi-app",
-            "version": "v1.0.14",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/top-think/think-multi-app.git",
-                "reference": "ccaad7c2d33f42cb1cc2a78d6610aaec02cea4c3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-multi-app/zipball/ccaad7c2d33f42cb1cc2a78d6610aaec02cea4c3",
-                "reference": "ccaad7c2d33f42cb1cc2a78d6610aaec02cea4c3",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": ">=7.1.0",
-                "topthink/framework": "^6.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "think": {
-                    "services": [
-                        "think\\app\\Service"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "think\\app\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "liu21st",
-                    "email": "liu21st@gmail.com"
-                }
-            ],
-            "description": "thinkphp6 multi app support",
-            "time": "2020-07-12T13:50:37+00:00"
-        },
-        {
             "name": "topthink/think-orm",
             "version": "v2.0.33",
             "source": {
@@ -929,12 +879,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "aae4fe718837428b6eae19b97ab34ca5e0ce529d"
+                "reference": "845f0e19f58548a241fb42369344ca5b3f221337"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/aae4fe718837428b6eae19b97ab34ca5e0ce529d",
-                "reference": "aae4fe718837428b6eae19b97ab34ca5e0ce529d",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/845f0e19f58548a241fb42369344ca5b3f221337",
+                "reference": "845f0e19f58548a241fb42369344ca5b3f221337",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -978,7 +928,7 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://framework.thinkadmin.top",
-            "time": "2020-07-29T06:09:04+00:00"
+            "time": "2020-07-30T08:07:27+00:00"
         },
         {
             "name": "zoujingli/wechat-developer",
