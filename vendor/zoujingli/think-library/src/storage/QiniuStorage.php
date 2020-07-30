@@ -31,7 +31,7 @@ class QiniuStorage extends Storage
 
     /**
      * 初始化入口
-     * @return Storage
+     * @return static
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException

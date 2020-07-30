@@ -26,6 +26,16 @@
             </div>
         </div>
 
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="storage.local_http_domain">
+                <span class="color-green font-w7">访问域名</span><br><span class="nowrap color-desc">Domain</span>
+            </label>
+            <div class="layui-input-block">
+                <input id="storage.local_http_domain" type="text" name="storage.local_http_domain" value="{:sysconf('storage.local_http_domain')}" placeholder="请输入上传后的访问域名 (非必填项)" class="layui-input">
+                <p class="help-block">填写上传后的访问域名（不指定时根据当前访问地址自动计算），如：static.ctolog.com</p>
+            </div>
+        </div>
+
         <div class="hr-line-dashed margin-left-40"></div>
         <input type="hidden" name="storage.type" value="local">
 
