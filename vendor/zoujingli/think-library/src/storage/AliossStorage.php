@@ -38,12 +38,6 @@ class AliossStorage extends Storage
     private $bucket;
 
     /**
-     * 绑定访问域名
-     * @var string
-     */
-    private $domain;
-
-    /**
      * AccessKeyId
      * @var string
      */
@@ -68,14 +62,14 @@ class AliossStorage extends Storage
         // 读取配置文件
         $this->point = sysconf('storage.alioss_point');
         $this->bucket = sysconf('storage.alioss_bucket');
-        $this->domain = sysconf('storage.alioss_http_domain');
         $this->accessKey = sysconf('storage.alioss_access_key');
         $this->secretKey = sysconf('storage.alioss_secret_key');
         // 计算链接前缀
         $type = strtolower(sysconf('storage.alioss_http_protocol'));
-        if ($type === 'auto') $this->prefix = "//{$this->domain}";
-        elseif ($type === 'http') $this->prefix = "http://{$this->domain}";
-        elseif ($type === 'https') $this->prefix = "https://{$this->domain}";
+        $domain = strtolower(sysconf('storage.alioss_http_domain'));
+        if ($type === 'auto') $this->prefix = "//{$domain}";
+        elseif ($type === 'http') $this->prefix = "http://{$domain}";
+        elseif ($type === 'https') $this->prefix = "https://{$domain}";
         else throw new \think\admin\Exception('未配置阿里云URL域名哦');
         // 初始化配置并返回当前实例
         return parent::initialize();
@@ -84,7 +78,7 @@ class AliossStorage extends Storage
     /**
      * 获取当前实例对象
      * @param null $name
-     * @return AliossStorage|LocalStorage|QiniuStorage
+     * @return static
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException

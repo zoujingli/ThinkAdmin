@@ -65,7 +65,7 @@ abstract class Storage
 
     /**
      * 存储初始化
-     * @return Storage|AliossStorage|LocalStorage|QiniuStorage
+     * @return static
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -98,7 +98,7 @@ abstract class Storage
     /**
      * 设置文件驱动名称
      * @param string $name 驱动名称
-     * @return AliossStorage|LocalStorage|QiniuStorage
+     * @return static
      * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException

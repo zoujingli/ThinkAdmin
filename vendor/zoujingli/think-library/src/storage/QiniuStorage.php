@@ -26,7 +26,6 @@ use think\admin\Storage;
 class QiniuStorage extends Storage
 {
     private $bucket;
-    private $domain;
     private $accessKey;
     private $secretKey;
 
@@ -42,14 +41,14 @@ class QiniuStorage extends Storage
     {
         // 读取配置文件
         $this->bucket = sysconf('storage.qiniu_bucket');
-        $this->domain = sysconf('storage.qiniu_http_domain');
         $this->accessKey = sysconf('storage.qiniu_access_key');
         $this->secretKey = sysconf('storage.qiniu_secret_key');
         // 计算链接前缀
         $type = strtolower(sysconf('storage.qiniu_http_protocol'));
-        if ($type === 'auto') $this->prefix = "//{$this->domain}";
-        elseif ($type === 'http') $this->prefix = "http://{$this->domain}";
-        elseif ($type === 'https') $this->prefix = "https://{$this->domain}";
+        $domain = strtolower(sysconf('storage.qiniu_http_domain'));
+        if ($type === 'auto') $this->prefix = "//{$domain}";
+        elseif ($type === 'http') $this->prefix = "http://{$domain}";
+        elseif ($type === 'https') $this->prefix = "https://{$domain}";
         else throw new \think\admin\Exception('未配置七牛云URL域名哦');
         // 初始化配置并返回当前实例
         return parent::initialize();
@@ -58,7 +57,7 @@ class QiniuStorage extends Storage
     /**
      * 获取当前实例对象
      * @param null $name
-     * @return AliossStorage|LocalStorage|QiniuStorage
+     * @return static
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
