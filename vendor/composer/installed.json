@@ -903,12 +903,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "0a8548f0b1814130840210695a9febc3766d0803"
+            "reference": "568ab719724c389c6b2a41d3fe4a2c5a82286d21"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/0a8548f0b1814130840210695a9febc3766d0803",
-            "reference": "0a8548f0b1814130840210695a9febc3766d0803",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/568ab719724c389c6b2a41d3fe4a2c5a82286d21",
+            "reference": "568ab719724c389c6b2a41d3fe4a2c5a82286d21",
             "shasum": "",
             "mirrors": [
                 {
@@ -924,7 +924,7 @@
             "ext-json": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-07-31T08:20:24+00:00",
+        "time": "2020-07-31T09:06:14+00:00",
         "type": "library",
         "extra": {
             "think": {
