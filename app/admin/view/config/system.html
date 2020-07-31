@@ -2,7 +2,7 @@
     <div class="layui-card-body padding-left-40">
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">后台登录入口</span>
-            <span class="color-desc margin-left-5">login</span>
+            <span class="color-desc margin-left-5">Login</span>
             <label class="layui-input relative block label-required-null">
                 <span>{:sysuri('@',[],false,true)}</span>
                 <input autofocus required pattern="[a-zA-Z_][a-zA-Z0-9_]+" placeholder="请输入后台登录入口" class="layui-input inline-block padding-0 border-0" style="width:auto;background:none" value="{:trim(sysuri('admin/index/index',[],false),'/')}" name="xpath">
@@ -13,7 +13,7 @@
             <span class="color-green font-w7">浏览器小图标</span>
             <span class="color-desc margin-left-5">Icon</span>
             <input class="layui-input" required pattern="^http" placeholder="请上传浏览器图标　　" value="{:sysconf('site_icon')}" name="site_icon">
-            <a class="input-right-icon layui-icon layui-icon-upload-circle" style="top:25px" data-file="btn" data-type="ico,png" data-field="site_icon"></a>
+            <a class="input-right-icon layui-icon layui-icon-upload-drag" style="top:25px" data-file="btn" data-type="ico,png" data-field="site_icon"></a>
             <span class="help-block">建议上传 <span class="color-blue">128x128</span> 的 ico 或 png 图片，可以通过 <a href="http://www.favicon-icon-generator.com" target="_blank">ICON </a>在线制作 ico 文件！</span>
         </label>
         <div class="layui-form-item layui-row layui-col-space15">
