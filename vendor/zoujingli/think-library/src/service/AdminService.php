@@ -73,7 +73,7 @@ class AdminService extends Service
     {
         if ($this->isSuper()) return true;
         $service = NodeService::instance();
-        list($real, $nodes) = [$service->fullnode($node), $service->getMethods()];
+        [$real, $nodes] = [$service->fullnode($node), $service->getMethods()];
         foreach ($nodes as $key => $rule) if (stripos($key, '_') !== false) {
             $nodes[str_replace('_', '', $key)] = $rule;
         }
@@ -92,9 +92,9 @@ class AdminService extends Service
      */
     public function getTree($checkeds = [])
     {
-        list($nodes, $pnodes, $methods) = [[], [], array_reverse(NodeService::instance()->getMethods())];
+        [$nodes, $pnodes, $methods] = [[], [], array_reverse(NodeService::instance()->getMethods())];
         foreach ($methods as $node => $method) {
-            list($count, $pnode) = [substr_count($node, '/'), substr($node, 0, strripos($node, '/'))];
+            [$count, $pnode] = [substr_count($node, '/'), substr($node, 0, strripos($node, '/'))];
             if ($count === 2 && !empty($method['isauth'])) {
                 in_array($pnode, $pnodes) or array_push($pnodes, $pnode);
                 $nodes[$node] = ['node' => $node, 'title' => $method['title'], 'pnode' => $pnode, 'checked' => in_array($node, $checkeds)];

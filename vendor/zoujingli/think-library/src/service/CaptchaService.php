@@ -45,12 +45,12 @@ class CaptchaService extends Service
         // 生成验证码序号
         $this->uniqid = uniqid('captcha') . mt_rand(1000, 9999);
         // 生成验证码字符串
-        list($this->code, $length) = ['', strlen($this->charset) - 1];
+        [$this->code, $length] = ['', strlen($this->charset) - 1];
         for ($i = 0; $i < $this->length; $i++) {
             $this->code .= $this->charset[mt_rand(0, $length)];
         }
         // 设置字体文件路径
-        $this->fontfile = __DIR__ . '/bin/font.ttf';
+        $this->fontfile = __DIR__ . '/bin/captcha.ttf';
         // 缓存验证码字符串
         $this->app->cache->set($this->uniqid, $this->code, 360);
         // 返回当前对象
