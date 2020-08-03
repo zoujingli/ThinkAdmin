@@ -17,10 +17,11 @@
 return [
     'name'    => 'admin',
     'author'  => 'Anyon',
-    'version' => '2020.08.03.01',
+    'version' => '2020.08.03.00',
     'content' => 'ThinkAdmin 系统基础模块',
     'changes' => [
         '2020.08.03.00' => [
+            'content'  => '模块初始化提交',
             'database' => [
                 'select version()',
             ],

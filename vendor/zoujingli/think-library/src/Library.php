@@ -73,11 +73,11 @@ class Library extends Service
                 $this->app->request->setPathinfo($_SERVER['argv'][1]);
             }
         } else {
-            // 注册语言包处理中间键
-            $this->app->middleware->add(LoadLangPack::class);
-            // 注册会话初始化中间键
             if ($this->app->request->request('not_init_session', 0) == 0) {
+                // 注册会话初始化中间键
                 $this->app->middleware->add(SessionInit::class);
+                // 注册语言包处理中间键
+                $this->app->middleware->add(LoadLangPack::class);
             }
             // 注册访问处理中间键
             $this->app->middleware->add(function (Request $request, \Closure $next) {

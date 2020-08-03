@@ -21,6 +21,7 @@ return [
     'content' => 'ThinkAdmin 微信基础模块',
     'changes' => [
         '2020.08.03.00' => [
+            'content'  => '模块初始化提交',
             'database' => [
                 'select version()',
             ],
