@@ -17,6 +17,7 @@ namespace app\admin\controller\api;
 
 use think\admin\Controller;
 use think\admin\service\InstallService;
+use think\admin\service\NodeService;
 
 /**
  * 安装服务端支持
@@ -25,8 +26,44 @@ use think\admin\service\InstallService;
  */
 class Update extends Controller
 {
+
     /**
-     * 读取文件内容
+     * 获取模块信息
+     */
+    public function version()
+    {
+        $input = $this->_vali(['name.default' => '_all']);
+        if ($input['name'] === '_all') {
+            $data = [];
+            foreach (NodeService::instance()->getModules() as $module) {
+                if (is_array($ver = $this->__getModuleVersion($module))) $data[] = $ver;
+            }
+            $this->success('获取所有模块版本成功！', $data);
+        } else {
+            $ver = $this->__getModuleVersion($input['name']);
+            if ($ver === null) $this->error('获取模块版本失败！');
+            if ($ver === false) $this->error('获取模块信息无效！');
+            if (is_array($ver)) $this->success('获取模块版本成功！', [$ver]);
+        }
+    }
+
+    /**
+     * 获取模块版本信息
+     * @param string $name
+     * @return bool|array|null
+     */
+    private function __getModuleVersion($name)
+    {
+        $file = $this->app->getBasePath() . $name . DIRECTORY_SEPARATOR . 'ver.php';
+        if (file_exists($file) && is_file($file) && is_array($vars = @include $file)) {
+            return (isset($vars['name']) && isset($vars['version']) && isset($vars['changes'])) ? $vars : null;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 读取文件内容（旧版本）
      */
     public function get()
     {
@@ -38,25 +75,7 @@ class Update extends Controller
     }
 
     /**
-     * 获取模块版本
-     */
-    public function version()
-    {
-        $input = $this->_vali(['module.require' => '模块名称不能为空！']);
-        $filename = $this->app->getRootPath() . 'app' . DIRECTORY_SEPARATOR . $input['module'] . DIRECTORY_SEPARATOR . 'ver.php';
-        if (file_exists($filename) && is_file($filename) && is_array($vars = include $filename)) {
-            if (isset($vars['name']) && isset($vars['version']) && isset($vars['content']) && isset($vars['changes'])) {
-                $this->success('获取模块版本成功！', $vars);
-            } else {
-                $this->error('获取模块版本失败！');
-            }
-        } else {
-            $this->error('获取的模块无效！');
-        }
-    }
-
-    /**
-     * 读取文件列表
+     * 读取文件列表（旧版本）
      */
     public function node()
     {
