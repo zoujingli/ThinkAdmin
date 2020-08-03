@@ -1,0 +1,30 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+        <table class="layui-table">
+            <tr>
+                <td>模块名称</td>
+                <td>{$module.name}</td>
+            </tr>
+            <tr>
+                <td>模块描述</td>
+                <td>{$module.content}</td>
+            </tr>
+            <tr>
+                <td>最新版本</td>
+                <td>{$module.version}</td>
+            </tr>
+        </table>
+        <ul class="layui-timeline margin-top-30 margin-bottom-30" style="max-height:400px;overflow:auto">
+            {foreach $module.changes as $key=>$vo}
+            <li class="layui-timeline-item">
+                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                <div class="layui-timeline-content layui-text">
+                    <h3 class="layui-timeline-title">{$vo.datetime|default=''}</h3>
+                    <p>模块版本：{$key|default=''}</p>
+                    <p>更新描述：{$vo.content|default=''}</p>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</form>

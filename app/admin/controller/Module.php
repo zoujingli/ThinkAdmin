@@ -47,4 +47,23 @@ class Module extends Controller
         [$state, $message] = ModuleService::instance()->install($data['name']);
         $state ? $this->success($message) : $this->error($message);
     }
+
+    /**
+     * 查看模块更新
+     * @auth true
+     */
+    public function change()
+    {
+        $data = $this->_vali(['name.require' => '模块名称不能为空！']);
+        $modules = ModuleService::instance()->online();
+        if (isset($modules[$data['name']])) {
+            $this->module = $modules[$data['name']];
+            foreach ($this->module['changes'] as $key => &$change) {
+                $change['datetime'] = preg_replace("|^(\d{4})\.(\d{2})\.(\d{2}).*?$|", '$1年$2月$3日', $key);
+            }
+            $this->fetch();
+        } else {
+            $this->error('未查询到模块更新记录！');
+        }
+    }
 }
