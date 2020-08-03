@@ -38,6 +38,24 @@ class Update extends Controller
     }
 
     /**
+     * 获取模块版本
+     */
+    public function version()
+    {
+        $input = $this->_vali(['module.require' => '模块名称不能为空！']);
+        $filename = $this->app->getRootPath() . 'app' . DIRECTORY_SEPARATOR . $input['module'] . DIRECTORY_SEPARATOR . 'ver.php';
+        if (file_exists($filename) && is_file($filename) && is_array($vars = include $filename)) {
+            if (isset($vars['name']) && isset($vars['version']) && isset($vars['content']) && isset($vars['changes'])) {
+                $this->success('获取模块版本成功！', $vars);
+            } else {
+                $this->error('获取模块版本失败！');
+            }
+        } else {
+            $this->error('获取的模块无效！');
+        }
+    }
+
+    /**
      * 读取文件列表
      */
     public function node()
