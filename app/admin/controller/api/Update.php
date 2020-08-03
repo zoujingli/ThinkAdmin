@@ -41,9 +41,9 @@ class Update extends Controller
             $this->success('获取所有模块版本成功！', $data);
         } else {
             $ver = $this->__getModuleVersion($input['name']);
-            if ($ver === null) $this->error('获取模块版本失败！');
+            if ($ver === null) $this->error('获取模块信息失败！');
             if ($ver === false) $this->error('获取模块信息无效！');
-            if (is_array($ver)) $this->success('获取模块版本成功！', [$ver]);
+            if (is_array($ver)) $this->success('获取模块信息成功！', [$ver]);
         }
     }
 
@@ -56,7 +56,7 @@ class Update extends Controller
     {
         $file = $this->app->getBasePath() . $name . DIRECTORY_SEPARATOR . 'ver.php';
         if (file_exists($file) && is_file($file) && is_array($vars = @include $file)) {
-            return (isset($vars['name']) && isset($vars['version']) && isset($vars['changes'])) ? $vars : null;
+            return isset($vars['name']) && isset($vars['version']) ? $vars : null;
         } else {
             return false;
         }
