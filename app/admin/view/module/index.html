@@ -20,7 +20,7 @@
             <td class='text-left nowrap'>{$vo.name}</td>
             <td class='text-left nowrap'>{$vo.content}</td>
             <td class='text-left nowrap'>
-                <div class="inline-block" data-title="查看模块版本" data-modal="{:url('change')}?name={$vo.name}">
+                <div class="inline-block pointer" data-title="查看模块版本" data-modal="{:url('change')}?name={$vo.name}">
                     {if isset($vo.local)} {$vo.local.version}
                     {if $vo.version > $vo.local.version}
                     <span class="color-red margin-left-5">{$vo.version}</span>
