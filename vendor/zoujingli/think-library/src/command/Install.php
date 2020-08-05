@@ -117,7 +117,7 @@ class Install extends Command
         $data = InstallService::instance()->grenerateDifference($this->rules, $this->ignore);
         if (empty($data)) $this->output->writeln('No need to update the file if the file comparison is consistent');
         else foreach ($data as $file) {
-            [$state, $mode, $name] = InstallService::instance()->fileSynchronization($file);
+            [$state, $mode, $name] = InstallService::instance()->updateFileByDownload($file);
             if ($state) {
                 if ($mode === 'add') $this->output->writeln("--- {$name} add successfully");
                 if ($mode === 'mod') $this->output->writeln("--- {$name} update successfully");

@@ -62,18 +62,20 @@ class Library extends Service
      */
     public function register()
     {
+        // 输入默认过滤
+        $this->app->request->filter(['trim']);
         // 加载中文语言
         $this->app->lang->load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
         $this->app->lang->load(__DIR__ . '/lang/en-us.php', 'en-us');
-        // 输入变量默认过滤
-        $this->app->request->filter(['trim']);
         // 判断访问模式，兼容 CLI 访问控制器
         if ($this->app->request->isCli()) {
             if (empty($_SERVER['REQUEST_URI']) && isset($_SERVER['argv'][1])) {
                 $this->app->request->setPathinfo($_SERVER['argv'][1]);
             }
         } else {
-            if ($this->app->request->request('not_init_session', 0) == 0) {
+            $isSess = $this->app->request->request('not_init_session', 0) > 0;
+            $notYar = stripos($this->app->request->header('user-agent', ''), 'PHP Yar RPC-') !== false;
+            if ($notYar && $isSess) {
                 // 注册会话初始化中间键
                 $this->app->middleware->add(SessionInit::class);
                 // 注册语言包处理中间键

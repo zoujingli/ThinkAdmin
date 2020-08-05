@@ -94,7 +94,7 @@ class NodeService extends Service
         static $data = [];
         if (empty($force)) {
             if (count($data) > 0) return $data;
-            $data = $this->app->cache->get('system_auth_node', []);
+            $data = $this->app->cache->get('SystemAuthNode', []);
             if (count($data) > 0) return $data;
         } else {
             $data = [];
@@ -113,7 +113,7 @@ class NodeService extends Service
             }
         }
         $data = array_change_key_case($data, CASE_LOWER);
-        $this->app->cache->set('system_auth_node', $data);
+        $this->app->cache->set('SystemAuthNode', $data);
         return $data;
     }
 

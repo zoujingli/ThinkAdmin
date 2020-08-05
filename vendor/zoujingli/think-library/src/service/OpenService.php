@@ -56,6 +56,17 @@ class OpenService extends Service
     }
 
     /**
+     * 接口数据签名
+     * @param array $data [time, nostr, json, sign]
+     * @return array
+     */
+    public function signData(array $data): array
+    {
+        [$time, $nostr, $json] = [time(), uniqid(), json_encode($data, JSON_UNESCAPED_UNICODE)];
+        return [$time, $nostr, $json, md5("{$this->appid}#{$json}#{$time}#{$this->appkey}#{$nostr}")];
+    }
+
+    /**
      * 接口数据请求
      * @param string $uri 接口地址
      * @param array $data 请求数据
@@ -64,11 +75,10 @@ class OpenService extends Service
      */
     public function doRequest(string $uri, array $data = []): array
     {
-        [$time, $nostr, $json] = [time(), uniqid(), json_encode($data)];
-        $sign = md5($this->appid . '#' . $json . '#' . $time . '#' . $this->appkey . '#' . $nostr);
-        $data = ['appid' => $this->appid, 'time' => $time, 'nostr' => $nostr, 'sign' => $sign, 'data' => $json];
-        $result = json_decode(HttpExtend::post("https://open.cuci.cc/{$uri}", $data), true);
-        if (empty($result)) throw new \think\admin\Exception('接口响应异常');
+        [$time, $nostr, $json, $sign] = $this->signData($data);
+        $post = ['appid' => $this->appid, 'time' => $time, 'nostr' => $nostr, 'sign' => $sign, 'data' => $json];
+        $result = json_decode(HttpExtend::post("https://open.cuci.cc/{$uri}", $post), true);
+        if (empty($result)) throw new \think\admin\Exception('服务端接口响应异常');
         if (empty($result['code'])) throw new \think\admin\Exception($result['info']);
         return $result['data'] ?? [];
     }

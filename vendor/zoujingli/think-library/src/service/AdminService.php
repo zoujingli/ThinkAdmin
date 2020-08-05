@@ -142,7 +142,7 @@ class AdminService extends Service
      */
     public function clearCache()
     {
-        $this->app->cache->delete('system_auth_node');
+        $this->app->cache->delete('SystemAuthNode');
         return $this;
     }
 

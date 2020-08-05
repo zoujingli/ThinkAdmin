@@ -38,7 +38,7 @@ class Module extends Controller
     }
 
     /**
-     * 安装模块代码
+     * 安装更新模块
      * @auth true
      */
     public function install()

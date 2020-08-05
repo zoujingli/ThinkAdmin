@@ -28,21 +28,18 @@ class Update extends Controller
 {
 
     /**
-     * 获取模块信息
-     */
-    public function version()
-    {
-        $modules = ModuleService::instance()->getModules();
-        $this->success('获取模块信息成功！', $modules);
-    }
-
-    /**
      * 读取文件内容
      */
     public function get()
     {
-        if (file_exists($file = $this->app->getRootPath() . decode(input('encode', '0')))) {
-            $this->success('读取文件成功！', ['content' => base64_encode(file_get_contents($file))]);
+        $filename = decode(input('encode', '0'));
+        if (!ModuleService::instance()->checkAllowDownload($filename)) {
+            $this->error('下载的文件不在认证规则中！');
+        }
+        if (file_exists($realname = $this->app->getRootPath() . $filename)) {
+            $this->success('读取文件内容成功！', [
+                'content' => base64_encode(file_get_contents($realname)),
+            ]);
         } else {
             $this->error('读取文件内容失败！');
         }
@@ -57,6 +54,14 @@ class Update extends Controller
             json_decode($this->request->post('rules', '[]', ''), true),
             json_decode($this->request->post('ignore', '[]', ''), true)
         ));
+    }
+
+    /**
+     * 获取模块信息
+     */
+    public function version()
+    {
+        $this->success('获取模块信息成功！', ModuleService::instance()->getModules());
     }
 
 }

@@ -81,7 +81,7 @@ class ModuleService extends Service
         } else {
             $lines = [];
             foreach ($data as $file) {
-                [$state, $mode, $name] = InstallService::instance()->fileSynchronization($file);
+                [$state, $mode, $name] = InstallService::instance()->updateFileByDownload($file);
                 if ($state) {
                     if ($mode === 'add') $lines[] = "add {$name} successed";
                     if ($mode === 'mod') $lines[] = "modify {$name} successed";
@@ -111,6 +111,39 @@ class ModuleService extends Service
             }
         }
         return $data;
+    }
+
+    /**
+     * 获取允许下载的规则
+     * @return array
+     */
+    public function getAllowDownloadRule(): array
+    {
+        $data = $this->app->cache->get('moduleAllowRule', []);
+        if (is_array($data) && count($data) > 0) return $data;
+        $data = ['config', 'public/static'];
+        foreach (array_keys($this->getModules()) as $name) $data[] = "app/{$name}";
+        $this->app->cache->set('moduleAllowRule', $data, 30);
+        return $data;
+    }
+
+    /**
+     * 检查文件是否可下载
+     * @param string $name 文件名称
+     * @return boolean
+     */
+    public function checkAllowDownload($name): bool
+    {
+        // 禁止下载数据库配置文件
+        if (stripos($name, 'database.php') !== false) {
+            return false;
+        }
+        // 检查允许下载的文件规则
+        foreach ($this->getAllowDownloadRule() as $rule) {
+            if (stripos($name, $rule) !== false) return true;
+        }
+        // 不在允许下载的文件规则
+        return false;
     }
 
     /**
