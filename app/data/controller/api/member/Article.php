@@ -82,12 +82,12 @@ class Article extends Member
     }
 
     /**
-     * 取消收藏课程
+     * 取消收藏文章
      * @throws \think\db\exception\DbException
      */
     public function delCollection()
     {
-        $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '课程ID不能为空！']);
+        $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '文章ID不能为空！']);
         if ($this->app->db->name('DataArticleCollection')->where($data)->delete() !== false) {
             ArticleService::instance()->syncTotal($data['cid']);
             $this->success('取消收藏成功！');
@@ -111,6 +111,7 @@ class Article extends Member
             foreach ($result['list'] as &$vo) $vo['record'] = $Articles[$vo['cid']] ?? [];
         }
         $this->success('获取收藏记录成功！', $result);
+
     }
 
     /**

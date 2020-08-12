@@ -84,7 +84,6 @@ class Upload extends Controller
      * 文件上传入口
      * @login true
      * @return \think\response\Json
-     * @throws \think\Exception
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
