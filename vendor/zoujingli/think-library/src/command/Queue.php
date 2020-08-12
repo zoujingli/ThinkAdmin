@@ -68,7 +68,7 @@ class Queue extends Command
     {
         $action = $this->input->hasOption('daemon') ? 'start' : $input->getArgument('action');
         if (method_exists($this, $method = "{$action}Action")) return $this->$method();
-        $this->output->error("Wrong operation, Allow stop|start|status|query|listen|clean|dorun|webstop|webstart|webstatus");
+        $this->output->error(">> Wrong operation, Allow stop|start|status|query|listen|clean|dorun|webstop|webstart|webstatus");
     }
 
     /**
@@ -76,12 +76,12 @@ class Queue extends Command
      */
     protected function webStopAction()
     {
-        $root = "{$this->app->getRootPath()}public" . DIRECTORY_SEPARATOR;
+        $root = $this->app->getRootPath() . 'public' . DIRECTORY_SEPARATOR;
         if (count($result = $this->process->query("-t {$root} {$root}router.php")) < 1) {
-            $this->output->writeln("There are no WebServer processes to stop");
+            $this->output->writeln(">> There are no WebServer processes to stop");
         } else foreach ($result as $item) {
             $this->process->close($item['pid']);
-            $this->output->writeln("Successfully sent end signal to process {$item['pid']}");
+            $this->output->writeln(">> Successfully sent end signal to process {$item['pid']}");
         }
     }
 
@@ -92,22 +92,19 @@ class Queue extends Command
     {
         $port = $this->input->getOption('port') ?: '80';
         $host = $this->input->getOption('host') ?: '127.0.0.1';
-        $root = "{$this->app->getRootPath()}public" . DIRECTORY_SEPARATOR;
+        $root = $this->app->getRootPath() . 'public' . DIRECTORY_SEPARATOR;
         $command = "php -S {$host}:{$port} -t {$root} {$root}router.php";
+        $this->output->highlight("># {$command}");
         if (count($result = $this->process->query($command)) > 0) {
-            if ($this->process->iswin()) {
-                $this->process->exec("start http://{$host}:{$port}");
-            }
-            $this->output->writeln("WebServer process already exist for pid {$result[0]['pid']}");
+            if ($this->process->iswin()) $this->process->exec("start http://{$host}:{$port}");
+            $this->output->writeln(">> WebServer process already exist for pid {$result[0]['pid']}");
         } else {
             [$this->process->create($command), usleep(2000)];
             if (count($result = $this->process->query($command)) > 0) {
-                $this->output->writeln("WebServer process started successfully for pid {$result[0]['pid']}");
-                if ($this->process->iswin()) {
-                    $this->process->exec("start http://{$host}:{$port}");
-                }
+                $this->output->writeln(">> WebServer process started successfully for pid {$result[0]['pid']}");
+                if ($this->process->iswin()) $this->process->exec("start http://{$host}:{$port}");
             } else {
-                $this->output->writeln('WebServer process failed to start');
+                $this->output->writeln('>> WebServer process failed to start');
             }
         }
     }
@@ -117,12 +114,12 @@ class Queue extends Command
      */
     protected function webStatusAction()
     {
-        $root = "{$this->app->getRootPath()}public" . DIRECTORY_SEPARATOR;
+        $root = $this->app->getRootPath() . 'public' . DIRECTORY_SEPARATOR;
         if (count($result = $this->process->query("-t {$root} {$root}router.php")) > 0) {
-            $this->output->info("WebServer process {$result[0]['pid']} running");
-            $this->output->write("># {$result[0]['cmd']}");
+            $this->output->highlight("># {$result[0]['cmd']}");
+            $this->output->writeln(">> WebServer process {$result[0]['pid']} running");
         } else {
-            $this->output->warning("The WebServer process is not running");
+            $this->output->writeln(">> The WebServer process is not running");
         }
     }
 
@@ -133,10 +130,10 @@ class Queue extends Command
     {
         $keyword = $this->process->think('xadmin:queue');
         if (count($result = $this->process->query($keyword)) < 1) {
-            $this->output->writeln("There are no task processes to stop");
+            $this->output->writeln(">> There are no task processes to stop");
         } else foreach ($result as $item) {
             $this->process->close($item['pid']);
-            $this->output->writeln("Successfully sent end signal to process {$item['pid']}");
+            $this->output->writeln(">> Successfully sent end signal to process {$item['pid']}");
         }
     }
 
@@ -146,15 +143,16 @@ class Queue extends Command
     protected function startAction()
     {
         $this->app->db->name($this->table)->count();
-        $command = $this->process->think("xadmin:queue listen");
+        $command = $this->process->think('xadmin:queue listen');
+        $this->output->highlight("># {$command}");
         if (count($result = $this->process->query($command)) > 0) {
-            $this->output->writeln("Asynchronous daemons already exist for pid {$result[0]['pid']}");
+            $this->output->writeln(">> Asynchronous daemons already exist for pid {$result[0]['pid']}");
         } else {
             [$this->process->create($command), usleep(1000)];
             if (count($result = $this->process->query($command)) > 0) {
-                $this->output->writeln("Asynchronous daemons started successfully for pid {$result[0]['pid']}");
+                $this->output->writeln(">> Asynchronous daemons started successfully for pid {$result[0]['pid']}");
             } else {
-                $this->output->writeln("Asynchronous daemons failed to start");
+                $this->output->writeln(">> Asynchronous daemons failed to start");
             }
         }
     }
@@ -164,11 +162,11 @@ class Queue extends Command
      */
     protected function queryAction()
     {
-        $result = $this->process->query($this->process->think("xadmin:queue"));
-        if (count($result) > 0) foreach ($result as $item) {
-            $this->output->writeln("{$item['pid']}\t{$item['cmd']}");
+        $list = $this->process->query($this->process->think("xadmin:queue"));
+        if (count($list) > 0) foreach ($list as $item) {
+            $this->output->writeln(">> {$item['pid']}\t{$item['cmd']}");
         } else {
-            $this->output->writeln('No related task process found');
+            $this->output->writeln('>> No related task process found');
         }
     }
 
@@ -210,14 +208,17 @@ class Queue extends Command
     {
         $command = $this->process->think('xadmin:queue listen');
         if (count($result = $this->process->query($command)) > 0) {
-            $this->output->info("Listening for main process {$result[0]['pid']} running");
+            $this->output->writeln("Listening for main process {$result[0]['pid']} running");
         } else {
-            $this->output->warning("The Listening main process is not running");
+            $this->output->writeln("The Listening main process is not running");
         }
     }
 
     /**
      * 立即监听任务
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function listenAction()
     {
@@ -231,25 +232,22 @@ class Queue extends Command
         $this->output->writeln('============== LISTENING ==============');
         while (true) {
             [$start, $where] = [microtime(true), [['status', '=', 1], ['exec_time', '<=', time()]]];
-            $this->app->db->name($this->table)->where($where)->order('exec_time asc')->chunk(100, function (Collection $result) {
-                foreach ($result->toArray() as $vo) try {
-                    $command = $this->process->think("xadmin:queue dorun {$vo['code']} -");
-                    if (count($this->process->query($command)) > 0) {
-                        $this->output->writeln("Already in progress -> [{$vo['code']}] {$vo['title']}");
-                    } else {
-                        $this->process->create($command);
-                        $this->output->writeln("Created new process -> [{$vo['code']}] {$vo['title']}");
-                    }
-                } catch (\Exception $exception) {
-                    $this->app->db->name($this->table)->where(['code' => $vo['code']])->update([
-                        'status' => 4, 'outer_time' => time(), 'exec_desc' => $exception->getMessage(),
-                    ]);
-                    $this->output->error("Execution failed -> [{$vo['code']}] {$vo['title']}，{$exception->getMessage()}");
+            foreach ($this->app->db->name($this->table)->where($where)->order('exec_time asc')->select()->toArray() as $vo) try {
+                $command = $this->process->think("xadmin:queue dorun {$vo['code']} -");
+                $this->output->highlight("># {$command}");
+                if (count($this->process->query($command)) > 0) {
+                    $this->output->writeln(">> Already in progress -> [{$vo['code']}] {$vo['title']}");
+                } else {
+                    $this->process->create($command);
+                    $this->output->writeln(">> Created new process -> [{$vo['code']}] {$vo['title']}");
                 }
-            });
-            if (microtime(true) - $start < 0.5000) {
-                usleep(500000);
+            } catch (\Exception $exception) {
+                $this->app->db->name($this->table)->where(['code' => $vo['code']])->update([
+                    'status' => 4, 'outer_time' => time(), 'exec_desc' => $exception->getMessage(),
+                ]);
+                $this->output->error(">> Execution failed -> [{$vo['code']}] {$vo['title']}，{$exception->getMessage()}");
             }
+            if (microtime(true) - $start < 0.5000) usleep(500000);
         }
     }
 
@@ -309,14 +307,14 @@ class Queue extends Command
      * 修改当前任务状态
      * @param integer $status 任务状态
      * @param string $message 消息内容
-     * @param boolean $issplit 是否分隔
+     * @param boolean $isSplit 是否分隔
      * @throws \think\db\exception\DbException
      */
-    protected function updateQueue($status, $message, $issplit = true)
+    protected function updateQueue($status, $message, $isSplit = true)
     {
         // 更新当前任务
         $info = trim(is_string($message) ? $message : '');
-        $desc = $issplit ? explode("\n", $info) : [$message];
+        $desc = $isSplit ? explode("\n", $info) : [$message];
         $this->app->db->name($this->table)->strict(false)->where(['code' => $this->code])->update([
             'status' => $status, 'outer_time' => microtime(true), 'exec_pid' => getmypid(), 'exec_desc' => $desc[0],
         ]);
