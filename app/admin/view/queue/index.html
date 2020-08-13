@@ -1,23 +1,18 @@
 {extend name='main'}
 
 {block name="button"}
-
-{if auth("start") && $iswin}
+<!--{if auth("start") && $iswin}-->
 <button data-load='{:url("start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开始监听</button>
-{/if}
-
-{if auth("stop") && $iswin}
+<!--{/if}-->
+<!--{if auth("stop") && $iswin}-->
 <button data-load='{:url("stop")}' data-confirm="确定要停止主进程监听吗？" class='layui-btn layui-btn-sm layui-btn-primary'>停止监听</button>
-{/if}
-
-{if auth("remove")}
+<!--{/if}-->
+<!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定批量删除任务吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
-{/if}
-
-{if auth("clear")}
+<!--{/if}-->
+<!--{if auth("clear")}-->
 <button data-load='{:url("clear")}' data-confirm="确定要创建定时清理任务吗？" class='layui-btn layui-btn-sm layui-btn-primary'>定时清理</button>
-{/if}
-
+<!--{/if}-->
 {/block}
 
 {block name="content"}
@@ -101,9 +96,9 @@
                     {/if}
 
                     {eq name='vo.status' value='1'}
-                    <span class="layui-badge layui-bg-black">待处理</span>
+                    <span class="layui-badge layui-bg-black">等待处理</span>
                     {elseif $vo.status eq 2}
-                    <span class="layui-badge layui-bg-green">处理中</span>
+                    <span class="layui-badge layui-bg-green">正在处理</span>
                     {elseif $vo.status eq 3}
                     <span class="layui-badge layui-bg-blue">处理完成</span>
                     {elseif $vo.status eq 4 and auth('redo')}

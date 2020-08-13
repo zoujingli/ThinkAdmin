@@ -1,15 +1,12 @@
 {extend name="main"}
 
 {block name="button"}
-
-{if session('user.username') eq 'admin'}
+<!--{if session('user.username') eq 'admin'}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-queue="{:url('admin/api.plugs/optimize')}">优化数据库</a>
-{/if}
-
-{if auth('system')}
+<!--{/if}-->
+<!--{if auth('system')}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('system')}">修改系统参数</a>
-{/if}
-
+<!--{/if}-->
 {/block}
 
 {block name="content"}

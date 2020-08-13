@@ -1,7 +1,6 @@
 {extend name='main'}
 
 {block name="button"}
-
 {if isset($type) and $type eq 'all'}
 <!--{if auth("add")}-->
 <button data-modal='{:url("add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
@@ -17,7 +16,6 @@
 <a data-confirm="确定要永久删除这些账号吗？" data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
 <!--{/if}-->
 {/if}
-
 {/block}
 
 {block name="content"}

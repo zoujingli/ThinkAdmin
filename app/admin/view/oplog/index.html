@@ -1,15 +1,12 @@
 {extend name='main'}
 
 {block name="button"}
-
-{if auth("clear")}
+<!--{if auth("clear")}-->
 <button data-load='{:url("clear")}' data-confirm="确定要消除所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理日志</button>
-{/if}
-
-{if auth("remove")}
+<!--{/if}-->
+<!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
-{/if}
-
+<!--{/if}-->
 {/block}
 
 {block name="content"}

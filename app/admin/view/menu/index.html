@@ -1,15 +1,12 @@
 {extend name='main'}
 
 {block name="button"}
-
-{if auth("add")}
+<!--{if auth("add")}-->
 <button data-modal='{:url("add")}' data-title="添加菜单" class='layui-btn layui-btn-sm layui-btn-primary'>添加菜单</button>
-{/if}
-
-{if auth("remove")}
+<!--{/if}-->
+<!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-csrf="{:systoken('remove')}" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除菜单</button>
-{/if}
-
+<!--{/if}-->
 {/block}
 
 {block name="content"}

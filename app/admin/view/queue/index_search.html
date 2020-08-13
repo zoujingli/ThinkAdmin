@@ -39,13 +39,12 @@
             <label class="layui-form-label">任务状态</label>
             <div class="layui-input-inline">
                 <select name="status" class="layui-select">
-                    {foreach [''=>'-- 全部状态 --','1'=>'待处理','2'=>'处理中','3'=>'处理完成','4'=>'处理失败'] as $k=>$v}
+                    {foreach [''=>'-- 全部状态 --','1'=>'等待处理','2'=>'正在处理','3'=>'处理完成','4'=>'处理失败'] as $k=>$v}
                     {if input('get.status') eq $k}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
-                    {/if}
-                    {/foreach}
+                    {/if}{/foreach}
                 </select>
             </div>
         </div>
