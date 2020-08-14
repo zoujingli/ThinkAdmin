@@ -177,17 +177,17 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.42",
-        "version_normalized": "3.4.42.0",
+        "version": "v3.4.43",
+        "version_normalized": "3.4.43.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "3b9fe6db7fe3694307d182dd73983584af77d5fd"
+            "reference": "0edf31d2e34f4adb72dd4d2e4a8aa21f84b943e5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/3b9fe6db7fe3694307d182dd73983584af77d5fd",
-            "reference": "3b9fe6db7fe3694307d182dd73983584af77d5fd",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/0edf31d2e34f4adb72dd4d2e4a8aa21f84b943e5",
+            "reference": "0edf31d2e34f4adb72dd4d2e4a8aa21f84b943e5",
             "shasum": "",
             "mirrors": [
                 {
@@ -199,7 +199,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2020-05-21T13:02:25+00:00",
+        "time": "2020-07-08T17:07:26+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -460,17 +460,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.22",
-        "version_normalized": "1.2.22.0",
+        "version": "v1.2.23",
+        "version_normalized": "1.2.23.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "7eb7f6a2d8aa4a105208c7dff6428dcecd0c7059"
+            "reference": "f070dd076a4137ff4e86600b63d1ccfe2f744a92"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/7eb7f6a2d8aa4a105208c7dff6428dcecd0c7059",
-            "reference": "7eb7f6a2d8aa4a105208c7dff6428dcecd0c7059",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/f070dd076a4137ff4e86600b63d1ccfe2f744a92",
+            "reference": "f070dd076a4137ff4e86600b63d1ccfe2f744a92",
             "shasum": "",
             "mirrors": [
                 {
@@ -490,7 +490,7 @@
             "ext-xml": "*",
             "php": ">=5.4"
         },
-        "time": "2020-07-04T07:24:41+00:00",
+        "time": "2020-07-20T06:55:26+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
