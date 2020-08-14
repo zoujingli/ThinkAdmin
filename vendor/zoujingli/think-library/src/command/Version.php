@@ -38,7 +38,7 @@ class Version extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $output->writeln('ThinkLib ' . $this->process->version());
         $output->writeln('ThinkPHP ' . $this->app->version());
+        $output->writeln('ThinkLIB ' . $this->process->version());
     }
 }

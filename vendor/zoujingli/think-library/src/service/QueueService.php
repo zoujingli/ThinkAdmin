@@ -154,6 +154,7 @@ class QueueService extends Service
      */
     public function progress($status = null, $message = null, $progress = null)
     {
+        $cachefile = "queue_{$this->code}_progress";
         if (is_numeric($status) && intval($status) === 3) {
             if (!is_numeric($progress)) $progress = '100.00';
             if (is_null($message)) $message = '>>> 任务已经完成 <<<';
@@ -163,7 +164,11 @@ class QueueService extends Service
             if (is_null($message)) $message = '>>> 任务执行失败 <<<';
         }
         try {
-            $data = $this->app->cache->get("queue_{$this->code}_progress", [
+            // 文件缓存时，重置 opcache 缓存
+            if (function_exists('opcache_invalidate') && strtolower($this->app->cache->getDefaultDriver()) === 'file') {
+                @opcache_invalidate($this->app->cache->getCacheKey($cachefile), true);
+            }
+            $data = $this->app->cache->get($cachefile, [
                 'code' => $this->code, 'status' => $status, 'message' => $message, 'progress' => $progress, 'history' => [],
             ]);
         } catch (\Exception|\Error $exception) {
@@ -186,7 +191,7 @@ class QueueService extends Service
             if (count($data['history']) > 10) {
                 $data['history'] = array_slice($data['history'], -10);
             }
-            $this->app->cache->set("queue_{$this->code}_progress", $data, 86400);
+            $this->app->cache->set($cachefile, $data, 86400);
         }
         return $data;
     }
