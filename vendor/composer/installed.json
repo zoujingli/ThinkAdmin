@@ -69,17 +69,17 @@
     },
     {
         "name": "league/flysystem",
-        "version": "1.1.0",
-        "version_normalized": "1.1.0.0",
+        "version": "1.1.1",
+        "version_normalized": "1.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/thephpleague/flysystem.git",
-            "reference": "481c0174b9c99b189959e2bb9d6f52188ed1f692"
+            "reference": "6e96f54d82e71f71c4108da33ee96a7f57083710"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/481c0174b9c99b189959e2bb9d6f52188ed1f692",
-            "reference": "481c0174b9c99b189959e2bb9d6f52188ed1f692",
+            "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/6e96f54d82e71f71c4108da33ee96a7f57083710",
+            "reference": "6e96f54d82e71f71c4108da33ee96a7f57083710",
             "shasum": "",
             "mirrors": [
                 {
@@ -116,7 +116,7 @@
             "spatie/flysystem-dropbox": "Allows you to use Dropbox storage",
             "srmklive/flysystem-dropbox-v2": "Allows you to use Dropbox storage for PHP 5 applications"
         },
-        "time": "2020-08-09T15:57:10+00:00",
+        "time": "2020-08-12T14:23:41+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -963,12 +963,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "947f3bbdf949e1d341258f778ea0ad91153350a7"
+            "reference": "032fd6e5bd304a2fd7e8d964c2e125db55d4e9db"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/947f3bbdf949e1d341258f778ea0ad91153350a7",
-            "reference": "947f3bbdf949e1d341258f778ea0ad91153350a7",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/032fd6e5bd304a2fd7e8d964c2e125db55d4e9db",
+            "reference": "032fd6e5bd304a2fd7e8d964c2e125db55d4e9db",
             "shasum": "",
             "mirrors": [
                 {
@@ -984,7 +984,7 @@
             "ext-json": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-08-12T03:01:11+00:00",
+        "time": "2020-08-14T05:29:39+00:00",
         "type": "library",
         "extra": {
             "think": {

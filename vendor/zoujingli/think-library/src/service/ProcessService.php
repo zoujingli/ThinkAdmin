@@ -26,7 +26,7 @@ class ProcessService extends Service
 {
 
     /**
-     * 创建并获取Think指令内容
+     * 获取 Think 指令内容
      * @param string $args 指定参数
      * @return string
      */
@@ -55,7 +55,7 @@ class ProcessService extends Service
         if ($this->iswin()) {
             $this->exec(__DIR__ . "/bin/console.exe {$command}");
         } else {
-            $this->exec("{$command} > /dev/null &");
+            $this->exec("{$command} > /dev/null 2>&1 &");
         }
         return $this;
     }
@@ -78,7 +78,7 @@ class ProcessService extends Service
             $lines = $this->exec("ps ax|grep -v grep|grep \"{$command}\"", true);
             foreach ($lines as $line) if ($this->_issub($line, $command) !== false) {
                 $attr = explode(' ', $this->_space($line));
-                list($pid) = [array_shift($attr), array_shift($attr), array_shift($attr), array_shift($attr)];
+                [$pid] = [array_shift($attr), array_shift($attr), array_shift($attr), array_shift($attr)];
                 $list[] = ['pid' => $pid, 'cmd' => join(' ', $attr)];
             }
         }

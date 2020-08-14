@@ -33,87 +33,80 @@ class SystemService extends Service
     protected $data = [];
 
     /**
+     * 绑定配置数据表
+     * @var string
+     */
+    protected $table = 'SystemConfig';
+
+    /**
      * 设置配置数据
      * @param string $name 配置名称
      * @param string $value 配置内容
-     * @return static
+     * @return integer
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public function set($name, $value = '')
     {
-        [$type, $field] = $this->parse($name);
+        [$this->data, $count] = [[], 0];
+        [$type, $field] = $this->parse($name, 'base');
         if (is_array($value)) {
-            foreach ($value as $k => $v) $this->set("{$field}.{$k}", $v);
+            foreach ($value as $kk => $vv) $count += $this->set("{$field}.{$kk}", $vv);
+            return $count;
         } else {
-            $this->data = [];
-            $data = ['name' => $field, 'value' => $value, 'type' => $type];
-            $this->save('SystemConfig', $data, 'name', ['type' => $type]);
+            $this->app->cache->delete($this->table);
+            $data = ['type' => $type, 'name' => $field, 'value' => $value];
+            $query = $this->app->db->name($this->table)->where(['type' => $type, 'name' => $name]);
+            return (clone $query)->count() > 0 ? $query->update($data) : $query->insert($data);
         }
-        return $this;
     }
 
     /**
      * 读取配置数据
      * @param string $name
+     * @param string $default
      * @return array|mixed|string
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function get($name)
+    public function get($name = '', $default = '')
     {
-        [$type, $field, $outer] = $this->parse($name);
-        if (empty($this->data)) foreach ($this->app->db->name('SystemConfig')->select() as $vo) {
-            $this->data[$vo['type']][$vo['name']] = $vo['value'];
-        }
+        [$type, $field, $outer] = $this->parse($name, 'base');
+        if (empty($this->data)) $this->app->db->name($this->table)->cache($this->table)->select()->map(function ($item) {
+            $this->data[$item['type']][$item['name']] = $item['value'];
+        });
         if (empty($name)) {
-            return empty($this->data[$type]) ? [] : ($outer === 'raw' ? $this->data[$type] : array_map(function ($value) {
-                return htmlspecialchars($value);
-            }, $this->data[$type]));
-        } else {
-            if (isset($this->data[$type])) {
-                if ($field) {
-                    if (isset($this->data[$type][$field])) {
-                        return $outer === 'raw' ? $this->data[$type][$field] : htmlspecialchars($this->data[$type][$field]);
-                    }
-                } else {
-                    if ($outer === 'raw') foreach ($this->data[$type] as $key => $vo) {
-                        $this->data[$type][$key] = htmlspecialchars($vo);
-                    }
-                    return $this->data[$type];
-                }
+            return $this->data;
+        } elseif (isset($this->data[$type])) {
+            $group = $this->data[$type];
+            if ($outer !== 'raw') foreach ($group as $kk => $vo) {
+                $group[$kk] = htmlspecialchars($vo);
             }
-            return '';
+            return $field ? ($group[$field] ?? $default) : $group;
+        } else {
+            return $default;
         }
     }
 
     /**
      * 数据增量保存
      * @param Query|string $dbQuery 数据查询对象
-     * @param array $data 需要保存或更新的数据
-     * @param string $key 条件主键限制
-     * @param array $where 其它的where条件
-     * @return boolean|integer
+     * @param array $data 需要保存的数据
+     * @param string $key 更新条件查询主键
+     * @param array $where 额外更新查询条件
+     * @return boolean|integer 失败返回 false, 成功返回主键值或 true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function save($dbQuery, $data, $key = 'id', $where = [])
+    public function save($dbQuery, $data, $key = 'id', array $where = [])
     {
-        $db = is_string($dbQuery) ? $this->app->db->name($dbQuery) : $dbQuery;
-        [$table, $value] = [$db->getTable(), isset($data[$key]) ? $data[$key] : null];
-        $map = isset($where[$key]) ? [] : (is_string($value) ? [[$key, 'in', explode(',', $value)]] : [$key => $value]);
-        if (is_array($info = $this->app->db->table($table)->master()->where($where)->where($map)->find()) && !empty($info)) {
-            if ($this->app->db->table($table)->strict(false)->where($where)->where($map)->update($data) !== false) {
-                return $info[$key] ?? true;
-            } else {
-                return false;
-            }
-        } else {
-            return $this->app->db->table($table)->strict(false)->insertGetId($data);
-        }
+        $val = $data[$key] ?? null;
+        $query = (is_string($dbQuery) ? $this->app->db->name($dbQuery) : $dbQuery)->master()->strict(false)->where($where);
+        if (empty($where[$key])) is_string($val) && strpos($val, ',') !== false ? $query->whereIn($key, explode(',', $val)) : $query->where([$key => $val]);
+        return is_array($info = (clone $query)->find()) && !empty($info) ? ($query->update($data) !== false ? ($info[$key] ?? true) : false) : $query->insertGetId($data);
     }
 
     /**
@@ -125,7 +118,7 @@ class SystemService extends Service
     private function parse($rule, $type = 'base')
     {
         if (stripos($rule, '.') !== false) {
-            [$type, $rule] = explode('.', $rule);
+            [$type, $rule] = explode('.', $rule, 2);
         }
         [$field, $outer] = explode('|', "{$rule}|");
         return [$type, $field, strtolower($outer)];
@@ -198,12 +191,13 @@ class SystemService extends Service
      * @param mixed $data 输出的数据
      * @param boolean $new 强制替换文件
      * @param string|null $file 文件名称
+     * @return false|int
      */
     public function putDebug($data, $new = false, $file = null)
     {
         if (is_null($file)) $file = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . date('Ymd') . '.log';
         $str = (is_string($data) ? $data : ((is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true))) . PHP_EOL;
-        $new ? file_put_contents($file, $str) : file_put_contents($file, $str, FILE_APPEND);
+        return $new ? file_put_contents($file, $str) : file_put_contents($file, $str, FILE_APPEND);
     }
 
     /**
@@ -347,8 +341,7 @@ class SystemService extends Service
     public function doInit(\think\App $app): void
     {
         $app->debug($this->isDebug());
-        $response = $app->http->run();
-        $response->send();
+        ($response = $app->http->run())->send();
         $app->http->end($response);
     }
 }
