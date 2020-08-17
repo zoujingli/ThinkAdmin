@@ -34,9 +34,9 @@ return [
             // 单文件日志写入
             'single'         => true,
             // 指定日志类型
-            'level'          => ['warning', 'error', 'alert', 'sql'],
+            'level'          => ['notice', 'error', 'sql'],
             // 独立日志级别
-            'apart_level'    => ['warning', 'error', 'alert', 'sql'],
+            'apart_level'    => true,
             // 每个文件大小 ( 10兆 )
             'file_size'      => 1024 * 1024 * 10,
             // 日志日期格式
