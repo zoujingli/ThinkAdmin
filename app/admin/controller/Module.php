@@ -60,8 +60,8 @@ class Module extends Controller
             $this->module = $modules[$data['name']];
             foreach ($this->module['change'] as $key => &$change) {
                 $change = [
-                    'datetime' => preg_replace("|^(\d{4})\.(\d{2})\.(\d{2}).*?$|", '$1年$2月$3日', $key),
-                    'content'  => $change,
+                    'version' => preg_replace("|^(\d{4})\.(\d{2})\.(\d{2})\.(\d+)$|", '$1年$2月$3日 第$4次更新', $key),
+                    'content' => $change,
                 ];
             }
             $this->fetch();

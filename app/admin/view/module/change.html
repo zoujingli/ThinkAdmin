@@ -15,11 +15,11 @@
             </tr>
         </table>
         <ul class="layui-timeline margin-top-30 margin-bottom-30" style="max-height:400px;overflow:auto">
-            {foreach $module.change as $version=>$change}
+            {foreach $module.change as $change}
             <li class="layui-timeline-item">
                 <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                 <div class="layui-timeline-content layui-text">
-                    <h3 class="layui-timeline-title">版本号 {$version|default=''}，于 {$change.datetime|default=''} 更新</h3>
+                    <h3 class="layui-timeline-title">{$change.version|default=''}</h3>
                     {$change.content|default=''|raw}
                 </div>
             </li>
