@@ -13,18 +13,9 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-// 模块配置文件
 return [
     'name'    => 'wechat',
     'author'  => 'Anyon',
     'version' => '2020.08.03.01',
     'content' => 'ThinkAdmin 微信基础模块',
-    'changes' => [
-        '2020.08.03.00' => [
-            'content'  => '模块初始化提交',
-            'database' => [
-                'select version()',
-            ],
-        ],
-    ],
 ];

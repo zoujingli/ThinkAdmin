@@ -16,6 +16,7 @@
 namespace think\admin\service;
 
 use think\admin\extend\HttpExtend;
+use think\admin\extend\Parsedown;
 use think\admin\Service;
 
 /**
@@ -104,9 +105,12 @@ class ModuleService extends Service
     public function getModules(array $data = []): array
     {
         foreach (NodeService::instance()->getModules() as $name) {
-            if (is_array($version = $this->getModuleVersion($name))) {
-                if (preg_match('|^\d{4}\.\d{2}\.\d{2}\.\d{2}$|', $version['version'])) {
-                    $data[$name] = $version;
+            if (is_array($vars = $this->getModuleVersion($name)) && isset($vars['version'])) {
+                if (preg_match('|^\d{4}\.\d{2}\.\d{2}\.\d{2}$|', $vars['version'])) {
+                    $data[$name] = $vars;
+                    foreach (glob("{$this->app->getBasePath()}{$name}/module/change/*.md") as $file) {
+                        $data[$name]['change'][pathinfo($file, PATHINFO_FILENAME)] = Parsedown::instance()->parse(file_get_contents($file));
+                    }
                 }
             }
         }
@@ -153,7 +157,7 @@ class ModuleService extends Service
      */
     private function getModuleVersion($name)
     {
-        $file = $this->app->getBasePath() . $name . DIRECTORY_SEPARATOR . 'ver.php';
+        $file = "{$this->app->getBasePath()}{$name}/module/version.php";
         if (file_exists($file) && is_file($file) && is_array($vars = @include $file)) {
             return isset($vars['name']) && isset($vars['version']) ? $vars : null;
         } else {

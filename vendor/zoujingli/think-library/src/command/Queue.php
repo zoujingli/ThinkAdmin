@@ -94,7 +94,7 @@ class Queue extends Command
         $host = $this->input->getOption('host') ?: '127.0.0.1';
         $root = $this->app->getRootPath() . 'public' . DIRECTORY_SEPARATOR;
         $command = "php -S {$host}:{$port} -t {$root} {$root}router.php";
-        $this->output->highlight("># {$command}");
+        $this->output->comment("># {$command}");
         if (count($result = $this->process->query($command)) > 0) {
             if ($this->process->iswin()) $this->process->exec("start http://{$host}:{$port}");
             $this->output->writeln(">> WebServer process already exist for pid {$result[0]['pid']}");
@@ -116,7 +116,7 @@ class Queue extends Command
     {
         $root = $this->app->getRootPath() . 'public' . DIRECTORY_SEPARATOR;
         if (count($result = $this->process->query("-t {$root} {$root}router.php")) > 0) {
-            $this->output->highlight("># {$result[0]['cmd']}");
+            $this->output->comment("># {$result[0]['cmd']}");
             $this->output->writeln(">> WebServer process {$result[0]['pid']} running");
         } else {
             $this->output->writeln(">> The WebServer process is not running");
@@ -144,7 +144,7 @@ class Queue extends Command
     {
         $this->app->db->name($this->table)->count();
         $command = $this->process->think('xadmin:queue listen');
-        $this->output->highlight("># {$command}");
+        $this->output->comment("># {$command}");
         if (count($result = $this->process->query($command)) > 0) {
             $this->output->writeln(">> Asynchronous daemons already exist for pid {$result[0]['pid']}");
         } else {
@@ -234,7 +234,7 @@ class Queue extends Command
             [$start, $where] = [microtime(true), [['status', '=', 1], ['exec_time', '<=', time()]]];
             foreach ($this->app->db->name($this->table)->where($where)->order('exec_time asc')->select()->toArray() as $vo) try {
                 $command = $this->process->think("xadmin:queue dorun {$vo['code']} -");
-                $this->output->highlight("># {$command}");
+                $this->output->comment("># {$command}");
                 if (count($this->process->query($command)) > 0) {
                     $this->output->writeln(">> Already in progress -> [{$vo['code']}] {$vo['title']}");
                 } else {

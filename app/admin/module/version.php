@@ -13,20 +13,9 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-// 模块配置文件
 return [
     'name'    => 'admin',
     'author'  => 'Anyon',
-    'version' => '2020.08.05.00',
+    'version' => '2020.08.03.00',
     'content' => 'ThinkAdmin 系统基础模块',
-    'changes' => [
-        '2020.08.05.00' => [
-            'content'  => '优化系统模块管理',
-            'database' => ['select version()'],
-        ],
-        '2020.08.03.00' => [
-            'content'  => '系统模块初始化提交',
-            'database' => ['select version()'],
-        ],
-    ],
 ];
