@@ -72,7 +72,7 @@ class MenuService extends Service
             elseif ($menu['url'] === '#') unset($menus[$key]);
             elseif (preg_match('|^https?://|i', $menu['url'])) continue;
             else {
-                $node = join('/', array_slice(explode('/', preg_replace('/[\W]/', '/', $menu['url'])), 0, 3));
+                $node = join('/', array_slice(explode('/', $menu['url']), 0, 3));
                 $menu['url'] = url($menu['url']) . (empty($menu['params']) ? '' : "?{$menu['params']}");
                 if (!AdminService::instance()->check($node)) unset($menus[$key]);
             }

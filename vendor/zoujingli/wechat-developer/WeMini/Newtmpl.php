@@ -73,8 +73,9 @@ class Newtmpl extends BasicWeChat
     public function getPubTemplateTitleList($ids)
     {
         $url = 'https://api.weixin.qq.com/wxaapi/newtmpl/getpubtemplatetitles?access_token=ACCESS_TOKEN';
+        $url .= '&' . http_build_query(['ids' => $ids, 'start' => '0', 'limit' => '30']);
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->callPostApi($url, ['ids' => $ids, 'start' => '0', 'limit' => '30'], true);
+        return $this->callGetApi($url);
     }
 
     /**
@@ -87,8 +88,9 @@ class Newtmpl extends BasicWeChat
     public function getPubTemplateKeyWordsById($tid)
     {
         $url = 'https://api.weixin.qq.com/wxaapi/newtmpl/getpubtemplatekeywords?access_token=ACCESS_TOKEN';
+        $url .= '&' . http_build_query(['tid' => $tid]);
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->callPostApi($url, ['tid' => $tid], true);
+        return $this->callGetApi($url);
     }
 
     /**
@@ -117,7 +119,7 @@ class Newtmpl extends BasicWeChat
     {
         $url = 'https://api.weixin.qq.com/wxaapi/newtmpl/gettemplate?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->callPostApi($url, [], true);
+        return $this->callGetApi($url);
     }
 
     /**

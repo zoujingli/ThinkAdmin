@@ -28,10 +28,9 @@ try {
     $result = $pay->apply([
         'out_trade_no' => time(), // 商户订单号
         'total_amount' => '1', // 支付金额
-        'subject'      => 'test subject', // 支付订单描述
+        'subject'      => '支付宝订单标题', // 支付订单描述
     ]);
-    echo '<pre>';
-    var_export($result);
+    echo $result;
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
