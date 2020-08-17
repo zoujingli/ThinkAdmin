@@ -58,8 +58,11 @@ class Module extends Controller
         $modules = ModuleService::instance()->online();
         if (isset($modules[$data['name']])) {
             $this->module = $modules[$data['name']];
-            foreach ($this->module['changes'] as $key => &$change) {
-                $change['datetime'] = preg_replace("|^(\d{4})\.(\d{2})\.(\d{2}).*?$|", '$1年$2月$3日', $key);
+            foreach ($this->module['change'] as $key => &$change) {
+                $change = [
+                    'datetime' => preg_replace("|^(\d{4})\.(\d{2})\.(\d{2}).*?$|", '$1年$2月$3日', $key),
+                    'content'  => $change,
+                ];
             }
             $this->fetch();
         } else {
