@@ -16,6 +16,6 @@
 return [
     'name'    => 'admin',
     'author'  => 'Anyon',
-    'version' => '2020.08.03.00',
+    'version' => '2020.08.03.01',
     'content' => 'ThinkAdmin 系统基础模块',
 ];
