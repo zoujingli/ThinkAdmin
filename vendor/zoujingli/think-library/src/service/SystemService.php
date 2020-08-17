@@ -57,7 +57,7 @@ class SystemService extends Service
         } else {
             $this->app->cache->delete($this->table);
             $data = ['type' => $type, 'name' => $field, 'value' => $value];
-            $query = $this->app->db->name($this->table)->where(['type' => $type, 'name' => $name]);
+            $query = $this->app->db->name($this->table)->where(['type' => $type, 'name' => $field]);
             return (clone $query)->count() > 0 ? $query->update($data) : $query->insert($data);
         }
     }

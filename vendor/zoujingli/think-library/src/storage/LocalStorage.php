@@ -33,7 +33,7 @@ class LocalStorage extends Storage
      */
     protected function initialize()
     {
-        $type = strtolower(sysconf('storage.local_http_protocol'));
+        $type = sysconf('storage.local_http_protocol') ?: 'follow';
         if ($type === 'follow') $type = $this->app->request->scheme();
         $this->prefix = trim(dirname($this->app->request->baseFile(false)), '\\/');
         if ($type !== 'path') {
