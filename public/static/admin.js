@@ -125,7 +125,7 @@ $(function () {
         this.selecter = '.layui-layout-admin>.layui-body';
         // 刷新当前页面
         this.reload = function () {
-            window.onhashchange.call(this);
+            self === top ? window.onhashchange.call(this) : window.location.reload();
         };
         // 内容区域动态加载后初始化
         this.reInit = function ($dom) {
