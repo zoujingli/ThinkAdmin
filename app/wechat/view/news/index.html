@@ -41,33 +41,28 @@
 
 {block name='script'}
 <script>
-
-    $('body').on('mouseenter', '.news-item', function () {
+    $('body').off('mouseenter', '.news-item').on('mouseenter', '.news-item', function () {
         $(this).find('.news-tools').removeClass('layui-hide');
-    }).on('mouseleave', '.news-item', function () {
+    }).off('mouseleave', '.news-item').on('mouseleave', '.news-item', function () {
         $(this).find('.news-tools').addClass('layui-hide');
     });
-
     require(['jquery.masonry'], function (Masonry) {
-        var item = document.querySelector('#news-box');
-        var msnry = new Masonry(item, {itemSelector: '.news-item', columnWidth: 0});
-        msnry.layout();
-        $('body').on('click', '[data-news-del]', function () {
-            var that = this;
-            var dialogIndex = $.msg.confirm('确定要删除图文吗？', function () {
-                $.form.load('{:url("remove")}', {value: 0, field: 'delete', id: that.getAttribute('data-news-del')}, 'post', function (ret) {
+        var newsbox = document.querySelector('#news-box');
+        var msnry = new Masonry(newsbox, {itemSelector: '.news-item', columnWidth: 0});
+        msnry.layout(), $('body').on('click', '[data-news-del]', function (event) {
+            $.msg.confirm('确定要删除图文吗？', function (index) {
+                $.msg.close(index), $.form.load('{:url("remove")}', {value: 0, field: 'delete', id: $(event.target).data('news-del')}, 'post', function (ret) {
                     if (ret.code) {
-                        $(that).parents('.news-item').remove();
-                        msnry = new Masonry(item, {itemSelector: '.news-item', columnWidth: 0});
-                        return $.msg.success(ret.msg), msnry.layout(), false;
+                        $(event.target).parents('.news-item').remove();
+                        msnry = new Masonry(newsbox, {itemSelector: '.news-item', columnWidth: 0});
+                        return msnry.layout(), (msnry.items.length < 1 && $.form.open('{:url("index")}')), $.msg.success(ret.info), false;
+                    } else {
+                        return $.msg.error(ret.info), false;
                     }
-                    return $.msg.error(ret.msg), false;
                 });
-                $.msg.close(dialogIndex);
             });
         });
     });
-
 </script>
 {/block}
 
