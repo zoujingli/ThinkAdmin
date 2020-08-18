@@ -13,7 +13,7 @@ html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}main{display:b
 @media only screen and (min-width:736px){html{font-size:46px!important}}
 .header{margin-top:.4rem;text-align:center}
 .header span{padding:.1rem .2rem;border-radius:.5rem;background:#999;color:#fff;font-size:.6rem}
-.container{position:relative;display:block;overflow:hidden;margin:5vw auto;width:90%;color:#333;text-overflow:ellipsis}
+.container{position:relative;display:block;margin:5vw auto;width:90%;color:#333;text-overflow:ellipsis}
 .container .logo{position:absolute;top:0;display:inline-block;width:2.5rem;height:2.5rem;border-radius:50%;background:#098;color:#fff;content:'A';text-align:center;font-size:.8rem;line-height:2.5rem}
 .container .content{position:relative;left:3.4rem;display:inline-block;padding:.8rem .8rem .8rem;max-width:54vw;border:1px solid #ccc;border-radius:.25rem;background:#fff;font-size:.7rem;line-height:1.5em}
 .container .arrow:after,.container .arrow:before{position:absolute;top:.8rem;left:-.4rem;width:0;height:0;border-color:transparent #ccc transparent transparent;border-style:solid;border-width:.4rem .4rem .4rem 0;content:' '}
