@@ -19,7 +19,7 @@ use think\admin\extend\HttpExtend;
 use think\admin\Service;
 
 /**
- * 短信业务扩展服务
+ * 旧助通短信接口服务
  * Class MessageService
  * @package app\store\service
  * =================================
@@ -145,7 +145,7 @@ class MessageService extends Service
             'productid' => $productid,
             'password'  => md5(md5($this->chinaPassword) . $tkey),
         ]);
-        list($code, $message) = explode(',', $result . ',');
+        [$code, $message] = explode(',', $result . ',');
         $this->app->db->name($this->table)->insert([
             'phone' => $phone, 'region' => '860', 'content' => $content, 'result' => $result,
         ]);
@@ -169,7 +169,7 @@ class MessageService extends Service
             $dtime = ($cache['time'] + $wait < time()) ? 0 : ($wait - time() + $cache['time']);
             return [1, '短信验证码已经发送！', ['time' => $dtime]];
         }
-        list($code, $content) = [rand(1000, 9999), sysconf($type)];
+        [$code, $content] = [rand(1000, 9999), sysconf($type)];
         if (empty($content) || stripos($content, '{code}') === false) {
             $content = '您的验证码为{code}，请在十分钟内完成操作！';
         }

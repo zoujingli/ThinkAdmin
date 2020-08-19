@@ -234,7 +234,7 @@ class SystemService extends Service
         if (is_null($state)) {
             return $this->bindRuntime();
         } else {
-            return $this->setRuntime([], $state ? 'product' : 'developoer');
+            return $this->setRuntime([], $state ? 'product' : 'debug');
         }
     }
 
@@ -253,7 +253,7 @@ class SystemService extends Service
         if (empty($data) || !is_array($data)) $data = [];
         if (empty($data['map']) || !is_array($data['map'])) $data['map'] = [];
         if (empty($data['uri']) || !is_array($data['uri'])) $data['uri'] = [];
-        if (empty($data['run']) || !is_string($data['run'])) $data['run'] = 'developer';
+        if (empty($data['run']) || !is_string($data['run'])) $data['run'] = 'debug';
         return is_null($key) ? $data : ($data[$key] ?? $default);
     }
 

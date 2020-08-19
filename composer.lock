@@ -74,16 +74,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "6e96f54d82e71f71c4108da33ee96a7f57083710"
+                "reference": "63cd8c14708b9544d3f61d3c15b747fda1c95c6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/6e96f54d82e71f71c4108da33ee96a7f57083710",
-                "reference": "6e96f54d82e71f71c4108da33ee96a7f57083710",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/63cd8c14708b9544d3f61d3c15b747fda1c95c6e",
+                "reference": "63cd8c14708b9544d3f61d3c15b747fda1c95c6e",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -167,7 +167,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2020-08-12T14:23:41+00:00"
+            "time": "2020-08-18T10:57:55+00:00"
         },
         {
             "name": "league/flysystem-cached-adapter",
@@ -937,12 +937,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "7a6e104189fca196ea4bc8311d7c9e45a2348de3"
+                "reference": "2100be983dcb654d93003773ec62ac7324cd91e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/7a6e104189fca196ea4bc8311d7c9e45a2348de3",
-                "reference": "7a6e104189fca196ea4bc8311d7c9e45a2348de3",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/2100be983dcb654d93003773ec62ac7324cd91e9",
+                "reference": "2100be983dcb654d93003773ec62ac7324cd91e9",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -987,7 +987,7 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://thinkadmin.top",
-            "time": "2020-08-17T10:35:51+00:00"
+            "time": "2020-08-19T02:25:08+00:00"
         },
         {
             "name": "zoujingli/wechat-developer",
