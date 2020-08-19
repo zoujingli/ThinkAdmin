@@ -33,6 +33,7 @@ require.config({
     paths: {
         'md5': ['plugs/jquery/md5.min'],
         'json': ['plugs/jquery/json.min'],
+        'xlsx': ['plugs/jquery/xlsx.min'],
         'michat': ['plugs/michat/michat'],
         'base64': ['plugs/jquery/base64.min'],
         'upload': [tapiRoot + '/api.upload?.js'],
