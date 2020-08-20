@@ -150,11 +150,7 @@ class TokenService extends Service
     private function _getCacheItem(string $token, $default = [])
     {
         $this->_clearTimeoutCache();
-        if (isset($this->cachedata[$token])) {
-            return array_merge($this->cachedata[$token], ['token' => $token]);
-        } else {
-            return $default;
-        }
+        return $this->cachedata[$token] ?? $default;
     }
 
     /**
@@ -180,6 +176,9 @@ class TokenService extends Service
             if (empty($item['time']) || $item['time'] + $this->expire < $time) {
                 unset($this->cachedata[$key]);
             }
+        }
+        if (count($this->cachedata) > 99) {
+            $this->cachedata = array_slice($this->cachedata, -99);
         }
         return $this->cachedata;
     }
