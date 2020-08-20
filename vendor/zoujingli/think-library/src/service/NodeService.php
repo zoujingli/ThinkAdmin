@@ -102,11 +102,11 @@ class NodeService extends Service
         $ignores = get_class_methods('\think\admin\Controller');
         foreach ($this->_scanDirectory($this->app->getBasePath()) as $file) {
             if (preg_match("|/(\w+)/(\w+)/controller/(.+)\.php$|i", $file, $matches)) {
-                list(, $namespace, $appname, $classname) = $matches;
-                $class = new \ReflectionClass(strtr("{$namespace}/{$appname}/controller/{$classname}", '/', '\\'));
+                [, $namespace, $appname, $classname] = $matches;
                 $prefix = strtr("{$appname}/{$this->nameTolower($classname)}", '\\', '/');
-                $data[$prefix] = $this->_parseComment($class->getDocComment(), $classname);
-                foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                $reflection = new \ReflectionClass(strtr("{$namespace}/{$appname}/controller/{$classname}", '/', '\\'));
+                $data[$prefix] = $this->_parseComment($reflection->getDocComment(), $classname);
+                foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
                     if (in_array($metname = $method->getName(), $ignores)) continue;
                     $data["{$prefix}/{$metname}"] = $this->_parseComment($method->getDocComment(), $metname);
                 }

@@ -17,6 +17,7 @@ namespace think\admin\service;
 
 use think\admin\extend\DataExtend;
 use think\admin\Service;
+use think\helper\Str;
 
 /**
  * 系统权限管理服务
@@ -74,8 +75,12 @@ class AdminService extends Service
         if ($this->isSuper()) return true;
         $service = NodeService::instance();
         [$real, $nodes] = [$service->fullnode($node), $service->getMethods()];
-        foreach ($nodes as $key => $rule) if (stripos($key, '_') !== false) {
-            $nodes[str_replace('_', '', $key)] = $rule;
+        foreach ($nodes as $key => $rule) {
+            if (strpos($key, '_') !== false && strpos($key, '/') !== false) {
+                $attr = explode('/', $key);
+                $attr[1] = strtr($attr[1], ['_' => '']);
+                $nodes[join('/', $attr)] = $rule;
+            }
         }
         if (!empty($nodes[$real]['isauth'])) {
             return in_array($real, $this->app->session->get('user.nodes', []));

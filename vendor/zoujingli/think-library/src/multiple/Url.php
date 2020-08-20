@@ -13,6 +13,8 @@
 
 namespace think\admin\multiple;
 
+use think\helper\Str;
+
 /**
  * 多应用URL生成与解析
  * Class Url
@@ -49,7 +51,7 @@ class Url extends \think\route\Url
             $action = array_pop($path);
             $controller = empty($path) ? $controller : array_pop($path);
             $app = empty($path) ? $app : array_pop($path);
-            $url = $controller . '/' . $action;
+            $url = Str::snake($controller) . '/' . $action;
             $bind = $this->app->config->get('app.domain_bind', []);
             if ($key = array_search($app, $bind)) {
                 isset($bind[$_SERVER['SERVER_NAME']]) && $domain = $_SERVER['SERVER_NAME'];
@@ -87,15 +89,15 @@ class Url extends \think\route\Url
                 $anchor = $info['fragment'];
                 if (false !== strpos($anchor, '?')) {
                     // 解析参数
-                    list($anchor, $info['query']) = explode('?', $anchor, 2);
+                    [$anchor, $info['query']] = explode('?', $anchor, 2);
                 }
                 if (false !== strpos($anchor, '@')) {
                     // 解析域名
-                    list($anchor, $domain) = explode('@', $anchor, 2);
+                    [$anchor, $domain] = explode('@', $anchor, 2);
                 }
             } elseif (strpos($url, '@') && false === strpos($url, '\\')) {
                 // 解析域名
-                list($url, $domain) = explode('@', $url, 2);
+                [$url, $domain] = explode('@', $url, 2);
             }
         }
         if ($url) {
