@@ -61,6 +61,7 @@ class Module extends Controller
             $this->module = $modules[$data['name']];
             $this->current = $locals[$data['name']] ?? [];
             $pattern = "|^(\d{4})\.(\d{2})\.(\d{2})\.(\d+)$|";
+            $this->module['change'] = array_reverse($this->module['change']);
             foreach ($this->module['change'] as $version => &$change) {
                 $change = ['content' => $change, 'version' => preg_replace($pattern, '$1年$2月$3日 第 $4 次更新', $version)];
             }

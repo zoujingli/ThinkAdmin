@@ -15,9 +15,9 @@
             {foreach $module.change as $version=>$change}
             <li class="layui-timeline-item">
                 {if isset($current.version) and $current.version eq $version}
-                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                {else}
                 <i class="layui-icon layui-timeline-axis">&#xe756;</i>
+                {else}
+                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                 {/if}
                 <div class="layui-timeline-content layui-text">
                     <h3 class="layui-timeline-title">
