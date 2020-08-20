@@ -142,6 +142,7 @@ class AdminService extends Service
      */
     public function clearCache()
     {
+        TokenService::instance()->clearCache();
         $this->app->cache->delete('SystemAuthNode');
         return $this;
     }

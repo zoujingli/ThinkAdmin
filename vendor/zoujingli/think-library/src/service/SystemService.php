@@ -282,18 +282,12 @@ class SystemService extends Service
      */
     public function bindRuntime($data = []): bool
     {
-        // 获取运行配置
         if (empty($data)) $data = $this->getRuntime();
-        // 动态设置应用绑定
-        $config = ['app_map' => [], 'domain_bind' => []];
-        if (isset($data['map']) && is_array($data['map']) && count($data['map']) > 0) {
-            $config['app_map'] = $this->uniqueArray($this->app->config->get('app.app_map', []), $data['map']);
-        }
-        if (isset($data['uri']) && is_array($data['uri']) && count($data['uri']) > 0) {
-            $config['domain_bind'] = $this->uniqueArray($this->app->config->get('app.domain_bind', []), $data['uri']);
-        }
-        // 动态设置运行模式
-        $this->app->config->set($config, 'app');
+        $bind['app_map'] = $this->app->config->get('app.app_map', []);
+        $bind['domain_bind'] = $this->app->config->get('app.domain_bind', []);
+        if (count($data['map']) > 0) $bind['app_map'] = $this->uniqueArray($bind['app_map'], $data['map']);
+        if (count($data['uri']) > 0) $bind['domain_bind'] = $this->uniqueArray($bind['domain_bind'], $data['uri']);
+        $this->app->config->set($bind, 'app');
         return $this->app->debug($data['run'] !== 'product')->isDebug();
     }
 
@@ -304,9 +298,8 @@ class SystemService extends Service
      */
     private function uniqueArray(...$args): array
     {
-        $unique = array_unique(array_reverse(array_merge(...$args)));
-        foreach ($unique as $kk => $vv) if ($kk == $vv) unset($unique[$kk]);
-        return $unique;
+        return array_unique(array_reverse(array_merge(...$args)));
+        // foreach ($unique as $kk => $vv) if ($kk == $vv) unset($unique[$kk]);
     }
 
     /**

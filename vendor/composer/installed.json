@@ -963,12 +963,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "2100be983dcb654d93003773ec62ac7324cd91e9"
+            "reference": "adb49d4408625e7a4bb50c3292377d154a10b3d3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/2100be983dcb654d93003773ec62ac7324cd91e9",
-            "reference": "2100be983dcb654d93003773ec62ac7324cd91e9",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/adb49d4408625e7a4bb50c3292377d154a10b3d3",
+            "reference": "adb49d4408625e7a4bb50c3292377d154a10b3d3",
             "shasum": "",
             "mirrors": [
                 {
@@ -985,7 +985,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-08-19T02:25:08+00:00",
+        "time": "2020-08-20T05:52:53+00:00",
         "type": "library",
         "extra": {
             "think": {
@@ -1018,17 +1018,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.24",
-        "version_normalized": "1.2.24.0",
+        "version": "v1.2.25",
+        "version_normalized": "1.2.25.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "2e5ca0d48fca8014eea504db6daec2b97d53d768"
+            "reference": "6fcb6504904ee4276b358b3f9b80ffc992eb385c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/2e5ca0d48fca8014eea504db6daec2b97d53d768",
-            "reference": "2e5ca0d48fca8014eea504db6daec2b97d53d768",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/6fcb6504904ee4276b358b3f9b80ffc992eb385c",
+            "reference": "6fcb6504904ee4276b358b3f9b80ffc992eb385c",
             "shasum": "",
             "mirrors": [
                 {
@@ -1048,7 +1048,7 @@
             "ext-xml": "*",
             "php": ">=5.4"
         },
-        "time": "2020-08-16T07:01:12+00:00",
+        "time": "2020-08-19T08:52:11+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

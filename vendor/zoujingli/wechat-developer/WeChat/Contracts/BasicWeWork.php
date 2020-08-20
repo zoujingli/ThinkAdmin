@@ -12,29 +12,30 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
-namespace WeMini;
-
-use WeChat\Contracts\BasicWeChat;
+namespace WeChat\Contracts;
 
 /**
- * 小程序生物认证
- * Class Soter
- * @package WeMini
+ * 企业微信基础类
+ * Class BasicWeWork
+ * @package WeChat\Contracts
  */
-class Soter extends BasicWeChat
+class BasicWeWork extends BasicWeChat
 {
     /**
-     * SOTER 生物认证秘钥签名验证
-     * @param array $data
-     * @return array
+     * 获取访问 AccessToken
+     * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function verifySignature($data)
+    public function getAccessToken()
     {
-        $url = 'https://api.weixin.qq.com/cgi-bin/soter/verify_signature?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
-        return $this->callPostApi($url, $data, true);
+        if ($this->access_token) return $this->access_token;
+        $ckey = $this->config->get('appid') . '_access_token';
+        if ($this->access_token = Tools::getCache($ckey)) return $this->access_token;
+        list($appid, $secret) = [$this->config->get('appid'), $this->config->get('appsecret')];
+        $result = Tools::json2arr(Tools::get("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={$appid}&corpsecret={$secret}"));
+        if (isset($result['access_token']) && $result['access_token']) Tools::setCache($ckey, $result['access_token'], 7000);
+        return $this->access_token = $result['access_token'];
     }
 
 }

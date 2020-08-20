@@ -145,6 +145,7 @@ return array(
     'WeChat\\Contracts\\BasicPushEvent' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicPushEvent.php',
     'WeChat\\Contracts\\BasicWeChat' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicWeChat.php',
     'WeChat\\Contracts\\BasicWePay' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicWePay.php',
+    'WeChat\\Contracts\\BasicWeWork' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/BasicWeWork.php',
     'WeChat\\Contracts\\DataArray' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/DataArray.php',
     'WeChat\\Contracts\\DataError' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/DataError.php',
     'WeChat\\Contracts\\MyCurlFile' => $vendorDir . '/zoujingli/wechat-developer/WeChat/Contracts/MyCurlFile.php',

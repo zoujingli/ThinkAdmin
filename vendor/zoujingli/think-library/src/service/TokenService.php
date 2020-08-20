@@ -25,7 +25,47 @@ use think\admin\Service;
 class TokenService extends Service
 {
     /**
-     * 获取当前请求令牌
+     * 令牌有效时间
+     * @var integer
+     */
+    private $expire = 600;
+
+    /**
+     * 缓存分组名称
+     * @var string
+     */
+    private $cachename;
+
+    /**
+     * 当前缓存数据
+     * @var array
+     */
+    private $cachedata = [];
+
+    /**
+     * 表单令牌服务初始化
+     */
+    protected function initialize()
+    {
+        $user = AdminService::instance()->getUserName();
+        $this->cachename = 'systoken_' . ($user ?: 'default');
+        $this->cachedata = $this->_getCacheList(true);
+        $this->app->event->listen('HttpEnd', function () {
+            TokenService::instance()->saveCacheData();
+        });
+    }
+
+    /**
+     * 保存缓存到文件
+     */
+    public function saveCacheData()
+    {
+        $this->_clearTimeoutCache();
+        $this->app->cache->set($this->cachename, $this->cachedata, $this->expire);
+    }
+
+    /**
+     * 获取当前请求 CSRF 值
      * @return array|string
      */
     public function getInputToken()
@@ -34,49 +74,113 @@ class TokenService extends Service
     }
 
     /**
-     * 验证表单令牌是否有效
+     * 验证 CSRF 是否有效
      * @param string $token 表单令牌
      * @param string $node 授权节点
      * @return boolean
      */
     public function checkFormToken($token = null, $node = null)
     {
-        if (is_null($token)) $token = $this->getInputToken();
-        if (is_null($node)) $node = NodeService::instance()->getCurrent();
-        // 读取缓存并检查是否有效
-        $cache = $this->app->session->get($token, []);
-        if (empty($cache['node']) || empty($cache['time']) || empty($cache['token'])) return false;
-        if ($cache['time'] + 600 < time() || strtolower($cache['node']) !== strtolower($node)) return false;
+        $cnode = NodeService::instance()->fullnode($node);
+        $cache = $this->_getCacheItem($token ?: $this->getInputToken());
+        if (empty($cache['node']) || empty($cache['time'])) return false;
+        if (strtolower($cache['node']) !== strtolower($cnode)) return false;
         return true;
     }
 
     /**
-     * 清理表单CSRF信息
+     * 清理表单 CSRF 数据
      * @param string $token
      * @return $this
      */
     public function clearFormToken($token = null)
     {
-        if (is_null($token)) $token = $this->getInputToken();
-        $this->app->session->delete($token);
+        $this->_delCacheItem($token ?: $this->getInputToken());
         return $this;
     }
 
     /**
-     * 生成表单CSRF信息
-     * @param null|string $node
+     * 生成表单 CSRF 数据
+     * @param string $node
      * @return array
      */
     public function buildFormToken($node = null)
     {
-        list($token, $time) = [uniqid('csrf') . rand(1000, 9999), time()];
-        foreach ($this->app->session->all() as $key => $item) {
-            if (stripos($key, 'csrf') === 0 && isset($item['time'])) {
-                if ($item['time'] + 600 < $time) $this->clearFormToken($key);
+        $cnode = NodeService::instance()->fullnode($node);
+        [$token, $time] = [uniqid() . rand(100000, 999999), time()];
+        $this->_setCacheItem($token, $item = ['node' => $cnode, 'time' => $time]);
+        return array_merge($item, ['token' => $token]);
+    }
+
+    /**
+     * 清空所有 CSRF 数据
+     */
+    public function clearCache()
+    {
+        $this->app->cache->delete($this->cachename);
+    }
+
+    /**
+     * 设置缓存数据
+     * @param string $token
+     * @param array $item
+     * @return static
+     */
+    private function _setCacheItem(string $token, array $item)
+    {
+        $this->cachedata[$token] = $item;
+        return $this;
+    }
+
+    /**
+     * 删除缓存
+     * @param string $token
+     */
+    private function _delCacheItem(string $token)
+    {
+        unset($this->cachedata[$token]);
+    }
+
+    /**
+     * 获取指定缓存
+     * @param string $token
+     * @param array $default
+     * @return mixed
+     */
+    private function _getCacheItem(string $token, $default = [])
+    {
+        $this->_clearTimeoutCache();
+        if (isset($this->cachedata[$token])) {
+            return array_merge($this->cachedata[$token], ['token' => $token]);
+        } else {
+            return $default;
+        }
+    }
+
+    /**
+     * 获取缓存列表
+     * @param bool $clear 强制清理
+     * @return array
+     */
+    private function _getCacheList(bool $clear = false): array
+    {
+        $this->cachedata = $this->app->cache->get($this->cachename, []);
+        if ($clear) $this->cachedata = $this->_clearTimeoutCache();
+        return $this->cachedata;
+    }
+
+    /**
+     * 清理超时的缓存
+     * @return array
+     */
+    private function _clearTimeoutCache(): array
+    {
+        $time = time();
+        foreach ($this->cachedata as $key => $item) {
+            if (empty($item['time']) || $item['time'] + $this->expire < $time) {
+                unset($this->cachedata[$key]);
             }
         }
-        $data = ['node' => NodeService::instance()->fullnode($node), 'token' => $token, 'time' => $time];
-        $this->app->session->set($token, $data);
-        return $data;
+        return $this->cachedata;
     }
 }
