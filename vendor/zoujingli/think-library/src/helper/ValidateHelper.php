@@ -28,47 +28,36 @@ class ValidateHelper extends Helper
     /**
      * 快捷输入并验证（ 支持 规则 # 别名 ）
      * @param array $rules 验证规则（ 验证信息数组 ）
-     * @param string $type 输入方式 ( post. 或 get. )
+     * @param string|array $input 输入内容 ( post. 或 get. )
      * @return array
-     *  age.max:100 => message // 最大值限定
+     *  age.require => message // 最大值限定
+     *  age.between:1,120 => message // 范围限定
      *  name.require => message // 必填内容
-     *  name.between:1,120 => message // 范围限定
-     *  name.value => value // 固定字段数值内容
      *  name.default => 100 // 获取并设置默认值
+     *  region.value => value // 固定字段数值内容
      *  更多规则参照 ThinkPHP 官方的验证类
      */
-    public function init(array $rules, $type = '')
+    public function init(array $rules, $input = ''): array
     {
-        list($data, $rule, $info, $alias) = [[], [], [], ''];
-        foreach ($rules as $name => $message) {
-            if (stripos($name, '#') !== false) {
-                list($name, $alias) = explode('#', $name);
-            }
-            if (stripos($name, '.') === false) {
-                if (is_numeric($name)) {
-                    $field = $message;
-                    if (is_string($message) && stripos($message, '#') !== false) {
-                        list($name, $alias) = explode('#', $message);
-                        $field = empty($alias) ? $name : $alias;
-                    }
-                    $data[$name] = input("{$type}{$field}");
-                } else {
-                    $data[$name] = $message;
-                }
+        if (is_string($input)) {
+            $input = trim($input, '.') ?: 'request';
+            $input = $this->app->request->$input();
+        }
+        [$data, $rule, $info] = [[], [], []];
+        foreach ($rules as $name => $message) if (is_numeric($name)) {
+            [$name, $alias] = explode('#', $message . '#');
+            $data[$name] = $input[($alias ?: $name)] ?? null;
+        } elseif (strpos($name, '.') === false) {
+            $data[$name] = $message;
+        } elseif (preg_match('|^(.*?)\.(.*?)#(.*?)#?$|', $name . '#', $matches)) {
+            [, $_key, $_rule, $alias] = $matches;
+            if (in_array($_rule, ['value', 'default'])) {
+                if ($_rule === 'value') $data[$_key] = $message;
+                elseif ($_rule === 'default') $data[$_key] = $input[($alias ?: $_key)] ?? $message;
             } else {
-                list($_rgx) = explode(':', $name);
-                list($_key, $_rule) = explode('.', $name);
-                if (in_array($_rule, ['value', 'default'])) {
-                    if ($_rule === 'value') {
-                        $data[$_key] = $message;
-                    } elseif ($_rule === 'default') {
-                        $data[$_key] = input($type . ($alias ?: $_key), $message);
-                    }
-                } else {
-                    $info[$_rgx] = $message;
-                    $data[$_key] = $data[$_key] ?? input($type . ($alias ?: $_key));
-                    $rule[$_key] = empty($rule[$_key]) ? $_rule : "{$rule[$_key]}|{$_rule}";
-                }
+                $info[strstr($name, ':', true)] = $message;
+                $data[$_key] = $data[$_key] ?? ($input[($alias ?: $_key)] ?? null);
+                $rule[$_key] = isset($rule[$_key]) ? ($rule[$_key] . '|' . $_rule) : $_rule;
             }
         }
         $validate = new Validate();
