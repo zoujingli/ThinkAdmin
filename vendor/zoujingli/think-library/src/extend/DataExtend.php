@@ -54,6 +54,7 @@ class DataExtend
         foreach (static::arr2tree($list, $cid, $pid) as $attr) {
             $attr[$cpath] = "{$ppath}-{$attr[$cid]}";
             $attr['sub'] = $attr['sub'] ?? [];
+            $attr['spc'] = count($attr['sub']);
             $attr['spt'] = substr_count($ppath, '-');
             $attr['spl'] = str_repeat("　├　", $attr['spt']);
             $sub = $attr['sub'];

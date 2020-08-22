@@ -164,10 +164,6 @@ class QueueService extends Service
             if (is_null($message)) $message = '>>> 任务执行失败 <<<';
         }
         try {
-            // 文件缓存时，重置 opcache 缓存
-            if (function_exists('opcache_invalidate') && strtolower($this->app->cache->getDefaultDriver()) === 'file') {
-                @opcache_invalidate($this->app->cache->getCacheKey($cachefile), true);
-            }
             $data = $this->app->cache->get($cachefile, [
                 'code' => $this->code, 'status' => $status, 'message' => $message, 'progress' => $progress, 'history' => [],
             ]);
