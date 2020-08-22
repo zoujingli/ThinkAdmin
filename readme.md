@@ -20,7 +20,7 @@ ThinkAdmin 非常适用快速二次开发，默认集成 微信开发组件，�
 
 #### 注意事项
 * 项目测试需要自行搭建环境导入数据库( admin_v6.sql )并修改配置( config/database.php )；
-* 若操作提示“演示系统禁止操作”等字样，需要删除演示路由配置( route/admin/demo.php )或清空路由文件；
+* 若操作提示“演示系统禁止操作”等字样，需要删除演示路由配置( app/admin/route/demo.php )或清空路由文件；
 * 当前版本使用 ThinkPHP 6.0.x，对 PHP 版本标注不低于 PHP 7.1，具体请阅读 ThinkPHP 官方文档；
 * 环境需开启 PATHINFO，不再支持 ThinkPHP 的 URL 兼容模式运行（源于如何优雅的展示）；
 
