@@ -80,8 +80,8 @@ class JsonRpcServer
                     $error = ['code' => '-32601', 'message' => '找不到方法', 'meaning' => '该方法不存在或无效'];
                     $response = ['jsonrpc' => '2.0', 'id' => $request['id'], 'result' => null, 'error' => $error];
                 }
-            } catch (\Exception $e) {
-                $error = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+            } catch (\Exception $exception) {
+                $error = ['code' => $exception->getCode(), 'message' => $exception->getMessage()];
                 $response = ['jsonrpc' => '2.0', 'id' => $request['id'], 'result' => null, 'error' => $error];
             }
             // Output the response

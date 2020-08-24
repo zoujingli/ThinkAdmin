@@ -33,7 +33,7 @@ class NodeService extends Service
     {
         $dots = [];
         foreach (explode('.', strtr($name, '/', '.')) as $dot) {
-            $dots[] = trim(preg_replace("/[A-Z]/", "_\\0", $dot), "_");
+            $dots[] = trim(preg_replace("/[A-Z]/", "_\\0", $dot), '_');
         }
         return strtolower(join('.', $dots));
     }
@@ -60,7 +60,7 @@ class NodeService extends Service
     {
         if (empty($node)) return $this->getCurrent();
         if (count($attrs = explode('/', $node)) === 1) {
-            return $this->getCurrent('controller') . "/{$node}";
+            return $this->getCurrent('controller') . '/' . $node;
         } else {
             $attrs[1] = $this->nameTolower($attrs[1]);
             return join('/', $attrs);
@@ -74,11 +74,9 @@ class NodeService extends Service
      */
     public function getModules($data = [])
     {
-        if ($handle = opendir($this->app->getBasePath())) {
-            while (false !== ($file = readdir($handle))) if ($file !== "." && $file !== "..") {
-                if (is_dir($this->app->getBasePath() . $file)) $data[] = $file;
-            }
-            closedir($handle);
+        $path = $this->app->getBasePath();
+        foreach (scandir($path) as $item) if ($item[0] !== '.') {
+            if (is_dir(realpath($path . $item))) $data[] = $item;
         }
         return $data;
     }
@@ -100,7 +98,7 @@ class NodeService extends Service
             $data = [];
         }
         $ignores = get_class_methods('\think\admin\Controller');
-        foreach ($this->_scanDirectory($this->app->getBasePath()) as $file) {
+        foreach ($this->scanDirectory($this->app->getBasePath()) as $file) {
             if (preg_match("|/(\w+)/(\w+)/controller/(.+)\.php$|i", $file, $matches)) {
                 [, $namespace, $appname, $classname] = $matches;
                 $prefix = strtr("{$appname}/{$this->nameTolower($classname)}", '\\', '/');
@@ -127,9 +125,7 @@ class NodeService extends Service
     {
         $text = strtr($comment, "\n", ' ');
         $title = preg_replace('/^\/\*\s*\*\s*\*\s*(.*?)\s*\*.*?$/', '$1', $text);
-        foreach (['@auth', '@menu', '@login'] as $find) if (stripos($title, $find) === 0) {
-            $title = $default;
-        }
+        if (in_array(substr($title, 0, 5), ['@auth', '@menu', '@logi'])) $title = $default;
         return [
             'title'   => $title ?: $default,
             'isauth'  => intval(preg_match('/@auth\s*true/i', $text)),
@@ -142,16 +138,17 @@ class NodeService extends Service
      * 获取所有PHP文件列表
      * @param string $path 扫描目录
      * @param array $data 额外数据
-     * @param string $ext 有文件后缀
+     * @param string $ext 文件后缀
      * @return array
      */
-    private function _scanDirectory($path, $data = [], $ext = 'php')
+    public function scanDirectory($path, $data = [], $ext = '.php')
     {
-        foreach (glob("{$path}*") as $item) {
-            if (is_dir($item)) {
-                $data = array_merge($data, $this->_scanDirectory("{$item}" . DIRECTORY_SEPARATOR));
-            } elseif (is_file($item) && pathinfo($item, PATHINFO_EXTENSION) === $ext) {
-                $data[] = strtr($item, '\\', '/');
+        foreach (scandir($path) as $item) if ($item[0] !== '.') {
+            $realpath = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
+            if (is_readable($realpath)) if (is_dir($realpath)) {
+                $data = $this->scanDirectory($realpath, $data, $ext);
+            } elseif (is_file($realpath) && (is_null($ext) || strstr($realpath, '.') === $ext)) {
+                $data[] = $realpath;
             }
         }
         return $data;

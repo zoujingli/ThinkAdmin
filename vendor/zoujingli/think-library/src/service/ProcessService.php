@@ -42,7 +42,7 @@ class ProcessService extends Service
      */
     public function version()
     {
-        return $this->app->config->get('app.thinkadmin_ver', 'v4');
+        return ModuleService::instance()->getVersion();
     }
 
     /**

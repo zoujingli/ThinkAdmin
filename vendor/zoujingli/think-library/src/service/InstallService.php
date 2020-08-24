@@ -29,61 +29,66 @@ class InstallService extends Service
      * 项目根目录
      * @var string
      */
-    protected $root;
+    private $root;
 
     /**
      * 线上服务器地址
      * @var string
      */
-    protected $server;
-
-    /**
-     * 当前大版本号
-     * @var string
-     */
-    protected $version;
-
-    /**
-     * 更新规则
-     * @var array
-     */
-    protected $rules = [];
-
-    /**
-     * 忽略规则
-     * @var array
-     */
-    protected $ignore = [];
+    private $server;
 
     /**
      * 初始化服务
      */
     protected function initialize()
     {
-        // 应用框架版本
-        $this->version = $this->app->config->get('app.thinkadmin_ver') ?: 'v4';
-        // 线上应用代码
-        $this->server = "https://{$this->version}.thinkadmin.top";
-        // 应用根目录
         $this->root = strtr($this->app->getRootPath(), '\\', '/');
+        $this->server = ModuleService::instance()->getServer();
     }
 
     /**
-     * 获取线上接口
-     * @return string
+     * 获取文件信息列表
+     * @param array $rules 文件规则
+     * @param array $ignore 忽略规则
+     * @param array $data 扫描结果列表
+     * @return array
      */
-    public function getServer()
+    public function getList(array $rules, array $ignore = [], array $data = []): array
     {
-        return $this->server;
+        // 扫描规则文件
+        foreach ($rules as $key => $rule) {
+            $name = strtr(trim($rule, '\\/'), '\\', '/');
+            $data = array_merge($data, $this->_scanList("{$this->root}{$name}"));
+        }
+        // 清除忽略文件
+        foreach ($data as $key => $item) foreach ($ignore as $ign) {
+            if (stripos($item['name'], $ign) === 0) unset($data[$key]);
+        }
+        // 返回文件数据
+        return ['rules' => $rules, 'ignore' => $ignore, 'list' => $data];
     }
 
     /**
-     * 获取当前版本
-     * @return string
+     * 获取文件差异数据
+     * @param array $rules 文件规则
+     * @param array $ignore 忽略规则
+     * @return array
      */
-    public function getVersion()
+    public function grenerateDifference(array $rules = [], array $ignore = []): array
     {
-        return $this->version;
+        [$rules1, $ignore1, $data] = [$rules, $ignore, []];
+        $result = json_decode(HttpExtend::post("{$this->server}/admin/api.update/node", [
+            'rules' => json_encode($rules1), 'ignore' => json_encode($ignore1),
+        ]), true);
+        if (!empty($result['code'])) {
+            $new = $this->getList($result['data']['rules'], $result['data']['ignore']);
+            foreach ($this->_grenerateDifferenceContrast($result['data']['list'], $new['list']) as $file) {
+                if (in_array($file['type'], ['add', 'del', 'mod'])) foreach ($rules1 as $rule) {
+                    if (stripos($file['name'], $rule) === 0) $data[] = $file;
+                }
+            }
+        }
+        return $data;
     }
 
     /**
@@ -94,7 +99,7 @@ class InstallService extends Service
     public function updateFileByDownload(array $file): array
     {
         if (in_array($file['type'], ['add', 'mod'])) {
-            if ($this->downloadFile(encode($file['name']))) {
+            if ($this->_downloadFile(encode($file['name']))) {
                 return [true, $file['type'], $file['name']];
             } else {
                 return [false, $file['type'], $file['name']];
@@ -102,7 +107,7 @@ class InstallService extends Service
         } elseif (in_array($file['type'], ['del'])) {
             $real = $this->root . $file['name'];
             if (is_file($real) && unlink($real)) {
-                $this->removeEmptyDirectory(dirname($real));
+                $this->_removeEmptyDirectory(dirname($real));
                 return [true, $file['type'], $file['name']];
             } else {
                 return [false, $file['type'], $file['name']];
@@ -115,7 +120,7 @@ class InstallService extends Service
      * @param string $encode
      * @return boolean|integer
      */
-    private function downloadFile($encode)
+    private function _downloadFile($encode)
     {
         $source = "{$this->server}/admin/api.update/get?encode={$encode}";
         $result = json_decode(HttpExtend::get($source), true);
@@ -129,34 +134,11 @@ class InstallService extends Service
      * 清理空目录
      * @param string $path
      */
-    private function removeEmptyDirectory($path)
+    private function _removeEmptyDirectory($path)
     {
         if (is_dir($path) && count(scandir($path)) === 2 && rmdir($path)) {
-            $this->removeEmptyDirectory(dirname($path));
+            $this->_removeEmptyDirectory(dirname($path));
         }
-    }
-
-    /**
-     * 获取文件差异数据
-     * @param array $rules 文件规则
-     * @param array $ignore 忽略规则
-     * @return array
-     */
-    public function grenerateDifference(array $rules = [], array $ignore = []): array
-    {
-        [$this->rules, $this->ignore, $data] = [$rules, $ignore, []];
-        $result = json_decode(HttpExtend::post("{$this->server}/admin/api.update/node", [
-            'rules' => json_encode($this->rules), 'ignore' => json_encode($this->ignore),
-        ]), true);
-        if (!empty($result['code'])) {
-            $new = $this->getList($result['data']['rules'], $result['data']['ignore']);
-            foreach ($this->grenerateDifferenceContrast($result['data']['list'], $new['list']) as $file) {
-                if (in_array($file['type'], ['add', 'del', 'mod'])) foreach ($this->rules as $rule) {
-                    if (stripos($file['name'], $rule) === 0) $data[] = $file;
-                }
-            }
-        }
-        return $data;
     }
 
     /**
@@ -165,7 +147,7 @@ class InstallService extends Service
      * @param array $local 本地文件列表信息
      * @return array
      */
-    private function grenerateDifferenceContrast(array $serve = [], array $local = []): array
+    private function _grenerateDifferenceContrast(array $serve = [], array $local = []): array
     {
         // 数据扁平化
         [$_serve, $_local, $_diffy] = [[], [], []];
@@ -186,57 +168,29 @@ class InstallService extends Service
     }
 
     /**
-     * 获取文件信息列表
-     * @param array $rules 文件规则
-     * @param array $ignore 忽略规则
-     * @param array $data 扫描结果列表
+     * 获取指定文件信息
+     * @param string $path 文件路径
      * @return array
      */
-    public function getList(array $rules, array $ignore = [], array $data = []): array
+    private function _getInfo($path): array
     {
-        // 扫描规则文件
-        foreach ($rules as $key => $rule) {
-            $name = strtr(trim($rule, '\\/'), '\\', '/');
-            $data = array_merge($data, $this->scanList("{$this->root}{$name}"));
-        }
-        // 清除忽略文件
-        foreach ($data as $key => $item) foreach ($ignore as $igr) {
-            if (stripos($item['name'], $igr) === 0) unset($data[$key]);
-        }
-        // 返回文件数据
-        return ['rules' => $rules, 'ignore' => $ignore, 'list' => $data];
+        return [
+            'name' => str_replace($this->root, '', $path),
+            'hash' => md5(preg_replace('/\s+/', '', file_get_contents($path))),
+        ];
     }
 
     /**
      * 获取目录文件列表
-     * @param string $path 待扫描的目录
+     * @param string $path 待扫描目录
      * @param array $data 扫描结果
      * @return array
      */
-    private function scanList($path, $data = []): array
+    private function _scanList($path, $data = []): array
     {
-        if (file_exists($path)) if (is_dir($path)) foreach (scandir($path) as $sub) {
-            if (strpos($sub, '.') !== 0) if (is_dir($temp = "{$path}/{$sub}")) {
-                $data = array_merge($data, $this->scanList($temp));
-            } else {
-                array_push($data, $this->getInfo($temp));
-            }
-        } else {
-            return [$this->getInfo($path)];
+        foreach (NodeService::instance()->scanDirectory($path) as $file) {
+            $data[] = $this->_getInfo($file);
         }
         return $data;
-    }
-
-    /**
-     * 获取指定文件信息
-     * @param string $realname 文件路径
-     * @return array
-     */
-    private function getInfo($realname): array
-    {
-        return [
-            'name' => str_replace($this->root, '', $realname),
-            'hash' => md5(preg_replace('/\s+/', '', file_get_contents($realname))),
-        ];
     }
 }

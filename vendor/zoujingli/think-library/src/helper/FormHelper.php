@@ -70,7 +70,7 @@ class FormHelper extends Helper
     public function init($dbQuery, $template = '', $field = '', $where = [], $data = [])
     {
         $this->query = $this->buildQuery($dbQuery);
-        list($this->template, $this->where, $this->data) = [$template, $where, $data];
+        [$this->template, $this->where, $this->data] = [$template, $where, $data];
         $this->field = $field ?: ($this->query->getPk() ?: 'id');
         $this->value = input($this->field, $data[$this->field] ?? null);
         // GET请求, 获取数据并显示表单页面

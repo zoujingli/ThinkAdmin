@@ -120,7 +120,7 @@ abstract class Storage
     public static function name($url, $ext = '', $pre = '', $fun = 'md5')
     {
         if (empty($ext)) $ext = pathinfo($url, 4);
-        list($xmd, $ext) = [$fun($url), trim($ext, '.\\/')];
+        [$xmd, $ext] = [$fun($url), trim($ext, '.\\/')];
         $attr = [trim($pre, '.\\/'), substr($xmd, 0, 2), substr($xmd, 2, 30)];
         return trim(join('/', $attr), '/') . '.' . strtolower($ext ? $ext : 'tmp');
     }
@@ -188,7 +188,7 @@ abstract class Storage
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        list($content) = [curl_exec($ch), curl_close($ch)];
+        [$content] = [curl_exec($ch), curl_close($ch)];
         return $content;
     }
 

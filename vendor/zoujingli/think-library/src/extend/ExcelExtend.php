@@ -64,7 +64,7 @@ class ExcelExtend
      */
     public static function parseKeyDotValue(array $data, $rule)
     {
-        list($temp, $attr) = [$data, explode('.', trim($rule, '.'))];
+        [$temp, $attr] = [$data, explode('.', trim($rule, '.'))];
         while ($key = array_shift($attr)) $temp = $temp[$key] ?? $temp;
         return (is_string($temp) || is_numeric($temp)) ? @iconv('utf-8', 'gbk//TRANSLIT', "{$temp}") : '';
     }

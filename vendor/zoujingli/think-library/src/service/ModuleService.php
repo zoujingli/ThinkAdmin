@@ -27,6 +27,47 @@ use think\admin\Service;
 class ModuleService extends Service
 {
     /**
+     * 官方应用地址
+     * @var string
+     */
+    protected $server;
+
+    /**
+     * 官方应用版本
+     * @var string
+     */
+    protected $version;
+
+    /**
+     * 服务初始化
+     */
+    public function initialize()
+    {
+        $full = $this->app->config->get('app.thinkadmin_ver', 'v4.0.0');
+        $this->version = trim($full, 'v');
+        $version = strstr($full . '.', '.', true);
+        $this->server = "https://{$version}.thinkadmin.top";
+    }
+
+    /**
+     * 获取服务端地址
+     * @return string
+     */
+    public function getServer()
+    {
+        return $this->server;
+    }
+
+    /**
+     * 获取版本号信息
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
      * 获取模块变更
      * @return array
      */
@@ -58,10 +99,9 @@ class ModuleService extends Service
     {
         $data = $this->app->cache->get('moduleOnlineData', []);
         if (!empty($data)) return $data;
-        $server = InstallService::instance()->getServer();
-        $result = json_decode(HttpExtend::get("{$server}/admin/api.update/version"), true);
+        $result = json_decode(HttpExtend::get("{$this->server}/admin/api.update/version"), true);
         if (isset($result['code']) && $result['code'] > 0 && isset($result['data']) && is_array($result['data'])) {
-            $this->app->cache->set('moduleOnlineData', $result['data'], 1800);
+            $this->app->cache->set('moduleOnlineData', $result['data'], 30);
             return $result['data'];
         } else {
             return [];
@@ -76,7 +116,7 @@ class ModuleService extends Service
     public function install($name): array
     {
         $this->app->cache->set('moduleOnlineData', []);
-        $data = InstallService::instance()->grenerateDifference(["app/{$name}"]);
+        $data = InstallService::instance()->grenerateDifference(['app' . '/' . $name]);
         if (empty($data)) {
             return [0, '没有需要安装的文件', []];
         } else {
@@ -104,13 +144,13 @@ class ModuleService extends Service
      */
     public function getModules(array $data = []): array
     {
-        foreach (NodeService::instance()->getModules() as $name) {
-            if (is_array($vars = $this->getModuleVersion($name)) && isset($vars['version'])) {
-                if (preg_match('|^\d{4}\.\d{2}\.\d{2}\.\d{2}$|', $vars['version'])) {
-                    $data[$name] = $vars;
-                    foreach (glob("{$this->app->getBasePath()}{$name}/module/change/*.md") as $file) {
-                        $data[$name]['change'][pathinfo($file, PATHINFO_FILENAME)] = Parsedown::instance()->parse(file_get_contents($file));
-                    }
+        $service = NodeService::instance();
+        foreach ($service->getModules() as $name) {
+            $vars = $this->_getModuleVersion($name);
+            if (is_array($vars) && isset($vars['version']) && preg_match('|^\d{4}\.\d{2}\.\d{2}\.\d{2}$|', $vars['version'])) {
+                $data[$name] = $vars;
+                foreach ($service->scanDirectory($this->app->getBasePath() . $name . '/module/change/', [], '.md') as $file) {
+                    $data[$name]['change'][pathinfo($file, PATHINFO_FILENAME)] = Parsedown::instance()->parse(file_get_contents($file));
                 }
             }
         }
@@ -155,10 +195,12 @@ class ModuleService extends Service
      * @param string $name 模块名称
      * @return bool|array|null
      */
-    private function getModuleVersion($name)
+    private function _getModuleVersion($name)
     {
-        $file = "{$this->app->getBasePath()}{$name}/module/version.php";
-        if (file_exists($file) && is_file($file) && is_array($vars = @include $file)) {
+        $appdir = $this->app->getBasePath() . $name;
+        $filename = $appdir . DIRECTORY_SEPARATOR . 'module' . DIRECTORY_SEPARATOR . 'version.json';
+        if (file_exists($filename) && is_file($filename) && is_readable($filename)) {
+            $vars = json_decode(file_get_contents($filename), true);
             return isset($vars['name']) && isset($vars['version']) ? $vars : null;
         } else {
             return false;

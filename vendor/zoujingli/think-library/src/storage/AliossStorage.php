@@ -133,7 +133,7 @@ class AliossStorage extends Storage
      */
     public function del($name, $safe = false)
     {
-        list($file) = explode('?', $name);
+        [$file] = explode('?', $name);
         $result = HttpExtend::request('DELETE', "http://{$this->bucket}.{$this->point}/{$file}", [
             'returnHeader' => true, 'headers' => $this->headerSign('DELETE', $file),
         ]);

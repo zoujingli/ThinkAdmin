@@ -73,9 +73,9 @@ class QueryHelper extends Helper
     {
         $data = $this->app->request->$input();
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
-            list($dk, $qk) = [$field, $field];
+            [$dk, $qk] = [$field, $field];
             if (stripos($field, $alias) !== false) {
-                list($dk, $qk) = explode($alias, $field);
+                [$dk, $qk] = explode($alias, $field);
             }
             if (isset($data[$qk]) && $data[$qk] !== '') {
                 $this->query->whereLike($dk, "%{$data[$qk]}%");
@@ -95,9 +95,9 @@ class QueryHelper extends Helper
     {
         $data = $this->app->request->$input();
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
-            list($dk, $qk) = [$field, $field];
+            [$dk, $qk] = [$field, $field];
             if (stripos($field, $alias) !== false) {
-                list($dk, $qk) = explode($alias, $field);
+                [$dk, $qk] = explode($alias, $field);
             }
             if (isset($data[$qk]) && $data[$qk] !== '') {
                 $this->query->where($dk, "{$data[$qk]}");
@@ -118,9 +118,9 @@ class QueryHelper extends Helper
     {
         $data = $this->app->request->$input();
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
-            list($dk, $qk) = [$field, $field];
+            [$dk, $qk] = [$field, $field];
             if (stripos($field, $alias) !== false) {
-                list($dk, $qk) = explode($alias, $field);
+                [$dk, $qk] = explode($alias, $field);
             }
             if (isset($data[$qk]) && $data[$qk] !== '') {
                 $this->query->whereIn($dk, explode($split, $data[$qk]));
@@ -185,12 +185,12 @@ class QueryHelper extends Helper
     {
         $data = $this->app->request->$input();
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
-            list($dk, $qk) = [$field, $field];
+            [$dk, $qk] = [$field, $field];
             if (stripos($field, $alias) !== false) {
-                list($dk, $qk) = explode($alias, $field);
+                [$dk, $qk] = explode($alias, $field);
             }
             if (isset($data[$qk]) && $data[$qk] !== '') {
-                list($begin, $after) = explode($split, $data[$qk]);
+                [$begin, $after] = explode($split, $data[$qk]);
                 if (is_callable($callback)) {
                     $after = call_user_func($callback, $after, 'after');
                     $begin = call_user_func($callback, $begin, 'begin');

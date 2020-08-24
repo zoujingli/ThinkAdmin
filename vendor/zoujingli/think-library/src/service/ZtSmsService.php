@@ -126,9 +126,8 @@ class ZtSmsService extends Service
             if (strpos($sign, '】') === false) $signs[$key] = $sign . '】';
             if (strpos($sign, '【') === false) $signs[$key] = '【' . $sign;
         }
-        return $this->doRequest('https://api.mix2.zthysms.com/sms/v1/sign', [
-            'sign' => $signs, 'remark' => $remark,
-        ]);
+        $data = ['sign' => $signs, 'remark' => $remark];
+        return $this->doRequest('https://api.mix2.zthysms.com/sms/v1/sign', $data);
     }
 
     /**

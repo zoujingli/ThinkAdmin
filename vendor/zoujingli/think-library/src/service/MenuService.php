@@ -52,7 +52,7 @@ class MenuService extends Service
     public function getTree()
     {
         $result = $this->app->db->name('SystemMenu')->where(['status' => '1'])->order('sort desc,id asc')->select();
-        return $this->buildData(DataExtend::arr2tree($result->toArray()), NodeService::instance()->getMethods());
+        return $this->_buildData(DataExtend::arr2tree($result->toArray()), NodeService::instance()->getMethods());
     }
 
     /**
@@ -62,11 +62,11 @@ class MenuService extends Service
      * @return array
      * @throws \ReflectionException
      */
-    private function buildData($menus, $nodes)
+    private function _buildData($menus, $nodes)
     {
         foreach ($menus as $key => &$menu) {
             if (!empty($menu['sub'])) {
-                $menu['sub'] = $this->buildData($menu['sub'], $nodes);
+                $menu['sub'] = $this->_buildData($menu['sub'], $nodes);
             }
             if (!empty($menu['sub'])) $menu['url'] = '#';
             elseif ($menu['url'] === '#') unset($menus[$key]);

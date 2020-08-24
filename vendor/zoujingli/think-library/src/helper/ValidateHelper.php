@@ -29,7 +29,8 @@ class ValidateHelper extends Helper
      * 快捷输入并验证（ 支持 规则 # 别名 ）
      * @param array $rules 验证规则（ 验证信息数组 ）
      * @param string|array $input 输入内容 ( post. 或 get. )
-     * @return array
+     * @param boolean $callable 异常处理操作
+     * @return array|void
      *  age.require => message // 最大值限定
      *  age.between:1,120 => message // 范围限定
      *  name.require => message // 必填内容
@@ -37,7 +38,7 @@ class ValidateHelper extends Helper
      *  region.value => value // 固定字段数值内容
      *  更多规则参照 ThinkPHP 官方的验证类
      */
-    public function init(array $rules, $input = ''): array
+    public function init(array $rules, $input = '', $callable = null): array
     {
         if (is_string($input)) {
             $input = trim($input, '.') ?: 'request';
@@ -63,8 +64,10 @@ class ValidateHelper extends Helper
         $validate = new Validate();
         if ($validate->rule($rule)->message($info)->check($data)) {
             return $data;
+        } elseif (is_callable($callable)) {
+            return call_user_func($callable, $validate->getError());
         } else {
-            $this->controller->error($validate->getError());
+            return $this->controller->error($validate->getError());
         }
     }
 }

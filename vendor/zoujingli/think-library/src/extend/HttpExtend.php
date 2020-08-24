@@ -60,7 +60,7 @@ class HttpExtend
      */
     public static function submit($url, array $data = [], array $file = [], array $header = [], $method = 'POST', $returnHeader = true)
     {
-        list($line, $boundary) = [[], CodeExtend::random(18)];
+        [$line, $boundary] = [[], CodeExtend::random(18)];
         foreach ($data as $key => $value) {
             $line[] = "--{$boundary}";
             $line[] = "Content-Disposition: form-data; name=\"{$key}\"";

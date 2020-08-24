@@ -43,16 +43,25 @@ class TokenService extends Service
     private $cachedata = [];
 
     /**
-     * 表单令牌服务初始化
+     * 令牌服务初始化
      */
     protected function initialize()
     {
-        $user = AdminService::instance()->getUserName();
-        $this->cachename = 'systoken_' . ($user ?: 'default');
+        $this->cachename = $this->getCacheName();
         $this->cachedata = $this->_getCacheList(true);
         $this->app->event->listen('HttpEnd', function () {
             TokenService::instance()->saveCacheData();
         });
+    }
+
+    /**
+     * 获取缓存名称
+     * @return string
+     */
+    public function getCacheName()
+    {
+        $sid = $this->app->session->getId();
+        return 'systoken_' . ($sid ?: 'default');
     }
 
     /**

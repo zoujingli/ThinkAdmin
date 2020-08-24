@@ -33,7 +33,7 @@ class DataExtend
      */
     public static function arr2tree($list, $cid = 'id', $pid = 'pid', $sub = 'sub')
     {
-        list($tree, $tmp) = [[], array_combine(array_column($list, $cid), array_values($list))];
+        [$tree, $tmp] = [[], array_combine(array_column($list, $cid), array_values($list))];
         foreach ($list as $vo) isset($vo[$pid]) && isset($tmp[$vo[$pid]]) ? $tmp[$vo[$pid]][$sub][] = &$tmp[$vo[$cid]] : $tree[] = &$tmp[$vo[$cid]];
         unset($tmp, $list);
         return $tree;
