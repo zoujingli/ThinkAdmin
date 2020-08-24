@@ -24,12 +24,12 @@ return [
     'use_cookie'      => true,
     // 多语言 Cookie 变量
     'cookie_var'      => 'think_lang',
+    // 是否支持语言分组
+    'allow_group'     => false,
     // 扩展语言包
     'extend_list'     => [],
     // 转义为对应语言包名称
     'accept_language' => [
         'zh-hans-cn' => 'zh-cn',
     ],
-    // 是否支持语言分组
-    'allow_group'     => false,
 ];

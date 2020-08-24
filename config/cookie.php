@@ -20,7 +20,7 @@ return [
     'path'      => '/',
     // cookie 有效域名
     'domain'    => '',
-    //  cookie 启用安全传输
+    // cookie 启用安全传输
     'secure'    => false,
     // httponly 设置
     'httponly'  => false,
