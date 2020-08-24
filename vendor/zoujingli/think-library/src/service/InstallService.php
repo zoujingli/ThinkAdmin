@@ -44,7 +44,6 @@ class InstallService extends Service
     {
         $this->root = strtr($this->app->getRootPath(), '\\', '/');
         $this->server = ModuleService::instance()->getServer();
-        dump($this->server);
     }
 
     /**
@@ -81,7 +80,6 @@ class InstallService extends Service
         $result = json_decode(HttpExtend::post("{$this->server}/admin/api.update/node", [
             'rules' => json_encode($rules1), 'ignore' => json_encode($ignore1),
         ]), true);
-        dump($result);
         if (!empty($result['code'])) {
             $new = $this->getList($result['data']['rules'], $result['data']['ignore']);
             foreach ($this->_grenerateDifferenceContrast($result['data']['list'], $new['list']) as $file) {
@@ -90,7 +88,6 @@ class InstallService extends Service
                 }
             }
         }
-        dump($data);
         return $data;
     }
 
