@@ -163,8 +163,8 @@ class ModuleService extends Service
     {
         $data = $this->app->cache->get('moduleAllowRule', []);
         if (is_array($data) && count($data) > 0) return $data;
-        $data = ['config', 'public/static'];
-        foreach (array_keys($this->getModules()) as $name) $data[] = 'app/' . $name;
+        $data = ['config', 'public/static', 'public/router.php', 'public/index.php'];
+        foreach (array_keys($this->getModules()) as $name) $data[] = "app/{$name}";
         $this->app->cache->set('moduleAllowRule', $data, 30);
         return $data;
     }
