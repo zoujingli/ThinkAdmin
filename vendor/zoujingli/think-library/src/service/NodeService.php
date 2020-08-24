@@ -141,13 +141,13 @@ class NodeService extends Service
      * @param string $ext 文件后缀
      * @return array
      */
-    public function scanDirectory($path, $data = [], $ext = '.php')
+    public function scanDirectory($path, $data = [], $ext = 'php')
     {
         foreach (scandir($path) as $item) if ($item[0] !== '.') {
             $realpath = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
             if (is_readable($realpath)) if (is_dir($realpath)) {
                 $data = $this->scanDirectory($realpath, $data, $ext);
-            } elseif (is_file($realpath) && (is_null($ext) || strstr($realpath, '.') === $ext)) {
+            } elseif (is_file($realpath) && (is_null($ext) || pathinfo($realpath, 4) === $ext)) {
                 $data[] = $realpath;
             }
         }
