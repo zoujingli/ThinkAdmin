@@ -188,7 +188,7 @@ class InstallService extends Service
      */
     private function _scanList($path, $data = []): array
     {
-        foreach (NodeService::instance()->scanDirectory($path) as $file) {
+        foreach (NodeService::instance()->scanDirectory($path, [], null) as $file) {
             $data[] = $this->_getInfo(strtr($file, '\\', '/'));
         }
         return $data;
