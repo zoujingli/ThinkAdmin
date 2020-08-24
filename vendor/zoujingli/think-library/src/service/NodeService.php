@@ -148,7 +148,7 @@ class NodeService extends Service
             if (is_readable($realpath)) if (is_dir($realpath)) {
                 $data = $this->scanDirectory($realpath, $data, $ext);
             } elseif (is_file($realpath) && (is_null($ext) || pathinfo($realpath, 4) === $ext)) {
-                $data[] = $realpath;
+                $data[] = strtr($realpath, '\\', '/');
             }
         }
         return $data;
