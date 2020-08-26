@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8037e81a3aec4e25e2cb08d241087287",
+    "content-hash": "23659f7dc81b58e95b422bc4b5e39054",
     "packages": [
         {
             "name": "endroid/qr-code",
@@ -933,7 +933,7 @@
         },
         {
             "name": "zoujingli/think-library",
-            "version": "v6.0.x-dev",
+            "version": "v6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
@@ -1059,9 +1059,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "zoujingli/think-library": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

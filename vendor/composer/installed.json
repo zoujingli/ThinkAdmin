@@ -958,8 +958,8 @@
     },
     {
         "name": "zoujingli/think-library",
-        "version": "v6.0.x-dev",
-        "version_normalized": "6.0.9999999.9999999-dev",
+        "version": "v6.0.1",
+        "version_normalized": "6.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
