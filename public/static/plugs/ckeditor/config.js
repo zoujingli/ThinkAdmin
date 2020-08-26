@@ -23,7 +23,7 @@ CKEDITOR.plugins.add("uimage", {
         setTimeout(function () {
             $('#cke_' + editor.name).find('.cke_button__uploadimage_label').parent().map(function () {
                 $(this).attr('data-type', 'png,jpg,gif').attr('data-file', 'mul').uploadFile(function (url) {
-                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<img style="max-width:100%;border:0" alt="" src="' + url + '">'));
+                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<span><img style="max-width:100%;border:0" alt="" src="' + url + '"></span>'));
                 });
             });
         }, 100);
@@ -37,7 +37,7 @@ CKEDITOR.plugins.add('umusic', {
         setTimeout(function () {
             $('#cke_' + editor.name).find('.cke_button__uploadmusic_label').parent().map(function () {
                 $(this).attr('data-type', 'mp3').attr('data-file', 'mul').uploadFile(function (url) {
-                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<audio controls="controls"><source src="' + url + '" type="audio/mpeg"></audio>'));
+                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<div><audio controls="controls"><source src="' + url + '" type="audio/mpeg"></audio></div>'));
                 });
             });
         }, 100);
@@ -51,7 +51,7 @@ CKEDITOR.plugins.add('uvideo', {
         setTimeout(function () {
             $('#cke_' + editor.name).find('.cke_button__uploadvideo_label').parent().map(function () {
                 $(this).attr('data-type', 'mp4').attr('data-file', 'mul').uploadFile(function (url) {
-                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<video width="100%" controls="controls"><source src="' + url + '" type="audio/mp4"></video>'));
+                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<div><video width="100%" controls="controls"><source src="' + url + '" type="audio/mp4"></video></div>'));
                 });
             });
         }, 100);
