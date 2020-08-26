@@ -52,11 +52,12 @@ abstract class Service
 
     /**
      * 静态实例对象
-     * @param array $args
+     * @param array $var 实例参数
+     * @param boolean $new 创建新实例
      * @return static
      */
-    public static function instance(...$args)
+    public static function instance($var = [], $new = false)
     {
-        return Container::getInstance()->make(static::class, $args);
+        return Container::getInstance()->make(static::class, $var, $new);
     }
 }

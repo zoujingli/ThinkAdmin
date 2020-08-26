@@ -68,7 +68,7 @@ class ExpressService extends Service
     public function express($code, $number, $list = [])
     {
         // 1-新订单,2-在途中,3-签收,4-问题件
-        // 0在途，1揽收，2疑难，3签收，4退签，5派件，6退回
+        // 0-在途，1-揽收，2-疑难，3-签收，4-退签，5-派件，6-退回
         $ckey = md5("{$code}{$number}");
         $cache = $this->app->cache->get($ckey, []);
         if (!empty($cache)) return $cache;

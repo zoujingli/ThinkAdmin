@@ -52,6 +52,12 @@ abstract class Controller extends \stdClass
     public $request;
 
     /**
+     * 控制器中间键
+     * @var array
+     */
+    protected $middleware = [];
+
+    /**
      * 表单CSRF验证状态
      * @var boolean
      */
@@ -62,12 +68,6 @@ abstract class Controller extends \stdClass
      * @var string
      */
     public $csrf_message;
-
-    /**
-     * 控制器中间键
-     * @var array
-     */
-    protected $middleware = [];
 
     /**
      * Controller constructor.
@@ -188,11 +188,12 @@ abstract class Controller extends \stdClass
     /**
      * 快捷查询逻辑器
      * @param string|Query $dbQuery
+     * @param array|string|null $input
      * @return QueryHelper
      */
-    protected function _query($dbQuery): QueryHelper
+    protected function _query($dbQuery, $input = null): QueryHelper
     {
-        return QueryHelper::instance()->init($dbQuery);
+        return QueryHelper::instance()->init($dbQuery, $input);
     }
 
     /**

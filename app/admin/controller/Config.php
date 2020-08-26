@@ -17,6 +17,7 @@ namespace app\admin\controller;
 
 use think\admin\Controller;
 use think\admin\service\AdminService;
+use think\admin\service\ModuleService;
 use think\admin\service\SystemService;
 
 /**
@@ -69,6 +70,7 @@ class Config extends Controller
     {
         $this->title = '系统参数配置';
         $this->isSuper = AdminService::instance()->isSuper();
+        $this->version = ModuleService::instance()->getVersion();
         $this->fetch();
     }
 

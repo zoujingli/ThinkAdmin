@@ -35,16 +35,16 @@ class InterfaceService extends Service
     private $debug;
 
     /**
-     * 接口认证账号
-     * @var string
-     */
-    private $appid;
-
-    /**
      * 请求数据
      * @var array
      */
     private $input;
+
+    /**
+     * 接口认证账号
+     * @var string
+     */
+    private $appid;
 
     /**
      * 接口认证密钥
@@ -56,25 +56,22 @@ class InterfaceService extends Service
      * 接口请求地址
      * @var string
      */
-    private $baseapi;
+    private $baseurl;
 
     /**
      * 接口服务初始化
-     * OpenService constructor.
+     * InterfaceService constructor.
      * @param App $app
-     * @param string $appid 接口账号
-     * @param string $appkey 接口密钥
-     * @param string $baseapi 接口地址
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function __construct(App $app, $appid = '', $appkey = '', $baseapi = '')
+    public function __construct(App $app)
     {
         parent::__construct($app);
-        $this->appid = $appid ?: sysconf('data.interface_appid');
-        $this->appkey = $appkey ?: sysconf('data.interface_appkey');
-        $this->baseapi = $baseapi ?: sysconf('data.interface_baseapi');
+        $this->appid = sysconf('data.interface_appid') ?: '';
+        $this->appkey = sysconf('data.interface_appkey') ?: '';
+        $this->baseurl = sysconf('data.interface_baseapi') ?: '';
     }
 
     /**
@@ -103,7 +100,7 @@ class InterfaceService extends Service
      */
     public function getBaseUrl()
     {
-        return $this->baseapi;
+        return $this->baseurl;
     }
 
     /**
@@ -147,6 +144,7 @@ class InterfaceService extends Service
      */
     public function checkInput()
     {
+        if ($this->debug) return true;
         if (empty($this->input)) $this->getInput(false);
         if ($this->input['appid'] !== $this->appid) return null;
         return md5("{$this->appid}#{$this->input['data']}#{$this->input['time']}#{$this->appkey}#{$this->input['nostr']}") === $this->input['sign'];
@@ -158,6 +156,7 @@ class InterfaceService extends Service
      */
     public function showCheck()
     {
+        if ($this->debug) return $this;
         if (is_null($check = $this->checkInput())) {
             $this->baseError(lang('think_library_params_failed_auth'));
         } elseif ($check === false) {
@@ -189,11 +188,7 @@ class InterfaceService extends Service
     public function error($info, $data = '{-null-}', $code = 0)
     {
         if ($data === '{-null-}') $data = new \stdClass();
-        if ($this->debug) {
-            $this->baseError($info, $data, $code);
-        } else {
-            $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data], 1);
-        }
+        $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data], 1);
     }
 
     /**
@@ -205,11 +200,7 @@ class InterfaceService extends Service
     public function success($info, $data = '{-null-}', $code = 1)
     {
         if ($data === '{-null-}') $data = new \stdClass();
-        if ($this->debug) {
-            $this->baseSuccess($info, $data, $code);
-        } else {
-            $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data], 1);
-        }
+        $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data], 1);
     }
 
     /**
@@ -258,7 +249,7 @@ class InterfaceService extends Service
      */
     public function doRequest(string $uri, array $data = []): array
     {
-        $result = json_decode(HttpExtend::post($this->baseapi . $uri, $this->_buildSign($data)), true);
+        $result = json_decode(HttpExtend::post($this->baseurl . $uri, $this->_buildSign($data)), true);
         if (empty($result)) throw new \think\admin\Exception(lang('think_library_response_failed'));
         if (empty($result['code'])) throw new \think\admin\Exception($result['info']);
         return $result['data'] ?? [];
