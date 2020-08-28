@@ -138,6 +138,10 @@ class ComposerStaticInitb911c14a0826c73d9f097343fd33a252
         ),
     );
 
+    public static $fallbackDirsPsr0 = array (
+        0 => __DIR__ . '/../..' . '/extend',
+    );
+
     public static $classMap = array (
         'AliPay\\App' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/App.php',
         'AliPay\\Bill' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Bill.php',
@@ -650,6 +654,7 @@ class ComposerStaticInitb911c14a0826c73d9f097343fd33a252
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitb911c14a0826c73d9f097343fd33a252::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitb911c14a0826c73d9f097343fd33a252::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitb911c14a0826c73d9f097343fd33a252::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInitb911c14a0826c73d9f097343fd33a252::$classMap;
 
         }, null, ClassLoader::class);

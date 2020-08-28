@@ -963,12 +963,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "1c194b947fb85bd79adc1f821ef06f2f77a35147"
+            "reference": "6768de2a30a5d3058c4b6d34a0c99591acc4e476"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/1c194b947fb85bd79adc1f821ef06f2f77a35147",
-            "reference": "1c194b947fb85bd79adc1f821ef06f2f77a35147",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/6768de2a30a5d3058c4b6d34a0c99591acc4e476",
+            "reference": "6768de2a30a5d3058c4b6d34a0c99591acc4e476",
             "shasum": "",
             "mirrors": [
                 {
