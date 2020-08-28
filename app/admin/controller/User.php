@@ -42,8 +42,9 @@ class User extends Controller
     public function index()
     {
         $this->title = '系统用户管理';
-        $query = $this->_query($this->table)->like('username,phone,mail');
+        $query = $this->_query($this->table);
         $query->equal('status')->dateBetween('login_at,create_at');
+        $query->like('username,contact_phone#phone,contact_mail#mail');
         // 加载对应数据列表
         $this->type = input('type', 'all');
         if ($this->type === 'all') {
