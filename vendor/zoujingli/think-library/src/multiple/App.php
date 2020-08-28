@@ -1,6 +1,5 @@
 <?php
 
-// 以下代码来自 topthink/think-multi-app，有部分修改以兼容 ThinkAdmin 的需求
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -9,6 +8,8 @@
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
+// +----------------------------------------------------------------------
+// 以下代码来自 topthink/think-multi-app，有部分修改以兼容 ThinkAdmin 的需求
 // +----------------------------------------------------------------------
 
 namespace think\admin\multiple;
@@ -25,9 +26,7 @@ use think\Response;
  */
 class App
 {
-    /**
-     * @var \think\App
-     */
+    /** @var \think\App */
     protected $app;
 
     /**
@@ -55,14 +54,15 @@ class App
 
     /**
      * 多应用解析
-     * @access public
      * @param Request $request
      * @param Closure $next
      * @return Response
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->parseMultiApp()) return $next($request);
+        if (!$this->parseMultiApp()) {
+            return $next($request);
+        }
         return $this->app->middleware->pipeline('app')->send($request)->then(function ($request) use ($next) {
             return $next($request);
         });
@@ -70,7 +70,6 @@ class App
 
     /**
      * 获取路由目录
-     * @access protected
      * @return string
      */
     protected function getRoutePath(): string
@@ -95,8 +94,9 @@ class App
             $appName = null;
             $bind = $this->app->config->get('app.domain_bind', []);
             if (!empty($bind)) {
-                $domain = $this->app->request->host(true);
+                // 获取当前子域名
                 $subDomain = $this->app->request->subDomain();
+                $domain = $this->app->request->host(true);
                 if (isset($bind[$domain])) {
                     $appName = $bind[$domain];
                     $this->app->http->setBind();
@@ -118,7 +118,8 @@ class App
                 }
                 if (isset($map[$name])) {
                     if ($map[$name] instanceof Closure) {
-                        $appName = call_user_func_array($map[$name], [$this->app]) ?: $name;
+                        $result = call_user_func_array($map[$name], [$this->app]);
+                        $appName = $result ?: $name;
                     } else {
                         $appName = $map[$name];
                     }
@@ -167,7 +168,7 @@ class App
 
     /**
      * 设置应用
-     * @param string $appName
+     * @param string $appName 应用名称
      */
     protected function setApp(string $appName): void
     {
@@ -185,18 +186,27 @@ class App
 
     /**
      * 加载应用文件
-     * @param string $appPath
+     * @param string $appPath 应用路径
      * @return void
      */
     protected function loadApp(string $appPath): void
     {
-        if (is_file($appPath . 'common.php')) \Composer\Autoload\includeFile($appPath . 'common.php');
-        foreach (glob($appPath . 'config' . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt()) as $file) {
+        if (is_file($appPath . 'common.php')) {
+            include_once $appPath . 'common.php';
+        }
+        $files = glob($appPath . 'config' . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt());
+        foreach ($files as $file) {
             $this->app->config->load($file, pathinfo($file, PATHINFO_FILENAME));
         }
-        if (is_file($appPath . 'event.php')) $this->app->loadEvent(include $appPath . 'event.php');
-        if (is_file($appPath . 'provider.php')) $this->app->bind(include $appPath . 'provider.php');
-        if (is_file($appPath . 'middleware.php')) $this->app->middleware->import(include $appPath . 'middleware.php', 'app');
+        if (is_file($appPath . 'event.php')) {
+            $this->app->loadEvent(include $appPath . 'event.php');
+        }
+        if (is_file($appPath . 'middleware.php')) {
+            $this->app->middleware->import(include $appPath . 'middleware.php', 'app');
+        }
+        if (is_file($appPath . 'provider.php')) {
+            $this->app->bind(include $appPath . 'provider.php');
+        }
         // 加载应用默认语言包
         $this->app->loadLangPack($this->app->lang->defaultLangSet());
     }

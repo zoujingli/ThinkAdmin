@@ -1,6 +1,5 @@
 <?php
 
-// 以下代码来自 topthink/think-multi-app，有部分修改以兼容 ThinkAdmin 的需求
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -9,6 +8,8 @@
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
+// +----------------------------------------------------------------------
+// 以下代码来自 topthink/think-multi-app，有部分修改以兼容 ThinkAdmin 的需求
 // +----------------------------------------------------------------------
 
 namespace think\admin\multiple;
@@ -42,27 +43,24 @@ class Url extends \think\route\Url
             // 解析到控制器
             $url = substr($url, 1);
         } elseif ('' === $url) {
-            $url = $this->app->http->getName() . '/' . $request->controller() . '/' . $request->action();
+            $url = $request->controller() . '/' . $request->action();
+            if (!$this->app->http->isBind()) {
+                $url = $this->getAppName() . '/' . $url;
+            }
         } else {
             // 解析到 应用/控制器/操作
             $controller = $request->controller();
-            $app = $this->app->http->getName();
             $path = explode('/', $url);
             $action = array_pop($path);
             $controller = empty($path) ? $controller : array_pop($path);
-            $app = empty($path) ? $app : array_pop($path);
+            $app = empty($path) ? $this->getAppName() : array_pop($path);
             $url = Str::snake($controller) . '/' . $action;
             $bind = $this->app->config->get('app.domain_bind', []);
-            if ($key = array_search($app, $bind)) {
+            if ($key = array_search($this->app->http->getName(), $bind)) {
                 isset($bind[$_SERVER['SERVER_NAME']]) && $domain = $_SERVER['SERVER_NAME'];
                 $domain = is_bool($domain) ? $key : $domain;
-            } else {
-                $map = $this->app->config->get('app.app_map', []);
-                if ($key = array_search($app, $map)) {
-                    $url = $key . '/' . $url;
-                } else {
-                    $url = $app . '/' . $url;
-                }
+            } elseif (!$this->app->http->isBind()) {
+                $url = $app . '/' . $url;
             }
         }
         return $url;
@@ -106,7 +104,7 @@ class Url extends \think\route\Url
             $rule = $this->route->getName($checkName, $checkDomain);
             if (empty($rule) && isset($info['query'])) {
                 $rule = $this->route->getName($url, $checkDomain);
-                // 解析地址里面参数 合并到 vars
+                // 解析地址里面参数 合并到vars
                 parse_str($info['query'], $params);
                 $vars = array_merge($params, $vars);
                 unset($info['query']);
@@ -122,7 +120,8 @@ class Url extends \think\route\Url
                 $suffix = $match[2];
             }
             if (!$this->app->http->isBind()) {
-                $url = $this->app->http->getName() . '/' . $url;
+                $app = $this->getAppName();
+                $url = $app . '/' . $url;
             }
         } elseif (!empty($rule) && isset($name)) {
             throw new \InvalidArgumentException('route name not exists:' . $name);
@@ -149,7 +148,7 @@ class Url extends \think\route\Url
                 $vars = array_merge($params, $vars);
             }
         }
-        // 还原 URL 分隔符
+        // 还原URL分隔符
         $depr = $this->route->config('pathinfo_depr');
         $url = str_replace('/', $depr, $url);
         $file = $request->baseFile();
@@ -187,5 +186,20 @@ class Url extends \think\route\Url
         $domain = $this->parseDomain($url, $domain);
         // URL组装
         return $domain . rtrim($this->root, '/') . '/' . ltrim($url, '/');
+    }
+
+    /**
+     * 获取URL的应用名
+     * @access protected
+     * @return string
+     */
+    protected function getAppName()
+    {
+        $app = $this->app->http->getName();
+        $map = $this->app->config->get('app.app_map', []);
+        if ($key = array_search($app, $map)) {
+            $app = $key;
+        }
+        return $app;
     }
 }

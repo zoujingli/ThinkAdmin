@@ -56,7 +56,7 @@ class ValidateHelper extends Helper
                 if ($_rule === 'value') $data[$_key] = $message;
                 elseif ($_rule === 'default') $data[$_key] = $input[($alias ?: $_key)] ?? $message;
             } else {
-                $info[strstr($name, ':', true)] = $message;
+                $info[explode(':', $name)[0]] = $message;
                 $data[$_key] = $data[$_key] ?? ($input[($alias ?: $_key)] ?? null);
                 $rule[$_key] = isset($rule[$_key]) ? ($rule[$_key] . '|' . $_rule) : $_rule;
             }

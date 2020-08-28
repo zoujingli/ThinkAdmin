@@ -45,6 +45,7 @@
       "@php think vendor:publish"
     ]
   },
+  "minimum-stability": "stable",
   "repositories": {
     "packagist": {
       "type": "composer",

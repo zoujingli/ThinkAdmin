@@ -177,7 +177,7 @@ abstract class Controller extends \stdClass
     public function callback($name, &$one = [], &$two = [])
     {
         if (is_callable($name)) return call_user_func($name, $this, $one, $two);
-        foreach ([$name, "_{$this->app->request->action()}{$name}"] as $method) {
+        foreach (["_{$this->app->request->action()}{$name}", $name] as $method) {
             if (method_exists($this, $method) && false === $this->$method($one, $two)) {
                 return false;
             }
