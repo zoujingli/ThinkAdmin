@@ -39,6 +39,11 @@ use function Composer\Autoload\includeFile;
 class Library extends Service
 {
     /**
+     * 扩展库版本号
+     */
+    const VERSION = '6.0.2';
+
+    /**
      * 启动服务
      */
     public function boot()

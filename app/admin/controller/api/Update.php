@@ -16,7 +16,6 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
-use think\admin\service\InstallService;
 use think\admin\service\ModuleService;
 
 /**
@@ -50,7 +49,7 @@ class Update extends Controller
      */
     public function node()
     {
-        $this->success('获取文件列表成功！', InstallService::instance()->getList(
+        $this->success('获取文件列表成功！', ModuleService::instance()->getChanges(
             json_decode($this->request->post('rules', '[]', ''), true),
             json_decode($this->request->post('ignore', '[]', ''), true)
         ));

@@ -74,6 +74,7 @@ class AdminService extends Service
         if ($this->isSuper()) return true;
         $service = NodeService::instance();
         [$real, $nodes] = [$service->fullnode($node), $service->getMethods()];
+        // 以下代码为兼容 win 控制器不区分大小写的验证问题
         foreach ($nodes as $key => $rule) {
             if (strpos($key, '_') !== false && strpos($key, '/') !== false) {
                 $attr = explode('/', $key);

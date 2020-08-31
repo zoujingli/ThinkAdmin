@@ -16,7 +16,7 @@
 namespace think\admin\command;
 
 use think\admin\Command;
-use think\admin\service\InstallService;
+use think\admin\service\ModuleService;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
@@ -114,10 +114,10 @@ class Install extends Command
 
     protected function installFile()
     {
-        $data = InstallService::instance()->grenerateDifference($this->rules, $this->ignore);
+        $data = ModuleService::instance()->grenerateDifference($this->rules, $this->ignore);
         if (empty($data)) $this->output->writeln('No need to update the file if the file comparison is consistent');
         else foreach ($data as $file) {
-            [$state, $mode, $name] = InstallService::instance()->updateFileByDownload($file);
+            [$state, $mode, $name] = ModuleService::instance()->updateFileByDownload($file);
             if ($state) {
                 if ($mode === 'add') $this->output->writeln("--- {$name} add successfully");
                 if ($mode === 'mod') $this->output->writeln("--- {$name} update successfully");

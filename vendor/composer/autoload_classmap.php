@@ -299,7 +299,6 @@ return array(
     'think\\admin\\service\\AdminService' => $vendorDir . '/zoujingli/think-library/src/service/AdminService.php',
     'think\\admin\\service\\CaptchaService' => $vendorDir . '/zoujingli/think-library/src/service/CaptchaService.php',
     'think\\admin\\service\\ExpressService' => $vendorDir . '/zoujingli/think-library/src/service/ExpressService.php',
-    'think\\admin\\service\\InstallService' => $vendorDir . '/zoujingli/think-library/src/service/InstallService.php',
     'think\\admin\\service\\InterfaceService' => $vendorDir . '/zoujingli/think-library/src/service/InterfaceService.php',
     'think\\admin\\service\\MenuService' => $vendorDir . '/zoujingli/think-library/src/service/MenuService.php',
     'think\\admin\\service\\MessageService' => $vendorDir . '/zoujingli/think-library/src/service/MessageService.php',

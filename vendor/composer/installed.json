@@ -573,8 +573,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.43",
-        "version_normalized": "3.4.43.0",
+        "version": "v3.4.44",
+        "version_normalized": "3.4.44.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
@@ -958,17 +958,17 @@
     },
     {
         "name": "zoujingli/think-library",
-        "version": "v6.0.1",
-        "version_normalized": "6.0.1.0",
+        "version": "v6.0.2",
+        "version_normalized": "6.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "a5c1e18d0e57dd0a83174793f09cca5ba592b773"
+            "reference": "a498595d637568481601091985ae22d5cd05a057"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/a5c1e18d0e57dd0a83174793f09cca5ba592b773",
-            "reference": "a5c1e18d0e57dd0a83174793f09cca5ba592b773",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/a498595d637568481601091985ae22d5cd05a057",
+            "reference": "a498595d637568481601091985ae22d5cd05a057",
             "shasum": "",
             "mirrors": [
                 {
@@ -985,7 +985,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-08-28T11:32:28+00:00",
+        "time": "2020-08-31T11:59:58+00:00",
         "type": "library",
         "extra": {
             "think": {
