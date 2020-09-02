@@ -89,7 +89,7 @@ class Center extends Member
     public function getFrom()
     {
         $query = $this->_query($this->table);
-        $query->where(['from' => $this->mid])->field('id,from,user,nickname,headimg,create_at');
+        $query->where(['from' => $this->mid])->field('id,from,username,nickname,headimg,create_at');
         $this->success('获取我邀请的朋友', $query->order('id desc')->page(true, false, false, 15));
     }
 }

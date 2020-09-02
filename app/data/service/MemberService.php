@@ -29,10 +29,12 @@ class MemberService extends Service
      */
     public function get(string $token, array $data = []): array
     {
-        $query = $this->app->db->name($this->table);
-        $query->where(['token' => $token, 'deleted' => 0]);
+        $map = ['token' => $token, 'deleted' => 0];
+        $query = $this->app->db->name($this->table)->where($map);
         $member = $query->withoutField('status,deleted')->find();
-        if (empty($member)) throw new \think\Exception('会员查询失败');
+        if (empty($member)) {
+            throw new \think\Exception('登录授权失败');
+        }
         if ($member['tokenv'] !== $this->buildTokenVerify()) {
             throw new \think\Exception('请重新登录授权');
         }
@@ -51,13 +53,15 @@ class MemberService extends Service
      */
     public function token(int $mid, array $data = []): array
     {
-        do $up = ['token' => md5(uniqid("{$mid}#", true) . rand(100, 999))];
-        while ($this->app->db->name($this->table)->where($up)->count() > 0);
-        $count = $this->app->db->name($this->table)->where(['id' => $mid, 'deleted' => 0])->update([
-            'token' => $up['token'], 'tokenv' => $this->buildTokenVerify(),
+        // 生成新的接口令牌
+        do $update = ['token' => md5(uniqid("{$mid}#", true) . rand(100, 999))];
+        while ($this->app->db->name($this->table)->where($update)->count() > 0);
+        // 更新账号授权令牌
+        $this->app->db->name($this->table)->where(['id' => $mid, 'deleted' => 0])->update([
+            'token' => $update['token'], 'tokenv' => $this->buildTokenVerify(),
         ]);
-        if ($count < 1) throw new \think\Exception('生成授权TOKEN失败');
-        return $this->get($up['token'], $data);
+        // 获取新的会员数据
+        return $this->get($update['token'], $data);
     }
 
     /**
@@ -68,7 +72,7 @@ class MemberService extends Service
     public function total(int $mid): array
     {
         $query = $this->app->db->name($this->table);
-        return ['myinvited' => $query->where(['from' => $mid])->count()];
+        return ['my_invite' => $query->where(['from' => $mid])->count()];
     }
 
     /**

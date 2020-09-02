@@ -43,28 +43,11 @@ class News extends Controller
                 $this->app->db->name('DataNewsHistory')->insert($history);
             }
         }
-        $query = $this->_query('DataNewsItem')->equal('id')->like('title,mark');
+        $query = $this->_query('DataNewsItem')->like('title,mark')->equal('id');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
-        if (count($result['list']) > 0 && input('mid') > 0) {
-            NewsService::instance()->buildListState($result['list'], input('mid'));
-        }
+        NewsService::instance()->buildListState($result['list'], input('mid'));
         $this->success('获取文章内容列表', $result);
-    }
-
-    /**
-     * 获取文章评论
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function getComment()
-    {
-        $data = $this->_vali(['cid.require' => '文章ID不能为空！']);
-        $query = $this->_query('DataNewsXComment')->where($data);
-        $result = $query->order('id desc')->page(false, false, false, 5);
-        NewsService::instance()->buildListByMid($result['list']);
-        $this->success('获取文章评论成功！', $result);
     }
 
     /**
@@ -86,4 +69,20 @@ class News extends Controller
         $query = $this->app->db->name('DataNewsXCollect')->where($data);
         $this->success('获取已收藏的会员', ['list' => $query->order('mid asc')->column('mid')]);
     }
+
+    /**
+     * 获取文章评论
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getComment()
+    {
+        $data = $this->_vali(['cid.require' => '文章ID不能为空！']);
+        $query = $this->_query('DataNewsXComment')->where($data);
+        $result = $query->order('id desc')->page(false, false, false, 5);
+        NewsService::instance()->buildListByMid($result['list']);
+        $this->success('获取文章评论成功！', $result);
+    }
+
 }

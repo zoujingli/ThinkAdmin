@@ -16,7 +16,7 @@ class NewsService extends Service
      * @param integer $cid 文章ID
      * @throws \think\db\exception\DbException
      */
-    public function syncTotal($cid)
+    public function syncNewsTotal($cid)
     {
         $this->app->db->name('DataNewsItem')->where(['id' => $cid])->update([
             'num_like'    => $this->app->db->name('DataNewsXLike')->where(['cid' => $cid])->count(),

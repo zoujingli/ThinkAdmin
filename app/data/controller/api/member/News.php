@@ -24,7 +24,7 @@ class News extends Member
             'content.require' => '评论内容不能为空！',
         ]);
         if ($this->app->db->name('DataNewsXComment')->insert($data) !== false) {
-            NewsService::instance()->syncTotal($data['cid']);
+            NewsService::instance()->syncNewsTotal($data['cid']);
             $this->success('添加评论成功！');
         } else {
             $this->error('添加评论失败！');
@@ -73,7 +73,7 @@ class News extends Member
             $this->success('您已收藏！');
         }
         if ($this->app->db->name('DataNewsXCollect')->insert($data) !== false) {
-            NewsService::instance()->syncTotal($data['cid']);
+            NewsService::instance()->syncNewsTotal($data['cid']);
             $this->success('收藏成功！');
         } else {
             $this->error('收藏失败！');
@@ -88,7 +88,7 @@ class News extends Member
     {
         $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '文章ID不能为空！']);
         if ($this->app->db->name('DataNewsXCollect')->where($data)->delete() !== false) {
-            NewsService::instance()->syncTotal($data['cid']);
+            NewsService::instance()->syncNewsTotal($data['cid']);
             $this->success('取消收藏成功！');
         } else {
             $this->error('取消收藏失败！');
@@ -118,7 +118,7 @@ class News extends Member
             $this->success('您已点赞！');
         }
         if ($this->app->db->name('DataNewsXLike')->insert($data) !== false) {
-            NewsService::instance()->syncTotal($data['cid']);
+            NewsService::instance()->syncNewsTotal($data['cid']);
             $this->success('点赞成功！');
         } else {
             $this->error('点赞失败！');
@@ -133,7 +133,7 @@ class News extends Member
     {
         $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '内容ID不能为空！']);
         if ($this->app->db->name('DataNewsXLike')->where($data)->delete() !== false) {
-            NewsService::instance()->syncTotal($data['cid']);
+            NewsService::instance()->syncNewsTotal($data['cid']);
             $this->success('取消点赞成功！');
         } else {
             $this->error('取消点赞失败！');
