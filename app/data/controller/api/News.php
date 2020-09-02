@@ -39,8 +39,8 @@ class News extends Controller
             ]);
             if (input('mid') > 0) {
                 $history = ['mid' => input('mid'), 'cid' => $id];
-                $this->app->db->name('DataNewsHistory')->where($history)->delete();
-                $this->app->db->name('DataNewsHistory')->insert($history);
+                $this->app->db->name('DataNewsXHistory')->where($history)->delete();
+                $this->app->db->name('DataNewsXHistory')->insert($history);
             }
         }
         $query = $this->_query('DataNewsItem')->like('title,mark')->equal('id');
