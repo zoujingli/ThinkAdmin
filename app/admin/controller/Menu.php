@@ -19,6 +19,7 @@ use think\admin\Controller;
 use think\admin\extend\DataExtend;
 use think\admin\service\AdminService;
 use think\admin\service\MenuService;
+use think\admin\service\NodeService;
 
 /**
  * 系统菜单管理
@@ -102,7 +103,13 @@ class Menu extends Controller
             // 选择自己的上级菜单
             $vo['pid'] = $vo['pid'] ?? input('pid', '0');
             // 读取系统功能节点
+            $this->auths = [];
             $this->nodes = MenuService::instance()->getList();
+            foreach (NodeService::instance()->getMethods() as $node => $item) {
+                if ($item['isauth'] && substr_count($node, '/') >= 2) {
+                    $this->auths[] = ['node' => $node, 'title' => $item['title']];
+                }
+            }
             // 列出可选上级菜单
             $menus = $this->app->db->name($this->table)->order('sort desc,id asc')->column('id,pid,icon,url,title,params', 'id');
             $this->menus = DataExtend::arr2table(array_merge($menus, [['id' => '0', 'pid' => '-1', 'url' => '#', 'title' => '顶部菜单']]));

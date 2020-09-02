@@ -1,8 +1,8 @@
+.git
+.svn
 .idea
 !.gitignore
 !composer.json
-composer.lock
-app
-config
-vendor
-public
+/composer.lock
+/vendor
+/test.php

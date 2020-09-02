@@ -49,15 +49,19 @@ class SystemService extends Service
      */
     public function set($name, $value = '')
     {
-        [$this->data, $count] = [[], 0];
-        [$type, $field] = $this->parse($name, 'base');
+        $this->data = [];
+        [$type, $field] = $this->_parse($name, 'base');
         if (is_array($value)) {
-            foreach ($value as $kk => $vv) $count += $this->set("{$field}.{$kk}", $vv);
+            $count = 0;
+            foreach ($value as $kk => $vv) {
+                $count += $this->set("{$field}.{$kk}", $vv);
+            }
             return $count;
         } else {
             $this->app->cache->delete($this->table);
-            $data = ['type' => $type, 'name' => $field, 'value' => $value];
-            $query = $this->app->db->name($this->table)->where(['type' => $type, 'name' => $field]);
+            $map = ['type' => $type, 'name' => $field];
+            $data = array_merge($map, ['value' => $value]);
+            $query = $this->app->db->name($this->table)->master(true)->where($map);
             return (clone $query)->count() > 0 ? $query->update($data) : $query->insert($data);
         }
     }
@@ -73,10 +77,12 @@ class SystemService extends Service
      */
     public function get($name = '', $default = '')
     {
-        [$type, $field, $outer] = $this->parse($name, 'base');
-        if (empty($this->data)) $this->app->db->name($this->table)->cache($this->table)->select()->map(function ($item) {
-            $this->data[$item['type']][$item['name']] = $item['value'];
-        });
+        if (empty($this->data)) {
+            $this->app->db->name($this->table)->cache($this->table)->select()->map(function ($item) {
+                $this->data[$item['type']][$item['name']] = $item['value'];
+            });
+        }
+        [$type, $field, $outer] = $this->_parse($name, 'base');
         if (empty($name)) {
             return $this->data;
         } elseif (isset($this->data[$type])) {
@@ -115,7 +121,7 @@ class SystemService extends Service
      * @param string $type 配置类型
      * @return array
      */
-    private function parse($rule, $type = 'base')
+    private function _parse($rule, $type = 'base')
     {
         if (stripos($rule, '.') !== false) {
             [$type, $rule] = explode('.', $rule, 2);

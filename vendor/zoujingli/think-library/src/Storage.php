@@ -119,10 +119,9 @@ abstract class Storage
      */
     public static function name($url, $ext = '', $pre = '', $fun = 'md5')
     {
-        if (empty($ext)) $ext = pathinfo($url, 4);
-        [$xmd, $ext] = [$fun($url), trim($ext, '.\\/')];
-        $attr = [trim($pre, '.\\/'), substr($xmd, 0, 2), substr($xmd, 2, 30)];
-        return trim(join('/', $attr), '/') . '.' . strtolower($ext ? $ext : 'tmp');
+        [$hah, $ext] = [$fun($url), trim($ext ?: pathinfo($url, 4), '.\\/')];
+        $attr = [trim($pre, '.\\/'), substr($hah, 0, 2), substr($hah, 2, 30)];
+        return trim(join('/', $attr), '/') . '.' . strtolower($ext ?: 'tmp');
     }
 
     /**

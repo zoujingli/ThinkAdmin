@@ -20,13 +20,16 @@ use think\Request;
 use think\Response;
 
 /**
- * 多应用支持
- * Class MultiApp
+ * 多应用支持组件
+ * Class App
  * @package think\admin\multiple
  */
 class App
 {
-    /** @var \think\App */
+    /**
+     * 应用实例
+     * @var \think\App
+     */
     protected $app;
 
     /**
@@ -118,8 +121,7 @@ class App
                 }
                 if (isset($map[$name])) {
                     if ($map[$name] instanceof Closure) {
-                        $result = call_user_func_array($map[$name], [$this->app]);
-                        $appName = $result ?: $name;
+                        $appName = call_user_func_array($map[$name], [$this->app]) ?: $name;
                     } else {
                         $appName = $map[$name];
                     }
@@ -131,8 +133,7 @@ class App
                     $appName = $name ?: $defaultApp;
                     $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
                     if (!is_dir($appPath)) {
-                        $express = $this->app->config->get('app.app_express', false);
-                        if ($express) {
+                        if ($this->app->config->get('app.app_express', false)) {
                             $this->setApp($defaultApp);
                             return true;
                         } else {

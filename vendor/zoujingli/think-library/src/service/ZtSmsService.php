@@ -45,8 +45,8 @@ class ZtSmsService extends Service
      */
     protected function initialize()
     {
-        $this->username = sysconf('ztsms.username');
-        $this->password = sysconf('ztsms.password');
+        $this->username = sysconf('ztsms.username') ?: '';
+        $this->password = sysconf('ztsms.password') ?: '';
     }
 
     /**
@@ -55,7 +55,7 @@ class ZtSmsService extends Service
      * @param string $password 账号密码
      * @return static
      */
-    public function make(string $username, string $password)
+    public function setAuth(string $username, string $password)
     {
         $this->username = $username;
         $this->password = $password;

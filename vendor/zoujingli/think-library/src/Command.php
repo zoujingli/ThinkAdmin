@@ -44,7 +44,7 @@ abstract class Command extends ThinkCommand
      * 初始化指令变量
      * @param Input $input
      * @param Output $output
-     * @return $this
+     * @return static
      * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -69,7 +69,7 @@ abstract class Command extends ThinkCommand
      * 设置进度消息并继续执行
      * @param null|string $message 进度消息
      * @param null|integer $progress 进度数值
-     * @return Command
+     * @return static
      */
     protected function setQueueProgress($message = null, $progress = null)
     {
@@ -84,7 +84,7 @@ abstract class Command extends ThinkCommand
     /**
      * 设置失败消息并结束进程
      * @param string $message 消息内容
-     * @return Command
+     * @return static
      * @throws Exception
      */
     protected function setQueueError($message)
@@ -100,7 +100,7 @@ abstract class Command extends ThinkCommand
     /**
      * 设置成功消息并结束进程
      * @param string $message 消息内容
-     * @return Command
+     * @return static
      * @throws Exception
      */
     protected function setQueueSuccess($message)

@@ -105,8 +105,8 @@ class InterfaceService extends Service
 
     /**
      * 设置授权账号
-     * @param string $appid
-     * @param string $appkey
+     * @param string $appid 接口账号
+     * @param string $appkey 接口密钥
      * @return $this
      */
     public function setAuth($appid, $appkey)
