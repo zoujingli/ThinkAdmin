@@ -15,7 +15,7 @@
 */
 
 SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for data_member
@@ -49,7 +49,7 @@ CREATE TABLE `data_member`  (
   INDEX `idx_data_member_token`(`token`) USING BTREE,
   INDEX `idx_data_member_status`(`status`) USING BTREE,
   INDEX `idx_data_member_openid`(`openid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-会员' ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-会员' ROW_FORMAT=Compact;
 
 -- ----------------------------
 -- Table structure for data_member_coin
@@ -70,7 +70,7 @@ CREATE TABLE `data_member_coin`  (
   INDEX `idx_data_member_coin_name`(`name`) USING BTREE,
   INDEX `idx_data_member_coin_date`(`date`) USING BTREE,
   INDEX `idx_data_member_coin_code`(`code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-会员-金币-获得' ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci COMMENT='数据-会员-金币-获得' ROW_FORMAT=Compact;
 
 -- ----------------------------
 -- Table structure for data_member_coin_used
@@ -90,7 +90,7 @@ CREATE TABLE `data_member_coin_used`  (
   INDEX `idx_data_member_coin_used_mid`(`mid`) USING BTREE,
   INDEX `idx_data_member_coin_used_type`(`type`) USING BTREE,
   INDEX `idx_data_member_coin_used_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-会员-金币-消费' ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci COMMENT='数据-会员-金币-消费' ROW_FORMAT=Compact;
 
 -- ----------------------------
 -- Table structure for data_news_item
@@ -114,7 +114,7 @@ CREATE TABLE `data_news_item`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-内容' ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-文章-内容' ROW_FORMAT=Compact;
 
 -- ----------------------------
 -- Table structure for data_news_mark
@@ -131,7 +131,7 @@ CREATE TABLE `data_news_mark`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_mark_status`(`status`) USING BTREE,
   INDEX `idx_data_news_mark_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标签' ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-文章-标签' ROW_FORMAT=Compact;
 
 -- ----------------------------
 -- Table structure for data_news_x_collect
@@ -146,7 +146,7 @@ CREATE TABLE `data_news_x_collect`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_x_collect_cid`(`cid`) USING BTREE,
   INDEX `idx_data_news_x_collect_mid`(`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-会员-收藏' ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-文章-会员-收藏' ROW_FORMAT=Compact;
 
 -- ----------------------------
 -- Table structure for data_news_x_comment
@@ -161,7 +161,7 @@ CREATE TABLE `data_news_x_comment`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_x_comment_cid`(`cid`) USING BTREE,
   INDEX `idx_data_news_x_comment_mid`(`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-会员-评论' ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-文章-会员-评论' ROW_FORMAT=Compact;
 
 -- ----------------------------
 -- Table structure for data_news_x_history
@@ -175,7 +175,7 @@ CREATE TABLE `data_news_x_history`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_x_history_cid`(`cid`) USING BTREE,
   INDEX `idx_data_news_x_history_mid`(`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-会员-历史' ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-文章-会员-历史' ROW_FORMAT=Compact;
 
 -- ----------------------------
 -- Table structure for data_news_x_like
@@ -189,6 +189,6 @@ CREATE TABLE `data_news_x_like`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_x_like_cid`(`cid`) USING BTREE,
   INDEX `idx_data_news_x_like_mid`(`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-会员-点赞' ROW_FORMAT = Compact;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-文章-会员-点赞' ROW_FORMAT=Compact;
 
-SET FOREIGN_KEY_CHECKS = 1;
+SET FOREIGN_KEY_CHECKS=1;

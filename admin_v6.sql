@@ -15,7 +15,7 @@
 */
 
 SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for system_auth
@@ -31,7 +31,7 @@ CREATE TABLE `system_auth`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_auth_title`(`title`) USING BTREE,
   INDEX `idx_system_auth_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-权限';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统-权限';
 
 -- ----------------------------
 -- Table structure for system_auth_node
@@ -44,7 +44,7 @@ CREATE TABLE `system_auth_node`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_auth_auth`(`auth`) USING BTREE,
   INDEX `idx_system_auth_node`(`node`(191)) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-授权';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统-授权';
 
 -- ----------------------------
 -- Table structure for system_config
@@ -56,7 +56,7 @@ CREATE TABLE `system_config`  (
   `value` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置值',
   INDEX `idx_system_config_type`(`type`) USING BTREE,
   INDEX `idx_system_config_name`(`name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-配置';
+) ENGINE=InnoDB CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统-配置';
 
 -- ----------------------------
 -- Records of system_config
@@ -105,7 +105,7 @@ CREATE TABLE `system_data`  (
   `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_data_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统-数据';
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -126,7 +126,7 @@ CREATE TABLE `system_menu`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_menu_node`(`node`) USING BTREE,
   INDEX `idx_system_menu_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统-菜单';
 
 -- ----------------------------
 -- Records of system_menu
@@ -165,7 +165,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统-日志';
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -194,7 +194,7 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统-任务';
 
 -- ----------------------------
 -- Table structure for system_user
@@ -222,7 +222,7 @@ CREATE TABLE `system_user`  (
   INDEX `idx_system_user_username`(`username`) USING BTREE,
   INDEX `idx_system_user_deleted`(`is_deleted`) USING BTREE,
   INDEX `idx_system_user_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户';
+) ENGINE=InnoDB AUTO_INCREMENT=10001 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统-用户';
 
 -- ----------------------------
 -- Records of system_user
@@ -260,7 +260,7 @@ CREATE TABLE `wechat_fans`  (
   INDEX `index_wechat_fans_unionid`(`unionid`) USING BTREE,
   INDEX `index_wechat_fans_is_back`(`is_black`) USING BTREE,
   INDEX `index_wechat_fans_subscribe`(`subscribe`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-粉丝';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='微信-粉丝';
 
 -- ----------------------------
 -- Table structure for wechat_fans_tags
@@ -274,7 +274,7 @@ CREATE TABLE `wechat_fans_tags`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
   INDEX `index_wechat_fans_tags_id`(`id`) USING BTREE,
   INDEX `index_wechat_fans_tags_appid`(`appid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-标签';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='微信-标签';
 
 -- ----------------------------
 -- Table structure for wechat_keys
@@ -304,7 +304,7 @@ CREATE TABLE `wechat_keys`  (
   INDEX `index_wechat_keys_appid`(`appid`) USING BTREE,
   INDEX `index_wechat_keys_type`(`type`) USING BTREE,
   INDEX `index_wechat_keys_keys`(`keys`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-关键字';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='微信-关键字';
 
 -- ----------------------------
 -- Table structure for wechat_media
@@ -324,7 +324,7 @@ CREATE TABLE `wechat_media`  (
   INDEX `index_wechat_media_md5`(`md5`) USING BTREE,
   INDEX `index_wechat_media_type`(`type`) USING BTREE,
   INDEX `index_wechat_media_media_id`(`media_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-素材';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='微信-素材';
 
 -- ----------------------------
 -- Table structure for wechat_news
@@ -341,7 +341,7 @@ CREATE TABLE `wechat_news`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_wechat_news_artcle_id`(`article_id`) USING BTREE,
   INDEX `index_wechat_news_media_id`(`media_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-图文';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='微信-图文';
 
 -- ----------------------------
 -- Table structure for wechat_news_article
@@ -359,6 +359,6 @@ CREATE TABLE `wechat_news_article`  (
   `read_num` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '阅读数量',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-文章';
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='微信-文章';
 
-SET FOREIGN_KEY_CHECKS = 1;
+SET FOREIGN_KEY_CHECKS=1;
