@@ -62,10 +62,10 @@
         })();
         /*! 轮播选项操作 */
         $('[data-slider-box]').on('click', '[data-item-article]', function ($that) {
-            $that = $(this), top.setAttackId = function (id) {
-                $that.prevAll('input').val('article#{v}'.replace('{v}', id));
+            $that = $(this), top.setNewsId = function (id) {
+                $that.prevAll('input').val('news#{v}'.replace('{v}', id));
             };
-            $.form.iframe('{:url("data/article_content/select")}', '选择文章', ['930px', '600px']);
+            $.form.iframe('{:url("data/news_item/select")}', '选择文章', ['930px', '600px']);
         }).on('click', '[data-item-add]', function () {
             addItem();
         }).on('click', '[data-item-rm]', function () {

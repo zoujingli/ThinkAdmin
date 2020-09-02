@@ -2,7 +2,7 @@
 
 {block name='content'}
 <div class="padding-25" data-select-container>
-    {include file='article_content/select_search'}
+    {include file='news_item/select_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
@@ -20,11 +20,7 @@
             <td class="text-left nowrap">{$vo.title|default=''}</td>
             <td class="text-left nowrap">{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}</td>
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
-            <td class='text-left nowrap'>
-
-                <a class="layui-btn layui-btn-sm layui-btn-normal" data-article="{$vo.id}">选择文章</a>
-
-            </td>
+            <td class='text-left nowrap'><a class="layui-btn layui-btn-sm layui-btn-normal" data-news="{$vo.id}">选择文章</a></td>
         </tr>
         {/foreach}
         </tbody>
@@ -37,8 +33,8 @@
 <script>
     $(function () {
         layui.form.render();
-        $('[data-article]').on('click', function () {
-            top.setAttackId(this.getAttribute('data-article') || '');
+        $('[data-news]').on('click', function () {
+            top.setNewsId(this.getAttribute('data-news') || '');
             parent.layer.close(parent.layer.getFrameIndex(window.name));
         });
         $.form.reInit($('[data-select-container]'));

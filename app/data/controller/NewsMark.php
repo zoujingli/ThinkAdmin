@@ -6,16 +6,16 @@ use think\admin\Controller;
 
 /**
  * 文章标签管理
- * Class ArticleTags
+ * Class NewsMark
  * @package app\data\controller
  */
-class ArticleTags extends Controller
+class NewsMark extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataArticleTags';
+    private $table = 'DataNewsMark';
 
     /**
      * 文章标签管理

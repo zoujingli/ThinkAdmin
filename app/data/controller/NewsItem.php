@@ -6,22 +6,16 @@ use think\admin\Controller;
 
 /**
  * 文章内容管理
- * Class ArticleContent
+ * Class NewsItem
  * @package app\data\controller
  */
-class ArticleContent extends Controller
+class NewsItem extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataArticleContent';
-
-    /**
-     * 平台标签配置
-     * @var array
-     */
-    protected $types = ['video' => '视频', 'article' => '文章', 'audio' => '音频'];
+    private $table = 'DataNewsItem';
 
     /**
      * 文章内容管理
@@ -35,7 +29,7 @@ class ArticleContent extends Controller
     {
         $this->title = '文章内容管理';
         $query = $this->_query($this->table);
-        $query->like('title,tags')->dateBetween('create_at');
+        $query->like('title,mark')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
@@ -58,7 +52,8 @@ class ArticleContent extends Controller
     protected function _page_filter(&$data)
     {
         foreach ($data as &$vo) {
-            $vo['tags'] = explode(',', trim($vo['tags'], ','));
+            $vo['mark'] = trim($vo['mark'], ',');
+            $vo['mark'] = $vo['mark'] ? explode(',', $vo['mark']) : [];
         }
     }
 
@@ -99,10 +94,10 @@ class ArticleContent extends Controller
     {
         if ($this->request->isGet()) {
             [$map, $sort] = [['deleted' => 0, 'status' => 1], 'sort desc,id desc'];
-            $this->tags = $this->app->db->name('DataArticleTags')->where($map)->order($sort)->select()->toArray();
-            $data['tags'] = isset($data['tags']) && $data['tags'] ? explode(',', trim($data['tags'], ',')) : [];
+            $this->mark = $this->app->db->name('DataNewsMark')->where($map)->order($sort)->select()->toArray();
+            $data['mark'] = isset($data['mark']) && $data['mark'] ? explode(',', trim($data['mark'], ',')) : [];
         } else {
-            $data['tags'] = ',' . join(',', isset($data['tags']) && is_array($data['tags']) ? $data['tags'] : []) . ',';
+            $data['mark'] = ',' . join(',', isset($data['mark']) && is_array($data['mark']) ? $data['mark'] : []) . ',';
         }
     }
 

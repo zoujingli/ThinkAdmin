@@ -2,14 +2,15 @@
 
 namespace app\data\controller\api;
 
+use app\data\service\NewsService;
 use think\admin\Controller;
 
 /**
  * 文章接口控制器
- * Class Article
+ * Class News
  * @package app\data\controller\api
  */
-class Article extends Controller
+class News extends Controller
 {
     /**
      * 获取文章标签列表
@@ -17,9 +18,9 @@ class Article extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getTags()
+    public function getMark()
     {
-        $query = $this->_query('DataArticleTags')->like('title');
+        $query = $this->_query('DataNewsMark')->like('title');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $this->success('获取文章标签列表', $query->order('sort desc,id desc')->page(false, false));
     }
@@ -30,22 +31,24 @@ class Article extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getContent()
+    public function getItem()
     {
         if (($id = intval(input('id', 0))) > 0) {
-            $this->app->db->name('DataArticleContent')->where(['id' => $id])->update([
-                'number_reads' => $this->app->db->raw('`number_reads`+1'),
+            $this->app->db->name('DataNewsItem')->where(['id' => $id])->update([
+                'num_read' => $this->app->db->raw('`num_read`+1'),
             ]);
             if (input('mid') > 0) {
                 $history = ['mid' => input('mid'), 'cid' => $id];
-                $this->app->db->name('DataArticleHistory')->where($history)->delete();
-                $this->app->db->name('DataArticleHistory')->insert($history);
+                $this->app->db->name('DataNewsHistory')->where($history)->delete();
+                $this->app->db->name('DataNewsHistory')->insert($history);
             }
         }
-        $query = $this->_query('DataArticleContent')->equal('type,id')->like('title,tags');
+        $query = $this->_query('DataNewsItem')->equal('id')->like('title,mark');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
-        foreach ($result['list'] as &$vo) $vo['tags'] = trim($vo['tags'], ',');
+        if (count($result['list']) > 0 && input('mid') > 0) {
+            NewsService::instance()->buildListState($result['list'], input('mid'));
+        }
         $this->success('获取文章内容列表', $result);
     }
 
@@ -58,13 +61,9 @@ class Article extends Controller
     public function getComment()
     {
         $data = $this->_vali(['cid.require' => '文章ID不能为空！']);
-        $query = $this->_query('DataArticleComment')->where($data);
+        $query = $this->_query('DataNewsXComment')->where($data);
         $result = $query->order('id desc')->page(false, false, false, 5);
-        if (count($result['list']) > 0) {
-            $ids = array_unique(array_column($result['list'], 'mid'));
-            $mems = $this->app->db->name('DataMember')->whereIn('id', $ids)->column('id,nickname,username,headimg', 'id');
-            foreach ($result['list'] as &$vo) $vo['member'] = $mems[$vo['mid']] ?? [];
-        }
+        NewsService::instance()->buildListByMid($result['list']);
         $this->success('获取文章评论成功！', $result);
     }
 
@@ -74,17 +73,17 @@ class Article extends Controller
     public function getLike()
     {
         $data = $this->_vali(['cid.require' => '文章ID不能为空！']);
-        $query = $this->app->db->name('DataArticleLike')->where($data);
+        $query = $this->app->db->name('DataNewsXLike')->where($data);
         $this->success('获取已点赞的会员', ['list' => $query->order('mid asc')->column('mid')]);
     }
 
     /**
      * 获取已收藏的会员
      */
-    public function getCollection()
+    public function getCollect()
     {
         $data = $this->_vali(['cid.require' => '文章ID不能为空！']);
-        $query = $this->app->db->name('DataArticleCollection')->where($data);
+        $query = $this->app->db->name('DataNewsXCollect')->where($data);
         $this->success('获取已收藏的会员', ['list' => $query->order('mid asc')->column('mid')]);
     }
 }
