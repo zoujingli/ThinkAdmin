@@ -1,16 +1,16 @@
 <?php
 
-namespace app\data\controller\api\member;
+namespace app\data\controller\api\auth;
 
-use app\data\controller\api\Member;
-use app\data\service\MemberService;
+use app\data\controller\api\Auth;
+use app\data\service\UserService;
 
 /**
  * 会员资料管理
  * Class Center
- * @package app\data\controller\api\member
+ * @package app\data\controller\api\auth
  */
-class Center extends Member
+class Center extends Auth
 {
     /**
      * 绑定数据表
@@ -55,7 +55,7 @@ class Center extends Member
      */
     public function total()
     {
-        $this->success('获取会员数据统计!', MemberService::instance()->total($this->mid));
+        $this->success('获取会员数据统计!', UserService::instance()->total($this->mid));
     }
 
     /**
@@ -68,15 +68,15 @@ class Center extends Member
     {
         $data = $this->_vali(['from.require' => '邀请人不能为空']);
         if ($data['from'] == $this->mid) {
-            $this->error('邀请人不能是自己哦', MemberService::instance()->total($this->mid));
+            $this->error('邀请人不能是自己哦', UserService::instance()->total($this->mid));
         }
         $from = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
-        if (empty($from)) $this->error('邀请人状态异常', MemberService::instance()->total($this->mid));
-        if ($this->member['from'] > 0) $this->error('您已经绑定了邀请人', MemberService::instance()->total($this->mid));
+        if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->total($this->mid));
+        if ($this->member['from'] > 0) $this->error('您已经绑定了邀请人', UserService::instance()->total($this->mid));
         if ($this->app->db->name($this->table)->where(['id' => $this->mid])->update($data) !== false) {
-            $this->success('绑定邀请人成功！', MemberService::instance()->total($this->mid));
+            $this->success('绑定邀请人成功！', UserService::instance()->total($this->mid));
         } else {
-            $this->error('绑定邀请人失败！', MemberService::instance()->total($this->mid));
+            $this->error('绑定邀请人失败！', UserService::instance()->total($this->mid));
         }
     }
 

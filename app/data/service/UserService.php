@@ -5,11 +5,11 @@ namespace app\data\service;
 use think\admin\Service;
 
 /**
- * 会员数据服务
- * Class MemberService
+ * 会员数据接口服务
+ * Class UserService
  * @package app\store\service
  */
-class MemberService extends Service
+class UserService extends Service
 {
     /**
      * 绑定数据表

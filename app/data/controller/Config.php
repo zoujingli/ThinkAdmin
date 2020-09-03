@@ -22,11 +22,12 @@ class Config extends Controller
     public function slider()
     {
         if ($this->request->isGet()) {
+            $this->skey = 'slider';
             $this->title = '轮播图管理';
-            $this->data = sysdata('slider');
+            $this->data = sysdata($this->skey);
             $this->fetch();
         } else {
-            if (sysdata('slider', json_decode(input('data'), true))) {
+            if (sysdata($this->skey, json_decode(input('data'), true))) {
                 $this->success('轮播图保存成功！', '');
             } else {
                 $this->error('轮播图保存失败，请稍候再试!');

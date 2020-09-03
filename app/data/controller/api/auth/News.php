@@ -1,16 +1,16 @@
 <?php
 
-namespace app\data\controller\api\member;
+namespace app\data\controller\api\auth;
 
-use app\data\controller\api\Member;
+use app\data\controller\api\Auth;
 use app\data\service\NewsService;
 
 /**
  * 文章评论内容
  * Class News
- * @package app\data\controller\api\member
+ * @package app\data\controller\api\auth
  */
-class News extends Member
+class News extends Auth
 {
     /**
      * 会员评论内容

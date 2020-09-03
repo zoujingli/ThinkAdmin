@@ -49,9 +49,9 @@ class NewsService extends Service
     public function buildListByMid(array &$list = []): array
     {
         if (count($list) > 0) {
-            $ids = array_unique(array_column($list, 'mid'));
+            $mids = array_unique(array_column($list, 'mid'));
             $cols = 'id,phone,nickname,username,headimg,status';
-            $mems = $this->app->db->name('DataMember')->whereIn('id', $ids)->column($cols, 'id');
+            $mems = $this->app->db->name('DataMember')->whereIn('id', $mids)->column($cols, 'id');
             foreach ($list as &$vo) $vo['member'] = $mems[$vo['mid']] ?? [];
         }
         return $list;

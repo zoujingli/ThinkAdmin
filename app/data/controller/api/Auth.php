@@ -2,16 +2,16 @@
 
 namespace app\data\controller\api;
 
-use app\data\service\MemberService;
+use app\data\service\UserService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 
 /**
- * 会员管理基类
+ * 授权认证基类
  * Class Member
  * @package app\store\controller\api
  */
-abstract class Member extends Controller
+abstract class Auth extends Controller
 {
     /**
      * 当前会员MID
@@ -45,13 +45,13 @@ abstract class Member extends Controller
      * 获取会员数据
      * @return array
      */
-    protected function getMember()
+    protected function getMember(): array
     {
         try {
             if (empty($this->token)) {
                 $this->error('接口授权TOKEN无效');
             }
-            return MemberService::instance()->get($this->token);
+            return UserService::instance()->get($this->token);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

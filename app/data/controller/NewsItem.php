@@ -41,8 +41,9 @@ class NewsItem extends Controller
      */
     public function select()
     {
-        $query = $this->_query($this->table)->equal('status')->like('title');
-        $query->where(['deleted' => '0'])->dateBetween('create_at')->order('sort desc,id desc')->page();
+        $query = $this->_query($this->table);
+        $query->equal('status')->like('title')->dateBetween('create_at');
+        $query->where(['deleted' => '0'])->order('sort desc,id desc')->page();
     }
 
     /**

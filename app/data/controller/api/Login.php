@@ -2,7 +2,7 @@
 
 namespace app\data\controller\api;
 
-use app\data\service\MemberService;
+use app\data\service\UserService;
 use think\admin\Controller;
 
 /**
@@ -37,7 +37,7 @@ class Login extends Controller
         if (empty($user)) $this->error('该手机号还没有注册哦！');
         if (empty($user['status'])) $this->error('该会员账号状态异常！');
         if (md5($data['password']) === $user['password']) {
-            $this->success('手机登录成功！', MemberService::instance()->token($user['id']));
+            $this->success('手机登录成功！', UserService::instance()->token($user['id']));
         } else {
             $this->error('账号登录失败，请稍候再试！');
         }
@@ -67,7 +67,7 @@ class Login extends Controller
         }
         $data['password'] = md5($data['password']);
         if (($mid = $this->app->db->name($this->table)->insertGetId($data)) !== false) {
-            $this->success('会员注册成功！', MemberService::instance()->token($mid));
+            $this->success('会员注册成功！', UserService::instance()->token($mid));
         } else {
             $this->error('手机注册失败！');
         }
