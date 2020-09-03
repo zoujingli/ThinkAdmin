@@ -137,16 +137,17 @@ CREATE TABLE `data_news_mark`  (
 -- Table structure for data_news_x_collect
 -- ----------------------------
 DROP TABLE IF EXISTS `data_news_x_collect`;
-CREATE TABLE `data_news_x_collect`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章编号',
-  `mid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '会员MID',
-  `content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '评论内容',
+CREATE TABLE `data_news_x_collect` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `cid` bigint(20) unsigned DEFAULT '0' COMMENT '文章编号',
+  `mid` bigint(20) unsigned DEFAULT '0' COMMENT '会员MID',
+  `type` tinyint(1) unsigned DEFAULT '1' COMMENT '记录类型(1收藏,2点赞)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_news_x_collect_cid`(`cid`) USING BTREE,
-  INDEX `idx_data_news_x_collect_mid`(`mid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-文章-会员-收藏' ROW_FORMAT=Compact;
+  KEY `idx_data_news_x_collect_cid` (`cid`) USING BTREE,
+  KEY `idx_data_news_x_collect_mid` (`mid`) USING BTREE,
+  KEY `idx_data_news_x_collect_type` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='数据-文章-会员-收藏';
 
 -- ----------------------------
 -- Table structure for data_news_x_comment
@@ -176,19 +177,5 @@ CREATE TABLE `data_news_x_history`  (
   INDEX `idx_data_news_x_history_cid`(`cid`) USING BTREE,
   INDEX `idx_data_news_x_history_mid`(`mid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-文章-会员-历史' ROW_FORMAT=Compact;
-
--- ----------------------------
--- Table structure for data_news_x_like
--- ----------------------------
-DROP TABLE IF EXISTS `data_news_x_like`;
-CREATE TABLE `data_news_x_like`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章编号',
-  `mid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '会员MID',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_news_x_like_cid`(`cid`) USING BTREE,
-  INDEX `idx_data_news_x_like_mid`(`mid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='数据-文章-会员-点赞' ROW_FORMAT=Compact;
 
 SET FOREIGN_KEY_CHECKS=1;

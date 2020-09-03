@@ -13,21 +13,25 @@ class NewsService extends Service
 {
     /**
      * 同步文章数据统计
-     * @param integer $cid 文章ID
+     * @param integer $cid 文章记录ID
      * @throws \think\db\exception\DbException
      */
-    public function syncNewsTotal($cid)
+    public function syncNewsTotal(int $cid)
     {
-        $this->app->db->name('DataNewsItem')->where(['id' => $cid])->update([
-            'num_like'    => $this->app->db->name('DataNewsXLike')->where(['cid' => $cid])->count(),
-            'num_comment' => $this->app->db->name('DataNewsXComment')->where(['cid' => $cid])->count(),
-            'num_collect' => $this->app->db->name('DataNewsXCollect')->where(['cid' => $cid])->count(),
+        [$map, $total] = [['cid' => $cid], []];
+        $query = $this->app->db->name('DataNewsXCollect')->field('count(1) count,type');
+        $query->where($map)->group('type')->select()->map(function ($item) use (&$total) {
+            $total[$item['type']] = $item['count'];
+        });
+        $this->app->db->name('DataNewsItem')->where($map)->update([
+            'num_collect' => $total[2] ?? 0, 'num_like' => $total[1] ?? 0,
+            'num_comment' => $this->app->db->name('DataNewsXComment')->where($map)->count(),
         ]);
     }
 
     /**
      * 根据CID绑定列表数据
-     * @param array $list
+     * @param array $list 数据列表
      * @return array
      */
     public function buildListByCid(array &$list = []): array
@@ -43,7 +47,7 @@ class NewsService extends Service
 
     /**
      * 根据MID绑定列表数据
-     * @param array $list
+     * @param array $list 数据列表
      * @return array
      */
     public function buildListByMid(array &$list = []): array
@@ -59,8 +63,8 @@ class NewsService extends Service
 
     /**
      * 获取列表状态
-     * @param array $list
-     * @param integer $mid
+     * @param array $list 数据列表
+     * @param integer $mid 会员MID
      * @return array
      */
     public function buildListState(array &$list, int $mid = 0): array

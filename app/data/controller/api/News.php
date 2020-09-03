@@ -55,8 +55,9 @@ class News extends Controller
      */
     public function getLike()
     {
-        $data = $this->_vali(['cid.require' => '文章ID不能为空！']);
-        $query = $this->app->db->name('DataNewsXLike')->where($data);
+        $query = $this->app->db->name('DataNewsXCollect')->where($this->_vali([
+            'cid.require' => '文章ID不能为空！', 'type.value' => 2,
+        ]));
         $this->success('获取已点赞的会员', ['list' => $query->order('mid asc')->column('mid')]);
     }
 
@@ -65,8 +66,9 @@ class News extends Controller
      */
     public function getCollect()
     {
-        $data = $this->_vali(['cid.require' => '文章ID不能为空！']);
-        $query = $this->app->db->name('DataNewsXCollect')->where($data);
+        $query = $this->app->db->name('DataNewsXCollect')->where($this->_vali([
+            'cid.require' => '文章ID不能为空！', 'type.value' => 1,
+        ]));
         $this->success('获取已收藏的会员', ['list' => $query->order('mid asc')->column('mid')]);
     }
 

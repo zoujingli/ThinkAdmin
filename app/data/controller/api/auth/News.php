@@ -32,6 +32,19 @@ class News extends Auth
     }
 
     /**
+     * 获取我的评论
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getComment()
+    {
+        $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '内容ID不能为空！']);
+        $query = $this->app->db->name('DataNewsXComment')->where($data)->order('id desc');
+        $this->success('获取评论列表成功', ['list' => $query->select()->toArray()]);
+    }
+
+    /**
      * 删除内容评论
      * @throws \think\db\exception\DbException
      */
@@ -50,30 +63,17 @@ class News extends Auth
     }
 
     /**
-     * 获取我的评论
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function getComment()
-    {
-        $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '内容ID不能为空！']);
-        $query = $this->app->db->name('DataNewsXComment')->where($data)->order('id desc');
-        $this->success('获取评论列表成功', ['list' => $query->select()->toArray()]);
-    }
-
-    /**
      * 添加内容收藏
      * @throws \think\db\exception\DbException
      */
     public function addCollect()
     {
-        $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '内容ID不能为空！']);
-        if ($this->app->db->name('DataNewsXCollect')->where($data)->count() > 0) {
+        $map = $this->_getCollectWhere(1);
+        if ($this->app->db->name('DataNewsXCollect')->where($map)->count() > 0) {
             $this->success('您已收藏！');
         }
-        if ($this->app->db->name('DataNewsXCollect')->insert($data) !== false) {
-            NewsService::instance()->syncNewsTotal($data['cid']);
+        if ($this->app->db->name('DataNewsXCollect')->insert($map) !== false) {
+            NewsService::instance()->syncNewsTotal($map['cid']);
             $this->success('收藏成功！');
         } else {
             $this->error('收藏失败！');
@@ -86,7 +86,7 @@ class News extends Auth
      */
     public function delCollect()
     {
-        $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '文章ID不能为空！']);
+        $data = $this->_getCollectWhere(1);
         if ($this->app->db->name('DataNewsXCollect')->where($data)->delete() !== false) {
             NewsService::instance()->syncNewsTotal($data['cid']);
             $this->success('取消收藏成功！');
@@ -96,12 +96,13 @@ class News extends Auth
     }
 
     /**
-     * 获取我收藏的资讯
+     * 获取会员收藏的资讯
      * @throws \think\db\exception\DbException
      */
-    public function getMyCollect()
+    public function getCollect()
     {
-        $query = $this->_query('DataNewsXCollect')->where(['mid' => $this->mid]);
+        $query = $this->_query('DataNewsXCollect');
+        $query->where(['mid' => $this->mid, 'type' => 1]);
         $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByCid($result['list']);
         $this->success('获取收藏记录成功！', $result);
@@ -113,12 +114,12 @@ class News extends Auth
      */
     public function addLike()
     {
-        $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '内容ID不能为空！']);
-        if ($this->app->db->name('DataNewsXLike')->where($data)->count() > 0) {
+        $map = $this->_getCollectWhere(2);
+        if ($this->app->db->name('DataNewsXCollect')->where($map)->count() > 0) {
             $this->success('您已点赞！');
         }
-        if ($this->app->db->name('DataNewsXLike')->insert($data) !== false) {
-            NewsService::instance()->syncNewsTotal($data['cid']);
+        if ($this->app->db->name('DataNewsXCollect')->insert($map) !== false) {
+            NewsService::instance()->syncNewsTotal($map['cid']);
             $this->success('点赞成功！');
         } else {
             $this->error('点赞失败！');
@@ -131,9 +132,9 @@ class News extends Auth
      */
     public function delLike()
     {
-        $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '内容ID不能为空！']);
-        if ($this->app->db->name('DataNewsXLike')->where($data)->delete() !== false) {
-            NewsService::instance()->syncNewsTotal($data['cid']);
+        $map = $this->_getCollectWhere(2);
+        if ($this->app->db->name('DataNewsXCollect')->where($map)->delete() !== false) {
+            NewsService::instance()->syncNewsTotal($map['cid']);
             $this->success('取消点赞成功！');
         } else {
             $this->error('取消点赞失败！');
@@ -141,18 +142,31 @@ class News extends Auth
     }
 
     /**
-     * 获取浏览历史
+     * 获取会员的浏览历史
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public function getHistory()
     {
-        $query = $this->_query('DataNewsXHistory');
-        $query->where(['mid' => $this->mid])->order('id desc');
-        $result = $query->page(true, false, false, 15);
+        $query = $this->_query('DataNewsXHistory')->where(['mid' => $this->mid]);
+        $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByCid($result['list']);
         $this->success('获取浏览历史成功！', $result);
+    }
+
+    /**
+     * 获取收藏点赞
+     * @param integer $type 数据类型
+     * @return array
+     */
+    private function _getCollectWhere($type = 1): array
+    {
+        return $this->_vali([
+            'mid.value'   => $this->mid,
+            'type.value'  => $type,
+            'cid.require' => '文章ID不能为空！',
+        ]);
     }
 
 }
