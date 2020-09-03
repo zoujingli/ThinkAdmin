@@ -5,10 +5,9 @@
 
     <div class="layui-card-body padding-40">
 
-
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">文章标签</span>
-            <div class="tags-container layui-textarea">
+            <div class="markbox layui-textarea">
                 {foreach $mark as $tag}{if isset($vo.mark) && is_array($vo.mark) && in_array($tag.title, $vo.mark)}
                 <label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$tag.title}" lay-ignore> {$tag.title}</label>
                 {else}
@@ -56,26 +55,18 @@
 </form>
 
 <script>
-    (function () {
-        $('[name="type"]').on('change', function () {
-            var $input = $('[name="source"]'), type = $('[name="type"]:checked').val() || 'video';
-            if (type === 'video') $input.attr('data-type', 'mp4').parents('div.layui-form-item').addClass('block').removeClass('layui-hide');
-            else if (type === 'audio') console.log($input.attr('data-type', 'mp3').parents('div.layui-form-item').addClass('block').removeClass('layui-hide'));
-            else $input.attr('data-type', 'jpg,png,jpeg').parents('div.layui-form-item').addClass('layui-hide').removeClass('block');
-        }).trigger('change');
-        require(['ckeditor'], function () {
-            window.createEditor('[name=content]', {height: 300});
-        })
-    })();
+    require(['ckeditor'], function () {
+        window.createEditor('[name=content]', {height: 300});
+    });
 </script>
 
 <style>
-    .tags-container {
+    .markbox {
         padding: 2px 10px 10px 10px;
         min-height: 55px;
     }
 
-    .tags-container label {
+    .markbox label {
         border: 1px dashed #e2e2e2;
         padding: 5px 8px 5px 5px;
         background: white;
