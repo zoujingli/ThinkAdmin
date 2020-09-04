@@ -60,10 +60,10 @@ class NodeService extends Service
     {
         if (empty($node)) return $this->getCurrent();
         if (count($attrs = explode('/', $node)) === 1) {
-            return $this->getCurrent('controller') . '/' . $node;
+            return $this->getCurrent('controller') . '/' . strtolower($node);
         } else {
             $attrs[1] = $this->nameTolower($attrs[1]);
-            return join('/', $attrs);
+            return strtolower(join('/', $attrs));
         }
     }
 

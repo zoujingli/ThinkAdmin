@@ -190,8 +190,16 @@ class ModuleService extends Service
      */
     public function checkAllowDownload(string $name): bool
     {
+        // 禁止目录级别上跳
+        if (stripos($name, '../') !== false) {
+            return false;
+        }
         // 禁止下载数据库配置文件
         if (stripos($name, 'database.php') !== false) {
+            return false;
+        }
+        // 禁止非官方演示项目下载
+        if (stripos($this->app->request->domain(), 'thinkadmin.top') === false) {
             return false;
         }
         // 检查允许下载的文件规则
