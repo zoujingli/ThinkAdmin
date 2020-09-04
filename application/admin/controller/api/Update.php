@@ -26,10 +26,15 @@ use library\Controller;
 class Update extends Controller
 {
     /**
-     * 基础URL地址
-     * @var string
+     * 访问权限
      */
-    protected $baseUri = 'https://demo.thinkadmin.top';
+    protected function initialize()
+    {
+        $domain = $this->app->request->host(true);
+        $isDemo = is_numeric(stripos($domain, 'thinkadmin.top'));
+        $isLocal = in_array($domain, ['127.0.0.1', 'localhost']);
+        if (!$isLocal && !$isDemo) $this->error('只允许访问本地或官方代码！');
+    }
 
     /**
      * 获取文件列表
