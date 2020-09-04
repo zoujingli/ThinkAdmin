@@ -143,13 +143,18 @@ class NodeService extends Service
      */
     public function scanDirectory($path, $data = [], $ext = 'php')
     {
-        if (file_exists($path)) if (is_file($path)) $data[] = $path;
-        elseif (is_dir($path)) foreach (scandir($path) as $item) if ($item[0] !== '.') {
-            $realpath = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
-            if (is_readable($realpath)) if (is_dir($realpath)) {
-                $data = $this->scanDirectory($realpath, $data, $ext);
-            } elseif (is_file($realpath) && (is_null($ext) || pathinfo($realpath, 4) === $ext)) {
-                $data[] = strtr($realpath, '\\', '/');
+        if (file_exists($path)) {
+            if (is_file($path)) {
+                $data[] = strtr($path, '\\', '/');
+            } elseif (is_dir($path)) {
+                foreach (scandir($path) as $item) if ($item[0] !== '.') {
+                    $real = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
+                    if (is_readable($real)) if (is_dir($real)) {
+                        $data = $this->scanDirectory($real, $data, $ext);
+                    } elseif (is_file($real) && (is_null($ext) || pathinfo($real, 4) === $ext)) {
+                        $data[] = strtr($real, '\\', '/');
+                    }
+                }
             }
         }
         return $data;

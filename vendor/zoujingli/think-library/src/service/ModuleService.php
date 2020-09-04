@@ -195,7 +195,7 @@ class ModuleService extends Service
             return false;
         }
         // 禁止下载数据库配置文件
-        if (stripos($name, 'database.php') !== false) {
+        if (stripos(strtr($name, '\\', '/'), 'config/database') !== false) {
             return false;
         }
         // 禁止非官方演示项目下载
@@ -204,7 +204,7 @@ class ModuleService extends Service
         }
         // 检查允许下载的文件规则
         foreach ($this->_getAllowDownloadRule() as $rule) {
-            if (stripos($name, $rule) !== false) return true;
+            if (stripos($name, $rule) === 0) return true;
         }
         // 不在允许下载的文件规则
         return false;
@@ -263,11 +263,11 @@ class ModuleService extends Service
      */
     private function _getAllowDownloadRule(): array
     {
-        $data = $this->app->cache->get('moduleAllowRule', []);
+        $data = $this->app->cache->get('moduleAllowDownloadRule', []);
         if (is_array($data) && count($data) > 0) return $data;
         $data = ['think', 'config', 'public/static', 'public/router.php', 'public/index.php'];
         foreach (array_keys($this->getModules()) as $name) $data[] = 'app/' . $name;
-        $this->app->cache->set('moduleAllowRule', $data, 30);
+        $this->app->cache->set('moduleAllowDownloadRule', $data, 30);
         return $data;
     }
 
