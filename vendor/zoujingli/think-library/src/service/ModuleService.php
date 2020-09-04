@@ -199,7 +199,7 @@ class ModuleService extends Service
             return false;
         }
         // 禁止非官方演示项目下载
-        if (stripos($this->app->request->domain(), 'thinkadmin.top') === false) {
+        if (!SystemService::instance()->checkRunMode('dev')) {
             return false;
         }
         // 检查允许下载的文件规则
