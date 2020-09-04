@@ -1,17 +1,17 @@
 [
     {
         "name": "aliyuncs/oss-sdk-php",
-        "version": "v2.3.1",
-        "version_normalized": "2.3.1.0",
+        "version": "v2.4.0",
+        "version_normalized": "2.4.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-            "reference": "053d7ba9e798e4c09b9c5c1edab153d25ea9643a"
+            "reference": "bd9c2bba3d167de821cbb33b5c03fe6e41e8e363"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
-            "reference": "053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
+            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/bd9c2bba3d167de821cbb33b5c03fe6e41e8e363",
+            "reference": "bd9c2bba3d167de821cbb33b5c03fe6e41e8e363",
             "shasum": "",
             "mirrors": [
                 {
@@ -27,7 +27,7 @@
             "phpunit/phpunit": "~4.0",
             "satooshi/php-coveralls": "~1.0"
         },
-        "time": "2019-11-15T11:05:42+00:00",
+        "time": "2020-08-31T08:39:59+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -177,8 +177,8 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.43",
-        "version_normalized": "3.4.43.0",
+        "version": "v3.4.44",
+        "version_normalized": "3.4.44.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
@@ -415,12 +415,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "bcc628e4258a716b3569d6b7511ab01144d98cd5"
+            "reference": "5e91c776c2111fa0cc7635a6f018ba0e553e3f49"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/bcc628e4258a716b3569d6b7511ab01144d98cd5",
-            "reference": "bcc628e4258a716b3569d6b7511ab01144d98cd5",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/5e91c776c2111fa0cc7635a6f018ba0e553e3f49",
+            "reference": "5e91c776c2111fa0cc7635a6f018ba0e553e3f49",
             "shasum": "",
             "mirrors": [
                 {
@@ -440,7 +440,7 @@
             "qiniu/php-sdk": "^7.2",
             "topthink/framework": "5.1.*"
         },
-        "time": "2020-07-14T01:51:17+00:00",
+        "time": "2020-09-04T04:16:04+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -460,17 +460,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.24",
-        "version_normalized": "1.2.24.0",
+        "version": "v1.2.25",
+        "version_normalized": "1.2.25.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "2e5ca0d48fca8014eea504db6daec2b97d53d768"
+            "reference": "6fcb6504904ee4276b358b3f9b80ffc992eb385c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/2e5ca0d48fca8014eea504db6daec2b97d53d768",
-            "reference": "2e5ca0d48fca8014eea504db6daec2b97d53d768",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/6fcb6504904ee4276b358b3f9b80ffc992eb385c",
+            "reference": "6fcb6504904ee4276b358b3f9b80ffc992eb385c",
             "shasum": "",
             "mirrors": [
                 {
@@ -490,7 +490,7 @@
             "ext-xml": "*",
             "php": ">=5.4"
         },
-        "time": "2020-08-16T07:01:12+00:00",
+        "time": "2020-08-19T08:52:11+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

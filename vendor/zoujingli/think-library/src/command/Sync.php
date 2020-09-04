@@ -188,9 +188,53 @@ class Sync extends Command
     {
         $result = json_decode(http_get("{$this->uri}?s=admin/api.update/read/{$encode}"), true);
         if (empty($result['code'])) return false;
+        if (!$this->checkAllowDownload(decode($encode))) {
+            return false;
+        }
         $pathname = env('root_path') . decode($encode);
         file_exists(dirname($pathname)) || mkdir(dirname($pathname), 0755, true);
         return file_put_contents($pathname, base64_decode($result['data']['content']));
+    }
+
+    /**
+     * 检查文件是否可下载
+     * @param string $name 文件名称
+     * @return boolean
+     */
+    private function checkAllowDownload($name)
+    {
+        // 禁止目录级别上跳
+        if (stripos($name, '../') !== false) {
+            return false;
+        }
+        // 禁止下载数据库配置文件
+        if (stripos($name, 'database.php') !== false) {
+            return false;
+        }
+        // 禁止非官方演示项目下载
+        if (stripos($this->app->request->domain(), 'thinkadmin.top') === false) {
+            return false;
+        }
+        // 检查允许下载的文件规则
+        foreach ($this->_getAllowDownloadRule() as $rule) {
+            if (stripos($name, $rule) !== false) return true;
+        }
+        // 不在允许下载的文件规则
+        return false;
+    }
+
+    /**
+     * 获取允许下载的规则
+     * @return array
+     */
+    private function _getAllowDownloadRule(): array
+    {
+        $data = cache('moduleAllowRule', []);
+        if (is_array($data) && count($data) > 0) return $data;
+        $data = ['think', 'config', 'public/static', 'public/router.php', 'public/index.php'];
+        foreach (['admin', 'wechat', 'service'] as $name) $data[] = 'application/' . $name;
+        cache('moduleAllowRule', $data, 30);
+        return $data;
     }
 
     /**
