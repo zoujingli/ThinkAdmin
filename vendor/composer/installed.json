@@ -282,17 +282,17 @@
     },
     {
         "name": "opis/closure",
-        "version": "3.5.6",
-        "version_normalized": "3.5.6.0",
+        "version": "3.5.7",
+        "version_normalized": "3.5.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/opis/closure.git",
-            "reference": "e8d34df855b0a0549a300cb8cb4db472556e8aa9"
+            "reference": "4531e53afe2fc660403e76fb7644e95998bff7bf"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/opis/closure/zipball/e8d34df855b0a0549a300cb8cb4db472556e8aa9",
-            "reference": "e8d34df855b0a0549a300cb8cb4db472556e8aa9",
+            "url": "https://api.github.com/repos/opis/closure/zipball/4531e53afe2fc660403e76fb7644e95998bff7bf",
+            "reference": "4531e53afe2fc660403e76fb7644e95998bff7bf",
             "shasum": "",
             "mirrors": [
                 {
@@ -308,7 +308,7 @@
             "jeremeamia/superclosure": "^2.0",
             "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
         },
-        "time": "2020-08-11T08:46:50+00:00",
+        "time": "2020-09-06T17:02:15+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -963,12 +963,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "3167e4678d32158127cde5f8d0d34848e42874c1"
+            "reference": "8ae46bac7e9c1a17cc111fffa9a5d91669eaa756"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/3167e4678d32158127cde5f8d0d34848e42874c1",
-            "reference": "3167e4678d32158127cde5f8d0d34848e42874c1",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/8ae46bac7e9c1a17cc111fffa9a5d91669eaa756",
+            "reference": "8ae46bac7e9c1a17cc111fffa9a5d91669eaa756",
             "shasum": "",
             "mirrors": [
                 {
