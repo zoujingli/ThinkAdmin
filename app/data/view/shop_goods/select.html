@@ -1,0 +1,58 @@
+{extend name="../../admin/view/full"}
+
+{block name="content"}
+<div class="padding-25">
+    {include file='shop_goods/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>商品信息</th>
+            <th class='text-left nowrap'></th>
+            <th class='text-left nowrap'>商品状态</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='nowrap'>
+                {notempty name='vo.logo'}
+                <img data-tips-image style="width:auto;height:60px" src="{$vo.logo|default=''}" class="margin-right-5" alt="img">
+                {/notempty}
+                <div class="inline-block text-top">
+                    商品编号：{$vo.id|default='--'}<br>
+                    商品名称：{$vo.title|default='--'}<br>
+                </div>
+            </td>
+            <td class='nowrap'>
+                入会礼包：{$vo.vip_mod?"是":"否"}<br>
+                所属分类：{$vo.cate.title|default='&#45;&#45;'}<br>
+            </td>
+            <td class='nowrap'>
+                剩余库存：{$vo.number_stock|default='0'} 件<br>
+                销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
+            </td>
+            <td class='nowrap'>
+                <a class="layui-btn layui-btn-sm layui-btn-normal" data-goods="{$vo.id}">选择商品</a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}
+
+{block name='script'}
+<script>
+    layui.form.render();
+    $('[data-goods]').on('click', function () {
+        top.setGoodsInfo(this.getAttribute('data-goods') || '');
+        parent.layer.close(parent.layer.getFrameIndex(window.name));
+    })
+</script>
+{/block}

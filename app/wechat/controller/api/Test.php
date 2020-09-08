@@ -36,7 +36,7 @@ class Test extends Controller
      */
     public function jsapi_qrc()
     {
-        $this->url = url('wechat/api.test/jsapi', [], false, true);
+        $this->url = sysuri('wechat/api.test/jsapi', [], false, true);
         return $this->showQrc($this->url);
     }
 
@@ -49,7 +49,7 @@ class Test extends Controller
      */
     public function oauth_qrc()
     {
-        $this->url = url('wechat/api.test/oauth', [], false, true);
+        $this->url = sysuri('wechat/api.test/oauth', [], false, true);
         return $this->showQrc($this->url);
     }
 
@@ -62,7 +62,7 @@ class Test extends Controller
      */
     public function jssdk_qrc()
     {
-        $this->url = url('wechat/api.test/jssdk', [], false, true);
+        $this->url = sysuri('wechat/api.test/jssdk', [], false, true);
         return $this->showQrc($this->url);
     }
 
@@ -94,7 +94,7 @@ class Test extends Controller
             'body'             => '测试商品',
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
-            'notify_url'       => url('wechat/api.test/notify', [], false, true)->build(),
+            'notify_url'       => sysuri('wechat/api.test/notify', [], false, true),
             'out_trade_no'     => CodeExtend::uniqidNumber(18),
             'spbill_create_ip' => $this->request->ip(),
         ]);
@@ -152,7 +152,7 @@ class Test extends Controller
             'body'             => "测试商品，产品ID：{$notify['product_id']}",
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
-            'notify_url'       => url('wechat/api.test/notify', [], false, true)->build(),
+            'notify_url'       => sysuri('wechat/api.test/notify', [], false, true),
             'out_trade_no'     => CodeExtend::uniqidDate(18),
             'spbill_create_ip' => $this->request->ip(),
         ];
@@ -197,7 +197,7 @@ class Test extends Controller
             'openid'           => $user['openid'],
             'total_fee'        => '1',
             'trade_type'       => 'JSAPI',
-            'notify_url'       => url('wechat/api.test/notify', [], false, true),
+            'notify_url'       => sysuri('wechat/api.test/notify', [], false, true),
             'out_trade_no'     => CodeExtend::uniqidDate(18),
             'spbill_create_ip' => $this->request->ip(),
         ]);

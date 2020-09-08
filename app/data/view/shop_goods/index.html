@@ -1,10 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{extend name="../../admin/view/main"}
 
-</body>
-</html>
+{block name="button"}
+
+{if auth("add")}
+<button data-open='{:url("add")}' data-title="添加商品" class='layui-btn layui-btn-sm layui-btn-primary'>添加商品</button>
+{/if}
+
+{if $type eq 'index'}
+<!--{if auth("state")}-->
+<button data-action='{:url("state")}' data-rule="id#{key};is_deleted#1" data-csrf="{:systoken('state')}" class='layui-btn layui-btn-sm layui-btn-primary'>删除商品</button>
+<!--{/if}-->
+{else}
+<!--{if auth("state")}-->
+<button data-action='{:url("state")}' data-rule="id#{key};is_deleted#0" data-csrf="{:systoken('state')}" data-confirm="确定要恢复这些数据吗？？" class='layui-btn layui-btn-sm layui-btn-primary'>恢复商品</button>
+<!--{/if}-->
+{/if}
+
+{/block}
+
+{block name="content"}
+<div class="layui-tab layui-tab-card think-bg-white">
+    <ul class="layui-tab-title">
+        {foreach ['index'=>'商品管理','recycle'=>'回 收 站'] as $k=>$v}
+        {if $type eq $k}
+        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}</li>
+        {else}
+        <li data-open="{:url('index')}?type={$k}">{$v}</li>
+        {/if}
+        {/foreach}
+    </ul>
+    <div class="layui-tab-content think-box-shadow">
+        {include file='shop_goods/index_search'}
+        <table class="layui-table margin-top-10" lay-skin="line">
+            {notempty name='list'}
+            <thead>
+            <tr>
+                <th class='list-table-check-td think-checkbox'>
+                    <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+                </th>
+                <th class='list-table-sort-td'>
+                    <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+                </th>
+                <th class='text-left nowrap' style="width:400px">商品信息</th>
+                <th class='text-left nowrap' style="width:150px"></th>
+                <th class='text-left nowrap' style="width:200px">商品状态</th>
+                <th></th>
+            </tr>
+            </thead>
+            {/notempty}
+            <tbody>
+            {foreach $list as $key=>$vo}
+            <tr data-dbclick>
+                <td class='list-table-check-td think-checkbox'>
+                    <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                </td>
+                <td class='list-table-sort-td'>
+                    <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
+                </td>
+                <td class='nowrap'>
+                    {notempty name='vo.cover'}
+                    <img data-tips-image style="width:auto;height:40px" src="{$vo.cover|default=''}" class="margin-right-5" alt="img">
+                    {/notempty}
+                    <div class="inline-block text-top sub-span-blue">
+                        商品编号：<span>{$vo.code|default='--'}</span>
+                        {if auth("state") and $vo.hot_state eq 1}
+                        <a class="layui-badge-rim color-red margin-left-5" data-action="{:url('state')}" data-value="id#{$vo.id};hot_state#0">热推</a>
+                        {elseif auth('state')}
+                        <a class="layui-badge-rim color-desc margin-left-5" data-action="{:url('state')}" data-value="id#{$vo.id};hot_state#1">热推</a>
+                        {/if}
+                        <a class="layui-badge-rim color-desc margin-left-5" data-copy="/pages/goods/detail?g={$vo.id}">复制链接</a>
+                        <br>
+                        商品名称：<span>{$vo.name|default='--'}</span><br>
+                    </div>
+                </td>
+                <td class='nowrap'>
+                    入会礼包：{if empty($vo.vip_mod)}<span class=" color-red">否</span>{else}<span class="color-blue">是</span> [ <span class="color-blue">{$vo.vip_level|default='0'}</span> ]{/if}<br>
+                    所属分类：{$vo.cate.title|default='&#45;&#45;'}<br>
+                </td>
+                <td class='nowrap'>
+                    销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
+                    剩余库存：<span class="color-blue">{$vo.number_stock-$vo.number_sales} 件 ( 已售 {$vo.number_sales} 件 )</span><br>
+                </td>
+                <td class='nowrap'>
+
+                    {if auth("edit")}
+                    <a data-dbclick class="layui-btn layui-btn-sm" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                    {else}
+                    <a data-tips-text="您没有编辑商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">编 辑</a>
+                    {/if}
+
+                    {if $type eq 'index'}
+
+                    {if isset($vo.status) and $vo.status eq 1}
+                    <!--{if auth("forbid")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">下 架</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有下架商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">下 架</a>
+                    <!--{/if}-->
+                    {else}
+                    <!--{if auth("resume")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1">上 架</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有上架商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">上 架</a>
+                    <!--{/if}-->
+                    {/if}
+
+                    {if auth("stock")}
+                    <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="商品入库" data-modal='{:url("stock")}?id={$vo.id}'>入 库</a>
+                    {else}
+                    <a data-tips-text="您没有商品入库的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">入 库</a>
+                    {/if}
+
+
+                    {if auth("state")}
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要移入回收站吗？" data-action="{:url('state')}" data-value="id#{$vo.id};is_deleted#1" data-csrf="{:systoken('state')}">删 除</a>
+                    {/if}
+
+                    {else}
+
+                    {if auth("state")}
+                    <a class="layui-btn layui-btn-sm layui-btn-normal" data-action="{:url('state')}" data-value="id#{$vo.id};is_deleted#0" data-csrf="{:systoken('state')}">恢 复</a>
+                    {/if}
+
+                    {/if}
+
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+
+        {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+    </div>
+</div>
+{/block}
+
+{block name='script'}
+<script>form.render()</script>
+{/block}
