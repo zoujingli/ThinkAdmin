@@ -43,17 +43,17 @@ abstract class Helper
      * 控制器实例
      * @var Controller
      */
-    public $controller;
+    public $class;
 
     /**
      * Helper constructor.
      * @param App $app
-     * @param Controller $controller
+     * @param Controller $class
      */
-    public function __construct(Controller $controller, App $app)
+    public function __construct(Controller $class, App $app)
     {
         $this->app = $app;
-        $this->controller = $controller;
+        $this->class = $class;
     }
 
     /**

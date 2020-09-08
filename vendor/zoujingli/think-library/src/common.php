@@ -40,7 +40,7 @@ if (!function_exists('auth')) {
      * @return boolean
      * @throws ReflectionException
      */
-    function auth($node)
+    function auth($node): bool
     {
         return AdminService::instance()->check($node);
     }

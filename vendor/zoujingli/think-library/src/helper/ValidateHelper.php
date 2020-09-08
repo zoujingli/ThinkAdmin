@@ -41,8 +41,8 @@ class ValidateHelper extends Helper
     public function init(array $rules, $input = '', $callable = null): array
     {
         if (is_string($input)) {
-            $input = trim($input, '.') ?: 'request';
-            $input = $this->app->request->$input();
+            $type = trim($input, '.') ?: 'request';
+            $input = $this->app->request->$type();
         }
         [$data, $rule, $info] = [[], [], []];
         foreach ($rules as $name => $message) if (is_numeric($name)) {
@@ -67,7 +67,7 @@ class ValidateHelper extends Helper
         } elseif (is_callable($callable)) {
             return call_user_func($callable, $validate->getError());
         } else {
-            return $this->controller->error($validate->getError());
+            return $this->class->error($validate->getError());
         }
     }
 }

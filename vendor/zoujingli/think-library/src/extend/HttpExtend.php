@@ -29,7 +29,7 @@ class HttpExtend
      * @param array $options CURL请求参数
      * @return boolean|string
      */
-    public static function get($location, $query = [], array $options = [])
+    public static function get(string $location, array $query = [], array $options = [])
     {
         $options['query'] = $query;
         return static::request('get', $location, $options);
@@ -42,7 +42,7 @@ class HttpExtend
      * @param array $options CURL请求参数
      * @return boolean|string
      */
-    public static function post($location, $data = [], array $options = [])
+    public static function post(string $location, array $data = [], array $options = [])
     {
         $options['data'] = $data;
         return static::request('post', $location, $options);
@@ -58,7 +58,7 @@ class HttpExtend
      * @param boolean $returnHeader 是否返回头部信息
      * @return boolean|string
      */
-    public static function submit($url, array $data = [], array $file = [], array $header = [], $method = 'POST', $returnHeader = true)
+    public static function submit(string $url, array $data = [], array $file = [], array $header = [], string $method = 'POST', bool $returnHeader = true)
     {
         [$line, $boundary] = [[], CodeExtend::random(18)];
         foreach ($data as $key => $value) {
@@ -85,7 +85,7 @@ class HttpExtend
      * @param array $options 请求参数[headers,query,data,cookie,cookie_file,timeout,returnHeader]
      * @return boolean|string
      */
-    public static function request($method, $location, array $options = [])
+    public static function request(string $method, string $location, array $options = [])
     {
         // GET 参数设置
         if (!empty($options['query'])) {
@@ -142,7 +142,7 @@ class HttpExtend
      * 获取浏览器代理信息
      * @return string
      */
-    private static function getUserAgent()
+    private static function getUserAgent(): string
     {
         if (!empty($_SERVER['HTTP_USER_AGENT'])) return $_SERVER['HTTP_USER_AGENT'];
         $agents = [

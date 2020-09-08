@@ -30,7 +30,7 @@ class AdminService extends Service
      * 是否已经登录
      * @return boolean
      */
-    public function isLogin()
+    public function isLogin(): bool
     {
         return $this->getUserId() > 0;
     }
@@ -39,7 +39,7 @@ class AdminService extends Service
      * 是否为超级用户
      * @return boolean
      */
-    public function isSuper()
+    public function isSuper(): bool
     {
         return $this->getUserName() === 'admin';
     }
@@ -48,7 +48,7 @@ class AdminService extends Service
      * 获取后台用户ID
      * @return integer
      */
-    public function getUserId()
+    public function getUserId(): int
     {
         return intval($this->app->session->get('user.id', 0));
     }
@@ -57,7 +57,7 @@ class AdminService extends Service
      * 获取后台用户名称
      * @return string
      */
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->app->session->get('user.username', '');
     }
@@ -69,7 +69,7 @@ class AdminService extends Service
      * @return boolean
      * @throws \ReflectionException
      */
-    public function check($node = '')
+    public function check(string $node = ''): bool
     {
         if ($this->isSuper()) return true;
         $service = NodeService::instance();
@@ -95,7 +95,7 @@ class AdminService extends Service
      * @return array
      * @throws \ReflectionException
      */
-    public function getTree($checkeds = [])
+    public function getTree(array $checkeds = []): array
     {
         [$nodes, $pnodes, $methods] = [[], [], array_reverse(NodeService::instance()->getMethods())];
         foreach ($methods as $node => $method) {

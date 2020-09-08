@@ -60,7 +60,7 @@ class ModuleService extends Service
      * 获取服务端地址
      * @return string
      */
-    public function getServer()
+    public function getServer(): string
     {
         return $this->server;
     }
@@ -69,7 +69,7 @@ class ModuleService extends Service
      * 获取版本号信息
      * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
@@ -172,8 +172,8 @@ class ModuleService extends Service
     {
         // 扫描规则文件
         foreach ($rules as $key => $rule) {
-            $name = strtr(trim($rule, '\\/'), '\\', '/');
-            $data = array_merge($data, $this->_scanLocalFileHashList($this->root . $name));
+            $path = $this->root . strtr(trim($rule, '\\/'), '\\', '/');
+            $data = array_merge($data, $this->_scanLocalFileHashList($path));
         }
         // 清除忽略文件
         foreach ($data as $key => $item) foreach ($ignore as $ign) {
@@ -191,15 +191,15 @@ class ModuleService extends Service
     public function checkAllowDownload(string $name): bool
     {
         // 禁止目录级别上跳
-        if (stripos($name, '../') !== false) {
+        if (stripos($name, '..') !== false) {
             return false;
         }
+        // 禁止非官方演示项目下载，不支持通过指令更新
+        // if (!SystemService::instance()->checkRunMode('dev')) {
+        //    return false;
+        // }
         // 禁止下载数据库配置文件
         if (stripos(strtr($name, '\\', '/'), 'config/database') !== false) {
-            return false;
-        }
-        // 禁止非官方演示项目下载
-        if (!SystemService::instance()->checkRunMode('dev')) {
             return false;
         }
         // 检查允许下载的文件规则
@@ -212,25 +212,24 @@ class ModuleService extends Service
 
     /**
      * 获取文件差异数据
-     * @param array $rules 文件规则
+     * @param array $rules 查询规则
      * @param array $ignore 忽略规则
+     * @param array $result 差异数据
      * @return array
      */
-    public function grenerateDifference(array $rules = [], array $ignore = []): array
+    public function grenerateDifference(array $rules = [], array $ignore = [], array $result = []): array
     {
-        [$rules1, $ignore1, $data] = [$rules, $ignore, []];
-        $result = json_decode(HttpExtend::post($this->server . '/admin/api.update/node', [
-            'rules' => json_encode($rules1), 'ignore' => json_encode($ignore1),
+        $online = json_decode(HttpExtend::post($this->server . '/admin/api.update/node', [
+            'rules' => json_encode($rules), 'ignore' => json_encode($ignore),
         ]), true);
-        if (!empty($result['code'])) {
-            $new = $this->getChanges($result['data']['rules'], $result['data']['ignore']);
-            foreach ($this->_grenerateDifferenceContrast($result['data']['list'], $new['list']) as $file) {
-                if (in_array($file['type'], ['add', 'del', 'mod'])) foreach ($rules1 as $rule) {
-                    if (stripos($file['name'], $rule) === 0) $data[] = $file;
-                }
+        if (empty($online['code'])) return $result;
+        $change = $this->getChanges($online['data']['rules'] ?? [], $online['data']['ignore'] ?? []);
+        foreach ($this->_grenerateDifferenceContrast($online['data']['list'], $change['list']) as $file) {
+            if (in_array($file['type'], ['add', 'del', 'mod'])) foreach ($rules as $rule) {
+                if (stripos($file['name'], $rule) === 0) $result[] = $file;
             }
         }
-        return $data;
+        return $result;
     }
 
     /**
@@ -326,28 +325,24 @@ class ModuleService extends Service
 
     /**
      * 根据线上线下生成操作数组
-     * @param array $serve 线上文件列表信息
-     * @param array $local 本地文件列表信息
+     * @param array $serve 线上文件数据
+     * @param array $local 本地文件数据
+     * @param array $diffy 计算结果数据
      * @return array
      */
-    private function _grenerateDifferenceContrast(array $serve = [], array $local = []): array
+    private function _grenerateDifferenceContrast(array $serve = [], array $local = [], array $diffy = []): array
     {
-        // 数据扁平化
-        [$_serve, $_local, $_diffy] = [[], [], []];
-        foreach ($serve as $t) $_serve[$t['name']] = $t;
-        foreach ($local as $t) $_local[$t['name']] = $t;
-        unset($serve, $local);
-        // 线上数据差异计算
-        foreach ($_serve as $t) isset($_local[$t['name']]) ? array_push($_diffy, [
-            'type' => $t['hash'] === $_local[$t['name']]['hash'] ? null : 'mod', 'name' => $t['name'],
-        ]) : array_push($_diffy, ['type' => 'add', 'name' => $t['name']]);
-        // 本地数据增量计算
-        foreach ($_local as $t) if (!isset($_serve[$t['name']])) array_push($_diffy, ['type' => 'del', 'name' => $t['name']]);
-        unset($_serve, $_local);
-        usort($_diffy, function ($a, $b) {
-            return $a['name'] !== $b['name'] ? ($a['name'] > $b['name'] ? 1 : -1) : 0;
-        });
-        return $_diffy;
+        $serve = array_combine(array_column($serve, 'name'), array_column($serve, 'hash'));
+        $local = array_combine(array_column($local, 'name'), array_column($local, 'hash'));
+        foreach ($serve as $name => $hash) {
+            $type = isset($local[$name]) ? ($hash === $local[$name] ? null : 'mod') : 'add';
+            $diffy[$name] = ['type' => $type, 'name' => $name];
+        }
+        foreach ($local as $name => $hash) if (!isset($serve[$name])) {
+            $diffy[$name] = ['type' => 'del', 'name' => $name];
+        }
+        ksort($diffy);
+        return array_values($diffy);
     }
 
     /**
@@ -358,10 +353,11 @@ class ModuleService extends Service
      */
     private function _scanLocalFileHashList(string $path, array $data = []): array
     {
-        foreach (NodeService::instance()->scanDirectory($path, [], null) as $file) $data[] = [
-            'name' => str_replace(strtr($this->root, '\\', '/'), '', $file),
-            'hash' => md5(preg_replace('/\s+/', '', file_get_contents($file))),
-        ];
+        foreach (NodeService::instance()->scanDirectory($path, [], null) as $file) {
+            if ($this->checkAllowDownload($name = substr($file, strlen($this->root)))) {
+                $data[] = ['name' => $name, 'hash' => md5(preg_replace('/\s+/', '', file_get_contents($file)))];
+            }
+        }
         return $data;
     }
 }

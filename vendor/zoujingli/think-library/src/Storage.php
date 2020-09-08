@@ -117,7 +117,7 @@ abstract class Storage
      * @param string $fun 名称规则方法
      * @return string
      */
-    public static function name($url, $ext = '', $pre = '', $fun = 'md5')
+    public static function name(string $url, string $ext = '', string $pre = '', string $fun = 'md5'): string
     {
         [$hah, $ext] = [$fun($url), trim($ext ?: pathinfo($url, 4), '.\\/')];
         $attr = [trim($pre, '.\\/'), substr($hah, 0, 2), substr($hah, 2, 30)];
@@ -131,7 +131,7 @@ abstract class Storage
      * @param integer $expire 文件保留时间
      * @return array
      */
-    public static function down($url, $force = false, $expire = 0)
+    public static function down(string $url, bool $force = false, int $expire = 0): array
     {
         try {
             $file = LocalStorage::instance();
@@ -153,7 +153,7 @@ abstract class Storage
      * @param array $mime 文件信息
      * @return string
      */
-    public static function mime($exts, $mime = [])
+    public static function mime($exts, array $mime = []): string
     {
         $mimes = static::mimes();
         foreach (is_string($exts) ? explode(',', $exts) : $exts as $ext) {
@@ -178,7 +178,7 @@ abstract class Storage
      * @param string $url
      * @return string
      */
-    public static function curlGet($url)
+    public static function curlGet(string $url)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -196,7 +196,7 @@ abstract class Storage
      * @param string $attname 下载名称
      * @return string
      */
-    protected function getSuffix($attname = null)
+    protected function getSuffix(string $attname = null): string
     {
         if ($this->linkType === 'full') {
             if (is_string($attname) && strlen($attname) > 0) {
@@ -211,7 +211,7 @@ abstract class Storage
      * @param string $name 文件名称
      * @return string
      */
-    protected function delSuffix($name)
+    protected function delSuffix(string $name): string
     {
         if (strpos($name, '?') !== false) {
             return strstr($name, '?', true);

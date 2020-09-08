@@ -25,35 +25,6 @@ use think\db\Query;
  */
 class FormHelper extends Helper
 {
-    /**
-     * 表单扩展数据
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * 表单额外更新条件
-     * @var array
-     */
-    protected $where;
-
-    /**
-     * 数据对象主键名称
-     * @var string
-     */
-    protected $field;
-
-    /**
-     * 数据对象主键值
-     * @var string
-     */
-    protected $value;
-
-    /**
-     * 表单模板文件
-     * @var string
-     */
-    protected $template;
 
     /**
      * 逻辑器初始化
@@ -67,34 +38,32 @@ class FormHelper extends Helper
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function init($dbQuery, $template = '', $field = '', $where = [], $data = [])
+    public function init($dbQuery, string $template = '', string $field = '', array $where = [], array $data = [])
     {
-        $this->query = $this->buildQuery($dbQuery);
-        [$this->template, $this->where, $this->data] = [$template, $where, $data];
-        $this->field = $field ?: ($this->query->getPk() ?: 'id');
-        $this->value = input($this->field, $data[$this->field] ?? null);
+        $query = $this->buildQuery($dbQuery);
+        $field = $field ?: ($query->getPk() ?: 'id');
+        $value = input($field, $data[$field] ?? null);
         // GET请求, 获取数据并显示表单页面
         if ($this->app->request->isGet()) {
-            if ($this->value !== null) {
-                $where = [$this->field => $this->value];
-                $data = (array)$this->query->where($where)->where($this->where)->find();
+            if ($value !== null) {
+                $find = $query->where([$field => $value])->where($where)->find();
+                if (!empty($find) && is_array($find)) $data = array_merge($data, $find);
             }
-            $data = array_merge($data, $this->data);
-            if (false !== $this->controller->callback('_form_filter', $data)) {
-                return $this->controller->fetch($this->template, ['vo' => $data]);
+            if (false !== $this->class->callback('_form_filter', $data)) {
+                return $this->class->fetch($template, ['vo' => $data]);
             }
             return $data;
         }
         // POST请求, 数据自动存库处理
         if ($this->app->request->isPost()) {
-            $data = array_merge($this->app->request->post(), $this->data);
-            if (false !== $this->controller->callback('_form_filter', $data, $this->where)) {
-                $result = data_save($this->query, $data, $this->field, $this->where);
-                if (false !== $this->controller->callback('_form_result', $result, $data)) {
+            $data = array_merge($this->app->request->post(), $data);
+            if (false !== $this->class->callback('_form_filter', $data, $where)) {
+                $result = data_save($query, $data, $field, $where);
+                if (false !== $this->class->callback('_form_result', $result, $data)) {
                     if ($result !== false) {
-                        $this->controller->success(lang('think_library_form_success'));
+                        $this->class->success(lang('think_library_form_success'));
                     } else {
-                        $this->controller->error(lang('think_library_form_error'));
+                        $this->class->error(lang('think_library_form_error'));
                     }
                 }
                 return $result;

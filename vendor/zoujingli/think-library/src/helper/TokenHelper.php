@@ -34,10 +34,10 @@ class TokenHelper extends Helper
      */
     public function init($return = false)
     {
-        $this->controller->csrf_state = true;
+        $this->class->csrf_state = true;
         if ($this->app->request->isPost() && !TokenService::instance()->checkFormToken()) {
             if ($return) return false;
-            $this->controller->error($this->controller->csrf_message);
+            $this->class->error($this->class->csrf_message);
         } else {
             return true;
         }

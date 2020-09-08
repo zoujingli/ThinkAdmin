@@ -87,7 +87,7 @@ abstract class Command extends ThinkCommand
      * @return static
      * @throws Exception
      */
-    protected function setQueueError($message)
+    protected function setQueueError(string $message)
     {
         if (defined('WorkQueueCode')) {
             throw new Exception($message, 4, WorkQueueCode);
@@ -103,7 +103,7 @@ abstract class Command extends ThinkCommand
      * @return static
      * @throws Exception
      */
-    protected function setQueueSuccess($message)
+    protected function setQueueSuccess(string $message)
     {
         if (defined('WorkQueueCode')) {
             throw new Exception($message, 3, WorkQueueCode);

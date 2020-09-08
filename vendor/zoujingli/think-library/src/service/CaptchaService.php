@@ -71,7 +71,7 @@ class CaptchaService extends Service
      * 获取验证码值
      * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -80,7 +80,7 @@ class CaptchaService extends Service
      * 获取图片内容
      * @return string
      */
-    public function getData()
+    public function getData(): string
     {
         return "data:image/png;base64,{$this->createImage()}";
     }
@@ -89,7 +89,7 @@ class CaptchaService extends Service
      * 获取验证码编号
      * @return string
      */
-    public function getUniqid()
+    public function getUniqid(): string
     {
         return $this->uniqid;
     }
@@ -98,7 +98,7 @@ class CaptchaService extends Service
      * 获取验证码数据
      * @return array
      */
-    public function getAttrs()
+    public function getAttrs(): array
     {
         return [
             'code'   => $this->getCode(),
@@ -113,7 +113,7 @@ class CaptchaService extends Service
      * @param string $uniqid 验证码编号
      * @return boolean
      */
-    public function check($code, $uniqid = null)
+    public function check(string $code, $uniqid = null): bool
     {
         $_uni = is_string($uniqid) ? $uniqid : input('uniqid', '-');
         $_val = $this->app->cache->get($_uni, '');

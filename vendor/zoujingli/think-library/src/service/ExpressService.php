@@ -65,7 +65,7 @@ class ExpressService extends Service
      * @param array $list 快递路径列表
      * @return array
      */
-    public function express($code, $number, $list = [])
+    public function express(string $code, string $number, array $list = []): array
     {
         // 1-新订单,2-在途中,3-签收,4-问题件
         // 0-在途，1-揽收，2-疑难，3-签收，4-退签，5-派件，6-退回
@@ -90,7 +90,7 @@ class ExpressService extends Service
      * @param array $data
      * @return array
      */
-    public function getExpressList($data = [])
+    public function getExpressList(array $data = []): array
     {
         if (preg_match('/"currentData":.*?\[(.*?)],/', $this->getWapBaiduHtml(), $matches)) {
             foreach (json_decode("[{$matches['1']}]") as $item) $data[$item->value] = $item->text;

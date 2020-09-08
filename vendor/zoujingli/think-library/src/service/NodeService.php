@@ -29,7 +29,7 @@ class NodeService extends Service
      * @param string $name
      * @return string
      */
-    public function nameTolower($name)
+    public function nameTolower(string $name): string
     {
         $dots = [];
         foreach (explode('.', strtr($name, '/', '.')) as $dot) {
@@ -43,7 +43,7 @@ class NodeService extends Service
      * @param string $type
      * @return string
      */
-    public function getCurrent($type = '')
+    public function getCurrent(string $type = ''): string
     {
         $prefix = $this->app->getNamespace();
         $middle = '\\' . $this->nameTolower($this->app->request->controller());
@@ -56,7 +56,7 @@ class NodeService extends Service
      * @param string $node
      * @return string
      */
-    public function fullnode($node)
+    public function fullnode($node): string
     {
         if (empty($node)) return $this->getCurrent();
         if (count($attrs = explode('/', $node)) === 1) {
@@ -72,7 +72,7 @@ class NodeService extends Service
      * @param array $data
      * @return array
      */
-    public function getModules($data = [])
+    public function getModules(array $data = []): array
     {
         $path = $this->app->getBasePath();
         foreach (scandir($path) as $item) if ($item[0] !== '.') {
@@ -87,7 +87,7 @@ class NodeService extends Service
      * @return array
      * @throws \ReflectionException
      */
-    public function getMethods($force = false)
+    public function getMethods(bool $force = false): array
     {
         static $data = [];
         if (empty($force)) {
@@ -121,7 +121,7 @@ class NodeService extends Service
      * @param string $default 默认标题
      * @return array
      */
-    private function _parseComment($comment, $default = '')
+    private function _parseComment(string $comment, string $default = ''): array
     {
         $text = strtr($comment, "\n", ' ');
         $title = preg_replace('/^\/\*\s*\*\s*\*\s*(.*?)\s*\*.*?$/', '$1', $text);
@@ -138,22 +138,20 @@ class NodeService extends Service
      * 获取所有PHP文件列表
      * @param string $path 扫描目录
      * @param array $data 额外数据
-     * @param string $ext 文件后缀
+     * @param null|string $ext 文件后缀
      * @return array
      */
-    public function scanDirectory($path, $data = [], $ext = 'php')
+    public function scanDirectory(string $path, array $data = [], $ext = 'php'): array
     {
         if (file_exists($path)) {
             if (is_file($path)) {
                 $data[] = strtr($path, '\\', '/');
-            } elseif (is_dir($path)) {
-                foreach (scandir($path) as $item) if ($item[0] !== '.') {
-                    $real = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
-                    if (is_readable($real)) if (is_dir($real)) {
-                        $data = $this->scanDirectory($real, $data, $ext);
-                    } elseif (is_file($real) && (is_null($ext) || pathinfo($real, 4) === $ext)) {
-                        $data[] = strtr($real, '\\', '/');
-                    }
+            } elseif (is_dir($path)) foreach (scandir($path) as $item) if ($item[0] !== '.') {
+                $real = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
+                if (is_readable($real)) if (is_dir($real)) {
+                    $data = $this->scanDirectory($real, $data, $ext);
+                } elseif (is_file($real) && (is_null($ext) || pathinfo($real, 4) === $ext)) {
+                    $data[] = strtr($real, '\\', '/');
                 }
             }
         }

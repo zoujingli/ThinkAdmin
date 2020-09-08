@@ -29,7 +29,7 @@ class CodeExtend
      * @param string $prefix 编码前缀
      * @return string
      */
-    public static function random($size = 10, $type = 1, $prefix = '')
+    public static function random(int $size = 10, int $type = 1, string $prefix = ''): string
     {
         $numbs = '0123456789';
         $chars = 'abcdefghijklmnopqrstuvwxyz';
@@ -48,7 +48,7 @@ class CodeExtend
      * @param string $prefix
      * @return string
      */
-    public static function uniqidDate($size = 16, $prefix = '')
+    public static function uniqidDate(int $size = 16, string $prefix = ''): string
     {
         if ($size < 14) $size = 14;
         $string = $prefix . date('Ymd') . (date('H') + date('i')) . date('s');
@@ -62,7 +62,7 @@ class CodeExtend
      * @param string $prefix
      * @return string
      */
-    public static function uniqidNumber($size = 12, $prefix = '')
+    public static function uniqidNumber(int $size = 12, string $prefix = ''): string
     {
         $time = time() . '';
         if ($size < 10) $size = 10;

@@ -31,7 +31,7 @@ class DataExtend
      * @param string $sub 子数组名称
      * @return array
      */
-    public static function arr2tree($list, $cid = 'id', $pid = 'pid', $sub = 'sub')
+    public static function arr2tree(array $list, string $cid = 'id', string $pid = 'pid', string $sub = 'sub'): array
     {
         [$tree, $tmp] = [[], array_combine(array_column($list, $cid), array_values($list))];
         foreach ($list as $vo) isset($vo[$pid]) && isset($tmp[$vo[$pid]]) ? $tmp[$vo[$pid]][$sub][] = &$tmp[$vo[$cid]] : $tree[] = &$tmp[$vo[$cid]];
@@ -48,7 +48,7 @@ class DataExtend
      * @param string $ppath 上级 PATH
      * @return array
      */
-    public static function arr2table(array $list, $cid = 'id', $pid = 'pid', $cpath = 'path', $ppath = '')
+    public static function arr2table(array $list, string $cid = 'id', string $pid = 'pid', string $cpath = 'path', string $ppath = ''): array
     {
         $tree = [];
         foreach (static::arr2tree($list, $cid, $pid) as $attr) {
@@ -68,16 +68,16 @@ class DataExtend
     /**
      * 获取数据树子ID
      * @param array $list 数据列表
-     * @param integer $id 起始ID
-     * @param string $key ID_KEY
+     * @param mixed $id 起始ID
+     * @param string $ckey ID_KEY
      * @param string $pkey PID_KEY
      * @return array
      */
-    public static function getArrSubIds($list, $id = 0, $key = 'id', $pkey = 'pid')
+    public static function getArrSubIds(array $list, $id = 0, string $ckey = 'id', string $pkey = 'pid'): array
     {
         $ids = [intval($id)];
         foreach ($list as $vo) if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) === intval($id)) {
-            $ids = array_merge($ids, static::getArrSubIds($list, intval($vo[$key]), $key, $pkey));
+            $ids = array_merge($ids, static::getArrSubIds($list, intval($vo[$ckey]), $ckey, $pkey));
         }
         return $ids;
     }

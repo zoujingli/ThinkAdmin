@@ -152,7 +152,7 @@ class QueueService extends Service
      * @param null|integer $progress 进度数值
      * @return array
      */
-    public function progress($status = null, $message = null, $progress = null)
+    public function progress($status = null, $message = null, $progress = null): array
     {
         $ckey = "queue_{$this->code}_progress";
         if (is_numeric($status) && intval($status) === 3) {

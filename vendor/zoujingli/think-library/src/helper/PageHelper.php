@@ -25,29 +25,6 @@ use think\db\Query;
  */
 class PageHelper extends Helper
 {
-    /**
-     * 是否启用分页
-     * @var boolean
-     */
-    protected $page;
-
-    /**
-     * 集合分页记录数
-     * @var integer
-     */
-    protected $total;
-
-    /**
-     * 集合每页记录数
-     * @var integer
-     */
-    protected $limit;
-
-    /**
-     * 是否渲染模板
-     * @var boolean
-     */
-    protected $display;
 
     /**
      * 逻辑器初始化
@@ -64,25 +41,21 @@ class PageHelper extends Helper
      */
     public function init($dbQuery, $page = true, $display = true, $total = false, $limit = 0, $template = '')
     {
-        $this->page = $page;
-        $this->total = $total;
-        $this->limit = $limit;
-        $this->display = $display;
         $this->query = $this->buildQuery($dbQuery);
         // 数据列表排序自动处理
         if ($this->app->request->isPost()) $this->sortAction();
         // 列表设置默认排序处理
         if (!$this->query->getOptions('order')) $this->orderAction();
         // 列表分页及结果集处理
-        if ($this->page) {
-            if ($this->limit > 0) {
-                $limit = intval($this->limit);
+        if ($page) {
+            if ($limit > 0) {
+                $limit = intval($limit);
             } else {
                 $limit = $this->app->request->get('limit', $this->app->cookie->get('limit'));
                 $this->app->cookie->set('limit', $limit = intval($limit >= 10 ? $limit : 20));
             }
             [$options, $query] = ['', $this->app->request->get()];
-            $pager = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $this->total);
+            $pager = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $total);
             foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
                 [$query['limit'], $query['page'], $selects] = [$num, 1, $limit === $num ? 'selected' : ''];
                 if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
@@ -96,16 +69,16 @@ class PageHelper extends Helper
             $pagetext = lang('think_library_page_html', [$pager->total(), $selects, $pager->lastPage(), $pager->currentPage()]);
             $pagehtml = "<div class='pagination-container nowrap'><span>{$pagetext}</span>{$pager->render()}</div>";
             if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
-                $this->controller->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $pagehtml));
+                $this->class->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $pagehtml));
             } else {
-                $this->controller->assign('pagehtml', $pagehtml);
+                $this->class->assign('pagehtml', $pagehtml);
             }
             $result = ['page' => ['limit' => intval($limit), 'total' => intval($pager->total()), 'pages' => intval($pager->lastPage()), 'current' => intval($pager->currentPage())], 'list' => $pager->items()];
         } else {
             $result = ['list' => $this->query->select()->toArray()];
         }
-        if (false !== $this->controller->callback('_page_filter', $result['list']) && $this->display) {
-            return $this->controller->fetch($template, $result);
+        if (false !== $this->class->callback('_page_filter', $result['list']) && $display) {
+            return $this->class->fetch($template, $result);
         } else {
             return $result;
         }
@@ -125,11 +98,11 @@ class PageHelper extends Helper
                     $map = [$pk => $this->app->request->post($pk, 0)];
                     $data = ['sort' => intval($this->app->request->post('sort', 0))];
                     if ($this->app->db->table($this->query->getTable())->where($map)->update($data) !== false) {
-                        $this->controller->success(lang('think_library_sort_success'), '');
+                        $this->class->success(lang('think_library_sort_success'), '');
                     }
                 }
             }
-            $this->controller->error($message ?? lang('think_library_sort_error'));
+            $this->class->error(lang('think_library_sort_error'));
         }
     }
 

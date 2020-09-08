@@ -30,7 +30,7 @@ class ProcessService extends Service
      * @param string $args 指定参数
      * @return string
      */
-    public function think($args = '')
+    public function think(string $args = ''): string
     {
         $root = $this->app->getRootPath();
         return trim("php {$root}think {$args}");
@@ -40,7 +40,7 @@ class ProcessService extends Service
      * 获取当前应用版本
      * @return string
      */
-    public function version()
+    public function version(): string
     {
         return ModuleService::instance()->getVersion();
     }
@@ -65,7 +65,7 @@ class ProcessService extends Service
      * @param string $command 任务指令
      * @return array
      */
-    public function query($command)
+    public function query(string $command): array
     {
         $list = [];
         if ($this->iswin()) {
@@ -90,7 +90,7 @@ class ProcessService extends Service
      * @param integer $pid 进程号
      * @return boolean
      */
-    public function close($pid)
+    public function close($pid): bool
     {
         if ($this->iswin()) {
             $this->exec("wmic process {$pid} call terminate");
@@ -116,7 +116,7 @@ class ProcessService extends Service
      * 判断系统类型
      * @return boolean
      */
-    public function iswin()
+    public function iswin(): bool
     {
         return PATH_SEPARATOR === ';';
     }
@@ -127,7 +127,7 @@ class ProcessService extends Service
      * @param string $tochar
      * @return string
      */
-    private function _space($content, $tochar = ' ')
+    private function _space(string $content, string $tochar = ' '): string
     {
         return preg_replace('|\s+|', $tochar, strtr(trim($content), '\\', '/'));
     }
@@ -138,7 +138,7 @@ class ProcessService extends Service
      * @param string $substr
      * @return boolean
      */
-    private function _issub($content, $substr)
+    private function _issub(string $content, string $substr): bool
     {
         return stripos($this->_space($content), $this->_space($substr)) !== false;
     }

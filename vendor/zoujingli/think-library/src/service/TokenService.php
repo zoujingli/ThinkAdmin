@@ -58,7 +58,7 @@ class TokenService extends Service
      * 获取缓存名称
      * @return string
      */
-    public function getCacheName()
+    public function getCacheName(): string
     {
         $sid = $this->app->session->getId();
         return 'systoken_' . ($sid ?: 'default');
@@ -77,7 +77,7 @@ class TokenService extends Service
      * 获取当前请求 CSRF 值
      * @return array|string
      */
-    public function getInputToken()
+    public function getInputToken(): string
     {
         return $this->app->request->header('user-form-token', input('_csrf_', ''));
     }
@@ -88,7 +88,7 @@ class TokenService extends Service
      * @param string $node 授权节点
      * @return boolean
      */
-    public function checkFormToken($token = null, $node = null)
+    public function checkFormToken($token = null, $node = null): bool
     {
         $cnode = NodeService::instance()->fullnode($node);
         $cache = $this->_getCacheItem($token ?: $this->getInputToken());
@@ -113,7 +113,7 @@ class TokenService extends Service
      * @param string $node
      * @return array
      */
-    public function buildFormToken($node = null)
+    public function buildFormToken($node = null): array
     {
         $cnode = NodeService::instance()->fullnode($node);
         [$token, $time] = [uniqid() . rand(100000, 999999), time()];
