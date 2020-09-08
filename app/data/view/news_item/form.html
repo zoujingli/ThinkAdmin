@@ -2,9 +2,7 @@
 
 {block name='content'}
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
-
     <div class="layui-card-body padding-40">
-
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">文章标签</span>
             <div class="markbox layui-textarea">
@@ -15,7 +13,6 @@
                 {/if}{/foreach}
             </div>
         </div>
-
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">文章图片</span>
             <label class="relative block label-required-null">
@@ -24,34 +21,27 @@
                 <script>$('[name="cover"]').uploadOneImage()</script>
             </label>
         </div>
-
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">文章标题</span>
             <input required name="title" value='{$vo.title|default=""}' placeholder="请输入文章标题" class="layui-input">
         </label>
-
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">文章描述</span>
             <textarea required class="layui-textarea" placeholder="请输入文章描述" name="remark">{$vo.remark|default=''}</textarea>
         </label>
-
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">文章内容</span>
             <label class="relative block">
                 <textarea class="layui-textarea" placeholder="请输入文章内容" name="content">{$vo.content|default=''}</textarea>
             </label>
         </div>
-
         <div class="hr-line-dashed"></div>
         {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
-
         <div class="layui-form-item text-center">
             <button class="layui-btn" type='submit'>保存数据</button>
             <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
         </div>
-
     </div>
-
 </form>
 
 <script>
