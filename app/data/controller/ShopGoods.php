@@ -151,28 +151,28 @@ class ShopGoods extends Controller
             $this->cates = GoodsService::instance()->getCateList('arr2table');
             // 商品默认规格
             $fields = 'goods_sku,goods_code,goods_spec,price_selling,price_market,number_virtual,number_express express,status';
-            $this->items = $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec');
+            $data['items'] = $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec');
         } elseif ($this->request->isPost()) {
             if (empty($data['cover'])) $this->error('商品图片不能为空！');
             if (empty($data['slider'])) $this->error('轮播图不能为空！');
             // 商品规格保存
-            [$specs, $count] = [json_decode($data['lists'], true), 0];
-            foreach ($specs as $item) {
+            [$count, $items] = [0, json_decode($data['items_data'], true)];
+            foreach ($items as $item) {
                 $count += intval($item[0]['status']);
                 if (empty($data['price_market'])) $data['price_market'] = $item[0]['market'];
             }
             if (empty($count)) $this->error('无可用的商品规格！');
             $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->update(['status' => '0']);
-            foreach ($specs as $item) data_save('ShopGoodsItem', [
+            foreach ($items as $item) data_save('ShopGoodsItem', [
                 'goods_sku'      => $item[0]['sku'],
-                'goods_code'     => $item[0]['code'],
-                'goods_spec'     => $item[0]['spec'],
+                'goods_code'     => $data['code'],
+                'goods_spec'     => $item[0]['key'],
                 'price_market'   => $item[0]['market'],
                 'price_selling'  => $item[0]['selling'],
                 'number_virtual' => $item[0]['virtual'],
                 'number_express' => $item[0]['express'],
                 'status'         => $item[0]['status'] ? 1 : 0,
-            ], 'goods_spec', ['goods_id' => $data['id']]);
+            ], 'goods_spec', ['goods_code' => $data['code']]);
         }
     }
 
