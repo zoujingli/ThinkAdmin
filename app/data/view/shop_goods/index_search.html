@@ -8,6 +8,19 @@
             </label>
         </div>
         <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">商品标签</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="mark" lay-search>
+                    <option value="">-- 全部标签 --</option>
+                    {foreach $marks as $mark}{if input('mark','') eq $mark}
+                    <option selected value="{$mark}">{$mark}</option>
+                    {else}
+                    <option value="{$mark}">{$mark}</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
             <label class="layui-form-label">商品分类</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="cate_id" lay-search>

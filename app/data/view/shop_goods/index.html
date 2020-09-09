@@ -37,15 +37,16 @@
                 <th class='list-table-sort-td'>
                     <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
                 </th>
-                <th class='text-left nowrap'>商品信息</th>
-                <th class='text-left nowrap'></th>
+                <th class='text-left nowrap'>商品名称</th>
+                <th class='text-left nowrap'>商品标签</th>
+                <th></th>
                 <th></th>
             </tr>
             </thead>
             {/notempty}
             <tbody>
             {foreach $list as $key=>$vo}
-            <tr data-dbclick>
+            <tr>
                 <td class='list-table-check-td think-checkbox'>
                     <label><input class="list-check-box" value='{$vo.code}' type='checkbox'></label>
                 </td>
@@ -61,6 +62,9 @@
                         商品名称：<span>{$vo.name|default='--'}</span><br>
                     </div>
                 </td>
+                <td class="text-left">
+                    {notempty name='vo.mark'}{foreach $vo.mark as $mark}<span class="margin-right-5 layui-badge layui-bg-cyan">{$mark}</span>{/foreach}{/notempty}
+                </td>
                 <td class='nowrap'>
                     销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
                     所属分类：{$vo.cate.name|default='-'}<br>
@@ -68,7 +72,7 @@
                 <td class='nowrap sub-span-blue'>
                     <div class="margin-bottom-5">剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )</div>
                     <!--{if auth("edit")}-->
-                    <a data-dbclick class="layui-btn layui-btn-xs" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
+                    <a class="layui-btn layui-btn-xs" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
                     <!--{else}-->
                     <a data-tips-text="您没有编辑商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">编 辑</a>
                     <!--{/if}-->

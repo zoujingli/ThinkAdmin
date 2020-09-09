@@ -32,7 +32,7 @@ class ShopGoods extends Controller
     {
         $this->title = '商品数据管理';
         $query = $this->_query($this->table);
-        $query->like('name')->equal('status,cate');
+        $query->like('name,mark')->equal('status,cate');
         // 加载对应数据
         $this->type = $this->request->get('type', 'index');
         if ($this->type === 'index') $query->where(['deleted' => 0]);
@@ -63,10 +63,14 @@ class ShopGoods extends Controller
      */
     protected function _page_filter(&$data)
     {
+        $this->marks = GoodsService::instance()->getMarkList();
         $query = $this->app->db->name('ShopGoodsCate')->where(['deleted' => 0, 'status' => 1]);
         $this->clist = DataExtend::arr2table($query->order('sort desc,id desc')->select()->toArray());
         $clist = $this->app->db->name('ShopGoodsCate')->whereIn('id', array_column($data, 'cate'))->column('pid,name,status', 'id');
-        foreach ($data as &$vo) $vo['cate'] = $clist[$vo['cate']] ?? $vo['cate'];
+        foreach ($data as &$vo) {
+            $vo['cate'] = $clist[$vo['cate']] ?? $vo['cate'];
+            $vo['mark'] = trim($vo['mark'], ',') ? explode(',', trim($vo['mark'], ',')) : [];
+        }
     }
 
     /**
