@@ -2,15 +2,15 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-open='{:url("add")}' class='layui-btn layui-btn-xs layui-btn-primary'>添加商品</button>
+<button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加商品</button>
 <!--{/if}-->
 {if $type eq 'index'}
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="code#{key};deleted#1" class='layui-btn layui-btn-xs layui-btn-primary'>删除商品</button>
+<button data-action='{:url("remove")}' data-rule="code#{key};deleted#1" class='layui-btn layui-btn-sm layui-btn-primary'>删除商品</button>
 <!--{/if}-->
 {else}
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="code#{key};deleted#0" data-confirm="确定要恢复这些数据吗？" class='layui-btn layui-btn-xs layui-btn-primary'>恢复商品</button>
+<button data-action='{:url("remove")}' data-rule="code#{key};deleted#0" data-confirm="确定要恢复这些数据吗？" class='layui-btn layui-btn-sm layui-btn-primary'>恢复商品</button>
 <!--{/if}-->
 {/if}
 {/block}
