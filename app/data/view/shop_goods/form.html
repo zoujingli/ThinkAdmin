@@ -4,19 +4,9 @@
 {include file='shop_goods/formstyle'}
 <form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
     <div class="layui-card-body padding-40">
-        <label class="layui-form-item block relative">
-            <span class="color-green font-w7 label-required-prev">所属分类</span>
-            <select class="layui-select" name="cate" lay-search>
-                {foreach $cates as $cate}
-                {if isset($vo.cate) and $vo.cate eq $cate.id}
-                <option selected value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
-                {else}
-                <option value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
-                {/if}{/foreach}
-            </select>
-        </label>
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">商品标签</span>
+            <span class="color-desc margin-left-5">Label Name</span>
             <div class="tags-container layui-textarea">
                 {foreach $marks as $mark}{if isset($vo.mark) && is_array($vo.mark) && in_array($mark, $vo.mark)}
                 <label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$mark}" lay-ignore> {$mark}</label>
@@ -26,7 +16,20 @@
             </div>
         </div>
         <label class="layui-form-item block relative">
+            <span class="color-green font-w7 label-required-prev">所属分类</span>
+            <span class="color-desc margin-left-5">Category Name</span>
+            <select class="layui-select" name="cate" lay-search>
+                {foreach $cates as $cate}
+                {if isset($vo.cate) and $vo.cate eq $cate.id}
+                <option selected value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
+                {else}
+                <option value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
+                {/if}{/foreach}
+            </select>
+        </label>
+        <label class="layui-form-item block relative">
             <span class="color-green font-w7">商品名称</span>
+            <span class="color-desc margin-left-5">Goods Name</span>
             <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">
         </label>
         <div class="layui-form-item">
@@ -122,11 +125,17 @@
                 </tbody>
             </table>
             <p class="color-desc">请注意商品SKU尽量不要重复，也不能产生订单后再修改，否则会造成订单数据无法关联！</p>
-            <textarea class="layui-textarea layui-hide" name="data_specs">{{specs}}</textarea>
-            <textarea class="layui-textarea layui-hide" name="data_items">{{items}}</textarea>
+            <label class="layui-hide">
+                <textarea class="layui-textarea" name="data_specs">{{specs}}</textarea>
+                <textarea class="layui-textarea" name="data_items">{{items}}</textarea>
+            </label>
         </div>
+        <label class="layui-form-item block">
+            <span class="label-required-prev font-w7 color-green">商品简介描述</span>
+            <textarea class="layui-textarea" placeholder="请输入商品简介描述" name="remark">{$vo.remark|default=''|raw}</textarea>
+        </label>
         <div class="layui-form-item block">
-            <span class="label-required-prev font-w7 color-green">商品富文本内容</span>
+            <span class="label-required-prev font-w7 color-green">商品富文本详情</span>
             <textarea name="content">{$vo.content|default=''|raw}</textarea>
         </div>
         <div class="layui-form-item text-center">
