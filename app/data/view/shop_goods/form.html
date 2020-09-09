@@ -20,6 +20,17 @@
             </select>
         </label>
 
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">课程标签</span>
+            <div class="tags-container layui-textarea">
+                {foreach $marks as $mark}{if isset($vo.mark) && is_array($vo.mark) && in_array($mark, $vo.mark)}
+                <label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$mark}" lay-ignore> {$mark}</label>
+                {else}
+                <label class="think-checkbox notselect"><input type="checkbox" name="mark[]" value="{$mark}" lay-ignore> {$mark}</label>
+                {/if}{/foreach}
+            </div>
+        </div>
+
         <label class="layui-form-item block relative">
             <span class="color-green font-w7">商品名称</span>
             <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">

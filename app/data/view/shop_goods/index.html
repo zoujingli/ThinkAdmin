@@ -5,12 +5,12 @@
 <button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加商品</button>
 <!--{/if}-->
 {if $type eq 'index'}
-<!--{if auth("state")}-->
-<button data-action='{:url("state")}' data-rule="code#{key};deleted#1" class='layui-btn layui-btn-sm layui-btn-primary'>删除商品</button>
+<!--{if auth("remove")}-->
+<button data-action='{:url("remove")}' data-rule="code#{key};deleted#1" class='layui-btn layui-btn-sm layui-btn-primary'>删除商品</button>
 <!--{/if}-->
 {else}
-<!--{if auth("state")}-->
-<button data-action='{:url("state")}' data-rule="code#{key};deleted#0" data-confirm="确定要恢复这些数据吗？？" class='layui-btn layui-btn-sm layui-btn-primary'>恢复商品</button>
+<!--{if auth("remove")}-->
+<button data-action='{:url("remove")}' data-rule="code#{key};deleted#0" data-confirm="确定要恢复这些数据吗？" class='layui-btn layui-btn-sm layui-btn-primary'>恢复商品</button>
 <!--{/if}-->
 {/if}
 {/block}
@@ -23,8 +23,7 @@
         <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}</li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v}</li>
-        {/if}
-        {/foreach}
+        {/if}{/foreach}
     </ul>
     <div class="layui-tab-content think-box-shadow table-block">
         {include file='shop_goods/index_search'}
@@ -65,7 +64,7 @@
                 </td>
                 <td class='nowrap'>
                     入会礼包：{if empty($vo.vip_mod)}<span class=" color-red">否</span>{else}<span class="color-blue">是</span> [ <span class="color-blue">{$vo.vip_level|default='0'}</span> ]{/if}<br>
-                    所属分类：{$vo.cate.title|default='&#45;&#45;'}<br>
+                    所属分类：{$vo.cate.name|default='-'}<br>
                 </td>
                 <td class='nowrap'>
                     销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
@@ -114,8 +113,4 @@
 
     </div>
 </div>
-{/block}
-
-{block name='script'}
-<script>form.render()</script>
 {/block}

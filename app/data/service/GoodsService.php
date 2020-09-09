@@ -71,6 +71,17 @@ class GoodsService extends Service
     }
 
     /**
+     * 获取商品标签数据
+     * @return array
+     */
+    public function getMarkList()
+    {
+        $map = ['status' => 1];
+        $query = $this->app->db->name('ShopGoodsMark');
+        return $query->where($map)->order('sort desc,id desc')->column('name');
+    }
+
+    /**
      * 最大分类级别
      * @return integer
      */

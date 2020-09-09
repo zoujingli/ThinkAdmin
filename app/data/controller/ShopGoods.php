@@ -63,13 +63,10 @@ class ShopGoods extends Controller
      */
     protected function _page_filter(&$data)
     {
-        $query = $this->app->db->name('ShopGoodsCate');
-        $query->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc');
-        $this->clist = DataExtend::arr2table($query->select()->toArray());
-        foreach ($data as &$vo) {
-            [$vo['list'], $vo['cate']] = [[], []];
-            foreach ($this->clist as $cate) if ($cate['id'] === $vo['cate']) $vo['cate'] = $cate;
-        }
+        $query = $this->app->db->name('ShopGoodsCate')->where(['deleted' => 0, 'status' => 1]);
+        $this->clist = DataExtend::arr2table($query->order('sort desc,id desc')->select()->toArray());
+        $clist = $this->app->db->name('ShopGoodsCate')->whereIn('id', array_column($data, 'cate'))->column('pid,name,status', 'id');
+        foreach ($data as &$vo) $vo['cate'] = $clist[$vo['cate']] ?? $vo['cate'];
     }
 
     /**
@@ -147,21 +144,22 @@ class ShopGoods extends Controller
             $data['code'] = CodeExtend::uniqidNumber(12, 'G');
         }
         if ($this->request->isGet()) {
-            // 商品分类数据
+            $this->marks = GoodsService::instance()->getMarkList();
             $this->cates = GoodsService::instance()->getCateList('arr2table');
-            // 商品默认规格
+            $data['mark'] = isset($data['mark']) && trim($data['mark'], ',') ? explode(',', trim($data['mark'], ',')) : [];
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,status';
             $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
         } elseif ($this->request->isPost()) {
             if (empty($data['cover'])) $this->error('商品图片不能为空！');
             if (empty($data['slider'])) $this->error('轮播图不能为空！');
             // 商品规格保存
+            $data['mark'] = ',' . (isset($data['mark']) && is_array($data['mark']) ? join(',', $data['mark']) : '') . ',';
             [$count, $items] = [0, json_decode($data['data_items'], true)];
             foreach ($items as $item) {
                 $count += intval($item[0]['status']);
                 if (empty($data['price_market'])) $data['price_market'] = $item[0]['market'];
             }
-            if (empty($count)) $this->error('无可用的商品规格！');
+            if (empty($count)) $this->error('无效的的商品价格信息！');
             $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->update(['status' => 0]);
             foreach ($items as $item) data_save('ShopGoodsItem', [
                 'goods_code'     => $data['code'],
