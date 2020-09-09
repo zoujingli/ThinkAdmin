@@ -1,13 +1,10 @@
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
-
     <div class="layui-card-body padding-left-40">
-
         <div class="layui-form-item relative block">
             <span class="color-green font-w7">商品名称</span>
             <span class="color-desc margin-left-5">Goods name</span>
-            <div class="layui-input layui-bg-gray">{$vo.title}</div>
+            <div class="layui-input layui-bg-gray">{$vo.name}</div>
         </div>
-
         <div class="layui-form-item">
             <div class="relative block">
                 <span class="color-green font-w7">规格数据</span>
@@ -16,6 +13,7 @@
                     <thead>
                     <tr>
                         <th class="text-left">商品规格</th>
+                        <th class="text-center">市场价格</th>
                         <th class="text-center">销售价格</th>
                         <th class="text-center">库存统计</th>
                         <th class="text-center">总销统计</th>
@@ -26,25 +24,28 @@
                     <tbody>
                     {foreach $vo.list as $goods}
                     <tr>
-                        <td class="padding-0" width="40%">
-                            <input class="layui-input layui-bg-gray border-0" disabled value="{$goods.goods_spec|show_goods_spec}">
+                        <td width="28%" class="layui-bg-gray">
+                            {$goods.goods_spec|show_goods_spec}
                         </td>
                         <td class="padding-0" width="12%">
                             <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="￥{$goods.price_market}">
                         </td>
                         <td class="padding-0" width="12%">
-                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.number_stock}">
+                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="￥{$goods.price_selling}">
                         </td>
                         <td class="padding-0" width="12%">
-                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.number_sales} ">
+                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.stock_total}">
                         </td>
                         <td class="padding-0" width="12%">
-                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.number_stock-$goods.number_sales} ">
+                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.stock_sales} ">
                         </td>
                         <td class="padding-0" width="12%">
-                            <input type="hidden" name="goods_id[]" value="{$goods.goods_id|default=''}">
+                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.stock_total-$goods.stock_sales} ">
+                        </td>
+                        <td class="padding-0" width="12%">
+                            <input type="hidden" name="goods_code[]" value="{$goods.goods_code|default=''}">
                             <input type="hidden" name="goods_spec[]" value="{$goods.goods_spec|default=''}">
-                            <input class="layui-input text-center border-0 padding-left-0" onblur="this.value=parseInt(this.value)||0" name="goods_number[]" value="0">
+                            <input class="layui-input text-center border-0 padding-left-0" onblur="this.value=parseInt(this.value)||0" name="goods_stock[]" value="0">
                         </td>
                     </tr>
                     {/foreach}
@@ -52,12 +53,8 @@
                 </table>
             </div>
         </div>
-
     </div>
-
     <div class="hr-line-dashed"></div>
-    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
-
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>确定入库</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消入库吗？" data-close>取消入库</button>

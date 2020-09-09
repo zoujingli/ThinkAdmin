@@ -78,24 +78,27 @@ class ShopGoods extends Controller
      */
     public function stock()
     {
+        $input = $this->_vali(['code.require' => '商品编号不能为空哦！']);
         if ($this->request->isGet()) {
-            $code = $this->request->get('code');
-            $goods = $this->app->db->name('ShopGoods')->where(['code' => $code])->find();
+            $goods = $this->app->db->name('ShopGoods')->where($input)->find();
             empty($goods) && $this->error('无效的商品信息，请稍候再试！');
-            $map = ['goods_code' => $code, 'status' => 1];
+            $map = ['goods_code' => $input['code'], 'status' => 1];
             $goods['list'] = $this->app->db->name('ShopGoodsItem')->where($map)->select()->toArray();
             $this->fetch('', ['vo' => $goods]);
         } else {
-            [$post, $data] = [$this->request->post(), []];
-            if (isset($post['id']) && isset($post['goods_code']) && is_array($post['goods_code'])) {
-                foreach (array_keys($post['goods_id']) as $key) if ($post['goods_number'][$key] > 0) array_push($data, [
-                    'goods_code'  => $post['goods_code'][$key],
-                    'goods_spec'  => $post['goods_spec'][$key],
-                    'stock_total' => $post['goods_number'][$key],
-                ]);
+            [$post, $data, $batch] = [$this->request->post(), [], CodeExtend::uniqidDate(12, 'B')];
+            if (isset($post['goods_code']) && is_array($post['goods_code'])) {
+                foreach (array_keys($post['goods_code']) as $key) {
+                    if ($post['goods_stock'][$key] > 0) $data[] = [
+                        'batch_no'    => $batch,
+                        'goods_code'  => $post['goods_code'][$key],
+                        'goods_spec'  => $post['goods_spec'][$key],
+                        'goods_stock' => $post['goods_stock'][$key],
+                    ];
+                }
                 if (!empty($data)) {
                     $this->app->db->name('ShopGoodsStock')->insertAll($data);
-                    GoodsService::instance()->syncStock($post['code']);
+                    GoodsService::instance()->syncStock($input['code']);
                     $this->success('商品信息入库成功！');
                 }
             }

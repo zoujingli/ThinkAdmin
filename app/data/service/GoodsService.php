@@ -25,7 +25,7 @@ class GoodsService extends Service
     {
         // 商品入库统计
         $query = $this->app->db->name('ShopGoodsStock');
-        $query->field('goods_code,goods_spec,ifnull(sum(number_stock),0) number_stock');
+        $query->field('goods_code,goods_spec,ifnull(sum(goods_stock),0) stock_total');
         $stockList = $query->where(['goods_code' => $code])->group('goods_code,goods_spec')->select()->toArray();
         // 商品销量统计
         $query = $this->app->db->table('shop_order a')->field('b.goods_code,b.goods_spec,ifnull(sum(b.stock_sales),0) stock_sales');
