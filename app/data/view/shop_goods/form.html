@@ -79,7 +79,7 @@
                 <thead>
                 <tr>
                     <th ng-repeat="x in navas track by $index" class="nowrap" ng-bind="x"></th>
-                    <th width="10%" class="text-center nowrap">商品SKU <a ng-click="batchSet('sku',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+                    <th width="10%" class="text-center nowrap">商品SKU <a ng-click="batchSet('sku',null)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">市场价格 <a ng-click="batchSet('market',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">销售价格 <a ng-click="batchSet('selling',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">虚拟销量 <a ng-click="batchSet('virtual',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
@@ -155,13 +155,13 @@
         function callback($rootScope) {
             $rootScope.mode = '{$mode|default="add"}', $rootScope.navas = [];
             $rootScope.items = angular.fromJson(angular.element('#GoodsItems').val() || '[]') || {};
-            $rootScope.cache = angular.fromJson(angular.toJson($rootScope.items));
+            $rootScope.cache = angular.fromJson(angular.element('#GoodsItems').val() || '[]') || {};
             $rootScope.specs = angular.fromJson(angular.element('#GoodsSpecs').val() || '[{"name":"默认分组","list":[{"name":"默认规格","check":true}]}]');
             // 批量设置数值
             $rootScope.batchSet = function (name, fixed) {
                 layer.prompt({title: '请输入数值', formType: 0}, function (value, index) {
                     layer.close(index), $rootScope.$apply(function () {
-                        value = (parseFloat(value) || 0).toFixed(fixed);
+                        if (fixed !== null) value = (parseFloat(value) || 0).toFixed(fixed);
                         $rootScope.items.forEach(function (rows) {
                             rows.forEach(function (item) {
                                 item[name] = value;
@@ -177,13 +177,12 @@
                 });
             };
             $rootScope.setValue = function (key, name, value, callback) {
-                $rootScope.items[key] = $rootScope.items[key] || {};
-                $rootScope.cache[key] = $rootScope.cache[key] || {};
                 if (callback.indexOf('_') > -1) {
                     value = eval(callback.replace('_', "'" + value + "'"));
                 }
-                $rootScope.cache[key][name] = value;
-                return $rootScope.items[key][name] = value;
+                $rootScope.items[key] = $rootScope.items[key] || {};
+                $rootScope.cache[key] = $rootScope.cache[key] || {};
+                return $rootScope.cache[key][name] = $rootScope.items[key][name] = value;
             };
             $rootScope.getValue = function (key, name, value) {
                 var cache = $rootScope.cache[key] || {};
