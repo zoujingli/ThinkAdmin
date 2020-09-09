@@ -4,7 +4,7 @@
 <!--{if auth("add")}-->
 <button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加商品</button>
 <!--{/if}-->
-{if $type eq 'index'}
+{if isset($type) and $type eq 'index'}
 <!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="code#{key};deleted#1" class='layui-btn layui-btn-sm layui-btn-primary'>删除商品</button>
 <!--{/if}-->
@@ -19,7 +19,7 @@
 <div class="layui-tab layui-tab-card think-bg-white table-block">
     <ul class="layui-tab-title">
         {foreach ['index'=>'商品管理','recycle'=>'回 收 站'] as $k=>$v}
-        {if $type eq $k}
+        {if isset($type) and $type eq $k}
         <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}</li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v}</li>
@@ -76,7 +76,7 @@
                     <!--{else}-->
                     <a data-tips-text="您没有编辑商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">编 辑</a>
                     <!--{/if}-->
-                    {if $type eq 'index'}
+                    {if isset($type) and $type eq 'index'}
                     {if isset($vo.status) and $vo.status eq 1}
                     <!--{if auth("forbid")}-->
                     <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('forbid')}" data-value="code#{$vo.code};status#0">下 架</a>
