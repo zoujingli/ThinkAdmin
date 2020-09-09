@@ -214,11 +214,11 @@
                 // 表格交叉
                 data.forEach(function (rows) {
                     var temp = [];
-                    rows.forEach(function (item) {
-                        table.forEach(function (line) {
-                            temp.push(line.concat(item))
+                    table.forEach(function (line) {
+                        rows.forEach(function (item) {
+                            temp.push(line.concat(item));
                         });
-                    })
+                    });
                     table = temp;
                 });
                 // 表格合并
@@ -247,7 +247,7 @@
             };
             // 增加整行规格分组
             $rootScope.addSpecRow = function (data) {
-                data.push({name: '规格分组', list: [{name: '规格属性', check: true}]})
+                data.push({name: '规格分组' + data.length, list: [{name: '规格属性', check: true}]})
             };
             // 下移整行规格分组
             $rootScope.dnSpecRow = function (data, $index) {
@@ -278,8 +278,8 @@
                 return $rootScope.specs = temp;
             };
             // 增加分组的属性
-            $rootScope.addSpecVal = function (list) {
-                list.push({name: '规格属性', check: true});
+            $rootScope.addSpecVal = function (data) {
+                data.push({name: '规格属性' + data.length, check: true});
             };
             // 移除分组的属性
             $rootScope.delSpecVal = function (data, $index) {
