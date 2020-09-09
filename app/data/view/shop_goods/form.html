@@ -179,7 +179,6 @@
                     });
                 });
             };
-            // 返回商品列表
             $rootScope.pageBack = function () {
                 $.msg.confirm('确定要取消编辑吗？', function (index) {
                     history.back(), $.msg.close(index);
@@ -229,7 +228,7 @@
                     });
                     table = temp;
                 });
-                // 表格合并
+                // 表格数据
                 data = angular.fromJson(angular.toJson(table));
                 data.forEach(function (rows) {
                     var keys = [];
