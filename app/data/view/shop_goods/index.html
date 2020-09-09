@@ -66,7 +66,7 @@
                     所属分类：{$vo.cate.name|default='-'}<br>
                 </td>
                 <td class='nowrap sub-span-blue'>
-                    <div>剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )</div>
+                    <div class="margin-bottom-5">剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )</div>
                     <!--{if auth("edit")}-->
                     <a data-dbclick class="layui-btn layui-btn-xs" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
                     <!--{else}-->
