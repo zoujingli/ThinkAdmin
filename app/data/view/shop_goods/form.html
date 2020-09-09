@@ -1,13 +1,9 @@
 {extend name="../../admin/view/main"}
 
 {block name="content"}
-
 {include file='shop_goods/formstyle'}
-
 <form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
-
     <div class="layui-card-body padding-40">
-
         <label class="layui-form-item block relative">
             <span class="color-green font-w7 label-required-prev">所属分类</span>
             <select class="layui-select" name="cate" lay-search>
@@ -19,7 +15,6 @@
                 {/if}{/foreach}
             </select>
         </label>
-
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">商品标签</span>
             <div class="tags-container layui-textarea">
@@ -30,12 +25,10 @@
                 {/if}{/foreach}
             </div>
         </div>
-
         <label class="layui-form-item block relative">
             <span class="color-green font-w7">商品名称</span>
             <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">
         </label>
-
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">商品图片及轮播展示图片</span>
             <table class="layui-table">
@@ -57,7 +50,6 @@
                 </thead>
             </table>
         </div>
-
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">商品规格及商品SKU绑定<span class="color-red font-s12">（规格填写后不允许再次修改）</span></span>
             <div ng-repeat="x in specs track by $index" style="display:none" class="margin-bottom-10" ng-class="{true:'layui-show'}[mode==='add'&&specs.length>0]">
@@ -79,7 +71,10 @@
                     </label>
                 </div>
             </div>
-            <a ng-if="mode==='add'&&specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加分组</a>
+            <div ng-if="mode==='add'">
+                <a ng-if="specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加分组</a>
+                <p>请完成属性修改后再编辑下面的规格信息，否则规格数据会丢失！！！</p>
+            </div>
             <table class="layui-table margin-top-10">
                 <thead>
                 <tr>
@@ -94,10 +89,10 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="rows in items track by $index">
-                    <td class="layui-bg-gray" ng-if="td.show" rowspan="{{td.span}}" ng-repeat="td in rows" ng-bind="td.name"></td>
+                    <td class="layui-bg-gray" ng-if="td.show" ng-repeat="td in rows" ng-bind="td.name"></td>
                     <td class="padding-0">
                         <label class="padding-0 margin-0">
-                            <input ng-blur="rows[0].sku=setValue(rows[0].key,'sku',$event.target.value,'_')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].sku">
+                            <input ng-blur="rows[0].sku=setValue(rows[0].key,'sku',$event.target.value)" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].sku">
                         </label>
                     </td>
                     <td class="padding-0">
@@ -126,33 +121,31 @@
                 </tr>
                 </tbody>
             </table>
-            <p class="color-desc">请注意商品SKU与商品条码尽量不要重复，也不能产生订单后再修改！</p>
-            <textarea class="layui-textarea layui-hide" name="data_specs">{{specs}}</textarea>
-            <textarea class="layui-textarea layui-hide" name="data_items">{{items}}</textarea>
+            <p class="color-desc">请注意商品SKU尽量不要重复，也不能产生订单后再修改，否则会造成订单数据无法关联！</p>
+            <textarea class="layui-textarea" name="data_specs">{{specs}}</textarea>
+            <textarea class="layui-textarea" name="data_items">{{items}}</textarea>
         </div>
-
         <div class="layui-form-item block">
             <span class="label-required-prev font-w7 color-green">商品富文本内容</span>
             <textarea name="content">{$vo.content|default=''|raw}</textarea>
         </div>
-
         <div class="layui-form-item text-center">
             {notempty name='vo.code'}<input type="hidden" name="code" value="{$vo.code}">{/notempty}
             <button class="layui-btn layui-btn-danger" ng-click="pageBack()" type="button">取消编辑</button>
             <button class="layui-btn" type="submit">保存商品</button>
         </div>
-
     </div>
 </form>
 {/block}
 
 {block name='script'}
-<textarea class="layui-hide" id="goodsSpecs">{$vo.data_specs|raw|default=''}</textarea>
-<textarea class="layui-hide" id="goodsItems">{$vo.data_items|raw|default=''}</textarea>
+<label class="layui-hide">
+    <textarea id="GoodsSpecs">{$vo.data_specs|raw|default=''}</textarea>
+    <textarea id="GoodsItems">{$vo.data_items|raw|default=''}</textarea>
+</label>
 <script>
     /*! 表单初始化 */
     window.form.render();
-
     /*! 加载扩展插件 */
     require(['ckeditor', 'angular'], function () {
         window.createEditor('[name="content"]', {height: 500});
@@ -161,18 +154,20 @@
 
         function callback($rootScope) {
             $rootScope.mode = '{$mode|default="add"}', $rootScope.navas = [];
-            $rootScope.items = angular.fromJson(angular.element('#goodsItems').val() || '[]') || {};
-            $rootScope.specs = angular.fromJson(angular.element('#goodsSpecs').val() || '[{"name":"默认分组","list":[{"name":"默认规格","check":true}]}]');
+            $rootScope.items = angular.fromJson(angular.element('#GoodsItems').val() || '[]') || {};
+            $rootScope.cache = angular.fromJson(angular.toJson($rootScope.items));
+            $rootScope.specs = angular.fromJson(angular.element('#GoodsSpecs').val() || '[{"name":"默认分组","list":[{"name":"默认规格","check":true}]}]');
             // 批量设置数值
-            $rootScope.batchSet = function (type, fixed) {
+            $rootScope.batchSet = function (name, fixed) {
                 layer.prompt({title: '请输入数值', formType: 0}, function (value, index) {
-                    $rootScope.$apply(function () {
-                        var val = (parseFloat(value) || 0).toFixed(fixed);
-                        for (var i in $rootScope.items) for (var j in $rootScope.items[i]) {
-                            $rootScope.items[i][j][type] = val;
-                        }
+                    layer.close(index), $rootScope.$apply(function () {
+                        value = (parseFloat(value) || 0).toFixed(fixed);
+                        $rootScope.items.forEach(function (rows) {
+                            rows.forEach(function (item) {
+                                item[name] = value;
+                            });
+                        });
                     });
-                    layer.close(index);
                 });
             };
             // 返回商品列表
@@ -181,13 +176,22 @@
                     history.back(), $.msg.close(index);
                 });
             };
-            $rootScope.setValue = function (key, type, value, call) {
+            $rootScope.setValue = function (key, name, value, callback) {
                 $rootScope.items[key] = $rootScope.items[key] || {};
-                return $rootScope.items[key][type] = eval(call.replace('_', "'" + value + "'"));
+                $rootScope.cache[key] = $rootScope.cache[key] || {};
+                if (callback.indexOf('_') > -1) {
+                    value = eval(callback.replace('_', "'" + value + "'"));
+                }
+                $rootScope.cache[key][name] = value;
+                return $rootScope.items[key][name] = value;
             };
             $rootScope.getValue = function (key, name, value) {
-                var item = $rootScope.items[key] || {};
-                return typeof item[name] !== 'undefined' ? item[name] : value;
+                var cache = $rootScope.cache[key] || {};
+                if (typeof cache[name] === 'undefined') {
+                    $rootScope.setValue(key, name, value, '_')
+                    cache = $rootScope.cache[key] || {};
+                }
+                return cache[name];
             };
             // 去除空白字符
             $rootScope.trimSpace = function (value) {
@@ -197,22 +201,22 @@
             $rootScope.$watch('specs', function () {
                 var data = [], navs = [], table = [[]];
                 $rootScope.specs.forEach(function (spec) {
-                    var tmp = [];
+                    var temp = [];
                     spec.list.forEach(function (item) {
                         if (item.check && item.name.length > 0) {
-                            item.span = 1, item.show = true, item.group = spec.name;
-                            tmp.push(item);
+                            item.show = true, item.group = spec.name;
+                            temp.push(item);
                         }
                     });
-                    data.push(tmp), navs.push(spec.name);
+                    data.push(temp), navs.push(spec.name);
                 });
                 $rootScope.navas = navs;
                 // 表格交叉
-                data.forEach(function (line) {
+                data.forEach(function (rows) {
                     var temp = [];
-                    line.forEach(function (item) {
-                        table.forEach(function (rows) {
-                            temp.push(rows.concat(item))
+                    rows.forEach(function (item) {
+                        table.forEach(function (line) {
+                            temp.push(line.concat(item))
                         });
                     })
                     table = temp;
@@ -226,19 +230,19 @@
                     }), rows.every(function (item) {
                         item.key = keys.join(';;');
                         item.sku = $rootScope.getValue(item.key, 'sku', 'S' + Date.now() + (Math.random() * 100).toFixed());
-                        item.status = !!$rootScope.getValue(item.key, 'status', true);
+                        item.status = !!$rootScope.getValue(item.key, 'status', 1);
                         item.market = $rootScope.getValue(item.key, 'market', '0.00');
                         item.selling = $rootScope.getValue(item.key, 'selling', '0.00');
-                        item.virtual = $rootScope.getValue(item.key, 'virtual', '0');
                         item.express = $rootScope.getValue(item.key, 'express', '1');
+                        item.virtual = $rootScope.getValue(item.key, 'virtual', '0');
                         return false;
                     });
                 });
                 $rootScope.items = data;
             }, true);
             // 判断规则是否能取消选择
-            $rootScope.checkListChecked = function (list, check) {
-                for (var i in list) if (list[i].check) return check;
+            $rootScope.checkListChecked = function (data, check) {
+                for (var i in data) if (data[i].check) return check;
                 return true;
             };
             // 增加整行规格分组
@@ -267,11 +271,11 @@
             };
             // 移除整行规格分组
             $rootScope.delSpecRow = function (data, $index) {
-                var tmp = [];
+                var temp = [];
                 data.forEach(function (item, index) {
-                    if (parseInt(index) !== parseInt($index)) tmp.push(item);
+                    if (parseInt(index) !== parseInt($index)) temp.push(item);
                 });
-                return $rootScope.specs = tmp;
+                return $rootScope.specs = temp;
             };
             // 增加分组的属性
             $rootScope.addSpecVal = function (list) {
