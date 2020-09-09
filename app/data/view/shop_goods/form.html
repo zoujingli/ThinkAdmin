@@ -21,7 +21,7 @@
         </label>
 
         <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">课程标签</span>
+            <span class="color-green font-w7 label-required-prev">商品标签</span>
             <div class="tags-container layui-textarea">
                 {foreach $marks as $mark}{if isset($vo.mark) && is_array($vo.mark) && in_array($mark, $vo.mark)}
                 <label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$mark}" lay-ignore> {$mark}</label>
