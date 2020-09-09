@@ -68,7 +68,7 @@ class ShopGoods extends Controller
         $this->clist = DataExtend::arr2table($query->select()->toArray());
         foreach ($data as &$vo) {
             [$vo['list'], $vo['cate']] = [[], []];
-            foreach ($this->clist as $cate) if ($cate['id'] === $vo['cate_id']) $vo['cate'] = $cate;
+            foreach ($this->clist as $cate) if ($cate['id'] === $vo['cate']) $vo['cate'] = $cate;
         }
     }
 
@@ -115,9 +115,9 @@ class ShopGoods extends Controller
      */
     public function add()
     {
+        $this->mode = 'add';
         $this->title = '添加商品信息';
-        $this->isAddMode = '1';
-        $this->_form($this->table, 'form');
+        $this->_form($this->table, 'form', 'code');
     }
 
     /**
@@ -129,9 +129,9 @@ class ShopGoods extends Controller
      */
     public function edit()
     {
+        $this->mode = 'edit';
         $this->title = '编辑商品信息';
-        $this->isAddMode = '0';
-        $this->_form($this->table, 'form');
+        $this->_form($this->table, 'form', 'code');
     }
 
     /**
@@ -150,22 +150,22 @@ class ShopGoods extends Controller
             // 商品分类数据
             $this->cates = GoodsService::instance()->getCateList('arr2table');
             // 商品默认规格
-            $fields = 'goods_sku,goods_code,goods_spec,price_selling,price_market,number_virtual,number_express express,status';
-            $data['items'] = $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec');
+            $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,status';
+            $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
         } elseif ($this->request->isPost()) {
             if (empty($data['cover'])) $this->error('商品图片不能为空！');
             if (empty($data['slider'])) $this->error('轮播图不能为空！');
             // 商品规格保存
-            [$count, $items] = [0, json_decode($data['items_data'], true)];
+            [$count, $items] = [0, json_decode($data['data_items'], true)];
             foreach ($items as $item) {
                 $count += intval($item[0]['status']);
                 if (empty($data['price_market'])) $data['price_market'] = $item[0]['market'];
             }
             if (empty($count)) $this->error('无可用的商品规格！');
-            $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->update(['status' => '0']);
+            $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->update(['status' => 0]);
             foreach ($items as $item) data_save('ShopGoodsItem', [
-                'goods_sku'      => $item[0]['sku'],
                 'goods_code'     => $data['code'],
+                'goods_sku'      => $item[0]['sku'],
                 'goods_spec'     => $item[0]['key'],
                 'price_market'   => $item[0]['market'],
                 'price_selling'  => $item[0]['selling'],
@@ -197,7 +197,7 @@ class ShopGoods extends Controller
         $this->_save($this->table, $this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
-        ]));
+        ]), 'code');
     }
 
     /**
@@ -207,7 +207,10 @@ class ShopGoods extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_save($this->table, $this->_vali([
+            'deleted.in:0,1'  => '状态值范围异常！',
+            'deleted.require' => '状态值不能为空！',
+        ]), 'code');
     }
 
 }

@@ -2,11 +2,11 @@
 
 {block name="content"}
 
-{include file='shop_goods/form_style'}
+{include file='shop_goods/formstyle'}
 
 <form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
 
-    <div class="layui-card-body think-box-shadow padding-left-40">
+    <div class="layui-card-body padding-40">
 
         <label class="layui-form-item block relative">
             <span class="color-green font-w7 label-required-prev">所属分类</span>
@@ -22,7 +22,7 @@
 
         <label class="layui-form-item block relative">
             <span class="color-green font-w7">商品名称</span>
-            <input name="title" required class="layui-input" placeholder="请输入商品名称" value="{$vo.title|default=''}">
+            <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">
         </label>
 
         <div class="layui-form-item">
@@ -46,20 +46,10 @@
                 </thead>
             </table>
         </div>
-        <div class="layui-clear goods-item-box">
-
-            <fieldset>
-                <legend class="layui-bg-gray">商品限购设置</legend>
-                <label class="layui-form-item">
-                    <input class="layui-input" data-blur-number="0" name="number_limit" value="{$vo.number_limit|default=0}" placeholder="请输入商品限购数量">
-                    <span class="help-block">限制每人可购买数量（为0时不限制）！</span>
-                </label>
-            </fieldset>
-        </div>
 
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">商品规格及商品SKU绑定<span class="color-red font-s12">（规格填写后不允许再次修改）</span></span>
-            <div ng-repeat="x in specs track by $index" style="display:none" class="margin-bottom-10" ng-class="{true:'layui-show'}[isAddMode&&specs.length>0]">
+            <div ng-repeat="x in specs track by $index" style="display:none" class="margin-bottom-10" ng-class="{true:'layui-show'}[mode==='add'&&specs.length>0]">
                 <div class="goods-spec-box padding-10 margin-0 relative" style="background:#ddd">
                     <span class="text-center goods-spec-title">分组</span>
                     <label class="label-required-null inline-block"><input ng-blur="x.name=trimSpace(x.name)" ng-model="x.name" required placeholder="请输入分组名称"></label>
@@ -78,7 +68,7 @@
                     </label>
                 </div>
             </div>
-            <a ng-if="isAddMode&&specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加分组</a>
+            <a ng-if="mode==='add'&&specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加分组</a>
             <table class="layui-table margin-top-10">
                 <thead>
                 <tr>
@@ -106,7 +96,7 @@
                     </td>
                     <td class="padding-0">
                         <label class="padding-0 margin-0">
-                            <input ng-blur="rows[0].market=setValue(rows[0].key,'selling',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].selling">
+                            <input ng-blur="rows[0].selling=setValue(rows[0].key,'selling',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].selling">
                         </label>
                     </td>
                     <td class="padding-0">
@@ -126,8 +116,8 @@
                 </tbody>
             </table>
             <p class="color-desc">请注意商品SKU与商品条码尽量不要重复，也不能产生订单后再修改！</p>
-            <textarea class="layui-textarea layui-hide" name="specs_data">{{specs}}</textarea>
-            <textarea class="layui-textarea layui-hide" name="items_data">{{items}}</textarea>
+            <textarea class="layui-textarea layui-hide" name="data_specs">{{specs}}</textarea>
+            <textarea class="layui-textarea layui-hide" name="data_items">{{items}}</textarea>
         </div>
 
         <div class="layui-form-item block">
@@ -146,8 +136,8 @@
 {/block}
 
 {block name='script'}
-<textarea class="layui-hide" id="goods-specs">{$vo.specs|raw|default=''}</textarea>
-<textarea class="layui-hide" id="goods-items">{$vo.items|json_encode|raw|default=''}</textarea>
+<textarea class="layui-hide" id="goodsSpecs">{$vo.data_specs|raw|default=''}</textarea>
+<textarea class="layui-hide" id="goodsItems">{$vo.data_items|raw|default=''}</textarea>
 <script>
     /*! 表单初始化 */
     window.form.render();
@@ -159,9 +149,9 @@
         angular.bootstrap(document.getElementById(app.name), [app.name]);
 
         function callback($rootScope) {
-            $rootScope.isAddMode = parseInt('{$isAddMode|default=0}');
-            $rootScope.items = JSON.parse(angular.element('#goods-items').val() || '[]') || {};
-            $rootScope.specs = JSON.parse(angular.element('#goods-specs').val() || '[{"name":"默认分组","list":[{"name":"默认规格","check":true}]}]');
+            $rootScope.mode = '{$mode|default="add"}', $rootScope.navas = [];
+            $rootScope.items = angular.fromJson(angular.element('#goodsItems').val() || '[]') || {};
+            $rootScope.specs = angular.fromJson(angular.element('#goodsSpecs').val() || '[{"name":"默认分组","list":[{"name":"默认规格","check":true}]}]');
             // 批量设置数值
             $rootScope.batchSet = function (type, fixed) {
                 layer.prompt({title: '请输入数值', formType: 0}, function (value, index) {
@@ -180,34 +170,31 @@
                     history.back(), $.msg.close(index);
                 });
             };
-            // 设置默认值
             $rootScope.setValue = function (key, type, value, call) {
-                $rootScope.items[key] || ($rootScope.items[key] = {});
+                $rootScope.items[key] = $rootScope.items[key] || {};
                 return $rootScope.items[key][type] = eval(call.replace('_', "'" + value + "'"));
             };
-            // 读取默认值
             $rootScope.getValue = function (key, name, value) {
-                var item = ($rootScope.items[key] || {key: {}});
+                var item = $rootScope.items[key] || {};
                 return typeof item[name] !== 'undefined' ? item[name] : value;
             };
             // 去除空白字符
             $rootScope.trimSpace = function (value) {
                 return (value + '').replace(/\s*/ig, '');
             };
-            // 生成交叉表格数据
-            $rootScope.items = [], $rootScope.navas = [];
             // 当前商品规格发生变化时重新计算规格列表
             $rootScope.$watch('specs', function () {
-                var specs = $rootScope.specs, data = [], navs = [], table = [[]];
-                // 过滤无效记录
-                for (var i in specs) {
+                var data = [], navs = [], table = [[]];
+                $rootScope.specs.forEach(function (spec) {
                     var tmp = [];
-                    for (var j in specs[i].list) if (specs[i].list[j].check && specs[i].list[j].name.length > 0) {
-                        specs[i].list[j].span = 1, specs[i].list[j].show = true, specs[i].list[j].group = specs[i].name;
-                        tmp.push(specs[i].list[j]);
-                    }
-                    data.push(tmp), navs.push(specs[i].name);
-                }
+                    spec.list.forEach(function (item) {
+                        if (item.check && item.name.length > 0) {
+                            item.span = 1, item.show = true, item.group = spec.name;
+                            tmp.push(item);
+                        }
+                    });
+                    data.push(tmp), navs.push(spec.name);
+                });
                 $rootScope.navas = navs;
                 // 表格交叉
                 data.forEach(function (line) {
@@ -228,7 +215,7 @@
                     }), rows.every(function (item) {
                         item.key = keys.join(';;');
                         item.sku = $rootScope.getValue(item.key, 'sku', 'S' + Date.now() + (Math.random() * 100).toFixed());
-                        item.status = $rootScope.getValue(item.key, 'status', true);
+                        item.status = !!$rootScope.getValue(item.key, 'status', true);
                         item.market = $rootScope.getValue(item.key, 'market', '0.00');
                         item.selling = $rootScope.getValue(item.key, 'selling', '0.00');
                         item.virtual = $rootScope.getValue(item.key, 'virtual', '0');
@@ -249,28 +236,30 @@
             };
             // 下移整行规格分组
             $rootScope.dnSpecRow = function (data, $index) {
-                var tmp = [], cur = data[$index];
+                var temp = [], self = data[$index];
                 if ($index > data.length - 2) return false;
-                for (var i in data) {
-                    (parseInt(i) !== parseInt($index)) && tmp.push(data[i]);
-                    (parseInt(i) === parseInt($index) + 1) && tmp.push(cur);
-                }
-                return $rootScope.specs = tmp;
+                data.forEach(function (item, index) {
+                    if (parseInt(index) !== parseInt($index)) temp.push(item);
+                    if (parseInt(index) === parseInt($index) + 1) temp.push(self);
+                });
+                return $rootScope.specs = temp;
             };
             // 上移整行规格分组
             $rootScope.upSpecRow = function (data, $index) {
-                var tmp = [], cur = data[$index];
+                var temp = [], self = data[$index];
                 if ($index < 1) return false;
-                for (var i in data) {
-                    (parseInt(i) === parseInt($index) - 1) && tmp.push(cur);
-                    (parseInt(i) !== parseInt($index)) && tmp.push(data[i]);
-                }
-                return $rootScope.specs = tmp;
+                data.forEach(function (item, index) {
+                    if (parseInt(index) === parseInt($index) - 1) temp.push(self);
+                    if (parseInt(index) !== parseInt($index)) temp.push(item);
+                });
+                return $rootScope.specs = temp;
             };
             // 移除整行规格分组
             $rootScope.delSpecRow = function (data, $index) {
                 var tmp = [];
-                for (var i in data) if (parseInt(i) !== parseInt($index)) tmp.push(data[i]);
+                data.forEach(function (item, index) {
+                    if (parseInt(index) !== parseInt($index)) tmp.push(item);
+                });
                 return $rootScope.specs = tmp;
             };
             // 增加分组的属性
@@ -280,7 +269,9 @@
             // 移除分组的属性
             $rootScope.delSpecVal = function (data, $index) {
                 var temp = [];
-                for (var i in data) if (parseInt(i) !== parseInt($index)) temp.push(data[i]);
+                data.forEach(function (item, index) {
+                    if (parseInt(index) !== parseInt($index)) temp.push(item);
+                });
                 return temp;
             };
         }
