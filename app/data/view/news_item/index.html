@@ -49,15 +49,15 @@
             <td class='text-left nowrap'>
 
                 {if auth("edit")}
-                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-xs" data-title="编辑文章文章" data-open="{:url('edit')}?id={$vo.id}">编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑文章文章" data-open="{:url('edit')}?id={$vo.id}">编 辑</a>
                 {/if}
 
                 {if auth("state") and $vo.status eq 1}
-                <a class="layui-btn layui-btn-sm layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
+                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
                 {/if}
 
                 {if auth("state") and $vo.status eq 0}
-                <a class="layui-btn layui-btn-sm layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">启 用</a>
+                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">启 用</a>
                 {/if}
 
                 {if auth("remove")}
