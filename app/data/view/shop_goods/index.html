@@ -39,7 +39,6 @@
                 </th>
                 <th class='text-left nowrap' style="width:400px">商品信息</th>
                 <th class='text-left nowrap' style="width:150px"></th>
-                <th class='text-left nowrap' style="width:200px">商品状态</th>
                 <th></th>
             </tr>
             </thead>
@@ -63,14 +62,11 @@
                     </div>
                 </td>
                 <td class='nowrap'>
-                    入会礼包：{if empty($vo.vip_mod)}<span class=" color-red">否</span>{else}<span class="color-blue">是</span> [ <span class="color-blue">{$vo.vip_level|default='0'}</span> ]{/if}<br>
+                    销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
                     所属分类：{$vo.cate.name|default='-'}<br>
                 </td>
                 <td class='nowrap'>
-                    销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
-                    剩余库存：<span class="color-blue">{$vo.stock_total-$vo.stock_sales} 件 ( 已售 {$vo.stock_sales} 件 )</span><br>
-                </td>
-                <td class='nowrap'>
+                    剩余库存 <span class="color-blue">{$vo.stock_total-$vo.stock_sales} 件 ( 已售 {$vo.stock_sales} 件 )</span><br>
                     <!--{if auth("edit")}-->
                     <a data-dbclick class="layui-btn layui-btn-xs" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
                     <!--{else}-->
