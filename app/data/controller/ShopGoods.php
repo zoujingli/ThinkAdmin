@@ -179,10 +179,14 @@ class ShopGoods extends Controller
     /**
      * 表单结果处理
      * @param boolean $result
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _form_result($result)
     {
         if ($result && $this->request->isPost()) {
+            GoodsService::instance()->syncStock(input('code'));
             $this->success('商品编辑成功！', 'javascript:history.back()');
         }
     }

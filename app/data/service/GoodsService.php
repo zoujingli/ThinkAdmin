@@ -21,16 +21,16 @@ class GoodsService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function syncStock($code)
+    public function syncStock(string $code)
     {
         // 商品入库统计
         $query = $this->app->db->name('ShopGoodsStock');
         $query->field('goods_code,goods_spec,ifnull(sum(number_stock),0) number_stock');
-        $stockList = $query->where(['code' => $code])->group('goods_id,goods_spec')->select()->toArray();
+        $stockList = $query->where(['goods_code' => $code])->group('goods_code,goods_spec')->select()->toArray();
         // 商品销量统计
         $query = $this->app->db->table('shop_order a')->field('b.goods_code,b.goods_spec,ifnull(sum(b.stock_sales),0) stock_sales');
-        $query->leftJoin('shop_order_item b', 'a.order_no=b.order_no')->where([['b.code', '=', $code], ['a.status', 'in', [1, 2, 3, 4, 5]]]);
-        $salesList = $query->group('b.goods_id,b.goods_spec')->select()->toArray();
+        $query->leftJoin('shop_order_item b', 'a.order_no=b.order_no')->where([['b.goods_code', '=', $code], ['a.status', 'in', [1, 2, 3, 4, 5]]]);
+        $salesList = $query->group('b.goods_code,b.goods_spec')->select()->toArray();
         // 组装更新数据
         $dataList = [];
         foreach (array_merge($stockList, $salesList) as $vo) {
@@ -48,27 +48,26 @@ class GoodsService extends Service
         }
         // 更新商品主体销量及库存
         $this->app->db->name('ShopGoods')->where(['code' => $code])->update([
-            'stock_total' => intval(array_sum(array_column($dataList, 'stock_total'))),
-            'stock_sales' => intval(array_sum(array_column($dataList, 'stock_sales'))),
+            'stock_total'   => intval(array_sum(array_column($dataList, 'stock_total'))),
+            'stock_sales'   => intval(array_sum(array_column($dataList, 'stock_sales'))),
+            'stock_virtual' => $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $code])->sum('number_virtual'),
         ]);
         return true;
     }
 
     /**
      * 获取分类数据
-     * @param string $type 数据类型
+     * @param string $type 操作函数
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getCateList($type = 'arr2tree'): array
+    public function getCateList(string $type = 'arr2tree'): array
     {
         $map = ['deleted' => 0, 'status' => 1];
-        $query = $this->app->db->name('ShopGoodsCate');
-        $query->where($map)->order('sort desc,id desc');
-        $query->withoutField('sort,status,deleted,create_at');
-        return DataExtend::$type($query->select()->toArray());
+        $query = $this->app->db->name('ShopGoodsCate')->where($map)->order('sort desc,id desc');
+        return DataExtend::$type($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
     }
 
     /**
