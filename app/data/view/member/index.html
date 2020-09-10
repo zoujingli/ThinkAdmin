@@ -14,7 +14,7 @@
             </th>
             <th class='text-left nowrap'>姓名昵称</th>
             <th class='text-left nowrap'>会员手机</th>
-            <th class='text-left nowrap'>会员状态</th>
+            <th class='text-left nowrap'>所在区域</th>
             <th class='text-left nowrap'>注册时间</th>
             <th class='text-left nowrap'></th>
         </tr>
@@ -37,12 +37,12 @@
                 </div>
                 {/if}
             </td>
-            <td class="text-left">{$vo.phone|default='-'}</td>
+            <td>{$vo.phone|default='-'}</td>
+            <td>{$vo.region_province|default=''}{$vo.region_city|default=''}{$vo.region_area|default=''}</td>
             <td>
-                {if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{/if}
-                {if $vo.status eq 1}<b class="color-green margin-right-5">使用中</b>{/if}
+                使用状态：{if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{/if}{if $vo.status eq 1}<b class="color-green margin-right-5">使用中</b>{/if}<br>
+                创建时间：{$vo.create_at|default=''}
             </td>
-            <td>{$vo.create_at|default=''}</td>
             <td>
                 {if auth("state") and $vo.status eq 1}
                 <a class="layui-btn layui-btn-sm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">冻结账号</a>
