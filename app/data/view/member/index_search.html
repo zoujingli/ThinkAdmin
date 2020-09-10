@@ -2,15 +2,15 @@
     <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">姓名昵称</label>
-            <label class="layui-input-inline">
-                <input name="username" value="{:input('username')}" placeholder="请输入姓名昵称" class="layui-input">
-            </label>
-        </div>
-        <div class="layui-form-item layui-inline">
             <label class="layui-form-label">会员手机</label>
             <label class="layui-input-inline">
                 <input name="phone" value="{:input('phone')}" placeholder="请输入会员手机" class="layui-input">
+            </label>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">姓名昵称</label>
+            <label class="layui-input-inline">
+                <input name="username" value="{:input('username')}" placeholder="请输入姓名昵称" class="layui-input">
             </label>
         </div>
         <div class="layui-form-item layui-inline">
