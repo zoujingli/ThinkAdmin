@@ -32,8 +32,8 @@
                 {/notempty}
                 {if $vo.username || $vo.nickname}
                 <div class="inline-block text-middle">
-                    姓名：{$vo.username|default='-'}<br>
-                    昵称：{$vo.nickname|default='-'}
+                    <div>姓名：{$vo.username|default='-'}</div>
+                    <div>昵称：{$vo.nickname|default='-'}</div>
                 </div>
                 {/if}
             </td>
