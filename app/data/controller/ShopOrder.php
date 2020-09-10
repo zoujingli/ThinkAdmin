@@ -31,7 +31,7 @@ class ShopOrder extends Controller
     public function index()
     {
         $this->title = '订单数据管理';
-        // 订单各状态数据统计
+        // 各状态数据统计
         $this->totals = [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 'all' => 0];
         $this->app->db->name($this->table)->fieldRaw('status,count(1) total')->group('status')->select()->map(function ($vo) {
             $this->totals[$vo['status']] = $vo['total'];
@@ -48,10 +48,11 @@ class ShopOrder extends Controller
         $db = $this->_query('DataMember')->like('phone#agent_phone,nickname#agent_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("from in {$db->fieldRaw('id')->buildSql()}");
         // 列表选项卡
-        $this->type = input('type', 'all');
-        if (is_numeric($this->type)) $query->equal('status#type');
+        if (is_numeric($this->type = input('type', 'all'))) {
+            $query->equal('status#type');
+        }
         // 分页排序处理
-        if (isset($this->action) && $this->action === 'export') {
+        if (defined('_ACTION_') && _ACTION_ === 'export') {
             return $query;
         } else {
             $query->order('id desc')->page();
@@ -67,7 +68,7 @@ class ShopOrder extends Controller
      */
     public function export()
     {
-        $this->action = 'export';
+        define('_ACTION_', 'export');
         $options = ['serialize' => serialize($this->index()->db()->getOptions())];
         $this->_queue('导出订单数据', OrderQueue::class, 0, $options, 0);
     }

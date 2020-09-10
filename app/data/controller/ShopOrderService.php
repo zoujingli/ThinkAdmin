@@ -28,8 +28,13 @@ class ShopOrderService extends Controller
     public function index()
     {
         $this->title = '售后申请管理';
+        $this->type = input('type', 'all');
+
         $query = $this->_query($this->table);
-        $query->page();
+        if (is_numeric($this->type = input('type', 'all'))) {
+            $query->equal('status#type');
+        }
+        $query->order('id desc')->page();
     }
 
 }

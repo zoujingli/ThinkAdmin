@@ -29,7 +29,10 @@ class ShopOrderSend extends Controller
     {
         $this->title = '订单发货管理';
         $query = $this->_query($this->table);
-        $query->page();
+        if (is_numeric($this->type = input('type', 'all'))) {
+            $query->equal('status#type');
+        }
+        $query->order('id desc')->page();
     }
 
 }
