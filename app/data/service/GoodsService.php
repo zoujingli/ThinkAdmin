@@ -99,22 +99,21 @@ class GoodsService extends Service
 
     /**
      * 商品数据绑定
-     * @param array $list 商品主数据
+     * @param array $data 商品主数据
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function buildItemData(array &$list = []): array
+    public function buildItemData(array &$data = []): array
     {
         $cates = $this->app->db->name('ShopGoodsCate')->column('id,pid,name', 'id');
         foreach ($cates as $cate) if (isset($cates[$cate['pid']])) {
             $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
         }
-        $codes = array_unique(array_column($list, 'code'));
-        $where = [['goods_code', 'in', $codes], ['status', '=', 1]];
-        $items = $this->app->db->name('ShopGoodsItem')->withoutField('id,status,create_at')->where($where)->select()->toArray();
-        foreach ($list as &$vo) {
+        $map = [['goods_code', 'in', array_unique(array_column($data, 'code'))], ['status', '=', 1]];
+        $items = $this->app->db->name('ShopGoodsItem')->withoutField('id,status,create_at')->where($map)->select()->toArray();
+        foreach ($data as &$vo) {
             $vo['marks'] = think_string_to_array($vo['mark']);
             $vo['cates'] = $cates[$vo['cate']] ?? [];
             $vo['slider'] = explode('|', $vo['slider']);
@@ -123,9 +122,7 @@ class GoodsService extends Service
             foreach ($items as $item) if ($item['goods_code'] === $vo['code']) $vo['items'][] = $item;
             unset($vo['mark'], $vo['sort'], $vo['status'], $vo['deleted'], $vo['data_items'], $vo['data_specs']);
         }
-        dump($list);
-        exit;
-        return $list;
+        return $data;
     }
 
 

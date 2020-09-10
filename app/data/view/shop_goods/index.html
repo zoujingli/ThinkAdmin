@@ -78,14 +78,14 @@
                     <!--{/if}-->
                     {if isset($type) and $type eq 'index'}
                     {if isset($vo.status) and $vo.status eq 1}
-                    <!--{if auth("forbid")}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('forbid')}" data-value="code#{$vo.code};status#0">下 架</a>
+                    <!--{if auth("state")}-->
+                    <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="code#{$vo.code};status#0">下 架</a>
                     <!--{else}-->
                     <a data-tips-text="您没有下架商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">下 架</a>
                     <!--{/if}-->
                     {else}
-                    <!--{if auth("resume")}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('resume')}" data-value="code#{$vo.code};status#1">上 架</a>
+                    <!--{if auth("state")}-->
+                    <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="code#{$vo.code};status#1">上 架</a>
                     <!--{else}-->
                     <a data-tips-text="您没有上架商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">上 架</a>
                     <!--{/if}-->

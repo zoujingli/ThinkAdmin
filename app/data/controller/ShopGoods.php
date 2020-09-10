@@ -82,13 +82,12 @@ class ShopGoods extends Controller
      */
     public function stock()
     {
-        $input = $this->_vali(['code.require' => '商品编号不能为空哦！']);
+        $map = $this->_vali(['code.require' => '商品编号不能为空哦！']);
         if ($this->request->isGet()) {
-            $goods = $this->app->db->name('ShopGoods')->where($input)->find();
-            empty($goods) && $this->error('无效的商品信息，请稍候再试！');
-            $map = ['goods_code' => $input['code'], 'status' => 1];
-            $goods['list'] = $this->app->db->name('ShopGoodsItem')->where($map)->select()->toArray();
-            $this->fetch('', ['vo' => $goods]);
+            $list = $this->app->db->name('ShopGoods')->where($map)->select()->toArray();
+            if (empty($list)) $this->error('无效的商品信息，请稍候再试！');
+            [$this->vo] = GoodsService::instance()->buildItemData($list);
+            $this->fetch();
         } else {
             [$post, $data, $batch] = [$this->request->post(), [], CodeExtend::uniqidDate(12, 'B')];
             if (isset($post['goods_code']) && is_array($post['goods_code'])) {
@@ -102,7 +101,7 @@ class ShopGoods extends Controller
                 }
                 if (!empty($data)) {
                     $this->app->db->name('ShopGoodsStock')->insertAll($data);
-                    GoodsService::instance()->syncStock($input['code']);
+                    GoodsService::instance()->syncStock($map['code']);
                     $this->success('商品信息入库成功！');
                 }
             }

@@ -2,46 +2,34 @@
     <div class="layui-card-body padding-left-40">
         <div class="layui-form-item relative block">
             <span class="color-green font-w7">商品名称</span>
-            <span class="color-desc margin-left-5">Goods name</span>
-            <div class="layui-input layui-bg-gray">{$vo.name}</div>
+            <span class="color-desc margin-left-5">Goods Name</span>
+            <div class="layui-input layui-bg-gray">{$vo.name|default=''}</div>
         </div>
         <div class="layui-form-item">
             <div class="relative block">
                 <span class="color-green font-w7">规格数据</span>
-                <span class="color-desc margin-left-5">Specification data</span>
-                <table class="layui-table">
+                <span class="color-desc margin-left-5">Specification Data</span>
+                <table class="layui-table" lay-skin="line">
                     <thead>
-                    <tr>
+                    <tr class="layui-bg-cyan">
                         <th class="text-left">商品规格</th>
-                        <th class="text-center">市场价格</th>
-                        <th class="text-center">销售价格</th>
-                        <th class="text-center">库存统计</th>
-                        <th class="text-center">总销统计</th>
-                        <th class="text-center">库存剩余</th>
-                        <th class="text-center">入库数量</th>
+                        <th class="text-center nowrap">市场价格</th>
+                        <th class="text-center nowrap">销售价格</th>
+                        <th class="text-center nowrap">库存统计</th>
+                        <th class="text-center nowrap">总销统计</th>
+                        <th class="text-center nowrap">库存剩余</th>
+                        <th class="text-center nowrap">入库数量</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {foreach $vo.list as $goods}
+                    {foreach $vo.items as $goods}
                     <tr>
-                        <td width="28%" class="layui-bg-gray">
-                            {$goods.goods_spec|think_show_goods_spec}
-                        </td>
-                        <td class="padding-0" width="12%">
-                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="￥{$goods.price_market}">
-                        </td>
-                        <td class="padding-0" width="12%">
-                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="￥{$goods.price_selling}">
-                        </td>
-                        <td class="padding-0" width="12%">
-                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.stock_total}">
-                        </td>
-                        <td class="padding-0" width="12%">
-                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.stock_sales} ">
-                        </td>
-                        <td class="padding-0" width="12%">
-                            <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="{$goods.stock_total-$goods.stock_sales} ">
-                        </td>
+                        <td class="layui-bg-gray" width="28%">{$goods.goods_spec|think_show_goods_spec}</td>
+                        <td class="layui-bg-gray text-center" width="12%">￥{$goods.price_market+0}</td>
+                        <td class="layui-bg-gray text-center" width="12%">￥{$goods.price_selling+0}</td>
+                        <td class="layui-bg-gray text-center" width="12%">{$goods.stock_total|default=0}</td>
+                        <td class="layui-bg-gray text-center" width="12%">{$goods.stock_sales|default=0}</td>
+                        <td class="layui-bg-gray text-center" width="12%">{$goods.stock_total-$goods.stock_sales}</td>
                         <td class="padding-0" width="12%">
                             <input type="hidden" name="goods_code[]" value="{$goods.goods_code|default=''}">
                             <input type="hidden" name="goods_spec[]" value="{$goods.goods_spec|default=''}">
@@ -59,5 +47,4 @@
         <button class="layui-btn" type='submit'>确定入库</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消入库吗？" data-close>取消入库</button>
     </div>
-
 </form>
