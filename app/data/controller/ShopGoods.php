@@ -89,7 +89,7 @@ class ShopGoods extends Controller
             [$this->vo] = GoodsService::instance()->buildItemData($list);
             $this->fetch();
         } else {
-            [$post, $data, $batch] = [$this->request->post(), [], CodeExtend::uniqidDate(12, 'B')];
+            [$data, $post, $batch] = [[], $this->request->post(), CodeExtend::uniqidDate(12, 'B')];
             if (isset($post['goods_code']) && is_array($post['goods_code'])) {
                 foreach (array_keys($post['goods_code']) as $key) {
                     if ($post['goods_stock'][$key] > 0) $data[] = [
