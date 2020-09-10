@@ -1,0 +1,61 @@
+{extend name="../../admin/view/main"}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='member/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label>
+                    <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+                </label>
+            </th>
+            <th class='text-left nowrap'>姓名昵称</th>
+            <th class='text-left nowrap'>会员手机</th>
+            <th class='text-left nowrap'>会员状态</th>
+            <th class='text-left nowrap'>注册时间</th>
+            <th class='text-left nowrap'></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
+            <td class="text-left">
+                {notempty name='vo.headimg'}
+                <img alt="" style="width:32px;height:32px" data-tips-image class="inline-block margin-right-5" src="{$vo.headimg}">
+                {/notempty}
+                {if $vo.username || $vo.nickname}
+                <div class="inline-block text-middle">
+                    姓名：{$vo.username|default='-'}<br>
+                    昵称：{$vo.nickname|default='-'}
+                </div>
+                {/if}
+            </td>
+            <td class="text-left">{$vo.phone|default='-'}</td>
+            <td>
+                {if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{/if}
+                {if $vo.status eq 1}<b class="color-green margin-right-5">使用中</b>{/if}
+            </td>
+            <td>{$vo.create_at|default=''}</td>
+            <td>
+                {if auth("state") and $vo.status eq 1}
+                <a class="layui-btn layui-btn-sm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">冻结账号</a>
+                {/if}
+
+                {if auth("state") and $vo.status eq 0}
+                <a class="layui-btn layui-btn-sm layui-btn-xs layui-btn-danger" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">解冻账号</a>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}
