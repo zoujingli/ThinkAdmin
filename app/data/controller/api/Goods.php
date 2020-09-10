@@ -39,6 +39,11 @@ class Goods extends Controller
      */
     public function getGoods()
     {
+        if ($code = input('code', null)) {
+            $this->app->db->name('ShopGoods')->where(['code' => $code])->update([
+                'num_read' => $this->app->db->raw('num_read+1'),
+            ]);
+        }
         $map = ['deleted' => 0, 'status' => 1];
         $query = $this->_query('ShopGoods')->like('name,mark')->equal('code,cate');
         $result = $query->where($map)->order('sort desc,id desc')->page(true, false, false, 10);

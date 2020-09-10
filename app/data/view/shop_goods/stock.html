@@ -25,7 +25,7 @@
                     {foreach $vo.list as $goods}
                     <tr>
                         <td width="28%" class="layui-bg-gray">
-                            {$goods.goods_spec|show_goods_spec}
+                            {$goods.goods_spec|think_show_goods_spec}
                         </td>
                         <td class="padding-0" width="12%">
                             <input class="layui-input text-center layui-bg-gray border-0 padding-left-0" disabled value="￥{$goods.price_market}">

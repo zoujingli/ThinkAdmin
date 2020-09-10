@@ -82,8 +82,24 @@ class GoodsService extends Service
     }
 
     /**
+     * 一维数组生成数据树
+     * @param array $list 待处理数据
+     * @param string $cid 自己的主键
+     * @param string $pid 上级的主键
+     * @param string $sub 子数组名称
+     * @return array
+     */
+    public function arr2tree(array $list, string $cid = 'id', string $pid = 'pid', string $sub = 'sub'): array
+    {
+        [$tree, $tmp] = [[], array_combine(array_column($list, $cid), array_values($list))];
+        foreach ($list as $vo) isset($vo[$pid]) && isset($tmp[$vo[$pid]]) ? $tmp[$vo[$pid]][$sub][] = &$tmp[$vo[$cid]] : $tree[] = &$tmp[$vo[$cid]];
+        unset($tmp, $list);
+        return $tree;
+    }
+
+    /**
      * 商品数据绑定
-     * @param array $list
+     * @param array $list 商品主数据
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -91,19 +107,27 @@ class GoodsService extends Service
      */
     public function buildItemData(array &$list = []): array
     {
-        $codes = array_unique(array_column($list, 'code'));
-        $map = [['goods_code', 'in', $codes], ['status', '=', 1]];
-        $items = $this->app->db->name('ShopGoodsItem')->where($map)->select()->toArray();
-        foreach ($list as &$vo) {
-            $vo['items'] = [];
-            foreach ($items as $item) {
-                if ($item['goods_code'] === $vo['code']) {
-                    $vo['items'][] = $item;
-                }
-            }
+        $cates = $this->app->db->name('ShopGoodsCate')->column('id,pid,name', 'id');
+        foreach ($cates as $cate) if (isset($cates[$cate['pid']])) {
+            $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
         }
+        $codes = array_unique(array_column($list, 'code'));
+        $where = [['goods_code', 'in', $codes], ['status', '=', 1]];
+        $items = $this->app->db->name('ShopGoodsItem')->withoutField('id,status,create_at')->where($where)->select()->toArray();
+        foreach ($list as &$vo) {
+            $vo['marks'] = think_string_to_array($vo['mark']);
+            $vo['cates'] = $cates[$vo['cate']] ?? [];
+            $vo['slider'] = explode('|', $vo['slider']);
+            $vo['specs'] = json_decode($vo['data_specs'], true);
+            $vo['items'] = [];
+            foreach ($items as $item) if ($item['goods_code'] === $vo['code']) $vo['items'][] = $item;
+            unset($vo['mark'], $vo['sort'], $vo['status'], $vo['deleted'], $vo['data_items'], $vo['data_specs']);
+        }
+        dump($list);
+        exit;
         return $list;
     }
+
 
     /**
      * 最大分类级别
