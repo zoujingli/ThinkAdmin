@@ -1,7 +1,7 @@
 {extend name="../../admin/view/main"}
 
 {block name="content"}
-<div class="think-box-shadow">
+<div class="think-box-shadow table-block">
     {include file='member/index_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
@@ -12,8 +12,7 @@
                     <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
                 </label>
             </th>
-            <th class='text-left nowrap'>姓名昵称</th>
-            <th class='text-left nowrap'>会员手机</th>
+            <th class='text-left nowrap'>姓名信息</th>
             <th class='text-left nowrap'>所在区域</th>
             <th class='text-left nowrap'>注册时间</th>
             <th class='text-left nowrap'></th>
@@ -26,31 +25,29 @@
             <td class='list-table-check-td think-checkbox'>
                 <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
-            <td class="text-left">
-                {notempty name='vo.headimg'}
-                <img alt="" style="width:32px;height:32px" data-tips-image class="inline-block margin-right-5" src="{$vo.headimg}">
-                {/notempty}
-                {if $vo.username || $vo.nickname}
+            <td class="sub-span-blue">
+                <img alt="img" style="width:32px;height:32px" data-tips-image class="margin-right-5" src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}">
                 <div class="inline-block text-middle">
-                    <div>姓名：{$vo.username|default='-'}</div>
-                    <div>昵称：{$vo.nickname|default='-'}</div>
+                    {notempty name='vo.username'}
+                    <div>姓名：<span>{$vo.username|default='-'}</span></div>
+                    {else}
+                    <div>昵称：<span>{$vo.nickname|default='-'}</span></div>
+                    {/notempty}
+                    <div>手机：<span>{$vo.phone|default='-'}</span></div>
                 </div>
-                {/if}
             </td>
-            <td>{$vo.phone|default='-'}</td>
             <td>{$vo.region_province|default=''}{$vo.region_city|default=''}{$vo.region_area|default=''}</td>
             <td>
                 使用状态：{if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{/if}{if $vo.status eq 1}<b class="color-green margin-right-5">使用中</b>{/if}<br>
                 创建时间：{$vo.create_at|default=''}
             </td>
             <td>
-                {if auth("state") and $vo.status eq 1}
+                <!--{if auth("state") and $vo.status eq 1}-->
                 <a class="layui-btn layui-btn-sm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">冻结账号</a>
-                {/if}
-
-                {if auth("state") and $vo.status eq 0}
+                <!--{/if}-->
+                <!--{if auth("state") and $vo.status eq 0}-->
                 <a class="layui-btn layui-btn-sm layui-btn-xs layui-btn-danger" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">解冻账号</a>
-                {/if}
+                <!--{/if}-->
             </td>
         </tr>
         {/foreach}
