@@ -27,6 +27,7 @@ class ShopOrderService extends Controller
      */
     public function index()
     {
+        $this->title = '售后申请管理';
         $query = $this->_query($this->table);
         $query->page();
     }

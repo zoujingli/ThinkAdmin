@@ -1,16 +1,14 @@
 {extend name="../../admin/view/main"}
 
 {block name="content"}
-<div class="layui-tab layui-tab-card think-bg-white">
+<div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title notselect">
         {foreach ['all'=>'全部订单','2'=>'待支付的订单','3'=>'待发货的订单','4'=>'待收货的订单','5'=>'已完成的订单','0'=>'已取消的订单'] as $k=>$v}
-        {php}$total=isset($totals[$k])?$totals[$k]:0;{/php}
-        {if isset($type) and $type eq $k.''}
-        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v} <sup class="layui-badge absolute border-radius">{$total}</sup></li>
+        {if isset($type) and $type eq $k}
+        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v} <sup class="layui-badge absolute border-radius">{$total[$k]??0}</sup></li>
         {else}
-        <li data-open="{:url('index')}?type={$k}">{$v} <sup class="layui-badge absolute border-radius">{$total}</sup></li>
-        {/if}
-        {/foreach}
+        <li data-open="{:url('index')}?type={$k}">{$v} <sup class="layui-badge absolute border-radius">{$total[$k]??0}</sup></li>
+        {/if}{/foreach}
     </ul>
     <div class="layui-tab-content think-box-shadow">
         {include file='shop_order/index_search'}

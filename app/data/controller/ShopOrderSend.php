@@ -27,6 +27,7 @@ class ShopOrderSend extends Controller
      */
     public function index()
     {
+        $this->title = '订单发货管理';
         $query = $this->_query($this->table);
         $query->page();
     }
