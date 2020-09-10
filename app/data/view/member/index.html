@@ -38,8 +38,8 @@
             </td>
             <td>{$vo.region_province|default=''}{$vo.region_city|default=''}{$vo.region_area|default=''}</td>
             <td>
-                使用状态：{if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{/if}{if $vo.status eq 1}<b class="color-green margin-right-5">使用中</b>{/if}<br>
-                创建时间：{$vo.create_at|default=''}
+                使用状态：{if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{elseif $vo.status eq 1}<b class="color-green margin-right-5">使用中</b>{/if}<br>
+                注册时间：{$vo.create_at|default=''}
             </td>
             <td>
                 <!--{if auth("state") and $vo.status eq 1}-->
