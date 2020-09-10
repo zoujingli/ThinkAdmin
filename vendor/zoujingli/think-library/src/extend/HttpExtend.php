@@ -29,7 +29,7 @@ class HttpExtend
      * @param array $options CURL请求参数
      * @return boolean|string
      */
-    public static function get(string $location, array $query = [], array $options = [])
+    public static function get(string $location, $query = [], array $options = [])
     {
         $options['query'] = $query;
         return static::request('get', $location, $options);
@@ -42,7 +42,7 @@ class HttpExtend
      * @param array $options CURL请求参数
      * @return boolean|string
      */
-    public static function post(string $location, array $data = [], array $options = [])
+    public static function post(string $location, $data = [], array $options = [])
     {
         $options['data'] = $data;
         return static::request('post', $location, $options);
@@ -89,8 +89,12 @@ class HttpExtend
     {
         // GET 参数设置
         if (!empty($options['query'])) {
-            $split = strpos($location, '?') !== false ? '&' : '?';
-            $location .= $split . http_build_query($options['query']);
+            $location .= strpos($location, '?') !== false ? '&' : '?';
+            if (is_array($options['query'])) {
+                $location .= http_build_query($options['query']);
+            } elseif (is_string($options['query'])) {
+                $location .= $options['query'];
+            }
         }
         $curl = curl_init();
         // Agent 代理设置

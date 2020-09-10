@@ -193,11 +193,11 @@
                 });
             };
             $rootScope.setValue = function (key, name, value, callback) {
-                if (callback.indexOf('_') > -1) {
-                    value = eval(callback.replace('_', "'" + value + "'"));
-                }
                 $rootScope.items[key] = $rootScope.items[key] || {};
                 $rootScope.cache[key] = $rootScope.cache[key] || {};
+                if (typeof callback === 'string' && callback.indexOf('_') > -1) {
+                    value = eval(callback.replace('_', "'" + value + "'"));
+                }
                 return $rootScope.cache[key][name] = $rootScope.items[key][name] = value;
             };
             $rootScope.getValue = function (key, name, value) {
