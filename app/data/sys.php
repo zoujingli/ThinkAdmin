@@ -1,5 +1,10 @@
 <?php
 if (!function_exists('show_goods_spec')) {
+    /**
+     * 商品规格过滤显示
+     * @param string $spec
+     * @return string
+     */
     function show_goods_spec($spec)
     {
         $specs = [];
