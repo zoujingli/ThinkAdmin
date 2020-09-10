@@ -39,10 +39,10 @@ class Goods extends Controller
      */
     public function getGoods()
     {
-        $query = $this->_query('ShopGoods')->like('name')->equal('cate');
-        $query->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc');
-        $result = $query->page(true, false, false, 10);
-        // @todo 处理商品列表 
+        $map = ['deleted' => 0, 'status' => 1];
+        $query = $this->_query('ShopGoods')->like('name,mark')->equal('code,cate');
+        $result = $query->where($map)->order('sort desc,id desc')->page(true, false, false, 10);
+        GoodsService::instance()->buildItemData($result['list']);
         $this->success('获取商品数据成功', $result);
     }
 

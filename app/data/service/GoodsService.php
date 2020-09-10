@@ -82,6 +82,30 @@ class GoodsService extends Service
     }
 
     /**
+     * 商品数据绑定
+     * @param array $list
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function buildItemData(array &$list = []): array
+    {
+        $codes = array_unique(array_column($list, 'code'));
+        $map = [['goods_code', 'in', $codes], ['status', '=', 1]];
+        $items = $this->app->db->name('ShopGoodsItem')->where($map)->select()->toArray();
+        foreach ($list as &$vo) {
+            $vo['items'] = [];
+            foreach ($items as $item) {
+                if ($item['goods_code'] === $vo['code']) {
+                    $vo['items'][] = $item;
+                }
+            }
+        }
+        return $list;
+    }
+
+    /**
      * 最大分类级别
      * @return integer
      */
