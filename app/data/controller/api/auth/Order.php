@@ -11,6 +11,7 @@ use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
 
 /**
+ * 会员订单数据接口
  * Class Order
  * @package app\data\controller\api\auth
  */
@@ -163,7 +164,7 @@ class Order extends Auth
         } catch (HttpResponseException $exception) {
             throw  $exception;
         } catch (\Exception $exception) {
-            $this->error("获取支付参数失败，{$exception->getMessage()}");
+            $this->error("创建支付参数失败，{$exception->getMessage()}");
         }
     }
 
@@ -219,7 +220,7 @@ class Order extends Auth
     }
 
     /**
-     * 订单取消
+     * 主动取消未支付的订单
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

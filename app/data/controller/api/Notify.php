@@ -7,6 +7,7 @@ use app\wechat\service\WechatService;
 use think\admin\Controller;
 
 /**
+ * 异步通知处理
  * Class Notify
  * @package app\data\controller\api
  */

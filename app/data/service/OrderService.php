@@ -2,6 +2,7 @@
 
 namespace app\data\service;
 
+use think\admin\extend\CodeExtend;
 use think\admin\Service;
 
 /**
@@ -18,6 +19,7 @@ class OrderService extends Service
      */
     public function syncAmount(string $orderno): bool
     {
+        //@todo 处理订单支付完成的动作
         return true;
     }
 
