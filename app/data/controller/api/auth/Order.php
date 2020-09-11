@@ -199,25 +199,23 @@ class Order extends Auth
     public function get()
     {
         $map = [['mid', '=', $this->mid]];
-        if ($this->request->has('order_no', 'post', true)) {
-            $map[] = ['order_no', '=', $this->request->post('order_no')];
-        } else {
-            $map[] = ['status', 'in', ['0', '2', '3', '4', '5']];
+        if (!$this->request->has('order_no', 'param', true)) {
+            $map[] = ['status', 'in', [0, 2, 3, 4, 5]];
         }
-        if ($this->request->has('status', 'post', true)) {
-            $map[] = ['status', '=', $this->request->post('status')];
-        }
-        $result = $this->_query('ShopOrder')->where($map)->order('id desc')->page(true, false, false, 20);
-        $codes = array_unique(array_column($result['list'], 'order_no'));
-        $glist = $this->app->db->name('ShopOrderList')->whereIn('order_no', $codes)->select()->toArray();
-        foreach ($result['list'] as &$vo) {
-            [$vo['goods_count'], $vo['list']] = [0, []];
-            foreach ($glist as $goods) if ($vo['order_no'] === $goods['order_no']) {
-                $vo['list'][] = $goods;
-                $vo['goods_count'] += $goods['number_goods'];
+        $query = $this->_query('ShopOrder')->equal('status,order_no');
+        $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
+        if (count($result['list']) > 0) {
+            $codes = array_unique(array_column($result['list'], 'order_no'));
+            $items = $this->app->db->name('ShopOrderItem')->whereIn('order_no', $codes)->select()->toArray();
+            foreach ($result['list'] as &$vo) {
+                [$vo['count'], $vo['items']] = [0, []];
+                foreach ($items as $item) if ($vo['order_no'] === $item['order_no']) {
+                    $vo['items'][] = $item;
+                    $vo['count'] += $item['stock_sales'];
+                }
             }
         }
-        $this->success('获取订单列表成功！', $result);
+        $this->success('获取订单数据成功！', $result);
     }
 
     /**
@@ -228,15 +226,15 @@ class Order extends Auth
      */
     public function cancel()
     {
-        $map = $this->_vali(['mid' => $this->mid, 'order_no.require' => '订单号不能为空！']);
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        $map = $this->_vali(['order_no.require' => '订单号不能为空！']);
+        $order = $this->app->db->name('ShopOrder')->where(['mid' => $this->mid])->where($map)->find();
         if (empty($order)) $this->error('订单查询失败，请稍候再试！');
         if (in_array($order['status'], [1, 2])) {
             $result = $this->app->db->name('ShopOrder')->where($map)->update([
-                'status'        => 0,
-                'cancel_state'  => 1,
-                'cancel_stime'  => date('Y-m-d H:i:s'),
-                'cancel_remark' => '用户主动取消订单！',
+                'status'          => 0,
+                'cancel_status'   => 1,
+                'cancel_remark'   => '用户主动取消订单！',
+                'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
             if ($result !== false && OrderService::instance()->syncStock($order['order_no'])) {
                 $this->success('订单取消成功！');
@@ -338,7 +336,7 @@ class Order extends Auth
         $map = $this->_vali(['order_no.require' => '订单编号不能为空！']);
         $order = $this->app->db->name('ShopOrder')->where(['mid' => $this->mid])->where($map)->find();
         if (empty($order)) $this->error('订单查询失败！');
-        $order['list'] = $this->app->db->name('ShopOrderList')->where($map)->select()->toArray();
+        $order['list'] = $this->app->db->name('ShopOrderItem')->where($map)->select()->toArray();
         $rlist = $this->app->db->name('ShopOrderRefund')->where($map)->whereIn('refund_status', [1, 2, 3])->select()->toArray();
         if (count($order['list']) > 0) foreach ($order['list'] as &$vo) if (count($rlist) > 0) foreach ($rlist as $rule) {
             if ($vo['goods_id'] === $rule['goods_id'] && $vo['goods_spec'] === $rule['goods_spec']) {

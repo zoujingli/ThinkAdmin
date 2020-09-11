@@ -26,7 +26,7 @@ class Notify extends Controller
         $notify = ($payment = WechatService::WePayOrder())->getNotify();
         if ($notify['result_code'] == 'SUCCESS' && $notify['return_code'] == 'SUCCESS') {
             if ($scene === 'order') {
-                if ($this->setOrder($notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100, 'wxpay')) {
+                if ($this->setOrder($notify['out_trade_no'], $notify['cash_fee'] / 100, $notify['transaction_id'], 'wxpay')) {
                     return $payment->getNotifySuccessReply();
                 }
             }
@@ -38,15 +38,15 @@ class Notify extends Controller
     /**
      * 订单状态更新
      * @param string $code 订单单号
-     * @param string $payno 交易单号
      * @param string $amount 交易金额
+     * @param string $paycode 交易单号
      * @param string $paytype 支付类型
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function setOrder($code, $payno, $amount, $paytype = 'wxpay')
+    private function setOrder($code, $amount, $paycode, $paytype = 'wxpay')
     {
         // 检查订单支付状态
         $map = ['order_no' => $code, 'payment_status' => 0, 'status' => 2];
@@ -55,8 +55,8 @@ class Notify extends Controller
         // 更新订单支付状态
         $this->app->db->name('StoreOrder')->where($map)->update([
             'status'           => 3,
-            'payment_no'       => $payno,
             'payment_type'     => $paytype,
+            'payment_code'     => $paycode,
             'payment_status'   => 1,
             'payment_amount'   => $amount,
             'payment_remark'   => '微信在线支付',
