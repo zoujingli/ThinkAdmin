@@ -31,13 +31,13 @@ class UserService extends Service
     {
         $map = ['token' => $token, 'deleted' => 0];
         $query = $this->app->db->name($this->table)->where($map);
-        $member = $query->withoutField('status,deleted')->find();
+        $member = $query->withoutField('tokenv,deleted')->find();
         if (empty($member)) {
             throw new \think\Exception('登录授权失败');
         }
-        if ($member['tokenv'] !== $this->buildTokenVerify()) {
-            throw new \think\Exception('请重新登录授权');
-        }
+//        if ($member['tokenv'] !== $this->buildTokenVerify()) {
+//            throw new \think\Exception('请重新登录授权');
+//        }
         return array_merge($member, $data);
     }
 

@@ -22,6 +22,7 @@ class Order extends Auth
      */
     protected function initialize()
     {
+        parent::initialize();
         if (empty($this->member['status'])) {
             $this->error('账户已被冻结，不能操作订单数据哦！');
         }
@@ -36,7 +37,7 @@ class Order extends Auth
     public function add()
     {
         // 商品规则
-        $rules = $this->request->post('rule', '');
+        $rules = $this->request->post('items', '');
         if (empty($rules)) $this->error('商品规则不能为空！');
         // 订单数据
         [$codes, $items] = [[], []];
@@ -95,9 +96,8 @@ class Order extends Auth
             // 同步商品库存及销量
             foreach ($codes as $code) GoodsService::instance()->syncStock($code);
             // 返回前端订单编号
-            $this->success('订单创建成功，请补全收货地址后支付！', [
-                'order_no' => $order['order_no'], 'reduct' => $order['amount_reduct'],
-            ]);
+            $order['items'] = $items;
+            $this->success('预购订单创建成功，请补全收货地址', $order);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
