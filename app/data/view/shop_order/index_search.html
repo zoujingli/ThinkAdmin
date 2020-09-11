@@ -108,14 +108,14 @@
                         item.order_no,
                         item.member.phone,
                         item.member.username || item.member.nickname || '',
+                        item.payment_code || '',
                         item.payment_status ? '已支付' : '未支付',
                         item.payment_amount || '0.00',
                         item.payment_datetime || '',
                     ];
                 });
                 return [[
-                    '订单单号', '会员手机', '会员姓名',
-                    '支付状态', '支付金额', '支付时间'
+                    '订单单号', '会员手机', '会员姓名', '支付单号', '支付状态', '支付金额', '支付时间'
                 ]].concat(data);
             }, '订单记录导出');
         });
