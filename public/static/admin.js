@@ -32,9 +32,10 @@ require.config({
     map: {'*': {css: baseRoot + 'plugs/require/css.js'}},
     paths: {
         'md5': ['plugs/jquery/md5.min'],
+        'chat': ['plugs/michat/michat'],
         'json': ['plugs/jquery/json.min'],
         'xlsx': ['plugs/jquery/xlsx.min'],
-        'michat': ['plugs/michat/michat'],
+        'excel': ['plugs/jquery/excel.xlsx'],
         'base64': ['plugs/jquery/base64.min'],
         'upload': [tapiRoot + '/api.upload?.js'],
         'angular': ['plugs/angular/angular.min'],

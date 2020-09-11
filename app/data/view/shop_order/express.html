@@ -6,16 +6,16 @@
                 <label class="layui-col-xs6 relative block">
                     <span class="color-green font-w7 label-required-prev">收货人姓名</span>
                     <span class="color-desc margin-left-5">Consignee Name</span>
-                    <input class="layui-input" required placeholder="请输入收货姓名" name="express_name" value="{$vo.express_name|default=''}">
+                    <input class="layui-input" required placeholder="请输入收货姓名" name="truck_name" value="{$vo.truck_name|default=''}">
                 </label>
                 <label class="layui-col-xs6 relative block">
                     <span class="color-green font-w7 label-required-prev">收货人手机</span>
                     <span class="color-desc margin-left-5">Consignee's mobile phone</span>
-                    <input class="layui-input" required placeholder="请输入收货人手机" name="express_phone" value="{$vo.express_phone|default=''}">
+                    <input class="layui-input" required placeholder="请输入收货人手机" name="truck_phone" value="{$vo.truck_phone|default=''}">
                 </label>
                 <div class="layui-col-xs12 relative block">
                     <span class="color-green font-w7 label-required-prev">收货所在区域</span>
-                    <span class="color-desc margin-left-5">（ {$vo.express_province|default='--'} {$vo.express_city|default=''} {$vo.express_area|default=''} ）</span>
+                    <span class="color-desc margin-left-5">（原区域： {$vo.truck_province|default='--'} {$vo.truck_city|default=''} {$vo.truck_area|default=''} ）</span>
                     <div class="layui-row layui-col-space10">
                         <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="form_province"></select></label>
                         <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="form_city"></select></label>
@@ -24,58 +24,54 @@
                 </div>
                 <label class="layui-col-xs12 relative block">
                     <span class="color-green font-w7 label-required-prev">收货详细地址</span>
-                    <span class="color-desc margin-left-5">（ {$vo.express_address|default=""} )</span>
-                    <input name="express_address" required value='{$vo.express_address|default=""}' placeholder="请输入收货地址" class="layui-input">
+                    <span class="color-desc margin-left-5">（原地址： {$vo.truck_address|default=""} )</span>
+                    <input name="truck_address" required value='{$vo.truck_address|default=""}' placeholder="请输入收货地址" class="layui-input">
                 </label>
             </div>
         </fieldset>
-
         <fieldset class="margin-top-20">
             <legend><span class="layui-badge layui-bg-cyan">快递信息</span> <a class="margin-left-10 layui-badge layui-bg-blue" data-express-query>快递跟踪</a></legend>
             <label class="layui-form-item relative block">
                 <span class="color-green font-w7 label-required-prev">快递配送公司</span>
                 <span class="color-desc margin-left-5">Express delivery company</span>
-                <select data-express-code class="layui-select" name="express_company_code" lay-search>
-                    {foreach $expressList as $express}
-                    {if $vo.express_company_code eq $express.code_1}
-                    <option selected value="{$express.code_1}">{$express.title} ( {$express.code_1} )</option>
+                <select data-truck-code class="layui-select" name="truck_send_code" lay-search>
+                    {foreach $items as $item}
+                    {if $vo.truck_send_code eq $item.code_1}
+                    <option selected value="{$item.code_1}">{$item.name} ( {$item.code_1} )</option>
                     {else}
-                    <option value="{$express.code_1}">{$express.title} ( {$express.code_1} )</option>
-                    {/if}
-                    {/foreach}
+                    <option value="{$item.code_1}">{$item.name} ( {$item.code_1} )</option>
+                    {/if}{/foreach}
                 </select>
             </label>
             <label class="layui-form-item relative block">
                 <span class="color-green font-w7 label-required-prev">快递配送单号</span>
                 <span class="color-desc margin-left-5">Express delivery number</span>
-                <input data-express-number name="express_send_no" required value='{$vo.express_send_no|default=""}' placeholder="请输入快递配送单号" class="layui-input">
+                <input data-truck-number name="truck_send_no" required value='{$vo.truck_send_no|default=""}' placeholder="请输入快递配送单号" class="layui-input">
             </label>
             <label class="layui-form-item relative block">
-                <span class="color-green font-w7 label-required-prev">快递配送描述</span>
+                <span class="color-green font-w7">快递配送描述</span>
                 <span class="color-desc margin-left-5">Express delivery description</span>
-                <textarea placeholder="请输入快递配送描述" class="layui-textarea" name="express_description">{$vo.express_description|default=""}</textarea>
+                <textarea placeholder="请输入快递配送描述" class="layui-textarea" name="truck_send_remark">{$vo.truck_send_remark|default=""}</textarea>
             </label>
         </fieldset>
     </div>
-
     <div class="hr-line-dashed"></div>
-    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
     {notempty name='vo.order_no'}<input type='hidden' value='{$vo.order_no}' name='order_no'>{/notempty}
-
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>
-
-    <script>
-        require(['pcasunzips'], function () {
-            new PCAS("form_province", "form_city", "form_area", '{$vo.express_province|default=""}', '{$vo.express_city|default=""}', '{$vo.express_area|default=""}');
-            window.form.render();
-        });
-        $('[data-express-query]').on('click', function () {
-            this.code = $('[data-express-code]').val();
-            this.number = $('[data-express-number]').val();
-            $.form.modal('{:url("expressQuery")}', {code: this.code, number: this.number})
-        });
-    </script>
 </form>
+<script>
+    require(['pcasunzips'], function () {
+        (function (province, city, area) {
+            new PCAS("form_province", "form_city", "form_area", province, city, area);
+            window.form.render();
+        })('{$vo.truck_province|default=""}', '{$vo.truck_city|default=""}', '{$vo.truck_area|default=""}');
+    });
+    $('[data-express-query]').on('click', function () {
+        (function (code, number) {
+            $.form.modal('{:url("expressQuery")}', {code: code, number: number}, '快递追踪查询')
+        })($('[data-truck-code]').val(), $('[data-truck-number]').val());
+    });
+</script>

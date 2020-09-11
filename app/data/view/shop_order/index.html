@@ -3,8 +3,8 @@
 {block name="content"}
 <div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title notselect">
-        {foreach ['all'=>'全部订单','2'=>'待支付的订单','3'=>'待发货的订单','4'=>'待收货的订单','5'=>'已完成的订单','0'=>'已取消的订单'] as $k=>$v}
-        {if isset($type) and $type eq $k.''}
+        {foreach ['ta'=>'全部订单','t2'=>'待支付的订单','t3'=>'待发货的订单','t4'=>'待收货的订单','t5'=>'已完成的订单','t0'=>'已取消的订单'] as $k=>$v}
+        {if isset($type) and 't'.$type eq $k}
         <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v} <sup class="layui-badge absolute border-radius">{$total[$k]??0}</sup></li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v} <sup class="layui-badge absolute border-radius">{$total[$k]??0}</sup></li>
@@ -34,10 +34,10 @@
                 </td>
                 <td class="nowrap relative">
                     <div>
-                        <img data-tips-image style="width:35px;height:35px" src="{$vo.from_member.headimg|default='__ROOT__/static/theme/img/headimg.png'}" class="margin-right-5" alt="img">
+                        <img data-tips-image style="width:35px;height:35px" src="{$vo.fromer.headimg|default='__ROOT__/static/theme/img/headimg.png'}" class="margin-right-5" alt="img">
                         <div class="inline-block text-middle sub-span-blue">
-                            推荐会员：{$vo.from_member.nickname|default='--'}<br>
-                            推荐手机：<span>{$vo.from_member.phone|default='--'}</span>{notempty name='vo.from_member.vip_level'} [ <b class="color-red">VIP{$vo.from_member.vip_level}</b> ] <b class="color-red">{$vo.from_member.vip_title}</b>{/notempty}<br>
+                            推荐会员：{$vo.fromer.nickname|default='--'}<br>
+                            推荐手机：<span>{$vo.fromer.phone|default='--'}</span>{notempty name='vo.fromer.vip_level'} [ <b class="color-red">VIP{$vo.fromer.vip_level}</b> ] <b class="color-red">{$vo.fromer.vip_title}</b>{/notempty}<br>
                         </div>
                     </div>
                     <div>
@@ -50,7 +50,7 @@
                 </td>
                 <td class='nowrap'>
                     <div class="inline-block margin-right-5 think-badge-middle notselect padding-left-5">
-                        {eq name='vo.status' value='0'}<span class="layui-badge layui-bg-gray" data-tips-text="{$vo.cancel_description}">已取消</span>{/eq}
+                        {eq name='vo.status' value='0'}<span class="layui-badge layui-bg-gray" data-tips-text="{$vo.cancel_remark}">已取消</span>{/eq}
                         {eq name='vo.status' value='1'}<span class="layui-badge layui-bg-red">预订单</span>{/eq}
                         {eq name='vo.status' value='2'}<span class="layui-badge layui-bg-orange">待付款</span>{/eq}
                         {eq name='vo.status' value='3'}<span class="layui-badge layui-bg-black">待发货</span>{/eq}
@@ -59,52 +59,40 @@
                     </div>
                     <div class="inline-block text-middle">
                         订单单号：<span class="color-blue">{$vo.order_no|default=''}</span><br>
-                        订单金额：<b class="color-blue">{$vo.price_total+0}</b> 元<span class="color-blue">{if $vo.price_express>0}（含{$vo.price_express+0}元）{else}（包邮）{/if}</span>已支付 <strong class="color-blue">{$vo.pay_price+0}</strong> 元<br>
+                        订单金额：<b class="color-blue">{$vo.amount_total+0}</b> 元<span class="color-blue">{if $vo.amount_express>0}（含{$vo.amount_express+0}元）{else}（包邮）{/if}</span>已支付 <strong class="color-blue">{$vo.payment_amount+0}</strong> 元<br>
                         下单时间：{$vo.create_at|format_datetime}<br>
-                        支付时间：{$vo.pay_datetime|format_datetime}{if $vo.pay_datetime}<span class="color-blue"> ({$vo.pay_type|default='-'})</span>{/if}<br>
+                        支付时间：{$vo.payment_datetime|format_datetime}{if $vo.payment_datetime}<span class="color-blue"> ({$vo.pay_type|default='-'})</span>{/if}<br>
                     </div>
                 </td>
                 <td class="nowrap">
-                    收货信息：{$vo.express_name|default='--'}<span class="margin-left-5 color-blue">{$vo.express_phone}</span><br>
-                    收货地址：{$vo.express_province|default='--'}{$vo.express_city}{$vo.express_area}{$vo.express_address}<br>
-                    发货状态：{eq name='vo.express_state' value='0'}
+                    收货信息：{$vo.truck_name|default='--'}<span class="margin-left-5 color-blue">{$vo.truck_phone}</span><br>
+                    收货地址：{$vo.truck_province|default='--'}{$vo.truck_city}{$vo.truck_area}{$vo.truck_address}<br>
+                    发货状态：{if empty($vo.truck_send_code)}
                     <span class="layui-badge layui-bg-black">未发货</span>
                     {else}
-                    <span class="layui-badge layui-bg-blue">{$vo.express_company_title|default='--'}</span>
-                    <a data-title="{$vo.express_company_title}（{$vo.express_send_no}）" data-tips-text="快递追踪查询"
-                       data-modal="{:url('expressQuery')}?code={$vo.express_company_code}&number={$vo.express_send_no}"
-                       class="layui-badge layui-bg-gray margin-left-5">{$vo.express_send_no|default='--'}</a>
-                    {/eq}
-                    {if $vo.status eq 3}
-                    <a class=" margin-left-5" data-title="填写订单信息" data-modal="{:url('express')}?id={$vo.id}">填写发货</a>
-                    <!--{if auth('store/order/pushJushuitan') && isset($jushuitanType) and $jushuitanType > 0}-->
-                    <a class=" margin-left-5" data-confirm="确认要使用仓库发货吗？" data-load="{:url('pushJushuitan')}?order_no={$vo.order_no}">提交仓库</a>
-                    <!--{/if}-->
-                    <!--{if auth('cancel')}-->
-                    <a class=" margin-left-5" data-confirm="确认要取消并创建退款申请吗？" data-load="{:url('cancel')}?order_no={$vo.order_no}">取消并退款</a>
-                    <!--{/if}-->
-                    {elseif $vo.status eq 4}
-                    <a class=" margin-left-5" data-title="修改发货信息" data-modal="{:url('express')}?id={$vo.id}">修改发货</a>
+                    <span class="layui-badge layui-bg-blue">{$vo.truck_send_name|default='--'}</span>
+                    <a data-title="{$vo.truck_send_name}（{$vo.truck_send_no}）" data-tips-text="快递追踪查询"
+                       data-modal="{:url('expressQuery')}?code={$vo.truck_send_code}&number={$vo.truck_send_no}"
+                       class="layui-badge layui-bg-orange margin-left-5">{$vo.truck_send_no|default='--'}</a>
                     {/if}
+                    {if $vo.status eq 3}
+                    <a class="margin-left-5" data-title="填写订单信息" data-modal="{:url('express')}?order_no={$vo.order_no}">填写发货</a>
+                    {elseif $vo.status eq 4}
+                    <a class="margin-left-5" data-title="修改发货信息" data-modal="{:url('express')}?order_no={$vo.order_no}">修改发货</a>
+                    {/if}
+                    <!--{if auth('cancel') and in_array($vo.status, [1,2])}-->
+                    <a class="margin-left-5" data-confirm="确认要取消订单吗？" data-load="{:url('cancel')}?order_no={$vo.order_no}">取消订单</a>
+                    <!--{/if}-->
                     <br>
-                    发货时间：{$vo.express_send_at|format_datetime}<br>
+                    发货时间：{$vo.truck_send_datetime|format_datetime}<br>
                 </td>
                 <td class="nowrap">
-                    {foreach $vo.list as $g}
+                    {foreach $vo.items as $item}
                     <div>
-                        {if $g.vip_mod > 0 and $g.vip_level > $g.discount_vip}
-                        [ <b class="color-red">VIP{$g.discount_vip}</b> <b class="layui-icon font-s10 color-blue">&#xe65b;</b> <b class="color-red">VIP{$g.vip_level}</b> ]
-                        {else}
-                        [ <b class="color-blue">VIP{$g.discount_vip}</b> ]
-                        {/if}
-                        {if $g.discount_rate<100.00}
-                        <b class="color-blue">享{$g.discount_rate+0}%折扣</b>
+                        <b class="color-blue">{$item.stock_sales|default=0}件</b>
                         <b class="color-red">x</b>
-                        {/if}
-                        <b class="color-blue">{$g.number_goods|default=0}件</b>
-                        <b class="color-red">x</b>
-                        <b class="color-blue">{$g.goods_price_market+0}元 </b>
-                        {$g.goods_title|default=''} <span class="color-green">( {$g.goods_spec|show_goods_spec})</span>
+                        <b class="color-blue">{$item.price_market+0}元 </b>
+                        {$item.goods_name|default=''} <span class="color-green">( {$item.goods_spec|think_show_goods_spec})</span>
                     </div>
                     {/foreach}
                 </td>

@@ -15,7 +15,7 @@ class ShopOrderSend extends Controller
      * 绑定数据表
      * @var string
      */
-    private $table = 'ShopOrderSend';
+    private $table = 'ShopOrder';
 
     /**
      * 订单发货管理
