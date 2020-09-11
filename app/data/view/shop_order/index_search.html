@@ -97,20 +97,24 @@
         <div class="layui-form-item layui-inline">
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
 
-            <button type="button" data-form-export="{:url('index')}?type={$type|default=''}&output=json" class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-export"></i> 导 出</button>
+            <button type="button" data-form-export="{:url('index')}?type={$type|default=''}" class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-export"></i> 导 出</button>
 
         </div>
     </form>
     <script>
         window.form.render();
+
         require(['excel'], function (excel) {
-            excel.bind(function (data) {
-                var rows = [['订单号', '会员编号']];
+            excel.bind(function (data, rows) {
+                rows = [['订单号', '会员手机']];
                 data.forEach(function (item) {
-                    rows.push([item.order_no, item.mid]);
+                    rows.push([
+                        item.order_no,
+                        item.member.phone
+                    ]);
                 });
                 return rows;
-            });
+            }, '订单记录导出');
         });
     </script>
 </fieldset>
