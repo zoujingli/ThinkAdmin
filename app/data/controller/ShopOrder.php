@@ -136,7 +136,7 @@ class ShopOrder extends Controller
                 'code.require'   => '快递公司不能为空！',
                 'number.require' => '配送单号不能为空！',
             ]);
-            $this->result = OrderService::instance()->tracktruck($data['code'], $data['number']);
+            $this->result = OrderService::instance()->trackExpress($data['code'], $data['number']);
             if (empty($this->result['code'])) $this->error($this->result['info']);
             $this->fetch();
         } catch (HttpResponseException $exception) {
