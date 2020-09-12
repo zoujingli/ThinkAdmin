@@ -42,17 +42,7 @@ class Order extends Auth
         $query = $this->_query('ShopOrder')->equal('status,order_no');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
         if (count($result['list']) > 0) {
-            $codes = array_unique(array_column($result['list'], 'order_no'));
-            $items = $this->app->db->name('ShopOrderItem')->whereIn('order_no', $codes)->select()->toArray();
-            foreach ($result['list'] as &$vo) {
-                [$vo['count'], $vo['items']] = [0, []];
-                foreach ($items as $item) {
-                    if ($vo['order_no'] === $item['order_no']) {
-                        $vo['items'][] = $item;
-                        $vo['count'] += $item['stock_sales'];
-                    }
-                }
-            }
+            OrderService::instance()->buildItemData($result['list']);
         }
         $this->success('获取订单数据成功！', $result);
     }

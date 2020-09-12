@@ -2,7 +2,6 @@
 
 namespace app\data\service;
 
-use think\admin\extend\CodeExtend;
 use think\admin\Service;
 use think\admin\service\InterfaceService;
 
@@ -65,4 +64,34 @@ class OrderService extends Service
             'type' => 'free', 'express' => $code, 'number' => $number,
         ]);
     }
+
+    /**
+     * 绑定订单详情数据
+     * @param array $data
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function buildItemData(array &$data = []): array
+    {
+        $mids = array_unique(array_merge(array_column($data, 'mid'), array_column($data, 'from')));
+        $members = $this->app->db->name('DataMember')->whereIn('id', $mids)->column('*', 'id');
+        // 商品详情管理
+        $query = $this->app->db->name('ShopOrderItem')->where(['status' => 1, 'deleted' => 0]);
+        $items = $query->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select()->toArray();
+        foreach ($data as &$vo) {
+            [$vo['count'], $vo['items']] = [0, []];
+            $vo['member'] = $members[$vo['mid']] ?? [];
+            $vo['fromer'] = $members[$vo['from']] ?? [];
+            foreach ($items as $item) {
+                if ($vo['order_no'] === $item['order_no']) {
+                    $vo['count'] += $item['stock_sales'];
+                    $vo['items'][] = $item;
+                }
+            }
+        }
+        return $data;
+    }
+
 }

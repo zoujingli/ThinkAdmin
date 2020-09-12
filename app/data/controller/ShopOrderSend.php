@@ -2,6 +2,7 @@
 
 namespace app\data\controller;
 
+use app\data\service\OrderService;
 use think\admin\Controller;
 
 /**
@@ -67,20 +68,7 @@ class ShopOrderSend extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        $mids = array_unique(array_merge(array_column($data, 'mid'), array_column($data, 'from')));
-        $mems = $this->app->db->name('DataMember')->whereIn('id', $mids)->column('*', 'id');
-        $query = $this->app->db->name('ShopOrderItem')->where(['status' => 1, 'deleted' => 0]);
-        $items = $query->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select()->toArray();
-        foreach ($data as &$vo) {
-            $vo['items'] = [];
-            $vo['member'] = $mems[$vo['mid']] ?? [];
-            $vo['fromer'] = $mems[$vo['from']] ?? [];
-            foreach ($items as $item) {
-                if ($vo['order_no'] === $item['order_no']) {
-                    $vo['items'][] = $item;
-                }
-            }
-        }
+        OrderService::instance()->buildItemData($data);
     }
 
 }

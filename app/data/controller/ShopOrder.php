@@ -69,20 +69,7 @@ class ShopOrder extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        $mids = array_unique(array_merge(array_column($data, 'mid'), array_column($data, 'from')));
-        $mems = $this->app->db->name('DataMember')->whereIn('id', $mids)->column('*', 'id');
-        $query = $this->app->db->name('ShopOrderItem')->where(['status' => 1, 'deleted' => 0]);
-        $items = $query->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select()->toArray();
-        foreach ($data as &$vo) {
-            $vo['items'] = [];
-            $vo['member'] = $mems[$vo['mid']] ?? [];
-            $vo['fromer'] = $mems[$vo['from']] ?? [];
-            foreach ($items as $item) {
-                if ($vo['order_no'] === $item['order_no']) {
-                    $vo['items'][] = $item;
-                }
-            }
-        }
+        OrderService::instance()->buildItemData($data);
     }
 
     /**
@@ -133,7 +120,8 @@ class ShopOrder extends Controller
     {
         try {
             $data = $this->_vali([
-                'code.require' => '快递编号不能为空！', 'number.require' => '配送单号不能为空！',
+                'code.require'   => '快递编号不能为空！',
+                'number.require' => '配送单号不能为空！',
             ]);
             $this->result = OrderService::instance()->trackExpress($data['code'], $data['number']);
             if (empty($this->result['code'])) $this->error($this->result['info']);
@@ -154,7 +142,10 @@ class ShopOrder extends Controller
      */
     public function cancel()
     {
-        $map = $this->_vali(['order_no.require' => '订单编号不能为空！']);
+        $map = $this->_vali([
+            'deleted.value'    => 0,
+            'order_no.require' => '订单编号不能为空！',
+        ]);
         $order = $this->app->db->name($this->table)->where($map)->find();
         if (empty($order)) $this->error('订单查询异常');
         if (!in_array($order['status'], [1, 2])) $this->error('订单不能取消！');
