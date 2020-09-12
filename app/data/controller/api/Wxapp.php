@@ -1,0 +1,185 @@
+<?php
+
+namespace app\data\controller\api;
+
+use app\data\service\UserService;
+use think\admin\Controller;
+use think\exception\HttpResponseException;
+use WeMini\Crypt;
+use WeMini\Live;
+use WeMini\Qrcode;
+
+/**
+ * 小程序入口
+ * Class Wxapp
+ * @package app\data\controller\api
+ */
+class Wxapp extends Controller
+{
+    /**
+     * 小程序配置参数
+     * @var array
+     */
+    protected $config;
+
+    /**
+     * 接口初始化
+     */
+    protected function initialize()
+    {
+        $this->config = [
+            'appid'      => '',
+            'appsecret'  => '',
+            // 商户支付配置
+            'mch_id'     => '',
+            'mch_key'    => '',
+            // 支付证书配置
+            'ssl_key'    => '', // 需要配置证书文件的绝对路径
+            'ssl_cer'    => '', // 需要配置证书文件的绝对路径
+            // 支付缓存配置
+            'cache_path' => $this->app->getRuntimePath() . 'wxapp' . DIRECTORY_SEPARATOR,
+        ];
+    }
+
+    /**
+     * 授权Code换取会话信息
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function session()
+    {
+        $input = $this->_vali(['code.require' => '登录凭证code不能为空！']);
+        [$openid, $sessionKey] = $this->_exchangeSessionKey($input['code']);
+        $result = UserService::instance()->token($openid, ['session_key' => $sessionKey]);
+        $this->success('授权换取成功！', $result);
+    }
+
+    /**
+     * 小程序数据解密
+     * @throws HttpResponseException
+     */
+    public function decode()
+    {
+        try {
+            $input = $this->_vali([
+                'code.default'        => '', // code 与 session_key 二选一
+                'session_key.default' => '', // code 与 session_key 二选一
+                'iv.require'          => '解密向量值iv不能为空！',
+                'encrypted.require'   => '加密内容encrypted不能为空！',
+            ]);
+            if (empty($input['session_key'])) {
+                if (empty($input['code'])) $this->error('登录凭证code不能为空！');
+                [, $input['session_key']] = $this->_exchangeSessionKey($input['code']);
+            }
+            $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
+            if (is_array($result) && isset($result['openId']) && isset($result['avatarUrl']) && isset($result['nickName'])) {
+                data_save('DataMember', ['openid' => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName']], 'openid');
+                $this->success('数据解密成功！', UserService::instance()->token($result['openId']));
+            } elseif (is_array($result) && isset($result['phoneNumber'])) {
+                $this->success('数据解密成功！', $result);
+            } else {
+                $this->error('数据处理失败，请稍候再试！');
+            }
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error("数据处理失败，{$exception->getMessage()}");
+        }
+
+    }
+
+    /**
+     * 授权CODE换取会话信息
+     * @param string $code 换取授权CODE
+     * @return array [openid, sessionkey]
+     */
+    private function _exchangeSessionKey($code)
+    {
+        try {
+            $cache = $this->app->cache->get($code, []);
+            if (isset($cache['openid']) && isset($cache['session_key'])) {
+                data_save('DataMember', ['openid' => $cache['openid']], 'openid');
+                return [$cache['openid'], $cache['session_key']];
+            }
+            $result = Crypt::instance($this->config)->session($code);
+            if (isset($result['openid']) && isset($result['session_key'])) {
+                $this->app->cache->set($code, $result, 3600);
+                data_save('DataMember', ['openid' => $result['openid']], 'openid');
+                return [$result['openid'], $result['session_key']];
+            } elseif (isset($result['errmsg'])) {
+                $this->error($result['errmsg']);
+            } else {
+                $this->error("授权换取失败，请稍候再试！");
+            }
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error("授权换取失败，{$exception->getMessage()}");
+        }
+    }
+
+    /**
+     * 获取小程序码
+     */
+    public function qrcode()
+    {
+        try {
+            $data = $this->_vali([
+                'size.default' => 430,
+                'type.default' => 'base64',
+                'path.require' => '跳转路径不能为空!',
+            ]);
+            $result = Qrcode::instance($this->config)->createMiniPath($data['path'], $data['size']);
+            if (isset($data['type']) && $data['type'] === 'base64') {
+                $this->success('生成小程序码成功！', [
+                    'base64' => 'data:image/png;base64,' . base64_encode($result),
+                ]);
+            } else {
+                return response($result)->contentType('image/png');
+            }
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        }
+    }
+
+    /**
+     * 获取直播列表
+     */
+    public function getLiveList()
+    {
+        try {
+            $data = $this->_vali(['start.default' => 0, 'limit.default' => 10]);
+            $list = Live::instance($this->config)->getLiveList($data['start'], $data['limit']);
+            $this->success('获取直播列表成功！', $list);
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        }
+    }
+
+    /**
+     * 获取回放源视频
+     */
+    public function getLiveInfo()
+    {
+        try {
+            $data = $this->_vali([
+                'start.default'   => 0,
+                'limit.default'   => 10,
+                'action.default'  => 'get_replay',
+                'room_id.require' => '直播间ID不能为空',
+            ]);
+            $result = Live::instance($this->config)->getLiveInfo($data);
+            $this->success('获取回放视频成功！', $result);
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        }
+    }
+}
