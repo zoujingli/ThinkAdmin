@@ -43,7 +43,7 @@ class UserService extends Service
 
     /**
      * 刷新会员授权 TOKEN
-     * @param int $mid 会员MID
+     * @param mixed $mkey 会员标识
      * @param array $data 额外数据
      * @return array
      * @throws \think\Exception
@@ -51,17 +51,17 @@ class UserService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function token(int $mid, array $data = []): array
+    public function token($mkey, array $data = []): array
     {
         // 生成新的接口令牌
-        do $update = ['token' => md5(uniqid("{$mid}#", true) . rand(100, 999))];
-        while ($this->app->db->name($this->table)->where($update)->count() > 0);
+        do $set = ['token' => md5(uniqid("{$mkey}#", true) . rand(100, 999))];
+        while ($this->app->db->name($this->table)->where($set)->count() > 0);
         // 更新账号授权令牌
-        $this->app->db->name($this->table)->where(['id' => $mid, 'deleted' => 0])->update([
-            'token' => $update['token'], 'tokenv' => $this->buildTokenVerify(),
+        $this->app->db->name($this->table)->where(['id|token' => $mkey, 'deleted' => 0])->update([
+            'token' => $set['token'], 'tokenv' => $this->buildTokenVerify(),
         ]);
         // 获取新的会员数据
-        return $this->get($update['token'], $data);
+        return $this->get($set['token'], $data);
     }
 
     /**

@@ -60,7 +60,6 @@ class Address extends Auth
         $this->success('添加收货地址成功！', $this->_getAddress($data['code']));
     }
 
-
     /**
      * 获取收货地址
      * @throws \think\db\exception\DataNotFoundException
@@ -83,9 +82,9 @@ class Address extends Auth
     {
         $data = $this->_vali([
             'mid.value'    => $this->mid,
-            'code.require' => '地址编号不能为空！',
-            'type.require' => '地址状态不能为空！',
             'type.in:0,1'  => '地址状态不在范围！',
+            'type.require' => '地址状态不能为空！',
+            'code.require' => '地址编号不能为空！',
         ]);
         // 检查地址是否存在
         $map = ['mid' => $data['mid'], 'code' => $data['code']];
