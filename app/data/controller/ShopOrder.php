@@ -133,12 +133,11 @@ class ShopOrder extends Controller
     {
         try {
             $data = $this->_vali([
-                'code.require'   => '快递公司不能为空！',
-                'number.require' => '配送单号不能为空！',
+                'code.require' => '快递编号不能为空！', 'number.require' => '配送单号不能为空！',
             ]);
             $this->result = OrderService::instance()->trackExpress($data['code'], $data['number']);
             if (empty($this->result['code'])) $this->error($this->result['info']);
-            $this->fetch();
+            $this->fetch('truck_query');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
@@ -147,7 +146,7 @@ class ShopOrder extends Controller
     }
 
     /**
-     * 取消订单并创建售后单
+     * 取消未支付的订单
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -158,20 +157,18 @@ class ShopOrder extends Controller
         $map = $this->_vali(['order_no.require' => '订单编号不能为空！']);
         $order = $this->app->db->name($this->table)->where($map)->find();
         if (empty($order)) $this->error('订单查询异常');
-        if (intval($order['status']) !== 3) $this->error('该订单不能发货！');
-        [$rules, $data] = [[], ['type' => 3, 'refund_content' => '后台操作取消订单并申请退款', 'refund_images' => '']];
-        foreach ($this->app->db->name("{$this->table}Item")->where($map)->select()->toArray() as $item) {
-            $rules[] = ['goods_code' => $item['goods_code'], 'goods_spec' => $item['goods_spec'], 'refund_number' => $item['stock_sales']];
-        }
+        if (!in_array($order['status'], [1, 2])) $this->error('订单不能取消！');
         try {
-            if (OrderService::instance()->refund($order['order_no'], $data, $rules)) {
-                $this->app->db->name($this->table)->where($map)->update([
-                    'status'          => 0,
-                    'cancel_status'   => 1,
-                    'cancel_remark'   => '后台取消并创建退款申请',
-                    'cancel_datetime' => date('Y-m-d H:i:s'),
-                ]);
-                $this->success('取消订单并创建退款申请成功！');
+            $result = $this->app->db->name($this->table)->where($map)->update([
+                'status'          => 0,
+                'cancel_status'   => 1,
+                'cancel_remark'   => '后台未支付的取消',
+                'cancel_datetime' => date('Y-m-d H:i:s'),
+            ]);
+            if ($result !== false) {
+                $this->success('取消未支付的订单成功！');
+            } else {
+                $this->error('取消支付的订单失败！');
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
