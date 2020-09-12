@@ -71,7 +71,7 @@
     });
     $('[data-express-query]').on('click', function () {
         (function (code, number) {
-            $.form.modal('{:url("expressQuery")}', {code: code, number: number}, '快递追踪查询')
+            $.form.modal('{:url("truckQuery")}', {code: code, number: number}, '快递追踪查询')
         })($('[data-truck-code]').val(), $('[data-truck-number]').val());
     });
 </script>

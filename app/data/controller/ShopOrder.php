@@ -23,7 +23,6 @@ class ShopOrder extends Controller
      * 订单数据管理
      * @auth true
      * @menu true
-     * @return \think\admin\helper\QueryHelper
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

@@ -72,7 +72,7 @@
                     {else}
                     <span class="layui-badge layui-bg-blue">{$vo.truck_send_name|default='--'}</span>
                     <a data-title="{$vo.truck_send_name}（{$vo.truck_send_no}）" data-tips-text="快递追踪查询"
-                       data-modal="{:url('expressQuery')}?code={$vo.truck_send_code}&number={$vo.truck_send_no}"
+                       data-modal="{:url('truckQuery')}?code={$vo.truck_send_code}&number={$vo.truck_send_no}"
                        class="layui-badge layui-bg-orange margin-left-5">{$vo.truck_send_no|default='--'}</a>
                     {/if}
                     {if $vo.status eq 3}
