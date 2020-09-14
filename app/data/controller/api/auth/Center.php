@@ -60,6 +60,7 @@ class Center extends Auth
 
     /**
      * 绑定会员邀请人
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -71,7 +72,7 @@ class Center extends Auth
             $this->error('邀请人不能是自己哦', UserService::instance()->total($this->mid));
         }
         $from = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
-        if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->total($this->mid));
+        if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->get($this->mid));
         if ($this->member['from'] > 0) $this->error('您已经绑定了邀请人', UserService::instance()->total($this->mid));
         if ($this->app->db->name($this->table)->where(['id' => $this->mid])->update($data) !== false) {
             $this->success('绑定邀请人成功！', UserService::instance()->total($this->mid));

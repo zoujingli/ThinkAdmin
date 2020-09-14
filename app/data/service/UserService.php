@@ -19,22 +19,27 @@ class UserService extends Service
 
     /**
      * 获取会员资料
-     * @param array $map 查询条件
-     * @param bool $force 强制令牌
+     * @param mixed $map 查询条件
+     * @param boolean $force 强制令牌
      * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function get(array $map, bool $force = false): array
+    public function get($map, bool $force = false): array
     {
-        $member = $this->save($map, [], $force);
-        if (empty($member)) throw new \think\Exception('登录授权失败');
+        if (is_numeric($map)) {
+            $map = ['id' => $map];
+        } elseif (is_string($map)) {
+            $map = ['token|openid' => $map];
+        }
+        $user = $this->save($map, [], $force);
+        if (empty($user)) throw new \think\Exception('登录授权失败');
         // if ($member['tokenv'] !== $this->buildTokenVerify()) {
         //     throw new \think\Exception('请重新登录授权');
         // }
-        return $member;
+        return $user;
     }
 
     /**

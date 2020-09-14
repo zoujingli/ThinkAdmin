@@ -20,7 +20,7 @@ abstract class Auth extends Controller
     protected $mid;
 
     /**
-     * 接口授权TOKEN
+     * 接口授权令牌
      * @var string
      */
     protected $token;
@@ -45,7 +45,7 @@ abstract class Auth extends Controller
      * 获取会员数据
      * @return array
      */
-    protected function getMember(): array
+    protected function getMember()
     {
         try {
             if (empty($this->token)) $this->error('接口授权TOKEN无效');
