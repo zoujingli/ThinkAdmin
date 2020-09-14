@@ -50,9 +50,9 @@ class Wxapp extends Controller
     public function session()
     {
         $input = $this->_vali(['code.require' => '登录凭证code不能为空！']);
-        [$openid, $unionid, $sessionKey] = $this->_exchangeSessionKey($input['code']);
-        [$map, $data] = [['openid1' => $openid], ['openid1' => $openid, 'session_key' => $sessionKey]];
-        if (!empty($unionid)) [$map, $data] = [['unionid' => $unionid], array_merge(['unionid' => $unionid], $data)];
+        [$openid, $unionid, $sessionKey] = $this->_getSessionKey($input['code']);
+        $map = empty($unionid) ? ['openid1' => $openid] : ['unionid' => $unionid];
+        $data = array_merge($map, ['openid1' => $openid, 'session_key' => $sessionKey]);
         $this->success('授权换取成功！', UserService::instance()->save($map, $data, true));
     }
 
@@ -71,7 +71,7 @@ class Wxapp extends Controller
             ]);
             if (empty($input['session_key'])) {
                 if (empty($input['code'])) $this->error('登录凭证code不能为空！');
-                [, , $input['session_key']] = $this->_exchangeSessionKey($input['code']);
+                [, , $input['session_key']] = $this->_getSessionKey($input['code']);
             }
             $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
             if (is_array($result) && isset($result['openId']) && isset($result['avatarUrl']) && isset($result['nickName'])) {
@@ -96,7 +96,7 @@ class Wxapp extends Controller
      * @param string $code 换取授权CODE
      * @return array [openid, sessionkey]
      */
-    private function _exchangeSessionKey($code)
+    private function _getSessionKey($code)
     {
         try {
             $cache = $this->app->cache->get($code, []);
@@ -131,7 +131,7 @@ class Wxapp extends Controller
                 'path.require' => '跳转路径不能为空!',
             ]);
             $result = Qrcode::instance($this->config)->createMiniPath($data['path'], $data['size']);
-            if (isset($data['type']) && $data['type'] === 'base64') {
+            if ($data['type'] === 'base64') {
                 $this->success('生成小程序码成功！', [
                     'base64' => 'data:image/png;base64,' . base64_encode($result),
                 ]);
