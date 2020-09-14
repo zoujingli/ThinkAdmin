@@ -37,7 +37,7 @@ class Login extends Controller
         if (empty($user)) $this->error('该手机号还没有注册哦！');
         if (empty($user['status'])) $this->error('该会员账号状态异常！');
         if (md5($data['password']) === $user['password']) {
-            $this->success('手机登录成功！', UserService::instance()->get($user['id'], true));
+            $this->success('手机登录成功！', UserService::instance()->get($map, true));
         } else {
             $this->error('账号登录失败，请稍候再试！');
         }
@@ -65,7 +65,7 @@ class Login extends Controller
             $this->error('手机号已注册，请使用其它手机号！');
         }
         $data['password'] = md5($data['password']);
-        $user = UserService::instance()->save(['phone' => $data['phone']], $data, true);
+        $user = UserService::instance()->save($map, $data, true);
         empty($user) ? $this->success('会员注册成功！', $user) : $this->error('手机注册失败！');
     }
 
