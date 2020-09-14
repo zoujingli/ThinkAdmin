@@ -32,7 +32,7 @@ class UserService extends Service
         if (is_numeric($map)) {
             $map = ['id' => $map];
         } elseif (is_string($map)) {
-            $map = ['token|openid' => $map];
+            $map = ['token|openid1|openid2' => $map];
         }
         $user = $this->save($map, [], $force);
         if (empty($user)) throw new \think\Exception('登录授权失败');
@@ -56,13 +56,14 @@ class UserService extends Service
     {
         $user = $this->app->db->name($this->table)->where($map)->where(['deleted' => 0])->find() ?: [];
         unset($data['id'], $data['token'], $data['tokenv'], $data['status'], $data['deleted'], $data['create_at']);
-        if ($force) $data = array_merge($data, $this->_buildUserToken());
-        if (empty($data)) {
+        if (empty($data) || (empty($data['phone']) && empty($data['openid']) && empty($data['unionid']))) {
             unset($user['deleted'], $user['password']);
             return $user;
         } elseif (empty($user['id'])) {
+            if ($force) $data = array_merge($data, $this->_buildUserToken());
             $user['id'] = $this->app->db->name($this->table)->strict(false)->insertGetId($data);
         } else {
+            if ($force) $data = array_merge($data, $this->_buildUserToken());
             $this->app->db->name($this->table)->strict(false)->where(['id' => $user['id']])->update($data);
         }
         $map = ['id' => $user['id'], 'deleted' => 0];

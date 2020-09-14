@@ -50,8 +50,9 @@ class Wxapp extends Controller
     public function session()
     {
         $input = $this->_vali(['code.require' => '登录凭证code不能为空！']);
-        [$openid, $sessionKey] = $this->_exchangeSessionKey($input['code']);
-        $data = array_merge($map = ['openid' => $openid], ['session_key' => $sessionKey]);
+        [$openid, $unionid, $sessionKey] = $this->_exchangeSessionKey($input['code']);
+        [$map, $data] = [['openid1' => $openid], ['openid1' => $openid, 'session_key' => $sessionKey]];
+        if (!empty($unionid)) [$map, $data] = [['unionid' => $unionid], array_merge(['unionid' => $unionid], $data)];
         $this->success('授权换取成功！', UserService::instance()->save($map, $data, true));
     }
 
@@ -65,17 +66,19 @@ class Wxapp extends Controller
             $input = $this->_vali([
                 'code.default'        => '', // code 与 session_key 二选一
                 'session_key.default' => '', // code 与 session_key 二选一
-                'iv.require'          => '解密向量值iv不能为空！',
-                'encrypted.require'   => '加密内容encrypted不能为空！',
+                'iv.require'          => '解密向量不能为空！',
+                'encrypted.require'   => '加密内容不能为空！',
             ]);
             if (empty($input['session_key'])) {
                 if (empty($input['code'])) $this->error('登录凭证code不能为空！');
-                [, $input['session_key']] = $this->_exchangeSessionKey($input['code']);
+                [, , $input['session_key']] = $this->_exchangeSessionKey($input['code']);
             }
             $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
             if (is_array($result) && isset($result['openId']) && isset($result['avatarUrl']) && isset($result['nickName'])) {
-                $data = ['openid' => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName']];
-                $this->success('数据解密成功！', UserService::instance()->save(['openid' => $result['openId']], $data, true));
+                $sex = ['未知', '男', '女'][$result['gender']] ?? '未知';
+                $map = empty($result['unionId']) ? ['openid1' => $result['openId']] : ['unionid' => $result['unionId']];
+                $data = ['openid1' => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
+                $this->success('数据解密成功！', UserService::instance()->save($map, array_merge($map, $data), true));
             } elseif (is_array($result) && isset($result['phoneNumber'])) {
                 $this->success('数据解密成功！', $result);
             } else {
@@ -86,7 +89,6 @@ class Wxapp extends Controller
         } catch (\Exception $exception) {
             $this->error("数据处理失败，{$exception->getMessage()}");
         }
-
     }
 
     /**
@@ -99,12 +101,12 @@ class Wxapp extends Controller
         try {
             $cache = $this->app->cache->get($code, []);
             if (isset($cache['openid']) && isset($cache['session_key'])) {
-                return [$cache['openid'], $cache['session_key']];
+                return [$cache['openid'], $cache['unionid'] ?? '', $cache['session_key']];
             }
             $result = Crypt::instance($this->config)->session($code);
             if (isset($result['openid']) && isset($result['session_key'])) {
                 $this->app->cache->set($code, $result, 3600);
-                return [$result['openid'], $result['session_key']];
+                return [$result['openid'], $cache['unionid'] ?? '', $result['session_key']];
             } elseif (isset($result['errmsg'])) {
                 $this->error($result['errmsg']);
             } else {
