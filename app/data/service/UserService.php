@@ -32,7 +32,7 @@ class UserService extends Service
         if (is_numeric($map)) {
             $map = ['id' => $map];
         } elseif (is_string($map)) {
-            $map = ['token|openid1|openid2' => $map];
+            $map = ['token|openid1|openid2|unionid' => $map];
         }
         $user = $this->save($map, [], $force);
         if (empty($user)) throw new \think\Exception('登录授权失败');
