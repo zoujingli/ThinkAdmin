@@ -86,9 +86,9 @@ class News extends Auth
      */
     public function delCollect()
     {
-        $data = $this->_getCollectWhere(1);
-        if ($this->app->db->name('DataNewsXCollect')->where($data)->delete() !== false) {
-            NewsService::instance()->syncNewsTotal($data['cid']);
+        $map = $this->_getCollectWhere(1);
+        if ($this->app->db->name('DataNewsXCollect')->where($map)->delete() !== false) {
+            NewsService::instance()->syncNewsTotal($map['cid']);
             $this->success('取消收藏成功！');
         } else {
             $this->error('取消收藏失败！');
@@ -101,8 +101,8 @@ class News extends Auth
      */
     public function getCollect()
     {
-        $query = $this->_query('DataNewsXCollect');
-        $query->where(['mid' => $this->mid, 'type' => 1]);
+        $map = ['mid' => $this->mid, 'type' => 1];
+        $query = $this->_query('DataNewsXCollect')->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByCid($result['list']);
         $this->success('获取收藏记录成功！', $result);
@@ -142,6 +142,19 @@ class News extends Auth
     }
 
     /**
+     * 获取会员收藏的资讯
+     * @throws \think\db\exception\DbException
+     */
+    public function getLike()
+    {
+        $map = ['mid' => $this->mid, 'type' => 2];
+        $query = $this->_query('DataNewsXCollect')->where($map);
+        $result = $query->order('id desc')->page(true, false, false, 15);
+        NewsService::instance()->buildListByCid($result['list']);
+        $this->success('获取点赞记录成功！', $result);
+    }
+
+    /**
      * 获取会员的浏览历史
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -149,7 +162,8 @@ class News extends Auth
      */
     public function getHistory()
     {
-        $query = $this->_query('DataNewsXHistory')->where(['mid' => $this->mid]);
+        $map = ['mid' => $this->mid];
+        $query = $this->_query('DataNewsXHistory')->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByCid($result['list']);
         $this->success('获取浏览历史成功！', $result);
