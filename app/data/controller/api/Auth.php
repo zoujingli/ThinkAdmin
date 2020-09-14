@@ -48,10 +48,8 @@ abstract class Auth extends Controller
     protected function getMember(): array
     {
         try {
-            if (empty($this->token)) {
-                $this->error('接口授权TOKEN无效');
-            }
-            return UserService::instance()->get($this->token);
+            if (empty($this->token)) $this->error('接口授权TOKEN无效');
+            return UserService::instance()->get(['token' => $this->token]);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

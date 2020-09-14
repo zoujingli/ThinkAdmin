@@ -19,49 +19,50 @@ class UserService extends Service
 
     /**
      * 获取会员资料
-     * @param string $token 接口认证
-     * @param array $data 额外数据
+     * @param array $map 查询条件
+     * @param bool $force 强制令牌
      * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function get(string $token, array $data = []): array
+    public function get(array $map, bool $force = false): array
     {
-        $map = ['token' => $token, 'deleted' => 0];
-        $query = $this->app->db->name($this->table)->where($map);
-        $member = $query->withoutField('tokenv,deleted')->find();
-        if (empty($member)) {
-            throw new \think\Exception('登录授权失败');
-        }
-//        if ($member['tokenv'] !== $this->buildTokenVerify()) {
-//            throw new \think\Exception('请重新登录授权');
-//        }
-        return array_merge($member, $data);
+        $member = $this->save($map, [], $force);
+        if (empty($member)) throw new \think\Exception('登录授权失败');
+        // if ($member['tokenv'] !== $this->buildTokenVerify()) {
+        //     throw new \think\Exception('请重新登录授权');
+        // }
+        return $member;
     }
 
     /**
-     * 刷新会员授权 TOKEN
-     * @param mixed $mkey 会员标识
-     * @param array $data 额外数据
+     * 更新会员用户参数
+     * @param array $map 查询条件
+     * @param array $data 更新数据
+     * @param boolean $force 强刷令牌
      * @return array
-     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function token($mkey, array $data = []): array
+    public function save(array $map, array $data = [], bool $force = false): array
     {
-        // 生成新的接口令牌
-        do $set = ['token' => md5(uniqid("{$mkey}#", true) . rand(100, 999))];
-        while ($this->app->db->name($this->table)->where($set)->count() > 0);
-        // 更新账号授权令牌
-        $this->app->db->name($this->table)->where(['id|token' => $mkey, 'deleted' => 0])->update([
-            'token' => $set['token'], 'tokenv' => $this->buildTokenVerify(),
-        ]);
-        // 获取新的会员数据
-        return $this->get($set['token'], $data);
+        $user = $this->app->db->name($this->table)->where($map)->where(['deleted' => 0])->find() ?: [];
+        unset($data['id'], $data['token'], $data['tokenv'], $data['status'], $data['deleted'], $data['create_at']);
+        if ($force) $data = array_merge($data, $this->_buildUserToken());
+        if (empty($data)) {
+            unset($user['deleted'], $user['password']);
+            return $user;
+        } elseif (empty($user['id'])) {
+            $user['id'] = $this->app->db->name($this->table)->strict(false)->insertGetId($data);
+        } else {
+            $this->app->db->name($this->table)->strict(false)->where(['id' => $user['id']])->update($data);
+        }
+        $map = ['id' => $user['id'], 'deleted' => 0];
+        $query = $this->app->db->name($this->table)->where($map);
+        return $query->withoutField('deleted,password')->find() ?: [];
     }
 
     /**
@@ -76,10 +77,21 @@ class UserService extends Service
     }
 
     /**
-     * 获取认证信息编码
+     * 生成新的用户令牌
+     * @return array
+     */
+    private function _buildUserToken(): array
+    {
+        do $map = ['token' => md5(uniqid('', true) . rand(100, 999))];
+        while ($this->app->db->name($this->table)->where($map)->count() > 0);
+        return ['token' => $map['token'], 'tokenv' => $this->_buildTokenVerify()];
+    }
+
+    /**
+     * 获取令牌的认证值
      * @return string
      */
-    private function buildTokenVerify(): string
+    private function _buildTokenVerify(): string
     {
         return md5($this->app->request->server('HTTP_USER_AGENT', '-'));
     }

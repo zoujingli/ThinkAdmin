@@ -43,7 +43,6 @@ class Wxapp extends Controller
 
     /**
      * 授权Code换取会话信息
-     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -52,8 +51,8 @@ class Wxapp extends Controller
     {
         $input = $this->_vali(['code.require' => '登录凭证code不能为空！']);
         [$openid, $sessionKey] = $this->_exchangeSessionKey($input['code']);
-        $result = UserService::instance()->token($openid, ['session_key' => $sessionKey]);
-        $this->success('授权换取成功！', $result);
+        $data = array_merge($map = ['openid' => $openid], ['session_key' => $sessionKey]);
+        $this->success('授权换取成功！', UserService::instance()->save($map, $data, true));
     }
 
     /**
@@ -75,8 +74,8 @@ class Wxapp extends Controller
             }
             $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
             if (is_array($result) && isset($result['openId']) && isset($result['avatarUrl']) && isset($result['nickName'])) {
-                data_save('DataMember', ['openid' => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName']], 'openid');
-                $this->success('数据解密成功！', UserService::instance()->token($result['openId']));
+                $data = ['openid' => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName']];
+                $this->success('数据解密成功！', UserService::instance()->save(['openid' => $result['openId']], $data, true));
             } elseif (is_array($result) && isset($result['phoneNumber'])) {
                 $this->success('数据解密成功！', $result);
             } else {
@@ -100,13 +99,11 @@ class Wxapp extends Controller
         try {
             $cache = $this->app->cache->get($code, []);
             if (isset($cache['openid']) && isset($cache['session_key'])) {
-                data_save('DataMember', ['openid' => $cache['openid']], 'openid');
                 return [$cache['openid'], $cache['session_key']];
             }
             $result = Crypt::instance($this->config)->session($code);
             if (isset($result['openid']) && isset($result['session_key'])) {
                 $this->app->cache->set($code, $result, 3600);
-                data_save('DataMember', ['openid' => $result['openid']], 'openid');
                 return [$result['openid'], $result['session_key']];
             } elseif (isset($result['errmsg'])) {
                 $this->error($result['errmsg']);

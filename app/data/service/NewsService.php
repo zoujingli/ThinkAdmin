@@ -23,7 +23,7 @@ class NewsService extends Service
         $query->where($map)->group('type')->select()->map(function ($item) use (&$total) {
             $total[$item['type']] = $item['count'];
         });
-        $this->app->db->name('DataNewsItem')->where($map)->update([
+        $this->app->db->name('DataNewsItem')->where(['id' => $cid])->update([
             'num_collect' => $total[2] ?? 0, 'num_like' => $total[1] ?? 0,
             'num_comment' => $this->app->db->name('DataNewsXComment')->where($map)->count(),
         ]);
