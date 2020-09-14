@@ -55,20 +55,19 @@ class UserService extends Service
     public function save(array $map, array $data = [], bool $force = false): array
     {
         $query = $this->app->db->name($this->table)->where($map);
-        $user = $query->withoutField('deleted,password')->where(['deleted' => 0])->find() ?: [];
+        $member = $query->withoutField('deleted,password')->where(['deleted' => 0])->find() ?: [];
         unset($data['id'], $data['token'], $data['tokenv'], $data['status'], $data['deleted'], $data['create_at']);
-        if (empty($data['phone']) && empty($data['openid1']) && empty($data['openid2']) && empty($data['unionid'])) {
-            return $user;
+        if (empty($data['phone']) && empty($data['unionid']) && empty($data['openid1']) && empty($data['openid2'])) {
+            return $member;
         }
-        if ($force) {
-            $data = array_merge($data, $this->_buildUserToken());
-        }
-        if (empty($user['id'])) {
-            $user['id'] = $this->app->db->name($this->table)->strict(false)->insertGetId($data);
+        if ($force) $data = array_merge($data, $this->_buildUserToken());
+        if (isset($member['id']) && $member['id'] > 0) {
+            $map = ['id' => $member['id'], 'deleted' => 0];
+            $this->app->db->name($this->table)->where($map)->strict(false)->update($data);
         } else {
-            $this->app->db->name($this->table)->strict(false)->where(['id' => $user['id']])->update($data);
+            $member['id'] = $this->app->db->name($this->table)->strict(false)->insertGetId($data);
         }
-        $map = ['id' => $user['id'], 'deleted' => 0];
+        $map = ['id' => $member['id'], 'deleted' => 0];
         $query = $this->app->db->name($this->table)->where($map);
         return $query->withoutField('deleted,password')->find() ?: [];
     }
