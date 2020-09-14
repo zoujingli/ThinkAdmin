@@ -288,4 +288,22 @@ class Order extends Auth
         $this->success('获取状态统计成功！', $data);
     }
 
+    /**
+     * 物流追踪查询
+     */
+    public function track()
+    {
+        try {
+            $data = $this->_vali([
+                'code.require' => '快递编号不能为空！', 'number.require' => '配送单号不能为空！',
+            ]);
+            $result = OrderService::instance()->trackExpress($data['code'], $data['number']);
+            empty($result['code']) ? $this->error($result['info']) : $this->success('快递追踪信息', $result);
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        }
+    }
+
 }
