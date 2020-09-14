@@ -57,7 +57,7 @@ class UserService extends Service
         $query = $this->app->db->name($this->table)->where($map);
         $user = $query->withoutField('deleted,password')->where(['deleted' => 0])->find() ?: [];
         unset($data['id'], $data['token'], $data['tokenv'], $data['status'], $data['deleted'], $data['create_at']);
-        if (empty($data) || (empty($data['phone']) && empty($data['openid1']) && empty($data['openid2']) && empty($data['unionid']))) {
+        if (empty($data['phone']) && empty($data['openid1']) && empty($data['openid2']) && empty($data['unionid'])) {
             return $user;
         }
         if ($force) {
