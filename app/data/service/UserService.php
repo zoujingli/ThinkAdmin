@@ -54,16 +54,18 @@ class UserService extends Service
      */
     public function save(array $map, array $data = [], bool $force = false): array
     {
-        $user = $this->app->db->name($this->table)->where($map)->where(['deleted' => 0])->find() ?: [];
+        $query = $this->app->db->name($this->table)->where($map);
+        $user = $query->withoutField('deleted,password')->where(['deleted' => 0])->find() ?: [];
         unset($data['id'], $data['token'], $data['tokenv'], $data['status'], $data['deleted'], $data['create_at']);
         if (empty($data) || (empty($data['phone']) && empty($data['openid1']) && empty($data['openid2']) && empty($data['unionid']))) {
-            unset($user['deleted'], $user['password']);
             return $user;
-        } elseif (empty($user['id'])) {
-            if ($force) $data = array_merge($data, $this->_buildUserToken());
+        }
+        if ($force) {
+            $data = array_merge($data, $this->_buildUserToken());
+        }
+        if (empty($user['id'])) {
             $user['id'] = $this->app->db->name($this->table)->strict(false)->insertGetId($data);
         } else {
-            if ($force) $data = array_merge($data, $this->_buildUserToken());
             $this->app->db->name($this->table)->strict(false)->where(['id' => $user['id']])->update($data);
         }
         $map = ['id' => $user['id'], 'deleted' => 0];
