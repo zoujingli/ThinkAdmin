@@ -63,7 +63,7 @@ class UserService extends Service
         if ($force) $data = array_merge($data, $this->_buildUserToken());
         if (isset($member['id']) && $member['id'] > 0) {
             $map = ['id' => $member['id'], 'deleted' => 0];
-            $this->app->db->name($this->table)->where($map)->strict(false)->update($data);
+            $this->app->db->name($this->table)->strict(false)->where($map)->update($data);
         } else {
             $member['id'] = $this->app->db->name($this->table)->strict(false)->insertGetId($data);
         }
