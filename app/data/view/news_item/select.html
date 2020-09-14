@@ -34,7 +34,7 @@
     $(function () {
         layui.form.render();
         $('[data-news]').on('click', function () {
-            top.setNewsId(this.getAttribute('data-news') || '');
+            top.setCheckValue(this.getAttribute('data-news') || '');
             parent.layer.close(parent.layer.getFrameIndex(window.name));
         });
         $.form.reInit($('[data-select-container]'));

@@ -21,8 +21,8 @@ class Config extends Controller
      */
     public function slider()
     {
+        $this->skey = 'slider';
         if ($this->request->isGet()) {
-            $this->skey = 'slider';
             $this->title = '轮播图管理';
             $this->data = sysdata($this->skey);
             $this->fetch();

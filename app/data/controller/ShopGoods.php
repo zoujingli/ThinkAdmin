@@ -50,8 +50,9 @@ class ShopGoods extends Controller
      */
     public function select()
     {
-        $query = $this->_query($this->table)->equal('status,cate')->like('name');
-        $query->where(['deleted' => '0'])->order('sort desc,id desc')->page();
+        $query = $this->_query($this->table);
+        $query->equal('status,cate')->like('name,mark');
+        $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
     /**

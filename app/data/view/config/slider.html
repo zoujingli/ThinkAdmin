@@ -23,16 +23,17 @@
             <input data-upload-image name="img[]" type="hidden">
         </div>
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
-            <span>图片标题 </span>
-            <input class="layui-input inline-block" style="width:240px" name="title[]" value="#" required placeholder="请输入图片标题">
+            <span>图片名称 </span>
+            <input class="layui-input inline-block" style="width:240px" name="name[]" value="#" required placeholder="请输入图片标题">
             <a data-item-up class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-up margin-0"></i></a>
             <a data-item-dn class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-down margin-0"></i></a>
             <a data-item-rm class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-close margin-0"></i></a>
         </label>
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
             <span>跳转活动 </span>
-            <input class="layui-input inline-block" style="width:240px" name="url[]" value="#" required placeholder="请输入跳转活动">
-            <a data-item-article class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择文章</a>
+            <input class="layui-input inline-block" style="width:240px" name="rule[]" value="#" required placeholder="请输入跳转活动">
+            <a data-item-news class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择文章</a>
+            <a data-item-goods class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择商品</a>
             <span class="help-block block">若要跳转页面，请填写正确的 URL 地址，不跳转以“#”号表示。</span>
         </label>
     </div>
@@ -61,11 +62,16 @@
             setTimeout(initUpload, 100);
         })();
         /*! 轮播选项操作 */
-        $('[data-slider-box]').on('click', '[data-item-article]', function ($that) {
-            $that = $(this), top.setNewsId = function (id) {
+        $('[data-slider-box]').on('click', '[data-item-news]', function ($that) {
+            $that = $(this), top.setCheckValue = function (id) {
                 $that.prevAll('input').val('news#{v}'.replace('{v}', id));
             };
             $.form.iframe('{:url("data/news_item/select")}', '选择文章', ['930px', '600px']);
+        }).on('click', '[data-item-goods]', function ($that) {
+            $that = $(this), top.setCheckValue = function (id) {
+                $that.prevAll('input').val('goods#{v}'.replace('{v}', id));
+            };
+            $.form.iframe('{:url("data/shop_goods/select")}', '选择商品', ['930px', '600px']);
         }).on('click', '[data-item-add]', function () {
             addItem();
         }).on('click', '[data-item-rm]', function () {
@@ -84,7 +90,7 @@
             this.data = [];
             for (this.index in ret.img) {
                 if (!ret.img[this.index]) return $.msg.tips('请上传展示图片哦！');
-                this.data.push({img: ret.img[this.index], url: ret.url[this.index], title: ret.title[this.index]});
+                this.data.push({img: ret.img[this.index], rule: ret.rule[this.index], name: ret.name[this.index]});
             }
             $.form.load('{$request->url()}', {data: JSON.stringify(this.data)}, 'post');
         });
