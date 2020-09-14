@@ -226,6 +226,7 @@ return array(
     'app\\data\\controller\\api\\Login' => $baseDir . '/app/data/controller/api/Login.php',
     'app\\data\\controller\\api\\News' => $baseDir . '/app/data/controller/api/News.php',
     'app\\data\\controller\\api\\Notify' => $baseDir . '/app/data/controller/api/Notify.php',
+    'app\\data\\controller\\api\\Wxapp' => $baseDir . '/app/data/controller/api/Wxapp.php',
     'app\\data\\controller\\api\\auth\\Address' => $baseDir . '/app/data/controller/api/auth/Address.php',
     'app\\data\\controller\\api\\auth\\Center' => $baseDir . '/app/data/controller/api/auth/Center.php',
     'app\\data\\controller\\api\\auth\\News' => $baseDir . '/app/data/controller/api/auth/News.php',

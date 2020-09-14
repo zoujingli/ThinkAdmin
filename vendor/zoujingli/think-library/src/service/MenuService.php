@@ -83,7 +83,7 @@ class MenuService extends Service
                 unset($menus[$key]);
             } else {
                 $node = join('/', array_slice(explode('/', $menu['url']), 0, 3));
-                $menu['url'] = url($menu['url']) . ($menu['params'] ? '' : "?{$menu['params']}");
+                $menu['url'] = url($menu['url'])->build() . ($menu['params'] ? '?' . $menu['params'] : '');
                 if (!$service->check($node)) unset($menus[$key]);
             }
         }

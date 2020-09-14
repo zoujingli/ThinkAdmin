@@ -363,6 +363,7 @@ class ComposerStaticInit7ad2dfd941224dedfd9e69a3187017d8
         'app\\data\\controller\\api\\Login' => __DIR__ . '/../..' . '/app/data/controller/api/Login.php',
         'app\\data\\controller\\api\\News' => __DIR__ . '/../..' . '/app/data/controller/api/News.php',
         'app\\data\\controller\\api\\Notify' => __DIR__ . '/../..' . '/app/data/controller/api/Notify.php',
+        'app\\data\\controller\\api\\Wxapp' => __DIR__ . '/../..' . '/app/data/controller/api/Wxapp.php',
         'app\\data\\controller\\api\\auth\\Address' => __DIR__ . '/../..' . '/app/data/controller/api/auth/Address.php',
         'app\\data\\controller\\api\\auth\\Center' => __DIR__ . '/../..' . '/app/data/controller/api/auth/Center.php',
         'app\\data\\controller\\api\\auth\\News' => __DIR__ . '/../..' . '/app/data/controller/api/auth/News.php',

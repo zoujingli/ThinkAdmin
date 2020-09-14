@@ -40,15 +40,16 @@ class Oauth extends BasicWeChat
 
     /**
      * 通过 code 获取 AccessToken 和 openid
+     * @param string $code 授权Code值，不传则取GET参数
      * @return bool|array
      * @throws Exceptions\InvalidResponseException
      * @throws Exceptions\LocalCacheException
      */
-    public function getOauthAccessToken()
+    public function getOauthAccessToken($code = '')
     {
         $appid = $this->config->get('appid');
         $appsecret = $this->config->get('appsecret');
-        $code = isset($_GET['code']) ? $_GET['code'] : '';
+        $code = $code ? $code : (isset($_GET['code']) ? $_GET['code'] : '');
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$appsecret}&code={$code}&grant_type=authorization_code";
         return $this->httpGetForJson($url);
     }
