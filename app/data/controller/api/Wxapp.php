@@ -10,7 +10,7 @@ use WeMini\Live;
 use WeMini\Qrcode;
 
 /**
- * 小程序入口
+ * 微信小程序入口
  * Class Wxapp
  * @package app\data\controller\api
  */
