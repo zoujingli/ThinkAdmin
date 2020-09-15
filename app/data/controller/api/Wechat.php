@@ -79,6 +79,7 @@ class Wechat extends Controller
             // 会员注册并登录生成接口令牌
             $data = $this->fansinfo;
             $data['openid2'] = $data['openid'];
+            $data['base_sex'] = ['未知', '男', '女'][$data['sex']] ?? '未知';
             if (isset($data['headimgurl'])) $data['headimg'] = $data['headimgurl'];
             $map = isset($data['unionid']) ? ['unionid' => $data['unionid']] : ['openid2' => $this->openid];
             $this->userinfo = UserService::instance()->save($map, array_merge($map, $data), true);
