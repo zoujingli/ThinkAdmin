@@ -87,43 +87,7 @@ class ShopGoods extends Controller
     }
 
     /**
-     * 商品库存入库
-     * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function stock()
-    {
-        $map = $this->_vali(['code.require' => '商品编号不能为空哦！']);
-        if ($this->request->isGet()) {
-            $list = $this->app->db->name('ShopGoods')->where($map)->select()->toArray();
-            if (empty($list)) $this->error('无效的商品信息，请稍候再试！');
-            [$this->vo] = GoodsService::instance()->buildItemData($list);
-            $this->fetch();
-        } else {
-            [$data, $post, $batch] = [[], $this->request->post(), CodeExtend::uniqidDate(12, 'B')];
-            if (isset($post['goods_code']) && is_array($post['goods_code'])) {
-                foreach (array_keys($post['goods_code']) as $key) {
-                    if ($post['goods_stock'][$key] > 0) $data[] = [
-                        'batch_no'    => $batch,
-                        'goods_code'  => $post['goods_code'][$key],
-                        'goods_spec'  => $post['goods_spec'][$key],
-                        'goods_stock' => $post['goods_stock'][$key],
-                    ];
-                }
-                if (!empty($data)) {
-                    $this->app->db->name('ShopGoodsStock')->insertAll($data);
-                    GoodsService::instance()->syncStock($map['code']);
-                    $this->success('商品信息入库成功！');
-                }
-            }
-            $this->error('没有需要商品入库的数据！');
-        }
-    }
-
-    /**
-     * 添加商品信息
+     * 添加商品数据
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -132,12 +96,12 @@ class ShopGoods extends Controller
     public function add()
     {
         $this->mode = 'add';
-        $this->title = '添加商品信息';
+        $this->title = '添加商品数据';
         $this->_form($this->table, 'form', 'code');
     }
 
     /**
-     * 编辑商品信息
+     * 编辑商品数据
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -146,8 +110,33 @@ class ShopGoods extends Controller
     public function edit()
     {
         $this->mode = 'edit';
-        $this->title = '编辑商品信息';
+        $this->title = '编辑商品数据';
         $this->_form($this->table, 'form', 'code');
+    }
+
+    /**
+     * 复制编辑商品
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function copy()
+    {
+        $this->mode = 'copy';
+        $this->title = '复制编辑商品';
+        $this->_form($this->table, 'form', 'code');
+    }
+
+    /**
+     * 表单数据处理
+     * @param array $data
+     */
+    protected function _copy_form_filter(&$data)
+    {
+        if ($this->request->isPost()) {
+            $data['code'] = CodeExtend::uniqidNumber(12, 'G');
+        }
     }
 
     /**
@@ -209,7 +198,43 @@ class ShopGoods extends Controller
     }
 
     /**
-     * 上下架商品管理
+     * 商品库存入库
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function stock()
+    {
+        $map = $this->_vali(['code.require' => '商品编号不能为空哦！']);
+        if ($this->request->isGet()) {
+            $list = $this->app->db->name('ShopGoods')->where($map)->select()->toArray();
+            if (empty($list)) $this->error('无效的商品数据，请稍候再试！');
+            [$this->vo] = GoodsService::instance()->buildItemData($list);
+            $this->fetch();
+        } else {
+            [$data, $post, $batch] = [[], $this->request->post(), CodeExtend::uniqidDate(12, 'B')];
+            if (isset($post['goods_code']) && is_array($post['goods_code'])) {
+                foreach (array_keys($post['goods_code']) as $key) {
+                    if ($post['goods_stock'][$key] > 0) $data[] = [
+                        'batch_no'    => $batch,
+                        'goods_code'  => $post['goods_code'][$key],
+                        'goods_spec'  => $post['goods_spec'][$key],
+                        'goods_stock' => $post['goods_stock'][$key],
+                    ];
+                }
+                if (!empty($data)) {
+                    $this->app->db->name('ShopGoodsStock')->insertAll($data);
+                    GoodsService::instance()->syncStock($map['code']);
+                    $this->success('商品数据入库成功！');
+                }
+            }
+            $this->error('没有需要商品入库的数据！');
+        }
+    }
+
+    /**
+     * 商品上下架管理
      * @auth true
      * @throws \think\db\exception\DbException
      */
@@ -222,7 +247,7 @@ class ShopGoods extends Controller
     }
 
     /**
-     * 删除商品信息
+     * 删除商品数据
      * @auth true
      * @throws \think\db\exception\DbException
      */

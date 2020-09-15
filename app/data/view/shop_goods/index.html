@@ -71,6 +71,9 @@
                 </td>
                 <td class='nowrap sub-span-blue'>
                     <div class="margin-bottom-5">剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )</div>
+                    {if auth('copy')}
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" data-open='{:url("copy")}?code={$vo.code}'>复 制</a>
+                    {/if}
                     <!--{if auth("edit")}-->
                     <a class="layui-btn layui-btn-xs" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
                     <!--{else}-->
