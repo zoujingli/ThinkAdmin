@@ -25,15 +25,15 @@
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
             <span class="notselect">图片名称 </span>
             <input class="layui-input inline-block" style="width:240px" name="name[]" value="#" required placeholder="请输入图片名称">
-            <a data-item-up class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-up margin-0"></i></a>
-            <a data-item-dn class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-down margin-0"></i></a>
-            <a data-item-del class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-close margin-0"></i></a>
+            <a data-item-up class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-up margin-0"></i></a>
+            <a data-item-dn class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-down margin-0"></i></a>
+            <a data-item-rm class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-close margin-0"></i></a>
         </label>
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
             <span class="notselect">跳转规则 </span>
             <input class="layui-input inline-block" style="width:240px" name="rule[]" value="#" required placeholder="请输入跳转规则">
-            <a data-prefix="NEWS" data-show-page="{:url('data/news_item/select')}" class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择文章</a>
-            <a data-prefix="GOODS" data-show-page="{:url('data/shop_goods/select')}" class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择商品</a>
+            <a data-prefix="NEWS" data-item-page="{:url('data/news_item/select')}" class="layui-btn layui-btn-primary">选择文章</a>
+            <a data-prefix="GOODS" data-item-page="{:url('data/shop_goods/select')}" class="layui-btn layui-btn-primary">选择商品</a>
             <span class="help-block block notselect">若要跳转页面，请选择对应的数据或填写跳转的 URL 地址，不跳转以“#”号表示。</span>
         </label>
     </div>
@@ -44,14 +44,20 @@
 </label>
 
 <style>
-    [data-item-dn], [data-item-up], [data-item-del], [data-item-goods], [data-item-cate] {
+    [data-item-page] {
+        margin-top: -3px;
+        margin-left: 5px;
+    }
+
+    [data-item-dn], [data-item-up], [data-item-rm] {
         margin-top: -4px;
+        margin-left: 5px;
     }
 </style>
 
 <script>
     (function (data) {
-        /*! 默认数据处理 */
+        /*! 默认数据渲染 */
         if (data.length < 1) addItem();
         else data.forEach(function (item) {
             addItem(item)
@@ -64,14 +70,14 @@
             setTimeout(initUpload, 100);
         })();
         /*! 轮播选项操作 */
-        $('[data-slider-box]').on('click', '[data-show-page]', function ($that) {
+        $('[data-slider-box]').on('click', '[data-item-page]', function ($that) {
             $that = $(this), top.setCheckValue = function (value) {
                 $that.prevAll('input').val(($that.data('prefix') + '#{v}').replace('{v}', value));
             };
-            $.form.iframe($(this).data('show-page'), $that.data('title') || $that.text(), ['930px', '600px']);
+            $.form.iframe($(this).data('item-page'), $that.data('title') || $that.text(), ['930px', '600px']);
         }).on('click', '[data-item-add]', function () {
             addItem();
-        }).on('click', '[data-item-del]', function () {
+        }).on('click', '[data-item-rm]', function () {
             $(this).parents('[data-slider-item]').remove();
         }).on('click', '[data-item-up]', function () {
             var item = $(this).parents('[data-slider-item]');
@@ -91,7 +97,7 @@
             }
             $.form.load('{$request->url()}', {data: JSON.stringify(data)}, 'post');
         });
-    })(JSON.parse(document.getElementById('DefaultData').innerHTML || '[]') || []);
+    })(JSON.parse($('#DefaultData').val() || '[]') || []);
 
     /*! 添加轮播项 */
     function addItem(data) {
