@@ -5,6 +5,7 @@ namespace app\data\controller\api\auth;
 use app\data\controller\api\Auth;
 use app\data\service\GoodsService;
 use app\data\service\OrderService;
+use app\data\service\TruckService;
 use app\wechat\service\WechatService;
 use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
@@ -297,7 +298,7 @@ class Order extends Auth
             $data = $this->_vali([
                 'code.require' => '快递编号不能为空！', 'number.require' => '配送单号不能为空！',
             ]);
-            $result = OrderService::instance()->trackExpress($data['code'], $data['number']);
+            $result = TruckService::instance()->query($data['code'], $data['number']);
             empty($result['code']) ? $this->error($result['info']) : $this->success('快递追踪信息', $result);
         } catch (HttpResponseException $exception) {
             throw $exception;

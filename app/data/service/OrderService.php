@@ -3,7 +3,6 @@
 namespace app\data\service;
 
 use think\admin\Service;
-use think\admin\service\InterfaceService;
 
 /**
  * 订单数据服务
@@ -46,23 +45,6 @@ class OrderService extends Service
         $codes = $this->app->db->name('ShopOrderItem')->where($map)->column('goods_code');
         foreach (array_unique($codes) as $code) GoodsService::instance()->syncStock($code);
         return true;
-    }
-
-    /**
-     * 楚才开放平台快递查询
-     * @param string $code 快递公司编号
-     * @param string $number 快递配送单号
-     * @return array
-     * @throws \think\admin\Exception
-     */
-    public function trackExpress($code, $number)
-    {
-        $service = InterfaceService::instance();
-        // 测试的账号及密钥，随时可能会变更，请联系客服获取自己的账号和密钥
-        $service->setAuth('6998081316132228', '193fc1d9a2aac78475bc8dbeb9a5feb1');
-        return $service->doRequest('https://open.cuci.cc/user/api.auth.express/query', [
-            'type' => 'free', 'express' => $code, 'number' => $number,
-        ]);
     }
 
     /**

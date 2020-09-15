@@ -1,0 +1,42 @@
+<form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+
+    <div class="layui-card-body padding-left-40">
+
+        <label class="layui-form-item block relative">
+            <span class="color-green font-w7 margin-right-5">快递公司名称</span><span class="nowrap color-desc">Name</span>
+            <input name="name" required value='{$vo.name|default=""}' placeholder="请输入快递公司名称" class="layui-input">
+            <p class="color-desc">必填，快递公司名称用于显示快递配送的公司标识，请尽量保持其精准性。</p>
+        </label>
+
+        <label class="layui-form-item block relative">
+            <span class="color-green font-w7 margin-right-5">快递鸟接口查询编码</span><span class="nowrap color-desc">Code01</span>
+            <input name="code_1" required value='{$vo.code_1|default=""}' placeholder="请输入快递鸟接口查询编码" class="layui-input">
+            <p class="color-desc">必填，快递公司对应在快递鸟接口的编码，可以从快递鸟官方接口文档中获取到。</p>
+        </label>
+
+        <label class="layui-form-item block relative">
+            <span class="color-green font-w7 margin-right-5">快递100百度查询编码</span><span class="nowrap color-desc">Code02</span>
+            <input name="code_2" value='{$vo.code_2|default=""}' placeholder="请输入快递100百度查询编码" class="layui-input">
+            <p class="color-desc">可选，快递公司在百度快递100应用程序搜索时使用的编码，需要使用网络模拟请求抓取。</p>
+        </label>
+
+        <label class="layui-form-item block relative">
+            <span class="color-green font-w7 margin-right-5">快递100接口查询编码</span><span class="nowrap color-desc">Code03</span>
+            <input name="code_3" value='{$vo.code_3|default=""}' placeholder="请输入快递100接口查询编码" class="layui-input">
+            <p class="color-desc">必填，快递公司对应在快递100接口的编码，可以从快递100官方接口文档中获取到。</p>
+        </label>
+
+        <label class="layui-form-item block relative">
+            <span class="color-green font-w7 margin-right-5">快递公司描述</span><span class="nowrap color-desc">Remark</span>
+            <textarea class="layui-textarea" name="remark" placeholder="请输入快递公司描述">{$vo.remark|default=''}</textarea>
+        </label>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>

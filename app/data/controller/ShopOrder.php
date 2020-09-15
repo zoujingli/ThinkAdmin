@@ -3,6 +3,7 @@
 namespace app\data\controller;
 
 use app\data\service\OrderService;
+use app\data\service\TruckService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 
@@ -123,7 +124,7 @@ class ShopOrder extends Controller
                 'code.require'   => '快递编号不能为空！',
                 'number.require' => '配送单号不能为空！',
             ]);
-            $this->result = OrderService::instance()->trackExpress($data['code'], $data['number']);
+            $this->result = TruckService::instance()->query($data['code'], $data['number']);
             if (empty($this->result['code'])) $this->error($this->result['info']);
             $this->fetch('truck_query');
         } catch (HttpResponseException $exception) {
