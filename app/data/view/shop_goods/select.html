@@ -34,7 +34,7 @@
                 销售状态：{if $vo.status eq 0}<b class="layui-badge">已下架</b>{else}<b class="layui-badge layui-bg-green">销售中</b>{/if}<br>
                 剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )<br>
             </td>
-            <td class='text-right'><a class="layui-btn layui-btn-sm layui-btn-normal" data-goods="{$vo.code}">选择商品</a></td>
+            <td class='text-right'><a class="layui-btn layui-btn-sm layui-btn-normal" data-item="{$vo.code}">选择商品</a></td>
         </tr>
         {/foreach}
         </tbody>
@@ -59,8 +59,8 @@
 {block name='script'}
 <script>
     layui.form.render();
-    $('[data-goods]').on('click', function () {
-        top.setCheckValue(this.getAttribute('data-goods') || '');
+    $('[data-item]').on('click', function () {
+        top.setCheckValue(this.getAttribute('data-item') || '');
         parent.layer.close(parent.layer.getFrameIndex(window.name));
     });
 </script>

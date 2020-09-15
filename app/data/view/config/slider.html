@@ -27,24 +27,24 @@
             <input class="layui-input inline-block" style="width:240px" name="name[]" value="#" required placeholder="请输入图片名称">
             <a data-item-up class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-up margin-0"></i></a>
             <a data-item-dn class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-down margin-0"></i></a>
-            <a data-item-rm class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-close margin-0"></i></a>
+            <a data-item-del class="layui-btn layui-btn-primary margin-left-5"><i class="layui-icon layui-icon-close margin-0"></i></a>
         </label>
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
             <span class="notselect">跳转规则 </span>
             <input class="layui-input inline-block" style="width:240px" name="rule[]" value="#" required placeholder="请输入跳转规则">
-            <a data-item-news class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择文章</a>
-            <a data-item-goods class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择商品</a>
+            <a data-prefix="NEWS" data-show-page="{:url('data/news_item/select')}" class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择文章</a>
+            <a data-prefix="GOODS" data-show-page="{:url('data/shop_goods/select')}" class="layui-btn layui-btn-primary margin-left-5" style="margin-top:-3px">选择商品</a>
             <span class="help-block block notselect">若要跳转页面，请选择对应的数据或填写跳转的 URL 地址，不跳转以“#”号表示。</span>
         </label>
     </div>
 </div>
 
 <label class="layui-hide">
-    <textarea id="default-data">{$data|default=[]|json_encode}</textarea>
+    <textarea id="DefaultData">{$data|default=[]|json_encode}</textarea>
 </label>
 
 <style>
-    [data-item-dn], [data-item-up], [data-item-rm], [data-item-goods], [data-item-cate] {
+    [data-item-dn], [data-item-up], [data-item-del], [data-item-goods], [data-item-cate] {
         margin-top: -4px;
     }
 </style>
@@ -53,7 +53,9 @@
     (function (data) {
         /*! 默认数据处理 */
         if (data.length < 1) addItem();
-        for (this.index in data) addItem(data[this.index]);
+        else data.forEach(function (item) {
+            addItem(item)
+        });
         /*! 初始化上传插件 */
         (function initUpload() {
             $('[data-slider-box] input[data-upload-image]').map(function () {
@@ -62,40 +64,34 @@
             setTimeout(initUpload, 100);
         })();
         /*! 轮播选项操作 */
-        $('[data-slider-box]').on('click', '[data-item-news]', function ($that) {
-            $that = $(this), top.setCheckValue = function (id) {
-                $that.prevAll('input').val('news#{v}'.replace('{v}', id));
+        $('[data-slider-box]').on('click', '[data-show-page]', function ($that) {
+            $that = $(this), top.setCheckValue = function (value) {
+                $that.prevAll('input').val(($that.data('prefix') + '#{v}').replace('{v}', value));
             };
-            $.form.iframe('{:url("data/news_item/select")}', '选择文章', ['930px', '600px']);
-        }).on('click', '[data-item-goods]', function ($that) {
-            $that = $(this), top.setCheckValue = function (id) {
-                $that.prevAll('input').val('goods#{v}'.replace('{v}', id));
-            };
-            $.form.iframe('{:url("data/shop_goods/select")}', '选择商品', ['930px', '600px']);
+            $.form.iframe($(this).data('show-page'), $that.data('title') || $that.text(), ['930px', '600px']);
         }).on('click', '[data-item-add]', function () {
             addItem();
-        }).on('click', '[data-item-rm]', function () {
+        }).on('click', '[data-item-del]', function () {
             $(this).parents('[data-slider-item]').remove();
         }).on('click', '[data-item-up]', function () {
-            this.item = $(this).parents('[data-slider-item]');
-            this.prev = this.item.prev('[data-slider-item]');
-            if (this.item.index() > 0) this.item.insertBefore(this.prev);
+            var item = $(this).parents('[data-slider-item]');
+            var prev = item.prev('[data-slider-item]');
+            if (item.index() > 0) item.insertBefore(prev);
         }).on('click', '[data-item-dn]', function () {
-            this.item = $(this).parents('[data-slider-item]');
-            this.next = this.item.next('[data-slider-item]');
-            if (this.next) this.item.insertAfter(this.next);
+            var item = $(this).parents('[data-slider-item]');
+            var next = item.next('[data-slider-item]');
+            if (next) item.insertAfter(next);
         });
         /*! 表单提交处理 */
         $('form#SliderForm').vali(function (ret) {
-            this.data = [];
-            for (this.index in ret.img) {
-                if (!ret.img[this.index]) return $.msg.tips('请上传展示图片哦！');
-                this.data.push({img: ret.img[this.index], rule: ret.rule[this.index], name: ret.name[this.index]});
+            var idx, data = [];
+            for (idx in ret.img) {
+                if (!ret.img[idx]) return $.msg.tips('请上传展示图片哦！');
+                data.push({img: ret.img[idx], rule: ret.rule[idx], name: ret.name[idx]});
             }
-            $.form.load('{$request->url()}', {data: JSON.stringify(this.data)}, 'post');
+            $.form.load('{$request->url()}', {data: JSON.stringify(data)}, 'post');
         });
-
-    })(JSON.parse(document.getElementById('default-data').innerHTML || '[]') || []);
+    })(JSON.parse(document.getElementById('DefaultData').innerHTML || '[]') || []);
 
     /*! 添加轮播项 */
     function addItem(data) {

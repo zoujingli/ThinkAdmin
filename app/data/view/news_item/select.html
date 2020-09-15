@@ -20,7 +20,7 @@
             <td class="nowrap">{$vo.title|default=''}</td>
             <td>{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}</td>
             <td>{$vo.create_at|format_datetime}</td>
-            <td class='text-right'><a class="layui-btn layui-btn-sm layui-btn-normal" data-news="{$vo.id}">选择文章</a></td>
+            <td class='text-right'><a class="layui-btn layui-btn-sm layui-btn-normal" data-item="{$vo.id}">选择文章</a></td>
         </tr>
         {/foreach}
         </tbody>
@@ -46,8 +46,8 @@
 <script>
     $(function () {
         $.form.reInit(), layui.form.render();
-        $('[data-news]').on('click', function () {
-            top.setCheckValue(this.getAttribute('data-goods') || '');
+        $('[data-item]').on('click', function () {
+            top.setCheckValue(this.getAttribute('data-item') || '');
             parent.layer.close(parent.layer.getFrameIndex(window.name));
         });
     });
