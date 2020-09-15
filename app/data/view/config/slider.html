@@ -3,7 +3,7 @@
 {block name="content"}
 <div class="think-box-shadow">
     <form onsubmit="return false;" id="SliderForm" class='layui-form' autocomplete="off" style="width:750px">
-        <div class="text-center font-s14 font-w7">轮播图管理<span class="color-desc font-s12">（建议尺寸：690px  250px）</span></div>
+        <div class="text-center font-s14 font-w7">{$title|default='图片数据管理'}<span class="color-desc font-s12">（建议尺寸：690px  250px）</span></div>
         <div class="hr-line-dashed"></div>
         <div class="padding-bottom-15" data-slider-box>
             <div class="layui-form-item text-center">
@@ -23,18 +23,18 @@
             <input data-upload-image name="img[]" type="hidden">
         </div>
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
-            <span class="notselect">图片名称 </span>
+            <b class="notselect color-green">图片名称 </b>
             <input class="layui-input inline-block" style="width:240px" name="name[]" value="#" required placeholder="请输入图片名称">
             <a data-item-up class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-up margin-0"></i></a>
             <a data-item-dn class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-down margin-0"></i></a>
             <a data-item-rm class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-close margin-0"></i></a>
         </label>
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
-            <span class="notselect">跳转规则 </span>
+            <b class="notselect color-green">跳转规则 </b>
             <input class="layui-input inline-block" style="width:240px" name="rule[]" value="#" required placeholder="请输入跳转规则">
             <a data-prefix="NEWS" data-item-page="{:url('data/news_item/select')}" class="layui-btn layui-btn-primary">选择文章</a>
             <a data-prefix="GOODS" data-item-page="{:url('data/shop_goods/select')}" class="layui-btn layui-btn-primary">选择商品</a>
-            <span class="help-block block notselect">若要跳转页面，请选择对应的数据或填写跳转的 URL 地址，不跳转以“#”号表示。</span>
+            <span class="help-block block notselect">若要跳转页面，请选择对应的数据或填写跳转的 URL 地址，不跳转请填写“#”号占位。</span>
         </label>
     </div>
 </div>
@@ -69,7 +69,7 @@
             });
             setTimeout(initUpload, 100);
         })();
-        /*! 轮播选项操作 */
+        /*! 数据选项操作 */
         $('[data-slider-box]').on('click', '[data-item-page]', function ($that) {
             $that = $(this), top.setCheckValue = function (value) {
                 $that.prevAll('input').val(($that.data('prefix') + '#{v}').replace('{v}', value));
@@ -99,7 +99,7 @@
         });
     })(JSON.parse($('#DefaultData').val() || '[]') || []);
 
-    /*! 添加轮播项 */
+    /*! 添加数据选项 */
     function addItem(data) {
         this.$html = $($('[data-item-tpl]').html());
         if (data) for (this.index in data) this.$html.find('[name^="' + this.index + '"]').val(data[this.index]);
