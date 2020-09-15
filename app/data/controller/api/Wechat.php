@@ -47,12 +47,12 @@ class Wechat extends Controller
      * 微信粉丝数据
      * @var array
      */
-    protected $fansinfo;
+    protected $fansInfo;
     /**
      * 会员用户数据
      * @var array
      */
-    protected $userinfo;
+    protected $userInfo;
 
     /**
      * 加载对应JSSDK数据
@@ -75,14 +75,14 @@ class Wechat extends Controller
         } else {
             $this->openid = $user['openid'];
             $this->config = $wechat->getWebJssdkSign($this->source);
-            $this->fansinfo = $user['fansinfo'] ?? [];
+            $this->fansInfo = $user['fansinfo'] ?? [];
             // 会员注册并登录生成接口令牌
-            $data = $this->fansinfo;
+            $data = $this->fansInfo;
             $data['openid2'] = $data['openid'];
             $data['base_sex'] = ['未知', '男', '女'][$data['sex']] ?? '未知';
             if (isset($data['headimgurl'])) $data['headimg'] = $data['headimgurl'];
             $map = isset($data['unionid']) ? ['unionid' => $data['unionid']] : ['openid2' => $this->openid];
-            $this->userinfo = UserService::instance()->save($map, array_merge($map, $data), true);
+            $this->userInfo = UserService::instance()->save($map, array_merge($map, $data), true);
             $content = $this->_buildContent();
         }
         return Response::create($content)->contentType('application/x-javascript');
@@ -108,8 +108,8 @@ class Wechat extends Controller
 if (typeof wx === 'object') {
     wx.openid="{$this->openid}";
     wx.config({$this->_jsonEncode($this->config)});
-    wx.fansinfo={$this->_jsonEncode($this->fansinfo)};
-    wx.userinfo={$this->_jsonEncode($this->userinfo)};
+    wx.fansinfo={$this->_jsonEncode($this->fansInfo)};
+    wx.userinfo={$this->_jsonEncode($this->userInfo)};
     wx.ready(function(){
         wx.hideOptionMenu();
         wx.hideAllNonBaseMenuItem();
