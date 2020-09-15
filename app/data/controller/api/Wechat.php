@@ -15,7 +15,7 @@ use think\Response;
  * <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
  * <script src="https://v6.thinkadmin.top/data/api.wechat/jssdk?mode=1"></script>
  * 授权模式支持两种模块，参数 mode=0 时为静默授权，mode=1 时为完整授权
- * 注意：回跳地址默认使用 Header 中的 http_referer 获取，也可以传 source 参数
+ * 注意：回跳地址默认从 Header 中的 http_referer 获取，也可以传 source 参数
  */
 class Wechat extends Controller
 {
