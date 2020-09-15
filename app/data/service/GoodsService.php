@@ -67,7 +67,11 @@ class GoodsService extends Service
     {
         $map = ['deleted' => 0, 'status' => 1];
         $query = $this->app->db->name('ShopGoodsCate')->where($map)->order('sort desc,id desc');
-        return DataExtend::$type($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
+        $cates = DataExtend::$type($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
+        if ($type === 'arr2table') foreach ($cates as &$vo) {
+            $vo['sat'] = $vo['spt'] !== $this->getCateLevel() - 1 ? 'disabled' : '';
+        }
+        return $cates;
     }
 
     /**

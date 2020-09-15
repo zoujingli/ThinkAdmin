@@ -5,7 +5,6 @@ namespace app\data\controller;
 use app\data\service\GoodsService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
-use think\admin\extend\DataExtend;
 
 /**
  * 商品数据管理
@@ -19,6 +18,20 @@ class ShopGoods extends Controller
      * @var string
      */
     private $table = 'ShopGoods';
+
+    /**
+     * 最大分类级别
+     * @var integer
+     */
+    protected $cateLevel;
+
+    /**
+     * 控制器初始化
+     */
+    protected function initialize()
+    {
+        $this->cateLevel = GoodsService::instance()->getCateLevel();
+    }
 
     /**
      * 商品数据管理
@@ -65,8 +78,7 @@ class ShopGoods extends Controller
     protected function _page_filter(&$data)
     {
         $this->marks = GoodsService::instance()->getMarkList();
-        $query = $this->app->db->name('ShopGoodsCate')->where(['deleted' => 0, 'status' => 1]);
-        $this->clist = DataExtend::arr2table($query->order('sort desc,id desc')->select()->toArray());
+        $this->clist = GoodsService::instance()->getCateList('arr2table');
         $clist = $this->app->db->name('ShopGoodsCate')->whereIn('id', array_column($data, 'cate'))->column('pid,name,status', 'id');
         foreach ($data as &$vo) {
             $vo['cate'] = $clist[$vo['cate']] ?? $vo['cate'];

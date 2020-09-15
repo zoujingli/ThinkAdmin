@@ -32,9 +32,9 @@
                 <select class="layui-select" name="cate" lay-search>
                     <option value="">-- 全部分类 --</option>
                     {foreach $clist as $cate}{if input('cate','') eq $cate.id}
-                    <option selected value="{$cate.id}">{$cate.spl}{$cate.name}</option>
+                    <option {$cate.sat} selected value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
                     {else}
-                    <option value="{$cate.id}">{$cate.spl}{$cate.name}</option>
+                    <option {$cate.sat} value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
                     {/if}{/foreach}
                 </select>
             </div>
