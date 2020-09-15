@@ -32,7 +32,7 @@ class ShopGoods extends Controller
     {
         $this->title = '商品数据管理';
         $query = $this->_query($this->table);
-        $query->like('name,mark')->equal('status,cate');
+        $query->like('code,name,mark')->equal('status,cate');
         // 加载对应数据
         $this->type = $this->request->get('type', 'index');
         if ($this->type === 'index') $query->where(['deleted' => 0]);
@@ -51,7 +51,7 @@ class ShopGoods extends Controller
     public function select()
     {
         $query = $this->_query($this->table);
-        $query->equal('status,cate')->like('name,mark');
+        $query->equal('status,cate')->like('code,name,mark');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
