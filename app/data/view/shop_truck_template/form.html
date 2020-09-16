@@ -1,0 +1,234 @@
+{extend name="../../admin/view/main"}
+
+{block name="content"}
+<div id="TruckForm">
+    <form onsubmit="return false;" action="{:url('')}" method="post" class='layui-form layui-card' autocomplete="off">
+        <div class="layui-card-body padding-40">
+            <label class="layui-form-item block relative">
+                <span class="color-green font-w7 margin-right-5">邮费模板名称</span><span class="color-desc">Name</span>
+                <input name="name" required value='{$vo.name|default=""}' placeholder="请输入邮费模板名称" class="layui-input">
+                <p class="color-desc">必填，邮费模板名称用于区分邮费模板规则，仅在后台选择邮费模板时使用。</p>
+            </label>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>可配送区域</th>
+                    <th>首件（个）</th>
+                    <th>运费（元）</th>
+                    <th>续件（个）</th>
+                    <th>续费（元）</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in rules">
+                    <td>
+                    <span class="margin-right-5" ng-repeat="city in item.city" ng-if="checkShowOne(city)">
+                        <b class="font-w7" ng-bind="city.name"></b>
+                        <b ng-repeat="x in city.subs" ng-if="x.status" class="color-desc">（{{x.name}}）</b>
+                    </span>
+                        <a class="margin-left-5" ng-click="editRuleItem(item)">编辑</a>
+                        <a class="margin-left-5" ng-click="removeRuleItem(item)">删除</a>
+                    </td>
+                    <td><input class="layui-input" ng-model="item.rule.firstNumber"></td>
+                    <td><input class="layui-input" ng-model="item.rule.firstAmount"></td>
+                    <td><input class="layui-input" ng-model="item.rule.repeatNumber"></td>
+                    <td><input class="layui-input" ng-model="item.rule.repeatAmount"></td>
+                </tr>
+                <tr>
+                    <td colspan="5"><a ng-click="addRuleItem()">添加可配送区域和运费</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="hr-line-dashed"></div>
+            {if auth('edit')}
+            <div class="layui-form-item text-center">
+                <button class="layui-btn" type='submit'>保存数据</button>
+            </div>
+            {/if}
+        </div>
+    </form>
+
+    <div class='layui-form layui-card layui-hide' id="RegionContainer">
+        <div class="layui-card-body padding-20 padding-bottom-0">
+            <div class="layui-row layui-col-space10">
+                <div class="layui-col-xs8">
+                    <div class="layui-textarea" style="height:360px;overflow:auto">
+                        <div>
+                            <span class="pointer notselect margin-right-10" ng-click="setCheckAllItem(true)">全选</span>
+                            <span class="pointer notselect margin-right-10" ng-click="setCheckAllItem(false)">取消</span>
+                        </div>
+                        <hr class="hr-line-dashed margin-top-5 margin-bottom-5">
+                        <div class="layui-row layui-col-space5">
+                            <div class="layui-col-xs3 nowrap" ng-repeat="x in citys" ng-if="checkShowCity(x)">
+                                <label class="think-checkbox margin-right-0">
+                                    <input type="checkbox" ng-model="x.status" ng-change="setCheckActiveCity(x)" ng-value="x.name" lay-ignore>
+                                </label>
+                                <span class="pointer notselect" ng-click="setCheckActiveCity(x)">{{x.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs4">
+                    <div class="layui-textarea" style="height:360px;overflow:auto">
+                        <div>
+                            <span class="pointer notselect margin-right-10" ng-click="setCheckCityItem(true)">全选</span>
+                            <span class="pointer notselect margin-right-10" ng-click="setCheckCityItem(false)">取消</span>
+                            <b class="pull-right color-blue" ng-bind="city.name"></b>
+                        </div>
+                        <hr class="hr-line-dashed margin-top-5 margin-bottom-5">
+                        <label ng-repeat="x in city.subs" class="think-checkbox nowrap layui-elip" ng-if="x.show">
+                            <input type="checkbox" ng-model="x.status" ng-value="x.name" value="" lay-ignore> {{x.name}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="layui-form-item text-center">
+                <button class="layui-btn" ng-click="setItem()">确定选择</button>
+                <button class="layui-btn layui-btn-danger" data-close>取消编辑</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<label class="layui-hide">
+    <textarea id="CityData">{$citys|json_encode|raw}</textarea>
+</label>
+<script>
+    Array.prototype.inArray = function (e) {
+        for (let i = 0; i < this.length; i++) {
+            if (this[i] === e) return true;
+        }
+        return false;
+    }
+    require(['angular'], function () {
+        var app = angular.module("TruckForm", []).run(callback);
+        angular.bootstrap(document.getElementById(app.name), [app.name]);
+
+        function callback($rootScope) {
+
+            $rootScope.rule = {city: [], rule: {}};
+            $rootScope.rules = [];
+
+            $rootScope.city = {subs: []};
+            $rootScope.citys = angular.fromJson($('#CityData').val()) || [];
+            // 默认显示所有城市
+            $rootScope.citys.forEach(function (item) {
+                item.show = true
+                delete item.id, delete item.pid;
+                item.subs.forEach(function (item) {
+                    item.show = true;
+                    delete item.id, delete item.pid;
+                });
+            });
+            // 添加规格选项
+            $rootScope.addRuleItem = function () {
+                $rootScope.rule = angular.fromJson(angular.toJson({city: [], rule: {firstNumber: 1, firstAmount: 1.00, repeatNumber: 1, repeatAmount: 1.00}}));
+                $rootScope.rules.push($rootScope.rule);
+                $rootScope.showDailog();
+            };
+            // 编辑规则选项
+            $rootScope.editRuleItem = function (rule) {
+                rule.city.forEach(function (item) {
+                    item.subs.forEach(function (item) {
+                        item.show = true;
+                    });
+                });
+                rule.city = [];
+                $rootScope.rule = rule;
+                $rootScope.showDailog();
+            }
+            // 删除规则选项
+            $rootScope.removeRuleItem = function (rule) {
+                rule.city.forEach(function (item) {
+                    item.subs.forEach(function (item) {
+                        item.show = true;
+                        item.status = false;
+                    });
+                });
+                var rules = [];
+                $rootScope.rules.forEach(function (item) {
+                    if (item !== rule) rules.push(item);
+                })
+                $rootScope.rules = rules;
+            }
+            // 检查是否还拥有可以选择的项目
+            $rootScope.checkShowCity = function (city) {
+                return city.subs.some(function (item) {
+                    if (item.show) return true;
+                })
+            }
+            $rootScope.checkShowOne = function (city) {
+                return city.subs.some(function (item) {
+                    if (item.status) return true;
+                });
+            };
+            /*! 省份全选或取消 */
+            $rootScope.setCheckAllItem = function (status) {
+                $rootScope.citys.forEach(function (item) {
+                    if (item.show) item.status = !!status;
+                    item.subs.forEach(function (item) {
+                        if (item.show) item.status = !!status;
+                    })
+                });
+            };
+            /*! 城市全选或取消 */
+            $rootScope.setCheckCityItem = function (status) {
+                $rootScope.city.subs.forEach(function (item) {
+                    if (item.show) item.status = !!status;
+                });
+            };
+            /*! 展开省份下的城市 */
+            $rootScope.setCheckActiveCity = function (city) {
+                $rootScope.city = city;
+                city.subs.forEach(function (item) {
+                    item.status = !!city.status;
+                });
+            };
+            $rootScope.$watch('citys', function () {
+                // 子集联动上级选择
+                $rootScope.city.status = $rootScope.city.subs.some(function (item) {
+                    if (item.show && item.status) return true;
+                });
+                // 记录当前操作值
+                var cache = {};
+                $rootScope.rule.city.forEach(function (item) {
+                    cache[item.name] = item;
+                });
+                $rootScope.citys.forEach(function (item) {
+                    var subs = [];
+                    item.subs.forEach(function (item) {
+                        if (item.status && item.show) subs.push(item);
+                    })
+                    if (item.show && item.status && subs.length > 0) {
+                        if (cache[item.name]) subs = cache[item.name].subs.concat(subs);
+                        else $rootScope.rule.city.push({name: item.name, subs: subs});
+                        cache[item.name] = subs;
+                    }
+                });
+                console.log(JSON.stringify($rootScope.rule.city))
+            }, true);
+            $rootScope.setItem = function () {
+                layui.layer.closeAll();
+                $rootScope.rules.forEach(function (rule) {
+                    rule.city.forEach(function (item) {
+                        item.subs.forEach(function (item) {
+                            item.show = false;
+                        });
+                    });
+                });
+            };
+            $rootScope.showDailog = function () {
+                layui.layer.open({
+                    type: 1, shade: false, area: '800px', title: '选择配送区域',
+                    content: $('#RegionContainer').removeClass('layui-hide'),
+                    end: function () {
+                        $('#RegionContainer').addClass('layui-hide')
+                    }
+                });
+            };
+        }
+    });
+</script>
+
+{/block}

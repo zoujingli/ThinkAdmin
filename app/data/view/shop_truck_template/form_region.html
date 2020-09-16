@@ -1,0 +1,98 @@
+<div class='layui-form layui-card layui-hide' id="RegionContainer">
+    <div class="layui-card-body padding-20 padding-bottom-0">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-xs8">
+                <div class="layui-textarea" style="height:360px;overflow:auto">
+                    <div>
+                        <span class="pointer notselect margin-right-10" ng-click="setCheckAll(true)">全选</span>
+                        <span class="pointer notselect margin-right-10" ng-click="setCheckAll(false)">取消</span>
+                    </div>
+                    <hr class="hr-line-dashed margin-top-5 margin-bottom-5">
+                    <div class="layui-row layui-col-space5">
+                        <div class="layui-col-xs3 nowrap" data-city-left ng-repeat="x in citys">
+                            <label class="think-checkbox margin-right-0">
+                                <input type="checkbox" ng-model="x.status" ng-change="setActiveCity(x)" ng-value="x.name" lay-ignore>
+                            </label>
+                            <span class="pointer notselect" ng-click="setActiveCity(x)">{{x.name}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs4">
+                <div class="layui-textarea" style="height:360px;overflow:auto">
+                    <div>
+                        <span class="pointer notselect margin-right-10" ng-click="setCheckItem(true)">全选</span>
+                        <span class="pointer notselect margin-right-10" ng-click="setCheckItem(false)">取消</span>
+                        <b ng-bind="city.name"></b>
+                    </div>
+                    <hr class="hr-line-dashed margin-top-5 margin-bottom-5">
+                    <label ng-repeat="x in city.sub" class="think-checkbox nowrap layui-elip">
+                        <input type="checkbox" ng-model="x.status" ng-value="x.name" value="" lay-ignore> {{x.name}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">{{items}}</div>
+        <div class="hr-line-dashed"></div>
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" ng-click="submit()">确定选择</button>
+            <button class="layui-btn layui-btn-danger" data-close>取消编辑</button>
+        </div>
+    </div>
+</div>
+
+<label class="layui-hide">
+    <textarea id="CitysData">{$citys|json_encode|raw}</textarea>
+</label>
+
+<script>
+    require(['angular'], function () {
+        var app = angular.module("RegionContainer", []).run(callback);
+        angular.bootstrap(document.getElementById(app.name), [app.name]);
+
+        function callback($rootScope) {
+            $rootScope.items = [];
+            $rootScope.city = {sub: []};
+            $rootScope.citys = angular.fromJson($('#CitysData').val()) || [];
+            $rootScope.setCheckAll = function (status) {
+                $rootScope.citys.forEach(function (item) {
+                    item.status = !!status;
+                    item.sub.forEach(function (item) {
+                        item.status = !!status;
+                    });
+                })
+            };
+            $rootScope.submit = function () {
+                top.setCitys($rootScope.items);
+            };
+            $rootScope.setCheckItem = function (status) {
+                $rootScope.city.sub.forEach(function (item) {
+                    item.status = !!status;
+                });
+            };
+            $rootScope.setActiveCity = function (city) {
+                $rootScope.city = city;
+                city.sub.forEach(function (item) {
+                    item.status = city.status;
+                });
+            };
+            $rootScope.$watch('citys', function () {
+                let citys = [], full = 1;
+                $rootScope.citys.forEach(function (item) {
+                    let subs = [];
+                    item.sub.forEach(function (item) {
+                        if (item.status) subs.push(item.name)
+                    });
+                    subs.length === item.sub.length ? subs = [] : full = 0;
+                    item.status ? citys.push({name: item.name, subs: subs.join(',')}) : full = 0;
+                    $rootScope.items = full ? [{name: '全国'}] : citys;
+                });
+            }, true);
+            $rootScope.$watch('city', function () {
+                $rootScope.city.status = $rootScope.city.sub.some(function (city) {
+                    if (city.status) return true;
+                });
+            }, true);
+        }
+    });
+</script>

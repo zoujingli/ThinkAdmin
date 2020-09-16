@@ -2,6 +2,7 @@
 
 namespace app\data\service;
 
+use think\admin\extend\DataExtend;
 use think\admin\Service;
 use think\admin\service\InterfaceService;
 
@@ -29,6 +30,12 @@ class TruckService extends Service
     public function amount()
     {
 
+    }
+
+    public function region($level = 3)
+    {
+        $items = $this->app->db->name('ShopTruckRegion')->where('level', '<=', $level)->column('id,pid,name', 'id');
+        return DataExtend::arr2tree($items, 'id', 'pid', 'subs');
     }
 
     /**

@@ -1,0 +1,66 @@
+{extend name="../../admin/view/main"}
+
+{block name="button"}
+
+<!--{if auth("add")}-->
+<button data-open='{:url("add")}' data-title="添加邮费模板" class='layui-btn layui-btn-sm layui-btn-primary'>添加邮费模板</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="layui-badge think-bg-red padding-5 padding-left-10 font-s15 layui-anim layui-anim-upbit">
+    注意：快递公司配置不能随意修改或删除，会影响到物流路径查询！如需添加新快递请联系客服！
+</div>
+<div class="layui-tab layui-tab-card think-bg-white">
+    <div class="layui-tab-content think-box-shadow">
+        {include file='shop_truck_company/index_search'}
+        <table class="layui-table" lay-skin="line">
+            {notempty name='list'}
+            <thead>
+            <tr>
+                <th class='list-table-check-td think-checkbox'>
+                    <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+                </th>
+                <th class='list-table-sort-td'>
+                    <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+                </th>
+                <th class='text-left nowrap'>模板名称</th>
+                <th class="text-center">创建时间</th>
+                <th></th>
+            </tr>
+            </thead>
+            {/notempty}
+            <tbody>
+            {foreach $list as $key=>$vo}
+            <tr data-dbclick>
+                <td class='list-table-check-td think-checkbox'>
+                    <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                </td>
+                <td class='list-table-sort-td'>
+                    <label>
+                        <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
+                    </label>
+                </td>
+                <td class='text-left nowrap'>{$vo.name|default=''}</td>
+                <td class='text-center nowrap'>{$vo.create_at|format_datetime}</td>
+                <td class='text-left nowrap'>
+                    <!--{if auth("edit")}-->
+                    <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑快递公司" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                    <!--{/if}-->
+                    <!--{if $vo.status eq 1 and auth("state")}-->
+                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
+                    <!--{elseif auth("state")}-->
+                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">启 用</a>
+                    <!--{/if}-->
+                    <!--{if auth("remove")}-->
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                    <!--{/if}-->
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    </div>
+</div>
+{/block}
