@@ -165,13 +165,11 @@
                 });
                 return isfull ? '' : '（' + citys.join('、') + '）';
             };
-            /*! 检查是否还拥有可以选择的项目 */
             $rootScope.ShowProvinceShow = function (province) {
                 return province.subs.some(function (item) {
                     if (item.show) return true;
                 })
             }
-            /*! 检查是否还拥有可以选择的项目 */
             $rootScope.ShowProvinceStatus = function (province) {
                 return province.subs.some(function (item) {
                     if (item.status) return true;
