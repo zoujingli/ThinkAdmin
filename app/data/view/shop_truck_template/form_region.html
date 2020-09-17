@@ -6,18 +6,18 @@
         <div class="layui-card">
             <div class="layui-card-header">配送区域</div>
             <div class="layui-card-body">
-                <div ng-repeat="x in items" ng-class="{false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
+                <div ng-repeat="x in items" ng-click="SetActiveProvince(x)" ng-class="{false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
                     <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" type="checkbox" ng-model="x.status"></label>
-                    <span ng-bind="x.name" ng-click="SetActiveProvince(x)"></span>
+                    <span ng-bind="x.name"></span>
                 </div>
             </div>
         </div>
         <div class="layui-card">
             <div class="layui-card-header"><b class="color-green">{{province.name}}</b> 可选区域</div>
             <div class="layui-card-body">
-                <div ng-repeat="x in province.subs" ng-class="{false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
+                <div ng-repeat="x in province.subs" ng-click="SetActiveCity(x)" ng-class="{false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
                     <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" type="checkbox" ng-model="x.status"></label>
-                    <span ng-bind="x.name" ng-click="SetActiveCity(x)"></span>
+                    <span ng-bind="x.name"></span>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
             <div class="layui-card-body">
                 <div ng-repeat="x in city.subs" ng-class="{false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
                     <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" type="checkbox" ng-model="x.status"></label>
-                    <span ng-bind="x.name" ng-click="SetActiveCity(x)"></span>
+                    <span ng-bind="x.name"></span>
                 </div>
             </div>
         </div>
