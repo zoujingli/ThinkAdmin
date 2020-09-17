@@ -23,7 +23,8 @@
                 <tr ng-repeat="item in rules">
                     <td>
                     <span class="margin-right-5" ng-repeat="province in item.city" ng-if="ShowProvinceStatus(province)">
-                        <b class="font-w7" ng-bind="province.name"></b><b class="color-desc">（{{ShowProvinceCityName(province)}}）</b>
+                        <b class="font-w7" ng-bind="province.name"></b>
+                        <span class="color-desc">{{ShowProvinceCityName(province)}}</span>
                     </span>
                         <a class="margin-left-5" ng-click="EditRuleItem(item)">编辑</a>
                         <a class="margin-left-5" ng-click="RemoveRuleItem(item)">删除</a>
@@ -47,7 +48,7 @@
         </div>
     </form>
 
-    <div class='layui-form layui-card' id="RegionDialog">
+    <div class='layui-form layui-card layui-hide' id="RegionDialog">
         <div class="layui-card-body padding-20">
             <div class="layui-row layui-col-space10">
                 <div class="layui-col-xs8">
@@ -152,11 +153,17 @@
             };
             /*! 配送区域城市名称显示处理 */
             $rootScope.ShowProvinceCityName = function (province) {
-                var citys = [];
+                var isfull, citys = [];
                 province.subs.forEach(function (city) {
                     if (city.status) citys.push(city.name);
                 });
-                return citys.join('、');
+                // 省份已选择全部城市，只显示省份名称
+                isfull = $rootScope.citys.some(function (item) {
+                    if (item.name === province.name && citys.length >= item.subs.length) {
+                        return true;
+                    }
+                });
+                return isfull ? '' : '（' + citys.join('、') + '）';
             };
             /*! 检查是否还拥有可以选择的项目 */
             $rootScope.ShowProvinceShow = function (province) {
