@@ -15,14 +15,14 @@
             <div class="layui-form-item">
                 <span class="color-green font-w7 label-required-prev">配送区域计费规则</span>
                 <span class="color-desc margin-left-5">Region</span>
-                <table class="layui-table" lay-skin="line">
+                <table class="layui-table">
                     <thead>
                     <tr>
                         <th class="nowrap">可配送区域</th>
-                        <th class="nowrap">首件（个）</th>
-                        <th class="nowrap">运费（元）</th>
-                        <th class="nowrap">续件（个）</th>
-                        <th class="nowrap">续费（元）</th>
+                        <th class="nowrap text-center">首件（个）</th>
+                        <th class="nowrap text-center">运费（元）</th>
+                        <th class="nowrap text-center">续件（个）</th>
+                        <th class="nowrap text-center">续费（元）</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -35,10 +35,10 @@
                             <a class="margin-left-5" ng-click="EditRuleItem(item)">编辑</a>
                             <a class="margin-left-5" ng-click="RemoveRuleItem(item)">删除</a>
                         </td>
-                        <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.firstNumber"></td>
-                        <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.firstAmount"></td>
-                        <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatNumber"></td>
-                        <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatAmount"></td>
+                        <td class="padding-0 text-center"><input class="layui-input text-center padding-left-0 border-0" ng-model="item.rule.firstNumber"></td>
+                        <td class="padding-0 text-center"><input class="layui-input text-center padding-left-0 border-0" ng-model="item.rule.firstAmount"></td>
+                        <td class="padding-0 text-center"><input class="layui-input text-center padding-left-0 border-0" ng-model="item.rule.repeatNumber"></td>
+                        <td class="padding-0 text-center"><input class="layui-input text-center padding-left-0 border-0" ng-model="item.rule.repeatAmount"></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -76,9 +76,9 @@
                         <div class="layui-row layui-col-space5">
                             <div class="layui-col-xs3 nowrap" ng-repeat="x in citys" ng-if="ShowProvinceShow(x)">
                                 <label class="think-checkbox margin-right-0">
-                                    <input type="checkbox" ng-model="x.status" ng-change="SwitchActiveProvince(x)" ng-value="x.name" lay-ignore>
+                                    <input type="checkbox" ng-model="x.status" ng-change="SwitchActiveProvince(x, true)" ng-value="x.name" lay-ignore>
                                 </label>
-                                <span class="pointer notselect" ng-click="SwitchActiveProvince(x)">{{x.name}}</span>
+                                <span class="pointer notselect" ng-click="SwitchActiveProvince(x, false)">{{x.name}}</span>
                             </div>
                         </div>
                     </div>
@@ -222,10 +222,10 @@
                 });
             };
             /*! 展开省份下的城市 */
-            $rootScope.SwitchActiveProvince = function (province) {
+            $rootScope.SwitchActiveProvince = function (province, force) {
                 $rootScope.city = province;
                 province.subs.forEach(function (item) {
-                    if (item.show) item.status = !!province.status;
+                    if (item.show && force) item.status = !!province.status;
                 });
             };
             /*! 显示区域选择器 */
