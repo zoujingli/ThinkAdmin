@@ -22,9 +22,9 @@
                 <tbody>
                 <tr ng-repeat="item in rules">
                     <td>
-                    <span class="margin-right-5" ng-repeat="city in item.city" ng-if="ShowProvinceStatus(city)">
-                        <b class="font-w7" ng-bind="city.name"></b>
-                        <b class="color-desc">（{{ShowRuleCityName(city)}}）</b>
+                    <span class="margin-right-5" ng-repeat="province in item.city" ng-if="ShowProvinceStatus(province)">
+                        <b class="font-w7" ng-bind="province.name"></b>
+                        <b class="color-desc">（{{ShowProvinceCityName(province)}}）</b>
                     </span>
                         <a class="margin-left-5" ng-click="EditRuleItem(item)">编辑</a>
                         <a class="margin-left-5" ng-click="RemoveRuleItem(item)">删除</a>
@@ -95,7 +95,7 @@
 <script>
     require(['angular'], function () {
         var app = angular.module("TruckForm", []).run(callback);
-        var citys = document.getElementById('CityData').value || '[]';
+        var _data = document.getElementById('CityData').value || '[]';
         var _rule = {city: [], rule: {firstNumber: 1, firstAmount: 1.00, repeatNumber: 1, repeatAmount: 1.00}};
         angular.bootstrap(document.getElementById(app.name), [app.name]);
 
@@ -103,7 +103,7 @@
             $rootScope.rule = angular.fromJson(angular.toJson(_rule));
             $rootScope.rules = [];
             $rootScope.city = {subs: []};
-            $rootScope.citys = angular.fromJson(citys) || [];
+            $rootScope.citys = angular.fromJson(_data) || [];
             /*! 默认显示所有城市 */
             $rootScope.citys.forEach(function (item) {
                 delete item.id, delete item.pid;
@@ -145,31 +145,29 @@
             /*! 确认规则选项 */
             $rootScope.SetRuleItem = function () {
                 layui.layer.closeAll();
-                $rootScope.rules.forEach(function (rule) {
-                    rule.city.forEach(function (item) {
-                        item.subs.forEach(function (item) {
-                            if (item.status) item.show = false;
-                        });
+                $rootScope.rule.city.forEach(function (province) {
+                    province.subs.forEach(function (city) {
+                        if (city.status) city.show = false;
                     });
                 });
             };
             /*! 配送区域城市名称显示处理 */
-            $rootScope.ShowRuleCityName = function (city) {
+            $rootScope.ShowProvinceCityName = function (province) {
                 var citys = [];
-                city.subs.forEach(function (item) {
-                    if (item.status) citys.push(item.name);
+                province.subs.forEach(function (city) {
+                    if (city.status) citys.push(city.name);
                 });
                 return citys.join('、');
             };
             /*! 检查是否还拥有可以选择的项目 */
-            $rootScope.ShowProvinceShow = function (city) {
-                return city.subs.some(function (item) {
+            $rootScope.ShowProvinceShow = function (province) {
+                return province.subs.some(function (item) {
                     if (item.show) return true;
                 })
             }
             /*! 检查是否还拥有可以选择的项目 */
-            $rootScope.ShowProvinceStatus = function (city) {
-                return city.subs.some(function (item) {
+            $rootScope.ShowProvinceStatus = function (province) {
+                return province.subs.some(function (item) {
                     if (item.status) return true;
                 });
             };
@@ -188,41 +186,54 @@
                 });
             };
             /*! 展开省份下的城市 */
-            $rootScope.SwitchActiveProvince = function (city) {
-                $rootScope.city = city;
-                city.subs.forEach(function (item) {
-                    item.status = !!city.status;
+            $rootScope.SwitchActiveProvince = function (province) {
+                $rootScope.city = province;
+                province.subs.forEach(function (item) {
+                    if (item.show) item.status = !!province.status;
                 });
             };
             $rootScope.showDailog = function () {
                 layui.layer.open({
                     type: 1, shade: false, area: '800px', title: '选择配送区域',
                     content: $('#RegionDialog').removeClass('layui-hide'), end: function () {
-                        $('#RegionDialog').addClass('layui-hide')
+                        $('#RegionDialog').addClass('layui-hide');
+                        $rootScope.SetRuleItem();
                     }
                 });
             };
             $rootScope.$watch('citys', function () {
-                // 子集联动上级选择
+                /*! 城市集联动省份选项选择 */
                 $rootScope.city.status = $rootScope.city.subs.some(function (item) {
                     if (item.show && item.status) return true;
                 });
-                // 记录当前操作值
-                var cache = {};
-                $rootScope.rule.city.forEach(function (item) {
-                    cache[item.name] = item;
+                /*! 合并当前操作数据到缓存 */
+                var _province_cache = {}, _city_cache = {};
+                $rootScope.rule.city.forEach(function (province) {
+                    _province_cache[province.name] = province;
+                    province.subs.forEach(function (city) {
+                        _city_cache[province.name + '-' + city.name] = true;
+                    });
                 });
-                $rootScope.citys.forEach(function (item) {
-                    var subs = [];
-                    item.subs.forEach(function (item) {
-                        if (item.status && item.show) subs.push(item);
-                    })
-                    if (subs.length > 0) {
-                        if (cache[item.name]) subs = cache[item.name].subs.concat(subs);
-                        else $rootScope.rule.city.push({name: item.name, subs: subs});
-                        cache[item.name] = subs;
-                    }
+                /*! 筛选出当前选中的城市 */
+                $rootScope.citys.forEach(function (province) {
+                    _province_cache[province.name] = _province_cache[province.name] || {name: province.name, subs: []};
+                    province.subs.forEach(function (city) {
+                        if (city.status && city.show && !_city_cache[province.name + '-' + city.name]) {
+                            _province_cache[province.name].subs.push(city);
+                            _city_cache[province.name + '-' + city.name] = true;
+                        }
+                    });
                 });
+                /* 将临时数据转换为区域规则选项 */
+                var provinces = [], province = {};
+                for (var i in _province_cache) {
+                    province = {name: _province_cache[i].name, subs: []};
+                    _province_cache[i].subs.forEach(function (item) {
+                        if (item.status) province.subs.push(item);
+                    });
+                    if (province.subs.length > 0) provinces.push(province);
+                }
+                $rootScope.rule.city = provinces;
             }, true);
         }
     });
