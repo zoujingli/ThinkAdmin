@@ -36,6 +36,20 @@ class ShopTruckTemplate extends Controller
     }
 
     /**
+     * 配送区域管理
+     * @auth true
+     * @menu true
+     */
+    public function region()
+    {
+        if ($this->request->isGet()) {
+            $this->title = '配送区域管理';
+            $this->citys = TruckService::instance()->region(3);
+            $this->fetch('form_region');
+        }
+    }
+
+    /**
      * 添加配送邮费模板
      * @auth true
      * @throws \think\db\exception\DataNotFoundException

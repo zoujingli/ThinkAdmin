@@ -14,7 +14,7 @@
         <div class="layui-card">
             <div class="layui-card-header"><b class="color-green">{{province.name}}</b> 可选区域</div>
             <div class="layui-card-body">
-                <a ng-repeat="x in province.sub" ng-bind="x.name" ng-click="SetActiveCity(x)"
+                <a ng-repeat="x in province.subs" ng-bind="x.name" ng-click="SetActiveCity(x)"
                    class="layui-btn layui-btn-radius layui-btn-normal margin-left-0 margin-right-5 margin-bottom-5"
                 ></a>
             </div>
@@ -22,7 +22,7 @@
         <div class="layui-card">
             <div class="layui-card-header"><b class="color-green">{{city.name}}</b> 可选区域</div>
             <div class="layui-card-body">
-                <a ng-repeat="x in city.sub" ng-bind="x.name"
+                <a ng-repeat="x in city.subs" ng-bind="x.name"
                    class="layui-btn layui-btn-radius layui-btn-normal margin-left-0 margin-right-5 margin-bottom-5"
                 ></a>
             </div>
@@ -35,20 +35,21 @@
 </div>
 
 <label class="layui-hide">
-    <textarea class="layui-textarea" id="RegionData">{$list|json_encode|raw}</textarea>
+    <textarea class="layui-textarea" id="RegionData">{$citys|json_encode|raw}</textarea>
 </label>
 <script>
     require(['angular'], function () {
         var app = angular.module("TruckForm", []).run(callback);
         var _data = document.getElementById('RegionData').value || '[]';
+        console.log(_data)
         angular.bootstrap(document.getElementById(app.name), [app.name]);
 
         function callback($rootScope) {
             $rootScope.items = angular.fromJson(_data);
             $rootScope.province = $rootScope.items[0];
-            $rootScope.city = $rootScope.province.sub[0];
+            $rootScope.city = $rootScope.province.subs[0];
             $rootScope.SetActiveProvince = function (province) {
-                $rootScope.city = province.sub[0];
+                $rootScope.city = province.subs[0];
                 $rootScope.province = province;
             };
             $rootScope.SetActiveCity = function (city) {
