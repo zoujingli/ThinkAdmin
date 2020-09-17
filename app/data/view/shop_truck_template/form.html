@@ -34,10 +34,12 @@
                     <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatNumber"></td>
                     <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatAmount"></td>
                 </tr>
+                </tbody>
+                <tfoot>
                 <tr>
                     <td colspan="5"><a ng-click="AddRuleItem()">添加可配送区域和运费</a></td>
                 </tr>
-                </tbody>
+                </tfoot>
             </table>
             <label class="layui-form-item text-center layui-hide">
                 <textarea name="content" class="layui-textarea layui-bg-gray">{{getRuleData()}}</textarea>
