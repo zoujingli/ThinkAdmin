@@ -5,26 +5,29 @@
     <div class="padding-40">
         <div class="layui-card">
             <div class="layui-card-header">配送区域</div>
-            <div class="layui-card-body layui-clear">
-                <a ng-repeat="x in items" ng-bind="x.name" ng-click="SetActiveProvince(x)"
-                   class="layui-btn layui-btn-radius layui-btn-normal margin-left-0 margin-right-5 margin-bottom-5"
-                ></a>
+            <div class="layui-card-body">
+                <div ng-repeat="x in items" ng-class="{false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
+                    <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" type="checkbox" ng-model="x.status"></label>
+                    <span ng-bind="x.name" ng-click="SetActiveProvince(x)"></span>
+                </div>
             </div>
         </div>
         <div class="layui-card">
             <div class="layui-card-header"><b class="color-green">{{province.name}}</b> 可选区域</div>
             <div class="layui-card-body">
-                <a ng-repeat="x in province.subs" ng-bind="x.name" ng-click="SetActiveCity(x)"
-                   class="layui-btn layui-btn-radius layui-btn-normal margin-left-0 margin-right-5 margin-bottom-5"
-                ></a>
+                <div ng-repeat="x in province.subs" ng-class="{false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
+                    <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" type="checkbox" ng-model="x.status"></label>
+                    <span ng-bind="x.name" ng-click="SetActiveCity(x)"></span>
+                </div>
             </div>
         </div>
         <div class="layui-card">
             <div class="layui-card-header"><b class="color-green">{{city.name}}</b> 可选区域</div>
             <div class="layui-card-body">
-                <a ng-repeat="x in city.subs" ng-bind="x.name"
-                   class="layui-btn layui-btn-radius layui-btn-normal margin-left-0 margin-right-5 margin-bottom-5"
-                ></a>
+                <div ng-repeat="x in city.subs" ng-class="{false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
+                    <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" type="checkbox" ng-model="x.status"></label>
+                    <span ng-bind="x.name" ng-click="SetActiveCity(x)"></span>
+                </div>
             </div>
         </div>
         <div class="hr-line-dashed"></div>
@@ -41,13 +44,29 @@
     require(['angular'], function () {
         var app = angular.module("TruckForm", []).run(callback);
         var _data = document.getElementById('RegionData').value || '[]';
-        console.log(_data)
         angular.bootstrap(document.getElementById(app.name), [app.name]);
 
         function callback($rootScope) {
             $rootScope.items = angular.fromJson(_data);
+            $rootScope.items.forEach(function (province) {
+                province.status = !!province.status;
+                if (province.subs) province.subs.forEach(function (city) {
+                    city.status = !!city.status;
+                    if (city.subs) city.subs.forEach(function (area) {
+                        area.status = !!area.status;
+                    });
+                });
+            });
             $rootScope.province = $rootScope.items[0];
             $rootScope.city = $rootScope.province.subs[0];
+            $rootScope.SetChangeCity = function (item, status) {
+                if (item.subs) item.subs.forEach(function (item) {
+                    item.status = status;
+                    if (item.subs) item.subs.forEach(function (item) {
+                        item.status = status;
+                    })
+                });
+            };
             $rootScope.SetActiveProvince = function (province) {
                 $rootScope.city = province.subs[0];
                 $rootScope.province = province;

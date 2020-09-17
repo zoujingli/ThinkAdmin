@@ -34,7 +34,7 @@ class TruckService extends Service
 
     public function region($level = 3)
     {
-        $items = $this->app->db->name('ShopTruckRegion')->where('level', '<=', $level)->column('id,pid,name', 'id');
+        $items = $this->app->db->name('ShopTruckRegion')->where('level', '<=', $level)->column('id,pid,name,status', 'id');
         return DataExtend::arr2tree($items, 'id', 'pid', 'subs');
     }
 
