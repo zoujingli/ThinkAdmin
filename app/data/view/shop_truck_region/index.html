@@ -1,0 +1,60 @@
+{extend name="../../admin/view/main"}
+
+{block name="content"}
+<div class="think-box-shadow" id="TruckForm">
+    <div class="padding-40">
+        <div class="layui-card">
+            <div class="layui-card-header">配送区域</div>
+            <div class="layui-card-body layui-clear">
+                <a ng-repeat="x in items" ng-bind="x.name" ng-click="SetActiveProvince(x)"
+                   class="layui-btn layui-btn-radius layui-btn-normal margin-left-0 margin-right-5 margin-bottom-5"
+                ></a>
+            </div>
+        </div>
+        <div class="layui-card">
+            <div class="layui-card-header"><b class="color-green">{{province.name}}</b> 可选区域</div>
+            <div class="layui-card-body">
+                <a ng-repeat="x in province.sub" ng-bind="x.name" ng-click="SetActiveCity(x)"
+                   class="layui-btn layui-btn-radius layui-btn-normal margin-left-0 margin-right-5 margin-bottom-5"
+                ></a>
+            </div>
+        </div>
+        <div class="layui-card">
+            <div class="layui-card-header"><b class="color-green">{{city.name}}</b> 可选区域</div>
+            <div class="layui-card-body">
+                <a ng-repeat="x in city.sub" ng-bind="x.name"
+                   class="layui-btn layui-btn-radius layui-btn-normal margin-left-0 margin-right-5 margin-bottom-5"
+                ></a>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" ng-click="SetRuleItem()">确定修改</button>
+        </div>
+    </div>
+</div>
+
+<label class="layui-hide">
+    <textarea class="layui-textarea" id="RegionData">{$list|json_encode|raw}</textarea>
+</label>
+<script>
+    require(['angular'], function () {
+        var app = angular.module("TruckForm", []).run(callback);
+        var _data = document.getElementById('RegionData').value || '[]';
+        angular.bootstrap(document.getElementById(app.name), [app.name]);
+
+        function callback($rootScope) {
+            $rootScope.items = angular.fromJson(_data);
+            $rootScope.province = $rootScope.items[0];
+            $rootScope.city = $rootScope.province.sub[0];
+            $rootScope.SetActiveProvince = function (province) {
+                $rootScope.city = province.sub[0];
+                $rootScope.province = province;
+            };
+            $rootScope.SetActiveCity = function (city) {
+                $rootScope.city = city;
+            }
+        }
+    });
+</script>
+{/block}
