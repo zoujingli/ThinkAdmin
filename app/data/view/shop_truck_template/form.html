@@ -177,9 +177,9 @@
             };
             /*! 省份全选或取消 */
             $rootScope.CheckAllProvince = function (status) {
-                $rootScope.citys.forEach(function (item) {
-                    item.subs.forEach(function (item) {
-                        if (item.show) item.status = !!status;
+                $rootScope.citys.forEach(function (province) {
+                    province.subs.forEach(function (city) {
+                        if (city.show) city.status = !!status;
                     })
                 });
             };
@@ -206,10 +206,6 @@
                 });
             };
             $rootScope.$watch('citys', function () {
-                /*! 城市集联动省份选项选择 */
-                $rootScope.city.status = $rootScope.city.subs.some(function (item) {
-                    if (item.show && item.status) return true;
-                });
                 /*! 合并当前操作数据到缓存 */
                 var _province_cache = {}, _city_cache = {};
                 $rootScope.rule.city.forEach(function (province) {
@@ -221,6 +217,10 @@
                 /*! 筛选出当前选中的城市 */
                 $rootScope.citys.forEach(function (province) {
                     _province_cache[province.name] = _province_cache[province.name] || {name: province.name, subs: []};
+                    /*! 城市集联动省份选项选择 */
+                    province.status = province.subs.some(function (city) {
+                        if (city.show && city.status) return true;
+                    });
                     province.subs.forEach(function (city) {
                         if (city.status && city.show && !_city_cache[province.name + '-' + city.name]) {
                             _province_cache[province.name].subs.push(city);
