@@ -32,13 +32,21 @@
                             <b class="font-w7" ng-bind="province.name"></b>
                             <b class="color-desc">{{ShowProvinceCityName(province)}}</b>
                         </span>
-                            <a class="margin-left-5" ng-click="EditRuleItem(item)">编辑</a>
-                            <a class="margin-left-5" ng-click="RemoveRuleItem(item)">删除</a>
+                            <a class="margin-left-5 inline-block nowrap" ng-click="EditRuleItem(item)">编辑</a>
+                            <a class="margin-left-5 inline-block nowrap" ng-click="RemoveRuleItem(item)">删除</a>
                         </td>
-                        <td class="padding-0 text-center"><input class="layui-input text-center padding-left-0 border-0" ng-model="item.rule.firstNumber"></td>
-                        <td class="padding-0 text-center"><input class="layui-input text-center padding-left-0 border-0" ng-model="item.rule.firstAmount"></td>
-                        <td class="padding-0 text-center"><input class="layui-input text-center padding-left-0 border-0" ng-model="item.rule.repeatNumber"></td>
-                        <td class="padding-0 text-center"><input class="layui-input text-center padding-left-0 border-0" ng-model="item.rule.repeatAmount"></td>
+                        <td class="padding-0 text-center">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(item.rule,'firstNumber',0)" ng-model="item.rule.firstNumber">
+                        </td>
+                        <td class="padding-0 text-center">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(item.rule,'firstAmount',2)" ng-model="item.rule.firstAmount">
+                        </td>
+                        <td class="padding-0 text-center">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(item.rule,'repeatNumber',0)" ng-model="item.rule.repeatNumber">
+                        </td>
+                        <td class="padding-0 text-center">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(item.rule,'repeatAmount',2)" ng-model="item.rule.repeatAmount">
+                        </td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -49,9 +57,9 @@
                 </table>
             </div>
 
-            <label class="layui-form-item text-center layui-hide">
-                <textarea name="content" class="layui-textarea layui-bg-gray">{{getRuleData()}}</textarea>
-                <textarea name="default" class="layui-textarea layui-bg-gray">{$vo.content|default=''|raw}</textarea>
+            <label class="layui-form-item layui-hide">
+                <textarea name="content" class="layui-textarea layui-bg-gray">{{GetRuleData()}}</textarea>
+                <textarea name="default" class="layui-textarea layui-bg-gray">{$vo.content|raw|default=''}</textarea>
             </label>
 
             <div class="hr-line-dashed"></div>
@@ -128,8 +136,12 @@
                     delete item.id, delete item.pid;
                 });
             });
+            /*! 对象值到为指定小数 */
+            $rootScope.convertNumber = function (item, name, fixed) {
+                item[name] = parseFloat(item[name] || 0).toFixed(fixed)
+            };
             /*! 生成待提交的数据 */
-            $rootScope.getRuleData = function () {
+            $rootScope.GetRuleData = function () {
                 var data = [];
                 $rootScope.rules.forEach(function (rule) {
                     var item = {city: [], rule: rule.rule};
@@ -239,7 +251,7 @@
                 });
             };
             /*! 实时生成规则数据 */
-            $rootScope.setRuleData = function () {
+            $rootScope.SetRuleData = function () {
                 /*! 合并当前操作数据到缓存 */
                 var _province_cache = {}, _city_cache = {};
                 $rootScope.rule.city.forEach(function (province) {
@@ -274,7 +286,7 @@
                 $rootScope.rule.city = provinces;
             }
             /*! 数据变化监听处理 */
-            $rootScope.$watch('citys', $rootScope.setRuleData, true);
+            $rootScope.$watch('citys', $rootScope.SetRuleData, true);
             /*! 默认数据显示处理 */
             var defaultItems = angular.fromJson($('[name="default"]').val() || '[]') || [];
             defaultItems.forEach(function (item) {
@@ -290,7 +302,7 @@
                         });
                     });
                 });
-                $rootScope.setRuleData();
+                $rootScope.SetRuleData();
                 $rootScope.SetRuleItem();
             });
         }
