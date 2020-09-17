@@ -4,49 +4,59 @@
 <div id="TruckForm">
     <form onsubmit="return false;" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
         <div class="layui-card-body padding-40">
+
             <label class="layui-form-item block relative">
-                <span class="color-green font-w7 margin-right-5">邮费模板名称</span><span class="color-desc">Name</span>
+                <span class="color-green font-w7">邮费模板名称</span>
+                <span class="color-desc margin-left-5">Name</span>
                 <input name="name" required value='{$vo.name|default=""}' placeholder="请输入邮费模板名称" class="layui-input">
                 <p class="color-desc">必填，邮费模板名称用于区分邮费模板规则，仅在后台选择邮费模板时使用。</p>
             </label>
-            <table class="layui-table">
-                <thead>
-                <tr>
-                    <th>可配送区域</th>
-                    <th>首件（个）</th>
-                    <th>运费（元）</th>
-                    <th>续件（个）</th>
-                    <th>续费（元）</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="item in rules" ng-if="item.city.length > 0">
-                    <td>
+
+            <div class="layui-form-item">
+                <span class="color-green font-w7 label-required-prev">配送区域计费规则</span>
+                <span class="color-desc margin-left-5">Region</span>
+                <table class="layui-table" lay-skin="line">
+                    <thead>
+                    <tr>
+                        <th class="nowrap">可配送区域</th>
+                        <th class="nowrap">首件（个）</th>
+                        <th class="nowrap">运费（元）</th>
+                        <th class="nowrap">续件（个）</th>
+                        <th class="nowrap">续费（元）</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in rules" ng-if="item.city.length > 0">
+                        <td>
                         <span class="margin-right-5" ng-repeat="province in item.city" ng-if="ShowProvinceStatus(province)">
                             <b class="font-w7" ng-bind="province.name"></b>
                             <b class="color-desc">{{ShowProvinceCityName(province)}}</b>
                         </span>
-                        <a class="margin-left-5" ng-click="EditRuleItem(item)">编辑</a>
-                        <a class="margin-left-5" ng-click="RemoveRuleItem(item)">删除</a>
-                    </td>
-                    <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.firstNumber"></td>
-                    <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.firstAmount"></td>
-                    <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatNumber"></td>
-                    <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatAmount"></td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="5"><a ng-click="AddRuleItem()">添加可配送区域和运费</a></td>
-                </tr>
-                </tfoot>
-            </table>
+                            <a class="margin-left-5" ng-click="EditRuleItem(item)">编辑</a>
+                            <a class="margin-left-5" ng-click="RemoveRuleItem(item)">删除</a>
+                        </td>
+                        <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.firstNumber"></td>
+                        <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.firstAmount"></td>
+                        <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatNumber"></td>
+                        <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatAmount"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="5"><a ng-click="AddRuleItem()">添加可配送区域和运费</a></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+
             <label class="layui-form-item text-center layui-hide">
                 <textarea name="content" class="layui-textarea layui-bg-gray">{{getRuleData()}}</textarea>
                 <textarea name="default" class="layui-textarea layui-bg-gray">{$vo.content|default=''|raw}</textarea>
             </label>
+
             <div class="hr-line-dashed"></div>
             {notempty name='vo.code'}<input type="hidden" name="code" value="{$vo.code}">{/notempty}
+
             <div class="layui-form-item text-center">
                 <button class="layui-btn" type='submit'>保存数据</button>
             </div>
@@ -110,6 +120,14 @@
             $rootScope.rules = [];
             $rootScope.city = {subs: []};
             $rootScope.citys = angular.fromJson(_data) || [];
+            /*! 默认显示城市 */
+            $rootScope.citys.forEach(function (item) {
+                delete item.id, delete item.pid;
+                item.subs.forEach(function (item) {
+                    item.show = true;
+                    delete item.id, delete item.pid;
+                });
+            });
             /*! 生成待提交的数据 */
             $rootScope.getRuleData = function () {
                 var data = [];
@@ -126,14 +144,6 @@
                 });
                 return data;
             };
-            /*! 默认显示城市 */
-            $rootScope.citys.forEach(function (item) {
-                delete item.id, delete item.pid;
-                item.subs.forEach(function (item) {
-                    item.show = true;
-                    delete item.id, delete item.pid;
-                });
-            });
             /*! 添加规则选项 */
             $rootScope.AddRuleItem = function () {
                 $rootScope.rule = angular.fromJson(angular.toJson(_rule));
