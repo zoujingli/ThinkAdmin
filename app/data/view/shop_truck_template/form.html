@@ -2,7 +2,7 @@
 
 {block name="content"}
 <div id="TruckForm">
-    <form onsubmit="return false;" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
+    <form onsubmit="return false;" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
         <div class="layui-card-body padding-40">
             <label class="layui-form-item block relative">
                 <span class="color-green font-w7 margin-right-5">邮费模板名称</span><span class="color-desc">Name</span>
@@ -20,31 +20,34 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in rules">
+                <tr ng-repeat="item in rules" ng-if="item.city.length > 0">
                     <td>
-                    <span class="margin-right-5" ng-repeat="province in item.city" ng-if="ShowProvinceStatus(province)">
-                        <b class="font-w7" ng-bind="province.name"></b>
-                        <span class="color-desc">{{ShowProvinceCityName(province)}}</span>
-                    </span>
+                        <span class="margin-right-5" ng-repeat="province in item.city" ng-if="ShowProvinceStatus(province)">
+                            <b class="font-w7" ng-bind="province.name"></b>
+                            <b class="color-desc">{{ShowProvinceCityName(province)}}</b>
+                        </span>
                         <a class="margin-left-5" ng-click="EditRuleItem(item)">编辑</a>
                         <a class="margin-left-5" ng-click="RemoveRuleItem(item)">删除</a>
                     </td>
-                    <td><input class="layui-input" ng-model="item.rule.firstNumber"></td>
-                    <td><input class="layui-input" ng-model="item.rule.firstAmount"></td>
-                    <td><input class="layui-input" ng-model="item.rule.repeatNumber"></td>
-                    <td><input class="layui-input" ng-model="item.rule.repeatAmount"></td>
+                    <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.firstNumber"></td>
+                    <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.firstAmount"></td>
+                    <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatNumber"></td>
+                    <td class="padding-0"><input class="layui-input border-0" ng-model="item.rule.repeatAmount"></td>
                 </tr>
                 <tr>
                     <td colspan="5"><a ng-click="AddRuleItem()">添加可配送区域和运费</a></td>
                 </tr>
                 </tbody>
             </table>
+            <label class="layui-form-item text-center layui-hide">
+                <textarea name="content" class="layui-textarea layui-bg-gray">{{getRuleData()}}</textarea>
+                <textarea name="default" class="layui-textarea layui-bg-gray">{$vo.content|default=''|raw}</textarea>
+            </label>
             <div class="hr-line-dashed"></div>
-            {if auth('edit')}
+            {notempty name='vo.code'}<input type="hidden" name="code" value="{$vo.code}">{/notempty}
             <div class="layui-form-item text-center">
                 <button class="layui-btn" type='submit'>保存数据</button>
             </div>
-            {/if}
         </div>
     </form>
 
@@ -83,6 +86,7 @@
                 </div>
             </div>
         </div>
+
         <div class="layui-form-item text-center">
             <button class="layui-btn" ng-click="SetRuleItem()">确定选择</button>
         </div>
@@ -104,6 +108,22 @@
             $rootScope.rules = [];
             $rootScope.city = {subs: []};
             $rootScope.citys = angular.fromJson(_data) || [];
+            /*! 生成待提交的数据 */
+            $rootScope.getRuleData = function () {
+                var data = [];
+                $rootScope.rules.forEach(function (rule) {
+                    var item = {city: [], rule: rule.rule};
+                    rule.city.forEach(function (province) {
+                        var citys = [];
+                        province.subs.forEach(function (city) {
+                            citys.push(city.name)
+                        });
+                        item.city.push({name: province.name, subs: citys})
+                    });
+                    if (item.city.length > 0) data.push(item);
+                });
+                return data;
+            };
             /*! 默认显示城市 */
             $rootScope.citys.forEach(function (item) {
                 delete item.id, delete item.pid;
@@ -196,16 +216,18 @@
                     if (item.show) item.status = !!province.status;
                 });
             };
+            /*! 显示区域选择器 */
             $rootScope.showDialog = function () {
                 layui.layer.open({
-                    type: 1, shade: false, area: '800px', title: '选择配送区域',
+                    type: 1, shade: false, area: '800px', title: '区域选择器',
                     content: $('#RegionDialog').removeClass('layui-hide'), end: function () {
                         $('#RegionDialog').addClass('layui-hide');
                         $rootScope.SetRuleItem();
                     }
                 });
             };
-            $rootScope.$watch('citys', function () {
+            /*! 实时生成规则数据 */
+            $rootScope.setRuleData = function () {
                 /*! 合并当前操作数据到缓存 */
                 var _province_cache = {}, _city_cache = {};
                 $rootScope.rule.city.forEach(function (province) {
@@ -238,7 +260,27 @@
                     if (province.subs.length > 0) provinces.push(province);
                 }
                 $rootScope.rule.city = provinces;
-            }, true);
+            }
+            /*! 数据变化监听处理 */
+            $rootScope.$watch('citys', $rootScope.setRuleData, true);
+            /*! 默认数据显示处理 */
+            var defaultItems = angular.fromJson($('[name="default"]').val() || '[]') || [];
+            defaultItems.forEach(function (item) {
+                $rootScope.rule = angular.fromJson(angular.toJson(_rule));
+                $rootScope.rule.rule = item.rule;
+                $rootScope.rules.push($rootScope.rule);
+                item.city.forEach(function (province) {
+                    province.subs.forEach(function (city) {
+                        $rootScope.citys.forEach(function (_item) {
+                            _item.subs.forEach(function (_city) {
+                                if (_city.name === city) _city.status = true;
+                            });
+                        });
+                    });
+                });
+                $rootScope.setRuleData();
+                $rootScope.SetRuleItem();
+            });
         }
     });
 </script>

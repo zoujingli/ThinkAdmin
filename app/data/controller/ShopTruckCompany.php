@@ -3,7 +3,6 @@
 namespace app\data\controller;
 
 use app\data\service\TruckService;
-use app\store\service\OpenCuciService;
 use think\admin\Controller;
 use think\admin\service\SystemService;
 use think\exception\HttpResponseException;
@@ -75,7 +74,10 @@ class ShopTruckCompany extends Controller
      */
     public function state()
     {
-        $this->_save($this->table);
+        $this->_save($this->table, $this->_vali([
+            'status.in:0,1'  => '状态值范围异常！',
+            'status.require' => '状态值不能为空！',
+        ]));
     }
 
     /**
