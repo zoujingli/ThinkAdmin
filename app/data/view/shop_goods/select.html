@@ -61,7 +61,7 @@
 <script>
     layui.form.render();
     $('[data-item]').on('click', function () {
-        top.setCheckValue(this.getAttribute('data-item') || '');
+        top.setItemValue(this.getAttribute('data-item') || '');
         parent.layer.close(parent.layer.getFrameIndex(window.name));
     });
 </script>

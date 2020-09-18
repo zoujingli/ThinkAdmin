@@ -51,9 +51,9 @@
                     {else}
                     <span class="layui-badge layui-bg-blue">{$vo.company_name|default='--'}</span>
                     <a data-title="{$vo.company_name}（{$vo.send_number}）" data-tips-text="快递追踪查询"
-                       data-modal="{:url('truckQuery')}?code={$vo.send_number}&number={$vo.send_number}"
+                       data-modal="{:url('shop_order/truckQuery')}?code={$vo.company_code}&number={$vo.send_number}"
                        class="layui-badge layui-bg-orange margin-left-5">{$vo.send_number|default='--'}</a>
-                    <div class="margin-top-5">于 {$vo.send_datetime|format_datetime} 发货！<br></div>
+                    <div class="margin-top-5">于 <b>{$vo.send_datetime|format_datetime} 发货！</b></div>
                     {/if}
                 </td>
                 <td class="color-desc">

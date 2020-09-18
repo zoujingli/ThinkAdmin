@@ -73,9 +73,9 @@ class OrderService extends Service
         $items = $query->withoutField('id,mid,status,deleted,create_at')->whereIn('order_no', $nos)->select()->toArray();
         foreach ($data as &$vo) {
             $vo['sales'] = 0;
-            $vo['fromer'] = $members[$vo['from']] ?? new \stdClass();
-            $vo['member'] = $members[$vo['mid']] ?? new \stdClass();
-            $vo['truck'] = $trucks[$vo['order_no']] ?? new \stdClass();
+            $vo['member'] = $members[$vo['mid']] ?? [];
+            $vo['fromer'] = $members[$vo['from']] ?? [];
+            $vo['truck'] = $trucks[$vo['order_no']] ?? [];
             $vo['items'] = [];
             foreach ($items as $item) {
                 if ($vo['order_no'] === $item['order_no']) {

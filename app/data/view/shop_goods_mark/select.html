@@ -31,7 +31,7 @@
     $(function () {
         layui.form.render();
         $('[data-article]').on('click', function () {
-            if (top.setItemId) top.setItemId(this.getAttribute('data-item') || '');
+            if (top.setItemValue) top.setItemValue(this.getAttribute('data-item') || '');
             parent.layer.close(parent.layer.getFrameIndex(window.name));
         });
         $.form.reInit($('[data-select-container]'));
