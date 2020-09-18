@@ -105,17 +105,16 @@ class Order extends Auth
             ];
         }
         // 统计订单金额
-        $order['truck_count'] = array_sum(array_column($items, 'truck_count'));
-        $order['amount_goods'] = array_sum(array_column($items, 'total_selling'));
         $order['amount_reduct'] = OrderService::instance()->getReduct();
-        $order['amount_total'] = $order['amount_goods'];
+        $order['amount_goods'] = array_sum(array_column($items, 'total_selling'));
+        $order['amount_total'] = $order['amount_goods'] - $order['amount_reduct'];
         try {
             // 订单数据写入
             $this->app->db->name('ShopOrder')->insert($order);
             $this->app->db->name('ShopOrderItem')->insertAll($items);
             // 同步商品库存及销量
             foreach ($codes as $code) GoodsService::instance()->syncStock($code);
-            // 返回前端订单编号
+            // 返回订单数据给接口
             $order['items'] = $items;
             $this->success('预购订单创建成功，请补全收货地址', $order);
         } catch (HttpResponseException $exception) {
@@ -144,15 +143,18 @@ class Order extends Auth
         // 订单状态检查
         $map = ['mid' => $this->mid, 'order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->whereIn('status', [1, 2])->find();
+        $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_count');
         if (empty($order)) $this->error('不能修改收货地址哦！');
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
-        $tcodes = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_tcode');
-        [$amount, $tcode, $remark] = TruckService::instance()->amount($tcodes, $addr['province'], $addr['city'], $order['truck_count']);
+        $tCode = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_tcode');
+        [$amount, $tCount, $tCode, $remark] = TruckService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
         // 创建订单发货信息
-        $express = ['template_code' => $tcode, 'template_remark' => $remark, 'template_amount' => $amount];
-        $express['mid'] = $this->mid;
-        $express['status'] = 1;
+        $express = [
+            'mid'             => $this->mid, 'status' => 1,
+            'template_code'   => $tCode, 'template_count' => $tCount,
+            'template_remark' => $remark, 'template_amount' => $amount,
+        ];
         $express['order_no'] = $data['order_no'];
         $express['address_code'] = $data['code'];
         $express['address_name'] = $addr['name'];
