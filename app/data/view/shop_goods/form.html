@@ -6,7 +6,7 @@
     <div class="layui-card-body padding-40">
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">商品标签</span>
-            <span class="color-desc margin-left-5">Label Name</span>
+            <span class="color-desc margin-left-5">Mark Name</span>
             <div class="tags-container layui-textarea">
                 {foreach $marks as $mark}{if isset($vo.mark) && is_array($vo.mark) && in_array($mark, $vo.mark)}
                 <label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$mark}" lay-ignore> {$mark}</label>
@@ -30,7 +30,7 @@
             <span class="color-green font-w7 label-required-prev">运费模板</span>
             <span class="color-desc margin-left-5">Truck Template</span>
             <select class="layui-select" name="truck_tcode" lay-search>
-                <option value="">--- 包邮 ---</option>
+                <option value="">--- 包 邮 ---</option>
                 {foreach $vo.truck_items as $truck}{if isset($vo.truck_tcode) and $vo.truck_tcode eq $truck.code}
                 <option selected value="{$truck.code}">{$truck.code} - {$truck.name|default=''}</option>
                 {else}

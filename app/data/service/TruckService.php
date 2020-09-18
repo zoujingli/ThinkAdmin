@@ -15,11 +15,37 @@ class TruckService extends Service
 {
     /**
      * 模拟计算快递费用
-     * @return string
+     * @param array $codes 模板编号
+     * @param string $provName 省份名称
+     * @param string $cityName 城市名称
+     * @param integer $truckCount 邮费基数
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function amount()
+    public function amount(array $codes, string $provName, string $cityName, int $truckCount = 0): array
     {
-        return '0.00';
+        if (empty($codes)) return [0, '', '邮费模板编码为空！'];
+        $map = [['status', '=', 1], ['deleted', '=', 0], ['code', 'in', $codes]];
+        $template = $this->app->db->name('ShopTruckTemplate')->where($map)->order('sort desc,id desc')->find();
+        if (empty($template)) return [0, '', '邮费模板编码无效！'];
+        $rule = json_decode($template['normal'], true) ?: [];
+        foreach (json_decode($template['content'], true) ?: [] as $item) {
+            if (isset($item['city']) && is_array($item['city'])) foreach ($item['city'] as $city) {
+                if ($city['name'] === $provName && in_array($cityName, $city['subs'])) {
+                    $rule = $item['rule'];
+                    break 2;
+                }
+            }
+        }
+        [$firstNumber, $firstAmount] = [$rule['firstNumber'] ?: 0, $rule['firstAmount'] ?: 0];
+        [$repeatNumber, $repeatAmount] = [$rule['repeatNumber'] ?: 0, $rule['repeatAmount'] ?: 0];
+        if ($truckCount <= $firstNumber) {
+            return [$firstAmount, $template['code'], "首件计费，不超过{$firstNumber}件"];
+        }
+        $amount = $repeatNumber > 0 ? $repeatAmount * ceil(($truckCount - $firstNumber) / $repeatNumber) : 0;
+        return [$firstAmount + $amount, $template['code'], "续件计费，超出{$firstNumber}件续件{$amount}元"];
     }
 
     /**
@@ -37,13 +63,9 @@ class TruckService extends Service
         // 排序子集为空的省份和城市
         foreach ($items as $ik => $item) {
             foreach ($item['subs'] as $ck => $city) {
-                if (isset($city['subs']) && empty($city['subs'])) {
-                    unset($items[$ik]['subs'][$ck]);
-                }
+                if (isset($city['subs']) && empty($city['subs'])) unset($items[$ik]['subs'][$ck]);
             }
-            if (isset($item['subs']) && empty($item['subs'])) {
-                unset($items[$ik]);
-            }
+            if (isset($item['subs']) && empty($item['subs'])) unset($items[$ik]);
         }
         return $items;
     }

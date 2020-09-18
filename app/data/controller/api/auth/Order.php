@@ -42,9 +42,7 @@ class Order extends Auth
         }
         $query = $this->_query('ShopOrder')->equal('status,order_no');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
-        if (count($result['list']) > 0) {
-            OrderService::instance()->buildItemData($result['list']);
-        }
+        if (count($result['list']) > 0) OrderService::instance()->buildItemData($result['list']);
         $this->success('获取订单数据成功！', $result);
     }
 
@@ -97,6 +95,7 @@ class Order extends Auth
                 'goods_spec'    => $goodsItem['goods_spec'],
                 // 数量处理
                 'stock_sales'   => $count,
+                'truck_tcode'   => $goodsInfo['truck_tcode'],
                 'truck_count'   => $goodsItem['number_express'] * $count,
                 // 费用字段
                 'price_market'  => $goodsItem['price_market'],
@@ -106,8 +105,9 @@ class Order extends Auth
             ];
         }
         // 统计订单金额
-        $order['amount_reduct'] = OrderService::instance()->getReduct();
+        $order['truck_count'] = array_sum(array_column($items, 'truck_count'));
         $order['amount_goods'] = array_sum(array_column($items, 'total_selling'));
+        $order['amount_reduct'] = OrderService::instance()->getReduct();
         $order['amount_total'] = $order['amount_goods'];
         try {
             // 订单数据写入
@@ -134,33 +134,39 @@ class Order extends Auth
     public function perfect()
     {
         $data = $this->_vali([
-            'order_no.require'     => '订单单号不能为空！',
-            'address_code.require' => '收货地址不能为空！',
+            'code.require'     => '地址编号不能为空！',
+            'order_no.require' => '订单单号不能为空！',
         ]);
-        // 收货地址
-        $map = ['mid' => $this->mid, 'code' => $data['address_code'], 'deleted' => 0];
-        $address = $this->app->db->name('DataMemberAddress')->where($map)->find();
-        if (empty($address)) $this->error('会员收货地址异常！');
-        // 订单检查
+        // 会员收货地址
+        $map = ['mid' => $this->mid, 'code' => $data['code'], 'deleted' => 0];
+        $addr = $this->app->db->name('DataMemberAddress')->where($map)->find();
+        if (empty($addr)) $this->error('会员收货地址异常！');
+        // 订单状态检查
         $map = ['mid' => $this->mid, 'order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->whereIn('status', [1, 2])->find();
-        if (empty($order)) $this->error('订单状态异常，请重新下单！');
-        // 组装数据
-        $update = ['status' => 2];
-        $update['order_no'] = $data['order_no'];
-        $update['truck_code'] = $data['address_code'];
-        $update['truck_name'] = $address['name'];
-        $update['truck_phone'] = $address['phone'];
-        $update['truck_province'] = $address['province'];
-        $update['truck_city'] = $address['city'];
-        $update['truck_area'] = $address['area'];
-        $update['truck_address'] = $address['address'];
-        $update['truck_datetime'] = date('Y-m-d H:i:s');
-        // 运费计算 @todo 计算快递费用
-        // $result = TruckService::instance()->amount($address['province'], $order['express_rule_number'], $order['price_discount']);
-        // $update['price_express'] = $result['amount'];
-        // $update['price_total'] = $order['price_discount'] + $result['amount'];
-        // $update['express_rule_content'] = $result['content'];
+        if (empty($order)) $this->error('不能修改收货地址哦！');
+        // 根据地址计算运费
+        $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
+        $tcodes = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_tcode');
+        [$amount, $tcode, $remark] = TruckService::instance()->amount($tcodes, $addr['province'], $addr['city'], $order['truck_count']);
+        // 创建订单发货信息
+        $express = ['template_code' => $tcode, 'template_remark' => $remark, 'template_amount' => $amount];
+        $express['mid'] = $this->mid;
+        $express['status'] = 1;
+        $express['order_no'] = $data['order_no'];
+        $express['address_code'] = $data['code'];
+        $express['address_name'] = $addr['name'];
+        $express['address_phone'] = $addr['phone'];
+        $express['address_province'] = $addr['province'];
+        $express['address_city'] = $addr['city'];
+        $express['address_area'] = $addr['area'];
+        $express['address_content'] = $addr['address'];
+        $express['address_datetime'] = date('Y-m-d H:i:s');
+        data_save('ShopOrderSend', $express, 'order_no');
+        // 更新订单状态，刷新订单金额
+        $map = ['mid' => $this->mid, 'order_no' => $data['order_no']];
+        $update = ['status' => 2, 'amount_express' => $express['template_amount']];
+        $update['amount_total'] = $order['amount_goods'] + $amount - $order['amount_reduct'] - $order['amount_discount'];
         if ($this->app->db->name('ShopOrder')->where($map)->update($update) !== false) {
             $this->success('订单确认成功！', $this->_getPaymentParams($order['order_no'], $order['amount_total']));
         } else {
@@ -182,7 +188,7 @@ class Order extends Auth
         if ($order['status'] != 2) $this->error('该订单不能发起支付哦！');
         if ($order['payment_status']) $this->error('订单已经支付，不需要再次支付哦！');
         try {
-            $params = $this->_getPaymentParams($order['order_no'], $order['amount_total'] - $order['amount_reduct']);
+            $params = $this->_getPaymentParams($order['order_no'], $order['amount_total']);
             $this->success('获取支付参数成功！', $params);
         } catch (HttpResponseException $exception) {
             throw  $exception;
