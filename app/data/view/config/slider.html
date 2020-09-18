@@ -74,7 +74,7 @@
             $that = $(this), top.setItemValue = function (value) {
                 $that.prevAll('input').val(($that.data('prefix') + '#{v}').replace('{v}', value));
             };
-            $.form.iframe($(this).data('item-page'), $that.data('title') || $that.text(), ['930px', '600px']);
+            $.form.iframe($(this).data('rule-page'), $that.data('title') || $that.text(), ['930px', '600px']);
         }).on('click', '[data-item-add]', function () {
             addItem();
         }).on('click', '[data-item-rm]', function () {
