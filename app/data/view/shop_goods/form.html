@@ -27,6 +27,18 @@
             </select>
         </label>
         <label class="layui-form-item block relative">
+            <span class="color-green font-w7 label-required-prev">运费模板</span>
+            <span class="color-desc margin-left-5">Truck Template</span>
+            <select class="layui-select" name="truck_tcode" lay-search>
+                <option value="">--- 包邮 ---</option>
+                {foreach $vo.truck_items as $truck}{if isset($vo.truck_tcode) and $vo.truck_tcode eq $truck.code}
+                <option selected value="{$truck.code}">{$truck.code} - {$truck.name|default=''}</option>
+                {else}
+                <option value="{$truck.code}">{$truck.code} - {$truck.name|default=''}</option>
+                {/if}{/foreach}
+            </select>
+        </label>
+        <label class="layui-form-item block relative">
             <span class="color-green font-w7">商品名称</span>
             <span class="color-desc margin-left-5">Goods Name</span>
             <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">

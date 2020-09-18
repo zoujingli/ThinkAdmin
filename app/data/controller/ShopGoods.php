@@ -157,6 +157,7 @@ class ShopGoods extends Controller
             $data['mark'] = isset($data['mark']) && trim($data['mark'], ',') ? explode(',', trim($data['mark'], ',')) : [];
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,status';
             $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
+            $data['truck_items'] = $this->app->db->name('ShopTruckTemplate')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('code,name');
         } elseif ($this->request->isPost()) {
             if (empty($data['cover'])) $this->error('商品图片不能为空！');
             if (empty($data['slider'])) $this->error('轮播图不能为空！');
