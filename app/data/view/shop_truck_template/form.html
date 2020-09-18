@@ -150,8 +150,8 @@
             $rootScope.citys.forEach(function (item) {
                 delete item.id, delete item.pid;
                 item.subs.forEach(function (item) {
-                    item.show = true;
                     delete item.id, delete item.pid;
+                    item.show = true, item.status = false;
                 });
             });
             /*! 对象值到为指定小数 */
