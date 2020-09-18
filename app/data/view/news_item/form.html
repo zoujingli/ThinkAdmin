@@ -5,6 +5,7 @@
     <div class="layui-card-body padding-40">
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">文章标签</span>
+            <span class="color-desc margin-left-5">Mark Name</span>
             <div class="markbox layui-textarea">
                 {foreach $mark as $tag}{if isset($vo.mark) && is_array($vo.mark) && in_array($tag.title, $vo.mark)}
                 <label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$tag.title}" lay-ignore> {$tag.title}</label>
@@ -14,23 +15,27 @@
             </div>
         </div>
         <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">文章图片</span>
+            <span class="color-green font-w7 label-required-prev">文章封面</span>
+            <span class="color-desc margin-left-5">Conver Image</span>
             <label class="relative block label-required-null">
-                <input required name="cover" value='{$vo.cover|default=""}' placeholder="请上传图片&nbsp; &nbsp; &nbsp; &nbsp;" class="layui-input">
+                <input required name="cover" value='{$vo.cover|default=""}' placeholder="请上传文章封面&nbsp; &nbsp; &nbsp; &nbsp;" class="layui-input">
                 <a data-file data-type="png,jpg,gif" data-field="cover" class="input-right-icon layui-icon layui-icon-upload"></a>
                 <script>$('[name="cover"]').uploadOneImage()</script>
             </label>
         </div>
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">文章标题</span>
+            <span class="color-desc margin-left-5">Article Title</span>
             <input required name="title" value='{$vo.title|default=""}' placeholder="请输入文章标题" class="layui-input">
         </label>
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">文章描述</span>
+            <span class="color-desc margin-left-5">Article Remark</span>
             <textarea required class="layui-textarea" placeholder="请输入文章描述" name="remark">{$vo.remark|default=''}</textarea>
         </label>
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">文章内容</span>
+            <span class="color-desc margin-left-5">Article Content</span>
             <label class="relative block">
                 <textarea class="layui-textarea" placeholder="请输入文章内容" name="content">{$vo.content|default=''}</textarea>
             </label>
@@ -38,8 +43,8 @@
         <div class="hr-line-dashed"></div>
         {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
         <div class="layui-form-item text-center">
-            <button class="layui-btn" type='submit'>保存数据</button>
-            <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+            <button type="submit" class="layui-btn">保存数据</button>
+            <button type='button' class="layui-btn layui-btn-danger" data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
         </div>
     </div>
 </form>
@@ -49,17 +54,4 @@
         window.createEditor('[name=content]', {height: 300});
     });
 </script>
-
-<style>
-    .markbox {
-        padding: 2px 10px 10px 10px;
-        min-height: 55px;
-    }
-
-    .markbox label {
-        border: 1px dashed #e2e2e2;
-        padding: 5px 8px 5px 5px;
-        background: white;
-    }
-</style>
 {/block}
