@@ -29,7 +29,7 @@ class NewsItem extends Controller
     {
         $this->title = '文章内容管理';
         $query = $this->_query($this->table);
-        $query->like('mark,title')->dateBetween('create_at');
+        $query->like('mark,name')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 

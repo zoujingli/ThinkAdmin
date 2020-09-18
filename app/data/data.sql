@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 18/09/2020 15:24:40
+ Date: 18/09/2020 18:59:03
 */
 
 SET NAMES utf8mb4;
@@ -146,7 +146,7 @@ CREATE TABLE `data_member_coin_used`  (
 DROP TABLE IF EXISTS `data_news_item`;
 CREATE TABLE `data_news_item`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章标题',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章标题',
   `mark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章标签',
   `cover` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章封面',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注说明',
@@ -167,7 +167,7 @@ CREATE TABLE `data_news_item`  (
 -- ----------------------------
 -- Records of data_news_item
 -- ----------------------------
-INSERT INTO `data_news_item` VALUES (1, '32612', ',,', '231623', '36126', '<p>12612</p>', 0, 0, 0, 0, 0, 1, 0, '2020-09-14 10:11:27');
+INSERT INTO `data_news_item` VALUES (1, '32612', ',测试标签,', '231623', '36126', '<p>12612</p>', 0, 0, 0, 0, 0, 1, 0, '2020-09-14 10:11:27');
 
 -- ----------------------------
 -- Table structure for data_news_mark
@@ -175,7 +175,7 @@ INSERT INTO `data_news_item` VALUES (1, '32612', ',,', '231623', '36126', '<p>12
 DROP TABLE IF EXISTS `data_news_mark`;
 CREATE TABLE `data_news_mark`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '标签名称',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '标签名称',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '标签说明',
   `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '权限状态(1使用,0禁用)',
@@ -184,11 +184,12 @@ CREATE TABLE `data_news_mark`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_mark_status`(`status`) USING BTREE,
   INDEX `idx_data_news_mark_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标签' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标签' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_news_mark
 -- ----------------------------
+INSERT INTO `data_news_mark` VALUES (1, '测试标签', '', 0, 1, 0, '2020-09-18 10:30:51');
 
 -- ----------------------------
 -- Table structure for data_news_x_collect
@@ -281,7 +282,7 @@ CREATE TABLE `shop_goods`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-内容' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-内容' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_goods
@@ -291,7 +292,10 @@ INSERT INTO `shop_goods` VALUES (2, 1, 'G69962122974', '34563242', '', 'http://1
 INSERT INTO `shop_goods` VALUES (3, 6, 'G69962280234', '36152365213', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":1,\"virtual\":44}]]', '', 234, 41, 44, 0.00, 111.00, 17, 0, 0, 0, 0, 0, '2020-09-09 03:23:18');
 INSERT INTO `shop_goods` VALUES (4, 7, 'G69971817078', '商品名称', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '', '[{\"name\":\"默认分组1\",\"list\":[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\"}]},{\"name\":\"规格分组111\",\"list\":[{\"name\":\"规格属性22231\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性11235\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性221\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"}]},{\"name\":\"规格分组21325\",\"list\":[{\"name\":\"规格属性32151\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"},{\"name\":\"规格属性1235123\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}]}]', '[[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性22231;;规格分组21325::规格属性32151\",\"sku\":\"S159971819422415\",\"status\":true,\"market\":\"111.00\",\"selling\":\"315123.00\",\"express\":15123,\"virtual\":235123},{\"name\":\"规格属性22231\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性32151\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性22231;;规格分组21325::规格属性1235123\",\"sku\":\"S159971819649657\",\"status\":true,\"market\":\"222.00\",\"selling\":\"5123.00\",\"express\":5123,\"virtual\":32151},{\"name\":\"规格属性22231\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性1235123\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性11235;;规格分组21325::规格属性32151\",\"sku\":\"S159971819422444\",\"status\":false,\"market\":\"333.00\",\"selling\":\"123.00\",\"express\":1531,\"virtual\":2342},{\"name\":\"规格属性11235\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性32151\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性11235;;规格分组21325::规格属性1235123\",\"sku\":\"S159971819649628\",\"status\":true,\"market\":\"444.00\",\"selling\":\"231.00\",\"express\":113,\"virtual\":13651},{\"name\":\"规格属性11235\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性1235123\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性221;;规格分组21325::规格属性32151\",\"sku\":\"S159971819422496\",\"status\":false,\"market\":\"111.00\",\"selling\":\"123.00\",\"express\":132561,\"virtual\":24},{\"name\":\"规格属性221\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性32151\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性221;;规格分组21325::规格属性1235123\",\"sku\":\"S159971819649676\",\"status\":true,\"market\":\"1231.00\",\"selling\":\"112.00\",\"express\":1113,\"virtual\":16512},{\"name\":\"规格属性221\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性1235123\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}]]', '', 15, 0, 299803, 0.00, 111.00, 0, 0, 0, 0, 0, 0, '2020-09-10 05:53:17');
 INSERT INTO `shop_goods` VALUES (5, 0, 'G70015845347', '36152365213', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":1,\"virtual\":44}]]', '', 0, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 0, 0, '2020-09-15 08:10:22');
-INSERT INTO `shop_goods` VALUES (6, 6, 'G70015891349', '复制商品的名称', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 10, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-15 08:18:02');
+INSERT INTO `shop_goods` VALUES (6, 6, 'G70015891349', '复制商品的名称', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 10, 1, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-15 08:18:02');
+INSERT INTO `shop_goods` VALUES (7, 6, 'G70042017345', '复制商品的名称', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-18 08:52:16');
+INSERT INTO `shop_goods` VALUES (8, 6, 'G70042017792', '复制商品的名称', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-18 08:52:20');
+INSERT INTO `shop_goods` VALUES (9, 6, 'G70042018118', '复制商品的名称', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 0, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-18 08:52:25');
 
 -- ----------------------------
 -- Table structure for shop_goods_cate
@@ -345,7 +349,7 @@ CREATE TABLE `shop_goods_item`  (
   INDEX `index_store_goods_list_id`(`goods_code`) USING BTREE,
   INDEX `index_store_goods_list_spec`(`goods_spec`) USING BTREE,
   INDEX `index_store_goods_list_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-商品-规格' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-商品-规格' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_item
@@ -361,7 +365,10 @@ INSERT INTO `shop_goods_item` VALUES (8, 'S159971819649628', 'G69971817078', '�
 INSERT INTO `shop_goods_item` VALUES (9, 'S159971819422496', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性221;;规格分组21325::规格属性32151', 0, 0, 123.00, 111.00, 24, 132561, 0, '2020-09-10 05:53:17');
 INSERT INTO `shop_goods_item` VALUES (10, 'S159971819649676', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性221;;规格分组21325::规格属性1235123', 0, 5, 112.00, 1231.00, 16512, 1113, 1, '2020-09-10 05:53:17');
 INSERT INTO `shop_goods_item` VALUES (11, 'S159962280311732', 'G70015845347', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 1, 1, '2020-09-15 08:10:22');
-INSERT INTO `shop_goods_item` VALUES (12, 'S159962280311732', 'G70015891349', '默认分组::默认规格', 0, 10, 44.00, 111.00, 44, 2, 1, '2020-09-15 08:18:02');
+INSERT INTO `shop_goods_item` VALUES (12, 'S159962280311732', 'G70015891349', '默认分组::默认规格', 1, 10, 44.00, 111.00, 44, 2, 1, '2020-09-15 08:18:02');
+INSERT INTO `shop_goods_item` VALUES (13, 'S159962280311732', 'G70042017345', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-09-18 08:52:16');
+INSERT INTO `shop_goods_item` VALUES (14, 'S159962280311732', 'G70042017792', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-09-18 08:52:20');
+INSERT INTO `shop_goods_item` VALUES (15, 'S159962280311732', 'G70042018118', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-09-18 08:52:25');
 
 -- ----------------------------
 -- Table structure for shop_goods_mark

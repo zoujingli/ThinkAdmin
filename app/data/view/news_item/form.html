@@ -7,10 +7,10 @@
             <span class="color-green font-w7 label-required-prev">文章标签</span>
             <span class="color-desc margin-left-5">Mark Name</span>
             <div class="markbox layui-textarea">
-                {foreach $mark as $tag}{if isset($vo.mark) && is_array($vo.mark) && in_array($tag.title, $vo.mark)}
-                <label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$tag.title}" lay-ignore> {$tag.title}</label>
+                {foreach $mark as $tag}{if isset($vo.mark) && is_array($vo.mark) && in_array($tag.name, $vo.mark)}
+                <label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$tag.name}" lay-ignore> {$tag.name}</label>
                 {else}
-                <label class="think-checkbox notselect"><input type="checkbox" name="mark[]" value="{$tag.title}" lay-ignore> {$tag.title}</label>
+                <label class="think-checkbox notselect"><input type="checkbox" name="mark[]" value="{$tag.name}" lay-ignore> {$tag.name}</label>
                 {/if}{/foreach}
             </div>
         </div>
@@ -25,8 +25,8 @@
         </div>
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">文章标题</span>
-            <span class="color-desc margin-left-5">Article Title</span>
-            <input required name="title" value='{$vo.title|default=""}' placeholder="请输入文章标题" class="layui-input">
+            <span class="color-desc margin-left-5">Article Name</span>
+            <input required name="name" value='{$vo.name|default=""}' placeholder="请输入文章标题" class="layui-input">
         </label>
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">简介描述</span>

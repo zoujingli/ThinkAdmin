@@ -20,7 +20,7 @@ class News extends Controller
      */
     public function getMark()
     {
-        $query = $this->_query('DataNewsMark')->like('title');
+        $query = $this->_query('DataNewsMark')->like('name');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $this->success('获取文章标签列表', $query->order('sort desc,id desc')->page(false, false));
     }
@@ -43,7 +43,7 @@ class News extends Controller
                 $this->app->db->name('DataNewsXHistory')->insert($history);
             }
         }
-        $query = $this->_query('DataNewsItem')->like('title,mark')->equal('id');
+        $query = $this->_query('DataNewsItem')->like('name,mark')->equal('id');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListState($result['list'], input('mid'));

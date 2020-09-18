@@ -29,7 +29,7 @@ class NewsMark extends Controller
     {
         $this->title = '文章标签管理';
         $query = $this->_query($this->table);
-        $query->like('title')->equal('status')->dateBetween('create_at');
+        $query->like('name')->equal('status')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
