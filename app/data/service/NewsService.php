@@ -38,7 +38,7 @@ class NewsService extends Service
     {
         if (count($list) > 0) {
             $cids = array_unique(array_column($list, 'cid'));
-            $cols = 'id,title,logo,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
+            $cols = 'id,name,cover,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
             $news = $this->app->db->name('DataNewsItem')->whereIn('id', $cids)->column($cols, 'id');
             foreach ($list as &$vo) $vo['record'] = $news[$vo['cid']] ?? [];
         }
@@ -71,11 +71,11 @@ class NewsService extends Service
     {
         if (count($list) > 0 && $mid > 0) {
             $map = [['mid', '=', $mid], ['cid', 'in', array_column($list, 'id')]];
-            $cid1s = $this->app->db->name('DataNewsXLike')->where($map)->column('cid');
-            $cid2s = $this->app->db->name('DataNewsXCollect')->where($map)->column('cid');
+            $cid1s = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 2])->column('cid');
+            $cid2s = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 1])->column('cid');
             foreach ($list as &$vo) {
                 $vo['my_like_state'] = in_array($vo['id'], $cid1s) ? 1 : 0;
-                $vo['my_collect_state'] = in_array($vo['id'], $cid2s) ? 1 : 0;
+                $vo['my_coll_state'] = in_array($vo['id'], $cid2s) ? 1 : 0;
             }
         }
         return $list;

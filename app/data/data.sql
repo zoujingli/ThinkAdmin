@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 18/09/2020 18:59:03
+ Date: 18/09/2020 19:08:12
 */
 
 SET NAMES utf8mb4;
@@ -4413,5 +4413,675 @@ INSERT INTO `shop_truck_template` VALUES (191, 'T2020091731584', '1256123', NULL
 INSERT INTO `shop_truck_template` VALUES (192, 'T2020091734143', '1256123', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"2.00\"}', '[{\"city\":[{\"name\":\"北京市\",\"subs\":[\"北京市\"]},{\"name\":\"内蒙古自治区\",\"subs\":[\"呼和浩特市\",\"包头市\",\"乌海市\",\"赤峰市\",\"通辽市\",\"鄂尔多斯市\",\"呼伦贝尔市\",\"巴彦淖尔市\",\"乌兰察布市\",\"兴安盟\",\"锡林郭勒盟\",\"阿拉善盟\"]},{\"name\":\"上海市\",\"subs\":[\"上海市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":\"2.00\"}}]', 2, 0, 0, '2020-09-17 06:03:00');
 INSERT INTO `shop_truck_template` VALUES (193, 'T2020091734314', '1256123', NULL, '[{\"city\":[{\"name\":\"天津市\",\"subs\":[\"天津市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}},{\"city\":[{\"name\":\"北京市\",\"subs\":[\"北京市\"]},{\"name\":\"河北省\",\"subs\":[\"石家庄市\",\"唐山市\",\"秦皇岛市\",\"邯郸市\",\"邢台市\",\"保定市\",\"张家口市\",\"承德市\",\"沧州市\",\"廊坊市\",\"衡水市\"]},{\"name\":\"山西省\",\"subs\":[\"太原市\",\"大同市\",\"阳泉市\",\"长治市\",\"晋城市\",\"朔州市\",\"晋中市\",\"运城市\",\"忻州市\",\"临汾市\",\"吕梁市\"]},{\"name\":\"内蒙古自治区\",\"subs\":[\"呼和浩特市\",\"包头市\",\"乌海市\",\"赤峰市\",\"通辽市\",\"鄂尔多斯市\",\"呼伦贝尔市\",\"巴彦淖尔市\",\"乌兰察布市\",\"兴安盟\",\"锡林郭勒盟\",\"阿拉善盟\"]},{\"name\":\"辽宁省\",\"subs\":[\"沈阳市\",\"大连市\",\"鞍山市\",\"抚顺市\",\"本溪市\",\"丹东市\",\"锦州市\",\"营口市\",\"阜新市\",\"辽阳市\",\"盘锦市\",\"铁岭市\",\"朝阳市\",\"葫芦岛市\",\"金普新区\"]},{\"name\":\"吉林省\",\"subs\":[\"长春市\",\"吉林市\",\"四平市\",\"辽源市\",\"通化市\",\"白山市\",\"松原市\",\"白城市\",\"延边朝鲜族自治州\"]},{\"name\":\"黑龙江省\",\"subs\":[\"哈尔滨市\",\"齐齐哈尔市\",\"鸡西市\",\"鹤岗市\",\"双鸭山市\",\"大庆市\",\"伊春市\",\"佳木斯市\",\"七台河市\",\"牡丹江市\",\"黑河市\",\"绥化市\",\"大兴安岭地区\"]},{\"name\":\"上海市\",\"subs\":[\"上海市\"]},{\"name\":\"浙江省\",\"subs\":[\"杭州市\",\"宁波市\",\"温州市\",\"嘉兴市\",\"湖州市\",\"绍兴市\",\"金华市\",\"衢州市\",\"舟山市\",\"台州市\",\"丽水市\",\"舟山群岛新区\"]},{\"name\":\"安徽省\",\"subs\":[\"合肥市\",\"芜湖市\",\"蚌埠市\",\"淮南市\",\"马鞍山市\",\"淮北市\",\"铜陵市\",\"安庆市\",\"黄山市\",\"滁州市\",\"阜阳市\",\"宿州市\",\"六安市\",\"亳州市\",\"池州市\",\"宣城市\"]},{\"name\":\"福建省\",\"subs\":[\"福州市\",\"厦门市\",\"莆田市\",\"三明市\",\"泉州市\",\"漳州市\",\"龙岩市\",\"宁德市\"]},{\"name\":\"江西省\",\"subs\":[\"南昌市\",\"景德镇市\",\"萍乡市\",\"九江市\",\"新余市\",\"鹰潭市\",\"赣州市\",\"吉安市\",\"宜春市\",\"抚州市\",\"上饶市\"]},{\"name\":\"山东省\",\"subs\":[\"济南市\",\"青岛市\",\"淄博市\",\"枣庄市\",\"东营市\",\"烟台市\",\"潍坊市\",\"济宁市\",\"泰安市\",\"威海市\",\"日照市\",\"莱芜市\",\"临沂市\",\"德州市\",\"聊城市\",\"滨州市\",\"菏泽市\"]},{\"name\":\"河南省\",\"subs\":[\"郑州市\",\"开封市\",\"洛阳市\",\"平顶山市\",\"安阳市\",\"鹤壁市\",\"新乡市\",\"焦作市\",\"濮阳市\",\"许昌市\",\"漯河市\",\"三门峡市\",\"南阳市\",\"商丘市\",\"信阳市\",\"周口市\",\"驻马店市\",\"直辖县级\"]},{\"name\":\"湖北省\",\"subs\":[\"武汉市\",\"黄石市\",\"十堰市\",\"宜昌市\",\"襄阳市\",\"鄂州市\",\"荆门市\",\"孝感市\",\"荆州市\",\"黄冈市\",\"咸宁市\",\"随州市\",\"恩施土家族苗族自治州\",\"直辖县级\"]},{\"name\":\"湖南省\",\"subs\":[\"长沙市\",\"株洲市\",\"湘潭市\",\"衡阳市\",\"邵阳市\",\"岳阳市\",\"常德市\",\"张家界市\",\"益阳市\",\"郴州市\",\"永州市\",\"怀化市\",\"娄底市\",\"湘西土家族苗族自治州\"]},{\"name\":\"广东省\",\"subs\":[\"广州市\",\"韶关市\",\"深圳市\",\"珠海市\",\"汕头市\",\"佛山市\",\"江门市\",\"湛江市\",\"茂名市\",\"肇庆市\",\"惠州市\",\"梅州市\",\"汕尾市\",\"河源市\",\"阳江市\",\"清远市\",\"东莞市\",\"中山市\",\"潮州市\",\"揭阳市\",\"云浮市\"]},{\"name\":\"广西壮族自治区\",\"subs\":[\"南宁市\",\"柳州市\",\"桂林市\",\"梧州市\",\"北海市\",\"防城港市\",\"钦州市\",\"贵港市\",\"玉林市\",\"百色市\",\"贺州市\",\"河池市\",\"来宾市\",\"崇左市\"]},{\"name\":\"海南省\",\"subs\":[\"海口市\",\"三亚市\",\"三沙市\",\"直辖县级\",\"儋州市\"]},{\"name\":\"重庆市\",\"subs\":[\"重庆市\",\"县\"]},{\"name\":\"四川省\",\"subs\":[\"成都市\",\"自贡市\",\"攀枝花市\",\"泸州市\",\"德阳市\",\"绵阳市\",\"广元市\",\"遂宁市\",\"内江市\",\"乐山市\",\"南充市\",\"眉山市\",\"宜宾市\",\"广安市\",\"达州市\",\"雅安市\",\"巴中市\",\"资阳市\",\"阿坝藏族羌族自治州\",\"甘孜藏族自治州\",\"凉山彝族自治州\"]},{\"name\":\"贵州省\",\"subs\":[\"贵阳市\",\"六盘水市\",\"遵义市\",\"安顺市\",\"毕节市\",\"铜仁市\",\"黔西南布依族苗族自治州\",\"黔东南苗族侗族自治州\",\"黔南布依族苗族自治州\"]},{\"name\":\"云南省\",\"subs\":[\"昆明市\",\"曲靖市\",\"玉溪市\",\"保山市\",\"昭通市\",\"丽江市\",\"普洱市\",\"临沧市\",\"楚雄彝族自治州\",\"红河哈尼族彝族自治州\",\"文山壮族苗族自治州\",\"西双版纳傣族自治州\",\"大理白族自治州\",\"德宏傣族景颇族自治州\",\"怒江傈僳族自治州\",\"迪庆藏族自治州\"]},{\"name\":\"西藏自治区\",\"subs\":[\"拉萨市\",\"日喀则市\",\"昌都市\",\"山南地区\",\"那曲地区\",\"阿里地区\",\"林芝地区\"]},{\"name\":\"陕西省\",\"subs\":[\"西安市\",\"铜川市\",\"宝鸡市\",\"咸阳市\",\"渭南市\",\"延安市\",\"汉中市\",\"榆林市\",\"安康市\",\"商洛市\",\"西咸新区\"]},{\"name\":\"甘肃省\",\"subs\":[\"兰州市\",\"嘉峪关市\",\"金昌市\",\"白银市\",\"天水市\",\"武威市\",\"张掖市\",\"平凉市\",\"酒泉市\",\"庆阳市\",\"定西市\",\"陇南市\",\"临夏回族自治州\",\"甘南藏族自治州\"]},{\"name\":\"青海省\",\"subs\":[\"西宁市\",\"海东市\",\"海北藏族自治州\",\"黄南藏族自治州\",\"海南藏族自治州\",\"果洛藏族自治州\",\"玉树藏族自治州\",\"海西蒙古族藏族自治州\"]},{\"name\":\"宁夏回族自治区\",\"subs\":[\"银川市\",\"石嘴山市\",\"吴忠市\",\"固原市\",\"中卫市\"]},{\"name\":\"新疆维吾尔自治区\",\"subs\":[\"乌鲁木齐市\",\"克拉玛依市\",\"吐鲁番地区\",\"哈密地区\",\"昌吉回族自治州\",\"博尔塔拉蒙古自治州\",\"巴音郭楞蒙古自治州\",\"阿克苏地区\",\"克孜勒苏柯尔克孜自治州\",\"喀什地区\",\"和田地区\",\"伊犁哈萨克自治州\",\"塔城地区\",\"阿勒泰地区\",\"直辖县级\"]},{\"name\":\"台湾省\",\"subs\":[\"台北市\",\"高雄市\",\"基隆市\",\"台中市\",\"台南市\",\"新竹市\",\"嘉义市\",\"新北市\",\"宜兰县\",\"桃园县\",\"新竹县\",\"苗栗县\",\"彰化县\",\"南投县\",\"云林县\",\"嘉义县\",\"屏东县\",\"台东县\",\"花莲县\",\"澎湖县\",\"金门县\",\"连江县\"]},{\"name\":\"香港特别行政区\",\"subs\":[\"香港特别行政区\"]},{\"name\":\"澳门特别行政区\",\"subs\":[\"澳门半岛\",\"氹仔岛\",\"路环岛\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}},{\"city\":[{\"name\":\"江苏省\",\"subs\":[\"南京市\",\"无锡市\",\"徐州市\",\"苏州市\",\"南通市\",\"连云港市\",\"淮安市\",\"盐城市\",\"扬州市\",\"镇江市\",\"泰州市\",\"宿迁市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}},{\"city\":[{\"name\":\"江苏省\",\"subs\":[\"常州市\"]},{\"name\":\"福建省\",\"subs\":[\"南平市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}}]', 0, 0, 0, '2020-09-17 06:03:16');
 INSERT INTO `shop_truck_template` VALUES (194, 'T2020091731249', '通用邮费模板', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"北京市\",\"subs\":[\"北京市\"]},{\"name\":\"天津市\",\"subs\":[\"天津市\"]},{\"name\":\"河北省\",\"subs\":[\"石家庄市\",\"唐山市\",\"秦皇岛市\",\"邯郸市\",\"邢台市\",\"保定市\",\"张家口市\",\"承德市\",\"沧州市\",\"廊坊市\",\"衡水市\"]},{\"name\":\"山西省\",\"subs\":[\"太原市\",\"大同市\",\"阳泉市\",\"长治市\",\"晋城市\",\"朔州市\",\"晋中市\",\"运城市\",\"忻州市\",\"临汾市\",\"吕梁市\"]},{\"name\":\"内蒙古自治区\",\"subs\":[\"呼和浩特市\",\"包头市\",\"乌海市\",\"赤峰市\",\"通辽市\",\"鄂尔多斯市\",\"呼伦贝尔市\",\"巴彦淖尔市\",\"乌兰察布市\",\"兴安盟\",\"锡林郭勒盟\",\"阿拉善盟\"]},{\"name\":\"辽宁省\",\"subs\":[\"沈阳市\",\"大连市\",\"鞍山市\",\"抚顺市\",\"本溪市\",\"丹东市\",\"锦州市\",\"营口市\",\"阜新市\",\"辽阳市\",\"盘锦市\",\"铁岭市\",\"朝阳市\",\"葫芦岛市\",\"金普新区\"]},{\"name\":\"吉林省\",\"subs\":[\"长春市\",\"吉林市\",\"四平市\",\"辽源市\",\"通化市\",\"白山市\",\"松原市\",\"白城市\",\"延边朝鲜族自治州\"]},{\"name\":\"黑龙江省\",\"subs\":[\"哈尔滨市\",\"齐齐哈尔市\",\"鸡西市\",\"鹤岗市\",\"双鸭山市\",\"大庆市\",\"伊春市\",\"佳木斯市\",\"七台河市\",\"牡丹江市\",\"黑河市\",\"绥化市\",\"大兴安岭地区\"]},{\"name\":\"上海市\",\"subs\":[\"上海市\"]},{\"name\":\"江苏省\",\"subs\":[\"南京市\",\"无锡市\",\"徐州市\",\"常州市\",\"苏州市\",\"南通市\",\"连云港市\",\"淮安市\",\"盐城市\",\"扬州市\",\"镇江市\",\"泰州市\",\"宿迁市\"]},{\"name\":\"浙江省\",\"subs\":[\"杭州市\",\"宁波市\",\"温州市\",\"嘉兴市\",\"湖州市\",\"绍兴市\",\"金华市\",\"衢州市\",\"舟山市\",\"台州市\",\"丽水市\",\"舟山群岛新区\"]},{\"name\":\"安徽省\",\"subs\":[\"合肥市\",\"芜湖市\",\"蚌埠市\",\"淮南市\",\"马鞍山市\",\"淮北市\",\"铜陵市\",\"安庆市\",\"黄山市\",\"滁州市\",\"阜阳市\",\"宿州市\",\"六安市\",\"亳州市\",\"池州市\",\"宣城市\"]},{\"name\":\"福建省\",\"subs\":[\"福州市\",\"厦门市\",\"莆田市\",\"三明市\",\"泉州市\",\"漳州市\",\"南平市\",\"龙岩市\",\"宁德市\"]},{\"name\":\"江西省\",\"subs\":[\"南昌市\",\"景德镇市\",\"萍乡市\",\"九江市\",\"新余市\",\"鹰潭市\",\"赣州市\",\"吉安市\",\"宜春市\",\"抚州市\",\"上饶市\"]},{\"name\":\"山东省\",\"subs\":[\"济南市\",\"青岛市\",\"淄博市\",\"枣庄市\",\"东营市\",\"烟台市\",\"潍坊市\",\"济宁市\",\"泰安市\",\"威海市\",\"日照市\",\"莱芜市\",\"临沂市\",\"德州市\",\"聊城市\",\"滨州市\",\"菏泽市\"]},{\"name\":\"河南省\",\"subs\":[\"郑州市\",\"开封市\",\"洛阳市\",\"平顶山市\",\"安阳市\",\"鹤壁市\",\"新乡市\",\"焦作市\",\"濮阳市\",\"许昌市\",\"漯河市\",\"三门峡市\",\"南阳市\",\"商丘市\",\"信阳市\",\"周口市\",\"驻马店市\",\"直辖县级\"]},{\"name\":\"湖北省\",\"subs\":[\"武汉市\",\"黄石市\",\"十堰市\",\"宜昌市\",\"襄阳市\",\"鄂州市\",\"荆门市\",\"孝感市\",\"荆州市\",\"黄冈市\",\"咸宁市\",\"随州市\",\"恩施土家族苗族自治州\",\"直辖县级\"]},{\"name\":\"湖南省\",\"subs\":[\"长沙市\",\"株洲市\",\"湘潭市\",\"衡阳市\",\"邵阳市\",\"岳阳市\",\"常德市\",\"张家界市\",\"益阳市\",\"郴州市\",\"永州市\",\"怀化市\",\"娄底市\",\"湘西土家族苗族自治州\"]},{\"name\":\"广东省\",\"subs\":[\"广州市\",\"韶关市\",\"深圳市\",\"珠海市\",\"汕头市\",\"佛山市\",\"江门市\",\"湛江市\",\"茂名市\",\"肇庆市\",\"惠州市\",\"梅州市\",\"汕尾市\",\"河源市\",\"阳江市\",\"清远市\",\"东莞市\",\"中山市\",\"潮州市\",\"揭阳市\",\"云浮市\"]},{\"name\":\"广西壮族自治区\",\"subs\":[\"南宁市\",\"柳州市\",\"桂林市\",\"梧州市\",\"北海市\",\"防城港市\",\"钦州市\",\"贵港市\",\"玉林市\",\"百色市\",\"贺州市\",\"河池市\",\"来宾市\",\"崇左市\"]},{\"name\":\"海南省\",\"subs\":[\"海口市\",\"三亚市\",\"三沙市\",\"直辖县级\",\"儋州市\"]},{\"name\":\"重庆市\",\"subs\":[\"重庆市\",\"县\"]},{\"name\":\"四川省\",\"subs\":[\"成都市\",\"自贡市\",\"攀枝花市\",\"泸州市\",\"德阳市\",\"绵阳市\",\"广元市\",\"遂宁市\",\"内江市\",\"乐山市\",\"南充市\",\"眉山市\",\"宜宾市\",\"广安市\",\"达州市\",\"雅安市\",\"巴中市\",\"资阳市\",\"阿坝藏族羌族自治州\",\"甘孜藏族自治州\",\"凉山彝族自治州\"]},{\"name\":\"贵州省\",\"subs\":[\"贵阳市\",\"六盘水市\",\"遵义市\",\"安顺市\",\"毕节市\",\"铜仁市\",\"黔西南布依族苗族自治州\",\"黔东南苗族侗族自治州\",\"黔南布依族苗族自治州\"]},{\"name\":\"云南省\",\"subs\":[\"昆明市\",\"曲靖市\",\"玉溪市\",\"保山市\",\"昭通市\",\"丽江市\",\"普洱市\",\"临沧市\",\"楚雄彝族自治州\",\"红河哈尼族彝族自治州\",\"文山壮族苗族自治州\",\"西双版纳傣族自治州\",\"大理白族自治州\",\"德宏傣族景颇族自治州\",\"怒江傈僳族自治州\",\"迪庆藏族自治州\"]},{\"name\":\"西藏自治区\",\"subs\":[\"拉萨市\",\"日喀则市\",\"昌都市\",\"山南地区\",\"那曲地区\",\"阿里地区\",\"林芝地区\"]},{\"name\":\"陕西省\",\"subs\":[\"西安市\",\"铜川市\",\"宝鸡市\",\"咸阳市\",\"渭南市\",\"延安市\",\"汉中市\",\"榆林市\",\"安康市\",\"商洛市\",\"西咸新区\"]},{\"name\":\"甘肃省\",\"subs\":[\"兰州市\",\"嘉峪关市\",\"金昌市\",\"白银市\",\"天水市\",\"武威市\",\"张掖市\",\"平凉市\",\"酒泉市\",\"庆阳市\",\"定西市\",\"陇南市\",\"临夏回族自治州\",\"甘南藏族自治州\"]},{\"name\":\"青海省\",\"subs\":[\"西宁市\",\"海东市\",\"海北藏族自治州\",\"黄南藏族自治州\",\"海南藏族自治州\",\"果洛藏族自治州\",\"玉树藏族自治州\",\"海西蒙古族藏族自治州\"]},{\"name\":\"宁夏回族自治区\",\"subs\":[\"银川市\",\"石嘴山市\",\"吴忠市\",\"固原市\",\"中卫市\"]},{\"name\":\"新疆维吾尔自治区\",\"subs\":[\"乌鲁木齐市\",\"克拉玛依市\",\"吐鲁番地区\",\"哈密地区\",\"昌吉回族自治州\",\"博尔塔拉蒙古自治州\",\"巴音郭楞蒙古自治州\",\"阿克苏地区\",\"克孜勒苏柯尔克孜自治州\",\"喀什地区\",\"和田地区\",\"伊犁哈萨克自治州\",\"塔城地区\",\"阿勒泰地区\",\"直辖县级\"]},{\"name\":\"台湾省\",\"subs\":[\"台北市\",\"高雄市\",\"基隆市\",\"台中市\",\"台南市\",\"新竹市\",\"嘉义市\",\"新北市\",\"宜兰县\",\"桃园县\",\"新竹县\",\"苗栗县\",\"彰化县\",\"南投县\",\"云林县\",\"嘉义县\",\"屏东县\",\"台东县\",\"花莲县\",\"澎湖县\",\"金门县\",\"连江县\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"6.00\",\"repeatNumber\":1,\"repeatAmount\":\"4.00\"}}]', 3, 1, 0, '2020-09-17 08:58:02');
+
+-- ----------------------------
+-- Table structure for system_auth
+-- ----------------------------
+DROP TABLE IF EXISTS `system_auth`;
+CREATE TABLE `system_auth`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '权限名称',
+  `desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注说明',
+  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '权限状态(1使用,0禁用)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_system_auth_title`(`title`) USING BTREE,
+  INDEX `idx_system_auth_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-权限' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of system_auth
+-- ----------------------------
+INSERT INTO `system_auth` VALUES (1, 'test', 'test', 0, 1, '2020-07-15 01:44:20');
+
+-- ----------------------------
+-- Table structure for system_auth_node
+-- ----------------------------
+DROP TABLE IF EXISTS `system_auth_node`;
+CREATE TABLE `system_auth_node`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `auth` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '角色',
+  `node` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '节点',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_system_auth_auth`(`auth`) USING BTREE,
+  INDEX `idx_system_auth_node`(`node`(191)) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 719 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-授权' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of system_auth_node
+-- ----------------------------
+INSERT INTO `system_auth_node` VALUES (664, 1, 'admin');
+INSERT INTO `system_auth_node` VALUES (665, 1, 'admin/auth');
+INSERT INTO `system_auth_node` VALUES (666, 1, 'admin/auth/index');
+INSERT INTO `system_auth_node` VALUES (667, 1, 'admin/auth/add');
+INSERT INTO `system_auth_node` VALUES (668, 1, 'admin/auth/edit');
+INSERT INTO `system_auth_node` VALUES (669, 1, 'admin/auth/state');
+INSERT INTO `system_auth_node` VALUES (670, 1, 'admin/auth/apply');
+INSERT INTO `system_auth_node` VALUES (671, 1, 'admin/auth/remove');
+INSERT INTO `system_auth_node` VALUES (672, 1, 'admin/config');
+INSERT INTO `system_auth_node` VALUES (673, 1, 'admin/config/index');
+INSERT INTO `system_auth_node` VALUES (674, 1, 'admin/config/system');
+INSERT INTO `system_auth_node` VALUES (675, 1, 'admin/config/storage');
+INSERT INTO `system_auth_node` VALUES (676, 1, 'admin/menu');
+INSERT INTO `system_auth_node` VALUES (677, 1, 'admin/menu/index');
+INSERT INTO `system_auth_node` VALUES (678, 1, 'admin/menu/add');
+INSERT INTO `system_auth_node` VALUES (679, 1, 'admin/menu/edit');
+INSERT INTO `system_auth_node` VALUES (680, 1, 'admin/menu/state');
+INSERT INTO `system_auth_node` VALUES (681, 1, 'admin/menu/remove');
+INSERT INTO `system_auth_node` VALUES (682, 1, 'admin/module');
+INSERT INTO `system_auth_node` VALUES (683, 1, 'admin/module/index');
+INSERT INTO `system_auth_node` VALUES (684, 1, 'admin/module/install');
+INSERT INTO `system_auth_node` VALUES (685, 1, 'admin/module/change');
+INSERT INTO `system_auth_node` VALUES (686, 1, 'admin/oplog');
+INSERT INTO `system_auth_node` VALUES (687, 1, 'admin/oplog/index');
+INSERT INTO `system_auth_node` VALUES (688, 1, 'admin/oplog/clear');
+INSERT INTO `system_auth_node` VALUES (689, 1, 'admin/oplog/remove');
+INSERT INTO `system_auth_node` VALUES (690, 1, 'admin/queue');
+INSERT INTO `system_auth_node` VALUES (691, 1, 'admin/queue/index');
+INSERT INTO `system_auth_node` VALUES (692, 1, 'admin/queue/redo');
+INSERT INTO `system_auth_node` VALUES (693, 1, 'admin/queue/start');
+INSERT INTO `system_auth_node` VALUES (694, 1, 'admin/queue/stop');
+INSERT INTO `system_auth_node` VALUES (695, 1, 'admin/queue/clear');
+INSERT INTO `system_auth_node` VALUES (696, 1, 'admin/queue/remove');
+INSERT INTO `system_auth_node` VALUES (697, 1, 'admin/user');
+INSERT INTO `system_auth_node` VALUES (698, 1, 'admin/user/index');
+INSERT INTO `system_auth_node` VALUES (699, 1, 'admin/user/add');
+INSERT INTO `system_auth_node` VALUES (700, 1, 'admin/user/edit');
+INSERT INTO `system_auth_node` VALUES (701, 1, 'admin/user/pass');
+INSERT INTO `system_auth_node` VALUES (702, 1, 'admin/user/state');
+INSERT INTO `system_auth_node` VALUES (703, 1, 'admin/user/remove');
+INSERT INTO `system_auth_node` VALUES (704, 1, 'data');
+INSERT INTO `system_auth_node` VALUES (705, 1, 'data/config');
+INSERT INTO `system_auth_node` VALUES (706, 1, 'data/config/slider');
+INSERT INTO `system_auth_node` VALUES (707, 1, 'data/news_item');
+INSERT INTO `system_auth_node` VALUES (708, 1, 'data/news_item/index');
+INSERT INTO `system_auth_node` VALUES (709, 1, 'data/news_item/add');
+INSERT INTO `system_auth_node` VALUES (710, 1, 'data/news_item/edit');
+INSERT INTO `system_auth_node` VALUES (711, 1, 'data/news_item/state');
+INSERT INTO `system_auth_node` VALUES (712, 1, 'data/news_item/remove');
+INSERT INTO `system_auth_node` VALUES (713, 1, 'data/news_mark');
+INSERT INTO `system_auth_node` VALUES (714, 1, 'data/news_mark/index');
+INSERT INTO `system_auth_node` VALUES (715, 1, 'data/news_mark/add');
+INSERT INTO `system_auth_node` VALUES (716, 1, 'data/news_mark/edit');
+INSERT INTO `system_auth_node` VALUES (717, 1, 'data/news_mark/state');
+INSERT INTO `system_auth_node` VALUES (718, 1, 'data/news_mark/remove');
+
+-- ----------------------------
+-- Table structure for system_config
+-- ----------------------------
+DROP TABLE IF EXISTS `system_config`;
+CREATE TABLE `system_config`  (
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '分类',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置名',
+  `value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置值',
+  INDEX `idx_system_config_type`(`type`) USING BTREE,
+  INDEX `idx_system_config_name`(`name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-配置' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of system_config
+-- ----------------------------
+INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
+INSERT INTO `system_config` VALUES ('base', 'site_icon', 'https://v6.thinkadmin.top/upload/f47b8fe06e38ae99/08e8398da45583b9.png');
+INSERT INTO `system_config` VALUES ('base', 'site_copy', '©版权所有 2014-2020 楚才科技');
+INSERT INTO `system_config` VALUES ('base', 'app_name', 'ThinkAdmin');
+INSERT INTO `system_config` VALUES ('base', 'app_version', 'v6.0');
+INSERT INTO `system_config` VALUES ('base', 'miitbeian', '粤ICP备16006642号-2');
+INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_protocol', 'http');
+INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
+INSERT INTO `system_config` VALUES ('storage', 'allow_exts', 'doc,gif,icon,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');
+INSERT INTO `system_config` VALUES ('storage', 'qiniu_region', '华东');
+INSERT INTO `system_config` VALUES ('wechat', 'type', 'thr');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appid', 'wx60a43dd8161666d4');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appkey', '7d0e4a487c6258b2232294b6ef0adb9e');
+INSERT INTO `system_config` VALUES ('base', 'xpath', 'admin');
+INSERT INTO `system_config` VALUES ('base', 'beian', '');
+INSERT INTO `system_config` VALUES ('storage', 'link_type', 'none');
+INSERT INTO `system_config` VALUES ('storage', 'local_http_protocol', 'follow');
+INSERT INTO `system_config` VALUES ('storage', 'local_http_domain', '');
+
+-- ----------------------------
+-- Table structure for system_data
+-- ----------------------------
+DROP TABLE IF EXISTS `system_data`;
+CREATE TABLE `system_data`  (
+  `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置名',
+  `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_system_data_name`(`name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of system_data
+-- ----------------------------
+INSERT INTO `system_data` VALUES (1, 'slider', 'a:3:{i:0;a:3:{s:3:\"img\";s:66:\"http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg\";s:4:\"rule\";s:6:\"NEWS#1\";s:4:\"name\";s:1:\"#\";}i:1;a:3:{s:3:\"img\";s:64:\"//v6.thinkadmin.top/upload/a8/23328aa13affc4040af4fa4a365a6e.jpg\";s:4:\"rule\";s:18:\"GOODS#G69971817078\";s:4:\"name\";s:6:\"234231\";}i:2;a:3:{s:3:\"img\";s:66:\"http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg\";s:4:\"rule\";s:18:\"GOODS#G69971817078\";s:4:\"name\";s:1:\"#\";}}');
+INSERT INTO `system_data` VALUES (2, 'wechat_menu_data', 'a:1:{i:0;a:3:{s:4:\"name\";s:15:\"请输入名称\";s:4:\"type\";s:18:\"pic_photo_or_album\";s:3:\"key\";s:4:\"tttt\";}}');
+
+-- ----------------------------
+-- Table structure for system_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `system_menu`;
+CREATE TABLE `system_menu`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `pid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '上级ID',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '菜单名称',
+  `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '菜单图标',
+  `node` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '节点代码',
+  `url` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '链接节点',
+  `params` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '链接参数',
+  `target` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '_self' COMMENT '打开方式',
+  `sort` int(11) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '状态(0:禁用,1:启用)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_system_menu_node`(`node`) USING BTREE,
+  INDEX `idx_system_menu_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 84 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of system_menu
+-- ----------------------------
+INSERT INTO `system_menu` VALUES (2, 0, '系统管理', '', '', '#', '', '_self', 100, 1, '2018-09-05 18:04:52');
+INSERT INTO `system_menu` VALUES (3, 4, '系统菜单管理', 'layui-icon layui-icon-layouts', '', 'admin/menu/index', '', '_self', 1, 1, '2018-09-05 18:05:26');
+INSERT INTO `system_menu` VALUES (4, 2, '系统配置', '', '', '#', '', '_self', 20, 1, '2018-09-05 18:07:17');
+INSERT INTO `system_menu` VALUES (5, 12, '系统用户管理', 'layui-icon layui-icon-username', '', 'admin/user/index', '', '_self', 1, 1, '2018-09-06 11:10:42');
+INSERT INTO `system_menu` VALUES (7, 12, '访问权限管理', 'layui-icon layui-icon-vercode', '', 'admin/auth/index', '', '_self', 2, 1, '2018-09-06 15:17:14');
+INSERT INTO `system_menu` VALUES (11, 4, '系统参数配置', 'layui-icon layui-icon-set', '', 'admin/config/index', '', '_self', 4, 1, '2018-09-06 16:43:47');
+INSERT INTO `system_menu` VALUES (12, 2, '权限管理', '', '', '#', '', '_self', 10, 1, '2018-09-06 18:01:31');
+INSERT INTO `system_menu` VALUES (27, 4, '系统任务管理', 'layui-icon layui-icon-log', '', 'admin/queue/index', '', '_self', 3, 1, '2018-11-29 11:13:34');
+INSERT INTO `system_menu` VALUES (49, 4, '系统日志管理', 'layui-icon layui-icon-form', '', 'admin/oplog/index', '', '_self', 2, 1, '2019-02-18 12:56:56');
+INSERT INTO `system_menu` VALUES (56, 0, '微信管理', '', '', '#', '', '_self', 200, 1, '2019-12-09 11:00:37');
+INSERT INTO `system_menu` VALUES (57, 56, '微信管理', '', '', '#', '', '_self', 0, 1, '2019-12-09 13:56:58');
+INSERT INTO `system_menu` VALUES (58, 57, '微信接口配置', 'layui-icon layui-icon-set', 'wechat/config/options', 'wechat/config/options', '', '_self', 0, 1, '2019-12-09 13:57:28');
+INSERT INTO `system_menu` VALUES (59, 57, '微信支付配置', 'layui-icon layui-icon-rmb', 'wechat/config/payment', 'wechat/config/payment', '', '_self', 0, 1, '2019-12-09 13:58:42');
+INSERT INTO `system_menu` VALUES (60, 56, '微信定制', '', '', '#', '', '_self', 0, 1, '2019-12-09 18:35:16');
+INSERT INTO `system_menu` VALUES (61, 60, '微信粉丝管理', 'layui-icon layui-icon-username', '', 'wechat/fans/index', '', '_self', 0, 1, '2019-12-09 18:35:37');
+INSERT INTO `system_menu` VALUES (62, 60, '微信图文管理', 'layui-icon layui-icon-template-1', '', 'wechat/news/index', '', '_self', 0, 1, '2019-12-09 18:43:51');
+INSERT INTO `system_menu` VALUES (63, 60, '微信菜单配置', 'layui-icon layui-icon-cellphone', '', 'wechat/menu/index', '', '_self', 0, 1, '2019-12-09 22:49:28');
+INSERT INTO `system_menu` VALUES (64, 60, '回复规则管理', 'layui-icon layui-icon-engine', '', 'wechat/keys/index', '', '_self', 0, 1, '2019-12-14 14:09:04');
+INSERT INTO `system_menu` VALUES (65, 60, '关注回复配置', 'layui-icon layui-icon-senior', '', 'wechat/keys/subscribe', '', '_self', 0, 1, '2019-12-14 14:10:31');
+INSERT INTO `system_menu` VALUES (66, 60, '默认回复配置', 'layui-icon layui-icon-util', '', 'wechat/keys/defaults', '', '_self', 0, 1, '2019-12-14 14:11:18');
+INSERT INTO `system_menu` VALUES (67, 0, '控制台', '', '', '#', '', '_self', 300, 1, '2020-07-13 06:51:46');
+INSERT INTO `system_menu` VALUES (68, 67, '数据管理', '', '', '#', '', '_self', 0, 1, '2020-07-13 06:51:54');
+INSERT INTO `system_menu` VALUES (69, 68, '文章标签管理', 'layui-icon layui-icon-note', 'data/news_mark/index', 'data/news_mark/index', '', '_self', 20, 1, '2020-07-13 06:52:09');
+INSERT INTO `system_menu` VALUES (70, 68, '文章内容管理', 'layui-icon layui-icon-template', 'data/news_item/index', 'data/news_item/index', '', '_self', 10, 1, '2020-07-13 06:52:26');
+INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', 'data/config/slider', 'data/config/slider', '', '_self', 30, 1, '2020-07-14 01:17:02');
+INSERT INTO `system_menu` VALUES (72, 4, '系统模块管理', 'layui-icon layui-icon-app', '', 'admin/module/index', '', '_self', 0, 1, '2020-08-03 07:37:12');
+INSERT INTO `system_menu` VALUES (73, 67, '商城管理', '', '', '#', '', '_self', 0, 1, '2020-09-08 02:51:30');
+INSERT INTO `system_menu` VALUES (74, 73, '商品分类管理', 'layui-icon layui-icon-app', 'data/shop_goods_cate/index', 'data/shop_goods_cate/index', '', '_self', 80, 1, '2020-09-08 02:51:49');
+INSERT INTO `system_menu` VALUES (75, 73, '商品标签管理', 'layui-icon layui-icon-form', 'data/shop_goods_mark/index', 'data/shop_goods_mark/index', '', '_self', 70, 1, '2020-09-08 03:35:58');
+INSERT INTO `system_menu` VALUES (76, 73, '商品数据管理', 'layui-icon layui-icon-star', 'data/shop_goods/index', 'data/shop_goods/index', '', '_self', 90, 1, '2020-09-08 07:13:19');
+INSERT INTO `system_menu` VALUES (77, 73, '会员用户管理', 'layui-icon layui-icon-user', 'data/member/index', 'data/member/index', '', '_self', 100, 1, '2020-09-10 01:48:02');
+INSERT INTO `system_menu` VALUES (78, 73, '订单数据管理', 'layui-icon layui-icon-template-1', 'data/shop_order/index', 'data/shop_order/index', '', '_self', 60, 1, '2020-09-10 01:48:41');
+INSERT INTO `system_menu` VALUES (79, 73, '订单发货管理', 'layui-icon layui-icon-transfer', 'data/shop_order_send/index', 'data/shop_order_send/index', '', '_self', 50, 1, '2020-09-10 01:50:12');
+INSERT INTO `system_menu` VALUES (80, 73, '售后申请管理', 'layui-icon layui-icon-diamond', 'data/shop_order_service/index', 'data/shop_order_service/index', '', '_self', 40, 1, '2020-09-10 01:53:16');
+INSERT INTO `system_menu` VALUES (81, 73, '快递公司管理', 'layui-icon layui-icon-website', 'data/shop_truck_company/index', 'data/shop_truck_company/index', '', '_self', 0, 1, '2020-09-15 08:47:46');
+INSERT INTO `system_menu` VALUES (82, 73, '邮费模板管理', 'layui-icon layui-icon-template-1', 'data/shop_truck_template/index', 'data/shop_truck_template/index', '', '_self', 0, 1, '2020-09-15 09:14:46');
+INSERT INTO `system_menu` VALUES (83, 73, '配送区域管理', 'layui-icon layui-icon-location', 'data/shop_truck_template/region', 'data/shop_truck_template/region', '', '_self', 0, 1, '2020-09-17 09:13:35');
+
+-- ----------------------------
+-- Table structure for system_oplog
+-- ----------------------------
+DROP TABLE IF EXISTS `system_oplog`;
+CREATE TABLE `system_oplog`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `node` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '当前操作节点',
+  `geoip` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作者IP地址',
+  `action` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作行为名称',
+  `content` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作内容描述',
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 170 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of system_oplog
+-- ----------------------------
+INSERT INTO `system_oplog` VALUES (143, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-08 05:20:11');
+INSERT INTO `system_oplog` VALUES (144, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-08 06:01:28');
+INSERT INTO `system_oplog` VALUES (145, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-08 07:12:32');
+INSERT INTO `system_oplog` VALUES (146, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-08 09:03:07');
+INSERT INTO `system_oplog` VALUES (147, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-09 01:18:38');
+INSERT INTO `system_oplog` VALUES (148, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-09 06:00:39');
+INSERT INTO `system_oplog` VALUES (149, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-10 01:31:12');
+INSERT INTO `system_oplog` VALUES (150, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-10 05:52:23');
+INSERT INTO `system_oplog` VALUES (151, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-10 09:09:18');
+INSERT INTO `system_oplog` VALUES (152, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-11 02:19:49');
+INSERT INTO `system_oplog` VALUES (156, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-14 08:16:33');
+INSERT INTO `system_oplog` VALUES (157, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-15 02:36:45');
+INSERT INTO `system_oplog` VALUES (158, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-15 07:34:30');
+INSERT INTO `system_oplog` VALUES (159, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-16 01:27:45');
+INSERT INTO `system_oplog` VALUES (160, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-16 11:40:44');
+INSERT INTO `system_oplog` VALUES (161, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-16 12:44:46');
+INSERT INTO `system_oplog` VALUES (162, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-17 01:34:53');
+INSERT INTO `system_oplog` VALUES (163, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-17 02:54:57');
+INSERT INTO `system_oplog` VALUES (164, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-17 04:33:42');
+INSERT INTO `system_oplog` VALUES (165, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-17 08:55:01');
+INSERT INTO `system_oplog` VALUES (166, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-18 01:36:19');
+INSERT INTO `system_oplog` VALUES (167, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-18 04:53:01');
+INSERT INTO `system_oplog` VALUES (168, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-18 08:51:47');
+INSERT INTO `system_oplog` VALUES (169, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-09-18 09:33:18');
+
+-- ----------------------------
+-- Table structure for system_queue
+-- ----------------------------
+DROP TABLE IF EXISTS `system_queue`;
+CREATE TABLE `system_queue`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务编号',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务名称',
+  `command` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '执行指令',
+  `exec_pid` bigint(20) NULL DEFAULT 0 COMMENT '执行进程',
+  `exec_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '执行参数',
+  `exec_time` bigint(20) NULL DEFAULT 0 COMMENT '执行时间',
+  `exec_desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '执行描述',
+  `enter_time` decimal(20, 4) NULL DEFAULT 0.0000 COMMENT '开始时间',
+  `outer_time` decimal(20, 4) NULL DEFAULT 0.0000 COMMENT '结束时间',
+  `loops_time` bigint(20) NULL DEFAULT 0 COMMENT '循环时间',
+  `attempts` bigint(20) NULL DEFAULT 0 COMMENT '执行次数',
+  `rscript` tinyint(1) NULL DEFAULT 1 COMMENT '任务类型(0单例,1多例)',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '任务状态(1新任务,2处理中,3成功,4失败)',
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_system_queue_code`(`code`) USING BTREE,
+  INDEX `idx_system_queue_title`(`title`) USING BTREE,
+  INDEX `idx_system_queue_status`(`status`) USING BTREE,
+  INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
+  INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
+  INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of system_queue
+-- ----------------------------
+INSERT INTO `system_queue` VALUES (71, 'Q202009106829678', '导出订单数据', 'app\\data\\controller\\OrderQueue', 16052, '{\"serialize\":\"a:0:{}\"}', 1599706709, 'Command \"app\\data\\controller\\OrderQueue\" is not defined.', 1600074733.9529, 1600074733.9930, 0, 1, 0, 4, '2020-09-10 02:41:30');
+
+-- ----------------------------
+-- Table structure for system_user
+-- ----------------------------
+DROP TABLE IF EXISTS `system_user`;
+CREATE TABLE `system_user`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户账号',
+  `password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户密码',
+  `nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户昵称',
+  `headimg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址',
+  `authorize` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '权限授权',
+  `contact_qq` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '联系QQ',
+  `contact_mail` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '联系邮箱',
+  `contact_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '联系手机',
+  `login_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录地址',
+  `login_at` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录时间',
+  `login_num` bigint(20) NULL DEFAULT 0 COMMENT '登录次数',
+  `describe` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注说明',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '状态(0禁用,1启用)',
+  `sort` bigint(20) NULL DEFAULT 0 COMMENT '排序权重',
+  `is_deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_system_user_username`(`username`) USING BTREE,
+  INDEX `idx_system_user_deleted`(`is_deleted`) USING BTREE,
+  INDEX `idx_system_user_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of system_user
+-- ----------------------------
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://v6.thinkadmin.top/upload/ec/f571134493e54fe06855c88557052c.png', '', '', '', '', '127.0.0.1', '2020-09-18 09:33:18', 1216, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10001, 'test', '098f6bcd4621d373cade4e832627b4f6', 'test', '', '1', '', '', '', '127.0.0.1', '2020-09-02 08:15:45', 2, '', 1, 0, 0, '2020-09-02 02:49:03');
+
+-- ----------------------------
+-- Table structure for wechat_fans
+-- ----------------------------
+DROP TABLE IF EXISTS `wechat_fans`;
+CREATE TABLE `wechat_fans`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `appid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '公众号APPID',
+  `unionid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '粉丝unionid',
+  `openid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '粉丝openid',
+  `tagid_list` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '粉丝标签id',
+  `is_black` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否为黑名单状态',
+  `subscribe` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '关注状态(0未关注,1已关注)',
+  `nickname` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户昵称',
+  `sex` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '用户性别(1男性,2女性,0未知)',
+  `country` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户所在国家',
+  `province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户所在省份',
+  `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户所在城市',
+  `language` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户的语言(zh_CN)',
+  `headimgurl` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户头像',
+  `subscribe_time` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '关注时间',
+  `subscribe_at` datetime NULL DEFAULT NULL COMMENT '关注时间',
+  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
+  `subscribe_scene` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '扫码关注场景',
+  `qr_scene` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '二维码场景值',
+  `qr_scene_str` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '二维码场景内容',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `index_wechat_fans_openid`(`openid`) USING BTREE,
+  INDEX `index_wechat_fans_unionid`(`unionid`) USING BTREE,
+  INDEX `index_wechat_fans_is_back`(`is_black`) USING BTREE,
+  INDEX `index_wechat_fans_subscribe`(`subscribe`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 180 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-粉丝' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of wechat_fans
+-- ----------------------------
+INSERT INTO `wechat_fans` VALUES (1, 'wx60a43dd8161666d4', 'oGsrks90f4Q9AtYh7qEl7zOq9714', 'o38gpsyv_0ZMf036Y34MyxWe3N94', '', 0, 1, '小森℡¹³⁰⁵⁶⁶⁹²³²⁰', 1, '中国', '四川', '成都', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLDwoNDf4JibY83km94sePmib8icWnanYRflQHoaEW8P1baROqBBAsVvPBSdJRmskBVCWA6q2Z6rywgeA/132', 1554367956, '2019-04-04 16:52:36', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:12');
+INSERT INTO `wechat_fans` VALUES (2, 'wx60a43dd8161666d4', 'oGsrks681jIO4LFqxj_9kglhVhR8', 'o38gps_QjMGBd-4V23YtnbY0IJLg', '', 0, 1, '渡己', 1, '冰岛', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLDicK5ePRgq06HcghPxr8Wg2KmcmotIOaGAMEEUgmricAdbXYQPtNcibDibBC7dfhpFrEHJaOAeAqkcyA/132', 1572078534, '2019-10-26 16:28:54', '', 'ADD_SCENE_QR_CODE', '0', '你好', '2020-08-17 10:27:12');
+INSERT INTO `wechat_fans` VALUES (3, 'wx60a43dd8161666d4', 'oGsrkszQSaou6tKM-4c2Tl625Ta8', 'o38gps8yp0qvO2Oa0OelGA66uX8k', '2', 0, 1, '🙂 阿杰跑了👣', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELNulOb8B2hvQhoSicaOPictR4S3sdT7Mg58NrCcGlicgXAG3XCt27b7rtFXelT80LXgR24HQOCkDN2w/132', 1484634161, '2017-01-17 14:22:41', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (4, 'wx60a43dd8161666d4', 'oGsrks5iFPe4nVA4wsbHDeaz460Q', 'o38gps84njUZvxV-CpsvR3_VT3ko', '', 0, 1, '山东小木', 1, '中国', '山东', '东营', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEJxymiaTy2dEDW40SPlACqYEQskichFEGCxc6zFNVt7VjbMl5wnMeqnyzuy0lItTtxic9s324P54wyEg/132', 1565101271, '2019-08-06 22:21:11', '', 'ADD_SCENE_QR_CODE', '0', '111abc', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (5, 'wx60a43dd8161666d4', 'oGsrks1qovmJUGycmiAKSry3ISp4', 'o38gps4pJjHGkXVGe1aXxgzKJ7u4', '', 0, 1, '黑不溜秋🐾', 1, '中国', '贵州', '贵阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFkzMmUKxtqiafIDXib9Lqm5oVA1ibiakiaYSBPRZ04gyeWBibsEV1rmHBn1s3HIH4FIBJWBoLqpp2kMFH7g/132', 1517301228, '2018-01-30 16:33:48', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (6, 'wx60a43dd8161666d4', 'oGsrks9XUFq6O6g2len8l2TaS6dA', 'o38gps5khVMMG2trfekmkNX13VOI', '2', 0, 1, '成哲', 1, '中国', '福建', '厦门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAMQn9cXnRr8mVEgicJU7ktibJMZXQMqAKBCSj5Md9PX8kBibnPCic6XFxCqyXNjhV7zxEWMFlnwK195A/132', 1497508654, '2017-06-15 14:37:34', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (7, 'wx60a43dd8161666d4', 'oGsrks5LPIyKW5DhKIlbwup7ttsY', 'o38gps5_GtNBpRCAC4xi_1zThFxY', '', 0, 1, 'Jack Lee', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0uneic3BIpbrdSp91Dcl46Qwkicib3yaSxLZhStia6SlM3ccRyek1toJ57yhAWOHsbD1Z46scwZTlongbn/132', 1576594459, '2019-12-17 22:54:19', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (8, 'wx60a43dd8161666d4', 'oGsrkswZ9aRbMxNeADBiIoFs7Ixs', 'o38gps5cxg7TIJjhW40hcfx3ceM0', '', 0, 1, '大豪', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichAgPGia3yWJjWELUkZB1ZeNLiaA5FUtiaicc4t1nicDW8j7bllJVnAlKNYOD3hrXiaricadxuzTUveqIghR/132', 1501054131, '2017-07-26 15:28:51', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (9, 'wx60a43dd8161666d4', 'oGsrks3wmXGbNTdXziL3B9yqk2LQ', 'o38gpsxJ19rGKqndlBWudPyfiVPI', '', 0, 1, 'H4cK', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFks3UmBvxhPriaEJwF5MVra0aXXX59JeBTBQMfzZD1x1FNlWkq1OHjQBencFbuyPa89mgFzC4Kmpfw/132', 1580373088, '2020-01-30 16:31:28', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (10, 'wx60a43dd8161666d4', 'oGsrks7m6YxqJr-uVgyB_ehp-3_M', 'o38gps-X1CXwQCpvE5_Suv5Fa1GA', '2,241', 0, 1, '白凤鸣', 1, '中国', '黑龙江', '哈尔滨', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM7yicibbXmOnrTS6T1DNp2d1taxD5lEVyRjvwIkB2RzeYv5zbicB1n7yIE1mWvvHs2ALU4EfYNIDaPbw/132', 1536743322, '2018-09-12 17:08:42', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (11, 'wx60a43dd8161666d4', 'oGsrkszCVFA8v-3_FGYhmTRiURlc', 'o38gpsza67FfLSapYrfBTo1Zu5zw', '', 0, 1, '杨永安', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFlqFUCaneic7zQBqwRxBSrXhMJeibuUZ7ia0ibhnR2YiaYHELtAcqES5Fic97km9uS1tfRzmG34Cg6oBjanzS15mxgAxr/132', 1514250857, '2017-12-26 09:14:17', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (12, 'wx60a43dd8161666d4', 'oGsrks2d7Vj8sqMh8A5RV19_gJqw', 'o38gps7Xb4ksNPSnNlVkagiVmrGM', '', 0, 1, 'CGGO.', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mkKSyWyia8EEu1g1fcjgHTibDIXAwBwib0qzfY7pMePkIyDUTdWNm6FUpHOjML7sOeap6MHLaPkT69K0DyWrDYhOE/132', 1525858013, '2018-05-09 17:26:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (13, 'wx60a43dd8161666d4', 'oGsrks8FUHqgI4nOt8JJP8qd8ioE', 'o38gps7jMkHnBSV6JN-Rpgog6lu0', '', 0, 1, '日尧', 1, '中国', '浙江', '杭州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEJEJhTmyr45OJJJInEVwQcc95lt90IrRhPQX3LoQ55o7iamGytWnicL7PHreWxicQlhrrocDDWKtKm4g/132', 1476402502, '2016-10-14 07:48:22', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (14, 'wx60a43dd8161666d4', 'oGsrks6HNhd5IgQBd4Wfe1j0lY-Y', 'o38gps1wvTeJLKirFf4UFMp4hIwY', '', 0, 1, '贤', 1, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBpTVfzmuclcLnY6MutHIA7420yRicZvc2rgHjqowdZq4Tg1MmzyB681K9soiaxQv8G7PQNQic0rYUgQ/132', 1570970192, '2019-10-13 20:36:32', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (15, 'wx60a43dd8161666d4', 'oGsrks2Mv-0flhVG8Oi-bZZSdRFE', 'o38gps1COGG9--oRbPIazGFPmtcE', '2', 0, 1, 'UC', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjFHIKUiabCChlvlBvNO4ItvQANPqmdKRIoDJTXm56vaS6aC1sMvFskQV7uVTMmBQYDWBuoRGzIb11OiaMaiasqGIic/132', 1466066875, '2016-06-16 16:47:55', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (16, 'wx60a43dd8161666d4', 'oGsrks5PzhNfMRmV1E5dL6Ydsm4A', 'o38gps9lnht0uxYR6cTlnntT6bA0', '', 0, 1, '_Xiαпg™', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mkKSyWyia8EEvwt23OaKQmcibicbzKmyDHP8HNeHEHqc552NUtZeoTZ4PhBNYWvYyae5WeSa6KRoq4gtwciamjI9DI/132', 1496038821, '2017-05-29 14:20:21', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (17, 'wx60a43dd8161666d4', 'oGsrks9Sl2pcIhFCLoXBwxFi5P8w', 'o38gps2DCEuBJkh-5i9kGg7lxNsE', '', 0, 1, '在路上', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmyWVLyT5ZdM1WWBicr9vxDM131kibTTm9hlDKXB7iahlM6FKiagkmLdB036g6EJ0wRqWicgo1nMlic9WDg/132', 1496907572, '2017-06-08 15:39:32', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:13');
+INSERT INTO `wechat_fans` VALUES (18, 'wx60a43dd8161666d4', 'oGsrkszQdIxogHKGhWQOUl41B_yI', 'o38gpsxwYSL2_sAsMZBfIuZZksL8', '', 0, 1, '张利民', 1, '中国', '福建', '福州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjnvaIJBPZV5ZdRJxyfHxFl8e2FdIl627um8FmNwibde3ibCSlftianiacD8TsjwlHCtAa0bzzjkjQ2cw/132', 1579313416, '2020-01-18 10:10:16', '', 'ADD_SCENE_QR_CODE', '0', '菜单回复', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (19, 'wx60a43dd8161666d4', 'oGsrks7bq2oijI9rA38zZ1KxTHyA', 'o38gps1-O1OEFn6Fle0jQGoDuDdg', '', 0, 1, '无形…', 1, '中国', '四川', '成都', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFlqFUCaneic7zYBL9qFNibfCSyyTxQfRwlmYGE7EL54lHJ6DbuWUqfbvTLnWqiaMYzGSiatDNqwKwuE2z1OLKygepqe/132', 1510799509, '2017-11-16 10:31:49', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (20, 'wx60a43dd8161666d4', 'oGsrks-uHtEQh1-AxA2iTfa7UCOQ', 'o38gps9Ht6gmrMBCxXfUOEtM811I', '', 0, 1, 'qcd', 1, '中国', '福建', '福州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLApR28Hc9K4e26xrhwdRQ7GPoZWg81sRZkpUOutgk4kYTJAC2ulqUWZvEtibpa6BdiaNIbZE1zd9qyQ/132', 1582591119, '2020-02-25 08:38:39', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (21, 'wx60a43dd8161666d4', 'oGsrks68g1elLyggOA9wUXezjkVY', 'o38gps-clgtfbM1BjVHTV7OdQTiY', '', 0, 1, '瓦力', 1, '中国', '河南', '洛阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELUzO65C5B5bfto6Oq7PGP6EVSMwzt73aspjIbsydrzpe0Vf05FtZvEMKzS7kib2r0bX6RcYiawhkicA/132', 1498804317, '2017-06-30 14:31:57', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (22, 'wx60a43dd8161666d4', 'oGsrks9f-NoY4hvqev-Nulbsigb8', 'o38gps9iZQgkyXPaHl-N7aBSXYv4', '', 0, 1, '红松鼠', 1, '中国', '四川', '成都', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELAcT3c5Gyhsicw9dYzlVtIKJk1E15YSNj3WM7RsPDU0sCGXSGZ91lOhv0dueGbBRuuSrPIAYMzxiaA/132', 1544693570, '2018-12-13 17:32:50', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (23, 'wx60a43dd8161666d4', 'oGsrks-mJu7hqiRMhNDPVGR0Fu9o', 'o38gpszLGFY86inXygfs3klN5QMI', '2', 0, 1, '叫我小周-18922325497', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCFOsVf6CdF2O7VicDsmWPTibTtyT7L8TH4bQthUuUhJZdrBczhI8DYao7Q5859g7yAmsubMTEsmfkg/132', 1461314119, '2016-04-22 16:35:19', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (24, 'wx60a43dd8161666d4', 'oGsrks9wr0__6pq26qnyHZF4OSF0', 'o38gps8VtceLYgD9tuB0QjXAs4zc', '', 0, 1, '咪咕源码', 1, '中国', '上海', '松江', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjFHIKUiabCChrDQdmA8DntV1yBc4yn3Dx2vosibcSSFiavFkw3QDnicGOxGDkZHeicWmYWHdicKYZ0jCHpA1AbTCFffA/132', 1579444164, '2020-01-19 22:29:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (25, 'wx60a43dd8161666d4', 'oGsrks0Q0Q5WAT-aSKHuJsmXjojU', 'o38gps_d4aGPEpf6eyRH73SAuCuY', '', 0, 1, '一物一码营销策划', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mkKSyWyia8EEquArYSyUgT9dHEUBrFMvuUVWTAQMVcTp43oX62H8w4icWMSTBhmLGh0hdj0KhuCI08TZnWulYoBu/132', 1501207299, '2017-07-28 10:01:39', '', 'ADD_SCENE_PROFILE_CARD', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (26, 'wx60a43dd8161666d4', 'oGsrks-h2mrLJJge7Xjm7lvqmY7Q', 'o38gps9Fudsconvbbbe4V4CVRdiE', '', 0, 1, 'Star', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjFHIKUiabCChpI0zkCmYDqibXLiceeXyfZicW8iaszxZiciban0tmVXZRVqdiaPQfFjdk0J8icZPLg3ibFKnQKIlquicwvX1h/132', 1543571671, '2018-11-30 17:54:31', '', 'ADD_SCENE_PROFILE_CARD', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (27, 'wx60a43dd8161666d4', 'oGsrks6MdHVQC87MqEKpFSNDJlFw', 'o38gps_8KRAfvQe8C6oMD-U82jKA', '', 0, 1, 'La🇨🇦', 1, '不丹', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLDr5EvsDqsiaCz80gQmfI6nfrzjDJPpictC2wAr2iarxm4CjazXwfrA4GFr1YwicX4eFcCREJeVb8LgSg/132', 1521186882, '2018-03-16 15:54:42', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (28, 'wx60a43dd8161666d4', 'oGsrks-uhJW3zzVI37jJUxgLL8EI', 'o38gps5SyrkvcANPtnpc-cEXecz0', '', 0, 1, 'Rena🧸', 1, '中国', '上海', '浦东新区', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM6QJ33G0al5CKick3SDvIbE3A0J0ndDdibE2yJxYmIT9xchchxcrmz0ezKlibYkUzUDicfKqZVOY8G0GA/132', 1554704844, '2019-04-08 14:27:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (29, 'wx60a43dd8161666d4', 'oGsrks7Owr4aGpQeCNcZEIdhdEdM', 'o38gpsx-W33xl7IpokJmVYFlsqmg', '', 0, 1, 'ㅤ', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEIjZJugquHONrrt5XzxsVTeyNzhAxnic1V1myx3icBCsqa8Il3FvBjdiagzsibZueE1WFjomW6DTfNLaQ/132', 1564641353, '2019-08-01 14:35:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (30, 'wx60a43dd8161666d4', 'oGsrksx3AUPGik0A5YJLgCU0xXuQ', 'o38gps_QUHkrw6GI-fAU12UfDYv8', '', 0, 1, '范竞', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFkWic3UVOkFGFiaoGryGkTtOQ28mzaxibtfpuHVibicqia3bL6XOp4iaJjGtSFG6nSbc7quCWbVGbicQUeIJA/132', 1564811667, '2019-08-03 13:54:27', '', 'ADD_SCENE_QR_CODE', '0', '111', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (31, 'wx60a43dd8161666d4', 'oGsrksyP1ZaV6OIby6lFhVevmfWA', 'o38gps_MkgPH3Ewn8BYz3MOomOaU', '', 0, 1, 'Mr.Zou', 1, '中国', '重庆', '巴南', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1n4RY2fIzPicq7s9WpbhiaCHGKWRV9iaZPlzRwWHWmnFZoZLQDOrWJlkktqaZ6VOoghxvC8c9BSDSyzw/132', 1545026380, '2018-12-17 13:59:40', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (32, 'wx60a43dd8161666d4', 'oGsrkswOwBceFOvE7xVF7K54ClYg', 'o38gps51ilcgTbQ9zcuCJb_qCSk0', '', 0, 1, 'YE', 1, 'AE', 'Ajman', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLDDYpvHetPwvkK12ob1e5Abmg7wnnNr8OFB2gEWMZrqyC0sujmMMyxfibHYDoGJSrO0BjFPpB716IQ/132', 1582780413, '2020-02-27 13:13:33', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (33, 'wx60a43dd8161666d4', 'oGsrks9gfg7nLP0G7sdTlq4xfzpU', 'o38gps8YeMGMWqMecWQjOko6aWAk', '', 0, 1, '张鹤', 1, '中国', '北京', '顺义', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1kOAqzeAicameS9ZWMDK4awMxkUsnDzeB8TpVc9qMpYL9mEQCciaegSqiaBobibvpjBUN67YyBk8PCKlQ/132', 1567147167, '2019-08-30 14:39:27', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:14');
+INSERT INTO `wechat_fans` VALUES (34, 'wx60a43dd8161666d4', 'oGsrks1_4lRQum_CKGWAVsDZxYps', 'o38gps33cPD8u2cxNx5evYBYIVs8', '', 0, 1, 'Cricle', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBia7xaYiafnETkiczAxjqJsAuyEiapPbjcEFqO3HWtPC2Ekny5jY1Dq8dPCLDRZGFoxBy1ELOia1hLkDg/132', 1520303270, '2018-03-06 10:27:50', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (35, 'wx60a43dd8161666d4', 'oGsrksyzfRggTv9aph8a-dy9TcdI', 'o38gpsxP5fii5BQtI20Gvj4cAELY', '', 0, 1, 'Amos', 1, '中国', '重庆', '南岸', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1lddYMJiaYuFmeP8Q3CtibuQVDyY3Bvj0biceYcicadP99tLr6LSnnM3MzlFBUeibaK0LBaia6e9e0PYMvQ/132', 1528360545, '2018-06-07 16:35:45', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (36, 'wx60a43dd8161666d4', 'oGsrksx8x7WPo5hELWahpPnbDcKw', 'o38gps1OSpEMht-JsrSZ2-WwqZpY', '2', 0, 1, '蚊子', 1, '中国', '浙江', '杭州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCsYLhjWH854IUJVicDkiaHnrMhzKTDsrxzYGfWse1t3zGhAFKZcHQLvdI5GicRuhfS9d0NrLicS7hbTg/132', 1499867678, '2017-07-12 21:54:38', '', 'ADD_SCENE_PROFILE_CARD', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (37, 'wx60a43dd8161666d4', 'oGsrkswwR675FcwfISOp8U2OU2VE', 'o38gpsy-fZ8nL60jJvW5S2xmRcNk', '', 0, 1, 'Monarch... 👑', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAVHnZBz2BF04csfshK7u3Jict9RRhsibllBAwibUDPNxHnRXFll4nEBz2qiaOOfWeRc6Pnx2rxotLfdw/132', 1521113148, '2018-03-15 19:25:48', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (38, 'wx60a43dd8161666d4', 'oGsrkswfXAfUqTYQie4-SxpGpfoI', 'o38gps0WN50LvA-_7faEkOpqcZiM', '', 0, 1, '吾字天河', 1, '中国', '新疆', '乌鲁木齐', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEJh7qQ6EeFice7l9IvxyiaQ9HySw1VlfDo1IqKdicW9aicfAGyqOh5EcD0EibL9AG7QBWuHZcud92QickOQ/132', 1575023304, '2019-11-29 18:28:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (39, 'wx60a43dd8161666d4', 'oGsrks7TohvKPCLV4FPWUpiKFAKs', 'o38gps6CVe_HCqDmJ7THpPIOAgUQ', '', 0, 1, '星辰', 1, '中国', '河北', '石家庄', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFm4VfW2tKMOkJ7YSN1xTGvnOJaKsicvNVTFN3p3ciaJyYV5rP3LmpPtibdGicjTicficN3GgU2hbFl6G4Bw/132', 1574927242, '2019-11-28 15:47:22', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (40, 'wx60a43dd8161666d4', 'oGsrks_8CQ7de_Bmg4kYQ77lsIVU', 'o38gpsyDsQYGF-_P5mIN2RwW70aA', '', 0, 1, '五道杠的小男人', 1, '中国', '江苏', '盐城', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEICH59IWZ1va7nfamgYkyTASXrWqHFVUjsYia3jNIk4SwAlmUSIZGnUyvRXdD6CGUs5XnhvjKBMYcg/132', 1570592951, '2019-10-09 11:49:11', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (41, 'wx60a43dd8161666d4', 'oGsrks-zojMhfOigMQhHbm4otDAo', 'o38gpsyl92S7G2zuoU7QhyS7M5C4', '', 0, 1, '静夜星🔥', 1, '阿尔及利亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAhGLbNeqciafRIJ7CibtS7uvlWMib1KmJ9wTZzofJ3SnO0CZbkhRIKDwRFKRaW5Azjp3l8wCp6Dc5Yw/132', 1579596043, '2020-01-21 16:40:43', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (42, 'wx60a43dd8161666d4', 'oGsrks5VWhzI1fR1k5n-csax_z04', 'o38gps3UwjGcwfogliQQZlVxCX2k', '', 0, 1, 'LiuGang', 1, '中国', '北京', '海淀', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCPQIZ8UI3YM5h1fyjG0tGRB4quu7icCa45X6ceIqWy8zsIv36cd1Ayf6mWWSibnOeQmjrSibKKQoib0w/132', 1564795553, '2019-08-03 09:25:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (43, 'wx60a43dd8161666d4', 'oGsrks6zpXTf3A9n6hJeElMM1CF0', 'o38gps31jfVXc2XAHI-kkkb68btw', '', 0, 1, '辫子编程', 1, '百慕大', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAJd9gsr0IfcQn6u0OAea382fwibQuCwyH4Xic5w8SAmTbKnmiaNZib35UG6E2jwJWAFHOMeHEDdsodsg/132', 1505962042, '2017-09-21 10:47:22', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (44, 'wx60a43dd8161666d4', 'oGsrks3bej6buPOBe_bysM_DQyMc', 'o38gps1iqmQ5V3DMB3eoRJAEnxc0', '', 0, 1, 'A继续ꫛꫀ', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/QxhD6QevWDypRKO3jAbt97JuQib99ppib65V58n56hib0Xv0gnx3EnNIKhpJgXibfwRVic4NicicAtLuKjxRayCROSEDJVSIyrS6MIX/132', 1580412103, '2020-01-31 03:21:43', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (45, 'wx60a43dd8161666d4', 'oGsrks7b6Vr4xR5zEfUxfkocvpFs', 'o38gps1zUbMdHqVrneOcRX2s9w-Y', '', 0, 1, '叫我慧妍', 2, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbDstmoknTNNDJ5UaLHQsbkvpjJUAT2yBtouFkmXQFKE0ic3jlXXoViasjkldxYLxXXe0UicCQX9n6qV/132', 1500262365, '2017-07-17 11:32:45', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (46, 'wx60a43dd8161666d4', 'oGsrks1-omPbZPIyJjqDHGrJ2uNU', 'o38gpszg_-jIQYq6Iy2zBj3N5ndM', '', 0, 1, '周峥宇🤠我又胖了', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4tgNiaicia15NzKR1seqyNz6L1j1YpE57f28SKnepPacWDibP0ILdKg42n0t4p9U0DxCMqyib5BZQ3XnQ/132', 1500284215, '2017-07-17 17:36:55', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (47, 'wx60a43dd8161666d4', 'oGsrks6S24eaOIper7ycCIb4xydM', 'o38gps3UKRSEF8m91JkjQ0q3u4qo', '', 0, 1, '施展', 1, '中国', '上海', '闵行', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELPkJE9lEg5cXRAJczhliaFbgbN1H73VjyNzcTyhe7DfVa2KvbA9VuTtVhVKxfqLjfIQneMDpYRzzg/132', 1532685318, '2018-07-27 17:55:18', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:15');
+INSERT INTO `wechat_fans` VALUES (48, 'wx60a43dd8161666d4', 'oGsrks5DGPMadyIRsx2BI-PR2Wrs', 'o38gps7sBQA9jucKdRQkABv_U5LQ', '', 0, 1, '米饭也疯狂¹⁻²⁵', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCnYGv8rw9N0cW44XNC9zxJ8mxCZSZ1o8rIlEjy5TBxdJBgjqMgZSJhqJou9zCwDug1g9ibib6PpRPQ/132', 1582256222, '2020-02-21 11:37:02', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (49, 'wx60a43dd8161666d4', 'oGsrkswEE8stsbSIbgSRreMD8vHU', 'o38gps0eAUahUFNPiO5M6RP0SJBU', '', 0, 1, '立早成章', 1, '中国', '甘肃', '兰州市', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEKAl3lw5NkicUY1MSCzzlJTrgoKuAcGuW9PdxKmhdNSwQ3X1GXcGnQ7kJ2xgoiahF6zLicyGgkWic1Ewg/132', 1553498000, '2019-03-25 15:13:20', '', 'ADD_SCENE_PAID', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (50, 'wx60a43dd8161666d4', 'oGsrks3Oc5g5HMsoydMcX_oc7ApU', 'o38gps9ZfYC36JnrwdSfaHP3W3ik', '227,241', 0, 1, '六六', 2, '中国', '广东', '江门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaduibl6jgmsicOcUlaYX2KCT1GZn15FYa9lV65FQU7ffW8HaKS0B1J2iaNB7DQVI4FNKqDQBoWPD8oy/132', 1542117395, '2018-11-13 21:56:35', '', 'ADD_SCENE_QR_CODE', '0', 'aaaaaaaaaaaaaaaaaaaa', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (51, 'wx60a43dd8161666d4', 'oGsrks4vN3pEBSCIwOB8_Juat5l0', 'o38gpswFGKNyVQe8WEiEPj5V_o-E', '2', 0, 1, '喧气...炎魔', 0, '', '', '', 'zh_CN', '', 1467451373, '2016-07-02 17:22:53', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (52, 'wx60a43dd8161666d4', 'oGsrks9Coc-tsgWeHJfYJnGEkjH4', 'o38gps4mRhBAMKbQ3S3IJVFeo2IY', '', 0, 1, '纳宝万.', 1, '中国', '山东', '临沂', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM6ckejEPr4uDmcwxnHVV9bC9NPkoGIYTWO8j3clXI6DviaesYZQKnRbia3FANpYZXEsvkpMq74WOmghSUPEEmMmc7mXMupkyRQibo/132', 1567246388, '2019-08-31 18:13:08', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (53, 'wx60a43dd8161666d4', 'oGsrks_l5JTgyc0wNWEMXAzSvWoc', 'o38gps-SBw60Pbwz_1t6egiyiy8s', '', 0, 1, '🌸 樱花妹 🌸', 2, '中国', '广东', '肇庆', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEI2ZCdG5CaHTpiaC7Miaj3Hs2laGOf0cYwB4sX2ibPd8njZVlB9QicAfJ7DsDvhMg38bDJCpoj0Q53c6A/132', 1546497141, '2019-01-03 14:32:21', '', 'ADD_SCENE_QR_CODE', '0', '154648522814', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (54, 'wx60a43dd8161666d4', 'oGsrks8wZprONrqzxV50sUxsbyEM', 'o38gps6H7P1RE2pkvyLgHhK5X5yQ', '', 0, 1, '小朋', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaa6Zyz3ZB4pLv8YZbq0yN35tS2H27fdAkkQIA1FlmHKr4c0Uz6G8nR3zLxNsPia2qzRNjygD57ia6s/132', 1461829132, '2016-04-28 15:38:52', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (55, 'wx60a43dd8161666d4', 'oGsrks5h-iq2PsHWnomgbHQW7cbI', 'o38gps2gTDZrgo7xDQcBnOv6kSCw', '', 0, 1, '肖', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM6P5wB3cJN5SkRHzwKTJ8Ixtyk8LDcA6ztNKr0crdWx50AlE9moNcVbrniceict4ZpCPD9BXsKKyuSg/132', 1511144044, '2017-11-20 10:14:04', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (56, 'wx60a43dd8161666d4', 'oGsrks-4KSMJUTVBrkiZwmKFnKkw', 'o38gpsyHiwv9XeLT7FnB-X-wXnrY', '2', 0, 1, '杨志斌', 1, '阿曼', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mt5tkXcQ3yrSbPkvpkr3CnnicML6N3ML127MyOcWamrg3XCVVZkdMF3taorIviaaxj8iau8aqdBA9NA/132', 1468834443, '2016-07-18 17:34:03', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (57, 'wx60a43dd8161666d4', 'oGsrksx6pGST6OZpQd3kxVDVe0-4', 'o38gpsxqDndY2CNb-wKqzfQOCxOs', '', 0, 1, '。', 1, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1ktoYc3JFOdy0UBggCicqR6QMCp09kTIhG8cpNT9AKib6lEugjSzZWUd3R4lsUkrw6TKC4sf2icnghqQ/132', 1570865174, '2019-10-12 15:26:14', '', 'ADD_SCENE_QR_CODE', '0', '111', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (58, 'wx60a43dd8161666d4', 'oGsrks4BUDS-NijG9-oeGM8EQe6o', 'o38gps8_cEUKk8IosX7dz7RaYTAo', '', 0, 1, '佳佳', 1, '中国', '江西', '赣州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gadU9f6iczEE6bd0WyAicExIZ7szOCeKeXBwuP2fiatugpZLWf9cM2x06d6V06icZia3icwVtRY2KNPDiaXp/132', 1522484891, '2018-03-31 16:28:11', '', 'ADD_SCENE_QR_CODE', '0', 'aa', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (59, 'wx60a43dd8161666d4', 'oGsrks3utvazyTi5SKhmE5355uUg', 'o38gps8nSZLqMhjA33FKNIvd1Htg', '2', 0, 1, '风哥', 1, '中国', '广东', '茂名', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbMhU4bRlBsutZibauoPWKqdC61OnjjteOdtT3xoytVz9Ulslqwljso2HCe5AnxGQaod3cE7XB8kdR/132', 1522159304, '2018-03-27 22:01:44', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (60, 'wx60a43dd8161666d4', 'oGsrks4NFh-BBZ4wCEocQi6h1Dl0', 'o38gps-I8V3bi3uZNIBB507xoPfs', '', 0, 1, 'Jy马', 1, '中国', '广东', '汕头', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gadugoIr1z9PDdb7iatZsZS9NftpY9AER5AmnCneNzmfvZYUt0yrLzic68WJk7yrhonx0Xsuyp8ygUl/132', 1548037576, '2019-01-21 10:26:16', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (61, 'wx60a43dd8161666d4', 'oGsrks4Yt-wrExelLAyH8WA57JW4', 'o38gpswYruFZZI8c6-lKWWHak3xg', '', 0, 1, 'chenhyde', 1, '中国', '福建', '厦门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBuXHP6FSjm23vw4srNKbKN5wQPxALSJQRtuOETFIMkUvtHCrwicldLZlwfe1JibGWlibh7YIDUtO5GA/132', 1567391961, '2019-09-02 10:39:21', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (62, 'wx60a43dd8161666d4', 'oGsrks33jf6hGYbr-fN4hl2O3t2E', 'o38gps0VZNX4tMBGf9wc62ze50iY', '', 0, 1, 'clement', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEKeLknYcZfDXKvVc08wAGsdciaFEsXIic8UBYx7jsOTbPe2DAqTOxoIfwztqaCKkibq2ibMKTcITfliaRw/132', 1501581665, '2017-08-01 18:01:05', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:16');
+INSERT INTO `wechat_fans` VALUES (63, 'wx60a43dd8161666d4', 'oGsrks-qXcDuHS5_GcA4CAwlL7I8', 'o38gpsxnN9gdxBUKCE_Wmhnzg_BE', '', 0, 1, '阿伯刺的饿佛歌', 1, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnsquVC6bRf4fQpn9BDBSntv9ST56OnSrrJPqK9Qg3xR2Jvpia2vJuALMouPibBF7Otk3tM9xIU7mgg/132', 1564646018, '2019-08-01 15:53:38', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (64, 'wx60a43dd8161666d4', 'oGsrksy8u0sYaQ3n1oYliCkMzC68', 'o38gps2Tx8cdNfGzaEis2Mc4pvTI', '2', 0, 1, '周星星', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaXUd33E2xm49mibmfE14cLwH2ROdxK7kI8vsVeVPOUvKZgE6JcwUmX0ZXWAVP44dKeFLUIz4zDWtia/132', 1498098232, '2017-06-22 10:23:52', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (65, 'wx60a43dd8161666d4', 'oGsrks_hP6tLtqnPLDO2c2mdCiKU', 'o38gpsyh30CKHUULhEf4ILUQqZ5s', '', 0, 1, 'Promise', 1, '中国', '湖北', '襄阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbEKHibv9hH5RMl2nAVbibfNibbn4lEG9XsFwE7GqkiaGCZvccCWn2G8s5oonSbTp27RCKb3t5N64bKNE/132', 1509438514, '2017-10-31 16:28:34', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (66, 'wx60a43dd8161666d4', 'oGsrks9D8srvwLluE2dcPI1zg_Wk', 'o38gps0p6nk_ClXVWTNgoGErk-m0', '', 0, 1, 'Stone', 1, '中国', '上海', '浦东新区', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mBVicmQAhcPtfyCe5tvMcMg9XSAsSibJU4mDeR7XFbrFXWvR9PKH0l6WEAe6WBB2fHXpoSBF4bdpsg/132', 1577696383, '2019-12-30 16:59:43', '', 'ADD_SCENE_QR_CODE', '0', '人工', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (67, 'wx60a43dd8161666d4', 'oGsrks8MgmWGcHiTXw8-MVOud_jk', 'o38gps3vNdCqaggFfrBRCRikwlWY', '', 0, 1, 'Anyon', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gabdQdx2gUg5S8g0bpwruPiccFZRPhicvIiazQISqcia9kKQBETsYnJiakE1DSFhUN7t529jXh7iaibBjB5z/132', 1586344593, '2020-04-08 19:16:33', '', 'ADD_SCENE_PROFILE_CARD', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (68, 'wx60a43dd8161666d4', 'oGsrksyuQFA4llVF36HPs5Gv2UMQ', 'o38gps-uNjXogTeIcCq_Fs5d_J6E', '', 0, 1, '晨曦记忆', 1, '中国', '广西', '南宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqUSBo9niatdmhianibSUbNx9dPMCMsicTS0otNib4WRfXJWayQ5iccokFvlVK6fXia7kY4gomNMHh0w4C2g/132', 1497952981, '2017-06-20 18:03:01', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (69, 'wx60a43dd8161666d4', 'oGsrksx8UJymFAg31hkR5uBxhb5Y', 'o38gpsynrRbwkefHoGXz9XUMR3T8', '2', 0, 1, '王牌飞行员', 1, '中国', '江苏', '泰州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM5o8TJlHMOkEKAhCqMDojlB0FC9lLFibT8RGkT5d60STCkBFKrAfpoply4Jv68bicaOxm3kV8XOB5xA/132', 1523346997, '2018-04-10 15:56:37', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (70, 'wx60a43dd8161666d4', 'oGsrks9yOCbqOASjxEwfMwVNildI', 'o38gps79rC4d7rwnfhmWnxXi_1i8', '2', 0, 1, 'A北京皇甫世佳\\皇太北尚北孔', 2, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbGVF36I9BzRtZKsHVnr8ucPeqwR03EAYXDP3xbcSbHjN6pYNibPSBgVtM0oSCbkBjPSsOYqxWEa2c/132', 1461593762, '2016-04-25 22:16:02', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (71, 'wx60a43dd8161666d4', 'oGsrkszZVl6PTAtbzrmfkUl4KyLM', 'o38gpsxFtOXxBpZ9AjXs5RkEfPj0', '', 0, 1, 'Chen', 1, '中国', '广西', '南宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/QxhD6QevWDypRKO3jAbt91libGBOUmV1GibwYNJ7mQmP5xkdUDVoVXvN36bYeicD71pTFL4SgTbeqhe8DVvibt3uL6adwOt8J8bH/132', 1500003321, '2017-07-14 11:35:21', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (72, 'wx60a43dd8161666d4', 'oGsrks3H7ZYi36S4ZmX4rGUnxksE', 'o38gps4IybUrdT0vNPy5rJ1mQOQU', '', 0, 1, '乾祎宝', 1, '中国', '江西', '南昌', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCsicxAIopw8eZWicibgMjF4RULrL6nibEmFDgEzzLxAuOQKiawO4QZopXpwlVVk7vja4YSibL3sU6wG5Nw/132', 1563090308, '2019-07-14 15:45:08', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (73, 'wx60a43dd8161666d4', 'oGsrks_Yf9S9KemX-5shUhvPkWSk', 'o38gps_3EjXgILhDBDRhhrD7DMkk', '', 0, 1, 'NH', 2, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELPibepDuGJ8xMgJCJRvBfwjVyq390nibich7tT5IiclP5d01KNA7spECibOeALBoYeOBR5C4UgQPx60vw/132', 1461314624, '2016-04-22 16:43:44', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (74, 'wx60a43dd8161666d4', 'oGsrkszWEtT1QgUECBII0w4vev80', 'o38gps1-lGijD-11Z2-fMRmw5FU8', '', 0, 1, '谁与争锋', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjQ3icahRqZPGay4EozuJuObYKon0CqN9MfZSJ4seDNte0xpkG1n0FBoAbXRtCicYEiaqXxTQia1p8rhg/132', 1586985952, '2020-04-16 05:25:52', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (75, 'wx60a43dd8161666d4', 'oGsrks4Kt8yXvT62xHWZr9fb3x4o', 'o38gps63NJv0wkeTK6zvUdtC9Nxs', '2', 0, 1, 'Z☀️', 1, '芬兰', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLD5Z04sNs9ZDlnbUO8SicvXKOPTBwgsLgVuWAY0xIJRtuJOa2BlULeibqLQU6ParSibvcFBdPKWQEhsQ/132', 1521766608, '2018-03-23 08:56:48', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (76, 'wx60a43dd8161666d4', 'oGsrks9xLZWtXDa_-EcAC_ZcGUO8', 'o38gps-kvqeQ7Y-M9lvWUr8tiUe4', '', 0, 1, '幸福优鲜', 1, '中国', '重庆', '开县', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/QxhD6QevWDypRKO3jAbt9wYGWIK7qmmvDUTOEIxT5PicUkiaG5WBfyWO1nx2UOuMy5Bnlpo6TlIKTv4PISicqKFwJ2y2fymLFHM/132', 1526269424, '2018-05-14 11:43:44', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:17');
+INSERT INTO `wechat_fans` VALUES (77, 'wx60a43dd8161666d4', 'oGsrks0rVI5y68qkGIWkde8bdtqY', 'o38gps0-FOFzkzk7aoiKepEyg-fY', '227', 0, 1, '罗培元', 1, '中国', '贵州', '贵阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbIicV6ukevPc3XcCM0VL5Jp3XBkqpm6Tt59pecy7YT65kr00Van9EnvvKItxDbd774DOroQPTJiaem/132', 1545276263, '2018-12-20 11:24:23', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (78, 'wx60a43dd8161666d4', 'oGsrksxRpWEHDH9IdIxdus8_h57g', 'o38gpswZkDihqLaHEIgCYg2rDFek', '2', 0, 1, 'goldc', 1, '中国', '广东', '湛江', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnLq4hSElRXElZnHOoojO62rNtmN7sZUlxLmegV8F2WU6ODufpJjUXWQcdqECJODYoorSoSMt8OBCbiauRPRdrP1/132', 1509860364, '2017-11-05 13:39:24', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (79, 'wx60a43dd8161666d4', 'oGsrksxKC6HssWvXSv2hHXNFHf6M', 'o38gps4ssW_HpC_wiML44kJDPObo', '', 0, 1, '山里人', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/QxhD6QevWDypRKO3jAbt90Hc72JgV7Go0ygPRztzQXn5OBn4sTD7icSJTzrUsiaE9gGE7oPaNRmXicZsd2OVQAbZN83VswO2rmd/132', 1497665032, '2017-06-17 10:03:52', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (80, 'wx60a43dd8161666d4', 'oGsrksy_HtXNxeiynG4oteIb7V7E', 'o38gpswggHeTC8SO2FCCvifxTwkQ', '', 0, 1, '明珠玮玉', 1, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLDsz7PwGtjGIHnufRLJ6pOLibMIURqsIpnlFwxicaTpQetWHgicgTbNujrIiaicw0LHFb5VhuiaVGSZnZAA/132', 1553060209, '2019-03-20 13:36:49', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (81, 'wx60a43dd8161666d4', 'oGsrks2nqZdraWnNb0GmagPhUvZY', 'o38gps7gEu0vznvTdofhX9FVqLMI', '2,227,243', 0, 1, 'Bill', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbKUJibt7tn2HhvdkpibQQfMx6Eib9yNS9m7f3gRwnAXlylJS7lBqJuENLNc7qCWoONPsV76rOpH8Mqib/132', 1544510640, '2018-12-11 14:44:00', '', 'ADD_SCENE_QR_CODE', '0', '12345', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (82, 'wx60a43dd8161666d4', 'oGsrks9XBD7I8vJBYw0Um-x1vQxk', 'o38gps7_doPnGKUbJyHPEr_MlfWg', '', 0, 1, '心が属している', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mHHPnTOMEsHmiblGX2jG5VJFlbZhdlgs2BOnU27AgCeHXSmTszonPVOMA31NJbOJpAb9Bm4TW3QXw/132', 1525709132, '2018-05-08 00:05:32', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (83, 'wx60a43dd8161666d4', 'oGsrkszdq0gzl5MyEyJRe6Evc-Uk', 'o38gps8ChEiBDDAT3MWZR0oyeu9E', '', 0, 1, 'LimHo', 1, '德国', '柏林', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLByW37hP0eAPHBmxM4gsibYBumR2sWHUyDeASu8VL5hfEyguVR6QySPmxDoEJibyk4FVTx6LCemfoAQ/132', 1528361114, '2018-06-07 16:45:14', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (84, 'wx60a43dd8161666d4', 'oGsrks2kyvsVE3Qd16AgoxaMW0hA', 'o38gpsyRXMa_TaR7-MvCGMhmjnec', '', 0, 1, '袁再强', 1, '中国', '浙江', '台州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1muoA0xCmia0f3OGSv0939YJazoZJ41Ficj0Sa2EfM7AibzFK5oeuILiaMt04icUrNVKNsFTWjs4Y0V1ag/132', 1532703309, '2018-07-27 22:55:09', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (85, 'wx60a43dd8161666d4', 'oGsrks3QCAmS0w84Rz-vEId_vEjE', 'o38gpsyhNsz9oufVc9cJWX8YTkTE', '', 0, 1, 'Biao', 1, '中国', '广西', '南宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnLq4hSElRXEqHibwT5P6gee7Q9dk9ca8icSCBhHnTNbh9DbAllVg01jntILzH90NzjfcsxR2MUQzk9ic6ErSxsbUk/132', 1505788891, '2017-09-19 10:41:31', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (86, 'wx60a43dd8161666d4', 'oGsrks6H0hBnuX9dRGeqNQmoFm_Y', 'o38gps0ZJKvxjEc0N2BOgR-T1doM', '', 0, 1, 'Hoooooo！', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichElj72GhOBEBxhv5R1z0XNx9KmyliaQAAFSzWzJJsj0ic4mL9Qn4XskVm777D4SwUQEmERtk06VFhF/132', 1513841189, '2017-12-21 15:26:29', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (87, 'wx60a43dd8161666d4', 'oGsrksxHcmjgfKLZbToYcFp1AeM4', 'o38gps5YcXI5uCI1FM6n2Y9BUptk', '', 0, 1, '远在咫尺', 1, '中国', '黑龙江', '伊春', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKreb251wicMDk2ibfKVr8nn182yBLdBUoDMvfapWicwI89b8E0QM8Uhqblcr3xPgwFaEhFibldMCIcQRSKiclmicqmxrl/132', 1578543697, '2020-01-09 12:21:37', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (88, 'wx60a43dd8161666d4', 'oGsrkswrLrpbSvX4_tCxLVl8f4kg', 'o38gps0g0bwxdeVfrbY2LukeJ4Jk', '2', 0, 1, 'Mr@ME', 1, '中国', '广西', '柳州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKq1TWQDicS9XErTKgEicfqicklicdo56a0m23tnGffIRZuaMoxr7vwhvvH3Bq1VFyVWDcIxJyNs4U0ib2T4qvhnyKQF9/132', 1522733858, '2018-04-03 13:37:38', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (89, 'wx60a43dd8161666d4', 'oGsrks7uGTusOa_Jfh7bXFt3xrsI', 'o38gps9nKLqd1u6S9WOflRRAyXMY', '', 0, 1, '荒漠屠夫', 1, '中国', '浙江', '杭州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unbzibIu3mOeDVreibb17BaBGx9AuvTVFdiceBJN44F57lLcEt2wXecUEXZysLFHn4e7F2xfSeZKy2eo/132', 1592460048, '2020-06-18 14:00:48', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (90, 'wx60a43dd8161666d4', 'oGsrks0QOm-Ub3EiVLp4rCIjMvCk', 'o38gps6Imix3AQIzG81jJ9oj7_V4', '241', 0, 1, '佰宝龙猫', 1, '中国', '福建', '福州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unc4OpDLDEAJiaiaGp4gxHRZToMx6XbdHJv0W3aOWoIZD1eV60M9Ca60CBXXS7dWKxY09ZHPOw2VEMv/132', 1540783549, '2018-10-29 11:25:49', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (91, 'wx60a43dd8161666d4', 'oGsrks7l57zX6SekGy0f2BmLEVJQ', 'o38gpsyOUOUIOIcMGmWWyXWV4pmo', '2', 0, 1, '我不该拥有这么美的梦', 1, '中国', '浙江', '温州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unfvLkc1ctn9DXAPVUMHEDje9NDxJtR2Xt6A3XUIdwhgMJtGp5ZwibAL5pN4l0aAq1lUCrcQkxSqb4/132', 1529650299, '2018-06-22 14:51:39', '', 'ADD_SCENE_QR_CODE', '0', '55', '2020-08-17 10:27:18');
+INSERT INTO `wechat_fans` VALUES (92, 'wx60a43dd8161666d4', 'oGsrks68I0iO8K1a-ovuXlQbe6ek', 'o38gps35ZFbur02-CpnFoCJ-a_BM', '', 0, 1, '代号为纯洁🙃', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSng0FcEtAeOfcWF40ibrlia315ESLg5NbgNqxD3sbTwuOg1VVrlExh2swicVQb32jLLNyjQNEcJveB3m4FpBStHjlrj/132', 1487058795, '2017-02-14 15:53:15', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:19');
+INSERT INTO `wechat_fans` VALUES (93, 'wx60a43dd8161666d4', 'oGsrks5oAnVDeARhvzJsXkv9cwj0', 'o38gps2FSyO8uilTJiC5RqaqPptQ', '', 0, 1, 'Miranda', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLuibicnf90vxHX52UmU2pGsAk3aXI8EBic5tKIuGrIAGYVsZJrSXbFaur7SnO4YrHlW1QLaTzGx1ice2/132', 1461418982, '2016-04-23 21:43:02', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:19');
+INSERT INTO `wechat_fans` VALUES (94, 'wx60a43dd8161666d4', 'oGsrks6A9MtnPEJagwyYuF6-8Nwg', 'o38gpsypyRYaBO-6YsKP84f0vGxg', '', 0, 1, '祥哥', 1, '中国', '辽宁', '沈阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6M7yEdmIP1fVP4NT1QnIrov9jm4yQyp9r6wQdGZEIcBMPdafxRPuBeVwJhmkDgia88MctPF93F5Fgu/132', 1582679807, '2020-02-26 09:16:47', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:19');
+INSERT INTO `wechat_fans` VALUES (95, 'wx60a43dd8161666d4', 'oGsrks_cMX730air6ZKOSPhUv5bI', 'o38gps5zUa08f5ivxsv10AqPVTM8', '', 0, 1, '阿科', 1, '中国', '湖北', '荆州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlCrtvWZCGVUsTQpZzGR53Ykyg1rjg5jTWiaEDQKdtsewAwEXFavouZcwfOAF390ibDC9MXWOdoDwicy/132', 1517735573, '2018-02-04 17:12:53', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:19');
+INSERT INTO `wechat_fans` VALUES (96, 'wx60a43dd8161666d4', 'oGsrksyZXNWqO4y9Iz3K8EgJyVvs', 'o38gps06XAl50J74ZnfQp1vFqJ-U', '', 0, 1, '淘宝宝🎈', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlLCrzc1RWYy0RQThCol1XYwjRdj8PiaHrVic5HdudbYrRxRp9OX3y31wF4rnjD8kvJw7WLa3lO9Rv7/132', 1565310407, '2019-08-09 08:26:47', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:19');
+INSERT INTO `wechat_fans` VALUES (97, 'wx60a43dd8161666d4', 'oGsrks8jlV1rMF6G66qj5PblyqoA', 'o38gps9sN93vtEkBT2xH3yeMZ5Vw', '', 0, 1, '6030', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmg5BrQukEzgiaLA0Bf8oF1dVSicRSPictr4mXN7UPQZ5vwGSmmIYia1NuJ7PFDrxwnMrXvtMB0wianO7BxqjtXRlCam/132', 1565731505, '2019-08-14 05:25:05', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:19');
+INSERT INTO `wechat_fans` VALUES (98, 'wx60a43dd8161666d4', 'oGsrksyJ9EZJAjlzQdZnGByZiwyE', 'o38gps9GErwzTtZPTiNPC9f8ay1s', '2', 0, 1, '昂', 2, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichAISWLs8ZKSWr9b5C5k4k7sDW21KhYiaF9NqYXHqY30osZ9epKcLdicy5RGoUJDiaMB5QXrkv1pWMuj/132', 1511158120, '2017-11-20 14:08:40', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:19');
+INSERT INTO `wechat_fans` VALUES (99, 'wx60a43dd8161666d4', 'oGsrks4_Z_lgmXKceWYTRB3TLX5A', 'o38gps5wHVuGWDiA_j0PT-9bhzzk', '2', 0, 1, '王桦', 1, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlHwPGSsXZOAKIufCzrhkejyN3WianDic3CstkiciaXeDiaTpjLGorR2iamdNPp7PxRzuc7x6RcqsOibu8Fw/132', 1526005045, '2018-05-11 10:17:25', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:19');
+INSERT INTO `wechat_fans` VALUES (100, 'wx60a43dd8161666d4', 'oGsrksxuJOublV9Qyzgp2KyXhdKg', 'o38gps_m9icHZRSezFaGS6KKqLak', '', 0, 1, 'leshnn', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSngy6ricJOyC2uXNibU5tMKeoXDZiaTbtEYLCSxmLF0RribU0tA7sxpaibrbxSJF4jmibrf3delkWmSBcAhMUd6UK8qGwt/132', 1580182198, '2020-01-28 11:29:58', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:19');
+INSERT INTO `wechat_fans` VALUES (101, 'wx60a43dd8161666d4', 'oGsrks75QHSQZ10LNO-6M5cfSkXQ', 'o38gps8bnjsc8R9Y5bTPfS3W8dts', '2', 0, 1, '永文', 1, '中国', '北京', '通州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6M1SibOX2y4f2pPUnz96HCrWpQQpxDF90ZWia1bgcU8tIDIcPcBRuIWO1fSUDn6ruL0iceEoibPRibtE1h/132', 1531124671, '2018-07-09 16:24:31', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (102, 'wx60a43dd8161666d4', 'oGsrkswvewcgA2obzWXeCj_yIHzs', 'o38gpsycVcwBKD3CfXL4hhzvOgt4', '', 0, 1, 'linf', 1, '中国', '云南', '昆明', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlNiaEKOh52TwmbCSiaUavoqRAGZvgjlcEbgzXcaicFibaV8JDiceH6TJPndzLyWvvhT5QNPBPLNgiaDDmN/132', 1495794329, '2017-05-26 18:25:29', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (103, 'wx60a43dd8161666d4', 'oGsrksxmbPwKz-MGZKc3FUgNIeOU', 'o38gps4jI25Hj9wP-eu0LoNQH9zU', '', 0, 1, '浩月当空', 1, '中国', '内蒙古', '包头', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLgghqkpeFIeQF2Js4lsrDCicgcygoNXQ0uu0C2AUvpFf2U3jIqVnPlWVG4tykNeFphQZYVvVQ8aDC/132', 1555389027, '2019-04-16 12:30:27', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (104, 'wx60a43dd8161666d4', 'oGsrkszCtnR6d8iRVRaOk1zynSxo', 'o38gps2K5yh5DDC6k-1QJBWORIe4', '', 0, 1, '有想法的球', 1, '中国', '重庆', '沙坪坝', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpYqCiajmWhGHWQyZRJ5YlbxWs24lm76oRiadbgkEoSxBdgak9aMXzqzryicomR0psjIZhy9DaxV5VibuYMM5XptQOK/132', 1593332496, '2020-06-28 16:21:36', '', 'ADD_SCENE_QR_CODE', '0', '1', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (105, 'wx60a43dd8161666d4', 'oGsrks2xiOxVbOWvaJYHEWkGxzWk', 'o38gps-cq3BpRloot4Zn_SgkERIU', '', 0, 1, '瑋瑋', 2, '中国', '湖南', '衡阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLgNia0zvtXj9NTLNic1btoLLpIGVu6CviafENqODPtZ4icH7YL07ImRciaEc6BwlJRmDxVfxic2pIiaeOTL/132', 1472542553, '2016-08-30 15:35:53', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (106, 'wx60a43dd8161666d4', 'oGsrks4j6Dgv0ZEF9eJqU_1aJJ6U', 'o38gps3EEPUdl9ZHCrpif2gtFZDI', '', 0, 1, '尹潇', 1, '中国', '江苏', '南京', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6M0aY0hjiciadOY3kosBib9pVIZD5Wn0ibPnacQ8AjoXHZ5L3z1IyDqasJsWzQ8vC1a4uKgYdUH2NrbjF/132', 1597407276, '2020-08-14 20:14:36', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (107, 'wx60a43dd8161666d4', 'oGsrks6SoYso94Z56phTkcfERGJU', 'o38gps70YF7VdtDbwbHLQI9uOTLY', '', 0, 1, '大海', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1lBlXFjzK7wQ1iaD5Ov83GiasrOY9tXdicQsZj14ts1GFdUZ2TIq9DnNkkhnG6cZSbakCx60KKiaNBnibkYtzOcdibadb/132', 1586313367, '2020-04-08 10:36:07', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (108, 'wx60a43dd8161666d4', 'oGsrks0jW9y25wKFxLurrUPrxvFw', 'o38gps-VE_f7mOEfN5NRf9fzYLNg', '2', 0, 1, '暴躁的jk苏', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLjE1gRKdbiaibvesz4iaXN4wCEJX49wKuVUhlCny7U9sK7IHS4YVlxHhicWH9BOMr6PmGSH9Ria4SJ9Fo/132', 1476260898, '2016-10-12 16:28:18', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (109, 'wx60a43dd8161666d4', 'oGsrks4VBHbqs2SxQ0609pRM1vH8', 'o38gps2idCh8YqRLoPsefLL2oHAk', '2', 0, 1, '零点', 1, '百慕大', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlPmBibkPfbc8YmOiaSpSnvmQInfUf9Bf0iaKAQHVsoIovW2NPicaibLO0qcLhLiaxia7icLgDqoGMg5uZEWY/132', 1525703752, '2018-05-07 22:35:52', '', 'ADD_SCENE_QR_CODE', '0', '222', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (110, 'wx60a43dd8161666d4', 'oGsrksyjW9dK0ZTI_ymiTVpp4bd0', 'o38gps9lQUwPERa6xZR1dCq_FjRk', '', 0, 1, 'Jalon', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLrNCwSNLwTKSbV3y5DHzKjicD7sgoKsCDjGaX0SZECqsiak9xnkZeiazaRKvZcuF3eY9wmBmB3e9y5f/132', 1529237070, '2018-06-17 20:04:30', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (111, 'wx60a43dd8161666d4', 'oGsrks2HYfmN6FlAKyiYHQQV_N1s', 'o38gps8Sa2N4MVzhufn-TzIna05I', '', 0, 1, '达', 1, '中国', '福建', '厦门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlBFudhDYQYwIicL201q9Tt0s7C2myzfAROgo7yPa3lF9S333vMXxvfryicgicpvWQLYlh6Gicic5oKtnu/132', 1585118933, '2020-03-25 14:48:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (112, 'wx60a43dd8161666d4', 'oGsrks3bi69ROBM7wdcnwLiCJN7g', 'o38gps0kRV2gBR97_kn69yXfiQ4o', '', 0, 1, 'zhāng', 1, '中国', '江苏', '南京', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unWtp4MV83EXsWgftJxbx9xZThCrLicLiaVN2z9UmLzWiarhHU8F29QxJFK6tKWJeYNVxgUrlbqmlnMic/132', 1512742506, '2017-12-08 22:15:06', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:22');
+INSERT INTO `wechat_fans` VALUES (113, 'wx60a43dd8161666d4', 'oGsrkswerFlRUVrugU0Na7vKTwTI', 'o38gps7K_p-A07YnCQ5HnX8KOskY', '', 0, 1, '😁 😁', 1, '冰岛', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unXQkGFAhMXutNvdZDzGYialsYWvEooJq85ic5bzp2mrHc7ZVsab3o4mibJ9VQGKJ9niavYkd7DnibuZEs/132', 1562401230, '2019-07-06 16:20:30', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (114, 'wx60a43dd8161666d4', 'oGsrksxXiSBXnE0xBkSC3xWYb7uU', 'o38gps8yZrJD1H02Z2Z15kjf7NII', '', 0, 1, '有趣的灵魂', 1, '阿鲁巴', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mppTOhUBib5koEAEcrDNudQ9FmhLmeuG79FbzwrH7rj6d3P6fYtfHd7VEBwkcrcIic9icn6DIjWoHBEj4acNhvOk4/132', 1572834059, '2019-11-04 10:20:59', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (115, 'wx60a43dd8161666d4', 'oGsrks0nSf1nhcIG-kwHJX_ya9Bo', 'o38gps0y_FuNIiN1UacIxNgXBeOQ', '', 0, 1, '十七', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichFic3YPv2alf6b2HZGR7TCick5ABNRcqpJrePhNjzb6DUaYKyVzPwtSCWweEVqCMKrnOaB01yiajW3S/132', 1583461750, '2020-03-06 10:29:10', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (116, 'wx60a43dd8161666d4', 'oGsrks08c6gc1Z3NMgJeU7Y3oZnM', 'o38gps633HtKPDreE-Cc4USywnsc', '227', 0, 1, '杜先生', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnj0T2gicl9MPv2AAmPRibymgbValqqOUyDeBtXjwC3aLicUsWIKyc9ib5RqwOeLvZVsXp179kbibp7eRYkab4hUicAVq/132', 1533001921, '2018-07-31 09:52:01', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (117, 'wx60a43dd8161666d4', 'oGsrksxBQW56NSMZvXuBDIDJh1iM', 'o38gps2sIrPg2g74VLwGgY-FRQz4', '', 0, 1, 'Eugene Yu', 1, '中国', '四川', '成都', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLB2BSWBtFSY8OE8AoibYhOqicbHaBzG1e9s2Sp92QpBbnK6TSvmXbEaz4jIxNFSr6j9xkKA5biaUbM08EsFa0fibUyKRqbyiaZ1yIv0/132', 1502625756, '2017-08-13 20:02:36', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (118, 'wx60a43dd8161666d4', 'oGsrks9P7TsDqZL-zB-m43Ekspi4', 'o38gps0XMYTVSVmNqlDmgbzryzdY', '', 0, 1, '王兴伍', 1, '中国', '北京', '朝阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlEnWM88jcZ6qVfYyicKzZUor0StQj8yBK4CS4tHIP79cuSespLwdwAwkv2DOVHEBxyTxNp40085yb/132', 1552979757, '2019-03-19 15:15:57', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (119, 'wx60a43dd8161666d4', 'oGsrks4gMjJSBSWQbtyxwJiZQj18', 'o38gps0Trh8Ggyc7mwBH2XIRIAEc', '2', 0, 1, 'Mr. La', 1, '中国', '青海', '西宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlIw66OXtcgoHictuwB6ZyWRQGOkSeEuibMytbxyZvPmM6r1HJHdia4Hgr07toMBj4PczIlfjnIVAtaB/132', 1516598324, '2018-01-22 13:18:44', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (120, 'wx60a43dd8161666d4', 'oGsrks1ptDJ5so-RBby5Oabx23mU', 'o38gpswuLqrUQTGYkeaBS66yBHWc', '2,241', 0, 1, '老男孩', 1, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKrn8y1lxTpMlGTmicLpDDXNE3zN3yKZyRVBHk1AHiaAmBVkTh04VWUly9ES1afdSjEjsnqFiaXFCcAj4znUiaiaNhlhZ/132', 1534310999, '2018-08-15 13:29:59', '', 'ADD_SCENE_QR_CODE', '0', '红包', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (121, 'wx60a43dd8161666d4', 'oGsrks5sAyLMOJ3PPJGNdsmP6h1c', 'o38gpszaBKphV_UFktrUqsPR6urI', '', 0, 1, '海', 1, '中国', '江苏', '无锡', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unfpabCqCF2bxRP2Wvy0pexFGvoLEGqf2CJnBaBhMOI0FS1Zg3TB1TJialTwXNclWicbkvaljsSPO0j/132', 1522660780, '2018-04-02 17:19:40', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (122, 'wx60a43dd8161666d4', 'oGsrks5arhP8js3-C_Mc2tLOaB34', 'o38gps5soAzcDO6PvbTz3XE88VIY', '2', 0, 1, 'WGZXU', 2, '中国', '广东', '梅州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichHB7SnWLogr9fYaTCsjAUFlsZkeQdibfYsc2aCkoHF8X9nO1reJMicvDl9205faJ87G60YcXADq5tE/132', 1472019816, '2016-08-24 14:23:36', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (123, 'wx60a43dd8161666d4', 'oGsrks9Bl7SPEjPgN-ui3eFMhDog', 'o38gpszG6ZnGcvNV7feJnT70MCkI', '', 0, 1, 'Apple', 1, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlEnmqkvBYMlmYibDElPS7icwAFMnBH0CATjnfXCmm3UxkRuKlZ3aiaNZkNGbLMmkR7o9U4auEia5f8lL/132', 1496744829, '2017-06-06 18:27:09', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (124, 'wx60a43dd8161666d4', 'oGsrkszhE3kIdWyYlN4E_zgLWdUk', 'o38gpsyVfsO9gDNPoRDvsme8n3FE', '', 0, 1, 'A鼎盛电脑科技', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqk0D9AMvZBcaicKKmbnSKIqtAQIbWIg4NmibBwSiau3DnT3krxx0Jaia94APKfCA761ktAyfuRpGzvaM2O2icNUiaaBm/132', 1514213921, '2017-12-25 22:58:41', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (125, 'wx60a43dd8161666d4', 'oGsrks1Wd6i5m0YalfiuXg6X6a40', 'o38gpswc8aL1dUFMb2TcABmsksDw', '2', 0, 1, 'Adrian、', 1, '中国', '广东', '江门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKoRF8qcrXUclWjyeMnPUVQMnoxJOvNRZZyRnPdqTnDMavjBHjNrIbK7dyNuyyoR5qV5ibgn2dibMQVf3pSkNcV47c/132', 1495683769, '2017-05-25 11:42:49', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (126, 'wx60a43dd8161666d4', 'oGsrks_nMhj7vI10yWxY8GzscIx0', 'o38gps4zEPecqw8rdL1b9d1D1YPo', '', 0, 1, '麦客', 1, '中国', '广东', '东莞', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqHCfYpq5D174oa61ibHp8mSMk7uIl6ibV6yYvvOSDaTQqJae7fpErfvJE9tRWjWtfhAlicJyocJVZevBaFyuwpvnd/132', 1493125763, '2017-04-25 21:09:23', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (127, 'wx60a43dd8161666d4', 'oGsrks5_ohtlFxr5d_i4GWddfzMc', 'o38gps0fdsSRWEmaDQQrhLc390Fo', '', 0, 1, '蒙东辉', 1, '中国', '广西', '柳州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0une6Y81xeRt7owIbIoQyuy1mVkGyzUCiank5lrLpvJjcHPwpE0QLicD0pFCLveEPUX69iblmjEnibaZ1E/132', 1593090535, '2020-06-25 21:08:55', '', 'ADD_SCENE_QR_CODE', '0', '1', '2020-08-17 10:27:23');
+INSERT INTO `wechat_fans` VALUES (128, 'wx60a43dd8161666d4', 'oGsrkswo8fDPab1lg_UXQkK6kOFA', 'o38gps74mjt-oVMudAu7zHmD70Jk', '', 0, 1, 'Simon', 1, '中国', '云南', '昆明', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mYnVcdoh64DnVSKUerDDJbckJicN8dYRibUUGV8d6Jm8R0x1cjqG5caQRibOx7UibZjKsr9BXpo5OQe6hpN0cHR5et/132', 1506754302, '2017-09-30 14:51:42', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (129, 'wx60a43dd8161666d4', 'oGsrks1Vd2boIxw3KjWdfrgD2XjY', 'o38gps1Unf64JOTdxNdd424lsEmM', '', 0, 1, 'SuperX', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKrHKPCxRI8LDKPpHmXtcbibbY29nvYwHqRtkm0tCw4TiaKVDC0Ze1jlUtDhHIRicaXFf6WqarEC6d3P9P6z0oXCLFF/132', 1586344506, '2020-04-08 19:15:06', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (130, 'wx60a43dd8161666d4', 'oGsrks-yWVJh5HNm1BuqBRCLVwBA', 'o38gps9rfb37mPgw6AFl8M_YltLs', '', 0, 1, '点点😉', 1, '中国', '浙江', '杭州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichCFIoVY84Z2BV4AFpgy1eubUicfnAms23wh7VYVhSyf7icKjxVEQHYLiaov8UIO4z3a7vsrFWrTt3AR/132', 1596433234, '2020-08-03 13:40:34', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (131, 'wx60a43dd8161666d4', 'oGsrks5_qJYniIfbAUsI4ThBG2Gw', 'o38gps7jcUqiSscytP5BWmsl1xiA', '', 0, 1, 'Y', 1, '中国', '广东', '东莞', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKq9p0g3Yh5EPrCDdRuEHfgy5VG4VUjqvzb240X7r1JnFwmUr2R0paxyuicPoibTC0IOcmSptZxU4zXNOibueqHtsFI/132', 1555254065, '2019-04-14 23:01:05', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (132, 'wx60a43dd8161666d4', 'oGsrkszzLgA8_64J_TZRAUaElaZU', 'o38gps7OXpYbeugJ8e_lxBaW2ohk', '2', 0, 1, 'null', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlJCKqTVy7yEXic7MpiaMScdWZ8WwCw72dWSJFkr7ZOpwyYnHd6kPiaTyvgcc9MUCwPAJPv3aptjIGQk/132', 1532070685, '2018-07-20 15:11:25', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (133, 'wx60a43dd8161666d4', 'oGsrks57SP_-KtDmAO1eBght4V5g', 'o38gps2Gp10B13AcD0EJw6Vh6Wgw', '2,241', 0, 1, '高歌；', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/8Mibmhf23HNdiajJeO5wCV3ezOrra63iahWIcR4K7LgL436LyjM6oiaRBheNyTibQNEKm9FOtYibjmshGoC2ooWVZiaJZZpDia7bEA3y/132', 1533196587, '2018-08-02 15:56:27', '', 'ADD_SCENE_QR_CODE', '0', '2', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (134, 'wx60a43dd8161666d4', 'oGsrksw7NWL0DCq0twZeR4OO9HK0', 'o38gps_02StO3HDCzmZhGQDoLNgI', '', 0, 1, '小朱', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichHaoA3cd92ax8T8swqFvRicApjDtBMsKybhtFwqol7wHOPCcJnLyqqQvhlkibXvXNJJxJC6IRsqVtt/132', 1564322306, '2019-07-28 21:58:26', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (135, 'wx60a43dd8161666d4', 'oGsrks1xIVqJI0DSzHA-_FI5HvVg', 'o38gps4KHVFX5_FSTSbz49Z4k2xE', '', 0, 1, 'marco', 1, '中国', '上海', '长宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlG8sM3lLVxy96yLRicn1YmYllaSq0pibk3bibDos30PtzlkickrGXsUK7iaJcN3CEkehFc4mqQ0OwxYMQ/132', 1564974412, '2019-08-05 11:06:52', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (136, 'wx60a43dd8161666d4', 'oGsrks5yHgDWmBQSzLt_W-rhVvx4', 'o38gpsyuVjFCAsDJfQeBex22uzc8', '', 0, 1, '言不言', 1, '中国', '重庆', '江北', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFm2c99iby8f0CI2wIwCweGlGHf7f61vt55tD3BHquotib3PPxRG6xj79zkty14euz7BcSjkzPCicZtLpic4Tg2mfobR/132', 1549705714, '2019-02-09 17:48:34', '', 'ADD_SCENE_QR_CODE', '0', '9999', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (137, 'wx60a43dd8161666d4', 'oGsrkszAn8Q0wGHZDxgsDhMUwWno', 'o38gps8gV-ymabTRXLxgaOsFU7Dw', '', 0, 1, '嘿，快来 要走了', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unQ131icZ6DHvgkIx9AAwlfJJPc5ytAV65e9xTas050wJrCibBPBHNyrfiafkFdd6fjeqTIs6BDqlfSs/132', 1544162168, '2018-12-07 13:56:08', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (138, 'wx60a43dd8161666d4', 'oGsrks5mX7Kr6b1guI9ecDgrXJVE', 'o38gps1tvPvDBPeMXFTZkFvBMxjU', '', 0, 1, '刘彪', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSngiaicZxcutgibCRtgMWC3eksaKycMbRmBGOZNjfK2VibK50S9wAmEGpgtV9agDk3jgBcIDfJxncWoO8apetK36rg1K/132', 1515404964, '2018-01-08 17:49:24', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (139, 'wx60a43dd8161666d4', 'oGsrksyhLdY9DwfJjQdSezUs3Edk', 'o38gpszo4K3qbXCzEjTmpJboKcCI', '', 0, 1, '晨曦', 2, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKo6ShR6rIOLfRPKMEZyHnbNOxPyvFOSuGDQF3PZEOf0aqeggBSxR026kdH24qQDBQ1fQhRAbWjxpRxh2wKTbU60/132', 1577159518, '2019-12-24 11:51:58', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (140, 'wx60a43dd8161666d4', 'oGsrks4wbE_8_OJDxrgr0wv45kRo', 'o38gps7lNafq9xmynMicfc8Emt98', '2', 0, 1, 'X', 1, '中国', '山东', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unUIvbSQsPmPYNQ3x7Hym2dEVwt0DdIHicm4nonwb2nX5kDCvxVpwXpjslWQyEb3akpicrgSqNibLIcT/132', 1527235947, '2018-05-25 16:12:27', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (141, 'wx60a43dd8161666d4', 'oGsrkswPgadHg_s_pIzWT8Icw1eI', 'o38gpsz80NIIMB7hALahkiF0_W5s', '241', 0, 1, 'Amy张~', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFne6ticWjHpreROdqS2paQY9PIq4P60wwgiaicoriaGia4VDLicxyPoiadVsXUDyDMFib0w8fsqbj7HGkjub9C4HC7PhqRC/132', 1536054662, '2018-09-04 17:51:02', '', 'ADD_SCENE_QR_CODE', '0', '关注', '2020-08-17 10:27:24');
+INSERT INTO `wechat_fans` VALUES (142, 'wx60a43dd8161666d4', 'oGsrkswdxf8YgxqyJ1S6RbH_yz8o', 'o38gpsyXwZEpgizcpP44NUdvOGho', '2', 0, 1, '王灿昆', 1, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnh8Fm56BRv0fh5AMrokepdpDia4iajtqqTwA5M2TjY74vgCibrI25W4AexPbGIyjlawHJMIzhZ6lriaL2tJHrcbyg78/132', 1527318064, '2018-05-26 15:01:04', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (143, 'wx60a43dd8161666d4', 'oGsrks93peyNDIECPpLAppB-kFvU', 'o38gps-4z7nkOJ9VljnrjZ1hJs9Q', '', 0, 1, 'L⃞I⃞U⃞.P⃞.F⃞', 1, '中国', '河南', '郑州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlCm6OTBQpNXOqnaHboRX48PVC0U7ibXdrKIIiakvF0KLyCicJO56GgLerwn3RQ0I5RWxgUSl87daxKg/132', 1498788522, '2017-06-30 10:08:42', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (144, 'wx60a43dd8161666d4', 'oGsrks89DGZXf8VfajzOVlbAQ3z8', 'o38gps8K3eiJ3cNAU0TKkAs2a9CU', '2', 0, 1, '黄宇🍉Forsa', 1, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnnuQFeHLG2XkAxv123SYx95QmjBAlJ3LEkgyggv0poM4tVcdIzelz8hF7GD6Lx7FnklKnoacuAoQibRQ1ZP2lP3/132', 1460548852, '2016-04-13 20:00:52', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (145, 'wx60a43dd8161666d4', 'oGsrksyXiMSZDlCqG-DtRoQSpsmU', 'o38gps0eI3yofVMgzSQeT-ZAjwDY', '', 0, 1, '👉挺帅的小伙子', 1, '埃及', '', '', 'zh_TW', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnj1fxjlu5zJcChIbTXnyeaS17NxJeKiawbYx1OibEbLLTvWq7XZ212MDmicnkbIZ0Cn95bYJYibHMxDGQPobib3ooPFv/132', 1565621834, '2019-08-12 22:57:14', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (146, 'wx60a43dd8161666d4', 'oGsrks99dccfeMtPQ9x0fHvFFzqU', 'o38gpswCrDZsTd4H3hT5dkgWssLI', '', 0, 1, 'Lee', 1, '中国', '山东', '济南', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichPxNLuG6Je1ht72nYJv3ia7OtJGxCwSXZah0qYXibsMjQ3xmiceeGmHupnSG9daWRkmynkDvOFOj7pH/132', 1560498188, '2019-06-14 15:43:08', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (147, 'wx60a43dd8161666d4', 'oGsrks3sZqDpGooHSY9OfP0ePJDo', 'o38gps3KfTv0T-KuuSoihtXdF_V0', '', 0, 1, '杨兴', 1, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjJGIU788aOeDDibbgcOZRzvUFCFcgSictYNg79ohLlZP9YKcDn2xepk1g9TaFxwIu3IaVBxyZg4vHwRfMCOXaPRib/132', 1563164527, '2019-07-15 12:22:07', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (148, 'wx60a43dd8161666d4', 'oGsrks_9xYojMQRMdatj-F7qGGCc', 'o38gps_d6OVvcoNV1irurfbOOpJ4', '', 0, 1, 'Samuella', 2, '中国', '江苏', '无锡', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlEJWDaoia4vibIic6fF9lFVJuRHKLbqm7PqQo23ickK5osWDK7AF95dVhB61kqKJxaZWWuRLjOtYicJial/132', 1554352496, '2019-04-04 12:34:56', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (149, 'wx60a43dd8161666d4', 'oGsrks7YjGV_35_A98qIyanIXx4s', 'o38gpswjzR0S7wMTdDI-lF6kvYaU', '', 0, 1, '卡卡', 1, '中国', '江苏', '苏州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unUH6uoW0BqJcaLbju7xakdCbr0ic1HiatibT4l2PpvlOazPtJHxGzZU1P9o5E2gSG97BxGYLpeNJzibZ/132', 1512692256, '2017-12-08 08:17:36', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (150, 'wx60a43dd8161666d4', 'oGsrks1Xr9cP1NV7bnQZ-kECDiJU', 'o38gps0xVS4elV6PcylCNzUTJ2WU', '', 0, 1, '绝非', 1, '中国', '湖南', '株洲', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM7Hb9uEmYQ6LsGxPrQKXrFCIKD9JMvMAADGoJtibxic1zzAceiarJ8ABLXMeU9VMZiaouDaicFQV4Rmm6qC8cSELMIXG8Yw7zUajcEc/132', 1530665893, '2018-07-04 08:58:13', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (151, 'wx60a43dd8161666d4', 'oGsrks0jFvF68dSmv0XGryx2fifo', 'o38gps2lZ3rB5367IG7oNy8Ov3YI', '', 0, 1, '黑色调-邹', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFn8EbVDPXicy4xTCBicXnZzeS6f806hXial9Rao3wAkJ6Mz9Sq5pxGwuYx26D7iasvz9xcTD0iaX7NVdjG9PZtrTkR4Z/132', 1560999426, '2019-06-20 10:57:06', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (152, 'wx60a43dd8161666d4', 'oGsrkswYnd9qL8EdvS-ABl55wb-I', 'o38gps6_chW-YV83sCx9fm_LOids', '2', 0, 1, '盼盼🔰雅滋美特®总部', 2, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpbjOibFLiaRzBwY2ia7XH9Ive6oCQiazl8hRBQr8WORSph7a5swBFoCy9ZewOMqExx7wGQzt4z5Tehoa7qulnEXdO4/132', 1462429726, '2016-05-05 14:28:46', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (153, 'wx60a43dd8161666d4', 'oGsrkszqd-rgvsAZRQM22uRJQNYM', 'o38gps4EiWwszYrWPOzsJALGJYaE', '', 0, 1, '系统|APP|爬虫|人工智能|AI|微信', 1, '冰岛', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichMAFlcfXliaWb4d19wlueB2ibNZ6tqpt1BUqWXlsDatRajWiaKOInKRe7Q7vEXKIqjQBJUWjI9IOGFX/132', 1556506683, '2019-04-29 10:58:03', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (154, 'wx60a43dd8161666d4', 'oGsrks1Abt6J8b_yWmrTmZlfWIZc', 'o38gps8seicLl2gYewGDSpFGcu4k', '', 0, 1, 'Cheng.', 1, '中国', '广东', '东莞', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM7iajUHnwFR7FrMq7tcfRh8wcLcUuz1ChMxGcHrygjFDCfLKDdWjj3hoPQUjpO0B2omZ8SJLo9gfrg8ich5ky8IOUtNb9dWX3Eqc/132', 1559007932, '2019-05-28 09:45:32', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (155, 'wx60a43dd8161666d4', 'oGsrksy3zLOfQ2F1aUiXiHPtCcn8', 'o38gps2le4Jvp1-ie-LT17rtTyt8', '', 0, 1, '志成', 1, '中国', '江苏', '南通', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlOicVU0UPTZFaGbyhRHqibdveWBzJuiaoMNNLJ73n25vGEsdkNVD4hTc5ZOxQpibogzuDsOS2PWvrAicL/132', 1585179799, '2020-03-26 07:43:19', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (156, 'wx60a43dd8161666d4', 'oGsrks-A5SNqe0ycd4MyRqZa-mSk', 'o38gpsyD9bq4ZFZmox8uwGm8H2sQ', '', 0, 1, '李建强', 1, '中国', '河北', '石家庄', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLlGfHzeXxE72d7BTmRfjS6ibVGdEe4hChv6lDbY5AqAl7m01fvuTQdSzriaZkJJbMnp50Ry5GhnWcc/132', 1545218771, '2018-12-19 19:26:11', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:25');
+INSERT INTO `wechat_fans` VALUES (157, 'wx60a43dd8161666d4', 'oGsrks-If1RQayI1JyPNp2MaK7T0', 'o38gps1CJrKQlN4iBneBRsc-6MeE', '', 0, 1, '一次就好', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0undgyrM9BhrmZnKhxoByYbIeY0E4mzVibuwrK4Z7lu25HwWjBUiaa9sdFXx5s06oHd8oXn1qaicDVRCv/132', 1522825109, '2018-04-04 14:58:29', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (158, 'wx60a43dd8161666d4', 'oGsrksxHmXVcZMJeySQ37uDytOmg', 'o38gpsxjv6TDDkmlPpOCybQ9tjJ0', '2', 0, 1, '　　　　　　　　', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqHxl82Xol99xTovqtPdth2ulKkXk8Ckibwop7NqC4SASx0iaFNB0FxtgF9ubk9xPWSDW1OLd7RNZibfp0XMJpIecia/132', 1491880522, '2017-04-11 11:15:22', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (159, 'wx60a43dd8161666d4', 'oGsrks8AQ_mp1XePvYuUDAJ7oBJg', 'o38gpswwa0WyHEKVXaHtF0kcjoJk', '2', 0, 1, '堂堂', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKp5nibynO469KphibAhuVZ1ZWA5hR79YlLUT9l8ic4ckibpgkPlC0zm1Rwem9kLsN3kPBAhibfIWo7gBmPSvSsLjQKuE/132', 1467771020, '2016-07-06 10:10:20', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (160, 'wx60a43dd8161666d4', 'oGsrks9MfAU8BgLY4v61f1E3BnfA', 'o38gpsyR3h1TD0IpMcgZHb-LR9jM', '', 0, 1, '雅士斯', 2, '中国', '山东', '日照', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4BRqlJBVfD2r2hOu6U6MCUm84l0icCDdz063eib5Au5dD53ibyNwYAdePAjV20XjrDwTVyiah3DaRxKvWkK1baGGQyRtyXQENC3lA/132', 1531050828, '2018-07-08 19:53:48', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (161, 'wx60a43dd8161666d4', 'oGsrks71BIPANqZDyv4B64e4Eozg', 'o38gps7sSKAiIosZcPtvDCIp5iqg', '', 0, 1, '风染季末', 1, '黑山', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlMqlYggVlxQQjEz0gI06NiaiciaLd1jFpjMmpC28Ib5OZ2bqgf3eMwjxEibRXUgtkOuFJ1AicN31NWefb/132', 1508379559, '2017-10-19 10:19:19', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (162, 'wx60a43dd8161666d4', 'oGsrks7GIEtTsVvc0im_6xrSfmcc', 'o38gps2ljh0Zut4jp8uZqnOnpFMk', '', 0, 1, 'yj', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichEbFsRbugBKeO4PrD4ra5siap32ibgMqicwcicY1juDOIsqzEUXU70d3mdN6QzYRPtQFcfPkJErbQl3X/132', 1582593343, '2020-02-25 09:15:43', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (163, 'wx60a43dd8161666d4', 'oGsrks3QXReZSmopt5JNz_am1lCQ', 'o38gps2fmVA_eJ2EhBu29kvpDLOI', '2', 0, 1, '仍在路上', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unQdDzTPs026IF3d2qutQan15IN1CQEMiaXbJ1WAt6h3w9MxAHsMaWPR0HDboL8QVYLvAFP5LL6fmI/132', 1522637873, '2018-04-02 10:57:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (164, 'wx60a43dd8161666d4', 'oGsrks7y1H7a5LiKAZrwqt2wv3Eo', 'o38gps7j5z2_NLnN2qlj8bRBqPVc', '2,241', 0, 1, 'Ready Fuck', 1, '中国', '山东', '泰安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM5gMKhoYWbiahU8bYnNSEF1j04Ewib6eUicxB7UVYoVnBibzibpex29SQkgYXSGKY5NHE7NoyqetKer0JhE3TmibIGwD9iafP2KGl7ibKc/132', 1538100467, '2018-09-28 10:07:47', '', 'ADD_SCENE_PAID', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (165, 'wx60a43dd8161666d4', 'oGsrks8XclsARHmwzEtED6tjqe8A', 'o38gps_FBniwS3Cch06HPbnHhjVk', '', 0, 1, '李能', 1, '中国', '上海', '普陀', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6M0sibnOZfwSIPBCRAmoqNMiczvgWkY2RgskFuVOm7JPcF0ewnxJde5ghRBEicEib17dhoNQIABkXQhzP/132', 1564974444, '2019-08-05 11:07:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (166, 'wx60a43dd8161666d4', 'oGsrks22hZFbB-J-Y98nM-h_9uMM', 'o38gps2Fh1GdM5rQkC3_Bckn3iEY', '2', 0, 1, '永胜', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unTecSoEY71TA6iaGhEEzT9jicPn5nphSYgXbG907Uff6Q3meTgLGCTUelUjqDCrex7hNH9hV5KyI1P/132', 1462429914, '2016-05-05 14:31:54', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (167, 'wx60a43dd8161666d4', 'oGsrkswKizHcUiaOTe7dZVciNJck', 'o38gps0v23okvmQVq8uot3u5NWkc', '', 0, 1, 'A风', 1, '中国', '江苏', '淮安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlKZ0rTYoibJy5p9XAFWgibzJcJOVHAR992gHlxxTeFMNtfmicwWwI0ju3ialibvGjzomicT8YG26Oibsrbn/132', 1592366564, '2020-06-17 12:02:44', '', 'ADD_SCENE_QR_CODE', '0', '123', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (168, 'wx60a43dd8161666d4', 'oGsrks0WtG_Uk8XOBka4AB-6Y7h8', 'o38gpszskjDHYvaL43OyX95-lvlI', '243', 0, 1, '原色大叔', 1, '中国', '四川', '绵阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlIdsGkbJZX4qh9nS2p9odTMD6qj8RVzGJbsT0Erhm9pLViaaWGpqJBMzFceF2cMNh6TD9NKVRicnmr/132', 1544107732, '2018-12-06 22:48:52', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (169, 'wx60a43dd8161666d4', 'oGsrks6Y0TUcHa-IhfxS0Me6gl4c', 'o38gps08RgM4pxI5aKCMvAC6iQNw', '', 0, 1, '劲松_楚鸟', 1, '中国', '湖北', '荆州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6MwjVAA8Bb0TUf0aaElVVYCibMLqI5BNclYGhGM9Lgict7uI2UOxnfuricfcdUIa1SWb0tfBW1uqYewF/132', 1495687411, '2017-05-25 12:43:31', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (170, 'wx60a43dd8161666d4', 'oGsrks1mRFfwmmqt37THToIKPArc', 'o38gpsyXpbq7ybSlpKtICCoUBJpk', '', 0, 1, '淼先森', 1, '中国', '河南', '南阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unYYCpXrV3ibqy5asFK5Wicrt7ZEfv4B4pRlUL6RbicY9ibnR6mMJAria9Vfd2mibAwsmgoEic1bzd8J0DAL/132', 1585975455, '2020-04-04 12:44:15', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (171, 'wx60a43dd8161666d4', 'oGsrks9nEbjHQbOOgKFjvgpw4qj4', 'o38gps4Awds1FrY2N9HAidN0FF8Q', '', 0, 1, 'admin@l4.hk', 1, '乍得', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmZnSJjibNEXBmU7fMWicjOUlD8do5NtHCMicIgRE1WpW1Zg1uianajGialCXEkZctG7QjtsprK1icRnibBKVDaTLCliaAT/132', 1509361509, '2017-10-30 19:05:09', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:26');
+INSERT INTO `wechat_fans` VALUES (172, 'wx60a43dd8161666d4', 'oGsrksxKTwgEWj0ApQlblA_V9NEo', 'o38gps9mF9Em-CTs7aV9B88DuTpw', '', 0, 1, 'yyhhyj😂', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaZgJibibxOwB5fygtmZ1JTrNYwqxKRPBPJYhSmibVzibKeuhEIajbdxWjHfvNnBr6YYDyHJt3HYL6yQ2Z2CcDefPyM/132', 1503323592, '2017-08-21 21:53:12', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:27');
+INSERT INTO `wechat_fans` VALUES (173, 'wx60a43dd8161666d4', 'oGsrks0mBGjUxYLw1GGbQgNdaN4s', 'o38gpszoJoC9oJYz3UHHf6bEp0Lo', '', 0, 1, '老四', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnHsPaibz1juy3FqReGkWQ98f1nbbdm8dlYxXgq1FEo10ZzQ9ZVgHvg3l7KNdKaU4VTKoADoOoOGObjqaAh6Jb7B/132', 1514285567, '2017-12-26 18:52:47', '', 'ADD_SCENE_SEARCH', '0', '', '2020-08-17 10:27:27');
+INSERT INTO `wechat_fans` VALUES (174, 'wx60a43dd8161666d4', 'oGsrksxawVziyr-ePlU6nOxALYgA', 'o38gps47H7kIFrv0pQ15ODVQR1mA', '2', 0, 1, '才子佳人', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichC3NRcX3D5LVKUapG9XE3xzbt2jdh0qlRYiabia541bkdsY81ICFWrcKhicbAOic4iatlKts4nSVosACa/132', 1461809072, '2016-04-28 10:04:32', '', 'ADD_SCENE_OTHERS', '0', '', '2020-08-17 10:27:27');
+INSERT INTO `wechat_fans` VALUES (175, 'wx60a43dd8161666d4', 'oGsrks1FaExlUOm_D9GvCuIoDrlc', 'o38gps6SnGauVsoHsK-KzEdntbpY', '', 0, 1, '且行且珍惜', 0, '中国', '安徽', '合肥', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unVNJpuN0qfqICUlV5F41nJBumbh3YZTS0gtVbVqCs5TCem5rfM90XPFibhb8sbyoH8Ew5tmZp8xIib/132', 1525588382, '2018-05-06 14:33:02', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:27');
+INSERT INTO `wechat_fans` VALUES (176, 'wx60a43dd8161666d4', 'oGsrks5ho0coAR3ay0yQKdsJhiT0', 'o38gpsxtNW0RCqX_1yItf7hzKVho', '', 0, 1, 'A0-余思丽', 2, '中国', '上海', '黄浦', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqENmUvib4V4RRLHBZV2eNGyqo4PpLCeeiajOUPXah9d528OjRLaIAx3oLMhHzvqJoZQOTxuCjXOwjltMkVjWP3Xg/132', 1558147767, '2019-05-18 10:49:27', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:27');
+INSERT INTO `wechat_fans` VALUES (177, 'wx60a43dd8161666d4', 'oGsrks85_pfj9iVAnPkUJYS7Dcn8', 'o38gps8V1gm-BB0ruBW9lKdDkGPY', '', 0, 1, '停用', 1, '中国', '澳门', '氹仔', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnh06NZhX4M1teqOM0Q1sBt8kAzpQs3d4cV0ugn4WROm0fic9H4ayiasXoDcq8SRwteFmtHknb8XMxfJuQ73BZ8CAx/132', 1580490089, '2020-02-01 01:01:29', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:27');
+INSERT INTO `wechat_fans` VALUES (178, 'wx60a43dd8161666d4', 'oGsrks3XOGcxFnpTelYhBbXEWBnw', 'o38gps72RP9qBgIcMcoOcu9VnJ9Y', '', 0, 1, '山里人', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFm4BRljFPcdzIs0nSsY01ZkakccKeyasvnIfpv1sHKCDS5Aia3yqqJ6ZAH7UOSicREibXCvVZC6G751fkLNFDHUM3D/132', 1548130557, '2019-01-22 12:15:57', '', 'ADD_SCENE_QR_CODE', '0', '', '2020-08-17 10:27:27');
+INSERT INTO `wechat_fans` VALUES (179, 'wx60a43dd8161666d4', 'oGsrks1jmvKDrduVhsT9_PMcX0n0', 'o38gpsw6IF8X13m0sfGQeZvR9pWI', '', 0, 1, '吃货菇凉', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/r3xV6EGjibQwc1gYeMHRFI2JSiaCaXdHCNCuklfuN1cEh7O7QSj5lsncIZsNsaRdI04uCdnEj5CPWlTDESvWFyvv7fyYIneiamO/132', 1546493389, '2019-01-03 13:29:49', '', 'ADD_SCENE_QR_CODE', '0', '2', '2020-08-17 10:27:27');
+
+-- ----------------------------
+-- Table structure for wechat_fans_tags
+-- ----------------------------
+DROP TABLE IF EXISTS `wechat_fans_tags`;
+CREATE TABLE `wechat_fans_tags`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '标签ID',
+  `appid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '公众号APPID',
+  `name` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签名称',
+  `count` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '总数',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  INDEX `index_wechat_fans_tags_id`(`id`) USING BTREE,
+  INDEX `index_wechat_fans_tags_appid`(`appid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 246 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-标签' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of wechat_fans_tags
+-- ----------------------------
+INSERT INTO `wechat_fans_tags` VALUES (2, 'wx60a43dd8161666d4', '星标组', 38, '2020-08-18 02:05:44');
+INSERT INTO `wechat_fans_tags` VALUES (227, 'wx60a43dd8161666d4', '支付宝账号12', 4, '2020-08-18 02:05:44');
+INSERT INTO `wechat_fans_tags` VALUES (241, 'wx60a43dd8161666d4', 'administrator', 7, '2020-08-18 02:05:44');
+INSERT INTO `wechat_fans_tags` VALUES (243, 'wx60a43dd8161666d4', '仗剑天涯', 2, '2020-08-18 02:05:44');
+INSERT INTO `wechat_fans_tags` VALUES (245, 'wx60a43dd8161666d4', '测试订单', 0, '2020-08-18 02:05:44');
+
+-- ----------------------------
+-- Table structure for wechat_keys
+-- ----------------------------
+DROP TABLE IF EXISTS `wechat_keys`;
+CREATE TABLE `wechat_keys`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `appid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '公众号APPID',
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '类型(text,image,news)',
+  `keys` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '关键字',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '文本内容',
+  `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '图片链接',
+  `voice_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '语音链接',
+  `music_title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '音乐标题',
+  `music_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '音乐链接',
+  `music_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '缩略图片',
+  `music_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '音乐描述',
+  `video_title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '视频标题',
+  `video_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '视频URL',
+  `video_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '视频描述',
+  `news_id` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '图文ID',
+  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序字段',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '状态(0禁用,1启用)',
+  `create_by` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '创建人',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `index_wechat_keys_appid`(`appid`) USING BTREE,
+  INDEX `index_wechat_keys_type`(`type`) USING BTREE,
+  INDEX `index_wechat_keys_keys`(`keys`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-关键字' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of wechat_keys
+-- ----------------------------
+INSERT INTO `wechat_keys` VALUES (1, '', 'news', 'subscribe', '说点什么吧', 'http://127.0.0.1:8000/static/theme/img/image.png', '', '音乐标题', '', 'http://127.0.0.1:8000/static/theme/img/image.png', '音乐描述', '视频标题', '', '视频描述', 2, 0, 1, 0, '2020-07-15 02:52:17');
+INSERT INTO `wechat_keys` VALUES (2, '', 'news', 'test', '说点什么吧', 'http://127.0.0.1:8000/static/theme/img/image.png', '', '音乐标题', '', 'http://127.0.0.1:8000/static/theme/img/image.png', '音乐描述', '视频标题', '', '视频描述', 1, 0, 1, 0, '2020-07-15 02:26:47');
+INSERT INTO `wechat_keys` VALUES (3, '', 'news', 'tttt', '说点什么吧', 'http://127.0.0.1:8000/static/theme/img/image.png', '', '音乐标题', '', 'http://127.0.0.1:8000/static/theme/img/image.png', '音乐描述', '视频标题', '', '视频描述', 1, 0, 1, 0, '2020-07-15 02:52:22');
+INSERT INTO `wechat_keys` VALUES (4, '', 'video', 'teest', '说点什么吧', 'https://v6.thinkadmin.top/static/theme/img/image.png', '', '音乐标题', '', 'https://v6.thinkadmin.top/static/theme/img/image.png', '音乐描述', '视频标题', 'https://v6.thinkadmin.top/upload/54/26c9e1278fd8d385441d194428b17d.mp4', '视频描述', 0, 0, 1, 0, '2020-08-18 02:18:26');
+INSERT INTO `wechat_keys` VALUES (5, '', 'text', 'default', '说点什么吧', 'https://v6.thinkadmin.top/static/theme/img/image.png', '', '音乐标题', '', 'https://v6.thinkadmin.top/static/theme/img/image.png', '音乐描述', '视频标题', '', '视频描述', 0, 0, 1, 0, '2020-08-18 02:28:24');
+
+-- ----------------------------
+-- Table structure for wechat_media
+-- ----------------------------
+DROP TABLE IF EXISTS `wechat_media`;
+CREATE TABLE `wechat_media`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `appid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '公众号ID',
+  `md5` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文件md5',
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '媒体类型',
+  `media_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '永久素材MediaID',
+  `local_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '本地文件链接',
+  `media_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '远程图片链接',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `index_wechat_media_appid`(`appid`) USING BTREE,
+  INDEX `index_wechat_media_md5`(`md5`) USING BTREE,
+  INDEX `index_wechat_media_type`(`type`) USING BTREE,
+  INDEX `index_wechat_media_media_id`(`media_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-素材' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of wechat_media
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wechat_news
+-- ----------------------------
+DROP TABLE IF EXISTS `wechat_news`;
+CREATE TABLE `wechat_news`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `media_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '永久素材MediaID',
+  `local_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '永久素材外网URL',
+  `article_id` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '关联图文ID(用英文逗号做分割)',
+  `is_deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态(0未删除,1已删除)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_by` bigint(20) NULL DEFAULT NULL COMMENT '创建人',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `index_wechat_news_artcle_id`(`article_id`) USING BTREE,
+  INDEX `index_wechat_news_media_id`(`media_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-图文' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of wechat_news
+-- ----------------------------
+INSERT INTO `wechat_news` VALUES (1, '', '', '1', 1, '2020-07-15 02:25:56', 10000);
+INSERT INTO `wechat_news` VALUES (2, '', '', '2,3', 1, '2020-07-15 02:26:16', 10000);
+INSERT INTO `wechat_news` VALUES (3, '', '', '4', 1, '2020-08-18 02:14:46', 10000);
+
+-- ----------------------------
+-- Table structure for wechat_news_article
+-- ----------------------------
+DROP TABLE IF EXISTS `wechat_news_article`;
+CREATE TABLE `wechat_news_article`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '素材标题',
+  `local_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '永久素材显示URL',
+  `show_cover_pic` tinyint(4) UNSIGNED NULL DEFAULT 0 COMMENT '显示封面(0不显示,1显示)',
+  `author` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章作者',
+  `digest` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '摘要内容',
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '图文内容',
+  `content_source_url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '原文地址',
+  `read_num` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '阅读数量',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-文章' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of wechat_news_article
+-- ----------------------------
+INSERT INTO `wechat_news_article` VALUES (1, '新建图文', 'https://v6.thinkadmin.top/upload/ac/a8c68f0d1c0d240e2af8e0ac440157.jpg', 1, '管理员', '文章内容', '<p>文章内容</p>', '', 10, '2020-08-18 10:23:01');
+INSERT INTO `wechat_news_article` VALUES (2, '新建图文', 'https://v6.thinkadmin.top/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', 1, '管理员', '文章内容', '<p>文章内容</p>', '', 18, '2020-08-18 10:23:41');
+INSERT INTO `wechat_news_article` VALUES (3, '新建图文', 'https://v6.thinkadmin.top/upload/11/141a042ef00479a9af16c9efdb6c56.jpg', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 1, '2020-08-18 10:23:41');
+INSERT INTO `wechat_news_article` VALUES (4, '新建图文', 'https://v6.thinkadmin.top/upload/ac/a8c68f0d1c0d240e2af8e0ac440157.jpg', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 0, '2020-08-18 10:31:13');
 
 SET FOREIGN_KEY_CHECKS = 1;
