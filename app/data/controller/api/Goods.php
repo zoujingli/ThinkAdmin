@@ -3,6 +3,7 @@
 namespace app\data\controller\api;
 
 use app\data\service\GoodsService;
+use app\data\service\TruckService;
 use think\admin\Controller;
 
 /**
@@ -49,6 +50,14 @@ class Goods extends Controller
         $result = $query->where($map)->order('sort desc,id desc')->page(true, false, false, 10);
         GoodsService::instance()->buildItemData($result['list']);
         $this->success('获取商品数据成功', $result);
+    }
+
+    /**
+     *  获取配送区域
+     */
+    public function getRegion()
+    {
+        $this->success('获取配送区域成功', TruckService::instance()->region(3, 1));
     }
 
 }
