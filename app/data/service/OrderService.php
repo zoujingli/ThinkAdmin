@@ -58,22 +58,29 @@ class OrderService extends Service
     public function buildItemData(array &$data = []): array
     {
         $nos = array_unique(array_column($data, 'order_no'));
+        // 关联会员数据
         $mids = array_unique(array_merge(array_column($data, 'mid'), array_column($data, 'from')));
         $members = $this->app->db->name('DataMember')->whereIn('id', $mids)->column('*', 'id');
-        // 关联商品详情
-        $map = ['status' => 1, 'deleted' => 0];
-        $items = $this->app->db->name('ShopOrderItem')->where($map)->whereIn('order_no', $nos)->select()->toArray();
+        foreach ($members as &$user) {
+            unset($user['token'], $user['tokenv'], $user['openid1'], $user['openid2']);
+            unset($user['unionid'], $user['password'], $user['status'], $user['deleted']);
+        }
         // 关联发货信息
         $trucks = $this->app->db->name('ShopOrderSend')->whereIn('order_no', $nos)->column('*', 'order_no');
+        foreach ($trucks as &$item) unset($item['id'], $item['mid'], $item['status'], $item['deleted'], $item['create_at']);
+        // 关联订单商品
+        $query = $this->app->db->name('ShopOrderItem')->where(['status' => 1, 'deleted' => 0]);
+        $items = $query->withoutField('id,mid,status,deleted,create_at')->whereIn('order_no', $nos)->select()->toArray();
         foreach ($data as &$vo) {
-            $vo['truck'] = $trucks[$vo['order_no']] ?? [];
-            $vo['member'] = $members[$vo['mid']] ?? [];
-            $vo['fromer'] = $members[$vo['from']] ?? [];
-            [$vo['count'], $vo['items']] = [0, []];
+            $vo['sales'] = 0;
+            $vo['fromer'] = $members[$vo['from']] ?? new \stdClass();
+            $vo['member'] = $members[$vo['mid']] ?? new \stdClass();
+            $vo['truck'] = $trucks[$vo['order_no']] ?? new \stdClass();
+            $vo['items'] = [];
             foreach ($items as $item) {
                 if ($vo['order_no'] === $item['order_no']) {
-                    $vo['count'] += $item['stock_sales'];
                     $vo['items'][] = $item;
+                    $vo['sales'] += $item['stock_sales'];
                 }
             }
         }
