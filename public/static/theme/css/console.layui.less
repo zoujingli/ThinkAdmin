@@ -10,6 +10,30 @@ fieldset {
   }
 }
 
+.layui-btn {
+  border: 1px solid #009688;
+}
+
+.layui-btn-warm {
+  border: 1px solid #FFB800;
+}
+
+.layui-btn-danger {
+  border: 1px solid #FF5722;
+}
+
+.layui-btn-normal {
+  border: 1px solid #1E9FFF;
+}
+
+.layui-btn-disabled {
+  border: 1px solid #e6e6e6;
+}
+
+.layui-btn-group .layui-btn-primary:hover {
+  border-color: #009688;
+}
+
 /*! 搜索表单样式 */
 .form-search {
   .layui-btn {
@@ -23,7 +47,7 @@ fieldset {
     width: auto !important;
     height: 32px;
     padding: 0 8px;
-    line-height: 30px
+    line-height: 32px
   }
 
   .layui-input-inline {
@@ -32,8 +56,8 @@ fieldset {
     input, select {
       width: 100%;
       height: 32px;
-      padding: 2px 8px;
-      line-height: 1em
+      padding: 0 8px;
+      line-height: 32px
     }
   }
 
@@ -44,10 +68,6 @@ fieldset {
 }
 
 .layui-form {
-  input.layui-input, select.layui-select {
-    line-height: 1em;
-  }
-
   &.layui-card {
     box-shadow: none
   }
@@ -119,7 +139,7 @@ label.think-checkbox, label.think-radio {
   cursor: pointer;
   margin-top: 10px;
   font-weight: 400;
-  line-height: 17px;
+  line-height: 18px;
 }
 
 .think-checkbox input[type=checkbox] {
@@ -180,7 +200,6 @@ label.think-checkbox, label.think-radio {
   }
 }
 
-
 .layui-layer-content .layui-form.layui-card .layui-card-body {
   padding: 30px 40px 0 0
 }
@@ -202,11 +221,10 @@ label.think-checkbox, label.think-radio {
 .layui-btn-group {
   > .layui-btn {
     border-right: 0 !important;
-    border-radius: 0 !important;
-    border-left: 1px solid #C9C9C9 !important;
+    border-left: 1px solid #009688 !important;
 
     &:last-child {
-      border-right: 1px solid #C9C9C9 !important;
+      border-right: 1px solid #009688 !important;
     }
 
     &.layui-btn-active {
@@ -217,16 +235,6 @@ label.think-checkbox, label.think-radio {
         border-left: 0 !important;
       }
     }
-  }
-}
-
-.layui-btn-primary {
-  &.layui-btn-xs {
-    line-height: 20px
-  }
-
-  &.layui-btn-sm {
-    line-height: 28px
   }
 }
 

@@ -63,7 +63,9 @@
                     </div>
                 </td>
                 <td class="text-left">
-                    {notempty name='vo.mark'}{foreach $vo.mark as $mark}<span class="notselect margin-right-5 layui-badge layui-bg-cyan">{$mark}</span>{/foreach}{/notempty}
+                    {notempty name='vo.mark'}{foreach $vo.mark as $mark}
+                    <span class="notselect nowrap margin-right-5 layui-badge layui-bg-cyan">{$mark}</span>
+                    {/foreach}{/notempty}
                 </td>
                 <td class='nowrap'>
                     销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
