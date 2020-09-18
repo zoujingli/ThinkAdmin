@@ -14,18 +14,6 @@
             </div>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">推荐手机</label>
-            <div class="layui-input-inline">
-                <input name="agent_phone" value="{:input('agent_phone')}" placeholder="请输入会员手机" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">推荐昵称</label>
-            <div class="layui-input-inline">
-                <input name="agent_nickname" value="{:input('agent_nickname')}" placeholder="请输入会员昵称" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-inline">
             <label class="layui-form-label">订单单号</label>
             <div class="layui-input-inline">
                 <input name="order_no" value="{:input('order_no')}" placeholder="请输入订单单号" class="layui-input">
@@ -34,102 +22,79 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发货单号</label>
             <div class="layui-input-inline">
-                <input name="express_send_no" value="{:input('express_send_no')}" placeholder="请输入发货单号" class="layui-input">
+                <input name="truck_number" value="{:input('truck_number')}" placeholder="请输入发货单号" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">订单状态</label>
+            <label class="layui-form-label">发货状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    {foreach [''=>'- 全部订单 -','2'=>'待付款','3'=>'待发货','4'=>'已发货','5'=>'已完成'] as $k=>$v}
+                    {foreach [''=>'- 全部订单 -','0'=>'已取消的订单','1'=>'待发货的订单','2'=>'已发货的订单'] as $k=>$v}
                     {if input('status') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
-                    {/if}
-                    {/foreach}
+                    {/if}{/foreach}
                 </select>
             </div>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">付款状态</label>
+            <label class="layui-form-label">提交时间</label>
             <div class="layui-input-inline">
-                <select class="layui-select" name="pay_state">
-                    {foreach [''=>'- 全部订单 -','0'=>'未支付的订单','1'=>'已支付的订单'] as $k=>$v}
-                    {if input('pay_state') eq $k.''}
-                    <option selected value="{$k}">{$v}</option>
-                    {else}
-                    <option value="{$k}">{$v}</option>
-                    {/if}
-                    {/foreach}
-                </select>
+                <input data-date-range name="address_datetime" value="{:input('address_datetime')}" placeholder="请选择提交时间" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">下单时间</label>
+            <label class="layui-form-label">发货时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('create_at')}" placeholder="请选择下单时间" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">支付时间</label>
-            <div class="layui-input-inline">
-                <input data-date-range name="pay_datetime" value="{:input('pay_datetime')}" placeholder="请选择支付时间" class="layui-input">
+                <input data-date-range name="send_datetime" value="{:input('send_datetime')}" placeholder="请选择发货时间" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货姓名</label>
             <div class="layui-input-inline">
-                <input name="express_name" value="{:input('express_name')}" placeholder="请输入收货姓名" class="layui-input">
+                <input name="address_name" value="{:input('address_name')}" placeholder="请输入收货姓名" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货手机</label>
             <div class="layui-input-inline">
-                <input name="express_phone" value="{:input('express_phone')}" placeholder="请输入收货手机" class="layui-input">
+                <input name="address_phone" value="{:input('address_phone')}" placeholder="请输入收货手机" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">收货省份</label>
+            <label class="layui-form-label">配送地址</label>
             <div class="layui-input-inline">
-                <input name="express_province" value="{:input('express_province')}" placeholder="请输入收货省份" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">收货城市</label>
-            <div class="layui-input-inline">
-                <input name="express_city" value="{:input('express_city')}" placeholder="请输入收货城市" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">收货区域</label>
-            <div class="layui-input-inline">
-                <input name="express_area" value="{:input('express_area')}" placeholder="请输入收货区域" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">详细地址</label>
-            <div class="layui-input-inline">
-                <input name="express_address" value="{:input('express_address')}" placeholder="请输入详细地址" class="layui-input">
+                <input name="address_content" value="{:input('address_content')}" placeholder="请输入配送地址" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
             {if auth('export')}
-            <button type="button" data-export-list class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-export"></i> 导 出</button>
+            <button type="button" data-form-export="{:url('index')}?type={$type|default=''}" class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-export"></i> 导 出</button>
             {/if}
         </div>
     </form>
     <script>
         window.form.render();
-    </script>
-    {if auth('export')}
-    <script>
-        $('[data-export-list]').on('click', function () {
-            $.form.load('{:url("export")}?type={$type|default=""}', $(this).parents('form').serialize(), 'get', function (ret) {
-                if (ret.code > 0) return $.loadQueue(ret.data), false;
-            })
+        require(['excel'], function (excel) {
+            excel.bind(function (data) {
+                data.forEach(function (item, index) {
+                    data[index] = [
+                        item.order_no, item.member.phone,
+                        item.member.username || item.member.nickname || '',
+                        item.address_name || '', item.address_phone || '',
+                        item.address_province || '', item.address_city || '', item.address_area || '',
+                        item.address_content || '', item.address_datetime || '',
+                        item.company_name || '', item.send_number || '', item.send_datetime || '',
+                    ];
+                });
+                data.unshift([
+                    '订单单号', '会员手机', '会员姓名', '收货人姓名', '收货人手机', '配送省份', '配送城市',
+                    '配送区域', '配送详细地址', '提交时间', '快递公司', '配送单号', '发货时间'
+                ]);
+                return data;
+            }, '订单发货数据');
         });
     </script>
-    {/if}
 </fieldset>

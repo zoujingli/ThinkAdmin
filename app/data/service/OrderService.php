@@ -57,15 +57,19 @@ class OrderService extends Service
      */
     public function buildItemData(array &$data = []): array
     {
+        $nos = array_unique(array_column($data, 'order_no'));
         $mids = array_unique(array_merge(array_column($data, 'mid'), array_column($data, 'from')));
         $members = $this->app->db->name('DataMember')->whereIn('id', $mids)->column('*', 'id');
-        // 商品详情管理
-        $query = $this->app->db->name('ShopOrderItem')->where(['status' => 1, 'deleted' => 0]);
-        $items = $query->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select()->toArray();
+        // 关联商品详情
+        $map = ['status' => 1, 'deleted' => 0];
+        $items = $this->app->db->name('ShopOrderItem')->where($map)->whereIn('order_no', $nos)->select()->toArray();
+        // 关联发货信息
+        $trucks = $this->app->db->name('ShopOrderSend')->whereIn('order_no', $nos)->column('*', 'order_no');
         foreach ($data as &$vo) {
-            [$vo['count'], $vo['items']] = [0, []];
+            $vo['truck'] = $trucks[$vo['order_no']] ?? [];
             $vo['member'] = $members[$vo['mid']] ?? [];
             $vo['fromer'] = $members[$vo['from']] ?? [];
+            [$vo['count'], $vo['items']] = [0, []];
             foreach ($items as $item) {
                 if ($vo['order_no'] === $item['order_no']) {
                     $vo['count'] += $item['stock_sales'];

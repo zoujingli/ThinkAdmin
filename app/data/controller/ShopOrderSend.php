@@ -2,7 +2,6 @@
 
 namespace app\data\controller;
 
-use app\data\service\OrderService;
 use think\admin\Controller;
 
 /**
@@ -16,10 +15,10 @@ class ShopOrderSend extends Controller
      * 绑定数据表
      * @var string
      */
-    private $table = 'ShopOrder';
+    private $table = 'ShopOrderSend';
 
     /**
-     * 订单数据管理
+     * 订单发货管理
      * @auth true
      * @menu true
      * @throws \think\db\exception\DataNotFoundException
@@ -28,47 +27,42 @@ class ShopOrderSend extends Controller
      */
     public function index()
     {
-        $this->title = '订单数据管理';
+        $this->title = '订单发货管理';
         // 状态数据统计
-        $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 'ta' => 0];
+        $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 'ta' => 0];
         $this->app->db->name($this->table)->fieldRaw('status,count(1) total')->group('status')->select()->map(function ($vo) {
             $this->total["t{$vo['status']}"] = $vo['total'];
             $this->total["ta"] += $vo['total'];
         });
         // 订单列表查询
-        $query = $this->_query($this->table);
-        $query->equal('status,payment_type,payment_status');
-        $query->dateBetween('create_at,payment_datetime,cancel_datetime,truck_datetime,truck_send_datetime');
-        $query->like('order_no,truck_name,truck_phone,truck_province|truck_area|truck_address#address,truck_send_no,truck_send_name');
+        $query = $this->_query($this->table)->order('id desc');
+        $query->dateBetween('address_datetime,send_datetime')->equal('status')->like('send_number#truck_number');
+        $query->like('address_phone,address_name,address_province|address_city|address_area|address_content#address_content');
         // 会员搜索查询
         $db = $this->_query('DataMember')->like('phone#member_phone,nickname#member_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("mid in {$db->fieldRaw('id')->buildSql()}");
-        // 推荐人搜索查询
-        $db = $this->_query('DataMember')->like('phone#from_phone,nickname#from_nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("from in {$db->fieldRaw('id')->buildSql()}");
         // 列表选项卡
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
             $query->where(['status' => $this->type]);
         }
         // 分页排序处理
         if (input('output') === 'json') {
-            $result = $query->order('id desc')->page(true, false);
+            $result = $query->page(true, false);
             $this->success('获取数据列表成功', $result);
         } else {
-            $query->order('id desc')->page();
+            $query->page();
         }
     }
 
     /**
      * 订单列表处理
      * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _index_page_filter(array &$data)
     {
-        OrderService::instance()->buildItemData($data);
+        $mids = array_unique(array_column($data, 'mid'));
+        $members = $this->app->db->name('DataMember')->whereIn('id', $mids)->column('*', 'id');
+        foreach ($data as &$vo) $vo['member'] = $members[$vo['mid']] ?? [];
     }
 
 }

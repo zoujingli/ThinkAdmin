@@ -3,7 +3,7 @@
 {block name="content"}
 <div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title notselect">
-        {foreach ['ta'=>'全部订单','t2'=>'待支付的订单','t3'=>'待发货的订单','t4'=>'待收货的订单','t5'=>'已完成的订单','t0'=>'已取消的订单'] as $k=>$v}
+        {foreach ['ta'=>'全部订单','t1'=>'待发货的订单','t2'=>'已发货的订单','t0'=>'已取消的订单'] as $k => $v}
         {if isset($type) and 't'.$type eq $k}
         <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v} <sup class="layui-badge absolute border-radius">{$total[$k]??0}</sup></li>
         {else}
@@ -11,7 +11,7 @@
         {/if}{/foreach}
     </ul>
     <div class="layui-tab-content think-box-shadow">
-        {include file='shop_order/index_search'}
+        {include file='shop_order_send/index_search'}
         <table class="layui-table margin-top-10" lay-skin="line">
             {notempty name='list'}
             <thead>
@@ -19,10 +19,10 @@
                 <th class='list-table-check-td think-checkbox'>
                     <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
                 </th>
-                <th style="width:360px">会员信息</th>
-                <th style="width:360px">订单信息</th>
-                <th>发货信息</th>
-                <th>商品信息</th>
+                <th>会员信息</th>
+                <th>收货信息</th>
+                <th>发货状态</th>
+                <th></th>
             </tr>
             </thead>
             {/notempty}
@@ -33,68 +33,35 @@
                     <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
                 </td>
                 <td class="nowrap relative">
-                    <div>
-                        <img data-tips-image style="width:35px;height:35px" src="{$vo.fromer.headimg|default='__ROOT__/static/theme/img/headimg.png'}" class="margin-right-5" alt="img">
-                        <div class="inline-block text-middle sub-span-blue">
-                            推荐会员：{$vo.fromer.nickname|default='--'}<br>
-                            推荐手机：<span>{$vo.fromer.phone|default='--'}</span>{notempty name='vo.fromer.vip_level'} [ <b class="color-red">VIP{$vo.fromer.vip_level}</b> ] <b class="color-red">{$vo.fromer.vip_title}</b>{/notempty}<br>
-                        </div>
-                    </div>
-                    <div>
-                        <img data-tips-image style="width:35px;height:35px" src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}" class="margin-right-5" alt="img">
-                        <div class="inline-block text-middle sub-span-blue">
-                            会员昵称：{$vo.member.nickname|default='--'}<br>
-                            会员手机：<span>{$vo.member.phone|default='--'}</span>{notempty name='vo.member.vip_level'} [ <b class="color-red">VIP{$vo.member.vip_level}</b> ] <b class="color-red">{$vo.member.vip_title}</b>{/notempty}<br>
-                        </div>
-                    </div>
-                </td>
-                <td class='nowrap'>
-                    <div class="inline-block margin-right-5 think-badge-middle notselect padding-left-5">
-                        {eq name='vo.status' value='0'}<span class="layui-badge layui-bg-gray" data-tips-text="{$vo.cancel_remark}">已取消</span>{/eq}
-                        {eq name='vo.status' value='1'}<span class="layui-badge layui-bg-red">预订单</span>{/eq}
-                        {eq name='vo.status' value='2'}<span class="layui-badge layui-bg-orange">待付款</span>{/eq}
-                        {eq name='vo.status' value='3'}<span class="layui-badge layui-bg-black">待发货</span>{/eq}
-                        {eq name='vo.status' value='4'}<span class="layui-badge layui-bg-green">已发货</span>{/eq}
-                        {eq name='vo.status' value='5'}<span class="layui-badge layui-bg-blue">已完成</span>{/eq}
-                    </div>
-                    <div class="inline-block text-middle">
-                        订单单号：<span class="color-blue">{$vo.order_no|default=''}</span><br>
-                        订单金额：<b class="color-blue">{$vo.amount_total+0}</b> 元<span class="color-blue">{if $vo.amount_express>0}（含{$vo.amount_express+0}元）{else}（包邮）{/if}</span>已支付 <strong class="color-blue">{$vo.payment_amount+0}</strong> 元<br>
-                        下单时间：{$vo.create_at|format_datetime}<br>
-                        支付时间：{$vo.payment_datetime|format_datetime}{if $vo.payment_datetime}<span class="color-blue"> ({$vo.pay_type|default='-'})</span>{/if}<br>
+                    <img data-tips-image style="width:55px;height:55px" src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}" class="margin-right-5" alt="img">
+                    <div class="inline-block text-middle sub-span-blue">
+                        会员昵称：{$vo.member.nickname|default='--'}<br>
+                        会员手机：<span>{$vo.member.phone|default='--'}</span><br>
+                        订单单号：<span>{$vo.order_no|default='--'}</span><br>
                     </div>
                 </td>
                 <td class="nowrap">
-                    收货信息：{$vo.truck_name|default='--'}<span class="margin-left-5 color-blue">{$vo.truck_phone}</span><br>
-                    收货地址：{$vo.truck_province|default='--'}{$vo.truck_city}{$vo.truck_area}{$vo.truck_address}<br>
-                    发货状态：{if empty($vo.truck_send_code)}
+                    收货姓名：{$vo.address_name|default='--'}<span class="margin-left-5 color-blue">{$vo.address_phone}</span><br>
+                    收货地址：{$vo.address_province|default='--'}{$vo.address_city}{$vo.address_area}{$vo.address_content}<br>
+                    提交时间：{$vo.address_datetime|format_datetime}<br>
+                </td>
+                <td class="nowrap">
+                    {if empty($vo.send_datetime)}
                     <span class="layui-badge layui-bg-black">未发货</span>
                     {else}
-                    <span class="layui-badge layui-bg-blue">{$vo.truck_send_name|default='--'}</span>
-                    <a data-title="{$vo.truck_send_name}（{$vo.truck_send_no}）" data-tips-text="快递追踪查询"
-                       data-modal="{:url('truckQuery')}?code={$vo.truck_send_code}&number={$vo.truck_send_no}"
-                       class="layui-badge layui-bg-orange margin-left-5">{$vo.truck_send_no|default='--'}</a>
+                    <span class="layui-badge layui-bg-blue">{$vo.company_name|default='--'}</span>
+                    <a data-title="{$vo.company_name}（{$vo.send_number}）" data-tips-text="快递追踪查询"
+                       data-modal="{:url('truckQuery')}?code={$vo.send_number}&number={$vo.send_number}"
+                       class="layui-badge layui-bg-orange margin-left-5">{$vo.send_number|default='--'}</a>
+                    <div class="margin-top-5">于 {$vo.send_datetime|format_datetime} 发货！<br></div>
                     {/if}
-                    {if $vo.status eq 3}
+                </td>
+                <td class="color-desc">
+                    {if $vo.status eq 1}
                     <a class="margin-left-5" data-title="填写订单信息" data-modal="{:url('express')}?order_no={$vo.order_no}">填写发货</a>
-                    {elseif $vo.status eq 4}
+                    {elseif $vo.status eq 2}
                     <a class="margin-left-5" data-title="修改发货信息" data-modal="{:url('express')}?order_no={$vo.order_no}">修改发货</a>
                     {/if}
-                    <!--{if auth('cancel') and in_array($vo.status, [1,2])}-->
-                    <a class="margin-left-5" data-confirm="确认要取消订单吗？" data-load="{:url('cancel')}?order_no={$vo.order_no}">取消订单</a>
-                    <!--{/if}-->
-                    <br>
-                    发货时间：{$vo.truck_send_datetime|format_datetime}<br>
-                </td>
-                <td class="nowrap">
-                    {foreach $vo.items as $item}
-                    <div>
-                        <b class="color-blue">{$item.stock_sales|default=0}件</b>
-                        <b class="color-red">x</b>
-                        <b class="color-blue">{$item.price_market+0}元 </b>
-                        {$item.goods_name|default=''} <span class="color-green">( {$item.goods_spec|think_show_goods_spec})</span>
-                    </div>
-                    {/foreach}
                 </td>
             </tr>
             {/foreach}

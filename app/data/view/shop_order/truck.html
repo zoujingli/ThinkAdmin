@@ -6,16 +6,16 @@
                 <label class="layui-col-xs6 relative block">
                     <span class="color-green font-w7 label-required-prev">收货人姓名</span>
                     <span class="color-desc margin-left-5">Consignee Name</span>
-                    <input class="layui-input" required placeholder="请输入收货姓名" name="truck_name" value="{$vo.truck_name|default=''}">
+                    <input class="layui-input" required placeholder="请输入收货姓名" name="address_name" value="{$vo.address_name|default=''}">
                 </label>
                 <label class="layui-col-xs6 relative block">
                     <span class="color-green font-w7 label-required-prev">收货人手机</span>
                     <span class="color-desc margin-left-5">Consignee's mobile phone</span>
-                    <input class="layui-input" required placeholder="请输入收货人手机" name="truck_phone" value="{$vo.truck_phone|default=''}">
+                    <input class="layui-input" required placeholder="请输入收货人手机" name="address_phone" value="{$vo.address_phone|default=''}">
                 </label>
                 <div class="layui-col-xs12 relative block">
                     <span class="color-green font-w7 label-required-prev">收货所在区域</span>
-                    <span class="color-desc margin-left-5">（原区域： {$vo.truck_province|default='--'} {$vo.truck_city|default=''} {$vo.truck_area|default=''} ）</span>
+                    <span class="color-desc margin-left-5">（原区域： {$vo.address_province|default='--'} {$vo.address_city|default=''} {$vo.address_area|default=''} ）</span>
                     <div class="layui-row layui-col-space10">
                         <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="form_province"></select></label>
                         <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="form_city"></select></label>
@@ -24,8 +24,8 @@
                 </div>
                 <label class="layui-col-xs12 relative block">
                     <span class="color-green font-w7 label-required-prev">收货详细地址</span>
-                    <span class="color-desc margin-left-5">（原地址： {$vo.truck_address|default=""} )</span>
-                    <input name="truck_address" required value='{$vo.truck_address|default=""}' placeholder="请输入收货地址" class="layui-input">
+                    <span class="color-desc margin-left-5">（原地址： {$vo.address_content|default=""} )</span>
+                    <input name="address_content" required value='{$vo.address_content|default=""}' placeholder="请输入收货地址" class="layui-input">
                 </label>
             </div>
         </fieldset>
@@ -34,9 +34,9 @@
             <label class="layui-form-item relative block">
                 <span class="color-green font-w7 label-required-prev">快递配送公司</span>
                 <span class="color-desc margin-left-5">Express delivery company</span>
-                <select data-truck-code class="layui-select" name="truck_send_code" lay-search>
+                <select data-truck-code class="layui-select" name="company_code" lay-search>
                     {foreach $items as $item}
-                    {if $vo.truck_send_code eq $item.code_1}
+                    {if isset($vo.company_code) and $vo.company_code eq $item.code_1}
                     <option selected value="{$item.code_1}">{$item.name} ( {$item.code_1} )</option>
                     {else}
                     <option value="{$item.code_1}">{$item.name} ( {$item.code_1} )</option>
@@ -46,17 +46,18 @@
             <label class="layui-form-item relative block">
                 <span class="color-green font-w7 label-required-prev">快递配送单号</span>
                 <span class="color-desc margin-left-5">Express delivery number</span>
-                <input data-truck-number name="truck_send_no" required value='{$vo.truck_send_no|default=""}' placeholder="请输入快递配送单号" class="layui-input">
+                <input data-truck-number name="send_number" required value='{$vo.send_number|default=""}' placeholder="请输入快递配送单号" class="layui-input">
             </label>
             <label class="layui-form-item relative block">
                 <span class="color-green font-w7">快递配送描述</span>
                 <span class="color-desc margin-left-5">Express delivery description</span>
-                <textarea placeholder="请输入快递配送描述" class="layui-textarea" name="truck_send_remark">{$vo.truck_send_remark|default=""}</textarea>
+                <textarea placeholder="请输入快递配送描述" class="layui-textarea" name="send_remark">{$vo.send_remark|default=""}</textarea>
             </label>
         </fieldset>
     </div>
     <div class="hr-line-dashed"></div>
     {notempty name='vo.order_no'}<input type='hidden' value='{$vo.order_no}' name='order_no'>{/notempty}
+    {notempty name='vo.send_datetime'}<input type='hidden' value='{$vo.send_datetime}' name='send_datetime'>{/notempty}
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
@@ -67,7 +68,7 @@
         (function (province, city, area) {
             new PCAS("form_province", "form_city", "form_area", province, city, area);
             window.form.render();
-        })('{$vo.truck_province|default=""}', '{$vo.truck_city|default=""}', '{$vo.truck_area|default=""}');
+        })('{$vo.address_province|default=""}', '{$vo.address_city|default=""}', '{$vo.address_area|default=""}');
     });
     $('[data-express-query]').on('click', function () {
         (function (code, number) {

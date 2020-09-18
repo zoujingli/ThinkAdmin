@@ -42,16 +42,17 @@ class ShopOrder extends Controller
         $query->equal('status,payment_type,payment_status');
         $query->dateBetween('create_at,payment_datetime,cancel_datetime,truck_datetime,truck_send_datetime');
         $query->like('order_no,truck_name,truck_phone,truck_province|truck_area|truck_address#address,truck_send_no,truck_send_name');
+        // 发货信息搜索
+        $db = $this->_query('ShopOrderSend')->like('address_name#truck_address_name,address_phone#truck_address_phone,address_province|address_city|address_area|address_content#truck_address_content')->db();
+        if ($db->getOptions('where')) $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
         // 会员搜索查询
         $db = $this->_query('DataMember')->like('phone#member_phone,nickname#member_nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("mid in {$db->fieldRaw('id')->buildSql()}");
+        if ($db->getOptions('where')) $query->whereRaw("mid in {$db->field('id')->buildSql()}");
         // 推荐人搜索查询
         $db = $this->_query('DataMember')->like('phone#from_phone,nickname#from_nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("from in {$db->fieldRaw('id')->buildSql()}");
+        if ($db->getOptions('where')) $query->whereRaw("from in {$db->field('id')->buildSql()}");
         // 列表选项卡
-        if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
-            $query->where(['status' => $this->type]);
-        }
+        if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) $query->where(['status' => $this->type]);
         // 分页排序处理
         if (input('output') === 'json') {
             $result = $query->order('id desc')->page(true, false);
@@ -87,7 +88,7 @@ class ShopOrder extends Controller
             $query = $this->app->db->name('ShopTruckCompany')->where($map);
             $this->items = $query->order('sort desc,id desc')->select()->toArray();
         }
-        $this->_form($this->table, '', 'order_no');
+        $this->_form('ShopOrderSend', '', 'order_no');
     }
 
     /**
@@ -101,15 +102,20 @@ class ShopOrder extends Controller
     {
         if ($this->request->isPost()) {
             $map = ['order_no' => $vo['order_no']];
-            $order = $this->app->db->name($this->table)->where($map)->find();
+            $order = $this->app->db->name('ShopOrder')->where($map)->find();
             if (empty($order)) $this->error('订单查询异常，请稍候再试！');
             // 配送快递公司信息填写
-            $map = ['code_1|code_2|code_3' => $vo['truck_send_code']];
+            $map = ['code_1|code_2|code_3' => $vo['company_code']];
             $company = $this->app->db->name('ShopTruckCompany')->where($map)->find();
             if (empty($company)) $this->error('配送快递公司异常，请重新选择快递公司！');
-            $vo['status'] = 4;
-            $vo['truck_send_name'] = $company['name'];
-            $vo['truck_send_datetime'] = $order['truck_send_datetime'] ?: date('Y-m-d H:i:s');
+            $vo['status'] = 2;
+            $vo['company_name'] = $company['name'];
+            $vo['send_datetime'] = $vo['send_datetime'] ?? date('Y-m-d H:i:s');
+            // 更新订单发货状态
+            if ($order['status'] === 3) {
+                $map = ['order_no' => $vo['order_no']];
+                $this->app->db->name('ShopOrder')->where($map)->update(['status' => 4]);
+            }
         }
     }
 
