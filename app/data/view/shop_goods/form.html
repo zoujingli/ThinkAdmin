@@ -27,7 +27,12 @@
             </select>
         </label>
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7 label-required-prev">运费模板</span>
+            <span class="color-green font-w7">商品名称</span>
+            <span class="color-desc margin-left-5">Goods Name</span>
+            <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">
+        </label>
+        <label class="layui-form-item block relative">
+            <span class="color-green font-w7 label-required-prev">邮费模板</span>
             <span class="color-desc margin-left-5">Truck Template</span>
             <select class="layui-select" name="truck_tcode" lay-search>
                 <option value="">--- 包 邮 ---</option>
@@ -37,11 +42,6 @@
                 <option value="{$truck.code}">{$truck.code} - {$truck.name|default=''}</option>
                 {/if}{/foreach}
             </select>
-        </label>
-        <label class="layui-form-item block relative">
-            <span class="color-green font-w7">商品名称</span>
-            <span class="color-desc margin-left-5">Goods Name</span>
-            <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">
         </label>
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">商品图片及轮播展示图片</span>
