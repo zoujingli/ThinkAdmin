@@ -14,28 +14,38 @@ use think\admin\service\InterfaceService;
 class TruckService extends Service
 {
     /**
-     * 楚才开放平台接口账号
-     * 测试的账号及密钥，随时可能会变更，请联系客服获取自己的账号和密钥
-     * @var string
+     * 模拟计算快递费用
+     * @return string
      */
-    protected $appid = '6998081316132228';
-
-    /**
-     * 楚才开放平台接口密钥
-     * 测试的账号及密钥，随时可能会变更，请联系客服获取自己的账号和密钥
-     * @var string
-     */
-    protected $appkey = '193fc1d9a2aac78475bc8dbeb9a5feb1';
-
     public function amount()
     {
-
+        return '0.00';
     }
 
-    public function region($level = 3)
+    /**
+     * 配送区域树型数据
+     * @param integer $level 最大级别
+     * @param integer $status 状态筛选
+     * @return array
+     */
+    public function region($level = 3, $status = null)
     {
-        $items = $this->app->db->name('ShopTruckRegion')->where('level', '<=', $level)->column('id,pid,name,status', 'id');
-        return DataExtend::arr2tree($items, 'id', 'pid', 'subs');
+        $query = $this->app->db->name('ShopTruckRegion');
+        if (is_numeric($level)) $query->where('level', '<=', $level);
+        if (is_numeric($status)) $query->where(['status' => $status]);
+        $items = DataExtend::arr2tree($query->column('id,pid,name,status', 'id'), 'id', 'pid', 'subs');
+        // 排序子集为空的省份和城市
+        foreach ($items as $ik => $item) {
+            foreach ($item['subs'] as $ck => $city) {
+                if (isset($city['subs']) && empty($city['subs'])) {
+                    unset($items[$ik]['subs'][$ck]);
+                }
+            }
+            if (isset($item['subs']) && empty($item['subs'])) {
+                unset($items[$ik]);
+            }
+        }
+        return $items;
     }
 
     /**
@@ -47,9 +57,7 @@ class TruckService extends Service
      */
     public function query($code, $number)
     {
-        $service = InterfaceService::instance();
-        $service->setAuth($this->appid, $this->appkey);
-        return $service->doRequest('https://open.cuci.cc/user/api.auth.express/query', [
+        return $this->_getInterface()->doRequest('https://open.cuci.cc/user/api.auth.express/query', [
             'type' => 'free', 'express' => $code, 'number' => $number,
         ]);
     }
@@ -61,9 +69,19 @@ class TruckService extends Service
      */
     public function company()
     {
+        return $this->_getInterface()->doRequest('https://open.cuci.cc/user/api.auth.express/getCompany');
+    }
+
+    /**
+     * 获取楚才开放平台接口实例
+     * @return InterfaceService
+     */
+    private function _getInterface(): InterfaceService
+    {
         $service = InterfaceService::instance();
-        $service->setAuth($this->appid, $this->appkey);
-        return $service->doRequest('https://open.cuci.cc/user/api.auth.express/getCompany');
+        // 测试的账号及密钥，随时可能会变更，请联系客服获取自己的账号和密钥
+        $service->setAuth("6998081316132228", "193fc1d9a2aac78475bc8dbeb9a5feb1");
+        return $service;
     }
 
 }

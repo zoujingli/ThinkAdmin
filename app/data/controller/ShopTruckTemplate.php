@@ -39,13 +39,19 @@ class ShopTruckTemplate extends Controller
      * 配送区域管理
      * @auth true
      * @menu true
+     * @throws \think\db\exception\DbException
      */
     public function region()
     {
         if ($this->request->isGet()) {
             $this->title = '配送区域管理';
-            $this->citys = TruckService::instance()->region(3);
+            $this->citys = TruckService::instance()->region(3, null);
             $this->fetch('form_region');
+        } else {
+            $data = $this->_vali(['nos.default' => '', 'oks.default' => '']);
+            if ($data['nos']) $this->app->db->name('ShopTruckRegion')->whereIn('id', explode(',', $data['nos']))->update(['status' => 0]);
+            if ($data['oks']) $this->app->db->name('ShopTruckRegion')->whereIn('id', explode(',', $data['oks']))->update(['status' => 1]);
+            $this->success('修改配送区域成功！');
         }
     }
 
@@ -85,7 +91,7 @@ class ShopTruckTemplate extends Controller
             $data['code'] = CodeExtend::uniqidDate(12, 'T');
         }
         if ($this->request->isGet()) {
-            $this->citys = TruckService::instance()->region(2);
+            $this->citys = TruckService::instance()->region(2, 1);
         }
     }
 
