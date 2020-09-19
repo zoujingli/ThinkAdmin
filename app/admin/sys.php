@@ -39,18 +39,18 @@ app()->db->listen(function ($sqlstr) {
         if (preg_match('/^INSERT\s+INTO\s+`(.*?)`\s+SET\s+(.*?)\s*$/i', $sqlstr, $matches)) {
             if (stripos($matches[1] = Str::studly($matches[1]), 'SystemOplog') === false) {
                 $matches[2] = substr(str_replace(['`', '\''], '', $matches[2]), 0, 200);
-                $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("添加数据 {$matches[1]}", "添加数据：{$matches[2]}");
+                $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("添加 {$matches[1]} 数据", "添加数据：{$matches[2]}");
             }
         } elseif (preg_match('/^UPDATE\s+`(.*?)`\s+SET\s+(.*?)\s+WHERE\s+(.*?)\s*$/i', $sqlstr, $matches)) {
             if (stripos($matches[1] = Str::studly($matches[1]), 'SystemOplog') === false) {
                 $matches[3] = substr(str_replace(['`', '\''], '', $matches[3]), 0, 200);
                 $matches[2] = substr(str_replace(['`', '\''], '', $matches[2]), 0, 200);
-                $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("更新数据 {$matches[1]}（ {$matches[3]} ）", "更新内容 {$matches[2]}");
+                $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("更新 {$matches[1]} 数据 {$matches[3]}", "更新内容 {$matches[2]}");
             }
         } elseif (preg_match('/^DELETE\s*FROM\s*`(.*?)`\s*WHERE\s*(.*?)\s*$/i', $sqlstr, $matches)) {
             if (stripos($matches[1] = Str::studly($matches[1]), 'SystemOplog') === false) {
                 $matches[2] = str_replace(['`', '\''], '', $matches[2]);
-                $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("删除数据 {$matches[1]}", "删除条件 {$matches[2]}");
+                $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("删除 {$matches[1]} 数据", "删除条件 {$matches[2]}");
             }
         }
     }
