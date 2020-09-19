@@ -56,6 +56,10 @@ fieldset {
   &-disabled {
     border: 1px solid #DDD;
   }
+
+  & + .layui-btn {
+    margin-left: 8px;
+  }
 }
 
 .layui-btn-group {
@@ -73,8 +77,11 @@ fieldset {
 }
 
 .layui-badge {
-  line-height: 19px;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.15);
+
+  & + .layui-badge {
+    margin-left: 5px;
+  }
 
   &-middle {
     width: 1em;
