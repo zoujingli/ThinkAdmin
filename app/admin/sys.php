@@ -27,7 +27,8 @@ app()->event->listen('HttpEnd', function () {
             app()->db->name('SystemOplog')->insertAll($items);
         }
         $GLOBALS['oplogs'] = [];
-        app()->db->name('SystemOplog')->where('create_at', '<', strtotime('-7days'))->delete();
+        $lastdate = date('Y-m-d H:i:s', strtotime('-7days'));
+        app()->db->name('SystemOplog')->where('create_at', '<', $lastdate)->delete();
     }
 });
 
