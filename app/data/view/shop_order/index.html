@@ -10,7 +10,7 @@
         <li data-open="{:url('index')}?type={$k}">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {/if}{/foreach}
     </ul>
-    <div class="layui-tab-content think-box-shadow table-block">
+    <div class="layui-tab-content table-block">
         {include file='shop_order/index_search'}
         <table class="layui-table margin-top-10" lay-skin="line">
             {notempty name='list'}

@@ -30,8 +30,8 @@ class TruckService extends Service
         $map = [['status', '=', 1], ['deleted', '=', 0], ['code', 'in', $codes]];
         $template = $this->app->db->name('ShopTruckTemplate')->where($map)->order('sort desc,id desc')->find();
         if (empty($template)) return [0, $truckCount, '', '邮费模板编码无效！'];
-        $rule = json_decode($template['normal'], true) ?: [];
-        foreach (json_decode($template['content'], true) ?: [] as $item) {
+        $rule = json_decode($template['normal'] ?: '[]', true) ?: [];
+        foreach (json_decode($template['content'] ?: '[]', true) ?: [] as $item) {
             if (isset($item['city']) && is_array($item['city'])) foreach ($item['city'] as $city) {
                 if ($city['name'] === $provName && in_array($cityName, $city['subs'])) {
                     $rule = $item['rule'];

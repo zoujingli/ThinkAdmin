@@ -1,7 +1,9 @@
-<form onsubmit="return false" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card noshadow' autocomplete="off">
 
-    <div class="layui-card-header padding-left-40 color-desc sub-span-blue">
-        使用微信开放平台授权模式时，需要使用楚才开放平台的 <span>微信授权</span> 服务，接口需要使用 <span>Yar</span> 或 <span>JsonRpc</span> 模块通信。
+    <div class="layui-card-header">
+        <div class="layui-bg-gray padding-col-20 border-radius-5">
+            使用微信开放平台授权模式时，需要使用楚才开放平台的 <span>微信授权</span> 服务，接口需要使用 <span>Yar</span> 或 <span>JsonRpc</span> 通信。
+        </div>
     </div>
 
     <div class="layui-card-body">
@@ -51,13 +53,13 @@
             <div class="layui-input-block">
                 <div class="relative margin-top-5">
                     <input value="{$thrNotify}" disabled class="layui-input layui-bg-gray">
-                    <a data-copy="{$thrNotify}" class="fa fa-copy input-right-icon"></a>
+                    <a data-copy="{$thrNotify}" class="input-right-icon"><i class="fa fa-copy"></i></a>
                 </div>
                 <p class="help-block">公众号绑定服务平台接口通知 URL, 公众号消息接收与回复等。</p>
             </div>
         </div>
 
-        <div class="hr-line-dashed"></div>
+        <div class="hr-line-dashed margin-top-30"></div>
         <input type="hidden" name="wechat.type" value="thr">
 
         <div class="layui-form-item text-center">

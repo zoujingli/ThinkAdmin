@@ -1,9 +1,10 @@
 fieldset {
-  margin: 0;
-  border: 1px solid #e6e6e6;
+  margin: 0 0 10px 0;
+  border: 1px solid #DDD;
   padding: 10px 20px 5px 20px;
-  border-radius: 5px;
   background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
 
   legend {
     color: #333;
@@ -12,52 +13,77 @@ fieldset {
   }
 }
 
+.layui-table {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+  border-color: #DDD;
+}
+
 .layui-tab, .layui-card {
   overflow: hidden;
   border-radius: 5px;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
+
+  .layui-card-header {
+    padding: 0 20px;
+  }
 
   .layui-card-body {
-    padding: 15px
+    padding: 20px;
   }
+
+  .layui-tab-content {
+    padding: 20px;
+    background: #fff;
+  }
+
 }
 
 .layui-btn {
   border: 1px solid #009688;
+
+  &-warm {
+    border: 1px solid #FFB800;
+  }
+
+  &-danger {
+    border: 1px solid #FF5722;
+  }
+
+  &-normal {
+    border: 1px solid #1E9FFF;
+  }
+
+  &-disabled {
+    border: 1px solid #DDD;
+  }
 }
 
-.layui-btn-warm {
-  border: 1px solid #FFB800;
-}
+.layui-btn-group {
+  .layui-btn:last-child {
+    border-radius: 0 5px 5px 0;
+  }
 
-.layui-btn-danger {
-  border: 1px solid #FF5722;
-}
+  .layui-btn:first-child {
+    border-radius: 5px 0 0 5px;
+  }
 
-.layui-btn-normal {
-  border: 1px solid #1E9FFF;
-}
-
-.layui-btn-disabled {
-  border: 1px solid #e6e6e6;
-}
-
-.layui-btn-group .layui-btn-primary:hover {
-  border-color: #009688;
+  .layui-btn-primary:hover {
+    border-color: #009688;
+  }
 }
 
 .layui-badge {
-  border: none;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
-}
+  line-height: 19px;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.15);
 
-.layui-badge-middle {
-  width: 1em;
-  height: auto;
-  padding: 5px;
-  margin-right: 5px;
-  white-space: normal;
-  vertical-align: middle;
+  &-middle {
+    width: 1em;
+    height: auto;
+    padding: 5px;
+    margin-right: 5px;
+    white-space: normal;
+    vertical-align: middle;
+  }
 }
 
 /*! 搜索表单样式 */
@@ -97,12 +123,6 @@ fieldset {
   }
 }
 
-.layui-form {
-  &.layui-card {
-    box-shadow: none
-  }
-}
-
 /* 表单验证异常提示 */
 .label-required {
   &-prev:before {
@@ -134,24 +154,6 @@ fieldset {
 }
 
 /** 自定义表单样式 */
-.think-form-label {
-  padding: 9px 15px;
-  font-weight: 400;
-  line-height: 20px;
-  text-align: right
-}
-
-.think-form-group-right {
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.think-form-group-left input {
-  border-right: none;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
 
 .think-box-shadow {
   padding: 20px !important;
@@ -194,9 +196,9 @@ label.think-checkbox, label.think-radio {
     display: block;
     content: "\e605";
     font-size: 12px;
+    position: absolute;
     font-style: normal;
     font-weight: 700;
-    position: absolute;
     font-family: layui-icon !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale
@@ -295,7 +297,7 @@ label.think-checkbox, label.think-radio {
       width: 50px;
       color: #666;
       padding: 2px;
-      border: 1px solid #e6e6e6;
+      border: 1px solid #DDD;
       text-align: center;
       font-size: 9pt;
       line-height: 18px

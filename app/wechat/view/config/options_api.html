@@ -1,7 +1,9 @@
-<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card noshadow' autocomplete="off">
 
-    <div class="layui-card-header padding-left-40 color-desc">
-        使用微信公众平台直接模式时，需要在微信公众号平台配置授权IP及网页授权域名，另外再将获取到的参数填写到下面。
+    <div class="layui-card-header">
+        <div class="layui-bg-gray padding-col-20 border-radius-5">
+            使用微信公众平台直接模式时，需要在微信公众号平台配置授权IP及网页授权域名，将公众号平台获取到的参数填写到下面。
+        </div>
     </div>
 
     <div class="layui-card-body">
@@ -31,7 +33,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><b>EnAesKey</b><br><span class="nowrap color-desc">消息加密密钥</span></label>
+            <label class="layui-form-label"><b>AesKey</b><br><span class="nowrap color-desc">消息加密密钥</span></label>
             <div class="layui-input-block">
                 <input name="wechat.encodingaeskey" placeholder="请输入43位消息公众号加密密钥（可选）" value="{:sysconf('wechat.encodingaeskey')}" maxlength="43" pattern="^.{43}$" class="layui-input">
                 <p class="help-block">若开启了消息加密时必需填写，消息加密密钥必需填写并保持与公众号平台一致。</p>
@@ -39,21 +41,21 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><b>PushApiUrl</b><br><span class="nowrap color-desc">消息推送接收</span></label>
+            <label class="layui-form-label"><b>PushApi</b><br><span class="nowrap color-desc">消息推送接收</span></label>
             <div class="layui-input-block">
                 <div class="relative">
                     <input value="服务器授权IP：{$geoip}" disabled class="layui-input layui-bg-gray border-0">
-                    <a data-copy="{$geoip}" class="absolute layui-btn layui-bg-gray" style="top:0;right:0;background:none!important"><i class="fa fa-copy"></i></a>
+                    <a data-copy="{$geoip}" class="input-right-icon"><i class="fa fa-copy"></i></a>
                 </div>
                 <div class="relative margin-top-5">
                     <input value="消息推送地址：{$thrNotify}" disabled class="layui-input layui-bg-gray border-0">
-                    <a data-copy="{$thrNotify}" class="absolute layui-btn layui-bg-gray" style="top:0;right:0;background:none!important"><i class="fa fa-copy"></i></a>
+                    <a data-copy="{$thrNotify}" class="input-right-icon"><i class="fa fa-copy"></i></a>
                 </div>
                 <p class="help-block">公众号服务平台消息推送接口及服务器授权IP地址，需在公众号接口开发处配置。</p>
             </div>
         </div>
 
-        <div class="hr-line-dashed"></div>
+        <div class="hr-line-dashed margin-top-30"></div>
         <input type="hidden" name="wechat.type" value="api">
 
         <div class="layui-form-item text-center">

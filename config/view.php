@@ -23,7 +23,7 @@ return [
     // 模板后缀
     'view_suffix'        => 'html',
     // 去除HTML空格换行
-    'strip_space'        => false,
+    'strip_space'        => true,
     // 模板文件名分隔符
     'view_depr'          => DIRECTORY_SEPARATOR,
     // 模板缓存配置
