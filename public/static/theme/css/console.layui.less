@@ -2,11 +2,23 @@ fieldset {
   margin: 0;
   border: 1px solid #e6e6e6;
   padding: 10px 20px 5px 20px;
+  border-radius: 5px;
+  background: #fff;
 
   legend {
-    color: #666;
+    color: #333;
     padding: 0 10px;
-    font-size: 14px
+    font-size: 14px;
+  }
+}
+
+.layui-tab, .layui-card {
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
+
+  .layui-card-body {
+    padding: 15px
   }
 }
 
@@ -32,6 +44,20 @@ fieldset {
 
 .layui-btn-group .layui-btn-primary:hover {
   border-color: #009688;
+}
+
+.layui-badge {
+  border: none;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.layui-badge-middle {
+  width: 1em;
+  height: auto;
+  padding: 5px;
+  margin-right: 5px;
+  white-space: normal;
+  vertical-align: middle;
 }
 
 /*! 搜索表单样式 */
@@ -130,7 +156,8 @@ fieldset {
 .think-box-shadow {
   padding: 20px !important;
   background: #fff !important;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
+  border-radius: 5px;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
 }
 
 /** checkbox & radio */

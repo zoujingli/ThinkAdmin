@@ -5,9 +5,9 @@
     <ul class="layui-tab-title notselect">
         {foreach ['ta'=>'全部订单','t1'=>'待发货的订单','t2'=>'已发货的订单','t0'=>'已取消的订单'] as $k => $v}
         {if isset($type) and 't'.$type eq $k}
-        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v} <sup class="layui-badge absolute border-radius">{$total[$k]??0}</sup></li>
+        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {else}
-        <li data-open="{:url('index')}?type={$k}">{$v} <sup class="layui-badge absolute border-radius">{$total[$k]??0}</sup></li>
+        <li data-open="{:url('index')}?type={$k}">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {/if}{/foreach}
     </ul>
     <div class="layui-tab-content think-box-shadow table-block">
