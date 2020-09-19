@@ -20,16 +20,17 @@ use think\helper\Str;
 /*! 全局操作日志数据 */
 $GLOBALS['oplogs'] = [];
 
-/*! 操作日志批量写入日志 */
+/*! 操作日志批量写入 */
 app()->event->listen('HttpEnd', function () {
     if (is_array($GLOBALS['oplogs']) && count($GLOBALS['oplogs']) > 0) {
         foreach (array_chunk($GLOBALS['oplogs'], 100) as $items) {
             app()->db->name('SystemOplog')->insertAll($items);
         }
+        app()->db->name('SystemOplog')->where('create_at', '<', strtotime('-7days'))->delete();
     }
 });
 
-/*! SQL 监听分析记录日志 */
+/*! 数据操作监听分析 */
 app()->db->listen(function ($sqlstr) {
     [$type,] = explode(' ', $sqlstr);
     if (in_array($type, ['INSERT', 'UPDATE', 'DELETE']) && AdminService::instance()->isLogin()) {
