@@ -26,6 +26,7 @@ app()->event->listen('HttpEnd', function () {
         foreach (array_chunk($GLOBALS['oplogs'], 100) as $items) {
             app()->db->name('SystemOplog')->insertAll($items);
         }
+        $GLOBALS['oplogs'] = [];
         app()->db->name('SystemOplog')->where('create_at', '<', strtotime('-7days'))->delete();
     }
 });
