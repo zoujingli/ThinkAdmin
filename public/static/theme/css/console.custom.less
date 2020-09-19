@@ -816,11 +816,6 @@
   }
 }
 
-
-.think-switch-button .layui-form-switch {
-  margin-top: 0
-}
-
 .input-right-icon {
   top: 0;
   right: 0;
@@ -1016,10 +1011,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    position: absolute;
     border: 1px solid #ccc;
-    border-radius: 0 0 5px 5px;
+    position: absolute;
     background: #f5f5f5;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
 
     iframe {
       width: 100%;
@@ -1035,8 +1031,9 @@
     position: absolute;
     padding-left: 43px;
     border: 1px solid #ccc;
-    list-style-type: none;
     background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
+    list-style-type: none;
+    border-radius: 0 0 5px 5px;
 
     li {
       float: left;
@@ -1047,17 +1044,17 @@
 
       a {
         width: auto;
+        color: #616161;
+        border: 1px solid hsla(0, 0%, 100%, 0);
         display: block;
         overflow: hidden;
-        border: 1px solid hsla(0, 0%, 100%, 0);
-        border-left: 1px solid #e7e7eb;
-        margin-top: -1px;
-        margin-bottom: -1px;
-        color: #616161;
-        white-space: nowrap;
-        text-decoration: none;
-        text-overflow: ellipsis;
         word-wrap: normal;
+        margin-top: -1px;
+        border-left: 1px solid #e7e7eb;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-bottom: -1px;
+        text-decoration: none;
 
         &:hover {
           background: rgba(0, 0, 0, .02)
@@ -1128,10 +1125,10 @@
 
       ul, ul li {
         float: none;
+        width: 100%;
         padding: 0;
         z-index: 11;
         display: block;
-        width: 100%
       }
 
       ul li {
@@ -1161,10 +1158,10 @@
       width: 0;
       height: 0;
       z-index: 10;
-      display: inline-block;
       border: 6px dashed transparent;
+      display: inline-block;
+      border-top-style: solid;
       border-bottom-width: 0;
-      border-top-style: solid
     }
 
     .arrow_in {

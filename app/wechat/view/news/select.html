@@ -2,19 +2,103 @@
 
 {block name='style'}
 <style>
-    body{min-width:500px}
-    .news-container{position:relative}
-    .news-container .news-item{top:0;left:0;width:232px;margin:10px;padding:5px;cursor:pointer;position:relative;border:1px solid #ccc;box-sizing:content-box}
-    .news-container .news-item.active,.news-container .news-item:hover{border-color:#09c;box-shadow:1px 0 10px #09c}
-    .news-container .news-item .news-articel-item{width:100%;height:150px;overflow:hidden;position:relative;background-size:100%;background-position:center center}
-    .news-container .news-item .news-articel-item p{bottom:0;width:100%;color:#fff;padding:5px;max-height:5em;font-size:12px;overflow:hidden;position:absolute;text-overflow:ellipsis;background:rgba(0,0,0,.7)}
-    .news-container .news-item .news-articel-item.other{height:50px;padding:5px 0}
-    .news-container .news-item .news-articel-item .left-image{width:50px;height:50px;float:left;overflow:hidden;position:relative;background-size:100%;background-position:center center}
-    .news-container .news-item .news-articel-item .right-text{float:left;width:172px;overflow:hidden;padding-right:10px;text-overflow:ellipsis}
-    .news-container .news-item .hr-line-dashed:last-child{display:none}
-    .news-container .hr-line-dashed{margin:6px 0 1px 0}
-    .page-style{bottom:0;width:100%;height:50px;padding:0 10px;position:fixed;background:#fff}
-    .page-style .pagination,.page-style .pagination-trigger{margin:10px 0!important;padding:0 10px!important}
+    body {
+        min-width: 500px
+    }
+
+    .news-container {
+        position: relative
+    }
+
+    .news-container .news-item {
+        top: 0;
+        left: 0;
+        width: 228px;
+        margin: 20px 0 20px 20px;
+        padding: 5px;
+        cursor: pointer;
+        position: relative;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: content-box
+    }
+
+    .news-container .news-item.active,
+    .news-container .news-item:hover {
+        border-color: #09c;
+        box-shadow: 1px 0 10px #09c
+    }
+
+    .news-container .news-item .news-articel-item {
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+        position: relative;
+        background-size: 100%;
+        background-position: center center
+    }
+
+    .news-container .news-item .news-articel-item p {
+        bottom: 0;
+        color: #fff;
+        width: 100%;
+        padding: 5px;
+        overflow: hidden;
+        font-size: 12px;
+        max-height: 5em;
+        position: absolute;
+        text-overflow: ellipsis;
+        background: rgba(0, 0, 0, .7)
+    }
+
+    .news-container .news-item .news-articel-item.other {
+        height: 50px;
+        padding: 5px 0
+    }
+
+    .news-container .news-item .news-articel-item .left-image {
+        width: 50px;
+        height: 50px;
+        float: left;
+        overflow: hidden;
+        position: relative;
+        background-size: 100%;
+        background-position: center center
+    }
+
+    .news-container .news-item .news-articel-item .right-text {
+        float: left;
+        width: 165px;
+        overflow: hidden;
+        padding-right: 10px;
+        text-overflow: ellipsis
+    }
+
+    .news-container .news-item .hr-line-dashed:last-child {
+        display: none
+    }
+
+    .news-container .hr-line-dashed {
+        margin: 6px 0 1px 0
+    }
+
+    .page-style {
+        bottom: 0;
+        width: 100%;
+        height: 50px;
+        padding: 0 10px;
+        position: fixed;
+        background: #fff
+    }
+
+    .pagination-container {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: fixed;
+        background: #fff;
+        text-indent: 20px;
+    }
 </style>
 {/block}
 
@@ -40,8 +124,8 @@
     {/foreach}
     {if empty($list)}<p class="notdata">没有记录哦！</p>{/if}
 </div>
-<div class="margin-bottom-20 margin-top-20"></div>
-<div class="page-style">{if isset($pagehtml)}{$pagehtml|raw}{/if}</div>
+<div class="padding-10"></div>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 {/block}
 
 {block name="script"}
@@ -67,8 +151,7 @@
         // 分页事件处理
         $('body').off('change', '.pagination-trigger select').on('change', '.pagination-trigger select', function () {
             var urls = this.options[this.selectedIndex].getAttribute('data-url').split('#');
-            urls.shift();
-            window.location.href = urls.join('#');
+            urls.shift(), window.location.href = urls.join('#');
         }).off('click', '[data-open]').on('click', '[data-open]', function () {
             window.location.href = this.getAttribute('data-open');
         });
