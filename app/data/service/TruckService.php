@@ -79,7 +79,7 @@ class TruckService extends Service
      */
     public function query($code, $number)
     {
-        return $this->_getInterface()->doRequest('https://open.cuci.cc/user/api.auth.express/query', [
+        return $this->_getInterface()->doRequest('api.auth.express/query', [
             'type' => 'free', 'express' => $code, 'number' => $number,
         ]);
     }
@@ -91,7 +91,7 @@ class TruckService extends Service
      */
     public function company()
     {
-        return $this->_getInterface()->doRequest('https://open.cuci.cc/user/api.auth.express/getCompany');
+        return $this->_getInterface()->doRequest('api.auth.express/getCompany');
     }
 
     /**
@@ -101,7 +101,8 @@ class TruckService extends Service
     private function _getInterface(): InterfaceService
     {
         $service = InterfaceService::instance();
-        // 测试的账号及密钥，随时可能会变更，请联系客服获取自己的账号和密钥
+        // 测试的账号及密钥随时可能会变更，请联系客服更新
+        $service->getway('https://open.cuci.cc/user/');
         $service->setAuth("6998081316132228", "193fc1d9a2aac78475bc8dbeb9a5feb1");
         return $service;
     }

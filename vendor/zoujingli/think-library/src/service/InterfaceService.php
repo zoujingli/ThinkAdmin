@@ -117,6 +117,17 @@ class InterfaceService extends Service
     }
 
     /**
+     * 设置接口网关地址
+     * @param string $getway
+     * @return $this
+     */
+    public function getway(string $getway)
+    {
+        $this->baseurl = $getway;
+        return $this;
+    }
+
+    /**
      * 获取请求数据
      * @param boolean $check 验证数据
      * @return mixed

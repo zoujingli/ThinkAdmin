@@ -14,7 +14,20 @@
 // +----------------------------------------------------------------------
 
 use think\admin\service\AdminService;
+use think\admin\service\SystemService;
 use think\helper\Str;
+
+/*! 全局操作日志数据 */
+$GLOBALS['oplogs'] = [];
+
+/*! 操作日志批量写入日志 */
+app()->event->listen('HttpEnd', function () {
+    if (is_array($GLOBALS['oplogs']) && count($GLOBALS['oplogs']) > 0) {
+        foreach (array_chunk($GLOBALS['oplogs'], 100) as $items) {
+            app()->db->name('SystemOplog')->insertAll($items);
+        }
+    }
+});
 
 /*! SQL 监听分析记录日志 */
 app()->db->listen(function ($sqlstr) {
@@ -24,18 +37,18 @@ app()->db->listen(function ($sqlstr) {
         if (preg_match('/^INSERT\s+INTO\s+`(.*?)`\s+SET\s+(.*?)\s*$/i', $sqlstr, $matches)) {
             if (stripos($matches[1] = Str::studly($matches[1]), 'SystemOplog') === false) {
                 $matches[2] = substr(str_replace(['`', '\''], '', $matches[2]), 0, 200);
-                return sysoplog("添加数据 {$matches[1]}", "添加数据：{$matches[2]}");
+                $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("添加数据 {$matches[1]}", "添加数据：{$matches[2]}");
             }
         } elseif (preg_match('/^UPDATE\s+`(.*?)`\s+SET\s+(.*?)\s+WHERE\s+(.*?)\s*$/i', $sqlstr, $matches)) {
             if (stripos($matches[1] = Str::studly($matches[1]), 'SystemOplog') === false) {
                 $matches[3] = substr(str_replace(['`', '\''], '', $matches[3]), 0, 200);
                 $matches[2] = substr(str_replace(['`', '\''], '', $matches[2]), 0, 200);
-                return sysoplog("更新数据 {$matches[1]}（ {$matches[3]} ）", "更新内容：{$matches[2]}");
+                $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("更新数据 {$matches[1]}（ {$matches[3]} ）", "更新内容 {$matches[2]}");
             }
         } elseif (preg_match('/^DELETE\s*FROM\s*`(.*?)`\s*WHERE\s*(.*?)\s*$/i', $sqlstr, $matches)) {
             if (stripos($matches[1] = Str::studly($matches[1]), 'SystemOplog') === false) {
                 $matches[2] = str_replace(['`', '\''], '', $matches[2]);
-                return sysoplog("删除数据 {$matches[1]}", "删除条件：{$matches[2]}");
+                $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("删除数据 {$matches[1]}", "删除条件 {$matches[2]}");
             }
         }
     }

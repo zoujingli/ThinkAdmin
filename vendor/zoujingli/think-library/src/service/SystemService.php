@@ -176,19 +176,30 @@ class SystemService extends Service
     }
 
     /**
-     * 写入系统日志
+     * 写入系统日志内容
      * @param string $action
      * @param string $content
      * @return integer
      */
     public function setOplog($action, $content)
     {
-        return $this->app->db->name('SystemOplog')->insert([
+        return $this->app->db->name('SystemOplog')->insert($this->getOplog($action, $content));
+    }
+
+    /**
+     * 获取系统日志内容
+     * @param string $action
+     * @param string $content
+     * @return array
+     */
+    public function getOplog($action, $content)
+    {
+        return [
             'node'     => NodeService::instance()->getCurrent(),
             'action'   => $action, 'content' => $content,
             'geoip'    => $this->app->request->ip() ?: '127.0.0.1',
             'username' => AdminService::instance()->getUserName() ?: '-',
-        ]);
+        ];
     }
 
     /**
