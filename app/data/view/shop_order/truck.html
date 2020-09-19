@@ -1,4 +1,4 @@
-<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form class="layui-form layui-card margin-bottom-0" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
     <div class="layui-card-body padding-left-40">
         <fieldset>
             <legend><span class="layui-badge layui-bg-cyan">收货信息</span></legend>
@@ -62,17 +62,17 @@
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>
+    <script>
+        require(['pcasunzips'], function () {
+            (function (province, city, area) {
+                new PCAS("form_province", "form_city", "form_area", province, city, area);
+                window.form.render();
+            })('{$vo.address_province|default=""}', '{$vo.address_city|default=""}', '{$vo.address_area|default=""}');
+        });
+        $('[data-express-query]').on('click', function () {
+            (function (code, number) {
+                $.form.modal('{:url("truckQuery")}', {code: code, number: number}, '快递追踪查询')
+            })($('[data-truck-code]').val(), $('[data-truck-number]').val());
+        });
+    </script>
 </form>
-<script>
-    require(['pcasunzips'], function () {
-        (function (province, city, area) {
-            new PCAS("form_province", "form_city", "form_area", province, city, area);
-            window.form.render();
-        })('{$vo.address_province|default=""}', '{$vo.address_city|default=""}', '{$vo.address_area|default=""}');
-    });
-    $('[data-express-query]').on('click', function () {
-        (function (code, number) {
-            $.form.modal('{:url("truckQuery")}', {code: code, number: number}, '快递追踪查询')
-        })($('[data-truck-code]').val(), $('[data-truck-number]').val());
-    });
-</script>
