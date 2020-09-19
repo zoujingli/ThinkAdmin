@@ -27,8 +27,10 @@ app()->event->listen('HttpEnd', function () {
             app()->db->name('SystemOplog')->insertAll($items);
         }
         $GLOBALS['oplogs'] = [];
-        $lastdate = date('Y-m-d H:i:s', strtotime('-7days'));
-        app()->db->name('SystemOplog')->where('create_at', '<', $lastdate)->delete();
+        if (rand(1, 100) <= 10) {
+            $lastdate = date('Y-m-d H:i:s', strtotime('-7days'));
+            app()->db->name('SystemOplog')->where('create_at', '<', $lastdate)->delete();
+        }
     }
 });
 
