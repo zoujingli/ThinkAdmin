@@ -149,6 +149,7 @@
             <span class="label-required-prev font-w7 color-green">商品富文本详情</span>
             <textarea name="content">{$vo.content|default=''|raw}</textarea>
         </div>
+        <div class="hr-line-dashed"></div>
         <div class="layui-form-item text-center">
             {notempty name='vo.code'}<input type="hidden" name="code" value="{$vo.code}">{/notempty}
             <button class="layui-btn layui-btn-danger" ng-click="pageBack()" type="button">取消编辑</button>
@@ -185,7 +186,7 @@
             $rootScope.items = angular.fromJson(angular.element('#GoodsItems').val() || '[]') || {};
             $rootScope.cache = angular.fromJson(angular.element('#GoodsItems').val() || '[]') || {};
             $rootScope.specs = angular.fromJson(angular.element('#GoodsSpecs').val() || '[{"name":"默认分组","list":[{"name":"默认规格","check":true}]}]');
-            // 批量设置数值
+            /*! 批量设置数值 */
             $rootScope.batchSet = function (name, fixed) {
                 layer.prompt({title: '请输入数值', formType: 0}, function (value, index) {
                     layer.close(index), $rootScope.$apply(function () {
@@ -219,11 +220,11 @@
                 }
                 return cache[name];
             };
-            // 去除空白字符
+            /*! 去除空白字符 */
             $rootScope.trimSpace = function (value) {
                 return (value + '').replace(/\s*/ig, '');
             };
-            // 当前商品规格发生变化时重新计算规格列表
+            /*! 当前商品规格发生变化时重新计算规格列表 */
             $rootScope.$watch('specs', function () {
                 var data = [], navs = [], table = [[]];
                 $rootScope.specs.forEach(function (spec) {
@@ -237,7 +238,7 @@
                     data.push(temp), navs.push(spec.name);
                 });
                 $rootScope.navas = navs;
-                // 表格交叉
+                /*! 表格交叉 */
                 data.forEach(function (rows) {
                     var temp = [];
                     table.forEach(function (line) {
@@ -247,7 +248,7 @@
                     });
                     table = temp;
                 });
-                // 表格数据
+                /*! 表格数据  */
                 data = angular.fromJson(angular.toJson(table));
                 data.forEach(function (rows) {
                     var keys = [];
@@ -266,16 +267,16 @@
                 });
                 $rootScope.items = data;
             }, true);
-            // 判断规则是否能取消选择
+            /*! 判断规则是否能取消选择 */
             $rootScope.checkListChecked = function (data, check) {
                 for (var i in data) if (data[i].check) return check;
                 return true;
             };
-            // 增加整行规格分组
+            /*! 增加整行规格分组 */
             $rootScope.addSpecRow = function (data) {
                 data.push({name: '规格分组' + data.length, list: [{name: '规格属性', check: true}]})
             };
-            // 下移整行规格分组
+            /*! 下移整行规格分组 */
             $rootScope.dnSpecRow = function (data, $index) {
                 var temp = [], self = data[$index];
                 if ($index > data.length - 2) return false;
@@ -285,7 +286,7 @@
                 });
                 return $rootScope.specs = temp;
             };
-            // 上移整行规格分组
+            /*! 上移整行规格分组 */
             $rootScope.upSpecRow = function (data, $index) {
                 var temp = [], self = data[$index];
                 if ($index < 1) return false;
@@ -295,7 +296,7 @@
                 });
                 return $rootScope.specs = temp;
             };
-            // 移除整行规格分组
+            /*! 移除整行规格分组 */
             $rootScope.delSpecRow = function (data, $index) {
                 var temp = [];
                 data.forEach(function (item, index) {
@@ -303,11 +304,11 @@
                 });
                 return $rootScope.specs = temp;
             };
-            // 增加分组的属性
+            /*! 增加分组的属性 */
             $rootScope.addSpecVal = function (data) {
                 data.push({name: '规格属性' + data.length, check: true});
             };
-            // 移除分组的属性
+            /*! 移除分组的属性 */
             $rootScope.delSpecVal = function (data, $index) {
                 var temp = [];
                 data.forEach(function (item, index) {
