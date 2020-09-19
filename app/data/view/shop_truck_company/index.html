@@ -19,7 +19,7 @@
 {/block}
 
 {block name="content"}
-<div class="layui-tab layui-tab-card think-bg-white">
+<div class="layui-tab layui-tab-card think-bg-white table-block">
     <ul class="layui-tab-title">
         {foreach ['index'=>'快递公司','recycle'=>'回 收 站'] as $k=>$v}
         {if $type eq $k}
@@ -28,7 +28,7 @@
         <li data-open="{:url('index')}?type={$k}">{$v}</li>
         {/if}{/foreach}
     </ul>
-    <div class="layui-tab-content think-box-shadow">
+    <div class="layui-tab-content think-box-shadow table-block">
         {include file='shop_truck_company/index_search'}
         <table class="layui-table" lay-skin="line">
             {notempty name='list'}
