@@ -17,7 +17,7 @@
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='text-left nowrap'>操作权限</th>
             <th class='text-left nowrap'>操作行为</th>
@@ -30,11 +30,11 @@
         {foreach $list as $key=>$vo}
         <tr data-dbclick>
             <td class='list-table-check-td think-checkbox'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td class="text-left nowrap">
-                <span class="font-w7">{$vo.username|default='-'}</span><br>
-                <span class="color-desc">{$vo.node|default='-'}</span>
+                操作账号：<span class="font-w7">{$vo.username|default='-'}</span><br>
+                操作节点：<span class="color-desc">{$vo.node|default='-'}</span>
             </td>
             <td class='text-left nowrap'>
                 <p class="color-text layui-elip" style="max-width:400px">{$vo.action|default='-'}</p>
