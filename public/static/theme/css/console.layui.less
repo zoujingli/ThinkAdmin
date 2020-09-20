@@ -34,7 +34,6 @@ fieldset {
     padding: 20px;
     background: #fff;
   }
-
 }
 
 .layui-btn {
@@ -213,7 +212,7 @@ label.think-radio, label.think-checkbox {
       width: 8px;
       height: 8px;
       content: '';
-      background: #666;
+      background: #009688;
       border-radius: 1em
     }
   }
@@ -222,7 +221,7 @@ label.think-radio, label.think-checkbox {
     border-radius: 1px;
 
     &:checked:after {
-      color: #666;
+      color: #009688;
       padding: 2px;
       content: "\e605";
       font-size: 12px;
@@ -235,13 +234,23 @@ label.think-radio, label.think-checkbox {
   }
 }
 
-.layui-layer-content .layui-form.layui-card .layui-card-body {
-  padding: 30px 40px 0 0
+.layui-layer-content {
+  .layui-form.layui-card {
+    margin: 0;
+
+    .layui-card-body {
+      padding: 30px 40px 0 0
+    }
+  }
 }
 
-.layui-layer-dialog .layui-layer-content .layui-layer-ico {
-  top: 50% !important;
-  margin-top: -15px !important
+.layui-layer-dialog {
+  .layui-layer-content {
+    .layui-layer-ico {
+      top: 50% !important;
+      margin-top: -15px !important
+    }
+  }
 }
 
 .laydate-footer-btns span {
@@ -285,7 +294,6 @@ label.think-radio, label.think-checkbox {
       }
     }
   }
-
 
   tr {
     td, th {
