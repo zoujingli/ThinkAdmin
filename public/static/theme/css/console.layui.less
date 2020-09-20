@@ -4,7 +4,7 @@ fieldset {
   padding: 10px 20px 5px 20px;
   background: #fff;
   border-radius: 5px;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
 
   legend {
     color: #333;
@@ -13,9 +13,8 @@ fieldset {
   }
 }
 
-.layui-table {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
-  border-color: #DDD;
+.layui-code {
+  border-radius: 5px;
 }
 
 .layui-tab, .layui-card {
@@ -24,7 +23,7 @@ fieldset {
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
 
   .layui-card-header {
-    padding: 0 20px;
+    border-color: #DDD;
   }
 
   .layui-card-body {
@@ -78,7 +77,7 @@ fieldset {
 
 .layui-badge {
   margin-right: 5px;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
 
   &-middle {
     width: 1em;
@@ -163,7 +162,7 @@ fieldset {
   padding: 20px !important;
   background: #fff !important;
   border-radius: 5px;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
 }
 
 /** checkbox & radio */
@@ -276,9 +275,114 @@ label.think-checkbox, label.think-radio {
 }
 
 .layui-table {
+  overflow: hidden;
+  border-width: 0;
+  border-color: #ddd;
+  border-radius: 5px;
+  border-collapse: separate;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
 
-  td, th {
-    font-size: 12px
+  &[lay-skin='nob'] {
+    tr {
+      td, th {
+        border-width: 0;
+      }
+    }
+  }
+
+  &[lay-skin='line'] {
+    border-color: #ddd;
+    border-width: 0 0 1px 0;
+
+    tr {
+      td:first-child, th:first-child {
+        border-left-width: 1px;
+      }
+    }
+
+    tr:last-child {
+      td, td {
+        border-bottom-width: 0;
+      }
+    }
+  }
+
+
+  tr {
+    td, th {
+      font-size: 12px;
+      border-color: #ddd;
+      border-width: 0 0 1px 1px;
+
+      .text-explode {
+        color: #ccc !important;
+        margin: 0 4px !important;
+
+        &:first-child {
+          opacity: 0;
+          display: none;
+        }
+      }
+
+      .background-image {
+        float: left;
+        width: 40px;
+        height: 40px;
+        margin-right: 5px;
+        display: inline-block;
+        background: no-repeat center center;
+        background-size: cover;
+        vertical-align: middle
+      }
+    }
+
+    td:last-child, th:last-child {
+      border-right-width: 1px;
+    }
+  }
+
+  tr:first-child {
+    th, td {
+      border-top-width: 1px;
+
+      &:last-child {
+        border-top-right-radius: 5px;
+      }
+
+      &:first-child {
+        border-top-left-radius: 5px;
+      }
+    }
+  }
+
+  tr:last-child {
+    th, td {
+      border-bottom-width: 1px;
+    }
+
+    td {
+      &:last-child {
+        border-bottom-right-radius: 5px;
+      }
+
+      &:first-child {
+        border-bottom-left-radius: 5px;
+      }
+    }
+  }
+
+  thead + tbody tr:first-child {
+    th, td {
+      border-top-width: 0;
+
+      &:last-child {
+        border-top-right-radius: 0;
+      }
+
+      &:first-child {
+        border-top-left-radius: 0;
+      }
+    }
   }
 
   .list-table-image {
@@ -301,9 +405,9 @@ label.think-checkbox, label.think-radio {
       width: 50px;
       color: #666;
       padding: 2px;
+      font-size: 9pt;
       border: 1px solid #DDD;
       text-align: center;
-      font-size: 9pt;
       line-height: 18px
     }
   }
@@ -316,29 +420,6 @@ label.think-checkbox, label.think-radio {
 
     input {
       margin: 0 !important;
-      vertical-align: middle
-    }
-  }
-
-  td {
-    .text-explode {
-      color: #ccc !important;
-      margin: 0 4px !important;
-
-      &:first-child {
-        display: none;
-        opacity: 0
-      }
-    }
-
-    .background-image {
-      float: left;
-      width: 40px;
-      height: 40px;
-      display: inline-block;
-      margin-right: 5px;
-      background: no-repeat center center;
-      background-size: cover;
       vertical-align: middle
     }
   }
