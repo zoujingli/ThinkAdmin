@@ -171,13 +171,13 @@ fieldset {
 
 /** checkbox & radio */
 label.think-radio, label.think-checkbox {
+  margin-right: 10px;
   display: inline-block;
 }
 
 .think-radio, .think-checkbox {
   cursor: pointer;
   margin-top: 10px;
-  margin-right: 10px;
   font-weight: 400;
   line-height: 18px;
 
@@ -194,9 +194,13 @@ label.think-radio, label.think-checkbox {
     appearance: none;
     -webkit-appearance: none;
 
-    &:checked:after {
-      display: block;
-      position: relative;
+    &:checked {
+      border-color: #009688;
+
+      &:after {
+        display: block;
+        position: relative;
+      }
     }
   }
 
