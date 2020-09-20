@@ -1,13 +1,13 @@
 fieldset {
   margin: 0 0 10px 0;
-  border: 1px solid #DDD;
+  border: 1px solid #DCDCDC;
   padding: 10px 20px 5px 20px;
   background: #fff;
   border-radius: 5px;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
 
   legend {
-    color: #333;
+    color: #666;
     padding: 0 10px;
     font-size: 14px;
   }
@@ -53,25 +53,30 @@ fieldset {
   }
 
   &-disabled {
-    border: 1px solid #DDD;
+    border: 1px solid #DCDCDC;
   }
 
   & + .layui-btn {
     margin-left: 8px;
   }
-}
 
-.layui-btn-group {
-  .layui-btn:last-child {
-    border-radius: 0 5px 5px 0;
-  }
+  &-group {
+    overflow: hidden;
+    border-radius: 5px;
+    background: #009688;
+    border: 1px solid #009688 !important;
 
-  .layui-btn:first-child {
-    border-radius: 5px 0 0 5px;
-  }
+    .layui-btn {
+      border-width: 0 !important;
 
-  .layui-btn-primary:hover {
-    border-color: #009688;
+      + .layui-btn {
+        margin-left: 1px !important;
+      }
+
+      &-primary:hover {
+        border-color: #009688;
+      }
+    }
   }
 }
 
@@ -157,7 +162,6 @@ fieldset {
 }
 
 /** 自定义表单样式 */
-
 .think-box-shadow {
   padding: 20px !important;
   background: #fff !important;
@@ -166,73 +170,64 @@ fieldset {
 }
 
 /** checkbox & radio */
-label.think-checkbox, label.think-radio {
-  margin-right: 10px;
+label.think-radio, label.think-checkbox {
   display: inline-block;
 }
 
-.think-checkbox, .think-radio {
+.think-radio, .think-checkbox {
   cursor: pointer;
   margin-top: 10px;
+  margin-right: 10px;
   font-weight: 400;
   line-height: 18px;
-}
 
-.think-checkbox input[type=checkbox] {
-  width: 18px;
-  height: 18px;
-  border: 1px solid #dcdcdc;
-  cursor: pointer;
-  margin: 0 5px 0 0;
-  position: relative;
-  display: inline-block !important;
-  background: #fff;
-  appearance: none;
-  box-sizing: border-box !important;
-  border-radius: 1px;
-  vertical-align: bottom;
-  -webkit-appearance: none;
-
-  &:checked:after {
-    color: #666;
-    padding: 2px;
-    display: block;
-    content: "\e605";
-    font-size: 12px;
-    position: absolute;
-    font-style: normal;
-    font-weight: 700;
-    font-family: layui-icon !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale
-  }
-}
-
-.think-radio input[type=radio] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  margin: 0 5px 0 0;
-  position: relative;
-  border: 1px solid #dcdcdc;
-  display: inline-block !important;
-  box-sizing: border-box !important;
-  appearance: none;
-  background: #fff;
-  border-radius: 1em;
-  vertical-align: bottom;
-  -webkit-appearance: none;
-
-  &:checked:after {
-    top: 4px;
-    left: 4px;
-    width: 8px;
-    height: 8px;
-    content: '';
-    display: block;
+  input[type=radio], input[type=checkbox] {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #DCDCDC;
     position: relative;
-    background: #666;
-    border-radius: 1em
+    background: #fff;
+    margin-right: 5px;
+    vertical-align: bottom;
+    display: inline-block !important;
+    box-sizing: border-box !important;
+    appearance: none;
+    -webkit-appearance: none;
+
+    &:checked:after {
+      display: block;
+      position: relative;
+    }
+  }
+
+  input[type=radio] {
+    border-radius: 1em;
+
+    &:checked:after {
+      top: 4px;
+      left: 4px;
+      width: 8px;
+      height: 8px;
+      content: '';
+      background: #666;
+      border-radius: 1em
+    }
+  }
+
+  input[type=checkbox] {
+    border-radius: 1px;
+
+    &:checked:after {
+      color: #666;
+      padding: 2px;
+      content: "\e605";
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 700;
+      font-family: layui-icon !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale
+    }
   }
 }
 
@@ -254,30 +249,10 @@ label.think-checkbox, label.think-radio {
   line-height: 38px
 }
 
-.layui-btn-group {
-  > .layui-btn {
-    border-right: 0 !important;
-    border-left: 1px solid #009688 !important;
-
-    &:last-child {
-      border-right: 1px solid #009688 !important;
-    }
-
-    &.layui-btn-active {
-      border-left: 0 !important;
-      border-right: 0 !important;
-
-      + .layui-btn {
-        border-left: 0 !important;
-      }
-    }
-  }
-}
-
 .layui-table {
   overflow: hidden;
   border-width: 0;
-  border-color: #ddd;
+  border-color: #DCDCDC;
   border-radius: 5px;
   border-collapse: separate;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
@@ -291,7 +266,7 @@ label.think-checkbox, label.think-radio {
   }
 
   &[lay-skin='line'] {
-    border-color: #ddd;
+    border-color: #DCDCDC;
     border-width: 0 0 1px 0;
 
     tr {
@@ -311,7 +286,7 @@ label.think-checkbox, label.think-radio {
   tr {
     td, th {
       font-size: 12px;
-      border-color: #ddd;
+      border-color: #DCDCDC;
       border-width: 0 0 1px 1px;
 
       .text-explode {
@@ -406,7 +381,7 @@ label.think-checkbox, label.think-radio {
       color: #666;
       padding: 2px;
       font-size: 9pt;
-      border: 1px solid #DDD;
+      border: 1px solid #DCDCDC;
       text-align: center;
       line-height: 18px
     }
