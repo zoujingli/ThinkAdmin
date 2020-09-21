@@ -8,7 +8,7 @@
                 <span class="color-green font-w7">邮费模板名称</span>
                 <span class="color-desc margin-left-5">Name</span>
                 <input name="name" required value='{$vo.name|default=""}' placeholder="请输入邮费模板名称" class="layui-input">
-                <p class="color-desc">必填，邮费模板名称用于区分邮费模板规则，仅在后台选择邮费模板时使用。</p>
+                <p class="color-desc"><b>必填</b>，邮费模板名称用于区分邮费模板规则，仅在后台选择邮费模板时使用。</p>
             </label>
             <div class="layui-form-item">
                 <span class="color-green font-w7 label-required-prev">配送区域计费规则</span>
@@ -16,7 +16,7 @@
                 <table class="layui-table">
                     <thead>
                     <tr>
-                        <th class="nowrap">可配送区域</th>
+                        <th class="nowrap text-left">可配送区域</th>
                         <th class="nowrap text-center">首件（个）</th>
                         <th class="nowrap text-center">运费（元）</th>
                         <th class="nowrap text-center">续件（个）</th>
@@ -27,10 +27,11 @@
                     <!--已选择的区域邮费规则-->
                     <tr ng-repeat="item in rules" ng-if="item.city.length > 0">
                         <td>
-                            自定义区域：
-                            <span class="margin-right-5" ng-repeat="province in item.city" ng-if="ShowProvinceStatus(province)">
-                            <b class="font-w7" ng-bind="province.name"></b><b class="color-desc">{{ShowProvinceCityName(province)}}</b>
-                            </span>
+                            <b class="color-green">自定区域：</b>
+                            <div class="margin-right-5 inline-block" ng-repeat="province in item.city" ng-if="ShowProvinceStatus(province)">
+                                <b class="font-w7" ng-bind="province.name"></b>
+                                <span class="color-desc">{{ShowProvinceCityName(province)}}</span>
+                            </div>
                             <a class="margin-left-5 inline-block nowrap" ng-click="EditRuleItem(item)">编辑</a>
                             <a class="margin-left-5 inline-block nowrap" ng-click="RemoveRuleItem(item)">删除</a>
                         </td>
@@ -53,10 +54,11 @@
                     <!-- 未选择的区域邮费规则 -->
                     <tr ng-if="defs.city.length > 0">
                         <td>
-                            默认区域：
-                            <span class="margin-right-5" ng-repeat="province in defs.city">
-                                <b class="font-w7" ng-bind="province.name"></b><b class="color-desc">{{ShowProvinceCityName(province)}}</b>
-                            </span>
+                            <b class="color-green">默认区域：</b>
+                            <div class="margin-right-5 inline-block" ng-repeat="province in defs.city">
+                                <b class="font-w7" ng-bind="province.name"></b>
+                                <span class="color-desc">{{ShowProvinceCityName(province)}}</span>
+                            </div>
                         </td>
                         <td class="padding-0 text-center">
                             <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(defs.rule,'firstNumber',0)" ng-model="defs.rule.firstNumber">
@@ -225,7 +227,7 @@
                         return true;
                     }
                 });
-                return isfull ? '' : '（' + citys.join('、') + '）';
+                return isfull ? '' : ' ( ' + citys.join('、') + ' ) ';
             };
             $rootScope.ShowProvinceShow = function (province) {
                 return province.subs.some(function (item) {
