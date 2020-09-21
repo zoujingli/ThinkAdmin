@@ -131,4 +131,33 @@ class Plugs extends Controller
         }
     }
 
+    /**
+     * 清理系统配置
+     * @login true
+     */
+    public function clearConfig()
+    {
+        if (AdminService::instance()->isSuper()) try {
+            $this->app->db->transaction(function () {
+                [$tmpdata, $alldata] = [[], []];
+                foreach ($this->app->db->name('SystemConfig')->cursor() as $item) {
+                    $tmpdata[$item['type']][$item['name']] = $item['value'];
+                    ksort($tmpdata[$item['type']]);
+                }
+                ksort($tmpdata);
+                foreach ($tmpdata as $type => $items) foreach ($items as $name => $value) {
+                    $alldata[] = ['type' => $type, 'name' => $name, 'value' => $value];
+                }
+                $this->app->db->name('SystemConfig')->whereRaw('1=1')->delete();
+                $this->app->db->name('SystemConfig')->insertAll($alldata);
+            });
+            $this->success('清理系统配置成功！');
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        } else {
+            $this->error('只有超级管理员才能操作！');
+        }
+    }
 }
