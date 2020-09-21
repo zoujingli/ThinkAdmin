@@ -511,7 +511,7 @@ $(function () {
     /*! 上传单张图片 */
     $.fn.uploadOneImage = function () {
         return this.each(function (input, template) {
-            input = $(this), template = $('<a data-file="one" class="uploadimage"><span class="layui-icon">&#x1006;</span></a>');
+            input = $(this), template = $('<a data-file="one" class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>');
             template.attr('data-type', input.data('type') || 'png,jpg,gif');
             template.attr('data-field', input.attr('name') || 'image').data('input', this);
             template.find('span').on('click', function (event) {
@@ -536,7 +536,7 @@ $(function () {
 
             function showImageContainer(srcs) {
                 $(srcs).each(function (idx, src, $image) {
-                    $image = $('<div class="uploadimage uploadimagemtl"><a class="layui-icon margin-right-5">&#xe602;</a><a class="layui-icon margin-right-5">&#x1006;</a><a class="layui-icon margin-right-5">&#xe603;</a></div>');
+                    $image = $('<div class="uploadimage uploadimagemtl transition"><a class="layui-icon margin-right-5">&#xe602;</a><a class="layui-icon margin-right-5">&#x1006;</a><a class="layui-icon margin-right-5">&#xe603;</a></div>');
                     $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
                         event.stopPropagation(), $item = $(this).parent(), index = $(this).index(), prevs = $button.prevAll('div.uploadimage').length;
                         if (index === 0 && $item.index() !== prevs) $item.next().after($item);

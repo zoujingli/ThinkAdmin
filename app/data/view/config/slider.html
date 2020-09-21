@@ -2,24 +2,27 @@
 
 {block name="content"}
 <div class="think-box-shadow">
-    <form onsubmit="return false;" id="DataForm" class='layui-form' autocomplete="off" style="width:750px">
-        <div class="text-center font-s14 font-w7">{$title|default='图片数据管理'}<span class="color-desc font-s12">（建议尺寸：690px  250px）</span></div>
-        <div class="hr-line-dashed"></div>
-        <div class="padding-bottom-15" data-rule-list>
-            <div class="layui-form-item text-center">
-                <a data-item-add class="layui-btn layui-btn-primary">添加图片</a>
-            </div>
+    <form onsubmit="return false;" id="DataForm" class='layui-form layui-card noshadow' autocomplete="off" style="width:850px">
+        <div class="layui-card-header text-center margin-20 font-w7 color-text layui-bg-gray border-radius-5">
+            {$title|default='图片数据管理'}<span class="color-desc font-s12"> ( 建议上传图片尺寸：690px  250px )</span>
         </div>
-        <div class="hr-line-dashed"></div>
-        <div class="layui-form-item text-center">
-            <button class="layui-btn" data-submit>保存数据</button>
+        <div class="layui-card-body margin-top-20 padding-bottom-0">
+            <div class="padding-left-20" data-rule-list>
+                <div class="layui-form-item text-center">
+                    <a data-item-add class="layui-btn layui-btn-primary">添加图片</a>
+                </div>
+            </div>
+            <div class="hr-line-dashed margin-top-30"></div>
+            <div class="layui-form-item text-center padding-left-20">
+                <button class="layui-btn" data-submit>保存数据</button>
+            </div>
         </div>
     </form>
 </div>
 
 <div data-item-tpl class="layui-hide">
-    <div class="layui-form-item padding-left-40 margin-left-40" data-rule-item>
-        <div class="layui-input-inline nowrap" style="width:120px">
+    <div class="layui-form-item" data-rule-item>
+        <div class="layui-input-inline nowrap relative" style="width:180px">
             <input data-upload-image name="img[]" type="hidden">
         </div>
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
@@ -34,7 +37,7 @@
             <input class="layui-input inline-block" style="width:240px" name="rule[]" value="#" required placeholder="请输入跳转规则">
             <a data-prefix="NEWS" data-rule-page="{:url('data/news_item/select')}" class="layui-btn layui-btn-primary">选择文章</a>
             <a data-prefix="GOODS" data-rule-page="{:url('data/shop_goods/select')}" class="layui-btn layui-btn-primary">选择商品</a>
-            <span class="help-block block notselect">若要跳转页面，请选择对应的数据或填写跳转的 URL 地址，不跳转请填写“#”号占位。</span>
+            <span class="help-block block notselect">若要跳转页面，请选择对应的数据或填写跳转的 URL 地址，不跳转请填写 “#” 号占位。</span>
         </label>
     </div>
 </div>
@@ -47,6 +50,16 @@
     [data-rule-page] {
         margin-top: -3px;
         margin-left: 5px;
+    }
+
+    [data-rule-item] {
+        padding-left: 40px;
+        margin-bottom: 20px;
+    }
+
+    [data-rule-item] .uploadimage {
+        width: 135px;
+        height: 100px;
     }
 
     [data-item-dn], [data-item-up], [data-item-rm] {
