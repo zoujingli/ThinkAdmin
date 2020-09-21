@@ -3,7 +3,7 @@
 {block name="content"}
 {include file='shop_goods/formstyle'}
 <form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card table-block' autocomplete="off">
-    <div class="layui-card-body padding-40">
+    <div class="layui-card-body padding-40 padding-bottom-20">
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">商品标签</span>
             <span class="color-desc margin-left-5">Mark Name</span>
@@ -149,7 +149,7 @@
             <span class="label-required-prev font-w7 color-green">商品富文本详情</span>
             <textarea name="content">{$vo.content|default=''|raw}</textarea>
         </div>
-        <div class="hr-line-dashed"></div>
+        <div class="hr-line-dashed margin-top-40"></div>
         <div class="layui-form-item text-center">
             {notempty name='vo.code'}<input type="hidden" name="code" value="{$vo.code}">{/notempty}
             <button class="layui-btn layui-btn-danger" ng-click="pageBack()" type="button">取消编辑</button>
