@@ -943,6 +943,8 @@
 .pagination-container {
   margin-top: 20px;
   line-height: 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 
   > span {
     color: #666;
@@ -953,17 +955,19 @@
     margin: 0;
     padding: 0;
     float: right;
+    height: 30px;
     display: inline-block;
 
     > li:last-child, > li:first-child {
       > a, > span {
         font-size: 16px;
-        line-height: 27px;
       }
     }
 
     > li {
       z-index: 1;
+      height: 30px;
+      line-height: 30px;
       display: inline-block;
 
       &.active {
@@ -989,17 +993,18 @@
         border: 1px solid #DCDCDC;
         display: inline-block;
         box-sizing: border-box;
-        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
+        text-indent: 0;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2) inset;
       }
 
       > span {
+        cursor: default;
         background: #DCDCDC;
-        cursor: default
       }
 
       > a:hover {
-        background: #DCDCDC;
         border-color: #009688;
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .4) inset;
       }
     }
   }
