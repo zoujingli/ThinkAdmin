@@ -53,10 +53,12 @@
                 <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑分类" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 {/if}
 
-                {if $vo.status eq 1 and auth("state")}
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定要禁用分类吗？" data-action="{:url('state')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('state')}">禁 用</a>
-                {elseif auth("state")}
+                {if $vo.status eq 0 and auth("state")}
                 <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('state')}">启 用</a>
+                {/if}
+
+                {if $vo.status eq 1 and auth("state")}
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('state')}">禁 用</a>
                 {/if}
 
                 {if auth("remove")}
