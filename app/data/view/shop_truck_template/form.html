@@ -47,7 +47,7 @@
                             <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(item.rule,'repeatAmount',2)" ng-model="item.rule.repeatAmount">
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-if="defs.city.length > 0">
                         <td colspan="5"><a class="font-w7" ng-click="AddRuleItem()">添加可配送区域和运费</a></td>
                     </tr>
                     <!-- 未选择的区域邮费规则 -->
