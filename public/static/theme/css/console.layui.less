@@ -61,11 +61,18 @@ fieldset {
 
   &-group {
     overflow: hidden;
+    line-height: 28px;
     border-radius: 5px;
     background: #009688;
     border: 1px solid #009688 !important;
 
+    + .layui-btn {
+      margin-left: 8px;
+    }
+
     .layui-btn {
+      height: 28px;
+      line-height: 28px;
       border-width: 0 !important;
 
       + .layui-btn {
@@ -92,6 +99,7 @@ fieldset {
     vertical-align: middle;
   }
 }
+
 
 /*! 搜索表单样式 */
 .form-search {
@@ -257,9 +265,14 @@ label.think-radio, label.think-checkbox {
   line-height: 24px !important
 }
 
-/** Layui 样式调整 */
 .layui-input, .layui-select {
   line-height: 38px
+}
+
+.layui-form-checkbox.layui-form-checked {
+  i {
+    border-color: #5FB878;
+  }
 }
 
 .layui-table {

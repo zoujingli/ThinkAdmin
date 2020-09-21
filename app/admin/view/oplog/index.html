@@ -1,9 +1,25 @@
 {extend name='main'}
 
 {block name="button"}
+<!--{if isset($isSupper) and $isSupper}-->
+<div class="layui-form inline-block">
+    <!--{if intval(sysconf('base.oplog_state')) eq 1}-->
+    <input type="checkbox" title="数据变更日志" value="0" checked lay-filter="OplogState">
+    <!--{else}-->
+    <input type="checkbox" title="数据变更日志" value="1" lay-filter="OplogState">
+    <!--{/if}-->
+    <script>
+        form.render(), form.on('checkbox(OplogState)', function (elem) {
+            $.form.load('{:url("admin/api.plugs/oplog")}', {state: elem.value});
+        });
+    </script>
+</div>
+<!--{/if}-->
+
 <!--{if auth("clear")}-->
 <button data-load='{:url("clear")}' data-confirm="确定要消除所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理日志</button>
 <!--{/if}-->
+
 <!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
 <!--{/if}-->
@@ -36,9 +52,11 @@
                 操作账号：<span class="font-w7">{$vo.username|default='-'}</span><br>
                 操作节点：<span class="color-desc">{$vo.node|default='-'}</span>
             </td>
-            <td class='text-left nowrap'>
-                <p class="color-text layui-elip" style="max-width:550px">{$vo.action|default='-'}</p>
-                <p class="color-desc layui-elip" style="max-width:550px">{$vo.content|default='-'}</p>
+            <td class='text-left nowrap padding-row-0 padding-right-0'>
+                <div style="overflow:auto;max-height:58px;padding:5px 0">
+                    <p class="color-text layui-elip" style="max-width:550px">{$vo.action|default='-'}</p>
+                    <div class="color-desc layui-elip" style="white-space:normal">{$vo.content|default='-'}</div>
+                </div>
             </td>
             <td class='text-left nowrap'>
                 <p class="color-text">{$vo.geoip|default='-'}</p>

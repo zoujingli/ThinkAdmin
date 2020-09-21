@@ -16,6 +16,7 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
+use think\admin\service\AdminService;
 
 /**
  * 系统日志管理
@@ -42,6 +43,7 @@ class Oplog extends Controller
     public function index()
     {
         $this->title = '系统日志管理';
+        $this->isSupper = AdminService::instance()->isSuper();
         $query = $this->_query($this->table)->like('action,node,content,username,geoip');
         $query->dateBetween('create_at')->order('id desc')->page();
     }
