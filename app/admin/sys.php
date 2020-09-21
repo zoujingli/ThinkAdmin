@@ -45,10 +45,10 @@ try {
                         $matches[2] = substr(str_replace(['`', '\''], '', $matches[2]), 0, 800);
                         $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("添加 {$matches[1]} 数据", $matches[2]);
                     }
-                } elseif (preg_match('/^INSERT\s*INTO\s*`(.*?)`\s*\((.*?)\)\s*VALUES\s+\((.*?)\)\s*$/i', $sqlstr, $matches)) {
+                } elseif (preg_match('/^INSERT\s*INTO\s+`(.*?)`\s+(.*?)\s+VALUES\s+(.*?)\s*$/i', $sqlstr, $matches)) {
                     if (stripos($matches[1] = Str::studly($matches[1]), 'SystemOplog') === false) {
-                        $matches[2] = substr(str_replace(['`', '\''], '', $matches[2]), 150);
-                        $matches[3] = substr(str_replace(['`', '\''], '', $matches[3]), 800);
+                        $matches[2] = substr(str_replace(['`', '\''], '', $matches[2]), 0, 200);
+                        $matches[3] = substr(str_replace(['`', '\''], '', $matches[3]), 0, 600);
                         $GLOBALS['oplogs'][] = SystemService::instance()->getOplog("添加 {$matches[1]} 数据", "{$matches[2]} VALUES {$matches[3]}");
                     }
                 } elseif (preg_match('/^UPDATE\s+`(.*?)`\s+SET\s+(.*?)\s+WHERE\s+(.*?)\s*$/i', $sqlstr, $matches)) {

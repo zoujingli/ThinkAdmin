@@ -152,6 +152,7 @@ class Plugs extends Controller
                 $this->app->db->name('SystemConfig')->insertAll($alldata);
             });
             $this->app->cache->delete('SystemConfig');
+            $GLOBALS['oplogs'] = [];
             $this->success('清理系统配置成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
