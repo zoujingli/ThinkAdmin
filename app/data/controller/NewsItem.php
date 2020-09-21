@@ -34,7 +34,8 @@ class NewsItem extends Controller
     }
 
     /**
-     * 文章内容管理
+     * 文章内容选择器
+     * @login true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -42,8 +43,8 @@ class NewsItem extends Controller
     public function select()
     {
         $query = $this->_query($this->table);
-        $query->equal('status')->like('title')->dateBetween('create_at');
-        $query->where(['deleted' => '0'])->order('sort desc,id desc')->page();
+        $query->equal('status')->like('name')->dateBetween('create_at');
+        $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
     /**

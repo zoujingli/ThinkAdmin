@@ -985,16 +985,15 @@
         color: #333;
         width: 30px;
         height: 30px;
-        font-size: 12px;
+        border: 1px solid #DCDCDC;
         overflow: hidden;
-        line-height: 30px;
+        font-size: 12px;
         text-align: center;
+        line-height: 30px;
         margin-right: 3px;
         border-radius: 50%;
-        border: 1px solid #DCDCDC;
         display: inline-block;
         box-sizing: border-box;
-        text-indent: 0;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2) inset;
       }
 
@@ -1016,8 +1015,8 @@
   width: 317px;
   height: 580px;
   position: relative;
-  border-radius: 5px;
   background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
+  border-radius: 5px;
 
   .mobile-header {
     color: #fff;
@@ -1126,23 +1125,25 @@
       }
     }
 
-    .icon-add {
-      width: 14px;
-      height: 14px;
-      border-bottom: none !important;
-      background: url(../img/wechat/index.png) 0 0 no-repeat
-    }
+    .icon {
+      &-add, &-sub {
+        display: inline-block;
+        vertical-align: middle
+      }
 
-    .icon-add, .icon-sub {
-      display: inline-block;
-      vertical-align: middle
-    }
+      &-add {
+        width: 14px;
+        height: 14px;
+        border-bottom: none !important;
+        background: url(../img/wechat/index.png) 0 0 no-repeat
+      }
 
-    .icon-sub {
-      width: 7px;
-      height: 7px;
-      margin-right: 2px;
-      background: url(../img/wechat/index.png) 0 -3pc no-repeat
+      &-sub {
+        width: 7px;
+        height: 7px;
+        margin-right: 2px;
+        background: url(../img/wechat/index.png) 0 -3pc no-repeat
+      }
     }
 
     .sub-menu {
@@ -1154,15 +1155,13 @@
       border: 1px solid #d0d0d0;
       background-color: #fafafa;
 
-      ul, ul li {
+      ul li {
         float: none;
         width: 100%;
         padding: 0;
         z-index: 11;
         display: block;
-      }
 
-      ul li {
         a {
           padding: 0 5px;
           border: 1px solid hsla(0, 0%, 100%, 0);
@@ -1182,7 +1181,7 @@
     .arrow {
       left: 50%;
       position: absolute;
-      margin-left: -6px
+      margin-left: -6px;
     }
 
     .arrow_in, .arrow_out {

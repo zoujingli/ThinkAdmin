@@ -57,6 +57,7 @@ class ShopGoods extends Controller
 
     /**
      * 商品选择器
+     * @login true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
