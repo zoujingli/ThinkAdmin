@@ -19,11 +19,11 @@
     <div class="layui-card-body">
         <div class="layui-btn-group nowrap">
             {if $app->isDebug()}
-            <a class="layui-btn layui-btn-sm layui-btn-active" data-tips-text="当前以开发模式运行中...">以开发模式运行</a>
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-tips-text="立即切换到生产模式运行" data-load="{:url('admin/api.plugs/debug')}?state=1">以生产模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-active">以开发模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.plugs/debug')}?state=1">以生产模式运行</a>
             {else}
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-tips-text="立即切换到开发模式运行" data-load="{:url('admin/api.plugs/debug')}?state=0">以开发模式运行</a>
-            <a class="layui-btn layui-btn-sm layui-btn-active" data-tips-text="当前以生产模式运行中...">以生产模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.plugs/debug')}?state=0">以开发模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-active">以生产模式运行</a>
             {/if}
         </div>
         <div class="margin-top-20">
@@ -40,10 +40,10 @@
     </div>
     <div class="layui-card-body">
         <div class="layui-btn-group nowrap">
-            {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','alioss'=>'阿里云OSS存储'] as $k => $v} {if sysconf('storage.type') eq $k}
-            {if auth('storage')}<a data-title="配置{$v}" data-tips-text="切换并配置以{$v}文件" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{/if}
+            {foreach ['local' => '本地服务器存储','qiniu' => '七牛云对象存储','alioss' => '阿里云OSS存储'] as $k => $v} {if sysconf('storage.type') eq $k}
+            {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{/if}
             {else}
-            {if auth('storage')}<a data-title="配置{$v}" data-tips-text="切换并配置以{$v}文件" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
+            {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
             {/if}{/foreach}
         </div>
         <div class="margin-top-20">
