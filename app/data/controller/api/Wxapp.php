@@ -33,7 +33,9 @@ class Wxapp extends Controller
         $this->config = [
             'appid'      => sysconf('data.wxapp_appid'),
             'appsecret'  => sysconf('data.wxapp_appkey'),
-            'cache_path' => $this->app->getRuntimePath() . 'wxapp' . DIRECTORY_SEPARATOR,
+            'mch_id'     => sysconf('data.wxapp_mch_id'),
+            'mch_key'    => sysconf('data.wxapp_mch_key'),
+            'cache_path' => $this->app->getRuntimePath() . 'wechat',
         ];
     }
 

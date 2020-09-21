@@ -42,7 +42,7 @@ class Config extends Controller
     {
         $this->skey = 'slider';
         if ($this->request->isGet()) {
-            $this->title = '轮播图管理';
+            $this->title = '轮播图片管理';
             $this->data = sysdata($this->skey);
             $this->fetch();
         } else {

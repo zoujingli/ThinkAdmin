@@ -6,20 +6,28 @@
         <div class="layui-card-header text-center margin-20 font-w7 color-text layui-bg-gray border-radius-5">
             {$title|default='小程序接口配置'}<span class="color-desc font-s12"> ( 需要从微信公众号平台获取 )</span>
         </div>
-        <div class="layui-card-body padding-left-40 padding-top-30 padding-bottom-0">
-
+        <div class="layui-card-body padding-left-40 padding-top-20 padding-bottom-0">
             <label class="layui-form-item margin-bottom-20 block relative">
                 <span class="color-green font-s14 font-w7 margin-right-10">小程序 ID</span><span class="nowrap color-desc">AppID</span>
                 <input name="data.wxapp_appid" required maxlength="18" pattern="^wx[0-9a-z]{16}$" placeholder="请输入18位小程序 AppID（必填）" value="{:sysconf('data.wxapp_appid')}" class="layui-input">
-                <span class="help-block">微信小程序 AppID 需要微信公众号平台获取！</span>
+                <span class="help-block"><b>必选</b>，微信小程序 AppID 需要微信公众号平台获取！</span>
             </label>
-
             <label class="layui-form-item margin-bottom-20 block relative">
                 <span class="color-green font-s14 font-w7 margin-right-10">小程序密钥 Secret</span><span class="nowrap color-desc">AppSecret</span>
                 <input name="data.wxapp_appkey" required maxlength="32" pattern="^[0-9a-z]{32}$" placeholder="请输入32位小程序 AppSecret（必填）" value="{:sysconf('data.wxapp_appkey')}" class="layui-input">
-                <span class="help-block">微信小程序 AppSecret 需要微信公众号平台获取！</span>
+                <span class="help-block"><b>必选</b>，微信小程序 AppSecret 需要微信公众号平台获取！</span>
             </label>
-
+            <div class="hr-line-solid"></div>
+            <label class="layui-form-item margin-bottom-20 block relative">
+                <span class="color-green font-s14 font-w7 margin-right-5">微信商户账号（支付）</span><span class="nowrap color-desc">MchId</span>
+                <input name="data.wxapp_mch_id" placeholder="请输入绑定微信商户账号（可选）" value="{:sysconf('data.wxapp_mch_id')}" class="layui-input">
+                <span class="help-block"><b>可选</b>，绑定微信商户账号需要与公众号APPID绑定，否则无法创建订单！</span>
+            </label>
+            <label class="layui-form-item margin-bottom-20 block relative">
+                <span class="color-green font-s14 font-w7 margin-right-5">微信商户密钥（支付）</span><span class="nowrap color-desc">MchKey</span>
+                <input name="data.wxapp_mch_key" placeholder="请输入绑定微信商户密钥（可选）" value="{:sysconf('data.wxapp_mch_key')}" class="layui-input">
+                <span class="help-block"><b>可选</b>，绑定微信商户的密钥需要与商户账号匹配，否则无法签名数据签名！</span>
+            </label>
             <div class="hr-line-dashed margin-top-30"></div>
             <div class="layui-form-item text-center padding-left-20">
                 <button class="layui-btn" data-submit>保存数据</button>
