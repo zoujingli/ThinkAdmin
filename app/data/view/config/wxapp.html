@@ -1,0 +1,30 @@
+{extend name="../../admin/view/main"}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <form class="layui-form layui-card noshadow" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" style="width:850px">
+        <div class="layui-card-header text-center margin-20 font-w7 color-text layui-bg-gray border-radius-5">
+            {$title|default='小程序接口配置'}<span class="color-desc font-s12"> ( 需要从微信公众号平台获取 )</span>
+        </div>
+        <div class="layui-card-body padding-left-40 padding-top-30 padding-bottom-0">
+
+            <label class="layui-form-item margin-bottom-20 block relative">
+                <span class="color-green font-s14 font-w7 margin-right-10">小程序 ID</span><span class="nowrap color-desc">AppID</span>
+                <input name="data.wxapp_appid" required maxlength="18" pattern="^wx[0-9a-z]{16}$" placeholder="请输入18位小程序 AppID（必填）" value="{:sysconf('data.wxapp_appid')}" class="layui-input">
+                <span class="help-block">微信小程序 AppID 需要微信公众号平台获取！</span>
+            </label>
+
+            <label class="layui-form-item margin-bottom-20 block relative">
+                <span class="color-green font-s14 font-w7 margin-right-10">小程序密钥 Secret</span><span class="nowrap color-desc">AppSecret</span>
+                <input name="data.wxapp_appkey" required maxlength="32" pattern="^[0-9a-z]{32}$" placeholder="请输入32位小程序 AppSecret（必填）" value="{:sysconf('data.wxapp_appkey')}" class="layui-input">
+                <span class="help-block">微信小程序 AppSecret 需要微信公众号平台获取！</span>
+            </label>
+
+            <div class="hr-line-dashed margin-top-30"></div>
+            <div class="layui-form-item text-center padding-left-20">
+                <button class="layui-btn" data-submit>保存数据</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}

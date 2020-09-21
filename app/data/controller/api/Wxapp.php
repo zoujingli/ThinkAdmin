@@ -23,20 +23,16 @@ class Wxapp extends Controller
     protected $config;
 
     /**
-     * 接口初始化
+     * 接口服务初始化
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function initialize()
     {
         $this->config = [
-            'appid'      => '',
-            'appsecret'  => '',
-            // 商户支付配置
-            'mch_id'     => '',
-            'mch_key'    => '',
-            // 支付证书配置
-            'ssl_key'    => '', // 需要配置证书文件的绝对路径
-            'ssl_cer'    => '', // 需要配置证书文件的绝对路径
-            // 支付缓存配置
+            'appid'      => sysconf('data.wxapp_appid'),
+            'appsecret'  => sysconf('data.wxapp_appkey'),
             'cache_path' => $this->app->getRuntimePath() . 'wxapp' . DIRECTORY_SEPARATOR,
         ];
     }
