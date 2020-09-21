@@ -54,8 +54,7 @@ class NewsItem extends Controller
     protected function _page_filter(&$data)
     {
         foreach ($data as &$vo) {
-            $vo['mark'] = trim($vo['mark'], ',');
-            $vo['mark'] = $vo['mark'] ? explode(',', $vo['mark']) : [];
+            $vo['mark'] = think_string_to_array($vo['mark'] ?: '');
         }
     }
 
@@ -95,11 +94,11 @@ class NewsItem extends Controller
     protected function _form_filter(&$data)
     {
         if ($this->request->isGet()) {
-            [$map, $sort] = [['deleted' => 0, 'status' => 1], 'sort desc,id desc'];
-            $this->mark = $this->app->db->name('DataNewsMark')->where($map)->order($sort)->select()->toArray();
-            $data['mark'] = isset($data['mark']) && $data['mark'] ? explode(',', trim($data['mark'], ',')) : [];
+            $query = $this->app->db->name('DataNewsMark')->where(['deleted' => 0, 'status' => 1]);
+            $this->mark = $query->order('sort desc,id desc')->select()->toArray();
+            $data['mark'] = think_string_to_array($data['mark']);
         } else {
-            $data['mark'] = ',' . join(',', isset($data['mark']) && is_array($data['mark']) ? $data['mark'] : []) . ',';
+            $data['mark'] = think_array_to_string($data['mark'] ?? []);
         }
     }
 

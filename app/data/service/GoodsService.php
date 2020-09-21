@@ -129,7 +129,6 @@ class GoodsService extends Service
         return $data;
     }
 
-
     /**
      * 最大分类级别
      * @return integer

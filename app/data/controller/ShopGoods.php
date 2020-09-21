@@ -83,7 +83,7 @@ class ShopGoods extends Controller
         $clist = $this->app->db->name('ShopGoodsCate')->whereIn('id', array_column($data, 'cate'))->column('pid,name,status', 'id');
         foreach ($data as &$vo) {
             $vo['cate'] = $clist[$vo['cate']] ?? $vo['cate'];
-            $vo['mark'] = trim($vo['mark'], ',') ? explode(',', trim($vo['mark'], ',')) : [];
+            $vo['mark'] = think_string_to_array($vo['mark'] ?: '');
         }
     }
 
@@ -153,9 +153,9 @@ class ShopGoods extends Controller
             $data['code'] = CodeExtend::uniqidNumber(12, 'G');
         }
         if ($this->request->isGet()) {
+            $data['mark'] = think_string_to_array($data['mark']);
             $this->marks = GoodsService::instance()->getMarkList();
             $this->cates = GoodsService::instance()->getCateList('arr2table');
-            $data['mark'] = isset($data['mark']) && trim($data['mark'], ',') ? explode(',', trim($data['mark'], ',')) : [];
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,status';
             $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
             $data['truck_items'] = $this->app->db->name('ShopTruckTemplate')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('code,name');
@@ -163,7 +163,7 @@ class ShopGoods extends Controller
             if (empty($data['cover'])) $this->error('商品图片不能为空！');
             if (empty($data['slider'])) $this->error('轮播图不能为空！');
             // 商品规格保存
-            $data['mark'] = ',' . (isset($data['mark']) && is_array($data['mark']) ? join(',', $data['mark']) : '') . ',';
+            $data['mark'] = think_array_to_string($data['mark'] ?? []);
             [$count, $items] = [0, json_decode($data['data_items'], true)];
             foreach ($items as $item) {
                 $count += intval($item[0]['status']);
@@ -236,7 +236,7 @@ class ShopGoods extends Controller
     }
 
     /**
-     * 商品上下架管理
+     * 商品上下架
      * @auth true
      * @throws \think\db\exception\DbException
      */
