@@ -48,7 +48,6 @@
 
                 {if auth("state") and $vo.status eq 1}
                 <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
-                <a class="layui-btn layui-btn-xs layui-btn-primary" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
                 {/if}
 
                 {if auth("state") and $vo.status eq 0}
