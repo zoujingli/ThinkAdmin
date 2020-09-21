@@ -941,7 +941,8 @@
 
 /* 通用分页 */
 .pagination-container {
-  line-height: 40px;
+  margin-top: 20px;
+  line-height: 30px;
 
   > span {
     color: #666;
@@ -949,10 +950,17 @@
   }
 
   > ul {
-    float: right;
-    display: inline-block;
     margin: 0;
     padding: 0;
+    float: right;
+    display: inline-block;
+
+    > li:last-child, > li:first-child {
+      > a, > span {
+        font-size: 16px;
+        line-height: 27px;
+      }
+    }
 
     > li {
       z-index: 1;
@@ -963,21 +971,25 @@
 
         > span {
           color: #fff;
-          border-color: #098;
-          padding-right: 1px;
+          border-color: #009688;
           background: #009688 !important
         }
       }
 
       > a, > span {
         color: #333;
-        width: 33px;
+        width: 30px;
         height: 30px;
+        font-size: 12px;
+        overflow: hidden;
+        line-height: 30px;
+        text-align: center;
+        margin-right: 3px;
+        border-radius: 50%;
         border: 1px solid #DCDCDC;
         display: inline-block;
-        margin-left: -1px;
-        text-align: center;
-        line-height: 30px
+        box-sizing: border-box;
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
       }
 
       > span {
@@ -987,7 +999,7 @@
 
       > a:hover {
         background: #DCDCDC;
-        border-color: #DCDCDC
+        border-color: #009688;
       }
     }
   }
