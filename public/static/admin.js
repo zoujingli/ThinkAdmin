@@ -808,7 +808,7 @@ $(function () {
         })(code)
     };
 
-    /*! 图片懒加载转换处理 */
+    /*! 图片懒加载处理 */
     $(window).on('scroll resize load', function () {
         var notFoundCount = 0, maxNotFound = 2, screenHeight = $(window).height();
         $('[data-lazy-src]:not([data-lazy-loaded])').each(function (src, pos) {
@@ -822,8 +822,8 @@ $(function () {
     });
 
     /*! 图片加载异常处理 */
-    document.addEventListener('error', function (e, elem) {
-        elem = e.target;
+    document.addEventListener('error', function (event, elem) {
+        elem = event.target;
         if (elem.tagName.toLowerCase() === 'img') {
             elem.src = baseRoot + 'theme/img/404_icon.png';
         }
