@@ -39,7 +39,7 @@ class NewsService extends Service
         if (count($list) > 0) {
             /*! 读取文章内容 */
             $cids = array_unique(array_column($list, 'cid'));
-            $cols = 'id,name,cover,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
+            $cols = 'id,name,cover,mark,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
             $items = $this->app->db->name('DataNewsItem')->whereIn('id', $cids)->column($cols, 'id');
             $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
             foreach ($items as &$vo) $vo['mark'] = think_string_to_array($vo['mark'] ?: '', ',', $marks);
