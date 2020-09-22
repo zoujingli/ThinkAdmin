@@ -131,7 +131,7 @@ $(function () {
         };
         // 内容区域动态加载后初始化
         this.reInit = function ($dom) {
-            $.vali.listen(this), $dom = $dom || $(this.selecter);
+            $(window).trigger('scroll'), $.vali.listen(this), $dom = $dom || $(this.selecter);
             $dom.find('[required]').map(function ($parent) {
                 if (($parent = $(this).parent()) && $parent.is('label')) {
                     $parent.addClass('label-required-prev');
@@ -160,9 +160,7 @@ $(function () {
                 $this.uploadFile(function (url, file) {
                     $($this.data('input')).data('file', file).val(url).trigger('change');
                 });
-            }), setTimeout(function () {
-                $(window).trigger('scroll');
-            }, 500);
+            });
         };
         // 在内容区显示视图
         this.show = function (html) {

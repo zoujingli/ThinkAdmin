@@ -10,7 +10,7 @@
 
 {block name='content'}
 <div class="think-box-shadow">
-    <div id="news-box" class="layui-clear">
+    <div id="news-box" class="layui-clear layui-hide">
         {foreach $list as $vo}
         <div class="news-item">
             <div class='news-tools layui-hide'>
@@ -45,7 +45,10 @@
     }).off('mouseleave', '.news-item').on('mouseleave', '.news-item', function () {
         $(this).find('.news-tools').addClass('layui-hide');
     });
+    $.msg.loading();
     require(['jquery.masonry'], function (Masonry) {
+        layui.layer.closeAll();
+        $('#news-box').removeClass('layui-hide');
         var newsbox = document.querySelector('#news-box');
         var msnry = new Masonry(newsbox, {itemSelector: '.news-item', columnWidth: 0});
         msnry.layout(), $('body').on('click', '[data-news-del]', function (event) {
