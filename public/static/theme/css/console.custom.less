@@ -954,42 +954,25 @@
   padding-top: 5px;
   padding-bottom: 5px;
 
-  > span {
+  span {
     color: #666;
     font-size: 9pt
   }
 
-  > ul {
+  ul {
     float: right;
     height: 30px;
     margin: 0;
     padding: 0;
     display: inline-block;
 
-    > li:last-child, > li:first-child {
-      > a, > span {
-        font-size: 16px;
-        line-height: 28px;
-      }
-    }
-
-    > li {
+    li {
       z-index: 1;
       height: 30px;
       line-height: 30px;
       display: inline-block;
 
-      &.active {
-        z-index: 2;
-
-        > span {
-          color: #fff;
-          border-color: #009688;
-          background: #009688 !important
-        }
-      }
-
-      > a, > span {
+      a, span {
         color: #333;
         width: 30px;
         height: 30px;
@@ -1005,14 +988,40 @@
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2) inset;
       }
 
-      > span {
+      span {
         cursor: default;
         background: #DCDCDC;
       }
 
-      > a:hover {
+      a:hover {
         border-color: #009688;
         box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .4) inset;
+      }
+
+      &.active {
+        z-index: 2;
+
+        span {
+          color: #fff;
+          border-color: #009688;
+          background: #009688 !important
+        }
+      }
+
+      &.disabled {
+        span {
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 22px;
+        }
+      }
+
+      &:last-child, &:first-child {
+        a, span {
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 28px;
+        }
       }
     }
   }
@@ -1054,7 +1063,6 @@
     position: absolute;
     background: #f5f5f5;
     border-radius: 0 0 5px 5px;
-    //  box-shadow: @minShadow;
 
     iframe {
       width: 100%;
@@ -1067,9 +1075,9 @@
     right: 0;
     bottom: 0;
     margin: 0;
+    border: 1px solid #ccc;
     position: absolute;
     padding-left: 43px;
-    border: 1px solid #ccc;
     background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
     list-style-type: none;
     border-radius: 0 0 5px 5px;
