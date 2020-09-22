@@ -95,9 +95,9 @@ class NewsItem extends Controller
         if ($this->request->isGet()) {
             $query = $this->app->db->name('DataNewsMark')->where(['deleted' => 0, 'status' => 1]);
             $this->mark = $query->order('sort desc,id desc')->select()->toArray();
-            $data['mark'] = think_string_to_array($data['mark']);
+            $data['mark'] = mark_str2arr($data['mark']);
         } else {
-            $data['mark'] = think_array_to_string($data['mark'] ?? []);
+            $data['mark'] = mark_arr2str($data['mark'] ?? []);
         }
     }
 

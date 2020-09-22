@@ -20,7 +20,7 @@ class UserService extends Service
     /**
      * 获取会员资料
      * @param mixed $map 查询条件
-     * @param boolean $force 强制令牌
+     * @param boolean $force 刷新令牌
      * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException

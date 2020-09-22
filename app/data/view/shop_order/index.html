@@ -87,7 +87,7 @@
                     {foreach $vo.items as $item}
                     <div>
                         <b class="color-blue">{$item.stock_sales|default=0}件</b><b class="color-green"> x </b><b class="color-blue">{$item.price_market+0}元 </b>
-                        {$item.goods_name|default=''} <span class="color-green"> ( {$item.goods_spec|think_show_goods_spec} ) </span>
+                        {$item.goods_name|default=''} <span class="color-green"> ( {$item.goods_spec|show_goods_spec} ) </span>
                     </div>
                     {/foreach}
                 </td>

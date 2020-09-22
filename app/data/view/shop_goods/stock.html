@@ -24,7 +24,7 @@
                     <tbody>
                     {foreach $vo.items as $goods}
                     <tr>
-                        <td class="layui-bg-gray" width="28%">{$goods.goods_spec|think_show_goods_spec}</td>
+                        <td class="layui-bg-gray" width="28%">{$goods.goods_spec|show_goods_spec}</td>
                         <td class="layui-bg-gray text-center" width="12%">￥{$goods.price_market+0}</td>
                         <td class="layui-bg-gray text-center" width="12%">￥{$goods.price_selling+0}</td>
                         <td class="layui-bg-gray text-center" width="12%">{$goods.stock_total|default=0}</td>

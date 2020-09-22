@@ -57,7 +57,6 @@ class OrderService extends Service
      */
     public function buildItemData(array &$data = []): array
     {
-        $nos = array_unique(array_column($data, 'order_no'));
         // 关联会员数据
         $mids = array_unique(array_merge(array_column($data, 'mid'), array_column($data, 'from')));
         $members = $this->app->db->name('DataMember')->whereIn('id', $mids)->column('*', 'id');
@@ -66,11 +65,12 @@ class OrderService extends Service
             unset($user['unionid'], $user['password'], $user['status'], $user['deleted']);
         }
         // 关联发货信息
-        $trucks = $this->app->db->name('ShopOrderSend')->whereIn('order_no', $nos)->column('*', 'order_no');
+        $nobs = array_unique(array_column($data, 'order_no'));
+        $trucks = $this->app->db->name('ShopOrderSend')->whereIn('order_no', $nobs)->column('*', 'order_no');
         foreach ($trucks as &$item) unset($item['id'], $item['mid'], $item['status'], $item['deleted'], $item['create_at']);
         // 关联订单商品
         $query = $this->app->db->name('ShopOrderItem')->where(['status' => 1, 'deleted' => 0]);
-        $items = $query->withoutField('id,mid,status,deleted,create_at')->whereIn('order_no', $nos)->select()->toArray();
+        $items = $query->withoutField('id,mid,status,deleted,create_at')->whereIn('order_no', $nobs)->select()->toArray();
         foreach ($data as &$vo) {
             $vo['sales'] = 0;
             $vo['member'] = $members[$vo['mid']] ?? [];

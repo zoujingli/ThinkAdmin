@@ -99,11 +99,12 @@ class GoodsService extends Service
         foreach ($cates as $cate) if (isset($cates[$cate['pid']])) {
             $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
         }
-        $map = [['goods_code', 'in', array_unique(array_column($data, 'code'))], ['status', '=', 1]];
-        $items = $this->app->db->name('ShopGoodsItem')->withoutField('id,status,create_at')->where($map)->select()->toArray();
+        $codes = array_unique(array_column($data, 'code'));
+        $query = $this->app->db->name('ShopGoodsItem')->withoutField('id,status,create_at');
+        $items = $query->whereIn('goods_code', $codes)->where(['status' => 1])->select()->toArray();
         $marks = $this->app->db->name('ShopGoodsMark')->where(['status' => 1])->column('name');
         foreach ($data as &$vo) {
-            $vo['marks'] = think_string_to_array($vo['mark'], ',', $marks);
+            $vo['marks'] = mark_string_array($vo['mark'], ',', $marks);
             $vo['cates'] = $cates[$vo['cate']] ?? [];
             $vo['slider'] = explode('|', $vo['slider']);
             $vo['specs'] = json_decode($vo['data_specs'], true);

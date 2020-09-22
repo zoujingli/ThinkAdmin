@@ -5,7 +5,7 @@ namespace app\data\service;
 use think\admin\Service;
 
 /**
- * 文章数据处理服务
+ * 文章数据服务
  * Class NewsService
  * @package app\data\service
  */
@@ -13,7 +13,7 @@ class NewsService extends Service
 {
     /**
      * 同步文章数据统计
-     * @param integer $cid 文章记录ID
+     * @param integer $cid 文章ID
      * @throws \think\db\exception\DbException
      */
     public function syncNewsTotal(int $cid)
@@ -42,7 +42,7 @@ class NewsService extends Service
             $cols = 'id,name,cover,mark,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
             $items = $this->app->db->name('DataNewsItem')->whereIn('id', $cids)->column($cols, 'id');
             $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
-            foreach ($items as &$vo) $vo['mark'] = think_string_to_array($vo['mark'] ?: '', ',', $marks);
+            foreach ($items as &$vo) $vo['mark'] = mark_str_2_arr($vo['mark'] ?: '', ',', $marks);
             /*! 绑定会员数据 */
             $mids = array_unique(array_column($list, 'mid'));
             $cols = 'id,phone,nickname,username,headimg,status';
@@ -64,17 +64,17 @@ class NewsService extends Service
     public function buildListState(array &$list, int $mid = 0): array
     {
         if (count($list) > 0) {
-            [$cid1s, $cid2s] = [[], []];
+            [$cid1s, $cid2s, $marks] = [[], [], []];
             if ($mid > 0) {
-                $map = [['mid', '=', $mid], ['cid', 'in', array_column($list, 'id')]];
+                $map = [['mid', '=', $mid], ['cid', 'in', array_unique(array_column($list, 'id'))]];
+                $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
                 $cid1s = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 2])->column('cid');
                 $cid2s = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 1])->column('cid');
             }
-            $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
             foreach ($list as &$vo) {
+                $vo['mark'] = mark_string_array($vo['mark'] ?: '', ',', $marks);
                 $vo['my_like_state'] = in_array($vo['id'], $cid1s) ? 1 : 0;
                 $vo['my_coll_state'] = in_array($vo['id'], $cid2s) ? 1 : 0;
-                $vo['mark'] = think_string_to_array($vo['mark'] ?: '', ',', $marks);
             }
         }
         return $list;
