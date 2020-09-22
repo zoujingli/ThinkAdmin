@@ -5,12 +5,17 @@ if (!function_exists('think_string_to_array')) {
      * 字符串转数组
      * @param string $text 待转内容
      * @param string $separ 分隔字符
+     * @param null|array $allow 限定规则
      * @return array
      */
-    function think_string_to_array(string $text, string $separ = ','): array
+    function think_string_to_array(string $text, string $separ = ',', $allow = null): array
     {
         $text = trim($text, $separ);
-        return $text ? explode($separ, $text) : [];
+        $data = $text ? explode($separ, $text) : [];
+        if (is_array($allow)) foreach ($data as $key => $mark) {
+            if (!in_array($mark, $allow)) unset($data[$key]);
+        }
+        return $data;
     }
 }
 

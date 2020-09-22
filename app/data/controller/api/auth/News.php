@@ -20,8 +20,8 @@ class News extends Auth
     {
         $data = $this->_vali([
             'mid.value'       => $this->mid,
-            'cid.require'     => '文章ID不能为空！',
-            'content.require' => '评论内容不能为空！',
+            'cid.require'     => '文章不能为空！',
+            'content.require' => '内容不能为空！',
         ]);
         if ($this->app->db->name('DataNewsXComment')->insert($data) !== false) {
             NewsService::instance()->syncNewsTotal($data['cid']);
@@ -39,9 +39,10 @@ class News extends Auth
      */
     public function getComment()
     {
-        $data = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '内容ID不能为空！']);
-        $query = $this->app->db->name('DataNewsXComment')->where($data)->order('id desc');
-        $this->success('获取评论列表成功', ['list' => $query->select()->toArray()]);
+        $map = $this->_vali(['mid.value' => $this->mid, 'cid.require' => '文章不能为空！']);
+        $result = $this->_query('DataNewsXComment')->where($map)->order('id desc')->page(true, false);
+        NewsService::instance()->buildListByCidAndMid($result);
+        $this->success('获取评论列表成功', $result);
     }
 
     /**
@@ -50,12 +51,12 @@ class News extends Auth
      */
     public function delComment()
     {
-        $data = $this->_vali([
+        $map = $this->_vali([
             'mid.value'   => $this->mid,
-            'id.require'  => '评论ID不能为空',
             'cid.require' => '文章ID不能为空！',
+            'id.require'  => '评论ID不能为空！',
         ]);
-        if ($this->app->db->name('DataNewsXComment')->where($data)->delete() !== false) {
+        if ($this->app->db->name('DataNewsXComment')->where($map)->delete() !== false) {
             $this->success('评论删除成功！');
         } else {
             $this->error('认证删除失败！');
@@ -104,7 +105,7 @@ class News extends Auth
         $map = ['mid' => $this->mid, 'type' => 1];
         $query = $this->_query('DataNewsXCollect')->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListByCid($result['list']);
+        NewsService::instance()->buildListByCidAndMid($result['list']);
         $this->success('获取收藏记录成功！', $result);
     }
 
@@ -150,7 +151,7 @@ class News extends Auth
         $map = ['mid' => $this->mid, 'type' => 2];
         $query = $this->_query('DataNewsXCollect')->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListByCid($result['list']);
+        NewsService::instance()->buildListByCidAndMid($result['list']);
         $this->success('获取点赞记录成功！', $result);
     }
 
@@ -165,7 +166,7 @@ class News extends Auth
         $map = ['mid' => $this->mid];
         $query = $this->_query('DataNewsXHistory')->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListByCid($result['list']);
+        NewsService::instance()->buildListByCidAndMid($result['list']);
         $this->success('获取浏览历史成功！', $result);
     }
 
@@ -179,7 +180,7 @@ class News extends Auth
         return $this->_vali([
             'mid.value'   => $this->mid,
             'type.value'  => $type,
-            'cid.require' => '文章ID不能为空！',
+            'cid.require' => '文章不能为空！',
         ]);
     }
 

@@ -86,22 +86,6 @@ class GoodsService extends Service
     }
 
     /**
-     * 一维数组生成数据树
-     * @param array $list 待处理数据
-     * @param string $cid 自己的主键
-     * @param string $pid 上级的主键
-     * @param string $sub 子数组名称
-     * @return array
-     */
-    public function arr2tree(array $list, string $cid = 'id', string $pid = 'pid', string $sub = 'sub'): array
-    {
-        [$tree, $tmp] = [[], array_combine(array_column($list, $cid), array_values($list))];
-        foreach ($list as $vo) isset($vo[$pid]) && isset($tmp[$vo[$pid]]) ? $tmp[$vo[$pid]][$sub][] = &$tmp[$vo[$cid]] : $tree[] = &$tmp[$vo[$cid]];
-        unset($tmp, $list);
-        return $tree;
-    }
-
-    /**
      * 商品数据绑定
      * @param array $data 商品主数据
      * @return array
@@ -117,8 +101,9 @@ class GoodsService extends Service
         }
         $map = [['goods_code', 'in', array_unique(array_column($data, 'code'))], ['status', '=', 1]];
         $items = $this->app->db->name('ShopGoodsItem')->withoutField('id,status,create_at')->where($map)->select()->toArray();
+        $marks = $this->app->db->name('ShopGoodsMark')->where(['status' => 1])->column('name');
         foreach ($data as &$vo) {
-            $vo['marks'] = think_string_to_array($vo['mark']);
+            $vo['marks'] = think_string_to_array($vo['mark'], ',', $marks);
             $vo['cates'] = $cates[$vo['cate']] ?? [];
             $vo['slider'] = explode('|', $vo['slider']);
             $vo['specs'] = json_decode($vo['data_specs'], true);

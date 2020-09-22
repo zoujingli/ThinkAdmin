@@ -37,7 +37,7 @@ class News extends Controller
             $this->app->db->name('DataNewsItem')->where(['id' => $id])->update([
                 'num_read' => $this->app->db->raw('`num_read`+1'),
             ]);
-            if (input('mid') > 0) {
+            if (input('mid', 0) > 0) {
                 $history = ['mid' => input('mid'), 'cid' => $id];
                 $this->app->db->name('DataNewsXHistory')->where($history)->delete();
                 $this->app->db->name('DataNewsXHistory')->insert($history);
@@ -46,30 +46,8 @@ class News extends Controller
         $query = $this->_query('DataNewsItem')->like('name,mark')->equal('id');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListState($result['list'], input('mid'));
+        NewsService::instance()->buildListState($result['list'], input('mid', 0));
         $this->success('获取文章内容列表', $result);
-    }
-
-    /**
-     * 获取已点赞的会员
-     */
-    public function getLike()
-    {
-        $query = $this->app->db->name('DataNewsXCollect')->where($this->_vali([
-            'cid.require' => '文章ID不能为空！', 'type.value' => 2,
-        ]));
-        $this->success('获取已点赞的会员', ['list' => $query->order('mid asc')->column('mid')]);
-    }
-
-    /**
-     * 获取已收藏的会员
-     */
-    public function getCollect()
-    {
-        $query = $this->app->db->name('DataNewsXCollect')->where($this->_vali([
-            'cid.require' => '文章ID不能为空！', 'type.value' => 1,
-        ]));
-        $this->success('获取已收藏的会员', ['list' => $query->order('mid asc')->column('mid')]);
     }
 
     /**
@@ -80,10 +58,10 @@ class News extends Controller
      */
     public function getComment()
     {
-        $data = $this->_vali(['cid.require' => '文章ID不能为空！']);
-        $query = $this->_query('DataNewsXComment')->where($data);
+        $map = $this->_vali(['cid.require' => '文章不能为空！']);
+        $query = $this->_query('DataNewsXComment')->where($map);
         $result = $query->order('id desc')->page(false, false, false, 5);
-        NewsService::instance()->buildListByMid($result['list']);
+        NewsService::instance()->buildListByCidAndMid($result['list']);
         $this->success('获取文章评论成功！', $result);
     }
 

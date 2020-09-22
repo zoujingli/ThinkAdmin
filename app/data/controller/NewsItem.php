@@ -2,6 +2,7 @@
 
 namespace app\data\controller;
 
+use app\data\service\NewsService;
 use think\admin\Controller;
 
 /**
@@ -53,9 +54,7 @@ class NewsItem extends Controller
      */
     protected function _page_filter(&$data)
     {
-        foreach ($data as &$vo) {
-            $vo['mark'] = think_string_to_array($vo['mark'] ?: '');
-        }
+        NewsService::instance()->buildListState($data);
     }
 
     /**

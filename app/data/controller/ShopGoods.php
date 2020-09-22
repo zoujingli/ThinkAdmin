@@ -83,7 +83,7 @@ class ShopGoods extends Controller
         $clist = $this->app->db->name('ShopGoodsCate')->whereIn('id', array_column($data, 'cate'))->column('pid,name,status', 'id');
         foreach ($data as &$vo) {
             $vo['cate'] = $clist[$vo['cate']] ?? $vo['cate'];
-            $vo['mark'] = think_string_to_array($vo['mark'] ?: '');
+            $vo['mark'] = think_string_to_array($vo['mark'] ?: '', ',', $this->marks);
         }
     }
 

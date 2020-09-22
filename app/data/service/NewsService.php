@@ -34,29 +34,23 @@ class NewsService extends Service
      * @param array $list 数据列表
      * @return array
      */
-    public function buildListByCid(array &$list = []): array
+    public function buildListByCidAndMid(array &$list = []): array
     {
         if (count($list) > 0) {
+            /*! 读取文章内容 */
             $cids = array_unique(array_column($list, 'cid'));
             $cols = 'id,name,cover,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
-            $news = $this->app->db->name('DataNewsItem')->whereIn('id', $cids)->column($cols, 'id');
-            foreach ($list as &$vo) $vo['record'] = $news[$vo['cid']] ?? [];
-        }
-        return $list;
-    }
-
-    /**
-     * 根据MID绑定列表数据
-     * @param array $list 数据列表
-     * @return array
-     */
-    public function buildListByMid(array &$list = []): array
-    {
-        if (count($list) > 0) {
+            $items = $this->app->db->name('DataNewsItem')->whereIn('id', $cids)->column($cols, 'id');
+            $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
+            foreach ($items as &$vo) $vo['mark'] = think_string_to_array($vo['mark'] ?: '', ',', $marks);
+            /*! 绑定会员数据 */
             $mids = array_unique(array_column($list, 'mid'));
             $cols = 'id,phone,nickname,username,headimg,status';
-            $mems = $this->app->db->name('DataMember')->whereIn('id', $mids)->column($cols, 'id');
-            foreach ($list as &$vo) $vo['member'] = $mems[$vo['mid']] ?? [];
+            $users = $this->app->db->name('DataMember')->whereIn('id', $mids)->column($cols, 'id');
+            foreach ($list as &$vo) {
+                $vo['record'] = $items[$vo['cid']] ?? [];
+                $vo['member'] = $users[$vo['mid']] ?? [];
+            }
         }
         return $list;
     }
@@ -69,13 +63,18 @@ class NewsService extends Service
      */
     public function buildListState(array &$list, int $mid = 0): array
     {
-        if (count($list) > 0 && $mid > 0) {
-            $map = [['mid', '=', $mid], ['cid', 'in', array_column($list, 'id')]];
-            $cid1s = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 2])->column('cid');
-            $cid2s = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 1])->column('cid');
+        if (count($list) > 0) {
+            [$cid1s, $cid2s] = [[], []];
+            if ($mid > 0) {
+                $map = [['mid', '=', $mid], ['cid', 'in', array_column($list, 'id')]];
+                $cid1s = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 2])->column('cid');
+                $cid2s = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 1])->column('cid');
+            }
+            $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
             foreach ($list as &$vo) {
                 $vo['my_like_state'] = in_array($vo['id'], $cid1s) ? 1 : 0;
                 $vo['my_coll_state'] = in_array($vo['id'], $cid2s) ? 1 : 0;
+                $vo['mark'] = think_string_to_array($vo['mark'] ?: '', ',', $marks);
             }
         }
         return $list;
