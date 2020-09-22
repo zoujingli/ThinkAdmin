@@ -131,15 +131,14 @@ $(function () {
         };
         // 内容区域动态加载后初始化
         this.reInit = function ($dom) {
-            $(window).trigger('scroll'), $.vali.listen(this), $dom = $dom || $(this.selecter);
+            $.vali.listen(this), $dom = $dom || $(this.selecter);
             $dom.find('[required]').map(function ($parent) {
                 if (($parent = $(this).parent()) && $parent.is('label')) {
                     $parent.addClass('label-required-prev');
                 } else {
                     $parent.prevAll('label').addClass('label-required-next');
                 }
-            });
-            $dom.find('input[data-date-range]').map(function () {
+            }), $dom.find('input[data-date-range]').map(function () {
                 this.setAttribute('autocomplete', 'off');
                 laydate.render({
                     type: this.getAttribute('data-date-range') || 'date',
@@ -147,8 +146,7 @@ $(function () {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
-            });
-            $dom.find('input[data-date-input]').map(function () {
+            }), $dom.find('input[data-date-input]').map(function () {
                 this.setAttribute('autocomplete', 'off');
                 laydate.render({
                     type: this.getAttribute('data-date-input') || 'date',
@@ -156,14 +154,15 @@ $(function () {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
-            });
-            $dom.find('[data-file]:not([data-inited])').map(function (index, elem, $this, field) {
+            }), $dom.find('[data-file]:not([data-inited])').map(function (index, elem, $this, field) {
                 $this = $(elem), field = $this.attr('data-field') || 'file';
                 if (!$this.data('input')) $this.data('input', $('[name="' + field + '"]').get(0));
                 $this.uploadFile(function (url, file) {
                     $($this.data('input')).data('file', file).val(url).trigger('change');
                 });
-            });
+            }), setTimeout(function () {
+                $(window).trigger('scroll');
+            }, 500);
         };
         // 在内容区显示视图
         this.show = function (html) {
@@ -286,10 +285,6 @@ $(function () {
         };
         // 后台菜单动作初始化
         this.listen = function () {
-            /*! 初始化操作 */
-            layui.form.on('switch(ThinkAdminDebug)', function (data) {
-                jQuery.post(tapiRoot + '/api.plugs/debug', {state: data.elem.checked ? 1 : 0});
-            });
             /*! 菜单模式切换 */
             (function ($menu, miniClass) {
                 /*! Mini 菜单模式切换及显示 */
@@ -334,7 +329,7 @@ $(function () {
                         $all = $all.not($('a[data-menu-node="' + tmpNode + '"]').parent().addClass('layui-this'));
                     }
                     $all.removeClass('layui-this');
-                    // 菜单模式切换
+                    /*! 菜单模式切换 */
                     if (node.split('-').length > 2) {
                         var _tmp = node.split('-'), _node = _tmp.shift() + '-' + _tmp.shift();
                         $('[data-menu-layout]').not($('[data-menu-layout="' + _node + '"]').removeClass('layui-hide')).addClass('layui-hide');
@@ -344,7 +339,7 @@ $(function () {
                     that.syncOpenStatus(1);
                 }
             };
-            // URI初始化动作
+            /*! URI初始化动作 */
             window.onhashchange.call(this);
         };
     };
@@ -352,38 +347,38 @@ $(function () {
     /*! 注册对象到Jq */
     $.vali = function (form, callback, options) {
         return (new function (that) {
-            // 表单元素
+            /*! 表单元素 */
             that = this, this.tags = 'input,textarea,select';
-            // 检测元素事件
+            /*! 检测元素事件 */
             this.checkEvent = {change: true, blur: true, keyup: false};
-            // 去除字符串两头的空格
+            /*! 去除字符串的空格 */
             this.trim = function (str) {
                 return str.replace(/(^\s*)|(\s*$)/g, '');
             };
-            // 标签元素是否可见
+            /*! 标签元素是否可见 */
             this.isVisible = function (ele) {
                 return $(ele).is(':visible');
             };
-            // 检测属性是否有定义
+            /*! 检测属性是否有定义 */
             this.hasProp = function (ele, prop) {
                 if (typeof prop !== "string") return false;
                 var attrProp = ele.getAttribute(prop);
                 return (typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false);
             };
-            // 判断表单元素是否为空
+            /*! 判断表单元素是否为空 */
             this.isEmpty = function (ele, value) {
                 var trim = this.trim(ele.value);
                 value = value || ele.getAttribute('placeholder');
                 return (trim === "" || trim === value);
             };
-            // 正则验证表单元素
+            /*! 正则验证表单元素 */
             this.isRegex = function (ele, regex, params) {
                 var input = $(ele).val(), real = this.trim(input);
                 regex = regex || ele.getAttribute('pattern');
                 if (real === "" || !regex) return true;
                 return new RegExp(regex, params || 'i').test(real);
             };
-            // 检侧所的表单元素
+            /*! 检侧所有表单元素 */
             this.checkAllInput = function () {
                 var isPass = true;
                 $(form).find(this.tags).each(function () {
@@ -391,7 +386,7 @@ $(function () {
                 });
                 return isPass;
             };
-            // 检测表单单元
+            /*! 检测表单单元 */
             this.checkInput = function (input) {
                 var tag = input.tagName.toLowerCase(), need = this.hasProp(input, "required");
                 var type = (input.getAttribute("type") || '').replace(/\W+/, "").toLowerCase();
@@ -402,29 +397,29 @@ $(function () {
                 if (need && this.isEmpty(input)) return this.remind(input);
                 return this.isRegex(input) ? (this.hideError(input), true) : this.remind(input);
             };
-            // 验证标志
+            /*! 验证标志 */
             this.remind = function (input) {
                 if (!this.isVisible(input)) return true;
                 this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误');
                 return false;
             };
-            // 错误消息显示
+            /*! 错误消息显示 */
             this.showError = function (ele, content) {
                 $(ele).addClass('validate-error'), this.insertError(ele);
                 $($(ele).data('input-info')).addClass('layui-anim layui-anim-fadein').css({width: 'auto'}).html(content);
             };
-            // 错误消息消除
+            /*! 错误消息消除 */
             this.hideError = function (ele) {
                 $(ele).removeClass('validate-error'), this.insertError(ele);
                 $($(ele).data('input-info')).removeClass('layui-anim-fadein').css({width: '30px'}).html('');
             };
-            // 错误消息标签插入
+            /*! 错误消息标签插入 */
             this.insertError = function (ele) {
                 var $html = $('<span style="padding-right:12px;color:#a94442;position:absolute;right:0;font-size:12px;z-index:2;display:block;width:34px;text-align:center;pointer-events:none"></span>');
                 $html.css({top: $(ele).position().top + 'px', paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('height')});
                 $(ele).data('input-info') || $(ele).data('input-info', $html.insertAfter(ele));
             };
-            // 表单验证入口
+            /*! 表单验证入口 */
             this.check = function (form, callback) {
                 $(form).attr("novalidate", "novalidate");
                 $(form).find(that.tags).map(function () {
@@ -443,8 +438,7 @@ $(function () {
                         callback.call(this, $(form).formToJson());
                     }
                     return event.preventDefault(), false;
-                });
-                $(form).find('[data-form-loaded]').map(function () {
+                }).find('[data-form-loaded]').map(function () {
                     $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
                     $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
                 });
