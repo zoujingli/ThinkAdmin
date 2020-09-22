@@ -1,10 +1,12 @@
+@import "console.dynamic.less";
+
 fieldset {
   margin: 0 0 10px 0;
-  border: 1px solid #DCDCDC;
+  border: 1px solid @borderColor;
   padding: 10px 20px 5px 20px;
   background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
+  box-shadow: @minShadow;
+  border-radius: @borderRadus;
 
   legend {
     color: #666;
@@ -14,13 +16,13 @@ fieldset {
 }
 
 .layui-code {
-  border-radius: 5px;
+  border-radius: @borderRadus;
 }
 
 .layui-tab, .layui-card {
   overflow: hidden;
-  border-radius: 5px;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
+  box-shadow: @minShadow;
+  border-radius: @borderRadus;
 
   .layui-card-header {
     padding: 0 20px;
@@ -33,6 +35,12 @@ fieldset {
   .layui-tab-content {
     padding: 20px;
     background: #fff;
+  }
+}
+
+.layui-body > .layui-card > .layui-card-body {
+  > .layui-tab, > .layui-card {
+    box-shadow: @maxShadow;
   }
 }
 
@@ -52,7 +60,7 @@ fieldset {
   }
 
   &-disabled {
-    border: 1px solid #DCDCDC;
+    border: 1px solid @borderColor;
   }
 
   & + .layui-btn {
@@ -62,7 +70,7 @@ fieldset {
   &-group {
     overflow: hidden;
     line-height: 28px;
-    border-radius: 5px;
+    border-radius: @borderRadus;
     background: #009688;
     border: 1px solid #009688 !important;
 
@@ -88,7 +96,7 @@ fieldset {
 
 .layui-badge {
   margin-right: 5px;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
+  box-shadow: @minShadow;
 
   &-middle {
     width: 1em;
@@ -99,7 +107,6 @@ fieldset {
     vertical-align: middle;
   }
 }
-
 
 /*! 搜索表单样式 */
 .form-search {
@@ -172,18 +179,18 @@ fieldset {
 .think-box-shadow {
   padding: 20px !important;
   background: #fff !important;
-  border-radius: 5px;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
+  box-shadow: @maxShadow;
+  border-radius: @borderRadus;
 }
 
 /** checkbox & radio */
 label.think-radio, label.think-checkbox {
+  cursor: pointer;
   margin-right: 10px;
   display: inline-block;
 }
 
 .think-radio, .think-checkbox {
-  cursor: pointer;
   margin-top: 10px;
   font-weight: 400;
   line-height: 18px;
@@ -191,7 +198,8 @@ label.think-radio, label.think-checkbox {
   input[type=radio], input[type=checkbox] {
     width: 18px;
     height: 18px;
-    border: 1px solid #DCDCDC;
+    cursor: pointer;
+    border: 1px solid @borderColor;
     position: relative;
     background: #fff;
     margin-right: 5px;
@@ -207,6 +215,12 @@ label.think-radio, label.think-checkbox {
       &:after {
         display: block;
         position: relative;
+        animation-duration: .3s;
+        -webkit-animation-duration: .3s;
+        animation-fill-mode: both;
+        -webkit-animation-fill-mode: both;
+        animation-name: layui-scale-spring;
+        -webkit-animation-name: layui-scale-spring;
       }
     }
   }
@@ -219,9 +233,10 @@ label.think-radio, label.think-checkbox {
       left: 4px;
       width: 8px;
       height: 8px;
+      cursor: pointer;
       content: '';
       background: #009688;
-      border-radius: 1em
+      border-radius: 1em;
     }
   }
 
@@ -230,6 +245,7 @@ label.think-radio, label.think-checkbox {
 
     &:checked:after {
       color: #009688;
+      cursor: pointer;
       padding: 2px;
       content: "\e605";
       font-size: 12px;
@@ -278,10 +294,10 @@ label.think-radio, label.think-checkbox {
 .layui-table {
   overflow: hidden;
   border-width: 0;
-  border-color: #DCDCDC;
-  border-radius: 5px;
+  box-shadow: @minShadow;
+  border-color: @borderColor;
+  border-radius: @borderRadus;
   border-collapse: separate;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
 
   &[lay-skin='nob'] {
     tr {
@@ -293,7 +309,7 @@ label.think-radio, label.think-checkbox {
 
   &[lay-skin='line'] {
     border-width: 0;
-    border-color: #DCDCDC;
+    border-color: @borderColor;
 
     tr {
       td:first-child, th:first-child {
@@ -311,7 +327,7 @@ label.think-radio, label.think-checkbox {
   tr {
     td, th {
       font-size: 12px;
-      border-color: #DCDCDC;
+      border-color: @borderColor;
       border-width: 0 0 1px 1px;
 
       .text-explode {
@@ -406,7 +422,7 @@ label.think-radio, label.think-checkbox {
       color: #666;
       padding: 2px;
       font-size: 9pt;
-      border: 1px solid #DCDCDC;
+      border: 1px solid @borderColor;
       text-align: center;
       line-height: 18px
     }

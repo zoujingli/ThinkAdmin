@@ -13,6 +13,8 @@
 /public/static/theme/css/package-lock.json
 /public/static/theme/css/console.custom.css
 /public/static/theme/css/console.custom.css.map
+/public/static/theme/css/console.dynamic.css
+/public/static/theme/css/console.dynamic.css.map
 /public/static/theme/css/console.layout.css
 /public/static/theme/css/console.layout.css.map
 /public/static/theme/css/console.layui.css

@@ -1,3 +1,5 @@
+@import "console.dynamic.less";
+
 .layui-layout {
   > .layui-side {
     top: 50px;
@@ -24,7 +26,7 @@
         position: absolute;
         background: #fff;
         line-height: 50px;
-        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: @maxShadow;
       }
 
       > .layui-card-header + .layui-card-body {
@@ -43,7 +45,7 @@
 
         .layui-tab.layui-tab-card {
           border: none;
-          box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: @maxShadow;
         }
 
         .layui-tab.layui-tab-card > .layui-tab-content.think-box-shadow {
@@ -98,38 +100,38 @@
 
     .layui-nav-child {
       top: 49px;
+      border: 0;
       padding: 0;
-      border: none;
+      background: #eef;
       line-height: 45px;
-      background: #eaedf1;
 
       + a {
-        padding-right: 35px
-      }
+        padding-right: 35px;
 
-      + a img {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%
+        img {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%
+        }
       }
 
       &.layui-show + a {
-        background: #fff
-      }
+        background: #fff;
 
-      &.layui-show + a span {
-        color: #333
+        span {
+          color: #333
+        }
       }
 
       dd {
         background: #fff;
-      }
 
-      dd a {
-        padding: 0;
-        color: #333;
-        margin-top: 1px;
-        text-align: center;
+        a {
+          padding: 0;
+          color: #333;
+          margin-top: 1px;
+          text-align: center;
+        }
       }
     }
   }
@@ -171,11 +173,12 @@
           background: hsla(0, 0%, 39%, .2) !important
         }
       }
+
+      &ed {
+        border-bottom: none !important;
+      }
     }
 
-    .layui-nav-itemed {
-      border-bottom: none !important
-    }
 
     .layui-nav-tree-top a {
       height: 28px !important;

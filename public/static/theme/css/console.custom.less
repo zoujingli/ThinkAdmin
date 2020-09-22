@@ -1,3 +1,5 @@
+@import "console.dynamic.less";
+
 .notdata {
   padding: 15px;
   display: block;
@@ -6,9 +8,9 @@
   line-height: 22px;
   border-radius: 5px;
   letter-spacing: 6px;
-  border: 1px solid #DCDCDC;
+  border: 1px solid @borderColor;
   background-color: #f2f2f2;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
+  box-shadow: @minShadow;
 }
 
 .notselect {
@@ -46,7 +48,11 @@
 }
 
 .shadow {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+  box-shadow: @maxShadow;
+}
+
+.shadow-mini {
+  box-shadow: @minShadow;
 }
 
 .noshadow {
@@ -204,11 +210,11 @@
   }
 
   &-line {
-    border: 1px solid #DCDCDC;
+    border: 1px solid @borderColor;
   }
 
   &-bottom-line {
-    border-bottom: 1px solid #DCDCDC;
+    border-bottom: 1px solid @borderColor;
   }
 
   &-top-0 {
@@ -866,14 +872,14 @@
   background-size: cover;
 
   span.layui-icon {
-    display: none;
+    right: 0;
+    color: #fff;
     width: 20px;
     height: 20px;
+    display: none;
+    position: absolute;
     text-align: center;
     line-height: 22px;
-    color: #fff;
-    right: 0;
-    position: absolute;
     background: rgba(0, 0, 0, .5)
   }
 
@@ -916,25 +922,27 @@
   margin-bottom: 10px;
   letter-spacing: 1px;
 
-  .portal-block-icon {
-    top: 45%;
-    right: 8%;
-    font-size: 65px;
-    position: absolute;
-    color: rgba(255, 255, 255, 0.4);
-  }
+  .portal-block {
+    &-icon {
+      top: 45%;
+      right: 8%;
+      font-size: 65px;
+      position: absolute;
+      color: rgba(255, 255, 255, 0.4);
+    }
 
-  .portal-block-item {
-    color: #fff;
-    padding: 15px 25px;
-    position: relative;
-    line-height: 3em;
-    border-radius: 5px;
-    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
+    &-item {
+      color: #fff;
+      padding: 15px 25px;
+      position: relative;
+      line-height: 3em;
+      border-radius: 5px;
+      box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
 
-    > div:nth-child(2) {
-      font-size: 46px;
-      line-height: 46px;
+      > div:nth-child(2) {
+        font-size: 46px;
+        line-height: 46px;
+      }
     }
   }
 }
@@ -952,10 +960,10 @@
   }
 
   > ul {
-    margin: 0;
-    padding: 0;
     float: right;
     height: 30px;
+    margin: 0;
+    padding: 0;
     display: inline-block;
 
     > li:last-child, > li:first-child {
@@ -985,7 +993,7 @@
         color: #333;
         width: 30px;
         height: 30px;
-        border: 1px solid #DCDCDC;
+        border: 1px solid @borderColor;
         overflow: hidden;
         font-size: 12px;
         text-align: center;
@@ -1016,7 +1024,8 @@
   height: 580px;
   position: relative;
   background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
-  border-radius: 5px;
+  box-shadow: @minShadow;
+  border-radius: @borderRadus;
 
   .mobile-header {
     color: #fff;
@@ -1045,7 +1054,7 @@
     position: absolute;
     background: #f5f5f5;
     border-radius: 0 0 5px 5px;
-    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
+    //  box-shadow: @minShadow;
 
     iframe {
       width: 100%;
