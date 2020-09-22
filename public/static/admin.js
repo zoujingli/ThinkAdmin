@@ -131,7 +131,7 @@ $(function () {
         };
         // 内容区域动态加载后初始化
         this.reInit = function ($dom) {
-            $.vali.listen(this), $dom = $dom || $(this.selecter);
+            $(window).trigger('scroll'), $.vali.listen(this), $dom = $dom || $(this.selecter);
             $dom.find('[required]').map(function ($parent) {
                 if (($parent = $(this).parent()) && $parent.is('label')) {
                     $parent.addClass('label-required-prev');
@@ -807,6 +807,19 @@ $(function () {
             }, false);
         })(code)
     };
+
+    /*! 图片懒加载转换处理 */
+    $(window).on('scroll resize load', function () {
+        var notFoundCount = 0, maxNotFound = 2, screenHeight = $(window).height();
+        $('[data-lazy-src]:not([data-lazy-loaded])').each(function (src, pos) {
+            if (this.getAttribute('data-lazy-loaded')) return true;
+            src = this.dataset.lazySrc, pos = this.getBoundingClientRect();
+            if (pos.bottom <= 0 || !src) return true;
+            if (pos.top >= screenHeight) return (notFoundCount++) < maxNotFound;
+            this.nodeName === 'IMG' ? this.src = src : this.style.backgroundImage = 'url(' + src + ')';
+            this.setAttribute('data-lazy-loaded', true);
+        });
+    });
 
     /*! 图片加载异常处理 */
     document.addEventListener('error', function (e, elem) {

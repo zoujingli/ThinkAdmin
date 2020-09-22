@@ -215,6 +215,404 @@
   }
 }
 
+
+.input-right-icon {
+  top: 0;
+  right: 0;
+  width: 38px;
+  height: 38px;
+  display: inline-block;
+  position: absolute;
+  text-align: center;
+  line-height: 38px;
+}
+
+/** 加载进度 */
+.pace-inactive {
+  display: none
+}
+
+.pace-progress {
+  top: 0;
+  right: 100%;
+  width: 100%;
+  height: 2px;
+  z-index: 2000;
+  position: fixed;
+  background: #22df80
+}
+
+.uploadimage {
+  width: 77px;
+  height: 77px;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  border: 1px dashed #e2e2e2;
+  background: url('../img/upimg.png') no-repeat center center;
+  background-size: cover;
+
+  span.layui-icon {
+    right: 0;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    display: none;
+    position: absolute;
+    text-align: center;
+    line-height: 22px;
+    background: rgba(0, 0, 0, .5)
+  }
+
+  &:hover span.layui-icon {
+    display: inline-block;
+  }
+}
+
+.uploadimagemtl {
+  margin-right: 8px;
+
+  a {
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    float: right;
+    display: none;
+    text-align: center;
+    line-height: 22px;
+    background: rgba(0, 0, 0, .5)
+  }
+
+  &:hover a {
+    cursor: pointer;
+    display: inline-block;
+
+    &:hover {
+      color: #fff;
+      text-decoration: none
+    }
+  }
+}
+
+[data-tips-image] {
+  cursor: zoom-in !important
+}
+
+[data-lazy-src] {
+  overflow: hidden;
+  position: relative;
+  background-size: 100%;
+  background-position: center center;
+}
+
+.portal-block-container {
+  font-size: 14px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+
+  .portal-block {
+    &-icon {
+      top: 45%;
+      right: 8%;
+      font-size: 65px;
+      position: absolute;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    &-item {
+      color: #fff;
+      padding: 15px 25px;
+      position: relative;
+      line-height: 3em;
+      border-radius: 5px;
+      box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
+
+      > div:nth-child(2) {
+        font-size: 46px;
+        line-height: 46px;
+      }
+    }
+  }
+}
+
+/* 通用分页 */
+.pagination-container {
+  margin-top: 20px;
+  line-height: 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  span {
+    color: #666;
+    font-size: 9pt
+  }
+
+  ul {
+    float: right;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+
+    li {
+      z-index: 1;
+      height: 30px;
+      line-height: 30px;
+      display: inline-block;
+
+      a, span {
+        color: #333;
+        width: 30px;
+        height: 30px;
+        border: 1px solid @borderColor;
+        overflow: hidden;
+        font-size: 12px;
+        text-align: center;
+        line-height: 30px;
+        margin-right: 3px;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2) inset;
+      }
+
+      span {
+        cursor: default;
+        background: #DCDCDC;
+      }
+
+      a:hover {
+        border-color: #009688;
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .4) inset;
+      }
+
+      &.active {
+        z-index: 2;
+
+        span {
+          color: #fff;
+          border-color: #009688;
+          background: #009688 !important
+        }
+      }
+
+      &.disabled {
+        span {
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 22px;
+        }
+      }
+
+      &:last-child, &:first-child {
+        a, span {
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 28px;
+        }
+      }
+    }
+  }
+}
+
+/** 手机盒子及微信菜单 */
+.mobile-preview {
+  width: 317px;
+  height: 580px;
+  position: relative;
+  background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
+  box-shadow: @minShadow;
+  border-radius: @borderRadius;
+
+  .mobile-header {
+    color: #fff;
+    width: auto;
+    margin: 0 30px;
+    overflow: hidden;
+    font-size: 15px;
+    padding-top: 30px;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    user-select: none;
+    pointer-events: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -webkit-pointer-events: none
+  }
+
+  .mobile-body {
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid #ccc;
+    position: absolute;
+    background: #f5f5f5;
+    border-radius: 0 0 5px 5px;
+
+    iframe {
+      width: 100%;
+      height: 100%
+    }
+  }
+
+  .mobile-footer {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    position: absolute;
+    padding-left: 43px;
+    background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
+    list-style-type: none;
+    border-radius: 0 0 5px 5px;
+
+    li {
+      float: left;
+      width: 33.33%;
+      position: relative;
+      text-align: center;
+      line-height: 50px;
+
+      a {
+        width: auto;
+        color: #616161;
+        border: 1px solid hsla(0, 0%, 100%, 0);
+        display: block;
+        overflow: hidden;
+        word-wrap: normal;
+        margin-top: -1px;
+        border-left: 1px solid #e7e7eb;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-bottom: -1px;
+        text-decoration: none;
+
+        &:hover {
+          background: rgba(0, 0, 0, .02)
+        }
+
+        &.active {
+          border: 1px solid #44b549 !important;
+          box-shadow: 0 0 1px #44b549
+        }
+
+        span:before {
+          width: 1px;
+          height: 1px;
+          content: '';
+          display: inline-block
+        }
+      }
+
+      > .close {
+        top: 1px;
+        right: 1px;
+        width: 18px;
+        height: 18px;
+        display: none;
+        cursor: pointer;
+        position: absolute;
+        text-align: center;
+        line-height: 18px
+      }
+
+      &:hover > .close {
+        display: inline-block;
+
+        &:hover {
+          color: #fff !important;
+          background: #999 !important
+        }
+      }
+    }
+
+    .icon {
+      &-add, &-sub {
+        display: inline-block;
+        vertical-align: middle
+      }
+
+      &-add {
+        width: 14px;
+        height: 14px;
+        border-bottom: none !important;
+        background: url(../img/wechat/index.png) 0 0 no-repeat
+      }
+
+      &-sub {
+        width: 7px;
+        height: 7px;
+        margin-right: 2px;
+        background: url(../img/wechat/index.png) 0 -3pc no-repeat
+      }
+    }
+
+    .sub-menu {
+      width: 100%;
+      bottom: 60px;
+      margin: -1px;
+      display: block;
+      position: absolute;
+      border: 1px solid #d0d0d0;
+      background-color: #fafafa;
+
+      ul li {
+        float: none;
+        width: 100%;
+        padding: 0;
+        z-index: 11;
+        display: block;
+
+        a {
+          padding: 0 5px;
+          border: 1px solid hsla(0, 0%, 100%, 0);
+
+          &.bottom-border {
+            margin: -1px -1px 0;
+            border-bottom: 1px solid #e7e7eb
+          }
+        }
+
+        &:last-child a.bottom-border {
+          border-bottom-color: #fff
+        }
+      }
+    }
+
+    .arrow {
+      left: 50%;
+      position: absolute;
+      margin-left: -6px;
+    }
+
+    .arrow_in, .arrow_out {
+      width: 0;
+      height: 0;
+      z-index: 10;
+      border: 6px dashed transparent;
+      display: inline-block;
+      border-top-style: solid;
+      border-bottom-width: 0;
+    }
+
+    .arrow_in {
+      z-index: 3;
+      bottom: -5px;
+      border-top-color: #fafafa
+    }
+
+    .arrow_out {
+      z-index: 2;
+      bottom: -6px;
+      border-top-color: #d0d0d0
+    }
+  }
+}
+
 .border {
   &-0 {
     border: 0 !important
@@ -842,396 +1240,6 @@
 
     &-40 {
       margin-bottom: 40px !important
-    }
-  }
-}
-
-.input-right-icon {
-  top: 0;
-  right: 0;
-  width: 38px;
-  height: 38px;
-  display: inline-block;
-  position: absolute;
-  text-align: center;
-  line-height: 38px;
-}
-
-/** 加载进度 */
-.pace-inactive {
-  display: none
-}
-
-.pace-progress {
-  top: 0;
-  right: 100%;
-  width: 100%;
-  height: 2px;
-  z-index: 2000;
-  position: fixed;
-  background: #22df80
-}
-
-.uploadimage {
-  width: 77px;
-  height: 77px;
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-  border: 1px dashed #e2e2e2;
-  background: url('../img/upimg.png') no-repeat center center;
-  background-size: cover;
-
-  span.layui-icon {
-    right: 0;
-    color: #fff;
-    width: 20px;
-    height: 20px;
-    display: none;
-    position: absolute;
-    text-align: center;
-    line-height: 22px;
-    background: rgba(0, 0, 0, .5)
-  }
-
-  &:hover span.layui-icon {
-    display: inline-block;
-  }
-}
-
-.uploadimagemtl {
-  margin-right: 8px;
-
-  a {
-    color: #fff;
-    width: 20px;
-    height: 20px;
-    float: right;
-    display: none;
-    text-align: center;
-    line-height: 22px;
-    background: rgba(0, 0, 0, .5)
-  }
-
-  &:hover a {
-    cursor: pointer;
-    display: inline-block;
-
-    &:hover {
-      color: #fff;
-      text-decoration: none
-    }
-  }
-}
-
-[data-tips-image] {
-  cursor: zoom-in !important
-}
-
-.portal-block-container {
-  font-size: 14px;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
-
-  .portal-block {
-    &-icon {
-      top: 45%;
-      right: 8%;
-      font-size: 65px;
-      position: absolute;
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    &-item {
-      color: #fff;
-      padding: 15px 25px;
-      position: relative;
-      line-height: 3em;
-      border-radius: 5px;
-      box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
-
-      > div:nth-child(2) {
-        font-size: 46px;
-        line-height: 46px;
-      }
-    }
-  }
-}
-
-/* 通用分页 */
-.pagination-container {
-  margin-top: 20px;
-  line-height: 30px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-
-  span {
-    color: #666;
-    font-size: 9pt
-  }
-
-  ul {
-    float: right;
-    height: 30px;
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-
-    li {
-      z-index: 1;
-      height: 30px;
-      line-height: 30px;
-      display: inline-block;
-
-      a, span {
-        color: #333;
-        width: 30px;
-        height: 30px;
-        border: 1px solid @borderColor;
-        overflow: hidden;
-        font-size: 12px;
-        text-align: center;
-        line-height: 30px;
-        margin-right: 3px;
-        border-radius: 50%;
-        display: inline-block;
-        box-sizing: border-box;
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2) inset;
-      }
-
-      span {
-        cursor: default;
-        background: #DCDCDC;
-      }
-
-      a:hover {
-        border-color: #009688;
-        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .4) inset;
-      }
-
-      &.active {
-        z-index: 2;
-
-        span {
-          color: #fff;
-          border-color: #009688;
-          background: #009688 !important
-        }
-      }
-
-      &.disabled {
-        span {
-          font-size: 16px;
-          font-weight: 700;
-          line-height: 22px;
-        }
-      }
-
-      &:last-child, &:first-child {
-        a, span {
-          font-size: 16px;
-          font-weight: 700;
-          line-height: 28px;
-        }
-      }
-    }
-  }
-}
-
-/** 手机盒子及微信菜单 */
-.mobile-preview {
-  width: 317px;
-  height: 580px;
-  position: relative;
-  background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
-  box-shadow: @minShadow;
-  border-radius: @borderRadius;
-
-  .mobile-header {
-    color: #fff;
-    width: auto;
-    margin: 0 30px;
-    overflow: hidden;
-    font-size: 15px;
-    padding-top: 30px;
-    text-align: center;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    word-wrap: normal;
-    user-select: none;
-    pointer-events: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -webkit-pointer-events: none
-  }
-
-  .mobile-body {
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 1px solid #ccc;
-    position: absolute;
-    background: #f5f5f5;
-    border-radius: 0 0 5px 5px;
-
-    iframe {
-      width: 100%;
-      height: 100%
-    }
-  }
-
-  .mobile-footer {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0;
-    border: 1px solid #ccc;
-    position: absolute;
-    padding-left: 43px;
-    background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
-    list-style-type: none;
-    border-radius: 0 0 5px 5px;
-
-    li {
-      float: left;
-      width: 33.33%;
-      position: relative;
-      text-align: center;
-      line-height: 50px;
-
-      a {
-        width: auto;
-        color: #616161;
-        border: 1px solid hsla(0, 0%, 100%, 0);
-        display: block;
-        overflow: hidden;
-        word-wrap: normal;
-        margin-top: -1px;
-        border-left: 1px solid #e7e7eb;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        margin-bottom: -1px;
-        text-decoration: none;
-
-        &:hover {
-          background: rgba(0, 0, 0, .02)
-        }
-
-        &.active {
-          border: 1px solid #44b549 !important;
-          box-shadow: 0 0 1px #44b549
-        }
-
-        span:before {
-          width: 1px;
-          height: 1px;
-          content: '';
-          display: inline-block
-        }
-      }
-
-      > .close {
-        top: 1px;
-        right: 1px;
-        width: 18px;
-        height: 18px;
-        display: none;
-        cursor: pointer;
-        position: absolute;
-        text-align: center;
-        line-height: 18px
-      }
-
-      &:hover > .close {
-        display: inline-block;
-
-        &:hover {
-          color: #fff !important;
-          background: #999 !important
-        }
-      }
-    }
-
-    .icon {
-      &-add, &-sub {
-        display: inline-block;
-        vertical-align: middle
-      }
-
-      &-add {
-        width: 14px;
-        height: 14px;
-        border-bottom: none !important;
-        background: url(../img/wechat/index.png) 0 0 no-repeat
-      }
-
-      &-sub {
-        width: 7px;
-        height: 7px;
-        margin-right: 2px;
-        background: url(../img/wechat/index.png) 0 -3pc no-repeat
-      }
-    }
-
-    .sub-menu {
-      width: 100%;
-      bottom: 60px;
-      margin: -1px;
-      display: block;
-      position: absolute;
-      border: 1px solid #d0d0d0;
-      background-color: #fafafa;
-
-      ul li {
-        float: none;
-        width: 100%;
-        padding: 0;
-        z-index: 11;
-        display: block;
-
-        a {
-          padding: 0 5px;
-          border: 1px solid hsla(0, 0%, 100%, 0);
-
-          &.bottom-border {
-            margin: -1px -1px 0;
-            border-bottom: 1px solid #e7e7eb
-          }
-        }
-
-        &:last-child a.bottom-border {
-          border-bottom-color: #fff
-        }
-      }
-    }
-
-    .arrow {
-      left: 50%;
-      position: absolute;
-      margin-left: -6px;
-    }
-
-    .arrow_in, .arrow_out {
-      width: 0;
-      height: 0;
-      z-index: 10;
-      border: 6px dashed transparent;
-      display: inline-block;
-      border-top-style: solid;
-      border-bottom-width: 0;
-    }
-
-    .arrow_in {
-      z-index: 3;
-      bottom: -5px;
-      border-top-color: #fafafa
-    }
-
-    .arrow_out {
-      z-index: 2;
-      bottom: -6px;
-      border-top-color: #d0d0d0
     }
   }
 }

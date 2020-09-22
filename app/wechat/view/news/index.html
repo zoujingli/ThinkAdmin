@@ -20,18 +20,17 @@
             </div>
             {foreach $vo.articles as $k => $v}
             {if $k < 1}
-            <div data-tips-image='{$v.local_url}' class='news-articel-item' style='background-image:url("{$v.local_url}")'>
+            <div data-tips-image='{$v.local_url}' data-lazy-src="{$v.local_url}" class='news-articel-item'>
                 {if $v.title}<p>{$v.title}</p>{/if}
             </div>
             <div class="hr-line-dashed"></div>
             {else}
             <div class='news-articel-item other'>
                 <span>{$v.title}</span>
-                <div data-tips-image='{$v.local_url}' style='background-image:url("{$v.local_url}");'></div>
+                <div data-tips-image='{$v.local_url}' data-lazy-src="{$v.local_url}"></div>
             </div>
             <div class="hr-line-dashed"></div>
-            {/if}
-            {/foreach}
+            {/if}{/foreach}
         </div>
         {/foreach}
     </div>
@@ -87,12 +86,7 @@
     }
 
     #news-box .news-item .news-articel-item {
-        width: 100%;
         height: 150px;
-        overflow: hidden;
-        position: relative;
-        background-size: 100%;
-        background-position: center center
     }
 
     #news-box .news-item .news-articel-item p {
