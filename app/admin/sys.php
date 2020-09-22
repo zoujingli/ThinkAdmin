@@ -21,7 +21,7 @@ try {
     /*! 全局数据变更数据 */
     $GLOBALS['oplogs'] = [];
     /*! 数据变更日志开关状态 */
-    if (intval(sysconf('base.oplog_state'))) {
+    if (sysconf('base.oplog_state')) {
         /*! 数据变更批量写入 */
         app()->event->listen('HttpEnd', function () {
             if (is_array($GLOBALS['oplogs']) && count($GLOBALS['oplogs']) > 0) {
@@ -37,7 +37,7 @@ try {
         });
         /*! 数据操作SQL语句监听分析 */
         app()->db->listen(function ($sqlstr) {
-            [$type,] = explode(' ', $sqlstr);
+            [$type] = explode(' ', $sqlstr);
             if (in_array($type, ['INSERT', 'UPDATE', 'DELETE']) && AdminService::instance()->isLogin()) {
                 [$sqlstr] = explode('GROUP BY', explode('ORDER BY', $sqlstr)[0]);
                 if (preg_match('/^INSERT\s+INTO\s+`(.*?)`\s+SET\s+(.*?)\s*$/i', $sqlstr, $matches)) {
