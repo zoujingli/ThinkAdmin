@@ -26,8 +26,10 @@
                 <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td class="sub-span-blue nowrap">
-                <img alt="img" style="width:32px;height:32px" data-tips-image class="margin-right-5" src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}">
-                <div class="inline-block text-middle">
+                <div class="headimg">
+                    <img alt="img" data-tips-image src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}">
+                </div>
+                <div class="inline-block">
                     {notempty name='vo.username'}
                     <div>姓名：<span>{$vo.username|default='-'}</span></div>
                     {else}
@@ -36,7 +38,7 @@
                     <div>手机：<span>{$vo.phone|default='-'}</span></div>
                 </div>
             </td>
-            <td>{$vo.region_province|default=''}{$vo.region_city|default=''}{$vo.region_area|default=''}</td>
+            <td class="nowrap">{$vo.region_province|default=''}{$vo.region_city|default=''}{$vo.region_area|default=''}</td>
             <td class="nowrap">
                 使用状态：{if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{elseif $vo.status eq 1}<b class="color-green margin-right-5">使用中</b>{/if}<br>
                 注册时间：{$vo.create_at|format_datetime}

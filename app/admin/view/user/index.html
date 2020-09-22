@@ -26,8 +26,7 @@
         <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}</li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v}</li>
-        {/if}
-        {/foreach}
+        {/if}{/foreach}
     </ul>
     <div class="layui-tab-content think-box-shadow table-block table-block">
         {include file='user/index_search'}
@@ -58,8 +57,10 @@
                     <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
                 </td>
                 <td class='text-left nowrap'>
-                    <img alt="img" width="40px" height="40px" data-tips-image src="{$vo.headimg|default=''}">
-                    <div class="inline-block sub-span-blue text-middle margin-left-10">
+                    <div class="headimg">
+                        <img alt="img" data-tips-image src="{$vo.headimg|default=''}">
+                    </div>
+                    <div class="inline-block sub-span-blue">
                         登录账号：<span><b>{$vo.username|default=''}</b></span><br>
                         用户昵称：<span><b>{$vo.nickname|default='-'|raw}</b></span><br>
                     </div>

@@ -33,8 +33,10 @@
                     <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
                 </td>
                 <td class="nowrap relative">
-                    <img data-tips-image style="width:55px;height:55px" src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}" class="margin-right-5" alt="img">
-                    <div class="inline-block text-middle sub-span-blue">
+                    <div class="headimg" style="width:56px;height:56px">
+                        <img data-tips-image src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}" alt="img">
+                    </div>
+                    <div class="inline-block sub-span-blue">
                         会员昵称：{$vo.member.nickname|default='--'}<br>
                         会员手机：<span>{$vo.member.phone|default='--'}</span><br>
                         订单单号：<span>{$vo.order_no|default='--'}</span><br>

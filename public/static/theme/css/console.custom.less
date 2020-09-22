@@ -74,6 +74,17 @@
   display: inline-block !important
 }
 
+.think-box-shadow {
+  padding: 20px !important;
+  background: #fff !important;
+  box-shadow: @maxShadow;
+  border-radius: @borderRadius;
+
+  > form.layui-card {
+    box-shadow: none;
+  }
+}
+
 .pull- {
   &left {
     float: left !important
@@ -1034,7 +1045,7 @@
   position: relative;
   background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
   box-shadow: @minShadow;
-  border-radius: @borderRadus;
+  border-radius: @borderRadius;
 
   .mobile-header {
     color: #fff;

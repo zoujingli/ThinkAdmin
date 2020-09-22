@@ -41,11 +41,13 @@
             <td class='list-table-check-td think-checkbox'>
                 <label><input class="list-check-box" value='{$vo.openid}' type='checkbox'></label>
             </td>
-            <td class='text-left nowrap relative layui-elip'>
-                <img alt="" src="{$vo.headimgurl|default=''}" data-tips-image class="inline-block text-top margin-right-5" style="width:40px;height:40px">
+            <td class='text-left nowrap'>
+                <div class="headimg">
+                    <img alt="img" src="{$vo.headimgurl|default=''}" data-tips-image>
+                </div>
                 <div class="inline-block">
-                    昵称：{$vo.nickname|default='--'}<br>
-                    区域：{$vo.country|default='--'} {$vo.province} {$vo.city}
+                    <p>昵称：{$vo.nickname|default='--'}</p>
+                    <p>区域：{$vo.country|default='--'} {$vo.province|default=''} {$vo.city|default=''}</p>
                 </div>
             </td>
             <td class="text-left padding-0">
