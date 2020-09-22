@@ -2,19 +2,17 @@
 
 {block name='style'}
 <style>
-    body {
-        min-width: 500px
-    }
-
     .news-container {
-        position: relative
+        overflow: auto;
+        position: relative;
+        max-height: 480px;
     }
 
     .news-container .news-item {
         top: 0;
         left: 0;
         width: 228px;
-        margin: 20px 0 20px 20px;
+        margin: 0 0 20px 20px;
         padding: 5px;
         cursor: pointer;
         position: relative;
@@ -82,49 +80,37 @@
         margin: 6px 0 1px 0
     }
 
-    .page-style {
-        bottom: 0;
-        width: 100%;
-        height: 50px;
-        padding: 0 10px;
-        position: fixed;
-        background: #fff
-    }
-
     .pagination-container {
         left: 0;
         right: 0;
         bottom: 0;
+        padding: 5px 20px;
         position: fixed;
         background: #fff;
-        text-indent: 20px;
+        border-top: 1px solid #dedede;
     }
 </style>
 {/block}
 
 {block name="body"}
-<div class="layui-clear news-container layui-hide">
+<div class="layui-clear news-container layui-hide padding-top-20">
     {foreach $list as $vo}
-    <div class="news-item" data-news-id="{$vo.id}">
-        {foreach $vo.articles as $k => $v}
-        {if $k < 1}
-        <div class='news-articel-item' style='background-image:url("{$v.local_url}")'>
+    <div class="news-item shadow-mini" data-news-id="{$vo.id}">
+        {foreach $vo.articles as $k => $v}{if $k < 1}
+        <div class='news-articel-item' data-lazy-src="{$v.local_url}">
             {if $v.title}<p>{$v.title}</p>{/if}
         </div>
         <div class="hr-line-dashed"></div>
         {else}
         <div class='news-articel-item other'>
             <div class='right-text'>{$v.title}</div>
-            <div class='left-image' style='background-image:url("{$v.local_url}");'></div>
+            <div class='left-image' data-lazy-src="{$v.local_url}"></div>
         </div>
         <div class="hr-line-dashed"></div>
-        {/if}
-        {/foreach}
+        {/if}{/foreach}
     </div>
     {/foreach}
-    {if empty($list)}<p class="notdata">没有记录哦！</p>{/if}
 </div>
-<div class="padding-10"></div>
 {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 {/block}
 
@@ -132,23 +118,23 @@
 <script>
     require(['jquery.masonry'], function (Masonry) {
         $('.news-container.layui-hide').removeClass('layui-hide');
-        var msnry = new Masonry($('.news-container').get(0), {itemSelector: '.news-item', columnWidth: 0});
+        var msnry = new Masonry($('.news-container').get(0), {
+            itemSelector: '.news-item', columnWidth: 0
+        });
         msnry.layout();
-        // 事件处理
+        /*! 事件处理 */
         $('.news-item').on('mouseenter', '.news-container', function () {
             $(this).addClass('active');
         }).on('mouseleave', '.news-container', function () {
             $(this).removeClass('active');
         });
-        // 外部选择器
+        /*! 外部选择器 */
         var seletor = '[name="{:decode(input("get.field","0"))}"]';
-        if (seletor) {
-            $('[data-news-id]').on('click', function () {
-                window.top.$(seletor).val($(this).attr('data-news-id')).trigger('change');
-                parent.layer.close(parent.layer.getFrameIndex(window.name))
-            });
-        }
-        // 分页事件处理
+        $('[data-news-id]').on('click', function () {
+            window.top.$(seletor).val($(this).attr('data-news-id')).trigger('change');
+            parent.layer.close(parent.layer.getFrameIndex(window.name))
+        });
+        /*! 分页事件处理 */
         $('body').off('change', '.pagination-trigger select').on('change', '.pagination-trigger select', function () {
             var urls = this.options[this.selectedIndex].getAttribute('data-url').split('#');
             urls.shift(), window.location.href = urls.join('#');
