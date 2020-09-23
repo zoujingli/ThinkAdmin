@@ -223,17 +223,17 @@
     },
     {
         "name": "league/mime-type-detection",
-        "version": "1.4.0",
-        "version_normalized": "1.4.0.0",
+        "version": "1.5.0",
+        "version_normalized": "1.5.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/thephpleague/mime-type-detection.git",
-            "reference": "fda190b62b962d96a069fcc414d781db66d65b69"
+            "reference": "ea2fbfc988bade315acd5967e6d02274086d0f28"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/fda190b62b962d96a069fcc414d781db66d65b69",
-            "reference": "fda190b62b962d96a069fcc414d781db66d65b69",
+            "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/ea2fbfc988bade315acd5967e6d02274086d0f28",
+            "reference": "ea2fbfc988bade315acd5967e6d02274086d0f28",
             "shasum": "",
             "mirrors": [
                 {
@@ -250,7 +250,7 @@
             "phpstan/phpstan": "^0.12.36",
             "phpunit/phpunit": "^8.5.8"
         },
-        "time": "2020-08-09T10:34:01+00:00",
+        "time": "2020-09-21T18:10:53+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -958,17 +958,17 @@
     },
     {
         "name": "zoujingli/think-library",
-        "version": "v6.0.9",
-        "version_normalized": "6.0.9.0",
+        "version": "v6.0.10",
+        "version_normalized": "6.0.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "6fa904cad8bde5b2d04750d17323fe715a0c2b4d"
+            "reference": "9f778a0eaa1ae3c7dd15cd6f9812c94a29e438ae"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/6fa904cad8bde5b2d04750d17323fe715a0c2b4d",
-            "reference": "6fa904cad8bde5b2d04750d17323fe715a0c2b4d",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/9f778a0eaa1ae3c7dd15cd6f9812c94a29e438ae",
+            "reference": "9f778a0eaa1ae3c7dd15cd6f9812c94a29e438ae",
             "shasum": "",
             "mirrors": [
                 {
@@ -985,7 +985,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-09-19T10:23:24+00:00",
+        "time": "2020-09-23T02:52:29+00:00",
         "type": "library",
         "extra": {
             "think": {

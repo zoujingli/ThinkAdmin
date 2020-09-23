@@ -99,13 +99,13 @@ class HttpExtend
         $curl = curl_init();
         // Agent 代理设置
         curl_setopt($curl, CURLOPT_USERAGENT, static::getUserAgent());
-        // CURL 头信息设置
-        if (!empty($options['headers'])) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $options['headers']);
-        }
         // Cookie 信息设置
         if (!empty($options['cookie'])) {
             curl_setopt($curl, CURLOPT_COOKIE, $options['cookie']);
+        }
+        // Header 头信息设置
+        if (!empty($options['headers'])) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $options['headers']);
         }
         if (!empty($options['cookie_file'])) {
             curl_setopt($curl, CURLOPT_COOKIEJAR, $options['cookie_file']);

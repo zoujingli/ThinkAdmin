@@ -137,7 +137,7 @@ class MessageService extends Service
     public function sendChinaSms($phone, $content, $productid = '676767')
     {
         $tkey = date("YmdHis");
-        $result = HttpExtend::post('http://www.ztsms.cn/sendNSms.do', [
+        $result = HttpExtend::get('http://www.ztsms.cn/sendNSms.do', [
             'tkey'      => $tkey,
             'mobile'    => $phone,
             'content'   => $content,
@@ -202,7 +202,7 @@ class MessageService extends Service
     public function queryChinaSmsBalance()
     {
         $tkey = date("YmdHis");
-        $result = HttpExtend::post('http://www.ztsms.cn/balanceN.do', [
+        $result = HttpExtend::get('http://www.ztsms.cn/balanceN.do', [
             'username' => $this->chinaUsername, 'tkey' => $tkey,
             'password' => md5(md5($this->chinaPassword) . $tkey),
         ]);
@@ -246,7 +246,7 @@ class MessageService extends Service
     public function sendGlobeSms($code, $mobile, $content)
     {
         $tkey = date("YmdHis");
-        $result = HttpExtend::post('http://intl.zthysms.com/intSendSms.do', [
+        $result = HttpExtend::get('http://intl.zthysms.com/intSendSms.do', [
             'tkey'     => $tkey, 'code' => $code, 'mobile' => $mobile,
             'content'  => $content, 'username' => sysconf('sms_zt_username2'),
             'password' => md5(md5(sysconf('sms_zt_password2')) . $tkey),
@@ -264,7 +264,7 @@ class MessageService extends Service
     public function queryGlobeSmsBalance()
     {
         $tkey = date("YmdHis");
-        $result = HttpExtend::post('http://intl.zthysms.com/intBalance.do', [
+        $result = HttpExtend::get('http://intl.zthysms.com/intBalance.do', [
             'username' => $this->globeUsername, 'tkey' => $tkey, 'password' => md5(md5($this->globePassword) . $tkey),
         ]);
         if (!is_numeric($result) && ($state = intval($result)) && isset($this->globeMessageMap[$state])) {

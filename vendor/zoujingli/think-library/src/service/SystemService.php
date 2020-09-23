@@ -183,7 +183,8 @@ class SystemService extends Service
      */
     public function setOplog($action, $content)
     {
-        return $this->app->db->name('SystemOplog')->insert($this->getOplog($action, $content));
+        $oplog = $this->getOplog($action, $content);
+        return $this->app->db->name('SystemOplog')->insert($oplog);
     }
 
     /**
