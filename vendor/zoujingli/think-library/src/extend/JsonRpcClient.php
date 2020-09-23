@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\extend;
 
 /**
@@ -55,6 +57,10 @@ class JsonRpcClient
     {
         // Performs the HTTP POST
         $options = [
+            'ssl'  => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false,
+            ],
             'http' => [
                 'method'  => 'POST',
                 'header'  => 'Content-type: application/json',

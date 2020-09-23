@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\command;
 
 use think\admin\Command;
@@ -39,11 +41,14 @@ class Database extends Command
      * @param Output $output
      * @return mixed
      */
-    public function execute(Input $input, Output $output)
+    public function execute(Input $input, Output $output): void
     {
-        $do = $input->getArgument('action');
-        if (in_array($do, ['repair', 'optimize'])) return $this->{"_{$do}"}();
-        $this->output->error("Wrong operation, currently allow repair|optimize");
+        $method = $input->getArgument('action');
+        if (in_array($method, ['repair', 'optimize'])) {
+            $this->{"_{$method}"}();
+        } else {
+            $this->output->error("Wrong operation, currently allow repair|optimize");
+        }
     }
 
     /**
@@ -53,7 +58,7 @@ class Database extends Command
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _repair()
+    protected function _repair(): void
     {
         $this->setQueueProgress("正在获取需要修复的数据表", 0);
         [$total, $used] = [count($tables = $this->getTables()), 0];
@@ -72,7 +77,7 @@ class Database extends Command
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _optimize()
+    protected function _optimize(): void
     {
         $this->setQueueProgress("正在获取需要优化的数据表", 0);
         [$total, $used] = [count($tables = $this->getTables()), 0];
@@ -88,7 +93,7 @@ class Database extends Command
      * 获取数据库的数据表
      * @return array
      */
-    protected function getTables()
+    protected function getTables(): array
     {
         $tables = [];
         foreach ($this->app->db->query("show tables") as $item) {

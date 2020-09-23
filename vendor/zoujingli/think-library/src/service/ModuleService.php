@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\service;
 
 use think\admin\extend\HttpExtend;
@@ -52,8 +54,8 @@ class ModuleService extends Service
     {
         $this->root = $this->app->getRootPath();
         $this->version = trim(Library::VERSION, 'v');
-        $maxver = strstr($this->version, '.', true);
-        $this->server = "https://v{$maxver}.thinkadmin.top";
+        $maxVersion = strstr($this->version, '.', true);
+        $this->server = "https://v{$maxVersion}.thinkadmin.top";
     }
 
     /**
@@ -120,7 +122,7 @@ class ModuleService extends Service
      * @param string $name 模块名称
      * @return array
      */
-    public function install($name): array
+    public function install(string $name): array
     {
         $this->app->cache->set('moduleOnlineData', []);
         $data = $this->grenerateDifference(['app' . '/' . $name]);
@@ -194,10 +196,6 @@ class ModuleService extends Service
         if (stripos($name, '..') !== false) {
             return false;
         }
-        // 禁止非官方演示项目下载，不支持通过指令更新
-        // if (!SystemService::instance()->checkRunMode('dev')) {
-        //    return false;
-        // }
         // 禁止下载数据库配置文件
         if (stripos(strtr($name, '\\', '/'), 'config/database') !== false) {
             return false;

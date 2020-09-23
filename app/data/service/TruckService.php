@@ -51,10 +51,10 @@ class TruckService extends Service
     /**
      * 配送区域树型数据
      * @param integer $level 最大级别
-     * @param integer $status 状态筛选
+     * @param null|integer $status 状态筛选
      * @return array
      */
-    public function region($level = 3, $status = null)
+    public function region($level = 3, $status = null): array
     {
         $query = $this->app->db->name('ShopTruckRegion');
         if (is_numeric($level)) $query->where('level', '<=', $level);
@@ -77,7 +77,7 @@ class TruckService extends Service
      * @return array
      * @throws \think\admin\Exception
      */
-    public function query($code, $number)
+    public function query(string $code, string $number): array
     {
         return $this->_getInterface()->doRequest('api.auth.express/query', [
             'type' => 'free', 'express' => $code, 'number' => $number,

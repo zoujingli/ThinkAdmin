@@ -12,6 +12,8 @@
 // 以下代码来自 topthink/think-multi-app，有部分修改以兼容 ThinkAdmin 的需求
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\multiple;
 
 use think\helper\Str;

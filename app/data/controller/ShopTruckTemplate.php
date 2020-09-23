@@ -99,7 +99,7 @@ class ShopTruckTemplate extends Controller
      * 表单结果处理
      * @param boolean $result
      */
-    protected function _form_result($result)
+    protected function _form_result(bool $result)
     {
         if ($result && $this->request->isPost()) {
             $this->success('邮费模板保存成功！', 'javascript:history.back()');

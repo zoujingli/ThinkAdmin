@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\service;
 
 use think\admin\extend\CodeExtend;
@@ -59,7 +61,7 @@ class QueueService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function initialize($code = 0)
+    public function initialize($code = 0): QueueService
     {
         if (!empty($code)) {
             $this->code = $code;
@@ -83,7 +85,7 @@ class QueueService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function reset($wait = 0)
+    public function reset($wait = 0): QueueService
     {
         if (empty($this->record)) {
             $this->app->log->error("Qeueu reset failed, Queue {$this->code} data cannot be empty!");
@@ -103,7 +105,7 @@ class QueueService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function addCleanQueue()
+    public function addCleanQueue(): QueueService
     {
         return $this->register('定时清理系统任务数据', "xadmin:queue clean", 0, [], 0, 3600);
     }
@@ -122,7 +124,7 @@ class QueueService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function register($title, $command, $later = 0, $data = [], $rscript = 0, $loops = 0)
+    public function register(string $title, string $command, int $later = 0, array $data = [], int $rscript = 0, int $loops = 0): QueueService
     {
         $map = [['title', '=', $title], ['status', 'in', [1, 2]]];
         if (empty($rscript) && ($queue = $this->app->db->name('SystemQueue')->where($map)->find())) {

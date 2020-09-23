@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\extend;
 
 /**
@@ -28,14 +30,16 @@ class ExcelExtend
      * @param string $name 导出文件名称
      * @param array $headers 表格头部(一维数组)
      */
-    public static function header($name, array $headers)
+    public static function header(string $name, array $headers)
     {
         header('Content-Type: application/octet-stream');
         header("Content-Disposition: attachment; filename=" . iconv('utf-8', 'gbk//TRANSLIT', $name));
         $handle = fopen('php://output', 'w');
         foreach ($headers as $key => $value) $headers[$key] = iconv("utf-8", "gbk//TRANSLIT", $value);
         fputcsv($handle, $headers);
-        if (is_resource($handle)) fclose($handle);
+        if (is_resource($handle)) {
+            fclose($handle);
+        }
     }
 
     /**
@@ -43,7 +47,7 @@ class ExcelExtend
      * @param array $list 数据列表(二维数组)
      * @param array $rules 数据规则(一维数组)
      */
-    public static function body(array $list, array $rules)
+    public static function body(array $list, array $rules): void
     {
         $handle = fopen('php://output', 'w');
         foreach ($list as $data) {
@@ -53,16 +57,18 @@ class ExcelExtend
             }
             fputcsv($handle, $rows);
         }
-        if (is_resource($handle)) fclose($handle);
+        if (is_resource($handle)) {
+            fclose($handle);
+        }
     }
 
     /**
      * 根据数组key查询(可带点规则)
      * @param array $data 数据
      * @param string $rule 规则，如: order.order_no
-     * @return mixed
+     * @return string
      */
-    public static function parseKeyDotValue(array $data, $rule)
+    public static function parseKeyDotValue(array $data, string $rule): string
     {
         [$temp, $attr] = [$data, explode('.', trim($rule, '.'))];
         while ($key = array_shift($attr)) $temp = $temp[$key] ?? $temp;

@@ -26,7 +26,7 @@ class OrderService extends Service
      * 获取随机减免金额
      * @return float
      */
-    public function getReduct()
+    public function getReduct(): float
     {
         return rand(1, 100) / 100;
     }
@@ -34,12 +34,12 @@ class OrderService extends Service
     /**
      * 同步订单关联商品的库存
      * @param string $order_no 订单编号
-     * @return bool
+     * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function syncStock(string $order_no)
+    public function syncStock(string $order_no): bool
     {
         $map = ['order_no' => $order_no];
         $codes = $this->app->db->name('ShopOrderItem')->where($map)->column('goods_code');

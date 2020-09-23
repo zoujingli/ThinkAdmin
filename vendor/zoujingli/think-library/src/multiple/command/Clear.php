@@ -1,4 +1,5 @@
 <?php
+
 // 以下代码来自 topthink/think-multi-app，有部分修改以兼容 ThinkAdmin 的需求
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
@@ -9,6 +10,8 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+
+declare (strict_types=1);
 
 namespace think\admin\multiple\command;
 

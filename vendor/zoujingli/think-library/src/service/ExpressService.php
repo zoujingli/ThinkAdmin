@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\service;
 
 use think\admin\extend\CodeExtend;
@@ -109,7 +111,7 @@ class ExpressService extends Service
      * @param string $number 快递单单号
      * @return mixed
      */
-    private function doExpress($code, $number)
+    private function doExpress(string $code, string $number)
     {
         $qid = CodeExtend::uniqidNumber(19, '7740');
         $url = "{$this->getExpressQueryApi()}&appid=4001&nu={$number}&com={$code}&qid={$qid}&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
@@ -120,7 +122,7 @@ class ExpressService extends Service
      * 获取快递查询接口
      * @return string
      */
-    private function getExpressQueryApi()
+    private function getExpressQueryApi(): string
     {
         if (preg_match('/"expSearchApi":.*?"(.*?)",/', $this->getWapBaiduHtml(), $matches)) {
             return str_replace('\\', '', $matches[1]);
@@ -135,7 +137,7 @@ class ExpressService extends Service
      * 获取百度WAP快递HTML（用于后面的抓取关键值）
      * @return string
      */
-    private function getWapBaiduHtml()
+    private function getWapBaiduHtml(): string
     {
         $content = $this->app->cache->get('express_kuaidi_html', '');
         while (empty($content) || stripos($content, '"expSearchApi":') === -1) {

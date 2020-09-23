@@ -52,7 +52,7 @@ class NewsItem extends Controller
      * 列表数据处理
      * @param array $data
      */
-    protected function _page_filter(&$data)
+    protected function _page_filter(array &$data)
     {
         NewsService::instance()->buildListState($data);
     }
@@ -90,7 +90,7 @@ class NewsItem extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _form_filter(&$data)
+    protected function _form_filter(array &$data)
     {
         if ($this->request->isGet()) {
             $query = $this->app->db->name('DataNewsMark')->where(['deleted' => 0, 'status' => 1]);
@@ -105,7 +105,7 @@ class NewsItem extends Controller
      * 表单结果处理
      * @param boolean $state
      */
-    protected function _form_result($state)
+    protected function _form_result(bool $state)
     {
         if ($state) {
             $this->success('文章内容保存成功！', 'javascript:history.back()');

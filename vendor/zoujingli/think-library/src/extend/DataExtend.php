@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\extend;
 
 /**
@@ -66,17 +68,17 @@ class DataExtend
     }
 
     /**
-     * 获取数据树子ID
+     * 获取数据树子ID集合
      * @param array $list 数据列表
-     * @param mixed $id 起始ID
-     * @param string $ckey ID_KEY
-     * @param string $pkey PID_KEY
+     * @param mixed $value 起始有效ID值
+     * @param string $ckey 当前主键ID名称
+     * @param string $pkey 上级主键ID名称
      * @return array
      */
-    public static function getArrSubIds(array $list, $id = 0, string $ckey = 'id', string $pkey = 'pid'): array
+    public static function getArrSubIds(array $list, $value = 0, string $ckey = 'id', string $pkey = 'pid'): array
     {
-        $ids = [intval($id)];
-        foreach ($list as $vo) if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) === intval($id)) {
+        $ids = [intval($value)];
+        foreach ($list as $vo) if (intval($vo[$pkey]) > 0 && intval($vo[$pkey]) === intval($value)) {
             $ids = array_merge($ids, static::getArrSubIds($list, intval($vo[$ckey]), $ckey, $pkey));
         }
         return $ids;

@@ -98,7 +98,7 @@ class ShopOrder extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _truck_form_filter(&$vo)
+    protected function _truck_form_filter(array &$vo)
     {
         if ($this->request->isPost()) {
             $map = ['order_no' => $vo['order_no']];

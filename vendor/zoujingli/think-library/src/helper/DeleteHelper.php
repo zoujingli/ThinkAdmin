@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\helper;
 
 use think\admin\Helper;
@@ -59,7 +61,7 @@ class DeleteHelper extends Helper
             if (in_array('is_deleted', $fields)) $data['is_deleted'] = 1;
         }
         // 执行删除操作
-        $result = empty($data) ? $query->delete() : $query->update($data);
+        $result = (empty($data) ? $query->delete() : $query->update($data)) !== false;
         // 结果回调处理
         if (false === $this->class->callback('_delete_result', $result)) {
             return $result;

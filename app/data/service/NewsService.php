@@ -16,7 +16,7 @@ class NewsService extends Service
      * @param integer $cid 文章ID
      * @throws \think\db\exception\DbException
      */
-    public function syncNewsTotal(int $cid)
+    public function syncNewsTotal(int $cid): void
     {
         [$map, $total] = [['cid' => $cid], []];
         $query = $this->app->db->name('DataNewsXCollect')->field('count(1) count,type');

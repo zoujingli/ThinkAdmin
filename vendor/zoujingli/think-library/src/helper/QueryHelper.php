@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\helper;
 
 use think\admin\Helper;
@@ -48,7 +50,7 @@ class QueryHelper extends Helper
      * @param array|string|null $input 输入数据
      * @return $this
      */
-    public function init($dbQuery, $input = null)
+    public function init($dbQuery, $input = null): QueryHelper
     {
         $this->query = $this->buildQuery($dbQuery);
         $this->input = $this->_getInputData($input);
@@ -56,13 +58,13 @@ class QueryHelper extends Helper
     }
 
     /**
-     * 设置Like查询条件
+     * 设置 Like 查询条件
      * @param string|array $fields 查询字段
      * @param array|string|null $input 输入数据
      * @param string $alias 别名分割符
      * @return $this
      */
-    public function like($fields, $input = null, $alias = '#')
+    public function like($fields, $input = null, string $alias = '#'): QueryHelper
     {
         $data = $this->_getInputData($input ?: $this->input);
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
@@ -84,7 +86,7 @@ class QueryHelper extends Helper
      * @param string $alias 别名分割符
      * @return $this
      */
-    public function equal($fields, $input = null, $alias = '#')
+    public function equal($fields, $input = null, string $alias = '#'): QueryHelper
     {
         $data = $this->_getInputData($input ?: $this->input);
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
@@ -100,14 +102,14 @@ class QueryHelper extends Helper
     }
 
     /**
-     * 设置IN区间查询
-     * @param string $fields 查询字段
+     * 设置 IN 区间查询
+     * @param string|array $fields 查询字段
      * @param string $split 输入分隔符
      * @param array|string|null $input 输入数据
      * @param string $alias 别名分割符
      * @return $this
      */
-    public function in($fields, $split = ',', $input = null, $alias = '#')
+    public function in($fields, string $split = ',', $input = null, string $alias = '#'): QueryHelper
     {
         $data = $this->_getInputData($input ?: $this->input);
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
@@ -130,7 +132,7 @@ class QueryHelper extends Helper
      * @param string $alias 别名分割符
      * @return $this
      */
-    public function valueBetween($fields, $split = ' ', $input = null, $alias = '#')
+    public function valueBetween($fields, string $split = ' ', $input = null, string $alias = '#'): QueryHelper
     {
         return $this->_setBetweenWhere($fields, $split, $input, $alias);
     }
@@ -143,7 +145,7 @@ class QueryHelper extends Helper
      * @param string $alias 别名分割符
      * @return $this
      */
-    public function dateBetween($fields, $split = ' - ', $input = null, $alias = '#')
+    public function dateBetween($fields, string $split = ' - ', $input = null, string $alias = '#'): QueryHelper
     {
         return $this->_setBetweenWhere($fields, $split, $input, $alias, function ($value, $type) {
             return $type === 'after' ? "{$value} 23:59:59" : "{$value} 00:00:00";
@@ -158,7 +160,7 @@ class QueryHelper extends Helper
      * @param string $alias 别名分割符
      * @return $this
      */
-    public function timeBetween($fields, $split = ' - ', $input = null, $alias = '#')
+    public function timeBetween($fields, string $split = ' - ', $input = null, string $alias = '#'): QueryHelper
     {
         return $this->_setBetweenWhere($fields, $split, $input, $alias, function ($value, $type) {
             return $type === 'after' ? strtotime("{$value} 23:59:59") : strtotime("{$value} 00:00:00");
@@ -177,7 +179,7 @@ class QueryHelper extends Helper
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function page($page = true, $display = true, $total = false, $limit = 0, $template = '')
+    public function page(bool $page = true, bool $display = true, $total = false, int $limit = 0, string $template = '')
     {
         return PageHelper::instance()->init($this->query, $page, $display, $total, $limit, $template);
     }
@@ -188,7 +190,7 @@ class QueryHelper extends Helper
      * @param array $args 调用参数内容
      * @return $this
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args): QueryHelper
     {
         if (is_callable($callable = [$this->query, $name])) {
             call_user_func_array($callable, $args);
@@ -202,10 +204,10 @@ class QueryHelper extends Helper
      * @param string $split 输入分隔符
      * @param array|string|null $input 输入数据
      * @param string $alias 别名分割符
-     * @param callable $callback
+     * @param callable|null $callback 回调函数
      * @return $this
      */
-    private function _setBetweenWhere($fields, $split = ' ', $input = null, $alias = '#', $callback = null)
+    private function _setBetweenWhere($fields, string $split = ' ', $input = null, string $alias = '#', $callback = null): QueryHelper
     {
         $data = $this->_getInputData($input ?: $this->input);
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {

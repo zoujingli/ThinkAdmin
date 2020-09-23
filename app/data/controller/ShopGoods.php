@@ -76,7 +76,7 @@ class ShopGoods extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _page_filter(&$data)
+    protected function _page_filter(array &$data)
     {
         $this->marks = GoodsService::instance()->getMarkList();
         $this->clist = GoodsService::instance()->getCateList('arr2table');
@@ -133,7 +133,7 @@ class ShopGoods extends Controller
      * 表单数据处理
      * @param array $data
      */
-    protected function _copy_form_filter(&$data)
+    protected function _copy_form_filter(array &$data)
     {
         if ($this->request->isPost()) {
             $data['code'] = CodeExtend::uniqidNumber(12, 'G');
@@ -147,7 +147,7 @@ class ShopGoods extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _form_filter(&$data)
+    protected function _form_filter(array &$data)
     {
         if (empty($data['code'])) {
             $data['code'] = CodeExtend::uniqidNumber(12, 'G');
@@ -191,7 +191,7 @@ class ShopGoods extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _form_result($result)
+    protected function _form_result(bool $result)
     {
         if ($result && $this->request->isPost()) {
             GoodsService::instance()->syncStock(input('code'));

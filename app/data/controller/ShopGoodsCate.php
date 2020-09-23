@@ -53,7 +53,7 @@ class ShopGoodsCate extends Controller
      * 列表数据处理
      * @param array $data
      */
-    protected function _index_page_filter(&$data)
+    protected function _index_page_filter(array &$data)
     {
         foreach ($data as &$vo) {
             $vo['ids'] = join(',', DataExtend::getArrSubIds($data, $vo['id']));
@@ -92,7 +92,7 @@ class ShopGoodsCate extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _form_filter(&$data)
+    protected function _form_filter(array &$data)
     {
         if ($this->request->isGet()) {
             $data['pid'] = intval($data['pid'] ?? input('pid', '0'));

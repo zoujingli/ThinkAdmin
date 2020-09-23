@@ -53,11 +53,11 @@ class Menu extends Controller
      * 列表数据处理
      * @param array $data
      */
-    protected function _index_page_filter(&$data)
+    protected function _index_page_filter(array &$data)
     {
         foreach ($data as &$vo) {
             if ($vo['url'] !== '#') {
-                $vo['url'] = trim(url($vo['url']) . (empty($vo['params']) ? '' : "?{$vo['params']}"), '/\\');
+                $vo['url'] = trim(sysuri($vo['url']) . (empty($vo['params']) ? '' : "?{$vo['params']}"), '/\\');
             }
             $vo['ids'] = join(',', DataExtend::getArrSubIds($data, $vo['id']));
         }
@@ -95,7 +95,7 @@ class Menu extends Controller
      * @param array $vo
      * @throws \ReflectionException
      */
-    protected function _form_filter(&$vo)
+    protected function _form_filter(array &$vo)
     {
         if ($this->request->isGet()) {
             // 清理权限节点

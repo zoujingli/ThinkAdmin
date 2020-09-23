@@ -21,7 +21,7 @@ class GoodsService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function syncStock(string $code)
+    public function syncStock(string $code): bool
     {
         // 商品入库统计
         $query = $this->app->db->name('ShopGoodsStock');
@@ -78,7 +78,7 @@ class GoodsService extends Service
      * 获取商品标签数据
      * @return array
      */
-    public function getMarkList()
+    public function getMarkList(): array
     {
         $map = ['status' => 1];
         $query = $this->app->db->name('ShopGoodsMark');

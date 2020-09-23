@@ -44,7 +44,7 @@ class News extends Controller
     public function index()
     {
         $this->title = '微信图文列表';
-        $this->_query($this->table)->where(['is_deleted' => '0'])->order('id desc')->page();
+        $this->_query($this->table)->where(['is_deleted' => 0])->order('id desc')->page();
     }
 
     /**
@@ -54,7 +54,7 @@ class News extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _index_page_filter(&$data)
+    protected function _page_filter(array &$data)
     {
         foreach ($data as &$vo) {
             $vo = MediaService::instance()->news($vo['id']);
@@ -71,20 +71,6 @@ class News extends Controller
     public function select()
     {
         $this->index();
-    }
-
-    /**
-     * 列表数据处理
-     * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    protected function _select_page_filter(&$data)
-    {
-        foreach ($data as &$vo) {
-            $vo = MediaService::instance()->news($vo['id']);
-        }
     }
 
     /**
@@ -140,13 +126,23 @@ class News extends Controller
     }
 
     /**
+     * 删除微信图文
+     * auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function remove()
+    {
+        $this->_delete($this->table);
+    }
+
+    /**
      * 图文更新操作
      * @param array $data
      * @param array $ids
      * @return string
      * @throws \think\db\exception\DbException
      */
-    private function _buildArticle($data, $ids = [])
+    private function _buildArticle(array $data, array $ids = []): string
     {
         foreach ($data as $vo) {
             if (empty($vo['digest'])) {
@@ -162,16 +158,6 @@ class News extends Controller
             if ($result !== false) array_push($ids, $id);
         }
         return join(',', $ids);
-    }
-
-    /**
-     * 删除微信图文
-     * auth true
-     * @throws \think\db\exception\DbException
-     */
-    public function remove()
-    {
-        $this->_delete($this->table);
     }
 
 }

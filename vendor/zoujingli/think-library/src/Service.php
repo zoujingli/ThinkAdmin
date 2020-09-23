@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin;
 
 use think\App;
@@ -43,7 +45,7 @@ abstract class Service
 
     /**
      * 初始化服务
-     * @return $this
+     * @return static
      */
     protected function initialize()
     {

@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\helper;
 
 use think\admin\Helper;
@@ -39,7 +41,7 @@ class PageHelper extends Helper
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function init($dbQuery, $page = true, $display = true, $total = false, $limit = 0, $template = '')
+    public function init($dbQuery, bool $page = true, bool $display = true, $total = false, int $limit = 0, string $template = '')
     {
         $this->query = $this->buildQuery($dbQuery);
         // 数据列表排序自动处理
@@ -52,7 +54,7 @@ class PageHelper extends Helper
                 $limit = intval($limit);
             } else {
                 $limit = $this->app->request->get('limit', $this->app->cookie->get('limit'));
-                $this->app->cookie->set('limit', $limit = intval($limit >= 10 ? $limit : 20));
+                $this->app->cookie->set('limit', ($limit = intval($limit >= 10 ? $limit : 20)) . '');
             }
             [$options, $query] = ['', $this->app->request->get()];
             $pager = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $total);
@@ -78,7 +80,7 @@ class PageHelper extends Helper
             $result = ['list' => $this->query->select()->toArray()];
         }
         if (false !== $this->class->callback('_page_filter', $result['list']) && $display) {
-            return $this->class->fetch($template, $result);
+            $this->class->fetch($template, $result);
         } else {
             return $result;
         }

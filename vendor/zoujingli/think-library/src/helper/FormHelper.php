@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\helper;
 
 use think\admin\Helper;
@@ -43,22 +45,20 @@ class FormHelper extends Helper
         $query = $this->buildQuery($dbQuery);
         $field = $field ?: ($query->getPk() ?: 'id');
         $value = input($field, $data[$field] ?? null);
-        // GET请求, 获取数据并显示表单页面
         if ($this->app->request->isGet()) {
             if ($value !== null) {
                 $find = $query->where([$field => $value])->where($where)->find();
                 if (!empty($find) && is_array($find)) $data = array_merge($data, $find);
             }
             if (false !== $this->class->callback('_form_filter', $data)) {
-                return $this->class->fetch($template, ['vo' => $data]);
+                $this->class->fetch($template, ['vo' => $data]);
+            } else {
+                return $data;
             }
-            return $data;
-        }
-        // POST请求, 数据自动存库处理
-        if ($this->app->request->isPost()) {
+        } elseif ($this->app->request->isPost()) {
             $data = array_merge($this->app->request->post(), $data);
             if (false !== $this->class->callback('_form_filter', $data, $where)) {
-                $result = data_save($query, $data, $field, $where);
+                $result = data_save($query, $data, $field, $where) !== false;
                 if (false !== $this->class->callback('_form_result', $result, $data)) {
                     if ($result !== false) {
                         $this->class->success(lang('think_library_form_success'));

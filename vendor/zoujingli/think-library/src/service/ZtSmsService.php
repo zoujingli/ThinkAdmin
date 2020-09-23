@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\service;
 
 use think\admin\extend\HttpExtend;
@@ -55,7 +57,7 @@ class ZtSmsService extends Service
      * @param string $password 账号密码
      * @return static
      */
-    public function setAuth(string $username, string $password)
+    public function setAuth(string $username, string $password): ZtSmsService
     {
         $this->username = $username;
         $this->password = $password;
@@ -188,10 +190,10 @@ class ZtSmsService extends Service
      * 发送定时短信
      * @param string $mobile 发送手机号码
      * @param string $content 发送短信内容
-     * @param string $time 定时发送时间（为 null 立即发送）
+     * @param integer $time 定时发送时间（为 0 立即发送）
      * @return array
      */
-    public function timeSend(string $mobile, string $content, $time = null): array
+    public function timeSend(string $mobile, string $content, int $time = 0): array
     {
         $data = ['mobile' => $mobile, 'content' => $content];
         if ($time > 0) $data['time'] = $time;
@@ -280,6 +282,6 @@ class ZtSmsService extends Service
             9998 => 'JSON解析错误',
             9999 => '非法请求',
         ];
-        return $arrs[$code] ?? $code;
+        return $arrs[$code] ?? "{$code}";
     }
 }

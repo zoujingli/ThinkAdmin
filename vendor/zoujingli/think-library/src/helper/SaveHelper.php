@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\helper;
 
 use think\admin\Helper;
@@ -35,7 +37,7 @@ class SaveHelper extends Helper
      * @return boolean
      * @throws \think\db\exception\DbException
      */
-    public function init($dbQuery, $data = [], $field = '', $where = [])
+    public function init($dbQuery, array $data = [], string $field = '', array $where = [])
     {
         $query = $this->buildQuery($dbQuery);
         $data = $data ?: $this->app->request->post();

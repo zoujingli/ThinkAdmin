@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\command;
 
 use Psr\Log\NullLogger;
@@ -310,7 +312,7 @@ class Queue extends Command
      * @param boolean $isSplit 是否分隔
      * @throws \think\db\exception\DbException
      */
-    protected function updateQueue($status, $message, $isSplit = true)
+    protected function updateQueue(int $status, string $message, bool $isSplit = true)
     {
         // 更新当前任务
         $info = trim(is_string($message) ? $message : '');

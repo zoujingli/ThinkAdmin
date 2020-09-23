@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin;
 
 use think\admin\service\ProcessService;
@@ -50,7 +52,7 @@ abstract class Command extends ThinkCommand
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function initialize(Input $input, Output $output)
+    protected function initialize(Input $input, Output $output): Command
     {
         $this->queue = QueueService::instance();
         $this->process = ProcessService::instance();
@@ -87,7 +89,7 @@ abstract class Command extends ThinkCommand
      * @return static
      * @throws Exception
      */
-    protected function setQueueError(string $message)
+    protected function setQueueError(string $message): Command
     {
         if (defined('WorkQueueCode')) {
             throw new Exception($message, 4, WorkQueueCode);
@@ -103,7 +105,7 @@ abstract class Command extends ThinkCommand
      * @return static
      * @throws Exception
      */
-    protected function setQueueSuccess(string $message)
+    protected function setQueueSuccess(string $message): Command
     {
         if (defined('WorkQueueCode')) {
             throw new Exception($message, 3, WorkQueueCode);

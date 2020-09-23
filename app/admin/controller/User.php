@@ -117,7 +117,7 @@ class User extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _form_filter(&$data)
+    protected function _form_filter(array &$data)
     {
         if ($this->request->isPost()) {
             if (isset($data['id']) && $data['id'] > 0) {

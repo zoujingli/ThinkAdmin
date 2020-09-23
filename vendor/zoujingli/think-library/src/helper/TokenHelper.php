@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\helper;
 
 use think\admin\Helper;
@@ -55,7 +57,7 @@ class TokenHelper extends Helper
      * 返回视图内容
      * @param string $tpl 模板名称
      * @param array $vars 模板变量
-     * @param string $node CSRF授权节点
+     * @param string|null $node 授权节点
      */
     public function fetchTemplate($tpl = '', $vars = [], $node = null)
     {

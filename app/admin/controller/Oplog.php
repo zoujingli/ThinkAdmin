@@ -54,7 +54,7 @@ class Oplog extends Controller
      * @param array $data
      * @throws \Exception
      */
-    protected function _index_page_filter(&$data)
+    protected function _index_page_filter(array &$data)
     {
         $ip = new \Ip2Region();
         foreach ($data as &$vo) {

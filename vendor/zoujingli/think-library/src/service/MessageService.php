@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\service;
 
 use think\admin\extend\HttpExtend;
@@ -66,7 +68,7 @@ class MessageService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function initialize()
+    protected function initialize(): MessageService
     {
         $this->table = 'SystemMessageHistory';
         $this->chinaUsername = sysconf('sms_zt.china_username');
@@ -82,7 +84,7 @@ class MessageService extends Service
      * @param string $password 账号密码
      * @return $this
      */
-    public function configChina($username, $password): MessageService
+    public function configChina(string $username, string $password): MessageService
     {
         $this->chinaUsername = $username;
         $this->chinaPassword = $password;
@@ -95,7 +97,7 @@ class MessageService extends Service
      * @param string $password 账号密码
      * @return $this
      */
-    public function configGlobe($username, $password): MessageService
+    public function configGlobe(string $username, string $password): MessageService
     {
         $this->globeUsername = $username;
         $this->globePassword = $password;
@@ -107,7 +109,7 @@ class MessageService extends Service
      * @param string $table
      * @return $this
      */
-    public function setSaveTable($table): MessageService
+    public function setSaveTable(string $table): MessageService
     {
         $this->table = $table;
         return $this;
@@ -119,7 +121,7 @@ class MessageService extends Service
      * @param array $params
      * @return string
      */
-    public function buildContent($content, array $params = [])
+    public function buildContent(string $content, array $params = []): string
     {
         foreach ($params as $key => $value) {
             $content = str_replace("{{$key}}", $value, $content);
@@ -154,7 +156,7 @@ class MessageService extends Service
 
     /**
      * 发送国内短信验证码
-     * @param string $phone 目标手机
+     * @param mixed $phone 目标手机
      * @param integer $wait 等待时间
      * @param string $type 短信模板
      * @return array
@@ -189,7 +191,7 @@ class MessageService extends Service
      * @param string $type 短信模板
      * @return boolean
      */
-    public function check($phone, $code, $type = 'sms_reg_template')
+    public function check($phone, $code, string $type = 'sms_reg_template'): bool
     {
         $cache = $this->app->cache->get($cachekey = "{$type}_{$phone}", []);
         return is_array($cache) && isset($cache['code']) && $cache['code'] == $code;
@@ -243,7 +245,7 @@ class MessageService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function sendGlobeSms($code, $mobile, $content)
+    public function sendGlobeSms($code, $mobile, string $content): bool
     {
         $tkey = date("YmdHis");
         $result = HttpExtend::get('http://intl.zthysms.com/intSendSms.do', [

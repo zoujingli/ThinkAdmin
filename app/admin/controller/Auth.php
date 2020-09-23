@@ -131,7 +131,7 @@ class Auth extends Controller
      * @param boolean $result
      * @throws \think\db\exception\DbException
      */
-    protected function _remove_delete_result($result)
+    protected function _remove_delete_result(bool $result)
     {
         if ($result) {
             $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);

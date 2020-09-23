@@ -13,6 +13,8 @@
 // | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\storage;
 
 use think\admin\extend\HttpExtend;
@@ -70,14 +72,14 @@ class QiniuStorage extends Storage
      * @param string $name 文件名称
      * @param string $file 文件内容
      * @param boolean $safe 安全模式
-     * @param string $attname 下载名称
+     * @param null|string $attname 下载名称
      * @return array
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function set($name, $file, $safe = false, $attname = null)
+    public function set(string $name, string $file, bool $safe = false, $attname = null)
     {
         $token = $this->buildUploadToken($name, 3600, $attname);
         $data = ['key' => $name, 'token' => $token, 'fileName' => $name];
@@ -93,7 +95,7 @@ class QiniuStorage extends Storage
      * @param boolean $safe 安全模式
      * @return string
      */
-    public function get($name, $safe = false)
+    public function get(string $name, bool $safe = false)
     {
         $url = $this->url($name, $safe) . "?e=" . time();
         $token = "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', $url, $this->secretKey, true))}";
@@ -106,7 +108,7 @@ class QiniuStorage extends Storage
      * @param boolean $safe 安全模式
      * @return boolean|null
      */
-    public function del($name, $safe = false)
+    public function del(string $name, bool $safe = false)
     {
         [$EncodedEntryURI, $AccessToken] = $this->getAccessToken($name, 'delete');
         $data = json_decode(HttpExtend::post("http://rs.qiniu.com/delete/{$EncodedEntryURI}", [], [
@@ -121,7 +123,7 @@ class QiniuStorage extends Storage
      * @param boolean $safe 安全模式
      * @return boolean
      */
-    public function has($name, $safe = false)
+    public function has(string $name, bool $safe = false): bool
     {
         return is_array($this->info($name, $safe));
     }
@@ -130,10 +132,10 @@ class QiniuStorage extends Storage
      * 获取文件当前URL地址
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
-     * @param string $attname 下载名称
+     * @param null|string $attname 下载名称
      * @return string
      */
-    public function url($name, $safe = false, $attname = null)
+    public function url(string $name, bool $safe = false, $attname = null): string
     {
         return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
     }
@@ -144,7 +146,7 @@ class QiniuStorage extends Storage
      * @param boolean $safe 安全模式
      * @return string
      */
-    public function path($name, $safe = false)
+    public function path(string $name, bool $safe = false): string
     {
         return $this->url($name, $safe);
     }
@@ -153,10 +155,10 @@ class QiniuStorage extends Storage
      * 获取文件存储信息
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
-     * @param string $attname 下载名称
+     * @param null|string $attname 下载名称
      * @return array
      */
-    public function info($name, $safe = false, $attname = null)
+    public function info(string $name, bool $safe = false, $attname = null): array
     {
         [$entry, $token] = $this->getAccessToken($name);
         $data = json_decode(HttpExtend::get("http://rs.qiniu.com/stat/{$entry}", [], ['headers' => ["Authorization: QBox {$token}"]]), true);
@@ -192,12 +194,12 @@ class QiniuStorage extends Storage
 
     /**
      * 获取文件上传令牌
-     * @param string $name 文件名称
+     * @param null|string $name 文件名称
      * @param integer $expires 有效时间
-     * @param string $attname 下载名称
+     * @param null|string $attname 下载名称
      * @return string
      */
-    public function buildUploadToken($name = null, $expires = 3600, $attname = null)
+    public function buildUploadToken($name = null, int $expires = 3600, $attname = null)
     {
         $policy = $this->safeBase64(json_encode([
             "deadline"   => time() + $expires, "scope" => is_null($name) ? $this->bucket : "{$this->bucket}:{$name}",
@@ -213,7 +215,7 @@ class QiniuStorage extends Storage
      * @param string $content
      * @return string
      */
-    private function safeBase64($content)
+    private function safeBase64(string $content): string
     {
         return str_replace(['+', '/'], ['-', '_'], base64_encode($content));
     }
@@ -224,7 +226,7 @@ class QiniuStorage extends Storage
      * @param string $type 操作类型
      * @return array
      */
-    private function getAccessToken($name, $type = 'stat')
+    private function getAccessToken(string $name, $type = 'stat'): array
     {
         $entry = $this->safeBase64("{$this->bucket}:{$name}");
         $sign = hash_hmac('sha1', "/{$type}/{$entry}\n", $this->secretKey, true);

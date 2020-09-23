@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\service;
 
 use think\admin\Service;
@@ -50,7 +52,7 @@ class ProcessService extends Service
      * @param string $command 任务指令
      * @return $this
      */
-    public function create($command)
+    public function create(string $command): ProcessService
     {
         if ($this->iswin()) {
             $this->exec(__DIR__ . "/bin/console.exe {$command}");
@@ -90,7 +92,7 @@ class ProcessService extends Service
      * @param integer $pid 进程号
      * @return boolean
      */
-    public function close($pid): bool
+    public function close(int $pid): bool
     {
         if ($this->iswin()) {
             $this->exec("wmic process {$pid} call terminate");
@@ -106,7 +108,7 @@ class ProcessService extends Service
      * @param boolean $outarr 返回类型
      * @return string|array
      */
-    public function exec($command, $outarr = false)
+    public function exec(string $command, $outarr = false)
     {
         exec($command, $output);
         return $outarr ? $output : join("\n", $output);

@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\extend;
 
 /**
@@ -24,8 +26,8 @@ class CodeExtend
 {
     /**
      * 获取随机字符串编码
-     * @param integer $size 字符串长度
-     * @param integer $type 字符串类型(1纯数字,2纯字母,3数字字母)
+     * @param integer $size 编码长度
+     * @param integer $type 编码类型(1纯数字,2纯字母,3数字字母)
      * @param string $prefix 编码前缀
      * @return string
      */
@@ -35,39 +37,37 @@ class CodeExtend
         $chars = 'abcdefghijklmnopqrstuvwxyz';
         if (intval($type) === 1) $chars = $numbs;
         if (intval($type) === 3) $chars = "{$numbs}{$chars}";
-        $string = $prefix . $chars[rand(1, strlen($chars) - 1)];
-        if (isset($chars)) while (strlen($string) < $size) {
-            $string .= $chars[rand(0, strlen($chars) - 1)];
-        }
-        return $string;
+        $code = $prefix . $chars[rand(1, strlen($chars) - 1)];
+        while (strlen($code) < $size) $code .= $chars[rand(0, strlen($chars) - 1)];
+        return $code;
     }
 
     /**
      * 唯一日期编码
-     * @param integer $size
-     * @param string $prefix
+     * @param integer $size 编码长度
+     * @param string $prefix 编码前缀
      * @return string
      */
     public static function uniqidDate(int $size = 16, string $prefix = ''): string
     {
         if ($size < 14) $size = 14;
-        $string = $prefix . date('Ymd') . (date('H') + date('i')) . date('s');
-        while (strlen($string) < $size) $string .= rand(0, 9);
-        return $string;
+        $code = $prefix . date('Ymd') . (date('H') + date('i')) . date('s');
+        while (strlen($code) < $size) $code .= rand(0, 9);
+        return $code;
     }
 
     /**
      * 唯一数字编码
-     * @param integer $size
-     * @param string $prefix
+     * @param integer $size 编码长度
+     * @param string $prefix 编码前缀
      * @return string
      */
     public static function uniqidNumber(int $size = 12, string $prefix = ''): string
     {
         $time = time() . '';
         if ($size < 10) $size = 10;
-        $string = $prefix . (intval($time[0]) + intval($time[1])) . substr($time, 2) . rand(0, 9);
-        while (strlen($string) < $size) $string .= rand(0, 9);
-        return $string;
+        $code = $prefix . (intval($time[0]) + intval($time[1])) . substr($time, 2) . rand(0, 9);
+        while (strlen($code) < $size) $code .= rand(0, 9);
+        return $code;
     }
 }

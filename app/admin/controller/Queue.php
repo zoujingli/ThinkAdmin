@@ -97,7 +97,7 @@ class Queue extends Controller
      * 重启任务结果处理
      * @param boolean $state
      */
-    protected function _redo_save_result($state)
+    protected function _redo_save_result(bool $state)
     {
         if ($state) {
             $this->success('重启任务成功！');

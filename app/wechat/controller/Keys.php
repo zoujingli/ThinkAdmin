@@ -71,11 +71,11 @@ class Keys extends Controller
      * 列表数据处理
      * @param array $data
      */
-    protected function _index_page_filter(&$data)
+    protected function _index_page_filter(array &$data)
     {
         foreach ($data as &$vo) {
             $vo['type'] = $this->types[$vo['type']] ?? $vo['type'];
-            $vo['qrc'] = url('wechat/keys/index') . "?action=qrc&keys={$vo['keys']}";
+            $vo['qrc'] = sysuri('wechat/keys/index') . "?action=qrc&keys={$vo['keys']}";
         }
     }
 
@@ -186,7 +186,7 @@ class Keys extends Controller
      * 表单结果处理
      * @param boolean $result
      */
-    protected function _form_result($result)
+    protected function _form_result(bool $result)
     {
         if ($result !== false) {
             $iskeys = in_array(input('keys'), ['subscribe', 'default']);

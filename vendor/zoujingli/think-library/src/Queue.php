@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin;
 
 use think\admin\service\ProcessService;
@@ -60,7 +62,7 @@ abstract class Queue
      * @param QueueService $queue
      * @return $this
      */
-    public function initialize(QueueService $queue)
+    public function initialize(QueueService $queue): Queue
     {
         $this->queue = $queue;
         return $this;
@@ -79,7 +81,7 @@ abstract class Queue
      * @param null|integer $progress 进度数值
      * @return Queue
      */
-    protected function setQueueProgress($message = null, $progress = null)
+    protected function setQueueProgress($message = null, $progress = null): Queue
     {
         $this->queue->progress(2, $message, $progress);
         return $this;
@@ -90,7 +92,7 @@ abstract class Queue
      * @param string $message 消息内容
      * @throws Exception
      */
-    protected function setQueueSuccess($message)
+    protected function setQueueSuccess(string $message): void
     {
         throw new Exception($message, 3, $this->queue->code);
     }
@@ -100,7 +102,7 @@ abstract class Queue
      * @param string $message 消息内容
      * @throws Exception
      */
-    protected function setQueueError($message)
+    protected function setQueueError(string $message): void
     {
         throw new Exception($message, 4, $this->queue->code);
     }

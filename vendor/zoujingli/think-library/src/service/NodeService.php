@@ -13,6 +13,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace think\admin\service;
 
 use think\admin\Service;
@@ -108,7 +110,7 @@ class NodeService extends Service
                 $data[$prefix] = $this->_parseComment($class->getDocComment(), $classname);
                 foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
                     if (in_array($metname = $method->getName(), $ignores)) continue;
-                    $data[strtolower("{$prefix}/{$metname}")] = $this->_parseComment($method->getDocComment(), $metname);
+                    $data[strtolower("{$prefix}/{$metname}")] = $this->_parseComment($method->getDocComment() ?: '', $metname);
                 }
             }
         }
