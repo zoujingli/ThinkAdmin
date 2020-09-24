@@ -21,7 +21,7 @@ try {
     /*! 全局数据变更数据 */
     $GLOBALS['oplogs'] = [];
     /*! 数据变更日志开关状态 */
-    if (sysconf('base.oplog_state') && ($days = floatval(sysoplog('base.oplog_days'))) > 0) {
+    if (sysconf('base.oplog_state') && ($days = floatval(sysconf('base.oplog_days'))) > 0) {
         /*! 数据变更批量写入 */
         app()->event->listen('HttpEnd', function () {
             if (is_array($GLOBALS['oplogs']) && count($GLOBALS['oplogs']) > 0) {
