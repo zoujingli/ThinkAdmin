@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "ThinkAdmin Theme Less build",
   "dependencies": {
-    "less": "^2.5.3",
-    "less-plugin-clean-css": "^1.5.0"
+    "less": "^2.7.3",
+    "less-plugin-clean-css": "^1.5.1"
   },
   "scripts": {
-    "install": "npm install -g less less-plugin-clean-css",
-    "build": "lessc --clean-css --source-map console.less console.css \n lessc --clean-css --source-map login.less login.css"
+    "install": "npm install less less-plugin-clean-css",
+    "build": "\nlessc --clean-css --source-map console.less console.css \nlessc --clean-css --source-map mobile.less mobile.css \nlessc --clean-css --source-map login.less login.css"
   }
 }

@@ -12,13 +12,13 @@
                 <table class="layui-table" lay-skin="line">
                     <thead>
                     <tr class="layui-bg-cyan">
-                        <th class="text-left">商品规格</th>
-                        <th class="text-center nowrap">市场价格</th>
-                        <th class="text-center nowrap">销售价格</th>
-                        <th class="text-center nowrap">库存统计</th>
-                        <th class="text-center nowrap">总销统计</th>
-                        <th class="text-center nowrap">库存剩余</th>
-                        <th class="text-center nowrap">入库数量</th>
+                        <th class="text-left nowrap border-0">商品规格</th>
+                        <th class="text-center nowrap border-0">市场价格</th>
+                        <th class="text-center nowrap border-0">销售价格</th>
+                        <th class="text-center nowrap border-0">库存统计</th>
+                        <th class="text-center nowrap border-0">总销统计</th>
+                        <th class="text-center nowrap border-0">库存剩余</th>
+                        <th class="text-center nowrap border-0">入库数量</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -30,10 +30,13 @@
                         <td class="layui-bg-gray text-center" width="12%">{$goods.stock_total|default=0}</td>
                         <td class="layui-bg-gray text-center" width="12%">{$goods.stock_sales|default=0}</td>
                         <td class="layui-bg-gray text-center" width="12%">{$goods.stock_total-$goods.stock_sales}</td>
-                        <td class="padding-0" width="12%">
+                        <td class="padding-0 nowrap" width="12%">
                             <input type="hidden" name="goods_code[]" value="{$goods.goods_code|default=''}">
                             <input type="hidden" name="goods_spec[]" value="{$goods.goods_spec|default=''}">
-                            <input class="layui-input text-center border-0 padding-left-0" onblur="this.value=parseInt(this.value)||0" name="goods_stock[]" value="0">
+                            <label>
+                                <input class="layui-input text-center border-0 padding-left-0 padding-right-30" maxlength="20" data-blur-number="0" name="goods_stock[]" value="0">
+                                <span class="input-right-icon">件</span>
+                            </label>
                         </td>
                     </tr>
                     {/foreach}
