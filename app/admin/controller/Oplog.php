@@ -44,7 +44,8 @@ class Oplog extends Controller
     {
         $this->title = '系统日志管理';
         $this->isSupper = AdminService::instance()->isSuper();
-        $query = $this->_query($this->table)->like('action,node,content,username,geoip');
+        $query = $this->_query($this->table);
+        $query->like('action,node,content,username,geoip');
         $query->dateBetween('create_at')->order('id desc')->page();
     }
 

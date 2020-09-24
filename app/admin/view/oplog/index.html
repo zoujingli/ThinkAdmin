@@ -42,16 +42,22 @@
                 操作节点：<span class="color-desc">{$vo.node|default='-'}</span>
             </td>
             <td class='text-left nowrap padding-row-0 padding-right-0'>
-                <div class="inline-block" style="overflow:auto;max-height:58px;padding:5px 0">
-                    <p class="color-text layui-elip" style="max-width:550px">{$vo.action|default='-'}</p>
-                    <div class="color-desc layui-elip" style="white-space:normal">{$vo.content|default='-'}</div>
-                </div>
+                <p class="color-text layui-elip" style="max-width:550px">{$vo.action|default='-'}</p>
+                {if preg_match('|\s+(\w+)\s+数据|', $vo.action)}
+                <label data-tips-desc class="notselect pointer color-blue">
+                    查看详情内容<textarea class="layui-hide">{$vo.content|raw|default=''}</textarea>
+                </label>
+                {else}
+                <span class="color-desc" style="white-space:normal">{$vo.content|default='-'}</span>
+                {/if}
             </td>
             <td class='text-left nowrap'>
                 <p class="color-text">{$vo.geoip|default='-'}</p>
                 <p class="color-desc">{$vo.isp|default='-'}</p>
             </td>
-            <td class='text-left nowrap'>日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">时间：',###|raw}</span></td>
+            <td class='text-left nowrap'>
+                日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">时间：',###|raw}</span>
+            </td>
             <td class='text-left nowrap'>
                 <!--{if auth("remove")}-->
                 <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
@@ -64,4 +70,18 @@
     </table>
     {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 </div>
+{/block}
+
+{block name='script'}
+<script>
+    (function (layers) {
+        $('body').off('click', '[data-tips-desc]').on('click', '[data-tips-desc]', function () {
+            return layers.push(layer.tips($(this).find('textarea').html(), this, {tips: 3, time: 0, maxWidth: 500})), false;
+        }).off('click', '.layui-body').on('click', '.layui-body', function () {
+            layers.forEach(function (value, index) {
+                layer.close(value), delete layers[index];
+            });
+        });
+    })([]);
+</script>
 {/block}
