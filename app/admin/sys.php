@@ -23,7 +23,7 @@ try {
     /*! 数据变更日志开关状态 */
     if (sysconf('base.oplog_state') && ($days = floatval(sysconf('base.oplog_days'))) > 0) {
         /*! 数据变更批量写入 */
-        app()->event->listen('HttpEnd', function () {
+        app()->event->listen('HttpEnd', function () use ($days) {
             if (is_array($GLOBALS['oplogs']) && count($GLOBALS['oplogs']) > 0) {
                 foreach (array_chunk($GLOBALS['oplogs'], 100) as $items) {
                     app()->db->name('SystemOplog')->insertAll($items);
