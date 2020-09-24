@@ -141,6 +141,7 @@ if (!function_exists('sysoplog')) {
         return SystemService::instance()->setOplog($action, $content);
     }
 }
+
 if (!function_exists('encode')) {
     /**
      * 加密 UTF8 字符串
@@ -280,5 +281,19 @@ if (!function_exists('down_file')) {
     {
         $result = Storage::down($source, $force, $expire);
         return $result['url'] ?? $source;
+    }
+}
+
+if (!function_exists('progress_prefix')) {
+    /**
+     * 生成进度前缀文字
+     * @param integer $total
+     * @param integer $used
+     * @param string $char
+     * @return string
+     */
+    function progress_prefix(int $total, int $used, string $char = '0'): string
+    {
+        return str_pad("{$used}", strlen("{$total}"), $char, STR_PAD_LEFT) . "/{$total}";
     }
 }

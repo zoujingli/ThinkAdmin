@@ -114,20 +114,26 @@ class Install extends Command
         }
     }
 
-    protected function installFile()
+    private function installFile()
     {
-        $data = ModuleService::instance()->grenerateDifference($this->rules, $this->ignore);
-        if (empty($data)) $this->output->writeln('No need to update the file if the file comparison is consistent');
-        else foreach ($data as $file) {
-            [$state, $mode, $name] = ModuleService::instance()->updateFileByDownload($file);
-            if ($state) {
-                if ($mode === 'add') $this->output->writeln("--- {$name} add successfully");
-                if ($mode === 'mod') $this->output->writeln("--- {$name} update successfully");
-                if ($mode === 'del') $this->output->writeln("--- {$name} delete successfully");
-            } else {
-                if ($mode === 'add') $this->output->writeln("--- {$name} add failed");
-                if ($mode === 'mod') $this->output->writeln("--- {$name} update failed");
-                if ($mode === 'del') $this->output->writeln("--- {$name} delete failed");
+        $module = ModuleService::instance();
+        $data = $module->grenerateDifference($this->rules, $this->ignore);
+        if (empty($data)) {
+            $this->output->writeln('No need to update the file if the file comparison is consistent');
+        } else {
+            [$total, $used] = [count($data), 0];
+            foreach ($data as $file) {
+                $prefix = progress_prefix($total, ++$used);
+                [$state, $mode, $name] = $module->updateFileByDownload($file);
+                if ($state) {
+                    if ($mode === 'add') $this->output->writeln("[{$prefix}] --- {$name} add successfully");
+                    if ($mode === 'mod') $this->output->writeln("[{$prefix}] --- {$name} update successfully");
+                    if ($mode === 'del') $this->output->writeln("[{$prefix}] --- {$name} delete successfully");
+                } else {
+                    if ($mode === 'add') $this->output->writeln("[{$prefix}] --- {$name} add failed");
+                    if ($mode === 'mod') $this->output->writeln("[{$prefix}] --- {$name} update failed");
+                    if ($mode === 'del') $this->output->writeln("[{$prefix}] --- {$name} delete failed");
+                }
             }
         }
     }

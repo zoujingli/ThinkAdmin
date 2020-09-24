@@ -189,12 +189,12 @@ class Queue extends Command
         $this->app->db->name($this->table)->whereOr([$map1, $map2])->chunk(100, function (Collection $result) use ($total, &$loops, &$timeout) {
             foreach ($result->toArray() as $item) {
                 $item['loops_time'] > 0 ? $loops++ : $timeout++;
-                $prefix = str_pad($timeout + $loops, strlen("{$total}"), 0, STR_PAD_LEFT);
+                $prefix = progress_prefix($total, $timeout + $loops);
                 if ($item['loops_time'] > 0) {
-                    $this->setQueueProgress("[{$prefix}/{$total}] 正在重置任务 {$item['code']} 为运行", ($timeout + $loops) * 100 / $total);
+                    $this->setQueueProgress("[{$prefix}] 正在重置任务 {$item['code']} 为运行", ($timeout + $loops) * 100 / $total);
                     [$status, $message] = [1, intval($item['status']) === 4 ? '任务执行失败，已自动重置任务！' : '任务执行超时，已自动重置任务！'];
                 } else {
-                    $this->setQueueProgress("[{$prefix}/{$total}] 正在标记任务 {$item['code']} 为超时", ($timeout + $loops) * 100 / $total);
+                    $this->setQueueProgress("[{$prefix}] 正在标记任务 {$item['code']} 为超时", ($timeout + $loops) * 100 / $total);
                     [$status, $message] = [4, '任务执行超时，已自动标识为失败！'];
                 }
                 $this->app->db->name($this->table)->where(['id' => $item['id']])->update(['status' => $status, 'exec_desc' => $message]);

@@ -64,7 +64,7 @@ class Database extends Command
         [$total, $used] = [count($tables = $this->getTables()), 0];
         $this->setQueueProgress("总共需要修复 {$total} 张数据表", 0);
         foreach ($tables as $table) {
-            $stridx = str_pad(++$used, strlen("{$total}"), '0', STR_PAD_LEFT) . "/{$total}";
+            $stridx = progress_prefix($total, ++$used);
             $this->setQueueProgress("[{$stridx}] 正在修复数据表 {$table}", $used / $total * 100);
             $this->app->db->query("REPAIR TABLE `{$table}`");
         }
@@ -83,7 +83,7 @@ class Database extends Command
         [$total, $used] = [count($tables = $this->getTables()), 0];
         $this->setQueueProgress("总共需要优化 {$total} 张数据表", 0);
         foreach ($tables as $table) {
-            $stridx = str_pad(++$used, strlen("{$total}"), '0', STR_PAD_LEFT) . "/{$total}";
+            $stridx = progress_prefix($total, ++$used);
             $this->setQueueProgress("[{$stridx}] 正在优化数据表 {$table}", $used / $total * 100);
             $this->app->db->query("OPTIMIZE TABLE `{$table}`");
         }
