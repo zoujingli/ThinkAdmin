@@ -73,12 +73,11 @@ class Url extends \think\route\Url
 
     public function build()
     {
-        // 解析URL
         $url = $this->url;
-        $suffix = $this->suffix;
-        $domain = $this->domain;
-        $request = $this->app->request;
         $vars = $this->vars;
+        $domain = $this->domain;
+        $suffix = $this->suffix;
+        $request = $this->app->request;
         if (0 === strpos($url, '[') && $pos = strpos($url, ']')) {
             // [name] 表示使用路由命名标识生成URL
             $name = substr($url, 1, $pos - 1);

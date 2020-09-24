@@ -40,7 +40,7 @@ class ValidateHelper extends Helper
      *  region.value => value // 固定字段数值内容
      *  更多规则参照 ThinkPHP 官方的验证类
      */
-    public function init(array $rules, string $input = '', $callable = null): array
+    public function init(array $rules, string $input = '', ?callable $callable = null): array
     {
         if (is_string($input)) {
             $type = trim($input, '.') ?: 'request';

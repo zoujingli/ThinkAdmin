@@ -33,7 +33,7 @@ class PageHelper extends Helper
      * @param string|Query $dbQuery
      * @param boolean $page 是否启用分页
      * @param boolean $display 是否渲染模板
-     * @param boolean $total 集合分页记录数
+     * @param boolean|integer $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @param string $template 模板文件名称
      * @return array|mixed

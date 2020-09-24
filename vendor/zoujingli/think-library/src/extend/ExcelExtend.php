@@ -18,7 +18,7 @@ declare (strict_types=1);
 namespace think\admin\extend;
 
 /**
- * 导出CSV文件扩展
+ * 导出 CSV 文件扩展
  * Class ExcelExtend
  * @package think\admin\extend
  */
@@ -26,11 +26,11 @@ class ExcelExtend
 {
 
     /**
-     * 设置写入CSV文件头部
+     * 设置写入 CSV 文件头部
      * @param string $name 导出文件名称
      * @param array $headers 表格头部(一维数组)
      */
-    public static function header(string $name, array $headers)
+    public static function header(string $name, array $headers): void
     {
         header('Content-Type: application/octet-stream');
         header("Content-Disposition: attachment; filename=" . iconv('utf-8', 'gbk//TRANSLIT', $name));

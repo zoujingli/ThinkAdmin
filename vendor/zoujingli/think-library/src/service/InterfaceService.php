@@ -120,7 +120,7 @@ class InterfaceService extends Service
 
     /**
      * 设置接口网关地址
-     * @param string $getway
+     * @param string $getway 网关地址
      * @return $this
      */
     public function getway(string $getway): InterfaceService
@@ -134,7 +134,7 @@ class InterfaceService extends Service
      * @param boolean $check 验证数据
      * @return mixed
      */
-    public function getInput($check = true)
+    public function getInput(bool $check = true)
     {
         // 基础参数获取
         $this->input = ValidateHelper::instance()->init([
@@ -182,7 +182,7 @@ class InterfaceService extends Service
      * 获取请求参数
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         if ($this->debug) {
             return $this->app->request->request();
@@ -198,7 +198,7 @@ class InterfaceService extends Service
      * @param mixed $data 返回数据
      * @param mixed $code 返回状态码
      */
-    public function error($info, $data = '{-null-}', $code = 0)
+    public function error($info, $data = '{-null-}', $code = 0): void
     {
         if ($data === '{-null-}') $data = new \stdClass();
         $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data], 1);
@@ -210,7 +210,7 @@ class InterfaceService extends Service
      * @param mixed $data 返回数据
      * @param mixed $code 返回状态码
      */
-    public function success($info, $data = '{-null-}', $code = 1)
+    public function success($info, $data = '{-null-}', $code = 1): void
     {
         if ($data === '{-null-}') $data = new \stdClass();
         $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data], 1);
@@ -222,7 +222,7 @@ class InterfaceService extends Service
      * @param mixed $data 返回数据
      * @param mixed $code 根状态码
      */
-    public function baseError($info, $data = [], $code = 0)
+    public function baseError($info, $data = [], $code = 0): void
     {
         $this->baseResponse($info, $data, $code);
     }
@@ -233,7 +233,7 @@ class InterfaceService extends Service
      * @param mixed $data 返回数据
      * @param mixed $code 根状态码
      */
-    public function baseSuccess($info, $data = [], $code = 1)
+    public function baseSuccess($info, $data = [], $code = 1): void
     {
         $this->baseResponse($info, $data, $code);
     }
@@ -244,7 +244,7 @@ class InterfaceService extends Service
      * @param mixed $data 返回数据
      * @param mixed $code 根状态码
      */
-    public function baseResponse($info, $data = [], $code = 1)
+    public function baseResponse($info, $data = [], $code = 1): void
     {
         $array = $this->_buildSign($data);
         throw new HttpResponseException(json([

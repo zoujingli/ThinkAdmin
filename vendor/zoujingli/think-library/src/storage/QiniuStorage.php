@@ -79,7 +79,7 @@ class QiniuStorage extends Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function set(string $name, string $file, bool $safe = false, $attname = null)
+    public function set(string $name, string $file, bool $safe = false, ?string $attname = null)
     {
         $token = $this->buildUploadToken($name, 3600, $attname);
         $data = ['key' => $name, 'token' => $token, 'fileName' => $name];
@@ -135,7 +135,7 @@ class QiniuStorage extends Storage
      * @param null|string $attname 下载名称
      * @return string
      */
-    public function url(string $name, bool $safe = false, $attname = null): string
+    public function url(string $name, bool $safe = false, ?string $attname = null): string
     {
         return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
     }
@@ -158,7 +158,7 @@ class QiniuStorage extends Storage
      * @param null|string $attname 下载名称
      * @return array
      */
-    public function info(string $name, bool $safe = false, $attname = null): array
+    public function info(string $name, bool $safe = false, ?string $attname = null): array
     {
         [$entry, $token] = $this->getAccessToken($name);
         $data = json_decode(HttpExtend::get("http://rs.qiniu.com/stat/{$entry}", [], ['headers' => ["Authorization: QBox {$token}"]]), true);
@@ -173,7 +173,7 @@ class QiniuStorage extends Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function upload()
+    public function upload(): string
     {
         $protocol = $this->app->request->isSsl() ? 'https' : 'http';
         switch (sysconf('storage.qiniu_region')) {
@@ -199,7 +199,7 @@ class QiniuStorage extends Storage
      * @param null|string $attname 下载名称
      * @return string
      */
-    public function buildUploadToken($name = null, int $expires = 3600, $attname = null)
+    public function buildUploadToken(?string $name = null, int $expires = 3600, ?string $attname = null): string
     {
         $policy = $this->safeBase64(json_encode([
             "deadline"   => time() + $expires, "scope" => is_null($name) ? $this->bucket : "{$this->bucket}:{$name}",
@@ -226,7 +226,7 @@ class QiniuStorage extends Storage
      * @param string $type 操作类型
      * @return array
      */
-    private function getAccessToken(string $name, $type = 'stat'): array
+    private function getAccessToken(string $name, string $type = 'stat'): array
     {
         $entry = $this->safeBase64("{$this->bucket}:{$name}");
         $sign = hash_hmac('sha1', "/{$type}/{$entry}\n", $this->secretKey, true);

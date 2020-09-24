@@ -207,7 +207,7 @@ class QueryHelper extends Helper
      * @param callable|null $callback 回调函数
      * @return $this
      */
-    private function _setBetweenWhere($fields, string $split = ' ', $input = null, string $alias = '#', $callback = null): QueryHelper
+    private function _setBetweenWhere($fields, string $split = ' ', $input = null, string $alias = '#', ?callable $callback = null): QueryHelper
     {
         $data = $this->_getInputData($input ?: $this->input);
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {

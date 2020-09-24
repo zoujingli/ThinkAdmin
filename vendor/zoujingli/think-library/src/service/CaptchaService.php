@@ -112,10 +112,10 @@ class CaptchaService extends Service
     /**
      * 检查验证码是否正确
      * @param string $code 需要验证的值
-     * @param string|null $uniqid 验证码编号
+     * @param null|string $uniqid 验证码编号
      * @return boolean
      */
-    public function check(string $code, $uniqid = null): bool
+    public function check(string $code, ?string $uniqid = null): bool
     {
         $_uni = is_string($uniqid) ? $uniqid : input('uniqid', '-');
         $_val = $this->app->cache->get($_uni, '');
@@ -163,7 +163,7 @@ class CaptchaService extends Service
             if (function_exists('imagettftext')) {
                 imagettftext($img, $this->fontsize, mt_rand(-30, 30), intval($_x * $i + mt_rand(1, 5)), intval($this->height / 1.4), $fontcolor, $this->fontfile, $this->code[$i]);
             } else {
-                imagestring($img, 15, $_x * $i + mt_rand(10, 15), mt_rand(10, 30), $this->code[$i], $fontcolor);
+                imagestring($img, 15, intval($_x * $i + mt_rand(10, 15)), mt_rand(10, 30), $this->code[$i], $fontcolor);
             }
         }
         ob_start();

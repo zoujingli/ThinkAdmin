@@ -134,12 +134,12 @@ class TokenService extends Service
     /**
      * 设置缓存数据
      * @param string $token
-     * @param array $item
+     * @param array $value
      * @return static
      */
-    private function _setCacheItem(string $token, array $item)
+    private function _setCacheItem(string $token, array $value)
     {
-        $this->cachedata[$token] = $item;
+        $this->cachedata[$token] = $value;
         return $this;
     }
 

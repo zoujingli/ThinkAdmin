@@ -139,9 +139,9 @@ abstract class Controller extends \stdClass
      * 返回视图内容
      * @param string $tpl 模板名称
      * @param array $vars 模板变量
-     * @param mixed $node CSRF授权节点
+     * @param null|string $node 授权节点
      */
-    public function fetch($tpl = '', $vars = [], $node = null): void
+    public function fetch(string $tpl = '', array $vars = [], ?string $node = null): void
     {
         foreach ($this as $name => $value) $vars[$name] = $value;
         if ($this->csrf_state) {
@@ -203,7 +203,7 @@ abstract class Controller extends \stdClass
      * @param string|Query $dbQuery
      * @param boolean $page 是否启用分页
      * @param boolean $display 是否渲染模板
-     * @param boolean $total 集合分页记录数
+     * @param boolean|integer $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @param string $template 模板文件名称
      * @return array

@@ -43,16 +43,16 @@ abstract class Storage
     protected $app;
 
     /**
-     * 链接前缀
-     * @var string
-     */
-    protected $prefix;
-
-    /**
      * 链接类型
      * @var string
      */
     protected $type;
+
+    /**
+     * 链接前缀
+     * @var string
+     */
+    protected $prefix;
 
     /**
      * Storage constructor.
@@ -101,7 +101,7 @@ abstract class Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function instance($name = null)
+    public static function instance(?string $name = null)
     {
         $class = ucfirst(strtolower($name ?: sysconf('storage.type')));
         if (class_exists($object = "think\\admin\\storage\\{$class}Storage")) {
@@ -198,7 +198,7 @@ abstract class Storage
      * @param null|string $attname 下载名称
      * @return string
      */
-    protected function getSuffix(string $attname = null): string
+    protected function getSuffix(?string $attname = null): string
     {
         if ($this->type === 'full') {
             if (is_string($attname) && strlen($attname) > 0) {

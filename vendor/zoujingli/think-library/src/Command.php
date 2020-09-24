@@ -73,7 +73,7 @@ abstract class Command extends ThinkCommand
      * @param null|integer $progress 进度数值
      * @return static
      */
-    protected function setQueueProgress($message = null, $progress = null)
+    protected function setQueueProgress(?string $message = null, $progress = null)
     {
         if (defined('WorkQueueCode')) {
             $this->queue->progress(2, $message, $progress);

@@ -260,11 +260,11 @@ class SystemService extends Service
 
     /**
      * 获取实时运行配置
-     * @param string $key
-     * @param array $default
+     * @param null|string $name 配置名称
+     * @param array $default 配置内容
      * @return array|string
      */
-    public function getRuntime($key = null, array $default = [])
+    public function getRuntime($name = null, array $default = [])
     {
         $filename = "{$this->app->getRootPath()}runtime/config.json";
         if (file_exists($filename) && is_file($filename)) {
@@ -274,14 +274,14 @@ class SystemService extends Service
         if (empty($data['map']) || !is_array($data['map'])) $data['map'] = [];
         if (empty($data['uri']) || !is_array($data['uri'])) $data['uri'] = [];
         if (empty($data['run']) || !is_string($data['run'])) $data['run'] = 'debug';
-        return is_null($key) ? $data : ($data[$key] ?? $default);
+        return is_null($name) ? $data : ($data[$name] ?? $default);
     }
 
     /**
      * 设置实时运行配置
-     * @param array|null $map 应用映射
-     * @param string|null $run 支持模式
-     * @param array|null $uri 域名映射
+     * @param null|array $map 应用映射
+     * @param null|string $run 支持模式
+     * @param null|array $uri 域名映射
      * @return boolean 是否调试模式
      */
     public function setRuntime(array $map = [], $run = null, array $uri = []): bool

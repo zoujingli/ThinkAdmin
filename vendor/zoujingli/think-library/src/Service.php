@@ -58,7 +58,7 @@ abstract class Service
      * @param boolean $new 创建新实例
      * @return static
      */
-    public static function instance($var = [], $new = false)
+    public static function instance(array $var = [], bool $new = false)
     {
         return Container::getInstance()->make(static::class, $var, $new);
     }

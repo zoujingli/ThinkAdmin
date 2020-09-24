@@ -67,11 +67,11 @@ class AdminService extends Service
     /**
      * 检查指定节点授权
      * --- 需要读取缓存或扫描所有节点
-     * @param string $node
+     * @param null|string $node
      * @return boolean
      * @throws \ReflectionException
      */
-    public function check(string $node = ''): bool
+    public function check(?string $node = ''): bool
     {
         if ($this->isSuper()) return true;
         $service = NodeService::instance();

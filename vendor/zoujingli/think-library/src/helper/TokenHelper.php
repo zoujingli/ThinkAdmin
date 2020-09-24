@@ -59,7 +59,7 @@ class TokenHelper extends Helper
      * @param array $vars 模板变量
      * @param string|null $node 授权节点
      */
-    public function fetchTemplate($tpl = '', $vars = [], $node = null)
+    public function fetchTemplate(string $tpl = '', array $vars = [], ?string $node = null)
     {
         throw new HttpResponseException(view($tpl, $vars, 200, function ($html) use ($node) {
             return preg_replace_callback('/<\/form>/i', function () use ($node) {

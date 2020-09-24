@@ -151,10 +151,10 @@ class QueueService extends Service
      * 设置任务进度信息
      * @param null|integer $status 任务状态
      * @param null|string $message 进度消息
-     * @param null|integer $progress 进度数值
+     * @param null|float $progress 进度数值
      * @return array
      */
-    public function progress($status = null, $message = null, $progress = null): array
+    public function progress(?int $status = null, ?string $message = null, $progress = null): array
     {
         $ckey = "queue_{$this->code}_progress";
         if (is_numeric($status) && intval($status) === 3) {

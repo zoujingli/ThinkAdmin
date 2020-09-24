@@ -131,12 +131,12 @@ class MessageService extends Service
 
     /**
      * 发送国内短信验证码
-     * @param string $phone 手机号
-     * @param string $content 短信内容
-     * @param string $productid 短信通道
+     * @param integer|string $phone 手机号
+     * @param integer|string $content 短信内容
+     * @param integer|string $productid 短信通道
      * @return boolean
      */
-    public function sendChinaSms($phone, $content, $productid = '676767')
+    public function sendChinaSms($phone, $content, $productid = '676767'): bool
     {
         $tkey = date("YmdHis");
         $result = HttpExtend::get('http://www.ztsms.cn/sendNSms.do', [
@@ -156,7 +156,7 @@ class MessageService extends Service
 
     /**
      * 发送国内短信验证码
-     * @param mixed $phone 目标手机
+     * @param integer|string $phone 目标手机
      * @param integer $wait 等待时间
      * @param string $type 短信模板
      * @return array
@@ -164,7 +164,7 @@ class MessageService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function sendChinaSmsByCode($phone, $wait = 120, $type = 'sms_reg_template')
+    public function sendChinaSmsByCode($phone, int $wait = 120, string $type = 'sms_reg_template'): array
     {
         $cache = $this->app->cache->get($ckey = "{$type}_{$phone}", []);
         if (is_array($cache) && isset($cache['time']) && $cache['time'] > time() - $wait) {
@@ -186,8 +186,8 @@ class MessageService extends Service
 
     /**
      * 验证手机短信验证码
-     * @param string $phone 目标手机
-     * @param string $code 短信验证码
+     * @param integer|string $phone 目标手机
+     * @param integer|string $code 短信验证码
      * @param string $type 短信模板
      * @return boolean
      */
@@ -237,8 +237,8 @@ class MessageService extends Service
 
     /**
      * 发送国际短信内容
-     * @param string $code 国家代码
-     * @param string $mobile 手机号码
+     * @param integer|string $code 国家代码
+     * @param integer|string $mobile 手机号码
      * @param string $content 发送内容
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
@@ -263,7 +263,7 @@ class MessageService extends Service
      * 查询国际短信余额
      * @return array
      */
-    public function queryGlobeSmsBalance()
+    public function queryGlobeSmsBalance(): array
     {
         $tkey = date("YmdHis");
         $result = HttpExtend::get('http://intl.zthysms.com/intBalance.do', [
@@ -280,7 +280,7 @@ class MessageService extends Service
      * 获取国际地域编号
      * @return array
      */
-    public function getGlobeRegionMap()
+    public function getGlobeRegionMap(): array
     {
         return [
             ['title' => '中国 台湾', 'english' => 'Taiwan', 'code' => 886],

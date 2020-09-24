@@ -68,7 +68,7 @@ class LocalStorage extends Storage
      * @param null|string $attname 下载名称
      * @return array
      */
-    public function set(string $name, string $file, bool $safe = false, $attname = null)
+    public function set(string $name, string $file, bool $safe = false, ?string $attname = null)
     {
         try {
             $path = $this->path($name, $safe);
@@ -126,7 +126,7 @@ class LocalStorage extends Storage
      * @param null|string $attname 下载名称
      * @return string
      */
-    public function url(string $name, bool $safe = false, $attname = null): string
+    public function url(string $name, bool $safe = false, ?string $attname = null): string
     {
         return $safe ? $name : "{$this->prefix}/upload/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
     }
@@ -151,7 +151,7 @@ class LocalStorage extends Storage
      * @param null|string $attname 下载名称
      * @return array
      */
-    public function info(string $name, bool $safe = false, $attname = null): array
+    public function info(string $name, bool $safe = false, ?string $attname = null): array
     {
         return $this->has($name, $safe) ? [
             'url' => $this->url($name, $safe, $attname),

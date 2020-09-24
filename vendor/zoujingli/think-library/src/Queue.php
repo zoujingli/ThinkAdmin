@@ -71,7 +71,6 @@ abstract class Queue
     /**
      * 执行任务处理内容
      * @param array $data
-     * @return mixed
      */
     abstract public function execute($data = []);
 
@@ -81,7 +80,7 @@ abstract class Queue
      * @param null|integer $progress 进度数值
      * @return Queue
      */
-    protected function setQueueProgress($message = null, $progress = null): Queue
+    protected function setQueueProgress(?string $message = null, $progress = null): Queue
     {
         $this->queue->progress(2, $message, $progress);
         return $this;

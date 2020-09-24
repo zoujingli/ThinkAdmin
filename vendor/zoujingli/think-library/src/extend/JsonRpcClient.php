@@ -38,9 +38,9 @@ class JsonRpcClient
 
     /**
      * JsonRpcClient constructor.
-     * @param $proxy
+     * @param string $proxy
      */
-    public function __construct($proxy)
+    public function __construct(string $proxy)
     {
         $this->proxy = $proxy;
         $this->id = CodeExtend::uniqidNumber();

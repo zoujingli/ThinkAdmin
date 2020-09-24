@@ -82,7 +82,7 @@ class Queue extends Command
         if (count($result = $this->process->query("-t {$root} {$root}router.php")) < 1) {
             $this->output->writeln(">> There are no WebServer processes to stop");
         } else foreach ($result as $item) {
-            $this->process->close($item['pid']);
+            $this->process->close(intval($item['pid']));
             $this->output->writeln(">> Successfully sent end signal to process {$item['pid']}");
         }
     }
@@ -134,7 +134,7 @@ class Queue extends Command
         if (count($result = $this->process->query($keyword)) < 1) {
             $this->output->writeln(">> There are no task processes to stop");
         } else foreach ($result as $item) {
-            $this->process->close($item['pid']);
+            $this->process->close(intval($item['pid']));
             $this->output->writeln(">> Successfully sent end signal to process {$item['pid']}");
         }
     }

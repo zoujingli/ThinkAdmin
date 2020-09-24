@@ -45,7 +45,7 @@ class ExpressService extends Service
      * 快递服务初始化
      * @return $this
      */
-    protected function initialize()
+    protected function initialize(): ExpressService
     {
         // 创建 CURL 请求模拟参数
         $clentip = $this->app->request->ip();
@@ -94,7 +94,7 @@ class ExpressService extends Service
      */
     public function getExpressList(array $data = []): array
     {
-        if (preg_match('/"currentData":.*?\[(.*?)],/', $this->getWapBaiduHtml(), $matches)) {
+        if (preg_match('/"currentData":.*?\[(.*?)],/', $this->_getWapBaiduHtml(), $matches)) {
             foreach (json_decode("[{$matches['1']}]") as $item) $data[$item->value] = $item->text;
             unset($data['_auto']);
             return $data;
@@ -114,7 +114,7 @@ class ExpressService extends Service
     private function doExpress(string $code, string $number)
     {
         $qid = CodeExtend::uniqidNumber(19, '7740');
-        $url = "{$this->getExpressQueryApi()}&appid=4001&nu={$number}&com={$code}&qid={$qid}&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
+        $url = "{$this->_getExpressQueryApi()}&appid=4001&nu={$number}&com={$code}&qid={$qid}&new_need_di=1&source_xcx=0&vcode=&token=&sourceId=4155&cb=callback";
         return json_decode(str_replace('/**/callback(', '', trim(HttpExtend::get($url, [], $this->options), ')')), true);
     }
 
@@ -122,14 +122,14 @@ class ExpressService extends Service
      * 获取快递查询接口
      * @return string
      */
-    private function getExpressQueryApi(): string
+    private function _getExpressQueryApi(): string
     {
-        if (preg_match('/"expSearchApi":.*?"(.*?)",/', $this->getWapBaiduHtml(), $matches)) {
+        if (preg_match('/"expSearchApi":.*?"(.*?)",/', $this->_getWapBaiduHtml(), $matches)) {
             return str_replace('\\', '', $matches[1]);
         } else {
             @unlink($this->cookies);
             $this->app->cache->delete('express_kuaidi_html');
-            return $this->getExpressQueryApi();
+            return $this->_getExpressQueryApi();
         }
     }
 
@@ -137,7 +137,7 @@ class ExpressService extends Service
      * 获取百度WAP快递HTML（用于后面的抓取关键值）
      * @return string
      */
-    private function getWapBaiduHtml(): string
+    private function _getWapBaiduHtml(): string
     {
         $content = $this->app->cache->get('express_kuaidi_html', '');
         while (empty($content) || stripos($content, '"expSearchApi":') === -1) {

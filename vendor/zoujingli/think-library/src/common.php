@@ -36,11 +36,11 @@ if (!function_exists('p')) {
 if (!function_exists('auth')) {
     /**
      * 访问权限检查
-     * @param string $node
+     * @param null|string $node
      * @return boolean
      * @throws ReflectionException
      */
-    function auth($node): bool
+    function auth(?string $node): bool
     {
         return AdminService::instance()->check($node);
     }
@@ -54,7 +54,7 @@ if (!function_exists('sysuri')) {
      * @param boolean|string $domain 域名
      * @return string
      */
-    function sysuri($url = '', array $vars = [], $suffix = true, $domain = false)
+    function sysuri(string $url = '', array $vars = [], $suffix = true, $domain = false)
     {
         return SystemService::instance()->sysuri($url, $vars, $suffix, $domain);
     }
@@ -63,7 +63,7 @@ if (!function_exists('sysconf')) {
     /**
      * 获取或配置系统参数
      * @param string $name 参数名称
-     * @param string $value 参数内容
+     * @param mixed $value 参数内容
      * @return mixed
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -88,7 +88,7 @@ if (!function_exists('sysdata')) {
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    function sysdata($name, $value = null)
+    function sysdata(string $name, $value = null)
     {
         if (is_null($value)) {
             return SystemService::instance()->getData($name);
@@ -123,7 +123,7 @@ if (!function_exists('systoken')) {
      * @param null|string $node
      * @return string
      */
-    function systoken($node = null): string
+    function systoken(?string $node = null): string
     {
         $result = TokenService::instance()->buildFormToken($node);
         return $result['token'] ?? '';

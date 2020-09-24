@@ -63,7 +63,7 @@ class App
      * @param Closure $next
      * @return Response
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if (!$this->parseMultiApp()) {
             return $next($request);
