@@ -51,12 +51,12 @@ class Queue extends Command
     public function configure()
     {
         $this->setName('xadmin:queue');
-        $this->addArgument('action', Argument::OPTIONAL, 'stop|start|status|query|listen|clean|dorun|webstop|webstart|webstatus', 'listen');
-        $this->addArgument('code', Argument::OPTIONAL, 'Taskcode');
-        $this->addArgument('spts', Argument::OPTIONAL, 'Separator');
         $this->addOption('host', '-H', Option::VALUE_OPTIONAL, 'The host of WebServer.');
         $this->addOption('port', '-p', Option::VALUE_OPTIONAL, 'The port of WebServer.');
         $this->addOption('daemon', 'd', Option::VALUE_NONE, 'Run the queue listen in daemon mode');
+        $this->addArgument('action', Argument::OPTIONAL, 'stop|start|status|query|listen|clean|dorun|webstop|webstart|webstatus', 'listen');
+        $this->addArgument('code', Argument::OPTIONAL, 'Taskcode');
+        $this->addArgument('spts', Argument::OPTIONAL, 'Separator');
         $this->setDescription('Asynchronous Command Queue Task for ThinkAdmin');
     }
 
@@ -189,12 +189,11 @@ class Queue extends Command
         $this->app->db->name($this->table)->whereOr([$map1, $map2])->chunk(100, function (Collection $result) use ($total, &$loops, &$timeout) {
             foreach ($result->toArray() as $item) {
                 $item['loops_time'] > 0 ? $loops++ : $timeout++;
-                $prefix = progress_prefix($total, $timeout + $loops);
                 if ($item['loops_time'] > 0) {
-                    $this->setQueueProgress("[{$prefix}] 正在重置任务 {$item['code']} 为运行", ($timeout + $loops) * 100 / $total);
+                    $this->queue->message($total, $timeout + $loops, "正在重置任务 {$item['code']} 为运行");
                     [$status, $message] = [1, intval($item['status']) === 4 ? '任务执行失败，已自动重置任务！' : '任务执行超时，已自动重置任务！'];
                 } else {
-                    $this->setQueueProgress("[{$prefix}] 正在标记任务 {$item['code']} 为超时", ($timeout + $loops) * 100 / $total);
+                    $this->queue->message($total, $timeout + $loops, "正在标记任务 {$item['code']} 为超时");
                     [$status, $message] = [4, '任务执行超时，已自动标识为失败！'];
                 }
                 $this->app->db->name($this->table)->where(['id' => $item['id']])->update(['status' => $status, 'exec_desc' => $message]);

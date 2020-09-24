@@ -1,19 +1,8 @@
 {extend name='main'}
 
 {block name="button"}
-<!--{if isset($isSupper) and $isSupper}-->
-<div class="layui-form inline-block">
-    <!--{if intval(sysconf('base.oplog_state')) eq 1}-->
-    <input type="checkbox" title="数据变更日志" value="0" checked lay-filter="OplogState">
-    <!--{else}-->
-    <input type="checkbox" title="数据变更日志" value="1" lay-filter="OplogState">
-    <!--{/if}-->
-    <script>
-        form.render(), form.on('checkbox(OplogState)', function (elem) {
-            $.form.load('{:url("admin/api.plugs/oplog")}', {state: elem.value});
-        });
-    </script>
-</div>
+<!--{if auth('config')}-->
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('config')}">日志配置</a>
 <!--{/if}-->
 
 <!--{if auth("clear")}-->

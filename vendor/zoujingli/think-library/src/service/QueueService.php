@@ -195,6 +195,24 @@ class QueueService extends Service
     }
 
     /**
+     * 生成进度前缀数据
+     * @param integer $total 记录总和
+     * @param integer $used 当前记录
+     * @param string $message 文字描述
+     */
+    public function message(int $total, int $used, string $message = ''): void
+    {
+        $total = $total < 1 ? 1 : $total;
+        $prefix = str_pad("{$used}", strlen("{$total}"), '0', STR_PAD_LEFT);
+        $message = "[{$prefix}/{$total}] {$message}";
+        if (defined('WorkQueueCode')) {
+            $this->progress(2, $message, sprintf("%.2f", $used / $total * 100));
+        } else {
+            echo $message . PHP_EOL;
+        }
+    }
+
+    /**
      * 执行任务处理
      * @param array $data 任务参数
      * @return mixed

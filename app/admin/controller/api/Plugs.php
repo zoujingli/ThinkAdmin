@@ -79,27 +79,6 @@ class Plugs extends Controller
     }
 
     /**
-     * 数据变更日志
-     * @login true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function oplog()
-    {
-        if (AdminService::instance()->isSuper()) {
-            $data = $this->_vali([
-                'state.in:0,1'  => '状态值范围错误！',
-                'state.require' => '状态值不能为空！',
-            ]);
-            sysconf('base.oplog_state', $data['state']);
-            $this->success('数据变更日志切换成功！');
-        } else {
-            $this->error('只有超级管理员才能操作！');
-        }
-    }
-
-    /**
      * 当前运行模式
      * @login true
      */

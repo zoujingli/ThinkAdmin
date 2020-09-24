@@ -123,16 +123,15 @@ class Install extends Command
         } else {
             [$total, $used] = [count($data), 0];
             foreach ($data as $file) {
-                $prefix = progress_prefix($total, ++$used);
                 [$state, $mode, $name] = $module->updateFileByDownload($file);
                 if ($state) {
-                    if ($mode === 'add') $this->output->writeln("[{$prefix}] --- {$name} add successfully");
-                    if ($mode === 'mod') $this->output->writeln("[{$prefix}] --- {$name} update successfully");
-                    if ($mode === 'del') $this->output->writeln("[{$prefix}] --- {$name} delete successfully");
+                    if ($mode === 'add') $this->queue->message($total, ++$used, "--- {$name} add successfully");
+                    if ($mode === 'mod') $this->queue->message($total, ++$used, "--- {$name} update successfully");
+                    if ($mode === 'del') $this->queue->message($total, ++$used, "--- {$name} delete successfully");
                 } else {
-                    if ($mode === 'add') $this->output->writeln("[{$prefix}] --- {$name} add failed");
-                    if ($mode === 'mod') $this->output->writeln("[{$prefix}] --- {$name} update failed");
-                    if ($mode === 'del') $this->output->writeln("[{$prefix}] --- {$name} delete failed");
+                    if ($mode === 'add') $this->queue->message($total, ++$used, "--- {$name} add failed");
+                    if ($mode === 'mod') $this->queue->message($total, ++$used, "--- {$name} update failed");
+                    if ($mode === 'del') $this->queue->message($total, ++$used, "--- {$name} delete failed");
                 }
             }
         }

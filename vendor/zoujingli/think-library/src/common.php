@@ -283,17 +283,3 @@ if (!function_exists('down_file')) {
         return $result['url'] ?? $source;
     }
 }
-
-if (!function_exists('progress_prefix')) {
-    /**
-     * 生成进度前缀文字
-     * @param integer $total
-     * @param integer $used
-     * @param string $char
-     * @return string
-     */
-    function progress_prefix(int $total, int $used, string $char = '0'): string
-    {
-        return str_pad("{$used}", strlen("{$total}"), $char, STR_PAD_LEFT) . "/{$total}";
-    }
-}

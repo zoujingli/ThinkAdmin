@@ -64,6 +64,30 @@ class Oplog extends Controller
     }
 
     /**
+     * 日志行为配置
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function config()
+    {
+        if ($this->request->isGet()) {
+            $this->fetch();
+        } else {
+            $data = $this->_vali([
+                'oplog_state.in:0,1'  => '日志状态值异常！',
+                'oplog_state.require' => '日志状态不能为空！',
+                'oplog_days.require'  => '保存天数不能为空!',
+            ]);
+            foreach ($data as $name => $value) {
+                sysconf($name, $value);
+            }
+            $this->success('日志配置成功！');
+        }
+    }
+
+    /**
      * 清理系统日志
      * @auth true
      * @throws \think\db\exception\DbException

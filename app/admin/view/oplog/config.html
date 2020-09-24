@@ -1,0 +1,29 @@
+<form onsubmit="return false" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+        <div class="layui-form-item">
+            <span class="color-green font-w7 label-required-prev">记录数据变更日志</span>
+            <div>
+                {foreach [1 => '记录数据变更日志',0 => '不记录数据变更日志'] as $k=>$v}
+                {if intval(sysconf('base.oplog_state')) eq $k}
+                <label class="think-radio">
+                    <input checked type="radio" value="{$k}" name="oplog_state">{$v}
+                </label>
+                {else}
+                <label class="think-radio">
+                    <input type="radio" value="{$k}" name="oplog_state">{$v}
+                </label>
+                {/if}{/foreach}
+            </div>
+        </div>
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7">操作日志保留天数</span>
+            <input class="layui-input" required data-blur-number="0" name="oplog_days" value="{:sysconf('base.oplog_days')?:0}">
+            <p class="help-block">注意：当日志保留天数设置为 0 时则为永久保留日志，系统不会进行删除！</p>
+        </label>
+        <div class="hr-line-dashed "></div>
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">保存配置</button>
+            <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消修改吗？" data-close>取消修改</button>
+        </div>
+    </div>
+</form>
