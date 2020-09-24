@@ -285,9 +285,9 @@ class Queue extends Command
                     // 自定义任务，支持返回消息（支持异常结束，异常码可选择 3|4 设置任务状态）
                     $class = $this->app->make($command, [], true);
                     if ($class instanceof \think\admin\Queue) {
-                        $this->updateQueue(3, $class->initialize($this->queue)->execute($this->queue->data));
+                        $this->updateQueue(3, $class->initialize($this->queue)->execute($this->queue->data) ?: '');
                     } elseif ($class instanceof \think\admin\service\QueueService) {
-                        $this->updateQueue(3, $class->initialize($this->queue->code)->execute($this->queue->data));
+                        $this->updateQueue(3, $class->initialize($this->queue->code)->execute($this->queue->data) ?: '');
                     } else {
                         throw new \think\admin\Exception("自定义 {$command} 未继承 Queue 或 QueueService");
                     }
@@ -306,8 +306,8 @@ class Queue extends Command
 
     /**
      * 修改当前任务状态
-     * @param integer $status 任务状态
-     * @param string $message 消息内容
+     * @param int $status 任务状态
+     * @param mixed $message 消息内容
      * @param boolean $isSplit 是否分隔
      * @throws \think\db\exception\DbException
      */
