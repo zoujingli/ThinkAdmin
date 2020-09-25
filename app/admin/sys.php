@@ -21,15 +21,16 @@ try {
     /*! 全局数据变更数据 */
     $GLOBALS['oplogs'] = [];
     /*! 数据变更日志开关状态 */
-    if (sysconf('base.oplog_state') && ($days = floatval(sysconf('base.oplog_days'))) > 0) {
+    if (sysconf('base.oplog_state') > 0) {
         /*! 数据变更批量写入 */
-        app()->event->listen('HttpEnd', function () use ($days) {
+        app()->event->listen('HttpEnd', function () {
             if (is_array($GLOBALS['oplogs']) && count($GLOBALS['oplogs']) > 0) {
                 foreach (array_chunk($GLOBALS['oplogs'], 100) as $items) {
                     app()->db->name('SystemOplog')->insertAll($items);
                 }
                 $GLOBALS['oplogs'] = [];
-                if (rand(1, 100) <= 10) { /*! 清理一周前的日志记录 */
+                $days = floatval(sysconf('base.oplog_days'));
+                if (rand(1, 100) <= 10 && $days > 0) {
                     $lastdate = date('Y-m-d H:i:s', strtotime("-{$days}days"));
                     app()->db->name('SystemOplog')->where('create_at', '<', $lastdate)->delete();
                 }
