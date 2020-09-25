@@ -122,6 +122,17 @@ class Menu extends Controller
     }
 
     /**
+     * 菜单编辑成功后刷新页面
+     * @param bool $state
+     */
+    protected function _form_result(bool $state)
+    {
+        if ($state) {
+            $this->success('系统菜单修改成功！', 'javascript:location.reload()');
+        }
+    }
+
+    /**
      * 修改菜单状态
      * @auth true
      * @throws \think\db\exception\DbException

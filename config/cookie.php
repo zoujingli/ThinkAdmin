@@ -23,7 +23,7 @@ return [
     // cookie 启用安全传输
     'secure'    => false,
     // httponly 设置
-    'httponly'  => false,
+    'httponly'  => true,
     // 是否使用 setcookie
     'setcookie' => true,
 ];
