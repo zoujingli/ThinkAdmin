@@ -26,9 +26,7 @@
                 <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td class="sub-span-blue nowrap">
-                <div class="headimg">
-                    <img alt="img" data-tips-image src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}">
-                </div>
+                <div class="headimg" data-tips-image data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 <div class="inline-block">
                     {notempty name='vo.username'}
                     <div>姓名：<span>{$vo.username|default='-'}</span></div>

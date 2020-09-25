@@ -55,9 +55,7 @@
                 </td>
                 <td class='nowrap'>
                     {notempty name='vo.cover'}
-                    <div class="headimg">
-                        <img alt="img" data-tips-image src="{$vo.cover|default=''}">
-                    </div>
+                    <div class="headimg" data-tips-image data-lazy-src="{$vo.cover}"></div>
                     {/notempty}
                     <div class="inline-block text-top sub-span-blue">
                         商品编号：<span>{$vo.code|default='--'}</span><br>

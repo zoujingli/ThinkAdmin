@@ -57,9 +57,7 @@
                     <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
                 </td>
                 <td class='text-left nowrap'>
-                    <div class="headimg">
-                        <img alt="img" data-tips-image src="{$vo.headimg|default=''}">
-                    </div>
+                    <div class="headimg" data-tips-image data-lazy-src="{$vo.headimg|default=''}"></div>
                     <div class="inline-block sub-span-blue">
                         登录账号：<span><b>{$vo.username|default=''}</b></span><br>
                         用户昵称：<span><b>{$vo.nickname|default='-'|raw}</b></span><br>

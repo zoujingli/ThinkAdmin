@@ -14,18 +14,18 @@
 // Layui & jQuery
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
-
+/*! 应用根路径 */
 window.appRoot = (function (src) {
     return src.pop(), src.pop(), src.join('/') + '/';
 })(document.scripts[document.scripts.length - 1].src.split('/'));
-
+/*! 静态插件库路径 */
 window.baseRoot = (function (src) {
     return src.substring(0, src.lastIndexOf("/") + 1);
 })(document.scripts[document.scripts.length - 1].src);
+/*! 动态插件库路径 */
+window.tapiRoot = window.tapiRoot || window.appRoot + "admin"
 
-window.tapiRoot = window.tapiRoot || window.baseRoot + "?s=admin"
-
-// require 配置参数
+/*! require 配置 */
 require.config({
     waitSeconds: 60,
     baseUrl: baseRoot,
@@ -54,7 +54,7 @@ require.config({
     }
 });
 
-// 注册jquery到require模块
+/*! 注册 jquery 到 require 模块 */
 define('jquery', [], function () {
     return layui.$;
 });
@@ -141,7 +141,7 @@ $(function () {
             }), $dom.find('input[data-date-range]').map(function () {
                 this.setAttribute('autocomplete', 'off');
                 laydate.render({
-                    type: this.getAttribute('data-date-range') || 'date',
+                    type: this.dataset.dateRange || 'date',
                     range: true, elem: this, done: function (value) {
                         $(this.elem).val(value).trigger('change');
                     }
@@ -149,17 +149,26 @@ $(function () {
             }), $dom.find('input[data-date-input]').map(function () {
                 this.setAttribute('autocomplete', 'off');
                 laydate.render({
-                    type: this.getAttribute('data-date-input') || 'date',
+                    type: this.dataset.dateInput || 'date',
                     range: false, elem: this, done: function (value) {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
             }), $dom.find('[data-file]:not([data-inited])').map(function (index, elem, $this, field) {
-                $this = $(elem), field = $this.attr('data-field') || 'file';
+                $this = $(elem), field = this.dataset.field || 'file';
                 if (!$this.data('input')) $this.data('input', $('[name="' + field + '"]').get(0));
                 $this.uploadFile(function (url, file) {
                     $($this.data('input')).data('file', file).val(url).trigger('change');
                 });
+            }), $dom.find('[data-lazy-src]:not([data-lazy-loaded])').each(function () {
+                if (this.dataset.lazyLoaded !== 'true') {
+                    if (this.nodeName === 'IMG') {
+                        this.src = this.dataset.lazySrc;
+                    } else {
+                        this.style.backgroundImage = 'url(' + this.dataset.lazySrc + ')';
+                    }
+                    this.dataset.lazyLoaded = "true";
+                }
             });
         };
         // 在内容区显示视图
@@ -168,11 +177,11 @@ $(function () {
                 that.reInit($(that.selecter));
             }, 500);
         };
-        // 以HASH打开新网页
+        // 以 HASH 打开新网页
         this.href = function (url, obj) {
             if (url !== '#') window.location.href = '#' + $.menu.parseUri(url, obj);
-            else if (obj && obj.getAttribute('data-menu-node')) {
-                $('[data-menu-node^="' + obj.getAttribute('data-menu-node') + '-"][data-open!="#"]:first').trigger('click');
+            else if (obj && obj.dataset.menuNode) {
+                $('[data-menu-node^="' + obj.dataset.menuNode + '-"][data-open!="#"]:first').trigger('click');
             }
         };
         // 异步加载的数据
@@ -226,7 +235,7 @@ $(function () {
                 index = layer.open({
                     type: 1, btn: false, area: "800px", content: res, title: title || '', success: function (dom, index) {
                         $(dom).find('[data-close]').off('click').on('click', function () {
-                            if ($(this).attr('data-confirm')) return $.msg.confirm($(this).attr('data-confirm'), function (_index) {
+                            if (this.dataset.confirm) return $.msg.confirm(this.dataset.confirm, function (_index) {
                                 layer.close(_index), layer.close(index);
                             }), false;
                             layer.close(index);
@@ -254,7 +263,7 @@ $(function () {
             node = node || location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1');
             if (!/^m-/.test(node)) {
                 var $menu = $('[data-menu-node][data-open*="' + url.replace(/\.html$/ig, '') + '"]');
-                return $menu.size() ? $menu.get(0).getAttribute('data-menu-node') : '';
+                return $menu.size() ? $menu.get(0).dataset.menuNode : '';
             }
             return node;
         };
@@ -272,7 +281,7 @@ $(function () {
             }
             uri = this.getUri(uri);
             if (typeof params.spm !== 'string') {
-                params.spm = obj && obj.getAttribute('data-menu-node') || this.queryNode(uri);
+                params.spm = obj && obj.dataset.menuNode || this.queryNode(uri);
             }
             if (typeof params.spm !== 'string' || params.spm.length < 1) delete params.spm;
             // 生成新的 URL 参数
@@ -294,7 +303,7 @@ $(function () {
                 }).trigger('resize');
                 /*! Mini 菜单模式时TIPS文字显示 */
                 $('[data-target-tips]').mouseenter(function () {
-                    if ($menu.hasClass(miniClass)) $(this).attr('index', layer.tips($(this).attr('data-target-tips') || '', this));
+                    if ($menu.hasClass(miniClass)) $(this).attr('index', layer.tips(this.dataset.targetTips || '', this));
                 }).mouseleave(function () {
                     layer.close($(this).attr('index'));
                 });
@@ -306,7 +315,7 @@ $(function () {
             /*! 同步二级菜单展示状态 */
             this.syncOpenStatus = function (mode) {
                 $('[data-submenu-layout]').map(function (node) {
-                    node = $(this).attr('data-submenu-layout');
+                    node = this.dataset.submenuLayout;
                     if (mode === 1) {
                         layui.data('admin-menu-stat', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
                     } else if ((layui.data('admin-menu-stat')[node] || 2) === 2) {
@@ -437,7 +446,7 @@ $(function () {
                     }
                     return event.preventDefault(), false;
                 }).find('[data-form-loaded]').map(function () {
-                    $(this).html(this.getAttribute('data-form-loaded') || this.innerHTML);
+                    $(this).html(this.dataset.formLoaded || this.innerHTML);
                     $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
                 });
                 return $(form).data('validate', this);
@@ -447,11 +456,12 @@ $(function () {
 
     /*! 自动监听规则内表单 */
     $.vali.listen = function () {
-        $('form[data-auto]').map(function () {
-            if ($(this).attr('data-listen') !== 'true') $(this).attr('data-listen', 'true').vali(function (data) {
-                var call = $(this).attr('data-callback') || '_default_callback';
-                var type = this.getAttribute('method') || 'POST', tips = this.getAttribute('data-tips') || undefined;
-                var time = this.getAttribute('data-time') || undefined, href = this.getAttribute('action') || window.location.href;
+        $('form[data-auto]').map(function (index, form) {
+            if (this.dataset.listen === 'true') return true;
+            $(this).attr('data-listen', 'true').vali(function (data) {
+                var call = form.dataset.callback || '_default_callback';
+                var type = form.method || 'POST', tips = form.dataset.tips || undefined;
+                var time = form.dataset.time || undefined, href = form.action || window.location.href;
                 $.form.load(href, data, type, window[call] || undefined, true, tips, time);
             });
         });
@@ -465,7 +475,7 @@ $(function () {
     /*! 表单转JSON */
     $.fn.formToJson = function () {
         var self = this, data = {}, push = {};
-        var patterns = {"key": /[a-zA-Z0-9_]+|(?=\[\])/g, "push": /^$/, "fixed": /^\d+$/, "named": /^[a-zA-Z0-9_]+$/};
+        var patterns = {"key": /[a-zA-Z0-9_]+|(?=\[])/g, "push": /^$/, "fixed": /^\d+$/, "named": /^[a-zA-Z0-9_]+$/};
         this.build = function (base, key, value) {
             return (base[key] = value), base;
         };
@@ -493,7 +503,7 @@ $(function () {
     /*! 全局文件上传入口 */
     $.fn.uploadFile = function (callback) {
         if (this.attr('data-inited')) return false;
-        var that = this, mode = $(this).attr('data-file') || 'one';
+        var that = this, mode = this.attr('data-file') || 'one';
         this.attr('data-inited', true).attr('data-multiple', (mode !== 'btn' && mode !== 'one') ? 1 : 0);
         require(['upload'], function (apply) {
             apply.call(this, that, callback);
@@ -502,15 +512,15 @@ $(function () {
 
     /*! 上传单张图片 */
     $.fn.uploadOneImage = function () {
-        return this.each(function (input, template) {
-            input = $(this), template = $('<a data-file="one" class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>');
-            template.attr('data-type', input.data('type') || 'png,jpg,gif');
-            template.attr('data-field', input.attr('name') || 'image').data('input', this);
-            template.find('span').on('click', function (event) {
-                event.stopPropagation(), template.attr('style', ''), input.val('');
+        return this.each(function ($in, $tpl) {
+            $in = $(this), $tpl = $('<a data-file="one" class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>');
+            $tpl.attr('data-type', $in.data('type') || 'png,jpg,gif');
+            $tpl.attr('data-field', $in.attr('name') || 'image').data('input', this);
+            $tpl.find('span').on('click', function (event) {
+                event.stopPropagation(), $tpl.attr('style', ''), $in.val('');
             });
-            input.attr('name', template.attr('data-field')).after(template).on('change', function () {
-                if (this.value) template.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
+            $in.attr('name', $tpl.attr('data-field')).after($tpl).on('change', function () {
+                if (this.value) $tpl.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
             }).trigger('change');
         }), this;
     };
@@ -546,11 +556,10 @@ $(function () {
 
     /*! 注册 data-load 事件行为 */
     $body.on('click', '[data-load]', function () {
-        var url = $(this).attr('data-load'), tips = $(this).attr('data-tips'), time = $(this).attr('data-time');
-        if ($(this).attr('data-confirm')) return $.msg.confirm($(this).attr('data-confirm'), function () {
+        var url = this.dataset.load, tips = this.dataset.tips, time = this.dataset.time;
+        this.dataset.confirm ? $.msg.confirm(this.dataset.confirm, function () {
             $.form.load(url, {}, 'get', null, true, tips, time);
-        });
-        $.form.load(url, {}, 'get', null, true, tips, time);
+        }) : $.form.load(url, {}, 'get', null, true, tips, time);
     });
 
     /*! 注册 data-serach 表单搜索行为 */
@@ -568,17 +577,17 @@ $(function () {
 
     /*! 注册 data-modal 事件行为 */
     $body.on('click', '[data-modal]', function () {
-        return $.form.modal($(this).attr('data-modal'), 'open_type=modal', $(this).attr('data-title') || $(this).text() || '编辑');
+        return $.form.modal(this.dataset.modal, 'open_type=modal', this.dataset.title || this.innerText || '编辑');
     });
 
     /*! 注册 data-open 事件行为 */
     $body.on('click', '[data-open]', function () {
-        $.form.href($(this).attr('data-open'), this);
+        $.form.href(this.dataset.open, this);
     });
 
     /*! 注册 data-dbclick 事件行为 */
     $body.on('dblclick', '[data-dbclick]', function () {
-        $(this).find(this.getAttribute('data-dbclick') || '[data-dbclick]').trigger('click');
+        $(this).find(this.dataset.dbclick || '[data-dbclick]').trigger('click');
     });
 
     /*! 注册 data-reload 事件行为 */
@@ -587,44 +596,40 @@ $(function () {
     });
 
     /*! 注册 data-check 事件行为 */
-    $body.on('click', '[data-check-target]', function () {
-        var checked = !!this.checked;
-        $($(this).attr('data-check-target')).map(function () {
-            (this.checked = checked), $(this).trigger('change');
+    $body.on('click', '[data-check-target]', function (event) {
+        $(this.dataset.checkTarget).map(function () {
+            (this.checked = !!event.target.checked), $(this).trigger('change');
         });
     });
 
     /*! 注册 data-action 事件行为 */
     $body.on('click', '[data-action]', function () {
-        var $this = $(this), data = {}, time = $this.attr('data-time'), action = $this.attr('data-action');
-        var loading = $this.attr('data-loading'), method = $this.attr('data-method') || 'post';
-        var rule = $this.attr('data-value') || (function (rule, ids) {
-            $($this.attr('data-target') || 'input[type=checkbox].list-check-box').map(function () {
+        var data = {}, time = this.dataset.time, action = this.dataset.action;
+        var loading = this.dataset.loading, method = this.dataset.method || 'post';
+        var rule = this.dataset.value || (function (elem, rule, ids) {
+            $(elem.dataset.target || 'input[type=checkbox].list-check-box').map(function () {
                 (this.checked) && ids.push(this.value);
             });
             return ids.length > 0 ? rule.replace('{key}', ids.join(',')) : '';
-        }).call(this, $this.attr('data-rule') || '', []) || '';
+        })(this, this.dataset.rule || '', []) || '';
         if (rule.length < 1) return $.msg.tips('请选择需要更改的数据！');
-        var rules = rule.split(';');
-        for (var i in rules) {
-            if (rules[i].length < 2) return $.msg.tips('异常的数据操作规则，请修改规则！');
-            data[rules[i].split('#')[0]] = rules[i].split('#')[1];
-        }
-        data['_token_'] = $this.attr('data-token') || $this.attr('data-csrf') || '--';
-        var load = loading !== 'false', tips = typeof loading === 'string' ? loading : undefined;
-        if (!$this.attr('data-confirm')) $.form.load(action, data, method, false, load, tips, time);
-        else $.msg.confirm($this.attr('data-confirm'), function () {
-            $.form.load(action, data, method, false, load, tips, time);
+        rule.split(';').forEach(function (rule) {
+            if (rule.length < 2) return $.msg.tips('异常的数据操作规则，请修改规则！');
+            data[rule.split('#')[0]] = rule.split('#')[1];
         });
+        data['_token_'] = this.dataset.token || this.dataset.csrf || '--';
+        var load = loading !== 'false', tips = typeof loading === 'string' ? loading : undefined;
+        this.dataset.confirm ? $.msg.confirm(this.dataset.confirm, function () {
+            $.form.load(action, data, method, false, load, tips, time);
+        }) : $.form.load(action, data, method, false, load, tips, time);
     });
 
     /*! 表单元素失焦时提交 */
     $body.on('blur', '[data-action-blur]', function () {
-        var data = {}, that = this, $this = $(this), action = $this.attr('data-action-blur');
-        var time = $this.attr('data-time'), loading = $this.attr('data-loading') || false;
-        var load = loading !== 'false', tips = typeof loading === 'string' ? loading : undefined;
-        var method = $this.attr('data-method') || 'post', confirm = $this.attr('data-confirm');
-        var attrs = $this.attr('data-value').replace('{value}', $this.val()).split(';');
+        var data = {}, that = this, $this = $(this), action = this.dataset.actionBlur;
+        var time = this.dataset.time, loading = this.dataset.loading || false, load = loading !== 'false';
+        var tips = typeof loading === 'string' ? loading : undefined, method = this.dataset.method || 'post';
+        var attrs = this.dataset.value.replace('{value}', $this.val()).split(';');
         for (var i in attrs) {
             if (attrs[i].length < 2) return $.msg.tips('异常的数据操作规则，请修改规则！');
             data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
@@ -632,43 +637,39 @@ $(function () {
         that.callback = function (ret) {
             return $this.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red'), false;
         };
-        data['_token_'] = $this.attr('data-token') || $this.attr('data-csrf') || '--';
-        if (!confirm) return $.form.load(action, data, method, that.callback, load, tips, time);
-        $.msg.confirm(confirm, function () {
+        data['_token_'] = this.dataset.token || this.dataset.csrf || '--';
+        this.dataset.confirm ? $.msg.confirm(this.dataset.confirm, function () {
             $.form.load(action, data, method, that.callback, load, tips, time);
-        });
+        }) : $.form.load(action, data, method, that.callback, load, tips, time);
     });
 
     /*! 表单元素失去焦点时数字 */
     $body.on('blur', '[data-blur-number]', function (fiexd) {
-        fiexd = this.getAttribute('data-blur-number') || 0;
+        fiexd = this.dataset.blurNumber || 0;
         this.value = (parseFloat(this.value) || 0).toFixed(fiexd);
     });
 
     /*! 注册 data-href 事件行为 */
     $body.on('click', '[data-href]', function (href) {
-        href = $(this).attr('data-href');
+        href = this.dataset.href;
         if (href && href.indexOf('#') !== 0) window.location.href = href;
     });
 
     /*! 注册 data-iframe 事件行为 */
     $body.on('click', '[data-iframe]', function () {
-        $(this).attr('data-index', $.form.iframe(
-            $(this).attr('data-iframe'), $(this).attr('data-title') || '窗口',
-            $(this).attr('data-area') || undefined)
-        );
+        $(this).attr('data-index', $.form.iframe(this.dataset.iframe, this.dataset.title || '窗口', this.dataset.area || undefined));
     });
 
     /*! 注册 data-icon 事件行为 */
     $body.on('click', '[data-icon]', function (field, location) {
         location = tapiRoot + '/api.plugs/icon';
-        field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
+        field = this.dataset.icon || this.dataset.field || 'icon';
         $.form.iframe(location + (location.indexOf('?') > -1 ? '&' : '?') + 'field=' + field, '图标选择');
     });
 
     /*! 注册 data-copy 事件行为 */
     $body.on('click', '[data-copy]', function () {
-        $.copyToClipboard(this.getAttribute('data-copy'));
+        $.copyToClipboard(this.dataset.copy);
     });
     $.copyToClipboard = function (content, input) {
         input = document.createElement('textarea');
@@ -689,7 +690,7 @@ $(function () {
 
     /*! 注册 data-tips-image 事件行为 */
     $body.on('click', '[data-tips-image]', function () {
-        $.previewImage(this.getAttribute('data-tips-image') || this.src, this.getAttribute('data-width'));
+        $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
     });
     $.previewImage = function (src, area) {
         var img = new Image(), index = $.msg.loading();
@@ -710,7 +711,7 @@ $(function () {
 
     /*! 注册 data-phone-view 事件行为 */
     $body.on('click', '[data-phone-view]', function () {
-        $.previewPhonePage(this.getAttribute('data-phone-view') || this.href);
+        $.previewPhonePage(this.dataset.phoneView || this.href);
     });
     $.previewPhonePage = function (href, title, template) {
         template = '<div><div class="mobile-preview pull-left"><div class="mobile-header">_TITLE_</div><div class="mobile-body"><iframe id="phone-preview" src="_URL_" frameborder="0" marginheight="0" marginwidth="0"></iframe></div></div></div>';
@@ -718,16 +719,15 @@ $(function () {
     };
 
     /*! 表单编辑返回操作 */
-    $body.on('click', '[data-history-back]', function (title) {
-        title = this.getAttribute('data-history-back') || '确定要返回上一页吗？';
-        $.msg.confirm(title, function (index) {
+    $body.on('click', '[data-history-back]', function () {
+        $.msg.confirm(this.dataset.historyBack || '确定要返回吗？', function (index) {
             history.back(), $.msg.close(index);
         })
     });
 
     /*! 异步任务状态监听与展示 */
     $body.on('click', '[data-queue]', function (action) {
-        action = this.getAttribute('data-queue') || '';
+        action = this.dataset.queue || '';
         if (action.length < 1) return $.msg.tips('任务地址不能为空！');
         this.doRuntime = function (index) {
             $.form.load(action, {}, 'post', function (ret) {
@@ -736,7 +736,7 @@ $(function () {
                 }
             }), $.msg.close(index);
         };
-        $(this).attr('data-confirm') ? $.msg.confirm($(this).attr('data-confirm'), this.doRuntime) : this.doRuntime(0);
+        this.dataset.confirm ? $.msg.confirm(this.dataset.confirm, this.doRuntime) : this.doRuntime(0);
     });
     $.loadQueue = function (code, doScript, doAjax) {
         layer.open({
@@ -800,29 +800,15 @@ $(function () {
         })(code)
     };
 
-    /*! 图片懒加载处理 */
-    $(window).on('scroll resize load', function () {
-        var notFoundCount = 0, maxNotFound = 2, screenHeight = $(window).height();
-        $('[data-lazy-src]:not([data-lazy-loaded])').each(function (src, pos) {
-            if (this.getAttribute('data-lazy-loaded')) return true;
-            src = this.dataset.lazySrc, pos = this.getBoundingClientRect();
-            if (pos.bottom <= 0 || !src) return true;
-            if (pos.top >= screenHeight) return (notFoundCount++) < maxNotFound;
-            this.nodeName === 'IMG' ? this.src = src : this.style.backgroundImage = 'url(' + src + ')';
-            this.setAttribute('data-lazy-loaded', true);
-        });
-    });
-
     /*! 图片加载异常处理 */
-    document.addEventListener('error', function (event, elem) {
-        elem = event.target;
-        if (elem.tagName.toLowerCase() === 'img') {
-            elem.src = baseRoot + 'theme/img/404_icon.png';
+    document.addEventListener('error', function (event) {
+        var elem = event.target;
+        if (elem.nodeName === 'IMG') {
+            event.target.src = baseRoot + 'theme/img/404_icon.png';
         }
     }, true);
 
     /*! 初始化事件 */
     $.menu.listen();
     $.vali.listen();
-
 });

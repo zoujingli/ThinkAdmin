@@ -42,9 +42,7 @@
                 <label><input class="list-check-box" value='{$vo.openid}' type='checkbox'></label>
             </td>
             <td class='text-left nowrap'>
-                <div class="headimg">
-                    <img alt="img" src="{$vo.headimgurl|default=''}" data-tips-image>
-                </div>
+                <div class="headimg" data-tips-image data-lazy-src="{$vo.headimgurl|default=''}"></div>
                 <div class="inline-block">
                     <p>昵称：{$vo.nickname|default='--'}</p>
                     <p>区域：{$vo.country|default='--'} {$vo.province|default=''} {$vo.city|default=''}</p>
