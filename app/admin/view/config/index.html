@@ -117,27 +117,27 @@
         <table class="layui-table" lay-even>
             <tbody>
             <tr>
-                <td>核心框架</td>
+                <td class="nowrap text-center">核心框架</td>
                 <td><a target="_blank" href="https://www.thinkphp.cn">ThinkPHP Version {$app->version()}</a></td>
             </tr>
             <tr>
-                <td>管理程序</td>
+                <td class="nowrap text-center">管理程序</td>
                 <td><a target="_blank" href="https://thinkadmin.top">ThinkAdmin Version {$version|default='6.0.0'}</a></td>
             </tr>
             <tr>
-                <td>服务器信息</td>
+                <td class="nowrap text-center">服务器信息</td>
                 <td>{:php_uname()}</td>
             </tr>
             <tr>
-                <td>服务器软件</td>
+                <td class="nowrap text-center">服务器软件</td>
                 <td>{$request->server('SERVER_SOFTWARE',php_sapi_name())}</td>
             </tr>
             <tr>
-                <td>PHP 版本</td>
+                <td class="nowrap text-center">PHP 版本</td>
                 <td>PHP Version {$Think.const.PHP_VERSION}</td>
             </tr>
             <tr>
-                <td>MySQL 版本</td>
+                <td class="nowrap text-center">MySQL 版本</td>
                 <td>MySQL Version {$app->db->query('SELECT VERSION()')[0]['VERSION()']}</td>
             </tr>
             </tbody>
