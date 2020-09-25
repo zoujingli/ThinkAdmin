@@ -306,8 +306,8 @@ class Queue extends Command
 
     /**
      * 修改当前任务状态
-     * @param int $status 任务状态
-     * @param mixed $message 消息内容
+     * @param integer $status 任务状态
+     * @param string $message 消息内容
      * @param boolean $isSplit 是否分隔
      * @throws \think\db\exception\DbException
      */
