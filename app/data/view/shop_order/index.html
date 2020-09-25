@@ -34,18 +34,14 @@
                 </td>
                 <td class="nowrap relative">
                     <div>
-                        <div class="headimg">
-                            <img alt="img" data-tips-image src="{$vo.fromer.headimg|default='__ROOT__/static/theme/img/headimg.png'}">
-                        </div>
+                        <div class="headimg" data-tips-image data-lazy-src="{$vo.fromer.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                         <div class="inline-block sub-span-blue">
                             推荐会员：{$vo.fromer.nickname|default='--'}<br>
                             推荐手机：<span>{$vo.fromer.phone|default='--'}</span><br>
                         </div>
                     </div>
                     <div>
-                        <div class="headimg">
-                            <img alt="img" data-tips-image src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}">
-                        </div>
+                        <div class="headimg" data-tips-image data-lazy-src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                         <div class="inline-block sub-span-blue">
                             会员昵称：{$vo.member.nickname|default='--'}<br>
                             会员手机：<span>{$vo.member.phone|default='--'}</span><br>
@@ -95,9 +91,7 @@
             {/foreach}
             </tbody>
         </table>
-
         {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
-
     </div>
 </div>
 {/block}

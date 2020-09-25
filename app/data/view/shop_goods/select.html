@@ -19,9 +19,9 @@
         <tr>
             <td class='nowrap'>
                 {notempty name='vo.cover'}
-                <img data-tips-image style="width:auto;height:40px" src="{$vo.cover|default=''}" class="margin-right-5" alt="img">
+                <div class="headimg" data-tips-image data-lazy-src="{$vo.cover}"></div>
                 {/notempty}
-                <div class="inline-block text-top">
+                <div class="inline-block">
                     商品编号：{$vo.code|default='--'}<br>
                     商品名称：{$vo.name|default='--'}<br>
                 </div>

@@ -808,7 +808,6 @@ $(function () {
         }
     }, true);
 
-    /*! 初始化事件 */
-    $.menu.listen();
-    $.vali.listen();
+    /*! 系统菜单表单页面初始化 */
+    $.menu.listen(), $.vali.listen(), $.form.reInit($body);
 });

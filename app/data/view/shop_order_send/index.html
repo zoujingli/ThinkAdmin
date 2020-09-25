@@ -33,9 +33,7 @@
                     <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
                 </td>
                 <td class="nowrap relative">
-                    <div class="headimg" style="width:56px;height:56px">
-                        <img data-tips-image src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}" alt="img">
-                    </div>
+                    <div class="headimg" style="width:56px;height:56px" data-tips-image data-lazy-src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                     <div class="inline-block sub-span-blue">
                         会员昵称：{$vo.member.nickname|default='--'}<br>
                         会员手机：<span>{$vo.member.phone|default='--'}</span><br>
@@ -74,14 +72,4 @@
 
     </div>
 </div>
-<style>
-    .think-badge-middle .layui-badge {
-        width: 1em;
-        height: 68px;
-        padding-top: 5px;
-        line-height: 21px;
-        white-space: normal;
-        vertical-align: middle;
-    }
-</style>
 {/block}
