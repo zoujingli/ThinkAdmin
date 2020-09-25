@@ -153,7 +153,7 @@ class ShopGoods extends Controller
             $data['code'] = CodeExtend::uniqidNumber(12, 'G');
         }
         if ($this->request->isGet()) {
-            $data['mark'] = mark_string_array($data['mark']);
+            $data['mark'] = mark_string_array($data['mark'] ?? '');
             $this->marks = GoodsService::instance()->getMarkList();
             $this->cates = GoodsService::instance()->getCateList('arr2table');
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,status';
