@@ -30,7 +30,7 @@ class Auth extends Controller
      * 绑定数据表
      * @var string
      */
-    public $table = 'SystemAuth';
+    private $table = 'SystemAuth';
 
     /**
      * 系统权限管理

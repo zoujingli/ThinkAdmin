@@ -57,7 +57,7 @@ class Menu extends Controller
     {
         foreach ($data as &$vo) {
             if ($vo['url'] !== '#') {
-                $vo['url'] = trim(sysuri($vo['url']) . (empty($vo['params']) ? '' : "?{$vo['params']}"), '/\\');
+                $vo['url'] = trim(url($vo['url'])->build() . (empty($vo['params']) ? '' : "?{$vo['params']}"), '/\\');
             }
             $vo['ids'] = join(',', DataExtend::getArrSubIds($data, $vo['id']));
         }
