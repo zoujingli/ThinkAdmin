@@ -17,6 +17,7 @@ declare (strict_types=1);
 
 namespace think\admin\service;
 
+use think\admin\Exception;
 use think\admin\extend\CodeExtend;
 use think\admin\Service;
 
@@ -195,7 +196,7 @@ class QueueService extends Service
     }
 
     /**
-     * 生成进度前缀数据
+     * 更新任务进度
      * @param integer $total 记录总和
      * @param integer $used 当前记录
      * @param string $message 文字描述
@@ -210,6 +211,26 @@ class QueueService extends Service
         } else {
             echo $message . PHP_EOL;
         }
+    }
+
+    /**
+     * 任务执行成功
+     * @param string $message 消息内容
+     * @throws Exception
+     */
+    public function success(string $message): void
+    {
+        throw new Exception($message, 3, $this->code);
+    }
+
+    /**
+     * 任务执行失败
+     * @param string $message 消息内容
+     * @throws Exception
+     */
+    public function error(string $message): void
+    {
+        throw new Exception($message, 4, $this->code);
     }
 
     /**

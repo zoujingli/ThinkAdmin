@@ -93,7 +93,7 @@ abstract class Queue
      */
     protected function setQueueSuccess(string $message): void
     {
-        throw new Exception($message, 3, $this->queue->code);
+        $this->queue->success($message);
     }
 
     /**
@@ -103,6 +103,6 @@ abstract class Queue
      */
     protected function setQueueError(string $message): void
     {
-        throw new Exception($message, 4, $this->queue->code);
+        $this->queue->error($message);
     }
 }

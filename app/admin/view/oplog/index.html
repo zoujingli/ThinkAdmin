@@ -82,6 +82,9 @@
                 layer.close(value), delete layers[index];
             });
         });
+        $(window).on('hashchange', function () {
+            $('.layui-body').trigger('click');
+        });
     })([]);
 </script>
 {/block}

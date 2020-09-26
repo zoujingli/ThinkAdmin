@@ -92,7 +92,7 @@ abstract class Command extends ThinkCommand
     protected function setQueueError(string $message): Command
     {
         if (defined('WorkQueueCode')) {
-            throw new Exception($message, 4, WorkQueueCode);
+            $this->queue->error($message);
         } elseif (is_string($message)) {
             $this->output->writeln($message);
         }
@@ -108,7 +108,7 @@ abstract class Command extends ThinkCommand
     protected function setQueueSuccess(string $message): Command
     {
         if (defined('WorkQueueCode')) {
-            throw new Exception($message, 3, WorkQueueCode);
+            $this->queue->success($message);
         } elseif (is_string($message)) {
             $this->output->writeln($message);
         }
