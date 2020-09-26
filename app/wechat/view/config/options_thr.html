@@ -8,11 +8,13 @@
 
     <div class="layui-card-body">
 
-        {if !empty($wechat)}
-        <div class="layui-form-item">
+        <!--{if !empty($wechat)}-->
+        <div class="layui-form-item margin-bottom-20">
             <label class="layui-form-label"><b>QRCode</b><br><span class="nowrap color-desc">公众号二维码</span></label>
             <div class="layui-input-block">
-                <div class="pull-left notselect"><img alt="qrc" data-tips-image src="{$wechat.qrcode_url|down_file}" style="width:96px;margin-left:-7px"></div>
+                <div class="pull-left notselect">
+                    <div class="shadow" data-tips-image data-lazy-src="{$wechat.qrcode_url|down_file}" style="width:95px;height:95px"></div>
+                </div>
                 <div class="pull-left padding-left-10">
                     <p class="nowrap">微信昵称：{$wechat.user_nickname|default='-'}</p>
                     <p class="nowrap">微信类型：{$wechat.service_type|default='-'} / {$wechat.service_verify == '未认证' ? '未认证' : '<span class="color-green">已认证</span>'}</p>
@@ -21,12 +23,13 @@
                 </div>
             </div>
         </div>
-        {/if}
+        <div class="hr-line-dashed"></div>
+        <!--{/if}-->
 
         <div class="layui-form-item">
             <label class="layui-form-label"><b>Authorize</b><br><span class="nowrap color-desc">绑定微信授权</span></label>
             <div class="layui-input-block">
-                <button type="button" data-href="{$authurl|default=''}" class="layui-btn layui-btn-primary">重新绑定公众号</button>
+                <button type="button" data-href="{$authurl|default=''}" class="layui-btn layui-btn-sm layui-btn-primary">重新绑定公众号</button>
                 <p class="help-block">点击连接将跳转到微信第三方平台进行公众号授权。</p>
                 {if !empty($message)}<p class="color-red">{$message|default=''}</p>{/if}
             </div>

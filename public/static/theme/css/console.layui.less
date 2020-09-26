@@ -67,10 +67,6 @@ fieldset {
     border: 1px solid @borderColor;
   }
 
-  & + .layui-btn {
-    margin-left: 8px;
-  }
-
   &-group {
     overflow: hidden;
     line-height: 28px;
@@ -96,6 +92,15 @@ fieldset {
       }
     }
   }
+
+  .layui-icon {
+    float: left;
+    margin-right: 5px;
+  }
+
+  & + .layui-btn {
+    margin-left: 8px;
+  }
 }
 
 .layui-badge {
@@ -120,7 +125,7 @@ fieldset {
     line-height: 32px;
 
     .layui-icon {
-      font-size: 15px;
+      font-size: 15px
     }
   }
 
