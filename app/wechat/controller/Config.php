@@ -86,7 +86,6 @@ class Config extends Controller
      */
     public function payment()
     {
-        $this->_applyFormToken();
         if ($this->request->isGet()) {
             $this->title = '微信支付配置';
             $local = LocalStorage::instance();
