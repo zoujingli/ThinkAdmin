@@ -33,7 +33,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label"><b>MCH_CERT</b><br><span class="nowrap color-desc">微信商户证书</span></label>
                     <div class="layui-input-block">
-                        {foreach ['none'=>'暂不使用支付证书', 'pem'=>'上传 PEM 证书', 'p12'=>'上传 P12 证书'] as $k=>$v}
+                        {foreach ['none'=>'暂不使用证书', 'pem'=>'上传 PEM 证书', 'p12'=>'上传 P12 证书'] as $k=>$v}
                         <input type="radio" data-pem-type="{$k}" name="wechat.mch_ssl_type" value="{$k}" title="{$v}" lay-filter="data-mch-type">
                         {/foreach}
                         <div data-mch-type="none"></div>
