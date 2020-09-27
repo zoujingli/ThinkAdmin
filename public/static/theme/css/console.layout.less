@@ -235,7 +235,13 @@
 
   &.layui-layout-left-hide {
     > .layui-body {
-      left: 0 !important
+      left: 0 !important;
+
+      > .layui-card {
+        > .layui-card-header {
+          left: 0 !important;
+        }
+      }
     }
 
     > .layui-side {
