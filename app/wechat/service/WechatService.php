@@ -195,11 +195,14 @@ class WechatService extends Service
             'mch_key'        => sysconf('wechat.mch_key'),
             'cache_path'     => $this->app->getRuntimePath() . 'wechat',
         ];
-        if (sysconf('wechat.mch_ssl_type') === 'p12') {
-            $options['ssl_p12'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_p12'), true);
-        } else {
-            $options['ssl_key'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_key'), true);
-            $options['ssl_cer'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_cer'), true);
+        switch (strtolower(sysconf('wechat.mch_ssl_type'))) {
+            case 'p12':
+                $options['ssl_p12'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_p12'), true);
+                break;
+            case 'pem':
+                $options['ssl_key'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_key'), true);
+                $options['ssl_cer'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_cer'), true);
+                break;
         }
         return $options;
     }
