@@ -78,7 +78,9 @@ class ExpressService extends Service
             if (isset($result['data']['info']['context']) && isset($result['data']['info']['state'])) {
                 $state = intval($result['data']['info']['state']);
                 $status = in_array($state, [0, 1, 5]) ? 2 : ($state === 3 ? 3 : 4);
-                foreach ($result['data']['info']['context'] as $vo) $list[] = ['time' => date('Y-m-d H:i:s', $vo['time']), 'context' => $vo['desc']];
+                foreach ($result['data']['info']['context'] as $vo) {
+                    $list[] = ['time' => date('Y-m-d H:i:s', intval($vo['time'])), 'context' => $vo['desc']];
+                }
                 $result = ['message' => $result['msg'], 'status' => $status, 'express' => $code, 'number' => $number, 'data' => $list];
                 $this->app->cache->set($ckey, $result, 10);
                 return $result;
