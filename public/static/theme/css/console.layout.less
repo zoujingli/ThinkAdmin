@@ -13,11 +13,12 @@
     overflow: auto;
 
     > .layui-card {
+      overflow: visible;
+      position: absolute;
       min-width: 100%;
       min-height: 100%;
       box-shadow: none;
-      overflow: visible;
-      position: absolute;
+      background: none !important;
 
       > .layui-card-header {
         left: 200px;
@@ -146,7 +147,6 @@
 
 /* 页面布局 - 左则 */
 .layui-layout {
-
   > .layui-side {
     .layui-nav-bar {
       display: none !important
