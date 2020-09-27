@@ -532,7 +532,7 @@ $(function () {
     $.fn.uploadOneImage = function () {
         return this.each(function ($in, $tpl) {
             $in = $(this), $tpl = $('<a data-file="one" class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>');
-            $tpl.attr('data-type', $in.data('type') || 'png,jpg,gif');
+            $tpl.attr('data-type', $in.data('type') || 'png,jpg,gif').attr('data-size', $in.data('size') || 0);
             $tpl.attr('data-field', $in.attr('name') || 'image').data('input', this);
             $tpl.find('span').on('click', function (event) {
                 event.stopPropagation(), $tpl.attr('style', ''), $in.val('');
