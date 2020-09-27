@@ -11,17 +11,30 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-// Layui & jQuery
+/*! 数组 forEach 兼容处理 */
+if (typeof Array.prototype.forEach !== 'function') {
+    Array.prototype.forEach = function forEach(callback, context) {
+        typeof context === "undefined" ? context = window : null;
+        for (var i in this) if (typeof callback === "function") {
+            callback.call(context, this[i], i, this)
+        }
+    };
+}
+
+/*! Layui & jQuery */
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
+
 /*! 应用根路径 */
 window.appRoot = (function (src) {
     return src.pop(), src.pop(), src.join('/') + '/';
 })(document.scripts[document.scripts.length - 1].src.split('/'));
+
 /*! 静态插件库路径 */
 window.baseRoot = (function (src) {
     return src.substring(0, src.lastIndexOf("/") + 1);
 })(document.scripts[document.scripts.length - 1].src);
+
 /*! 动态插件库路径 */
 window.tapiRoot = window.tapiRoot || window.appRoot + "admin"
 
