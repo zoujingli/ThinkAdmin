@@ -11,17 +11,31 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-/*! 数组 forEach 兼容处理 */
+/*! 数组兼容处理 */
 if (typeof Array.prototype.forEach !== 'function') {
-    Array.prototype.forEach = function forEach(callback, context) {
+    Array.prototype.forEach = function (callback, context) {
         typeof context === "undefined" ? context = window : null;
-        for (var i in this) if (typeof callback === "function") {
-            callback.call(context, this[i], i, this)
+        for (var i in this) callback.call(context, this[i], i, this)
+    };
+}
+if (typeof Array.prototype.every !== 'function') {
+    Array.prototype.every = function (callback) {
+        for (var i in this) if (callback(this[i], i, this) === false) {
+            return false;
         }
+        return true;
+    };
+}
+if (typeof Array.prototype.some !== 'function') {
+    Array.prototype.some = function (callback) {
+        for (var i in this) if (callback(this[i], i, this) === true) {
+            return true;
+        }
+        return false;
     };
 }
 
-/*! Layui & jQuery */
+/*! LayUI & jQuery */
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
 
@@ -36,7 +50,7 @@ window.baseRoot = (function (src) {
 })(document.scripts[document.scripts.length - 1].src);
 
 /*! 动态插件库路径 */
-window.tapiRoot = window.tapiRoot || window.appRoot + "admin"
+window.tapiRoot = window.tapiRoot || window.appRoot + "admin";
 
 /*! require 配置 */
 require.config({
@@ -77,16 +91,16 @@ $(function () {
     /*! 消息组件实例 */
     $.msg = new function (that) {
         that = this, this.idx = [], this.shade = [0.02, '#000'];
-        // 关闭消息框
+        /*! 关闭消息框 */
         this.close = function (index) {
             return layer.close(index);
         };
-        // 弹出警告框
+        /*! 弹出警告框 */
         this.alert = function (msg, callback) {
             var index = layer.alert(msg, {end: callback, scrollbar: false});
             return this.idx.push(index), index;
         };
-        // 确认对话框
+        /*! 确认对话框 */
         this.confirm = function (msg, ok, no) {
             var index = layer.confirm(msg, {title: '操作确认', btn: ['确认', '取消']}, function () {
                 typeof ok === 'function' && ok.call(this, index);
@@ -96,39 +110,39 @@ $(function () {
             });
             return index;
         };
-        // 显示成功类型的消息
+        /*! 显示成功类型的消息 */
         this.success = function (msg, time, callback) {
             var index = layer.msg(msg, {icon: 1, shade: this.shade, scrollbar: false, end: callback, time: (time || 2) * 1000, shadeClose: true});
             return this.idx.push(index), index;
         };
-        // 显示失败类型的消息
+        /*! 显示失败类型的消息 */
         this.error = function (msg, time, callback) {
             var index = layer.msg(msg, {icon: 2, shade: this.shade, scrollbar: false, time: (time || 3) * 1000, end: callback, shadeClose: true});
             return this.idx.push(index), index;
         };
-        // 状态消息提示
+        /*! 状态消息提示 */
         this.tips = function (msg, time, callback) {
             var index = layer.msg(msg, {time: (time || 3) * 1000, shade: this.shade, end: callback, shadeClose: true});
             return this.idx.push(index), index;
         };
-        // 显示正在加载中的提示
+        /*! 显示正在加载中的提示 */
         this.loading = function (msg, callback) {
             var index = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: callback}) : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: callback});
             return this.idx.push(index), index;
         };
-        // 自动处理显示Think返回的Json数据
+        /*! 自动处理显示返回的Json数据 */
         this.auto = function (ret, time) {
             var url = ret.url || (typeof ret.data === 'string' ? ret.data : '');
             var msg = ret.msg || (typeof ret.info === 'string' ? ret.info : '');
             if (parseInt(ret.code) === 1 && time === 'false') {
-                return url ? (window.location.href = url) : $.form.reload();
+                return url ? (location.href = url) : $.form.reload();
             }
             return (parseInt(ret.code) === 1) ? this.success(msg, time, function () {
-                url ? (window.location.href = url) : $.form.reload();
+                url ? (location.href = url) : $.form.reload();
                 for (var i in that.idx) layer.close(that.idx[i]);
                 that.idx = [];
             }) : this.error(msg, 3, function () {
-                url ? window.location.href = url : '';
+                url ? location.href = url : '';
             });
         };
     };
@@ -136,13 +150,13 @@ $(function () {
     /*! 表单自动化组件 */
     $.form = new function (that) {
         that = this;
-        // 内容区选择器
+        /*! 内容区选择器 */
         this.selecter = '.layui-layout-admin>.layui-body';
-        // 刷新当前页面
+        /*! 刷新当前页面 */
         this.reload = function () {
-            self === top ? window.onhashchange.call(this) : window.location.reload();
+            self === top ? window.onhashchange.call(this) : location.reload();
         };
-        // 内容区域动态加载后初始化
+        /*! 内容区域动态加载后初始化 */
         this.reInit = function ($dom) {
             $(window).trigger('scroll'), $.vali.listen(this), $dom = $dom || $(this.selecter);
             $dom.find('[required]').map(function ($parent) {
@@ -184,20 +198,20 @@ $(function () {
                 }
             });
         };
-        // 在内容区显示视图
+        /*! 在内容区显示视图 */
         this.show = function (html) {
             $(this.selecter).html(html), this.reInit($(this.selecter)), setTimeout(function () {
                 that.reInit($(that.selecter));
             }, 500);
         };
-        // 以 HASH 打开新网页
+        /*! 以 HASH 打开新网页 */
         this.href = function (url, obj) {
-            if (url !== '#') window.location.href = '#' + $.menu.parseUri(url, obj);
+            if (url !== '#') location.href = '#' + $.menu.parseUri(url, obj);
             else if (obj && obj.dataset.menuNode) {
                 $('[data-menu-node^="' + obj.dataset.menuNode + '-"][data-open!="#"]:first').trigger('click');
             }
         };
-        // 异步加载的数据
+        /*! 异步加载的数据 */
         this.load = function (url, data, method, callback, loading, tips, time, headers) {
             var index = loading !== false ? $.msg.loading(tips) : 0;
             if (typeof data === 'object' && typeof data['_token_'] === 'string') {
@@ -231,17 +245,17 @@ $(function () {
                 }
             });
         };
-        // 加载HTML到目标位置
+        /*! 加载 HTML 到目标位置 */
         this.open = function (url, data, callback, loading, tips) {
             this.load(url, data, 'get', function (ret) {
                 return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)), false;
             }, loading, tips);
         };
-        // 打开一个iframe窗口
+        /*! 打开一个iframe窗口 */
         this.iframe = function (url, title, area) {
             return layer.open({title: title || '窗口', type: 2, area: area || ['800px', '580px'], fix: true, maxmin: false, content: url});
         };
-        // 加载HTML到弹出层
+        /*! 加载 HTML 到弹出层 */
         this.modal = function (url, data, title, callback, loading, tips) {
             this.load(url, data, 'GET', function (res, index) {
                 if (typeof (res) === 'object') return $.msg.auto(res), false;
@@ -265,13 +279,13 @@ $(function () {
     /*! 后台菜单辅助插件 */
     $.menu = new function (that) {
         that = this;
-        // 计算URL地址中有效的URI
+        /*! 计算 URL 地址中有效的 URI */
         this.getUri = function (uri) {
-            uri = uri || window.location.href;
-            uri = (uri.indexOf(window.location.host) > -1 ? uri.split(window.location.host)[1] : uri);
+            uri = uri || location.href;
+            uri = (uri.indexOf(location.host) > -1 ? uri.split(location.host)[1] : uri);
             return (uri.indexOf('#') > -1 ? uri.split('#')[1] : uri).split('?')[0];
         };
-        // 通过URI查询最有可能的菜单NODE
+        /*! 通过 URI 查询最有可能的菜单 NODE */
         this.queryNode = function (url, node) {
             node = node || location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1');
             if (!/^m-/.test(node)) {
@@ -280,30 +294,21 @@ $(function () {
             }
             return node;
         };
-        // URL转URI
-        this.parseUri = function (uri, obj) {
-            var params = {};
-            if (uri.indexOf('?') > -1) {
-                var attrs = uri.split('?')[1].split('&');
-                for (var i in attrs) if (attrs[i].indexOf('=') > -1) {
-                    var tmp = attrs[i].split('=').slice();
-                    if (typeof tmp[0] === 'string' && tmp[0].length > 0) {
-                        params[tmp[0]] = decodeURIComponent(tmp[1].replace(/%2B/ig, '%20'));
-                    }
+        /*! URL 转 URI */
+        this.parseUri = function (uri, elem, vars, temp, attrs) {
+            vars = {}, attrs = [], elem = elem || document.createElement('a');
+            if (uri.indexOf('?') > -1) uri.split('?')[1].split('&').forEach(function (item) {
+                if (item.indexOf('=') > -1 && (temp = item.split('=')) && typeof temp[0] === 'string' && temp[0].length > 0) {
+                    vars[temp[0]] = decodeURIComponent(temp[1].replace(/%2B/ig, '%20'));
                 }
-            }
+            });
             uri = this.getUri(uri);
-            if (typeof params.spm !== 'string') {
-                params.spm = obj && obj.dataset.menuNode || this.queryNode(uri);
-            }
-            if (typeof params.spm !== 'string' || params.spm.length < 1) delete params.spm;
-            // 生成新的 URL 参数
-            var attrs = [];
-            for (var i in params) attrs.push([i, params[i]].join('='));
-            var query = '?' + attrs.join('&');
-            return uri + (query === '?' ? '' : query);
+            if (typeof vars.spm !== 'string') vars.spm = elem.dataset.menuNode || this.queryNode(uri) || '';
+            if (typeof vars.spm !== 'string' || vars.spm.length < 1) delete vars.spm;
+            for (var i in vars) attrs.push(i + '=' + vars[i]);
+            return uri + (attrs.length > 0 ? '?' + attrs.join('&') : '');
         };
-        // 后台菜单动作初始化
+        /*! 后台菜单动作初始化 */
         this.listen = function () {
             /*! 菜单模式切换 */
             (function ($menu, miniClass) {
@@ -337,10 +342,10 @@ $(function () {
                 });
             };
             window.onhashchange = function (hash, node) {
-                hash = window.location.hash || '';
+                hash = location.hash || '';
                 if (hash.length < 1) return $('[data-menu-node][data-open!="#"]:first').trigger('click');
                 $.form.load(hash), that.syncOpenStatus(2);
-                // 菜单选择切换
+                /*! 菜单选择切换 */
                 node = that.queryNode(that.getUri());
                 if (/^m-/.test(node)) {
                     var $all = $('a[data-menu-node]').parent(), tmp = node.split('-'), tmpNode = tmp.shift();
@@ -474,7 +479,7 @@ $(function () {
             $(this).attr('data-listen', 'true').vali(function (data) {
                 var call = form.dataset.callback || '_default_callback';
                 var type = form.method || 'POST', tips = form.dataset.tips || undefined;
-                var time = form.dataset.time || undefined, href = form.action || window.location.href;
+                var time = form.dataset.time || undefined, href = form.action || location.href;
                 $.form.load(href, data, type, window[call] || undefined, true, tips, time);
             });
         });
@@ -580,9 +585,9 @@ $(function () {
         var url = $(this).attr('action').replace(/&?page=\d+/g, ''), split = url.indexOf('?') === -1 ? '?' : '&';
         if ((this.method || 'get').toLowerCase() === 'get') {
             if (location.href.indexOf('spm=') > -1) {
-                return window.location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
+                return location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
             } else {
-                return window.location.href = $.menu.parseUri(url + split + $(this).serialize());
+                return location.href = $.menu.parseUri(url + split + $(this).serialize());
             }
         }
         $.form.load(url, this, 'post');
@@ -665,7 +670,7 @@ $(function () {
     /*! 注册 data-href 事件行为 */
     $body.on('click', '[data-href]', function (href) {
         href = this.dataset.href;
-        if (href && href.indexOf('#') !== 0) window.location.href = href;
+        if (href && href.indexOf('#') !== 0) location.href = href;
     });
 
     /*! 注册 data-iframe 事件行为 */
