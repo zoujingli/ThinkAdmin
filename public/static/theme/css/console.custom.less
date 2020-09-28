@@ -6,7 +6,7 @@
   font-size: 13px;
   text-align: center;
   line-height: 22px;
-  border-radius: 5px;
+  border-radius: @borderRadius;
   letter-spacing: 6px;
   border: 1px solid @borderColor;
   background-color: #f2f2f2;
@@ -323,7 +323,7 @@
       padding: 15px 25px;
       position: relative;
       line-height: 3em;
-      border-radius: 5px;
+      border-radius: @borderRadius;
       box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
 
       > div:nth-child(2) {
@@ -449,7 +449,7 @@
     border: 1px solid #ccc;
     position: absolute;
     background: #f5f5f5;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 @borderRadius @borderRadius;
 
     iframe {
       width: 100%;
@@ -467,7 +467,7 @@
     padding-left: 43px;
     background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
     list-style-type: none;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 @borderRadius @borderRadius;
 
     li {
       float: left;
