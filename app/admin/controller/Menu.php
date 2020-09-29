@@ -98,11 +98,11 @@ class Menu extends Controller
     protected function _form_filter(array &$vo)
     {
         if ($this->request->isGet()) {
-            // 清理权限节点
+            /* 清理权限节点 */
             AdminService::instance()->clearCache();
-            // 选择自己的上级菜单
+            /* 选择自己的上级菜单 */
             $vo['pid'] = $vo['pid'] ?? input('pid', '0');
-            // 读取系统功能节点
+            /* 读取系统功能节点 */
             $this->auths = [];
             $this->nodes = MenuService::instance()->getList();
             foreach (NodeService::instance()->getMethods() as $node => $item) {
@@ -110,13 +110,13 @@ class Menu extends Controller
                     $this->auths[] = ['node' => $node, 'title' => $item['title']];
                 }
             }
-            // 列出可选上级菜单
+            /* 列出可选上级菜单 */
             $menus = $this->app->db->name($this->table)->order('sort desc,id asc')->column('id,pid,icon,url,node,title,params', 'id');
             $this->menus = DataExtend::arr2table(array_merge($menus, [['id' => '0', 'pid' => '-1', 'url' => '#', 'title' => '顶部菜单']]));
-            if (isset($vo['id'])) foreach ($this->menus as $key => $menu) if ($menu['id'] === $vo['id']) $vo = $menu;
-            foreach ($this->menus as $key => $menu) {
-                if ($menu['spt'] >= 3 || $menu['url'] !== '#') unset($this->menus[$key]);
-                if (isset($vo['spt']) && $vo['spt'] <= $menu['spt']) unset($this->menus[$key]);
+            if (isset($vo['id'])) foreach ($this->menus as $menu) if ($menu['id'] === $vo['id']) $vo = $menu;
+            foreach ($this->menus as $key => $menu) if ($menu['spt'] >= 3 || $menu['url'] !== '#') unset($this->menus[$key]);
+            if (isset($vo['spt']) && isset($vo['spc']) && in_array($vo['spt'], [1, 2]) && $vo['spc'] > 0) {
+                foreach ($this->menus as $key => $menu) if ($vo['spt'] <= $menu['spt']) unset($this->menus[$key]);
             }
         }
     }
