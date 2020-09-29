@@ -43,7 +43,6 @@
             <td class='layui-hide-xs'>{$vo.url}</td>
             <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq}</td>
             <td class='text-center nowrap notselect'>
-
                 {if auth("add")}
                 <!--{if $vo.spt < 2}-->
                 <a class="layui-btn layui-btn-xs layui-btn-primary" data-title="添加子菜单" data-modal='{:url("add")}?pid={$vo.id}'>添 加</a>
@@ -51,21 +50,18 @@
                 <a class="layui-btn layui-btn-xs layui-btn-disabled">添 加</a>
                 <!--{/if}-->
                 {/if}
-
-                {if auth("edit")}
+                <!--{if auth("edit")}-->
                 <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑菜单" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
-                {/if}
-
-                {if $vo.status eq 1 and auth("state")}
+                <!--{/if}-->
+                <!--{if $vo.status eq 1 and auth("state")}-->
                 <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定要禁用菜单吗？" data-action="{:url('state')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('state')}">禁 用</a>
-                {elseif auth("state")}
+                <!--{/if}-->
+                <!--{if $vo.status eq 0 and auth("state")}-->
                 <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('state')}">启 用</a>
-                {/if}
-
-                {if auth("remove")}
+                <!--{/if}-->
+                <!--{if auth("remove")}-->
                 <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.ids}" data-csrf="{:systoken('remove')}">删 除</a>
-                {/if}
-
+                <!--{/if}-->
             </td>
         </tr>
         {/foreach}

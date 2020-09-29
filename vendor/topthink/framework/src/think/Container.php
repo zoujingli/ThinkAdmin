@@ -152,8 +152,9 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
             $this->instance($abstract, $concrete);
         } else {
             $abstract = $this->getAlias($abstract);
-
-            $this->bind[$abstract] = $concrete;
+            if ($abstract != $concrete) {
+                $this->bind[$abstract] = $concrete;
+            }
         }
 
         return $this;
@@ -445,9 +446,9 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
                 $args[] = $this->getObjectParam($class->getName(), $vars);
             } elseif (1 == $type && !empty($vars)) {
                 $args[] = array_shift($vars);
-            } elseif (0 == $type && isset($vars[$name])) {
+            } elseif (0 == $type && array_key_exists($name, $vars)) {
                 $args[] = $vars[$name];
-            } elseif (0 == $type && isset($vars[$lowerName])) {
+            } elseif (0 == $type && array_key_exists($lowerName, $vars)) {
                 $args[] = $vars[$lowerName];
             } elseif ($param->isDefaultValueAvailable()) {
                 $args[] = $param->getDefaultValue();

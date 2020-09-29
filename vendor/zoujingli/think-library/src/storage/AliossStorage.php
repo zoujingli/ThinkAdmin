@@ -76,14 +76,14 @@ class AliossStorage extends Storage
 
     /**
      * 获取当前实例对象
-     * @param null $name
+     * @param null|string $name
      * @return static
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function instance($name = null)
+    public static function instance(?string $name = null)
     {
         return parent::instance('alioss');
     }

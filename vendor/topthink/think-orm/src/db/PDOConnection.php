@@ -203,7 +203,7 @@ abstract class PDOConnection extends Connection
      * @param array $config 连接信息
      * @return string
      */
-    abstract protected function parseDsn(array $config);
+    abstract protected function parseDsn(array $config): string;
 
     /**
      * 取得数据表的字段信息
@@ -211,7 +211,7 @@ abstract class PDOConnection extends Connection
      * @param string $tableName 数据表名称
      * @return array
      */
-    abstract public function getFields(string $tableName);
+    abstract public function getFields(string $tableName): array;
 
     /**
      * 取得数据库的表信息
@@ -219,7 +219,7 @@ abstract class PDOConnection extends Connection
      * @param string $dbName 数据库名称
      * @return array
      */
-    abstract public function getTables(string $dbName);
+    abstract public function getTables(string $dbName = ''): array;
 
     /**
      * 对返数据表字段信息进行大小写转换出来
@@ -728,16 +728,13 @@ abstract class PDOConnection extends Connection
      */
     public function getPDOStatement(string $sql, array $bind = [], bool $master = false, bool $procedure = false): PDOStatement
     {
-        $this->initConnect($this->readMaster ?: $master);
-
-        // 记录SQL语句
-        $this->queryStr = $sql;
-
-        $this->bind = $bind;
-
-        $this->db->updateQueryTimes();
-
         try {
+            $this->initConnect($this->readMaster ?: $master);
+            // 记录SQL语句
+            $this->queryStr = $sql;
+            $this->bind     = $bind;
+
+            $this->db->updateQueryTimes();
             $this->queryStartTime = microtime(true);
 
             // 预处理
@@ -1394,11 +1391,11 @@ abstract class PDOConnection extends Connection
      */
     public function startTrans(): void
     {
-        $this->initConnect(true);
-
-        ++$this->transTimes;
-
         try {
+            $this->initConnect(true);
+
+            ++$this->transTimes;
+
             if (1 == $this->transTimes) {
                 $this->linkID->beginTransaction();
             } elseif ($this->transTimes > 1 && $this->supportSavepoint()) {
@@ -1412,8 +1409,9 @@ abstract class PDOConnection extends Connection
                 --$this->transTimes;
                 ++$this->reConnectTimes;
                 $this->close()->startTrans();
+            } else {
+                throw $e;
             }
-            throw $e;
         }
     }
 

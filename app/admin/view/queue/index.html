@@ -84,33 +84,35 @@
             </td>
             <td class='text-left nowrap'>
                 <div class="margin-bottom-5">
-                    {if isset($vo.loops_time) and $vo.loops_time > 0}
+                    <!--{if isset($vo.loops_time) and $vo.loops_time > 0}-->
                     <span class="layui-badge layui-bg-orange">循</span>
-                    {/if}
+                    <!--{/if}-->
 
-                    {if $vo.rscript eq 1}
+                    <!--{if $vo.rscript eq 1}-->
                     <span class="layui-badge layui-bg-green">复</span>
-                    {else}
+                    <!--{else}-->
                     <span class="layui-badge layui-bg-blue">单</span>
-                    {/if}
+                    <!--{/if}-->
 
-                    {if $vo.status eq 1}
+                    <!--{if $vo.status eq 1}-->
                     <span class="layui-badge layui-bg-black">等待处理</span>
-                    {elseif $vo.status eq 2}
+                    <!--{elseif $vo.status eq 2}-->
                     <span class="layui-badge layui-bg-green">正在处理</span>
-                    {elseif $vo.status eq 3}
+                    <!--{elseif $vo.status eq 3}-->
                     <span class="layui-badge layui-bg-blue">处理完成</span>
-                    {elseif $vo.status eq 4 and auth('redo')}
+                    <!--{elseif $vo.status eq 4 and auth('redo')}-->
                     <span class="layui-badge layui-bg-red">处理失败</span>
                     <a class="layui-badge layui-bg-green" data-confirm="确定要重置该任务吗？" data-queue="{:url('redo')}?code={$vo.code}">
                         <i class="layui-icon font-s12">&#xe669;</i>
                     </a>
-                    {/if}
-                    {if auth("remove") }
+                    <!--{/if}-->
+
+                    <!--{if auth("remove")}-->
                     <a class='layui-badge layui-bg-red' data-confirm="确定要删除该任务吗？" data-action='{:url("remove")}' data-value="id#{$vo.id}">
                         <i class="layui-icon font-s12">&#xe640;</i>
                     </a>
-                    {/if}
+                    <!--{/if}-->
+
                     <a class='layui-badge layui-bg-orange' onclick="$.loadQueue('{$vo.code}',false)">
                         <i class="layui-icon font-s12">&#xe705;</i>
                     </a>
@@ -121,8 +123,6 @@
         {/foreach}
         </tbody>
     </table>
-
     {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
-
 </div>
 {/block}

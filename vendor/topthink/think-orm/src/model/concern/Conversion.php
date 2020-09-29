@@ -49,6 +49,24 @@ trait Conversion
     protected $resultSetType;
 
     /**
+     * 数据命名是否自动转为驼峰
+     * @var bool
+     */
+    protected $convertNameToCamel;
+
+    /**
+     * 转换数据为驼峰命名（用于输出）
+     * @access public
+     * @param  bool $toCamel 是否自动驼峰命名
+     * @return $this
+     */
+    public function convertNameToCamel(bool $toCamel = true)
+    {
+        $this->convertNameToCamel = $toCamel;
+        return $this;
+    }
+
+    /**
      * 设置需要附加的输出属性
      * @access public
      * @param  array $append   属性列表
@@ -179,6 +197,16 @@ trait Conversion
         // 追加属性（必须定义获取器）
         foreach ($this->append as $key => $name) {
             $this->appendAttrToArray($item, $key, $name);
+        }
+
+        if ($this->convertNameToCamel) {
+            foreach ($item as $key => $val) {
+                $name = Str::camel($key);
+                if ($name !== $key) {
+                    $item[$name] = $val;
+                    unset($item[$key]);
+                }
+            }
         }
 
         return $item;

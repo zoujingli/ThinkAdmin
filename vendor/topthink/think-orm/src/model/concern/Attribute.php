@@ -185,7 +185,11 @@ trait Attribute
      */
     protected function getRealFieldName(string $name): string
     {
-        return $this->strict ? $name : Str::snake($name);
+        if ($this->convertNameToCamel || !$this->strict) {
+            return Str::snake($name);
+        }
+
+        return $name;
     }
 
     /**
@@ -302,7 +306,7 @@ trait Attribute
 
         // 只读字段不允许更新
         foreach ($this->readonly as $key => $field) {
-            if (isset($data[$field])) {
+            if (array_key_exists($field, $data)) {
                 unset($data[$field]);
             }
         }

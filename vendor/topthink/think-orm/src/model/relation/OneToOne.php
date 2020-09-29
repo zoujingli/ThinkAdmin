@@ -307,10 +307,6 @@ abstract class OneToOne extends Relation
             $this->query->field($this->withField);
         }
 
-        if ($this->query->getOptions('order')) {
-            $this->query->group($key);
-        }
-
         $list = $this->query
             ->where($where)
             ->with($subRelation)

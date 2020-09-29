@@ -165,12 +165,12 @@ class Route
             // 读取路由映射文件
             $this->import(include $this->app->getRuntimePath() . 'route.php');
         }
+
+        $this->config = array_merge($this->config, $this->app->config->get('route'));
     }
 
     protected function init()
     {
-        $this->config = array_merge($this->config, $this->app->config->get('route'));
-
         if (!empty($this->config['middleware'])) {
             $this->app->middleware->import($this->config['middleware'], 'route');
         }
@@ -423,7 +423,7 @@ class Route
      * @param string $name   路由标识
      * @param string $domain 域名
      * @param string $method 请求类型
-     * @return RuleItem[]
+     * @return array
      */
     public function getName(string $name = null, string $domain = null, string $method = '*'): array
     {
@@ -681,6 +681,18 @@ class Route
     public function redirect(string $rule, string $route = '', int $status = 301): RuleItem
     {
         return $this->rule($rule, function () use ($status, $route) {
+            $search  = $replace  = [];
+            $matches = $this->request->rule()->getVars();
+
+            foreach ($matches as $key => $value) {
+                $search[]  = '<' . $key . '>';
+                $replace[] = $value;
+
+                $search[]  = ':' . $key;
+                $replace[] = $value;
+            }
+
+            $route = str_replace($search, $replace, $route);
             return Response::create($route, 'redirect')->code($status);
         }, '*');
     }
