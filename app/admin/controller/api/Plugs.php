@@ -46,6 +46,7 @@ class Plugs extends Controller
     {
         try {
             if (AdminService::instance()->isSuper()) {
+                AdminService::instance()->clearCache();
                 SystemService::instance()->pushRuntime();
                 $this->success('网站缓存加速成功！');
             } else {
@@ -66,6 +67,7 @@ class Plugs extends Controller
     {
         try {
             if (AdminService::instance()->isSuper()) {
+                AdminService::instance()->clearCache();
                 SystemService::instance()->clearRuntime();
                 $this->success('清理网站缓存成功！');
             } else {

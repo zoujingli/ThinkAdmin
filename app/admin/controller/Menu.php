@@ -99,7 +99,9 @@ class Menu extends Controller
     {
         if ($this->request->isGet()) {
             /* 清理权限节点 */
-            AdminService::instance()->clearCache();
+            if ($this->app->isDebug()) {
+                AdminService::instance()->clearCache();
+            }
             /* 选择自己的上级菜单 */
             $vo['pid'] = $vo['pid'] ?? input('pid', '0');
             /* 读取系统功能节点 */
