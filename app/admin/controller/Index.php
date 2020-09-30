@@ -36,13 +36,14 @@ class Index extends Controller
      */
     public function index()
     {
-        if ($this->app->isDebug()) {
-            AdminService::instance()->apply(true);
-        } else {
-            AdminService::instance()->apply(false);
-        }
+        /*! 根据运行模式刷新权限 */
+        $clear = $this->app->isDebug();
+        AdminService::instance()->apply($clear);
+        /*! 读取当前权限菜单树 */
         $this->menus = MenuService::instance()->getTree();
+        /*! 判断用户是否已经登录 */
         $this->login = AdminService::instance()->isLogin();
+        /*! 菜单为空并且未登录跳转到登录页 */
         if (empty($this->menus) && empty($this->login)) {
             $this->redirect(sysuri('admin/login/index'));
         } else {
