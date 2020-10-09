@@ -219,7 +219,7 @@ class Push extends Controller
                 [$news, $articles] = [MediaService::instance()->news($data['news_id']), []];
                 if (empty($news['articles'])) return false;
                 foreach ($news['articles'] as $vo) array_push($articles, [
-                    'url'   => url("@wechat/api.review/view", ['id' => $vo['id']], false, true)->build(),
+                    'url'   => url("@wechat/api.review/view/id/{$vo['id']}", [], false, true)->build(),
                     'title' => $vo['title'], 'picurl' => $vo['local_url'], 'description' => $vo['digest'],
                 ]);
                 return $this->_sendMessage('news', ['articles' => $articles], $custom);
