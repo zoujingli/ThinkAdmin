@@ -65,9 +65,7 @@ class App
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$this->parseMultiApp()) {
-            return $next($request);
-        }
+        if (!$this->parseMultiApp()) return $next($request);
         return $this->app->middleware->pipeline('app')->send($request)->then(function ($request) use ($next) {
             return $next($request);
         });
@@ -155,7 +153,6 @@ class App
 
     /**
      * 获取当前运行入口名称
-     * @access protected
      * @codeCoverageIgnore
      * @return string
      */

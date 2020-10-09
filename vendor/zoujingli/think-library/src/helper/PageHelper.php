@@ -36,7 +36,7 @@ class PageHelper extends Helper
      * @param boolean|integer $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @param string $template 模板文件名称
-     * @return array|mixed
+     * @return array|mixed|void
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -45,15 +45,15 @@ class PageHelper extends Helper
     {
         $this->query = $this->buildQuery($dbQuery);
         // 数据列表排序自动处理
-        if ($this->app->request->isPost()) $this->sortAction();
+        if ($this->app->request->isPost()) $this->_sortAction();
         // 列表设置默认排序处理
-        if (!$this->query->getOptions('order')) $this->orderAction();
+        if (!$this->query->getOptions('order')) $this->_orderAction();
         // 列表分页及结果集处理
         if ($page) {
             if ($limit > 0) {
                 $limit = intval($limit);
             } else {
-                $limit = $this->app->request->get('limit', $this->app->cookie->get('limit'));
+                $limit = $this->app->request->get('limit', $this->app->cookie->get('limit', 20));
                 $this->app->cookie->set('limit', ($limit = intval($limit >= 10 ? $limit : 20)) . '');
             }
             [$options, $query] = ['', $this->app->request->get()];
@@ -91,11 +91,11 @@ class PageHelper extends Helper
      * POST 提交 {action:sort,PK:$PK,SORT:$SORT}
      * @throws \think\db\exception\DbException
      */
-    private function sortAction()
+    private function _sortAction()
     {
         if ($this->app->request->post('action') === 'sort') {
             if (method_exists($this->query, 'getTableFields') && in_array('sort', $this->query->getTableFields())) {
-                $pk = $this->query->getPk() ?? 'id';
+                $pk = $this->query->getPk() ?: 'id';
                 if ($this->app->request->has($pk, 'post')) {
                     $map = [$pk => $this->app->request->post($pk, 0)];
                     $data = ['sort' => intval($this->app->request->post('sort', 0))];
@@ -112,7 +112,7 @@ class PageHelper extends Helper
      * 列表默认排序处理
      * 未配置排序规则时自动按SORT排序
      */
-    private function orderAction()
+    private function _orderAction()
     {
         if (method_exists($this->query, 'getTableFields')) {
             if (in_array('sort', $this->query->getTableFields())) {
