@@ -99,42 +99,30 @@ class Push extends Controller
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
                 $this->encrypt = boolval($this->request->post('encrypt', 0));
-                $this->receive = $this->toLower(json_decode(input('params', '[]'), true));
+                $this->receive = $this->_objectToLowerKey(json_decode(input('params', '[]'), true));
                 if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
                     throw new \think\Exception('微信API实例缺失必要参数[appid,openid,receive]');
                 }
             } else {
                 $this->forceJson = false; // 暂停返回JSON消息对象
                 $this->forceCustom = false; // 暂停使用客户消息模式
-                $this->wechat = WechatService::WeChatReceive();
                 $this->appid = WechatService::instance()->getAppid();
+                $this->wechat = WechatService::WeChatReceive();
                 $this->openid = $this->wechat->getOpenid();
                 $this->encrypt = $this->wechat->isEncrypt();
-                $this->receive = $this->toLower($this->wechat->getReceive());
+                $this->receive = $this->_objectToLowerKey($this->wechat->getReceive());
             }
             $this->fromOpenid = $this->receive['tousername'];
-            // text, event, image, location
+            // 消息类型：text, event, image, voice, shortvideo, location, link
             if (method_exists($this, ($method = $this->receive['msgtype']))) {
                 if (is_string($result = $this->$method())) return $result;
+            } else {
+                $this->app->log->notice("The {$method} event pushed by wechat was not handled. from {$this->openid}");
             }
-        } catch (\Exception $e) {
-            $this->app->log->error("{$e->getLine()} [{$e->getCode()}] {$e->getMessage()}");
+        } catch (\Exception $exception) {
+            $this->app->log->error("{$exception->getLine()} [{$exception->getCode()}] {$exception->getMessage()}");
         }
         return 'success';
-    }
-
-    /**
-     * 数组KEY全部转小写
-     * @param array $data
-     * @return array
-     */
-    private function toLower(array $data)
-    {
-        $data = array_change_key_case($data, CASE_LOWER);
-        foreach ($data as $key => $vo) if (is_array($vo)) {
-            $data[$key] = $this->toLower($vo);
-        }
-        return $data;
     }
 
     /**
@@ -150,7 +138,7 @@ class Push extends Controller
      */
     protected function text()
     {
-        return $this->keys("WechatKeys#keys#{$this->receive['content']}", false, $this->forceCustom);
+        return $this->_keys("WechatKeys#keys#{$this->receive['content']}", false, $this->forceCustom);
     }
 
     /**
@@ -168,25 +156,25 @@ class Push extends Controller
     {
         switch (strtolower($this->receive['event'])) {
             case 'subscribe':
-                $this->updateFansinfo(true);
+                $this->_setUserInfo(true);
                 if (isset($this->receive['eventkey']) && is_string($this->receive['eventkey'])) {
                     if (($key = preg_replace('/^qrscene_/i', '', $this->receive['eventkey']))) {
-                        return $this->keys("WechatKeys#keys#{$key}", false, true);
+                        return $this->_keys("WechatKeys#keys#{$key}", false, true);
                     }
                 }
-                return $this->keys('WechatKeys#keys#subscribe', true, $this->forceCustom);
+                return $this->_keys('WechatKeys#keys#subscribe', true, $this->forceCustom);
             case 'unsubscribe':
-                return $this->updateFansinfo(false);
+                return $this->_setUserInfo(false);
             case 'click':
-                return $this->keys("WechatKeys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
+                return $this->_keys("WechatKeys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
             case 'scancode_push':
             case 'scancode_waitmsg':
                 if (empty($this->receive['scancodeinfo'])) return false;
                 if (empty($this->receive['scancodeinfo']['scanresult'])) return false;
-                return $this->keys("WechatKeys#keys#{$this->receive['scancodeinfo']['scanresult']}", false, $this->forceCustom);
+                return $this->_keys("WechatKeys#keys#{$this->receive['scancodeinfo']['scanresult']}", false, $this->forceCustom);
             case 'scan':
                 if (empty($this->receive['eventkey'])) return false;
-                return $this->keys("WechatKeys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
+                return $this->_keys("WechatKeys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
             default:
                 return false;
         }
@@ -195,8 +183,8 @@ class Push extends Controller
     /**
      * 关键字处理
      * @param string $rule 关键字规则
-     * @param boolean $isLast 重复回复消息处理
-     * @param boolean $isCustom 是否使用客服消息发送
+     * @param boolean $last 重复回复消息处理
+     * @param boolean $custom 是否使用客服消息发送
      * @return boolean|string
      * @throws \WeChat\Exceptions\InvalidDecryptException
      * @throws \WeChat\Exceptions\InvalidResponseException
@@ -206,47 +194,47 @@ class Push extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function keys($rule, $isLast = false, $isCustom = false)
+    private function _keys(string $rule, bool $last = false, bool $custom = false)
     {
         [$table, $field, $value] = explode('#', $rule . '##');
         $data = $this->app->db->name($table)->where([$field => $value])->find();
         if (empty($data['type']) || (array_key_exists('status', $data) && empty($data['status']))) {
-            return $isLast ? false : $this->keys('WechatKeys#keys#default', true, $isCustom);
+            return $last ? false : $this->_keys('WechatKeys#keys#default', true, $custom);
         }
         switch (strtolower($data['type'])) {
             case 'keys':
                 $content = empty($data['content']) ? $data['name'] : $data['content'];
-                return $this->keys("WechatKeys#keys#{$content}", $isLast, $isCustom);
+                return $this->_keys("WechatKeys#keys#{$content}", $last, $custom);
             case 'text':
-                return $this->sendMessage('text', ['content' => $data['content']], $isCustom);
+                return $this->_sendMessage('text', ['content' => $data['content']], $custom);
             case 'customservice':
-                return $this->sendMessage('customservice', ['content' => $data['content']], false);
+                return $this->_sendMessage('customservice', ['content' => $data['content']], false);
             case 'voice':
                 if (empty($data['voice_url']) || !($mediaId = MediaService::instance()->upload($data['voice_url'], 'voice'))) return false;
-                return $this->sendMessage('voice', ['media_id' => $mediaId], $isCustom);
+                return $this->_sendMessage('voice', ['media_id' => $mediaId], $custom);
             case 'image':
                 if (empty($data['image_url']) || !($mediaId = MediaService::instance()->upload($data['image_url'], 'image'))) return false;
-                return $this->sendMessage('image', ['media_id' => $mediaId], $isCustom);
+                return $this->_sendMessage('image', ['media_id' => $mediaId], $custom);
             case 'news':
                 [$news, $articles] = [MediaService::instance()->news($data['news_id']), []];
                 if (empty($news['articles'])) return false;
                 foreach ($news['articles'] as $vo) array_push($articles, [
-                    'url'   => url("@wechat/api.review/view", [], false, true) . "?id={$vo['id']}",
+                    'url'   => url("@wechat/api.review/view", ['id' => $vo['id']], false, true)->build(),
                     'title' => $vo['title'], 'picurl' => $vo['local_url'], 'description' => $vo['digest'],
                 ]);
-                return $this->sendMessage('news', ['articles' => $articles], $isCustom);
+                return $this->_sendMessage('news', ['articles' => $articles], $custom);
             case 'music':
                 if (empty($data['music_url']) || empty($data['music_title']) || empty($data['music_desc'])) return false;
-                return $this->sendMessage('music', [
-                    'thumb_media_id' => empty($data['music_image']) ? '' : MediaService::instance()->upload($data['music_image'], 'image'),
-                    'description'    => $data['music_desc'], 'title' => $data['music_title'],
-                    'hqmusicurl'     => $data['music_url'], 'musicurl' => $data['music_url'],
-                ], $isCustom);
+                $mediaId = $data['music_image'] ? MediaService::instance()->upload($data['music_image'], 'image') : '';
+                return $this->_sendMessage('music', [
+                    'hqmusicurl'  => $data['music_url'], 'musicurl' => $data['music_url'],
+                    'description' => $data['music_desc'], 'title' => $data['music_title'], 'thumb_media_id' => $mediaId,
+                ], $custom);
             case 'video':
                 if (empty($data['video_url']) || empty($data['video_desc']) || empty($data['video_title'])) return false;
-                $videoData = ['title' => $data['video_title'], 'introduction' => $data['video_desc']];
-                if (!($mediaId = MediaService::instance()->upload($data['video_url'], 'video', $videoData))) return false;
-                return $this->sendMessage('video', ['media_id' => $mediaId, 'title' => $data['video_title'], 'description' => $data['video_desc']], $isCustom);
+                $video = ['title' => $data['video_title'], 'introduction' => $data['video_desc']];
+                if (!($mediaId = MediaService::instance()->upload($data['video_url'], 'video', $video))) return false;
+                return $this->_sendMessage('video', ['media_id' => $mediaId, 'title' => $data['video_title'], 'description' => $data['video_desc']], $custom);
             default:
                 return false;
         }
@@ -256,36 +244,35 @@ class Push extends Controller
      * 发送消息到微信
      * @param string $type 消息类型（text|image|voice|video|music|news|mpnews|wxcard）
      * @param array $data 消息内容数据对象
-     * @param boolean $isCustom 是否使用客服消息发送
-     * @return array|boolean
+     * @param boolean $custom 是否使用客服消息发送
+     * @return string|void
      * @throws \WeChat\Exceptions\InvalidDecryptException
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    private function sendMessage($type, $data, $isCustom = false)
+    private function _sendMessage(string $type, array $data, bool $custom = false)
     {
-        if ($isCustom) {
-            WechatService::WeChatCustom()->send(['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data]);
+        if ($custom) {
+            WechatService::WeChatCustom()->send(['touser' => $this->openid, 'msgtype' => $type, $type => $data]);
         } else switch (strtolower($type)) {
             case 'text': // 发送文本消息
-                $reply = ['CreateTime' => time(), 'MsgType' => 'text', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Content' => $data['content']];
-                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($reply, true, $this->encrypt);
-            case 'image': // 发送图片消息
-                return $this->buildMessage($type, ['MediaId' => $data['media_id']]);
-            case 'voice': // 发送语言消息
-                return $this->buildMessage($type, ['MediaId' => $data['media_id']]);
-            case 'video': // 发送视频消息
-                return $this->buildMessage($type, ['Title' => $data['title'], 'MediaId' => $data['media_id'], 'Description' => $data['description']]);
-            case 'music': // 发送音乐消息
-                return $this->buildMessage($type, ['Title' => $data['title'], 'Description' => $data['description'], 'MusicUrl' => $data['musicurl'], 'HQMusicUrl' => $data['musicurl'], 'ThumbMediaId' => $data['thumb_media_id']]);
-            case 'customservice': // 转交客服消息
-                if ($data['content']) $this->sendMessage('text', $data, true);
-                return $this->buildMessage('transfer_customer_service');
+                return $this->_buildMessage($type, ['Content' => $data['content']]);
             case 'news': // 发送图文消息
-                $articles = [];
-                foreach ($data['articles'] as $article) array_push($articles, ['PicUrl' => $article['picurl'], 'Title' => $article['title'], 'Description' => $article['description'], 'Url' => $article['url']]);
-                $reply = ['CreateTime' => time(), 'MsgType' => 'news', 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'Articles' => $articles, 'ArticleCount' => count($articles)];
-                return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($reply, true, $this->encrypt);
+                foreach ($data['articles'] as &$v) {
+                    $v = ['PicUrl' => $v['picurl'], 'Title' => $v['title'], 'Description' => $v['description'], 'Url' => $v['url']];
+                }
+                return $this->_buildMessage($type, ['Articles' => $data['articles'], 'ArticleCount' => count($data['articles'])]);
+            case 'image': // 发送图片消息
+                return $this->_buildMessage($type, ['Image' => ['MediaId' => $data['media_id']]]);
+            case 'voice': // 发送语言消息
+                return $this->_buildMessage($type, ['Voice' => ['MediaId' => $data['media_id']]]);
+            case 'video': // 发送视频消息
+                return $this->_buildMessage($type, ['Video' => ['Title' => $data['title'], 'Description' => $data['description'], 'MediaId' => $data['media_id']]]);
+            case 'music': // 发送音乐消息
+                return $this->_buildMessage($type, ['Music' => ['Title' => $data['title'], 'Description' => $data['description'], 'MusicUrl' => $data['musicurl'], 'HQMusicUrl' => $data['musicurl'], 'ThumbMediaId' => $data['thumb_media_id']]]);
+            case 'customservice': // 转交客服消息
+                if ($data['content']) $this->_sendMessage('text', $data, true);
+                return $this->_buildMessage('transfer_customer_service', []);
             default:
                 return 'success';
         }
@@ -293,39 +280,52 @@ class Push extends Controller
 
     /**
      * 消息数据生成
-     * @param string $type 消息类型
-     * @param string|array $data 消息数据
+     * @param mixed $type 消息类型
+     * @param array $data 消息内容
      * @return string
      * @throws \WeChat\Exceptions\InvalidDecryptException
      */
-    private function buildMessage($type, $data = [])
+    private function _buildMessage(string $type, array $data = []): string
     {
-        $reply = ['CreateTime' => time(), 'MsgType' => strtolower($type), 'ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid];
-        if (!empty($data)) $reply[ucfirst(strtolower($type))] = $data;
-        return $this->forceJson ? json_encode($reply, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($reply, true, $this->encrypt);
+        $data = array_merge($data, ['ToUserName' => $this->openid, 'FromUserName' => $this->fromOpenid, 'CreateTime' => time(), 'MsgType' => $type]);
+        return $this->forceJson ? json_encode($data, JSON_UNESCAPED_UNICODE) : WechatService::WeChatReceive()->reply($data, true, $this->encrypt);
     }
 
     /**
      * 同步粉丝状态
-     * @param boolean $subscribe 关注状态
+     * @param boolean $state 关注状态
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function updateFansinfo($subscribe = true)
+    private function _setUserInfo(bool $state): bool
     {
-        if ($subscribe) {
+        if ($state) {
             try {
                 $user = WechatService::WeChatUser()->getUserInfo($this->openid);
-                return FansService::instance()->set(array_merge($user, ['subscribe' => '1', 'appid' => $this->appid]));
-            } catch (\Exception $e) {
-                $this->app->log->error(__METHOD__ . " {$this->openid} get userinfo faild. {$e->getMessage()}");
+                return FansService::instance()->set(array_merge($user, ['subscribe' => 1, 'appid' => $this->appid]));
+            } catch (\Exception $exception) {
+                $this->app->log->error(__METHOD__ . " {$this->openid} get userinfo faild. {$exception->getMessage()}");
                 return false;
             }
         } else {
-            return FansService::instance()->set(['subscribe' => '0', 'openid' => $this->openid, 'appid' => $this->appid]);
+            return FansService::instance()->set(['subscribe' => 0, 'openid' => $this->openid, 'appid' => $this->appid]);
         }
+    }
+
+    /**
+     * 数组健值全部转小写
+     * @param array $data
+     * @return array
+     */
+    private function _objectToLowerKey(array $data)
+    {
+        $data = array_change_key_case($data, CASE_LOWER);
+        foreach ($data as $key => $vo) if (is_array($vo)) {
+            $data[$key] = $this->_objectToLowerKey($vo);
+        }
+        return $data;
     }
 
 }
