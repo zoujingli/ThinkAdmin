@@ -104,7 +104,7 @@ class JsonRpcServer
                     $params[] = ($type ? "{$type} $" : '$') . $parameter->getName();
                 }
                 $params = count($params) > 0 ? join(', ', $params) : '';
-                echo '<div style="color:#666">' . nl2br($method->getDocComment()) . '</div>';
+                echo '<div style="color:#666">' . nl2br($method->getDocComment() ?: '') . '</div>';
                 echo "<div style='color:#00E'>{$object->getShortName()}::{$method->getName()}({$params})</div><br>";
             }
         } catch (\Exception $exception) {
