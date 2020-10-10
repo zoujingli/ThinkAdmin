@@ -60,11 +60,8 @@ class JsonRpcServer
     public function handle($object)
     {
         // Checks if a JSON-RCP request has been received
-        if ($this->app->request->method() !== "POST" || $this->app->request->contentType() != 'application/json') {
-            echo "<h2>" . get_class($object) . "</h2>";
-            foreach (get_class_methods($object) as $method) {
-                if ($method[0] !== '_') echo "<p>method {$method}()</p>";
-            }
+        if ($this->app->request->method() !== "POST" || $this->app->request->contentType() !== 'application/json') {
+            $this->printMethod($object);
         } else {
             // Reads the input data
             $request = json_decode(file_get_contents('php://input'), true);
@@ -88,6 +85,30 @@ class JsonRpcServer
             }
             // Output the response
             throw new HttpResponseException(json($response)->contentType('text/javascript'));
+        }
+    }
+
+    /**
+     * 打印输出对象方法
+     * @param mixed $object
+     */
+    protected function printMethod($object)
+    {
+        try {
+            $object = new \ReflectionClass($object);
+            echo "<h2>" . $object->getName() . "</h2><hr>";
+            foreach ($object->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                $params = [];
+                foreach ($method->getParameters() as $parameter) {
+                    $type = $parameter->getType();
+                    $params[] = ($type ? "{$type} $" : '$') . $parameter->getName();
+                }
+                $params = count($params) > 0 ? join(', ', $params) : '';
+                echo '<div style="color:#666">' . nl2br($method->getDocComment()) . '</div>';
+                echo "<div style='color:#00E'>{$object->getShortName()}::{$method->getName()}({$params})</div><br>";
+            }
+        } catch (\Exception $exception) {
+            echo "<h3>[{$exception->getCode()}] {$exception->getMessage()}</h3>";
         }
     }
 }

@@ -86,7 +86,7 @@ class Database extends Command
             $this->queue->message($total, ++$used, "正在优化数据表 {$table}");
             $this->app->db->query("OPTIMIZE TABLE `{$table}`");
         }
-        $this->queue->success("已完成对 {$total} 张数据优化复操作");
+        $this->queue->success("已完成对 {$total} 张数据表优化操作");
     }
 
     /**
