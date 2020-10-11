@@ -1,0 +1,153 @@
+{extend name="../../admin/view/main"}
+
+{block name="content"}
+<table class="layui-hide">
+    <tbody id='add-item-tpl'>
+    <tr>
+        <td class="padding-0">
+            <select name='prize_code[]' class="layui-select full-width border-0" lay-ignore>
+                {foreach $prizes as $prize}
+                <option value="{$prize.code}">{$prize.name}</option>
+                {/foreach}
+            </select>
+        </td>
+        <td class="nowrap padding-0">
+            <label class="label-required-null">
+                <input name="prize_level[]" placeholder="请输入奖项" required value="特等奖" class="layui-input border-0 text-center">
+            </label>
+        </td>
+        <td class="nowrap padding-0">
+            <label class="label-required-null">
+                <input name="prize_num[]" data-blur-number="0" value="1" class="layui-input border-0 text-center">
+            </label>
+        </td>
+        <td class="nowrap padding-0">
+            <label class="label-required-null">
+                <input name="prize_rate[]" data-blur-number="4" value="0.0001" class="layui-input border-0 text-center inline-block">
+                <span class="absolute font-s14" style='right:10px;width:39px;text-align:center;height:39px;line-height:39px;display:inline-block'>%</span>
+            </label>
+        </td>
+        <td class="nowrap padding-0 text-center">
+            <a onclick="moveUp(this)" class="layui-btn layui-btn-xs layui-icon layui-icon-up"></a>
+            <a onclick="moveDn(this)" class="layui-btn layui-btn-xs layui-icon layui-icon-down"></a>
+            <a onclick="moveRm(this)" class="layui-btn layui-btn-danger layui-btn-xs layui-icon layui-icon-close"></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-40 padding-bottom-20">
+
+        <div class="layui-form-item">
+            <span class="color-green font-w7 label-required-prev">活动图片</span>
+            <label class="relative block">
+                <input name="cover" value='{$vo.cover|default=""}' class="layui-input">
+                <a data-file data-field="cover" data-type="png,jpg,gif" class="layui-icon layui-icon-upload input-right-icon"></a>
+                <script>$('[name=cover]').uploadOneImage()</script>
+            </label>
+        </div>
+
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">活动名称</span>
+            <input name="name" value='{$vo.name|default=""}' autofocus required placeholder="请输入活动名称" class="layui-input">
+        </label>
+
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">奖品核销码</span>
+            <input name="uncode" value='{$vo.uncode|default=""}' autofocus required placeholder="请输入奖品核销码" class="layui-input">
+        </label>
+
+        <div class="layui-form-item">
+            <span class="color-green font-w7 label-required-prev">活动奖品规则</span>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th class="nowrap">奖品名称</th>
+                    <th class="nowrap text-center" style="width:200px">奖项名称</th>
+                    <th class="nowrap text-center" style="width:120px">奖品数量</th>
+                    <th class="nowrap text-center" style="width:100px">中奖率(总概率100%)</th>
+                    <th style="width:100px"></th>
+                </tr>
+                </thead>
+                <tbody class="layui-bg-gray">
+                {foreach $selectPrizes as $pz}
+                <tr>
+                    <td class="nowrap padding-0">
+                        <select name='prize_code[]' class="layui-select full-width border-0" lay-ignore>
+                            {foreach $prizes as $prize}
+                            {if $pz.prize_code eq $prize.code}
+                            <option selected value="{$prize.code}">{$prize.name}</option>
+                            {else}
+                            <option value="{$prize.code}">{$prize.name}</option>
+                            {/if}{/foreach}
+                        </select>
+                    </td>
+                    <td class="nowrap padding-0 relative">
+                        <label class="label-required-null">
+                            <input name="prize_level[]" placeholder="请输入奖项" required value="{$pz.prize_level|default=''}" class="layui-input text-center border-0">
+                        </label>
+                    </td>
+                    <td class="nowrap padding-0 text-center">
+                        <label class="label-required-null">
+                            <input name="prize_num[]" data-blur-number="0" value="{$pz.prize_num|default='1'}" class="layui-input border-0 text-center">
+                        </label>
+                    </td>
+                    <td class="nowrap padding-0 text-center">
+                        <label class="label-required-null">
+                            <input name="prize_rate[]" data-blur-number="4" value="{$pz.prize_rate|default='0.0001'}" class="layui-input border-0 inline-block text-center">
+                            <span class="absolute font-s14" style='right:10px;width:39px;text-align:center;height:39px;line-height:39px;display:inline-block'>%</span>
+                        </label>
+                    </td>
+                    <td class="nowrap padding-0 text-center">
+                        <a onclick="moveUp(this)" class="layui-btn layui-btn-xs layui-icon layui-icon-up"></a>
+                        <a onclick="moveDn(this)" class="layui-btn layui-btn-xs layui-icon layui-icon-down"></a>
+                        <a onclick="moveRm(this)" class="layui-btn layui-btn-danger layui-btn-xs layui-icon layui-icon-close"></a>
+                    </td>
+                </tr>
+                {/foreach}
+                <tr>
+                    <td colspan="5"><a onclick="$(this).parents('tr').before($('#add-item-tpl').html()),form.render();" class="layui-btn layui-btn-xs">添加奖项</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">活动规则</span>
+            <textarea class="layui-textarea" name="content" placeholder="请输入活动规则">{$vo.content|default=''}</textarea>
+        </label>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <!--{notempty name='vo.code'}-->
+    <input type='hidden' value='{$vo.code}' name='code'>
+    <!--{/notempty}-->
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-history-back>取消编辑</button>
+    </div>
+    <script>
+        window.form.render();
+
+        function moveRm(that) {
+            $.msg.confirm('确定要移除这个选项吗?', function (index) {
+                $(that).parents('tr').remove(), $.msg.close(index);
+            })
+        }
+
+        function moveUp(that) {
+            this.$item = $(that).parents("tr");
+            if (this.$item.index() > 0) this.$item.prev().before(this.$item);
+        }
+
+        function moveDn(that) {
+            this.$item = $(that).parents("tr");
+            if (this.$item.index() < this.$item.siblings('tr').size()) {
+                this.$item.next().after(this.$item);
+            }
+        }
+    </script>
+</form>
+{/block}

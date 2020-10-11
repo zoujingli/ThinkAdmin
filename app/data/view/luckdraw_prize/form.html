@@ -1,0 +1,47 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">奖品名称</span>
+            <input name="name" autofocus value='{$vo.name|default=""}' required placeholder="请输入奖品名称" class="layui-input">
+        </label>
+
+        <div class="layui-form-item">
+            <span class="color-green font-w7 label-required-prev">是否需要发货</span>
+            {php} $vo['express'] = $vo['express'] ?? 0; {/php}
+            <div class="layui-input">
+                {foreach ['无需发货','需要发货'] as $k=>$v}
+                {if isset($vo.express) and $k eq $vo.express}
+                <label class="think-radio"><input checked name="express" type="radio" value="{$k}" lay-ignore>{$v}</label>
+                {else}
+                <label class="think-radio"><input name="express" type="radio" value="{$k}" lay-ignore>{$v}</label>
+                {/if}{/foreach}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <span class="color-green font-w7 label-required-prev">奖品图片</span>
+            <label class="relative block label-required-null">
+                <input name="cover" value='{$vo.cover|default=""}' required placeholder="请上传奖品图片链接　" class="layui-input">
+                <a data-file data-type="png,jpg,gif" data-field="cover" class="input-right-icon"><i class="layui-icon layui-icon-upload"></i></a>
+                <script>$('[name=cover]').uploadOneImage()</script>
+            </label>
+        </div>
+
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7">奖品描述</span>
+            <textarea name="remark" class="layui-textarea">{$vo.remark|default=""}</textarea>
+        </label>
+
+        <div class="hr-line-dashed"></div>
+
+        <!--{notempty name='vo.code'}-->
+        <input type='hidden' value='{$vo.code}' name='code'>
+        <!--{/notempty}-->
+
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type='submit'>保存数据</button>
+            <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        </div>
+    </div>
+</form>

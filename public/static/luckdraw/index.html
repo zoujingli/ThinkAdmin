@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width">
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>标题</title>
+    <link rel="stylesheet" href="./lib/swiper/swiper.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script>
+        fontsize();
+        window.onresize = function () {
+            fontsize();
+        };
+
+        function fontsize() {
+            var deviceWidth = document.documentElement.clientWidth;
+            if (deviceWidth > 640) deviceWidth = 640;
+            document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px'; // 750 设计稿
+        };
+    </script>
+</head>
+
+<body>
+
+<div class="page index-page">
+    <img src="./images/bg2.jpg" alt="一尚美术">
+    <div class="page-body">
+        <img onclick="showRule()" class="rule" src="./images/rule.png" alt="活动规则">
+        <!-- 抽奖按钮 -->
+        <img class="btn" src="./images/yu.png" alt="点我抽奖" onclick="draw()">
+        <!-- 已中奖的点击按钮变成 查看奖品 -->
+        <!-- <img class="btn" src="./images/yu1.png" alt="查看奖品" > -->
+
+        <!-- 中奖明细 -->
+        <div class="detail">
+            <img class="title" src="./images/t1.png" alt="中奖明细">
+
+            <div>
+                <!-- <img class="icon1" src="./images/icon1.png" alt="一尚美术">
+                <img class="icon1 icon2" src="./images/icon1.png" alt="一尚美术"> -->
+
+                <div class="swiper-container ls-box">
+                    <img class="icon1" src="./images/icon1.png" alt="一尚美术">
+                    <img class="icon1 icon2" src="./images/icon1.png" alt="一尚美术">
+
+                    <ul class="swiper-wrapper">
+                        <li class="swiper-slide">
+                            <div class="ls-title">
+                                <span>林烨林</span>
+                                <span>获得一等奖</span>
+                            </div>
+                            <div class="ls-text">多功能数据线1条</div>
+                        </li>
+                        <li class="swiper-slide">
+                            <div class="ls-title">
+                                <span>林烨林</span>
+                                <span>获得一等奖</span>
+                            </div>
+                            <div class="ls-text">多功能数据线2条</div>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 填写信息 -->
+<div id="mask1" class="mask" onclick="hideDraw()"></div>
+<div class="info-dialog">
+    <h2>填写信息即可参与抽奖哦~</h2>
+    <div class="form">
+        <label>
+            <span>您的姓名：</span>
+            <input type="text" maxlength="20">
+        </label>
+        <label>
+            <span>手机号码：</span>
+            <input type="tel" maxlength="11">
+        </label>
+    </div>
+    <div class="btns">
+        <span onclick="hideDraw()">取消</span>
+        <span onclick="showLuck()">确认</span>
+    </div>
+</div>
+
+<!-- 中奖弹窗 -->
+<div class="luck-mask">
+    <img onclick="this.parentNode.className='luck-mask'" class="close" src="./images/close.png" alt="关闭">
+    <img src="./images/luck.png" alt="中奖了">
+    <div class="luck-dialog">
+        <h1>一等奖</h1>
+        <h3>蓝牙音箱一台</h3>
+
+        <div>
+            <input type="text" placeholder="请输入核销码">
+            <div class="dialog-btn">确认核销</div>
+        </div>
+        <!-- 奖品已核销 -->
+        <div class="dialog-btn btn1 hide">奖品已核销</div>
+    </div>
+</div>
+
+<!-- 规则说明 -->
+<div class="rule-mask">
+    <img onclick="this.parentNode.className='rule-mask'" class="close" src="./images/close.png" alt="关闭">
+    <div class="rule-dialog">
+        <h1 class="dialog-title">活动规则</h1>
+        <div class="rule-content">
+            <p>这是内容这是内容这是内容这是内容这是内容这是内容</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- script -->
+<script src="./lib/swiper/swiper.min.js"></script>
+<script>
+    // 显示活动规则
+    function showRule() {
+        document.querySelector('.rule-mask').className = 'rule-mask show';
+    };
+
+    // 显示填写信息弹窗
+    function draw() {
+        document.querySelector('#mask1').className = 'mask show';
+        document.querySelector('.info-dialog').className = 'info-dialog show';
+    };
+
+    // 隐藏填写信息弹窗
+    function hideDraw() {
+        document.querySelector('#mask1').className = 'mask';
+        document.querySelector('.info-dialog').className = 'info-dialog';
+    };
+
+    // 显示中奖
+    function showLuck() {
+        document.querySelector('.luck-mask').className = 'luck-mask show';
+    };
+
+    window.onload = function () {
+        var winH = document.body.clientHeight; // 可视区高度
+        var n = 5; // 列表默认5个数据
+        // 根据不同屏幕高度改变列表高度+数据个数
+        if (winH > 645) {
+            n = parseInt(winH / 100);
+            document.querySelector('.index-page .ls-box').style.height = (n * 0.92) + 'rem';
+        }
+        // 列表轮播默认参数，默认不自动轮播
+        var option = {
+            direction: 'vertical',
+            slidesPerView: n,
+        };
+        // 列表数据个数
+        var len = document.querySelectorAll('.ls-box li').length;
+
+        // 列表数量大于默认数量 循环+自动轮播
+        if (len > n) {
+            option.autoplay = {
+                delay: 5000,
+                disableOnInteraction: false,
+            }
+            option.loop = true;
+        }
+        // swiper 轮播实例化
+        new Swiper('.swiper-container', option);
+    }
+</script>
+
+</body>
+
+</html>

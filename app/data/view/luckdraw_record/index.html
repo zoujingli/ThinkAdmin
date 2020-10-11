@@ -1,0 +1,53 @@
+{extend name="../../admin/view/main"}
+
+
+{block name="content"}
+<div class="think-box-shadow table-block">
+    {include file='luckdraw_record/index_search'}
+    <table class="layui-table" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='text-left nowrap'>中奖人</th>
+            <th class='text-left nowrap'>活动信息</th>
+            <th class='text-left nowrap'>奖品信息</th>
+            <th class='text-left nowrap'>中奖时间</th>
+            <th class='text-left nowrap'>核销时间</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.username|default=''}
+                {notempty name='vo.member.phone'}
+                <span class="margin-left-5 layui-badge layui-bg-gray">{$vo.member.phone|default=''}</span>
+                {/notempty}
+            </td>
+            <td class='text-left nowrap'>{$vo.info.name|default=''}</td>
+            <td class='text-left nowrap'>
+                {if $vo.prize_code neq ''}
+                {$vo.prize_name|default=''}（ {$vo.prize_level|default=''} ）
+                {$vo.prize_express ? "<span class='color-blue'>需要发货</span>":"<span class='color-desc'>无需发货</span>"}
+                {else}<span class="layui-badge layui-bg-gray">未中奖</span>{/if}
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.create_at|format_datetime}
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.uncode_datetime|default='未核销'}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

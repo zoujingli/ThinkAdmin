@@ -1,0 +1,63 @@
+{extend name="../../admin/view/main"}
+
+{block name="button"}
+<!--{if auth("add")}-->
+<button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加活动</button>
+<!--{/if}-->
+<!--{if auth("del")}-->
+<button data-action='{:url("del")}' data-rule="id#{key}" data-confirm="确定要删除这些活动吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除活动</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow table-block">
+    {include file='luckdraw_config/index_search'}
+    <table class="layui-table" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none="" data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
+            <th class='text-left nowrap'>活动编号</th>
+            <th class='text-left nowrap'>活动名称</th>
+            <th class='text-left nowrap'>创建时间</th>
+            <th class='text-left nowrap'>活动状态</th>
+            <th class='text-left nowrap'></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class='text-left nowrap'>{$vo.code}</td>
+            <td class='text-left nowrap'><i class="fa fa-qrcode fa-lg margin-right-5 pointer" data-load="{:url('index')}?action=qrc&code={$vo.code}" data-time="false"></i>{$vo.name|default=''}</td>
+            <td class='text-left nowrap'>{$vo.create_at|format_datetime|raw}</td>
+            <td class='text-left nowrap'>{eq name='vo.status' value='0'}<span class="layui-badge">已停止</span>{else}<span class="layui-badge layui-bg-green">进行中</span>{/eq}</td>
+            <td class='text-left nowrap'>
+                <!--{if auth("edit")}-->
+                <a class="layui-btn layui-btn-xs" data-title="编辑活动" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
+                <!--{/if}-->
+
+                <!--{if $vo.status eq 1 and auth("state")}-->
+                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">停 止</a>
+                <!--{/if}-->
+
+                <!--{if $vo.status eq 0 and auth("state")}-->
+                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">进 行</a>
+                <!--{/if}-->
+
+                <!--{if auth("remove")}-->
+                <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除该活动吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                <!--{/if}-->
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}
