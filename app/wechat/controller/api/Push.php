@@ -196,6 +196,10 @@ class Push extends Controller
      */
     private function _keys(string $rule, bool $last = false, bool $custom = false)
     {
+        if (stripos($rule, 'reply#text:') === 0) {
+            [, $content] = explode('#text:', $rule);
+            return $this->_buildMessage('text', ['Content' => $content]);
+        }
         [$table, $field, $value] = explode('#', $rule . '##');
         $data = $this->app->db->name($table)->where([$field => $value])->find();
         if (empty($data['type']) || (array_key_exists('status', $data) && empty($data['status']))) {
