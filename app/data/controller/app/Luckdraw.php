@@ -1,6 +1,6 @@
 <?php
 
-namespace app\data\controller\api;
+namespace app\data\controller\app;
 
 use app\wechat\service\WechatService;
 use think\admin\Controller;
