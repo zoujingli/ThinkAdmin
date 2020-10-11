@@ -83,7 +83,7 @@ class Luckdraw extends Controller
     {
         $map = [['prize_code', '<>', ''], ['code', '=', $this->vo['code']]];
         $this->records = $this->app->db->name('ActivityLuckdrawRecord')->where($map)->order('id desc')->select()->toArray();
-        foreach ($this->records as &$vo) $vo['username'] = mb_substr($vo['username'], 0, 1) . '**';
+        foreach ($this->records as &$vo) $vo['username'] = mb_substr($vo['username'], 0, 1) . ' * * ';
         $this->fetch();
     }
 
