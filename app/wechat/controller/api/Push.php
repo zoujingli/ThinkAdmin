@@ -196,8 +196,8 @@ class Push extends Controller
      */
     private function _keys(string $rule, bool $last = false, bool $custom = false)
     {
-        if (stripos($rule, 'reply#text:') === 0) {
-            [, $content] = explode('#text:', $rule);
+        if (stripos($rule, 'WechatKeys#keys#reply#text:') === 0) {
+            [, $content] = explode('WechatKeys#keys#reply#text:', $rule);
             return $this->_buildMessage('text', ['Content' => $content]);
         }
         [$table, $field, $value] = explode('#', $rule . '##');
