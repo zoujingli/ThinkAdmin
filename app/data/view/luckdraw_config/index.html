@@ -33,7 +33,12 @@
             <td class='list-table-check-td think-checkbox'>
                 <input class="list-check-box" value='{$vo.id}' type='checkbox'>
             </td>
-            <td class='text-left nowrap'>{$vo.code}</td>
+            <td class='text-left nowrap'>
+                {$vo.code|default=''}
+                <span data-tips-text="复制活动链接" data-copy="{:url('@data/app.luckdraw/index/code/'.$vo.code,[],true,true)}" class="layui-badge pointer">
+                    <i class="layui-icon layui-icon-link font-s12"></i>
+                </span>
+            </td>
             <td class='text-left nowrap'><i class="fa fa-qrcode fa-lg margin-right-5 pointer" data-load="{:url('index')}?action=qrc&code={$vo.code}" data-time="false"></i>{$vo.name|default=''}</td>
             <td class='text-left nowrap'>{$vo.create_at|format_datetime|raw}</td>
             <td class='text-left nowrap'>{eq name='vo.status' value='0'}<span class="layui-badge">已停止</span>{else}<span class="layui-badge layui-bg-green">进行中</span>{/eq}</td>
