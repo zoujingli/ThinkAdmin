@@ -1,6 +1,5 @@
 {extend name="../../admin/view/main"}
 
-
 {block name="content"}
 <div class="think-box-shadow table-block">
     {include file='luckdraw_record/index_search'}
@@ -36,12 +35,13 @@
                 {if $vo.prize_code neq ''}
                 <div>奖品编号：{$vo.prize_code|default=''}{$vo.prize_express ? "<span class='color-blue margin-left-5'>需要发货</span>":"<span class='color-desc margin-left-5'>无需发货</span>"}</div>
                 <div>奖品名称：{$vo.prize_name|default=''}<span class='color-blue margin-left-5'>{$vo.prize_level|default=''}</span></div>
-                {else}<span class="layui-badge layui-bg-gray">未中奖</span>{/if}
+                {else}<span class="color-desc">未中奖</span>{/if}
             </td>
             <td class='text-left nowrap'>
                 中奖时间：{$vo.create_at|format_datetime}<br>
-                核销状态：{if empty($vo.prize_express)}{$vo.uncode_datetime|default='未核销'}
+                核销状态：{if $vo.prize_code neq ''}{if empty($vo.prize_express)}{$vo.uncode_datetime|default='未核销'}
                 {else}{$vo.express_province|default=''}{$vo.express_city|default=''}{$vo.express_area|default=''}{$vo.express_address|default=''}{/if}
+                {else}<span class="color-desc">未中奖</span>{/if}
             </td>
         </tr>
         {/foreach}
