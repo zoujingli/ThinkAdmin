@@ -15,7 +15,7 @@
             <th class='text-left nowrap'>活动信息</th>
             <th class='text-left nowrap'>奖品信息</th>
             <th class='text-left nowrap'>中奖时间</th>
-            <th class='text-left nowrap'>核销时间</th>
+            <th class='text-left nowrap'>核销信息</th>
         </tr>
         </thead>
         {/notempty}
@@ -27,9 +27,7 @@
             </td>
             <td class='text-left nowrap'>
                 {$vo.username|default=''}
-                {notempty name='vo.member.phone'}
-                <span class="margin-left-5 layui-badge layui-bg-gray">{$vo.member.phone|default=''}</span>
-                {/notempty}
+                <span class="margin-left-5 layui-badge layui-bg-gray">{$vo.phone|default=''}</span>
             </td>
             <td class='text-left nowrap'>{$vo.info.name|default=''}</td>
             <td class='text-left nowrap'>
@@ -42,7 +40,12 @@
                 {$vo.create_at|format_datetime}
             </td>
             <td class='text-left nowrap'>
+                {if empty($vo.prize_express)}
                 {$vo.uncode_datetime|default='未核销'}
+                {else}
+                {$vo.express_province|default=''}{$vo.express_city|default=''}{$vo.express_area|default=''}
+                {$vo.express_address|default=''}
+                {/if}
             </td>
         </tr>
         {/foreach}

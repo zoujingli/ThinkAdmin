@@ -151,6 +151,7 @@ class Luckdraw extends Controller
             $_prize = $this->app->db->name('ActivityLuckdrawPrize')->where(['code' => $prize['prize_code']])->find();
             $data = [
                 'mid'           => $this->member['id'],
+                'phone'         => $this->member['phone'],
                 'username'      => $this->member['username'],
                 'code'          => $this->code,
                 'prize_level'   => $prize['prize_level'],
@@ -179,5 +180,21 @@ class Luckdraw extends Controller
         $data = ['uncode_code' => $map['uncode'], 'uncode_status' => 1, 'uncode_datatime' => date('Y-m-d H:i:s')];
         $result = $this->app->db->name('ActivityLuckdrawRecord')->where(['id' => $this->record['id']])->update($data);
         $result !== false ? $this->success('奖品核销成功！') : $this->error('奖品核销失败，请稍候再试！');
+    }
+
+    /**
+     * 提交收货地址
+     * @throws \think\db\exception\DbException
+     */
+    public function express()
+    {
+        $data = $this->_vali([
+            'express_province.require#province' => '收货省份不能为空！',
+            'express_city.require#city'         => '收货城市不能为空！',
+            'express_area.require#area'         => '收货区域不能为空！',
+            'express_address.require#address'   => '详细地址不能为空！',
+        ]);
+        $result = $this->app->db->name('ActivityLuckdrawRecord')->where(['id' => $this->record['id']])->update($data);
+        $result !== false ? $this->success('提交收货地址成功！') : $this->error('提交收货地址失败，请稍候再试！');
     }
 }

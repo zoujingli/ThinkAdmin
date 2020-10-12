@@ -10,7 +10,7 @@
     <script src="__ROOT__/static/plugs/jquery/jquery.min.js"></script>
     <script src="__ROOT__/static/luckdraw/layer.mobile/layer.js"></script>
     <script src="__ROOT__/static/luckdraw/lib/swiper/swiper.min.js"></script>
-    <script src="//res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
     <script>
         window.onresize = function () {
             this.deviceWidth = document.documentElement.clientWidth;
@@ -19,54 +19,57 @@
         };
         window.onresize();
 
-        var ApiFun = new function () {
+        let ApiFun = new function () {
             this.doDraw = function () {
-
                 /* {if empty($member)} */
-
                 document.querySelector('#mask1').className = 'mask show';
                 document.querySelector('.info-dialog').className = 'info-dialog show';
-
                 /* {else} */
-
-                var index = layer.open({type: 2, content: '抽奖中...'});
-                $.post('{:url("@data/api.luckdraw/prize/code/".$vo.code)}', {}, function (ret) {
-                    layer.close(index);
-                    return location.reload();
-                    if (ret.code > 0) return location.reload();
-                    return layer.open({
-                        content: ret.info, skin: 'msg', time: 2, end: function () {
-                            location.reload();
-                        }, shade: true
-                    });
+                let index = layer.open({type: 2, content: '抽奖中...'});
+                $.post('{:url("@data/app.luckdraw/prize/code/".$vo.code)}', {}, function (ret) {
+                    layer.close(index), location.reload();
                 });
-
                 /* {/if} */
-
             };
-            /* 补充用户数据 */
+            /*! 补充用户数据 */
             this.doInfo = function () {
-                var phone = $('#phone').val() || '', username = $('#username').val() || '';
+                let phone = $('#phone').val() || '', username = $('#username').val() || '';
                 if (!/.{1}/.test(username)) return layer.open({content: '请输入您的姓名！', skin: 'msg', time: 2, shade: true});
                 if (!/^1\d{10}$/.test(phone)) return layer.open({content: '请输入正确的手机号！', skin: 'msg', time: 2, shade: true});
-                var index = layer.open({type: 2, content: '提交中...', shade: true});
-                $.post('{:url("@data/api.luckdraw/info/code/".$vo.code)}', {phone: phone, username: username}, function (ret) {
+                let index = layer.open({type: 2, content: '提交中...', shade: true});
+                $.post('{:url("@data/app.luckdraw/info/code/".$vo.code)}', {phone: phone, username: username}, function (ret) {
                     layer.close(index);
                     if (ret.code > 0) return window.location.reload();
                     return layer.open({content: ret.info, skin: 'msg', time: 2, shade: true});
                 });
             };
-
+            /*! 奖品核销码 */
             this.doUsed = function () {
-                var uncode = $('#uncode').val() || '';
+                let uncode = $('#uncode').val() || '';
                 if (!uncode) return layer.open({content: '请输入核销码再操作！', skin: 'msg', time: 2, shade: true});
-                var index = layer.open({type: 2, content: '正在核销奖品...', shade: true});
-                $.post('{:url("@data/api.luckdraw/used/code/".$vo.code)}', {uncode: uncode}, function (ret) {
+                let index = layer.open({type: 2, content: '正在核销奖品...', shade: true});
+                $.post('{:url("@data/app.luckdraw/used/code/".$vo.code)}', {uncode: uncode}, function (ret) {
                     layer.close(index);
                     if (ret.code > 0) return location.reload();
                     return layer.open({content: ret.info, skin: 'msg', time: 2, shade: true});
                 });
             }
+            /*! 填写收货地址 */
+            this.doExpress = function () {
+                let data = {
+                    city: $('[name=city]').val() || '',
+                    area: $('[name=area]').val() || '',
+                    address: $('[name=address]').val() || '',
+                    province: $('[name=province]').val() || '',
+                };
+                if (!data.address) return layer.open({content: '收货地址不能为空！', skin: 'msg', time: 2, shade: true});
+                let index = layer.open({type: 2, content: '正在提交收货地址...', shade: true});
+                $.post('{:url("@data/app.luckdraw/express/code/".$vo.code)}', data, function (ret) {
+                    layer.close(index);
+                    if (ret.code > 0) return location.reload();
+                    return layer.open({content: ret.info, skin: 'msg', time: 2, shade: true});
+                });
+            };
         };
         (function () {
             wx.config(JSON.parse('{$jsoptin|raw}'));
@@ -79,9 +82,7 @@
         })();
     </script>
 </head>
-
 <body>
-
 <div class="page index-page">
     {if !empty($vo.status) and empty($vo.is_deleted)}
     <img src="__ROOT__/static/luckdraw/images/bg2.jpg" alt="一尚美术">
@@ -94,7 +95,6 @@
         <!-- 已中奖的点击按钮变成 查看奖品 -->
         <img class="btn" src="__ROOT__/static/luckdraw/images/yu1.png" alt="查看奖品" onclick="ApiFun.doDraw()">
         {/empty}
-
         <!-- 中奖明细 -->
         <div class="detail">
             <img class="title" src="__ROOT__/static/luckdraw/images/t1.png" alt="中奖明细">
@@ -108,7 +108,7 @@
                             <span>{$vo.username|default=''}</span>
                             <span>{$vo.prize_level|default='特等奖'}</span>
                         </div>
-                        <div class="ls-text">{$vo.prize_title|default=''}</div>
+                        <div class="ls-text">{$vo.prize_name|default=''}</div>
                     </li>
                     {/foreach}
                 </ul>
@@ -142,19 +142,47 @@
 <div class="luck-mask show">
     <img onclick="this.parentNode.className='luck-mask'" class="close" src="__ROOT__/static/luckdraw/images/close.png" alt="关闭">
     <img src="__ROOT__/static/luckdraw/images/luck.png" alt="中奖了">
+    <script src="__ROOT__/static/plugs/jquery/pcasunzips.js"></script>
     <div class="luck-dialog">
         {if $record.prize_code neq ''}
         <h1>{$record.prize_level|default='特等奖'}</h1>
         <h3>{$record.prize_name|default='未中奖'}</h3>
-        {if empty($record.uncode_status)}
+        {if empty($record.uncode_status) && empty($record.express_province)}
         <div>
-            <label>
-                <input id="uncode" type="text" placeholder="请输入核销码">
-            </label>
+            {if empty($record.prize_express)}
+            <label><input id="uncode" type="text" placeholder="请输入核销码"></label>
             <div onclick="ApiFun.doUsed()" class="dialog-btn">确认核销</div>
+            {else}
+            <label>
+                <select name="province"></select>
+                <select name="city"></select>
+                <select name="area"></select>
+                <input name="address" value="{$record.express_address|default=''}" placeholder="请输入详情地址">
+            </label>
+            <script>new PCAS('province', 'city', 'area', '{$record.express_province|default=""}', '{$record.express_city|default=""}', '{$record.express_area|default=""}')</script>
+            <div onclick="ApiFun.doExpress()" class="dialog-btn">提交收货地址</div>
+            {/if}
         </div>
         {else}
+        <!--{if empty($record.prize_express)}-->
         <div class="dialog-btn btn1">奖品已核销</div>
+        <!--{else}-->
+        <div>
+            <label>
+                <select disabled style="background:#ddd">
+                    <option>{$record.express_province|default=''}</option>
+                </select>
+                <select disabled style="background:#ddd">
+                    <option>{$record.express_city|default=''}</option>
+                </select>
+                <select disabled style="background:#ddd">
+                    <option>{$record.express_area|default=''}</option>
+                </select>
+                <input disabled style="background:#ddd" value="{$record.express_address}" placeholder="请输入详情地址">
+            </label>
+            <div class="dialog-btn btn1">已提交收货地址</div>
+        </div>
+        <!--{/if}-->
         {/if}
         {else}
         <div class="dialog-btn btn1">未中奖</div>
@@ -168,10 +196,9 @@
     <img onclick="this.parentNode.className='rule-mask'" class="close" src="__ROOT__/static/luckdraw/images/close.png" alt="关闭">
     <div class="rule-dialog">
         <h1 class="dialog-title">活动规则</h1>
-        <div class="rule-content">{foreach $rules as $r}<p>{$r}</p>{/foreach}</div>
+        <div class="rule-content">{foreach $rules as $rule}<p>{$rule}</p>{/foreach}</div>
     </div>
 </div>
-
 {else}
 <script>
     alert('活动已经结束');
@@ -181,63 +208,46 @@
 </script>
 {/if}
 
-<!-- script -->
 <script>
-
-    // 显示活动规则
+    /*! 显示活动规则 */
     function showRule() {
         document.querySelector('.rule-mask').className = 'rule-mask show';
-    };
+    }
 
-    // 显示填写信息弹窗
-    function draw() {
+    /*! 显示信息弹窗 */
+    function showDraw() {
         document.querySelector('#mask1').className = 'mask show';
         document.querySelector('.info-dialog').className = 'info-dialog show';
-    };
+    }
 
-    // 隐藏填写信息弹窗
+    /*! 隐藏信息弹窗 */
     function hideDraw() {
         document.querySelector('#mask1').className = 'mask';
         document.querySelector('.info-dialog').className = 'info-dialog';
-    };
+    }
 
-    // 显示中奖
+    /*! 显示中奖弹窗 */
     function showLuck() {
         document.querySelector('.luck-mask').className = 'luck-mask show';
-    };
-
+    }
 
     window.onload = function () {
-        var winH = document.body.clientHeight; // 可视区高度
-        var n = 4; // 列表默认个数
-
-        // 根据不同屏幕高度改变列表高度+数据个数
+        let number = 4; /* 列表默认个数 */
+        let winH = document.body.clientHeight || 720;
+        /*! 不同屏幕高度改变列表高度 + 数据个数 */
         if (winH > 720) {
-            n = parseInt(winH / 130);
-            document.querySelector('.index-page .ls-box').style.height = (n * 0.82) + 'rem';
+            document.querySelector('.index-page .ls-box').style.height = (winH / 130 * 0.82).toFixed(2) + 'rem';
         }
-
-        // 列表轮播默认参数，默认不自动轮播
-        var option = {
-            direction: 'vertical',
-            slidesPerView: n,
-        };
-        // 列表数据个数
-        var len = document.querySelectorAll('.ls-box li').length;
-
-        // 列表数量大于默认数量 循环+自动轮播
-        if (len > n) {
-            option.autoplay = {
-                delay: 1500,
-                disableOnInteraction: false,
-            }
+        /*! 列表轮播默认参数，默认不自动轮播 */
+        let option = {direction: 'vertical', slidesPerView: number};
+        /*! 列表数量大于默认数量 循环 + 自动轮播 */
+        if (document.querySelectorAll('.ls-box li').length > number) {
             option.loop = true;
+            option.autoplay = {delay: 1500, disableOnInteraction: false}
         }
-        // swiper 轮播实例化
+        /*! Swiper 轮播实例化 */
         new Swiper('.swiper-container', option);
-    }
+    };
 </script>
-
 </body>
-
 </html>

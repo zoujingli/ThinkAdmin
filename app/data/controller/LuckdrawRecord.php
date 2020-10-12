@@ -18,7 +18,7 @@ class LuckdrawRecord extends Controller
     protected $table = 'ActivityLuckdrawRecord';
 
     /**
-     * 中奖管理
+     * 中奖记录管理
      * @auth true
      * @menu true
      * @throws \think\Exception
@@ -29,9 +29,15 @@ class LuckdrawRecord extends Controller
      */
     public function index()
     {
-        $this->title = '中奖管理';
-        $query = $this->_query($this->table)->like('username,prize_name,prize_level');
-        $query->equal('uncode_status,code')->dateBetween('create_at,uncode_datetime')->page();
+        $this->title = '中奖记录管理';
+        $query = $this->_query($this->table)->like('phone,username,prize_name,prize_level');
+        $query->equal('uncode_status,code')->dateBetween('create_at,uncode_datetime')->order('id desc');
+        if (input('output') === 'json') {
+            $result = $query->page(true, false);
+            $this->success('获取数据列表成功', $result);
+        } else {
+            $query->page();
+        }
     }
 
     /**

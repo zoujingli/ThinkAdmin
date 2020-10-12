@@ -7,7 +7,7 @@
         <td class="padding-0">
             <select name='prize_code[]' class="layui-select full-width border-0" lay-ignore>
                 {foreach $prizes as $prize}
-                <option value="{$prize.code}">{$prize.name}</option>
+                <option value="{$prize.code}">{$prize.code} {$prize.name}</option>
                 {/foreach}
             </select>
         </td>
@@ -64,7 +64,7 @@
                 <thead>
                 <tr>
                     <th class="nowrap">奖品名称</th>
-                    <th class="nowrap text-center" style="width:200px">奖项名称</th>
+                    <th class="nowrap text-center" style="width:200px">奖项等级</th>
                     <th class="nowrap text-center" style="width:120px">奖品数量</th>
                     <th class="nowrap text-center" style="width:100px">中奖率(总概率100%)</th>
                     <th style="width:100px"></th>
@@ -77,9 +77,9 @@
                         <select name='prize_code[]' class="layui-select full-width border-0" lay-ignore>
                             {foreach $prizes as $prize}
                             {if $pz.prize_code eq $prize.code}
-                            <option selected value="{$prize.code}">{$prize.name}</option>
+                            <option selected value="{$prize.code}">{$prize.code} {$prize.name}</option>
                             {else}
-                            <option value="{$prize.code}">{$prize.name}</option>
+                            <option value="{$prize.code}">{$prize.code} {$prize.name}</option>
                             {/if}{/foreach}
                         </select>
                     </td>

@@ -442,35 +442,49 @@ body {
 .luck-dialog h3 {
     font-size: .36rem;
     color: #ffe100;
-    margin-bottom: .8rem;
+    margin-bottom: .4rem;
 }
 
-.luck-dialog input {
-    font-size: .26rem;
-    display: block;
-    width: 4.7rem;
+.luck-dialog label {
+    width: 6.5rem;
+    display: inline-block;
+    position: relative;
+}
+
+.luck-dialog input,
+.luck-dialog select {
+    width: 78%;
     height: .8rem;
+    display: block;
+    font-size: .26rem;
     line-height: .4rem;
     background: #fff;
-    border-radius: .8rem;
+    border-radius: .1rem;
     margin: 0 auto .4rem;
     text-align: left;
     padding-left: .3rem;
 }
 
+.luck-dialog select {
+    width: 25.2%;
+    text-align: center;
+    margin-bottom: .1rem;
+    display: inline-block;
+}
+
 .luck-dialog .dialog-btn {
     width: 4.7rem;
-    line-height: .8rem;
-    border-radius: .8rem;
     margin: 0 auto;
     font-size: .3rem;
+    line-height: .8rem;
+    border-radius: .8rem;
     color: #dd0d1d;
     background: #ffe100;
 }
 
 .luck-dialog .btn1 {
-    background: #fff0e8;
     color: #dd0d1d;
+    background: #fff0e8;
 }
 
 .show.luck-mask,
