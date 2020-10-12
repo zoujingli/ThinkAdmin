@@ -11,10 +11,9 @@
             <th class='list-table-check-td think-checkbox'>
                 <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'>
             </th>
-            <th class='text-left nowrap'>中奖人</th>
+            <th class='text-left nowrap'>中奖信息</th>
             <th class='text-left nowrap'>活动信息</th>
             <th class='text-left nowrap'>奖品信息</th>
-            <th class='text-left nowrap'>中奖时间</th>
             <th class='text-left nowrap'>核销信息</th>
         </tr>
         </thead>
@@ -26,26 +25,23 @@
                 <input class="list-check-box" value='{$vo.id}' type='checkbox'>
             </td>
             <td class='text-left nowrap'>
-                {$vo.username|default=''}
-                <span class="margin-left-5 layui-badge layui-bg-gray">{$vo.phone|default=''}</span>
+                姓名：{$vo.username|default=''}<br>
+                手机：{$vo.phone|default=''}
             </td>
-            <td class='text-left nowrap'>{$vo.info.name|default=''}</td>
+            <td class='text-left nowrap'>
+                活动编号：{$vo.info.code|default=''}<br>
+                活动名称：{$vo.info.name|default=''}
+            </td>
             <td class='text-left nowrap'>
                 {if $vo.prize_code neq ''}
-                {$vo.prize_name|default=''}（ {$vo.prize_level|default=''} ）
-                {$vo.prize_express ? "<span class='color-blue'>需要发货</span>":"<span class='color-desc'>无需发货</span>"}
+                <div>奖品编号：{$vo.prize_code|default=''}{$vo.prize_express ? "<span class='color-blue margin-left-5'>需要发货</span>":"<span class='color-desc margin-left-5'>无需发货</span>"}</div>
+                <div>奖品名称：{$vo.prize_name|default=''}<span class='color-blue margin-left-5'>{$vo.prize_level|default=''}</span></div>
                 {else}<span class="layui-badge layui-bg-gray">未中奖</span>{/if}
             </td>
             <td class='text-left nowrap'>
-                {$vo.create_at|format_datetime}
-            </td>
-            <td class='text-left nowrap'>
-                {if empty($vo.prize_express)}
-                {$vo.uncode_datetime|default='未核销'}
-                {else}
-                {$vo.express_province|default=''}{$vo.express_city|default=''}{$vo.express_area|default=''}
-                {$vo.express_address|default=''}
-                {/if}
+                中奖时间：{$vo.create_at|format_datetime}<br>
+                销售状态：{if empty($vo.prize_express)}{$vo.uncode_datetime|default='未核销'}
+                {else}{$vo.express_province|default=''}{$vo.express_city|default=''}{$vo.express_area|default=''}{$vo.express_address|default=''}{/if}
             </td>
         </tr>
         {/foreach}
