@@ -122,14 +122,14 @@ class Luckdraw extends Controller
         $query = $this->app->db->name('ActivityLuckdrawConfigRecord');
         $query->field('prize_num,prize_rate,prize_level,prize_code');
         $prizes = $query->where(['code' => $this->code])->select()->toArray();
-        $prizesNum = array_combine(array_column($prizes, 'prize_code'), array_pad([], count($prizes), 0));
-        foreach ($prizes as $item) $prizesNum[$item['prize_code']] += $item['prize_num'];
+        /* 统计奖品信息 */
+        [$prize, $prizesNum, $tempRate, $tempNumber] = [[], [], 0, rand(1, 1000000) / 10000];
+        foreach ($prizes as $item) $prizesNum[$item['prize_code']] = ($prizesNum[$item['prize_code']] ?? 0) + $item['prize_num'];
         /* 计算抽奖的中奖数据 */
-        [$prize, $tempRate, $tempNumber] = [[], 0, rand(1, 1000000) / 10000];
         foreach ($prizes as $key => $item) {
             if (isset($useds[$item['prize_code']]) && $useds[$item['prize_code']] >= $prizesNum[$item['prize_code']]) {
                 unset($prizes[$key]);
-                continue 1;
+                continue;
             }
             if ($tempNumber <= ($tempRate += $item['prize_rate'])) {
                 $prize = $item;
