@@ -40,7 +40,7 @@
             </td>
             <td class='text-left nowrap'>
                 中奖时间：{$vo.create_at|format_datetime}<br>
-                销售状态：{if empty($vo.prize_express)}{$vo.uncode_datetime|default='未核销'}
+                核销状态：{if empty($vo.prize_express)}{$vo.uncode_datetime|default='未核销'}
                 {else}{$vo.express_province|default=''}{$vo.express_city|default=''}{$vo.express_area|default=''}{$vo.express_address|default=''}{/if}
             </td>
         </tr>
