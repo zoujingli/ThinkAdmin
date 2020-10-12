@@ -1,24 +1,26 @@
 {extend name="../../admin/view/main"}
 
-{block name="content"}
+{block name="button"}
+<!--{if auth("testapi")}-->
+<button data-modal="{:url('testapi')}" class='layui-btn layui-btn-sm layui-btn-primary'>接口功能测试</button>
+<!--{/if}-->
+{/block}
 
+{block name="content"}
 <div class="think-box-shadow layui-form">
-    <div class="layui-input-block nowrap">
-        {foreach ['api'=>'微信公众平台直接模式','thr'=>'微信开放平台授权模式','test'=>'微信接口功能测试'] as $k=>$v}
+    <div class="nowrap" style="margin-left:99px">
+        {foreach ['api'=>'微信公众平台直接模式','thr'=>'微信开放平台授权模式'] as $k=>$v}
         <input type="radio" data-wechat-type="{$k}" name="wechat.type" value="{$k}" title="{$v}" lay-filter="wechat_type">
         {/foreach}
         <p class="help-block">请选择微信对接方式，其中微信开放平台授权模式是需要微信开放平台支持，还需要搭建微信授权服务！</p>
     </div>
 </div>
-
 <div class="think-box-shadow margin-top-15">
     <div class="padding-top-20" style="width:850px">
         <div class="layui-anim layui-anim-fadein" data-type="api">{include file='config/options_api'}</div>
         <div class="layui-anim layui-anim-fadein" data-type="thr">{include file='config/options_thr'}</div>
-        <div class="layui-anim layui-anim-fadein" data-type="test">{include file='config/options_tst'}</div>
     </div>
 </div>
-
 {/block}
 
 {block name='script'}

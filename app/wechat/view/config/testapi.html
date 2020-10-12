@@ -1,23 +1,16 @@
-<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card noshadow' autocomplete="off">
-
-    <div class="layui-card-header border-0">
-        <div class="layui-bg-gray padding-col-20 border-radius-5">
-            微信常用功能测试案例，请使用微信扫描下面的二维码进行测试，具体请检查公众号是否拥有对应的产品功能。
-        </div>
-    </div>
-
-    <div class="layui-card-body">
+<div class='layui-card noshadow'>
+    <div class="layui-card-body padding-40">
         <div class="layui-bg-gray padding-20 border-radius-5">
             <div class="margin-bottom-15">
-                <p class="font-w7">微信开放平台授权</p>
+                <p class="font-w7 color-green">微信开放平台授权</p>
                 <p>JSSDK 签名测试需要在开放平台配置当前的授权域名：<a data-copy="{:request()->host()}">{:request()->host()}</a></p>
             </div>
             <div class="margin-bottom-15">
-                <p class="font-w7">公众号平台接口域名授权</p>
-                <p>网页授权及 JSSDK 签名都需要在公众号平台配置授权域名：<a data-copy="{:request()->host()}">{:request()->host()}</a></p>
+                <p class="font-w7 color-green">公众号平台域名授权</p>
+                <p>网页授权及 JSSDK 签名都需要在公众号平台授权域名：<a data-copy="{:request()->host()}">{:request()->host()}</a></p>
             </div>
-            <div class="margin-bottom-15">
-                <p class="font-w7">支付测试配置</p>
+            <div class="margin-bottom-0">
+                <p class="font-w7 color-green">微信商户支付测试配置</p>
                 <p>JSAPI 支付测试需要在微信商户平台配置支付目录：<a data-copy="{:url('wechat/api.test/',[],'',true)}">{:sysuri('wechat/api.test/index',[],'',true)}</a></p>
                 <p>扫码支付①需要在微信商户平台配置支付通知地址：<a data-copy="{:url('wechat/api.test/scan_one_notify',[],'',true)}">{:url('wechat/api.test/scan_one_notify',[],'',true)}</a></p>
             </div>
@@ -44,6 +37,5 @@
                 <p class="text-center">扫码支付②</p>
             </div>
         </div>
-
     </div>
-</form>
+</div>

@@ -1,15 +1,12 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
-
-{if auth("add")}
+<!--{if auth("add")}-->
 <button data-open="{:url('add')}" class='layui-btn layui-btn-sm layui-btn-primary'>添加规则</button>
-{/if}
-
-{if auth("remove")}
+<!--{/if}-->
+<!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除这些规则吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除规则</button>
-{/if}
-
+<!--{/if}-->
 {/block}
 
 {block name='content'}

@@ -76,6 +76,15 @@ class Config extends Controller
     }
 
     /**
+     * 接口功能测试
+     * @auth true
+     */
+    public function testapi()
+    {
+        $this->fetch();
+    }
+
+    /**
      * 配置微信支付
      * @auth true
      * @menu true
