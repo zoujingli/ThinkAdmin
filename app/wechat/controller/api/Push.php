@@ -29,13 +29,13 @@ class Push extends Controller
 {
 
     /**
-     * 微信APPID
+     * 公众号 APPID
      * @var string
      */
     protected $appid;
 
     /**
-     * 微信用户OPENID
+     * 微信用户 OPENID
      * @var string
      */
     protected $openid;
@@ -48,7 +48,7 @@ class Push extends Controller
 
 
     /**
-     * 微信OPENID
+     * 请求微信 OPENID
      * @var string
      */
     protected $fromOpenid;
@@ -94,23 +94,23 @@ class Push extends Controller
     {
         try {
             if (WechatService::instance()->getType() === 'thr') {
-                $this->forceJson = true; // 强制回复 JSON 到 SERVICE
-                $this->forceCustom = false; // 强制使用客服消息模式推送
+                $this->forceJson = true; // 直接回复JSON数据到SERVICE
+                $this->forceCustom = false; // 直接使用客服消息模式推送
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
                 $this->encrypt = boolval($this->request->post('encrypt', 0));
-                $this->receive = $this->_objectToLowerKey(json_decode(input('params', '[]'), true));
+                $this->receive = $this->_arrayChangeKeyCase(json_decode(input('params', '[]'), true));
                 if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
                     throw new \think\Exception('微信API实例缺失必要参数[appid,openid,receive]');
                 }
             } else {
-                $this->forceJson = false; // 暂停返回JSON消息对象
-                $this->forceCustom = false; // 暂停使用客户消息模式
+                $this->forceJson = false; // 直接返回JSON对象数据
+                $this->forceCustom = false; // 直接使用客服消息回复
                 $this->appid = WechatService::instance()->getAppid();
                 $this->wechat = WechatService::WeChatReceive();
                 $this->openid = $this->wechat->getOpenid();
                 $this->encrypt = $this->wechat->isEncrypt();
-                $this->receive = $this->_objectToLowerKey($this->wechat->getReceive());
+                $this->receive = $this->_arrayChangeKeyCase($this->wechat->getReceive());
             }
             $this->fromOpenid = $this->receive['tousername'];
             // 消息类型：text, event, image, voice, shortvideo, location, link
@@ -323,11 +323,11 @@ class Push extends Controller
      * @param array $data
      * @return array
      */
-    private function _objectToLowerKey(array $data)
+    private function _arrayChangeKeyCase(array $data)
     {
         $data = array_change_key_case($data, CASE_LOWER);
         foreach ($data as $key => $vo) if (is_array($vo)) {
-            $data[$key] = $this->_objectToLowerKey($vo);
+            $data[$key] = $this->_arrayChangeKeyCase($vo);
         }
         return $data;
     }
