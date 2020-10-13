@@ -155,6 +155,8 @@ class Push extends Controller
     protected function event()
     {
         switch (strtolower($this->receive['event'])) {
+            case 'unsubscribe':
+                return $this->_setUserInfo(false);
             case 'subscribe':
                 $this->_setUserInfo(true);
                 if (isset($this->receive['eventkey']) && is_string($this->receive['eventkey'])) {
@@ -163,18 +165,16 @@ class Push extends Controller
                     }
                 }
                 return $this->_keys('WechatKeys#keys#subscribe', true, $this->forceCustom);
-            case 'unsubscribe':
-                return $this->_setUserInfo(false);
+            case 'scan':
             case 'click':
+                if (empty($this->receive['eventkey'])) return false;
                 return $this->_keys("WechatKeys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
             case 'scancode_push':
             case 'scancode_waitmsg':
-                if (empty($this->receive['scancodeinfo'])) return false;
                 if (empty($this->receive['scancodeinfo']['scanresult'])) return false;
                 return $this->_keys("WechatKeys#keys#{$this->receive['scancodeinfo']['scanresult']}", false, $this->forceCustom);
-            case 'scan':
-                if (empty($this->receive['eventkey'])) return false;
-                return $this->_keys("WechatKeys#keys#{$this->receive['eventkey']}", false, $this->forceCustom);
+            case 'view':
+            case 'location':
             default:
                 return false;
         }
