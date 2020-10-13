@@ -4,7 +4,7 @@
   "description": "ThinkAdmin Theme Less build",
   "dependencies": {},
   "scripts": {
-    "install": "cnpm install less less-plugin-clean-css -g",
+    "install": "npm install less less-plugin-clean-css -g",
     "build": "\nlessc --clean-css --source-map login.less login.css\nlessc --clean-css --source-map mobile.less mobile.css\nlessc --clean-css --source-map console.less console.css"
   }
 }
