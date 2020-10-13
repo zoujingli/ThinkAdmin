@@ -54,11 +54,11 @@ class ShopOrder extends Controller
         // 列表选项卡
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) $query->where(['status' => $this->type]);
         // 分页排序处理
+        $query->order('id desc');
         if (input('output') === 'json') {
-            $result = $query->order('id desc')->page(true, false);
-            $this->success('获取数据列表成功', $result);
+            $this->success('获取数据成功', $query->page(true, false));
         } else {
-            $query->order('id desc')->page();
+            $query->page();
         }
     }
 

@@ -4,14 +4,14 @@
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">微信昵称</label>
-            <div class="layui-input-inline">
+            <label class="layui-input-inline">
                 <input name="nickname" value="{:input('nickname')}" placeholder="请输入微信昵称" class="layui-input">
-            </div>
+            </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">关注状态</label>
-            <div class="layui-input-inline">
+            <label class="layui-input-inline">
                 <select class="layui-select" name="subscribe">
                     {foreach [''=>'-- 全部 --','0'=>'显示未关注的粉丝','1'=>'显示已关注的粉丝'] as $k=>$v}
                     {if $k.'' eq input('subscribe')}
@@ -21,12 +21,12 @@
                     {/if}
                     {/foreach}
                 </select>
-            </div>
+            </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">拉黑状态</label>
-            <div class="layui-input-inline">
+            <label class="layui-input-inline">
                 <select class="layui-select" name="is_black">
                     {foreach [''=>'-- 全部 --','0'=>'显示未拉黑的粉丝','1'=>'显示已拉黑的粉丝'] as $k=>$v}
                     {if $k.'' eq input('is_black')}
@@ -36,21 +36,45 @@
                     {/if}
                     {/foreach}
                 </select>
-            </div>
+            </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">关注时间</label>
-            <div class="layui-input-inline">
+            <label class="layui-input-inline">
                 <input data-date-range name="subscribe_at" value="{:input('subscribe_at')}" placeholder="请选择关注时间" class="layui-input">
-            </div>
+            </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button type="button" data-form-export="{:url('index')}?type={$type|default=''}" class="layui-btn layui-btn-primary">
+                <i class="layui-icon layui-icon-export"></i> 导 出
+            </button>
         </div>
     </form>
-
 </fieldset>
 
-<script>window.form.render()</script>
+<script>
+    window.form.render();
+    require(['excel'], function (excel) {
+        excel.bind(function (data, sexs) {
+            sexs = {1: '男', 2: '女'};
+            data.forEach(function (item, index) {
+                data[index] = [
+                    item.openid || '',
+                    item.nickname || '',
+                    item.country || '',
+                    item.province || '',
+                    item.city || '',
+                    sexs[item.sex] || '未知',
+                    item.subscribe ? '已订阅' : '未订阅',
+                    item.subscribe_at || '',
+                    item.is_black ? '已拉黑' : '未拉黑',
+                ];
+            });
+            data.unshift(['OPENID', '微信昵称', '所在国家', '所在省份', '所在城市', '性别', '订阅状态', '订阅时间', '是否拉黑']);
+            return data;
+        }, '微信粉丝数据');
+    });
+</script>
