@@ -94,7 +94,7 @@ class Push extends Controller
     {
         try {
             if (WechatService::instance()->getType() === 'thr') {
-                $this->forceJson = true; // 直接回复JSON数据到SERVICE
+                $this->forceJson = true; // 直接返回JSON数据到SERVICE
                 $this->forceCustom = false; // 直接使用客服消息模式推送
                 $this->appid = $this->request->post('appid', '', null);
                 $this->openid = $this->request->post('openid', '', null);
@@ -105,7 +105,7 @@ class Push extends Controller
                 }
             } else {
                 $this->forceJson = false; // 直接返回JSON对象数据
-                $this->forceCustom = false; // 直接使用客服消息回复
+                $this->forceCustom = false; // 直接使用客服消息推送
                 $this->appid = WechatService::instance()->getAppid();
                 $this->wechat = WechatService::WeChatReceive();
                 $this->openid = $this->wechat->getOpenid();
