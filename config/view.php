@@ -39,7 +39,7 @@ return [
     // 定义模板替换字符串
     'tpl_replace_string' => [
         '__APP__'  => rtrim(url('@')->build(), '\\/'),
-        '__ROOT__' => rtrim(dirname(request()->basefile(false)), '\\/'),
+        '__ROOT__' => rtrim(dirname(request()->basefile()), '\\/'),
         '__HOST__' => rtrim(dirname(request()->basefile(true)), '\\/'),
     ],
 ];
