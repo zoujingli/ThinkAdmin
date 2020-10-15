@@ -17,6 +17,7 @@ namespace app\admin\controller\api;
 
 use think\admin\Controller;
 use think\admin\service\AdminService;
+use think\admin\service\ProcessService;
 use think\admin\service\SystemService;
 use think\exception\HttpResponseException;
 
@@ -94,6 +95,26 @@ class Plugs extends Controller
                 SystemService::instance()->productMode(false);
                 $this->success('已切换为开发模式！');
             }
+        } else {
+            $this->error('只有超级管理员才能操作！');
+        }
+    }
+
+    /**
+     * 检查任务状态
+     * @login true
+     */
+    public function queue()
+    {
+        if (AdminService::instance()->isSuper()) try {
+            $message = $this->app->console->call('xadmin:queue', ['status'])->fetch();
+            if (preg_match('/process.*?\d+.*?running/', $message, $attrs)) {
+                echo '<span class="color-green">' . $message . '</span>';
+            } else {
+                echo '<span class="color-red">' . $message . '</span>';
+            }
+        } catch (\Exception $exception) {
+            echo '<span class="color-red">' . $exception->getMessage() . '</span>';
         } else {
             $this->error('只有超级管理员才能操作！');
         }

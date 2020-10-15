@@ -45,19 +45,13 @@ class Queue extends Controller
      */
     public function index()
     {
-        // 检查进程状态
-        if (AdminService::instance()->isSuper()) try {
-            $this->process = ProcessService::instance();
-            if ($this->process->iswin() || empty($_SERVER['USER'])) {
-                $this->command = $this->process->think('xadmin:queue start');
+        if (AdminService::instance()->isSuper()) {
+            $process = ProcessService::instance();
+            if ($process->iswin() || empty($_SERVER['USER'])) {
+                $this->command = $process->think('xadmin:queue start');
             } else {
-                $this->command = "sudo -u {$_SERVER['USER']} {$this->process->think('xadmin:queue start')}";
+                $this->command = "sudo -u {$_SERVER['USER']} {$process->think('xadmin:queue start')}";
             }
-            $this->message = $this->app->console->call('xadmin:queue', ['status'])->fetch();
-            $this->listen = preg_match('/process.*?\d+.*?running/', $this->message, $attr);
-        } catch (\Exception $exception) {
-            $this->listen = false;
-            $this->message = $exception->getMessage();
         }
         // 任务状态统计
         $this->total = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];

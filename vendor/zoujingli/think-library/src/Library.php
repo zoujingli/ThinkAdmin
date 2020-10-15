@@ -49,11 +49,11 @@ class Library extends Service
     public function boot()
     {
         // 多应用中间键处理
-        $this->app->event->listen('HttpRun', function () {
+        $this->app->event->listen('HttpRun', function (Request $request) {
             $this->app->middleware->add(App::class);
-            // 解决 HTTP 模式下调用 Console 之后 URL 生成问题
-            if (!$this->app->request->isCli() && !$this->app->config->get('app.url')) {
-                $this->app->config->set(['url' => $this->app->request->url(true)], 'app');
+            // 解决 HTTP 调用 Console 之后 URL 问题
+            if (!$this->app->request->isCli()) {
+                $request->setHost($request->host());
             }
         });
         // 替换 ThinkPHP 地址

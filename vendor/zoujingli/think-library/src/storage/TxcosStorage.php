@@ -1,0 +1,283 @@
+<?php
+
+declare (strict_types=1);
+
+namespace think\admin\storage;
+
+use think\admin\extend\HttpExtend;
+use think\admin\Storage;
+
+/**
+ * 腾讯云COS存储支持
+ * Class TxcosStorage
+ * @package think\admin\storage
+ */
+class TxcosStorage extends Storage
+{
+    /**
+     * 数据中心
+     * @var string
+     */
+    private $point;
+
+    /**
+     * 存储空间名称
+     * @var string
+     */
+    private $bucket;
+
+    /**
+     * $secretId
+     * @var string
+     */
+    private $secretId;
+
+    /**
+     * secretKey
+     * @var string
+     */
+    private $secretKey;
+
+    /**
+     * 初始化入口
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function initialize()
+    {
+        // 读取配置文件
+        $this->point = sysconf('storage.txcos_point');
+        $this->bucket = sysconf('storage.txcos_bucket');
+        $this->secretId = sysconf('storage.txcos_secret_id');
+        $this->secretKey = sysconf('storage.txcos_secret_key');
+        // 计算链接前缀
+        $type = strtolower(sysconf('storage.txcos_http_protocol'));
+        $domain = strtolower(sysconf('storage.txcos_http_domain'));
+        if ($type === 'auto') $this->prefix = "//{$domain}";
+        elseif ($type === 'http') $this->prefix = "http://{$domain}";
+        elseif ($type === 'https') $this->prefix = "https://{$domain}";
+        else throw new \think\admin\Exception('未配置腾讯云COS访问域名哦');
+    }
+
+    /**
+     * 获取当前实例对象
+     * @param null|string $name
+     * @return static
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public static function instance(?string $name = null)
+    {
+        return parent::instance('txcos');
+    }
+
+    /**
+     * 上传文件内容
+     * @param string $name 文件名称
+     * @param string $file 文件内容
+     * @param boolean $safe 安全模式
+     * @param null|string $attname 下载名称
+     * @return array
+     */
+    public function set(string $name, string $file, bool $safe = false, ?string $attname = null)
+    {
+        $token = $this->buildUploadToken($name);
+        $data = ['key' => $name];
+        $data['policy'] = $token['policy'];
+        $data['q-sign-algorithm'] = $token['q-sign-algorithm'];
+        $data['q-ak'] = $token['q-ak'];
+        $data['q-key-time'] = $token['q-key-time'];
+        $data['q-signature'] = $token['d-signature'];
+        $data['success_action_status'] = '200';
+        if (is_string($attname) && strlen($attname) > 0) {
+            $filename = urlencode($attname);
+            $data['Content-Disposition'] = "inline;filename={$filename}";
+        }
+        $file = ['field' => 'file', 'name' => $name, 'content' => $file];
+        if (is_numeric(stripos(HttpExtend::submit($this->upload(), $data, $file), '200 OK'))) {
+            return ['file' => $this->path($name, $safe), 'url' => $this->url($name, $safe, $attname), 'key' => $name];
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * 根据文件名读取文件内容
+     * @param string $name 文件名称
+     * @param boolean $safe 安全模式
+     * @return false|string
+     */
+    public function get(string $name, bool $safe = false)
+    {
+        return static::curlGet($this->url($name, $safe));
+    }
+
+    /**
+     * 删除存储的文件
+     * @param string $name 文件名称
+     * @param boolean $safe 安全模式
+     * @return boolean
+     */
+    public function del(string $name, bool $safe = false)
+    {
+        [$file] = explode('?', $name);
+        $result = HttpExtend::request('DELETE', "http://{$this->bucket}.{$this->point}/{$file}", [
+            'returnHeader' => true, 'headers' => $this->headerSign('DELETE', $file),
+        ]);
+        return is_numeric(stripos($result, '204 No Content'));
+    }
+
+    /**
+     * 判断文件是否存在
+     * @param string $name 文件名称
+     * @param boolean $safe 安全模式
+     * @return boolean
+     */
+    public function has(string $name, bool $safe = false)
+    {
+        $file = $this->delSuffix($name);
+        $result = HttpExtend::request('HEAD', "http://{$this->bucket}.{$this->point}/{$file}", [
+            'returnHeader' => true, 'headers' => $this->headerSign('HEAD', $name),
+        ]);
+        return is_numeric(stripos($result, 'HTTP/1.1 200 OK'));
+    }
+
+    /**
+     * 获取文件当前URL地址
+     * @param string $name 文件名称
+     * @param boolean $safe 安全模式
+     * @param null|string $attname 下载名称
+     * @return string
+     */
+    public function url(string $name, bool $safe = false, ?string $attname = null): string
+    {
+        return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
+    }
+
+    /**
+     * 获取文件存储路径
+     * @param string $name 文件名称
+     * @param boolean $safe 安全模式
+     * @return string
+     */
+    public function path(string $name, bool $safe = false): string
+    {
+        return $this->url($name, $safe);
+    }
+
+    /**
+     * 获取文件存储信息
+     * @param string $name 文件名称
+     * @param boolean $safe 安全模式
+     * @param null|string $attname 下载名称
+     * @return array
+     */
+    public function info(string $name, bool $safe = false, ?string $attname = null): array
+    {
+        return $this->has($name, $safe) ? [
+            'url' => $this->url($name, $safe, $attname),
+            'key' => $name, 'file' => $this->path($name, $safe),
+        ] : [];
+    }
+
+    /**
+     * 获取文件上传地址
+     * @return string
+     */
+    public function upload(): string
+    {
+        $http = $this->app->request->isSsl() ? 'https' : 'http';
+        return "{$http}://{$this->bucket}.{$this->point}";
+    }
+
+    /**
+     * 获取文件上传令牌
+     * @param null|string $name 文件名称
+     * @param integer $expires 有效时间
+     * @param null|string $attname 下载名称
+     * @return array
+     */
+    public function buildUploadToken(?string $name = null, int $expires = 3600, ?string $attname = null): array
+    {
+        $startTimestamp = time();
+        $endTimestamp = $startTimestamp + $expires;
+        $keyTime = "{$startTimestamp};{$endTimestamp}";
+        $siteurl = $this->url($name, false, $attname);
+        $policy = json_encode([
+            'expiration' => date('Y-m-d\TH:i:s.000\Z', $endTimestamp),
+            'conditions' => [
+                ['q-sign-algorithm' => 'sha1'],
+                ['q-ak' => $this->secretId],
+                ['q-sign-time' => $keyTime]
+            ],
+        ]);
+        $data = [
+            'policy'           => base64_encode($policy),
+            'q-sign-algorithm' => 'sha1',
+            'q-ak'             => $this->secretId,
+            'q-key-time'       => $keyTime,
+            'siteurl'          => $siteurl
+        ];
+        $signKey = hash_hmac('sha1', $keyTime, $this->secretKey);
+        $stringToSign = sha1($policy);
+        $data['q-signature'] = hash_hmac('sha1', $stringToSign, $signKey);
+        return $data;
+    }
+
+    /**
+     * 操作请求头信息签名
+     * @param string $method 请求方式
+     * @param string $soruce 资源名称
+     * @param array $header 请求头信息
+     * @return array
+     */
+    private function headerSign(string $method, string $soruce, array $header = []): array
+    {
+        // 1.生成KeyTime
+        $startTimestamp = time();
+        $endTimestamp = $startTimestamp + 3600;
+        $keyTime = "{$startTimestamp};{$endTimestamp}";
+        // 2.生成 SignKey
+        $signKey = hash_hmac('sha1', $keyTime, $this->secretKey);
+        // 3.生成UrlParamList,HttpParameters
+        list($parse_url, $urlParamList, $httpParameters) = [parse_url($soruce), '', ''];
+        if (!empty($parse_url['query'])) {
+            parse_str($parse_url['query'], $params);
+            uksort($params, 'strnatcasecmp');
+            $urlParamList = join(';', array_keys($params));
+            $httpParameters = http_build_query($params);
+        }
+        // 4.生成HeaderList,HttpHeaders
+        list($headerList, $httpHeaders) = ['', ''];
+        if (!empty($header)) {
+            uksort($header, 'strnatcasecmp');
+            $headerList = join(';', array_keys($header));
+            $httpHeaders = http_build_query($header);
+        }
+        // 5.生成HttpString
+        $httpString = strtolower($method) . "\n/{$parse_url['path']}\n{$httpParameters}\n{$httpHeaders}\n";
+        // 6.生成StringToSign
+        $httpStringSha1 = sha1($httpString);
+        $stringToSign = "sha1\n{$keyTime}\n{$httpStringSha1}\n";
+        // 7.生成Signature
+        $signature = hash_hmac('sha1', $stringToSign, $signKey);
+        // 8.生成签名
+        $signArray = [
+            'q-sign-algorithm' => 'sha1',
+            'q-ak'             => $this->secretId,
+            'q-sign-time'      => $keyTime,
+            'q-key-time'       => $keyTime,
+            'q-header-list'    => $headerList,
+            'q-url-param-list' => $urlParamList,
+            'q-signature'      => $signature
+        ];
+        $header['Authorization'] = urldecode(http_build_query($signArray));
+        foreach ($header as $key => $value) $header[$key] = ucfirst($key) . ": {$value}";
+        return array_values($header);
+    }
+
+}

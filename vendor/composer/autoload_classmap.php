@@ -324,6 +324,7 @@ return array(
     'think\\admin\\storage\\AliossStorage' => $vendorDir . '/zoujingli/think-library/src/storage/AliossStorage.php',
     'think\\admin\\storage\\LocalStorage' => $vendorDir . '/zoujingli/think-library/src/storage/LocalStorage.php',
     'think\\admin\\storage\\QiniuStorage' => $vendorDir . '/zoujingli/think-library/src/storage/QiniuStorage.php',
+    'think\\admin\\storage\\TxcosStorage' => $vendorDir . '/zoujingli/think-library/src/storage/TxcosStorage.php',
     'think\\cache\\Driver' => $vendorDir . '/topthink/framework/src/think/cache/Driver.php',
     'think\\cache\\TagSet' => $vendorDir . '/topthink/framework/src/think/cache/TagSet.php',
     'think\\cache\\driver\\File' => $vendorDir . '/topthink/framework/src/think/cache/driver/File.php',

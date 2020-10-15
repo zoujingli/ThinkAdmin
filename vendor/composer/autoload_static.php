@@ -452,6 +452,7 @@ class ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409
         'think\\admin\\storage\\AliossStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/AliossStorage.php',
         'think\\admin\\storage\\LocalStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/LocalStorage.php',
         'think\\admin\\storage\\QiniuStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/QiniuStorage.php',
+        'think\\admin\\storage\\TxcosStorage' => __DIR__ . '/..' . '/zoujingli/think-library/src/storage/TxcosStorage.php',
         'think\\cache\\Driver' => __DIR__ . '/..' . '/topthink/framework/src/think/cache/Driver.php',
         'think\\cache\\TagSet' => __DIR__ . '/..' . '/topthink/framework/src/think/cache/TagSet.php',
         'think\\cache\\driver\\File' => __DIR__ . '/..' . '/topthink/framework/src/think/cache/driver/File.php',
