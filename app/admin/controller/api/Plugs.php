@@ -116,7 +116,7 @@ class Plugs extends Controller
         } catch (\Exception $exception) {
             echo '<span class="color-red">' . $exception->getMessage() . '</span>';
         } else {
-            $this->error('只有超级管理员才能操作！');
+            echo '<span class="color-red">只有超级管理员才能操作！</span>';
         }
     }
 
