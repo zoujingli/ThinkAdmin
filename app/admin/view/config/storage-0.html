@@ -3,6 +3,7 @@
         <span class="color-green font-w7">链接类型</span><br><span class="nowrap color-desc">LinkType</span>
     </label>
     <div class="layui-input-block">
+        {if !sysconf('storage.link_type')}{php}sysconf('storage.link_type','none');{/php}{/if}
         {foreach ['none'=>'简洁链接','full'=>'完整链接'] as $k=>$v}
         <label class="think-radio notselect">
             {if sysconf('storage.link_type') eq $k}

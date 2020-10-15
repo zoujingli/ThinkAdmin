@@ -13,16 +13,17 @@
                 <span class="color-green font-w7">访问协议</span><br><span class="nowrap color-desc">Protocol</span>
             </label>
             <div class="layui-input-block">
-                {foreach ['http','https','auto'] as $pro}
+                {if !sysconf('storage.qiniu_http_protocol')}{php}sysconf('storage.qiniu_http_protocol','http');{/php}{/if}
+                {foreach ['http'=>'HTTP','https'=>'HTTPS','auto'=>"AUTO"] as $protocol=>$remark}
                 <label class="think-radio">
-                    {if sysconf('storage.qiniu_http_protocol') eq $pro}
-                    <input checked type="radio" name="storage.qiniu_http_protocol" value="{$pro}" lay-ignore> {$pro}
+                    {if sysconf('storage.qiniu_http_protocol') eq $protocol}
+                    <input checked type="radio" name="storage.qiniu_http_protocol" value="{$protocol}" lay-ignore> {$remark}
                     {else}
-                    <input type="radio" name="storage.qiniu_http_protocol" value="{$pro}" lay-ignore> {$pro}
+                    <input type="radio" name="storage.qiniu_http_protocol" value="{$protocol}" lay-ignore> {$remark}
                     {/if}
                 </label>
                 {/foreach}
-                <p class="help-block">七牛云存储访问协议，其中 https 需要配置证书才能使用（auto 为相对协议）</p>
+                <p class="help-block">七牛云存储访问协议，其中 HTTPS 需要配置证书才能使用（ AUTO 为相对协议 ）</p>
             </div>
         </div>
 

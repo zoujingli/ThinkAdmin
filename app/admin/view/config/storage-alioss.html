@@ -13,16 +13,17 @@
                 <span class="color-green font-w7">访问协议</span><br><span class="nowrap color-desc">Protocol</span>
             </label>
             <div class="layui-input-block">
-                {foreach ['http','https','auto'] as $protocol}
+                {if !sysconf('storage.alioss_http_protocol')}{php}sysconf('storage.alioss_http_protocol','http');{/php}{/if}
+                {foreach ['http'=>'HTTP','https'=>'HTTPS','auto'=>"AUTO"] as $protocol=>$remark}
                 <label class="think-radio">
                     {if sysconf('storage.alioss_http_protocol') eq $protocol}
-                    <input checked type="radio" name="storage.alioss_http_protocol" value="{$protocol}" lay-ignore> {$protocol}
+                    <input checked type="radio" name="storage.alioss_http_protocol" value="{$protocol}" lay-ignore> {$remark}
                     {else}
-                    <input type="radio" name="storage.alioss_http_protocol" value="{$protocol}" lay-ignore> {$protocol}
+                    <input type="radio" name="storage.alioss_http_protocol" value="{$protocol}" lay-ignore> {$remark}
                     {/if}
                 </label>
                 {/foreach}
-                <p class="help-block">阿里云OSS存储访问协议，其中 https 需要配置证书才能使用（auto 为相对协议）</p>
+                <p class="help-block">阿里云OSS存储访问协议，其中 HTTPS 需要配置证书才能使用（AUTO 为相对协议）</p>
             </div>
         </div>
 
@@ -34,9 +35,9 @@
                 <select class="layui-select" name="storage.alioss_point" lay-search>
                     {foreach $points as $point => $title}
                     {if sysconf('storage.alioss_point') eq $point}
-                    <option selected value="{$point}">{$title} {$point}</option>
+                    <option selected value="{$point}">{$title}（ {$point} ）</option>
                     {else}
-                    <option value="{$point}">{$title} {$point}</option>
+                    <option value="{$point}">{$title}（ {$point} ）</option>
                     {/if}{/foreach}
                 </select>
                 <p class="help-block">阿里云OSS存储空间所在区域，需要严格对应储存所在区域才能上传文件</p>
@@ -49,7 +50,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.alioss_bucket" type="text" name="storage.alioss_bucket" required value="{:sysconf('storage.alioss_bucket')}" placeholder="请输入阿里云OSS存储 Bucket (空间名称)" class="layui-input">
-                <p class="help-block">填写OSS存储空间名称，如：think-admin-oss（需要是全区唯一的值，不存在时会自动创建）</p>
+                <p class="help-block">填写阿里云OSS存储空间名称，如：think-admin-oss（需要是全区唯一的值，不存在时会自动创建）</p>
             </div>
         </div>
 
@@ -59,7 +60,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.alioss_http_domain" type="text" name="storage.alioss_http_domain" required value="{:sysconf('storage.alioss_http_domain')}" placeholder="请输入阿里云OSS存储 Domain (访问域名)" class="layui-input">
-                <p class="help-block">填写OSS存储外部访问域名，如：static.ctolog.com</p>
+                <p class="help-block">填写阿里云OSS存储外部访问域名，如：static.ctolog.com</p>
             </div>
         </div>
 

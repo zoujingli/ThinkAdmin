@@ -20,6 +20,7 @@ use think\admin\Storage;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\LocalStorage;
 use think\admin\storage\QiniuStorage;
+use think\admin\storage\TxcosStorage;
 
 /**
  * 文件上传接口
@@ -76,6 +77,15 @@ class Upload extends Controller
             $data['signature'] = $token['signature'];
             $data['OSSAccessKeyId'] = $token['keyid'];
             $data['server'] = AliossStorage::instance()->upload();
+        } elseif ('txcos' === $data['uptype']) {
+            $token = TxcosStorage::instance()->buildUploadToken($data['xkey'], 3600, $this->name);
+            $data['url'] = $token['siteurl'];
+            $data['q-ak'] = $token['q-ak'];
+            $data['policy'] = $token['policy'];
+            $data['q-key-time'] = $token['q-key-time'];
+            $data['q-signature'] = $token['d-signature'];
+            $data['q-sign-algorithm'] = $token['q-sign-algorithm'];
+            $data['server'] = TxcosStorage::instance()->upload();
         }
         $this->success('获取授权参数', $data, 404);
     }
@@ -139,7 +149,7 @@ class Upload extends Controller
     private function getType()
     {
         $this->uptype = strtolower(input('uptype', ''));
-        if (!in_array($this->uptype, ['local', 'qiniu', 'alioss'])) {
+        if (!in_array($this->uptype, ['local', 'qiniu', 'alioss', 'txcos'])) {
             $this->uptype = strtolower(sysconf('storage.type'));
         }
         return strtolower($this->uptype);

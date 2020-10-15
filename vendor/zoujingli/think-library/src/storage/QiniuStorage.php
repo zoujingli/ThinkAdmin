@@ -232,4 +232,19 @@ class QiniuStorage extends Storage
         $sign = hash_hmac('sha1', "/{$type}/{$entry}\n", $this->secretKey, true);
         return [$entry, "{$this->accessKey}:{$this->safeBase64($sign)}"];
     }
+
+    /**
+     * 七牛云对象存储区域
+     * @return array
+     */
+    public static function region()
+    {
+        return [
+            'up.qiniup.com'     => '华东',
+            'up-z1.qiniup.com'  => '华北',
+            'up-z2.qiniup.com'  => '华南',
+            'up-na0.qiniup.com' => '北美',
+            'up-as0.qiniup.com' => '东南亚',
+        ];
+    }
 }
