@@ -43,7 +43,6 @@ define(['md5'], function (SparkMD5, allowMime) {
                                         option.uploader.config.data.policy = ret.data.policy;
                                         option.uploader.config.data['q-ak'] = ret.data['q-ak'];
                                         option.uploader.config.data['q-key-time'] = ret.data['q-key-time'];
-                                        option.uploader.config.data['q-signature'] = ret.data['q-signature'];
                                         option.uploader.config.data['q-sign-algorithm'] = ret.data['q-sign-algorithm'];
                                         option.uploader.config.data.success_action_status = 200;
                                         option.uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);

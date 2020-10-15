@@ -1,9 +1,9 @@
 <form onsubmit="return false" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
     <div class="layui-card-body padding-top-20">
 
-        <div class="color-text margin-left-40 margin-bottom-20 layui-code text-center layui-bg-gray layui-hide" style="border-left-width:1px">
-            <p class="margin-bottom-5 font-w7">文件将上传到腾讯云 COS 存储，需要配置 COS 公开访问及跨域策略</p>
-            <p>直传需要配置跨域规则，设置来源为 *，允许 Methods 为 POST，允许 Headers 为 *</p>
+        <div class="color-text margin-left-40 margin-bottom-20 layui-code text-center layui-bg-gray" style="border-left-width:1px">
+            <p class="margin-bottom-5 font-w7">文件将上传到腾讯云 COS 存储，需要配置 COS 公有读私有写访问权限及跨域策略</p>
+            <p>需要配置跨域访问 CORS 规则，设置：来源 Origin 为 *，允许 Methods 为 POST，允许 Headers 为 *</p>
         </div>
 
         {include file='config/storage-0'}
@@ -50,7 +50,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.txcos_bucket" type="text" name="storage.txcos_bucket" required value="{:sysconf('storage.txcos_bucket')}" placeholder="请输入腾讯云COS存储 Bucket" class="layui-input">
-                <p class="help-block">填写腾讯云COS存储空间名称，如：think-admin-cos</p>
+                <p class="help-block">填写腾讯云COS存储空间名称，如：thinkadmin-1251143395</p>
             </div>
         </div>
 
@@ -61,16 +61,6 @@
             <div class="layui-input-block">
                 <input id="storage.txcos_http_domain" type="text" name="storage.txcos_http_domain" required value="{:sysconf('storage.txcos_http_domain')}" placeholder="请输入腾讯云COS存储 Domain" class="layui-input">
                 <p class="help-block">填写腾讯云COS存储外部访问域名，如：static.thinkadmin.top</p>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label" for="storage.txcos_appid">
-                <span class="color-green font-w7">账号编号</span><br><span class="nowrap color-desc">APPID</span>
-            </label>
-            <div class="layui-input-block">
-                <input id="storage.txcos_appid" type="text" name="storage.txcos_appid" required value="{:sysconf('storage.txcos_appid')}" placeholder="请输入腾讯云主账号 APPID" class="layui-input">
-                <p class="help-block">可以在 [ 腾讯云 > 个人中心 ] 获取到主账号的 APPID</p>
             </div>
         </div>
 

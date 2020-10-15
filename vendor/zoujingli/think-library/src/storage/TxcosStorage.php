@@ -21,12 +21,6 @@ class TxcosStorage extends Storage
     private $point;
 
     /**
-     * 账号 AppID
-     * @var string
-     */
-    private $appid;
-
-    /**
      * 存储空间名称
      * @var string
      */
@@ -54,10 +48,9 @@ class TxcosStorage extends Storage
     protected function initialize()
     {
         // 读取配置文件
-        $this->appid = sysconf('storage.txcos_appid');
         $this->point = sysconf('storage.txcos_point');
         $this->bucket = sysconf('storage.txcos_bucket');
-        $this->secretId = sysconf('storage.txcos_secret_id');
+        $this->secretId = sysconf('storage.txcos_access_key');
         $this->secretKey = sysconf('storage.txcos_secret_key');
         // 计算链接前缀
         $type = strtolower(sysconf('storage.txcos_http_protocol'));
@@ -92,16 +85,9 @@ class TxcosStorage extends Storage
      */
     public function set(string $name, string $file, bool $safe = false, ?string $attname = null)
     {
-        $token = $this->buildUploadToken($name);
-        $data = ['key' => $name];
-        $data['policy'] = $token['policy'];
-        $data['q-sign-algorithm'] = $token['q-sign-algorithm'];
-        $data['q-ak'] = $token['q-ak'];
-        $data['q-key-time'] = $token['q-key-time'];
-        $data['q-signature'] = $token['d-signature'];
+        $data = $this->buildUploadToken($name) + ['key' => $name];
         if (is_string($attname) && strlen($attname) > 0) {
-            $filename = urlencode($attname);
-            $data['Content-Disposition'] = "inline;filename={$filename}";
+            $data['Content-Disposition'] = '' . urlencode($attname);
         }
         $data['success_action_status'] = '200';
         $file = ['field' => 'file', 'name' => $name, 'content' => $file];
@@ -132,7 +118,7 @@ class TxcosStorage extends Storage
     public function del(string $name, bool $safe = false)
     {
         [$file] = explode('?', $name);
-        $result = HttpExtend::request('DELETE', "http://{$this->bucket}-{$this->appid}.{$this->point}/{$file}", [
+        $result = HttpExtend::request('DELETE', "http://{$this->bucket}.{$this->point}/{$file}", [
             'returnHeader' => true, 'headers' => $this->headerSign('DELETE', $file),
         ]);
         return is_numeric(stripos($result, '204 No Content'));
@@ -147,7 +133,7 @@ class TxcosStorage extends Storage
     public function has(string $name, bool $safe = false)
     {
         $file = $this->delSuffix($name);
-        $result = HttpExtend::request('HEAD', "http://{$this->bucket}-{$this->appid}.{$this->point}/{$file}", [
+        $result = HttpExtend::request('HEAD', "http://{$this->bucket}.{$this->point}/{$file}", [
             'returnHeader' => true, 'headers' => $this->headerSign('HEAD', $name),
         ]);
         return is_numeric(stripos($result, 'HTTP/1.1 200 OK'));
@@ -198,17 +184,17 @@ class TxcosStorage extends Storage
     public function upload(): string
     {
         $protocol = $this->app->request->isSsl() ? 'https' : 'http';
-        return "{$protocol}://{$this->bucket}-{$this->appid}.{$this->point}";
+        return "{$protocol}://{$this->bucket}.{$this->point}";
     }
 
     /**
      * 获取文件上传令牌
-     * @param null|string $name 文件名称
+     * @param string $name 文件名称
      * @param integer $expires 有效时间
      * @param null|string $attname 下载名称
      * @return array
      */
-    public function buildUploadToken(?string $name = null, int $expires = 3600, ?string $attname = null): array
+    public function buildUploadToken(string $name, int $expires = 3600, ?string $attname = null): array
     {
         $startTimestamp = time();
         $endTimestamp = $startTimestamp + $expires;
@@ -216,15 +202,12 @@ class TxcosStorage extends Storage
         $siteurl = $this->url($name, false, $attname);
         $policy = json_encode([
             'expiration' => date('Y-m-d\TH:i:s.000\Z', $endTimestamp),
-            'conditions' => [['q-sign-algorithm' => 'sha1'], ['q-ak' => $this->secretId], ['q-sign-time' => $keyTime]],
+            'conditions' => [['q-ak' => $this->secretId], ['q-sign-time' => $keyTime], ['q-sign-algorithm' => 'sha1']],
         ]);
         return [
-            'policy'           => base64_encode($policy),
-            'q-sign-algorithm' => 'sha1',
-            'q-ak'             => $this->secretId,
-            'q-key-time'       => $keyTime,
-            'q-signature'      => hash_hmac('sha1', sha1($policy), hash_hmac('sha1', $keyTime, $this->secretKey)),
-            'siteurl'          => $siteurl,
+            'policy'  => base64_encode($policy), 'q-ak' => $this->secretId,
+            'siteurl' => $siteurl, 'q-key-time' => $keyTime, 'q-sign-algorithm' => 'sha1',
+            // 'q-signature' => hash_hmac('sha1', sha1($policy), hash_hmac('sha1', $keyTime, $this->secretKey)),
         ];
     }
 

@@ -105,8 +105,7 @@ class AliossStorage extends Storage
         $data['OSSAccessKeyId'] = $this->accessKey;
         $data['success_action_status'] = '200';
         if (is_string($attname) && strlen($attname) > 0) {
-            $filename = urlencode($attname);
-            $data['Content-Disposition'] = "inline;filename={$filename}";
+            $data['Content-Disposition'] = 'inline;filename=' . urlencode($attname);
         }
         $file = ['field' => 'file', 'name' => $name, 'content' => $file];
         if (is_numeric(stripos(HttpExtend::submit($this->upload(), $data, $file), '200 OK'))) {
@@ -207,12 +206,12 @@ class AliossStorage extends Storage
 
     /**
      * 获取文件上传令牌
-     * @param null|string $name 文件名称
+     * @param string $name 文件名称
      * @param integer $expires 有效时间
      * @param null|string $attname 下载名称
      * @return array
      */
-    public function buildUploadToken(?string $name = null, int $expires = 3600, ?string $attname = null): array
+    public function buildUploadToken(string $name, int $expires = 3600, ?string $attname = null): array
     {
         $data = [
             'policy'  => base64_encode(json_encode([
