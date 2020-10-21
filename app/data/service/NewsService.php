@@ -42,7 +42,7 @@ class NewsService extends Service
             $cols = 'id,name,cover,mark,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
             $items = $this->app->db->name('DataNewsItem')->whereIn('id', $cids)->column($cols, 'id');
             $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
-            foreach ($items as &$vo) $vo['mark'] = mark_str_2_arr($vo['mark'] ?: '', ',', $marks);
+            foreach ($items as &$vo) $vo['mark'] = mark_string_array($vo['mark'] ?: '', ',', $marks);
             /*! 绑定会员数据 */
             $mids = array_unique(array_column($list, 'mid'));
             $cols = 'id,phone,nickname,username,headimg,status';
