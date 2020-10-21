@@ -223,17 +223,17 @@
     },
     {
         "name": "league/mime-type-detection",
-        "version": "1.5.0",
-        "version_normalized": "1.5.0.0",
+        "version": "1.5.1",
+        "version_normalized": "1.5.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/thephpleague/mime-type-detection.git",
-            "reference": "ea2fbfc988bade315acd5967e6d02274086d0f28"
+            "reference": "353f66d7555d8a90781f6f5e7091932f9a4250aa"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/ea2fbfc988bade315acd5967e6d02274086d0f28",
-            "reference": "ea2fbfc988bade315acd5967e6d02274086d0f28",
+            "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/353f66d7555d8a90781f6f5e7091932f9a4250aa",
+            "reference": "353f66d7555d8a90781f6f5e7091932f9a4250aa",
             "shasum": "",
             "mirrors": [
                 {
@@ -250,7 +250,7 @@
             "phpstan/phpstan": "^0.12.36",
             "phpunit/phpunit": "^8.5.8"
         },
-        "time": "2020-09-21T18:10:53+00:00",
+        "time": "2020-10-18T11:50:25+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -893,12 +893,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "19e53d5ea8335b706742cc4ff964ea8f5ce9b726"
+            "reference": "fffe4896577d523c165f3730d6112d4d0aff11d5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/19e53d5ea8335b706742cc4ff964ea8f5ce9b726",
-            "reference": "19e53d5ea8335b706742cc4ff964ea8f5ce9b726",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/fffe4896577d523c165f3730d6112d4d0aff11d5",
+            "reference": "fffe4896577d523c165f3730d6112d4d0aff11d5",
             "shasum": "",
             "mirrors": [
                 {
@@ -915,7 +915,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-10-15T05:41:07+00:00",
+        "time": "2020-10-15T06:12:17+00:00",
         "type": "library",
         "extra": {
             "think": {

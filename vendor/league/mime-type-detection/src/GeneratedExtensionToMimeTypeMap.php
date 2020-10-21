@@ -70,6 +70,7 @@ class GeneratedExtensionToMimeTypeMap implements ExtensionToMimeTypeMap
         'azs' => 'application/vnd.airzip.filesecure.azs',
         'azv' => 'image/vnd.airzip.accelerator.azv',
         'azw' => 'application/vnd.amazon.ebook',
+        'b16' => 'image/vnd.pco.b16',
         'bat' => 'application/x-msdownload',
         'bcpio' => 'application/x-bcpio',
         'bdf' => 'application/x-font-bdf',
