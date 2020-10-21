@@ -580,13 +580,9 @@ $(function () {
             $this.parent().append($box.append($text)), $text.off('keydown blur'), (tags.length > 0 && showTags(tags));
             $text.on('keydown blur', function (event, value) {
                 if (event.keyCode === 13 || event.type === 'blur') {
-                    event.preventDefault(), (value = $text.val());
-                    if (tags.indexOf($(this).val()) > -1) {
-                        layer.msg('该标签已存在')
-                    } else if ((value + '').replace(/\s+/g, '').length > 0) {
-                        tags.push(value), $this.val(tags.join(','));
-                        showTags([value]), this.focus(), $text.val('');
-                    }
+                    event.preventDefault(), (value = $text.val().replace(/^\s*|\s*$/g, ''));
+                    if (tags.indexOf($(this).val()) > -1) return layer.msg('该标签已经存在！');
+                    if (value.length > 0) tags.push(value), $this.val(tags.join(',')), showTags([value]), this.focus(), $text.val('');
                 }
             });
 
