@@ -592,7 +592,7 @@ $(function () {
                     element.on('click', 'i', function (tagText, tagIndex) {
                         tagText = $(this).parent().text(), tagIndex = tags.indexOf(tagText);
                         tags.splice(tagIndex, 1), $(this).parent().remove(), $this.val(tags.join(','));
-                    }), $box.append(element), $box.append($text);
+                    }), $box.append(element, $text);
                 });
             }
         });
