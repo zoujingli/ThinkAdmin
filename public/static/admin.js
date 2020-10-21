@@ -572,6 +572,36 @@ $(function () {
         }), this;
     };
 
+    /*! 标签输入插件 */
+    $.fn.initTagInput = function () {
+        return this.each(function () {
+            var $this = $(this), tags = this.value ? this.value.split(',') : [], $box = $('<div class="layui-tags"></div>');
+            var $text = $('<textarea class="layui-input layui-input-inline layui-tag-input" style="width:100px"></textarea>');
+            $this.parent().append($box.append($text)), $text.off('keydown blur'), (tags.length > 0 && showTags(tags));
+            $text.on('keydown blur', function (event, value) {
+                if (event.keyCode === 13 || event.type === 'blur') {
+                    event.preventDefault(), (value = $text.val());
+                    if (tags.indexOf($(this).val()) > -1) {
+                        layer.msg('该标签已存在')
+                    } else if ((value + '').replace(/\s+/g, '').length > 0) {
+                        tags.push(value), $this.val(tags.join(','));
+                        showTags([value]), this.focus(), $text.val('');
+                    }
+                }
+            });
+
+            function showTags(tagsArr) {
+                $(tagsArr).each(function (idx, text, element) {
+                    element = $('<div class="layui-tag"></div>').html(text + '<i class="layui-icon">&#x1006;</i>');
+                    element.on('click', 'i', function (tagText, tagIndex) {
+                        tagText = $(this).parent().text(), tagIndex = tags.indexOf(tagText);
+                        tags.splice(tagIndex, 1), $(this).parent().remove(), $this.val(tags.join(','));
+                    }), $box.append(element), $box.append($text);
+                });
+            }
+        });
+    };
+
     /*! 注册 data-load 事件行为 */
     $body.on('click', '[data-load]', function () {
         var url = this.dataset.load, tips = this.dataset.tips, time = this.dataset.time;
