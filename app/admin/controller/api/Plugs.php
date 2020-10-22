@@ -34,7 +34,7 @@ class Plugs extends Controller
     public function icon()
     {
         $this->title = '图标选择器';
-        $this->field = input('field', 'icon');
+        $this->field = $this->app->request->get('field', 'icon');
         $this->fetch(realpath(__DIR__ . '/../../view/api/icon.html'));
     }
 
