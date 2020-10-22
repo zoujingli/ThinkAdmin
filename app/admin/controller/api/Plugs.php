@@ -44,18 +44,16 @@ class Plugs extends Controller
      */
     public function push()
     {
-        try {
-            if (AdminService::instance()->isSuper()) {
-                AdminService::instance()->clearCache();
-                SystemService::instance()->pushRuntime();
-                $this->success('网站缓存加速成功！');
-            } else {
-                $this->error('只有超级管理员才能操作！');
-            }
+        if (AdminService::instance()->isSuper()) try {
+            AdminService::instance()->clearCache();
+            SystemService::instance()->pushRuntime();
+            $this->success('网站缓存加速成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
+        } else {
+            $this->error('只有超级管理员才能操作！');
         }
     }
 
@@ -65,18 +63,16 @@ class Plugs extends Controller
      */
     public function clear()
     {
-        try {
-            if (AdminService::instance()->isSuper()) {
-                AdminService::instance()->clearCache();
-                SystemService::instance()->clearRuntime();
-                $this->success('清理网站缓存成功！');
-            } else {
-                $this->error('只有超级管理员才能操作！');
-            }
+        if (AdminService::instance()->isSuper()) try {
+            AdminService::instance()->clearCache();
+            SystemService::instance()->clearRuntime();
+            $this->success('清理网站缓存成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
+        } else {
+            $this->error('只有超级管理员才能操作！');
         }
     }
 
@@ -86,14 +82,12 @@ class Plugs extends Controller
      */
     public function debug()
     {
-        if (AdminService::instance()->isSuper()) {
-            if (input('state')) {
-                SystemService::instance()->productMode(true);
-                $this->success('已切换为生产模式！');
-            } else {
-                SystemService::instance()->productMode(false);
-                $this->success('已切换为开发模式！');
-            }
+        if (AdminService::instance()->isSuper()) if (input('state')) {
+            SystemService::instance()->setRuntime([], 'product');
+            $this->success('已切换为生产模式！');
+        } else {
+            SystemService::instance()->setRuntime([], 'debug');
+            $this->success('已切换为开发模式！');
         } else {
             $this->error('只有超级管理员才能操作！');
         }

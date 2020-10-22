@@ -249,7 +249,7 @@ class SystemService extends Service
      * @param null|boolean $state
      * @return boolean
      */
-    public function productMode($state = null): bool
+    public function productMode(?bool $state = null): bool
     {
         if (is_null($state)) {
             return $this->bindRuntime();
@@ -264,7 +264,7 @@ class SystemService extends Service
      * @param array $default 配置内容
      * @return array|string
      */
-    public function getRuntime($name = null, array $default = [])
+    public function getRuntime(?string $name = null, array $default = [])
     {
         $filename = "{$this->app->getRootPath()}runtime/config.json";
         if (file_exists($filename) && is_file($filename)) {
@@ -280,11 +280,11 @@ class SystemService extends Service
     /**
      * 设置实时运行配置
      * @param null|array $map 应用映射
-     * @param null|string $run 支持模式
+     * @param null|mixed $run 支持模式
      * @param null|array $uri 域名映射
      * @return boolean 是否调试模式
      */
-    public function setRuntime(array $map = [], $run = null, array $uri = []): bool
+    public function setRuntime(?array $map = [], ?string $run = null, ?array $uri = []): bool
     {
         $data = $this->getRuntime();
         $data['run'] = is_string($run) ? $run : $data['run'];
@@ -326,8 +326,8 @@ class SystemService extends Service
      */
     public function pushRuntime(): void
     {
-        $type = $this->app->db->getConfig('default');
-        $this->app->console->call("optimize:schema", ["--connection={$type}"]);
+        $connection = $this->app->db->getConfig('default');
+        $this->app->console->call("optimize:schema", ["--connection={$connection}"]);
         foreach (NodeService::instance()->getModules() as $module) {
             $path = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $module;
             file_exists($path) && is_dir($path) or mkdir($path, 0755, true);
