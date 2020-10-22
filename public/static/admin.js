@@ -702,8 +702,9 @@ $(function () {
 
     /*! 注册 data-iframe 事件行为 */
     $body.on('click', '[data-iframe]', function () {
-        var width = this.dataset.width || '800px', height = this.dataset.height || '580px';
-        $(this).attr('data-index', $.form.iframe(this.dataset.iframe, this.dataset.title || '窗口', this.dataset.area || [width, height]));
+        $(this).attr('data-index', $.form.iframe(this.dataset.iframe, this.dataset.title || '窗口', this.dataset.area || [
+            this.dataset.width || '800px', this.dataset.height || '580px'
+        ]));
     });
 
     /*! 注册 data-icon 事件行为 */
