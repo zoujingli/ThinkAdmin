@@ -674,7 +674,7 @@ $(function () {
         var data = {}, that = this, $this = $(this), action = this.dataset.actionBlur;
         var time = this.dataset.time, loading = this.dataset.loading || false, load = loading !== 'false';
         var tips = typeof loading === 'string' ? loading : undefined, method = this.dataset.method || 'post';
-        var attrs = this.dataset.value.replace('{value}', $this.val()).split(';');
+        var attrs = (this.dataset.value || '').replace('{value}', $this.val()).split(';');
         for (var i in attrs) {
             if (attrs[i].length < 2) return $.msg.tips('异常的数据操作规则，请修改规则！');
             data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
@@ -689,26 +689,26 @@ $(function () {
     });
 
     /*! 表单元素失去焦点时数字 */
-    $body.on('blur', '[data-blur-number]', function (fiexd) {
-        fiexd = this.dataset.blurNumber || 0;
+    $body.on('blur', '[data-blur-number]', function () {
+        var fiexd = parseInt(this.dataset.blurNumber || 0);
         this.value = (parseFloat(this.value) || 0).toFixed(fiexd);
     });
 
     /*! 注册 data-href 事件行为 */
-    $body.on('click', '[data-href]', function (href) {
-        href = this.dataset.href;
+    $body.on('click', '[data-href]', function () {
+        var href = this.dataset.href;
         if (href && href.indexOf('#') !== 0) location.href = href;
     });
 
     /*! 注册 data-iframe 事件行为 */
     $body.on('click', '[data-iframe]', function () {
-        $(this).attr('data-index', $.form.iframe(this.dataset.iframe, this.dataset.title || '窗口', this.dataset.area || undefined));
+        var width = this.dataset.width || '800px', height = this.dataset.height || '580px';
+        $(this).attr('data-index', $.form.iframe(this.dataset.iframe, this.dataset.title || '窗口', this.dataset.area || [width, height]));
     });
 
     /*! 注册 data-icon 事件行为 */
-    $body.on('click', '[data-icon]', function (field, location) {
-        location = tapiRoot + '/api.plugs/icon';
-        field = this.dataset.icon || this.dataset.field || 'icon';
+    $body.on('click', '[data-icon]', function () {
+        var location = tapiRoot + '/api.plugs/icon', field = this.dataset.icon || this.dataset.field || 'icon';
         $.form.iframe(location + (location.indexOf('?') > -1 ? '&' : '?') + 'field=' + field, '图标选择');
     });
 
