@@ -84,7 +84,7 @@ class Plugs extends Controller
     {
         if (AdminService::instance()->isSuper()) if (input('state')) {
             SystemService::instance()->setRuntime([], 'product');
-            $this->success('已切换为生产模式！');
+            $this->success('已切换为产品模式！');
         } else {
             SystemService::instance()->setRuntime([], 'debug');
             $this->success('已切换为开发模式！');
