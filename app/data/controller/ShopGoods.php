@@ -83,7 +83,7 @@ class ShopGoods extends Controller
         $clist = $this->app->db->name('ShopGoodsCate')->whereIn('id', array_column($data, 'cate'))->column('pid,name,status', 'id');
         foreach ($data as &$vo) {
             $vo['cate'] = $clist[$vo['cate']] ?? $vo['cate'];
-            $vo['mark'] = mark_string_array($vo['mark'] ?: '', ',', $this->marks);
+            $vo['mark'] = str2arr($vo['mark'] ?: '', ',', $this->marks);
         }
     }
 
@@ -153,7 +153,7 @@ class ShopGoods extends Controller
             $data['code'] = CodeExtend::uniqidNumber(12, 'G');
         }
         if ($this->request->isGet()) {
-            $data['mark'] = mark_string_array($data['mark'] ?? '');
+            $data['mark'] = str2arr($data['mark'] ?? '');
             $this->marks = GoodsService::instance()->getMarkList();
             $this->cates = GoodsService::instance()->getCateList('arr2table');
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,status';
@@ -163,7 +163,7 @@ class ShopGoods extends Controller
             if (empty($data['cover'])) $this->error('商品图片不能为空！');
             if (empty($data['slider'])) $this->error('轮播图不能为空！');
             // 商品规格保存
-            $data['mark'] = mark_array_string($data['mark'] ?? []);
+            $data['mark'] = arr2str($data['mark'] ?? []);
             [$count, $items] = [0, json_decode($data['data_items'], true)];
             foreach ($items as $item) {
                 $count += intval($item[0]['status']);

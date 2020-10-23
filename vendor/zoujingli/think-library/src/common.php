@@ -141,7 +141,41 @@ if (!function_exists('sysoplog')) {
         return SystemService::instance()->setOplog($action, $content);
     }
 }
-
+if (!function_exists('str2arr')) {
+    /**
+     * 字符串转数组
+     * @param string $text 待转内容
+     * @param string $separ 分隔字符
+     * @param null|array $allow 限定规则
+     * @return array
+     */
+    function str2arr(string $text, string $separ = ',', ?array $allow = null): array
+    {
+        $text = trim($text, $separ);
+        $data = strlen($text) ? explode($separ, $text) : [];
+        if (is_array($allow)) foreach ($data as $key => $mark) {
+            if (!in_array($mark, $allow)) unset($data[$key]);
+        }
+        return $data;
+    }
+}
+if (!function_exists('arr2str')) {
+    /**
+     * 数组转字符串
+     * @param array $data 待转数组
+     * @param string $separ 分隔字符
+     * @param null|array $allow 限定规则
+     * @return string
+     */
+    function arr2str(array $data, string $separ = ',', ?array $allow = null)
+    {
+        $temp = $data;
+        if (is_array($allow)) foreach ($data as $item) {
+            if (in_array($item, $allow)) $temp[] = $item;
+        }
+        return $separ . join($separ, $temp) . $separ;
+    }
+}
 if (!function_exists('encode')) {
     /**
      * 加密 UTF8 字符串
@@ -168,6 +202,28 @@ if (!function_exists('decode')) {
             $chars .= chr(intval(base_convert($char, 36, 10)));
         }
         return iconv('GBK//TRANSLIT', 'UTF-8', $chars);
+    }
+}
+if (!function_exists('enbase64url')) {
+    /**
+     * Base64安全URL编码
+     * @param string $string
+     * @return string
+     */
+    function enbase64url(string $string): string
+    {
+        return rtrim(strtr(base64_encode($string), '+/', '-_'), '=');
+    }
+}
+if (!function_exists('debase64url')) {
+    /**
+     * Base64安全URL解码
+     * @param string $string
+     * @return string
+     */
+    function debase64url(string $string): string
+    {
+        return base64_decode(str_pad(strtr($string, '-_', '+/'), strlen($string) % 4, '=', STR_PAD_RIGHT));
     }
 }
 if (!function_exists('http_get')) {
@@ -247,28 +303,6 @@ if (!function_exists('format_datetime')) {
         }
     }
 }
-if (!function_exists('enbase64url')) {
-    /**
-     * Base64安全URL编码
-     * @param string $string
-     * @return string
-     */
-    function enbase64url(string $string): string
-    {
-        return rtrim(strtr(base64_encode($string), '+/', '-_'), '=');
-    }
-}
-if (!function_exists('debase64url')) {
-    /**
-     * Base64安全URL解码
-     * @param string $string
-     * @return string
-     */
-    function debase64url(string $string): string
-    {
-        return base64_decode(str_pad(strtr($string, '-_', '+/'), strlen($string) % 4, '=', STR_PAD_RIGHT));
-    }
-}
 if (!function_exists('down_file')) {
     /**
      * 下载远程文件到本地
@@ -279,7 +313,6 @@ if (!function_exists('down_file')) {
      */
     function down_file(string $source, bool $force = false, int $expire = 0)
     {
-        $result = Storage::down($source, $force, $expire);
-        return $result['url'] ?? $source;
+        return Storage::down($source, $force, $expire)['url'] ?? $source;
     }
 }

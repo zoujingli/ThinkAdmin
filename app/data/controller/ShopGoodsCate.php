@@ -44,9 +44,8 @@ class ShopGoodsCate extends Controller
     public function index()
     {
         $this->title = "商品分类管理（最大{$this->cateLevel}级）";
-        $query = $this->_query($this->table);
-        $query->like('name')->equal('status')->dateBetween('create_at');
-        $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
+        $query = $this->_query($this->table)->like('name')->dateBetween('create_at');
+        $query->equal('status')->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
     /**

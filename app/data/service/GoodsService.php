@@ -104,7 +104,7 @@ class GoodsService extends Service
         $items = $query->whereIn('goods_code', $codes)->where(['status' => 1])->select()->toArray();
         $marks = $this->app->db->name('ShopGoodsMark')->where(['status' => 1])->column('name');
         foreach ($data as &$vo) {
-            $vo['marks'] = mark_string_array($vo['mark'], ',', $marks);
+            $vo['marks'] = str2arr($vo['mark'], ',', $marks);
             $vo['cates'] = $cates[$vo['cate']] ?? [];
             $vo['slider'] = explode('|', $vo['slider']);
             $vo['specs'] = json_decode($vo['data_specs'], true);
