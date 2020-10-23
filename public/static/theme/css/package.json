@@ -1,10 +1,9 @@
 {
   "name": "theme",
   "version": "1.0.0",
-  "description": "ThinkAdmin Theme Less build",
-  "dependencies": {},
+  "description": "ThinkAdmin v6 theme less-style build",
   "scripts": {
     "install": "npm install less less-plugin-clean-css -g",
-    "build": "\nlessc --clean-css --source-map login.less login.css\nlessc --clean-css --source-map mobile.less mobile.css\nlessc --clean-css --source-map console.less console.css"
+    "build": "lessc --clean-css --source-map login.less login.css && lessc --clean-css --source-map mobile.less mobile.css && lessc --clean-css --source-map console.less console.css"
   }
 }
