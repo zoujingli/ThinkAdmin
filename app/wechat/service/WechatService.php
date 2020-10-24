@@ -95,7 +95,7 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, array $arguments)
     {
         [$type, $class, $classname] = self::paraseName($name);
         if ("{$type}{$class}" !== $name) {
@@ -132,7 +132,7 @@ class WechatService extends Service
      * @param string $name
      * @return array
      */
-    private static function paraseName($name)
+    private static function paraseName(string $name)
     {
         foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkService'] as $type) {
             if (strpos($name, $type) === 0) {
@@ -220,7 +220,7 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getWebOauthInfo($source, $isfull = 0, $redirect = true)
+    public function getWebOauthInfo(string $source, $isfull = 0, $redirect = true)
     {
         $appid = $this->getAppid();
         $openid = $this->app->session->get("{$appid}_openid");
@@ -265,7 +265,7 @@ class WechatService extends Service
 
     /**
      * 获取微信网页JSSDK
-     * @param string $location JS签名地址
+     * @param null|string $location 签名地址
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
@@ -274,7 +274,7 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getWebJssdkSign($location = null)
+    public function getWebJssdkSign(?string $location = null)
     {
         $location = is_null($location) ? $this->app->request->url(true) : $location;
         if ($this->getType() === 'api') {

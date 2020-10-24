@@ -61,7 +61,7 @@ class MediaService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function upload($url, $type = 'image', $video = [])
+    public function upload(string $url, string $type = 'image', array $video = [])
     {
         $map = ['md5' => md5($url), 'appid' => WechatService::instance()->getAppid()];
         if (($mediaId = $this->app->db->name('WechatMedia')->where($map)->value('media_id'))) return $mediaId;
@@ -79,7 +79,7 @@ class MediaService extends Service
      * @return string
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    private function _buildCurlFile($local)
+    private function _buildCurlFile(string $local)
     {
         if (file_exists($local)) {
             return new MyCurlFile($local);

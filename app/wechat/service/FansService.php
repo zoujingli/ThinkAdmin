@@ -34,7 +34,7 @@ class FansService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function set(array $user, $appid = '')
+    public function set(array $user, string $appid = '')
     {
         if (!empty($user['subscribe_time'])) {
             $user['subscribe_at'] = date('Y-m-d H:i:s', $user['subscribe_time']);
@@ -55,7 +55,7 @@ class FansService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function get($openid)
+    public function get(string $openid)
     {
         return $this->app->db->name('WechatFans')->where(['openid' => $openid])->find();
     }
