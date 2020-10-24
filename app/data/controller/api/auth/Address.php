@@ -29,9 +29,9 @@ class Address extends Auth
             'code.default'     => '',
             'type.default'     => 0,
             'type.in:0,1'      => '地址状态不在范围！',
-            'name.require'     => '收货人姓名不能为空！',
-            'phone.mobile'     => '收货人手机格式错误！',
-            'phone.require'    => '收货人手机不能为空！',
+            'name.require'     => '收货姓名不能为空！',
+            'phone.mobile'     => '收货手机格式错误！',
+            'phone.require'    => '收货手机不能为空！',
             'province.require' => '地址省份不能为空！',
             'city.require'     => '地址城市不能为空！',
             'area.require'     => '地址区域不能为空！',
@@ -124,12 +124,12 @@ class Address extends Auth
     /**
      * 获取指定的收货地址
      * @param string $code
-     * @return array|\think\Model|null
+     * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function _getAddress($code)
+    private function _getAddress(string $code)
     {
         $map = ['code' => $code, 'mid' => $this->mid, 'deleted' => 0];
         return $this->app->db->name($this->table)->withoutField('deleted')->where($map)->find();
