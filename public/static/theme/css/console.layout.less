@@ -79,7 +79,8 @@
 
     sup {
       font-size: 9px;
-      line-height: 9px
+      line-height: 9px;
+      padding-left: 5px;
     }
   }
 
@@ -102,13 +103,17 @@
       background: #eef;
       line-height: 45px;
 
-      + a {
+      + a.layui-elip {
         padding-right: 35px;
 
         img {
           width: 20px;
           height: 20px;
           border-radius: 50%
+        }
+
+        span {
+          padding-left: 5px;
         }
       }
 
@@ -128,6 +133,10 @@
           color: #333;
           margin-top: 1px;
           text-align: center;
+
+          .layui-icon {
+            margin-right: 5px;
+          }
         }
       }
     }
@@ -167,6 +176,10 @@
 
         &:hover {
           background: hsla(0, 0%, 39%, .2) !important
+        }
+
+        .nav-icon, .nav-text {
+          padding-left: 5px
         }
       }
 

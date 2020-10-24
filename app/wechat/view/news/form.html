@@ -100,7 +100,7 @@
             function apply(list) {
                 if (list.length < 1) list.push({
                     title: '新建图文', author: '管理员', content: '文章内容',
-                    read_num: 0, local_url: '__ROOT__/static/theme/img/image.png',
+                    read_num: 0, local_url: '__FULL__/static/theme/img/image.png',
                 });
                 for (var i in list) {
                     list[i].active = false;
@@ -173,8 +173,8 @@
                     author: '管理员',
                     content: '文章内容',
                     read_num: 0,
-                    local_url: '__ROOT__/static/theme/img/image.png',
-                    style: "background-image:url('__ROOT__/static/theme/img/image.png')"
+                    local_url: '__FULL__/static/theme/img/image.png',
+                    style: "background-image:url('__FULL__/static/theme/img/image.png')"
                 });
             };
             $rootScope.submit = function () {
