@@ -13,6 +13,20 @@ use think\admin\Controller;
 class Config extends Controller
 {
     /**
+     * 微信小程序配置
+     * @auth true
+     * @menu true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function wxapp()
+    {
+        $this->title = '微信小程序配置';
+        $this->__sysconf('wxapp');
+    }
+
+    /**
      * 短信接口配置
      * @auth true
      * @menu true
@@ -22,8 +36,8 @@ class Config extends Controller
      */
     public function message()
     {
-        $this->title = '短信接口配置';
         if ($this->request->isGet()) {
+            $this->title = '短信接口配置';
             $this->result = MessageService::instance()->balance();
         }
         $this->__sysconf('message');
@@ -42,20 +56,6 @@ class Config extends Controller
         $this->skey = 'about';
         $this->title = '关于我们描述';
         $this->__sysdata('content');
-    }
-
-    /**
-     * 微信小程序配置
-     * @auth true
-     * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function wxapp()
-    {
-        $this->title = '微信小程序配置';
-        $this->__sysconf('wxapp');
     }
 
     /**
