@@ -54,7 +54,8 @@ abstract class Auth extends Controller
     protected function getMember()
     {
         try {
-            return UserService::instance()->get(['token' => $this->token]);
+            $map = ['token' => $this->token];
+            return UserService::instance()->get($map);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
