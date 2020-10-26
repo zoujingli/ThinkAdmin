@@ -90,13 +90,9 @@ class Config extends Controller
         $this->_applyFormToken();
         if ($this->request->isGet()) {
             $this->type = input('type', 'local');
-            if ($this->type === 'alioss') {
-                $this->points = AliossStorage::region();
-            } elseif ($this->type === 'txcos') {
-                $this->points = TxcosStorage::region();
-            } elseif ($this->type === 'qiniu') {
-                $this->points = QiniuStorage::region();
-            }
+            if ($this->type === 'alioss') $this->points = AliossStorage::region();
+            elseif ($this->type === 'qiniu') $this->points = QiniuStorage::region();
+            elseif ($this->type === 'txcos') $this->points = TxcosStorage::region();
             $this->fetch("storage-{$this->type}");
         } else {
             $post = $this->request->post();
