@@ -31,6 +31,9 @@ abstract class Auth extends Controller
      */
     protected $member;
 
+    /**
+     * 控制器初始化
+     */
     protected function initialize()
     {
         $this->token = $this->request->request('token', '');
