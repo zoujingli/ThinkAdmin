@@ -95,14 +95,14 @@ class Config extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function __sysdata($template = 'content')
+    private function __sysdata(string $template = 'content')
     {
         if ($this->request->isGet()) {
             $this->data = sysdata($this->skey);
             $this->fetch($template);
         } elseif ($this->request->isPost()) {
             if (is_string(input('data'))) {
-                $data = json_decode(input('data'), true);
+                $data = json_decode(input('data'), true) ?: [];
             } else {
                 $data = $this->request->post();
             }
@@ -121,7 +121,7 @@ class Config extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function __sysconf($template = 'wxapp')
+    private function __sysconf(string $template)
     {
         if ($this->request->isGet()) {
             $this->fetch($template);
