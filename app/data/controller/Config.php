@@ -26,7 +26,7 @@ class Config extends Controller
         if ($this->request->isGet()) {
             $this->result = MessageService::instance()->balance();
         }
-        $this->__sysconf('open');
+        $this->__sysconf('message');
     }
 
     /**
