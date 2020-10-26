@@ -26,16 +26,17 @@ use think\admin\Controller;
 class Login extends Controller
 {
     /**
+     * 数据缓存时间
+     * @var integer
+     */
+    protected $expire = 3600;
+
+    /**
      * 授权码前缀
      * @var string
      */
     protected $prefix = 'wxlogin';
 
-    /**
-     * 数据缓存时间
-     * @var integer
-     */
-    protected $expire = 3600;
 
     /**
      * 扫描显示二维码

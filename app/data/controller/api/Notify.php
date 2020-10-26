@@ -22,7 +22,7 @@ class Notify extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function wxpay($scene = 'order')
+    public function wxpay(string $scene = 'order')
     {
         $notify = ($payment = WechatService::WePayOrder())->getNotify();
         if ($notify['result_code'] == 'SUCCESS' && $notify['return_code'] == 'SUCCESS') {
@@ -47,7 +47,7 @@ class Notify extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function setOrder($code, $amount, $paycode, $paytype = 'wxpay')
+    private function setOrder(string $code, string $amount, string $paycode, string $paytype = 'wxpay')
     {
         // 检查订单支付状态
         $map = ['order_no' => $code, 'payment_status' => 0, 'status' => 2];

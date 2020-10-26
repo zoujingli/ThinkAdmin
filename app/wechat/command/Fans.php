@@ -71,7 +71,7 @@ class Fans extends Command
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function _list($next = '', $done = 0)
+    protected function _list(string $next = '', int $done = 0)
     {
         $appid = WechatService::instance()->getAppid();
         $this->output->comment('开始获取微信用户数据');
@@ -111,7 +111,7 @@ class Fans extends Command
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\db\exception\DbException
      */
-    public function _black($next = '', $done = 0)
+    public function _black(string $next = '', int $done = 0)
     {
         $wechat = WechatService::WeChatUser();
         $this->output->comment('开始更新黑名单的微信用户');
@@ -147,7 +147,7 @@ class Fans extends Command
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function _tags($done = 0)
+    public function _tags(int $done = 0)
     {
         $appid = WechatService::instance()->getAppid();
         $this->output->comment('开始获取微信用户标签数据');

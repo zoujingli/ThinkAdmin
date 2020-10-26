@@ -34,7 +34,7 @@ class Review extends Controller
      */
     public function news($id = 0)
     {
-        $this->id = empty($id) ? input('id') : $id;
+        $this->id = $id ?: input('id', 0);
         $this->news = MediaService::instance()->news($this->id);
         $this->fetch();
     }
@@ -48,11 +48,11 @@ class Review extends Controller
      */
     public function view($id = 0)
     {
-        $where = ['id' => empty($id) ? input('id') : $id];
-        $this->app->db->name('WechatNewsArticle')->where($where)->update([
+        $map = ['id' => $id ?: input('id', 0)];
+        $this->app->db->name('WechatNewsArticle')->where($map)->update([
             'read_num' => $this->app->db->raw('read_num+1'),
         ]);
-        $this->info = $this->app->db->name('WechatNewsArticle')->where($where)->find();
+        $this->info = $this->app->db->name('WechatNewsArticle')->where($map)->find();
         $this->fetch();
     }
 

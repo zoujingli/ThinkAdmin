@@ -94,7 +94,7 @@ class Wxapp extends Controller
      * @param string $code 换取授权CODE
      * @return array [openid, sessionkey]
      */
-    private function _getSessionKey($code)
+    private function _getSessionKey(string $code)
     {
         try {
             $cache = $this->app->cache->get($code, []);

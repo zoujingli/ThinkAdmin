@@ -54,7 +54,7 @@ class TruckService extends Service
      * @param null|integer $status 状态筛选
      * @return array
      */
-    public function region($level = 3, $status = null): array
+    public function region(int $level = 3, ?int $status = null): array
     {
         $query = $this->app->db->name('ShopTruckRegion');
         if (is_numeric($level)) $query->where('level', '<=', $level);

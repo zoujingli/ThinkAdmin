@@ -2,6 +2,7 @@
 
 namespace app\data\controller\api;
 
+use app\data\service\MessageService;
 use app\data\service\UserService;
 use think\admin\Controller;
 
@@ -67,6 +68,25 @@ class Login extends Controller
         $data['password'] = md5($data['password']);
         $user = UserService::instance()->save($map, $data, true);
         empty($user) ? $this->success('会员注册成功！', $user) : $this->error('手机注册失败！');
+    }
+
+    /**
+     * 发送短信验证码
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function sendsms()
+    {
+        $data = $this->_vali([
+            'phone.require'  => '手机号不能为空！',
+            'phone.mobile'   => '手机号格式错误！',
+            'secure.require' => '安全码不能为空！',
+        ]);
+        if ($data['secure'] !== sysconf('zt.secure_code')) $this->error('短信发送安全码错误！');
+        [$state, $message, $data] = MessageService::instance()->sendVerifyCode($data['phone']);
+        $state ? $this->success($message, $data) : $this->error($message, $data);
+        // 检测验证码：if(MessageService::instance()->checkVerifyCode($data['verify'], $data['phone'])){ }
     }
 
 }
