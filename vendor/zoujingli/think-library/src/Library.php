@@ -19,10 +19,10 @@ use think\admin\command\Database;
 use think\admin\command\Install;
 use think\admin\command\Queue;
 use think\admin\command\Version;
-use think\admin\multiple\App;
 use think\admin\multiple\command\Build;
 use think\admin\multiple\command\Clear;
-use think\admin\multiple\Url;
+use think\admin\multiple\Multiple;
+use think\admin\multiple\BuildUrl;
 use think\admin\service\AdminService;
 use think\admin\service\SystemService;
 use think\middleware\LoadLangPack;
@@ -50,14 +50,14 @@ class Library extends Service
     {
         // 多应用中间键处理
         $this->app->event->listen('HttpRun', function (Request $request) {
-            $this->app->middleware->add(App::class);
+            $this->app->middleware->add(Multiple::class);
             // 解决 HTTP 调用 Console 之后 URL 问题
             if (!$this->app->request->isCli()) {
                 $request->setHost($request->host());
             }
         });
         // 替换 ThinkPHP 地址
-        $this->app->bind('think\route\Url', Url::class);
+        $this->app->bind('think\route\Url', BuildUrl::class);
         // 替换 ThinkPHP 指令
         $this->commands(['build' => Build::class, 'clear' => Clear::class]);
         // 注册 ThinkAdmin 指令

@@ -31,24 +31,26 @@ abstract class Auth extends Controller
      */
     protected $member;
 
-    /**
-     * 控制器初始化
-     */
     protected function initialize()
     {
-        $this->token = input('token', '');
+        $this->token = $this->request->request('token', '');
+        if (empty($this->token)) {
+            $this->token = $this->request->header('token', '');
+        }
+        if (empty($this->token)) {
+            $this->error('请求令牌不能为空！');
+        }
         $this->member = $this->getMember();
         $this->mid = $this->member['id'];
     }
 
     /**
      * 获取会员数据
-     * @return array
+     * @return array|void
      */
     protected function getMember()
     {
         try {
-            if (empty($this->token)) $this->error('请求令牌不能为空！');
             return UserService::instance()->get(['token' => $this->token]);
         } catch (HttpResponseException $exception) {
             throw $exception;

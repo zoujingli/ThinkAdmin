@@ -17,55 +17,46 @@ declare (strict_types=1);
 namespace think\admin\multiple;
 
 use think\helper\Str;
+use think\route\Url;
 
 /**
- * 多应用URL生成与解析
- * Class Url
+ * 多应用 URL 生成与解析
+ * Class BuildUrl
  * @package think\admin\multiple
  */
-class Url extends \think\route\Url
+class BuildUrl extends Url
 {
     /**
-     * 直接解析URL地址
-     * @access protected
+     * 直接解析 URL 地址
      * @param string $url URL
-     * @param string|bool $domain Domain
+     * @param string|boolean $domain Domain
      * @return string
      */
     protected function parseUrl(string $url, &$domain): string
     {
         $request = $this->app->request;
         if (0 === strpos($url, '/')) {
-            // 直接作为路由地址解析
             $url = substr($url, 1);
         } elseif (false !== strpos($url, '\\')) {
-            // 解析到类
             $url = ltrim(str_replace('\\', '/', $url), '/');
         } elseif (0 === strpos($url, '@')) {
-            // 解析到控制器
             $url = substr($url, 1);
         } elseif ('' === $url) {
             $url = $this->app->http->getName() . '/' . $request->controller() . '/' . $request->action();
         } else {
-            // 解析到 应用/控制器/操作
-            $controller = $request->controller();
-            $app = $this->app->http->getName();
             $path = explode('/', $url);
             $action = array_pop($path);
-            $controller = empty($path) ? $controller : array_pop($path);
-            $app = empty($path) ? $app : array_pop($path);
+            $controller = empty($path) ? $request->controller() : array_pop($path);
+            $app = empty($path) ? $this->app->http->getName() : array_pop($path);
             $url = Str::snake($controller) . '/' . $action;
             $bind = $this->app->config->get('app.domain_bind', []);
             if ($key = array_search($app, $bind)) {
                 isset($bind[$_SERVER['SERVER_NAME']]) && $domain = $_SERVER['SERVER_NAME'];
                 $domain = is_bool($domain) ? $key : $domain;
+            } elseif ($key = array_search($app, $this->app->config->get('app.app_map', []))) {
+                $url = $key . '/' . $url;
             } else {
-                $map = $this->app->config->get('app.app_map', []);
-                if ($key = array_search($app, $map)) {
-                    $url = $key . '/' . $url;
-                } else {
-                    $url = $app . '/' . $url;
-                }
+                $url = $app . '/' . $url;
             }
         }
         return $url;
@@ -103,26 +94,20 @@ class Url extends \think\route\Url
             }
         }
         if ($url) {
-            $checkName = isset($name) ? $name : $url . (isset($info['query']) ? '?' . $info['query'] : '');
             $checkDomain = $domain && is_string($domain) ? $domain : null;
+            $checkName = isset($name) ? $name : $url . (isset($info['query']) ? '?' . $info['query'] : '');
             $rule = $this->route->getName($checkName, $checkDomain);
             if (empty($rule) && isset($info['query'])) {
                 $rule = $this->route->getName($url, $checkDomain);
-                // 解析地址里面参数 合并到 vars
                 parse_str($info['query'], $params);
                 $vars = array_merge($params, $vars);
                 unset($info['query']);
             }
         }
         if (!empty($rule) && $match = $this->getRuleUrl($rule, $vars, $domain)) {
-            // 匹配路由命名标识
             $url = $match[0];
-            if ($domain && !empty($match[1])) {
-                $domain = $match[1];
-            }
-            if (!is_null($match[2])) {
-                $suffix = $match[2];
-            }
+            if ($domain && !empty($match[1])) $domain = $match[1];
+            if (!is_null($match[2])) $suffix = $match[2];
             if (!$this->app->http->isBind()) {
                 $url = $this->app->http->getName() . '/' . $url;
             }
