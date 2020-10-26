@@ -19,6 +19,7 @@ namespace think\admin\service;
 
 use think\admin\Service;
 use think\db\Query;
+use think\helper\Str;
 
 /**
  * 系统参数管理服务
@@ -142,9 +143,10 @@ class SystemService extends Service
      */
     public function sysuri(string $url = '', array $vars = [], $suffix = true, $domain = false): string
     {
-        $location = $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build();
-        [$d1, $d2, $d3] = [$this->app->config->get('app.default_app'), $this->app->config->get('route.default_controller'), $this->app->config->get('route.default_action')];
-        return preg_replace('|/\.html$|', '', preg_replace(["|^/{$d1}/{$d2}/{$d3}(\.html)?$|i", "|/{$d2}/{$d3}(\.html)?$|i", "|/{$d3}(\.html)?$|i"], ['$1', '$1', '$1'], $location));
+        $d2 = Str::snake($this->app->config->get('route.default_controller'));
+        [$d1, $d3] = [$this->app->config->get('app.default_app'), $this->app->config->get('route.default_action')];
+        $pattern = ["#^/{$d1}/{$d2}/{$d3}(.html)?#i", "#^(/.*?)/{$d2}/{$d3}(^\w|\?|\.|$)#i", "#^(/.*?/.*?)/{$d3}(^\w|\?|\.|$)#i"];
+        return preg_replace($pattern, ['', '$1$2', '$1$2'], $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build());
     }
 
     /**
