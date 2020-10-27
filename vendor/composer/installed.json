@@ -580,17 +580,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v6.0.4",
-        "version_normalized": "6.0.4.0",
+        "version": "v6.0.5",
+        "version_normalized": "6.0.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "4b252d78562d4a51a501651f837c26cb9d91624f"
+            "reference": "85625d984f5c96699dc27d384869f206c3aec1cc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/4b252d78562d4a51a501651f837c26cb9d91624f",
-            "reference": "4b252d78562d4a51a501651f837c26cb9d91624f",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/85625d984f5c96699dc27d384869f206c3aec1cc",
+            "reference": "85625d984f5c96699dc27d384869f206c3aec1cc",
             "shasum": "",
             "mirrors": [
                 {
@@ -616,7 +616,7 @@
             "mockery/mockery": "^1.2",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2020-09-29T02:19:59+00:00",
+        "time": "2020-10-26T07:18:00+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -893,12 +893,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "c5846d13a516a982f94b4d28ead23b515bd0fafc"
+            "reference": "51051855309a5752c0adb8f8d63129a43fd139ce"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/c5846d13a516a982f94b4d28ead23b515bd0fafc",
-            "reference": "c5846d13a516a982f94b4d28ead23b515bd0fafc",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/51051855309a5752c0adb8f8d63129a43fd139ce",
+            "reference": "51051855309a5752c0adb8f8d63129a43fd139ce",
             "shasum": "",
             "mirrors": [
                 {
@@ -915,7 +915,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-10-26T02:07:54+00:00",
+        "time": "2020-10-26T10:23:23+00:00",
         "type": "library",
         "extra": {
             "think": {
