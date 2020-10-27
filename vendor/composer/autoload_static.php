@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409
+class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -66,10 +66,10 @@ class ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409
         ),
         'think\\' => 
         array (
-            0 => __DIR__ . '/..' . '/topthink/framework/src/think',
-            1 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            2 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            3 => __DIR__ . '/..' . '/topthink/think-template/src',
+            0 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            1 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            2 => __DIR__ . '/..' . '/topthink/think-template/src',
+            3 => __DIR__ . '/..' . '/topthink/framework/src/think',
         ),
         'app\\' => 
         array (
@@ -142,6 +142,7 @@ class ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409
         'AliPay\\Transfer' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Transfer.php',
         'AliPay\\Wap' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Wap.php',
         'AliPay\\Web' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Web.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Endroid\\QrCode\\Bundle\\Controller\\QrCodeController' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/Controller/QrCodeController.php',
         'Endroid\\QrCode\\Bundle\\DependencyInjection\\Configuration' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/DependencyInjection/Configuration.php',
         'Endroid\\QrCode\\Bundle\\DependencyInjection\\EndroidQrCodeExtension' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/DependencyInjection/EndroidQrCodeExtension.php',
@@ -565,7 +566,6 @@ class ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409
         'think\\facade\\Db' => __DIR__ . '/..' . '/topthink/think-orm/src/facade/Db.php',
         'think\\facade\\Env' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Env.php',
         'think\\facade\\Event' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Event.php',
-        'think\\facade\\Facade' => __DIR__ . '/..' . '/topthink/think-orm/src/facade/Db.php',
         'think\\facade\\Filesystem' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Filesystem.php',
         'think\\facade\\Lang' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Lang.php',
         'think\\facade\\Log' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Log.php',
@@ -652,10 +652,10 @@ class ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit33b66ed99ea8fcca84c95dfb0e7ed409::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b::$classMap;
 
         }, null, ClassLoader::class);
     }
