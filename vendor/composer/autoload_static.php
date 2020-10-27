@@ -66,10 +66,10 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         ),
         'think\\' => 
         array (
-            0 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            1 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            2 => __DIR__ . '/..' . '/topthink/think-template/src',
-            3 => __DIR__ . '/..' . '/topthink/framework/src/think',
+            0 => __DIR__ . '/..' . '/topthink/framework/src/think',
+            1 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            2 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            3 => __DIR__ . '/..' . '/topthink/think-template/src',
         ),
         'app\\' => 
         array (
@@ -142,7 +142,6 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'AliPay\\Transfer' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Transfer.php',
         'AliPay\\Wap' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Wap.php',
         'AliPay\\Web' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Web.php',
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Endroid\\QrCode\\Bundle\\Controller\\QrCodeController' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/Controller/QrCodeController.php',
         'Endroid\\QrCode\\Bundle\\DependencyInjection\\Configuration' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/DependencyInjection/Configuration.php',
         'Endroid\\QrCode\\Bundle\\DependencyInjection\\EndroidQrCodeExtension' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/DependencyInjection/EndroidQrCodeExtension.php',
@@ -566,6 +565,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'think\\facade\\Db' => __DIR__ . '/..' . '/topthink/think-orm/src/facade/Db.php',
         'think\\facade\\Env' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Env.php',
         'think\\facade\\Event' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Event.php',
+        'think\\facade\\Facade' => __DIR__ . '/..' . '/topthink/think-orm/src/facade/Db.php',
         'think\\facade\\Filesystem' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Filesystem.php',
         'think\\facade\\Lang' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Lang.php',
         'think\\facade\\Log' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Log.php',
