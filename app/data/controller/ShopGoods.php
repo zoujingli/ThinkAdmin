@@ -45,13 +45,13 @@ class ShopGoods extends Controller
     {
         $this->title = '商品数据管理';
         $query = $this->_query($this->table);
-        $query->like('code,name,mark')->equal('status,cate');
         // 加载对应数据
         $this->type = $this->request->get('type', 'index');
         if ($this->type === 'index') $query->where(['deleted' => 0]);
         elseif ($this->type === 'recycle') $query->where(['deleted' => 1]);
         else $this->error("无法加载 {$this->type} 数据列表！");
         // 列表排序并显示
+        $query->like('code,name,mark')->equal('status,cate');
         $query->order('sort desc,id desc')->page();
     }
 
@@ -154,8 +154,7 @@ class ShopGoods extends Controller
         }
         if ($this->request->isGet()) {
             $data['mark'] = str2arr($data['mark'] ?? '');
-            $this->marks = GoodsService::instance()->getMarkList();
-            $this->cates = GoodsService::instance()->getCateList('arr2table');
+            [$this->marks, $this->cates] = [GoodsService::instance()->getMarkList(), GoodsService::instance()->getCateList('arr2table')];
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,status';
             $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
             $data['truck_items'] = $this->app->db->name('ShopTruckTemplate')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('code,name');
