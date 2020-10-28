@@ -33,6 +33,7 @@ class ShopGoodsMark extends Controller
 
     /**
      * 商品标签选择
+     * @login true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
