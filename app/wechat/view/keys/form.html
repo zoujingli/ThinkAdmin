@@ -60,7 +60,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label label-required">消息类型</label>
                         <div class="layui-input-block">
-                            {foreach $msgTypes as $k=>$v}
+                            {foreach $types as $k=>$v}
                             <label class="think-radio">
                                 <!--{if (!isset($vo.type) and $k eq 'text') or (isset($vo.type) and$vo.type eq $k)}-->
                                 <input name="type" checked type="radio" value="{$k}"> {$v}

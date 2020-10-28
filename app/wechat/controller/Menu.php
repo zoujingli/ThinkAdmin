@@ -60,12 +60,29 @@ class Menu extends Controller
     public function index()
     {
         if ($this->request->get('output') === 'json') {
-            $where = [['keys', 'notin', ['subscribe', 'default']], ['status', '=', '1']];
-            $keys = $this->app->db->name('WechatKeys')->where($where)->order('sort desc,id desc')->select();
-            $this->success('获取数据成功!', ['menudata' => sysdata($this->ckey), 'keysdata' => $keys]);
+            $map = [['keys', 'notin', ['subscribe', 'default']], ['status', '=', 1]];
+            $result = $this->app->db->name('WechatKeys')->where($map)->order('sort desc,id desc')->select();
+            $this->success('获取数据成功!', ['menudata' => sysdata($this->ckey), 'keysdata' => $result->toArray()]);
         } else {
             $this->title = '微信菜单定制';
             $this->fetch();
+        }
+    }
+
+    /**
+     * 取消微信菜单
+     * @auth true
+     */
+    public function cancel()
+    {
+        try {
+            WechatService::WeChatMenu()->delete();
+            $this->success('菜单取消成功，重新关注可立即生效！');
+        } catch (HttpResponseException $exception) {
+            sysoplog('微信管理', '取消微信菜单成功');
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error("菜单取消失败，请稍候再试！<br> {$exception->getMessage()}");
         }
     }
 
@@ -107,17 +124,15 @@ class Menu extends Controller
      */
     private function _buildMenuData(array $list): array
     {
-        foreach ($list as &$vo) {
-            unset($vo['active'], $vo['show']);
-            if (empty($vo['sub_button'])) {
-                $vo = $this->_buildMenuItemData($vo);
+        foreach ($list as $key => &$item) {
+            if (empty($item['sub_button'])) {
+                $item = $this->_buildMenuDataItem($item);
             } else {
-                $item = ['name' => $vo['name'], 'sub_button' => []];
-                foreach ($vo['sub_button'] as &$sub) {
-                    unset($sub['active'], $sub['show']);
-                    array_push($item['sub_button'], $this->_buildMenuItemData($sub));
+                $button = ['name' => $item['name'], 'sub_button' => []];
+                foreach ($item['sub_button'] as &$sub) {
+                    $button['sub_button'][] = $this->_buildMenuDataItem($sub);
                 }
-                $vo = $item;
+                $item = $button;
             }
         }
         return $list;
@@ -128,7 +143,7 @@ class Menu extends Controller
      * @param array $item
      * @return array
      */
-    private function _buildMenuItemData(array $item)
+    private function _buildMenuDataItem(array $item): array
     {
         switch (strtolower($item['type'])) {
             case 'pic_weixin':
@@ -145,23 +160,8 @@ class Menu extends Controller
                 return ['name' => $item['name'], 'type' => $item['type'], 'url' => $item['url']];
             case 'miniprogram':
                 return ['name' => $item['name'], 'type' => $item['type'], 'url' => $item['url'], 'appid' => $item['appid'], 'pagepath' => $item['pagepath']];
-        }
-    }
-
-    /**
-     * 取消微信菜单
-     * @auth true
-     */
-    public function cancel()
-    {
-        try {
-            WechatService::WeChatMenu()->delete();
-            $this->success('菜单取消成功，重新关注可立即生效！');
-        } catch (HttpResponseException $exception) {
-            sysoplog('微信管理', '取消微信菜单成功');
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error("菜单取消失败，请稍候再试！<br> {$exception->getMessage()}");
+            default:
+                return [];
         }
     }
 
