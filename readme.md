@@ -88,7 +88,7 @@ public function index(){
 * 执行 `php think xadmin:queue webstatus` [调试]查看本地调试状态
 
 ## 赞助打赏
-![赞助](http://static.thinkadmin.top/pay.png)
+![赞助](https://thinkadmin.top/static/img/pay.png)
 
 ## 项目版本
 体验账号及密码都是admin
