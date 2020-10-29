@@ -65,7 +65,7 @@ class Config extends Controller
             $this->fetch();
         } else {
             if ($xpath = $this->request->post('xpath')) {
-                if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]+$/', $xpath)) {
+                if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $xpath)) {
                     $this->error('后台入口名称需要是由英文字母开头！');
                 }
                 if ($xpath !== 'admin' && file_exists($this->app->getBasePath() . $xpath)) {

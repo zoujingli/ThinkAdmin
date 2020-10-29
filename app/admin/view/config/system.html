@@ -5,7 +5,7 @@
             <span class="color-desc margin-left-5">Login</span>
             <label class="layui-input relative block label-required-null">
                 <span>{:sysuri('@',[],false,true)}</span>
-                <input autofocus required pattern="[a-zA-Z_][a-zA-Z0-9_]+" placeholder="请输入后台登录入口" class="layui-input inline-block padding-0 border-0" style="width:auto;background:none" value="{:trim(sysuri('admin/index/index',[],false),'/')}" name="xpath">
+                <input autofocus required pattern="[a-zA-Z_][a-zA-Z0-9_]*" placeholder="请输入后台登录入口" class="layui-input inline-block padding-0 border-0" style="width:auto;background:none" value="{:trim(sysuri('admin/index/index',[],false),'/')}" name="xpath">
             </label>
             <span class="help-block">名称由英文字母开头且不能存在相同名称的应用，设置之后原地址不能继续访问！</span>
         </div>
