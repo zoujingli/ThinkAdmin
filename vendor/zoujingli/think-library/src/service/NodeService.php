@@ -48,16 +48,17 @@ class NodeService extends Service
     public function getCurrent(string $type = ''): string
     {
         $prefix = $this->app->http->getName();
-        if (preg_match("|\\\\addons\\\\{$prefix}$|", $this->app->getNamespace())) {
-            $prefix = "addons-{$this->app->http->getName()}";
+        $namespace = $this->app->getNamespace();
+        if (preg_match("|\\\\addons\\\\{$prefix}$|", $namespace)) {
+            $prefix = "addons-{$prefix}";
         }
         // 获取应用前缀节点
         if ($type === 'module') return $prefix;
         // 获取控制器前缀节点
-        $middle = '\\' . $this->nameTolower($this->app->request->controller());
-        if ($type === 'controller') return $prefix . $middle;
+        $middle = $this->nameTolower($this->app->request->controller());
+        if ($type === 'controller') return $prefix . '/' . $middle;
         // 获取完整的权限节点
-        return strtolower(strtr($prefix . $middle . $this->app->request->action(), '\\', '/'));
+        return $prefix . '/' . $middle . '/' . strtolower($this->app->request->action());
     }
 
     /**

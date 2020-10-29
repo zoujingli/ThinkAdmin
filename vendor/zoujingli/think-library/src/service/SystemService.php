@@ -331,10 +331,10 @@ class SystemService extends Service
      */
     public function doInit(?\think\App $app = null): void
     {
-        if (is_null($app)) $app = new App();
-        $http = $app->debug($this->isDebug())->http;
-        ($response = $http->run())->send();
-        $http->end($response);
+        $this->app = $app ?: $this->app;
+        $this->app->debug($this->isDebug());
+        ($response = $this->app->http->run())->send();
+        $this->app->http->end($response);
     }
 
     /**
