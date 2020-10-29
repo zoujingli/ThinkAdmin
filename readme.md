@@ -87,9 +87,6 @@ public function index(){
 * 执行 `php think xadmin:queue webstart` [调试]开启本地调试服务（建议定时任务执行）
 * 执行 `php think xadmin:queue webstatus` [调试]查看本地调试状态
 
-## 赞助打赏
-![赞助](https://thinkadmin.top/static/img/pay.png)
-
 ## 项目版本
 体验账号及密码都是admin
 ### ThinkAdmin v6 基于 ThinkPHP 6.0 开发（后台权限基于注解实现）
@@ -121,3 +118,6 @@ public function index(){
 * 在线体验地址：https://v1.thinkadmin.top
 * Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v1
 * Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v1
+
+## 赞助打赏
+![赞助](https://thinkadmin.top/static/img/pay.png)
