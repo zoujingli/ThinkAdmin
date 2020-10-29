@@ -47,9 +47,9 @@ class NodeService extends Service
      */
     public function getCurrent(string $type = ''): string
     {
-        $prefix = $this->app->http->getName();
-        $namespace = $this->app->getNamespace();
-        if (preg_match("|\\\\addons\\\\{$prefix}$|", $namespace)) {
+        $space = $this->app->getNamespace();
+        $prefix = strtolower($this->app->http->getName());
+        if (preg_match("|\\\\addons\\\\{$prefix}$|", $space)) {
             $prefix = "addons-{$prefix}";
         }
         // 获取应用前缀节点
