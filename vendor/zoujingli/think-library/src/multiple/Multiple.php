@@ -131,15 +131,6 @@ class Multiple
                     $appName = $map['*'];
                 } else {
                     $appName = $name ?: $defaultApp;
-                    $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
-                    if (!is_dir($appPath)) {
-                        if ($this->app->config->get('app.app_express', false)) {
-                            $this->setApp($defaultApp);
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
                 }
                 if ($name) {
                     $this->app->request->setRoot('/' . $name);
@@ -172,11 +163,16 @@ class Multiple
      */
     protected function setApp(string $appName): void
     {
-        $this->app->http->name($appName);
-        $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
+        if (stripos($appName, 'addons-') === 0) {
+            [, $appName] = explode('addons-', $appName, 2);
+            $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: "app\\addons\\{$appName}");
+            $appPath = $this->path ?: $this->app->getBasePath() . 'addons' . DIRECTORY_SEPARATOR . $appName . DIRECTORY_SEPARATOR;
+        } else {
+            $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
+            $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: "app\\{$appName}");
+        }
         $this->app->setAppPath($appPath);
-        // 设置应用命名空间
-        $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: 'app\\' . $appName);
+        $this->app->http->name($appName);
         if (is_dir($appPath)) {
             $this->app->setRuntimePath($this->app->getRuntimePath() . $appName . DIRECTORY_SEPARATOR);
             $this->app->http->setRoutePath($this->getRoutePath());

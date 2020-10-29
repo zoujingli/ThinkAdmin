@@ -39,7 +39,7 @@ use function Composer\Autoload\includeFile;
 class Library extends Service
 {
     /**
-     * 扩展库版本号
+     * 版本号
      */
     const VERSION = '6.0.18';
 
@@ -82,8 +82,8 @@ class Library extends Service
                 $this->app->request->setPathinfo($_SERVER['argv'][1]);
             }
         } else {
-            $isSess = $this->app->request->request('not_init_session', 0) == 0;
-            $notYar = stripos($this->app->request->header('user-agent', ''), 'PHP Yar RPC-') === false;
+            $isSess = intval($this->app->request->get('not_init_session', '0')) === 0;
+            $notYar = stripos($this->app->request->header('user_agent', ''), 'PHP Yar RPC-') === false;
             if ($notYar && $isSess) {
                 // 注册会话初始化中间键
                 $this->app->middleware->add(SessionInit::class);
@@ -105,14 +105,19 @@ class Library extends Service
                 } elseif (AdminService::instance()->check()) {
                     return $next($request)->header($header);
                 } elseif (AdminService::instance()->isLogin()) {
-                    return json(['code' => 0, 'msg' => lang('think_library_not_auth')])->header($header);
+                    return json(['code' => 0, 'info' => lang('think_library_not_auth')])->header($header);
                 } else {
-                    return json(['code' => 0, 'msg' => lang('think_library_not_login'), 'url' => sysuri('admin/login/index')])->header($header);
+                    return json(['code' => 0, 'info' => lang('think_library_not_login'), 'url' => sysuri('admin/login/index')])->header($header);
                 }
             }, 'route');
         }
-        // 动态加入应用函数
-        $SysRule = "{$this->app->getBasePath()}*/sys.php";
-        foreach (glob($SysRule) as $file) includeFile($file);
+        // 动态加入应用初始化系统函数
+        [$ds, $base] = [DIRECTORY_SEPARATOR, $this->app->getBasePath()];
+        foreach (glob("{$base}*{$ds}sys.php") as $file) includeFile($file);
+        // 动态加载插件初始化系统函数
+        $base = "{$this->app->getBasePath()}addons{$ds}";
+        if (file_exists($base) && is_dir($base)) {
+            foreach (glob("{$base}*{$ds}sys.php") as $file) includeFile($file);
+        }
     }
 }

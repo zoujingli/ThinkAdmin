@@ -533,17 +533,17 @@
     },
     {
         "name": "symfony/options-resolver",
-        "version": "v3.4.45",
-        "version_normalized": "3.4.45.0",
+        "version": "v3.4.46",
+        "version_normalized": "3.4.46.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "0edf31d2e34f4adb72dd4d2e4a8aa21f84b943e5"
+            "reference": "c7efc97a47b2ebaabc19d5b6c6b50f5c37c92744"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/0edf31d2e34f4adb72dd4d2e4a8aa21f84b943e5",
-            "reference": "0edf31d2e34f4adb72dd4d2e4a8aa21f84b943e5",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/c7efc97a47b2ebaabc19d5b6c6b50f5c37c92744",
+            "reference": "c7efc97a47b2ebaabc19d5b6c6b50f5c37c92744",
             "shasum": "",
             "mirrors": [
                 {
@@ -555,13 +555,8 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2020-07-08T17:07:26+00:00",
+        "time": "2020-10-24T10:57:07+00:00",
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.4-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
@@ -592,9 +587,6 @@
             "configuration",
             "options"
         ],
-        "support": {
-            "source": "https://github.com/symfony/options-resolver/tree/v3.4.44"
-        },
         "funding": [
             {
                 "url": "https://symfony.com/sponsor",
@@ -949,12 +941,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "51051855309a5752c0adb8f8d63129a43fd139ce"
+            "reference": "b34dc9c54a212b3f44b4231eec2218c8da1b98c1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/51051855309a5752c0adb8f8d63129a43fd139ce",
-            "reference": "51051855309a5752c0adb8f8d63129a43fd139ce",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/b34dc9c54a212b3f44b4231eec2218c8da1b98c1",
+            "reference": "b34dc9c54a212b3f44b4231eec2218c8da1b98c1",
             "shasum": "",
             "mirrors": [
                 {
@@ -971,7 +963,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-10-26T10:23:23+00:00",
+        "time": "2020-10-29T02:59:49+00:00",
         "type": "library",
         "extra": {
             "think": {
@@ -1000,11 +992,7 @@
             }
         ],
         "description": "ThinkPHP v6.0 Development Library",
-        "homepage": "http://thinkadmin.top",
-        "support": {
-            "issues": "https://github.com/zoujingli/ThinkLibrary/issues",
-            "source": "https://github.com/zoujingli/ThinkLibrary/tree/v6.0"
-        }
+        "homepage": "http://thinkadmin.top"
     },
     {
         "name": "zoujingli/wechat-developer",

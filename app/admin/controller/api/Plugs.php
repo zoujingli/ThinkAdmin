@@ -83,10 +83,10 @@ class Plugs extends Controller
     public function debug()
     {
         if (AdminService::instance()->isSuper()) if (input('state')) {
-            SystemService::instance()->setRuntime([], 'product');
+            SystemService::instance()->setRuntime('product');
             $this->success('已切换为产品模式！');
         } else {
-            SystemService::instance()->setRuntime([], 'debug');
+            SystemService::instance()->setRuntime('debug');
             $this->success('已切换为开发模式！');
         } else {
             $this->error('只有超级管理员才能操作！');

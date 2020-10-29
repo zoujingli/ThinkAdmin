@@ -143,6 +143,13 @@ class BuildUrl extends Url
         if ($file && 0 !== strpos($request->url(), $file)) {
             $file = str_replace('\\', '/', dirname($file));
         }
+        /*=====- 插件 Addons URL 处理 - 开始 -=====*/
+        $name = $this->app->http->getName();
+        if (preg_match("#{$depr}addons-{$name}({$depr}|\.|$)#i", $request->url())) {
+            [$_name, $_attr] = explode($depr, $url . $depr, 2);
+            if ($_name === $name) $url = "addons-{$name}{$depr}" . rtrim($_attr, $depr);
+        }
+        /*=====- 插件 Addons URL 处理 - 结束 -=====*/
         $url = rtrim($file, '/') . '/' . ltrim($url, '/');
         // URL后缀
         if ('/' == substr($url, -1) || '' == $url) {

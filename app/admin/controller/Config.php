@@ -71,7 +71,7 @@ class Config extends Controller
                 if ($xpath !== 'admin' && file_exists($this->app->getBasePath() . $xpath)) {
                     $this->error("后台入口名称{$xpath}已经存在应用！");
                 }
-                SystemService::instance()->setRuntime([$xpath => 'admin']);
+                SystemService::instance()->setRuntime(null, [$xpath => 'admin']);
             }
             foreach ($this->request->post() as $name => $value) sysconf($name, $value);
             $this->success('修改系统参数成功！', sysuri("{$xpath}/index/index") . '#' . url("{$xpath}/config/index"));
