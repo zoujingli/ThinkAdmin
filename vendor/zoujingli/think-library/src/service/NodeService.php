@@ -73,12 +73,14 @@ class NodeService extends Service
         }
         switch (count($attrs = explode('/', $node))) {
             case 2:
-                return $this->getCurrent('module') . '/' . strtolower($node);
+                $suffix = $this->nameTolower($attrs[0]) . '/' . $attrs[1];
+                return $this->getCurrent('module') . '/' . strtolower($suffix);
             case 1:
                 return $this->getCurrent('controller') . '/' . strtolower($node);
+            default:
+                $attrs[1] = $this->nameTolower($attrs[1]);
+                return strtolower(join('/', $attrs));
         }
-        $attrs[1] = $this->nameTolower($attrs[1]);
-        return strtolower(join('/', $attrs));
     }
 
     /**

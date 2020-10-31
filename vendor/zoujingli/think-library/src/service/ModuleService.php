@@ -192,15 +192,15 @@ class ModuleService extends Service
      */
     public function checkAllowDownload(string $name): bool
     {
-        // 禁止目录级别上跳
+        // 禁止目录上跳级别
         if (stripos($name, '..') !== false) {
             return false;
         }
-        // 禁止下载数据库配置文件
-        if (stripos(strtr($name, '\\', '/'), 'config/database') !== false) {
+        // 阻止可能存在敏感信息的文件被下载
+        if (preg_match('#config[\\\\/]+(filesystem|database|session|cache)#i', $name)) {
             return false;
         }
-        // 检查允许下载的文件规则
+        // 检查允许下载的文件规则列表
         foreach ($this->_getAllowDownloadRule() as $rule) {
             if (stripos($name, $rule) === 0) return true;
         }

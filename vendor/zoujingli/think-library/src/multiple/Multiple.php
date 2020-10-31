@@ -73,21 +73,12 @@ class Multiple
     }
 
     /**
-     * 获取路由目录
-     * @return string
-     */
-    protected function getRoutePath(): string
-    {
-        return $this->app->getAppPath() . 'route' . DIRECTORY_SEPARATOR;
-    }
-
-    /**
      * 解析多应用
      * @return bool
      */
     protected function parseMultiApp(): bool
     {
-        $scriptName = $this->getScriptName();
+        $scriptName = $this->scriptName();
         $defaultApp = $this->app->config->get('app.default_app') ?: 'index';
         if ($this->name || ($scriptName && !in_array($scriptName, ['index', 'router', 'think']))) {
             $appName = $this->name ?: $scriptName;
@@ -131,6 +122,16 @@ class Multiple
                     $appName = $map['*'];
                 } else {
                     $appName = $name ?: $defaultApp;
+                    if (stripos($appName, 'addons-') !== 0) {
+                        if (!is_dir($this->path ?: $this->app->getBasePath() . $appName)) {
+                            if ($this->app->config->get('app.app_express', false)) {
+                                $this->setApp($defaultApp);
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
                 }
                 if ($name) {
                     $this->app->request->setRoot('/' . $name);
@@ -143,39 +144,25 @@ class Multiple
     }
 
     /**
-     * 获取当前运行入口名称
-     * @codeCoverageIgnore
-     * @return string
-     */
-    protected function getScriptName(): string
-    {
-        if (isset($_SERVER['SCRIPT_FILENAME'])) {
-            $file = $_SERVER['SCRIPT_FILENAME'];
-        } elseif (isset($_SERVER['argv'][0])) {
-            $file = realpath($_SERVER['argv'][0]);
-        }
-        return isset($file) ? pathinfo($file, PATHINFO_FILENAME) : '';
-    }
-
-    /**
-     * 设置应用
+     * 设置应用参数
      * @param string $appName 应用名称
      */
-    protected function setApp(string $appName): void
+    private function setApp(string $appName): void
     {
+        $space = $this->app->config->get('app.app_namespace') ?: 'app';
         if (stripos($appName, 'addons-') === 0) {
-            [, $appName] = explode('addons-', $appName, 2);
-            $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: "app\\addons\\{$appName}");
+            $appName = substr($appName, strlen('addons-'));
+            $this->app->setNamespace("{$space}\\addons\\{$appName}");
             $appPath = $this->path ?: $this->app->getBasePath() . 'addons' . DIRECTORY_SEPARATOR . $appName . DIRECTORY_SEPARATOR;
         } else {
+            $this->app->setNamespace("{$space}\\{$appName}");
             $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
-            $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: "app\\{$appName}");
         }
         $this->app->setAppPath($appPath);
         $this->app->http->name($appName);
         if (is_dir($appPath)) {
             $this->app->setRuntimePath($this->app->getRuntimePath() . $appName . DIRECTORY_SEPARATOR);
-            $this->app->http->setRoutePath($this->getRoutePath());
+            $this->app->http->setRoutePath($this->app->getAppPath() . 'route' . DIRECTORY_SEPARATOR);
             $this->loadApp($appPath);
         }
     }
@@ -185,7 +172,7 @@ class Multiple
      * @param string $appPath 应用路径
      * @return void
      */
-    protected function loadApp(string $appPath): void
+    private function loadApp(string $appPath): void
     {
         if (is_file($appPath . 'common.php')) {
             include_once $appPath . 'common.php';
@@ -203,7 +190,21 @@ class Multiple
         if (is_file($appPath . 'provider.php')) {
             $this->app->bind(include $appPath . 'provider.php');
         }
-        // 加载应用默认语言包
         $this->app->loadLangPack($this->app->lang->defaultLangSet());
+    }
+
+    /**
+     * 获取当前运行入口名称
+     * @codeCoverageIgnore
+     * @return string
+     */
+    private function scriptName(): string
+    {
+        if (isset($_SERVER['SCRIPT_FILENAME'])) {
+            $file = $_SERVER['SCRIPT_FILENAME'];
+        } elseif (isset($_SERVER['argv'][0])) {
+            $file = realpath($_SERVER['argv'][0]);
+        }
+        return isset($file) ? pathinfo($file, PATHINFO_FILENAME) : '';
     }
 }

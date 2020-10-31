@@ -65,10 +65,8 @@ class Install extends Command
         'config' => [
             'rules'  => [
                 'config/app.php',
-                'config/cache.php',
                 'config/log.php',
                 'config/route.php',
-                'config/session.php',
                 'config/trace.php',
                 'config/view.php',
                 'public/index.php',
