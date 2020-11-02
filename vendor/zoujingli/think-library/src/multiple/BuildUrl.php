@@ -45,7 +45,7 @@ class BuildUrl extends Url
             $url = $this->app->http->getName() . '/' . $request->controller() . '/' . $request->action();
         } else {
             $path = explode('/', $url);
-            $action = array_pop($path);
+            $action = empty($path) ? $request->action() : array_pop($path);
             $controller = empty($path) ? $request->controller() : array_pop($path);
             $app = empty($path) ? $this->app->http->getName() : array_pop($path);
             $url = Str::snake($controller) . '/' . $action;
@@ -137,17 +137,25 @@ class BuildUrl extends Url
             }
         }
         // 还原 URL 分隔符
-        $depr = $this->route->config('pathinfo_depr');
-        $url = str_replace('/', $depr, $url);
         $file = $request->baseFile();
-        if ($file && 0 !== strpos($request->url(), $file)) {
+        $depr = $this->route->config('pathinfo_depr');
+        [$uri, $url] = [$request->url(), str_replace('/', $depr, $url)];
+        if ($file && 0 !== strpos($uri, $file)) {
             $file = str_replace('\\', '/', dirname($file));
         }
+        /*=====- 多应用绑定 URL 生成处理 -=====*/
+        $app = $this->app->http->getName();
+        if ($this->app->http->isBind()) {
+            if (preg_match("#^{$app}({$depr}|\.|$)#i", $url)) {
+                $url = trim(substr($url, strlen($app)), $depr);
+            } elseif (substr_count($url, $depr) >= 2) {
+                $file = 'index.php';
+            }
+        }
         /*=====- 插件 Addons URL 处理 - 开始 -=====*/
-        $name = $this->app->http->getName();
-        if (preg_match("#{$depr}addons-{$name}({$depr}|\.|$)#i", $request->url())) {
-            [$_name, $_attr] = explode($depr, $url . $depr, 2);
-            if ($_name === $name) $url = "addons-{$name}{$depr}" . rtrim($_attr, $depr);
+        if (preg_match("#^{$depr}addons-{$app}({$depr}|\.|$)#i", $uri)) {
+            [$prefix, $suffix] = explode($depr, $url . $depr, 2);
+            if ($prefix === $app) $url = rtrim("addons-{$app}{$depr}{$suffix}", $depr);
         }
         /*=====- 插件 Addons URL 处理 - 结束 -=====*/
         $url = rtrim($file, '/') . '/' . ltrim($url, '/');

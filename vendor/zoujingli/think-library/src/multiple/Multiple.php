@@ -78,13 +78,13 @@ class Multiple
      */
     protected function parseMultiApp(): bool
     {
-        $scriptName = $this->scriptName();
         $defaultApp = $this->app->config->get('app.default_app') ?: 'index';
-        if ($this->name || ($scriptName && !in_array($scriptName, ['index', 'router', 'think']))) {
-            $appName = $this->name ?: $scriptName;
-            $this->app->http->setBind();
+        [$script, $path] = [$this->scriptName(), $this->app->request->pathinfo()];
+        if ($this->name || ($script && !in_array($script, ['index', 'router', 'think']))) {
+            $appName = $this->name ?: $script;
+            $this->app->http->setBind(true);
+            $this->app->request->setPathinfo(preg_replace("#^{$script}\.php(/|\.|$)#i", '', $path) ?: '/');
         } else {
-            // 自动多应用识别
             $appName = null;
             $this->app->http->setBind(false);
             $bind = $this->app->config->get('app.domain_bind', []);
@@ -93,17 +93,16 @@ class Multiple
                 $subDomain = $this->app->request->subDomain();
                 if (isset($bind[$domain])) {
                     $appName = $bind[$domain];
-                    $this->app->http->setBind();
+                    $this->app->http->setBind(true);
                 } elseif (isset($bind[$subDomain])) {
                     $appName = $bind[$subDomain];
-                    $this->app->http->setBind();
+                    $this->app->http->setBind(true);
                 } elseif (isset($bind['*'])) {
                     $appName = $bind['*'];
-                    $this->app->http->setBind();
+                    $this->app->http->setBind(true);
                 }
             }
             if (!$this->app->http->isBind()) {
-                $path = $this->app->request->pathinfo();
                 $map = $this->app->config->get('app.app_map', []);
                 $deny = $this->app->config->get('app.deny_app_list', []);
                 $name = current(explode('/', $path));
