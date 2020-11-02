@@ -39,7 +39,8 @@ class Fans extends Command
      */
     protected function configure()
     {
-        $this->setName('xadmin:fansall')->setDescription('Wechat Users Data Synchronize for ThinkAdmin');
+        $this->setName('xadmin:fansall');
+        $this->setDescription('Wechat Users Data Synchronize for ThinkAdmin');
     }
 
     /**
