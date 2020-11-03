@@ -63,7 +63,7 @@ class Login extends Controller
             'password.require'        => '登录密码不能为空！',
         ]);
         // if (MessageService::instance()->checkVerifyCode($data['verify'], $data['phone'])) {
-        //     //  验证码验证能完
+        //     @验证码验证能完
         // } else {
         //     $this->error('验证失败！');
         // }
@@ -85,8 +85,8 @@ class Login extends Controller
     public function sendsms()
     {
         $data = $this->_vali([
-            'phone.require'  => '手机号不能为空！',
             'phone.mobile'   => '手机号格式错误！',
+            'phone.require'  => '手机号不能为空！',
             'secure.require' => '安全码不能为空！',
         ]);
         if ($data['secure'] !== sysconf('zt.secure_code')) $this->error('短信发送安全码错误！');
