@@ -97,6 +97,7 @@ class Library extends Service
                     $header['Access-Control-Allow-Origin'] = $origin;
                     $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE';
                     $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With';
+                    $header['Access-Control-Allow-Credentials'] = 'true';
                     $header['Access-Control-Expose-Headers'] = 'User-Form-Token,User-Token,Token';
                 }
                 // 访问模式及访问权限检查
@@ -111,7 +112,7 @@ class Library extends Service
                 }
             }, 'route');
         }
-        // 动态加入应用初始化系统函数
+        // 动态加载应用初始化系统函数
         [$ds, $base] = [DIRECTORY_SEPARATOR, $this->app->getBasePath()];
         foreach (glob("{$base}*{$ds}sys.php") as $file) includeFile($file);
         // 动态加载插件初始化系统函数
