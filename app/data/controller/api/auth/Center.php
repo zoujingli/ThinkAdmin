@@ -4,6 +4,8 @@ namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
 use app\data\service\UserService;
+use think\admin\Storage;
+use think\exception\HttpResponseException;
 
 /**
  * 会员资料管理
@@ -56,6 +58,27 @@ class Center extends Auth
     public function total()
     {
         $this->success('获取会员数据统计!', UserService::instance()->total($this->mid));
+    }
+
+    /**
+     * 上传Base64图片
+     */
+    public function image()
+    {
+        try {
+            $data = $this->_vali(['base64.require' => '图片内容不为空！']);
+            if (preg_match('|^data:image/(.*?);base64,|i', $data['base64'])) {
+                [$ext, $img] = explode('|||', preg_replace('|^data:image/(.*?);base64,|i', '$1|||', $data['base64']));
+                $info = Storage::instance()->set(Storage::name($img, $ext ?: 'png', 'image/'), base64_decode($img));
+                $this->success('图片上传成功！', ['url' => $info['url']]);
+            } else {
+                $this->error('解析内容失败！');
+            }
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        }
     }
 
     /**
