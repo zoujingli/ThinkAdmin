@@ -59,8 +59,14 @@ class Login extends Controller
             'region_province.default' => '',
             'phone.mobile'            => '手机号码格式错误！',
             'phone.require'           => '手机号码不能为空！',
+            // 'verify.require'          => '验证码不能为空！',
             'password.require'        => '登录密码不能为空！',
         ]);
+        // if (MessageService::instance()->checkVerifyCode($data['verify'], $data['phone'])) {
+        //     //  验证码验证能完
+        // } else {
+        //     $this->error('验证失败！');
+        // }
         $map = ['phone' => $data['phone'], 'deleted' => 0];
         if ($this->app->db->name($this->table)->where($map)->count() > 0) {
             $this->error('手机号已注册，请使用其它手机号！');
@@ -86,7 +92,6 @@ class Login extends Controller
         if ($data['secure'] !== sysconf('zt.secure_code')) $this->error('短信发送安全码错误！');
         [$state, $message, $data] = MessageService::instance()->sendVerifyCode($data['phone']);
         $state ? $this->success($message, $data) : $this->error($message, $data);
-        // 检测验证码：if(MessageService::instance()->checkVerifyCode($data['verify'], $data['phone'])){ }
     }
 
 }
