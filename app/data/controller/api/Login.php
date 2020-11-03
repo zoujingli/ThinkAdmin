@@ -53,10 +53,10 @@ class Login extends Controller
     public function register()
     {
         $data = $this->_vali([
-            'username.default'        => '',
-            'region_area.default'     => '',
-            'region_city.default'     => '',
             'region_province.default' => '',
+            'region_city.default'     => '',
+            'region_area.default'     => '',
+            'username.default'        => '',
             'phone.mobile'            => '手机号码格式错误！',
             'phone.require'           => '手机号码不能为空！',
             // 'verify.require'          => '验证码不能为空！',
