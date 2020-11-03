@@ -18,7 +18,7 @@ class Center extends Auth
      * 绑定数据表
      * @var string
      */
-    protected $table = 'DataMember';
+    private $table = 'DataMember';
 
     /**
      * 更新会员资料
