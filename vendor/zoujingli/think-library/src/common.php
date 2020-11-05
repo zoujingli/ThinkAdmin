@@ -169,7 +169,7 @@ if (!function_exists('arr2str')) {
      */
     function arr2str(array $data, string $separ = ',', ?array $allow = null)
     {
-        $temp = $data;
+        $temp = [];
         if (is_array($allow)) foreach ($data as $item) {
             if (in_array($item, $allow)) $temp[] = $item;
         }
