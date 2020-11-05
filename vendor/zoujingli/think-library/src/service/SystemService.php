@@ -144,9 +144,10 @@ class SystemService extends Service
      */
     public function sysuri(string $url = '', array $vars = [], $suffix = true, $domain = false): string
     {
+        $hm = $this->app->config->get('route.url_html_suffix', '.html');
         $d2 = Str::snake($this->app->config->get('route.default_controller'));
         [$d1, $d3] = [$this->app->config->get('app.default_app'), $this->app->config->get('route.default_action')];
-        $pattern = ["#^/{$d1}/{$d2}/{$d3}(.html)?#i", "#^(/.*?)/{$d2}/{$d3}(^\w|\?|\.|$)#i", "#^(/.*?/.*?)/{$d3}(^\w|\?|\.|$)#i"];
+        $pattern = ["#^/{$d1}/{$d2}/{$d3}({$hm})?#i", "#^(/.*?)/{$d2}/{$d3}(^\w|\?|\.|$)#i", "#^(/.*?/.*?)/{$d3}(^\w|\?|\.|$)#i"];
         return preg_replace($pattern, ['', '$1$2', '$1$2'], $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build());
     }
 
