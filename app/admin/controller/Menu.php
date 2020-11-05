@@ -56,8 +56,8 @@ class Menu extends Controller
     protected function _index_page_filter(array &$data)
     {
         foreach ($data as &$vo) {
-            if ($vo['url'] !== '#') {
-                $vo['url'] = trim(url($vo['url'])->build() . (empty($vo['params']) ? '' : "?{$vo['params']}"), '/\\');
+            if ($vo['url'] !== '#' && !preg_match('#^https?://#', $vo['url'])) {
+                $vo['url'] = trim(url($vo['url']) . ($vo['params'] ? "?{$vo['params']}" : ''), '\\/');
             }
             $vo['ids'] = join(',', DataExtend::getArrSubIds($data, $vo['id']));
         }

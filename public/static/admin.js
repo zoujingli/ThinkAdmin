@@ -627,7 +627,11 @@ $(function () {
 
     /*! 注册 data-open 事件行为 */
     $body.on('click', '[data-open]', function () {
-        $.form.href(this.dataset.open, this);
+        if (this.dataset.open.match(/^https?:/)) {
+            location.href = this.dataset.open;
+        } else {
+            $.form.href(this.dataset.open, this);
+        }
     });
 
     /*! 注册 data-dbclick 事件行为 */
