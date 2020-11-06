@@ -57,7 +57,7 @@ class Center extends Auth
      */
     public function total()
     {
-        $this->success('获取会员数据统计!', UserService::instance()->total($this->mid));
+        $this->success('获取会员统计!', UserService::instance()->total($this->mid));
     }
 
     /**
