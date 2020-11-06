@@ -26,8 +26,12 @@ use think\Response;
  */
 class Js extends Controller
 {
+    protected $params;
+    protected $openid;
+    protected $fansinfo;
+
     /**
-     * 返回生成的JS内容
+     * 生成网页授权的JS内容
      * @return \think\Response
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
@@ -38,18 +42,19 @@ class Js extends Controller
      */
     public function index()
     {
-        $this->mode = $this->request->get('mode', 1);
-        $this->source = $this->request->server('http_referer', $this->request->url(true));
-        $user = WechatService::instance()->getWebOauthInfo($this->source, $this->mode, false);
-        if (empty($user['openid'])) {
+        $mode = $this->request->get('mode', 1);
+        $source = $this->request->server('http_referer') ?: $this->request->url(true);
+        $userinfo = WechatService::instance()->getWebOauthInfo($source, $mode, false);
+        if (empty($userinfo['openid'])) {
             $content = 'alert("Wechat webOauth failed.")';
         } else {
-            $this->openid = $user['openid'];
-            $this->config = json_encode(WechatService::instance()->getWebJssdkSign($this->source));
-            $this->fansinfo = json_encode(empty($user['fansinfo']) ? [] : $user['fansinfo'], JSON_UNESCAPED_UNICODE);
-            // 生成接口授权令牌
+            $this->openid = $userinfo['openid'];
+            $this->params = json_encode(WechatService::instance()->getWebJssdkSign($source));
+            $this->fansinfo = json_encode($userinfo['fansinfo'] ?? [], JSON_UNESCAPED_UNICODE);
+            // 生成数据授权令牌
             $this->token = uniqid('oauth') . rand(10000, 99999);
             $this->app->cache->set($this->openid, $this->token, 3600);
+            // 生成前端JS变量代码
             $content = $this->_buildContent();
         }
         return Response::create($content)->contentType('application/x-javascript');
@@ -66,7 +71,7 @@ if(typeof wx === 'object'){
     wx.token="{$this->token}";
     wx.openid="{$this->openid}";
     wx.fansinfo={$this->fansinfo};
-    wx.config({$this->config});
+    wx.config({$this->params});
     wx.ready(function(){
         wx.hideOptionMenu();
         wx.hideAllNonBaseMenuItem();
