@@ -35,12 +35,14 @@ class Center extends Auth
             'base_weight.default'   => '',
             'base_birthday.default' => '',
         ]);
-        foreach ($data as $key => $vo) if ($vo === '') unset($data[$key]);
+        foreach ($data as $key => $vo) {
+            if ($vo === '') unset($data[$key]);
+        }
         if (empty($data)) $this->error('没有需要修改的数据！');
         if ($this->app->db->name($this->table)->where(['id' => $this->mid])->update($data) !== false) {
-            $this->success('更新会员资料成功！', $this->getMember());
+            $this->success('更新资料成功！', $this->getMember());
         } else {
-            $this->error('更新会员资料失败！');
+            $this->error('更新资料失败！');
         }
     }
 
