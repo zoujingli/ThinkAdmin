@@ -21,7 +21,7 @@ class Goods extends Controller
      */
     public function getCate()
     {
-        $this->success('获取商品分类数据成功', GoodsService::instance()->getCateList());
+        $this->success('获取分类成功', GoodsService::instance()->getCateList());
     }
 
     /**
@@ -29,7 +29,7 @@ class Goods extends Controller
      */
     public function getMark()
     {
-        $this->success('获取商品标签数据成功', GoodsService::instance()->getMarkList());
+        $this->success('获取标签成功', GoodsService::instance()->getMarkList());
     }
 
     /**
@@ -49,7 +49,7 @@ class Goods extends Controller
         $query = $this->_query('ShopGoods')->like('name,mark')->equal('code,cate');
         $result = $query->where($map)->order('sort desc,id desc')->page(true, false, false, 10);
         GoodsService::instance()->buildItemData($result['list']);
-        $this->success('获取商品数据成功', $result);
+        $this->success('获取商品成功', $result);
     }
 
     /**
@@ -57,7 +57,7 @@ class Goods extends Controller
      */
     public function getRegion()
     {
-        $this->success('获取配送区域成功', TruckService::instance()->region(3, 1));
+        $this->success('获取区域成功', TruckService::instance()->region(3, 1));
     }
 
 }
