@@ -1,19 +1,15 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
-
-{if auth("black_add")}
+<!--{if auth("black_add")}-->
 <button data-action='{:url("black_add")}' data-rule="openid#{key}" data-csrf="{:systoken('black_add')}" class='layui-btn layui-btn-sm layui-btn-primary'>拉入黑名单</button>
-{/if}
-
-{if auth("black_del")}
+<!--{/if}-->
+<!--{if auth("black_del")}-->
 <button data-action='{:url("black_del")}' data-rule="openid#{key}" data-csrf="{:systoken('black_del')}" class='layui-btn layui-btn-sm layui-btn-primary'>移出黑名单</button>
-{/if}
-
-{if auth("sync")}
+<!--{/if}-->
+<!--{if auth("sync")}-->
 <button data-queue='{:url("sync")}' data-confirm="是否要创建后台任务同步用户数据？" class='layui-btn layui-btn-sm layui-btn-primary'>同步用户数据</button>
-{/if}
-
+<!--{/if}-->
 {/block}
 
 {block name="content"}
