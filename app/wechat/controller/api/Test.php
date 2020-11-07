@@ -252,7 +252,7 @@ class Test extends Controller
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    protected function showQrc($url)
+    private function showQrc(string $url)
     {
         $qrCode = new \Endroid\QrCode\QrCode();
         $qrCode->setText($url)->setSize(300)->setPadding(20)->setImageType('png');
