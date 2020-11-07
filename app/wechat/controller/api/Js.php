@@ -61,6 +61,21 @@ class Js extends Controller
     }
 
     /**
+     * 给指定地址创建签名参数
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function sdk()
+    {
+        $data = $this->_vali(['url.require' => '签名地址不能为空！']);
+        $this->success('获取签名参数', WechatService::instance()->getWebJssdkSign($data['url']));
+    }
+
+    /**
      * 生成授权内容
      * @return string
      */
