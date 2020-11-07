@@ -270,7 +270,7 @@ class TxcosStorage extends Storage
     public static function region()
     {
         return [
-            'cos.ap-beijing-1.myqcloud.com'     => '中国大陆 公有云地域 北京一区（已售罄）',
+            'cos.ap-beijing-1.myqcloud.com'     => '中国大陆 公有云地域 北京一区',
             'cos.ap-beijing.myqcloud.com'       => '中国大陆 公有云地域 北京',
             'cos.ap-nanjing.myqcloud.com'       => '中国大陆 公有云地域 南京',
             'cos.ap-shanghai.myqcloud.com'      => '中国大陆 公有云地域 上海',

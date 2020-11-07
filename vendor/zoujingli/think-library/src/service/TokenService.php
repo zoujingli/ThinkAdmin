@@ -27,30 +27,29 @@ use think\admin\Service;
 class TokenService extends Service
 {
     /**
+     * 缓存分组名称
+     * @var string
+     */
+    private $name;
+
+    /**
+     * 当前缓存数据
+     * @var array
+     */
+    private $cache = [];
+    /**
      * 令牌有效时间
      * @var integer
      */
     private $expire = 600;
 
     /**
-     * 缓存分组名称
-     * @var string
-     */
-    private $cachename;
-
-    /**
-     * 当前缓存数据
-     * @var array
-     */
-    private $cachedata = [];
-
-    /**
      * 令牌服务初始化
      */
     protected function initialize()
     {
-        $this->cachename = $this->getCacheName();
-        $this->cachedata = $this->_getCacheList(true);
+        $this->name = $this->getCacheName();
+        $this->cache = $this->_getCacheList(true);
         $this->app->event->listen('HttpEnd', function () {
             TokenService::instance()->saveCacheData();
         });
@@ -72,7 +71,7 @@ class TokenService extends Service
     public function saveCacheData()
     {
         $this->_clearTimeoutCache();
-        $this->app->cache->set($this->cachename, $this->cachedata, $this->expire);
+        $this->app->cache->set($this->name, $this->cache, $this->expire);
     }
 
     /**
@@ -92,11 +91,9 @@ class TokenService extends Service
      */
     public function checkFormToken($token = null, $node = null): bool
     {
-        $cnode = NodeService::instance()->fullnode($node);
         $cache = $this->_getCacheItem($token ?: $this->getInputToken());
         if (empty($cache['node']) || empty($cache['time'])) return false;
-        if (strtolower($cache['node']) !== strtolower($cnode)) return false;
-        return true;
+        return $cache['node'] === NodeService::instance()->fullnode($node);
     }
 
     /**
@@ -128,7 +125,7 @@ class TokenService extends Service
      */
     public function clearCache()
     {
-        $this->app->cache->delete($this->cachename);
+        $this->app->cache->delete($this->name);
     }
 
     /**
@@ -139,7 +136,7 @@ class TokenService extends Service
      */
     private function _setCacheItem(string $token, array $value)
     {
-        $this->cachedata[$token] = $value;
+        $this->cache[$token] = $value;
         return $this;
     }
 
@@ -149,7 +146,7 @@ class TokenService extends Service
      */
     private function _delCacheItem(string $token)
     {
-        unset($this->cachedata[$token]);
+        unset($this->cache[$token]);
     }
 
     /**
@@ -161,7 +158,7 @@ class TokenService extends Service
     private function _getCacheItem(string $token, $default = [])
     {
         $this->_clearTimeoutCache();
-        return $this->cachedata[$token] ?? $default;
+        return $this->cache[$token] ?? $default;
     }
 
     /**
@@ -171,9 +168,9 @@ class TokenService extends Service
      */
     private function _getCacheList(bool $clear = false): array
     {
-        $this->cachedata = $this->app->cache->get($this->cachename, []);
-        if ($clear) $this->cachedata = $this->_clearTimeoutCache();
-        return $this->cachedata;
+        $this->cache = $this->app->cache->get($this->name, []);
+        if ($clear) $this->cache = $this->_clearTimeoutCache();
+        return $this->cache;
     }
 
     /**
@@ -183,14 +180,14 @@ class TokenService extends Service
     private function _clearTimeoutCache(): array
     {
         $time = time();
-        foreach ($this->cachedata as $key => $item) {
+        foreach ($this->cache as $key => $item) {
             if (empty($item['time']) || $item['time'] + $this->expire < $time) {
-                unset($this->cachedata[$key]);
+                unset($this->cache[$key]);
             }
         }
-        if (count($this->cachedata) > 99) {
-            $this->cachedata = array_slice($this->cachedata, -99);
+        if (count($this->cache) > 999) {
+            $this->cache = array_slice($this->cache, -999);
         }
-        return $this->cachedata;
+        return $this->cache;
     }
 }

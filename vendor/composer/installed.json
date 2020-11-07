@@ -883,17 +883,17 @@
     },
     {
         "name": "zoujingli/ip2region",
-        "version": "v1.0.8",
-        "version_normalized": "1.0.8.0",
+        "version": "v1.0.9",
+        "version_normalized": "1.0.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ip2region.git",
-            "reference": "d6be3ab9da1a1ab7e3cd51c4aa634a34de358ce6"
+            "reference": "e48f9122f50dd3b79295e35b4acdd0dcd2608ca8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/d6be3ab9da1a1ab7e3cd51c4aa634a34de358ce6",
-            "reference": "d6be3ab9da1a1ab7e3cd51c4aa634a34de358ce6",
+            "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/e48f9122f50dd3b79295e35b4acdd0dcd2608ca8",
+            "reference": "e48f9122f50dd3b79295e35b4acdd0dcd2608ca8",
             "shasum": "",
             "mirrors": [
                 {
@@ -905,7 +905,7 @@
         "require": {
             "php": ">=5.3"
         },
-        "time": "2020-07-06T05:33:26+00:00",
+        "time": "2020-11-06T07:21:55+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -928,11 +928,7 @@
         "homepage": "https://github.com/zoujingli/Ip2Region",
         "keywords": [
             "Ip2Region"
-        ],
-        "support": {
-            "issues": "https://github.com/zoujingli/ip2region/issues",
-            "source": "https://github.com/zoujingli/ip2region/tree/master"
-        }
+        ]
     },
     {
         "name": "zoujingli/think-library",
@@ -941,12 +937,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "6d7c8ac778d356e21222c6015260246a55433507"
+            "reference": "5dca339c3a9440425b5e2586c60b63ea58043835"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/6d7c8ac778d356e21222c6015260246a55433507",
-            "reference": "6d7c8ac778d356e21222c6015260246a55433507",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/5dca339c3a9440425b5e2586c60b63ea58043835",
+            "reference": "5dca339c3a9440425b5e2586c60b63ea58043835",
             "shasum": "",
             "mirrors": [
                 {
@@ -963,7 +959,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-11-05T09:27:54+00:00",
+        "time": "2020-11-07T15:02:39+00:00",
         "type": "library",
         "extra": {
             "think": {
