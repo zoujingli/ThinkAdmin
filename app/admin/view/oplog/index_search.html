@@ -47,10 +47,25 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button type="button" data-form-export="{:url('index')}?type={$type|default=''}" class="layui-btn layui-btn-primary">
+                <i class="layui-icon layui-icon-export"></i> 导 出
+            </button>
         </div>
     </form>
 
 </fieldset>
 
-<script>form.render()</script>
+
+<script>
+    window.form.render();
+    require(['excel'], function (excel) {
+        excel.bind(function (data) {
+            data.forEach(function (item, index) {
+                data[index] = [item.username, item.node, item.geoip, item.action, item.create_at];
+            });
+            data.unshift(['操作账号', '访问节点', '访问IP地址', '访问操作', '访问时间']);
+            return data;
+        }, '访问日志');
+    });
+</script>
