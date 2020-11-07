@@ -81,7 +81,9 @@
             });
         });
         $(window).on('hashchange', function () {
-            $('.layui-body').trigger('click');
+            layers.forEach(function (value, index) {
+                layer.close(value), delete layers[index];
+            });
         });
     })([]);
 </script>
