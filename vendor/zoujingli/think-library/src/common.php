@@ -153,8 +153,8 @@ if (!function_exists('str2arr')) {
     {
         $text = trim($text, $separ);
         $data = strlen($text) ? explode($separ, $text) : [];
-        if (is_array($allow)) foreach ($data as $key => $mark) {
-            if (!in_array($mark, $allow)) unset($data[$key]);
+        if (is_array($allow)) foreach ($data as $key => $item) {
+            if (!in_array($item, $allow)) unset($data[$key]);
         }
         return $data;
     }
@@ -169,11 +169,10 @@ if (!function_exists('arr2str')) {
      */
     function arr2str(array $data, string $separ = ',', ?array $allow = null)
     {
-        $temp = [];
-        if (is_array($allow)) foreach ($data as $item) {
-            if (in_array($item, $allow)) $temp[] = $item;
+        if (is_array($allow)) foreach ($data as $key => $item) {
+            if (!in_array($item, $allow)) unset($data[$key]);
         }
-        return $separ . join($separ, $temp) . $separ;
+        return $separ . join($separ, $data) . $separ;
     }
 }
 if (!function_exists('encode')) {
