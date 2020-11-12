@@ -1,4 +1,3 @@
-/* 页面布局 - 全局 */
 .layui-layout {
   > .layui-side {
     top: 50px;
@@ -12,18 +11,41 @@
     overflow: auto;
 
     > .layui-card {
+      overflow: visible;
+      position: absolute;
+      min-width: 100%;
+      min-height: 100%;
       box-shadow: none;
-
-      > .layui-card-body {
-        padding: 15px 15px
-      }
+      background: none !important;
 
       > .layui-card-header {
+        left: 200px;
+        right: 0;
+        z-index: 3;
         height: 50px;
         border: none;
+        position: fixed;
+        background: #fff;
         line-height: 50px;
-        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1);
-        background: #fff
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .22);
+      }
+
+      > .layui-card-header + .layui-card-body {
+        top: 50px;
+      }
+
+      > .layui-card-body {
+        z-index: 2;
+        padding: 15px;
+
+        > .layui-tab.layui-tab-card {
+          border: none;
+          box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .22);
+        }
+
+        > .layui-tab.layui-tab-card > .layui-tab-content.think-box-shadow {
+          box-shadow: none;
+        }
       }
     }
   }
@@ -35,13 +57,12 @@
   background: #393D49 !important;
 
   [data-target-menu-type] {
-    // box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .15);
     border-left: 1px solid rgba(0, 0, 0, 0);
     border-right: 1px solid rgba(0, 0, 0, .15);
   }
 
-  .layui-layout-left,
-  .layui-layout-right {
+  .layui-layout-left, .layui-layout-right {
+    margin: 0;
     padding: 0
   }
 
@@ -56,7 +77,8 @@
 
     sup {
       font-size: 9px;
-      line-height: 9px
+      line-height: 9px;
+      padding-left: 5px;
     }
   }
 
@@ -74,27 +96,46 @@
 
     .layui-nav-child {
       top: 49px;
+      border: 0;
       padding: 0;
-      border: none;
+      background: #eef;
       line-height: 45px;
 
-      + a {
-        padding-right: 35px
+      + a.layui-elip {
+        padding-right: 35px;
+
+        img {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%
+        }
+
+        span {
+          padding-left: 5px;
+        }
       }
 
       &.layui-show + a {
-        background: #fff
+        background: #fff;
+
+        span {
+          color: #333
+        }
       }
 
-      &.layui-show + a span {
-        color: #333
-      }
+      dd {
+        background: #fff;
 
-      dd a {
-        padding: 0;
-        color: #333;
-        text-align: center;
-        border-top: 1px solid #eaedf1
+        a {
+          padding: 0;
+          color: #333;
+          margin-top: 1px;
+          text-align: center;
+
+          .layui-icon {
+            margin-right: 5px;
+          }
+        }
       }
     }
   }
@@ -113,7 +154,6 @@
 
 /* 页面布局 - 左则 */
 .layui-layout {
-
   > .layui-side {
     .layui-nav-bar {
       display: none !important
@@ -135,12 +175,17 @@
         &:hover {
           background: hsla(0, 0%, 39%, .2) !important
         }
+
+        .nav-icon, .nav-text {
+          padding-left: 5px
+        }
+      }
+
+      &ed {
+        border-bottom: none !important;
       }
     }
 
-    .layui-nav-itemed {
-      border-bottom: none !important
-    }
 
     .layui-nav-tree-top a {
       height: 28px !important;
@@ -150,7 +195,13 @@
 
   &.layui-layout-left-mini {
     > .layui-body {
-      left: 50px
+      left: 50px;
+
+      > .layui-card {
+        > .layui-card-header {
+          left: 50px;
+        }
+      }
     }
 
     > .layui-side {
@@ -187,15 +238,21 @@
 
     [data-target-menu-type] i {
       display: inline-block;
-      -webkit-transform: rotate(180deg);
       transform: rotate(180deg);
-      -ms-transform: rotate(180deg)
+      -ms-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg);
     }
   }
 
   &.layui-layout-left-hide {
     > .layui-body {
-      left: 0 !important
+      left: 0 !important;
+
+      > .layui-card {
+        > .layui-card-header {
+          left: 0 !important;
+        }
+      }
     }
 
     > .layui-side {
@@ -208,252 +265,49 @@
   }
 }
 
-/* 通用分页 */
-.pagination-container {
-  line-height: 40px;
+/* 下拉样式 */
+.layui-nav {
+  .layui-nav-item {
+    .layui-nav-more {
+      top: 0;
+      right: 15px;
+      width: auto;
+      height: auto;
+      border: none;
+      margin-top: 0;
+      font-size: 14px;
+      font-style: normal;
+      font-family: "layui-icon" !important;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
 
-  > span {
-    color: #666;
-    font-size: 9pt
-  }
-
-  > ul {
-    float: right;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-
-    > li {
-      z-index: 1;
-      display: inline-block;
-
-      &.active {
-        z-index: 2;
-
-        > span {
-          color: #fff;
-          border-color: #098;
-          padding-right: 1px;
-          background: #009688 !important
-        }
+      &::before {
+        content: "\e619"
       }
+    }
 
-      > a, > span {
-        color: #333;
-        width: 33px;
-        height: 30px;
-        border: 1px solid #dcdcdc;
-        display: inline-block;
-        margin-left: -1px;
-        text-align: center;
-        line-height: 28px
-      }
-
-      > span {
-        background: #dcdcdc;
-        cursor: default
-      }
-
-      > a:hover {
-        background: #dcdcdc;
-        border-color: #dcdcdc
-      }
+    & .layui-nav-mored, &ed .layui-nav-more {
+      border: none;
+      margin-top: 0;
+      transform: rotate(180deg);
+      -o-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg)
     }
   }
 }
 
-/** 手机盒子及微信菜单 */
-.mobile-preview {
-  width: 317px;
-  height: 580px;
-  position: relative;
-  background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
+.iframe-pagination {
+  padding: 20px 20px 45px 20px;
 
-  .mobile-header {
-    color: #fff;
-    width: auto;
-    margin: 0 30px;
-    overflow: hidden;
-    font-size: 15px;
-    padding-top: 30px;
-    text-align: center;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    word-wrap: normal;
-    user-select: none;
-    pointer-events: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -webkit-pointer-events: none
-  }
-
-  .mobile-body {
-    top: 60px;
+  .pagination-container {
     left: 0;
     right: 0;
     bottom: 0;
-    position: absolute;
-    border: 1px solid #ccc;
-    background: #f5f5f5;
-
-    iframe {
-      width: 100%;
-      height: 100%
-    }
+    padding: 5px 20px;
+    position: fixed;
+    background: #fff;
+    border-top: 1px solid #ddd;
   }
-
-  .mobile-footer {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0;
-    position: absolute;
-    padding-left: 43px;
-    border: 1px solid #ccc;
-    list-style-type: none;
-    background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
-
-    li {
-      float: left;
-      width: 33.33%;
-      position: relative;
-      text-align: center;
-      line-height: 50px;
-
-      a {
-        width: auto;
-        display: block;
-        overflow: hidden;
-        border: 1px solid hsla(0, 0%, 100%, 0);
-        border-left: 1px solid #e7e7eb;
-        margin-top: -1px;
-        margin-bottom: -1px;
-        color: #616161;
-        white-space: nowrap;
-        text-decoration: none;
-        text-overflow: ellipsis;
-        word-wrap: normal;
-
-        &:hover {
-          background: rgba(0, 0, 0, .02)
-        }
-
-        &.active {
-          border: 1px solid #44b549 !important;
-          box-shadow: 0 0 1px #44b549
-        }
-
-        span:before {
-          width: 1px;
-          height: 1px;
-          content: '';
-          display: inline-block
-        }
-      }
-
-      > .close {
-        top: 1px;
-        right: 1px;
-        width: 18px;
-        height: 18px;
-        display: none;
-        cursor: pointer;
-        position: absolute;
-        text-align: center;
-        line-height: 18px
-      }
-
-      &:hover > .close {
-        display: inline-block;
-
-        &:hover {
-          color: #fff !important;
-          background: #999 !important
-        }
-      }
-    }
-
-    .icon-add {
-      width: 14px;
-      height: 14px;
-      border-bottom: none !important;
-      background: url(../img/wechat/index.png) 0 0 no-repeat
-    }
-
-    .icon-add, .icon-sub {
-      display: inline-block;
-      vertical-align: middle
-    }
-
-    .icon-sub {
-      width: 7px;
-      height: 7px;
-      margin-right: 2px;
-      background: url(../img/wechat/index.png) 0 -3pc no-repeat
-    }
-
-    .sub-menu {
-      width: 100%;
-      bottom: 60px;
-      margin: -1px;
-      display: block;
-      position: absolute;
-      border: 1px solid #d0d0d0;
-      background-color: #fafafa;
-
-      ul, ul li {
-        float: none;
-        padding: 0;
-        z-index: 11;
-        display: block;
-        width: 100%
-      }
-
-      ul li {
-        a {
-          padding: 0 5px;
-          border: 1px solid hsla(0, 0%, 100%, 0);
-
-          &.bottom-border {
-            margin: -1px -1px 0;
-            border-bottom: 1px solid #e7e7eb
-          }
-        }
-
-        &:last-child a.bottom-border {
-          border-bottom-color: #fff
-        }
-      }
-    }
-
-    .arrow {
-      left: 50%;
-      position: absolute;
-      margin-left: -6px
-    }
-
-    .arrow_in, .arrow_out {
-      width: 0;
-      height: 0;
-      z-index: 10;
-      display: inline-block;
-      border: 6px dashed transparent;
-      border-bottom-width: 0;
-      border-top-style: solid
-    }
-
-    .arrow_in {
-      z-index: 3;
-      bottom: -5px;
-      border-top-color: #fafafa
-    }
-
-    .arrow_out {
-      z-index: 2;
-      bottom: -6px;
-      border-top-color: #d0d0d0
-    }
-
-  }
-
 }
