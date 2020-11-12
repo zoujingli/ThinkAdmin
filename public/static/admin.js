@@ -668,9 +668,10 @@ $(function () {
     });
 
     /*! 注册 data-iframe 事件行为 */
-    $body.on('click', '[data-iframe]', function (index) {
-        index = $.form.iframe($(this).attr('data-iframe'), $(this).attr('data-title') || '窗口');
-        $(this).attr('data-index', index);
+    $body.on('click', '[data-iframe]', function () {
+        $(this).attr('data-index', $.form.iframe(this.dataset.iframe, this.dataset.title || '窗口', this.dataset.area || [
+            this.dataset.width || '800px', this.dataset.height || '580px'
+        ]));
     });
 
     /*! 注册 data-icon 事件行为 */
