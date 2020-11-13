@@ -56,9 +56,9 @@ return [
             // 是否需要断线重连
             'break_reconnect' => false,
             // 监听SQL
-            'trigger_sql'     => app()->isDebug(),
+            'trigger_sql'     => true,
             // 开启字段缓存
-            'fields_cache'    => false,
+            'fields_cache'    => app()->debug(),
         ],
     ],
 ];
