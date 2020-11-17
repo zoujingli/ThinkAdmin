@@ -127,15 +127,15 @@ class User extends Controller
                 if (empty($data['username'])) $this->error('登录账号不能为空！');
                 $where = ['username' => $data['username'], 'is_deleted' => 0];
                 if ($this->app->db->name($this->table)->where($where)->count() > 0) {
-                    $this->error("账号{$data['username']}已经存在，请使用其它账号！");
+                    $this->error("账号已经存在，请使用其它账号！");
                 }
                 // 新添加的用户密码与账号相同
                 $data['password'] = md5($data['username']);
             }
             // 账号权限绑定处理
-            $data['authorize'] = (isset($data['authorize']) && is_array($data['authorize'])) ? join(',', $data['authorize']) : '';
+            $data['authorize'] = arr2str($data['authorize'] ?? []);
         } else {
-            $data['authorize'] = explode(',', $data['authorize'] ?? '');
+            $data['authorize'] = str2arr($data['authorize'] ?? '');
             $this->authorizes = $this->app->db->name('SystemAuth')->where(['status' => 1])->order('sort desc,id desc')->select()->toArray();
         }
     }
@@ -172,7 +172,7 @@ class User extends Controller
      */
     private function _checkInput()
     {
-        if (in_array('10000', explode(',', input('id', '')))) {
+        if (in_array('10000', str2arr(input('id', '')))) {
             $this->error('系统超级账号禁止删除！');
         }
     }
