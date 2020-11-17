@@ -88,6 +88,7 @@ class Oplog extends Controller
             foreach ($data as $name => $value) {
                 sysconf($name, $value);
             }
+            $GLOBALS['oplogs'] = [];
             $this->success('日志配置成功！');
         }
     }
