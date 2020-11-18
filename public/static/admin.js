@@ -599,6 +599,24 @@ $(function () {
         });
     };
 
+    /*! 文本框插入内容 */
+    $.fn.insertAtCursor = function (value) {
+        return this.each(function () {
+            if (document.selection) {
+                this.focus();
+                var selection = document.selection.createRange();
+                (selection.text = value), selection.select();
+            } else if (this.selectionStart || this.selectionStart === 0) {
+                var startPos = this.selectionStart, afterPos = this.selectionEnd, scrollTop = this.scrollTop;
+                this.value = this.value.substring(0, startPos) + value + this.value.substring(afterPos, this.value.length);
+                if (scrollTop > 0) this.scrollTop = scrollTop;
+                this.focus();
+                this.selectionEnd = startPos + value.length;
+                this.selectionStart = startPos + value.length;
+            } else (this.value += value), this.focus();
+        });
+    }
+
     /*! 注册 data-load 事件行为 */
     $body.on('click', '[data-load]', function () {
         var url = this.dataset.load, tips = this.dataset.tips, time = this.dataset.time;
