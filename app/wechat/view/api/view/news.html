@@ -4,20 +4,23 @@
 <div class="header"><span>{:date('H:i')}</span></div>
 <div class="container">
     {notempty name='news.articles'} {foreach $news.articles as $k => $v} {if $k < 1}
-    <a href="{:url('wechat/api.view/item')}?id={$v.id}" style='background-image:url("{$v.local_url}")'>
+    <a href="{:url('wechat/api.view/item')}?id={$v.id}" data-lazy-src="{$v.local_url}" class="item">
         {if $v.title}<span>{$v.title}</span>{/if}
     </a>
-    <div class="hr-line-dashed"></div>
     {else}
-    <a href="{:url('wechat/api.view/item')}?id={$v.id}" class='other'>
-        <span>{$v.title}</span>
-        <span style='background-image:url("{$v.local_url}");'></span>
-    </a>
     <div class="hr-line-dashed"></div>
+    <a href="{:url('wechat/api.view/item')}?id={$v.id}" class='other'>
+        <span>{$v.title}</span><span data-lazy-src="{$v.local_url}"></span>
+    </a>
     {/if} {/foreach} {else}
     <div class="info"><h3>404</h3> 访问资源不存在哦！</div>
     {/notempty}
 </div>
+<script>
+    document.querySelectorAll('[data-lazy-src]').forEach(function (elem) {
+        elem.style.backgroundImage = 'url(' + elem.dataset.lazySrc + ')';
+    });
+</script>
 {/block}
 
 {block name='style'}
@@ -32,25 +35,34 @@
         font-size: 12px;
         line-height: 12px;
         background: #aaa;
-        box-shadow: 0 0 3px #666
+        box-shadow: 0 0 1px #666
     }
 
     .container {
         width: 90%;
         display: block;
         margin: 5vw auto;
-        overflow: hidden;
         position: relative;
         border-radius: 5px;
-        box-shadow: 0 0 3px #333;
+        box-shadow: 0 0 2px #333;
     }
 
-    .container a {
+    .container a.item {
         height: 50vw;
         display: block;
         position: relative;
         background: no-repeat center center;
-        background-size: cover
+        background-size: cover;
+    }
+
+    .container a.item:first-child {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    .container a.item:last-child, .container a.item:last-child span {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
     }
 
     .container a span {
@@ -65,7 +77,6 @@
         position: absolute;
         line-height: 2em;
         white-space: nowrap;
-        margin: 0 -1px 0 -1px;
         text-overflow: ellipsis;
         background: rgba(0, 0, 0, .7);
     }
@@ -99,18 +110,18 @@
         background-position: center center
     }
 
-    .info h3 {
-        color: #333;
-        font-size: 5vw;
-        margin-bottom: 1rem
-    }
-
     .info {
         color: #666;
         padding: 2rem;
         font-size: .5rem;
         text-align: center;
         letter-spacing: 1px
+    }
+
+    .info h3 {
+        color: #333;
+        font-size: 5vw;
+        margin-bottom: 1rem
     }
 
     .hr-line-dashed {
