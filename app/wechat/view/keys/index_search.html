@@ -12,13 +12,11 @@
             <div class="layui-input-inline">
                 <select class="layui-select" name="type">
                     <option value="">-- 全部 --</option>
-                    {foreach $types as $k=>$v}
-                    {if $k.'' eq input('type')}
+                    {foreach $types as $k => $v}{if $k.'' eq input('type')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
-                    {/if}
-                    {/foreach}
+                    {/if}{/foreach}
                 </select>
             </div>
         </div>
@@ -26,13 +24,13 @@
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    {foreach [''=>'-- 全部 --','0'=>'显示使用的规则','1'=>'显示禁止的规则'] as $k=>$v}
+                    <option value="">-- 全部 --</option>
+                    {foreach ['显示禁止的规则','显示使用的规则'] as $k=>$v}
                     {if $k.'' eq input('status')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
-                    {/if}
-                    {/foreach}
+                    {/if}{/foreach}
                 </select>
             </div>
         </div>
@@ -46,6 +44,6 @@
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
         </div>
     </form>
+    <script>window.form.render()</script>
 </fieldset>
 
-<script>window.form.render()</script>

@@ -14,9 +14,19 @@
         padding-right: 50px
     }
 
-    .keys-container .layui-card [data-tips-image] {
+    .keys-container .layui-card .layui-card-body [data-tips-image] {
         width: 112px;
         height: auto
+    }
+
+    .keys-container .layui-card .layui-card-body .layui-form-label {
+        width: 60px;
+        color: #6c6c6c;
+        font-weight: 700;
+    }
+
+    .keys-container .layui-card .layui-card-body .layui-form-label + .layui-input-block {
+        margin-left: 100px;
     }
 </style>
 {/block}
@@ -73,9 +83,9 @@
                     </div>
 
                     <div class="layui-form-item" data-keys-type='text'>
-                        <label class="layui-form-label">回复内容</label>
+                        <label class="layui-form-label">回复文字</label>
                         <div class="layui-input-block">
-                            <textarea name="content" maxlength="10000" class="layui-textarea">{$vo.content|raw|default='说点什么吧'}</textarea>
+                            <textarea name="content" required placeholder="请输入回复文字" maxlength="10000" class="layui-textarea">{$vo.content|raw|default='说点什么吧'}</textarea>
                         </div>
                     </div>
 
@@ -182,9 +192,9 @@
         /*! 刷新预览显示 */
         function showReview(params, location) {
             if (params['type'] === 'news') {
-                location = '{:url("@wechat/api.review/news")}?id=_id_'.replace('_id_', params.content);
+                location = '{:url("@wechat/api.view/news")}?id=_id_'.replace('_id_', params.content);
             } else {
-                location = '{:url("@wechat/api.review/_type_")}?'.replace('_type_', params.type) + $.param(params || {});
+                location = '{:url("@wechat/api.view/_type_")}?'.replace('_type_', params.type) + $.param(params || {});
             }
             var iframe = '<iframe id="phone-preview" frameborder="0" marginheight="0" marginwidth="0"></iframe>';
             $('[data-iframe-box]').empty().append($(iframe).attr('src', location));

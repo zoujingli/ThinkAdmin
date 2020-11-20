@@ -19,14 +19,15 @@ use app\wechat\service\MediaService;
 use think\admin\Controller;
 
 /**
- * Class Review
+ * 微信图文显示
+ * Class View
  * @package app\wechat\controller\api
  */
-class Review extends Controller
+class View extends Controller
 {
 
     /**
-     * 图文展示
+     * 图文列表展示
      * @param integer $id 图文ID
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -40,13 +41,13 @@ class Review extends Controller
     }
 
     /**
-     * 文章展示
+     * 文章内容展示
      * @param integer $id 文章ID
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function view($id = 0)
+    public function item($id = 0)
     {
         $map = ['id' => $id ?: input('id', 0)];
         $this->app->db->name('WechatNewsArticle')->where($map)->update([
