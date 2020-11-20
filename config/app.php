@@ -18,8 +18,6 @@ return [
     'app_namespace'    => '',
     // 是否启用路由
     'with_route'       => true,
-    // 是否启用事件
-    'with_event'       => true,
     // 开启应用快速访问
     'app_express'      => true,
     // 默认应用
