@@ -34,10 +34,10 @@ class Test extends Controller
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    public function jsapi_qrc()
+    public function jsapiQrc()
     {
         $this->url = sysuri('wechat/api.test/jsapi', [], false, true);
-        return $this->showQrc($this->url);
+        return $this->_buildQrcResponse($this->url);
     }
 
     /**
@@ -47,10 +47,10 @@ class Test extends Controller
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    public function oauth_qrc()
+    public function oauthQrc()
     {
         $this->url = sysuri('wechat/api.test/oauth', [], false, true);
-        return $this->showQrc($this->url);
+        return $this->_buildQrcResponse($this->url);
     }
 
     /**
@@ -60,10 +60,10 @@ class Test extends Controller
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    public function jssdk_qrc()
+    public function jssdkQrc()
     {
         $this->url = sysuri('wechat/api.test/jssdk', [], false, true);
-        return $this->showQrc($this->url);
+        return $this->_buildQrcResponse($this->url);
     }
 
     /**
@@ -73,10 +73,10 @@ class Test extends Controller
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    public function scan_one_qrc()
+    public function scanOneQrc()
     {
         $pay = WechatService::WePayOrder();
-        return $this->showQrc($pay->qrcParams('8888888'));
+        return $this->_buildQrcResponse($pay->qrcParams('8888888'));
     }
 
     /**
@@ -88,7 +88,7 @@ class Test extends Controller
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function scan_two_qrc()
+    public function scanTwoQrc()
     {
         $result = WechatService::WePayOrder()->create([
             'body'             => '测试商品',
@@ -98,7 +98,7 @@ class Test extends Controller
             'out_trade_no'     => CodeExtend::uniqidNumber(18),
             'spbill_create_ip' => $this->request->ip(),
         ]);
-        return $this->showQrc($result['code_url']);
+        return $this->_buildQrcResponse($result['code_url']);
     }
 
     /**
@@ -141,7 +141,7 @@ class Test extends Controller
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function scan_one_notify()
+    public function scanOneNotify()
     {
         $pay = WechatService::WePayOrder();
         $notify = $pay->getNotify();
@@ -183,7 +183,6 @@ class Test extends Controller
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
-     * @link wx-demo-jsapi
      */
     public function jsapi()
     {
@@ -252,7 +251,7 @@ class Test extends Controller
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    private function showQrc(string $url)
+    private function _buildQrcResponse(string $url)
     {
         $qrCode = new \Endroid\QrCode\QrCode();
         $qrCode->setText($url)->setSize(300)->setPadding(20)->setImageType('png');

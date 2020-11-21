@@ -12,30 +12,36 @@
             <div class="margin-bottom-0">
                 <p class="font-w7 color-green">微信商户支付测试配置</p>
                 <p>JSAPI 支付测试需要在微信商户平台配置支付目录：<a data-copy="{:url('wechat/api.test/',[],'',true)}">{:sysuri('wechat/api.test/index',[],'',true)}</a></p>
-                <p>扫码支付①需要在微信商户平台配置支付通知地址：<a data-copy="{:url('wechat/api.test/scan_one_notify',[],'',true)}">{:url('wechat/api.test/scan_one_notify',[],'',true)}</a></p>
+                <p>扫码支付①需要在微信商户平台配置支付通知地址：<a data-copy="{:url('wechat/api.test/scanOneNotify',[],'',true)}">{:url('wechat/api.test/scanOneNotify',[],'',true)}</a></p>
             </div>
         </div>
-        <div class="text-center margin-top-20">
+        <div class="text-center margin-top-20 test-qrcode-box">
             <div class="inline-block padding-right-15 notselect">
-                <img alt="" class="notselect" data-tips-image src="{:url('wechat/api.test/oauth_qrc')}" style="width:120px">
+                <img alt="" class="notselect" data-tips-image src="{:url('wechat/api.test/oauthQrc')}">
                 <p class="text-center">网页授权</p>
             </div>
             <div class="inline-block padding-right-15">
-                <img alt="img" class="notselect" data-tips-image src="{:url('wechat/api.test/jssdk_qrc')}" style="width:120px;">
+                <img alt="img" class="notselect" data-tips-image src="{:url('wechat/api.test/jssdkQrc')}">
                 <p class="text-center">JSSDK签名</p>
             </div>
             <div class="inline-block padding-right-15">
-                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/jsapi_qrc')}" style="width:120px;">
+                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/jsapiQrc')}">
                 <p class="text-center">JSAPI支付</p>
             </div>
             <div class="inline-block padding-right-15">
-                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/scan_one_qrc')}" style="width:120px;">
+                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/scanOneQrc')}">
                 <p class="text-center">扫码支付①</p>
             </div>
             <div class="inline-block">
-                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/scan_two_qrc')}" style="width:120px;">
+                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/scanTwoQrc')}">
                 <p class="text-center">扫码支付②</p>
             </div>
         </div>
     </div>
 </div>
+<style>
+    .test-qrcode-box img {
+        width: 130px;
+        height: 130px
+    }
+</style>
