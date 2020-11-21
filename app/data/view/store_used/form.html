@@ -1,0 +1,23 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7">标签名称</span>
+            <span class="color-desc margin-left-5">Mark Name</span>
+            <input class="layui-input" required placeholder="请输入标签名称" name="name" value="{$vo.name|default=''}"/>
+            <span class="help-block"><b>必填，</b>请填写分类名称（如：系统管理），建议字符不要太长，一般4-6个汉字</span>
+        </label>
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7">标签描述</span>
+            <span class="color-desc margin-left-5">Mark Remark</span>
+            <label class="relative block">
+                <textarea class="layui-textarea" placeholder="请输入文档描述" name="desc">{$vo.desc|default=''}</textarea>
+            </label>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>

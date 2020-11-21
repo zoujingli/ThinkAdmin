@@ -1,0 +1,35 @@
+<fieldset>
+    <legend>条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">标签名称</label>
+            <label class="layui-input-inline">
+                <input name="name" value="{:input('name','')}" placeholder="请输入标签名称" class="layui-input">
+            </label>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">使用状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="status">
+                    {foreach [''=>'-- 全部 --','0'=>'已禁用的记录','1'=>'使用中的记录'] as $k=>$v}
+                    {if $k.'' eq input('status')}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <label class="layui-input-inline">
+                <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择创建时间" class="layui-input">
+            </label>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+</fieldset>
+
+<script>window.form.render()</script>
