@@ -156,9 +156,8 @@ class Test extends Controller
             'out_trade_no'     => CodeExtend::uniqidDate(18),
             'spbill_create_ip' => $this->request->ip(),
         ];
-        $order = $pay->create($options);
         p('======= 来自扫码支付1统一下单结果 ======');
-        p($order);
+        p($order = $pay->create($options));
         // 回复XML文本
         $result = [
             'return_code' => 'SUCCESS',
