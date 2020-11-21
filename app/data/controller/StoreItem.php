@@ -30,7 +30,9 @@ class StoreItem extends Controller
         $this->title = '实体门店管理';
         $query = $this->_query($this->table);
         // code,name,cover,slider,username,phone,remark,sort,type,status,deleted,business_hours_start,business_hours_after
+        ### 地理位置标志
         // region_province,region_city,region_area,region_address,region_longitude,region_latitude
+        ### 字段描述
         // type 0 支持自提，1 不支持自提
         // status 0 禁用，0 启用
         // business_weeks_days // 每周天数
