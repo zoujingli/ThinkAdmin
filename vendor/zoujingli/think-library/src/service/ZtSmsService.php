@@ -79,8 +79,7 @@ class ZtSmsService extends Service
      */
     public function checkVerifyCode(string $code, string $phone, string $template = 'ztsms.register_verify'): bool
     {
-        $ckey = md5("code-{$template}-{$phone}");
-        $cache = $this->app->cache->get($ckey, []);
+        $cache = $this->app->cache->get($ckey = md5("code-{$template}-{$phone}"), []);
         if (is_array($cache) && isset($cache['code']) && $cache['code'] == $code) {
             $this->app->cache->delete($ckey);
             return true;
@@ -102,9 +101,8 @@ class ZtSmsService extends Service
     public function sendVerifyCode(string $phone, int $wait = 120, string $template = 'ztsms.register_verify'): array
     {
         $time = time();
-        $ckey = md5("code-{$template}-{$phone}");
-        $cache = $this->app->cache->get($ckey, []);
         // 检查是否已经发送
+        $cache = $this->app->cache->get($ckey = md5("code-{$template}-{$phone}"), []);
         if (is_array($cache) && isset($cache['time']) && $cache['time'] + $wait > $time) {
             $dtime = $cache['time'] + $wait < $time ? 0 : $cache['time'] + $wait - $time;
             return [1, '短信验证码已经发送！', ['time' => $dtime]];

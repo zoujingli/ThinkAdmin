@@ -21,17 +21,29 @@ use think\console\input\Argument;
 use think\console\input\Option;
 use think\console\Output;
 
+/**
+ * 清理运行缓存
+ * Class Clear
+ * @package think\admin\multiple\command
+ */
 class Clear extends Command
 {
     protected function configure()
     {
-        $this->setName('clear')->addArgument('app', Argument::OPTIONAL, 'app name .');
+        $this->setName('clear')->addArgument('app', Argument::OPTIONAL, 'app name');
+        $this->addOption('path', 'd', Option::VALUE_OPTIONAL, 'path to clear', null);
         $this->addOption('cache', 'c', Option::VALUE_NONE, 'clear cache file');
         $this->addOption('log', 'l', Option::VALUE_NONE, 'clear log file');
         $this->addOption('dir', 'r', Option::VALUE_NONE, 'clear empty dir');
+        $this->addOption('expire', 'e', Option::VALUE_NONE, 'clear cache file if cache has expired');
         $this->setDescription('Clear runtime file');
     }
 
+    /**
+     * @param Input $input
+     * @param Output $output
+     * @return int|void|null
+     */
     protected function execute(Input $input, Output $output)
     {
         $app = $input->getArgument('app') ?: '';
@@ -41,23 +53,47 @@ class Clear extends Command
         } elseif ($input->getOption('log')) {
             $path = $runtimePath . 'log';
         } else {
-            $path = $runtimePath;
+            $path = $input->getOption('path') ?: $runtimePath;
         }
         $rmdir = $input->getOption('dir') ? true : false;
-        $this->clear(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR, $rmdir);
+        // --expire 仅当 --cache 时生效
+        $expire = $input->getOption('expire') && $input->getOption('cache');
+        $this->clear(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR, $rmdir, $expire);
         $output->writeln("<info>Clear Successed</info>");
     }
 
-    protected function clear(string $path, bool $rmdir): void
+    /**
+     * 清处理指定目录
+     * @param string $path 待清理目录
+     * @param boolean $rmdir 是否目录
+     * @param boolean $expire 有效时间
+     */
+    private function clear(string $path, bool $rmdir, bool $expire): void
     {
-        $files = is_dir($path) ? scandir($path) : [];
-        foreach ($files as $file) {
-            if ('.' != $file && '..' != $file && is_dir($path . $file)) {
-                array_map('unlink', glob($path . $file . DIRECTORY_SEPARATOR . '*.*'));
-                if ($rmdir) rmdir($path . $file);
+        foreach (is_dir($path) ? scandir($path) : [] as $file) {
+            if ('.' !== $file && '..' !== $file && is_dir($path . $file)) {
+                $this->clear($path . $file . DIRECTORY_SEPARATOR, $rmdir, $expire);
+                if ($rmdir) @rmdir($path . $file);
             } elseif ('.gitignore' != $file && is_file($path . $file)) {
-                unlink($path . $file);
+                if ($expire) {
+                    if ($this->cacheHasExpired($path . $file)) {
+                        @unlink($path . $file);
+                    }
+                } else {
+                    @unlink($path . $file);
+                }
             }
         }
+    }
+
+    /**
+     * 缓存文件是否已过期
+     * @param $filename string 文件路径
+     * @return boolean
+     */
+    private function cacheHasExpired(string $filename): bool
+    {
+        $expire = (int)substr(file_get_contents($filename), 8, 12);
+        return 0 != $expire && time() - $expire > filemtime($filename);
     }
 }
