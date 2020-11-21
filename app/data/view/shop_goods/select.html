@@ -1,7 +1,7 @@
 {extend name="../../admin/view/full"}
 
 {block name="content"}
-<div class="padding-25">
+<div class="iframe-pagination">
     {include file='shop_goods/index_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
@@ -39,23 +39,8 @@
         {/foreach}
         </tbody>
     </table>
-    <div class="padding-10"></div>
     {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 </div>
-{/block}
-
-{block name='style'}
-<style>
-    .pagination-container {
-        left: 0;
-        right: 0;
-        bottom: 0;
-        padding: 5px 20px;
-        position: fixed;
-        background: #fff;
-        border-top: 1px solid #dedede;
-    }
-</style>
 {/block}
 
 {block name='script'}
