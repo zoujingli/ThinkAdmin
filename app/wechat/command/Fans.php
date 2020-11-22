@@ -57,7 +57,7 @@ class Fans extends Command
                 $message .= $this->$method();
             }
         }
-        $this->queue->success($message);
+        $this->setQueueSuccess($message);
     }
 
     /**
