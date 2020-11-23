@@ -226,7 +226,7 @@ class WechatService extends Service
         $openid = $this->app->session->get("{$appid}_openid");
         $fansinfo = $this->app->session->get("{$appid}_fansinfo");
         if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
-            empty($fansinfo) || FansService::instance()->set($fansinfo);
+            empty($fansinfo) || FansService::instance()->set($fansinfo, $appid);
             return ['openid' => $openid, 'fansinfo' => $fansinfo];
         }
         if ($this->getType() === 'api') {
@@ -244,7 +244,7 @@ class WechatService extends Service
                     throw new HttpResponseException(redirect(debase64url(input('rcode')), 301));
                 }
                 $this->app->session->set("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
-                empty($fansinfo) || FansService::instance()->set($fansinfo);
+                empty($fansinfo) || FansService::instance()->set($fansinfo, $appid);
             }
             throw new HttpResponseException(redirect(debase64url(input('rcode')), 301));
         } else {
@@ -252,7 +252,7 @@ class WechatService extends Service
             $this->app->session->set("{$appid}_openid", $openid = $result['openid']);
             $this->app->session->set("{$appid}_fansinfo", $fansinfo = $result['fans']);
             if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
-                if (!empty($fansinfo)) FansService::instance()->set($fansinfo);
+                if (!empty($fansinfo)) FansService::instance()->set($fansinfo, $appid);
                 return ['openid' => $openid, 'fansinfo' => $fansinfo];
             }
             if ($redirect && !empty($result['url'])) {
