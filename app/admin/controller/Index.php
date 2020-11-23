@@ -38,9 +38,9 @@ class Index extends Controller
     {
         /*! 根据运行模式刷新权限 */
         AdminService::instance()->apply($this->app->isDebug());
-        /*! 读取当前权限菜单树 */
+        /*! 读取当前用户权限菜单树 */
         $this->menus = MenuService::instance()->getTree();
-        /*! 判断用户是否已经登录 */
+        /*! 判断当前用户的登录状态 */
         $this->login = AdminService::instance()->isLogin();
         /*! 菜单为空且未登录跳转到登录页 */
         if (empty($this->menus) && empty($this->login)) {
