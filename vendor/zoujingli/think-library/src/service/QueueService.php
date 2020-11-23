@@ -100,15 +100,16 @@ class QueueService extends Service
 
     /**
      * 添加定时清理任务
+     * @param integer $loops 循环时间
      * @return $this
-     * @throws \think\admin\Exception
+     * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function addCleanQueue(): QueueService
+    public function addCleanQueue($loops = 3600): QueueService
     {
-        return $this->register('定时清理系统任务数据', "xadmin:queue clean", 0, [], 0, 3600);
+        return $this->register('定时清理系统任务数据', "xadmin:queue clean", 0, [], 0, $loops);
     }
 
     /**
