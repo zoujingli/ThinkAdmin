@@ -20,12 +20,12 @@ return [
     'allow_lang_list' => ['zh-cn'],
     // 多语言自动侦测变量名
     'detect_var'      => 'lang',
-    // 使用 Cookie 记录
-    'use_cookie'      => true,
     // 多语言 Cookie 变量
     'cookie_var'      => 'think_lang',
     // 多语言 Header 变量
     'header_var'      => 'think-lang',
+    // 使用 Cookie 记录
+    'use_cookie'      => true,
     // 是否支持语言分组
     'allow_group'     => false,
     // 扩展语言包

@@ -35,7 +35,7 @@ class StoreItem extends Controller
         ### 字段描述
         // type 0 支持自提，1 不支持自提
         // status 0 禁用，0 启用
-        // business_weeks_days // 每周天数
+        // business_weeks_works // 每周工作
         // business_hours_start // 开始时间
         // business_hours_after // 结束时间
         $query->like('name')->equal('status')->dateBetween('create_at');
