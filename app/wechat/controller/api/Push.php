@@ -120,7 +120,7 @@ class Push extends Controller
                 $this->app->log->notice("The {$method} event pushed by wechat was not handled. from {$this->openid}");
             }
         } catch (\Exception $exception) {
-            $this->app->log->error("{$exception->getLine()} [{$exception->getCode()}] {$exception->getMessage()}");
+            $this->app->log->error("{$exception->getFile()}:{$exception->getLine()} [{$exception->getCode()}] {$exception->getMessage()}");
         }
         return 'success';
     }
