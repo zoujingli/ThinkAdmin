@@ -65,7 +65,7 @@ class Index extends Controller
         if (AdminService::instance()->getUserId() === intval($id)) {
             $this->_form('SystemUser', 'admin@user/form', 'id', [], ['id' => $id]);
         } else {
-            $this->error('只能修改登录用户的资料！');
+            $this->error('只能修改自己的资料！');
         }
     }
 
