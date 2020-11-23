@@ -38,43 +38,6 @@ class Plugs extends Controller
         $this->fetch(realpath(__DIR__ . '/../../view/api/icon.html'));
     }
 
-    /**
-     * 网站压缩发布
-     * @login true
-     */
-    public function push()
-    {
-        if (AdminService::instance()->isSuper()) try {
-            AdminService::instance()->clearCache();
-            SystemService::instance()->pushRuntime();
-            $this->success('网站缓存加速成功！');
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
-        } else {
-            $this->error('只有超级管理员才能操作！');
-        }
-    }
-
-    /**
-     * 清理运行缓存
-     * @login true
-     */
-    public function clear()
-    {
-        if (AdminService::instance()->isSuper()) try {
-            AdminService::instance()->clearCache();
-            SystemService::instance()->clearRuntime();
-            $this->success('清理网站缓存成功！');
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
-        } else {
-            $this->error('只有超级管理员才能操作！');
-        }
-    }
 
     /**
      * 当前运行模式
@@ -149,6 +112,44 @@ class Plugs extends Controller
             $this->app->cache->delete('SystemConfig');
             $GLOBALS['oplogs'] = [];
             $this->success('清理系统配置成功！');
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        } else {
+            $this->error('只有超级管理员才能操作！');
+        }
+    }
+
+    /**
+     * 网站压缩发布
+     * @login true
+     */
+    public function pushRuntime()
+    {
+        if (AdminService::instance()->isSuper()) try {
+            AdminService::instance()->clearCache();
+            SystemService::instance()->pushRuntime();
+            $this->success('网站缓存加速成功！');
+        } catch (HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        } else {
+            $this->error('只有超级管理员才能操作！');
+        }
+    }
+
+    /**
+     * 清理运行缓存
+     * @login true
+     */
+    public function clearRuntime()
+    {
+        if (AdminService::instance()->isSuper()) try {
+            AdminService::instance()->clearCache();
+            SystemService::instance()->clearRuntime();
+            $this->success('清理网站缓存成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
