@@ -18,7 +18,7 @@ return [
     'app_namespace'    => '',
     // 是否启用路由
     'with_route'       => true,
-    // 开启应用快速访问
+    // 应用快速访问
     'app_express'      => true,
     // 默认应用
     'default_app'      => 'index',
@@ -30,8 +30,8 @@ return [
     'domain_bind'      => [],
     // 禁止URL访问的应用列表（自动多应用模式有效）
     'deny_app_list'    => [],
-    // 异常页面的模板文件
-    'exception_tmpl'   => app()->getBasePath() . 'admin/view/error.tpl',
-    // 错误显示信息,非调试模式有效
+    // 非调试模式时显示错误的消息
     'error_message'    => '页面错误！请稍后再试～',
+    // 调试模式异常页面的模板文件
+    'exception_tmpl'   => app()->getBasePath() . 'admin/view/error.tpl',
 ];

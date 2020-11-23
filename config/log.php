@@ -14,11 +14,11 @@
 // +----------------------------------------------------------------------
 
 return [
-    // 默认日志记录通道
+    // 默认日志通道
     'default'      => 'file',
     // 日志记录级别
     'level'        => [],
-    // 日志类型记录的通道 ['error'=>'email',...]
+    // 日志类型记录的通道
     'type_channel' => [],
     // 关闭全局日志写入
     'close'        => false,
@@ -34,11 +34,11 @@ return [
             // 单文件日志写入
             'single'         => true,
             // 指定日志类型
-            'level'          => ['notice', 'error', 'sql'],
+            'level'          => ['info', 'notice', 'error', 'sql'],
             // 独立日志级别
             'apart_level'    => true,
             // 每个文件大小 ( 10兆 )
-            'file_size'      => 1024 * 1024 * 10,
+            'file_size'      => 10485760,
             // 日志日期格式
             'time_format'    => 'Y-m-d H:i:s',
             // 最大日志文件数量

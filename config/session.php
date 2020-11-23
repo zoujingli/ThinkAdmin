@@ -22,6 +22,6 @@ return [
     'store'  => null,
     // 过期时间
     'expire' => 1800,
-    // 前缀
+    // 文件前缀
     'prefix' => '',
 ];

@@ -27,7 +27,7 @@ return [
     // 去除HTML空格换行
     'strip_space'        => true,
     // 模板缓存配置
-    'tpl_cache'          => false,
+    'tpl_cache'          => !app()->isDebug(),
     // 模板引擎普通标签开始标记
     'tpl_begin'          => '{',
     // 模板引擎普通标签结束标记
