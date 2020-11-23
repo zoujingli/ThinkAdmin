@@ -195,13 +195,14 @@ class WechatService extends Service
             'mch_key'        => sysconf('wechat.mch_key'),
             'cache_path'     => $this->app->getRuntimePath() . 'wechat',
         ];
+        $local = LocalStorage::instance();
         switch (strtolower(sysconf('wechat.mch_ssl_type'))) {
             case 'p12':
-                $options['ssl_p12'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_p12'), true);
+                $options['ssl_p12'] = $local->path(sysconf('wechat.mch_ssl_p12'), true);
                 break;
             case 'pem':
-                $options['ssl_key'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_key'), true);
-                $options['ssl_cer'] = LocalStorage::instance()->path(sysconf('wechat.mch_ssl_cer'), true);
+                $options['ssl_key'] = $local->path(sysconf('wechat.mch_ssl_key'), true);
+                $options['ssl_cer'] = $local->path(sysconf('wechat.mch_ssl_cer'), true);
                 break;
         }
         return $options;
@@ -276,7 +277,7 @@ class WechatService extends Service
      */
     public function getWebJssdkSign(?string $location = null)
     {
-        $location = is_null($location) ? $this->app->request->url(true) : $location;
+        $location = $location ?: $this->app->request->url(true);
         if ($this->getType() === 'api') {
             return self::WeChatScript()->getJsSign($location);
         } else {
