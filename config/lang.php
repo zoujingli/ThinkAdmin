@@ -18,6 +18,10 @@ return [
     'default_lang'    => 'zh-cn',
     // 允许的语言列表
     'allow_lang_list' => ['zh-cn'],
+    // 转义为对应语言包名称
+    'accept_language' => [
+        'zh-hans-cn' => 'zh-cn',
+    ],
     // 多语言自动侦测变量名
     'detect_var'      => 'lang',
     // 多语言 Cookie 变量
@@ -30,8 +34,4 @@ return [
     'allow_group'     => false,
     // 扩展语言包
     'extend_list'     => [],
-    // 转义为对应语言包名称
-    'accept_language' => [
-        'zh-hans-cn' => 'zh-cn',
-    ],
 ];
