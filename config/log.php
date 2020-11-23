@@ -33,8 +33,6 @@ return [
             'path'           => '',
             // 单文件日志写入
             'single'         => true,
-            // 指定日志类型
-            'level'          => ['info', 'notice', 'error', 'sql'],
             // 独立日志级别
             'apart_level'    => true,
             // 每个文件大小 ( 10兆 )
