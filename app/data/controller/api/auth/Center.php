@@ -39,7 +39,7 @@ class Center extends Auth
             if ($vo === '') unset($data[$key]);
         }
         if (empty($data)) $this->error('没有修改的数据！');
-        if ($this->app->db->name($this->table)->where(['id' => $this->uid])->update($data) !== false) {
+        if ($this->app->db->name($this->table)->where(['id' => $this->uuid])->update($data) !== false) {
             $this->success('更新资料成功！', $this->getUser());
         } else {
             $this->error('更新资料失败！');
@@ -59,7 +59,7 @@ class Center extends Auth
      */
     public function total()
     {
-        $this->success('获取用户统计!', UserService::instance()->total($this->uid));
+        $this->success('获取用户统计!', UserService::instance()->total($this->uuid));
     }
 
     /**
@@ -93,16 +93,16 @@ class Center extends Auth
     public function bindFrom()
     {
         $data = $this->_vali(['from.require' => '邀请人不能为空']);
-        if ($data['from'] == $this->uid) {
-            $this->error('邀请人不能是自己哦', UserService::instance()->total($this->uid));
+        if ($data['from'] == $this->uuid) {
+            $this->error('邀请人不能是自己哦', UserService::instance()->total($this->uuid));
         }
         $from = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
-        if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->get($this->uid));
-        if ($this->user['from'] > 0) $this->error('您已经绑定了邀请人', UserService::instance()->total($this->uid));
-        if ($this->app->db->name($this->table)->where(['id' => $this->uid])->update($data) !== false) {
-            $this->success('绑定邀请人成功！', UserService::instance()->total($this->uid));
+        if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->get($this->type, $this->uuid));
+        if ($this->user['from'] > 0) $this->error('您已经绑定了邀请人', UserService::instance()->total($this->uuid));
+        if ($this->app->db->name($this->table)->where(['id' => $this->uuid])->update($data) !== false) {
+            $this->success('绑定邀请人成功！', UserService::instance()->total($this->uuid));
         } else {
-            $this->error('绑定邀请人失败！', UserService::instance()->total($this->uid));
+            $this->error('绑定邀请人失败！', UserService::instance()->total($this->uuid));
         }
     }
 
@@ -115,7 +115,7 @@ class Center extends Auth
     public function getFrom()
     {
         $query = $this->_query($this->table);
-        $query->where(['from' => $this->uid])->field('id,from,username,nickname,headimg,create_at');
+        $query->where(['from' => $this->uuid])->field('id,from,username,nickname,headimg,create_at');
         $this->success('获取我邀请的朋友', $query->order('id desc')->page(true, false, false, 15));
     }
 }

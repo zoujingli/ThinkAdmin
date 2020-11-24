@@ -51,7 +51,7 @@ class Wxapp extends Controller
         [$openid, $unionid, $sessionKey] = $this->_getSessionKey($input['code']);
         $map = empty($unionid) ? ['openid1' => $openid] : ['unionid' => $unionid];
         $data = array_merge($map, ['openid1' => $openid, 'session_key' => $sessionKey]);
-        $this->success('授权换取成功！', UserService::instance()->save($map, $data, true));
+        $this->success('授权换取成功！', UserService::instance()->save($map, $data, 'wxapp', true));
     }
 
     /**
@@ -76,7 +76,7 @@ class Wxapp extends Controller
                 $sex = ['未知', '男', '女'][$result['gender']] ?? '未知';
                 $map = empty($result['unionId']) ? ['openid1' => $result['openId']] : ['unionid' => $result['unionId']];
                 $data = ['openid1' => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
-                $this->success('数据解密成功！', UserService::instance()->save($map, array_merge($map, $data), true));
+                $this->success('数据解密成功！', UserService::instance()->save($map, array_merge($map, $data), 'wxapp', true));
             } elseif (is_array($result) && isset($result['phoneNumber'])) {
                 $this->success('数据解密成功！', $result);
             } else {

@@ -82,7 +82,7 @@ class Wechat extends Controller
             $data['base_sex'] = ['未知', '男', '女'][$data['sex']] ?? '未知';
             if (isset($data['headimgurl'])) $data['headimg'] = $data['headimgurl'];
             $map = isset($data['unionid']) ? ['unionid' => $data['unionid']] : ['openid2' => $this->openid];
-            $this->userInfo = UserService::instance()->save($map, array_merge($map, $data), true);
+            $this->userInfo = UserService::instance()->save($map, array_merge($map, $data), 'wechat', true);
             $content = $this->_buildContent();
         }
         return Response::create($content)->contentType('application/x-javascript');

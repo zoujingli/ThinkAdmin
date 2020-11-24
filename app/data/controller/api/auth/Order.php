@@ -36,7 +36,7 @@ class Order extends Auth
      */
     public function get()
     {
-        $map = [['uid', '=', $this->uid]];
+        $map = [['uid', '=', $this->uuid]];
         if (!$this->request->has('order_no', 'param', true)) {
             $map[] = ['status', 'in', [0, 2, 3, 4, 5]];
         }
@@ -59,10 +59,10 @@ class Order extends Auth
         if (empty($rules)) $this->error('商品规则不能为空！');
         // 订单数据
         [$codes, $items] = [[], []];
-        $order = ['uid' => $this->uid, 'from' => input('from_mid', '0'), 'status' => 1];
+        $order = ['uid' => $this->uuid, 'from' => input('from_mid', '0'), 'status' => 1];
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
         // 推荐人处理
-        if ($order['from'] == $this->uid) {
+        if ($order['from'] == $this->uuid) {
             $order['from'] = 0;
         }
         if ($order['from'] > 0) {
@@ -137,11 +137,11 @@ class Order extends Auth
             'order_no.require' => '订单单号不能为空！',
         ]);
         // 用户收货地址
-        $map = ['uid' => $this->uid, 'code' => $data['code'], 'deleted' => 0];
+        $map = ['uid' => $this->uuid, 'code' => $data['code'], 'deleted' => 0];
         $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
         if (empty($addr)) $this->error('用户收货地址异常！');
         // 订单状态检查
-        $map = ['uid' => $this->uid, 'order_no' => $data['order_no']];
+        $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->whereIn('status', [1, 2])->find();
         $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_count');
         if (empty($order)) $this->error('不能修改收货地址哦！');
@@ -151,9 +151,8 @@ class Order extends Auth
         [$amount, $tCount, $tCode, $remark] = TruckService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
         // 创建订单发货信息
         $express = [
-            'uid'             => $this->uid, 'status' => 1,
-            'template_code'   => $tCode, 'template_count' => $tCount,
-            'template_remark' => $remark, 'template_amount' => $amount,
+            'template_code'   => $tCode, 'template_count' => $tCount, 'uid' => $this->uuid,
+            'template_remark' => $remark, 'template_amount' => $amount, 'status' => 1,
         ];
         $express['order_no'] = $data['order_no'];
         $express['address_code'] = $data['code'];
@@ -166,7 +165,7 @@ class Order extends Auth
         $express['address_datetime'] = date('Y-m-d H:i:s');
         data_save('ShopOrderSend', $express, 'order_no');
         // 更新订单状态，刷新订单金额
-        $map = ['uid' => $this->uid, 'order_no' => $data['order_no']];
+        $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
         $update['amount_total'] = $order['amount_goods'] + $amount - $order['amount_reduct'] - $order['amount_discount'];
         if ($this->app->db->name('ShopOrder')->where($map)->update($update) !== false) {
@@ -232,7 +231,7 @@ class Order extends Auth
     public function cancel()
     {
         $map = $this->_vali([
-            'uid.value'        => $this->uid,
+            'uid.value'        => $this->uuid,
             'order_no.require' => '订单号不能为空！',
         ]);
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
@@ -263,7 +262,7 @@ class Order extends Auth
     public function confirm()
     {
         $map = $this->_vali([
-            'uid.value'        => $this->uid,
+            'uid.value'        => $this->uuid,
             'order_no.require' => '订单号不能为空！',
         ]);
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
@@ -288,7 +287,7 @@ class Order extends Auth
      */
     public function total()
     {
-        $map = ['uid' => $this->uid, 'deleted' => 0];
+        $map = ['uid' => $this->uuid, 'deleted' => 0];
         $data = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0];
         $query = $this->app->db->name('ShopOrder')->fieldRaw('status,count(1) count');
         $query->where($map)->group('status')->select()->each(function ($item) use (&$data) {
@@ -304,7 +303,8 @@ class Order extends Auth
     {
         try {
             $data = $this->_vali([
-                'code.require' => '快递编号不能为空！', 'number.require' => '配送单号不能为空！',
+                'code.require'   => '快递编号不能为空！',
+                'number.require' => '配送单号不能为空！',
             ]);
             $result = TruckService::instance()->query($data['code'], $data['number']);
             empty($result['code']) ? $this->error($result['info']) : $this->success('快递追踪信息', $result);

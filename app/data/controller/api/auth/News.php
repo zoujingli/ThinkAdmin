@@ -19,7 +19,7 @@ class News extends Auth
     public function addComment()
     {
         $data = $this->_vali([
-            'uid.value'       => $this->uid,
+            'uid.value'       => $this->uuid,
             'code.require'    => '文章不能为空！',
             'content.require' => '内容不能为空！',
         ]);
@@ -39,7 +39,7 @@ class News extends Auth
      */
     public function getComment()
     {
-        $map = $this->_vali(['uid.value' => $this->uid, 'code.require' => '文章不能为空！']);
+        $map = $this->_vali(['uid.value' => $this->uuid, 'code.require' => '文章不能为空！']);
         $result = $this->_query('DataNewsXComment')->where($map)->order('id desc')->page(true, false);
         if (count($result['list']) > 0) {
             NewsService::instance()->buildListByMinAndCode($result);
@@ -54,7 +54,7 @@ class News extends Auth
     public function delComment()
     {
         $map = $this->_vali([
-            'uid.value'    => $this->uid,
+            'uid.value'    => $this->uuid,
             'id.require'   => '评论ID不能为空！',
             'code.require' => '文章CODE不能为空！',
         ]);
@@ -104,7 +104,7 @@ class News extends Auth
      */
     public function getCollect()
     {
-        $map = ['uid' => $this->uid, 'type' => 1];
+        $map = ['uid' => $this->uuid, 'type' => 1];
         $query = $this->_query('DataNewsXCollect')->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
         if (count($result['list']) > 0) {
@@ -153,7 +153,7 @@ class News extends Auth
     public function getLike()
     {
         $query = $this->_query('DataNewsXCollect')->order('id desc');
-        $result = $query->where(['uid' => $this->uid, 'type' => 2])->page(true, false, false, 15);
+        $result = $query->where(['uid' => $this->uuid, 'type' => 2])->page(true, false, false, 15);
         NewsService::instance()->buildListByMinAndCode($result['list']);
         $this->success('获取点赞记录成功！', $result);
     }
@@ -167,7 +167,7 @@ class News extends Auth
     public function getHistory()
     {
         $query = $this->_query('DataNewsXCollect')->order('id desc');
-        $result = $query->where(['uid' => $this->uid, 'type' => 3])->page(true, false, false, 15);
+        $result = $query->where(['uid' => $this->uuid, 'type' => 3])->page(true, false, false, 15);
         NewsService::instance()->buildListByMinAndCode($result['list']);
         $this->success('获取浏览历史成功！', $result);
     }
@@ -180,7 +180,7 @@ class News extends Auth
     private function _getCollectWhere(int $type = 1): array
     {
         return $this->_vali([
-            'uid.value'    => $this->uid,
+            'uid.value'    => $this->uuid,
             'type.value'   => $type,
             'code.require' => '编号不能为空！',
         ]);

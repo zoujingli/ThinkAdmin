@@ -25,7 +25,7 @@ class Address extends Auth
     public function set()
     {
         $data = $this->_vali([
-            'uid.value'        => $this->uid,
+            'uid.value'        => $this->uuid,
             'code.default'     => '',
             'type.default'     => 0,
             'type.in:0,1'      => '地址状态不在范围！',
@@ -47,14 +47,14 @@ class Address extends Auth
                 $this->error('添加收货地址失败！');
             }
         } else {
-            $map = ['uid' => $this->uid, 'code' => $data['code']];
+            $map = ['uid' => $this->uuid, 'code' => $data['code']];
             $address = $this->app->db->name($this->table)->where($map)->find();
             if (empty($address)) $this->error('修改收货地址不存在！');
             $this->app->db->name($this->table)->where($map)->update($data);
         }
         // 去除其它默认选项
         if (isset($data['type']) && $data['type'] > 0) {
-            $map = [['uid', '=', $this->uid], ['code', '<>', $data['code']]];
+            $map = [['uid', '=', $this->uuid], ['code', '<>', $data['code']]];
             $this->app->db->name($this->table)->where($map)->update(['type' => 0]);
         }
         $this->success('添加收货地址成功！', $this->_getAddress($data['code']));
@@ -69,7 +69,7 @@ class Address extends Auth
     public function get()
     {
         $query = $this->_query($this->table)->withoutField('deleted');
-        $query->equal('code')->where(['uid' => $this->uid, 'deleted' => 0]);
+        $query->equal('code')->where(['uid' => $this->uuid, 'deleted' => 0]);
         $result = $query->order('type desc,id desc')->page(false, false, false, 15);
         $this->success('获取收货地址数据！', $result);
     }
@@ -81,7 +81,7 @@ class Address extends Auth
     public function state()
     {
         $data = $this->_vali([
-            'uid.value'    => $this->uid,
+            'uid.value'    => $this->uuid,
             'type.in:0,1'  => '地址状态不在范围！',
             'type.require' => '地址状态不能为空！',
             'code.require' => '地址编号不能为空！',
@@ -96,7 +96,7 @@ class Address extends Auth
         $this->app->db->name($this->table)->where($map)->update(['type' => $data['type']]);
         // 去除其它默认选项
         if ($data['type'] > 0) {
-            $map = [['uid', '=', $this->uid], ['code', '<>', $data['code']]];
+            $map = [['uid', '=', $this->uuid], ['code', '<>', $data['code']]];
             $this->app->db->name($this->table)->where($map)->update(['type' => 0]);
         }
         $this->success('默认设置成功！', $this->_getAddress($data['code']));
@@ -109,7 +109,7 @@ class Address extends Auth
     public function remove()
     {
         $map = $this->_vali([
-            'uid.value'    => $this->uid,
+            'uid.value'    => $this->uuid,
             'code.require' => '地址编号不能为空！',
         ]);
         $address = $this->app->db->name($this->table)->where($map)->find();
@@ -131,7 +131,7 @@ class Address extends Auth
      */
     private function _getAddress(string $code)
     {
-        $map = ['code' => $code, 'uid' => $this->uid, 'deleted' => 0];
+        $map = ['code' => $code, 'uid' => $this->uuid, 'deleted' => 0];
         return $this->app->db->name($this->table)->withoutField('deleted')->where($map)->find();
     }
 

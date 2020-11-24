@@ -8,7 +8,7 @@ use think\exception\HttpResponseException;
 
 /**
  * 授权认证基类
- * Class Member
+ * Class Auth
  * @package app\store\controller\api
  */
 abstract class Auth extends Controller
@@ -17,7 +17,7 @@ abstract class Auth extends Controller
      * 当前用户UID
      * @var int
      */
-    protected $uid;
+    protected $uuid;
 
     /**
      * 当前用户数据
@@ -26,12 +26,18 @@ abstract class Auth extends Controller
     protected $user;
 
     /**
+     * 当前接口类型
+     * @var string
+     */
+    protected $type = 'wxapp';
+
+    /**
      * 控制器初始化
      */
     protected function initialize()
     {
         $this->user = $this->getUser();
-        $this->uid = $this->user['id'];
+        $this->uuid = $this->user['id'];
     }
 
     /**
@@ -41,9 +47,13 @@ abstract class Auth extends Controller
     protected function getUser()
     {
         try {
-            $this->token = input('token') ?: $this->request->header('token');
-            if (empty($this->token)) $this->error('接口请求认证令牌不能为空！');
-            return UserService::instance()->get(['token' => $this->token]);
+            if (empty($this->uuid)) {
+                $token = input('token') ?: $this->request->header('token');
+                if (empty($token)) $this->error('接口认证令牌不能为空！');
+                [$state, $message, $this->uuid] = UserService::instance()->checkUserToken($this->type, $token);
+                if ($state) $this->error($message);
+            }
+            return UserService::instance()->get($this->type, $this->uuid);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

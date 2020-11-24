@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 24/11/2020 15:59:13
+ Date: 24/11/2020 17:59:00
 */
 
 SET NAMES utf8mb4;
@@ -82,7 +82,7 @@ CREATE TABLE `data_news_x_collect`  (
   INDEX `idx_data_news_x_collect_mid`(`uid`) USING BTREE,
   INDEX `idx_data_news_x_collect_type`(`type`) USING BTREE,
   INDEX `idx_data_news_x_collect_code`(`code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标记' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标记' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_news_x_collect
@@ -113,9 +113,7 @@ CREATE TABLE `data_news_x_comment`  (
 DROP TABLE IF EXISTS `data_user`;
 CREATE TABLE `data_user`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `from` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '邀请者UID',
-  `token` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权TOKEN令牌',
-  `tokenv` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权TOKEN验证',
+  `from` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '邀请者MID',
   `openid1` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '小程序OPENID',
   `openid2` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '服务号OPENID',
   `unionid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '公众号UnionID',
@@ -138,13 +136,12 @@ CREATE TABLE `data_user`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_user_token`(`token`) USING BTREE,
   INDEX `idx_data_user_status`(`status`) USING BTREE,
   INDEX `idx_data_user_deleted`(`deleted`) USING BTREE,
   INDEX `idx_data_user_openid1`(`openid1`) USING BTREE,
   INDEX `idx_data_user_openid2`(`openid2`) USING BTREE,
   INDEX `idx_data_user_unionid`(`unionid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-记录' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user
@@ -172,7 +169,7 @@ CREATE TABLE `data_user_address`  (
   INDEX `idx_data_user_address_type`(`type`) USING BTREE,
   INDEX `idx_data_user_address_code`(`code`) USING BTREE,
   INDEX `idx_data_user_address_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_address
@@ -210,7 +207,7 @@ DROP TABLE IF EXISTS `data_user_coin_used`;
 CREATE TABLE `data_user_coin_used`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
-  `from` bigint(20) NULL DEFAULT 0 COMMENT '来自UID',
+  `from` bigint(20) NULL DEFAULT 0 COMMENT '来自MID',
   `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录类型',
   `target` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '目标ID',
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录名称',
@@ -246,10 +243,32 @@ CREATE TABLE `data_user_message`  (
   INDEX `idx_data_user_message_status`(`status`) USING BTREE,
   INDEX `idx_data_user_message_phone`(`phone`) USING BTREE,
   INDEX `idx_data_user_message_msgid`(`msgid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统-用户-短信' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统-用户-短信' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_message
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for data_user_token
+-- ----------------------------
+DROP TABLE IF EXISTS `data_user_token`;
+CREATE TABLE `data_user_token`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权类型',
+  `time` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '有效时间',
+  `token` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权TOKEN令牌',
+  `tokenv` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权TOKEN验证',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_user_token_type`(`type`) USING BTREE,
+  INDEX `idx_data_user_token_time`(`time`) USING BTREE,
+  INDEX `idx_data_user_token_token`(`token`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of data_user_token
 -- ----------------------------
 
 -- ----------------------------
@@ -284,7 +303,7 @@ CREATE TABLE `shop_goods`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-内容' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods
@@ -308,7 +327,7 @@ CREATE TABLE `shop_goods_cate`  (
   INDEX `idx_shop_goods_cate_sort`(`sort`) USING BTREE,
   INDEX `idx_shop_goods_cate_status`(`status`) USING BTREE,
   INDEX `idx_shop_goods_cate_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-分类' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-分类' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_cate
@@ -355,7 +374,7 @@ CREATE TABLE `shop_goods_mark`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_goods_mark_sort`(`sort`) USING BTREE,
   INDEX `idx_shop_goods_mark_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-标签' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-标签' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_mark
@@ -377,7 +396,7 @@ CREATE TABLE `shop_goods_stock`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-库存' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-库存' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_stock
@@ -417,7 +436,7 @@ CREATE TABLE `shop_order`  (
   INDEX `idx_shop_order_orderno`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
   INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order
@@ -453,7 +472,7 @@ CREATE TABLE `shop_order_item`  (
   INDEX `idx_shop_order_item_goods_sku`(`goods_sku`) USING BTREE,
   INDEX `idx_shop_order_item_goods_code`(`goods_code`) USING BTREE,
   INDEX `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order_item
@@ -492,7 +511,7 @@ CREATE TABLE `shop_order_send`  (
   INDEX `idx_shop_order_send_status`(`status`) USING BTREE,
   INDEX `idx_shop_order_send_deleted`(`deleted`) USING BTREE,
   INDEX `idx_shop_order_send_order_no`(`order_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order_send
@@ -520,7 +539,7 @@ CREATE TABLE `shop_order_service`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-售后' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-售后' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order_service
@@ -547,7 +566,7 @@ CREATE TABLE `shop_truck_company`  (
   INDEX `idx_shop_truck_company_code3`(`code_3`) USING BTREE,
   INDEX `idx_shop_truck_company_status`(`status`) USING BTREE,
   INDEX `idx_shop_truck_company_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-公司' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-公司' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_truck_company
@@ -572,7 +591,7 @@ CREATE TABLE `shop_truck_region`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_truck_region_pid`(`pid`) USING BTREE,
   INDEX `idx_shop_truck_region_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-区域' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-区域' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_truck_region
@@ -4337,7 +4356,7 @@ CREATE TABLE `shop_truck_template`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-快递-模板' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-快递-模板' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_truck_template
