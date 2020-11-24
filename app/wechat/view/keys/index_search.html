@@ -25,7 +25,7 @@
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
                     <option value="">-- 全部 --</option>
-                    {foreach ['显示禁止的规则','显示使用的规则'] as $k=>$v}
+                    {foreach ['显示已禁止的规则','显示已激活的规则'] as $k=>$v}
                     {if $k.'' eq input('status')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
