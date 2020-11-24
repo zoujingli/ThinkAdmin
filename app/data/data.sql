@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 24/11/2020 17:59:00
+ Date: 24/11/2020 18:29:43
 */
 
 SET NAMES utf8mb4;
@@ -255,12 +255,12 @@ CREATE TABLE `data_user_message`  (
 DROP TABLE IF EXISTS `data_user_token`;
 CREATE TABLE `data_user_token`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
+  `uid` bigint(20) NULL DEFAULT 0 COMMENT '用户UID',
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权类型',
-  `time` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '有效时间',
-  `token` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权TOKEN令牌',
-  `tokenv` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权TOKEN验证',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+  `time` bigint(20) NULL DEFAULT 0 COMMENT '有效时间',
+  `token` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权令牌',
+  `tokenv` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '授权验证',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_token_type`(`type`) USING BTREE,
   INDEX `idx_data_user_token_time`(`time`) USING BTREE,
