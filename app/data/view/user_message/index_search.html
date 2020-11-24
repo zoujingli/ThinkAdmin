@@ -17,7 +17,8 @@
             <label class="layui-form-label">发送状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    {foreach [''=>'-- 全部 --','0'=>'已发送失败的短信','1'=>'已发送成功的短信'] as $k=>$v}
+                    <option value="">-- 全部 --</option>
+                    {foreach ['已发送失败的短信','已发送成功的短信'] as $k => $v}
                     {if $k.'' eq input('status')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
