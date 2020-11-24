@@ -38,9 +38,9 @@ class ShopOrderSend extends Controller
         $query = $this->_query($this->table)->order('id desc');
         $query->dateBetween('address_datetime,send_datetime')->equal('status')->like('send_number#truck_number');
         $query->like('address_phone,address_name,address_province|address_city|address_area|address_content#address_content');
-        // 会员搜索查询
-        $db = $this->_query('DataMember')->like('phone#member_phone,nickname#member_nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("mid in {$db->fieldRaw('id')->buildSql()}");
+        // 用户搜索查询
+        $db = $this->_query('DataUser')->like('phone#member_phone,nickname#member_nickname')->db();
+        if ($db->getOptions('where')) $query->whereRaw("uid in {$db->fieldRaw('id')->buildSql()}");
         // 列表选项卡
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
             $query->where(['status' => $this->type]);
@@ -60,9 +60,9 @@ class ShopOrderSend extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        $mids = array_unique(array_column($data, 'mid'));
-        $members = $this->app->db->name('DataMember')->whereIn('id', $mids)->column('*', 'id');
-        foreach ($data as &$vo) $vo['member'] = $members[$vo['mid']] ?? [];
+        $mids = array_unique(array_column($data, 'uid'));
+        $members = $this->app->db->name('DataUser')->whereIn('id', $mids)->column('*', 'id');
+        foreach ($data as &$vo) $vo['member'] = $members[$vo['uid']] ?? [];
     }
 
 }

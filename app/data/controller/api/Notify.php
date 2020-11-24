@@ -63,7 +63,7 @@ class Notify extends Controller
             'payment_remark'   => '微信在线支付',
             'payment_datetime' => date('Y-m-d H:i:s'),
         ]);
-        // 调用会员升级机制
+        // 调用用户升级机制
         return OrderService::instance()->syncAmount($order['order_no']);
     }
 }

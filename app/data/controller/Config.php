@@ -74,7 +74,7 @@ class Config extends Controller
     }
 
     /**
-     * 会员服务协议
+     * 用户服务协议
      * @auth true
      * @menu true
      * @throws \think\db\exception\DataNotFoundException
@@ -84,7 +84,7 @@ class Config extends Controller
     public function agreement()
     {
         $this->skey = 'agreement';
-        $this->title = '会员服务协议';
+        $this->title = '用户服务协议';
         $this->__sysdata('content');
     }
 

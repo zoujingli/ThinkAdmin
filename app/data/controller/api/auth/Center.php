@@ -8,7 +8,7 @@ use think\admin\Storage;
 use think\exception\HttpResponseException;
 
 /**
- * 会员资料管理
+ * 用户资料管理
  * Class Center
  * @package app\data\controller\api\auth
  */
@@ -18,10 +18,10 @@ class Center extends Auth
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataMember';
+    private $table = 'DataUser';
 
     /**
-     * 更新会员资料
+     * 更新用户资料
      * @throws \think\db\exception\DbException
      */
     public function set()
@@ -39,27 +39,27 @@ class Center extends Auth
             if ($vo === '') unset($data[$key]);
         }
         if (empty($data)) $this->error('没有修改的数据！');
-        if ($this->app->db->name($this->table)->where(['id' => $this->mid])->update($data) !== false) {
-            $this->success('更新资料成功！', $this->getMember());
+        if ($this->app->db->name($this->table)->where(['id' => $this->uid])->update($data) !== false) {
+            $this->success('更新资料成功！', $this->getUser());
         } else {
             $this->error('更新资料失败！');
         }
     }
 
     /**
-     * 获取会员资料
+     * 获取用户资料
      */
     public function get()
     {
-        $this->success('获取会员资料', $this->getMember());
+        $this->success('获取用户资料', $this->getUser());
     }
 
     /**
-     * 获取会员数据统计
+     * 获取用户数据统计
      */
     public function total()
     {
-        $this->success('获取会员统计!', UserService::instance()->total($this->mid));
+        $this->success('获取用户统计!', UserService::instance()->total($this->uid));
     }
 
     /**
@@ -84,7 +84,7 @@ class Center extends Auth
     }
 
     /**
-     * 绑定会员邀请人
+     * 绑定用户邀请人
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -93,16 +93,16 @@ class Center extends Auth
     public function bindFrom()
     {
         $data = $this->_vali(['from.require' => '邀请人不能为空']);
-        if ($data['from'] == $this->mid) {
-            $this->error('邀请人不能是自己哦', UserService::instance()->total($this->mid));
+        if ($data['from'] == $this->uid) {
+            $this->error('邀请人不能是自己哦', UserService::instance()->total($this->uid));
         }
         $from = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
-        if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->get($this->mid));
-        if ($this->member['from'] > 0) $this->error('您已经绑定了邀请人', UserService::instance()->total($this->mid));
-        if ($this->app->db->name($this->table)->where(['id' => $this->mid])->update($data) !== false) {
-            $this->success('绑定邀请人成功！', UserService::instance()->total($this->mid));
+        if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->get($this->uid));
+        if ($this->user['from'] > 0) $this->error('您已经绑定了邀请人', UserService::instance()->total($this->uid));
+        if ($this->app->db->name($this->table)->where(['id' => $this->uid])->update($data) !== false) {
+            $this->success('绑定邀请人成功！', UserService::instance()->total($this->uid));
         } else {
-            $this->error('绑定邀请人失败！', UserService::instance()->total($this->mid));
+            $this->error('绑定邀请人失败！', UserService::instance()->total($this->uid));
         }
     }
 
@@ -115,7 +115,7 @@ class Center extends Auth
     public function getFrom()
     {
         $query = $this->_query($this->table);
-        $query->where(['from' => $this->mid])->field('id,from,username,nickname,headimg,create_at');
+        $query->where(['from' => $this->uid])->field('id,from,username,nickname,headimg,create_at');
         $this->success('获取我邀请的朋友', $query->order('id desc')->page(true, false, false, 15));
     }
 }

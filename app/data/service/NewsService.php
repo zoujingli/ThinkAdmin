@@ -43,12 +43,12 @@ class NewsService extends Service
             $items = $this->app->db->name('DataNewsItem')->whereIn('code', $codes)->column($colls, 'code');
             $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
             foreach ($items as &$vo) $vo['mark'] = str2arr($vo['mark'] ?: '', ',', $marks);
-            /*! 绑定会员数据 */
-            $mids = array_unique(array_column($list, 'mid'));
+            /*! 绑定用户数据 */
+            $mids = array_unique(array_column($list, 'uid'));
             $colls = 'id,phone,nickname,username,headimg,status';
-            $users = $this->app->db->name('DataMember')->whereIn('id', $mids)->column($colls, 'id');
+            $users = $this->app->db->name('DataUser')->whereIn('id', $mids)->column($colls, 'id');
             foreach ($list as &$vo) {
-                $vo['member'] = $users[$vo['mid']] ?? [];
+                $vo['member'] = $users[$vo['uid']] ?? [];
                 $vo['record'] = $items[$vo['code']] ?? [];
             }
         }
@@ -58,7 +58,7 @@ class NewsService extends Service
     /**
      * 获取列表状态
      * @param array $list 数据列表
-     * @param integer $mid 会员MID
+     * @param integer $mid 用户UID
      * @return array
      */
     public function buildListState(array &$list, int $mid = 0): array
@@ -66,7 +66,7 @@ class NewsService extends Service
         if (count($list) > 0) {
             [$code2, $code1, $marks] = [[], [], []];
             if ($mid > 0) {
-                $map = [['mid', '=', $mid], ['code', 'in', array_unique(array_column($list, 'code'))]];
+                $map = [['uid', '=', $mid], ['code', 'in', array_unique(array_column($list, 'code'))]];
                 $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
                 $code1 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 1])->column('code');
                 $code2 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 2])->column('code');

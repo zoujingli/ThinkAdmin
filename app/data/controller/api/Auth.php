@@ -14,48 +14,36 @@ use think\exception\HttpResponseException;
 abstract class Auth extends Controller
 {
     /**
-     * 当前会员MID
+     * 当前用户UID
      * @var int
      */
-    protected $mid;
+    protected $uid;
 
     /**
-     * 接口授权令牌
-     * @var string
-     */
-    protected $token;
-
-    /**
-     * 当前会员数据
+     * 当前用户数据
      * @var array
      */
-    protected $member;
+    protected $user;
 
     /**
      * 控制器初始化
      */
     protected function initialize()
     {
-        $this->token = $this->request->request('token', '');
-        if (empty($this->token)) {
-            $this->token = $this->request->header('token', '');
-        }
-        if (empty($this->token)) {
-            $this->error('请求令牌不能为空！');
-        }
-        $this->member = $this->getMember();
-        $this->mid = $this->member['id'];
+        $this->user = $this->getUser();
+        $this->uid = $this->user['id'];
     }
 
     /**
-     * 获取会员数据
+     * 获取用户数据
      * @return array|void
      */
-    protected function getMember()
+    protected function getUser()
     {
         try {
-            $map = ['token' => $this->token];
-            return UserService::instance()->get($map);
+            $this->token = input('token') ?: $this->request->header('token');
+            if (empty($this->token)) $this->error('接口请求认证令牌不能为空！');
+            return UserService::instance()->get(['token' => $this->token]);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

@@ -5,7 +5,7 @@ namespace app\data\service;
 use think\admin\Service;
 
 /**
- * 会员数据接口服务
+ * 用户数据接口服务
  * Class UserService
  * @package app\store\service
  */
@@ -15,10 +15,10 @@ class UserService extends Service
      * 绑定数据表
      * @var string
      */
-    protected $table = 'DataMember';
+    protected $table = 'DataUser';
 
     /**
-     * 获取会员资料
+     * 获取用户资料
      * @param mixed $map 查询条件
      * @param boolean $force 刷新令牌
      * @return array
@@ -43,7 +43,7 @@ class UserService extends Service
     }
 
     /**
-     * 更新会员用户参数
+     * 更新用户用户参数
      * @param array $map 查询条件
      * @param array $data 更新数据
      * @param boolean $force 强刷令牌
@@ -73,8 +73,8 @@ class UserService extends Service
     }
 
     /**
-     * 获取会员数据统计
-     * @param int $mid 会员MID
+     * 获取用户数据统计
+     * @param int $mid 用户UID
      * @return array
      */
     public function total(int $mid): array

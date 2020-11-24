@@ -7,7 +7,7 @@ use app\data\service\UserService;
 use think\admin\Controller;
 
 /**
- * 会员登录注册接口
+ * 用户登录注册接口
  * Class Login
  * @package app\data\controller\api
  */
@@ -17,10 +17,10 @@ class Login extends Controller
      * 绑定数据表
      * @var string
      */
-    protected $table = 'DataMember';
+    protected $table = 'DataUser';
 
     /**
-     * 会员登录接口
+     * 用户登录接口
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -36,7 +36,7 @@ class Login extends Controller
         $map = ['deleted' => 0, 'phone' => $data['phone']];
         $user = $this->app->db->name($this->table)->where($map)->find();
         if (empty($user)) $this->error('该手机号还没有注册哦！');
-        if (empty($user['status'])) $this->error('该会员账号状态异常！');
+        if (empty($user['status'])) $this->error('该用户账号状态异常！');
         if (md5($data['password']) === $user['password']) {
             $this->success('手机登录成功！', UserService::instance()->get($map, true));
         } else {
@@ -45,7 +45,7 @@ class Login extends Controller
     }
 
     /**
-     * 会员统一注册入口
+     * 用户统一注册入口
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -73,7 +73,7 @@ class Login extends Controller
         }
         $data['password'] = md5($data['password']);
         $user = UserService::instance()->save($map, $data, true);
-        empty($user) ? $this->success('会员注册成功！', $user) : $this->error('手机注册失败！');
+        empty($user) ? $this->success('用户注册成功！', $user) : $this->error('手机注册失败！');
     }
 
     /**

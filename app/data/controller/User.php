@@ -5,20 +5,20 @@ namespace app\data\controller;
 use think\admin\Controller;
 
 /**
- * 会员用户管理
- * Class Member
+ * 普通用户管理
+ * Class User
  * @package app\data\controller
  */
-class Member extends Controller
+class User extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataMember';
+    private $table = 'DataUser';
 
     /**
-     * 会员用户管理
+     * 普通用户管理
      * @auth true
      * @menu true
      * @throws \think\db\exception\DataNotFoundException
@@ -27,7 +27,7 @@ class Member extends Controller
      */
     public function index()
     {
-        $this->title = '会员用户管理';
+        $this->title = '普通用户管理';
         $query = $this->_query($this->table);
         $query->like('phone,username|nickname#username');
         $query->whereRaw('nickname != "" or username != ""');
@@ -35,7 +35,7 @@ class Member extends Controller
     }
 
     /**
-     * 修改会员状态
+     * 修改用户状态
      * @auth true
      * @throws \think\db\exception\DbException
      */

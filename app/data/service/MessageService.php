@@ -45,7 +45,7 @@ class MessageService extends Service
     public function send(string $phone, string $content): array
     {
         [$state, $message, $record] = $this->_request('v2/sendSms', ['mobile' => $phone, 'content' => $content]);
-        $this->app->db->name('DataMemberMessage')->insert([
+        $this->app->db->name('DataUserMessage')->insert([
             'phone' => $phone, 'content' => $content, 'result' => $message, 'status' => $state ? 1 : 0,
         ]);
         return [$state, $message, $record];

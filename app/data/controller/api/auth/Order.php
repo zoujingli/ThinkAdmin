@@ -11,7 +11,7 @@ use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
 
 /**
- * 会员订单数据接口
+ * 用户订单数据接口
  * Class Order
  * @package app\data\controller\api\auth
  */
@@ -23,7 +23,7 @@ class Order extends Auth
     protected function initialize()
     {
         parent::initialize();
-        if (empty($this->member['status'])) {
+        if (empty($this->user['status'])) {
             $this->error('账户已被冻结，不能操作订单数据哦！');
         }
     }
@@ -36,7 +36,7 @@ class Order extends Auth
      */
     public function get()
     {
-        $map = [['mid', '=', $this->mid]];
+        $map = [['uid', '=', $this->uid]];
         if (!$this->request->has('order_no', 'param', true)) {
             $map[] = ['status', 'in', [0, 2, 3, 4, 5]];
         }
@@ -47,7 +47,7 @@ class Order extends Auth
     }
 
     /**
-     * 会员创建订单
+     * 用户创建订单
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -59,10 +59,10 @@ class Order extends Auth
         if (empty($rules)) $this->error('商品规则不能为空！');
         // 订单数据
         [$codes, $items] = [[], []];
-        $order = ['mid' => $this->mid, 'from' => input('from_mid', '0'), 'status' => 1];
+        $order = ['uid' => $this->uid, 'from' => input('from_mid', '0'), 'status' => 1];
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
         // 推荐人处理
-        if ($order['from'] == $this->mid) {
+        if ($order['from'] == $this->uid) {
             $order['from'] = 0;
         }
         if ($order['from'] > 0) {
@@ -85,7 +85,7 @@ class Order extends Auth
             }
             // 订单详情处理
             $items[] = [
-                'mid'           => $order['mid'],
+                'uid'           => $order['uid'],
                 'order_no'      => $order['order_no'],
                 // 商品字段
                 'goods_name'    => $goodsInfo['name'],
@@ -136,12 +136,12 @@ class Order extends Auth
             'code.require'     => '地址编号不能为空！',
             'order_no.require' => '订单单号不能为空！',
         ]);
-        // 会员收货地址
-        $map = ['mid' => $this->mid, 'code' => $data['code'], 'deleted' => 0];
-        $addr = $this->app->db->name('DataMemberAddress')->where($map)->find();
-        if (empty($addr)) $this->error('会员收货地址异常！');
+        // 用户收货地址
+        $map = ['uid' => $this->uid, 'code' => $data['code'], 'deleted' => 0];
+        $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
+        if (empty($addr)) $this->error('用户收货地址异常！');
         // 订单状态检查
-        $map = ['mid' => $this->mid, 'order_no' => $data['order_no']];
+        $map = ['uid' => $this->uid, 'order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->whereIn('status', [1, 2])->find();
         $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_count');
         if (empty($order)) $this->error('不能修改收货地址哦！');
@@ -151,7 +151,7 @@ class Order extends Auth
         [$amount, $tCount, $tCode, $remark] = TruckService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
         // 创建订单发货信息
         $express = [
-            'mid'             => $this->mid, 'status' => 1,
+            'uid'             => $this->uid, 'status' => 1,
             'template_code'   => $tCode, 'template_count' => $tCount,
             'template_remark' => $remark, 'template_amount' => $amount,
         ];
@@ -166,7 +166,7 @@ class Order extends Auth
         $express['address_datetime'] = date('Y-m-d H:i:s');
         data_save('ShopOrderSend', $express, 'order_no');
         // 更新订单状态，刷新订单金额
-        $map = ['mid' => $this->mid, 'order_no' => $data['order_no']];
+        $map = ['uid' => $this->uid, 'order_no' => $data['order_no']];
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
         $update['amount_total'] = $order['amount_goods'] + $amount - $order['amount_reduct'] - $order['amount_discount'];
         if ($this->app->db->name('ShopOrder')->where($map)->update($update) !== false) {
@@ -210,7 +210,7 @@ class Order extends Auth
         try {
             return WechatService::WePayOrder()->create([
                 'body'             => '商城订单支付',
-                'openid'           => $this->member['openid'],
+                'openid'           => $this->user['openid'],
                 'out_trade_no'     => $code,
                 'total_fee'        => $amount * 100,
                 'trade_type'       => 'JSAPI',
@@ -232,7 +232,7 @@ class Order extends Auth
     public function cancel()
     {
         $map = $this->_vali([
-            'mid.value'        => $this->mid,
+            'uid.value'        => $this->uid,
             'order_no.require' => '订单号不能为空！',
         ]);
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
@@ -241,7 +241,7 @@ class Order extends Auth
             $result = $this->app->db->name('ShopOrder')->where($map)->update([
                 'status'          => 0,
                 'cancel_status'   => 1,
-                'cancel_remark'   => '会员主动取消订单！',
+                'cancel_remark'   => '用户主动取消订单！',
                 'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
             if ($result !== false && OrderService::instance()->syncStock($order['order_no'])) {
@@ -263,7 +263,7 @@ class Order extends Auth
     public function confirm()
     {
         $map = $this->_vali([
-            'mid.value'        => $this->mid,
+            'uid.value'        => $this->uid,
             'order_no.require' => '订单号不能为空！',
         ]);
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
@@ -288,7 +288,7 @@ class Order extends Auth
      */
     public function total()
     {
-        $map = ['mid' => $this->mid, 'deleted' => 0];
+        $map = ['uid' => $this->uid, 'deleted' => 0];
         $data = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0];
         $query = $this->app->db->name('ShopOrder')->fieldRaw('status,count(1) count');
         $query->where($map)->group('status')->select()->each(function ($item) use (&$data) {

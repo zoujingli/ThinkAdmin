@@ -45,11 +45,11 @@ class ShopOrder extends Controller
         // 发货信息搜索
         $db = $this->_query('ShopOrderSend')->like('address_name#truck_address_name,address_phone#truck_address_phone,address_province|address_city|address_area|address_content#truck_address_content')->db();
         if ($db->getOptions('where')) $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
-        // 会员搜索查询
-        $db = $this->_query('DataMember')->like('phone#member_phone,nickname#member_nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("mid in {$db->field('id')->buildSql()}");
+        // 用户搜索查询
+        $db = $this->_query('DataUser')->like('phone#member_phone,nickname#member_nickname')->db();
+        if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
         // 推荐人搜索查询
-        $db = $this->_query('DataMember')->like('phone#from_phone,nickname#from_nickname')->db();
+        $db = $this->_query('DataUser')->like('phone#from_phone,nickname#from_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("from in {$db->field('id')->buildSql()}");
         // 列表选项卡
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) $query->where(['status' => $this->type]);

@@ -2,9 +2,9 @@
     <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">会员手机</label>
+            <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input name="phone" value="{:input('phone')}" placeholder="请输入会员手机" class="layui-input">
+                <input name="phone" value="{:input('phone')}" placeholder="请输入用户手机" class="layui-input">
             </label>
         </div>
         <div class="layui-form-item layui-inline">
@@ -17,7 +17,7 @@
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    {foreach [''=>'-- 全部 --','0'=>'已冻结的会员','1'=>'已激活的会员'] as $k=>$v}
+                    {foreach [''=>'-- 全部 --','0'=>'已冻结的用户','1'=>'已激活的用户'] as $k=>$v}
                     {if $k.'' eq input('status')}
                     <option selected value="{$k}">{$v}</option>
                     {else}

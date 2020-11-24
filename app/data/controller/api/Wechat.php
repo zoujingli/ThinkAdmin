@@ -49,7 +49,7 @@ class Wechat extends Controller
      */
     protected $fansInfo;
     /**
-     * 会员用户数据
+     * 用户用户数据
      * @var array
      */
     protected $userInfo;
@@ -76,7 +76,7 @@ class Wechat extends Controller
             $this->openid = $user['openid'];
             $this->config = $wechat->getWebJssdkSign($this->source);
             $this->fansInfo = $user['fansinfo'] ?? [];
-            // 会员注册并登录生成接口令牌
+            // 用户注册并登录生成接口令牌
             $data = $this->fansInfo;
             $data['openid2'] = $data['openid'];
             $data['base_sex'] = ['未知', '男', '女'][$data['sex']] ?? '未知';

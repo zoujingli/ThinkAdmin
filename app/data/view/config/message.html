@@ -2,7 +2,7 @@
 
 {block name="content"}
 <div class="layui-badge nowrap think-bg-red padding-5 padding-left-10 font-s15 layui-anim layui-anim-upbit">
-    注意：短信接口配置的参数不能随意修改，会影响到会员注册发送短信通知功能，若有需要调整请联系客服！
+    注意：短信接口配置的参数不能随意修改，会影响到用户注册发送短信通知功能，若有需要调整请联系客服！
 </div>
 <div class="think-box-shadow">
     <form style="width:800px" onsubmit="return false;" data-auto="true" action="{$request->url()}" method="post" class='layui-form layui-card shadow-none' autocomplete="off">
@@ -40,9 +40,9 @@
             </label>
 
             <label class="layui-form-item block relative">
-                <span class="color-green font-w7 margin-right-10">会员注册通知模板</span><span class="nowrap color-desc">RegisterTemplate</span>
+                <span class="color-green font-w7 margin-right-10">用户注册通知模板</span><span class="nowrap color-desc">RegisterTemplate</span>
                 <textarea class="layui-textarea" name="zt.tplcode_register">{:sysconf('zt.tplcode_register')}</textarea>
-                <span class="help-block">会员注册短信模板，验证码变量使用 {code} 代替</span>
+                <span class="help-block">用户注册短信模板，验证码变量使用 {code} 代替</span>
             </label>
 
             <div class="hr-line-dashed"></div>

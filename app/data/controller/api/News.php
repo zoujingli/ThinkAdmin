@@ -37,8 +37,8 @@ class News extends Controller
             $this->app->db->name('DataNewsItem')->where(['code' => $code])->update([
                 'num_read' => $this->app->db->raw('`num_read`+1'),
             ]);
-            if (($mid = input('mid', 0)) > 0) {
-                $data = ['mid' => $mid, 'code' => $code, 'type' => 3];
+            if (($mid = input('uid', 0)) > 0) {
+                $data = ['uid' => $mid, 'code' => $code, 'type' => 3];
                 $this->app->db->name('DataNewsXCollect')->where($data)->delete();
                 $this->app->db->name('DataNewsXCollect')->insert($data);
             }
@@ -46,7 +46,7 @@ class News extends Controller
         $query = $this->_query('DataNewsItem')->like('name,mark')->equal('id,code');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListState($result['list'], input('mid', 0));
+        NewsService::instance()->buildListState($result['list'], input('uid', 0));
         $this->success('获取文章内容列表', $result);
     }
 
