@@ -30,7 +30,7 @@ class Fans extends Controller
      * 绑定数据表
      * @var string
      */
-    protected $table = 'WechatFans';
+    private $table = 'WechatFans';
 
     /**
      * 微信用户管理

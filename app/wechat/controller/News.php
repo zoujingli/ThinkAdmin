@@ -31,7 +31,7 @@ class News extends Controller
      * 设置默认操作表
      * @var string
      */
-    protected $table = 'WechatNews';
+    private $table = 'WechatNews';
 
     /**
      * 微信图文管理

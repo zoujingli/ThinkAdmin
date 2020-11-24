@@ -30,7 +30,7 @@ class Keys extends Controller
      * 绑定数据表
      * @var string
      */
-    protected $table = 'WechatKeys';
+    private $table = 'WechatKeys';
 
     /**
      * 消息类型
