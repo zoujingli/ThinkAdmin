@@ -29,14 +29,13 @@ abstract class Auth extends Controller
      * 当前接口类型
      * @var string
      */
-    protected $type = 'wxapp';
+    protected $type;
 
     /**
      * 控制器初始化
      */
     protected function initialize()
     {
-        $this->type = input('api', 'web');
         $this->user = $this->getUser();
         $this->uuid = $this->user['id'];
     }
@@ -49,6 +48,7 @@ abstract class Auth extends Controller
     {
         try {
             $user = UserService::instance();
+            $this->type = input('api', 'web');
             if (empty($this->uuid)) {
                 $token = input('token') ?: $this->request->header('token');
                 if (empty($token)) $this->error('接口认证令牌不能为空！');
