@@ -31,7 +31,7 @@ class UserService extends Service
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uuid, 'deleted' => 0])->findOrEmpty();
         $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->findOrEmpty();
-        [$state, $message] = $this->checkUserToken($type, $data['token'], $data);
+        [$state, $message] = $this->checkUserToken($type, $data['token'] ?? '', $data);
         if (empty($state)) throw new \think\Exception($message);
         unset($user['deleted'], $user['password']);
         $user['token'] = ['token' => $data['token'], 'expire' => $data['time']];
