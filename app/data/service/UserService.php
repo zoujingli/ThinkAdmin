@@ -62,7 +62,7 @@ class UserService extends Service
             $uid = $this->app->db->name('DataUser')->strict(false)->insertGetId($data);
         }
         if ($force) $this->buildUserToken($uid, $type);
-        return $this->get($uid, $type);
+        return $this->get($type, $uid);
     }
 
     /**
