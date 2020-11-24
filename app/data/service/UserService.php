@@ -91,7 +91,7 @@ class UserService extends Service
         $this->app->db->name('DataUserToken')->whereOr([$map1, $map2])->delete();
         // 创建用户新的用户认证数据
         do $map = ['type' => $type, 'token' => md5(uniqid('', true) . rand(100, 999))];
-        while ($this->app->db->name('DataUser')->where($map)->count() > 0);
+        while ($this->app->db->name('DataUserToken')->where($map)->count() > 0);
         $token = array_merge($map, ['time' => $time + $this->expire, 'tokenv' => $this->_buildTokenVerify()]);
         if ($this->app->db->name('DataUserToken')->insert($token) !== false) {
             return [1, '刷新用户认证成功', $token];
