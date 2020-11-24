@@ -47,11 +47,11 @@ class Plugs extends Controller
     {
         if (AdminService::instance()->isSuper()) if (input('state')) {
             SystemService::instance()->setRuntime('product');
-            sysoplog('切换运行模式', '由开发模式切为为产品模式！');
+            sysoplog('切换运行模式', '由开发模式切为为产品模式');
             $this->success('已切换为产品模式！');
         } else {
             SystemService::instance()->setRuntime('debug');
-            sysoplog('切换运行模式', '由产品模式切为为开发模式！');
+            sysoplog('切换运行模式', '由产品模式切为为开发模式');
             $this->success('已切换为开发模式！');
         } else {
             $this->error('只有超级管理员才能操作！');
