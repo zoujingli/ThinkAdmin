@@ -33,17 +33,17 @@ class News extends Controller
      */
     public function getItem()
     {
-        if (($id = intval(input('id', 0))) > 0) {
-            $this->app->db->name('DataNewsItem')->where(['id' => $id])->update([
+        if ($code = input('code', '')) {
+            $this->app->db->name('DataNewsItem')->where(['code' => $code])->update([
                 'num_read' => $this->app->db->raw('`num_read`+1'),
             ]);
-            if (input('mid', 0) > 0) {
-                $history = ['mid' => input('mid'), 'cid' => $id];
-                $this->app->db->name('DataNewsXHistory')->where($history)->delete();
-                $this->app->db->name('DataNewsXHistory')->insert($history);
+            if (($mid = input('mid', 0)) > 0) {
+                $data = ['mid' => $mid, 'code' => $code, 'type' => 3];
+                $this->app->db->name('DataNewsXCollect')->where($data)->delete();
+                $this->app->db->name('DataNewsXCollect')->insert($data);
             }
         }
-        $query = $this->_query('DataNewsItem')->like('name,mark')->equal('id');
+        $query = $this->_query('DataNewsItem')->like('name,mark')->equal('id,code');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListState($result['list'], input('mid', 0));
@@ -58,10 +58,10 @@ class News extends Controller
      */
     public function getComment()
     {
-        $map = $this->_vali(['cid.require' => '文章不能为空！']);
+        $map = $this->_vali(['code.require' => '文章不能为空！']);
         $query = $this->_query('DataNewsXComment')->where($map);
         $result = $query->order('id desc')->page(false, false, false, 5);
-        NewsService::instance()->buildListByCidAndMid($result['list']);
+        NewsService::instance()->buildListByMinAndCode($result['list']);
         $this->success('获取文章评论成功！', $result);
     }
 

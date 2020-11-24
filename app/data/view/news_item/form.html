@@ -40,18 +40,20 @@
                 <textarea class="layui-textarea" placeholder="请输入文章内容" name="content">{$vo.content|default=''}</textarea>
             </label>
         </div>
+
         <div class="hr-line-dashed"></div>
         {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        {notempty name='vo.code'}<input type='hidden' value='{$vo.code}' name='code'>{/notempty}
+
         <div class="layui-form-item text-center">
             <button type="submit" class="layui-btn">保存数据</button>
             <button type='button' class="layui-btn layui-btn-danger" data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
         </div>
     </div>
+    <script>
+        require(['ckeditor'], function () {
+            window.createEditor('[name=content]', {height: 300});
+        });
+    </script>
 </form>
-
-<script>
-    require(['ckeditor'], function () {
-        window.createEditor('[name=content]', {height: 300});
-    });
-</script>
 {/block}

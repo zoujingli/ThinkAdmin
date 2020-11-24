@@ -4,6 +4,7 @@ namespace app\data\controller;
 
 use app\data\service\NewsService;
 use think\admin\Controller;
+use think\admin\extend\CodeExtend;
 
 /**
  * 文章内容管理
@@ -92,6 +93,9 @@ class NewsItem extends Controller
      */
     protected function _form_filter(array &$data)
     {
+        if (empty($data['code'])) {
+            $data['code'] = CodeExtend::uniqidDate(15, 'A');
+        }
         if ($this->request->isGet()) {
             $query = $this->app->db->name('DataNewsMark')->where(['deleted' => 0, 'status' => 1]);
             $this->mark = $query->order('sort desc,id desc')->select()->toArray();

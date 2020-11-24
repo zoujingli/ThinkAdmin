@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : local.ctolog.com
+ Source Server         : server.cuci.cc
  Source Server Type    : MySQL
  Source Server Version : 50562
- Source Host           : 127.0.0.1:3306
+ Source Host           : localhost:3306
  Source Schema         : admin_v6
 
  Target Server Type    : MySQL
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 26/10/2020 15:13:35
+ Date: 24/11/2020 15:32:49
 */
 
 SET NAMES utf8mb4;
@@ -54,17 +54,11 @@ CREATE TABLE `data_member`  (
   INDEX `idx_data_member_openid1`(`openid1`) USING BTREE,
   INDEX `idx_data_member_openid2`(`openid2`) USING BTREE,
   INDEX `idx_data_member_unionid`(`unionid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-会员' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-会员' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_member
 -- ----------------------------
-INSERT INTO `data_member` VALUES (1, 0, 'token', 'xxx', 'xxx', '', '', '136173433801', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'username', 'nickname', 'password', '广东省', '广州市', '天河区', 21, '男', '165', '65', '30', 0, 0, 1, 0, '2020-09-10 02:13:58');
-INSERT INTO `data_member` VALUES (2, 0, 'fe9b841899139e0c0a293fda89d429a5', 'c51375c8235cfb78e537fdf97dea9e10', '', '', '', '13617348888', '', 'ahahah22', '', 'e10adc3949ba59abbe56e057f20f883e', '', '', '', 0, '', '', '', '', 0, 0, 1, 0, '2020-09-21 20:38:57');
-INSERT INTO `data_member` VALUES (3, 0, '51aee8a9b28fd056864d601f76cd4c30', 'ae7a02cad8f8489e2a3b5d3f321cef4b', '', '', '', '13617340000', '', '', '', 'e10adc3949ba59abbe56e057f20f883e', '', '', '', 0, '', '', '', '', 0, 0, 1, 0, '2020-09-24 18:41:39');
-INSERT INTO `data_member` VALUES (4, 0, 'e74ca80c0a2b7a05c394223c0ba11133', 'ae7a02cad8f8489e2a3b5d3f321cef4b', '', '', '', '18611795659', '', '', '', 'e10adc3949ba59abbe56e057f20f883e', '', '', '', 0, '', '', '', '', 0, 0, 1, 0, '2020-09-24 18:41:45');
-INSERT INTO `data_member` VALUES (5, 0, 'b8c430306f52e0d4e1b51b45d5ce5fc4', 'ae7a02cad8f8489e2a3b5d3f321cef4b', '', '', '', '18611795658', '', '王锋', '', 'e10adc3949ba59abbe56e057f20f883e', '北京', '北京', '朝阳', 0, '', '', '', '', 0, 0, 1, 0, '2020-09-24 18:42:06');
-INSERT INTO `data_member` VALUES (6, 0, '921555d3ce6a3947bf7feae7f2bc719b', 'ebaaa24c06a2d23afdc725af136c6ab7', '', 'o38gps9lQUwPERa6xZR1dCq_FjRk', 'oGsrksyjW9dK0ZTI_ymiTVpp4bd0', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKAflkqicKNYOGJXmYqyKADibo6sbbUk078WGD4ibicomQbNs8zhF6PyZNtKVmoUpCZPhXYaGS6tT5oLw/132', '', 'Jalon', '', '', '', '', 0, '男', '', '', '', 0, 0, 1, 0, '2020-10-03 20:41:46');
 
 -- ----------------------------
 -- Table structure for data_member_address
@@ -88,14 +82,11 @@ CREATE TABLE `data_member_address`  (
   INDEX `idx_data_member_address_type`(`type`) USING BTREE,
   INDEX `idx_data_member_address_code`(`code`) USING BTREE,
   INDEX `idx_data_member_address_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-会员-地址' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-会员-地址' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of data_member_address
 -- ----------------------------
-INSERT INTO `data_member_address` VALUES (1, 1, 0, 'A2020091128272', '小小邹', '13617343811', '广东省', '广州市', '天河区', '体育中心11号', 1, '2020-09-11 03:00:25');
-INSERT INTO `data_member_address` VALUES (2, 1, 1, 'A2020091128300', '小小邹', '13617343811', '广东省', '广州市', '天河区', '体育中心11号', 0, '2020-09-11 03:00:28');
-INSERT INTO `data_member_address` VALUES (3, 1, 0, 'A2020092468510', '小小邹', '13617343811', '广东省', '广州市', '天河区', '体育中心11号', 0, '2020-09-24 11:57:51');
 
 -- ----------------------------
 -- Table structure for data_member_coin_item
@@ -105,10 +96,10 @@ CREATE TABLE `data_member_coin_item`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `mid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '会员ID',
   `code` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录编号',
-  `date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录日期',
   `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录类型',
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录名称',
   `number` bigint(20) NULL DEFAULT 0 COMMENT '奖励数量',
+  `date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录日期',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_member_coin_mid`(`mid`) USING BTREE,
@@ -130,11 +121,11 @@ CREATE TABLE `data_member_coin_used`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `mid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '会员ID',
   `from` bigint(20) NULL DEFAULT 0 COMMENT '来自MID',
-  `date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录日期',
   `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录类型',
   `target` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '目标ID',
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录名称',
   `number` bigint(20) NULL DEFAULT 0 COMMENT '奖励数量',
+  `date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录日期',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_member_coin_used_mid`(`mid`) USING BTREE,
@@ -147,36 +138,12 @@ CREATE TABLE `data_member_coin_used`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for data_member_message
--- ----------------------------
-DROP TABLE IF EXISTS `data_member_message`;
-CREATE TABLE `data_member_message`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '短信类型',
-  `msgid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '消息编号',
-  `phone` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '目标手机',
-  `region` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '国家编号',
-  `result` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '返回结果',
-  `content` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '短信内容',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '短信状态(0失败,1成功)',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_member_message_type`(`type`) USING BTREE,
-  INDEX `idx_data_member_message_status`(`status`) USING BTREE,
-  INDEX `idx_data_member_message_phone`(`phone`) USING BTREE,
-  INDEX `idx_data_member_message_msgid`(`msgid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统-会员-短信' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of data_member_message
--- ----------------------------
-
--- ----------------------------
 -- Table structure for data_news_item
 -- ----------------------------
 DROP TABLE IF EXISTS `data_news_item`;
 CREATE TABLE `data_news_item`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章编号',
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章标题',
   `mark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章标签',
   `cover` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章封面',
@@ -191,22 +158,14 @@ CREATE TABLE `data_news_item`  (
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_news_item_code`(`code`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_news_item
 -- ----------------------------
-INSERT INTO `data_news_item` VALUES (1, '没有什么好知道的', '标称名称1', 'https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', '有啥意义呢！？', '<ul>\r\n	<li>\r\n	<p>&nbsp;</p>\r\n\r\n	<p><a>　　参考消息网9月19日报道 中国国务委员兼外交部长王毅在接受新华社记者专访时表示，中俄团结如山，友谊牢不可破，两国战略协作不会因外部环境影响而发生任何改变。</a></p>\r\n\r\n	<p><a>　　据俄新社北京9月17日报道，王毅说：&ldquo;在世界动荡变革期，牢固的中俄关系对维护地区及世界和平安全具有更加突出意义。&rdquo;</a></p>\r\n\r\n	<p><a>　　他指出：&ldquo;这次是疫情全球暴发后中俄外长首次面对面会晤。我同拉夫罗夫外长进行了长时间会谈、交流，就加强双边关系和应对国际地区挑战达成一系列重要共识。&rdquo;</a></p>\r\n\r\n	<p><a>　　王毅表示，双方发表了一份内容广泛的两国外长联合声明，阐释了双方对几乎所有国际问题的共同立场。</a></p>\r\n\r\n	<p><br />\r\n	<a>　　报道称，王毅于9月10日至16日赴俄罗斯出席上海合作组织成员国外长理事会会议并对俄罗斯、哈萨克斯坦、吉尔吉斯斯坦、蒙古国进行访问。王毅与俄罗斯外长拉夫罗夫9月11日在莫斯科举行会谈。拉夫罗夫在会谈结束后表示，莫斯科拒绝美国&ldquo;联手对抗&rdquo;中国或其他国家的政策，俄中两国将继续扩大在国际舞台上的合作。</a></p>\r\n\r\n	<p><a>　　另据香港《南华早报》网站9月17日报道，王毅强调，面对印太地区以美国为首的新兴多边安全集团构成的威胁与挑战，俄罗斯、蒙古国和中亚国家必须加强合作。</a></p>\r\n\r\n	<p><a>　　报道称，在美国国防部长马克&middot;埃斯珀突然重申，华盛顿准备在该地区成立一个类似北约的地缘战略联盟之后，官方通讯社新华社发表了王毅的上述讲话。埃斯珀称这个地区是&ldquo;与中国进行大国竞争的中心&rdquo;。</a></p>\r\n\r\n	<p><a>[&nbsp;系统代码&nbsp;]</a>&nbsp;<a href=\"http://www.thinkphp.cn/code/8895.html\" target=\"_blank\">ThinkAdmin v6.0 基于 ThinkPHP6.0 后台开发框架</a></p>\r\n\r\n	<p>2020/01/21 16:25浏览2059次&nbsp;评论：(4)&nbsp;anyon</p>\r\n	</li>\r\n	<li>\r\n	<p><a>[&nbsp;功能实现&nbsp;]</a>&nbsp;<a href=\"http://www.thinkphp.cn/code/7314.html\" target=\"_blank\">ThinkAdmin v5.0 发布，基于ThinkPHP5.1后台开发框架</a></p>\r\n\r\n	<p>2019/08/07 17:18浏览4435次&nbsp;评论：(0)&nbsp;anyon</p>\r\n	</li>\r\n	<li>\r\n	<p><a>[&nbsp;功能实现&nbsp;]</a>&nbsp;<a href=\"http://www.thinkphp.cn/code/1342.html\" target=\"_blank\">【更新】ThinkPHP3.2.3通用后台&ndash;ThinkAdmin</a></p>\r\n\r\n	<p>2019/04/12 18:29浏览25313次&nbsp;评论：(36)&nbsp;xiaoshi1991</p>\r\n	</li>\r\n</ul>', 0, 2, 0, 0, 0, 1, 1, '2020-09-14 10:11:27');
-INSERT INTO `data_news_item` VALUES (2, '有什么意义呢？', ',家长的需求,标称名称1,', 'https://v6.thinkadmin.top/upload/71/3cb1bf27a377e8f176380732852002.png', '测试一下就知道了', '<p><span>哒哒哒哒哒哒多多多多多多水电费爱尚发送到发送到发送到是的 第三方啊</span></p>\r\n\r\n<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/d9/ee9b58bcfab3f918f4a8c095e19f75.png\" style=\"max-width:100%;border:0\" /></span></p>', 0, 0, 0, 0, 0, 1, 1, '2020-09-21 09:14:39');
-INSERT INTO `data_news_item` VALUES (3, 'vrevre', 'ceshi', 'vere', 'vre', '<p>vrevre</p>', 0, 0, 0, 0, 0, 1, 1, '2020-09-28 14:50:23');
-INSERT INTO `data_news_item` VALUES (4, '111111111111111', '羽族', '111', '11111111111111111', '<p>1111111111111111111</p>\r\n', 0, 0, 0, 0, 0, 1, 1, '2020-09-28 22:47:00');
-INSERT INTO `data_news_item` VALUES (5, '阿斯顿发生', '羽族', 'https://v6.thinkadmin.top/upload/ed/7ed24aef9b709ffe297140589145f7.jpg', '暗示法大声的', '<p>阿所发生的</p>\r\n', 0, 0, 0, 0, 0, 1, 1, '2020-10-07 15:45:04');
-INSERT INTO `data_news_item` VALUES (6, '的撒范德萨', '羽族', '大师傅大法师', '发大水a\'d\'s\'f', '<p>adsf懂是aa的撒范德萨</p>\r\n', 0, 0, 0, 0, 0, 1, 1, '2020-10-08 17:29:19');
-INSERT INTO `data_news_item` VALUES (7, 'dfasdfas', '5645', 'https://v6.thinkadmin.top/upload/18/704aa289a2d673080ad3aa805f458c.jpg', 'asdfasdf', '<p>asdfasdf<span><img alt=\"\" height=\"33\" src=\"https://v6.thinkadmin.top/upload/a2/e425cf0c5e493bc5478c7630fe446d.png\" style=\"max-width: 100%; border: 0px none;\" width=\"36\" />13132</span></p>\r\n', 0, 0, 0, 0, 3, 1, 1, '2020-10-13 10:15:43');
-INSERT INTO `data_news_item` VALUES (8, 'qqqqqqqqqq', ',5645,dasda,ghg,', 'qq', 'qqqqqqqqq', '<p>qqqq<span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/c8/4cc93dea06c481cddf812169218345.png\" style=\"max-width:100%;border:0\" /></span></p>\r\n', 0, 7, 0, 0, 1, 1, 1, '2020-10-20 13:52:44');
-INSERT INTO `data_news_item` VALUES (9, '文章标题', ',ghg,5645,', 'https://v6.thinkadmin.top/upload/cd/6caafe83dde9d44b0ce63dfd005478.png', '<script>alert(\'aaaaaaaaaaaaaaaa)</script>', '<p>dsfadfdsfsfsfsdffsdfsdfsdffsdff</p>\r\n\r\n<p><strong>fgsdgsdfgdfgdfgdfgdgfgsdfgdg</strong></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><strong><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/ab/d9fcb369594e37f9f99ee9009d6da0.png\" style=\"max-width:100%;border:0\" /></span></strong></p>\r\n\r\n<p><strong>dfsfsfdfafafdfafdsdf</strong></p>\r\n', 0, 0, 0, 0, 0, 1, 0, '2020-10-26 14:54:17');
 
 -- ----------------------------
 -- Table structure for data_news_mark
@@ -223,28 +182,11 @@ CREATE TABLE `data_news_mark`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_mark_status`(`status`) USING BTREE,
   INDEX `idx_data_news_mark_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标签' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标签' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_news_mark
 -- ----------------------------
-INSERT INTO `data_news_mark` VALUES (1, '标称名称1', '', 0, 1, 1, '2020-09-18 16:06:02');
-INSERT INTO `data_news_mark` VALUES (2, 'ttt', '', 0, 1, 1, '2020-09-19 17:57:20');
-INSERT INTO `data_news_mark` VALUES (3, 'tttt', '', 0, 1, 1, '2020-09-19 17:57:40');
-INSERT INTO `data_news_mark` VALUES (4, '21', '', 0, 1, 1, '2020-09-19 17:58:15');
-INSERT INTO `data_news_mark` VALUES (5, '2135', '', 0, 1, 1, '2020-09-19 17:58:49');
-INSERT INTO `data_news_mark` VALUES (6, '家长的需求', '', 0, 0, 1, '2020-09-21 00:24:01');
-INSERT INTO `data_news_mark` VALUES (7, '标签名称2', '', 0, 1, 1, '2020-09-23 10:43:53');
-INSERT INTO `data_news_mark` VALUES (8, '播放', '', 1, 1, 1, '2020-09-24 15:19:57');
-INSERT INTO `data_news_mark` VALUES (9, '鹅鹅鹅', '', 8, 0, 1, '2020-09-24 15:20:15');
-INSERT INTO `data_news_mark` VALUES (10, '羽族', '', 0, 0, 1, '2020-09-27 19:05:30');
-INSERT INTO `data_news_mark` VALUES (11, '测试', '', 0, 1, 1, '2020-09-30 15:17:15');
-INSERT INTO `data_news_mark` VALUES (12, 'asdf', '', 0, 1, 1, '2020-10-09 16:27:39');
-INSERT INTO `data_news_mark` VALUES (13, '要', '', 0, 1, 1, '2020-10-09 17:30:43');
-INSERT INTO `data_news_mark` VALUES (14, 'ghg', '', 9, 1, 0, '2020-10-10 00:07:05');
-INSERT INTO `data_news_mark` VALUES (15, '1234', '', 0, 1, 1, '2020-10-11 20:04:29');
-INSERT INTO `data_news_mark` VALUES (16, 'dasda', '', 0, 1, 1, '2020-10-16 15:35:58');
-INSERT INTO `data_news_mark` VALUES (17, '5645', '', 2, 1, 0, '2020-10-19 09:55:32');
 
 -- ----------------------------
 -- Table structure for data_news_x_collect
@@ -252,15 +194,15 @@ INSERT INTO `data_news_mark` VALUES (17, '5645', '', 2, 1, 0, '2020-10-19 09:55:
 DROP TABLE IF EXISTS `data_news_x_collect`;
 CREATE TABLE `data_news_x_collect`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章编号',
   `mid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '会员MID',
-  `type` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '记录类型(1收藏,2点赞)',
+  `type` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '记录类型(1收藏,2点赞,3历史)',
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章编号',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_news_x_collect_cid`(`cid`) USING BTREE,
   INDEX `idx_data_news_x_collect_mid`(`mid`) USING BTREE,
-  INDEX `idx_data_news_x_collect_type`(`type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-会员-收藏' ROW_FORMAT = COMPACT;
+  INDEX `idx_data_news_x_collect_type`(`type`) USING BTREE,
+  INDEX `idx_data_news_x_collect_code`(`code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-会员-数据' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of data_news_x_collect
@@ -272,39 +214,18 @@ CREATE TABLE `data_news_x_collect`  (
 DROP TABLE IF EXISTS `data_news_x_comment`;
 CREATE TABLE `data_news_x_comment`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章编号',
   `mid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '会员MID',
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章编号',
   `content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '评论内容',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_news_x_comment_cid`(`cid`) USING BTREE,
-  INDEX `idx_data_news_x_comment_mid`(`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-会员-评论' ROW_FORMAT = COMPACT;
+  INDEX `idx_data_news_x_comment_mid`(`mid`) USING BTREE,
+  INDEX `idx_data_news_x_comment_code`(`code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-会员-评论' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_news_x_comment
 -- ----------------------------
-INSERT INTO `data_news_x_comment` VALUES (1, 1, 1, '评论内容', '2020-09-14 03:02:23');
-INSERT INTO `data_news_x_comment` VALUES (2, 1, 1, '评论内容', '2020-09-14 03:04:12');
-
--- ----------------------------
--- Table structure for data_news_x_history
--- ----------------------------
-DROP TABLE IF EXISTS `data_news_x_history`;
-CREATE TABLE `data_news_x_history`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章编号',
-  `mid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '会员MID',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_news_x_history_cid`(`cid`) USING BTREE,
-  INDEX `idx_data_news_x_history_mid`(`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-会员-历史' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of data_news_x_history
--- ----------------------------
-INSERT INTO `data_news_x_history` VALUES (2, 1, 1, '2020-09-19 01:04:45');
 
 -- ----------------------------
 -- Table structure for shop_goods
@@ -338,56 +259,11 @@ CREATE TABLE `shop_goods`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-内容' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_goods
 -- ----------------------------
-INSERT INTO `shop_goods` VALUES (1, 6, 'G69962109079', '32512351', '', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格22213\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组\",\"list\":[{\"name\":\"规格属性1111123\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"规格分组\"},{\"name\":\"规格属性1321\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"规格分组\"}]}]', '[[{\"name\":\"默认规格22213\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格22213;;规格分组::规格属性1111123\",\"sku\":\"S159962111569712\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"virtual\":\"0\",\"express\":\"1\"},{\"name\":\"规格属性1111123\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"规格分组\"}],[{\"name\":\"默认规格22213\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格22213;;规格分组::规格属性1321\",\"sku\":\"S159962111569760\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"virtual\":\"0\",\"express\":\"1\"},{\"name\":\"规格属性1321\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"规格分组\"}]]', '', 110, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 0, '2020-09-09 02:55:00');
-INSERT INTO `shop_goods` VALUES (2, 24, 'G69962122974', '34563242', '', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>1235123</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962123001821\",\"status\":true,\"market\":\"111.00\",\"selling\":\"22.00\",\"express\":1,\"virtual\":22}]]', '', 0, 0, 22, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-09 02:57:05');
-INSERT INTO `shop_goods` VALUES (3, 6, 'G69962280234', '36152365213', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":1,\"virtual\":44}]]', '', 234, 41, 44, 0.00, 111.00, 17, 0, 0, 0, 0, 0, '2020-09-09 03:23:18');
-INSERT INTO `shop_goods` VALUES (4, 7, 'G69971817078', '商品名称', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '', '[{\"name\":\"默认分组1\",\"list\":[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\"}]},{\"name\":\"规格分组111\",\"list\":[{\"name\":\"规格属性22231\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性11235\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性221\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"}]},{\"name\":\"规格分组21325\",\"list\":[{\"name\":\"规格属性32151\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"},{\"name\":\"规格属性1235123\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}]}]', '[[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性22231;;规格分组21325::规格属性32151\",\"sku\":\"S159971819422415\",\"status\":true,\"market\":\"111.00\",\"selling\":\"315123.00\",\"express\":15123,\"virtual\":235123},{\"name\":\"规格属性22231\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性32151\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性22231;;规格分组21325::规格属性1235123\",\"sku\":\"S159971819649657\",\"status\":true,\"market\":\"222.00\",\"selling\":\"5123.00\",\"express\":5123,\"virtual\":32151},{\"name\":\"规格属性22231\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性1235123\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性11235;;规格分组21325::规格属性32151\",\"sku\":\"S159971819422444\",\"status\":false,\"market\":\"333.00\",\"selling\":\"123.00\",\"express\":1531,\"virtual\":2342},{\"name\":\"规格属性11235\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性32151\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性11235;;规格分组21325::规格属性1235123\",\"sku\":\"S159971819649628\",\"status\":true,\"market\":\"444.00\",\"selling\":\"231.00\",\"express\":113,\"virtual\":13651},{\"name\":\"规格属性11235\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性1235123\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性221;;规格分组21325::规格属性32151\",\"sku\":\"S159971819422496\",\"status\":false,\"market\":\"111.00\",\"selling\":\"123.00\",\"express\":132561,\"virtual\":24},{\"name\":\"规格属性221\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性32151\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}],[{\"name\":\"默认规格2\",\"check\":true,\"show\":true,\"group\":\"默认分组1\",\"key\":\"默认分组1::默认规格2;;规格分组111::规格属性221;;规格分组21325::规格属性1235123\",\"sku\":\"S159971819649676\",\"status\":true,\"market\":\"1231.00\",\"selling\":\"112.00\",\"express\":1113,\"virtual\":16512},{\"name\":\"规格属性221\",\"check\":true,\"show\":true,\"group\":\"规格分组111\"},{\"name\":\"规格属性1235123\",\"check\":true,\"show\":true,\"group\":\"规格分组21325\"}]]', '', 15, 0, 299803, 0.00, 111.00, 0, 0, 0, 0, 0, 0, '2020-09-10 05:53:17');
-INSERT INTO `shop_goods` VALUES (5, 0, 'G70015845347', '36152365213', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":1,\"virtual\":44}]]', '', 70, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 0, 0, '2020-09-15 08:10:22');
-INSERT INTO `shop_goods` VALUES (6, 6, 'G70015891349', '复制商品的名称', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 10, 1, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-15 08:18:02');
-INSERT INTO `shop_goods` VALUES (7, 6, 'G70042250204', '复制商品的名称2', ',商品标签1,商品标签2,', 'https://v6.thinkadmin.top/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'https://v6.thinkadmin.top/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-18 17:48:22');
-INSERT INTO `shop_goods` VALUES (8, 6, 'G70042250866', '复制商品的名称3', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/a6/411e96553d0e4193945b874f09b185.png', 'http://127.0.0.1:8000/upload/a6/411e96553d0e4193945b874f09b185.png', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-18 17:48:28');
-INSERT INTO `shop_goods` VALUES (9, 6, 'G70042251639', '复制商品的名称4', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/a6/411e96553d0e4193945b874f09b185.png', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-18 17:48:36');
-INSERT INTO `shop_goods` VALUES (10, 6, 'G70042252242', '复制商品的名称5', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/a6/411e96553d0e4193945b874f09b185.png', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-18 17:48:42');
-INSERT INTO `shop_goods` VALUES (11, 6, 'G70051173861', '复制商品的名称5', ',商品标签1,商品标签2,', 'http://127.0.0.1:8000/upload/a6/411e96553d0e4193945b874f09b185.png', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 0, 0.00, 111.00, 0, 0, 0, 0, 1, 0, '2020-09-19 18:35:38');
-INSERT INTO `shop_goods` VALUES (12, 7, 'G70065116874', '111', ',商品标签1,商品标签2,', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 0, '2020-09-21 09:20:06');
-INSERT INTO `shop_goods` VALUES (13, 7, 'G70065788070', '111', ',商品标签1,商品标签2,', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 0, 0, '2020-09-21 11:11:20');
-INSERT INTO `shop_goods` VALUES (14, 7, 'G70067226634', '111', ',商品标签2,', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 0, '2020-09-21 15:11:05');
-INSERT INTO `shop_goods` VALUES (15, 7, 'G70067226915', '111', ',商品标签2,', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 0, '2020-09-21 15:11:09');
-INSERT INTO `shop_goods` VALUES (16, 7, 'G70067227394', '111', ',商品标签2,', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 0, 0, '2020-09-21 15:11:12');
-INSERT INTO `shop_goods` VALUES (17, 7, 'G70067227690', '111', ',商品标签2,', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 0, '2020-09-21 15:11:16');
-INSERT INTO `shop_goods` VALUES (18, 7, 'G70067228008', '111', ',商品标签2,', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 0, '2020-09-21 15:11:20');
-INSERT INTO `shop_goods` VALUES (19, 7, 'G70067228485', '111', ',商品标签2,', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 0, '2020-09-21 15:11:24');
-INSERT INTO `shop_goods` VALUES (20, 7, 'G70067228919', '111', '商品标签1,商品标签2', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 0, '2020-09-21 15:11:28');
-INSERT INTO `shop_goods` VALUES (21, 7, 'G70067229882', '111', '商品标签2', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"电风扇刚发的\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 10, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 0, 0, '2020-09-21 15:11:37');
-INSERT INTO `shop_goods` VALUES (22, 7, 'G70067230554', '111', '商品标签2', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/4e/c0790958706fbaabed89e6c7ab022f.png|https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232645tergdfs</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>gsdf</p>\r\n\r\n<p>gsdfgsdfgsd</p>\r\n\r\n<p>fsadf</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', '', 358129, 0, 0, 0.00, 0.00, 0, 0, 0, 33, 1, 1, '2020-09-21 15:11:44');
-INSERT INTO `shop_goods` VALUES (23, 7, 'G70067231298', '111', ',商品标签2,', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 0, 0, '2020-09-21 15:11:51');
-INSERT INTO `shop_goods` VALUES (24, 24, 'G70067232643', '111', '3,2', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', '', 785, 0, 0, 0.00, 0.00, 0, 0, 0, 4, 0, 1, '2020-09-21 15:12:06');
-INSERT INTO `shop_goods` VALUES (25, 30, 'G70068526449', '111212', ',,', 'https://v6.thinkadmin.top/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png|https://v6.thinkadmin.top/upload/6d/843d90d0517b798dd8a513711d1aa8.jpg|https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', '323232', '<p>3232</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"054654645\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', 'T2020091731249', 167, 0, 0, 0.00, 0.00, 0, 0, 0, 31, 1, 1, '2020-09-21 18:47:44');
-INSERT INTO `shop_goods` VALUES (26, 30, 'G70102391743', '1112', '3,2', 'https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png|https://v6.thinkadmin.top/upload/6d/843d90d0517b798dd8a513711d1aa8.jpg|https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', '323232', '<p>3232</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', '', 100000002048, 0, 0, 0.00, 0.00, 0, 0, 0, 1, 1, 1, '2020-09-25 16:51:57');
-INSERT INTO `shop_goods` VALUES (27, 8, 'G70127536257', 'qqq', '商品标签2', 'https://v6.thinkadmin.top/upload/60/2bde50c199a919e8ace0b8ced839bd.jpg', 'https://v6.thinkadmin.top/upload/60/2bde50c199a919e8ace0b8ced839bd.jpg', '1', '<p>1</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]},{\"name\":\"规格分组2\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性;;规格分组2::规格属性\",\"sku\":\"S70127538478\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"}],[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性;;规格分组2::规格属性1\",\"sku\":\"S70127539249\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"}],[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性1;;规格分组2::规格属性\",\"sku\":\"S70127539104\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"}],[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性1;;规格分组2::规格属性1\",\"sku\":\"S70127539202\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"}],[{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性1;;规格分组1::规格属性;;规格分组2::规格属性\",\"sku\":\"S70127539055\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"}],[{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性1;;规格分组1::规格属性;;规格分组2::规格属性1\",\"sku\":\"S70127539293\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"}],[{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性1;;规格分组1::规格属性1;;规格分组2::规格属性\",\"sku\":\"S70127539160\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"}],[{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性1;;规格分组1::规格属性1;;规格分组2::规格属性1\",\"sku\":\"S70127539241\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"规格分组2\"}]]', 'T2020091734143', 1111, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-09-28 14:43:30');
-INSERT INTO `shop_goods` VALUES (28, 8, 'G70127557261', '1', '商品标签2', 'https://v6.thinkadmin.top/upload/60/2bde50c199a919e8ace0b8ced839bd.jpg', 'https://v6.thinkadmin.top/upload/60/2bde50c199a919e8ace0b8ced839bd.jpg', '1', '<p>1</p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性4\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性5\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性6\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性7\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性8\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性9\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性10\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性11\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性12\",\"check\":true,\"show\":true,\"group\":\"默认分组\"},{\"name\":\"规格属性13\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S70127557219\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性1\",\"sku\":\"S70127558556\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性2\",\"sku\":\"S70127558572\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性3\",\"sku\":\"S70127558653\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性4\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性4\",\"sku\":\"S70127558638\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性5\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性5\",\"sku\":\"S70127558685\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性6\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性6\",\"sku\":\"S70127558610\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性7\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性7\",\"sku\":\"S70127558672\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性8\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性8\",\"sku\":\"S70127558696\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性9\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性9\",\"sku\":\"S70127558771\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性10\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性10\",\"sku\":\"S70127558726\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性11\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性11\",\"sku\":\"S70127558719\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性12\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性12\",\"sku\":\"S70127558744\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}],[{\"name\":\"规格属性13\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::规格属性13\",\"sku\":\"S70127558787\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}]]', 'T2020091734143', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods` VALUES (29, 8, 'G70135907888', 'gfgfgfgfgf', '', 'https://v6.thinkadmin.top/upload/4e/c0790958706fbaabed89e6c7ab022f.png', 'https://v6.thinkadmin.top/upload/4e/c0790958706fbaabed89e6c7ab022f.png|https://v6.thinkadmin.top/upload/6b/c9dc0cbed1fb015aa3a8eab823c6d2.jpg|https://v6.thinkadmin.top/upload/4c/c0b66c1747643ff010538ff5630517.jpg', 'gffggffg ', '<p>gfgfgfgf</p>\r\n', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"黄色\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]},{\"name\":\"尺寸\",\"list\":[{\"name\":\"L\",\"check\":true,\"show\":true,\"group\":\"尺寸\"},{\"name\":\"S\",\"check\":true,\"show\":true,\"group\":\"尺寸\"},{\"name\":\"M\",\"check\":true,\"show\":true,\"group\":\"尺寸\"},{\"name\":\"XL\",\"check\":true,\"show\":true,\"group\":\"尺寸\"},{\"name\":\"XXL\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}]}]', '[[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::L\",\"sku\":\"S70135910136\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"L\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::S\",\"sku\":\"S70135910821\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"S\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::M\",\"sku\":\"S70135911064\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"M\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::XL\",\"sku\":\"S70135911447\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"XL\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::XXL\",\"sku\":\"S70135911858\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"XXL\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::L\",\"sku\":\"S70135910118\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"L\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::S\",\"sku\":\"S70135910801\",\"status\":false,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"S\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::M\",\"sku\":\"S70135911013\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"M\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::XL\",\"sku\":\"S70135911471\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"XL\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::XXL\",\"sku\":\"S70135911877\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"XXL\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黄色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黄色;;尺寸::L\",\"sku\":\"S70135910161\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"L\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黄色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黄色;;尺寸::S\",\"sku\":\"S70135910802\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"S\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黄色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黄色;;尺寸::M\",\"sku\":\"S70135911052\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"M\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黄色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黄色;;尺寸::XL\",\"sku\":\"S701359115310\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"XL\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黄色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黄色;;尺寸::XXL\",\"sku\":\"S70135911812\",\"status\":true,\"market\":\"100.00\",\"selling\":\"88.00\",\"express\":1,\"virtual\":1000},{\"name\":\"XXL\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}]]', 'T2020091731584', 0, 0, 15000, 0.00, 100.00, 0, 0, 0, 0, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods` VALUES (30, 8, 'G70143303923', '测试', '', 'https://v6.thinkadmin.top/upload/74/c02e9bc071eb346e51f62302ef4602.jpg', 'https://v6.thinkadmin.top/upload/74/c02e9bc071eb346e51f62302ef4602.jpg', '', '', '[{\"name\":\"::默认分组::::::::::::::::::::::::\",\"list\":[{\"name\":\";;默认规格;;;;;;;;;;;;;;;;;;;;;;\",\"check\":true,\"show\":true,\"group\":\"::默认分组::::::::::::::::::::::::\"}]},{\"name\":\"::默认分组::::::::::::::::::::::::\",\"list\":[{\"name\":\";;默认规格;;;;;;;;;;;;;;;;;;;;;;\",\"check\":true,\"show\":true,\"group\":\"::默认分组::::::::::::::::::::::::\"}]}]', '[[{\"name\":\";;默认规格;;;;;;;;;;;;;;;;;;;;;;\",\"check\":true,\"show\":true,\"group\":\"::默认分组::::::::::::::::::::::::\",\"key\":\"::默认分组::::::::::::::::::::::::::;;默认规格;;;;;;;;;;;;;;;;;;;;;;;;::默认分组::::::::::::::::::::::::::;;默认规格;;;;;;;;;;;;;;;;;;;;;;\",\"sku\":\"S70143316118\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\";;默认规格;;;;;;;;;;;;;;;;;;;;;;\",\"check\":true,\"show\":true,\"group\":\"::默认分组::::::::::::::::::::::::\"}]]', '', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-09-30 10:33:25');
-INSERT INTO `shop_goods` VALUES (31, 30, 'G70209117130', '111', '', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/4e/c0790958706fbaabed89e6c7ab022f.png|https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png|https://v6.thinkadmin.top/upload/b4/1b0660bf47c9f13b04a80090f771bb.jpg', '323232', '<p>3232645tergdfs</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>gsdf</p>\r\n\r\n<p>gsdfgsdfgsd</p>\r\n\r\n<p>fsadf</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', '', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-10-08 01:19:31');
-INSERT INTO `shop_goods` VALUES (32, 30, 'G70209120001', '111112222', '3,2', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/4e/c0790958706fbaabed89e6c7ab022f.png|https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232645tergdfs</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>gsdf</p>\r\n\r\n<p>gsdfgsdfgsd</p>\r\n\r\n<p>fsadf</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', '', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-10-08 01:20:01');
-INSERT INTO `shop_goods` VALUES (33, 0, 'G70209124477', '复制商品的名称4', '', 'http://127.0.0.1:8000/upload/a6/411e96553d0e4193945b874f09b185.png', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 0, 0.00, 111.00, 0, 0, 0, 0, 1, 1, '2020-10-08 01:20:44');
-INSERT INTO `shop_goods` VALUES (34, 0, 'G70209126540', '复制商品的名称4', '', 'http://127.0.0.1:8000/upload/a6/411e96553d0e4193945b874f09b185.png', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 0, 0.00, 111.00, 0, 0, 0, 0, 1, 1, '2020-10-08 01:21:05');
-INSERT INTO `shop_goods` VALUES (35, 0, 'G70209127743', '复制商品的名6', '', 'http://127.0.0.1:8000/upload/a6/411e96553d0e4193945b874f09b185.png', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', 'T2020091731249', 0, 0, 44, 0.00, 111.00, 0, 0, 0, 0, 1, 1, '2020-10-08 01:21:17');
-INSERT INTO `shop_goods` VALUES (36, 30, 'G70221630641', '111', '', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/4e/c0790958706fbaabed89e6c7ab022f.png|https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232645tergdfs</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>gsdf</p>\r\n\r\n<p>gsdfgsdfgsd</p>\r\n\r\n<p>fsadf</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', '', 500, 0, 0, 0.00, 0.00, 0, 0, 0, 40, 1, 1, '2020-10-09 12:05:06');
-INSERT INTO `shop_goods` VALUES (37, 10, 'G70223335594', '123', '', 'https://v6.thinkadmin.top/upload/37/9df8556dc0ba565fb4a4cbc157e37e.png', 'https://v6.thinkadmin.top/upload/37/9df8556dc0ba565fb4a4cbc157e37e.png', '', '<p>123213213</p>\r\n', '[{\"name\":\"sda\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"sda\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"sda\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"sda\"}]},{\"name\":\"as\",\"list\":[{\"name\":\"规格23属性\",\"check\":true,\"show\":true,\"group\":\"as\"},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"as\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"sda\",\"key\":\"sda::默认规格;;as::规格23属性\",\"sku\":\"S70223337461\",\"status\":false,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格23属性\",\"check\":true,\"show\":true,\"group\":\"as\"}],[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"sda\",\"key\":\"sda::默认规格;;as::规格属性1\",\"sku\":\"S70223337851\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"as\"}],[{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"sda\",\"key\":\"sda::规格属性1;;as::规格23属性\",\"sku\":\"S70223337476\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格23属性\",\"check\":true,\"show\":true,\"group\":\"as\"}],[{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"sda\",\"key\":\"sda::规格属性1;;as::规格属性1\",\"sku\":\"S70223337813\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"as\"}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"sda\",\"key\":\"sda::规格属性2;;as::规格23属性\",\"sku\":\"S70223337410\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格23属性\",\"check\":true,\"show\":true,\"group\":\"as\"}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"sda\",\"key\":\"sda::规格属性2;;as::规格属性1\",\"sku\":\"S70223337873\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性1\",\"check\":true,\"show\":true,\"group\":\"as\"}]]', 'T2020091731249', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-10-09 16:49:59');
-INSERT INTO `shop_goods` VALUES (38, 15, 'G70241799705', '111', '', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/4e/c0790958706fbaabed89e6c7ab022f.png|https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png|https://v6.thinkadmin.top/upload/b9/38c28fa6e364e54770a472d2ff9905.png', '323232', '<p>3232645tergdfs</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>gsdf</p>\r\n\r\n<p>gsdfgsdfgsd</p>\r\n\r\n<p>fsadf</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', '', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-10-11 20:06:37');
-INSERT INTO `shop_goods` VALUES (39, 19, 'G70246171404', '测试商品啦啦啦', '', 'https://v6.thinkadmin.top/upload/4c/a5fbc4e76b00922f75554793d126b3.jpg', 'https://v6.thinkadmin.top/upload/9c/2cb7c9434f52769fa3ad00dcd366d2.png', '测试添加商品', '<p>啦啦啦阿里</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S70246170000\",\"status\":true,\"market\":\"45.00\",\"selling\":\"50.00\",\"express\":3,\"virtual\":45}]]', 'T2020091731249', 160, 0, 45, 0.00, 45.00, 0, 0, 0, 2, 0, 1, '2020-10-12 08:18:06');
-INSERT INTO `shop_goods` VALUES (40, 0, 'G70258929081', 'asdfasdf', '2', 'https://v6.thinkadmin.top/upload/18/704aa289a2d673080ad3aa805f458c.jpg', 'https://v6.thinkadmin.top/upload/18/704aa289a2d673080ad3aa805f458c.jpg', 'asdfasdf', '<p>asdfasdf</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S70258929010\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}]]', 'T2020091734143', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-10-13 19:42:19');
-INSERT INTO `shop_goods` VALUES (41, 0, 'G70259130795', 'asdfadfasdf', '2', 'https://v6.thinkadmin.top/upload/18/704aa289a2d673080ad3aa805f458c.jpg', 'https://v6.thinkadmin.top/upload/18/704aa289a2d673080ad3aa805f458c.jpg', 'asdfd', '<p>asdasdfa</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S70259130779\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"}]]', 'T2020101243025', 1009, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-10-13 20:15:32');
-INSERT INTO `shop_goods` VALUES (42, 24, 'G70307135183', '111', '3,2', 'https://v6.thinkadmin.top/upload/49/f7b1fce780efbd5003e4fa4e1e3a80.png', 'https://v6.thinkadmin.top/upload/22/bd7517a8e94e9982e66cfd58d3f042.png', '323232', '<p>3232adsfadsf</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]},{\"name\":\"规格分组1\",\"list\":[{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格;;规格分组1::规格属性\",\"sku\":\"S70065118538\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"规格属性\",\"check\":true,\"show\":true,\"group\":\"规格分组1\"}]]', '', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-10-19 09:35:51');
-INSERT INTO `shop_goods` VALUES (43, 0, 'G70318034754', 'CSD X 謝金燕 姐姐蕾絲口罩 (1盒10片)', '', 'https://v6.thinkadmin.top/upload/f1/3cf6578c2e53187ffd272161d59d54.jpg', 'https://v6.thinkadmin.top/upload/58/b8923ec851d4fb162ee4bfa385ab72.jpg', '', '<p>阿萨德撒大</p>\r\n', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"蓝色\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::红色\",\"sku\":\"S70318072901\",\"status\":true,\"market\":\"100.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色\",\"sku\":\"S70318073218\",\"status\":true,\"market\":\"100.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0}],[{\"name\":\"蓝色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::蓝色\",\"sku\":\"S70318073643\",\"status\":true,\"market\":\"100.00\",\"selling\":\"0.00\",\"express\":1,\"virtual\":0}]]', '', 0, 0, 0, 0.00, 100.00, 0, 0, 0, 0, 0, 1, '2020-10-20 15:58:57');
-INSERT INTO `shop_goods` VALUES (44, 30, 'G70324190018', '联想笔记本电脑', '3,2', 'https://v6.thinkadmin.top/upload/ec/b9ed5ade404d239c813300d2dd53ce.png', 'https://v6.thinkadmin.top/upload/ec/b9ed5ade404d239c813300d2dd53ce.png', '', '<p>交流电三老地方三级了fdsafdsjklfnbjfa 加工费大家覅到时见覅偶</p>\r\n', '[{\"name\":\"商品名称\",\"list\":[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\"}]},{\"name\":\"类型\",\"list\":[{\"name\":\"游戏本\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"轻薄本\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"ThinkPad\",\"check\":true,\"show\":true,\"group\":\"类型\"}]},{\"name\":\"规格型号\",\"list\":[{\"name\":\"拯救者\",\"check\":true,\"show\":true,\"group\":\"规格型号\"},{\"name\":\"小新\",\"check\":true,\"show\":true,\"group\":\"规格型号\"},{\"name\":\"T430\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}]}]', '[[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\",\"key\":\"商品名称::联想笔记本;;类型::游戏本;;规格型号::拯救者\",\"sku\":\"S70324206910\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"游戏本\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"拯救者\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}],[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\",\"key\":\"商品名称::联想笔记本;;类型::游戏本;;规格型号::小新\",\"sku\":\"S70324207796\",\"status\":false,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"游戏本\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"小新\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}],[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\",\"key\":\"商品名称::联想笔记本;;类型::游戏本;;规格型号::T430\",\"sku\":\"S70324208771\",\"status\":false,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"游戏本\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"T430\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}],[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\",\"key\":\"商品名称::联想笔记本;;类型::轻薄本;;规格型号::拯救者\",\"sku\":\"S703242069110\",\"status\":false,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"轻薄本\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"拯救者\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}],[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\",\"key\":\"商品名称::联想笔记本;;类型::轻薄本;;规格型号::小新\",\"sku\":\"S70324207703\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"轻薄本\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"小新\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}],[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\",\"key\":\"商品名称::联想笔记本;;类型::轻薄本;;规格型号::T430\",\"sku\":\"S70324208761\",\"status\":false,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"轻薄本\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"T430\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}],[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\",\"key\":\"商品名称::联想笔记本;;类型::ThinkPad;;规格型号::拯救者\",\"sku\":\"S703242069310\",\"status\":false,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"ThinkPad\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"拯救者\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}],[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\",\"key\":\"商品名称::联想笔记本;;类型::ThinkPad;;规格型号::小新\",\"sku\":\"S70324207704\",\"status\":false,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"ThinkPad\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"小新\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}],[{\"name\":\"联想笔记本\",\"check\":true,\"show\":true,\"group\":\"商品名称\",\"key\":\"商品名称::联想笔记本;;类型::ThinkPad;;规格型号::T430\",\"sku\":\"S70324208735\",\"status\":true,\"market\":\"0.00\",\"selling\":\"0.00\",\"express\":\"1\",\"virtual\":\"0\"},{\"name\":\"ThinkPad\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"T430\",\"check\":true,\"show\":true,\"group\":\"规格型号\"}]]', 'T2020101243025', 0, 0, 0, 0.00, 0.00, 0, 0, 0, 0, 1, 1, '2020-10-21 09:06:08');
-INSERT INTO `shop_goods` VALUES (45, 30, 'G70326944824', '复制商品的名6', '', 'http://127.0.0.1:8000/upload/a6/411e96553d0e4193945b874f09b185.png', 'http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg|http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>2365123</p>\r\n', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"span\":1,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S159962280311732\",\"status\":true,\"market\":\"111.00\",\"selling\":\"44.00\",\"express\":2,\"virtual\":44}]]', '', 0, 0, 0, 0.00, 111.00, 0, 0, 0, 0, 1, 1, '2020-10-21 16:37:29');
 
 -- ----------------------------
 -- Table structure for shop_goods_cate
@@ -407,46 +283,11 @@ CREATE TABLE `shop_goods_cate`  (
   INDEX `idx_shop_goods_cate_sort`(`sort`) USING BTREE,
   INDEX `idx_shop_goods_cate_status`(`status`) USING BTREE,
   INDEX `idx_shop_goods_cate_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-分类' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-分类' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_goods_cate
 -- ----------------------------
-INSERT INTO `shop_goods_cate` VALUES (1, 0, '一级菜单', 'https://v6.thinkadmin.top/upload/d0/c50633f94dfd02755946cdd2aef759.jpg', '真的是厉害了', 0, 1, 1, '2020-09-08 02:52:00');
-INSERT INTO `shop_goods_cate` VALUES (2, 1, '二级菜单2', '', '', 0, 1, 1, '2020-09-08 02:57:12');
-INSERT INTO `shop_goods_cate` VALUES (3, 0, '23512351', '', '', 0, 1, 1, '2020-09-08 02:58:05');
-INSERT INTO `shop_goods_cate` VALUES (4, 0, '235123', '', '', 0, 1, 1, '2020-09-08 02:58:13');
-INSERT INTO `shop_goods_cate` VALUES (5, 1, '二级菜单1', '', '', 0, 1, 1, '2020-09-08 03:01:21');
-INSERT INTO `shop_goods_cate` VALUES (6, 1, '三级菜单1', '', '', 10, 1, 1, '2020-09-08 03:02:46');
-INSERT INTO `shop_goods_cate` VALUES (7, 2, '三级菜单2', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', '', 0, 1, 1, '2020-09-08 03:03:35');
-INSERT INTO `shop_goods_cate` VALUES (8, 2, '1', '', '', 0, 1, 1, '2020-09-22 11:50:05');
-INSERT INTO `shop_goods_cate` VALUES (9, 0, 'ooooo', 'https://v6.thinkadmin.top/upload/6d/843d90d0517b798dd8a513711d1aa8.jpg', '', 0, 0, 1, '2020-09-24 09:03:06');
-INSERT INTO `shop_goods_cate` VALUES (10, 5, '11', '', '', 0, 1, 1, '2020-09-27 18:20:45');
-INSERT INTO `shop_goods_cate` VALUES (11, 0, '111', '', '', 0, 1, 1, '2020-10-03 23:03:08');
-INSERT INTO `shop_goods_cate` VALUES (12, 11, '22', '', '', 0, 1, 1, '2020-10-03 23:03:21');
-INSERT INTO `shop_goods_cate` VALUES (13, 11, '44', '', '', 0, 1, 1, '2020-10-10 16:53:22');
-INSERT INTO `shop_goods_cate` VALUES (14, 6, '888', '', '', 0, 1, 1, '2020-10-10 16:53:36');
-INSERT INTO `shop_goods_cate` VALUES (15, 13, ' 55', '', '', 5, 1, 1, '2020-10-10 17:04:08');
-INSERT INTO `shop_goods_cate` VALUES (16, 12, '33', '', '', 0, 1, 1, '2020-10-11 20:07:20');
-INSERT INTO `shop_goods_cate` VALUES (17, 0, '测试一级分类', '', '', 0, 1, 1, '2020-10-12 10:11:17');
-INSERT INTO `shop_goods_cate` VALUES (18, 17, '测试二级分类', '', '', 0, 0, 1, '2020-10-12 10:12:49');
-INSERT INTO `shop_goods_cate` VALUES (19, 18, '测试三级分类', '', '', 0, 0, 1, '2020-10-12 10:12:57');
-INSERT INTO `shop_goods_cate` VALUES (20, 18, '测试三级分类2', '', '', 0, 1, 1, '2020-10-12 10:17:49');
-INSERT INTO `shop_goods_cate` VALUES (21, 17, '测试二级分类', '', '', 0, 1, 1, '2020-10-12 11:47:29');
-INSERT INTO `shop_goods_cate` VALUES (22, 21, '测试三级分类1', '', '', 0, 1, 1, '2020-10-12 11:47:39');
-INSERT INTO `shop_goods_cate` VALUES (23, 21, '测试三级分类2', '', '', 0, 1, 1, '2020-10-12 11:47:48');
-INSERT INTO `shop_goods_cate` VALUES (24, 21, '测试三级分类3', '', '', 123, 1, 1, '2020-10-12 11:48:48');
-INSERT INTO `shop_goods_cate` VALUES (25, 21, '测试三级分类2', '', '', 0, 1, 1, '2020-10-15 00:14:08');
-INSERT INTO `shop_goods_cate` VALUES (26, 21, 'dd', 'dd', 'd', 0, 1, 1, '2020-10-19 09:42:36');
-INSERT INTO `shop_goods_cate` VALUES (27, 0, '3C产品', '1', '3C电子产品', 0, 1, 0, '2020-10-19 13:55:47');
-INSERT INTO `shop_goods_cate` VALUES (28, 27, '2', '2', '2', 0, 1, 1, '2020-10-19 13:56:01');
-INSERT INTO `shop_goods_cate` VALUES (29, 27, '电脑整机', '2', '电脑整机，包括笔记本和台式机', 6, 1, 0, '2020-10-20 17:11:15');
-INSERT INTO `shop_goods_cate` VALUES (30, 29, '笔记本电脑', '3', '笔记本电脑', 5, 1, 0, '2020-10-20 17:11:22');
-INSERT INTO `shop_goods_cate` VALUES (31, 0, '五五七二', '', '', 0, 1, 1, '2020-10-21 00:40:55');
-INSERT INTO `shop_goods_cate` VALUES (32, 29, '台式机', '', '电脑台式机', 0, 1, 0, '2020-10-21 08:57:12');
-INSERT INTO `shop_goods_cate` VALUES (33, 0, '多级分类列表可以搞个展开收起插件吗？', '', '', 0, 1, 1, '2020-10-22 15:52:33');
-INSERT INTO `shop_goods_cate` VALUES (34, 27, 'test', 'https://v6.thinkadmin.top/upload/c8/8218b7eb4b842a10cec1c679e8f4ea.png', '', 0, 1, 1, '2020-10-23 16:52:43');
-INSERT INTO `shop_goods_cate` VALUES (35, 29, '45', '', '', 0, 1, 0, '2020-10-26 11:26:27');
 
 -- ----------------------------
 -- Table structure for shop_goods_item
@@ -469,111 +310,11 @@ CREATE TABLE `shop_goods_item`  (
   INDEX `index_store_goods_list_id`(`goods_code`) USING BTREE,
   INDEX `index_store_goods_list_spec`(`goods_spec`) USING BTREE,
   INDEX `index_store_goods_list_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-商品-规格' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-商品-规格' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_item
 -- ----------------------------
-INSERT INTO `shop_goods_item` VALUES (1, 'S159962111569712', 'G69962109079', '默认分组::默认规格22213;;规格分组::规格属性1111123', 0, 55, 0.00, 0.00, 0, 1, 1, '2020-09-09 02:55:00');
-INSERT INTO `shop_goods_item` VALUES (2, 'S159962111569760', 'G69962109079', '默认分组::默认规格22213;;规格分组::规格属性1321', 0, 55, 0.00, 0.00, 0, 1, 1, '2020-09-09 02:55:00');
-INSERT INTO `shop_goods_item` VALUES (3, 'S159962123001821', 'G69962122974', '默认分组::默认规格', 0, 0, 22.00, 111.00, 22, 1, 1, '2020-09-09 02:57:05');
-INSERT INTO `shop_goods_item` VALUES (4, 'S159962280311732', 'G69962280234', '默认分组::默认规格', 41, 234, 44.00, 111.00, 44, 1, 1, '2020-09-09 03:23:18');
-INSERT INTO `shop_goods_item` VALUES (5, 'S159971819422415', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性22231;;规格分组21325::规格属性32151', 0, 1, 315123.00, 111.00, 235123, 15123, 1, '2020-09-10 05:53:17');
-INSERT INTO `shop_goods_item` VALUES (6, 'S159971819649657', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性22231;;规格分组21325::规格属性1235123', 0, 2, 5123.00, 222.00, 32151, 5123, 1, '2020-09-10 05:53:17');
-INSERT INTO `shop_goods_item` VALUES (7, 'S159971819422444', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性11235;;规格分组21325::规格属性32151', 0, 3, 123.00, 333.00, 2342, 1531, 0, '2020-09-10 05:53:17');
-INSERT INTO `shop_goods_item` VALUES (8, 'S159971819649628', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性11235;;规格分组21325::规格属性1235123', 0, 4, 231.00, 444.00, 13651, 113, 1, '2020-09-10 05:53:17');
-INSERT INTO `shop_goods_item` VALUES (9, 'S159971819422496', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性221;;规格分组21325::规格属性32151', 0, 0, 123.00, 111.00, 24, 132561, 0, '2020-09-10 05:53:17');
-INSERT INTO `shop_goods_item` VALUES (10, 'S159971819649676', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性221;;规格分组21325::规格属性1235123', 0, 5, 112.00, 1231.00, 16512, 1113, 1, '2020-09-10 05:53:17');
-INSERT INTO `shop_goods_item` VALUES (11, 'S159962280311732', 'G70015845347', '默认分组::默认规格', 0, 70, 44.00, 111.00, 44, 1, 1, '2020-09-15 08:10:22');
-INSERT INTO `shop_goods_item` VALUES (12, 'S159962280311732', 'G70015891349', '默认分组::默认规格', 1, 10, 44.00, 111.00, 44, 2, 1, '2020-09-15 08:18:02');
-INSERT INTO `shop_goods_item` VALUES (13, 'S159962280311732', 'G70042250204', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-09-18 17:48:22');
-INSERT INTO `shop_goods_item` VALUES (14, 'S159962280311732', 'G70042250866', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-09-18 17:48:28');
-INSERT INTO `shop_goods_item` VALUES (15, 'S159962280311732', 'G70042251639', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-09-18 17:48:36');
-INSERT INTO `shop_goods_item` VALUES (16, 'S159962280311732', 'G70042252242', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-09-18 17:48:42');
-INSERT INTO `shop_goods_item` VALUES (17, 'S159962280311732', 'G70051173861', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-09-19 18:35:38');
-INSERT INTO `shop_goods_item` VALUES (18, 'S70065118538', 'G70065116874', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 09:20:06');
-INSERT INTO `shop_goods_item` VALUES (19, 'S70065118538', 'G70065788070', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 11:11:20');
-INSERT INTO `shop_goods_item` VALUES (20, 'S70065118538', 'G70067226634', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:05');
-INSERT INTO `shop_goods_item` VALUES (21, 'S70065118538', 'G70067226915', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:09');
-INSERT INTO `shop_goods_item` VALUES (22, 'S70065118538', 'G70067227394', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:12');
-INSERT INTO `shop_goods_item` VALUES (23, 'S70065118538', 'G70067227690', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:16');
-INSERT INTO `shop_goods_item` VALUES (24, 'S70065118538', 'G70067228008', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:20');
-INSERT INTO `shop_goods_item` VALUES (25, 'S70065118538', 'G70067228485', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:24');
-INSERT INTO `shop_goods_item` VALUES (26, 'S70065118538', 'G70067228919', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:28');
-INSERT INTO `shop_goods_item` VALUES (27, '电风扇刚发的', 'G70067229882', '默认分组::默认规格;;规格分组1::规格属性', 0, 10, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:37');
-INSERT INTO `shop_goods_item` VALUES (28, 'S70065118538', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 0, 358129, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:44');
-INSERT INTO `shop_goods_item` VALUES (29, 'S70065118538', 'G70067231298', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:11:51');
-INSERT INTO `shop_goods_item` VALUES (30, 'S70065118538', 'G70067232643', '默认分组::默认规格;;规格分组1::规格属性', 0, 785, 0.00, 0.00, 0, 1, 1, '2020-09-21 15:12:06');
-INSERT INTO `shop_goods_item` VALUES (31, '054654645', 'G70068526449', '默认分组::默认规格;;规格分组1::规格属性', 0, 167, 0.00, 0.00, 0, 1, 1, '2020-09-21 18:47:44');
-INSERT INTO `shop_goods_item` VALUES (32, 'S70065118538', 'G70102391743', '默认分组::默认规格;;规格分组1::规格属性', 0, 18446744073709551615, 0.00, 0.00, 0, 1, 1, '2020-09-25 16:51:57');
-INSERT INTO `shop_goods_item` VALUES (33, 'S70127538478', 'G70127536257', '默认分组::默认规格;;规格分组1::规格属性;;规格分组2::规格属性', 0, 1111, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:43:30');
-INSERT INTO `shop_goods_item` VALUES (34, 'S70127539249', 'G70127536257', '默认分组::默认规格;;规格分组1::规格属性;;规格分组2::规格属性1', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:43:30');
-INSERT INTO `shop_goods_item` VALUES (35, 'S70127539104', 'G70127536257', '默认分组::默认规格;;规格分组1::规格属性1;;规格分组2::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:43:30');
-INSERT INTO `shop_goods_item` VALUES (36, 'S70127539202', 'G70127536257', '默认分组::默认规格;;规格分组1::规格属性1;;规格分组2::规格属性1', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:43:30');
-INSERT INTO `shop_goods_item` VALUES (37, 'S70127539055', 'G70127536257', '默认分组::规格属性1;;规格分组1::规格属性;;规格分组2::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:43:30');
-INSERT INTO `shop_goods_item` VALUES (38, 'S70127539293', 'G70127536257', '默认分组::规格属性1;;规格分组1::规格属性;;规格分组2::规格属性1', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:43:30');
-INSERT INTO `shop_goods_item` VALUES (39, 'S70127539160', 'G70127536257', '默认分组::规格属性1;;规格分组1::规格属性1;;规格分组2::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:43:30');
-INSERT INTO `shop_goods_item` VALUES (40, 'S70127539241', 'G70127536257', '默认分组::规格属性1;;规格分组1::规格属性1;;规格分组2::规格属性1', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:43:30');
-INSERT INTO `shop_goods_item` VALUES (41, 'S70127557219', 'G70127557261', '默认分组::默认规格', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (42, 'S70127558556', 'G70127557261', '默认分组::规格属性1', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (43, 'S70127558572', 'G70127557261', '默认分组::规格属性2', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (44, 'S70127558653', 'G70127557261', '默认分组::规格属性3', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (45, 'S70127558638', 'G70127557261', '默认分组::规格属性4', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (46, 'S70127558685', 'G70127557261', '默认分组::规格属性5', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (47, 'S70127558610', 'G70127557261', '默认分组::规格属性6', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (48, 'S70127558672', 'G70127557261', '默认分组::规格属性7', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (49, 'S70127558696', 'G70127557261', '默认分组::规格属性8', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (50, 'S70127558771', 'G70127557261', '默认分组::规格属性9', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (51, 'S70127558726', 'G70127557261', '默认分组::规格属性10', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (52, 'S70127558719', 'G70127557261', '默认分组::规格属性11', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (53, 'S70127558744', 'G70127557261', '默认分组::规格属性12', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (54, 'S70127558787', 'G70127557261', '默认分组::规格属性13', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-28 14:46:34');
-INSERT INTO `shop_goods_item` VALUES (55, 'S70135910136', 'G70135907888', '颜色::白色;;尺寸::L', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (56, 'S70135910821', 'G70135907888', '颜色::白色;;尺寸::S', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (57, 'S70135911064', 'G70135907888', '颜色::白色;;尺寸::M', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (58, 'S70135911447', 'G70135907888', '颜色::白色;;尺寸::XL', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (59, 'S70135911858', 'G70135907888', '颜色::白色;;尺寸::XXL', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (60, 'S70135910118', 'G70135907888', '颜色::黑色;;尺寸::L', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (61, 'S70135910801', 'G70135907888', '颜色::黑色;;尺寸::S', 0, 0, 88.00, 100.00, 1000, 1, 0, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (62, 'S70135911013', 'G70135907888', '颜色::黑色;;尺寸::M', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (63, 'S70135911471', 'G70135907888', '颜色::黑色;;尺寸::XL', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (64, 'S70135911877', 'G70135907888', '颜色::黑色;;尺寸::XXL', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (65, 'S70135910161', 'G70135907888', '颜色::黄色;;尺寸::L', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (66, 'S70135910802', 'G70135907888', '颜色::黄色;;尺寸::S', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (67, 'S70135911052', 'G70135907888', '颜色::黄色;;尺寸::M', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (68, 'S701359115310', 'G70135907888', '颜色::黄色;;尺寸::XL', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (69, 'S70135911812', 'G70135907888', '颜色::黄色;;尺寸::XXL', 0, 0, 88.00, 100.00, 1000, 1, 1, '2020-09-29 13:59:45');
-INSERT INTO `shop_goods_item` VALUES (70, 'S70143316118', 'G70143303923', '::默认分组::::::::::::::::::::::::::;;默认规格;;;;;;;;;;;;;;;;;;;;;;;;::默认分组::::::::::::::::::::::::::;;默认规格', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-09-30 10:33:25');
-INSERT INTO `shop_goods_item` VALUES (71, 'S70065118538', 'G70209117130', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-08 01:19:31');
-INSERT INTO `shop_goods_item` VALUES (72, 'S70065118538', 'G70209120001', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-08 01:20:01');
-INSERT INTO `shop_goods_item` VALUES (73, 'S159962280311732', 'G70209124477', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-10-08 01:20:44');
-INSERT INTO `shop_goods_item` VALUES (74, 'S159962280311732', 'G70209126540', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-10-08 01:21:05');
-INSERT INTO `shop_goods_item` VALUES (75, 'S159962280311732', 'G70209127743', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-10-08 01:21:17');
-INSERT INTO `shop_goods_item` VALUES (76, 'S70065118538', 'G70221630641', '默认分组::默认规格;;规格分组1::规格属性', 0, 500, 0.00, 0.00, 0, 1, 1, '2020-10-09 12:05:06');
-INSERT INTO `shop_goods_item` VALUES (77, 'S70223337461', 'G70223335594', 'sda::默认规格;;as::规格23属性', 0, 0, 0.00, 0.00, 0, 1, 0, '2020-10-09 16:49:59');
-INSERT INTO `shop_goods_item` VALUES (78, 'S70223337851', 'G70223335594', 'sda::默认规格;;as::规格属性1', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-09 16:49:59');
-INSERT INTO `shop_goods_item` VALUES (79, 'S70223337476', 'G70223335594', 'sda::规格属性1;;as::规格23属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-09 16:49:59');
-INSERT INTO `shop_goods_item` VALUES (80, 'S70223337813', 'G70223335594', 'sda::规格属性1;;as::规格属性1', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-09 16:49:59');
-INSERT INTO `shop_goods_item` VALUES (81, 'S70223337410', 'G70223335594', 'sda::规格属性2;;as::规格23属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-09 16:49:59');
-INSERT INTO `shop_goods_item` VALUES (82, 'S70223337873', 'G70223335594', 'sda::规格属性2;;as::规格属性1', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-09 16:49:59');
-INSERT INTO `shop_goods_item` VALUES (83, 'S70065118538', 'G70241799705', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-11 20:06:37');
-INSERT INTO `shop_goods_item` VALUES (84, 'S70246170000', 'G70246171404', '默认分组::默认规格', 0, 160, 50.00, 45.00, 45, 3, 1, '2020-10-12 08:18:06');
-INSERT INTO `shop_goods_item` VALUES (85, 'S70258929010', 'G70258929081', '默认分组::默认规格', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-13 19:42:19');
-INSERT INTO `shop_goods_item` VALUES (86, 'S70259130779', 'G70259130795', '默认分组::默认规格', 0, 1009, 0.00, 0.00, 0, 1, 1, '2020-10-13 20:15:32');
-INSERT INTO `shop_goods_item` VALUES (87, 'S70065118538', 'G70307135183', '默认分组::默认规格;;规格分组1::规格属性', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-19 09:35:51');
-INSERT INTO `shop_goods_item` VALUES (88, 'S70318072901', 'G70318034754', '颜色::红色', 0, 0, 0.00, 100.00, 0, 1, 1, '2020-10-20 15:58:57');
-INSERT INTO `shop_goods_item` VALUES (89, 'S70318073218', 'G70318034754', '颜色::白色', 0, 0, 0.00, 100.00, 0, 1, 1, '2020-10-20 15:58:57');
-INSERT INTO `shop_goods_item` VALUES (90, 'S70318073643', 'G70318034754', '颜色::蓝色', 0, 0, 0.00, 100.00, 0, 1, 1, '2020-10-20 15:58:57');
-INSERT INTO `shop_goods_item` VALUES (91, 'S70324206910', 'G70324190018', '商品名称::联想笔记本;;类型::游戏本;;规格型号::拯救者', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-21 09:06:07');
-INSERT INTO `shop_goods_item` VALUES (92, 'S70324207796', 'G70324190018', '商品名称::联想笔记本;;类型::游戏本;;规格型号::小新', 0, 0, 0.00, 0.00, 0, 1, 0, '2020-10-21 09:06:07');
-INSERT INTO `shop_goods_item` VALUES (93, 'S70324208771', 'G70324190018', '商品名称::联想笔记本;;类型::游戏本;;规格型号::T430', 0, 0, 0.00, 0.00, 0, 1, 0, '2020-10-21 09:06:07');
-INSERT INTO `shop_goods_item` VALUES (94, 'S703242069110', 'G70324190018', '商品名称::联想笔记本;;类型::轻薄本;;规格型号::拯救者', 0, 0, 0.00, 0.00, 0, 1, 0, '2020-10-21 09:06:07');
-INSERT INTO `shop_goods_item` VALUES (95, 'S70324207703', 'G70324190018', '商品名称::联想笔记本;;类型::轻薄本;;规格型号::小新', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-21 09:06:07');
-INSERT INTO `shop_goods_item` VALUES (96, 'S70324208761', 'G70324190018', '商品名称::联想笔记本;;类型::轻薄本;;规格型号::T430', 0, 0, 0.00, 0.00, 0, 1, 0, '2020-10-21 09:06:07');
-INSERT INTO `shop_goods_item` VALUES (97, 'S703242069310', 'G70324190018', '商品名称::联想笔记本;;类型::ThinkPad;;规格型号::拯救者', 0, 0, 0.00, 0.00, 0, 1, 0, '2020-10-21 09:06:07');
-INSERT INTO `shop_goods_item` VALUES (98, 'S70324207704', 'G70324190018', '商品名称::联想笔记本;;类型::ThinkPad;;规格型号::小新', 0, 0, 0.00, 0.00, 0, 1, 0, '2020-10-21 09:06:08');
-INSERT INTO `shop_goods_item` VALUES (99, 'S70324208735', 'G70324190018', '商品名称::联想笔记本;;类型::ThinkPad;;规格型号::T430', 0, 0, 0.00, 0.00, 0, 1, 1, '2020-10-21 09:06:08');
-INSERT INTO `shop_goods_item` VALUES (100, 'S159962280311732', 'G70326944824', '默认分组::默认规格', 0, 0, 44.00, 111.00, 44, 2, 1, '2020-10-21 16:37:29');
 
 -- ----------------------------
 -- Table structure for shop_goods_mark
@@ -589,13 +330,11 @@ CREATE TABLE `shop_goods_mark`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_goods_mark_sort`(`sort`) USING BTREE,
   INDEX `idx_shop_goods_mark_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-标签' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-标签' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_goods_mark
 -- ----------------------------
-INSERT INTO `shop_goods_mark` VALUES (6, 'ssss', 'ssss', 0, 1, '2020-10-22 21:52:09');
-INSERT INTO `shop_goods_mark` VALUES (7, 'hhhhhh', 'hhhhh', 0, 1, '2020-10-22 21:53:03');
 
 -- ----------------------------
 -- Table structure for shop_goods_stock
@@ -613,58 +352,11 @@ CREATE TABLE `shop_goods_stock`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-库存' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-库存' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_goods_stock
 -- ----------------------------
-INSERT INTO `shop_goods_stock` VALUES (2, 'B2020090924384', 'G69962280234', '默认分组::默认规格', 111, 1, 0, '2020-09-09 03:55:40');
-INSERT INTO `shop_goods_stock` VALUES (3, 'B2020090925538', 'G69962280234', '默认分组::默认规格', 111, 1, 0, '2020-09-09 03:56:55');
-INSERT INTO `shop_goods_stock` VALUES (4, 'B2020090928469', 'G69962280234', '默认分组::默认规格', 1, 1, 0, '2020-09-09 03:59:48');
-INSERT INTO `shop_goods_stock` VALUES (5, 'B2020091021257', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性22231;;规格分组21325::规格属性32151', 1, 1, 0, '2020-09-10 06:49:24');
-INSERT INTO `shop_goods_stock` VALUES (6, 'B2020091021257', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性22231;;规格分组21325::规格属性1235123', 2, 1, 0, '2020-09-10 06:49:24');
-INSERT INTO `shop_goods_stock` VALUES (7, 'B2020091021257', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性11235;;规格分组21325::规格属性32151', 3, 1, 0, '2020-09-10 06:49:24');
-INSERT INTO `shop_goods_stock` VALUES (8, 'B2020091021257', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性11235;;规格分组21325::规格属性1235123', 4, 1, 0, '2020-09-10 06:49:24');
-INSERT INTO `shop_goods_stock` VALUES (9, 'B2020091021257', 'G69971817078', '默认分组1::默认规格2;;规格分组111::规格属性221;;规格分组21325::规格属性1235123', 5, 1, 0, '2020-09-10 06:49:24');
-INSERT INTO `shop_goods_stock` VALUES (10, 'B2020091820230', 'G70015891349', '默认分组::默认规格', 10, 1, 0, '2020-09-18 06:48:07');
-INSERT INTO `shop_goods_stock` VALUES (11, 'B2020091931103', 'G70015845347', '默认分组::默认规格', 70, 1, 0, '2020-09-19 10:21:10');
-INSERT INTO `shop_goods_stock` VALUES (12, 'B2020092135038', 'G70067229882', '默认分组::默认规格;;规格分组1::规格属性', 10, 1, 0, '2020-09-21 16:19:02');
-INSERT INTO `shop_goods_stock` VALUES (13, 'B2020092123356', 'G70067232643', '默认分组::默认规格;;规格分组1::规格属性', 100, 1, 0, '2020-09-21 17:06:35');
-INSERT INTO `shop_goods_stock` VALUES (14, 'B2020092220060', 'G70068526449', '默认分组::默认规格;;规格分组1::规格属性', 100, 1, 0, '2020-09-22 14:06:06');
-INSERT INTO `shop_goods_stock` VALUES (15, 'B2020092256031', 'G70068526449', '默认分组::默认规格;;规格分组1::规格属性', 11, 1, 0, '2020-09-22 15:41:03');
-INSERT INTO `shop_goods_stock` VALUES (16, 'B2020092240458', 'G70067232643', '默认分组::默认规格;;规格分组1::规格属性', 555, 1, 0, '2020-09-22 17:23:45');
-INSERT INTO `shop_goods_stock` VALUES (17, 'B2020092443216', 'G70068526449', '默认分组::默认规格;;规格分组1::规格属性', 10, 1, 0, '2020-09-24 09:34:21');
-INSERT INTO `shop_goods_stock` VALUES (18, 'B2020092416385', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 231523, 1, 0, '2020-09-24 12:04:38');
-INSERT INTO `shop_goods_stock` VALUES (19, 'B2020092440137', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 23151, 1, 0, '2020-09-24 12:28:13');
-INSERT INTO `shop_goods_stock` VALUES (20, 'B2020092425140', 'G70068526449', '默认分组::默认规格;;规格分组1::规格属性', 10, 1, 0, '2020-09-24 13:12:14');
-INSERT INTO `shop_goods_stock` VALUES (21, 'B2020092425198', 'G70068526449', '默认分组::默认规格;;规格分组1::规格属性', 1, 1, 0, '2020-09-24 13:12:19');
-INSERT INTO `shop_goods_stock` VALUES (22, 'B2020092523257', 'G70067232643', '默认分组::默认规格;;规格分组1::规格属性', 10, 1, 0, '2020-09-25 13:10:25');
-INSERT INTO `shop_goods_stock` VALUES (23, 'B2020092561133', 'G70102391743', '默认分组::默认规格;;规格分组1::规格属性', 100, 1, 0, '2020-09-25 17:44:13');
-INSERT INTO `shop_goods_stock` VALUES (24, 'B2020092561245', 'G70067232643', '默认分组::默认规格;;规格分组1::规格属性', 100, 1, 0, '2020-09-25 17:44:24');
-INSERT INTO `shop_goods_stock` VALUES (25, 'B2020092523199', 'G70102391743', '默认分组::默认规格;;规格分组1::规格属性', 1111, 1, 0, '2020-09-25 23:00:19');
-INSERT INTO `shop_goods_stock` VALUES (26, 'B2020092716216', 'G70102391743', '默认分组::默认规格;;规格分组1::规格属性', 99999999999, 1, 0, '2020-09-27 12:04:21');
-INSERT INTO `shop_goods_stock` VALUES (27, 'B2020092716293', 'G70102391743', '默认分组::默认规格;;规格分组1::规格属性', 18446744073709551615, 1, 0, '2020-09-27 12:04:29');
-INSERT INTO `shop_goods_stock` VALUES (28, 'B2020092858134', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 1451, 1, 0, '2020-09-28 16:42:13');
-INSERT INTO `shop_goods_stock` VALUES (29, 'B2020092969307', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 1000, 1, 0, '2020-09-29 13:56:30');
-INSERT INTO `shop_goods_stock` VALUES (30, 'B2020092969362', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 100000, 1, 0, '2020-09-29 13:56:36');
-INSERT INTO `shop_goods_stock` VALUES (31, 'B2020092969424', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 1, 1, 0, '2020-09-29 13:56:42');
-INSERT INTO `shop_goods_stock` VALUES (32, 'B2020100924333', 'G70067232643', '默认分组::默认规格;;规格分组1::规格属性', 10, 1, 0, '2020-10-09 16:08:33');
-INSERT INTO `shop_goods_stock` VALUES (33, 'B2020100924422', 'G70067232643', '默认分组::默认规格;;规格分组1::规格属性', 10, 1, 0, '2020-10-09 16:08:42');
-INSERT INTO `shop_goods_stock` VALUES (34, 'B2020100957307', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 1, 1, 0, '2020-10-09 16:41:30');
-INSERT INTO `shop_goods_stock` VALUES (35, 'B2020100957457', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 2, 1, 0, '2020-10-09 16:41:45');
-INSERT INTO `shop_goods_stock` VALUES (36, 'B2020101055586', 'G70067230554', '默认分组::默认规格;;规格分组1::规格属性', 1000, 1, 0, '2020-10-10 09:46:58');
-INSERT INTO `shop_goods_stock` VALUES (37, 'B2020101229039', 'G70246171404', '默认分组::默认规格', 100, 1, 0, '2020-10-12 08:21:03');
-INSERT INTO `shop_goods_stock` VALUES (38, 'B2020101229592', 'G70246171404', '默认分组::默认规格', 50, 1, 0, '2020-10-12 08:21:59');
-INSERT INTO `shop_goods_stock` VALUES (39, 'B2020101357185', 'G70221630641', '默认分组::默认规格;;规格分组1::规格属性', 500, 1, 0, '2020-10-13 13:44:18');
-INSERT INTO `shop_goods_stock` VALUES (40, 'B2020101442210', 'G70127536257', '默认分组::默认规格;;规格分组1::规格属性;;规格分组2::规格属性', 1111, 1, 0, '2020-10-14 16:26:21');
-INSERT INTO `shop_goods_stock` VALUES (41, 'B2020101442321', 'G70259130795', '默认分组::默认规格', 999, 1, 0, '2020-10-14 16:26:32');
-INSERT INTO `shop_goods_stock` VALUES (42, 'B2020101533579', 'G70259130795', '默认分组::默认规格', 10, 1, 0, '2020-10-15 16:17:57');
-INSERT INTO `shop_goods_stock` VALUES (43, 'B2020102072502', 'G70068526449', '默认分组::默认规格;;规格分组1::规格属性', 10, 1, 0, '2020-10-20 13:59:50');
-INSERT INTO `shop_goods_stock` VALUES (44, 'B2020102050142', 'G70068526449', '默认分组::默认规格;;规格分组1::规格属性', 20, 1, 0, '2020-10-20 15:35:14');
-INSERT INTO `shop_goods_stock` VALUES (45, 'B2020102050243', 'G70068526449', '默认分组::默认规格;;规格分组1::规格属性', 5, 1, 0, '2020-10-20 15:35:24');
-INSERT INTO `shop_goods_stock` VALUES (46, 'B2020102267392', 'G70246171404', '默认分组::默认规格', 10, 1, 0, '2020-10-22 14:53:39');
-INSERT INTO `shop_goods_stock` VALUES (47, 'B2020102463526', 'G69962109079', '默认分组::默认规格22213;;规格分组::规格属性1111123', 55, 1, 0, '2020-10-24 14:49:52');
-INSERT INTO `shop_goods_stock` VALUES (48, 'B2020102463526', 'G69962109079', '默认分组::默认规格22213;;规格分组::规格属性1321', 55, 1, 0, '2020-10-24 14:49:52');
 
 -- ----------------------------
 -- Table structure for shop_order
@@ -700,15 +392,11 @@ CREATE TABLE `shop_order`  (
   INDEX `idx_shop_order_orderno`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
   INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_order
 -- ----------------------------
-INSERT INTO `shop_order` VALUES (1, 1, 0, 'N20200918302856917', 43.40, 44.00, 0.60, 0.00, 0.00, '', '', 0, 0.00, '', '', 0, '', '', 4, 0, '2020-09-18 05:00:12');
-INSERT INTO `shop_order` VALUES (2, 1, 0, 'N20200918312265361', 44.00, 44.00, 0.27, 0.00, 0.00, '', '', 0, 0.00, '', '', 1, '后台未支付的取消', '2020-09-18 13:50:29', 0, 0, '2020-09-18 05:01:06');
-INSERT INTO `shop_order` VALUES (3, 1, 0, 'N20200918312862491', 44.00, 44.00, 1.00, 0.00, 0.00, '', '', 0, 0.00, '', '', 1, '后台未支付的取消', '2020-09-22 13:58:25', 0, 0, '2020-09-18 05:01:12');
-INSERT INTO `shop_order` VALUES (4, 1, 0, 'N20200918202608084', 53.85, 44.00, 0.15, 10.00, 0.00, '', '', 0, 0.00, '', '', 1, '后台未支付的取消', '2020-09-19 23:44:03', 0, 0, '2020-09-18 06:48:09');
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -740,15 +428,11 @@ CREATE TABLE `shop_order_item`  (
   INDEX `idx_shop_order_item_goods_sku`(`goods_sku`) USING BTREE,
   INDEX `idx_shop_order_item_goods_code`(`goods_code`) USING BTREE,
   INDEX `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_order_item
 -- ----------------------------
-INSERT INTO `shop_order_item` VALUES (1, 1, 'N20200918302856917', '36152365213', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'S159962280311732', 'G69962280234', '默认分组::默认规格', 111.00, 44.00, 111.00, 44.00, 1, '', 1, 1, 0, '2020-09-18 05:00:12');
-INSERT INTO `shop_order_item` VALUES (2, 1, 'N20200918312265361', '36152365213', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'S159962280311732', 'G69962280234', '默认分组::默认规格', 111.00, 44.00, 111.00, 44.00, 1, '', 1, 1, 0, '2020-09-18 05:01:06');
-INSERT INTO `shop_order_item` VALUES (3, 1, 'N20200918312862491', '36152365213', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'S159962280311732', 'G69962280234', '默认分组::默认规格', 111.00, 44.00, 111.00, 44.00, 1, '', 1, 1, 0, '2020-09-18 05:01:12');
-INSERT INTO `shop_order_item` VALUES (4, 1, 'N20200918202608084', '复制商品的名称', 'http://127.0.0.1:8000/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'S159962280311732', 'G70015891349', '默认分组::默认规格', 111.00, 44.00, 111.00, 44.00, 2, 'T2020091731249', 1, 1, 0, '2020-09-18 06:48:09');
 
 -- ----------------------------
 -- Table structure for shop_order_send
@@ -783,13 +467,11 @@ CREATE TABLE `shop_order_send`  (
   INDEX `idx_shop_order_send_status`(`status`) USING BTREE,
   INDEX `idx_shop_order_send_deleted`(`deleted`) USING BTREE,
   INDEX `idx_shop_order_send_order_no`(`order_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_order_send
 -- ----------------------------
-INSERT INTO `shop_order_send` VALUES (1, 1, 'N20200918302856917', 'A2020091128300', '小小邹', '13617343811', '广东省', '广州市', '天河区', 'sasasasdddddddddddddddddddddddddddddddddddddddd', '2020-09-18 13:20:22', '', 0, '邮费模板编码无效！', 0.00, 'ZTO', '中通快递', '75341484568973', '1235123', '2020-09-18 13:36:22', 2, 0, '2020-09-18 05:03:06');
-INSERT INTO `shop_order_send` VALUES (2, 1, 'N20200918202608084', 'A2020091128300', '小小邹888', '13617343811', '广东省', '广州市', '天河区', '体育中心11号', '2020-09-18 15:05:39', 'T2020091731249', 0, '续件计费，超出1件续件4元', 10.00, 'SF', '顺丰速运', '000000000000', '', '2020-09-23 14:47:59', 2, 0, '2020-09-18 06:48:22');
 
 -- ----------------------------
 -- Table structure for shop_order_service
@@ -813,7 +495,7 @@ CREATE TABLE `shop_order_service`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-售后' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-售后' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_order_service
@@ -840,79 +522,11 @@ CREATE TABLE `shop_truck_company`  (
   INDEX `idx_shop_truck_company_code3`(`code_3`) USING BTREE,
   INDEX `idx_shop_truck_company_status`(`status`) USING BTREE,
   INDEX `idx_shop_truck_company_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-公司' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-公司' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_truck_company
 -- ----------------------------
-INSERT INTO `shop_truck_company` VALUES (1, '顺丰速运', 'SF', 'shunfeng', 'shunfeng', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (2, '百世快递', 'HTKY', 'huitongkuaidi', 'huitongkuaidi', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (3, '中通快递', 'ZTO', 'zhongtong', 'zhongtong', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (4, '申通快递', 'STO', 'shentong', 'shentong', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (5, '圆通速递', 'YTO', 'yuantong', 'yuantong', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (6, '韵达速递', 'YD', 'yunda', 'yunda', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (7, '邮政快递包裹', 'YZPY', 'youzhengguonei', 'youzhengguonei', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (8, 'EMS', 'EMS', 'ems', 'ems', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (9, '天天快递', 'HHTT', 'tiantian', 'tiantian', '', 22, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (10, '京东快递', 'JD', 'jd', 'jd', '', 11, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (11, '优速快递', 'UC', 'youshuwuliu', 'youshuwuliu', '', 2, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (12, '德邦快递', 'DBL', 'debangwuliu', 'debangkuaidi', '', 40, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (13, '宅急送', 'ZJS', 'zhaijisong', 'zhaijisong', '', 20, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (14, '韵达快递', 'YDA', 'yunda', 'yunda', '', 0, 0, 1, '2020-04-14 10:51:56');
-INSERT INTO `shop_truck_company` VALUES (15, '极兔快递', 'jtexpress', 'jtexpress', 'jtexpress', '', 0, 1, 0, '2020-09-15 08:44:08');
-
--- ----------------------------
--- Table structure for shop_truck_province
--- ----------------------------
-DROP TABLE IF EXISTS `shop_truck_province`;
-CREATE TABLE `shop_truck_province`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '地区名称',
-  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权限',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '数据状态',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_store_express_province_title`(`name`) USING BTREE,
-  INDEX `idx_store_express_province_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3113 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-快递-省份' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of shop_truck_province
--- ----------------------------
-INSERT INTO `shop_truck_province` VALUES (1, '北京市', 1, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (19, '天津市', 2, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (37, '河北省', 3, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (217, '山西省', 4, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (464, '辽宁省', 6, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (579, '吉林省', 7, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (649, '黑龙江省', 8, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (792, '上海市', 9, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (810, '江苏省', 10, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (920, '浙江省', 11, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (1021, '安徽省', 12, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (1143, '福建省', 13, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (1238, '江西省', 14, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (1350, '山东省', 15, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (1505, '河南省', 16, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (1681, '湖北省', 17, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (1798, '湖南省', 18, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (1935, '广东省', 19, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (2079, '广西壮族自治区', 20, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (2205, '海南省', 21, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (2236, '重庆市', 22, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (2277, '四川省', 23, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (2482, '贵州省', 24, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (2580, '云南省', 25, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (2726, '西藏自治区', 26, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (2808, '陕西省', 27, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (2926, '甘肃省', 28, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (3027, '青海省', 29, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (3080, '宁夏回族自治区', 30, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (3108, '新疆维吾尔自治区', 31, 1, '2017-09-12 11:53:40');
-INSERT INTO `shop_truck_province` VALUES (3109, '内蒙古自治区', 0, 1, '2020-04-28 10:57:37');
-INSERT INTO `shop_truck_province` VALUES (3110, '台湾省', 0, 1, '2020-04-28 10:57:37');
-INSERT INTO `shop_truck_province` VALUES (3111, '香港', 0, 1, '2020-04-28 10:57:37');
-INSERT INTO `shop_truck_province` VALUES (3112, '澳门', 0, 1, '2020-04-28 10:57:37');
 
 -- ----------------------------
 -- Table structure for shop_truck_region
@@ -933,7 +547,7 @@ CREATE TABLE `shop_truck_region`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_truck_region_pid`(`pid`) USING BTREE,
   INDEX `idx_shop_truck_region_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-区域' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-区域' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_truck_region
@@ -974,320 +588,320 @@ INSERT INTO `shop_truck_region` VALUES (33, 20, 'B', '滨海新区', '滨海新�
 INSERT INTO `shop_truck_region` VALUES (34, 20, 'N', '宁河', '宁河县', 3, 'ninghe', '301500', 1, '117.8255', '39.33048');
 INSERT INTO `shop_truck_region` VALUES (35, 20, 'J', '静海', '静海县', 3, 'jinghai', '301600', 1, '116.97436', '38.94582');
 INSERT INTO `shop_truck_region` VALUES (36, 20, 'J', '蓟县', '蓟县', 3, 'jixian', '301900', 1, '117.40799', '40.04567');
-INSERT INTO `shop_truck_region` VALUES (37, 0, 'H', '河北', '河北省', 1, 'hebei', '', 0, '114.502461', '38.045474');
-INSERT INTO `shop_truck_region` VALUES (38, 37, 'S', '石家庄', '石家庄市', 2, 'shijiazhuang', '050011', 0, '114.502461', '38.045474');
-INSERT INTO `shop_truck_region` VALUES (39, 38, 'C', '长安', '长安区', 3, 'chang\'an', '050011', 0, '114.53906', '38.03665');
-INSERT INTO `shop_truck_region` VALUES (40, 38, 'Q', '桥西', '桥西区', 3, 'qiaoxi', '050091', 0, '114.46977', '38.03221');
-INSERT INTO `shop_truck_region` VALUES (41, 38, 'X', '新华', '新华区', 3, 'xinhua', '050051', 0, '114.46326', '38.05088');
-INSERT INTO `shop_truck_region` VALUES (42, 38, 'J', '井陉矿区', '井陉矿区', 3, 'jingxingkuangqu', '050100', 0, '114.06518', '38.06705');
-INSERT INTO `shop_truck_region` VALUES (43, 38, 'Y', '裕华', '裕华区', 3, 'yuhua', '050031', 0, '114.53115', '38.00604');
-INSERT INTO `shop_truck_region` VALUES (44, 38, 'G', '藁城', '藁城区', 3, 'gaocheng', '052160', 0, '114.84671', '38.02162');
-INSERT INTO `shop_truck_region` VALUES (45, 38, 'L', '鹿泉', '鹿泉区', 3, 'luquan', '050200', 0, '114.31347', '38.08782');
-INSERT INTO `shop_truck_region` VALUES (46, 38, 'L', '栾城', '栾城区', 3, 'luancheng', '051430', 0, '114.64834', '37.90022');
-INSERT INTO `shop_truck_region` VALUES (47, 38, 'J', '井陉', '井陉县', 3, 'jingxing', '050300', 0, '114.14257', '38.03688');
-INSERT INTO `shop_truck_region` VALUES (48, 38, 'Z', '正定', '正定县', 3, 'zhengding', '050800', 0, '114.57296', '38.14445');
-INSERT INTO `shop_truck_region` VALUES (49, 38, 'X', '行唐', '行唐县', 3, 'xingtang', '050600', 0, '114.55316', '38.43654');
-INSERT INTO `shop_truck_region` VALUES (50, 38, 'L', '灵寿', '灵寿县', 3, 'lingshou', '050500', 0, '114.38259', '38.30845');
-INSERT INTO `shop_truck_region` VALUES (51, 38, 'G', '高邑', '高邑县', 3, 'gaoyi', '051330', 0, '114.61142', '37.61556');
-INSERT INTO `shop_truck_region` VALUES (52, 38, 'S', '深泽', '深泽县', 3, 'shenze', '052560', 0, '115.20358', '38.18353');
-INSERT INTO `shop_truck_region` VALUES (53, 38, 'Z', '赞皇', '赞皇县', 3, 'zanhuang', '051230', 0, '114.38775', '37.66135');
-INSERT INTO `shop_truck_region` VALUES (54, 38, 'W', '无极', '无极县', 3, 'wuji', '052460', 0, '114.97509', '38.17653');
-INSERT INTO `shop_truck_region` VALUES (55, 38, 'P', '平山', '平山县', 3, 'pingshan', '050400', 0, '114.186', '38.25994');
-INSERT INTO `shop_truck_region` VALUES (56, 38, 'Y', '元氏', '元氏县', 3, 'yuanshi', '051130', 0, '114.52539', '37.76668');
-INSERT INTO `shop_truck_region` VALUES (57, 38, 'Z', '赵县', '赵县', 3, 'zhaoxian', '051530', 0, '114.77612', '37.75628');
-INSERT INTO `shop_truck_region` VALUES (58, 38, 'X', '辛集', '辛集市', 3, 'xinji', '052360', 0, '115.20626', '37.94079');
-INSERT INTO `shop_truck_region` VALUES (59, 38, 'J', '晋州', '晋州市', 3, 'jinzhou', '052260', 0, '115.04348', '38.03135');
-INSERT INTO `shop_truck_region` VALUES (60, 38, 'X', '新乐', '新乐市', 3, 'xinle', '050700', 0, '114.68985', '38.34417');
-INSERT INTO `shop_truck_region` VALUES (61, 37, 'T', '唐山', '唐山市', 2, 'tangshan', '063000', 0, '118.175393', '39.635113');
-INSERT INTO `shop_truck_region` VALUES (62, 61, 'L', '路南', '路南区', 3, 'lunan', '063000', 0, '118.15431', '39.62505');
-INSERT INTO `shop_truck_region` VALUES (63, 61, 'L', '路北', '路北区', 3, 'lubei', '063000', 0, '118.20079', '39.62436');
-INSERT INTO `shop_truck_region` VALUES (64, 61, 'G', '古冶', '古冶区', 3, 'guye', '063100', 0, '118.45803', '39.71993');
-INSERT INTO `shop_truck_region` VALUES (65, 61, 'K', '开平', '开平区', 3, 'kaiping', '063021', 0, '118.26171', '39.67128');
-INSERT INTO `shop_truck_region` VALUES (66, 61, 'F', '丰南', '丰南区', 3, 'fengnan', '063300', 0, '118.11282', '39.56483');
-INSERT INTO `shop_truck_region` VALUES (67, 61, 'F', '丰润', '丰润区', 3, 'fengrun', '064000', 0, '118.12976', '39.8244');
-INSERT INTO `shop_truck_region` VALUES (68, 61, 'C', '曹妃甸', '曹妃甸区', 3, 'caofeidian', '063200', 0, '118.460379', '39.273070');
-INSERT INTO `shop_truck_region` VALUES (69, 61, 'L', '滦县', '滦县', 3, 'luanxian', '063700', 0, '118.70346', '39.74056');
-INSERT INTO `shop_truck_region` VALUES (70, 61, 'L', '滦南', '滦南县', 3, 'luannan', '063500', 0, '118.6741', '39.5039');
-INSERT INTO `shop_truck_region` VALUES (71, 61, 'L', '乐亭', '乐亭县', 3, 'laoting', '063600', 0, '118.9125', '39.42561');
-INSERT INTO `shop_truck_region` VALUES (72, 61, 'Q', '迁西', '迁西县', 3, 'qianxi', '064300', 0, '118.31616', '40.14587');
-INSERT INTO `shop_truck_region` VALUES (73, 61, 'Y', '玉田', '玉田县', 3, 'yutian', '064100', 0, '117.7388', '39.90049');
-INSERT INTO `shop_truck_region` VALUES (74, 61, 'Z', '遵化', '遵化市', 3, 'zunhua', '064200', 0, '117.96444', '40.18741');
-INSERT INTO `shop_truck_region` VALUES (75, 61, 'Q', '迁安', '迁安市', 3, 'qian\'an', '064400', 0, '118.70068', '39.99833');
-INSERT INTO `shop_truck_region` VALUES (76, 37, 'Q', '秦皇岛', '秦皇岛市', 2, 'qinhuangdao', '066000', 0, '119.586579', '39.942531');
-INSERT INTO `shop_truck_region` VALUES (77, 76, 'H', '海港', '海港区', 3, 'haigang', '066000', 0, '119.61046', '39.9345');
-INSERT INTO `shop_truck_region` VALUES (78, 76, 'S', '山海关', '山海关区', 3, 'shanhaiguan', '066200', 0, '119.77563', '39.97869');
-INSERT INTO `shop_truck_region` VALUES (79, 76, 'B', '北戴河', '北戴河区', 3, 'beidaihe', '066100', 0, '119.48388', '39.83408');
-INSERT INTO `shop_truck_region` VALUES (80, 76, 'Q', '青龙', '青龙满族自治县', 3, 'qinglong', '066500', 0, '118.95242', '40.40743');
-INSERT INTO `shop_truck_region` VALUES (81, 76, 'C', '昌黎', '昌黎县', 3, 'changli', '066600', 0, '119.16595', '39.70884');
-INSERT INTO `shop_truck_region` VALUES (82, 76, 'F', '抚宁', '抚宁县', 3, 'funing', '066300', 0, '119.24487', '39.87538');
-INSERT INTO `shop_truck_region` VALUES (83, 76, 'L', '卢龙', '卢龙县', 3, 'lulong', '066400', 0, '118.89288', '39.89176');
-INSERT INTO `shop_truck_region` VALUES (84, 37, 'H', '邯郸', '邯郸市', 2, 'handan', '056002', 0, '114.490686', '36.612273');
-INSERT INTO `shop_truck_region` VALUES (85, 84, 'H', '邯山', '邯山区', 3, 'hanshan', '056001', 0, '114.48375', '36.60006');
-INSERT INTO `shop_truck_region` VALUES (86, 84, 'C', '丛台', '丛台区', 3, 'congtai', '056002', 0, '114.49343', '36.61847');
-INSERT INTO `shop_truck_region` VALUES (87, 84, 'F', '复兴', '复兴区', 3, 'fuxing', '056003', 0, '114.45928', '36.61134');
-INSERT INTO `shop_truck_region` VALUES (88, 84, 'F', '峰峰矿区', '峰峰矿区', 3, 'fengfengkuangqu', '056200', 0, '114.21148', '36.41937');
-INSERT INTO `shop_truck_region` VALUES (89, 84, 'H', '邯郸', '邯郸县', 3, 'handan', '056101', 0, '114.53103', '36.59385');
-INSERT INTO `shop_truck_region` VALUES (90, 84, 'L', '临漳', '临漳县', 3, 'linzhang', '056600', 0, '114.6195', '36.33461');
-INSERT INTO `shop_truck_region` VALUES (91, 84, 'C', '成安', '成安县', 3, 'cheng\'an', '056700', 0, '114.66995', '36.44411');
-INSERT INTO `shop_truck_region` VALUES (92, 84, 'D', '大名', '大名县', 3, 'daming', '056900', 0, '115.15362', '36.27994');
-INSERT INTO `shop_truck_region` VALUES (93, 84, 'S', '涉县', '涉县', 3, 'shexian', '056400', 0, '113.69183', '36.58072');
-INSERT INTO `shop_truck_region` VALUES (94, 84, 'C', '磁县', '磁县', 3, 'cixian', '056500', 0, '114.37387', '36.37392');
-INSERT INTO `shop_truck_region` VALUES (95, 84, 'F', '肥乡', '肥乡县', 3, 'feixiang', '057550', 0, '114.79998', '36.54807');
-INSERT INTO `shop_truck_region` VALUES (96, 84, 'Y', '永年', '永年县', 3, 'yongnian', '057150', 0, '114.48925', '36.78356');
-INSERT INTO `shop_truck_region` VALUES (97, 84, 'Q', '邱县', '邱县', 3, 'qiuxian', '057450', 0, '115.17407', '36.82082');
-INSERT INTO `shop_truck_region` VALUES (98, 84, 'J', '鸡泽', '鸡泽县', 3, 'jize', '057350', 0, '114.8742', '36.92374');
-INSERT INTO `shop_truck_region` VALUES (99, 84, 'G', '广平', '广平县', 3, 'guangping', '057650', 0, '114.94653', '36.48046');
-INSERT INTO `shop_truck_region` VALUES (100, 84, 'G', '馆陶', '馆陶县', 3, 'guantao', '057750', 0, '115.29913', '36.53719');
-INSERT INTO `shop_truck_region` VALUES (101, 84, 'W', '魏县', '魏县', 3, 'weixian', '056800', 0, '114.93518', '36.36171');
-INSERT INTO `shop_truck_region` VALUES (102, 84, 'Q', '曲周', '曲周县', 3, 'quzhou', '057250', 0, '114.95196', '36.77671');
-INSERT INTO `shop_truck_region` VALUES (103, 84, 'W', '武安', '武安市', 3, 'wu\'an', '056300', 0, '114.20153', '36.69281');
-INSERT INTO `shop_truck_region` VALUES (104, 37, 'X', '邢台', '邢台市', 2, 'xingtai', '054001', 0, '114.508851', '37.0682');
-INSERT INTO `shop_truck_region` VALUES (105, 104, 'Q', '桥东', '桥东区', 3, 'qiaodong', '054001', 0, '114.50725', '37.06801');
-INSERT INTO `shop_truck_region` VALUES (106, 104, 'Q', '桥西', '桥西区', 3, 'qiaoxi', '054000', 0, '114.46803', '37.05984');
-INSERT INTO `shop_truck_region` VALUES (107, 104, 'X', '邢台', '邢台县', 3, 'xingtai', '054001', 0, '114.56575', '37.0456');
-INSERT INTO `shop_truck_region` VALUES (108, 104, 'L', '临城', '临城县', 3, 'lincheng', '054300', 0, '114.50387', '37.43977');
-INSERT INTO `shop_truck_region` VALUES (109, 104, 'N', '内丘', '内丘县', 3, 'neiqiu', '054200', 0, '114.51212', '37.28671');
-INSERT INTO `shop_truck_region` VALUES (110, 104, 'B', '柏乡', '柏乡县', 3, 'baixiang', '055450', 0, '114.69332', '37.48242');
-INSERT INTO `shop_truck_region` VALUES (111, 104, 'L', '隆尧', '隆尧县', 3, 'longyao', '055350', 0, '114.77615', '37.35351');
-INSERT INTO `shop_truck_region` VALUES (112, 104, 'R', '任县', '任县', 3, 'renxian', '055150', 0, '114.6842', '37.12575');
-INSERT INTO `shop_truck_region` VALUES (113, 104, 'N', '南和', '南和县', 3, 'nanhe', '054400', 0, '114.68371', '37.00488');
-INSERT INTO `shop_truck_region` VALUES (114, 104, 'N', '宁晋', '宁晋县', 3, 'ningjin', '055550', 0, '114.92117', '37.61696');
-INSERT INTO `shop_truck_region` VALUES (115, 104, 'J', '巨鹿', '巨鹿县', 3, 'julu', '055250', 0, '115.03524', '37.21801');
-INSERT INTO `shop_truck_region` VALUES (116, 104, 'X', '新河', '新河县', 3, 'xinhe', '055650', 0, '115.24987', '37.52718');
-INSERT INTO `shop_truck_region` VALUES (117, 104, 'G', '广宗', '广宗县', 3, 'guangzong', '054600', 0, '115.14254', '37.0746');
-INSERT INTO `shop_truck_region` VALUES (118, 104, 'P', '平乡', '平乡县', 3, 'pingxiang', '054500', 0, '115.03002', '37.06317');
-INSERT INTO `shop_truck_region` VALUES (119, 104, 'W', '威县', '威县', 3, 'weixian', '054700', 0, '115.2637', '36.9768');
-INSERT INTO `shop_truck_region` VALUES (120, 104, 'Q', '清河', '清河县', 3, 'qinghe', '054800', 0, '115.66479', '37.07122');
-INSERT INTO `shop_truck_region` VALUES (121, 104, 'L', '临西', '临西县', 3, 'linxi', '054900', 0, '115.50097', '36.87078');
-INSERT INTO `shop_truck_region` VALUES (122, 104, 'N', '南宫', '南宫市', 3, 'nangong', '055750', 0, '115.39068', '37.35799');
-INSERT INTO `shop_truck_region` VALUES (123, 104, 'S', '沙河', '沙河市', 3, 'shahe', '054100', 0, '114.4981', '36.8577');
-INSERT INTO `shop_truck_region` VALUES (124, 37, 'B', '保定', '保定市', 2, 'baoding', '071052', 0, '115.482331', '38.867657');
-INSERT INTO `shop_truck_region` VALUES (125, 124, 'X', '新市', '新市区', 3, 'xinshi', '071051', 0, '115.4587', '38.87751');
-INSERT INTO `shop_truck_region` VALUES (126, 124, 'B', '北市', '北市区', 3, 'beishi', '071000', 0, '115.49715', '38.88322');
-INSERT INTO `shop_truck_region` VALUES (127, 124, 'N', '南市', '南市区', 3, 'nanshi', '071001', 0, '115.52859', '38.85455');
-INSERT INTO `shop_truck_region` VALUES (128, 124, 'M', '满城', '满城县', 3, 'mancheng', '072150', 0, '115.32296', '38.94972');
-INSERT INTO `shop_truck_region` VALUES (129, 124, 'Q', '清苑', '清苑县', 3, 'qingyuan', '071100', 0, '115.49267', '38.76709');
-INSERT INTO `shop_truck_region` VALUES (130, 124, 'L', '涞水', '涞水县', 3, 'laishui', '074100', 0, '115.71517', '39.39404');
-INSERT INTO `shop_truck_region` VALUES (131, 124, 'F', '阜平', '阜平县', 3, 'fuping', '073200', 0, '114.19683', '38.84763');
-INSERT INTO `shop_truck_region` VALUES (132, 124, 'X', '徐水', '徐水县', 3, 'xushui', '072550', 0, '115.65829', '39.02099');
-INSERT INTO `shop_truck_region` VALUES (133, 124, 'D', '定兴', '定兴县', 3, 'dingxing', '072650', 0, '115.80786', '39.26312');
-INSERT INTO `shop_truck_region` VALUES (134, 124, 'T', '唐县', '唐县', 3, 'tangxian', '072350', 0, '114.98516', '38.74513');
-INSERT INTO `shop_truck_region` VALUES (135, 124, 'G', '高阳', '高阳县', 3, 'gaoyang', '071500', 0, '115.7788', '38.70003');
-INSERT INTO `shop_truck_region` VALUES (136, 124, 'R', '容城', '容城县', 3, 'rongcheng', '071700', 0, '115.87158', '39.0535');
-INSERT INTO `shop_truck_region` VALUES (137, 124, 'L', '涞源', '涞源县', 3, 'laiyuan', '074300', 0, '114.69128', '39.35388');
-INSERT INTO `shop_truck_region` VALUES (138, 124, 'W', '望都', '望都县', 3, 'wangdu', '072450', 0, '115.1567', '38.70996');
-INSERT INTO `shop_truck_region` VALUES (139, 124, 'A', '安新', '安新县', 3, 'anxin', '071600', 0, '115.93557', '38.93532');
-INSERT INTO `shop_truck_region` VALUES (140, 124, 'Y', '易县', '易县', 3, 'yixian', '074200', 0, '115.4981', '39.34885');
-INSERT INTO `shop_truck_region` VALUES (141, 124, 'Q', '曲阳', '曲阳县', 3, 'quyang', '073100', 0, '114.70123', '38.62154');
-INSERT INTO `shop_truck_region` VALUES (142, 124, 'L', '蠡县', '蠡县', 3, 'lixian', '071400', 0, '115.57717', '38.48974');
-INSERT INTO `shop_truck_region` VALUES (143, 124, 'S', '顺平', '顺平县', 3, 'shunping', '072250', 0, '115.1347', '38.83854');
-INSERT INTO `shop_truck_region` VALUES (144, 124, 'B', '博野', '博野县', 3, 'boye', '071300', 0, '115.47033', '38.4564');
-INSERT INTO `shop_truck_region` VALUES (145, 124, 'X', '雄县', '雄县', 3, 'xiongxian', '071800', 0, '116.10873', '38.99442');
-INSERT INTO `shop_truck_region` VALUES (146, 124, 'Z', '涿州', '涿州市', 3, 'zhuozhou', '072750', 0, '115.98062', '39.48622');
-INSERT INTO `shop_truck_region` VALUES (147, 124, 'D', '定州', '定州市', 3, 'dingzhou', '073000', 0, '114.9902', '38.51623');
-INSERT INTO `shop_truck_region` VALUES (148, 124, 'A', '安国', '安国市', 3, 'anguo', '071200', 0, '115.32321', '38.41391');
-INSERT INTO `shop_truck_region` VALUES (149, 124, 'G', '高碑店', '高碑店市', 3, 'gaobeidian', '074000', 0, '115.87368', '39.32655');
-INSERT INTO `shop_truck_region` VALUES (150, 37, 'Z', '张家口', '张家口市', 2, 'zhangjiakou', '075000', 0, '114.884091', '40.811901');
-INSERT INTO `shop_truck_region` VALUES (151, 150, 'Q', '桥东', '桥东区', 3, 'qiaodong', '075000', 0, '114.8943', '40.78844');
-INSERT INTO `shop_truck_region` VALUES (152, 150, 'Q', '桥西', '桥西区', 3, 'qiaoxi', '075061', 0, '114.86962', '40.81945');
-INSERT INTO `shop_truck_region` VALUES (153, 150, 'X', '宣化', '宣化区', 3, 'xuanhua', '075100', 0, '115.06543', '40.60957');
-INSERT INTO `shop_truck_region` VALUES (154, 150, 'X', '下花园', '下花园区', 3, 'xiahuayuan', '075300', 0, '115.28744', '40.50236');
-INSERT INTO `shop_truck_region` VALUES (155, 150, 'X', '宣化', '宣化县', 3, 'xuanhua', '075100', 0, '115.15497', '40.56618');
-INSERT INTO `shop_truck_region` VALUES (156, 150, 'Z', '张北', '张北县', 3, 'zhangbei', '076450', 0, '114.71432', '41.15977');
-INSERT INTO `shop_truck_region` VALUES (157, 150, 'K', '康保', '康保县', 3, 'kangbao', '076650', 0, '114.60031', '41.85225');
-INSERT INTO `shop_truck_region` VALUES (158, 150, 'G', '沽源', '沽源县', 3, 'guyuan', '076550', 0, '115.68859', '41.66959');
-INSERT INTO `shop_truck_region` VALUES (159, 150, 'S', '尚义', '尚义县', 3, 'shangyi', '076750', 0, '113.97134', '41.07782');
-INSERT INTO `shop_truck_region` VALUES (160, 150, 'W', '蔚县', '蔚县', 3, 'yuxian', '075700', 0, '114.58892', '39.84067');
-INSERT INTO `shop_truck_region` VALUES (161, 150, 'Y', '阳原', '阳原县', 3, 'yangyuan', '075800', 0, '114.15051', '40.10361');
-INSERT INTO `shop_truck_region` VALUES (162, 150, 'H', '怀安', '怀安县', 3, 'huai\'an', '076150', 0, '114.38559', '40.67425');
-INSERT INTO `shop_truck_region` VALUES (163, 150, 'W', '万全', '万全县', 3, 'wanquan', '076250', 0, '114.7405', '40.76694');
-INSERT INTO `shop_truck_region` VALUES (164, 150, 'H', '怀来', '怀来县', 3, 'huailai', '075400', 0, '115.51773', '40.41536');
-INSERT INTO `shop_truck_region` VALUES (165, 150, 'Z', '涿鹿', '涿鹿县', 3, 'zhuolu', '075600', 0, '115.22403', '40.37636');
-INSERT INTO `shop_truck_region` VALUES (166, 150, 'C', '赤城', '赤城县', 3, 'chicheng', '075500', 0, '115.83187', '40.91438');
-INSERT INTO `shop_truck_region` VALUES (167, 150, 'C', '崇礼', '崇礼县', 3, 'chongli', '076350', 0, '115.27993', '40.97519');
-INSERT INTO `shop_truck_region` VALUES (168, 37, 'C', '承德', '承德市', 2, 'chengde', '067000', 0, '117.939152', '40.976204');
-INSERT INTO `shop_truck_region` VALUES (169, 168, 'S', '双桥', '双桥区', 3, 'shuangqiao', '067000', 0, '117.9432', '40.97466');
-INSERT INTO `shop_truck_region` VALUES (170, 168, 'S', '双滦', '双滦区', 3, 'shuangluan', '067001', 0, '117.74487', '40.95375');
-INSERT INTO `shop_truck_region` VALUES (171, 168, 'Y', '鹰手营子矿区', '鹰手营子矿区', 3, 'yingshouyingzikuangqu', '067200', 0, '117.65985', '40.54744');
-INSERT INTO `shop_truck_region` VALUES (172, 168, 'C', '承德', '承德县', 3, 'chengde', '067400', 0, '118.17639', '40.76985');
-INSERT INTO `shop_truck_region` VALUES (173, 168, 'X', '兴隆', '兴隆县', 3, 'xinglong', '067300', 0, '117.50073', '40.41709');
-INSERT INTO `shop_truck_region` VALUES (174, 168, 'P', '平泉', '平泉县', 3, 'pingquan', '067500', 0, '118.70196', '41.01839');
-INSERT INTO `shop_truck_region` VALUES (175, 168, 'L', '滦平', '滦平县', 3, 'luanping', '068250', 0, '117.33276', '40.94148');
-INSERT INTO `shop_truck_region` VALUES (176, 168, 'L', '隆化', '隆化县', 3, 'longhua', '068150', 0, '117.7297', '41.31412');
-INSERT INTO `shop_truck_region` VALUES (177, 168, 'F', '丰宁', '丰宁满族自治县', 3, 'fengning', '068350', 0, '116.6492', '41.20481');
-INSERT INTO `shop_truck_region` VALUES (178, 168, 'K', '宽城', '宽城满族自治县', 3, 'kuancheng', '067600', 0, '118.49176', '40.60829');
-INSERT INTO `shop_truck_region` VALUES (179, 168, 'W', '围场', '围场满族蒙古族自治县', 3, 'weichang', '068450', 0, '117.7601', '41.94368');
-INSERT INTO `shop_truck_region` VALUES (180, 37, 'C', '沧州', '沧州市', 2, 'cangzhou', '061001', 0, '116.857461', '38.310582');
-INSERT INTO `shop_truck_region` VALUES (181, 180, 'X', '新华', '新华区', 3, 'xinhua', '061000', 0, '116.86643', '38.31438');
-INSERT INTO `shop_truck_region` VALUES (182, 180, 'Y', '运河', '运河区', 3, 'yunhe', '061001', 0, '116.85706', '38.31352');
-INSERT INTO `shop_truck_region` VALUES (183, 180, 'C', '沧县', '沧县', 3, 'cangxian', '061000', 0, '116.87817', '38.29361');
-INSERT INTO `shop_truck_region` VALUES (184, 180, 'Q', '青县', '青县', 3, 'qingxian', '062650', 0, '116.80316', '38.58345');
-INSERT INTO `shop_truck_region` VALUES (185, 180, 'D', '东光', '东光县', 3, 'dongguang', '061600', 0, '116.53668', '37.8857');
-INSERT INTO `shop_truck_region` VALUES (186, 180, 'H', '海兴', '海兴县', 3, 'haixing', '061200', 0, '117.49758', '38.13958');
-INSERT INTO `shop_truck_region` VALUES (187, 180, 'Y', '盐山', '盐山县', 3, 'yanshan', '061300', 0, '117.23092', '38.05647');
-INSERT INTO `shop_truck_region` VALUES (188, 180, 'S', '肃宁', '肃宁县', 3, 'suning', '062350', 0, '115.82971', '38.42272');
-INSERT INTO `shop_truck_region` VALUES (189, 180, 'N', '南皮', '南皮县', 3, 'nanpi', '061500', 0, '116.70224', '38.04109');
-INSERT INTO `shop_truck_region` VALUES (190, 180, 'W', '吴桥', '吴桥县', 3, 'wuqiao', '061800', 0, '116.3847', '37.62546');
-INSERT INTO `shop_truck_region` VALUES (191, 180, 'X', '献县', '献县', 3, 'xianxian', '062250', 0, '116.12695', '38.19228');
-INSERT INTO `shop_truck_region` VALUES (192, 180, 'M', '孟村', '孟村回族自治县', 3, 'mengcun', '061400', 0, '117.10412', '38.05338');
-INSERT INTO `shop_truck_region` VALUES (193, 180, 'B', '泊头', '泊头市', 3, 'botou', '062150', 0, '116.57824', '38.08359');
-INSERT INTO `shop_truck_region` VALUES (194, 180, 'R', '任丘', '任丘市', 3, 'renqiu', '062550', 0, '116.1033', '38.71124');
-INSERT INTO `shop_truck_region` VALUES (195, 180, 'H', '黄骅', '黄骅市', 3, 'huanghua', '061100', 0, '117.33883', '38.3706');
-INSERT INTO `shop_truck_region` VALUES (196, 180, 'H', '河间', '河间市', 3, 'hejian', '062450', 0, '116.0993', '38.44549');
-INSERT INTO `shop_truck_region` VALUES (197, 37, 'L', '廊坊', '廊坊市', 2, 'langfang', '065000', 0, '116.713873', '39.529244');
-INSERT INTO `shop_truck_region` VALUES (198, 197, 'A', '安次', '安次区', 3, 'anci', '065000', 0, '116.70308', '39.52057');
-INSERT INTO `shop_truck_region` VALUES (199, 197, 'G', '广阳', '广阳区', 3, 'guangyang', '065000', 0, '116.71069', '39.52278');
-INSERT INTO `shop_truck_region` VALUES (200, 197, 'G', '固安', '固安县', 3, 'gu\'an', '065500', 0, '116.29916', '39.43833');
-INSERT INTO `shop_truck_region` VALUES (201, 197, 'Y', '永清', '永清县', 3, 'yongqing', '065600', 0, '116.50091', '39.32069');
-INSERT INTO `shop_truck_region` VALUES (202, 197, 'X', '香河', '香河县', 3, 'xianghe', '065400', 0, '117.00634', '39.76133');
-INSERT INTO `shop_truck_region` VALUES (203, 197, 'D', '大城', '大城县', 3, 'daicheng', '065900', 0, '116.65353', '38.70534');
-INSERT INTO `shop_truck_region` VALUES (204, 197, 'W', '文安', '文安县', 3, 'wen\'an', '065800', 0, '116.45846', '38.87325');
-INSERT INTO `shop_truck_region` VALUES (205, 197, 'D', '大厂', '大厂回族自治县', 3, 'dachang', '065300', 0, '116.98916', '39.88649');
-INSERT INTO `shop_truck_region` VALUES (206, 197, 'B', '霸州', '霸州市', 3, 'bazhou', '065700', 0, '116.39154', '39.12569');
-INSERT INTO `shop_truck_region` VALUES (207, 197, 'S', '三河', '三河市', 3, 'sanhe', '065200', 0, '117.07229', '39.98358');
-INSERT INTO `shop_truck_region` VALUES (208, 37, 'H', '衡水', '衡水市', 2, 'hengshui', '053000', 0, '115.665993', '37.735097');
-INSERT INTO `shop_truck_region` VALUES (209, 208, 'T', '桃城', '桃城区', 3, 'taocheng', '053000', 0, '115.67529', '37.73499');
-INSERT INTO `shop_truck_region` VALUES (210, 208, 'Z', '枣强', '枣强县', 3, 'zaoqiang', '053100', 0, '115.72576', '37.51027');
-INSERT INTO `shop_truck_region` VALUES (211, 208, 'W', '武邑', '武邑县', 3, 'wuyi', '053400', 0, '115.88748', '37.80181');
-INSERT INTO `shop_truck_region` VALUES (212, 208, 'W', '武强', '武强县', 3, 'wuqiang', '053300', 0, '115.98226', '38.04138');
-INSERT INTO `shop_truck_region` VALUES (213, 208, 'R', '饶阳', '饶阳县', 3, 'raoyang', '053900', 0, '115.72558', '38.23529');
-INSERT INTO `shop_truck_region` VALUES (214, 208, 'A', '安平', '安平县', 3, 'anping', '053600', 0, '115.51876', '38.23388');
-INSERT INTO `shop_truck_region` VALUES (215, 208, 'G', '故城', '故城县', 3, 'gucheng', '053800', 0, '115.97076', '37.34773');
-INSERT INTO `shop_truck_region` VALUES (216, 208, 'J', '景县', '景县', 3, 'jingxian', '053500', 0, '116.26904', '37.6926');
-INSERT INTO `shop_truck_region` VALUES (217, 208, 'F', '阜城', '阜城县', 3, 'fucheng', '053700', 0, '116.14431', '37.86881');
-INSERT INTO `shop_truck_region` VALUES (218, 208, 'J', '冀州', '冀州市', 3, 'jizhou', '053200', 0, '115.57934', '37.55082');
-INSERT INTO `shop_truck_region` VALUES (219, 208, 'S', '深州', '深州市', 3, 'shenzhou', '053800', 0, '115.55993', '38.00109');
+INSERT INTO `shop_truck_region` VALUES (37, 0, 'H', '河北', '河北省', 1, 'hebei', '', 1, '114.502461', '38.045474');
+INSERT INTO `shop_truck_region` VALUES (38, 37, 'S', '石家庄', '石家庄市', 2, 'shijiazhuang', '050011', 1, '114.502461', '38.045474');
+INSERT INTO `shop_truck_region` VALUES (39, 38, 'C', '长安', '长安区', 3, 'chang\'an', '050011', 1, '114.53906', '38.03665');
+INSERT INTO `shop_truck_region` VALUES (40, 38, 'Q', '桥西', '桥西区', 3, 'qiaoxi', '050091', 1, '114.46977', '38.03221');
+INSERT INTO `shop_truck_region` VALUES (41, 38, 'X', '新华', '新华区', 3, 'xinhua', '050051', 1, '114.46326', '38.05088');
+INSERT INTO `shop_truck_region` VALUES (42, 38, 'J', '井陉矿区', '井陉矿区', 3, 'jingxingkuangqu', '050100', 1, '114.06518', '38.06705');
+INSERT INTO `shop_truck_region` VALUES (43, 38, 'Y', '裕华', '裕华区', 3, 'yuhua', '050031', 1, '114.53115', '38.00604');
+INSERT INTO `shop_truck_region` VALUES (44, 38, 'G', '藁城', '藁城区', 3, 'gaocheng', '052160', 1, '114.84671', '38.02162');
+INSERT INTO `shop_truck_region` VALUES (45, 38, 'L', '鹿泉', '鹿泉区', 3, 'luquan', '050200', 1, '114.31347', '38.08782');
+INSERT INTO `shop_truck_region` VALUES (46, 38, 'L', '栾城', '栾城区', 3, 'luancheng', '051430', 1, '114.64834', '37.90022');
+INSERT INTO `shop_truck_region` VALUES (47, 38, 'J', '井陉', '井陉县', 3, 'jingxing', '050300', 1, '114.14257', '38.03688');
+INSERT INTO `shop_truck_region` VALUES (48, 38, 'Z', '正定', '正定县', 3, 'zhengding', '050800', 1, '114.57296', '38.14445');
+INSERT INTO `shop_truck_region` VALUES (49, 38, 'X', '行唐', '行唐县', 3, 'xingtang', '050600', 1, '114.55316', '38.43654');
+INSERT INTO `shop_truck_region` VALUES (50, 38, 'L', '灵寿', '灵寿县', 3, 'lingshou', '050500', 1, '114.38259', '38.30845');
+INSERT INTO `shop_truck_region` VALUES (51, 38, 'G', '高邑', '高邑县', 3, 'gaoyi', '051330', 1, '114.61142', '37.61556');
+INSERT INTO `shop_truck_region` VALUES (52, 38, 'S', '深泽', '深泽县', 3, 'shenze', '052560', 1, '115.20358', '38.18353');
+INSERT INTO `shop_truck_region` VALUES (53, 38, 'Z', '赞皇', '赞皇县', 3, 'zanhuang', '051230', 1, '114.38775', '37.66135');
+INSERT INTO `shop_truck_region` VALUES (54, 38, 'W', '无极', '无极县', 3, 'wuji', '052460', 1, '114.97509', '38.17653');
+INSERT INTO `shop_truck_region` VALUES (55, 38, 'P', '平山', '平山县', 3, 'pingshan', '050400', 1, '114.186', '38.25994');
+INSERT INTO `shop_truck_region` VALUES (56, 38, 'Y', '元氏', '元氏县', 3, 'yuanshi', '051130', 1, '114.52539', '37.76668');
+INSERT INTO `shop_truck_region` VALUES (57, 38, 'Z', '赵县', '赵县', 3, 'zhaoxian', '051530', 1, '114.77612', '37.75628');
+INSERT INTO `shop_truck_region` VALUES (58, 38, 'X', '辛集', '辛集市', 3, 'xinji', '052360', 1, '115.20626', '37.94079');
+INSERT INTO `shop_truck_region` VALUES (59, 38, 'J', '晋州', '晋州市', 3, 'jinzhou', '052260', 1, '115.04348', '38.03135');
+INSERT INTO `shop_truck_region` VALUES (60, 38, 'X', '新乐', '新乐市', 3, 'xinle', '050700', 1, '114.68985', '38.34417');
+INSERT INTO `shop_truck_region` VALUES (61, 37, 'T', '唐山', '唐山市', 2, 'tangshan', '063000', 1, '118.175393', '39.635113');
+INSERT INTO `shop_truck_region` VALUES (62, 61, 'L', '路南', '路南区', 3, 'lunan', '063000', 1, '118.15431', '39.62505');
+INSERT INTO `shop_truck_region` VALUES (63, 61, 'L', '路北', '路北区', 3, 'lubei', '063000', 1, '118.20079', '39.62436');
+INSERT INTO `shop_truck_region` VALUES (64, 61, 'G', '古冶', '古冶区', 3, 'guye', '063100', 1, '118.45803', '39.71993');
+INSERT INTO `shop_truck_region` VALUES (65, 61, 'K', '开平', '开平区', 3, 'kaiping', '063021', 1, '118.26171', '39.67128');
+INSERT INTO `shop_truck_region` VALUES (66, 61, 'F', '丰南', '丰南区', 3, 'fengnan', '063300', 1, '118.11282', '39.56483');
+INSERT INTO `shop_truck_region` VALUES (67, 61, 'F', '丰润', '丰润区', 3, 'fengrun', '064000', 1, '118.12976', '39.8244');
+INSERT INTO `shop_truck_region` VALUES (68, 61, 'C', '曹妃甸', '曹妃甸区', 3, 'caofeidian', '063200', 1, '118.460379', '39.273070');
+INSERT INTO `shop_truck_region` VALUES (69, 61, 'L', '滦县', '滦县', 3, 'luanxian', '063700', 1, '118.70346', '39.74056');
+INSERT INTO `shop_truck_region` VALUES (70, 61, 'L', '滦南', '滦南县', 3, 'luannan', '063500', 1, '118.6741', '39.5039');
+INSERT INTO `shop_truck_region` VALUES (71, 61, 'L', '乐亭', '乐亭县', 3, 'laoting', '063600', 1, '118.9125', '39.42561');
+INSERT INTO `shop_truck_region` VALUES (72, 61, 'Q', '迁西', '迁西县', 3, 'qianxi', '064300', 1, '118.31616', '40.14587');
+INSERT INTO `shop_truck_region` VALUES (73, 61, 'Y', '玉田', '玉田县', 3, 'yutian', '064100', 1, '117.7388', '39.90049');
+INSERT INTO `shop_truck_region` VALUES (74, 61, 'Z', '遵化', '遵化市', 3, 'zunhua', '064200', 1, '117.96444', '40.18741');
+INSERT INTO `shop_truck_region` VALUES (75, 61, 'Q', '迁安', '迁安市', 3, 'qian\'an', '064400', 1, '118.70068', '39.99833');
+INSERT INTO `shop_truck_region` VALUES (76, 37, 'Q', '秦皇岛', '秦皇岛市', 2, 'qinhuangdao', '066000', 1, '119.586579', '39.942531');
+INSERT INTO `shop_truck_region` VALUES (77, 76, 'H', '海港', '海港区', 3, 'haigang', '066000', 1, '119.61046', '39.9345');
+INSERT INTO `shop_truck_region` VALUES (78, 76, 'S', '山海关', '山海关区', 3, 'shanhaiguan', '066200', 1, '119.77563', '39.97869');
+INSERT INTO `shop_truck_region` VALUES (79, 76, 'B', '北戴河', '北戴河区', 3, 'beidaihe', '066100', 1, '119.48388', '39.83408');
+INSERT INTO `shop_truck_region` VALUES (80, 76, 'Q', '青龙', '青龙满族自治县', 3, 'qinglong', '066500', 1, '118.95242', '40.40743');
+INSERT INTO `shop_truck_region` VALUES (81, 76, 'C', '昌黎', '昌黎县', 3, 'changli', '066600', 1, '119.16595', '39.70884');
+INSERT INTO `shop_truck_region` VALUES (82, 76, 'F', '抚宁', '抚宁县', 3, 'funing', '066300', 1, '119.24487', '39.87538');
+INSERT INTO `shop_truck_region` VALUES (83, 76, 'L', '卢龙', '卢龙县', 3, 'lulong', '066400', 1, '118.89288', '39.89176');
+INSERT INTO `shop_truck_region` VALUES (84, 37, 'H', '邯郸', '邯郸市', 2, 'handan', '056002', 1, '114.490686', '36.612273');
+INSERT INTO `shop_truck_region` VALUES (85, 84, 'H', '邯山', '邯山区', 3, 'hanshan', '056001', 1, '114.48375', '36.60006');
+INSERT INTO `shop_truck_region` VALUES (86, 84, 'C', '丛台', '丛台区', 3, 'congtai', '056002', 1, '114.49343', '36.61847');
+INSERT INTO `shop_truck_region` VALUES (87, 84, 'F', '复兴', '复兴区', 3, 'fuxing', '056003', 1, '114.45928', '36.61134');
+INSERT INTO `shop_truck_region` VALUES (88, 84, 'F', '峰峰矿区', '峰峰矿区', 3, 'fengfengkuangqu', '056200', 1, '114.21148', '36.41937');
+INSERT INTO `shop_truck_region` VALUES (89, 84, 'H', '邯郸', '邯郸县', 3, 'handan', '056101', 1, '114.53103', '36.59385');
+INSERT INTO `shop_truck_region` VALUES (90, 84, 'L', '临漳', '临漳县', 3, 'linzhang', '056600', 1, '114.6195', '36.33461');
+INSERT INTO `shop_truck_region` VALUES (91, 84, 'C', '成安', '成安县', 3, 'cheng\'an', '056700', 1, '114.66995', '36.44411');
+INSERT INTO `shop_truck_region` VALUES (92, 84, 'D', '大名', '大名县', 3, 'daming', '056900', 1, '115.15362', '36.27994');
+INSERT INTO `shop_truck_region` VALUES (93, 84, 'S', '涉县', '涉县', 3, 'shexian', '056400', 1, '113.69183', '36.58072');
+INSERT INTO `shop_truck_region` VALUES (94, 84, 'C', '磁县', '磁县', 3, 'cixian', '056500', 1, '114.37387', '36.37392');
+INSERT INTO `shop_truck_region` VALUES (95, 84, 'F', '肥乡', '肥乡县', 3, 'feixiang', '057550', 1, '114.79998', '36.54807');
+INSERT INTO `shop_truck_region` VALUES (96, 84, 'Y', '永年', '永年县', 3, 'yongnian', '057150', 1, '114.48925', '36.78356');
+INSERT INTO `shop_truck_region` VALUES (97, 84, 'Q', '邱县', '邱县', 3, 'qiuxian', '057450', 1, '115.17407', '36.82082');
+INSERT INTO `shop_truck_region` VALUES (98, 84, 'J', '鸡泽', '鸡泽县', 3, 'jize', '057350', 1, '114.8742', '36.92374');
+INSERT INTO `shop_truck_region` VALUES (99, 84, 'G', '广平', '广平县', 3, 'guangping', '057650', 1, '114.94653', '36.48046');
+INSERT INTO `shop_truck_region` VALUES (100, 84, 'G', '馆陶', '馆陶县', 3, 'guantao', '057750', 1, '115.29913', '36.53719');
+INSERT INTO `shop_truck_region` VALUES (101, 84, 'W', '魏县', '魏县', 3, 'weixian', '056800', 1, '114.93518', '36.36171');
+INSERT INTO `shop_truck_region` VALUES (102, 84, 'Q', '曲周', '曲周县', 3, 'quzhou', '057250', 1, '114.95196', '36.77671');
+INSERT INTO `shop_truck_region` VALUES (103, 84, 'W', '武安', '武安市', 3, 'wu\'an', '056300', 1, '114.20153', '36.69281');
+INSERT INTO `shop_truck_region` VALUES (104, 37, 'X', '邢台', '邢台市', 2, 'xingtai', '054001', 1, '114.508851', '37.0682');
+INSERT INTO `shop_truck_region` VALUES (105, 104, 'Q', '桥东', '桥东区', 3, 'qiaodong', '054001', 1, '114.50725', '37.06801');
+INSERT INTO `shop_truck_region` VALUES (106, 104, 'Q', '桥西', '桥西区', 3, 'qiaoxi', '054000', 1, '114.46803', '37.05984');
+INSERT INTO `shop_truck_region` VALUES (107, 104, 'X', '邢台', '邢台县', 3, 'xingtai', '054001', 1, '114.56575', '37.0456');
+INSERT INTO `shop_truck_region` VALUES (108, 104, 'L', '临城', '临城县', 3, 'lincheng', '054300', 1, '114.50387', '37.43977');
+INSERT INTO `shop_truck_region` VALUES (109, 104, 'N', '内丘', '内丘县', 3, 'neiqiu', '054200', 1, '114.51212', '37.28671');
+INSERT INTO `shop_truck_region` VALUES (110, 104, 'B', '柏乡', '柏乡县', 3, 'baixiang', '055450', 1, '114.69332', '37.48242');
+INSERT INTO `shop_truck_region` VALUES (111, 104, 'L', '隆尧', '隆尧县', 3, 'longyao', '055350', 1, '114.77615', '37.35351');
+INSERT INTO `shop_truck_region` VALUES (112, 104, 'R', '任县', '任县', 3, 'renxian', '055150', 1, '114.6842', '37.12575');
+INSERT INTO `shop_truck_region` VALUES (113, 104, 'N', '南和', '南和县', 3, 'nanhe', '054400', 1, '114.68371', '37.00488');
+INSERT INTO `shop_truck_region` VALUES (114, 104, 'N', '宁晋', '宁晋县', 3, 'ningjin', '055550', 1, '114.92117', '37.61696');
+INSERT INTO `shop_truck_region` VALUES (115, 104, 'J', '巨鹿', '巨鹿县', 3, 'julu', '055250', 1, '115.03524', '37.21801');
+INSERT INTO `shop_truck_region` VALUES (116, 104, 'X', '新河', '新河县', 3, 'xinhe', '055650', 1, '115.24987', '37.52718');
+INSERT INTO `shop_truck_region` VALUES (117, 104, 'G', '广宗', '广宗县', 3, 'guangzong', '054600', 1, '115.14254', '37.0746');
+INSERT INTO `shop_truck_region` VALUES (118, 104, 'P', '平乡', '平乡县', 3, 'pingxiang', '054500', 1, '115.03002', '37.06317');
+INSERT INTO `shop_truck_region` VALUES (119, 104, 'W', '威县', '威县', 3, 'weixian', '054700', 1, '115.2637', '36.9768');
+INSERT INTO `shop_truck_region` VALUES (120, 104, 'Q', '清河', '清河县', 3, 'qinghe', '054800', 1, '115.66479', '37.07122');
+INSERT INTO `shop_truck_region` VALUES (121, 104, 'L', '临西', '临西县', 3, 'linxi', '054900', 1, '115.50097', '36.87078');
+INSERT INTO `shop_truck_region` VALUES (122, 104, 'N', '南宫', '南宫市', 3, 'nangong', '055750', 1, '115.39068', '37.35799');
+INSERT INTO `shop_truck_region` VALUES (123, 104, 'S', '沙河', '沙河市', 3, 'shahe', '054100', 1, '114.4981', '36.8577');
+INSERT INTO `shop_truck_region` VALUES (124, 37, 'B', '保定', '保定市', 2, 'baoding', '071052', 1, '115.482331', '38.867657');
+INSERT INTO `shop_truck_region` VALUES (125, 124, 'X', '新市', '新市区', 3, 'xinshi', '071051', 1, '115.4587', '38.87751');
+INSERT INTO `shop_truck_region` VALUES (126, 124, 'B', '北市', '北市区', 3, 'beishi', '071000', 1, '115.49715', '38.88322');
+INSERT INTO `shop_truck_region` VALUES (127, 124, 'N', '南市', '南市区', 3, 'nanshi', '071001', 1, '115.52859', '38.85455');
+INSERT INTO `shop_truck_region` VALUES (128, 124, 'M', '满城', '满城县', 3, 'mancheng', '072150', 1, '115.32296', '38.94972');
+INSERT INTO `shop_truck_region` VALUES (129, 124, 'Q', '清苑', '清苑县', 3, 'qingyuan', '071100', 1, '115.49267', '38.76709');
+INSERT INTO `shop_truck_region` VALUES (130, 124, 'L', '涞水', '涞水县', 3, 'laishui', '074100', 1, '115.71517', '39.39404');
+INSERT INTO `shop_truck_region` VALUES (131, 124, 'F', '阜平', '阜平县', 3, 'fuping', '073200', 1, '114.19683', '38.84763');
+INSERT INTO `shop_truck_region` VALUES (132, 124, 'X', '徐水', '徐水县', 3, 'xushui', '072550', 1, '115.65829', '39.02099');
+INSERT INTO `shop_truck_region` VALUES (133, 124, 'D', '定兴', '定兴县', 3, 'dingxing', '072650', 1, '115.80786', '39.26312');
+INSERT INTO `shop_truck_region` VALUES (134, 124, 'T', '唐县', '唐县', 3, 'tangxian', '072350', 1, '114.98516', '38.74513');
+INSERT INTO `shop_truck_region` VALUES (135, 124, 'G', '高阳', '高阳县', 3, 'gaoyang', '071500', 1, '115.7788', '38.70003');
+INSERT INTO `shop_truck_region` VALUES (136, 124, 'R', '容城', '容城县', 3, 'rongcheng', '071700', 1, '115.87158', '39.0535');
+INSERT INTO `shop_truck_region` VALUES (137, 124, 'L', '涞源', '涞源县', 3, 'laiyuan', '074300', 1, '114.69128', '39.35388');
+INSERT INTO `shop_truck_region` VALUES (138, 124, 'W', '望都', '望都县', 3, 'wangdu', '072450', 1, '115.1567', '38.70996');
+INSERT INTO `shop_truck_region` VALUES (139, 124, 'A', '安新', '安新县', 3, 'anxin', '071600', 1, '115.93557', '38.93532');
+INSERT INTO `shop_truck_region` VALUES (140, 124, 'Y', '易县', '易县', 3, 'yixian', '074200', 1, '115.4981', '39.34885');
+INSERT INTO `shop_truck_region` VALUES (141, 124, 'Q', '曲阳', '曲阳县', 3, 'quyang', '073100', 1, '114.70123', '38.62154');
+INSERT INTO `shop_truck_region` VALUES (142, 124, 'L', '蠡县', '蠡县', 3, 'lixian', '071400', 1, '115.57717', '38.48974');
+INSERT INTO `shop_truck_region` VALUES (143, 124, 'S', '顺平', '顺平县', 3, 'shunping', '072250', 1, '115.1347', '38.83854');
+INSERT INTO `shop_truck_region` VALUES (144, 124, 'B', '博野', '博野县', 3, 'boye', '071300', 1, '115.47033', '38.4564');
+INSERT INTO `shop_truck_region` VALUES (145, 124, 'X', '雄县', '雄县', 3, 'xiongxian', '071800', 1, '116.10873', '38.99442');
+INSERT INTO `shop_truck_region` VALUES (146, 124, 'Z', '涿州', '涿州市', 3, 'zhuozhou', '072750', 1, '115.98062', '39.48622');
+INSERT INTO `shop_truck_region` VALUES (147, 124, 'D', '定州', '定州市', 3, 'dingzhou', '073000', 1, '114.9902', '38.51623');
+INSERT INTO `shop_truck_region` VALUES (148, 124, 'A', '安国', '安国市', 3, 'anguo', '071200', 1, '115.32321', '38.41391');
+INSERT INTO `shop_truck_region` VALUES (149, 124, 'G', '高碑店', '高碑店市', 3, 'gaobeidian', '074000', 1, '115.87368', '39.32655');
+INSERT INTO `shop_truck_region` VALUES (150, 37, 'Z', '张家口', '张家口市', 2, 'zhangjiakou', '075000', 1, '114.884091', '40.811901');
+INSERT INTO `shop_truck_region` VALUES (151, 150, 'Q', '桥东', '桥东区', 3, 'qiaodong', '075000', 1, '114.8943', '40.78844');
+INSERT INTO `shop_truck_region` VALUES (152, 150, 'Q', '桥西', '桥西区', 3, 'qiaoxi', '075061', 1, '114.86962', '40.81945');
+INSERT INTO `shop_truck_region` VALUES (153, 150, 'X', '宣化', '宣化区', 3, 'xuanhua', '075100', 1, '115.06543', '40.60957');
+INSERT INTO `shop_truck_region` VALUES (154, 150, 'X', '下花园', '下花园区', 3, 'xiahuayuan', '075300', 1, '115.28744', '40.50236');
+INSERT INTO `shop_truck_region` VALUES (155, 150, 'X', '宣化', '宣化县', 3, 'xuanhua', '075100', 1, '115.15497', '40.56618');
+INSERT INTO `shop_truck_region` VALUES (156, 150, 'Z', '张北', '张北县', 3, 'zhangbei', '076450', 1, '114.71432', '41.15977');
+INSERT INTO `shop_truck_region` VALUES (157, 150, 'K', '康保', '康保县', 3, 'kangbao', '076650', 1, '114.60031', '41.85225');
+INSERT INTO `shop_truck_region` VALUES (158, 150, 'G', '沽源', '沽源县', 3, 'guyuan', '076550', 1, '115.68859', '41.66959');
+INSERT INTO `shop_truck_region` VALUES (159, 150, 'S', '尚义', '尚义县', 3, 'shangyi', '076750', 1, '113.97134', '41.07782');
+INSERT INTO `shop_truck_region` VALUES (160, 150, 'W', '蔚县', '蔚县', 3, 'yuxian', '075700', 1, '114.58892', '39.84067');
+INSERT INTO `shop_truck_region` VALUES (161, 150, 'Y', '阳原', '阳原县', 3, 'yangyuan', '075800', 1, '114.15051', '40.10361');
+INSERT INTO `shop_truck_region` VALUES (162, 150, 'H', '怀安', '怀安县', 3, 'huai\'an', '076150', 1, '114.38559', '40.67425');
+INSERT INTO `shop_truck_region` VALUES (163, 150, 'W', '万全', '万全县', 3, 'wanquan', '076250', 1, '114.7405', '40.76694');
+INSERT INTO `shop_truck_region` VALUES (164, 150, 'H', '怀来', '怀来县', 3, 'huailai', '075400', 1, '115.51773', '40.41536');
+INSERT INTO `shop_truck_region` VALUES (165, 150, 'Z', '涿鹿', '涿鹿县', 3, 'zhuolu', '075600', 1, '115.22403', '40.37636');
+INSERT INTO `shop_truck_region` VALUES (166, 150, 'C', '赤城', '赤城县', 3, 'chicheng', '075500', 1, '115.83187', '40.91438');
+INSERT INTO `shop_truck_region` VALUES (167, 150, 'C', '崇礼', '崇礼县', 3, 'chongli', '076350', 1, '115.27993', '40.97519');
+INSERT INTO `shop_truck_region` VALUES (168, 37, 'C', '承德', '承德市', 2, 'chengde', '067000', 1, '117.939152', '40.976204');
+INSERT INTO `shop_truck_region` VALUES (169, 168, 'S', '双桥', '双桥区', 3, 'shuangqiao', '067000', 1, '117.9432', '40.97466');
+INSERT INTO `shop_truck_region` VALUES (170, 168, 'S', '双滦', '双滦区', 3, 'shuangluan', '067001', 1, '117.74487', '40.95375');
+INSERT INTO `shop_truck_region` VALUES (171, 168, 'Y', '鹰手营子矿区', '鹰手营子矿区', 3, 'yingshouyingzikuangqu', '067200', 1, '117.65985', '40.54744');
+INSERT INTO `shop_truck_region` VALUES (172, 168, 'C', '承德', '承德县', 3, 'chengde', '067400', 1, '118.17639', '40.76985');
+INSERT INTO `shop_truck_region` VALUES (173, 168, 'X', '兴隆', '兴隆县', 3, 'xinglong', '067300', 1, '117.50073', '40.41709');
+INSERT INTO `shop_truck_region` VALUES (174, 168, 'P', '平泉', '平泉县', 3, 'pingquan', '067500', 1, '118.70196', '41.01839');
+INSERT INTO `shop_truck_region` VALUES (175, 168, 'L', '滦平', '滦平县', 3, 'luanping', '068250', 1, '117.33276', '40.94148');
+INSERT INTO `shop_truck_region` VALUES (176, 168, 'L', '隆化', '隆化县', 3, 'longhua', '068150', 1, '117.7297', '41.31412');
+INSERT INTO `shop_truck_region` VALUES (177, 168, 'F', '丰宁', '丰宁满族自治县', 3, 'fengning', '068350', 1, '116.6492', '41.20481');
+INSERT INTO `shop_truck_region` VALUES (178, 168, 'K', '宽城', '宽城满族自治县', 3, 'kuancheng', '067600', 1, '118.49176', '40.60829');
+INSERT INTO `shop_truck_region` VALUES (179, 168, 'W', '围场', '围场满族蒙古族自治县', 3, 'weichang', '068450', 1, '117.7601', '41.94368');
+INSERT INTO `shop_truck_region` VALUES (180, 37, 'C', '沧州', '沧州市', 2, 'cangzhou', '061001', 1, '116.857461', '38.310582');
+INSERT INTO `shop_truck_region` VALUES (181, 180, 'X', '新华', '新华区', 3, 'xinhua', '061000', 1, '116.86643', '38.31438');
+INSERT INTO `shop_truck_region` VALUES (182, 180, 'Y', '运河', '运河区', 3, 'yunhe', '061001', 1, '116.85706', '38.31352');
+INSERT INTO `shop_truck_region` VALUES (183, 180, 'C', '沧县', '沧县', 3, 'cangxian', '061000', 1, '116.87817', '38.29361');
+INSERT INTO `shop_truck_region` VALUES (184, 180, 'Q', '青县', '青县', 3, 'qingxian', '062650', 1, '116.80316', '38.58345');
+INSERT INTO `shop_truck_region` VALUES (185, 180, 'D', '东光', '东光县', 3, 'dongguang', '061600', 1, '116.53668', '37.8857');
+INSERT INTO `shop_truck_region` VALUES (186, 180, 'H', '海兴', '海兴县', 3, 'haixing', '061200', 1, '117.49758', '38.13958');
+INSERT INTO `shop_truck_region` VALUES (187, 180, 'Y', '盐山', '盐山县', 3, 'yanshan', '061300', 1, '117.23092', '38.05647');
+INSERT INTO `shop_truck_region` VALUES (188, 180, 'S', '肃宁', '肃宁县', 3, 'suning', '062350', 1, '115.82971', '38.42272');
+INSERT INTO `shop_truck_region` VALUES (189, 180, 'N', '南皮', '南皮县', 3, 'nanpi', '061500', 1, '116.70224', '38.04109');
+INSERT INTO `shop_truck_region` VALUES (190, 180, 'W', '吴桥', '吴桥县', 3, 'wuqiao', '061800', 1, '116.3847', '37.62546');
+INSERT INTO `shop_truck_region` VALUES (191, 180, 'X', '献县', '献县', 3, 'xianxian', '062250', 1, '116.12695', '38.19228');
+INSERT INTO `shop_truck_region` VALUES (192, 180, 'M', '孟村', '孟村回族自治县', 3, 'mengcun', '061400', 1, '117.10412', '38.05338');
+INSERT INTO `shop_truck_region` VALUES (193, 180, 'B', '泊头', '泊头市', 3, 'botou', '062150', 1, '116.57824', '38.08359');
+INSERT INTO `shop_truck_region` VALUES (194, 180, 'R', '任丘', '任丘市', 3, 'renqiu', '062550', 1, '116.1033', '38.71124');
+INSERT INTO `shop_truck_region` VALUES (195, 180, 'H', '黄骅', '黄骅市', 3, 'huanghua', '061100', 1, '117.33883', '38.3706');
+INSERT INTO `shop_truck_region` VALUES (196, 180, 'H', '河间', '河间市', 3, 'hejian', '062450', 1, '116.0993', '38.44549');
+INSERT INTO `shop_truck_region` VALUES (197, 37, 'L', '廊坊', '廊坊市', 2, 'langfang', '065000', 1, '116.713873', '39.529244');
+INSERT INTO `shop_truck_region` VALUES (198, 197, 'A', '安次', '安次区', 3, 'anci', '065000', 1, '116.70308', '39.52057');
+INSERT INTO `shop_truck_region` VALUES (199, 197, 'G', '广阳', '广阳区', 3, 'guangyang', '065000', 1, '116.71069', '39.52278');
+INSERT INTO `shop_truck_region` VALUES (200, 197, 'G', '固安', '固安县', 3, 'gu\'an', '065500', 1, '116.29916', '39.43833');
+INSERT INTO `shop_truck_region` VALUES (201, 197, 'Y', '永清', '永清县', 3, 'yongqing', '065600', 1, '116.50091', '39.32069');
+INSERT INTO `shop_truck_region` VALUES (202, 197, 'X', '香河', '香河县', 3, 'xianghe', '065400', 1, '117.00634', '39.76133');
+INSERT INTO `shop_truck_region` VALUES (203, 197, 'D', '大城', '大城县', 3, 'daicheng', '065900', 1, '116.65353', '38.70534');
+INSERT INTO `shop_truck_region` VALUES (204, 197, 'W', '文安', '文安县', 3, 'wen\'an', '065800', 1, '116.45846', '38.87325');
+INSERT INTO `shop_truck_region` VALUES (205, 197, 'D', '大厂', '大厂回族自治县', 3, 'dachang', '065300', 1, '116.98916', '39.88649');
+INSERT INTO `shop_truck_region` VALUES (206, 197, 'B', '霸州', '霸州市', 3, 'bazhou', '065700', 1, '116.39154', '39.12569');
+INSERT INTO `shop_truck_region` VALUES (207, 197, 'S', '三河', '三河市', 3, 'sanhe', '065200', 1, '117.07229', '39.98358');
+INSERT INTO `shop_truck_region` VALUES (208, 37, 'H', '衡水', '衡水市', 2, 'hengshui', '053000', 1, '115.665993', '37.735097');
+INSERT INTO `shop_truck_region` VALUES (209, 208, 'T', '桃城', '桃城区', 3, 'taocheng', '053000', 1, '115.67529', '37.73499');
+INSERT INTO `shop_truck_region` VALUES (210, 208, 'Z', '枣强', '枣强县', 3, 'zaoqiang', '053100', 1, '115.72576', '37.51027');
+INSERT INTO `shop_truck_region` VALUES (211, 208, 'W', '武邑', '武邑县', 3, 'wuyi', '053400', 1, '115.88748', '37.80181');
+INSERT INTO `shop_truck_region` VALUES (212, 208, 'W', '武强', '武强县', 3, 'wuqiang', '053300', 1, '115.98226', '38.04138');
+INSERT INTO `shop_truck_region` VALUES (213, 208, 'R', '饶阳', '饶阳县', 3, 'raoyang', '053900', 1, '115.72558', '38.23529');
+INSERT INTO `shop_truck_region` VALUES (214, 208, 'A', '安平', '安平县', 3, 'anping', '053600', 1, '115.51876', '38.23388');
+INSERT INTO `shop_truck_region` VALUES (215, 208, 'G', '故城', '故城县', 3, 'gucheng', '053800', 1, '115.97076', '37.34773');
+INSERT INTO `shop_truck_region` VALUES (216, 208, 'J', '景县', '景县', 3, 'jingxian', '053500', 1, '116.26904', '37.6926');
+INSERT INTO `shop_truck_region` VALUES (217, 208, 'F', '阜城', '阜城县', 3, 'fucheng', '053700', 1, '116.14431', '37.86881');
+INSERT INTO `shop_truck_region` VALUES (218, 208, 'J', '冀州', '冀州市', 3, 'jizhou', '053200', 1, '115.57934', '37.55082');
+INSERT INTO `shop_truck_region` VALUES (219, 208, 'S', '深州', '深州市', 3, 'shenzhou', '053800', 1, '115.55993', '38.00109');
 INSERT INTO `shop_truck_region` VALUES (220, 0, 'S', '山西', '山西省', 1, 'shanxi', '', 1, '112.549248', '37.857014');
-INSERT INTO `shop_truck_region` VALUES (221, 220, 'T', '太原', '太原市', 2, 'taiyuan', '030082', 0, '112.549248', '37.857014');
-INSERT INTO `shop_truck_region` VALUES (222, 221, 'X', '小店', '小店区', 3, 'xiaodian', '030032', 0, '112.56878', '37.73565');
-INSERT INTO `shop_truck_region` VALUES (223, 221, 'Y', '迎泽', '迎泽区', 3, 'yingze', '030002', 0, '112.56338', '37.86326');
-INSERT INTO `shop_truck_region` VALUES (224, 221, 'X', '杏花岭', '杏花岭区', 3, 'xinghualing', '030009', 0, '112.56237', '37.88429');
-INSERT INTO `shop_truck_region` VALUES (225, 221, 'J', '尖草坪', '尖草坪区', 3, 'jiancaoping', '030023', 0, '112.48709', '37.94193');
-INSERT INTO `shop_truck_region` VALUES (226, 221, 'W', '万柏林', '万柏林区', 3, 'wanbailin', '030024', 0, '112.51553', '37.85923');
-INSERT INTO `shop_truck_region` VALUES (227, 221, 'J', '晋源', '晋源区', 3, 'jinyuan', '030025', 0, '112.47985', '37.72479');
-INSERT INTO `shop_truck_region` VALUES (228, 221, 'Q', '清徐', '清徐县', 3, 'qingxu', '030400', 0, '112.35888', '37.60758');
-INSERT INTO `shop_truck_region` VALUES (229, 221, 'Y', '阳曲', '阳曲县', 3, 'yangqu', '030100', 0, '112.67861', '38.05989');
-INSERT INTO `shop_truck_region` VALUES (230, 221, 'L', '娄烦', '娄烦县', 3, 'loufan', '030300', 0, '111.79473', '38.06689');
-INSERT INTO `shop_truck_region` VALUES (231, 221, 'G', '古交', '古交市', 3, 'gujiao', '030200', 0, '112.16918', '37.90983');
-INSERT INTO `shop_truck_region` VALUES (232, 220, 'D', '大同', '大同市', 2, 'datong', '037008', 0, '113.295259', '40.09031');
-INSERT INTO `shop_truck_region` VALUES (233, 232, 'C', '城区', '城区', 3, 'chengqu', '037008', 0, '113.298', '40.07566');
-INSERT INTO `shop_truck_region` VALUES (234, 232, 'K', '矿区', '矿区', 3, 'kuangqu', '037003', 0, '113.1772', '40.03685');
-INSERT INTO `shop_truck_region` VALUES (235, 232, 'N', '南郊', '南郊区', 3, 'nanjiao', '037001', 0, '113.14947', '40.00539');
-INSERT INTO `shop_truck_region` VALUES (236, 232, 'X', '新荣', '新荣区', 3, 'xinrong', '037002', 0, '113.13504', '40.25618');
-INSERT INTO `shop_truck_region` VALUES (237, 232, 'Y', '阳高', '阳高县', 3, 'yanggao', '038100', 0, '113.75012', '40.36256');
-INSERT INTO `shop_truck_region` VALUES (238, 232, 'T', '天镇', '天镇县', 3, 'tianzhen', '038200', 0, '114.0931', '40.42299');
-INSERT INTO `shop_truck_region` VALUES (239, 232, 'G', '广灵', '广灵县', 3, 'guangling', '037500', 0, '114.28204', '39.76082');
-INSERT INTO `shop_truck_region` VALUES (240, 232, 'L', '灵丘', '灵丘县', 3, 'lingqiu', '034400', 0, '114.23672', '39.44043');
-INSERT INTO `shop_truck_region` VALUES (241, 232, 'H', '浑源', '浑源县', 3, 'hunyuan', '037400', 0, '113.69552', '39.69962');
-INSERT INTO `shop_truck_region` VALUES (242, 232, 'Z', '左云', '左云县', 3, 'zuoyun', '037100', 0, '112.70266', '40.01336');
-INSERT INTO `shop_truck_region` VALUES (243, 232, 'D', '大同', '大同县', 3, 'datong', '037300', 0, '113.61212', '40.04012');
-INSERT INTO `shop_truck_region` VALUES (244, 220, 'Y', '阳泉', '阳泉市', 2, 'yangquan', '045000', 0, '113.583285', '37.861188');
-INSERT INTO `shop_truck_region` VALUES (245, 244, 'C', '城区', '城区', 3, 'chengqu', '045000', 0, '113.60069', '37.8474');
-INSERT INTO `shop_truck_region` VALUES (246, 244, 'K', '矿区', '矿区', 3, 'kuangqu', '045000', 0, '113.55677', '37.86895');
-INSERT INTO `shop_truck_region` VALUES (247, 244, 'J', '郊区', '郊区', 3, 'jiaoqu', '045011', 0, '113.58539', '37.94139');
-INSERT INTO `shop_truck_region` VALUES (248, 244, 'P', '平定', '平定县', 3, 'pingding', '045200', 0, '113.65789', '37.78601');
-INSERT INTO `shop_truck_region` VALUES (249, 244, 'Y', '盂县', '盂县', 3, 'yuxian', '045100', 0, '113.41235', '38.08579');
-INSERT INTO `shop_truck_region` VALUES (250, 220, 'C', '长治', '长治市', 2, 'changzhi', '046000', 0, '113.113556', '36.191112');
-INSERT INTO `shop_truck_region` VALUES (251, 250, 'C', '城区', '城区', 3, 'chengqu', '046011', 0, '113.12308', '36.20351');
-INSERT INTO `shop_truck_region` VALUES (252, 250, 'J', '郊区', '郊区', 3, 'jiaoqu', '046011', 0, '113.12653', '36.19918');
-INSERT INTO `shop_truck_region` VALUES (253, 250, 'C', '长治', '长治县', 3, 'changzhi', '047100', 0, '113.04791', '36.04722');
-INSERT INTO `shop_truck_region` VALUES (254, 250, 'X', '襄垣', '襄垣县', 3, 'xiangyuan', '046200', 0, '113.05157', '36.53527');
-INSERT INTO `shop_truck_region` VALUES (255, 250, 'T', '屯留', '屯留县', 3, 'tunliu', '046100', 0, '112.89196', '36.31579');
-INSERT INTO `shop_truck_region` VALUES (256, 250, 'P', '平顺', '平顺县', 3, 'pingshun', '047400', 0, '113.43603', '36.20005');
-INSERT INTO `shop_truck_region` VALUES (257, 250, 'L', '黎城', '黎城县', 3, 'licheng', '047600', 0, '113.38766', '36.50301');
-INSERT INTO `shop_truck_region` VALUES (258, 250, 'H', '壶关', '壶关县', 3, 'huguan', '047300', 0, '113.207', '36.11301');
-INSERT INTO `shop_truck_region` VALUES (259, 250, 'C', '长子', '长子县', 3, 'zhangzi', '046600', 0, '112.87731', '36.12125');
-INSERT INTO `shop_truck_region` VALUES (260, 250, 'W', '武乡', '武乡县', 3, 'wuxiang', '046300', 0, '112.86343', '36.83687');
-INSERT INTO `shop_truck_region` VALUES (261, 250, 'Q', '沁县', '沁县', 3, 'qinxian', '046400', 0, '112.69863', '36.75628');
-INSERT INTO `shop_truck_region` VALUES (262, 250, 'Q', '沁源', '沁源县', 3, 'qinyuan', '046500', 0, '112.33758', '36.50008');
-INSERT INTO `shop_truck_region` VALUES (263, 250, 'L', '潞城', '潞城市', 3, 'lucheng', '047500', 0, '113.22888', '36.33414');
-INSERT INTO `shop_truck_region` VALUES (264, 220, 'J', '晋城', '晋城市', 2, 'jincheng', '048000', 0, '112.851274', '35.497553');
-INSERT INTO `shop_truck_region` VALUES (265, 264, 'C', '城区', '城区', 3, 'chengqu', '048000', 0, '112.85319', '35.50175');
-INSERT INTO `shop_truck_region` VALUES (266, 264, 'Q', '沁水', '沁水县', 3, 'qinshui', '048200', 0, '112.1871', '35.69102');
-INSERT INTO `shop_truck_region` VALUES (267, 264, 'Y', '阳城', '阳城县', 3, 'yangcheng', '048100', 0, '112.41485', '35.48614');
-INSERT INTO `shop_truck_region` VALUES (268, 264, 'L', '陵川', '陵川县', 3, 'lingchuan', '048300', 0, '113.2806', '35.77532');
-INSERT INTO `shop_truck_region` VALUES (269, 264, 'Z', '泽州', '泽州县', 3, 'zezhou', '048012', 0, '112.83947', '35.50789');
-INSERT INTO `shop_truck_region` VALUES (270, 264, 'G', '高平', '高平市', 3, 'gaoping', '048400', 0, '112.92288', '35.79705');
-INSERT INTO `shop_truck_region` VALUES (271, 220, 'S', '朔州', '朔州市', 2, 'shuozhou', '038500', 0, '112.433387', '39.331261');
-INSERT INTO `shop_truck_region` VALUES (272, 271, 'S', '朔城', '朔城区', 3, 'shuocheng', '036000', 0, '112.43189', '39.31982');
-INSERT INTO `shop_truck_region` VALUES (273, 271, 'P', '平鲁', '平鲁区', 3, 'pinglu', '038600', 0, '112.28833', '39.51155');
-INSERT INTO `shop_truck_region` VALUES (274, 271, 'S', '山阴', '山阴县', 3, 'shanyin', '036900', 0, '112.81662', '39.52697');
-INSERT INTO `shop_truck_region` VALUES (275, 271, 'Y', '应县', '应县', 3, 'yingxian', '037600', 0, '113.19052', '39.55279');
-INSERT INTO `shop_truck_region` VALUES (276, 271, 'Y', '右玉', '右玉县', 3, 'youyu', '037200', 0, '112.46902', '39.99011');
-INSERT INTO `shop_truck_region` VALUES (277, 271, 'H', '怀仁', '怀仁县', 3, 'huairen', '038300', 0, '113.10009', '39.82806');
+INSERT INTO `shop_truck_region` VALUES (221, 220, 'T', '太原', '太原市', 2, 'taiyuan', '030082', 1, '112.549248', '37.857014');
+INSERT INTO `shop_truck_region` VALUES (222, 221, 'X', '小店', '小店区', 3, 'xiaodian', '030032', 1, '112.56878', '37.73565');
+INSERT INTO `shop_truck_region` VALUES (223, 221, 'Y', '迎泽', '迎泽区', 3, 'yingze', '030002', 1, '112.56338', '37.86326');
+INSERT INTO `shop_truck_region` VALUES (224, 221, 'X', '杏花岭', '杏花岭区', 3, 'xinghualing', '030009', 1, '112.56237', '37.88429');
+INSERT INTO `shop_truck_region` VALUES (225, 221, 'J', '尖草坪', '尖草坪区', 3, 'jiancaoping', '030023', 1, '112.48709', '37.94193');
+INSERT INTO `shop_truck_region` VALUES (226, 221, 'W', '万柏林', '万柏林区', 3, 'wanbailin', '030024', 1, '112.51553', '37.85923');
+INSERT INTO `shop_truck_region` VALUES (227, 221, 'J', '晋源', '晋源区', 3, 'jinyuan', '030025', 1, '112.47985', '37.72479');
+INSERT INTO `shop_truck_region` VALUES (228, 221, 'Q', '清徐', '清徐县', 3, 'qingxu', '030400', 1, '112.35888', '37.60758');
+INSERT INTO `shop_truck_region` VALUES (229, 221, 'Y', '阳曲', '阳曲县', 3, 'yangqu', '030100', 1, '112.67861', '38.05989');
+INSERT INTO `shop_truck_region` VALUES (230, 221, 'L', '娄烦', '娄烦县', 3, 'loufan', '030300', 1, '111.79473', '38.06689');
+INSERT INTO `shop_truck_region` VALUES (231, 221, 'G', '古交', '古交市', 3, 'gujiao', '030200', 1, '112.16918', '37.90983');
+INSERT INTO `shop_truck_region` VALUES (232, 220, 'D', '大同', '大同市', 2, 'datong', '037008', 1, '113.295259', '40.09031');
+INSERT INTO `shop_truck_region` VALUES (233, 232, 'C', '城区', '城区', 3, 'chengqu', '037008', 1, '113.298', '40.07566');
+INSERT INTO `shop_truck_region` VALUES (234, 232, 'K', '矿区', '矿区', 3, 'kuangqu', '037003', 1, '113.1772', '40.03685');
+INSERT INTO `shop_truck_region` VALUES (235, 232, 'N', '南郊', '南郊区', 3, 'nanjiao', '037001', 1, '113.14947', '40.00539');
+INSERT INTO `shop_truck_region` VALUES (236, 232, 'X', '新荣', '新荣区', 3, 'xinrong', '037002', 1, '113.13504', '40.25618');
+INSERT INTO `shop_truck_region` VALUES (237, 232, 'Y', '阳高', '阳高县', 3, 'yanggao', '038100', 1, '113.75012', '40.36256');
+INSERT INTO `shop_truck_region` VALUES (238, 232, 'T', '天镇', '天镇县', 3, 'tianzhen', '038200', 1, '114.0931', '40.42299');
+INSERT INTO `shop_truck_region` VALUES (239, 232, 'G', '广灵', '广灵县', 3, 'guangling', '037500', 1, '114.28204', '39.76082');
+INSERT INTO `shop_truck_region` VALUES (240, 232, 'L', '灵丘', '灵丘县', 3, 'lingqiu', '034400', 1, '114.23672', '39.44043');
+INSERT INTO `shop_truck_region` VALUES (241, 232, 'H', '浑源', '浑源县', 3, 'hunyuan', '037400', 1, '113.69552', '39.69962');
+INSERT INTO `shop_truck_region` VALUES (242, 232, 'Z', '左云', '左云县', 3, 'zuoyun', '037100', 1, '112.70266', '40.01336');
+INSERT INTO `shop_truck_region` VALUES (243, 232, 'D', '大同', '大同县', 3, 'datong', '037300', 1, '113.61212', '40.04012');
+INSERT INTO `shop_truck_region` VALUES (244, 220, 'Y', '阳泉', '阳泉市', 2, 'yangquan', '045000', 1, '113.583285', '37.861188');
+INSERT INTO `shop_truck_region` VALUES (245, 244, 'C', '城区', '城区', 3, 'chengqu', '045000', 1, '113.60069', '37.8474');
+INSERT INTO `shop_truck_region` VALUES (246, 244, 'K', '矿区', '矿区', 3, 'kuangqu', '045000', 1, '113.55677', '37.86895');
+INSERT INTO `shop_truck_region` VALUES (247, 244, 'J', '郊区', '郊区', 3, 'jiaoqu', '045011', 1, '113.58539', '37.94139');
+INSERT INTO `shop_truck_region` VALUES (248, 244, 'P', '平定', '平定县', 3, 'pingding', '045200', 1, '113.65789', '37.78601');
+INSERT INTO `shop_truck_region` VALUES (249, 244, 'Y', '盂县', '盂县', 3, 'yuxian', '045100', 1, '113.41235', '38.08579');
+INSERT INTO `shop_truck_region` VALUES (250, 220, 'C', '长治', '长治市', 2, 'changzhi', '046000', 1, '113.113556', '36.191112');
+INSERT INTO `shop_truck_region` VALUES (251, 250, 'C', '城区', '城区', 3, 'chengqu', '046011', 1, '113.12308', '36.20351');
+INSERT INTO `shop_truck_region` VALUES (252, 250, 'J', '郊区', '郊区', 3, 'jiaoqu', '046011', 1, '113.12653', '36.19918');
+INSERT INTO `shop_truck_region` VALUES (253, 250, 'C', '长治', '长治县', 3, 'changzhi', '047100', 1, '113.04791', '36.04722');
+INSERT INTO `shop_truck_region` VALUES (254, 250, 'X', '襄垣', '襄垣县', 3, 'xiangyuan', '046200', 1, '113.05157', '36.53527');
+INSERT INTO `shop_truck_region` VALUES (255, 250, 'T', '屯留', '屯留县', 3, 'tunliu', '046100', 1, '112.89196', '36.31579');
+INSERT INTO `shop_truck_region` VALUES (256, 250, 'P', '平顺', '平顺县', 3, 'pingshun', '047400', 1, '113.43603', '36.20005');
+INSERT INTO `shop_truck_region` VALUES (257, 250, 'L', '黎城', '黎城县', 3, 'licheng', '047600', 1, '113.38766', '36.50301');
+INSERT INTO `shop_truck_region` VALUES (258, 250, 'H', '壶关', '壶关县', 3, 'huguan', '047300', 1, '113.207', '36.11301');
+INSERT INTO `shop_truck_region` VALUES (259, 250, 'C', '长子', '长子县', 3, 'zhangzi', '046600', 1, '112.87731', '36.12125');
+INSERT INTO `shop_truck_region` VALUES (260, 250, 'W', '武乡', '武乡县', 3, 'wuxiang', '046300', 1, '112.86343', '36.83687');
+INSERT INTO `shop_truck_region` VALUES (261, 250, 'Q', '沁县', '沁县', 3, 'qinxian', '046400', 1, '112.69863', '36.75628');
+INSERT INTO `shop_truck_region` VALUES (262, 250, 'Q', '沁源', '沁源县', 3, 'qinyuan', '046500', 1, '112.33758', '36.50008');
+INSERT INTO `shop_truck_region` VALUES (263, 250, 'L', '潞城', '潞城市', 3, 'lucheng', '047500', 1, '113.22888', '36.33414');
+INSERT INTO `shop_truck_region` VALUES (264, 220, 'J', '晋城', '晋城市', 2, 'jincheng', '048000', 1, '112.851274', '35.497553');
+INSERT INTO `shop_truck_region` VALUES (265, 264, 'C', '城区', '城区', 3, 'chengqu', '048000', 1, '112.85319', '35.50175');
+INSERT INTO `shop_truck_region` VALUES (266, 264, 'Q', '沁水', '沁水县', 3, 'qinshui', '048200', 1, '112.1871', '35.69102');
+INSERT INTO `shop_truck_region` VALUES (267, 264, 'Y', '阳城', '阳城县', 3, 'yangcheng', '048100', 1, '112.41485', '35.48614');
+INSERT INTO `shop_truck_region` VALUES (268, 264, 'L', '陵川', '陵川县', 3, 'lingchuan', '048300', 1, '113.2806', '35.77532');
+INSERT INTO `shop_truck_region` VALUES (269, 264, 'Z', '泽州', '泽州县', 3, 'zezhou', '048012', 1, '112.83947', '35.50789');
+INSERT INTO `shop_truck_region` VALUES (270, 264, 'G', '高平', '高平市', 3, 'gaoping', '048400', 1, '112.92288', '35.79705');
+INSERT INTO `shop_truck_region` VALUES (271, 220, 'S', '朔州', '朔州市', 2, 'shuozhou', '038500', 1, '112.433387', '39.331261');
+INSERT INTO `shop_truck_region` VALUES (272, 271, 'S', '朔城', '朔城区', 3, 'shuocheng', '036000', 1, '112.43189', '39.31982');
+INSERT INTO `shop_truck_region` VALUES (273, 271, 'P', '平鲁', '平鲁区', 3, 'pinglu', '038600', 1, '112.28833', '39.51155');
+INSERT INTO `shop_truck_region` VALUES (274, 271, 'S', '山阴', '山阴县', 3, 'shanyin', '036900', 1, '112.81662', '39.52697');
+INSERT INTO `shop_truck_region` VALUES (275, 271, 'Y', '应县', '应县', 3, 'yingxian', '037600', 1, '113.19052', '39.55279');
+INSERT INTO `shop_truck_region` VALUES (276, 271, 'Y', '右玉', '右玉县', 3, 'youyu', '037200', 1, '112.46902', '39.99011');
+INSERT INTO `shop_truck_region` VALUES (277, 271, 'H', '怀仁', '怀仁县', 3, 'huairen', '038300', 1, '113.10009', '39.82806');
 INSERT INTO `shop_truck_region` VALUES (278, 220, 'J', '晋中', '晋中市', 2, 'jinzhong', '030600', 1, '112.736465', '37.696495');
-INSERT INTO `shop_truck_region` VALUES (279, 278, 'Y', '榆次', '榆次区', 3, 'yuci', '030600', 0, '112.70788', '37.6978');
-INSERT INTO `shop_truck_region` VALUES (280, 278, 'Y', '榆社', '榆社县', 3, 'yushe', '031800', 0, '112.97558', '37.0721');
-INSERT INTO `shop_truck_region` VALUES (281, 278, 'Z', '左权', '左权县', 3, 'zuoquan', '032600', 0, '113.37918', '37.08235');
-INSERT INTO `shop_truck_region` VALUES (282, 278, 'H', '和顺', '和顺县', 3, 'heshun', '032700', 0, '113.56988', '37.32963');
-INSERT INTO `shop_truck_region` VALUES (283, 278, 'X', '昔阳', '昔阳县', 3, 'xiyang', '045300', 0, '113.70517', '37.61863');
-INSERT INTO `shop_truck_region` VALUES (284, 278, 'S', '寿阳', '寿阳县', 3, 'shouyang', '045400', 0, '113.17495', '37.88899');
-INSERT INTO `shop_truck_region` VALUES (285, 278, 'T', '太谷', '太谷县', 3, 'taigu', '030800', 0, '112.55246', '37.42161');
-INSERT INTO `shop_truck_region` VALUES (286, 278, 'Q', '祁县', '祁县', 3, 'qixian', '030900', 0, '112.33358', '37.3579');
+INSERT INTO `shop_truck_region` VALUES (279, 278, 'Y', '榆次', '榆次区', 3, 'yuci', '030600', 1, '112.70788', '37.6978');
+INSERT INTO `shop_truck_region` VALUES (280, 278, 'Y', '榆社', '榆社县', 3, 'yushe', '031800', 1, '112.97558', '37.0721');
+INSERT INTO `shop_truck_region` VALUES (281, 278, 'Z', '左权', '左权县', 3, 'zuoquan', '032600', 1, '113.37918', '37.08235');
+INSERT INTO `shop_truck_region` VALUES (282, 278, 'H', '和顺', '和顺县', 3, 'heshun', '032700', 1, '113.56988', '37.32963');
+INSERT INTO `shop_truck_region` VALUES (283, 278, 'X', '昔阳', '昔阳县', 3, 'xiyang', '045300', 1, '113.70517', '37.61863');
+INSERT INTO `shop_truck_region` VALUES (284, 278, 'S', '寿阳', '寿阳县', 3, 'shouyang', '045400', 1, '113.17495', '37.88899');
+INSERT INTO `shop_truck_region` VALUES (285, 278, 'T', '太谷', '太谷县', 3, 'taigu', '030800', 1, '112.55246', '37.42161');
+INSERT INTO `shop_truck_region` VALUES (286, 278, 'Q', '祁县', '祁县', 3, 'qixian', '030900', 1, '112.33358', '37.3579');
 INSERT INTO `shop_truck_region` VALUES (287, 278, 'P', '平遥', '平遥县', 3, 'pingyao', '031100', 1, '112.17553', '37.1892');
-INSERT INTO `shop_truck_region` VALUES (288, 278, 'L', '灵石', '灵石县', 3, 'lingshi', '031300', 0, '111.7774', '36.84814');
-INSERT INTO `shop_truck_region` VALUES (289, 278, 'J', '介休', '介休市', 3, 'jiexiu', '032000', 0, '111.91824', '37.02771');
-INSERT INTO `shop_truck_region` VALUES (290, 220, 'Y', '运城', '运城市', 2, 'yuncheng', '044000', 0, '111.003957', '35.022778');
-INSERT INTO `shop_truck_region` VALUES (291, 290, 'Y', '盐湖', '盐湖区', 3, 'yanhu', '044000', 0, '110.99827', '35.0151');
-INSERT INTO `shop_truck_region` VALUES (292, 290, 'L', '临猗', '临猗县', 3, 'linyi', '044100', 0, '110.77432', '35.14455');
-INSERT INTO `shop_truck_region` VALUES (293, 290, 'W', '万荣', '万荣县', 3, 'wanrong', '044200', 0, '110.83657', '35.41556');
-INSERT INTO `shop_truck_region` VALUES (294, 290, 'W', '闻喜', '闻喜县', 3, 'wenxi', '043800', 0, '111.22265', '35.35553');
-INSERT INTO `shop_truck_region` VALUES (295, 290, 'J', '稷山', '稷山县', 3, 'jishan', '043200', 0, '110.97924', '35.59993');
-INSERT INTO `shop_truck_region` VALUES (296, 290, 'X', '新绛', '新绛县', 3, 'xinjiang', '043100', 0, '111.22509', '35.61566');
-INSERT INTO `shop_truck_region` VALUES (297, 290, 'J', '绛县', '绛县', 3, 'jiangxian', '043600', 0, '111.56668', '35.49096');
-INSERT INTO `shop_truck_region` VALUES (298, 290, 'Y', '垣曲', '垣曲县', 3, 'yuanqu', '043700', 0, '111.67166', '35.29923');
-INSERT INTO `shop_truck_region` VALUES (299, 290, 'X', '夏县', '夏县', 3, 'xiaxian', '044400', 0, '111.21966', '35.14121');
-INSERT INTO `shop_truck_region` VALUES (300, 290, 'P', '平陆', '平陆县', 3, 'pinglu', '044300', 0, '111.21704', '34.83772');
-INSERT INTO `shop_truck_region` VALUES (301, 290, 'R', '芮城', '芮城县', 3, 'ruicheng', '044600', 0, '110.69455', '34.69384');
-INSERT INTO `shop_truck_region` VALUES (302, 290, 'Y', '永济', '永济市', 3, 'yongji', '044500', 0, '110.44537', '34.86556');
-INSERT INTO `shop_truck_region` VALUES (303, 290, 'H', '河津', '河津市', 3, 'hejin', '043300', 0, '110.7116', '35.59478');
-INSERT INTO `shop_truck_region` VALUES (304, 220, 'X', '忻州', '忻州市', 2, 'xinzhou', '034000', 0, '112.733538', '38.41769');
-INSERT INTO `shop_truck_region` VALUES (305, 304, 'X', '忻府', '忻府区', 3, 'xinfu', '034000', 0, '112.74603', '38.40414');
-INSERT INTO `shop_truck_region` VALUES (306, 304, 'D', '定襄', '定襄县', 3, 'dingxiang', '035400', 0, '112.95733', '38.47387');
-INSERT INTO `shop_truck_region` VALUES (307, 304, 'W', '五台', '五台县', 3, 'wutai', '035500', 0, '113.25256', '38.72774');
-INSERT INTO `shop_truck_region` VALUES (308, 304, 'D', '代县', '代县', 3, 'daixian', '034200', 0, '112.95913', '39.06717');
-INSERT INTO `shop_truck_region` VALUES (309, 304, 'F', '繁峙', '繁峙县', 3, 'fanshi', '034300', 0, '113.26303', '39.18886');
-INSERT INTO `shop_truck_region` VALUES (310, 304, 'N', '宁武', '宁武县', 3, 'ningwu', '036700', 0, '112.30423', '39.00211');
-INSERT INTO `shop_truck_region` VALUES (311, 304, 'J', '静乐', '静乐县', 3, 'jingle', '035100', 0, '111.94158', '38.3602');
-INSERT INTO `shop_truck_region` VALUES (312, 304, 'S', '神池', '神池县', 3, 'shenchi', '036100', 0, '112.20541', '39.09');
-INSERT INTO `shop_truck_region` VALUES (313, 304, 'W', '五寨', '五寨县', 3, 'wuzhai', '036200', 0, '111.8489', '38.90757');
-INSERT INTO `shop_truck_region` VALUES (314, 304, 'K', '岢岚', '岢岚县', 3, 'kelan', '036300', 0, '111.57388', '38.70452');
-INSERT INTO `shop_truck_region` VALUES (315, 304, 'H', '河曲', '河曲县', 3, 'hequ', '036500', 0, '111.13821', '39.38439');
-INSERT INTO `shop_truck_region` VALUES (316, 304, 'B', '保德', '保德县', 3, 'baode', '036600', 0, '111.08656', '39.02248');
-INSERT INTO `shop_truck_region` VALUES (317, 304, 'P', '偏关', '偏关县', 3, 'pianguan', '036400', 0, '111.50863', '39.43609');
-INSERT INTO `shop_truck_region` VALUES (318, 304, 'Y', '原平', '原平市', 3, 'yuanping', '034100', 0, '112.70584', '38.73181');
-INSERT INTO `shop_truck_region` VALUES (319, 220, 'L', '临汾', '临汾市', 2, 'linfen', '041000', 0, '111.517973', '36.08415');
-INSERT INTO `shop_truck_region` VALUES (320, 319, 'Y', '尧都', '尧都区', 3, 'yaodu', '041000', 0, '111.5787', '36.08298');
-INSERT INTO `shop_truck_region` VALUES (321, 319, 'Q', '曲沃', '曲沃县', 3, 'quwo', '043400', 0, '111.47525', '35.64119');
-INSERT INTO `shop_truck_region` VALUES (322, 319, 'Y', '翼城', '翼城县', 3, 'yicheng', '043500', 0, '111.7181', '35.73881');
-INSERT INTO `shop_truck_region` VALUES (323, 319, 'X', '襄汾', '襄汾县', 3, 'xiangfen', '041500', 0, '111.44204', '35.87711');
-INSERT INTO `shop_truck_region` VALUES (324, 319, 'H', '洪洞', '洪洞县', 3, 'hongtong', '041600', 0, '111.67501', '36.25425');
-INSERT INTO `shop_truck_region` VALUES (325, 319, 'G', '古县', '古县', 3, 'guxian', '042400', 0, '111.92041', '36.26688');
-INSERT INTO `shop_truck_region` VALUES (326, 319, 'A', '安泽', '安泽县', 3, 'anze', '042500', 0, '112.24981', '36.14803');
-INSERT INTO `shop_truck_region` VALUES (327, 319, 'F', '浮山', '浮山县', 3, 'fushan', '042600', 0, '111.84744', '35.96854');
-INSERT INTO `shop_truck_region` VALUES (328, 319, 'J', '吉县', '吉县', 3, 'jixian', '042200', 0, '110.68148', '36.09873');
-INSERT INTO `shop_truck_region` VALUES (329, 319, 'X', '乡宁', '乡宁县', 3, 'xiangning', '042100', 0, '110.84652', '35.97072');
-INSERT INTO `shop_truck_region` VALUES (330, 319, 'D', '大宁', '大宁县', 3, 'daning', '042300', 0, '110.75216', '36.46624');
-INSERT INTO `shop_truck_region` VALUES (331, 319, 'X', '隰县', '隰县', 3, 'xixian', '041300', 0, '110.93881', '36.69258');
-INSERT INTO `shop_truck_region` VALUES (332, 319, 'Y', '永和', '永和县', 3, 'yonghe', '041400', 0, '110.63168', '36.7584');
-INSERT INTO `shop_truck_region` VALUES (333, 319, 'P', '蒲县', '蒲县', 3, 'puxian', '041200', 0, '111.09674', '36.41243');
-INSERT INTO `shop_truck_region` VALUES (334, 319, 'F', '汾西', '汾西县', 3, 'fenxi', '031500', 0, '111.56811', '36.65063');
-INSERT INTO `shop_truck_region` VALUES (335, 319, 'H', '侯马', '侯马市', 3, 'houma', '043000', 0, '111.37207', '35.61903');
-INSERT INTO `shop_truck_region` VALUES (336, 319, 'H', '霍州', '霍州市', 3, 'huozhou', '031400', 0, '111.755', '36.5638');
-INSERT INTO `shop_truck_region` VALUES (337, 220, 'L', '吕梁', '吕梁市', 2, 'lvliang', '033000', 0, '111.134335', '37.524366');
-INSERT INTO `shop_truck_region` VALUES (338, 337, 'L', '离石', '离石区', 3, 'lishi', '033000', 0, '111.15059', '37.5177');
-INSERT INTO `shop_truck_region` VALUES (339, 337, 'W', '文水', '文水县', 3, 'wenshui', '032100', 0, '112.02829', '37.43841');
-INSERT INTO `shop_truck_region` VALUES (340, 337, 'J', '交城', '交城县', 3, 'jiaocheng', '030500', 0, '112.1585', '37.5512');
-INSERT INTO `shop_truck_region` VALUES (341, 337, 'X', '兴县', '兴县', 3, 'xingxian', '033600', 0, '111.12692', '38.46321');
-INSERT INTO `shop_truck_region` VALUES (342, 337, 'L', '临县', '临县', 3, 'linxian', '033200', 0, '110.99282', '37.95271');
-INSERT INTO `shop_truck_region` VALUES (343, 337, 'L', '柳林', '柳林县', 3, 'liulin', '033300', 0, '110.88922', '37.42932');
-INSERT INTO `shop_truck_region` VALUES (344, 337, 'S', '石楼', '石楼县', 3, 'shilou', '032500', 0, '110.8352', '36.99731');
-INSERT INTO `shop_truck_region` VALUES (345, 337, 'L', '岚县', '岚县', 3, 'lanxian', '033500', 0, '111.67627', '38.27874');
-INSERT INTO `shop_truck_region` VALUES (346, 337, 'F', '方山', '方山县', 3, 'fangshan', '033100', 0, '111.24011', '37.88979');
-INSERT INTO `shop_truck_region` VALUES (347, 337, 'Z', '中阳', '中阳县', 3, 'zhongyang', '033400', 0, '111.1795', '37.35715');
-INSERT INTO `shop_truck_region` VALUES (348, 337, 'J', '交口', '交口县', 3, 'jiaokou', '032400', 0, '111.18103', '36.98213');
-INSERT INTO `shop_truck_region` VALUES (349, 337, 'X', '孝义', '孝义市', 3, 'xiaoyi', '032300', 0, '111.77362', '37.14414');
-INSERT INTO `shop_truck_region` VALUES (350, 337, 'F', '汾阳', '汾阳市', 3, 'fenyang', '032200', 0, '111.7882', '37.26605');
+INSERT INTO `shop_truck_region` VALUES (288, 278, 'L', '灵石', '灵石县', 3, 'lingshi', '031300', 1, '111.7774', '36.84814');
+INSERT INTO `shop_truck_region` VALUES (289, 278, 'J', '介休', '介休市', 3, 'jiexiu', '032000', 1, '111.91824', '37.02771');
+INSERT INTO `shop_truck_region` VALUES (290, 220, 'Y', '运城', '运城市', 2, 'yuncheng', '044000', 1, '111.003957', '35.022778');
+INSERT INTO `shop_truck_region` VALUES (291, 290, 'Y', '盐湖', '盐湖区', 3, 'yanhu', '044000', 1, '110.99827', '35.0151');
+INSERT INTO `shop_truck_region` VALUES (292, 290, 'L', '临猗', '临猗县', 3, 'linyi', '044100', 1, '110.77432', '35.14455');
+INSERT INTO `shop_truck_region` VALUES (293, 290, 'W', '万荣', '万荣县', 3, 'wanrong', '044200', 1, '110.83657', '35.41556');
+INSERT INTO `shop_truck_region` VALUES (294, 290, 'W', '闻喜', '闻喜县', 3, 'wenxi', '043800', 1, '111.22265', '35.35553');
+INSERT INTO `shop_truck_region` VALUES (295, 290, 'J', '稷山', '稷山县', 3, 'jishan', '043200', 1, '110.97924', '35.59993');
+INSERT INTO `shop_truck_region` VALUES (296, 290, 'X', '新绛', '新绛县', 3, 'xinjiang', '043100', 1, '111.22509', '35.61566');
+INSERT INTO `shop_truck_region` VALUES (297, 290, 'J', '绛县', '绛县', 3, 'jiangxian', '043600', 1, '111.56668', '35.49096');
+INSERT INTO `shop_truck_region` VALUES (298, 290, 'Y', '垣曲', '垣曲县', 3, 'yuanqu', '043700', 1, '111.67166', '35.29923');
+INSERT INTO `shop_truck_region` VALUES (299, 290, 'X', '夏县', '夏县', 3, 'xiaxian', '044400', 1, '111.21966', '35.14121');
+INSERT INTO `shop_truck_region` VALUES (300, 290, 'P', '平陆', '平陆县', 3, 'pinglu', '044300', 1, '111.21704', '34.83772');
+INSERT INTO `shop_truck_region` VALUES (301, 290, 'R', '芮城', '芮城县', 3, 'ruicheng', '044600', 1, '110.69455', '34.69384');
+INSERT INTO `shop_truck_region` VALUES (302, 290, 'Y', '永济', '永济市', 3, 'yongji', '044500', 1, '110.44537', '34.86556');
+INSERT INTO `shop_truck_region` VALUES (303, 290, 'H', '河津', '河津市', 3, 'hejin', '043300', 1, '110.7116', '35.59478');
+INSERT INTO `shop_truck_region` VALUES (304, 220, 'X', '忻州', '忻州市', 2, 'xinzhou', '034000', 1, '112.733538', '38.41769');
+INSERT INTO `shop_truck_region` VALUES (305, 304, 'X', '忻府', '忻府区', 3, 'xinfu', '034000', 1, '112.74603', '38.40414');
+INSERT INTO `shop_truck_region` VALUES (306, 304, 'D', '定襄', '定襄县', 3, 'dingxiang', '035400', 1, '112.95733', '38.47387');
+INSERT INTO `shop_truck_region` VALUES (307, 304, 'W', '五台', '五台县', 3, 'wutai', '035500', 1, '113.25256', '38.72774');
+INSERT INTO `shop_truck_region` VALUES (308, 304, 'D', '代县', '代县', 3, 'daixian', '034200', 1, '112.95913', '39.06717');
+INSERT INTO `shop_truck_region` VALUES (309, 304, 'F', '繁峙', '繁峙县', 3, 'fanshi', '034300', 1, '113.26303', '39.18886');
+INSERT INTO `shop_truck_region` VALUES (310, 304, 'N', '宁武', '宁武县', 3, 'ningwu', '036700', 1, '112.30423', '39.00211');
+INSERT INTO `shop_truck_region` VALUES (311, 304, 'J', '静乐', '静乐县', 3, 'jingle', '035100', 1, '111.94158', '38.3602');
+INSERT INTO `shop_truck_region` VALUES (312, 304, 'S', '神池', '神池县', 3, 'shenchi', '036100', 1, '112.20541', '39.09');
+INSERT INTO `shop_truck_region` VALUES (313, 304, 'W', '五寨', '五寨县', 3, 'wuzhai', '036200', 1, '111.8489', '38.90757');
+INSERT INTO `shop_truck_region` VALUES (314, 304, 'K', '岢岚', '岢岚县', 3, 'kelan', '036300', 1, '111.57388', '38.70452');
+INSERT INTO `shop_truck_region` VALUES (315, 304, 'H', '河曲', '河曲县', 3, 'hequ', '036500', 1, '111.13821', '39.38439');
+INSERT INTO `shop_truck_region` VALUES (316, 304, 'B', '保德', '保德县', 3, 'baode', '036600', 1, '111.08656', '39.02248');
+INSERT INTO `shop_truck_region` VALUES (317, 304, 'P', '偏关', '偏关县', 3, 'pianguan', '036400', 1, '111.50863', '39.43609');
+INSERT INTO `shop_truck_region` VALUES (318, 304, 'Y', '原平', '原平市', 3, 'yuanping', '034100', 1, '112.70584', '38.73181');
+INSERT INTO `shop_truck_region` VALUES (319, 220, 'L', '临汾', '临汾市', 2, 'linfen', '041000', 1, '111.517973', '36.08415');
+INSERT INTO `shop_truck_region` VALUES (320, 319, 'Y', '尧都', '尧都区', 3, 'yaodu', '041000', 1, '111.5787', '36.08298');
+INSERT INTO `shop_truck_region` VALUES (321, 319, 'Q', '曲沃', '曲沃县', 3, 'quwo', '043400', 1, '111.47525', '35.64119');
+INSERT INTO `shop_truck_region` VALUES (322, 319, 'Y', '翼城', '翼城县', 3, 'yicheng', '043500', 1, '111.7181', '35.73881');
+INSERT INTO `shop_truck_region` VALUES (323, 319, 'X', '襄汾', '襄汾县', 3, 'xiangfen', '041500', 1, '111.44204', '35.87711');
+INSERT INTO `shop_truck_region` VALUES (324, 319, 'H', '洪洞', '洪洞县', 3, 'hongtong', '041600', 1, '111.67501', '36.25425');
+INSERT INTO `shop_truck_region` VALUES (325, 319, 'G', '古县', '古县', 3, 'guxian', '042400', 1, '111.92041', '36.26688');
+INSERT INTO `shop_truck_region` VALUES (326, 319, 'A', '安泽', '安泽县', 3, 'anze', '042500', 1, '112.24981', '36.14803');
+INSERT INTO `shop_truck_region` VALUES (327, 319, 'F', '浮山', '浮山县', 3, 'fushan', '042600', 1, '111.84744', '35.96854');
+INSERT INTO `shop_truck_region` VALUES (328, 319, 'J', '吉县', '吉县', 3, 'jixian', '042200', 1, '110.68148', '36.09873');
+INSERT INTO `shop_truck_region` VALUES (329, 319, 'X', '乡宁', '乡宁县', 3, 'xiangning', '042100', 1, '110.84652', '35.97072');
+INSERT INTO `shop_truck_region` VALUES (330, 319, 'D', '大宁', '大宁县', 3, 'daning', '042300', 1, '110.75216', '36.46624');
+INSERT INTO `shop_truck_region` VALUES (331, 319, 'X', '隰县', '隰县', 3, 'xixian', '041300', 1, '110.93881', '36.69258');
+INSERT INTO `shop_truck_region` VALUES (332, 319, 'Y', '永和', '永和县', 3, 'yonghe', '041400', 1, '110.63168', '36.7584');
+INSERT INTO `shop_truck_region` VALUES (333, 319, 'P', '蒲县', '蒲县', 3, 'puxian', '041200', 1, '111.09674', '36.41243');
+INSERT INTO `shop_truck_region` VALUES (334, 319, 'F', '汾西', '汾西县', 3, 'fenxi', '031500', 1, '111.56811', '36.65063');
+INSERT INTO `shop_truck_region` VALUES (335, 319, 'H', '侯马', '侯马市', 3, 'houma', '043000', 1, '111.37207', '35.61903');
+INSERT INTO `shop_truck_region` VALUES (336, 319, 'H', '霍州', '霍州市', 3, 'huozhou', '031400', 1, '111.755', '36.5638');
+INSERT INTO `shop_truck_region` VALUES (337, 220, 'L', '吕梁', '吕梁市', 2, 'lvliang', '033000', 1, '111.134335', '37.524366');
+INSERT INTO `shop_truck_region` VALUES (338, 337, 'L', '离石', '离石区', 3, 'lishi', '033000', 1, '111.15059', '37.5177');
+INSERT INTO `shop_truck_region` VALUES (339, 337, 'W', '文水', '文水县', 3, 'wenshui', '032100', 1, '112.02829', '37.43841');
+INSERT INTO `shop_truck_region` VALUES (340, 337, 'J', '交城', '交城县', 3, 'jiaocheng', '030500', 1, '112.1585', '37.5512');
+INSERT INTO `shop_truck_region` VALUES (341, 337, 'X', '兴县', '兴县', 3, 'xingxian', '033600', 1, '111.12692', '38.46321');
+INSERT INTO `shop_truck_region` VALUES (342, 337, 'L', '临县', '临县', 3, 'linxian', '033200', 1, '110.99282', '37.95271');
+INSERT INTO `shop_truck_region` VALUES (343, 337, 'L', '柳林', '柳林县', 3, 'liulin', '033300', 1, '110.88922', '37.42932');
+INSERT INTO `shop_truck_region` VALUES (344, 337, 'S', '石楼', '石楼县', 3, 'shilou', '032500', 1, '110.8352', '36.99731');
+INSERT INTO `shop_truck_region` VALUES (345, 337, 'L', '岚县', '岚县', 3, 'lanxian', '033500', 1, '111.67627', '38.27874');
+INSERT INTO `shop_truck_region` VALUES (346, 337, 'F', '方山', '方山县', 3, 'fangshan', '033100', 1, '111.24011', '37.88979');
+INSERT INTO `shop_truck_region` VALUES (347, 337, 'Z', '中阳', '中阳县', 3, 'zhongyang', '033400', 1, '111.1795', '37.35715');
+INSERT INTO `shop_truck_region` VALUES (348, 337, 'J', '交口', '交口县', 3, 'jiaokou', '032400', 1, '111.18103', '36.98213');
+INSERT INTO `shop_truck_region` VALUES (349, 337, 'X', '孝义', '孝义市', 3, 'xiaoyi', '032300', 1, '111.77362', '37.14414');
+INSERT INTO `shop_truck_region` VALUES (350, 337, 'F', '汾阳', '汾阳市', 3, 'fenyang', '032200', 1, '111.7882', '37.26605');
 INSERT INTO `shop_truck_region` VALUES (351, 0, 'N', '内蒙古', '内蒙古自治区', 1, 'innermongolia', '', 1, '111.670801', '40.818311');
 INSERT INTO `shop_truck_region` VALUES (352, 351, 'H', '呼和浩特', '呼和浩特市', 2, 'hohhot', '010000', 1, '111.670801', '40.818311');
 INSERT INTO `shop_truck_region` VALUES (353, 352, 'X', '新城', '新城区', 3, 'xincheng', '010050', 1, '111.66554', '40.85828');
@@ -1757,119 +1371,119 @@ INSERT INTO `shop_truck_region` VALUES (816, 802, 'S', '松江', '松江区', 3,
 INSERT INTO `shop_truck_region` VALUES (817, 802, 'Q', '青浦', '青浦区', 3, 'qingpu', '201700', 1, '121.12417', '31.14974');
 INSERT INTO `shop_truck_region` VALUES (818, 802, 'F', '奉贤', '奉贤区', 3, 'fengxian', '201400', 1, '121.47412', '30.9179');
 INSERT INTO `shop_truck_region` VALUES (819, 802, 'C', '崇明', '崇明县', 3, 'chongming', '202150', 1, '121.39758', '31.62278');
-INSERT INTO `shop_truck_region` VALUES (820, 0, 'J', '江苏', '江苏省', 1, 'jiangsu', '', 0, '118.767413', '32.041544');
-INSERT INTO `shop_truck_region` VALUES (821, 820, 'N', '南京', '南京市', 2, 'nanjing', '210008', 0, '118.767413', '32.041544');
-INSERT INTO `shop_truck_region` VALUES (822, 821, 'X', '玄武', '玄武区', 3, 'xuanwu', '210018', 0, '118.79772', '32.04856');
-INSERT INTO `shop_truck_region` VALUES (823, 821, 'Q', '秦淮', '秦淮区', 3, 'qinhuai', '210001', 0, '118.79815', '32.01112');
-INSERT INTO `shop_truck_region` VALUES (824, 821, 'J', '建邺', '建邺区', 3, 'jianye', '210004', 0, '118.76641', '32.03096');
-INSERT INTO `shop_truck_region` VALUES (825, 821, 'G', '鼓楼', '鼓楼区', 3, 'gulou', '210009', 0, '118.76974', '32.06632');
-INSERT INTO `shop_truck_region` VALUES (826, 821, 'P', '浦口', '浦口区', 3, 'pukou', '211800', 0, '118.62802', '32.05881');
-INSERT INTO `shop_truck_region` VALUES (827, 821, 'Q', '栖霞', '栖霞区', 3, 'qixia', '210046', 0, '118.88064', '32.11352');
-INSERT INTO `shop_truck_region` VALUES (828, 821, 'Y', '雨花台', '雨花台区', 3, 'yuhuatai', '210012', 0, '118.7799', '31.99202');
-INSERT INTO `shop_truck_region` VALUES (829, 821, 'J', '江宁', '江宁区', 3, 'jiangning', '211100', 0, '118.8399', '31.95263');
-INSERT INTO `shop_truck_region` VALUES (830, 821, 'L', '六合', '六合区', 3, 'luhe', '211500', 0, '118.8413', '32.34222');
-INSERT INTO `shop_truck_region` VALUES (831, 821, NULL, '溧水', '溧水区', 3, 'lishui', '211200', 0, '119.028732', '31.653061');
-INSERT INTO `shop_truck_region` VALUES (832, 821, 'G', '高淳', '高淳区', 3, 'gaochun', '211300', 0, '118.87589', '31.327132');
-INSERT INTO `shop_truck_region` VALUES (833, 820, 'W', '无锡', '无锡市', 2, 'wuxi', '214000', 0, '120.301663', '31.574729');
-INSERT INTO `shop_truck_region` VALUES (834, 833, 'C', '崇安', '崇安区', 3, 'chong\'an', '214001', 0, '120.29975', '31.58002');
-INSERT INTO `shop_truck_region` VALUES (835, 833, 'N', '南长', '南长区', 3, 'nanchang', '214021', 0, '120.30873', '31.56359');
-INSERT INTO `shop_truck_region` VALUES (836, 833, 'B', '北塘', '北塘区', 3, 'beitang', '214044', 0, '120.29405', '31.60592');
-INSERT INTO `shop_truck_region` VALUES (837, 833, 'X', '锡山', '锡山区', 3, 'xishan', '214101', 0, '120.35699', '31.5886');
-INSERT INTO `shop_truck_region` VALUES (838, 833, 'H', '惠山', '惠山区', 3, 'huishan', '214174', 0, '120.29849', '31.68088');
-INSERT INTO `shop_truck_region` VALUES (839, 833, 'B', '滨湖', '滨湖区', 3, 'binhu', '214123', 0, '120.29461', '31.52162');
-INSERT INTO `shop_truck_region` VALUES (840, 833, 'J', '江阴', '江阴市', 3, 'jiangyin', '214431', 0, '120.2853', '31.91996');
-INSERT INTO `shop_truck_region` VALUES (841, 833, 'Y', '宜兴', '宜兴市', 3, 'yixing', '214200', 0, '119.82357', '31.33978');
-INSERT INTO `shop_truck_region` VALUES (842, 820, 'X', '徐州', '徐州市', 2, 'xuzhou', '221003', 0, '117.184811', '34.261792');
-INSERT INTO `shop_truck_region` VALUES (843, 842, 'G', '鼓楼', '鼓楼区', 3, 'gulou', '221005', 0, '117.18559', '34.28851');
-INSERT INTO `shop_truck_region` VALUES (844, 842, 'Y', '云龙', '云龙区', 3, 'yunlong', '221007', 0, '117.23053', '34.24895');
-INSERT INTO `shop_truck_region` VALUES (845, 842, 'J', '贾汪', '贾汪区', 3, 'jiawang', '221003', 0, '117.45346', '34.44264');
-INSERT INTO `shop_truck_region` VALUES (846, 842, 'Q', '泉山', '泉山区', 3, 'quanshan', '221006', 0, '117.19378', '34.24418');
-INSERT INTO `shop_truck_region` VALUES (847, 842, 'T', '铜山', '铜山区', 3, 'tongshan', '221106', 0, '117.183894', '34.19288');
-INSERT INTO `shop_truck_region` VALUES (848, 842, 'F', '丰县', '丰县', 3, 'fengxian', '221700', 0, '116.59957', '34.69972');
-INSERT INTO `shop_truck_region` VALUES (849, 842, 'P', '沛县', '沛县', 3, 'peixian', '221600', 0, '116.93743', '34.72163');
-INSERT INTO `shop_truck_region` VALUES (850, 842, NULL, '睢宁', '睢宁县', 3, 'suining', '221200', 0, '117.94104', '33.91269');
-INSERT INTO `shop_truck_region` VALUES (851, 842, 'X', '新沂', '新沂市', 3, 'xinyi', '221400', 0, '118.35452', '34.36942');
-INSERT INTO `shop_truck_region` VALUES (852, 842, NULL, '邳州', '邳州市', 3, 'pizhou', '221300', 0, '117.95858', '34.33329');
-INSERT INTO `shop_truck_region` VALUES (853, 820, 'C', '常州', '常州市', 2, 'changzhou', '213000', 0, '119.946973', '31.772752');
-INSERT INTO `shop_truck_region` VALUES (854, 853, 'T', '天宁', '天宁区', 3, 'tianning', '213000', 0, '119.95132', '31.75211');
-INSERT INTO `shop_truck_region` VALUES (855, 853, 'Z', '钟楼', '钟楼区', 3, 'zhonglou', '213023', 0, '119.90178', '31.80221');
-INSERT INTO `shop_truck_region` VALUES (856, 853, 'Q', '戚墅堰', '戚墅堰区', 3, 'qishuyan', '213025', 0, '120.06106', '31.71956');
-INSERT INTO `shop_truck_region` VALUES (857, 853, 'X', '新北', '新北区', 3, 'xinbei', '213022', 0, '119.97131', '31.83046');
-INSERT INTO `shop_truck_region` VALUES (858, 853, 'W', '武进', '武进区', 3, 'wujin', '213100', 0, '119.94244', '31.70086');
-INSERT INTO `shop_truck_region` VALUES (859, 853, NULL, '溧阳', '溧阳市', 3, 'liyang', '213300', 0, '119.4837', '31.41538');
-INSERT INTO `shop_truck_region` VALUES (860, 853, 'J', '金坛', '金坛市', 3, 'jintan', '213200', 0, '119.57757', '31.74043');
-INSERT INTO `shop_truck_region` VALUES (861, 820, 'S', '苏州', '苏州市', 2, 'suzhou', '215002', 0, '120.619585', '31.299379');
-INSERT INTO `shop_truck_region` VALUES (862, 861, 'H', '虎丘', '虎丘区', 3, 'huqiu', '215004', 0, '120.57345', '31.2953');
-INSERT INTO `shop_truck_region` VALUES (863, 861, 'W', '吴中', '吴中区', 3, 'wuzhong', '215128', 0, '120.63211', '31.26226');
-INSERT INTO `shop_truck_region` VALUES (864, 861, 'X', '相城', '相城区', 3, 'xiangcheng', '215131', 0, '120.64239', '31.36889');
-INSERT INTO `shop_truck_region` VALUES (865, 861, 'G', '姑苏', '姑苏区', 3, 'gusu', '215031', 0, '120.619585', '31.299379');
-INSERT INTO `shop_truck_region` VALUES (866, 861, 'W', '吴江', '吴江区', 3, 'wujiang', '215200', 0, '120.638317', '31.159815');
-INSERT INTO `shop_truck_region` VALUES (867, 861, 'C', '常熟', '常熟市', 3, 'changshu', '215500', 0, '120.75225', '31.65374');
-INSERT INTO `shop_truck_region` VALUES (868, 861, 'Z', '张家港', '张家港市', 3, 'zhangjiagang', '215600', 0, '120.55538', '31.87532');
-INSERT INTO `shop_truck_region` VALUES (869, 861, 'K', '昆山', '昆山市', 3, 'kunshan', '215300', 0, '120.98074', '31.38464');
-INSERT INTO `shop_truck_region` VALUES (870, 861, 'T', '太仓', '太仓市', 3, 'taicang', '215400', 0, '121.10891', '31.4497');
-INSERT INTO `shop_truck_region` VALUES (871, 820, 'N', '南通', '南通市', 2, 'nantong', '226001', 0, '120.864608', '32.016212');
-INSERT INTO `shop_truck_region` VALUES (872, 871, 'C', '崇川', '崇川区', 3, 'chongchuan', '226001', 0, '120.8573', '32.0098');
-INSERT INTO `shop_truck_region` VALUES (873, 871, 'G', '港闸', '港闸区', 3, 'gangzha', '226001', 0, '120.81778', '32.03163');
-INSERT INTO `shop_truck_region` VALUES (874, 871, 'T', '通州', '通州区', 3, 'tongzhou', '226300', 0, '121.07293', '32.0676');
-INSERT INTO `shop_truck_region` VALUES (875, 871, 'H', '海安', '海安县', 3, 'hai\'an', '226600', 0, '120.45852', '32.54514');
-INSERT INTO `shop_truck_region` VALUES (876, 871, 'R', '如东', '如东县', 3, 'rudong', '226400', 0, '121.18942', '32.31439');
-INSERT INTO `shop_truck_region` VALUES (877, 871, 'Q', '启东', '启东市', 3, 'qidong', '226200', 0, '121.65985', '31.81083');
-INSERT INTO `shop_truck_region` VALUES (878, 871, 'R', '如皋', '如皋市', 3, 'rugao', '226500', 0, '120.55969', '32.37597');
-INSERT INTO `shop_truck_region` VALUES (879, 871, 'H', '海门', '海门市', 3, 'haimen', '226100', 0, '121.16995', '31.89422');
-INSERT INTO `shop_truck_region` VALUES (880, 820, 'L', '连云港', '连云港市', 2, 'lianyungang', '222002', 0, '119.178821', '34.600018');
-INSERT INTO `shop_truck_region` VALUES (881, 880, 'L', '连云', '连云区', 3, 'lianyun', '222042', 0, '119.37304', '34.75293');
-INSERT INTO `shop_truck_region` VALUES (882, 880, 'H', '海州', '海州区', 3, 'haizhou', '222003', 0, '119.13128', '34.56986');
-INSERT INTO `shop_truck_region` VALUES (883, 880, 'G', '赣榆', '赣榆区', 3, 'ganyu', '222100', 0, '119.128774', '34.839154');
-INSERT INTO `shop_truck_region` VALUES (884, 880, 'D', '东海', '东海县', 3, 'donghai', '222300', 0, '118.77145', '34.54215');
-INSERT INTO `shop_truck_region` VALUES (885, 880, 'G', '灌云', '灌云县', 3, 'guanyun', '222200', 0, '119.23925', '34.28391');
-INSERT INTO `shop_truck_region` VALUES (886, 880, 'G', '灌南', '灌南县', 3, 'guannan', '222500', 0, '119.35632', '34.09');
-INSERT INTO `shop_truck_region` VALUES (887, 820, 'H', '淮安', '淮安市', 2, 'huai\'an', '223001', 0, '119.021265', '33.597506');
-INSERT INTO `shop_truck_region` VALUES (888, 887, 'Q', '清河', '清河区', 3, 'qinghe', '223001', 0, '119.00778', '33.59949');
-INSERT INTO `shop_truck_region` VALUES (889, 887, 'H', '淮安', '淮安区', 3, 'huai\'an', '223200', 0, '119.021265', '33.597506');
-INSERT INTO `shop_truck_region` VALUES (890, 887, 'H', '淮阴', '淮阴区', 3, 'huaiyin', '223300', 0, '119.03485', '33.63171');
-INSERT INTO `shop_truck_region` VALUES (891, 887, 'Q', '清浦', '清浦区', 3, 'qingpu', '223002', 0, '119.02648', '33.55232');
-INSERT INTO `shop_truck_region` VALUES (892, 887, 'L', '涟水', '涟水县', 3, 'lianshui', '223400', 0, '119.26083', '33.78094');
-INSERT INTO `shop_truck_region` VALUES (893, 887, 'H', '洪泽', '洪泽县', 3, 'hongze', '223100', 0, '118.87344', '33.29429');
-INSERT INTO `shop_truck_region` VALUES (894, 887, 'X', '盱眙', '盱眙县', 3, 'xuyi', '211700', 0, '118.54495', '33.01086');
-INSERT INTO `shop_truck_region` VALUES (895, 887, 'J', '金湖', '金湖县', 3, 'jinhu', '211600', 0, '119.02307', '33.02219');
-INSERT INTO `shop_truck_region` VALUES (896, 820, 'Y', '盐城', '盐城市', 2, 'yancheng', '224005', 0, '120.139998', '33.377631');
-INSERT INTO `shop_truck_region` VALUES (897, 896, 'T', '亭湖', '亭湖区', 3, 'tinghu', '224005', 0, '120.16583', '33.37825');
-INSERT INTO `shop_truck_region` VALUES (898, 896, 'Y', '盐都', '盐都区', 3, 'yandu', '224055', 0, '120.15441', '33.3373');
-INSERT INTO `shop_truck_region` VALUES (899, 896, 'X', '响水', '响水县', 3, 'xiangshui', '224600', 0, '119.56985', '34.20513');
-INSERT INTO `shop_truck_region` VALUES (900, 896, 'B', '滨海', '滨海县', 3, 'binhai', '224500', 0, '119.82058', '33.98972');
-INSERT INTO `shop_truck_region` VALUES (901, 896, 'F', '阜宁', '阜宁县', 3, 'funing', '224400', 0, '119.80175', '33.78228');
-INSERT INTO `shop_truck_region` VALUES (902, 896, 'S', '射阳', '射阳县', 3, 'sheyang', '224300', 0, '120.26043', '33.77636');
-INSERT INTO `shop_truck_region` VALUES (903, 896, 'J', '建湖', '建湖县', 3, 'jianhu', '224700', 0, '119.79852', '33.47241');
-INSERT INTO `shop_truck_region` VALUES (904, 896, 'D', '东台', '东台市', 3, 'dongtai', '224200', 0, '120.32376', '32.85078');
-INSERT INTO `shop_truck_region` VALUES (905, 896, 'D', '大丰', '大丰市', 3, 'dafeng', '224100', 0, '120.46594', '33.19893');
-INSERT INTO `shop_truck_region` VALUES (906, 820, 'Y', '扬州', '扬州市', 2, 'yangzhou', '225002', 0, '119.421003', '32.393159');
-INSERT INTO `shop_truck_region` VALUES (907, 906, 'G', '广陵', '广陵区', 3, 'guangling', '225002', 0, '119.43186', '32.39472');
-INSERT INTO `shop_truck_region` VALUES (908, 906, 'H', '邗江', '邗江区', 3, 'hanjiang', '225002', 0, '119.39816', '32.3765');
-INSERT INTO `shop_truck_region` VALUES (909, 906, 'J', '江都', '江都区', 3, 'jiangdu', '225200', 0, '119.567481', '32.426564');
-INSERT INTO `shop_truck_region` VALUES (910, 906, 'B', '宝应', '宝应县', 3, 'baoying', '225800', 0, '119.31213', '33.23549');
-INSERT INTO `shop_truck_region` VALUES (911, 906, 'Y', '仪征', '仪征市', 3, 'yizheng', '211400', 0, '119.18432', '32.27197');
-INSERT INTO `shop_truck_region` VALUES (912, 906, 'G', '高邮', '高邮市', 3, 'gaoyou', '225600', 0, '119.45965', '32.78135');
-INSERT INTO `shop_truck_region` VALUES (913, 820, 'Z', '镇江', '镇江市', 2, 'zhenjiang', '212004', 0, '119.452753', '32.204402');
-INSERT INTO `shop_truck_region` VALUES (914, 913, 'J', '京口', '京口区', 3, 'jingkou', '212003', 0, '119.46947', '32.19809');
-INSERT INTO `shop_truck_region` VALUES (915, 913, 'R', '润州', '润州区', 3, 'runzhou', '212005', 0, '119.41134', '32.19523');
-INSERT INTO `shop_truck_region` VALUES (916, 913, 'D', '丹徒', '丹徒区', 3, 'dantu', '212028', 0, '119.43383', '32.13183');
-INSERT INTO `shop_truck_region` VALUES (917, 913, 'D', '丹阳', '丹阳市', 3, 'danyang', '212300', 0, '119.57525', '31.99121');
-INSERT INTO `shop_truck_region` VALUES (918, 913, 'Y', '扬中', '扬中市', 3, 'yangzhong', '212200', 0, '119.79718', '32.2363');
-INSERT INTO `shop_truck_region` VALUES (919, 913, 'J', '句容', '句容市', 3, 'jurong', '212400', 0, '119.16482', '31.95591');
-INSERT INTO `shop_truck_region` VALUES (920, 820, 'T', '泰州', '泰州市', 2, 'taizhou', '225300', 0, '119.915176', '32.484882');
-INSERT INTO `shop_truck_region` VALUES (921, 920, 'H', '海陵', '海陵区', 3, 'hailing', '225300', 0, '119.91942', '32.49101');
-INSERT INTO `shop_truck_region` VALUES (922, 920, 'G', '高港', '高港区', 3, 'gaogang', '225321', 0, '119.88089', '32.31833');
-INSERT INTO `shop_truck_region` VALUES (923, 920, 'J', '姜堰', '姜堰区', 3, 'jiangyan', '225500', 0, '120.148208', '32.508483');
-INSERT INTO `shop_truck_region` VALUES (924, 920, 'X', '兴化', '兴化市', 3, 'xinghua', '225700', 0, '119.85238', '32.90944');
-INSERT INTO `shop_truck_region` VALUES (925, 920, 'J', '靖江', '靖江市', 3, 'jingjiang', '214500', 0, '120.27291', '32.01595');
-INSERT INTO `shop_truck_region` VALUES (926, 920, 'T', '泰兴', '泰兴市', 3, 'taixing', '225400', 0, '120.05194', '32.17187');
-INSERT INTO `shop_truck_region` VALUES (927, 820, 'S', '宿迁', '宿迁市', 2, 'suqian', '223800', 0, '118.293328', '33.945154');
-INSERT INTO `shop_truck_region` VALUES (928, 927, 'S', '宿城', '宿城区', 3, 'sucheng', '223800', 0, '118.29141', '33.94219');
-INSERT INTO `shop_truck_region` VALUES (929, 927, 'S', '宿豫', '宿豫区', 3, 'suyu', '223800', 0, '118.32922', '33.94673');
-INSERT INTO `shop_truck_region` VALUES (930, 927, 'S', '沭阳', '沭阳县', 3, 'shuyang', '223600', 0, '118.76873', '34.11446');
-INSERT INTO `shop_truck_region` VALUES (931, 927, 'S', '泗阳', '泗阳县', 3, 'siyang', '223700', 0, '118.7033', '33.72096');
-INSERT INTO `shop_truck_region` VALUES (932, 927, 'S', '泗洪', '泗洪县', 3, 'sihong', '223900', 0, '118.21716', '33.45996');
+INSERT INTO `shop_truck_region` VALUES (820, 0, 'J', '江苏', '江苏省', 1, 'jiangsu', '', 1, '118.767413', '32.041544');
+INSERT INTO `shop_truck_region` VALUES (821, 820, 'N', '南京', '南京市', 2, 'nanjing', '210008', 1, '118.767413', '32.041544');
+INSERT INTO `shop_truck_region` VALUES (822, 821, 'X', '玄武', '玄武区', 3, 'xuanwu', '210018', 1, '118.79772', '32.04856');
+INSERT INTO `shop_truck_region` VALUES (823, 821, 'Q', '秦淮', '秦淮区', 3, 'qinhuai', '210001', 1, '118.79815', '32.01112');
+INSERT INTO `shop_truck_region` VALUES (824, 821, 'J', '建邺', '建邺区', 3, 'jianye', '210004', 1, '118.76641', '32.03096');
+INSERT INTO `shop_truck_region` VALUES (825, 821, 'G', '鼓楼', '鼓楼区', 3, 'gulou', '210009', 1, '118.76974', '32.06632');
+INSERT INTO `shop_truck_region` VALUES (826, 821, 'P', '浦口', '浦口区', 3, 'pukou', '211800', 1, '118.62802', '32.05881');
+INSERT INTO `shop_truck_region` VALUES (827, 821, 'Q', '栖霞', '栖霞区', 3, 'qixia', '210046', 1, '118.88064', '32.11352');
+INSERT INTO `shop_truck_region` VALUES (828, 821, 'Y', '雨花台', '雨花台区', 3, 'yuhuatai', '210012', 1, '118.7799', '31.99202');
+INSERT INTO `shop_truck_region` VALUES (829, 821, 'J', '江宁', '江宁区', 3, 'jiangning', '211100', 1, '118.8399', '31.95263');
+INSERT INTO `shop_truck_region` VALUES (830, 821, 'L', '六合', '六合区', 3, 'luhe', '211500', 1, '118.8413', '32.34222');
+INSERT INTO `shop_truck_region` VALUES (831, 821, NULL, '溧水', '溧水区', 3, 'lishui', '211200', 1, '119.028732', '31.653061');
+INSERT INTO `shop_truck_region` VALUES (832, 821, 'G', '高淳', '高淳区', 3, 'gaochun', '211300', 1, '118.87589', '31.327132');
+INSERT INTO `shop_truck_region` VALUES (833, 820, 'W', '无锡', '无锡市', 2, 'wuxi', '214000', 1, '120.301663', '31.574729');
+INSERT INTO `shop_truck_region` VALUES (834, 833, 'C', '崇安', '崇安区', 3, 'chong\'an', '214001', 1, '120.29975', '31.58002');
+INSERT INTO `shop_truck_region` VALUES (835, 833, 'N', '南长', '南长区', 3, 'nanchang', '214021', 1, '120.30873', '31.56359');
+INSERT INTO `shop_truck_region` VALUES (836, 833, 'B', '北塘', '北塘区', 3, 'beitang', '214044', 1, '120.29405', '31.60592');
+INSERT INTO `shop_truck_region` VALUES (837, 833, 'X', '锡山', '锡山区', 3, 'xishan', '214101', 1, '120.35699', '31.5886');
+INSERT INTO `shop_truck_region` VALUES (838, 833, 'H', '惠山', '惠山区', 3, 'huishan', '214174', 1, '120.29849', '31.68088');
+INSERT INTO `shop_truck_region` VALUES (839, 833, 'B', '滨湖', '滨湖区', 3, 'binhu', '214123', 1, '120.29461', '31.52162');
+INSERT INTO `shop_truck_region` VALUES (840, 833, 'J', '江阴', '江阴市', 3, 'jiangyin', '214431', 1, '120.2853', '31.91996');
+INSERT INTO `shop_truck_region` VALUES (841, 833, 'Y', '宜兴', '宜兴市', 3, 'yixing', '214200', 1, '119.82357', '31.33978');
+INSERT INTO `shop_truck_region` VALUES (842, 820, 'X', '徐州', '徐州市', 2, 'xuzhou', '221003', 1, '117.184811', '34.261792');
+INSERT INTO `shop_truck_region` VALUES (843, 842, 'G', '鼓楼', '鼓楼区', 3, 'gulou', '221005', 1, '117.18559', '34.28851');
+INSERT INTO `shop_truck_region` VALUES (844, 842, 'Y', '云龙', '云龙区', 3, 'yunlong', '221007', 1, '117.23053', '34.24895');
+INSERT INTO `shop_truck_region` VALUES (845, 842, 'J', '贾汪', '贾汪区', 3, 'jiawang', '221003', 1, '117.45346', '34.44264');
+INSERT INTO `shop_truck_region` VALUES (846, 842, 'Q', '泉山', '泉山区', 3, 'quanshan', '221006', 1, '117.19378', '34.24418');
+INSERT INTO `shop_truck_region` VALUES (847, 842, 'T', '铜山', '铜山区', 3, 'tongshan', '221106', 1, '117.183894', '34.19288');
+INSERT INTO `shop_truck_region` VALUES (848, 842, 'F', '丰县', '丰县', 3, 'fengxian', '221700', 1, '116.59957', '34.69972');
+INSERT INTO `shop_truck_region` VALUES (849, 842, 'P', '沛县', '沛县', 3, 'peixian', '221600', 1, '116.93743', '34.72163');
+INSERT INTO `shop_truck_region` VALUES (850, 842, NULL, '睢宁', '睢宁县', 3, 'suining', '221200', 1, '117.94104', '33.91269');
+INSERT INTO `shop_truck_region` VALUES (851, 842, 'X', '新沂', '新沂市', 3, 'xinyi', '221400', 1, '118.35452', '34.36942');
+INSERT INTO `shop_truck_region` VALUES (852, 842, NULL, '邳州', '邳州市', 3, 'pizhou', '221300', 1, '117.95858', '34.33329');
+INSERT INTO `shop_truck_region` VALUES (853, 820, 'C', '常州', '常州市', 2, 'changzhou', '213000', 1, '119.946973', '31.772752');
+INSERT INTO `shop_truck_region` VALUES (854, 853, 'T', '天宁', '天宁区', 3, 'tianning', '213000', 1, '119.95132', '31.75211');
+INSERT INTO `shop_truck_region` VALUES (855, 853, 'Z', '钟楼', '钟楼区', 3, 'zhonglou', '213023', 1, '119.90178', '31.80221');
+INSERT INTO `shop_truck_region` VALUES (856, 853, 'Q', '戚墅堰', '戚墅堰区', 3, 'qishuyan', '213025', 1, '120.06106', '31.71956');
+INSERT INTO `shop_truck_region` VALUES (857, 853, 'X', '新北', '新北区', 3, 'xinbei', '213022', 1, '119.97131', '31.83046');
+INSERT INTO `shop_truck_region` VALUES (858, 853, 'W', '武进', '武进区', 3, 'wujin', '213100', 1, '119.94244', '31.70086');
+INSERT INTO `shop_truck_region` VALUES (859, 853, NULL, '溧阳', '溧阳市', 3, 'liyang', '213300', 1, '119.4837', '31.41538');
+INSERT INTO `shop_truck_region` VALUES (860, 853, 'J', '金坛', '金坛市', 3, 'jintan', '213200', 1, '119.57757', '31.74043');
+INSERT INTO `shop_truck_region` VALUES (861, 820, 'S', '苏州', '苏州市', 2, 'suzhou', '215002', 1, '120.619585', '31.299379');
+INSERT INTO `shop_truck_region` VALUES (862, 861, 'H', '虎丘', '虎丘区', 3, 'huqiu', '215004', 1, '120.57345', '31.2953');
+INSERT INTO `shop_truck_region` VALUES (863, 861, 'W', '吴中', '吴中区', 3, 'wuzhong', '215128', 1, '120.63211', '31.26226');
+INSERT INTO `shop_truck_region` VALUES (864, 861, 'X', '相城', '相城区', 3, 'xiangcheng', '215131', 1, '120.64239', '31.36889');
+INSERT INTO `shop_truck_region` VALUES (865, 861, 'G', '姑苏', '姑苏区', 3, 'gusu', '215031', 1, '120.619585', '31.299379');
+INSERT INTO `shop_truck_region` VALUES (866, 861, 'W', '吴江', '吴江区', 3, 'wujiang', '215200', 1, '120.638317', '31.159815');
+INSERT INTO `shop_truck_region` VALUES (867, 861, 'C', '常熟', '常熟市', 3, 'changshu', '215500', 1, '120.75225', '31.65374');
+INSERT INTO `shop_truck_region` VALUES (868, 861, 'Z', '张家港', '张家港市', 3, 'zhangjiagang', '215600', 1, '120.55538', '31.87532');
+INSERT INTO `shop_truck_region` VALUES (869, 861, 'K', '昆山', '昆山市', 3, 'kunshan', '215300', 1, '120.98074', '31.38464');
+INSERT INTO `shop_truck_region` VALUES (870, 861, 'T', '太仓', '太仓市', 3, 'taicang', '215400', 1, '121.10891', '31.4497');
+INSERT INTO `shop_truck_region` VALUES (871, 820, 'N', '南通', '南通市', 2, 'nantong', '226001', 1, '120.864608', '32.016212');
+INSERT INTO `shop_truck_region` VALUES (872, 871, 'C', '崇川', '崇川区', 3, 'chongchuan', '226001', 1, '120.8573', '32.0098');
+INSERT INTO `shop_truck_region` VALUES (873, 871, 'G', '港闸', '港闸区', 3, 'gangzha', '226001', 1, '120.81778', '32.03163');
+INSERT INTO `shop_truck_region` VALUES (874, 871, 'T', '通州', '通州区', 3, 'tongzhou', '226300', 1, '121.07293', '32.0676');
+INSERT INTO `shop_truck_region` VALUES (875, 871, 'H', '海安', '海安县', 3, 'hai\'an', '226600', 1, '120.45852', '32.54514');
+INSERT INTO `shop_truck_region` VALUES (876, 871, 'R', '如东', '如东县', 3, 'rudong', '226400', 1, '121.18942', '32.31439');
+INSERT INTO `shop_truck_region` VALUES (877, 871, 'Q', '启东', '启东市', 3, 'qidong', '226200', 1, '121.65985', '31.81083');
+INSERT INTO `shop_truck_region` VALUES (878, 871, 'R', '如皋', '如皋市', 3, 'rugao', '226500', 1, '120.55969', '32.37597');
+INSERT INTO `shop_truck_region` VALUES (879, 871, 'H', '海门', '海门市', 3, 'haimen', '226100', 1, '121.16995', '31.89422');
+INSERT INTO `shop_truck_region` VALUES (880, 820, 'L', '连云港', '连云港市', 2, 'lianyungang', '222002', 1, '119.178821', '34.600018');
+INSERT INTO `shop_truck_region` VALUES (881, 880, 'L', '连云', '连云区', 3, 'lianyun', '222042', 1, '119.37304', '34.75293');
+INSERT INTO `shop_truck_region` VALUES (882, 880, 'H', '海州', '海州区', 3, 'haizhou', '222003', 1, '119.13128', '34.56986');
+INSERT INTO `shop_truck_region` VALUES (883, 880, 'G', '赣榆', '赣榆区', 3, 'ganyu', '222100', 1, '119.128774', '34.839154');
+INSERT INTO `shop_truck_region` VALUES (884, 880, 'D', '东海', '东海县', 3, 'donghai', '222300', 1, '118.77145', '34.54215');
+INSERT INTO `shop_truck_region` VALUES (885, 880, 'G', '灌云', '灌云县', 3, 'guanyun', '222200', 1, '119.23925', '34.28391');
+INSERT INTO `shop_truck_region` VALUES (886, 880, 'G', '灌南', '灌南县', 3, 'guannan', '222500', 1, '119.35632', '34.09');
+INSERT INTO `shop_truck_region` VALUES (887, 820, 'H', '淮安', '淮安市', 2, 'huai\'an', '223001', 1, '119.021265', '33.597506');
+INSERT INTO `shop_truck_region` VALUES (888, 887, 'Q', '清河', '清河区', 3, 'qinghe', '223001', 1, '119.00778', '33.59949');
+INSERT INTO `shop_truck_region` VALUES (889, 887, 'H', '淮安', '淮安区', 3, 'huai\'an', '223200', 1, '119.021265', '33.597506');
+INSERT INTO `shop_truck_region` VALUES (890, 887, 'H', '淮阴', '淮阴区', 3, 'huaiyin', '223300', 1, '119.03485', '33.63171');
+INSERT INTO `shop_truck_region` VALUES (891, 887, 'Q', '清浦', '清浦区', 3, 'qingpu', '223002', 1, '119.02648', '33.55232');
+INSERT INTO `shop_truck_region` VALUES (892, 887, 'L', '涟水', '涟水县', 3, 'lianshui', '223400', 1, '119.26083', '33.78094');
+INSERT INTO `shop_truck_region` VALUES (893, 887, 'H', '洪泽', '洪泽县', 3, 'hongze', '223100', 1, '118.87344', '33.29429');
+INSERT INTO `shop_truck_region` VALUES (894, 887, 'X', '盱眙', '盱眙县', 3, 'xuyi', '211700', 1, '118.54495', '33.01086');
+INSERT INTO `shop_truck_region` VALUES (895, 887, 'J', '金湖', '金湖县', 3, 'jinhu', '211600', 1, '119.02307', '33.02219');
+INSERT INTO `shop_truck_region` VALUES (896, 820, 'Y', '盐城', '盐城市', 2, 'yancheng', '224005', 1, '120.139998', '33.377631');
+INSERT INTO `shop_truck_region` VALUES (897, 896, 'T', '亭湖', '亭湖区', 3, 'tinghu', '224005', 1, '120.16583', '33.37825');
+INSERT INTO `shop_truck_region` VALUES (898, 896, 'Y', '盐都', '盐都区', 3, 'yandu', '224055', 1, '120.15441', '33.3373');
+INSERT INTO `shop_truck_region` VALUES (899, 896, 'X', '响水', '响水县', 3, 'xiangshui', '224600', 1, '119.56985', '34.20513');
+INSERT INTO `shop_truck_region` VALUES (900, 896, 'B', '滨海', '滨海县', 3, 'binhai', '224500', 1, '119.82058', '33.98972');
+INSERT INTO `shop_truck_region` VALUES (901, 896, 'F', '阜宁', '阜宁县', 3, 'funing', '224400', 1, '119.80175', '33.78228');
+INSERT INTO `shop_truck_region` VALUES (902, 896, 'S', '射阳', '射阳县', 3, 'sheyang', '224300', 1, '120.26043', '33.77636');
+INSERT INTO `shop_truck_region` VALUES (903, 896, 'J', '建湖', '建湖县', 3, 'jianhu', '224700', 1, '119.79852', '33.47241');
+INSERT INTO `shop_truck_region` VALUES (904, 896, 'D', '东台', '东台市', 3, 'dongtai', '224200', 1, '120.32376', '32.85078');
+INSERT INTO `shop_truck_region` VALUES (905, 896, 'D', '大丰', '大丰市', 3, 'dafeng', '224100', 1, '120.46594', '33.19893');
+INSERT INTO `shop_truck_region` VALUES (906, 820, 'Y', '扬州', '扬州市', 2, 'yangzhou', '225002', 1, '119.421003', '32.393159');
+INSERT INTO `shop_truck_region` VALUES (907, 906, 'G', '广陵', '广陵区', 3, 'guangling', '225002', 1, '119.43186', '32.39472');
+INSERT INTO `shop_truck_region` VALUES (908, 906, 'H', '邗江', '邗江区', 3, 'hanjiang', '225002', 1, '119.39816', '32.3765');
+INSERT INTO `shop_truck_region` VALUES (909, 906, 'J', '江都', '江都区', 3, 'jiangdu', '225200', 1, '119.567481', '32.426564');
+INSERT INTO `shop_truck_region` VALUES (910, 906, 'B', '宝应', '宝应县', 3, 'baoying', '225800', 1, '119.31213', '33.23549');
+INSERT INTO `shop_truck_region` VALUES (911, 906, 'Y', '仪征', '仪征市', 3, 'yizheng', '211400', 1, '119.18432', '32.27197');
+INSERT INTO `shop_truck_region` VALUES (912, 906, 'G', '高邮', '高邮市', 3, 'gaoyou', '225600', 1, '119.45965', '32.78135');
+INSERT INTO `shop_truck_region` VALUES (913, 820, 'Z', '镇江', '镇江市', 2, 'zhenjiang', '212004', 1, '119.452753', '32.204402');
+INSERT INTO `shop_truck_region` VALUES (914, 913, 'J', '京口', '京口区', 3, 'jingkou', '212003', 1, '119.46947', '32.19809');
+INSERT INTO `shop_truck_region` VALUES (915, 913, 'R', '润州', '润州区', 3, 'runzhou', '212005', 1, '119.41134', '32.19523');
+INSERT INTO `shop_truck_region` VALUES (916, 913, 'D', '丹徒', '丹徒区', 3, 'dantu', '212028', 1, '119.43383', '32.13183');
+INSERT INTO `shop_truck_region` VALUES (917, 913, 'D', '丹阳', '丹阳市', 3, 'danyang', '212300', 1, '119.57525', '31.99121');
+INSERT INTO `shop_truck_region` VALUES (918, 913, 'Y', '扬中', '扬中市', 3, 'yangzhong', '212200', 1, '119.79718', '32.2363');
+INSERT INTO `shop_truck_region` VALUES (919, 913, 'J', '句容', '句容市', 3, 'jurong', '212400', 1, '119.16482', '31.95591');
+INSERT INTO `shop_truck_region` VALUES (920, 820, 'T', '泰州', '泰州市', 2, 'taizhou', '225300', 1, '119.915176', '32.484882');
+INSERT INTO `shop_truck_region` VALUES (921, 920, 'H', '海陵', '海陵区', 3, 'hailing', '225300', 1, '119.91942', '32.49101');
+INSERT INTO `shop_truck_region` VALUES (922, 920, 'G', '高港', '高港区', 3, 'gaogang', '225321', 1, '119.88089', '32.31833');
+INSERT INTO `shop_truck_region` VALUES (923, 920, 'J', '姜堰', '姜堰区', 3, 'jiangyan', '225500', 1, '120.148208', '32.508483');
+INSERT INTO `shop_truck_region` VALUES (924, 920, 'X', '兴化', '兴化市', 3, 'xinghua', '225700', 1, '119.85238', '32.90944');
+INSERT INTO `shop_truck_region` VALUES (925, 920, 'J', '靖江', '靖江市', 3, 'jingjiang', '214500', 1, '120.27291', '32.01595');
+INSERT INTO `shop_truck_region` VALUES (926, 920, 'T', '泰兴', '泰兴市', 3, 'taixing', '225400', 1, '120.05194', '32.17187');
+INSERT INTO `shop_truck_region` VALUES (927, 820, 'S', '宿迁', '宿迁市', 2, 'suqian', '223800', 1, '118.293328', '33.945154');
+INSERT INTO `shop_truck_region` VALUES (928, 927, 'S', '宿城', '宿城区', 3, 'sucheng', '223800', 1, '118.29141', '33.94219');
+INSERT INTO `shop_truck_region` VALUES (929, 927, 'S', '宿豫', '宿豫区', 3, 'suyu', '223800', 1, '118.32922', '33.94673');
+INSERT INTO `shop_truck_region` VALUES (930, 927, 'S', '沭阳', '沭阳县', 3, 'shuyang', '223600', 1, '118.76873', '34.11446');
+INSERT INTO `shop_truck_region` VALUES (931, 927, 'S', '泗阳', '泗阳县', 3, 'siyang', '223700', 1, '118.7033', '33.72096');
+INSERT INTO `shop_truck_region` VALUES (932, 927, 'S', '泗洪', '泗洪县', 3, 'sihong', '223900', 1, '118.21716', '33.45996');
 INSERT INTO `shop_truck_region` VALUES (933, 0, 'Z', '浙江', '浙江省', 1, 'zhejiang', '', 1, '120.153576', '30.287459');
 INSERT INTO `shop_truck_region` VALUES (934, 933, 'H', '杭州', '杭州市', 2, 'hangzhou', '310026', 1, '120.153576', '30.287459');
 INSERT INTO `shop_truck_region` VALUES (935, 934, 'S', '上城', '上城区', 3, 'shangcheng', '310002', 1, '120.16922', '30.24255');
@@ -2764,143 +2378,143 @@ INSERT INTO `shop_truck_region` VALUES (1823, 1822, 'X', '仙桃', '仙桃市', 
 INSERT INTO `shop_truck_region` VALUES (1824, 1822, 'Q', '潜江', '潜江市', 3, 'qianjiang', '433100', 1, '112.896866', '30.421215');
 INSERT INTO `shop_truck_region` VALUES (1825, 1822, 'T', '天门', '天门市', 3, 'tianmen', '431700', 1, '113.165862', '30.653061');
 INSERT INTO `shop_truck_region` VALUES (1826, 1822, 'S', '神农架', '神农架林区', 3, 'shennongjia', '442400', 1, '110.671525', '31.744449');
-INSERT INTO `shop_truck_region` VALUES (1827, 0, 'H', '湖南', '湖南省', 1, 'hunan', '', 0, '112.982279', '28.19409');
-INSERT INTO `shop_truck_region` VALUES (1828, 1827, 'C', '长沙', '长沙市', 2, 'changsha', '410005', 0, '112.982279', '28.19409');
-INSERT INTO `shop_truck_region` VALUES (1829, 1828, NULL, '芙蓉', '芙蓉区', 3, 'furong', '410011', 0, '113.03176', '28.1844');
-INSERT INTO `shop_truck_region` VALUES (1830, 1828, 'T', '天心', '天心区', 3, 'tianxin', '410004', 0, '112.98991', '28.1127');
-INSERT INTO `shop_truck_region` VALUES (1831, 1828, 'Y', '岳麓', '岳麓区', 3, 'yuelu', '410013', 0, '112.93133', '28.2351');
-INSERT INTO `shop_truck_region` VALUES (1832, 1828, 'K', '开福', '开福区', 3, 'kaifu', '410008', 0, '112.98623', '28.25585');
-INSERT INTO `shop_truck_region` VALUES (1833, 1828, 'Y', '雨花', '雨花区', 3, 'yuhua', '410011', 0, '113.03567', '28.13541');
-INSERT INTO `shop_truck_region` VALUES (1834, 1828, 'W', '望城', '望城区', 3, 'wangcheng', '410200', 0, '112.819549', '28.347458');
-INSERT INTO `shop_truck_region` VALUES (1835, 1828, 'C', '长沙', '长沙县', 3, 'changsha', '410100', 0, '113.08071', '28.24595');
-INSERT INTO `shop_truck_region` VALUES (1836, 1828, 'N', '宁乡', '宁乡县', 3, 'ningxiang', '410600', 0, '112.55749', '28.25358');
-INSERT INTO `shop_truck_region` VALUES (1837, 1828, NULL, '浏阳', '浏阳市', 3, 'liuyang', '410300', 0, '113.64312', '28.16375');
-INSERT INTO `shop_truck_region` VALUES (1838, 1827, 'Z', '株洲', '株洲市', 2, 'zhuzhou', '412000', 0, '113.151737', '27.835806');
-INSERT INTO `shop_truck_region` VALUES (1839, 1838, 'H', '荷塘', '荷塘区', 3, 'hetang', '412000', 0, '113.17315', '27.85569');
-INSERT INTO `shop_truck_region` VALUES (1840, 1838, 'L', '芦淞', '芦淞区', 3, 'lusong', '412000', 0, '113.15562', '27.78525');
-INSERT INTO `shop_truck_region` VALUES (1841, 1838, 'S', '石峰', '石峰区', 3, 'shifeng', '412005', 0, '113.11776', '27.87552');
-INSERT INTO `shop_truck_region` VALUES (1842, 1838, 'T', '天元', '天元区', 3, 'tianyuan', '412007', 0, '113.12335', '27.83103');
-INSERT INTO `shop_truck_region` VALUES (1843, 1838, 'Z', '株洲', '株洲县', 3, 'zhuzhou', '412100', 0, '113.14428', '27.69826');
-INSERT INTO `shop_truck_region` VALUES (1844, 1838, NULL, '攸县', '攸县', 3, 'youxian', '412300', 0, '113.34365', '27.00352');
-INSERT INTO `shop_truck_region` VALUES (1845, 1838, 'C', '茶陵', '茶陵县', 3, 'chaling', '412400', 0, '113.54364', '26.7915');
-INSERT INTO `shop_truck_region` VALUES (1846, 1838, 'Y', '炎陵', '炎陵县', 3, 'yanling', '412500', 0, '113.77163', '26.48818');
-INSERT INTO `shop_truck_region` VALUES (1847, 1838, NULL, '醴陵', '醴陵市', 3, 'liling', '412200', 0, '113.49704', '27.64615');
-INSERT INTO `shop_truck_region` VALUES (1848, 1827, 'X', '湘潭', '湘潭市', 2, 'xiangtan', '411100', 0, '112.925083', '27.846725');
-INSERT INTO `shop_truck_region` VALUES (1849, 1848, 'Y', '雨湖', '雨湖区', 3, 'yuhu', '411100', 0, '112.90399', '27.86859');
-INSERT INTO `shop_truck_region` VALUES (1850, 1848, 'Y', '岳塘', '岳塘区', 3, 'yuetang', '411101', 0, '112.9606', '27.85784');
-INSERT INTO `shop_truck_region` VALUES (1851, 1848, 'X', '湘潭', '湘潭县', 3, 'xiangtan', '411228', 0, '112.9508', '27.77893');
-INSERT INTO `shop_truck_region` VALUES (1852, 1848, 'X', '湘乡', '湘乡市', 3, 'xiangxiang', '411400', 0, '112.53512', '27.73543');
-INSERT INTO `shop_truck_region` VALUES (1853, 1848, 'S', '韶山', '韶山市', 3, 'shaoshan', '411300', 0, '112.52655', '27.91503');
-INSERT INTO `shop_truck_region` VALUES (1854, 1827, 'H', '衡阳', '衡阳市', 2, 'hengyang', '421001', 0, '112.607693', '26.900358');
-INSERT INTO `shop_truck_region` VALUES (1855, 1854, 'Z', '珠晖', '珠晖区', 3, 'zhuhui', '421002', 0, '112.62054', '26.89361');
-INSERT INTO `shop_truck_region` VALUES (1856, 1854, 'Y', '雁峰', '雁峰区', 3, 'yanfeng', '421001', 0, '112.61654', '26.88866');
-INSERT INTO `shop_truck_region` VALUES (1857, 1854, 'S', '石鼓', '石鼓区', 3, 'shigu', '421005', 0, '112.61069', '26.90232');
-INSERT INTO `shop_truck_region` VALUES (1858, 1854, 'Z', '蒸湘', '蒸湘区', 3, 'zhengxiang', '421001', 0, '112.6033', '26.89651');
-INSERT INTO `shop_truck_region` VALUES (1859, 1854, 'N', '南岳', '南岳区', 3, 'nanyue', '421900', 0, '112.7384', '27.23262');
-INSERT INTO `shop_truck_region` VALUES (1860, 1854, 'H', '衡阳', '衡阳县', 3, 'hengyang', '421200', 0, '112.37088', '26.9706');
-INSERT INTO `shop_truck_region` VALUES (1861, 1854, 'H', '衡南', '衡南县', 3, 'hengnan', '421131', 0, '112.67788', '26.73828');
-INSERT INTO `shop_truck_region` VALUES (1862, 1854, 'H', '衡山', '衡山县', 3, 'hengshan', '421300', 0, '112.86776', '27.23134');
-INSERT INTO `shop_truck_region` VALUES (1863, 1854, 'H', '衡东', '衡东县', 3, 'hengdong', '421400', 0, '112.94833', '27.08093');
-INSERT INTO `shop_truck_region` VALUES (1864, 1854, 'Q', '祁东', '祁东县', 3, 'qidong', '421600', 0, '112.09039', '26.79964');
-INSERT INTO `shop_truck_region` VALUES (1865, 1854, NULL, '耒阳', '耒阳市', 3, 'leiyang', '421800', 0, '112.85998', '26.42132');
-INSERT INTO `shop_truck_region` VALUES (1866, 1854, 'C', '常宁', '常宁市', 3, 'changning', '421500', 0, '112.4009', '26.40692');
-INSERT INTO `shop_truck_region` VALUES (1867, 1827, 'S', '邵阳', '邵阳市', 2, 'shaoyang', '422000', 0, '111.46923', '27.237842');
-INSERT INTO `shop_truck_region` VALUES (1868, 1867, 'S', '双清', '双清区', 3, 'shuangqing', '422001', 0, '111.49715', '27.23291');
-INSERT INTO `shop_truck_region` VALUES (1869, 1867, 'D', '大祥', '大祥区', 3, 'daxiang', '422000', 0, '111.45412', '27.23332');
-INSERT INTO `shop_truck_region` VALUES (1870, 1867, 'B', '北塔', '北塔区', 3, 'beita', '422007', 0, '111.45219', '27.24648');
-INSERT INTO `shop_truck_region` VALUES (1871, 1867, 'S', '邵东', '邵东县', 3, 'shaodong', '422800', 0, '111.74441', '27.2584');
-INSERT INTO `shop_truck_region` VALUES (1872, 1867, 'X', '新邵', '新邵县', 3, 'xinshao', '422900', 0, '111.46066', '27.32169');
-INSERT INTO `shop_truck_region` VALUES (1873, 1867, 'S', '邵阳', '邵阳县', 3, 'shaoyang', '422100', 0, '111.27459', '26.99143');
-INSERT INTO `shop_truck_region` VALUES (1874, 1867, 'L', '隆回', '隆回县', 3, 'longhui', '422200', 0, '111.03216', '27.10937');
-INSERT INTO `shop_truck_region` VALUES (1875, 1867, 'D', '洞口', '洞口县', 3, 'dongkou', '422300', 0, '110.57388', '27.05462');
-INSERT INTO `shop_truck_region` VALUES (1876, 1867, 'S', '绥宁', '绥宁县', 3, 'suining', '422600', 0, '110.15576', '26.58636');
-INSERT INTO `shop_truck_region` VALUES (1877, 1867, 'X', '新宁', '新宁县', 3, 'xinning', '422700', 0, '110.85131', '26.42936');
-INSERT INTO `shop_truck_region` VALUES (1878, 1867, 'C', '城步', '城步苗族自治县', 3, 'chengbu', '422500', 0, '110.3222', '26.39048');
-INSERT INTO `shop_truck_region` VALUES (1879, 1867, 'W', '武冈', '武冈市', 3, 'wugang', '422400', 0, '110.63281', '26.72817');
-INSERT INTO `shop_truck_region` VALUES (1880, 1827, 'Y', '岳阳', '岳阳市', 2, 'yueyang', '414000', 0, '113.132855', '29.37029');
-INSERT INTO `shop_truck_region` VALUES (1881, 1880, 'Y', '岳阳楼', '岳阳楼区', 3, 'yueyanglou', '414000', 0, '113.12942', '29.3719');
-INSERT INTO `shop_truck_region` VALUES (1882, 1880, 'Y', '云溪', '云溪区', 3, 'yunxi', '414009', 0, '113.27713', '29.47357');
-INSERT INTO `shop_truck_region` VALUES (1883, 1880, 'J', '君山', '君山区', 3, 'junshan', '414005', 0, '113.00439', '29.45941');
-INSERT INTO `shop_truck_region` VALUES (1884, 1880, 'Y', '岳阳', '岳阳县', 3, 'yueyang', '414100', 0, '113.11987', '29.14314');
-INSERT INTO `shop_truck_region` VALUES (1885, 1880, 'H', '华容', '华容县', 3, 'huarong', '414200', 0, '112.54089', '29.53019');
-INSERT INTO `shop_truck_region` VALUES (1886, 1880, 'X', '湘阴', '湘阴县', 3, 'xiangyin', '414600', 0, '112.90911', '28.68922');
-INSERT INTO `shop_truck_region` VALUES (1887, 1880, 'P', '平江', '平江县', 3, 'pingjiang', '414500', 0, '113.58105', '28.70664');
-INSERT INTO `shop_truck_region` VALUES (1888, 1880, NULL, '汨罗', '汨罗市', 3, 'miluo', '414400', 0, '113.06707', '28.80631');
-INSERT INTO `shop_truck_region` VALUES (1889, 1880, 'L', '临湘', '临湘市', 3, 'linxiang', '414300', 0, '113.4501', '29.47701');
-INSERT INTO `shop_truck_region` VALUES (1890, 1827, 'C', '常德', '常德市', 2, 'changde', '415000', 0, '111.691347', '29.040225');
-INSERT INTO `shop_truck_region` VALUES (1891, 1890, 'W', '武陵', '武陵区', 3, 'wuling', '415000', 0, '111.69791', '29.02876');
-INSERT INTO `shop_truck_region` VALUES (1892, 1890, 'D', '鼎城', '鼎城区', 3, 'dingcheng', '415101', 0, '111.68078', '29.01859');
-INSERT INTO `shop_truck_region` VALUES (1893, 1890, 'A', '安乡', '安乡县', 3, 'anxiang', '415600', 0, '112.16732', '29.41326');
-INSERT INTO `shop_truck_region` VALUES (1894, 1890, 'H', '汉寿', '汉寿县', 3, 'hanshou', '415900', 0, '111.96691', '28.90299');
-INSERT INTO `shop_truck_region` VALUES (1895, 1890, NULL, '澧县', '澧县', 3, 'lixian', '415500', 0, '111.75866', '29.63317');
-INSERT INTO `shop_truck_region` VALUES (1896, 1890, 'L', '临澧', '临澧县', 3, 'linli', '415200', 0, '111.65161', '29.44163');
-INSERT INTO `shop_truck_region` VALUES (1897, 1890, 'T', '桃源', '桃源县', 3, 'taoyuan', '415700', 0, '111.48892', '28.90474');
-INSERT INTO `shop_truck_region` VALUES (1898, 1890, 'S', '石门', '石门县', 3, 'shimen', '415300', 0, '111.37966', '29.58424');
-INSERT INTO `shop_truck_region` VALUES (1899, 1890, 'J', '津市', '津市市', 3, 'jinshi', '415400', 0, '111.87756', '29.60563');
-INSERT INTO `shop_truck_region` VALUES (1900, 1827, 'Z', '张家界', '张家界市', 2, 'zhangjiajie', '427000', 0, '110.479921', '29.127401');
-INSERT INTO `shop_truck_region` VALUES (1901, 1900, 'Y', '永定', '永定区', 3, 'yongding', '427000', 0, '110.47464', '29.13387');
-INSERT INTO `shop_truck_region` VALUES (1902, 1900, 'W', '武陵源', '武陵源区', 3, 'wulingyuan', '427400', 0, '110.55026', '29.34574');
-INSERT INTO `shop_truck_region` VALUES (1903, 1900, 'C', '慈利', '慈利县', 3, 'cili', '427200', 0, '111.13946', '29.42989');
-INSERT INTO `shop_truck_region` VALUES (1904, 1900, 'S', '桑植', '桑植县', 3, 'sangzhi', '427100', 0, '110.16308', '29.39815');
-INSERT INTO `shop_truck_region` VALUES (1905, 1827, 'Y', '益阳', '益阳市', 2, 'yiyang', '413000', 0, '112.355042', '28.570066');
-INSERT INTO `shop_truck_region` VALUES (1906, 1905, 'Z', '资阳', '资阳区', 3, 'ziyang', '413001', 0, '112.32447', '28.59095');
-INSERT INTO `shop_truck_region` VALUES (1907, 1905, 'H', '赫山', '赫山区', 3, 'heshan', '413002', 0, '112.37265', '28.57425');
-INSERT INTO `shop_truck_region` VALUES (1908, 1905, 'N', '南县', '南县', 3, 'nanxian', '413200', 0, '112.3963', '29.36159');
-INSERT INTO `shop_truck_region` VALUES (1909, 1905, 'T', '桃江', '桃江县', 3, 'taojiang', '413400', 0, '112.1557', '28.51814');
-INSERT INTO `shop_truck_region` VALUES (1910, 1905, 'A', '安化', '安化县', 3, 'anhua', '413500', 0, '111.21298', '28.37424');
-INSERT INTO `shop_truck_region` VALUES (1911, 1905, NULL, '沅江', '沅江市', 3, 'yuanjiang', '413100', 0, '112.35427', '28.84403');
-INSERT INTO `shop_truck_region` VALUES (1912, 1827, 'C', '郴州', '郴州市', 2, 'chenzhou', '423000', 0, '113.032067', '25.793589');
-INSERT INTO `shop_truck_region` VALUES (1913, 1912, 'B', '北湖', '北湖区', 3, 'beihu', '423000', 0, '113.01103', '25.78405');
-INSERT INTO `shop_truck_region` VALUES (1914, 1912, 'S', '苏仙', '苏仙区', 3, 'suxian', '423000', 0, '113.04226', '25.80045');
-INSERT INTO `shop_truck_region` VALUES (1915, 1912, 'G', '桂阳', '桂阳县', 3, 'guiyang', '424400', 0, '112.73364', '25.75406');
-INSERT INTO `shop_truck_region` VALUES (1916, 1912, 'Y', '宜章', '宜章县', 3, 'yizhang', '424200', 0, '112.95147', '25.39931');
-INSERT INTO `shop_truck_region` VALUES (1917, 1912, 'Y', '永兴', '永兴县', 3, 'yongxing', '423300', 0, '113.11242', '26.12646');
-INSERT INTO `shop_truck_region` VALUES (1918, 1912, 'J', '嘉禾', '嘉禾县', 3, 'jiahe', '424500', 0, '112.36935', '25.58795');
-INSERT INTO `shop_truck_region` VALUES (1919, 1912, 'L', '临武', '临武县', 3, 'linwu', '424300', 0, '112.56369', '25.27602');
-INSERT INTO `shop_truck_region` VALUES (1920, 1912, 'R', '汝城', '汝城县', 3, 'rucheng', '424100', 0, '113.68582', '25.55204');
-INSERT INTO `shop_truck_region` VALUES (1921, 1912, 'G', '桂东', '桂东县', 3, 'guidong', '423500', 0, '113.9468', '26.07987');
-INSERT INTO `shop_truck_region` VALUES (1922, 1912, 'A', '安仁', '安仁县', 3, 'anren', '423600', 0, '113.26944', '26.70931');
-INSERT INTO `shop_truck_region` VALUES (1923, 1912, 'Z', '资兴', '资兴市', 3, 'zixing', '423400', 0, '113.23724', '25.97668');
-INSERT INTO `shop_truck_region` VALUES (1924, 1827, 'Y', '永州', '永州市', 2, 'yongzhou', '425000', 0, '111.608019', '26.434516');
-INSERT INTO `shop_truck_region` VALUES (1925, 1924, 'L', '零陵', '零陵区', 3, 'lingling', '425100', 0, '111.62103', '26.22109');
-INSERT INTO `shop_truck_region` VALUES (1926, 1924, 'L', '冷水滩', '冷水滩区', 3, 'lengshuitan', '425100', 0, '111.59214', '26.46107');
-INSERT INTO `shop_truck_region` VALUES (1927, 1924, 'Q', '祁阳', '祁阳县', 3, 'qiyang', '426100', 0, '111.84011', '26.58009');
-INSERT INTO `shop_truck_region` VALUES (1928, 1924, 'D', '东安', '东安县', 3, 'dong\'an', '425900', 0, '111.3164', '26.39202');
-INSERT INTO `shop_truck_region` VALUES (1929, 1924, 'S', '双牌', '双牌县', 3, 'shuangpai', '425200', 0, '111.65927', '25.95988');
-INSERT INTO `shop_truck_region` VALUES (1930, 1924, 'D', '道县', '道县', 3, 'daoxian', '425300', 0, '111.60195', '25.52766');
-INSERT INTO `shop_truck_region` VALUES (1931, 1924, 'J', '江永', '江永县', 3, 'jiangyong', '425400', 0, '111.34082', '25.27233');
-INSERT INTO `shop_truck_region` VALUES (1932, 1924, 'N', '宁远', '宁远县', 3, 'ningyuan', '425600', 0, '111.94625', '25.56913');
-INSERT INTO `shop_truck_region` VALUES (1933, 1924, 'L', '蓝山', '蓝山县', 3, 'lanshan', '425800', 0, '112.19363', '25.36794');
-INSERT INTO `shop_truck_region` VALUES (1934, 1924, 'X', '新田', '新田县', 3, 'xintian', '425700', 0, '112.22103', '25.9095');
-INSERT INTO `shop_truck_region` VALUES (1935, 1924, 'J', '江华', '江华瑶族自治县', 3, 'jianghua', '425500', 0, '111.58847', '25.1845');
-INSERT INTO `shop_truck_region` VALUES (1936, 1827, 'H', '怀化', '怀化市', 2, 'huaihua', '418000', 0, '109.97824', '27.550082');
-INSERT INTO `shop_truck_region` VALUES (1937, 1936, 'H', '鹤城', '鹤城区', 3, 'hecheng', '418000', 0, '109.96509', '27.54942');
-INSERT INTO `shop_truck_region` VALUES (1938, 1936, 'Z', '中方', '中方县', 3, 'zhongfang', '418005', 0, '109.94497', '27.43988');
-INSERT INTO `shop_truck_region` VALUES (1939, 1936, NULL, '沅陵', '沅陵县', 3, 'yuanling', '419600', 0, '110.39633', '28.45548');
-INSERT INTO `shop_truck_region` VALUES (1940, 1936, 'C', '辰溪', '辰溪县', 3, 'chenxi', '419500', 0, '110.18942', '28.00406');
-INSERT INTO `shop_truck_region` VALUES (1941, 1936, NULL, '溆浦', '溆浦县', 3, 'xupu', '419300', 0, '110.59384', '27.90836');
-INSERT INTO `shop_truck_region` VALUES (1942, 1936, 'H', '会同', '会同县', 3, 'huitong', '418300', 0, '109.73568', '26.88716');
-INSERT INTO `shop_truck_region` VALUES (1943, 1936, 'M', '麻阳', '麻阳苗族自治县', 3, 'mayang', '419400', 0, '109.80194', '27.866');
-INSERT INTO `shop_truck_region` VALUES (1944, 1936, 'X', '新晃', '新晃侗族自治县', 3, 'xinhuang', '419200', 0, '109.17166', '27.35937');
-INSERT INTO `shop_truck_region` VALUES (1945, 1936, NULL, '芷江', '芷江侗族自治县', 3, 'zhijiang', '419100', 0, '109.6849', '27.44297');
-INSERT INTO `shop_truck_region` VALUES (1946, 1936, 'J', '靖州', '靖州苗族侗族自治县', 3, 'jingzhou', '418400', 0, '109.69821', '26.57651');
-INSERT INTO `shop_truck_region` VALUES (1947, 1936, 'T', '通道', '通道侗族自治县', 3, 'tongdao', '418500', 0, '109.78515', '26.1571');
-INSERT INTO `shop_truck_region` VALUES (1948, 1936, 'H', '洪江', '洪江市', 3, 'hongjiang', '418100', 0, '109.83651', '27.20922');
-INSERT INTO `shop_truck_region` VALUES (1949, 1827, 'L', '娄底', '娄底市', 2, 'loudi', '417000', 0, '112.008497', '27.728136');
-INSERT INTO `shop_truck_region` VALUES (1950, 1949, 'L', '娄星', '娄星区', 3, 'louxing', '417000', 0, '112.00193', '27.72992');
-INSERT INTO `shop_truck_region` VALUES (1951, 1949, 'S', '双峰', '双峰县', 3, 'shuangfeng', '417700', 0, '112.19921', '27.45418');
-INSERT INTO `shop_truck_region` VALUES (1952, 1949, 'X', '新化', '新化县', 3, 'xinhua', '417600', 0, '111.32739', '27.7266');
-INSERT INTO `shop_truck_region` VALUES (1953, 1949, 'L', '冷水江', '冷水江市', 3, 'lengshuijiang', '417500', 0, '111.43554', '27.68147');
-INSERT INTO `shop_truck_region` VALUES (1954, 1949, 'L', '涟源', '涟源市', 3, 'lianyuan', '417100', 0, '111.67233', '27.68831');
-INSERT INTO `shop_truck_region` VALUES (1955, 1827, 'X', '湘西', '湘西土家族苗族自治州', 2, 'xiangxi', '416000', 0, '109.739735', '28.314296');
-INSERT INTO `shop_truck_region` VALUES (1956, 1955, 'J', '吉首', '吉首市', 3, 'jishou', '416000', 0, '109.69799', '28.26247');
-INSERT INTO `shop_truck_region` VALUES (1957, 1955, NULL, '泸溪', '泸溪县', 3, 'luxi', '416100', 0, '110.21682', '28.2205');
-INSERT INTO `shop_truck_region` VALUES (1958, 1955, 'F', '凤凰', '凤凰县', 3, 'fenghuang', '416200', 0, '109.60156', '27.94822');
-INSERT INTO `shop_truck_region` VALUES (1959, 1955, 'H', '花垣', '花垣县', 3, 'huayuan', '416400', 0, '109.48217', '28.5721');
-INSERT INTO `shop_truck_region` VALUES (1960, 1955, 'B', '保靖', '保靖县', 3, 'baojing', '416500', 0, '109.66049', '28.69997');
-INSERT INTO `shop_truck_region` VALUES (1961, 1955, 'G', '古丈', '古丈县', 3, 'guzhang', '416300', 0, '109.94812', '28.61944');
-INSERT INTO `shop_truck_region` VALUES (1962, 1955, 'Y', '永顺', '永顺县', 3, 'yongshun', '416700', 0, '109.85266', '29.00103');
-INSERT INTO `shop_truck_region` VALUES (1963, 1955, 'L', '龙山', '龙山县', 3, 'longshan', '416800', 0, '109.4432', '29.45693');
+INSERT INTO `shop_truck_region` VALUES (1827, 0, 'H', '湖南', '湖南省', 1, 'hunan', '', 1, '112.982279', '28.19409');
+INSERT INTO `shop_truck_region` VALUES (1828, 1827, 'C', '长沙', '长沙市', 2, 'changsha', '410005', 1, '112.982279', '28.19409');
+INSERT INTO `shop_truck_region` VALUES (1829, 1828, NULL, '芙蓉', '芙蓉区', 3, 'furong', '410011', 1, '113.03176', '28.1844');
+INSERT INTO `shop_truck_region` VALUES (1830, 1828, 'T', '天心', '天心区', 3, 'tianxin', '410004', 1, '112.98991', '28.1127');
+INSERT INTO `shop_truck_region` VALUES (1831, 1828, 'Y', '岳麓', '岳麓区', 3, 'yuelu', '410013', 1, '112.93133', '28.2351');
+INSERT INTO `shop_truck_region` VALUES (1832, 1828, 'K', '开福', '开福区', 3, 'kaifu', '410008', 1, '112.98623', '28.25585');
+INSERT INTO `shop_truck_region` VALUES (1833, 1828, 'Y', '雨花', '雨花区', 3, 'yuhua', '410011', 1, '113.03567', '28.13541');
+INSERT INTO `shop_truck_region` VALUES (1834, 1828, 'W', '望城', '望城区', 3, 'wangcheng', '410200', 1, '112.819549', '28.347458');
+INSERT INTO `shop_truck_region` VALUES (1835, 1828, 'C', '长沙', '长沙县', 3, 'changsha', '410100', 1, '113.08071', '28.24595');
+INSERT INTO `shop_truck_region` VALUES (1836, 1828, 'N', '宁乡', '宁乡县', 3, 'ningxiang', '410600', 1, '112.55749', '28.25358');
+INSERT INTO `shop_truck_region` VALUES (1837, 1828, NULL, '浏阳', '浏阳市', 3, 'liuyang', '410300', 1, '113.64312', '28.16375');
+INSERT INTO `shop_truck_region` VALUES (1838, 1827, 'Z', '株洲', '株洲市', 2, 'zhuzhou', '412000', 1, '113.151737', '27.835806');
+INSERT INTO `shop_truck_region` VALUES (1839, 1838, 'H', '荷塘', '荷塘区', 3, 'hetang', '412000', 1, '113.17315', '27.85569');
+INSERT INTO `shop_truck_region` VALUES (1840, 1838, 'L', '芦淞', '芦淞区', 3, 'lusong', '412000', 1, '113.15562', '27.78525');
+INSERT INTO `shop_truck_region` VALUES (1841, 1838, 'S', '石峰', '石峰区', 3, 'shifeng', '412005', 1, '113.11776', '27.87552');
+INSERT INTO `shop_truck_region` VALUES (1842, 1838, 'T', '天元', '天元区', 3, 'tianyuan', '412007', 1, '113.12335', '27.83103');
+INSERT INTO `shop_truck_region` VALUES (1843, 1838, 'Z', '株洲', '株洲县', 3, 'zhuzhou', '412100', 1, '113.14428', '27.69826');
+INSERT INTO `shop_truck_region` VALUES (1844, 1838, NULL, '攸县', '攸县', 3, 'youxian', '412300', 1, '113.34365', '27.00352');
+INSERT INTO `shop_truck_region` VALUES (1845, 1838, 'C', '茶陵', '茶陵县', 3, 'chaling', '412400', 1, '113.54364', '26.7915');
+INSERT INTO `shop_truck_region` VALUES (1846, 1838, 'Y', '炎陵', '炎陵县', 3, 'yanling', '412500', 1, '113.77163', '26.48818');
+INSERT INTO `shop_truck_region` VALUES (1847, 1838, NULL, '醴陵', '醴陵市', 3, 'liling', '412200', 1, '113.49704', '27.64615');
+INSERT INTO `shop_truck_region` VALUES (1848, 1827, 'X', '湘潭', '湘潭市', 2, 'xiangtan', '411100', 1, '112.925083', '27.846725');
+INSERT INTO `shop_truck_region` VALUES (1849, 1848, 'Y', '雨湖', '雨湖区', 3, 'yuhu', '411100', 1, '112.90399', '27.86859');
+INSERT INTO `shop_truck_region` VALUES (1850, 1848, 'Y', '岳塘', '岳塘区', 3, 'yuetang', '411101', 1, '112.9606', '27.85784');
+INSERT INTO `shop_truck_region` VALUES (1851, 1848, 'X', '湘潭', '湘潭县', 3, 'xiangtan', '411228', 1, '112.9508', '27.77893');
+INSERT INTO `shop_truck_region` VALUES (1852, 1848, 'X', '湘乡', '湘乡市', 3, 'xiangxiang', '411400', 1, '112.53512', '27.73543');
+INSERT INTO `shop_truck_region` VALUES (1853, 1848, 'S', '韶山', '韶山市', 3, 'shaoshan', '411300', 1, '112.52655', '27.91503');
+INSERT INTO `shop_truck_region` VALUES (1854, 1827, 'H', '衡阳', '衡阳市', 2, 'hengyang', '421001', 1, '112.607693', '26.900358');
+INSERT INTO `shop_truck_region` VALUES (1855, 1854, 'Z', '珠晖', '珠晖区', 3, 'zhuhui', '421002', 1, '112.62054', '26.89361');
+INSERT INTO `shop_truck_region` VALUES (1856, 1854, 'Y', '雁峰', '雁峰区', 3, 'yanfeng', '421001', 1, '112.61654', '26.88866');
+INSERT INTO `shop_truck_region` VALUES (1857, 1854, 'S', '石鼓', '石鼓区', 3, 'shigu', '421005', 1, '112.61069', '26.90232');
+INSERT INTO `shop_truck_region` VALUES (1858, 1854, 'Z', '蒸湘', '蒸湘区', 3, 'zhengxiang', '421001', 1, '112.6033', '26.89651');
+INSERT INTO `shop_truck_region` VALUES (1859, 1854, 'N', '南岳', '南岳区', 3, 'nanyue', '421900', 1, '112.7384', '27.23262');
+INSERT INTO `shop_truck_region` VALUES (1860, 1854, 'H', '衡阳', '衡阳县', 3, 'hengyang', '421200', 1, '112.37088', '26.9706');
+INSERT INTO `shop_truck_region` VALUES (1861, 1854, 'H', '衡南', '衡南县', 3, 'hengnan', '421131', 1, '112.67788', '26.73828');
+INSERT INTO `shop_truck_region` VALUES (1862, 1854, 'H', '衡山', '衡山县', 3, 'hengshan', '421300', 1, '112.86776', '27.23134');
+INSERT INTO `shop_truck_region` VALUES (1863, 1854, 'H', '衡东', '衡东县', 3, 'hengdong', '421400', 1, '112.94833', '27.08093');
+INSERT INTO `shop_truck_region` VALUES (1864, 1854, 'Q', '祁东', '祁东县', 3, 'qidong', '421600', 1, '112.09039', '26.79964');
+INSERT INTO `shop_truck_region` VALUES (1865, 1854, NULL, '耒阳', '耒阳市', 3, 'leiyang', '421800', 1, '112.85998', '26.42132');
+INSERT INTO `shop_truck_region` VALUES (1866, 1854, 'C', '常宁', '常宁市', 3, 'changning', '421500', 1, '112.4009', '26.40692');
+INSERT INTO `shop_truck_region` VALUES (1867, 1827, 'S', '邵阳', '邵阳市', 2, 'shaoyang', '422000', 1, '111.46923', '27.237842');
+INSERT INTO `shop_truck_region` VALUES (1868, 1867, 'S', '双清', '双清区', 3, 'shuangqing', '422001', 1, '111.49715', '27.23291');
+INSERT INTO `shop_truck_region` VALUES (1869, 1867, 'D', '大祥', '大祥区', 3, 'daxiang', '422000', 1, '111.45412', '27.23332');
+INSERT INTO `shop_truck_region` VALUES (1870, 1867, 'B', '北塔', '北塔区', 3, 'beita', '422007', 1, '111.45219', '27.24648');
+INSERT INTO `shop_truck_region` VALUES (1871, 1867, 'S', '邵东', '邵东县', 3, 'shaodong', '422800', 1, '111.74441', '27.2584');
+INSERT INTO `shop_truck_region` VALUES (1872, 1867, 'X', '新邵', '新邵县', 3, 'xinshao', '422900', 1, '111.46066', '27.32169');
+INSERT INTO `shop_truck_region` VALUES (1873, 1867, 'S', '邵阳', '邵阳县', 3, 'shaoyang', '422100', 1, '111.27459', '26.99143');
+INSERT INTO `shop_truck_region` VALUES (1874, 1867, 'L', '隆回', '隆回县', 3, 'longhui', '422200', 1, '111.03216', '27.10937');
+INSERT INTO `shop_truck_region` VALUES (1875, 1867, 'D', '洞口', '洞口县', 3, 'dongkou', '422300', 1, '110.57388', '27.05462');
+INSERT INTO `shop_truck_region` VALUES (1876, 1867, 'S', '绥宁', '绥宁县', 3, 'suining', '422600', 1, '110.15576', '26.58636');
+INSERT INTO `shop_truck_region` VALUES (1877, 1867, 'X', '新宁', '新宁县', 3, 'xinning', '422700', 1, '110.85131', '26.42936');
+INSERT INTO `shop_truck_region` VALUES (1878, 1867, 'C', '城步', '城步苗族自治县', 3, 'chengbu', '422500', 1, '110.3222', '26.39048');
+INSERT INTO `shop_truck_region` VALUES (1879, 1867, 'W', '武冈', '武冈市', 3, 'wugang', '422400', 1, '110.63281', '26.72817');
+INSERT INTO `shop_truck_region` VALUES (1880, 1827, 'Y', '岳阳', '岳阳市', 2, 'yueyang', '414000', 1, '113.132855', '29.37029');
+INSERT INTO `shop_truck_region` VALUES (1881, 1880, 'Y', '岳阳楼', '岳阳楼区', 3, 'yueyanglou', '414000', 1, '113.12942', '29.3719');
+INSERT INTO `shop_truck_region` VALUES (1882, 1880, 'Y', '云溪', '云溪区', 3, 'yunxi', '414009', 1, '113.27713', '29.47357');
+INSERT INTO `shop_truck_region` VALUES (1883, 1880, 'J', '君山', '君山区', 3, 'junshan', '414005', 1, '113.00439', '29.45941');
+INSERT INTO `shop_truck_region` VALUES (1884, 1880, 'Y', '岳阳', '岳阳县', 3, 'yueyang', '414100', 1, '113.11987', '29.14314');
+INSERT INTO `shop_truck_region` VALUES (1885, 1880, 'H', '华容', '华容县', 3, 'huarong', '414200', 1, '112.54089', '29.53019');
+INSERT INTO `shop_truck_region` VALUES (1886, 1880, 'X', '湘阴', '湘阴县', 3, 'xiangyin', '414600', 1, '112.90911', '28.68922');
+INSERT INTO `shop_truck_region` VALUES (1887, 1880, 'P', '平江', '平江县', 3, 'pingjiang', '414500', 1, '113.58105', '28.70664');
+INSERT INTO `shop_truck_region` VALUES (1888, 1880, NULL, '汨罗', '汨罗市', 3, 'miluo', '414400', 1, '113.06707', '28.80631');
+INSERT INTO `shop_truck_region` VALUES (1889, 1880, 'L', '临湘', '临湘市', 3, 'linxiang', '414300', 1, '113.4501', '29.47701');
+INSERT INTO `shop_truck_region` VALUES (1890, 1827, 'C', '常德', '常德市', 2, 'changde', '415000', 1, '111.691347', '29.040225');
+INSERT INTO `shop_truck_region` VALUES (1891, 1890, 'W', '武陵', '武陵区', 3, 'wuling', '415000', 1, '111.69791', '29.02876');
+INSERT INTO `shop_truck_region` VALUES (1892, 1890, 'D', '鼎城', '鼎城区', 3, 'dingcheng', '415101', 1, '111.68078', '29.01859');
+INSERT INTO `shop_truck_region` VALUES (1893, 1890, 'A', '安乡', '安乡县', 3, 'anxiang', '415600', 1, '112.16732', '29.41326');
+INSERT INTO `shop_truck_region` VALUES (1894, 1890, 'H', '汉寿', '汉寿县', 3, 'hanshou', '415900', 1, '111.96691', '28.90299');
+INSERT INTO `shop_truck_region` VALUES (1895, 1890, NULL, '澧县', '澧县', 3, 'lixian', '415500', 1, '111.75866', '29.63317');
+INSERT INTO `shop_truck_region` VALUES (1896, 1890, 'L', '临澧', '临澧县', 3, 'linli', '415200', 1, '111.65161', '29.44163');
+INSERT INTO `shop_truck_region` VALUES (1897, 1890, 'T', '桃源', '桃源县', 3, 'taoyuan', '415700', 1, '111.48892', '28.90474');
+INSERT INTO `shop_truck_region` VALUES (1898, 1890, 'S', '石门', '石门县', 3, 'shimen', '415300', 1, '111.37966', '29.58424');
+INSERT INTO `shop_truck_region` VALUES (1899, 1890, 'J', '津市', '津市市', 3, 'jinshi', '415400', 1, '111.87756', '29.60563');
+INSERT INTO `shop_truck_region` VALUES (1900, 1827, 'Z', '张家界', '张家界市', 2, 'zhangjiajie', '427000', 1, '110.479921', '29.127401');
+INSERT INTO `shop_truck_region` VALUES (1901, 1900, 'Y', '永定', '永定区', 3, 'yongding', '427000', 1, '110.47464', '29.13387');
+INSERT INTO `shop_truck_region` VALUES (1902, 1900, 'W', '武陵源', '武陵源区', 3, 'wulingyuan', '427400', 1, '110.55026', '29.34574');
+INSERT INTO `shop_truck_region` VALUES (1903, 1900, 'C', '慈利', '慈利县', 3, 'cili', '427200', 1, '111.13946', '29.42989');
+INSERT INTO `shop_truck_region` VALUES (1904, 1900, 'S', '桑植', '桑植县', 3, 'sangzhi', '427100', 1, '110.16308', '29.39815');
+INSERT INTO `shop_truck_region` VALUES (1905, 1827, 'Y', '益阳', '益阳市', 2, 'yiyang', '413000', 1, '112.355042', '28.570066');
+INSERT INTO `shop_truck_region` VALUES (1906, 1905, 'Z', '资阳', '资阳区', 3, 'ziyang', '413001', 1, '112.32447', '28.59095');
+INSERT INTO `shop_truck_region` VALUES (1907, 1905, 'H', '赫山', '赫山区', 3, 'heshan', '413002', 1, '112.37265', '28.57425');
+INSERT INTO `shop_truck_region` VALUES (1908, 1905, 'N', '南县', '南县', 3, 'nanxian', '413200', 1, '112.3963', '29.36159');
+INSERT INTO `shop_truck_region` VALUES (1909, 1905, 'T', '桃江', '桃江县', 3, 'taojiang', '413400', 1, '112.1557', '28.51814');
+INSERT INTO `shop_truck_region` VALUES (1910, 1905, 'A', '安化', '安化县', 3, 'anhua', '413500', 1, '111.21298', '28.37424');
+INSERT INTO `shop_truck_region` VALUES (1911, 1905, NULL, '沅江', '沅江市', 3, 'yuanjiang', '413100', 1, '112.35427', '28.84403');
+INSERT INTO `shop_truck_region` VALUES (1912, 1827, 'C', '郴州', '郴州市', 2, 'chenzhou', '423000', 1, '113.032067', '25.793589');
+INSERT INTO `shop_truck_region` VALUES (1913, 1912, 'B', '北湖', '北湖区', 3, 'beihu', '423000', 1, '113.01103', '25.78405');
+INSERT INTO `shop_truck_region` VALUES (1914, 1912, 'S', '苏仙', '苏仙区', 3, 'suxian', '423000', 1, '113.04226', '25.80045');
+INSERT INTO `shop_truck_region` VALUES (1915, 1912, 'G', '桂阳', '桂阳县', 3, 'guiyang', '424400', 1, '112.73364', '25.75406');
+INSERT INTO `shop_truck_region` VALUES (1916, 1912, 'Y', '宜章', '宜章县', 3, 'yizhang', '424200', 1, '112.95147', '25.39931');
+INSERT INTO `shop_truck_region` VALUES (1917, 1912, 'Y', '永兴', '永兴县', 3, 'yongxing', '423300', 1, '113.11242', '26.12646');
+INSERT INTO `shop_truck_region` VALUES (1918, 1912, 'J', '嘉禾', '嘉禾县', 3, 'jiahe', '424500', 1, '112.36935', '25.58795');
+INSERT INTO `shop_truck_region` VALUES (1919, 1912, 'L', '临武', '临武县', 3, 'linwu', '424300', 1, '112.56369', '25.27602');
+INSERT INTO `shop_truck_region` VALUES (1920, 1912, 'R', '汝城', '汝城县', 3, 'rucheng', '424100', 1, '113.68582', '25.55204');
+INSERT INTO `shop_truck_region` VALUES (1921, 1912, 'G', '桂东', '桂东县', 3, 'guidong', '423500', 1, '113.9468', '26.07987');
+INSERT INTO `shop_truck_region` VALUES (1922, 1912, 'A', '安仁', '安仁县', 3, 'anren', '423600', 1, '113.26944', '26.70931');
+INSERT INTO `shop_truck_region` VALUES (1923, 1912, 'Z', '资兴', '资兴市', 3, 'zixing', '423400', 1, '113.23724', '25.97668');
+INSERT INTO `shop_truck_region` VALUES (1924, 1827, 'Y', '永州', '永州市', 2, 'yongzhou', '425000', 1, '111.608019', '26.434516');
+INSERT INTO `shop_truck_region` VALUES (1925, 1924, 'L', '零陵', '零陵区', 3, 'lingling', '425100', 1, '111.62103', '26.22109');
+INSERT INTO `shop_truck_region` VALUES (1926, 1924, 'L', '冷水滩', '冷水滩区', 3, 'lengshuitan', '425100', 1, '111.59214', '26.46107');
+INSERT INTO `shop_truck_region` VALUES (1927, 1924, 'Q', '祁阳', '祁阳县', 3, 'qiyang', '426100', 1, '111.84011', '26.58009');
+INSERT INTO `shop_truck_region` VALUES (1928, 1924, 'D', '东安', '东安县', 3, 'dong\'an', '425900', 1, '111.3164', '26.39202');
+INSERT INTO `shop_truck_region` VALUES (1929, 1924, 'S', '双牌', '双牌县', 3, 'shuangpai', '425200', 1, '111.65927', '25.95988');
+INSERT INTO `shop_truck_region` VALUES (1930, 1924, 'D', '道县', '道县', 3, 'daoxian', '425300', 1, '111.60195', '25.52766');
+INSERT INTO `shop_truck_region` VALUES (1931, 1924, 'J', '江永', '江永县', 3, 'jiangyong', '425400', 1, '111.34082', '25.27233');
+INSERT INTO `shop_truck_region` VALUES (1932, 1924, 'N', '宁远', '宁远县', 3, 'ningyuan', '425600', 1, '111.94625', '25.56913');
+INSERT INTO `shop_truck_region` VALUES (1933, 1924, 'L', '蓝山', '蓝山县', 3, 'lanshan', '425800', 1, '112.19363', '25.36794');
+INSERT INTO `shop_truck_region` VALUES (1934, 1924, 'X', '新田', '新田县', 3, 'xintian', '425700', 1, '112.22103', '25.9095');
+INSERT INTO `shop_truck_region` VALUES (1935, 1924, 'J', '江华', '江华瑶族自治县', 3, 'jianghua', '425500', 1, '111.58847', '25.1845');
+INSERT INTO `shop_truck_region` VALUES (1936, 1827, 'H', '怀化', '怀化市', 2, 'huaihua', '418000', 1, '109.97824', '27.550082');
+INSERT INTO `shop_truck_region` VALUES (1937, 1936, 'H', '鹤城', '鹤城区', 3, 'hecheng', '418000', 1, '109.96509', '27.54942');
+INSERT INTO `shop_truck_region` VALUES (1938, 1936, 'Z', '中方', '中方县', 3, 'zhongfang', '418005', 1, '109.94497', '27.43988');
+INSERT INTO `shop_truck_region` VALUES (1939, 1936, NULL, '沅陵', '沅陵县', 3, 'yuanling', '419600', 1, '110.39633', '28.45548');
+INSERT INTO `shop_truck_region` VALUES (1940, 1936, 'C', '辰溪', '辰溪县', 3, 'chenxi', '419500', 1, '110.18942', '28.00406');
+INSERT INTO `shop_truck_region` VALUES (1941, 1936, NULL, '溆浦', '溆浦县', 3, 'xupu', '419300', 1, '110.59384', '27.90836');
+INSERT INTO `shop_truck_region` VALUES (1942, 1936, 'H', '会同', '会同县', 3, 'huitong', '418300', 1, '109.73568', '26.88716');
+INSERT INTO `shop_truck_region` VALUES (1943, 1936, 'M', '麻阳', '麻阳苗族自治县', 3, 'mayang', '419400', 1, '109.80194', '27.866');
+INSERT INTO `shop_truck_region` VALUES (1944, 1936, 'X', '新晃', '新晃侗族自治县', 3, 'xinhuang', '419200', 1, '109.17166', '27.35937');
+INSERT INTO `shop_truck_region` VALUES (1945, 1936, NULL, '芷江', '芷江侗族自治县', 3, 'zhijiang', '419100', 1, '109.6849', '27.44297');
+INSERT INTO `shop_truck_region` VALUES (1946, 1936, 'J', '靖州', '靖州苗族侗族自治县', 3, 'jingzhou', '418400', 1, '109.69821', '26.57651');
+INSERT INTO `shop_truck_region` VALUES (1947, 1936, 'T', '通道', '通道侗族自治县', 3, 'tongdao', '418500', 1, '109.78515', '26.1571');
+INSERT INTO `shop_truck_region` VALUES (1948, 1936, 'H', '洪江', '洪江市', 3, 'hongjiang', '418100', 1, '109.83651', '27.20922');
+INSERT INTO `shop_truck_region` VALUES (1949, 1827, 'L', '娄底', '娄底市', 2, 'loudi', '417000', 1, '112.008497', '27.728136');
+INSERT INTO `shop_truck_region` VALUES (1950, 1949, 'L', '娄星', '娄星区', 3, 'louxing', '417000', 1, '112.00193', '27.72992');
+INSERT INTO `shop_truck_region` VALUES (1951, 1949, 'S', '双峰', '双峰县', 3, 'shuangfeng', '417700', 1, '112.19921', '27.45418');
+INSERT INTO `shop_truck_region` VALUES (1952, 1949, 'X', '新化', '新化县', 3, 'xinhua', '417600', 1, '111.32739', '27.7266');
+INSERT INTO `shop_truck_region` VALUES (1953, 1949, 'L', '冷水江', '冷水江市', 3, 'lengshuijiang', '417500', 1, '111.43554', '27.68147');
+INSERT INTO `shop_truck_region` VALUES (1954, 1949, 'L', '涟源', '涟源市', 3, 'lianyuan', '417100', 1, '111.67233', '27.68831');
+INSERT INTO `shop_truck_region` VALUES (1955, 1827, 'X', '湘西', '湘西土家族苗族自治州', 2, 'xiangxi', '416000', 1, '109.739735', '28.314296');
+INSERT INTO `shop_truck_region` VALUES (1956, 1955, 'J', '吉首', '吉首市', 3, 'jishou', '416000', 1, '109.69799', '28.26247');
+INSERT INTO `shop_truck_region` VALUES (1957, 1955, NULL, '泸溪', '泸溪县', 3, 'luxi', '416100', 1, '110.21682', '28.2205');
+INSERT INTO `shop_truck_region` VALUES (1958, 1955, 'F', '凤凰', '凤凰县', 3, 'fenghuang', '416200', 1, '109.60156', '27.94822');
+INSERT INTO `shop_truck_region` VALUES (1959, 1955, 'H', '花垣', '花垣县', 3, 'huayuan', '416400', 1, '109.48217', '28.5721');
+INSERT INTO `shop_truck_region` VALUES (1960, 1955, 'B', '保靖', '保靖县', 3, 'baojing', '416500', 1, '109.66049', '28.69997');
+INSERT INTO `shop_truck_region` VALUES (1961, 1955, 'G', '古丈', '古丈县', 3, 'guzhang', '416300', 1, '109.94812', '28.61944');
+INSERT INTO `shop_truck_region` VALUES (1962, 1955, 'Y', '永顺', '永顺县', 3, 'yongshun', '416700', 1, '109.85266', '29.00103');
+INSERT INTO `shop_truck_region` VALUES (1963, 1955, 'L', '龙山', '龙山县', 3, 'longshan', '416800', 1, '109.4432', '29.45693');
 INSERT INTO `shop_truck_region` VALUES (1964, 0, 'G', '广东', '广东省', 1, 'guangdong', '', 1, '113.280637', '23.125178');
 INSERT INTO `shop_truck_region` VALUES (1965, 1964, 'G', '广州', '广州市', 2, 'guangzhou', '510032', 1, '113.280637', '23.125178');
 INSERT INTO `shop_truck_region` VALUES (1966, 1965, 'L', '荔湾', '荔湾区', 3, 'liwan', '510170', 1, '113.2442', '23.12592');
@@ -4141,124 +3755,124 @@ INSERT INTO `shop_truck_region` VALUES (3203, 3202, 'S', '沙坡头', '沙坡头
 INSERT INTO `shop_truck_region` VALUES (3204, 3202, 'Z', '中宁', '中宁县', 3, 'zhongning', '751200', 1, '105.68515', '37.49149');
 INSERT INTO `shop_truck_region` VALUES (3205, 3202, 'H', '海原', '海原县', 3, 'haiyuan', '751800', 1, '105.64712', '36.56498');
 INSERT INTO `shop_truck_region` VALUES (3206, 0, 'X', '新疆', '新疆维吾尔自治区', 1, 'xinjiang', '', 1, '87.617733', '43.792818');
-INSERT INTO `shop_truck_region` VALUES (3207, 3206, 'W', '乌鲁木齐', '乌鲁木齐市', 2, 'urumqi', '830002', 0, '87.617733', '43.792818');
-INSERT INTO `shop_truck_region` VALUES (3208, 3207, 'T', '天山', '天山区', 3, 'tianshan', '830002', 0, '87.63167', '43.79439');
-INSERT INTO `shop_truck_region` VALUES (3209, 3207, 'S', '沙依巴克', '沙依巴克区', 3, 'shayibake', '830000', 0, '87.59788', '43.80118');
-INSERT INTO `shop_truck_region` VALUES (3210, 3207, 'X', '新市', '新市区', 3, 'xinshi', '830011', 0, '87.57406', '43.84348');
-INSERT INTO `shop_truck_region` VALUES (3211, 3207, 'S', '水磨沟', '水磨沟区', 3, 'shuimogou', '830017', 0, '87.64249', '43.83247');
-INSERT INTO `shop_truck_region` VALUES (3212, 3207, 'T', '头屯河', '头屯河区', 3, 'toutunhe', '830022', 0, '87.29138', '43.85487');
-INSERT INTO `shop_truck_region` VALUES (3213, 3207, 'D', '达坂城', '达坂城区', 3, 'dabancheng', '830039', 0, '88.30697', '43.35797');
-INSERT INTO `shop_truck_region` VALUES (3214, 3207, 'M', '米东', '米东区', 3, 'midong', '830019', 0, '87.68583', '43.94739');
-INSERT INTO `shop_truck_region` VALUES (3215, 3207, 'W', '乌鲁木齐', '乌鲁木齐县', 3, 'wulumuqi', '830063', 0, '87.40939', '43.47125');
+INSERT INTO `shop_truck_region` VALUES (3207, 3206, 'W', '乌鲁木齐', '乌鲁木齐市', 2, 'urumqi', '830002', 1, '87.617733', '43.792818');
+INSERT INTO `shop_truck_region` VALUES (3208, 3207, 'T', '天山', '天山区', 3, 'tianshan', '830002', 1, '87.63167', '43.79439');
+INSERT INTO `shop_truck_region` VALUES (3209, 3207, 'S', '沙依巴克', '沙依巴克区', 3, 'shayibake', '830000', 1, '87.59788', '43.80118');
+INSERT INTO `shop_truck_region` VALUES (3210, 3207, 'X', '新市', '新市区', 3, 'xinshi', '830011', 1, '87.57406', '43.84348');
+INSERT INTO `shop_truck_region` VALUES (3211, 3207, 'S', '水磨沟', '水磨沟区', 3, 'shuimogou', '830017', 1, '87.64249', '43.83247');
+INSERT INTO `shop_truck_region` VALUES (3212, 3207, 'T', '头屯河', '头屯河区', 3, 'toutunhe', '830022', 1, '87.29138', '43.85487');
+INSERT INTO `shop_truck_region` VALUES (3213, 3207, 'D', '达坂城', '达坂城区', 3, 'dabancheng', '830039', 1, '88.30697', '43.35797');
+INSERT INTO `shop_truck_region` VALUES (3214, 3207, 'M', '米东', '米东区', 3, 'midong', '830019', 1, '87.68583', '43.94739');
+INSERT INTO `shop_truck_region` VALUES (3215, 3207, 'W', '乌鲁木齐', '乌鲁木齐县', 3, 'wulumuqi', '830063', 1, '87.40939', '43.47125');
 INSERT INTO `shop_truck_region` VALUES (3216, 3206, 'K', '克拉玛依', '克拉玛依市', 2, 'karamay', '834000', 1, '84.873946', '45.595886');
-INSERT INTO `shop_truck_region` VALUES (3217, 3216, 'D', '独山子', '独山子区', 3, 'dushanzi', '834021', 0, '84.88671', '44.32867');
+INSERT INTO `shop_truck_region` VALUES (3217, 3216, 'D', '独山子', '独山子区', 3, 'dushanzi', '834021', 1, '84.88671', '44.32867');
 INSERT INTO `shop_truck_region` VALUES (3218, 3216, 'K', '克拉玛依', '克拉玛依区', 3, 'kelamayi', '834000', 1, '84.86225', '45.59089');
 INSERT INTO `shop_truck_region` VALUES (3219, 3216, 'B', '白碱滩', '白碱滩区', 3, 'baijiantan', '834008', 1, '85.13244', '45.68768');
-INSERT INTO `shop_truck_region` VALUES (3220, 3216, 'W', '乌尔禾', '乌尔禾区', 3, 'wuerhe', '834012', 0, '85.69143', '46.09006');
-INSERT INTO `shop_truck_region` VALUES (3221, 3206, 'T', '吐鲁番', '吐鲁番地区', 2, 'turpan', '838000', 0, '89.184078', '42.947613');
-INSERT INTO `shop_truck_region` VALUES (3222, 3221, 'T', '吐鲁番', '吐鲁番市', 3, 'tulufan', '838000', 0, '89.18579', '42.93505');
-INSERT INTO `shop_truck_region` VALUES (3223, 3221, NULL, '鄯善', '鄯善县', 3, 'shanshan', '838200', 0, '90.21402', '42.8635');
-INSERT INTO `shop_truck_region` VALUES (3224, 3221, 'T', '托克逊', '托克逊县', 3, 'tuokexun', '838100', 0, '88.65823', '42.79231');
-INSERT INTO `shop_truck_region` VALUES (3225, 3206, 'H', '哈密', '哈密地区', 2, 'hami', '839000', 0, '93.51316', '42.833248');
-INSERT INTO `shop_truck_region` VALUES (3226, 3225, 'H', '哈密', '哈密市', 3, 'hami', '839000', 0, '93.51452', '42.82699');
-INSERT INTO `shop_truck_region` VALUES (3227, 3225, 'B', '巴里坤', '巴里坤哈萨克自治县', 3, 'balikun', '839200', 0, '93.01236', '43.59993');
-INSERT INTO `shop_truck_region` VALUES (3228, 3225, 'Y', '伊吾', '伊吾县', 3, 'yiwu', '839300', 0, '94.69403', '43.2537');
-INSERT INTO `shop_truck_region` VALUES (3229, 3206, 'C', '昌吉', '昌吉回族自治州', 2, 'changji', '831100', 0, '87.304012', '44.014577');
-INSERT INTO `shop_truck_region` VALUES (3230, 3229, 'C', '昌吉', '昌吉市', 3, 'changji', '831100', 0, '87.30249', '44.01267');
-INSERT INTO `shop_truck_region` VALUES (3231, 3229, 'F', '阜康', '阜康市', 3, 'fukang', '831500', 0, '87.98529', '44.1584');
-INSERT INTO `shop_truck_region` VALUES (3232, 3229, 'H', '呼图壁', '呼图壁县', 3, 'hutubi', '831200', 0, '86.89892', '44.18977');
-INSERT INTO `shop_truck_region` VALUES (3233, 3229, 'M', '玛纳斯', '玛纳斯县', 3, 'manasi', '832200', 0, '86.2145', '44.30438');
-INSERT INTO `shop_truck_region` VALUES (3234, 3229, 'Q', '奇台', '奇台县', 3, 'qitai', '831800', 0, '89.5932', '44.02221');
-INSERT INTO `shop_truck_region` VALUES (3235, 3229, 'J', '吉木萨尔', '吉木萨尔县', 3, 'jimusaer', '831700', 0, '89.18078', '44.00048');
-INSERT INTO `shop_truck_region` VALUES (3236, 3229, 'M', '木垒', '木垒哈萨克自治县', 3, 'mulei', '831900', 0, '90.28897', '43.83508');
-INSERT INTO `shop_truck_region` VALUES (3237, 3206, 'B', '博尔塔拉', '博尔塔拉蒙古自治州', 2, 'bortala', '833400', 0, '82.074778', '44.903258');
-INSERT INTO `shop_truck_region` VALUES (3238, 3237, 'B', '博乐', '博乐市', 3, 'bole', '833400', 0, '82.0713', '44.90052');
-INSERT INTO `shop_truck_region` VALUES (3239, 3237, 'A', '阿拉山口', '阿拉山口市', 3, 'alashankou', '833400', 0, '82.567721', '45.170616');
-INSERT INTO `shop_truck_region` VALUES (3240, 3237, 'J', '精河', '精河县', 3, 'jinghe', '833300', 0, '82.89419', '44.60774');
-INSERT INTO `shop_truck_region` VALUES (3241, 3237, 'W', '温泉', '温泉县', 3, 'wenquan', '833500', 0, '81.03134', '44.97373');
-INSERT INTO `shop_truck_region` VALUES (3242, 3206, 'B', '巴音郭楞', '巴音郭楞蒙古自治州', 2, 'bayingol', '841000', 0, '86.150969', '41.768552');
-INSERT INTO `shop_truck_region` VALUES (3243, 3242, 'K', '库尔勒', '库尔勒市', 3, 'kuerle', '841000', 0, '86.15528', '41.76602');
-INSERT INTO `shop_truck_region` VALUES (3244, 3242, 'L', '轮台', '轮台县', 3, 'luntai', '841600', 0, '84.26101', '41.77642');
-INSERT INTO `shop_truck_region` VALUES (3245, 3242, 'W', '尉犁', '尉犁县', 3, 'yuli', '841500', 0, '86.25903', '41.33632');
-INSERT INTO `shop_truck_region` VALUES (3246, 3242, 'R', '若羌', '若羌县', 3, 'ruoqiang', '841800', 0, '88.16812', '39.0179');
-INSERT INTO `shop_truck_region` VALUES (3247, 3242, 'Q', '且末', '且末县', 3, 'qiemo', '841900', 0, '85.52975', '38.14534');
-INSERT INTO `shop_truck_region` VALUES (3248, 3242, 'Y', '焉耆', '焉耆回族自治县', 3, 'yanqi', '841100', 0, '86.5744', '42.059');
-INSERT INTO `shop_truck_region` VALUES (3249, 3242, 'H', '和静', '和静县', 3, 'hejing', '841300', 0, '86.39611', '42.31838');
-INSERT INTO `shop_truck_region` VALUES (3250, 3242, 'H', '和硕', '和硕县', 3, 'heshuo', '841200', 0, '86.86392', '42.26814');
-INSERT INTO `shop_truck_region` VALUES (3251, 3242, 'B', '博湖', '博湖县', 3, 'bohu', '841400', 0, '86.63333', '41.98014');
-INSERT INTO `shop_truck_region` VALUES (3252, 3206, 'A', '阿克苏', '阿克苏地区', 2, 'aksu', '843000', 0, '80.265068', '41.170712');
-INSERT INTO `shop_truck_region` VALUES (3253, 3252, 'A', '阿克苏', '阿克苏市', 3, 'akesu', '843000', 0, '80.26338', '41.16754');
-INSERT INTO `shop_truck_region` VALUES (3254, 3252, 'W', '温宿', '温宿县', 3, 'wensu', '843100', 0, '80.24173', '41.27679');
-INSERT INTO `shop_truck_region` VALUES (3255, 3252, 'K', '库车', '库车县', 3, 'kuche', '842000', 0, '82.96209', '41.71793');
-INSERT INTO `shop_truck_region` VALUES (3256, 3252, 'S', '沙雅', '沙雅县', 3, 'shaya', '842200', 0, '82.78131', '41.22497');
-INSERT INTO `shop_truck_region` VALUES (3257, 3252, 'X', '新和', '新和县', 3, 'xinhe', '842100', 0, '82.61053', '41.54964');
-INSERT INTO `shop_truck_region` VALUES (3258, 3252, 'B', '拜城', '拜城县', 3, 'baicheng', '842300', 0, '81.87564', '41.79801');
-INSERT INTO `shop_truck_region` VALUES (3259, 3252, 'W', '乌什', '乌什县', 3, 'wushi', '843400', 0, '79.22937', '41.21569');
-INSERT INTO `shop_truck_region` VALUES (3260, 3252, 'A', '阿瓦提', '阿瓦提县', 3, 'awati', '843200', 0, '80.38336', '40.63926');
-INSERT INTO `shop_truck_region` VALUES (3261, 3252, 'K', '柯坪', '柯坪县', 3, 'keping', '843600', 0, '79.04751', '40.50585');
-INSERT INTO `shop_truck_region` VALUES (3262, 3206, 'K', '克孜勒苏', '克孜勒苏柯尔克孜自治州', 2, 'kizilsu', '845350', 0, '76.172825', '39.713431');
-INSERT INTO `shop_truck_region` VALUES (3263, 3262, 'A', '阿图什', '阿图什市', 3, 'atushi', '845350', 0, '76.16827', '39.71615');
-INSERT INTO `shop_truck_region` VALUES (3264, 3262, 'A', '阿克陶', '阿克陶县', 3, 'aketao', '845550', 0, '75.94692', '39.14892');
-INSERT INTO `shop_truck_region` VALUES (3265, 3262, 'A', '阿合奇', '阿合奇县', 3, 'aheqi', '843500', 0, '78.44848', '40.93947');
-INSERT INTO `shop_truck_region` VALUES (3266, 3262, 'W', '乌恰', '乌恰县', 3, 'wuqia', '845450', 0, '75.25839', '39.71984');
-INSERT INTO `shop_truck_region` VALUES (3267, 3206, 'K', '喀什', '喀什地区', 2, 'kashgar', '844000', 0, '75.989138', '39.467664');
-INSERT INTO `shop_truck_region` VALUES (3268, 3267, 'K', '喀什', '喀什市', 3, 'kashi', '844000', 0, '75.99379', '39.46768');
-INSERT INTO `shop_truck_region` VALUES (3269, 3267, 'S', '疏附', '疏附县', 3, 'shufu', '844100', 0, '75.86029', '39.37534');
-INSERT INTO `shop_truck_region` VALUES (3270, 3267, 'S', '疏勒', '疏勒县', 3, 'shule', '844200', 0, '76.05398', '39.40625');
-INSERT INTO `shop_truck_region` VALUES (3271, 3267, 'Y', '英吉沙', '英吉沙县', 3, 'yingjisha', '844500', 0, '76.17565', '38.92968');
-INSERT INTO `shop_truck_region` VALUES (3272, 3267, 'Z', '泽普', '泽普县', 3, 'zepu', '844800', 0, '77.27145', '38.18935');
-INSERT INTO `shop_truck_region` VALUES (3273, 3267, 'S', '莎车', '莎车县', 3, 'shache', '844700', 0, '77.24316', '38.41601');
-INSERT INTO `shop_truck_region` VALUES (3274, 3267, 'Y', '叶城', '叶城县', 3, 'yecheng', '844900', 0, '77.41659', '37.88324');
-INSERT INTO `shop_truck_region` VALUES (3275, 3267, 'M', '麦盖提', '麦盖提县', 3, 'maigaiti', '844600', 0, '77.64224', '38.89662');
-INSERT INTO `shop_truck_region` VALUES (3276, 3267, 'Y', '岳普湖', '岳普湖县', 3, 'yuepuhu', '844400', 0, '76.77233', '39.23561');
-INSERT INTO `shop_truck_region` VALUES (3277, 3267, NULL, '伽师', '伽师县', 3, 'jiashi', '844300', 0, '76.72372', '39.48801');
-INSERT INTO `shop_truck_region` VALUES (3278, 3267, 'B', '巴楚', '巴楚县', 3, 'bachu', '843800', 0, '78.54888', '39.7855');
-INSERT INTO `shop_truck_region` VALUES (3279, 3267, 'T', '塔什库尔干塔吉克', '塔什库尔干塔吉克自治县', 3, 'tashikuergantajike', '845250', 0, '75.23196', '37.77893');
-INSERT INTO `shop_truck_region` VALUES (3280, 3206, 'H', '和田', '和田地区', 2, 'hotan', '848000', 0, '79.92533', '37.110687');
-INSERT INTO `shop_truck_region` VALUES (3281, 3280, 'H', '和田市', '和田市', 3, 'hetianshi', '848000', 0, '79.91353', '37.11214');
-INSERT INTO `shop_truck_region` VALUES (3282, 3280, 'H', '和田县', '和田县', 3, 'hetianxian', '848000', 0, '79.82874', '37.08922');
-INSERT INTO `shop_truck_region` VALUES (3283, 3280, 'M', '墨玉', '墨玉县', 3, 'moyu', '848100', 0, '79.74035', '37.27248');
-INSERT INTO `shop_truck_region` VALUES (3284, 3280, 'P', '皮山', '皮山县', 3, 'pishan', '845150', 0, '78.28125', '37.62007');
-INSERT INTO `shop_truck_region` VALUES (3285, 3280, 'L', '洛浦', '洛浦县', 3, 'luopu', '848200', 0, '80.18536', '37.07364');
-INSERT INTO `shop_truck_region` VALUES (3286, 3280, 'C', '策勒', '策勒县', 3, 'cele', '848300', 0, '80.80999', '36.99843');
-INSERT INTO `shop_truck_region` VALUES (3287, 3280, 'Y', '于田', '于田县', 3, 'yutian', '848400', 0, '81.66717', '36.854');
-INSERT INTO `shop_truck_region` VALUES (3288, 3280, 'M', '民丰', '民丰县', 3, 'minfeng', '848500', 0, '82.68444', '37.06577');
-INSERT INTO `shop_truck_region` VALUES (3289, 3206, 'Y', '伊犁', '伊犁哈萨克自治州', 2, 'ili', '835100', 0, '81.317946', '43.92186');
-INSERT INTO `shop_truck_region` VALUES (3290, 3289, 'Y', '伊宁', '伊宁市', 3, 'yining', '835000', 0, '81.32932', '43.91294');
-INSERT INTO `shop_truck_region` VALUES (3291, 3289, 'K', '奎屯', '奎屯市', 3, 'kuitun', '833200', 0, '84.90228', '44.425');
-INSERT INTO `shop_truck_region` VALUES (3292, 3289, 'H', '霍尔果斯', '霍尔果斯市', 3, 'huoerguosi', '835221', 0, '80.418189', '44.205778');
-INSERT INTO `shop_truck_region` VALUES (3293, 3289, 'Y', '伊宁', '伊宁县', 3, 'yining', '835100', 0, '81.52764', '43.97863');
-INSERT INTO `shop_truck_region` VALUES (3294, 3289, 'C', '察布查尔锡伯', '察布查尔锡伯自治县', 3, 'chabuchaerxibo', '835300', 0, '81.14956', '43.84023');
-INSERT INTO `shop_truck_region` VALUES (3295, 3289, 'H', '霍城', '霍城县', 3, 'huocheng', '835200', 0, '80.87826', '44.0533');
-INSERT INTO `shop_truck_region` VALUES (3296, 3289, 'G', '巩留', '巩留县', 3, 'gongliu', '835400', 0, '82.22851', '43.48429');
-INSERT INTO `shop_truck_region` VALUES (3297, 3289, 'X', '新源', '新源县', 3, 'xinyuan', '835800', 0, '83.26095', '43.4284');
-INSERT INTO `shop_truck_region` VALUES (3298, 3289, 'Z', '昭苏', '昭苏县', 3, 'zhaosu', '835600', 0, '81.1307', '43.15828');
-INSERT INTO `shop_truck_region` VALUES (3299, 3289, 'T', '特克斯', '特克斯县', 3, 'tekesi', '835500', 0, '81.84005', '43.21938');
-INSERT INTO `shop_truck_region` VALUES (3300, 3289, 'N', '尼勒克', '尼勒克县', 3, 'nileke', '835700', 0, '82.51184', '43.79901');
-INSERT INTO `shop_truck_region` VALUES (3301, 3206, 'T', '塔城', '塔城地区', 2, 'qoqek', '834700', 0, '82.985732', '46.746301');
-INSERT INTO `shop_truck_region` VALUES (3302, 3301, 'T', '塔城', '塔城市', 3, 'tacheng', '834700', 0, '82.97892', '46.74852');
-INSERT INTO `shop_truck_region` VALUES (3303, 3301, 'W', '乌苏', '乌苏市', 3, 'wusu', '833000', 0, '84.68258', '44.43729');
-INSERT INTO `shop_truck_region` VALUES (3304, 3301, 'E', '额敏', '额敏县', 3, 'emin', '834600', 0, '83.62872', '46.5284');
-INSERT INTO `shop_truck_region` VALUES (3305, 3301, 'S', '沙湾', '沙湾县', 3, 'shawan', '832100', 0, '85.61932', '44.33144');
-INSERT INTO `shop_truck_region` VALUES (3306, 3301, 'T', '托里', '托里县', 3, 'tuoli', '834500', 0, '83.60592', '45.93623');
-INSERT INTO `shop_truck_region` VALUES (3307, 3301, 'Y', '裕民', '裕民县', 3, 'yumin', '834800', 0, '82.99002', '46.20377');
-INSERT INTO `shop_truck_region` VALUES (3308, 3301, 'H', '和布克赛尔', '和布克赛尔蒙古自治县', 3, 'hebukesaier', '834400', 0, '85.72662', '46.79362');
-INSERT INTO `shop_truck_region` VALUES (3309, 3206, 'A', '阿勒泰', '阿勒泰地区', 2, 'altay', '836500', 0, '88.13963', '47.848393');
-INSERT INTO `shop_truck_region` VALUES (3310, 3309, 'A', '阿勒泰', '阿勒泰市', 3, 'aletai', '836500', 0, '88.13913', '47.8317');
-INSERT INTO `shop_truck_region` VALUES (3311, 3309, 'B', '布尔津', '布尔津县', 3, 'buerjin', '836600', 0, '86.85751', '47.70062');
-INSERT INTO `shop_truck_region` VALUES (3312, 3309, 'F', '富蕴', '富蕴县', 3, 'fuyun', '836100', 0, '89.52679', '46.99444');
-INSERT INTO `shop_truck_region` VALUES (3313, 3309, 'F', '福海', '福海县', 3, 'fuhai', '836400', 0, '87.49508', '47.11065');
-INSERT INTO `shop_truck_region` VALUES (3314, 3309, 'H', '哈巴河', '哈巴河县', 3, 'habahe', '836700', 0, '86.42092', '48.06046');
-INSERT INTO `shop_truck_region` VALUES (3315, 3309, 'Q', '青河', '青河县', 3, 'qinghe', '836200', 0, '90.38305', '46.67382');
-INSERT INTO `shop_truck_region` VALUES (3316, 3309, 'J', '吉木乃', '吉木乃县', 3, 'jimunai', '836800', 0, '85.87814', '47.43359');
-INSERT INTO `shop_truck_region` VALUES (3317, 3206, 'Z', ' ', '直辖县级', 2, '', '', 0, '91.132212', '29.660361');
-INSERT INTO `shop_truck_region` VALUES (3318, 3317, 'S', '石河子', '石河子市', 3, 'shihezi', '832000', 0, '86.041075', '44.305886');
-INSERT INTO `shop_truck_region` VALUES (3319, 3317, 'A', '阿拉尔', '阿拉尔市', 3, 'aral', '843300', 0, '81.285884', '40.541914');
-INSERT INTO `shop_truck_region` VALUES (3320, 3317, 'T', '图木舒克', '图木舒克市', 3, 'tumxuk', '843806', 0, '79.077978', '39.867316');
-INSERT INTO `shop_truck_region` VALUES (3321, 3317, 'W', '五家渠', '五家渠市', 3, 'wujiaqu', '831300', 0, '87.526884', '44.167401');
-INSERT INTO `shop_truck_region` VALUES (3322, 3317, 'B', '北屯', '北屯市', 3, 'beitun', '836000', 0, '87.808456', '47.362308');
-INSERT INTO `shop_truck_region` VALUES (3323, 3317, 'T', '铁门关', '铁门关市', 3, 'tiemenguan', '836000', 0, '86.194687', '41.811007');
-INSERT INTO `shop_truck_region` VALUES (3324, 3317, 'S', '双河', '双河市', 3, 'shuanghe', '833408', 0, '91.132212', '29.660361');
+INSERT INTO `shop_truck_region` VALUES (3220, 3216, 'W', '乌尔禾', '乌尔禾区', 3, 'wuerhe', '834012', 1, '85.69143', '46.09006');
+INSERT INTO `shop_truck_region` VALUES (3221, 3206, 'T', '吐鲁番', '吐鲁番地区', 2, 'turpan', '838000', 1, '89.184078', '42.947613');
+INSERT INTO `shop_truck_region` VALUES (3222, 3221, 'T', '吐鲁番', '吐鲁番市', 3, 'tulufan', '838000', 1, '89.18579', '42.93505');
+INSERT INTO `shop_truck_region` VALUES (3223, 3221, NULL, '鄯善', '鄯善县', 3, 'shanshan', '838200', 1, '90.21402', '42.8635');
+INSERT INTO `shop_truck_region` VALUES (3224, 3221, 'T', '托克逊', '托克逊县', 3, 'tuokexun', '838100', 1, '88.65823', '42.79231');
+INSERT INTO `shop_truck_region` VALUES (3225, 3206, 'H', '哈密', '哈密地区', 2, 'hami', '839000', 1, '93.51316', '42.833248');
+INSERT INTO `shop_truck_region` VALUES (3226, 3225, 'H', '哈密', '哈密市', 3, 'hami', '839000', 1, '93.51452', '42.82699');
+INSERT INTO `shop_truck_region` VALUES (3227, 3225, 'B', '巴里坤', '巴里坤哈萨克自治县', 3, 'balikun', '839200', 1, '93.01236', '43.59993');
+INSERT INTO `shop_truck_region` VALUES (3228, 3225, 'Y', '伊吾', '伊吾县', 3, 'yiwu', '839300', 1, '94.69403', '43.2537');
+INSERT INTO `shop_truck_region` VALUES (3229, 3206, 'C', '昌吉', '昌吉回族自治州', 2, 'changji', '831100', 1, '87.304012', '44.014577');
+INSERT INTO `shop_truck_region` VALUES (3230, 3229, 'C', '昌吉', '昌吉市', 3, 'changji', '831100', 1, '87.30249', '44.01267');
+INSERT INTO `shop_truck_region` VALUES (3231, 3229, 'F', '阜康', '阜康市', 3, 'fukang', '831500', 1, '87.98529', '44.1584');
+INSERT INTO `shop_truck_region` VALUES (3232, 3229, 'H', '呼图壁', '呼图壁县', 3, 'hutubi', '831200', 1, '86.89892', '44.18977');
+INSERT INTO `shop_truck_region` VALUES (3233, 3229, 'M', '玛纳斯', '玛纳斯县', 3, 'manasi', '832200', 1, '86.2145', '44.30438');
+INSERT INTO `shop_truck_region` VALUES (3234, 3229, 'Q', '奇台', '奇台县', 3, 'qitai', '831800', 1, '89.5932', '44.02221');
+INSERT INTO `shop_truck_region` VALUES (3235, 3229, 'J', '吉木萨尔', '吉木萨尔县', 3, 'jimusaer', '831700', 1, '89.18078', '44.00048');
+INSERT INTO `shop_truck_region` VALUES (3236, 3229, 'M', '木垒', '木垒哈萨克自治县', 3, 'mulei', '831900', 1, '90.28897', '43.83508');
+INSERT INTO `shop_truck_region` VALUES (3237, 3206, 'B', '博尔塔拉', '博尔塔拉蒙古自治州', 2, 'bortala', '833400', 1, '82.074778', '44.903258');
+INSERT INTO `shop_truck_region` VALUES (3238, 3237, 'B', '博乐', '博乐市', 3, 'bole', '833400', 1, '82.0713', '44.90052');
+INSERT INTO `shop_truck_region` VALUES (3239, 3237, 'A', '阿拉山口', '阿拉山口市', 3, 'alashankou', '833400', 1, '82.567721', '45.170616');
+INSERT INTO `shop_truck_region` VALUES (3240, 3237, 'J', '精河', '精河县', 3, 'jinghe', '833300', 1, '82.89419', '44.60774');
+INSERT INTO `shop_truck_region` VALUES (3241, 3237, 'W', '温泉', '温泉县', 3, 'wenquan', '833500', 1, '81.03134', '44.97373');
+INSERT INTO `shop_truck_region` VALUES (3242, 3206, 'B', '巴音郭楞', '巴音郭楞蒙古自治州', 2, 'bayingol', '841000', 1, '86.150969', '41.768552');
+INSERT INTO `shop_truck_region` VALUES (3243, 3242, 'K', '库尔勒', '库尔勒市', 3, 'kuerle', '841000', 1, '86.15528', '41.76602');
+INSERT INTO `shop_truck_region` VALUES (3244, 3242, 'L', '轮台', '轮台县', 3, 'luntai', '841600', 1, '84.26101', '41.77642');
+INSERT INTO `shop_truck_region` VALUES (3245, 3242, 'W', '尉犁', '尉犁县', 3, 'yuli', '841500', 1, '86.25903', '41.33632');
+INSERT INTO `shop_truck_region` VALUES (3246, 3242, 'R', '若羌', '若羌县', 3, 'ruoqiang', '841800', 1, '88.16812', '39.0179');
+INSERT INTO `shop_truck_region` VALUES (3247, 3242, 'Q', '且末', '且末县', 3, 'qiemo', '841900', 1, '85.52975', '38.14534');
+INSERT INTO `shop_truck_region` VALUES (3248, 3242, 'Y', '焉耆', '焉耆回族自治县', 3, 'yanqi', '841100', 1, '86.5744', '42.059');
+INSERT INTO `shop_truck_region` VALUES (3249, 3242, 'H', '和静', '和静县', 3, 'hejing', '841300', 1, '86.39611', '42.31838');
+INSERT INTO `shop_truck_region` VALUES (3250, 3242, 'H', '和硕', '和硕县', 3, 'heshuo', '841200', 1, '86.86392', '42.26814');
+INSERT INTO `shop_truck_region` VALUES (3251, 3242, 'B', '博湖', '博湖县', 3, 'bohu', '841400', 1, '86.63333', '41.98014');
+INSERT INTO `shop_truck_region` VALUES (3252, 3206, 'A', '阿克苏', '阿克苏地区', 2, 'aksu', '843000', 1, '80.265068', '41.170712');
+INSERT INTO `shop_truck_region` VALUES (3253, 3252, 'A', '阿克苏', '阿克苏市', 3, 'akesu', '843000', 1, '80.26338', '41.16754');
+INSERT INTO `shop_truck_region` VALUES (3254, 3252, 'W', '温宿', '温宿县', 3, 'wensu', '843100', 1, '80.24173', '41.27679');
+INSERT INTO `shop_truck_region` VALUES (3255, 3252, 'K', '库车', '库车县', 3, 'kuche', '842000', 1, '82.96209', '41.71793');
+INSERT INTO `shop_truck_region` VALUES (3256, 3252, 'S', '沙雅', '沙雅县', 3, 'shaya', '842200', 1, '82.78131', '41.22497');
+INSERT INTO `shop_truck_region` VALUES (3257, 3252, 'X', '新和', '新和县', 3, 'xinhe', '842100', 1, '82.61053', '41.54964');
+INSERT INTO `shop_truck_region` VALUES (3258, 3252, 'B', '拜城', '拜城县', 3, 'baicheng', '842300', 1, '81.87564', '41.79801');
+INSERT INTO `shop_truck_region` VALUES (3259, 3252, 'W', '乌什', '乌什县', 3, 'wushi', '843400', 1, '79.22937', '41.21569');
+INSERT INTO `shop_truck_region` VALUES (3260, 3252, 'A', '阿瓦提', '阿瓦提县', 3, 'awati', '843200', 1, '80.38336', '40.63926');
+INSERT INTO `shop_truck_region` VALUES (3261, 3252, 'K', '柯坪', '柯坪县', 3, 'keping', '843600', 1, '79.04751', '40.50585');
+INSERT INTO `shop_truck_region` VALUES (3262, 3206, 'K', '克孜勒苏', '克孜勒苏柯尔克孜自治州', 2, 'kizilsu', '845350', 1, '76.172825', '39.713431');
+INSERT INTO `shop_truck_region` VALUES (3263, 3262, 'A', '阿图什', '阿图什市', 3, 'atushi', '845350', 1, '76.16827', '39.71615');
+INSERT INTO `shop_truck_region` VALUES (3264, 3262, 'A', '阿克陶', '阿克陶县', 3, 'aketao', '845550', 1, '75.94692', '39.14892');
+INSERT INTO `shop_truck_region` VALUES (3265, 3262, 'A', '阿合奇', '阿合奇县', 3, 'aheqi', '843500', 1, '78.44848', '40.93947');
+INSERT INTO `shop_truck_region` VALUES (3266, 3262, 'W', '乌恰', '乌恰县', 3, 'wuqia', '845450', 1, '75.25839', '39.71984');
+INSERT INTO `shop_truck_region` VALUES (3267, 3206, 'K', '喀什', '喀什地区', 2, 'kashgar', '844000', 1, '75.989138', '39.467664');
+INSERT INTO `shop_truck_region` VALUES (3268, 3267, 'K', '喀什', '喀什市', 3, 'kashi', '844000', 1, '75.99379', '39.46768');
+INSERT INTO `shop_truck_region` VALUES (3269, 3267, 'S', '疏附', '疏附县', 3, 'shufu', '844100', 1, '75.86029', '39.37534');
+INSERT INTO `shop_truck_region` VALUES (3270, 3267, 'S', '疏勒', '疏勒县', 3, 'shule', '844200', 1, '76.05398', '39.40625');
+INSERT INTO `shop_truck_region` VALUES (3271, 3267, 'Y', '英吉沙', '英吉沙县', 3, 'yingjisha', '844500', 1, '76.17565', '38.92968');
+INSERT INTO `shop_truck_region` VALUES (3272, 3267, 'Z', '泽普', '泽普县', 3, 'zepu', '844800', 1, '77.27145', '38.18935');
+INSERT INTO `shop_truck_region` VALUES (3273, 3267, 'S', '莎车', '莎车县', 3, 'shache', '844700', 1, '77.24316', '38.41601');
+INSERT INTO `shop_truck_region` VALUES (3274, 3267, 'Y', '叶城', '叶城县', 3, 'yecheng', '844900', 1, '77.41659', '37.88324');
+INSERT INTO `shop_truck_region` VALUES (3275, 3267, 'M', '麦盖提', '麦盖提县', 3, 'maigaiti', '844600', 1, '77.64224', '38.89662');
+INSERT INTO `shop_truck_region` VALUES (3276, 3267, 'Y', '岳普湖', '岳普湖县', 3, 'yuepuhu', '844400', 1, '76.77233', '39.23561');
+INSERT INTO `shop_truck_region` VALUES (3277, 3267, NULL, '伽师', '伽师县', 3, 'jiashi', '844300', 1, '76.72372', '39.48801');
+INSERT INTO `shop_truck_region` VALUES (3278, 3267, 'B', '巴楚', '巴楚县', 3, 'bachu', '843800', 1, '78.54888', '39.7855');
+INSERT INTO `shop_truck_region` VALUES (3279, 3267, 'T', '塔什库尔干塔吉克', '塔什库尔干塔吉克自治县', 3, 'tashikuergantajike', '845250', 1, '75.23196', '37.77893');
+INSERT INTO `shop_truck_region` VALUES (3280, 3206, 'H', '和田', '和田地区', 2, 'hotan', '848000', 1, '79.92533', '37.110687');
+INSERT INTO `shop_truck_region` VALUES (3281, 3280, 'H', '和田市', '和田市', 3, 'hetianshi', '848000', 1, '79.91353', '37.11214');
+INSERT INTO `shop_truck_region` VALUES (3282, 3280, 'H', '和田县', '和田县', 3, 'hetianxian', '848000', 1, '79.82874', '37.08922');
+INSERT INTO `shop_truck_region` VALUES (3283, 3280, 'M', '墨玉', '墨玉县', 3, 'moyu', '848100', 1, '79.74035', '37.27248');
+INSERT INTO `shop_truck_region` VALUES (3284, 3280, 'P', '皮山', '皮山县', 3, 'pishan', '845150', 1, '78.28125', '37.62007');
+INSERT INTO `shop_truck_region` VALUES (3285, 3280, 'L', '洛浦', '洛浦县', 3, 'luopu', '848200', 1, '80.18536', '37.07364');
+INSERT INTO `shop_truck_region` VALUES (3286, 3280, 'C', '策勒', '策勒县', 3, 'cele', '848300', 1, '80.80999', '36.99843');
+INSERT INTO `shop_truck_region` VALUES (3287, 3280, 'Y', '于田', '于田县', 3, 'yutian', '848400', 1, '81.66717', '36.854');
+INSERT INTO `shop_truck_region` VALUES (3288, 3280, 'M', '民丰', '民丰县', 3, 'minfeng', '848500', 1, '82.68444', '37.06577');
+INSERT INTO `shop_truck_region` VALUES (3289, 3206, 'Y', '伊犁', '伊犁哈萨克自治州', 2, 'ili', '835100', 1, '81.317946', '43.92186');
+INSERT INTO `shop_truck_region` VALUES (3290, 3289, 'Y', '伊宁', '伊宁市', 3, 'yining', '835000', 1, '81.32932', '43.91294');
+INSERT INTO `shop_truck_region` VALUES (3291, 3289, 'K', '奎屯', '奎屯市', 3, 'kuitun', '833200', 1, '84.90228', '44.425');
+INSERT INTO `shop_truck_region` VALUES (3292, 3289, 'H', '霍尔果斯', '霍尔果斯市', 3, 'huoerguosi', '835221', 1, '80.418189', '44.205778');
+INSERT INTO `shop_truck_region` VALUES (3293, 3289, 'Y', '伊宁', '伊宁县', 3, 'yining', '835100', 1, '81.52764', '43.97863');
+INSERT INTO `shop_truck_region` VALUES (3294, 3289, 'C', '察布查尔锡伯', '察布查尔锡伯自治县', 3, 'chabuchaerxibo', '835300', 1, '81.14956', '43.84023');
+INSERT INTO `shop_truck_region` VALUES (3295, 3289, 'H', '霍城', '霍城县', 3, 'huocheng', '835200', 1, '80.87826', '44.0533');
+INSERT INTO `shop_truck_region` VALUES (3296, 3289, 'G', '巩留', '巩留县', 3, 'gongliu', '835400', 1, '82.22851', '43.48429');
+INSERT INTO `shop_truck_region` VALUES (3297, 3289, 'X', '新源', '新源县', 3, 'xinyuan', '835800', 1, '83.26095', '43.4284');
+INSERT INTO `shop_truck_region` VALUES (3298, 3289, 'Z', '昭苏', '昭苏县', 3, 'zhaosu', '835600', 1, '81.1307', '43.15828');
+INSERT INTO `shop_truck_region` VALUES (3299, 3289, 'T', '特克斯', '特克斯县', 3, 'tekesi', '835500', 1, '81.84005', '43.21938');
+INSERT INTO `shop_truck_region` VALUES (3300, 3289, 'N', '尼勒克', '尼勒克县', 3, 'nileke', '835700', 1, '82.51184', '43.79901');
+INSERT INTO `shop_truck_region` VALUES (3301, 3206, 'T', '塔城', '塔城地区', 2, 'qoqek', '834700', 1, '82.985732', '46.746301');
+INSERT INTO `shop_truck_region` VALUES (3302, 3301, 'T', '塔城', '塔城市', 3, 'tacheng', '834700', 1, '82.97892', '46.74852');
+INSERT INTO `shop_truck_region` VALUES (3303, 3301, 'W', '乌苏', '乌苏市', 3, 'wusu', '833000', 1, '84.68258', '44.43729');
+INSERT INTO `shop_truck_region` VALUES (3304, 3301, 'E', '额敏', '额敏县', 3, 'emin', '834600', 1, '83.62872', '46.5284');
+INSERT INTO `shop_truck_region` VALUES (3305, 3301, 'S', '沙湾', '沙湾县', 3, 'shawan', '832100', 1, '85.61932', '44.33144');
+INSERT INTO `shop_truck_region` VALUES (3306, 3301, 'T', '托里', '托里县', 3, 'tuoli', '834500', 1, '83.60592', '45.93623');
+INSERT INTO `shop_truck_region` VALUES (3307, 3301, 'Y', '裕民', '裕民县', 3, 'yumin', '834800', 1, '82.99002', '46.20377');
+INSERT INTO `shop_truck_region` VALUES (3308, 3301, 'H', '和布克赛尔', '和布克赛尔蒙古自治县', 3, 'hebukesaier', '834400', 1, '85.72662', '46.79362');
+INSERT INTO `shop_truck_region` VALUES (3309, 3206, 'A', '阿勒泰', '阿勒泰地区', 2, 'altay', '836500', 1, '88.13963', '47.848393');
+INSERT INTO `shop_truck_region` VALUES (3310, 3309, 'A', '阿勒泰', '阿勒泰市', 3, 'aletai', '836500', 1, '88.13913', '47.8317');
+INSERT INTO `shop_truck_region` VALUES (3311, 3309, 'B', '布尔津', '布尔津县', 3, 'buerjin', '836600', 1, '86.85751', '47.70062');
+INSERT INTO `shop_truck_region` VALUES (3312, 3309, 'F', '富蕴', '富蕴县', 3, 'fuyun', '836100', 1, '89.52679', '46.99444');
+INSERT INTO `shop_truck_region` VALUES (3313, 3309, 'F', '福海', '福海县', 3, 'fuhai', '836400', 1, '87.49508', '47.11065');
+INSERT INTO `shop_truck_region` VALUES (3314, 3309, 'H', '哈巴河', '哈巴河县', 3, 'habahe', '836700', 1, '86.42092', '48.06046');
+INSERT INTO `shop_truck_region` VALUES (3315, 3309, 'Q', '青河', '青河县', 3, 'qinghe', '836200', 1, '90.38305', '46.67382');
+INSERT INTO `shop_truck_region` VALUES (3316, 3309, 'J', '吉木乃', '吉木乃县', 3, 'jimunai', '836800', 1, '85.87814', '47.43359');
+INSERT INTO `shop_truck_region` VALUES (3317, 3206, 'Z', ' ', '直辖县级', 2, '', '', 1, '91.132212', '29.660361');
+INSERT INTO `shop_truck_region` VALUES (3318, 3317, 'S', '石河子', '石河子市', 3, 'shihezi', '832000', 1, '86.041075', '44.305886');
+INSERT INTO `shop_truck_region` VALUES (3319, 3317, 'A', '阿拉尔', '阿拉尔市', 3, 'aral', '843300', 1, '81.285884', '40.541914');
+INSERT INTO `shop_truck_region` VALUES (3320, 3317, 'T', '图木舒克', '图木舒克市', 3, 'tumxuk', '843806', 1, '79.077978', '39.867316');
+INSERT INTO `shop_truck_region` VALUES (3321, 3317, 'W', '五家渠', '五家渠市', 3, 'wujiaqu', '831300', 1, '87.526884', '44.167401');
+INSERT INTO `shop_truck_region` VALUES (3322, 3317, 'B', '北屯', '北屯市', 3, 'beitun', '836000', 1, '87.808456', '47.362308');
+INSERT INTO `shop_truck_region` VALUES (3323, 3317, 'T', '铁门关', '铁门关市', 3, 'tiemenguan', '836000', 1, '86.194687', '41.811007');
+INSERT INTO `shop_truck_region` VALUES (3324, 3317, 'S', '双河', '双河市', 3, 'shuanghe', '833408', 1, '91.132212', '29.660361');
 INSERT INTO `shop_truck_region` VALUES (3325, 0, 'T', '台湾', '台湾省', 1, 'taiwan', '', 1, '121.509062', '25.044332');
 INSERT INTO `shop_truck_region` VALUES (3326, 3325, 'T', '台北', '台北市', 2, 'taipei', '1', 1, '121.565170', '25.037798');
 INSERT INTO `shop_truck_region` VALUES (3327, 3326, 'S', '松山', '松山区', 3, 'songshan', '105', 1, '121.577206', '25.049698');
@@ -4698,21 +4312,10 @@ CREATE TABLE `shop_truck_template`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 201 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-快递-费用' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-快递-模板' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_truck_template
 -- ----------------------------
-INSERT INTO `shop_truck_template` VALUES (190, '', '', NULL, ',默认邮费规则,', 0, 1, 1, '2020-03-20 10:39:07');
-INSERT INTO `shop_truck_template` VALUES (191, 'T2020091731584', '1256123', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"天津市\",\"subs\":[\"天津市\"]},{\"name\":\"山西省\",\"subs\":[\"长治市\",\"晋中市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}},{\"city\":[{\"name\":\"云南省\",\"subs\":[\"昆明市\",\"曲靖市\",\"玉溪市\",\"保山市\",\"昭通市\",\"丽江市\",\"普洱市\",\"临沧市\",\"楚雄彝族自治州\",\"红河哈尼族彝族自治州\",\"文山壮族苗族自治州\",\"西双版纳傣族自治州\",\"大理白族自治州\",\"德宏傣族景颇族自治州\",\"怒江傈僳族自治州\",\"迪庆藏族自治州\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":\"2\"}},{\"city\":[{\"name\":\"河北省\",\"subs\":[\"石家庄市\",\"唐山市\",\"秦皇岛市\",\"邯郸市\",\"邢台市\",\"保定市\",\"张家口市\",\"承德市\",\"沧州市\",\"廊坊市\",\"衡水市\"]},{\"name\":\"吉林省\",\"subs\":[\"长春市\",\"吉林市\",\"四平市\",\"通化市\",\"白山市\",\"松原市\",\"白城市\",\"延边朝鲜族自治州\"]},{\"name\":\"浙江省\",\"subs\":[\"杭州市\",\"宁波市\",\"温州市\",\"嘉兴市\",\"湖州市\",\"绍兴市\",\"金华市\",\"衢州市\",\"舟山市\",\"台州市\",\"丽水市\",\"舟山群岛新区\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}}]', 0, 1, 0, '2020-09-17 06:00:44');
-INSERT INTO `shop_truck_template` VALUES (192, 'T2020091734143', '1256123', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"2.00\"}', '[{\"city\":[{\"name\":\"香港特别行政区\",\"subs\":[\"香港特别行政区\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"0.00\",\"repeatNumber\":\"0\",\"repeatAmount\":\"0.00\"}}]', 2, 1, 0, '2020-09-17 06:03:00');
-INSERT INTO `shop_truck_template` VALUES (193, 'T2020091734314', '1256123', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"天津市\",\"subs\":[\"天津市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}},{\"city\":[{\"name\":\"北京市\",\"subs\":[\"北京市\"]},{\"name\":\"河北省\",\"subs\":[\"石家庄市\",\"唐山市\",\"秦皇岛市\",\"邯郸市\",\"邢台市\",\"保定市\",\"张家口市\",\"承德市\",\"沧州市\",\"廊坊市\",\"衡水市\"]},{\"name\":\"山西省\",\"subs\":[\"太原市\",\"大同市\",\"阳泉市\",\"长治市\",\"晋城市\",\"朔州市\",\"晋中市\",\"运城市\",\"忻州市\",\"临汾市\",\"吕梁市\"]},{\"name\":\"内蒙古自治区\",\"subs\":[\"呼和浩特市\",\"包头市\",\"乌海市\",\"赤峰市\",\"通辽市\",\"鄂尔多斯市\",\"呼伦贝尔市\",\"巴彦淖尔市\",\"乌兰察布市\",\"兴安盟\",\"锡林郭勒盟\",\"阿拉善盟\"]},{\"name\":\"辽宁省\",\"subs\":[\"沈阳市\",\"大连市\",\"鞍山市\",\"抚顺市\",\"本溪市\",\"丹东市\",\"锦州市\",\"营口市\",\"阜新市\",\"辽阳市\",\"盘锦市\",\"铁岭市\",\"朝阳市\",\"葫芦岛市\",\"金普新区\"]},{\"name\":\"吉林省\",\"subs\":[\"长春市\",\"吉林市\",\"四平市\",\"辽源市\",\"通化市\",\"白山市\",\"松原市\",\"白城市\",\"延边朝鲜族自治州\"]},{\"name\":\"黑龙江省\",\"subs\":[\"哈尔滨市\",\"齐齐哈尔市\",\"鸡西市\",\"鹤岗市\",\"双鸭山市\",\"大庆市\",\"伊春市\",\"佳木斯市\",\"七台河市\",\"牡丹江市\",\"黑河市\",\"绥化市\",\"大兴安岭地区\"]},{\"name\":\"上海市\",\"subs\":[\"上海市\"]},{\"name\":\"浙江省\",\"subs\":[\"杭州市\",\"宁波市\",\"温州市\",\"嘉兴市\",\"湖州市\",\"绍兴市\",\"金华市\",\"衢州市\",\"舟山市\",\"台州市\",\"丽水市\",\"舟山群岛新区\"]},{\"name\":\"安徽省\",\"subs\":[\"合肥市\",\"芜湖市\",\"蚌埠市\",\"淮南市\",\"马鞍山市\",\"淮北市\",\"铜陵市\",\"安庆市\",\"黄山市\",\"滁州市\",\"阜阳市\",\"宿州市\",\"六安市\",\"亳州市\",\"池州市\",\"宣城市\"]},{\"name\":\"福建省\",\"subs\":[\"福州市\",\"厦门市\",\"莆田市\",\"三明市\",\"泉州市\",\"漳州市\",\"龙岩市\",\"宁德市\"]},{\"name\":\"江西省\",\"subs\":[\"南昌市\",\"景德镇市\",\"萍乡市\",\"九江市\",\"新余市\",\"鹰潭市\",\"赣州市\",\"吉安市\",\"宜春市\",\"抚州市\",\"上饶市\"]},{\"name\":\"山东省\",\"subs\":[\"济南市\",\"青岛市\",\"淄博市\",\"枣庄市\",\"东营市\",\"烟台市\",\"潍坊市\",\"济宁市\",\"泰安市\",\"威海市\",\"日照市\",\"莱芜市\",\"临沂市\",\"德州市\",\"聊城市\",\"滨州市\",\"菏泽市\"]},{\"name\":\"河南省\",\"subs\":[\"郑州市\",\"开封市\",\"洛阳市\",\"平顶山市\",\"安阳市\",\"鹤壁市\",\"新乡市\",\"焦作市\",\"濮阳市\",\"许昌市\",\"漯河市\",\"三门峡市\",\"南阳市\",\"商丘市\",\"信阳市\",\"周口市\",\"驻马店市\",\"直辖县级\"]},{\"name\":\"湖北省\",\"subs\":[\"武汉市\",\"黄石市\",\"十堰市\",\"宜昌市\",\"襄阳市\",\"鄂州市\",\"荆门市\",\"孝感市\",\"荆州市\",\"黄冈市\",\"咸宁市\",\"随州市\",\"恩施土家族苗族自治州\",\"直辖县级\"]},{\"name\":\"湖南省\",\"subs\":[\"长沙市\",\"株洲市\",\"湘潭市\",\"衡阳市\",\"邵阳市\",\"岳阳市\",\"常德市\",\"张家界市\",\"益阳市\",\"郴州市\",\"永州市\",\"怀化市\",\"娄底市\",\"湘西土家族苗族自治州\"]},{\"name\":\"广东省\",\"subs\":[\"广州市\",\"韶关市\",\"深圳市\",\"珠海市\",\"汕头市\",\"佛山市\",\"江门市\",\"湛江市\",\"茂名市\",\"肇庆市\",\"惠州市\",\"梅州市\",\"汕尾市\",\"河源市\",\"阳江市\",\"清远市\",\"东莞市\",\"中山市\",\"潮州市\",\"揭阳市\",\"云浮市\"]},{\"name\":\"广西壮族自治区\",\"subs\":[\"南宁市\",\"柳州市\",\"桂林市\",\"梧州市\",\"北海市\",\"防城港市\",\"钦州市\",\"贵港市\",\"玉林市\",\"百色市\",\"贺州市\",\"河池市\",\"来宾市\",\"崇左市\"]},{\"name\":\"海南省\",\"subs\":[\"海口市\",\"三亚市\",\"三沙市\",\"直辖县级\",\"儋州市\"]},{\"name\":\"重庆市\",\"subs\":[\"重庆市\",\"县\"]},{\"name\":\"四川省\",\"subs\":[\"成都市\",\"自贡市\",\"攀枝花市\",\"泸州市\",\"德阳市\",\"绵阳市\",\"广元市\",\"遂宁市\",\"内江市\",\"乐山市\",\"南充市\",\"眉山市\",\"宜宾市\",\"广安市\",\"达州市\",\"雅安市\",\"巴中市\",\"资阳市\",\"阿坝藏族羌族自治州\",\"甘孜藏族自治州\",\"凉山彝族自治州\"]},{\"name\":\"贵州省\",\"subs\":[\"贵阳市\",\"六盘水市\",\"遵义市\",\"安顺市\",\"毕节市\",\"铜仁市\",\"黔西南布依族苗族自治州\",\"黔东南苗族侗族自治州\",\"黔南布依族苗族自治州\"]},{\"name\":\"云南省\",\"subs\":[\"昆明市\",\"曲靖市\",\"玉溪市\",\"保山市\",\"昭通市\",\"丽江市\",\"普洱市\",\"临沧市\",\"楚雄彝族自治州\",\"红河哈尼族彝族自治州\",\"文山壮族苗族自治州\",\"西双版纳傣族自治州\",\"大理白族自治州\",\"德宏傣族景颇族自治州\",\"怒江傈僳族自治州\",\"迪庆藏族自治州\"]},{\"name\":\"西藏自治区\",\"subs\":[\"拉萨市\",\"日喀则市\",\"昌都市\",\"山南地区\",\"那曲地区\",\"阿里地区\",\"林芝地区\"]},{\"name\":\"陕西省\",\"subs\":[\"西安市\",\"铜川市\",\"宝鸡市\",\"咸阳市\",\"渭南市\",\"延安市\",\"汉中市\",\"榆林市\",\"安康市\",\"商洛市\",\"西咸新区\"]},{\"name\":\"甘肃省\",\"subs\":[\"兰州市\",\"嘉峪关市\",\"金昌市\",\"白银市\",\"天水市\",\"武威市\",\"张掖市\",\"平凉市\",\"酒泉市\",\"庆阳市\",\"定西市\",\"陇南市\",\"临夏回族自治州\",\"甘南藏族自治州\"]},{\"name\":\"青海省\",\"subs\":[\"西宁市\",\"海东市\",\"海北藏族自治州\",\"黄南藏族自治州\",\"海南藏族自治州\",\"果洛藏族自治州\",\"玉树藏族自治州\",\"海西蒙古族藏族自治州\"]},{\"name\":\"宁夏回族自治区\",\"subs\":[\"银川市\",\"石嘴山市\",\"吴忠市\",\"固原市\",\"中卫市\"]},{\"name\":\"新疆维吾尔自治区\",\"subs\":[\"乌鲁木齐市\",\"克拉玛依市\",\"吐鲁番地区\",\"哈密地区\",\"昌吉回族自治州\",\"博尔塔拉蒙古自治州\",\"巴音郭楞蒙古自治州\",\"阿克苏地区\",\"克孜勒苏柯尔克孜自治州\",\"喀什地区\",\"和田地区\",\"伊犁哈萨克自治州\",\"塔城地区\",\"阿勒泰地区\",\"直辖县级\"]},{\"name\":\"台湾省\",\"subs\":[\"台北市\",\"高雄市\",\"基隆市\",\"台中市\",\"台南市\",\"新竹市\",\"嘉义市\",\"新北市\",\"宜兰县\",\"桃园县\",\"新竹县\",\"苗栗县\",\"彰化县\",\"南投县\",\"云林县\",\"嘉义县\",\"屏东县\",\"台东县\",\"花莲县\",\"澎湖县\",\"金门县\",\"连江县\"]},{\"name\":\"香港特别行政区\",\"subs\":[\"香港特别行政区\"]},{\"name\":\"澳门特别行政区\",\"subs\":[\"澳门半岛\",\"氹仔岛\",\"路环岛\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}},{\"city\":[{\"name\":\"江苏省\",\"subs\":[\"南京市\",\"无锡市\",\"徐州市\",\"苏州市\",\"南通市\",\"连云港市\",\"淮安市\",\"盐城市\",\"扬州市\",\"镇江市\",\"泰州市\",\"宿迁市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}},{\"city\":[{\"name\":\"江苏省\",\"subs\":[\"常州市\"]},{\"name\":\"福建省\",\"subs\":[\"南平市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":1,\"repeatNumber\":1,\"repeatAmount\":1}}]', 0, 1, 0, '2020-09-17 06:03:16');
-INSERT INTO `shop_truck_template` VALUES (194, 'T2020091731249', '通用邮费模板', '{\"firstNumber\":\"2\",\"firstAmount\":\"9.08\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"天津市\",\"subs\":[\"天津市\"]},{\"name\":\"河北省\",\"subs\":[\"石家庄市\",\"唐山市\",\"秦皇岛市\",\"邯郸市\",\"邢台市\",\"保定市\",\"张家口市\",\"承德市\",\"沧州市\",\"廊坊市\",\"衡水市\"]},{\"name\":\"山西省\",\"subs\":[\"太原市\"]},{\"name\":\"内蒙古自治区\",\"subs\":[\"呼和浩特市\",\"包头市\",\"乌海市\",\"赤峰市\",\"通辽市\",\"鄂尔多斯市\",\"呼伦贝尔市\",\"巴彦淖尔市\",\"乌兰察布市\",\"兴安盟\",\"锡林郭勒盟\",\"阿拉善盟\"]},{\"name\":\"辽宁省\",\"subs\":[\"沈阳市\",\"大连市\",\"鞍山市\",\"抚顺市\",\"本溪市\",\"丹东市\",\"锦州市\",\"营口市\",\"阜新市\",\"辽阳市\",\"盘锦市\",\"铁岭市\",\"朝阳市\",\"葫芦岛市\",\"金普新区\"]},{\"name\":\"吉林省\",\"subs\":[\"长春市\",\"吉林市\",\"四平市\",\"辽源市\",\"通化市\",\"白山市\",\"松原市\",\"白城市\",\"延边朝鲜族自治州\"]},{\"name\":\"黑龙江省\",\"subs\":[\"哈尔滨市\",\"齐齐哈尔市\",\"鸡西市\",\"鹤岗市\",\"双鸭山市\",\"大庆市\",\"伊春市\",\"佳木斯市\",\"七台河市\",\"牡丹江市\",\"黑河市\",\"绥化市\",\"大兴安岭地区\"]},{\"name\":\"上海市\",\"subs\":[\"上海市\"]},{\"name\":\"江苏省\",\"subs\":[\"南京市\",\"无锡市\",\"徐州市\",\"常州市\",\"苏州市\",\"南通市\",\"连云港市\",\"淮安市\",\"盐城市\",\"扬州市\",\"镇江市\",\"泰州市\",\"宿迁市\"]},{\"name\":\"浙江省\",\"subs\":[\"杭州市\",\"宁波市\",\"温州市\",\"嘉兴市\",\"湖州市\",\"绍兴市\",\"金华市\",\"衢州市\",\"舟山市\",\"台州市\",\"丽水市\",\"舟山群岛新区\"]},{\"name\":\"安徽省\",\"subs\":[\"合肥市\",\"芜湖市\",\"蚌埠市\",\"淮南市\",\"马鞍山市\",\"淮北市\",\"铜陵市\",\"安庆市\",\"黄山市\",\"滁州市\",\"阜阳市\",\"宿州市\",\"六安市\",\"亳州市\",\"池州市\",\"宣城市\"]},{\"name\":\"福建省\",\"subs\":[\"福州市\",\"厦门市\",\"莆田市\",\"三明市\",\"泉州市\",\"漳州市\",\"南平市\",\"龙岩市\",\"宁德市\"]},{\"name\":\"江西省\",\"subs\":[\"南昌市\",\"景德镇市\",\"萍乡市\",\"九江市\",\"新余市\",\"鹰潭市\",\"赣州市\",\"吉安市\",\"宜春市\",\"抚州市\",\"上饶市\"]},{\"name\":\"山东省\",\"subs\":[\"济南市\",\"青岛市\",\"淄博市\",\"枣庄市\",\"东营市\",\"烟台市\",\"潍坊市\",\"济宁市\",\"泰安市\",\"威海市\",\"日照市\",\"莱芜市\",\"临沂市\",\"德州市\",\"聊城市\",\"滨州市\",\"菏泽市\"]},{\"name\":\"河南省\",\"subs\":[\"郑州市\",\"开封市\",\"洛阳市\",\"平顶山市\",\"安阳市\",\"鹤壁市\",\"新乡市\",\"焦作市\",\"濮阳市\",\"许昌市\",\"漯河市\",\"三门峡市\",\"南阳市\",\"商丘市\",\"信阳市\",\"周口市\",\"驻马店市\",\"直辖县级\"]},{\"name\":\"湖北省\",\"subs\":[\"武汉市\",\"黄石市\",\"十堰市\",\"宜昌市\",\"襄阳市\",\"鄂州市\",\"荆门市\",\"孝感市\",\"荆州市\",\"黄冈市\",\"咸宁市\",\"随州市\",\"恩施土家族苗族自治州\",\"直辖县级\"]},{\"name\":\"湖南省\",\"subs\":[\"长沙市\",\"株洲市\",\"湘潭市\",\"衡阳市\",\"邵阳市\",\"岳阳市\",\"常德市\",\"张家界市\",\"益阳市\",\"郴州市\",\"永州市\",\"怀化市\",\"娄底市\",\"湘西土家族苗族自治州\"]},{\"name\":\"广西壮族自治区\",\"subs\":[\"南宁市\",\"柳州市\",\"桂林市\",\"梧州市\",\"北海市\",\"防城港市\",\"钦州市\",\"贵港市\",\"玉林市\",\"百色市\",\"贺州市\",\"河池市\",\"来宾市\",\"崇左市\"]},{\"name\":\"海南省\",\"subs\":[\"海口市\",\"三亚市\",\"三沙市\",\"直辖县级\",\"儋州市\"]},{\"name\":\"重庆市\",\"subs\":[\"重庆市\",\"县\"]},{\"name\":\"四川省\",\"subs\":[\"成都市\",\"自贡市\",\"攀枝花市\",\"泸州市\",\"德阳市\",\"绵阳市\",\"广元市\",\"遂宁市\",\"内江市\",\"乐山市\",\"南充市\",\"眉山市\",\"宜宾市\",\"广安市\",\"达州市\",\"雅安市\",\"巴中市\",\"资阳市\",\"阿坝藏族羌族自治州\",\"甘孜藏族自治州\",\"凉山彝族自治州\"]},{\"name\":\"贵州省\",\"subs\":[\"贵阳市\",\"六盘水市\",\"遵义市\",\"安顺市\",\"毕节市\",\"铜仁市\",\"黔西南布依族苗族自治州\",\"黔东南苗族侗族自治州\",\"黔南布依族苗族自治州\"]},{\"name\":\"云南省\",\"subs\":[\"昆明市\",\"曲靖市\",\"玉溪市\",\"保山市\",\"昭通市\",\"丽江市\",\"普洱市\",\"临沧市\",\"楚雄彝族自治州\",\"红河哈尼族彝族自治州\",\"文山壮族苗族自治州\",\"西双版纳傣族自治州\",\"大理白族自治州\",\"德宏傣族景颇族自治州\",\"怒江傈僳族自治州\",\"迪庆藏族自治州\"]},{\"name\":\"陕西省\",\"subs\":[\"西安市\",\"铜川市\",\"宝鸡市\",\"咸阳市\",\"渭南市\",\"延安市\",\"汉中市\",\"榆林市\",\"安康市\",\"商洛市\",\"西咸新区\"]},{\"name\":\"甘肃省\",\"subs\":[\"兰州市\",\"平凉市\"]},{\"name\":\"青海省\",\"subs\":[\"西宁市\",\"海东市\",\"海北藏族自治州\",\"黄南藏族自治州\",\"海南藏族自治州\",\"果洛藏族自治州\",\"玉树藏族自治州\",\"海西蒙古族藏族自治州\"]},{\"name\":\"新疆维吾尔自治区\",\"subs\":[\"直辖县级\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"6.00\",\"repeatNumber\":1,\"repeatAmount\":\"4.00\"}},{\"city\":[{\"name\":\"广东省\",\"subs\":[\"珠海市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}}]', 32, 0, 0, '2020-09-17 08:58:02');
-INSERT INTO `shop_truck_template` VALUES (195, 'T2020092446330', '888888', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[]', 0, 1, 0, '2020-09-24 08:38:52');
-INSERT INTO `shop_truck_template` VALUES (196, 'T2020100562024', 'dfdfg', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"江苏省\",\"subs\":[\"南京市\",\"无锡市\",\"徐州市\",\"常州市\",\"苏州市\",\"南通市\",\"连云港市\",\"淮安市\",\"盐城市\",\"扬州市\",\"镇江市\",\"泰州市\",\"宿迁市\"]},{\"name\":\"广东省\",\"subs\":[\"广州市\",\"韶关市\",\"深圳市\",\"珠海市\",\"汕头市\",\"佛山市\",\"江门市\",\"湛江市\",\"茂名市\",\"肇庆市\",\"惠州市\",\"梅州市\",\"汕尾市\",\"河源市\",\"阳江市\",\"清远市\",\"东莞市\",\"中山市\",\"潮州市\",\"揭阳市\",\"云浮市\"]},{\"name\":\"河南省\",\"subs\":[\"安阳市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}}]', 0, 1, 0, '2020-10-05 15:47:41');
-INSERT INTO `shop_truck_template` VALUES (197, 'T2020101044069', '测', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"辽宁省\",\"subs\":[\"沈阳市\",\"大连市\",\"鞍山市\",\"抚顺市\",\"本溪市\",\"丹东市\",\"锦州市\",\"营口市\",\"阜新市\",\"辽阳市\",\"盘锦市\",\"铁岭市\",\"朝阳市\",\"葫芦岛市\",\"金普新区\"]},{\"name\":\"江西省\",\"subs\":[\"南昌市\",\"景德镇市\",\"萍乡市\",\"九江市\",\"新余市\",\"鹰潭市\",\"赣州市\",\"吉安市\",\"宜春市\",\"抚州市\",\"上饶市\"]},{\"name\":\"广东省\",\"subs\":[\"广州市\",\"韶关市\",\"深圳市\",\"珠海市\",\"汕头市\",\"佛山市\",\"江门市\",\"湛江市\",\"茂名市\",\"肇庆市\",\"惠州市\",\"梅州市\",\"汕尾市\",\"河源市\",\"阳江市\",\"清远市\",\"东莞市\",\"中山市\",\"潮州市\",\"揭阳市\",\"云浮市\"]},{\"name\":\"陕西省\",\"subs\":[\"西安市\",\"铜川市\",\"宝鸡市\",\"咸阳市\",\"渭南市\",\"延安市\",\"汉中市\",\"榆林市\",\"安康市\",\"商洛市\",\"西咸新区\"]},{\"name\":\"西藏自治区\",\"subs\":[\"拉萨市\",\"日喀则市\",\"昌都市\",\"山南地区\",\"那曲地区\",\"阿里地区\",\"林芝地区\"]},{\"name\":\"宁夏回族自治区\",\"subs\":[\"银川市\",\"石嘴山市\",\"吴忠市\",\"固原市\",\"中卫市\"]},{\"name\":\"澳门特别行政区\",\"subs\":[\"澳门半岛\",\"氹仔岛\",\"路环岛\"]},{\"name\":\"湖北省\",\"subs\":[\"武汉市\",\"黄石市\",\"十堰市\",\"宜昌市\",\"襄阳市\",\"鄂州市\",\"荆门市\",\"孝感市\",\"荆州市\",\"黄冈市\",\"咸宁市\",\"随州市\",\"恩施土家族苗族自治州\",\"直辖县级\"]},{\"name\":\"山西省\",\"subs\":[\"太原市\"]},{\"name\":\"黑龙江省\",\"subs\":[\"哈尔滨市\",\"齐齐哈尔市\",\"鸡西市\",\"鹤岗市\",\"双鸭山市\",\"大庆市\",\"伊春市\",\"佳木斯市\",\"七台河市\",\"牡丹江市\",\"黑河市\",\"绥化市\",\"大兴安岭地区\"]},{\"name\":\"安徽省\",\"subs\":[\"合肥市\",\"芜湖市\",\"蚌埠市\",\"淮南市\",\"马鞍山市\",\"淮北市\",\"铜陵市\",\"安庆市\",\"黄山市\",\"滁州市\",\"阜阳市\",\"宿州市\",\"六安市\",\"亳州市\",\"池州市\",\"宣城市\"]},{\"name\":\"广西壮族自治区\",\"subs\":[\"防城港市\",\"钦州市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}}]', 0, 1, 0, '2020-10-10 21:24:03');
-INSERT INTO `shop_truck_template` VALUES (198, 'T2020101243025', '不太清楚是什么模板', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"北京市\",\"subs\":[\"北京市\"]},{\"name\":\"天津市\",\"subs\":[\"天津市\"]},{\"name\":\"河北省\",\"subs\":[\"石家庄市\",\"唐山市\",\"秦皇岛市\",\"邯郸市\",\"邢台市\",\"保定市\",\"张家口市\",\"承德市\",\"沧州市\",\"廊坊市\",\"衡水市\"]},{\"name\":\"山西省\",\"subs\":[\"太原市\"]},{\"name\":\"内蒙古自治区\",\"subs\":[\"呼和浩特市\",\"包头市\",\"乌海市\",\"赤峰市\",\"通辽市\",\"鄂尔多斯市\",\"呼伦贝尔市\",\"巴彦淖尔市\",\"乌兰察布市\",\"兴安盟\",\"锡林郭勒盟\",\"阿拉善盟\"]},{\"name\":\"辽宁省\",\"subs\":[\"沈阳市\",\"大连市\",\"鞍山市\",\"抚顺市\",\"本溪市\",\"丹东市\",\"锦州市\",\"营口市\",\"阜新市\",\"辽阳市\",\"盘锦市\",\"铁岭市\",\"朝阳市\",\"葫芦岛市\",\"金普新区\"]},{\"name\":\"吉林省\",\"subs\":[\"长春市\",\"吉林市\",\"四平市\",\"辽源市\",\"通化市\",\"白山市\",\"松原市\",\"白城市\",\"延边朝鲜族自治州\"]},{\"name\":\"黑龙江省\",\"subs\":[\"哈尔滨市\",\"齐齐哈尔市\",\"鸡西市\",\"鹤岗市\",\"双鸭山市\",\"大庆市\",\"伊春市\",\"佳木斯市\",\"七台河市\",\"牡丹江市\",\"黑河市\",\"绥化市\",\"大兴安岭地区\"]},{\"name\":\"上海市\",\"subs\":[\"上海市\"]},{\"name\":\"江苏省\",\"subs\":[\"南京市\",\"无锡市\",\"徐州市\",\"常州市\",\"苏州市\",\"南通市\",\"连云港市\",\"淮安市\",\"盐城市\",\"扬州市\",\"镇江市\",\"泰州市\",\"宿迁市\"]},{\"name\":\"浙江省\",\"subs\":[\"杭州市\",\"宁波市\",\"温州市\",\"嘉兴市\",\"湖州市\",\"绍兴市\",\"金华市\",\"衢州市\",\"舟山市\",\"台州市\",\"丽水市\",\"舟山群岛新区\"]},{\"name\":\"安徽省\",\"subs\":[\"合肥市\",\"芜湖市\",\"蚌埠市\",\"淮南市\",\"马鞍山市\",\"淮北市\",\"铜陵市\",\"安庆市\",\"黄山市\",\"滁州市\",\"阜阳市\",\"宿州市\",\"六安市\",\"亳州市\",\"池州市\",\"宣城市\"]},{\"name\":\"福建省\",\"subs\":[\"福州市\",\"厦门市\",\"莆田市\",\"三明市\",\"泉州市\",\"漳州市\",\"南平市\",\"龙岩市\",\"宁德市\"]},{\"name\":\"江西省\",\"subs\":[\"南昌市\",\"景德镇市\",\"萍乡市\",\"九江市\",\"新余市\",\"鹰潭市\",\"赣州市\",\"吉安市\",\"宜春市\",\"抚州市\",\"上饶市\"]},{\"name\":\"山东省\",\"subs\":[\"济南市\",\"青岛市\",\"淄博市\",\"枣庄市\",\"东营市\",\"烟台市\",\"潍坊市\",\"济宁市\",\"泰安市\",\"威海市\",\"日照市\",\"莱芜市\",\"临沂市\",\"德州市\",\"聊城市\",\"滨州市\",\"菏泽市\"]},{\"name\":\"河南省\",\"subs\":[\"郑州市\",\"开封市\",\"洛阳市\",\"平顶山市\",\"安阳市\",\"鹤壁市\",\"新乡市\",\"焦作市\",\"濮阳市\",\"许昌市\",\"漯河市\",\"三门峡市\",\"南阳市\",\"商丘市\",\"信阳市\",\"周口市\",\"驻马店市\",\"直辖县级\"]},{\"name\":\"湖北省\",\"subs\":[\"武汉市\",\"黄石市\",\"十堰市\",\"宜昌市\",\"襄阳市\",\"鄂州市\",\"荆门市\",\"孝感市\",\"荆州市\",\"黄冈市\",\"咸宁市\",\"随州市\",\"恩施土家族苗族自治州\",\"直辖县级\"]},{\"name\":\"湖南省\",\"subs\":[\"长沙市\",\"株洲市\",\"湘潭市\",\"衡阳市\",\"邵阳市\",\"岳阳市\",\"常德市\",\"张家界市\",\"益阳市\",\"郴州市\",\"永州市\",\"怀化市\",\"娄底市\",\"湘西土家族苗族自治州\"]},{\"name\":\"广东省\",\"subs\":[\"广州市\",\"韶关市\",\"深圳市\",\"珠海市\",\"汕头市\",\"佛山市\",\"江门市\",\"湛江市\",\"茂名市\",\"肇庆市\",\"惠州市\",\"梅州市\",\"汕尾市\",\"河源市\",\"阳江市\",\"清远市\",\"东莞市\",\"中山市\",\"潮州市\",\"揭阳市\",\"云浮市\"]},{\"name\":\"广西壮族自治区\",\"subs\":[\"南宁市\",\"柳州市\",\"桂林市\",\"梧州市\",\"北海市\",\"防城港市\",\"钦州市\",\"贵港市\",\"玉林市\",\"百色市\",\"贺州市\",\"河池市\",\"来宾市\",\"崇左市\"]},{\"name\":\"海南省\",\"subs\":[\"海口市\",\"三亚市\",\"三沙市\",\"直辖县级\",\"儋州市\"]},{\"name\":\"重庆市\",\"subs\":[\"重庆市\",\"县\"]},{\"name\":\"四川省\",\"subs\":[\"成都市\",\"自贡市\",\"攀枝花市\",\"泸州市\",\"德阳市\",\"绵阳市\",\"广元市\",\"遂宁市\",\"内江市\",\"乐山市\",\"南充市\",\"眉山市\",\"宜宾市\",\"广安市\",\"达州市\",\"雅安市\",\"巴中市\",\"资阳市\",\"阿坝藏族羌族自治州\",\"甘孜藏族自治州\",\"凉山彝族自治州\"]},{\"name\":\"贵州省\",\"subs\":[\"贵阳市\",\"六盘水市\",\"遵义市\",\"安顺市\",\"毕节市\",\"铜仁市\",\"黔西南布依族苗族自治州\",\"黔东南苗族侗族自治州\",\"黔南布依族苗族自治州\"]},{\"name\":\"云南省\",\"subs\":[\"昆明市\",\"曲靖市\",\"玉溪市\",\"保山市\",\"昭通市\",\"丽江市\",\"普洱市\",\"临沧市\",\"楚雄彝族自治州\",\"红河哈尼族彝族自治州\",\"文山壮族苗族自治州\",\"西双版纳傣族自治州\",\"大理白族自治州\",\"德宏傣族景颇族自治州\",\"怒江傈僳族自治州\",\"迪庆藏族自治州\"]},{\"name\":\"西藏自治区\",\"subs\":[\"拉萨市\",\"日喀则市\",\"昌都市\",\"山南地区\",\"那曲地区\",\"阿里地区\",\"林芝地区\"]},{\"name\":\"陕西省\",\"subs\":[\"西安市\",\"铜川市\",\"宝鸡市\",\"咸阳市\",\"渭南市\",\"延安市\",\"汉中市\",\"榆林市\",\"安康市\",\"商洛市\",\"西咸新区\"]},{\"name\":\"甘肃省\",\"subs\":[\"兰州市\",\"嘉峪关市\",\"金昌市\",\"白银市\",\"天水市\",\"武威市\",\"张掖市\",\"平凉市\",\"酒泉市\",\"庆阳市\",\"定西市\",\"陇南市\",\"临夏回族自治州\",\"甘南藏族自治州\"]},{\"name\":\"青海省\",\"subs\":[\"西宁市\",\"海东市\",\"海北藏族自治州\",\"黄南藏族自治州\",\"海南藏族自治州\",\"果洛藏族自治州\",\"玉树藏族自治州\",\"海西蒙古族藏族自治州\"]},{\"name\":\"宁夏回族自治区\",\"subs\":[\"银川市\",\"石嘴山市\",\"吴忠市\",\"固原市\",\"中卫市\"]},{\"name\":\"新疆维吾尔自治区\",\"subs\":[\"乌鲁木齐市\",\"克拉玛依市\",\"吐鲁番地区\",\"哈密地区\",\"昌吉回族自治州\",\"博尔塔拉蒙古自治州\",\"巴音郭楞蒙古自治州\",\"阿克苏地区\",\"克孜勒苏柯尔克孜自治州\",\"喀什地区\",\"和田地区\",\"伊犁哈萨克自治州\",\"塔城地区\",\"阿勒泰地区\",\"直辖县级\"]},{\"name\":\"台湾省\",\"subs\":[\"台中市\"]},{\"name\":\"香港特别行政区\",\"subs\":[\"香港特别行政区\"]},{\"name\":\"澳门特别行政区\",\"subs\":[\"澳门半岛\",\"氹仔岛\",\"路环岛\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}}]', 0, 1, 0, '2020-10-12 09:34:27');
-INSERT INTO `shop_truck_template` VALUES (199, 'T2020102073501', '11', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"北京市\",\"subs\":[\"北京市\"]},{\"name\":\"天津市\",\"subs\":[\"天津市\"]},{\"name\":\"河北省\",\"subs\":[\"石家庄市\",\"唐山市\",\"秦皇岛市\",\"邯郸市\",\"邢台市\",\"保定市\",\"张家口市\",\"承德市\",\"沧州市\",\"廊坊市\",\"衡水市\"]},{\"name\":\"山西省\",\"subs\":[\"太原市\",\"大同市\",\"阳泉市\",\"长治市\",\"晋城市\",\"朔州市\",\"晋中市\",\"运城市\",\"忻州市\",\"临汾市\",\"吕梁市\"]},{\"name\":\"内蒙古自治区\",\"subs\":[\"呼和浩特市\",\"包头市\",\"乌海市\",\"赤峰市\",\"通辽市\",\"鄂尔多斯市\",\"呼伦贝尔市\",\"巴彦淖尔市\",\"乌兰察布市\",\"兴安盟\",\"锡林郭勒盟\",\"阿拉善盟\"]},{\"name\":\"辽宁省\",\"subs\":[\"沈阳市\",\"大连市\",\"鞍山市\",\"抚顺市\",\"本溪市\",\"丹东市\",\"锦州市\",\"营口市\",\"阜新市\",\"辽阳市\",\"盘锦市\",\"铁岭市\",\"朝阳市\",\"葫芦岛市\",\"金普新区\"]},{\"name\":\"吉林省\",\"subs\":[\"长春市\",\"吉林市\",\"四平市\",\"辽源市\",\"通化市\",\"白山市\",\"松原市\",\"白城市\",\"延边朝鲜族自治州\"]},{\"name\":\"湖北省\",\"subs\":[\"武汉市\",\"黄石市\",\"十堰市\",\"宜昌市\",\"襄阳市\",\"鄂州市\",\"荆门市\",\"孝感市\",\"荆州市\",\"黄冈市\",\"咸宁市\",\"随州市\",\"恩施土家族苗族自治州\",\"直辖县级\"]},{\"name\":\"湖南省\",\"subs\":[\"长沙市\",\"株洲市\",\"湘潭市\",\"衡阳市\",\"邵阳市\",\"岳阳市\",\"常德市\",\"张家界市\",\"益阳市\",\"郴州市\",\"永州市\",\"怀化市\",\"娄底市\",\"湘西土家族苗族自治州\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}}]', 0, 1, 0, '2020-10-20 16:58:15');
-INSERT INTO `shop_truck_template` VALUES (200, 'T2020102644290', '123', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"北京市\",\"subs\":[\"北京市\"]},{\"name\":\"天津市\",\"subs\":[\"天津市\"]},{\"name\":\"河北省\",\"subs\":[\"石家庄市\",\"唐山市\",\"秦皇岛市\",\"邯郸市\",\"邢台市\",\"保定市\",\"张家口市\",\"承德市\",\"沧州市\",\"廊坊市\",\"衡水市\"]},{\"name\":\"山西省\",\"subs\":[\"晋中市\"]},{\"name\":\"内蒙古自治区\",\"subs\":[\"呼和浩特市\",\"包头市\",\"乌海市\",\"赤峰市\",\"通辽市\",\"鄂尔多斯市\",\"呼伦贝尔市\",\"巴彦淖尔市\",\"乌兰察布市\",\"兴安盟\",\"锡林郭勒盟\",\"阿拉善盟\"]},{\"name\":\"辽宁省\",\"subs\":[\"沈阳市\",\"大连市\",\"鞍山市\",\"抚顺市\",\"本溪市\",\"丹东市\",\"锦州市\",\"营口市\",\"阜新市\",\"辽阳市\",\"盘锦市\",\"铁岭市\",\"朝阳市\",\"葫芦岛市\",\"金普新区\"]},{\"name\":\"吉林省\",\"subs\":[\"长春市\",\"吉林市\",\"四平市\",\"辽源市\",\"通化市\",\"白山市\",\"松原市\",\"白城市\",\"延边朝鲜族自治州\"]},{\"name\":\"黑龙江省\",\"subs\":[\"哈尔滨市\",\"齐齐哈尔市\",\"鸡西市\",\"鹤岗市\",\"双鸭山市\",\"大庆市\",\"伊春市\",\"佳木斯市\",\"七台河市\",\"牡丹江市\",\"黑河市\",\"绥化市\",\"大兴安岭地区\"]},{\"name\":\"上海市\",\"subs\":[\"上海市\"]},{\"name\":\"江苏省\",\"subs\":[\"南京市\",\"无锡市\",\"徐州市\",\"常州市\",\"苏州市\",\"南通市\",\"连云港市\",\"淮安市\",\"盐城市\",\"扬州市\",\"镇江市\",\"泰州市\",\"宿迁市\"]},{\"name\":\"浙江省\",\"subs\":[\"杭州市\",\"宁波市\",\"温州市\",\"嘉兴市\",\"湖州市\",\"绍兴市\",\"金华市\",\"衢州市\",\"舟山市\",\"台州市\",\"丽水市\",\"舟山群岛新区\"]},{\"name\":\"安徽省\",\"subs\":[\"合肥市\",\"芜湖市\",\"蚌埠市\",\"淮南市\",\"马鞍山市\",\"淮北市\",\"铜陵市\",\"安庆市\",\"黄山市\",\"滁州市\",\"阜阳市\",\"宿州市\",\"六安市\",\"亳州市\",\"池州市\",\"宣城市\"]},{\"name\":\"福建省\",\"subs\":[\"福州市\",\"厦门市\",\"莆田市\",\"三明市\",\"泉州市\",\"漳州市\",\"南平市\",\"龙岩市\",\"宁德市\"]},{\"name\":\"江西省\",\"subs\":[\"南昌市\",\"景德镇市\",\"萍乡市\",\"九江市\",\"新余市\",\"鹰潭市\",\"赣州市\",\"吉安市\",\"宜春市\",\"抚州市\",\"上饶市\"]},{\"name\":\"山东省\",\"subs\":[\"济南市\",\"青岛市\",\"淄博市\",\"枣庄市\",\"东营市\",\"烟台市\",\"潍坊市\",\"济宁市\",\"泰安市\",\"威海市\",\"日照市\",\"莱芜市\",\"临沂市\",\"德州市\",\"聊城市\",\"滨州市\",\"菏泽市\"]},{\"name\":\"河南省\",\"subs\":[\"郑州市\",\"开封市\",\"洛阳市\",\"平顶山市\",\"安阳市\",\"鹤壁市\",\"新乡市\",\"焦作市\",\"濮阳市\",\"许昌市\",\"漯河市\",\"三门峡市\",\"南阳市\",\"商丘市\",\"信阳市\",\"周口市\",\"驻马店市\",\"直辖县级\"]},{\"name\":\"湖北省\",\"subs\":[\"武汉市\",\"黄石市\",\"十堰市\",\"宜昌市\",\"襄阳市\",\"鄂州市\",\"荆门市\",\"孝感市\",\"荆州市\",\"黄冈市\",\"咸宁市\",\"随州市\",\"恩施土家族苗族自治州\",\"直辖县级\"]},{\"name\":\"广东省\",\"subs\":[\"广州市\",\"韶关市\",\"深圳市\",\"珠海市\",\"汕头市\",\"佛山市\",\"江门市\",\"湛江市\",\"茂名市\",\"肇庆市\",\"惠州市\",\"梅州市\",\"汕尾市\",\"河源市\",\"阳江市\",\"清远市\",\"东莞市\",\"中山市\",\"潮州市\",\"揭阳市\",\"云浮市\"]},{\"name\":\"广西壮族自治区\",\"subs\":[\"南宁市\",\"柳州市\",\"桂林市\",\"梧州市\",\"北海市\",\"防城港市\",\"钦州市\",\"贵港市\",\"玉林市\",\"百色市\",\"贺州市\",\"河池市\",\"来宾市\",\"崇左市\"]},{\"name\":\"海南省\",\"subs\":[\"海口市\",\"三亚市\",\"三沙市\",\"直辖县级\",\"儋州市\"]},{\"name\":\"重庆市\",\"subs\":[\"重庆市\",\"县\"]},{\"name\":\"四川省\",\"subs\":[\"成都市\",\"自贡市\",\"攀枝花市\",\"泸州市\",\"德阳市\",\"绵阳市\",\"广元市\",\"遂宁市\",\"内江市\",\"乐山市\",\"南充市\",\"眉山市\",\"宜宾市\",\"广安市\",\"达州市\",\"雅安市\",\"巴中市\",\"资阳市\",\"阿坝藏族羌族自治州\",\"甘孜藏族自治州\",\"凉山彝族自治州\"]},{\"name\":\"贵州省\",\"subs\":[\"贵阳市\",\"六盘水市\",\"遵义市\",\"安顺市\",\"毕节市\",\"铜仁市\",\"黔西南布依族苗族自治州\",\"黔东南苗族侗族自治州\",\"黔南布依族苗族自治州\"]},{\"name\":\"云南省\",\"subs\":[\"昆明市\",\"曲靖市\",\"玉溪市\",\"保山市\",\"昭通市\",\"丽江市\",\"普洱市\",\"临沧市\",\"楚雄彝族自治州\",\"红河哈尼族彝族自治州\",\"文山壮族苗族自治州\",\"西双版纳傣族自治州\",\"大理白族自治州\",\"德宏傣族景颇族自治州\",\"怒江傈僳族自治州\",\"迪庆藏族自治州\"]},{\"name\":\"西藏自治区\",\"subs\":[\"拉萨市\",\"日喀则市\",\"昌都市\",\"山南地区\",\"那曲地区\",\"阿里地区\",\"林芝地区\"]},{\"name\":\"陕西省\",\"subs\":[\"西安市\",\"铜川市\",\"宝鸡市\",\"咸阳市\",\"渭南市\",\"延安市\",\"汉中市\",\"榆林市\",\"安康市\",\"商洛市\",\"西咸新区\"]},{\"name\":\"甘肃省\",\"subs\":[\"兰州市\",\"嘉峪关市\",\"金昌市\",\"白银市\",\"天水市\",\"武威市\",\"张掖市\",\"平凉市\",\"酒泉市\",\"庆阳市\",\"定西市\",\"陇南市\",\"临夏回族自治州\",\"甘南藏族自治州\"]},{\"name\":\"青海省\",\"subs\":[\"西宁市\",\"海东市\",\"海北藏族自治州\",\"黄南藏族自治州\",\"海南藏族自治州\",\"果洛藏族自治州\",\"玉树藏族自治州\",\"海西蒙古族藏族自治州\"]},{\"name\":\"宁夏回族自治区\",\"subs\":[\"银川市\",\"石嘴山市\",\"吴忠市\",\"固原市\",\"中卫市\"]},{\"name\":\"新疆维吾尔自治区\",\"subs\":[\"克拉玛依市\"]},{\"name\":\"台湾省\",\"subs\":[\"台北市\",\"高雄市\",\"基隆市\",\"台中市\",\"台南市\",\"新竹市\",\"嘉义市\",\"新北市\",\"宜兰县\",\"桃园县\",\"新竹县\",\"苗栗县\",\"彰化县\",\"南投县\",\"云林县\",\"嘉义县\",\"屏东县\",\"台东县\",\"花莲县\",\"澎湖县\",\"金门县\",\"连江县\"]},{\"name\":\"香港特别行政区\",\"subs\":[\"香港特别行政区\"]},{\"name\":\"澳门特别行政区\",\"subs\":[\"澳门半岛\",\"氹仔岛\",\"路环岛\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}}]', 0, 1, 0, '2020-10-26 09:35:53');
 
 SET FOREIGN_KEY_CHECKS = 1;
