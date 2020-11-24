@@ -7,7 +7,7 @@ use think\admin\Service;
 use think\admin\service\InterfaceService;
 
 /**
- * 快递运输服务
+ * 快递运输数据服务
  * Class TruckService
  * @package app\data\service
  */
@@ -19,7 +19,7 @@ class TruckService extends Service
      * @param string $provName 省份名称
      * @param string $cityName 城市名称
      * @param integer $truckCount 邮费基数
-     * @return array [邮费金额, 计费基数, 模板编号, 计算描述]
+     * @return array [邮费金额, 计费基数, 模板编号, 计费描述]
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

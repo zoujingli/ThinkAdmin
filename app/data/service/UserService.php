@@ -35,7 +35,9 @@ class UserService extends Service
             $map = ['token|openid1|openid2|unionid' => $map];
         }
         $user = $this->save($map, [], $force);
-        if (empty($user)) throw new \think\Exception('登录授权失败');
+        if (empty($user)) {
+            throw new \think\Exception('登录授权失败');
+        }
         // if ($member['tokenv'] !== $this->buildTokenVerify()) {
         //     throw new \think\Exception('请重新登录授权');
         // }
