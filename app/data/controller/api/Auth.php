@@ -36,6 +36,7 @@ abstract class Auth extends Controller
      */
     protected function initialize()
     {
+        $this->type = input('api', 'web');
         $this->user = $this->getUser();
         $this->uuid = $this->user['id'];
     }
@@ -51,7 +52,7 @@ abstract class Auth extends Controller
                 $token = input('token') ?: $this->request->header('token');
                 if (empty($token)) $this->error('接口认证令牌不能为空！');
                 [$state, $message, $this->uuid] = UserService::instance()->checkUserToken($this->type, $token);
-                if ($state) $this->error($message);
+                if (empty($state)) $this->error($message);
             }
             return UserService::instance()->get($this->type, $this->uuid);
         } catch (HttpResponseException $exception) {

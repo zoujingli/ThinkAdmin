@@ -74,7 +74,7 @@ class Login extends Controller
         }
         $data['password'] = md5($data['password']);
         $user = UserService::instance()->save($map, $data, 'web', true);
-        empty($user) ? $this->success('用户注册成功！', $user) : $this->error('手机注册失败！');
+        empty($user) ? $this->error('手机注册失败！') : $this->success('用户注册成功！', $user);
     }
 
     /**

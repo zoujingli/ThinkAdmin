@@ -53,16 +53,16 @@ class UserService extends Service
     public function save(array $map, array $data, string $type, bool $force = false): array
     {
         unset($data['id'], $data['deleted'], $data['create_at']);
-        if ($uid = $this->app->db->name('DataUser')->where($map)->where(['deleted' => 0])->value('id')) {
+        if ($uuid = $this->app->db->name('DataUser')->where($map)->where(['deleted' => 0])->value('id')) {
             if (!empty($data)) {
-                $map = ['id' => $uid, 'deleted' => 0];
+                $map = ['id' => $uuid, 'deleted' => 0];
                 $this->app->db->name('DataUser')->strict(false)->where($map)->update($data);
             }
         } else {
-            $uid = $this->app->db->name('DataUser')->strict(false)->insertGetId($data);
+            $uuid = $this->app->db->name('DataUser')->strict(false)->insertGetId($data);
         }
-        if ($force) $this->buildUserToken($uid, $type);
-        return $this->get($type, $uid);
+        if ($force) $this->buildUserToken(intval($uuid), $type);
+        return $this->get($type, $uuid);
     }
 
     /**
@@ -92,9 +92,9 @@ class UserService extends Service
         // 创建用户新的用户认证数据
         do $map = ['type' => $type, 'token' => md5(uniqid('', true) . rand(100, 999))];
         while ($this->app->db->name('DataUserToken')->where($map)->count() > 0);
-        $token = array_merge($map, ['time' => $time + $this->expire, 'tokenv' => $this->_buildTokenVerify()]);
-        if ($this->app->db->name('DataUserToken')->insert($token) !== false) {
-            return [1, '刷新用户认证成功', $token];
+        $data = array_merge($map, ['uid' => $uid, 'time' => $time + $this->expire, 'tokenv' => $this->_buildTokenVerify()]);
+        if ($this->app->db->name('DataUserToken')->insert($data) !== false) {
+            return [1, '刷新用户认证成功', $data];
         } else {
             return [0, '刷新用户认证失败', []];
         }
