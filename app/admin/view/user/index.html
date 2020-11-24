@@ -68,7 +68,7 @@
                     联系邮箱：<span class="color-blue">{$vo.contact_mail|default='<i class="color-desc">未配置邮箱</i>'|raw}</span><br>
                 </td>
                 <td class='text-left nowrap'>
-                    创建时间：<span class="color-blue">{$vo.create_at|format_datetime}</span>（ {eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq} ）<br>
+                    创建时间：<span class="color-blue">{$vo.create_at|format_datetime}</span>（ {eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">已激活</span>{/eq} ）<br>
                     {if $vo.login_at}
                     最后登录：<span class="color-blue">{$vo.login_at|format_datetime}</span>（ 已登录 <span class="color-blue">{$vo.login_num|default=0}</span> 次 ）<br>
                     {else}
