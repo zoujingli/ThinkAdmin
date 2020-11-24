@@ -33,7 +33,7 @@ class Menu extends Controller
      * 当前操作数据库
      * @var string
      */
-    protected $table = 'SystemMenu';
+    private $table = 'SystemMenu';
 
     /**
      * 系统菜单管理

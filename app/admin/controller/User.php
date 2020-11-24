@@ -29,7 +29,7 @@ class User extends Controller
      * 绑定数据表
      * @var string
      */
-    public $table = 'SystemUser';
+    private $table = 'SystemUser';
 
     /**
      * 系统用户管理

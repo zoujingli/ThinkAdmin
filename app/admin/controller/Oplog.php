@@ -30,7 +30,7 @@ class Oplog extends Controller
      * 绑定数据表
      * @var string
      */
-    public $table = 'SystemOplog';
+    private $table = 'SystemOplog';
 
     /**
      * 系统日志管理

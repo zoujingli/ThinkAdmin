@@ -35,7 +35,7 @@ class Config extends Controller
      * 绑定数据表
      * @var string
      */
-    protected $table = 'SystemConfig';
+    private $table = 'SystemConfig';
 
     /**
      * 系统参数配置

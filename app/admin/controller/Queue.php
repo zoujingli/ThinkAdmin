@@ -33,7 +33,7 @@ class Queue extends Controller
      * 绑定数据表
      * @var string
      */
-    protected $table = 'SystemQueue';
+    private $table = 'SystemQueue';
 
     /**
      * 系统任务管理
