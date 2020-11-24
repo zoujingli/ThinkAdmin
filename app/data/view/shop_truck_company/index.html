@@ -72,7 +72,7 @@
                     <!--{if $vo.status eq 1 and auth("state")}-->
                     <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
                     <!--{elseif auth("state")}-->
-                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">启 用</a>
+                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
                     <!--{/if}-->
                     <!--{if auth("remove") and $type eq 'recycle'}-->
                     <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>

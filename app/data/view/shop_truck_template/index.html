@@ -42,7 +42,7 @@
                 </td>
                 <td class='text-left nowrap'>{$vo.code|default=''}</td>
                 <td class='text-left nowrap'>{$vo.name|default=''}</td>
-                <td class="text-left nowrap">{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">使用中</span>{/if}</td>
+                <td class="text-left nowrap">{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">已激活</span>{/if}</td>
                 <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>
                 <td class='text-left nowrap'>
                     <!--{if auth("edit")}-->
@@ -51,7 +51,7 @@
                     <!--{if $vo.status eq 1 and auth("state")}-->
                     <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="code#{$vo.code};status#0">禁 用</a>
                     <!--{elseif auth("state")}-->
-                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="code#{$vo.code};status#1">启 用</a>
+                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="code#{$vo.code};status#1">激 活</a>
                     <!--{/if}-->
                     <!--{if auth("remove")}-->
                     <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="code#{$vo.code}">删 除</a>

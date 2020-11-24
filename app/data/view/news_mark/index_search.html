@@ -11,7 +11,7 @@
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    {foreach [''=>'-- 全部 --','0'=>'已禁用的记录','1'=>'使用中的记录'] as $k=>$v}
+                    {foreach [''=>'-- 全部 --','0'=>'已禁用的记录','1'=>'已激活的记录'] as $k=>$v}
                     {if $k.'' eq input('status')}
                     <option selected value="{$k}">{$v}</option>
                     {else}

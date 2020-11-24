@@ -38,7 +38,7 @@
             </td>
             <td class="nowrap"><span class="color-desc notselect">{$vo.spl|raw}</span>{$vo.name}</td>
             <td class="color-desc">{$vo.remark|default=''}</td>
-            <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq}</td>
+            <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">已激活</span>{/eq}</td>
             <td class='text-center nowrap notselect'>
 
                 {if auth("add")}
@@ -54,7 +54,7 @@
                 {/if}
 
                 {if $vo.status eq 0 and auth("state")}
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('state')}">启 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('state')}">激 活</a>
                 {/if}
 
                 {if $vo.status eq 1 and auth("state")}
