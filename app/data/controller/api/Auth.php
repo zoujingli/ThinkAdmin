@@ -48,13 +48,14 @@ abstract class Auth extends Controller
     protected function getUser()
     {
         try {
+            $user = UserService::instance();
             if (empty($this->uuid)) {
                 $token = input('token') ?: $this->request->header('token');
                 if (empty($token)) $this->error('接口认证令牌不能为空！');
-                [$state, $message, $this->uuid] = UserService::instance()->checkUserToken($this->type, $token);
+                [$state, $message, $this->uuid] = $user->checkUserToken($this->type, $token);
                 if (empty($state)) $this->error($message);
             }
-            return UserService::instance()->get($this->type, $this->uuid);
+            return $user->get($this->type, $this->uuid);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
