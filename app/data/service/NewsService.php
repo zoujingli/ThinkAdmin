@@ -13,10 +13,10 @@ class NewsService extends Service
 {
     /**
      * 同步文章数据统计
-     * @param integer $code 文章编号
+     * @param string $code 文章编号
      * @throws \think\db\exception\DbException
      */
-    public function syncNewsTotal(int $code): void
+    public function syncNewsTotal(string $code): void
     {
         [$map, $total] = [['code' => $code], []];
         $query = $this->app->db->name('DataNewsXCollect')->field('count(1) count,type');
