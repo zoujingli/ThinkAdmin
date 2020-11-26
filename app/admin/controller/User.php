@@ -179,4 +179,52 @@ class User extends Controller
         }
     }
 
+    /**
+     * 表单结果处理
+     * @param bool $result
+     */
+    protected function _add_form_result(bool $result)
+    {
+        if ($result) {
+            $id = $this->app->db->name($this->table)->getLastInsID();
+            sysoplog('系统用户管理', "添加系统用户[{$id}]成功");
+        }
+    }
+
+    /**
+     * 表单结果处理
+     * @param boolean $result
+     */
+    protected function _edit_form_result(bool $result)
+    {
+        if ($result) {
+            $id = input('id') ?: 0;
+            sysoplog('系统用户管理', "修改系统用户[{$id}]成功");
+        }
+    }
+
+    /**
+     * 状态结果处理
+     * @param boolean $result
+     */
+    protected function _state_save_result(bool $result)
+    {
+        if ($result) {
+            [$id, $state] = [input('id'), input('status')];
+            sysoplog('系统用户管理', ($state ? '激活' : '禁用') . "系统用户[{$id}]成功");
+        }
+    }
+
+    /**
+     * 删除结果处理
+     * @param boolean $result
+     */
+    protected function _remove_delete_result(bool $result)
+    {
+        if ($result) {
+            $id = input('id') ?: 0;
+            sysoplog('系统用户管理', "删除系统用户[{$id}]成功");
+        }
+    }
+
 }

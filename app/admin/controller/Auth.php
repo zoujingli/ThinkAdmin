@@ -109,6 +109,7 @@ class Auth extends Controller
             }
             $this->app->db->name('SystemAuthNode')->where($map)->delete();
             $this->app->db->name('SystemAuthNode')->insertAll($data);
+            sysoplog('系统权限管理', "配置系统权限[{$map['auth']}]授权成功");
             $this->success('权限授权修改成功！', 'javascript:history.back()');
         } else {
             $this->title = '权限配置节点';
@@ -128,6 +129,42 @@ class Auth extends Controller
     }
 
     /**
+     * 表单结果处理
+     * @param bool $result
+     */
+    protected function _add_form_result(bool $result)
+    {
+        if ($result) {
+            $id = $this->app->db->name($this->table)->getLastInsID();
+            sysoplog('系统权限管理', "添加系统权限[{$id}]成功");
+        }
+    }
+
+    /**
+     * 表单结果处理
+     * @param boolean $result
+     */
+    protected function _edit_form_result(bool $result)
+    {
+        if ($result) {
+            $id = input('id') ?: 0;
+            sysoplog('系统权限管理', "修改系统权限[{$id}]成功");
+        }
+    }
+
+    /**
+     * 状态结果处理
+     * @param boolean $result
+     */
+    protected function _state_save_result(bool $result)
+    {
+        if ($result) {
+            [$id, $state] = [input('id'), input('status')];
+            sysoplog('系统权限管理', ($state ? '激活' : '禁用') . "系统权限[{$id}]成功");
+        }
+    }
+
+    /**
      * 删除结果处理
      * @param boolean $result
      * @throws \think\db\exception\DbException
@@ -143,5 +180,4 @@ class Auth extends Controller
             $this->error("权限删除失败，请稍候再试！");
         }
     }
-
 }
