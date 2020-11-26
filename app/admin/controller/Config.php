@@ -67,7 +67,7 @@ class Config extends Controller
                 SystemService::instance()->setRuntime(null, [$xpath => 'admin']);
             }
             foreach ($this->request->post() as $name => $value) sysconf($name, $value);
-            sysoplog('系统配置管理', "修改系统参数配置");
+            sysoplog('系统配置管理', "修改系统参数成功");
             $this->success('修改系统参数成功！', sysuri("{$xpath}/index/index") . '#' . url("{$xpath}/config/index"));
         }
     }
@@ -96,7 +96,7 @@ class Config extends Controller
                 $post['storage']['allow_exts'] = join(',', $exts);
             }
             foreach ($post as $name => $value) sysconf($name, $value);
-            sysoplog('系统配置管理', "修改文件存储参数");
+            sysoplog('系统配置管理', "修改存储参数成功");
             $this->success('修改文件存储成功！');
         }
     }
