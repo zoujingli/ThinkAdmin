@@ -47,11 +47,11 @@ class Plugs extends Controller
     {
         if (AdminService::instance()->isSuper()) if (input('state')) {
             SystemService::instance()->setRuntime('product');
-            sysoplog('切换运行模式', '由开发模式切换为产品模式');
+            sysoplog('系统运维管理', '由开发模式切换为产品模式');
             $this->success('已切换为产品模式！');
         } else {
             SystemService::instance()->setRuntime('debug');
-            sysoplog('切换运行模式', '由产品模式切换为开发模式');
+            sysoplog('系统运维管理', '由产品模式切换为开发模式');
             $this->success('已切换为开发模式！');
         } else {
             $this->error('只有超级管理员才能操作！');
@@ -85,6 +85,7 @@ class Plugs extends Controller
     public function optimize()
     {
         if (AdminService::instance()->isSuper()) {
+            sysoplog('系统运维管理', '创建数据库优化任务');
             $this->_queue('优化数据库所有数据表', 'xadmin:database optimize', 0, [], 0, 0);
         } else {
             $this->error('只有超级管理员才能操作！');
@@ -113,6 +114,7 @@ class Plugs extends Controller
             });
             $this->app->cache->delete('SystemConfig');
             $GLOBALS['oplogs'] = [];
+            sysoplog('系统运维管理', '清理系统配置成功');
             $this->success('清理系统配置成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
@@ -132,6 +134,7 @@ class Plugs extends Controller
         if (AdminService::instance()->isSuper()) try {
             AdminService::instance()->clearCache();
             SystemService::instance()->pushRuntime();
+            sysoplog('系统运维管理', '网站发布缓存加速');
             $this->success('网站缓存加速成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
@@ -151,6 +154,7 @@ class Plugs extends Controller
         if (AdminService::instance()->isSuper()) try {
             AdminService::instance()->clearCache();
             SystemService::instance()->clearRuntime();
+            sysoplog('系统运维管理', '清理网站缓存日志');
             $this->success('清理网站缓存成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;

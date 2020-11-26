@@ -98,6 +98,7 @@ class Index extends Controller
                 $this->error('旧密码验证失败，请重新输入！');
             }
             if (data_save('SystemUser', ['id' => $user['id'], 'password' => md5($data['password'])])) {
+                sysoplog('系统用户管理', "修改用户[{$user['id']}]密码成功");
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {
                 $this->error('密码修改失败，请稍候再试！');

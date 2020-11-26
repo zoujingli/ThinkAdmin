@@ -137,6 +137,7 @@ class Auth extends Controller
         if ($result) {
             $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);
             $this->app->db->name('SystemAuthNode')->where($map)->delete();
+            sysoplog('系统权限管理', "删除系统权限[{$map['auth']}]及授权配置");
             $this->success("权限删除成功！");
         } else {
             $this->error("权限删除失败，请稍候再试！");
