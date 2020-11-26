@@ -89,6 +89,7 @@ class Oplog extends Controller
                 sysconf($name, $value);
             }
             $GLOBALS['oplogs'] = [];
+            sysoplog('系统运维管理', '修改系统日志行为配置');
             $this->success('日志配置成功！');
         }
     }
@@ -101,6 +102,7 @@ class Oplog extends Controller
     public function clear()
     {
         if ($this->app->db->name($this->table)->whereRaw('1=1')->delete() !== false) {
+            sysoplog('系统运维管理', '成功清理所有日志数据');
             $this->success('日志清理成功！');
         } else {
             $this->error('日志清理失败，请稍候再试！');
