@@ -134,7 +134,7 @@ class Plugs extends Controller
         if (AdminService::instance()->isSuper()) try {
             AdminService::instance()->clearCache();
             SystemService::instance()->pushRuntime();
-            sysoplog('系统运维管理', '网站发布缓存加速');
+            sysoplog('系统运维管理', '网站缓存加速成功');
             $this->success('网站缓存加速成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
