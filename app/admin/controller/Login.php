@@ -83,7 +83,7 @@ class Login extends Controller
                 'login_at'  => $this->app->db->raw('now()'),
                 'login_num' => $this->app->db->raw('login_num+1'),
             ]);
-            sysoplog('后台用户登录', '登录系统后台成功');
+            sysoplog('系统用户登录', '登录系统后台成功');
             $GLOBALS['oplogs'] = [];
             $this->success('登录成功', sysuri('admin/index/index'));
         }
