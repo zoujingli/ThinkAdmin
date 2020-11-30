@@ -48,13 +48,14 @@ class Library extends Service
      */
     public function boot()
     {
-        // 多应用中间键处理
+        // 服务初始化处理
         $this->app->event->listen('HttpRun', function (Request $request) {
+            // 配置默认输入过滤
+            $request->filter(['trim']);
+            // 注册多应用中间键
             $this->app->middleware->add(Multiple::class);
-            // 解决 HTTP 调用 Console 之后 URL 问题
-            if (!$this->app->request->isCli()) {
-                $request->setHost($request->host());
-            }
+            // 解决 HTTP 调用 Console 之后 URL 生成的问题
+            if (!$request->isCli()) $request->setHost($request->host());
         });
         // 替换 ThinkPHP 地址
         $this->app->bind('think\route\Url', BuildUrl::class);
@@ -71,8 +72,6 @@ class Library extends Service
      */
     public function register()
     {
-        // 输入默认过滤
-        $this->app->request->filter(['trim']);
         // 加载中文语言
         $this->app->lang->load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
         $this->app->lang->load(__DIR__ . '/lang/en-us.php', 'en-us');
