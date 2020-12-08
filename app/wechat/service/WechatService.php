@@ -221,7 +221,7 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getWebOauthInfo(string $source, $isfull = 0, $redirect = true)
+    public function getWebOauthInfo(string $source, $isfull = 0, $redirect = true): array
     {
         $appid = $this->getAppid();
         $openid = $this->app->session->get("{$appid}_openid");
@@ -234,10 +234,13 @@ class WechatService extends Service
             $wechat = self::WeChatOauth();
             if (input('state') !== $appid) {
                 $snsapi = empty($isfull) ? 'snsapi_base' : 'snsapi_userinfo';
-                $param = (strpos($source, '?') !== false ? '&' : '?') . 'rcode=' . enbase64url($source);
-                $oauthurl = $wechat->getOauthRedirect($source . $param, $appid, $snsapi);
-                if ($redirect) throw new HttpResponseException(redirect($oauthurl, 301));
-                exit("window.location.href='{$oauthurl}'");
+                $params = (strpos($source, '?') !== false ? '&' : '?') . 'rcode=' . enbase64url($source);
+                $oauthurl = $wechat->getOauthRedirect($source . $params, $appid, $snsapi);
+                if ($redirect) {
+                    throw new HttpResponseException(redirect($oauthurl, 301));
+                } else {
+                    throw new HttpResponseException(response("window.location.href='{$oauthurl}'"));
+                }
             }
             if (($token = $wechat->getOauthAccessToken()) && isset($token['openid'])) {
                 $this->app->session->set("{$appid}_openid", $openid = $token['openid']);
