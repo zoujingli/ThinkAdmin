@@ -19,40 +19,30 @@ use think\Response;
  */
 class Wechat extends Controller
 {
-    /**
-     * 授权模式
-     * @var int
-     */
-    protected $mode;
-
-    /**
-     * 来源地址
-     * @var string
-     */
-    protected $source;
 
     /**
      * 粉丝OPNEID
      * @var string
      */
-    protected $openid;
+    private $openid;
 
     /**
      * 网页授权配置
      * @var array
      */
-    protected $config;
+    private $config;
 
     /**
      * 微信粉丝数据
      * @var array
      */
-    protected $fansInfo;
+    private $fansInfo;
+
     /**
-     * 用户用户数据
+     * 前端用户数据
      * @var array
      */
-    protected $userInfo;
+    private $userInfo;
 
     /**
      * 加载对应JSSDK数据
@@ -64,18 +54,17 @@ class Wechat extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function jssdk()
+    public function jssdk(): Response
     {
         $wechat = WechatService::instance();
-        $this->mode = $this->request->get('mode', 1);
-        $this->source = $this->request->server('http_referer', $this->request->get('source', ''));
-        $user = $wechat->getWebOauthInfo($this->source ?: $this->request->url(true), $this->mode, false);
-        if (empty($user['openid'])) {
+        $source = $this->request->server('http_referer', $this->request->get('source', ''));
+        $result = $wechat->getWebOauthInfo($source ?: $this->request->url(true), input('mode', 1), false);
+        if (empty($result['openid'])) {
             $content = 'alert("Wechat WebOauth failed.")';
         } else {
-            $this->openid = $user['openid'];
-            $this->config = $wechat->getWebJssdkSign($this->source);
-            $this->fansInfo = $user['fansinfo'] ?? [];
+            $this->openid = $result['openid'];
+            $this->fansInfo = $result['fansinfo'] ?? [];
+            $this->config = $wechat->getWebJssdkSign($source);
             // 用户注册并登录生成接口令牌
             $data = $this->fansInfo;
             $data['openid2'] = $data['openid'];
