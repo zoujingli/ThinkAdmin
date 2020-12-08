@@ -132,7 +132,7 @@ class WechatService extends Service
      * @param string $name
      * @return array
      */
-    private static function paraseName(string $name)
+    private static function paraseName(string $name): array
     {
         foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkService'] as $type) {
             if (strpos($name, $type) === 0) {
@@ -168,7 +168,7 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getType()
+    public function getType(): string
     {
         $type = strtolower(sysconf('wechat.type'));
         if (in_array($type, ['api', 'thr'])) return $type;
@@ -184,7 +184,7 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         $options = [
             'token'          => sysconf('wechat.token'),
@@ -278,7 +278,7 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getWebJssdkSign(?string $location = null)
+    public function getWebJssdkSign(?string $location = null): array
     {
         $location = $location ?: $this->app->request->url(true);
         if ($this->getType() === 'api') {

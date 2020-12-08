@@ -28,14 +28,14 @@ class MediaService extends Service
 {
     /**
      * 通过图文ID读取图文信息
-     * @param integer $id 本地图文ID
+     * @param mixed $id 本地图文ID
      * @param array $where 额外的查询条件
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function news($id, $where = [])
+    public function news($id, $where = []): array
     {
         // 文章主体数据
         $data = $this->app->db->name('WechatNews')->where(['id' => $id])->where($where)->find();
@@ -61,7 +61,7 @@ class MediaService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function upload(string $url, string $type = 'image', array $video = [])
+    public function upload(string $url, string $type = 'image', array $video = []): string
     {
         $map = ['md5' => md5($url), 'appid' => WechatService::instance()->getAppid()];
         if (($mediaId = $this->app->db->name('WechatMedia')->where($map)->value('media_id'))) return $mediaId;
@@ -76,10 +76,10 @@ class MediaService extends Service
     /**
      * 创建 CURL 文件对象
      * @param string $local 文件路径或网络地址
-     * @return string
+     * @return MyCurlFile
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    private function _buildCurlFile(string $local)
+    private function _buildCurlFile(string $local): MyCurlFile
     {
         if (file_exists($local)) {
             return new MyCurlFile($local);

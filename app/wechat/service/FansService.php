@@ -34,7 +34,7 @@ class FansService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function set(array $user, string $appid = '')
+    public function set(array $user, string $appid = ''): bool
     {
         if (isset($user['subscribe_time'])) {
             $user['subscribe_at'] = date('Y-m-d H:i:s', $user['subscribe_time']);
@@ -44,20 +44,20 @@ class FansService extends Service
         }
         if ($appid !== '') $user['appid'] = $appid;
         unset($user['privilege'], $user['groupid']);
-        return data_save('WechatFans', $user, 'openid');
+        return !!data_save('WechatFans', $user, 'openid');
     }
 
     /**
      * 获取粉丝信息
      * @param string $openid
-     * @return array|null
+     * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function get(string $openid)
+    public function get(string $openid): array
     {
-        return $this->app->db->name('WechatFans')->where(['openid' => $openid])->find();
+        return $this->app->db->name('WechatFans')->where(['openid' => $openid])->find() ?: [];
     }
 
 }
