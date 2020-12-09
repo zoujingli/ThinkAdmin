@@ -89,10 +89,10 @@ class UserService extends Service
         $map1 = [['time', '<', $time = time()]];
         $map2 = [['uid', '=', $uid], ['type', '=', $type]];
         $this->app->db->name('DataUserToken')->whereOr([$map1, $map2])->delete();
-        // 创建用户新的用户认证数据
+        // 创建新的用户认证数据
         do $map = ['type' => $type, 'token' => md5(uniqid('', true) . rand(100, 999))];
         while ($this->app->db->name('DataUserToken')->where($map)->count() > 0);
-        // 刷新接口用户认证数据
+        // 写入接口用户认证数据
         $data = array_merge($map, ['uid' => $uid, 'time' => $time + $this->expire, 'tokenv' => $this->_buildTokenVerify()]);
         if ($this->app->db->name('DataUserToken')->insert($data) !== false) {
             return [1, '刷新认证成功', $data];
