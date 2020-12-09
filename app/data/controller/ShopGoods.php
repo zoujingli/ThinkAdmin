@@ -136,7 +136,7 @@ class ShopGoods extends Controller
     protected function _copy_form_filter(array &$data)
     {
         if ($this->request->isPost()) {
-            $data['code'] = CodeExtend::uniqidNumber(12, 'G');
+            $data['code'] = CodeExtend::uniqidNumber(14, 'G');
         }
     }
 
@@ -150,7 +150,7 @@ class ShopGoods extends Controller
     protected function _form_filter(array &$data)
     {
         if (empty($data['code'])) {
-            $data['code'] = CodeExtend::uniqidNumber(12, 'G');
+            $data['code'] = CodeExtend::uniqidNumber(14, 'G');
         }
         if ($this->request->isGet()) {
             $data['mark'] = str2arr($data['mark'] ?? '');
