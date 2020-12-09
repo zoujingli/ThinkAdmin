@@ -15,7 +15,7 @@ class UserService extends Service
      * 认证有效时间
      * @var integer
      */
-    private $expire = 3600;
+    private $expire = 7200;
 
     /**
      * 获取用户数据
@@ -27,7 +27,7 @@ class UserService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function get(string $type, int $uuid)
+    public function get(string $type, int $uuid): array
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uuid, 'deleted' => 0])->findOrEmpty();
         $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->findOrEmpty();
@@ -101,6 +101,20 @@ class UserService extends Service
     }
 
     /**
+     * 延期TOKEN有效时间
+     * @param string $type 接口类型
+     * @param string $token 授权令牌
+     * @throws \think\db\exception\DbException
+     */
+    public function expireUserToken(string $type, string $token)
+    {
+        $map = ['type' => $type, 'token' => $token];
+        $this->app->db->name('DataUserToken')->where($map)->update([
+            'time' => time() + $this->expire,
+        ]);
+    }
+
+    /**
      * 检查接口授权 TOKEN 是否有效
      * @param string $type 接口类型
      * @param string $token 认证令牌
@@ -117,12 +131,13 @@ class UserService extends Service
             $data = $this->app->db->name('DataUserToken')->where($map)->find();
         }
         if (empty($data) || empty($data['uid'])) {
-            return [0, '接口认证令牌无效', 0, 0];
+            return [0, '请重新登录，接口认证令牌无效', 0, 0];
         } elseif ($data['time'] < time()) {
-            return [0, '接口认证令牌已失效', 0, 0];
+            return [0, '请重新登录，接口认证令牌已失效', 0, 0];
         } elseif ($data['tokenv'] !== $this->_buildTokenVerify()) {
-            return [0, '接口请求客户端已更换', 0, 0];
+            return [0, '请重新登录，接口请求客户端已更换', 0, 0];
         } else {
+            $this->expireUserToken($type, $token);
             return [1, '接口认证令牌验证成功', $data['uid'], $data['time']];
         }
     }
