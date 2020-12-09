@@ -4520,25 +4520,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of system_oplog
--- ----------------------------
-INSERT INTO `system_oplog` VALUES (1, 'admin/login/index', '127.0.0.1', '用户登录', '登录系统后台成功', 'admin', '2020-11-24 07:34:11');
-INSERT INTO `system_oplog` VALUES (2, 'admin/login/index', '127.0.0.1', '后台用户登录', '登录系统后台成功', 'admin', '2020-11-24 10:41:53');
-INSERT INTO `system_oplog` VALUES (3, 'admin/config/storage', '127.0.0.1', '修改文件存储', '将文件存储修改为local', 'admin', '2020-11-24 10:42:19');
-INSERT INTO `system_oplog` VALUES (4, 'admin/login/index', '127.0.0.1', '后台用户登录', '登录系统后台成功', 'admin', '2020-11-26 06:11:58');
-INSERT INTO `system_oplog` VALUES (5, 'admin/login/index', '127.0.0.1', '后台用户登录', '登录系统后台成功', 'admin', '2020-11-26 07:04:56');
-INSERT INTO `system_oplog` VALUES (6, 'admin/menu/state', '127.0.0.1', '系统菜单管理', '禁用系统菜单[71]成功', 'admin', '2020-11-26 07:05:01');
-INSERT INTO `system_oplog` VALUES (7, 'admin/menu/state', '127.0.0.1', '系统菜单管理', '激活系统菜单[71]成功', 'admin', '2020-11-26 07:05:03');
-INSERT INTO `system_oplog` VALUES (8, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[70]成功', 'admin', '2020-11-26 07:05:57');
-INSERT INTO `system_oplog` VALUES (9, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2020-11-26 07:07:21');
-INSERT INTO `system_oplog` VALUES (10, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2020-11-26 07:07:23');
-INSERT INTO `system_oplog` VALUES (11, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2020-12-02 05:34:56');
-INSERT INTO `system_oplog` VALUES (12, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2020-12-02 06:13:35');
-INSERT INTO `system_oplog` VALUES (13, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2020-12-08 05:08:54');
-INSERT INTO `system_oplog` VALUES (14, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2020-12-09 07:59:27');
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for system_queue
