@@ -92,16 +92,17 @@ class UserService extends Service
         // 创建用户新的用户认证数据
         do $map = ['type' => $type, 'token' => md5(uniqid('', true) . rand(100, 999))];
         while ($this->app->db->name('DataUserToken')->where($map)->count() > 0);
+        // 刷新接口用户认证数据
         $data = array_merge($map, ['uid' => $uid, 'time' => $time + $this->expire, 'tokenv' => $this->_buildTokenVerify()]);
         if ($this->app->db->name('DataUserToken')->insert($data) !== false) {
-            return [1, '刷新用户认证成功', $data];
+            return [1, '刷新认证成功', $data];
         } else {
-            return [0, '刷新用户认证失败', []];
+            return [0, '刷新认证失败', []];
         }
     }
 
     /**
-     * 延期TOKEN有效时间
+     * 延期 TOKEN 有效时间
      * @param string $type 接口类型
      * @param string $token 授权令牌
      * @throws \think\db\exception\DbException
@@ -131,14 +132,14 @@ class UserService extends Service
             $data = $this->app->db->name('DataUserToken')->where($map)->find();
         }
         if (empty($data) || empty($data['uid'])) {
-            return [0, '请重新登录，接口认证令牌无效', 0, 0];
+            return [0, '请重新登录，登录认证无效', 0, 0];
         } elseif ($data['time'] < time()) {
-            return [0, '请重新登录，接口认证令牌已失效', 0, 0];
+            return [0, '请重新登录，登录认证已失效', 0, 0];
         } elseif ($data['tokenv'] !== $this->_buildTokenVerify()) {
-            return [0, '请重新登录，接口请求客户端已更换', 0, 0];
+            return [0, '请重新登录，客户端已更换', 0, 0];
         } else {
             $this->expireUserToken($type, $token);
-            return [1, '接口认证令牌验证成功', $data['uid'], $data['time']];
+            return [1, '登录验证成功', $data['uid'], $data['time']];
         }
     }
 
