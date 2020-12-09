@@ -96,7 +96,7 @@ class Config extends Controller
                 $post['storage']['allow_exts'] = join(',', $exts);
             }
             foreach ($post as $name => $value) sysconf($name, $value);
-            sysoplog('系统配置管理', "修改存储参数成功");
+            sysoplog('系统配置管理', "修改系统存储参数");
             $this->success('修改文件存储成功！');
         }
     }
