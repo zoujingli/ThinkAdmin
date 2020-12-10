@@ -14,7 +14,13 @@ use think\exception\HttpResponseException;
 abstract class Auth extends Controller
 {
     /**
-     * 当前用户UID
+     * 当前接口类型
+     * @var string
+     */
+    protected $type;
+
+    /**
+     * 当前用户编号
      * @var int
      */
     protected $uuid;
@@ -24,12 +30,6 @@ abstract class Auth extends Controller
      * @var array
      */
     protected $user;
-
-    /**
-     * 当前接口类型
-     * @var string
-     */
-    protected $type;
 
     /**
      * 控制器初始化
@@ -44,18 +44,18 @@ abstract class Auth extends Controller
      * 获取用户数据
      * @return array|void
      */
-    protected function getUser()
+    protected function getUser(): array
     {
         try {
-            $user = UserService::instance();
             $this->type = input('api', 'web');
+            $service = UserService::instance();
             if (empty($this->uuid)) {
                 $token = input('token') ?: $this->request->header('token');
-                if (empty($token)) $this->error('接口认证令牌不能为空！');
-                [$state, $message, $this->uuid] = $user->checkUserToken($this->type, $token);
-                if (empty($state)) $this->error($message);
+                if (empty($token)) $this->error('登录认证令牌不能为空！');
+                [$state, $info, $this->uuid] = $service->checkUserToken($this->type, $token);
+                if (empty($state)) $this->error($info, '{-null-}', 401);
             }
-            return $user->get($this->type, $this->uuid);
+            return $service->get($this->type, $this->uuid);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
