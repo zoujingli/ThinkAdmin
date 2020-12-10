@@ -21,7 +21,7 @@ abstract class Auth extends Controller
 
     /**
      * 当前用户编号
-     * @var int
+     * @var integer
      */
     protected $uuid;
 
