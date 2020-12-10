@@ -34,17 +34,18 @@ define(['md5'], function (SparkMD5, allowMime) {
                                     if (ret.data.uptype === 'qiniu') {
                                         option.uploader.config.data.token = ret.data.token;
                                     } else if (ret.data.uptype === 'alioss') {
-                                        option.uploader.config.data.policy = ret.data.policy;
-                                        option.uploader.config.data.signature = ret.data.signature;
-                                        option.uploader.config.data.OSSAccessKeyId = ret.data.OSSAccessKeyId;
-                                        option.uploader.config.data.success_action_status = 200;
+                                        option.uploader.config.data['policy'] = ret.data.policy;
+                                        option.uploader.config.data['signature'] = ret.data.signature;
+                                        option.uploader.config.data['OSSAccessKeyId'] = ret.data.OSSAccessKeyId;
+                                        option.uploader.config.data['success_action_status'] = 200;
                                         option.uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);
                                     } else if (ret.data.uptype === 'txcos') {
-                                        option.uploader.config.data.policy = ret.data.policy;
+                                        option.uploader.config.data['policy'] = ret.data.policy;
                                         option.uploader.config.data['q-ak'] = ret.data['q-ak'];
                                         option.uploader.config.data['q-key-time'] = ret.data['q-key-time'];
+                                        option.uploader.config.data['q-signature'] = ret.data['q-signature'];
                                         option.uploader.config.data['q-sign-algorithm'] = ret.data['q-sign-algorithm'];
-                                        option.uploader.config.data.success_action_status = 200;
+                                        option.uploader.config.data['success_action_status'] = 200;
                                         option.uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);
                                     }
                                     object.upload(file.index, file);

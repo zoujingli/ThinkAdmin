@@ -205,9 +205,9 @@ class TxcosStorage extends Storage
             'conditions' => [['q-ak' => $this->secretId], ['q-sign-time' => $keyTime], ['q-sign-algorithm' => 'sha1']],
         ]);
         return [
-            'policy'  => base64_encode($policy), 'q-ak' => $this->secretId,
-            'siteurl' => $siteurl, 'q-key-time' => $keyTime, 'q-sign-algorithm' => 'sha1',
-            // 'q-signature' => hash_hmac('sha1', sha1($policy), hash_hmac('sha1', $keyTime, $this->secretKey)),
+            'policy'      => base64_encode($policy), 'q-ak' => $this->secretId,
+            'siteurl'     => $siteurl, 'q-key-time' => $keyTime, 'q-sign-algorithm' => 'sha1',
+            'q-signature' => hash_hmac('sha1', sha1($policy), hash_hmac('sha1', $keyTime, $this->secretKey)),
         ];
     }
 

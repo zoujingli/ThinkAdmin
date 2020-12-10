@@ -83,6 +83,7 @@ class Upload extends Controller
             $data['q-ak'] = $token['q-ak'];
             $data['policy'] = $token['policy'];
             $data['q-key-time'] = $token['q-key-time'];
+            $data['q-signature'] = $token['q-signature'];
             $data['q-sign-algorithm'] = $token['q-sign-algorithm'];
             $data['server'] = TxcosStorage::instance()->upload();
         }
