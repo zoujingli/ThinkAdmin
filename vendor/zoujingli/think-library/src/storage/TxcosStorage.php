@@ -64,7 +64,7 @@ class TxcosStorage extends Storage
     /**
      * 获取当前实例对象
      * @param null|string $name
-     * @return static
+     * @return TxcosStorage
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -83,11 +83,11 @@ class TxcosStorage extends Storage
      * @param null|string $attname 下载名称
      * @return array
      */
-    public function set(string $name, string $file, bool $safe = false, ?string $attname = null)
+    public function set(string $name, string $file, bool $safe = false, ?string $attname = null): array
     {
         $data = $this->buildUploadToken($name) + ['key' => $name];
         if (is_string($attname) && strlen($attname) > 0) {
-            $data['Content-Disposition'] = '' . urlencode($attname);
+            $data['Content-Disposition'] = urlencode($attname);
         }
         $data['success_action_status'] = '200';
         $file = ['field' => 'file', 'name' => $name, 'content' => $file];
@@ -115,7 +115,7 @@ class TxcosStorage extends Storage
      * @param boolean $safe 安全模式
      * @return boolean
      */
-    public function del(string $name, bool $safe = false)
+    public function del(string $name, bool $safe = false): bool
     {
         [$file] = explode('?', $name);
         $result = HttpExtend::request('DELETE', "http://{$this->bucket}.{$this->point}/{$file}", [
@@ -130,7 +130,7 @@ class TxcosStorage extends Storage
      * @param boolean $safe 安全模式
      * @return boolean
      */
-    public function has(string $name, bool $safe = false)
+    public function has(string $name, bool $safe = false): bool
     {
         $file = $this->delSuffix($name);
         $result = HttpExtend::request('HEAD', "http://{$this->bucket}.{$this->point}/{$file}", [
@@ -148,7 +148,7 @@ class TxcosStorage extends Storage
      */
     public function url(string $name, bool $safe = false, ?string $attname = null): string
     {
-        return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
+        return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname,$name)}";
     }
 
     /**
@@ -267,7 +267,7 @@ class TxcosStorage extends Storage
      * 腾讯云COS存储区域
      * @return array
      */
-    public static function region()
+    public static function region(): array
     {
         return [
             'cos.ap-beijing-1.myqcloud.com'     => '中国大陆 公有云地域 北京一区',

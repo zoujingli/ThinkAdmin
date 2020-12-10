@@ -96,7 +96,7 @@ class AliossStorage extends Storage
      * @param null|string $attname 下载名称
      * @return array
      */
-    public function set(string $name, string $file, bool $safe = false, ?string $attname = null)
+    public function set(string $name, string $file, bool $safe = false, ?string $attname = null): array
     {
         $token = $this->buildUploadToken($name);
         $data = ['key' => $name];
@@ -132,7 +132,7 @@ class AliossStorage extends Storage
      * @param boolean $safe 安全模式
      * @return boolean
      */
-    public function del(string $name, bool $safe = false)
+    public function del(string $name, bool $safe = false): bool
     {
         [$file] = explode('?', $name);
         $result = HttpExtend::request('DELETE', "http://{$this->bucket}.{$this->point}/{$file}", [
@@ -147,7 +147,7 @@ class AliossStorage extends Storage
      * @param boolean $safe 安全模式
      * @return boolean
      */
-    public function has(string $name, bool $safe = false)
+    public function has(string $name, bool $safe = false): bool
     {
         $file = $this->delSuffix($name);
         $result = HttpExtend::request('HEAD', "http://{$this->bucket}.{$this->point}/{$file}", [
@@ -165,7 +165,7 @@ class AliossStorage extends Storage
      */
     public function url(string $name, bool $safe = false, ?string $attname = null): string
     {
-        return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
+        return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname,$name)}";
     }
 
     /**
@@ -257,7 +257,7 @@ class AliossStorage extends Storage
      * 阿里云OSS存储区域
      * @return array
      */
-    public static function region()
+    public static function region(): array
     {
         return [
             'oss-cn-hangzhou.aliyuncs.com'    => '华东 1（杭州）',

@@ -4,7 +4,7 @@
     </label>
     <div class="layui-input-block">
         {if !sysconf('storage.link_type')}{php}sysconf('storage.link_type','none');{/php}{/if}
-        {foreach ['none'=>'简洁链接','full'=>'完整链接'] as $k=>$v}
+        {foreach ['none'=>'简洁链接','full'=>'完整链接','none+compress'=>'简洁并压缩图片','full+compress'=>'完整并压缩图片'] as $k=>$v}
         <label class="think-radio notselect">
             {if sysconf('storage.link_type') eq $k}
             <input checked type="radio" name="storage.link_type" value="{$k}" lay-ignore> {$v}

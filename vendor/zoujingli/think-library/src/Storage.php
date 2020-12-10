@@ -43,10 +43,16 @@ abstract class Storage
     protected $app;
 
     /**
-     * 链接类型
+     * 存储类型
      * @var string
      */
     protected $type;
+
+    /**
+     * 链接类型
+     * @var string
+     */
+    protected $link;
 
     /**
      * 链接前缀
@@ -64,7 +70,7 @@ abstract class Storage
     public function __construct(App $app)
     {
         $this->app = $app;
-        $this->type = sysconf('storage.link_type');
+        $this->link = sysconf('storage.link_type');
         $this->initialize();
     }
 
@@ -180,7 +186,7 @@ abstract class Storage
      * @param string $url 资源地址
      * @return string
      */
-    public static function curlGet(string $url)
+    public static function curlGet(string $url): string
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -190,22 +196,33 @@ abstract class Storage
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         [$content] = [curl_exec($ch), curl_close($ch)];
-        return $content;
+        return $content ?: '';
     }
 
     /**
      * 获取下载链接后缀
      * @param null|string $attname 下载名称
+     * @param null|string $filename 文件名称
      * @return string
      */
-    protected function getSuffix(?string $attname = null): string
+    protected function getSuffix(?string $attname = null, ?string $filename = null): string
     {
-        if ($this->type === 'full') {
-            if (is_string($attname) && strlen($attname) > 0) {
-                return "?attname=" . urlencode($attname);
-            }
+        $suffix = '';
+        if (is_string($filename) && stripos($this->link, 'compress') !== false) {
+            $compress = [
+                'LocalStorage'  => '',
+                'QiniuStorage'  => '?imageslim',
+                'TxcosStorage'  => '?imageMogr2/format/webp',
+                'AliossStorage' => '?x-oss-process=image/format,webp',
+            ];
+            $class = basename(get_class($this));
+            $extens = strtolower(pathinfo($this->delSuffix($filename), PATHINFO_EXTENSION));
+            $suffix = in_array($extens, ['png', 'jpg', 'jpeg']) ? ($compress[$class] ?? '') : '';
         }
-        return '';
+        if (is_string($attname) && strlen($attname) > 0 && stripos($this->link, 'full') !== false) {
+            $suffix .= ($suffix ? '&' : '?') . 'attname=' . urlencode($attname);
+        }
+        return $suffix;
     }
 
     /**

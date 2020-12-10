@@ -27,6 +27,7 @@ use think\admin\Storage;
  */
 class QiniuStorage extends Storage
 {
+
     private $bucket;
     private $accessKey;
     private $secretKey;
@@ -79,7 +80,7 @@ class QiniuStorage extends Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function set(string $name, string $file, bool $safe = false, ?string $attname = null)
+    public function set(string $name, string $file, bool $safe = false, ?string $attname = null): array
     {
         $token = $this->buildUploadToken($name, 3600, $attname);
         $data = ['key' => $name, 'token' => $token, 'fileName' => $name];
@@ -95,7 +96,7 @@ class QiniuStorage extends Storage
      * @param boolean $safe 安全模式
      * @return string
      */
-    public function get(string $name, bool $safe = false)
+    public function get(string $name, bool $safe = false): string
     {
         $url = $this->url($name, $safe) . "?e=" . time();
         $token = "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', $url, $this->secretKey, true))}";
@@ -106,9 +107,9 @@ class QiniuStorage extends Storage
      * 删除存储的文件
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
-     * @return boolean|null
+     * @return boolean
      */
-    public function del(string $name, bool $safe = false)
+    public function del(string $name, bool $safe = false): bool
     {
         [$EncodedEntryURI, $AccessToken] = $this->getAccessToken($name, 'delete');
         $data = json_decode(HttpExtend::post("http://rs.qiniu.com/delete/{$EncodedEntryURI}", [], [
@@ -137,7 +138,7 @@ class QiniuStorage extends Storage
      */
     public function url(string $name, bool $safe = false, ?string $attname = null): string
     {
-        return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
+        return "{$this->prefix}/{$this->delSuffix($name)}{$this->getSuffix($attname,$name)}";
     }
 
     /**
@@ -203,9 +204,7 @@ class QiniuStorage extends Storage
     {
         $policy = $this->safeBase64(json_encode([
             "deadline"   => time() + $expires, "scope" => is_null($name) ? $this->bucket : "{$this->bucket}:{$name}",
-            'returnBody' => json_encode([
-                'uploaded' => true, 'filename' => '$(key)', 'url' => "{$this->prefix}/$(key){$this->getSuffix($attname)}", 'key' => $name, 'file' => $name,
-            ], JSON_UNESCAPED_UNICODE),
+            'returnBody' => json_encode(['uploaded' => true, 'filename' => '$(key)', 'url' => "{$this->prefix}/$(key){$this->getSuffix($attname,$name)}", 'key' => $name, 'file' => $name], JSON_UNESCAPED_UNICODE),
         ]));
         return "{$this->accessKey}:{$this->safeBase64(hash_hmac('sha1', $policy, $this->secretKey, true))}:{$policy}";
     }
@@ -237,7 +236,7 @@ class QiniuStorage extends Storage
      * 七牛云对象存储区域
      * @return array
      */
-    public static function region()
+    public static function region(): array
     {
         return [
             'up.qiniup.com'     => '华东',

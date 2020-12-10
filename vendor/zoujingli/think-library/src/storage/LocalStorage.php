@@ -55,7 +55,7 @@ class LocalStorage extends Storage
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function instance(?string $name = null): LocalStorage
+    public static function instance(?string $name = null)
     {
         return parent::instance('local');
     }
@@ -68,7 +68,7 @@ class LocalStorage extends Storage
      * @param null|string $attname 下载名称
      * @return array
      */
-    public function set(string $name, string $file, bool $safe = false, ?string $attname = null)
+    public function set(string $name, string $file, bool $safe = false, ?string $attname = null): array
     {
         try {
             $path = $this->path($name, $safe);
@@ -87,7 +87,7 @@ class LocalStorage extends Storage
      * @param boolean $safe 安全模式
      * @return string
      */
-    public function get(string $name, bool $safe = false)
+    public function get(string $name, bool $safe = false): string
     {
         if (!$this->has($name, $safe)) return '';
         return static::curlGet($this->path($name, $safe));
@@ -99,7 +99,7 @@ class LocalStorage extends Storage
      * @param boolean $safe 安全模式
      * @return boolean
      */
-    public function del(string $name, bool $safe = false)
+    public function del(string $name, bool $safe = false): bool
     {
         if ($this->has($name, $safe)) {
             return @unlink($this->path($name, $safe));
@@ -128,7 +128,7 @@ class LocalStorage extends Storage
      */
     public function url(string $name, bool $safe = false, ?string $attname = null): string
     {
-        return $safe ? $name : "{$this->prefix}/upload/{$this->delSuffix($name)}{$this->getSuffix($attname)}";
+        return $safe ? $name : "{$this->prefix}/upload/{$this->delSuffix($name)}{$this->getSuffix($attname,$name)}";
     }
 
     /**

@@ -35,11 +35,10 @@
                 {foreach ['华东','华北','华南','北美'] as $area}
                 <label class="think-radio">
                     {if sysconf('storage.qiniu_region') eq $area}
-                    <input checked type="radio" name="storage.qiniu_region" value="{$area}" lay-ignore>
+                    <input checked type="radio" name="storage.qiniu_region" value="{$area}" lay-ignore> {$area}
                     {else}
-                    <input type="radio" name="storage.qiniu_region" value="{$area}" lay-ignore>
+                    <input type="radio" name="storage.qiniu_region" value="{$area}" lay-ignore> {$area}
                     {/if}
-                    {$area}
                 </label>
                 {/foreach}
                 <p class="help-block">七牛云存储空间所在区域，需要严格对应储存所在区域才能上传文件</p>
