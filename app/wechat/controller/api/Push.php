@@ -196,8 +196,8 @@ class Push extends Controller
      */
     private function _keys(string $rule, bool $last = false, bool $custom = false)
     {
-        if (stripos($rule, 'WechatKeys#keys#reply#text:') === 0) {
-            [, $content] = explode('WechatKeys#keys#reply#text:', $rule);
+        if (is_numeric(stripos($rule, '#reply#text:'))) {
+            [, $content] = explode('#reply#text:', $rule);
             return $this->_buildMessage('text', ['Content' => $content]);
         }
         [$table, $field, $value] = explode('#', $rule . '##');
@@ -323,7 +323,7 @@ class Push extends Controller
      * @param array $data
      * @return array
      */
-    private function _arrayChangeKeyCase(array $data)
+    private function _arrayChangeKeyCase(array $data): array
     {
         $data = array_change_key_case($data, CASE_LOWER);
         foreach ($data as $key => $vo) if (is_array($vo)) {
