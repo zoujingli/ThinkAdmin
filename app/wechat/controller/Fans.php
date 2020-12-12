@@ -75,7 +75,7 @@ class Fans extends Controller
      */
     public function sync()
     {
-        $this->_queue('同步微信用户数据', "xadmin:fansall", 1, [], 0);
+        $this->_queue('同步微信用户数据', "xadmin:fansall");
     }
 
     /**
