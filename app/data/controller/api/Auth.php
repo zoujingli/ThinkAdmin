@@ -15,6 +15,8 @@ abstract class Auth extends Controller
 {
     /**
      * 当前接口类型
+     * 小程序使用 wxapp
+     * 服务号使用 wechat
      * @var string
      */
     protected $type;
