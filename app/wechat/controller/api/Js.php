@@ -26,8 +26,13 @@ use think\Response;
  */
 class Js extends Controller
 {
+    /** @var string */
     protected $params;
+
+    /** @var string */
     protected $openid;
+
+    /** @var string */
     protected $fansinfo;
 
     /**
@@ -40,7 +45,7 @@ class Js extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function index()
+    public function index(): Response
     {
         $mode = $this->request->get('mode', 1);
         $source = $this->request->server('http_referer') ?: $this->request->url(true);

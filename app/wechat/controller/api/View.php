@@ -28,7 +28,7 @@ class View extends Controller
 
     /**
      * 图文列表展示
-     * @param integer $id 图文ID
+     * @param integer $id 图文ID编号
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -42,7 +42,7 @@ class View extends Controller
 
     /**
      * 文章内容展示
-     * @param integer $id 文章ID
+     * @param integer $id 文章ID编号
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
