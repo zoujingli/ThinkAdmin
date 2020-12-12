@@ -1,0 +1,66 @@
+{extend name="../../admin/view/main"}
+
+{block name='content'}
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-40">
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7">支付名称</span>
+            <span class="color-desc margin-left-5">Payment Name</span>
+            <input class="layui-input" required placeholder="请输入支付名称" name="name" value="{$vo.name|default=''}"/>
+            <span class="help-block"><b>必填，</b>请填写分类名称（如：微信小程序支付），建议字符不要太长，一般4-6个汉字</span>
+        </label>
+        <div class="layui-form-item">
+            <span class="color-green font-w7 label-required-prev">支付通道</span>
+            <span class="color-desc margin-left-5">Payment Channel</span>
+            <div class="layui-input">
+                {empty name='vo.type'}{php}$vo['type'] = 'wechat_xcx';{/php}{/empty}
+                {foreach $types as $k => $v}
+                <label class="think-radio notselect">
+                    {if $vo.type eq $k}
+                    <input data-payment-type checked type="radio" name="type" value="{$k}" lay-ignore> {$v}
+                    {else}
+                    <input data-payment-type type="radio" name="type" value="{$k}" lay-ignore> {$v}
+                    {/if}
+                </label>
+                {/foreach}
+            </div>
+        </div>
+
+        <div data-payment-type="wechat">{include file='payment/form_wechat'}</div>
+        <div data-payment-type="joinpay" class="layui-hide">{include file='payment/form_joinpay'}</div>
+
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7">支付描述</span>
+            <span class="color-desc margin-left-5">Payment Remark</span>
+            <label class="relative block">
+                <textarea class="layui-textarea" placeholder="请输入支付描述" name="desc">{$vo.desc|default=''}</textarea>
+            </label>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type='submit'>保存数据</button>
+            <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-history-back>取消编辑</button>
+        </div>
+
+    </div>
+
+</form>
+{/block}
+
+{block name='script'}
+<script>
+    $('input[data-payment-type]').on('change', function () {
+        var type = $('input[data-payment-type]:checked').val();
+        if (type.indexOf('wechat') > -1) {
+            $('[data-payment-type="wechat"]').removeClass('layui-hide')
+            $('[data-payment-type="joinpay"]').addClass('layui-hide');
+        } else {
+            $('[data-payment-type="wechat"]').addClass('layui-hide')
+            $('[data-payment-type="joinpay"]').removeClass('layui-hide');
+        }
+    }).trigger('change');
+</script>
+{/block}

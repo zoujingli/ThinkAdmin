@@ -104,8 +104,23 @@ CREATE TABLE `data_news_x_comment`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-评论' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
--- Records of data_news_x_comment
+-- Table structure for data_payment
 -- ----------------------------
+DROP TABLE IF EXISTS `data_payment`;
+CREATE TABLE `data_payment`  (
+ `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+ `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付类型',
+ `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付名称',
+ `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '支付参数',
+ `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付说明',
+ `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
+ `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '支付状态(1使用,0禁用)',
+ `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
+ `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+ PRIMARY KEY (`id`) USING BTREE,
+ INDEX `idx_data_news_mark_status`(`status`) USING BTREE,
+ INDEX `idx_data_news_mark_deleted`(`deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-支付-通道' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user
@@ -4506,6 +4521,7 @@ INSERT INTO `system_menu` VALUES (83, 73, '配送区域管理', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (84, 68, '微信小程序配置', 'layui-icon layui-icon-set', 'data/config/wxapp', 'data/config/wxapp', '', '_self', 0, 1, '2020-09-21 16:34:08');
 INSERT INTO `system_menu` VALUES (85, 68, '会员服务协议', 'layui-icon layui-icon-template-1', 'data/config/agreement', 'data/config/agreement', '', '_self', 30, 1, '2020-09-22 16:00:10');
 INSERT INTO `system_menu` VALUES (86, 68, '关于我们描述', 'layui-icon layui-icon-app', 'data/config/about', 'data/config/about', '', '_self', 40, 1, '2020-09-22 16:12:44');
+INSERT INTO `system_menu` VALUES (87, 68, '商城支付配置', 'layui-icon layui-icon-set-sm', 'data/payment/index', 'data/payment/index', '', '_self', 0, 1, '2020-12-12 09:08:09');
 
 -- ----------------------------
 -- Table structure for system_oplog

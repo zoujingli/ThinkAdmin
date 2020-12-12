@@ -5,8 +5,8 @@ namespace app\data\controller\api\auth;
 use app\data\controller\api\Auth;
 use app\data\service\GoodsService;
 use app\data\service\OrderService;
+use app\data\service\PaymentService;
 use app\data\service\TruckService;
-use app\wechat\service\WechatService;
 use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
 
@@ -169,7 +169,7 @@ class Order extends Auth
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
         $update['amount_total'] = $order['amount_goods'] + $amount - $order['amount_reduct'] - $order['amount_discount'];
         if ($this->app->db->name('ShopOrder')->where($map)->update($update) !== false) {
-            $this->success('订单确认成功！', $this->_getPaymentParams($order['order_no'], $order['amount_total']));
+            $this->success('订单确认成功！', ['order_no' => $order['order_no']]);
         } else {
             $this->error('订单确认失败，请稍候再试！');
         }
@@ -183,13 +183,17 @@ class Order extends Auth
      */
     public function payment()
     {
-        $map = $this->_vali(['order_no.require' => '订单单号不能为空！']);
+        $data = $this->_vali([
+            'payid.require'    => '支付通道不能为空！',
+            'order_no.require' => '订单单号不能为空！',
+        ]);
+        $map = ['order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) $this->error('获取订单数据失败，请稍候再试！');
         if ($order['status'] != 2) $this->error('该订单不能发起支付哦！');
         if ($order['payment_status']) $this->error('订单已经支付，不需要再次支付哦！');
         try {
-            $params = $this->_getPaymentParams($order['order_no'], $order['amount_total']);
+            $params = PaymentService::build($data['payid'])->create($this->user['openid'], $order['order_no'], $order['amount_total'], '商城订单支付', '');
             $this->success('获取支付参数成功！', $params);
         } catch (HttpResponseException $exception) {
             throw  $exception;
@@ -197,30 +201,6 @@ class Order extends Auth
             $this->error("创建支付参数失败，{$exception->getMessage()}");
         }
     }
-
-    /**
-     * 获取订单支付参数
-     * @param string $code 订单单号
-     * @param string $amount 支付金额
-     * @return array
-     */
-    private function _getPaymentParams(string $code, string $amount): array
-    {
-        try {
-            return WechatService::WePayOrder()->create([
-                'body'             => '商城订单支付',
-                'openid'           => $this->user['openid'],
-                'out_trade_no'     => $code,
-                'total_fee'        => $amount * 100,
-                'trade_type'       => 'JSAPI',
-                'notify_url'       => sysuri('@data/api.notify/wxpay/type/order', [], false, true),
-                'spbill_create_ip' => $this->app->request->ip(),
-            ]);
-        } catch (\Exception $exception) {
-            $this->error("创建支付参数失败，{$exception->getMessage()}");
-        }
-    }
-
 
     /**
      * 主动取消未支付的订单
