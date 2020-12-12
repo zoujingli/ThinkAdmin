@@ -21,6 +21,9 @@ use think\admin\storage\AliossStorage;
 use think\admin\storage\LocalStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
+use think\file\UploadedFile;
+use think\Response;
+use think\response\Json;
 
 /**
  * 文件上传接口
@@ -32,11 +35,12 @@ class Upload extends Controller
 
     /**
      * 文件上传JS支持
+     * @return Response
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function index()
+    public function index(): Response
     {
         $data = ['exts' => []];
         foreach (explode(',', sysconf('storage.allow_exts')) as $ext) {
@@ -93,13 +97,13 @@ class Upload extends Controller
     /**
      * 文件上传入口
      * @login true
-     * @return \think\response\Json
+     * @return Json
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function file()
+    public function file(): Json
     {
         if (!($file = $this->getFile()) || empty($file)) {
             return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件可能过大或未上传']]);
@@ -134,7 +138,7 @@ class Upload extends Controller
      * 获取文件上传类型
      * @return boolean
      */
-    private function getSafe()
+    private function getSafe(): bool
     {
         return boolval(input('safe', '0'));
     }
@@ -146,7 +150,7 @@ class Upload extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function getType()
+    private function getType(): string
     {
         $this->uptype = strtolower(input('uptype', ''));
         if (!in_array($this->uptype, ['local', 'qiniu', 'alioss', 'txcos'])) {
@@ -157,9 +161,9 @@ class Upload extends Controller
 
     /**
      * 获取本地文件对象
-     * @return \think\file\UploadedFile
+     * @return UploadedFile
      */
-    private function getFile()
+    private function getFile(): UploadedFile
     {
         try {
             return $this->request->file('file');

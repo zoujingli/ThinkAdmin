@@ -113,8 +113,7 @@ class Plugs extends Controller
                 $this->app->db->name('SystemConfig')->insertAll($alldata);
             });
             $this->app->cache->delete('SystemConfig');
-            $GLOBALS['oplogs'] = [];
-            sysoplog('系统运维管理', '清理系统配置成功');
+            sysoplog('系统运维管理', '清理系统参数配置成功');
             $this->success('清理系统配置成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
@@ -134,7 +133,7 @@ class Plugs extends Controller
         if (AdminService::instance()->isSuper()) try {
             AdminService::instance()->clearCache();
             SystemService::instance()->pushRuntime();
-            sysoplog('系统运维管理', '网站缓存加速成功');
+            sysoplog('系统运维管理', '刷新并创建网站路由缓存');
             $this->success('网站缓存加速成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
@@ -154,8 +153,8 @@ class Plugs extends Controller
         if (AdminService::instance()->isSuper()) try {
             AdminService::instance()->clearCache();
             SystemService::instance()->clearRuntime();
-            sysoplog('系统运维管理', '清理网站缓存日志');
-            $this->success('清理网站缓存成功！');
+            sysoplog('系统运维管理', '清理网站日志及缓存数据');
+            $this->success('清理网站日志及缓存数据成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

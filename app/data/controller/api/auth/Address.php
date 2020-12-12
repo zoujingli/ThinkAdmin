@@ -124,12 +124,12 @@ class Address extends Auth
     /**
      * 获取指定的收货地址
      * @param string $code
-     * @return array
+     * @return null|array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function _getAddress(string $code)
+    private function _getAddress(string $code): ?array
     {
         $map = ['code' => $code, 'uid' => $this->uuid, 'deleted' => 0];
         return $this->app->db->name($this->table)->withoutField('deleted')->where($map)->find();

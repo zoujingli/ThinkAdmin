@@ -5,6 +5,7 @@ namespace app\data\controller\api;
 use app\data\service\UserService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
+use think\Response;
 use WeMini\Crypt;
 use WeMini\Live;
 use WeMini\Qrcode;
@@ -41,6 +42,7 @@ class Wxapp extends Controller
 
     /**
      * 授权Code换取会话信息
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -94,7 +96,7 @@ class Wxapp extends Controller
      * @param string $code 换取授权CODE
      * @return array [openid, sessionkey]
      */
-    private function _getSessionKey(string $code)
+    private function _getSessionKey(string $code): array
     {
         try {
             $cache = $this->app->cache->get($code, []);
@@ -120,7 +122,7 @@ class Wxapp extends Controller
     /**
      * 获取小程序码
      */
-    public function qrcode()
+    public function qrcode(): Response
     {
         try {
             $data = $this->_vali([
@@ -169,7 +171,7 @@ class Wxapp extends Controller
                 'start.default'   => 0,
                 'limit.default'   => 10,
                 'action.default'  => 'get_replay',
-                'room_id.require' => '直播间ID不能为空',
+                'room_id.require' => '直播间不能为空',
             ]);
             $result = Live::instance($this->config)->getLiveInfo($data);
             $this->success('获取回放视频成功！', $result);

@@ -25,15 +25,16 @@ class MessageService extends Service
 
     /**
      * 短信服务初始化
-     * @return MessageService|void
+     * @return MessageService
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function initialize()
+    protected function initialize(): MessageService
     {
         $this->username = sysconf('zt.username');
         $this->password = sysconf('zt.password');
+        return $this;
     }
 
     /**
@@ -67,7 +68,7 @@ class MessageService extends Service
      * @param string $tplcode
      * @return boolean
      */
-    public function checkVerifyCode(string $code, string $phone, string $tplcode = 'zt.tplcode_register')
+    public function checkVerifyCode(string $code, string $phone, string $tplcode = 'zt.tplcode_register'): bool
     {
         $cache = $this->app->cache->get($ckey = md5("code-{$tplcode}-{$phone}"), []);
         return is_array($cache) && isset($cache['code']) && $cache['code'] == $code;
@@ -83,7 +84,7 @@ class MessageService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function sendVerifyCode(string $phone, int $wait = 120, string $tplcode = 'zt.tplcode_register')
+    public function sendVerifyCode(string $phone, int $wait = 120, string $tplcode = 'zt.tplcode_register'): array
     {
         $content = sysconf($tplcode) ?: '您的短信验证码为{code}，请在十分钟内完成操作！';
         $cache = $this->app->cache->get($ckey = md5("code-{$tplcode}-{$phone}"), []);

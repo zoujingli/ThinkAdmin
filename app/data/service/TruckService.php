@@ -89,7 +89,7 @@ class TruckService extends Service
      * @return array
      * @throws \think\admin\Exception
      */
-    public function company()
+    public function company(): array
     {
         return $this->_getInterface()->doRequest('api.auth.express/getCompany');
     }
