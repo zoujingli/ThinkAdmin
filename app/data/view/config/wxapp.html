@@ -4,7 +4,7 @@
 <div class="think-box-shadow">
     <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" style="width:850px">
         <div class="layui-card-header text-center margin-20 font-w7 color-text layui-bg-gray border-radius-5">
-            {$title|default='小程序接口配置'}<span class="color-desc font-s12"> ( 微信公众号平台 和 微信商户平台获取 )</span>
+            {$title|default='小程序接口配置'}<span class="color-desc font-s12"> ( 微信公众号平台配置获取 )</span>
         </div>
         <div class="layui-card-body padding-left-40 padding-top-20 padding-bottom-0">
             <label class="layui-form-item margin-bottom-20 block relative">
@@ -16,17 +16,6 @@
                 <span class="color-green font-s14 font-w7 margin-right-10">小程序密钥 Secret</span>
                 <input name="data.wxapp_appkey" required maxlength="32" pattern="^[0-9a-z]{32}$" placeholder="请输入32位小程序 AppSecret" value="{:sysconf('data.wxapp_appkey')}" class="layui-input">
                 <span class="help-block"><b>必选</b>，微信小程序 AppSecret 需要微信公众号平台获取！</span>
-            </label>
-            <div class="hr-line-solid"></div>
-            <label class="layui-form-item margin-bottom-20 block relative">
-                <span class="color-green font-s14 font-w7">微信商户账号</span><span class="color-desc">（支付账号）</span>
-                <input name="data.wxapp_mch_id" placeholder="请输入绑定微信商户账号" value="{:sysconf('data.wxapp_mch_id')}" class="layui-input">
-                <span class="help-block"><b>可选</b>，绑定微信商户账号需要与公众号APPID绑定，否则无法调用商户类接口！</span>
-            </label>
-            <label class="layui-form-item margin-bottom-20 block relative">
-                <span class="color-green font-s14 font-w7">微信商户密钥</span><span class="color-desc">（支付密钥）</span>
-                <input name="data.wxapp_mch_key" placeholder="请输入绑定微信商户密钥" value="{:sysconf('data.wxapp_mch_key')}" class="layui-input">
-                <span class="help-block"><b>可选</b>，绑定微信商户的密钥需要与商户账号匹配，否则无法进行接口数据签名！</span>
             </label>
             <div class="hr-line-dashed margin-top-30"></div>
             <div class="layui-form-item text-center padding-left-20">
