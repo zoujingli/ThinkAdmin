@@ -53,7 +53,7 @@
 {block name='script'}
 <script>
     $('input[data-payment-type]').on('change', function () {
-        var type = $('input[data-payment-type]:checked').val();
+        var type = $('input[data-payment-type]:checked').val() || '';
         if (type.indexOf('wechat') > -1) {
             $('[data-payment-type="wechat"]').removeClass('layui-hide')
             $('[data-payment-type="joinpay"]').addClass('layui-hide');

@@ -13,20 +13,19 @@ use think\admin\Service;
  */
 abstract class PaymentService extends Service
 {
-    // 微信支付类型
-    const PAYMENT_WECHAT_GZH = 'wechat_gzh';
-    const PAYMENT_WECHAT_XCX = 'wechat_xcx';
 
-    // 汇聚支付类型
+    // 汇聚支付通道
     const PAYMENT_JOINPAY_GZH = 'joinpay_gzh';
     const PAYMENT_JOINPAY_XCX = 'joinpay_xcx';
 
+    // 微信支付通道
+    const PAYMENT_WECHAT_JSAPI = 'wechat_jsapi';
+
     // 支付通道描述
     const TYPES = [
-        PaymentService::PAYMENT_WECHAT_XCX  => '微信小程序支付',
-        PaymentService::PAYMENT_WECHAT_GZH  => '微信服务号支付',
-        PaymentService::PAYMENT_JOINPAY_XCX => '汇聚小程序支付',
-        PaymentService::PAYMENT_JOINPAY_GZH => '汇聚服务号支付',
+        PaymentService::PAYMENT_WECHAT_JSAPI => '微信商户支付',
+        PaymentService::PAYMENT_JOINPAY_XCX  => '汇聚小程序支付',
+        PaymentService::PAYMENT_JOINPAY_GZH  => '汇聚服务号支付',
     ];
 
     /**
