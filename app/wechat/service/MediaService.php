@@ -29,16 +29,16 @@ class MediaService extends Service
     /**
      * 通过图文ID读取图文信息
      * @param mixed $id 本地图文ID
-     * @param array $where 额外的查询条件
+     * @param array $map 额外的查询条件
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function news($id, $where = []): array
+    public function news($id, $map = []): array
     {
         // 文章主体数据
-        $data = $this->app->db->name('WechatNews')->where(['id' => $id])->where($where)->find();
+        $data = $this->app->db->name('WechatNews')->where(['id' => $id])->where($map)->find();
         if (empty($data)) return [];
         [$data['articles'], $articleIds] = [[], explode(',', $data['article_id'])];
         if (empty($data['article_id']) || empty($articleIds)) return $data;

@@ -79,7 +79,7 @@ class Js extends Controller
      * 生成授权内容
      * @return string
      */
-    private function _buildContent()
+    private function _buildContent(): string
     {
         return <<<EOF
 if(typeof wx === 'object'){

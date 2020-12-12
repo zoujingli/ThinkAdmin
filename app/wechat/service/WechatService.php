@@ -122,7 +122,9 @@ class WechatService extends Service
             } catch (\Exception  $exception) {
                 $exception = null;
             }
-            if ($exception instanceof \Exception) throw $exception;
+            if ($exception instanceof \Exception) {
+                throw $exception;
+            }
             return $client;
         }
     }
@@ -145,13 +147,13 @@ class WechatService extends Service
 
     /**
      * 获取当前微信APPID
-     * @return bool|string
+     * @return string
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getAppid()
+    public function getAppid(): string
     {
         if ($this->getType() === 'api') {
             return sysconf('wechat.appid');
@@ -187,8 +189,8 @@ class WechatService extends Service
     public function getConfig(): array
     {
         $options = [
-            'token'          => sysconf('wechat.token'),
             'appid'          => $this->getAppid(),
+            'token'          => sysconf('wechat.token'),
             'appsecret'      => sysconf('wechat.appsecret'),
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
             'mch_id'         => sysconf('wechat.mch_id'),
@@ -268,7 +270,7 @@ class WechatService extends Service
     }
 
     /**
-     * 获取微信网页JSSDK
+     * 获取微信网页JSSDK签名参数
      * @param null|string $location 签名地址
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
