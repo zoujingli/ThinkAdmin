@@ -23,9 +23,18 @@ abstract class PaymentService extends Service
 
     // 支付通道描述
     const TYPES = [
-        PaymentService::PAYMENT_WECHAT_JSAPI => '微信商户支付',
-        PaymentService::PAYMENT_JOINPAY_XCX  => '汇聚小程序支付',
-        PaymentService::PAYMENT_JOINPAY_GZH  => '汇聚服务号支付',
+        PaymentService::PAYMENT_JOINPAY_XCX  => [
+            'name' => '汇聚小程序支付',
+            'auth' => [UserService::APITYPE_WXAPP],
+        ],
+        PaymentService::PAYMENT_JOINPAY_GZH  => [
+            'name' => '汇聚服务号支付',
+            'auth' => 'UserService::APITYPE_WECHAT',
+        ],
+        PaymentService::PAYMENT_WECHAT_JSAPI => [
+            'name' => '微信商户支付',
+            'auth' => [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT],
+        ],
     ];
 
     /**

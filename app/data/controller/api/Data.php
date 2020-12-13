@@ -22,19 +22,4 @@ class Data extends Controller
         $data = sysdata(input('keys', 'slider'));
         $this->success('获取轮播图片数据', $data);
     }
-
-    /**
-     * 获取支付通道数据
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function getPayment()
-    {
-        $map = ['status' => 1, 'deleted' => 0];
-        $query = $this->app->db->name('DataPayment')->where($map);
-        $result = $query->order('sort desc,id desc')->field('id,name,type')->select();
-        $this->success('获取支付通道数据', $result->toArray());
-    }
-
 }

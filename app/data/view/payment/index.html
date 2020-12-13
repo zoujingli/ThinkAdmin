@@ -40,7 +40,7 @@
                 <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
             </td>
             <td class="text-left nowrap">{$vo.name|default=''}</td>
-            <td class="text-left nowrap">{$types[$vo.type]??$vo.type}</td>
+            <td class="text-left nowrap">{$types[$vo.type]['name']??$vo.type}</td>
             <td>{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">已激活</span>{/if}</td>
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
             <td class='text-left nowrap'>

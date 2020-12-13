@@ -17,9 +17,9 @@
                 {foreach $types as $k => $v}
                 <label class="think-radio notselect">
                     {if $vo.type eq $k}
-                    <input data-payment-type checked type="radio" name="type" value="{$k}" lay-ignore> {$v}
+                    <input data-payment-type checked type="radio" name="type" value="{$k}" lay-ignore> {$v.name}
                     {else}
-                    <input data-payment-type type="radio" name="type" value="{$k}" lay-ignore> {$v}
+                    <input data-payment-type type="radio" name="type" value="{$k}" lay-ignore> {$v.name}
                     {/if}
                 </label>
                 {/foreach}

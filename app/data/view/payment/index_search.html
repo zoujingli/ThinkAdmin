@@ -14,9 +14,9 @@
                     <option value="">-- 全部 --</option>
                     {foreach $types as $k=>$v}
                     {if $k eq input('type')}
-                    <option selected value="{$k}">{$v}</option>
+                    <option selected value="{$k}">{$v.name}</option>
                     {else}
-                    <option value="{$k}">{$v}</option>
+                    <option value="{$k}">{$v.name}</option>
                     {/if}{/foreach}
                 </select>
             </div>
