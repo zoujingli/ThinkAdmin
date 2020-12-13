@@ -7,6 +7,7 @@ use app\data\service\GoodsService;
 use app\data\service\OrderService;
 use app\data\service\PaymentService;
 use app\data\service\TruckService;
+use app\data\service\UserService;
 use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
 
@@ -193,14 +194,7 @@ class Order extends Auth
         if ($order['status'] != 2) $this->error('该订单不能发起支付哦！');
         if ($order['payment_status']) $this->error('订单已经支付，不需要再次支付哦！');
         try {
-            $openid = '';
-            if ($this->type === 'wxapp') {
-                $openid = $this->user['openid1'];
-            } elseif ($this->type === 'wechat') {
-                $openid = $this->user['openid2'];
-            } else {
-                $this->error("接口类型{$this->type}未绑定支付");
-            }
+            $openid = $this->user[UserService::AUTHS[$this->type]] ?? '';
             $params = PaymentService::build($data['payid'])->create($openid, $order['order_no'], $order['amount_total'], '商城订单支付', '');
             $this->success('获取支付参数成功！', $params);
         } catch (HttpResponseException $exception) {
