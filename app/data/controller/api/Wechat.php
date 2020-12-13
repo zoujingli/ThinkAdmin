@@ -21,6 +21,12 @@ class Wechat extends Controller
 {
 
     /**
+     * 接口认证类型
+     * @var string
+     */
+    private $type = UserService::APITYPE_WECHAT;
+
+    /**
      * 粉丝OPNEID
      * @var string
      */
@@ -70,8 +76,8 @@ class Wechat extends Controller
             $data['openid2'] = $data['openid'];
             $data['base_sex'] = ['未知', '男', '女'][$data['sex']] ?? '未知';
             if (isset($data['headimgurl'])) $data['headimg'] = $data['headimgurl'];
-            $map = isset($data['unionid']) ? ['unionid' => $data['unionid']] : ['openid2' => $this->openid];
-            $this->userInfo = UserService::instance()->save($map, array_merge($map, $data), 'wechat', true);
+            $map = isset($data['unionid']) ? ['unionid' => $data['unionid']] : [UserService::AUTHS[$this->type] => $this->openid];
+            $this->userInfo = UserService::instance()->save($map, array_merge($map, $data), $this->type, true);
             $content = $this->_buildContent();
         }
         return Response::create($content)->contentType('application/x-javascript');

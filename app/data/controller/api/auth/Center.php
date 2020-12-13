@@ -114,8 +114,7 @@ class Center extends Auth
      */
     public function getFrom()
     {
-        $query = $this->_query($this->table);
-        $query->where(['from' => $this->uuid])->field('id,from,username,nickname,headimg,create_at');
-        $this->success('获取我邀请的朋友', $query->order('id desc')->page(true, false, false, 15));
+        $query = $this->_query($this->table)->field('id,from,username,nickname,headimg,create_at');
+        $this->success('获取我邀请的朋友', $query->where(['from' => $this->uuid])->order('id desc')->page(true, false, false, 15));
     }
 }

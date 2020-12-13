@@ -15,8 +15,10 @@ abstract class Auth extends Controller
 {
     /**
      * 当前接口类型
-     * 小程序使用 wxapp
-     * 服务号使用 wechat
+     * -- 手机浏览器访问 wap
+     * -- 电脑浏览器访问 web
+     * -- 微信小程序访问 wxapp
+     * -- 微信服务号访问 wechat
      * @var string
      */
     protected $type;
@@ -38,18 +40,21 @@ abstract class Auth extends Controller
      */
     protected function initialize()
     {
+        $this->type = input('api', UserService::APITYPE_WXAPP);
+        if (empty(UserService::TYPES[$this->type])) {
+            $this->error("接口通道[{$this->type}]未定义规则！");
+        }
         $this->user = $this->getUser();
         $this->uuid = $this->user['id'];
     }
 
     /**
      * 获取用户数据
-     * @return array|void
+     * @return array
      */
     protected function getUser(): array
     {
         try {
-            $this->type = input('api', 'web');
             $service = UserService::instance();
             if (empty($this->uuid)) {
                 $token = input('token') ?: $this->request->header('token');

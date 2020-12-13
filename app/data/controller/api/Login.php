@@ -14,6 +14,12 @@ use think\admin\Controller;
 class Login extends Controller
 {
     /**
+     * 接口认证类型
+     * @var string
+     */
+    private $type = UserService::APITYPE_WAP;
+
+    /**
      * 绑定数据表
      * @var string
      */
@@ -73,7 +79,7 @@ class Login extends Controller
             $this->error('手机号已注册，请使用其它手机号！');
         }
         $data['password'] = md5($data['password']);
-        $user = UserService::instance()->save($map, $data, 'web', true);
+        $user = UserService::instance()->save($map, $data, $this->type, true);
         empty($user) ? $this->error('手机注册失败！') : $this->success('用户注册成功！', $user);
     }
 

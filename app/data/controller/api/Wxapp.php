@@ -18,6 +18,12 @@ use WeMini\Qrcode;
 class Wxapp extends Controller
 {
     /**
+     * 接口认证类型
+     * @var string
+     */
+    protected $type = UserService::APITYPE_WXAPP;
+
+    /**
      * 小程序配置参数
      * @var array
      */
@@ -34,8 +40,6 @@ class Wxapp extends Controller
         $this->config = [
             'appid'      => sysconf('data.wxapp_appid'),
             'appsecret'  => sysconf('data.wxapp_appkey'),
-            'mch_id'     => sysconf('data.wxapp_mch_id'),
-            'mch_key'    => sysconf('data.wxapp_mch_key'),
             'cache_path' => $this->app->getRuntimePath() . 'wechat',
         ];
     }
@@ -53,7 +57,7 @@ class Wxapp extends Controller
         [$openid, $unionid, $sessionKey] = $this->_getSessionKey($input['code']);
         $map = empty($unionid) ? ['openid1' => $openid] : ['unionid' => $unionid];
         $data = array_merge($map, ['openid1' => $openid, 'session_key' => $sessionKey]);
-        $this->success('授权换取成功！', UserService::instance()->save($map, $data, 'wxapp', true));
+        $this->success('授权换取成功！', UserService::instance()->save($map, $data, $this->type, true));
     }
 
     /**
@@ -77,8 +81,8 @@ class Wxapp extends Controller
             if (is_array($result) && isset($result['openId']) && isset($result['avatarUrl']) && isset($result['nickName'])) {
                 $sex = ['未知', '男', '女'][$result['gender']] ?? '未知';
                 $map = empty($result['unionId']) ? ['openid1' => $result['openId']] : ['unionid' => $result['unionId']];
-                $data = ['openid1' => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
-                $this->success('数据解密成功！', UserService::instance()->save($map, array_merge($map, $data), 'wxapp', true));
+                $data = [UserService::AUTHS[$this->type] => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
+                $this->success('数据解密成功！', UserService::instance()->save($map, array_merge($map, $data), $this->type, true));
             } elseif (is_array($result) && isset($result['phoneNumber'])) {
                 $this->success('数据解密成功！', $result);
             } else {

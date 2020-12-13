@@ -11,6 +11,25 @@ use think\admin\Service;
  */
 class UserService extends Service
 {
+    const APITYPE_WAP = 'wap';
+    const APITYPE_WEB = 'web';
+    const APITYPE_WXAPP = 'wxapp';
+    const APITYPE_WECHAT = 'wechat';
+
+    const AUTHS = [
+        UserService::APITYPE_WAP    => 'phone,password',
+        UserService::APITYPE_WEB    => 'phone,password',
+        UserService::APITYPE_WXAPP  => 'openid1',
+        UserService::APITYPE_WECHAT => 'openid2',
+    ];
+
+    const TYPES = [
+        UserService::APITYPE_WAP    => '手机浏览器访问',
+        UserService::APITYPE_WEB    => '电脑浏览器访问',
+        UserService::APITYPE_WXAPP  => '微信小程序访问',
+        UserService::APITYPE_WECHAT => '微信服务号访问',
+    ];
+
     /**
      * 认证有效时间
      * @var integer
