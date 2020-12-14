@@ -68,12 +68,8 @@ class JoinPaymentService extends PaymentService
     public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payDescription): array
     {
         try {
-            $types = [
-                static::PAYMENT_JOINPAY_GZH => 'WEIXIN_GZH',
-                static::PAYMENT_JOINPAY_XCX => 'WEIXIN_XCX',
-            ];
-            if (isset($types[static::$type])) {
-                $type = $types[static::$type];
+            if (isset(static::TYPES[static::$type])) {
+                $type = static::TYPES[static::$type]['type'];
             } else {
                 throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
             }
@@ -85,7 +81,7 @@ class JoinPaymentService extends PaymentService
                 'p4_Cur'             => '1',
                 'p5_ProductName'     => $payTitle,
                 'p6_ProductDesc'     => $payDescription,
-                'p9_NotifyUrl'       => sysuri('@data/api.notify/joinpay/scene/order', [], false, true),
+                'p9_NotifyUrl'       => sysuri('@data/api.notify/joinpay/scene/order/type/' . static::$type, [], false, true),
                 'q1_FrpCode'         => $type ?? '',
                 'q5_OpenId'          => $openid,
                 'q7_AppId'           => $this->appid,
@@ -126,13 +122,15 @@ class JoinPaymentService extends PaymentService
 
     /**
      * 支付结果处理
+     * @param string $type 支付通道
      * @return string
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function notify(): string
+    public function notify(string $type = ''): string
     {
+        $type = $type ?: static::$type;
         $notify = $this->app->request->get();
         foreach ($notify as &$item) $item = urldecode($item);
         if (empty($notify['hmac']) || $notify['hmac'] !== $this->_doSign($notify)) {
@@ -142,14 +140,14 @@ class JoinPaymentService extends PaymentService
             // 更新支付记录
             data_save('DataPaymentItem', [
                 'order_no'         => $notify['r2_OrderNo'],
-                'payment_type'     => static::$type,
+                'payment_type'     => $type,
                 'payment_code'     => $notify['r9_BankTrxNo'],
                 'payment_amount'   => $notify['r3_Amount'],
                 'payment_status'   => 1,
                 'payment_datatime' => date('Y-m-d H:i:s'),
-            ], 'order_no', ['payment_type' => static::$type, 'payment_status' => 0]);
+            ], 'order_no', ['payment_type' => $type, 'payment_status' => 0]);
             // 更新记录状态
-            if ($this->updateOrder($notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'], 'joinpay')) {
+            if ($this->updateOrder($notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'], $type)) {
                 return 'success';
             }
         }

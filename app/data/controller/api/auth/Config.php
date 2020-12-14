@@ -22,7 +22,7 @@ class Config extends Auth
     {
         $types = [];
         foreach (PaymentService::TYPES as $type => $arr) {
-            if (isset($arr['auth']) && in_array($this->type, $arr['auth'])) {
+            if (isset($arr['bind']) && in_array($this->type, $arr['bind'])) {
                 $types[] = $type;
             }
         }

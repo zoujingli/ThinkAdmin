@@ -3,7 +3,6 @@
 namespace app\data\service\payment;
 
 use app\data\service\PaymentService;
-use http\Exception;
 use WePay\Order;
 
 /**
@@ -59,14 +58,19 @@ class WechatPaymentService extends PaymentService
     public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payDescription): array
     {
         try {
+            if (isset(static::TYPES[static::$type])) {
+                $type = static::TYPES[static::$type]['type'];
+            } else {
+                throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
+            }
             $body = empty($payDescription) ? $payTitle : ($payTitle . '-' . $payDescription);
             $data = [
                 'body'             => $body,
                 'openid'           => $openid,
                 'out_trade_no'     => $orderNo,
                 'total_fee'        => $payAmount * 100,
-                'trade_type'       => 'JSAPI',
-                'notify_url'       => sysuri('@data/api.notify/wxpay/scene/order', [], false, true),
+                'trade_type'       => $type,
+                'notify_url'       => sysuri('@data/api.notify/wxpay/scene/order/type/' . static::$type, [], false, true),
                 'spbill_create_ip' => $this->app->request->ip(),
             ];
             if (empty($data['openid'])) unset($data['openid']);
@@ -93,27 +97,29 @@ class WechatPaymentService extends PaymentService
 
     /**
      * 支付结果处理
+     * @param string $type 支付通道
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function notify(): string
+    public function notify(string $type = ''): string
     {
+        $type = $type ?: static::$type;
         $notify = $this->payment->getNotify();
         if ($notify['result_code'] == 'SUCCESS' && $notify['return_code'] == 'SUCCESS') {
             // 更新支付记录
             data_save('DataPaymentItem', [
                 'order_no'         => $notify['out_trade_no'],
-                'payment_type'     => static::$type,
+                'payment_type'     => $type,
                 'payment_code'     => $notify['transaction_id'],
                 'payment_amount'   => $notify['cash_fee'] / 100,
                 'payment_status'   => 1,
                 'payment_datatime' => date('Y-m-d H:i:s'),
-            ], 'order_no', ['payment_type' => static::$type, 'payment_status' => 0]);
+            ], 'order_no', ['payment_type' => $type, 'payment_status' => 0]);
             // 更新记录状态
-            if ($this->updateOrder($notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100, 'wechat')) {
+            if ($this->updateOrder($notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100, $type)) {
                 return $this->payment->getNotifySuccessReply();
             }
         } else {

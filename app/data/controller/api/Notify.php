@@ -16,16 +16,17 @@ class Notify extends Controller
     /**
      * 微信支付通知
      * @param string $scene 支付场景
+     * @param string $type 支付通道
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function wxpay(string $scene = 'order'): string
+    public function wxpay(string $scene = 'order', string $type = ''): string
     {
         if (strtolower($scene) === 'order') {
-            return WechatPaymentService::instance()->notify();
+            return WechatPaymentService::instance()->notify($type);
         } else {
             return 'success';
         }
@@ -34,15 +35,16 @@ class Notify extends Controller
     /**
      * 汇聚支付通知
      * @param string $scene 支付场景
+     * @param string $type 支付通道
      * @return string
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function joinpay(string $scene = 'order'): string
+    public function joinpay(string $scene = 'order', string $type = ''): string
     {
         if (strtolower($scene) === 'order') {
-            return JoinPaymentService::instance()->notify();
+            return JoinPaymentService::instance()->notify($type);
         } else {
             return 'success';
         }

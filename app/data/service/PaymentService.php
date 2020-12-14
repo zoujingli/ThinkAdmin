@@ -19,21 +19,36 @@ abstract class PaymentService extends Service
     const PAYMENT_JOINPAY_XCX = 'joinpay_xcx';
 
     // 微信支付通道
+    const PAYMENT_WECHAT_MWEB = 'wechat_mweb';
     const PAYMENT_WECHAT_JSAPI = 'wechat_jsapi';
+    const PAYMENT_WECHAT_NATIVE = 'wechat_native';
 
     // 支付通道描述
     const TYPES = [
-        PaymentService::PAYMENT_JOINPAY_XCX  => [
-            'name' => '汇聚小程序支付',
-            'auth' => [UserService::APITYPE_WXAPP],
+        PaymentService::PAYMENT_JOINPAY_XCX   => [
+            'type' => 'WEIXIN_XCX',
+            'name' => '汇聚小程序JSAPI支付',
+            'bind' => [UserService::APITYPE_WXAPP],
         ],
-        PaymentService::PAYMENT_JOINPAY_GZH  => [
-            'name' => '汇聚服务号支付',
-            'auth' => [UserService::APITYPE_WECHAT],
+        PaymentService::PAYMENT_JOINPAY_GZH   => [
+            'type' => 'WEIXIN_GZH',
+            'name' => '汇聚服务号JSAPI支付',
+            'bind' => [UserService::APITYPE_WECHAT],
         ],
-        PaymentService::PAYMENT_WECHAT_JSAPI => [
-            'name' => '微信商户支付',
-            'auth' => [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT],
+        PaymentService::PAYMENT_WECHAT_MWEB   => [
+            'type' => 'MWEB',
+            'name' => '微信商户H5支付',
+            'bind' => [UserService::APITYPE_WAP],
+        ],
+        PaymentService::PAYMENT_WECHAT_NATIVE => [
+            'type' => 'NATIVE',
+            'name' => '微信商户NATIVE支付',
+            'bind' => [UserService::APITYPE_WEB],
+        ],
+        PaymentService::PAYMENT_WECHAT_JSAPI  => [
+            'type' => 'JSAPI',
+            'name' => '微信商户JSAPI支付',
+            'bind' => [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT],
         ],
     ];
 
@@ -123,9 +138,10 @@ abstract class PaymentService extends Service
 
     /**
      * 支付通知处理
+     * @param string $type
      * @return string
      */
-    abstract public function notify(): string;
+    abstract public function notify(string $type = ''): string;
 
     /**
      * 订单主动查询
