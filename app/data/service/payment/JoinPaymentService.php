@@ -140,13 +140,14 @@ class JoinPaymentService extends PaymentService
         }
         if (isset($notify['r6_Status']) && intval($notify['r6_Status']) === 100) {
             // 更新支付记录
-            $map = ['order_no' => $notify['r2_OrderNo'], 'payment_type' => static::$type];
-            $this->app->db->name('DataPaymentItem')->where($map)->update([
+            data_save('DataPaymentItem', [
+                'order_no'         => $notify['r2_OrderNo'],
+                'payment_type'     => static::$type,
                 'payment_code'     => $notify['r9_BankTrxNo'],
                 'payment_amount'   => $notify['r3_Amount'],
                 'payment_status'   => 1,
                 'payment_datatime' => date('Y-m-d H:i:s'),
-            ]);
+            ], 'order_no', ['payment_type' => static::$type, 'payment_status' => 0]);
             // 更新记录状态
             if ($this->updateOrder($notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'], 'joinpay')) {
                 return 'success';

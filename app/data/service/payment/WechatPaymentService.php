@@ -104,13 +104,14 @@ class WechatPaymentService extends PaymentService
         $notify = $this->payment->getNotify();
         if ($notify['result_code'] == 'SUCCESS' && $notify['return_code'] == 'SUCCESS') {
             // 更新支付记录
-            $map = ['order_no' => $notify['out_trade_no'], 'payment_type' => static::$type];
-            $this->app->db->name('DataPaymentItem')->where($map)->update([
-                'payment_code'     => $notify['r9_BankTrxNo'],
-                'payment_amount'   => $notify['r3_Amount'],
+            data_save('DataPaymentItem', [
+                'order_no'         => $notify['out_trade_no'],
+                'payment_type'     => static::$type,
+                'payment_code'     => $notify['transaction_id'],
+                'payment_amount'   => $notify['cash_fee'] / 100,
                 'payment_status'   => 1,
                 'payment_datatime' => date('Y-m-d H:i:s'),
-            ]);
+            ], 'order_no', ['payment_type' => static::$type, 'payment_status' => 0]);
             // 更新记录状态
             if ($this->updateOrder($notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100, 'wechat')) {
                 return $this->payment->getNotifySuccessReply();
