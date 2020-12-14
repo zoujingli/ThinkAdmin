@@ -18,19 +18,19 @@ class UserService extends Service
 
     const TYPES = [
         UserService::APITYPE_WAP    => [
-            'name' => '手机浏览器访问',
+            'name' => '手机浏览器终端',
             'auth' => '',
         ],
         UserService::APITYPE_WEB    => [
-            'name' => '电脑浏览器访问',
+            'name' => '电脑浏览器终端',
             'auth' => '',
         ],
         UserService::APITYPE_WXAPP  => [
-            'name' => '微信小程序访问',
+            'name' => '微信小程序终端',
             'auth' => 'openid1',
         ],
         UserService::APITYPE_WECHAT => [
-            'name' => '微信服务号访问',
+            'name' => '微信服务号终端',
             'auth' => 'openid2',
         ],
     ];

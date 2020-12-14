@@ -19,13 +19,14 @@
                 {foreach $types as $k => $v}
                 <label class="think-radio notselect">
                     {if $vo.type eq $k}
-                    <input data-payment-type checked type="radio" name="type" value="{$k}"> {$v.name}
+                    <input data-payment-type data-allow="{$v.allow}" checked type="radio" name="type" value="{$k}"> {$v.name}
                     {else}
-                    <input data-payment-type type="radio" name="type" value="{$k}"> {$v.name}
+                    <input data-payment-type data-allow="{$v.allow}" type="radio" name="type" value="{$k}"> {$v.name}
                     {/if}
                 </label>
                 {/foreach}
             </div>
+            <div class="help-block">此支付通道支持 <span class="color-blue" data-payment-info></span> 的终端用户通过 API 发起支付</div>
         </div>
 
         <div data-payment-type="wechat">{include file='payment/form_wechat'}</div>
@@ -55,14 +56,15 @@
 {block name='script'}
 <script>
     $('input[data-payment-type]').on('change', function () {
-        var type = $('input[data-payment-type]:checked').val() || '';
-        if (type.indexOf('wechat') > -1) {
+        var $radio = $('input[data-payment-type]:checked');
+        if ($radio.val().indexOf('wechat') > -1) {
             $('[data-payment-type="wechat"]').removeClass('layui-hide')
             $('[data-payment-type="joinpay"]').addClass('layui-hide');
         } else {
             $('[data-payment-type="wechat"]').addClass('layui-hide')
             $('[data-payment-type="joinpay"]').removeClass('layui-hide');
         }
+        $('[data-payment-info]').html($radio.data('allow'));
     }).trigger('change');
 </script>
 {/block}

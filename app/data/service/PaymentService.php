@@ -25,16 +25,6 @@ abstract class PaymentService extends Service
 
     // 支付通道配置
     const TYPES = [
-        PaymentService::PAYMENT_JOINPAY_XCX   => [
-            'type' => 'WEIXIN_XCX',
-            'name' => '汇聚小程序JSAPI支付',
-            'bind' => [UserService::APITYPE_WXAPP],
-        ],
-        PaymentService::PAYMENT_JOINPAY_GZH   => [
-            'type' => 'WEIXIN_GZH',
-            'name' => '汇聚服务号JSAPI支付',
-            'bind' => [UserService::APITYPE_WECHAT],
-        ],
         PaymentService::PAYMENT_WECHAT_MWEB   => [
             'type' => 'MWEB',
             'name' => '微信商户H5支付',
@@ -49,6 +39,16 @@ abstract class PaymentService extends Service
             'type' => 'JSAPI',
             'name' => '微信商户JSAPI支付',
             'bind' => [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT],
+        ],
+        PaymentService::PAYMENT_JOINPAY_XCX   => [
+            'type' => 'WEIXIN_XCX',
+            'name' => '汇聚小程序JSAPI支付',
+            'bind' => [UserService::APITYPE_WXAPP],
+        ],
+        PaymentService::PAYMENT_JOINPAY_GZH   => [
+            'type' => 'WEIXIN_GZH',
+            'name' => '汇聚服务号JSAPI支付',
+            'bind' => [UserService::APITYPE_WECHAT],
         ],
     ];
 

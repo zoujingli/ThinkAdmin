@@ -3,6 +3,7 @@
 namespace app\data\controller;
 
 use app\data\service\PaymentService;
+use app\data\service\UserService;
 use think\admin\Controller;
 
 /**
@@ -73,6 +74,13 @@ class Payment extends Controller
     protected function _form_filter(array &$data)
     {
         if ($this->request->isGet()) {
+            foreach ($this->types as &$vo) {
+                $binds = [];
+                foreach ($vo['bind'] as $api) if (isset(UserService::TYPES[$api])) {
+                    $binds[$api] = UserService::TYPES[$api]['name'];
+                }
+                $vo['allow'] = join('、', $binds);
+            }
             $data['content'] = json_decode($data['content'] ?? '[]', true) ?: [];
         } else {
             $data['content'] = json_encode($this->request->post() ?: [], JSON_UNESCAPED_UNICODE);
