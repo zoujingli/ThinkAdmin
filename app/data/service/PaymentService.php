@@ -23,7 +23,7 @@ abstract class PaymentService extends Service
     const PAYMENT_WECHAT_JSAPI = 'wechat_jsapi';
     const PAYMENT_WECHAT_NATIVE = 'wechat_native';
 
-    // 支付通道描述
+    // 支付通道配置
     const TYPES = [
         PaymentService::PAYMENT_JOINPAY_XCX   => [
             'type' => 'WEIXIN_XCX',
