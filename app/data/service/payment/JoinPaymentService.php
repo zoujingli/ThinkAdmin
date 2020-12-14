@@ -153,7 +153,7 @@ class JoinPaymentService extends PaymentService
                 'payment_amount'   => $notify['r3_Amount'],
                 'payment_status'   => 1,
                 'payment_datatime' => date('Y-m-d H:i:s'),
-            ], 'order_no', ['payment_type' => $payType, 'payment_status' => 0]);
+            ], 'order_no', ['payment_id' => $payId, 'payment_type' => $payType, 'payment_status' => 0]);
             // 更新记录状态
             if ($this->updateOrder($notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'], $payType)) {
                 return 'success';

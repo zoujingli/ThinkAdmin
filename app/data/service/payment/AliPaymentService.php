@@ -88,7 +88,7 @@ class AliPaymentService extends PaymentService
                 'payment_amount'   => $notify['total_amount'],
                 'payment_status'   => 1,
                 'payment_datatime' => date('Y-m-d H:i:s'),
-            ], 'order_no', ['payment_type' => $payType, 'payment_status' => 0]);
+            ], 'order_no', ['payment_id' => $payId, 'payment_type' => $payType, 'payment_status' => 0]);
             // 更新记录状态
             if ($this->updateOrder($notify['out_trade_no'], $notify['trade_no'], $notify['total_amount'], $payType)) {
                 return 'success';

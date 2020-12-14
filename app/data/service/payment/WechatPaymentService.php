@@ -125,7 +125,7 @@ class WechatPaymentService extends PaymentService
                 'payment_amount'   => $notify['cash_fee'] / 100,
                 'payment_status'   => 1,
                 'payment_datatime' => date('Y-m-d H:i:s'),
-            ], 'order_no', ['payment_type' => $payType, 'payment_status' => 0]);
+            ], 'order_no', ['payment_id' => $payId, 'payment_type' => $payType, 'payment_status' => 0]);
             // 更新记录状态
             if ($this->updateOrder($notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100, $payType)) {
                 return $this->payment->getNotifySuccessReply();
