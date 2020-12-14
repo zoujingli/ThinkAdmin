@@ -21,7 +21,7 @@
                     {foreach $payments as $kk => $vv}
                     <optgroup label="{$kk}">
                         {foreach $vv as $k => $v}{if $vo.type eq $k}
-                        <option selected value="{$kk}">{$v.name} ( {$v.allow} )</option>
+                        <option selected value="{$k}">{$v.name} ( {$v.allow} )</option>
                         {else}
                         <option value="{$k}">{$v.name} ( {$v.allow} )</option>
                         {/if}{/foreach}
