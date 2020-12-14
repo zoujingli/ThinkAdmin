@@ -16,18 +16,23 @@ class UserService extends Service
     const APITYPE_WXAPP = 'wxapp';
     const APITYPE_WECHAT = 'wechat';
 
-    const AUTHS = [
-        UserService::APITYPE_WAP    => 'phone,password',
-        UserService::APITYPE_WEB    => 'phone,password',
-        UserService::APITYPE_WXAPP  => 'openid1',
-        UserService::APITYPE_WECHAT => 'openid2',
-    ];
-
     const TYPES = [
-        UserService::APITYPE_WAP    => '手机浏览器访问',
-        UserService::APITYPE_WEB    => '电脑浏览器访问',
-        UserService::APITYPE_WXAPP  => '微信小程序访问',
-        UserService::APITYPE_WECHAT => '微信服务号访问',
+        UserService::APITYPE_WAP    => [
+            'name' => '手机浏览器访问',
+            'auth' => '',
+        ],
+        UserService::APITYPE_WEB    => [
+            'name' => '电脑浏览器访问',
+            'auth' => '',
+        ],
+        UserService::APITYPE_WXAPP  => [
+            'name' => '微信小程序访问',
+            'auth' => 'openid1',
+        ],
+        UserService::APITYPE_WECHAT => [
+            'name' => '微信服务号访问',
+            'auth' => 'openid2',
+        ],
     ];
 
     /**
@@ -69,7 +74,7 @@ class UserService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function save(array $map, array $data, string $type, bool $force = false): array
+    public function set(array $map, array $data, string $type, bool $force = false): array
     {
         unset($data['id'], $data['deleted'], $data['create_at']);
         if ($uuid = $this->app->db->name('DataUser')->where($map)->where(['deleted' => 0])->value('id')) {

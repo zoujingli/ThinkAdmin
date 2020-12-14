@@ -2,8 +2,8 @@
 
 namespace app\data\controller\api;
 
-use app\data\service\payment\JoinPayService;
-use app\data\service\payment\WechatPayService;
+use app\data\service\payment\JoinPaymentService;
+use app\data\service\payment\WechatPaymentService;
 use think\admin\Controller;
 
 /**
@@ -25,7 +25,7 @@ class Notify extends Controller
     public function wxpay(string $scene = 'order'): string
     {
         if (strtolower($scene) === 'order') {
-            return WechatPayService::instance()->notify();
+            return WechatPaymentService::instance()->notify();
         } else {
             return 'success';
         }
@@ -42,7 +42,7 @@ class Notify extends Controller
     public function joinpay(string $scene = 'order'): string
     {
         if (strtolower($scene) === 'order') {
-            return JoinPayService::instance()->notify();
+            return JoinPaymentService::instance()->notify();
         } else {
             return 'success';
         }

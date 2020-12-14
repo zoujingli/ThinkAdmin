@@ -44,7 +44,7 @@ class Login extends Controller
         if (empty($user)) $this->error('该手机号还没有注册哦！');
         if (empty($user['status'])) $this->error('该用户账号状态异常！');
         if (md5($data['password']) === $user['password']) {
-            $this->success('手机登录成功！', UserService::instance()->save($map, [], 'web', true));
+            $this->success('手机登录成功！', UserService::instance()->set($map, [], $this->type, true));
         } else {
             $this->error('账号登录失败，请稍候再试！');
         }
@@ -79,7 +79,7 @@ class Login extends Controller
             $this->error('手机号已注册，请使用其它手机号！');
         }
         $data['password'] = md5($data['password']);
-        $user = UserService::instance()->save($map, $data, $this->type, true);
+        $user = UserService::instance()->set($map, $data, $this->type, true);
         empty($user) ? $this->error('手机注册失败！') : $this->success('用户注册成功！', $user);
     }
 
@@ -96,7 +96,7 @@ class Login extends Controller
             'phone.require'  => '手机号不能为空！',
             'secure.require' => '安全码不能为空！',
         ]);
-        if ($data['secure'] !== sysconf('zt.secure_code')) $this->error('短信发送安全码错误！');
+        if ($data['secure'] !== sysconf('zt.secure_code')) $this->error('接口安全码错误！');
         [$state, $message, $data] = MessageService::instance()->sendVerifyCode($data['phone']);
         $state ? $this->success($message, $data) : $this->error($message, $data);
     }

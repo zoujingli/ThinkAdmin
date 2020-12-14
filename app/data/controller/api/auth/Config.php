@@ -22,11 +22,13 @@ class Config extends Auth
     {
         $types = [];
         foreach (PaymentService::TYPES as $type => $arr) {
-            if (in_array($this->type, $arr['auth'])) $types[] = $type;
+            if (isset($arr['auth']) && in_array($this->type, $arr['auth'])) {
+                $types[] = $type;
+            }
         }
         $map = ['status' => 1, 'deleted' => 0];
         $query = $this->app->db->name('DataPayment')->where($map)->whereIn('type', $types);
-        $result = $query->order('sort desc,id desc')->field('id,name,type,create_at')->select();
-        $this->success('获取支付通道数据', $result->toArray());
+        $collect = $query->order('sort desc,id desc')->field('id,name,type,create_at')->select();
+        $this->success('获取支付通道数据', $collect->toArray());
     }
 }

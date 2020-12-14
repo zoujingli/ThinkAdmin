@@ -27,6 +27,12 @@ class Wechat extends Controller
     private $type = UserService::APITYPE_WECHAT;
 
     /**
+     * 唯一绑定字段
+     * @var string
+     */
+    private $field;
+
+    /**
      * 粉丝OPNEID
      * @var string
      */
@@ -49,6 +55,18 @@ class Wechat extends Controller
      * @var array
      */
     private $userInfo;
+
+    /**
+     * 控制器初始化
+     */
+    protected function initialize()
+    {
+        if (empty(UserService::TYPES[$this->type]['auth'])) {
+            $this->error("接口类型[{$this->type}]没有定义规则");
+        } else {
+            $this->field = UserService::TYPES[$this->type]['auth'];
+        }
+    }
 
     /**
      * 加载对应JSSDK数据
@@ -76,8 +94,8 @@ class Wechat extends Controller
             $data['openid2'] = $data['openid'];
             $data['base_sex'] = ['未知', '男', '女'][$data['sex']] ?? '未知';
             if (isset($data['headimgurl'])) $data['headimg'] = $data['headimgurl'];
-            $map = isset($data['unionid']) ? ['unionid' => $data['unionid']] : [UserService::AUTHS[$this->type] => $this->openid];
-            $this->userInfo = UserService::instance()->save($map, array_merge($map, $data), $this->type, true);
+            $map = isset($data['unionid']) ? ['unionid' => $data['unionid']] : [$this->field => $this->openid];
+            $this->userInfo = UserService::instance()->set($map, array_merge($map, $data), $this->type, true);
             $content = $this->_buildContent();
         }
         return Response::create($content)->contentType('application/x-javascript');

@@ -7,10 +7,10 @@ use WePay\Order;
 
 /**
  * 微信官方公众号支持
- * Class WechatPayService
+ * Class WechatPaymentService
  * @package app\store\service\payment
  */
-class WechatPayService extends PaymentService
+class WechatPaymentService extends PaymentService
 {
     /**
      * 微信对象对象
@@ -20,15 +20,15 @@ class WechatPayService extends PaymentService
 
     /**
      * 微信支付服务初始化
-     * @return WechatPayService
+     * @return WechatPaymentService
      */
-    protected function initialize(): WechatPayService
+    protected function initialize(): WechatPaymentService
     {
         $this->payment = Order::instance([
             'appid'      => static::$config['wechat_appid'],
             'mch_id'     => static::$config['wechat_mch_id'],
             'mch_key'    => static::$config['wechat_mch_key'],
-            'cache_path' => $this->app->getRuntimePath() . 'wechat',
+            'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
         ]);
         return $this;
     }

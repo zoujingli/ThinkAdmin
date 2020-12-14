@@ -21,13 +21,19 @@ class Wxapp extends Controller
      * 接口认证类型
      * @var string
      */
-    protected $type = UserService::APITYPE_WXAPP;
+    private $type = UserService::APITYPE_WXAPP;
+
+    /**
+     * 唯一绑定字段
+     * @var string
+     */
+    private $field;
 
     /**
      * 小程序配置参数
      * @var array
      */
-    protected $config;
+    private $config;
 
     /**
      * 接口服务初始化
@@ -40,8 +46,13 @@ class Wxapp extends Controller
         $this->config = [
             'appid'      => sysconf('data.wxapp_appid'),
             'appsecret'  => sysconf('data.wxapp_appkey'),
-            'cache_path' => $this->app->getRuntimePath() . 'wechat',
+            'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
         ];
+        if (empty(UserService::TYPES[$this->type]['auth'])) {
+            $this->error("接口类型[{$this->type}]没有定义规则");
+        } else {
+            $this->field = UserService::TYPES[$this->type]['auth'];
+        }
     }
 
     /**
@@ -55,9 +66,9 @@ class Wxapp extends Controller
     {
         $input = $this->_vali(['code.require' => '登录凭证code不能为空！']);
         [$openid, $unionid, $sessionKey] = $this->_getSessionKey($input['code']);
-        $map = empty($unionid) ? ['openid1' => $openid] : ['unionid' => $unionid];
-        $data = array_merge($map, ['openid1' => $openid, 'session_key' => $sessionKey]);
-        $this->success('授权换取成功！', UserService::instance()->save($map, $data, $this->type, true));
+        $map = empty($unionid) ? [$this->field => $openid] : ['unionid' => $unionid];
+        $data = array_merge($map, [$this->field => $openid, 'session_key' => $sessionKey]);
+        $this->success('授权换取成功！', UserService::instance()->set($map, $data, $this->type, true));
     }
 
     /**
@@ -80,9 +91,9 @@ class Wxapp extends Controller
             $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
             if (is_array($result) && isset($result['openId']) && isset($result['avatarUrl']) && isset($result['nickName'])) {
                 $sex = ['未知', '男', '女'][$result['gender']] ?? '未知';
-                $map = empty($result['unionId']) ? ['openid1' => $result['openId']] : ['unionid' => $result['unionId']];
-                $data = [UserService::AUTHS[$this->type] => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
-                $this->success('数据解密成功！', UserService::instance()->save($map, array_merge($map, $data), $this->type, true));
+                $map = empty($result['unionId']) ? [$this->field => $result['openId']] : ['unionid' => $result['unionId']];
+                $data = [$this->field => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
+                $this->success('数据解密成功！', UserService::instance()->set($map, array_merge($map, $data), $this->type, true));
             } elseif (is_array($result) && isset($result['phoneNumber'])) {
                 $this->success('数据解密成功！', $result);
             } else {

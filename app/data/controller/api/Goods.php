@@ -40,7 +40,7 @@ class Goods extends Controller
      */
     public function getGoods()
     {
-        if ($code = input('code', null)) {
+        if ($code = input('code', '')) {
             $this->app->db->name('ShopGoods')->where(['code' => $code])->update([
                 'num_read' => $this->app->db->raw('num_read+1'),
             ]);

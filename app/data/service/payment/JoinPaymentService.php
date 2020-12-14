@@ -7,10 +7,10 @@ use think\admin\extend\HttpExtend;
 
 /**
  * 汇聚支付基础服务
- * Class JoinPayService
+ * Class JoinPaymentService
  * @package app\store\service\payment
  */
-class JoinPayService extends PaymentService
+class JoinPaymentService extends PaymentService
 {
     /**
      * 请求地址
@@ -44,9 +44,9 @@ class JoinPayService extends PaymentService
 
     /**
      * 汇聚支付服务初始化
-     * @return JoinPayService
+     * @return JoinPaymentService
      */
-    protected function initialize(): JoinPayService
+    protected function initialize(): JoinPaymentService
     {
         $this->appid = static::$config['joinpay_appid'];
         $this->trade = static::$config['joinpay_trade'];;

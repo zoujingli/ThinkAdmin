@@ -2,8 +2,8 @@
 
 namespace app\data\service;
 
-use app\data\service\payment\JoinPayService;
-use app\data\service\payment\WechatPayService;
+use app\data\service\payment\JoinPaymentService;
+use app\data\service\payment\WechatPaymentService;
 use think\admin\Service;
 
 /**
@@ -29,7 +29,7 @@ abstract class PaymentService extends Service
         ],
         PaymentService::PAYMENT_JOINPAY_GZH  => [
             'name' => '汇聚服务号支付',
-            'auth' => 'UserService::APITYPE_WECHAT',
+            'auth' => [UserService::APITYPE_WECHAT],
         ],
         PaymentService::PAYMENT_WECHAT_JSAPI => [
             'name' => '微信商户支付',
@@ -51,7 +51,7 @@ abstract class PaymentService extends Service
 
     /**
      * 支付服务对象
-     * @var JoinPayService|WechatPayService
+     * @var JoinPaymentService|WechatPaymentService
      */
     protected static $driver = [];
 
@@ -59,7 +59,7 @@ abstract class PaymentService extends Service
     /**
      * 根据配置实例支付服务
      * @param string $payid 支付通道编号
-     * @return JoinPayService|WechatPayService
+     * @return JoinPaymentService|WechatPaymentService
      * @throws \think\Exception
      */
     public static function build(string $payid): PaymentService
@@ -84,9 +84,9 @@ abstract class PaymentService extends Service
         // 实例化具体支付通道类型
         static::$type = $payment['type'];
         if (stripos(static::$type, 'wechat_') === 0) {
-            return static::$driver[$payid] = WechatPayService::instance();
+            return static::$driver[$payid] = WechatPaymentService::instance();
         } else {
-            return static::$driver[$payid] = JoinPayService::instance();
+            return static::$driver[$payid] = JoinPaymentService::instance();
         }
     }
 

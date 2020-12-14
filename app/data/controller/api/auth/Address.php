@@ -109,8 +109,7 @@ class Address extends Auth
     public function remove()
     {
         $map = $this->_vali([
-            'uid.value'    => $this->uuid,
-            'code.require' => '地址编号不能为空！',
+            'uid.value' => $this->uuid, 'code.require' => '地址编号不能为空！',
         ]);
         $address = $this->app->db->name($this->table)->where($map)->find();
         if (empty($address)) $this->error('需要删除的地址不存在！');
