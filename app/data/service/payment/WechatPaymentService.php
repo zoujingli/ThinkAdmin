@@ -52,10 +52,11 @@ class WechatPaymentService extends PaymentService
      * @param string $payAmount 交易订单金额（元）
      * @param string $payTitle 交易订单名称
      * @param string $payRemark 订单订单描述
+     * @param string $returnUrl 支付回跳地址
      * @return array
      * @throws \think\Exception
      */
-    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark): array
+    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $returnUrl = ''): array
     {
         try {
             if (isset(static::TYPES[static::$type])) {

@@ -185,17 +185,18 @@ class Order extends Auth
     public function payment()
     {
         $data = $this->_vali([
+            'back.default'     => '', #支付回跳地址
             'payid.require'    => '支付通道不能为空！',
             'order_no.require' => '订单单号不能为空！',
         ]);
         $map = ['order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) $this->error('获取订单数据失败，请稍候再试！');
-        if ($order['status'] != 2) $this->error('该订单不能发起支付哦！');
+        if (empty($order)) $this->error('获取订单数据失败！');
+        if ($order['status'] != 2) $this->error('订单不能发起支付哦！');
         if ($order['payment_status'] > 0) $this->error('订单已经完成支付！');
         try {
             $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
-            $params = PaymentService::build($data['payid'])->create($openid, $order['order_no'], $order['amount_total'], '商城订单支付', '');
+            $params = PaymentService::build($data['payid'])->create($openid, $order['order_no'], $order['amount_total'], '商城订单支付', '', $data['back']);
             $this->success('获取支付参数成功！', $params);
         } catch (HttpResponseException $exception) {
             throw  $exception;

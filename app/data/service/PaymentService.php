@@ -18,7 +18,7 @@ abstract class PaymentService extends Service
     const PAYMENT_JOINPAY_GZH = 'joinpay_gzh';
     const PAYMENT_JOINPAY_XCX = 'joinpay_xcx';
 
-    // 微信支付通道
+    // 微信商户通道
     const PAYMENT_WECHAT_APP = 'wechat_app';
     const PAYMENT_WECHAT_MWEB = 'wechat_mweb';
     const PAYMENT_WECHAT_JSAPI = 'wechat_jsapi';
@@ -190,7 +190,8 @@ abstract class PaymentService extends Service
      * @param string $payAmount 交易订单金额（元）
      * @param string $payTitle 交易订单名称
      * @param string $payRemark 订单订单描述
+     * @param string $returnUrl 支付回跳地址
      * @return array
      */
-    abstract public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark): array;
+    abstract public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $returnUrl = ''): array;
 }

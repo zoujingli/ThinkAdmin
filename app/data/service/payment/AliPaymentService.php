@@ -6,7 +6,7 @@ use app\data\service\PaymentService;
 
 /**
  * 支付宝支付基础服务
- * Class JoinPaymentService
+ * Class AliPaymentService
  * @package app\store\service\payment
  */
 class AliPaymentService extends PaymentService
@@ -32,19 +32,33 @@ class AliPaymentService extends PaymentService
             // 应用ID
             'appid'       => static::$config['alipay_appid'],
             // 支付宝公钥 (1行填写，特别注意，这里是支付宝公钥，不是应用公钥，最好从开发者中心的网页上去复制)
-            'public_key'  => static::$config['alipay_public_key'],
+            'public_key'  => $this->_trimCertHeader(static::$config['alipay_public_key']),
             // 支付宝私钥 (1行填写)
-            'private_key' => static::$config['alipay_private_key'],
+            'private_key' => $this->_trimCertHeader(static::$config['alipay_private_key']),
             // 应用公钥证书（新版资金类接口转 app_cert_sn）
-            'app_cert'    => '',
+            # 'app_cert'    => '',
             // 支付宝根证书（新版资金类接口转 alipay_root_cert_sn）
-            'root_cert'   => '',
+            # 'root_cert'   => '',
             // 支付成功通知地址
             'notify_url'  => '',
             // 网页支付回跳地址
             'return_url'  => '',
         ];
         return $this;
+    }
+
+    /**
+     * 去除证书内容前后缀
+     * @param string $content
+     * @return string
+     */
+    private function _trimCertHeader(string $content): string
+    {
+        $search = [
+            '-----BEGIN PUBLIC KEY-----', '-----END PUBLIC KEY-----',
+            '-----BEGIN RSA PRIVATE KEY-----', '-----END RSA PRIVATE KEY-----',
+        ];
+        return preg_replace('/\s+/', '', str_replace(trim($content), $search, ''));
     }
 
     /**
@@ -103,10 +117,11 @@ class AliPaymentService extends PaymentService
      * @param string $payAmount 交易订单金额（元）
      * @param string $payTitle 交易订单名称
      * @param string $payRemark 订单订单描述
+     * @param string $returnUrl 完成回跳地址
      * @return array
      * @throws \think\Exception
      */
-    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark): array
+    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $returnUrl = ''): array
     {
         try {
             if (isset(static::TYPES[static::$type])) {
@@ -116,6 +131,13 @@ class AliPaymentService extends PaymentService
                 throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
             }
             $this->params['notify_url'] = sysuri("@data/api.notify/alipay/scene/order/param/{$tradeParam}", [], false, true);
+            if (in_array($tradeType, [static::PAYMENT_ALIPAY_WAP, static::PAYMENT_ALIPAY_WEB])) {
+                if (empty($returnUrl)) {
+                    throw new \think\Exception('支付回跳地址不能为空！');
+                } else {
+                    $this->params['return_url'] = $returnUrl;
+                }
+            }
             if ($tradeType === static::PAYMENT_WECHAT_APP) {
                 $payment = \AliPay\App::instance($this->params);
             } elseif ($tradeType === static::PAYMENT_ALIPAY_WAP) {
@@ -125,7 +147,9 @@ class AliPaymentService extends PaymentService
             } else {
                 throw new \think\Exception("支付类型[{$tradeType}]暂时不支持！");
             }
-            $result = $payment->apply(['out_trade_no' => $orderNo, 'total_amount' => $payAmount, 'subject' => $payTitle, 'body' => $payRemark]);
+            $data = ['out_trade_no' => $orderNo, 'total_amount' => $payAmount, 'subject' => $payTitle];
+            if (!empty($payRemark)) $data['body'] = $payRemark;
+            $result = $payment->apply($data);
             // 创建支付记录
             $this->app->db->name('DataPaymentItem')->insert([
                 'order_no'   => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount,
