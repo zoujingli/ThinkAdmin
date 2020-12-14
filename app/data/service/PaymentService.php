@@ -110,8 +110,8 @@ abstract class PaymentService extends Service
         // 更新订单支付状态
         $this->app->db->name('StoreOrder')->where($map)->update([
             'status'           => 3,
-            'payment_type'     => $paytype,
             'payment_code'     => $payno,
+            'payment_type'     => $paytype,
             'payment_status'   => 1,
             'payment_amount'   => $amount,
             'payment_remark'   => '微信在线支付',
