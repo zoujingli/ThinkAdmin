@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 14/12/2020 13:59:54
+ Date: 14/12/2020 14:20:05
 */
 
 SET NAMES utf8mb4;
@@ -4539,7 +4539,7 @@ INSERT INTO `system_menu` VALUES (67, 0, '控制台', '', '', '#', '', '_self', 
 INSERT INTO `system_menu` VALUES (68, 67, '数据管理（接口案例）', '', '', '#', '', '_self', 0, 1, '2020-07-13 06:51:54');
 INSERT INTO `system_menu` VALUES (69, 68, '文章标签管理', 'layui-icon layui-icon-note', '', 'data/news_mark/index', '', '_self', 20, 1, '2020-07-13 06:52:09');
 INSERT INTO `system_menu` VALUES (70, 68, '文章内容管理', 'layui-icon layui-icon-template', '', 'data/news_item/index', '', '_self', 10, 1, '2020-07-13 06:52:26');
-INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', '', 'data/config/slider', '', '_self', 0, 1, '2020-07-14 01:17:02');
+INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', '', 'data/config/slider', '', '_self', 8, 1, '2020-07-14 01:17:02');
 INSERT INTO `system_menu` VALUES (73, 67, '商城管理（开发中）', '', '', '#', '', '_self', 0, 1, '2020-09-08 02:51:30');
 INSERT INTO `system_menu` VALUES (74, 73, '商品分类管理', 'layui-icon layui-icon-app', 'data/shop_goods_cate/index', 'data/shop_goods_cate/index', '', '_self', 80, 1, '2020-09-08 02:51:49');
 INSERT INTO `system_menu` VALUES (75, 73, '商品标签管理', 'layui-icon layui-icon-form', 'data/shop_goods_mark/index', 'data/shop_goods_mark/index', '', '_self', 70, 1, '2020-09-08 03:35:58');
@@ -4551,10 +4551,10 @@ INSERT INTO `system_menu` VALUES (80, 73, '售后申请管理', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (81, 73, '快递公司管理', 'layui-icon layui-icon-website', 'data/shop_truck_company/index', 'data/shop_truck_company/index', '', '_self', 0, 1, '2020-09-15 08:47:46');
 INSERT INTO `system_menu` VALUES (82, 73, '邮费模板管理', 'layui-icon layui-icon-template-1', 'data/shop_truck_template/index', 'data/shop_truck_template/index', '', '_self', 0, 1, '2020-09-15 09:14:46');
 INSERT INTO `system_menu` VALUES (83, 73, '配送区域管理', 'layui-icon layui-icon-location', 'data/shop_truck_template/region', 'data/shop_truck_template/region', '', '_self', 0, 1, '2020-09-17 09:13:35');
-INSERT INTO `system_menu` VALUES (84, 68, '微信小程序配置', 'layui-icon layui-icon-set', 'data/config/wxapp', 'data/config/wxapp', '', '_self', 0, 1, '2020-09-21 16:34:08');
+INSERT INTO `system_menu` VALUES (84, 68, '微信小程序配置', 'layui-icon layui-icon-set', 'data/config/wxapp', 'data/config/wxapp', '', '_self', 5, 1, '2020-09-21 16:34:08');
 INSERT INTO `system_menu` VALUES (85, 68, '会员服务协议', 'layui-icon layui-icon-template-1', 'data/config/agreement', 'data/config/agreement', '', '_self', 30, 1, '2020-09-22 16:00:10');
 INSERT INTO `system_menu` VALUES (86, 68, '关于我们描述', 'layui-icon layui-icon-app', 'data/config/about', 'data/config/about', '', '_self', 40, 1, '2020-09-22 16:12:44');
-INSERT INTO `system_menu` VALUES (87, 68, '商城支付配置', 'layui-icon layui-icon-set-sm', 'data/payment/index', 'data/payment/index', '', '_self', 0, 1, '2020-12-12 09:08:09');
+INSERT INTO `system_menu` VALUES (87, 68, '支付通道管理', 'layui-icon layui-icon-set-sm', 'data/payment/index', 'data/payment/index', '', '_self', 6, 1, '2020-12-12 09:08:09');
 
 -- ----------------------------
 -- Table structure for system_oplog
@@ -4569,11 +4569,14 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
 -- ----------------------------
+INSERT INTO `system_oplog` VALUES (1, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2020-12-14 06:00:24');
+INSERT INTO `system_oplog` VALUES (2, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[87]成功', 'admin', '2020-12-14 06:00:53');
+INSERT INTO `system_oplog` VALUES (3, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[87]成功', 'admin', '2020-12-14 06:01:06');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4639,7 +4642,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://v6.thinkadmin.top/upload/ec/f571134493e54fe06855c88557052c.png', '', '', '', '', '127.0.0.1', '2020-12-13 04:29:27', 22, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://v6.thinkadmin.top/upload/ec/f571134493e54fe06855c88557052c.png', '', '', '', '', '127.0.0.1', '2020-12-14 06:00:24', 23, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
