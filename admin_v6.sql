@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 14/12/2020 14:20:05
+ Date: 14/12/2020 15:34:25
 */
 
 SET NAMES utf8mb4;
@@ -139,6 +139,7 @@ CREATE TABLE `data_payment_item`  (
   `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单单号',
   `order_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单描述',
   `order_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额',
+  `payment_id` bigint(20) NULL DEFAULT 0 COMMENT '支付编号',
   `payment_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付通道',
   `payment_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付单号',
   `payment_status` tinyint(1) NULL DEFAULT 0 COMMENT '支付状态',
@@ -147,6 +148,7 @@ CREATE TABLE `data_payment_item`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_payment_item_order_no`(`order_no`) USING BTREE,
+  INDEX `idx_data_payment_item_pament_id`(`payment_id`) USING BTREE,
   INDEX `idx_data_payment_item_payment_type`(`payment_type`) USING BTREE,
   INDEX `idx_data_payment_item_payment_status`(`payment_status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-支付-记录' ROW_FORMAT = COMPACT;
@@ -4569,7 +4571,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
@@ -4577,6 +4579,7 @@ CREATE TABLE `system_oplog`  (
 INSERT INTO `system_oplog` VALUES (1, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2020-12-14 06:00:24');
 INSERT INTO `system_oplog` VALUES (2, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[87]成功', 'admin', '2020-12-14 06:00:53');
 INSERT INTO `system_oplog` VALUES (3, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[87]成功', 'admin', '2020-12-14 06:01:06');
+INSERT INTO `system_oplog` VALUES (4, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2020-12-14 06:34:19');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4642,7 +4645,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://v6.thinkadmin.top/upload/ec/f571134493e54fe06855c88557052c.png', '', '', '', '', '127.0.0.1', '2020-12-14 06:00:24', 23, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://v6.thinkadmin.top/upload/ec/f571134493e54fe06855c88557052c.png', '', '', '', '', '127.0.0.1', '2020-12-14 06:34:19', 24, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

@@ -53,6 +53,12 @@ abstract class PaymentService extends Service
     ];
 
     /**
+     * 支付通道编号
+     * @var integer
+     */
+    protected static $id;
+
+    /**
      * 默认支付类型
      * @var string
      */
@@ -79,6 +85,7 @@ abstract class PaymentService extends Service
      */
     public static function build(string $payid): PaymentService
     {
+        static::$id = $payid;
         if (isset(static::$driver[$payid])) {
             return static::$driver[$payid];
         }
@@ -156,8 +163,8 @@ abstract class PaymentService extends Service
      * @param string $orderNo 交易订单单号
      * @param string $payAmount 交易订单金额（元）
      * @param string $payTitle 交易订单名称
-     * @param string $payDescription 订单订单描述
+     * @param string $payRemark 订单订单描述
      * @return array
      */
-    abstract public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payDescription): array;
+    abstract public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark): array;
 }

@@ -61,15 +61,16 @@ class JoinPaymentService extends PaymentService
      * @param string $orderNo 交易订单单号
      * @param string $payAmount 交易订单金额（元）
      * @param string $payTitle 交易订单名称
-     * @param string $payDescription 订单订单描述
+     * @param string $payRemark 订单订单描述
      * @return array
      * @throws \think\Exception
      */
-    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payDescription): array
+    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark): array
     {
         try {
             if (isset(static::TYPES[static::$type])) {
-                $type = static::TYPES[static::$type]['type'];
+                $tradeType = static::TYPES[static::$type]['type'];
+                $tradeParam = static::$type . '_' . static::$id;
             } else {
                 throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
             }
@@ -80,9 +81,9 @@ class JoinPaymentService extends PaymentService
                 'p3_Amount'          => $payAmount * 100,
                 'p4_Cur'             => '1',
                 'p5_ProductName'     => $payTitle,
-                'p6_ProductDesc'     => $payDescription,
-                'p9_NotifyUrl'       => sysuri('@data/api.notify/joinpay/scene/order/type/' . static::$type, [], false, true),
-                'q1_FrpCode'         => $type ?? '',
+                'p6_ProductDesc'     => $payRemark,
+                'p9_NotifyUrl'       => sysuri("@data/api.notify/joinpay/scene/order/param/{$tradeParam}", [], false, true),
+                'q1_FrpCode'         => $tradeType ?? '',
                 'q5_OpenId'          => $openid,
                 'q7_AppId'           => $this->appid,
                 'qa_TradeMerchantNo' => $this->trade,
@@ -93,7 +94,8 @@ class JoinPaymentService extends PaymentService
             if (is_array($result) && isset($result['ra_Code']) && intval($result['ra_Code']) === 100) {
                 // 创建支付记录
                 $this->app->db->name('DataPaymentItem')->insert([
-                    'order_no' => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount, 'payment_type' => static::$type,
+                    'order_no'   => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount,
+                    'payment_id' => static::$id, 'payment_type' => static::$type,
                 ]);
                 // 返回支付参数
                 return json_decode($result['rc_Result'], true);
@@ -130,7 +132,11 @@ class JoinPaymentService extends PaymentService
      */
     public function notify(string $type = ''): string
     {
-        $type = $type ?: static::$type;
+        if (is_numeric(stripos($type, '_'))) {
+            [$payType, $payId] = explode('_', $type);
+        } else {
+            [$payType, $payId] = [$type ?: static::$type, static::$id];
+        }
         $notify = $this->app->request->get();
         foreach ($notify as &$item) $item = urldecode($item);
         if (empty($notify['hmac']) || $notify['hmac'] !== $this->_doSign($notify)) {
@@ -140,14 +146,15 @@ class JoinPaymentService extends PaymentService
             // 更新支付记录
             data_save('DataPaymentItem', [
                 'order_no'         => $notify['r2_OrderNo'],
-                'payment_type'     => $type,
+                'payment_id'       => $payId,
+                'payment_type'     => $payType,
                 'payment_code'     => $notify['r9_BankTrxNo'],
                 'payment_amount'   => $notify['r3_Amount'],
                 'payment_status'   => 1,
                 'payment_datatime' => date('Y-m-d H:i:s'),
-            ], 'order_no', ['payment_type' => $type, 'payment_status' => 0]);
+            ], 'order_no', ['payment_type' => $payType, 'payment_status' => 0]);
             // 更新记录状态
-            if ($this->updateOrder($notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'], $type)) {
+            if ($this->updateOrder($notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'], $payType)) {
                 return 'success';
             }
         }
