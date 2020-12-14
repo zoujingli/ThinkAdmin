@@ -97,7 +97,7 @@ class JoinPaymentService extends PaymentService
             if (is_array($result) && isset($result['ra_Code']) && intval($result['ra_Code']) === 100) {
                 // 创建支付记录
                 $this->app->db->name('DataPaymentItem')->insert([
-                    'order_no' => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount, 'payment_type' => $type,
+                    'order_no' => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount, 'payment_type' => static::$type,
                 ]);
                 // 返回支付参数
                 return json_decode($result['rc_Result'], true);
