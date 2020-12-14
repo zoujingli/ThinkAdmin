@@ -171,10 +171,10 @@ abstract class PaymentService extends Service
 
     /**
      * 支付通知处理
-     * @param string $type
+     * @param string $param 支付通道-支付编号
      * @return string
      */
-    abstract public function notify(string $type = ''): string;
+    abstract public function notify(string $param = ''): string;
 
     /**
      * 订单主动查询

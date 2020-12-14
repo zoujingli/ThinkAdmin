@@ -125,18 +125,18 @@ class JoinPaymentService extends PaymentService
 
     /**
      * 支付结果处理
-     * @param string $type 支付通道
+     * @param string $param 支付通道
      * @return string
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function notify(string $type = ''): string
+    public function notify(string $param = ''): string
     {
-        if (is_numeric(stripos($type, '-'))) {
-            [$payType, $payId] = explode('-', $type);
+        if (is_numeric(stripos($param, '-'))) {
+            [$payType, $payId] = explode('-', $param);
         } else {
-            [$payType, $payId] = [$type ?: static::$type, static::$id];
+            [$payType, $payId] = [$param ?: static::$type, static::$id];
         }
         $notify = $this->app->request->get();
         foreach ($notify as &$item) $item = urldecode($item);
