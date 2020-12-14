@@ -1,0 +1,17 @@
+<label class="layui-form-item margin-bottom-20 block relative">
+    <span class="color-green font-s14 font-w7 margin-right-10">绑定商户编号</span>
+    <input name="alipay_appid" required placeholder="请输入绑定公众号（必填）" value="{$vo.content.alipay_appid|default=''}" class="layui-input">
+    <span class="help-block">商户绑定的公众号，授权给汇聚支付平台的公众号APPID</span>
+</label>
+
+<label class="layui-form-item margin-bottom-20 block relative">
+    <span class="color-green font-s14 font-w7">支付宝私钥文件内容</span><span class="nowrap color-desc">（ 需要填写文件的全部内容 ）</span>
+    <textarea name="alipay_public_key" placeholder="请输入支付宝私钥文件内容" class="layui-textarea">{$vo.content.alipay_public_key|default=''}</textarea>
+    <span class="help-block">从商户平台上下载支付证书，解压并取得其中的支付宝私钥文件用记事本打开并复制文件内容填至此处</span>
+</label>
+
+<label class="layui-form-item margin-bottom-20 block relative">
+    <span class="color-green font-s14 font-w7">支付宝公钥证书文件内容</span><span class="nowrap color-desc">（ 需要填写文件的全部内容 ）</span>
+    <textarea name="alipay_private_key" placeholder="请输入支付宝公钥证书文件内容" class="layui-textarea">{$vo.content.alipay_private_key|default=''}</textarea>
+    <span class="help-block">从商户平台上下载支付证书，解压并取得其中的支付宝公钥证书文件用记事本打开并复制文件内容填至此处</span>
+</label>

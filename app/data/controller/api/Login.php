@@ -17,13 +17,24 @@ class Login extends Controller
      * 接口认证类型
      * @var string
      */
-    private $type = UserService::APITYPE_WAP;
+    private $type;
 
     /**
      * 绑定数据表
      * @var string
      */
     protected $table = 'DataUser';
+
+    /**
+     * 控制器初始化
+     */
+    protected function initialize()
+    {
+        $this->type = input('api', UserService::APITYPE_WAP);
+        if (empty(UserService::TYPES[$this->type])) {
+            $this->error("接口通道[{$this->type}]未定义规则！");
+        }
+    }
 
     /**
      * 用户登录接口

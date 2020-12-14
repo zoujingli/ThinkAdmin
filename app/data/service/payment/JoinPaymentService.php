@@ -70,7 +70,7 @@ class JoinPaymentService extends PaymentService
         try {
             if (isset(static::TYPES[static::$type])) {
                 $tradeType = static::TYPES[static::$type]['type'];
-                $tradeParam = static::$type . '_' . static::$id;
+                $tradeParam = static::$type . '-' . static::$id;
             } else {
                 throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
             }
@@ -132,8 +132,8 @@ class JoinPaymentService extends PaymentService
      */
     public function notify(string $type = ''): string
     {
-        if (is_numeric(stripos($type, '_'))) {
-            [$payType, $payId] = explode('_', $type);
+        if (is_numeric(stripos($type, '-'))) {
+            [$payType, $payId] = explode('-', $type);
         } else {
             [$payType, $payId] = [$type ?: static::$type, static::$id];
         }

@@ -15,23 +15,33 @@ class UserService extends Service
     const APITYPE_WEB = 'web';
     const APITYPE_WXAPP = 'wxapp';
     const APITYPE_WECHAT = 'wechat';
+    const APITYPE_IOSAPP = 'ios';
+    const APITYPE_ANDROID = 'android';
 
     const TYPES = [
-        UserService::APITYPE_WAP    => [
-            'name' => '手机浏览器终端',
+        UserService::APITYPE_WAP     => [
+            'name' => '手机浏览器',
             'auth' => '',
         ],
-        UserService::APITYPE_WEB    => [
-            'name' => '电脑浏览器终端',
+        UserService::APITYPE_WEB     => [
+            'name' => '电脑浏览器',
             'auth' => '',
         ],
-        UserService::APITYPE_WXAPP  => [
-            'name' => '微信小程序终端',
+        UserService::APITYPE_WXAPP   => [
+            'name' => '微信小程序',
             'auth' => 'openid1',
         ],
-        UserService::APITYPE_WECHAT => [
-            'name' => '微信服务号终端',
+        UserService::APITYPE_WECHAT  => [
+            'name' => '微信服务号',
             'auth' => 'openid2',
+        ],
+        UserService::APITYPE_ANDROID => [
+            'name' => '安卓应用',
+            'auth' => '',
+        ],
+        UserService::APITYPE_IOSAPP  => [
+            'name' => '苹果应用',
+            'auth' => '',
         ],
     ];
 

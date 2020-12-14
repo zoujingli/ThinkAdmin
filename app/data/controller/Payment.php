@@ -74,15 +74,20 @@ class Payment extends Controller
     protected function _form_filter(array &$data)
     {
         if ($this->request->isGet()) {
-            foreach ($this->types as &$vo) {
-                $binds = [];
+            $this->payments = [];
+            foreach ($this->types as $k => $vo) {
+                [$allow, $group] = [[], ucfirst(strstr($k, '_', true))];
                 foreach ($vo['bind'] as $api) if (isset(UserService::TYPES[$api])) {
-                    $binds[$api] = UserService::TYPES[$api]['name'];
+                    $allow[$api] = UserService::TYPES[$api]['name'];
                 }
-                $vo['allow'] = join('、', $binds);
+                $vo['allow'] = join('、', $allow);
+                $this->payments[$group][$k] = $vo;
             }
             $data['content'] = json_decode($data['content'] ?? '[]', true) ?: [];
         } else {
+            if (empty($data['type'])) {
+                $this->error('请选择支付通道并配置支付参数！');
+            }
             $data['content'] = json_encode($this->request->post() ?: [], JSON_UNESCAPED_UNICODE);
         }
     }

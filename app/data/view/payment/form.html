@@ -14,22 +14,25 @@
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">支付通道</span>
             <span class="color-desc margin-left-5">Payment Channel</span>
-            <div class="layui-input">
+            <label class="block full-width">
                 {empty name='vo.type'}{php}$vo['type'] = 'wechat_jsapi';{/php}{/empty}
-                {foreach $types as $k => $v}
-                <label class="think-radio notselect">
-                    {if $vo.type eq $k}
-                    <input data-payment-type data-allow="{$v.allow}" checked type="radio" name="type" value="{$k}"> {$v.name}
-                    {else}
-                    <input data-payment-type data-allow="{$v.allow}" type="radio" name="type" value="{$k}"> {$v.name}
-                    {/if}
-                </label>
-                {/foreach}
-            </div>
-            <div class="help-block">此支付通道支持 <span class="color-blue" data-payment-info></span> 的终端用户通过 API 发起支付</div>
+                <select name="type" class="layui-select" lay-search lay-filter="payment-type">
+                    <option value="">-- 请选择 --</option>
+                    {foreach $payments as $kk => $vv}
+                    <optgroup label="{$kk}">
+                        {foreach $vv as $k => $v}{if $vo.type eq $k}
+                        <option selected value="{$kk}">{$v.name} ( {$v.allow} )</option>
+                        {else}
+                        <option value="{$k}">{$v.name} ( {$v.allow} )</option>
+                        {/if}{/foreach}
+                    </optgroup>
+                    {/foreach}
+                </select>
+            </label>
         </div>
 
         <div data-payment-type="wechat">{include file='payment/form_wechat'}</div>
+        <div data-payment-type="alipay" class="layui-hide">{include file='payment/form_alipay'}</div>
         <div data-payment-type="joinpay" class="layui-hide">{include file='payment/form_joinpay'}</div>
 
         <div class="layui-form-item relative block">
@@ -55,16 +58,22 @@
 
 {block name='script'}
 <script>
-    $('input[data-payment-type]').on('change', function () {
-        var $radio = $('input[data-payment-type]:checked');
-        if ($radio.val().indexOf('wechat') > -1) {
-            $('[data-payment-type="wechat"]').removeClass('layui-hide')
-            $('[data-payment-type="joinpay"]').addClass('layui-hide');
-        } else {
-            $('[data-payment-type="wechat"]').addClass('layui-hide')
-            $('[data-payment-type="joinpay"]').removeClass('layui-hide');
+    (function () {
+        layui.form.render();
+        apply({value: '{$vo.type}'});
+        layui.form.on('select(payment-type)', apply);
+
+        function apply(data) {
+            if (data.value.indexOf('wechat') > -1) {
+                $('[data-payment-type]').not($('[data-payment-type="wechat"]').removeClass('layui-hide')).addClass('layui-hide');
+            } else if (data.value.indexOf('alipay') > -1) {
+                $('[data-payment-type]').not($('[data-payment-type="alipay"]').removeClass('layui-hide')).addClass('layui-hide');
+            } else if (data.value.indexOf('joinpay') > -1) {
+                $('[data-payment-type]').not($('[data-payment-type="joinpay"]').removeClass('layui-hide')).addClass('layui-hide');
+            } else {
+                $('[data-payment-type]').addClass('layui-hide');
+            }
         }
-        $('[data-payment-info]').html($radio.data('allow'));
-    }).trigger('change');
+    })();
 </script>
 {/block}
