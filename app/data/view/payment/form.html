@@ -12,7 +12,7 @@
         </label>
 
         <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">支付通道</span>
+            <span class="color-green font-w7 label-required-prev">支付方式</span>
             <span class="color-desc margin-left-5">Payment Channel</span>
             <label class="block full-width">
                 {empty name='vo.type'}{php}$vo['type'] = 'wechat_jsapi';{/php}{/empty}
@@ -35,7 +35,7 @@
         <div data-payment-type="alipay" class="layui-hide">{include file='payment/form_alipay'}</div>
         <div data-payment-type="joinpay" class="layui-hide">{include file='payment/form_joinpay'}</div>
 
-        <div class="layui-form-item relative block">
+        <div class="layui-form-item relative layui-hide">
             <span class="color-green font-w7">支付描述</span>
             <span class="color-desc margin-left-5">Payment Remark</span>
             <label class="relative block">

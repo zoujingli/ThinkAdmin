@@ -2,10 +2,11 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加支付</button>
+<button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加支付通道</button>
 <!--{/if}-->
+
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些支付吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除支付</button>
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些支付通道吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除支付通道</button>
 <!--{/if}-->
 {/block}
 
@@ -22,9 +23,9 @@
             <th class='list-table-sort-td'>
                 <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
             </th>
-            <th class="text-left nowrap">支付名称</th>
-            <th class="text-left nowrap">支付通道</th>
-            <th class="text-left nowrap">支付状态</th>
+            <th class="text-left nowrap">通道名称</th>
+            <th class="text-left nowrap">支付方式</th>
+            <th class="text-left nowrap">使用状态</th>
             <th class="text-left nowrap">创建时间</th>
             <th class="text-left nowrap"></th>
         </tr>
