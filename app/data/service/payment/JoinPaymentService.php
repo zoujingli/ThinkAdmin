@@ -67,16 +67,16 @@ class JoinPaymentService extends PaymentService
      */
     public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payDescription): array
     {
-        $types = [
-            static::PAYMENT_JOINPAY_GZH => 'WEIXIN_GZH',
-            static::PAYMENT_JOINPAY_XCX => 'WEIXIN_XCX',
-        ];
-        if (isset($types[static::$type])) {
-            $type = $types[static::$type];
-        } else {
-            throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
-        }
         try {
+            $types = [
+                static::PAYMENT_JOINPAY_GZH => 'WEIXIN_GZH',
+                static::PAYMENT_JOINPAY_XCX => 'WEIXIN_XCX',
+            ];
+            if (isset($types[static::$type])) {
+                $type = $types[static::$type];
+            } else {
+                throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
+            }
             $data = [
                 'p0_Version'         => '1.0',
                 'p1_MerchantNo'      => $this->mchid,
@@ -95,12 +95,19 @@ class JoinPaymentService extends PaymentService
             $this->uri = 'https://www.joinpay.com/trade/uniPayApi.action';
             $result = $this->_doReuest($data);
             if (is_array($result) && isset($result['ra_Code']) && intval($result['ra_Code']) === 100) {
+                // 创建支付记录
+                $this->app->db->name('DataPaymentItem')->insert([
+                    'order_no' => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount, 'payment_type' => $type,
+                ]);
+                // 返回支付参数
                 return json_decode($result['rc_Result'], true);
             } elseif (is_array($result) && isset($result['rb_CodeMsg'])) {
                 throw new \think\Exception($result['rb_CodeMsg']);
             } else {
                 throw new \think\Exception('获取预支付码失败！');
             }
+        } catch (\think\Exception $exception) {
+            throw $exception;
         } catch (\Exception $exception) {
             throw new \think\Exception($exception->getMessage(), $exception->getCode());
         }
@@ -132,6 +139,15 @@ class JoinPaymentService extends PaymentService
             return 'error';
         }
         if (isset($notify['r6_Status']) && intval($notify['r6_Status']) === 100) {
+            // 更新支付记录
+            $map = ['order_no' => $notify['r2_OrderNo'], 'payment_type' => static::$type];
+            $this->app->db->name('DataPaymentItem')->where($map)->update([
+                'payment_code'     => $notify['r9_BankTrxNo'],
+                'payment_amount'   => $notify['r3_Amount'],
+                'payment_status'   => 1,
+                'payment_datatime' => date('Y-m-d H:i:s'),
+            ]);
+            // 更新记录状态
             if ($this->updateOrder($notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'], 'joinpay')) {
                 return 'success';
             }

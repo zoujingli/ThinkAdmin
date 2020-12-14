@@ -3,6 +3,7 @@
 namespace app\data\service\payment;
 
 use app\data\service\PaymentService;
+use http\Exception;
 use WePay\Order;
 
 /**
@@ -71,6 +72,11 @@ class WechatPaymentService extends PaymentService
             if (empty($data['openid'])) unset($data['openid']);
             $info = $this->payment->create($data);
             if ($info['return_code'] === 'SUCCESS' && $info['result_code'] === 'SUCCESS') {
+                // 创建支付记录
+                $this->app->db->name('DataPaymentItem')->insert([
+                    'order_no' => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount, 'payment_type' => static::$type,
+                ]);
+                // 返回支付参数
                 return $this->payment->jsapiParams($info['prepay_id']);
             }
             if (isset($info['err_code_des'])) {
@@ -78,6 +84,8 @@ class WechatPaymentService extends PaymentService
             } else {
                 throw new \think\Exception('获取预支付码失败！');
             }
+        } catch (\think\Exception $exception) {
+            throw $exception;
         } catch (\Exception $exception) {
             throw new \think\Exception($exception->getMessage(), $exception->getCode());
         }
@@ -95,6 +103,15 @@ class WechatPaymentService extends PaymentService
     {
         $notify = $this->payment->getNotify();
         if ($notify['result_code'] == 'SUCCESS' && $notify['return_code'] == 'SUCCESS') {
+            // 更新支付记录
+            $map = ['order_no' => $notify['out_trade_no'], 'payment_type' => static::$type];
+            $this->app->db->name('DataPaymentItem')->where($map)->update([
+                'payment_code'     => $notify['r9_BankTrxNo'],
+                'payment_amount'   => $notify['r3_Amount'],
+                'payment_status'   => 1,
+                'payment_datatime' => date('Y-m-d H:i:s'),
+            ]);
+            // 更新记录状态
             if ($this->updateOrder($notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100, 'wechat')) {
                 return $this->payment->getNotifySuccessReply();
             }
