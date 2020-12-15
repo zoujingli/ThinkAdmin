@@ -814,13 +814,13 @@ $(function () {
                 '<div class="padding-30 padding-bottom-0" style="width:500px" data-queue-load="' + code + '">' +
                 '   <div class="layui-elip nowrap" data-message-title></div>' +
                 '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' +
-                '   <div class="margin-top-15"><textarea class="layui-textarea layui-bg-black border-0" disabled style="resize:none;overflow:hidden;height:190px"></textarea></div>' +
+                '   <div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" disabled style="resize:none;overflow:hidden;height:190px"></code></div>' +
                 '</div>'
         });
         (function loadprocess(code, that) {
             that = this, this.$box = $('[data-queue-load=' + code + ']');
             if (doAjax === false || that.$box.length < 1) return false;
-            this.$area = that.$box.find('textarea'), this.$title = that.$box.find('[data-message-title]');
+            this.$code = that.$box.find('code'), this.$title = that.$box.find('[data-message-title]');
             this.$percent = that.$box.find('.layui-progress div'), this.runCache = function (code, index, value) {
                 this.ckey = code + '_' + index, this.ctype = 'admin-queue-script';
                 return value !== undefined ? layui.data(this.ctype, {key: this.ckey, value: value}) : layui.data(this.ctype)[this.ckey] || 0;
@@ -855,7 +855,7 @@ $(function () {
                             that.runCache(code, this.lineIndex, 1), location.href = this.line.message;
                         }
                     }
-                    that.$area.val(that.lines.join("\n")), that.$area.animate({scrollTop: that.$area[0].scrollHeight + 'px'}, 200);
+                    that.$code.html(that.lines.join("<br>")), that.$code.animate({scrollTop: that.$code[0].scrollHeight + 'px'}, 200);
                     that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
                     if (ret.data.status > 0) that.setState(parseInt(ret.data.status), ret.data.message);
                     else return that.setState(4, '获取任务详情失败！'), false;
