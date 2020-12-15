@@ -175,7 +175,7 @@ class QueueService extends Service
         } catch (\Exception | \Error $exception) {
             return $this->progress($status, $message, $progress, $backline);
         }
-        while (count($data['history']) > 0 && $backline > 0) {
+        while ($backline > 0 && count($data['history']) > 0) {
             [--$backline, array_pop($data['history'])];
         }
         if (is_numeric($status)) $data['status'] = intval($status);
