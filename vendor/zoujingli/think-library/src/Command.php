@@ -70,13 +70,14 @@ abstract class Command extends ThinkCommand
     /**
      * 设置进度消息并继续执行
      * @param null|string $message 进度消息
-     * @param null|integer $progress 进度数值
+     * @param null|float $progress 进度数值
+     * @param integer $backline 回退行数
      * @return static
      */
-    protected function setQueueProgress(?string $message = null, $progress = null)
+    protected function setQueueProgress(?string $message = null, $progress = null, $backline = 0): Command
     {
         if (defined('WorkQueueCode')) {
-            $this->queue->progress(2, $message, $progress);
+            $this->queue->progress(2, $message, $progress, $backline);
         } elseif (is_string($message)) {
             $this->output->writeln($message);
         }

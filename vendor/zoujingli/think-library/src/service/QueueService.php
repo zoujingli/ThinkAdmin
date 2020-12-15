@@ -154,9 +154,10 @@ class QueueService extends Service
      * @param null|integer $status 任务状态
      * @param null|string $message 进度消息
      * @param null|float $progress 进度数值
+     * @param integer $backline 回退信息行
      * @return array
      */
-    public function progress(?int $status = null, ?string $message = null, $progress = null): array
+    public function progress(?int $status = null, ?string $message = null, $progress = null, $backline = 0): array
     {
         $ckey = "queue_{$this->code}_progress";
         if (is_numeric($status) && intval($status) === 3) {
@@ -171,8 +172,11 @@ class QueueService extends Service
             $data = $this->app->cache->get($ckey, [
                 'code' => $this->code, 'status' => $status, 'message' => $message, 'progress' => $progress, 'history' => [],
             ]);
-        } catch (\Exception|\Error $exception) {
-            return $this->progress($status, $message, $progress);
+        } catch (\Exception | \Error $exception) {
+            return $this->progress($status, $message, $progress, $backline);
+        }
+        while (count($data['history']) > 0 && $backline > 0) {
+            [--$backline, array_pop($data['history'])];
         }
         if (is_numeric($status)) $data['status'] = intval($status);
         if (is_numeric($progress)) $progress = str_pad(sprintf("%.2f", $progress), 6, '0', STR_PAD_LEFT);
@@ -201,14 +205,15 @@ class QueueService extends Service
      * @param integer $total 记录总和
      * @param integer $used 当前记录
      * @param string $message 文字描述
+     * @param integer $backline 回退行数
      */
-    public function message(int $total, int $used, string $message = ''): void
+    public function message(int $total, int $used, string $message = '', $backline = 0): void
     {
         $total = $total < 1 ? 1 : $total;
         $prefix = str_pad("{$used}", strlen("{$total}"), '0', STR_PAD_LEFT);
         $message = "[{$prefix}/{$total}] {$message}";
         if (defined('WorkQueueCode')) {
-            $this->progress(2, $message, sprintf("%.2f", $used / $total * 100));
+            $this->progress(2, $message, sprintf("%.2f", $used / $total * 100), $backline);
         } else {
             echo $message . PHP_EOL;
         }

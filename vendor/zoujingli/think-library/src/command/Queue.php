@@ -297,7 +297,7 @@ class Queue extends Command
                     $this->updateQueue(3, $this->app->console->call(array_shift($attr), $attr)->fetch(), false);
                 }
             }
-        } catch (\Exception|\Error|\Throwable $exception) {
+        } catch (\Exception | \Error | \Throwable $exception) {
             $code = $exception->getCode();
             if (intval($code) !== 3) $code = 4;
             $this->updateQueue($code, $exception->getMessage());
@@ -333,7 +333,7 @@ class Queue extends Command
         if (isset($this->queue->record['loops_time']) && $this->queue->record['loops_time'] > 0) {
             try {
                 $this->queue->initialize($this->code)->reset($this->queue->record['loops_time']);
-            } catch (\Exception|\Error|\Throwable $exception) {
+            } catch (\Exception | \Error | \Throwable $exception) {
                 $this->app->log->error("Queue {$this->queue->record['code']} Loops Failed. {$exception->getMessage()}");
             }
         }
