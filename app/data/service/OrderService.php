@@ -57,13 +57,6 @@ class OrderService extends Service
      */
     public function buildItemData(array &$data = []): array
     {
-        // 关联用户数据
-        $mids = array_unique(array_merge(array_column($data, 'uid'), array_column($data, 'from')));
-        $members = $this->app->db->name('DataUser')->whereIn('id', $mids)->column('*', 'id');
-        foreach ($members as &$user) {
-            unset($user['token'], $user['tokenv'], $user['openid1'], $user['openid2']);
-            unset($user['unionid'], $user['password'], $user['status'], $user['deleted']);
-        }
         // 关联发货信息
         $nobs = array_unique(array_column($data, 'order_no'));
         $trucks = $this->app->db->name('ShopOrderSend')->whereIn('order_no', $nobs)->column('*', 'order_no');
@@ -71,17 +64,17 @@ class OrderService extends Service
         // 关联订单商品
         $query = $this->app->db->name('ShopOrderItem')->where(['status' => 1, 'deleted' => 0]);
         $items = $query->withoutField('id,uid,status,deleted,create_at')->whereIn('order_no', $nobs)->select()->toArray();
+        // 关联用户数据
+        $fields = 'username,phone,nickname,headimg,status';
+        UserService::instance()->buildByUid($data, 'uid', 'member', $fields);
+        UserService::instance()->buildByUid($data, 'from', 'fromer', $fields);
         foreach ($data as &$vo) {
             $vo['sales'] = 0;
-            $vo['member'] = $members[$vo['uid']] ?? [];
-            $vo['fromer'] = $members[$vo['from']] ?? [];
             $vo['truck'] = $trucks[$vo['order_no']] ?? [];
             $vo['items'] = [];
-            foreach ($items as $item) {
-                if ($vo['order_no'] === $item['order_no']) {
-                    $vo['items'][] = $item;
-                    $vo['sales'] += $item['stock_sales'];
-                }
+            foreach ($items as $item) if ($vo['order_no'] === $item['order_no']) {
+                $vo['sales'] += $item['stock_sales'];
+                $vo['items'][] = $item;
             }
         }
         return $data;

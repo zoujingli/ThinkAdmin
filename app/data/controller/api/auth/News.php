@@ -41,9 +41,7 @@ class News extends Auth
     {
         $map = $this->_vali(['uid.value' => $this->uuid, 'code.require' => '文章不能为空！']);
         $result = $this->_query('DataNewsXComment')->where($map)->order('id desc')->page(true, false);
-        if (count($result['list']) > 0) {
-            NewsService::instance()->buildListByMinAndCode($result);
-        }
+        NewsService::instance()->buildListByUidAndCode($result);
         $this->success('获取评论列表成功', $result);
     }
 
@@ -107,9 +105,7 @@ class News extends Auth
         $map = ['uid' => $this->uuid, 'type' => 1];
         $query = $this->_query('DataNewsXCollect')->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
-        if (count($result['list']) > 0) {
-            NewsService::instance()->buildListByMinAndCode($result['list']);
-        }
+        NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取收藏记录成功！', $result);
     }
 
@@ -154,7 +150,7 @@ class News extends Auth
     {
         $query = $this->_query('DataNewsXCollect')->order('id desc');
         $result = $query->where(['uid' => $this->uuid, 'type' => 2])->page(true, false, false, 15);
-        NewsService::instance()->buildListByMinAndCode($result['list']);
+        NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取点赞记录成功！', $result);
     }
 
@@ -168,7 +164,7 @@ class News extends Auth
     {
         $query = $this->_query('DataNewsXCollect')->order('id desc');
         $result = $query->where(['uid' => $this->uuid, 'type' => 3])->page(true, false, false, 15);
-        NewsService::instance()->buildListByMinAndCode($result['list']);
+        NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取浏览历史成功！', $result);
     }
 

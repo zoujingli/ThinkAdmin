@@ -61,7 +61,7 @@ class News extends Controller
         $map = $this->_vali(['code.require' => '文章不能为空！']);
         $query = $this->_query('DataNewsXComment')->where($map);
         $result = $query->order('id desc')->page(false, false, false, 5);
-        NewsService::instance()->buildListByMinAndCode($result['list']);
+        NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取文章评论成功！', $result);
     }
 

@@ -178,6 +178,23 @@ class UserService extends Service
     }
 
     /**
+     * 列表绑定用户数据
+     * @param array $list 原数据列表
+     * @param string $keys 用户UID字段
+     * @param string $bind 绑定字段名称
+     * @param string $column 返回用户字段
+     * @return array
+     */
+    public function buildByUid(array &$list, string $keys = 'uid', string $bind = 'user', string $column = '*'): array
+    {
+        if (count($list) < 1) return $list;
+        $uids = array_unique(array_column($list, $keys));
+        $users = $this->app->db->name('DataUser')->whereIn('id', $uids)->column($column, 'id');
+        foreach ($list as &$vo) $vo[$bind] = $users[$keys] ?? [];
+        return $list;
+    }
+
+    /**
      * 获取令牌的认证值
      * @return string
      */

@@ -2,6 +2,7 @@
 
 namespace app\data\service;
 
+use app\data\service\payment\AliPaymentService;
 use app\data\service\payment\JoinPaymentService;
 use app\data\service\payment\WechatPaymentService;
 use think\admin\Service;
@@ -98,15 +99,14 @@ abstract class PaymentService extends Service
 
     /**
      * 支付服务对象
-     * @var JoinPaymentService|WechatPaymentService
+     * @var JoinPaymentService|WechatPaymentService|AliPaymentService
      */
     protected static $driver = [];
-
 
     /**
      * 根据配置实例支付服务
      * @param string $payid 支付通道编号
-     * @return JoinPaymentService|WechatPaymentService
+     * @return JoinPaymentService|WechatPaymentService|AliPaymentService
      * @throws \think\Exception
      */
     public static function build(string $payid): PaymentService

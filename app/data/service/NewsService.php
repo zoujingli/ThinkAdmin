@@ -34,23 +34,19 @@ class NewsService extends Service
      * @param array $list 数据列表
      * @return array
      */
-    public function buildListByMinAndCode(array &$list = []): array
+    public function buildListByUidAndCode(array &$list = []): array
     {
         if (count($list) > 0) {
-            /*! 读取文章内容 */
+            /*! 绑定文章内容 */
             $codes = array_unique(array_column($list, 'code'));
             $colls = 'id,code,name,cover,mark,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
             $items = $this->app->db->name('DataNewsItem')->whereIn('code', $codes)->column($colls, 'code');
             $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
             foreach ($items as &$vo) $vo['mark'] = str2arr($vo['mark'] ?: '', ',', $marks);
+            foreach ($list as &$vo) $vo['record'] = $items[$vo['code']] ?? [];
             /*! 绑定用户数据 */
-            $mids = array_unique(array_column($list, 'uid'));
             $colls = 'id,phone,nickname,username,headimg,status';
-            $users = $this->app->db->name('DataUser')->whereIn('id', $mids)->column($colls, 'id');
-            foreach ($list as &$vo) {
-                $vo['member'] = $users[$vo['uid']] ?? [];
-                $vo['record'] = $items[$vo['code']] ?? [];
-            }
+            UserService::instance()->buildByUid($list, 'uid', 'member', $colls);
         }
         return $list;
     }

@@ -38,6 +38,10 @@ class Notify extends Controller
      * @param string $scene 支付场景
      * @param string $param 支付通道
      * @return string
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function alipay(string $scene = 'order', string $param = ''): string
     {
