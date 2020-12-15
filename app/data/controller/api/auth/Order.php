@@ -195,7 +195,11 @@ class Order extends Auth
         if ($order['status'] != 2) $this->error('订单不能发起支付哦！');
         if ($order['payment_status'] > 0) $this->error('订单已经完成支付！');
         try {
-            $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
+            $openid = '';
+            if (in_array($this->type, [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT])) {
+                $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
+                if (empty($openid)) $this->error("无法创建支付，未获取到OPENID");
+            }
             $params = PaymentService::build($data['payid'])->create($openid, $order['order_no'], $order['amount_total'], '商城订单支付', '', $data['back']);
             $this->success('获取支付参数成功！', $params);
         } catch (HttpResponseException $exception) {
