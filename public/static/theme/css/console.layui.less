@@ -15,8 +15,23 @@ fieldset {
 }
 
 .layui-tab, .layui-card {
-  overflow: hidden;
   border-radius: @borderRadius;
+}
+
+.layui-tab {
+  .layui-tab-title {
+    border-top-left-radius: @borderRadius;
+    border-top-right-radius: @borderRadius;
+
+    > li:first-child {
+      border-top-left-radius: @borderRadius;
+    }
+  }
+
+  .layui-tab-content {
+    border-bottom-left-radius: @borderRadius;
+    border-bottom-right-radius: @borderRadius;
+  }
 }
 
 .layui-tab {
