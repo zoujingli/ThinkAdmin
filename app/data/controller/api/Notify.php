@@ -2,7 +2,7 @@
 
 namespace app\data\controller\api;
 
-use app\data\service\payment\AliPaymentService;
+use app\data\service\payment\AlipayPaymentService;
 use app\data\service\payment\JoinPaymentService;
 use app\data\service\payment\WechatPaymentService;
 use think\admin\Controller;
@@ -46,7 +46,7 @@ class Notify extends Controller
     public function alipay(string $scene = 'order', string $param = ''): string
     {
         if (strtolower($scene) === 'order') {
-            return AliPaymentService::instance()->notify($param);
+            return AlipayPaymentService::instance()->notify($param);
         } else {
             return 'success';
         }

@@ -6,10 +6,10 @@ use app\data\service\PaymentService;
 
 /**
  * 支付宝支付基础服务
- * Class AliPaymentService
+ * Class AlipayPaymentService
  * @package app\store\service\payment
  */
-class AliPaymentService extends PaymentService
+class AlipayPaymentService extends PaymentService
 {
 
     /**
@@ -22,7 +22,7 @@ class AliPaymentService extends PaymentService
      * 支付服务初始化
      * @return $this
      */
-    protected function initialize(): AliPaymentService
+    protected function initialize(): AlipayPaymentService
     {
         $this->params = [
             // 沙箱模式

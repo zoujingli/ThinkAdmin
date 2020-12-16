@@ -2,7 +2,7 @@
 
 namespace app\data\service;
 
-use app\data\service\payment\AliPaymentService;
+use app\data\service\payment\AlipayPaymentService;
 use app\data\service\payment\JoinPaymentService;
 use app\data\service\payment\WechatPaymentService;
 use think\admin\Service;
@@ -99,14 +99,14 @@ abstract class PaymentService extends Service
 
     /**
      * 支付服务对象
-     * @var JoinPaymentService|WechatPaymentService|AliPaymentService
+     * @var JoinPaymentService|WechatPaymentService|AlipayPaymentService
      */
     protected static $driver = [];
 
     /**
      * 根据配置实例支付服务
      * @param string $payid 支付通道编号
-     * @return JoinPaymentService|WechatPaymentService|AliPaymentService
+     * @return JoinPaymentService|WechatPaymentService|AlipayPaymentService
      * @throws \think\Exception
      */
     public static function build(string $payid): PaymentService
@@ -131,10 +131,14 @@ abstract class PaymentService extends Service
         }
         // 实例化具体支付通道类型
         static::$type = $payment['type'];
-        if (stripos(static::$type, 'wechat_') === 0) {
+        if (stripos(static::$type, 'alipay_') === 0) {
+            return static::$driver[$payid] = AlipayPaymentService::instance();
+        } elseif (stripos(static::$type, 'wechat_') === 0) {
             return static::$driver[$payid] = WechatPaymentService::instance();
-        } else {
+        } elseif (stripos(static::$type, 'joinpay_') === 0) {
             return static::$driver[$payid] = JoinPaymentService::instance();
+        } else {
+            throw new \think\Exception("支付驱动[{$payment['type']}]未定义");
         }
     }
 
