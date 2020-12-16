@@ -1,17 +1,20 @@
 {extend name='main'}
 
 {block name="button"}
-<!--{if auth("start") && $iswin}-->
-<button data-load='{:url("start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开始监听</button>
+<!--{if session('user.username') eq 'admin'}-->
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-queue="{:url('admin/api.plugs/optimize')}">优化数据库</a>
+<!--{if $iswin}-->
+<button data-load='{:url("admin/api.queue/start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开启后台服务</button>
+<button data-load='{:url("admin/api.queue/stop")}' class='layui-btn layui-btn-sm layui-btn-primary'>关闭后台服务</button>
 <!--{/if}-->
-<!--{if auth("stop") && $iswin}-->
-<button data-load='{:url("stop")}' data-confirm="确定要停止主进程监听吗？" class='layui-btn layui-btn-sm layui-btn-primary'>停止监听</button>
 <!--{/if}-->
-<!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定批量删除任务吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
-<!--{/if}-->
+
 <!--{if auth("clear")}-->
-<button data-load='{:url("clear")}' data-confirm="确定要创建定时清理任务吗？" class='layui-btn layui-btn-sm layui-btn-primary'>定时清理</button>
+<button data-load='{:url("clear")}' data-confirm="确定要创建定时清理任务吗？" class='layui-btn layui-btn-sm layui-btn-primary'>定时维护清理</button>
+<!--{/if}-->
+
+<!--{if auth("remove")}-->
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定批量删除记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除记录</button>
 <!--{/if}-->
 {/block}
 
@@ -20,7 +23,7 @@
     <div class="layui-row layui-col-space20 portal-block-container notselect">
         <div class="layui-col-sm6 layui-col-md6 layui-col-lg3">
             <div class="portal-block-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2)">
-                <div>待处理</div>
+                <div>等待处理</div>
                 <div>{$total.pre|default=0}</div>
                 <div>待处理的任务数量</div>
             </div>
@@ -28,7 +31,7 @@
         </div>
         <div class="layui-col-sm6 layui-col-md6 layui-col-lg3">
             <div class="portal-block-item nowrap" style="background:linear-gradient(-125deg,#ff7d7d,#fb2c95)">
-                <div>处理中</div>
+                <div>正在处理</div>
                 <div>{$total.dos|default=0}</div>
                 <div>处理中的任务数量</div>
             </div>

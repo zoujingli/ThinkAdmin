@@ -1,5 +1,6 @@
 <form onsubmit="return false" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
     <div class="layui-card-body padding-left-40">
+
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">后台登录入口</span>
             <span class="color-desc margin-left-5">Login</span>
@@ -9,6 +10,7 @@
             </label>
             <span class="help-block">名称由英文字母开头且不能存在相同名称的应用，设置之后原地址不能继续访问！</span>
         </div>
+
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">浏览器小图标</span>
             <span class="color-desc margin-left-5">Icon</span>
@@ -16,6 +18,7 @@
             <a class="input-right-icon layui-icon layui-icon-upload-drag" style="top:25px" data-file="btn" data-type="ico,png" data-field="site_icon"></a>
             <span class="help-block">建议上传 <span class="color-blue">128x128</span> 的 ico 或 png 图片，可以通过 <a href="http://www.favicon-icon-generator.com" target="_blank">ICON </a>在线制作 ico 文件！</span>
         </label>
+
         <div class="layui-form-item layui-row layui-col-space15">
             <div class="layui-col-xs4 padding-bottom-0">
                 <label class="relative block">
@@ -42,24 +45,28 @@
                 </label>
             </div>
         </div>
+
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">公网安备号</span>
             <span class="color-desc margin-left-5">Baian</span>
             <input name="beian" placeholder="请输入公网安备号" value="{:sysconf('beian')}" class="layui-input">
             <span class="help-block">公网安备号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将在登录页面下面显示！</span>
         </label>
+
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">网站备案号</span>
             <span class="color-desc margin-left-5">Miitbeian</span>
             <input name="miitbeian" placeholder="请输入网站备案号" value="{:sysconf('miitbeian')}" class="layui-input">
             <span class="help-block">网站备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将在登录页面下面显示！</span>
         </label>
+
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">网站版权信息</span>
             <span class="color-desc margin-left-5">Copyright</span>
             <input name="site_copy" required placeholder="请输入版权信息" value="{:sysconf('site_copy')}" class="layui-input">
             <span class="help-block">网站版权信息，在后台登录页面显示版本信息并链接到备案到信息备案管理系统！</span>
         </label>
+
         <div class="hr-line-dashed "></div>
         <div class="layui-form-item text-center">
             <button class="layui-btn" type="submit">保存配置</button>

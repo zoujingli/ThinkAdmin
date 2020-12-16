@@ -8,11 +8,11 @@
             <div class="layui-col-xs5">
                 <label class="block relative">
                     <span class="color-green font-w7">登录账号</span>
-                    <span class="color-desc margin-left-5">Username</span>
+                    <span class="color-desc margin-left-5">User Name</span>
                     {if isset($vo) and isset($vo.username)}
                     <input disabled value='{$vo.username|default=""}' class="layui-input layui-bg-gray">
                     {else}
-                    <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" placeholder="请输入登录用户账号" class="layui-input">
+                    <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" placeholder="请输入登录账号" class="layui-input">
                     {/if}
                     <span class="help-block">登录账号不能重复，账号创建后不能再次修改</span>
                 </label>
@@ -20,8 +20,8 @@
             <div class="layui-col-xs5">
                 <label class="block relative">
                     <span class="color-green font-w7">用户昵称</span>
-                    <span class="color-desc margin-left-5">Nickname</span>
-                    <input name="nickname" value='{$vo.nickname|default=""}' required placeholder="请输入用户的昵称" class="layui-input">
+                    <span class="color-desc margin-left-5">Nick Name</span>
+                    <input name="nickname" value='{$vo.nickname|default=""}' required placeholder="请输入用户昵称" class="layui-input">
                     <span class="help-block">用户显示的账号别名，请尽量保持不要重复</span>
                 </label>
             </div>
@@ -76,7 +76,7 @@
         {/notempty}
         <div class="hr-line-dashed margin-top-10 margin-bottom-10"></div>
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7">用户描述</span><span class="color-desc margin-left-5">Description</span>
+            <span class="color-green font-w7">用户描述</span><span class="color-desc margin-left-5">User Remark</span>
             <textarea placeholder="请输入用户描述" class="layui-textarea" name="describe">{$vo.describe|default=""}</textarea>
         </label>
         <div class="hr-line-dashed"></div>

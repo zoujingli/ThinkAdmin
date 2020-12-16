@@ -98,49 +98,6 @@ class Queue extends Controller
         }
     }
 
-    /**
-     * WIN创建监听进程
-     * @auth true
-     */
-    public function start()
-    {
-        try {
-            $message = nl2br($this->app->console->call('xadmin:queue', ['start'])->fetch());
-            if (stripos($message, 'daemons started successfully for pid')) {
-                $this->success('任务监听主进程启动成功！');
-            } elseif (stripos($message, 'daemons already exist for pid')) {
-                $this->success('任务监听主进程已经存在！');
-            } else {
-                $this->error($message);
-            }
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
-        }
-    }
-
-    /**
-     * WIN停止监听进程
-     * @auth true
-     */
-    public function stop()
-    {
-        try {
-            $message = nl2br($this->app->console->call('xadmin:queue', ['stop'])->fetch());
-            if (stripos($message, 'sent end signal to process')) {
-                $this->success('停止任务监听主进程成功！');
-            } elseif (stripos($message, 'processes to stop')) {
-                $this->success('没有找到需要停止的进程！');
-            } else {
-                $this->error($message);
-            }
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
-        }
-    }
 
     /**
      * 创建记录清理任务

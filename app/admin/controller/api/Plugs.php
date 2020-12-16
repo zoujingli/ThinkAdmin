@@ -59,26 +59,6 @@ class Plugs extends Controller
     }
 
     /**
-     * 检查任务状态
-     * @login true
-     */
-    public function queue()
-    {
-        if (AdminService::instance()->isSuper()) try {
-            $message = $this->app->console->call('xadmin:queue', ['status'])->fetch();
-            if (preg_match('/process.*?\d+.*?running/', $message, $attrs)) {
-                echo '<span class="color-green">' . $message . '</span>';
-            } else {
-                echo '<span class="color-red">' . $message . '</span>';
-            }
-        } catch (\Exception $exception) {
-            echo '<span class="color-red">' . $exception->getMessage() . '</span>';
-        } else {
-            echo '<span class="color-red">只有超级管理员才能操作！</span>';
-        }
-    }
-
-    /**
      * 优化数据库
      * @login true
      */

@@ -2,10 +2,11 @@
 
 {block name="button"}
 <!--{if auth("clear")}-->
-<button data-load='{:url("clear")}' data-confirm="确定要消除所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理日志</button>
+<button data-load='{:url("clear")}' data-confirm="确定要清理所有记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理所有日志</button>
 <!--{/if}-->
+
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除这些记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除日志</button>
 <!--{/if}-->
 {/block}
 
@@ -55,7 +56,7 @@
             </td>
             <td class='text-left nowrap'>
                 <!--{if auth("remove")}-->
-                <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
                 <!--{/if}-->
             </td>
         </tr>
