@@ -64,19 +64,19 @@
             <td class='text-left nowrap'>{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">已激活</span>{/if}</td>
             <td class='text-left nowrap'>
 
-                {if auth("edit")}
-                <a class="layui-btn layui-btn-xs" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
-                {/if}
+                <!--{if auth("edit")}-->
+                <a class="layui-btn layui-btn-sm" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <!--{/if}-->
 
-                {if $vo.status eq 1 and auth("state")}
-                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
-                {elseif auth("state")}
-                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">激 活</a>
-                {/if}
+                <!--{if $vo.status eq 1 and auth("state")}-->
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
+                <!--{elseif auth("state")}-->
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">激 活</a>
+                <!--{/if}-->
 
-                {if auth("remove")}
-                <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
-                {/if}
+                <!--{if auth("remove")}-->
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该规则吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <!--{/if}-->
 
             </td>
         </tr>
