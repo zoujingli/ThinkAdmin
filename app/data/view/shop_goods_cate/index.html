@@ -12,9 +12,7 @@
 
 {block name="content"}
 <div class="think-box-shadow table-block">
-    {empty name='list'}
-    <blockquote class="notdata">没有记录哦！</blockquote>
-    {else}
+    {notempty name='list'}
     <table class="layui-table" lay-skin="line">
         <thead>
         <tr>
@@ -71,6 +69,9 @@
         {/foreach}
         </tbody>
     </table>
-    {/empty}
+    {$pagehtml|raw|default=''}
+    {else}
+    <span class="notdata">没有记录哦</span>
+    {/notempty}
 </div>
 {/block}

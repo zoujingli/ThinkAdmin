@@ -45,7 +45,7 @@ class ShopGoodsCate extends Controller
     {
         $this->title = "商品分类管理（最大{$this->cateLevel}级）";
         $query = $this->_query($this->table)->like('name')->dateBetween('create_at');
-        $query->equal('status')->where(['deleted' => 0])->order('sort desc,id desc')->page();
+        $query->equal('status')->where(['deleted' => 0])->order('sort desc,id desc')->page(false);
     }
 
     /**
