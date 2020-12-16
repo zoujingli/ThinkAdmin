@@ -99,7 +99,7 @@ class Queue extends Controller
     }
 
     /**
-     * 定时清理系统运行数据
+     * 清理运行数据
      * @auth true
      */
     public function clean()
