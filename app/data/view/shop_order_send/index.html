@@ -57,11 +57,11 @@
                     {/if}
                 </td>
                 <td class="color-desc">
-                    {if auth('shop_order/truck') and $vo.status eq 1}
-                    <a class="layui-btn layui-btn-xs" data-title="填写订单信息" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}">填写发货</a>
-                    {elseif auth('shop_order/truck') and $vo.status eq 2}
-                    <a class="layui-btn layui-btn-xs" data-title="修改发货信息" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}">修改发货</a>
-                    {/if}
+                    <!--{if auth('shop_order/truck') and $vo.status eq 1}-->
+                    <a class="layui-btn layui-btn-sm" data-title="填写订单信息" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}">填写发货</a>
+                    <!--{elseif auth('shop_order/truck') and $vo.status eq 2}-->
+                    <a class="layui-btn layui-btn-sm" data-title="修改发货信息" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}">修改发货</a>
+                    <!--{/if}-->
                 </td>
             </tr>
             {/foreach}
