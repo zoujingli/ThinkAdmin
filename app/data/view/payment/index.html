@@ -46,16 +46,16 @@
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
             <td class='text-left nowrap'>
                 {if auth("edit")}
-                <a data-dbclick class="layui-btn layui-btn-xs" data-open="{:url('edit')}?id={$vo.id}">编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-sm" data-open="{:url('edit')}?id={$vo.id}">编 辑</a>
                 {/if}
                 {if auth("state") and $vo.status eq 1}
-                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
                 {/if}
                 {if auth("state") and $vo.status eq 0}
-                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
                 {/if}
                 {if auth("remove")}
-                <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除该支付吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该支付吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
                 {/if}
             </td>
         </tr>

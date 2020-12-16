@@ -67,15 +67,15 @@
                 <td class='text-center nowrap'>{$vo.create_at|format_datetime}</td>
                 <td class='text-left nowrap'>
                     <!--{if auth("edit") and $type eq 'index'}-->
-                    <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑快递公司" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                    <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑快递公司" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                     <!--{/if}-->
                     <!--{if $vo.status eq 1 and auth("state")}-->
-                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
+                    <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
                     <!--{elseif auth("state")}-->
-                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
+                    <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
                     <!--{/if}-->
                     <!--{if auth("remove") and $type eq 'recycle'}-->
-                    <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
                     <!--{/if}-->
                 </td>
             </tr>

@@ -4,6 +4,7 @@
 <!--{if auth("add")}-->
 <button data-modal='{:url("add")}' data-title="添加标签" class='layui-btn layui-btn-sm layui-btn-primary'>添加标签</button>
 <!--{/if}-->
+
 <!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些标签吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除标签</button>
 <!--{/if}-->
@@ -42,18 +43,21 @@
             <td>{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">已激活</span>{/if}</td>
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
             <td class='text-left nowrap'>
-                {if auth("edit")}
-                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑标签" data-modal="{:url('edit')}?id={$vo.id}">编 辑</a>
-                {/if}
-                {if auth("state") and $vo.status eq 1}
-                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
-                {/if}
-                {if auth("state") and $vo.status eq 0}
-                <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
-                {/if}
-                {if auth("remove")}
-                <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要删除该标签吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
-                {/if}
+                <!--{if auth("edit")}-->
+                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑标签" data-modal="{:url('edit')}?id={$vo.id}">编 辑</a>
+                <!--{/if}-->
+
+                <!--{if auth("state") and $vo.status eq 1}-->
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
+                <!--{/if}-->
+
+                <!--{if auth("state") and $vo.status eq 0}-->
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
+                <!--{/if}-->
+
+                <!--{if auth("remove")}-->
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该标签吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                <!--{/if}-->
             </td>
         </tr>
         {/foreach}

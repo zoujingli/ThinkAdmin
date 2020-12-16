@@ -74,38 +74,38 @@
                 <td class='nowrap sub-span-blue'>
                     <div class="margin-bottom-5">剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )</div>
                     {if auth('copy')}
-                    <a class="layui-btn layui-btn-xs layui-btn-normal" data-open='{:url("copy")}?code={$vo.code}'>复 制</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-normal" data-open='{:url("copy")}?code={$vo.code}'>复 制</a>
                     {/if}
                     <!--{if auth("edit")}-->
-                    <a class="layui-btn layui-btn-xs" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
+                    <a class="layui-btn layui-btn-sm" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有编辑商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">编 辑</a>
+                    <a data-tips-text="您没有编辑商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">编 辑</a>
                     <!--{/if}-->
                     {if isset($type) and $type eq 'index'}
                     {if isset($vo.status) and $vo.status eq 1}
                     <!--{if auth("state")}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="code#{$vo.code};status#0">下 架</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="code#{$vo.code};status#0">下 架</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有下架商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">下 架</a>
+                    <a data-tips-text="您没有下架商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">下 架</a>
                     <!--{/if}-->
                     {else}
                     <!--{if auth("state")}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="code#{$vo.code};status#1">上 架</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="code#{$vo.code};status#1">上 架</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有上架商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">上 架</a>
+                    <a data-tips-text="您没有上架商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">上 架</a>
                     <!--{/if}-->
                     {/if}
                     <!--{if auth("stock")}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-normal" data-title="商品入库" data-modal='{:url("stock")}?code={$vo.code}'>入 库</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="商品入库" data-modal='{:url("stock")}?code={$vo.code}'>入 库</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有商品入库的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">入 库</a>
+                    <a data-tips-text="您没有商品入库的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">入 库</a>
                     <!--{/if}-->
                     <!--{if auth("remove")}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要移入回收站吗？" data-action="{:url('remove')}" data-value="code#{$vo.code};deleted#1">删 除</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要移入回收站吗？" data-action="{:url('remove')}" data-value="code#{$vo.code};deleted#1">删 除</a>
                     <!--{/if}-->
                     {else}
                     <!--{if auth("remove")}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-normal" data-action="{:url('remove')}" data-value="code#{$vo.code};deleted#0">恢 复</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-normal" data-action="{:url('remove')}" data-value="code#{$vo.code};deleted#0">恢 复</a>
                     <!--{/if}-->
                     {/if}
                 </td>
