@@ -94,10 +94,7 @@ class JoinPaymentService extends PaymentService
             $result = $this->_doReuest($data);
             if (is_array($result) && isset($result['ra_Code']) && intval($result['ra_Code']) === 100) {
                 // 创建支付记录
-                $this->app->db->name('DataPaymentItem')->insert([
-                    'order_no'   => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount,
-                    'payment_id' => static::$id, 'payment_type' => static::$type,
-                ]);
+                $this->createPaymentAction($tradeParam, $orderNo, $payTitle, $payAmount);
                 // 返回支付参数
                 return json_decode($result['rc_Result'], true);
             } elseif (is_array($result) && isset($result['rb_CodeMsg'])) {
@@ -133,33 +130,20 @@ class JoinPaymentService extends PaymentService
      */
     public function notify(string $param = ''): string
     {
-        if (is_numeric(stripos($param, '-'))) {
-            [$payType, $payId] = explode('-', $param);
-        } else {
-            [$payType, $payId] = [$param ?: static::$type, static::$id];
-        }
         $notify = $this->app->request->get();
         foreach ($notify as &$item) $item = urldecode($item);
         if (empty($notify['hmac']) || $notify['hmac'] !== $this->_doSign($notify)) {
             return 'error';
         }
         if (isset($notify['r6_Status']) && intval($notify['r6_Status']) === 100) {
-            // 更新支付记录
-            data_save('DataPaymentItem', [
-                'order_no'         => $notify['r2_OrderNo'],
-                'payment_id'       => $payId,
-                'payment_type'     => $payType,
-                'payment_code'     => $notify['r9_BankTrxNo'],
-                'payment_amount'   => $notify['r3_Amount'],
-                'payment_status'   => 1,
-                'payment_datatime' => date('Y-m-d H:i:s'),
-            ], 'order_no', ['payment_id' => $payId, 'payment_type' => $payType, 'payment_status' => 0]);
-            // 更新记录状态
-            if ($this->updateOrder($notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'], $payType)) {
+            if ($this->updatePaymentAction($param, $notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'])) {
                 return 'success';
+            } else {
+                return 'error';
             }
+        } else {
+            return 'success';
         }
-        return 'error';
     }
 
     /**

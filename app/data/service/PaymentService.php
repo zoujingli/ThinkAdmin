@@ -147,20 +147,20 @@ abstract class PaymentService extends Service
      * @param string $code 订单单号
      * @param string $payno 交易单号
      * @param string $amount 支付金额
-     * @param string $paytype 支付类型
+     * @param null|string $paytype 支付类型
      * @return bool
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function updateOrder(string $code, string $payno, string $amount, string $paytype): bool
+    public function updateOrder(string $code, string $payno, string $amount, ?string $paytype = null): bool
     {
         // 检查订单支付状态
         $map = ['order_no' => $code, 'payment_status' => 0, 'status' => 2];
         $order = $this->app->db->name('StoreOrder')->where($map)->find();
         if (empty($order)) return false;
         // 更新订单支付状态
-        $this->app->db->name('StoreOrder')->where($map)->update([
+        $data = [
             'status'           => 3,
             'payment_code'     => $payno,
             'payment_type'     => $paytype,
@@ -168,17 +168,65 @@ abstract class PaymentService extends Service
             'payment_amount'   => $amount,
             'payment_remark'   => '微信在线支付',
             'payment_datetime' => date('Y-m-d H:i:s'),
-        ]);
+        ];
+        if (empty($data['payment_type'])) unset($data['payment_type']);
+        $this->app->db->name('StoreOrder')->where($map)->update($data);
         // 调用用户升级机制
         return OrderService::instance()->syncAmount($order['order_no']);
     }
 
     /**
-     * 支付通知处理
-     * @param string $param 支付通道-支付编号
-     * @return string
+     * 创建支付行为
+     * @param string $param 通道-编号
+     * @param string $orderNo 商户订单单号
+     * @param string $payTitle 商户订单标题
+     * @param string $payAmount
      */
-    abstract public function notify(string $param = ''): string;
+    protected function createPaymentAction(string $param, string $orderNo, string $payTitle, string $payAmount)
+    {
+        if (is_numeric(stripos($param, '-'))) {
+            [$paymentType, $paymentId] = explode('-', $param);
+        } else {
+            [$paymentType, $paymentId] = [$param ?: static::$type, static::$id];
+        }
+        // 创建支付记录
+        $this->app->db->name('DataPaymentItem')->insert([
+            'order_no'   => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount,
+            'payment_id' => $paymentId, 'payment_type' => $paymentType,
+        ]);
+    }
+
+    /**
+     * 更新支付记录并更新订单
+     * @param string $param 通道-编号
+     * @param string $orderNo 商户订单单号
+     * @param string $paymentCode 平台交易单号
+     * @param string $paymentAmount 实际到账金额
+     * @return boolean
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function updatePaymentAction(string $param, string $orderNo, string $paymentCode, string $paymentAmount): bool
+    {
+        if (is_numeric(stripos($param, '-'))) {
+            [$paymentType, $paymentId] = explode('-', $param);
+        } else {
+            [$paymentType, $paymentId] = [$param ?: static::$type, static::$id];
+        }
+        // 更新支付记录
+        data_save('DataPaymentItem', [
+            'order_no'         => $orderNo,
+            'payment_id'       => $paymentId,
+            'payment_type'     => $paymentType,
+            'payment_code'     => $paymentCode,
+            'payment_amount'   => $paymentAmount,
+            'payment_status'   => 1,
+            'payment_datatime' => date('Y-m-d H:i:s'),
+        ], 'order_no', ['payment_id' => $paymentId, 'payment_type' => $paymentType]);
+        // 更新记录状态
+        return $this->updateOrder($orderNo, $paymentCode, $paymentAmount, $paymentType);
+    }
 
     /**
      * 订单主动查询
@@ -186,6 +234,13 @@ abstract class PaymentService extends Service
      * @return array
      */
     abstract public function query(string $orderNo): array;
+
+    /**
+     * 支付通知处理
+     * @param string $param 支付通道-支付编号
+     * @return string
+     */
+    abstract public function notify(string $param = ''): string;
 
     /**
      * 创建支付订单

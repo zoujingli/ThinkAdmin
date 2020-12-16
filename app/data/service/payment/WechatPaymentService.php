@@ -34,18 +34,6 @@ class WechatPaymentService extends PaymentService
     }
 
     /**
-     * 查询微信支付订单
-     * @param string $orderNo
-     * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     */
-    public function query(string $orderNo): array
-    {
-        return $this->payment->query(['out_trade_no' => $orderNo]);
-    }
-
-    /**
      * 创建微信支付订单
      * @param string $openid 会员OPENID
      * @param string $orderNo 交易订单单号
@@ -69,6 +57,7 @@ class WechatPaymentService extends PaymentService
             $data = [
                 'body'             => $body,
                 'openid'           => $openid,
+                'attach'           => $tradeParam,
                 'out_trade_no'     => $orderNo,
                 'total_fee'        => $payAmount * 100,
                 'trade_type'       => $tradeType ?: '',
@@ -79,10 +68,7 @@ class WechatPaymentService extends PaymentService
             $info = $this->payment->create($data);
             if ($info['return_code'] === 'SUCCESS' && $info['result_code'] === 'SUCCESS') {
                 // 创建支付记录
-                $this->app->db->name('DataPaymentItem')->insert([
-                    'order_no'   => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount,
-                    'payment_id' => static::$id, 'payment_type' => static::$type,
-                ]);
+                $this->createPaymentAction($tradeParam, $orderNo, $payTitle, $payAmount);
                 // 返回支付参数
                 return $this->payment->jsapiParams($info['prepay_id']);
             }
@@ -99,6 +85,27 @@ class WechatPaymentService extends PaymentService
     }
 
     /**
+     * 查询微信支付订单
+     * @param string $orderNo 订单单号
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function query(string $orderNo): array
+    {
+        $result = $this->payment->query(['out_trade_no' => $orderNo]);
+        if (isset($result['return_code']) && isset($result['result_code']) && isset($result['attach'])) {
+            if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
+                $this->updatePaymentAction($result['attach'], $result['out_trade_no'], $result['cash_fee'] / 100, $result['transaction_id']);
+            }
+        }
+        return $result;
+    }
+
+    /**
      * 支付结果处理
      * @param string $param 支付通道
      * @return string
@@ -109,26 +116,12 @@ class WechatPaymentService extends PaymentService
      */
     public function notify(string $param = ''): string
     {
-        if (is_numeric(stripos($param, '-'))) {
-            [$payType, $payId] = explode('-', $param);
-        } else {
-            [$payType, $payId] = [$param ?: static::$type, static::$id];
-        }
         $notify = $this->payment->getNotify();
         if ($notify['result_code'] == 'SUCCESS' && $notify['return_code'] == 'SUCCESS') {
-            // 更新支付记录
-            data_save('DataPaymentItem', [
-                'order_no'         => $notify['out_trade_no'],
-                'payment_id'       => $payId,
-                'payment_type'     => $payType,
-                'payment_code'     => $notify['transaction_id'],
-                'payment_amount'   => $notify['cash_fee'] / 100,
-                'payment_status'   => 1,
-                'payment_datatime' => date('Y-m-d H:i:s'),
-            ], 'order_no', ['payment_id' => $payId, 'payment_type' => $payType, 'payment_status' => 0]);
-            // 更新记录状态
-            if ($this->updateOrder($notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100, $payType)) {
+            if ($this->updatePaymentAction($param, $notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100)) {
                 return $this->payment->getNotifySuccessReply();
+            } else {
+                return 'error';
             }
         } else {
             return $this->payment->getNotifySuccessReply();

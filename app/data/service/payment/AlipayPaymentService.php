@@ -72,29 +72,15 @@ class AlipayPaymentService extends PaymentService
      */
     public function notify(string $param = ''): string
     {
-        if (is_numeric(stripos($param, '-'))) {
-            [$payType, $payId] = explode('-', $param);
-        } else {
-            [$payType, $payId] = [$param ?: static::$type, static::$id];
-        }
         $notify = \AliPay\App::instance($this->params)->notify();
         if (in_array($notify['trade_status'], ['TRADE_SUCCESS', 'TRADE_FINISHED'])) {
-            // 更新支付记录
-            data_save('DataPaymentItem', [
-                'order_no'         => $notify['out_trade_no'],
-                'payment_id'       => $payId,
-                'payment_type'     => $payType,
-                'payment_code'     => $notify['trade_no'],
-                'payment_amount'   => $notify['total_amount'],
-                'payment_status'   => 1,
-                'payment_datatime' => date('Y-m-d H:i:s'),
-            ], 'order_no', ['payment_id' => $payId, 'payment_type' => $payType, 'payment_status' => 0]);
-            // 更新记录状态
-            if ($this->updateOrder($notify['out_trade_no'], $notify['trade_no'], $notify['total_amount'], $payType)) {
+            if ($this->updatePaymentAction($param, $notify['out_trade_no'], $notify['trade_no'], $notify['total_amount'])) {
                 return 'success';
+            } else {
+                return 'error';
             }
         } else {
-            return 'error';
+            return 'success';
         }
     }
 
@@ -151,10 +137,8 @@ class AlipayPaymentService extends PaymentService
             if (!empty($payRemark)) $data['body'] = $payRemark;
             $result = $payment->apply($data);
             // 创建支付记录
-            $this->app->db->name('DataPaymentItem')->insert([
-                'order_no'   => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount,
-                'payment_id' => static::$id, 'payment_type' => static::$type,
-            ]);
+            $this->createPaymentAction($tradeParam, $orderNo, $payTitle, $payAmount);
+            // 返回支付参数
             return ['result' => $result];
         } catch (\think\Exception $exception) {
             throw $exception;
