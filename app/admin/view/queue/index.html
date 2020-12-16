@@ -9,8 +9,8 @@
 <!--{/if}-->
 <!--{/if}-->
 
-<!--{if auth("clear")}-->
-<button data-load='{:url("clear")}' data-confirm="确定要创建定时清理任务吗？" class='layui-btn layui-btn-sm layui-btn-primary'>定时维护清理</button>
+<!--{if auth("clean")}-->
+<button data-queue='{:url("clean")}' class='layui-btn layui-btn-sm layui-btn-primary'>定时维护清理</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->

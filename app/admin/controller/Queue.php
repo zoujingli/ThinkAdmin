@@ -98,21 +98,13 @@ class Queue extends Controller
         }
     }
 
-
     /**
-     * 创建记录清理任务
+     * 定时清理系统运行数据
      * @auth true
      */
-    public function clear()
+    public function clean()
     {
-        try {
-            QueueService::instance()->addCleanQueue();
-            $this->success('创建清理任务成功！');
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
-        }
+        $this->_queue('定时清理系统运行数据', "xadmin:queue clean", 0, [], 0, 3600);
     }
 
     /**
