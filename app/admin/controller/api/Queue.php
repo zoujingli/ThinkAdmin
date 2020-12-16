@@ -51,6 +51,7 @@ class Queue extends Controller
         try {
             $message = nl2br($this->app->console->call('xadmin:queue', ['stop'])->fetch());
             if (stripos($message, 'sent end signal to process')) {
+                sysoplog('系统运维管理', '尝试停止后台服务主进程');
                 $this->success('停止后台服务主进程成功！');
             } elseif (stripos($message, 'processes to stop')) {
                 $this->success('没有找到需要停止的进程！');
@@ -73,6 +74,7 @@ class Queue extends Controller
         try {
             $message = nl2br($this->app->console->call('xadmin:queue', ['start'])->fetch());
             if (stripos($message, 'daemons started successfully for pid')) {
+                sysoplog('系统运维管理', '尝试启动后台服务主进程');
                 $this->success('后台服务主进程启动成功！');
             } elseif (stripos($message, 'daemons already exist for pid')) {
                 $this->success('后台服务主进程已经存在！');
