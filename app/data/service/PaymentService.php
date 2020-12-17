@@ -99,7 +99,7 @@ abstract class PaymentService extends Service
 
     /**
      * 支付服务对象
-     * @var JoinPaymentService|WechatPaymentService|AlipayPaymentService
+     * @var array
      */
     protected static $driver = [];
 
