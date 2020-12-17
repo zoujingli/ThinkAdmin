@@ -79,17 +79,16 @@ class Fans extends Command
         while (is_string($next)) {
             $result = WechatService::WeChatUser()->getUserList($next);
             if (is_array($result) && !empty($result['data']['openid'])) {
-                $total = intval($result['total']);
                 foreach (array_chunk($result['data']['openid'], 100) as $openids) {
-                    $list = WechatService::WeChatUser()->getBatchUserInfo($openids);
-                    if (is_array($list) && !empty($list['user_info_list'])) {
-                        foreach ($list['user_info_list'] as $user) {
-                            $this->queue->message($total, ++$done, "-> {$user['openid']} {$user['nickname']}");
+                    $info = WechatService::WeChatUser()->getBatchUserInfo($openids);
+                    if (is_array($info) && !empty($info['user_info_list'])) {
+                        foreach ($info['user_info_list'] as $user) {
+                            $this->queue->message($result['total'], ++$done, "-> {$user['openid']} {$user['nickname']}");
                             FansService::instance()->set($user, $appid);
                         }
                     }
                 }
-                $next = $total > $done ? $result['next_openid'] : null;
+                $next = $result['total'] > $done ? $result['next_openid'] : null;
             } else {
                 $next = null;
             }
