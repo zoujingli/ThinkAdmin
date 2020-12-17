@@ -54,11 +54,7 @@ class AlipayPaymentService extends PaymentService
      */
     private function _trimCertHeader(string $content): string
     {
-        $search = [
-            '-----BEGIN PUBLIC KEY-----', '-----END PUBLIC KEY-----',
-            '-----BEGIN RSA PRIVATE KEY-----', '-----END RSA PRIVATE KEY-----',
-        ];
-        return preg_replace('/\s+/', '', str_replace(trim($content), $search, ''));
+        return preg_replace(['/\s+/', '/-{5}.*?-{5}/'], '', $content);
     }
 
     /**
