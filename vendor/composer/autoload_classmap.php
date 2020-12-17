@@ -236,7 +236,7 @@ return array(
     'app\\data\\service\\PaymentService' => $baseDir . '/app/data/service/PaymentService.php',
     'app\\data\\service\\TruckService' => $baseDir . '/app/data/service/TruckService.php',
     'app\\data\\service\\UserService' => $baseDir . '/app/data/service/UserService.php',
-    'app\\data\\service\\payment\\AliPaymentService' => $baseDir . '/app/data/service/payment/AliPaymentService.php',
+    'app\\data\\service\\payment\\AlipayPaymentService' => $baseDir . '/app/data/service/payment/AlipayPaymentService.php',
     'app\\data\\service\\payment\\JoinPaymentService' => $baseDir . '/app/data/service/payment/JoinPaymentService.php',
     'app\\data\\service\\payment\\WechatPaymentService' => $baseDir . '/app/data/service/payment/WechatPaymentService.php',
     'app\\index\\controller\\Index' => $baseDir . '/app/index/controller/Index.php',

@@ -364,7 +364,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'app\\data\\service\\PaymentService' => __DIR__ . '/../..' . '/app/data/service/PaymentService.php',
         'app\\data\\service\\TruckService' => __DIR__ . '/../..' . '/app/data/service/TruckService.php',
         'app\\data\\service\\UserService' => __DIR__ . '/../..' . '/app/data/service/UserService.php',
-        'app\\data\\service\\payment\\AliPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/AliPaymentService.php',
+        'app\\data\\service\\payment\\AlipayPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/AlipayPaymentService.php',
         'app\\data\\service\\payment\\JoinPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/JoinPaymentService.php',
         'app\\data\\service\\payment\\WechatPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/WechatPaymentService.php',
         'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/app/index/controller/Index.php',

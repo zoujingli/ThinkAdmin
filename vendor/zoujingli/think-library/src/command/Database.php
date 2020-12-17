@@ -66,6 +66,7 @@ class Database extends Command
         foreach ($tables as $table) {
             $this->queue->message($total, ++$used, "正在修复数据表 {$table}");
             $this->app->db->query("REPAIR TABLE `{$table}`");
+            $this->queue->message($total, $used, "完成修复数据表 {$table}", 1);
         }
         $this->queue->success("已完成对 {$total} 张数据表修复操作");
     }
@@ -85,6 +86,7 @@ class Database extends Command
         foreach ($tables as $table) {
             $this->queue->message($total, ++$used, "正在优化数据表 {$table}");
             $this->app->db->query("OPTIMIZE TABLE `{$table}`");
+            $this->queue->message($total, $used, "完成优化数据表 {$table}", 1);
         }
         $this->queue->success("已完成对 {$total} 张数据表优化操作");
     }

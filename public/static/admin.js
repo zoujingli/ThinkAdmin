@@ -820,27 +820,27 @@ $(function () {
         (function loadprocess(code, that) {
             that = this, this.$box = $('[data-queue-load=' + code + ']');
             if (doAjax === false || that.$box.length < 1) return false;
-            this.$code = that.$box.find('code'), this.$title = that.$box.find('[data-message-title]');
+            this.$code = that.$box.find('code'), this.$name = that.$box.find('[data-message-title]');
             this.$percent = that.$box.find('.layui-progress div'), this.runCache = function (code, index, value) {
                 this.ckey = code + '_' + index, this.ctype = 'admin-queue-script';
                 return value !== undefined ? layui.data(this.ctype, {key: this.ckey, value: value}) : layui.data(this.ctype)[this.ckey] || 0;
             };
             this.setState = function (status, message) {
                 if (message.indexOf('javascript:') === -1) if (status === 1) {
-                    that.$title.html('<b class="color-text">' + message + '</b>').addClass('text-center');
+                    that.$name.html('<b class="color-text">' + message + '</b>').addClass('text-center');
                     that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
                 } else if (status === 2) {
                     if (message.indexOf('>>>') > -1) {
-                        that.$title.html('<b class="color-blue">' + message + '</b>').addClass('text-center');
+                        that.$name.html('<b class="color-blue">' + message + '</b>').addClass('text-center');
                     } else {
-                        that.$title.html('<b class="color-blue">正在处理：</b>' + message).removeClass('text-center');
+                        that.$name.html('<b class="color-blue">正在处理：</b>' + message).removeClass('text-center');
                     }
                     that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
                 } else if (status === 3) {
-                    that.$title.html('<b class="color-green">' + message + '</b>').addClass('text-center');
+                    that.$name.html('<b class="color-green">' + message + '</b>').addClass('text-center');
                     that.$percent.addClass('layui-bg-green').removeClass('layui-bg-blue layui-bg-red');
                 } else if (status === 4) {
-                    that.$title.html('<b class="color-red">' + message + '</b>').addClass('text-center');
+                    that.$name.html('<b class="color-red">' + message + '</b>').addClass('text-center');
                     that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
                 }
             };
@@ -855,12 +855,12 @@ $(function () {
                             that.runCache(code, this.lineIndex, 1), location.href = this.line.message;
                         }
                     }
-                    that.$code.html(that.lines.join("<br>")), that.$code.animate({scrollTop: that.$code[0].scrollHeight + 'px'}, 200);
+                    that.$code.html('<p>' + that.lines.join('</p><p>') + '</p>'), that.$code.animate({scrollTop: that.$code[0].scrollHeight + 'px'}, 200);
                     that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
-                    if (ret.data.status > 0) that.setState(parseInt(ret.data.status), ret.data.message);
-                    else return that.setState(4, '获取任务详情失败！'), false;
-                    if (parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4) return false;
-                    return setTimeout(function () {
+                    if (ret.data.status > 0) that.setState(parseInt(ret.data.status), ret.data.message); else return setTimeout(function () {
+                        loadprocess(code);
+                    }, Math.floor(Math.random() * 500) + 200), false;
+                    if (parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4) return false; else return setTimeout(function () {
                         loadprocess(code);
                     }, Math.floor(Math.random() * 200)), false;
                 }
