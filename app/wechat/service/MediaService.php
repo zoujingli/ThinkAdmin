@@ -38,12 +38,15 @@ class MediaService extends Service
     public function news($id, $map = []): array
     {
         // 文章主体数据
-        $data = $this->app->db->name('WechatNews')->where(['id' => $id])->where($map)->find();
+        $query = $this->app->db->name('WechatNews');
+        $data = $query->where(['id' => $id])->where($map)->find();
         if (empty($data)) return [];
+        // 文章内容编号
         [$data['articles'], $articleIds] = [[], explode(',', $data['article_id'])];
         if (empty($data['article_id']) || empty($articleIds)) return $data;
-        // 文章列表组合
-        $query = $this->app->db->name('WechatNewsArticle')->whereIn('id', $articleIds)->orderField('id', $articleIds);
+        // 文章内容集合
+        $query = $this->app->db->name('WechatNewsArticle');
+        $query->whereIn('id', $articleIds)->orderField('id', $articleIds);
         $data['articles'] = $query->withoutField('create_by,create_at')->select()->toArray();
         return $data;
     }
