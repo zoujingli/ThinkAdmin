@@ -93,13 +93,9 @@ class Fans extends Command
                 $next = null;
             }
         }
-        if ($done > 0) {
-            $this->output->comment('微信用户数据获取完成');
-        } else {
-            $this->output->comment('未获取到微信用户数据');
-        }
+        $this->output->comment($done > 0 ? '微信用户数据获取完成' : '未获取到微信用户数据');
         $this->output->newLine();
-        return "共获取{$done}个用户数据";
+        return "共获取 {$done} 个用户数据";
     }
 
     /**
@@ -130,9 +126,9 @@ class Fans extends Command
         }
         $this->output->newLine();
         if (empty($result['total'])) {
-            return '，其中黑名单0人';
+            return '，其中黑名单 0 人';
         } else {
-            return "，其中黑名单{$result['total']}人";
+            return "，其中黑名单 {$result['total']} 人";
         }
     }
 
@@ -166,7 +162,7 @@ class Fans extends Command
             $this->output->comment('未获取到微信用户标签数据');
         }
         $this->output->newLine();
-        return "，获取到{$done}个标签。";
+        return "，获取到 {$done} 个标签。";
     }
 
 }
