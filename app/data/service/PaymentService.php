@@ -157,7 +157,7 @@ abstract class PaymentService extends Service
     {
         // 检查订单支付状态
         $map = ['order_no' => $code, 'payment_status' => 0, 'status' => 2];
-        $order = $this->app->db->name('StoreOrder')->where($map)->find();
+        $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) return false;
         // 更新订单支付状态
         $data = [
@@ -170,7 +170,7 @@ abstract class PaymentService extends Service
             'payment_datetime' => date('Y-m-d H:i:s'),
         ];
         if (empty($data['payment_type'])) unset($data['payment_type']);
-        $this->app->db->name('StoreOrder')->where($map)->update($data);
+        $this->app->db->name('ShopOrder')->where($map)->update($data);
         // 调用用户升级机制
         return OrderService::instance()->syncAmount($order['order_no']);
     }
