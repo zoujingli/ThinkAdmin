@@ -855,9 +855,11 @@ $(function () {
                             that.runCache(code, this.lineIndex, 1), location.href = this.line.message;
                         }
                     }
-                    that.$code.html('<p>' + that.lines.join('</p><p>') + '</p>'), that.$code.animate({scrollTop: that.$code[0].scrollHeight + 'px'}, 200);
-                    that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
-                    if (ret.data.status > 0) that.setState(parseInt(ret.data.status), ret.data.message); else return setTimeout(function () {
+                    if (ret.data.status > 0) {
+                        that.$code.html('<p>' + that.lines.join('</p><p>') + '</p>'), that.$code.animate({scrollTop: that.$code[0].scrollHeight + 'px'}, 200);
+                        that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
+                        that.setState(parseInt(ret.data.status), ret.data.message);
+                    } else return setTimeout(function () {
                         loadprocess(code);
                     }, Math.floor(Math.random() * 500) + 200), false;
                     if (parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4) return false; else return setTimeout(function () {
