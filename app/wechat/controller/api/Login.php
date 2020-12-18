@@ -54,7 +54,7 @@ class Login extends Controller
         $qrcode = new \Endroid\QrCode\QrCode();
         $qrcode->setText($text)->setSize(300)->setPadding(20);
         $content = base64_encode($qrcode->setImageType('png')->get());
-        $this->success('获取二维码成功', ['code' => $code, 'image' => "data:image/jpg;base64,{$content}"]);
+        $this->success('获取二维码成功', ['code' => $code, 'image' => "data:image/png;base64,{$content}"]);
     }
 
     /**
