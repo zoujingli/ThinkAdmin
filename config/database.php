@@ -55,9 +55,9 @@ return [
             'fields_strict'   => true,
             // 是否需要断线重连
             'break_reconnect' => false,
-            // 监听SQL
+            // 监听SQL执行日志
             'trigger_sql'     => true,
-            // 开启字段缓存
+            // 开启字段类型缓存
             'fields_cache'    => !app()->isDebug(),
         ],
     ],
