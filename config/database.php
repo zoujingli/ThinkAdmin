@@ -58,7 +58,7 @@ return [
             // 监听SQL
             'trigger_sql'     => true,
             // 开启字段缓存
-            'fields_cache'    => false,
+            'fields_cache'    => !app()->isDebug(),
         ],
     ],
 ];
