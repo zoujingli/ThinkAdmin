@@ -73,7 +73,8 @@ class JsonRpcServer
                 $response = ['jsonrpc' => '2.0', 'id' => $request['id'], 'result' => null, 'error' => $error];
             } else try {
                 // Executes the task on local object
-                if ($result = @call_user_func_array([$object, $request['method']], $request['params'])) {
+                if (method_exists($object, $request['method'])) {
+                    $result = call_user_func_array([$object, $request['method']], $request['params']);
                     $response = ['jsonrpc' => '2.0', 'id' => $request['id'], 'result' => $result, 'error' => null];
                 } else {
                     $error = ['code' => '-32601', 'message' => '找不到方法', 'meaning' => '该方法不存在或无效'];
