@@ -856,7 +856,7 @@ $(function () {
                         }
                     }
                     if (ret.data.status > 0) {
-                        that.$code.html('<p class="nowrap layui-elip">' + that.lines.join('</p><p class="nowrap layui-elip">') + '</p>'), that.$code.animate({scrollTop: that.$code[0].scrollHeight + 'px'}, 200);
+                        that.$code.html('<p class="layui-elip">' + that.lines.join('</p><p class="layui-elip">') + '</p>'), that.$code.animate({scrollTop: that.$code[0].scrollHeight + 'px'}, 200);
                         that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
                         that.setState(parseInt(ret.data.status), ret.data.message);
                     } else return setTimeout(function () {
