@@ -267,10 +267,10 @@ class WechatService extends Service
             $this->app->session->set("{$appid}_openid", $openid = $result['openid']);
             $this->app->session->set("{$appid}_fansinfo", $userinfo = $result['fans']);
             if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
-                if (!empty($userinfo)) FansService::instance()->set($userinfo, $appid);
+                empty($userinfo) || FansService::instance()->set($userinfo, $appid);
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             }
-            if ($redirect && !empty($result['url'])) {
+            if ($redirect) {
                 throw new HttpResponseException(redirect($result['url'], 301));
             } else {
                 throw new HttpResponseException(response("location.href='{$result['url']}'"));
