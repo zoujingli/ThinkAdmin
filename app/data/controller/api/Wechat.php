@@ -101,6 +101,21 @@ class Wechat extends Controller
         return Response::create($content)->contentType('application/x-javascript');
     }
 
+
+    /**
+     * 微信jssdk测试
+     * @return string
+     */
+    public function jssdkTest(): string
+    {
+        $src = sysuri('data/api.wechat/jssdk', [], false, true) . '?mode=1';
+        return <<<EOL
+ <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+ <script src="{$src}"></script>
+ <script>document.write(JSON.stringify(wx||{}));</script>
+EOL;
+    }
+
     /**
      * 生成JOSN数据
      * @param mixed $data
