@@ -97,7 +97,7 @@ class WechatService extends Service
      */
     public static function __callStatic(string $name, array $arguments)
     {
-        [$type, $class, $classname] = self::paraseName($name);
+        [$type, $class, $classname] = self::parseName($name);
         if ("{$type}{$class}" !== $name) {
             throw new \think\Exception("抱歉，实例 {$name} 不在符合规则！");
         }
@@ -134,7 +134,7 @@ class WechatService extends Service
      * @param string $name
      * @return array
      */
-    private static function paraseName(string $name): array
+    private static function parseName(string $name): array
     {
         foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkService'] as $type) {
             if (strpos($name, $type) === 0) {
