@@ -103,16 +103,23 @@ class Wechat extends Controller
 
 
     /**
-     * 微信jssdk测试
+     * 页面授权 jssdk 测试
      * @return string
      */
     public function jssdkTest(): string
     {
         $src = sysuri('data/api.wechat/jssdk', [], false, true) . '?mode=1';
         return <<<EOL
- <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
- <script src="{$src}"></script>
- <script>document.write(JSON.stringify(wx||{}));</script>
+<html lang="zh">
+    <header>
+        <title>页面授权测试</title>
+        <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+        <script src="{$src}"></script>
+    </header>
+    <body>
+        <script>document.write(JSON.stringify(wx||{}));</script>
+    </body>
+</html>
 EOL;
     }
 

@@ -232,27 +232,28 @@ class WechatService extends Service
             empty($fansinfo) || FansService::instance()->set($fansinfo, $appid);
             return ['openid' => $openid, 'fansinfo' => $fansinfo];
         }
+        // 解析 GET 参数
+        parse_str(parse_url($source, PHP_URL_QUERY), $params);
+        $getVars = [
+            'code'  => $params['code'] ?? input('code', ''),
+            'rcode' => $params['rcode'] ?? input('rcode', ''),
+            'state' => $params['state'] ?? input('state', ''),
+        ];
         if ($this->getType() === 'api') {
             $wechat = self::WeChatOauth();
-            if (input('state') !== $appid) {
+            if ($getVars['state'] !== $appid || empty($getVars['code'])) {
+                $params['rcode'] = enbase64url($source);
                 $snsapi = empty($isfull) ? 'snsapi_base' : 'snsapi_userinfo';
-                $params = (strpos($source, '?') !== false ? '&' : '?') . 'rcode=' . enbase64url($source);
-                $oauthurl = $wechat->getOauthRedirect($source . $params, $appid, $snsapi);
-                if ($redirect) {
-                    throw new HttpResponseException(redirect($oauthurl, 301));
-                } else {
-                    throw new HttpResponseException(response("window.location.href='{$oauthurl}'"));
-                }
+                $oauthurl = $wechat->getOauthRedirect(explode('?', $source)[0] . '?' . http_build_query($params), $appid, $snsapi);
+                throw new HttpResponseException($redirect ? redirect($oauthurl, 301) : response("window.location.href='{$oauthurl}'"));
             }
-            if (($token = $wechat->getOauthAccessToken()) && isset($token['openid'])) {
+            if (($token = $wechat->getOauthAccessToken($getVars['code'])) && isset($token['openid'])) {
                 $this->app->session->set("{$appid}_openid", $openid = $token['openid']);
-                if (empty($isfull) && input('rcode')) {
-                    throw new HttpResponseException(redirect(debase64url(input('rcode')), 301));
-                }
+                if (empty($isfull) && $getVars['rcode']) throw new HttpResponseException(redirect(debase64url($getVars['rcode']), 301));
                 $this->app->session->set("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
                 empty($fansinfo) || FansService::instance()->set($fansinfo, $appid);
             }
-            throw new HttpResponseException(redirect(debase64url(input('rcode')), 301));
+            if ($getVars['rcode']) throw new HttpResponseException(redirect(debase64url($getVars['rcode']), 301));
         } else {
             $result = self::ThinkServiceConfig()->oauth($this->app->session->getId(), $source, $isfull);
             $this->app->session->set("{$appid}_openid", $openid = $result['openid']);
