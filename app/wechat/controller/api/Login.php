@@ -59,7 +59,6 @@ class Login extends Controller
 
     /**
      * 微信授权结果处理
-     * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
