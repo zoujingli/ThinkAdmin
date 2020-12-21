@@ -29,7 +29,8 @@ class Plugs extends Controller
 {
 
     /**
-     * 系统图标选择器
+     * 图标选择器
+     * @login true
      */
     public function icon()
     {
