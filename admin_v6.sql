@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 14/12/2020 15:34:25
+ Date: 21/12/2020 16:07:31
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,7 @@ CREATE TABLE `data_news_item`  (
   `num_collect` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章收藏数',
   `num_comment` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章评论数',
   `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '权限状态(1使用,0禁用)',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '文章状态(1使用,0禁用)',
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
@@ -56,7 +56,7 @@ CREATE TABLE `data_news_mark`  (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '标签名称',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '标签说明',
   `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '权限状态(1使用,0禁用)',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '标签状态(1使用,0禁用)',
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
@@ -122,8 +122,9 @@ CREATE TABLE `data_payment`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_news_mark_status`(`status`) USING BTREE,
-  INDEX `idx_data_news_mark_deleted`(`deleted`) USING BTREE
+  INDEX `idx_data_payment_type`(`type`) USING BTREE,
+  INDEX `idx_data_payment_status`(`status`) USING BTREE,
+  INDEX `idx_data_payment_deleted`(`deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-支付-通道' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
@@ -347,12 +348,14 @@ CREATE TABLE `shop_goods`  (
   `num_collect` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章收藏数',
   `num_comment` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章评论数',
   `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '权限状态(1使用,0禁用)',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '商品状态(1使用,0禁用)',
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_news_item_status`(`status`) USING BTREE,
-  INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
+  INDEX `idx_shop_goods_code`(`code`) USING BTREE,
+  INDEX `idx_shop_goods_cate`(`cate`) USING BTREE,
+  INDEX `idx_shop_goods_status`(`status`) USING BTREE,
+  INDEX `idx_shop_goods_deleted`(`deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
@@ -419,7 +422,7 @@ CREATE TABLE `shop_goods_mark`  (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '标签名称',
   `remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '标签描述',
   `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '权限状态(1使用,0禁用)',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '标签状态(1使用,0禁用)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_goods_mark_sort`(`sort`) USING BTREE,
@@ -583,7 +586,7 @@ CREATE TABLE `shop_order_service`  (
   `num_collect` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章收藏数',
   `num_comment` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章评论数',
   `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '权限状态(1使用,0禁用)',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '记录状态(1使用,0禁用)',
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
@@ -4472,11 +4475,14 @@ INSERT INTO `system_config` VALUES ('base', 'site_copy', '©版权所有 2014-20
 INSERT INTO `system_config` VALUES ('base', 'site_icon', 'https://v6.thinkadmin.top/upload/f4/7b8fe06e38ae9908e8398da45583b9.png');
 INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES ('base', 'xpath', 'admin');
-INSERT INTO `system_config` VALUES ('storage', 'link_type', 'none+compress');
 INSERT INTO `system_config` VALUES ('storage', 'allow_exts', 'doc,gif,icon,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');
-INSERT INTO `system_config` VALUES ('storage', 'local_http_protocol', 'follow');
+INSERT INTO `system_config` VALUES ('storage', 'link_type', 'none+compress');
 INSERT INTO `system_config` VALUES ('storage', 'local_http_domain', '');
+INSERT INTO `system_config` VALUES ('storage', 'local_http_protocol', 'follow');
 INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
+INSERT INTO `system_config` VALUES ('wechat', 'type', 'thr');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appid', 'wx60a43dd8161666d4');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appkey', '7d0e4a487c6258b2232294b6ef0adb9e');
 
 -- ----------------------------
 -- Table structure for system_data
@@ -4571,15 +4577,11 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
 -- ----------------------------
-INSERT INTO `system_oplog` VALUES (1, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2020-12-14 06:00:24');
-INSERT INTO `system_oplog` VALUES (2, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[87]成功', 'admin', '2020-12-14 06:00:53');
-INSERT INTO `system_oplog` VALUES (3, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[87]成功', 'admin', '2020-12-14 06:01:06');
-INSERT INTO `system_oplog` VALUES (4, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2020-12-14 06:34:19');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4645,7 +4647,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://v6.thinkadmin.top/upload/ec/f571134493e54fe06855c88557052c.png', '', '', '', '', '127.0.0.1', '2020-12-14 06:34:19', 24, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', ',,', '', '', '', '127.0.0.1', '2020-12-21 06:43:50', 37, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
