@@ -260,7 +260,7 @@ class WechatService extends Service
             } elseif ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             } else {
-                throw new \think\Exception('Query Params [rcode] not find.');
+                throw new \think\Exception('Query params [rcode] not find.');
             }
         } else {
             $result = self::ThinkServiceConfig()->oauth($this->app->session->getId(), $source, $isfull);
