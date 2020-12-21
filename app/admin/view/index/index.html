@@ -54,7 +54,7 @@
                     <dd lay-unselect><a data-load="{:url('admin/login/out')}" data-confirm="确定要退出登录吗？"><i class="layui-icon layui-icon-release"></i> 退出登录</a></dd>
                 </dl>
                 <a class="layui-elip">
-                    <img alt="headimg" src="{:htmlentities(session('user.headimg')?:'__ROOT__/static/theme/img/headimg.png')}">
+                    <img alt=" " onerror="this.src='__ROOT__/static/theme/img/headimg.png'" src="{:htmlentities(session('user.headimg'))}">
                     <span>{:htmlentities(session('user.nickname')?:session('user.username'))}</span>
                 </a>
             </li>
