@@ -97,7 +97,7 @@ class WechatService extends Service
      */
     public static function __callStatic(string $name, array $arguments)
     {
-        [$type, $class, $classname] = self::parseName($name);
+        [$type, $class, $classname] = static::parseName($name);
         if ("{$type}{$class}" !== $name) {
             throw new \think\Exception("抱歉，实例 {$name} 不在符合规则！");
         }
@@ -105,7 +105,7 @@ class WechatService extends Service
             if ($type === 'ThinkService') {
                 throw new \think\Exception("抱歉，接口模式不能实例 {$classname} 对象！");
             }
-            return new $classname(self::instance()->getConfig());
+            return new $classname(static::instance()->getConfig());
         } else {
             [$appid, $appkey] = [sysconf('wechat.thr_appid'), sysconf('wechat.thr_appkey')];
             $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
@@ -240,7 +240,7 @@ class WechatService extends Service
                 'rcode' => $params['rcode'] ?? input('rcode', ''),
                 'state' => $params['state'] ?? input('state', ''),
             ];
-            $wechat = self::WeChatOauth();
+            $wechat = static::WeChatOauth();
             if ($getVars['state'] !== $appid || empty($getVars['code'])) {
                 $params['rcode'] = enbase64url($source);
                 $location = strstr("{$source}?", '?', true) . '?' . http_build_query($params);
@@ -263,7 +263,7 @@ class WechatService extends Service
                 throw new \think\Exception('Query params [rcode] not find.');
             }
         } else {
-            $result = self::ThinkServiceConfig()->oauth($this->app->session->getId(), $source, $isfull);
+            $result = static::ThinkServiceConfig()->oauth($this->app->session->getId(), $source, $isfull);
             $this->app->session->set("{$appid}_openid", $openid = $result['openid']);
             $this->app->session->set("{$appid}_fansinfo", $userinfo = $result['fans']);
             if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
@@ -293,9 +293,9 @@ class WechatService extends Service
     {
         $location = $location ?: $this->app->request->url(true);
         if ($this->getType() === 'api') {
-            return self::WeChatScript()->getJsSign($location);
+            return static::WeChatScript()->getJsSign($location);
         } else {
-            return self::ThinkServiceConfig()->jsSign($location);
+            return static::ThinkServiceConfig()->jsSign($location);
         }
     }
 }
