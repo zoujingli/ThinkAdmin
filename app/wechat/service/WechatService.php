@@ -245,10 +245,10 @@ class WechatService extends Service
                 $params['rcode'] = enbase64url($source);
                 $location = strstr("{$source}?", '?', true) . '?' . http_build_query($params);
                 $oauthurl = $wechat->getOauthRedirect($location, $appid, $isfull ? 'snsapi_userinfo' : 'snsapi_base');
-                throw new HttpResponseException($redirect ? redirect($oauthurl, 301) : response("window.location.href='{$oauthurl}'"));
+                throw new HttpResponseException($redirect ? redirect($oauthurl, 301) : response("location.href='{$oauthurl}'"));
             } elseif (($token = $wechat->getOauthAccessToken($getVars['code'])) && isset($token['openid'])) {
                 $this->app->session->set("{$appid}_openid", $openid = $token['openid']);
-                if ($isfull && !empty($token['access_token'])) {
+                if ($isfull && isset($token['access_token'])) {
                     $userinfo = $wechat->getUserInfo($token['access_token'], $openid);
                     $this->app->session->set("{$appid}_fansinfo", $userinfo);
                     empty($userinfo) || FansService::instance()->set($userinfo, $appid);
@@ -256,7 +256,7 @@ class WechatService extends Service
             }
             if ($getVars['rcode']) {
                 $location = debase64url($getVars['rcode']);
-                throw new HttpResponseException($redirect ? redirect($location, 301) : response("window.location.href='{$location}'"));
+                throw new HttpResponseException($redirect ? redirect($location, 301) : response("location.href='{$location}'"));
             } elseif ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             } else {
@@ -273,7 +273,7 @@ class WechatService extends Service
             if ($redirect && !empty($result['url'])) {
                 throw new HttpResponseException(redirect($result['url'], 301));
             } else {
-                throw new HttpResponseException(response("window.location.href='{$result['url']}'"));
+                throw new HttpResponseException(response("location.href='{$result['url']}'"));
             }
         }
     }
