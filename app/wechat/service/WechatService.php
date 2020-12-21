@@ -227,42 +227,48 @@ class WechatService extends Service
     {
         $appid = $this->getAppid();
         $openid = $this->app->session->get("{$appid}_openid");
-        $fansinfo = $this->app->session->get("{$appid}_fansinfo");
-        if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
-            empty($fansinfo) || FansService::instance()->set($fansinfo, $appid);
-            return ['openid' => $openid, 'fansinfo' => $fansinfo];
+        $userinfo = $this->app->session->get("{$appid}_fansinfo");
+        if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
+            empty($userinfo) || FansService::instance()->set($userinfo, $appid);
+            return ['openid' => $openid, 'fansinfo' => $userinfo];
         }
-        // 解析 GET 参数
-        parse_str(parse_url($source, PHP_URL_QUERY), $params);
-        $getVars = [
-            'code'  => $params['code'] ?? input('code', ''),
-            'rcode' => $params['rcode'] ?? input('rcode', ''),
-            'state' => $params['state'] ?? input('state', ''),
-        ];
         if ($this->getType() === 'api') {
+            // 解析 GET 参数
+            parse_str(parse_url($source, PHP_URL_QUERY), $params);
+            $getVars = [
+                'code'  => $params['code'] ?? input('code', ''),
+                'rcode' => $params['rcode'] ?? input('rcode', ''),
+                'state' => $params['state'] ?? input('state', ''),
+            ];
             $wechat = self::WeChatOauth();
             if ($getVars['state'] !== $appid || empty($getVars['code'])) {
                 $params['rcode'] = enbase64url($source);
-                $snsapi = empty($isfull) ? 'snsapi_base' : 'snsapi_userinfo';
-                $oauthurl = $wechat->getOauthRedirect(strstr("{$source}?", '?', true) . '?' . http_build_query($params), $appid, $snsapi);
+                $location = strstr("{$source}?", '?', true) . '?' . http_build_query($params);
+                $oauthurl = $wechat->getOauthRedirect($location, $appid, $isfull ? 'snsapi_userinfo' : 'snsapi_base');
                 throw new HttpResponseException($redirect ? redirect($oauthurl, 301) : response("window.location.href='{$oauthurl}'"));
             } elseif (($token = $wechat->getOauthAccessToken($getVars['code'])) && isset($token['openid'])) {
                 $this->app->session->set("{$appid}_openid", $openid = $token['openid']);
-                if (empty($isfull) && $getVars['rcode']) throw new HttpResponseException(redirect(debase64url($getVars['rcode']), 301));
-                $this->app->session->set("{$appid}_fansinfo", $fansinfo = $wechat->getUserInfo($token['access_token'], $openid));
-                empty($fansinfo) || FansService::instance()->set($fansinfo, $appid);
+                if ($isfull && !empty($token['access_token'])) {
+                    $userinfo = $wechat->getUserInfo($token['access_token'], $openid);
+                    $this->app->session->set("{$appid}_fansinfo", $userinfo);
+                    empty($userinfo) || FansService::instance()->set($userinfo, $appid);
+                }
             }
             if ($getVars['rcode']) {
                 $location = debase64url($getVars['rcode']);
                 throw new HttpResponseException($redirect ? redirect($location, 301) : response("window.location.href='{$location}'"));
+            } elseif ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
+                return ['openid' => $openid, 'fansinfo' => $userinfo];
+            } else {
+                throw new \think\Exception('Query Params [rcode] not find.');
             }
         } else {
             $result = self::ThinkServiceConfig()->oauth($this->app->session->getId(), $source, $isfull);
             $this->app->session->set("{$appid}_openid", $openid = $result['openid']);
-            $this->app->session->set("{$appid}_fansinfo", $fansinfo = $result['fans']);
-            if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($fansinfo))) {
-                if (!empty($fansinfo)) FansService::instance()->set($fansinfo, $appid);
-                return ['openid' => $openid, 'fansinfo' => $fansinfo];
+            $this->app->session->set("{$appid}_fansinfo", $userinfo = $result['fans']);
+            if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
+                if (!empty($userinfo)) FansService::instance()->set($userinfo, $appid);
+                return ['openid' => $openid, 'fansinfo' => $userinfo];
             }
             if ($redirect && !empty($result['url'])) {
                 throw new HttpResponseException(redirect($result['url'], 301));
