@@ -39,13 +39,7 @@
             </td>
             <td class='text-left nowrap padding-row-0 padding-right-0'>
                 <p class="color-text layui-elip" style="max-width:550px">{$vo.action|default='-'}</p>
-                {if preg_match('|\s+(\w+)\s+数据|', $vo.action)}
-                <label data-tips-desc class="notselect pointer color-blue">
-                    查看详情内容<textarea class="layui-hide">{$vo.content|raw|default=''}</textarea>
-                </label>
-                {else}
                 <span class="color-desc" style="white-space:normal">{$vo.content|default='-'}</span>
-                {/if}
             </td>
             <td class='text-left nowrap'>
                 <p class="color-text">{$vo.geoip|default='-'}</p>
