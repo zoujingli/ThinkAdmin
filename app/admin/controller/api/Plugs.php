@@ -134,7 +134,7 @@ class Plugs extends Controller
             AdminService::instance()->clearCache();
             SystemService::instance()->clearRuntime();
             sysoplog('系统运维管理', '清理网站日志及缓存数据');
-            $this->success('清理网站日志及缓存数据成功！');
+            $this->success('清理缓存及日志成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
