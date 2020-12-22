@@ -223,7 +223,10 @@ abstract class PaymentService extends Service
             'payment_amount'   => $paymentAmount,
             'payment_status'   => 1,
             'payment_datatime' => date('Y-m-d H:i:s'),
-        ], 'order_no', ['payment_id' => $paymentId, 'payment_type' => $paymentType]);
+        ], 'order_no', [
+            'payment_id'   => $paymentId,
+            'payment_type' => $paymentType,
+        ]);
         // 更新记录状态
         return $this->updateOrder($orderNo, $paymentCode, $paymentAmount, $paymentType);
     }
