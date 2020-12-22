@@ -10,10 +10,10 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">关注状态</label>
+            <label class="layui-form-label">订阅状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="subscribe">
-                    {foreach [''=>'-- 全部 --','0'=>'显示未关注的粉丝','1'=>'显示已关注的粉丝'] as $k=>$v}
+                    {foreach [''=>'-- 全部 --','0'=>'显示未订阅的粉丝','1'=>'显示已订阅的粉丝'] as $k=>$v}
                     {if $k.'' eq input('subscribe')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
@@ -40,9 +40,9 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">关注时间</label>
+            <label class="layui-form-label">订阅时间</label>
             <label class="layui-input-inline">
-                <input data-date-range name="subscribe_at" value="{:input('subscribe_at')}" placeholder="请选择关注时间" class="layui-input">
+                <input data-date-range name="subscribe_at" value="{:input('subscribe_at')}" placeholder="请选择订阅时间" class="layui-input">
             </label>
         </div>
 

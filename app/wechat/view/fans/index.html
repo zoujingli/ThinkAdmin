@@ -25,7 +25,7 @@
             <th width="180px" class='text-left nowrap'>微信昵称</th>
             <th width="180px"></th>
             <th width="150px" class='text-left nowrap'>性别语言</th>
-            <th width="180px" class='text-left nowrap'>关注时间</th>
+            <th width="180px" class='text-left nowrap'>订阅时间</th>
             <th width="80px"></th>
             <th></th>
         </tr>
@@ -55,7 +55,7 @@
                 日期：{$vo.subscribe_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
             </td>
             <td class='text-center nowrap'>
-                {eq name='vo.subscribe' value='0'}<span class="layui-badge">未关注</span>{else}<span class="layui-badge layui-bg-green">已关注</span>{/eq}
+                {eq name='vo.subscribe' value='0'}<span class="layui-badge">未订阅</span>{else}<span class="layui-badge layui-bg-green">已订阅</span>{/eq}
                 <br>
                 {eq name='vo.is_black' value='0'}<span class="layui-badge layui-bg-green">未拉黑</span>{else}<span class="layui-badge">已拉黑</span>{/eq}
             </td>

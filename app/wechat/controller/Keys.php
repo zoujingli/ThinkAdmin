@@ -133,7 +133,7 @@ class Keys extends Controller
     }
 
     /**
-     * 配置关注回复
+     * 配置订阅回复
      * @auth true
      * @menu true
      * @throws \think\db\exception\DataNotFoundException
@@ -143,7 +143,7 @@ class Keys extends Controller
     public function subscribe()
     {
         $this->_applyFormToken();
-        $this->title = '编辑关注回复规则';
+        $this->title = '编辑订阅回复规则';
         $this->_form($this->table, 'form', 'keys', [], ['keys' => 'subscribe']);
     }
 
