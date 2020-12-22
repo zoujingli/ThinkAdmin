@@ -51,7 +51,9 @@ CKEDITOR.plugins.add('uvideo', {
         setTimeout(function () {
             $('#cke_' + editor.name).find('.cke_button__uploadvideo_label').parent().map(function () {
                 $(this).attr('data-type', 'mp4').attr('data-file', 'mul').uploadFile(function (url) {
-                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<div><iframe src="' + url + '" style="max-width:100%;max-height:100%;border:0" allowfullscreen="true"></iframe></div>'));
+                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<div><video width="100%" controls="controls"><source src="' + url + '" type="audio/mp4"></video></div>'));
+                    // 小程序不支持
+                    // editor.insertElement(CKEDITOR.dom.element.createFromHtml('<div><iframe src="' + url + '" style="max-width:100%;max-height:100%;border:0" allowfullscreen="true"></iframe></div>'));
                 });
             });
         }, 100);
