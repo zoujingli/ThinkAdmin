@@ -32,30 +32,25 @@ abstract class PaymentService extends Service
 
     // 支付通道配置
     const TYPES = [
-        PaymentService::PAYMENT_WECHAT_APP    => [
-            'type' => 'APP',
-            'name' => '微信商户 APP 支付',
-            'bind' => [UserService::APITYPE_IOSAPP, UserService::APITYPE_ANDROID],
-        ],
         PaymentService::PAYMENT_WECHAT_MWEB   => [
             'type' => 'MWEB',
             'name' => '微信商户 H5 支付',
             'bind' => [UserService::APITYPE_WAP],
         ],
-        PaymentService::PAYMENT_WECHAT_NATIVE => [
-            'type' => 'NATIVE',
-            'name' => '微信商户 NATIVE 支付',
-            'bind' => [UserService::APITYPE_WEB],
+        PaymentService::PAYMENT_WECHAT_APP    => [
+            'type' => 'APP',
+            'name' => '微信商户 APP 支付',
+            'bind' => [UserService::APITYPE_IOSAPP, UserService::APITYPE_ANDROID],
         ],
         PaymentService::PAYMENT_WECHAT_JSAPI  => [
             'type' => 'JSAPI',
             'name' => '微信商户 JSAPI 支付',
             'bind' => [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT],
         ],
-        PaymentService::PAYMENT_ALIAPY_APP    => [
-            'type' => '',
-            'name' => '支付宝 APP 支付',
-            'bind' => [UserService::APITYPE_ANDROID, UserService::APITYPE_IOSAPP],
+        PaymentService::PAYMENT_WECHAT_NATIVE => [
+            'type' => 'NATIVE',
+            'name' => '微信商户 NATIVE 支付',
+            'bind' => [UserService::APITYPE_WEB],
         ],
         PaymentService::PAYMENT_ALIPAY_WAP    => [
             'type' => '',
@@ -66,6 +61,11 @@ abstract class PaymentService extends Service
             'type' => '',
             'name' => '支付宝 WEB 支付',
             'bind' => [UserService::APITYPE_WEB],
+        ],
+        PaymentService::PAYMENT_ALIAPY_APP    => [
+            'type' => '',
+            'name' => '支付宝 APP 支付',
+            'bind' => [UserService::APITYPE_ANDROID, UserService::APITYPE_IOSAPP],
         ],
         PaymentService::PAYMENT_JOINPAY_XCX   => [
             'type' => 'WEIXIN_XCX',
@@ -148,7 +148,7 @@ abstract class PaymentService extends Service
      * @param string $payno 交易单号
      * @param string $amount 支付金额
      * @param null|string $paytype 支付类型
-     * @return bool
+     * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
