@@ -23,7 +23,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label"><b>MCH_KEY</b><br><span class="nowrap color-desc">微信商户密钥</span></label>
                     <div class="layui-input-block">
-                        <input name="wechat.mch_key" placeholder="请输入微信商户密钥（必填）" maxlength="32" required value="{:sysconf('wechat.mch_key')}" class="layui-input">
+                        <input name="wechat.mch_key" placeholder="请输入微信商户密钥（必填）" maxlength="32" pattern=".{32}" required value="{:sysconf('wechat.mch_key')}" class="layui-input">
                         <p class="help-block">微信商户密钥，需要在微信商户平台操作设置操作密码并获取商户接口密钥</p>
                     </div>
                 </div>
