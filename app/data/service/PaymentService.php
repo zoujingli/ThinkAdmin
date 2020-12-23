@@ -185,14 +185,14 @@ abstract class PaymentService extends Service
     protected function createPaymentAction(string $param, string $orderNo, string $payTitle, string $payAmount)
     {
         if (is_numeric(stripos($param, '-'))) {
-            [$paymentType, $paymentId] = explode('-', $param);
+            [$paymentType, $paymentCode] = explode('-', $param);
         } else {
-            [$paymentType, $paymentId] = [$param ?: static::$type, static::$code];
+            [$paymentType, $paymentCode] = [$param ?: static::$type, static::$code];
         }
         // 创建支付记录
         $this->app->db->name('DataPaymentItem')->insert([
-            'order_no'   => $orderNo, 'order_name' => $payTitle, 'order_amount' => $payAmount,
-            'payment_id' => $paymentId, 'payment_type' => $paymentType,
+            'payment_code' => $paymentCode, 'payment_type' => $paymentType,
+            'order_name'   => $payTitle, 'order_amount' => $payAmount, 'order_no' => $orderNo,
         ]);
     }
 
