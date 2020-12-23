@@ -121,7 +121,7 @@ abstract class PaymentService extends Service
         if (empty($payment)) {
             throw new \think\Exception("支付通道[#{$paycode}]已关闭");
         }
-        static::$config = json_decode(static::$config['content'], true);
+        static::$config = @json_decode($payment['content'], true);
         if (empty(static::$config)) {
             throw new \think\Exception("支付通道[#{$paycode}]配置无效");
         }
