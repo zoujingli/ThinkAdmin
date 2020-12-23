@@ -5,6 +5,7 @@ namespace app\data\controller;
 use app\data\service\PaymentService;
 use app\data\service\UserService;
 use think\admin\Controller;
+use think\admin\extend\CodeExtend;
 
 /**
  * 支付通道通道
@@ -73,6 +74,9 @@ class Payment extends Controller
      */
     protected function _form_filter(array &$data)
     {
+        if (empty($data['code'])) {
+            $data['code'] = CodeExtend::uniqidNumber(14, 'M');
+        }
         if ($this->request->isGet()) {
             $this->payments = [];
             foreach ($this->types as $k => $vo) {

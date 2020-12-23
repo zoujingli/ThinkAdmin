@@ -83,7 +83,7 @@ abstract class PaymentService extends Service
      * 支付通道编号
      * @var integer
      */
-    protected static $id;
+    protected static $code;
 
     /**
      * 默认支付类型
@@ -105,25 +105,25 @@ abstract class PaymentService extends Service
 
     /**
      * 根据配置实例支付服务
-     * @param string $payid 支付通道编号
+     * @param string $paycode 支付通道编号
      * @return JoinPaymentService|WechatPaymentService|AlipayPaymentService
      * @throws \think\Exception
      */
-    public static function build(string $payid): PaymentService
+    public static function build(string $paycode): PaymentService
     {
-        static::$id = $payid;
-        if (isset(static::$driver[$payid])) {
-            return static::$driver[$payid];
+        static::$code = $paycode;
+        if (isset(static::$driver[$paycode])) {
+            return static::$driver[$paycode];
         }
         // 支付通道配置验证
-        $map = ['id' => $payid, 'status' => 1, 'deleted' => 0];
+        $map = ['code' => $paycode, 'status' => 1, 'deleted' => 0];
         $payment = app()->db->name('DataPayment')->where($map)->find();
         if (empty($payment)) {
-            throw new \think\Exception("支付通道[#{$payid}]已关闭");
+            throw new \think\Exception("支付通道[#{$paycode}]已关闭");
         }
         static::$config = json_decode(static::$config['content'], true);
         if (empty(static::$config)) {
-            throw new \think\Exception("支付通道[#{$payid}]配置无效");
+            throw new \think\Exception("支付通道[#{$paycode}]配置无效");
         }
         // 支付通道类型验证
         if (empty(static::TYPES[$payment['type']])) {
@@ -132,11 +132,11 @@ abstract class PaymentService extends Service
         // 实例化具体支付通道类型
         static::$type = $payment['type'];
         if (stripos(static::$type, 'alipay_') === 0) {
-            return static::$driver[$payid] = AlipayPaymentService::instance();
+            return static::$driver[$paycode] = AlipayPaymentService::instance();
         } elseif (stripos(static::$type, 'wechat_') === 0) {
-            return static::$driver[$payid] = WechatPaymentService::instance();
+            return static::$driver[$paycode] = WechatPaymentService::instance();
         } elseif (stripos(static::$type, 'joinpay_') === 0) {
-            return static::$driver[$payid] = JoinPaymentService::instance();
+            return static::$driver[$paycode] = JoinPaymentService::instance();
         } else {
             throw new \think\Exception("支付驱动[{$payment['type']}]未定义");
         }
@@ -187,7 +187,7 @@ abstract class PaymentService extends Service
         if (is_numeric(stripos($param, '-'))) {
             [$paymentType, $paymentId] = explode('-', $param);
         } else {
-            [$paymentType, $paymentId] = [$param ?: static::$type, static::$id];
+            [$paymentType, $paymentId] = [$param ?: static::$type, static::$code];
         }
         // 创建支付记录
         $this->app->db->name('DataPaymentItem')->insert([
@@ -200,35 +200,35 @@ abstract class PaymentService extends Service
      * 更新支付记录并更新订单
      * @param string $param 通道-编号
      * @param string $orderNo 商户订单单号
-     * @param string $paymentCode 平台交易单号
+     * @param string $paymentTrade 平台交易单号
      * @param string $paymentAmount 实际到账金额
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function updatePaymentAction(string $param, string $orderNo, string $paymentCode, string $paymentAmount): bool
+    protected function updatePaymentAction(string $param, string $orderNo, string $paymentTrade, string $paymentAmount): bool
     {
         if (is_numeric(stripos($param, '-'))) {
-            [$paymentType, $paymentId] = explode('-', $param);
+            [$paymentType, $paymentCode] = explode('-', $param);
         } else {
-            [$paymentType, $paymentId] = [$param ?: static::$type, static::$id];
+            [$paymentType, $paymentCode] = [$param ?: static::$type, static::$code];
         }
         // 更新支付记录
         data_save('DataPaymentItem', [
             'order_no'         => $orderNo,
-            'payment_id'       => $paymentId,
-            'payment_type'     => $paymentType,
             'payment_code'     => $paymentCode,
+            'payment_type'     => $paymentType,
+            'payment_trade'    => $paymentTrade,
             'payment_amount'   => $paymentAmount,
             'payment_status'   => 1,
             'payment_datatime' => date('Y-m-d H:i:s'),
         ], 'order_no', [
-            'payment_id'   => $paymentId,
+            'payment_code' => $paymentCode,
             'payment_type' => $paymentType,
         ]);
         // 更新记录状态
-        return $this->updateOrder($orderNo, $paymentCode, $paymentAmount, $paymentType);
+        return $this->updateOrder($orderNo, $paymentTrade, $paymentAmount, $paymentType);
     }
 
     /**

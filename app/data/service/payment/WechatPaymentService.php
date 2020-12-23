@@ -49,7 +49,7 @@ class WechatPaymentService extends PaymentService
         try {
             if (isset(static::TYPES[static::$type])) {
                 $tradeType = static::TYPES[static::$type]['type'];
-                $tradeParam = static::$type . '-' . static::$id;
+                $tradeParam = static::$type . '-' . static::$code;
             } else {
                 throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
             }

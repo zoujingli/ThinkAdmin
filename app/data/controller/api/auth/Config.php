@@ -28,7 +28,7 @@ class Config extends Auth
         }
         $map = ['status' => 1, 'deleted' => 0];
         $query = $this->app->db->name('DataPayment')->where($map)->whereIn('type', $types);
-        $collect = $query->order('sort desc,id desc')->field('id,name,type,create_at')->select();
+        $collect = $query->order('sort desc,id desc')->field('code,name,type,create_at')->select();
         $this->success('获取支付通道数据', $collect->toArray());
     }
 }
