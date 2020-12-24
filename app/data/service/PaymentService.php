@@ -46,17 +46,17 @@ abstract class PaymentService extends Service
         ],
         PaymentService::PAYMENT_WECHAT_XCX  => [
             'type' => 'JSAPI',
-            'name' => '微信商户小程序支付',
+            'name' => '微信商户 小程序 支付',
             'bind' => [UserService::APITYPE_WXAPP],
         ],
         PaymentService::PAYMENT_WECHAT_GZH  => [
             'type' => 'JSAPI',
-            'name' => '微信商户公众号支付',
+            'name' => '微信商户 公众号 支付',
             'bind' => [UserService::APITYPE_WECHAT],
         ],
         PaymentService::PAYMENT_WECHAT_QRC  => [
             'type' => 'NATIVE',
-            'name' => '微信商户二维码支付',
+            'name' => '微信商户 二维码 支付',
             'bind' => [UserService::APITYPE_WEB],
         ],
         // 支付宝支持配置（不需要的直接注释）
@@ -78,12 +78,12 @@ abstract class PaymentService extends Service
         // 汇聚支持配置（不需要的直接注释）
         PaymentService::PAYMENT_JOINPAY_XCX => [
             'type' => 'WEIXIN_XCX',
-            'name' => '汇聚小程序 JSAPI 支付',
+            'name' => '汇聚 小程序 支付',
             'bind' => [UserService::APITYPE_WXAPP],
         ],
         PaymentService::PAYMENT_JOINPAY_GZH => [
             'type' => 'WEIXIN_GZH',
-            'name' => '汇聚服务号 JSAPI 支付',
+            'name' => '汇聚 公众号 支付',
             'bind' => [UserService::APITYPE_WECHAT],
         ],
     ];
