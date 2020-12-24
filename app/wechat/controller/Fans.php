@@ -80,10 +80,21 @@ class Fans extends Controller
     }
 
     /**
+     * 删除用户信息
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function remove()
+    {
+        $this->_applyFormToken();
+        $this->_delete($this->table);
+    }
+
+    /**
      * 用户拉入黑名单
      * @auth true
      */
-    public function black_add()
+    public function blackAdd()
     {
         try {
             $this->_applyFormToken();
@@ -103,7 +114,7 @@ class Fans extends Controller
      * 用户移出黑名单
      * @auth true
      */
-    public function black_del()
+    public function blackDel()
     {
         try {
             $this->_applyFormToken();
@@ -117,17 +128,6 @@ class Fans extends Controller
         } catch (\Exception $exception) {
             $this->error("移出黑名单失败，请稍候再试！<br>{$exception->getMessage()}");
         }
-    }
-
-    /**
-     * 删除用户信息
-     * @auth true
-     * @throws \think\db\exception\DbException
-     */
-    public function remove()
-    {
-        $this->_applyFormToken();
-        $this->_delete($this->table);
     }
 
 }

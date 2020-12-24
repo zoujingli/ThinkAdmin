@@ -1,12 +1,14 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
-<!--{if auth("black_add")}-->
-<button data-action='{:url("black_add")}' data-rule="openid#{key}" data-csrf="{:systoken('black_add')}" class='layui-btn layui-btn-sm layui-btn-primary'>拉入黑名单</button>
+<!--{if auth("blackAdd")}-->
+<button data-action='{:url("blackAdd")}' data-rule="openid#{key}" data-csrf="{:systoken('blackAdd')}" class='layui-btn layui-btn-sm layui-btn-primary'>拉入黑名单</button>
 <!--{/if}-->
-<!--{if auth("black_del")}-->
-<button data-action='{:url("black_del")}' data-rule="openid#{key}" data-csrf="{:systoken('black_del')}" class='layui-btn layui-btn-sm layui-btn-primary'>移出黑名单</button>
+
+<!--{if auth("blackDel")}-->
+<button data-action='{:url("blackDel")}' data-rule="openid#{key}" data-csrf="{:systoken('blackDel')}" class='layui-btn layui-btn-sm layui-btn-primary'>移出黑名单</button>
 <!--{/if}-->
+
 <!--{if auth("sync")}-->
 <button data-queue='{:url("sync")}' data-confirm="是否要创建后台任务同步用户数据？" class='layui-btn layui-btn-sm layui-btn-primary'>同步用户数据</button>
 <!--{/if}-->
@@ -61,17 +63,17 @@
             </td>
             <td class="nowrap">
 
-                {if auth('black_add') and $vo.is_black eq 0}
-                <a class="layui-btn layui-btn-sm" data-action="{:url('black_add')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('black_add')}">拉 黑</a>
-                {/if}
+                <!--{if auth('blackAdd') and $vo.is_black eq 0}-->
+                <a class="layui-btn layui-btn-sm" data-action="{:url('blackAdd')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('blackAdd')}">拉 黑</a>
+                <!--{/if}-->
 
-                {if auth('black_del') and $vo.is_black eq 1}
-                <a class="layui-btn layui-btn-sm" data-action="{:url('black_del')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('black_del')}">移 出</a>
-                {/if}
+                <!--{if auth('blackDel') and $vo.is_black eq 1}-->
+                <a class="layui-btn layui-btn-sm" data-action="{:url('blackDel')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('blackDel')}">移 出</a>
+                <!--{/if}-->
 
-                {if auth("remove")}
+                <!--{if auth("remove")}-->
                 <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除该用户吗？">删 除</a>
-                {/if}
+                <!--{/if}-->
 
             </td>
         </tr>
