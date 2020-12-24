@@ -260,7 +260,7 @@ abstract class PaymentService extends Service
      * @param string $orderNo 交易订单单号
      * @param string $payAmount 交易订单金额（元）
      * @param string $payTitle 交易订单名称
-     * @param string $payRemark 订单订单描述
+     * @param string $payRemark 交易订单描述
      * @param string $returnUrl 支付回跳地址
      * @return array
      */
