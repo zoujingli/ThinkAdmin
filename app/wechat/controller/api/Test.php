@@ -18,6 +18,7 @@ namespace app\wechat\controller\api;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
+use think\Response;
 use WeChat\Contracts\Tools;
 
 /**
@@ -29,12 +30,12 @@ class Test extends Controller
 {
     /**
      * 微信JSAPI支付二维码
-     * @return \think\Response
+     * @return Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    public function jsapiQrc()
+    public function jsapiQrc(): Response
     {
         $this->url = sysuri('wechat/api.test/jsapi', [], false, true);
         return $this->_buildQrcResponse($this->url);
@@ -42,12 +43,12 @@ class Test extends Controller
 
     /**
      * 显示网页授权二维码
-     * @return \think\Response
+     * @return Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    public function oauthQrc()
+    public function oauthQrc(): Response
     {
         $this->url = sysuri('wechat/api.test/oauth', [], false, true);
         return $this->_buildQrcResponse($this->url);
@@ -55,12 +56,12 @@ class Test extends Controller
 
     /**
      * 显示网页授权二维码
-     * @return \think\Response
+     * @return Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    public function jssdkQrc()
+    public function jssdkQrc(): Response
     {
         $this->url = sysuri('wechat/api.test/jssdk', [], false, true);
         return $this->_buildQrcResponse($this->url);
@@ -68,12 +69,12 @@ class Test extends Controller
 
     /**
      * 微信扫码支付模式一二维码显示
-     * @return \think\Response
+     * @return Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    public function scanOneQrc()
+    public function scanOneQrc(): Response
     {
         $pay = WechatService::WePayOrder();
         return $this->_buildQrcResponse($pay->qrcParams('8888888'));
@@ -81,14 +82,14 @@ class Test extends Controller
 
     /**
      * 扫码支付模式二测试二维码
-     * @return \think\Response
+     * @return Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function scanTwoQrc()
+    public function scanTwoQrc(): Response
     {
         $result = WechatService::WePayOrder()->create([
             'body'             => '测试商品',
@@ -103,7 +104,6 @@ class Test extends Controller
 
     /**
      * 网页授权测试
-     * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
@@ -120,7 +120,6 @@ class Test extends Controller
 
     /**
      * JSSDK测试
-     * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\Exception
@@ -141,7 +140,7 @@ class Test extends Controller
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function scanOneNotify()
+    public function scanOneNotify(): string
     {
         $pay = WechatService::WePayOrder();
         $notify = $pay->getNotify();
@@ -209,9 +208,6 @@ class Test extends Controller
         echo "当前用户OPENID: {$user['openid']}";
         echo "\n--- 创建预支付码 ---\n";
         var_export($result);
-        echo '</pre>';
-
-        echo '<pre>';
         echo "\n\n--- JSAPI 及 H5 参数 ---\n";
         var_export($options);
         echo '</pre>';
@@ -235,7 +231,7 @@ class Test extends Controller
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      */
-    public function notify()
+    public function notify(): string
     {
         $wechat = WechatService::WePayOrder();
         p($wechat->getNotify());
@@ -245,12 +241,12 @@ class Test extends Controller
     /**
      * 创建二维码响应对应
      * @param string $url 二维码内容
-     * @return \think\Response
+     * @return Response
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
      * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
      */
-    private function _buildQrcResponse(string $url)
+    private function _buildQrcResponse(string $url): Response
     {
         $qrCode = new \Endroid\QrCode\QrCode();
         $qrCode->setText($url)->setSize(300)->setPadding(20)->setImageType('png');
