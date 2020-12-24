@@ -122,9 +122,9 @@ class Fans extends Command
         $this->output->comment($done > 0 ? '黑名单的微信用户更新成功' : '未获取到黑名单微信用户哦');
         $this->output->newLine();
         if (empty($result['total'])) {
-            return '，其中黑名单 0 人';
+            return ', 其中黑名单 0 人';
         } else {
-            return "，其中黑名单 {$result['total']} 人";
+            return ", 其中黑名单 {$result['total']} 人";
         }
     }
 
@@ -154,7 +154,7 @@ class Fans extends Command
         }
         $this->output->comment($done > 0 ? '微信用户标签数据获取完成' : '未获取到微信用户标签数据');
         $this->output->newLine();
-        return "，获取到 {$done} 个标签";
+        return ", 获取到 {$done} 个标签";
     }
 
 }
