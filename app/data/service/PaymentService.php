@@ -21,9 +21,10 @@ abstract class PaymentService extends Service
 
     // 微信商户通道
     const PAYMENT_WECHAT_APP = 'wechat_app';
-    const PAYMENT_WECHAT_MWEB = 'wechat_mweb';
-    const PAYMENT_WECHAT_JSAPI = 'wechat_jsapi';
-    const PAYMENT_WECHAT_NATIVE = 'wechat_native';
+    const PAYMENT_WECHAT_GZH = 'wechat_gzh';
+    const PAYMENT_WECHAT_XCX = 'wechat_xcx';
+    const PAYMENT_WECHAT_WAP = 'wechat_wap';
+    const PAYMENT_WECHAT_QRC = 'wechat_qrc';
 
     // 支付宝支付通道
     const PAYMENT_ALIAPY_APP = 'alipay_app';
@@ -32,47 +33,55 @@ abstract class PaymentService extends Service
 
     // 支付通道配置
     const TYPES = [
-        PaymentService::PAYMENT_WECHAT_MWEB   => [
+        // 微信支付配置（不需要的直接注释）
+        PaymentService::PAYMENT_WECHAT_WAP  => [
             'type' => 'MWEB',
             'name' => '微信商户 H5 支付',
             'bind' => [UserService::APITYPE_WAP],
         ],
-        PaymentService::PAYMENT_WECHAT_APP    => [
+        PaymentService::PAYMENT_WECHAT_APP  => [
             'type' => 'APP',
             'name' => '微信商户 APP 支付',
             'bind' => [UserService::APITYPE_IOSAPP, UserService::APITYPE_ANDROID],
         ],
-        PaymentService::PAYMENT_WECHAT_JSAPI  => [
+        PaymentService::PAYMENT_WECHAT_XCX  => [
             'type' => 'JSAPI',
-            'name' => '微信商户 JSAPI 支付',
-            'bind' => [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT],
+            'name' => '微信商户小程序支付',
+            'bind' => [UserService::APITYPE_WXAPP],
         ],
-        PaymentService::PAYMENT_WECHAT_NATIVE => [
+        PaymentService::PAYMENT_WECHAT_GZH  => [
+            'type' => 'JSAPI',
+            'name' => '微信商户公众号支付',
+            'bind' => [UserService::APITYPE_WECHAT],
+        ],
+        PaymentService::PAYMENT_WECHAT_QRC  => [
             'type' => 'NATIVE',
-            'name' => '微信商户 NATIVE 支付',
+            'name' => '微信商户二维码支付',
             'bind' => [UserService::APITYPE_WEB],
         ],
-        PaymentService::PAYMENT_ALIPAY_WAP    => [
+        // 支付宝支持配置（不需要的直接注释）
+        PaymentService::PAYMENT_ALIPAY_WAP  => [
             'type' => '',
             'name' => '支付宝 WAP 支付',
             'bind' => [UserService::APITYPE_WAP],
         ],
-        PaymentService::PAYMENT_ALIPAY_WEB    => [
+        PaymentService::PAYMENT_ALIPAY_WEB  => [
             'type' => '',
             'name' => '支付宝 WEB 支付',
             'bind' => [UserService::APITYPE_WEB],
         ],
-        PaymentService::PAYMENT_ALIAPY_APP    => [
+        PaymentService::PAYMENT_ALIAPY_APP  => [
             'type' => '',
             'name' => '支付宝 APP 支付',
             'bind' => [UserService::APITYPE_ANDROID, UserService::APITYPE_IOSAPP],
         ],
-        PaymentService::PAYMENT_JOINPAY_XCX   => [
+        // 汇聚支持配置（不需要的直接注释）
+        PaymentService::PAYMENT_JOINPAY_XCX => [
             'type' => 'WEIXIN_XCX',
             'name' => '汇聚小程序 JSAPI 支付',
             'bind' => [UserService::APITYPE_WXAPP],
         ],
-        PaymentService::PAYMENT_JOINPAY_GZH   => [
+        PaymentService::PAYMENT_JOINPAY_GZH => [
             'type' => 'WEIXIN_GZH',
             'name' => '汇聚服务号 JSAPI 支付',
             'bind' => [UserService::APITYPE_WECHAT],

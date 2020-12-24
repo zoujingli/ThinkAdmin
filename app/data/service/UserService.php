@@ -19,6 +19,7 @@ class UserService extends Service
     const APITYPE_ANDROID = 'android';
 
     const TYPES = [
+        // 接口通道配置（不需要的直接注释）
         UserService::APITYPE_WAP     => [
             'name' => '手机浏览器',
             'auth' => 'phone',

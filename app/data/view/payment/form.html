@@ -15,7 +15,7 @@
             <span class="color-green font-w7 label-required-prev">支付方式</span>
             <span class="color-desc margin-left-5">Payment Channel</span>
             <label class="block full-width">
-                {empty name='vo.type'}{php}$vo['type'] = 'wechat_jsapi';{/php}{/empty}
+                {empty name='vo.type'}{php}$vo['type'] = 'wechat_xcx';{/php}{/empty}
                 <select name="type" class="layui-select" lay-search lay-filter="payment-type">
                     <option value="">-- 请选择 --</option>
                     {foreach $payments as $kk => $vv}
