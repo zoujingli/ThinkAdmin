@@ -16,7 +16,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作行为</label>
             <div class="layui-input-inline">
-                <select name="action" class="layui-select">
+                <select name="action" lay-search class="layui-select">
                     <option value=''>-- 全部日志 --</option>
                     {foreach $actions as $action}{if $action eq input('get.action')}
                     <option selected value="{$action}">{$action}</option>
