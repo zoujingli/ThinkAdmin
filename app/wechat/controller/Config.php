@@ -69,7 +69,7 @@ class Config extends Controller
                     $this->error($exception->getMessage());
                 }
             }
-            sysoplog('微信管理', '修改微信授权配置成功');
+            sysoplog('微信授权配置', '修改微信授权配置成功');
             $location = url('wechat/config/options')->build() . '?uniqid=' . uniqid();
             $this->success('微信参数修改成功！', sysuri('admin/index/index') . "#{$location}");
         }
@@ -138,7 +138,7 @@ class Config extends Controller
                 }
             }
             foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-            sysoplog('微信管理', '修改微信支付配置成功');
+            sysoplog('微信授权配置', '修改微信支付配置成功');
             $this->success('微信支付配置成功！');
         } else {
             $this->error('抱歉，访问方式错误！');

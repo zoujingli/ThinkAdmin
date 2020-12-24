@@ -75,6 +75,7 @@ class Fans extends Controller
      */
     public function sync()
     {
+        sysoplog('微信授权配置', '创建粉丝用户同步任务');
         $this->_queue('同步微信用户数据', "xadmin:fansall");
     }
 
