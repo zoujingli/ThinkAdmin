@@ -7,8 +7,8 @@
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">支付名称</span>
             <span class="color-desc margin-left-5">Payment Name</span>
-            <input class="layui-input" required placeholder="请输入支付名称" name="name" value="{$vo.name|default=''}"/>
-            <span class="help-block"><b>必填，</b>请填写分类名称（如：微信小程序支付），建议字符不要太长，一般4-6个汉字</span>
+            <input class="layui-input" required placeholder="请输入支付名称" maxlength="50" name="name" value="{$vo.name|default=''}"/>
+            <span class="help-block"><b>必填，</b>请填写分类名称（如：微信小程序支付），建议字符不要太长一般4-6个汉字</span>
         </label>
 
         <div class="layui-form-item">
@@ -39,7 +39,7 @@
             <span class="color-green font-w7">支付描述</span>
             <span class="color-desc margin-left-5">Payment Remark</span>
             <label class="relative block">
-                <textarea class="layui-textarea" placeholder="请输入支付描述" name="desc">{$vo.desc|default=''}</textarea>
+                <textarea class="layui-textarea" placeholder="请输入支付描述" name="remark">{$vo.remark|default=''}</textarea>
             </label>
         </div>
 
