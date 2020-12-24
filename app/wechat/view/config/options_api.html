@@ -27,7 +27,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><b>AppSecret</b><br><span class="nowrap color-desc">公众号 Secret</span></label>
             <div class="layui-input-block">
-                <input name="wechat.appsecret" required placeholder="请输入32位公众号AppSecret（必填）" value="{:sysconf('wechat.appsecret')}" maxlength="32" pattern="^[0-9a-z]{32}$" class="layui-input">
+                <input name="wechat.appsecret" required placeholder="请输入32位公众号接口密钥AppSecret（必填）" value="{:sysconf('wechat.appsecret')}" maxlength="32" pattern="^[0-9a-z]{32}$" class="layui-input">
                 <p class="help-block">公众号应用密钥是所有接口必要参数，可以在公众号平台 [ 开发 > 基本配置 ] 页面授权后获取。</p>
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><b>AesKey</b><br><span class="nowrap color-desc">消息加密密钥</span></label>
             <div class="layui-input-block">
-                <input name="wechat.encodingaeskey" placeholder="请输入43位消息公众号加密密钥（可选）" value="{:sysconf('wechat.encodingaeskey')}" maxlength="43" pattern="^.{43}$" class="layui-input">
+                <input name="wechat.encodingaeskey" placeholder="请输入43位公众号消息推送加密密钥（可选）" value="{:sysconf('wechat.encodingaeskey')}" maxlength="43" pattern="^.{43}$" class="layui-input">
                 <p class="help-block">若开启了消息加密时必需填写，消息加密密钥必需填写并保持与公众号平台一致。</p>
             </div>
         </div>
