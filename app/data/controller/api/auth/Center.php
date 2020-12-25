@@ -63,7 +63,7 @@ class Center extends Auth
     }
 
     /**
-     * 上传Base64图片
+     * Base64 图片上传
      */
     public function image()
     {
@@ -80,6 +80,29 @@ class Center extends Auth
             throw $exception;
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
+        }
+    }
+
+    /**
+     * 二进制文件上传
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function upload()
+    {
+        $file = $this->request->file('file');
+        if (empty($file)) $this->error('文件上传异常！');
+        $extension = strtolower($file->getOriginalExtension());
+        if (in_array($extension, ['php', 'sh'])) $this->error('禁止上传此类文件！');
+        $bina = file_get_contents($file->getRealPath());
+        $name = Storage::name($file->getPathname(), $extension, '', 'md5_file');
+        $info = Storage::instance()->set($name, $bina, false, $file->getOriginalName());
+        if (is_array($info) && isset($info['url'])) {
+            $this->success('文件上传成功！', $info);
+        } else {
+            $this->error('文件上传失败！');
         }
     }
 
