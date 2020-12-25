@@ -81,17 +81,19 @@ class Plugs extends Controller
     {
         if (AdminService::instance()->isSuper()) try {
             $this->app->db->transaction(function () {
-                [$tmpdata, $alldata] = [[], []];
+                [$tmpdata, $newdata] = [[], []];
                 foreach ($this->app->db->name('SystemConfig')->cursor() as $item) {
                     $tmpdata[$item['type']][$item['name']] = $item['value'];
-                    ksort($tmpdata[$item['type']]);
                 }
                 ksort($tmpdata);
-                foreach ($tmpdata as $type => $items) foreach ($items as $name => $value) {
-                    $alldata[] = ['type' => $type, 'name' => $name, 'value' => $value];
+                foreach ($tmpdata as $type => $items) {
+                    ksort($items);
+                    foreach ($items as $name => $value) {
+                        $newdata[] = ['type' => $type, 'name' => $name, 'value' => $value];
+                    }
                 }
                 $this->app->db->name('SystemConfig')->whereRaw('1=1')->delete();
-                $this->app->db->name('SystemConfig')->insertAll($alldata);
+                $this->app->db->name('SystemConfig')->insertAll($newdata);
             });
             $this->app->cache->delete('SystemConfig');
             sysoplog('系统运维管理', '清理系统参数配置成功');
