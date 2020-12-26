@@ -18,11 +18,12 @@ namespace think\admin;
 use think\admin\command\Database;
 use think\admin\command\Install;
 use think\admin\command\Queue;
+use think\admin\command\Replace;
 use think\admin\command\Version;
+use think\admin\multiple\BuildUrl;
 use think\admin\multiple\command\Build;
 use think\admin\multiple\command\Clear;
 use think\admin\multiple\Multiple;
-use think\admin\multiple\BuildUrl;
 use think\admin\service\AdminService;
 use think\admin\service\SystemService;
 use think\middleware\LoadLangPack;
@@ -41,7 +42,7 @@ class Library extends Service
     /**
      * 版本号
      */
-    const VERSION = '6.0.22';
+    const VERSION = '6.0.23';
 
     /**
      * 启动服务
@@ -62,7 +63,7 @@ class Library extends Service
         // 替换 ThinkPHP 指令
         $this->commands(['build' => Build::class, 'clear' => Clear::class]);
         // 注册 ThinkAdmin 指令
-        $this->commands([Queue::class, Install::class, Version::class, Database::class]);
+        $this->commands([Queue::class, Install::class, Version::class, Database::class, Replace::class]);
         // 动态应用运行参数
         SystemService::instance()->bindRuntime();
     }

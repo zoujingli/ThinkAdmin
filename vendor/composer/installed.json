@@ -937,12 +937,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "f8a4e65cf6b57531c8536462b30892eae49c7809"
+            "reference": "e1cc4dcb049fc1cedbb99807d235e5bda3dcdf71"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/f8a4e65cf6b57531c8536462b30892eae49c7809",
-            "reference": "f8a4e65cf6b57531c8536462b30892eae49c7809",
+            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/e1cc4dcb049fc1cedbb99807d235e5bda3dcdf71",
+            "reference": "e1cc4dcb049fc1cedbb99807d235e5bda3dcdf71",
             "shasum": "",
             "mirrors": [
                 {
@@ -959,7 +959,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2020-12-18T05:04:10+00:00",
+        "time": "2020-12-26T08:29:41+00:00",
         "type": "library",
         "extra": {
             "think": {
@@ -992,17 +992,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.26",
-        "version_normalized": "1.2.26.0",
+        "version": "v1.2.27",
+        "version_normalized": "1.2.27.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "5ecafcd810627cd9217c3d7f18c7026612418278"
+            "reference": "94de6626f1c9e3d12f16640c30fb9319b37ff34c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/5ecafcd810627cd9217c3d7f18c7026612418278",
-            "reference": "5ecafcd810627cd9217c3d7f18c7026612418278",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/94de6626f1c9e3d12f16640c30fb9319b37ff34c",
+            "reference": "94de6626f1c9e3d12f16640c30fb9319b37ff34c",
             "shasum": "",
             "mirrors": [
                 {
@@ -1022,7 +1022,7 @@
             "ext-xml": "*",
             "php": ">=5.4"
         },
-        "time": "2020-09-13T06:01:11+00:00",
+        "time": "2020-12-24T09:44:04+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1056,10 +1056,6 @@
             "wechat",
             "wechatpay",
             "wepay"
-        ],
-        "support": {
-            "issues": "https://github.com/zoujingli/WeChatDeveloper/issues",
-            "source": "https://github.com/zoujingli/WeChatDeveloper/tree/v1.2.26"
-        }
+        ]
     }
 ]

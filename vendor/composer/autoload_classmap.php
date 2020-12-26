@@ -296,6 +296,7 @@ return array(
     'think\\admin\\command\\Database' => $vendorDir . '/zoujingli/think-library/src/command/Database.php',
     'think\\admin\\command\\Install' => $vendorDir . '/zoujingli/think-library/src/command/Install.php',
     'think\\admin\\command\\Queue' => $vendorDir . '/zoujingli/think-library/src/command/Queue.php',
+    'think\\admin\\command\\Replace' => $vendorDir . '/zoujingli/think-library/src/command/Replace.php',
     'think\\admin\\command\\Version' => $vendorDir . '/zoujingli/think-library/src/command/Version.php',
     'think\\admin\\extend\\CodeExtend' => $vendorDir . '/zoujingli/think-library/src/extend/CodeExtend.php',
     'think\\admin\\extend\\DataExtend' => $vendorDir . '/zoujingli/think-library/src/extend/DataExtend.php',

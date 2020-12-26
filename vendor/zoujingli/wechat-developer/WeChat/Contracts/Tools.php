@@ -426,7 +426,7 @@ class Tools
             return call_user_func_array(self::$cache_callable['get'], func_get_args());
         }
         $file = self::_getCacheName($name);
-        if (file_exists($file) && ($content = file_get_contents($file))) {
+        if (file_exists($file) && is_file($file) && ($content = file_get_contents($file))) {
             $data = unserialize($content);
             if (isset($data['expired']) && (intval($data['expired']) === 0 || intval($data['expired']) >= time())) {
                 return $data['value'];

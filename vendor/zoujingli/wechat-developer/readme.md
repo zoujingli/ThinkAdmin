@@ -11,6 +11,7 @@ WeChatDeveloper for PHP
 * 微信的部分接口需要缓存数据在本地，因此对目录需要有写权限；
 * 我们鼓励大家使用 composer 来管理您的第三方库，方便后期更新操作；
 * WeChatDeveloper 已历经数个线上项目考验，欢迎 fork 或 star 此项目。
+* 微信商户支持已经支持 v2 接口，组件开发版支持 v3 接口。
 
 功能描述
 ----
@@ -260,8 +261,5 @@ try {
 * WeChatDeveloper 基于`MIT`协议发布，任何人可以用在任何地方，不受约束
 * WeChatDeveloper 部分代码来自互联网，若有异议，可以联系作者进行删除
 
-赞助支持
-----
-![赞助](http://static.thinkadmin.top/pay.png)
-
-
+## 赞助打赏
+![赞助](https://thinkadmin.top/static/img/pay.png)

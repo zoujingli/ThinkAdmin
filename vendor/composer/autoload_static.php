@@ -424,6 +424,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'think\\admin\\command\\Database' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Database.php',
         'think\\admin\\command\\Install' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Install.php',
         'think\\admin\\command\\Queue' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Queue.php',
+        'think\\admin\\command\\Replace' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Replace.php',
         'think\\admin\\command\\Version' => __DIR__ . '/..' . '/zoujingli/think-library/src/command/Version.php',
         'think\\admin\\extend\\CodeExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/CodeExtend.php',
         'think\\admin\\extend\\DataExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/DataExtend.php',
