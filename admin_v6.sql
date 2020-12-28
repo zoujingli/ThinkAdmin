@@ -4491,7 +4491,7 @@ INSERT INTO `system_config` VALUES ('base', 'miitbeian', '粤ICP备16006642号-2
 INSERT INTO `system_config` VALUES ('base', 'site_copy', '©版权所有 2014-2020 楚才科技');
 INSERT INTO `system_config` VALUES ('base', 'site_icon', 'https://v6.thinkadmin.top/upload/f4/7b8fe06e38ae9908e8398da45583b9.png');
 INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
-INSERT INTO `system_config` VALUES ('base', 'xpath', 'xx');
+INSERT INTO `system_config` VALUES ('base', 'xpath', 'admin');
 INSERT INTO `system_config` VALUES ('storage', 'allow_exts', 'doc,gif,icon,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');
 INSERT INTO `system_config` VALUES ('storage', 'link_type', 'none');
 INSERT INTO `system_config` VALUES ('storage', 'local_http_protocol', 'follow');
