@@ -7,7 +7,7 @@
         <h4 class="color-desc margin-top-10 notselect">配置定时任务来检查并启动进程（建议每分钟执行）</h4>
         <div>{$command|default='--'}</div>
     </div>
-    <script>$('[data-queue-message]').load('{:url("@admin/api.queue/status")}')</script>
+    <script>$('[data-queue-message]').load('{:url("admin/api.queue/status")}')</script>
 </fieldset>
 {/if}
 
