@@ -90,7 +90,7 @@ abstract class PaymentService extends Service
 
     /**
      * 支付通道编号
-     * @var integer
+     * @var string
      */
     protected static $code;
 
