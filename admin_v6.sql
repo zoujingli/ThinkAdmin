@@ -151,9 +151,9 @@ CREATE TABLE `data_payment_item`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_payment_item_order_no`(`order_no`) USING BTREE,
+  INDEX `idx_data_payment_item_payment_code`(`payment_code`) USING BTREE,
   INDEX `idx_data_payment_item_payment_type`(`payment_type`) USING BTREE,
   INDEX `idx_data_payment_item_payment_trade`(`payment_trade`) USING BTREE,
-  INDEX `idx_data_payment_item_payment_code`(`payment_code`) USING BTREE,
   INDEX `idx_data_payment_item_payment_status`(`payment_status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-支付-记录' ROW_FORMAT = COMPACT;
 
@@ -294,9 +294,9 @@ CREATE TABLE `data_user_message`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_message_type`(`type`) USING BTREE,
-  INDEX `idx_data_user_message_status`(`status`) USING BTREE,
   INDEX `idx_data_user_message_phone`(`phone`) USING BTREE,
-  INDEX `idx_data_user_message_msgid`(`msgid`) USING BTREE
+  INDEX `idx_data_user_message_msgid`(`msgid`) USING BTREE,
+  INDEX `idx_data_user_message_status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户-短信' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
@@ -4654,9 +4654,9 @@ CREATE TABLE `system_user`  (
   `is_deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除(1删除,0未删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_system_user_status`(`status`) USING BTREE,
   INDEX `idx_system_user_username`(`username`) USING BTREE,
-  INDEX `idx_system_user_deleted`(`is_deleted`) USING BTREE,
-  INDEX `idx_system_user_status`(`status`) USING BTREE
+  INDEX `idx_system_user_deleted`(`is_deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 10001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
@@ -4693,8 +4693,8 @@ CREATE TABLE `wechat_fans`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_wechat_fans_openid`(`openid`) USING BTREE,
   INDEX `index_wechat_fans_unionid`(`unionid`) USING BTREE,
-  INDEX `index_wechat_fans_subscribe`(`subscribe`) USING BTREE,
-  INDEX `index_wechat_fans_isblack`(`is_black`) USING BTREE
+  INDEX `index_wechat_fans_isblack`(`is_black`) USING BTREE,
+  INDEX `index_wechat_fans_subscribe`(`subscribe`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-粉丝' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
@@ -4744,9 +4744,9 @@ CREATE TABLE `wechat_keys`  (
   `create_by` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '创建人',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_keys_appid`(`appid`) USING BTREE,
   INDEX `index_wechat_keys_type`(`type`) USING BTREE,
-  INDEX `index_wechat_keys_keys`(`keys`) USING BTREE
+  INDEX `index_wechat_keys_keys`(`keys`) USING BTREE,
+  INDEX `index_wechat_keys_appid`(`appid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-规则' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
@@ -4767,9 +4767,9 @@ CREATE TABLE `wechat_media`  (
   `media_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '远程图片链接',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_media_appid`(`appid`) USING BTREE,
   INDEX `index_wechat_media_md5`(`md5`) USING BTREE,
   INDEX `index_wechat_media_type`(`type`) USING BTREE,
+  INDEX `index_wechat_media_appid`(`appid`) USING BTREE,
   INDEX `index_wechat_media_media_id`(`media_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-素材' ROW_FORMAT = COMPACT;
 
@@ -4790,8 +4790,8 @@ CREATE TABLE `wechat_news`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `create_by` bigint(20) NULL DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_news_artcle_id`(`article_id`) USING BTREE,
-  INDEX `index_wechat_news_media_id`(`media_id`) USING BTREE
+  INDEX `index_wechat_news_media_id`(`media_id`) USING BTREE,
+  INDEX `index_wechat_news_artcle_id`(`article_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-图文' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
