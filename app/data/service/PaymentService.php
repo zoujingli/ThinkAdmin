@@ -261,8 +261,8 @@ abstract class PaymentService extends Service
      * @param string $paymentAmount 交易订单金额（元）
      * @param string $paymentTitle 交易订单名称
      * @param string $paymentRemark 交易订单描述
-     * @param string $returnLocation 支付回跳地址
+     * @param string $paymentReturn 支付回跳地址
      * @return array
      */
-    abstract public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $returnLocation = ''): array;
+    abstract public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array;
 }

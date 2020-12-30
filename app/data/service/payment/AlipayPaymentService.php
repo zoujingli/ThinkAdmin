@@ -99,11 +99,11 @@ class AlipayPaymentService extends PaymentService
      * @param string $paymentAmount 交易订单金额（元）
      * @param string $paymentTitle 交易订单名称
      * @param string $paymentRemark 订单订单描述
-     * @param string $returnLocation 完成回跳地址
+     * @param string $paymentReturn 完成回跳地址
      * @return array
      * @throws \think\Exception
      */
-    public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $returnLocation = ''): array
+    public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array
     {
         try {
             if (isset(static::TYPES[static::$type])) {
@@ -114,10 +114,10 @@ class AlipayPaymentService extends PaymentService
             }
             $this->params['notify_url'] = sysuri("@data/api.notify/alipay/scene/order/param/{$tradeParam}", [], false, true);
             if (in_array($tradeType, [static::PAYMENT_ALIPAY_WAP, static::PAYMENT_ALIPAY_WEB])) {
-                if (empty($returnLocation)) {
+                if (empty($paymentReturn)) {
                     throw new \think\Exception('支付回跳地址不能为空！');
                 } else {
-                    $this->params['return_url'] = $returnLocation;
+                    $this->params['return_url'] = $paymentReturn;
                 }
             }
             if ($tradeType === static::PAYMENT_WECHAT_APP) {
