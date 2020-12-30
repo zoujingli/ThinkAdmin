@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 28/12/2020 13:00:05
+ Date: 30/12/2020 13:54:24
 */
 
 SET NAMES utf8mb4;
@@ -473,7 +473,7 @@ CREATE TABLE `shop_order`  (
   `amount_express` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '快递费用金额',
   `amount_discount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '策略优惠金额',
   `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付平台',
-  `payment_code` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付单号',
+  `payment_trade` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付单号',
   `payment_status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '实际支付状态',
   `payment_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '实际支付金额',
   `payment_remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付结果描述',
@@ -4494,8 +4494,8 @@ INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES ('base', 'xpath', 'admin');
 INSERT INTO `system_config` VALUES ('storage', 'allow_exts', 'doc,gif,icon,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');
 INSERT INTO `system_config` VALUES ('storage', 'link_type', 'none');
-INSERT INTO `system_config` VALUES ('storage', 'local_http_protocol', 'follow');
 INSERT INTO `system_config` VALUES ('storage', 'local_http_domain', '');
+INSERT INTO `system_config` VALUES ('storage', 'local_http_protocol', 'follow');
 INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
 
 -- ----------------------------
@@ -4591,12 +4591,24 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
 -- ----------------------------
 INSERT INTO `system_oplog` VALUES (1, 'admin/config/storage', '127.0.0.1', '系统配置管理', '修改系统存储参数', 'admin', '2020-12-28 04:40:54');
+INSERT INTO `system_oplog` VALUES (2, 'admin/config/system', '127.0.0.1', '系统配置管理', '修改系统参数成功', 'admin', '2020-12-28 04:52:25');
+INSERT INTO `system_oplog` VALUES (3, 'admin/api.plugs/optimize', '127.0.0.1', '系统运维管理', '创建数据库优化任务', 'admin', '2020-12-28 05:16:55');
+INSERT INTO `system_oplog` VALUES (4, 'admin/api.queue/start', '127.0.0.1', '系统运维管理', '尝试启动后台服务主进程', 'admin', '2020-12-28 05:17:02');
+INSERT INTO `system_oplog` VALUES (5, 'admin/api.queue/stop', '127.0.0.1', '系统运维管理', '尝试停止后台服务主进程', 'admin', '2020-12-28 05:17:57');
+INSERT INTO `system_oplog` VALUES (6, 'admin/api.plugs/clearconfig', '127.0.0.1', '系统运维管理', '清理系统参数配置成功', 'admin', '2020-12-28 05:39:22');
+INSERT INTO `system_oplog` VALUES (7, 'admin/config/storage', '127.0.0.1', '系统配置管理', '修改系统存储参数', 'admin', '2020-12-28 05:42:30');
+INSERT INTO `system_oplog` VALUES (8, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2020-12-28 05:42:33');
+INSERT INTO `system_oplog` VALUES (9, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2020-12-28 05:42:34');
+INSERT INTO `system_oplog` VALUES (10, 'admin/api.plugs/clearconfig', '127.0.0.1', '系统运维管理', '清理系统参数配置成功', 'admin', '2020-12-28 05:42:37');
+INSERT INTO `system_oplog` VALUES (11, 'admin/config/system', '127.0.0.1', '系统配置管理', '修改系统参数成功', 'admin', '2020-12-28 05:42:47');
+INSERT INTO `system_oplog` VALUES (12, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2020-12-28 05:43:07');
+INSERT INTO `system_oplog` VALUES (13, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2020-12-28 05:43:08');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4625,11 +4637,12 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_queue
 -- ----------------------------
+INSERT INTO `system_queue` VALUES (1, 'Q202012284835692', '优化数据库所有数据表', 'xadmin:database optimize', 4744, '[]', 1609133735, '已完成对 38 张数据表优化操作', 1609133743.1638, 1609133747.7311, 0, 1, 0, 3, '2020-12-28 05:16:55');
 
 -- ----------------------------
 -- Table structure for system_user

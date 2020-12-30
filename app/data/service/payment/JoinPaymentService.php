@@ -59,14 +59,14 @@ class JoinPaymentService extends PaymentService
      * 创建订单支付参数
      * @param string $openid 会员OPENID
      * @param string $orderNo 交易订单单号
-     * @param string $payAmount 交易订单金额（元）
-     * @param string $payTitle 交易订单名称
-     * @param string $payRemark 订单订单描述
-     * @param string $returnUrl 支付回跳地址
+     * @param string $paymentAmount 交易订单金额（元）
+     * @param string $paymentTitle 交易订单名称
+     * @param string $paymentRemark 订单订单描述
+     * @param string $returnLocation 支付回跳地址
      * @return array
      * @throws \think\Exception
      */
-    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $returnUrl = ''): array
+    public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $returnLocation = ''): array
     {
         try {
             if (isset(static::TYPES[static::$type])) {
@@ -79,10 +79,10 @@ class JoinPaymentService extends PaymentService
                 'p0_Version'         => '1.0',
                 'p1_MerchantNo'      => $this->mchid,
                 'p2_OrderNo'         => $orderNo,
-                'p3_Amount'          => $payAmount * 100,
+                'p3_Amount'          => $paymentAmount * 100,
                 'p4_Cur'             => '1',
-                'p5_ProductName'     => $payTitle,
-                'p6_ProductDesc'     => $payRemark,
+                'p5_ProductName'     => $paymentTitle,
+                'p6_ProductDesc'     => $paymentRemark,
                 'p9_NotifyUrl'       => sysuri("@data/api.notify/joinpay/scene/order/param/{$tradeParam}", [], false, true),
                 'q1_FrpCode'         => $tradeType ?? '',
                 'q5_OpenId'          => $openid,
@@ -94,7 +94,7 @@ class JoinPaymentService extends PaymentService
             $result = $this->_doReuest($data);
             if (is_array($result) && isset($result['ra_Code']) && intval($result['ra_Code']) === 100) {
                 // 创建支付记录
-                $this->createPaymentAction($tradeParam, $orderNo, $payTitle, $payAmount);
+                $this->createPaymentAction($tradeParam, $orderNo, $paymentTitle, $paymentAmount);
                 // 返回支付参数
                 return json_decode($result['rc_Result'], true);
             } elseif (is_array($result) && isset($result['rb_CodeMsg'])) {

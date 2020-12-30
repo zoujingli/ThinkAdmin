@@ -37,14 +37,14 @@ class WechatPaymentService extends PaymentService
      * 创建微信支付订单
      * @param string $openid 会员OPENID
      * @param string $orderNo 交易订单单号
-     * @param string $payAmount 交易订单金额（元）
-     * @param string $payTitle 交易订单名称
-     * @param string $payRemark 订单订单描述
-     * @param string $returnUrl 支付回跳地址
+     * @param string $paymentAmount 交易订单金额（元）
+     * @param string $paymentTitle 交易订单名称
+     * @param string $paymentRemark 订单订单描述
+     * @param string $returnLocation 支付回跳地址
      * @return array
      * @throws \think\Exception
      */
-    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $returnUrl = ''): array
+    public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $returnLocation = ''): array
     {
         try {
             if (isset(static::TYPES[static::$type])) {
@@ -53,13 +53,13 @@ class WechatPaymentService extends PaymentService
             } else {
                 throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
             }
-            $body = empty($payRemark) ? $payTitle : ($payTitle . '-' . $payRemark);
+            $body = empty($paymentRemark) ? $paymentTitle : ($paymentTitle . '-' . $paymentRemark);
             $data = [
                 'body'             => $body,
                 'openid'           => $openid,
                 'attach'           => $tradeParam,
                 'out_trade_no'     => $orderNo,
-                'total_fee'        => $payAmount * 100,
+                'total_fee'        => $paymentAmount * 100,
                 'trade_type'       => $tradeType ?: '',
                 'notify_url'       => sysuri("@data/api.notify/wxpay/scene/order/param/{$tradeParam}", [], false, true),
                 'spbill_create_ip' => $this->app->request->ip(),
@@ -68,7 +68,7 @@ class WechatPaymentService extends PaymentService
             $info = $this->payment->create($data);
             if ($info['return_code'] === 'SUCCESS' && $info['result_code'] === 'SUCCESS') {
                 // 创建支付记录
-                $this->createPaymentAction($tradeParam, $orderNo, $payTitle, $payAmount);
+                $this->createPaymentAction($tradeParam, $orderNo, $paymentTitle, $paymentAmount);
                 // 返回支付参数
                 return $this->payment->jsapiParams($info['prepay_id']);
             }

@@ -68,11 +68,13 @@
                     <div>发货状态：<!--{if empty($vo.truck.send_number)}--><span class="layui-badge layui-bg-black">未发货</span><!--{else}--><span class="layui-badge layui-bg-blue">{$vo.truck.company_name|default='--'}</span>
                         <a data-title="快递查询" data-modal="{:url('truckQuery')}?code={$vo.truck.company_code|default=''}&number={$vo.truck.send_number|default=''}" class="layui-badge layui-bg-orange">{$vo.truck.send_number|default='--'}</a>
                         <!--{/if}-->
+
                         <!--{if auth('truck') and $vo.status eq 3}-->
                         <a class="margin-left-5" data-title="填写订单信息" data-modal="{:url('truck')}?order_no={$vo.order_no}">填写发货</a>
                         <!--{elseif auth('truck') and $vo.status eq 4}-->
                         <a class="margin-left-5" data-title="修改发货信息" data-modal="{:url('truck')}?order_no={$vo.order_no}">修改发货</a>
                         <!--{/if}-->
+
                         <!--{if auth('cancel') and in_array($vo.status, [1,2])}-->
                         <a class="margin-left-5" data-confirm="确认要取消订单吗？" data-load="{:url('cancel')}?order_no={$vo.order_no}">取消订单</a>
                         <!--{/if}-->

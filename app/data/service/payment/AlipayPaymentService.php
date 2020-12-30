@@ -96,14 +96,14 @@ class AlipayPaymentService extends PaymentService
      * 创建订单支付参数
      * @param string $openid 会员OPENID
      * @param string $orderNo 交易订单单号
-     * @param string $payAmount 交易订单金额（元）
-     * @param string $payTitle 交易订单名称
-     * @param string $payRemark 订单订单描述
-     * @param string $returnUrl 完成回跳地址
+     * @param string $paymentAmount 交易订单金额（元）
+     * @param string $paymentTitle 交易订单名称
+     * @param string $paymentRemark 订单订单描述
+     * @param string $returnLocation 完成回跳地址
      * @return array
      * @throws \think\Exception
      */
-    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $returnUrl = ''): array
+    public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $returnLocation = ''): array
     {
         try {
             if (isset(static::TYPES[static::$type])) {
@@ -114,10 +114,10 @@ class AlipayPaymentService extends PaymentService
             }
             $this->params['notify_url'] = sysuri("@data/api.notify/alipay/scene/order/param/{$tradeParam}", [], false, true);
             if (in_array($tradeType, [static::PAYMENT_ALIPAY_WAP, static::PAYMENT_ALIPAY_WEB])) {
-                if (empty($returnUrl)) {
+                if (empty($returnLocation)) {
                     throw new \think\Exception('支付回跳地址不能为空！');
                 } else {
-                    $this->params['return_url'] = $returnUrl;
+                    $this->params['return_url'] = $returnLocation;
                 }
             }
             if ($tradeType === static::PAYMENT_WECHAT_APP) {
@@ -129,11 +129,11 @@ class AlipayPaymentService extends PaymentService
             } else {
                 throw new \think\Exception("支付类型[{$tradeType}]暂时不支持！");
             }
-            $data = ['out_trade_no' => $orderNo, 'total_amount' => $payAmount, 'subject' => $payTitle];
-            if (!empty($payRemark)) $data['body'] = $payRemark;
+            $data = ['out_trade_no' => $orderNo, 'total_amount' => $paymentAmount, 'subject' => $paymentTitle];
+            if (!empty($paymentRemark)) $data['body'] = $paymentRemark;
             $result = $payment->apply($data);
             // 创建支付记录
-            $this->createPaymentAction($tradeParam, $orderNo, $payTitle, $payAmount);
+            $this->createPaymentAction($tradeParam, $orderNo, $paymentTitle, $paymentAmount);
             // 返回支付参数
             return ['result' => $result];
         } catch (\think\Exception $exception) {

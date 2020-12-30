@@ -153,29 +153,29 @@ abstract class PaymentService extends Service
 
     /**
      * 订单更新操作
-     * @param string $code 订单单号
-     * @param string $payno 交易单号
-     * @param string $amount 支付金额
-     * @param null|string $paytype 支付类型
+     * @param string $orderNo 订单单号
+     * @param string $paymentTrade 交易单号
+     * @param string $paymentAmount 支付金额
+     * @param null|string $paymentType 支付类型
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function updateOrder(string $code, string $payno, string $amount, ?string $paytype = null): bool
+    public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount, ?string $paymentType = null): bool
     {
         // 检查订单支付状态
-        $map = ['order_no' => $code, 'payment_status' => 0, 'status' => 2];
+        $map = ['order_no' => $orderNo, 'payment_status' => 0, 'status' => 2];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) return false;
         // 更新订单支付状态
         $data = [
             'status'           => 3,
-            'payment_code'     => $payno,
-            'payment_type'     => $paytype,
+            'payment_type'     => $paymentType,
+            'payment_trade'    => $paymentTrade,
             'payment_status'   => 1,
-            'payment_amount'   => $amount,
-            'payment_remark'   => '微信在线支付',
+            'payment_amount'   => $paymentAmount,
+            'payment_remark'   => '在线支付',
             'payment_datetime' => date('Y-m-d H:i:s'),
         ];
         if (empty($data['payment_type'])) unset($data['payment_type']);
@@ -188,10 +188,10 @@ abstract class PaymentService extends Service
      * 创建支付行为
      * @param string $param 通道-编号
      * @param string $orderNo 商户订单单号
-     * @param string $payTitle 商户订单标题
-     * @param string $payAmount
+     * @param string $paymentTitle 商户订单标题
+     * @param string $paymentAmount 需要支付金额
      */
-    protected function createPaymentAction(string $param, string $orderNo, string $payTitle, string $payAmount)
+    protected function createPaymentAction(string $param, string $orderNo, string $paymentTitle, string $paymentAmount)
     {
         if (is_numeric(stripos($param, '-'))) {
             [$paymentType, $paymentCode] = explode('-', $param);
@@ -201,7 +201,7 @@ abstract class PaymentService extends Service
         // 创建支付记录
         $this->app->db->name('DataPaymentItem')->insert([
             'payment_code' => $paymentCode, 'payment_type' => $paymentType,
-            'order_name'   => $payTitle, 'order_amount' => $payAmount, 'order_no' => $orderNo,
+            'order_name'   => $paymentTitle, 'order_amount' => $paymentAmount, 'order_no' => $orderNo,
         ]);
     }
 
@@ -258,11 +258,11 @@ abstract class PaymentService extends Service
      * 创建支付订单
      * @param string $openid 会员OPENID
      * @param string $orderNo 交易订单单号
-     * @param string $payAmount 交易订单金额（元）
-     * @param string $payTitle 交易订单名称
-     * @param string $payRemark 交易订单描述
-     * @param string $returnUrl 支付回跳地址
+     * @param string $paymentAmount 交易订单金额（元）
+     * @param string $paymentTitle 交易订单名称
+     * @param string $paymentRemark 交易订单描述
+     * @param string $returnLocation 支付回跳地址
      * @return array
      */
-    abstract public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $returnUrl = ''): array;
+    abstract public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $returnLocation = ''): array;
 }
