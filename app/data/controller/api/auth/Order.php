@@ -185,9 +185,9 @@ class Order extends Auth
     public function payment()
     {
         $data = $this->_vali([
-            'back.default'         => '', #支付回跳地址
             'order_no.require'     => '订单单号不能为空！',
             'payment_code.require' => '支付通道不能为空！',
+            'payment_back.default' => '', # 支付回跳地址
         ]);
         $map = ['order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
@@ -200,7 +200,7 @@ class Order extends Auth
                 $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
                 if (empty($openid)) $this->error("无法创建支付，未获取到OPENID");
             }
-            $params = PaymentService::build($data['payment_code'])->create($openid, $order['order_no'], $order['amount_total'], '商城订单支付', '', $data['back']);
+            $params = PaymentService::build($data['payment_code'])->create($openid, $order['order_no'], $order['amount_total'], '商城订单支付', '', $data['payment_back']);
             $this->success('获取支付参数成功！', $params);
         } catch (HttpResponseException $exception) {
             throw  $exception;
