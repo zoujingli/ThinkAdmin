@@ -40,11 +40,14 @@ class ShopOrderSend extends Controller
         $query->like('address_phone,address_name,address_province|address_city|address_area|address_content#address_content');
         // 用户搜索查询
         $db = $this->_query('DataUser')->like('phone#member_phone,nickname#member_nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("uid in {$db->fieldRaw('id')->buildSql()}");
+        if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
         // 列表选项卡
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
             $query->where(['status' => $this->type]);
         }
+        // 订单搜索查询
+        $db = $this->_query('ShopOrder')->whereIn('status', [3, 4, 5])->db();
+        $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
         // 分页排序处理
         if (input('output') === 'json') {
             $result = $query->page(true, false);
