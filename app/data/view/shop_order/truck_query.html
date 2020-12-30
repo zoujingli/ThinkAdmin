@@ -1,6 +1,6 @@
 <div class="padding-25" style="max-height:450px;overflow:auto">
     {empty name='result.data'}
-    <div>还没有快递记录哦！</div>
+    <div class="notdata">还没有快递记录哦！</div>
     {else}
     <ul class="layui-timeline">
         {foreach $result.data as $key=>$vo}
