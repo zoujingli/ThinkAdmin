@@ -44,14 +44,14 @@ class ShopOrderSend extends Controller
         // 订单搜索查询
         $db = $this->_query('ShopOrder')->whereIn('status', [3, 4, 5])->db();
         if ($db->getOptions('where')) $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
-        // 列表选项卡
+        // 列表选项卡状态
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
             $query->where(['status' => $this->type]);
         }
         // 分页排序处理
         if (input('output') === 'json') {
             $result = $query->page(true, false);
-            $this->success('获取数据列表成功', $result);
+            $this->success('获取数据成功', $result);
         } else {
             $query->page();
         }
@@ -63,9 +63,9 @@ class ShopOrderSend extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        $mids = array_unique(array_column($data, 'uid'));
-        $members = $this->app->db->name('DataUser')->whereIn('id', $mids)->column('*', 'id');
-        foreach ($data as &$vo) $vo['member'] = $members[$vo['uid']] ?? [];
+        $uids = array_unique(array_column($data, 'uid'));
+        $users = $this->app->db->name('DataUser')->whereIn('id', $uids)->column('*', 'id');
+        foreach ($data as &$vo) $vo['member'] = $users[$vo['uid']] ?? [];
     }
 
 }
