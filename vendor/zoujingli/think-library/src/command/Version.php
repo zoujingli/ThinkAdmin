@@ -37,6 +37,7 @@ class Version extends Command
     /**
      * @param Input $input
      * @param Output $output
+     * @return void
      */
     protected function execute(Input $input, Output $output)
     {

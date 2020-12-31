@@ -4,6 +4,7 @@
 <!--{if auth("add")}-->
 <button data-open='{:url("add")}' data-title="添加文章内容" class='layui-btn layui-btn-sm layui-btn-primary'>添加文章</button>
 <!--{/if}-->
+
 <!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些文章吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除文章</button>
 <!--{/if}-->
@@ -20,7 +21,7 @@
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
-                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'/></label>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='list-table-sort-td'>
                 <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
@@ -38,7 +39,7 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'/></label>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td class='list-table-sort-td'>
                 <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
@@ -50,21 +51,21 @@
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
             <td class='text-left nowrap'>
 
-                {if auth("edit")}
+                <!--{if auth("edit")}-->
                 <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑文章文章" data-open="{:url('edit')}?id={$vo.id}">编 辑</a>
-                {/if}
+                <!--{/if}-->
 
-                {if auth("state") and $vo.status eq 1}
+                <!--{if auth("state") and $vo.status eq 1}-->
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
-                {/if}
+                <!--{/if}-->
 
-                {if auth("state") and $vo.status eq 0}
+                <!--{if auth("state") and $vo.status eq 0}-->
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
-                {/if}
+                <!--{/if}-->
 
-                {if auth("remove")}
+                <!--{if auth("remove")}-->
                 <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该文章吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
-                {/if}
+                <!--{/if}-->
 
             </td>
         </tr>

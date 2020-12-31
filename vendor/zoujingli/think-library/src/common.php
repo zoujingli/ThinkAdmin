@@ -54,7 +54,7 @@ if (!function_exists('sysuri')) {
      * @param boolean|string $domain 域名
      * @return string
      */
-    function sysuri(string $url = '', array $vars = [], $suffix = true, $domain = false)
+    function sysuri(string $url = '', array $vars = [], $suffix = true, $domain = false): string
     {
         return SystemService::instance()->sysuri($url, $vars, $suffix, $domain);
     }
@@ -136,7 +136,7 @@ if (!function_exists('sysoplog')) {
      * @param string $content 日志内容
      * @return boolean
      */
-    function sysoplog(string $action, string $content)
+    function sysoplog(string $action, string $content): bool
     {
         return SystemService::instance()->setOplog($action, $content);
     }
@@ -167,7 +167,7 @@ if (!function_exists('arr2str')) {
      * @param null|array $allow 限定规则
      * @return string
      */
-    function arr2str(array $data, string $separ = ',', ?array $allow = null)
+    function arr2str(array $data, string $separ = ',', ?array $allow = null): string
     {
         if (is_array($allow)) foreach ($data as $key => $item) {
             if (!in_array($item, $allow)) unset($data[$key]);
@@ -258,7 +258,7 @@ if (!function_exists('data_save')) {
      * @param array $data 需要保存或更新的数据
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
-     * @return boolean
+     * @return boolean|integer
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -290,9 +290,9 @@ if (!function_exists('format_datetime')) {
      * 日期格式标准输出
      * @param int|string $datetime 输入日期
      * @param string $format 输出格式
-     * @return false|string
+     * @return string
      */
-    function format_datetime($datetime, $format = 'Y年m月d日 H:i:s')
+    function format_datetime($datetime, $format = 'Y年m月d日 H:i:s'): string
     {
         if (empty($datetime)) return '-';
         if (is_numeric($datetime)) {
@@ -310,7 +310,7 @@ if (!function_exists('down_file')) {
      * @param integer $expire 强制本地存储时间
      * @return string
      */
-    function down_file(string $source, bool $force = false, int $expire = 0)
+    function down_file(string $source, bool $force = false, int $expire = 0): string
     {
         return Storage::down($source, $force, $expire)['url'] ?? $source;
     }

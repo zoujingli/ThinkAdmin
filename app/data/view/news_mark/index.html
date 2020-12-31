@@ -4,6 +4,7 @@
 <!--{if auth("add")}-->
 <button data-modal='{:url("add")}' data-title="添加标签" class='layui-btn layui-btn-sm layui-btn-primary'>添加标签</button>
 <!--{/if}-->
+
 <!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些标签吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除标签</button>
 <!--{/if}-->
@@ -20,7 +21,7 @@
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
-                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'/></label>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='list-table-sort-td'>
                 <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
@@ -36,7 +37,7 @@
         {foreach $list as $key=>$vo}
         <tr data-dbclick>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'/></label>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td class='list-table-sort-td'>
                 <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>

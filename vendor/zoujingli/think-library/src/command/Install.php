@@ -92,6 +92,11 @@ class Install extends Command
         $this->setDescription("Source code Install and Update for ThinkAdmin");
     }
 
+    /**
+     * @param Input $input
+     * @param Output $output
+     * @return void
+     */
     protected function execute(Input $input, Output $output)
     {
         $this->name = trim($input->getArgument('name'));

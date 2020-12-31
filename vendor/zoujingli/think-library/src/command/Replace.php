@@ -42,8 +42,9 @@ class Replace extends Command
      * 执行指令
      * @param Input $input
      * @param Output $output
-     * @throws \think\admin\Exception
+     * @return void
      * @throws \think\db\exception\DbException
+     * @throws \think\admin\Exception
      */
     protected function execute(Input $input, Output $output)
     {

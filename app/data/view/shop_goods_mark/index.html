@@ -16,7 +16,7 @@
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
-                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'/></label>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='list-table-sort-td'>
                 <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
@@ -32,7 +32,7 @@
         {foreach $list as $key=>$vo}
         <tr data-dbclick>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'/></label>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td class='list-table-sort-td'>
                 <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
