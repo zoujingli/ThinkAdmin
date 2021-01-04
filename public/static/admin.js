@@ -751,7 +751,7 @@ $(function () {
 
     /*! 注册 data-tips-text 事件行为 */
     $body.on('mouseenter', '[data-tips-text]', function () {
-        $(this).attr('index', layer.tips($(this).attr('data-tips-text'), this, {tips: [$(this).attr('data-tips-type') || 3, '#78BA32']}));
+        $(this).attr('index', layer.tips($(this).attr('data-tips-text'), this, {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0}));
     }).on('mouseleave', '[data-tips-text]', function () {
         layer.close($(this).attr('index'));
     });
