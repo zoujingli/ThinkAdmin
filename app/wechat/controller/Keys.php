@@ -108,7 +108,7 @@ class Keys extends Controller
     }
 
     /**
-     * 修改回复规则状态
+     * 修改规则状态
      * @auth true
      * @throws \think\db\exception\DbException
      */
