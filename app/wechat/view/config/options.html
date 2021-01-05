@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("options_test")}-->
-<button data-modal="{:url('options_test')}" class='layui-btn layui-btn-sm layui-btn-primary'>微信授权测试</button>
+<button data-modal="{:url('options_test')}" class='layui-btn layui-btn-sm layui-btn-primary' data-title="微信授权测试（ 扫码 ）">微信授权测试</button>
 <!--{/if}-->
 {/block}
 
@@ -16,7 +16,7 @@
     </div>
 </div>
 <div class="think-box-shadow margin-top-15">
-    <div class="padding-top-20" style="width:850px">
+    <div class="padding-top-20">
         <div class="layui-anim layui-anim-fadein" data-type="api">{include file='config/options_form_api'}</div>
         <div class="layui-anim layui-anim-fadein" data-type="thr">{include file='config/options_form_thr'}</div>
     </div>

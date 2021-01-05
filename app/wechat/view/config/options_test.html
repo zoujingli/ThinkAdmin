@@ -1,21 +1,11 @@
 <div class='layui-card shadow-none margin-0'>
     <div class="layui-card-body padding-40">
-        <div class="layui-bg-gray padding-20 border-radius-5">
-            <div class="margin-bottom-15">
-                <p class="font-w7 color-green">微信开放平台授权</p>
-                <p>JSSDK 签名测试需要在开放平台配置当前的授权域名：<a data-copy="{:request()->host()}">{:request()->host()}</a></p>
-            </div>
-            <div>
-                <p class="font-w7 color-green">公众号平台域名授权</p>
-                <p>网页授权及 JSSDK 签名都需要在公众号平台授权域名：<a data-copy="{:request()->host()}">{:request()->host()}</a></p>
-            </div>
-        </div>
-        <div class="text-center margin-top-20 test-qrcode-box">
-            <div class="inline-block padding-right-30 notselect">
+        <div class="text-center test-qrcode-box">
+            <div class="inline-block padding-right-40 notselect">
                 <img alt="img" class="notselect" data-tips-image src="{:url('wechat/api.test/oauthQrc')}">
                 <p class="text-center">OAUTH 网页授权</p>
             </div>
-            <div class="inline-block">
+            <div class="inline-block padding-left-40">
                 <img alt="img" class="notselect" data-tips-image src="{:url('wechat/api.test/jssdkQrc')}">
                 <p class="text-center">JSSDK 接口签名</p>
             </div>
