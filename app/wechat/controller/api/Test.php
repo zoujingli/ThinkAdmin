@@ -215,9 +215,9 @@ class Test extends Controller
         echo "
         <script src='//res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
         <script>
-            wx.config($configJSON);
+            wx.config({$configJSON});
             document.getElementById('paytest').onclick = function(){
-                var options = $optionJSON;
+                var options = {$optionJSON};
                 options.success = function(){
                     alert('支付成功');
                 }
