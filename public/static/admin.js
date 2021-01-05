@@ -256,11 +256,11 @@ $(function () {
             return layer.open({title: title || '窗口', type: 2, area: area || ['800px', '580px'], fix: true, maxmin: false, content: url});
         };
         /*! 加载 HTML 到弹出层 */
-        this.modal = function (url, data, title, callback, loading, tips) {
+        this.modal = function (url, data, title, callback, loading, tips, area) {
             this.load(url, data, 'GET', function (res, index) {
                 if (typeof (res) === 'object') return $.msg.auto(res), false;
                 index = layer.open({
-                    type: 1, btn: false, area: "800px", content: res, title: title || '', success: function (dom, index) {
+                    type: 1, btn: false, area: area || "800px", content: res, title: title || '', success: function (dom, index) {
                         $(dom).find('[data-close]').off('click').on('click', function () {
                             if (this.dataset.confirm) return $.msg.confirm(this.dataset.confirm, function (_index) {
                                 layer.close(_index), layer.close(index);
@@ -640,7 +640,8 @@ $(function () {
 
     /*! 注册 data-modal 事件行为 */
     $body.on('click', '[data-modal]', function () {
-        return $.form.modal(this.dataset.modal, 'open_type=modal', this.dataset.title || this.innerText || '编辑');
+        var area = this.dataset.area || this.dataset.width || '800px';
+        return $.form.modal(this.dataset.modal, 'open_type=modal', this.dataset.title || this.innerText || '编辑', undefined, undefined, undefined, area);
     });
 
     /*! 注册 data-open 事件行为 */
