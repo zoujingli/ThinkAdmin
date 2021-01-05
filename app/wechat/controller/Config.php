@@ -76,16 +76,16 @@ class Config extends Controller
     }
 
     /**
-     * 接口功能测试
+     * 微信授权测试
      * @auth true
      */
-    public function testapi()
+    public function options_test()
     {
         $this->fetch();
     }
 
     /**
-     * 配置微信支付
+     * 微信支付配置
      * @auth true
      * @menu true
      * @throws \think\admin\Exception
@@ -111,14 +111,23 @@ class Config extends Controller
     }
 
     /**
-     * 修改微信支付
+     * 微信支付测试
+     * @auth true
+     */
+    public function payment_test()
+    {
+        $this->fetch();
+    }
+
+    /**
+     * 微信支付修改
      * @auth true
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function paymentsave()
+    public function payment_save()
     {
         if ($this->request->isPost()) {
             if ($this->request->post('wechat.mch_ssl_type') === 'p12') {

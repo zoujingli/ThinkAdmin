@@ -1,9 +1,15 @@
 {extend name="../../admin/view/main"}
 
+{block name="button"}
+<!--{if auth("payment_test")}-->
+<button data-modal="{:url('payment_test')}" class='layui-btn layui-btn-sm layui-btn-primary'>微信支付测试</button>
+<!--{/if}-->
+{/block}
+
 {block name="content"}
 <div class="think-box-shadow">
     <div class="layui-anim layui-anim-fadein padding-top-20" style="width:850px">
-        <form onsubmit="return false;" action="{:url('paymentsave')}" data-auto="true" method="post" class='layui-form layui-card shadow-none' autocomplete="off" lay-filter="payment">
+        <form onsubmit="return false;" action="{:url('payment_save')}" data-auto="true" method="post" class='layui-form layui-card shadow-none' autocomplete="off" lay-filter="payment">
 
             <div class="layui-card-header border-0">
                 <div class="layui-bg-gray padding-col-20 border-radius-5">

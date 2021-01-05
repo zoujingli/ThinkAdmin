@@ -1,4 +1,4 @@
-<div class='layui-card shadow-none'>
+<div class='layui-card shadow-none margin-0'>
     <div class="layui-card-body padding-40">
         <div class="layui-bg-gray padding-20 border-radius-5">
             <div class="margin-bottom-15">
@@ -16,19 +16,11 @@
             </div>
         </div>
         <div class="text-center margin-top-20 test-qrcode-box">
-            <div class="inline-block padding-right-15 notselect">
-                <img alt="" class="notselect" data-tips-image src="{:url('wechat/api.test/oauthQrc')}">
-                <p class="text-center">网页授权</p>
-            </div>
-            <div class="inline-block padding-right-15">
-                <img alt="img" class="notselect" data-tips-image src="{:url('wechat/api.test/jssdkQrc')}">
-                <p class="text-center">JSSDK签名</p>
-            </div>
-            <div class="inline-block padding-right-15">
+            <div class="inline-block padding-right-30">
                 <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/jsapiQrc')}">
                 <p class="text-center">JSAPI支付</p>
             </div>
-            <div class="inline-block padding-right-15">
+            <div class="inline-block padding-right-30">
                 <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/scanOneQrc')}">
                 <p class="text-center">扫码支付①</p>
             </div>
@@ -39,6 +31,7 @@
         </div>
     </div>
 </div>
+
 <style>
     .test-qrcode-box img {
         width: 130px;
