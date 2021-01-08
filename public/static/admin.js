@@ -725,7 +725,7 @@ $(function () {
 
     /*! 注册 data-iframe 事件行为 */
     $body.on('click', '[data-iframe]', function () {
-        $(this).attr('data-index', $.form.iframe(this.dataset.iframe, this.dataset.title || '窗口', this.dataset.area || [
+        $(this).attr('data-index', $.form.iframe(this.dataset.iframe, this.dataset.title || this.innerText || '窗口', this.dataset.area || [
             this.dataset.width || '800px', this.dataset.height || '580px'
         ]));
     });
