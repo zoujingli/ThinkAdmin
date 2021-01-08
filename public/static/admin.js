@@ -766,12 +766,12 @@ $(function () {
         img.style.background = '#fff', img.style.display = 'none';
         img.style.height = 'auto', img.style.width = area || '480px';
         document.body.appendChild(img), img.onerror = function () {
-            $.msg.close(index), (typeof done === 'function' && done());
+            $.msg.close(index);
         }, img.onload = function () {
             layer.open({
                 type: 1, shadeClose: true, success: img.onerror, content: $(img), title: false,
                 area: area || '480px', closeBtn: 1, skin: 'layui-layer-nobg', end: function () {
-                    document.body.removeChild(img);
+                    document.body.removeChild(img), (typeof done === 'function' && done())
                 }
             });
         };
