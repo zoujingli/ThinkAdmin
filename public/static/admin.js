@@ -761,21 +761,21 @@ $(function () {
     $body.on('click', '[data-tips-image]', function () {
         $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
     });
-    $.previewImage = function (src, area, done) {
-        var img = new Image(), index = $.msg.loading();
+    $.previewImage = function (src, area, end) {
+        var idx = 0, img = new Image(), index = $.msg.loading();
         img.style.background = '#fff', img.style.display = 'none';
         img.style.height = 'auto', img.style.width = area || '480px';
         document.body.appendChild(img), img.onerror = function () {
             $.msg.close(index);
         }, img.onload = function () {
-            layer.open({
+            idx = layer.open({
                 type: 1, shadeClose: true, success: img.onerror, content: $(img), title: false,
                 area: area || '480px', closeBtn: 1, skin: 'layui-layer-nobg', end: function () {
-                    document.body.removeChild(img), (typeof done === 'function' && done())
+                    document.body.removeChild(img), (typeof end === 'function' && end())
                 }
             });
         };
-        img.src = src;
+        return (img.src = src), idx;
     };
 
     /*! 注册 data-phone-view 事件行为 */
