@@ -7,17 +7,20 @@
                 <input name="phone" value="{:input('phone')}" placeholder="请输入用户手机" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">姓名昵称</label>
             <label class="layui-input-inline">
                 <input name="username" value="{:input('username')}" placeholder="请输入姓名昵称" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    {foreach [''=>'-- 全部 --','0'=>'已冻结的用户','1'=>'已激活的用户'] as $k=>$v}
+                    <option value="">-- 全部 --</option>
+                    {foreach ['已冻结的用户','已激活的用户'] as $k=>$v}
                     {if $k.'' eq input('status')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
@@ -26,16 +29,18 @@
                 </select>
             </div>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">注册时间</label>
             <div class="layui-input-inline">
                 <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择注册时间" class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item layui-inline">
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
             <button type="button" data-export-list class="layui-btn layui-btn-primary layui-hide"><i class="layui-icon layui-icon-export"></i> 导 出</button>
         </div>
     </form>
-    <script>form.render()</script>
 </fieldset>
+<script>form.render()</script>
