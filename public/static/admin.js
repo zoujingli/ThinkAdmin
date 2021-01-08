@@ -769,8 +769,8 @@ $(function () {
             $.msg.close(index);
         }, img.onload = function () {
             layer.open({
-                type: 1, title: false, shadeClose: true, content: $(img), success: function (idx) {
-                    $.msg.close(index), (typeof done === 'function' && done(idx))
+                type: 1, title: false, shadeClose: true, content: $(img), success: function ($ele, idx) {
+                    $.msg.close(index), (typeof done === 'function' && done($ele, idx))
                 }, area: area || '480px', closeBtn: 1, skin: 'layui-layer-nobg', end: function () {
                     document.body.removeChild(img), (typeof close === 'function' && close())
                 }
