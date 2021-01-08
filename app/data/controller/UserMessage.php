@@ -2,6 +2,7 @@
 
 namespace app\data\controller;
 
+use app\data\service\MessageService;
 use think\admin\Controller;
 
 /**
@@ -31,6 +32,27 @@ class UserMessage extends Controller
         $query = $this->_query($this->table);
         $query->equal('status')->like('phone,content');
         $query->dateBetween('create_at')->order('id desc')->page();
+    }
+
+    /**
+     * 短信接口配置
+     * @auth true
+     * @menu true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function config()
+    {
+        if ($this->request->isGet()) {
+            $this->title = '短信接口配置';
+            $this->result = MessageService::instance()->balance();
+            $this->fetch();
+        } else {
+            $data = $this->request->post();
+            foreach ($data as $k => $v) sysconf($k, $v);
+            $this->success('配置保存成功！');
+        }
     }
 
     /**

@@ -1,8 +1,12 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
+<!--{if auth("news_mark/index")}-->
+<button data-iframe='{:url("news_mark/index")}' data-width="900px" data-title="标签管理" class='layui-btn layui-btn-sm layui-btn-primary'>标签管理</button>
+<!--{/if}-->
+
 <!--{if auth("add")}-->
-<button data-open='{:url("add")}' data-title="添加文章内容" class='layui-btn layui-btn-sm layui-btn-primary'>添加文章</button>
+<button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加文章</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
@@ -12,9 +16,6 @@
 
 {block name='content'}
 <div class="think-box-shadow table-block">
-    <p class=" margin-bottom-15">
-        演示接口文档：<a target="_blank" href="http://www.docway.net/project/1WkI0ZyQ7M1/share/1Wld0z7b1zE">http://www.docway.net/project/1WkI0ZyQ7M1/share/1Wld0z7b1zE</a>
-    </p>
     {include file='news_item/index_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}

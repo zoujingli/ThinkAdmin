@@ -80,18 +80,15 @@ class Payment extends Controller
         if ($this->request->isGet()) {
             $this->payments = [];
             foreach ($this->types as $k => $vo) {
-                [$allow, $group] = [[], ucfirst(strstr($k, '_', true))];
+                $allow = [];
                 foreach ($vo['bind'] as $api) if (isset(UserService::TYPES[$api])) {
                     $allow[$api] = UserService::TYPES[$api]['name'];
                 }
-                $vo['allow'] = join('、', $allow);
-                $this->payments[$group][$k] = $vo;
+                $this->payments[$k] = array_merge($vo, ['allow' => join('、', $allow)]);
             }
             $data['content'] = json_decode($data['content'] ?? '[]', true) ?: [];
         } else {
-            if (empty($data['type'])) {
-                $this->error('请选择支付通道并配置支付参数！');
-            }
+            if (empty($data['type'])) $this->error('请选择支付通道并配置支付参数！');
             $data['content'] = json_encode($this->request->post() ?: [], JSON_UNESCAPED_UNICODE);
         }
     }

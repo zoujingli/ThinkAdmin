@@ -97,8 +97,9 @@ class NewsItem extends Controller
             $data['code'] = CodeExtend::uniqidNumber(14, 'A');
         }
         if ($this->request->isGet()) {
-            $query = $this->app->db->name('DataNewsMark')->where(['deleted' => 0, 'status' => 1]);
-            $this->mark = $query->order('sort desc,id desc')->select()->toArray();
+            $map = ['deleted' => 0, 'status' => 1];
+            $query = $this->app->db->name('DataNewsMark')->where($map);
+            $this->marks = $query->order('sort desc,id desc')->select()->toArray();
             $data['mark'] = str2arr($data['mark'] ?? '');
         } else {
             $data['mark'] = arr2str($data['mark'] ?? []);

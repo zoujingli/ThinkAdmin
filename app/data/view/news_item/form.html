@@ -7,7 +7,7 @@
             <span class="color-green font-w7 label-required-prev">文章标签</span>
             <span class="color-desc margin-left-5">Mark Name</span>
             <div class="markbox layui-textarea">
-                {foreach $mark as $tag}{if isset($vo.mark) && is_array($vo.mark) && in_array($tag.name, $vo.mark)}
+                {foreach $marks as $tag}{if isset($vo.mark) && is_array($vo.mark) && in_array($tag.name, $vo.mark)}
                 <label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$tag.name}" lay-ignore> {$tag.name}</label>
                 {else}
                 <label class="think-checkbox notselect"><input type="checkbox" name="mark[]" value="{$tag.name}" lay-ignore> {$tag.name}</label>

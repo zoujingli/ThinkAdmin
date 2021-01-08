@@ -117,15 +117,16 @@ class Center extends Auth
     {
         $data = $this->_vali(['from.require' => '邀请人不能为空']);
         if ($data['from'] == $this->uuid) {
-            $this->error('邀请人不能是自己哦', UserService::instance()->total($this->uuid));
+            $this->error('邀请人不能是自己', UserService::instance()->total($this->uuid));
         }
         $from = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
         if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->get($this->type, $this->uuid));
-        if ($this->user['from'] > 0) $this->error('您已经绑定了邀请人', UserService::instance()->total($this->uuid));
+        if ($this->user['from'] > 0) $this->error('已绑定了邀请人', UserService::instance()->total($this->uuid));
+        $data['path'] = rtrim($from['path'] ?: '-', '-') . '-' . $from['id'] . '-';
         if ($this->app->db->name($this->table)->where(['id' => $this->uuid])->update($data) !== false) {
-            $this->success('绑定邀请人成功！', UserService::instance()->total($this->uuid));
+            $this->success('绑定邀请人成功', UserService::instance()->total($this->uuid));
         } else {
-            $this->error('绑定邀请人失败！', UserService::instance()->total($this->uuid));
+            $this->error('绑定邀请人失败', UserService::instance()->total($this->uuid));
         }
     }
 

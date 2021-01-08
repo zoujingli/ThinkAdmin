@@ -7,12 +7,15 @@
                 <input name="code" value="{:input('code','')}" placeholder="请输入商品编号" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">商品名称</label>
             <label class="layui-input-inline">
                 <input name="name" value="{:input('name','')}" placeholder="请输入商品名称" class="layui-input">
             </label>
         </div>
+
+        {notempty name='marks'}
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">商品标签</label>
             <label class="layui-input-inline">
@@ -26,6 +29,9 @@
                 </select>
             </label>
         </div>
+        {/notempty}
+
+        {notempty name='clist'}
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">商品分类</label>
             <label class="layui-input-inline">
@@ -39,11 +45,14 @@
                 </select>
             </label>
         </div>
+        {/notempty}
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">销售状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    {foreach [''=>'- 全部状态 -','1'=>'销售中商品','0'=>'已下架商品'] as $k=>$v}
+                    <option value=''>-- 全部状态 --</option>
+                    {foreach ['已下架的商品','销售中的商品'] as $k=>$v}
                     {if input('status','-') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}

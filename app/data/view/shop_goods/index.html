@@ -1,6 +1,10 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
+<!--{if auth("shop_goods_mark/index")}-->
+<button data-iframe='{:url("shop_goods_mark/index")}' data-width="900px" data-title="标签管理" class='layui-btn layui-btn-sm layui-btn-primary'>标签管理</button>
+<!--{/if}-->
+
 <!--{if auth("add")}-->
 <button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加商品</button>
 <!--{/if}-->
@@ -37,8 +41,8 @@
                 <th class='list-table-sort-td'>
                     <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
                 </th>
-                <th class='text-left nowrap'>商品名称</th>
-                <th class='text-left nowrap'>商品标签</th>
+                <th class='text-left nowrap'>商品信息</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -69,18 +73,22 @@
                 </td>
                 <td class='nowrap'>
                     销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
+                    <!--{notempty name='clist'}-->
                     所属分类：{$vo.cate.name|default='-'}<br>
+                    <!--{/notempty}-->
                 </td>
                 <td class='nowrap sub-span-blue'>
                     <div class="margin-bottom-5">剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )</div>
-                    {if auth('copy')}
+                    <!--{if auth('copy')}-->
                     <a class="layui-btn layui-btn-xs layui-btn-normal" data-open='{:url("copy")}?code={$vo.code}'>复 制</a>
-                    {/if}
+                    <!--{/if}-->
+
                     <!--{if auth("edit")}-->
                     <a class="layui-btn layui-btn-xs" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
                     <!--{else}-->
                     <a data-tips-text="您没有编辑商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">编 辑</a>
                     <!--{/if}-->
+
                     {if isset($type) and $type eq 'index'}
                     {if isset($vo.status) and $vo.status eq 1}
                     <!--{if auth("state")}-->

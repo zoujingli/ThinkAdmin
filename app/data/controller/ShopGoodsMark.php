@@ -20,7 +20,6 @@ class ShopGoodsMark extends Controller
     /**
      * 商品标签管理
      * @auth true
-     * @menu true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -28,7 +27,9 @@ class ShopGoodsMark extends Controller
     public function index()
     {
         $this->title = '商品标签管理';
-        $this->_query($this->table)->order('sort desc,id desc')->page();
+        $query = $this->_query($this->table);
+        $query->like('name')->dateBetween('create_at');
+        $query->equal('status')->order('sort desc,id desc')->page();
     }
 
     /**

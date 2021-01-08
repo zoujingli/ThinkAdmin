@@ -4,6 +4,7 @@
 {include file='shop_goods/formstyle'}
 <form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card table-block' autocomplete="off">
     <div class="layui-card-body padding-40 padding-bottom-20">
+        {notempty name='marks'}
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">商品标签</span>
             <span class="color-desc margin-left-5">Mark Name</span>
@@ -15,6 +16,9 @@
                 {/if}{/foreach}
             </div>
         </div>
+        {/notempty}
+
+        {notempty name='cates'}
         <label class="layui-form-item block relative">
             <span class="color-green font-w7 label-required-prev">所属分类</span>
             <span class="color-desc margin-left-5">Category Name</span>
@@ -26,11 +30,14 @@
                 {/if}{/foreach}
             </select>
         </label>
+        {/notempty}
+
         <label class="layui-form-item block relative">
             <span class="color-green font-w7">商品名称</span>
             <span class="color-desc margin-left-5">Goods Name</span>
             <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">
         </label>
+
         <label class="layui-form-item block relative">
             <span class="color-green font-w7 label-required-prev">邮费模板</span>
             <span class="color-desc margin-left-5">Truck Template</span>
@@ -43,6 +50,7 @@
                 {/if}{/foreach}
             </select>
         </label>
+
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">商品图片及轮播展示图片</span>
             <table class="layui-table">
@@ -64,6 +72,7 @@
                 </thead>
             </table>
         </div>
+
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">商品规格及商品SKU绑定<span class="color-red font-s12">（规格填写后不允许再次修改）</span></span>
             <div ng-repeat="x in specs track by $index" style="display:none" class="margin-bottom-10" ng-class="{true:'layui-show'}[mode==='add'&&specs.length>0]">
@@ -98,7 +107,7 @@
                     <th width="10%" class="text-center nowrap">销售价格 <a ng-click="batchSet('selling',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">虚拟销量 <a ng-click="batchSet('virtual',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">快递计件 <a ng-click="batchSet('express',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="8%" class="text-center nowrap">销售状态</th>
+                    <th width="08%" class="text-center nowrap">销售状态</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -141,17 +150,21 @@
                 <textarea class="layui-textarea" name="data_items">{{items}}</textarea>
             </label>
         </div>
+
         <label class="layui-form-item block">
             <span class="font-w7 color-green">商品简介描述</span>
             <textarea class="layui-textarea" placeholder="请输入商品简介描述" name="remark">{$vo.remark|default=''|raw}</textarea>
         </label>
+
         <div class="layui-form-item block">
             <span class="label-required-prev font-w7 color-green">商品富文本详情</span>
             <textarea name="content">{$vo.content|default=''|raw}</textarea>
         </div>
+
         <div class="hr-line-dashed margin-top-40"></div>
+        {notempty name='vo.code'}<input type="hidden" name="code" value="{$vo.code}">{/notempty}
+
         <div class="layui-form-item text-center">
-            {notempty name='vo.code'}<input type="hidden" name="code" value="{$vo.code}">{/notempty}
             <button class="layui-btn layui-btn-danger" ng-click="pageBack()" type="button">取消编辑</button>
             <button class="layui-btn" type="submit">保存商品</button>
         </div>

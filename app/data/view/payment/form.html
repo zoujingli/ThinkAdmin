@@ -15,18 +15,12 @@
             <span class="color-green font-w7 label-required-prev">支付方式</span>
             <span class="color-desc margin-left-5">Payment Channel</span>
             <label class="block full-width">
-                {empty name='vo.type'}{php}$vo['type'] = 'wechat_xcx';{/php}{/empty}
                 <select name="type" class="layui-select" lay-search lay-filter="payment-type">
-                    <option value="">-- 请选择 --</option>
-                    {foreach $payments as $kk => $vv}
-                    <optgroup label="{$kk}">
-                        {foreach $vv as $k => $v}{if $vo.type eq $k}
-                        <option selected value="{$k}">{$v.name} ( {$v.allow} )</option>
-                        {else}
-                        <option value="{$k}">{$v.name} ( {$v.allow} )</option>
-                        {/if}{/foreach}
-                    </optgroup>
-                    {/foreach}
+                    {foreach $payments as $k=>$v}{if isset($vo.type) and $vo.type eq $k}
+                    <option selected value="{$k}">{$v.name} ( {$v.allow} )</option>
+                    {else}
+                    <option value="{$k}">{$v.name} ( {$v.allow} )</option>
+                    {/if}{/foreach}
                 </select>
             </label>
         </div>
@@ -60,8 +54,10 @@
 {block name='script'}
 <script>
     (function () {
+
         layui.form.render();
-        apply({value: '{$vo.type}'});
+
+        apply({value: $('select[name=type]').val()});
         layui.form.on('select(payment-type)', apply);
 
         function apply(data) {
@@ -75,6 +71,7 @@
                 $('[data-payment-type]').addClass('layui-hide');
             }
         }
+
     })();
 </script>
 {/block}

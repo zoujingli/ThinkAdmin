@@ -14,9 +14,7 @@
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
-                <label>
-                    <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
-                </label>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='text-left nowrap'>目标手机</th>
             <th class='text-left nowrap'>短信内容</th>
@@ -30,9 +28,7 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label>
-                    <input class="list-check-box" value='{$vo.id}' type='checkbox'>
-                </label>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td>{$vo.phone|default=''}</td>
             <td>{$vo.content|default=''}</td>

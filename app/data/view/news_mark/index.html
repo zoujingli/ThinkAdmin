@@ -1,20 +1,7 @@
-{extend name="../../admin/view/main"}
-
-{block name="button"}
-<!--{if auth("add")}-->
-<button data-modal='{:url("add")}' data-title="添加标签" class='layui-btn layui-btn-sm layui-btn-primary'>添加标签</button>
-<!--{/if}-->
-
-<!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些标签吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除标签</button>
-<!--{/if}-->
-{/block}
+{extend name="../../admin/view/full"}
 
 {block name='content'}
-<div class="think-box-shadow table-block">
-    <p class=" margin-bottom-15">
-        演示接口文档：<a target="_blank" href="http://www.docway.net/project/1WkI0ZyQ7M1/share/1Wld0z7b1zE">http://www.docway.net/project/1WkI0ZyQ7M1/share/1Wld0z7b1zE</a>
-    </p>
+<div class="iframe-pagination">
     {include file='news_mark/index_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
@@ -47,7 +34,7 @@
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
             <td class='text-left nowrap'>
                 {if auth("edit")}
-                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑标签" data-modal="{:url('edit')}?id={$vo.id}">编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-sm" data-width="500px" data-title="编辑标签" data-modal="{:url('edit')}?id={$vo.id}">编 辑</a>
                 {/if}
                 {if auth("state") and $vo.status eq 1}
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
@@ -64,5 +51,10 @@
         </tbody>
     </table>
     {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    <div class="absolute" style="bottom:5px;right:10px">
+        <!--{if auth("add")}-->
+        <button type="button" data-width="500px" data-modal='{:url("add")}' data-title="添加标签" class='layui-btn layui-btn-sm'>添加标签</button>
+        <!--{/if}-->
+    </div>
 </div>
 {/block}

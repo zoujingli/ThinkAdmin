@@ -2,7 +2,6 @@
 
 namespace app\data\controller;
 
-use app\data\service\MessageService;
 use think\admin\Controller;
 
 /**
@@ -24,23 +23,6 @@ class Config extends Controller
     {
         $this->title = '微信小程序配置';
         $this->__sysconf('wxapp');
-    }
-
-    /**
-     * 短信接口配置
-     * @auth true
-     * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function message()
-    {
-        if ($this->request->isGet()) {
-            $this->title = '短信接口配置';
-            $this->result = MessageService::instance()->balance();
-        }
-        $this->__sysconf('message');
     }
 
     /**

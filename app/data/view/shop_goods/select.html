@@ -2,13 +2,12 @@
 
 {block name="content"}
 <div class="iframe-pagination">
-    {include file='shop_goods/index_search'}
+    {include file='shop_goods/select_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>
             <th>商品信息</th>
-            <th>分类标签</th>
             <th>商品状态</th>
             <th></th>
         </tr>
@@ -25,10 +24,6 @@
                     商品编号：{$vo.code|default='--'}<br>
                     商品名称：{$vo.name|default='--'}<br>
                 </div>
-            </td>
-            <td class='nowrap'>
-                所属分类：{$vo.cate.name|default=''}<br>
-                {notempty name='vo.mark'}{foreach $vo.mark as $mark}<span class="margin-right-5 layui-badge layui-bg-cyan">{$mark}</span>{/foreach}{/notempty}
             </td>
             <td class='nowrap sub-span-blue'>
                 销售状态：{if $vo.status eq 0}<b class="color-red">已下架</b>{else}<b class="color-green">销售中</b>{/if}<br>
