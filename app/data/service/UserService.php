@@ -15,7 +15,7 @@ class UserService extends Service
     const APITYPE_WEB = 'web';
     const APITYPE_WXAPP = 'wxapp';
     const APITYPE_WECHAT = 'wechat';
-    const APITYPE_IOSAPP = 'ios';
+    const APITYPE_IOSAPP = 'iosapp';
     const APITYPE_ANDROID = 'android';
 
     const TYPES = [
