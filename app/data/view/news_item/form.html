@@ -3,6 +3,7 @@
 {block name='content'}
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
     <div class="layui-card-body padding-40">
+        {notempty name='marks'}
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">文章标签</span>
             <span class="color-desc margin-left-5">Mark Name</span>
@@ -14,6 +15,7 @@
                 {/if}{/foreach}
             </div>
         </div>
+        {/notempty}
 
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">文章封面</span>
