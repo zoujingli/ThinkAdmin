@@ -26,6 +26,7 @@
                 </label>
             </div>
         </div>
+
         <div class="hr-line-dashed margin-top-10 margin-bottom-10"></div>
         <div class="layui-row layui-col-space15">
             <div class="layui-col-xs4">
@@ -50,6 +51,7 @@
                 </label>
             </div>
         </div>
+
         {notempty name='authorizes'}
         <div class="hr-line-dashed margin-top-10 margin-bottom-10"></div>
         <div class="layui-form-item">
@@ -74,13 +76,16 @@
             </div>
         </div>
         {/notempty}
+
         <div class="hr-line-dashed margin-top-10 margin-bottom-10"></div>
         <label class="layui-form-item block relative">
             <span class="color-green font-w7">用户描述</span><span class="color-desc margin-left-5">User Remark</span>
             <textarea placeholder="请输入用户描述" class="layui-textarea" name="describe">{$vo.describe|default=""}</textarea>
         </label>
+
         <div class="hr-line-dashed"></div>
         {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+
         <div class="layui-form-item text-center">
             <button class="layui-btn" type='submit'>保存数据</button>
             <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>

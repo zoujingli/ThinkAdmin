@@ -4,6 +4,7 @@
 <!--{if session('user.username') eq 'admin'}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.plugs/clearConfig')}">清理无效配置</a>
 <!--{/if}-->
+
 <!--{if auth('system')}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('system')}">修改系统参数</a>
 <!--{/if}-->

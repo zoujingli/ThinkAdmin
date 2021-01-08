@@ -13,13 +13,13 @@
             <label class="layui-form-label">订阅状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="subscribe">
-                    {foreach [''=>'-- 全部 --','0'=>'显示未订阅的粉丝','1'=>'显示已订阅的粉丝'] as $k=>$v}
+                    <option value=''>-- 全部 --</option>
+                    {foreach ['显示未订阅的粉丝','显示已订阅的粉丝'] as $k=>$v}
                     {if $k.'' eq input('subscribe')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
-                    {/if}
-                    {/foreach}
+                    {/if}{/foreach}
                 </select>
             </label>
         </div>
@@ -28,13 +28,13 @@
             <label class="layui-form-label">拉黑状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="is_black">
-                    {foreach [''=>'-- 全部 --','0'=>'显示未拉黑的粉丝','1'=>'显示已拉黑的粉丝'] as $k=>$v}
+                    <option value=''>-- 全部 --</option>
+                    {foreach ['显示未拉黑的粉丝','显示已拉黑的粉丝'] as $k=>$v}
                     {if $k.'' eq input('is_black')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
-                    {/if}
-                    {/foreach}
+                    {/if}{/foreach}
                 </select>
             </label>
         </div>

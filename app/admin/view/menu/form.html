@@ -6,13 +6,11 @@
             <label class="layui-form-label label-required-next">上级菜单</label>
             <div class="layui-input-block">
                 <select name='pid' class='layui-select' lay-search>
-                    {foreach $menus as $menu}
-                    {eq name='menu.id' value='$vo.pid|default=0'}
+                    {foreach $menus as $menu}{eq name='menu.id' value='$vo.pid|default=0'}
                     <option selected value='{$menu.id}'>{$menu.spl|raw}{$menu.title}</option>
                     {else}
                     <option value='{$menu.id}'>{$menu.spl|raw}{$menu.title}</option>
-                    {/eq}
-                    {/foreach}
+                    {/eq}{/foreach}
                 </select>
                 <p class="help-block"><b>必选</b>，请选择上级菜单或顶级菜单（目前最多支持三级菜单）</p>
             </div>

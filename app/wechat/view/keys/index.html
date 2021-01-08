@@ -4,6 +4,7 @@
 <!--{if auth("add")}-->
 <button data-open="{:url('add')}" class='layui-btn layui-btn-sm layui-btn-primary'>添加规则</button>
 <!--{/if}-->
+
 <!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除这些规则吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除规则</button>
 <!--{/if}-->
@@ -68,9 +69,9 @@
                 <a class="layui-btn layui-btn-sm" data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
                 <!--{/if}-->
 
-                <!--{if $vo.status eq 1 and auth("state")}-->
+                <!--{if auth("state") and $vo.status eq 1}-->
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
-                <!--{elseif auth("state")}-->
+                <!--{elseif auth("state") and $vo.status eq 0}-->
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">激 活</a>
                 <!--{/if}-->
 
