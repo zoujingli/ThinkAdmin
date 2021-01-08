@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 30/12/2020 13:54:24
+ Date: 08/01/2021 13:43:04
 */
 
 SET NAMES utf8mb4;
@@ -184,8 +184,6 @@ CREATE TABLE `data_user`  (
   `base_height` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户身高',
   `base_weight` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户体重',
   `base_birthday` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户生日',
-  `coin_total` bigint(20) NULL DEFAULT 0 COMMENT '金币数量',
-  `coin_used` bigint(20) NULL DEFAULT 0 COMMENT '金币已用',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '用户状态(1正常,0已拉黑)',
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
@@ -227,55 +225,6 @@ CREATE TABLE `data_user_address`  (
 
 -- ----------------------------
 -- Records of data_user_address
--- ----------------------------
-
--- ----------------------------
--- Table structure for data_user_coin_item
--- ----------------------------
-DROP TABLE IF EXISTS `data_user_coin_item`;
-CREATE TABLE `data_user_coin_item`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
-  `code` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录编号',
-  `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录类型',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录名称',
-  `number` bigint(20) NULL DEFAULT 0 COMMENT '奖励数量',
-  `date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录日期',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_user_coin_mid`(`uid`) USING BTREE,
-  INDEX `idx_data_user_coin_type`(`type`) USING BTREE,
-  INDEX `idx_data_user_coin_name`(`name`) USING BTREE,
-  INDEX `idx_data_user_coin_date`(`date`) USING BTREE,
-  INDEX `idx_data_user_coin_code`(`code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-金币-获得' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of data_user_coin_item
--- ----------------------------
-
--- ----------------------------
--- Table structure for data_user_coin_used
--- ----------------------------
-DROP TABLE IF EXISTS `data_user_coin_used`;
-CREATE TABLE `data_user_coin_used`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
-  `from` bigint(20) NULL DEFAULT 0 COMMENT '来自MID',
-  `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录类型',
-  `target` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '目标ID',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录名称',
-  `number` bigint(20) NULL DEFAULT 0 COMMENT '奖励数量',
-  `date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '记录日期',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_user_coin_used_mid`(`uid`) USING BTREE,
-  INDEX `idx_data_user_coin_used_type`(`type`) USING BTREE,
-  INDEX `idx_data_user_coin_used_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-金币-消费' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of data_user_coin_used
 -- ----------------------------
 
 -- ----------------------------
@@ -4497,6 +4446,10 @@ INSERT INTO `system_config` VALUES ('storage', 'link_type', 'none');
 INSERT INTO `system_config` VALUES ('storage', 'local_http_domain', '');
 INSERT INTO `system_config` VALUES ('storage', 'local_http_protocol', 'follow');
 INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
+INSERT INTO `system_config` VALUES ('wechat', 'type', 'thr');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appid', 'wx60a43dd8161666d4');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appkey', '7d0e4a487c6258b2232294b6ef0adb9e');
+INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_protocol', 'http');
 
 -- ----------------------------
 -- Table structure for system_data
@@ -4559,12 +4512,10 @@ INSERT INTO `system_menu` VALUES (65, 60, '关注回复配置', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (66, 60, '默认回复配置', 'layui-icon layui-icon-util', '', 'wechat/keys/defaults', '', '_self', 0, 1, '2019-12-14 14:11:18');
 INSERT INTO `system_menu` VALUES (67, 0, '控制台', '', '', '#', '', '_self', 300, 1, '2020-07-13 06:51:46');
 INSERT INTO `system_menu` VALUES (68, 67, '数据管理（接口案例）', '', '', '#', '', '_self', 0, 1, '2020-07-13 06:51:54');
-INSERT INTO `system_menu` VALUES (69, 68, '文章标签管理', 'layui-icon layui-icon-note', '', 'data/news_mark/index', '', '_self', 20, 1, '2020-07-13 06:52:09');
 INSERT INTO `system_menu` VALUES (70, 68, '文章内容管理', 'layui-icon layui-icon-template', '', 'data/news_item/index', '', '_self', 10, 1, '2020-07-13 06:52:26');
 INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', '', 'data/config/slider', '', '_self', 8, 1, '2020-07-14 01:17:02');
 INSERT INTO `system_menu` VALUES (73, 67, '商城管理（开发中）', '', '', '#', '', '_self', 0, 1, '2020-09-08 02:51:30');
-INSERT INTO `system_menu` VALUES (74, 73, '商品分类管理', 'layui-icon layui-icon-app', 'data/shop_goods_cate/index', 'data/shop_goods_cate/index', '', '_self', 80, 1, '2020-09-08 02:51:49');
-INSERT INTO `system_menu` VALUES (75, 73, '商品标签管理', 'layui-icon layui-icon-form', 'data/shop_goods_mark/index', 'data/shop_goods_mark/index', '', '_self', 70, 1, '2020-09-08 03:35:58');
+INSERT INTO `system_menu` VALUES (75, 73, '商品分类管理', 'layui-icon layui-icon-form', 'data/shop_goods_cate/index', 'data/shop_goods_cate/index', '', '_self', 70, 1, '2020-09-08 03:35:58');
 INSERT INTO `system_menu` VALUES (76, 73, '商品数据管理', 'layui-icon layui-icon-star', 'data/shop_goods/index', 'data/shop_goods/index', '', '_self', 90, 1, '2020-09-08 07:13:19');
 INSERT INTO `system_menu` VALUES (77, 73, '会员用户管理', 'layui-icon layui-icon-user', 'data/user/index', 'data/user/index', '', '_self', 100, 1, '2020-09-10 01:48:02');
 INSERT INTO `system_menu` VALUES (78, 73, '订单数据管理', 'layui-icon layui-icon-template-1', 'data/shop_order/index', 'data/shop_order/index', '', '_self', 60, 1, '2020-09-10 01:48:41');
@@ -4591,24 +4542,11 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
 -- ----------------------------
-INSERT INTO `system_oplog` VALUES (1, 'admin/config/storage', '127.0.0.1', '系统配置管理', '修改系统存储参数', 'admin', '2020-12-28 04:40:54');
-INSERT INTO `system_oplog` VALUES (2, 'admin/config/system', '127.0.0.1', '系统配置管理', '修改系统参数成功', 'admin', '2020-12-28 04:52:25');
-INSERT INTO `system_oplog` VALUES (3, 'admin/api.plugs/optimize', '127.0.0.1', '系统运维管理', '创建数据库优化任务', 'admin', '2020-12-28 05:16:55');
-INSERT INTO `system_oplog` VALUES (4, 'admin/api.queue/start', '127.0.0.1', '系统运维管理', '尝试启动后台服务主进程', 'admin', '2020-12-28 05:17:02');
-INSERT INTO `system_oplog` VALUES (5, 'admin/api.queue/stop', '127.0.0.1', '系统运维管理', '尝试停止后台服务主进程', 'admin', '2020-12-28 05:17:57');
-INSERT INTO `system_oplog` VALUES (6, 'admin/api.plugs/clearconfig', '127.0.0.1', '系统运维管理', '清理系统参数配置成功', 'admin', '2020-12-28 05:39:22');
-INSERT INTO `system_oplog` VALUES (7, 'admin/config/storage', '127.0.0.1', '系统配置管理', '修改系统存储参数', 'admin', '2020-12-28 05:42:30');
-INSERT INTO `system_oplog` VALUES (8, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2020-12-28 05:42:33');
-INSERT INTO `system_oplog` VALUES (9, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2020-12-28 05:42:34');
-INSERT INTO `system_oplog` VALUES (10, 'admin/api.plugs/clearconfig', '127.0.0.1', '系统运维管理', '清理系统参数配置成功', 'admin', '2020-12-28 05:42:37');
-INSERT INTO `system_oplog` VALUES (11, 'admin/config/system', '127.0.0.1', '系统配置管理', '修改系统参数成功', 'admin', '2020-12-28 05:42:47');
-INSERT INTO `system_oplog` VALUES (12, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2020-12-28 05:43:07');
-INSERT INTO `system_oplog` VALUES (13, 'admin/api.plugs/debug', '127.0.0.1', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2020-12-28 05:43:08');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4637,12 +4575,11 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_queue
 -- ----------------------------
-INSERT INTO `system_queue` VALUES (1, 'Q202012284835692', '优化数据库所有数据表', 'xadmin:database optimize', 4744, '[]', 1609133735, '已完成对 38 张数据表优化操作', 1609133743.1638, 1609133747.7311, 0, 1, 0, 3, '2020-12-28 05:16:55');
 
 -- ----------------------------
 -- Table structure for system_user
@@ -4675,7 +4612,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', ',,', '', '', '', '127.0.0.1', '2020-12-28 04:28:11', 53, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', ',,', '', '', '', '127.0.0.1', '2021-01-08 05:18:50', 56, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
