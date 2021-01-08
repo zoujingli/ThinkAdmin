@@ -30,11 +30,11 @@ class AlipayPaymentService extends PaymentService
             // 签名类型（RSA|RSA2）
             'sign_type'   => "RSA2",
             // 应用ID
-            'appid'       => static::$config['alipay_appid'],
+            'appid'       => static::$params['alipay_appid'],
             // 支付宝公钥 (1行填写，特别注意，这里是支付宝公钥，不是应用公钥，最好从开发者中心的网页上去复制)
-            'public_key'  => $this->_trimCertHeader(static::$config['alipay_public_key']),
+            'public_key'  => $this->_trimCertHeader(static::$params['alipay_public_key']),
             // 支付宝私钥 (1行填写)
-            'private_key' => $this->_trimCertHeader(static::$config['alipay_private_key']),
+            'private_key' => $this->_trimCertHeader(static::$params['alipay_private_key']),
             // 应用公钥证书（新版资金类接口转 app_cert_sn）
             # 'app_cert'    => '',
             // 支付宝根证书（新版资金类接口转 alipay_root_cert_sn）

@@ -25,9 +25,9 @@ class WechatPaymentService extends PaymentService
     protected function initialize(): WechatPaymentService
     {
         $this->payment = Order::instance([
-            'appid'      => static::$config['wechat_appid'],
-            'mch_id'     => static::$config['wechat_mch_id'],
-            'mch_key'    => static::$config['wechat_mch_key'],
+            'appid'      => static::$params['wechat_appid'],
+            'mch_id'     => static::$params['wechat_mch_id'],
+            'mch_key'    => static::$params['wechat_mch_key'],
             'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
         ]);
         return $this;

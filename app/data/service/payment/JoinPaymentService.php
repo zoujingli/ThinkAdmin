@@ -48,10 +48,10 @@ class JoinPaymentService extends PaymentService
      */
     protected function initialize(): JoinPaymentService
     {
-        $this->appid = static::$config['joinpay_appid'];
-        $this->trade = static::$config['joinpay_trade'];;
-        $this->mchid = static::$config['joinpay_mch_id'];
-        $this->mchkey = static::$config['joinpay_mch_key'];
+        $this->appid = static::$params['joinpay_appid'];
+        $this->trade = static::$params['joinpay_trade'];;
+        $this->mchid = static::$params['joinpay_mch_id'];
+        $this->mchkey = static::$params['joinpay_mch_key'];
         return $this;
     }
 

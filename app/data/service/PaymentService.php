@@ -104,7 +104,7 @@ abstract class PaymentService extends Service
      * 当前支付通道
      * @var array
      */
-    protected static $config;
+    protected static $params;
 
     /**
      * 支付服务对象
@@ -114,41 +114,50 @@ abstract class PaymentService extends Service
 
     /**
      * 根据配置实例支付服务
-     * @param string $paycode 支付通道编号
+     * @param string $code 支付通道编号
      * @return JoinPaymentService|WechatPaymentService|AlipayPaymentService
      * @throws \think\Exception
      */
-    public static function build(string $paycode): PaymentService
+    public static function build(string $code): PaymentService
     {
-        static::$code = $paycode;
-        if (isset(static::$driver[$paycode])) {
-            return static::$driver[$paycode];
+        [static::$code, static::$type, static::$params] = self::config($code);
+        if (isset(static::$driver[$code])) return static::$driver[$code];
+        // 实例化具体支付通道类型
+        if (stripos(static::$type, 'alipay_') === 0) {
+            return static::$driver[$code] = AlipayPaymentService::instance();
+        } elseif (stripos(static::$type, 'wechat_') === 0) {
+            return static::$driver[$code] = WechatPaymentService::instance();
+        } elseif (stripos(static::$type, 'joinpay_') === 0) {
+            return static::$driver[$code] = JoinPaymentService::instance();
+        } else {
+            throw new \think\Exception(sprintf('支付驱动[%s]未定义', static::$type));
         }
-        // 支付通道配置验证
-        $map = ['code' => $paycode, 'status' => 1, 'deleted' => 0];
+    }
+
+    /**
+     * 根据通道编号获取配置参数
+     * @param string $code
+     * @return array [code,type,params]
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public static function config(string $code): array
+    {
+        $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
         $payment = app()->db->name('DataPayment')->where($map)->find();
         if (empty($payment)) {
-            throw new \think\Exception("支付通道[#{$paycode}]已关闭");
+            throw new \think\Exception("支付通道[#{$code}]禁用关闭");
         }
-        static::$config = @json_decode($payment['content'], true);
-        if (empty(static::$config)) {
-            throw new \think\Exception("支付通道[#{$paycode}]配置无效");
+        $params = @json_decode($payment['content'], true);
+        if (empty($params)) {
+            throw new \think\Exception("支付通道[#{$code}]配置无效");
         }
-        // 支付通道类型验证
         if (empty(static::TYPES[$payment['type']])) {
-            throw new \think\Exception("支付通道[{$payment['type']}]未定义");
+            throw new \think\Exception("支付通道[@{$payment['type']}]匹配失败");
         }
-        // 实例化具体支付通道类型
-        static::$type = $payment['type'];
-        if (stripos(static::$type, 'alipay_') === 0) {
-            return static::$driver[$paycode] = AlipayPaymentService::instance();
-        } elseif (stripos(static::$type, 'wechat_') === 0) {
-            return static::$driver[$paycode] = WechatPaymentService::instance();
-        } elseif (stripos(static::$type, 'joinpay_') === 0) {
-            return static::$driver[$paycode] = JoinPaymentService::instance();
-        } else {
-            throw new \think\Exception("支付驱动[{$payment['type']}]未定义");
-        }
+        return [$payment['code'], $payment['type'], $params];
     }
 
     /**
