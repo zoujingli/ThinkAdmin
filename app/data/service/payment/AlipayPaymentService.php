@@ -16,7 +16,7 @@ class AlipayPaymentService extends PaymentService
      * 支付参数配置
      * @var array
      */
-    protected $params = [];
+    protected $config = [];
 
     /**
      * 支付服务初始化
@@ -24,7 +24,7 @@ class AlipayPaymentService extends PaymentService
      */
     protected function initialize(): AlipayPaymentService
     {
-        $this->params = [
+        $this->config = [
             // 沙箱模式
             'debug'       => false,
             // 签名类型（RSA|RSA2）
@@ -68,7 +68,7 @@ class AlipayPaymentService extends PaymentService
      */
     public function notify(string $param = ''): string
     {
-        $notify = \AliPay\App::instance($this->params)->notify();
+        $notify = \AliPay\App::instance($this->config)->notify();
         if (in_array($notify['trade_status'], ['TRADE_SUCCESS', 'TRADE_FINISHED'])) {
             if ($this->updatePaymentAction($param, $notify['out_trade_no'], $notify['trade_no'], $notify['total_amount'])) {
                 return 'success';
@@ -89,7 +89,7 @@ class AlipayPaymentService extends PaymentService
      */
     public function query(string $orderNo): array
     {
-        return \AliPay\App::instance($this->params)->query($orderNo);
+        return \AliPay\App::instance($this->config)->query($orderNo);
     }
 
     /**
@@ -112,20 +112,20 @@ class AlipayPaymentService extends PaymentService
             } else {
                 throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
             }
-            $this->params['notify_url'] = sysuri("@data/api.notify/alipay/scene/order/param/{$tradeParam}", [], false, true);
+            $this->config['notify_url'] = sysuri("@data/api.notify/alipay/scene/order/param/{$tradeParam}", [], false, true);
             if (in_array($tradeType, [static::PAYMENT_ALIPAY_WAP, static::PAYMENT_ALIPAY_WEB])) {
                 if (empty($paymentReturn)) {
                     throw new \think\Exception('支付回跳地址不能为空！');
                 } else {
-                    $this->params['return_url'] = $paymentReturn;
+                    $this->config['return_url'] = $paymentReturn;
                 }
             }
             if ($tradeType === static::PAYMENT_WECHAT_APP) {
-                $payment = \AliPay\App::instance($this->params);
+                $payment = \AliPay\App::instance($this->config);
             } elseif ($tradeType === static::PAYMENT_ALIPAY_WAP) {
-                $payment = \AliPay\Wap::instance($this->params);
+                $payment = \AliPay\Wap::instance($this->config);
             } elseif ($tradeType === static::PAYMENT_ALIPAY_WEB) {
-                $payment = \AliPay\Web::instance($this->params);
+                $payment = \AliPay\Web::instance($this->config);
             } else {
                 throw new \think\Exception("支付类型[{$tradeType}]暂时不支持！");
             }
