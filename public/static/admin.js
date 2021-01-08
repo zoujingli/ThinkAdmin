@@ -761,12 +761,12 @@ $(function () {
     $body.on('click', '[data-tips-image]', function () {
         $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
     });
-    $.previewImage = function (src, area) {
+    $.previewImage = function (src, area, done) {
         var img = new Image(), index = $.msg.loading();
         img.style.background = '#fff', img.style.display = 'none';
         img.style.height = 'auto', img.style.width = area || '480px';
         document.body.appendChild(img), img.onerror = function () {
-            $.msg.close(index);
+            $.msg.close(index), (typeof done === 'function' && done());
         }, img.onload = function () {
             layer.open({
                 type: 1, shadeClose: true, success: img.onerror, content: $(img), title: false,
