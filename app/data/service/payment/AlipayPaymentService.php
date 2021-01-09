@@ -30,11 +30,11 @@ class AlipayPaymentService extends PaymentService
             // 签名类型（RSA|RSA2）
             'sign_type'   => "RSA2",
             // 应用ID
-            'appid'       => static::$params['alipay_appid'],
+            'appid'       => $this->params['alipay_appid'],
             // 支付宝公钥 (1行填写，特别注意，这里是支付宝公钥，不是应用公钥，最好从开发者中心的网页上去复制)
-            'public_key'  => $this->_trimCertHeader(static::$params['alipay_public_key']),
+            'public_key'  => $this->_trimCertHeader($this->params['alipay_public_key']),
             // 支付宝私钥 (1行填写)
-            'private_key' => $this->_trimCertHeader(static::$params['alipay_private_key']),
+            'private_key' => $this->_trimCertHeader($this->params['alipay_private_key']),
             // 应用公钥证书（新版资金类接口转 app_cert_sn）
             # 'app_cert'    => '',
             // 支付宝根证书（新版资金类接口转 alipay_root_cert_sn）
@@ -58,41 +58,6 @@ class AlipayPaymentService extends PaymentService
     }
 
     /**
-     * 支付结果处理
-     * @param string $param 支付通道
-     * @return string
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function notify(string $param = ''): string
-    {
-        $notify = \AliPay\App::instance($this->config)->notify();
-        if (in_array($notify['trade_status'], ['TRADE_SUCCESS', 'TRADE_FINISHED'])) {
-            if ($this->updatePaymentAction($param, $notify['out_trade_no'], $notify['trade_no'], $notify['total_amount'])) {
-                return 'success';
-            } else {
-                return 'error';
-            }
-        } else {
-            return 'success';
-        }
-    }
-
-    /**
-     * 查询订单数据
-     * @param string $orderNo
-     * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     */
-    public function query(string $orderNo): array
-    {
-        return \AliPay\App::instance($this->config)->query($orderNo);
-    }
-
-    /**
      * 创建订单支付参数
      * @param string $openid 会员OPENID
      * @param string $orderNo 交易订单单号
@@ -106,13 +71,12 @@ class AlipayPaymentService extends PaymentService
     public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array
     {
         try {
-            if (isset(static::TYPES[static::$type])) {
-                $tradeType = static::TYPES[static::$type]['type'];
-                $tradeParam = static::$type . '-' . static::$code;
+            if (isset(static::TYPES[$this->type])) {
+                $tradeType = static::TYPES[$this->type]['type'];
             } else {
-                throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
+                throw new \think\Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
             }
-            $this->config['notify_url'] = sysuri("@data/api.notify/alipay/scene/order/param/{$tradeParam}", [], false, true);
+            $this->config['notify_url'] = sysuri("@data/api.notify/alipay/scene/order/param/{$this->code}", [], false, true);
             if (in_array($tradeType, [static::PAYMENT_ALIPAY_WAP, static::PAYMENT_ALIPAY_WEB])) {
                 if (empty($paymentReturn)) {
                     throw new \think\Exception('支付回跳地址不能为空！');
@@ -133,7 +97,7 @@ class AlipayPaymentService extends PaymentService
             if (!empty($paymentRemark)) $data['body'] = $paymentRemark;
             $result = $payment->apply($data);
             // 创建支付记录
-            $this->createPaymentAction($tradeParam, $orderNo, $paymentTitle, $paymentAmount);
+            $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
             // 返回支付参数
             return ['result' => $result];
         } catch (\think\Exception $exception) {
@@ -141,5 +105,39 @@ class AlipayPaymentService extends PaymentService
         } catch (\Exception $exception) {
             throw new \think\Exception($exception->getMessage(), $exception->getCode());
         }
+    }
+
+    /**
+     * 支付结果处理
+     * @return string
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function notify(): string
+    {
+        $notify = \AliPay\App::instance($this->config)->notify();
+        if (in_array($notify['trade_status'], ['TRADE_SUCCESS', 'TRADE_FINISHED'])) {
+            if ($this->updatePaymentAction($notify['out_trade_no'], $notify['trade_no'], $notify['total_amount'])) {
+                return 'success';
+            } else {
+                return 'error';
+            }
+        } else {
+            return 'success';
+        }
+    }
+
+    /**
+     * 查询订单数据
+     * @param string $orderNo
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function query(string $orderNo): array
+    {
+        return \AliPay\App::instance($this->config)->query($orderNo);
     }
 }

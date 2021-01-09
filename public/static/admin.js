@@ -761,22 +761,22 @@ $(function () {
     $body.on('click', '[data-tips-image]', function () {
         $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
     });
-    $.previewImage = function (src, area, done, close) {
-        var img = new Image(), index = $.msg.loading();
-        img.style.background = '#fff', img.style.display = 'none';
+    $.previewImage = function (src, area) {
+        var img = new Image(), defer = $.Deferred(), load = $.msg.loading();
         img.style.height = 'auto', img.style.width = area || '480px';
+        img.style.display = 'none', img.style.background = '#FFFFFF';
         document.body.appendChild(img), img.onerror = function () {
-            $.msg.close(index);
+            $.msg.close(load), defer.reject();
         }, img.onload = function () {
             layer.open({
                 type: 1, title: false, shadeClose: true, content: $(img), success: function ($ele, idx) {
-                    $.msg.close(index), (typeof done === 'function' && done($ele, idx))
-                }, area: area || '480px', closeBtn: 1, skin: 'layui-layer-nobg', end: function () {
-                    document.body.removeChild(img), (typeof close === 'function' && close())
+                    $.msg.close(load), defer.notify($ele, idx);
+                }, area: area || '480px', skin: 'layui-layer-nobg', closeBtn: 1, end: function () {
+                    document.body.removeChild(img), defer.resolve()
                 }
             });
         };
-        return img.src = src;
+        return (img.src = src), defer;
     };
 
     /*! 注册 data-phone-view 事件行为 */

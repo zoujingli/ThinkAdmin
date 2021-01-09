@@ -48,7 +48,7 @@
             <label class="layui-form-label">订单状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    <option value=''>- 全部状态 -</option>
+                    <option value=''>- 全部订单 -</option>
                     {foreach ['2'=>'待付款','3'=>'待发货','4'=>'已发货','5'=>'已完成'] as $k=>$v}
                     {if input('status') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
@@ -63,8 +63,8 @@
             <label class="layui-form-label">付款状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="payment_status">
-                    <option value=''>- 全部状态 -</option>
-                    {foreach ['未支付的订单','已支付的订单'] as $k=>$v}
+                    <option value=''>- 全部订单 -</option>
+                    {foreach ['0'=>'未支付的订单','1'=>'已支付的订单'] as $k=>$v}
                     {if input('payment_status') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}

@@ -13,7 +13,6 @@
             </div>
         </div>
     </div>
-
     <div class="layui-card border-line">
         <div class="layui-card-header layui-bg-gray border-bottom-line"><b class="color-green" ng-bind="province.name"></b><span class="font-s12 color-desc margin-left-10">配送城市</span></div>
         <div class="layui-card-body">
@@ -22,7 +21,6 @@
             </div>
         </div>
     </div>
-
     <div class="layui-card border-line">
         <div class="layui-card-header layui-bg-gray border-bottom-line"><b class="color-green" ng-bind="city.name"></b><span class="font-s12 color-desc margin-left-10">配送区域</span></div>
         <div class="layui-card-body">
@@ -31,13 +29,11 @@
             </div>
         </div>
     </div>
-
     <div class="hr-line-dashed margin-top-40"></div>
     <div class="layui-form-item text-center">
         <button class="layui-btn" ng-click="Confirm()">确定修改</button>
     </div>
 </div>
-
 <label class="layui-hide">
     <textarea class="layui-textarea" id="RegionData">{$citys|json_encode|raw}</textarea>
 </label>

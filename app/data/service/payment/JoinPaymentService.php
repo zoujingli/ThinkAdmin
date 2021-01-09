@@ -48,10 +48,10 @@ class JoinPaymentService extends PaymentService
      */
     protected function initialize(): JoinPaymentService
     {
-        $this->appid = static::$params['joinpay_appid'];
-        $this->trade = static::$params['joinpay_trade'];;
-        $this->mchid = static::$params['joinpay_mch_id'];
-        $this->mchkey = static::$params['joinpay_mch_key'];
+        $this->appid = $this->params['joinpay_appid'];
+        $this->trade = $this->params['joinpay_trade'];;
+        $this->mchid = $this->params['joinpay_mch_id'];
+        $this->mchkey = $this->params['joinpay_mch_key'];
         return $this;
     }
 
@@ -69,11 +69,10 @@ class JoinPaymentService extends PaymentService
     public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array
     {
         try {
-            if (isset(static::TYPES[static::$type])) {
-                $tradeType = static::TYPES[static::$type]['type'];
-                $tradeParam = static::$type . '-' . static::$code;
+            if (isset(static::TYPES[$this->type])) {
+                $tradeType = static::TYPES[$this->type]['type'];
             } else {
-                throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
+                throw new \think\Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
             }
             $data = [
                 'p0_Version'         => '1.0',
@@ -83,7 +82,7 @@ class JoinPaymentService extends PaymentService
                 'p4_Cur'             => '1',
                 'p5_ProductName'     => $paymentTitle,
                 'p6_ProductDesc'     => $paymentRemark,
-                'p9_NotifyUrl'       => sysuri("@data/api.notify/joinpay/scene/order/param/{$tradeParam}", [], false, true),
+                'p9_NotifyUrl'       => sysuri("@data/api.notify/joinpay/scene/order/param/{$this->code}", [], false, true),
                 'q1_FrpCode'         => $tradeType ?? '',
                 'q5_OpenId'          => $openid,
                 'q7_AppId'           => $this->appid,
@@ -94,7 +93,7 @@ class JoinPaymentService extends PaymentService
             $result = $this->_doReuest($data);
             if (is_array($result) && isset($result['ra_Code']) && intval($result['ra_Code']) === 100) {
                 // 创建支付记录
-                $this->createPaymentAction($tradeParam, $orderNo, $paymentTitle, $paymentAmount);
+                $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
                 // 返回支付参数
                 return json_decode($result['rc_Result'], true);
             } elseif (is_array($result) && isset($result['rb_CodeMsg'])) {
@@ -122,13 +121,12 @@ class JoinPaymentService extends PaymentService
 
     /**
      * 支付结果处理
-     * @param string $param 支付通道
      * @return string
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function notify(string $param = ''): string
+    public function notify(): string
     {
         $notify = $this->app->request->get();
         foreach ($notify as &$item) $item = urldecode($item);
@@ -136,7 +134,7 @@ class JoinPaymentService extends PaymentService
             return 'error';
         }
         if (isset($notify['r6_Status']) && intval($notify['r6_Status']) === 100) {
-            if ($this->updatePaymentAction($param, $notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'])) {
+            if ($this->updatePaymentAction($notify['r2_OrderNo'], $notify['r9_BankTrxNo'], $notify['r3_Amount'])) {
                 return 'success';
             } else {
                 return 'error';

@@ -44,7 +44,9 @@
             <td class="nowrap">
                 <!--{if auth("state") and $vo.status eq 1}-->
                 <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">冻结账号</a>
-                <!--{elseif auth("state") and $vo.status eq 0}-->
+                <!--{/if}-->
+
+                <!--{if auth("state") and $vo.status eq 0}-->
                 <a class="layui-btn layui-btn-sm layui-btn-normal" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">解冻账号</a>
                 <!--{/if}-->
             </td>

@@ -20,6 +20,7 @@ class Notify extends Controller
      * @param string $param 支付通道
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -27,7 +28,7 @@ class Notify extends Controller
     public function wxpay(string $scene = 'order', string $param = ''): string
     {
         if (strtolower($scene) === 'order') {
-            return WechatPaymentService::instance()->notify($param);
+            return WechatPaymentService::instance($param)->notify();
         } else {
             return 'success';
         }
@@ -39,6 +40,7 @@ class Notify extends Controller
      * @param string $param 支付通道
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -46,7 +48,7 @@ class Notify extends Controller
     public function alipay(string $scene = 'order', string $param = ''): string
     {
         if (strtolower($scene) === 'order') {
-            return AlipayPaymentService::instance()->notify($param);
+            return AlipayPaymentService::instance($param)->notify();
         } else {
             return 'success';
         }
@@ -57,6 +59,8 @@ class Notify extends Controller
      * @param string $scene 支付场景
      * @param string $param 支付通道
      * @return string
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -64,7 +68,7 @@ class Notify extends Controller
     public function joinpay(string $scene = 'order', string $param = ''): string
     {
         if (strtolower($scene) === 'order') {
-            return JoinPaymentService::instance()->notify($param);
+            return JoinPaymentService::instance($param)->notify();
         } else {
             return 'success';
         }

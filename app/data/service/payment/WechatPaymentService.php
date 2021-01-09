@@ -25,9 +25,9 @@ class WechatPaymentService extends PaymentService
     protected function initialize(): WechatPaymentService
     {
         $this->payment = Order::instance([
-            'appid'      => static::$params['wechat_appid'],
-            'mch_id'     => static::$params['wechat_mch_id'],
-            'mch_key'    => static::$params['wechat_mch_key'],
+            'appid'      => $this->params['wechat_appid'],
+            'mch_id'     => $this->params['wechat_mch_id'],
+            'mch_key'    => $this->params['wechat_mch_key'],
             'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
         ]);
         return $this;
@@ -47,28 +47,27 @@ class WechatPaymentService extends PaymentService
     public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array
     {
         try {
-            if (isset(static::TYPES[static::$type])) {
-                $tradeType = static::TYPES[static::$type]['type'];
-                $tradeParam = static::$type . '-' . static::$code;
+            if (isset(static::TYPES[$this->type])) {
+                $tradeType = static::TYPES[$this->type]['type'];
             } else {
-                throw new \think\Exception('支付类型[' . static::$type . ']未配置定义！');
+                throw new \think\Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
             }
             $body = empty($paymentRemark) ? $paymentTitle : ($paymentTitle . '-' . $paymentRemark);
             $data = [
                 'body'             => $body,
                 'openid'           => $openid,
-                'attach'           => $tradeParam,
+                'attach'           => $this->code,
                 'out_trade_no'     => $orderNo,
                 'total_fee'        => $paymentAmount * 100,
                 'trade_type'       => $tradeType ?: '',
-                'notify_url'       => sysuri("@data/api.notify/wxpay/scene/order/param/{$tradeParam}", [], false, true),
+                'notify_url'       => sysuri("@data/api.notify/wxpay/scene/order/param/{$this->code}", [], false, true),
                 'spbill_create_ip' => $this->app->request->ip(),
             ];
             if (empty($data['openid'])) unset($data['openid']);
             $info = $this->payment->create($data);
             if ($info['return_code'] === 'SUCCESS' && $info['result_code'] === 'SUCCESS') {
                 // 创建支付记录
-                $this->createPaymentAction($tradeParam, $orderNo, $paymentTitle, $paymentAmount);
+                $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
                 // 返回支付参数
                 return $this->payment->jsapiParams($info['prepay_id']);
             }
@@ -99,7 +98,7 @@ class WechatPaymentService extends PaymentService
         $result = $this->payment->query(['out_trade_no' => $orderNo]);
         if (isset($result['return_code']) && isset($result['result_code']) && isset($result['attach'])) {
             if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
-                $this->updatePaymentAction($result['attach'], $result['out_trade_no'], $result['cash_fee'] / 100, $result['transaction_id']);
+                $this->updatePaymentAction($result['out_trade_no'], $result['cash_fee'] / 100, $result['transaction_id']);
             }
         }
         return $result;
@@ -107,18 +106,17 @@ class WechatPaymentService extends PaymentService
 
     /**
      * 支付结果处理
-     * @param string $param 支付通道
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function notify(string $param = ''): string
+    public function notify(): string
     {
         $notify = $this->payment->getNotify();
         if ($notify['result_code'] == 'SUCCESS' && $notify['return_code'] == 'SUCCESS') {
-            if ($this->updatePaymentAction($param, $notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100)) {
+            if ($this->updatePaymentAction($notify['out_trade_no'], $notify['transaction_id'], $notify['cash_fee'] / 100)) {
                 return $this->payment->getNotifySuccessReply();
             } else {
                 return 'error';

@@ -6,13 +6,16 @@ use app\data\service\payment\AlipayPaymentService;
 use app\data\service\payment\JoinPaymentService;
 use app\data\service\payment\WechatPaymentService;
 use think\admin\Service;
+use think\App;
+use think\Container;
+use think\Exception;
 
 /**
  * 支付基础服务
  * Class PaymentService
  * @package app\data\service
  */
-abstract class PaymentService extends Service
+abstract class PaymentService
 {
 
     // 汇聚支付通道
@@ -89,22 +92,28 @@ abstract class PaymentService extends Service
     ];
 
     /**
+     * 当前应用
+     * @var App
+     */
+    protected $app;
+
+    /**
      * 支付通道编号
      * @var string
      */
-    protected static $code;
+    protected $code;
 
     /**
      * 默认支付类型
      * @var string
      */
-    protected static $type;
+    protected $type;
 
     /**
      * 当前支付通道
      * @var array
      */
-    protected static $params;
+    protected $params;
 
     /**
      * 支付服务对象
@@ -113,24 +122,43 @@ abstract class PaymentService extends Service
     protected static $driver = [];
 
     /**
+     * PaymentService constructor.
+     * @param App $app 当前应用对象
+     * @param string $code 支付通道编号
+     * @param string $type 支付类型代码
+     * @param array $params 支付通道配置
+     */
+    public function __construct(App $app, string $code, string $type, array $params)
+    {
+        $this->app = $app;
+        $this->code = $code;
+        $this->type = $type;
+        $this->params = $params;
+        if (method_exists($this, 'initialize')) {
+            $this->initialize();
+        }
+    }
+
+    /**
      * 根据配置实例支付服务
      * @param string $code 支付通道编号
      * @return JoinPaymentService|WechatPaymentService|AlipayPaymentService
-     * @throws \think\Exception
+     * @throws Exception
      */
-    public static function build(string $code): PaymentService
+    public static function instance(string $code): PaymentService
     {
-        [static::$code, static::$type, static::$params] = self::config($code);
+        [, $type, $params] = self::config($code);
         if (isset(static::$driver[$code])) return static::$driver[$code];
+        $vars = ['code' => $code, 'type' => $type, 'params' => $params];
         // 实例化具体支付通道类型
-        if (stripos(static::$type, 'alipay_') === 0) {
-            return static::$driver[$code] = AlipayPaymentService::instance();
-        } elseif (stripos(static::$type, 'wechat_') === 0) {
-            return static::$driver[$code] = WechatPaymentService::instance();
-        } elseif (stripos(static::$type, 'joinpay_') === 0) {
-            return static::$driver[$code] = JoinPaymentService::instance();
+        if (stripos($type, 'alipay_') === 0) {
+            return static::$driver[$code] = Container::getInstance()->make(AlipayPaymentService::class, $vars);
+        } elseif (stripos($type, 'wechat_') === 0) {
+            return static::$driver[$code] = Container::getInstance()->make(WechatPaymentService::class, $vars);
+        } elseif (stripos($type, 'joinpay_') === 0) {
+            return static::$driver[$code] = Container::getInstance()->make(JoinPaymentService::class, $vars);
         } else {
-            throw new \think\Exception(sprintf('支付驱动[%s]未定义', static::$type));
+            throw new \think\Exception(sprintf('支付驱动[%s]未定义', $type));
         }
     }
 
@@ -138,26 +166,27 @@ abstract class PaymentService extends Service
      * 根据通道编号获取配置参数
      * @param string $code
      * @return array [code,type,params]
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws Exception
      */
     public static function config(string $code): array
     {
-        $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
-        $payment = app()->db->name('DataPayment')->where($map)->find();
-        if (empty($payment)) {
-            throw new \think\Exception("支付通道[#{$code}]禁用关闭");
+        try {
+            $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
+            $payment = app()->db->name('DataPayment')->where($map)->find();
+            if (empty($payment)) {
+                throw new \think\Exception("支付通道[#{$code}]禁用关闭");
+            }
+            $params = @json_decode($payment['content'], true);
+            if (empty($params)) {
+                throw new \think\Exception("支付通道[#{$code}]配置无效");
+            }
+            if (empty(static::TYPES[$payment['type']])) {
+                throw new \think\Exception("支付通道[@{$payment['type']}]匹配失败");
+            }
+            return [$payment['code'], $payment['type'], $params];
+        } catch (\Exception $exception) {
+            throw new Exception($exception->getMessage(), $exception->getCode());
         }
-        $params = @json_decode($payment['content'], true);
-        if (empty($params)) {
-            throw new \think\Exception("支付通道[#{$code}]配置无效");
-        }
-        if (empty(static::TYPES[$payment['type']])) {
-            throw new \think\Exception("支付通道[@{$payment['type']}]匹配失败");
-        }
-        return [$payment['code'], $payment['type'], $params];
     }
 
     /**
@@ -165,13 +194,12 @@ abstract class PaymentService extends Service
      * @param string $orderNo 订单单号
      * @param string $paymentTrade 交易单号
      * @param string $paymentAmount 支付金额
-     * @param null|string $paymentType 支付类型
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount, ?string $paymentType = null): bool
+    public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount): bool
     {
         // 检查订单支付状态
         $map = ['order_no' => $orderNo, 'payment_status' => 0, 'status' => 2];
@@ -180,10 +208,11 @@ abstract class PaymentService extends Service
         // 更新订单支付状态
         $data = [
             'status'           => 3,
-            'payment_type'     => $paymentType,
+            'payment_type'     => $this->type,
+            'payment_code'     => $this->code,
             'payment_trade'    => $paymentTrade,
-            'payment_status'   => 1,
             'payment_amount'   => $paymentAmount,
+            'payment_status'   => 1,
             'payment_remark'   => '在线支付',
             'payment_datetime' => date('Y-m-d H:i:s'),
         ];
@@ -195,28 +224,21 @@ abstract class PaymentService extends Service
 
     /**
      * 创建支付行为
-     * @param string $param 通道-编号
      * @param string $orderNo 商户订单单号
      * @param string $paymentTitle 商户订单标题
      * @param string $paymentAmount 需要支付金额
      */
-    protected function createPaymentAction(string $param, string $orderNo, string $paymentTitle, string $paymentAmount)
+    protected function createPaymentAction(string $orderNo, string $paymentTitle, string $paymentAmount)
     {
-        if (is_numeric(stripos($param, '-'))) {
-            [$paymentType, $paymentCode] = explode('-', $param);
-        } else {
-            [$paymentType, $paymentCode] = [$param ?: static::$type, static::$code];
-        }
         // 创建支付记录
         $this->app->db->name('DataPaymentItem')->insert([
-            'payment_code' => $paymentCode, 'payment_type' => $paymentType,
+            'payment_code' => $this->code, 'payment_type' => $this->type,
             'order_name'   => $paymentTitle, 'order_amount' => $paymentAmount, 'order_no' => $orderNo,
         ]);
     }
 
     /**
      * 更新支付记录并更新订单
-     * @param string $param 通道-编号
      * @param string $orderNo 商户订单单号
      * @param string $paymentTrade 平台交易单号
      * @param string $paymentAmount 实际到账金额
@@ -225,28 +247,23 @@ abstract class PaymentService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function updatePaymentAction(string $param, string $orderNo, string $paymentTrade, string $paymentAmount): bool
+    protected function updatePaymentAction(string $orderNo, string $paymentTrade, string $paymentAmount): bool
     {
-        if (is_numeric(stripos($param, '-'))) {
-            [$paymentType, $paymentCode] = explode('-', $param);
-        } else {
-            [$paymentType, $paymentCode] = [$param ?: static::$type, static::$code];
-        }
         // 更新支付记录
         data_save('DataPaymentItem', [
             'order_no'         => $orderNo,
-            'payment_code'     => $paymentCode,
-            'payment_type'     => $paymentType,
+            'payment_code'     => $this->code,
+            'payment_type'     => $this->type,
             'payment_trade'    => $paymentTrade,
             'payment_amount'   => $paymentAmount,
             'payment_status'   => 1,
             'payment_datatime' => date('Y-m-d H:i:s'),
         ], 'order_no', [
-            'payment_code' => $paymentCode,
-            'payment_type' => $paymentType,
+            'payment_code' => $this->code,
+            'payment_type' => $this->type,
         ]);
         // 更新记录状态
-        return $this->updateOrder($orderNo, $paymentTrade, $paymentAmount, $paymentType);
+        return $this->updateOrder($orderNo, $paymentTrade, $paymentAmount);
     }
 
     /**
@@ -258,10 +275,9 @@ abstract class PaymentService extends Service
 
     /**
      * 支付通知处理
-     * @param string $param 支付通道-支付编号
      * @return string
      */
-    abstract public function notify(string $param = ''): string;
+    abstract public function notify(): string;
 
     /**
      * 创建支付订单

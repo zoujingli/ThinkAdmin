@@ -55,27 +55,24 @@
             </label>
         </fieldset>
     </div>
-
     <div class="hr-line-dashed"></div>
     {notempty name='vo.order_no'}<input type='hidden' value='{$vo.order_no}' name='order_no'>{/notempty}
     {notempty name='vo.send_datetime'}<input type='hidden' value='{$vo.send_datetime}' name='send_datetime'>{/notempty}
-
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>
+    <script>
+        require(['pcasunzips'], function () {
+            (function (province, city, area) {
+                new PCAS("form_province", "form_city", "form_area", province, city, area);
+                window.form.render();
+            })('{$vo.address_province|default=""}', '{$vo.address_city|default=""}', '{$vo.address_area|default=""}');
+        });
+        $('[data-express-query]').on('click', function () {
+            (function (code, number) {
+                $.form.modal('{:url("truckQuery")}', {code: code, number: number}, '快递追踪查询')
+            })($('[data-truck-code]').val(), $('[data-truck-number]').val());
+        });
+    </script>
 </form>
-
-<script>
-    require(['pcasunzips'], function () {
-        (function (province, city, area) {
-            new PCAS("form_province", "form_city", "form_area", province, city, area);
-            window.form.render();
-        })('{$vo.address_province|default=""}', '{$vo.address_city|default=""}', '{$vo.address_area|default=""}');
-    });
-    $('[data-express-query]').on('click', function () {
-        (function (code, number) {
-            $.form.modal('{:url("truckQuery")}', {code: code, number: number}, '快递追踪查询')
-        })($('[data-truck-code]').val(), $('[data-truck-number]').val());
-    });
-</script>

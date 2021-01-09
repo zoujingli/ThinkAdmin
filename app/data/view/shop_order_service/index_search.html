@@ -7,48 +7,41 @@
                 <input name="member_phone" value="{:input('member_phone')}" placeholder="请输入用户手机" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
                 <input name="member_nickname" value="{:input('member_nickname')}" placeholder="请输入用户昵称" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">推荐手机</label>
             <label class="layui-input-inline">
                 <input name="agent_phone" value="{:input('agent_phone')}" placeholder="请输入用户手机" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">推荐昵称</label>
             <label class="layui-input-inline">
                 <input name="agent_nickname" value="{:input('agent_nickname')}" placeholder="请输入用户昵称" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">订单单号</label>
             <label class="layui-input-inline">
                 <input name="order_no" value="{:input('order_no')}" placeholder="请输入订单单号" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发货单号</label>
             <label class="layui-input-inline">
                 <input name="express_send_no" value="{:input('express_send_no')}" placeholder="请输入发货单号" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">订单状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    <option value=''>- 全部状态 -</option>
-                    {foreach ['2'=>'待付款','3'=>'待发货','4'=>'已发货','5'=>'已完成'] as $k=>$v}
+                    {foreach [''=>'- 全部订单 -','2'=>'待付款','3'=>'待发货','4'=>'已发货','5'=>'已完成'] as $k=>$v}
                     {if input('status') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}
@@ -57,13 +50,11 @@
                 </select>
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">付款状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="pay_state">
-                    <option value=''>- 全部状态 -</option>
-                    {foreach ['未支付的订单','已支付的订单'] as $k=>$v}
+                    {foreach [''=>'- 全部订单 -','0'=>'未支付的订单','1'=>'已支付的订单'] as $k=>$v}
                     {if input('pay_state') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}
@@ -72,63 +63,54 @@
                 </select>
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">下单时间</label>
             <label class="layui-input-inline">
                 <input data-date-range name="create_at" value="{:input('create_at')}" placeholder="请选择下单时间" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">支付时间</label>
             <label class="layui-input-inline">
                 <input data-date-range name="pay_datetime" value="{:input('pay_datetime')}" placeholder="请选择支付时间" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货姓名</label>
             <label class="layui-input-inline">
                 <input name="express_name" value="{:input('express_name')}" placeholder="请输入收货姓名" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货手机</label>
             <label class="layui-input-inline">
                 <input name="express_phone" value="{:input('express_phone')}" placeholder="请输入收货手机" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货省份</label>
             <label class="layui-input-inline">
                 <input name="express_province" value="{:input('express_province')}" placeholder="请输入收货省份" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货城市</label>
             <label class="layui-input-inline">
                 <input name="express_city" value="{:input('express_city')}" placeholder="请输入收货城市" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货区域</label>
             <label class="layui-input-inline">
                 <input name="express_area" value="{:input('express_area')}" placeholder="请输入收货区域" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">详细地址</label>
             <label class="layui-input-inline">
                 <input name="express_address" value="{:input('express_address')}" placeholder="请输入详细地址" class="layui-input">
             </label>
         </div>
-
         <div class="layui-form-item layui-inline">
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
         </div>

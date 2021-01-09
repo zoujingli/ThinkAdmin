@@ -105,11 +105,15 @@ class Order extends Auth
                 'total_selling' => $goodsItem['price_selling'] * $count,
             ];
         }
-        // 统计订单金额
-        $order['amount_reduct'] = OrderService::instance()->getReduct();
-        $order['amount_goods'] = array_sum(array_column($items, 'total_selling'));
-        $order['amount_total'] = $order['amount_goods'] - $order['amount_reduct'];
         try {
+            // 统计订单商品
+            $order['amount_reduct'] = OrderService::instance()->getReduct();
+            // 统计订单金额
+            $order['number_goods'] = array_sum(array_column($items, 'stock_sales'));
+            $order['amount_goods'] = array_sum(array_column($items, 'total_selling'));
+            $order['amount_total'] = $order['amount_goods'] - $order['amount_reduct'];
+            // 支付金额不能为零
+            if ($order['amount_total'] <= 0) $order['amount_total'] = 0.01;
             // 订单数据写入
             $this->app->db->name('ShopOrder')->insert($order);
             $this->app->db->name('ShopOrderItem')->insertAll($items);
@@ -169,6 +173,8 @@ class Order extends Auth
         $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
         $update['amount_total'] = $order['amount_goods'] + $amount - $order['amount_reduct'] - $order['amount_discount'];
+        // 支付金额不能为零
+        if ($update['amount_total'] <= 0) $update['amount_total'] = 0.01;
         if ($this->app->db->name('ShopOrder')->where($map)->update($update) !== false) {
             $this->success('订单确认成功！', ['order_no' => $order['order_no']]);
         } else {
@@ -200,7 +206,7 @@ class Order extends Auth
                 $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
                 if (empty($openid)) $this->error("无法创建支付，未获取到OPENID");
             }
-            $params = PaymentService::build($data['payment_code'])->create($openid, $order['order_no'], $order['amount_total'], '商城订单支付', '', $data['payment_back']);
+            $params = PaymentService::instance($data['payment_code'])->create($openid, $order['order_no'], $order['amount_total'], '商城订单支付', '', $data['payment_back']);
             $this->success('获取支付参数成功！', $params);
         } catch (HttpResponseException $exception) {
             throw  $exception;
