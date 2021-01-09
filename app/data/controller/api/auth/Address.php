@@ -27,6 +27,7 @@ class Address extends Auth
         $data = $this->_vali([
             'uid.value'        => $this->uuid,
             'code.default'     => '',
+            'idcode.default'   => '',
             'type.default'     => 0,
             'type.in:0,1'      => '地址状态不在范围！',
             'name.require'     => '收货姓名不能为空！',
