@@ -114,19 +114,48 @@ class Order extends Auth
             $order['amount_total'] = $order['amount_goods'] - $order['amount_reduct'];
             // 支付金额不能为零
             if ($order['amount_total'] <= 0) $order['amount_total'] = 0.01;
-            // 订单数据写入
+            // 写入订单商品数据
             $this->app->db->name('ShopOrder')->insert($order);
             $this->app->db->name('ShopOrderItem')->insertAll($items);
-            // 同步商品库存及销量
+            // 同步商品库存销量
             foreach ($codes as $code) GoodsService::instance()->syncStock($code);
-            // 返回订单数据给接口
+            // 返回订单数据接口
             $order['items'] = $items;
+            // 触发订单创建事件
+            $this->app->event->trigger('ShopOrderCreate', $order['order_no']);
+            // 返回处理成功数据
             $this->success('预购订单创建成功，请补全收货地址', $order);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
             $this->error("创建订单失败，{$exception->getMessage()}");
         }
+    }
+
+    /**
+     * 模拟计算订单运费
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function express()
+    {
+        $data = $this->_vali([
+            'code.require'     => '收货地址不能为空！',
+            'order_no.require' => '订单单号不能为空！',
+        ]);
+        // 用户收货地址
+        $map = ['uid' => $this->uuid, 'code' => $data['code']];
+        $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
+        if (empty($addr)) $this->error('用户收货地址异常！');
+        // 订单状态检查
+        $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
+        $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_count');
+        // 根据地址计算运费
+        $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
+        $tCode = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_tcode');
+        [$amount, , , $remark] = TruckService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
+        $this->success('计算运费成功', ['amount' => $amount, 'remark' => $remark]);
     }
 
     /**
@@ -152,8 +181,8 @@ class Order extends Auth
         if (empty($order)) $this->error('不能修改收货地址哦！');
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
-        $tCode = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_tcode');
-        [$amount, $tCount, $tCode, $remark] = TruckService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
+        $tCodes = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_tcode');
+        [$amount, $tCount, $tCode, $remark] = TruckService::instance()->amount($tCodes, $addr['province'], $addr['city'], $tCount);
         // 创建订单发货信息
         $express = [
             'template_code'   => $tCode, 'template_count' => $tCount, 'uid' => $this->uuid,
@@ -176,6 +205,9 @@ class Order extends Auth
         // 支付金额不能为零
         if ($update['amount_total'] <= 0) $update['amount_total'] = 0.01;
         if ($this->app->db->name('ShopOrder')->where($map)->update($update) !== false) {
+            // 触发订单确认事件
+            $this->app->event->trigger('ShopOrderPerfect', $order['order_no']);
+            // 返回处理成功数据
             $this->success('订单确认成功！', ['order_no' => $order['order_no']]);
         } else {
             $this->error('订单确认失败，请稍候再试！');
@@ -237,6 +269,9 @@ class Order extends Auth
                 'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
             if ($result !== false && OrderService::instance()->syncStock($order['order_no'])) {
+                // 触发订单取消事件
+                $this->app->event->trigger('ShopOrderCancel', $order['order_no']);
+                // 返回处理成功数据
                 $this->success('订单取消成功！');
             } else {
                 $this->error('订单取消失败，请稍候再试！');
@@ -262,7 +297,9 @@ class Order extends Auth
         if (empty($order)) $this->error('订单查询失败，请稍候再试！');
         if (in_array($order['status'], [4])) {
             if ($this->app->db->name('ShopOrder')->where($map)->update(['status' => 5]) !== false) {
-                // OrderService::instance()->syncConfrimOrderAmount($order['order_no']);
+                // 触发订单确认事件
+                $this->app->event->trigger('ShopOrderConfirm', $order['order_no']);
+                // 返回处理成功数据
                 $this->success('订单确认成功！');
             } else {
                 $this->error('订单确认失败，请稍候再试！');

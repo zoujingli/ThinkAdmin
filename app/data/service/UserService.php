@@ -191,7 +191,7 @@ class UserService extends Service
         if (count($list) < 1) return $list;
         $uids = array_unique(array_column($list, $keys));
         $users = $this->app->db->name('DataUser')->whereIn('id', $uids)->column($column, 'id');
-        foreach ($list as &$vo) $vo[$bind] = $users[$keys] ?? [];
+        foreach ($list as &$vo) $vo[$bind] = $users[$vo['uid']] ?? [];
         return $list;
     }
 

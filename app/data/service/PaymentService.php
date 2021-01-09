@@ -219,7 +219,10 @@ abstract class PaymentService
         if (empty($data['payment_type'])) unset($data['payment_type']);
         $this->app->db->name('ShopOrder')->where($map)->update($data);
         // 调用用户升级机制
-        return OrderService::instance()->syncAmount($order['order_no']);
+        OrderService::instance()->syncAmount($order['order_no']);
+        // 触发订单更新事件
+        $this->app->event->trigger('ShopOrderPayment', $orderNo);
+        return true;
     }
 
     /**
