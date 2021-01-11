@@ -43,6 +43,12 @@ trait Conversion
     protected $append = [];
 
     /**
+     * 数据输出字段映射
+     * @var array
+     */
+    protected $mapping = [];
+
+    /**
      * 数据集对象名
      * @var string
      */
@@ -138,6 +144,19 @@ trait Conversion
     }
 
     /**
+     * 设置属性的映射输出
+     * @access public
+     * @param  array $map
+     * @return $this
+     */
+    public function mapping(array $map)
+    {
+        $this->mapping = $map;
+
+        return $this;
+    }
+
+    /**
      * 转换当前模型对象为数组
      * @access public
      * @return array
@@ -191,6 +210,13 @@ trait Conversion
                 $item[$key] = $this->getAttr($key);
             } elseif (!isset($this->hidden[$key]) && !$hasVisible) {
                 $item[$key] = $this->getAttr($key);
+            }
+
+            if (isset($this->mapping[$key])) {
+                // 检查字段映射
+                $mapName        = $this->mapping[$key];
+                $item[$mapName] = $item[$key];
+                unset($item[$key]);
             }
         }
 

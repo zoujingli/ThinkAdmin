@@ -358,25 +358,17 @@ trait Attribute
             return;
         }
 
-        if (is_null($value) && $this->autoWriteTimestamp && in_array($name, [$this->createTime, $this->updateTime])) {
-            // 自动写入的时间戳字段
-            $value = $this->autoWriteTimestamp();
-        } else {
-            // 检测修改器
-            $method = 'set' . Str::studly($name) . 'Attr';
+        // 检测修改器
+        $method = 'set' . Str::studly($name) . 'Attr';
 
-            if (method_exists($this, $method)) {
-                $array = $this->data;
+        if (method_exists($this, $method)) {
+            $array = $this->data;
 
-                $value = $this->$method($value, array_merge($this->data, $data));
+            $value = $this->$method($value, array_merge($this->data, $data));
 
-                $this->set[$name] = true;
-                if (is_null($value) && $array !== $this->data) {
-                    return;
-                }
-            } elseif (isset($this->type[$name])) {
-                // 类型转换
-                $value = $this->writeTransform($value, $this->type[$name]);
+            $this->set[$name] = true;
+            if (is_null($value) && $array !== $this->data) {
+                return;
             }
         }
 
@@ -506,11 +498,6 @@ trait Attribute
             }
 
             $value = $this->$method($value, $this->data);
-        } elseif (isset($this->type[$fieldName])) {
-            // 类型转换
-            $value = $this->readTransform($value, $this->type[$fieldName]);
-        } elseif ($this->autoWriteTimestamp && in_array($fieldName, [$this->createTime, $this->updateTime])) {
-            $value = $this->getTimestampValue($value);
         } elseif ($relation) {
             $value = $this->getRelationValue($relation);
             // 保存关联对象值
@@ -518,6 +505,43 @@ trait Attribute
         }
 
         return $value;
+    }
+
+    /**
+     * 读取数据类型处理
+     * @access protected
+     * @param  array $data 数据
+     * @return void
+     */
+    protected function readDataType(array &$data): void
+    {
+        foreach ($data as $name => &$value) {
+            if (isset($this->type[$name])) {
+                // 类型转换
+                $value = $this->readTransform($value, $this->type[$name]);
+            } elseif ($this->autoWriteTimestamp && in_array($name, [$this->createTime, $this->updateTime])) {
+                $value = $this->getTimestampValue($value);
+            }
+        }
+    }
+
+    /**
+     * 写入数据类型处理
+     * @access protected
+     * @param  array $data 数据
+     * @return void
+     */
+    protected function writeDataType(array &$data): void
+    {
+        foreach ($data as $name => &$value) {
+            if (isset($this->type[$name])) {
+                // 类型转换
+                $value = $this->writeTransform($value, $this->type[$name]);
+            } elseif (is_null($value) && $this->autoWriteTimestamp && in_array($name, [$this->createTime, $this->updateTime])) {
+                // 自动写入的时间戳字段
+                $value = $this->autoWriteTimestamp();
+            }
+        }
     }
 
     /**

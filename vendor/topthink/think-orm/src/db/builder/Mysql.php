@@ -313,10 +313,15 @@ class Mysql extends Builder
 
         $key = trim($key);
 
-        if (strpos($key, '->') && false === strpos($key, '(')) {
+        if (strpos($key, '->>') && false === strpos($key, '(')) {
+            // JSON字段支持
+            [$field, $name] = explode('->>', $key, 2);
+
+            return $this->parseKey($query, $field, true) . '->>\'$' . (strpos($name, '[') === 0 ? '' : '.') . str_replace('->>', '.', $name) . '\'';
+        } elseif (strpos($key, '->') && false === strpos($key, '(')) {
             // JSON字段支持
             [$field, $name] = explode('->', $key, 2);
-            return 'json_extract(' . $this->parseKey($query, $field) . ', \'$' . (strpos($name, '[') === 0 ? '' : '.') . str_replace('->', '.', $name) . '\')';
+            return 'json_extract(' . $this->parseKey($query, $field, true) . ', \'$' . (strpos($name, '[') === 0 ? '' : '.') . str_replace('->', '.', $name) . '\')';
         } elseif (strpos($key, '.') && !preg_match('/[,\'\"\(\)`\s]/', $key)) {
             [$table, $key] = explode('.', $key, 2);
 

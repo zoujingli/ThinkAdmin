@@ -266,6 +266,8 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      */
     public function newInstance(array $data = [], $where = null): Model
     {
+        $this->readDataType($data);
+
         $model = new static($data);
 
         if ($this->connection) {
@@ -609,9 +611,11 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
             return true;
         }
 
-        if ($this->autoWriteTimestamp && $this->updateTime && !isset($data[$this->updateTime])) {
+        $this->writeDataType($data);
+
+        if ($this->autoWriteTimestamp && $this->updateTime) {
             // 自动写入更新时间
-            $data[$this->updateTime]       = $this->autoWriteTimestamp($this->updateTime);
+            $data[$this->updateTime]       = $this->autoWriteTimestamp();
             $this->data[$this->updateTime] = $data[$this->updateTime];
         }
 
@@ -669,11 +673,11 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         // 时间戳自动写入
         if ($this->autoWriteTimestamp) {
             if ($this->createTime && !isset($this->data[$this->createTime])) {
-                $this->data[$this->createTime] = $this->autoWriteTimestamp($this->createTime);
+                $this->data[$this->createTime] = $this->autoWriteTimestamp();
             }
 
             if ($this->updateTime && !isset($this->data[$this->updateTime])) {
-                $this->data[$this->updateTime] = $this->autoWriteTimestamp($this->updateTime);
+                $this->data[$this->updateTime] = $this->autoWriteTimestamp();
             }
         }
 
@@ -682,6 +686,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         }
 
         $this->checkData();
+        $this->writeDataType($this->data);
 
         // 检查允许字段
         $allowFields = $this->checkAllowFields();

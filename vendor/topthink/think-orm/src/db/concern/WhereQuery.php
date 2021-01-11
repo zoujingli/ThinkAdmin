@@ -514,9 +514,17 @@ trait WhereQuery
         }
 
         if ($condition) {
-            $this->where($query);
+            if ($query instanceof Closure) {
+                $query($this, $condition);
+            } elseif (is_array($query)) {
+                $this->where($query);
+            }
         } elseif ($otherwise) {
-            $this->where($otherwise);
+            if ($otherwise instanceof Closure) {
+                $otherwise($this, $condition);
+            } elseif (is_array($otherwise)) {
+                $this->where($otherwise);
+            }
         }
 
         return $this;
