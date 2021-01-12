@@ -245,7 +245,11 @@ class Template
 
             // 页面缓存
             ob_start();
-            ob_implicit_flush(0);
+            if (PHP_VERSION > 8.0) {
+                ob_implicit_flush(false);
+            } else {
+                ob_implicit_flush(0);
+            }
 
             // 读取编译存储
             $this->storage->read($cacheFile, $this->data);
@@ -345,7 +349,13 @@ class Template
         }
 
         // 读取第一行
-        preg_match('/\/\*(.+?)\*\//', fgets($handle), $matches);
+        $line = fgets($handle);
+
+        if (false === $line) {
+            return false;
+        }
+
+        preg_match('/\/\*(.+?)\*\//', $line, $matches);
 
         if (!isset($matches[1])) {
             return false;

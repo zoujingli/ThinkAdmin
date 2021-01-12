@@ -709,17 +709,17 @@
     },
     {
         "name": "topthink/think-template",
-        "version": "v2.0.7",
-        "version_normalized": "2.0.7.0",
+        "version": "v2.0.8",
+        "version_normalized": "2.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-template.git",
-            "reference": "e98bdbb4a4c94b442f17dfceba81e0134d4fbd19"
+            "reference": "abfc293f74f9ef5127b5c416310a01fe42e59368"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-template/zipball/e98bdbb4a4c94b442f17dfceba81e0134d4fbd19",
-            "reference": "e98bdbb4a4c94b442f17dfceba81e0134d4fbd19",
+            "url": "https://api.github.com/repos/top-think/think-template/zipball/abfc293f74f9ef5127b5c416310a01fe42e59368",
+            "reference": "abfc293f74f9ef5127b5c416310a01fe42e59368",
             "shasum": "",
             "mirrors": [
                 {
@@ -732,7 +732,7 @@
             "php": ">=7.1.0",
             "psr/simple-cache": "^1.0"
         },
-        "time": "2019-09-20T15:31:04+00:00",
+        "time": "2020-12-10T07:52:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -750,11 +750,7 @@
                 "email": "liu21st@gmail.com"
             }
         ],
-        "description": "the php template engine",
-        "support": {
-            "issues": "https://github.com/top-think/think-template/issues",
-            "source": "https://github.com/top-think/think-template/tree/v2.0.7"
-        }
+        "description": "the php template engine"
     },
     {
         "name": "topthink/think-view",
