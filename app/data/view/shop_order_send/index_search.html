@@ -7,29 +7,34 @@
                 <input name="member_phone" value="{:input('member_phone')}" placeholder="请输入用户手机" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
                 <input name="member_nickname" value="{:input('member_nickname')}" placeholder="请输入用户昵称" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">订单单号</label>
             <label class="layui-input-inline">
                 <input name="order_no" value="{:input('order_no')}" placeholder="请输入订单单号" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发货单号</label>
             <label class="layui-input-inline">
                 <input name="truck_number" value="{:input('truck_number')}" placeholder="请输入发货单号" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发货状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    {foreach [''=>'- 全部订单 -','0'=>'已取消的订单','1'=>'待发货的订单','2'=>'已发货的订单'] as $k=>$v}
+                    <option value="">-- 全部 --</option>
+                    {foreach ['已取消的订单','待发货的订单','已发货的订单'] as $k=>$v}
                     {if input('status') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}
@@ -38,36 +43,42 @@
                 </select>
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">提交时间</label>
             <label class="layui-input-inline">
                 <input data-date-range name="address_datetime" value="{:input('address_datetime')}" placeholder="请选择提交时间" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发货时间</label>
             <label class="layui-input-inline">
                 <input data-date-range name="send_datetime" value="{:input('send_datetime')}" placeholder="请选择发货时间" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货姓名</label>
             <label class="layui-input-inline">
                 <input name="address_name" value="{:input('address_name')}" placeholder="请输入收货姓名" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货手机</label>
             <label class="layui-input-inline">
                 <input name="address_phone" value="{:input('address_phone')}" placeholder="请输入收货手机" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">配送地址</label>
             <label class="layui-input-inline">
                 <input name="address_content" value="{:input('address_content')}" placeholder="请输入配送地址" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
             <button type="button" data-form-export="{:url('index')}?type={$type|default=''}" class="layui-btn layui-btn-primary">

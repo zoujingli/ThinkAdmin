@@ -5,7 +5,6 @@ namespace app\data\service;
 use app\data\service\payment\AlipayPaymentService;
 use app\data\service\payment\JoinPaymentService;
 use app\data\service\payment\WechatPaymentService;
-use think\admin\Service;
 use think\App;
 use think\Container;
 use think\Exception;
@@ -158,30 +157,33 @@ abstract class PaymentService
         } elseif (stripos($type, 'joinpay_') === 0) {
             return static::$driver[$code] = Container::getInstance()->make(JoinPaymentService::class, $vars);
         } else {
-            throw new \think\Exception(sprintf('支付驱动[%s]未定义', $type));
+            throw new Exception(sprintf('支付驱动[%s]未定义', $type));
         }
     }
 
     /**
-     * 根据通道编号获取配置参数
+     * 获取通道配置参数
      * @param string $code
+     * @param array $payment
      * @return array [code,type,params]
      * @throws Exception
      */
-    public static function config(string $code): array
+    public static function config(string $code, array $payment = []): array
     {
         try {
-            $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
-            $payment = app()->db->name('DataPayment')->where($map)->find();
             if (empty($payment)) {
-                throw new \think\Exception("支付通道[#{$code}]禁用关闭");
+                $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
+                $payment = app()->db->name('DataPayment')->where($map)->find();
+            }
+            if (empty($payment)) {
+                throw new Exception("支付通道[#{$code}]禁用关闭");
             }
             $params = @json_decode($payment['content'], true);
             if (empty($params)) {
-                throw new \think\Exception("支付通道[#{$code}]配置无效");
+                throw new Exception("支付通道[#{$code}]配置无效");
             }
             if (empty(static::TYPES[$payment['type']])) {
-                throw new \think\Exception("支付通道[@{$payment['type']}]匹配失败");
+                throw new Exception("支付通道[@{$payment['type']}]匹配失败");
             }
             return [$payment['code'], $payment['type'], $params];
         } catch (\Exception $exception) {
@@ -233,10 +235,9 @@ abstract class PaymentService
      */
     protected function createPaymentAction(string $orderNo, string $paymentTitle, string $paymentAmount)
     {
-        // 创建支付记录
         $this->app->db->name('DataPaymentItem')->insert([
             'payment_code' => $this->code, 'payment_type' => $this->type,
-            'order_name'   => $paymentTitle, 'order_amount' => $paymentAmount, 'order_no' => $orderNo,
+            'order_amount' => $paymentAmount, 'order_name' => $paymentTitle, 'order_no' => $orderNo,
         ]);
     }
 

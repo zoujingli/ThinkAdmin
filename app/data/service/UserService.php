@@ -57,17 +57,13 @@ class UserService extends Service
      * @param string $type 接口类型
      * @param integer $uuid 用户UID
      * @return array
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function get(string $type, int $uuid): array
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uuid, 'deleted' => 0])->findOrEmpty();
-        $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->findOrEmpty();
-        [$state, $message] = $this->checkUserToken($type, $data['token'] ?? '', $data);
-        if (empty($state)) throw new \think\Exception($message);
+        $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->where(function ($query) {
+            $query->where(['tokenv' => ''])->whereOr(['tokenv' => $this->_buildTokenVerify()]);
+        })->findOrEmpty();
         unset($user['deleted'], $user['password']);
         $user['token'] = ['token' => $data['token'], 'expire' => $data['time']];
         return $user;
@@ -80,10 +76,7 @@ class UserService extends Service
      * @param string $type 接口类型
      * @param boolean $force 强刷令牌
      * @return array
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function set(array $map, array $data, string $type, bool $force = false): array
     {
@@ -170,7 +163,7 @@ class UserService extends Service
             return [0, '请重新登录，登录认证无效', 0, 0];
         } elseif ($data['time'] < time()) {
             return [0, '请重新登录，登录认证已失效', 0, 0];
-        } elseif ($data['tokenv'] !== $this->_buildTokenVerify()) {
+        } elseif ($data['tokenv'] !== $this->_buildTokenVerify() && $token !== 'token') {
             return [0, '请重新登录，客户端已更换', 0, 0];
         } else {
             $this->expireUserToken($type, $token);
@@ -191,7 +184,7 @@ class UserService extends Service
         if (count($list) < 1) return $list;
         $uids = array_unique(array_column($list, $keys));
         $users = $this->app->db->name('DataUser')->whereIn('id', $uids)->column($column, 'id');
-        foreach ($list as &$vo) $vo[$bind] = $users[$vo['uid']] ?? [];
+        foreach ($list as &$vo) $vo[$bind] = $users[$vo[$keys]] ?? [];
         return $list;
     }
 

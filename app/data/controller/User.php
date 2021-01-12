@@ -2,6 +2,7 @@
 
 namespace app\data\controller;
 
+use app\data\service\UserService;
 use think\admin\Controller;
 
 /**
@@ -32,6 +33,15 @@ class User extends Controller
         $query->like('phone,username|nickname#username');
         $query->whereRaw('nickname != "" or username != ""');
         $query->order('id desc')->equal('status')->dateBetween('create_at')->page();
+    }
+
+    /**
+     * 数据列表处理
+     * @param array $data
+     */
+    protected function _page_filter(array &$data)
+    {
+        UserService::instance()->buildByUid($data, 'from', 'fromer');
     }
 
     /**
