@@ -529,9 +529,9 @@ trait Attribute
      * 写入数据类型处理
      * @access protected
      * @param  array $data 数据
-     * @return void
+     * @return array
      */
-    protected function writeDataType(array &$data): void
+    protected function writeDataType(array $data): array
     {
         foreach ($data as $name => &$value) {
             if (isset($this->type[$name])) {
@@ -542,6 +542,8 @@ trait Attribute
                 $value = $this->autoWriteTimestamp();
             }
         }
+
+        return $data;
     }
 
     /**

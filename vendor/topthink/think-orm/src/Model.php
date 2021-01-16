@@ -611,7 +611,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
             return true;
         }
 
-        $this->writeDataType($data);
+        $data = $this->writeDataType($data);
 
         if ($this->autoWriteTimestamp && $this->updateTime) {
             // 自动写入更新时间
@@ -686,19 +686,19 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         }
 
         $this->checkData();
-        $this->writeDataType($this->data);
+        $data = $this->writeDataType($this->data);
 
         // 检查允许字段
         $allowFields = $this->checkAllowFields();
 
         $db = $this->db();
 
-        $db->transaction(function () use ($sequence, $allowFields, $db) {
+        $db->transaction(function () use ($data, $sequence, $allowFields, $db) {
             $result = $db->strict(false)
                 ->field($allowFields)
                 ->replace($this->replace)
                 ->sequence($sequence)
-                ->insert($this->data, true);
+                ->insert($data, true);
 
             // 获取自动增长主键
             if ($result) {

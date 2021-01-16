@@ -100,8 +100,8 @@ class Library extends Service
                 if (($origin = $request->header('origin', '*')) !== '*') {
                     $header['Access-Control-Allow-Origin'] = $origin;
                     $header['Access-Control-Allow-Methods'] = 'GET,PUT,POST,PATCH,DELETE';
-                    $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With,User-Form-Token,User-Token,Token';
-                    $header['Access-Control-Expose-Headers'] = 'User-Form-Token,User-Token,Token';
+                    $header['Access-Control-Allow-Headers'] = 'Authorization,Content-Type,If-Match,If-Modified-Since,If-None-Match,If-Unmodified-Since,X-Requested-With,Api-Type,Api-Token,User-Form-Token,User-Token,Token';
+                    $header['Access-Control-Expose-Headers'] = 'Api-Type,Api-Token,User-Form-Token,User-Token,Token';
                     $header['Access-Control-Allow-Credentials'] = 'true';
                 }
                 // 访问模式及访问权限检查
