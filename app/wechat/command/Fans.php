@@ -47,6 +47,7 @@ class Fans extends Command
      * 执行指令
      * @param Input $input
      * @param Output $output
+     * @return void
      * @throws \think\admin\Exception
      */
     protected function execute(Input $input, Output $output)
@@ -82,7 +83,7 @@ class Fans extends Command
                 foreach (array_chunk($result['data']['openid'], 100) as $openids) {
                     $info = WechatService::WeChatUser()->getBatchUserInfo($openids);
                     if (is_array($info) && !empty($info['user_info_list'])) {
-                        foreach ($info['user_info_list'] as $user) {
+                        foreach ($info['user_info_list'] as $user) if (isset($user['nickname'])) {
                             $this->queue->message($result['total'], ++$done, "-> {$user['openid']} {$user['nickname']}");
                             FansService::instance()->set($user, $appid);
                         }
@@ -111,10 +112,11 @@ class Fans extends Command
     {
         $wechat = WechatService::WeChatUser();
         $this->output->comment('开始更新黑名单的微信用户');
+        [$map, $data] = [['is_black' => 0], ['is_black' => 1]];
         while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
             $done += $result['count'];
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
-                $this->app->db->name('WechatFans')->where(['is_black' => '0'])->whereIn('openid', $chunk)->update(['is_black' => '1']);
+                $this->app->db->name('WechatFans')->where($map)->whereIn('openid', $chunk)->update($data);
             }
             $this->setQueueProgress("--> 共计同步微信黑名单{$result['total']}人");
             $next = $result['total'] > $done ? $result['next_openid'] : null;
