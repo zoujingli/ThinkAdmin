@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 09/01/2021 14:55:33
+ Date: 20/01/2021 18:33:53
 */
 
 SET NAMES utf8mb4;
@@ -108,67 +108,14 @@ CREATE TABLE `data_news_x_comment`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for data_payment
--- ----------------------------
-DROP TABLE IF EXISTS `data_payment`;
-CREATE TABLE `data_payment`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付类型',
-  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '通道编号',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付名称',
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '支付参数',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付说明',
-  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '支付状态(1使用,0禁用)',
-  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_payment_type`(`type`) USING BTREE,
-  INDEX `idx_data_payment_code`(`code`) USING BTREE,
-  INDEX `idx_data_payment_status`(`status`) USING BTREE,
-  INDEX `idx_data_payment_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-支付-通道' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of data_payment
--- ----------------------------
-
--- ----------------------------
--- Table structure for data_payment_item
--- ----------------------------
-DROP TABLE IF EXISTS `data_payment_item`;
-CREATE TABLE `data_payment_item`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单单号',
-  `order_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单描述',
-  `order_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额',
-  `payment_code` bigint(20) NULL DEFAULT 0 COMMENT '支付编号',
-  `payment_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付通道',
-  `payment_trade` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付单号',
-  `payment_status` tinyint(1) NULL DEFAULT 0 COMMENT '支付状态',
-  `payment_amount` decimal(20, 2) NULL DEFAULT NULL COMMENT '支付金额',
-  `payment_datatime` datetime NULL DEFAULT NULL COMMENT '支付时间',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_payment_item_order_no`(`order_no`) USING BTREE,
-  INDEX `idx_data_payment_item_payment_code`(`payment_code`) USING BTREE,
-  INDEX `idx_data_payment_item_payment_type`(`payment_type`) USING BTREE,
-  INDEX `idx_data_payment_item_payment_trade`(`payment_trade`) USING BTREE,
-  INDEX `idx_data_payment_item_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-支付-记录' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of data_payment_item
--- ----------------------------
-
--- ----------------------------
 -- Table structure for data_user
 -- ----------------------------
 DROP TABLE IF EXISTS `data_user`;
 CREATE TABLE `data_user`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '当前身份',
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'TYPE00' COMMENT '当前身份',
   `path` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '-' COMMENT '推荐关系',
+  `layer` bigint(20) UNSIGNED NULL DEFAULT 1 COMMENT '推荐层级',
   `from` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '推荐人UID',
   `openid1` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '小程序OPENID',
   `openid2` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '服务号OPENID',
@@ -186,8 +133,11 @@ CREATE TABLE `data_user`  (
   `base_height` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户身高',
   `base_weight` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户体重',
   `base_birthday` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户生日',
-  `amount_total` bigint(20) NULL DEFAULT 0 COMMENT '总收益统计',
-  `amount_used` bigint(20) NULL DEFAULT 0 COMMENT '已提现统计',
+  `amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '总收益统计',
+  `amount_used` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '已提现统计',
+  `balance_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '总充值统计',
+  `balance_used` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '已使用统计',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户备注',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '用户状态(1正常,0已拉黑)',
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
@@ -197,11 +147,12 @@ CREATE TABLE `data_user`  (
   INDEX `idx_data_user_openid1`(`openid1`) USING BTREE,
   INDEX `idx_data_user_openid2`(`openid2`) USING BTREE,
   INDEX `idx_data_user_unionid`(`unionid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-记录' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-会员' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user
 -- ----------------------------
+INSERT INTO `data_user` VALUES (1, 'TYPE00', '-', 1, 0, 'odTi05AMTKx5WYgMnnqbtG4MI9Q0', '', '', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/JSmwB5ERvyXDUGib2yIcPwFuZicQWDpB3cnRayRKeW66zZTGStbyhjoj2DM0nuxJAsY7BMz5nXjRne1MImHnrU2A/132', '', 'Anyon', '', '', '', '', 0, '男', '', '', '', 0.00, 0.00, 100.00, 0.00, '', 1, 0, '2021-01-20 09:59:05');
 
 -- ----------------------------
 -- Table structure for data_user_address
@@ -222,14 +173,65 @@ CREATE TABLE `data_user_address`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_user_address_mid`(`uid`) USING BTREE,
   INDEX `idx_data_user_address_type`(`type`) USING BTREE,
   INDEX `idx_data_user_address_code`(`code`) USING BTREE,
-  INDEX `idx_data_user_address_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = COMPACT;
+  INDEX `idx_data_user_address_deleted`(`deleted`) USING BTREE,
+  INDEX `idx_data_user_address_uid`(`uid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_address
+-- ----------------------------
+INSERT INTO `data_user_address` VALUES (1, 1, 1, 'A2021012037254', '小小邹', '13617343811', '', '山西省', '长治市', '屯留县', '测试地址', 0, '2021-01-20 10:00:03');
+
+-- ----------------------------
+-- Table structure for data_user_balance
+-- ----------------------------
+DROP TABLE IF EXISTS `data_user_balance`;
+CREATE TABLE `data_user_balance`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '充值编号',
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '充值名称',
+  `remark` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '充值备注',
+  `amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '充值金额',
+  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
+  `create_by` bigint(20) NULL DEFAULT 0 COMMENT '系统用户',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_user_balance_uid`(`uid`) USING BTREE,
+  INDEX `idx_data_user_balance_code`(`code`) USING BTREE,
+  INDEX `idx_data_user_balance_deleted`(`deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-余额' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of data_user_balance
+-- ----------------------------
+INSERT INTO `data_user_balance` VALUES (1, 1, 'B202101204905970', '后台充值', '', 100.00, 0, 10000, '2021-01-20 10:11:42');
+
+-- ----------------------------
+-- Table structure for data_user_balance_transfer
+-- ----------------------------
+DROP TABLE IF EXISTS `data_user_balance_transfer`;
+CREATE TABLE `data_user_balance_transfer`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
+  `from` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '来自UID',
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '转账编号',
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '转账名称',
+  `remark` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '转账备注',
+  `amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '转账金额',
+  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_user_balance_transfer_uid`(`uid`) USING BTREE,
+  INDEX `idx_data_user_balance_transfer_code`(`code`) USING BTREE,
+  INDEX `idx_data_user_balance_transfer_from`(`from`) USING BTREE,
+  INDEX `idx_data_user_balance_transfer_deleted`(`deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-转账' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of data_user_balance_transfer
 -- ----------------------------
 
 -- ----------------------------
@@ -251,11 +253,35 @@ CREATE TABLE `data_user_message`  (
   INDEX `idx_data_user_message_phone`(`phone`) USING BTREE,
   INDEX `idx_data_user_message_msgid`(`msgid`) USING BTREE,
   INDEX `idx_data_user_message_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户-短信' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-短信' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_message
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for data_user_notify
+-- ----------------------------
+DROP TABLE IF EXISTS `data_user_notify`;
+CREATE TABLE `data_user_notify`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息类型',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息名称',
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '消息内容',
+  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '消息状态(1使用,0禁用)',
+  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_user_notify_type`(`type`) USING BTREE,
+  INDEX `idx_data_user_notify_status`(`status`) USING BTREE,
+  INDEX `idx_data_user_notify_deleted`(`deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-通知' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of data_user_notify
+-- ----------------------------
+INSERT INTO `data_user_notify` VALUES (1, '', '系统上线了', '<p>系统上线了系统上线了系统上线了</p>', 0, 1, 0, '2021-01-20 10:13:38');
 
 -- ----------------------------
 -- Table structure for data_user_token
@@ -273,11 +299,12 @@ CREATE TABLE `data_user_token`  (
   INDEX `idx_data_user_token_type`(`type`) USING BTREE,
   INDEX `idx_data_user_token_time`(`time`) USING BTREE,
   INDEX `idx_data_user_token_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_token
 -- ----------------------------
+INSERT INTO `data_user_token` VALUES (1, 1, 'wxapp', 1611145990, '2b2e413226c35809325a430edf77184b', '5c930125f835f44b7bfddbe20ec8b915', '2021-01-20 09:59:05');
 
 -- ----------------------------
 -- Table structure for shop_goods
@@ -421,10 +448,12 @@ CREATE TABLE `shop_order`  (
   `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户编号',
   `from` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '推荐用户',
   `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单编号',
-  `amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '支付总金额',
-  `amount_goods` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品总金额',
+  `amount_real` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单实际金额',
+  `amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单统计金额',
+  `amount_goods` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品统计金额',
   `amount_reduct` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '随机减免金额',
   `amount_express` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '快递费用金额',
+  `amount_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '全额抵扣金额',
   `amount_discount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '策略优惠金额',
   `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付平台',
   `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际通道编号',
@@ -437,8 +466,10 @@ CREATE TABLE `shop_order`  (
   `cancel_status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '订单取消状态',
   `cancel_remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单取消描述',
   `cancel_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单取消时间',
+  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '订单删除状态(0未删,1已删)',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '订单状态(0已取消,1预订单,2待支付,3待发货,4待签收,5已完成)',
-  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
+  `deleted_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单删除描述',
+  `deleted_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单删除时间',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_order_mid`(`uid`) USING BTREE,
@@ -501,6 +532,7 @@ CREATE TABLE `shop_order_send`  (
   `address_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送地址编号',
   `address_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送收货人姓名',
   `address_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送收货人手机',
+  `address_idcode` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送收货人证件',
   `address_province` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送地址的省份',
   `address_city` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送地址的城市',
   `address_area` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送地址的区域',
@@ -530,31 +562,57 @@ CREATE TABLE `shop_order_send`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for shop_order_service
+-- Table structure for shop_payment
 -- ----------------------------
-DROP TABLE IF EXISTS `shop_order_service`;
-CREATE TABLE `shop_order_service`  (
+DROP TABLE IF EXISTS `shop_payment`;
+CREATE TABLE `shop_payment`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `send_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章标题',
-  `mark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章标签',
-  `cover` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章封面',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注说明',
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '文章内容',
-  `num_like` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章点赞数',
-  `num_read` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章阅读数',
-  `num_collect` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章收藏数',
-  `num_comment` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '文章评论数',
+  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付类型',
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '通道编号',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付名称',
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '支付参数',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付说明',
   `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '记录状态(1使用,0禁用)',
-  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '支付状态(1使用,0禁用)',
+  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_news_item_status`(`status`) USING BTREE,
-  INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-售后' ROW_FORMAT = COMPACT;
+  INDEX `idx_data_payment_type`(`type`) USING BTREE,
+  INDEX `idx_data_payment_code`(`code`) USING BTREE,
+  INDEX `idx_data_payment_status`(`status`) USING BTREE,
+  INDEX `idx_data_payment_deleted`(`deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-方式' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
--- Records of shop_order_service
+-- Records of shop_payment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for shop_payment_item
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_payment_item`;
+CREATE TABLE `shop_payment_item`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单单号',
+  `order_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单描述',
+  `order_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额',
+  `payment_code` bigint(20) NULL DEFAULT 0 COMMENT '支付编号',
+  `payment_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付通道',
+  `payment_trade` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付单号',
+  `payment_status` tinyint(1) NULL DEFAULT 0 COMMENT '支付状态',
+  `payment_amount` decimal(20, 2) NULL DEFAULT NULL COMMENT '支付金额',
+  `payment_datatime` datetime NULL DEFAULT NULL COMMENT '支付时间',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_payment_item_order_no`(`order_no`) USING BTREE,
+  INDEX `idx_data_payment_item_payment_code`(`payment_code`) USING BTREE,
+  INDEX `idx_data_payment_item_payment_type`(`payment_type`) USING BTREE,
+  INDEX `idx_data_payment_item_payment_trade`(`payment_trade`) USING BTREE,
+  INDEX `idx_data_payment_item_payment_status`(`payment_status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-支付-记录' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of shop_payment_item
 -- ----------------------------
 
 -- ----------------------------
@@ -4492,7 +4550,7 @@ CREATE TABLE `system_menu`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_menu_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 88 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_menu
@@ -4527,14 +4585,15 @@ INSERT INTO `system_menu` VALUES (76, 73, '商品数据管理', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (77, 73, '会员用户管理', 'layui-icon layui-icon-user', 'data/user/index', 'data/user/index', '', '_self', 100, 1, '2020-09-10 01:48:02');
 INSERT INTO `system_menu` VALUES (78, 73, '订单数据管理', 'layui-icon layui-icon-template-1', 'data/shop_order/index', 'data/shop_order/index', '', '_self', 60, 1, '2020-09-10 01:48:41');
 INSERT INTO `system_menu` VALUES (79, 73, '订单发货管理', 'layui-icon layui-icon-transfer', 'data/shop_order_send/index', 'data/shop_order_send/index', '', '_self', 50, 1, '2020-09-10 01:50:12');
-INSERT INTO `system_menu` VALUES (80, 73, '售后申请管理', 'layui-icon layui-icon-diamond', 'data/shop_order_service/index', 'data/shop_order_service/index', '', '_self', 40, 1, '2020-09-10 01:53:16');
 INSERT INTO `system_menu` VALUES (81, 73, '快递公司管理', 'layui-icon layui-icon-website', 'data/shop_truck_company/index', 'data/shop_truck_company/index', '', '_self', 0, 1, '2020-09-15 08:47:46');
 INSERT INTO `system_menu` VALUES (82, 73, '邮费模板管理', 'layui-icon layui-icon-template-1', 'data/shop_truck_template/index', 'data/shop_truck_template/index', '', '_self', 0, 1, '2020-09-15 09:14:46');
 INSERT INTO `system_menu` VALUES (83, 73, '配送区域管理', 'layui-icon layui-icon-location', 'data/shop_truck_template/region', 'data/shop_truck_template/region', '', '_self', 0, 1, '2020-09-17 09:13:35');
 INSERT INTO `system_menu` VALUES (84, 68, '微信小程序配置', 'layui-icon layui-icon-set', 'data/config/wxapp', 'data/config/wxapp', '', '_self', 5, 1, '2020-09-21 16:34:08');
 INSERT INTO `system_menu` VALUES (85, 68, '会员服务协议', 'layui-icon layui-icon-template-1', 'data/config/agreement', 'data/config/agreement', '', '_self', 30, 1, '2020-09-22 16:00:10');
 INSERT INTO `system_menu` VALUES (86, 68, '关于我们描述', 'layui-icon layui-icon-app', 'data/config/about', 'data/config/about', '', '_self', 40, 1, '2020-09-22 16:12:44');
-INSERT INTO `system_menu` VALUES (87, 68, '支付通道管理', 'layui-icon layui-icon-rmb', 'data/payment/index', 'data/payment/index', '', '_self', 6, 1, '2020-12-12 09:08:09');
+INSERT INTO `system_menu` VALUES (87, 68, '支付参数管理', 'layui-icon layui-icon-rmb', 'data/shop_payment/index', 'data/shop_payment/index', '', '_self', 6, 1, '2020-12-12 09:08:09');
+INSERT INTO `system_menu` VALUES (88, 68, '系统通知管理', 'layui-icon layui-icon-notice', 'data/user_notify/index', 'data/user_notify/index', '', '_self', 6, 1, '2021-01-20 10:07:32');
+INSERT INTO `system_menu` VALUES (89, 73, '余额充值记录', 'layui-icon layui-icon-rmb', 'data/user_balance/index', 'data/user_balance/index', '', '_self', 95, 1, '2021-01-20 10:09:49');
 
 -- ----------------------------
 -- Table structure for system_oplog
@@ -4549,11 +4608,28 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
 -- ----------------------------
+INSERT INTO `system_oplog` VALUES (1, 'admin/login/index', '111.18.185.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-01-20 10:00:08');
+INSERT INTO `system_oplog` VALUES (2, 'admin/login/index', '171.223.100.154', '系统用户登录', '登录系统后台成功', 'admin', '2021-01-20 10:00:55');
+INSERT INTO `system_oplog` VALUES (3, 'admin/login/index', '61.140.239.96', '系统用户登录', '登录系统后台成功', 'admin', '2021-01-20 10:01:22');
+INSERT INTO `system_oplog` VALUES (4, 'admin/api.plugs/optimize', '111.18.185.255', '系统运维管理', '创建数据库优化任务', 'admin', '2021-01-20 10:02:52');
+INSERT INTO `system_oplog` VALUES (5, 'admin/api.plugs/debug', '121.225.222.42', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-01-20 10:02:53');
+INSERT INTO `system_oplog` VALUES (6, 'admin/api.plugs/optimize', '111.18.185.255', '系统运维管理', '创建数据库优化任务', 'admin', '2021-01-20 10:03:02');
+INSERT INTO `system_oplog` VALUES (7, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-01-20 10:05:58');
+INSERT INTO `system_oplog` VALUES (8, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[87]成功', 'admin', '2021-01-20 10:06:09');
+INSERT INTO `system_oplog` VALUES (9, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[87]成功', 'admin', '2021-01-20 10:06:16');
+INSERT INTO `system_oplog` VALUES (10, 'admin/login/index', '124.116.214.209', '系统用户登录', '登录系统后台成功', 'admin', '2021-01-20 10:06:36');
+INSERT INTO `system_oplog` VALUES (11, 'admin/menu/remove', '127.0.0.1', '系统菜单管理', '删除系统菜单[80]成功', 'admin', '2021-01-20 10:06:47');
+INSERT INTO `system_oplog` VALUES (12, 'admin/menu/add', '127.0.0.1', '系统菜单管理', '添加系统菜单[88]成功', 'admin', '2021-01-20 10:07:32');
+INSERT INTO `system_oplog` VALUES (13, 'admin/api.plugs/debug', '124.116.214.209', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-01-20 10:08:34');
+INSERT INTO `system_oplog` VALUES (14, 'admin/api.plugs/debug', '124.116.214.209', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-01-20 10:08:36');
+INSERT INTO `system_oplog` VALUES (15, 'admin/menu/add', '127.0.0.1', '系统菜单管理', '添加系统菜单[89]成功', 'admin', '2021-01-20 10:09:49');
+INSERT INTO `system_oplog` VALUES (16, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[89]成功', 'admin', '2021-01-20 10:12:07');
+INSERT INTO `system_oplog` VALUES (17, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[89]成功', 'admin', '2021-01-20 10:13:12');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4582,11 +4658,12 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_queue
 -- ----------------------------
+INSERT INTO `system_queue` VALUES (1, 'Q202101204014361', '优化数据库所有数据表', 'xadmin:database optimize', 0, '[]', 1611138134, '', 0.0000, 0.0000, 0, 0, 0, 1, '2021-01-20 10:02:52');
 
 -- ----------------------------
 -- Table structure for system_user
@@ -4619,7 +4696,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', ',,', '', '', '', '127.0.0.1', '2021-01-08 05:18:50', 56, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', ',,', '', '', '', '124.116.214.209', '2021-01-20 10:06:36', 61, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

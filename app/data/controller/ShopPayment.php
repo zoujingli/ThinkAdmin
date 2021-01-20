@@ -84,7 +84,9 @@ class ShopPayment extends Controller
                 foreach ($vo['bind'] as $api) if (isset(UserService::TYPES[$api])) {
                     $allow[$api] = UserService::TYPES[$api]['name'];
                 }
-                $this->payments[$k] = array_merge($vo, ['allow' => join('、', $allow)]);
+                if (count($allow)) {
+                    $this->payments[$k] = array_merge($vo, ['allow' => join('、', $allow)]);
+                }
             }
             $data['content'] = json_decode($data['content'] ?? '[]', true) ?: [];
         } else {

@@ -8,7 +8,7 @@ use think\admin\extend\CodeExtend;
 use think\admin\service\AdminService;
 
 /**
- * 余额充值管理
+ * 余额充值记录
  * Class UserBalance
  * @package app\data\controller
  */
@@ -30,7 +30,7 @@ class UserBalance extends Controller
      */
     public function index()
     {
-        $this->title = '余额充值管理';
+        $this->title = '余额充值记录';
         $query = $this->_query($this->table);
         // 用户搜索查询
         $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
