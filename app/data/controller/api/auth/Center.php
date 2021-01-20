@@ -55,14 +55,6 @@ class Center extends Auth
     }
 
     /**
-     * 获取用户数据统计
-     */
-    public function total()
-    {
-        $this->success('获取用户统计!', UserService::instance()->total($this->uuid));
-    }
-
-    /**
      * Base64 图片上传
      */
     public function image()
@@ -107,6 +99,32 @@ class Center extends Auth
     }
 
     /**
+     * 获取我邀请的朋友
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getFrom()
+    {
+        $where = [];
+        $where[] = ['deleted', '=', '0'];
+        $where[] = ['path', 'like', "%-{$this->uuid}-%"];
+        // 查询邀请的朋友
+        $query = $this->_query($this->table);
+        $query->like('nickname|username#nickname')->equal('from,id#uid');
+        $query->field('id,from,username,nickname,headimg,amount_total,create_at');
+        $result = $query->where($where)->order('id desc')->page(true, false, false, 15);
+        // 统计当前用户所有下属数
+        $userTotal = $this->app->db->name($this->table)->where($where)->count();
+        // 统计当前用户本月下属数
+        $where[] = ['create_at', 'like', date('Y-m-%')];
+        $userMonth = $this->app->db->name($this->table)->where($where)->count();
+        // 返回结果列表数据及统计
+        $result['total'] = ['user_total' => $userTotal, 'user_month' => $userMonth];
+        $this->success('获取我邀请的朋友', $result);
+    }
+
+    /**
      * 绑定用户邀请人
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -122,23 +140,13 @@ class Center extends Auth
         $from = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
         if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->get($this->type, $this->uuid));
         if ($this->user['from'] > 0) $this->error('已绑定了邀请人', UserService::instance()->total($this->uuid));
+        if (is_numeric(stripos($from['path'], "-{$this->uuid}-"))) $this->error('不能绑定下属');
         $data['path'] = rtrim($from['path'] ?: '-', '-') . '-' . $from['id'] . '-';
+        $data['layer'] = substr_count($data['path'], '-');
         if ($this->app->db->name($this->table)->where(['id' => $this->uuid])->update($data) !== false) {
             $this->success('绑定邀请人成功', UserService::instance()->total($this->uuid));
         } else {
             $this->error('绑定邀请人失败', UserService::instance()->total($this->uuid));
         }
-    }
-
-    /**
-     * 获取我邀请的朋友
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function getFrom()
-    {
-        $query = $this->_query($this->table)->field('id,from,username,nickname,headimg,create_at');
-        $this->success('获取我邀请的朋友', $query->where(['from' => $this->uuid])->order('id desc')->page(true, false, false, 15));
     }
 }

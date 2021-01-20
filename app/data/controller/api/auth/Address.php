@@ -45,12 +45,12 @@ class Address extends Auth
             if ($count > 0) $this->error('抱歉，该地址已经存在！');
             $data['code'] = CodeExtend::uniqidDate(12, 'A');
             if ($this->app->db->name($this->table)->insert($data) === false) {
-                $this->error('添加收货地址失败！');
+                $this->error('添加地址失败！');
             }
         } else {
             $map = ['uid' => $this->uuid, 'code' => $data['code']];
             $address = $this->app->db->name($this->table)->where($map)->find();
-            if (empty($address)) $this->error('修改收货地址不存在！');
+            if (empty($address)) $this->error('修改地址不存在！');
             $this->app->db->name($this->table)->where($map)->update($data);
         }
         // 去除其它默认选项
@@ -58,7 +58,7 @@ class Address extends Auth
             $map = [['uid', '=', $this->uuid], ['code', '<>', $data['code']]];
             $this->app->db->name($this->table)->where($map)->update(['type' => 0]);
         }
-        $this->success('添加收货地址成功！', $this->_getAddress($data['code']));
+        $this->success('地址保存成功！', $this->_getAddress($data['code']));
     }
 
     /**
@@ -72,7 +72,7 @@ class Address extends Auth
         $query = $this->_query($this->table)->withoutField('deleted');
         $query->equal('code')->where(['uid' => $this->uuid, 'deleted' => 0]);
         $result = $query->order('type desc,id desc')->page(false, false, false, 15);
-        $this->success('获取收货地址数据！', $result);
+        $this->success('获取地址数据！', $result);
     }
 
     /**

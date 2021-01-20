@@ -35,9 +35,7 @@
                     <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
                 </td>
                 <td class='list-table-sort-td'>
-                    <label>
-                        <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
-                    </label>
+                    <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
                 </td>
                 <td class='text-left nowrap'>{$vo.code|default=''}</td>
                 <td class='text-left nowrap'>{$vo.name|default=''}</td>
@@ -48,9 +46,9 @@
                     <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑快递公司" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
                     <!--{/if}-->
 
-                    <!--{if $vo.status eq 1 and auth("state")}-->
+                    <!--{if auth("state") and $vo.status eq 1}-->
                     <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="code#{$vo.code};status#0">禁 用</a>
-                    <!--{elseif auth("state")}-->
+                    <!--{elseif auth("state") and $vo.status eq 0}-->
                     <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="code#{$vo.code};status#1">激 活</a>
                     <!--{/if}-->
 

@@ -5,14 +5,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input name="member_phone" value="{:input('member_phone')}" placeholder="请输入用户手机" class="layui-input">
+                <input name="user_phone" value="{:input('user_phone')}" placeholder="请输入用户手机" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input name="member_nickname" value="{:input('member_nickname')}" placeholder="请输入用户昵称" class="layui-input">
+                <input name="user_nickname" value="{:input('user_nickname')}" placeholder="请输入用户昵称" class="layui-input">
             </label>
         </div>
 
@@ -63,12 +63,27 @@
             <label class="layui-form-label">付款状态</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="payment_status">
-                    <option value=''>- 全部订单 -</option>
+                    <option value=''>-- 全部 --</option>
                     {foreach ['0'=>'未支付的订单','1'=>'已支付的订单'] as $k=>$v}
                     {if input('payment_status') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
+                    {/if}{/foreach}
+                </select>
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">支付方式</label>
+            <label class="layui-input-inline">
+                <select class="layui-select" name="payment_type">
+                    <option value=''>-- 全部 --</option>
+                    {foreach $payments as $k=>$v}
+                    {if input('payment_type') eq $k.''}
+                    <option selected value="{$k}">{$v.name}</option>
+                    {else}
+                    <option value="{$k}">{$v.name}</option>
                     {/if}{/foreach}
                 </select>
             </label>
@@ -125,8 +140,8 @@
             data.forEach(function (item, index) {
                 data[index] = [
                     item.order_no,
-                    item.member.phone,
-                    item.member.username || item.member.nickname || '',
+                    item.user.phone,
+                    item.user.username || item.user.nickname || '',
                     item.payment_trade || '',
                     item.payment_status ? '已支付' : '未支付',
                     item.payment_amount || '0.00',

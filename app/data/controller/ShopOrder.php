@@ -3,7 +3,9 @@
 namespace app\data\controller;
 
 use app\data\service\OrderService;
+use app\data\service\PaymentService;
 use app\data\service\TruckService;
+use app\data\service\UserService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 
@@ -19,6 +21,18 @@ class ShopOrder extends Controller
      * @var string
      */
     private $table = 'ShopOrder';
+
+    /**
+     * 支付方式
+     * @var array
+     */
+    protected $payments = [];
+
+    protected function initialize()
+    {
+        parent::initialize();
+        $this->payments = PaymentService::types();
+    }
 
     /**
      * 订单数据管理
@@ -46,7 +60,7 @@ class ShopOrder extends Controller
         $db = $this->_query('ShopOrderSend')->like('address_name#truck_address_name,address_phone#truck_address_phone,address_province|address_city|address_area|address_content#truck_address_content')->db();
         if ($db->getOptions('where')) $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
         // 用户搜索查询
-        $db = $this->_query('DataUser')->like('phone#member_phone,nickname#member_nickname')->db();
+        $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
         // 推荐人搜索查询
         $db = $this->_query('DataUser')->like('phone#from_phone,nickname#from_nickname')->db();
@@ -54,7 +68,7 @@ class ShopOrder extends Controller
         // 列表选项卡
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) $query->where(['status' => $this->type]);
         // 分页排序处理
-        $query->order('id desc');
+        $query->where(['deleted' => 0])->order('id desc');
         if (input('output') === 'json') {
             $this->success('获取数据成功', $query->page(true, false));
         } else {
@@ -71,7 +85,12 @@ class ShopOrder extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
+        UserService::instance()->buildByUid($data);
+        UserService::instance()->buildByUid($data, 'from', 'fromer');
         OrderService::instance()->buildItemData($data);
+        foreach ($data as &$vo) {
+            $vo['payment_name'] = PaymentService::name($vo['payment_type']);
+        }
     }
 
     /**
@@ -141,6 +160,15 @@ class ShopOrder extends Controller
     }
 
     /**
+     * 清理订单数据
+     * @auth true
+     */
+    public function clean()
+    {
+        $this->_queue('定时清理无效订单数据', "xdata:OrderClear", 0, [], 0, 60);
+    }
+
+    /**
      * 取消未支付的订单
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
@@ -164,6 +192,7 @@ class ShopOrder extends Controller
                 'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
             if ($result !== false) {
+                OrderService::instance()->syncStock($order['order_no']);
                 $this->success('取消未支付的订单成功！');
             } else {
                 $this->error('取消支付的订单失败！');

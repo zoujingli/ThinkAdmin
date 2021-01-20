@@ -1,5 +1,11 @@
 {extend name="../../admin/view/main"}
 
+{block name="button"}
+<!--{if auth('config')}-->
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('config')}">发货地址管理</a>
+<!--{/if}-->
+{/block}
+
 {block name="content"}
 <div class="layui-tab layui-tab-card table-block">
     <ul class="layui-tab-title notselect">
@@ -33,26 +39,27 @@
                     <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
                 </td>
                 <td class="nowrap relative">
-                    <div class="headimg" style="width:56px;height:56px" data-tips-image data-lazy-src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                    <div class="headimg" style="width:56px;height:56px" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                     <div class="inline-block sub-span-blue">
-                        用户昵称：<span>{$vo.member.nickname|default='--'}</span><br>
-                        用户手机：<span>{$vo.member.phone|default='--'}</span><br>
-                        订单单号：<span>{$vo.order_no|default='--'}</span><br>
+                        用户昵称：<span>{$vo.user.nickname|default='-'}</span><br>
+                        用户手机：<span>{$vo.user.phone|default='-'}</span><br>
+                        订单单号：<span>{$vo.order_no|default='-'}</span><br>
                     </div>
                 </td>
                 <td class="nowrap">
-                    收货姓名：{$vo.address_name|default='--'}<span class="margin-left-5 color-blue">{$vo.address_phone}</span><br>
-                    收货地址：{$vo.address_province|default='--'}{$vo.address_city}{$vo.address_area}{$vo.address_content}<br>
-                    提交时间：{$vo.address_datetime|format_datetime}<br>
+                    <div>身份证号：{$vo.address_idcode|default='-'}</div>
+                    <div>收货姓名：{$vo.address_name|default='-'}<span class="margin-left-5 color-blue">{$vo.address_phone}</span></div>
+                    <div>收货地址：{$vo.address_province|default='-'}{$vo.address_city}{$vo.address_area}{$vo.address_content}</div>
+                    <div>提交时间：{$vo.address_datetime|format_datetime}</div>
                 </td>
                 <td class="nowrap">
                     {if empty($vo.send_datetime)}
                     <span class="layui-badge layui-bg-black">未发货</span>
                     {else}
-                    <span class="layui-badge layui-bg-blue">{$vo.company_name|default='--'}</span>
+                    <span class="layui-badge layui-bg-blue">{$vo.company_name|default='-'}</span>
                     <a data-title="{$vo.company_name}（{$vo.send_number}）" data-tips-text="快递追踪查询"
                        data-modal="{:url('shop_order/truckQuery')}?code={$vo.company_code}&number={$vo.send_number}"
-                       class="layui-badge layui-bg-orange margin-left-5">{$vo.send_number|default='--'}</a>
+                       class="layui-badge layui-bg-orange margin-left-5">{$vo.send_number|default='-'}</a>
                     <div class="margin-top-5">于 <b>{$vo.send_datetime|format_datetime} 发货！</b></div>
                     {/if}
                 </td>

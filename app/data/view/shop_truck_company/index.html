@@ -4,15 +4,19 @@
 <!--{if auth("synchronize") and $type eq 'index'}-->
 <button data-load='{:url("synchronize")}' data-confirm="确定要同步快递公司数据吗？" class='layui-btn layui-btn-sm layui-btn-primary'>同步公司</button>
 <!--{/if}-->
+
 <!--{if auth("add") and $type eq 'index'}-->
 <button data-modal='{:url("add")}' data-title="添加快递公司" class='layui-btn layui-btn-sm layui-btn-primary'>添加公司</button>
 <!--{/if}-->
+
 <!--{if auth("state") and $type eq 'index'}-->
 <button data-action='{:url("state")}' data-confirm="确定要禁用快递公司？" data-rule="id#{key};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>批量禁用</button>
 <!--{/if}-->
+
 <!--{if auth("state") and $type eq 'recycle'}-->
 <button data-action='{:url("state")}' data-rule="id#{key};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>批量启用</button>
 <!--{/if}-->
+
 <!--{if auth("remove") and $type eq 'recycle'}-->
 <button data-action='{:url("remove")}' data-csrf="{:systoken('remove')}" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
@@ -56,9 +60,7 @@
                     <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
                 </td>
                 <td class='list-table-sort-td'>
-                    <label>
-                        <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
-                    </label>
+                    <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
                 </td>
                 <td class='text-left nowrap'>{$vo.name|default=''}</td>
                 <td class='text-center nowrap'>{$vo.code_1|default='-'}</td>
@@ -69,11 +71,13 @@
                     <!--{if auth("edit") and $type eq 'index'}-->
                     <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑快递公司" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                     <!--{/if}-->
+
                     <!--{if $vo.status eq 1 and auth("state")}-->
                     <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
                     <!--{elseif auth("state")}-->
                     <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
                     <!--{/if}-->
+
                     <!--{if auth("remove") and $type eq 'recycle'}-->
                     <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
                     <!--{/if}-->

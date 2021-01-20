@@ -3,6 +3,8 @@
 namespace app\data\service;
 
 use app\data\service\payment\AlipayPaymentService;
+use app\data\service\payment\BalancePyamentService;
+use app\data\service\payment\EmptyPaymentService;
 use app\data\service\payment\JoinPaymentService;
 use app\data\service\payment\WechatPaymentService;
 use think\App;
@@ -17,7 +19,11 @@ use think\Exception;
 abstract class PaymentService
 {
 
-    // 汇聚支付通道
+    // 用户余额支付
+    const PAYMENT_EMPTY = 'empty';
+    const PAYMENT_BALANCE = 'balance';
+
+    // 汇聚支付参数
     const PAYMENT_JOINPAY_GZH = 'joinpay_gzh';
     const PAYMENT_JOINPAY_XCX = 'joinpay_xcx';
 
@@ -28,64 +34,78 @@ abstract class PaymentService
     const PAYMENT_WECHAT_WAP = 'wechat_wap';
     const PAYMENT_WECHAT_QRC = 'wechat_qrc';
 
-    // 支付宝支付通道
+    // 支付宝支付参数
     const PAYMENT_ALIAPY_APP = 'alipay_app';
     const PAYMENT_ALIPAY_WAP = 'alipay_wap';
     const PAYMENT_ALIPAY_WEB = 'alipay_web';
 
-    // 支付通道配置
+    // 支付参数配置
     const TYPES = [
         // 微信支付配置（不需要的直接注释）
-        PaymentService::PAYMENT_WECHAT_WAP  => [
+        self::PAYMENT_EMPTY       => [
+            'type' => 'EMPTY',
+            'name' => '订单无需支付',
+            'bind' => [],
+        ],
+        self::PAYMENT_BALANCE     => [
+            'type' => 'BALANCE',
+            'name' => '账号余额支付',
+            'bind' => [
+                UserService::APITYPE_WAP, UserService::APITYPE_WEB,
+                UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT,
+                UserService::APITYPE_IOSAPP, UserService::APITYPE_ANDROID,
+            ],
+        ],
+        self::PAYMENT_WECHAT_WAP  => [
             'type' => 'MWEB',
-            'name' => '微信商户 H5 支付',
+            'name' => '微信WAP支付',
             'bind' => [UserService::APITYPE_WAP],
         ],
-        PaymentService::PAYMENT_WECHAT_APP  => [
+        self::PAYMENT_WECHAT_APP  => [
             'type' => 'APP',
-            'name' => '微信商户 APP 支付',
+            'name' => '微信APP支付',
             'bind' => [UserService::APITYPE_IOSAPP, UserService::APITYPE_ANDROID],
         ],
-        PaymentService::PAYMENT_WECHAT_XCX  => [
+        self::PAYMENT_WECHAT_XCX  => [
             'type' => 'JSAPI',
-            'name' => '微信商户 小程序 支付',
+            'name' => '微信小程序支付',
             'bind' => [UserService::APITYPE_WXAPP],
         ],
-        PaymentService::PAYMENT_WECHAT_GZH  => [
+        self::PAYMENT_WECHAT_GZH  => [
             'type' => 'JSAPI',
-            'name' => '微信商户 公众号 支付',
+            'name' => '微信公众号支付',
             'bind' => [UserService::APITYPE_WECHAT],
         ],
-        PaymentService::PAYMENT_WECHAT_QRC  => [
+        self::PAYMENT_WECHAT_QRC  => [
             'type' => 'NATIVE',
-            'name' => '微信商户 二维码 支付',
+            'name' => '微信二维码支付',
             'bind' => [UserService::APITYPE_WEB],
         ],
         // 支付宝支持配置（不需要的直接注释）
-        PaymentService::PAYMENT_ALIPAY_WAP  => [
+        self::PAYMENT_ALIPAY_WAP  => [
             'type' => '',
-            'name' => '支付宝 WAP 支付',
+            'name' => '支付宝WAP支付',
             'bind' => [UserService::APITYPE_WAP],
         ],
-        PaymentService::PAYMENT_ALIPAY_WEB  => [
+        self::PAYMENT_ALIPAY_WEB  => [
             'type' => '',
-            'name' => '支付宝 WEB 支付',
+            'name' => '支付宝WEB支付',
             'bind' => [UserService::APITYPE_WEB],
         ],
-        PaymentService::PAYMENT_ALIAPY_APP  => [
+        self::PAYMENT_ALIAPY_APP  => [
             'type' => '',
-            'name' => '支付宝 APP 支付',
+            'name' => '支付宝APP支付',
             'bind' => [UserService::APITYPE_ANDROID, UserService::APITYPE_IOSAPP],
         ],
         // 汇聚支持配置（不需要的直接注释）
-        PaymentService::PAYMENT_JOINPAY_XCX => [
+        self::PAYMENT_JOINPAY_XCX => [
             'type' => 'WEIXIN_XCX',
-            'name' => '汇聚 小程序 支付',
+            'name' => '汇聚小程序支付',
             'bind' => [UserService::APITYPE_WXAPP],
         ],
-        PaymentService::PAYMENT_JOINPAY_GZH => [
+        self::PAYMENT_JOINPAY_GZH => [
             'type' => 'WEIXIN_GZH',
-            'name' => '汇聚 公众号 支付',
+            'name' => '汇聚公众号支付',
             'bind' => [UserService::APITYPE_WECHAT],
         ],
     ];
@@ -97,7 +117,7 @@ abstract class PaymentService
     protected $app;
 
     /**
-     * 支付通道编号
+     * 支付参数编号
      * @var string
      */
     protected $code;
@@ -109,7 +129,7 @@ abstract class PaymentService
     protected $type;
 
     /**
-     * 当前支付通道
+     * 当前支付参数
      * @var array
      */
     protected $params;
@@ -123,9 +143,9 @@ abstract class PaymentService
     /**
      * PaymentService constructor.
      * @param App $app 当前应用对象
-     * @param string $code 支付通道编号
+     * @param string $code 支付参数编号
      * @param string $type 支付类型代码
-     * @param array $params 支付通道配置
+     * @param array $params 支付参数配置
      */
     public function __construct(App $app, string $code, string $type, array $params)
     {
@@ -140,17 +160,23 @@ abstract class PaymentService
 
     /**
      * 根据配置实例支付服务
-     * @param string $code 支付通道编号
+     * @param string $code 支付参数编号
      * @return JoinPaymentService|WechatPaymentService|AlipayPaymentService
      * @throws Exception
      */
     public static function instance(string $code): PaymentService
     {
+        if ($code === 'empty') {
+            $vars = ['code' => 'empty', 'type' => 'empty', 'params' => []];
+            return static::$driver[$code] = Container::getInstance()->make(EmptyPaymentService::class, $vars);
+        }
         [, $type, $params] = self::config($code);
         if (isset(static::$driver[$code])) return static::$driver[$code];
         $vars = ['code' => $code, 'type' => $type, 'params' => $params];
-        // 实例化具体支付通道类型
-        if (stripos($type, 'alipay_') === 0) {
+        // 实例化具体支付参数类型
+        if (stripos($type, 'balance') === 0) {
+            return static::$driver[$code] = Container::getInstance()->make(BalancePyamentService::class, $vars);
+        } elseif (stripos($type, 'alipay_') === 0) {
             return static::$driver[$code] = Container::getInstance()->make(AlipayPaymentService::class, $vars);
         } elseif (stripos($type, 'wechat_') === 0) {
             return static::$driver[$code] = Container::getInstance()->make(WechatPaymentService::class, $vars);
@@ -159,6 +185,31 @@ abstract class PaymentService
         } else {
             throw new Exception(sprintf('支付驱动[%s]未定义', $type));
         }
+    }
+
+    /**
+     * 获取支付通道名称
+     * @param string $type
+     * @return string
+     */
+    public static function name(string $type): string
+    {
+        return self::TYPES[$type]['name'] ?? $type;
+    }
+
+    /**
+     * 获取支付类型
+     * @return array
+     */
+    public static function types(): array
+    {
+        $types = [];
+        foreach (self::TYPES as $k => $v) if (isset($v['bind'])) {
+            if (array_intersect($v['bind'], array_keys(UserService::TYPES))) {
+                $types[$k] = $v;
+            }
+        }
+        return $types;
     }
 
     /**
@@ -173,17 +224,17 @@ abstract class PaymentService
         try {
             if (empty($payment)) {
                 $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
-                $payment = app()->db->name('DataPayment')->where($map)->find();
+                $payment = app()->db->name('ShopPayment')->where($map)->find();
             }
             if (empty($payment)) {
-                throw new Exception("支付通道[#{$code}]禁用关闭");
+                throw new Exception("支付参数[#{$code}]禁用关闭");
             }
             $params = @json_decode($payment['content'], true);
             if (empty($params)) {
-                throw new Exception("支付通道[#{$code}]配置无效");
+                throw new Exception("支付参数[#{$code}]配置无效");
             }
             if (empty(static::TYPES[$payment['type']])) {
-                throw new Exception("支付通道[@{$payment['type']}]匹配失败");
+                throw new Exception("支付参数[@{$payment['type']}]匹配失败");
             }
             return [$payment['code'], $payment['type'], $params];
         } catch (\Exception $exception) {
@@ -196,12 +247,13 @@ abstract class PaymentService
      * @param string $orderNo 订单单号
      * @param string $paymentTrade 交易单号
      * @param string $paymentAmount 支付金额
+     * @param string $paymentRemark 支付描述
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount): bool
+    public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount, $paymentRemark = '在线支付'): bool
     {
         // 检查订单支付状态
         $map = ['order_no' => $orderNo, 'payment_status' => 0, 'status' => 2];
@@ -214,14 +266,12 @@ abstract class PaymentService
             'payment_code'     => $this->code,
             'payment_trade'    => $paymentTrade,
             'payment_amount'   => $paymentAmount,
+            'payment_remark'   => $paymentRemark,
             'payment_status'   => 1,
-            'payment_remark'   => '在线支付',
             'payment_datetime' => date('Y-m-d H:i:s'),
         ];
         if (empty($data['payment_type'])) unset($data['payment_type']);
         $this->app->db->name('ShopOrder')->where($map)->update($data);
-        // 调用用户升级机制
-        OrderService::instance()->syncAmount($order['order_no']);
         // 触发订单更新事件
         $this->app->event->trigger('ShopOrderPayment', $orderNo);
         return true;
@@ -235,7 +285,7 @@ abstract class PaymentService
      */
     protected function createPaymentAction(string $orderNo, string $paymentTitle, string $paymentAmount)
     {
-        $this->app->db->name('DataPaymentItem')->insert([
+        $this->app->db->name('ShopPaymentItem')->insert([
             'payment_code' => $this->code, 'payment_type' => $this->type,
             'order_amount' => $paymentAmount, 'order_name' => $paymentTitle, 'order_no' => $orderNo,
         ]);
@@ -246,15 +296,16 @@ abstract class PaymentService
      * @param string $orderNo 商户订单单号
      * @param string $paymentTrade 平台交易单号
      * @param string $paymentAmount 实际到账金额
+     * @param string $paymentRemark 平台支付备注
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function updatePaymentAction(string $orderNo, string $paymentTrade, string $paymentAmount): bool
+    protected function updatePaymentAction(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付'): bool
     {
         // 更新支付记录
-        data_save('DataPaymentItem', [
+        data_save('ShopPaymentItem', [
             'order_no'         => $orderNo,
             'payment_code'     => $this->code,
             'payment_type'     => $this->type,
@@ -267,7 +318,7 @@ abstract class PaymentService
             'payment_type' => $this->type,
         ]);
         // 更新记录状态
-        return $this->updateOrder($orderNo, $paymentTrade, $paymentAmount);
+        return $this->updateOrder($orderNo, $paymentTrade, $paymentAmount, $paymentRemark);
     }
 
     /**

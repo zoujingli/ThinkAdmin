@@ -5,46 +5,72 @@
             <span class="color-desc margin-left-5">Goods Name</span>
             <div class="layui-input layui-bg-gray">{$vo.name|default=''}</div>
         </div>
+
         <div class="layui-form-item">
             <div class="relative block">
-                <span class="color-green font-w7">规格数据</span>
-                <span class="color-desc margin-left-5">Specification Data</span>
-                <table class="layui-table" lay-skin="line">
+                <span class="color-green font-w7">库存数据</span>
+                <span class="color-desc margin-left-5">Stock Data</span>
+                <table class="layui-table border-0 margin-0" lay-skin="line">
+                    <colgroup>
+                        <col style="width:auto">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:99px">
+                        <col style="width:18px">
+                    </colgroup>
                     <thead>
-                    <tr class="layui-bg-cyan">
-                        <th class="text-left nowrap border-0">商品规格</th>
-                        <th class="text-center nowrap border-0">市场价格</th>
-                        <th class="text-center nowrap border-0">销售价格</th>
-                        <th class="text-center nowrap border-0">库存统计</th>
-                        <th class="text-center nowrap border-0">总销统计</th>
-                        <th class="text-center nowrap border-0">库存剩余</th>
-                        <th class="text-center nowrap border-0">入库数量</th>
+                    <tr class="layui-bg-cyan notselect">
+                        <th class="text-left nowrap">商品规格</th>
+                        <th class="text-center nowrap">市场价格</th>
+                        <th class="text-center nowrap">销售价格</th>
+                        <th class="text-center nowrap">库存统计</th>
+                        <th class="text-center nowrap">总销统计</th>
+                        <th class="text-center nowrap">库存剩余</th>
+                        <th class="text-center nowrap">入库数量</th>
+                        <th class="padding-0 nowrap"></th>
                     </tr>
                     </thead>
-                    <tbody>
-                    {foreach $vo.items as $goods}
-                    <tr>
-                        <td class="layui-bg-gray" width="28%">{$goods.goods_spec|show_goods_spec}</td>
-                        <td class="layui-bg-gray text-center" width="12%">￥{$goods.price_market+0}</td>
-                        <td class="layui-bg-gray text-center" width="12%">￥{$goods.price_selling+0}</td>
-                        <td class="layui-bg-gray text-center" width="12%">{$goods.stock_total|default=0}</td>
-                        <td class="layui-bg-gray text-center" width="12%">{$goods.stock_sales|default=0}</td>
-                        <td class="layui-bg-gray text-center" width="12%">{$goods.stock_total-$goods.stock_sales}</td>
-                        <td class="padding-0 nowrap" width="12%">
-                            <input type="hidden" name="goods_code[]" value="{$goods.goods_code|default=''}">
-                            <input type="hidden" name="goods_spec[]" value="{$goods.goods_spec|default=''}">
-                            <label>
-                                <input class="layui-input text-right border-0 padding-right-30" maxlength="20" data-blur-number="0" name="goods_stock[]" value="0">
-                                <span class="input-right-icon">件</span>
-                            </label>
-                        </td>
-                    </tr>
-                    {/foreach}
-                    </tbody>
                 </table>
+                <div style="max-height:500px;overflow-y:scroll">
+                    <table class="layui-table margin-0" lay-skin="line">
+                        <colgroup>
+                            <col style="width:auto">
+                            <col style="width:80px">
+                            <col style="width:80px">
+                            <col style="width:80px">
+                            <col style="width:80px">
+                            <col style="width:80px">
+                            <col style="width:99px">
+                        </colgroup>
+                        <tbody>
+                        {foreach $vo.items as $goods}
+                        <tr>
+                            <td class="layui-bg-gray layui-elip">{$goods.goods_spec|show_goods_spec}</td>
+                            <td class="layui-bg-gray text-center">￥{$goods.price_market+0}</td>
+                            <td class="layui-bg-gray text-center">￥{$goods.price_selling+0}</td>
+                            <td class="layui-bg-gray text-center">{$goods.stock_total|default=0}</td>
+                            <td class="layui-bg-gray text-center">{$goods.stock_sales|default=0}</td>
+                            <td class="layui-bg-gray text-center">{$goods.stock_total-$goods.stock_sales}</td>
+                            <td class="padding-0 nowrap">
+                                <input type="hidden" name="goods_code[]" value="{$goods.goods_code|default=''}">
+                                <input type="hidden" name="goods_spec[]" value="{$goods.goods_spec|default=''}">
+                                <label>
+                                    <input class="layui-input text-right border-0 padding-right-40" maxlength="20" data-blur-number="0" name="goods_stock[]" value="0">
+                                    <span class="input-right-icon layui-bg-gray">件</span>
+                                </label>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+
     <div class="hr-line-dashed"></div>
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>确定入库</button>

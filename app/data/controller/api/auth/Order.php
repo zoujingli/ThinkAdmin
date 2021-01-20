@@ -37,10 +37,7 @@ class Order extends Auth
      */
     public function get()
     {
-        $map = [['uid', '=', $this->uuid]];
-        if (!$this->request->has('order_no', 'param', true)) {
-            $map[] = ['status', 'in', [0, 2, 3, 4, 5]];
-        }
+        $map = ['uid' => $this->uuid, 'deleted' => 0];
         $query = $this->_query('ShopOrder')->in('status')->equal('order_no');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
         if (count($result['list']) > 0) OrderService::instance()->buildItemData($result['list']);
@@ -57,32 +54,31 @@ class Order extends Auth
     {
         // 商品规则
         $rules = $this->request->post('items', '');
-        if (empty($rules)) $this->error('商品规则不能为空！');
+        if (empty($rules)) $this->error('商品不能为空');
         // 订单数据
         [$codes, $items] = [[], []];
-        $order = ['uid' => $this->uuid, 'from' => input('from_mid', '0'), 'status' => 1];
+        $order = ['uid' => $this->uuid, 'status' => 1];
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
         // 推荐人处理
-        if ($order['from'] == $this->uuid) {
-            $order['from'] = 0;
-        }
+        $order['from'] = input('from_uid', $this->user['from']);
+        if ($order['from'] == $this->uuid) $order['from'] = 0;
         if ($order['from'] > 0) {
             $map = ['id' => $order['from'], 'status' => 1];
-            $from = $this->app->db->name('ShopMember')->where($map)->find();
-            if (empty($from)) $this->error('推荐人信息异常！');
+            $from = $this->app->db->name('DataUser')->where($map)->find();
+            if (empty($from)) $this->error('推荐人异常');
         }
         foreach (explode('||', $rules) as $rule) {
             [$code, $spec, $count] = explode('@', $rule);
             // 商品信息检查
             $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
             $goodsInfo = $this->app->db->name('ShopGoods')->where($map)->find();
-            if (empty($goodsInfo)) $this->error('商品主体异常，请稍候再试！');
+            if (empty($goodsInfo)) $this->error('商品数据异常');
             $map = ['goods_code' => $code, 'goods_spec' => $spec, 'status' => 1];
             $goodsItem = $this->app->db->name('ShopGoodsItem')->where($map)->find();
-            if (empty($goodsItem)) $this->error('商品规格异常，请稍候再试！');
+            if (empty($goodsItem)) $this->error('商品规格异常');
             // 商品库存检查
             if ($goodsItem['stock_sales'] + $count > $goodsItem['stock_total']) {
-                $this->error('商品库存不足，请购买其它商品！');
+                $this->error('商品库存不足');
             }
             // 订单详情处理
             $items[] = [
@@ -106,29 +102,34 @@ class Order extends Auth
             ];
         }
         try {
-            // 统计订单商品
-            $order['amount_reduct'] = OrderService::instance()->getReduct();
-            // 统计订单金额
+            // 统计商品数量
             $order['number_goods'] = array_sum(array_column($items, 'stock_sales'));
+            // 统计商品金额
             $order['amount_goods'] = array_sum(array_column($items, 'total_selling'));
-            $order['amount_total'] = $order['amount_goods'] - $order['amount_reduct'];
-            // 支付金额不能为零
-            if ($order['amount_total'] <= 0) $order['amount_total'] = 0.01;
+            // 订单随机免减
+            $order['amount_reduct'] = OrderService::instance()->getReduct();
+            if ($order['amount_reduct'] > $order['amount_goods']) {
+                $order['amount_reduct'] = $order['amount_goods'];
+            }
+            // 统计订单金额
+            $order['amount_real'] = $order['amount_goods'] - $order['amount_reduct'];
+            $order['amount_total'] = $order['amount_goods'];
+
             // 写入订单商品数据
             $this->app->db->name('ShopOrder')->insert($order);
             $this->app->db->name('ShopOrderItem')->insertAll($items);
             // 同步商品库存销量
             foreach ($codes as $code) GoodsService::instance()->syncStock($code);
-            // 返回订单数据接口
-            $order['items'] = $items;
             // 触发订单创建事件
             $this->app->event->trigger('ShopOrderCreate', $order['order_no']);
+            // 组装订单商品数据
+            $order['items'] = $items;
             // 返回处理成功数据
-            $this->success('预购订单创建成功，请补全收货地址', $order);
+            $this->success('商品下单成功', $order);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
-            $this->error("创建订单失败，{$exception->getMessage()}");
+            $this->error("商品下单失败，{$exception->getMessage()}");
         }
     }
 
@@ -141,13 +142,13 @@ class Order extends Auth
     public function express()
     {
         $data = $this->_vali([
-            'code.require'     => '收货地址不能为空！',
-            'order_no.require' => '订单单号不能为空！',
+            'code.require'     => '地址不能为空',
+            'order_no.require' => '单号不能为空',
         ]);
         // 用户收货地址
         $map = ['uid' => $this->uuid, 'code' => $data['code']];
         $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
-        if (empty($addr)) $this->error('用户收货地址异常！');
+        if (empty($addr)) $this->error('收货地址异常');
         // 订单状态检查
         $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
         $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_count');
@@ -167,18 +168,18 @@ class Order extends Auth
     public function perfect()
     {
         $data = $this->_vali([
-            'code.require'     => '地址编号不能为空！',
-            'order_no.require' => '订单单号不能为空！',
+            'code.require'     => '地址不能为空',
+            'order_no.require' => '单号不能为空',
         ]);
         // 用户收货地址
         $map = ['uid' => $this->uuid, 'code' => $data['code'], 'deleted' => 0];
         $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
-        if (empty($addr)) $this->error('用户收货地址异常！');
+        if (empty($addr)) $this->error('收货地址异常');
         // 订单状态检查
         $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->whereIn('status', [1, 2])->find();
         $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_count');
-        if (empty($order)) $this->error('不能修改收货地址哦！');
+        if (empty($order)) $this->error('不能修改地址');
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
         $tCodes = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_tcode');
@@ -192,25 +193,30 @@ class Order extends Auth
         $express['address_code'] = $data['code'];
         $express['address_name'] = $addr['name'];
         $express['address_phone'] = $addr['phone'];
+        $express['address_idcode'] = $addr['idcode'];
         $express['address_province'] = $addr['province'];
         $express['address_city'] = $addr['city'];
         $express['address_area'] = $addr['area'];
         $express['address_content'] = $addr['address'];
         $express['address_datetime'] = date('Y-m-d H:i:s');
         data_save('ShopOrderSend', $express, 'order_no');
-        // 更新订单状态，刷新订单金额
-        $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
+        // 组装更新订单数据
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
-        $update['amount_total'] = $order['amount_goods'] + $amount - $order['amount_reduct'] - $order['amount_discount'];
+        // 重新计算订单金额
+        $update['amount_real'] = $order['amount_goods'] + $amount - $order['amount_reduct'] - $order['amount_discount'];
+        $update['amount_total'] = $order['amount_goods'] + $amount;
         // 支付金额不能为零
-        if ($update['amount_total'] <= 0) $update['amount_total'] = 0.01;
+        if ($update['amount_real'] <= 0) $update['amount_real'] = 0.00;
+        if ($update['amount_total'] <= 0) $update['amount_total'] = 0.00;
+        // 更新用户订单数据
+        $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
         if ($this->app->db->name('ShopOrder')->where($map)->update($update) !== false) {
             // 触发订单确认事件
             $this->app->event->trigger('ShopOrderPerfect', $order['order_no']);
             // 返回处理成功数据
-            $this->success('订单确认成功！', ['order_no' => $order['order_no']]);
+            $this->success('订单确认成功', ['order_no' => $order['order_no']]);
         } else {
-            $this->error('订单确认失败，请稍候再试！');
+            $this->error('订单确认失败');
         }
     }
 
@@ -223,27 +229,30 @@ class Order extends Auth
     public function payment()
     {
         $data = $this->_vali([
-            'order_no.require'     => '订单单号不能为空！',
-            'payment_code.require' => '支付通道不能为空！',
+            'order_no.require'     => '单号不能为空',
+            'payment_code.require' => '参数不能为空',
             'payment_back.default' => '', # 支付回跳地址
         ]);
         $map = ['order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) $this->error('获取订单数据失败！');
-        if ($order['status'] != 2) $this->error('订单不能发起支付哦！');
-        if ($order['payment_status'] > 0) $this->error('订单已经完成支付！');
+        if (empty($order)) $this->error('读取订单失败');
+        if ($order['status'] != 2) $this->error('不能发起支付');
+        if ($order['payment_status'] > 0) $this->error('已经完成支付');
         try {
             $openid = '';
             if (in_array($this->type, [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT])) {
                 $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
-                if (empty($openid)) $this->error("无法创建支付，未获取到OPENID");
+                if (empty($openid)) $this->error("无法创建支付");
             }
-            $params = PaymentService::instance($data['payment_code'])->create($openid, $order['order_no'], $order['amount_total'], '商城订单支付', '', $data['payment_back']);
-            $this->success('获取支付参数成功！', $params);
+            // 返回订单数据及支付发起参数
+            $type = $order['amount_real'] <= 0 ? 'empty' : $data['payment_code'];
+            $param = PaymentService::instance($type)->create($openid, $order['order_no'], $order['amount_real'], '商城订单支付', '', $data['payment_back']);
+            $order = $this->app->db->name('ShopOrder')->where($map)->find() ?: new \stdClass();
+            $this->success('获取支付参数', ['order' => $order, 'param' => $param]);
         } catch (HttpResponseException $exception) {
-            throw  $exception;
+            throw $exception;
         } catch (\Exception $exception) {
-            $this->error("创建支付参数失败，{$exception->getMessage()}");
+            $this->error($exception->getMessage());
         }
     }
 
@@ -257,10 +266,10 @@ class Order extends Auth
     {
         $map = $this->_vali([
             'uid.value'        => $this->uuid,
-            'order_no.require' => '订单号不能为空！',
+            'order_no.require' => '单号不能为空',
         ]);
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) $this->error('订单查询失败，请稍候再试！');
+        if (empty($order)) $this->error('读取订单失败');
         if (in_array($order['status'], [1, 2])) {
             $result = $this->app->db->name('ShopOrder')->where($map)->update([
                 'status'          => 0,
@@ -272,12 +281,46 @@ class Order extends Auth
                 // 触发订单取消事件
                 $this->app->event->trigger('ShopOrderCancel', $order['order_no']);
                 // 返回处理成功数据
-                $this->success('订单取消成功！');
+                $this->success('订单取消成功');
             } else {
-                $this->error('订单取消失败，请稍候再试！');
+                $this->error('订单取消失败');
             }
         } else {
-            $this->error('该订单状态不能取消哦~');
+            $this->error('订单不可取消');
+        }
+    }
+
+    /**
+     * 用户主动删除已取消的订单
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function remove()
+    {
+        $map = $this->_vali([
+            'uid.value'        => $this->uuid,
+            'order_no.require' => '单号不能为空',
+        ]);
+        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        if (empty($order)) $this->error('读取订单失败');
+        if (in_array($order['status'], [0])) {
+            $result = $this->app->db->name('ShopOrder')->where($map)->update([
+                'status'           => 0,
+                'deleted'          => 1,
+                'deleted_remark'   => '用户主动删除订单！',
+                'deleted_datetime' => date('Y-m-d H:i:s'),
+            ]);
+            if ($result !== false) {
+                // 触发订单删除事件
+                $this->app->event->trigger('ShopOrderRemove', $order['order_no']);
+                // 返回处理成功数据
+                $this->success('订单删除成功');
+            } else {
+                $this->error('订单删除失败');
+            }
+        } else {
+            $this->error('订单不可删除');
         }
     }
 
@@ -291,21 +334,21 @@ class Order extends Auth
     {
         $map = $this->_vali([
             'uid.value'        => $this->uuid,
-            'order_no.require' => '订单号不能为空！',
+            'order_no.require' => '单号不能为空',
         ]);
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) $this->error('订单查询失败，请稍候再试！');
+        if (empty($order)) $this->error('读取订单失败');
         if (in_array($order['status'], [4])) {
             if ($this->app->db->name('ShopOrder')->where($map)->update(['status' => 5]) !== false) {
                 // 触发订单确认事件
                 $this->app->event->trigger('ShopOrderConfirm', $order['order_no']);
                 // 返回处理成功数据
-                $this->success('订单确认成功！');
+                $this->success('订单确认成功');
             } else {
-                $this->error('订单确认失败，请稍候再试！');
+                $this->error('订单确认失败');
             }
         } else {
-            $this->error('订单不能确认收货哦~');
+            $this->error('订单确认失败');
         }
     }
 
@@ -323,7 +366,7 @@ class Order extends Auth
         $query->where($map)->group('status')->select()->each(function ($item) use (&$data) {
             $data["t{$item['status']}"] = $item['count'];
         });
-        $this->success('获取状态统计成功！', $data);
+        $this->success('获取统计成功', $data);
     }
 
     /**
@@ -333,8 +376,8 @@ class Order extends Auth
     {
         try {
             $data = $this->_vali([
-                'code.require'   => '快递编号不能为空！',
-                'number.require' => '配送单号不能为空！',
+                'code.require'   => '快递不能为空',
+                'number.require' => '单号不能为空',
             ]);
             $result = TruckService::instance()->query($data['code'], $data['number']);
             empty($result['code']) ? $this->error($result['info']) : $this->success('快递追踪信息', $result);

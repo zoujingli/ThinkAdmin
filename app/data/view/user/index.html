@@ -12,6 +12,7 @@
             </th>
             <th class='nowrap'>用户信息</th>
             <th class='nowrap'>推荐人信息</th>
+            <th class='nowrap'>余额信息</th>
             <th class='nowrap'>注册时间</th>
             <th class='nowrap'></th>
         </tr>
@@ -49,11 +50,20 @@
                 <div class="color-desc">没有推荐人</div>
                 {/notempty}
             </td>
+            <td class="nowrap sub-span-blue">
+                <div>余额统计：累计充值 <span>{$vo.balance_total+0}</span> 元，已使用 <span>{$vo.balance_used+0}</span> 元</div>
+                <div>奖励统计：共奖励金额 <span>{$vo.amount_total+0}</span> 元，已提现 <span>{$vo.amount_used+0}</span> 元</div>
+            </td>
             <td class="nowrap">
                 使用状态：{if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{elseif $vo.status eq 1}<b class="color-green margin-right-5">已激活</b>{/if}<br>
                 注册时间：{$vo.create_at|format_datetime}
             </td>
             <td class="nowrap">
+
+                <!--{if auth("user_balance/add")}-->
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('user_balance/add')}?uid={$vo.id}">余额充值</a>
+                <!--{/if}-->
+
                 <!--{if auth("state") and $vo.status eq 1}-->
                 <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">冻结账号</a>
                 <!--{/if}-->

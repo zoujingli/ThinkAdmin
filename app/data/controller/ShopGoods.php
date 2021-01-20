@@ -163,22 +163,21 @@ class ShopGoods extends Controller
             if (empty($data['slider'])) $this->error('轮播图不能为空！');
             // 商品规格保存
             $data['mark'] = arr2str($data['mark'] ?? []);
-            [$count, $items] = [0, json_decode($data['data_items'], true)];
-            foreach ($items as $item) {
-                $count += intval($item[0]['status']);
-                if (empty($data['price_market'])) $data['price_market'] = $item[0]['market'];
-            }
+            [$count, $items] = [0, array_column(json_decode($data['data_items'], true), 0)];
+            foreach ($items as $item) $count += intval($item['status']);
             if (empty($count)) $this->error('无效的的商品价格信息！');
+            if (empty($data['price_market'])) $data['price_market'] = min(array_column($items, 'market'));
+            if (empty($data['price_selling'])) $data['price_selling'] = min(array_column($items, 'selling'));
             $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->update(['status' => 0]);
             foreach ($items as $item) data_save('ShopGoodsItem', [
                 'goods_code'     => $data['code'],
-                'goods_sku'      => $item[0]['sku'],
-                'goods_spec'     => $item[0]['key'],
-                'price_market'   => $item[0]['market'],
-                'price_selling'  => $item[0]['selling'],
-                'number_virtual' => $item[0]['virtual'],
-                'number_express' => $item[0]['express'],
-                'status'         => $item[0]['status'] ? 1 : 0,
+                'goods_sku'      => $item['sku'],
+                'goods_spec'     => $item['key'],
+                'price_market'   => $item['market'],
+                'price_selling'  => $item['selling'],
+                'number_virtual' => $item['virtual'],
+                'number_express' => $item['express'],
+                'status'         => $item['status'] ? 1 : 0,
             ], 'goods_spec', ['goods_code' => $data['code']]);
         }
     }

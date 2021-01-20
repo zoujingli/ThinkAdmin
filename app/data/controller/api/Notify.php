@@ -17,7 +17,7 @@ class Notify extends Controller
     /**
      * 微信支付通知
      * @param string $scene 支付场景
-     * @param string $param 支付通道
+     * @param string $param 支付参数
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\Exception
@@ -37,7 +37,7 @@ class Notify extends Controller
     /**
      * 支付宝支付通知
      * @param string $scene 支付场景
-     * @param string $param 支付通道
+     * @param string $param 支付参数
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\Exception
@@ -57,7 +57,7 @@ class Notify extends Controller
     /**
      * 汇聚支付通知
      * @param string $scene 支付场景
-     * @param string $param 支付通道
+     * @param string $param 支付参数
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\Exception

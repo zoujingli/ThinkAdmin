@@ -1,4 +1,16 @@
 <?php
+
+use app\data\command\OrderClear;
+use app\data\command\UserBalance;
+use think\Console;
+
+Console::starting(function (Console $console) {
+    if (app()->request->isCli()) {
+        $console->addCommand(OrderClear::class);
+        $console->addCommand(UserBalance::class);
+    }
+});
+
 if (!function_exists('show_goods_spec')) {
     /**
      * 商品规格过滤显示

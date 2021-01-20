@@ -22,4 +22,17 @@ class Data extends Controller
         $data = sysdata(input('keys', 'slider'));
         $this->success('获取轮播图片数据', $data);
     }
+
+    /**
+     * 获取系统通知数据
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getNotify()
+    {
+        $query = $this->_query('DataUserNotify')->where(['status' => 1, 'deleted' => 0]);
+        $result = $query->equal('id')->order('sort desc,id desc')->page(true, false, false, 20);
+        $this->success('获取系统通知数据', $result);
+    }
 }

@@ -1,0 +1,63 @@
+{extend name="../../admin/view/main"}
+
+{block name="button"}
+<!--{if auth("remove")}-->
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些充值记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除充值</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='user_balance/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
+            <th class='text-left nowrap'>用户信息</th>
+            <th class='text-left nowrap'>充值金额</th>
+            <th class='text-left nowrap'>充值描述</th>
+            <th class='text-left nowrap'>操作用户</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
+            <td class="nowrap">
+                <div class="headimg" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="inline-block sub-span-blue">
+                    用户昵称：{$vo.user.nickname|default='--'}<br>
+                    用户手机：<span>{$vo.user.phone|default='--'}</span><br>
+                </div>
+            </td>
+            <td class="nowrap sub-span-blue">
+                <div>充值金额：<span>{$vo.amount+0}</span> 元</div>
+                <div>充值单号：{$vo.code|default='-'}</div>
+            </td>
+            <td class="nowrap">
+                <div>充值名称：{$vo.name|default='-'}</div>
+                <div>充值备注：{$vo.remark|default='-'}</div>
+            </td>
+            <td class="nowrap">
+                <div>操作账号：{$vo.create_byname|default=''}</div>
+                <div>操作时间：{$vo.create_at|default=''}</div>
+            </td>
+            <td class="nowrap">
+                <!--{if auth("remove")}-->
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                <!--{/if}-->
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

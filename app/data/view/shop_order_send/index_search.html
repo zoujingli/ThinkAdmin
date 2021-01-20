@@ -4,14 +4,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input name="member_phone" value="{:input('member_phone')}" placeholder="请输入用户手机" class="layui-input">
+                <input name="user_phone" value="{:input('user_phone')}" placeholder="请输入用户手机" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input name="member_nickname" value="{:input('member_nickname')}" placeholder="请输入用户昵称" class="layui-input">
+                <input name="user_nickname" value="{:input('user_nickname')}" placeholder="请输入用户昵称" class="layui-input">
             </label>
         </div>
 
@@ -92,21 +92,31 @@
     window.form.render();
     require(['excel'], function (excel) {
         excel.bind(function (data) {
-            data.forEach(function (item, index) {
-                data[index] = [
-                    item.order_no, item.member.phone,
-                    item.member.username || item.member.nickname || '',
-                    item.address_name || '', item.address_phone || '',
-                    item.address_province || '', item.address_city || '', item.address_area || '',
-                    item.address_content || '', item.address_datetime || '',
-                    item.company_name || '', item.send_number || '', item.send_datetime || '',
-                ];
+            var rows = [];
+            data.forEach(function (order) {
+                order.items.forEach(function (item) {
+                    rows.push([
+                        order.order_no,
+                        item.goods_name,
+                        item.stock_sales,
+                        item.price_selling,
+                        item.total_selling,
+                        '{$address.name|default=""}',
+                        order.truck.address_idcode,
+                        order.truck.address_name,
+                        order.truck.address_phone,
+                        order.truck.address_province,
+                        order.truck.address_city,
+                        order.truck.address_area,
+                        order.truck.address_content,
+                    ]);
+                })
             });
-            data.unshift([
-                '订单单号', '用户手机', '用户姓名', '收货人姓名', '收货人手机', '配送省份', '配送城市',
-                '配送区域', '配送详细地址', '提交时间', '快递公司', '配送单号', '发货时间'
+            rows.unshift([
+                '订单号', '物品名称', '数量', '单价', '总额',
+                '寄件方', '身份证号', '收货人', '电话', '省份', '城市', '区', '地址'
             ]);
-            return data;
+            return rows;
         }, '订单发货记录');
     });
 </script>

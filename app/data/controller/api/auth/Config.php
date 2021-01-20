@@ -13,7 +13,7 @@ use app\data\service\PaymentService;
 class Config extends Auth
 {
     /**
-     * 获取支付通道数据
+     * 获取支付参数数据
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -27,8 +27,8 @@ class Config extends Auth
             }
         }
         $map = ['status' => 1, 'deleted' => 0];
-        $query = $this->app->db->name('DataPayment')->where($map)->whereIn('type', $types);
+        $query = $this->app->db->name('ShopPayment')->where($map)->whereIn('type', $types);
         $collect = $query->order('sort desc,id desc')->field('code,name,type')->select();
-        $this->success('获取支付通道数据', $collect->toArray());
+        $this->success('获取支付参数数据', $collect->toArray());
     }
 }

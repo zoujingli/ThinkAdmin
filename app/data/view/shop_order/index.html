@@ -1,5 +1,11 @@
 {extend name="../../admin/view/main"}
 
+{block name="button"}
+<!--{if auth("clean")}-->
+<button data-queue='{:url("clean")}' class='layui-btn layui-btn-sm layui-btn-primary'>定时清理订单</button>
+<!--{/if}-->
+{/block}
+
 {block name="content"}
 <div class="layui-tab layui-tab-card table-block">
     <ul class="layui-tab-title notselect">
@@ -41,10 +47,10 @@
                         </div>
                     </div>
                     <div>
-                        <div class="headimg" data-tips-image data-lazy-src="{$vo.member.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                        <div class="headimg" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                         <div class="inline-block sub-span-blue">
-                            用户昵称：{$vo.member.nickname|default='--'}<br>
-                            用户手机：<span>{$vo.member.phone|default='--'}</span><br>
+                            用户昵称：{$vo.user.nickname|default='--'}<br>
+                            用户手机：<span>{$vo.user.phone|default='--'}</span><br>
                         </div>
                     </div>
                 </td>
@@ -57,9 +63,13 @@
                     {eq name='vo.status' value='5'}<span class="layui-badge layui-badge-middle layui-bg-blue">已完成</span>{/eq}
                     <div class="inline-block text-middle">
                         订单单号：<span class="color-blue">{$vo.order_no|default=''}</span><br>
-                        订单金额：<b class="color-blue">{$vo.amount_total+0}</b> 元<span class="color-blue">{if $vo.amount_express>0}（含邮费{$vo.amount_express+0}元）{else}（包邮）{/if}</span>已支付 <b class="color-blue">{$vo.payment_amount+0}</b> 元<br>
+                        订单总计 <b class="color-blue">{$vo.amount_total+0}</b> 元<span class="color-blue">{if $vo.amount_express>0}（含邮费{$vo.amount_express+0}元）{else}（包邮）{/if}</span>已支付 <b class="color-blue">{$vo.payment_amount+0}</b> 元<br>
                         下单时间：{$vo.create_at|format_datetime}<br>
-                        支付时间：{$vo.payment_datetime|format_datetime} {notempty name='vo.pay_type'}<span class="color-blue"> ({$vo.pay_type|default='-'})</span>{/notempty}<br>
+                        <!--{notempty name='vo.payment_status'}-->
+                        支付时间：{$vo.payment_datetime|format_datetime} {notempty name='vo.payment_name'}<span class="color-blue"> ({$vo.payment_name|default='-'})</span>{/notempty}<br>
+                        <!--{else}-->
+                        支付状态：<span class="color-desc">还未支付</span>
+                        <!--{/notempty}-->
                     </div>
                 </td>
                 <td class="nowrap">

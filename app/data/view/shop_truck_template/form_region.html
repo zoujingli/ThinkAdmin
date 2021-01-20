@@ -34,9 +34,11 @@
         <button class="layui-btn" ng-click="Confirm()">确定修改</button>
     </div>
 </div>
+
 <label class="layui-hide">
     <textarea class="layui-textarea" id="RegionData">{$citys|json_encode|raw}</textarea>
 </label>
+
 <script>
     require(['angular'], function () {
         var app = angular.module("TruckForm", []).run(callback);

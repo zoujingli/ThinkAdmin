@@ -12,17 +12,6 @@ use think\admin\Service;
 class OrderService extends Service
 {
     /**
-     * 同步订单支付状态
-     * @param string $orderno
-     * @return bool
-     */
-    public function syncAmount(string $orderno): bool
-    {
-        //@todo 处理订单支付完成的动作
-        return true;
-    }
-
-    /**
      * 获取随机减免金额
      * @return float
      */
@@ -50,12 +39,13 @@ class OrderService extends Service
     /**
      * 绑定订单详情数据
      * @param array $data
+     * @param bool $fromer
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function buildItemData(array &$data = []): array
+    public function buildItemData(array &$data = [], $fromer = true): array
     {
         // 关联发货信息
         $nobs = array_unique(array_column($data, 'order_no'));
@@ -66,8 +56,8 @@ class OrderService extends Service
         $items = $query->withoutField('id,uid,status,deleted,create_at')->whereIn('order_no', $nobs)->select()->toArray();
         // 关联用户数据
         $fields = 'username,phone,nickname,headimg,status';
-        UserService::instance()->buildByUid($data, 'uid', 'member', $fields);
-        UserService::instance()->buildByUid($data, 'from', 'fromer', $fields);
+        UserService::instance()->buildByUid($data, 'uid', 'user', $fields);
+        if ($fromer) UserService::instance()->buildByUid($data, 'from', 'fromer', $fields);
         foreach ($data as &$vo) {
             $vo['sales'] = 0;
             $vo['truck'] = $trucks[$vo['order_no']] ?? [];

@@ -1,0 +1,43 @@
+<form class="layui-form layui-card margin-bottom-0" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">发货人姓名</span>
+            <input class="layui-input" required placeholder="请输入发货姓名" name="name" value="{$vo.name|default=''}">
+        </label>
+
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">发货人手机</span>
+            <input class="layui-input" required placeholder="请输入发货人手机" name="phone" value="{$vo.phone|default=''}">
+        </label>
+
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">发货所在区域</span>
+            <div class="layui-row layui-col-space10">
+                <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="province"></select></label>
+                <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="city"></select></label>
+                <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="area"></select></label>
+            </div>
+        </div>
+
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">发货详细地址</span>
+            <textarea class="layui-textarea" name="content" required placeholder="请输入发货详细地址">{$vo.content|default=""}</textarea>
+        </label>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+    <script>
+        require(['pcasunzips'], function () {
+            (function (province, city, area) {
+                new PCAS("province", "city", "area", province, city, area);
+            })('{$vo.province|default=""}', '{$vo.city|default=""}', '{$vo.area|default=""}');
+        });
+    </script>
+</form>

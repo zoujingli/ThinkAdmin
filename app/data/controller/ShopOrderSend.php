@@ -2,6 +2,8 @@
 
 namespace app\data\controller;
 
+use app\data\service\OrderService;
+use app\data\service\UserService;
 use think\admin\Controller;
 
 /**
@@ -28,6 +30,8 @@ class ShopOrderSend extends Controller
     public function index()
     {
         $this->title = '订单发货管理';
+        // 发货地址数据
+        $this->address = sysdata('ordersend');
         // 状态数据统计
         $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 'ta' => 0];
         $this->app->db->name($this->table)->fieldRaw('status,count(1) total')->group('status')->select()->map(function ($vo) {
@@ -36,10 +40,10 @@ class ShopOrderSend extends Controller
         });
         // 订单列表查询
         $query = $this->_query($this->table)->order('id desc');
-        $query->dateBetween('address_datetime,send_datetime')->equal('status')->like('send_number#truck_number');
+        $query->dateBetween('address_datetime,send_datetime')->equal('status')->like('send_number#truck_number,order_no');
         $query->like('address_phone,address_name,address_province|address_city|address_area|address_content#address_content');
         // 用户搜索查询
-        $db = $this->_query('DataUser')->like('phone#member_phone,nickname#member_nickname')->db();
+        $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
         // 订单搜索查询
         $db = $this->_query('ShopOrder')->whereIn('status', [3, 4, 5])->db();
@@ -60,12 +64,31 @@ class ShopOrderSend extends Controller
     /**
      * 订单列表处理
      * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _index_page_filter(array &$data)
     {
-        $uids = array_unique(array_column($data, 'uid'));
-        $users = $this->app->db->name('DataUser')->whereIn('id', $uids)->column('*', 'id');
-        foreach ($data as &$vo) $vo['member'] = $users[$vo['uid']] ?? [];
+        OrderService::instance()->buildItemData($data, false);
+    }
+
+    /**
+     * 修改发货地址
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function config()
+    {
+        if ($this->request->isGet()) {
+            $this->vo = sysdata('ordersend');
+            $this->fetch();
+        } else {
+            sysdata('ordersend', $this->request->post());
+            $this->success('发货地址保存成功');
+        }
     }
 
 }

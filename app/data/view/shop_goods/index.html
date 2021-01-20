@@ -8,6 +8,7 @@
 <!--{if auth("add")}-->
 <button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加商品</button>
 <!--{/if}-->
+
 {if isset($type) and $type eq 'index'}
 <!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="code#{key};deleted#1" class='layui-btn layui-btn-sm layui-btn-primary'>删除商品</button>
@@ -42,8 +43,8 @@
                     <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
                 </th>
                 <th class='text-left nowrap'>商品信息</th>
-                <th></th>
-                <th></th>
+                <th class='text-left nowrap'>标签分类</th>
+                <th class='text-left nowrap'>商品状态</th>
                 <th></th>
             </tr>
             </thead>
@@ -67,15 +68,20 @@
                     </div>
                 </td>
                 <td class="text-left">
-                    {notempty name='vo.mark'}{foreach $vo.mark as $mark}
-                    <span class="notselect nowrap layui-badge layui-bg-cyan">{$mark}</span>
-                    {/foreach}{/notempty}
+                    <div>
+                        <!--{notempty name='clist'}-->
+                        所属分类：{$vo.cate.name|default='-'}<br>
+                        <!--{/notempty}-->
+                    </div>
+                    <div>
+                        {notempty name='vo.mark'}{foreach $vo.mark as $mark}
+                        <span class="notselect nowrap layui-badge layui-bg-cyan">{$mark}</span>
+                        {/foreach}{/notempty}
+                    </div>
                 </td>
                 <td class='nowrap'>
-                    销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}<br>
-                    <!--{notempty name='clist'}-->
-                    所属分类：{$vo.cate.name|default='-'}<br>
-                    <!--{/notempty}-->
+                    <div>销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}</div>
+                    <div>创建时间：{$vo.create_at|format_datetime}</div>
                 </td>
                 <td class='nowrap sub-span-blue'>
                     <div class="margin-bottom-5">剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )</div>

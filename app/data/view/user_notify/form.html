@@ -1,0 +1,40 @@
+{extend name="../../admin/view/main"}
+
+{block name='content'}
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-40">
+
+
+        <label class="layui-form-item relative block">
+            <span class="color-green font-w7">通知标题</span>
+            <span class="color-desc margin-left-5">Notify Title</span>
+            <input required name="name" value='{$vo.name|default=""}' placeholder="请输入通知标题" class="layui-input">
+        </label>
+
+
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">通知内容</span>
+            <span class="color-desc margin-left-5">Notify Content</span>
+            <label class="relative block">
+                <textarea class="layui-textarea" placeholder="请输入通知内容" name="content">{$vo.content|default=''}</textarea>
+            </label>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        {notempty name='vo.code'}<input type='hidden' value='{$vo.code}' name='code'>{/notempty}
+
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn">保存数据</button>
+            <button type='button' class="layui-btn layui-btn-danger" data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    require(['ckeditor'], function () {
+        window.createEditor('[name=content]', {height: 300});
+    });
+</script>
+{/block}
