@@ -17,7 +17,7 @@ define(['xlsx'], function () {
         });
     };
 
-    excel.load = function (url, data, done, filename, method) {
+    excel.load = function (url, data, done, name, method) {
         var alldata = [];
         var loading = $.msg.loading('正在加载 <span data-upload-page></span>，完成 <span data-upload-progress>0</span>%');
         nextPage(1, 1);
@@ -26,7 +26,7 @@ define(['xlsx'], function () {
             if (curPage > maxPage) {
                 if (typeof done === 'function') {
                     if ((this.result = done(alldata)) !== false) {
-                        excel(this.result, filename || '文件下载.xlsx');
+                        excel(this.result, name || '文件下载.xlsx');
                     } else {
                         console.log('格式化函数返回`false`，已终止数据导出操作', alldata, this.result);
                     }
@@ -45,6 +45,36 @@ define(['xlsx'], function () {
                 }, false);
             }
         }
-    }
+    };
+
+    excel.read = function (file) {
+        return (function (defer, reader, loaded) {
+            defer = jQuery.Deferred(), reader = new FileReader();
+            reader.onload = function (event) {
+                var work = XLSX.read(event.target.result, {type: 'binary'});
+                for (var sheet in work.Sheets) if (work.Sheets.hasOwnProperty(sheet)) {
+                    var object = {}, data = work.Sheets[sheet], keys = '', atrs = '';
+                    for (keys in data) if ((atrs = keys.match(/^([A-Z]+)(\d+)$/i))) {
+                        object[atrs[2]] = object[atrs[2]] || {};
+                        object[atrs[2]][atrs[1]] = data[keys].v;
+                    }
+                    return jQuery.msg.close(loaded), defer.resolve(object);
+                }
+                jQuery.msg.close(loaded)
+            };
+            reader.onerror = function () {
+                defer.reject('读取文件失败');
+            };
+            reader.onprogress = function (event) {
+                defer.notify((event.loaded / event.total).toFixed(4) * 100);
+            };
+            if (typeof file === 'object') {
+                return reader.readAsBinaryString(file), defer;
+            } else {
+                return defer;
+            }
+        })();
+    };
+
     return excel;
 });
