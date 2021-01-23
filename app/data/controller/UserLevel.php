@@ -1,0 +1,156 @@
+<?php
+
+namespace app\data\controller;
+
+use think\admin\Controller;
+
+/**
+ * 用户等级管理
+ * Class UserLevel
+ * @package app\data\controller
+ */
+class UserLevel extends Controller
+{
+    /**
+     * 绑定数据表
+     * @var string
+     */
+    private $table = 'DataUserLevel';
+
+    /**
+     * 用户等级管理
+     * @auth true
+     * @menu true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function index()
+    {
+        $this->title = '用户等级管理';
+        $this->_query($this->table)->order('number asc')->page();
+    }
+
+    /**
+     * 数据列表处理
+     * @param array $data
+     */
+    protected function _page_filter(array &$data)
+    {
+        foreach ($data as &$vo) {
+            $vo['rebate_rule'] = str2arr($vo['rebate_rule']);
+        }
+    }
+
+    /**
+     * 添加用户等级
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function add()
+    {
+        $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 编辑用户等级
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function edit()
+    {
+        $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 表单数据处理
+     * @param array $vo
+     */
+    protected function _form_filter(array &$vo)
+    {
+        if ($this->request->isGet()) {
+            $this->rules = ['首推奖利', '复购奖利', '直属团队', '间接团队', '差额奖励'];
+            $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
+        } else {
+            $vo['utime'] = time();
+            $vo['rebate_rule'] = arr2str($vo['rebate_rule'] ?? []);
+            $vo['goods_vip_status'] = isset($vo['goods_vip_status']) ? 1 : 0;
+            $vo['order_amount_status'] = isset($vo['order_amount_status']) ? 1 : 0;
+            $vo['teams_total_status'] = isset($vo['teams_total_status']) ? 1 : 0;
+            $vo['teams_direct_status'] = isset($vo['teams_direct_status']) ? 1 : 0;
+            $vo['teams_indirect_status'] = isset($vo['teams_indirect_status']) ? 1 : 0;
+            // 根据数量判断状态
+            $vo['order_amount_status'] = intval($vo['order_amount_status'] && $vo['order_amount_number'] > 0);
+            $vo['teams_total_status'] = intval($vo['teams_total_status'] && $vo['teams_total_number'] > 0);
+            $vo['teams_direct_status'] = intval($vo['teams_direct_status'] && $vo['teams_direct_number'] > 0);
+            $vo['teams_indirect_status'] = intval($vo['teams_indirect_status'] && $vo['teams_indirect_number'] > 0);
+            $state = 0;
+            foreach ($vo as $k => $v) if (stripos($k, '_status') !== false) $state += $v;
+            if (empty($state)) $this->error('升级条件不能为空！');
+        }
+    }
+
+    /**
+     * 表单结果处理
+     * @param boolean $state
+     * @throws \think\db\exception\DbException
+     */
+    public function _form_result(bool $state)
+    {
+        if ($state) {
+            $order = 'number asc,utime desc';
+            if (input('old_level', 100) < input('level', '0')) $order = 'number asc,utime asc';
+            foreach ($this->app->db->name($this->table)->order($order)->cursor() as $k => $vo) {
+                $this->app->db->name($this->table)->where(['id' => $vo['id']])->update(['number' => $k + 1]);
+            }
+        }
+    }
+
+    /**
+     * 修改等级状态
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function state()
+    {
+        $this->_save($this->table);
+    }
+
+    /**
+     * 删除用户等级
+     * @auth true
+     * @throws \think\db\exception\DbException
+     */
+    public function remove()
+    {
+        $this->_delete($this->table);
+    }
+
+    /**
+     * 状态变更处理
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function _save_result()
+    {
+        $this->_form_result(true);
+    }
+
+    /**
+     * 删除结果处理
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function _delete_result()
+    {
+        $this->_form_result(true);
+    }
+
+}

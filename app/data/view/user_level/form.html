@@ -1,0 +1,125 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+
+        <fieldset class="layui-form-item">
+            <legend class="layui-bg-cyan">用户等级</legend>
+            <div class="layui-form-item layui-row layui-col-space10">
+                <div class="layui-col-xs3 block relative">
+                    <span class="color-green label-required-prev">等级序号</span>
+                    <select class="layui-select" name="level">
+                        {for start="1" end="9" name="i"}
+                        {if isset($vo.number) and $vo.number eq $i}
+                        <option selected value="{$i}">当前 VIP {$vo.number} 等级</option>
+                        {else}
+                        <option value="{$i}">设置 VIP {$i} 等级</option>
+                        {/if}{/for}
+                    </select>
+                </div>
+                <label class="layui-col-xs9 block relative">
+                    <span class="color-green label-required-prev">等级名称</span>
+                    <input class="layui-input" name="name" required value="{$vo.name|default=''}" placeholder="请输入等级名称">
+                </label>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-form-item">
+            <legend class="layui-bg-cyan">升级规则</legend>
+            <div class="layui-form-item">
+                {php}$vo['upgrade_type'] = isset($vo['upgrade_type'])?$vo['upgrade_type']:1;{/php}
+                {foreach [1=>'达成所有条件',0=>'达成任何条件'] as $k => $v}
+                {if isset($vo.upgrade_type) and $vo.upgrade_type eq $k}
+                <label class="think-radio"><input checked type="radio" name="upgrade_type" value="{$k}" lay-ignore> {$v}</label>
+                {else}
+                <label class="think-radio"><input type="radio" name="upgrade_type" value="{$k}" lay-ignore> {$v}</label>
+                {/if}{/foreach}
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-form-item">
+            <legend class="layui-bg-cyan">升级条件</legend>
+            <div class="font-s13">
+                <label class="layui-form-item block relative think-checkbox notselect">
+                    {if isset($vo.goods_vip_status) and $vo.goods_vip_status eq 1}
+                    ① <input type="checkbox" checked name="goods_vip_status" value="1" lay-ignore>开启
+                    {else}
+                    ① <input type="checkbox" name="goods_vip_status" value="1" lay-ignore>开启
+                    {/if}
+                    需要 <span class="color-blue">购买入会礼包</span> 达成升级；
+                </label>
+
+                <label class="layui-form-item block relative think-checkbox notselect">
+                    {if isset($vo.teams_direct_status) and $vo.teams_direct_status eq 1}
+                    ② <input type="checkbox" checked name="teams_direct_status" value="1" lay-ignore>开启
+                    {else}
+                    ② <input type="checkbox" name="teams_direct_status" value="1" lay-ignore>开启
+                    {/if}
+                    <span class="color-blue">直推团队</span> 升级，<span class="color-blue">直推团队</span> 达到
+                    <input class="inline-block text-center" data-blur-number="0" style="width:80px" name="teams_direct_number" value="{$vo.teams_direct_number|default='0'}">
+                    人；
+                </label>
+
+                <label class="layui-form-item block relative think-checkbox notselect">
+                    {if isset($vo.teams_indirect_status) and $vo.teams_indirect_status eq 1}
+                    ③ <input type="checkbox" checked name="teams_indirect_status" value="1" lay-ignore>开启
+                    {else}
+                    ③ <input type="checkbox" name="teams_indirect_status" value="1" lay-ignore>开启
+                    {/if}
+                    <span class="color-blue">间接团队</span> 升级，<span class="color-blue">间接团队</span> 达到
+                    <input class="inline-block text-center" data-blur-number="0" style="width:80px" name="teams_indirect_number" value="{$vo.teams_indirect_number|default='0'}">
+                    人；
+                </label>
+
+                <label class="layui-form-item block relative think-checkbox notselect">
+                    {if isset($vo.teams_user_status) and $vo.teams_user_status eq 1}
+                    ④ <input type="checkbox" checked name="teams_user_status" value="1" lay-ignore>开启
+                    {else}
+                    ④ <input type="checkbox" name="teams_user_status" value="1" lay-ignore>开启
+                    {/if}
+                    <span class="color-blue">团队总数</span> 升级，<span class="color-blue">团队总数</span> 达到
+                    <input class="inline-block text-center" data-blur-number="0" style="width:80px" name="teams_user_number" value="{$vo.teams_user_number|default='0'}">
+                    人；
+                </label>
+
+                <label class="layui-form-item block relative think-checkbox notselect">
+                    {if isset($vo.order_amount_status) and $vo.order_amount_status eq 1}
+                    ⑤ <input type="checkbox" checked name="order_amount_status" value="1" lay-ignore>开启
+                    {else}
+                    ⑤ <input type="checkbox" name="order_amount_status" value="1" lay-ignore>开启
+                    {/if}
+                    <span class="color-blue">订单总额</span> 升级，<span class="color-blue">订单总额</span> 达到
+                    <input class="inline-block text-center" data-blur-number="2" style="width:80px" name="order_amount_number" value="{$vo.order_amount_number|default='0'}">
+                    元；
+                </label>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-form-item">
+            <legend class="layui-bg-cyan">发放奖利</legend>
+            <div class="layui-form-item">
+                {foreach $rules as $key}{if isset($vo.rebate_rule) && is_array($vo.rebate_rule) && in_array($key,$vo.rebate_rule)}
+                <label class="think-checkbox"><input checked type="checkbox" name="rebate_rule[]" value="{$key}" lay-ignore> {$key}</label>
+                {else}
+                <label class="think-checkbox"><input type="checkbox" name="rebate_rule[]" value="{$key}" lay-ignore> {$key}</label>
+                {/if}{/foreach}
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-form-item layui-hide">
+            <legend class="layui-bg-cyan">等级描述</legend>
+            <label class="layui-form-item block relative">
+                <textarea name="remark" class="layui-textarea" placeholder="请输入用户等级描述">{$vo.remark|default=''}</textarea>
+            </label>
+        </fieldset>
+
+        <div class="hr-line-dashed"></div>
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        {notempty name='vo.level'}<input type='hidden' value='{$vo.level}' name='old_level'>{/notempty}
+
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type='submit'>保存数据</button>
+            <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        </div>
+    </div>
+
+    <script>form.render()</script>
+</form>
