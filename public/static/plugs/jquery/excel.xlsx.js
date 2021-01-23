@@ -94,17 +94,14 @@ define(['xlsx'], function () {
                     doPostItem(0, items[0]);
 
                     /*! 执行导入的数据 */
-                    function doPostItem(index, item, message) {
+                    function doPostItem(index, item, result) {
                         if (index >= total) {
-                            message = '共处理' + total + '条记录' + '（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
-                            return closeAll(), jQuery.msg.success(message, 3, function () {
+                            return closeAll(), jQuery.msg.success('共处理' + total + '条记录' + '（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）', 3, function () {
                                 jQuery.form.reload();
                             });
                         } else {
-                            message = (index * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
-                            jQuery('[data-load-progress]').html(message);
+                            jQuery('[data-load-progress]').html((index * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）');
                             /*! 单元数据过滤 */
-                            var result = item;
                             if (filterFn && (result = filterFn(item)) === false) {
                                 return (ers++), doPostItem(index + 1, items[index + 1]);
                             }
