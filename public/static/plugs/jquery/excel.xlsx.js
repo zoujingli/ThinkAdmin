@@ -94,21 +94,21 @@ define(['xlsx'], function () {
                     doPostItem(0, items[0]);
 
                     /*! 执行导入的数据 */
-                    function doPostItem(index, item, result) {
-                        if (index >= total) {
+                    function doPostItem(idx, item, result) {
+                        if (idx >= total) {
                             return closeAll(), jQuery.msg.success('共处理' + total + '条记录' + '（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）', 3, function () {
                                 jQuery.form.reload();
                             });
                         } else {
-                            jQuery('[data-load-progress]').html((index * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）');
+                            jQuery('[data-load-progress]').html((idx * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）');
                             /*! 单元数据过滤 */
                             if (filterFn && (result = filterFn(item)) === false) {
-                                return (ers++), doPostItem(index + 1, items[index + 1]);
+                                return (ers++), doPostItem(idx + 1, items[idx + 1]);
                             }
                             /*! 提交单个数据 */
                             doUpdate(url, result).then(function (ret) {
                                 ret.code ? oks++ : ers++;
-                                doPostItem(index + 1, items[index + 1]);
+                                doPostItem(idx + 1, items[idx + 1]);
                             });
                         }
                     }
