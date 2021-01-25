@@ -59,7 +59,7 @@ define(['xlsx'], function () {
                     console.log(data)
                     for (k in data) if ((as = k.match(/^([A-Z]+)(\d+)$/i))) {
                         object[as[2]] = object[as[2]] || {};
-                        object[as[2]][as[1]] = excel.read.numToDate(data[k].v);
+                        object[as[2]][as[1]] = excel.read.CellToValue(data[k].v);
                     }
                     jQuery.msg.close(loaded);
                     return defer.resolve(filterCallback ? excel.read.filter(object, filterCallback) : object);
@@ -81,8 +81,8 @@ define(['xlsx'], function () {
         })(jQuery.Deferred(), new FileReader());
     };
 
-    /*! 数字时间转标准格式 */
-    excel.read.numToDate = function (v) {
+    /*! 表格单元内容转换 */
+    excel.read.CellToValue = function (v) {
         if (typeof v !== 'undefined' && /^\d+\.+\d{12}$/.test(v)) {
             var d = XLSX.SSF.parse_date_code(v);
             return d.y + '-' + d.m + '-' + d.d + ' ' + d.H + ':' + d.M + ':' + d.S;
@@ -160,7 +160,7 @@ define(['xlsx'], function () {
                 }
             } else {
                 item = {};
-                for (k in cols) item[k] = excel.read.numToDate(data[r][cols[k].bind]);
+                for (k in cols) item[k] = excel.read.CellToValue(data[r][cols[k].bind]);
                 items.push(item);
             }
             return items
