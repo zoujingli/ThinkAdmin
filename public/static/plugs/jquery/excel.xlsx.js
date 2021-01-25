@@ -49,19 +49,24 @@ define(['xlsx'], function () {
         }
     };
 
-    /*! 读取本地的文件 */
-    excel.read = function (file, filter) {
+    /*! 读取本地的表格文件 */
+    excel.read = function (file, filterCallback) {
         return (function (defer, reader, loaded, Work) {
             reader.onload = function (event) {
                 Work = XLSX.read(event.target.result, {type: 'binary'});
                 for (var sheet in Work.Sheets) if (Work.Sheets.hasOwnProperty(sheet)) {
-                    var object = {}, data = Work.Sheets[sheet], keys = '', atrs = '';
-                    for (keys in data) if ((atrs = keys.match(/^([A-Z]+)(\d+)$/i))) {
-                        object[atrs[2]] = object[atrs[2]] || {};
-                        object[atrs[2]][atrs[1]] = data[keys].v || '';
+                    var object = {}, data = Work.Sheets[sheet], k = '', as = '';
+                    for (k in data) if ((as = k.match(/^([A-Z]+)(\d+)$/i))) {
+                        object[as[2]] = object[as[2]] || {};
+                        if (data[k].t === 'n' && /^\d+\.+\d{12}$/.test(data[k].v)) {
+                            var d = XLSX.SSF.parse_date_code(data[k].v);
+                            object[as[2]][as[1]] = d.y + '-' + d.m + '-' + d.d + ' ' + d.H + ':' + d.M + ':' + d.S;
+                        } else {
+                            object[as[2]][as[1]] = data[k].v;
+                        }
                     }
-                    defer.resolve(filter ? excel.read.filter(object, filter) : object);
-                    break;
+                    jQuery.msg.close(loaded)
+                    return defer.resolve(filterCallback ? excel.read.filter(object, filterCallback) : object);
                 }
                 jQuery.msg.close(loaded)
             };
@@ -80,28 +85,31 @@ define(['xlsx'], function () {
         })(jQuery.Deferred(), new FileReader());
     };
 
-    /*! 直接推送文档内容 */
+    /*! 直接推送表格内容 */
     excel.read.push = function (url, filterCf, filterFn) {
         return (function (defer, $input, loaded) {
             $input.appendTo($('body')).click();
             $input.on('change', function (event) {
                 if (!event.target.files || event.target.files.length < 1) return $.msg.tips('没有可操作文件');
-                loaded = jQuery.msg.loading('<span data-load-name>正在读取文件</span> <span data-load-progress>0.00%</span>');
+                loaded = jQuery.msg.loading('<span data-load-name>读取</span> <span data-load-count>0.00%</span>');
                 excel.read(event.target.files[0], filterCf).then(function (items, total, ers, oks) {
                     if ((total = items.length) < 1) return closeAll(), jQuery.msg.tips('未读取到有效数据')
                     ers = 0, oks = 0;
-                    jQuery('[data-load-name]').html('正在更新数据 ');
+                    jQuery('[data-load-name]').html('更新数据 ');
                     doPostItem(0, items[0]);
 
                     /*! 执行导入的数据 */
-                    function doPostItem(idx, item, result) {
+                    function doPostItem(idx, item, info, result) {
                         if (idx >= total) {
-                            return closeAll(), jQuery.msg.success('共处理' + total + '条记录' + '（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）', 3, function () {
-                                jQuery.form.reload();
+                            info = '共处理' + total + '条记录' + '（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
+                            return closeAll(), jQuery.msg.success(info, 3, function () {
+                                // jQuery.form.reload();
                             });
                         } else {
-                            jQuery('[data-load-progress]').html((idx * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）');
+                            info = (idx * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
+                            jQuery('[data-load-count]').html(info);
                             /*! 单元数据过滤 */
+                            result = item;
                             if (filterFn && (result = filterFn(item)) === false) {
                                 return (ers++), doPostItem(idx + 1, items[idx + 1]);
                             }
@@ -113,7 +121,7 @@ define(['xlsx'], function () {
                         }
                     }
                 }).progress(function (progress) {
-                    jQuery('[data-load-progress]').html(progress + '%')
+                    jQuery('[data-load-count]').html(progress + '%')
                 }).fail(function () {
                     closeAll();
                 });
@@ -138,17 +146,13 @@ define(['xlsx'], function () {
     }
 
     /*! 解析读取的数据 */
-    excel.read.filter = function (books, cols) {
-        return (function (items, item, row, col, key) {
-            for (row in books) if (row <= 1) {
-                for (col in books[row]) for (key in cols) {
-                    if (books[row][col] === cols[key].name && !cols[key].bind) {
-                        cols[key].bind = col;
-                    }
-                }
+    excel.read.filter = function (data, cols) {
+        return (function (items, item, r, c, k) {
+            for (r in data) if (r <= 1) {
+                for (c in data[r]) for (k in cols) if (data[r][c] === cols[k].name && !cols[k].bind) cols[k].bind = c;
             } else {
                 item = {};
-                for (key in cols) item[key] = books[row][cols[key].bind] || ''
+                for (k in cols) item[k] = typeof data[r][cols[k].bind] === "undefined" ? '' : data[r][cols[k].bind]
                 items.push(item);
             }
             return items
