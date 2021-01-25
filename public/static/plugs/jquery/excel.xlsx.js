@@ -83,7 +83,7 @@ define(['xlsx'], function () {
 
     /*! 表格单元内容转换 */
     excel.read.CellToValue = function (v) {
-        if (typeof v !== 'undefined' && /^\d+\.+\d{12}$/.test(v)) {
+        if (typeof v !== 'undefined' && /^\d+\.\d{12}$/.test(v)) {
             var d = XLSX.SSF.parse_date_code(v);
             return d.y + '-' + d.m + '-' + d.d + ' ' + d.H + ':' + d.M + ':' + d.S;
         } else {
