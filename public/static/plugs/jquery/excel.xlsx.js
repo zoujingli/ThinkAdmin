@@ -98,11 +98,11 @@ define(['xlsx'], function () {
             $input.on('change', function (event) {
                 if (!event.target.files || event.target.files.length < 1) return $.msg.tips('没有可操作文件');
                 loaded = jQuery.msg.loading('<span data-load-name>读取</span> <span data-load-count>0.00%</span>');
-                excel.read(event.target.files[0], filterCf).then(function (items, total, ers, oks) {
+                excel.read(event.target.files[0], filterCf).then(function (items, total, ers, oks, idx) {
                     if ((total = items.length) < 1) return closeAll(), jQuery.msg.tips('未读取到有效数据')
-                    ers = 0, oks = 0;
+                    ers = 0, oks = 0, idx = 0;
                     jQuery('[data-load-name]').html('更新数据 ');
-                    doPostItem(0, items[0]);
+                    doPostItem(idx, items[idx]);
 
                     /*! 执行导入的数据 */
                     function doPostItem(idx, item, info, result) {
