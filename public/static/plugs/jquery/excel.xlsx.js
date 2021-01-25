@@ -56,16 +56,12 @@ define(['xlsx'], function () {
                 Work = XLSX.read(event.target.result, {type: 'binary'});
                 for (var sheet in Work.Sheets) if (Work.Sheets.hasOwnProperty(sheet)) {
                     var object = {}, data = Work.Sheets[sheet], k = '', as = '';
+                    console.log(data)
                     for (k in data) if ((as = k.match(/^([A-Z]+)(\d+)$/i))) {
                         object[as[2]] = object[as[2]] || {};
-                        if (data[k].t === 'n' && /^\d+\.+\d{12}$/.test(data[k].v)) {
-                            var d = XLSX.SSF.parse_date_code(data[k].v);
-                            object[as[2]][as[1]] = d.y + '-' + d.m + '-' + d.d + ' ' + d.H + ':' + d.M + ':' + d.S;
-                        } else {
-                            object[as[2]][as[1]] = data[k].v;
-                        }
+                        object[as[2]][as[1]] = excel.read.numToDate(data[k].v);
                     }
-                    jQuery.msg.close(loaded)
+                    jQuery.msg.close(loaded);
                     return defer.resolve(filterCallback ? excel.read.filter(object, filterCallback) : object);
                 }
                 jQuery.msg.close(loaded)
@@ -85,6 +81,16 @@ define(['xlsx'], function () {
         })(jQuery.Deferred(), new FileReader());
     };
 
+    /*! 数字时间转标准格式 */
+    excel.read.numToDate = function (v) {
+        if (typeof v !== 'undefined' && /^\d+\.+\d{12}$/.test(v)) {
+            var d = XLSX.SSF.parse_date_code(v);
+            return d.y + '-' + d.m + '-' + d.d + ' ' + d.H + ':' + d.M + ':' + d.S;
+        } else {
+            return typeof v !== 'undefined' ? v : '';
+        }
+    }
+
     /*! 直接推送表格内容 */
     excel.read.push = function (url, filterCf, filterFn) {
         return (function (defer, $input, loaded) {
@@ -103,7 +109,7 @@ define(['xlsx'], function () {
                         if (idx >= total) {
                             info = '共处理' + total + '条记录' + '（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
                             return closeAll(), jQuery.msg.success(info, 3, function () {
-                                // jQuery.form.reload();
+                                jQuery.form.reload();
                             });
                         } else {
                             info = (idx * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
@@ -149,10 +155,12 @@ define(['xlsx'], function () {
     excel.read.filter = function (data, cols) {
         return (function (items, item, r, c, k) {
             for (r in data) if (r <= 1) {
-                for (c in data[r]) for (k in cols) if (data[r][c] === cols[k].name && !cols[k].bind) cols[k].bind = c;
+                for (c in data[r]) for (k in cols) {
+                    if (data[r][c] === cols[k].name && !cols[k].bind) cols[k].bind = c;
+                }
             } else {
                 item = {};
-                for (k in cols) item[k] = typeof data[r][cols[k].bind] === "undefined" ? '' : data[r][cols[k].bind]
+                for (k in cols) item[k] = excel.read.numToDate(data[r][cols[k].bind]);
                 items.push(item);
             }
             return items
