@@ -5,9 +5,7 @@ define(function () {
         if (name.substr(-5).toLowerCase() !== '.xlsx') {
             name += '.xlsx';
         }
-        layui.use('excel', function () {
-            layui.excel.exportExcel(data, name, 'xlsx')
-        });
+        layui.excel.exportExcel(data, name, 'xlsx')
     }
 
     /*! 绑定导出的事件 */
@@ -160,8 +158,7 @@ define(function () {
     /*! 表格单元内容转换 */
     excel.read.CellToValue = function (v) {
         if (typeof v !== 'undefined' && /^\d+\.\d{12}$/.test(v)) {
-            var time = XLSX.SSF.parse_date_code(v);
-            return time.y + '-' + time.m + '-' + time.d + ' ' + time.H + ':' + time.M + ':' + time.S;
+            return LAY_EXCEL.dateCodeFormat(v, 'YYYY-MM-DD HH:ii:ss');
         } else {
             return typeof v !== 'undefined' ? v : '';
         }

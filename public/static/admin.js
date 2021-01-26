@@ -74,17 +74,11 @@ require.config({
         'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
     },
     shim: {
+        'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
         'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
         'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
         'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
     }
-});
-
-/*! 注册 layui 组件 */
-layui.config({
-    base: baseRoot + 'plugs/layui_exts/',
-}).extend({
-    excel: 'excel',
 });
 
 /*! 注册 jquery 组件 */
