@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2019 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2021 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -478,7 +478,7 @@ class Url
             // 添加参数
             if ($this->route->config('url_common_param')) {
                 $vars = http_build_query($vars);
-                $url .= $suffix . '?' . $vars . $anchor;
+                $url .= $suffix . ($vars ? '?' . $vars : '') . $anchor;
             } else {
                 foreach ($vars as $var => $val) {
                     $val = (string) $val;

@@ -84,18 +84,18 @@ class Library extends Service
         // 加载中文语言
         $this->app->lang->load(__DIR__ . '/lang/zh-cn.php', 'zh-cn');
         $this->app->lang->load(__DIR__ . '/lang/en-us.php', 'en-us');
-        // 终端 HTTP 访问处理
+        // 终端 HTTP 访问时特殊处理
         if (!$this->app->request->isCli()) {
-            $issess = intval($this->app->request->get('not_init_session', '0')) === 0;
-            $notapi = stripos($this->app->request->header('user_agent', ''), 'PHP Yar RPC-') === false;
-            if ($notapi && $issess) {
+            // 如果是 YAR 接口或指定情况下，不需要初始化会话和语言包，否则有可能会报错
+            $isYarRpc = stripos($this->app->request->header('user_agent', ''), 'PHP Yar RPC-');
+            if ($isYarRpc === false && intval($this->app->request->get('not_init_session', 0)) < 1) {
                 // 注册会话初始化中间键
                 $this->app->middleware->add(SessionInit::class);
                 // 注册语言包处理中间键
                 $this->app->middleware->add(LoadLangPack::class);
             }
             // 注册访问处理中间键
-            $this->app->middleware->add(function (Request $request, \Closure $next) use ($issess, $notapi) {
+            $this->app->middleware->add(function (Request $request, \Closure $next) {
                 $header = [];
                 if (($origin = $request->header('origin', '*')) !== '*') {
                     $header['Access-Control-Allow-Origin'] = $origin;

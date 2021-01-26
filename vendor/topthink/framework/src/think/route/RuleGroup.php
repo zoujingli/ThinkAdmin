@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2019 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2021 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -317,7 +317,7 @@ class RuleGroup extends Rule
         }
 
         try {
-            $result = preg_match('/^(?:' . implode('|', $regex) . ')/u', $url, $match);
+            $result = preg_match('~^(?:' . implode('|', $regex) . ')~u', $url, $match);
         } catch (\Exception $e) {
             throw new Exception('route pattern error');
         }

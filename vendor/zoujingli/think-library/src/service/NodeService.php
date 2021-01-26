@@ -160,18 +160,16 @@ class NodeService extends Service
      * @param null|string $ext 文件后缀
      * @return array
      */
-    public function scanDirectory(string $path, array $data = [], $ext = 'php'): array
+    public function scanDirectory(string $path, array $data = [], ?string $ext = 'php'): array
     {
-        if (file_exists($path)) {
-            if (is_file($path)) {
-                $data[] = strtr($path, '\\', '/');
-            } elseif (is_dir($path)) foreach (scandir($path) as $item) if ($item[0] !== '.') {
-                $real = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
-                if (is_readable($real)) if (is_dir($real)) {
-                    $data = $this->scanDirectory($real, $data, $ext);
-                } elseif (is_file($real) && (is_null($ext) || pathinfo($real, 4) === $ext)) {
-                    $data[] = strtr($real, '\\', '/');
-                }
+        if (file_exists($path)) if (is_file($path)) {
+            $data[] = strtr($path, '\\', '/');
+        } elseif (is_dir($path)) foreach (scandir($path) as $item) if ($item[0] !== '.') {
+            $real = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
+            if (is_readable($real)) if (is_dir($real)) {
+                $data = $this->scanDirectory($real, $data, $ext);
+            } elseif (is_file($real) && (is_null($ext) || pathinfo($real, 4) === $ext)) {
+                $data[] = strtr($real, '\\', '/');
             }
         }
         return $data;
