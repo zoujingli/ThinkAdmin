@@ -61,7 +61,8 @@ define(function () {
                         object[as[2]] = object[as[2]] || {};
                         object[as[2]][as[1]] = excel.read.CellToValue(data[k].v);
                     }
-                    return $.msg.close(loaded), defer.resolve(filterCallback ? excel.read.filter(object, filterCallback) : object);
+                    $.msg.close(loaded);
+                    return defer.resolve(filterCallback ? excel.read.filter(object, filterCallback) : object);
                 }
                 $.msg.close(loaded)
             };
