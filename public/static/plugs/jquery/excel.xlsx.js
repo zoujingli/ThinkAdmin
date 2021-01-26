@@ -12,41 +12,40 @@ define(['xlsx'], function () {
     excel.bind = function (done, filename) {
         $('body').off('click', '[data-form-export]').on('click', '[data-form-export]', function () {
             var form = $(this).parents('form');
+            var name = this.dataset.filename || filename;
             var method = this.dataset.method || form.attr('method') || 'get';
             var location = this.dataset.excel || this.dataset.formExport || form.attr('action') || '';
-            excel.load(location, form.serialize(), done, this.dataset.filename || filename, method);
+            excel.load(location, form.serialize(), method).then(function (ret) {
+                excel(done(ret), name);
+            }).fail(function (ret) {
+                $.msg.tips(ret || '文件导出失败');
+            });
         });
     };
 
     /*! 加载导出的文档 */
-    excel.load = function (url, data, done, name, method) {
-        var alldata = [];
-        var loading = $.msg.loading('正在加载 <span data-upload-page></span>，完成 <span data-upload-progress>0</span>%');
-        nextPage(1, 1);
+    excel.load = function (url, data, method) {
+        return (function (defer, lists, loaded) {
+            loaded = $.msg.loading("正在加载 <span data-upload-count>0.00</span>%");
+            return (lists = []), LoadNextPage(1, 1), defer;
 
-        function nextPage(curPage, maxPage) {
-            if (curPage > maxPage) {
-                if (typeof done === 'function') {
-                    if ((this.result = done(alldata)) !== false) {
-                        excel(this.result, name || '文件下载.xlsx');
-                    } else {
-                        console.log('格式化函数返回`false`，已终止数据导出操作', alldata, this.result);
-                    }
-                } else {
-                    console.log('格式化函数未绑定，已终止数据导出操作', alldata);
-                }
-                $.msg.close(loading);
-            } else {
-                $('[data-upload-page]').html(curPage + ' / ' + maxPage);
-                $('[data-upload-progress]').html((curPage / maxPage * 100).toFixed(2));
-                $.form.load(url + (url.indexOf('?') > -1 ? '&' : '?') + 'output=json&page=' + curPage, data, method || 'get', function (ret) {
+            function LoadNextPage(curPage, maxPage, urlParams) {
+                $('[data-upload-count]').html((curPage / maxPage * 100).toFixed(2));
+                if (curPage > maxPage) return $.msg.close(loaded), defer.resolve(lists);
+                urlParams = (url.indexOf('?') > -1 ? '&' : '?') + 'output=json&not_cache_limit=0&limit=100&page=' + curPage;
+                $.form.load(url + urlParams, data, method, function (ret) {
                     if (ret.code) {
-                        alldata = alldata.concat(ret.data.list);
-                        return nextPage((ret.data.page.current || 1) + 1, ret.data.page.pages || 1), false;
+                        lists = lists.concat(ret.data.list);
+                        if (ret.data.page) {
+                            LoadNextPage((ret.data.page.current || 1) + 1, ret.data.page.pages || 1);
+                        }
+                    } else {
+                        defer.reject('数据加载异常');
                     }
+                    return false;
                 }, false);
             }
-        }
+        })($.Deferred());
     };
 
     /*! 读取本地的表格文件 */
@@ -56,15 +55,13 @@ define(['xlsx'], function () {
                 Work = XLSX.read(event.target.result, {type: 'binary'});
                 for (var sheet in Work.Sheets) if (Work.Sheets.hasOwnProperty(sheet)) {
                     var object = {}, data = Work.Sheets[sheet], k = '', as = '';
-                    console.log(data)
                     for (k in data) if ((as = k.match(/^([A-Z]+)(\d+)$/i))) {
                         object[as[2]] = object[as[2]] || {};
                         object[as[2]][as[1]] = excel.read.CellToValue(data[k].v);
                     }
-                    jQuery.msg.close(loaded);
-                    return defer.resolve(filterCallback ? excel.read.filter(object, filterCallback) : object);
+                    return $.msg.close(loaded), defer.resolve(filterCallback ? excel.read.filter(object, filterCallback) : object);
                 }
-                jQuery.msg.close(loaded)
+                $.msg.close(loaded)
             };
             reader.onerror = function () {
                 defer.reject('读取文件失败');
@@ -78,18 +75,8 @@ define(['xlsx'], function () {
                 defer.reject('只能读取 file 文件对象');
                 return defer.promise();
             }
-        })(jQuery.Deferred(), new FileReader());
+        })($.Deferred(), new FileReader());
     };
-
-    /*! 表格单元内容转换 */
-    excel.read.CellToValue = function (v) {
-        if (typeof v !== 'undefined' && /^\d+\.\d{12}$/.test(v)) {
-            var d = XLSX.SSF.parse_date_code(v);
-            return d.y + '-' + d.m + '-' + d.d + ' ' + d.H + ':' + d.M + ':' + d.S;
-        } else {
-            return typeof v !== 'undefined' ? v : '';
-        }
-    }
 
     /*! 直接推送表格内容 */
     excel.read.push = function (url, filterCf, filterFn) {
@@ -97,23 +84,23 @@ define(['xlsx'], function () {
             $input.appendTo($('body')).click();
             $input.on('change', function (event) {
                 if (!event.target.files || event.target.files.length < 1) return $.msg.tips('没有可操作文件');
-                loaded = jQuery.msg.loading('<span data-load-name>读取</span> <span data-load-count>0.00%</span>');
+                loaded = $.msg.loading('<span data-load-name>读取</span> <span data-load-count>0.00%</span>');
                 excel.read(event.target.files[0], filterCf).then(function (items, total, ers, oks, idx) {
-                    if ((total = items.length) < 1) return closeAll(), jQuery.msg.tips('未读取到有效数据')
+                    if ((total = items.length) < 1) return clearAll(), $.msg.tips('未读取到有效数据')
                     ers = 0, oks = 0, idx = 0;
-                    jQuery('[data-load-name]').html('更新数据 ');
+                    $('[data-load-name]').html('更新数据 ');
                     doPostItem(idx, items[idx]);
 
                     /*! 执行导入的数据 */
                     function doPostItem(idx, item, info, result) {
                         if (idx >= total) {
                             info = '共处理' + total + '条记录' + '（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
-                            return closeAll(), jQuery.msg.success(info, 3, function () {
-                                jQuery.form.reload();
+                            return clearAll(), $.msg.success(info, 3, function () {
+                                $.form.reload();
                             });
                         } else {
                             info = (idx * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
-                            jQuery('[data-load-count]').html(info);
+                            $('[data-load-count]').html(info);
                             /*! 单元数据过滤 */
                             result = item;
                             if (filterFn && (result = filterFn(item)) === false) {
@@ -127,28 +114,28 @@ define(['xlsx'], function () {
                         }
                     }
                 }).progress(function (progress) {
-                    jQuery('[data-load-count]').html(progress + '%')
+                    $('[data-load-count]').html(progress + '%')
                 }).fail(function () {
-                    closeAll();
+                    clearAll();
                 });
             });
             return defer;
 
             /*! 清理文件选择器 */
-            function closeAll() {
+            function clearAll() {
                 $input.remove();
-                jQuery.msg.close(loaded);
+                $.msg.close(loaded);
             }
 
             /*! 队列方式上传数据 */
             function doUpdate(url, item) {
                 return (function (defer) {
-                    return jQuery.form.load(url, item, 'post', function (ret) {
+                    return $.form.load(url, item, 'post', function (ret) {
                         return defer.resolve(ret), false;
                     }, false), defer.promise();
-                })(jQuery.Deferred());
+                })($.Deferred());
             }
-        })(jQuery.Deferred(), $('<input class="layui-hide" type="file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">'));
+        })($.Deferred(), $('<input class="layui-hide" type="file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">'));
     }
 
     /*! 解析读取的数据 */
@@ -165,6 +152,16 @@ define(['xlsx'], function () {
             }
             return items
         })([]);
+    }
+
+    /*! 表格单元内容转换 */
+    excel.read.CellToValue = function (v) {
+        if (typeof v !== 'undefined' && /^\d+\.\d{12}$/.test(v)) {
+            var time = XLSX.SSF.parse_date_code(v);
+            return time.y + '-' + time.m + '-' + time.d + ' ' + time.H + ':' + time.M + ':' + time.S;
+        } else {
+            return typeof v !== 'undefined' ? v : '';
+        }
     }
 
     return excel;
