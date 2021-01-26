@@ -34,7 +34,7 @@ define(function () {
             function LoadNextPage(curPage, maxPage, urlParams) {
                 $('[data-upload-count]').html((curPage / maxPage * 100).toFixed(2));
                 if (curPage > maxPage) return $.msg.close(loaded), defer.resolve(lists);
-                urlParams = (url.indexOf('?') > -1 ? '&' : '?') + 'output=json&not_cache_limit=0&limit=100&page=' + curPage;
+                urlParams = (url.indexOf('?') > -1 ? '&' : '?') + 'output=json&not_cache_limit=1&limit=100&page=' + curPage;
                 $.form.load(url + urlParams, data, method, function (ret) {
                     if (ret.code) {
                         lists = lists.concat(ret.data.list);
