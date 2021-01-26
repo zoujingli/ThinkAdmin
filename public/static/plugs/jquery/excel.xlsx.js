@@ -1,9 +1,12 @@
 define(function () {
 
-    function excel(data, filename) {
-        if (filename.substr(-5).toLowerCase() !== '.xlsx') filename += '.xlsx';
+    /*! 下载 Excel 文件 */
+    function excel(data, name) {
+        if (name.substr(-5).toLowerCase() !== '.xlsx') {
+            name += '.xlsx';
+        }
         layui.use('excel', function () {
-            layui.excel.exportExcel(data, filename, 'xlsx')
+            layui.excel.exportExcel(data, name, 'xlsx')
         });
     }
 
