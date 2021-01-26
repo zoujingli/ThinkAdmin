@@ -59,7 +59,6 @@ require.config({
     map: {'*': {css: baseRoot + 'plugs/require/css.js'}},
     paths: {
         'md5': ['plugs/jquery/md5.min'],
-        'chat': ['plugs/michat/michat'],
         'json': ['plugs/jquery/json.min'],
         'xlsx': ['plugs/jquery/xlsx.min'],
         'excel': ['plugs/jquery/excel.xlsx'],
