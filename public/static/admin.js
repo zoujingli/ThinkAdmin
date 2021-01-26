@@ -81,7 +81,14 @@ require.config({
     }
 });
 
-/*! 注册 jquery 到 require 模块 */
+/*! 注册 layui 组件 */
+layui.config({
+    base: baseRoot + 'plugs/layui_exts/',
+}).extend({
+    excel: 'excel',
+});
+
+/*! 注册 jquery 组件 */
 define('jquery', [], function () {
     return layui.$;
 });

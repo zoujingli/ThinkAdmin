@@ -1,11 +1,10 @@
-define(['xlsx'], function () {
+define(function () {
 
-    function excel(data, filename, sheetname) {
-        this.name = sheetname || 'sheet1';
-        this.work = {SheetNames: [this.name], Sheets: {}};
-        this.work.Sheets[this.name] = XLSX.utils.aoa_to_sheet(data);
+    function excel(data, filename) {
         if (filename.substr(-5).toLowerCase() !== '.xlsx') filename += '.xlsx';
-        XLSX.writeFile(this.work, filename);
+        layui.use('excel', function () {
+            layui.excel.exportExcel(data, filename, 'xlsx')
+        });
     }
 
     /*! 绑定导出的事件 */
