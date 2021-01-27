@@ -57,8 +57,8 @@
                 日期：{$vo.subscribe_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
             </td>
             <td class='text-center nowrap'>
-                <div>{eq name='vo.subscribe' value='0'}<span class="layui-badge">未订阅</span>{else}<span class="layui-badge layui-bg-green">已订阅</span>{/eq}</div>
-                <div>{eq name='vo.is_black' value='0'}<span class="layui-badge layui-bg-green">未拉黑</span>{else}<span class="layui-badge">已拉黑</span>{/eq}</div>
+                {eq name='vo.subscribe' value='0'}<span class="layui-badge">未订阅</span>{else}<span class="layui-badge layui-bg-green">已订阅</span>{/eq}
+                {eq name='vo.is_black' value='0'}<span class="layui-badge layui-bg-green">未拉黑</span>{else}<span class="layui-badge">已拉黑</span>{/eq}
             </td>
             <td class="nowrap">
 
