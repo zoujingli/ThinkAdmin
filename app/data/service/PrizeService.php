@@ -35,7 +35,7 @@ class PrizeService extends Service
      * @param string $prize
      * @return string
      */
-    public function getName(string $prize): string
+    public function name(string $prize): string
     {
         return self::PRIZES[$prize]['name'] ?? $prize;
     }
@@ -90,10 +90,10 @@ class PrizeService extends Service
         if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
             if (sysconf('shop.fristType') == 1) {
                 $amount = sysconf('shop.fristValue') ?: '0.00';
-                $name = PrizeService::instance()->getName(PrizeService::PRIZE_01) . "，每人 {$amount} 元";
+                $name = PrizeService::instance()->name(PrizeService::PRIZE_01) . "，每人 {$amount} 元";
             } else {
                 $amount = sysconf('shop.fristValue') * $this->order['amount_total'] / 100;
-                $name = PrizeService::instance()->getName(PrizeService::PRIZE_01) . "，订单 " . sysconf('shop.fristValue') . '%';
+                $name = PrizeService::instance()->name(PrizeService::PRIZE_01) . "，订单 " . sysconf('shop.fristValue') . '%';
             }
             $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
                 'uid' => $this->fromer['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
@@ -122,10 +122,10 @@ class PrizeService extends Service
         if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
             if (sysconf('shop.repeatType') == 1) {
                 $amount = sysconf('shop.repeatValue') ?: '0.00';
-                $name = PrizeService::instance()->getName(PrizeService::PRIZE_02) . "，每人 {$amount} 元";
+                $name = PrizeService::instance()->name(PrizeService::PRIZE_02) . "，每人 {$amount} 元";
             } else {
                 $amount = sysconf('shop.repeatValue') * $this->order['amount_total'] / 100;
-                $name = PrizeService::instance()->getName(PrizeService::PRIZE_02) . "，订单 " . sysconf('shop.repeatValue') . '%';
+                $name = PrizeService::instance()->name(PrizeService::PRIZE_02) . "，订单 " . sysconf('shop.repeatValue') . '%';
             }
             $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
                 'uid' => $this->fromer['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
@@ -151,7 +151,7 @@ class PrizeService extends Service
         $map = ['type' => PrizeService::PRIZE_03, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
             $amount = sysconf('shop.repeatValue') * $this->order['amount_total'] / 100;
-            $name = PrizeService::instance()->getName(PrizeService::PRIZE_03) . "，订单 " . sysconf('shop.repeatValue') . '%';
+            $name = PrizeService::instance()->name(PrizeService::PRIZE_03) . "，订单 " . sysconf('shop.repeatValue') . '%';
             $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
                 'uid' => $this->fromer['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
@@ -177,7 +177,7 @@ class PrizeService extends Service
         $map = ['type' => PrizeService::PRIZE_04, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
             $amount = sysconf('shop.indirectValue') * $this->order['amount_total'] / 100;
-            $name = PrizeService::instance()->getName(PrizeService::PRIZE_04) . "，订单 " . sysconf('shop.indirectValue') . '%';
+            $name = PrizeService::instance()->name(PrizeService::PRIZE_04) . "，订单 " . sysconf('shop.indirectValue') . '%';
             $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
                 'uid' => $pm2['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));

@@ -149,13 +149,8 @@ abstract class PaymentService
      */
     public function __construct(App $app, string $code, string $type, array $params)
     {
-        $this->app = $app;
-        $this->code = $code;
-        $this->type = $type;
-        $this->params = $params;
-        if (method_exists($this, 'initialize')) {
-            $this->initialize();
-        }
+        [$this->app, $this->code, $this->type, $this->params] = [$app, $code, $type, $params];
+        if (method_exists($this, 'initialize')) $this->initialize();
     }
 
     /**

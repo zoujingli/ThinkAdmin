@@ -41,7 +41,7 @@ class UserLevel extends Controller
         foreach ($data as &$vo) {
             $vo['rebate_rule'] = str2arr($vo['rebate_rule']);
             foreach ($vo['rebate_rule'] as &$v) {
-                $v = PrizeService::instance()->getName($v);
+                $v = PrizeService::instance()->name($v);
             }
         }
     }
