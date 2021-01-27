@@ -20,12 +20,12 @@
                 <tbody>
                 {foreach $levels as $level}
                 <tr class="think-bg-white">
-                    <td class="nowrap notselect">
-                        [ <span class="color-blue">VIP{$level.number}</span> ] {$level.name|default=''}
+                    <td class="nowrap notselect sub-span-blue">
+                        [ <span>VIP{$level.number|default='0'}</span> ] {$level.name|default=''}
                     </td>
                     <td class="nowrap padding-0">
                         <label>
-                            {php} $key = "_level_".$level['number']; {/php}
+                            {php} $key = "_level_" . $level['number']; {/php}
                             <input name="_level_{$level.number}" data-blur-number="4" value="{$vo[$key]??'100.0000'}" placeholder="请输入用户级别折扣"> %
                         </label>
                     </td>
