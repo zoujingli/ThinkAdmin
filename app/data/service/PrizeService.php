@@ -221,31 +221,24 @@ class PrizeService extends Service
         // 查询需要计算奖励的商品
         $map = [['order_no', '=', $this->order['order_no']], ['discount_rate', '<', 100]];
         $this->app->db->name('StoreOrderItem')->where($map)->select()->each(function ($item) use ($users) {
-            foreach ($users as $user) {
-                $map = [
-                    'order_no' => $this->order['order_no'],
-                    '',
-                ];
-
-                $discountRule = $this->app->db->name('DataUserDiscount')->where(['status' => '1', 'is_deleted' => '0'])->value('rule');
-                if (!empty($discountRule) && is_array($rules = json_decode($discountRule, true))) {
-                    [$tempLevel, $tempRate] = [$item['vip_number'], $item['discount_rate']];
-                    foreach ($rules as $rule) if ($rule['level'] > $tempLevel) foreach ($uids as $mem) if ($mem['vip_number'] > $tempLevel) {
-                        if ($tempRate > $rule['discount'] && $tempRate < 100) {
-                            $diffRate = $tempRate - $rule['discount'];
-                            $this->orderno = "{$this->order['order_no']}#{$tempLevel}-{$mem['vip_number']}";
-                            if ($this->app->db->name('DataUserRebate')->where(['order_no' => $this->orderno])->count() < 1) {
-                                $this->app->db->name('DataUserRebate')->insert([
-                                    'order_no'     => $this->orderno, 'order_uid' => $this->order['mid'],
-                                    'order_price'  => $this->order['amount_total'], 'type' => '5', 'mid' => $mem['id'],
-                                    'profit_price' => $diffRate * $item['goods_amount_total'] / 100,
-                                    'profit_state' => intval(empty($this->settlement)),
-                                    'description'  => "等级差额奖励{$tempLevel}#{$mem['vip_number']}商品金额{$diffRate}%",
-                                ]);
-                                $this->app->db->name('StoreOrderItem')->where(['id' => $item['id']])->update(['discount_state' => '1']);
-                            }
-                            [$tempLevel, $tempRate] = [$mem['vip_number'], $rule['discount']];
+            $itemJson = $this->app->db->name('DataUserDiscount')->where(['status' => 1, 'deleted' => 0])->value('items');
+            if (!empty($itemJson) && is_array($rules = json_decode($itemJson, true))) {
+                [$tVip, $tRate] = [$item['vip_number'], $item['discount_rate']];
+                foreach ($rules as $rule) if ($rule['level'] > $tVip) foreach ($users as $user) if ($user['vip_number'] > $tVip) {
+                    if ($tRate > $rule['discount'] && $tRate < 100) {
+                        $map = ['type' => self::PRIZE_05, 'code' => "{$this->order['order_no']}#{$tVip}-{$user['vip_number']}"];
+                        if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
+                            $dRate = ($tRate - $rule['discount']) / 100;
+                            $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
+                                'uid'          => $user['id'],
+                                'name'         => "等级差额奖励{$tVip}#{$user['vip_number']}商品金额{$dRate}%",
+                                'amount'       => $dRate * $item['total_selling'],
+                                'order_no'     => $this->order['order_no'],
+                                'order_uid'    => $this->order['uid'],
+                                'order_amount' => $this->order['amount_total'],
+                            ]));
                         }
+                        [$tVip, $tRate] = [$user['vip_number'], $rule['discount']];
                     }
                 }
             }
