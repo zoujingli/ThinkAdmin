@@ -45,6 +45,12 @@ class PrizeService extends Service
     protected $fromer;
 
     /**
+     * 绑定数据表
+     * @var string
+     */
+    private $table = 'DataUserRebate';
+
+    /**
      * 获取奖励名称
      * @param string $prize
      * @return string
@@ -97,11 +103,11 @@ class PrizeService extends Service
     {
         if (empty($this->fromer)) return false;
         $map = ['order_uid' => $this->user['id']];
-        if ($this->app->db->name('DataUserRebate')->where($map)->count() > 0) return false;
+        if ($this->app->db->name($this->table)->where($map)->count() > 0) return false;
         if (!$this->checkLevelPrize(self::PRIZE_01, $this->fromer['vip_number'])) return false;
         // 创建返利奖励记录
         $map = ['type' => self::PRIZE_01, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-        if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
+        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
             if (sysconf('shop.fristType') == 1) {
                 $amount = sysconf('shop.fristValue') ?: '0.00';
                 $name = self::instance()->name(self::PRIZE_01) . "，每人 {$amount} 元";
@@ -109,7 +115,7 @@ class PrizeService extends Service
                 $amount = sysconf('shop.fristValue') * $this->order['amount_total'] / 100;
                 $name = self::instance()->name(self::PRIZE_01) . "，订单 " . sysconf('shop.fristValue') . '%';
             }
-            $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
+            $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->fromer['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新会员奖利金额
@@ -129,11 +135,11 @@ class PrizeService extends Service
     {
         if (empty($this->fromer)) return false;
         $map = ['order_uid' => $this->user['id']];
-        if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) return false;
+        if ($this->app->db->name($this->table)->where($map)->count() < 1) return false;
         if (!$this->checkLevelPrize(self::PRIZE_02, $this->fromer['vip_number'])) return false;
         // 创建返利奖励记录
         $map = ['type' => self::PRIZE_02, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-        if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
+        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
             if (sysconf('shop.repeatType') == 1) {
                 $amount = sysconf('shop.repeatValue') ?: '0.00';
                 $name = self::instance()->name(self::PRIZE_02) . "，每人 {$amount} 元";
@@ -141,7 +147,7 @@ class PrizeService extends Service
                 $amount = sysconf('shop.repeatValue') * $this->order['amount_total'] / 100;
                 $name = self::instance()->name(self::PRIZE_02) . "，订单 " . sysconf('shop.repeatValue') . '%';
             }
-            $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
+            $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->fromer['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新会员奖利金额
@@ -163,10 +169,10 @@ class PrizeService extends Service
         if (!$this->checkLevelPrize(self::PRIZE_03, $this->fromer['vip_number'])) return false;
         // 创建返利奖励记录
         $map = ['type' => self::PRIZE_03, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-        if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
+        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
             $amount = sysconf('shop.repeatValue') * $this->order['amount_total'] / 100;
             $name = self::instance()->name(self::PRIZE_03) . "，订单 " . sysconf('shop.repeatValue') . '%';
-            $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
+            $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->fromer['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新会员奖利金额
@@ -189,10 +195,10 @@ class PrizeService extends Service
         if (empty($pm2)) return false;
         if (!$this->checkLevelPrize(self::PRIZE_04, $pm2['vip_number'])) return false;
         $map = ['type' => self::PRIZE_04, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-        if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
+        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
             $amount = sysconf('shop.indirectValue') * $this->order['amount_total'] / 100;
             $name = self::instance()->name(self::PRIZE_04) . "，订单 " . sysconf('shop.indirectValue') . '%';
-            $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
+            $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $pm2['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新代理奖利金额
@@ -226,12 +232,15 @@ class PrizeService extends Service
                 [$tVip, $tRate] = [$item['vip_number'], $item['discount_rate']];
                 foreach ($rules as $rule) if ($rule['level'] > $tVip) foreach ($users as $user) if ($user['vip_number'] > $tVip) {
                     if ($tRate > $rule['discount'] && $tRate < 100) {
-                        $map = ['type' => self::PRIZE_05, 'code' => "{$this->order['order_no']}#{$tVip}-{$user['vip_number']}"];
-                        if ($this->app->db->name('DataUserRebate')->where($map)->count() < 1) {
+                        $map = [
+                            'uid'  => $user['id'],
+                            'type' => self::PRIZE_05,
+                            'code' => "{$this->order['order_no']}#{$item['id']}#{$tVip}.{$user['vip_number']}",
+                        ];
+                        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
                             $dRate = ($tRate - $rule['discount']) / 100;
-                            $this->app->db->name('DataUserRebate')->insert(array_merge($map, [
-                                'uid'          => $user['id'],
-                                'name'         => "等级差额奖励{$tVip}#{$user['vip_number']}商品金额{$dRate}%",
+                            $this->app->db->name($this->table)->insert(array_merge($map, [
+                                'name'         => "等级差额奖励{$tVip}#{$user['vip_number']}商品的{$dRate}%",
                                 'amount'       => $dRate * $item['total_selling'],
                                 'order_no'     => $this->order['order_no'],
                                 'order_uid'    => $this->order['uid'],

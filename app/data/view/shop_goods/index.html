@@ -1,10 +1,6 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
-<!--{if auth("shop_goods_mark/index")}-->
-<button data-iframe='{:url("shop_goods_mark/index")}' data-width="900px" data-title="标签管理" class='layui-btn layui-btn-sm layui-btn-primary'>标签管理</button>
-<!--{/if}-->
-
 <!--{if auth("add")}-->
 <button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加商品</button>
 <!--{/if}-->
@@ -18,6 +14,10 @@
 <button data-action='{:url("remove")}' data-rule="code#{key};deleted#0" data-confirm="确定要恢复这些数据吗？" class='layui-btn layui-btn-sm layui-btn-primary'>恢复商品</button>
 <!--{/if}-->
 {/if}
+
+<!--{if auth("shop_goods_mark/index")}-->
+<button data-iframe='{:url("shop_goods_mark/index")}' data-width="900px" data-title="标签管理" class='layui-btn layui-btn-sm layui-btn-primary'>标签管理</button>
+<!--{/if}-->
 {/block}
 
 {block name="content"}
@@ -43,7 +43,7 @@
                     <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
                 </th>
                 <th class='text-left nowrap'>商品信息</th>
-                <th class='text-left nowrap'>标签分类</th>
+                <th class='text-left nowrap'></th>
                 <th class='text-left nowrap'>商品状态</th>
                 <th></th>
             </tr>
@@ -85,6 +85,7 @@
                 </td>
                 <td class='nowrap sub-span-blue'>
                     <div class="margin-bottom-5">剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )</div>
+
                     <!--{if auth('copy')}-->
                     <a class="layui-btn layui-btn-xs layui-btn-normal" data-open='{:url("copy")}?code={$vo.code}'>复 制</a>
                     <!--{/if}-->
