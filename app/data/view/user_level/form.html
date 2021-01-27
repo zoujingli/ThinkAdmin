@@ -2,13 +2,12 @@
     <div class="layui-card-body padding-left-40">
 
         <fieldset class="layui-form-item">
-            <legend class="layui-bg-cyan">用户等级</legend>
-            <div class="layui-form-item layui-row layui-col-space10">
+            <legend><span class="layui-badge layui-bg-cyan">用户等级</span></legend>
+            <div class="layui-form-item layui-row layui-col-space15">
                 <div class="layui-col-xs3 block relative">
-                    <span class="color-green label-required-prev">等级序号</span>
-                    <select class="layui-select" name="level">
-                        {for start="1" end="9" name="i"}
-                        {if isset($vo.number) and $vo.number eq $i}
+                    <span class="color-green label-required-prev">等级序号</span><span class="color-desc">Number</span>
+                    <select class="layui-select" name="number">
+                        {for start="1" end="10" name="i"}{if isset($vo.number) and $vo.number eq $i}
                         <option selected value="{$i}">当前 VIP {$vo.number} 等级</option>
                         {else}
                         <option value="{$i}">设置 VIP {$i} 等级</option>
@@ -16,14 +15,14 @@
                     </select>
                 </div>
                 <label class="layui-col-xs9 block relative">
-                    <span class="color-green label-required-prev">等级名称</span>
+                    <span class="color-green label-required-prev">等级名称</span><span class="color-desc">Level Name</span>
                     <input class="layui-input" name="name" required value="{$vo.name|default=''}" placeholder="请输入等级名称">
                 </label>
             </div>
         </fieldset>
 
         <fieldset class="layui-form-item">
-            <legend class="layui-bg-cyan">升级规则</legend>
+            <legend><span class="layui-badge layui-bg-cyan">升级规则</span></legend>
             <div class="layui-form-item">
                 {php}$vo['upgrade_type'] = isset($vo['upgrade_type'])?$vo['upgrade_type']:1;{/php}
                 {foreach [1=>'达成所有条件',0=>'达成任何条件'] as $k => $v}
@@ -36,7 +35,7 @@
         </fieldset>
 
         <fieldset class="layui-form-item">
-            <legend class="layui-bg-cyan">升级条件</legend>
+            <legend><span class="layui-badge layui-bg-cyan">升级条件</span></legend>
             <div class="font-s13">
                 <label class="layui-form-item block relative think-checkbox notselect">
                     {if isset($vo.goods_vip_status) and $vo.goods_vip_status eq 1}
@@ -70,13 +69,13 @@
                 </label>
 
                 <label class="layui-form-item block relative think-checkbox notselect">
-                    {if isset($vo.teams_user_status) and $vo.teams_user_status eq 1}
-                    ④ <input type="checkbox" checked name="teams_user_status" value="1" lay-ignore>开启
+                    {if isset($vo.teams_users_status) and $vo.teams_users_status eq 1}
+                    ④ <input type="checkbox" checked name="teams_users_status" value="1" lay-ignore>开启
                     {else}
-                    ④ <input type="checkbox" name="teams_user_status" value="1" lay-ignore>开启
+                    ④ <input type="checkbox" name="teams_users_status" value="1" lay-ignore>开启
                     {/if}
                     <span class="color-blue">团队总数</span> 升级，<span class="color-blue">团队总数</span> 达到
-                    <input class="inline-block text-center" data-blur-number="0" style="width:80px" name="teams_user_number" value="{$vo.teams_user_number|default='0'}">
+                    <input class="inline-block text-center" data-blur-number="0" style="width:80px" name="teams_users_number" value="{$vo.teams_users_number|default='0'}">
                     人；
                 </label>
 
@@ -94,18 +93,18 @@
         </fieldset>
 
         <fieldset class="layui-form-item">
-            <legend class="layui-bg-cyan">发放奖利</legend>
-            <div class="layui-form-item">
-                {foreach $rules as $key}{if isset($vo.rebate_rule) && is_array($vo.rebate_rule) && in_array($key,$vo.rebate_rule)}
-                <label class="think-checkbox"><input checked type="checkbox" name="rebate_rule[]" value="{$key}" lay-ignore> {$key}</label>
+            <legend><span class="layui-badge layui-bg-cyan">发放奖利</span></legend>
+            <div class="layui-form-item notselect">
+                {foreach $prizes as $prize}{if isset($vo.rebate_rule) && is_array($vo.rebate_rule) && in_array($prize.code, $vo.rebate_rule)}
+                <label class="think-checkbox"><input type="checkbox" name="rebate_rule[]" value="{$prize.code}" lay-ignore checked> {$prize.name}</label>
                 {else}
-                <label class="think-checkbox"><input type="checkbox" name="rebate_rule[]" value="{$key}" lay-ignore> {$key}</label>
+                <label class="think-checkbox"><input type="checkbox" name="rebate_rule[]" value="{$prize.code}" lay-ignore> {$prize.name}</label>
                 {/if}{/foreach}
             </div>
         </fieldset>
 
         <fieldset class="layui-form-item layui-hide">
-            <legend class="layui-bg-cyan">等级描述</legend>
+            <legend><span class="layui-badge layui-bg-cyan">等级描述</span></legend>
             <label class="layui-form-item block relative">
                 <textarea name="remark" class="layui-textarea" placeholder="请输入用户等级描述">{$vo.remark|default=''}</textarea>
             </label>
@@ -113,7 +112,7 @@
 
         <div class="hr-line-dashed"></div>
         {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
-        {notempty name='vo.level'}<input type='hidden' value='{$vo.level}' name='old_level'>{/notempty}
+        {notempty name='vo.number'}<input type='hidden' value='{$vo.number}' name='old_number'>{/notempty}
 
         <div class="layui-form-item text-center">
             <button class="layui-btn" type='submit'>保存数据</button>

@@ -230,7 +230,7 @@ class UserService extends Service
         // 计算会员级别
         foreach ($this->app->db->name('DataUserLevel')->where(['status' => 1])->order('number desc')->select()->toArray() as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['vip_auth'] > 0;
-            $l2 = empty($item['teams_user_status']) || $item['teams_user_number'] <= $teamsDirect + $teamsIndirect;
+            $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsDirect + $teamsIndirect;
             $l3 = empty($item['teams_direct_status']) || $item['teams_direct_number'] <= $teamsDirect;
             $l4 = empty($item['teams_indirect_status']) || $item['teams_indirect_number'] <= $teamsIndirect;
             $l5 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $amountTotal;

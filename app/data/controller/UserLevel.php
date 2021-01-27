@@ -2,6 +2,7 @@
 
 namespace app\data\controller;
 
+use app\data\service\PrizeService;
 use think\admin\Controller;
 
 /**
@@ -39,6 +40,9 @@ class UserLevel extends Controller
     {
         foreach ($data as &$vo) {
             $vo['rebate_rule'] = str2arr($vo['rebate_rule']);
+            foreach ($vo['rebate_rule'] as &$v) {
+                $v = PrizeService::instance()->getName($v);
+            }
         }
     }
 
@@ -73,7 +77,7 @@ class UserLevel extends Controller
     protected function _form_filter(array &$vo)
     {
         if ($this->request->isGet()) {
-            $this->rules = ['首推奖利', '复购奖利', '直属团队', '间接团队', '差额奖励'];
+            $this->prizes = PrizeService::PRIZES;
             $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
         } else {
             $vo['utime'] = time();
@@ -103,7 +107,7 @@ class UserLevel extends Controller
     {
         if ($state) {
             $order = 'number asc,utime desc';
-            if (input('old_level', 100) < input('level', '0')) $order = 'number asc,utime asc';
+            if (input('old_number', 100) < input('number', '0')) $order = 'number asc,utime asc';
             foreach ($this->app->db->name($this->table)->order($order)->cursor() as $k => $vo) {
                 $this->app->db->name($this->table)->where(['id' => $vo['id']])->update(['number' => $k + 1]);
             }
