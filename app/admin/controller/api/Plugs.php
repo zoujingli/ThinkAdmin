@@ -39,7 +39,6 @@ class Plugs extends Controller
         $this->fetch(realpath(__DIR__ . '/../../view/api/icon.html'));
     }
 
-
     /**
      * 当前运行模式
      * @login true
