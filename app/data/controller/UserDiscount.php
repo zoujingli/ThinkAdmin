@@ -84,8 +84,9 @@ class UserDiscount extends Controller
             }
             $vo['items'] = json_encode($rule, JSON_UNESCAPED_UNICODE);
         } else {
-            $map = ['status' => 1];
-            $this->levels = $this->app->db->name('DataUserLevel')->where($map)->order('number asc')->select()->toArray();
+            $query = $this->app->db->name('DataUserLevel');
+            $this->levels = $query->where(['status' => 1])->order('number asc')->select()->toArray();
+            if (empty($this->levels)) $this->error('未配置用户等级！');
             if (!empty($vo['items'])) foreach (json_decode($vo['items'], true) as $item) {
                 $vo["_level_{$item['level']}"] = $item['discount'];
             }
