@@ -114,8 +114,7 @@ class Order extends Auth
             // 统计订单金额
             $order['amount_real'] = $order['amount_goods'] - $order['amount_reduct'];
             $order['amount_total'] = $order['amount_goods'];
-
-            // 写入订单商品数据
+            // 写入订单数据
             $this->app->db->name('ShopOrder')->insert($order);
             $this->app->db->name('ShopOrderItem')->insertAll($items);
             // 同步商品库存销量
