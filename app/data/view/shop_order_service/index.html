@@ -34,10 +34,10 @@
                 </td>
                 <td class="nowrap relative">
                     <div>
-                        <img data-tips-image style="width:35px;height:35px" src="{$vo.from_member.headimg|default='__ROOT__/static/theme/img/headimg.png'}" class="margin-right-5" alt="img">
+                        <img data-tips-image style="width:35px;height:35px" src="{$vo.fromer.headimg|default='__ROOT__/static/theme/img/headimg.png'}" class="margin-right-5" alt="img">
                         <div class="inline-block text-middle sub-span-blue">
-                            推荐用户：{$vo.from_member.nickname|default='--'}<br>
-                            推荐手机：<span>{$vo.from_member.phone|default='--'}</span>{notempty name='vo.from_member.vip_level'} [ <b class="color-red">VIP{$vo.from_member.vip_level}</b> ] <b class="color-red">{$vo.from_member.vip_title}</b>{/notempty}<br>
+                            推荐用户：{$vo.fromer.nickname|default='--'}<br>
+                            推荐手机：<span>{$vo.fromer.phone|default='--'}</span>{notempty name='vo.fromer.vip_level'} [ <b class="color-red">VIP{$vo.fromer.vip_level}</b> ] <b class="color-red">{$vo.fromer.vip_title}</b>{/notempty}<br>
                         </div>
                     </div>
                     <div>
