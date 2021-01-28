@@ -31,7 +31,7 @@ class ShopTruckTemplate extends Controller
     {
         $this->title = '快递邮费模板';
         $query = $this->_query($this->table);
-        $query->like('code,name')->dateBetween('create_at');
+        $query->like('code,name')->equal('status')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
