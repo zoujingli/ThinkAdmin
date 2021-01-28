@@ -2,12 +2,14 @@
 
 use app\data\command\OrderClear;
 use app\data\command\UserBalance;
+use app\data\command\UserLevel;
 use think\Console;
 
 Console::starting(function (Console $console) {
     if (app()->request->isCli()) {
         $console->addCommand(OrderClear::class);
         $console->addCommand(UserBalance::class);
+        $console->addCommand(UserLevel::class);
     }
 });
 

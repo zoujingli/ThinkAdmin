@@ -34,7 +34,7 @@ class UserBalance extends Command
             foreach ($this->app->db->name('DataUser')->field('id')->cursor() as $user) {
                 $this->queue->message($total, ++$count, "正在计算用户 [{$user['id']}] 的余额");
                 UserService::instance()->balance($user['id']);
-                $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的余额");
+                $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的余额", 1);
             }
         } catch (\Exception $exception) {
             $this->queue->error($exception->getMessage());
