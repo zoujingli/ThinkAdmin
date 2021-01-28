@@ -260,8 +260,8 @@ class UserService extends Service
 //        $teamsPerformanceIndirect = $this->app->db->name('ShopOrder')->whereRaw("from_uid in {$mysql2} and status in (3,4,5)")->sum('price_discount');
         // 更新会员数据
         $data = [
-            'vip_name'  => $title,
-            'vip_level' => $level,
+            'vip_name'   => $title,
+            'vip_number' => $level,
 //            'teams_total'        => $teamsDirect + $teamsIndirect,
 //            'teams_direct'       => $teamsDirect,
 //            'teams_indirect'     => $teamsIndirect,
