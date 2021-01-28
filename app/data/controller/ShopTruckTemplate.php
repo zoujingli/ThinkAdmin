@@ -49,8 +49,8 @@ class ShopTruckTemplate extends Controller
             $this->fetch('form_region');
         } else {
             $data = $this->_vali(['nos.default' => '', 'oks.default' => '']);
-            if ($data['nos']) $this->app->db->name('ShopTruckRegion')->whereIn('id', explode(',', $data['nos']))->update(['status' => 0]);
-            if ($data['oks']) $this->app->db->name('ShopTruckRegion')->whereIn('id', explode(',', $data['oks']))->update(['status' => 1]);
+            if ($data['nos']) $this->app->db->name('ShopTruckRegion')->whereIn('id', str2arr($data['nos']))->update(['status' => 0]);
+            if ($data['oks']) $this->app->db->name('ShopTruckRegion')->whereIn('id', str2arr($data['oks']))->update(['status' => 1]);
             $this->success('修改配送区域成功！');
         }
     }
