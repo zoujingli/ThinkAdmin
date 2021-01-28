@@ -74,12 +74,12 @@ class OrderClear extends Command
             $map[] = ['payment_status', '=', 0];
             $map[] = ['create_at', '<', date('Y-m-d H:i:s', strtotime('-3 days'))];
             [$total, $count] = [$this->app->db->name('ShopOrder')->where($map)->count(), 0];
-            $this->app->db->name('ShopOrder')->where($map)->select()->map(function ($item) use ($total, &$count) {
+            foreach ($this->app->db->name('ShopOrder')->where($map)->cursor() as $item) {
                 $this->queue->message($total, ++$count, "开始清理已取消的订单 {$item['order_no']}");
                 $this->app->db->name('ShopOrder')->where(['order_no' => $item['order_no']])->delete();
                 $this->app->db->name('ShopOrderItem')->where(['order_no' => $item['order_no']])->delete();
                 $this->queue->message($total, $count, "完成清理已取消的订单 {$item['order_no']}", 1);
-            });
+            }
         } catch (\Exception $exception) {
             $this->queue->error($exception->getMessage());
         }
