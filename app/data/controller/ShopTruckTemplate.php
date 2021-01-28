@@ -20,7 +20,7 @@ class ShopTruckTemplate extends Controller
     private $table = 'ShopTruckTemplate';
 
     /**
-     * 快递邮费配置
+     * 快递邮费模板
      * @auth true
      * @menu true
      * @throws \think\db\exception\DataNotFoundException
@@ -29,7 +29,7 @@ class ShopTruckTemplate extends Controller
      */
     public function index()
     {
-        $this->title = '快递邮费配置';
+        $this->title = '快递邮费模板';
         $query = $this->_query($this->table);
         $query->like('code,name')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
