@@ -38,18 +38,20 @@
             <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">
         </label>
 
+        {notempty name='truckitems'}
         <label class="layui-form-item block relative">
             <span class="color-green font-w7 label-required-prev">邮费模板</span>
             <span class="color-desc margin-left-5">Truck Template</span>
             <select class="layui-select" name="truck_tcode" lay-search>
                 <option value="">--- 包 邮 ---</option>
-                {foreach $vo.truck_items as $truck}{if isset($vo.truck_tcode) and $vo.truck_tcode eq $truck.code}
+                {foreach $truckitems as $truck}{if isset($vo.truck_tcode) and $vo.truck_tcode eq $truck.code}
                 <option selected value="{$truck.code}">{$truck.code} - {$truck.name|default=''}</option>
                 {else}
                 <option value="{$truck.code}">{$truck.code} - {$truck.name|default=''}</option>
                 {/if}{/foreach}
             </select>
         </label>
+        {/notempty}
 
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">商品图片及轮播展示图片</span>
@@ -77,8 +79,10 @@
             <span class="color-green font-w7 label-required-prev">商品规格及商品SKU绑定<span class="color-red font-s12">（规格填写后不允许再次修改）</span></span>
             <div ng-repeat="x in specs track by $index" style="display:none" class="margin-bottom-10" ng-class="{true:'layui-show'}[mode==='add'&&specs.length>0]">
                 <div class="goods-spec-box padding-10 margin-0 relative" style="background:#ddd">
-                    <span class="text-center goods-spec-title">分组</span>
-                    <label class="label-required-null inline-block"><input ng-blur="x.name=trimSpace(x.name)" ng-model="x.name" required placeholder="请输入分组名称"></label>
+                    <span class="text-center goods-spec-name">分组</span>
+                    <label class="label-required-null inline-block">
+                        <input ng-blur="x.name=trimSpace(x.name)" ng-model="x.name" required placeholder="请输入分组名称">
+                    </label>
                     <div class="pull-right">
                         <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-click="addSpecVal(x.list)">增加</a>
                         <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-bg-gray'}[$index>0]" ng-click="upSpecRow(specs,$index)">上移</a>
