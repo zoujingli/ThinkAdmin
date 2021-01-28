@@ -3,6 +3,7 @@
 use app\data\command\OrderClear;
 use app\data\command\UserBalance;
 use app\data\command\UserLevel;
+use app\data\command\UserTransfer;
 use think\Console;
 
 Console::starting(function (Console $console) {
@@ -10,6 +11,7 @@ Console::starting(function (Console $console) {
         $console->addCommand(OrderClear::class);
         $console->addCommand(UserBalance::class);
         $console->addCommand(UserLevel::class);
+        $console->addCommand(UserTransfer::class);
     }
 });
 

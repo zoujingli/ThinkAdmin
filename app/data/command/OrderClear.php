@@ -18,7 +18,7 @@ class OrderClear extends Command
     protected function configure()
     {
         $this->setName('xdata:OrderClear');
-        $this->setDescription('定时清理商城订单数据');
+        $this->setDescription('批量清理商城订单数据');
     }
 
     /**

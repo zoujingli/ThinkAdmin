@@ -1,0 +1,37 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+
+    <div class="layui-card-body padding-left-40">
+
+        <div class="layui-form-item">
+            <span class="color-green font-w7">审核操作类型</span>
+            <span class="color-desc margin-left-5">Audit type</span>
+            <!-- 提现状态(0失败, 1待审核, 2已审核, 3打款中, 4已打款, 5已收款) -->
+            <div class="layui-input relative notselect">
+                {foreach(['已拒绝','待审核', '已审核', '打款中','已打款'] as $k => $v)}
+                {if $k eq $vo.status}
+                <label class="think-radio"><input checked type="radio" name="status" value='{$k}' lay-ignore> {$v}</label>
+                {else}
+                <label class="think-radio"><input type="radio" name="status" value='{$k}' lay-ignore> {$v}</label>
+                {/if}{/foreach}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="relative block">
+                <span class="color-green font-w7">审核操作描述</span>
+                <span class="color-desc margin-left-5">Audit Remark</span>
+                <textarea class="layui-textarea" placeholder="请输入审核描述" name="remark">{$vo.remark|default=''}</textarea>
+            </label>
+        </div>
+
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+</form>

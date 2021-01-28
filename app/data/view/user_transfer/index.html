@@ -1,0 +1,87 @@
+{extend name="../../admin/view/main"}
+
+{block name="button"}
+<!--{if auth('sync')}-->
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-queue="{:url('sync')}">打款服务</a>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='user_transfer/index_search'}
+    <table class="layui-table" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
+            <th>提现用户</th>
+            <th>提现订单</th>
+            <th>提现方式</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key => $vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
+            <td class="sub-span-blue nowrap">
+                <div class="headimg" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="inline-block">
+                    {notempty name='vo.user.username'}
+                    <div>姓名：<span>{$vo.user.username|default='-'}</span></div>
+                    {else}
+                    <div>昵称：<span>{$vo.user.nickname|default='-'}</span></div>
+                    {/notempty}
+                    <div>手机：<span>{$vo.user.phone|default='-'}</span></div>
+                </div>
+            </td>
+            <td class='text-left nowrap'>
+                <div class="text-middle">
+                    提现金额：<b class="color-blue">{$vo.amount+0}</b> 元
+                    {eq name='vo.status' value='0'}<span class="layui-badge layui-bg-red margin-left-5">已失败</span>{/eq}
+                    {eq name='vo.status' value='1'}<span class="layui-badge layui-bg-cyan margin-left-5">待审核</span>{/eq}
+                    {eq name='vo.status' value='2'}<span class="layui-badge layui-bg-blue margin-left-5">已审核</span>{/eq}
+                    {eq name='vo.status' value='3'}<span class="layui-badge layui-bg-blue margin-left-5">待打款</span>{/eq}
+                    {eq name='vo.status' value='4'}<span class="layui-badge layui-bg-green margin-left-5">已打款</span>{/eq}
+                    {eq name='vo.status' value='5'}<span class="layui-badge layui-bg-green margin-left-5">已完成</span>{/eq}
+                </div>
+                提现单号：<span class="color-blue">{$vo.code|default='--'}</span><br>
+            </td>
+            <td class='text-left nowrap'>
+                {eq name='vo.type' value='2'}
+                银行卡号：{$vo.bank_code|default='-'}<br>
+                银行信息：{$vo.bank_name|default='-'}（ {$vo.bank_user|default='-'} ）<br>
+                {else}
+                <div><span class="layui-badge layui-bg-blue">提现到余额</span></div>
+                <div class="color-desc">{$vo.remark|default='-'}</div>
+                {/eq}
+            </td>
+            <td class='text-left nowrap'>
+                申请时间：{$vo.create_at|format_datetime}<br>
+                最后处理：{$vo.change_time|format_datetime}<br>
+            </td>
+            <td class='text-left nowrap'>
+                交易时间：{$vo.trade_time|format_datetime}<br>
+                交易描述：<span class="color-desc">{$vo.change_desc|default='--'}</span><br>
+            </td>
+            <td class='text-left nowrap'>
+                <!--{if auth('audit') and !in_array($vo.status,[4,5])}-->
+                <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="提现审核管理" data-modal="{:url('audit')}?code={$vo.code}">操 作</a>
+                <!--{/if}-->
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

@@ -222,63 +222,58 @@ class UserService extends Service
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
         if (empty($user)) return true;
-        [$level, $title] = [0, '普通用户'];
+        [$vipName, $vipNumber] = ['普通用户', 0];
         // 统计历史数据
-        $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uid])->count();
-        $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->count();
-        $amountTotal = $this->app->db->name('ShopOrder')->where(['uid' => $uid])->whereIn('status', [3, 4, 5])->sum('amount_total');
+        $teamsDirect = $this->app->db->name('DataUser')->where(['from' => $uid])->count();
+        $teamsIndirect = $this->app->db->name('DataUser')->where(['pfrom' => $uid])->count();
+        $orderAmount = $this->app->db->name('ShopOrder')->where(['uid' => $uid])->whereIn('status', [3, 4, 5])->sum('amount_total');
         // 计算会员级别
-        foreach ($this->app->db->name('DataUserLevel')->where(['status' => 1])->order('number desc')->select()->toArray() as $item) {
+        foreach ($this->app->db->name('DataUserLevel')->where(['status' => 1])->order('number desc')->cursor() as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['vip_auth'] > 0;
-            $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsDirect + $teamsIndirect;
-            $l3 = empty($item['teams_direct_status']) || $item['teams_direct_number'] <= $teamsDirect;
-            $l4 = empty($item['teams_indirect_status']) || $item['teams_indirect_number'] <= $teamsIndirect;
-            $l5 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $amountTotal;
+            $l2 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $orderAmount;
+            $l3 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsDirect + $teamsIndirect;
+            $l4 = empty($item['teams_direct_status']) || $item['teams_direct_number'] <= $teamsDirect;
+            $l5 = empty($item['teams_indirect_status']) || $item['teams_indirect_number'] <= $teamsIndirect;
             if (
-                ($item['upgrade_type'] == 0 && ($l1 || $l2 || $l3 || $l4 || $l5))  /* 满足任何条件可以等级 */
+                ($item['upgrade_type'] == 0 && ($l1 || $l2 || $l3 || $l4 || $l5)) /* 满足任何条件可以等级 */
                 ||
                 ($item['upgrade_type'] == 1 && ($l1 && $l2 && $l3 && $l4 && $l5)) /* 满足所有条件可以等级 */
             ) {
-                [$level, $title] = [$item['number'], $item['name']];
+                [$vipName, $vipNumber] = [$item['name'], $item['number']];
                 break;
             }
         }
         // 购买商品升级
         $query = $this->app->db->name('ShopOrderItem')->alias('b')->rightJoin('store_order a', 'b.order_no=a.order_no');
-        $tempLevel = $query->whereRaw("a.uid={$uid} and a.pay_status=1 and a.status in (3,4,5) and b.vip_mod=1")->max('b.vip_level');
-        if ($tempLevel > $level) {
-            $tempLevelInfo = $this->app->db->name('DataUserLevel')->where(['number' => $tempLevel, 'status' => 1])->find();
-            if (!empty($tempLevelInfo)) [$level, $title] = [$tempLevelInfo['number'], $tempLevelInfo['name']];
+        $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status in (3,4,5) and b.vip_entry=1")->max('b.vip_number');
+        if ($tmpNumber > $vipNumber) {
+            $map = ['number' => $tmpNumber, 'status' => 1];
+            $levelInfo = $this->app->db->name('DataUserLevel')->where($map)->find();
+            if (!empty($levelInfo)) [$vipNumber, $vipName] = [$levelInfo['number'], $levelInfo['name']];
         }
-        // 统计当日数据
-//        $where = ['pay_date_frist' => date('Y-m-d')];
-//        $dailyTeamsDirect = $this->app->db->name('DataUser')->where($where)->where(['pid1' => $uid])->count();
-//        $dailyTeamsIndirect = $this->app->db->name('DataUser')->where($where)->where(['pid2' => $uid])->count();
+        // 统计订单统计
+        $orderAmountTotal = $this->app->db->name('ShopOrder')->whereRaw("uid={$uid} and status in (3,4,5)")->sum('amount_goods');
         // 统计团队业绩
-//        $teamsPerformanceDirect = $this->app->db->name('ShopOrder')->whereRaw("from_uid={$uid} and status in (3,4,5)")->sum('price_discount');
-//        $mysql2 = $this->app->db->name('DataUser')->field('id')->where(['pid1' => $uid])->buildSql();
-//        $teamsPerformanceIndirect = $this->app->db->name('ShopOrder')->whereRaw("from_uid in {$mysql2} and status in (3,4,5)")->sum('price_discount');
-        // 更新会员数据
+        $usql = $this->app->db->name('DataUser')->field('id')->whereRaw("`from`={$uid}")->buildSql();
+        $teamsAmountDirect = $this->app->db->name('ShopOrder')->whereRaw("`from`={$uid} and status in (3,4,5)")->sum('amount_goods');
+        $teamsAmountIndirect = $this->app->db->name('ShopOrder')->whereRaw("`from` in {$usql} and status in (3,4,5)")->sum('amount_goods');
+        // 更新用户数据
         $data = [
-            'vip_name'   => $title,
-            'vip_number' => $level,
-//            'teams_total'        => $teamsDirect + $teamsIndirect,
-//            'teams_direct'       => $teamsDirect,
-//            'teams_indirect'     => $teamsIndirect,
-//            'amount_order_total' => $amountTotal,
-//            'teams_performance_total'    => $teamsPerformanceDirect + $teamsPerformanceIndirect,
-//            'teams_performance_direct'   => $teamsPerformanceDirect,
-//            'teams_performance_indirect' => $teamsPerformanceIndirect,
-//            'amount_profit_total'        => $this->app->db->name('StoreProfitRecord')->where(['uid' => $uid])->sum('profit_price'),
-//            'amount_profit_used'         => $this->app->db->name('StoreProfitUsed')->where(['uid' => $uid])->whereIn('status', [1, 2, 3])->sum('pay_price'),
-//            'amount_profit_lock'         => $this->app->db->name('StoreProfitRecord')->where(['uid' => $uid, 'profit_status' => '0'])->sum('profit_price'),
-//            'daily_teams_total'          => $dailyTeamsDirect + $dailyTeamsIndirect,
-//            'daily_teams_direct'         => $dailyTeamsDirect,
-//            'daily_teams_indirect'       => $dailyTeamsIndirect,
+            'vip_name'              => $vipName,
+            'vip_number'            => $vipNumber,
+            'teams_users_total'     => $teamsDirect + $teamsIndirect,
+            'teams_users_direct'    => $teamsDirect,
+            'teams_users_indirect'  => $teamsIndirect,
+            'teams_amount_total'    => $teamsAmountDirect + $teamsAmountIndirect,
+            'teams_amount_direct'   => $teamsAmountDirect,
+            'teams_amount_indirect' => $teamsAmountIndirect,
+            'order_amount_total'    => $orderAmountTotal,
         ];
-        if ($data['vip_level'] !== $user['vip_level']) $data['vip_date'] = date('Y-m-d H:i:s');
+        if ($data['vip_number'] !== $user['vip_number']) {
+            $data['vip_datetime'] = date('Y-m-d H:i:s');
+        }
         $this->app->db->name('DataUser')->where(['id' => $uid])->update($data);
-        return ($parent && $user['pid2'] > 0) ? $this->syncLevel($user['pid2'], false) : true;
+        return ($parent && $user['pfrom'] > 0) ? $this->syncLevel($user['pfrom'], false) : true;
     }
 
     /**

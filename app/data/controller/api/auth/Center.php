@@ -143,6 +143,7 @@ class Center extends Auth
         if (is_numeric(stripos($from['path'], "-{$this->uuid}-"))) $this->error('不能绑定下属');
         $data['path'] = rtrim($from['path'] ?: '-', '-') . '-' . $from['id'] . '-';
         $data['layer'] = substr_count($data['path'], '-');
+        $data['pfrom'] = $from['from'] ?? 0;
         if ($this->app->db->name($this->table)->where(['id' => $this->uuid])->update($data) !== false) {
             $this->success('绑定邀请人成功', UserService::instance()->total($this->uuid));
         } else {
