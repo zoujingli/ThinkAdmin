@@ -3,7 +3,6 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
-use app\data\controller\User;
 use app\data\service\UserService;
 use think\admin\extend\CodeExtend;
 
@@ -60,7 +59,7 @@ class Balance extends Auth
         $map = ['id' => $data['uid'], 'deleted' => 0];
         $user = $this->app->db->name('DataUser')->where($map)->find();
         if (empty($user)) $this->error('目标用户不存在！');
-        // 检测用户是否有足够的余额
+        // 检测余额否有足够
         [$total, $used] = UserService::instance()->balance($this->uuid);
         if ($data['amount'] > $total - $used) $this->error('可转账余额不足！');
         // 写入余额转账记录
