@@ -106,21 +106,21 @@ class Center extends Auth
      */
     public function getFrom()
     {
-        $where = [];
-        $where[] = ['deleted', '=', '0'];
-        $where[] = ['path', 'like', "%-{$this->uuid}-%"];
+        $map = [];
+        $map[] = ['deleted', '=', '0'];
+        $map[] = ['path', 'like', "%-{$this->uuid}-%"];
         // 查询邀请的朋友
         $query = $this->_query($this->table);
         $query->like('nickname|username#nickname')->equal('from,id#uid');
         $query->field('id,from,username,nickname,headimg,amount_total,create_at');
-        $result = $query->where($where)->order('id desc')->page(true, false, false, 15);
+        $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
         // 统计当前用户所有下属数
-        $userTotal = $this->app->db->name($this->table)->where($where)->count();
+        $total = $this->app->db->name($this->table)->where($map)->count();
         // 统计当前用户本月下属数
-        $where[] = ['create_at', 'like', date('Y-m-%')];
-        $userMonth = $this->app->db->name($this->table)->where($where)->count();
+        $map[] = ['create_at', 'like', date('Y-m-%')];
+        $month = $this->app->db->name($this->table)->where($map)->count();
         // 返回结果列表数据及统计
-        $result['total'] = ['user_total' => $userTotal, 'user_month' => $userMonth];
+        $result['total'] = ['user_total' => $total, 'user_month' => $month];
         $this->success('获取我邀请的朋友', $result);
     }
 
