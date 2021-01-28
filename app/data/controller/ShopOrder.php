@@ -66,7 +66,9 @@ class ShopOrder extends Controller
         $db = $this->_query('DataUser')->like('phone#from_phone,nickname#from_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("from in {$db->field('id')->buildSql()}");
         // 列表选项卡
-        if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) $query->where(['status' => $this->type]);
+        if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
+            $query->where(['status' => $this->type]);
+        }
         // 分页排序处理
         $query->where(['deleted' => 0])->order('id desc');
         if (input('output') === 'json') {
