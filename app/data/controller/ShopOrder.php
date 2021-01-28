@@ -123,7 +123,7 @@ class ShopOrder extends Controller
             $map = ['order_no' => $vo['order_no']];
             $order = $this->app->db->name('ShopOrder')->where($map)->find();
             if (empty($order)) $this->error('订单查询异常，请稍候再试！');
-            // 配送快递公司信息填写
+            // 配送快递公司填写
             $map = ['code_1|code_2|code_3' => $vo['company_code']];
             $company = $this->app->db->name('ShopTruckCompany')->where($map)->find();
             if (empty($company)) $this->error('配送快递公司异常，请重新选择快递公司！');
