@@ -114,7 +114,7 @@ class Order extends Auth
                 'goods_spec'      => $goodsItem['goods_spec'],
                 // 数量处理
                 'stock_sales'     => $count,
-                'truck_tcode'     => $goodsInfo['truck_tcode'],
+                'truck_code'     => $goodsInfo['truck_code'],
                 'truck_count'     => $goodsItem['number_express'] * $count,
                 // 费用字段
                 'price_market'    => $goodsItem['price_market'],
@@ -184,7 +184,7 @@ class Order extends Auth
         $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_count');
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
-        $tCode = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_tcode');
+        $tCode = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_code');
         [$amount, , , $remark] = TruckService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
         $this->success('计算运费成功', ['amount' => $amount, 'remark' => $remark]);
     }
@@ -212,7 +212,7 @@ class Order extends Auth
         if (empty($order)) $this->error('不能修改地址');
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
-        $tCodes = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_tcode');
+        $tCodes = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_code');
         [$amount, $tCount, $tCode, $remark] = TruckService::instance()->amount($tCodes, $addr['province'], $addr['city'], $tCount);
         // 创建订单发货信息
         $express = [
