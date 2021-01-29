@@ -98,7 +98,7 @@ class Order extends Auth
                 $map = ['status' => 1, 'deleted' => 0, 'id' => $goodsInfo['discount_id']];
                 if ($items = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
                     foreach (json_decode($items, true) as $vo) if ($vo['level'] == $this->user['vip_number']) {
-                        [$discountId, $discountRate] = [$discountId, $vo['discount']];
+                        [$discountId, $discountRate] = [$goodsInfo['discount_id'], $vo['discount']];
                     }
                 }
             }
