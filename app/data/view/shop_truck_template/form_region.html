@@ -50,8 +50,8 @@
 
         function callback($rootScope) {
             $rootScope.items = angular.fromJson(data);
-            $rootScope.province = $rootScope.items[0];
-            $rootScope.city = $rootScope.province.subs[0];
+            $rootScope.province = $rootScope.items[0] || {subs: []};
+            $rootScope.city = $rootScope.province.subs[0] || [];
             /*! 数据显示状态转换 */
             $rootScope.items.forEach(function (province) {
                 province.status = !!province.status;
