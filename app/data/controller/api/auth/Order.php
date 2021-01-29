@@ -76,29 +76,58 @@ class Order extends Auth
             $map = ['goods_code' => $code, 'goods_spec' => $spec, 'status' => 1];
             $goodsItem = $this->app->db->name('ShopGoodsItem')->where($map)->find();
             if (empty($goodsItem)) $this->error('商品规格异常');
+            // 限制数量
+            if (isset($goods['limit_max_buy']) && $goods['limit_max_buy'] > 0) {
+                $map = [['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']], ['a.uid', '=', $this->uuid]];
+                $buys = $this->app->db->name('StoreOrder')->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
+                if ($this->member['vip_entry'] && $goods['vip_entry'] || $buys + $count > $goods['limit_max_buy']) {
+                    $this->error('超过限购数量');
+                }
+            }
+            // 限制最购买
+            if ($goodsInfo['limit_low_vip'] > $this->user['vip_number']) {
+                $this->error('会员等级不够');
+            }
             // 商品库存检查
             if ($goodsItem['stock_sales'] + $count > $goodsItem['stock_total']) {
                 $this->error('商品库存不足');
             }
+            // 商品折扣处理
+            [$discountId, $discountRate] = [0, 100];
+            if ($goodsInfo['discount_id'] > 0) {
+                $map = ['status' => 1, 'deleted' => 0, 'id' => $goodsInfo['discount_id']];
+                if ($items = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
+                    foreach (json_decode($items, true) as $vo) if ($vo['level'] == $this->user['vip_number']) {
+                        [$discountId, $discountRate] = [$discountId, $vo['discount']];
+                    }
+                }
+            }
             // 订单详情处理
             $items[] = [
-                'uid'           => $order['uid'],
-                'order_no'      => $order['order_no'],
+                'uid'             => $order['uid'],
+                'order_no'        => $order['order_no'],
                 // 商品字段
-                'goods_name'    => $goodsInfo['name'],
-                'goods_cover'   => $goodsInfo['cover'],
-                'goods_sku'     => $goodsItem['goods_sku'],
-                'goods_code'    => $goodsItem['goods_code'],
-                'goods_spec'    => $goodsItem['goods_spec'],
+                'goods_name'      => $goodsInfo['name'],
+                'goods_cover'     => $goodsInfo['cover'],
+                'goods_sku'       => $goodsItem['goods_sku'],
+                'goods_code'      => $goodsItem['goods_code'],
+                'goods_spec'      => $goodsItem['goods_spec'],
                 // 数量处理
-                'stock_sales'   => $count,
-                'truck_tcode'   => $goodsInfo['truck_tcode'],
-                'truck_count'   => $goodsItem['number_express'] * $count,
+                'stock_sales'     => $count,
+                'truck_tcode'     => $goodsInfo['truck_tcode'],
+                'truck_count'     => $goodsItem['number_express'] * $count,
                 // 费用字段
-                'price_market'  => $goodsItem['price_market'],
-                'price_selling' => $goodsItem['price_selling'],
-                'total_market'  => $goodsItem['price_market'] * $count,
-                'total_selling' => $goodsItem['price_selling'] * $count,
+                'price_market'    => $goodsItem['price_market'],
+                'price_selling'   => $goodsItem['price_selling'],
+                'total_market'    => $goodsItem['price_market'] * $count,
+                'total_selling'   => $goodsItem['price_selling'] * $count,
+                // 用户等级
+                'vip_name'        => $this->user['vip_name'],
+                'vip_entry'       => $goodsInfo['vip_entry'],
+                'vip_number'      => $this->user['vip_number'],
+                'discount_id'     => $discountId,
+                'discount_rate'   => $discountRate,
+                'discount_amount' => $discountRate * $goodsItem['price_selling'] * $count,
             ];
         }
         try {
