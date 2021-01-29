@@ -31,12 +31,12 @@ class UserTransfer extends Controller
     public function index()
     {
         $this->title = '用户提现管理';
-        $query = $this->_query($this->table);
+        $query = $this->_query($this->table)->order('id desc');
         // 用户条件搜索
         $db = $this->_query('DataUser')->like('phone,username|nickname#nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
         // 数据列表处理
-        $query->equal('type,status')->dateBetween('create_at')->order('id desc')->page();
+        $query->equal('type,status')->dateBetween('create_at')->page();
     }
 
     /**

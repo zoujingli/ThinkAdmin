@@ -35,7 +35,9 @@ class ExcelExtend
         header('Content-Type: application/octet-stream');
         header("Content-Disposition: attachment; filename=" . iconv('utf-8', 'gbk//TRANSLIT', $name));
         $handle = fopen('php://output', 'w');
-        foreach ($headers as $key => $value) $headers[$key] = iconv("utf-8", "gbk//TRANSLIT", $value);
+        foreach ($headers as $key => $value) {
+            $headers[$key] = iconv("utf-8", "gbk//TRANSLIT", $value);
+        }
         fputcsv($handle, $headers);
         if (is_resource($handle)) {
             fclose($handle);

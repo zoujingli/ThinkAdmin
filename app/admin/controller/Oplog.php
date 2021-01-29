@@ -46,12 +46,7 @@ class Oplog extends Controller
         $this->isSupper = AdminService::instance()->isSuper();
         $this->actions = $this->app->db->name($this->table)->distinct(true)->column('action');
         $query = $this->_query($this->table)->order('id desc');
-        $query->like('action,node,content,username,geoip')->dateBetween('create_at');
-        if (input('output') === 'json') {
-            $this->success('获取数据成功', $query->page(true, false));
-        } else {
-            $query->page();
-        }
+        $query->like('action,node,content,username,geoip')->dateBetween('create_at')->page();
     }
 
     /**

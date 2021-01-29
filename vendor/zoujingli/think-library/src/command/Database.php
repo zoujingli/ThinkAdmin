@@ -18,6 +18,7 @@ declare (strict_types=1);
 namespace think\admin\command;
 
 use think\admin\Command;
+use think\admin\Exception;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
@@ -53,40 +54,34 @@ class Database extends Command
 
     /**
      * 修复数据表
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws Exception
      */
     protected function _repair(): void
     {
         $this->setQueueProgress("正在获取需要修复的数据表", 0);
-        [$total, $used] = [count($tables = $this->getTables()), 0];
+        [$total, $count] = [count($tables = $this->getTables()), 0];
         $this->setQueueProgress("总共需要修复 {$total} 张数据表", 0);
         foreach ($tables as $table) {
-            $this->queue->message($total, ++$used, "正在修复数据表 {$table}");
+            $this->queue->message($total, ++$count, "正在修复数据表 {$table}");
             $this->app->db->query("REPAIR TABLE `{$table}`");
-            $this->queue->message($total, $used, "完成修复数据表 {$table}", 1);
+            $this->queue->message($total, $count, "完成修复数据表 {$table}", 1);
         }
         $this->queue->success("已完成对 {$total} 张数据表修复操作");
     }
 
     /**
      * 优化所有数据表
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws Exception
      */
     protected function _optimize(): void
     {
         $this->setQueueProgress("正在获取需要优化的数据表", 0);
-        [$total, $used] = [count($tables = $this->getTables()), 0];
+        [$total, $count] = [count($tables = $this->getTables()), 0];
         $this->setQueueProgress("总共需要优化 {$total} 张数据表", 0);
         foreach ($tables as $table) {
-            $this->queue->message($total, ++$used, "正在优化数据表 {$table}");
+            $this->queue->message($total, ++$count, "正在优化数据表 {$table}");
             $this->app->db->query("OPTIMIZE TABLE `{$table}`");
-            $this->queue->message($total, $used, "完成优化数据表 {$table}", 1);
+            $this->queue->message($total, $count, "完成优化数据表 {$table}", 1);
         }
         $this->queue->success("已完成对 {$total} 张数据表优化操作");
     }
@@ -98,6 +93,7 @@ class Database extends Command
     protected function getTables(): array
     {
         $tables = [];
+        $this->app->db->getTable();
         foreach ($this->app->db->query("show tables") as $item) {
             $tables = array_merge($tables, array_values($item));
         }

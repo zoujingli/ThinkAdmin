@@ -46,12 +46,7 @@ class Fans extends Controller
         $this->title = '微信用户管理';
         $this->where = ['appid' => WechatService::instance()->getAppid()];
         $query = $this->_query($this->table)->like('nickname')->equal('subscribe,is_black');
-        $query->dateBetween('subscribe_at')->where($this->where)->order('subscribe_time desc');
-        if (input('output') === 'json') {
-            $this->success('获取数据成功', $query->page(true, false));
-        } else {
-            $query->page();
-        }
+        $query->dateBetween('subscribe_at')->where($this->where)->order('subscribe_time desc')->page();
     }
 
     /**

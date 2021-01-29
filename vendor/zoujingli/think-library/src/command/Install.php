@@ -101,7 +101,7 @@ class Install extends Command
     {
         $this->name = trim($input->getArgument('name'));
         if (empty($this->name)) {
-            $this->output->writeln('Module name of online installation cannot be empty');
+            $this->output->writeln('Module name of online install cannot be empty');
         } elseif ($this->name === 'all') {
             foreach ($this->bind as $bind) {
                 $this->rules = array_merge($this->rules, $bind['rules']);
@@ -113,35 +113,45 @@ class Install extends Command
             $this->ignore = $this->bind[$this->name]['ignore'] ?? [];
             [$this->installFile(), $this->installData()];
         } else {
-            $this->output->writeln("The specified module {$this->name} is not configured with installation rules");
+            $this->output->writeln("The specified module {$this->name} is not configured with install rules");
         }
     }
 
-    private function installFile()
+    /**
+     * 安装本地文件
+     * @return boolean
+     */
+    private function installFile(): bool
     {
         $module = ModuleService::instance();
         $data = $module->grenerateDifference($this->rules, $this->ignore);
         if (empty($data)) {
             $this->output->writeln('No need to update the file if the file comparison is consistent');
-        } else {
-            [$total, $used] = [count($data), 0];
-            foreach ($data as $file) {
-                [$state, $mode, $name] = $module->updateFileByDownload($file);
-                if ($state) {
-                    if ($mode === 'add') $this->queue->message($total, ++$used, "--- {$name} add successfully");
-                    if ($mode === 'mod') $this->queue->message($total, ++$used, "--- {$name} update successfully");
-                    if ($mode === 'del') $this->queue->message($total, ++$used, "--- {$name} delete successfully");
-                } else {
-                    if ($mode === 'add') $this->queue->message($total, ++$used, "--- {$name} add failed");
-                    if ($mode === 'mod') $this->queue->message($total, ++$used, "--- {$name} update failed");
-                    if ($mode === 'del') $this->queue->message($total, ++$used, "--- {$name} delete failed");
-                }
+            return false;
+        }
+        [$total, $count] = [count($data), 0];
+        foreach ($data as $file) {
+            [$state, $mode, $name] = $module->updateFileByDownload($file);
+            if ($state) {
+                if ($mode === 'add') $this->queue->message($total, ++$count, "--- {$name} add successfully");
+                if ($mode === 'mod') $this->queue->message($total, ++$count, "--- {$name} update successfully");
+                if ($mode === 'del') $this->queue->message($total, ++$count, "--- {$name} delete successfully");
+            } else {
+                if ($mode === 'add') $this->queue->message($total, ++$count, "--- {$name} add failed");
+                if ($mode === 'mod') $this->queue->message($total, ++$count, "--- {$name} update failed");
+                if ($mode === 'del') $this->queue->message($total, ++$count, "--- {$name} delete failed");
             }
         }
+        return true;
     }
 
-    protected function installData()
+    /**
+     * 安装数据库
+     * @return boolean
+     */
+    protected function installData(): bool
     {
+        return true;
     }
 
 }

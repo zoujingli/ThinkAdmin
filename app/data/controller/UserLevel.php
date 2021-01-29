@@ -137,9 +137,7 @@ class UserLevel extends Controller
     /**
      * 状态变更处理
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _save_result()
     {
@@ -148,9 +146,7 @@ class UserLevel extends Controller
 
     /**
      * 删除结果处理
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _delete_result()
     {

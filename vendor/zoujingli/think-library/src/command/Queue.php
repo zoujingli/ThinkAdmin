@@ -17,6 +17,7 @@ declare (strict_types=1);
 
 namespace think\admin\command;
 
+use Exception;
 use Psr\Log\NullLogger;
 use think\admin\Command;
 use think\Collection;
@@ -174,8 +175,7 @@ class Queue extends Command
 
     /**
      * 清理所有任务
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DbException
+     * @throws Exception
      */
     protected function cleanAction()
     {
@@ -217,9 +217,7 @@ class Queue extends Command
 
     /**
      * 立即监听任务
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws Exception
      */
     protected function listenAction()
     {
@@ -242,7 +240,7 @@ class Queue extends Command
                     $this->process->create($command);
                     $this->output->writeln(">> Created new process -> [{$vo['code']}] {$vo['title']}");
                 }
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->app->db->name($this->table)->where(['code' => $vo['code']])->update([
                     'status' => 4, 'outer_time' => time(), 'exec_desc' => $exception->getMessage(),
                 ]);
@@ -254,7 +252,7 @@ class Queue extends Command
 
     /**
      * 执行任务内容
-     * @throws \think\db\exception\DbException
+     * @throws Exception
      */
     protected function doRunAction()
     {
@@ -297,7 +295,7 @@ class Queue extends Command
                     $this->updateQueue(3, $this->app->console->call(array_shift($attr), $attr)->fetch(), false);
                 }
             }
-        } catch (\Exception | \Error | \Throwable $exception) {
+        } catch (Exception | \Error | \Throwable $exception) {
             $code = $exception->getCode();
             if (intval($code) !== 3) $code = 4;
             $this->updateQueue($code, $exception->getMessage());
@@ -309,7 +307,7 @@ class Queue extends Command
      * @param integer $status 任务状态
      * @param string $message 消息内容
      * @param boolean $isSplit 是否分隔
-     * @throws \think\db\exception\DbException
+     * @throws Exception
      */
     protected function updateQueue(int $status, string $message, bool $isSplit = true)
     {
@@ -333,7 +331,7 @@ class Queue extends Command
         if (isset($this->queue->record['loops_time']) && $this->queue->record['loops_time'] > 0) {
             try {
                 $this->queue->initialize($this->code)->reset($this->queue->record['loops_time']);
-            } catch (\Exception | \Error | \Throwable $exception) {
+            } catch (Exception | \Error | \Throwable $exception) {
                 $this->app->log->error("Queue {$this->queue->record['code']} Loops Failed. {$exception->getMessage()}");
             }
         }

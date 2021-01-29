@@ -82,7 +82,11 @@ class PageHelper extends Helper
             $result = ['list' => $this->query->select()->toArray()];
         }
         if (false !== $this->class->callback('_page_filter', $result['list']) && $display) {
-            $this->class->fetch($template, $result);
+            if ($this->app->request->get('output') === 'json') {
+                $this->class->success('JSON-DATA', $result);
+            } else {
+                $this->class->fetch($template, $result);
+            }
         } else {
             return $result;
         }

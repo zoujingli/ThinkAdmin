@@ -856,20 +856,8 @@
         "version_normalized": "6.0.9999999.9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://github.com/zoujingli/ThinkLibrary.git",
-            "reference": "02dedcf2f5b8905cbd179a4c6651b819c0f5f854"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/02dedcf2f5b8905cbd179a4c6651b819c0f5f854",
-            "reference": "02dedcf2f5b8905cbd179a4c6651b819c0f5f854",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "url": "https://gitee.com/zoujingli/ThinkLibrary",
+            "reference": "1fdad1dfac6b976c6e6ff878092e4dbf12e79e3f"
         },
         "require": {
             "ext-curl": "*",
@@ -879,7 +867,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2021-01-26T05:49:46+00:00",
+        "time": "2021-01-29T08:07:24+00:00",
         "type": "library",
         "extra": {
             "think": {
@@ -888,7 +876,7 @@
                 ]
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "files": [
                 "src/common.php"
