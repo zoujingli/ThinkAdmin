@@ -135,13 +135,15 @@ class Order extends Auth
             $order['number_goods'] = array_sum(array_column($items, 'stock_sales'));
             // 统计商品金额
             $order['amount_goods'] = array_sum(array_column($items, 'total_selling'));
+            // 优惠后的金额
+            $order['amount_discount'] = array_sum(array_column($items, 'discount_amount'));
             // 订单随机免减
             $order['amount_reduct'] = OrderService::instance()->getReduct();
             if ($order['amount_reduct'] > $order['amount_goods']) {
                 $order['amount_reduct'] = $order['amount_goods'];
             }
             // 统计订单金额
-            $order['amount_real'] = $order['amount_goods'] - $order['amount_reduct'];
+            $order['amount_real'] = $order['discount_amount'] - $order['amount_reduct'];
             $order['amount_total'] = $order['amount_goods'];
             // 写入订单数据
             $this->app->db->name('ShopOrder')->insert($order);
@@ -231,7 +233,7 @@ class Order extends Auth
         // 组装更新订单数据
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
         // 重新计算订单金额
-        $update['amount_real'] = $order['amount_goods'] + $amount - $order['amount_reduct'] - $order['amount_discount'];
+        $update['amount_real'] = $order['discount_amount'] + $amount - $order['amount_reduct'];
         $update['amount_total'] = $order['amount_goods'] + $amount;
         // 支付金额不能为零
         if ($update['amount_real'] <= 0) $update['amount_real'] = 0.00;
