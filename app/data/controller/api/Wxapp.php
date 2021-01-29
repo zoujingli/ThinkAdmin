@@ -57,10 +57,7 @@ class Wxapp extends Controller
 
     /**
      * 授权Code换取会话信息
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function session()
     {
