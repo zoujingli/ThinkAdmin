@@ -52,6 +52,7 @@
             $rootScope.items = angular.fromJson(data);
             $rootScope.province = $rootScope.items[0] || {subs: []};
             $rootScope.city = $rootScope.province.subs[0] || [];
+
             /*! 数据显示状态转换 */
             $rootScope.items.forEach(function (province) {
                 province.status = !!province.status;
@@ -62,6 +63,7 @@
                     });
                 });
             });
+
             /*! 切换下级区域选中状态 */
             $rootScope.SetChangeCity = function (item, status) {
                 if (item.subs) item.subs.forEach(function (item) {
@@ -71,6 +73,7 @@
                     })
                 });
             };
+
             /*! 所有城市全选 */
             $rootScope.SetAllChecked = function () {
                 $rootScope.items && $rootScope.items.forEach(function (province) {
@@ -83,15 +86,18 @@
                     })
                 });
             };
+
             /*! 切换显示省份对象 */
             $rootScope.SetActiveProvince = function (province) {
                 $rootScope.city = province.subs[0];
                 $rootScope.province = province;
             };
+
             /*! 切换显示城市对象 */
             $rootScope.SetActiveCity = function (city) {
                 $rootScope.city = city;
             }
+
             /*! 数据监听切换同步 */
             $rootScope.$watch('province', function () {
                 $rootScope.province.status = $rootScope.province.subs.some(function (city) {
@@ -103,6 +109,7 @@
                     if (area.status) return true;
                 });
             }, true);
+
             /*! 确认并更新到数据库 */
             $rootScope.Confirm = function () {
                 var nos = [], oks = [];
