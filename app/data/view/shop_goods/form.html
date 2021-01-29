@@ -93,7 +93,7 @@
             <fieldset>
                 <legend class="layui-bg-gray">升级会员级别</legend>
                 <label class="layui-form-item">
-                    <select name="vip_upgrade" class="layui-select" lay-filter="vip_level">
+                    <select name="vip_upgrade" class="layui-select" lay-filter="vip_upgrade">
                         {foreach $levels as $level}{if isset($vo.vip_upgrade) and $vo.vip_upgrade eq $level.number}
                         <option selected value="{$level.number|default=0}">[ {$level.number|default='0'} ] {$level.name|default=''}</option>
                         {else}
@@ -259,6 +259,21 @@
 <script>
     /*! 表单初始化 */
     window.form.render();
+
+    /*! 入会礼包切换 */
+    window.form.on('radio(vip_entry)', setVipEntry);
+    setVipEntry({value: ('{$vo.vip_entry|default="0"}')});
+
+    function setVipEntry(data, $input) {
+        $input = $('select[name="vip_upgrade"]');
+        if (parseInt(data.value)) {
+            $input.removeClass('layui-disabled').removeAttr('disabled');
+        } else {
+            $input.addClass('layui-disabled').attr('disabled', 'disabled');
+        }
+        layui.form.render();
+    }
+
     /*! 加载扩展插件 */
     require(['ckeditor', 'angular'], function () {
         window.createEditor('[name="content"]', {height: 500});
