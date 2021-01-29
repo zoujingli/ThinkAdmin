@@ -5,7 +5,7 @@
             <legend><span class="layui-badge layui-bg-cyan">用户等级</span></legend>
             <div class="layui-form-item layui-row layui-col-space15">
                 <div class="layui-col-xs3 block relative">
-                    <span class="color-green label-required-prev">等级序号</span><span class="color-desc">Number</span>
+                    <span class="color-green label-required-prev">等级序号</span><span class="margin-left-5 color-desc">Number</span>
                     <select class="layui-select" name="number">
                         {for start="1" end="10" name="i"}{if isset($vo.number) and $vo.number eq $i}
                         <option selected value="{$i}">当前 VIP {$vo.number} 等级</option>
@@ -15,7 +15,7 @@
                     </select>
                 </div>
                 <label class="layui-col-xs9 block relative">
-                    <span class="color-green label-required-prev">等级名称</span><span class="color-desc">Level Name</span>
+                    <span class="color-green label-required-prev">等级名称</span><span class="margin-left-5 color-desc">Level Name</span>
                     <input class="layui-input" name="name" required value="{$vo.name|default=''}" placeholder="请输入等级名称">
                 </label>
             </div>
