@@ -10,6 +10,13 @@
       "email": "zoujingli@qq.com"
     }
   ],
+  "support": {
+    "email": "zoujingli@qq.com",
+    "wiki": "https://thinkadmin.top",
+    "forum": "https://thinkadmin.top",
+    "source": "https://gitee.com/zoujingli/ThinkLibrary",
+    "issues": "https://gitee.com/zoujingli/ThinkLibrary/issues"
+  },
   "require": {
     "ext-gd": "*",
     "ext-curl": "*",
