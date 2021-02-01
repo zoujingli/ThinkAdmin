@@ -61,7 +61,7 @@ define(['md5'], function (SparkMD5, allowMime) {
                 });
             }, progress: function (number) {
                 $('[data-upload-progress]').html(number + '%');
-                option.element.triggerHandler('upload.progress', {event: arguments[2], file: arguments[3]});
+                option.element.triggerHandler('upload.progress', {number: number, event: arguments[2], file: arguments[3]});
             }, done: function (ret, index) {
                 option.element.triggerHandler('upload.done', {file: option.cache[index], data: ret});
                 if (++option.count.uploaded >= option.count.total) {
