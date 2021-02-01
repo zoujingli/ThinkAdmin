@@ -34,10 +34,12 @@ class ShopOrderSend extends Controller
         $this->address = sysdata('ordersend');
         // 状态数据统计
         $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 'ta' => 0];
-        $this->app->db->name($this->table)->fieldRaw('status,count(1) total')->group('status')->select()->map(function ($vo) {
+        $db = $this->app->db->name('ShopOrder')->whereIn('status', [3, 4, 5]);
+        $query = $this->app->db->name($this->table)->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
+        foreach ($query->fieldRaw('status,count(1) total')->group('status')->cursor() as $vo) {
             $this->total["t{$vo['status']}"] = $vo['total'];
             $this->total["ta"] += $vo['total'];
-        });
+        }
         // 订单列表查询
         $query = $this->_query($this->table)->order('id desc');
         $query->dateBetween('address_datetime,send_datetime')->equal('status')->like('send_number#truck_number,order_no');
@@ -71,6 +73,9 @@ class ShopOrderSend extends Controller
     protected function _index_page_filter(array &$data)
     {
         OrderService::instance()->buildItemData($data, false);
+        $orders = array_unique(array_column($data, 'order_no'));
+        $orderList = $this->app->db->name('ShopOrder')->whereIn('order_no', $orders)->column('*', 'order_no');
+        foreach ($data as &$vo) $vo['order'] = $orderList[$vo['order_no']] ?? [];
     }
 
     /**
