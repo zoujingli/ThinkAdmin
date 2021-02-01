@@ -107,19 +107,19 @@ define(['md5'], function (SparkMD5, allowMime) {
         /*! 读取文件并计算 HASH 值 */
         var spark = new SparkMD5.ArrayBuffer();
         var slice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
-        file.chunk_idx = 0, file.chunk_size = 2097152, file.chunk_total = Math.ceil(this.size / this.chunk_size);
+        file.chunkIdx = 0, file.chunkSize = 2097152, file.chunkTotal = Math.ceil(this.size / this.chunkSize);
         return jQuery.when(loadNextChunk(file));
 
         function setFileXdata(file, xmd5) {
             file.xmd5 = xmd5, file.xkey = file.xmd5.substr(0, 2) + '/' + file.xmd5.substr(2, 30) + '.' + file.xext;
-            return delete file.chunk_idx, delete file.chunk_size, delete file.chunk_total, file;
+            return delete file.chunkIdx, delete file.chunkSize, delete file.chunkTotal, file;
         }
 
         function loadNextChunk(file) {
             this.reader = new FileReader();
             this.reader.onload = function (event) {
                 spark.append(event.target.result);
-                if (++file.chunk_idx < file.chunk_total) {
+                if (++file.chunkIdx < file.chunkTotal) {
                     loadNextChunk(file);
                 } else {
                     setFileXdata(file, spark.end());
@@ -129,8 +129,8 @@ define(['md5'], function (SparkMD5, allowMime) {
             this.reader.onerror = function () {
                 deferred.reject();
             };
-            this.start = file.chunk_idx * file.chunk_size;
-            this.loaded = (this.start + file.chunk_size >= file.size) ? file.size : this.start + file.chunk_size;
+            this.start = file.chunkIdx * file.chunkSize;
+            this.loaded = (this.start + file.chunkSize >= file.size) ? file.size : this.start + file.chunkSize;
             this.reader.readAsArrayBuffer(slice.call(file, this.start, this.loaded));
             return deferred.notify(file, (this.loaded / file.size * 100).toFixed(2)), deferred;
         }
