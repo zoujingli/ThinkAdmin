@@ -26,8 +26,8 @@ define(['md5'], function (SparkMD5, allowMime) {
                         option.element.triggerHandler('upload.hash', file);
                         jQuery.ajax("{:url('admin/api.upload/state')}", {
                             data: {xkey: file.xkey, uptype: option.uptype, safe: option.safe, name: file.name}, method: 'post', success: function (ret) {
-                                file.xurl = ret.data.url;
                                 if (parseInt(ret.code) === 404) {
+                                    file.xurl = ret.data.url;
                                     option.uploader.config.url = ret.data.server;
                                     option.uploader.config.data.key = ret.data.xkey;
                                     option.uploader.config.data.safe = ret.data.safe;
@@ -51,6 +51,7 @@ define(['md5'], function (SparkMD5, allowMime) {
                                     }
                                     object.upload(file.index, file);
                                 } else if (parseInt(ret.code) === 200) {
+                                    file.xurl = ret.data.url;
                                     option.uploader.config.done({uploaded: true, url: file.xurl}, file.index);
                                 } else {
                                     $.msg.tips(ret.info || ret.error.message || '文件上传出错！');
