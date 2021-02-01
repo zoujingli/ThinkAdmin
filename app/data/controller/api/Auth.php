@@ -14,13 +14,13 @@ use think\exception\HttpResponseException;
 abstract class Auth extends Controller
 {
     /**
-     * 当前接口类型
-     * -- 苹果接口访问 isoapp
-     * -- 安装接口访问 android
+     * 当前请求终端类型
      * -- 手机浏览器访问 wap
      * -- 电脑浏览器访问 web
      * -- 微信小程序访问 wxapp
      * -- 微信服务号访问 wechat
+     * -- 苹果应用接口访问 isoapp
+     * -- 安卓应用接口访问 android
      * @var string
      */
     protected $type;
