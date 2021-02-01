@@ -74,8 +74,7 @@ class JsonRpcClient
         if ($fp = fopen($this->proxy, 'r', false, stream_context_create($options))) {
             $response = '';
             while ($row = fgets($fp)) $response .= trim($row) . "\n";
-            fclose($fp);
-            $response = json_decode($response, true);
+            [, $response] = [fclose($fp), json_decode($response, true)];
         } else {
             throw new Exception("无法连接到 {$this->proxy}");
         }

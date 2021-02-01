@@ -857,7 +857,7 @@
         "source": {
             "type": "git",
             "url": "https://gitee.com/zoujingli/ThinkLibrary",
-            "reference": "1fdad1dfac6b976c6e6ff878092e4dbf12e79e3f"
+            "reference": "d37728d027ac68c0798288f1e663599bb642021d"
         },
         "require": {
             "ext-curl": "*",
@@ -867,7 +867,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2021-01-29T08:07:24+00:00",
+        "time": "2021-01-31T06:25:09+00:00",
         "type": "library",
         "extra": {
             "think": {

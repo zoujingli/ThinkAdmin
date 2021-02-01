@@ -93,7 +93,6 @@ class Database extends Command
     protected function getTables(): array
     {
         $tables = [];
-        $this->app->db->getTable();
         foreach ($this->app->db->query("show tables") as $item) {
             $tables = array_merge($tables, array_values($item));
         }

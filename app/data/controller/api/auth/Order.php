@@ -114,7 +114,7 @@ class Order extends Auth
                 'goods_spec'      => $goodsItem['goods_spec'],
                 // 数量处理
                 'stock_sales'     => $count,
-                'truck_code'     => $goodsInfo['truck_code'],
+                'truck_code'      => $goodsInfo['truck_code'],
                 'truck_count'     => $goodsItem['number_express'] * $count,
                 // 费用字段
                 'price_market'    => $goodsItem['price_market'],
@@ -149,7 +149,9 @@ class Order extends Auth
             $this->app->db->name('ShopOrder')->insert($order);
             $this->app->db->name('ShopOrderItem')->insertAll($items);
             // 同步商品库存销量
-            foreach ($codes as $code) GoodsService::instance()->syncStock($code);
+            foreach ($codes as $code) {
+                GoodsService::instance()->syncStock($code);
+            }
             // 触发订单创建事件
             $this->app->event->trigger('ShopOrderCreate', $order['order_no']);
             // 组装订单商品数据

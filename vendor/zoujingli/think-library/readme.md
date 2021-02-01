@@ -1,13 +1,13 @@
 [![Latest Stable Version](https://poser.pugx.org/zoujingli/think-library/v/stable)](https://packagist.org/packages/zoujingli/think-library) [![Total Downloads](https://poser.pugx.org/zoujingli/think-library/downloads)](https://packagist.org/packages/zoujingli/think-library) [![Latest Unstable Version](https://poser.pugx.org/zoujingli/think-library/v/unstable)](https://packagist.org/packages/zoujingli/think-library) [![License](https://poser.pugx.org/zoujingli/think-library/license)](https://packagist.org/packages/zoujingli/think-library)
 
 # ThinkLibrary 6.0 for ThinkPHP 6.0
-ThinkLibrary 6.0 是针对 ThinkPHP 6.0 版本封装的一套工具类库，方便快速构建 WEB 应用。
+ThinkLibrary 6.0 是针对 ThinkPHP 6.0 版本封装的一套工具类库，方便快速构建 Web 应用。
 
 ## 包含组件
 * 数据列表展示（可带高级搜索器）
 * FORM表单处理器（表单展示及数据入库）
 * 数据状态快速处理（数据指定字段更新，支持多字段同时）
-* 数据安全删除处理（硬删除 + 软删除，is_deleted 字段存在则自动软删除）
+* 数据安全删除处理（硬删除 + 软删除，is_deleted 或 deleted 字段存在则自动软删除）
 * 文件存储通用组件（本地服务存储 + 七牛云存储 + 阿里云OSS存储  + 腾讯云COS存储）
 * 通用数据保存更新（通过 key 值及 where 判定是否存在，存在则更新，不存在则新增）
 * 通用网络请求 （支持 get 及 post，可配置请求证书等）
