@@ -34,13 +34,15 @@
         </fieldset>
 
         <fieldset class="margin-top-20">
-            <legend><span class="layui-badge layui-bg-cyan">快递信息</span> <a class="margin-left-10 layui-badge layui-bg-blue" data-express-query>快递跟踪</a></legend>
+            <legend>
+                <span class="layui-badge layui-bg-cyan">快递信息</span>
+                <span class="layui-badge layui-bg-blue pointer" data-express-query>快递跟踪</span>
+            </legend>
             <label class="layui-form-item relative block">
                 <span class="color-green font-w7 label-required-prev">快递配送公司</span>
                 <span class="color-desc margin-left-5">Express Company</span>
                 <select data-truck-code class="layui-select" name="company_code" lay-search>
-                    {foreach $items as $item}
-                    {if isset($vo.company_code) and $vo.company_code eq $item.code_1}
+                    {foreach $items as $item}{if isset($vo.company_code) and $vo.company_code eq $item.code_1}
                     <option selected value="{$item.code_1}">{$item.name} ( {$item.code_1} )</option>
                     {else}
                     <option value="{$item.code_1}">{$item.name} ( {$item.code_1} )</option>
