@@ -93,7 +93,7 @@ define(function () {
                     doPostItem(idx, items[idx]);
 
                     /*! 执行导入的数据 */
-                    function doPostItem(idx, item, info, result) {
+                    function doPostItem(idx, item, result) {
                         if (idx >= total) {
                             return clearAll(), $.msg.success('共处理' + total + '条记录（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）', 3, function () {
                                 $.form.reload();
