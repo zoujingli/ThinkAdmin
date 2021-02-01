@@ -15,7 +15,8 @@ abstract class Auth extends Controller
 {
     /**
      * 当前接口类型
-     * -- 应用接口访问 app
+     * -- 苹果接口访问 isoapp
+     * -- 安装接口访问 android
      * -- 手机浏览器访问 wap
      * -- 电脑浏览器访问 web
      * -- 微信小程序访问 wxapp
