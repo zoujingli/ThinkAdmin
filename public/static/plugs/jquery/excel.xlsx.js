@@ -95,13 +95,11 @@ define(function () {
                     /*! 执行导入的数据 */
                     function doPostItem(idx, item, info, result) {
                         if (idx >= total) {
-                            info = '共处理' + total + '条记录' + '（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
-                            return clearAll(), $.msg.success(info, 3, function () {
+                            return clearAll(), $.msg.success('共处理' + total + '条记录（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）', 3, function () {
                                 $.form.reload();
                             });
                         } else {
-                            info = (idx * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）';
-                            $('[data-load-count]').html(info);
+                            $('[data-load-count]').html((idx * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）');
                             /*! 单元数据过滤 */
                             result = item;
                             if (filterFn && (result = filterFn(item)) === false) {
