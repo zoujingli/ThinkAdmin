@@ -90,7 +90,7 @@ define(function () {
                     if ((total = items.length) < 1) return clearAll(), $.msg.tips('未读取到有效数据')
                     ers = 0, oks = 0, idx = 0;
                     $('[data-load-name]').html('更新数据 ');
-                    doPostItem(idx, items[idx]);
+                    return doPostItem(idx, items[idx]);
 
                     /*! 执行导入的数据 */
                     function doPostItem(idx, item, result) {
