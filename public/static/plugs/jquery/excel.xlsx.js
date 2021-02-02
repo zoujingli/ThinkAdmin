@@ -87,43 +87,39 @@ define(function () {
                 if (!event.target.files || event.target.files.length < 1) return $.msg.tips('没有可操作文件');
                 loaded = $.msg.loading('<span data-load-name>读取</span> <span data-load-count>0.00%</span>');
                 excel.read(event.target.files[0], filterCf).then(function (items, total, ers, oks, idx) {
-                    if ((total = items.length) < 1) return clearAll(), $.msg.tips('未读取到有效数据')
-                    ers = 0, oks = 0, idx = 0;
-                    $('[data-load-name]').html('更新数据 ');
-                    return doPostItem(idx, items[idx]);
+                    if ((total = items.length) < 1) return cleanAll(), $.msg.tips('未读取到有效数据');
+                    return (ers = 0, oks = 0, idx = 0), $('[data-load-name]').html('更新'), doPostItem(idx, items[idx]);
 
                     /*! 执行导入的数据 */
-                    function doPostItem(idx, item, result) {
+                    function doPostItem(idx, item, data) {
                         if (idx >= total) {
-                            return clearAll(), $.msg.success('共处理' + total + '条记录（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）', 3, function () {
+                            return cleanAll(), $.msg.success('共处理' + total + '条记录（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）', 3, function () {
                                 $.form.reload();
                             });
                         } else {
                             $('[data-load-count]').html((idx * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）');
                             /*! 单元数据过滤 */
-                            result = item;
-                            if (filterFn && (result = filterFn(item)) === false) {
+                            data = item;
+                            if (filterFn && (data = filterFn(item)) === false) {
                                 return (ers++), doPostItem(idx + 1, items[idx + 1]);
                             }
                             /*! 提交单个数据 */
-                            doUpdate(url, result).then(function (ret) {
-                                ret.code ? oks++ : ers++;
-                                doPostItem(idx + 1, items[idx + 1]);
+                            doUpdate(url, data).then(function (ret) {
+                                (ret.code ? oks++ : ers++), doPostItem(idx + 1, items[idx + 1]);
                             });
                         }
                     }
                 }).progress(function (progress) {
                     $('[data-load-count]').html(progress + '%')
                 }).fail(function () {
-                    clearAll();
+                    cleanAll();
                 });
             });
             return defer;
 
             /*! 清理文件选择器 */
-            function clearAll() {
-                $input.remove();
-                $.msg.close(loaded);
+            function cleanAll() {
+                $input.remove(), $.msg.close(loaded);
             }
 
             /*! 队列方式上传数据 */
