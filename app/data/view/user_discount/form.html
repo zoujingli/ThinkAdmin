@@ -14,7 +14,7 @@
                 <thead>
                 <tr>
                     <th class="text-left">会员级别</th>
-                    <th class="text-right" style="width:150px">原价比例</th>
+                    <th class="text-right" style="width:150px">原价比例 ( 0% - 100% )</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,7 +26,7 @@
                     <td class="nowrap padding-0">
                         <label>
                             {php} $key = "_level_" . $level['number']; {/php}
-                            <input name="_level_{$level.number}" data-blur-number="4" value="{$vo[$key]??'100.0000'}" placeholder="请输入用户级别折扣"> %
+                            <input name="_level_{$level.number}" data-blur-number="4" data-value-max="100" data-value-min="0" value="{$vo[$key]??'100.0000'}" placeholder="请输入用户级别折扣"> %
                         </label>
                     </td>
                 </tr>

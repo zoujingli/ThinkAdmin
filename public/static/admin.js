@@ -713,14 +713,20 @@ $(function () {
 
     /*! 表单元素失去焦点时数字 */
     $body.on('blur', '[data-blur-number]', function () {
+        var min = this.dataset.valueMin;
+        var max = this.dataset.valueMax;
+        var value = parseFloat(this.value) || 0;
         var fiexd = parseInt(this.dataset.blurNumber || 0);
-        this.value = (parseFloat(this.value) || 0).toFixed(fiexd);
+        if (typeof min !== 'undefined' && value < min) value = min;
+        if (typeof max !== 'undefined' && value > max) value = max;
+        this.value = parseFloat(value).toFixed(fiexd);
     });
 
     /*! 注册 data-href 事件行为 */
     $body.on('click', '[data-href]', function () {
-        var href = this.dataset.href;
-        if (href && href.indexOf('#') !== 0) location.href = href;
+        if (this.dataset.href && this.dataset.href.indexOf('#') !== 0) {
+            location.href = this.dataset.href;
+        }
     });
 
     /*! 注册 data-iframe 事件行为 */
