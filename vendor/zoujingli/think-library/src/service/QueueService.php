@@ -203,17 +203,17 @@ class QueueService extends Service
     /**
      * 更新任务进度
      * @param integer $total 记录总和
-     * @param integer $used 当前记录
+     * @param integer $count 当前记录
      * @param string $message 文字描述
      * @param integer $backline 回退行数
      */
-    public function message(int $total, int $used, string $message = '', $backline = 0): void
+    public function message(int $total, int $count, string $message = '', $backline = 0): void
     {
         $total = $total < 1 ? 1 : $total;
-        $prefix = str_pad("{$used}", strlen("{$total}"), '0', STR_PAD_LEFT);
+        $prefix = str_pad("{$count}", strlen("{$total}"), '0', STR_PAD_LEFT);
         $message = "[{$prefix}/{$total}] {$message}";
         if (defined('WorkQueueCode')) {
-            $this->progress(2, $message, sprintf("%.2f", $used / $total * 100), $backline);
+            $this->progress(2, $message, sprintf("%.2f", $count / $total * 100), $backline);
         } else {
             echo $message . PHP_EOL;
         }

@@ -30,12 +30,47 @@ class ProcessService extends Service
     /**
      * 获取 Think 指令内容
      * @param string $args 指定参数
+     * @param boolean $simple 指令内容
      * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function think(string $args = ''): string
+    public function think(string $args = '', $simple = false): string
     {
-        $root = $this->app->getRootPath();
-        return trim("php {$root}think {$args}");
+        if ($simple) {
+            return trim("{$this->app->getRootPath()}think {$args}");
+        } else {
+            $binary = sysconf('base.binary') ?: 'php';
+            return trim("{$binary} {$this->app->getRootPath()}think {$args}");
+        }
+    }
+
+    /**
+     * 检查 Think 运行进程
+     * @param string $args
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function thinkQuery(string $args): array
+    {
+        return $this->query($this->think($args, true));
+    }
+
+    /**
+     * 执行 Think 指令内容
+     * @param string $args 执行参数
+     * @param integer $usleep 延时时间
+     * @return ProcessService
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function thinkCreate(string $args, $usleep = 0): ProcessService
+    {
+        return $this->create($this->think($args), $usleep);
     }
 
     /**
@@ -50,14 +85,18 @@ class ProcessService extends Service
     /**
      * 创建异步进程
      * @param string $command 任务指令
+     * @param integer $usleep 延时时间
      * @return $this
      */
-    public function create(string $command): ProcessService
+    public function create(string $command, $usleep = 0): ProcessService
     {
         if ($this->iswin()) {
             $this->exec(__DIR__ . "/bin/console.exe {$command}");
         } else {
             $this->exec("{$command} > /dev/null 2>&1 &");
+        }
+        if ($usleep > 0) {
+            usleep($usleep);
         }
         return $this;
     }
@@ -124,7 +163,7 @@ class ProcessService extends Service
     }
 
     /**
-     * 消息空白字符过滤
+     * 清除空白字符过滤
      * @param string $content
      * @param string $tochar
      * @return string

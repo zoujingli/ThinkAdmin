@@ -1135,12 +1135,12 @@ abstract class PDOConnection extends Connection
     /**
      * 得到某个列的数组
      * @access public
-     * @param BaseQuery $query  查询对象
-     * @param string    $column 字段名 多个字段用逗号分隔
-     * @param string    $key    索引
+     * @param BaseQuery     $query  查询对象
+     * @param string|array  $column 字段名 多个字段用逗号分隔
+     * @param string        $key    索引
      * @return array
      */
-    public function column(BaseQuery $query, string $column, string $key = ''): array
+    public function column(BaseQuery $query, $column, string $key = ''): array
     {
         $options = $query->parseOptions();
 
@@ -1148,13 +1148,27 @@ abstract class PDOConnection extends Connection
             $query->removeOption('field');
         }
 
-        if ($key && '*' != $column) {
-            $field = $key . ',' . $column;
-        } else {
-            $field = $column;
+        if (empty($key) || trim($key) === '') {
+            $key = null;
         }
 
-        $field = array_map('trim', explode(',', $field));
+        if (\is_string($column)) {
+            $column = \trim($column);
+            if ('*' !== $column) {
+                $column = \array_map('\trim', \explode(',', $column));
+            }
+        } elseif (\is_array($column)) {
+            if (\in_array('*', $column)) {
+                $column = '*';
+            }
+        } else {
+            throw new DbException('not support type');
+        }
+
+        $field = $column;
+        if ('*' !== $column && $key && !\in_array($key, $column)) {
+            $field[] = $key;
+        }
 
         $query->setOption('field', $field);
 
@@ -1178,32 +1192,30 @@ abstract class PDOConnection extends Connection
         }
 
         // 执行查询操作
-        $pdo = $this->getPDOStatement($sql, $query->getBind(), $options['master']);
-
+        $pdo       = $this->getPDOStatement($sql, $query->getBind(), $options['master']);
         $resultSet = $pdo->fetchAll(PDO::FETCH_ASSOC);
+
+        if (is_string($key) && strpos($key, '.')) {
+            [$alias, $key] = explode('.', $key);
+        }
 
         if (empty($resultSet)) {
             $result = [];
-        } elseif (('*' == $column || strpos($column, ',')) && $key) {
-            $result = array_column($resultSet, null, $key);
+        } elseif ('*' !== $column && \count($column) === 1) {
+            $column = \array_shift($column);
+            if (\strpos($column, ' ')) {
+                $column = \substr(\strrchr(\trim($column), ' '), 1);
+            }
+
+            if (\strpos($column, '.')) {
+                [$alias, $column] = \explode('.', $column);
+            }
+
+            $result = \array_column($resultSet, $column, $key);
+        } elseif ($key) {
+            $result = \array_column($resultSet, null, $key);
         } else {
-            if (empty($key)) {
-                $key = null;
-            }
-
-            if ('*' == $column || strpos($column, ',')) {
-                $column = null;
-            } elseif (strpos($column, ' ')) {
-                $column = substr(strrchr(trim($column), ' '), 1);
-            } elseif (strpos($column, '.')) {
-                [$alias, $column] = explode('.', $column);
-            }
-
-            if (is_string($key) && strpos($key, '.')) {
-                [$alias, $key] = explode('.', $key);
-            }
-
-            $result = array_column($resultSet, $column, $key);
+            $result = $resultSet;
         }
 
         if (isset($cacheItem)) {
@@ -1225,19 +1237,19 @@ abstract class PDOConnection extends Connection
     public function getRealSql(string $sql, array $bind = []): string
     {
         foreach ($bind as $key => $val) {
-            $value = is_array($val) ? $val[0] : $val;
+            $value = strval(is_array($val) ? $val[0] : $val);
             $type  = is_array($val) ? $val[1] : PDO::PARAM_STR;
 
-            if ((self::PARAM_FLOAT == $type || PDO::PARAM_STR == $type) && is_string($value)) {
+            if (self::PARAM_FLOAT == $type || PDO::PARAM_STR == $type) {
                 $value = '\'' . addslashes($value) . '\'';
             } elseif (PDO::PARAM_INT == $type && '' === $value) {
-                $value = 0;
+                $value = '0';
             }
 
             // 判断占位符
             $sql = is_numeric($key) ?
-            substr_replace($sql, (string) $value, strpos($sql, '?'), 1) :
-            substr_replace($sql, (string) $value, strpos($sql, ':' . $key), strlen(':' . $key));
+            substr_replace($sql, $value, strpos($sql, '?'), 1) :
+            substr_replace($sql, $value, strpos($sql, ':' . $key), strlen(':' . $key));
         }
 
         return rtrim($sql);

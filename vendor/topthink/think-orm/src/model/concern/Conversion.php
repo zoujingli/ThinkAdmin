@@ -43,6 +43,12 @@ trait Conversion
     protected $append = [];
 
     /**
+     * 场景
+     * @var array
+     */
+    protected $scene = [];
+
+    /**
      * 数据输出字段映射
      * @var array
      */
@@ -81,6 +87,26 @@ trait Conversion
     public function append(array $append = [])
     {
         $this->append = $append;
+
+        return $this;
+    }
+
+    /**
+     * 设置输出层场景
+     * @access public
+     * @param  string $scene  场景名称
+     * @return $this
+     */
+    public function scene(string $scene)
+    {
+        if (isset($this->scene[$scene])) {
+            $data = $this->scene[$scene];
+            foreach (['append', 'hidden', 'visible'] as $name) {
+                if (isset($data[$name])) {
+                    $this->$name($data[$name]);
+                }
+            }
+        }
 
         return $this;
     }
@@ -255,11 +281,11 @@ trait Conversion
             $value       = $this->getAttr($name);
             $item[$name] = $value;
 
-            $this->getBindAttr($name, $value, $item);
+            $this->getBindAttrValue($name, $value, $item);
         }
     }
 
-    protected function getBindAttr(string $name, $value, array &$item = [])
+    protected function getBindAttrValue(string $name, $value, array &$item = [])
     {
         $relation = $this->isRelationAttr($name);
         if (!$relation) {

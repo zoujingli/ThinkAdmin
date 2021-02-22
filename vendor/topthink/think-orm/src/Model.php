@@ -266,9 +266,8 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      */
     public function newInstance(array $data = [], $where = null): Model
     {
-        $this->readDataType($data);
-
         $model = new static($data);
+        $model->readDataType();
 
         if ($this->connection) {
             $model->setConnection($this->connection);
@@ -616,7 +615,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         if ($this->autoWriteTimestamp && $this->updateTime) {
             // 自动写入更新时间
             $data[$this->updateTime]       = $this->autoWriteTimestamp();
-            $this->data[$this->updateTime] = $data[$this->updateTime];
+            $this->data[$this->updateTime] = $this->getTimestampValue($data[$this->updateTime]);
         }
 
         // 检查允许字段
@@ -670,23 +669,25 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      */
     protected function insertData(string $sequence = null): bool
     {
-        // 时间戳自动写入
-        if ($this->autoWriteTimestamp) {
-            if ($this->createTime && !isset($this->data[$this->createTime])) {
-                $this->data[$this->createTime] = $this->autoWriteTimestamp();
-            }
-
-            if ($this->updateTime && !isset($this->data[$this->updateTime])) {
-                $this->data[$this->updateTime] = $this->autoWriteTimestamp();
-            }
-        }
-
         if (false === $this->trigger('BeforeInsert')) {
             return false;
         }
 
         $this->checkData();
         $data = $this->writeDataType($this->data);
+
+        // 时间戳自动写入
+        if ($this->autoWriteTimestamp) {
+            if ($this->createTime && !isset($data[$this->createTime])) {
+                $data[$this->createTime]       = $this->autoWriteTimestamp();
+                $this->data[$this->createTime] = $this->getTimestampValue($data[$this->createTime]);
+            }
+
+            if ($this->updateTime && !isset($data[$this->updateTime])) {
+                $data[$this->updateTime]       = $this->autoWriteTimestamp();
+                $this->data[$this->updateTime] = $this->getTimestampValue($data[$this->updateTime]);
+            }
+        }
 
         // 检查允许字段
         $allowFields = $this->checkAllowFields();

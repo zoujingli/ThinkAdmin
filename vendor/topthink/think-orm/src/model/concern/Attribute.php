@@ -510,17 +510,15 @@ trait Attribute
     /**
      * 读取数据类型处理
      * @access protected
-     * @param  array $data 数据
      * @return void
      */
-    protected function readDataType(array &$data): void
+    protected function readDataType(): void
     {
-        foreach ($data as $name => &$value) {
-            if (isset($this->type[$name])) {
-                // 类型转换
-                $value = $this->readTransform($value, $this->type[$name]);
-            } elseif ($this->autoWriteTimestamp && in_array($name, [$this->createTime, $this->updateTime])) {
-                $value = $this->getTimestampValue($value);
+        foreach ($this->data as $key => $value) {
+            if (isset($this->type[$key])) {
+                $this->data[$key] = $this->readTransform($value, $this->type[$key]);
+            } elseif ($this->autoWriteTimestamp && in_array($key, [$this->createTime, $this->updateTime])) {
+                $this->data[$key] = $this->getTimestampValue($value);
             }
         }
     }
@@ -537,9 +535,6 @@ trait Attribute
             if (isset($this->type[$name])) {
                 // 类型转换
                 $value = $this->writeTransform($value, $this->type[$name]);
-            } elseif (is_null($value) && $this->autoWriteTimestamp && in_array($name, [$this->createTime, $this->updateTime])) {
-                // 自动写入的时间戳字段
-                $value = $this->autoWriteTimestamp();
             }
         }
 

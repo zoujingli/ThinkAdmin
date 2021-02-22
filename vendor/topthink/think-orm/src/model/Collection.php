@@ -118,6 +118,21 @@ class Collection extends BaseCollection
     }
 
     /**
+     * 设置模型输出场景
+     * @access public
+     * @param  string $scene   场景名称
+     * @return $this
+     */
+    public function scene(string $scene)
+    {
+        $this->each(function (Model $model) use ($scene) {
+            $model->scene($scene);
+        });
+
+        return $this;
+    }
+
+    /**
      * 设置父模型
      * @access public
      * @param  Model $parent 父模型

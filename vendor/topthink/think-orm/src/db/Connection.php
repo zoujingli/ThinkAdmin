@@ -138,7 +138,6 @@ abstract class Connection implements ConnectionInterface
         return $this->builder;
     }
 
-
     /**
      * 创建查询对象
      */
@@ -234,19 +233,35 @@ abstract class Connection implements ConnectionInterface
     protected function trigger(string $sql = '', bool $master = false): void
     {
         $listen = $this->db->getListen();
-
-        if (!empty($listen)) {
-            $runtime = number_format((microtime(true) - $this->queryStartTime), 6);
-            $sql     = $sql ?: $this->getLastsql();
-
-            if (empty($this->config['deploy'])) {
-                $master = null;
-            }
-
-            foreach ($listen as $callback) {
-                if (is_callable($callback)) {
-                    $callback($sql, $runtime, $master);
+        if (empty($listen)) {
+            $listen[] = function ($sql, $time, $master) {
+                if (0 === strpos($sql, 'CONNECT:')) {
+                    $this->db->log($sql);
+                    return;
                 }
+
+                // 记录SQL
+                if (is_bool($master)) {
+                    // 分布式记录当前操作的主从
+                    $master = $master ? 'master|' : 'slave|';
+                } else {
+                    $master = '';
+                }
+
+                $this->db->log($sql . ' [ ' . $master . 'RunTime:' . $time . 's ]');
+            };
+        }
+
+        $runtime = number_format((microtime(true) - $this->queryStartTime), 6);
+        $sql     = $sql ?: $this->getLastsql();
+
+        if (empty($this->config['deploy'])) {
+            $master = null;
+        }
+
+        foreach ($listen as $callback) {
+            if (is_callable($callback)) {
+                $callback($sql, $runtime, $master);
             }
         }
     }

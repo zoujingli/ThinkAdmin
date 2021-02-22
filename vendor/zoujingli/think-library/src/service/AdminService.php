@@ -125,7 +125,7 @@ class AdminService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function apply(bool $force = false)
+    public function apply(bool $force = false): AdminService
     {
         if ($force) $this->clearCache();
         if (($uid = $this->app->session->get('user.id'))) {
@@ -145,7 +145,7 @@ class AdminService extends Service
      * 清理节点缓存
      * @return $this
      */
-    public function clearCache()
+    public function clearCache(): AdminService
     {
         TokenService::instance()->clearCache();
         $this->app->cache->delete('SystemAuthNode');

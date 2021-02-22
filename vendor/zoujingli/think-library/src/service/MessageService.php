@@ -201,7 +201,7 @@ class MessageService extends Service
      * 查询国内短信余额
      * @return array
      */
-    public function queryChinaSmsBalance()
+    public function queryChinaSmsBalance(): array
     {
         $tkey = date("YmdHis");
         $result = HttpExtend::get('http://www.ztsms.cn/balanceN.do', [

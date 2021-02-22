@@ -266,11 +266,11 @@ abstract class BaseQuery
     /**
      * 得到某个列的数组
      * @access public
-     * @param string $field 字段名 多个字段用逗号分隔
+     * @param string|array $field 字段名 多个字段用逗号分隔
      * @param string $key   索引
      * @return array
      */
-    public function column(string $field, string $key = ''): array
+    public function column($field, string $key = ''): array
     {
         return $this->connection->column($this, $field, $key);
     }
