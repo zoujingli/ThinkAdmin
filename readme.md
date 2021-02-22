@@ -1,6 +1,8 @@
 大道至简 · 原生框架
 ---
-> 近期 Github 网络访问不稳定，项目主库已迁移到 Gitee 仓库。
+> 近期 Github 网络访问不稳定，项目主库已迁移到 Gitee 仓库
+> 
+> 注意：Github 仓库不会经常更新，获取最新源码请访问 Gitee 仓库
 > 
 > Gitee 仓库地址：https://gitee.com/zoujingli/ThinkAdmin
 
