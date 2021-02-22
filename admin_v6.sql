@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 29/01/2021 18:33:57
+ Date: 22/02/2021 15:33:49
 */
 
 SET NAMES utf8mb4;
@@ -258,7 +258,7 @@ CREATE TABLE `data_user_discount`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_discount_status`(`status`) USING BTREE,
   INDEX `idx_data_user_discount_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-会员-折扣' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-折扣' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of data_user_discount
@@ -408,12 +408,12 @@ CREATE TABLE `data_user_transfer`  (
   `openid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT 'OPENID',
   `amount` decimal(20, 2) UNSIGNED NULL DEFAULT 0.00 COMMENT '提现金额',
   `remark` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '提现描述',
-  `trade_no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '商户交易',
+  `bank_user` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '开户姓名',
+  `bank_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '银行名称',
+  `bank_code` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '银行卡号',
+  `bank_bran` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '开户分行',
+  `trade_no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '交易单号',
   `trade_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '打款时间',
-  `bank_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '开户姓名',
-  `bank_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '银行名称',
-  `bank_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '银行卡号',
-  `bank_bran` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '开户分行',
   `change_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '处理时间',
   `change_desc` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '处理描述',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '提现状态(0失败,1待审核,2已审核,3打款中,4已打款,5已收款)',
@@ -455,6 +455,7 @@ CREATE TABLE `shop_goods`  (
   `discount_id` bigint(20) NULL DEFAULT 0 COMMENT '折扣方案编号',
   `vip_entry` tinyint(1) NULL DEFAULT 0 COMMENT '入会礼包升级',
   `vip_upgrade` bigint(20) NULL DEFAULT 0 COMMENT '购买立即升级',
+  `num_read` bigint(20) NULL DEFAULT 0 COMMENT '访问阅读统计',
   `limit_low_vip` bigint(20) NULL DEFAULT 0 COMMENT '限制最低等级',
   `limit_max_buy` bigint(20) NULL DEFAULT 0 COMMENT '最大购买数量',
   `set_hot` tinyint(1) NULL DEFAULT 0 COMMENT '设置热度标签',
@@ -743,7 +744,7 @@ CREATE TABLE `shop_payment_item`  (
   INDEX `idx_data_payment_item_payment_type`(`payment_type`) USING BTREE,
   INDEX `idx_data_payment_item_payment_trade`(`payment_trade`) USING BTREE,
   INDEX `idx_data_payment_item_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-支付-记录' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_payment_item
@@ -4749,7 +4750,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
@@ -4757,6 +4758,9 @@ CREATE TABLE `system_oplog`  (
 INSERT INTO `system_oplog` VALUES (1, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-01-29 08:24:08');
 INSERT INTO `system_oplog` VALUES (2, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[78]成功', 'admin', '2021-01-29 09:35:46');
 INSERT INTO `system_oplog` VALUES (3, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[75]成功', 'admin', '2021-01-29 09:36:01');
+INSERT INTO `system_oplog` VALUES (4, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-01 03:28:15');
+INSERT INTO `system_oplog` VALUES (5, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 02:37:37');
+INSERT INTO `system_oplog` VALUES (6, 'admin/api.plugs/optimize', '127.0.0.1', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-22 02:37:58');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4785,11 +4789,12 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_queue
 -- ----------------------------
+INSERT INTO `system_queue` VALUES (1, 'Q202102226724559', '优化数据库所有数据表', 'xadmin:database optimize', 6324, '[]', 1613962644, '已完成对 42 张数据表优化操作', 1613962644.8968, 1613962650.0553, 0, 1, 0, 3, '2021-02-22 02:37:58');
 
 -- ----------------------------
 -- Table structure for system_user
@@ -4822,7 +4827,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/ec/f571134493e54fe06855c88557052c.png', ',,', '', '', '', '127.0.0.1', '2021-01-29 08:24:08', 72, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/ec/f571134493e54fe06855c88557052c.png', ',,', '', '', '', '127.0.0.1', '2021-02-22 02:37:37', 74, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
