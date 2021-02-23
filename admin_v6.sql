@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 23/02/2021 16:34:26
+ Date: 23/02/2021 17:21:12
 */
 
 SET NAMES utf8mb4;
@@ -4643,6 +4643,7 @@ INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_protocol', 'http');
 INSERT INTO `system_config` VALUES ('storage', 'txcos_http_protocol', 'http');
 INSERT INTO `system_config` VALUES ('data', 'wxapp_appid', 'wx6bb7b70258da09c6');
 INSERT INTO `system_config` VALUES ('data', 'wxapp_appkey', '4cdab4affa9c160e935a24a2860ff7f0');
+INSERT INTO `system_config` VALUES ('storage', 'alioss_http_protocol', 'http');
 
 -- ----------------------------
 -- Table structure for system_data
@@ -4740,20 +4741,11 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
 -- ----------------------------
-INSERT INTO `system_oplog` VALUES (1, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-01-29 08:24:08');
-INSERT INTO `system_oplog` VALUES (2, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[78]成功', 'admin', '2021-01-29 09:35:46');
-INSERT INTO `system_oplog` VALUES (3, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[75]成功', 'admin', '2021-01-29 09:36:01');
-INSERT INTO `system_oplog` VALUES (4, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-01 03:28:15');
-INSERT INTO `system_oplog` VALUES (5, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 02:37:37');
-INSERT INTO `system_oplog` VALUES (6, 'admin/api.plugs/optimize', '127.0.0.1', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-22 02:37:58');
-INSERT INTO `system_oplog` VALUES (7, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 09:17:48');
-INSERT INTO `system_oplog` VALUES (8, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 02:39:42');
-INSERT INTO `system_oplog` VALUES (9, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 07:39:39');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4782,12 +4774,11 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_queue
 -- ----------------------------
-INSERT INTO `system_queue` VALUES (1, 'Q202102226724559', '优化数据库所有数据表', 'xadmin:database optimize', 6324, '[]', 1613962644, '已完成对 42 张数据表优化操作', 1613962644.8968, 1613962650.0553, 0, 1, 0, 3, '2021-02-22 02:37:58');
 
 -- ----------------------------
 -- Table structure for system_user
@@ -4820,7 +4811,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/ec/f571134493e54fe06855c88557052c.png', ',,', '', '', '', '127.0.0.1', '2021-02-23 07:39:39', 77, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '127.0.0.1', '2021-02-23 07:39:39', 77, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
