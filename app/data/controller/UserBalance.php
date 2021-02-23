@@ -76,9 +76,7 @@ class UserBalance extends Controller
             $data['code'] = CodeExtend::uniqidDate('16', 'B');
         }
         if ($this->request->isPost()) {
-            if ($data['amount'] <= 0) {
-                $this->error('充值金额不能少于零');
-            }
+            if (empty($data['amount'])) $this->error('充值金额不能为零');
             $data['create_by'] = AdminService::instance()->getUserId();
         }
     }
