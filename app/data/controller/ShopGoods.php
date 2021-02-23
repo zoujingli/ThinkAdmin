@@ -174,16 +174,16 @@ class ShopGoods extends Controller
             if (empty($data['price_selling'])) $data['price_selling'] = min(array_column($items, 'selling'));
             $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->update(['status' => 0]);
             foreach ($items as $item) data_save('ShopGoodsItem', [
-                'goods_sku'      => $item['sku'],
-                'goods_spec'     => $item['key'],
-                'goods_code'     => $data['code'],
-                'price_market'   => $item['market'],
-                'price_selling'  => $item['selling'],
-                'number_virtual' => $item['virtual'],
-                'number_express' => $item['express'],
-                'balance'        => $item['balance'],
-                'integral'       => $item['integral'],
-                'status'         => $item['status'] ? 1 : 0,
+                'goods_sku'       => $item['sku'],
+                'goods_spec'      => $item['key'],
+                'goods_code'      => $data['code'],
+                'price_market'    => $item['market'],
+                'price_selling'   => $item['selling'],
+                'number_virtual'  => $item['virtual'],
+                'number_express'  => $item['express'],
+                'reward_balance'  => $item['balance'],
+                'reward_integral' => $item['integral'],
+                'status'          => $item['status'] ? 1 : 0,
             ], 'goods_spec', [
                 'goods_code' => $data['code'],
             ]);
