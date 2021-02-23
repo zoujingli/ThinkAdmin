@@ -76,7 +76,7 @@ class Order extends Auth
             $map = ['goods_code' => $code, 'goods_spec' => $spec, 'status' => 1];
             $goodsItem = $this->app->db->name('ShopGoodsItem')->where($map)->find();
             if (empty($goodsItem)) $this->error('商品规格异常');
-            // 限制数量
+            // 限制购买数量
             if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
                 $map = [['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']], ['a.uid', '=', $this->uuid]];
                 $buys = $this->app->db->name('StoreOrder')->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
