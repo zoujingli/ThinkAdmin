@@ -43,9 +43,10 @@ class TruckService extends Service
         [$repeatNumber, $repeatAmount] = [$rule['repeatNumber'] ?: 0, $rule['repeatAmount'] ?: 0];
         if ($truckCount <= $firstNumber) {
             return [$firstAmount, $truckCount, $template['code'], "首件计费，不超过{$firstNumber}件"];
+        } else {
+            $amount = $repeatNumber > 0 ? $repeatAmount * ceil(($truckCount - $firstNumber) / $repeatNumber) : 0;
+            return [$firstAmount + $amount, $truckCount, $template['code'], "续件计费，超出{$firstNumber}件续件{$amount}元"];
         }
-        $amount = $repeatNumber > 0 ? $repeatAmount * ceil(($truckCount - $firstNumber) / $repeatNumber) : 0;
-        return [$firstAmount + $amount, $truckCount, $template['code'], "续件计费，超出{$firstNumber}件续件{$amount}元"];
     }
 
     /**
