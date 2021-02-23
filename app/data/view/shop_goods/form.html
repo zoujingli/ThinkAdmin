@@ -199,7 +199,7 @@
                     <th width="10%" class="text-center nowrap">市场价格 <a ng-click="batchSet('market',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">销售价格 <a ng-click="batchSet('selling',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">奖励余额 <a ng-click="batchSet('balance',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">奖励积分 <a ng-click="batchSet('integral',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+                    <th width="10%" class="text-center nowrap">奖励积分 <a ng-click="batchSet('integral',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">虚拟销量 <a ng-click="batchSet('virtual',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">快递计件 <a ng-click="batchSet('express',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="08%" class="text-center nowrap">销售状态</th>
@@ -230,7 +230,7 @@
                     </td>
                     <td class="padding-0">
                         <label class="padding-0 margin-0">
-                            <input ng-blur="rows[0].integral=setValue(rows[0].key,'integral',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].integral">
+                            <input ng-blur="rows[0].integral=setValue(rows[0].key,'integral',$event.target.value,'(parseInt(_)||0)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].integral">
                         </label>
                     </td>
                     <td class="padding-0">
@@ -396,7 +396,7 @@
                         item.market = $rootScope.getValue(item.key, 'market', '0.00');
                         item.balance = $rootScope.getValue(item.key, 'balance', '0.00');
                         item.selling = $rootScope.getValue(item.key, 'selling', '0.00');
-                        item.integral = $rootScope.getValue(item.key, 'integral', '0.00');
+                        item.integral = $rootScope.getValue(item.key, 'integral', '0');
                         item.express = $rootScope.getValue(item.key, 'express', '1');
                         item.virtual = $rootScope.getValue(item.key, 'virtual', '0');
                         return false;
