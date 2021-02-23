@@ -157,8 +157,8 @@ class ShopGoods extends Controller
             $this->marks = GoodsService::instance()->getMarkList();
             $this->cates = GoodsService::instance()->getCateList('arr2table');
             $this->levels = $this->app->db->name('DataUserLevel')->where(['status' => 1])->order('number asc,id desc')->select()->toArray();
+            $this->trucks = $this->app->db->name('ShopTruckTemplate')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('code,name');
             $this->discounts = $this->app->db->name('DataUserDiscount')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->select()->toArray();
-            $this->truckitems = $this->app->db->name('ShopTruckTemplate')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('code,name');
             // 商品规格处理
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,reward_balance `balance`,reward_integral `integral`,status';
             $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
