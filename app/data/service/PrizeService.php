@@ -190,7 +190,7 @@ class PrizeService extends Service
      */
     private function _prize04(): bool
     {
-        if (empty($this->fromer)) return false;
+        if (empty($this->fromer) || empty($this->fromer['pid1'])) return false;
         $pm2 = $this->app->db->name('DataUser')->where(['id' => $this->fromer['pid1']])->find();
         if (empty($pm2)) return false;
         if (!$this->checkLevelPrize(self::PRIZE_04, $pm2['vip_number'])) return false;
