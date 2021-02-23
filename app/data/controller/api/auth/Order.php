@@ -82,7 +82,7 @@ class Order extends Auth
                 $buys = $this->app->db->name('StoreOrder')->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
                 if ($buys + $count > $goods['limit_max_num']) $this->error('超过限购数量');
             }
-            // 限制最购买
+            // 限制购买身份
             if ($goodsInfo['limit_low_vip'] > $this->user['vip_number']) {
                 $this->error('会员等级不够');
             }
