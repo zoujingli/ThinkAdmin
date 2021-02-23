@@ -24,7 +24,7 @@
         <fieldset class="layui-form-item">
             <legend><span class="layui-badge layui-bg-cyan">升级规则</span></legend>
             <div class="layui-form-item">
-                {php}$vo['upgrade_type'] = isset($vo['upgrade_type'])?$vo['upgrade_type']:1;{/php}
+                {php}$vo['upgrade_type'] = $vo['upgrade_type'] ?? 1;{/php}
                 {foreach [1=>'达成所有条件',0=>'达成任何条件'] as $k => $v}
                 {if isset($vo.upgrade_type) and $vo.upgrade_type eq $k}
                 <label class="think-radio"><input checked type="radio" name="upgrade_type" value="{$k}" lay-ignore> {$v}</label>

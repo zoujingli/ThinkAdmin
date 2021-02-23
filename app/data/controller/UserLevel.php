@@ -82,16 +82,17 @@ class UserLevel extends Controller
         } else {
             $vo['utime'] = time();
             $vo['rebate_rule'] = arr2str($vo['rebate_rule'] ?? []);
+            // 用户升级条件开关
             $vo['goods_vip_status'] = isset($vo['goods_vip_status']) ? 1 : 0;
-            $vo['order_amount_status'] = isset($vo['order_amount_status']) ? 1 : 0;
-            $vo['teams_total_status'] = isset($vo['teams_total_status']) ? 1 : 0;
+            $vo['teams_users_status'] = isset($vo['teams_users_status']) ? 1 : 0;
             $vo['teams_direct_status'] = isset($vo['teams_direct_status']) ? 1 : 0;
             $vo['teams_indirect_status'] = isset($vo['teams_indirect_status']) ? 1 : 0;
+            $vo['order_amount_status'] = isset($vo['order_amount_status']) ? 1 : 0;
             // 根据数量判断状态
-            $vo['order_amount_status'] = intval($vo['order_amount_status'] && $vo['order_amount_number'] > 0);
-            $vo['teams_total_status'] = intval($vo['teams_total_status'] && $vo['teams_total_number'] > 0);
+            $vo['teams_users_status'] = intval($vo['teams_users_status'] && $vo['teams_total_number'] > 0);
             $vo['teams_direct_status'] = intval($vo['teams_direct_status'] && $vo['teams_direct_number'] > 0);
             $vo['teams_indirect_status'] = intval($vo['teams_indirect_status'] && $vo['teams_indirect_number'] > 0);
+            $vo['order_amount_status'] = intval($vo['order_amount_status'] && $vo['order_amount_number'] > 0);
             $state = 0;
             foreach ($vo as $k => $v) if (stripos($k, '_status') !== false) $state += $v;
             if (empty($state)) $this->error('升级条件不能为空！');
