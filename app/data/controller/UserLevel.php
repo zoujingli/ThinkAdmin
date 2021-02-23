@@ -89,7 +89,7 @@ class UserLevel extends Controller
             $vo['teams_indirect_status'] = isset($vo['teams_indirect_status']) ? 1 : 0;
             $vo['order_amount_status'] = isset($vo['order_amount_status']) ? 1 : 0;
             // 根据数量判断状态
-            $vo['teams_users_status'] = intval($vo['teams_users_status'] && $vo['teams_total_number'] > 0);
+            $vo['teams_users_status'] = intval($vo['teams_users_status'] && $vo['teams_users_number'] > 0);
             $vo['teams_direct_status'] = intval($vo['teams_direct_status'] && $vo['teams_direct_number'] > 0);
             $vo['teams_indirect_status'] = intval($vo['teams_indirect_status'] && $vo['teams_indirect_number'] > 0);
             $vo['order_amount_status'] = intval($vo['order_amount_status'] && $vo['order_amount_number'] > 0);
