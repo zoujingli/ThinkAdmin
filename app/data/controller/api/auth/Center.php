@@ -111,8 +111,8 @@ class Center extends Auth
         $map[] = ['path', 'like', "%-{$this->uuid}-%"];
         // 查询邀请的朋友
         $query = $this->_query($this->table);
-        $query->like('nickname|username#nickname')->equal('from,id#uid');
-        $query->field('id,from,username,nickname,headimg,amount_total,create_at');
+        $query->like('nickname|username#nickname')->equal('pid1,id#uid');
+        $query->field('id,pid1,username,nickname,headimg,amount_total,create_at');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
         // 统计当前用户所有下属数
         $total = $this->app->db->name($this->table)->where($map)->count();
@@ -137,13 +137,12 @@ class Center extends Auth
         if ($data['from'] == $this->uuid) {
             $this->error('邀请人不能是自己', UserService::instance()->total($this->uuid));
         }
-        $from = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
-        if (empty($from)) $this->error('邀请人状态异常', UserService::instance()->get($this->type, $this->uuid));
-        if ($this->user['from'] > 0) $this->error('已绑定了邀请人', UserService::instance()->total($this->uuid));
-        if (is_numeric(stripos($from['path'], "-{$this->uuid}-"))) $this->error('不能绑定下属');
-        $data['path'] = rtrim($from['path'] ?: '-', '-') . '-' . $from['id'] . '-';
-        $data['layer'] = substr_count($data['path'], '-');
-        $data['pfrom'] = $from['from'] ?? 0;
+        $fromer = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
+        if (empty($fromer)) $this->error('邀请人状态异常', UserService::instance()->get($this->type, $this->uuid));
+        if ($this->user['pid1'] > 0) $this->error('已绑定了邀请人', UserService::instance()->total($this->uuid));
+        if (is_numeric(stripos($fromer['path'], "-{$this->uuid}-"))) $this->error('不能绑定下属');
+        $data['path'] = rtrim($fromer['path'] ?: '-', '-') . "-{$fromer['id']}-";
+        [$data['pid2'], $data['layer']] = [$fromer['pid1'] ?? 0, substr_count($data['path'], '-')];
         if ($this->app->db->name($this->table)->where(['id' => $this->uuid])->update($data) !== false) {
             $this->success('绑定邀请人成功', UserService::instance()->total($this->uuid));
         } else {

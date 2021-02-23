@@ -181,7 +181,7 @@ class UserService extends Service
     public function total(int $uuid): array
     {
         $query = $this->app->db->name('DataUser');
-        return ['my_invite' => $query->where(['from' => $uuid])->count()];
+        return ['my_invite' => $query->where(['pid1' => $uuid])->count()];
     }
 
     /**
@@ -224,14 +224,15 @@ class UserService extends Service
         if (empty($user)) return true;
         [$vipName, $vipNumber] = ['普通用户', 0];
         // 统计历史数据
-        $teamsDirect = $this->app->db->name('DataUser')->where(['from' => $uid])->count();
-        $teamsIndirect = $this->app->db->name('DataUser')->where(['pfrom' => $uid])->count();
+        $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uid])->count();
+        $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->count();
+        $teamsUsers = $this->app->db->name('DataUser')->whereLike('path', "%-{$uid}-%")->count();
         $orderAmount = $this->app->db->name('ShopOrder')->where(['uid' => $uid])->whereIn('status', [3, 4, 5])->sum('amount_total');
         // 计算会员级别
         foreach ($this->app->db->name('DataUserLevel')->where(['status' => 1])->order('number desc')->cursor() as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['vip_auth'] > 0;
-            $l2 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $orderAmount;
-            $l3 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsDirect + $teamsIndirect;
+            $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsUsers;
+            $l3 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $orderAmount;
             $l4 = empty($item['teams_direct_status']) || $item['teams_direct_number'] <= $teamsDirect;
             $l5 = empty($item['teams_indirect_status']) || $item['teams_indirect_number'] <= $teamsIndirect;
             if (
@@ -254,14 +255,14 @@ class UserService extends Service
         // 统计订单统计
         $orderAmountTotal = $this->app->db->name('ShopOrder')->whereRaw("uid={$uid} and status in (3,4,5)")->sum('amount_goods');
         // 统计团队业绩
-        $usql = $this->app->db->name('DataUser')->field('id')->whereRaw("`from`={$uid}")->buildSql();
+        $usql = $this->app->db->name('DataUser')->field('id')->whereRaw("`pid1`={$uid}")->buildSql();
         $teamsAmountDirect = $this->app->db->name('ShopOrder')->whereRaw("`from`={$uid} and status in (3,4,5)")->sum('amount_goods');
         $teamsAmountIndirect = $this->app->db->name('ShopOrder')->whereRaw("`from` in {$usql} and status in (3,4,5)")->sum('amount_goods');
         // 更新用户数据
         $data = [
             'vip_name'              => $vipName,
             'vip_number'            => $vipNumber,
-            'teams_users_total'     => $teamsDirect + $teamsIndirect,
+            'teams_users_total'     => $teamsUsers,
             'teams_users_direct'    => $teamsDirect,
             'teams_users_indirect'  => $teamsIndirect,
             'teams_amount_total'    => $teamsAmountDirect + $teamsAmountIndirect,
@@ -273,7 +274,7 @@ class UserService extends Service
             $data['vip_datetime'] = date('Y-m-d H:i:s');
         }
         $this->app->db->name('DataUser')->where(['id' => $uid])->update($data);
-        return ($parent && $user['pfrom'] > 0) ? $this->syncLevel($user['pfrom'], false) : true;
+        return ($parent && $user['pid2'] > 0) ? $this->syncLevel($user['pid2'], false) : true;
     }
 
     /**

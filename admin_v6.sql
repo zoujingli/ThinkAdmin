@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 23/02/2021 14:52:47
+ Date: 23/02/2021 16:34:26
 */
 
 SET NAMES utf8mb4;
@@ -97,11 +97,10 @@ CREATE TABLE `data_news_x_collect`  (
 DROP TABLE IF EXISTS `data_user`;
 CREATE TABLE `data_user`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `pid1` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '推荐人1UID',
+  `pid2` bigint(20) NULL DEFAULT 0 COMMENT '推荐人2UID',
   `path` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '-' COMMENT '推荐关系',
-  `layer` bigint(20) UNSIGNED NULL DEFAULT 1 COMMENT '推荐层级',
-  `from` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '推荐人1UID',
-  `pfrom` bigint(20) NULL DEFAULT 0 COMMENT '推荐人2UID',
-  `from_at` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '推荐人绑定时间',
+  `layer` bigint(20) NULL DEFAULT 1 COMMENT '推荐层级',
   `openid1` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '小程序OPENID',
   `openid2` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '服务号OPENID',
   `unionid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '公众号UnionID',
@@ -137,6 +136,8 @@ CREATE TABLE `data_user`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_user_pid1`(`pid1`) USING BTREE,
+  INDEX `idx_data_user_pid2`(`pid2`) USING BTREE,
   INDEX `idx_data_user_status`(`status`) USING BTREE,
   INDEX `idx_data_user_deleted`(`deleted`) USING BTREE,
   INDEX `idx_data_user_openid1`(`openid1`) USING BTREE,
@@ -254,11 +255,11 @@ INSERT INTO `data_user_discount` VALUES (1, '100', '[{\"level\":\"1\",\"discount
 -- ----------------------------
 DROP TABLE IF EXISTS `data_user_level`;
 CREATE TABLE `data_user_level`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别名称',
-  `number` tinyint(2) UNSIGNED NULL DEFAULT 0 COMMENT '用户级别序号',
+  `number` tinyint(2) NULL DEFAULT 0 COMMENT '用户级别序号',
   `rebate_rule` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户奖利规则',
-  `upgrade_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '会员升级规则(0单个,1同时)',
+  `upgrade_type` tinyint(1) NULL DEFAULT 0 COMMENT '会员升级规则(0单个,1同时)',
   `goods_vip_status` tinyint(1) NULL DEFAULT 0 COMMENT '入会礼包状态',
   `order_amount_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单金额状态',
   `order_amount_number` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额累计',
@@ -270,17 +271,18 @@ CREATE TABLE `data_user_level`  (
   `teams_indirect_number` bigint(20) NULL DEFAULT 0 COMMENT '间推人数累计',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别描述',
   `utime` bigint(20) NULL DEFAULT 0 COMMENT '等级更新时间',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '用户等级状态(1使用,0禁用)',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '用户等级状态(1使用,0禁用)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '等级创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_level_status`(`status`) USING BTREE,
   INDEX `idx_data_user_level_number`(`number`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-等级' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-等级' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of data_user_level
 -- ----------------------------
-INSERT INTO `data_user_level` VALUES (1, 'VIP1', 1, ',prize_02,prize_03,', 1, 1, 0, 900.00, 1, 100, 1, 10, 1, 20, '', 1611914262, 1, '2021-01-29 09:04:45');
+INSERT INTO `data_user_level` VALUES (1, 'VIP1', 1, ',prize_01,prize_02,prize_03,', 1, 1, 0, 900.00, 1, 100, 1, 10, 1, 20, '', 1614067769, 1, '2021-01-29 09:04:45');
+INSERT INTO `data_user_level` VALUES (2, 'VIP2', 2, ',prize_01,prize_02,prize_04,', 1, 1, 0, 0.00, 0, 0, 1, 100, 0, 0, '', 1614067824, 1, '2021-02-23 07:41:40');
 
 -- ----------------------------
 -- Table structure for data_user_message
@@ -431,6 +433,7 @@ CREATE TABLE `shop_goods`  (
   `data_specs` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品规格(JSON)',
   `data_items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品规格(JSON)',
   `truck_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '运费模板',
+  `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
   `stock_total` bigint(20) NULL DEFAULT 0 COMMENT '库存统计',
   `stock_sales` bigint(20) NULL DEFAULT 0 COMMENT '销售统计',
   `stock_virtual` bigint(20) NULL DEFAULT 0 COMMENT '虚拟销量',
@@ -494,10 +497,10 @@ CREATE TABLE `shop_goods_item`  (
   `goods_spec` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '商品规格',
   `stock_sales` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '销售数量',
   `stock_total` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '商品库存',
-  `number_virtual` bigint(20) NULL DEFAULT 0 COMMENT '虚拟销量',
-  `number_express` bigint(20) NULL DEFAULT 1 COMMENT '配送计件',
   `price_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售价格',
   `price_market` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '市场价格',
+  `number_virtual` bigint(20) NULL DEFAULT 0 COMMENT '虚拟销量',
+  `number_express` bigint(20) NULL DEFAULT 1 COMMENT '配送计件',
   `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励余额',
   `reward_integral` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励积分',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '商品状态',
@@ -570,6 +573,7 @@ CREATE TABLE `shop_order`  (
   `amount_express` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '快递费用金额',
   `amount_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '余额抵扣金额',
   `amount_discount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '折扣后的金额',
+  `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
   `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付平台',
   `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际通道编号',
   `payment_trade` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付单号',
@@ -4736,7 +4740,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
@@ -4749,6 +4753,7 @@ INSERT INTO `system_oplog` VALUES (5, 'admin/login/index', '127.0.0.1', '系统�
 INSERT INTO `system_oplog` VALUES (6, 'admin/api.plugs/optimize', '127.0.0.1', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-22 02:37:58');
 INSERT INTO `system_oplog` VALUES (7, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 09:17:48');
 INSERT INTO `system_oplog` VALUES (8, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 02:39:42');
+INSERT INTO `system_oplog` VALUES (9, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 07:39:39');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4815,7 +4820,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/ec/f571134493e54fe06855c88557052c.png', ',,', '', '', '', '127.0.0.1', '2021-02-23 02:39:42', 76, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/ec/f571134493e54fe06855c88557052c.png', ',,', '', '', '', '127.0.0.1', '2021-02-23 07:39:39', 77, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
