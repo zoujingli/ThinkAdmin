@@ -3,7 +3,6 @@
 namespace app\data\controller;
 
 use app\data\service\OrderService;
-use app\data\service\UserService;
 use think\admin\Controller;
 
 /**
