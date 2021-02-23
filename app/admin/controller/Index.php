@@ -54,7 +54,7 @@ class Index extends Controller
     /**
      * 修改用户资料
      * @login true
-     * @param integer $id 会员ID
+     * @param integer $id 用户ID
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

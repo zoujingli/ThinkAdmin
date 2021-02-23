@@ -94,7 +94,7 @@
             <fieldset>
                 <legend><span class="layui-badge think-bg-violet">入会礼包配置</span></legend>
                 <div class="layui-form-item">
-                    {foreach ['非入会礼包，购买后不会影响等级','入会员礼包，购买后升级会员级别'] as $k=>$v}
+                    {foreach ['非入会礼包，购买后不会影响等级','是入会礼包，购买后升级会员级别'] as $k=>$v}
                     {if (isset($vo.vip_entry) and $vo.vip_entry eq $k) or (empty($vo.vip_entry) and $k eq 0)}
                     <input type="radio" name="vip_entry" value="{$k}" title="{$v}" checked lay-filter="vip_entry">
                     {else}
@@ -105,7 +105,7 @@
 
             {notempty name='levels'}
             <fieldset>
-                <legend><span class="layui-badge think-bg-violet">升级会员级别</span></legend>
+                <legend><span class="layui-badge think-bg-violet">升级用户级别</span></legend>
                 <label class="layui-form-item">
                     <select name="vip_upgrade" class="layui-select" lay-filter="vip_upgrade">
                         {foreach $levels as $level}{if isset($vo.vip_upgrade) and $vo.vip_upgrade eq $level.number}
@@ -114,14 +114,14 @@
                         <option value="{$level.number|default=0}">[ {$level.number|default='0'} ] {$level.name|default=''}</option>
                         {/if}{/foreach}
                     </select>
-                    <span class="help-block">购买此商品会员可直接升级至此等级！</span>
+                    <span class="help-block">购买此商品用户可直接升级至此等级！</span>
                 </label>
             </fieldset>
             {/notempty}
 
             {notempty name='discounts'}
             <fieldset>
-                <legend><span class="layui-badge think-bg-violet">会员折扣方案</span></legend>
+                <legend><span class="layui-badge think-bg-violet">用户折扣方案</span></legend>
                 <label class="layui-form-item">
                     <select name="discount_id" class="layui-select" lay-search>
                         <option value="0"> -- 不设置 --</option>
@@ -131,7 +131,7 @@
                         <option value="{$discount.id|default=0}">{$discount.name|default='0'}</option>
                         {/if}{/foreach}
                     </select>
-                    <span class="help-block">会员级别达到规则可享有折扣！</span>
+                    <span class="help-block">用户级别达到规则可享有折扣！</span>
                 </label>
             </fieldset>
             {/notempty}
@@ -148,7 +148,8 @@
                         <option value="{$level.number|default=0}">[ {$level.number|default='0'} ] {$level.name|default=''}</option>
                         {/if}{/foreach}
                     </select>
-                    <span class="help-block">限制低于此等级的会员不能购买！</span>
+                    <span class="help-block">
+                        限制此等级及低于此等级的用户不能购买！</span>
                 </label>
             </fieldset>
             {/notempty}

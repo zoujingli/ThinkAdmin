@@ -118,7 +118,7 @@ class PrizeService extends Service
             $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->fromer['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
-            // 更新会员奖利金额
+            // 更新用户奖利金额
             UserService::instance()->syncLevel($this->fromer['id']);
         }
         return true;
@@ -150,7 +150,7 @@ class PrizeService extends Service
             $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->fromer['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
-            // 更新会员奖利金额
+            // 更新用户奖利金额
             UserService::instance()->syncLevel($this->fromer['id']);
         }
         return true;
@@ -175,7 +175,7 @@ class PrizeService extends Service
             $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->fromer['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
-            // 更新会员奖利金额
+            // 更新用户奖利金额
             UserService::instance()->syncLevel($this->fromer['id']);
         }
         return true;

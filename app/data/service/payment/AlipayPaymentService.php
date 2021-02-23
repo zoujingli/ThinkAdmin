@@ -59,7 +59,7 @@ class AlipayPaymentService extends PaymentService
 
     /**
      * 创建订单支付参数
-     * @param string $openid 会员OPENID
+     * @param string $openid 用户OPENID
      * @param string $orderNo 交易订单单号
      * @param string $paymentAmount 交易订单金额（元）
      * @param string $paymentTitle 交易订单名称

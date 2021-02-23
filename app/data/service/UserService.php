@@ -210,8 +210,8 @@ class UserService extends Service
     }
 
     /**
-     * 同步计算会员级别
-     * @param integer $uid 指定会员uid
+     * 同步计算用户级别
+     * @param integer $uid 指定用户uid
      * @param boolean $parent 同步计算上级
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
@@ -228,7 +228,7 @@ class UserService extends Service
         $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->count();
         $teamsUsers = $this->app->db->name('DataUser')->whereLike('path', "%-{$uid}-%")->count();
         $orderAmount = $this->app->db->name('ShopOrder')->where(['uid' => $uid])->whereIn('status', [3, 4, 5])->sum('amount_total');
-        // 计算会员级别
+        // 计算用户级别
         foreach ($this->app->db->name('DataUserLevel')->where(['status' => 1])->order('number desc')->cursor() as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['vip_auth'] > 0;
             $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsUsers;
