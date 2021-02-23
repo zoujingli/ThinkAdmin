@@ -2,7 +2,7 @@
 
 {block name="content"}
 {include file='shop_goods/formstyle'}
-<form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card table-block' autocomplete="off">
+<form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
     <div class="layui-card-body padding-40 padding-bottom-20">
         {notempty name='marks'}
         <div class="layui-form-item relative block">
@@ -54,12 +54,13 @@
         {/notempty}
 
         <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">商品图片及轮播展示图片</span>
+            <span class="color-green font-w7 label-required-prev">商品封面及轮播图片</span>
+            <span class="color-desc margin-left-5">Cover and Carousel Pictures</span>
             <table class="layui-table">
                 <thead>
                 <tr>
-                    <th style="width:90px" class="text-center">LOGO</th>
-                    <th class="text-left">展示图片</th>
+                    <th style="width:90px" class="text-center">商品封面</th>
+                    <th style="width:auto" class="text-left">轮播图片</th>
                 </tr>
                 <tr>
                     <td class="text-center">
@@ -76,22 +77,34 @@
         </div>
 
         <div class="layui-clear goods-item-box">
+
             <fieldset>
-                <legend class="layui-bg-gray">入会礼包配置</legend>
+                <legend><span class="layui-badge think-bg-violet">物流配送发货</span></legend>
                 <div class="layui-form-item">
-                    {foreach [0=>'非入会礼包，购买后不会影响等级',1=>'入会员礼包，购买后升级会员级别'] as $k=>$v}
+                    {foreach ['虚拟商品，无需物流配送','实物商品，需要物流配送'] as $k=>$v}
+                    {if (isset($vo.truck_type) and $vo.truck_type eq $k) or (empty($vo.truck_type) and $k eq 0)}
+                    <input type="radio" name="truck_type" value="{$k}" title="{$v}" checked>
+                    {else}
+                    <input type="radio" name="truck_type" value="{$k}" title="{$v}">
+                    {/if}{/foreach}
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend><span class="layui-badge think-bg-violet">入会礼包配置</span></legend>
+                <div class="layui-form-item">
+                    {foreach ['非入会礼包，购买后不会影响等级','入会员礼包，购买后升级会员级别'] as $k=>$v}
                     {if (isset($vo.vip_entry) and $vo.vip_entry eq $k) or (empty($vo.vip_entry) and $k eq 0)}
                     <input type="radio" name="vip_entry" value="{$k}" title="{$v}" checked lay-filter="vip_entry">
                     {else}
                     <input type="radio" name="vip_entry" value="{$k}" title="{$v}" lay-filter="vip_entry">
-                    {/if}
-                    {/foreach}
+                    {/if}{/foreach}
                 </div>
             </fieldset>
 
             {notempty name='levels'}
             <fieldset>
-                <legend class="layui-bg-gray">升级会员级别</legend>
+                <legend><span class="layui-badge think-bg-violet">升级会员级别</span></legend>
                 <label class="layui-form-item">
                     <select name="vip_upgrade" class="layui-select" lay-filter="vip_upgrade">
                         {foreach $levels as $level}{if isset($vo.vip_upgrade) and $vo.vip_upgrade eq $level.number}
@@ -105,9 +118,26 @@
             </fieldset>
             {/notempty}
 
+            {notempty name='discounts'}
+            <fieldset>
+                <legend><span class="layui-badge think-bg-violet">会员折扣方案</span></legend>
+                <label class="layui-form-item">
+                    <select name="discount_id" class="layui-select" lay-search>
+                        <option value="0"> -- 不设置 --</option>
+                        {foreach $discounts as $discount}{if isset($vo.discount_id) and $vo.discount_id eq $discount.id}
+                        <option selected value="{$discount.id|default=0}">{$discount.name|default='0'}</option>
+                        {else}
+                        <option value="{$discount.id|default=0}">{$discount.name|default='0'}</option>
+                        {/if}{/foreach}
+                    </select>
+                    <span class="help-block">会员级别达到规则可享有折扣！</span>
+                </label>
+            </fieldset>
+            {/notempty}
+
             {notempty name='levels'}
             <fieldset>
-                <legend class="layui-bg-gray">限制最低购买等级</legend>
+                <legend><span class="layui-badge think-bg-violet">限制最低购买等级</span></legend>
                 <label class="layui-form-item">
                     <select name="limit_low_vip" class="layui-select">
                         <option value="0"> -- 不设置 --</option>
@@ -122,32 +152,14 @@
             </fieldset>
             {/notempty}
 
-            {notempty name='discounts'}
             <fieldset>
-                <legend class="layui-bg-gray">会员享有折扣方案</legend>
+                <legend><span class="layui-badge think-bg-violet">商品限购数量</span></legend>
                 <label class="layui-form-item">
-                    <select name="discount_id" class="layui-select" lay-search>
-                        <option value="0"> -- 不设置 --</option>
-                        {foreach $discounts as $discount}
-                        {if isset($vo.discount_id) and $vo.discount_id eq $discount.id}
-                        <option selected value="{$discount.id|default=0}">{$discount.name|default='0'}</option>
-                        {else}
-                        <option value="{$discount.id|default=0}">{$discount.name|default='0'}</option>
-                        {/if}
-                        {/foreach}
-                    </select>
-                    <span class="help-block">会员级别达到规则可享有折扣！</span>
+                    <input class="layui-input" data-blur-number="0" name="limit_max_num" value="{$vo.limit_max_num|default=0}" placeholder="请输入商品限购数量">
+                    <span class="help-block">限制每人可购买数量（为 0 时不限制）！</span>
                 </label>
             </fieldset>
-            {/notempty}
 
-            <fieldset>
-                <legend class="layui-bg-gray">商品限购设置</legend>
-                <label class="layui-form-item">
-                    <input class="layui-input" data-blur-number="0" name="limit_max_buy" value="{$vo.limit_max_buy|default=0}" placeholder="请输入商品限购数量">
-                    <span class="help-block">限制每人可购买数量（为0时不限制）！</span>
-                </label>
-            </fieldset>
         </div>
 
         <div class="layui-form-item">
@@ -174,8 +186,8 @@
                 </div>
             </div>
             <div ng-if="mode==='add'">
-                <a ng-if="specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加分组</a>
-                <p>请完成属性修改后再编辑下面的规格信息，否则规格数据会丢失！！！</p>
+                <a ng-if="specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加规则分组</a>
+                <p class="margin-top-10"><span class="color-red">请完成属性修改后再编辑下面的规格信息，否则规格数据会丢失！</span></p>
             </div>
             <table class="layui-table margin-top-10">
                 <thead>
@@ -184,6 +196,8 @@
                     <th width="12%" class="text-center nowrap">商品SKU <a ng-click="batchSet('sku',null)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">市场价格 <a ng-click="batchSet('market',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">销售价格 <a ng-click="batchSet('selling',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+                    <th width="10%" class="text-center nowrap">奖励余额 <a ng-click="batchSet('balance',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+                    <th width="10%" class="text-center nowrap">奖励积分 <a ng-click="batchSet('integral',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">虚拟销量 <a ng-click="batchSet('virtual',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="10%" class="text-center nowrap">快递计件 <a ng-click="batchSet('express',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
                     <th width="08%" class="text-center nowrap">销售状态</th>
@@ -209,6 +223,16 @@
                     </td>
                     <td class="padding-0">
                         <label class="padding-0 margin-0">
+                            <input ng-blur="rows[0].balance=setValue(rows[0].key,'balance',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].balance">
+                        </label>
+                    </td>
+                    <td class="padding-0">
+                        <label class="padding-0 margin-0">
+                            <input ng-blur="rows[0].integral=setValue(rows[0].key,'integral',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].integral">
+                        </label>
+                    </td>
+                    <td class="padding-0">
+                        <label class="padding-0 margin-0">
                             <input ng-blur="rows[0].virtual=setValue(rows[0].key,'virtual',$event.target.value,'(parseInt(_)||0)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].virtual">
                         </label>
                     </td>
@@ -218,7 +242,9 @@
                         </label>
                     </td>
                     <td class="text-center layui-bg-gray">
-                        <label class="think-checkbox margin-0 full-width full-height block"><input lay-ignore type="checkbox" ng-model="rows[0].status"></label>
+                        <label class="think-checkbox margin-0 full-width full-height block">
+                            <input lay-ignore type="checkbox" ng-model="rows[0].status">
+                        </label>
                     </td>
                 </tr>
                 </tbody>
@@ -366,7 +392,9 @@
                         item.sku = $rootScope.getValue(item.key, 'sku', getRand(14, 'S'));
                         item.status = !!$rootScope.getValue(item.key, 'status', 1);
                         item.market = $rootScope.getValue(item.key, 'market', '0.00');
+                        item.balance = $rootScope.getValue(item.key, 'balance', '0.00');
                         item.selling = $rootScope.getValue(item.key, 'selling', '0.00');
+                        item.integral = $rootScope.getValue(item.key, 'integral', '0.00');
                         item.express = $rootScope.getValue(item.key, 'express', '1');
                         item.virtual = $rootScope.getValue(item.key, 'virtual', '0');
                         return false;

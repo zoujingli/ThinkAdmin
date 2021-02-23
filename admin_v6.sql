@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 22/02/2021 15:33:49
+ Date: 23/02/2021 14:52:47
 */
 
 SET NAMES utf8mb4;
@@ -74,37 +74,21 @@ CREATE TABLE `data_news_mark`  (
 DROP TABLE IF EXISTS `data_news_x_collect`;
 CREATE TABLE `data_news_x_collect`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
-  `type` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '记录类型(1收藏,2点赞,3历史)',
+  `uid` bigint(20) NULL DEFAULT 0 COMMENT '用户UID',
+  `type` tinyint(1) NULL DEFAULT 1 COMMENT '记录类型(1收藏,2点赞,3历史,4评论)',
   `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章编号',
+  `reply` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '评论内容',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '记录状态(0无效,1待审核,2已审核)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_x_collect_mid`(`uid`) USING BTREE,
   INDEX `idx_data_news_x_collect_type`(`type`) USING BTREE,
-  INDEX `idx_data_news_x_collect_code`(`code`) USING BTREE
+  INDEX `idx_data_news_x_collect_code`(`code`) USING BTREE,
+  INDEX `idx_data_news_x_collect_status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标记' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_news_x_collect
--- ----------------------------
-
--- ----------------------------
--- Table structure for data_news_x_comment
--- ----------------------------
-DROP TABLE IF EXISTS `data_news_x_comment`;
-CREATE TABLE `data_news_x_comment`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
-  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文章编号',
-  `content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '评论内容',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_news_x_comment_mid`(`uid`) USING BTREE,
-  INDEX `idx_data_news_x_comment_code`(`code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-评论' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of data_news_x_comment
 -- ----------------------------
 
 -- ----------------------------
@@ -436,7 +420,7 @@ CREATE TABLE `data_user_transfer`  (
 DROP TABLE IF EXISTS `shop_goods`;
 CREATE TABLE `shop_goods`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `cate` bigint(20) NULL DEFAULT 0 COMMENT '商品分类',
+  `cate` bigint(20) NULL DEFAULT 0 COMMENT '分类编号',
   `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品编号',
   `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品名称',
   `mark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品标签',
@@ -444,8 +428,8 @@ CREATE TABLE `shop_goods`  (
   `slider` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '轮播图片',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品描述',
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品详情',
-  `data_specs` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品规格',
-  `data_items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品规格',
+  `data_specs` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品规格(JSON)',
+  `data_items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品规格(JSON)',
   `truck_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '运费模板',
   `stock_total` bigint(20) NULL DEFAULT 0 COMMENT '库存统计',
   `stock_sales` bigint(20) NULL DEFAULT 0 COMMENT '销售统计',
@@ -455,11 +439,11 @@ CREATE TABLE `shop_goods`  (
   `discount_id` bigint(20) NULL DEFAULT 0 COMMENT '折扣方案编号',
   `vip_entry` tinyint(1) NULL DEFAULT 0 COMMENT '入会礼包升级',
   `vip_upgrade` bigint(20) NULL DEFAULT 0 COMMENT '购买立即升级',
-  `num_read` bigint(20) NULL DEFAULT 0 COMMENT '访问阅读统计',
   `limit_low_vip` bigint(20) NULL DEFAULT 0 COMMENT '限制最低等级',
-  `limit_max_buy` bigint(20) NULL DEFAULT 0 COMMENT '最大购买数量',
-  `set_hot` tinyint(1) NULL DEFAULT 0 COMMENT '设置热度标签',
-  `set_home` tinyint(1) NULL DEFAULT 0 COMMENT '设置首页推荐',
+  `limit_max_num` bigint(20) NULL DEFAULT 0 COMMENT '最大购买数量',
+  `num_read` bigint(20) NULL DEFAULT 0 COMMENT '访问阅读统计',
+  `state_hot` tinyint(1) NULL DEFAULT 0 COMMENT '设置热度标签',
+  `state_home` tinyint(1) NULL DEFAULT 0 COMMENT '设置首页推荐',
   `sort` bigint(20) NULL DEFAULT 0 COMMENT '列表排序权重',
   `status` tinyint(1) NULL DEFAULT 1 COMMENT '商品状态(1使用,0禁用)',
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
@@ -510,10 +494,12 @@ CREATE TABLE `shop_goods_item`  (
   `goods_spec` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '商品规格',
   `stock_sales` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '销售数量',
   `stock_total` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '商品库存',
-  `price_selling` decimal(20, 2) UNSIGNED NULL DEFAULT 0.00 COMMENT '销售价格',
-  `price_market` decimal(20, 2) UNSIGNED NULL DEFAULT 0.00 COMMENT '市场价格',
-  `number_virtual` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '虚拟销量',
-  `number_express` bigint(20) UNSIGNED NULL DEFAULT 1 COMMENT '计件数量',
+  `number_virtual` bigint(20) NULL DEFAULT 0 COMMENT '虚拟销量',
+  `number_express` bigint(20) NULL DEFAULT 1 COMMENT '配送计件',
+  `price_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售价格',
+  `price_market` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '市场价格',
+  `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励余额',
+  `reward_integral` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励积分',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '商品状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
@@ -4750,7 +4736,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
@@ -4761,6 +4747,8 @@ INSERT INTO `system_oplog` VALUES (3, 'admin/menu/edit', '127.0.0.1', '系统菜
 INSERT INTO `system_oplog` VALUES (4, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-01 03:28:15');
 INSERT INTO `system_oplog` VALUES (5, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 02:37:37');
 INSERT INTO `system_oplog` VALUES (6, 'admin/api.plugs/optimize', '127.0.0.1', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-22 02:37:58');
+INSERT INTO `system_oplog` VALUES (7, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 09:17:48');
+INSERT INTO `system_oplog` VALUES (8, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 02:39:42');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4827,7 +4815,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/ec/f571134493e54fe06855c88557052c.png', ',,', '', '', '', '127.0.0.1', '2021-02-22 02:37:37', 74, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/ec/f571134493e54fe06855c88557052c.png', ',,', '', '', '', '127.0.0.1', '2021-02-23 02:39:42', 76, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

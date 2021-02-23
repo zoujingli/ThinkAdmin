@@ -1,6 +1,13 @@
 [![Latest Stable Version](https://poser.pugx.org/zoujingli/think-library/v/stable)](https://packagist.org/packages/zoujingli/think-library) [![Total Downloads](https://poser.pugx.org/zoujingli/think-library/downloads)](https://packagist.org/packages/zoujingli/think-library) [![Latest Unstable Version](https://poser.pugx.org/zoujingli/think-library/v/unstable)](https://packagist.org/packages/zoujingli/think-library) [![License](https://poser.pugx.org/zoujingli/think-library/license)](https://packagist.org/packages/zoujingli/think-library)
 
-# ThinkLibrary 6.0 for ThinkPHP 6.0
+> 近期 Github 网络访问不稳定，项目主库已迁移到 Gitee 仓库
+> 
+> 注意：Github 仓库不会经常更新，获取最新源码请访问 Gitee 仓库
+> 
+> Gitee 仓库地址：https://gitee.com/zoujingli/ThinkLibrary
+
+ThinkLibrary 6.0 for ThinkPHP 6.0
+---
 
 ThinkLibrary 6.0 是针对 ThinkPHP 6.0 版本封装的一套工具类库，方便快速构建 Web 应用。
 

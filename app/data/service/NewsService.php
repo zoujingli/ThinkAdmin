@@ -14,18 +14,17 @@ class NewsService extends Service
     /**
      * 同步文章数据统计
      * @param string $code 文章编号
+     * @param array $total 查询统计
      * @throws \think\db\exception\DbException
      */
-    public function syncNewsTotal(string $code): void
+    public function syncNewsTotal(string $code, $total = []): void
     {
-        [$map, $total] = [['code' => $code], []];
-        $query = $this->app->db->name('DataNewsXCollect')->field('count(1) count,type');
-        $query->where($map)->group('type')->select()->map(function ($item) use (&$total) {
+        $query = $this->app->db->name('DataNewsXCollect')->field('type,count(1) count');
+        foreach ($query->where(['code' => $code, 'status' => 2])->group('type')->cursor() as $item) {
             $total[$item['type']] = $item['count'];
-        });
+        }
         $this->app->db->name('DataNewsItem')->where(['code' => $code])->update([
-            'num_collect' => $total[2] ?? 0, 'num_like' => $total[1] ?? 0,
-            'num_comment' => $this->app->db->name('DataNewsXComment')->where($map)->count(),
+            'num_like' => $total[1] ?? 0, 'num_collect' => $total[2] ?? 0, 'num_comment' => $total[4] ?? 0,
         ]);
     }
 
@@ -54,15 +53,15 @@ class NewsService extends Service
     /**
      * 获取列表状态
      * @param array $list 数据列表
-     * @param integer $mid 用户UID
+     * @param integer $uid 用户UID
      * @return array
      */
-    public function buildListState(array &$list, int $mid = 0): array
+    public function buildListState(array &$list, int $uid = 0): array
     {
         if (count($list) > 0) {
             [$code2, $code1, $marks] = [[], [], []];
-            if ($mid > 0) {
-                $map = [['uid', '=', $mid], ['code', 'in', array_unique(array_column($list, 'code'))]];
+            if ($uid > 0) {
+                $map = [['uid', '=', $uid], ['code', 'in', array_unique(array_column($list, 'code'))]];
                 $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
                 $code1 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 1])->column('code');
                 $code2 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 2])->column('code');

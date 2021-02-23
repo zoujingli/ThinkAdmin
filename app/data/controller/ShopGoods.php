@@ -160,7 +160,7 @@ class ShopGoods extends Controller
             $this->discounts = $this->app->db->name('DataUserDiscount')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->select()->toArray();
             $this->truckitems = $this->app->db->name('ShopTruckTemplate')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('code,name');
             // 商品规格处理
-            $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,status';
+            $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,reward_balance `balance`,reward_integral `integral`,status';
             $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
         } elseif ($this->request->isPost()) {
             if (empty($data['cover'])) $this->error('商品图片不能为空！');
@@ -181,6 +181,8 @@ class ShopGoods extends Controller
                 'price_selling'  => $item['selling'],
                 'number_virtual' => $item['virtual'],
                 'number_express' => $item['express'],
+                'balance'        => $item['balance'],
+                'integral'       => $item['integral'],
                 'status'         => $item['status'] ? 1 : 0,
             ], 'goods_spec', [
                 'goods_code' => $data['code'],

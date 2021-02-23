@@ -13,17 +13,25 @@ use app\data\service\NewsService;
 class News extends Auth
 {
     /**
+     * 绑定数据表
+     * @var string
+     */
+    protected $table = 'DataNewsXCollect';
+
+    /**
      * 用户评论内容
      * @throws \think\db\exception\DbException
      */
     public function addComment()
     {
         $data = $this->_vali([
-            'uid.value'       => $this->uuid,
-            'code.require'    => '文章不能为空！',
-            'content.require' => '内容不能为空！',
+            'uid.value'     => $this->uuid,
+            'type.value'    => 4,
+            'status.value'  => 1,
+            'code.require'  => '文章不能为空！',
+            'reply.require' => '评论不能为空！',
         ]);
-        if ($this->app->db->name('DataNewsXComment')->insert($data) !== false) {
+        if ($this->app->db->name($this->table)->insert($data) !== false) {
             NewsService::instance()->syncNewsTotal($data['code']);
             $this->success('添加评论成功！');
         } else {
@@ -39,8 +47,8 @@ class News extends Auth
      */
     public function getComment()
     {
-        $map = $this->_vali(['uid.value' => $this->uuid, 'code.require' => '文章不能为空！']);
-        $result = $this->_query('DataNewsXComment')->where($map)->order('id desc')->page(true, false);
+        $query = $this->_query($this->table)->where(['uid' => $this->uuid, 'type' => 4]);
+        $result = $query->whereIn('status', [1, 2])->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result);
         $this->success('获取评论列表成功', $result);
     }
@@ -51,12 +59,13 @@ class News extends Auth
      */
     public function delComment()
     {
-        $map = $this->_vali([
+        $data = $this->_vali([
             'uid.value'    => $this->uuid,
-            'id.require'   => '评论ID不能为空！',
-            'code.require' => '文章CODE不能为空！',
+            'type.value'   => 4,
+            'id.require'   => '评论编号不能为空！',
+            'code.require' => '文章编号不能为空！',
         ]);
-        if ($this->app->db->name('DataNewsXComment')->where($map)->delete() !== false) {
+        if ($this->app->db->name('DataNewsXCollect')->where($data)->delete() !== false) {
             $this->success('评论删除成功！');
         } else {
             $this->error('认证删除失败！');
@@ -69,12 +78,17 @@ class News extends Auth
      */
     public function addCollect()
     {
-        $map = $this->_getCollectWhere(1);
-        if ($this->app->db->name('DataNewsXCollect')->where($map)->count() > 0) {
+        $data = $this->_vali([
+            'uid.value'    => $this->uuid,
+            'type.value'   => 1,
+            'status.value' => 2,
+            'code.require' => '文章编号不能为空！',
+        ]);
+        if ($this->app->db->name('DataNewsXCollect')->where($data)->count() > 0) {
             $this->success('您已收藏！');
         }
-        if ($this->app->db->name('DataNewsXCollect')->insert($map) !== false) {
-            NewsService::instance()->syncNewsTotal($map['code']);
+        if ($this->app->db->name('DataNewsXCollect')->insert($data) !== false) {
+            NewsService::instance()->syncNewsTotal($data['code']);
             $this->success('收藏成功！');
         } else {
             $this->error('收藏失败！');
@@ -87,9 +101,13 @@ class News extends Auth
      */
     public function delCollect()
     {
-        $map = $this->_getCollectWhere(1);
-        if ($this->app->db->name('DataNewsXCollect')->where($map)->delete() !== false) {
-            NewsService::instance()->syncNewsTotal($map['code']);
+        $data = $this->_vali([
+            'uid.value'    => $this->uuid,
+            'type.value'   => 1,
+            'code.require' => '文章编号不能为空！',
+        ]);
+        if ($this->app->db->name('DataNewsXCollect')->where($data)->delete() !== false) {
+            NewsService::instance()->syncNewsTotal($data['code']);
             $this->success('取消收藏成功！');
         } else {
             $this->error('取消收藏失败！');
@@ -115,12 +133,17 @@ class News extends Auth
      */
     public function addLike()
     {
-        $map = $this->_getCollectWhere(2);
-        if ($this->app->db->name('DataNewsXCollect')->where($map)->count() > 0) {
+        $data = $this->_vali([
+            'uid.value'    => $this->uuid,
+            'type.value'   => 2,
+            'status.value' => 2,
+            'code.require' => '文章编号不能为空！',
+        ]);
+        if ($this->app->db->name('DataNewsXCollect')->where($data)->count() > 0) {
             $this->success('您已点赞！');
         }
-        if ($this->app->db->name('DataNewsXCollect')->insert($map) !== false) {
-            NewsService::instance()->syncNewsTotal($map['code']);
+        if ($this->app->db->name('DataNewsXCollect')->insert($data) !== false) {
+            NewsService::instance()->syncNewsTotal($data['code']);
             $this->success('点赞成功！');
         } else {
             $this->error('点赞失败！');
@@ -133,9 +156,13 @@ class News extends Auth
      */
     public function delLike()
     {
-        $map = $this->_getCollectWhere(2);
-        if ($this->app->db->name('DataNewsXCollect')->where($map)->delete() !== false) {
-            NewsService::instance()->syncNewsTotal($map['code']);
+        $data = $this->_vali([
+            'uid.value'    => $this->uuid,
+            'type.value'   => 2,
+            'code.require' => '文章编号不能为空！',
+        ]);
+        if ($this->app->db->name('DataNewsXCollect')->where($data)->delete() !== false) {
+            NewsService::instance()->syncNewsTotal($data['code']);
             $this->success('取消点赞成功！');
         } else {
             $this->error('取消点赞失败！');
@@ -148,10 +175,28 @@ class News extends Auth
      */
     public function getLike()
     {
-        $query = $this->_query('DataNewsXCollect')->order('id desc');
-        $result = $query->where(['uid' => $this->uuid, 'type' => 2])->page(true, false, false, 15);
+        $query = $this->_query('DataNewsXCollect');
+        $query->where(['uid' => $this->uuid, 'type' => 2, 'status' => 2]);
+        $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取点赞记录成功！', $result);
+    }
+
+    /**
+     * 添加用户的浏览历史
+     * @throws \think\db\exception\DbException
+     */
+    public function addHistory()
+    {
+        $data = $this->_vali([
+            'uid.value'    => $this->uuid,
+            'type.value'   => 2,
+            'status.value' => 2,
+            'code.require' => '文章编号不能为空！',
+        ]);
+        $this->app->db->name('DataNewsXCollect')->where($data)->delete();
+        $this->app->db->name('DataNewsXCollect')->insert($data);
+        $this->success('添加浏览历史成功！');
     }
 
     /**
@@ -162,24 +207,11 @@ class News extends Auth
      */
     public function getHistory()
     {
-        $query = $this->_query('DataNewsXCollect')->order('id desc');
-        $result = $query->where(['uid' => $this->uuid, 'type' => 3])->page(true, false, false, 15);
+        $query = $this->_query('DataNewsXCollect');
+        $query->where(['uid' => $this->uuid, 'type' => 3, 'status' => 2]);
+        $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取浏览历史成功！', $result);
-    }
-
-    /**
-     * 获取收藏点赞
-     * @param integer $type 数据类型
-     * @return array
-     */
-    private function _getCollectWhere(int $type = 1): array
-    {
-        return $this->_vali([
-            'uid.value'    => $this->uuid,
-            'type.value'   => $type,
-            'code.require' => '编号不能为空！',
-        ]);
     }
 
 }

@@ -77,10 +77,10 @@ class Order extends Auth
             $goodsItem = $this->app->db->name('ShopGoodsItem')->where($map)->find();
             if (empty($goodsItem)) $this->error('商品规格异常');
             // 限制数量
-            if (isset($goods['limit_max_buy']) && $goods['limit_max_buy'] > 0) {
+            if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
                 $map = [['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']], ['a.uid', '=', $this->uuid]];
                 $buys = $this->app->db->name('StoreOrder')->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
-                if ($this->member['vip_entry'] && $goods['vip_entry'] || $buys + $count > $goods['limit_max_buy']) {
+                if ($this->member['vip_entry'] && $goods['vip_entry'] || $buys + $count > $goods['limit_max_num']) {
                     $this->error('超过限购数量');
                 }
             }
