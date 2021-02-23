@@ -84,7 +84,7 @@ class Order extends Auth
             }
             // 限制购买身份
             if ($goodsInfo['limit_low_vip'] > $this->user['vip_number']) {
-                $this->error('会员等级不够');
+                $this->error('用户等级不够');
             }
             // 商品库存检查
             if ($goodsItem['stock_sales'] + $count > $goodsItem['stock_total']) {
