@@ -31,7 +31,6 @@ class User extends Controller
         $this->title = '普通用户管理';
         $query = $this->_query($this->table);
         $query->like('phone,username|nickname#username');
-        $query->whereRaw('nickname != "" or username != ""');
         $query->order('id desc')->equal('status')->dateBetween('create_at')->page();
     }
 
