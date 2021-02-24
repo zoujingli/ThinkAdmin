@@ -43,10 +43,11 @@ abstract class Auth extends Controller
     protected function initialize()
     {
         // 接口数据类型
-        $this->type = input('api') ?: $this->request->header('api-type');
+        $this->type = input('api') ?: $this->request->header('api-name');
+        $this->type = $this->type ?: $this->request->header('api-type');
         $this->type = $this->type ?: UserService::APITYPE_WXAPP;
         if (empty(UserService::TYPES[$this->type])) {
-            $this->error("接口通道[{$this->type}]未定义规则！");
+            $this->error("接口通道未定义规则！");
         }
         // 获取用户数据
         $this->user = $this->getUser();
@@ -60,14 +61,13 @@ abstract class Auth extends Controller
     protected function getUser(): array
     {
         try {
-            $user = UserService::instance();
             if (empty($this->uuid)) {
                 $token = input('token') ?: $this->request->header('api-token');
                 if (empty($token)) $this->error('登录认证TOKEN不能为空！');
-                [$state, $info, $this->uuid] = $user->check($this->type, $token);
+                [$state, $info, $this->uuid] = UserService::instance()->check($this->type, $token);
                 if (empty($state)) $this->error($info, '{-null-}', 401);
             }
-            return $user->get($this->type, $this->uuid);
+            return UserService::instance()->get($this->type, $this->uuid);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
