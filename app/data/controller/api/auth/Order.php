@@ -60,12 +60,12 @@ class Order extends Auth
         $order = ['uid' => $this->uuid, 'status' => 1];
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
         // 推荐人处理
-        $order['from'] = input('from_uid', $this->user['from']);
+        $order['from'] = input('from_uid', $this->user['pid1']);
         if ($order['from'] == $this->uuid) $order['from'] = 0;
         if ($order['from'] > 0) {
             $map = ['id' => $order['from'], 'status' => 1];
-            $from = $this->app->db->name('DataUser')->where($map)->find();
-            if (empty($from)) $this->error('推荐人异常');
+            $fromer = $this->app->db->name('DataUser')->where($map)->find();
+            if (empty($fromer)) $this->error('未找到推荐人');
         }
         foreach (explode('||', $rules) as $rule) {
             [$code, $spec, $count] = explode('@', $rule);
@@ -112,13 +112,17 @@ class Order extends Auth
                 'goods_spec'      => $goodsItem['goods_spec'],
                 // 数量处理
                 'stock_sales'     => $count,
+                'truck_type'      => $goodsInfo['truck_type'],
                 'truck_code'      => $goodsInfo['truck_code'],
                 'truck_count'     => $goodsItem['number_express'] * $count,
-                // 费用字段
+                // 商品费用字段
                 'price_market'    => $goodsItem['price_market'],
                 'price_selling'   => $goodsItem['price_selling'],
                 'total_market'    => $goodsItem['price_market'] * $count,
                 'total_selling'   => $goodsItem['price_selling'] * $count,
+                // 奖励金额及积分
+                'reward_balance'  => $goodsItem['reward_balance'] * $count,
+                'reward_integral' => $goodsItem['reward_integral'] * $count,
                 // 用户等级
                 'vip_name'        => $this->user['vip_name'],
                 'vip_entry'       => $goodsInfo['vip_entry'],
@@ -143,9 +147,11 @@ class Order extends Auth
             // 统计订单金额
             $order['amount_real'] = $order['discount_amount'] - $order['amount_reduct'];
             $order['amount_total'] = $order['amount_goods'];
-            // 写入订单数据
-            $this->app->db->name('ShopOrder')->insert($order);
-            $this->app->db->name('ShopOrderItem')->insertAll($items);
+            // 写入商品数据
+            $this->app->db->transaction(function () use ($order, $items) {
+                $this->app->db->name('ShopOrder')->insert($order);
+                $this->app->db->name('ShopOrderItem')->insertAll($items);
+            });
             // 同步商品库存销量
             foreach ($codes as $code) {
                 GoodsService::instance()->syncStock($code);
