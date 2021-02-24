@@ -26,74 +26,44 @@ class Config extends Controller
     }
 
     /**
-     * 关于我们描述
+     * 内容页面管理
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function about()
+    public function pageHome()
     {
-        $this->skey = 'about';
-        $this->title = '关于我们描述';
-        $this->__sysdata('content');
+        $this->title = '内容页面管理';
+        $this->types = ['关于我们', '用户协议'];
+        $this->fetch('page_home');
     }
 
     /**
-     * 应用轮播图片
-     * @menu true
+     * 内容页面编辑
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function slider()
+    public function pageEdit()
     {
-        $this->skey = 'slider';
-        $this->title = '应用轮播图片';
-        $this->__sysdata($this->skey);
+        $this->skey = input('type');
+        $this->title = '编辑' . $this->skey;
+        $this->__sysdata('page_form', 'javascript:history.back()');
     }
 
     /**
-     * 用户服务协议
-     * @auth true
+     * 首页轮播图片
      * @menu true
+     * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function agreement()
+    public function sliderHome()
     {
-        $this->skey = 'agreement';
-        $this->title = '用户服务协议';
-        $this->__sysdata('content');
-    }
-
-    /**
-     * 显示并保存数据
-     * @param string $template 模板文件
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    private function __sysdata(string $template)
-    {
-        if ($this->request->isGet()) {
-            $this->data = sysdata($this->skey);
-            $this->fetch($template);
-        } elseif ($this->request->isPost()) {
-            if (is_string(input('data'))) {
-                $data = json_decode(input('data'), true) ?: [];
-            } else {
-                $data = $this->request->post();
-            }
-            if (sysdata($this->skey, $data) !== false) {
-                $this->success('内容保存成功！', '');
-            } else {
-                $this->error('内容保存失败，请稍候再试!');
-            }
-        }
+        $this->skey = 'SliderHome';
+        $this->title = '首页轮播图片';
+        $this->__sysdata('slider');
     }
 
     /**
@@ -107,10 +77,39 @@ class Config extends Controller
     {
         if ($this->request->isGet()) {
             $this->fetch($template);
-        } elseif ($this->request->isPost()) {
+        }
+        if ($this->request->isPost()) {
             $data = $this->request->post();
             foreach ($data as $k => $v) sysconf($k, $v);
             $this->success('配置保存成功！');
+        }
+    }
+
+    /**
+     * 显示并保存数据
+     * @param string $template 模板文件
+     * @param string $history 跳转处理
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    private function __sysdata(string $template, $history = '')
+    {
+        if ($this->request->isGet()) {
+            $this->data = sysdata($this->skey);
+            $this->fetch($template);
+        }
+        if ($this->request->isPost()) {
+            if (is_string(input('data'))) {
+                $data = json_decode(input('data'), true) ?: [];
+            } else {
+                $data = $this->request->post();
+            }
+            if (sysdata($this->skey, $data) !== false) {
+                $this->success('内容保存成功！', $history);
+            } else {
+                $this->error('内容保存失败，请稍候再试!');
+            }
         }
     }
 }
