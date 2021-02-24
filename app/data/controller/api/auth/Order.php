@@ -244,7 +244,7 @@ class Order extends Auth
         // 组装更新订单数据
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
         // 重新计算订单金额
-        $update['amount_real'] = $order['discount_amount'] + $amount - $order['amount_reduct'];
+        $update['amount_real'] = $order['amount_discount'] + $amount - $order['amount_reduct'];
         $update['amount_total'] = $order['amount_goods'] + $amount;
         // 支付金额不能为零
         if ($update['amount_real'] <= 0) $update['amount_real'] = 0.00;
