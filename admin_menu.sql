@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : server.cuci.cc
+ Source Server         : thinkadmin.top
  Source Server Type    : MySQL
  Source Server Version : 50562
- Source Host           : localhost:3306
+ Source Host           : 127.0.0.1:3306
  Source Schema         : admin_v6
 
  Target Server Type    : MySQL
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 24/02/2021 18:00:55
+ Date: 24/02/2021 18:05:01
 */
 
 SET NAMES utf8mb4;

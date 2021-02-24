@@ -5,17 +5,20 @@
     {foreach $types as $type}
     <div class="layui-col-sm6 layui-col-md6 layui-col-lg4 ">
         <!--{if auth('pageEdit')}-->
-        <div class="portal-block-item nowrap pointer think-bg-violet" data-open="{:url('pageEdit')}?type={$type}">
-            <div class="">编辑页面内容</div>
-            <div style="font-size:26px">{$type|default=''}</div>
+        <div class="pointer" data-open="{:url('pageEdit')}?type={$type}">
+            <div class="portal-block-item nowrap  think-bg-violet">
+                <div class="">编辑页面内容</div>
+                <div style="font-size:26px">{$type|default=''}</div>
+            </div>
+            <i class="portal-block-icon layui-icon layui-icon-read"></i>
         </div>
         <!--{else}-->
-        <div class="portal-block-item nowrap pointer think-bg-violet">
+        <div class="portal-block-item nowrap think-bg-violet">
             <div class="">编辑页面内容</div>
             <div style="font-size:26px">{$type|default=''}</div>
         </div>
-        <!--{/if}-->
         <i class="portal-block-icon layui-icon layui-icon-read"></i>
+        <!--{/if}-->
     </div>
     {/foreach}
 </div>
