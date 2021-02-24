@@ -116,6 +116,15 @@ class UserLevel extends Controller
     }
 
     /**
+     * 重新计算会员级别
+     * @auth true
+     */
+    public function sync()
+    {
+        $this->_queue('重新计算所有会员等级', 'xdata:UserLevel');
+    }
+
+    /**
      * 修改等级状态
      * @auth true
      * @throws \think\db\exception\DbException
