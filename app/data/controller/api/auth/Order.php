@@ -76,7 +76,7 @@ class Order extends Auth
             if (empty($goodsItem)) $this->error('商品规格查询异常');
             // 商品类型检查
             if ($goodsInfo['truck_type'] < 0) $truckType = $goodsInfo['truck_type'];
-            if ($truckType !== $goodsInfo['truck_type']) $this->error('实物与虚拟不能混下单！');
+            if ($truckType !== $goodsInfo['truck_type']) $this->error('实物与虚拟不能混下单！' . $truckType . '#' . $goodsInfo['truck_type']);
             // 限制购买数量
             if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
                 $map = [['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']], ['a.uid', '=', $this->uuid]];
