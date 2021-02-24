@@ -40,7 +40,7 @@ class User extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        UserService::instance()->buildByUid($data, 'from', 'fromer');
+        UserService::instance()->buildByUid($data, 'pid1', 'fromer');
     }
 
     /**
