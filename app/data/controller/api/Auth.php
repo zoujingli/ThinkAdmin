@@ -14,13 +14,13 @@ use think\exception\HttpResponseException;
 abstract class Auth extends Controller
 {
     /**
-     * 当前请求终端类型
-     * -- 手机浏览器访问 wap
-     * -- 电脑浏览器访问 web
-     * -- 微信小程序访问 wxapp
-     * -- 微信服务号访问 wechat
-     * -- 苹果应用接口访问 isoapp
-     * -- 安卓应用接口访问 android
+     * 当前接口请求终端类型
+     * --- 手机浏览器访问 wap
+     * --- 电脑浏览器访问 web
+     * --- 微信小程序访问 wxapp
+     * --- 微信服务号访问 wechat
+     * --- 苹果应用接口访问 isoapp
+     * --- 安卓应用接口访问 android
      * @var string
      */
     protected $type;
@@ -45,13 +45,16 @@ abstract class Auth extends Controller
         // 接口数据类型
         $this->type = input('api') ?: $this->request->header('api-name');
         $this->type = $this->type ?: $this->request->header('api-type');
-        $this->type = $this->type ?: UserService::APITYPE_WXAPP;
-        if (empty(UserService::TYPES[$this->type])) {
-            $this->error("接口通道未定义规则！");
+        if (empty($this->type) || empty(UserService::TYPES[$this->type])) {
+            $this->error("接口通道未定义！");
         }
         // 获取用户数据
         $this->user = $this->getUser();
-        $this->uuid = $this->user['id'];
+        if (empty($this->user) || empty($this->user['id'])) {
+            $this->error('用户登录失败！', '{-null-}', 401);
+        } else {
+            $this->uuid = $this->user['id'];
+        }
     }
 
     /**
