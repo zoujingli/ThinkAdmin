@@ -127,8 +127,9 @@ class Order extends Auth
                 'reward_integral' => $goodsItem['reward_integral'] * $count,
                 // 绑定用户等级
                 'vip_name'        => $this->user['vip_name'],
-                'vip_entry'       => $goodsInfo['vip_entry'],
                 'vip_number'      => $this->user['vip_number'],
+                // 是否入会礼包
+                'vip_entry'       => $goodsInfo['vip_entry'],
                 // 等级优惠方案
                 'discount_id'     => $discountId,
                 'discount_rate'   => $discountRate,
