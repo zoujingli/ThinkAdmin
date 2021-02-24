@@ -56,8 +56,8 @@ class Order extends Auth
         $rules = $this->request->post('items', '');
         if (empty($rules)) $this->error('商品不能为空');
         // 订单数据
-        [$codes, $items] = [[], []];
-        $order = ['uid' => $this->uuid, 'status' => 1];
+        [$codes, $items, $truckType] = [[], [], -1];
+        $order = ['uid' => $this->uuid];
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
         // 推荐人处理
         $order['from'] = input('from_uid', $this->user['pid1']);
@@ -70,12 +70,13 @@ class Order extends Auth
         foreach (explode('||', $rules) as $rule) {
             [$code, $spec, $count] = explode('@', $rule);
             // 商品信息检查
-            $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
-            $goodsInfo = $this->app->db->name('ShopGoods')->where($map)->find();
-            if (empty($goodsInfo)) $this->error('商品数据异常');
-            $map = ['goods_code' => $code, 'goods_spec' => $spec, 'status' => 1];
-            $goodsItem = $this->app->db->name('ShopGoodsItem')->where($map)->find();
-            if (empty($goodsItem)) $this->error('商品规格异常');
+            $goodsInfo = $this->app->db->name('ShopGoods')->where(['code' => $code, 'status' => 1, 'deleted' => 0])->find();
+            $goodsItem = $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $code, 'goods_spec' => $spec, 'status' => 1])->find();
+            if (empty($goodsInfo)) $this->error('商品数据查询异常');
+            if (empty($goodsItem)) $this->error('商品规格查询异常');
+            // 商品类型检查
+            if ($goodsItem['truck_type'] < 0) $truckType = $goodsItem['truck_type'];
+            if ($truckType !== $goodsItem['truck_type']) $this->error('实物与虚拟不能混下单！');
             // 限制购买数量
             if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
                 $map = [['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']], ['a.uid', '=', $this->uuid]];
@@ -135,6 +136,9 @@ class Order extends Auth
             ];
         }
         try {
+            // 订单发货类型
+            $order['truck_type'] = $truckType;
+            $order['status'] = $truckType ? 2 : 1;
             // 统计商品数量
             $order['number_goods'] = array_sum(array_column($items, 'stock_sales'));
             // 统计商品金额
