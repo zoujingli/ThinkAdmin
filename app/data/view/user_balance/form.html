@@ -33,13 +33,13 @@
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">充值名称</span>
             <span class="color-desc margin-left-5">Name</span>
-            <input class="layui-input" required placeholder="请输入充值名称" name="name" value="{$vo.name|default='后台充值'}"/>
+            <input class="layui-input" maxlength="100" required placeholder="请输入充值名称" name="name" value="{$vo.name|default='后台充值'}"/>
         </label>
 
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">充值金额</span>
             <span class="color-desc margin-left-5">Amount</span>
-            <input class="layui-input" data-blur-number="2" required placeholder="请输入充值金额" name="amount" value="{$vo.amount|default='0.00'}"/>
+            <input class="layui-input" maxlength="10" data-blur-number="2" required placeholder="请输入充值金额" name="amount" value="{$vo.amount|default='0.00'}"/>
         </label>
 
         <div class="layui-form-item relative block">
