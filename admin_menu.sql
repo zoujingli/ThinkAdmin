@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : thinkadmin.top
+ Source Server         : server.cuci.cc
  Source Server Type    : MySQL
  Source Server Version : 50562
- Source Host           : 127.0.0.1:3306
+ Source Host           : localhost:3306
  Source Schema         : admin_v6
 
  Target Server Type    : MySQL
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 24/02/2021 18:05:01
+ Date: 24/02/2021 18:06:24
 */
 
 SET NAMES utf8mb4;
@@ -63,7 +63,7 @@ INSERT INTO `system_menu` VALUES (66, 60, '默认回复配置', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (67, 0, '控制台', '', '', '#', '', '_self', 300, 1, '2020-07-13 06:51:46');
 INSERT INTO `system_menu` VALUES (68, 67, '数据管理（接口案例）', '', '', '#', '', '_self', 0, 1, '2020-07-13 06:51:54');
 INSERT INTO `system_menu` VALUES (70, 68, '文章内容管理', 'layui-icon layui-icon-template', '', 'data/news_item/index', '', '_self', 10, 1, '2020-07-13 06:52:26');
-INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', 'data/config/sliderhome', 'data/config/sliderhome', '', '_self', 8, 1, '2020-07-14 01:17:02');
+INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', 'data/config/sliderhome', 'data/config/sliderhome', '', '_self', 30, 1, '2020-07-14 01:17:02');
 INSERT INTO `system_menu` VALUES (73, 67, '商城管理（开发中）', '', '', '#', '', '_self', 0, 1, '2020-09-08 02:51:30');
 INSERT INTO `system_menu` VALUES (75, 73, '商品分类管理', 'layui-icon layui-icon-tabs', 'data/shop_goods_cate/index', 'data/shop_goods_cate/index', '', '_self', 70, 1, '2020-09-08 03:35:58');
 INSERT INTO `system_menu` VALUES (76, 73, '商品数据管理', 'layui-icon layui-icon-star', 'data/shop_goods/index', 'data/shop_goods/index', '', '_self', 90, 1, '2020-09-08 07:13:19');
