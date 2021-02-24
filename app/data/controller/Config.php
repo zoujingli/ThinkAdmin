@@ -12,6 +12,15 @@ use think\admin\Controller;
 class Config extends Controller
 {
     /**
+     * 页面类型
+     * @var array
+     */
+    protected $pageTypes = [
+        '关于我们' => '关于我们',
+        '用户协议' => '用户协议',
+    ];
+
+    /**
      * 微信小程序配置
      * @auth true
      * @menu true
@@ -33,7 +42,6 @@ class Config extends Controller
     public function pageHome()
     {
         $this->title = '内容页面管理';
-        $this->types = ['关于我们', '用户协议'];
         $this->fetch('page_home');
     }
 
@@ -46,8 +54,8 @@ class Config extends Controller
      */
     public function pageEdit()
     {
-        $this->skey = input('type');
-        $this->title = '编辑' . $this->skey;
+        $this->skey = input('type') ?: $this->pageTypes[0];
+        $this->title = '编辑' . $this->pageTypes[$this->skey] ?? '';
         $this->__sysdata('page_form', 'javascript:history.back()');
     }
 

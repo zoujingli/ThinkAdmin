@@ -2,19 +2,19 @@
 
 {block name='content'}
 <div class="layui-row layui-col-space20 portal-block-container notselect">
-    {foreach $types as $type}
-    <div class="layui-col-sm6 layui-col-md6 layui-col-lg4 ">
+    {foreach $pageTypes as $key=>$type}
+    <div class="layui-col-xs6 layui-col-sm4 layui-col-md4 layui-col-lg3">
         <!--{if auth('pageEdit')}-->
-        <div class="pointer" data-open="{:url('pageEdit')}?type={$type}">
-            <div class="portal-block-item nowrap  think-bg-violet">
-                <div class="">编辑页面内容</div>
+        <div class="pointer" data-open="{:url('pageEdit')}?type={$key}">
+            <div class="portal-block-item nowrap think-bg-violet">
+                <div>编辑页面内容</div>
                 <div style="font-size:26px">{$type|default=''}</div>
             </div>
             <i class="portal-block-icon layui-icon layui-icon-read"></i>
         </div>
         <!--{else}-->
         <div class="portal-block-item nowrap think-bg-violet">
-            <div class="">编辑页面内容</div>
+            <div>编辑页面内容</div>
             <div style="font-size:26px">{$type|default=''}</div>
         </div>
         <i class="portal-block-icon layui-icon layui-icon-read"></i>
