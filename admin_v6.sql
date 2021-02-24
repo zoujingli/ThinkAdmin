@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 23/02/2021 17:21:12
+ Date: 24/02/2021 16:01:15
 */
 
 SET NAMES utf8mb4;
@@ -282,7 +282,7 @@ CREATE TABLE `data_user_level`  (
 -- Records of data_user_level
 -- ----------------------------
 INSERT INTO `data_user_level` VALUES (1, 'VIP1', 1, ',prize_01,prize_02,prize_03,', 1, 1, 0, 900.00, 1, 100, 1, 10, 1, 20, '', 1614067769, 1, '2021-01-29 09:04:45');
-INSERT INTO `data_user_level` VALUES (2, 'VIP2', 2, ',prize_01,prize_02,prize_04,', 1, 1, 0, 0.00, 0, 0, 1, 100, 0, 0, '', 1614067824, 1, '2021-02-23 07:41:40');
+INSERT INTO `data_user_level` VALUES (2, 'VIP2', 2, ',prize_01,prize_02,prize_04,', 1, 1, 0, 0.00, 0, 0, 1, 100, 0, 0, '', 1614073167, 1, '2021-02-23 07:41:40');
 
 -- ----------------------------
 -- Table structure for data_user_message
@@ -621,9 +621,12 @@ CREATE TABLE `shop_order_item`  (
   `price_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售单价',
   `total_market` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '市场总价',
   `total_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售总价',
+  `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励余额',
+  `reward_integral` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励积分',
+  `stock_sales` bigint(20) NULL DEFAULT 1 COMMENT '商品数量',
+  `truck_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
   `truck_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '快递邮费模板',
   `truck_count` bigint(20) NULL DEFAULT 0 COMMENT '快递计费基数',
-  `stock_sales` bigint(20) NULL DEFAULT 1 COMMENT '购买商品数量',
   `vip_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户等级名称',
   `vip_entry` tinyint(1) NULL DEFAULT 0 COMMENT '是否入会礼包',
   `vip_number` bigint(20) NULL DEFAULT 0 COMMENT '用户等级序号',
@@ -4741,11 +4744,13 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
 -- ----------------------------
+INSERT INTO `system_oplog` VALUES (1, 'admin/api.plugs/optimize', '127.0.0.1', '系统运维管理', '创建数据库优化任务', 'admin', '2021-02-23 09:21:43');
+INSERT INTO `system_oplog` VALUES (2, 'admin/api.queue/stop', '127.0.0.1', '系统运维管理', '尝试停止后台服务主进程', 'admin', '2021-02-23 09:21:54');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4774,11 +4779,12 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_queue
 -- ----------------------------
+INSERT INTO `system_queue` VALUES (1, 'Q202102235804511', '优化数据库所有数据表', 'xadmin:database optimize', 13040, '[]', 1614073264, '已完成对 41 张数据表优化操作', 1614073265.3524, 1614073270.0566, 0, 1, 0, 3, '2021-02-23 09:21:43');
 
 -- ----------------------------
 -- Table structure for system_user
