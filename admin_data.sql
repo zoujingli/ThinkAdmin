@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 24/02/2021 18:06:08
+ Date: 24/02/2021 18:31:33
 */
 
 SET NAMES utf8mb4;
@@ -120,6 +120,7 @@ CREATE TABLE `data_user`  (
   `vip_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'VIP等级名称',
   `vip_number` bigint(20) NULL DEFAULT 0 COMMENT 'VIP等级序号',
   `vip_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'VIP等级时间',
+  `buy_vip_entry` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否入会礼包',
   `amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '返利收益统计',
   `amount_used` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '提现金额统计',
   `balance_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '累计充值统计',

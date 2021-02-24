@@ -230,7 +230,7 @@ class UserService extends Service
         $orderAmount = $this->app->db->name('ShopOrder')->where(['uid' => $uid])->whereIn('status', [3, 4, 5])->sum('amount_total');
         // 计算用户级别
         foreach ($this->app->db->name('DataUserLevel')->where(['status' => 1])->order('number desc')->cursor() as $item) {
-            $l1 = empty($item['goods_vip_status']) || $user['vip_auth'] > 0;
+            $l1 = empty($item['goods_vip_status']) || $user['buy_vip_entry'] > 0;
             $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsUsers;
             $l3 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $orderAmount;
             $l4 = empty($item['teams_direct_status']) || $item['teams_direct_number'] <= $teamsDirect;
