@@ -112,6 +112,7 @@ class Order extends Auth
                 'goods_spec'      => $goodsItem['goods_spec'],
                 // 库存数量处理
                 'stock_sales'     => $count,
+                // 快递发货数据
                 'truck_type'      => $goodsInfo['truck_type'],
                 'truck_code'      => $goodsInfo['truck_code'],
                 'truck_count'     => $goodsItem['number_express'] * $count,
@@ -120,7 +121,7 @@ class Order extends Auth
                 'price_selling'   => $goodsItem['price_selling'],
                 'total_market'    => $goodsItem['price_market'] * $count,
                 'total_selling'   => $goodsItem['price_selling'] * $count,
-                // 奖励金额及积分
+                // 奖励金额积分
                 'reward_balance'  => $goodsItem['reward_balance'] * $count,
                 'reward_integral' => $goodsItem['reward_integral'] * $count,
                 // 绑定用户等级
