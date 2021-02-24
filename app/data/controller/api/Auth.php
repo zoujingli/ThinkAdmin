@@ -50,10 +50,9 @@ abstract class Auth extends Controller
         }
         // 获取用户数据
         $this->user = $this->getUser();
-        if (empty($this->user) || empty($this->user['id'])) {
+        $this->uuid = $this->user['id'] ?? '';
+        if (empty($this->uuid)) {
             $this->error('用户登录失败！', '{-null-}', 401);
-        } else {
-            $this->uuid = $this->user['id'];
         }
     }
 
