@@ -152,7 +152,7 @@ class Order extends Auth
                 $order['amount_reduct'] = $order['amount_goods'];
             }
             // 统计订单金额
-            $order['amount_real'] = $order['discount_amount'] - $order['amount_reduct'];
+            $order['amount_real'] = $order['amount_discount'] - $order['amount_reduct'];
             $order['amount_total'] = $order['amount_goods'];
             // 写入商品数据
             $this->app->db->transaction(function () use ($order, $items) {
