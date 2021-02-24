@@ -3,7 +3,7 @@
 {block name='content'}
 <div class="layui-row layui-col-space20 portal-block-container notselect">
     {foreach $pageTypes as $key=>$type}
-    <div class="layui-col-xs6 layui-col-sm4 layui-col-md4 layui-col-lg3">
+    <div class="layui-col-sm4 layui-col-md4 layui-col-lg3">
         <!--{if auth('pageEdit')}-->
         <div class="pointer" data-open="{:url('pageEdit')}?type={$key}">
             <div class="portal-block-item nowrap think-bg-violet">
