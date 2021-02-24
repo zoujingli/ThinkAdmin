@@ -104,13 +104,13 @@ class Order extends Auth
             $items[] = [
                 'uid'             => $order['uid'],
                 'order_no'        => $order['order_no'],
-                // 商品字段
+                // 商品信息字段
                 'goods_name'      => $goodsInfo['name'],
                 'goods_cover'     => $goodsInfo['cover'],
                 'goods_sku'       => $goodsItem['goods_sku'],
                 'goods_code'      => $goodsItem['goods_code'],
                 'goods_spec'      => $goodsItem['goods_spec'],
-                // 数量处理
+                // 库存数量处理
                 'stock_sales'     => $count,
                 'truck_type'      => $goodsInfo['truck_type'],
                 'truck_code'      => $goodsInfo['truck_code'],
@@ -123,10 +123,11 @@ class Order extends Auth
                 // 奖励金额及积分
                 'reward_balance'  => $goodsItem['reward_balance'] * $count,
                 'reward_integral' => $goodsItem['reward_integral'] * $count,
-                // 用户等级
+                // 绑定用户等级
                 'vip_name'        => $this->user['vip_name'],
                 'vip_entry'       => $goodsInfo['vip_entry'],
                 'vip_number'      => $this->user['vip_number'],
+                // 等级优惠方案
                 'discount_id'     => $discountId,
                 'discount_rate'   => $discountRate,
                 'discount_amount' => $discountRate * $goodsItem['price_selling'] * $count,
