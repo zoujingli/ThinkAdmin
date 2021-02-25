@@ -60,6 +60,21 @@ class Config extends Controller
     }
 
     /**
+     * 首页推荐位管理
+     * @menu true
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function iconHome()
+    {
+        $this->skey = 'IconHome';
+        $this->title = '首页推荐位管理';
+        $this->__sysdata('slider');
+    }
+
+    /**
      * 首页轮播图片
      * @menu true
      * @auth true
