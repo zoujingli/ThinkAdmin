@@ -133,7 +133,7 @@ class Order extends Auth
                 // 等级优惠方案
                 'discount_id'     => $discountId,
                 'discount_rate'   => $discountRate,
-                'discount_amount' => $discountRate * $goodsItem['price_selling'] * $count,
+                'discount_amount' => $discountRate * $goodsItem['price_selling'] * $count / 100,
             ];
         }
         try {
