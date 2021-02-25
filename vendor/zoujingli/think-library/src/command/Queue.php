@@ -260,7 +260,7 @@ class Queue extends Command
     }
 
     /**
-     * 执行任务内容
+     * 执行指定的任务内容
      * @throws \Exception
      */
     protected function doRunAction()
