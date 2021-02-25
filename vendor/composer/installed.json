@@ -656,17 +656,17 @@
     },
     {
         "name": "topthink/think-orm",
-        "version": "v2.0.37",
-        "version_normalized": "2.0.37.0",
+        "version": "v2.0.38",
+        "version_normalized": "2.0.38.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-orm.git",
-            "reference": "8a2225c3533f5ccae4a77d4988ed4c5523284871"
+            "reference": "48e01bd25fdd51afee95343a4381fabc5a9cb764"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-orm/zipball/8a2225c3533f5ccae4a77d4988ed4c5523284871",
-            "reference": "8a2225c3533f5ccae4a77d4988ed4c5523284871",
+            "url": "https://api.github.com/repos/top-think/think-orm/zipball/48e01bd25fdd51afee95343a4381fabc5a9cb764",
+            "reference": "48e01bd25fdd51afee95343a4381fabc5a9cb764",
             "shasum": "",
             "mirrors": [
                 {
@@ -677,6 +677,7 @@
         },
         "require": {
             "ext-json": "*",
+            "ext-pdo": "*",
             "php": ">=7.1.0",
             "psr/log": "~1.0",
             "psr/simple-cache": "^1.0",
@@ -685,14 +686,16 @@
         "require-dev": {
             "phpunit/phpunit": "^7|^8|^9.5"
         },
-        "time": "2021-02-18T02:01:00+00:00",
+        "time": "2021-02-24T00:54:36+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "think\\": "src"
             },
-            "files": []
+            "files": [
+                "stubs/load_stubs.php"
+            ]
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -860,7 +863,7 @@
         "source": {
             "type": "git",
             "url": "https://gitee.com/zoujingli/ThinkLibrary",
-            "reference": "1f6500135bacf0b7ef7dcaa1115494e73ab92b90"
+            "reference": "41fdf9bfc855798bf9bec0384c2c97248ec6e23a"
         },
         "require": {
             "ext-curl": "*",
@@ -870,7 +873,7 @@
             "ext-mbstring": "*",
             "topthink/framework": "^6.0"
         },
-        "time": "2021-02-22T10:20:05+00:00",
+        "time": "2021-02-23T07:09:05+00:00",
         "type": "library",
         "extra": {
             "think": {

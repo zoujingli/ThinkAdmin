@@ -95,6 +95,12 @@ trait Attribute
     protected $strict = true;
 
     /**
+     * 获取器数据
+     * @var array
+     */
+    private $get = [];
+
+    /**
      * 修改器执行记录
      * @var array
      */
@@ -266,7 +272,7 @@ trait Attribute
     }
 
     /**
-     * 获取对象原始数据 如果不存在指定字段返回false
+     * 获取当前对象数据 如果不存在指定字段返回false
      * @access public
      * @param  string $name 字段名 留空获取全部
      * @return mixed
@@ -479,8 +485,12 @@ trait Attribute
     {
         // 检测属性获取器
         $fieldName = $this->getRealFieldName($name);
-        $method    = 'get' . Str::studly($name) . 'Attr';
 
+        if (array_key_exists($fieldName, $this->get)) {
+            return $this->get[$fieldName];
+        }
+
+        $method = 'get' . Str::studly($name) . 'Attr';
         if (isset($this->withAttr[$fieldName])) {
             if ($relation) {
                 $value = $this->getRelationValue($relation);
@@ -504,6 +514,8 @@ trait Attribute
             $this->relation[$name] = $value;
         }
 
+        $this->get[$fieldName] = $value;
+
         return $value;
     }
 
@@ -516,9 +528,9 @@ trait Attribute
     {
         foreach ($this->data as $key => $value) {
             if (isset($this->type[$key])) {
-                $this->data[$key] = $this->readTransform($value, $this->type[$key]);
+                $this->get[$key] = $this->readTransform($value, $this->type[$key]);
             } elseif ($this->autoWriteTimestamp && in_array($key, [$this->createTime, $this->updateTime])) {
-                $this->data[$key] = $this->getTimestampValue($value);
+                $this->get[$key] = $this->getTimestampValue($value);
             }
         }
     }

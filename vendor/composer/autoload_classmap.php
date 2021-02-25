@@ -454,7 +454,7 @@ return array(
     'think\\facade\\Db' => $vendorDir . '/topthink/think-orm/src/facade/Db.php',
     'think\\facade\\Env' => $vendorDir . '/topthink/framework/src/think/facade/Env.php',
     'think\\facade\\Event' => $vendorDir . '/topthink/framework/src/think/facade/Event.php',
-    'think\\facade\\Facade' => $vendorDir . '/topthink/think-orm/src/facade/Db.php',
+    'think\\facade\\Facade' => $vendorDir . '/topthink/think-template/src/facade/Template.php',
     'think\\facade\\Filesystem' => $vendorDir . '/topthink/framework/src/think/facade/Filesystem.php',
     'think\\facade\\Lang' => $vendorDir . '/topthink/framework/src/think/facade/Lang.php',
     'think\\facade\\Log' => $vendorDir . '/topthink/framework/src/think/facade/Log.php',

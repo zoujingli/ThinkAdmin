@@ -8,6 +8,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
+        '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
         '8dafcc6956460bc297e00381fed53e11' => __DIR__ . '/..' . '/zoujingli/think-library/src/common.php',
     );
 
@@ -577,7 +578,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'think\\facade\\Db' => __DIR__ . '/..' . '/topthink/think-orm/src/facade/Db.php',
         'think\\facade\\Env' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Env.php',
         'think\\facade\\Event' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Event.php',
-        'think\\facade\\Facade' => __DIR__ . '/..' . '/topthink/think-orm/src/facade/Db.php',
+        'think\\facade\\Facade' => __DIR__ . '/..' . '/topthink/think-template/src/facade/Template.php',
         'think\\facade\\Filesystem' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Filesystem.php',
         'think\\facade\\Lang' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Lang.php',
         'think\\facade\\Log' => __DIR__ . '/..' . '/topthink/framework/src/think/facade/Log.php',

@@ -34,6 +34,9 @@ use function is_array;
 
 /**
  * Mongo数据库驱动
+ * @property Manager[] $links
+ * @property Manager   $linkRead
+ * @property Manager   $linkWrite
  */
 class Mongo extends Connection
 {
