@@ -8,6 +8,11 @@ use think\admin\Exception;
 use think\console\Input;
 use think\console\Output;
 
+/**
+ * 用户等级重算处理
+ * Class UserLevel
+ * @package app\data\command
+ */
 class UserLevel extends Command
 {
     protected function configure()

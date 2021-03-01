@@ -9,7 +9,7 @@ use think\console\Input;
 use think\console\Output;
 
 /**
- * 同步计算用户余额
+ * 用户余额重算处理
  * Class UserBalance
  * @package app\data\command
  */

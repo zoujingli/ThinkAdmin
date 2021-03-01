@@ -9,7 +9,7 @@ use think\console\Input;
 use think\console\Output;
 
 /**
- * 自动清理商城订单
+ * 商城订单自动清理
  * Class OrderClear
  * @package app\data\command
  */
