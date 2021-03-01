@@ -54,7 +54,6 @@ class Upload extends Controller
     /**
      * 检查文件上传已经上传
      * @login true
-     * @throws \think\Exception
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
