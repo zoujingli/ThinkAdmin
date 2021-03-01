@@ -51,7 +51,7 @@ class Wechat extends Controller
      * 获取 JSSDK 签名
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -65,10 +65,7 @@ class Wechat extends Controller
     /**
      * 加载网页授权数据
      * @return \think\Response
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function oauth(): Response
     {

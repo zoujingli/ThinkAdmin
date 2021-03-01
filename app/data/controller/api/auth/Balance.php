@@ -60,8 +60,8 @@ class Balance extends Auth
         $user = $this->app->db->name('DataUser')->where($map)->find();
         if (empty($user)) $this->error('目标用户不存在！');
         // 检测余额否有足够
-        [$total, $used] = UserService::instance()->balance($this->uuid);
-        if ($data['amount'] > $total - $used) $this->error('可转账余额不足！');
+        [$total, $count] = UserService::instance()->balance($this->uuid);
+        if ($data['amount'] > $total - $count) $this->error('可转账余额不足！');
         // 写入余额转账记录
         if ($this->app->db->name($this->table)->insert($data) !== false) {
             UserService::instance()->balance($data['uid']);

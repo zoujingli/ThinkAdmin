@@ -63,10 +63,7 @@ class Login extends Controller
 
     /**
      * 用户统一注册入口
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function register()
     {

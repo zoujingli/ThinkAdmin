@@ -20,7 +20,7 @@ class Notify extends Controller
      * @param string $param 支付参数
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -40,7 +40,7 @@ class Notify extends Controller
      * @param string $param 支付参数
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -60,7 +60,7 @@ class Notify extends Controller
      * @param string $param 支付参数
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
