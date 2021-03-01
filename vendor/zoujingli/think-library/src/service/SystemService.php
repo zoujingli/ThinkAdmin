@@ -165,6 +165,19 @@ class SystemService extends Service
     }
 
     /**
+     * 获取数据库所有数据表
+     * @return array [table, total, count]
+     */
+    public function getTables(): array
+    {
+        $tables = [];
+        foreach ($this->app->db->query("show tables") as $item) {
+            $tables = array_merge($tables, array_values($item));
+        }
+        return [$tables, count($tables), 0];
+    }
+
+    /**
      * 读取数据内容
      * @param string $name
      * @param mixed $default

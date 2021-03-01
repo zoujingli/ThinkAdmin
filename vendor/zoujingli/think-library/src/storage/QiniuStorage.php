@@ -75,7 +75,7 @@ class QiniuStorage extends Storage
      * @param boolean $safe 安全模式
      * @param null|string $attname 下载名称
      * @return array
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -169,7 +169,7 @@ class QiniuStorage extends Storage
     /**
      * 获取文件上传地址
      * @return string
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -189,7 +189,7 @@ class QiniuStorage extends Storage
             case '东南亚':
                 return "{$protocol}://up-as0.qiniup.com";
             default:
-                throw new \think\Exception('未配置七牛云空间区域哦');
+                throw new \think\admin\Exception('未配置七牛云空间区域哦');
         }
     }
 

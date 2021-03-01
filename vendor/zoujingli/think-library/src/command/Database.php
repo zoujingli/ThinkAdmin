@@ -19,6 +19,7 @@ namespace think\admin\command;
 
 use think\admin\Command;
 use think\admin\Exception;
+use think\admin\service\SystemService;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
@@ -59,7 +60,7 @@ class Database extends Command
     protected function _repair(): void
     {
         $this->setQueueProgress("正在获取需要修复的数据表", 0);
-        [$total, $count] = [count($tables = $this->getTables()), 0];
+        [$tables, $total, $count] = SystemService::instance()->getTables();
         $this->setQueueProgress("总共需要修复 {$total} 张数据表", 0);
         foreach ($tables as $table) {
             $this->queue->message($total, ++$count, "正在修复数据表 {$table}");
@@ -76,7 +77,7 @@ class Database extends Command
     protected function _optimize(): void
     {
         $this->setQueueProgress("正在获取需要优化的数据表", 0);
-        [$total, $count] = [count($tables = $this->getTables()), 0];
+        [$tables, $total, $count] = SystemService::instance()->getTables();
         $this->setQueueProgress("总共需要优化 {$total} 张数据表", 0);
         foreach ($tables as $table) {
             $this->queue->message($total, ++$count, "正在优化数据表 {$table}");
@@ -84,19 +85,6 @@ class Database extends Command
             $this->queue->message($total, $count, "完成优化数据表 {$table}", 1);
         }
         $this->queue->success("已完成对 {$total} 张数据表优化操作");
-    }
-
-    /**
-     * 获取数据库的数据表
-     * @return array
-     */
-    protected function getTables(): array
-    {
-        $tables = [];
-        foreach ($this->app->db->query("show tables") as $item) {
-            $tables = array_merge($tables, array_values($item));
-        }
-        return $tables;
     }
 
 }

@@ -19,6 +19,7 @@ namespace think\admin\command;
 
 use Exception;
 use think\admin\Command;
+use think\admin\service\SystemService;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
@@ -52,8 +53,7 @@ class Replace extends Command
         $repalce = $input->getArgument('replace');
         if ($search === '') $this->queue->error('查找替换字符内容不能为空！');
         if ($repalce === '') $this->queue->error('目标替换字符内容不能为空！');
-
-        [$total, $count] = [count($tables = $this->getTables()), 0];
+        [$tables, $total, $count] = SystemService::instance()->getTables();
         foreach ($tables as $table) {
             $data = [];
             $this->queue->message($total, ++$count, sprintf("准备替换数据表 %s", Str::studly($table)));
@@ -73,18 +73,5 @@ class Replace extends Command
             }
         }
         $this->queue->success('批量替换成功');
-    }
-
-    /**
-     * 获取数据库的数据表
-     * @return array
-     */
-    protected function getTables(): array
-    {
-        $tables = [];
-        foreach ($this->app->db->query("show tables") as $item) {
-            $tables = array_merge($tables, array_values($item));
-        }
-        return $tables;
     }
 }
