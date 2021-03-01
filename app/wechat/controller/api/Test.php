@@ -106,7 +106,7 @@ class Test extends Controller
      * 网页授权测试
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -122,7 +122,7 @@ class Test extends Controller
      * JSSDK测试
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -175,12 +175,14 @@ class Test extends Controller
 
     /**
      * 微信JSAPI支付测试
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @return string
+     * @return void|string
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
+     * @throws \WeChat\Exceptions\InvalidResponseException
      */
     public function jsapi()
     {

@@ -9,7 +9,7 @@ use app\data\service\payment\JoinPaymentService;
 use app\data\service\payment\WechatPaymentService;
 use think\App;
 use think\Container;
-use think\Exception;
+use think\admin\Exception;
 
 /**
  * 支付基础服务

@@ -4,6 +4,7 @@ namespace app\data\service\payment;
 
 use app\data\service\PaymentService;
 use think\admin\extend\HttpExtend;
+use think\admin\Exception;
 
 /**
  * 汇聚支付基础服务
@@ -64,7 +65,7 @@ class JoinPaymentService extends PaymentService
      * @param string $paymentRemark 订单订单描述
      * @param string $paymentReturn 支付回跳地址
      * @return array
-     * @throws \think\Exception
+     * @throws Exception
      */
     public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array
     {
@@ -72,7 +73,7 @@ class JoinPaymentService extends PaymentService
             if (isset(static::TYPES[$this->type])) {
                 $tradeType = static::TYPES[$this->type]['type'];
             } else {
-                throw new \think\Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
+                throw new Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
             }
             $data = [
                 'p0_Version'         => '1.0',
@@ -97,14 +98,14 @@ class JoinPaymentService extends PaymentService
                 // 返回支付参数
                 return json_decode($result['rc_Result'], true);
             } elseif (is_array($result) && isset($result['rb_CodeMsg'])) {
-                throw new \think\Exception($result['rb_CodeMsg']);
+                throw new Exception($result['rb_CodeMsg']);
             } else {
-                throw new \think\Exception('获取预支付码失败！');
+                throw new Exception('获取预支付码失败！');
             }
-        } catch (\think\Exception $exception) {
+        } catch (Exception $exception) {
             throw $exception;
         } catch (\Exception $exception) {
-            throw new \think\Exception($exception->getMessage(), $exception->getCode());
+            throw new Exception($exception->getMessage(), $exception->getCode());
         }
     }
 

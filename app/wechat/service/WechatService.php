@@ -89,7 +89,6 @@ class WechatService extends Service
      * @param string $name
      * @param array $arguments
      * @return mixed
-     * @throws \think\Exception
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -99,11 +98,11 @@ class WechatService extends Service
     {
         [$type, $class, $classname] = static::parseName($name);
         if ("{$type}{$class}" !== $name) {
-            throw new \think\Exception("抱歉，实例 {$name} 不在符合规则！");
+            throw new \think\admin\Exception("抱歉，实例 {$name} 不在符合规则！");
         }
         if (sysconf('wechat.type') === 'api' || $type === 'WePay') {
             if ($type === 'ThinkService') {
-                throw new \think\Exception("抱歉，接口模式不能实例 {$classname} 对象！");
+                throw new \think\admin\Exception("抱歉，接口模式不能实例 {$classname} 对象！");
             }
             return new $classname(static::instance()->getConfig());
         } else {
@@ -118,7 +117,7 @@ class WechatService extends Service
                 $client = new JsonRpcClient(str_replace('_TYPE_', 'jsonrpc', $location));
             }
             try {
-                $exception = new \think\Exception($client->getMessage(), $client->getCode());
+                $exception = new \think\admin\Exception($client->getMessage(), $client->getCode());
             } catch (\Exception  $exception) {
                 $exception = null;
             }
@@ -148,7 +147,7 @@ class WechatService extends Service
     /**
      * 获取当前微信APPID
      * @return string
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -165,7 +164,7 @@ class WechatService extends Service
     /**
      * 获取接口授权模式
      * @return string
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -174,13 +173,12 @@ class WechatService extends Service
     {
         $type = strtolower(sysconf('wechat.type'));
         if (in_array($type, ['api', 'thr'])) return $type;
-        throw new \think\Exception('请在后台配置微信对接授权模式');
+        throw new \think\admin\Exception('请在后台配置微信对接授权模式');
     }
 
     /**
      * 获取公众号配置参数
      * @return array
-     * @throws \think\Exception
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -218,7 +216,7 @@ class WechatService extends Service
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -260,7 +258,7 @@ class WechatService extends Service
             } elseif ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             } else {
-                throw new \think\Exception('Query params [rcode] not find.');
+                throw new \think\admin\Exception('Query params [rcode] not find.');
             }
         } else {
             $result = static::ThinkServiceConfig()->oauth($this->app->session->getId(), $source, $isfull);
@@ -284,7 +282,7 @@ class WechatService extends Service
      * @return array
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

@@ -161,14 +161,14 @@ class UserService extends Service
      * @param array $list 原数据列表
      * @param string $keys 用户UID字段
      * @param string $bind 绑定字段名称
-     * @param string $column 返回用户字段
+     * @param string $cols 返回用户字段
      * @return array
      */
-    public function buildByUid(array &$list, string $keys = 'uid', string $bind = 'user', string $column = '*'): array
+    public function buildByUid(array &$list, string $keys = 'uid', string $bind = 'user', string $cols = '*'): array
     {
         if (count($list) < 1) return $list;
         $uids = array_unique(array_column($list, $keys));
-        $users = $this->app->db->name('DataUser')->whereIn('id', $uids)->column($column, 'id');
+        $users = $this->app->db->name('DataUser')->whereIn('id', $uids)->column($cols, 'id');
         foreach ($list as &$vo) $vo[$bind] = $users[$vo[$keys]] ?? [];
         return $list;
     }

@@ -118,9 +118,9 @@ class News extends Controller
             $ids = $this->_buildArticle($this->request->post('data', []));
             [$map, $data] = [['id' => $this->id], ['article_id' => $ids]];
             if ($this->app->db->name($this->table)->where($map)->update($data) !== false) {
-                $this->success('图文更新成功！', 'javascript:history.back()');
+                $this->success('更新成功！', 'javascript:history.back()');
             } else {
-                $this->error('图文更新失败，请稍候再试！');
+                $this->error('更新失败，请稍候再试！');
             }
         }
     }

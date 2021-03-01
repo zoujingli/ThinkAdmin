@@ -3,7 +3,7 @@
 namespace app\data\service;
 
 use think\admin\Service;
-use think\Exception;
+use think\admin\Exception;
 
 /**
  * 用户奖励配置

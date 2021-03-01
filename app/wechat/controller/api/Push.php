@@ -101,7 +101,7 @@ class Push extends Controller
                 $this->encrypt = boolval($this->request->post('encrypt', 0));
                 $this->receive = $this->_arrayChangeKeyCase(json_decode(input('params', '[]'), true));
                 if (empty($this->appid) || empty($this->openid) || empty($this->receive)) {
-                    throw new \think\Exception('微信API实例缺失必要参数[appid,openid,receive]');
+                    throw new \think\admin\Exception('微信API实例缺失必要参数[appid,openid,receive]');
                 }
             } else {
                 $this->forceJson = false; // 直接返回JSON对象数据
@@ -131,7 +131,7 @@ class Push extends Controller
      * @throws \WeChat\Exceptions\InvalidDecryptException
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -147,7 +147,7 @@ class Push extends Controller
      * @throws \WeChat\Exceptions\InvalidDecryptException
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -189,7 +189,7 @@ class Push extends Controller
      * @throws \WeChat\Exceptions\InvalidDecryptException
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

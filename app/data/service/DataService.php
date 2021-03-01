@@ -16,7 +16,7 @@ class DataService extends Service
     /**
      * 获取支付配置
      * @return array|void
-     * @throws \think\admin\Exception
+     * @throws Exception
      */
     public function payment(): array
     {

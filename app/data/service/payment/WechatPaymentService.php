@@ -3,6 +3,7 @@
 namespace app\data\service\payment;
 
 use app\data\service\PaymentService;
+use think\admin\Exception;
 use WePay\Order;
 
 /**
@@ -42,7 +43,7 @@ class WechatPaymentService extends PaymentService
      * @param string $paymentRemark 订单订单描述
      * @param string $paymentReturn 支付回跳地址
      * @return array
-     * @throws \think\Exception
+     * @throws Exception
      */
     public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array
     {
@@ -50,7 +51,7 @@ class WechatPaymentService extends PaymentService
             if (isset(static::TYPES[$this->type])) {
                 $tradeType = static::TYPES[$this->type]['type'];
             } else {
-                throw new \think\Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
+                throw new Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
             }
             $body = empty($paymentRemark) ? $paymentTitle : ($paymentTitle . '-' . $paymentRemark);
             $data = [
@@ -72,14 +73,14 @@ class WechatPaymentService extends PaymentService
                 return $this->payment->jsapiParams($info['prepay_id']);
             }
             if (isset($info['err_code_des'])) {
-                throw new \think\Exception($info['err_code_des']);
+                throw new Exception($info['err_code_des']);
             } else {
-                throw new \think\Exception('获取预支付码失败！');
+                throw new Exception('获取预支付码失败！');
             }
-        } catch (\think\Exception $exception) {
+        } catch (Exception $exception) {
             throw $exception;
         } catch (\Exception $exception) {
-            throw new \think\Exception($exception->getMessage(), $exception->getCode());
+            throw new Exception($exception->getMessage(), $exception->getCode());
         }
     }
 

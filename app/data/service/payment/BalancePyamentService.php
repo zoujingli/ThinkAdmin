@@ -5,7 +5,7 @@ namespace app\data\service\payment;
 use app\data\service\PaymentService;
 use app\data\service\UserService;
 use think\admin\extend\CodeExtend;
-use think\Exception;
+use think\admin\Exception;
 
 /**
  * 账号余额支付参数处理

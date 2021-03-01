@@ -6,14 +6,14 @@ use app\data\command\UserLevel;
 use app\data\command\UserTransfer;
 use think\Console;
 
-Console::starting(function (Console $console) {
-    if (app()->request->isCli()) {
+if (app()->request->isCli()) {
+    Console::starting(function (Console $console) {
         $console->addCommand(OrderClear::class);
         $console->addCommand(UserBalance::class);
         $console->addCommand(UserLevel::class);
         $console->addCommand(UserTransfer::class);
-    }
-});
+    });
+}
 
 if (!function_exists('show_goods_spec')) {
     /**

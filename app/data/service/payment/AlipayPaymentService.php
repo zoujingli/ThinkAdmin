@@ -3,6 +3,7 @@
 namespace app\data\service\payment;
 
 use app\data\service\PaymentService;
+use think\admin\Exception;
 
 /**
  * 支付宝支付基础服务
@@ -66,7 +67,7 @@ class AlipayPaymentService extends PaymentService
      * @param string $paymentRemark 订单订单描述
      * @param string $paymentReturn 完成回跳地址
      * @return array
-     * @throws \think\Exception
+     * @throws Exception
      */
     public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array
     {
@@ -74,12 +75,12 @@ class AlipayPaymentService extends PaymentService
             if (isset(static::TYPES[$this->type])) {
                 $tradeType = static::TYPES[$this->type]['type'];
             } else {
-                throw new \think\Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
+                throw new Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
             }
             $this->config['notify_url'] = sysuri("@data/api.notify/alipay/scene/order/param/{$this->code}", [], false, true);
             if (in_array($tradeType, [static::PAYMENT_ALIPAY_WAP, static::PAYMENT_ALIPAY_WEB])) {
                 if (empty($paymentReturn)) {
-                    throw new \think\Exception('支付回跳地址不能为空！');
+                    throw new Exception('支付回跳地址不能为空！');
                 } else {
                     $this->config['return_url'] = $paymentReturn;
                 }
@@ -91,7 +92,7 @@ class AlipayPaymentService extends PaymentService
             } elseif ($tradeType === static::PAYMENT_ALIPAY_WEB) {
                 $payment = \AliPay\Web::instance($this->config);
             } else {
-                throw new \think\Exception("支付类型[{$tradeType}]暂时不支持！");
+                throw new Exception("支付类型[{$tradeType}]暂时不支持！");
             }
             $data = ['out_trade_no' => $orderNo, 'total_amount' => $paymentAmount, 'subject' => $paymentTitle];
             if (!empty($paymentRemark)) $data['body'] = $paymentRemark;
@@ -100,10 +101,10 @@ class AlipayPaymentService extends PaymentService
             $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
             // 返回支付参数
             return ['result' => $result];
-        } catch (\think\Exception $exception) {
+        } catch (Exception $exception) {
             throw $exception;
         } catch (\Exception $exception) {
-            throw new \think\Exception($exception->getMessage(), $exception->getCode());
+            throw new Exception($exception->getMessage(), $exception->getCode());
         }
     }
 
