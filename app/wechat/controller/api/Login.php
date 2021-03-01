@@ -75,7 +75,7 @@ class Login extends Controller
             $this->fans = WechatService::instance()->getWebOauthInfo($this->url, $this->mode);
             if (is_array($this->fans) && isset($this->fans['openid'])) {
                 $this->fans['token'] = md5(uniqid('t', true) . rand(10000, 99999));
-                $this->app->cache->set("wxlog_{$this->code}", $this->fans, $this->expire);
+                $this->app->cache->set("wxlogin{$this->code}", $this->fans, $this->expire);
                 $this->app->cache->set($this->fans['openid'], $this->fans['token'], $this->expire);
                 $this->message = '授权成功';
                 $this->fetch('success');
@@ -98,7 +98,7 @@ class Login extends Controller
     {
         $this->code = input('code', '');
         if (stripos($this->code, $this->prefix) === 0) {
-            $this->ckey = "wxlog_{$this->code}";
+            $this->ckey = "wxlogin{$this->code}";
             $this->fans = $this->app->cache->get($this->ckey, new \stdClass());
             $this->success('获取授权信息', $this->fans);
         } else {
