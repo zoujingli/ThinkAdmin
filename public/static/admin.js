@@ -69,6 +69,7 @@ require.config({
         'ckeditor': ['plugs/ckeditor/ckeditor'],
         'websocket': ['plugs/socket/websocket'],
         'pcasunzips': ['plugs/jquery/pcasunzips'],
+        'jquery.jcrop': ['plugs/jquery/jcrop/jcrop'],
         'jquery.ztree': ['plugs/ztree/ztree.all.min'],
         'jquery.masonry': ['plugs/jquery/masonry.min'],
         'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
@@ -76,6 +77,7 @@ require.config({
     shim: {
         'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
         'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
+        'jquery.jcrop': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/jcrop/jcrop.css']},
         'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
         'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
     }

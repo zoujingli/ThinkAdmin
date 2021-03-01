@@ -35,6 +35,17 @@ class Config extends Controller
     }
 
     /**
+     * 邀请二维码设置
+     * @auth true
+     * @menu true
+     */
+    public function jcrop()
+    {
+        $this->title = '邀请二维码设置';
+        $this->fetch();
+    }
+
+    /**
      * 内容页面管理
      * @auth true
      * @menu true

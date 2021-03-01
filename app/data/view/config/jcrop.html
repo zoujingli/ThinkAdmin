@@ -1,0 +1,45 @@
+{extend name="../../admin/view/main"}
+
+{block name="content"}
+<div class="think-box-shadow" id="ContentBox">
+
+    <div class="padding-30">
+        <img alt="" style="width:100%;height:auto" id="target" src="https://d3o1694hluedf9.cloudfront.net/market-750.jpg">
+    </div>
+
+    <div class="margin-top-20 text-center">
+        <a class="layui-btn layui-btn-primary">上传图片</a>
+        <a class="layui-btn layui-btn-primary">保存设置</a>
+    </div>
+
+</div>
+<script>
+
+    require(['jquery.jcrop'], function () {
+
+        var jcropApi;
+
+        $('#target').Jcrop({
+            // onChange: showCoords,
+            // onSelect: showCoords,
+            // onRelease: clearCoords
+        }, function () {
+            jcropApi = this;
+        });
+
+        $('#coords').on('change', 'input', function (e) {
+            var x1 = $('#x1').val(), x2 = $('#x2').val();
+            var y1 = $('#y1').val(), y2 = $('#y2').val();
+            jcropApi.setSelect([x1, y1, x2, y2]);
+        });
+    });
+
+
+    $(window).on('resize', function () {
+        (function (height) {
+            $('#ContentBox').css('minHeight', height + 'px')
+        })($('.layui-layout-admin>.layui-body').height() - 120);
+    }).trigger('resize');
+
+</script>
+{/block}
