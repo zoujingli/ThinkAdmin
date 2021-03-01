@@ -176,7 +176,6 @@ class Test extends Controller
     /**
      * 微信JSAPI支付测试
      * @return string
-     * @return void|string
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -184,11 +183,11 @@ class Test extends Controller
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \WeChat\Exceptions\InvalidResponseException
      */
-    public function jsapi()
+    public function jsapi(): string
     {
         $this->url = $this->request->url(true);
         $this->pay = WechatService::WePayOrder();
-        $user = WechatService::instance()->getWebOauthInfo($this->url, 0);
+        $user = WechatService::instance()->getWebOauthInfo($this->url);
         if (empty($user['openid'])) return '<h3>网页授权获取OPENID失败！</h3>';
         // 生成预支付码
         $result = $this->pay->create([
@@ -200,32 +199,29 @@ class Test extends Controller
             'out_trade_no'     => CodeExtend::uniqidDate(18),
             'spbill_create_ip' => $this->request->ip(),
         ]);
-        // 创建JSAPI参数签名
-        $options = $this->pay->jsapiParams($result['prepay_id']);
-        // JSSDK 签名配置
-        $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
-        $configJSON = json_encode(WechatService::instance()->getWebJssdkSign(), JSON_UNESCAPED_UNICODE);
-
-        echo '<pre>';
-        echo "当前用户OPENID: {$user['openid']}";
-        echo "\n--- 创建预支付码 ---\n";
-        var_export($result);
-        echo "\n\n--- JSAPI 及 H5 参数 ---\n";
-        var_export($options);
-        echo '</pre>';
-        echo "<button id='paytest' type='button'>JSAPI支付测试</button>";
-        echo "
-        <script src='//res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
-        <script>
-            wx.config({$configJSON});
-            document.getElementById('paytest').onclick = function(){
-                var options = {$optionJSON};
-                options.success = function(){
-                    alert('支付成功');
-                }
-                wx.chooseWXPay(options);
-            }
-        </script>";
+        // 数据参数格式化
+        $resultJson = var_export($result, true);
+        $optionJson = json_encode($this->pay->jsapiParams($result['prepay_id']), JSON_UNESCAPED_UNICODE);
+        $configJson = json_encode(WechatService::instance()->getWebJssdkSign(), JSON_UNESCAPED_UNICODE);
+        return <<<HTML
+<pre>
+    当前用户OPENID: {$user['openid']}
+    \n\n--- 创建微信预支付码结果 ---\n {$resultJson}
+    \n\n--- JSAPI 及 H5 支付参数 ---\n {$optionJson}
+</pre>
+<button id='paytest' type='button'>JSAPI支付测试</button>
+<script src='//res.wx.qq.com/open/js/jweixin-1.6.0.js'></script>
+<script>
+    wx.config({$configJson});
+    document.getElementById('paytest').onclick = function(){
+        var options = {$optionJson};
+        options.success = function(){
+            alert('支付成功');
+        }
+        wx.chooseWXPay(options);
+    }
+</script>
+HTML;
     }
 
     /**
