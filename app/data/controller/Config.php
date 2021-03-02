@@ -135,7 +135,6 @@ class Config extends Controller
     {
         if ($this->request->isGet()) {
             $this->data = sysdata($this->skey);
-            dump($this->data);
             $this->fetch($template);
         }
         if ($this->request->isPost()) {
