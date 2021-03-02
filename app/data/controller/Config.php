@@ -39,7 +39,7 @@ class Config extends Controller
      * @auth true
      * @menu true
      */
-    public function jcrop()
+    public function cropper()
     {
         $this->title = '邀请二维码设置';
         $this->fetch();

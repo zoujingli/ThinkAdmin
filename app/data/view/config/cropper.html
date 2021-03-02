@@ -1,0 +1,59 @@
+{extend name="../../admin/view/main"}
+
+{block name="content"}
+<div class="think-box-shadow" id="ContentBox">
+    <div class="padding-30">
+        <div class="text-left">
+            <p>1. 上传邀请码的背景图片（ 支持 PNG 和 JPG 格式 ）</p>
+            <p>2. 选择需要绘制二维码的区域，生成相对图片坐标参数</p>
+            <p>3. 保存位置数据，下次可直接显示</p>
+        </div>
+        <div class="margin-top-20 inline-block" style="max-width:800px">
+            <img alt="img" id="target" style="width:800px;height:400px" src="https://d3o1694hluedf9.cloudfront.net/market-750.jpg">
+            <div class="margin-top-5">
+                <label class="margin-top-5 block"><input id="inputImage" readonly value='' class="layui-input layui-bg-gray"></label>
+                <label class="margin-top-5 block"><input id="inputData" readonly value='' class="layui-input layui-bg-gray"></label>
+            </div>
+        </div>
+        <div class="margin-top-20">
+            <a class="layui-btn layui-btn-primary margin-right-5" data-type="png,jpg" data-upload-image>上传图片</a>
+            <span></span>
+            <a class="layui-btn layui-btn-primary margin-left-5" data-upload-update>保存设置</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 默认数据，可以从数据库读取
+    var defaData = {"x": 401.54158425953585, "y": 167.1141879254591, "width": 25.413444821187255, "height": 25.413444821187255, "rotate": 0, "scaleX": 1, "scaleY": 1}
+
+    require(['cropper'], function (Cropper) {
+        (function (image, cropper) {
+            cropper = new Cropper(image, {
+                aspectRatio: 1,
+                ready() {
+                    if (typeof defaData === 'object') {
+                        cropper.setData(defaData);
+                    }
+                },
+                crop() {
+                    $('#inputImage').val(image.src);
+                    $('#inputData').val(JSON.stringify(cropper.getData()));
+                },
+            });
+            // 背景图片切换
+            $('[data-upload-image]').uploadFile(function (url) {
+                image.src = url;
+                cropper.replace(url, true).reset();
+            });
+        })(document.getElementById('target'));
+    });
+
+    $(window).on('resize', function () {
+        (function (height) {
+            $('#ContentBox').css('minHeight', height + 'px')
+        })($('.layui-layout-admin>.layui-body').height() - 120);
+    }).trigger('resize');
+
+</script>
+{/block}
