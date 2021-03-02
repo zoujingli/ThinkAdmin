@@ -16,9 +16,9 @@
             </div>
         </div>
         <div class="margin-top-20 text-center">
-            <a class="layui-btn layui-btn-primary margin-right-5" data-type="png,jpg" data-upload-image>上传图片</a>
+            <a class="layui-btn layui-btn-primary margin-right-5" data-type="png,jpg" data-upload-image>上传背景图片</a>
             <span></span>
-            <a class="layui-btn layui-btn-primary margin-left-5" data-upload-commit>保存设置</a>
+            <a class="layui-btn layui-btn-primary margin-left-5" data-upload-commit>保存配置参数</a>
         </div>
     </div>
     <label class="layui-hide">
@@ -50,6 +50,7 @@
                 image.src = url;
                 cropper.replace(url, true).reset();
             });
+            // 保存设置参数
             $('[data-upload-commit]').on('click', function () {
                 $.form.load('{:url("")}', {image: image.src, postion: JSON.stringify(cropper.getData())}, 'post');
             });
