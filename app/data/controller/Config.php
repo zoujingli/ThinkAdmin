@@ -38,11 +38,15 @@ class Config extends Controller
      * 邀请二维码设置
      * @auth true
      * @menu true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function cropper()
     {
         $this->title = '邀请二维码设置';
-        $this->fetch();
+        $this->skey = 'cropper';
+        $this->__sysdata('cropper');
     }
 
     /**
@@ -131,6 +135,7 @@ class Config extends Controller
     {
         if ($this->request->isGet()) {
             $this->data = sysdata($this->skey);
+            dump($this->data);
             $this->fetch($template);
         }
         if ($this->request->isPost()) {
