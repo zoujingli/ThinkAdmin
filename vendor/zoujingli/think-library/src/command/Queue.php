@@ -97,7 +97,7 @@ class Queue extends Command
         $host = $this->input->getOption('host') ?: '127.0.0.1';
         $root = $this->app->getRootPath() . 'public' . DIRECTORY_SEPARATOR;
         $command = "php -S {$host}:{$port} -t {$root} {$root}router.php";
-        $this->output->comment("># {$command}");
+        $this->output->comment(">$ {$command}");
         if (count($result = $this->process->query($command)) > 0) {
             if ($this->process->iswin()) $this->process->exec("start http://{$host}:{$port}");
             $this->output->writeln("># WebServer process already exist for pid {$result[0]['pid']}");

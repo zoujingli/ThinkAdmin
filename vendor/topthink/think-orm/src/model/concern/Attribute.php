@@ -268,7 +268,9 @@ trait Attribute
             return $this->origin;
         }
 
-        return array_key_exists($name, $this->origin) ? $this->origin[$name] : null;
+        $fieldName = $this->getRealFieldName($name);
+
+        return array_key_exists($fieldName, $this->origin) ? $this->origin[$fieldName] : null;
     }
 
     /**
@@ -332,6 +334,7 @@ trait Attribute
         $name = $this->getRealFieldName($name);
 
         $this->data[$name] = $value;
+        unset($this->get[$name]);
     }
 
     /**
@@ -380,6 +383,7 @@ trait Attribute
 
         // 设置数据对象属性
         $this->data[$name] = $value;
+        unset($this->get[$name]);
     }
 
     /**

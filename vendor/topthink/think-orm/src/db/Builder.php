@@ -15,7 +15,6 @@ namespace think\db;
 use Closure;
 use PDO;
 use think\db\exception\DbException as Exception;
-use function count;
 
 /**
  * Db Builder
@@ -758,7 +757,7 @@ abstract class Builder
         } else {
             $value = array_unique(is_array($value) ? $value : explode(',', $value));
             if (count($value) === 0) {
-                return '0 = 1';
+                return 'IN' == $exp ? '0 = 1' : '1 = 1';
             }
             $array = [];
 
@@ -770,7 +769,7 @@ abstract class Builder
             if (count($array) == 1) {
                 return $key . ('IN' == $exp ? ' = ' : ' <> ') . $array[0];
             } else {
-                $value  = implode(',', $array);
+                $value = implode(',', $array);
             }
         }
 
