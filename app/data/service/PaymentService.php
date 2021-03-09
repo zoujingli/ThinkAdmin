@@ -256,12 +256,13 @@ abstract class PaymentService
      * @param string $paymentTrade 交易单号
      * @param string $paymentAmount 支付金额
      * @param string $paymentRemark 支付描述
+     * @param string $paymentImage 支付凭证
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount, $paymentRemark = '在线支付'): bool
+    public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付', string $paymentImage = ''): bool
     {
         $map = ['status' => 2, 'order_no' => $orderNo, 'payment_status' => 0];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
@@ -278,6 +279,7 @@ abstract class PaymentService
             'payment_type'     => $this->type,
             'payment_code'     => $this->code,
             'payment_trade'    => $paymentTrade,
+            'payment_image'    => $paymentImage,
             'payment_amount'   => $paymentAmount,
             'payment_remark'   => $paymentRemark,
             'payment_status'   => 1,
@@ -355,7 +357,8 @@ abstract class PaymentService
      * @param string $paymentTitle 交易订单名称
      * @param string $paymentRemark 交易订单描述
      * @param string $paymentReturn 支付回跳地址
+     * @param string $paymentImage 支付凭证图片
      * @return array
      */
-    abstract public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array;
+    abstract public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = '', string $paymentImage = ''): array;
 }

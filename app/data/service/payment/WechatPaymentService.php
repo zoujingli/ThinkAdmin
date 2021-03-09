@@ -35,17 +35,18 @@ class WechatPaymentService extends PaymentService
     }
 
     /**
-     * 创建微信支付订单
+     * 创建订单支付参数
      * @param string $openid 用户OPENID
      * @param string $orderNo 交易订单单号
      * @param string $paymentAmount 交易订单金额（元）
      * @param string $paymentTitle 交易订单名称
      * @param string $paymentRemark 订单订单描述
-     * @param string $paymentReturn 支付回跳地址
+     * @param string $paymentReturn 完成回跳地址
+     * @param string $paymentImage 支付凭证图片
      * @return array
      * @throws Exception
      */
-    public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = ''): array
+    public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = '', string $paymentImage = ''): array
     {
         try {
             if (isset(static::TYPES[$this->type])) {

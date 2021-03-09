@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 24/02/2021 18:31:33
+ Date: 09/03/2021 17:54:24
 */
 
 SET NAMES utf8mb4;
@@ -574,14 +574,15 @@ CREATE TABLE `shop_order`  (
   `amount_express` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '快递费用金额',
   `amount_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '余额抵扣金额',
   `amount_discount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '折扣后的金额',
-  `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
   `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付平台',
   `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际通道编号',
   `payment_trade` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付单号',
   `payment_status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '实际支付状态',
+  `payment_image` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付凭证图片',
   `payment_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '实际支付金额',
   `payment_remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付结果描述',
   `payment_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付到账时间',
+  `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
   `number_goods` bigint(20) NULL DEFAULT 0 COMMENT '订单商品数量',
   `cancel_status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '订单取消状态',
   `cancel_remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单取消描述',
@@ -589,7 +590,7 @@ CREATE TABLE `shop_order`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '订单删除状态(0未删,1已删)',
   `deleted_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单删除描述',
   `deleted_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单删除时间',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '订单状态(0已取消,1预订单,2待支付,3待发货,4待签收,5已完成)',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '订单状态(0已取消,1预订单,2待支付,3支付中,4已支付,5已发货,6已完成)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_order_mid`(`uid`) USING BTREE,
@@ -4660,13 +4661,14 @@ CREATE TABLE `system_data`  (
   `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_data_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_data
 -- ----------------------------
 INSERT INTO `system_data` VALUES (1, '关于我们', 'a:2:{s:4:\"name\";s:8:\"23512322\";s:7:\"content\";s:16:\"<p>512351235</p>\";}');
 INSERT INTO `system_data` VALUES (2, '用户协议', 'a:2:{s:4:\"name\";s:7:\"2315123\";s:7:\"content\";s:16:\"<p>512351235</p>\";}');
+INSERT INTO `system_data` VALUES (3, 'cropper', 'a:2:{s:5:\"image\";s:66:\"http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg\";s:7:\"postion\";s:134:\"{\"x\":400.05633605275233,\"y\":149.0905449790871,\"width\":17.208822404146915,\"height\":17.208822404146915,\"rotate\":0,\"scaleX\":1,\"scaleY\":1}\";}');
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -4686,7 +4688,7 @@ CREATE TABLE `system_menu`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_menu_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_menu
@@ -4733,6 +4735,7 @@ INSERT INTO `system_menu` VALUES (91, 90, '用户等级管理', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (92, 90, '用户折扣方案', 'layui-icon layui-icon-set', 'data/user_discount/index', 'data/user_discount/index', '', '_self', 0, 1, '2021-01-27 05:44:51');
 INSERT INTO `system_menu` VALUES (93, 90, '用户提现管理', 'layui-icon layui-icon-component', 'data/user_transfer/index', 'data/user_transfer/index', '', '_self', 0, 1, '2021-01-28 06:48:34');
 INSERT INTO `system_menu` VALUES (94, 68, '页面内容管理', 'layui-icon layui-icon-read', 'data/config/pagehome', 'data/config/pagehome', '', '_self', 20, 1, '2021-02-24 08:49:16');
+INSERT INTO `system_menu` VALUES (95, 68, '邀请二维码设置', 'layui-icon layui-icon-cols', 'data/config/cropper', 'data/config/cropper', '', '_self', 0, 1, '2021-03-01 09:53:59');
 
 -- ----------------------------
 -- Table structure for system_oplog
@@ -4747,7 +4750,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
@@ -4763,6 +4766,10 @@ INSERT INTO `system_oplog` VALUES (8, 'admin/menu/edit', '127.0.0.1', '系统菜
 INSERT INTO `system_oplog` VALUES (9, 'admin/auth/add', '127.0.0.1', '系统权限管理', '添加系统权限[1]成功', 'admin', '2021-02-24 09:24:55');
 INSERT INTO `system_oplog` VALUES (10, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[94]成功', 'admin', '2021-02-24 09:32:05');
 INSERT INTO `system_oplog` VALUES (11, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[71]成功', 'admin', '2021-02-24 09:32:18');
+INSERT INTO `system_oplog` VALUES (12, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-01 09:52:30');
+INSERT INTO `system_oplog` VALUES (13, 'admin/menu/add', '127.0.0.1', '系统菜单管理', '添加系统菜单[95]成功', 'admin', '2021-03-01 09:53:59');
+INSERT INTO `system_oplog` VALUES (14, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-02 01:46:58');
+INSERT INTO `system_oplog` VALUES (15, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[95]成功', 'admin', '2021-03-02 08:22:53');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4829,7 +4836,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '127.0.0.1', '2021-02-24 08:48:12', 78, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '127.0.0.1', '2021-03-02 01:46:58', 80, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

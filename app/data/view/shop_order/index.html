@@ -9,7 +9,7 @@
 {block name="content"}
 <div class="layui-tab layui-tab-card table-block">
     <ul class="layui-tab-title notselect">
-        {foreach ['ta'=>'全部订单','t2'=>'待支付的订单','t3'=>'待发货的订单','t4'=>'待收货的订单','t5'=>'已完成的订单','t0'=>'已取消的订单'] as $k=>$v}
+        {foreach ['ta'=>'全部订单','t2'=>'待支付的订单','t3'=>'待审核的订单','t4'=>'待发货的订单','t5'=>'待收货的订单','t6'=>'已完成的订单','t0'=>'已取消的订单'] as $k=>$v}
         {if isset($type) and 't'.$type eq $k}
         <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {else}
@@ -57,13 +57,14 @@
                 <td class='nowrap'>
                     {eq name='vo.status' value='0'}<span class="layui-badge layui-badge-middle layui-bg-gray" data-tips-text="{$vo.cancel_remark}">已取消</span>{/eq}
                     {eq name='vo.status' value='1'}<span class="layui-badge layui-badge-middle layui-bg-red">预订单</span>{/eq}
-                    {eq name='vo.status' value='2'}<span class="layui-badge layui-badge-middle layui-bg-orange">待付款</span>{/eq}
-                    {eq name='vo.status' value='3'}<span class="layui-badge layui-badge-middle layui-bg-black">待发货</span>{/eq}
-                    {eq name='vo.status' value='4'}<span class="layui-badge layui-badge-middle layui-bg-green">已发货</span>{/eq}
-                    {eq name='vo.status' value='5'}<span class="layui-badge layui-badge-middle layui-bg-blue">已完成</span>{/eq}
+                    {eq name='vo.status' value='2'}<span class="layui-badge layui-badge-middle layui-bg-red">待付款</span>{/eq}
+                    {eq name='vo.status' value='3'}<span class="layui-badge layui-badge-middle layui-bg-orange">待审核</span>{/eq}
+                    {eq name='vo.status' value='4'}<span class="layui-badge layui-badge-middle layui-bg-black">待发货</span>{/eq}
+                    {eq name='vo.status' value='5'}<span class="layui-badge layui-badge-middle layui-bg-green">已发货</span>{/eq}
+                    {eq name='vo.status' value='6'}<span class="layui-badge layui-badge-middle layui-bg-blue">已完成</span>{/eq}
                     <div class="inline-block text-middle">
-                        订单单号：<span class="color-blue">{$vo.order_no|default=''}</span><br>
-                        订单总计 <b class="color-blue">{$vo.amount_total+0}</b> 元<span class="color-blue">{if $vo.amount_express>0}（含邮费{$vo.amount_express+0}元）{else}（包邮）{/if}</span>已支付 <b class="color-blue">{$vo.payment_amount+0}</b> 元<br>
+                        订单单号：<b class="color-blue">{$vo.order_no|default=''}</b><br>
+                        订单总计：<b class="color-blue">{$vo.amount_total+0}</b> 元<span class="color-blue">{if $vo.amount_express>0}（含邮费{$vo.amount_express+0}元）{else}（包邮）{/if}</span>已支付 <b class="color-blue">{$vo.payment_amount+0}</b> 元<br>
                         下单时间：{$vo.create_at|format_datetime}<br>
                         <!--{notempty name='vo.payment_status'}-->
                         支付时间：{$vo.payment_datetime|format_datetime} {notempty name='vo.payment_name'}<span class="color-blue"> ({$vo.payment_name|default='-'})</span>{/notempty}<br>

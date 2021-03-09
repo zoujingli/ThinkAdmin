@@ -269,14 +269,15 @@ class Order extends Auth
     public function payment()
     {
         $data = $this->_vali([
-            'order_no.require'     => '单号不能为空',
-            'payment_code.require' => '参数不能为空',
-            'payment_back.default' => '', # 支付回跳地址
+            'order_no.require'      => '单号不能为空',
+            'payment_code.require'  => '参数不能为空',
+            'payment_back.default'  => '', # 支付回跳地址
+            'payment_image.default' => '', # 支付凭证地址
         ]);
         $map = ['order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) $this->error('读取订单失败');
-        if ($order['status'] != 2) $this->error('不能发起支付');
+        if (empty($order)) $this->error('读取订单异常');
+        if ($order['status'] !== 2) $this->error('不能发起支付');
         if ($order['payment_status'] > 0) $this->error('已经完成支付');
         try {
             $openid = '';
@@ -286,7 +287,7 @@ class Order extends Auth
             }
             // 返回订单数据及支付发起参数
             $type = $order['amount_real'] <= 0 ? 'empty' : $data['payment_code'];
-            $param = PaymentService::instance($type)->create($openid, $order['order_no'], $order['amount_real'], '商城订单支付', '', $data['payment_back']);
+            $param = PaymentService::instance($type)->create($openid, $order['order_no'], $order['amount_real'], '商城订单支付', '', $data['payment_back'], $data['payment_image']);
             $order = $this->app->db->name('ShopOrder')->where($map)->find() ?: new \stdClass();
             $this->success('获取支付参数', ['order' => $order, 'param' => $param]);
         } catch (HttpResponseException $exception) {
@@ -310,7 +311,7 @@ class Order extends Auth
         ]);
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) $this->error('读取订单失败');
-        if (in_array($order['status'], [1, 2])) {
+        if (in_array($order['status'], [1, 2, 3])) {
             $result = $this->app->db->name('ShopOrder')->where($map)->update([
                 'status'          => 0,
                 'cancel_status'   => 1,

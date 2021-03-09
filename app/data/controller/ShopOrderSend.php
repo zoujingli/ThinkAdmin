@@ -33,7 +33,7 @@ class ShopOrderSend extends Controller
         $this->address = sysdata('ordersend');
         // 状态数据统计
         $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 'ta' => 0];
-        $db = $this->app->db->name('ShopOrder')->whereIn('status', [3, 4, 5]);
+        $db = $this->app->db->name('ShopOrder')->whereIn('status', [4, 5, 6]);
         $query = $this->app->db->name($this->table)->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
         foreach ($query->fieldRaw('status,count(1) total')->group('status')->cursor() as $vo) {
             $this->total["t{$vo['status']}"] = $vo['total'];
@@ -47,7 +47,7 @@ class ShopOrderSend extends Controller
         $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
         // 订单搜索查询
-        $db = $this->_query('ShopOrder')->whereIn('status', [3, 4, 5])->db();
+        $db = $this->_query('ShopOrder')->whereIn('status', [4, 5, 6])->db();
         if ($db->getOptions('where')) $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
         // 列表选项卡状态
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
