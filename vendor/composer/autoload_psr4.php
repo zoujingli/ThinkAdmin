@@ -11,6 +11,7 @@ return array(
     'think\\' => array($vendorDir . '/topthink/framework/src/think', $vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-orm/src', $vendorDir . '/topthink/think-template/src'),
     'app\\' => array($baseDir . '/app'),
     'WePay\\' => array($vendorDir . '/zoujingli/wechat-developer/WePay'),
+    'WePayV3\\' => array($vendorDir . '/zoujingli/wechat-developer/WePayV3'),
     'WeMini\\' => array($vendorDir . '/zoujingli/wechat-developer/WeMini'),
     'WeChat\\' => array($vendorDir . '/zoujingli/wechat-developer/WeChat'),
     'Symfony\\Component\\OptionsResolver\\' => array($vendorDir . '/symfony/options-resolver'),

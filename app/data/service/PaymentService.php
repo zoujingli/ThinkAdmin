@@ -60,7 +60,7 @@ abstract class PaymentService
         ],
         self::PAYMENT_VOUCHER     => [
             'type' => 'VOUCHER',
-            'name' => '凭证单据支付',
+            'name' => '单据凭证支付',
             'bind' => [
                 UserService::APITYPE_WAP, UserService::APITYPE_WEB,
                 UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT,

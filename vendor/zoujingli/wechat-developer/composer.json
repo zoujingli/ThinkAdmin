@@ -38,7 +38,8 @@
       "WePay\\": "WePay",
       "WeChat\\": "WeChat",
       "WeMini\\": "WeMini",
-      "AliPay\\": "AliPay"
+      "AliPay\\": "AliPay",
+      "WePayV3\\": "WePayV3"
     }
   }
 }

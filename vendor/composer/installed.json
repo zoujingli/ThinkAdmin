@@ -918,17 +918,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.27",
-        "version_normalized": "1.2.27.0",
+        "version": "v1.2.28",
+        "version_normalized": "1.2.28.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "94de6626f1c9e3d12f16640c30fb9319b37ff34c"
+            "reference": "463c677cfdf8a3f3b21264babca034edb9fc7c3c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/94de6626f1c9e3d12f16640c30fb9319b37ff34c",
-            "reference": "94de6626f1c9e3d12f16640c30fb9319b37ff34c",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/463c677cfdf8a3f3b21264babca034edb9fc7c3c",
+            "reference": "463c677cfdf8a3f3b21264babca034edb9fc7c3c",
             "shasum": "",
             "mirrors": [
                 {
@@ -948,7 +948,7 @@
             "ext-xml": "*",
             "php": ">=5.4"
         },
-        "time": "2020-12-24T09:44:04+00:00",
+        "time": "2021-03-09T10:04:53+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -959,7 +959,8 @@
                 "WePay\\": "WePay",
                 "WeChat\\": "WeChat",
                 "WeMini\\": "WeMini",
-                "AliPay\\": "AliPay"
+                "AliPay\\": "AliPay",
+                "WePayV3\\": "WePayV3"
             }
         },
         "notification-url": "https://packagist.org/downloads/",

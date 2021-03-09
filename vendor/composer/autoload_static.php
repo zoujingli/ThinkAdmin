@@ -26,6 +26,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'W' => 
         array (
             'WePay\\' => 6,
+            'WePayV3\\' => 8,
             'WeMini\\' => 7,
             'WeChat\\' => 7,
         ),
@@ -78,6 +79,10 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'WePay\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay',
+        ),
+        'WePayV3\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3',
         ),
         'WeMini\\' => 
         array (
@@ -297,6 +302,11 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'WeMini\\Soter' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Soter.php',
         'WeMini\\Template' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Template.php',
         'WeMini\\Total' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeMini/Total.php',
+        'WePayV3\\Cert' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Cert.php',
+        'WePayV3\\Contracts\\BasicWePay' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Contracts/BasicWePay.php',
+        'WePayV3\\Contracts\\DecryptAes' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Contracts/DecryptAes.php',
+        'WePayV3\\Order' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Order.php',
+        'WePayV3\\Refund' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Refund.php',
         'WePay\\Bill' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Bill.php',
         'WePay\\Coupon' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Coupon.php',
         'WePay\\Order' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Order.php',
@@ -367,7 +377,8 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'app\\data\\service\\payment\\AlipayPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/AlipayPaymentService.php',
         'app\\data\\service\\payment\\BalancePyamentService' => __DIR__ . '/../..' . '/app/data/service/payment/BalancePyamentService.php',
         'app\\data\\service\\payment\\EmptyPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/EmptyPaymentService.php',
-        'app\\data\\service\\payment\\JoinPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/JoinPaymentService.php',
+        'app\\data\\service\\payment\\JoinpayPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/JoinpayPaymentService.php',
+        'app\\data\\service\\payment\\VoucherPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/VoucherPaymentService.php',
         'app\\data\\service\\payment\\WechatPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/WechatPaymentService.php',
         'app\\index\\controller\\Index' => __DIR__ . '/../..' . '/app/index/controller/Index.php',
         'app\\wechat\\command\\Fans' => __DIR__ . '/../..' . '/app/wechat/command/Fans.php',

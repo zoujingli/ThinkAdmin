@@ -1,10 +1,11 @@
-[![Latest Stable Version](https://poser.pugx.org/zoujingli/wechat-developer/v/stable)](https://packagist.org/packages/zoujingli/wechat-developer) 
-[![Latest Unstable Version](https://poser.pugx.org/zoujingli/wechat-developer/v/unstable)](https://packagist.org/packages/zoujingli/wechat-developer) 
-[![Total Downloads](https://poser.pugx.org/zoujingli/wechat-developer/downloads)](https://packagist.org/packages/zoujingli/wechat-developer) 
+[![Latest Stable Version](https://poser.pugx.org/zoujingli/wechat-developer/v/stable)](https://packagist.org/packages/zoujingli/wechat-developer)
+[![Latest Unstable Version](https://poser.pugx.org/zoujingli/wechat-developer/v/unstable)](https://packagist.org/packages/zoujingli/wechat-developer)
+[![Total Downloads](https://poser.pugx.org/zoujingli/wechat-developer/downloads)](https://packagist.org/packages/zoujingli/wechat-developer)
 [![License](https://poser.pugx.org/zoujingli/wechat-developer/license)](https://packagist.org/packages/zoujingli/wechat-developer)
 
 WeChatDeveloper for PHP
 ----
+
 * WeChatDeveloper 是基于 [wechat-php-sdk](https://github.com/zoujingli/wechat-php-sdk) 重构，优化并完善；
 * 运行最底要求 PHP 版本 5.4 , 建议在 PHP7 上运行以获取最佳性能；
 * WeChatDeveloper 针对 access_token 失效增加了自动刷新机制；
@@ -15,6 +16,7 @@ WeChatDeveloper for PHP
 
 功能描述
 ----
+
 * 微信小程序，服务端接口支持
 * 微信认证服务号，服务端接口支持
 * 微信支付（账单、卡券、红包、退款、转账、App支付、JSAPI支付、Web支付、扫码支付等）
@@ -24,20 +26,22 @@ WeChatDeveloper for PHP
 ----
 PHP开发技术交流（QQ群 513350915）
 
-[![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
+[![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a)
 
 WeChatDeveloper 是基于官方接口封装，在做微信开发前，必需先阅读微信官方文档。
+
 * 微信官方文档：https://mp.weixin.qq.com/wiki
 * 商户支付文档：https://pay.weixin.qq.com/wiki/doc/api/index.html
 
 针对 WeChatDeveloper 也有一准备了帮助资料可供参考。
+
 * ThinkAdmin：https://github.com/zoujingli/ThinkAdmin
 * WeChatDeveloper：https://www.kancloud.cn/zoujingli/wechat-developer
-
 
 代码仓库
 ----
 WeChatDeveloper 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
+
 * Gitee 托管地址：https://gitee.com/zoujingli/WeChatDeveloper
 * GitHub 托管地址：https://github.com/zoujingli/WeChatDeveloper
 
@@ -82,10 +86,10 @@ WeChatDeveloper 为开源项目，允许把它用于任何地方，不受任何�
 |  Template.php  | WeMini\Template   |  微信小程序模板消息支持  | 微信小程序 | \We::WeMiniTemplate() |
 |  Total.php  | WeMini\Total   |  微信小程序数据接口  | 微信小程序 | \We::WeMiniTotal() |
 
-
 安装使用
 ----
 1.1 通过 Composer 来管理安装
+
 ```shell
 # 首次安装 线上版本（稳定）
 composer require zoujingli/wechat-developer
@@ -98,12 +102,14 @@ composer update zoujingli/wechat-developer
 ```
 
 1.2 如果不使用 Composer， 可以下载 WeChatDeveloper 并解压到项目中
+
 ```php
 # 在项目中加载初始化文件
 include "您的目录/WeChatDeveloper/include.php";
 ```
 
 2.1 接口实例所需参数
+
 ```php
 $config = [
     'token'          => 'test',
@@ -122,6 +128,7 @@ $config = [
 ```
 
 3.1 实例指定接口
+
 ```php
 try {
 
@@ -145,6 +152,7 @@ try {
 
 微信支付
 ---
+
 ```php
   // 创建接口实例
   $wechat = new \WeChat\Pay($config);
@@ -177,28 +185,39 @@ try {
     
 }
 ```
+
 * 更多功能请阅读测试代码或SDK封装源码
 
 支付宝支付
 ----
+
 * 支付参数配置（可用沙箱模式）
+
 ```php
 $config = [
     // 沙箱模式
     'debug'       => true,
+    // 签名类型（RSA|RSA2）
+    'sign_type'   => "RSA2",
     // 应用ID
     'appid'       => '2016090900468879',
-    // 支付宝公钥(1行填写)
-    'public_key'  => 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtU71NY53UDGY7JNvLYAhsNa+taTF6KthIHJmGgdio9bkqeJGhHk6ttkTKkLqFgwIfgAkHpdKiOv1uZw6gVGZ7TCu5LfHTqKrCd6Uz+N7hxhY+4IwicLgprcV1flXQLmbkJYzFMZqkXGkSgOsR2yXh4LyQZczgk9N456uuzGtRy7MoB4zQy34PLUkkxR6W1B2ftNbLRGXv6tc7p/cmDcrY6K1bSxnGmfRxFSb8lRfhe0V0UM6pKq2SGGSeovrKHN0OLp+Nn5wcULVnFgATXGCENshRlp96piPEBFwneXs19n+sX1jx60FTR7/rME3sW3AHug0fhZ9mSqW4x401WjdnwIDAQAB',
-    // 支付宝私钥(1行填写)
-    'private_key' => 'MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC3pbN7esinxgjE8uxXAsccgGNKIq+PR1LteNTFOy0fsete43ObQCrzd9DO0zaUeBUzpIOnxrKxez7QoZROZMYrinttFZ/V5rbObEM9E5AR5Tv/Fr4IBywoS8ZtN16Xb+fZmibfU91yq9O2RYSvscncU2qEYmmaTenM0QlUO80ZKqPsM5JkgCNdcYZTUeHclWeyER3dSImNtlSKiSBSSTHthb11fkudjzdiUXua0NKVWyYuAOoDMcpXbD6NJmYqEA/iZ/AxtQt08pv0Mow581GPB0Uop5+qA2hCV85DpagE94a067sKcRui0rtkJzHem9k7xVL+2RoFm1fv3RnUkMwhAgMBAAECggEAAetkddzxrfc+7jgPylUIGb8pyoOUTC4Vqs/BgZI9xYAJksNT2QKRsFvHPfItNt4Ocqy8h4tnIL3GCU43C564B4p6AcjhE85GiN/O0BudPOKlfuQQ9mqExqMMHuYeQfz0cmzPDTSGMwWiv9v4KBH2pyvkCCAzNF6uG+rvawb4/NNVuiI7C8Ku/wYsamtbgjMZVOFFdScYgIw1BgA99RUU/fWBLMnTQkoyowSRb9eSmEUHjt/WQt+/QgKAT2WmuX4RhaGy0qcQLbNaJNKXdJ+PVhQrSiasINNtqYMa8GsQuuKsk3X8TCg9K6/lowivt5ruhyWcP2sx93zY/LGzIHgHcQKBgQDoZlcs9RWxTdGDdtH8kk0J/r+QtMijNzWI0a+t+ZsWOyd3rw+uM/8O4JTNP4Y98TvvxhJXewITbfiuOIbW1mxh8bnO/fcz7+RXZKgPDeoTeNo717tZFZGBEyUdH9M9Inqvht7+hjVDIMCYBDomYebdk3Xqo4mDBjLRdVNGrhGmVQKBgQDKS/MgTMK8Ktfnu1KzwCbn/FfHTOrp1a1t1wWPv9AW0rJPYeaP6lOkgIoO/1odG9qDDhdB6njqM+mKY5Yr3N94PHamHbwJUCmbkqEunCWpGzgcQZ1Q254xk9D7UKq/XUqW2WDqDq80GQeNial+fBc46yelQzokwdA+JdIFKoyinQKBgQCBems9V/rTAtkk1nFdt6EGXZEbLS3PiXXhGXo4gqV+OEzf6H/i/YMwJb2hsK+5GQrcps0XQihA7PctEb9GOMa/tu5fva0ZmaDtc94SLR1p5d4okyQFGPgtIp594HpPSEN0Qb9BrUJFeRz0VP6U3dzDPGHo7V4yyqRLgIN6EIcy1QKBgAqdh6mHPaTAHspDMyjJiYEc5cJIj/8rPkmIQft0FkhMUB0IRyAALNlyAUyeK61hW8sKvz+vPR8VEEk5xpSQp41YpuU6pDZc5YILZLfca8F+8yfQbZ/jll6Foi694efezl4yE/rUQG9cbOAJfEJt4o4TEOaEK5XoMbRBKc8pl22lAoGARTq0qOr9SStihRAy9a+8wi2WEwL4QHcmOjH7iAuJxy5b5TRDSjlk6h+0dnTItiFlTXdfpO8KhWA8EoSJVBZ1kcACQDFgMIA+VM+yXydtzMotOn21W4stfZ4I6dHFiujMsnKpNYVpQh3oCrJf4SeXiQDdiSCodqb1HlKkEc6naHQ=',
+    // 支付宝公钥文字内容 (1行填写，特别注意：这里是支付宝公钥，不是应用公钥，最好从开发者中心的网页上去复制)
+    'public_key'  => 'MIIBIjANBgkqhkiG9...',
+    // 支付宝私钥文字内容 (1行填写)
+    'private_key' => 'MIIEvQIBADANBgkqh...',
+    // 应用公钥证书完整内容（新版资金类接口转 app_cert_sn）
+    'app_cert'    => '',
+    // 支付宝根证书完整内容（新版资金类接口转 alipay_root_cert_sn）
+    'root_cert'   => '',
     // 支付成功通知地址
-    'notify_url'  => '', // 可以应用的时候配置哦
+    'notify_url'  => '',
     // 网页支付回跳地址
-    'return_url'  => '', // 可以应用的时候配置哦
+    'return_url'  => '',
 ];
 ```
+
 * 支付宝发起PC网站支付
+
 ```php
 // 参考公共参数  https://docs.open.alipay.com/203/107090/
 $config['notify_url'] = 'http://pay.thinkadmin.top/test/alipay-notify.php';
@@ -226,7 +245,9 @@ try {
     
 }
 ```
+
 * 支付宝发起手机网站支付
+
 ```php
 // 参考公共参数  https://docs.open.alipay.com/203/107090/
 $config['notify_url'] = 'http://pay.thinkadmin.top/test/alipay-notify.php';
@@ -254,12 +275,15 @@ try {
 
 }
 ```
+
 * 更多功能请阅读测试代码或SDK封装源码
 
 开源协议
 ----
+
 * WeChatDeveloper 基于`MIT`协议发布，任何人可以用在任何地方，不受约束
 * WeChatDeveloper 部分代码来自互联网，若有异议，可以联系作者进行删除
 
 ## 赞助打赏
+
 ![赞助](https://thinkadmin.top/static/img/pay.png)
