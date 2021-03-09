@@ -40,7 +40,7 @@ class ShopOrderSend extends Controller
             $this->total["ta"] += $vo['total'];
         }
         // 订单列表查询
-        $query = $this->_query($this->table)->order('id desc');
+        $query = $this->_query($this->table);
         $query->dateBetween('address_datetime,send_datetime')->equal('status')->like('send_number#truck_number,order_no');
         $query->like('address_phone,address_name,address_province|address_city|address_area|address_content#address_content');
         // 用户搜索查询
@@ -53,13 +53,8 @@ class ShopOrderSend extends Controller
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
             $query->where(['status' => $this->type]);
         }
-        // 分页排序处理
-        if (input('output') === 'json') {
-            $result = $query->page(true, false);
-            $this->success('获取数据成功', $result);
-        } else {
-            $query->page();
-        }
+        // 列表排序显示
+        $query->order('id desc')->page();
     }
 
     /**
