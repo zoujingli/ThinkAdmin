@@ -65,17 +65,17 @@ class Order extends Auth
         if ($order['from'] > 0) {
             $map = ['id' => $order['from'], 'status' => 1];
             $fromer = $this->app->db->name('DataUser')->where($map)->find();
-            if (empty($fromer)) $this->error('未找到推荐人');
+            if (empty($fromer)) $this->error('推荐人异常');
         }
         foreach (explode('||', $rules) as $rule) {
             [$code, $spec, $count] = explode('@', $rule);
             // 商品信息检查
             $goodsInfo = $this->app->db->name('ShopGoods')->where(['code' => $code, 'status' => 1, 'deleted' => 0])->find();
             $goodsItem = $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $code, 'goods_spec' => $spec, 'status' => 1])->find();
-            if (empty($goodsInfo) || empty($goodsItem)) $this->error('商品数据查询异常');
+            if (empty($goodsInfo) || empty($goodsItem)) $this->error('商品查询异常');
             // 商品类型检查
             if ($truckType < 0) $truckType = $goodsInfo['truck_type'];
-            if ($truckType !== $goodsInfo['truck_type']) $this->error('不能混合下单！');
+            if ($truckType !== $goodsInfo['truck_type']) $this->error('不能混合下单');
             // 限制购买数量
             if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
                 $map = [['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']], ['a.uid', '=', $this->uuid]];
@@ -394,18 +394,15 @@ class Order extends Auth
 
     /**
      * 订单状态统计
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function total()
     {
         $map = ['uid' => $this->uuid, 'deleted' => 0];
         $data = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0];
-        $query = $this->app->db->name('ShopOrder')->fieldRaw('status,count(1) count');
-        $query->where($map)->group('status')->select()->each(function ($item) use (&$data) {
+        $query = $this->app->db->name('ShopOrder')->field('status,count(1) count');
+        foreach ($query->where($map)->group('status')->cursor() as $item) {
             $data["t{$item['status']}"] = $item['count'];
-        });
+        }
         $this->success('获取统计成功', $data);
     }
 
@@ -415,10 +412,7 @@ class Order extends Auth
     public function track()
     {
         try {
-            $data = $this->_vali([
-                'code.require'   => '快递不能为空',
-                'number.require' => '单号不能为空',
-            ]);
+            $data = $this->_vali(['code.require' => '快递不能为空', 'number.require' => '单号不能为空']);
             $result = TruckService::instance()->query($data['code'], $data['number']);
             empty($result['code']) ? $this->error($result['info']) : $this->success('快递追踪信息', $result);
         } catch (HttpResponseException $exception) {
@@ -427,5 +421,4 @@ class Order extends Auth
             $this->error($exception->getMessage());
         }
     }
-
 }
