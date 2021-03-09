@@ -78,7 +78,7 @@ class Order extends Auth
             if ($truckType !== $goodsInfo['truck_type']) $this->error('不能混合下单');
             // 限制购买数量
             if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
-                $map = [['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']], ['a.uid', '=', $this->uuid]];
+                $map = [['a.uid', '=', $this->uuid], ['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']]];
                 $buys = $this->app->db->name('StoreOrder')->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
                 if ($buys + $count > $goods['limit_max_num']) $this->error('超过限购数量');
             }
