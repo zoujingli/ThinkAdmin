@@ -8,10 +8,10 @@ use think\admin\Exception;
 
 /**
  * 汇聚支付基础服务
- * Class JoinPaymentService
+ * Class JoinpayPaymentService
  * @package app\store\service\payment
  */
-class JoinPaymentService extends PaymentService
+class JoinpayPaymentService extends PaymentService
 {
     /**
      * 请求地址
@@ -45,9 +45,9 @@ class JoinPaymentService extends PaymentService
 
     /**
      * 汇聚支付服务初始化
-     * @return JoinPaymentService
+     * @return JoinpayPaymentService
      */
-    protected function initialize(): JoinPaymentService
+    protected function initialize(): JoinpayPaymentService
     {
         $this->appid = $this->params['joinpay_appid'];
         $this->trade = $this->params['joinpay_trade'];;

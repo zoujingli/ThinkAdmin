@@ -59,8 +59,8 @@ class WechatPaymentService extends PaymentService
                 'openid'           => $openid,
                 'attach'           => $this->code,
                 'out_trade_no'     => $orderNo,
-                'total_fee'        => $paymentAmount * 100,
                 'trade_type'       => $tradeType ?: '',
+                'total_fee'        => $paymentAmount * 100,
                 'notify_url'       => sysuri("@data/api.notify/wxpay/scene/order/param/{$this->code}", [], false, true),
                 'spbill_create_ip' => $this->app->request->ip(),
             ];

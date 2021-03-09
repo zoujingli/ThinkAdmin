@@ -22,7 +22,7 @@ class News extends Controller
     {
         $query = $this->_query('DataNewsMark')->like('name');
         $query->where(['status' => 1, 'deleted' => 0])->withoutField('sort,status,deleted');
-        $this->success('获取文章标签列表', $query->order('sort desc,id desc')->page(false, false));
+        $this->success('获取文章标签', $query->order('sort desc,id desc')->page(false, false));
     }
 
     /**
@@ -47,7 +47,7 @@ class News extends Controller
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListState($result['list'], input('uid', 0));
-        $this->success('获取列表成功！', $result);
+        $this->success('获取文章内容', $result);
     }
 
     /**
@@ -62,7 +62,7 @@ class News extends Controller
         $query = $this->_query('DataNewsXCollect')->where(['type' => 4, 'status' => 2]);
         $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);
-        $this->success('获取评论成功！', $result);
+        $this->success('获取评论成功', $result);
     }
 
 }

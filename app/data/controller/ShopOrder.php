@@ -28,6 +28,9 @@ class ShopOrder extends Controller
      */
     protected $payments = [];
 
+    /**
+     * 控制器初始化
+     */
     protected function initialize()
     {
         parent::initialize();
@@ -46,7 +49,7 @@ class ShopOrder extends Controller
     {
         $this->title = '订单数据管理';
         // 状态数据统计
-        $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 'ta' => 0];
+        $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 't6' => 0, 'ta' => 0];
         $this->app->db->name($this->table)->fieldRaw('status,count(1) total')->group('status')->select()->map(function ($vo) {
             $this->total["t{$vo['status']}"] = $vo['total'];
             $this->total["ta"] += $vo['total'];

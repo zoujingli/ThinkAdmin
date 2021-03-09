@@ -5,7 +5,8 @@ namespace app\data\service;
 use app\data\service\payment\AlipayPaymentService;
 use app\data\service\payment\BalancePyamentService;
 use app\data\service\payment\EmptyPaymentService;
-use app\data\service\payment\JoinPaymentService;
+use app\data\service\payment\JoinpayPaymentService;
+use app\data\service\payment\VoucherPaymentService;
 use app\data\service\payment\WechatPaymentService;
 use think\App;
 use think\Container;
@@ -22,6 +23,7 @@ abstract class PaymentService
     // 用户余额支付
     const PAYMENT_EMPTY = 'empty';
     const PAYMENT_BALANCE = 'balance';
+    const PAYMENT_VOUCHER = 'voucher';
 
     // 汇聚支付参数
     const PAYMENT_JOINPAY_GZH = 'joinpay_gzh';
@@ -50,6 +52,15 @@ abstract class PaymentService
         self::PAYMENT_BALANCE     => [
             'type' => 'BALANCE',
             'name' => '账号余额支付',
+            'bind' => [
+                UserService::APITYPE_WAP, UserService::APITYPE_WEB,
+                UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT,
+                UserService::APITYPE_IOSAPP, UserService::APITYPE_ANDROID,
+            ],
+        ],
+        self::PAYMENT_VOUCHER     => [
+            'type' => 'VOUCHER',
+            'name' => '凭证单据支付',
             'bind' => [
                 UserService::APITYPE_WAP, UserService::APITYPE_WEB,
                 UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT,
@@ -155,8 +166,8 @@ abstract class PaymentService
 
     /**
      * 根据配置实例支付服务
-     * @param string $code 支付参数编号
-     * @return JoinPaymentService|WechatPaymentService|AlipayPaymentService
+     * @param string $code 支付配置编号
+     * @return JoinpayPaymentService|WechatPaymentService|AlipayPaymentService|BalancePyamentService|VoucherPaymentService|EmptyPaymentService
      * @throws Exception
      */
     public static function instance(string $code): PaymentService
@@ -171,12 +182,14 @@ abstract class PaymentService
         // 实例化具体支付参数类型
         if (stripos($type, 'balance') === 0) {
             return static::$driver[$code] = Container::getInstance()->make(BalancePyamentService::class, $vars);
+        } elseif (stripos($type, 'voucher') === 0) {
+            return static::$driver[$code] = Container::getInstance()->make(VoucherPaymentService::class, $vars);
         } elseif (stripos($type, 'alipay_') === 0) {
             return static::$driver[$code] = Container::getInstance()->make(AlipayPaymentService::class, $vars);
         } elseif (stripos($type, 'wechat_') === 0) {
             return static::$driver[$code] = Container::getInstance()->make(WechatPaymentService::class, $vars);
         } elseif (stripos($type, 'joinpay_') === 0) {
-            return static::$driver[$code] = Container::getInstance()->make(JoinPaymentService::class, $vars);
+            return static::$driver[$code] = Container::getInstance()->make(JoinpayPaymentService::class, $vars);
         } else {
             throw new Exception(sprintf('支付驱动[%s]未定义', $type));
         }
@@ -211,7 +224,7 @@ abstract class PaymentService
      * 获取通道配置参数
      * @param string $code
      * @param array $payment
-     * @return array [code,type,params]
+     * @return array [code, type, params]
      * @throws Exception
      */
     public static function config(string $code, array $payment = []): array
@@ -238,7 +251,7 @@ abstract class PaymentService
     }
 
     /**
-     * 订单更新操作
+     * 订单支付更新操作
      * @param string $orderNo 订单单号
      * @param string $paymentTrade 交易单号
      * @param string $paymentAmount 支付金额
@@ -250,13 +263,18 @@ abstract class PaymentService
      */
     public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount, $paymentRemark = '在线支付'): bool
     {
-        // 检查订单支付状态
-        $map = ['order_no' => $orderNo, 'payment_status' => 0, 'status' => 2];
+        $map = ['status' => 2, 'order_no' => $orderNo, 'payment_status' => 0];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) return false;
+        // 检查订单支付状态
+        if ($this->type === self::PAYMENT_VOUCHER) {
+            $status = 3;
+        } else {
+            $status = 4;
+        }
         // 更新订单支付状态
         $data = [
-            'status'           => 3,
+            'status'           => $status,
             'payment_type'     => $this->type,
             'payment_code'     => $this->code,
             'payment_trade'    => $paymentTrade,
