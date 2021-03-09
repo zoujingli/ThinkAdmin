@@ -72,11 +72,10 @@ class Order extends Auth
             // 商品信息检查
             $goodsInfo = $this->app->db->name('ShopGoods')->where(['code' => $code, 'status' => 1, 'deleted' => 0])->find();
             $goodsItem = $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $code, 'goods_spec' => $spec, 'status' => 1])->find();
-            if (empty($goodsInfo)) $this->error('商品数据查询异常');
-            if (empty($goodsItem)) $this->error('商品规格查询异常');
+            if (empty($goodsInfo) || empty($goodsItem)) $this->error('商品数据查询异常');
             // 商品类型检查
             if ($truckType < 0) $truckType = $goodsInfo['truck_type'];
-            if ($truckType !== $goodsInfo['truck_type']) $this->error('实物与虚拟不能混合下单！');
+            if ($truckType !== $goodsInfo['truck_type']) $this->error('不能混合下单！');
             // 限制购买数量
             if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
                 $map = [['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']], ['a.uid', '=', $this->uuid]];
@@ -92,7 +91,7 @@ class Order extends Auth
                 $this->error('商品库存不足');
             }
             // 商品折扣处理
-            [$discountId, $discountRate] = [0, 100];
+            [$discountId, $discountRate] = [0, 100.00];
             if ($goodsInfo['discount_id'] > 0) {
                 $map = ['status' => 1, 'deleted' => 0, 'id' => $goodsInfo['discount_id']];
                 if ($items = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
