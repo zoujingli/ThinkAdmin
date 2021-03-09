@@ -138,8 +138,8 @@ class Order extends Auth
         }
         try {
             // 订单发货类型
+            $order['status'] = $truckType ? 1 : 2;
             $order['truck_type'] = $truckType;
-            $order['status'] = $truckType ? 2 : 1;
             // 统计商品数量
             $order['number_goods'] = array_sum(array_column($items, 'stock_sales'));
             // 统计商品金额
