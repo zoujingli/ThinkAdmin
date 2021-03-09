@@ -73,12 +73,7 @@ class ShopOrder extends Controller
             $query->where(['status' => $this->type]);
         }
         // 分页排序处理
-        $query->where(['deleted' => 0])->order('id desc');
-        if (input('output') === 'json') {
-            $this->success('获取数据成功', $query->page(true, false));
-        } else {
-            $query->page();
-        }
+        $query->where(['deleted' => 0])->order('id desc')->page();
     }
 
     /**
