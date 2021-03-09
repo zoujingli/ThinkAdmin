@@ -182,6 +182,7 @@ class Order extends Auth
     public function express()
     {
         $data = $this->_vali([
+            'uid.value'        => $this->uuid,
             'code.require'     => '地址不能为空',
             'order_no.require' => '单号不能为空',
         ]);
@@ -208,6 +209,7 @@ class Order extends Auth
     public function perfect()
     {
         $data = $this->_vali([
+            'uid.value'        => $this->uuid,
             'code.require'     => '地址不能为空',
             'order_no.require' => '单号不能为空',
         ]);
@@ -269,14 +271,13 @@ class Order extends Auth
     public function payment()
     {
         $data = $this->_vali([
+            'uid.value'             => $this->uuid,
             'order_no.require'      => '单号不能为空',
-            'payment_code.require'  => '参数不能为空',
+            'payment_code.require'  => '支付不能为空',
             'payment_back.default'  => '', # 支付回跳地址
-            'payment_image.default' => '', # 支付凭证地址
+            'payment_image.default' => '', # 支付凭证图片
         ]);
-        $map = ['order_no' => $data['order_no']];
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) $this->error('读取订单异常');
+        [$map, $order] = $this->getOrderData();
         if ($order['status'] !== 2) $this->error('不能发起支付');
         if ($order['payment_status'] > 0) $this->error('已经完成支付');
         try {
@@ -305,17 +306,12 @@ class Order extends Auth
      */
     public function cancel()
     {
-        $map = $this->_vali([
-            'uid.value'        => $this->uuid,
-            'order_no.require' => '单号不能为空',
-        ]);
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) $this->error('读取订单失败');
+        [$map, $order] = $this->getOrderData();
         if (in_array($order['status'], [1, 2, 3])) {
             $result = $this->app->db->name('ShopOrder')->where($map)->update([
                 'status'          => 0,
                 'cancel_status'   => 1,
-                'cancel_remark'   => '用户主动取消订单！',
+                'cancel_remark'   => '用户主动取消订单',
                 'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
             if ($result !== false && OrderService::instance()->syncStock($order['order_no'])) {
@@ -339,17 +335,13 @@ class Order extends Auth
      */
     public function remove()
     {
-        $map = $this->_vali([
-            'uid.value'        => $this->uuid,
-            'order_no.require' => '单号不能为空',
-        ]);
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        [$map, $order] = $this->getOrderData();
         if (empty($order)) $this->error('读取订单失败');
         if (in_array($order['status'], [0])) {
             $result = $this->app->db->name('ShopOrder')->where($map)->update([
                 'status'           => 0,
                 'deleted'          => 1,
-                'deleted_remark'   => '用户主动删除订单！',
+                'deleted_remark'   => '用户主动删除订单',
                 'deleted_datetime' => date('Y-m-d H:i:s'),
             ]);
             if ($result !== false) {
@@ -373,14 +365,9 @@ class Order extends Auth
      */
     public function confirm()
     {
-        $map = $this->_vali([
-            'uid.value'        => $this->uuid,
-            'order_no.require' => '单号不能为空',
-        ]);
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) $this->error('读取订单失败');
-        if (in_array($order['status'], [4])) {
-            if ($this->app->db->name('ShopOrder')->where($map)->update(['status' => 5]) !== false) {
+        [$map, $order] = $this->getOrderData();
+        if (in_array($order['status'], [5])) {
+            if ($this->app->db->name('ShopOrder')->where($map)->update(['status' => 6]) !== false) {
                 // 触发订单确认事件
                 $this->app->event->trigger('ShopOrderConfirm', $order['order_no']);
                 // 返回处理成功数据
@@ -394,17 +381,31 @@ class Order extends Auth
     }
 
     /**
+     * 获取输入订单
+     * @return array [map, order]
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    private function getOrderData(): array
+    {
+        $map = $this->_vali(['uid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
+        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        if (empty($order)) $this->error('读取订单失败');
+        return [$map, $order];
+    }
+
+    /**
      * 订单状态统计
      */
     public function total()
     {
-        $map = ['uid' => $this->uuid, 'deleted' => 0];
-        $data = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0];
-        $query = $this->app->db->name('ShopOrder')->field('status,count(1) count');
-        foreach ($query->where($map)->group('status')->cursor() as $item) {
+        $data = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 't6' => 0];
+        $query = $this->app->db->name('ShopOrder')->where(['uid' => $this->uuid, 'deleted' => 0]);
+        foreach ($query->field('status,count(1) count')->group('status')->cursor() as $item) {
             $data["t{$item['status']}"] = $item['count'];
         }
-        $this->success('获取统计成功', $data);
+        $this->success('获取订单统计', $data);
     }
 
     /**
