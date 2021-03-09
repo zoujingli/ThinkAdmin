@@ -50,10 +50,10 @@ class ShopOrder extends Controller
         $this->title = '订单数据管理';
         // 状态数据统计
         $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 't6' => 0, 'ta' => 0];
-        $this->app->db->name($this->table)->fieldRaw('status,count(1) total')->group('status')->select()->map(function ($vo) {
+        foreach ($this->app->db->name($this->table)->field('status,count(1) total')->group('status')->cursor() as $vo) {
             $this->total["t{$vo['status']}"] = $vo['total'];
             $this->total["ta"] += $vo['total'];
-        });
+        }
         // 订单列表查询
         $query = $this->_query($this->table);
         $query->like('order_no,truck_name,truck_phone,truck_province|truck_area|truck_address#address,truck_send_no,truck_send_name');
