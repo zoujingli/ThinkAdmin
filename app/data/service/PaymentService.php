@@ -288,7 +288,9 @@ abstract class PaymentService
         if (empty($data['payment_type'])) unset($data['payment_type']);
         $this->app->db->name('ShopOrder')->where($map)->update($data);
         // 触发订单更新事件
-        $this->app->event->trigger('ShopOrderPayment', $orderNo);
+        if ($status === 4) {
+            $this->app->event->trigger('ShopOrderPayment', $orderNo);
+        }
         return true;
     }
 
