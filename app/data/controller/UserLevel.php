@@ -2,7 +2,7 @@
 
 namespace app\data\controller;
 
-use app\data\service\PrizeService;
+use app\data\service\RebateCurrentService;
 use think\admin\Controller;
 
 /**
@@ -41,7 +41,7 @@ class UserLevel extends Controller
         foreach ($data as &$vo) {
             $vo['rebate_rule'] = str2arr($vo['rebate_rule']);
             foreach ($vo['rebate_rule'] as &$v) {
-                $v = PrizeService::instance()->name($v);
+                $v = RebateCurrentService::instance()->name($v);
             }
         }
     }
@@ -77,7 +77,7 @@ class UserLevel extends Controller
     protected function _form_filter(array &$vo)
     {
         if ($this->request->isGet()) {
-            $this->prizes = PrizeService::PRIZES;
+            $this->prizes = RebateCurrentService::PRIZES;
             $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
         } else {
             $vo['utime'] = time();

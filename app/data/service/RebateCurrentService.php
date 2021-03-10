@@ -6,11 +6,11 @@ use think\admin\Service;
 use think\admin\Exception;
 
 /**
- * 用户奖励配置
- * Class PrizeService
+ * 实时返利服务
+ * Class RebateCurrentService
  * @package app\data\service
  */
-class PrizeService extends Service
+class RebateCurrentService extends Service
 {
     const PRIZE_01 = 'prize_01';
     const PRIZE_02 = 'prize_02';
@@ -75,7 +75,7 @@ class PrizeService extends Service
         $this->order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($this->order)) throw new Exception('订单不存在');
         // 获取用户数据
-        $map = ['id' => $this->order['uid']];
+        $map = ['id' => $this->order['uid'], 'deleted' => 0];
         $this->user = $this->app->db->name('DataUser')->where($map)->find();
         if (empty($this->user)) throw new Exception('用户不存在');
         // 获取推荐用户

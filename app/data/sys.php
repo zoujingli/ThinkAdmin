@@ -8,10 +8,16 @@ use think\Console;
 
 if (app()->request->isCli()) {
     Console::starting(function (Console $console) {
+        $console->addCommand(UserLevel::class);
         $console->addCommand(OrderClear::class);
         $console->addCommand(UserBalance::class);
-        $console->addCommand(UserLevel::class);
         $console->addCommand(UserTransfer::class);
+    });
+} else {
+    // 注册订单支付处理事件
+    app()->event->listen('ShopOrderPayment', function ($orderNo) {
+        app()->log->notice("订单支付事件，订单号：{$orderNo}");
+        \app\data\service\RebateCurrentService::instance()->execute($orderNo);
     });
 }
 
