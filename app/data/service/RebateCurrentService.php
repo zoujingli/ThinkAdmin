@@ -17,6 +17,7 @@ class RebateCurrentService extends Service
     const PRIZE_03 = 'prize_03';
     const PRIZE_04 = 'prize_04';
     const PRIZE_05 = 'prize_05';
+    const PRIZE_06 = 'prize_06';
 
     const PRIZES = [
         self::PRIZE_01 => ['code' => self::PRIZE_01, 'name' => '首推奖励', 'func' => '_prize01'],
@@ -24,6 +25,7 @@ class RebateCurrentService extends Service
         self::PRIZE_03 => ['code' => self::PRIZE_03, 'name' => '直属团队', 'func' => '_prize03'],
         self::PRIZE_04 => ['code' => self::PRIZE_04, 'name' => '间接团队', 'func' => '_prize04'],
         self::PRIZE_05 => ['code' => self::PRIZE_05, 'name' => '差额奖励', 'func' => '_prize05'],
+        self::PRIZE_06 => ['code' => self::PRIZE_06, 'name' => '管理奖励', 'func' => '_prize06'],
     ];
 
     /**
@@ -252,6 +254,15 @@ class RebateCurrentService extends Service
                 }
             }
         });
+        return true;
+    }
+
+    /**
+     * 管理奖励发放
+     * @return boolean
+     */
+    private function _prize06(): bool
+    {
         return true;
     }
 

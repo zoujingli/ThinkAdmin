@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 09/03/2021 17:54:24
+ Date: 10/03/2021 15:17:21
 */
 
 SET NAMES utf8mb4;
@@ -418,6 +418,40 @@ CREATE TABLE `data_user_transfer`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for data_user_upgrade
+-- ----------------------------
+DROP TABLE IF EXISTS `data_user_upgrade`;
+CREATE TABLE `data_user_upgrade`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别名称',
+  `number` tinyint(2) NULL DEFAULT 0 COMMENT '用户级别序号',
+  `rebate_rule` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户奖利规则',
+  `upgrade_type` tinyint(1) NULL DEFAULT 0 COMMENT '会员升级规则(0单个,1同时)',
+  `goods_vip_status` tinyint(1) NULL DEFAULT 0 COMMENT '入会礼包状态',
+  `order_amount_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单金额状态',
+  `order_amount_number` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额累计',
+  `teams_users_status` tinyint(1) NULL DEFAULT 0 COMMENT '团队人数状态',
+  `teams_users_number` bigint(20) NULL DEFAULT 0 COMMENT '团队人数累计',
+  `teams_direct_status` tinyint(1) NULL DEFAULT 0 COMMENT '直推人数状态',
+  `teams_direct_number` bigint(20) NULL DEFAULT 0 COMMENT '直推人数累计',
+  `teams_indirect_status` tinyint(1) NULL DEFAULT 0 COMMENT '间推人数状态',
+  `teams_indirect_number` bigint(20) NULL DEFAULT 0 COMMENT '间推人数累计',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别描述',
+  `utime` bigint(20) NULL DEFAULT 0 COMMENT '等级更新时间',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '用户等级状态(1使用,0禁用)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '等级创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_user_level_status`(`status`) USING BTREE,
+  INDEX `idx_data_user_level_number`(`number`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-等级' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of data_user_upgrade
+-- ----------------------------
+INSERT INTO `data_user_upgrade` VALUES (1, 'VIP1', 1, ',prize_01,prize_02,prize_03,', 1, 1, 0, 900.00, 1, 100, 1, 10, 1, 20, '', 1614067769, 1, '2021-01-29 09:04:45');
+INSERT INTO `data_user_upgrade` VALUES (2, 'VIP2', 2, ',prize_01,prize_02,prize_04,', 1, 1, 0, 0.00, 0, 0, 1, 100, 0, 0, '', 1614073167, 1, '2021-02-23 07:41:40');
+
+-- ----------------------------
 -- Table structure for shop_goods
 -- ----------------------------
 DROP TABLE IF EXISTS `shop_goods`;
@@ -726,7 +760,7 @@ CREATE TABLE `shop_payment_item`  (
   `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单单号',
   `order_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单描述',
   `order_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额',
-  `payment_code` bigint(20) NULL DEFAULT 0 COMMENT '支付编号',
+  `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付编号',
   `payment_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付通道',
   `payment_trade` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付单号',
   `payment_status` tinyint(1) NULL DEFAULT 0 COMMENT '支付状态',
