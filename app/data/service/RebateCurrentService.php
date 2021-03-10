@@ -12,12 +12,12 @@ use think\admin\Exception;
  */
 class RebateCurrentService extends Service
 {
-    const PRIZE_01 = 'prize_01';
-    const PRIZE_02 = 'prize_02';
-    const PRIZE_03 = 'prize_03';
-    const PRIZE_04 = 'prize_04';
-    const PRIZE_05 = 'prize_05';
-    const PRIZE_06 = 'prize_06';
+    const PRIZE_01 = 'PRIZE01';
+    const PRIZE_02 = 'PRIZE02';
+    const PRIZE_03 = 'PRIZE03';
+    const PRIZE_04 = 'PRIZE04';
+    const PRIZE_05 = 'PRIZE05';
+    const PRIZE_06 = 'PRIZE06';
 
     const PRIZES = [
         self::PRIZE_01 => ['code' => self::PRIZE_01, 'name' => '首推奖励', 'func' => '_prize01'],
