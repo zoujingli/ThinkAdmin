@@ -48,9 +48,9 @@ class Balance extends Auth
         $data = $this->_vali([
             'from.value'     => $this->uuid,
             'code.value'     => CodeExtend::uniqidDate(18, 'T'),
-            'uid.require'    => '目标用户不能为空！',
+            'uid.require'    => '用户不能为空！',
             'name.default'   => '用户余额转账',
-            'amount.require' => '转账金额不能为空！',
+            'amount.require' => '金额不能为空！',
         ]);
         if ($data['uid'] == $this->uuid) {
             $this->error('不能给自己转账！');
