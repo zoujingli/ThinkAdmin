@@ -121,6 +121,8 @@ class Order extends Auth
                 'price_selling'   => $goodsItem['price_selling'],
                 'total_market'    => $goodsItem['price_market'] * $count,
                 'total_selling'   => $goodsItem['price_selling'] * $count,
+                // 是否参与返利
+                'rebate_type'     => $goodsInfo['rebate_type'],
                 // 奖励金额积分
                 'reward_balance'  => $goodsItem['reward_balance'] * $count,
                 'reward_integral' => $goodsItem['reward_integral'] * $count,
