@@ -60,12 +60,12 @@ class Order extends Auth
         $order = ['uid' => $this->uuid];
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
         // 推荐人处理
-        $order['from'] = input('from_uid', $this->user['pid1']);
-        if ($order['from'] == $this->uuid) $order['from'] = 0;
-        if ($order['from'] > 0) {
-            $map = ['id' => $order['from'], 'status' => 1];
-            $fromer = $this->app->db->name('DataUser')->where($map)->find();
-            if (empty($fromer)) $this->error('推荐人异常');
+        $order['puid1'] = input('puid1', $this->user['pid1']);
+        if ($order['puid1'] == $this->uuid) $order['puid1'] = 0;
+        if ($order['puid1'] > 0) {
+            $map = ['id' => $order['puid1'], 'status' => 1];
+            $order['puid2'] = $this->app->db->name('DataUser')->where($map)->value('pid2');
+            if (is_null($order['puid2'])) $this->error('推荐人异常');
         }
         foreach (explode('||', $rules) as $rule) {
             [$code, $spec, $count] = explode('@', $rule);
