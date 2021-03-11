@@ -21,7 +21,7 @@ class Goods extends Controller
      */
     public function getCate()
     {
-        $this->success('获取分类成功', GoodsService::instance()->getCateList());
+        $this->success('获取分类成功', GoodsService::instance()->getCateTree());
     }
 
     /**

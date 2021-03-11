@@ -289,13 +289,12 @@ class Order extends Auth
             $openid = '';
             if (in_array($this->type, [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT])) {
                 $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
-                // if (empty($openid)) $this->error("发起支付失败");
+                if (empty($openid)) $this->error("发起支付失败");
             }
             // 返回订单数据及支付发起参数
             $type = $order['amount_real'] <= 0 ? 'empty' : $data['payment_code'];
             $param = PaymentService::instance($type)->create($openid, $order['order_no'], $order['amount_real'], '商城订单支付', '', $data['payment_back'], $data['payment_image']);
-            $order = $this->app->db->name('ShopOrder')->where($map)->find() ?: new \stdClass();
-            $this->success('获取支付参数', ['order' => $order, 'param' => $param]);
+            $this->success('获取支付参数', ['order' => $this->app->db->name('ShopOrder')->where($map)->find() ?: new \stdClass(), 'param' => $param]);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

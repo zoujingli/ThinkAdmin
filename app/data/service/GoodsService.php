@@ -57,21 +57,16 @@ class GoodsService extends Service
 
     /**
      * 获取分类数据
-     * @param string $type 操作函数
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getCateList(string $type = 'arr2tree'): array
+    public function getCateTree(): array
     {
         $map = ['deleted' => 0, 'status' => 1];
         $query = $this->app->db->name('ShopGoodsCate')->where($map)->order('sort desc,id desc');
-        $cates = DataExtend::$type($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
-        if ($type === 'arr2table') foreach ($cates as &$vo) {
-            $vo['sat'] = $vo['spt'] !== $this->getCateLevel() - 1 ? 'disabled' : '';
-        }
-        return $cates;
+        return DataExtend::arr2tree($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
     }
 
     /**
@@ -133,7 +128,7 @@ class GoodsService extends Service
             foreach ($cates as $cate) if (in_array($cate['id'], $vo['cateids'])) $vo['cateinfo'] = $cate;
             [$vo['slider'], $vo['specs'], $vo['items']] = [str2arr($vo['slider'], '|'), json_decode($vo['data_specs'], true), []];
             foreach ($items as $item) if ($item['goods_code'] === $vo['code']) $vo['items'][] = $item;
-            if ($simple) unset($vo['marks'], $vo['sort'], $vo['status'], $vo['deleted'], $vo['data_items'], $vo['data_specs']);
+            if ($simple) unset($vo['marks'], $vo['sort'], $vo['status'], $vo['deleted'], $vo['data_items'], $vo['data_specs'], $vo['cateinfo']['parent']);
         }
         return $data;
     }
