@@ -132,7 +132,7 @@ class UserService extends Service
         }
         if (empty($data) || empty($data['uid'])) {
             return [0, '请重新登录，登录认证无效', 0, 0];
-        } elseif ($data['time'] < time()) {
+        } elseif ($token !== 'token' && $data['time'] < time()) {
             return [0, '请重新登录，登录认证失效', 0, 0];
         } elseif ($token !== 'token' && $data['tokenv'] !== $this->_buildTokenVerify()) {
             return [0, '请重新登录，客户端已更换', 0, 0];
