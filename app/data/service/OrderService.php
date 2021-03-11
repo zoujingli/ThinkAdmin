@@ -39,7 +39,7 @@ class OrderService extends Service
     /**
      * 绑定订单详情数据
      * @param array $data
-     * @param bool $fromer
+     * @param boolean $fromer
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
