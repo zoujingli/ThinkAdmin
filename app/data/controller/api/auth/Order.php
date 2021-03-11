@@ -95,8 +95,8 @@ class Order extends Auth
             [$discountId, $discountRate] = [0, 100.00];
             if ($goodsInfo['discount_id'] > 0) {
                 $map = ['status' => 1, 'deleted' => 0, 'id' => $goodsInfo['discount_id']];
-                if ($items = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
-                    foreach (json_decode($items, true) as $vo) if ($vo['level'] == $this->user['vip_number']) {
+                if ($discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
+                    foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $this->user['vip_number']) {
                         [$discountId, $discountRate] = [$goodsInfo['discount_id'], $vo['discount']];
                     }
                 }
@@ -135,7 +135,7 @@ class Order extends Auth
                 // 等级优惠方案
                 'discount_id'     => $discountId,
                 'discount_rate'   => $discountRate,
-                'discount_amount' => $discountRate * $goodsItem['price_selling'] * $count / 100,
+                'discount_amount' => $discountRate * floatval($goodsItem['price_selling']) * $count / 100,
             ];
         }
         try {
