@@ -55,7 +55,7 @@ class OrderService extends Service
         $query = $this->app->db->name('ShopOrderItem')->where(['status' => 1, 'deleted' => 0]);
         $items = $query->withoutField('id,uid,status,deleted,create_at')->whereIn('order_no', $nobs)->select()->toArray();
         // 关联用户数据
-        $fields = 'username,phone,nickname,headimg,status';
+        $fields = 'phone,username,nickname,headimg,status';
         UserService::instance()->buildByUid($data, 'uid', 'user', $fields);
         if ($fromer) UserService::instance()->buildByUid($data, 'puid1', 'fromer', $fields);
         foreach ($data as &$vo) {
