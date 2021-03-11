@@ -28,7 +28,7 @@ class Config extends Auth
         }
         $map = ['status' => 1, 'deleted' => 0];
         $query = $this->app->db->name('ShopPayment')->where($map)->whereIn('type', $types);
-        $collect = $query->order('sort desc,id desc')->field('code,name,type')->select();
+        $collect = $query->order('sort desc,id desc')->field('type,code,name')->select();
         $this->success('获取支付参数数据', $collect->toArray());
     }
 }
