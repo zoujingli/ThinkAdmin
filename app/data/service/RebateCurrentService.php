@@ -221,11 +221,9 @@ class RebateCurrentService extends Service
         $pids = array_reverse(explode('-', trim($this->user['path'], '-')));
         if (empty($pids)) return false;
         // 获取拥有差额奖励的等级
-        $query = $this->app->db->name('DataUserUpgrade');
-        $numbs = $query->whereLike('rule', '%,' . self::PRIZE_05 . ',%')->column('number');
+        $numbs = $this->app->db->name('DataUserUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->column('number');
         // 获取可以参与奖励的代理
-        $query = $this->app->db->name('DataUser')->whereIn('vip_number', $numbs);
-        $users = $query->whereIn('id', $pids)->orderField('id', $pids)->select()->toArray();
+        $users = $this->app->db->name('DataUser')->whereIn('vip_number', $numbs)->whereIn('id', $pids)->orderField('id', $pids)->select()->toArray();
         // 查询需要计算奖励的商品
         $map = [['order_no', '=', $this->order['order_no']], ['discount_rate', '<', 100]];
         $this->app->db->name('StoreOrderItem')->where($map)->select()->each(function ($item) use ($users) {

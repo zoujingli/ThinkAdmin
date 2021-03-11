@@ -289,7 +289,7 @@ class Order extends Auth
             $openid = '';
             if (in_array($this->type, [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT])) {
                 $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
-                if (empty($openid)) $this->error("发起支付失败");
+                // if (empty($openid)) $this->error("发起支付失败");
             }
             // 返回订单数据及支付发起参数
             $type = $order['amount_real'] <= 0 ? 'empty' : $data['payment_code'];
