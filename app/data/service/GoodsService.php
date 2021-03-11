@@ -120,9 +120,9 @@ class GoodsService extends Service
     public function buildItemData(array &$data = [], $simple = true): array
     {
         $cates = $this->getCateData();
+        $codes = array_unique(array_column($data, 'code'));
         $marks = $this->app->db->name('ShopGoodsMark')->where(['status' => 1])->column('name');
-        $query = $this->app->db->name('ShopGoodsItem')->withoutField('id,status,create_at');
-        $items = $query->whereIn('goods_code', array_unique(array_column($data, 'code')))->where(['status' => 1])->select()->toArray();
+        $items = $this->app->db->name('ShopGoodsItem')->whereIn('goods_code', $codes)->where(['status' => 1])->select()->toArray();
         foreach ($data as &$vo) {
             [$vo['marks'], $vo['cateids'], $vo['cateinfo']] = [str2arr($vo['marks'], ',', $marks), str2arr($vo['cateids']), []];
             foreach ($cates as $cate) if (in_array($cate['id'], $vo['cateids'])) $vo['cateinfo'] = $cate;
