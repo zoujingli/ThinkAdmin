@@ -72,7 +72,7 @@ class Order extends Auth
             [$code, $spec, $count] = explode('@', $rule);
             // 商品信息检查
             $goodsInfo = $this->app->db->name('ShopGoods')->where(['code' => $code, 'status' => 1, 'deleted' => 0])->find();
-            $goodsItem = $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $code, 'goods_spec' => $spec, 'status' => 1])->find();
+            $goodsItem = $this->app->db->name('ShopGoodsItem')->where(['status' => 1, 'goods_code' => $code, 'goods_spec' => $spec])->find();
             if (empty($goodsInfo) || empty($goodsItem)) $this->error('商品查询异常');
             // 商品类型检查
             if ($truckType < 0) $truckType = $goodsInfo['truck_type'];
