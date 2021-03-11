@@ -30,7 +30,7 @@ class ShopGoodsCate extends Controller
      */
     protected function initialize()
     {
-        $this->cateLevel = GoodsService::instance()->getCateLevel();
+        $this->cateLevel = GoodsService::instance()->getCateMax();
     }
 
     /**

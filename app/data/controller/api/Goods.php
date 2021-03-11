@@ -45,11 +45,10 @@ class Goods extends Controller
                 'num_read' => $this->app->db->raw('num_read+1'),
             ]);
         }
-        $map = ['deleted' => 0, 'status' => 1];
-        $query = $this->_query('ShopGoods')->like('name,mark')->equal('code,cate');
-        $result = $query->where($map)->order('sort desc,id desc')->page(true, false, false, 10);
-        GoodsService::instance()->buildItemData($result['list']);
-        $this->success('获取商品成功', $result);
+        $query = $this->_query('ShopGoods')->like('name,cateids,marks,payment')->equal('code');
+        $result = $query->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc')->page(true, false, false, 10);
+        if (count($result['list']) > 0) GoodsService::instance()->buildData($result['list']);
+        $this->success('获取商品数据', $result);
     }
 
     /**

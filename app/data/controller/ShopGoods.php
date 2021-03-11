@@ -30,7 +30,7 @@ class ShopGoods extends Controller
      */
     protected function initialize()
     {
-        $this->cateLevel = GoodsService::instance()->getCateLevel();
+        $this->cateLevel = GoodsService::instance()->getCateMax();
     }
 
     /**
@@ -80,7 +80,7 @@ class ShopGoods extends Controller
     {
         $this->marks = GoodsService::instance()->getMarkData();
         $this->cates = GoodsService::instance()->getCateData();
-        GoodsService::instance()->buildItemData($data, false);
+        GoodsService::instance()->buildData($data, false);
     }
 
     /**
@@ -218,7 +218,7 @@ class ShopGoods extends Controller
         if ($this->request->isGet()) {
             $list = $this->app->db->name('ShopGoods')->where($map)->select()->toArray();
             if (empty($list)) $this->error('无效的商品数据，请稍候再试！');
-            [$this->vo] = GoodsService::instance()->buildItemData($list);
+            [$this->vo] = GoodsService::instance()->buildData($list);
             $this->fetch();
         } else {
             [$data, $post, $batch] = [[], $this->request->post(), CodeExtend::uniqidDate(12, 'B')];
