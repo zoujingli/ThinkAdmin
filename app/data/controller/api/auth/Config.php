@@ -21,14 +21,8 @@ class Config extends Auth
     public function getPayment()
     {
         $types = [];
-        foreach (PaymentService::TYPES as $type => $arr) {
-            if (isset($arr['bind']) && in_array($this->type, $arr['bind'])) {
-                $types[] = $type;
-            }
-        }
-        $map = ['status' => 1, 'deleted' => 0];
-        $query = $this->app->db->name('ShopPayment')->where($map)->whereIn('type', $types);
-        $collect = $query->order('sort desc,id desc')->field('type,code,name')->select();
-        $this->success('获取支付参数数据', $collect->toArray());
+        foreach (PaymentService::TYPES as $type => $arr) if (in_array($this->type, $arr['bind'])) $types[] = $type;
+        $query = $this->app->db->name('ShopPayment')->where(['status' => 1, 'deleted' => 0])->whereIn('type', $types);
+        $this->success('获取支付参数数据', $query->order('sort desc,id desc')->field('type,code,name')->select()->toArray());
     }
 }
