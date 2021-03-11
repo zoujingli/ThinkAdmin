@@ -211,7 +211,7 @@ class UserService extends Service
 
     /**
      * 同步计算用户级别
-     * @param integer $uid 指定用户uid
+     * @param integer $uid 指定用户UID
      * @param boolean $parent 同步计算上级
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
@@ -226,8 +226,8 @@ class UserService extends Service
         // 统计历史数据
         $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uid])->count();
         $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->count();
-        $teamsUsers = $this->app->db->name('DataUser')->whereLike('path', "%-{$uid}-%")->count();
-        $orderAmount = $this->app->db->name('ShopOrder')->where(['uid' => $uid])->whereIn('status', [3, 4, 5])->sum('amount_total');
+        $teamsUsers = $this->app->db->name('DataUser')->where(['pid1|pid2' => $uid])->count();
+        $orderAmount = $this->app->db->name('ShopOrder')->where("uid={$uid} and status>=4")->sum('amount_total');
         // 计算用户级别
         foreach ($this->app->db->name('DataUserUpgrade')->where(['status' => 1])->order('number desc')->cursor() as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['buy_vip_entry'] > 0;
@@ -248,16 +248,14 @@ class UserService extends Service
         $query = $this->app->db->name('ShopOrderItem')->alias('b')->join('shop_order a', 'b.order_no=a.order_no');
         $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status in (3,4,5) and b.vip_entry=1")->max('b.vip_number');
         if ($tmpNumber > $vipNumber) {
-            $map = ['number' => $tmpNumber, 'status' => 1];
-            $levelInfo = $this->app->db->name('DataUserUpgrade')->where($map)->find();
-            if (!empty($levelInfo)) [$vipNumber, $vipName] = [$levelInfo['number'], $levelInfo['name']];
+            $map = ['status' => 1, 'number' => $tmpNumber];
+            $upgrade = $this->app->db->name('DataUserUpgrade')->where($map)->find();
+            if (!empty($upgrade)) [$vipName, $vipNumber] = [$upgrade['name'], $upgrade['number']];
         }
-        // 统计订单统计
-        $orderAmountTotal = $this->app->db->name('ShopOrder')->whereRaw("uid={$uid} and status in (3,4,5)")->sum('amount_goods');
-        // 统计团队业绩
-        $usql = $this->app->db->name('DataUser')->field('id')->whereRaw("`pid1`={$uid}")->buildSql();
-        $teamsAmountDirect = $this->app->db->name('ShopOrder')->whereRaw("`puid1`={$uid} and status in (3,4,5)")->sum('amount_goods');
-        $teamsAmountIndirect = $this->app->db->name('ShopOrder')->whereRaw("`puid1` in {$usql} and status in (3,4,5)")->sum('amount_goods');
+        // 统计订单金额
+        $orderAmountTotal = $this->app->db->name('ShopOrder')->whereRaw("uid={$uid} and status>=4")->sum('amount_goods');
+        $teamsAmountDirect = $this->app->db->name('ShopOrder')->whereRaw("puid1={$uid} and status>=4")->sum('amount_goods');
+        $teamsAmountIndirect = $this->app->db->name('ShopOrder')->whereRaw("puid2={$uid} and status>=4")->sum('amount_goods');
         // 更新用户数据
         $data = [
             'vip_name'              => $vipName,
