@@ -67,20 +67,24 @@
                         商品名称：<span>{$vo.name|default='--'}</span><br>
                     </div>
                 </td>
-                <td class="text-left">
+                <td class="text-left sub-span-blue">
                     <div>
-                        <!--{notempty name='clist'}-->
-                        所属分类：{$vo.cate.name|default='-'}<br>
-                        <!--{/notempty}-->
-                    </div>
-                    <div>
-                        {notempty name='vo.mark'}{foreach $vo.mark as $mark}
-                        <span class="notselect nowrap layui-badge layui-bg-cyan">{$mark}</span>
+                        {notempty name='vo.marks'}{foreach $vo.marks as $mark}
+                        <b class="notselect nowrap layui-badge layui-bg-cyan">{$mark}</b>
                         {/foreach}{/notempty}
+                    </div>
+                    <div class="nowrap">
+                        {notempty name='vo.cateinfo'}
+                        {:join('<span class="layui-icon layui-icon-right font-s10"></span>', $vo.cateinfo.names)}<br>
+                        {/notempty}
                     </div>
                 </td>
                 <td class='nowrap'>
-                    <div>销售状态：{eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}</div>
+                    <div>
+                        {eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}
+                        {eq name='vo.vip_entry' value='0'}<span class="layui-badge">非入会礼包</span>{else}<span class="layui-badge layui-bg-green">是入会礼包</span>{/eq}
+                        {eq name='vo.truck_type' value='0'}<span class="layui-badge">无需快递配送</span>{else}<span class="layui-badge layui-bg-green">需要快递配送</span>{/eq}
+                    </div>
                     <div>创建时间：{$vo.create_at|format_datetime}</div>
                 </td>
                 <td class='nowrap sub-span-blue'>

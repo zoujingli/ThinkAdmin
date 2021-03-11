@@ -7,16 +7,16 @@ use think\admin\Controller;
 
 /**
  * 用户等级管理
- * Class UserLevel
+ * Class UserUpgrade
  * @package app\data\controller
  */
-class UserLevel extends Controller
+class UserUpgrade extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataUserLevel';
+    private $table = 'DataUserUpgrade';
 
     /**
      * 用户等级管理

@@ -21,26 +21,26 @@
             <label class="layui-input-inline">
                 <select class="layui-select" name="mark" lay-search>
                     <option value="">-- 全部标签 --</option>
-                    {foreach $marks as $mark}{if input('mark','') eq $mark}
-                    <option selected value="{$mark}">{$mark}</option>
+                    {foreach $marks as $mark}{if input('mark','') eq ','.$mark.','}
+                    <option selected value=",{$mark},">{$mark}</option>
                     {else}
-                    <option value="{$mark}">{$mark}</option>
+                    <option value=",{$mark},">{$mark}</option>
                     {/if}{/foreach}
                 </select>
             </label>
         </div>
         {/notempty}
 
-        {notempty name='clist'}
+        {notempty name='cates'}
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">商品分类</label>
             <label class="layui-input-inline">
-                <select class="layui-select" name="cate" lay-search>
+                <select class="layui-select" name="cateids" lay-search>
                     <option value="">-- 全部分类 --</option>
-                    {foreach $clist as $cate}{if input('cate','') eq $cate.id}
-                    <option {$cate.sat} selected value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
+                    {foreach $cates as $cate}{if input('cateids','') eq ','.$cate.id.','}
+                    <option selected value=",{$cate.id},">{:join(' ＞ ', $cate.names)}</option>
                     {else}
-                    <option {$cate.sat} value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
+                    <option value=",{$cate.id},">{:join(' ＞ ', $cate.names)}</option>
                     {/if}{/foreach}
                 </select>
             </label>

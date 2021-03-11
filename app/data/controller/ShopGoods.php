@@ -51,7 +51,7 @@ class ShopGoods extends Controller
         elseif ($this->type === 'recycle') $query->where(['deleted' => 1]);
         else $this->error("无法加载 {$this->type} 数据列表！");
         // 列表排序并显示
-        $query->like('code,name,mark')->equal('status,cate');
+        $query->like('code,name,marks,cateids')->equal('status');
         $query->order('sort desc,id desc')->page();
     }
 
@@ -65,7 +65,7 @@ class ShopGoods extends Controller
     public function select()
     {
         $query = $this->_query($this->table);
-        $query->equal('status,cate')->like('code,name,mark');
+        $query->equal('status')->like('code,name,marks')->in('cates');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
@@ -78,13 +78,9 @@ class ShopGoods extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        $this->marks = GoodsService::instance()->getMarkList();
-        $this->clist = GoodsService::instance()->getCateList('arr2table');
-        $clist = $this->app->db->name('ShopGoodsCate')->whereIn('id', array_column($data, 'cate'))->column('pid,name,status', 'id');
-        foreach ($data as &$vo) {
-            $vo['cate'] = $clist[$vo['cate']] ?? $vo['cate'];
-            $vo['mark'] = str2arr($vo['mark'] ?: '', ',', $this->marks);
-        }
+        $this->marks = GoodsService::instance()->getMarkData();
+        $this->cates = GoodsService::instance()->getCateData();
+        GoodsService::instance()->buildItemData($data, false);
     }
 
     /**
@@ -153,12 +149,15 @@ class ShopGoods extends Controller
             $data['code'] = CodeExtend::uniqidNumber(14, 'G');
         }
         if ($this->request->isGet()) {
-            $data['mark'] = str2arr($data['mark'] ?? '');
-            $this->marks = GoodsService::instance()->getMarkList();
-            $this->cates = GoodsService::instance()->getCateList('arr2table');
-            $this->levels = $this->app->db->name('DataUserLevel')->where(['status' => 1])->order('number asc,id desc')->select()->toArray();
-            $this->trucks = $this->app->db->name('ShopTruckTemplate')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('code,name');
-            $this->discounts = $this->app->db->name('DataUserDiscount')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->select()->toArray();
+            $data['marks'] = str2arr($data['marks'] ?? '');
+            $data['payment'] = str2arr($data['payment'] ?? '');
+            $data['cateids'] = str2arr($data['cateids'] ?? '');
+            $this->marks = GoodsService::instance()->getMarkData();
+            $this->cates = GoodsService::instance()->getCateData();
+            $this->trucks = $this->app->db->name('ShopTruckTemplate')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('code,name', 'code');
+            $this->payments = $this->app->db->name('ShopPayment')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');
+            $this->upgrades = $this->app->db->name('DataUserUpgrade')->where(['status' => 1, 'deleted' => 0])->order('number asc,id desc')->column('number,name', 'id');
+            $this->discounts = $this->app->db->name('DataUserDiscount')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('id,name,items', 'id');
             // 商品规格处理
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,reward_balance `balance`,reward_integral `integral`,status';
             $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
@@ -169,7 +168,8 @@ class ShopGoods extends Controller
             [$count, $items] = [0, array_column(json_decode($data['data_items'], true), 0)];
             foreach ($items as $item) $count += intval($item['status']);
             if (empty($count)) $this->error('无效的的商品价格信息！');
-            $data['mark'] = arr2str($data['mark'] ?? []);
+            $data['marks'] = arr2str($data['marks'] ?? []);
+            $data['payment'] = arr2str($data['payment'] ?? []);
             if (empty($data['price_market'])) $data['price_market'] = min(array_column($items, 'market'));
             if (empty($data['price_selling'])) $data['price_selling'] = min(array_column($items, 'selling'));
             $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->update(['status' => 0]);

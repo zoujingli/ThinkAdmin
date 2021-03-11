@@ -29,7 +29,7 @@ class Goods extends Controller
      */
     public function getMark()
     {
-        $this->success('获取标签成功', GoodsService::instance()->getMarkList());
+        $this->success('获取标签成功', GoodsService::instance()->getMarkData());
     }
 
     /**

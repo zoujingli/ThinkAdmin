@@ -221,7 +221,7 @@ class RebateCurrentService extends Service
         $pids = array_reverse(explode('-', trim($this->user['path'], '-')));
         if (empty($pids)) return false;
         // 获取拥有差额奖励的等级
-        $query = $this->app->db->name('DataUserLevel');
+        $query = $this->app->db->name('DataUserUpgrade');
         $numbs = $query->whereLike('rule', '%,' . self::PRIZE_05 . ',%')->column('number');
         // 获取可以参与奖励的代理
         $query = $this->app->db->name('DataUser')->whereIn('vip_number', $numbs);
@@ -275,6 +275,6 @@ class RebateCurrentService extends Service
     protected function checkLevelPrize(string $prize, int $level): bool
     {
         $map = [['number', '=', $level], ['rebate_rule', 'like', "%,{$prize},%"]];
-        return $this->app->db->name('DataUserLevel')->where($map)->count() > 0;
+        return $this->app->db->name('DataUserUpgrade')->where($map)->count() > 0;
     }
 }

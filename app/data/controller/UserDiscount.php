@@ -84,7 +84,7 @@ class UserDiscount extends Controller
             }
             $vo['items'] = json_encode($rule, JSON_UNESCAPED_UNICODE);
         } else {
-            $query = $this->app->db->name('DataUserLevel');
+            $query = $this->app->db->name('DataUserUpgrade');
             $this->levels = $query->where(['status' => 1])->order('number asc')->select()->toArray();
             if (empty($this->levels)) $this->error('未配置用户等级！');
             if (!empty($vo['items'])) foreach (json_decode($vo['items'], true) as $item) {

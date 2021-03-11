@@ -13,7 +13,7 @@ use think\console\Output;
  * Class UserLevel
  * @package app\data\command
  */
-class UserLevel extends Command
+class UserUpgrade extends Command
 {
     protected function configure()
     {

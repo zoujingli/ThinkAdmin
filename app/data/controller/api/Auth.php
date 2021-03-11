@@ -43,7 +43,7 @@ abstract class Auth extends Controller
     protected function initialize()
     {
         // 接口数据类型
-        $this->type = input('api') ?: $this->request->header('api-name');
+        $this->type = $this->request->header('api-name') ?: input('api');
         $this->type = $this->type ?: $this->request->header('api-type');
         if (empty($this->type) || empty(UserService::TYPES[$this->type])) {
             $this->error("接口通道未定义！");

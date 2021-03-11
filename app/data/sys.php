@@ -2,15 +2,15 @@
 
 use app\data\command\OrderClear;
 use app\data\command\UserBalance;
-use app\data\command\UserLevel;
+use app\data\command\UserUpgrade;
 use app\data\command\UserTransfer;
 use think\Console;
 
 if (app()->request->isCli()) {
     Console::starting(function (Console $console) {
-        $console->addCommand(UserLevel::class);
         $console->addCommand(OrderClear::class);
         $console->addCommand(UserBalance::class);
+        $console->addCommand(UserUpgrade::class);
         $console->addCommand(UserTransfer::class);
     });
 } else {

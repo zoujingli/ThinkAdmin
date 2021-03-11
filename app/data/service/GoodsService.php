@@ -75,10 +75,38 @@ class GoodsService extends Service
     }
 
     /**
+     * 获取分类数据
+     * @param boolean $simple 简化数据
+     * @return array
+     */
+    public function getCateData($simple = true): array
+    {
+        $cates = $this->app->db->name('ShopGoodsCate')->column('id,pid,name', 'id');
+        foreach ($cates as $cate) if (isset($cates[$cate['pid']])) {
+            $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
+        }
+        foreach ($cates as $key => $cate) {
+            $id = $cate['id'];
+            $cates[$id]['ids'][] = $cate['id'];
+            $cates[$id]['names'][] = $cate['name'];
+            while (isset($cate['parent']) && $cate = $cate['parent']) {
+                $cates[$id]['ids'][] = $cate['id'];
+                $cates[$id]['names'][] = $cate['name'];
+            }
+            $cates[$id]['ids'] = array_reverse($cates[$id]['ids']);
+            $cates[$id]['names'] = array_reverse($cates[$id]['names']);
+            if ($simple && count($cates[$id]['names']) !== $this->getCateLevel()) {
+                unset($cates[$key]);
+            }
+        }
+        return $cates;
+    }
+
+    /**
      * 获取商品标签数据
      * @return array
      */
-    public function getMarkList(): array
+    public function getMarkData(): array
     {
         $map = ['status' => 1];
         $query = $this->app->db->name('ShopGoodsMark');
@@ -88,29 +116,24 @@ class GoodsService extends Service
     /**
      * 商品数据绑定
      * @param array $data 商品主数据
+     * @param boolean $simple 简化数据
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function buildItemData(array &$data = []): array
+    public function buildItemData(array &$data = [], $simple = true): array
     {
-        $cates = $this->app->db->name('ShopGoodsCate')->column('id,pid,name', 'id');
-        foreach ($cates as $cate) if (isset($cates[$cate['pid']])) {
-            $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
-        }
-        $codes = array_unique(array_column($data, 'code'));
-        $query = $this->app->db->name('ShopGoodsItem')->withoutField('id,status,create_at');
-        $items = $query->whereIn('goods_code', $codes)->where(['status' => 1])->select()->toArray();
+        $cates = $this->getCateData();
         $marks = $this->app->db->name('ShopGoodsMark')->where(['status' => 1])->column('name');
+        $query = $this->app->db->name('ShopGoodsItem')->withoutField('id,status,create_at');
+        $items = $query->whereIn('goods_code', array_unique(array_column($data, 'code')))->where(['status' => 1])->select()->toArray();
         foreach ($data as &$vo) {
-            $vo['marks'] = str2arr($vo['mark'], ',', $marks);
-            $vo['cates'] = $cates[$vo['cate']] ?? [];
-            $vo['slider'] = explode('|', $vo['slider']);
-            $vo['specs'] = json_decode($vo['data_specs'], true);
-            $vo['items'] = [];
+            [$vo['marks'], $vo['cateids'], $vo['cateinfo']] = [str2arr($vo['marks'], ',', $marks), str2arr($vo['cateids']), []];
+            foreach ($cates as $cate) if (in_array($cate['id'], $vo['cateids'])) $vo['cateinfo'] = $cate;
+            [$vo['slider'], $vo['specs'], $vo['items']] = [str2arr($vo['slider'], '|'), json_decode($vo['data_specs'], true), []];
             foreach ($items as $item) if ($item['goods_code'] === $vo['code']) $vo['items'][] = $item;
-            unset($vo['mark'], $vo['sort'], $vo['status'], $vo['deleted'], $vo['data_items'], $vo['data_specs']);
+            if ($simple) unset($vo['marks'], $vo['sort'], $vo['status'], $vo['deleted'], $vo['data_items'], $vo['data_specs']);
         }
         return $data;
     }

@@ -229,7 +229,7 @@ class UserService extends Service
         $teamsUsers = $this->app->db->name('DataUser')->whereLike('path', "%-{$uid}-%")->count();
         $orderAmount = $this->app->db->name('ShopOrder')->where(['uid' => $uid])->whereIn('status', [3, 4, 5])->sum('amount_total');
         // 计算用户级别
-        foreach ($this->app->db->name('DataUserLevel')->where(['status' => 1])->order('number desc')->cursor() as $item) {
+        foreach ($this->app->db->name('DataUserUpgrade')->where(['status' => 1])->order('number desc')->cursor() as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['buy_vip_entry'] > 0;
             $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsUsers;
             $l3 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $orderAmount;
@@ -249,7 +249,7 @@ class UserService extends Service
         $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status in (3,4,5) and b.vip_entry=1")->max('b.vip_number');
         if ($tmpNumber > $vipNumber) {
             $map = ['number' => $tmpNumber, 'status' => 1];
-            $levelInfo = $this->app->db->name('DataUserLevel')->where($map)->find();
+            $levelInfo = $this->app->db->name('DataUserUpgrade')->where($map)->find();
             if (!empty($levelInfo)) [$vipNumber, $vipName] = [$levelInfo['number'], $levelInfo['name']];
         }
         // 统计订单统计
