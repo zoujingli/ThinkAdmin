@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 24/02/2021 18:06:24
+ Date: 11/03/2021 16:26:19
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,7 @@ CREATE TABLE `system_menu`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_menu_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_menu
@@ -78,9 +78,10 @@ INSERT INTO `system_menu` VALUES (87, 68, '支付参数管理', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (88, 68, '系统通知管理', 'layui-icon layui-icon-notice', 'data/user_notify/index', 'data/user_notify/index', '', '_self', 6, 1, '2021-01-20 10:07:32');
 INSERT INTO `system_menu` VALUES (89, 90, '余额充值记录', 'layui-icon layui-icon-rmb', 'data/user_balance/index', 'data/user_balance/index', '', '_self', 800, 1, '2021-01-20 10:09:49');
 INSERT INTO `system_menu` VALUES (90, 67, '用户管理', '', '', '#', '', '_self', 0, 1, '2021-01-22 05:43:01');
-INSERT INTO `system_menu` VALUES (91, 90, '用户等级管理', 'layui-icon layui-icon-senior', 'data/user_level/index', 'data/user_level/index', '', '_self', 700, 1, '2021-01-22 05:43:27');
+INSERT INTO `system_menu` VALUES (91, 90, '用户等级管理', 'layui-icon layui-icon-senior', 'data/user_upgrade/index', 'data/user_upgrade/index', '', '_self', 700, 1, '2021-01-22 05:43:27');
 INSERT INTO `system_menu` VALUES (92, 90, '用户折扣方案', 'layui-icon layui-icon-set', 'data/user_discount/index', 'data/user_discount/index', '', '_self', 0, 1, '2021-01-27 05:44:51');
 INSERT INTO `system_menu` VALUES (93, 90, '用户提现管理', 'layui-icon layui-icon-component', 'data/user_transfer/index', 'data/user_transfer/index', '', '_self', 0, 1, '2021-01-28 06:48:34');
 INSERT INTO `system_menu` VALUES (94, 68, '页面内容管理', 'layui-icon layui-icon-read', 'data/config/pagehome', 'data/config/pagehome', '', '_self', 20, 1, '2021-02-24 08:49:16');
+INSERT INTO `system_menu` VALUES (95, 68, '邀请二维码设置', 'layui-icon layui-icon-cols', 'data/config/cropper', 'data/config/cropper', '', '_self', 0, 1, '2021-03-01 09:53:59');
 
 SET FOREIGN_KEY_CHECKS = 1;
