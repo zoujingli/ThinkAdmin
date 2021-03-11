@@ -36,16 +36,16 @@
                             <a class="margin-left-5 inline-block nowrap" ng-click="RemoveRuleItem(item)">删除</a>
                         </td>
                         <td class="padding-0 text-center">
-                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(item.rule,'firstNumber',0)" ng-model="item.rule.firstNumber">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-blur="convertNumber(item.rule,'firstNumber',0)" ng-model="item.rule.firstNumber">
                         </td>
                         <td class="padding-0 text-center">
-                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(item.rule,'firstAmount',2)" ng-model="item.rule.firstAmount">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-blur="convertNumber(item.rule,'firstAmount',2)" ng-model="item.rule.firstAmount">
                         </td>
                         <td class="padding-0 text-center">
-                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(item.rule,'repeatNumber',0)" ng-model="item.rule.repeatNumber">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-blur="convertNumber(item.rule,'repeatNumber',0)" ng-model="item.rule.repeatNumber">
                         </td>
                         <td class="padding-0 text-center">
-                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(item.rule,'repeatAmount',2)" ng-model="item.rule.repeatAmount">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-blur="convertNumber(item.rule,'repeatAmount',2)" ng-model="item.rule.repeatAmount">
                         </td>
                     </tr>
                     <tr ng-if="defs.city.length > 0">
@@ -61,16 +61,16 @@
                             </div>
                         </td>
                         <td class="padding-0 text-center">
-                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(defs.rule,'firstNumber',0)" ng-model="defs.rule.firstNumber">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-blur="convertNumber(defs.rule,'firstNumber',0)" ng-model="defs.rule.firstNumber">
                         </td>
                         <td class="padding-0 text-center">
-                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(defs.rule,'firstAmount',2)" ng-model="defs.rule.firstAmount">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-blur="convertNumber(defs.rule,'firstAmount',2)" ng-model="defs.rule.firstAmount">
                         </td>
                         <td class="padding-0 text-center">
-                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(defs.rule,'repeatNumber',0)" ng-model="defs.rule.repeatNumber">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-blur="convertNumber(defs.rule,'repeatNumber',0)" ng-model="defs.rule.repeatNumber">
                         </td>
                         <td class="padding-0 text-center">
-                            <input class="layui-input text-center padding-left-0 border-0" ng-change="convertNumber(defs.rule,'repeatAmount',2)" ng-model="defs.rule.repeatAmount">
+                            <input class="layui-input text-center padding-left-0 border-0" ng-blur="convertNumber(defs.rule,'repeatAmount',2)" ng-model="defs.rule.repeatAmount">
                         </td>
                     </tr>
                     </tbody>
