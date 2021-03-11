@@ -63,32 +63,34 @@
                     <div class="headimg" data-tips-image data-lazy-src="{$vo.cover}"></div>
                     {/notempty}
                     <div class="inline-block text-top sub-span-blue">
-                        商品编号：<span>{$vo.code|default='--'}</span><br>
-                        商品名称：<span>{$vo.name|default='--'}</span><br>
+                        <div>商品名称：<span>{$vo.name|default='--'}</span></div>
+                        <div>商品编号：<span>{$vo.code|default='--'}</span></div>
                     </div>
                 </td>
-                <td class="text-left sub-span-blue">
+                <td>
                     <div>
                         {notempty name='vo.marks'}{foreach $vo.marks as $mark}
-                        <b class="notselect nowrap layui-badge layui-bg-cyan">{$mark}</b>
+                        <span class="notselect nowrap layui-badge layui-bg-cyan">{$mark}</span>
                         {/foreach}{/notempty}
                     </div>
                     <div class="nowrap">
                         {notempty name='vo.cateinfo'}
-                        {:join('<span class="layui-icon layui-icon-right font-s10"></span>', $vo.cateinfo.names)}<br>
+                        {:join('<span class="layui-icon layui-icon-right font-s10 color-blue"></span>', $vo.cateinfo.names)}
                         {/notempty}
                     </div>
                 </td>
                 <td class='nowrap'>
+                    <div>创建时间：{$vo.create_at|format_datetime}</div>
                     <div>
                         {eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}
-                        {eq name='vo.vip_entry' value='0'}<span class="layui-badge">非入会礼包</span>{else}<span class="layui-badge layui-bg-green">是入会礼包</span>{/eq}
-                        {eq name='vo.truck_type' value='0'}<span class="layui-badge">无需快递配送</span>{else}<span class="layui-badge layui-bg-green">需要快递配送</span>{/eq}
+                        {eq name='vo.vip_entry' value='0'}<span class="layui-badge layui-bg-blue">非入会礼包</span>{else}<span class="layui-badge layui-bg-green">是入会礼包</span>{/eq}
+                        {eq name='vo.truck_type' value='0'}<span class="layui-badge layui-bg-blue">无需快递配送</span>{else}<span class="layui-badge layui-bg-green">需要快递配送</span>{/eq}
                     </div>
-                    <div>创建时间：{$vo.create_at|format_datetime}</div>
                 </td>
                 <td class='nowrap sub-span-blue'>
-                    <div class="margin-bottom-5">剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )</div>
+                    <div class="margin-bottom-5">
+                        剩余库存 <span>{$vo.stock_total-$vo.stock_sales}</span> 件 ( 已销售 <span>{$vo.stock_sales}</span> 件 )
+                    </div>
 
                     <!--{if auth('copy')}-->
                     <a class="layui-btn layui-btn-xs layui-btn-normal" data-open='{:url("copy")}?code={$vo.code}'>复 制</a>
