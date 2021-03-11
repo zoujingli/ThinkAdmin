@@ -59,6 +59,7 @@ class Order extends Auth
         [$items, $order, $truckType] = [[], [], -1];
         $order['uid'] = $this->uuid;
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
+        $order['amount_rebate'] = 0.00;
         // 推荐人处理
         $order['puid1'] = input('from', $this->user['pid1']);
         if ($order['puid1'] == $this->uuid) $order['puid1'] = 0;
@@ -122,8 +123,6 @@ class Order extends Auth
                 'price_selling'   => $goodsItem['price_selling'],
                 'total_market'    => $goodsItem['price_market'] * $count,
                 'total_selling'   => $goodsItem['price_selling'] * $count,
-                // 是否参与返利
-                'rebate_type'     => $goodsInfo['rebate_type'],
                 // 奖励金额积分
                 'reward_balance'  => $goodsItem['reward_balance'] * $count,
                 'reward_integral' => $goodsItem['reward_integral'] * $count,
@@ -132,11 +131,17 @@ class Order extends Auth
                 'vip_number'      => $this->user['vip_number'],
                 // 是否入会礼包
                 'vip_entry'       => $goodsInfo['vip_entry'],
+                // 是否参与返利
+                'rebate_type'     => $goodsInfo['rebate_type'],
                 // 等级优惠方案
                 'discount_id'     => $discountId,
                 'discount_rate'   => $discountRate,
-                'discount_amount' => $discountRate * floatval($goodsItem['price_selling']) * $count / 100,
+                'discount_amount' => $discountRate * $goodsItem['price_selling'] * $count / 100,
             ];
+            // 统计订单返利金额
+            if ($goodsInfo['rebate_type'] > 0) {
+                $order['amount_rebate'] += $goodsItem['price_selling'] * $count;
+            }
         }
         try {
             // 订单发货类型

@@ -16,7 +16,7 @@ class GoodsService extends Service
     /**
      * 更新商品库存数据
      * @param string $code
-     * @return bool
+     * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -29,7 +29,7 @@ class GoodsService extends Service
         $stockList = $query->where(['goods_code' => $code])->group('goods_code,goods_spec')->select()->toArray();
         // 商品销量统计
         $query = $this->app->db->table('shop_order a')->field('b.goods_code,b.goods_spec,ifnull(sum(b.stock_sales),0) stock_sales');
-        $query->leftJoin('shop_order_item b', 'a.order_no=b.order_no')->where([['b.goods_code', '=', $code], ['a.status', 'in', [1, 2, 3, 4, 5]]]);
+        $query->leftJoin('shop_order_item b', 'a.order_no=b.order_no')->where("b.goods_code='{$code}' and a.status>0 and a.deleted>0");
         $salesList = $query->group('b.goods_code,b.goods_spec')->select()->toArray();
         // 组装更新数据
         $dataList = [];
