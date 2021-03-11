@@ -218,23 +218,23 @@ class RebateCurrentService extends Service
      */
     private function _prize05(): bool
     {
-        $pids = array_reverse(explode('-', trim($this->user['path'], '-')));
-        if (empty($pids)) return false;
+        return true;
+        $puids = array_reverse(explode('-', trim($this->user['path'], '-')));
+        if (empty($puids)) return false;
         // 获取拥有差额奖励的等级
         $numbs = $this->app->db->name('DataUserUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->column('number');
         // 获取可以参与奖励的代理
-        $users = $this->app->db->name('DataUser')->whereIn('vip_number', $numbs)->whereIn('id', $pids)->orderField('id', $pids)->select()->toArray();
+        $users = $this->app->db->name('DataUser')->whereIn('vip_number', $numbs)->whereIn('id', $puids)->orderField('id', $puids)->select()->toArray();
         // 查询需要计算奖励的商品
         $map = [['order_no', '=', $this->order['order_no']], ['discount_rate', '<', 100]];
-        $this->app->db->name('StoreOrderItem')->where($map)->select()->each(function ($item) use ($users) {
+        foreach ($this->app->db->name('StoreOrderItem')->where($map)->cursor() as $item) {
             $itemJson = $this->app->db->name('DataUserDiscount')->where(['status' => 1, 'deleted' => 0])->value('items');
             if (!empty($itemJson) && is_array($rules = json_decode($itemJson, true))) {
                 [$tVip, $tRate] = [$item['vip_number'], $item['discount_rate']];
                 foreach ($rules as $rule) if ($rule['level'] > $tVip) foreach ($users as $user) if ($user['vip_number'] > $tVip) {
                     if ($tRate > $rule['discount'] && $tRate < 100) {
                         $map = [
-                            'uid'  => $user['id'],
-                            'type' => self::PRIZE_05,
+                            'type' => self::PRIZE_05, 'uid' => $user['id'],
                             'code' => "{$this->order['order_no']}#{$item['id']}#{$tVip}.{$user['vip_number']}",
                         ];
                         if ($this->app->db->name($this->table)->where($map)->count() < 1) {
@@ -251,7 +251,7 @@ class RebateCurrentService extends Service
                     }
                 }
             }
-        });
+        }
         return true;
     }
 
