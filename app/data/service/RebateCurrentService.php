@@ -81,8 +81,8 @@ class RebateCurrentService extends Service
         $this->user = $this->app->db->name('DataUser')->where($map)->find();
         if (empty($this->user)) throw new Exception('用户不存在');
         // 获取推荐用户
-        if ($this->order['from'] > 0) {
-            $map = ['id' => $this->order['from']];
+        if ($this->order['puid1'] > 0) {
+            $map = ['id' => $this->order['puid1']];
             $this->fromer = $this->app->db->name('DataUser')->where($map)->find();
             if (empty($this->fromer)) throw new Exception('推荐不存在');
         }

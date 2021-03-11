@@ -75,7 +75,7 @@ class ShopPayment extends Controller
     protected function _form_filter(array &$data)
     {
         if (empty($data['code'])) {
-            $data['code'] = CodeExtend::uniqidNumber(14, 'M');
+            $data['code'] = CodeExtend::uniqidNumber(20, 'M');
         }
         if ($this->request->isGet()) {
             $this->payments = [];
