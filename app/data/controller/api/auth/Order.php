@@ -60,7 +60,7 @@ class Order extends Auth
         $order['uid'] = $this->uuid;
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
         // 推荐人处理
-        $order['puid1'] = input('puid1', $this->user['pid1']);
+        $order['puid1'] = input('from', $this->user['pid1']);
         if ($order['puid1'] == $this->uuid) $order['puid1'] = 0;
         if ($order['puid1'] > 0) {
             $map = ['id' => $order['puid1'], 'status' => 1];
