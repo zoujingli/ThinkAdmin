@@ -56,8 +56,8 @@ class Order extends Auth
         $rules = $this->request->post('items', '');
         if (empty($rules)) $this->error('商品不能为空');
         // 订单数据
-        [$codes, $items, $truckType] = [[], [], -1];
-        $order = ['uid' => $this->uuid];
+        [$items, $order, $truckType] = [[], [], -1];
+        $order['uid'] = $this->uuid;
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
         // 推荐人处理
         $order['puid1'] = input('puid1', $this->user['pid1']);
@@ -67,6 +67,7 @@ class Order extends Auth
             $order['puid2'] = $this->app->db->name('DataUser')->where($map)->value('pid2');
             if (is_null($order['puid2'])) $this->error('推荐人异常');
         }
+        // 订单商品处理
         foreach (explode('||', $rules) as $rule) {
             [$code, $spec, $count] = explode('@', $rule);
             // 商品信息检查
@@ -161,7 +162,9 @@ class Order extends Auth
                 $this->app->db->name('ShopOrderItem')->insertAll($items);
             });
             // 同步商品库存销量
-            foreach ($codes as $code) GoodsService::instance()->syncStock($code);
+            foreach (array_unique(array_column($items, 'goods_code')) as $code) {
+                GoodsService::instance()->syncStock($code);
+            }
             // 触发订单创建事件
             $this->app->event->trigger('ShopOrderCreate', $order['order_no']);
             // 组装订单商品数据
