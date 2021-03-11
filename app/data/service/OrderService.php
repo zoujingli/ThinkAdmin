@@ -45,7 +45,7 @@ class OrderService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function buildItemData(array &$data = [], $fromer = true): array
+    public function buildOrderData(array &$data = [], $fromer = true): array
     {
         // 关联发货信息
         $nobs = array_unique(array_column($data, 'order_no'));
@@ -57,11 +57,9 @@ class OrderService extends Service
         // 关联用户数据
         $fields = 'username,phone,nickname,headimg,status';
         UserService::instance()->buildByUid($data, 'uid', 'user', $fields);
-        if ($fromer) UserService::instance()->buildByUid($data, 'from', 'fromer', $fields);
+        if ($fromer) UserService::instance()->buildByUid($data, 'puid1', 'fromer', $fields);
         foreach ($data as &$vo) {
-            $vo['sales'] = 0;
-            $vo['truck'] = $trucks[$vo['order_no']] ?? [];
-            $vo['items'] = [];
+            [$vo['sales'], $vo['truck'], $vo['items']] = [0, $trucks[$vo['order_no']] ?? [], []];
             foreach ($items as $item) if ($vo['order_no'] === $item['order_no']) {
                 $vo['sales'] += $item['stock_sales'];
                 $vo['items'][] = $item;

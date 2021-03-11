@@ -256,8 +256,8 @@ class UserService extends Service
         $orderAmountTotal = $this->app->db->name('ShopOrder')->whereRaw("uid={$uid} and status in (3,4,5)")->sum('amount_goods');
         // 统计团队业绩
         $usql = $this->app->db->name('DataUser')->field('id')->whereRaw("`pid1`={$uid}")->buildSql();
-        $teamsAmountDirect = $this->app->db->name('ShopOrder')->whereRaw("`from`={$uid} and status in (3,4,5)")->sum('amount_goods');
-        $teamsAmountIndirect = $this->app->db->name('ShopOrder')->whereRaw("`from` in {$usql} and status in (3,4,5)")->sum('amount_goods');
+        $teamsAmountDirect = $this->app->db->name('ShopOrder')->whereRaw("`puid1`={$uid} and status in (3,4,5)")->sum('amount_goods');
+        $teamsAmountIndirect = $this->app->db->name('ShopOrder')->whereRaw("`puid1` in {$usql} and status in (3,4,5)")->sum('amount_goods');
         // 更新用户数据
         $data = [
             'vip_name'              => $vipName,

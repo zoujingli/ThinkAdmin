@@ -66,7 +66,7 @@ class ShopOrderSend extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        OrderService::instance()->buildItemData($data, false);
+        OrderService::instance()->buildOrderData($data, false);
         $orders = array_unique(array_column($data, 'order_no'));
         $orderList = $this->app->db->name('ShopOrder')->whereIn('order_no', $orders)->column('*', 'order_no');
         foreach ($data as &$vo) $vo['order'] = $orderList[$vo['order_no']] ?? [];

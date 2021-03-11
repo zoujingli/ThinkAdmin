@@ -66,7 +66,7 @@ class ShopOrder extends Controller
         if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
         // 推荐人搜索查询
         $db = $this->_query('DataUser')->like('phone#from_phone,nickname#from_nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("from in {$db->field('id')->buildSql()}");
+        if ($db->getOptions('where')) $query->whereRaw("puid1 in {$db->field('id')->buildSql()}");
         // 列表选项卡
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
             $query->where(['status' => $this->type]);
@@ -85,11 +85,9 @@ class ShopOrder extends Controller
     protected function _index_page_filter(array &$data)
     {
         UserService::instance()->buildByUid($data);
-        UserService::instance()->buildByUid($data, 'from', 'fromer');
-        OrderService::instance()->buildItemData($data);
-        foreach ($data as &$vo) {
-            $vo['payment_name'] = PaymentService::name($vo['payment_type']);
-        }
+        UserService::instance()->buildByUid($data, 'puid1', 'fromer');
+        OrderService::instance()->buildOrderData($data);
+        foreach ($data as &$vo) $vo['payment_name'] = PaymentService::name($vo['payment_type']);
     }
 
     /**
