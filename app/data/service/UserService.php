@@ -246,7 +246,7 @@ class UserService extends Service
         }
         // 购买商品升级
         $query = $this->app->db->name('ShopOrderItem')->alias('b')->join('shop_order a', 'b.order_no=a.order_no');
-        $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status in (3,4,5) and b.vip_entry=1")->max('b.vip_number');
+        $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_number');
         if ($tmpNumber > $vipNumber) {
             $map = ['status' => 1, 'number' => $tmpNumber];
             $upgrade = $this->app->db->name('DataUserUpgrade')->where($map)->find();
