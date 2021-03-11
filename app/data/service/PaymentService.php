@@ -8,9 +8,9 @@ use app\data\service\payment\EmptyPaymentService;
 use app\data\service\payment\JoinpayPaymentService;
 use app\data\service\payment\VoucherPaymentService;
 use app\data\service\payment\WechatPaymentService;
+use think\admin\Exception;
 use think\App;
 use think\Container;
-use think\admin\Exception;
 
 /**
  * 支付基础服务

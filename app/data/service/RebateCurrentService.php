@@ -2,8 +2,8 @@
 
 namespace app\data\service;
 
-use think\admin\Service;
 use think\admin\Exception;
+use think\admin\Service;
 
 /**
  * 实时返利服务
@@ -128,7 +128,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UserService::instance()->syncLevel($this->from1['id']);
+            UpgradeService::instance()->syncLevel($this->from1['id']);
         }
         return true;
     }
@@ -160,7 +160,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UserService::instance()->syncLevel($this->from1['id']);
+            UpgradeService::instance()->syncLevel($this->from1['id']);
         }
         return true;
     }
@@ -185,7 +185,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UserService::instance()->syncLevel($this->from1['id']);
+            UpgradeService::instance()->syncLevel($this->from1['id']);
         }
         return true;
     }
@@ -209,7 +209,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新代理奖利金额
-            UserService::instance()->syncLevel($this->from2['id']);
+            UpgradeService::instance()->syncLevel($this->from2['id']);
         }
         return true;
     }

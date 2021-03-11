@@ -86,7 +86,7 @@ class ShopOrder extends Controller
     {
         UserService::instance()->buildByUid($data);
         UserService::instance()->buildByUid($data, 'puid1', 'fromer');
-        OrderService::instance()->buildOrderData($data);
+        OrderService::instance()->buildData($data);
         foreach ($data as &$vo) $vo['payment_name'] = PaymentService::name($vo['payment_type']);
     }
 

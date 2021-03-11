@@ -40,7 +40,7 @@ class Order extends Auth
         $map = ['uid' => $this->uuid, 'deleted' => 0];
         $query = $this->_query('ShopOrder')->in('status')->equal('order_no');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
-        if (count($result['list']) > 0) OrderService::instance()->buildOrderData($result['list']);
+        if (count($result['list']) > 0) OrderService::instance()->buildData($result['list']);
         $this->success('获取订单数据成功！', $result);
     }
 

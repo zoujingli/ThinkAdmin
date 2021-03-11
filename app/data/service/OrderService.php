@@ -45,7 +45,7 @@ class OrderService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function buildOrderData(array &$data = [], $fromer = true): array
+    public function buildData(array &$data = [], $fromer = true): array
     {
         // 关联发货信息
         $nobs = array_unique(array_column($data, 'order_no'));
