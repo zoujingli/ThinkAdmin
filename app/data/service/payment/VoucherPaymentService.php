@@ -7,7 +7,7 @@ use think\admin\Exception;
 use think\admin\extend\CodeExtend;
 
 /**
- * 凭证单据支付
+ * 单据凭证支付
  * Class VoucherPaymentService
  * @package app\data\service\payment
  */
