@@ -2,7 +2,11 @@
 
 namespace app\data\service;
 
+use think\admin\Exception;
 use think\admin\Service;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 用户数据接口服务
@@ -57,13 +61,18 @@ class UserService extends Service
      * @param string $type 接口类型
      * @param integer $uuid 用户UID
      * @return array
+     * @throws Exception
+     * @throws DbException
      */
     public function get(string $type, int $uuid): array
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uuid, 'deleted' => 0])->findOrEmpty();
-        $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->where(function ($query) {
-            $query->where(['tokenv' => ''])->whereOr(['tokenv' => $this->_buildTokenVerify()]);
-        })->findOrEmpty();
+        if (empty($user)) throw new Exception('指定UID用户不存在');
+        $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->findOrEmpty();
+        if (empty($data)) {
+            [$state, $info, $data] = $this->token($uuid, $type);
+            if (empty($state) || empty($data)) throw new Exception($info);
+        }
         $user['token'] = ['token' => $data['token'], 'expire' => $data['time']];
         unset($user['deleted'], $user['password']);
         return $user;
@@ -76,7 +85,8 @@ class UserService extends Service
      * @param string $type 接口类型
      * @param boolean $force 强刷令牌
      * @return array
-     * @throws \think\db\exception\DbException
+     * @throws Exception
+     * @throws DbException
      */
     public function set(array $map, array $data, string $type, bool $force = false): array
     {
@@ -99,9 +109,9 @@ class UserService extends Service
      * @param string $token 认证令牌
      * @param array $data 认证数据
      * @return array [ 检查状态，状态描述，用户UID, 有效时间 ]
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function check(string $type, string $token, array $data = []): array
     {
@@ -125,7 +135,7 @@ class UserService extends Service
      * 延期 TOKEN 有效时间
      * @param string $type 接口类型
      * @param string $token 授权令牌
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function expire(string $type, string $token)
     {
@@ -168,7 +178,7 @@ class UserService extends Service
      * @param int $uuid 授权用户
      * @param string $type 接口类型
      * @return array [创建状态, 状态描述, 令牌数据]
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function token(int $uuid, string $type): array
     {
