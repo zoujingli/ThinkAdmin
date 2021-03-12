@@ -18,6 +18,7 @@ class RebateCurrentService extends Service
     const PRIZE_04 = 'PRIZE04';
     const PRIZE_05 = 'PRIZE05';
     const PRIZE_06 = 'PRIZE06';
+    const PRIZE_07 = 'PRIZE07';
 
     const PRIZES = [
         self::PRIZE_01 => ['code' => self::PRIZE_01, 'name' => '首推奖励', 'func' => '_prize01'],
@@ -26,6 +27,7 @@ class RebateCurrentService extends Service
         self::PRIZE_04 => ['code' => self::PRIZE_04, 'name' => '间接团队', 'func' => '_prize04'],
         self::PRIZE_05 => ['code' => self::PRIZE_05, 'name' => '差额奖励', 'func' => '_prize05'],
         self::PRIZE_06 => ['code' => self::PRIZE_06, 'name' => '管理奖励', 'func' => '_prize06'],
+        self::PRIZE_07 => ['code' => self::PRIZE_07, 'name' => '升级奖励', 'func' => '_prize07'],
     ];
 
     /**

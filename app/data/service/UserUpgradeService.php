@@ -70,7 +70,20 @@ class UserUpgradeService extends Service
     }
 
     /**
-     * 同步计算用户级别
+     * 获取用户等级数据
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function levels(): array
+    {
+        $query = $this->app->db->name('DataUserUpgrade');
+        return $query->where(['status' => 1])->order('number asc')->select()->toArray();
+    }
+
+    /**
+     * 同步计算用户等级
      * @param integer $uid 指定用户UID
      * @param boolean $parent 同步计算上级
      * @return boolean
@@ -88,7 +101,7 @@ class UserUpgradeService extends Service
         $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->count();
         $teamsUsers = $this->app->db->name('DataUser')->where(['pid1|pid2' => $uid])->count();
         $orderAmount = $this->app->db->name('ShopOrder')->where("uid={$uid} and status>=4")->sum('amount_total');
-        // 计算用户级别
+        // 计算用户等级
         foreach ($this->app->db->name('DataUserUpgrade')->where(['status' => 1])->order('number desc')->cursor() as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['buy_vip_entry'] > 0;
             $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsUsers;
