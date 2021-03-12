@@ -30,7 +30,7 @@ class UserRebate extends Controller
     public function index()
     {
         $this->title = '用户返利记录';
-        $query = $this->_query($this->table)->equal('type')->like('order_no,description');
+        $query = $this->_query($this->table)->equal('type')->like('name,order_no');
         // 会员查询
         $db = $this->_query('DataUser')->like('nickname#order_nickname,phone#order_phone')->db();
         if ($db->getOptions('where')) $query->whereRaw("order_uid in {$db->field('id')->buildSql()}");
