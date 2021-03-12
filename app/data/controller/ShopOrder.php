@@ -72,7 +72,7 @@ class ShopOrder extends Controller
             $query->where(['status' => $this->type]);
         }
         // 分页排序处理
-        $query->where(['deleted' => 0])->order('id desc')->page();
+        $query->where(['deleted_status' => 0])->order('id desc')->page();
     }
 
     /**
@@ -174,12 +174,9 @@ class ShopOrder extends Controller
      */
     public function cancel()
     {
-        $map = $this->_vali([
-            'deleted.value'    => 0,
-            'order_no.require' => '订单编号不能为空！',
-        ]);
+        $map = $this->_vali(['order_no.require' => '订单号不能为空！',]);
         $order = $this->app->db->name($this->table)->where($map)->find();
-        if (empty($order)) $this->error('订单查询异常');
+        if (empty($order)) $this->error('订单查询异常！');
         if (!in_array($order['status'], [1, 2, 3])) $this->error('订单不能取消！');
         try {
             $result = $this->app->db->name($this->table)->where($map)->update([

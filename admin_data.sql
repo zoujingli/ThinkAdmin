@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 12/03/2021 15:54:21
+ Date: 12/03/2021 16:07:52
 */
 
 SET NAMES utf8mb4;
@@ -603,27 +603,28 @@ CREATE TABLE `shop_order`  (
   `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付平台',
   `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际通道编号',
   `payment_trade` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付单号',
-  `payment_status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '实际支付状态',
+  `payment_status` tinyint(1) NULL DEFAULT 0 COMMENT '实际支付状态',
   `payment_image` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付凭证图片',
   `payment_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '实际支付金额',
   `payment_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '余额抵扣金额',
   `payment_remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付结果描述',
   `payment_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付到账时间',
-  `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
   `number_goods` bigint(20) NULL DEFAULT 0 COMMENT '订单商品数量',
-  `cancel_status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '订单取消状态',
+  `number_express` bigint(20) NULL DEFAULT 0 COMMENT '订单快递计数',
+  `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
+  `cancel_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单取消状态',
   `cancel_remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单取消描述',
   `cancel_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单取消时间',
-  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '订单删除状态(0未删,1已删)',
+  `deleted_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单删除状态(0未删,1已删)',
   `deleted_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单删除描述',
   `deleted_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单删除时间',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '订单状态(0已取消,1预订单,2待支付,3支付中,4已支付,5已发货,6已完成)',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '订单状态(0已取消,1预订单,2待支付,3支付中,4已支付,5已发货,6已完成)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_order_mid`(`uid`) USING BTREE,
   INDEX `idx_shop_order_from`(`puid1`) USING BTREE,
   INDEX `idx_shop_order_status`(`status`) USING BTREE,
-  INDEX `idx_shop_order_deleted`(`deleted`) USING BTREE,
+  INDEX `idx_shop_order_deleted`(`deleted_status`) USING BTREE,
   INDEX `idx_shop_order_orderno`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
   INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE
@@ -632,9 +633,9 @@ CREATE TABLE `shop_order`  (
 -- ----------------------------
 -- Records of shop_order
 -- ----------------------------
-INSERT INTO `shop_order` VALUES (1, 1, 0, 0, 'N20210311513872036', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311695844329692', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:52:58', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:15:09');
-INSERT INTO `shop_order` VALUES (2, 1, 0, 0, 'N20210311715437924', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311721982820832', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:55:19', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:35:25');
-INSERT INTO `shop_order` VALUES (3, 1, 0, 0, 'N20210311745121809', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311750726151684', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:58:07', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:38:21');
+INSERT INTO `shop_order` VALUES (1, 1, 0, 0, 'N20210311513872036', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311695844329692', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:52:58', 1, 0, 0, 0, '', '', 0, '', '', 4, '2021-03-11 09:15:09');
+INSERT INTO `shop_order` VALUES (2, 1, 0, 0, 'N20210311715437924', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311721982820832', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:55:19', 1, 0, 0, 0, '', '', 0, '', '', 4, '2021-03-11 09:35:25');
+INSERT INTO `shop_order` VALUES (3, 1, 0, 0, 'N20210311745121809', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311750726151684', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:58:07', 1, 0, 0, 0, '', '', 0, '', '', 4, '2021-03-11 09:38:21');
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -660,7 +661,7 @@ CREATE TABLE `shop_order_item`  (
   `stock_sales` bigint(20) NULL DEFAULT 1 COMMENT '商品数量',
   `truck_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
   `truck_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '快递邮费模板',
-  `truck_count` bigint(20) NULL DEFAULT 0 COMMENT '快递计费基数',
+  `truck_number` bigint(20) NULL DEFAULT 0 COMMENT '快递计费基数',
   `vip_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户等级名称',
   `vip_entry` tinyint(1) NULL DEFAULT 0 COMMENT '是否入会礼包',
   `vip_number` bigint(20) NULL DEFAULT 0 COMMENT '用户等级序号',

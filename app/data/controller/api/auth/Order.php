@@ -116,7 +116,7 @@ class Order extends Auth
                 // 快递发货数据
                 'truck_type'      => $goodsInfo['truck_type'],
                 'truck_code'      => $goodsInfo['truck_code'],
-                'truck_count'     => $goodsItem['number_express'] * $count,
+                'truck_number'    => $goodsInfo['rebate_type'] > 0 ? $goodsItem['number_express'] * $count : 0,
                 // 商品费用字段
                 'price_market'    => $goodsItem['price_market'],
                 'price_selling'   => $goodsItem['price_selling'],
@@ -149,6 +149,7 @@ class Order extends Auth
             $order['truck_type'] = $truckType;
             // 统计商品数量
             $order['number_goods'] = array_sum(array_column($items, 'stock_sales'));
+            $order['number_express'] = array_sum(array_column($items, 'truck_number'));
             // 统计商品金额
             $order['amount_goods'] = array_sum(array_column($items, 'total_selling'));
             // 优惠后的金额
@@ -202,7 +203,7 @@ class Order extends Auth
         if (empty($addr)) $this->error('收货地址异常');
         // 订单状态检查
         $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
-        $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_count');
+        $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_number');
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
         $tCode = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_code');
@@ -230,7 +231,7 @@ class Order extends Auth
         // 订单状态检查
         $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map)->whereIn('status', [1, 2])->find();
-        $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_count');
+        $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_number');
         if (empty($order)) $this->error('不能修改地址');
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
