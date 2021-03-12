@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 12/03/2021 16:14:37
+ Date: 12/03/2021 17:48:05
 */
 
 SET NAMES utf8mb4;
@@ -423,7 +423,7 @@ CREATE TABLE `data_user_upgrade`  (
 -- ----------------------------
 -- Records of data_user_upgrade
 -- ----------------------------
-INSERT INTO `data_user_upgrade` VALUES (1, 'VIP1', 1, ',PRIZE01,PRIZE02,', 1, 1, 0, 900.00, 1, 100, 1, 10, 1, 20, '', 1615451839, 1, 0, '2021-01-29 09:04:45');
+INSERT INTO `data_user_upgrade` VALUES (1, 'VIP1', 1, ',PRIZE01,PRIZE02,', 1, 1, 1, 900.00, 1, 100, 1, 10, 1, 20, '', 1615536974, 1, 0, '2021-01-29 09:04:45');
 INSERT INTO `data_user_upgrade` VALUES (2, 'VIP2', 2, ',PRIZE01,PRIZE02,PRIZE03,PRIZE04,PRIZE05,PRIZE06,', 1, 1, 0, 0.00, 0, 0, 1, 100, 0, 0, '', 1615451836, 1, 0, '2021-02-23 07:41:40');
 
 -- ----------------------------
@@ -4703,7 +4703,7 @@ CREATE TABLE `system_data`  (
   `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_data_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_data
@@ -4711,6 +4711,7 @@ CREATE TABLE `system_data`  (
 INSERT INTO `system_data` VALUES (1, '关于我们', 'a:2:{s:4:\"name\";s:8:\"23512322\";s:7:\"content\";s:16:\"<p>512351235</p>\";}');
 INSERT INTO `system_data` VALUES (2, '用户协议', 'a:2:{s:4:\"name\";s:7:\"2315123\";s:7:\"content\";s:16:\"<p>512351235</p>\";}');
 INSERT INTO `system_data` VALUES (3, 'cropper', 'a:2:{s:5:\"image\";s:66:\"http://127.0.0.1:8000/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg\";s:7:\"postion\";s:134:\"{\"x\":400.05633605275233,\"y\":149.0905449790871,\"width\":17.208822404146915,\"height\":17.208822404146915,\"rotate\":0,\"scaleX\":1,\"scaleY\":1}\";}');
+INSERT INTO `system_data` VALUES (4, 'RebateRule', 'a:48:{s:10:\"settl_type\";s:1:\"1\";s:10:\"teams_type\";s:1:\"1\";s:17:\"equal_state_vip_1\";s:1:\"1\";s:19:\"equal_value_vip_1_1\";s:4:\"0.00\";s:19:\"equal_value_vip_2_1\";s:4:\"0.00\";s:17:\"equal_state_vip_2\";s:1:\"0\";s:19:\"equal_value_vip_1_2\";s:4:\"0.00\";s:19:\"equal_value_vip_2_2\";s:4:\"0.00\";s:19:\"frist_state_vip_1_1\";s:1:\"0\";s:18:\"frist_type_vip_1_1\";s:1:\"1\";s:19:\"frist_value_vip_1_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_1\";s:1:\"0\";s:19:\"repeat_type_vip_1_1\";s:1:\"1\";s:20:\"repeat_value_vip_1_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_1_2\";s:1:\"0\";s:18:\"frist_type_vip_1_2\";s:1:\"1\";s:19:\"frist_value_vip_1_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_2\";s:1:\"0\";s:19:\"repeat_type_vip_1_2\";s:1:\"1\";s:20:\"repeat_value_vip_1_2\";s:6:\"0.0000\";s:18:\"direct_state_vip_1\";s:1:\"0\";s:17:\"direct_type_vip_1\";s:1:\"2\";s:18:\"direct_value_vip_1\";s:6:\"0.0000\";s:20:\"indirect_state_vip_1\";s:1:\"0\";s:19:\"indirect_type_vip_1\";s:1:\"2\";s:20:\"indirect_value_vip_1\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_1\";s:1:\"0\";s:18:\"upgrade_type_vip_1\";s:1:\"2\";s:19:\"frist_state_vip_2_1\";s:1:\"0\";s:18:\"frist_type_vip_2_1\";s:1:\"1\";s:19:\"frist_value_vip_2_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_1\";s:1:\"0\";s:19:\"repeat_type_vip_2_1\";s:1:\"1\";s:20:\"repeat_value_vip_2_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_2_2\";s:1:\"0\";s:18:\"frist_type_vip_2_2\";s:1:\"1\";s:19:\"frist_value_vip_2_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_2\";s:1:\"0\";s:19:\"repeat_type_vip_2_2\";s:1:\"1\";s:20:\"repeat_value_vip_2_2\";s:6:\"0.0000\";s:18:\"direct_state_vip_2\";s:1:\"0\";s:17:\"direct_type_vip_2\";s:1:\"2\";s:18:\"direct_value_vip_2\";s:6:\"0.0000\";s:20:\"indirect_state_vip_2\";s:1:\"0\";s:19:\"indirect_type_vip_2\";s:1:\"2\";s:20:\"indirect_value_vip_2\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_2\";s:1:\"0\";s:18:\"upgrade_type_vip_2\";s:1:\"2\";}');
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -4730,7 +4731,7 @@ CREATE TABLE `system_menu`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_menu_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 97 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_menu
@@ -4778,6 +4779,7 @@ INSERT INTO `system_menu` VALUES (92, 90, '用户折扣方案', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (93, 90, '用户提现管理', 'layui-icon layui-icon-component', 'data/user_transfer/index', 'data/user_transfer/index', '', '_self', 0, 1, '2021-01-28 06:48:34');
 INSERT INTO `system_menu` VALUES (94, 68, '页面内容管理', 'layui-icon layui-icon-read', 'data/config/pagehome', 'data/config/pagehome', '', '_self', 20, 1, '2021-02-24 08:49:16');
 INSERT INTO `system_menu` VALUES (95, 68, '邀请二维码设置', 'layui-icon layui-icon-cols', 'data/config/cropper', 'data/config/cropper', '', '_self', 0, 1, '2021-03-01 09:53:59');
+INSERT INTO `system_menu` VALUES (96, 90, '用户返利配置', 'layui-icon layui-icon-android', 'data/user_rebate/config', 'data/user_rebate/config', '', '_self', 0, 1, '2021-03-12 08:05:58');
 
 -- ----------------------------
 -- Table structure for system_oplog
@@ -4792,7 +4794,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
@@ -4817,6 +4819,8 @@ INSERT INTO `system_oplog` VALUES (17, 'admin/menu/edit', '127.0.0.1', '系统�
 INSERT INTO `system_oplog` VALUES (18, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-11 05:59:27');
 INSERT INTO `system_oplog` VALUES (19, 'admin/api.plugs/clearconfig', '127.0.0.1', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-03-11 09:10:48');
 INSERT INTO `system_oplog` VALUES (20, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-12 01:32:13');
+INSERT INTO `system_oplog` VALUES (21, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-12 07:56:18');
+INSERT INTO `system_oplog` VALUES (22, 'admin/menu/add', '127.0.0.1', '系统菜单管理', '添加系统菜单[96]成功', 'admin', '2021-03-12 08:05:58');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4883,7 +4887,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '127.0.0.1', '2021-03-12 01:32:13', 83, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '127.0.0.1', '2021-03-12 07:56:18', 84, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
