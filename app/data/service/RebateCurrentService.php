@@ -128,7 +128,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UpgradeService::instance()->syncLevel($this->from1['id']);
+            UserUpgradeService::instance()->syncLevel($this->from1['id']);
         }
         return true;
     }
@@ -160,7 +160,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UpgradeService::instance()->syncLevel($this->from1['id']);
+            UserUpgradeService::instance()->syncLevel($this->from1['id']);
         }
         return true;
     }
@@ -185,7 +185,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UpgradeService::instance()->syncLevel($this->from1['id']);
+            UserUpgradeService::instance()->syncLevel($this->from1['id']);
         }
         return true;
     }
@@ -209,7 +209,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新代理奖利金额
-            UpgradeService::instance()->syncLevel($this->from2['id']);
+            UserUpgradeService::instance()->syncLevel($this->from2['id']);
         }
         return true;
     }

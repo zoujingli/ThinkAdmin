@@ -6,17 +6,17 @@ use think\admin\Service;
 
 /**
  * 用户等级升级服务
- * Class UpgradeService
+ * Class UserUpgradeService
  * @package app\data\service
  */
-class UpgradeService extends Service
+class UserUpgradeService extends Service
 {
 
     /**
      * 同步刷新用户余额
      * @param int $uuid 用户UID
      * @param array $nots 排除的订单
-     * @return array [total,count]
+     * @return array [total, count]
      * @throws \think\db\exception\DbException
      */
     public function balance(int $uuid, array $nots = []): array

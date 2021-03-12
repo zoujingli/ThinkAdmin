@@ -3,7 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
-use app\data\service\UpgradeService;
+use app\data\service\UserUpgradeService;
 use app\data\service\UserService;
 use think\admin\Storage;
 use think\exception\HttpResponseException;
@@ -135,7 +135,7 @@ class Center extends Auth
     public function bindFrom()
     {
         $data = $this->_vali(['from.require' => '邀请人不能为空']);
-        [$state, $message] = UpgradeService::instance()->bindAgent($this->uuid, $data['from'], false);
+        [$state, $message] = UserUpgradeService::instance()->bindAgent($this->uuid, $data['from'], false);
         if ($state) {
             $this->success($message, UserService::instance()->total($this->uuid));
         } else {

@@ -3,7 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
-use app\data\service\UpgradeService;
+use app\data\service\UserUpgradeService;
 use app\data\service\UserService;
 use think\admin\extend\CodeExtend;
 
@@ -61,12 +61,12 @@ class Balance extends Auth
         $user = $this->app->db->name('DataUser')->where($map)->find();
         if (empty($user)) $this->error('目标用户不存在！');
         // 检测余额否有足够
-        [$total, $count] = UpgradeService::instance()->balance($this->uuid);
+        [$total, $count] = UserUpgradeService::instance()->balance($this->uuid);
         if ($data['amount'] > $total - $count) $this->error('可转账余额不足！');
         // 写入余额转账记录
         if ($this->app->db->name($this->table)->insert($data) !== false) {
-            UpgradeService::instance()->balance($data['uid']);
-            UpgradeService::instance()->balance($data['from']);
+            UserUpgradeService::instance()->balance($data['uid']);
+            UserUpgradeService::instance()->balance($data['from']);
             $this->success('余额转账成功！');
         } else {
             $this->error('余额转账失败！');

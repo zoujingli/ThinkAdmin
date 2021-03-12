@@ -3,6 +3,7 @@
 namespace app\data\controller\api;
 
 use app\data\service\UserService;
+use app\data\service\UserTokenService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 
@@ -66,7 +67,7 @@ abstract class Auth extends Controller
             if (empty($this->uuid)) {
                 $token = input('token') ?: $this->request->header('api-token');
                 if (empty($token)) $this->error('登录认证TOKEN不能为空！');
-                [$state, $info, $this->uuid] = UserService::instance()->check($this->type, $token);
+                [$state, $info, $this->uuid] = UserTokenService::instance()->check($this->type, $token);
                 if (empty($state)) $this->error($info, '{-null-}', 401);
             }
             return UserService::instance()->get($this->type, $this->uuid);

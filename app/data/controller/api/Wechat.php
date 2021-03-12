@@ -65,6 +65,7 @@ class Wechat extends Controller
     /**
      * 加载网页授权数据
      * @return \think\Response
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DbException
      */
     public function oauth(): Response

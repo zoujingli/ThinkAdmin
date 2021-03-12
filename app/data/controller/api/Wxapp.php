@@ -57,6 +57,7 @@ class Wxapp extends Controller
 
     /**
      * 授权Code换取会话信息
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DbException
      */
     public function session()

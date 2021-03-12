@@ -5,7 +5,7 @@ namespace app\data\service;
 use think\admin\Service;
 
 /**
- * 订单数据服务
+ * 商城订单数据服务
  * Class OrderService
  * @package app\data\service
  */
@@ -80,7 +80,7 @@ class OrderService extends Service
         // 尝试绑定代理用户
         if (empty($user['pid1']) && ($order['puid1'] > 0 || $user['pid1'] > 0)) {
             $puid1 = $order['puid1'] > 0 ? $order['puid1'] : $user['bid'];
-            UpgradeService::instance()->bindAgent($user['id'], $puid1);
+            UserUpgradeService::instance()->bindAgent($user['id'], $puid1);
         }
         // 重置用户信息并绑定订单
         $user = $this->app->db->name('DataUser')->where(['id' => $order['uid']])->find();
@@ -90,7 +90,7 @@ class OrderService extends Service
             ]);
         }
         // 重新计算用户等级
-        UpgradeService::instance()->syncLevel($user['id']);
+        UserUpgradeService::instance()->syncLevel($user['id']);
         return [$user, $order, $entry];
     }
 
