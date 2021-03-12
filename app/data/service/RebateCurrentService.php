@@ -117,14 +117,16 @@ class RebateCurrentService extends Service
         if ($this->app->db->name($this->table)->where($map)->count() > 0) return false;
         if (!$this->checkLevelPrize(self::PRIZE_01, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
+        $key = "{$this->from1['id']}_{$this->user['id']}";
         $map = ['type' => self::PRIZE_01, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
-            if (sysconf('shop.fristType') == 1) {
-                $amount = sysconf('shop.fristValue') ?: '0.00';
-                $name = self::instance()->name(self::PRIZE_01) . "，每人 {$amount} 元";
+        if ($this->config("frist_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
+            $value = $this->config("frist_value_vip_{$key}");
+            if ($this->config("frist_type_vip_{$key}") == 1) {
+                $amount = $value ?: '0.00';
+                $name = "{$this->name(self::PRIZE_01)}，每人 {$amount} 元";
             } else {
-                $amount = sysconf('shop.fristValue') * $this->order['amount_total'] / 100;
-                $name = self::instance()->name(self::PRIZE_01) . "，订单 " . sysconf('shop.fristValue') . '%';
+                $amount = $value * $this->order['amount_total'] / 100;
+                $name = "{$this->name(self::PRIZE_01)}，订单 {$value}%";
             }
             $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
@@ -149,14 +151,16 @@ class RebateCurrentService extends Service
         if ($this->app->db->name($this->table)->where($map)->count() < 1) return false;
         if (!$this->checkLevelPrize(self::PRIZE_02, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
+        $key = "{$this->from1['id']}_{$this->user['id']}";
         $map = ['type' => self::PRIZE_02, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
-            if (sysconf('shop.repeatType') == 1) {
-                $amount = sysconf('shop.repeatValue') ?: '0.00';
-                $name = self::instance()->name(self::PRIZE_02) . "，每人 {$amount} 元";
+        if ($this->config("repeat_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
+            $value = $this->config("repeat_value_vip_{$key}");
+            if ($this->config("repeat_type_vip_{$key}") == 1) {
+                $amount = $value ?: '0.00';
+                $name = "{$this->name(self::PRIZE_02)}，每人 {$amount} 元";
             } else {
-                $amount = sysconf('shop.repeatValue') * $this->order['amount_total'] / 100;
-                $name = self::instance()->name(self::PRIZE_02) . "，订单 " . sysconf('shop.repeatValue') . '%';
+                $amount = $value * $this->order['amount_total'] / 100;
+                $name = "{$this->name(self::PRIZE_02)}，订单 {$value}%";
             }
             $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
@@ -179,10 +183,12 @@ class RebateCurrentService extends Service
         if (empty($this->from1)) return false;
         if (!$this->checkLevelPrize(self::PRIZE_03, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
+        $key = "{$this->user['id']}";
         $map = ['type' => self::PRIZE_03, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
-            $amount = sysconf('shop.repeatValue') * $this->order['amount_total'] / 100;
-            $name = self::instance()->name(self::PRIZE_03) . "，订单 " . sysconf('shop.repeatValue') . '%';
+        if ($this->config("direct_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
+            $value = $this->config("direct_value_vip_{$key}");
+            $amount = $value * $this->order['amount_total'] / 100;
+            $name = "{$this->name(self::PRIZE_03)}，订单 {$value}%";
             $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
@@ -203,10 +209,12 @@ class RebateCurrentService extends Service
     {
         if (empty($this->from2)) return false;
         if (!$this->checkLevelPrize(self::PRIZE_04, $this->from2['vip_code'])) return false;
+        $key = "{$this->user['id']}";
         $map = ['type' => self::PRIZE_04, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
-            $amount = sysconf('shop.indirectValue') * $this->order['amount_total'] / 100;
-            $name = self::instance()->name(self::PRIZE_04) . "，订单 " . sysconf('shop.indirectValue') . '%';
+        if ($this->config("indirect_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
+            $value = $this->config("indirect_value_vip_{$key}");
+            $amount = $value * $this->order['amount_total'] / 100;
+            $name = "{$this->name(self::PRIZE_04)}，订单 {$value}%";
             $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
             ]));
@@ -267,6 +275,29 @@ class RebateCurrentService extends Service
     private function _prize06(): bool
     {
         return true;
+    }
+
+    /**
+     * 升级奖励发放
+     */
+    private function _prize07()
+    {
+
+    }
+
+    /**
+     * 获取配置数据
+     * @param ?string $name
+     * @return array|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function config(?string $name = null)
+    {
+        static $data = [];
+        if (empty($data)) $data = sysdata('RebateRule');
+        return is_null($name) ? $data : ($data[$name] ?? '');
     }
 
     /**

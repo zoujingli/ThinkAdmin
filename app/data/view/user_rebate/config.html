@@ -12,8 +12,8 @@
                         <fieldset class="block">
                             <legend><span class="layui-badge">结算到账</span></legend>
                             <div class="layui-form-item">
-                                {php} $data['settl_type'] = $data['settl_type'] ?? 0; {/php}
-                                {foreach ['支付后立即到账', '确认收货后到账'] as $key => $val}{if $data.settl_type eq $key}
+                                {php} $data['settl_type'] = $data['settl_type'] ?? 1; {/php}
+                                {foreach [1 => '支付后立即到账',2 => '确认收货后到账'] as $key => $val}{if $data.settl_type eq $key}
                                 <input checked class="layui-input" type="radio" name="settl_type" value="{$key}" title="{$val}">
                                 {else}
                                 <input class="layui-input" type="radio" name="settl_type" value="{$key}" title="{$val}">
@@ -205,7 +205,7 @@
                                                 {/if}
                                             </legend>
                                             <div class="layui-form-item nowrap">
-                                                {php} $key = 'direct_value_vip_'.$level['number']; {/php}
+                                                {php} $key = 'indirect_value_vip_'.$level['number']; {/php}
                                                 <input class="layui-input" type="hidden" name="indirect_type_vip_{$level.number}" value="2">
                                                 <label class="block">
                                                     <span class="color-blue"><b>请输入团队业绩金额比例</b>（ 如：比例填写 10.00 表示 10.00% ）</span>
