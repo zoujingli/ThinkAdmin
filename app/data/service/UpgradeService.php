@@ -11,6 +11,65 @@ use think\admin\Service;
  */
 class UpgradeService extends Service
 {
+
+    /**
+     * 同步刷新用户余额
+     * @param int $uuid 用户UID
+     * @param array $nots 排除的订单
+     * @return array [total,count]
+     * @throws \think\db\exception\DbException
+     */
+    public function balance(int $uuid, array $nots = []): array
+    {
+        $total = $this->app->db->name('DataUserBalance')->where(['uid' => $uuid, 'deleted' => 0])->sum('amount');
+        $total += $this->app->db->name('DataUserBalanceTransfer')->where(['uid' => $uuid, 'deleted' => 0])->sum('amount');
+        $count = $this->app->db->name('DataUserBalanceTransfer')->where(['from' => $uuid, 'deleted' => 0])->sum('amount');
+        if (empty($nots)) {
+            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->sum('amount_balance');
+            $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
+        } else {
+            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->whereNotIn('order_no', $nots)->sum('amount_balance');
+        }
+        return [$total, $count];
+    }
+
+    /**
+     * 尝试绑定上级代理
+     * @param integer $uid 用户UID
+     * @param integer $pid 代理UID
+     * @param boolean $force 正式绑定
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function bindAgent(int $uid, int $pid = 0, bool $force = true): array
+    {
+        $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
+        if (empty($user)) return [0, '用户查询失败'];
+        if (!empty($user['pid1'])) return [0, '用户已绑定上级'];
+
+        if (empty($pid)) $pid = $user['pid0'];
+        if (empty($pid)) return [0, '绑定用户不存在'];
+        if (intval($uid) === intval($pid)) return [0, '推荐人不能是自己'];
+
+        $parant = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
+        if (empty($parant['pids']) || empty($parant['vip_number'])) return [0, '推荐人无推荐资格'];
+
+        if (is_numeric(stripos($parant['path'], "-{$uid}-"))) return [0, '不能绑定下属'];
+        $data = ['pid0' => $parant['id'], 'pid1' => $parant['id'], 'pid2' => $parant['pid1']];
+        $data['path'] = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";
+        $data['layer'] = substr_count($data['path'], '-');
+        // 非正式绑定时，不写入 pid1 及 pid2 字段
+        if (empty($force)) [$data['pid1'], $data['pid2']] = [0, 0];
+
+        if ($this->app->db->name('DataUser')->where(['id' => $uid])->update($data) !== false) {
+            return [1, '绑定代理成功'];
+        } else {
+            return [0, '绑定代理失败'];
+        }
+    }
+
     /**
      * 同步计算用户级别
      * @param integer $uid 指定用户UID

@@ -3,6 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\service\UpgradeService;
 use app\data\service\UserService;
 use think\admin\Storage;
 use think\exception\HttpResponseException;
@@ -134,19 +135,11 @@ class Center extends Auth
     public function bindFrom()
     {
         $data = $this->_vali(['from.require' => '邀请人不能为空']);
-        if ($data['from'] == $this->uuid) {
-            $this->error('邀请人不能是自己', UserService::instance()->total($this->uuid));
-        }
-        $fromer = $this->app->db->name($this->table)->where(['id' => $data['from']])->find();
-        if (empty($fromer)) $this->error('邀请人状态异常', UserService::instance()->get($this->type, $this->uuid));
-        if ($this->user['pid1'] > 0) $this->error('已绑定了邀请人', UserService::instance()->total($this->uuid));
-        if (is_numeric(stripos($fromer['path'], "-{$this->uuid}-"))) $this->error('不能绑定下属');
-        $data['path'] = rtrim($fromer['path'] ?: '-', '-') . "-{$fromer['id']}-";
-        [$data['pid2'], $data['layer']] = [$fromer['pid1'] ?? 0, substr_count($data['path'], '-')];
-        if ($this->app->db->name($this->table)->where(['id' => $this->uuid])->update($data) !== false) {
-            $this->success('绑定邀请人成功', UserService::instance()->total($this->uuid));
+        [$state, $message] = UpgradeService::instance()->bindAgent($this->uuid, $data['from']);
+        if ($state) {
+            $this->success($message, UserService::instance()->total($this->uuid));
         } else {
-            $this->error('绑定邀请人失败', UserService::instance()->total($this->uuid));
+            $this->error($message, UserService::instance()->total($this->uuid));
         }
     }
 }

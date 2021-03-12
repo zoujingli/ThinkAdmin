@@ -37,6 +37,61 @@ class OrderService extends Service
     }
 
     /**
+     * 刷新用户入会礼包
+     * @param integer $uid
+     * @return integer
+     * @throws \think\db\exception\DbException
+     */
+    public function syncUserVipEntry(int $uid): int
+    {
+        // 检查是否购买入会礼包
+        $query = $this->app->db->table('shop_order a')->join('shop_order_item b', 'a.order_no=b.order_no');
+        $count = $query->where("a.uid={$uid} and a.status>=4 and a.payment_status=1 and b.vip_entry>0")->count();
+        $buyVipEntry = $count > 0 ? 1 : 0;
+        // 查询用户最后支付时间
+        $buyLastMap = [['uid', '=', $uid], ['status', '>=', 4], ['payment_status', '=', 1]];
+        $buyLastDate = $this->app->db->name('ShopOrder')->where($buyLastMap)->max('payment_datetime');
+        // 更新用户支付信息
+        $this->app->db->name('DataUser')->where(['id' => $uid])->update([
+            'buy_vip_entry' => $buyVipEntry, 'buy_last_date' => $buyLastDate,
+        ]);
+        return $buyVipEntry;
+    }
+
+    /**
+     * @param string $order_no
+     * @return array|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function syncUserLevel(string $order_no): ?array
+    {
+        // 查询数据
+        $order = $this->app->db->name('ShopOrder')->where("order_no='{$order_no}' and status>=4")->find();
+        if (empty($order)) return null;
+        $user = $this->app->db->name('DataUser')->where(['id' => $order['uid']])->find();
+        if (empty($user)) return null;
+        // 更新用户购买资格
+        $entry = $this->syncUserVipEntry($order['uid']);
+        // 尝试绑定代理用户
+        if (empty($user['pid1']) && ($order['puid1'] > 0 || $user['pid1'] > 0)) {
+            $puid1 = $order['puid1'] > 0 ? $order['puid1'] : $user['bid'];
+            UpgradeService::instance()->bindAgent($user['id'], $puid1);
+        }
+        // 重置用户信息并绑定订单
+        $user = $this->app->db->name('DataUser')->where(['id' => $order['uid']])->find();
+        if ($user['pid1'] > 0) {
+            $this->app->db->name('ShopOrder')->where(['order_no' => $order_no])->update([
+                'puid1' => $user['pid1'], 'puid2' => $user['pid2'],
+            ]);
+        }
+        // 重新计算用户等级
+        UpgradeService::instance()->syncLevel($user['id']);
+        return [$order, $user, $entry];
+    }
+
+    /**
      * 绑定订单详情数据
      * @param array $data
      * @param boolean $fromer

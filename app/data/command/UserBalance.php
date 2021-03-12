@@ -2,7 +2,7 @@
 
 namespace app\data\command;
 
-use app\data\service\UserService;
+use app\data\service\UpgradeService;
 use think\admin\Command;
 use think\admin\Exception;
 use think\console\Input;
@@ -33,7 +33,7 @@ class UserBalance extends Command
             [$total, $count] = [$this->app->db->name('DataUser')->count(), 0];
             foreach ($this->app->db->name('DataUser')->field('id')->cursor() as $user) {
                 $this->queue->message($total, ++$count, "正在计算用户 [{$user['id']}] 的余额");
-                UserService::instance()->balance($user['id']);
+                UpgradeService::instance()->balance($user['id']);
                 $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的余额", 1);
             }
         } catch (\Exception $exception) {

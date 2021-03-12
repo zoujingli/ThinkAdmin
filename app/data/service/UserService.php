@@ -94,27 +94,6 @@ class UserService extends Service
     }
 
     /**
-     * 同步刷新用户余额
-     * @param int $uuid 用户UID
-     * @param array $nots 排除的订单
-     * @return array [total,count]
-     * @throws \think\db\exception\DbException
-     */
-    public function balance(int $uuid, array $nots = []): array
-    {
-        $total = $this->app->db->name('DataUserBalance')->where(['uid' => $uuid, 'deleted' => 0])->sum('amount');
-        $total += $this->app->db->name('DataUserBalanceTransfer')->where(['uid' => $uuid, 'deleted' => 0])->sum('amount');
-        $count = $this->app->db->name('DataUserBalanceTransfer')->where(['from' => $uuid, 'deleted' => 0])->sum('amount');
-        if (empty($nots)) {
-            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->sum('amount_balance');
-            $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
-        } else {
-            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->whereNotIn('order_no', $nots)->sum('amount_balance');
-        }
-        return [$total, $count];
-    }
-
-    /**
      * 检查 TOKEN 是否有效
      * @param string $type 接口类型
      * @param string $token 认证令牌
