@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 11/03/2021 16:26:07
+ Date: 12/03/2021 11:52:02
 */
 
 SET NAMES utf8mb4;
@@ -97,10 +97,12 @@ CREATE TABLE `data_news_x_collect`  (
 DROP TABLE IF EXISTS `data_user`;
 CREATE TABLE `data_user`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `pid1` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '推荐人1UID',
-  `pid2` bigint(20) NULL DEFAULT 0 COMMENT '推荐人2UID',
-  `path` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '-' COMMENT '推荐关系',
-  `layer` bigint(20) NULL DEFAULT 1 COMMENT '推荐层级',
+  `pid0` bigint(20) NULL DEFAULT 0 COMMENT '临时推荐人UID',
+  `pid1` bigint(20) NULL DEFAULT 0 COMMENT '推荐人一级UID',
+  `pid2` bigint(20) NULL DEFAULT 0 COMMENT '推荐人二级UID',
+  `pids` tinyint(1) NULL DEFAULT 0 COMMENT '推荐人绑定状态',
+  `path` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '-' COMMENT '推荐关系路径',
+  `layer` bigint(20) NULL DEFAULT 1 COMMENT '推荐关系层级',
   `openid1` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '小程序OPENID',
   `openid2` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '服务号OPENID',
   `unionid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '公众号UnionID',
@@ -121,14 +123,15 @@ CREATE TABLE `data_user`  (
   `vip_number` bigint(20) NULL DEFAULT 0 COMMENT 'VIP等级序号',
   `vip_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'VIP等级时间',
   `buy_vip_entry` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否入会礼包',
+  `buy_last_date` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '最后支付时间',
   `amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '返利收益统计',
   `amount_used` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '提现金额统计',
   `balance_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '累计充值统计',
   `balance_used` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '已经使用统计',
-  `order_amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单交易统计',
   `teams_users_total` bigint(20) NULL DEFAULT 0 COMMENT '团队人数统计',
   `teams_users_direct` bigint(20) NULL DEFAULT 0 COMMENT '直属人数团队',
   `teams_users_indirect` bigint(20) NULL DEFAULT 0 COMMENT '间接人数团队',
+  `order_amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单交易统计',
   `teams_amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '二级团队业绩',
   `teams_amount_direct` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '直属团队业绩',
   `teams_amount_indirect` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '间接团队业绩',
@@ -137,18 +140,21 @@ CREATE TABLE `data_user`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_user_pid0`(`pid0`) USING BTREE,
   INDEX `idx_data_user_pid1`(`pid1`) USING BTREE,
   INDEX `idx_data_user_pid2`(`pid2`) USING BTREE,
+  INDEX `idx_data_user_pids`(`pids`) USING BTREE,
   INDEX `idx_data_user_status`(`status`) USING BTREE,
   INDEX `idx_data_user_deleted`(`deleted`) USING BTREE,
   INDEX `idx_data_user_openid1`(`openid1`) USING BTREE,
   INDEX `idx_data_user_openid2`(`openid2`) USING BTREE,
   INDEX `idx_data_user_unionid`(`unionid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-会员' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-会员' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user
 -- ----------------------------
+INSERT INTO `data_user` VALUES (1, 0, 0, 0, 0, '-', 1, '', '', '', '13617348882', '', '', '', 'e10adc3949ba59abbe56e057f20f883e', '', '', '', 0, '', '', '', '', '', 0, '', 0, '', 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, 0.00, '', 1, 0, '2021-03-11 08:46:55');
 
 -- ----------------------------
 -- Table structure for data_user_address
@@ -343,11 +349,12 @@ CREATE TABLE `data_user_token`  (
   INDEX `idx_data_user_token_type`(`type`) USING BTREE,
   INDEX `idx_data_user_token_time`(`time`) USING BTREE,
   INDEX `idx_data_user_token_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_token
 -- ----------------------------
+INSERT INTO `data_user_token` VALUES (2, 1, 'wxapp', 1615463887, 'token', '1a2dc04bb795f060fbb9a0d4921dd3e5', '2021-03-11 08:46:55');
 
 -- ----------------------------
 -- Table structure for data_user_transfer
@@ -416,8 +423,8 @@ CREATE TABLE `data_user_upgrade`  (
 -- ----------------------------
 -- Records of data_user_upgrade
 -- ----------------------------
-INSERT INTO `data_user_upgrade` VALUES (1, 'VIP1', 1, ',prize_01,prize_02,prize_03,', 1, 1, 0, 900.00, 1, 100, 1, 10, 1, 20, '', 1614067769, 1, 0, '2021-01-29 09:04:45');
-INSERT INTO `data_user_upgrade` VALUES (2, 'VIP2', 2, ',prize_01,prize_02,prize_04,', 1, 1, 0, 0.00, 0, 0, 1, 100, 0, 0, '', 1614073167, 1, 0, '2021-02-23 07:41:40');
+INSERT INTO `data_user_upgrade` VALUES (1, 'VIP1', 1, ',PRIZE01,PRIZE02,', 1, 1, 0, 900.00, 1, 100, 1, 10, 1, 20, '', 1615451839, 1, 0, '2021-01-29 09:04:45');
+INSERT INTO `data_user_upgrade` VALUES (2, 'VIP2', 2, ',PRIZE01,PRIZE02,PRIZE03,PRIZE04,PRIZE05,PRIZE06,', 1, 1, 0, 0.00, 0, 0, 1, 100, 0, 0, '', 1615451836, 1, 0, '2021-02-23 07:41:40');
 
 -- ----------------------------
 -- Table structure for shop_goods
@@ -466,8 +473,8 @@ CREATE TABLE `shop_goods`  (
 -- ----------------------------
 -- Records of shop_goods
 -- ----------------------------
-INSERT INTO `shop_goods` VALUES (1, 'G7154507000354775728', '商品名称', ',商品标签,', ',1,2,3,', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '5123512', '<p>123123</p>', ',M7154355257944,M7154355188977,', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S7154509095221\",\"status\":true,\"market\":\"0.00\",\"balance\":\"0.00\",\"selling\":\"0.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0}]]', 0, 0, 0, 0.00, 0.00, 1, '', 1, 1, 0, 0, 1, 211, 0, 0, 0, 0, 1, 0, '2021-03-11 06:15:33');
-INSERT INTO `shop_goods` VALUES (2, 'G7154507000354775729', '商品名称', ',商品标签,', ',1,2,4,', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>123123</p>', ',M7154355257944,M7154355188977,', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S7154444768356\",\"status\":true,\"market\":\"0.00\",\"balance\":\"0.00\",\"selling\":\"0.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0}]]', 0, 0, 0, 0.00, 0.00, 1, '', 0, 1, 0, 0, 1, 211, 0, 0, 0, 0, 1, 0, '2021-03-11 07:58:51');
+INSERT INTO `shop_goods` VALUES (1, 'G7154507000354775728', '商品名称', ',商品标签,', ',1,2,3,', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '5123512', '<p>123123</p>', ',M7154355257944,M7154355188977,', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S7154509095221\",\"status\":true,\"market\":\"0.00\",\"balance\":\"0.00\",\"selling\":\"0.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0}]]', 0, 0, 0, 0.00, 0.00, 1, '', 1, 1, 0, 0, 1, 211, 0, 0, 0, 0, 0, 0, '2021-03-11 06:15:33');
+INSERT INTO `shop_goods` VALUES (2, 'G7154507000354775729', '商品名称', ',商品标签,', ',1,2,4,', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>123123</p>', ',M7154355257944,M7154355188977,', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S7154444768356\",\"status\":true,\"market\":\"0.00\",\"balance\":\"0.00\",\"selling\":\"0.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0}]]', 10, 3, 0, 0.00, 0.00, 1, '', 0, 1, 0, 0, 0, 211, 0, 0, 0, 0, 1, 0, '2021-03-11 07:58:51');
 
 -- ----------------------------
 -- Table structure for shop_goods_cate
@@ -526,7 +533,7 @@ CREATE TABLE `shop_goods_item`  (
 -- Records of shop_goods_item
 -- ----------------------------
 INSERT INTO `shop_goods_item` VALUES (1, 'S7154444768356', 'G7154444760930', '默认分组::默认规格', 0, 11, 0.00, 0.00, 0, 1, 0.00, 0.00, 1, '2021-03-11 06:15:33');
-INSERT INTO `shop_goods_item` VALUES (2, 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', 0, 0, 0.00, 0.00, 0, 1, 0.00, 0.00, 1, '2021-03-11 07:58:51');
+INSERT INTO `shop_goods_item` VALUES (2, 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', 3, 10, 0.00, 0.00, 0, 1, 0.00, 0.00, 1, '2021-03-11 07:58:51');
 INSERT INTO `shop_goods_item` VALUES (3, 'S7154509095221', 'G7154507000354775728', '默认分组::默认规格', 0, 0, 0.00, 0.00, 0, 1, 0.00, 0.00, 1, '2021-03-11 08:02:22');
 
 -- ----------------------------
@@ -566,13 +573,14 @@ CREATE TABLE `shop_goods_stock`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-库存' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-商品-库存' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_goods_stock
 -- ----------------------------
 INSERT INTO `shop_goods_stock` VALUES (1, 'B2021031171504', 'G7154444760930', '默认分组::默认规格', 10, 1, 0, '2021-03-11 07:37:21');
 INSERT INTO `shop_goods_stock` VALUES (2, 'B2021031132206', 'G7154444760930', '默认分组::默认规格', 1, 1, 0, '2021-03-11 07:56:51');
+INSERT INTO `shop_goods_stock` VALUES (3, 'B2021031144257', 'G7154507000354775729', '默认分组::默认规格', 10, 1, 0, '2021-03-11 09:07:55');
 
 -- ----------------------------
 -- Table structure for shop_order
@@ -581,12 +589,14 @@ DROP TABLE IF EXISTS `shop_order`;
 CREATE TABLE `shop_order`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户编号',
-  `from` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '推荐用户',
+  `puid1` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '推荐用户1',
+  `puid2` bigint(20) NULL DEFAULT 0 COMMENT '推荐用户2',
   `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单编号',
   `amount_real` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单实际金额',
   `amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单统计金额',
   `amount_goods` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品统计金额',
   `amount_reduct` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '随机减免金额',
+  `amount_rebate` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '参与返利金额',
   `amount_express` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '快递费用金额',
   `amount_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '余额抵扣金额',
   `amount_discount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '折扣后的金额',
@@ -610,17 +620,20 @@ CREATE TABLE `shop_order`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_order_mid`(`uid`) USING BTREE,
-  INDEX `idx_shop_order_from`(`from`) USING BTREE,
+  INDEX `idx_shop_order_from`(`puid1`) USING BTREE,
   INDEX `idx_shop_order_status`(`status`) USING BTREE,
   INDEX `idx_shop_order_deleted`(`deleted`) USING BTREE,
   INDEX `idx_shop_order_orderno`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
   INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order
 -- ----------------------------
+INSERT INTO `shop_order` VALUES (1, 1, 0, 0, 'N20210311513872036', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 'empty', 'empty', '20210311695844329692', 1, '', 0.00, '无需支付', '2021-03-11 17:52:58', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:15:09');
+INSERT INTO `shop_order` VALUES (2, 1, 0, 0, 'N20210311715437924', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 'empty', 'empty', '20210311721982820832', 1, '', 0.00, '无需支付', '2021-03-11 17:55:19', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:35:25');
+INSERT INTO `shop_order` VALUES (3, 1, 0, 0, 'N20210311745121809', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 'empty', 'empty', '20210311750726151684', 1, '', 0.00, '无需支付', '2021-03-11 17:58:07', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:38:21');
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -641,6 +654,7 @@ CREATE TABLE `shop_order_item`  (
   `total_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售总价',
   `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励余额',
   `reward_integral` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励积分',
+  `rebate_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '参与返利',
   `stock_sales` bigint(20) NULL DEFAULT 1 COMMENT '商品数量',
   `truck_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
   `truck_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '快递邮费模板',
@@ -660,12 +674,16 @@ CREATE TABLE `shop_order_item`  (
   INDEX `idx_shop_order_item_order_no`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_item_goods_sku`(`goods_sku`) USING BTREE,
   INDEX `idx_shop_order_item_goods_code`(`goods_code`) USING BTREE,
-  INDEX `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
+  INDEX `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE,
+  INDEX `idx_shop_order_item_rebate_type`(`rebate_type`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order_item
 -- ----------------------------
+INSERT INTO `shop_order_item` VALUES (1, 1, 'N20210311513872036', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:15:09');
+INSERT INTO `shop_order_item` VALUES (2, 1, 'N20210311715437924', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:35:25');
+INSERT INTO `shop_order_item` VALUES (3, 1, 'N20210311745121809', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:38:21');
 
 -- ----------------------------
 -- Table structure for shop_order_send
@@ -757,11 +775,14 @@ CREATE TABLE `shop_payment_item`  (
   INDEX `idx_shop_payment_item_payment_type`(`payment_type`) USING BTREE,
   INDEX `idx_shop_payment_item_payment_trade`(`payment_trade`) USING BTREE,
   INDEX `idx_shop_payment_item_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_payment_item
 -- ----------------------------
+INSERT INTO `shop_payment_item` VALUES (1, 'N20210311513872036', '商城订单支付', 0.00, 'empty', 'empty', '20210311695844329692', 1, 0.00, '2021-03-11 17:52:58', '2021-03-11 09:33:29');
+INSERT INTO `shop_payment_item` VALUES (2, 'N20210311715437924', '商城订单支付', 0.00, 'empty', 'empty', '20210311721982820832', 1, 0.00, '2021-03-11 17:55:19', '2021-03-11 09:35:49');
+INSERT INTO `shop_payment_item` VALUES (3, 'N20210311745121809', '商城订单支付', 0.00, 'empty', 'empty', '20210311750726151684', 1, 0.00, '2021-03-11 17:58:07', '2021-03-11 09:38:37');
 
 -- ----------------------------
 -- Table structure for shop_truck_company
@@ -4655,19 +4676,19 @@ INSERT INTO `system_config` VALUES ('base', 'site_copy', '©版权所有 2014-20
 INSERT INTO `system_config` VALUES ('base', 'site_icon', 'https://v6.thinkadmin.top/upload/f4/7b8fe06e38ae9908e8398da45583b9.png');
 INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
 INSERT INTO `system_config` VALUES ('base', 'xpath', 'admin');
+INSERT INTO `system_config` VALUES ('data', 'wxapp_appid', 'wx6bb7b70258da09c6');
+INSERT INTO `system_config` VALUES ('data', 'wxapp_appkey', '4cdab4affa9c160e935a24a2860ff7f0');
+INSERT INTO `system_config` VALUES ('storage', 'alioss_http_protocol', 'http');
 INSERT INTO `system_config` VALUES ('storage', 'allow_exts', 'doc,gif,icon,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');
 INSERT INTO `system_config` VALUES ('storage', 'link_type', 'none');
 INSERT INTO `system_config` VALUES ('storage', 'local_http_domain', '');
 INSERT INTO `system_config` VALUES ('storage', 'local_http_protocol', 'follow');
-INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
-INSERT INTO `system_config` VALUES ('wechat', 'type', 'thr');
-INSERT INTO `system_config` VALUES ('wechat', 'thr_appid', 'wx60a43dd8161666d4');
-INSERT INTO `system_config` VALUES ('wechat', 'thr_appkey', '7d0e4a487c6258b2232294b6ef0adb9e');
 INSERT INTO `system_config` VALUES ('storage', 'qiniu_http_protocol', 'http');
 INSERT INTO `system_config` VALUES ('storage', 'txcos_http_protocol', 'http');
-INSERT INTO `system_config` VALUES ('data', 'wxapp_appid', 'wx6bb7b70258da09c6');
-INSERT INTO `system_config` VALUES ('data', 'wxapp_appkey', '4cdab4affa9c160e935a24a2860ff7f0');
-INSERT INTO `system_config` VALUES ('storage', 'alioss_http_protocol', 'http');
+INSERT INTO `system_config` VALUES ('storage', 'type', 'local');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appid', 'wx60a43dd8161666d4');
+INSERT INTO `system_config` VALUES ('wechat', 'thr_appkey', '7d0e4a487c6258b2232294b6ef0adb9e');
+INSERT INTO `system_config` VALUES ('wechat', 'type', 'thr');
 
 -- ----------------------------
 -- Table structure for system_data
@@ -4768,7 +4789,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
@@ -4791,6 +4812,8 @@ INSERT INTO `system_oplog` VALUES (15, 'admin/menu/edit', '127.0.0.1', '系统�
 INSERT INTO `system_oplog` VALUES (16, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-11 03:31:51');
 INSERT INTO `system_oplog` VALUES (17, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[91]成功', 'admin', '2021-03-11 03:52:45');
 INSERT INTO `system_oplog` VALUES (18, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-11 05:59:27');
+INSERT INTO `system_oplog` VALUES (19, 'admin/api.plugs/clearconfig', '127.0.0.1', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-03-11 09:10:48');
+INSERT INTO `system_oplog` VALUES (20, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-12 01:32:13');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4857,7 +4880,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '127.0.0.1', '2021-03-11 05:59:27', 82, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '127.0.0.1', '2021-03-12 01:32:13', 83, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
