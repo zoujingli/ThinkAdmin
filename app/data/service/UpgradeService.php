@@ -47,22 +47,21 @@ class UpgradeService extends Service
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
         if (empty($user)) return [0, '用户查询失败'];
-        if (!empty($user['pid1'])) return [0, '用户已绑定上级'];
-
+        if (!empty($user['pids'])) return [0, '已绑定推荐人'];
+        // 检查代理用户
         if (empty($pid)) $pid = $user['pid0'];
-        if (empty($pid)) return [0, '绑定用户不存在'];
-        if (intval($uid) === intval($pid)) return [0, '推荐人不能是自己'];
-
+        if (empty($pid)) return [0, '绑定推荐人不存在'];
+        if ($uid == $pid) return [0, '推荐人不能是自己'];
         $parant = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
         if (empty($parant['pids']) || empty($parant['vip_number'])) return [0, '推荐人无推荐资格'];
-
-        if (is_numeric(stripos($parant['path'], "-{$uid}-"))) return [0, '不能绑定下属'];
-        $data = ['pid0' => $parant['id'], 'pid1' => $parant['id'], 'pid2' => $parant['pid1']];
-        $data['path'] = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";
-        $data['layer'] = substr_count($data['path'], '-');
-        // 非正式绑定时，不写入 pid1 及 pid2 字段
-        if (empty($force)) [$data['pid1'], $data['pid2']] = [0, 0];
-
+        if (stripos($parant['path'], "-{$uid}-") !== false) return [0, '不能绑定下属'];
+        // 组装代理数据
+        $path = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";
+        $data = [
+            'pid0' => $parant['id'], 'pid1' => $parant['id'], 'pid2' => $parant['pid1'],
+            'pids' => $force ? 1 : 0, 'path' => $path, 'layer' => substr_count($path, '-'),
+        ];
+        // 更新用户代理
         if ($this->app->db->name('DataUser')->where(['id' => $uid])->update($data) !== false) {
             return [1, '绑定代理成功'];
         } else {

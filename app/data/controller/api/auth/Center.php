@@ -113,7 +113,7 @@ class Center extends Auth
         // 查询邀请的朋友
         $query = $this->_query($this->table);
         $query->like('nickname|username#nickname')->equal('pid1,id#uid');
-        $query->field('id,pid1,username,nickname,headimg,amount_total,create_at');
+        $query->field('id,pid0,pid1,pid2,pids,username,nickname,headimg,amount_total,create_at');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
         // 统计当前用户所有下属数
         $total = $this->app->db->name($this->table)->where($map)->count();
@@ -135,7 +135,7 @@ class Center extends Auth
     public function bindFrom()
     {
         $data = $this->_vali(['from.require' => '邀请人不能为空']);
-        [$state, $message] = UpgradeService::instance()->bindAgent($this->uuid, $data['from']);
+        [$state, $message] = UpgradeService::instance()->bindAgent($this->uuid, $data['from'], false);
         if ($state) {
             $this->success($message, UserService::instance()->total($this->uuid));
         } else {

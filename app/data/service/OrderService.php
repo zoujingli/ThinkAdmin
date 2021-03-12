@@ -42,7 +42,7 @@ class OrderService extends Service
      * @return integer
      * @throws \think\db\exception\DbException
      */
-    public function syncUserVipEntry(int $uid): int
+    private function syncUserEntry(int $uid): int
     {
         // 检查是否购买入会礼包
         $query = $this->app->db->table('shop_order a')->join('shop_order_item b', 'a.order_no=b.order_no');
@@ -59,21 +59,24 @@ class OrderService extends Service
     }
 
     /**
+     * 根据订单更新用户等级
      * @param string $order_no
-     * @return array|null
+     * @return array|null [USER, ORDER, ENTRY]
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public function syncUserLevel(string $order_no): ?array
     {
-        // 查询数据
-        $order = $this->app->db->name('ShopOrder')->where("order_no='{$order_no}' and status>=4")->find();
+        // 目标订单数据
+        $map = [['order_no', '=', $order_no], ['status', '>=', 4]];
+        $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) return null;
+        // 订单用户数据
         $user = $this->app->db->name('DataUser')->where(['id' => $order['uid']])->find();
         if (empty($user)) return null;
         // 更新用户购买资格
-        $entry = $this->syncUserVipEntry($order['uid']);
+        $entry = $this->syncUserEntry($order['uid']);
         // 尝试绑定代理用户
         if (empty($user['pid1']) && ($order['puid1'] > 0 || $user['pid1'] > 0)) {
             $puid1 = $order['puid1'] > 0 ? $order['puid1'] : $user['bid'];
@@ -88,7 +91,7 @@ class OrderService extends Service
         }
         // 重新计算用户等级
         UpgradeService::instance()->syncLevel($user['id']);
-        return [$order, $user, $entry];
+        return [$user, $order, $entry];
     }
 
     /**

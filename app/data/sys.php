@@ -4,6 +4,8 @@ use app\data\command\OrderClear;
 use app\data\command\UserBalance;
 use app\data\command\UserUpgrade;
 use app\data\command\UserTransfer;
+use app\data\service\OrderService;
+use app\data\service\RebateCurrentService;
 use think\Console;
 
 if (app()->request->isCli()) {
@@ -17,7 +19,8 @@ if (app()->request->isCli()) {
     // 注册订单支付处理事件
     app()->event->listen('ShopOrderPayment', function ($orderNo) {
         app()->log->notice("订单支付事件，订单号：{$orderNo}");
-        \app\data\service\RebateCurrentService::instance()->execute($orderNo);
+        OrderService::instance()->syncUserLevel($orderNo);
+        RebateCurrentService::instance()->execute($orderNo);
     });
 }
 
