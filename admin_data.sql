@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 12/03/2021 16:07:52
+ Date: 12/03/2021 16:14:37
 */
 
 SET NAMES utf8mb4;
@@ -119,8 +119,8 @@ CREATE TABLE `data_user`  (
   `base_height` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户身高',
   `base_weight` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户体重',
   `base_birthday` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户生日',
+  `vip_code` bigint(20) NULL DEFAULT 0 COMMENT 'VIP等级编号',
   `vip_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'VIP等级名称',
-  `vip_number` bigint(20) NULL DEFAULT 0 COMMENT 'VIP等级序号',
   `vip_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'VIP等级时间',
   `buy_vip_entry` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否入会礼包',
   `buy_last_date` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '最后支付时间',
@@ -154,7 +154,7 @@ CREATE TABLE `data_user`  (
 -- ----------------------------
 -- Records of data_user
 -- ----------------------------
-INSERT INTO `data_user` VALUES (1, 0, 0, 0, 0, '-', 1, '', '', '', '13617348882', '', '', '', 'e10adc3949ba59abbe56e057f20f883e', '', '', '', 0, '', '', '', '', '', 0, '', 0, '', 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, 0.00, '', 1, 0, '2021-03-11 08:46:55');
+INSERT INTO `data_user` VALUES (1, 0, 0, 0, 0, '-', 1, '', '', '', '13617348882', '', '', '', 'e10adc3949ba59abbe56e057f20f883e', '', '', '', 0, '', '', '', '', 0, '', '', 0, '', 0.00, 0.00, 0.00, 0.00, 0, 0, 0, 0.00, 0.00, 0.00, 0.00, '', 1, 0, '2021-03-11 08:46:55');
 
 -- ----------------------------
 -- Table structure for data_user_address
@@ -656,15 +656,15 @@ CREATE TABLE `shop_order_item`  (
   `total_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售总价',
   `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励余额',
   `reward_integral` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励积分',
-  `rebate_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '参与返利状态',
-  `rebate_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '参与返利金额',
   `stock_sales` bigint(20) NULL DEFAULT 1 COMMENT '商品数量',
-  `truck_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
+  `vip_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户等级名称',
+  `vip_code` bigint(20) NULL DEFAULT 0 COMMENT '用户等级序号',
+  `vip_entry` tinyint(1) NULL DEFAULT 0 COMMENT '是否入会礼包(0非礼包,1是礼包)',
+  `truck_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '物流配送类型(0虚物,1实物)',
   `truck_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '快递邮费模板',
   `truck_number` bigint(20) NULL DEFAULT 0 COMMENT '快递计费基数',
-  `vip_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户等级名称',
-  `vip_entry` tinyint(1) NULL DEFAULT 0 COMMENT '是否入会礼包',
-  `vip_number` bigint(20) NULL DEFAULT 0 COMMENT '用户等级序号',
+  `rebate_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '参与返利状态(0不返,1返利)',
+  `rebate_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '参与返利金额',
   `discount_id` bigint(20) NULL DEFAULT 0 COMMENT '优惠方案编号',
   `discount_rate` decimal(20, 6) NULL DEFAULT 100.000000 COMMENT '销售价格折扣',
   `discount_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品优惠金额',
@@ -684,9 +684,9 @@ CREATE TABLE `shop_order_item`  (
 -- ----------------------------
 -- Records of shop_order_item
 -- ----------------------------
-INSERT INTO `shop_order_item` VALUES (1, 1, 'N20210311513872036', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 0.00, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:15:09');
-INSERT INTO `shop_order_item` VALUES (2, 1, 'N20210311715437924', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 0.00, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:35:25');
-INSERT INTO `shop_order_item` VALUES (3, 1, 'N20210311745121809', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 0.00, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:38:21');
+INSERT INTO `shop_order_item` VALUES (1, 1, 'N20210311513872036', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:15:09');
+INSERT INTO `shop_order_item` VALUES (2, 1, 'N20210311715437924', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:35:25');
+INSERT INTO `shop_order_item` VALUES (3, 1, 'N20210311745121809', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:38:21');
 
 -- ----------------------------
 -- Table structure for shop_order_send

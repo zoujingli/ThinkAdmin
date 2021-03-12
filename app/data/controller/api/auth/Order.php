@@ -84,7 +84,7 @@ class Order extends Auth
                 if ($buys + $count > $goods['limit_max_num']) $this->error('超过限购数量');
             }
             // 限制购买身份
-            if ($goodsInfo['limit_low_vip'] > $this->user['vip_number']) {
+            if ($goodsInfo['limit_low_vip'] > $this->user['vip_code']) {
                 $this->error('用户等级不够');
             }
             // 商品库存检查
@@ -96,7 +96,7 @@ class Order extends Auth
             if ($goodsInfo['discount_id'] > 0) {
                 $map = ['status' => 1, 'deleted' => 0, 'id' => $goodsInfo['discount_id']];
                 if ($discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
-                    foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $this->user['vip_number']) {
+                    foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $this->user['vip_code']) {
                         [$discountId, $discountRate] = [$goodsInfo['discount_id'], $vo['discount']];
                     }
                 }
@@ -127,7 +127,7 @@ class Order extends Auth
                 'reward_integral' => $goodsItem['reward_integral'] * $count,
                 // 绑定用户等级
                 'vip_name'        => $this->user['vip_name'],
-                'vip_number'      => $this->user['vip_number'],
+                'vip_code'        => $this->user['vip_code'],
                 // 是否入会礼包
                 'vip_entry'       => $goodsInfo['vip_entry'],
                 // 是否参与返利

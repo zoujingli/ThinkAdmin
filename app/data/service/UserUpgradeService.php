@@ -53,7 +53,7 @@ class UserUpgradeService extends Service
         if (empty($pid)) return [0, '绑定推荐人不存在'];
         if ($uid == $pid) return [0, '推荐人不能是自己'];
         $parant = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
-        if (empty($parant['pids']) || empty($parant['vip_number'])) return [0, '推荐人无推荐资格'];
+        if (empty($parant['pids']) || empty($parant['vip_code'])) return [0, '推荐人无推荐资格'];
         if (stripos($parant['path'], "-{$uid}-") !== false) return [0, '不能绑定下属'];
         // 组装代理数据
         $path = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";
@@ -106,7 +106,7 @@ class UserUpgradeService extends Service
         }
         // 购买商品升级
         $query = $this->app->db->name('ShopOrderItem')->alias('b')->join('shop_order a', 'b.order_no=a.order_no');
-        $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_number');
+        $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_code');
         if ($tmpNumber > $vipNumber) {
             $map = ['status' => 1, 'number' => $tmpNumber];
             $upgrade = $this->app->db->name('DataUserUpgrade')->where($map)->find();
@@ -119,7 +119,7 @@ class UserUpgradeService extends Service
         // 更新用户数据
         $data = [
             'vip_name'              => $vipName,
-            'vip_number'            => $vipNumber,
+            'vip_code'              => $vipNumber,
             'teams_users_total'     => $teamsUsers,
             'teams_users_direct'    => $teamsDirect,
             'teams_users_indirect'  => $teamsIndirect,
@@ -128,7 +128,7 @@ class UserUpgradeService extends Service
             'teams_amount_indirect' => $teamsAmountIndirect,
             'order_amount_total'    => $orderAmountTotal,
         ];
-        if ($data['vip_number'] !== $user['vip_number']) {
+        if ($data['vip_code'] !== $user['vip_code']) {
             $data['vip_datetime'] = date('Y-m-d H:i:s');
         }
         $this->app->db->name('DataUser')->where(['id' => $uid])->update($data);
