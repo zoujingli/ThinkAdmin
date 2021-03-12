@@ -1,0 +1,68 @@
+{extend name="../../admin/view/main"}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='user_rebate/index_search'}
+    <div class="layui-badge layui-bg-blue margin-top-10 margin-bottom-10">
+        已产生总佣金 {$total.total|default=0.00} 元，已提现 {$total.used|default=0.00} 元，未提现 0 元
+    </div>
+    <table class="layui-table" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
+            <th class="text-left nowrap" style="width:300px">代理会员</th>
+            <th class="text-left nowrap" style="width:300px">交易会员</th>
+            <th class='text-left nowrap'>订单信息</th>
+            <th class='text-left nowrap'>商品信息</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
+            <td class="text-left nowrap relative">
+                {notempty name='vo.agent.headimg'}
+                <img data-tips-image style="width:auto;height:60px" src="{$vo.agent.headimg|default=''}" class="margin-right-5" alt="img">
+                {/notempty}
+                <div class="inline-block text-middle">
+                    代理昵称：{$vo.agent.nickname|default='--'}<br>
+                    代理手机：{$vo.agent.phone|default='--'}<br>
+                    代理等级：{notempty name='vo.agent.vip_code'}[ <b class="color-red">VIP{$vo.agent.vip_code}</b> ] <b class="color-red">{$vo.agent.vip_name}</b>{else}--{/notempty}
+                </div>
+            </td>
+            <td class="text-left nowrap relative">
+                {notempty name='vo.user.headimg'}
+                <img data-tips-image style="width:auto;height:60px" src="{$vo.user.headimg|default=''}" class="margin-right-5" alt="img">
+                {/notempty}
+                <div class="inline-block text-middle">
+                    会员昵称：{$vo.user.nickname|default='--'}<br>
+                    会员手机：{$vo.user.phone|default='--'}<br>
+                    会员级别：{notempty name='vo.user.vip_code'}[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b>{else}--{/notempty}
+                </div>
+            </td>
+            <td class='text-left nowrap'>
+                订单单号：<span class="color-blue">{$vo.order_no|default='--'}</span><br>
+                订单交易 <span class="color-blue">{$vo.order_amount+0}</span> 元获得收益 <span class="color-blue">{$vo.amount+0}</span> 元
+                {notempty name='vo.description'}<span class="layui-badge layui-bg-blue margin-left-5">{$vo.description|default=''}</span>{/notempty}<br>
+                返拥时间：<span class="color-blue">{$vo.create_at|format_datetime}</span><br>
+            </td>
+            <td class="text-left nowrap">
+                {foreach $vo.list as $g}
+                <div>{$g.goods_name|default=''} x{$g.stock_sales|default=0}</div>
+                {/foreach}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

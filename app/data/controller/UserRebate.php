@@ -14,6 +14,60 @@ class UserRebate extends Controller
 {
 
     /**
+     * 绑定数据表
+     * @var string
+     */
+    private $table = 'DataUserRebate';
+
+    /**
+     * 用户返利记录
+     * @auth true
+     * @menu true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function index()
+    {
+        $this->title = '用户返利记录';
+        $query = $this->_query($this->table)->equal('type')->like('order_no,description');
+        // 会员查询
+        $db = $this->_query('DataUser')->like('nickname#order_nickname,phone#order_phone')->db();
+        if ($db->getOptions('where')) $query->whereRaw("order_uid in {$db->field('id')->buildSql()}");
+        // 代理查询
+        $db = $this->_query('DataUser')->like('nickname#agent_nickname,phone#agent_phone')->db();
+        if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
+        // 查询分页
+        $query->dateBetween('create_at')->order('id desc')->page();
+    }
+
+    /**
+     * 商城订单列表处理
+     * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function _index_page_filter(array &$data)
+    {
+        $uids = array_merge(array_column($data, 'uid'), array_column($data, 'order_uid'));
+        $userList = $this->app->db->name('DataUser')->whereIn('id', array_unique($uids))->select();
+        $goodsList = $this->app->db->name('ShopOrderItem')->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
+        foreach ($data as &$vo) {
+            [$vo['user'], $vo['agent'], $vo['list']] = [[], [], []];
+            foreach ($goodsList as $goods) if ($goods['order_no'] === $vo['order_no']) {
+                $vo['list'][] = $goods;
+            }
+            foreach ($userList as $user) if ($user['id'] === $vo['order_uid']) {
+                $vo['user'] = $user;
+            }
+            foreach ($userList as $user) if ($user['id'] === $vo['uid']) {
+                $vo['agent'] = $user;
+            }
+        }
+    }
+
+    /**
      * 返利奖励配置
      * @auth true
      * @menu true
