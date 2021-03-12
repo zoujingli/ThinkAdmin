@@ -50,22 +50,24 @@ class UserService extends Service
 
     /**
      * 获取用户数据
-     * @param string $type 接口类型
      * @param integer $uuid 用户UID
+     * @param ?string $type 接口类型
      * @return array
      * @throws DbException
      * @throws Exception
      */
-    public function get(string $type, int $uuid): array
+    public function get(int $uuid, ?string $type = null): array
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uuid, 'deleted' => 0])->findOrEmpty();
         if (empty($user)) throw new Exception('指定UID用户不存在');
-        $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->findOrEmpty();
-        if (empty($data)) {
-            [$state, $info, $data] = UserTokenService::instance()->token($uuid, $type);
-            if (empty($state) || empty($data)) throw new Exception($info);
+        if (!is_null($type)) {
+            $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->findOrEmpty();
+            if (empty($data)) {
+                [$state, $info, $data] = UserTokenService::instance()->token($uuid, $type);
+                if (empty($state) || empty($data)) throw new Exception($info);
+            }
+            $user['token'] = ['token' => $data['token'], 'expire' => $data['time']];
         }
-        $user['token'] = ['token' => $data['token'], 'expire' => $data['time']];
         unset($user['deleted'], $user['password']);
         return $user;
     }
@@ -94,7 +96,7 @@ class UserService extends Service
         if ($force) {
             UserTokenService::instance()->token(intval($uuid), $type);
         }
-        return $this->get($type, $uuid);
+        return $this->get($uuid, $type);
     }
 
     /**

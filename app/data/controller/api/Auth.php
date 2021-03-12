@@ -8,7 +8,7 @@ use think\admin\Controller;
 use think\exception\HttpResponseException;
 
 /**
- * 授权认证基类
+ * 接口授权认证基类
  * Class Auth
  * @package app\store\controller\api
  */
@@ -70,7 +70,7 @@ abstract class Auth extends Controller
                 [$state, $info, $this->uuid] = UserTokenService::instance()->check($this->type, $token);
                 if (empty($state)) $this->error($info, '{-null-}', 401);
             }
-            return UserService::instance()->get($this->type, $this->uuid);
+            return UserService::instance()->get($this->uuid, $this->type);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
