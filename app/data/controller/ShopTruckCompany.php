@@ -35,8 +35,8 @@ class ShopTruckCompany extends Controller
         $query->like('name,code')->equal('status')->dateBetween('craete_at');
         // 加载对应数据
         $this->type = $this->request->get('type', 'index');
-        if ($this->type === 'index') $query->where(['status' => '1']);
-        elseif ($this->type === 'recycle') $query->where(['status' => '0']);
+        if ($this->type === 'index') $query->where(['status' => 1]);
+        elseif ($this->type === 'recycle') $query->where(['status' => 0]);
         // 列表显示分页
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
