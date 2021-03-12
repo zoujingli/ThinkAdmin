@@ -180,16 +180,17 @@ class ShopOrder extends Controller
         ]);
         $order = $this->app->db->name($this->table)->where($map)->find();
         if (empty($order)) $this->error('订单查询异常');
-        if (!in_array($order['status'], [1, 2])) $this->error('订单不能取消！');
+        if (!in_array($order['status'], [1, 2, 3])) $this->error('订单不能取消！');
         try {
             $result = $this->app->db->name($this->table)->where($map)->update([
                 'status'          => 0,
                 'cancel_status'   => 1,
-                'cancel_remark'   => '后台未支付的取消',
+                'cancel_remark'   => '后台取消未支付的订单',
                 'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
             if ($result !== false) {
                 OrderService::instance()->syncStock($order['order_no']);
+                $this->app->event->trigger('ShopOrderCancel', $order['order_no']);
                 $this->success('取消未支付的订单成功！');
             } else {
                 $this->error('取消支付的订单失败！');

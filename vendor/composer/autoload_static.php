@@ -377,6 +377,8 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'app\\data\\service\\RebateYearService' => __DIR__ . '/../..' . '/app/data/service/RebateYearService.php',
         'app\\data\\service\\TruckService' => __DIR__ . '/../..' . '/app/data/service/TruckService.php',
         'app\\data\\service\\UserService' => __DIR__ . '/../..' . '/app/data/service/UserService.php',
+        'app\\data\\service\\UserTokenService' => __DIR__ . '/../..' . '/app/data/service/UserTokenService.php',
+        'app\\data\\service\\UserUpgradeService' => __DIR__ . '/../..' . '/app/data/service/UserUpgradeService.php',
         'app\\data\\service\\payment\\AlipayPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/AlipayPaymentService.php',
         'app\\data\\service\\payment\\BalancePyamentService' => __DIR__ . '/../..' . '/app/data/service/payment/BalancePyamentService.php',
         'app\\data\\service\\payment\\EmptyPaymentService' => __DIR__ . '/../..' . '/app/data/service/payment/EmptyPaymentService.php',

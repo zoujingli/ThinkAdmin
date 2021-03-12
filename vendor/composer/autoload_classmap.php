@@ -248,6 +248,8 @@ return array(
     'app\\data\\service\\RebateYearService' => $baseDir . '/app/data/service/RebateYearService.php',
     'app\\data\\service\\TruckService' => $baseDir . '/app/data/service/TruckService.php',
     'app\\data\\service\\UserService' => $baseDir . '/app/data/service/UserService.php',
+    'app\\data\\service\\UserTokenService' => $baseDir . '/app/data/service/UserTokenService.php',
+    'app\\data\\service\\UserUpgradeService' => $baseDir . '/app/data/service/UserUpgradeService.php',
     'app\\data\\service\\payment\\AlipayPaymentService' => $baseDir . '/app/data/service/payment/AlipayPaymentService.php',
     'app\\data\\service\\payment\\BalancePyamentService' => $baseDir . '/app/data/service/payment/BalancePyamentService.php',
     'app\\data\\service\\payment\\EmptyPaymentService' => $baseDir . '/app/data/service/payment/EmptyPaymentService.php',
