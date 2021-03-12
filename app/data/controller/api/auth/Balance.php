@@ -33,7 +33,7 @@ class Balance extends Auth
         $result = $query->order('id desc')->page(true, false, false, 15);
         if (count($result['list']) > 0) {
             UserService::instance()->buildByUid($result['list'], 'uid', 'selfer');
-            UserService::instance()->buildByUid($result['list'], 'from', 'fromer');
+            UserService::instance()->buildByUid($result['list'], 'pid1', 'fromer');
         }
         $this->success('获取数据成功', $result);
     }

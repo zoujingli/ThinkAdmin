@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 12/03/2021 11:52:02
+ Date: 12/03/2021 15:54:21
 */
 
 SET NAMES utf8mb4;
@@ -354,7 +354,7 @@ CREATE TABLE `data_user_token`  (
 -- ----------------------------
 -- Records of data_user_token
 -- ----------------------------
-INSERT INTO `data_user_token` VALUES (2, 1, 'wxapp', 1615463887, 'token', '1a2dc04bb795f060fbb9a0d4921dd3e5', '2021-03-11 08:46:55');
+INSERT INTO `data_user_token` VALUES (2, 1, 'wxapp', 1615529228, 'token', '', '2021-03-11 08:46:55');
 
 -- ----------------------------
 -- Table structure for data_user_transfer
@@ -596,16 +596,17 @@ CREATE TABLE `shop_order`  (
   `amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单统计金额',
   `amount_goods` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品统计金额',
   `amount_reduct` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '随机减免金额',
-  `amount_rebate` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '参与返利金额',
   `amount_express` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '快递费用金额',
-  `amount_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '余额抵扣金额',
   `amount_discount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '折扣后的金额',
+  `rebate_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '参与返利金额',
+  `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励账户余额',
   `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付平台',
   `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际通道编号',
   `payment_trade` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付单号',
   `payment_status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '实际支付状态',
   `payment_image` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付凭证图片',
   `payment_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '实际支付金额',
+  `payment_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '余额抵扣金额',
   `payment_remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付结果描述',
   `payment_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付到账时间',
   `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
@@ -631,9 +632,9 @@ CREATE TABLE `shop_order`  (
 -- ----------------------------
 -- Records of shop_order
 -- ----------------------------
-INSERT INTO `shop_order` VALUES (1, 1, 0, 0, 'N20210311513872036', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 'empty', 'empty', '20210311695844329692', 1, '', 0.00, '无需支付', '2021-03-11 17:52:58', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:15:09');
-INSERT INTO `shop_order` VALUES (2, 1, 0, 0, 'N20210311715437924', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 'empty', 'empty', '20210311721982820832', 1, '', 0.00, '无需支付', '2021-03-11 17:55:19', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:35:25');
-INSERT INTO `shop_order` VALUES (3, 1, 0, 0, 'N20210311745121809', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 'empty', 'empty', '20210311750726151684', 1, '', 0.00, '无需支付', '2021-03-11 17:58:07', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:38:21');
+INSERT INTO `shop_order` VALUES (1, 1, 0, 0, 'N20210311513872036', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311695844329692', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:52:58', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:15:09');
+INSERT INTO `shop_order` VALUES (2, 1, 0, 0, 'N20210311715437924', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311721982820832', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:55:19', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:35:25');
+INSERT INTO `shop_order` VALUES (3, 1, 0, 0, 'N20210311745121809', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311750726151684', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:58:07', 0, 1, 0, '', '', 0, '', '', 4, '2021-03-11 09:38:21');
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -654,7 +655,8 @@ CREATE TABLE `shop_order_item`  (
   `total_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售总价',
   `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励余额',
   `reward_integral` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励积分',
-  `rebate_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '参与返利',
+  `rebate_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '参与返利状态',
+  `rebate_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '参与返利金额',
   `stock_sales` bigint(20) NULL DEFAULT 1 COMMENT '商品数量',
   `truck_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
   `truck_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '快递邮费模板',
@@ -681,9 +683,9 @@ CREATE TABLE `shop_order_item`  (
 -- ----------------------------
 -- Records of shop_order_item
 -- ----------------------------
-INSERT INTO `shop_order_item` VALUES (1, 1, 'N20210311513872036', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:15:09');
-INSERT INTO `shop_order_item` VALUES (2, 1, 'N20210311715437924', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:35:25');
-INSERT INTO `shop_order_item` VALUES (3, 1, 'N20210311745121809', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:38:21');
+INSERT INTO `shop_order_item` VALUES (1, 1, 'N20210311513872036', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 0.00, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:15:09');
+INSERT INTO `shop_order_item` VALUES (2, 1, 'N20210311715437924', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 0.00, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:35:25');
+INSERT INTO `shop_order_item` VALUES (3, 1, 'N20210311745121809', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, 0.00, 1, 0, '', 1, '', 0, 0, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:38:21');
 
 -- ----------------------------
 -- Table structure for shop_order_send

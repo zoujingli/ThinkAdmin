@@ -25,10 +25,10 @@ class UserUpgradeService extends Service
         $total += $this->app->db->name('DataUserBalanceTransfer')->where(['uid' => $uuid, 'deleted' => 0])->sum('amount');
         $count = $this->app->db->name('DataUserBalanceTransfer')->where(['from' => $uuid, 'deleted' => 0])->sum('amount');
         if (empty($nots)) {
-            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->sum('amount_balance');
+            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->sum('payment_balance');
             $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
         } else {
-            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->whereNotIn('order_no', $nots)->sum('amount_balance');
+            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->whereNotIn('order_no', $nots)->sum('payment_balance');
         }
         return [$total, $count];
     }

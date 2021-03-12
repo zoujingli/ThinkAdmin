@@ -58,7 +58,7 @@ class BalancePyamentService extends PaymentService
         // 扣减用户余额
         [$total, $used] = UserUpgradeService::instance()->balance($order['uid'], [$orderNo]);
         if ($paymentAmount > $total - $used) throw new Exception("可抵扣余额不足");
-        $this->app->db->name('ShopOrder')->where(['order_no' => $orderNo])->update(['amount_balance' => $paymentAmount]);
+        $this->app->db->name('ShopOrder')->where(['order_no' => $orderNo])->update(['payment_balance' => $paymentAmount]);
         // 更新支付行为
         $this->updatePaymentAction($orderNo, CodeExtend::uniqidDate(20), $paymentAmount, '账户余额支付');
         // 刷新用户余额
