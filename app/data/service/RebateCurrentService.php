@@ -107,7 +107,7 @@ class RebateCurrentService extends Service
     }
 
     /**
-     * 执行订单返利
+     * 执行订单返利处理
      * @param string $orderNo
      * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
@@ -169,7 +169,7 @@ class RebateCurrentService extends Service
     }
 
     /**
-     * 首推奖励
+     * 用户首推奖励
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -203,7 +203,7 @@ class RebateCurrentService extends Service
     }
 
     /**
-     * 复购奖励
+     * 用户复购奖励
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -237,7 +237,7 @@ class RebateCurrentService extends Service
     }
 
     /**
-     * 直属团队
+     * 用户直属团队
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -264,7 +264,7 @@ class RebateCurrentService extends Service
     }
 
     /**
-     * 间接团队
+     * 用户间接团队
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -290,7 +290,7 @@ class RebateCurrentService extends Service
     }
 
     /**
-     * 差额奖励
+     * 用户差额奖励
      * @return false
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -335,7 +335,7 @@ class RebateCurrentService extends Service
     }
 
     /**
-     * 管理奖励发放
+     * 用户管理奖励发放
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
