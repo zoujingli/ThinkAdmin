@@ -62,6 +62,19 @@ class RebateCurrentService extends Service
     private $table = 'DataUserRebate';
 
     /**
+     * 返利服务初始化
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function initialize()
+    {
+        // 返利奖励到账时机
+        $this->status = $this->config('settl_type') > 1 ? 0 : 1;
+    }
+
+    /**
      * 获取奖励名称
      * @param string $prize
      * @return string
@@ -128,8 +141,6 @@ class RebateCurrentService extends Service
             $this->from2 = $this->app->db->name('DataUser')->where($map)->find();
             if (empty($this->from2)) throw new Exception('间接推荐人不存在');
         }
-        // 返利奖励到账时机
-        $this->status = $this->config('settl_type') > 1 ? 0 : 1;
         // 批量发放配置奖励
         foreach (self::PRIZES as $vo) {
             if (method_exists($this, $vo['func'])) {
