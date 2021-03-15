@@ -22,6 +22,11 @@ if (app()->request->isCli()) {
         OrderService::instance()->syncUserLevel($orderNo);
         RebateCurrentService::instance()->execute($orderNo);
     });
+    // 注册订单确认支付事件
+    app()->event->listen('ShopOrderConfirm', function ($orderNo) {
+        app()->log->notice("订单确认事件，订单号：{$orderNo}");
+        RebateCurrentService::instance()->confirm($orderNo);
+    });
 }
 
 if (!function_exists('show_goods_spec')) {

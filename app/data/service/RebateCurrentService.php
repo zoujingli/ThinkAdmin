@@ -43,6 +43,12 @@ class RebateCurrentService extends Service
     protected $order;
 
     /**
+     * 奖励到账时机
+     * @var integer
+     */
+    protected $status;
+
+    /**
      * 推荐用户
      * @var array
      */
@@ -63,6 +69,28 @@ class RebateCurrentService extends Service
     public function name(string $prize): string
     {
         return self::PRIZES[$prize]['name'] ?? $prize;
+    }
+
+    /**
+     * 确认收货订单处理
+     * @param string $orderNo
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function confirm(string $orderNo): array
+    {
+        $map = ['order_no' => $orderNo, 'status' => 6];
+        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        if (empty($order)) return [0, '需处理的订单状态异常！'];
+        $map = [['status', '=', 0], ['order_no', 'like', "{$orderNo}%"]];
+        $this->app->db->name($this->table)->where($map)->update(['status' => 1]);
+        if (UserUpgradeService::instance()->syncLevel($order['uid'])) {
+            return [1, '重新计算用户金额成功！'];
+        } else {
+            return [0, '重新计算用户金额失败！'];
+        }
     }
 
     /**
@@ -97,6 +125,8 @@ class RebateCurrentService extends Service
             $this->from2 = $this->app->db->name('DataUser')->where($map)->find();
             if (empty($this->from2)) throw new Exception('间接推荐人不存在');
         }
+        // 返利奖励到账时机
+        $this->status = $this->config('settl_type') > 1 ? 0 : 1;
         // 批量发放配置奖励
         foreach (self::PRIZES as $vo) {
             if (method_exists($this, $vo['func'])) {
@@ -131,7 +161,7 @@ class RebateCurrentService extends Service
                 $name = "{$this->name(self::PRIZE_01)}，订单 {$value}%";
             }
             $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
+                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
             UserUpgradeService::instance()->syncLevel($this->from1['id']);
@@ -165,7 +195,7 @@ class RebateCurrentService extends Service
                 $name = "{$this->name(self::PRIZE_02)}，订单 {$value}%";
             }
             $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
+                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
             UserUpgradeService::instance()->syncLevel($this->from1['id']);
@@ -192,7 +222,7 @@ class RebateCurrentService extends Service
             $amount = $value * $this->order['rebate_amount'] / 100;
             $name = "{$this->name(self::PRIZE_03)}，订单 {$value}%";
             $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
+                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
             UserUpgradeService::instance()->syncLevel($this->from1['id']);
@@ -218,7 +248,7 @@ class RebateCurrentService extends Service
             $amount = $value * $this->order['rebate_amount'] / 100;
             $name = "{$this->name(self::PRIZE_04)}，订单 {$value}%";
             $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
+                'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新代理奖利金额
             UserUpgradeService::instance()->syncLevel($this->from2['id']);
@@ -257,6 +287,7 @@ class RebateCurrentService extends Service
                             $this->app->db->name($this->table)->insert(array_merge($map, [
                                 'name'         => "等级差额奖励{$tVip}#{$user['vip_code']}商品的{$dRate}%",
                                 'amount'       => $dRate * $item['total_selling'],
+                                'status'       => $this->status,
                                 'order_no'     => $this->order['order_no'],
                                 'order_uid'    => $this->order['uid'],
                                 'order_amount' => $this->order['amount_total'],
@@ -291,7 +322,7 @@ class RebateCurrentService extends Service
                     $map = ['type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
                     $name = "{$this->name(self::PRIZE_06)}，[ {$prevLevel} > {$user['vip_code']} ]每单 {$amount} 元";
                     $this->app->db->name($this->table)->insert(array_merge($map, [
-                        'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
+                        'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
                     ]));
                     UserUpgradeService::instance()->syncLevel($this->from2['id']);
                 }
