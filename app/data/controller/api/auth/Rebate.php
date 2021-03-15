@@ -25,8 +25,7 @@ class Rebate extends Auth
      */
     public function get()
     {
-        $map = ['uid' => $this->uuid];
-        $query = $this->_query($this->table)->where($map);
+        $query = $this->_query($this->table)->where(['uid' => $this->uuid]);
         $query->like('create_at#date')->order('id desc')->page(true, false, false, 15);
     }
 }
