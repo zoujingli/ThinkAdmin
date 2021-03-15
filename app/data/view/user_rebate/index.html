@@ -1,11 +1,11 @@
 {extend name="../../admin/view/main"}
 
 {block name="content"}
-<div class="think-box-shadow">
+<div class="layui-badge think-bg-blue text-left notselect block shadow padding-10 padding-left-20 border-radius-5 font-s15 ">
+    统计：已产生返利累计 {$total.total|default=0.00} 元，已提现 {$total.used|default=0.00} 元，未提现 0 元
+</div>
+<div class="think-box-shadow margin-top-10">
     {include file='user_rebate/index_search'}
-    <div class="layui-badge layui-bg-blue margin-top-10 margin-bottom-10">
-        已产生总佣金 {$total.total|default=0.00} 元，已提现 {$total.used|default=0.00} 元，未提现 0 元
-    </div>
     <table class="layui-table" lay-skin="line">
         {notempty name='list'}
         <thead>

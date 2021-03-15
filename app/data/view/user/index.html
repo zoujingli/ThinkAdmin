@@ -52,7 +52,7 @@
             </td>
             <td class="nowrap sub-span-blue">
                 <div>余额统计：累计充值 <span>{$vo.balance_total+0}</span> 元，已使用 <span>{$vo.balance_used+0}</span> 元</div>
-                <div>奖励统计：共奖励金额 <span>{$vo.amount_total+0}</span> 元，已提现 <span>{$vo.amount_used+0}</span> 元</div>
+                <div>奖励统计：共奖励金额 <span>{$vo.rebate_total+0}</span> 元，已提现 <span>{$vo.rebate_used+0}</span> 元</div>
             </td>
             <td class="nowrap">
                 使用状态：{if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{elseif $vo.status eq 1}<b class="color-green margin-right-5">已激活</b>{/if}<br>
