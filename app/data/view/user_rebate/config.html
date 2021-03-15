@@ -119,7 +119,7 @@
                                                         {php} $key = 'frist_type_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                         <input type="hidden" name="{$key}" value="1">
                                                         {php} $data[$key] = $data[$key] ?? 1; {/php}
-                                                        {foreach [1 => '奖励固定金额 / 每人',2 => '按返利金额交易金额比例'] as $k => $v}
+                                                        {foreach [1 => '奖励固定金额 / 每人',2 => '按订单参与的返利金额比例'] as $k => $v}
                                                         {if isset($data[$key]) and $data[$key] eq $k}
                                                         <input checked class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
                                                         {else}
@@ -149,7 +149,7 @@
                                                     <div class="layui-form-item">
                                                         {php} $key = 'repeat_type_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                         {php} $data[$key] = $data[$key] ?? 1; {/php}
-                                                        {foreach [1 => '奖励固定金额 / 每人', 2 => '按返利金额交易金额比例'] as $k => $v}
+                                                        {foreach [1 => '奖励固定金额 / 每人', 2 => '按订单参与的返利金额比例'] as $k => $v}
                                                         {if isset($data[$key]) and $data[$key] eq $k}
                                                         <input checked class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
                                                         {else}
@@ -232,7 +232,7 @@
                                                 {php} $key = 'upgrade_type_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                 <input type="hidden" name="{$key}" value="1">
                                                 {php} $data[$key] = $data[$key] ?? 1; {/php}
-                                                {foreach [1 => '奖励固定金额 / 每人',2 => '按返利金额交易金额比例'] as $k => $v}
+                                                {foreach [1 => '奖励固定金额 / 每人',2 => '按订单参与的返利金额比例'] as $k => $v}
                                                 {if isset($data[$key]) and $data[$key] eq $k}
                                                 <input checked class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
                                                 {else}
