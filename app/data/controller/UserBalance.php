@@ -91,7 +91,7 @@ class UserBalance extends Controller
     protected function _form_result(bool $state, array $data)
     {
         if ($state && isset($data['uid'])) {
-            UserUpgradeService::instance()->balance($data['uid']);
+            UserUpgradeService::instance()->syncBalance($data['uid']);
         }
     }
 
@@ -116,7 +116,7 @@ class UserBalance extends Controller
             $ids = str2arr(input('id', ''));
             $query = $this->app->db->name($this->table);
             foreach ($query->whereIn('id', $ids)->cursor() as $vo) {
-                UserUpgradeService::instance()->balance($vo['uid']);
+                UserUpgradeService::instance()->syncBalance($vo['uid']);
             }
         }
     }

@@ -165,7 +165,7 @@ class RebateCurrentService extends Service
             'remark' => "来自订单{$this->order['order_no']}的余额充值",
             'amount' => $this->order['reward_balance'],
         ], 'code');
-        return UserUpgradeService::instance()->balance($this->order['uid']);
+        return UserUpgradeService::instance()->syncBalance($this->order['uid']);
     }
 
     /**

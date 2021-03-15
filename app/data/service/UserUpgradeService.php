@@ -13,39 +13,16 @@ class UserUpgradeService extends Service
 {
 
     /**
-     * 同步刷新用户返利
-     * @param integer $uuid
-     * @return array [total, count, lock]
+     * 获取用户等级数据
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function syncRebate(int $uuid): array
+    public function levels(): array
     {
-        $total = abs($this->app->db->name('DataUserRebate')->where("uid='{$uuid}' and status=1 and amount>0 and deleted=0")->sum('amount'));
-        $count = abs($this->app->db->name('DataUserRebate')->where("uid='{$uuid}' and status=1 and amount<0 and deleted=0")->sum('amount'));
-        $lockd = abs($this->app->db->name('DataUserRebate')->where("uid='{$uuid}' and status=0 and amount<0 and deleted=0")->sum('amount'));
-        $this->app->db->name('DataUser')->where(['id' => $uuid])->update([
-            'rebate_total' => $total, 'rebate_used' => $count, 'rebate_lock' => $lockd,
-        ]);
-        return [$total, $count, $lockd];
-    }
-
-    /**
-     * 同步刷新用户余额
-     * @param int $uuid 用户UID
-     * @param array $nots 排除的订单
-     * @return array [total, count]
-     * @throws \think\db\exception\DbException
-     */
-    public function balance(int $uuid, array $nots = []): array
-    {
-        $total = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and status=1 and amount>0 and deleted=0")->sum('amount'));
-        $count = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and status=1 and amount<0 and deleted=0")->sum('amount'));
-        if (empty($nots)) {
-            $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
-        } else {
-            $count -= $this->app->db->name('DataUserBalance')->whereRaw("uid={$uuid}")->whereIn('code', $nots)->sum('amount');
-        }
-        return [$total, $count];
+        $query = $this->app->db->name('DataUserUpgrade');
+        return $query->where(['status' => 1])->order('number asc')->select()->toArray();
     }
 
     /**
@@ -85,16 +62,39 @@ class UserUpgradeService extends Service
     }
 
     /**
-     * 获取用户等级数据
-     * @return array
-     * @throws \think\db\exception\DataNotFoundException
+     * 同步刷新用户返利
+     * @param integer $uuid
+     * @return array [total, count, lock]
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function levels(): array
+    public function syncRebate(int $uuid): array
     {
-        $query = $this->app->db->name('DataUserUpgrade');
-        return $query->where(['status' => 1])->order('number asc')->select()->toArray();
+        $total = abs($this->app->db->name('DataUserRebate')->where("uid='{$uuid}' and status=1 and amount>0 and deleted=0")->sum('amount'));
+        $count = abs($this->app->db->name('DataUserRebate')->where("uid='{$uuid}' and status=1 and amount<0 and deleted=0")->sum('amount'));
+        $lockd = abs($this->app->db->name('DataUserRebate')->where("uid='{$uuid}' and status=0 and amount<0 and deleted=0")->sum('amount'));
+        $this->app->db->name('DataUser')->where(['id' => $uuid])->update([
+            'rebate_total' => $total, 'rebate_used' => $count, 'rebate_lock' => $lockd,
+        ]);
+        return [$total, $count, $lockd];
+    }
+
+    /**
+     * 同步刷新用户余额
+     * @param int $uuid 用户UID
+     * @param array $nots 排除的订单
+     * @return array [total, count]
+     * @throws \think\db\exception\DbException
+     */
+    public function syncBalance(int $uuid, array $nots = []): array
+    {
+        $total = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and status=1 and amount>0 and deleted=0")->sum('amount'));
+        $count = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and status=1 and amount<0 and deleted=0")->sum('amount'));
+        if (empty($nots)) {
+            $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
+        } else {
+            $count -= $this->app->db->name('DataUserBalance')->whereRaw("uid={$uuid}")->whereIn('code', $nots)->sum('amount');
+        }
+        return [$total, $count];
     }
 
     /**
