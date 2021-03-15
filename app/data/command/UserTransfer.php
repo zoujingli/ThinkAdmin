@@ -50,17 +50,14 @@ class UserTransfer extends Command
                 ]);
             } else {
                 $this->app->db->name('DataUserTransfer')->where(['code' => $vo['code']])->update([
-                    'change_time' => date('Y-m-d H:i:s'),
-                    'change_desc' => $result['err_code_des'] ?? '线上提现失败',
+                    'change_time' => date('Y-m-d H:i:s'), 'change_desc' => $result['err_code_des'] ?? '线上提现失败',
                 ]);
             }
         } catch (\Exception $exception) {
             $this->output->writeln("订单 {$vo['code']} 提现失败，{$exception->getMessage()}");
             $this->app->db->name('DataUserTransfer')->where(['code' => $vo['code']])->update([
-                'change_time' => date('Y-m-d H:i:s'),
-                'change_desc' => $exception->getMessage(),
+                'change_time' => date('Y-m-d H:i:s'), 'change_desc' => $exception->getMessage(),
             ]);
         }
     }
-
 }
