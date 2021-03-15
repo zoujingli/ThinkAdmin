@@ -13,7 +13,7 @@
                             <legend><span class="layui-badge">结算到账</span></legend>
                             <div class="layui-form-item">
                                 {php} $data['settl_type'] = $data['settl_type'] ?? 1; {/php}
-                                {foreach [1 => '支付后立即到账',2 => '确认收货后到账'] as $key => $val}{if $data.settl_type eq $key}
+                                {foreach [1 => '支付后立即到账', 2 => '确认收货后到账'] as $key => $val}{if $data.settl_type eq $key}
                                 <input checked class="layui-input" type="radio" name="settl_type" value="{$key}" title="{$val}">
                                 {else}
                                 <input class="layui-input" type="radio" name="settl_type" value="{$key}" title="{$val}">
@@ -149,7 +149,7 @@
                                                     <div class="layui-form-item">
                                                         {php} $key = 'repeat_type_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                         {php} $data[$key] = $data[$key] ?? 1; {/php}
-                                                        {foreach [1 => '奖励固定金额 / 每人',2 => '按返利金额交易金额比例'] as $k => $v}
+                                                        {foreach [1 => '奖励固定金额 / 每人', 2 => '按返利金额交易金额比例'] as $k => $v}
                                                         {if isset($data[$key]) and $data[$key] eq $k}
                                                         <input checked class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
                                                         {else}
@@ -251,7 +251,7 @@
                                             <div class="layui-form-item nowrap">
                                                 {php} $key = 'manage_type_vip_'.$level['number']; {/php}
                                                 {php} $data[$key] = $data[$key] ?? 1; {/php}
-                                                {foreach [1 => '不累计未发管理奖金额',2 => '累计未发放管理奖金'] as $k => $v}
+                                                {foreach [1 => '不累计未发管理奖金额', 2 => '累计未发放管理奖金'] as $k => $v}
                                                 {if isset($data[$key]) and $data[$key] eq $k}
                                                 <input checked class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
                                                 {else}
