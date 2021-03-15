@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 15/03/2021 16:48:21
+ Date: 15/03/2021 18:12:10
 */
 
 SET NAMES utf8mb4;
@@ -295,6 +295,7 @@ CREATE TABLE `data_user_rebate`  (
   `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '奖励类型',
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '奖励名称',
   `status` tinyint(1) NULL DEFAULT 1 COMMENT '生效状态(0未生效,1已生效)',
+  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删除,1已删除)',
   `amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励数量',
   `order_no` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '订单单号',
   `order_uid` bigint(20) NULL DEFAULT 0 COMMENT '订单用户',
@@ -342,25 +343,19 @@ INSERT INTO `data_user_token` VALUES (2, 1, 'wxapp', 1615529228, 'token', '', '2
 DROP TABLE IF EXISTS `data_user_transfer`;
 CREATE TABLE `data_user_transfer`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
-  `type` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '提现类型（1余额提现，2银行提现）',
+  `uid` bigint(20) NULL DEFAULT 0 COMMENT '用户UID',
   `code` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '提现单号',
   `openid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT 'OPENID',
-  `amount` decimal(20, 2) UNSIGNED NULL DEFAULT 0.00 COMMENT '提现金额',
+  `amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '提现金额',
   `remark` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '提现描述',
-  `bank_user` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '开户姓名',
-  `bank_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '银行名称',
-  `bank_code` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '银行卡号',
-  `bank_bran` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '开户分行',
   `trade_no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '交易单号',
   `trade_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '打款时间',
   `change_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '处理时间',
   `change_desc` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '处理描述',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '提现状态(0失败,1待审核,2已审核,3打款中,4已打款,5已收款)',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '提现状态(0失败,1待审核,2已审核,3打款中,4已打款,5已收款)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_transfer_uid`(`uid`) USING BTREE,
-  INDEX `idx_data_user_transfer_type`(`type`) USING BTREE,
   INDEX `idx_data_user_transfer_code`(`code`) USING BTREE,
   INDEX `idx_data_user_transfer_status`(`status`) USING BTREE,
   INDEX `idx_data_user_transfer_openid`(`openid`) USING BTREE
@@ -4684,7 +4679,7 @@ CREATE TABLE `system_data`  (
   `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_data_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_data
@@ -4693,6 +4688,7 @@ INSERT INTO `system_data` VALUES (1, '关于我们', 'a:2:{s:4:\"name\";s:8:\"23
 INSERT INTO `system_data` VALUES (2, '用户协议', 'a:2:{s:4:\"name\";s:7:\"2315123\";s:7:\"content\";s:16:\"<p>512351235</p>\";}');
 INSERT INTO `system_data` VALUES (3, 'cropper', 'a:2:{s:5:\"image\";s:61:\"http://127.0.0.1/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg\";s:7:\"postion\";s:134:\"{\"x\":211.05349794238683,\"y\":110.7037037037037,\"width\":213.49999999999997,\"height\":213.49999999999997,\"rotate\":0,\"scaleX\":1,\"scaleY\":1}\";}');
 INSERT INTO `system_data` VALUES (4, 'RebateRule', 'a:104:{s:10:\"settl_type\";s:1:\"1\";s:10:\"teams_type\";s:1:\"1\";s:17:\"equal_state_vip_1\";s:1:\"1\";s:19:\"equal_value_vip_1_1\";s:4:\"0.00\";s:19:\"equal_value_vip_2_1\";s:4:\"0.00\";s:17:\"equal_state_vip_2\";s:1:\"0\";s:19:\"equal_value_vip_1_2\";s:4:\"0.00\";s:19:\"equal_value_vip_2_2\";s:4:\"0.00\";s:17:\"equal_state_vip_3\";s:1:\"0\";s:19:\"equal_value_vip_1_3\";s:4:\"0.00\";s:19:\"equal_value_vip_2_3\";s:4:\"0.00\";s:19:\"frist_state_vip_1_1\";s:1:\"0\";s:18:\"frist_type_vip_1_1\";s:1:\"1\";s:19:\"frist_value_vip_1_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_1\";s:1:\"0\";s:19:\"repeat_type_vip_1_1\";s:1:\"1\";s:20:\"repeat_value_vip_1_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_1_2\";s:1:\"0\";s:18:\"frist_type_vip_1_2\";s:1:\"1\";s:19:\"frist_value_vip_1_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_2\";s:1:\"0\";s:19:\"repeat_type_vip_1_2\";s:1:\"1\";s:20:\"repeat_value_vip_1_2\";s:6:\"0.0000\";s:19:\"frist_state_vip_1_3\";s:1:\"0\";s:18:\"frist_type_vip_1_3\";s:1:\"1\";s:19:\"frist_value_vip_1_3\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_3\";s:1:\"0\";s:19:\"repeat_type_vip_1_3\";s:1:\"1\";s:20:\"repeat_value_vip_1_3\";s:6:\"0.0000\";s:18:\"direct_state_vip_1\";s:1:\"0\";s:17:\"direct_type_vip_1\";s:1:\"2\";s:18:\"direct_value_vip_1\";s:6:\"0.0000\";s:20:\"indirect_state_vip_1\";s:1:\"0\";s:19:\"indirect_type_vip_1\";s:1:\"2\";s:20:\"indirect_value_vip_1\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_1\";s:1:\"0\";s:20:\"upgrade_type_vip_1_3\";s:1:\"1\";s:18:\"upgrade_type_vip_1\";s:1:\"2\";s:19:\"upgrade_value_vip_1\";s:6:\"0.0000\";s:18:\"manage_state_vip_1\";s:1:\"1\";s:17:\"manage_type_vip_1\";s:1:\"2\";s:18:\"manage_value_vip_1\";s:8:\"500.0000\";s:19:\"frist_state_vip_2_1\";s:1:\"0\";s:18:\"frist_type_vip_2_1\";s:1:\"1\";s:19:\"frist_value_vip_2_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_1\";s:1:\"0\";s:19:\"repeat_type_vip_2_1\";s:1:\"1\";s:20:\"repeat_value_vip_2_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_2_2\";s:1:\"0\";s:18:\"frist_type_vip_2_2\";s:1:\"1\";s:19:\"frist_value_vip_2_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_2\";s:1:\"0\";s:19:\"repeat_type_vip_2_2\";s:1:\"1\";s:20:\"repeat_value_vip_2_2\";s:6:\"0.0000\";s:19:\"frist_state_vip_2_3\";s:1:\"0\";s:18:\"frist_type_vip_2_3\";s:1:\"1\";s:19:\"frist_value_vip_2_3\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_3\";s:1:\"0\";s:19:\"repeat_type_vip_2_3\";s:1:\"1\";s:20:\"repeat_value_vip_2_3\";s:6:\"0.0000\";s:18:\"direct_state_vip_2\";s:1:\"0\";s:17:\"direct_type_vip_2\";s:1:\"2\";s:18:\"direct_value_vip_2\";s:6:\"0.0000\";s:20:\"indirect_state_vip_2\";s:1:\"0\";s:19:\"indirect_type_vip_2\";s:1:\"2\";s:20:\"indirect_value_vip_2\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_2\";s:1:\"0\";s:20:\"upgrade_type_vip_2_3\";s:1:\"1\";s:18:\"upgrade_type_vip_2\";s:1:\"2\";s:19:\"upgrade_value_vip_2\";s:6:\"0.0000\";s:18:\"manage_state_vip_2\";s:1:\"1\";s:17:\"manage_type_vip_2\";s:1:\"1\";s:18:\"manage_value_vip_2\";s:8:\"500.0000\";s:19:\"frist_state_vip_3_1\";s:1:\"0\";s:18:\"frist_type_vip_3_1\";s:1:\"1\";s:19:\"frist_value_vip_3_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_3_1\";s:1:\"0\";s:19:\"repeat_type_vip_3_1\";s:1:\"1\";s:20:\"repeat_value_vip_3_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_3_2\";s:1:\"0\";s:18:\"frist_type_vip_3_2\";s:1:\"1\";s:19:\"frist_value_vip_3_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_3_2\";s:1:\"0\";s:19:\"repeat_type_vip_3_2\";s:1:\"1\";s:20:\"repeat_value_vip_3_2\";s:6:\"0.0000\";s:19:\"frist_state_vip_3_3\";s:1:\"0\";s:18:\"frist_type_vip_3_3\";s:1:\"1\";s:19:\"frist_value_vip_3_3\";s:7:\"0.00000\";s:20:\"repeat_state_vip_3_3\";s:1:\"0\";s:19:\"repeat_type_vip_3_3\";s:1:\"1\";s:20:\"repeat_value_vip_3_3\";s:6:\"0.0000\";s:18:\"direct_state_vip_3\";s:1:\"0\";s:17:\"direct_type_vip_3\";s:1:\"2\";s:18:\"direct_value_vip_3\";s:6:\"0.0000\";s:20:\"indirect_state_vip_3\";s:1:\"0\";s:19:\"indirect_type_vip_3\";s:1:\"2\";s:20:\"indirect_value_vip_3\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_3\";s:1:\"0\";s:20:\"upgrade_type_vip_3_3\";s:1:\"1\";s:18:\"upgrade_type_vip_3\";s:1:\"2\";s:19:\"upgrade_value_vip_3\";s:6:\"0.0000\";s:18:\"manage_state_vip_3\";s:1:\"1\";s:17:\"manage_type_vip_3\";s:1:\"2\";s:18:\"manage_value_vip_3\";s:9:\"1000.0000\";}');
+INSERT INTO `system_data` VALUES (5, 'TransferRule', 'a:5:{s:14:\"transfer_state\";s:1:\"0\";s:12:\"transfer_min\";s:4:\"1.00\";s:12:\"transfer_max\";s:7:\"2000.00\";s:14:\"transfer_audit\";s:1:\"1\";s:6:\"remark\";s:0:\"\";}');
 
 -- ----------------------------
 -- Table structure for system_menu
