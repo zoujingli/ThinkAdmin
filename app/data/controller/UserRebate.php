@@ -29,12 +29,16 @@ class UserRebate extends Controller
      */
     public function index()
     {
+
         $this->title = '用户返利记录';
+        // 统计所有返利
+        $this->rebate = UserUpgradeService::instance()->syncRebate(0);
+        // 创建查询对象
         $query = $this->_query($this->table)->equal('type')->like('name,order_no');
-        // 会员查询
+        // 会员条件查询
         $db = $this->_query('DataUser')->like('nickname#order_nickname,phone#order_phone')->db();
         if ($db->getOptions('where')) $query->whereRaw("order_uid in {$db->field('id')->buildSql()}");
-        // 代理查询
+        // 代理条件查询
         $db = $this->_query('DataUser')->like('nickname#agent_nickname,phone#agent_phone')->db();
         if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
         // 查询分页
