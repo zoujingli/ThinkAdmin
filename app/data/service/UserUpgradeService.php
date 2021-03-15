@@ -95,7 +95,7 @@ class UserUpgradeService extends Service
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
         if (empty($user)) return true;
-        [$vipName, $vipNumber] = ['普通用户', 0];
+        [$vipName, $vipCode] = ['普通用户', 0];
         // 统计历史数据
         $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uid])->count();
         $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->count();
@@ -113,17 +113,17 @@ class UserUpgradeService extends Service
                 ||
                 ($item['upgrade_type'] == 1 && ($l1 && $l2 && $l3 && $l4 && $l5)) /* 满足所有条件可以等级 */
             ) {
-                [$vipName, $vipNumber] = [$item['name'], $item['number']];
+                [$vipName, $vipCode] = [$item['name'], $item['number']];
                 break;
             }
         }
         // 购买商品升级
         $query = $this->app->db->name('ShopOrderItem')->alias('b')->join('shop_order a', 'b.order_no=a.order_no');
         $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_code');
-        if ($tmpNumber > $vipNumber) {
+        if ($tmpNumber > $vipCode) {
             $map = ['status' => 1, 'number' => $tmpNumber];
             $upgrade = $this->app->db->name('DataUserUpgrade')->where($map)->find();
-            if (!empty($upgrade)) [$vipName, $vipNumber] = [$upgrade['name'], $upgrade['number']];
+            if (!empty($upgrade)) [$vipName, $vipCode] = [$upgrade['name'], $upgrade['number']];
         }
         // 统计订单金额
         $orderAmountTotal = $this->app->db->name('ShopOrder')->whereRaw("uid={$uid} and status>=4")->sum('amount_goods');
@@ -132,7 +132,7 @@ class UserUpgradeService extends Service
         // 更新用户数据
         $data = [
             'vip_name'              => $vipName,
-            'vip_code'              => $vipNumber,
+            'vip_code'              => $vipCode,
             'teams_users_total'     => $teamsUsers,
             'teams_users_direct'    => $teamsDirect,
             'teams_users_indirect'  => $teamsIndirect,
@@ -145,6 +145,12 @@ class UserUpgradeService extends Service
             $data['vip_datetime'] = date('Y-m-d H:i:s');
         }
         $this->app->db->name('DataUser')->where(['id' => $uid])->update($data);
+        if ($user['vip_code'] < $vipCode) {
+            // 用户升级事件
+            $this->app->event->trigger('UserUpgradeLevel', [
+                'uid' => $user['uid'], 'vip_code_old' => $user['vip_code'], 'vip_code_new' => $vipCode,
+            ]);
+        }
         return ($parent && $user['pid2'] > 0) ? $this->syncLevel($user['pid2'], false) : true;
     }
 }

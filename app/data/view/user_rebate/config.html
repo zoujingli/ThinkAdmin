@@ -236,6 +236,28 @@
                                             </div>
                                         </fieldset>
                                     </div>
+                                    <div class="layui-col-xs4">
+                                        <fieldset class="block">
+                                            <legend>
+                                                {php} $key = 'manage_state_vip_'.$level['number']; {/php}
+                                                <input type="hidden" name="{$key}" value="0">
+                                                {php} $data[$key] = $data[$key] ?? 0; {/php}
+                                                {if isset($data[$key]) and $data[$key] eq 1}
+                                                <input checked type="checkbox" name="{$key}" lay-skin="switch" value="1" lay-text="已启用用户 {$level.name} 管理奖励|已停用用户 {$level.name} 管理奖励">
+                                                {else}
+                                                <input type="checkbox" name="{$key}" lay-skin="switch" value="1" lay-text="已启用用户 {$level.name} 管理奖励|已停用用户 {$level.name} 管理奖励">
+                                                {/if}
+                                            </legend>
+                                            <div class="layui-form-item nowrap">
+                                                {php} $key = 'manage_value_vip_'.$level['number']; {/php}
+                                                <input class="layui-input" type="hidden" name="upgrade_type_vip_{$level.number}" value="2">
+                                                <label class="block">
+                                                    <span class="color-blue"><b>请输入固定奖励金额</b>（ 如：比例填写 10.00 表示 10.00 元 ）</span>
+                                                    <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或订单比例" value="{$data[$key]??'0.0000'}">
+                                                </label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
                                 </div>
                             </div>
                         </div>

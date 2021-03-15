@@ -272,10 +272,54 @@ class RebateCurrentService extends Service
     /**
      * 管理奖励发放
      * @return boolean
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     private function _prize06(): bool
     {
+        $puids = array_reverse(explode('-', trim($this->user['path'], '-')));
+        if (empty($puids) || $this->order['amount_total'] <= 0) return false;
+        // 记录原始等级
+        $prevLevel = $this->user['vip_code'];
+        // 获取可以参与奖励的代理
+        $subsql = $this->app->db->name('DataUserUpgrade')->field('number')->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->buildSql(true);
+        foreach ($this->app->db->name('DataUser')->where("vip_code in {$subsql}")->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
+            if ($user['vip_code'] > $prevLevel) {
+                if (($amount = $this->_prize06amount($prevLevel, $user['vip_code'])) > 0) {
+                    $map = ['type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
+                    $name = "{$this->name(self::PRIZE_06)}，[ {$prevLevel} > {$user['vip_code']} ]每单 {$amount} 元";
+                    $this->app->db->name($this->table)->insert(array_merge($map, [
+                        'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'order_amount' => $this->order['amount_total'],
+                    ]));
+                    UserUpgradeService::instance()->syncLevel($this->from2['id']);
+                }
+                $prevLevel = $user['vip_code'];
+            }
+        }
         return true;
+    }
+
+    /**
+     * 计算两等级之间的管理奖差异
+     * @param int $prevLevel
+     * @param int $nextLevel
+     * @return float
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    private function _prize06amount(int $prevLevel, int $nextLevel): float
+    {
+        $amount = 0.00;
+        foreach (range($prevLevel, $nextLevel) as $level) {
+            [$state, $value] = [
+                $this->config("manage_state_vip_{$level}"),
+                $this->config("manage_value_vip_{$level}"),
+            ];
+            if ($state && $value > 0) $amount += $value;
+        }
+        return floatval($amount);
     }
 
     /**
