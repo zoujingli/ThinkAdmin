@@ -396,11 +396,35 @@ class RebateCurrentService extends Service
     }
 
     /**
-     * 升级奖励发放
+     * 用户升级奖励发放
+     * @return boolean
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    private function _prize07()
+    private function _prize07(): bool
     {
-
+        if ($this->order['order_no'] !== $this->user['vip_order']) return false;
+        if (!$this->checkLevelPrize(self::PRIZE_07, $this->from1['vip_code'])) return false;
+        // 创建返利奖励记录
+        $key = "{$this->user['id']}";
+        $map = ['type' => self::PRIZE_07, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
+        if ($this->config("upgrade_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
+            $value = $this->config("upgrade_value_vip_{$key}");
+            if ($this->config("upgrade_type_vip_{$key}") == 1) {
+                $amount = $value ?: '0.00';
+                $name = "{$this->name(self::PRIZE_07)}，每人 {$amount} 元";
+            } else {
+                $amount = $value * $this->order['rebate_amount'] / 100;
+                $name = "{$this->name(self::PRIZE_07)}，订单 {$value}%";
+            }
+            $this->app->db->name($this->table)->insert(array_merge($map, [
+                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
+            ]));
+            // 更新用户奖利金额
+            UserUpgradeService::instance()->syncLevel($this->from1['id']);
+        }
+        return true;
     }
 
     /**

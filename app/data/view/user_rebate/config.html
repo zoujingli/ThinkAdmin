@@ -170,7 +170,7 @@
                             </table>
                             <div class="padding-20">
                                 <div class="layui-row layui-col-space20">
-                                    <div class="layui-col-xs4">
+                                    <div class="layui-col-xs6">
                                         <fieldset class="block">
                                             <legend>
                                                 {php} $key = 'direct_state_vip_'.$level['number']; {/php}
@@ -192,7 +192,7 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <div class="layui-col-xs4">
+                                    <div class="layui-col-xs6">
                                         <fieldset class="block">
                                             <legend>
                                                 {php} $key = 'indirect_state_vip_'.$level['number']; {/php}
@@ -214,7 +214,9 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <div class="layui-col-xs4">
+                                </div>
+                                <div class="layui-row layui-col-space20">
+                                    <div class="layui-col-xs6">
                                         <fieldset class="block">
                                             <legend>
                                                 {php} $key = 'upgrade_state_vip_'.$level['number']; {/php}
@@ -227,6 +229,15 @@
                                                 {/if}
                                             </legend>
                                             <div class="layui-form-item nowrap">
+                                                {php} $key = 'upgrade_type_vip_'.$level['number'].'_'.$l['number']; {/php}
+                                                <input type="hidden" name="{$key}" value="1">
+                                                {php} $data[$key] = $data[$key] ?? 1; {/php}
+                                                {foreach [1 => '奖励固定金额 / 每人',2 => '按返利金额交易金额比例'] as $k => $v}
+                                                {if isset($data[$key]) and $data[$key] eq $k}
+                                                <input checked class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
+                                                {else}
+                                                <input class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
+                                                {/if}{/foreach}
                                                 {php} $key = 'upgrade_value_vip_'.$level['number']; {/php}
                                                 <input class="layui-input" type="hidden" name="upgrade_type_vip_{$level.number}" value="2">
                                                 <label class="block">
@@ -236,7 +247,7 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <div class="layui-col-xs4">
+                                    <div class="layui-col-xs6">
                                         <fieldset class="block">
                                             <legend>
                                                 {php} $key = 'manage_state_vip_'.$level['number']; {/php}
@@ -273,11 +284,9 @@
                 </div>
             </div>
 
-            {if auth('save')}
             <div class="layui-form-item text-center margin-top-30">
                 <button class="layui-btn" type='submit'>保存配置</button>
             </div>
-            {/if}
 
         </div>
     </form>

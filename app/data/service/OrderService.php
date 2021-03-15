@@ -60,16 +60,16 @@ class OrderService extends Service
 
     /**
      * 根据订单更新用户等级
-     * @param string $order_no
+     * @param string $orderNo
      * @return array|null [USER, ORDER, ENTRY]
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function syncUserLevel(string $order_no): ?array
+    public function syncUserLevel(string $orderNo): ?array
     {
         // 目标订单数据
-        $map = [['order_no', '=', $order_no], ['status', '>=', 4]];
+        $map = [['order_no', '=', $orderNo], ['status', '>=', 4]];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) return null;
         // 订单用户数据
@@ -85,12 +85,12 @@ class OrderService extends Service
         // 重置用户信息并绑定订单
         $user = $this->app->db->name('DataUser')->where(['id' => $order['uid']])->find();
         if ($user['pid1'] > 0) {
-            $this->app->db->name('ShopOrder')->where(['order_no' => $order_no])->update([
+            $this->app->db->name('ShopOrder')->where(['order_no' => $orderNo])->update([
                 'puid1' => $user['pid1'], 'puid2' => $user['pid2'],
             ]);
         }
         // 重新计算用户等级
-        UserUpgradeService::instance()->syncLevel($user['id']);
+        UserUpgradeService::instance()->syncLevel($user['id'], $orderNo);
         return [$user, $order, $entry];
     }
 
