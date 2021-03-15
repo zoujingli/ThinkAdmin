@@ -58,9 +58,13 @@ class UserRebate extends Controller
         $goodsItem = $this->app->db->name('ShopOrderItem')->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
         foreach ($data as &$vo) {
             [$vo['user'], $vo['agent'], $vo['list']] = [[], [], []];
-            foreach ($userItem as $user) if ($user['id'] === $vo['uid']) $vo['agent'] = $user;
-            foreach ($userItem as $user) if ($user['id'] === $vo['order_uid']) $vo['user'] = $user;
-            foreach ($goodsItem as $goods) if ($goods['order_no'] === $vo['order_no']) $vo['list'][] = $goods;
+            foreach ($userItem as $user) {
+                if ($user['id'] === $vo['uid']) $vo['agent'] = $user;
+                if ($user['id'] === $vo['order_uid']) $vo['user'] = $user;
+            }
+            foreach ($goodsItem as $goods) {
+                if ($goods['order_no'] === $vo['order_no']) $vo['list'][] = $goods;
+            }
         }
     }
 
