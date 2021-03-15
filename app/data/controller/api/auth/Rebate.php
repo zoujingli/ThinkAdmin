@@ -5,29 +5,28 @@ namespace app\data\controller\api\auth;
 use app\data\controller\api\Auth;
 
 /**
- * 用户余额转账
- * Class Balance
+ * 用户返利管理
+ * Class Rebate
  * @package app\data\controller\api\auth
  */
-class Balance extends Auth
+class Rebate extends Auth
 {
     /**
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataUserBalance';
+    private $table = 'DataUserRebate';
 
     /**
-     * 获取用户余额记录
+     * 获取用户返利记录
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public function get()
     {
-        $query = $this->_query($this->table);
-        $query->where(['uid' => $this->uuid, 'deleted' => 0]);
-        $result = $query->like('create_at#date')->order('id desc')->page(true, false, false, 15);
-        $this->success('获取数据成功', $result);
+        $map = ['uid' => $this->uuid];
+        $query = $this->_query($this->table)->where($map);
+        $query->like('create_at#date')->order('id desc')->page(true, false, false, 15);
     }
 }

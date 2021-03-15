@@ -56,9 +56,17 @@ class BalancePyamentService extends PaymentService
         // 创建支付行为
         $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
         // 扣减用户余额
-        [$total, $used] = UserUpgradeService::instance()->balance($order['uid'], [$orderNo]);
-        if ($paymentAmount > $total - $used) throw new Exception("可抵扣余额不足");
+        [$total, $count] = UserUpgradeService::instance()->balance($order['uid'], [$orderNo]);
+        if ($paymentAmount > $total - $count) throw new Exception("可抵扣余额不足");
         $this->app->db->name('ShopOrder')->where(['order_no' => $orderNo])->update(['payment_balance' => $paymentAmount]);
+        // 扣除余额金额
+        data_save('DataUserBalance', [
+            'uid'    => $order['uid'],
+            'code'   => $order['order_no'],
+            'name'   => "订单余额支付",
+            'remark' => "使用余额支付订单{$order['order_no']}金额{$paymentAmount}元",
+            'amount' => -$paymentAmount,
+        ], 'code');
         // 更新支付行为
         $this->updatePaymentAction($orderNo, CodeExtend::uniqidDate(20), $paymentAmount, '账户余额支付');
         // 刷新用户余额

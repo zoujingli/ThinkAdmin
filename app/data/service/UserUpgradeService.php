@@ -21,16 +21,17 @@ class UserUpgradeService extends Service
      */
     public function balance(int $uuid, array $nots = []): array
     {
-        $total = $this->app->db->name('DataUserBalance')->where(['uid' => $uuid, 'deleted' => 0])->sum('amount');
-        $total += $this->app->db->name('DataUserBalanceTransfer')->where(['uid' => $uuid, 'deleted' => 0])->sum('amount');
-        $count = $this->app->db->name('DataUserBalanceTransfer')->where(['from' => $uuid, 'deleted' => 0])->sum('amount');
+        $total = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and status=1 and amount>0 and deleted=0")->sum('amount'));
+        $count = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and status=1 and amount<0 and deleted=0")->sum('amount'));
+        $locks = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and status=0 and amount>0 and deleted=0")->sum('amount'));
         if (empty($nots)) {
-            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->sum('payment_balance');
-            $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
+            $this->app->db->name('DataUser')->where(['id' => $uuid])->update([
+                'balance_total' => $total, 'balance_used' => $count, 'balance_lock' => $locks,
+            ]);
         } else {
-            $count += $this->app->db->name('ShopOrder')->whereRaw("uid={$uuid} and status>1")->whereNotIn('order_no', $nots)->sum('payment_balance');
+            $count -= $this->app->db->name('DataUserBalance')->whereRaw("uid={$uuid}")->whereIn('code', $nots)->sum('amount');
         }
-        return [$total, $count];
+        return [$total, $count, $locks];
     }
 
     /**
