@@ -63,7 +63,9 @@ class UserRebate extends Controller
                 if ($user['id'] === $vo['order_uid']) $vo['user'] = $user;
             }
             foreach ($goodsItem as $goods) {
-                if ($goods['order_no'] === $vo['order_no']) $vo['list'][] = $goods;
+                if ($goods['order_no'] === $vo['order_no']) {
+                    $vo['list'][] = $goods;
+                }
             }
         }
     }
