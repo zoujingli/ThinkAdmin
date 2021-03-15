@@ -80,6 +80,7 @@ class RebateCurrentService extends Service
         $this->order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($this->order)) throw new Exception('订单不存在');
         if ($this->order['amount_total'] <= 0) throw new Exception('订单金额为零');
+        if ($this->order['rebate_amount'] <= 0) throw new Exception('订单返利为零');
         // 获取用户数据
         $map = ['id' => $this->order['uid'], 'deleted' => 0];
         $this->user = $this->app->db->name('DataUser')->where($map)->find();
