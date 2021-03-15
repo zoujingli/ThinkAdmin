@@ -74,7 +74,7 @@ class RebateCurrentService extends Service
     /**
      * 确认收货订单处理
      * @param string $orderNo
-     * @return array
+     * @return array [status, message]
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
