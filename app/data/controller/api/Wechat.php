@@ -25,7 +25,7 @@ class Wechat extends Controller
      * 接口认证类型
      * @var string
      */
-    private $type = UserService::APITYPE_WECHAT;
+    private $type = UserService::API_TYPE_WECHAT;
 
     /**
      * 唯一绑定字段

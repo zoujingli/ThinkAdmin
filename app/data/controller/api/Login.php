@@ -30,7 +30,7 @@ class Login extends Controller
      */
     protected function initialize()
     {
-        $this->type = input('api', UserService::APITYPE_WAP);
+        $this->type = input('api', UserService::API_TYPE_WAP);
         if (empty(UserService::TYPES[$this->type])) {
             $this->error("接口通道[{$this->type}]未定义规则！");
         }

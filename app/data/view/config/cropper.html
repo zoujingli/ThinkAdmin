@@ -48,6 +48,9 @@
             // 背景图片切换
             $('[data-upload-image]').uploadFile(function (url) {
                 image.src = url;
+                console.log(cropper)
+                // cropper.refresh();
+                // cropper.resize();
                 cropper.replace(url, true).reset();
             });
             // 保存设置参数

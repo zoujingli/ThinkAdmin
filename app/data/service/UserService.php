@@ -13,38 +13,38 @@ use think\db\exception\DbException;
  */
 class UserService extends Service
 {
-    const APITYPE_WAP = 'wap';
-    const APITYPE_WEB = 'web';
-    const APITYPE_WXAPP = 'wxapp';
-    const APITYPE_WECHAT = 'wechat';
-    const APITYPE_IOSAPP = 'iosapp';
-    const APITYPE_ANDROID = 'android';
+    const API_TYPE_WAP = 'wap';
+    const API_TYPE_WEB = 'web';
+    const API_TYPE_WXAPP = 'wxapp';
+    const API_TYPE_WECHAT = 'wechat';
+    const API_TYPE_IOSAPP = 'iosapp';
+    const API_TYPE_ANDROID = 'android';
 
     const TYPES = [
         // 接口通道配置（不需要的直接注释）
-        UserService::APITYPE_WAP     => [
+        UserService::API_TYPE_WAP     => [
             'name' => '手机浏览器',
             'auth' => 'phone',
         ],
-        UserService::APITYPE_WEB     => [
+        UserService::API_TYPE_WEB     => [
             'name' => '电脑浏览器',
             'auth' => 'phone',
         ],
-        UserService::APITYPE_IOSAPP  => [
-            'name' => '苹果应用',
-            'auth' => 'phone',
-        ],
-        UserService::APITYPE_ANDROID => [
-            'name' => '安卓应用',
-            'auth' => 'phone',
-        ],
-        UserService::APITYPE_WXAPP   => [
+        UserService::API_TYPE_WXAPP   => [
             'name' => '微信小程序',
             'auth' => 'openid1',
         ],
-        UserService::APITYPE_WECHAT  => [
+        UserService::API_TYPE_WECHAT  => [
             'name' => '微信服务号',
             'auth' => 'openid2',
+        ],
+        UserService::API_TYPE_IOSAPP  => [
+            'name' => '苹果APP应用',
+            'auth' => 'phone',
+        ],
+        UserService::API_TYPE_ANDROID => [
+            'name' => '安卓APP应用',
+            'auth' => 'phone',
         ],
     ];
 

@@ -21,7 +21,7 @@ class Wxapp extends Controller
      * 接口认证类型
      * @var string
      */
-    private $type = UserService::APITYPE_WXAPP;
+    private $type = UserService::API_TYPE_WXAPP;
 
     /**
      * 唯一绑定字段

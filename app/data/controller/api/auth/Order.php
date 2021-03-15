@@ -293,7 +293,7 @@ class Order extends Auth
         if ($order['payment_status'] > 0) $this->error('已经完成支付');
         try {
             $openid = '';
-            if (in_array($this->type, [UserService::APITYPE_WXAPP, UserService::APITYPE_WECHAT])) {
+            if (in_array($this->type, [UserService::API_TYPE_WXAPP, UserService::API_TYPE_WECHAT])) {
                 $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
                 if (empty($openid)) $this->error("发起支付失败");
             }
