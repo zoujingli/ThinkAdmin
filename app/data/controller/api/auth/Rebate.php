@@ -56,7 +56,7 @@ class Rebate extends Auth
             'uid'    => $this->uuid,
             'code'   => CodeExtend::uniqidDate(20, 'T'),
             'openid' => $this->user['openid1'],
-            'status' => $params['transfer_audit'] > 0 ? 2 : 1,
+            'status' => $params['transfer_audit'] > 0 ? 1 : 3,
             'amount' => $data['amount'],
             'remark' => $data['remark'],
         ]);
