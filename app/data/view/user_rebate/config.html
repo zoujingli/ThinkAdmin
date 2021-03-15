@@ -119,7 +119,7 @@
                                                         {php} $key = 'frist_type_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                         <input type="hidden" name="{$key}" value="1">
                                                         {php} $data[$key] = $data[$key] ?? 1; {/php}
-                                                        {foreach [1 => '奖励固定金额 / 每人',2 => '按订单交易金额比例'] as $k => $v}
+                                                        {foreach [1 => '奖励固定金额 / 每人',2 => '按返利金额交易金额比例'] as $k => $v}
                                                         {if isset($data[$key]) and $data[$key] eq $k}
                                                         <input checked class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
                                                         {else}
@@ -128,8 +128,8 @@
                                                         {php} $key = 'frist_value_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                         <input type="hidden" name="{$key}" value="0.0000">
                                                         <label class="block relative">
-                                                            <span class="color-blue"><b>请输入奖励金额或订单比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
-                                                            <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或订单比例" value="{$data[$key]??'0.00000'}">
+                                                            <span class="color-blue"><b>请输入奖励金额或返利金额比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
+                                                            <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或返利金额比例" value="{$data[$key]??'0.00000'}">
                                                         </label>
                                                     </div>
                                                 </fieldset>
@@ -149,7 +149,7 @@
                                                     <div class="layui-form-item">
                                                         {php} $key = 'repeat_type_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                         {php} $data[$key] = $data[$key] ?? 1; {/php}
-                                                        {foreach [1 => '奖励固定金额 / 每人',2 => '按订单交易金额比例'] as $k => $v}
+                                                        {foreach [1 => '奖励固定金额 / 每人',2 => '按返利金额交易金额比例'] as $k => $v}
                                                         {if isset($data[$key]) and $data[$key] eq $k}
                                                         <input checked class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
                                                         {else}
@@ -157,8 +157,8 @@
                                                         {/if}{/foreach}
                                                         {php} $key = 'repeat_value_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                         <label class="block relative">
-                                                            <span class="color-blue"><b>请输入奖励金额或订单比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
-                                                            <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或订单比例" value="{$data[$key]??'0.0000'}">
+                                                            <span class="color-blue"><b>请输入奖励金额或返利金额比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
+                                                            <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或返利金额比例" value="{$data[$key]??'0.0000'}">
                                                         </label>
                                                     </div>
                                                 </fieldset>
@@ -187,7 +187,7 @@
                                                 <input class="layui-input" type="hidden" name="direct_type_vip_{$level.number}" value="2">
                                                 <label class="block nowrap">
                                                     <span class="color-blue"><b>请输入团队业绩金额比例</b>（ 如：比例填写 10.00 表示 10.00% ）</span>
-                                                    <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或订单比例" value="{$data[$key]??'0.0000'}">
+                                                    <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或返利金额比例" value="{$data[$key]??'0.0000'}">
                                                 </label>
                                             </div>
                                         </fieldset>
@@ -209,7 +209,7 @@
                                                 <input class="layui-input" type="hidden" name="indirect_type_vip_{$level.number}" value="2">
                                                 <label class="block">
                                                     <span class="color-blue"><b>请输入团队业绩金额比例</b>（ 如：比例填写 10.00 表示 10.00% ）</span>
-                                                    <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或订单比例" value="{$data[$key]??'0.0000'}">
+                                                    <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或返利金额比例" value="{$data[$key]??'0.0000'}">
                                                 </label>
                                             </div>
                                         </fieldset>
@@ -231,7 +231,7 @@
                                                 <input class="layui-input" type="hidden" name="upgrade_type_vip_{$level.number}" value="2">
                                                 <label class="block">
                                                     <span class="color-blue"><b>请输入固定奖励金额</b>（ 如：比例填写 10.00 表示 10.00 元 ）</span>
-                                                    <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或订单比例" value="{$data[$key]??'0.0000'}">
+                                                    <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或返利金额比例" value="{$data[$key]??'0.0000'}">
                                                 </label>
                                             </div>
                                         </fieldset>
@@ -260,7 +260,7 @@
                                                 <label class="block">
                                                     {php} $key = 'manage_value_vip_'.$level['number']; {/php}
                                                     <span class="color-blue"><b>请输入固定奖励金额</b>（ 如：比例填写 10.00 表示 10.00 元 ）</span>
-                                                    <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或订单比例" value="{$data[$key]??'0.0000'}">
+                                                    <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或返利金额比例" value="{$data[$key]??'0.0000'}">
                                                 </label>
                                             </div>
                                         </fieldset>
