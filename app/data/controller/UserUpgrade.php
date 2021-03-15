@@ -121,7 +121,7 @@ class UserUpgrade extends Controller
      */
     public function sync()
     {
-        $this->_queue('重新计算所有会员等级', 'xdata:UserLevel');
+        $this->_queue('重新计算所有会员等级', 'xdata:UserUpgrade');
     }
 
     /**

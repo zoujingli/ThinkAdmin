@@ -29,7 +29,6 @@ class UserRebate extends Controller
      */
     public function index()
     {
-
         $this->title = '用户返利记录';
         // 统计所有返利
         $this->rebate = UserUpgradeService::instance()->syncRebate(0);

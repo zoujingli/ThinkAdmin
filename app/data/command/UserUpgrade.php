@@ -17,7 +17,7 @@ class UserUpgrade extends Command
 {
     protected function configure()
     {
-        $this->setName('xdata:UserLevel');
+        $this->setName('xdata:UserUpgrade');
         $this->setDescription('批量重新计算用户等级');
     }
 
