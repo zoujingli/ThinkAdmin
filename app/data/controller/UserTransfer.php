@@ -81,10 +81,10 @@ class UserTransfer extends Controller
             $this->_form($this->table, 'audit', 'code');
         } else {
             $data = $this->_vali([
-                'remark.default'      => '',
                 'code.require'        => '打款单号不能为空！',
                 'status.require'      => '交易审核操作类型！',
                 'status.in:0,1,2,3,4' => '交易审核操作类型！',
+                'remark.default'      => '',
             ]);
             $map = ['code' => $data['code']];
             $find = $this->app->db->name($this->table)->where($map)->find();
