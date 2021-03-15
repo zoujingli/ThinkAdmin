@@ -249,9 +249,16 @@
                                                 {/if}
                                             </legend>
                                             <div class="layui-form-item nowrap">
-                                                {php} $key = 'manage_value_vip_'.$level['number']; {/php}
-                                                <input class="layui-input" type="hidden" name="upgrade_type_vip_{$level.number}" value="2">
+                                                {php} $key = 'manage_type_vip_'.$level['number']; {/php}
+                                                {php} $data[$key] = $data[$key] ?? 1; {/php}
+                                                {foreach [1 => '不累计未发管理奖金额',2 => '累计未发放管理奖金'] as $k => $v}
+                                                {if isset($data[$key]) and $data[$key] eq $k}
+                                                <input checked class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
+                                                {else}
+                                                <input class="layui-input" type="radio" name="{$key}" value="{$k}" title="{$v}">
+                                                {/if}{/foreach}
                                                 <label class="block">
+                                                    {php} $key = 'manage_value_vip_'.$level['number']; {/php}
                                                     <span class="color-blue"><b>请输入固定奖励金额</b>（ 如：比例填写 10.00 表示 10.00 元 ）</span>
                                                     <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或订单比例" value="{$data[$key]??'0.0000'}">
                                                 </label>

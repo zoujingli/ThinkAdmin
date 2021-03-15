@@ -286,7 +286,7 @@ class RebateCurrentService extends Service
         $subsql = $this->app->db->name('DataUserUpgrade')->field('number')->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->buildSql(true);
         foreach ($this->app->db->name('DataUser')->where("vip_code in {$subsql}")->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
             if ($user['vip_code'] > $prevLevel) {
-                if (($amount = $this->_prize06amount($prevLevel, $user['vip_code'])) > 0) {
+                if (($amount = $this->_prize06amount($prevLevel, $user['vip_code'])) > 0.00) {
                     $map = ['type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
                     $name = "{$this->name(self::PRIZE_06)}，[ {$prevLevel} > {$user['vip_code']} ]每单 {$amount} 元";
                     $this->app->db->name($this->table)->insert(array_merge($map, [
@@ -302,8 +302,8 @@ class RebateCurrentService extends Service
 
     /**
      * 计算两等级之间的管理奖差异
-     * @param int $prevLevel
-     * @param int $nextLevel
+     * @param integer $prevLevel
+     * @param integer $nextLevel
      * @return float
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -311,15 +311,23 @@ class RebateCurrentService extends Service
      */
     private function _prize06amount(int $prevLevel, int $nextLevel): float
     {
-        $amount = 0.00;
-        foreach (range($prevLevel, $nextLevel) as $level) {
-            [$state, $value] = [
-                $this->config("manage_state_vip_{$level}"),
-                $this->config("manage_value_vip_{$level}"),
-            ];
-            if ($state && $value > 0) $amount += $value;
+        if ($this->config("manage_type_vip_{$nextLevel}") == 2) {
+            $amount = 0.00;
+            foreach (range($prevLevel, $nextLevel) as $level) {
+                [$state, $value] = [
+                    $this->config("manage_state_vip_{$level}"),
+                    $this->config("manage_value_vip_{$level}"),
+                ];
+                if ($state && $value > 0) $amount += $value;
+            }
+            return floatval($amount);
+        } else {
+            if ($this->config("manage_state_vip_{$nextLevel}")) {
+                return floatval($this->config("manage_value_vip_{$nextLevel}"));
+            } else {
+                return floatval(0);
+            }
         }
-        return floatval($amount);
     }
 
     /**
