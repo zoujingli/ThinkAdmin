@@ -241,7 +241,7 @@
                                                 {php} $key = 'upgrade_value_vip_'.$level['number']; {/php}
                                                 <input class="layui-input" type="hidden" name="upgrade_type_vip_{$level.number}" value="2">
                                                 <label class="block">
-                                                    <span class="color-blue"><b>请输入固定奖励金额</b>（ 如：比例填写 10.00 表示 10.00 元 ）</span>
+                                                    <span class="color-blue"><b>请输入固定奖励金额</b>（ 如：比例填写 10.00 表示 10.00 元 ）<b class="color-red">仅针对订单升级有效！</b></span>
                                                     <input class="layui-input" type="text" name="{$key}" data-blur-number="4" placeholder="请输入奖励金额或返利金额比例" value="{$data[$key]??'0.0000'}">
                                                 </label>
                                             </div>
