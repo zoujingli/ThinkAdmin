@@ -26,7 +26,7 @@
                             <legend><span class="layui-badge">团队结算</span></legend>
                             <div class="layui-form-item">
                                 {php} $data['teams_type'] = $data['teams_type'] ?? 1; {/php}
-                                {foreach [1 => '实时结算', 2 => '次月结算'] as $key=>$val}{if $data.teams_type eq $key}
+                                {foreach [1 => '实时结算'] as $key=>$val}{if $data.teams_type eq $key}
                                 <input checked class="layui-input" type="radio" name="teams_type" value="{$key}" title="{$val}">
                                 {else}
                                 <input class="layui-input" type="radio" name="teams_type" value="{$key}" title="{$val}">
