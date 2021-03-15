@@ -1,0 +1,73 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">是否开启提现</span>
+            <span class="color-desc margin-left-5">Transfer State</span>
+            <div class="layui-textarea padding-15" style="min-height:auto">
+                {php} $data['transfer_state'] = $data['transfer_state'] ?? 0; {/php}
+                {foreach ['关闭用户提现', '开启用户提现'] as $k => $v}
+                {if $data.transfer_state eq $k}
+                <input checked class="layui-input layui-bg-gray" type="radio" title="{$v}" name="transfer_state" value="{$k}">
+                {else}
+                <input class="layui-input layui-bg-gray" type="radio" title="{$v}" name="transfer_state" value="{$k}">
+                {/if}{/foreach}
+            </div>
+        </div>
+
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">提现金额范围</span>
+            <span class="color-desc margin-left-5">Transfer Range</span>
+            <div class="padding-10">
+                <div class="layui-inline">
+                    <label class="layui-input-inline" style="width:200px;">
+                        <span class="font-s12 color-blue">最小提现金额（ 元 ）</span>
+                        <input type="text" placeholder="￥" class="layui-input" data-blur-number="2" name="transfer_min" value="{$data.transfer_min|default='1.00'}">
+                    </label>
+                    <div class="layui-form-mid text-center notselect">
+                        <span class="block">　</span>
+                        <span class="block">-</span>
+                    </div>
+                    <label class="layui-input-inline" style="width:200px;">
+                        <span class="font-s12 color-blue">最大提现金额（ 元 ）</span>
+                        <input type="text" placeholder="￥" class="layui-input" data-blur-number="2" name="transfer_max" value="{$data.transfer_max|default='2000.00'}">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">提现是否需要审核</span>
+            <span class="color-desc margin-left-5">Transfer Audit</span>
+            <div class="layui-textarea padding-15" style="min-height:auto">
+                {php} $data['transfer_audit'] = $data['transfer_audit'] ?? 0; {/php}
+                {foreach ['提现无需审核', '提现需要审核'] as $k => $v}
+                {if $data.transfer_audit eq $k}
+                <input checked class="layui-input layui-bg-gray" type="radio" title="{$v}" name="transfer_audit" value="{$k}">
+                {else}
+                <input class="layui-input layui-bg-gray" type="radio" title="{$v}" name="transfer_audit" value="{$k}">
+                {/if}{/foreach}
+            </div>
+        </div>
+
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7">用户提现描述内容</span>
+            <span class="color-desc margin-left-5">Transfer Remark</span>
+            <label class="relative block">
+                <textarea class="layui-textarea" placeholder="请输入用户提现描述内容" name="remark">{$data.remark|default=''}</textarea>
+            </label>
+        </div>
+
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+    <script>
+        layui.form.render();
+    </script>
+</form>

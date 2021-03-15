@@ -1,6 +1,9 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
+<!--{if auth('config')}-->
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('config')}">提现配置</a>
+<!--{/if}-->
 <!--{if auth('sync')}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-queue="{:url('sync')}">打款服务</a>
 <!--{/if}-->

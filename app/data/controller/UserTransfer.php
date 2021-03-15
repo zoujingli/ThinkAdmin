@@ -3,6 +3,7 @@
 namespace app\data\controller;
 
 use app\data\service\UserService;
+use app\data\service\UserUpgradeService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 use think\admin\service\AdminService;
@@ -19,6 +20,25 @@ class UserTransfer extends Controller
      * @var string
      */
     private $table = 'DataUserTransfer';
+
+    /**
+     * 奖励提现配置
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function config()
+    {
+        $this->skey = 'TransferRule';
+        $this->title = '奖励提现配置';
+        if ($this->request->isGet()) {
+            $this->data = sysdata($this->skey);
+            $this->fetch();
+        } else {
+            sysdata($this->skey, $this->request->post());
+            $this->success('配置修改成功');
+        }
+    }
 
     /**
      * 用户提现管理
