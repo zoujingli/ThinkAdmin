@@ -107,6 +107,9 @@ class RebateCurrentService extends Service
         $map = ['order_no' => $orderNo, 'payment_status' => 1];
         $this->order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($this->order)) throw new Exception('订单不存在');
+        // 同步订单用户余额
+        if ($this->order['reward_balance'] > 0) $this->_balance();
+        // 检查订单参与返利
         if ($this->order['amount_total'] <= 0) throw new Exception('订单金额为零');
         if ($this->order['rebate_amount'] <= 0) throw new Exception('订单返利为零');
         // 获取用户数据
@@ -133,6 +136,25 @@ class RebateCurrentService extends Service
                 $this->{$vo['func']}();
             }
         }
+    }
+
+    /**
+     * 来自订单余额充值
+     * @return array [total, count]
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    private function _balance(): array
+    {
+        data_save('DataUserBalance', [
+            'uid'    => $this->order['uid'],
+            'code'   => $this->order['order_no'],
+            'name'   => "订单余额充值",
+            'remark' => "来自订单{$this->order['order_no']}的余额充值",
+            'amount' => $this->order['reward_balance'],
+        ], 'code');
+        return UserUpgradeService::instance()->balance($this->order['uid']);
     }
 
     /**
