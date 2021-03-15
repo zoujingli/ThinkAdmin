@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 15/03/2021 15:18:42
+ Date: 15/03/2021 15:21:50
 */
 
 SET NAMES utf8mb4;
@@ -311,24 +311,25 @@ CREATE TABLE `data_user_notify`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `data_user_rebate`;
 CREATE TABLE `data_user_rebate`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户UID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) NULL DEFAULT 0 COMMENT '用户UID',
   `date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '奖励日期',
   `code` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '奖励编号',
   `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '奖励类型',
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '奖励名称',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '生效状态(0未生效,1已生效)',
   `amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励数量',
   `order_no` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '订单单号',
-  `order_uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '订单用户',
+  `order_uid` bigint(20) NULL DEFAULT 0 COMMENT '订单用户',
   `order_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '生效状态(0未生效,1已生效)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_rebate_uid`(`uid`) USING BTREE,
   INDEX `idx_data_user_rebate_type`(`type`) USING BTREE,
   INDEX `idx_data_user_rebate_date`(`date`) USING BTREE,
   INDEX `idx_data_user_rebate_code`(`code`) USING BTREE,
-  INDEX `idx_data_user_rebate_name`(`name`) USING BTREE
+  INDEX `idx_data_user_rebate_name`(`name`) USING BTREE,
+  INDEX `idx_data_user_rebate_status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-返利' ROW_FORMAT = Compact;
 
 -- ----------------------------
