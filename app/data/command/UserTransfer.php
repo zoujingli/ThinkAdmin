@@ -4,6 +4,8 @@ namespace app\data\command;
 
 use app\data\service\DataService;
 use think\admin\Command;
+use think\admin\Exception;
+use think\admin\storage\LocalStorage;
 use think\console\Input;
 use think\console\Output;
 use WePay\Transfers;
@@ -31,7 +33,7 @@ class UserTransfer extends Command
     {
         $map = ['type' => 1, 'status' => 3];
         foreach ($this->app->db->name('DataUserTransfer')->where($map)->cursor() as $vo) try {
-            $wechat = Transfers::instance(DataService::instance()->payment());
+            $wechat = Transfers::instance($this->getPayment());
             $result = $wechat->create([
                 'openid'           => $vo['openid'],
                 'amount'           => $vo['amount'] * 100,
@@ -59,5 +61,29 @@ class UserTransfer extends Command
                 'change_time' => date('Y-m-d H:i:s'), 'change_desc' => $exception->getMessage(),
             ]);
         }
+    }
+
+    /**
+     * 获取微信提现参数
+     * @return array
+     * @throws Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function getPayment(): array
+    {
+        $data = sysdata('TransferWxpay');
+        if (empty($data)) throw new Exception('未配置微信提现商户');
+        $key1 = LocalStorage::instance()->set("{$data['wechat_mch_id']}_key.pem", $data['wechat_mch_key_text'], true);
+        $key2 = LocalStorage::instance()->set("{$data['wechat_mch_id']}_cert.pem", $data['wechat_mch_cert_text'], true);
+        return [
+            'appid'      => $data['wechat_appid'],
+            'mch_id'     => $data['wechat_mch_id'],
+            'mch_key'    => $data['wechat_mch_key'],
+            'ssl_key'    => $key1['file'],
+            'ssl_cer'    => $key2['file'],
+            'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
+        ];
     }
 }
