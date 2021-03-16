@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 15/03/2021 18:12:10
+ Date: 16/03/2021 14:55:44
 */
 
 SET NAMES utf8mb4;
@@ -41,11 +41,12 @@ CREATE TABLE `data_news_item`  (
   INDEX `idx_data_news_item_code`(`code`) USING BTREE,
   INDEX `idx_data_news_item_status`(`status`) USING BTREE,
   INDEX `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-文章-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_news_item
 -- ----------------------------
+INSERT INTO `data_news_item` VALUES (1, 'A7158663097052', '论道', ',,', 'https://xht.test.cuci.cc/upload/e3/3c20d5ed2440f6099bb9a2e8cb8ed3.jpg', '论道', '', 0, 0, 0, 0, 0, 1, 0, '2021-03-16 03:26:42');
 
 -- ----------------------------
 -- Table structure for data_news_mark
@@ -181,11 +182,12 @@ CREATE TABLE `data_user_address`  (
   INDEX `idx_data_user_address_code`(`code`) USING BTREE,
   INDEX `idx_data_user_address_deleted`(`deleted`) USING BTREE,
   INDEX `idx_data_user_address_uid`(`uid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_address
 -- ----------------------------
+INSERT INTO `data_user_address` VALUES (1, 1, 1, 'A2021031658145', '张天帅', '15813427125', '460032199605097675', '河北省', '秦皇岛市', '北戴河区', '胜多负少的', 0, '2021-03-16 06:24:35');
 
 -- ----------------------------
 -- Table structure for data_user_balance
@@ -277,11 +279,13 @@ CREATE TABLE `data_user_notify`  (
   INDEX `idx_data_user_notify_type`(`type`) USING BTREE,
   INDEX `idx_data_user_notify_status`(`status`) USING BTREE,
   INDEX `idx_data_user_notify_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-通知' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-通知' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_notify
 -- ----------------------------
+INSERT INTO `data_user_notify` VALUES (1, '', '重大通知！重大通知华为厉害了！我的天！', '<p>重大通知！重大通知华为厉害了！我的天！</p>', 0, 1, 0, '2021-03-16 03:28:17');
+INSERT INTO `data_user_notify` VALUES (2, '', '通知！通知！明天放假，望周知', '<p>通知！通知！明天放假，望周知</p>', 0, 1, 0, '2021-03-16 03:33:56');
 
 -- ----------------------------
 -- Table structure for data_user_rebate
@@ -330,12 +334,13 @@ CREATE TABLE `data_user_token`  (
   INDEX `idx_data_user_token_type`(`type`) USING BTREE,
   INDEX `idx_data_user_token_time`(`time`) USING BTREE,
   INDEX `idx_data_user_token_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of data_user_token
 -- ----------------------------
-INSERT INTO `data_user_token` VALUES (2, 1, 'wxapp', 1615529228, 'token', '', '2021-03-11 08:46:55');
+INSERT INTO `data_user_token` VALUES (2, 1, 'wxapp', 1615869115, 'token', '', '2021-03-11 08:46:55');
+INSERT INTO `data_user_token` VALUES (7, 1, 'wap', 1615884799, '5e85642a2471aeb66a691ebba70dc0ea', '195f77c180c23e3f5a8a8f38e4290186', '2021-03-16 06:24:08');
 
 -- ----------------------------
 -- Table structure for data_user_transfer
@@ -449,8 +454,8 @@ CREATE TABLE `shop_goods`  (
 -- ----------------------------
 -- Records of shop_goods
 -- ----------------------------
-INSERT INTO `shop_goods` VALUES (1, 'G7154507000354775728', '商品名称', ',商品标签,', ',1,2,3,', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '5123512', '<p>123123</p>', ',M7154355257944,M7154355188977,', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S7154509095221\",\"status\":true,\"market\":\"0.00\",\"balance\":\"0.00\",\"selling\":\"0.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0}]]', 0, 0, 0, 0.00, 0.00, 1, '', 1, 1, 0, 0, 1, 211, 0, 0, 0, 0, 0, 0, '2021-03-11 06:15:33');
-INSERT INTO `shop_goods` VALUES (2, 'G7154507000354775729', '商品名称', ',商品标签,', ',1,2,4,', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 'http://127.0.0.1/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg', '', '<p>123123</p>', ',M7154355257944,M7154355188977,', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S7154444768356\",\"status\":true,\"market\":\"0.00\",\"balance\":\"0.00\",\"selling\":\"0.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":0}]]', 10, 3, 0, 0.00, 0.00, 1, '', 0, 1, 0, 0, 0, 211, 0, 0, 0, 0, 1, 0, '2021-03-11 07:58:51');
+INSERT INTO `shop_goods` VALUES (1, 'G7154507000354775728', '商品名称', ',商品标签,', ',1,2,4,', 'https://xht.test.cuci.cc/upload/e3/3c20d5ed2440f6099bb9a2e8cb8ed3.jpg', 'https://xht.test.cuci.cc/upload/d5/5f2f696c114644102890c2b03a4d5f.jpg|https://xht.test.cuci.cc/upload/64/3e766b121971bbffff764b9e107197.jpg', '5123512', '<p>123123</p>', ',M7154355257944,M7154355188977,', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S7154509095221\",\"status\":true,\"market\":\"5000.00\",\"balance\":\"500.00\",\"selling\":\"2000.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":596}]]', 0, 0, 596, 2000.00, 5000.00, 1, '', 1, 1, 0, 0, 1, 211, 0, 0, 0, 0, 1, 0, '2021-03-11 06:15:33');
+INSERT INTO `shop_goods` VALUES (2, 'G7154507000354775729', '商品名称', ',商品标签,', ',1,2,4,', 'https://xht.test.cuci.cc/upload/e9/6bb130213d8443db863dd9b0f6be72.jpg', 'https://xht.test.cuci.cc/upload/64/3e766b121971bbffff764b9e107197.jpg|https://xht.test.cuci.cc/upload/d5/5f2f696c114644102890c2b03a4d5f.jpg', '', '<p>123123</p>', ',M7154355257944,M7154355188977,', '[{\"name\":\"默认分组\",\"list\":[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\"}]}]', '[[{\"name\":\"默认规格\",\"check\":true,\"show\":true,\"group\":\"默认分组\",\"key\":\"默认分组::默认规格\",\"sku\":\"S7154444768356\",\"status\":true,\"market\":\"2000.00\",\"balance\":\"100.00\",\"selling\":\"500.00\",\"integral\":\"0.00\",\"express\":1,\"virtual\":58}]]', 10, 0, 58, 500.00, 2000.00, 1, '', 0, 1, 0, 0, 0, 211, 7, 0, 0, 0, 1, 0, '2021-03-11 07:58:51');
 
 -- ----------------------------
 -- Table structure for shop_goods_cate
@@ -475,7 +480,7 @@ CREATE TABLE `shop_goods_cate`  (
 -- ----------------------------
 -- Records of shop_goods_cate
 -- ----------------------------
-INSERT INTO `shop_goods_cate` VALUES (1, 0, '商品分类1', '', '', 0, 1, 0, '2021-03-11 06:24:48');
+INSERT INTO `shop_goods_cate` VALUES (1, 0, 'jk', 'https://xht.test.cuci.cc/upload/e3/3c20d5ed2440f6099bb9a2e8cb8ed3.jpg', '', 0, 1, 0, '2021-03-11 06:24:48');
 INSERT INTO `shop_goods_cate` VALUES (2, 1, '商品分类2', '', '', 0, 1, 0, '2021-03-11 06:24:56');
 INSERT INTO `shop_goods_cate` VALUES (3, 2, '商品分类3', '', '', 0, 1, 0, '2021-03-11 06:25:02');
 INSERT INTO `shop_goods_cate` VALUES (4, 2, '商品分类4', '', '', 0, 1, 0, '2021-03-11 07:14:10');
@@ -509,8 +514,8 @@ CREATE TABLE `shop_goods_item`  (
 -- Records of shop_goods_item
 -- ----------------------------
 INSERT INTO `shop_goods_item` VALUES (1, 'S7154444768356', 'G7154444760930', '默认分组::默认规格', 0, 11, 0.00, 0.00, 0, 1, 0.00, 0.00, 1, '2021-03-11 06:15:33');
-INSERT INTO `shop_goods_item` VALUES (2, 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', 3, 10, 0.00, 0.00, 0, 1, 0.00, 0.00, 1, '2021-03-11 07:58:51');
-INSERT INTO `shop_goods_item` VALUES (3, 'S7154509095221', 'G7154507000354775728', '默认分组::默认规格', 0, 0, 0.00, 0.00, 0, 1, 0.00, 0.00, 1, '2021-03-11 08:02:22');
+INSERT INTO `shop_goods_item` VALUES (2, 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', 0, 10, 500.00, 2000.00, 58, 1, 100.00, 0.00, 1, '2021-03-11 07:58:51');
+INSERT INTO `shop_goods_item` VALUES (3, 'S7154509095221', 'G7154507000354775728', '默认分组::默认规格', 0, 0, 2000.00, 5000.00, 596, 1, 500.00, 0.00, 1, '2021-03-11 08:02:22');
 
 -- ----------------------------
 -- Table structure for shop_goods_mark
@@ -578,6 +583,7 @@ CREATE TABLE `shop_order`  (
   `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励账户余额',
   `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付平台',
   `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际通道编号',
+  `payment_allow` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '允许支付通道',
   `payment_trade` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付单号',
   `payment_status` tinyint(1) NULL DEFAULT 0 COMMENT '实际支付状态',
   `payment_image` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付凭证图片',
@@ -604,14 +610,25 @@ CREATE TABLE `shop_order`  (
   INDEX `idx_shop_order_orderno`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
   INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order
 -- ----------------------------
-INSERT INTO `shop_order` VALUES (1, 1, 0, 0, 'N20210311513872036', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311695844329692', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:52:58', 1, 0, 0, 0, '', '', 0, '', '', 4, '2021-03-11 09:15:09');
-INSERT INTO `shop_order` VALUES (2, 1, 0, 0, 'N20210311715437924', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311721982820832', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:55:19', 1, 0, 0, 0, '', '', 0, '', '', 4, '2021-03-11 09:35:25');
-INSERT INTO `shop_order` VALUES (3, 1, 0, 0, 'N20210311745121809', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '20210311750726151684', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:58:07', 1, 0, 0, 0, '', '', 0, '', '', 4, '2021-03-11 09:38:21');
+INSERT INTO `shop_order` VALUES (1, 1, 0, 0, 'N20210311513872036', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '', '20210311695844329692', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:52:58', 1, 0, 0, 0, '', '', 0, '', '', 4, '2021-03-11 09:15:09');
+INSERT INTO `shop_order` VALUES (2, 1, 0, 0, 'N20210311715437924', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '', '20210311721982820832', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:55:19', 1, 0, 0, 0, '', '', 0, '', '', 4, '2021-03-11 09:35:25');
+INSERT INTO `shop_order` VALUES (3, 1, 0, 0, 'N20210311745121809', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 'empty', 'empty', '', '20210311750726151684', 1, '', 0.00, 0.00, '无需支付', '2021-03-11 17:58:07', 1, 0, 0, 0, '', '', 0, '', '', 4, '2021-03-11 09:38:21');
+INSERT INTO `shop_order` VALUES (4, 1, 0, 0, 'N20210316205282922', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '', '', '', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 01:51:12');
+INSERT INTO `shop_order` VALUES (5, 1, 0, 0, 'N20210316215337004', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '', '', '', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 01:52:14');
+INSERT INTO `shop_order` VALUES (6, 1, 0, 0, 'N20210316315313524', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '', '', ',M7154355257944,M7154355188977,', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 02:02:14');
+INSERT INTO `shop_order` VALUES (7, 1, 0, 0, 'N20210316513517708', 499.36, 500.00, 500.00, 0.64, 0.00, 500.00, 500.00, 100.00, '', '', ',M7154355257944,M7154355188977,', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 06:17:56');
+INSERT INTO `shop_order` VALUES (8, 1, 0, 0, 'N20210316534368463', 499.83, 500.00, 500.00, 0.17, 0.00, 500.00, 500.00, 100.00, '', '', ',M7154355257944,M7154355188977,', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 06:20:04');
+INSERT INTO `shop_order` VALUES (9, 1, 0, 0, 'N20210316584942766', 499.20, 500.00, 500.00, 0.80, 0.00, 500.00, 500.00, 100.00, '', '', ',M7154355257944,M7154355188977,', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 06:25:10');
+INSERT INTO `shop_order` VALUES (10, 1, 0, 0, 'N20210316595696335', 499.79, 500.00, 500.00, 0.21, 0.00, 500.00, 500.00, 100.00, '', '', ',M7154355257944,M7154355188977,', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 06:26:17');
+INSERT INTO `shop_order` VALUES (11, 1, 0, 0, 'N20210316603441385', 499.56, 500.00, 500.00, 0.44, 0.00, 500.00, 500.00, 100.00, '', '', ',M7154355257944,M7154355188977,', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 06:26:55');
+INSERT INTO `shop_order` VALUES (12, 1, 0, 0, 'N20210316643675497', 499.63, 500.00, 500.00, 0.37, 0.00, 500.00, 500.00, 100.00, '', '', ',M7154355257944,M7154355188977,', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 06:30:56');
+INSERT INTO `shop_order` VALUES (13, 1, 0, 0, 'N20210316661232477', 499.05, 500.00, 500.00, 0.95, 0.00, 500.00, 500.00, 100.00, '', '', ',M7154355257944,M7154355188977,', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 06:32:33');
+INSERT INTO `shop_order` VALUES (14, 1, 0, 0, 'N20210316671802432', 499.73, 500.00, 500.00, 0.27, 0.00, 500.00, 500.00, 100.00, '', '', ',M7154355257944,M7154355188977,', '', 0, '', 0.00, 0.00, '', '', 1, 1, 0, 0, '', '', 0, '', '', 2, '2021-03-16 06:33:39');
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -626,6 +643,7 @@ CREATE TABLE `shop_order_item`  (
   `goods_spec` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品规格',
   `goods_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品名称',
   `goods_cover` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品图片',
+  `goods_payment` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付通道',
   `price_market` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '市场单价',
   `price_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售单价',
   `total_market` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '市场总价',
@@ -655,14 +673,25 @@ CREATE TABLE `shop_order_item`  (
   INDEX `idx_shop_order_item_goods_code`(`goods_code`) USING BTREE,
   INDEX `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE,
   INDEX `idx_shop_order_item_rebate_type`(`rebate_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of shop_order_item
 -- ----------------------------
-INSERT INTO `shop_order_item` VALUES (1, 1, 'N20210311513872036', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:15:09');
-INSERT INTO `shop_order_item` VALUES (2, 1, 'N20210311715437924', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:35:25');
-INSERT INTO `shop_order_item` VALUES (3, 1, 'N20210311745121809', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:38:21');
+INSERT INTO `shop_order_item` VALUES (1, 1, 'N20210311513872036', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', '', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:15:09');
+INSERT INTO `shop_order_item` VALUES (2, 1, 'N20210311715437924', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', '', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:35:25');
+INSERT INTO `shop_order_item` VALUES (3, 1, 'N20210311745121809', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', '', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-11 09:38:21');
+INSERT INTO `shop_order_item` VALUES (4, 1, 'N20210316205282922', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', ',M7154355257944,M7154355188977,', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-16 01:51:12');
+INSERT INTO `shop_order_item` VALUES (5, 1, 'N20210316215337004', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', ',M7154355257944,M7154355188977,', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-16 01:52:14');
+INSERT INTO `shop_order_item` VALUES (6, 1, 'N20210316315313524', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'http://127.0.0.1/upload/25/e9c92266d3b7ab86d3221b0c9305fe.jpg', ',M7154355257944,M7154355188977,', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 0.00, 0, 100.000000, 0.00, 1, 0, '2021-03-16 02:02:14');
+INSERT INTO `shop_order_item` VALUES (7, 1, 'N20210316513517708', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'https://xht.test.cuci.cc/upload/e9/6bb130213d8443db863dd9b0f6be72.jpg', ',M7154355257944,M7154355188977,', 2000.00, 500.00, 2000.00, 500.00, 100.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 500.00, 0, 100.000000, 500.00, 1, 0, '2021-03-16 06:17:56');
+INSERT INTO `shop_order_item` VALUES (8, 1, 'N20210316534368463', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'https://xht.test.cuci.cc/upload/e9/6bb130213d8443db863dd9b0f6be72.jpg', ',M7154355257944,M7154355188977,', 2000.00, 500.00, 2000.00, 500.00, 100.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 500.00, 0, 100.000000, 500.00, 1, 0, '2021-03-16 06:20:04');
+INSERT INTO `shop_order_item` VALUES (9, 1, 'N20210316584942766', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'https://xht.test.cuci.cc/upload/e9/6bb130213d8443db863dd9b0f6be72.jpg', ',M7154355257944,M7154355188977,', 2000.00, 500.00, 2000.00, 500.00, 100.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 500.00, 0, 100.000000, 500.00, 1, 0, '2021-03-16 06:25:10');
+INSERT INTO `shop_order_item` VALUES (10, 1, 'N20210316595696335', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'https://xht.test.cuci.cc/upload/e9/6bb130213d8443db863dd9b0f6be72.jpg', ',M7154355257944,M7154355188977,', 2000.00, 500.00, 2000.00, 500.00, 100.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 500.00, 0, 100.000000, 500.00, 1, 0, '2021-03-16 06:26:17');
+INSERT INTO `shop_order_item` VALUES (11, 1, 'N20210316603441385', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'https://xht.test.cuci.cc/upload/e9/6bb130213d8443db863dd9b0f6be72.jpg', ',M7154355257944,M7154355188977,', 2000.00, 500.00, 2000.00, 500.00, 100.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 500.00, 0, 100.000000, 500.00, 1, 0, '2021-03-16 06:26:55');
+INSERT INTO `shop_order_item` VALUES (12, 1, 'N20210316643675497', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'https://xht.test.cuci.cc/upload/e9/6bb130213d8443db863dd9b0f6be72.jpg', ',M7154355257944,M7154355188977,', 2000.00, 500.00, 2000.00, 500.00, 100.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 500.00, 0, 100.000000, 500.00, 1, 0, '2021-03-16 06:30:56');
+INSERT INTO `shop_order_item` VALUES (13, 1, 'N20210316661232477', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'https://xht.test.cuci.cc/upload/e9/6bb130213d8443db863dd9b0f6be72.jpg', ',M7154355257944,M7154355188977,', 2000.00, 500.00, 2000.00, 500.00, 100.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 500.00, 0, 100.000000, 500.00, 1, 0, '2021-03-16 06:32:33');
+INSERT INTO `shop_order_item` VALUES (14, 1, 'N20210316671802432', 'S7154444768356', 'G7154507000354775729', '默认分组::默认规格', '商品名称', 'https://xht.test.cuci.cc/upload/e9/6bb130213d8443db863dd9b0f6be72.jpg', ',M7154355257944,M7154355188977,', 2000.00, 500.00, 2000.00, 500.00, 100.00, 0.00, 1, '', 0, 0, 0, '', 1, 1, 500.00, 0, 100.000000, 500.00, 1, 0, '2021-03-16 06:33:39');
 
 -- ----------------------------
 -- Table structure for shop_order_send
@@ -4647,13 +4676,13 @@ CREATE TABLE `system_config`  (
 -- ----------------------------
 -- Records of system_config
 -- ----------------------------
-INSERT INTO `system_config` VALUES ('base', 'app_name', 'ThinkAdmin');
-INSERT INTO `system_config` VALUES ('base', 'app_version', 'v6');
+INSERT INTO `system_config` VALUES ('base', 'app_name', '鑫和堂小程序');
+INSERT INTO `system_config` VALUES ('base', 'app_version', '测试');
 INSERT INTO `system_config` VALUES ('base', 'beian', '');
 INSERT INTO `system_config` VALUES ('base', 'miitbeian', '粤ICP备16006642号-2');
 INSERT INTO `system_config` VALUES ('base', 'site_copy', '©版权所有 2014-2020 楚才科技');
 INSERT INTO `system_config` VALUES ('base', 'site_icon', 'https://v6.thinkadmin.top/upload/f4/7b8fe06e38ae9908e8398da45583b9.png');
-INSERT INTO `system_config` VALUES ('base', 'site_name', 'ThinkAdmin');
+INSERT INTO `system_config` VALUES ('base', 'site_name', '鑫和堂小程序');
 INSERT INTO `system_config` VALUES ('base', 'xpath', 'admin');
 INSERT INTO `system_config` VALUES ('data', 'wxapp_appid', 'wx6bb7b70258da09c6');
 INSERT INTO `system_config` VALUES ('data', 'wxapp_appkey', '4cdab4affa9c160e935a24a2860ff7f0');
@@ -4679,16 +4708,18 @@ CREATE TABLE `system_data`  (
   `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置值',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_data_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-数据' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_data
 -- ----------------------------
 INSERT INTO `system_data` VALUES (1, '关于我们', 'a:2:{s:4:\"name\";s:8:\"23512322\";s:7:\"content\";s:16:\"<p>512351235</p>\";}');
 INSERT INTO `system_data` VALUES (2, '用户协议', 'a:2:{s:4:\"name\";s:7:\"2315123\";s:7:\"content\";s:16:\"<p>512351235</p>\";}');
-INSERT INTO `system_data` VALUES (3, 'cropper', 'a:2:{s:5:\"image\";s:61:\"http://127.0.0.1/upload/b4/e34bf60203f28f15a63b2af1c32dcb.jpg\";s:7:\"postion\";s:134:\"{\"x\":211.05349794238683,\"y\":110.7037037037037,\"width\":213.49999999999997,\"height\":213.49999999999997,\"rotate\":0,\"scaleX\":1,\"scaleY\":1}\";}');
-INSERT INTO `system_data` VALUES (4, 'RebateRule', 'a:104:{s:10:\"settl_type\";s:1:\"1\";s:10:\"teams_type\";s:1:\"1\";s:17:\"equal_state_vip_1\";s:1:\"1\";s:19:\"equal_value_vip_1_1\";s:4:\"0.00\";s:19:\"equal_value_vip_2_1\";s:4:\"0.00\";s:17:\"equal_state_vip_2\";s:1:\"0\";s:19:\"equal_value_vip_1_2\";s:4:\"0.00\";s:19:\"equal_value_vip_2_2\";s:4:\"0.00\";s:17:\"equal_state_vip_3\";s:1:\"0\";s:19:\"equal_value_vip_1_3\";s:4:\"0.00\";s:19:\"equal_value_vip_2_3\";s:4:\"0.00\";s:19:\"frist_state_vip_1_1\";s:1:\"0\";s:18:\"frist_type_vip_1_1\";s:1:\"1\";s:19:\"frist_value_vip_1_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_1\";s:1:\"0\";s:19:\"repeat_type_vip_1_1\";s:1:\"1\";s:20:\"repeat_value_vip_1_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_1_2\";s:1:\"0\";s:18:\"frist_type_vip_1_2\";s:1:\"1\";s:19:\"frist_value_vip_1_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_2\";s:1:\"0\";s:19:\"repeat_type_vip_1_2\";s:1:\"1\";s:20:\"repeat_value_vip_1_2\";s:6:\"0.0000\";s:19:\"frist_state_vip_1_3\";s:1:\"0\";s:18:\"frist_type_vip_1_3\";s:1:\"1\";s:19:\"frist_value_vip_1_3\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_3\";s:1:\"0\";s:19:\"repeat_type_vip_1_3\";s:1:\"1\";s:20:\"repeat_value_vip_1_3\";s:6:\"0.0000\";s:18:\"direct_state_vip_1\";s:1:\"0\";s:17:\"direct_type_vip_1\";s:1:\"2\";s:18:\"direct_value_vip_1\";s:6:\"0.0000\";s:20:\"indirect_state_vip_1\";s:1:\"0\";s:19:\"indirect_type_vip_1\";s:1:\"2\";s:20:\"indirect_value_vip_1\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_1\";s:1:\"0\";s:20:\"upgrade_type_vip_1_3\";s:1:\"1\";s:18:\"upgrade_type_vip_1\";s:1:\"2\";s:19:\"upgrade_value_vip_1\";s:6:\"0.0000\";s:18:\"manage_state_vip_1\";s:1:\"1\";s:17:\"manage_type_vip_1\";s:1:\"2\";s:18:\"manage_value_vip_1\";s:8:\"500.0000\";s:19:\"frist_state_vip_2_1\";s:1:\"0\";s:18:\"frist_type_vip_2_1\";s:1:\"1\";s:19:\"frist_value_vip_2_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_1\";s:1:\"0\";s:19:\"repeat_type_vip_2_1\";s:1:\"1\";s:20:\"repeat_value_vip_2_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_2_2\";s:1:\"0\";s:18:\"frist_type_vip_2_2\";s:1:\"1\";s:19:\"frist_value_vip_2_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_2\";s:1:\"0\";s:19:\"repeat_type_vip_2_2\";s:1:\"1\";s:20:\"repeat_value_vip_2_2\";s:6:\"0.0000\";s:19:\"frist_state_vip_2_3\";s:1:\"0\";s:18:\"frist_type_vip_2_3\";s:1:\"1\";s:19:\"frist_value_vip_2_3\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_3\";s:1:\"0\";s:19:\"repeat_type_vip_2_3\";s:1:\"1\";s:20:\"repeat_value_vip_2_3\";s:6:\"0.0000\";s:18:\"direct_state_vip_2\";s:1:\"0\";s:17:\"direct_type_vip_2\";s:1:\"2\";s:18:\"direct_value_vip_2\";s:6:\"0.0000\";s:20:\"indirect_state_vip_2\";s:1:\"0\";s:19:\"indirect_type_vip_2\";s:1:\"2\";s:20:\"indirect_value_vip_2\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_2\";s:1:\"0\";s:20:\"upgrade_type_vip_2_3\";s:1:\"1\";s:18:\"upgrade_type_vip_2\";s:1:\"2\";s:19:\"upgrade_value_vip_2\";s:6:\"0.0000\";s:18:\"manage_state_vip_2\";s:1:\"1\";s:17:\"manage_type_vip_2\";s:1:\"1\";s:18:\"manage_value_vip_2\";s:8:\"500.0000\";s:19:\"frist_state_vip_3_1\";s:1:\"0\";s:18:\"frist_type_vip_3_1\";s:1:\"1\";s:19:\"frist_value_vip_3_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_3_1\";s:1:\"0\";s:19:\"repeat_type_vip_3_1\";s:1:\"1\";s:20:\"repeat_value_vip_3_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_3_2\";s:1:\"0\";s:18:\"frist_type_vip_3_2\";s:1:\"1\";s:19:\"frist_value_vip_3_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_3_2\";s:1:\"0\";s:19:\"repeat_type_vip_3_2\";s:1:\"1\";s:20:\"repeat_value_vip_3_2\";s:6:\"0.0000\";s:19:\"frist_state_vip_3_3\";s:1:\"0\";s:18:\"frist_type_vip_3_3\";s:1:\"1\";s:19:\"frist_value_vip_3_3\";s:7:\"0.00000\";s:20:\"repeat_state_vip_3_3\";s:1:\"0\";s:19:\"repeat_type_vip_3_3\";s:1:\"1\";s:20:\"repeat_value_vip_3_3\";s:6:\"0.0000\";s:18:\"direct_state_vip_3\";s:1:\"0\";s:17:\"direct_type_vip_3\";s:1:\"2\";s:18:\"direct_value_vip_3\";s:6:\"0.0000\";s:20:\"indirect_state_vip_3\";s:1:\"0\";s:19:\"indirect_type_vip_3\";s:1:\"2\";s:20:\"indirect_value_vip_3\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_3\";s:1:\"0\";s:20:\"upgrade_type_vip_3_3\";s:1:\"1\";s:18:\"upgrade_type_vip_3\";s:1:\"2\";s:19:\"upgrade_value_vip_3\";s:6:\"0.0000\";s:18:\"manage_state_vip_3\";s:1:\"1\";s:17:\"manage_type_vip_3\";s:1:\"2\";s:18:\"manage_value_vip_3\";s:9:\"1000.0000\";}');
+INSERT INTO `system_data` VALUES (3, 'cropper', 'a:2:{s:5:\"image\";s:69:\"https://xht.test.cuci.cc/upload/aa/0c0058ad735f5f37ec9b548eb4cd91.jpg\";s:7:\"postion\";s:67:\"{\"x\":0,\"y\":0,\"width\":0,\"height\":0,\"rotate\":0,\"scaleX\":1,\"scaleY\":1}\";}');
+INSERT INTO `system_data` VALUES (4, 'RebateRule', 'a:104:{s:10:\"settl_type\";s:1:\"1\";s:10:\"teams_type\";s:1:\"1\";s:17:\"equal_state_vip_1\";s:1:\"1\";s:19:\"equal_value_vip_1_1\";s:5:\"20.00\";s:19:\"equal_value_vip_2_1\";s:4:\"0.00\";s:17:\"equal_state_vip_2\";s:1:\"0\";s:19:\"equal_value_vip_1_2\";s:4:\"0.00\";s:19:\"equal_value_vip_2_2\";s:4:\"0.00\";s:17:\"equal_state_vip_3\";s:1:\"0\";s:19:\"equal_value_vip_1_3\";s:4:\"0.00\";s:19:\"equal_value_vip_2_3\";s:4:\"0.00\";s:19:\"frist_state_vip_1_1\";s:1:\"0\";s:18:\"frist_type_vip_1_1\";s:1:\"1\";s:19:\"frist_value_vip_1_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_1\";s:1:\"0\";s:19:\"repeat_type_vip_1_1\";s:1:\"1\";s:20:\"repeat_value_vip_1_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_1_2\";s:1:\"0\";s:18:\"frist_type_vip_1_2\";s:1:\"1\";s:19:\"frist_value_vip_1_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_2\";s:1:\"0\";s:19:\"repeat_type_vip_1_2\";s:1:\"1\";s:20:\"repeat_value_vip_1_2\";s:6:\"0.0000\";s:19:\"frist_state_vip_1_3\";s:1:\"0\";s:18:\"frist_type_vip_1_3\";s:1:\"1\";s:19:\"frist_value_vip_1_3\";s:7:\"0.00000\";s:20:\"repeat_state_vip_1_3\";s:1:\"0\";s:19:\"repeat_type_vip_1_3\";s:1:\"1\";s:20:\"repeat_value_vip_1_3\";s:6:\"0.0000\";s:18:\"direct_state_vip_1\";s:1:\"0\";s:17:\"direct_type_vip_1\";s:1:\"2\";s:18:\"direct_value_vip_1\";s:6:\"0.0000\";s:20:\"indirect_state_vip_1\";s:1:\"0\";s:19:\"indirect_type_vip_1\";s:1:\"2\";s:20:\"indirect_value_vip_1\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_1\";s:1:\"0\";s:20:\"upgrade_type_vip_1_3\";s:1:\"1\";s:18:\"upgrade_type_vip_1\";s:1:\"2\";s:19:\"upgrade_value_vip_1\";s:6:\"0.0000\";s:18:\"manage_state_vip_1\";s:1:\"1\";s:17:\"manage_type_vip_1\";s:1:\"2\";s:18:\"manage_value_vip_1\";s:8:\"500.0000\";s:19:\"frist_state_vip_2_1\";s:1:\"0\";s:18:\"frist_type_vip_2_1\";s:1:\"1\";s:19:\"frist_value_vip_2_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_1\";s:1:\"0\";s:19:\"repeat_type_vip_2_1\";s:1:\"1\";s:20:\"repeat_value_vip_2_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_2_2\";s:1:\"0\";s:18:\"frist_type_vip_2_2\";s:1:\"1\";s:19:\"frist_value_vip_2_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_2_2\";s:1:\"0\";s:19:\"repeat_type_vip_2_2\";s:1:\"1\";s:20:\"repeat_value_vip_2_2\";s:6:\"0.0000\";s:19:\"frist_state_vip_2_3\";s:1:\"0\";s:18:\"frist_type_vip_2_3\";s:1:\"1\";s:19:\"frist_value_vip_2_3\";s:7:\"10.0000\";s:20:\"repeat_state_vip_2_3\";s:1:\"0\";s:19:\"repeat_type_vip_2_3\";s:1:\"1\";s:20:\"repeat_value_vip_2_3\";s:6:\"0.0000\";s:18:\"direct_state_vip_2\";s:1:\"0\";s:17:\"direct_type_vip_2\";s:1:\"2\";s:18:\"direct_value_vip_2\";s:6:\"0.0000\";s:20:\"indirect_state_vip_2\";s:1:\"0\";s:19:\"indirect_type_vip_2\";s:1:\"2\";s:20:\"indirect_value_vip_2\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_2\";s:1:\"0\";s:20:\"upgrade_type_vip_2_3\";s:1:\"1\";s:18:\"upgrade_type_vip_2\";s:1:\"2\";s:19:\"upgrade_value_vip_2\";s:6:\"0.0000\";s:18:\"manage_state_vip_2\";s:1:\"1\";s:17:\"manage_type_vip_2\";s:1:\"1\";s:18:\"manage_value_vip_2\";s:8:\"500.0000\";s:19:\"frist_state_vip_3_1\";s:1:\"0\";s:18:\"frist_type_vip_3_1\";s:1:\"1\";s:19:\"frist_value_vip_3_1\";s:7:\"0.00000\";s:20:\"repeat_state_vip_3_1\";s:1:\"0\";s:19:\"repeat_type_vip_3_1\";s:1:\"1\";s:20:\"repeat_value_vip_3_1\";s:6:\"0.0000\";s:19:\"frist_state_vip_3_2\";s:1:\"0\";s:18:\"frist_type_vip_3_2\";s:1:\"1\";s:19:\"frist_value_vip_3_2\";s:7:\"0.00000\";s:20:\"repeat_state_vip_3_2\";s:1:\"0\";s:19:\"repeat_type_vip_3_2\";s:1:\"1\";s:20:\"repeat_value_vip_3_2\";s:6:\"0.0000\";s:19:\"frist_state_vip_3_3\";s:1:\"0\";s:18:\"frist_type_vip_3_3\";s:1:\"1\";s:19:\"frist_value_vip_3_3\";s:7:\"0.00000\";s:20:\"repeat_state_vip_3_3\";s:1:\"0\";s:19:\"repeat_type_vip_3_3\";s:1:\"1\";s:20:\"repeat_value_vip_3_3\";s:6:\"0.0000\";s:18:\"direct_state_vip_3\";s:1:\"0\";s:17:\"direct_type_vip_3\";s:1:\"2\";s:18:\"direct_value_vip_3\";s:6:\"0.0000\";s:20:\"indirect_state_vip_3\";s:1:\"0\";s:19:\"indirect_type_vip_3\";s:1:\"2\";s:20:\"indirect_value_vip_3\";s:6:\"0.0000\";s:19:\"upgrade_state_vip_3\";s:1:\"0\";s:20:\"upgrade_type_vip_3_3\";s:1:\"1\";s:18:\"upgrade_type_vip_3\";s:1:\"2\";s:19:\"upgrade_value_vip_3\";s:6:\"0.0000\";s:18:\"manage_state_vip_3\";s:1:\"1\";s:17:\"manage_type_vip_3\";s:1:\"2\";s:18:\"manage_value_vip_3\";s:9:\"1000.0000\";}');
 INSERT INTO `system_data` VALUES (5, 'TransferRule', 'a:5:{s:14:\"transfer_state\";s:1:\"0\";s:12:\"transfer_min\";s:4:\"1.00\";s:12:\"transfer_max\";s:7:\"2000.00\";s:14:\"transfer_audit\";s:1:\"1\";s:6:\"remark\";s:0:\"\";}');
+INSERT INTO `system_data` VALUES (6, 'SliderHome', 'a:2:{i:0;a:3:{s:3:\"img\";s:69:\"https://xht.test.cuci.cc/upload/d5/5f2f696c114644102890c2b03a4d5f.jpg\";s:4:\"rule\";s:26:\"GOODS#G7154507000354775729\";s:4:\"name\";s:16:\"#这个是商品\";}i:1;a:3:{s:3:\"img\";s:69:\"https://xht.test.cuci.cc/upload/64/3e766b121971bbffff764b9e107197.jpg\";s:4:\"rule\";s:19:\"NEWS#A7158663097052\";s:4:\"name\";s:16:\"#这个是文章\";}}');
+INSERT INTO `system_data` VALUES (7, 'TransferWxpay', 'a:5:{s:11:\"wechat_type\";s:6:\"wechat\";s:13:\"wechat_mch_id\";s:19:\"4362346234623462346\";s:14:\"wechat_mch_key\";s:32:\"23412351235612126126512341234123\";s:19:\"wechat_mch_key_text\";s:11:\"32161236512\";s:20:\"wechat_mch_cert_text\";s:9:\"161235123\";}');
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -4756,8 +4787,7 @@ INSERT INTO `system_menu` VALUES (92, 90, '用户折扣方案', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (93, 90, '用户提现管理', 'layui-icon layui-icon-component', 'data/user_transfer/index', 'data/user_transfer/index', '', '_self', 0, 1, '2021-01-28 06:48:34');
 INSERT INTO `system_menu` VALUES (94, 68, '页面内容管理', 'layui-icon layui-icon-read', 'data/config/pagehome', 'data/config/pagehome', '', '_self', 20, 1, '2021-02-24 08:49:16');
 INSERT INTO `system_menu` VALUES (95, 68, '邀请二维码设置', 'layui-icon layui-icon-cols', 'data/config/cropper', 'data/config/cropper', '', '_self', 0, 1, '2021-03-01 09:53:59');
-INSERT INTO `system_menu` VALUES (96, 90, '用户返利配置', 'layui-icon layui-icon-android', 'data/user_rebate/config', 'data/user_rebate/config', '', '_self', 0, 1, '2021-03-12 08:05:58');
-INSERT INTO `system_menu` VALUES (97, 90, '用户返利记录', 'layui-icon layui-icon-transfer', 'data/user_rebate/index', 'data/user_rebate/index', '', '_self', 0, 1, '2021-03-12 10:06:49');
+INSERT INTO `system_menu` VALUES (97, 90, '用户返利管理', 'layui-icon layui-icon-transfer', 'data/user_rebate/index', 'data/user_rebate/index', '', '_self', 0, 1, '2021-03-12 10:06:49');
 
 -- ----------------------------
 -- Table structure for system_oplog
@@ -4772,7 +4802,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_oplog
@@ -4802,6 +4832,22 @@ INSERT INTO `system_oplog` VALUES (22, 'admin/menu/add', '127.0.0.1', '系统菜
 INSERT INTO `system_oplog` VALUES (23, 'admin/menu/add', '127.0.0.1', '系统菜单管理', '添加系统菜单[97]成功', 'admin', '2021-03-12 10:06:49');
 INSERT INTO `system_oplog` VALUES (24, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-15 02:02:36');
 INSERT INTO `system_oplog` VALUES (25, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-15 06:32:19');
+INSERT INTO `system_oplog` VALUES (26, 'admin/login/index', '61.140.239.71', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-15 10:25:31');
+INSERT INTO `system_oplog` VALUES (27, 'admin/api.plugs/clearconfig', '61.140.239.71', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-03-15 10:25:36');
+INSERT INTO `system_oplog` VALUES (28, 'admin/config/system', '61.140.239.71', '系统配置管理', '修改系统参数成功', 'admin', '2021-03-15 10:26:03');
+INSERT INTO `system_oplog` VALUES (29, 'admin/login/index', '61.140.239.71', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-15 10:29:02');
+INSERT INTO `system_oplog` VALUES (30, 'admin/config/system', '61.140.239.71', '系统配置管理', '修改系统参数成功', 'admin', '2021-03-15 10:30:54');
+INSERT INTO `system_oplog` VALUES (31, 'admin/api.plugs/clearruntime', '127.0.0.1', '系统运维管理', '清理网站日志及缓存数据', 'admin', '2021-03-15 10:40:26');
+INSERT INTO `system_oplog` VALUES (32, 'admin/api.plugs/clearconfig', '127.0.0.1', '系统运维管理', '清理系统参数配置成功', 'admin', '2021-03-15 10:41:24');
+INSERT INTO `system_oplog` VALUES (33, 'admin/api.plugs/optimize', '127.0.0.1', '系统运维管理', '创建数据库优化任务', 'admin', '2021-03-15 10:41:27');
+INSERT INTO `system_oplog` VALUES (34, 'admin/login/index', '116.21.40.249', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-16 02:41:12');
+INSERT INTO `system_oplog` VALUES (35, 'admin/login/index', '116.21.40.249', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-16 03:15:57');
+INSERT INTO `system_oplog` VALUES (36, 'admin/login/index', '127.0.0.1', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-16 05:48:59');
+INSERT INTO `system_oplog` VALUES (37, 'admin/api.plugs/clearruntime', '127.0.0.1', '系统运维管理', '清理网站日志及缓存数据', 'admin', '2021-03-16 06:16:37');
+INSERT INTO `system_oplog` VALUES (38, 'admin/login/index', '116.21.40.249', '系统用户登录', '登录系统后台成功', 'admin', '2021-03-16 06:16:49');
+INSERT INTO `system_oplog` VALUES (39, 'admin/api.plugs/clearruntime', '116.21.40.249', '系统运维管理', '清理网站日志及缓存数据', 'admin', '2021-03-16 06:16:56');
+INSERT INTO `system_oplog` VALUES (40, 'admin/menu/remove', '127.0.0.1', '系统菜单管理', '删除系统菜单[96]成功', 'admin', '2021-03-16 06:35:12');
+INSERT INTO `system_oplog` VALUES (41, 'admin/menu/edit', '127.0.0.1', '系统菜单管理', '修改系统菜单[97]成功', 'admin', '2021-03-16 06:35:25');
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -4830,12 +4876,14 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_queue
 -- ----------------------------
 INSERT INTO `system_queue` VALUES (1, 'Q202102235804511', '优化数据库所有数据表', 'xadmin:database optimize', 13040, '[]', 1614073264, '已完成对 41 张数据表优化操作', 1614073265.3524, 1614073270.0566, 0, 1, 0, 3, '2021-02-23 09:21:43');
+INSERT INTO `system_queue` VALUES (2, 'Q202103151929111', '定时清理无效订单数据', 'xdata:OrderClear', 0, '[]', 1615806345, '', 1615806285.1269, 1615806285.1519, 60, 5, 0, 1, '2021-03-15 10:40:49');
+INSERT INTO `system_queue` VALUES (3, 'Q202103152006769', '优化数据库所有数据表', 'xadmin:database optimize', 14080, '[]', 1615806066, '已完成对 40 张数据表优化操作', 1615806067.5660, 1615806072.4233, 0, 1, 0, 3, '2021-03-15 10:41:27');
 
 -- ----------------------------
 -- Table structure for system_user
@@ -4868,7 +4916,7 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '127.0.0.1', '2021-03-15 06:32:19', 86, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'http://127.0.0.1:8000/upload/cf/d4b538dc1d8b96a09310cab5fa44c9.gif', ',,', '', '', '', '116.21.40.249', '2021-03-16 06:16:49', 92, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

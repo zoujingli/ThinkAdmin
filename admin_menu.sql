@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 15/03/2021 18:11:31
+ Date: 16/03/2021 14:55:37
 */
 
 SET NAMES utf8mb4;
@@ -83,7 +83,6 @@ INSERT INTO `system_menu` VALUES (92, 90, '用户折扣方案', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (93, 90, '用户提现管理', 'layui-icon layui-icon-component', 'data/user_transfer/index', 'data/user_transfer/index', '', '_self', 0, 1, '2021-01-28 06:48:34');
 INSERT INTO `system_menu` VALUES (94, 68, '页面内容管理', 'layui-icon layui-icon-read', 'data/config/pagehome', 'data/config/pagehome', '', '_self', 20, 1, '2021-02-24 08:49:16');
 INSERT INTO `system_menu` VALUES (95, 68, '邀请二维码设置', 'layui-icon layui-icon-cols', 'data/config/cropper', 'data/config/cropper', '', '_self', 0, 1, '2021-03-01 09:53:59');
-INSERT INTO `system_menu` VALUES (96, 90, '用户返利配置', 'layui-icon layui-icon-android', 'data/user_rebate/config', 'data/user_rebate/config', '', '_self', 0, 1, '2021-03-12 08:05:58');
-INSERT INTO `system_menu` VALUES (97, 90, '用户返利记录', 'layui-icon layui-icon-transfer', 'data/user_rebate/index', 'data/user_rebate/index', '', '_self', 0, 1, '2021-03-12 10:06:49');
+INSERT INTO `system_menu` VALUES (97, 90, '用户返利管理', 'layui-icon layui-icon-transfer', 'data/user_rebate/index', 'data/user_rebate/index', '', '_self', 0, 1, '2021-03-12 10:06:49');
 
 SET FOREIGN_KEY_CHECKS = 1;

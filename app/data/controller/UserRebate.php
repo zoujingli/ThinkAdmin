@@ -20,7 +20,7 @@ class UserRebate extends Controller
     private $table = 'DataUserRebate';
 
     /**
-     * 用户返利记录
+     * 用户返利管理
      * @auth true
      * @menu true
      * @throws \think\db\exception\DataNotFoundException
@@ -29,7 +29,7 @@ class UserRebate extends Controller
      */
     public function index()
     {
-        $this->title = '用户返利记录';
+        $this->title = '用户返利管理';
         // 统计所有返利
         $this->rebate = UserUpgradeService::instance()->syncRebate(0);
         // 创建查询对象
@@ -73,7 +73,6 @@ class UserRebate extends Controller
     /**
      * 返利奖励配置
      * @auth true
-     * @menu true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
