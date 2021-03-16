@@ -345,6 +345,7 @@ class RebateCurrentService extends Service
      */
     private function _prize06(): bool
     {
+        return false;
         $puids = array_reverse(explode('-', trim($this->user['path'], '-')));
         if (empty($puids) || $this->order['amount_total'] <= 0) return false;
         // 记录原始等级
