@@ -298,6 +298,7 @@ class RebateCurrentService extends Service
      */
     private function _prize05(): bool
     {
+        return false;
         $puids = array_reverse(explode('-', trim($this->user['path'], '-')));
         if (empty($puids) || $this->order['amount_total'] <= 0) return false;
         // 获取可以参与奖励的代理
