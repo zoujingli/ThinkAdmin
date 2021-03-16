@@ -300,11 +300,11 @@ class RebateCurrentService extends Service
      */
     private function _prize05(): bool
     {
-        $puids = array_reverse(explode('-', trim($this->user['path'], '-')));
+        $puids = array_reverse(str2arr($this->user['path'], '-'));
         if (empty($puids) || $this->order['amount_total'] <= 0) return false;
         // 获取可以参与奖励的代理
-        $sql = $this->app->db->name('DataUserUpgrade')->field('number')->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->buildSql(true);
-        $users = $this->app->db->name('DataUser')->whereRaw("vip_code in {$sql}")->whereIn('id', $puids)->orderField('id', $puids)->select()->toArray();
+        $vips = $this->app->db->name('DataUserUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->column('number');
+        $users = $this->app->db->name('DataUser')->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->select()->toArray();
         // 查询需要计算奖励的商品
         $map = [['order_no', '=', $this->order['order_no']], ['discount_rate', '<', 100]];
         foreach ($this->app->db->name('StoreOrderItem')->where($map)->cursor() as $item) {
@@ -345,13 +345,13 @@ class RebateCurrentService extends Service
      */
     private function _prize06(): bool
     {
-        $puids = array_reverse(explode('-', trim($this->user['path'], '-')));
+        $puids = array_reverse(str2arr($this->user['path'], '-'));
         if (empty($puids) || $this->order['amount_total'] <= 0) return false;
         // 记录原始等级
         $prevLevel = $this->user['vip_code'];
         // 获取可以参与奖励的代理
-        $subsql = $this->app->db->name('DataUserUpgrade')->field('number')->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->buildSql(true);
-        foreach ($this->app->db->name('DataUser')->whereRaw("vip_code in {$subsql}")->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
+        $vips = $this->app->db->name('DataUserUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->column('number');
+        foreach ($this->app->db->name('DataUser')->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
             if ($user['vip_code'] > $prevLevel) {
                 if (($amount = $this->_prize06amount($prevLevel, $user['vip_code'])) > 0.00) {
                     $map = ['type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
