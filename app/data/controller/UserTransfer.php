@@ -21,6 +21,14 @@ class UserTransfer extends Controller
      */
     private $table = 'DataUserTransfer';
 
+    protected $types = [
+        'wechat_user'    => '转账到我的微信零钱',
+        'wechat_qrcode'  => '线下转账微信收款码',
+        'alipay_qrcode'  => '线下转账支付宝收款码',
+        'alipay_account' => '线下到账到支付宝账户',
+        'bank_offline'   => '线下转账到银行卡账户',
+    ];
+
     /**
      * 提现配置配置
      * @throws \think\db\exception\DataNotFoundException

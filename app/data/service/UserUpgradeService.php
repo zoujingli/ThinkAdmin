@@ -122,10 +122,10 @@ class UserUpgradeService extends Service
         // 开始处理等级
         [$vipName, $vipCode] = ['普通用户', 0];
         // 统计历史数据
-        $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uid])->where('vip_code>0')->count();
-        $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->where('vip_code>0')->count();
-        $teamsUsers = $this->app->db->name('DataUser')->where(['pid1|pid2' => $uid])->where('vip_code>0')->count();
         $orderAmount = $this->app->db->name('ShopOrder')->where("uid={$uid} and status>=4")->sum('amount_total');
+        $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uid])->whereRaw('vip_code>0')->count();
+        $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->whereRaw('vip_code>0')->count();
+        $teamsUsers = $this->app->db->name('DataUser')->where(['pid1|pid2' => $uid])->whereRaw('vip_code>0')->count();
         // 计算用户等级
         foreach ($this->app->db->name('DataUserUpgrade')->where(['status' => 1])->order('number desc')->cursor() as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['buy_vip_entry'] > 0;
