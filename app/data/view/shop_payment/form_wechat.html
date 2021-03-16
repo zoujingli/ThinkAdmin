@@ -19,13 +19,13 @@
     <span class="help-block">微信商户密钥，需要在微信商户平台操作设置密码并获取密钥，建议定期更换密钥</span>
 </label>
 
-<label class="layui-form-item block relative">
+<label class="layui-form-item layui-hide relative">
     <span class="color-green font-w7">微信商户密钥文件内容</span><span class="nowrap color-desc">（ 需要填写文件的全部内容 ）</span>
     <textarea name="wechat_mch_key_text" placeholder="请输入微信KEY密钥内容" class="layui-textarea">{$vo.content.wechat_mch_key_text|default=''}</textarea>
     <span class="help-block">从商户平台上下载支付证书，解压并取得其中的 apiclient_key.pem 用记事本打开并复制文件内容填至此处</span>
 </label>
 
-<label class="layui-form-item block relative">
+<label class="layui-form-item layui-hide relative">
     <span class="color-green font-w7">微信商户证书文件内容</span><span class="nowrap color-desc">（ 需要填写文件的全部内容 ）</span>
     <textarea name="wechat_mch_cert_text" placeholder="请输入微信CERT证书内容" class="layui-textarea">{$vo.content.wechat_mch_cert_text|default=''}</textarea>
     <span class="help-block">从商户平台上下载支付证书，解压并取得其中的 apiclient_cert.pem 用记事本打开并复制文件内容填至此处</span>
