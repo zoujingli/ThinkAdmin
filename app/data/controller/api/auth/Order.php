@@ -291,7 +291,7 @@ class Order extends Auth
     {
         $data = $this->_vali(['uid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
         $payments = $this->app->db->name('ShopOrder')->where($data)->value('payment_allow');
-        if (empty($payments)) $this->error('获取统一支付参数失败');
+        if (empty($payments)) $this->error('获取订单支付参数失败');
         [$map, $types] = [['status' => 1, 'deleted' => 0], []];
         foreach (PaymentService::TYPES as $type => $arr) if (in_array($this->type, $arr['bind'])) $types[] = $type;
         $query = $this->app->db->name('ShopPayment')->where($map)->whereIn('type', $types)->whereIn('code', str2arr($payments));
