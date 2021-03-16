@@ -37,7 +37,7 @@ class Order extends Auth
      */
     public function get()
     {
-        $map = ['uid' => $this->uuid, 'deleted' => 0];
+        $map = ['uid' => $this->uuid, 'deleted_status' => 0];
         $query = $this->_query('ShopOrder')->in('status')->equal('order_no');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
         if (count($result['list']) > 0) OrderService::instance()->buildData($result['list']);
@@ -375,7 +375,7 @@ class Order extends Auth
         if (in_array($order['status'], [0])) {
             $result = $this->app->db->name('ShopOrder')->where($map)->update([
                 'status'           => 0,
-                'deleted'          => 1,
+                'deleted_status'   => 1,
                 'deleted_remark'   => '用户主动删除订单',
                 'deleted_datetime' => date('Y-m-d H:i:s'),
             ]);
@@ -436,7 +436,7 @@ class Order extends Auth
     public function total()
     {
         $data = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 't6' => 0];
-        $query = $this->app->db->name('ShopOrder')->where(['uid' => $this->uuid, 'deleted' => 0]);
+        $query = $this->app->db->name('ShopOrder')->where(['uid' => $this->uuid, 'deleted_status' => 0]);
         foreach ($query->field('status,count(1) count')->group('status')->cursor() as $item) {
             $data["t{$item['status']}"] = $item['count'];
         }
