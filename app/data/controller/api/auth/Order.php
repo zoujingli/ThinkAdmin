@@ -108,6 +108,7 @@ class Order extends Auth
                 // 商品信息字段
                 'goods_name'      => $goodsInfo['name'],
                 'goods_cover'     => $goodsInfo['cover'],
+                'goods_payment'   => $goodsInfo['payment'],
                 'goods_sku'       => $goodsItem['goods_sku'],
                 'goods_code'      => $goodsItem['goods_code'],
                 'goods_spec'      => $goodsItem['goods_spec'],
@@ -271,6 +272,14 @@ class Order extends Auth
         } else {
             $this->error('订单确认失败');
         }
+    }
+
+    public function channel()
+    {
+        $data = $this->_vali([
+            'uid.value'        => $this->uuid,
+            'order_no.require' => '单号不能为空',
+        ]);
     }
 
     /**
