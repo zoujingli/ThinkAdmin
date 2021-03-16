@@ -381,10 +381,7 @@ class RebateCurrentService extends Service
         if ($this->config("manage_type_vip_{$nextLevel}") == 2) {
             $amount = 0.00;
             foreach (range($prevLevel, $nextLevel) as $level) {
-                [$state, $value] = [
-                    $this->config("manage_state_vip_{$level}"),
-                    $this->config("manage_value_vip_{$level}"),
-                ];
+                [$state, $value] = [$this->config("manage_state_vip_{$level}"), $this->config("manage_value_vip_{$level}")];
                 if ($state && $value > 0) $amount += $value;
             }
             return floatval($amount);
