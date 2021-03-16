@@ -21,7 +21,7 @@ class UserService extends Service
     const API_TYPE_ANDROID = 'android';
 
     const TYPES = [
-        // 接口通道配置（不需要的直接注释）
+        // 接口支付配置（不需要的直接注释）
         UserService::API_TYPE_WAP     => [
             'name' => '手机浏览器',
             'auth' => 'phone',

@@ -32,7 +32,7 @@ class Login extends Controller
     {
         $this->type = input('api', UserService::API_TYPE_WAP);
         if (empty(UserService::TYPES[$this->type])) {
-            $this->error("接口通道[{$this->type}]未定义规则！");
+            $this->error("接口支付[{$this->type}]未定义规则！");
         }
     }
 

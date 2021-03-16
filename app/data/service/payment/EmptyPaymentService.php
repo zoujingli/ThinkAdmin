@@ -7,7 +7,7 @@ use think\admin\extend\CodeExtend;
 use think\admin\Exception;
 
 /**
- * 空支付通道
+ * 空支付支付
  * Class EmptyPaymentService
  * @package app\data\service\payment
  */

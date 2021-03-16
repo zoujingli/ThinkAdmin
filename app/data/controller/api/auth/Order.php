@@ -87,7 +87,7 @@ class Order extends Auth
             if ($goodsInfo['limit_low_vip'] > $this->user['vip_code']) $this->error('用户等级不够');
             // 商品库存检查
             if ($goodsItem['stock_sales'] + $count > $goodsItem['stock_total']) $this->error('商品库存不足');
-            // 支付通道处理
+            // 支付支付处理
             $_allowPayments = [];
             foreach (str2arr($goodsInfo['payment']) as $code) {
                 if (is_null($allowPayments) || in_array($code, $allowPayments)) $_allowPayments[] = $code;
@@ -281,7 +281,7 @@ class Order extends Auth
     }
 
     /**
-     * 获取支付通道数据
+     * 获取支付支付数据
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

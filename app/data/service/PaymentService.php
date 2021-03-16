@@ -29,7 +29,7 @@ abstract class PaymentService
     const PAYMENT_JOINPAY_GZH = 'joinpay_gzh';
     const PAYMENT_JOINPAY_XCX = 'joinpay_xcx';
 
-    // 微信商户通道
+    // 微信商户支付
     const PAYMENT_WECHAT_APP = 'wechat_app';
     const PAYMENT_WECHAT_GZH = 'wechat_gzh';
     const PAYMENT_WECHAT_XCX = 'wechat_xcx';
@@ -196,7 +196,7 @@ abstract class PaymentService
     }
 
     /**
-     * 获取支付通道名称
+     * 获取支付支付名称
      * @param string $type
      * @return string
      */
@@ -221,7 +221,7 @@ abstract class PaymentService
     }
 
     /**
-     * 获取通道配置参数
+     * 获取支付配置参数
      * @param string $code
      * @param array $payment
      * @return array [code, type, params]

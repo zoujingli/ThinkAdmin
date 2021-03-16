@@ -8,7 +8,7 @@ use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 
 /**
- * 支付参数通道
+ * 支付参数支付
  * Class ShopPayment
  * @package app\data\controller
  */
@@ -39,7 +39,7 @@ class ShopPayment extends Controller
         $this->title = '支付参数管理';
         $query = $this->_query($this->table);
         $query->where(['deleted' => 0])->order('sort desc,id desc');
-        $query->equal('type,status')->like('name')->dateBetween('create_at')->page();
+        $query->like('name,code')->equal('type,status')->dateBetween('create_at')->page();
     }
 
     /**

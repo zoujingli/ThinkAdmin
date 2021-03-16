@@ -47,7 +47,7 @@ abstract class Auth extends Controller
         $this->type = $this->request->header('api-name') ?: input('api');
         $this->type = $this->type ?: $this->request->header('api-type');
         if (empty($this->type) || empty(UserService::TYPES[$this->type])) {
-            $this->error("接口通道未定义！");
+            $this->error("接口支付未定义！");
         }
         // 获取用户数据
         $this->user = $this->getUser();
