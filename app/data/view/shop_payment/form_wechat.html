@@ -6,14 +6,14 @@
 </label>
 
 <label class="layui-form-item block relative">
-    <span class="color-green font-w7 margin-right-10">微信商户号</span>
+    <span class="color-green font-w7">微信商户号</span>
     <span class="color-desc margin-left-5">WeChat Payment Number</span>
     <input name="wechat_mch_id" required placeholder="请输入微信商户号（必填）" value="{$vo.content.wechat_mch_id|default=''}" class="layui-input">
     <span class="help-block">微信商户编号，需要在微信商户平台获取，微信商户号 与 公众号APPID 匹配</span>
 </label>
 
 <label class="layui-form-item block relative">
-    <span class="color-green font-w7 margin-right-10">微信商户密钥</span>
+    <span class="color-green font-w7">微信商户密钥</span>
     <span class="color-desc margin-left-5">WeChat Payment Secret Key</span>
     <input name="wechat_mch_key" required maxlength="32" pattern=".{32}" placeholder="请输入32位微信商户密钥（必填）" value="{$vo.content.wechat_mch_key|default=''}" class="layui-input">
     <span class="help-block">微信商户密钥，需要在微信商户平台操作设置密码并获取密钥，建议定期更换密钥</span>
