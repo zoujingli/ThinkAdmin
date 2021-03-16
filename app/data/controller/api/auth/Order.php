@@ -94,7 +94,7 @@ class Order extends Auth
                 if (is_null($allowPayments) || in_array($code, $allowPayments)) $_allowPayments[] = $code;
             }
             if (empty($_allowPayments)) {
-                $this->error('订单无法统计支付');
+                $this->error('订单无法统一支付');
             } else {
                 $allowPayments = $_allowPayments;
             }
@@ -281,12 +281,21 @@ class Order extends Auth
         }
     }
 
+    /**
+     * 获取支付通道数据
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function channel()
     {
-        $data = $this->_vali([
-            'uid.value'        => $this->uuid,
-            'order_no.require' => '单号不能为空',
-        ]);
+        $data = $this->_vali(['uid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
+        $payments = $this->app->db->name('ShopOrder')->where($data)->value('payment_allow');
+        if (empty($payments)) $this->error('获取统一支付参数失败');
+        [$map, $types] = [['status' => 1, 'deleted' => 0], []];
+        foreach (PaymentService::TYPES as $type => $arr) if (in_array($this->type, $arr['bind'])) $types[] = $type;
+        $query = $this->app->db->name('ShopPayment')->where($map)->whereIn('type', $types)->whereIn('code', str2arr($payments));
+        $this->success('获取支付参数数据', $query->order('sort desc,id desc')->field('type,code,name')->select()->toArray());
     }
 
     /**
