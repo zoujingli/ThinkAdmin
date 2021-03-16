@@ -76,10 +76,8 @@ class GoodsService extends Service
      */
     public function getCateData($simple = true): array
     {
-        $cates = $this->app->db->name('ShopGoodsCate')->column('id,pid,name', 'id');
-        foreach ($cates as $cate) if (isset($cates[$cate['pid']])) {
-            $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
-        }
+        $cates = $this->app->db->name('ShopGoodsCate')->where(['status' => 1])->column('id,pid,name', 'id');
+        foreach ($cates as $cate) if (isset($cates[$cate['pid']])) $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
         foreach ($cates as $key => $cate) {
             $id = $cate['id'];
             $cates[$id]['ids'][] = $cate['id'];
