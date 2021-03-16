@@ -163,7 +163,8 @@ class ShopGoods extends Controller
             $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
         } elseif ($this->request->isPost()) {
             if (empty($data['cover'])) $this->error('商品图片不能为空！');
-            if (empty($data['slider'])) $this->error('轮播图不能为空！');
+            if (empty($data['slider'])) $this->error('轮播图片不能为空！');
+            if (empty($data['payment'])) $this->error('支付方式不能为空！');
             // 商品规格保存
             [$count, $items] = [0, array_column(json_decode($data['data_items'], true), 0)];
             foreach ($items as $item) $count += intval($item['status']);
