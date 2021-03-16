@@ -3,7 +3,7 @@
 namespace app\data\controller;
 
 use app\data\service\UserService;
-use app\data\service\UserUpgradeService;
+use app\data\service\UserTransferService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 use think\admin\service\AdminService;
@@ -21,14 +21,6 @@ class UserTransfer extends Controller
      */
     private $table = 'DataUserTransfer';
 
-    protected $types = [
-        'wechat_user'    => '转账到我的微信零钱',
-        'wechat_qrcode'  => '线下转账微信收款码',
-        'alipay_qrcode'  => '线下转账支付宝收款码',
-        'alipay_account' => '线下到账到支付宝账户',
-        'bank_offline'   => '线下转账到银行卡账户',
-    ];
-
     /**
      * 提现配置配置
      * @throws \think\db\exception\DataNotFoundException
@@ -39,6 +31,7 @@ class UserTransfer extends Controller
     {
         $this->skey = 'TransferRule';
         $this->title = '提现规则配置';
+        $this->types = UserTransferService::instance()->types();
         $this->_sysdata();
     }
 
