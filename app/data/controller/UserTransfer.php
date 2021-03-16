@@ -22,7 +22,7 @@ class UserTransfer extends Controller
     private $table = 'DataUserTransfer';
 
     /**
-     * 奖励提现配置
+     * 提现配置配置
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -30,10 +30,35 @@ class UserTransfer extends Controller
     public function config()
     {
         $this->skey = 'TransferRule';
-        $this->title = '奖励提现配置';
+        $this->title = '提现规则配置';
+        $this->_sysdata();
+    }
+
+    /**
+     * 微信提现配置
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function transfer()
+    {
+        $this->skey = 'TransferWxpay';
+        $this->title = '微信提现配置';
+        $this->_sysdata();
+    }
+
+    /**
+     * 配置数据处理
+     * @param string $tpl 模板文件
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    private function _sysdata($tpl = '')
+    {
         if ($this->request->isGet()) {
             $this->data = sysdata($this->skey);
-            $this->fetch();
+            $this->fetch($tpl);
         } else {
             sysdata($this->skey, $this->request->post());
             $this->success('配置修改成功');
