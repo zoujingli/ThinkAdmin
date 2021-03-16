@@ -93,8 +93,8 @@ class UserUpgradeService extends Service
      */
     public function syncBalance(int $uuid, array $nots = []): array
     {
-        $total = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and status=1 and amount>0 and deleted=0")->sum('amount'));
-        $count = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and status=1 and amount<0 and deleted=0")->sum('amount'));
+        $total = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
+        $count = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
         if (empty($nots)) {
             $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
         } else {

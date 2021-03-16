@@ -74,7 +74,7 @@ class UserBalance extends Controller
     protected function _form_filter(array &$data)
     {
         if (empty($data['code'])) {
-            $data['code'] = CodeExtend::uniqidDate('16', 'B');
+            $data['code'] = CodeExtend::uniqidDate('20', 'B');
         }
         if ($this->request->isPost()) {
             $data['create_by'] = AdminService::instance()->getUserId();
