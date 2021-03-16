@@ -56,9 +56,10 @@ class Order extends Auth
         $rules = $this->request->post('items', '');
         if (empty($rules)) $this->error('商品不能为空');
         // 订单数据
-        [$items, $order, $truckType] = [[], [], -1];
+        [$items, $order, $truckType, $allowPayments] = [[], [], -1, null];
         $order['uid'] = $this->uuid;
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
+        $order['payment_allow'] = null;
         // 推荐人处理
         $order['puid1'] = input('from', $this->user['pid1']);
         if ($order['puid1'] == $this->uuid) $order['puid1'] = 0;
@@ -84,12 +85,18 @@ class Order extends Auth
                 if ($buys + $count > $goods['limit_max_num']) $this->error('超过限购数量');
             }
             // 限制购买身份
-            if ($goodsInfo['limit_low_vip'] > $this->user['vip_code']) {
-                $this->error('用户等级不够');
-            }
+            if ($goodsInfo['limit_low_vip'] > $this->user['vip_code']) $this->error('用户等级不够');
             // 商品库存检查
-            if ($goodsItem['stock_sales'] + $count > $goodsItem['stock_total']) {
-                $this->error('商品库存不足');
+            if ($goodsItem['stock_sales'] + $count > $goodsItem['stock_total']) $this->error('商品库存不足');
+            // 支付通道处理
+            $_allowPayments = [];
+            foreach (str2arr($goodsInfo['payment']) as $code) {
+                if (is_null($allowPayments) || in_array($code, $allowPayments)) $_allowPayments[] = $code;
+            }
+            if (empty($_allowPayments)) {
+                $this->error('订单无法统计支付');
+            } else {
+                $allowPayments = $_allowPayments;
             }
             // 商品折扣处理
             [$discountId, $discountRate] = [0, 100.00];
@@ -141,7 +148,7 @@ class Order extends Auth
             ];
         }
         try {
-
+            $order['payment_allow'] = arr2str($allowPayments);
             $order['rebate_amount'] = array_sum(array_column($items, 'rebate_amount'));
             $order['reward_balance'] = array_sum(array_column($items, 'reward_balance'));
 
