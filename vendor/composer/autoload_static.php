@@ -366,7 +366,6 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'app\\data\\controller\\api\\auth\\News' => __DIR__ . '/../..' . '/app/data/controller/api/auth/News.php',
         'app\\data\\controller\\api\\auth\\Order' => __DIR__ . '/../..' . '/app/data/controller/api/auth/Order.php',
         'app\\data\\controller\\api\\auth\\Rebate' => __DIR__ . '/../..' . '/app/data/controller/api/auth/Rebate.php',
-        'app\\data\\service\\DataService' => __DIR__ . '/../..' . '/app/data/service/DataService.php',
         'app\\data\\service\\GoodsService' => __DIR__ . '/../..' . '/app/data/service/GoodsService.php',
         'app\\data\\service\\MessageService' => __DIR__ . '/../..' . '/app/data/service/MessageService.php',
         'app\\data\\service\\NewsService' => __DIR__ . '/../..' . '/app/data/service/NewsService.php',
