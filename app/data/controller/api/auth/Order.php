@@ -59,7 +59,6 @@ class Order extends Auth
         [$items, $order, $truckType, $allowPayments] = [[], [], -1, null];
         $order['uid'] = $this->uuid;
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
-        $order['payment_allow'] = null;
         // 推荐人处理
         $order['puid1'] = input('from', $this->user['pid1']);
         if ($order['puid1'] == $this->uuid) $order['puid1'] = 0;
