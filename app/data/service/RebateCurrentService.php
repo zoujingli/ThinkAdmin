@@ -144,6 +144,7 @@ class RebateCurrentService extends Service
         // 批量发放配置奖励
         foreach (self::PRIZES as $vo) {
             if (method_exists($this, $vo['func'])) {
+                $this->app->log->notice("订单{$orderNo}发放{$vo['func']}奖励");
                 $this->{$vo['func']}();
             }
         }
