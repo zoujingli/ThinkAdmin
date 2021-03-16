@@ -17,7 +17,7 @@
 
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">提现金额范围</span>
-            <span class="color-desc margin-left-5">Transfer Range</span>
+            <span class="color-desc margin-left-5">Transfer Amount Range</span>
             <div class="padding-10">
                 <div class="layui-inline">
                     <label class="layui-input-inline" style="width:200px;">
@@ -35,7 +35,7 @@
 
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">提现是否需要审核</span>
-            <span class="color-desc margin-left-5">Transfer Audit</span>
+            <span class="color-desc margin-left-5">Transfer Record Audit</span>
             <div class="layui-textarea padding-15" style="min-height:auto">
                 {php} $data['transfer_audit'] = $data['transfer_audit'] ?? 0; {/php}
                 {foreach ['提现无需审核', '提现需要审核'] as $k => $v}
@@ -49,7 +49,7 @@
 
         <div class="layui-form-item relative block">
             <span class="color-green font-w7">用户提现描述内容</span>
-            <span class="color-desc margin-left-5">Transfer Remark</span>
+            <span class="color-desc margin-left-5">Transfer Record Remark</span>
             <label class="relative block">
                 <textarea class="layui-textarea" placeholder="请输入用户提现描述内容" name="remark">{$data.remark|default=''}</textarea>
             </label>
