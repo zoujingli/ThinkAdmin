@@ -94,10 +94,10 @@ class NewsItem extends Controller
     protected function _form_filter(array &$data)
     {
         if (empty($data['code'])) {
-            $data['code'] = CodeExtend::uniqidNumber(14, 'A');
+            $data['code'] = CodeExtend::uniqidNumber(20, 'A');
         }
         if ($this->request->isGet()) {
-            $map = ['deleted' => 0, 'status' => 1];
+            $map = ['status' => 1, 'deleted' => 0];
             $query = $this->app->db->name('DataNewsMark')->where($map);
             $this->marks = $query->order('sort desc,id desc')->select()->toArray();
             $data['mark'] = str2arr($data['mark'] ?? '');
