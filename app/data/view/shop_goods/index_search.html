@@ -63,6 +63,36 @@
         </div>
 
         <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">入会礼包</label>
+            <label class="layui-input-inline">
+                <select class="layui-select" name="vip_entry">
+                    <option value=''>-- 全部状态 --</option>
+                    {foreach ['非入会礼包','是入会礼包'] as $k=>$v}
+                    {if input('vip_entry','-') eq $k.''}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/if}{/foreach}
+                </select>
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">物流发货</label>
+            <label class="layui-input-inline">
+                <select class="layui-select" name="truck_type">
+                    <option value=''>-- 全部状态 --</option>
+                    {foreach ['无需物流发货','需要物流发货'] as $k=>$v}
+                    {if input('truck_type','-') eq $k.''}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/if}{/foreach}
+                </select>
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
         </div>
     </form>
