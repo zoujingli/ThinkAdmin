@@ -148,7 +148,7 @@ class Transfer extends Auth
             'status' => 5, 'change_time' => date("Y-m-d H:i:s"), 'change_desc' => '用户主动确认收款',
         ]);
         UserRebateService::instance()->amount($this->uuid);
-        $this->success('取消提现成功');
+        $this->success('确认到账成功');
     }
 
     /**
