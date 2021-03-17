@@ -309,6 +309,7 @@ class Order extends Auth
         $data = $this->_vali([
             'uid.value'             => $this->uuid,
             'order_no.require'      => '单号不能为空',
+            'order_remark.default'  => '',
             'payment_code.require'  => '支付不能为空',
             'payment_back.default'  => '', # 支付回跳地址
             'payment_image.default' => '', # 支付凭证图片
@@ -316,12 +317,19 @@ class Order extends Auth
         [$map, $order] = $this->getOrderData();
         if ($order['status'] !== 2) $this->error('不能发起支付');
         if ($order['payment_status'] > 0) $this->error('已经完成支付');
+        // 更新订单备注
+        if (!empty($data['order_remark'])) {
+            $this->app->db->name('ShopOrder')->where($map)->update([
+                'order_remark' => $data['order_remark'],
+            ]);
+        }
+        // 自动处理用户字段
+        $openid = '';
+        if (in_array($this->type, [UserAdminService::API_TYPE_WXAPP, UserAdminService::API_TYPE_WECHAT])) {
+            $openid = $this->user[UserAdminService::TYPES[$this->type]['auth']] ?? '';
+            if (empty($openid)) $this->error("发起支付失败");
+        }
         try {
-            $openid = '';
-            if (in_array($this->type, [UserAdminService::API_TYPE_WXAPP, UserAdminService::API_TYPE_WECHAT])) {
-                $openid = $this->user[UserAdminService::TYPES[$this->type]['auth']] ?? '';
-                if (empty($openid)) $this->error("发起支付失败");
-            }
             // 返回订单数据及支付发起参数
             $type = $order['amount_real'] <= 0 ? 'empty' : $data['payment_code'];
             $param = PaymentService::instance($type)->create($openid, $order['order_no'], $order['amount_real'], '商城订单支付', '', $data['payment_back'], $data['payment_image']);
