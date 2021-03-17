@@ -70,16 +70,16 @@ class UserUpgradeService extends Service
     public function syncRebate(int $uuid): array
     {
         if ($uuid > 0) {
-            $count = abs($this->app->db->name('DataUserTransfer')->where("uid='{$uuid}' and status>0")->sum('amount'));
-            $total = abs($this->app->db->name('DataUserRebate')->where("uid='{$uuid}' and status=1 and deleted=0")->sum('amount'));
-            $locks = abs($this->app->db->name('DataUserRebate')->where("uid='{$uuid}' and status=0 and deleted=0")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>0")->sum('amount'));
+            $total = abs($this->app->db->name('DataUserRebate')->whereRaw("uid='{$uuid}' and status=1 and deleted=0")->sum('amount'));
+            $locks = abs($this->app->db->name('DataUserRebate')->whereRaw("uid='{$uuid}' and status=0 and deleted=0")->sum('amount'));
             $this->app->db->name('DataUser')->where(['id' => $uuid])->update([
                 'rebate_total' => $total, 'rebate_used' => $count, 'rebate_lock' => $locks,
             ]);
         } else {
             $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>0")->sum('amount'));
-            $total = abs($this->app->db->name('DataUserRebate')->where("status=1 and deleted=0")->sum('amount'));
-            $locks = abs($this->app->db->name('DataUserRebate')->where("status=0 and deleted=0")->sum('amount'));
+            $total = abs($this->app->db->name('DataUserRebate')->whereRaw("status=1 and deleted=0")->sum('amount'));
+            $locks = abs($this->app->db->name('DataUserRebate')->whereRaw("status=0 and deleted=0")->sum('amount'));
         }
         return [$total, $count, $locks];
     }
