@@ -48,4 +48,19 @@ class UserTransferService extends Service
         return is_null($name) ? $data : ($data[$name] ?? '');
     }
 
+    /**
+     * 获取转账配置
+     * @param ?string $name
+     * @return array|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function payment(?string $name = null)
+    {
+        static $data = [];
+        if (empty($data)) $data = sysdata('TransferWxpay');
+        return is_null($name) ? $data : ($data[$name] ?? '');
+    }
+
 }

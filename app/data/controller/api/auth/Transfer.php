@@ -3,7 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
-use app\data\controller\UserTransfer;
+use app\data\service\UserRebateService;
 use app\data\service\UserTransferService;
 use think\admin\extend\CodeExtend;
 
@@ -20,20 +20,86 @@ class Transfer extends Auth
      */
     private $table = 'DataUserTransfer';
 
+    /**
+     * 提交提现处理
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function add()
     {
         $data = $this->_vali([
-            'code.value'     => CodeExtend::uniqidDate(20, 'T'),
             'type.require'   => '提现方式不能为空！',
             'amount.require' => '提现金额不能为空！',
         ]);
-
+        $state = UserTransferService::instance()->config('status');
+        if (empty($state)) $this->error('提现还没有开启！');
+        $types = UserTransferService::instance()->config('transfer');
+        if (empty($types[$data['type']]['state'])) $this->error('提现方式已停用！');
+        // 提现数据补充
+        $data['uid'] = $this->uuid;
+        $data['date'] = date('Y-m-d');
+        $data['code'] = CodeExtend::uniqidDate(20, 'T');
+        $data['status'] = empty($types[$data['type']]['state']['audit']) ? 1 : 3;
+        $data['openid1'] = $this->user['openid1'];
+        $data['openid2'] = $this->user['openid2'];
+        // 扣除手续费
         $chargeRate = floatval(UserTransferService::instance()->config('transfer_charge'));
-        $chargeAmount = $chargeRate * $data['amount'];
+        $data['charge'] = $chargeRate * $data['amount'] / 100;
+        // 提现方式处理
+        if (in_array($data['type'], ['alipay_account'])) {
+            $data = array_merge($data, $this->_vali([
+                'alipay_user.require' => '开户姓名不能为空！',
+                'alipay_code.require' => '支付账号不能为空！',
+            ]));
+        } elseif (in_array($data['type'], ['wechat_qrcode', 'alipay_qrcode'])) {
+            $data = array_merge($data, $this->_vali([
+                'qrcode.require' => '收款码不能为空！',
+            ]));
+        } elseif (in_array($data['type'], ['wechat_banks', 'transfer_banks'])) {
+            $data = array_merge($data, $this->_vali([
+                'bank_name.require' => '银行名称不能为空！',
+                'bank_user.require' => '开户账号不能为空！',
+                'bank_bran.require' => '银行分行不能为空！',
+                'bank_code.require' => '银行卡号不能为空！',
+            ]));
+        } elseif (!in_array($data['type'], ['wechat_wallet'])) {
+            $this->error('转账方式不存在！');
+        }
+        // 检查可提现余额
+        [$total, $count] = UserRebateService::instance()->amount($this->uuid);
+        if ($total - $count < $data['amount']) $this->error('可提现余额不足！');
+        // 当日提现次数限制
+        $map = ['mid' => $this->uuid, 'type' => $data['type'], 'date' => $data['date']];
+        $count = $this->app->db->name($this->table)->where($map)->count();
+        if ($count >= $types[$data['type']]['dayNumber']) $this->error("当日提现次数受限");
+        // 提现金额范围控制
+        if ($types[$data['type']]['minAmount'] < $data['amount']) {
+            $this->error("不能少于{$types[$data['type']]['minAmount']}元");
+        }
+        if ($types[$data['type']]['maxAmount'] > $data['amount']) {
+            $this->error("不能大于{$types[$data['type']]['minAmount']}元");
+        }
+        // 写入用户提现数据
+        if ($this->app->db->name($this->table)->insert($data) !== false) {
+            UserRebateService::instance()->amount($this->uuid);
+            $this->error('提现申请成功');
+        } else {
+            $this->error('提现申请失败');
+        }
     }
 
+    /**
+     * 用户提现记录
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function get()
     {
+        $query = $this->_query($this->table)->where(['uid' => $this->uuid]);
+        $result = $query->like('date,code')->equal('status')->order('id desc')->page(true, false, false, 10);
+        $this->success('获取提现成功', $result);
     }
 
     /**
