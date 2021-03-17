@@ -7,11 +7,11 @@ use think\admin\Service;
 use think\admin\service\InterfaceService;
 
 /**
- * 快递运输数据服务
- * Class TruckService
+ * 快递查询数据服务
+ * Class ExpressService
  * @package app\data\service
  */
-class TruckService extends Service
+class ExpressService extends Service
 {
     /**
      * 模拟计算快递费用

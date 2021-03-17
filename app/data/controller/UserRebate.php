@@ -2,6 +2,7 @@
 
 namespace app\data\controller;
 
+use app\data\service\UserRebateService;
 use app\data\service\UserUpgradeService;
 use think\admin\Controller;
 
@@ -31,7 +32,7 @@ class UserRebate extends Controller
     {
         $this->title = '用户返利管理';
         // 统计所有返利
-        $this->rebate = UserUpgradeService::instance()->syncRebate(0);
+        $this->rebate = UserRebateService::instance()->amount(0);
         // 创建查询对象
         $query = $this->_query($this->table)->equal('type')->like('name,order_no');
         // 会员条件查询

@@ -26,84 +26,6 @@ class UserUpgradeService extends Service
     }
 
     /**
-     * 尝试绑定上级代理
-     * @param integer $uid 用户UID
-     * @param integer $pid 代理UID
-     * @param boolean $force 正式绑定
-     * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function bindAgent(int $uid, int $pid = 0, bool $force = true): array
-    {
-        $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
-        if (empty($user)) return [0, '用户查询失败'];
-        if (!empty($user['pids'])) return [0, '已绑定推荐人'];
-        // 检查代理用户
-        if (empty($pid)) $pid = $user['pid0'];
-        if (empty($pid)) return [0, '绑定推荐人不存在'];
-        if ($uid == $pid) return [0, '推荐人不能是自己'];
-        $parant = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
-        if (empty($parant['pids']) || empty($parant['vip_code'])) return [0, '推荐人无推荐资格'];
-        if (stripos($parant['path'], "-{$uid}-") !== false) return [0, '不能绑定下属'];
-        // 组装代理数据
-        $path = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";
-        $data = [
-            'pid0' => $parant['id'], 'pid1' => $parant['id'], 'pid2' => $parant['pid1'],
-            'pids' => $force ? 1 : 0, 'path' => $path, 'layer' => substr_count($path, '-'),
-        ];
-        // 更新用户代理
-        if ($this->app->db->name('DataUser')->where(['id' => $uid])->update($data) !== false) {
-            return [1, '绑定代理成功'];
-        } else {
-            return [0, '绑定代理失败'];
-        }
-    }
-
-    /**
-     * 同步刷新用户返利
-     * @param integer $uuid
-     * @return array [total, count, lock]
-     * @throws \think\db\exception\DbException
-     */
-    public function syncRebate(int $uuid): array
-    {
-        if ($uuid > 0) {
-            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>0")->sum('amount'));
-            $total = abs($this->app->db->name('DataUserRebate')->whereRaw("uid='{$uuid}' and status=1 and deleted=0")->sum('amount'));
-            $locks = abs($this->app->db->name('DataUserRebate')->whereRaw("uid='{$uuid}' and status=0 and deleted=0")->sum('amount'));
-            $this->app->db->name('DataUser')->where(['id' => $uuid])->update([
-                'rebate_total' => $total, 'rebate_used' => $count, 'rebate_lock' => $locks,
-            ]);
-        } else {
-            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>0")->sum('amount'));
-            $total = abs($this->app->db->name('DataUserRebate')->whereRaw("status=1 and deleted=0")->sum('amount'));
-            $locks = abs($this->app->db->name('DataUserRebate')->whereRaw("status=0 and deleted=0")->sum('amount'));
-        }
-        return [$total, $count, $locks];
-    }
-
-    /**
-     * 同步刷新用户余额
-     * @param int $uuid 用户UID
-     * @param array $nots 排除的订单
-     * @return array [total, count]
-     * @throws \think\db\exception\DbException
-     */
-    public function syncBalance(int $uuid, array $nots = []): array
-    {
-        $total = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
-        $count = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
-        if (empty($nots)) {
-            $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
-        } else {
-            $count -= $this->app->db->name('DataUserBalance')->whereRaw("uid={$uuid}")->whereIn('code', $nots)->sum('amount');
-        }
-        return [$total, $count];
-    }
-
-    /**
      * 同步计算用户等级
      * @param integer $uid 指定用户UID
      * @param boolean $parent 同步计算上级
@@ -113,12 +35,10 @@ class UserUpgradeService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function syncLevel(int $uid, bool $parent = true, ?string $orderNo = null): bool
+    public function upgrade(int $uid, bool $parent = true, ?string $orderNo = null): bool
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
         if (empty($user)) return true;
-        // 刷新用户返利
-        $this->syncRebate($uid);
         // 开始处理等级
         [$vipName, $vipCode] = ['普通用户', 0];
         // 统计历史数据
@@ -177,6 +97,42 @@ class UserUpgradeService extends Service
                 'uid' => $user['uid'], 'order_no' => $orderNo, 'vip_code_old' => $user['vip_code'], 'vip_code_new' => $vipCode,
             ]);
         }
-        return ($parent && $user['pid2'] > 0) ? $this->syncLevel($user['pid2'], false) : true;
+        return ($parent && $user['pid2'] > 0) ? $this->upgrade($user['pid2'], false) : true;
+    }
+
+    /**
+     * 尝试绑定上级代理
+     * @param integer $uid 用户UID
+     * @param integer $pid 代理UID
+     * @param boolean $force 正式绑定
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function bindAgent(int $uid, int $pid = 0, bool $force = true): array
+    {
+        $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
+        if (empty($user)) return [0, '用户查询失败'];
+        if (!empty($user['pids'])) return [0, '已绑定推荐人'];
+        // 检查代理用户
+        if (empty($pid)) $pid = $user['pid0'];
+        if (empty($pid)) return [0, '绑定推荐人不存在'];
+        if ($uid == $pid) return [0, '推荐人不能是自己'];
+        $parant = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
+        if (empty($parant['pids']) || empty($parant['vip_code'])) return [0, '推荐人无推荐资格'];
+        if (stripos($parant['path'], "-{$uid}-") !== false) return [0, '不能绑定下属'];
+        // 组装代理数据
+        $path = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";
+        $data = [
+            'pid0' => $parant['id'], 'pid1' => $parant['id'], 'pid2' => $parant['pid1'],
+            'pids' => $force ? 1 : 0, 'path' => $path, 'layer' => substr_count($path, '-'),
+        ];
+        // 更新用户代理
+        if ($this->app->db->name('DataUser')->where(['id' => $uid])->update($data) !== false) {
+            return [1, '绑定代理成功'];
+        } else {
+            return [0, '绑定代理失败'];
+        }
     }
 }

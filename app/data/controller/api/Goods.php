@@ -3,7 +3,7 @@
 namespace app\data\controller\api;
 
 use app\data\service\GoodsService;
-use app\data\service\TruckService;
+use app\data\service\ExpressService;
 use think\admin\Controller;
 
 /**
@@ -56,7 +56,7 @@ class Goods extends Controller
      */
     public function getRegion()
     {
-        $this->success('获取区域成功', TruckService::instance()->region(3, 1));
+        $this->success('获取区域成功', ExpressService::instance()->region(3, 1));
     }
 
 }

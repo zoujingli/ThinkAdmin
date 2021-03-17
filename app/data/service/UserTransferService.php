@@ -5,7 +5,7 @@ namespace app\data\service;
 use think\admin\Service;
 
 /**
- * 用户转账服务
+ * 用户提现数据服务
  * Class UserTransferService
  * @package app\data\service
  */

@@ -2,7 +2,7 @@
 
 namespace app\data\controller;
 
-use app\data\service\RebateCurrentService;
+use app\data\service\RebateService;
 use think\admin\Controller;
 
 /**
@@ -41,7 +41,7 @@ class UserUpgrade extends Controller
         foreach ($data as &$vo) {
             $vo['rebate_rule'] = str2arr($vo['rebate_rule']);
             foreach ($vo['rebate_rule'] as &$v) {
-                $v = RebateCurrentService::instance()->name($v);
+                $v = RebateService::instance()->name($v);
             }
         }
     }
@@ -77,7 +77,7 @@ class UserUpgrade extends Controller
     protected function _form_filter(array &$vo)
     {
         if ($this->request->isGet()) {
-            $this->prizes = RebateCurrentService::PRIZES;
+            $this->prizes = RebateService::PRIZES;
             $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
         } else {
             $vo['utime'] = time();

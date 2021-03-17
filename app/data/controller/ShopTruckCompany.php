@@ -2,7 +2,7 @@
 
 namespace app\data\controller;
 
-use app\data\service\TruckService;
+use app\data\service\ExpressService;
 use think\admin\Controller;
 use think\admin\service\SystemService;
 use think\exception\HttpResponseException;
@@ -97,7 +97,7 @@ class ShopTruckCompany extends Controller
     public function synchronize()
     {
         try {
-            $result = TruckService::instance()->company();
+            $result = ExpressService::instance()->company();
             if (empty($result['code'])) $this->error($result['info']);
             foreach ($result['data'] as $vo) SystemService::instance()->save($this->table, [
                 'code_1' => $vo['code_1'], 'code_2' => $vo['code_2'],

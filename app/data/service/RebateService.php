@@ -6,11 +6,11 @@ use think\admin\Exception;
 use think\admin\Service;
 
 /**
- * 实时返利服务
- * Class RebateCurrentService
+ * 系统实时返利服务
+ * Class RebateService
  * @package app\data\service
  */
-class RebateCurrentService extends Service
+class RebateService extends Service
 {
     const PRIZE_01 = 'PRIZE01';
     const PRIZE_02 = 'PRIZE02';
@@ -85,28 +85,6 @@ class RebateCurrentService extends Service
     }
 
     /**
-     * 确认收货订单处理
-     * @param string $orderNo
-     * @return array [status, message]
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function confirm(string $orderNo): array
-    {
-        $map = ['order_no' => $orderNo, 'status' => 6];
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) return [0, '需处理的订单状态异常！'];
-        $map = [['status', '=', 0], ['order_no', 'like', "{$orderNo}%"]];
-        $this->app->db->name($this->table)->where($map)->update(['status' => 1]);
-        if (UserUpgradeService::instance()->syncLevel($order['uid'])) {
-            return [1, '重新计算用户金额成功！'];
-        } else {
-            return [0, '重新计算用户金额失败！'];
-        }
-    }
-
-    /**
      * 执行订单返利处理
      * @param string $orderNo
      * @throws Exception
@@ -120,8 +98,6 @@ class RebateCurrentService extends Service
         $map = ['order_no' => $orderNo, 'payment_status' => 1];
         $this->order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($this->order)) throw new Exception('订单不存在');
-        // 同步订单用户余额
-        if ($this->order['reward_balance'] > 0) $this->_balance();
         // 检查订单参与返利
         if ($this->order['amount_total'] <= 0) throw new Exception('订单金额为零');
         if ($this->order['rebate_amount'] <= 0) throw new Exception('订单返利为零');
@@ -149,25 +125,6 @@ class RebateCurrentService extends Service
                 $this->app->log->notice("订单 {$orderNo} 完成发放 [{$vo['func']}] {$vo['name']}");
             }
         }
-    }
-
-    /**
-     * 来自订单余额充值
-     * @return array [total, count]
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    private function _balance(): array
-    {
-        data_save('DataUserBalance', [
-            'uid'    => $this->order['uid'],
-            'code'   => $this->order['order_no'],
-            'name'   => "订单余额充值",
-            'remark' => "来自订单{$this->order['order_no']}的余额充值",
-            'amount' => $this->order['reward_balance'],
-        ], 'code');
-        return UserUpgradeService::instance()->syncBalance($this->order['uid']);
     }
 
     /**
@@ -199,7 +156,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UserUpgradeService::instance()->syncLevel($this->from1['id']);
+            UserUpgradeService::instance()->upgrade($this->from1['id']);
         }
         return true;
     }
@@ -233,7 +190,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UserUpgradeService::instance()->syncLevel($this->from1['id']);
+            UserUpgradeService::instance()->upgrade($this->from1['id']);
         }
         return true;
     }
@@ -260,7 +217,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UserUpgradeService::instance()->syncLevel($this->from1['id']);
+            UserUpgradeService::instance()->upgrade($this->from1['id']);
         }
         return true;
     }
@@ -286,7 +243,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新代理奖利金额
-            UserUpgradeService::instance()->syncLevel($this->from2['id']);
+            UserUpgradeService::instance()->upgrade($this->from2['id']);
         }
         return true;
     }
@@ -359,7 +316,7 @@ class RebateCurrentService extends Service
                     $this->app->db->name($this->table)->insert(array_merge($map, [
                         'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
                     ]));
-                    UserUpgradeService::instance()->syncLevel($this->from2['id']);
+                    UserUpgradeService::instance()->upgrade($this->from2['id']);
                 }
                 $prevLevel = $user['vip_code'];
             }
@@ -421,7 +378,7 @@ class RebateCurrentService extends Service
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
-            UserUpgradeService::instance()->syncLevel($this->from1['id']);
+            UserUpgradeService::instance()->upgrade($this->from1['id']);
         }
         return true;
     }

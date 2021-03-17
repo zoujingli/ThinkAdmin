@@ -3,7 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
-use app\data\service\UserUpgradeService;
+use app\data\service\UserRebateService;
 use think\admin\extend\CodeExtend;
 
 /**
@@ -48,7 +48,7 @@ class Rebate extends Auth
         ]);
         $params = sysdata('TransferRule') ?: [];
         if (empty($params['transfer_state'])) $this->error('提现功能已经关闭');
-        [$total, $count] = UserUpgradeService::instance()->syncRebate($this->uuid);
+        [$total, $count] = UserRebateService::instance()->amount($this->uuid);
         if ($total - $count - $data['amount'] < 0) $this->error('可提现金额不足');
         if ($data['amount'] < $params['transfer_min']) $this->error("提现不能少于{$params['transfer_min']}元");
         if ($data['amount'] > $params['transfer_max']) $this->error("提现不能大于{$params['transfer_max']}元");
@@ -61,7 +61,7 @@ class Rebate extends Auth
             'remark' => $data['remark'],
         ]);
         if ($result !== false) {
-            UserUpgradeService::instance()->syncRebate($this->uuid);
+            UserRebateService::instance()->amount($this->uuid);
             $this->success('提交申请成功');
         } else {
             $this->error('提交申请失败');

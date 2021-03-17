@@ -2,6 +2,7 @@
 
 namespace app\data\controller;
 
+use app\data\service\UserBalanceService;
 use app\data\service\UserUpgradeService;
 use app\data\service\UserService;
 use think\admin\Controller;
@@ -91,7 +92,7 @@ class UserBalance extends Controller
     protected function _form_result(bool $state, array $data)
     {
         if ($state && isset($data['uid'])) {
-            UserUpgradeService::instance()->syncBalance($data['uid']);
+            UserBalanceService::instance()->amount($data['uid']);
         }
     }
 
@@ -116,7 +117,7 @@ class UserBalance extends Controller
             $ids = str2arr(input('id', ''));
             $query = $this->app->db->name($this->table);
             foreach ($query->whereIn('id', $ids)->cursor() as $vo) {
-                UserUpgradeService::instance()->syncBalance($vo['uid']);
+                UserBalanceService::instance()->amount($vo['uid']);
             }
         }
     }

@@ -54,7 +54,7 @@ class OrderClear extends Command
                     'cancel_datetime' => date('Y-m-d H:i:s'),
                     'cancel_remark'   => '30分钟未完成支付已自动取消',
                 ]);
-                OrderService::instance()->syncStock($item['order_no']);
+                OrderService::instance()->stock($item['order_no']);
                 $this->queue->message($total, $count, "完成取消未支付的订单 {$item['order_no']}", 1);
             });
         } catch (\Exception $exception) {

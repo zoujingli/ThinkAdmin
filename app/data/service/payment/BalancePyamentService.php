@@ -3,7 +3,7 @@
 namespace app\data\service\payment;
 
 use app\data\service\PaymentService;
-use app\data\service\UserUpgradeService;
+use app\data\service\UserBalanceService;
 use think\admin\Exception;
 use think\admin\extend\CodeExtend;
 
@@ -56,7 +56,7 @@ class BalancePyamentService extends PaymentService
         // 创建支付行为
         $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
         // 扣减用户余额
-        [$total, $count] = UserUpgradeService::instance()->syncBalance($order['uid'], [$orderNo]);
+        [$total, $count] = UserBalanceService::instance()->amount($order['uid'], [$orderNo]);
         if ($paymentAmount > $total - $count) throw new Exception("可抵扣余额不足");
         $this->app->db->name('ShopOrder')->where(['order_no' => $orderNo])->update(['payment_balance' => $paymentAmount]);
         // 扣除余额金额
@@ -70,7 +70,7 @@ class BalancePyamentService extends PaymentService
         // 更新支付行为
         $this->updatePaymentAction($orderNo, CodeExtend::uniqidDate(20), $paymentAmount, '账户余额支付');
         // 刷新用户余额
-        UserUpgradeService::instance()->syncBalance($order['uid']);
+        UserBalanceService::instance()->amount($order['uid']);
         return ['info' => '余额支付完成'];
     }
 }

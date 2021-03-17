@@ -36,10 +36,6 @@ class AlipayPaymentService extends PaymentService
             'public_key'  => $this->_trimCertHeader($this->params['alipay_public_key']),
             // 支付宝私钥 (1行填写)
             'private_key' => $this->_trimCertHeader($this->params['alipay_private_key']),
-            // 应用公钥证书（新版资金类接口转 app_cert_sn）
-            # 'app_cert'    => '',
-            // 支付宝根证书（新版资金类接口转 alipay_root_cert_sn）
-            # 'root_cert'   => '',
             // 支付成功通知地址
             'notify_url'  => '',
             // 网页支付回跳地址

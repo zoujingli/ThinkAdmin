@@ -22,40 +22,18 @@ class OrderService extends Service
 
     /**
      * 同步订单关联商品的库存
-     * @param string $order_no 订单编号
+     * @param string $orderNo 订单编号
      * @return boolean
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function syncStock(string $order_no): bool
+    public function stock(string $orderNo): bool
     {
-        $map = ['order_no' => $order_no];
+        $map = ['order_no' => $orderNo];
         $codes = $this->app->db->name('ShopOrderItem')->where($map)->column('goods_code');
         foreach (array_unique($codes) as $code) GoodsService::instance()->syncStock($code);
         return true;
-    }
-
-    /**
-     * 刷新用户入会礼包
-     * @param integer $uid
-     * @return integer
-     * @throws \think\db\exception\DbException
-     */
-    private function syncUserEntry(int $uid): int
-    {
-        // 检查是否购买入会礼包
-        $query = $this->app->db->table('shop_order a')->join('shop_order_item b', 'a.order_no=b.order_no');
-        $count = $query->where("a.uid={$uid} and a.status>=4 and a.payment_status=1 and b.vip_entry>0")->count();
-        $buyVipEntry = $count > 0 ? 1 : 0;
-        // 查询用户最后支付时间
-        $buyLastMap = [['uid', '=', $uid], ['status', '>=', 4], ['payment_status', '=', 1]];
-        $buyLastDate = $this->app->db->name('ShopOrder')->where($buyLastMap)->max('payment_datetime');
-        // 更新用户支付信息
-        $this->app->db->name('DataUser')->where(['id' => $uid])->update([
-            'buy_vip_entry' => $buyVipEntry, 'buy_last_date' => $buyLastDate,
-        ]);
-        return $buyVipEntry;
     }
 
     /**
@@ -66,7 +44,7 @@ class OrderService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function syncUserLevel(string $orderNo): ?array
+    public function upgrade(string $orderNo): ?array
     {
         // 目标订单数据
         $map = [['order_no', '=', $orderNo], ['status', '>=', 4]];
@@ -76,7 +54,7 @@ class OrderService extends Service
         $user = $this->app->db->name('DataUser')->where(['id' => $order['uid']])->find();
         if (empty($user)) return null;
         // 更新用户购买资格
-        $entry = $this->syncUserEntry($order['uid']);
+        $entry = $this->vipEntry($order['uid']);
         // 尝试绑定代理用户
         if (empty($user['pid1']) && ($order['puid1'] > 0 || $user['pid1'] > 0)) {
             $puid1 = $order['puid1'] > 0 ? $order['puid1'] : $user['bid'];
@@ -90,8 +68,30 @@ class OrderService extends Service
             ]);
         }
         // 重新计算用户等级
-        UserUpgradeService::instance()->syncLevel($user['id'], $orderNo);
+        UserUpgradeService::instance()->upgrade($user['id'], $orderNo);
         return [$user, $order, $entry];
+    }
+
+    /**
+     * 刷新用户入会礼包
+     * @param integer $uid
+     * @return integer
+     * @throws \think\db\exception\DbException
+     */
+    private function vipEntry(int $uid): int
+    {
+        // 检查是否购买入会礼包
+        $query = $this->app->db->table('shop_order a')->join('shop_order_item b', 'a.order_no=b.order_no');
+        $count = $query->where("a.uid={$uid} and a.status>=4 and a.payment_status=1 and b.vip_entry>0")->count();
+        $buyVipEntry = $count > 0 ? 1 : 0;
+        // 查询用户最后支付时间
+        $buyLastMap = [['uid', '=', $uid], ['status', '>=', 4], ['payment_status', '=', 1]];
+        $buyLastDate = $this->app->db->name('ShopOrder')->where($buyLastMap)->max('payment_datetime');
+        // 更新用户支付信息
+        $this->app->db->name('DataUser')->where(['id' => $uid])->update([
+            'buy_vip_entry' => $buyVipEntry, 'buy_last_date' => $buyLastDate,
+        ]);
+        return $buyVipEntry;
     }
 
     /**

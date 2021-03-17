@@ -22,27 +22,27 @@ class UserService extends Service
 
     const TYPES = [
         // 接口支付配置（不需要的直接注释）
-        UserService::API_TYPE_WAP     => [
+        self::API_TYPE_WAP     => [
             'name' => '手机浏览器',
             'auth' => 'phone',
         ],
-        UserService::API_TYPE_WEB     => [
+        self::API_TYPE_WEB     => [
             'name' => '电脑浏览器',
             'auth' => 'phone',
         ],
-        UserService::API_TYPE_WXAPP   => [
+        self::API_TYPE_WXAPP   => [
             'name' => '微信小程序',
             'auth' => 'openid1',
         ],
-        UserService::API_TYPE_WECHAT  => [
+        self::API_TYPE_WECHAT  => [
             'name' => '微信服务号',
             'auth' => 'openid2',
         ],
-        UserService::API_TYPE_IOSAPP  => [
+        self::API_TYPE_IOSAPP  => [
             'name' => '苹果APP应用',
             'auth' => 'phone',
         ],
-        UserService::API_TYPE_ANDROID => [
+        self::API_TYPE_ANDROID => [
             'name' => '安卓APP应用',
             'auth' => 'phone',
         ],

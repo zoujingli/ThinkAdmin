@@ -4,7 +4,7 @@ namespace app\data\controller;
 
 use app\data\service\OrderService;
 use app\data\service\PaymentService;
-use app\data\service\TruckService;
+use app\data\service\ExpressService;
 use app\data\service\UserService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
@@ -146,7 +146,7 @@ class ShopOrder extends Controller
                 'code.require'   => '快递编号不能为空！',
                 'number.require' => '配送单号不能为空！',
             ]);
-            $this->result = TruckService::instance()->query($data['code'], $data['number']);
+            $this->result = ExpressService::instance()->query($data['code'], $data['number']);
             if (empty($this->result['code'])) $this->error($this->result['info']);
             $this->fetch('truck_query');
         } catch (HttpResponseException $exception) {
@@ -186,7 +186,7 @@ class ShopOrder extends Controller
                 'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
             if ($result !== false) {
-                OrderService::instance()->syncStock($order['order_no']);
+                OrderService::instance()->stock($order['order_no']);
                 $this->app->event->trigger('ShopOrderCancel', $order['order_no']);
                 $this->success('取消未支付的订单成功！');
             } else {

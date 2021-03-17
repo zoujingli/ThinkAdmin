@@ -3,10 +3,10 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\service\ExpressService;
 use app\data\service\GoodsService;
 use app\data\service\OrderService;
 use app\data\service\PaymentService;
-use app\data\service\TruckService;
 use app\data\service\UserService;
 use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
@@ -214,7 +214,7 @@ class Order extends Auth
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
         $tCode = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_code');
-        [$amount, , , $remark] = TruckService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
+        [$amount, , , $remark] = ExpressService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
         $this->success('计算运费成功', ['amount' => $amount, 'remark' => $remark]);
     }
 
@@ -243,7 +243,7 @@ class Order extends Auth
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
         $tCodes = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_code');
-        [$amount, $tCount, $tCode, $remark] = TruckService::instance()->amount($tCodes, $addr['province'], $addr['city'], $tCount);
+        [$amount, $tCount, $tCode, $remark] = ExpressService::instance()->amount($tCodes, $addr['province'], $addr['city'], $tCount);
         // 创建订单发货信息
         $express = [
             'template_code'   => $tCode, 'template_count' => $tCount, 'uid' => $this->uuid,
@@ -348,7 +348,7 @@ class Order extends Auth
                 'cancel_remark'   => '用户主动取消订单',
                 'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
-            if ($result !== false && OrderService::instance()->syncStock($order['order_no'])) {
+            if ($result !== false && OrderService::instance()->stock($order['order_no'])) {
                 // 触发订单取消事件
                 $this->app->event->trigger('ShopOrderCancel', $order['order_no']);
                 // 返回处理成功数据
@@ -449,7 +449,7 @@ class Order extends Auth
     {
         try {
             $data = $this->_vali(['code.require' => '快递不能为空', 'number.require' => '单号不能为空']);
-            $result = TruckService::instance()->query($data['code'], $data['number']);
+            $result = ExpressService::instance()->query($data['code'], $data['number']);
             empty($result['code']) ? $this->error($result['info']) : $this->success('快递追踪信息', $result);
         } catch (HttpResponseException $exception) {
             throw $exception;
