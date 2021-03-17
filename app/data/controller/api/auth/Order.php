@@ -239,7 +239,7 @@ class Order extends Auth
         $map1 = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map1)->whereIn('status', [1, 2])->find();
         if (empty($order)) $this->error('不能修改地址');
-        if (empty($order['truck_type'])) $this->success('无需快递配送', ['order_no' => $order['order_no']);
+        if (empty($order['truck_type'])) $this->success('无需快递配送', ['order_no' => $order['order_no']]);
         // 根据地址计算运费
         $map2 = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
         $tCount = $this->app->db->name('ShopOrderItem')->where($map1)->sum('truck_number');
