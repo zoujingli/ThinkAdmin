@@ -87,6 +87,8 @@ class UserTransfer extends Controller
     public function index()
     {
         $this->title = '用户提现管理';
+        $this->transfer = UserTransferService::instance()->amount(0);
+        // 创建查询对象
         $query = $this->_query($this->table)->order('id desc');
         // 用户条件搜索
         $db = $this->_query('DataUser')->like('phone,username|nickname#nickname')->db();

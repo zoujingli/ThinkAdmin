@@ -33,6 +33,9 @@ class UserBalance extends Controller
     public function index()
     {
         $this->title = '余额充值记录';
+        // 统计用户余额
+        $this->balance = UserBalanceService::instance()->amount(0);
+        // 创建查询对象
         $query = $this->_query($this->table);
         // 用户搜索查询
         $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();

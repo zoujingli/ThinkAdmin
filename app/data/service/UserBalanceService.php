@@ -21,12 +21,17 @@ class UserBalanceService extends Service
      */
     public function amount(int $uuid, array $nots = []): array
     {
-        $total = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
-        $count = abs($this->app->db->name('DataUserBalance')->where("uid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
-        if (empty($nots)) {
-            $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
+        if ($uuid > 0) {
+            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("uid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("uid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
+            if (empty($nots)) {
+                $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
+            } else {
+                $count -= $this->app->db->name('DataUserBalance')->whereRaw("uid={$uuid}")->whereIn('code', $nots)->sum('amount');
+            }
         } else {
-            $count -= $this->app->db->name('DataUserBalance')->whereRaw("uid={$uuid}")->whereIn('code', $nots)->sum('amount');
+            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("amount>0 and deleted=0")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("amount<0 and deleted=0")->sum('amount'));
         }
         return [$total, $count];
     }

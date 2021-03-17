@@ -25,6 +25,27 @@ class UserTransferService extends Service
     ];
 
     /**
+     * 同步刷新用户返利
+     * @param integer $uuid
+     * @return array [total, count, audit, locks]
+     */
+    public function amount(int $uuid): array
+    {
+        if ($uuid > 0) {
+            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=1")->sum('amount'));
+            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=1 and status<3")->sum('amount'));
+            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status=3")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=4")->sum('amount'));
+        } else {
+            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=1")->sum('amount'));
+            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=1 and status<3")->sum('amount'));
+            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("status=3")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=4")->sum('amount'));
+        }
+        return [$total, $count, $audit, $locks];
+    }
+
+    /**
      * 获取转账类型
      * @return array
      */

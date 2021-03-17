@@ -15,8 +15,9 @@
 {/block}
 
 {block name="content"}
-<div class="layui-badge think-bg-violet text-left notselect block shadow margin-0 padding-10 padding-left-20 border-radius-5 font-s15">
-    统计：已产生提现累计 {$transfer.0|default=0.00} 元（ 含待审核 {$transfer.2|default='0.00'} 元 ），累计已提现 {$transfer.1|default=0.00} 元。
+<div class="layui-badge layui-bg-cyan text-left notselect block shadow margin-0 padding-10 padding-left-20 border-radius-5 font-s15">
+    <!-- 0 $total, 1 $count, 2 $audit, 3 $locks -->
+    统计：已产生提现累计 {$transfer.0|default=0.00} 元（ 含待转账 {$transfer.3|default='0.00'} 元，含待审核 {$transfer.2|default='0.00'} 元 ），累计已提现 {$transfer.1|default=0.00} 元。
 </div>
 <div class="think-box-shadow margin-top-10">
     {include file='user_transfer/index_search'}
