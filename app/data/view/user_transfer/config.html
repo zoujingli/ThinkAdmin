@@ -72,14 +72,14 @@
                     <td class="text-center">
                         <label>
                             {php} $key = 'transfer['.$k.'][minAmount]'; {/php}
-                            <input placeholder="￥" class="layui-input" data-blur-number="2" name="{$key}" value="{$data['transfer'][$k]['minAmount'] ?? '1.00'}">
+                            <input placeholder="￥" class="layui-input" data-value-min="0.00" data-blur-number="2" name="{$key}" value="{$data['transfer'][$k]['minAmount'] ?? '1.00'}">
                         </label>
                     </td>
                     <td class="text-center">-</td>
                     <td class="text-center">
                         <label>
                             {php} $key = 'transfer['.$k.'][maxAmount]'; {/php}
-                            <input placeholder="￥" class="layui-input" data-blur-number="2" name="{$key}" value="{$data['transfer'][$k]['maxAmount'] ?? '2000.00'}">
+                            <input placeholder="￥" class="layui-input" data-value-max="100000.00" data-blur-number="2" name="{$key}" value="{$data['transfer'][$k]['maxAmount'] ?? '2000.00'}">
                         </label>
                     </td>
                 </tr>
