@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 17/03/2021 15:31:45
+ Date: 17/03/2021 16:40:13
 */
 
 SET NAMES utf8mb4;
@@ -287,7 +287,7 @@ CREATE TABLE `data_user_token`  (
   INDEX `idx_data_user_token_type`(`type`) USING BTREE,
   INDEX `idx_data_user_token_time`(`time`) USING BTREE,
   INDEX `idx_data_user_token_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user_transfer
@@ -315,13 +315,20 @@ CREATE TABLE `data_user_transfer`  (
   `trade_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '打款时间',
   `change_time` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '处理时间',
   `change_desc` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '处理描述',
+  `audit_status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '审核状态',
+  `audit_remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '审核描述',
+  `audit_datetime` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '审核时间',
   `status` tinyint(1) NULL DEFAULT 1 COMMENT '提现状态(0失败,1待审核,2已审核,3打款中,4已打款,5已收款)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_transfer_uid`(`uid`) USING BTREE,
+  INDEX `idx_data_user_transfer_date`(`date`) USING BTREE,
+  INDEX `idx_data_user_transfer_type`(`type`) USING BTREE,
   INDEX `idx_data_user_transfer_code`(`code`) USING BTREE,
   INDEX `idx_data_user_transfer_status`(`status`) USING BTREE,
-  INDEX `idx_data_user_transfer_openid`(`openid1`) USING BTREE
+  INDEX `idx_data_user_transfer_openid1`(`openid1`) USING BTREE,
+  INDEX `idx_data_user_transfer_openid2`(`openid2`) USING BTREE,
+  INDEX `idx_data_user_transfer_audit_status`(`audit_status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-提现' ROW_FORMAT = Compact;
 
 -- ----------------------------
