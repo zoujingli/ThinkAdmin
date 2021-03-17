@@ -80,7 +80,7 @@ class Transfer extends Auth
         [$total, $count] = UserRebateService::instance()->amount($this->uuid);
         if ($total - $count < $data['amount']) $this->error('可提现余额不足！');
         // 当日提现次数限制
-        $map = ['mid' => $this->uuid, 'type' => $data['type'], 'date' => $data['date']];
+        $map = ['uid' => $this->uuid, 'type' => $data['type'], 'date' => $data['date']];
         $count = $this->app->db->name($this->table)->where($map)->count();
         if ($count >= $transfers[$data['type']]['dayNumber']) $this->error("当日提现次数受限");
         // 提现金额范围控制
