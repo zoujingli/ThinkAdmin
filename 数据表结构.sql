@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 17/03/2021 16:40:13
+ Date: 17/03/2021 18:11:27
 */
 
 SET NAMES utf8mb4;
@@ -164,7 +164,7 @@ CREATE TABLE `data_user_address`  (
   INDEX `idx_data_user_address_code`(`code`) USING BTREE,
   INDEX `idx_data_user_address_deleted`(`deleted`) USING BTREE,
   INDEX `idx_data_user_address_uid`(`uid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-地址' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user_balance
@@ -184,7 +184,7 @@ CREATE TABLE `data_user_balance`  (
   INDEX `idx_data_user_balance_uid`(`uid`) USING BTREE,
   INDEX `idx_data_user_balance_code`(`code`) USING BTREE,
   INDEX `idx_data_user_balance_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-余额' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-余额' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user_discount
@@ -287,7 +287,7 @@ CREATE TABLE `data_user_token`  (
   INDEX `idx_data_user_token_type`(`type`) USING BTREE,
   INDEX `idx_data_user_token_time`(`time`) USING BTREE,
   INDEX `idx_data_user_token_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user_transfer
@@ -515,6 +515,7 @@ CREATE TABLE `shop_order`  (
   `number_goods` bigint(20) NULL DEFAULT 0 COMMENT '订单商品数量',
   `number_express` bigint(20) NULL DEFAULT 0 COMMENT '订单快递计数',
   `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
+  `order_remark` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单用户备注',
   `cancel_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单取消状态',
   `cancel_remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单取消描述',
   `cancel_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单取消时间',
@@ -531,7 +532,7 @@ CREATE TABLE `shop_order`  (
   INDEX `idx_shop_order_orderno`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
   INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -576,7 +577,7 @@ CREATE TABLE `shop_order_item`  (
   INDEX `idx_shop_order_item_goods_code`(`goods_code`) USING BTREE,
   INDEX `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE,
   INDEX `idx_shop_order_item_rebate_type`(`rebate_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_order_send
@@ -612,7 +613,7 @@ CREATE TABLE `shop_order_send`  (
   INDEX `idx_shop_order_send_status`(`status`) USING BTREE,
   INDEX `idx_shop_order_send_deleted`(`deleted`) USING BTREE,
   INDEX `idx_shop_order_send_order_no`(`order_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_payment
