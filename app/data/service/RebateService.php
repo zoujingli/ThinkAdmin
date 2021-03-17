@@ -264,7 +264,7 @@ class RebateService extends Service
         $users = $this->app->db->name('DataUser')->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->select()->toArray();
         // 查询需要计算奖励的商品
         $map = [['order_no', '=', $this->order['order_no']], ['discount_rate', '<', 100]];
-        foreach ($this->app->db->name('StoreOrderItem')->where($map)->cursor() as $item) {
+        foreach ($this->app->db->name('ShopOrderItem')->where($map)->cursor() as $item) {
             $itemJson = $this->app->db->name('DataUserDiscount')->where(['status' => 1, 'deleted' => 0])->value('items');
             if (!empty($itemJson) && is_array($rules = json_decode($itemJson, true))) {
                 [$tVip, $tRate] = [$item['vip_code'], $item['discount_rate']];
