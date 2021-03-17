@@ -98,8 +98,36 @@ class Transfer extends Auth
     public function get()
     {
         $query = $this->_query($this->table)->where(['uid' => $this->uuid]);
-        $result = $query->like('date,code')->equal('status')->order('id desc')->page(true, false, false, 10);
+        $result = $query->like('date,code')->in('status')->order('id desc')->page(true, false, false, 10);
         $this->success('获取提现成功', $result);
+    }
+
+    /**
+     * 用户取消提现
+     * @throws \think\db\exception\DbException
+     */
+    public function cancel()
+    {
+        $data = $this->_vali(['uid.value' => $this->uuid, 'code.require' => '单号不能为空！']);
+        $this->app->db->name($this->table)->where($data)->whereIn('status', [1, 2, 3])->update([
+            'status' => 0, 'change_time' => date("Y-m-d H:i:s"), 'change_desc' => '用户主动取消提现',
+        ]);
+        UserRebateService::instance()->amount($this->uuid);
+        $this->success('取消提现成功');
+    }
+
+    /**
+     * 用户确认提现
+     * @throws \think\db\exception\DbException
+     */
+    public function confirm()
+    {
+        $data = $this->_vali(['uid.value' => $this->uuid, 'code.require' => '单号不能为空！']);
+        $this->app->db->name($this->table)->where($data)->whereIn('status', [4])->update([
+            'status' => 5, 'change_time' => date("Y-m-d H:i:s"), 'change_desc' => '用户主动确认收款',
+        ]);
+        UserRebateService::instance()->amount($this->uuid);
+        $this->success('取消提现成功');
     }
 
     /**
