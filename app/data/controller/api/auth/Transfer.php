@@ -31,6 +31,7 @@ class Transfer extends Auth
         $data = $this->_vali([
             'type.require'   => '提现方式不能为空！',
             'amount.require' => '提现金额不能为空！',
+            'remark.default' => '用户提交提现申请！',
         ]);
         $state = UserTransferService::instance()->config('status');
         if (empty($state)) $this->error('提现还没有开启！');
