@@ -100,7 +100,18 @@ class Transfer extends Auth
     {
         $query = $this->_query($this->table)->where(['uid' => $this->uuid]);
         $result = $query->like('date,code')->in('status')->order('id desc')->page(true, false, false, 10);
-        $this->success('获取提现成功', $result);
+        // 统计历史数据
+        $map = [['uid', '=', $this->uuid], ['status', '>', 1]];
+        [$total, $count, $locks] = UserRebateService::instance()->amount($this->uuid);
+        $this->success('获取提现成功', array_merge($result, [
+            'total' => [
+                '锁定' => $locks,
+                '可提' => $total - $count,
+                '上月' => $this->app->db->name($this->table)->where($map)->whereLike('date', date("Y-m-%", strtotime('-1 month')))->sum('amount'),
+                '本月' => $this->app->db->name($this->table)->where($map)->whereLike('date', date("Y-m-%"))->sum('amount'),
+                '全年' => $this->app->db->name($this->table)->where($map)->whereLike('date', date("Y-%"))->sum('amount'),
+            ],
+        ]));
     }
 
     /**
