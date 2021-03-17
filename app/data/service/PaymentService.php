@@ -269,9 +269,11 @@ abstract class PaymentService
         if (empty($order)) return false;
         // 检查订单支付状态
         if ($this->type === self::PAYMENT_VOUCHER) {
-            $status = 3;
+            $status = 3; # 凭证支付需要审核
+        } elseif (empty($order['truck_type'])) {
+            $status = 5; # 虚拟订单直接完成
         } else {
-            $status = 4;
+            $status = 4; # 实物订单需要发货
         }
         // 更新订单支付状态
         $data = [
