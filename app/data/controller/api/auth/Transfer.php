@@ -41,9 +41,18 @@ class Transfer extends Auth
         $data['uid'] = $this->uuid;
         $data['date'] = date('Y-m-d');
         $data['code'] = CodeExtend::uniqidDate(20, 'T');
-        $data['status'] = empty($transfers[$data['type']]['state']['audit']) ? 1 : 3;
         $data['openid1'] = $this->user['openid1'];
         $data['openid2'] = $this->user['openid2'];
+        // 提现状态处理
+        if (empty($transfers[$data['type']]['state']['audit'])) {
+            $data['status'] = 1;
+            $data['audit_status'] = 0;
+        } else {
+            $data['status'] = 3;
+            $data['audit_status'] = 1;
+            $data['audit_remark'] = '提现免审核';
+            $data['audit_datetime'] = date('Y-m-d H:i:s');
+        }
         // 扣除手续费
         $chargeRate = floatval(UserTransferService::instance()->config('transfer_charge'));
         $data['charge'] = $chargeRate * $data['amount'] / 100;
