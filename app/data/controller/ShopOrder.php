@@ -7,6 +7,7 @@ use app\data\service\PaymentService;
 use app\data\service\ExpressService;
 use app\data\service\UserAdminService;
 use think\admin\Controller;
+use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
 
 /**
@@ -153,6 +154,57 @@ class ShopOrder extends Controller
             throw $exception;
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
+        }
+    }
+
+    /**
+     * 单据凭证支付审核
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function audit()
+    {
+        if ($this->request->isGet()) {
+            $this->_form($this->table, '', 'order_no');
+        } else {
+            $data = $this->_vali([
+                'order_no.require' => '订单单号不能为空！',
+                'status.in:0,1'    => '审核状态数值异常！',
+                'status.require'   => '审核状态不能为空！',
+                'remark.default'   => '',
+            ]);
+            if (empty($data['status'])) {
+                $data['status'] = 0;
+                $data['cancel_status'] = 1;
+                $data['cancel_remark'] = $data['remark'] ?: '后台审核驳回并取消订单';
+                $data['cancel_datetime'] = date('Y-m-d H:i:s');
+            } else {
+                $data['status'] = 4;
+                $data['payment_code'] = CodeExtend::uniqidDate(20, 'T');
+                $data['payment_status'] = 1;
+                $data['payment_remark'] = $data['remark'] ?: '后台审核支付凭证通过';
+                $data['payment_datetime'] = date('Y-m-d H:i:s');
+            }
+            $order = $this->app->db->name($this->table)->where(['order_no' => $data['order_no']])->find();
+            if (empty($order) || $order['status'] !== 3) $this->error('不允许操作审核！');
+            // 无需发货时的处理
+            if ($data['status'] === 4 && empty($order['truck_type'])) $data['status'] = 5;
+            // 更新订单支付状态
+            $map = ['status' => 3, 'order_no' => $data['order_no']];
+            if ($this->app->db->name($this->table)->strict(false)->where($map)->update($data) !== false) {
+                if (in_array($data['status'], [4, 5])) {
+                    $this->app->event->trigger('ShopOrderPayment', $data['order_no']);
+                    $this->success('订单审核通过成功！');
+                } else {
+                    $this->app->event->trigger('ShopOrderCancel');
+                    OrderService::instance()->stock($data['order_no']);
+                    $this->success('审核驳回并取消成功！');
+                }
+            } else {
+                $this->error('订单审核失败！');
+            }
         }
     }
 

@@ -63,17 +63,38 @@
                     {eq name='vo.status' value='5'}<span class="layui-badge layui-badge-middle layui-bg-green">已发货</span>{/eq}
                     {eq name='vo.status' value='6'}<span class="layui-badge layui-badge-middle layui-bg-blue">已完成</span>{/eq}
                     <div class="inline-block text-middle">
-                        订单单号：<b class="color-blue">{$vo.order_no|default=''}</b><br>
-                        订单总计：<b class="color-blue">{$vo.amount_total+0}</b> 元<span class="color-blue">{if $vo.amount_express>0}（含邮费{$vo.amount_express+0}元）{else}（包邮）{/if}</span>已支付 <b class="color-blue">{$vo.payment_amount+0}</b> 元<br>
-                        下单时间：{$vo.create_at|format_datetime}<br>
+                        <div class="sub-strong-blue">
+                            订单单号：<b>{$vo.order_no|default=''}</b>
+                            <!--{eq name='vo.status' value='3'}-->
+                            <a data-modal="{:url('audit')}?order_no={$vo.order_no}" class="margin-left-5 layui-badge layui-bg-blue">凭证审核</a>
+                            <!--{/eq}-->
+                        </div>
+                        <div class="sub-strong-blue sub-span-blue">
+                            订单总计：<b>{$vo.amount_total+0}</b> 元
+                            <span>{if $vo.amount_express>0}(含邮费{$vo.amount_express+0}元){else}(包邮){/if}</span>
+                            已支付 <b>{$vo.payment_amount+0}</b> 元
+                        </div>
+                        <div>下单时间：{$vo.create_at|format_datetime}</div>
                         <!--{notempty name='vo.payment_status'}-->
-                        支付时间：{$vo.payment_datetime|format_datetime} {notempty name='vo.payment_name'}<span class="color-blue"> ({$vo.payment_name|default='-'})</span>{/notempty}<br>
+                        <div>
+                            支付时间：{$vo.payment_datetime|format_datetime}
+                            {notempty name='vo.payment_name'}
+                            <!--{notempty name='vo.payment_image'}-->
+                            <span data-tips-text="{$vo.payment_remark|default=''}" data-tips-image="{$vo.payment_image}" class="margin-left-5">({$vo.payment_name|default='-'})</span>
+                            <!--{else}-->
+                            <span class="margin-left-5">({$vo.payment_name|default='-'})</span>
+                            <!--{/notempty}-->
+                            {/notempty}
+                        </div>
                         <!--{else}-->
                         支付状态：<span class="color-desc">还未支付</span>
                         <!--{/notempty}-->
                     </div>
                 </td>
                 <td class="nowrap">
+                    {empty name='vo.truck_type'}
+                    无需发货
+                    {else}
                     <div>收货信息：{$vo.truck.address_name|default='--'}<span class="margin-left-5 color-blue">{$vo.truck.address_phone|default=''}</span></div>
                     <div>收货地址：{$vo.truck.address_province|default='--'}{$vo.truck.address_city|default=''}{$vo.truck.address_area|default=''}{$vo.truck.address_content|default=''}</div>
                     <div>发货状态：<!--{if empty($vo.truck.send_number)}--><span class="layui-badge layui-bg-black">未发货</span><!--{else}--><span class="layui-badge layui-bg-blue">{$vo.truck.company_name|default='--'}</span>
@@ -91,6 +112,7 @@
                         <!--{/if}-->
                     </div>
                     <div>发货时间：{$vo.truck.send_datetime|default='--'}</div>
+                    {/empty}
                 </td>
                 <td class="nowrap">
                     {foreach $vo.items as $item}
