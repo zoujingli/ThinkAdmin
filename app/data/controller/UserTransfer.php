@@ -22,6 +22,17 @@ class UserTransfer extends Controller
     private $table = 'DataUserTransfer';
 
     /**
+     * 提现转账方案
+     * @var array
+     */
+    protected $types = [];
+
+    protected function initialize()
+    {
+        $this->types = UserTransferService::instance()->types();
+    }
+
+    /**
      * 提现规则配置
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -31,7 +42,6 @@ class UserTransfer extends Controller
     {
         $this->skey = 'TransferRule';
         $this->title = '提现规则配置';
-        $this->types = UserTransferService::instance()->types();
         $this->_sysdata();
     }
 

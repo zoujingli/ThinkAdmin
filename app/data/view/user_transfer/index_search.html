@@ -21,7 +21,7 @@
             <div class="layui-input-inline">
                 <select name="type">
                     <option value="">-- 全部 --</option>
-                    {foreach ['1'=>'提现到余额', '2'=>'提现到银行'] as $k=>$v}
+                    {foreach $types as $k=>$v}
                     {if input('type') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}
