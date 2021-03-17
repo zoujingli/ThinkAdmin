@@ -50,36 +50,36 @@
                 {foreach $types as $k => $t}
                 <tr class="think-bg-white">
                     <td class="nowrap">
-                        {php} $key = 'items['.$k.']["state"]'; {/php}
+                        {php} $key = 'transfer['.$k.']["state"]'; {/php}
                         <input type="hidden" name="{$key}" value="0">
-                        {if isset($data['items'][$k]['state']) and $data['items'][$k]['state'] eq 1}
+                        {if isset($data['transfer'][$k]['state']) and $data['transfer'][$k]['state'] eq 1}
                         <input checked type="checkbox" name="{$key}" value="1" lay-skin="primary" title="{$t}">
                         {else}
                         <input type="checkbox" name="{$key}" value="1" lay-skin="primary" title="{$t}">
                         {/if}
                     </td>
                     <td class="text-center" style="width:80px">
-                        {php} $key = 'items['.$k.']["audit"]'; {/php}
+                        {php} $key = 'transfer['.$k.']["audit"]'; {/php}
                         <input type="hidden" name="{$key}" value="0">
-                        {if isset($data['items'][$k]['audit']) and $data['items'][$k]['audit'] eq 1}
+                        {if isset($data['transfer'][$k]['audit']) and $data['transfer'][$k]['audit'] eq 1}
                         <input checked type="checkbox" name="{$key}" value="1" lay-skin="switch" lay-text="需审核|免审核">
                         {else}
                         <input type="checkbox" name="{$key}" value="1" lay-skin="switch" lay-text="需审核|免审核">
                         {/if}
-                        {php} $key = 'items['.$k.'][title]'; {/php}
+                        {php} $key = 'transfer['.$k.'][title]'; {/php}
                         <input type="hidden" class="layui-input" name="{$key}" value="{$t}">
                     </td>
                     <td class="text-center">
                         <label>
-                            {php} $key = 'items['.$k.'][minAmount]'; {/php}
-                            <input placeholder="￥" class="layui-input" data-blur-number="2" name="{$key}" value="{$data['items'][$k]['minAmount'] ?? '1.00'}">
+                            {php} $key = 'transfer['.$k.'][minAmount]'; {/php}
+                            <input placeholder="￥" class="layui-input" data-blur-number="2" name="{$key}" value="{$data['transfer'][$k]['minAmount'] ?? '1.00'}">
                         </label>
                     </td>
                     <td class="text-center">-</td>
                     <td class="text-center">
                         <label>
-                            {php} $key = 'items['.$k.'][maxAmount]'; {/php}
-                            <input placeholder="￥" class="layui-input" data-blur-number="2" name="{$key}" value="{$data['items'][$k]['maxAmount'] ?? '2000.00'}">
+                            {php} $key = 'transfer['.$k.'][maxAmount]'; {/php}
+                            <input placeholder="￥" class="layui-input" data-blur-number="2" name="{$key}" value="{$data['transfer'][$k]['maxAmount'] ?? '2000.00'}">
                         </label>
                     </td>
                 </tr>
