@@ -23,9 +23,7 @@ class UserRebateService extends Service
             $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>0")->sum('amount'));
             $total = abs($this->app->db->name('DataUserRebate')->whereRaw("uid='{$uuid}' and status=1 and deleted=0")->sum('amount'));
             $locks = abs($this->app->db->name('DataUserRebate')->whereRaw("uid='{$uuid}' and status=0 and deleted=0")->sum('amount'));
-            $this->app->db->name('DataUser')->where(['id' => $uuid])->update([
-                'rebate_total' => $total, 'rebate_used' => $count, 'rebate_lock' => $locks,
-            ]);
+            $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['rebate_total' => $total, 'rebate_used' => $count, 'rebate_lock' => $locks]);
         } else {
             $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>0")->sum('amount'));
             $total = abs($this->app->db->name('DataUserRebate')->whereRaw("status=1 and deleted=0")->sum('amount'));
