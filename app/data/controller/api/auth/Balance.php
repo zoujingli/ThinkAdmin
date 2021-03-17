@@ -27,7 +27,7 @@ class Balance extends Auth
     {
         $query = $this->_query($this->table);
         $query->withoutField('deleted,create_by')->where(['uid' => $this->uuid, 'deleted' => 0]);
-        $result = $query->like('create_at#date')->order('id desc')->page(true, false, false, 15);
+        $result = $query->like('create_at#date')->order('id desc')->page(true, false, false, 10);
         $this->success('获取数据成功', $result);
     }
 }
