@@ -34,13 +34,13 @@ class Transfer extends Auth
         ]);
         $state = UserTransferService::instance()->config('status');
         if (empty($state)) $this->error('提现还没有开启！');
-        $types = UserTransferService::instance()->config('transfer');
-        if (empty($types[$data['type']]['state'])) $this->error('提现方式已停用！');
+        $transfers = UserTransferService::instance()->config('transfer');
+        if (empty($transfers[$data['type']]['state'])) $this->error('提现方式已停用！');
         // 提现数据补充
         $data['uid'] = $this->uuid;
         $data['date'] = date('Y-m-d');
         $data['code'] = CodeExtend::uniqidDate(20, 'T');
-        $data['status'] = empty($types[$data['type']]['state']['audit']) ? 1 : 3;
+        $data['status'] = empty($transfers[$data['type']]['state']['audit']) ? 1 : 3;
         $data['openid1'] = $this->user['openid1'];
         $data['openid2'] = $this->user['openid2'];
         // 扣除手续费
@@ -72,13 +72,13 @@ class Transfer extends Auth
         // 当日提现次数限制
         $map = ['mid' => $this->uuid, 'type' => $data['type'], 'date' => $data['date']];
         $count = $this->app->db->name($this->table)->where($map)->count();
-        if ($count >= $types[$data['type']]['dayNumber']) $this->error("当日提现次数受限");
+        if ($count >= $transfers[$data['type']]['dayNumber']) $this->error("当日提现次数受限");
         // 提现金额范围控制
-        if ($types[$data['type']]['minAmount'] < $data['amount']) {
-            $this->error("不能少于{$types[$data['type']]['minAmount']}元");
+        if ($transfers[$data['type']]['minAmount'] < $data['amount']) {
+            $this->error("不能少于{$transfers[$data['type']]['minAmount']}元");
         }
-        if ($types[$data['type']]['maxAmount'] > $data['amount']) {
-            $this->error("不能大于{$types[$data['type']]['minAmount']}元");
+        if ($transfers[$data['type']]['maxAmount'] > $data['amount']) {
+            $this->error("不能大于{$transfers[$data['type']]['minAmount']}元");
         }
         // 写入用户提现数据
         if ($this->app->db->name($this->table)->insert($data) !== false) {
