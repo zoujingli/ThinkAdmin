@@ -22,7 +22,7 @@ class UserTransfer extends Controller
     private $table = 'DataUserTransfer';
 
     /**
-     * 提现配置配置
+     * 提现规则配置
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -36,12 +36,12 @@ class UserTransfer extends Controller
     }
 
     /**
-     * 微信提现配置
+     * 微信转账配置
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function transfer()
+    public function payment()
     {
         $this->skey = 'TransferWxpay';
         $this->title = '微信提现配置';

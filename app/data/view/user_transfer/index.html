@@ -1,12 +1,12 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
-<!--{if auth('transfer')}-->
-<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('transfer')}">微信商户配置</a>
-<!--{/if}-->
-
 <!--{if auth('config')}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('config')}">提现规则配置</a>
+<!--{/if}-->
+
+<!--{if auth('payment')}-->
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('payment')}">微信转账配置</a>
 <!--{/if}-->
 
 <!--{if auth('sync')}-->
