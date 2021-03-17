@@ -101,7 +101,7 @@ class Transfer extends Auth
         $query = $this->_query($this->table)->where(['uid' => $this->uuid]);
         $result = $query->like('date,code')->in('status')->order('id desc')->page(true, false, false, 10);
         // 统计历史数据
-        $map = [['uid', '=', $this->uuid], ['status', '>', 1]];
+        $map = [['uid', '=', $this->uuid], ['status', '>', 0]];
         [$total, $count, $locks] = UserRebateService::instance()->amount($this->uuid);
         $this->success('获取提现成功', array_merge($result, [
             'total' => [
