@@ -3,8 +3,6 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
-use app\data\service\UserRebateService;
-use think\admin\extend\CodeExtend;
 
 /**
  * 用户返利管理
