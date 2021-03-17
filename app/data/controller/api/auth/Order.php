@@ -137,6 +137,7 @@ class Order extends Auth
                 'vip_code'        => $this->user['vip_code'],
                 // 是否入会礼包
                 'vip_entry'       => $goodsInfo['vip_entry'],
+                'vip_upgrade'     => $goodsInfo['vip_upgrade'],
                 // 是否参与返利
                 'rebate_type'     => $goodsInfo['rebate_type'],
                 'rebate_amount'   => $goodsInfo['rebate_type'] > 0 ? $goodsItem['price_selling'] * $count : 0,
