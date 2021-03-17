@@ -93,7 +93,7 @@ class Transfer extends Auth
         // 写入用户提现数据
         if ($this->app->db->name($this->table)->insert($data) !== false) {
             UserRebateService::instance()->amount($this->uuid);
-            $this->error('提现申请成功');
+            $this->success('提现申请成功');
         } else {
             $this->error('提现申请失败');
         }
