@@ -236,13 +236,14 @@ class Order extends Auth
         $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
         if (empty($addr)) $this->error('收货地址异常');
         // 订单状态检查
-        $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
-        $order = $this->app->db->name('ShopOrder')->where($map)->whereIn('status', [1, 2])->find();
-        $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_number');
+        $map1 = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
+        $order = $this->app->db->name('ShopOrder')->where($map1)->whereIn('status', [1, 2])->find();
         if (empty($order)) $this->error('不能修改地址');
+        if (empty($order['truck_type'])) $this->success('无需快递配送', ['order_no' => $order['order_no']);
         // 根据地址计算运费
-        $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
-        $tCodes = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_code');
+        $map2 = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
+        $tCount = $this->app->db->name('ShopOrderItem')->where($map1)->sum('truck_number');
+        $tCodes = $this->app->db->name('ShopOrderItem')->where($map2)->column('truck_code');
         [$amount, $tCount, $tCode, $remark] = ExpressService::instance()->amount($tCodes, $addr['province'], $addr['city'], $tCount);
         // 创建订单发货信息
         $express = [
