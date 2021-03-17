@@ -7,11 +7,11 @@ use think\admin\Service;
 use think\db\exception\DbException;
 
 /**
- * 用户数据服务
- * Class UserService
+ * 用户数据管理服务
+ * Class UserAdminService
  * @package app\store\service
  */
-class UserService extends Service
+class UserAdminService extends Service
 {
     const API_TYPE_WAP = 'wap';
     const API_TYPE_WEB = 'web';

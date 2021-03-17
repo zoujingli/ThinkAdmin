@@ -2,7 +2,7 @@
 
 namespace app\data\controller\api;
 
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use app\data\service\UserTokenService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
@@ -46,7 +46,7 @@ abstract class Auth extends Controller
         // 接口数据类型
         $this->type = $this->request->header('api-name') ?: input('api');
         $this->type = $this->type ?: $this->request->header('api-type');
-        if (empty($this->type) || empty(UserService::TYPES[$this->type])) {
+        if (empty($this->type) || empty(UserAdminService::TYPES[$this->type])) {
             $this->error("接口支付未定义！");
         }
         // 获取用户数据
@@ -70,7 +70,7 @@ abstract class Auth extends Controller
                 [$state, $info, $this->uuid] = UserTokenService::instance()->check($this->type, $token);
                 if (empty($state)) $this->error($info, '{-null-}', 401);
             }
-            return UserService::instance()->get($this->uuid, $this->type);
+            return UserAdminService::instance()->get($this->uuid, $this->type);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

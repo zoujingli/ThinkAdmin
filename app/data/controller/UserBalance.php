@@ -4,7 +4,7 @@ namespace app\data\controller;
 
 use app\data\service\UserBalanceService;
 use app\data\service\UserUpgradeService;
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 use think\admin\service\AdminService;
@@ -47,7 +47,7 @@ class UserBalance extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        UserService::instance()->buildByUid($data);
+        UserAdminService::instance()->buildByUid($data);
         $uids = array_unique(array_column($data, 'create_by'));
         $users = $this->app->db->name('SystemUser')->whereIn('id', $uids)->column('username', 'id');
         foreach ($data as &$vo) $vo['create_byname'] = $users[$vo['create_by']] ?? $vo['create_by'];

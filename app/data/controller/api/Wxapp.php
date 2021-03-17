@@ -2,7 +2,7 @@
 
 namespace app\data\controller\api;
 
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 use think\Response;
@@ -21,7 +21,7 @@ class Wxapp extends Controller
      * 接口认证类型
      * @var string
      */
-    private $type = UserService::API_TYPE_WXAPP;
+    private $type = UserAdminService::API_TYPE_WXAPP;
 
     /**
      * 唯一绑定字段
@@ -48,10 +48,10 @@ class Wxapp extends Controller
             'appsecret'  => sysconf('data.wxapp_appkey'),
             'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
         ];
-        if (empty(UserService::TYPES[$this->type]['auth'])) {
+        if (empty(UserAdminService::TYPES[$this->type]['auth'])) {
             $this->error("接口类型[{$this->type}]没有定义规则");
         } else {
-            $this->field = UserService::TYPES[$this->type]['auth'];
+            $this->field = UserAdminService::TYPES[$this->type]['auth'];
         }
     }
 
@@ -66,7 +66,7 @@ class Wxapp extends Controller
         [$openid, $unionid, $sessionKey] = $this->_getSessionKey($input['code']);
         $map = empty($unionid) ? [$this->field => $openid] : ['unionid' => $unionid];
         $data = array_merge($map, [$this->field => $openid, 'session_key' => $sessionKey]);
-        $this->success('授权换取成功！', UserService::instance()->set($map, $data, $this->type, true));
+        $this->success('授权换取成功！', UserAdminService::instance()->set($map, $data, $this->type, true));
     }
 
     /**
@@ -91,7 +91,7 @@ class Wxapp extends Controller
                 $sex = ['未知', '男', '女'][$result['gender']] ?? '未知';
                 $map = empty($result['unionId']) ? [$this->field => $result['openId']] : ['unionid' => $result['unionId']];
                 $data = [$this->field => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
-                $this->success('数据解密成功！', UserService::instance()->set($map, array_merge($map, $data), $this->type, true));
+                $this->success('数据解密成功！', UserAdminService::instance()->set($map, array_merge($map, $data), $this->type, true));
             } elseif (is_array($result) && isset($result['phoneNumber'])) {
                 $this->success('数据解密成功！', $result);
             } else {

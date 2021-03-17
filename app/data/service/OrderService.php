@@ -114,8 +114,8 @@ class OrderService extends Service
         $items = $query->withoutField('id,uid,status,deleted,create_at')->whereIn('order_no', $nobs)->select()->toArray();
         // 关联用户数据
         $fields = 'phone,username,nickname,headimg,status';
-        UserService::instance()->buildByUid($data, 'uid', 'user', $fields);
-        if ($fromer) UserService::instance()->buildByUid($data, 'puid1', 'fromer', $fields);
+        UserAdminService::instance()->buildByUid($data, 'uid', 'user', $fields);
+        if ($fromer) UserAdminService::instance()->buildByUid($data, 'puid1', 'fromer', $fields);
         foreach ($data as &$vo) {
             [$vo['sales'], $vo['truck'], $vo['items']] = [0, $trucks[$vo['order_no']] ?? [], []];
             foreach ($items as $item) if ($vo['order_no'] === $item['order_no']) {

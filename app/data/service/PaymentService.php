@@ -53,71 +53,71 @@ abstract class PaymentService
             'type' => 'BALANCE',
             'name' => '账号余额支付',
             'bind' => [
-                UserService::API_TYPE_WAP, UserService::API_TYPE_WEB,
-                UserService::API_TYPE_WXAPP, UserService::API_TYPE_WECHAT,
-                UserService::API_TYPE_IOSAPP, UserService::API_TYPE_ANDROID,
+                UserAdminService::API_TYPE_WAP, UserAdminService::API_TYPE_WEB,
+                UserAdminService::API_TYPE_WXAPP, UserAdminService::API_TYPE_WECHAT,
+                UserAdminService::API_TYPE_IOSAPP, UserAdminService::API_TYPE_ANDROID,
             ],
         ],
         self::PAYMENT_VOUCHER     => [
             'type' => 'VOUCHER',
             'name' => '单据凭证支付',
             'bind' => [
-                UserService::API_TYPE_WAP, UserService::API_TYPE_WEB,
-                UserService::API_TYPE_WXAPP, UserService::API_TYPE_WECHAT,
-                UserService::API_TYPE_IOSAPP, UserService::API_TYPE_ANDROID,
+                UserAdminService::API_TYPE_WAP, UserAdminService::API_TYPE_WEB,
+                UserAdminService::API_TYPE_WXAPP, UserAdminService::API_TYPE_WECHAT,
+                UserAdminService::API_TYPE_IOSAPP, UserAdminService::API_TYPE_ANDROID,
             ],
         ],
         self::PAYMENT_WECHAT_WAP  => [
             'type' => 'MWEB',
             'name' => '微信WAP支付',
-            'bind' => [UserService::API_TYPE_WAP],
+            'bind' => [UserAdminService::API_TYPE_WAP],
         ],
         self::PAYMENT_WECHAT_APP  => [
             'type' => 'APP',
             'name' => '微信APP支付',
-            'bind' => [UserService::API_TYPE_IOSAPP, UserService::API_TYPE_ANDROID],
+            'bind' => [UserAdminService::API_TYPE_IOSAPP, UserAdminService::API_TYPE_ANDROID],
         ],
         self::PAYMENT_WECHAT_XCX  => [
             'type' => 'JSAPI',
             'name' => '微信小程序支付',
-            'bind' => [UserService::API_TYPE_WXAPP],
+            'bind' => [UserAdminService::API_TYPE_WXAPP],
         ],
         self::PAYMENT_WECHAT_GZH  => [
             'type' => 'JSAPI',
             'name' => '微信公众号支付',
-            'bind' => [UserService::API_TYPE_WECHAT],
+            'bind' => [UserAdminService::API_TYPE_WECHAT],
         ],
         self::PAYMENT_WECHAT_QRC  => [
             'type' => 'NATIVE',
             'name' => '微信二维码支付',
-            'bind' => [UserService::API_TYPE_WEB],
+            'bind' => [UserAdminService::API_TYPE_WEB],
         ],
         // 支付宝支持配置（不需要的直接注释）
         self::PAYMENT_ALIPAY_WAP  => [
             'type' => '',
             'name' => '支付宝WAP支付',
-            'bind' => [UserService::API_TYPE_WAP],
+            'bind' => [UserAdminService::API_TYPE_WAP],
         ],
         self::PAYMENT_ALIPAY_WEB  => [
             'type' => '',
             'name' => '支付宝WEB支付',
-            'bind' => [UserService::API_TYPE_WEB],
+            'bind' => [UserAdminService::API_TYPE_WEB],
         ],
         self::PAYMENT_ALIAPY_APP  => [
             'type' => '',
             'name' => '支付宝APP支付',
-            'bind' => [UserService::API_TYPE_ANDROID, UserService::API_TYPE_IOSAPP],
+            'bind' => [UserAdminService::API_TYPE_ANDROID, UserAdminService::API_TYPE_IOSAPP],
         ],
         // 汇聚支持配置（不需要的直接注释）
         self::PAYMENT_JOINPAY_XCX => [
             'type' => 'WEIXIN_XCX',
             'name' => '汇聚小程序支付',
-            'bind' => [UserService::API_TYPE_WXAPP],
+            'bind' => [UserAdminService::API_TYPE_WXAPP],
         ],
         self::PAYMENT_JOINPAY_GZH => [
             'type' => 'WEIXIN_GZH',
             'name' => '汇聚公众号支付',
-            'bind' => [UserService::API_TYPE_WECHAT],
+            'bind' => [UserAdminService::API_TYPE_WECHAT],
         ],
     ];
 
@@ -213,7 +213,7 @@ abstract class PaymentService
     {
         $types = [];
         foreach (self::TYPES as $k => $v) if (isset($v['bind'])) {
-            if (array_intersect($v['bind'], array_keys(UserService::TYPES))) {
+            if (array_intersect($v['bind'], array_keys(UserAdminService::TYPES))) {
                 $types[$k] = $v;
             }
         }

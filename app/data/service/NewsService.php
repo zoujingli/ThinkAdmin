@@ -45,7 +45,7 @@ class NewsService extends Service
             foreach ($list as &$vo) $vo['record'] = $items[$vo['code']] ?? [];
             /*! 绑定用户数据 */
             $colls = 'id,phone,nickname,username,headimg,status';
-            UserService::instance()->buildByUid($list, 'uid', 'user', $colls);
+            UserAdminService::instance()->buildByUid($list, 'uid', 'user', $colls);
         }
         return $list;
     }

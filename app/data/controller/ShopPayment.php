@@ -3,7 +3,7 @@
 namespace app\data\controller;
 
 use app\data\service\PaymentService;
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 
@@ -81,8 +81,8 @@ class ShopPayment extends Controller
             $this->payments = [];
             foreach ($this->types as $k => $vo) {
                 $allow = [];
-                foreach ($vo['bind'] as $api) if (isset(UserService::TYPES[$api])) {
-                    $allow[$api] = UserService::TYPES[$api]['name'];
+                foreach ($vo['bind'] as $api) if (isset(UserAdminService::TYPES[$api])) {
+                    $allow[$api] = UserAdminService::TYPES[$api]['name'];
                 }
                 if (count($allow)) {
                     $this->payments[$k] = array_merge($vo, ['allow' => join('、', $allow)]);

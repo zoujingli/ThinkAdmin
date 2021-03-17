@@ -5,7 +5,7 @@ namespace app\data\controller;
 use app\data\service\OrderService;
 use app\data\service\PaymentService;
 use app\data\service\ExpressService;
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 
@@ -84,8 +84,8 @@ class ShopOrder extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        UserService::instance()->buildByUid($data);
-        UserService::instance()->buildByUid($data, 'puid1', 'fromer');
+        UserAdminService::instance()->buildByUid($data);
+        UserAdminService::instance()->buildByUid($data, 'puid1', 'fromer');
         OrderService::instance()->buildData($data);
         foreach ($data as &$vo) $vo['payment_name'] = PaymentService::name($vo['payment_type']);
     }

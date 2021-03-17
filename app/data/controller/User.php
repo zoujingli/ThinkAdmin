@@ -2,7 +2,7 @@
 
 namespace app\data\controller;
 
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use think\admin\Controller;
 
 /**
@@ -40,7 +40,7 @@ class User extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        UserService::instance()->buildByUid($data, 'pid1', 'fromer');
+        UserAdminService::instance()->buildByUid($data, 'pid1', 'fromer');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace app\data\controller\api;
 
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
 use think\Response;
@@ -25,7 +25,7 @@ class Wechat extends Controller
      * 接口认证类型
      * @var string
      */
-    private $type = UserService::API_TYPE_WECHAT;
+    private $type = UserAdminService::API_TYPE_WECHAT;
 
     /**
      * 唯一绑定字段
@@ -39,10 +39,10 @@ class Wechat extends Controller
      */
     protected function initialize(): Wechat
     {
-        if (empty(UserService::TYPES[$this->type]['auth'])) {
+        if (empty(UserAdminService::TYPES[$this->type]['auth'])) {
             $this->error("接口类型[{$this->type}]没有定义规则");
         } else {
-            $this->field = UserService::TYPES[$this->type]['auth'];
+            $this->field = UserAdminService::TYPES[$this->type]['auth'];
         }
         return $this;
     }
@@ -81,7 +81,7 @@ class Wechat extends Controller
             $data['base_sex'] = ['未知', '男', '女'][$data['sex']] ?? '未知';
             if (isset($data['headimgurl'])) $data['headimg'] = $data['headimgurl'];
             $map = isset($data['unionid']) ? ['unionid' => $data['unionid']] : [$this->field => $result['openid']];
-            $result['userinfo'] = UserService::instance()->set($map, array_merge($map, $data), $this->type, true);
+            $result['userinfo'] = UserAdminService::instance()->set($map, array_merge($map, $data), $this->type, true);
             $script[] = "window.WeChatOpenid='{$result['openid']}'";
             $script[] = 'window.WeChatFansInfo=' . json_encode($result['fansinfo'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             $script[] = 'window.WeChatUserInfo=' . json_encode($result['userinfo'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);

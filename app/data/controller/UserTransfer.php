@@ -2,7 +2,7 @@
 
 namespace app\data\controller;
 
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use app\data\service\UserTransferService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
@@ -91,7 +91,7 @@ class UserTransfer extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        UserService::instance()->buildByUid($data);
+        UserAdminService::instance()->buildByUid($data);
     }
 
     /**

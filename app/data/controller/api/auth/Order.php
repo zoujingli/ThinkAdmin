@@ -7,7 +7,7 @@ use app\data\service\ExpressService;
 use app\data\service\GoodsService;
 use app\data\service\OrderService;
 use app\data\service\PaymentService;
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
 
@@ -317,8 +317,8 @@ class Order extends Auth
         if ($order['payment_status'] > 0) $this->error('已经完成支付');
         try {
             $openid = '';
-            if (in_array($this->type, [UserService::API_TYPE_WXAPP, UserService::API_TYPE_WECHAT])) {
-                $openid = $this->user[UserService::TYPES[$this->type]['auth']] ?? '';
+            if (in_array($this->type, [UserAdminService::API_TYPE_WXAPP, UserAdminService::API_TYPE_WECHAT])) {
+                $openid = $this->user[UserAdminService::TYPES[$this->type]['auth']] ?? '';
                 if (empty($openid)) $this->error("发起支付失败");
             }
             // 返回订单数据及支付发起参数

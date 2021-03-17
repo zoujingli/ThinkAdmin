@@ -3,7 +3,7 @@
 namespace app\data\controller\api;
 
 use app\data\service\MessageService;
-use app\data\service\UserService;
+use app\data\service\UserAdminService;
 use think\admin\Controller;
 
 /**
@@ -30,8 +30,8 @@ class Login extends Controller
      */
     protected function initialize()
     {
-        $this->type = input('api', UserService::API_TYPE_WAP);
-        if (empty(UserService::TYPES[$this->type])) {
+        $this->type = input('api', UserAdminService::API_TYPE_WAP);
+        if (empty(UserAdminService::TYPES[$this->type])) {
             $this->error("接口支付[{$this->type}]未定义规则！");
         }
     }
@@ -55,7 +55,7 @@ class Login extends Controller
         if (empty($user)) $this->error('该手机号还没有注册哦！');
         if (empty($user['status'])) $this->error('该用户账号状态异常！');
         if (md5($data['password']) === $user['password']) {
-            $this->success('手机登录成功！', UserService::instance()->set($map, [], $this->type, true));
+            $this->success('手机登录成功！', UserAdminService::instance()->set($map, [], $this->type, true));
         } else {
             $this->error('账号登录失败，请稍候再试！');
         }
@@ -88,7 +88,7 @@ class Login extends Controller
             $this->error('手机号已注册，请使用其它手机号！');
         }
         $data['password'] = md5($data['password']);
-        $user = UserService::instance()->set($map, $data, $this->type, true);
+        $user = UserAdminService::instance()->set($map, $data, $this->type, true);
         empty($user) ? $this->error('手机注册失败！') : $this->success('用户注册成功！', $user);
     }
 
