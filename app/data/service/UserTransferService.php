@@ -11,7 +11,10 @@ use think\admin\Service;
  */
 class UserTransferService extends Service
 {
-
+    /**
+     * 提现方式配置
+     * @var array
+     */
     protected $types = [
         'wechat_wallet'  => '转账到我的微信零钱',
         'wechat_qrcode'  => '线下微信收款码转账',
@@ -31,14 +34,17 @@ class UserTransferService extends Service
 
     /**
      * 获取提现配置
-     * @return array
+     * @param ?string $name
+     * @return array|string
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function config(): array
+    public function config(?string $name = null)
     {
-        return sysdata('TransferRule');
+        static $data = [];
+        if (empty($data)) $data = sysdata('TransferRule');
+        return is_null($name) ? $data : ($data[$name] ?? '');
     }
 
 }
