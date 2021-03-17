@@ -84,10 +84,10 @@ class Transfer extends Auth
         $count = $this->app->db->name($this->table)->where($map)->count();
         if ($count >= $transfers[$data['type']]['dayNumber']) $this->error("当日提现次数受限");
         // 提现金额范围控制
-        if ($transfers[$data['type']]['minAmount'] < $data['amount']) {
+        if ($transfers[$data['type']]['minAmount'] > $data['amount']) {
             $this->error("不能少于{$transfers[$data['type']]['minAmount']}元");
         }
-        if ($transfers[$data['type']]['maxAmount'] > $data['amount']) {
+        if ($transfers[$data['type']]['maxAmount'] < $data['amount']) {
             $this->error("不能大于{$transfers[$data['type']]['minAmount']}元");
         }
         // 写入用户提现数据
