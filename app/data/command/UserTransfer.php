@@ -33,7 +33,7 @@ class UserTransfer extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $map = [['type', 'in', ['wechat_banks', 'wechat_wallet']], ['status', '=', 3]];
+        $map = [['type', 'in', ['wechat_banks', 'wechat_wallet']], ['status', 'in', 3]];
         foreach ($this->app->db->name('DataUserTransfer')->where($map)->cursor() as $vo) try {
             if ($vo['type'] === 'wechat_banks') {
                 $result = $this->transferBank($vo);
@@ -44,7 +44,7 @@ class UserTransfer extends Command
                 $this->app->db->name('DataUserTransfer')->where(['code' => $vo['code']])->update([
                     'status'      => 4,
                     'trade_no'    => $result['partner_trade_no'],
-                    'trade_time'  => $result['payment_time'],
+                    'trade_time'  => $result['payment_time'] ?? date('Y-m-d H:i:s'),
                     'change_time' => date('Y-m-d H:i:s'),
                     'change_desc' => '线上微信提现成功',
                 ]);
