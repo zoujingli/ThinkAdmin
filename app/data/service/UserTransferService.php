@@ -31,17 +31,16 @@ class UserTransferService extends Service
      */
     public function amount(int $uuid): array
     {
-        $raw = $this->app->db->raw('amount+charge_amount');
         if ($uuid > 0) {
-            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status=3")->sum($raw));
-            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=1")->sum($raw));
-            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=4")->sum($raw));
-            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=1 and status<3")->sum($raw));
+            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status=3")->sum('amount'));
+            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=1")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=4")->sum('amount'));
+            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=1 and status<3")->sum('amount'));
         } else {
-            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("status=3")->sum($raw));
-            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=1")->sum($raw));
-            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=4")->sum($raw));
-            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=1 and status<3")->sum($raw));
+            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("status=3")->sum('amount'));
+            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=1")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=4")->sum('amount'));
+            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=1 and status<3")->sum('amount'));
         }
         return [$total, $count, $audit, $locks];
     }

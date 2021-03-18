@@ -81,7 +81,7 @@ class UserTransfer extends Command
             'enc_bank_no'      => $item['bank_code'],
             'enc_true_name'    => $item['bank_user'],
             'bank_code'        => '1002',
-            'amount'           => $item['amount'] * 100,
+            'amount'           => intval($item['amount'] - $item['charge_amount']) * 100,
             'desc'             => '微信银行卡提现',
         ]);
     }
@@ -105,7 +105,7 @@ class UserTransfer extends Command
         if (empty($openid)) throw new Exception("提现{$item['code']}获取用户OPENID失败");
         return $wechat->create([
             'openid'           => $openid,
-            'amount'           => $item['amount'] * 100,
+            'amount'           => intval($item['amount'] - $item['charge_amount']) * 100,
             'partner_trade_no' => $item['code'],
             'spbill_create_ip' => '127.0.0.1',
             'check_name'       => 'NO_CHECK',

@@ -60,12 +60,6 @@ class Transfer extends Auth
         // 检查可提现余额
         [$total, $count] = UserRebateService::instance()->amount($this->uuid);
         if ($total - $count < $data['amount']) $this->error('可提现余额不足！');
-        // 如果手续费不够扣时，提现金额减少
-        if ($total - $count < $data['amount'] + $data['charge_amount']) {
-            $data['amount'] = $data['amount'] - $data['charge_amount'];
-            $data['charge_amount'] = $chargeRate * $data['amount'] / 100;
-            $data['amount'] = $total - $count - $data['charge_amount'];
-        }
         // 提现方式处理
         if (in_array($data['type'], ['alipay_account'])) {
             $data = array_merge($data, $this->_vali([
