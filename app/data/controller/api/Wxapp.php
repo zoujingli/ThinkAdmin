@@ -87,7 +87,6 @@ class Wxapp extends Controller
                 [, , $input['session_key']] = $this->_getSessionKey($input['code']);
             }
             $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
-            p($result);
             if (is_array($result) && isset($result['openId']) && isset($result['avatarUrl']) && isset($result['nickName'])) {
                 $sex = ['未知', '男', '女'][$result['gender']] ?? '未知';
                 $map = empty($result['unionId']) ? [$this->field => $result['openId']] : ['unionid' => $result['unionId']];
