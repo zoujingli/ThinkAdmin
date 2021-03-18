@@ -24,27 +24,33 @@
             <td class='list-table-check-td think-checkbox'>
                 <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
-            <td class="sub-span-blue nowrap">
+            <td class="nowrap">
                 <div class="headimg" data-tips-image data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 <div class="inline-block">
-                    {notempty name='vo.username'}
-                    <div>姓名：<span>{$vo.username|default='-'}</span></div>
-                    {else}
-                    <div>昵称：<span>{$vo.nickname|default='-'}</span></div>
-                    {/notempty}
-                    <div>手机：<span>{$vo.phone|default='-'}</span></div>
+                    <div>
+                        {notempty name='vo.username'}
+                        姓名：<span class="color-blue">{$vo.username|default='-'}</span>
+                        {else}
+                        昵称：<span class="color-blue">{$vo.nickname|default='-'}</span>
+                        {/notempty}
+                        <span class="margin-left-5">[ <b class="color-red">VIP{$vo.vip_code}</b> ] <b class="color-red">{$vo.vip_name}</b></span>
+                    </div>
+                    <div>手机：<span class="color-blue">{$vo.phone|default='-'}</span></div>
                 </div>
             </td>
-            <td class="sub-span-blue nowrap">
-                {notempty name='vo.fromer'}
-                <div class="headimg" data-tips-image data-lazy-src="{$vo.fromer.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+            <td class="nowrap">
+                {notempty name='vo.from'}
+                <div class="headimg" data-tips-image data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 <div class="inline-block">
-                    {notempty name='vo.fromer.username'}
-                    <div>姓名：<span>{$vo.fromer.username|default='-'}</span></div>
-                    {else}
-                    <div>昵称：<span>{$vo.fromer.nickname|default='-'}</span></div>
-                    {/notempty}
-                    <div>手机：<span>{$vo.fromer.phone|default='-'}</span></div>
+                    <div>
+                        {notempty name='vo.from.username'}
+                        姓名：<span class="color-blue">{$vo.from.username|default='-'}</span>
+                        {else}
+                        昵称：<span class="color-blue">{$vo.from.nickname|default='-'}</span>
+                        {/notempty}
+                        <span class="margin-left-5">[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></span>
+                    </div>
+                    <div>手机：<span>{$vo.from.phone|default='-'}</span></div>
                 </div>
                 {else}
                 <div class="color-desc">没有推荐人</div>

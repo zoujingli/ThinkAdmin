@@ -2,6 +2,7 @@
 
 namespace app\data\controller;
 
+use app\data\service\RebateService;
 use app\data\service\UserRebateService;
 use app\data\service\UserUpgradeService;
 use think\admin\Controller;
@@ -32,6 +33,7 @@ class UserRebate extends Controller
     {
         $this->title = '用户返利管理';
         // 统计所有返利
+        $this->types = RebateService::PRIZES;
         $this->rebate = UserRebateService::instance()->amount(0);
         // 创建查询对象
         $query = $this->_query($this->table)->equal('type')->like('name,order_no');
@@ -58,6 +60,7 @@ class UserRebate extends Controller
         $userItem = $this->app->db->name('DataUser')->whereIn('id', array_unique($uids))->select();
         $goodsItem = $this->app->db->name('ShopOrderItem')->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
         foreach ($data as &$vo) {
+            $vo['type'] = RebateService::instance()->name($vo['type']);
             [$vo['user'], $vo['agent'], $vo['list']] = [[], [], []];
             foreach ($userItem as $user) {
                 if ($user['id'] === $vo['uid']) $vo['agent'] = $user;

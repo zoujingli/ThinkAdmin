@@ -35,25 +35,34 @@ class UserBalance extends Controller
         $this->title = '余额充值记录';
         // 统计用户余额
         $this->balance = UserBalanceService::instance()->amount(0);
+        // 现有余额类型
+        $this->names = $this->app->db->name($this->table)->group('name')->column('name');
         // 创建查询对象
-        $query = $this->_query($this->table);
+        $query = $this->_query($this->table)->equal('name,vip_upgrade');
         // 用户搜索查询
         $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
         // 数据查询分页
-        $query->where(['deleted' => 0])->like('code,name')->dateBetween('create_at')->order('id desc')->page();
+        $query->where(['deleted' => 0])->like('code,remark')->dateBetween('create_at')->order('id desc')->page();
     }
 
     /**
      * 数据列表处理
      * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _index_page_filter(array &$data)
     {
         UserAdminService::instance()->buildByUid($data);
         $uids = array_unique(array_column($data, 'create_by'));
         $users = $this->app->db->name('SystemUser')->whereIn('id', $uids)->column('username', 'id');
-        foreach ($data as &$vo) $vo['create_byname'] = $users[$vo['create_by']] ?? $vo['create_by'];
+        $this->upgrades = UserUpgradeService::instance()->levels();
+        foreach ($data as &$vo) {
+            $vo['vip_upgradeinfo'] = $this->upgrades[$vo['vip_upgrade']] ?? [];
+            $vo['create_byname'] = $users[$vo['create_by']] ?? $vo['create_by'];
+        }
     }
 
     /**
@@ -74,6 +83,9 @@ class UserBalance extends Controller
     /**
      * 表单数据处理
      * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _form_filter(array &$data)
     {
@@ -82,7 +94,11 @@ class UserBalance extends Controller
         }
         if ($this->request->isPost()) {
             $data['create_by'] = AdminService::instance()->getUserId();
-            if (empty(floatval($data['amount']))) $this->error('充值金额不能为零');
+            if (empty(floatval($data['amount'])) && empty($data['vip_upgrade'])) {
+                $this->error('充值金额为零并没有升级行为！');
+            }
+        } else {
+            $this->upgrades = UserUpgradeService::instance()->levels();
         }
     }
 
@@ -96,6 +112,9 @@ class UserBalance extends Controller
     {
         if ($state && isset($data['uid'])) {
             UserBalanceService::instance()->amount($data['uid']);
+            if ($data['vip_upgrade'] > 0) {
+                UserUpgradeService::instance()->upgrade($data['uid']);
+            }
         }
     }
 

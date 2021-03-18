@@ -8,7 +8,7 @@
 
 {block name="content"}
 <div class="layui-badge layui-bg-cyan text-left notselect block shadow margin-0 padding-10 padding-left-20 border-radius-5 font-s15">
-    余额统计：已产生返利累计 {$balance.0|default=0.00} 元，累计已使用 {$balance.1|default=0.00} 元，剩余可使用 {$balance.0-$balance.1} 元。
+    余额统计：累计已充值余额 {$balance.0|default=0.00} 元，已使用 {$balance.1|default=0.00} 元，剩余可使用 {$balance.0-$balance.1} 元。
 </div>
 <div class="think-box-shadow margin-top-10">
     {include file='user_balance/index_search'}
@@ -35,22 +35,34 @@
             </td>
             <td class="nowrap">
                 <div class="headimg" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
-                <div class="inline-block sub-span-blue">
-                    <div>昵称：<span>{$vo.user.nickname|default='--'}</span></div>
-                    <div>手机：<span>{$vo.user.phone|default='--'}</span></div>
+                <div class="inline-block">
+                    <div>用户昵称：<span class="color-blue">{$vo.user.nickname|default='--'}</span></div>
+                    <div>用户手机：<span class="color-blue">{$vo.user.phone|default='--'}</span></div>
+                    <div>用户等级：<span>[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b></span></div>
                 </div>
             </td>
-            <td class="nowrap sub-span-blue">
-                <div>充值金额：<span>{$vo.amount+0}</span> 元</div>
+            <td class="nowrap sub-strong-red">
+                <div>充值金额：<b>{$vo.amount+0}</b> 元</div>
+                <div>升级等级：{if $vo.vip_upgrade > 0}
+                    <span class="color-blue">升级到 [ <b>VIP{$vo.vip_upgrade}</b> ] <b>{$vo.vip_upgradeinfo.name|default=''}</b></span>
+                    {else}
+                    <span class="color-desc">不升级</span>
+                    {/if}
+                </div>
                 <div>充值单号：{$vo.code|default='-'}</div>
             </td>
-            <td class="nowrap">
+            <td class="nowrap sub-strong-blue">
                 <div>充值名称：{$vo.name|default='-'}</div>
-                <div>充值备注：{$vo.remark|default='-'}</div>
+                <div>充值单号：<b>{$vo.code|default='-'}</b></div>
+                <!--{notempty name='vo.remark'}-->
+                <div>充值备注：{$vo.remark}</div>
+                <!--{else}-->
+                <div>充值备注：<span class="color-desc">未填写充值充值备注</span></div>
+                <!--{/notempty}-->
             </td>
             <td class="nowrap">
                 <div>操作账号：{$vo.create_byname|default=''}</div>
-                <div>操作时间：{$vo.create_at|default=''}</div>
+                <div>操作时间：{$vo.create_at|format_datetime}</div>
             </td>
             <td class="nowrap">
                 <!--{if auth("remove")}-->

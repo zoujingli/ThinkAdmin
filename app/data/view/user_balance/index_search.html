@@ -15,10 +15,49 @@
             </label>
         </div>
 
+        <!--{notempty name='upgrades'}-->
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">充值时间</label>
+            <label class="layui-form-label">升级等级</label>
+            <div class="layui-input-inline">
+                <select name="vip_upgrade" class="layui-select">
+                    <option value="">-- 全部 --</option>
+                    {foreach $upgrades as $upgrade}{if input('vip_upgrade') eq $upgrade.number}
+                    <option selected value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                    {else}
+                    <option value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
+        </div>
+        <!--{/notempty}-->
+
+        <!--{notempty name='names'}-->
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">充值名称</label>
+            <div class="layui-input-inline">
+                <select name="name" class="layui-select">
+                    <option value="">-- 全部 --</option>
+                    {foreach $names as $name}{if input('name') eq $name}
+                    <option selected value="{$name}">{$name}</option>
+                    {else}
+                    <option value="{$name}">{$name}</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
+        </div>
+        <!--{/notempty}-->
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">充值备注</label>
             <label class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择充值时间" class="layui-input">
+                <input name="remark" value="{:input('remark')}" placeholder="请输入充值备注" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">操作时间</label>
+            <label class="layui-input-inline">
+                <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择操作时间" class="layui-input">
             </label>
         </div>
 

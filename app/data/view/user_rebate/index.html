@@ -8,7 +8,7 @@
 
 {block name="content"}
 <div class="layui-badge layui-bg-cyan text-left notselect block shadow margin-0 padding-10 padding-left-20 border-radius-5 font-s15">
-    返利统计：累计已产生返利 {$rebate.0|default=0.00} 元（ 不含锁定 {$rebate.2|default='0.00'} 元 ），累计已提现 {$total.1|default=0.00} 元。
+    返利统计：累计已产生返利 <b>{$rebate.0|default=0.00}</b> 元（ 不含锁定 <b>{$rebate.2|default='0.00'}</b> 元 ），累计已提现 <b>{$total.1|default=0.00}</b> 元。
 </div>
 <div class="think-box-shadow margin-top-10">
     {include file='user_rebate/index_search'}
@@ -19,8 +19,8 @@
             <th class='list-table-check-td think-checkbox'>
                 <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
-            <th class="text-left nowrap" style="width:300px">代理会员</th>
-            <th class="text-left nowrap" style="width:300px">交易会员</th>
+            <th class="text-left nowrap" style="width:300px">代理用户</th>
+            <th class="text-left nowrap" style="width:300px">交易用户</th>
             <th class='text-left nowrap'>订单信息</th>
             <th class='text-left nowrap'>商品信息</th>
         </tr>
@@ -34,7 +34,7 @@
             </td>
             <td class="text-left nowrap relative">
                 {notempty name='vo.agent.headimg'}
-                <img data-tips-image style="width:auto;height:60px" src="{$vo.agent.headimg|default=''}" class="margin-right-5" alt="img">
+                <div class="headimg" data-tips-image data-lazy-src="{$vo.agent.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 {/notempty}
                 <div class="inline-block text-middle">
                     代理昵称：{$vo.agent.nickname|default='--'}<br>
@@ -44,19 +44,21 @@
             </td>
             <td class="text-left nowrap relative">
                 {notempty name='vo.user.headimg'}
-                <img data-tips-image style="width:auto;height:60px" src="{$vo.user.headimg|default=''}" class="margin-right-5" alt="img">
+                <div class="headimg" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 {/notempty}
                 <div class="inline-block text-middle">
-                    会员昵称：{$vo.user.nickname|default='--'}<br>
-                    会员手机：{$vo.user.phone|default='--'}<br>
-                    会员级别：{notempty name='vo.user.vip_code'}[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b>{else}--{/notempty}
+                    用户昵称：{$vo.user.nickname|default='--'}<br>
+                    用户手机：{$vo.user.phone|default='--'}<br>
+                    用户级别：{notempty name='vo.user.vip_code'}[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b>{else}--{/notempty}
                 </div>
             </td>
             <td class='text-left nowrap'>
-                订单单号：<span class="color-blue">{$vo.order_no|default='--'}</span><br>
-                订单交易 <span class="color-blue">{$vo.order_amount+0}</span> 元获得收益 <span class="color-blue">{$vo.amount+0}</span> 元
-                {notempty name='vo.description'}<span class="layui-badge layui-bg-blue margin-left-5">{$vo.description|default=''}</span>{/notempty}<br>
-                返拥时间：<span class="color-blue">{$vo.create_at|format_datetime}</span><br>
+                <div class="layui-badge layui-badge-middle layui-bg-black" style="line-height:14px">{$vo.type|default=''}</div>
+                <div class="inline-block text-middle">
+                    <div>返利时间：<span class="color-blue">{$vo.create_at|format_datetime}</span></div>
+                    <div>返利描述：{$vo.name|default=''} {if $vo.status}<span class="layui-badge layui-bg-black margin-left-5">未到账</span>{else}<span class="layui-badge layui-bg-green margin-left-5">已到账</span>{/if}</div>
+                    <div class="sub-strong-blue">订单 <b>{$vo.order_no|default='--'}</b> 交易 <b>{$vo.order_amount+0}</b> 元返利 <b>{$vo.amount+0}</b> 元</div>
+                </div>
             </td>
             <td class="text-left nowrap">
                 {foreach $vo.list as $g}

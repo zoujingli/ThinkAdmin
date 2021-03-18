@@ -15,14 +15,11 @@ class UserUpgradeService extends Service
     /**
      * 获取用户等级数据
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function levels(): array
     {
         $query = $this->app->db->name('DataUserUpgrade');
-        return $query->where(['status' => 1])->order('number asc')->select()->toArray();
+        return $query->where(['status' => 1])->order('number asc')->column('*', 'number');
     }
 
     /**
@@ -62,7 +59,7 @@ class UserUpgradeService extends Service
                 break;
             }
         }
-        // 购买商品升级
+        // 购买入会商品升级
         $query = $this->app->db->name('ShopOrderItem')->alias('b')->join('shop_order a', 'b.order_no=a.order_no');
         $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_upgrade');
         if ($tmpNumber > $vipCode) {
@@ -72,11 +69,18 @@ class UserUpgradeService extends Service
         } else {
             $orderNo = null;
         }
-        // 统计订单金额
+        // 后台余额充值升级
+        $tmpNumber = $this->app->db->name('DataUserBalance')->where(['uid' => $uid, 'deleted' => 0])->max('vip_upgrade');
+        if ($tmpNumber > $vipCode) {
+            $map = ['status' => 1, 'number' => $tmpNumber];
+            $upgrade = $this->app->db->name('DataUserUpgrade')->where($map)->find();
+            if (!empty($upgrade)) [$vipName, $vipCode] = [$upgrade['name'], $upgrade['number']];
+        }
+        // 统计用户订单金额
         $orderAmountTotal = $this->app->db->name('ShopOrder')->whereRaw("uid={$uid} and status>=4")->sum('amount_goods');
         $teamsAmountDirect = $this->app->db->name('ShopOrder')->whereRaw("puid1={$uid} and status>=4")->sum('amount_goods');
         $teamsAmountIndirect = $this->app->db->name('ShopOrder')->whereRaw("puid2={$uid} and status>=4")->sum('amount_goods');
-        // 更新用户数据
+        // 更新用户团队数据
         $data = [
             'vip_name'              => $vipName,
             'vip_code'              => $vipCode,

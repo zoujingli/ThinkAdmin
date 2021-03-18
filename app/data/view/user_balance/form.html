@@ -24,23 +24,36 @@
             </div>
         </fieldset>
 
-        <label class="layui-form-item relative block">
+        <label class="layui-form-item layui-hide">
             <span class="color-green font-w7">充值单号</span>
             <span class="color-desc margin-left-5">Code</span>
             <input class="layui-input layui-bg-gray" readonly required placeholder="请输入充值单号" name="name" value="{$vo.code|default=''}"/>
         </label>
 
-        <label class="layui-form-item relative block">
-            <span class="color-green font-w7">充值名称</span>
+        <label class="layui-form-item layui-hide">
+            <span class="color-green font-w7">余额充值名称</span>
             <span class="color-desc margin-left-5">Name</span>
-            <input class="layui-input" maxlength="100" required placeholder="请输入充值名称" name="name" value="{$vo.name|default='后台充值'}"/>
+            <input class="layui-input" maxlength="100" required placeholder="请输入余额充值名称" name="name" value="{$vo.name|default='后台余额充值'}"/>
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">充值金额</span>
+            <span class="color-green font-w7">充值账户余额</span>
             <span class="color-desc margin-left-5">Amount</span>
-            <input class="layui-input" maxlength="10" data-blur-number="2" required placeholder="请输入充值金额" name="amount" value="{$vo.amount|default='0.00'}"/>
+            <input class="layui-input" maxlength="10" data-blur-number="2" required placeholder="请输入充值账户余额" name="amount" value="{$vo.amount|default='0.00'}"/>
         </label>
+
+        <div class="layui-form-item">
+            <span class="color-green font-w7">升级用户等级</span>
+            <span class="color-desc margin-left-5">Upgrade</span>
+            <select name="vip_upgrade" class="layui-select" lay-filter="vip_upgrade">
+                <option value="0">-- 不升级 --</option>
+                {foreach $upgrades as $upgrade}{if isset($vo.vip_upgrade) and $vo.vip_upgrade eq $upgrade.number}
+                <option selected value="{$upgrade.number|default=0}">升级到 [ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                {else}
+                <option value="{$upgrade.number|default=0}">升级到 [ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                {/if}{/foreach}
+            </select>
+        </div>
 
         <div class="layui-form-item relative block">
             <span class="color-green font-w7">充值备注</span>
@@ -61,6 +74,8 @@
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>
 </form>
+
+<script>form.render()</script>
 
 <style>
     .WechatUserHead {

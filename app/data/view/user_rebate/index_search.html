@@ -14,15 +14,15 @@
             </label>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">会员昵称</label>
+            <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input name="order_nickname" value="{:input('order_nickname','')}" placeholder="请输入会员昵称" class="layui-input">
+                <input name="order_nickname" value="{:input('order_nickname','')}" placeholder="请输入用户昵称" class="layui-input">
             </label>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">会员手机</label>
+            <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input name="order_phone" value="{:input('order_phone','')}" placeholder="请输入会员手机" class="layui-input">
+                <input name="order_phone" value="{:input('order_phone','')}" placeholder="请输入用户手机" class="layui-input">
             </label>
         </div>
         <div class="layui-form-item layui-inline">
@@ -32,9 +32,22 @@
             </label>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">返佣描述</label>
+            <label class="layui-form-label">返利类型</label>
+            <div class="layui-input-inline">
+                <select name="type">
+                    <option value="">-- 全部 --</option>
+                    {foreach $types as $v}{if input('type') eq $v.code}
+                    <option selected value="{$v.code}">{$v.name}</option>
+                    {else}
+                    <option value="{$v.code}">{$v.name}</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">返利描述</label>
             <label class="layui-input-inline">
-                <input name="name" value="{:input('name','')}" placeholder="请输入返佣描述" class="layui-input">
+                <input name="name" value="{:input('name','')}" placeholder="请输入返利描述" class="layui-input">
             </label>
         </div>
         <div class="layui-form-item layui-inline">

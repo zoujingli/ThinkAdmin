@@ -3,6 +3,7 @@
 namespace app\data\controller;
 
 use app\data\service\UserAdminService;
+use app\data\service\UserUpgradeService;
 use think\admin\Controller;
 
 /**
@@ -30,17 +31,21 @@ class User extends Controller
     {
         $this->title = '普通用户管理';
         $query = $this->_query($this->table);
-        $query->like('phone,username|nickname#username');
+        $query->like('phone,username|nickname#username')->equal('vip_code');
         $query->order('id desc')->equal('status')->dateBetween('create_at')->page();
     }
 
     /**
      * 数据列表处理
      * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _page_filter(array &$data)
     {
-        UserAdminService::instance()->buildByUid($data, 'pid1', 'fromer');
+        $this->upgrades = UserUpgradeService::instance()->levels();
+        UserAdminService::instance()->buildByUid($data, 'pid1', 'from');
     }
 
     /**
