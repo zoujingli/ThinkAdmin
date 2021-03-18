@@ -26,7 +26,7 @@ class Rebate extends Auth
      */
     public function get()
     {
-        $query = $this->_query($this->table)->where(['uid' => $this->uuid])->equal('status');
+        $query = $this->_query($this->table)->where(['uid' => $this->uuid])->equal('type,status');
         $result = $query->like('create_at#date')->order('id desc')->page(true, false, false, 15);
         $this->success('获取用户返利', $result);
     }
