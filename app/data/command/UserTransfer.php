@@ -80,7 +80,7 @@ class UserTransfer extends Command
             'partner_trade_no' => $item['code'],
             'enc_bank_no'      => $item['bank_code'],
             'enc_true_name'    => $item['bank_user'],
-            'bank_code'        => '1002',
+            'bank_code'        => $item['bank_wseq'],
             'amount'           => intval($item['amount'] - $item['charge_amount']) * 100,
             'desc'             => '微信银行卡提现',
         ]);
