@@ -41,7 +41,7 @@
                     <div>用户等级：<span>[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b></span></div>
                 </div>
             </td>
-            <td class="nowrap sub-strong-red">
+            <td class="nowrap sub-strong-blue">
                 <div>充值金额：<b>{$vo.amount+0}</b> 元</div>
                 <div>升级等级：{if $vo.vip_upgrade > 0}
                     <span class="color-blue">升级到 [ <b>VIP{$vo.vip_upgrade}</b> ] <b>{$vo.vip_upgradeinfo.name|default=''}</b></span>
