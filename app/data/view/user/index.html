@@ -41,7 +41,14 @@
             <td class="nowrap">
                 {notempty name='vo.from'}
                 <div class="headimg" data-tips-image data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
-                <div class="inline-block">
+                <div class="inline-block text-middle">
+                    <!--{notempty name='vo.pids'}-->
+                    <span class="layui-badge layui-badge-middle layui-bg-green">永久</span>
+                    <!--{else}-->
+                    <span class="layui-badge layui-badge-middle layui-bg-red">临时</span>
+                    <!--{/notempty}-->
+                </div>
+                <div class="inline-block text-middle">
                     <div>
                         {notempty name='vo.from.username'}
                         姓名：<span class="color-blue">{$vo.from.username|default='-'}</span>

@@ -47,7 +47,9 @@
                     </div>
                 </td>
                 <td class="nowrap">
+                    {notempty name='vo.address_idcode'}
                     <div>身份证号：{$vo.address_idcode|default='-'}</div>
+                    {/notempty}
                     <div>收货姓名：{$vo.address_name|default='-'}<span class="margin-left-5 color-blue">{$vo.address_phone}</span></div>
                     <div>收货地址：{$vo.address_province|default='-'}{$vo.address_city}{$vo.address_area}{$vo.address_content}</div>
                     <div>提交时间：{$vo.address_datetime|format_datetime}</div>
