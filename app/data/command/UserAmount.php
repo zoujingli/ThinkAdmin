@@ -3,23 +3,23 @@
 namespace app\data\command;
 
 use app\data\service\UserBalanceService;
-use app\data\service\UserUpgradeService;
+use app\data\service\UserRebateService;
 use think\admin\Command;
 use think\admin\Exception;
 use think\console\Input;
 use think\console\Output;
 
 /**
- * 用户余额重算处理
+ * 用户余额及返利重算处理
  * Class UserBalance
  * @package app\data\command
  */
-class UserBalance extends Command
+class UserAmount extends Command
 {
     protected function configure()
     {
-        $this->setName('xdata:UserBalance');
-        $this->setDescription('批量重新计算用户余额');
+        $this->setName('xdata:UserAmount');
+        $this->setDescription('批量重新计算余额返利');
     }
 
     /**
@@ -33,9 +33,10 @@ class UserBalance extends Command
         try {
             [$total, $count] = [$this->app->db->name('DataUser')->count(), 0];
             foreach ($this->app->db->name('DataUser')->field('id')->cursor() as $user) {
-                $this->queue->message($total, ++$count, "正在计算用户 [{$user['id']}] 的余额");
+                $this->queue->message($total, ++$count, "正在计算用户 [{$user['id']}] 的余额和返利");
+                UserRebateService::instance()->amount($user['id']);
                 UserBalanceService::instance()->amount($user['id']);
-                $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的余额", 1);
+                $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的余额和返利", 1);
             }
         } catch (\Exception $exception) {
             $this->queue->error($exception->getMessage());

@@ -1,5 +1,11 @@
 {extend name="../../admin/view/main"}
 
+{block name="button"}
+<!--{if auth("sync")}-->
+<button data-queue="{:url('sync')}" class='layui-btn layui-btn-sm layui-btn-primary'>刷新用户余额返利</button>
+<!--{/if}-->
+{/block}
+
 {block name="content"}
 <div class="think-box-shadow table-block">
     {include file='user/index_search'}

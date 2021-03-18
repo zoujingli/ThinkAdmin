@@ -38,14 +38,21 @@ class User extends Controller
     /**
      * 数据列表处理
      * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _page_filter(array &$data)
     {
         $this->upgrades = UserUpgradeService::instance()->levels();
         UserAdminService::instance()->buildByUid($data, 'pid1', 'from');
+    }
+
+
+    /**
+     * 重新计算用户余额返利
+     * @auth true
+     */
+    public function sync()
+    {
+        $this->_queue('重新计算用户余额返利', 'xdata:UserAmount');
     }
 
     /**
