@@ -55,7 +55,17 @@ class Transfer extends Auth
         }
         // 扣除手续费
         $chargeRate = floatval(UserTransferService::instance()->config('transfer_charge'));
-        $data['charge'] = $chargeRate * $data['amount'] / 100;
+        $data['charge_rate'] = $chargeRate;
+        $data['charge_amount'] = $chargeRate * $data['amount'] / 100;
+        // 检查可提现余额
+        [$total, $count] = UserRebateService::instance()->amount($this->uuid);
+        if ($total - $count < $data['amount']) $this->error('可提现余额不足！');
+        // 如果手续费不够扣时，提现金额减少
+        if ($total - $count < $data['amount'] + $data['charge_amount']) {
+            $data['amount'] = $data['amount'] - $data['charge_amount'];
+            $data['charge_amount'] = $chargeRate * $data['amount'] / 100;
+            $data['amount'] = $total - $count - $data['charge_amount'];
+        }
         // 提现方式处理
         if (in_array($data['type'], ['alipay_account'])) {
             $data = array_merge($data, $this->_vali([
@@ -76,9 +86,6 @@ class Transfer extends Auth
         } elseif (!in_array($data['type'], ['wechat_wallet'])) {
             $this->error('转账方式不存在！');
         }
-        // 检查可提现余额
-        [$total, $count] = UserRebateService::instance()->amount($this->uuid);
-        if ($total - $count < $data['amount']) $this->error('可提现余额不足！');
         // 当日提现次数限制
         $map = ['uid' => $this->uuid, 'type' => $data['type'], 'date' => $data['date']];
         $count = $this->app->db->name($this->table)->where($map)->count();
