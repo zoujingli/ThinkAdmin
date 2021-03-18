@@ -42,15 +42,15 @@ class OrderClear extends Command
     {
         try {
             $map = [];
-            $map[] = ['status', '=', '1'];
-            $map[] = ['payment_status', '=', '0'];
+            $map[] = ['status', '<', 3];
+            $map[] = ['payment_status', '=', 0];
             $map[] = ['create_at', '<', date('Y-m-d H:i:s', strtotime('-30 minutes'))];
             [$total, $count] = [$this->app->db->name('ShopOrder')->where($map)->count(), 0];
             $this->app->db->name('ShopOrder')->where($map)->select()->map(function ($item) use ($total, &$count) {
                 $this->queue->message($total, ++$count, "开始取消未支付的订单 {$item['order_no']}");
                 $this->app->db->name('ShopOrder')->where(['order_no' => $item['order_no']])->update([
-                    'status'          => '0',
-                    'cancel_status'   => '1',
+                    'status'          => 0,
+                    'cancel_status'   => 1,
                     'cancel_datetime' => date('Y-m-d H:i:s'),
                     'cancel_remark'   => '30分钟未完成支付已自动取消',
                 ]);
