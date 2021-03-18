@@ -99,9 +99,12 @@ class UserTransfer extends Command
      */
     private function transferWallet(array $item): array
     {
-        $wechat = Transfers::instance($config = $this->getPayment());
+        $config = $this->getPayment();
+        $wechat = Transfers::instance($config);
+        $openid = $this->getUserOpenid($item['uid'], $config);
+        if (empty($openid)) throw new Exception("提现{$item['code']}获取用户OPENID失败");
         return $wechat->create([
-            'openid'           => $this->getUserOpenid($item['uid'], $config),
+            'openid'           => $openid,
             'amount'           => $item['amount'] * 100,
             'partner_trade_no' => $item['code'],
             'spbill_create_ip' => '127.0.0.1',
