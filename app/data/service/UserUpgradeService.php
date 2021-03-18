@@ -118,7 +118,7 @@ class UserUpgradeService extends Service
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
         if (empty($user)) return [0, '用户查询失败'];
-        if (!empty($user['pids'])) return [0, '已绑定推荐人'];
+        if (!empty($user['pids'])) return [1, '已绑定推荐人'];
         // 检查代理用户
         if (empty($pid)) $pid = $user['pid0'];
         if (empty($pid)) return [0, '绑定推荐人不存在'];

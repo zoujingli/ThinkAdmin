@@ -70,7 +70,7 @@
                 提现单号：<span class="color-blue">{$vo.code|default='--'}</span><br>
             </td>
             <td class='text-left nowrap'>
-                {eq name='vo.type' value='2'}
+                {eq name='vo.type' value='wechat_banks'}
                 银行卡号：{$vo.bank_code|default='-'}<br>
                 银行信息：{$vo.bank_name|default='-'}（ {$vo.bank_user|default='-'} ）<br>
                 {else}
