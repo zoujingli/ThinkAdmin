@@ -43,15 +43,18 @@
             <td class='list-table-check-td think-checkbox'>
                 <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
-            <td class="sub-span-blue nowrap">
+            <td class="nowrap">
                 <div class="headimg" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 <div class="inline-block">
-                    {notempty name='vo.user.username'}
-                    <div>姓名：<span>{$vo.user.username|default='-'}</span></div>
-                    {else}
-                    <div>昵称：<span>{$vo.user.nickname|default='-'}</span></div>
-                    {/notempty}
-                    <div>手机：<span>{$vo.user.phone|default='-'}</span></div>
+                    <div>
+                        {notempty name='vo.user.username'}
+                        姓名：<span class="color-blue">{$vo.user.username|default='-'}</span>
+                        {else}
+                        昵称：<span class="color-blue">{$vo.user.nickname|default='-'}</span>
+                        {/notempty}
+                        <span class="margin-left-5">[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b></span>
+                    </div>
+                    <div>手机：<span class="color-blue">{$vo.user.phone|default='-'}</span></div>
                 </div>
             </td>
             <td class='text-left nowrap'>
