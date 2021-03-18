@@ -128,7 +128,7 @@ class Center extends Auth
         $map[] = ['path', 'like', "%-{$this->uuid}-%"];
         // 查询邀请的朋友
         $query = $this->_query($this->table);
-        $query->like('nickname|username#nickname')->equal('pid1,id#uid');
+        $query->like('nickname|username#nickname')->equal('vip_code,pid1,id#uid');
         $query->field('id,pid0,pid1,pid2,pids,username,nickname,headimg,amount_total,create_at');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
         // 统计当前用户所有下属数
