@@ -65,7 +65,7 @@
                 <div>操作时间：{$vo.create_at|format_datetime}</div>
             </td>
             <td class="nowrap">
-                <!--{if auth("remove")}-->
+                <!--{if auth("remove") and stripos($vo.code,'B') === 0}-->
                 <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
                 <!--{/if}-->
             </td>
