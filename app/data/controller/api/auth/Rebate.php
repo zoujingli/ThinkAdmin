@@ -3,6 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\service\RebateService;
 
 /**
  * 用户返利管理
@@ -28,5 +29,13 @@ class Rebate extends Auth
         $query = $this->_query($this->table)->where(['uid' => $this->uuid])->equal('status');
         $result = $query->like('create_at#date')->order('id desc')->page(true, false, false, 15);
         $this->success('获取用户返利', $result);
+    }
+
+    /**
+     * 获取奖励配置
+     */
+    public function prize()
+    {
+        $this->success('获取奖励配置', RebateService::PRIZES);
     }
 }
