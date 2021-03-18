@@ -3,6 +3,7 @@
 namespace app\data\controller;
 
 use app\data\service\UserAdminService;
+use app\data\service\UserRebateService;
 use app\data\service\UserTransferService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
@@ -104,6 +105,9 @@ class UserTransfer extends Controller
     protected function _page_filter(array &$data)
     {
         UserAdminService::instance()->buildByUid($data);
+        foreach ($data as &$vo) {
+            $vo['type_name'] = UserTransferService::instance()->types($vo['type']);
+        }
     }
 
     /**

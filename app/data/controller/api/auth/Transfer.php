@@ -72,6 +72,7 @@ class Transfer extends Auth
             ]));
         } elseif (in_array($data['type'], ['wechat_banks', 'transfer_banks'])) {
             $data = array_merge($data, $this->_vali([
+                'bank_wseq.require' => '银行编号不能为空！',
                 'bank_name.require' => '银行名称不能为空！',
                 'bank_user.require' => '开户账号不能为空！',
                 'bank_bran.require' => '银行分行不能为空！',
@@ -161,6 +162,7 @@ class Transfer extends Auth
     public function config()
     {
         $data = UserTransferService::instance()->config();
+        $data['banks'] = UserTransferService::instance()->banks();
         $this->success('获取用户提现配置', $data);
     }
 }

@@ -30,7 +30,6 @@
             </th>
             <th>提现用户</th>
             <th>提现订单</th>
-            <th>提现方式</th>
             <th></th>
             <th></th>
             <th></th>
@@ -44,45 +43,45 @@
                 <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td class="nowrap">
-                <div class="headimg" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
-                <div class="inline-block">
+                <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="inline-block sub-span-blue">
+                    <div>用户手机：<span class="color-blue">{$vo.user.phone|default='-'}</span></div>
                     <div>
                         {notempty name='vo.user.username'}
-                        姓名：<span class="color-blue">{$vo.user.username|default='-'}</span>
+                        用户姓名：<span class="color-blue">{$vo.user.username|default='-'}</span>
                         {else}
-                        昵称：<span class="color-blue">{$vo.user.nickname|default='-'}</span>
+                        用户昵称：<span class="color-blue">{$vo.user.nickname|default='-'}</span>
                         {/notempty}
                         <span class="margin-left-5">[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b></span>
                     </div>
-                    <div>手机：<span class="color-blue">{$vo.user.phone|default='-'}</span></div>
+                    <div class="sub-strong-blue">用户剩余可提现 <b>{$vo.user.rebate_total-$vo.user.rebate_used}</b> 元，已提现 <b>{$vo.user.rebate_used+0}</b> 元，待到账 <b>{$vo.user.rebate_lock+0}</b> 元</div>
                 </div>
             </td>
             <td class='text-left nowrap'>
-                <div class="text-middle">
+                {eq name='vo.status' value='0'}<span class="layui-badge layui-badge-middle layui-bg-red">已失败</span>{/eq}
+                {eq name='vo.status' value='1'}<span class="layui-badge layui-badge-middle layui-bg-cyan">待审核</span>{/eq}
+                {eq name='vo.status' value='2'}<span class="layui-badge layui-badge-middle layui-bg-blue">已审核</span>{/eq}
+                {eq name='vo.status' value='3'}<span class="layui-badge layui-badge-middle layui-bg-blue">待打款</span>{/eq}
+                {eq name='vo.status' value='4'}<span class="layui-badge layui-badge-middle layui-bg-green">已打款</span>{/eq}
+                {eq name='vo.status' value='5'}<span class="layui-badge layui-badge-middle layui-bg-green">已完成</span>{/eq}
+                <div class="text-middle inline-block">
                     提现金额：<b class="color-blue">{$vo.amount+0}</b> 元
-                    {eq name='vo.status' value='0'}<span class="layui-badge layui-bg-red margin-left-5">已失败</span>{/eq}
-                    {eq name='vo.status' value='1'}<span class="layui-badge layui-bg-cyan margin-left-5">待审核</span>{/eq}
-                    {eq name='vo.status' value='2'}<span class="layui-badge layui-bg-blue margin-left-5">已审核</span>{/eq}
-                    {eq name='vo.status' value='3'}<span class="layui-badge layui-bg-blue margin-left-5">待打款</span>{/eq}
-                    {eq name='vo.status' value='4'}<span class="layui-badge layui-bg-green margin-left-5">已打款</span>{/eq}
-                    {eq name='vo.status' value='5'}<span class="layui-badge layui-bg-green margin-left-5">已完成</span>{/eq}
+                    {if $vo.charge_amount>0}<span class="color-desc"> ( 含手续费{$vo.charge_amount+0} 元 )</span>{/if}
+                    <div>提现单号：<span class="color-blue">{$vo.code|default='--'}</span></div>
+                    <div>提现方式：{$vo.type_name|default='-'}</div>
+                    <div>提现描述：<span class="color-desc">{$vo.remark|default='-'}</span></div>
                 </div>
-                提现单号：<span class="color-blue">{$vo.code|default='--'}</span><br>
             </td>
             <td class='text-left nowrap'>
-                {eq name='vo.type' value='wechat_banks'}
+                {if $vo.type eq 'wechat_banks'}
                 银行卡号：{$vo.bank_code|default='-'}<br>
                 银行信息：{$vo.bank_name|default='-'}（ {$vo.bank_user|default='-'} ）<br>
-                {else}
-                <div><span class="layui-badge layui-bg-blue">提现到余额</span></div>
-                <div class="color-desc">{$vo.remark|default='-'}</div>
-                {/eq}
+
+                {/if}
             </td>
             <td class='text-left nowrap'>
                 申请时间：{$vo.create_at|format_datetime}<br>
                 最后处理：{$vo.change_time|format_datetime}<br>
-            </td>
-            <td class='text-left nowrap'>
                 交易时间：{$vo.trade_time|format_datetime}<br>
                 交易描述：<span class="color-desc">{$vo.change_desc|default='--'}</span><br>
             </td>
