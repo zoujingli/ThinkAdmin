@@ -124,12 +124,12 @@ class Center extends Auth
     public function getFrom()
     {
         $map = [];
-        $map[] = ['deleted', '=', '0'];
+        $map[] = ['deleted', '=', 0];
         $map[] = ['path', 'like', "%-{$this->uuid}-%"];
         // 查询邀请的朋友
         $query = $this->_query($this->table);
         $query->like('nickname|username#nickname')->equal('vip_code,pid1,id#uid');
-        $query->field('id,pid0,pid1,pid2,pids,username,nickname,headimg,amount_total,create_at');
+        $query->field('id,pid0,pid1,pid2,pids,username,nickname,headimg,rebate_total,rebate_used,rebate_lock,create_at');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
         // 统计当前用户所有下属数
         $total = $this->app->db->name($this->table)->where($map)->count();
