@@ -133,6 +133,7 @@ class UserBalance extends Controller
             $map = [['id', 'in', str2arr(input('id', ''))]];
             foreach ($this->app->db->name($this->table)->where($map)->cursor() as $vo) {
                 UserBalanceService::instance()->amount($vo['uid']);
+                UserUpgradeService::instance()->upgrade($vo['uid']);
             }
         }
     }
