@@ -61,7 +61,6 @@ class UserTransfer extends Command
                 } else {
                     $this->queryTransferWallet($vo);
                 }
-                continue;
             }
         } catch (\Exception $exception) {
             $this->output->writeln("订单 {$vo['code']} 提现失败，{$exception->getMessage()}");
@@ -85,8 +84,7 @@ class UserTransfer extends Command
      */
     private function createTransferBank(array $item): array
     {
-        $wechat = TransfersBank::instance($this->getConfig());
-        return $wechat->create([
+        return TransfersBank::instance($this->getConfig())->create([
             'partner_trade_no' => $item['code'],
             'enc_bank_no'      => $item['bank_code'],
             'enc_true_name'    => $item['bank_user'],
@@ -135,13 +133,10 @@ class UserTransfer extends Command
      */
     private function queryTransferWallet(array $item)
     {
-        $config = $this->getConfig();
-        $wechat = Transfers::instance($config);
-        $result = $wechat->query($item['partner_trade_no']);
+        $result = Transfers::instance($this->getConfig())->query($item['partner_trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
             $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
                 'status'      => 5,
-                'trade_no'    => $result['partner_trade_no'],
                 'trade_time'  => $result['payment_time'],
                 'change_time' => date('Y-m-d H:i:s'),
                 'change_desc' => '微信提现打款成功',
@@ -161,9 +156,7 @@ class UserTransfer extends Command
      */
     private function queryTransferBank(array $item)
     {
-        $config = $this->getConfig();
-        $wechat = TransfersBank::instance($config);
-        $result = $wechat->query($item['partner_trade_no']);
+        $result = TransfersBank::instance($this->getConfig())->query($item['partner_trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
             if ($result['status'] === 'SUCCESS') {
                 $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
