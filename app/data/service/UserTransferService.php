@@ -29,25 +29,26 @@ class UserTransferService extends Service
      * @var array
      */
     protected $banks = [
-        '1002' => '工商银行',
-        '1005' => '农业银行',
-        '1003' => '建设银行',
-        '1026' => '中国银行',
-        '1020' => '交通银行',
-        '1001' => '招商银行',
-        '1066' => '邮储银行',
-        '1006' => '民生银行',
-        '1010' => '平安银行',
-        '1021' => '中信银行',
-        '1004' => '浦发银行',
-        '1009' => '兴业银行',
-        '1022' => '光大银行',
-        '1027' => '广发银行',
-        '1025' => '华夏银行',
-        '1056' => '宁波银行',
-        '4836' => '北京银行',
-        '1024' => '上海银行',
-        '1054' => '南京银行',
+        ['wseq' => '1002', 'name' => '工商银行'],
+        ['wseq' => '1005', 'name' => '农业银行'],
+        ['wseq' => '1003', 'name' => '建设银行'],
+        ['wseq' => '1026', 'name' => '中国银行'],
+        ['wseq' => '1020', 'name' => '交通银行'],
+        ['wseq' => '1001', 'name' => '招商银行'],
+        ['wseq' => '1066', 'name' => '邮储银行'],
+        ['wseq' => '1006', 'name' => '民生银行'],
+        ['wseq' => '1010', 'name' => '平安银行'],
+        ['wseq' => '1021', 'name' => '中信银行'],
+        ['wseq' => '1004', 'name' => '浦发银行'],
+        ['wseq' => '1009', 'name' => '兴业银行'],
+        ['wseq' => '1022', 'name' => '光大银行'],
+        ['wseq' => '1027', 'name' => '广发银行'],
+        ['wseq' => '1025', 'name' => '华夏银行'],
+        ['wseq' => '1056', 'name' => '宁波银行'],
+        ['wseq' => '4836', 'name' => '北京银行'],
+        ['wseq' => '1024', 'name' => '上海银行'],
+        ['wseq' => '1054', 'name' => '南京银行'],
+
         // '4755' => '长子县融汇村镇银行',
         // '4216' => '长沙银行',
         // '4051' => '浙江泰隆商业银行',
@@ -79,12 +80,16 @@ class UserTransferService extends Service
 
     /**
      * 获取微信提现银行
-     * @param string|null $name
+     * @param string|null $wsea
      * @return array|string
      */
-    public function banks(?string $name = null)
+    public function banks(?string $wsea = null)
     {
-        return is_null($name) ? $this->banks : $this->banks[$name] ?? $name;
+        if (is_null($wsea)) return $this->banks;
+        foreach ($this->banks as $bank) if ($bank['wseq'] === $wsea) {
+            return $bank['name'];
+        }
+        return $wsea;
     }
 
     /**
