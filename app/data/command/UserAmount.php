@@ -33,10 +33,10 @@ class UserAmount extends Command
         try {
             [$total, $count] = [$this->app->db->name('DataUser')->count(), 0];
             foreach ($this->app->db->name('DataUser')->field('id')->cursor() as $user) {
-                $this->queue->message($total, ++$count, "正在计算用户 [{$user['id']}] 的余额和返利");
+                $this->queue->message($total, ++$count, "正在计算用户 [{$user['id']}] 的余额及返利");
                 UserRebateService::instance()->amount($user['id']);
                 UserBalanceService::instance()->amount($user['id']);
-                $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的余额和返利", 1);
+                $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的余额及返利", 1);
             }
         } catch (\Exception $exception) {
             $this->queue->error($exception->getMessage());
