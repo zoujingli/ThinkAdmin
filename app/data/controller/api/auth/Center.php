@@ -3,6 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\service\RebateService;
 use app\data\service\UserUpgradeService;
 use app\data\service\UserAdminService;
 use think\admin\Storage;
@@ -97,6 +98,21 @@ class Center extends Auth
         } else {
             $this->error('文件上传失败！');
         }
+    }
+
+    /**
+     * 获取用户等级
+     */
+    public function levels()
+    {
+        $levels = UserUpgradeService::instance()->levels();
+        foreach ($levels as &$level) {
+            $level['prizes'] = [];
+            foreach (str2arr($level['rebate_rule']) as $code) {
+                $level['prizes'][$code] = RebateService::instance()->name($code);
+            }
+        }
+        $this->success('获取用户等级', array_values($levels));
     }
 
     /**
