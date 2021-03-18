@@ -32,10 +32,25 @@ class Rebate extends Auth
     }
 
     /**
-     * 获取奖励配置
+     * 获取我的奖励
      */
     public function prize()
     {
-        $this->success('获取奖励配置', RebateService::PRIZES);
+        [$map, $data] = [['number' => $this->user['vip_code']], []];
+        $prizes = $this->app->db->name($this->table)->group('name')->column('name');
+        $rebate = $this->app->db->name('DataUserUpgrade')->where($map)->value('rebate_rule', '');
+        $codemap = array_merge($prizes, str2arr($rebate));
+        foreach (RebateService::PRIZES as $prize) {
+            if (in_array($prize['code'], $codemap)) $data[] = $prize;
+        }
+        $this->success('获取我的奖励', $data);
+    }
+
+    /**
+     * 获取奖励配置
+     */
+    public function prizes()
+    {
+        $this->success('获取系统奖励', array_values(RebateService::PRIZES));
     }
 }
