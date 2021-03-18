@@ -31,10 +31,10 @@ class Rebate extends Auth
 
         $map = ['uid' => $this->uuid];
         $query = $this->_query($this->table)->where($map)->equal('type,status');
-        $result = $query->whereLike('date', "{$date}%")->order('id desc')->page(true, false, false, 15);
+        $result = $query->whereLike('date', "{$date}-%")->order('id desc')->page(true, false, false, 15);
         $result['total'] = [
-            '年度' => $this->_query($this->table)->where($map)->equal('type,status')->whereLike('date', "{$year}%")->db()->sum('amount'),
-            '月度' => $this->_query($this->table)->where($map)->equal('type,status')->whereLike('date', "{$date}%")->db()->sum('amount'),
+            '年度' => $this->_query($this->table)->where($map)->equal('type,status')->whereLike('date', "{$year}-%")->db()->sum('amount'),
+            '月度' => $this->_query($this->table)->where($map)->equal('type,status')->whereLike('date', "{$date}-%")->db()->sum('amount'),
         ];
         $this->success('获取返利统计', $result);
     }

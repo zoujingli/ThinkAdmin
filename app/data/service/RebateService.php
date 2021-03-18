@@ -3,6 +3,7 @@
 namespace app\data\service;
 
 use think\admin\Exception;
+use think\admin\extend\CodeExtend;
 use think\admin\Service;
 
 /**
@@ -152,9 +153,8 @@ class RebateService extends Service
                 $val = floatval($value * $this->order['rebate_amount'] / 100);
                 $name = "{$this->name(self::PRIZE_01)}，订单 {$value}%";
             }
-            $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $val, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
-            ]));
+            // 写入返利记录
+            $this->create($this->from1['id'], $map, $name, $val);
             // 更新用户奖利金额
             UserUpgradeService::instance()->upgrade($this->from1['id']);
         }
@@ -186,9 +186,8 @@ class RebateService extends Service
                 $val = floatval($value * $this->order['rebate_amount'] / 100);
                 $name = "{$this->name(self::PRIZE_02)}，订单 {$value}%";
             }
-            $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $val, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
-            ]));
+            // 写入返利记录
+            $this->create($this->from1['id'], $map, $name, $val);
             // 更新用户奖利金额
             UserUpgradeService::instance()->upgrade($this->from1['id']);
         }
@@ -213,9 +212,8 @@ class RebateService extends Service
             $value = $this->config("direct_value_vip_{$key}");
             $name = "{$this->name(self::PRIZE_03)}，订单 {$value}%";
             $amount = floatval($value * $this->order['rebate_amount'] / 100);
-            $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
-            ]));
+            // 写入返利记录
+            $this->create($this->from1['id'], $map, $name, $amount);
             // 更新用户奖利金额
             UserUpgradeService::instance()->upgrade($this->from1['id']);
         }
@@ -237,11 +235,10 @@ class RebateService extends Service
         $map = ['type' => self::PRIZE_04, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("indirect_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $value = $this->config("indirect_value_vip_{$key}");
-            $val = floatval($value * $this->order['rebate_amount'] / 100);
             $name = "{$this->name(self::PRIZE_04)}，订单 {$value}%";
-            $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from2['id'], 'name' => $name, 'amount' => $val, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
-            ]));
+            $amount = floatval($value * $this->order['rebate_amount'] / 100);
+            // 写入返利记录
+            $this->create($this->from2['id'], $map, $name, $amount);
             // 更新代理奖利金额
             UserUpgradeService::instance()->upgrade($this->from2['id']);
         }
@@ -276,14 +273,12 @@ class RebateService extends Service
                         ];
                         if ($this->app->db->name($this->table)->where($map)->count() < 1) {
                             $dRate = ($tRate - $rule['discount']) / 100;
-                            $this->app->db->name($this->table)->insert(array_merge($map, [
-                                'name'         => "等级差额奖励{$tVip}#{$user['vip_code']}商品的{$dRate}%",
-                                'amount'       => $dRate * $item['total_selling'],
-                                'status'       => $this->status,
-                                'order_no'     => $this->order['order_no'],
-                                'order_uid'    => $this->order['uid'],
-                                'order_amount' => $this->order['amount_total'],
-                            ]));
+                            $name = "等级差额奖励{$tVip}#{$user['vip_code']}商品的{$dRate}%";
+                            $amount = $dRate * $item['total_selling'];
+                            // 写入返利记录
+                            $this->create($user['id'], $map, $name, $amount);
+                            // 更新用户奖利金额
+                            UserRebateService::instance()->amount($user['id']);
                         }
                         [$tVip, $tRate] = [$user['vip_code'], $rule['discount']];
                     }
@@ -313,10 +308,10 @@ class RebateService extends Service
                 if (($amount = $this->_prize06amount($prevLevel, $user['vip_code'])) > 0.00) {
                     $map = ['type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
                     $name = "{$this->name(self::PRIZE_06)}，[ {$prevLevel} > {$user['vip_code']} ]每单 {$amount} 元";
-                    $this->app->db->name($this->table)->insert(array_merge($map, [
-                        'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
-                    ]));
-                    UserUpgradeService::instance()->upgrade($this->from2['id']);
+                    // 写入返利记录
+                    $this->create($user['id'], $map, $name, $amount);
+                    // 更新用户奖利金额
+                    UserUpgradeService::instance()->upgrade($user['id']);
                 }
                 $prevLevel = $user['vip_code'];
             }
@@ -374,9 +369,8 @@ class RebateService extends Service
                 $val = floatval($value * $this->order['rebate_amount'] / 100);
                 $name = "{$this->name(self::PRIZE_07)}，订单 {$value}%";
             }
-            $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $val, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
-            ]));
+            // 写入返利记录
+            $this->create($this->from1['id'], $map, $name, $val);
             // 更新用户奖利金额
             UserUpgradeService::instance()->upgrade($this->from1['id']);
         }
@@ -396,6 +390,28 @@ class RebateService extends Service
         static $data = [];
         if (empty($data)) $data = sysdata('RebateRule');
         return is_null($name) ? $data : ($data[$name] ?? '');
+    }
+
+    /**
+     * 写返利记录
+     * @param int $uid
+     * @param array $map
+     * @param string $name
+     * @param float $amount
+     */
+    public function create(int $uid, array $map, string $name, float $amount)
+    {
+        $this->app->db->name($this->table)->insert(array_merge($map, [
+            'uid'          => $uid,
+            'date'         => date('Y-m-d'),
+            'code'         => CodeExtend::uniqidDate(20, 'R'),
+            'name'         => $name,
+            'amount'       => $amount,
+            'status'       => $this->status,
+            'order_no'     => $this->order['order_no'],
+            'order_uid'    => $this->order['uid'],
+            'order_amount' => $this->order['amount_total'],
+        ]));
     }
 
     /**
