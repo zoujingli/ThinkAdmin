@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 17/03/2021 18:11:27
+ Date: 18/03/2021 12:01:26
 */
 
 SET NAMES utf8mb4;
@@ -177,6 +177,7 @@ CREATE TABLE `data_user_balance`  (
   `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '充值名称',
   `remark` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '充值备注',
   `amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '充值金额',
+  `vip_upgrade` tinyint(20) NULL DEFAULT 0 COMMENT '强制升级',
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_by` bigint(20) NULL DEFAULT 0 COMMENT '系统用户',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -184,7 +185,7 @@ CREATE TABLE `data_user_balance`  (
   INDEX `idx_data_user_balance_uid`(`uid`) USING BTREE,
   INDEX `idx_data_user_balance_code`(`code`) USING BTREE,
   INDEX `idx_data_user_balance_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-余额' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-余额' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user_discount
@@ -269,7 +270,7 @@ CREATE TABLE `data_user_rebate`  (
   INDEX `idx_data_user_rebate_code`(`code`) USING BTREE,
   INDEX `idx_data_user_rebate_name`(`name`) USING BTREE,
   INDEX `idx_data_user_rebate_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-返利' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-返利' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for data_user_token
@@ -287,7 +288,7 @@ CREATE TABLE `data_user_token`  (
   INDEX `idx_data_user_token_type`(`type`) USING BTREE,
   INDEX `idx_data_user_token_time`(`time`) USING BTREE,
   INDEX `idx_data_user_token_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user_transfer
@@ -329,7 +330,7 @@ CREATE TABLE `data_user_transfer`  (
   INDEX `idx_data_user_transfer_openid1`(`openid1`) USING BTREE,
   INDEX `idx_data_user_transfer_openid2`(`openid2`) USING BTREE,
   INDEX `idx_data_user_transfer_audit_status`(`audit_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-提现' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-提现' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for data_user_upgrade
@@ -532,7 +533,7 @@ CREATE TABLE `shop_order`  (
   INDEX `idx_shop_order_orderno`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
   INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -558,6 +559,7 @@ CREATE TABLE `shop_order_item`  (
   `vip_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户等级名称',
   `vip_code` bigint(20) NULL DEFAULT 0 COMMENT '用户等级序号',
   `vip_entry` tinyint(1) NULL DEFAULT 0 COMMENT '是否入会礼包(0非礼包,1是礼包)',
+  `vip_upgrade` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '升级用户等级',
   `truck_type` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '物流配送类型(0虚物,1实物)',
   `truck_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '快递邮费模板',
   `truck_number` bigint(20) NULL DEFAULT 0 COMMENT '快递计费基数',
@@ -577,7 +579,7 @@ CREATE TABLE `shop_order_item`  (
   INDEX `idx_shop_order_item_goods_code`(`goods_code`) USING BTREE,
   INDEX `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE,
   INDEX `idx_shop_order_item_rebate_type`(`rebate_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_order_send
@@ -613,7 +615,7 @@ CREATE TABLE `shop_order_send`  (
   INDEX `idx_shop_order_send_status`(`status`) USING BTREE,
   INDEX `idx_shop_order_send_deleted`(`deleted`) USING BTREE,
   INDEX `idx_shop_order_send_order_no`(`order_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_payment
@@ -659,7 +661,7 @@ CREATE TABLE `shop_payment_item`  (
   INDEX `idx_shop_payment_item_payment_type`(`payment_type`) USING BTREE,
   INDEX `idx_shop_payment_item_payment_trade`(`payment_trade`) USING BTREE,
   INDEX `idx_shop_payment_item_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_truck_company
@@ -756,7 +758,7 @@ CREATE TABLE `system_auth_node`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `system_config`;
 CREATE TABLE `system_config`  (
-  `id` bigint(20) NOT NULL DEFAULT 0 AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置分类',
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置名称',
   `value` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配置内容',
@@ -810,7 +812,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for system_queue
