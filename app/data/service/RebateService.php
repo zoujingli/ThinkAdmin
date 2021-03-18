@@ -71,7 +71,7 @@ class RebateService extends Service
     protected function initialize()
     {
         // 返利奖励到账时机
-        $this->status = $this->config('settl_type') > 1 ? 0 : 1;
+        $this->status = $this->config('settl_type') > 1 ? 1 : 0;
     }
 
     /**
