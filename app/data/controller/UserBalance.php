@@ -49,9 +49,6 @@ class UserBalance extends Controller
     /**
      * 数据列表处理
      * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _index_page_filter(array &$data)
     {
@@ -83,22 +80,20 @@ class UserBalance extends Controller
     /**
      * 表单数据处理
      * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _form_filter(array &$data)
     {
         if (empty($data['code'])) {
             $data['code'] = CodeExtend::uniqidDate('20', 'B');
         }
+        if ($this->request->isGet()) {
+            $this->upgrades = UserUpgradeService::instance()->levels();
+        }
         if ($this->request->isPost()) {
             $data['create_by'] = AdminService::instance()->getUserId();
             if (empty(floatval($data['amount'])) && empty($data['vip_upgrade'])) {
                 $this->error('充值金额为零并没有升级行为！');
             }
-        } else {
-            $this->upgrades = UserUpgradeService::instance()->levels();
         }
     }
 
@@ -112,9 +107,7 @@ class UserBalance extends Controller
     {
         if ($state && isset($data['uid'])) {
             UserBalanceService::instance()->amount($data['uid']);
-            if ($data['vip_upgrade'] > 0) {
-                UserUpgradeService::instance()->upgrade($data['uid']);
-            }
+            UserUpgradeService::instance()->upgrade($data['uid']);
         }
     }
 
@@ -125,7 +118,8 @@ class UserBalance extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $db = $this->app->db->name($this->table);
+        $this->_delete($db->whereLike('code', "B%"));
     }
 
     /**
@@ -136,9 +130,8 @@ class UserBalance extends Controller
     protected function _delete_result(bool $state)
     {
         if ($state) {
-            $ids = str2arr(input('id', ''));
-            $query = $this->app->db->name($this->table);
-            foreach ($query->whereIn('id', $ids)->cursor() as $vo) {
+            $map = [['id', 'in', str2arr(input('id', ''))]];
+            foreach ($this->app->db->name($this->table)->where($map)->cursor() as $vo) {
                 UserBalanceService::instance()->amount($vo['uid']);
             }
         }

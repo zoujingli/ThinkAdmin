@@ -146,14 +146,14 @@ class RebateService extends Service
         if ($this->config("frist_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $value = $this->config("frist_value_vip_{$key}");
             if ($this->config("frist_type_vip_{$key}") == 1) {
-                $amount = $value ?: '0.00';
-                $name = "{$this->name(self::PRIZE_01)}，每人 {$amount} 元";
+                $val = floatval($value ?: '0.00');
+                $name = "{$this->name(self::PRIZE_01)}，每单 {$val} 元";
             } else {
-                $amount = $value * $this->order['rebate_amount'] / 100;
+                $val = floatval($value * $this->order['rebate_amount'] / 100);
                 $name = "{$this->name(self::PRIZE_01)}，订单 {$value}%";
             }
             $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
+                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $val, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
             UserUpgradeService::instance()->upgrade($this->from1['id']);
@@ -180,14 +180,14 @@ class RebateService extends Service
         if ($this->config("repeat_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $value = $this->config("repeat_value_vip_{$key}");
             if ($this->config("repeat_type_vip_{$key}") == 1) {
-                $amount = $value ?: '0.00';
-                $name = "{$this->name(self::PRIZE_02)}，每人 {$amount} 元";
+                $val = floatval($value ?: '0.00');
+                $name = "{$this->name(self::PRIZE_02)}，每人 {$val} 元";
             } else {
-                $amount = $value * $this->order['rebate_amount'] / 100;
+                $val = floatval($value * $this->order['rebate_amount'] / 100);
                 $name = "{$this->name(self::PRIZE_02)}，订单 {$value}%";
             }
             $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
+                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $val, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
             UserUpgradeService::instance()->upgrade($this->from1['id']);
@@ -211,8 +211,8 @@ class RebateService extends Service
         $map = ['type' => self::PRIZE_03, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("direct_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $value = $this->config("direct_value_vip_{$key}");
-            $amount = $value * $this->order['rebate_amount'] / 100;
             $name = "{$this->name(self::PRIZE_03)}，订单 {$value}%";
+            $amount = floatval($value * $this->order['rebate_amount'] / 100);
             $this->app->db->name($this->table)->insert(array_merge($map, [
                 'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
@@ -237,10 +237,10 @@ class RebateService extends Service
         $map = ['type' => self::PRIZE_04, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("indirect_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $value = $this->config("indirect_value_vip_{$key}");
-            $amount = $value * $this->order['rebate_amount'] / 100;
+            $val = floatval($value * $this->order['rebate_amount'] / 100);
             $name = "{$this->name(self::PRIZE_04)}，订单 {$value}%";
             $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from2['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
+                'uid' => $this->from2['id'], 'name' => $name, 'amount' => $val, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新代理奖利金额
             UserUpgradeService::instance()->upgrade($this->from2['id']);
@@ -368,14 +368,14 @@ class RebateService extends Service
         if ($this->config("upgrade_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $value = $this->config("upgrade_value_vip_{$key}");
             if ($this->config("upgrade_type_vip_{$key}") == 1) {
-                $amount = $value ?: '0.00';
-                $name = "{$this->name(self::PRIZE_07)}，每人 {$amount} 元";
+                $val = floatval($value ?: '0.00');
+                $name = "{$this->name(self::PRIZE_07)}，每人 {$val} 元";
             } else {
-                $amount = $value * $this->order['rebate_amount'] / 100;
+                $val = floatval($value * $this->order['rebate_amount'] / 100);
                 $name = "{$this->name(self::PRIZE_07)}，订单 {$value}%";
             }
             $this->app->db->name($this->table)->insert(array_merge($map, [
-                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $amount, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
+                'uid' => $this->from1['id'], 'name' => $name, 'amount' => $val, 'status' => $this->status, 'order_amount' => $this->order['amount_total'],
             ]));
             // 更新用户奖利金额
             UserUpgradeService::instance()->upgrade($this->from1['id']);
@@ -385,7 +385,7 @@ class RebateService extends Service
 
     /**
      * 获取配置数据
-     * @param ?string $name
+     * @param ?string $name 配置名称
      * @return array|string
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -400,11 +400,11 @@ class RebateService extends Service
 
     /**
      * 检查等级是否有奖励
-     * @param string $prize
-     * @param integer $level
+     * @param string $prize 奖励规则
+     * @param integer $level 用户等级
      * @return boolean
      */
-    protected function checkLevelPrize(string $prize, int $level): bool
+    private function checkLevelPrize(string $prize, int $level): bool
     {
         $map = [['number', '=', $level], ['rebate_rule', 'like', "%,{$prize},%"]];
         return $this->app->db->name('DataUserUpgrade')->where($map)->count() > 0;
