@@ -62,7 +62,7 @@ class UserTransfer extends Command
                 }
             }
         } catch (\Exception $exception) {
-            $this->output->writeln("订单 {$vo['code']} 提现失败，{$exception->getMessage()}");
+            $this->output->writeln("提现 {$vo['code']} 失败，{$exception->getMessage()}");
             $this->app->db->name('DataUserTransfer')->where(['code' => $vo['code']])->update([
                 'change_time' => date('Y-m-d H:i:s'), 'change_desc' => $exception->getMessage(),
             ]);
@@ -228,14 +228,11 @@ class UserTransfer extends Command
             $local->set($file2, $data['wechat_mch_cert_text'], true);
         }
         // 获取用户支付信息
-        if (is_array($result = $this->getWechatInfo($uid, $data['wechat_type']))) {
-            [$appid, $openid] = $result;
-        } else {
-            throw new Exception('获取用户打款信息失败');
-        }
+        $result = $this->getWechatInfo($uid, $data['wechat_type']);
+        if (empty($result)) throw new Exception('无法读取打款数据');
         return [
-            'appid'      => $appid,
-            'openid'     => $openid,
+            'appid'      => $result[0],
+            'openid'     => $result[1],
             'mch_id'     => $data['wechat_mch_id'],
             'mch_key'    => $data['wechat_mch_key'],
             'ssl_key'    => $local->path($file1),
