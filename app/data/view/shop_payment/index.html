@@ -41,7 +41,10 @@
             <td class='list-table-sort-td'>
                 <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
             </td>
-            <td class="text-left nowrap">{$vo.name|default=''}</td>
+            <td class="text-left nowrap">
+                <div class="headimg" data-lazy-src="{$vo.cover}"></div>
+                {$vo.name|default=''}
+            </td>
             <td class="text-left nowrap">{$vo.code|default=''}</td>
             <td class="text-left nowrap">{$types[$vo.type]['name']??$vo.type}</td>
             <td>{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">已激活</span>{/if}</td>
