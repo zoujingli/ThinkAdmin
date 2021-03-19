@@ -111,13 +111,37 @@ class UserTransfer extends Controller
     }
 
     /**
+     * 提现审核操作
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function auditStatus()
+    {
+        $this->_audit();
+    }
+
+    /**
+     * 提现打款操作
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function auditPayment()
+    {
+        $this->_audit();
+    }
+
+    /**
      * 提现审核打款
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function audit()
+    private function _audit()
     {
         if ($this->request->isGet()) {
             $this->_form($this->table, 'audit', 'code');

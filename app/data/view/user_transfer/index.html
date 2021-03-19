@@ -45,15 +45,15 @@
             <td class="nowrap">
                 <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 <div class="inline-block sub-span-blue">
-                    <div>用户手机：<span class="color-blue">{$vo.user.phone|default='-'}</span></div>
                     <div>
-                        {notempty name='vo.user.username'}
+                        <!--{notempty name='vo.user.username'}-->
                         用户姓名：<span class="color-blue">{$vo.user.username|default='-'}</span>
-                        {else}
+                        <!--{else}-->
                         用户昵称：<span class="color-blue">{$vo.user.nickname|default='-'}</span>
-                        {/notempty}
+                        <!--{/notempty}-->
                         <span class="margin-left-5">[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b></span>
                     </div>
+                    <div>用户手机：<span class="color-blue">{$vo.user.phone|default='-'}</span></div>
                     <div class="sub-strong-blue">用户剩余可提现 <b>{$vo.user.rebate_total-$vo.user.rebate_used}</b> 元，已提现 <b>{$vo.user.rebate_used+0}</b> 元，待到账 <b>{$vo.user.rebate_lock+0}</b> 元</div>
                 </div>
             </td>
@@ -86,9 +86,15 @@
                 交易描述：<span class="color-desc">{$vo.change_desc|default='--'}</span><br>
             </td>
             <td class='text-left nowrap'>
-                <!--{if auth('audit') and !in_array($vo.status,[4,5])}-->
-                <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="提现审核管理" data-modal="{:url('audit')}?code={$vo.code}">操 作</a>
-                <!--{/if}-->
+
+                {if auth('auditStatus') and $vo.status eq 1}
+                <a class="layui-btn layui-btn-sm layui-btn-normal" data-modal="{:url('auditStatus')}?code={$vo.code}">提现审核</a>
+                {/if}
+
+                {if auth('auditPayment') and in_array($vo.status, [2,3,4])}
+                <a class="layui-btn layui-btn-sm" data-modal="{:url('auditPayment')}?code={$vo.code}">提现打款</a>
+                {/if}
+
             </td>
         </tr>
         {/foreach}

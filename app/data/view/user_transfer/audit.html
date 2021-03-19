@@ -2,16 +2,106 @@
 
     <div class="layui-card-body padding-left-40">
 
+
+        <div class="layui-row layui-form-item layui-col-space15">
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7">提现单号</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.code|default="-"}'>
+            </label>
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7">提现金额</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.amount|default="0.00"}'>
+            </label>
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7">提现手续费</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.charge_amount|default="0.00"}'>
+            </label>
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7 label-required-prev">提现方式</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.type|default="-"}'>
+            </label>
+        </div>
+
+
+        {in name='vo.type' value='wechat_qrcode,alipay_qrcode'}
+        <fieldset class="layui-form-item">
+            <legend><span class="layui-badge layui-bg-blue">付款二维码</span></legend>
+            <div data-tips-image style="height:300px" data-lazy-src="{$vo.qrcode}"></div>
+        </fieldset>
+        {/in}
+
+        <!-- 线下转账到支付宝账户 -->
+        {in name='vo.type' value='alipay_account'}
+        <div class="layui-row layui-form-item layui-col-space15">
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7">支付宝姓名</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.alipay_user|default="0.00"}'>
+            </label>
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7">支付宝账号</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.alipay_code|default="0.00"}'>
+            </label>
+        </div>
+        {/in}
+
+        <!-- 线下转账到银行卡账户 -->
+        {in name='vo.type' value='transfer_banks,wechat_banks'}
+        <div class="layui-row layui-form-item layui-col-space15">
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7">开户银行名称</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.bank_name|default="-"}'>
+            </label>
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7">开户分行名称</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.bank_bran|default="-"}'>
+            </label>
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7">开户账号姓名</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.bank_user|default="-"}'>
+            </label>
+            <label class="layui-col-xs3">
+                <span class="color-green font-w7">开户银行卡号</span>
+                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.bank_code|default="-"}'>
+            </label>
+        </div>
+        {/in}
+
         <div class="layui-form-item">
             <span class="color-green font-w7">审核操作类型</span>
-            <span class="color-desc margin-left-5">Audit type</span>
+
             <!-- 提现状态(0失败, 1待审核, 2已审核, 3打款中, 4已打款, 5已收款) -->
-            <div class="layui-input relative notselect">
-                {foreach(['已拒绝','待审核', '已审核', '打款中','已打款'] as $k => $v)}
-                {if $k eq $vo.status}
-                <label class="think-radio"><input checked type="radio" name="status" value='{$k}' lay-ignore> {$v}</label>
+            <!-- 'wechat_wallet'  => '转账到我的微信零钱' -->
+            <!-- 'wechat_banks'   => '转账到我的银行卡账户' -->
+            <!-- 'wechat_qrcode'  => '线下转账到微信收款码' -->
+            <!-- 'alipay_qrcode'  => '线下转账到支付宝收款码' -->
+            <!-- 'alipay_account' => '线下转账到支付宝账户' -->
+            <!-- 'transfer_banks' => '线下转账到银行卡账户' -->
+
+            {if $vo.status eq 1}
+            {php} $types = [0=>'拒绝提现', 1=>'等待审核', 2=>'审核通过']; {/php}
+            {/if}
+
+            {if $vo.status eq 2}
+            <!--{in name='vo.type' value='wechat_wallet,wechat_banks'}-->
+            {php} $types = [2=>'审核已通过', 3=>'自动打款']; {/php}
+            <!--{else}-->
+            {php} $types = [2=>'审核已通过', 3=>'线下打款']; {/php}
+            <!--{/in}-->
+            {/if}
+
+            {if $vo.status eq 3}
+            <!--{in name='vo.type' value='wechat_wallet,wechat_banks'}-->
+            {php} $types = [3=>'正在打款']; {/php}
+            <!--{else}-->
+            {php} $types = [3=>'线下打款', 4=>'已经打款']; {/php}
+            <!--{/in}-->
+            {/if}
+
+            <div class="layui-textarea" style="min-height:auto;padding:10px 0 13px 18px">
+                {foreach($types as $k => $v)}{if $k eq $vo.status}
+                <input checked type="radio" name="status" value='{$k}' title="{$v}">
                 {else}
-                <label class="think-radio"><input type="radio" name="status" value='{$k}' lay-ignore> {$v}</label>
+                <input type="radio" name="status" value='{$k}' title="{$v}">
                 {/if}{/foreach}
             </div>
         </div>
@@ -19,7 +109,6 @@
         <div class="layui-form-item">
             <label class="relative block">
                 <span class="color-green font-w7">审核操作描述</span>
-                <span class="color-desc margin-left-5">Audit Remark</span>
                 <textarea class="layui-textarea" placeholder="请输入审核描述" name="remark">{$vo.remark|default=''}</textarea>
             </label>
         </div>
@@ -35,3 +124,5 @@
     </div>
 
 </form>
+
+<script>form.render()</script>
