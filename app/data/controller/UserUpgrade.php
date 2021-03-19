@@ -79,6 +79,9 @@ class UserUpgrade extends Controller
         if ($this->request->isGet()) {
             $this->prizes = RebateService::PRIZES;
             $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
+            if (empty($vo['number'])) {
+                $vo['number'] = $this->app->db->name($this->table)->max('number') + 1;
+            }
         } else {
             $vo['utime'] = time();
             $vo['rebate_rule'] = arr2str($vo['rebate_rule'] ?? []);
