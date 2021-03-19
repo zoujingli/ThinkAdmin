@@ -29,13 +29,17 @@ class UserTransfer extends Command
      * @param Input $input
      * @param Output $output
      * @return void
+     * @throws Exception
      * @throws \think\db\exception\DbException
      */
     protected function execute(Input $input, Output $output)
     {
         $map = [['type', 'in', ['wechat_banks', 'wechat_wallet']], ['status', 'in', [3, 4]]];
+        [$total, $count, $error] = [$this->app->db->name('DataUserTransfer')->where($map)->count(), 0, 0];
         foreach ($this->app->db->name('DataUserTransfer')->where($map)->cursor() as $vo) try {
+            $this->queue->message($total, ++$count, "开始处理订单 {$vo['code']} 提现");
             if ($vo['status'] === 3) {
+                $this->queue->message($total, $count, "尝试处理订单 {$vo['code']} 打款", 1);
                 if ($vo['type'] === 'wechat_banks') {
                     $result = $this->createTransferBank($vo);
                 } else {
@@ -55,6 +59,7 @@ class UserTransfer extends Command
                     ]);
                 }
             } elseif ($vo['status'] === 4) {
+                $this->queue->message($total, $count, "刷新提现订单 {$vo['code']} 状态", 1);
                 if ($vo['type'] === 'wechat_banks') {
                     $this->queryTransferBank($vo);
                 } else {
@@ -62,11 +67,13 @@ class UserTransfer extends Command
                 }
             }
         } catch (\Exception $exception) {
-            $this->output->writeln("提现 {$vo['code']} 失败，{$exception->getMessage()}");
+            $error++;
+            $this->queue->message($total, $count, "处理提现订单 {$vo['code']} 失败，{$exception->getMessage()}");
             $this->app->db->name('DataUserTransfer')->where(['code' => $vo['code']])->update([
                 'change_time' => date('Y-m-d H:i:s'), 'change_desc' => $exception->getMessage(),
             ]);
         }
+        $this->setQueueSuccess("此次共处理 {$total} 笔提现操作，处理失败 {$error} 笔。");
     }
 
     /**
