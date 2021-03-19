@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
+class ComposerStaticInitebdef296d7d83da818fc7b45caf0540d
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
@@ -328,7 +328,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'app\\admin\\controller\\api\\Update' => __DIR__ . '/../..' . '/app/admin/controller/api/Update.php',
         'app\\admin\\controller\\api\\Upload' => __DIR__ . '/../..' . '/app/admin/controller/api/Upload.php',
         'app\\data\\command\\OrderClear' => __DIR__ . '/../..' . '/app/data/command/OrderClear.php',
-        'app\\data\\command\\UserBalance' => __DIR__ . '/../..' . '/app/data/command/UserBalance.php',
+        'app\\data\\command\\UserAmount' => __DIR__ . '/../..' . '/app/data/command/UserAmount.php',
         'app\\data\\command\\UserTransfer' => __DIR__ . '/../..' . '/app/data/command/UserTransfer.php',
         'app\\data\\command\\UserUpgrade' => __DIR__ . '/../..' . '/app/data/command/UserUpgrade.php',
         'app\\data\\controller\\Config' => __DIR__ . '/../..' . '/app/data/controller/Config.php',
@@ -366,6 +366,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'app\\data\\controller\\api\\auth\\News' => __DIR__ . '/../..' . '/app/data/controller/api/auth/News.php',
         'app\\data\\controller\\api\\auth\\Order' => __DIR__ . '/../..' . '/app/data/controller/api/auth/Order.php',
         'app\\data\\controller\\api\\auth\\Rebate' => __DIR__ . '/../..' . '/app/data/controller/api/auth/Rebate.php',
+        'app\\data\\controller\\api\\auth\\Transfer' => __DIR__ . '/../..' . '/app/data/controller/api/auth/Transfer.php',
         'app\\data\\service\\ExpressService' => __DIR__ . '/../..' . '/app/data/service/ExpressService.php',
         'app\\data\\service\\GoodsService' => __DIR__ . '/../..' . '/app/data/service/GoodsService.php',
         'app\\data\\service\\MessageService' => __DIR__ . '/../..' . '/app/data/service/MessageService.php',
@@ -373,9 +374,9 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'app\\data\\service\\OrderService' => __DIR__ . '/../..' . '/app/data/service/OrderService.php',
         'app\\data\\service\\PaymentService' => __DIR__ . '/../..' . '/app/data/service/PaymentService.php',
         'app\\data\\service\\RebateService' => __DIR__ . '/../..' . '/app/data/service/RebateService.php',
+        'app\\data\\service\\UserAdminService' => __DIR__ . '/../..' . '/app/data/service/UserAdminService.php',
         'app\\data\\service\\UserBalanceService' => __DIR__ . '/../..' . '/app/data/service/UserBalanceService.php',
         'app\\data\\service\\UserRebateService' => __DIR__ . '/../..' . '/app/data/service/UserRebateService.php',
-        'app\\data\\service\\UserService' => __DIR__ . '/../..' . '/app/data/service/UserService.php',
         'app\\data\\service\\UserTokenService' => __DIR__ . '/../..' . '/app/data/service/UserTokenService.php',
         'app\\data\\service\\UserTransferService' => __DIR__ . '/../..' . '/app/data/service/UserTransferService.php',
         'app\\data\\service\\UserUpgradeService' => __DIR__ . '/../..' . '/app/data/service/UserUpgradeService.php',
@@ -681,10 +682,10 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitebdef296d7d83da818fc7b45caf0540d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitebdef296d7d83da818fc7b45caf0540d::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitebdef296d7d83da818fc7b45caf0540d::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInitebdef296d7d83da818fc7b45caf0540d::$classMap;
 
         }, null, ClassLoader::class);
     }

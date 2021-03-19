@@ -1,7 +1,7 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
-<!--{if auth("add")}-->
+<!--{if auth("add") and $page.total <= 9}-->
 <button data-modal="{:url('add')}" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户等级</button>
 <!--{/if}-->
 
