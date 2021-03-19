@@ -10,14 +10,14 @@ use think\console\Output;
 
 /**
  * 商城订单自动清理
- * Class OrderClear
+ * Class OrderClean
  * @package app\data\command
  */
-class OrderClear extends Command
+class OrderClean extends Command
 {
     protected function configure()
     {
-        $this->setName('xdata:OrderClear');
+        $this->setName('xdata:OrderClean');
         $this->setDescription('批量清理商城订单数据');
     }
 
