@@ -68,12 +68,12 @@ class UserTransfer extends Command
             }
         } catch (\Exception $exception) {
             $error++;
-            $this->queue->message($total, $count, "处理提现订单 {$vo['code']} 失败，{$exception->getMessage()}");
+            $this->queue->message($total, $count, "处理提现订单 {$vo['code']} 失败, {$exception->getMessage()}", 1);
             $this->app->db->name('DataUserTransfer')->where(['code' => $vo['code']])->update([
                 'change_time' => date('Y-m-d H:i:s'), 'change_desc' => $exception->getMessage(),
             ]);
         }
-        $this->setQueueSuccess("此次共处理 {$total} 笔提现操作，处理失败 {$error} 笔。");
+        $this->setQueueSuccess("此次共处理 {$total} 笔提现操作, 其中有 {$error} 笔处理失败。");
     }
 
     /**
