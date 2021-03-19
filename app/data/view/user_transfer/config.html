@@ -7,6 +7,19 @@
     .payment-type td .layui-form-switch {
         margin: 0 !important;
     }
+
+    .transfer-image {
+        padding: 5px 10px 0 10px !important;
+    }
+
+    .transfer-image .uploadimage {
+        width: 35px;
+        height: 35px;
+    }
+
+    .transfer-image .uploadimage span.layui-icon {
+        display: none !important;
+    }
 </style>
 
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
@@ -41,6 +54,7 @@
                 <tr>
                     <th class="text-center notselect nowrap padding-col-5"><b>提现转账方式</b></th>
                     <td class="text-center notselect nowrap padding-col-5"><b>是否需要审核</b></td>
+                    <td class="text-center notselect nowrap padding-col-5"><b>图 标</b></td>
                     <td class="text-center notselect nowrap padding-col-5"><b>单笔最小金额（ 元 ）</b></td>
                     <td class="padding-col-0"></td>
                     <td class="text-center notselect nowrap padding-col-5"><b>单笔最大金额（ 元 ）</b></td>
@@ -69,6 +83,11 @@
                         {/if}
                         {php} $key = 'transfer['.$k.'][title]'; {/php}
                         <input type="hidden" class="layui-input" name="{$key}" value="{$t}">
+                    </td>
+                    <td class="text-center transfer-image">
+                        {php} $key = 'transfer['.$k.'][image]'; {/php}
+                        <input name="{$key}" type="hidden" value="{$data['transfer'][$k]['image'] ?? ''}">
+                        <script>$("[name='{$key}']").uploadOneImage()</script>
                     </td>
                     <td class="text-center padding-col-5">
                         <label>
