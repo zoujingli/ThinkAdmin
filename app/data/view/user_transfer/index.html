@@ -66,8 +66,8 @@
                 {eq name='vo.status' value='5'}<span class="layui-badge layui-badge-middle layui-bg-green">已完成</span>{/eq}
                 <div class="text-middle inline-block">
                     提现金额：<b class="color-blue">{$vo.amount+0}</b> 元
-                    {if $vo.charge_amount>0}<span class="color-desc"> ( 含手续费{$vo.charge_amount+0} 元 )</span>{/if}
-                    <div>提现单号：<span class="color-blue">{$vo.code|default='--'}</span></div>
+                    {if $vo.charge_amount>0}<span class="color-desc"> ( 含手续费 {$vo.charge_amount+0} 元 )</span>{/if}
+                    <div>提现单号：<b class="color-blue">{$vo.code|default='--'}</b></div>
                     <div>提现方式：{$vo.type_name|default='-'}</div>
                     <div>提现描述：<span class="color-desc">{$vo.remark|default='-'}</span></div>
                 </div>
