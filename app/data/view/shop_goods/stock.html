@@ -1,5 +1,12 @@
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
     <div class="layui-card-body padding-left-40">
+
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7">商品编号</span>
+            <span class="color-desc margin-left-5">Goods Code</span>
+            <div class="layui-input layui-bg-gray">{$vo.code|default=''}</div>
+        </div>
+
         <div class="layui-form-item relative block">
             <span class="color-green font-w7">商品名称</span>
             <span class="color-desc margin-left-5">Goods Name</span>
@@ -10,7 +17,7 @@
             <div class="relative block">
                 <span class="color-green font-w7">库存数据</span>
                 <span class="color-desc margin-left-5">Goods Stock Data</span>
-                <table class="layui-table border-0 margin-0" lay-skin="line">
+                <table class="layui-table border-0 margin-0" lay-skin="nob">
                     <colgroup>
                         <col style="width:auto">
                         <col style="width:80px">
@@ -29,15 +36,15 @@
                         <th class="text-center nowrap">库存统计</th>
                         <th class="text-center nowrap">总销统计</th>
                         <th class="text-center nowrap">库存剩余</th>
-                        <th class="text-center nowrap">入库数量</th>
-                        <th class="padding-0 nowrap">
-                            <a data-batchset data-tips-text="批量设置" class="layui-icon" style="color:#FFF">&#xe63c;</a>
+                        <th class="text-center nowrap pointer" data-batchset data-tips-text="批量设置库存">
+                            <i class="layui-icon font-s10" style="color:#FFF">&#xe63c;</i> 入库数量
                         </th>
+                        <th class="padding-0"></th>
                     </tr>
                     </thead>
                 </table>
                 <div style="max-height:500px;overflow-y:scroll">
-                    <table class="layui-table margin-0" lay-skin="line">
+                    <table class="layui-table margin-0" lay-skin="nob">
                         <colgroup>
                             <col style="width:auto">
                             <col style="width:80px">
@@ -82,7 +89,7 @@
 
 <script>
     $('[data-batchset]').on('click', function () {
-        layer.prompt({title: '请输入数值', formType: 0}, function (value, index) {
+        layer.prompt({title: '请输入库存数值', formType: 0}, function (value, index) {
             layer.close(index), $('[name^="goods_stock"]').val(parseInt(value) || 0);
         });
     });

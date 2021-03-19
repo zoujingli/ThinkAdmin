@@ -84,13 +84,13 @@ class ShopPayment extends Controller
                 foreach ($vo['bind'] as $api) if (isset(UserAdminService::TYPES[$api])) {
                     $allow[$api] = UserAdminService::TYPES[$api]['name'];
                 }
-                if (count($allow)) {
-                    $this->payments[$k] = array_merge($vo, ['allow' => join('、', $allow)]);
-                }
+                if (empty($allow)) continue;
+                $this->payments[$k] = array_merge($vo, ['allow' => join('、', $allow)]);
             }
             $data['content'] = json_decode($data['content'] ?? '[]', true) ?: [];
         } else {
-            if (empty($data['type'])) $this->error('请选择支付参数并配置支付参数！');
+            if (empty($data['type'])) $this->error('请选择支付通道并配置参数！');
+            if (empty($data['cover'])) $this->error('请上传支付方式图标！');
             $data['content'] = json_encode($this->request->post() ?: [], JSON_UNESCAPED_UNICODE);
         }
     }

@@ -213,25 +213,25 @@
                 <a ng-if="specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加规则分组</a>
                 <p class="margin-top-10"><span class="color-red">请完成属性修改后再编辑下面的规格信息，否则规格数据会丢失！</span></p>
             </div>
-            <table class="layui-table margin-top-10">
+            <table class="layui-table margin-top-10" lay-skin="nob">
                 <thead>
                 <tr>
                     <th ng-repeat="x in navas track by $index" class="nowrap" ng-bind="x"></th>
-                    <th width="12%" class="text-center nowrap">商品SKU <a ng-click="batchSet('sku',null)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">市场价格 <a ng-click="batchSet('market',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">销售价格 <a ng-click="batchSet('selling',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">奖励余额 <a ng-click="batchSet('balance',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap layui-hide">奖励积分 <a ng-click="batchSet('integral',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">虚拟销量 <a ng-click="batchSet('virtual',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="10%" class="text-center nowrap">快递计件 <a ng-click="batchSet('express',0)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
-                    <th width="08%" class="text-center nowrap">销售状态</th>
+                    <th width="12%" class="text-center nowrap pointer" ng-click="batchSet('sku',null)" data-tips-text="批量设置商品SKU">商品SKU <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('market',2)" data-tips-text="批量设置市场价格">市场价格 <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('selling',2)" data-tips-text="批量设置销售价格">销售价格 <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('balance',2)" data-tips-text="批量设置奖励余额">奖励余额 <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer layui-hide" ng-click="batchSet('integral',0)" data-tips-text="批量设置奖励积分">奖励积分 <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('virtual',0)" data-tips-text="批量设置虚拟销量">虚拟销量 <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('express',0)" data-tips-text="批量设置快递计件">快递计件 <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="08%" class="text-center nowrap pointer">销售状态</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="rows in items track by $index">
                     <td class="layui-bg-gray nowrap" ng-if="td.show" ng-repeat="td in rows" ng-bind="td.name"></td>
                     <td class="padding-0">
-                        <label class="padding-0 margin-0">
+                        <label>
                             <input ng-blur="rows[0].sku=setValue(rows[0].key,'sku',$event.target.value)" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].sku">
                         </label>
                     </td>

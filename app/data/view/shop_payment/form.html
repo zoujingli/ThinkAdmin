@@ -4,15 +4,24 @@
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
     <div class="layui-card-body padding-40">
 
+        <div class="layui-form-item">
+            <span class="color-green font-w7 label-required-prev">支付方式图标</span>
+            <span class="color-desc margin-left-5">Payment Cover</span>
+            <div class="margin-top-10">
+                <input type="hidden" required name="cover" value="{$vo.cover|default=''}"/>
+                <script>$('[name=cover]').uploadOneImage()</script>
+            </div>
+        </div>
+
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">支付名称</span>
+            <span class="color-green font-w7">支付方式名称</span>
             <span class="color-desc margin-left-5">Payment Name</span>
             <input class="layui-input" required placeholder="请输入支付名称" maxlength="50" name="name" value="{$vo.name|default=''}"/>
-            <span class="help-block"><b>必填，</b>请填写支付参数名称，支付名称尽量不要重复，字符不要太长一般4-6个汉字</span>
+            <span class="help-block"><b>必填，</b>请填写支付方式名称，支付名称尽量不要重复，字符不要太长一般4-6个汉字</span>
         </label>
 
         <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">支付方式</span>
+            <span class="color-green font-w7 label-required-prev">支付通道方式</span>
             <span class="color-desc margin-left-5">Payment Channel</span>
             <label class="block full-width">
                 {empty name='vo.type'}
