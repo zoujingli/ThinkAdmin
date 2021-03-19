@@ -30,7 +30,7 @@
             <span class="color-desc margin-left-5">Transfer Status</span>
             <div class="layui-textarea" style="min-height:auto;padding:10px 0 13px 18px">
                 {php} $data['status'] = $data['status'] ?? 0; {/php}
-                {foreach ['关闭用户提现', '开启用户提现'] as $k => $v}
+                {foreach ['关闭返利提现', '开启返利提现'] as $k => $v}
                 {if $data.status eq $k}
                 <input checked class="layui-input layui-bg-gray" type="radio" title="{$v}" name="status" value="{$k}">
                 {else}

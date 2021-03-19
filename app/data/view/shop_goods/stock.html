@@ -30,7 +30,9 @@
                         <th class="text-center nowrap">总销统计</th>
                         <th class="text-center nowrap">库存剩余</th>
                         <th class="text-center nowrap">入库数量</th>
-                        <th class="padding-0 nowrap"></th>
+                        <th class="padding-0 nowrap">
+                            <a data-batchset data-tips-text="批量设置" class="layui-icon" style="color:#FFF">&#xe63c;</a>
+                        </th>
                     </tr>
                     </thead>
                 </table>
@@ -77,3 +79,11 @@
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消入库吗？" data-close>取消入库</button>
     </div>
 </form>
+
+<script>
+    $('[data-batchset]').on('click', function () {
+        layer.prompt({title: '请输入数值', formType: 0}, function (value, index) {
+            layer.close(index), $('[name^="goods_stock"]').val(parseInt(value) || 0);
+        });
+    });
+</script>
