@@ -213,18 +213,18 @@
                 <a ng-if="specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加规则分组</a>
                 <p class="margin-top-10"><span class="color-red">请完成属性修改后再编辑下面的规格信息，否则规格数据会丢失！</span></p>
             </div>
-            <table class="layui-table margin-top-10" lay-skin="nob">
+            <table class="layui-table margin-top-10">
                 <thead>
                 <tr>
-                    <th ng-repeat="x in navas track by $index" class="nowrap" ng-bind="x"></th>
-                    <th width="12%" class="text-center nowrap pointer" ng-click="batchSet('sku',null)" data-tips-text="批量设置商品SKU">商品SKU <i class="layui-icon">&#xe63c;</i></th>
-                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('market',2)" data-tips-text="批量设置市场价格">市场价格 <i class="layui-icon">&#xe63c;</i></th>
-                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('selling',2)" data-tips-text="批量设置销售价格">销售价格 <i class="layui-icon">&#xe63c;</i></th>
-                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('balance',2)" data-tips-text="批量设置奖励余额">奖励余额 <i class="layui-icon">&#xe63c;</i></th>
-                    <th width="10%" class="text-center nowrap pointer layui-hide" ng-click="batchSet('integral',0)" data-tips-text="批量设置奖励积分">奖励积分 <i class="layui-icon">&#xe63c;</i></th>
-                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('virtual',0)" data-tips-text="批量设置虚拟销量">虚拟销量 <i class="layui-icon">&#xe63c;</i></th>
-                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('express',0)" data-tips-text="批量设置快递计件">快递计件 <i class="layui-icon">&#xe63c;</i></th>
-                    <th width="08%" class="text-center nowrap pointer">销售状态</th>
+                    <th ng-repeat="x in navas track by $index" class="nowrap"><b ng-bind="x"></b></th>
+                    <th width="12%" class="text-center nowrap pointer" ng-click="batchSet('sku',null)" data-tips-text="批量设置商品SKU"><b>商品SKU</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('market',2)" data-tips-text="批量设置市场价格"><b>市场价格</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('selling',2)" data-tips-text="批量设置销售价格"><b>销售价格</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('balance',2)" data-tips-text="批量设置奖励余额"><b>奖励余额</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer layui-hide" ng-click="batchSet('integral',0)" data-tips-text="批量设置奖励积分"><b>奖励积分</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('virtual',0)" data-tips-text="批量设置虚拟销量"><b>虚拟销量</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="10%" class="text-center nowrap pointer" ng-click="batchSet('express',0)" data-tips-text="批量设置快递计件"><b>快递计件</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th width="08%" class="text-center nowrap pointer"><b>销售状态</b></th>
                 </tr>
                 </thead>
                 <tbody>
