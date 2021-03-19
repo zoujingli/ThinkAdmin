@@ -30,16 +30,16 @@ class UserAmount extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        try {
-            [$total, $count] = [$this->app->db->name('DataUser')->count(), 0];
-            foreach ($this->app->db->name('DataUser')->field('id')->cursor() as $user) {
-                $this->queue->message($total, ++$count, "正在计算用户 [{$user['id']}] 的余额及返利");
-                UserRebateService::instance()->amount($user['id']);
-                UserBalanceService::instance()->amount($user['id']);
-                $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的余额及返利", 1);
-            }
+        [$total, $count, $error] = [$this->app->db->name('DataUser')->count(), 0, 0];
+        foreach ($this->app->db->name('DataUser')->field('id')->cursor() as $user) try {
+            $this->queue->message($total, ++$count, "刷新用户 [{$user['id']}] 余额及返利开始");
+            UserRebateService::instance()->amount($user['id']);
+            UserBalanceService::instance()->amount($user['id']);
+            $this->queue->message($total, $count, "刷新用户 [{$user['id']}] 余额及返利完成", 1);
         } catch (\Exception $exception) {
-            $this->queue->error($exception->getMessage());
+            $error++;
+            $this->queue->message($total, $count, "刷新用户 [{$user['id']}] 余额及返利失败, {$exception->getMessage()}", 1);
         }
+        $this->setQueueSuccess("此次共处理 {$total} 个刷新操作, 其中有 {$error} 个刷新失败。");
     }
 }
