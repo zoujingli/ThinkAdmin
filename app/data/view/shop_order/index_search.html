@@ -137,19 +137,30 @@
     window.form.render();
     require(['excel'], function (excel) {
         excel.bind(function (data) {
-            data.forEach(function (item, index) {
-                data[index] = [
-                    item.order_no,
-                    item.user.phone,
-                    item.user.username || item.user.nickname || '',
-                    item.payment_trade || '',
-                    item.payment_status ? '已支付' : '未支付',
-                    item.payment_amount || '0.00',
-                    item.payment_datetime || '',
-                ];
+            console.log(data);
+            var items = [];
+            items.push(['订单号', '用户手机', '用户姓名', '商品名称', '商品编码', '商品规格SKU', '商品规格描述', '商品数量', '商品单价', '支付单号', '支付方式', '支付状态', '支付金额', '支付时间']);
+            data.forEach(function (order, index) {
+                order.items.forEach(function (goods) {
+                    items.push([
+                        order.order_no,
+                        order.user.phone,
+                        order.user.username || order.user.nickname || '',
+                        goods.goods_name,
+                        goods.goods_code,
+                        goods.goods_sku,
+                        goods.goods_spec,
+                        goods.stock_sales,
+                        goods.price_selling,
+                        order.payment_trade || '',
+                        order.payment_name || order.payment_type || '',
+                        order.payment_status ? '已支付' : '未支付',
+                        order.payment_amount || '0.00',
+                        order.payment_datetime || '',
+                    ]);
+                });
             });
-            data.unshift(['订单单号', '用户手机', '用户姓名', '支付单号', '支付状态', '支付金额', '支付时间']);
-            return data;
+            return items;
         }, '用户订单记录');
     });
 </script>
