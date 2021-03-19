@@ -42,7 +42,7 @@
                 <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
             </td>
             <td class="text-left nowrap">
-                <div class="headimg" data-lazy-src="{$vo.cover}"></div>
+                <div class="headimg headimg-xs headimg-no" data-lazy-src="{$vo.cover}"></div>
                 {$vo.name|default=''}
             </td>
             <td class="text-left nowrap">{$vo.code|default=''}</td>

@@ -58,7 +58,7 @@ class UserBalance extends Controller
         $this->upgrades = UserUpgradeService::instance()->levels();
         foreach ($data as &$vo) {
             $vo['vip_upgradeinfo'] = $this->upgrades[$vo['vip_upgrade']] ?? [];
-            $vo['create_byname'] = $users[$vo['create_by']] ?? $vo['create_by'];
+            $vo['create_byname'] = $users[$vo['create_by']] ?? '系统内部';
         }
     }
 
