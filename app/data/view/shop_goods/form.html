@@ -5,6 +5,20 @@
 <form onsubmit="return false;" id="GoodsForm" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
     <div class="layui-card-body padding-40 padding-bottom-20">
 
+        <!--{notempty name='marks'}-->
+        <div class="layui-form-item relative block">
+            <span class="color-green font-w7 label-required-prev">商品标签</span>
+            <span class="color-desc margin-left-5">Mark Name</span>
+            <div class="layui-textarea">
+                {foreach $marks as $mark}{if isset($vo.marks) && is_array($vo.marks) && in_array($mark, $vo.marks)}
+                <input checked type="checkbox" name="marks[]" value="{$mark}" title="{$mark}">
+                {else}
+                <input type="checkbox" name="marks[]" value="{$mark}" title="{$mark}">
+                {/if}{/foreach}
+            </div>
+        </div>
+        <!--{/notempty}-->
+
         <!--{notempty name='cates'}-->
         <label class="layui-form-item block relative">
             <span class="color-green font-w7 label-required-prev">所属分类</span>
@@ -19,24 +33,10 @@
         </label>
         <!--{/notempty}-->
 
-        <!--{notempty name='marks'}-->
-        <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">商品标签</span>
-            <span class="color-desc margin-left-5">Goods Mark Name</span>
-            <div class="layui-textarea">
-                {foreach $marks as $mark}{if isset($vo.marks) && is_array($vo.marks) && in_array($mark, $vo.marks)}
-                <input checked type="checkbox" name="marks[]" value="{$mark}" title="{$mark}">
-                {else}
-                <input type="checkbox" name="marks[]" value="{$mark}" title="{$mark}">
-                {/if}{/foreach}
-            </div>
-        </div>
-        <!--{/notempty}-->
-
         <!--{notempty name='payments'}-->
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">支付方式</span>
-            <span class="color-desc margin-left-5">Goods Pyament Name</span>
+            <span class="color-desc margin-left-5">Goods Payment</span>
             <div class="layui-textarea">
                 {foreach $payments as $payment}{if isset($vo.payment) && is_array($vo.payment) && in_array($payment.code, $vo.payment)}
                 <input checked type="checkbox" name="payment[]" value="{$payment.code}" title="{$payment.name}">
