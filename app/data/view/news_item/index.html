@@ -1,16 +1,16 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
+<!--{if auth("news_mark/index")}-->
+<button data-iframe='{:url("news_mark/index")}' data-width="900px" data-title="标签管理" class='layui-btn layui-btn-sm layui-btn-primary'>标签管理</button>
+<!--{/if}-->
+
 <!--{if auth("add")}-->
 <button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加文章</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些文章吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除文章</button>
-<!--{/if}-->
-
-<!--{if auth("news_mark/index")}-->
-<button data-iframe='{:url("news_mark/index")}' data-width="900px" data-title="标签管理" class='layui-btn layui-btn-sm layui-btn-primary'>标签管理</button>
 <!--{/if}-->
 {/block}
 
