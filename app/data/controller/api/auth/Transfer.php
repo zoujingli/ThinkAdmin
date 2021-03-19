@@ -54,7 +54,7 @@ class Transfer extends Auth
             $data['audit_datetime'] = date('Y-m-d H:i:s');
         }
         // 扣除手续费
-        $chargeRate = floatval(UserTransferService::instance()->config('transfer_charge'));
+        $chargeRate = floatval(UserTransferService::instance()->config('charge'));
         $data['charge_rate'] = $chargeRate;
         $data['charge_amount'] = $chargeRate * $data['amount'] / 100;
         // 检查可提现余额
