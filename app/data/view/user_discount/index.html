@@ -1,11 +1,9 @@
 {extend name="../../admin/view/main"}
 
 {block name="button"}
-
-{if auth("add")}
+<!--{if auth("add")}-->
 <button data-modal="{:url('add')}" data-title="添加折扣方案" class='layui-btn layui-btn-sm layui-btn-primary'>添加折扣方案</button>
-{/if}
-
+<!--{/if}-->
 {/block}
 
 {block name='content'}
@@ -52,19 +50,19 @@
             </td>
             <td class='text-left nowrap'>
 
-                {if auth("edit")}
+                <!--{if auth("edit")}-->
                 <a class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={$vo.id}' data-title="编辑折扣方案">编 辑</a>
-                {/if}
+                <!--{/if}-->
 
-                {if auth("state") and $vo.status eq 1}
+                <!--{if auth("state") and $vo.status eq 1}-->
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
-                {elseif auth("state")}
+                <!--{elseif auth("state")}-->
                 <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
-                {/if}
+                <!--{/if}-->
 
-                {if auth("remove")}
+                <!--{if auth("remove")}-->
                 <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除折扣方案吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
-                {/if}
+                <!--{/if}-->
 
             </td>
         </tr>
