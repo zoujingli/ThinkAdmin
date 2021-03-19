@@ -53,7 +53,7 @@
             <input name="name" required class="layui-input" placeholder="请输入商品名称" value="{$vo.name|default=''}">
         </label>
 
-        {notempty name='trucks'}
+        <!--{notempty name='trucks'}-->
         <label class="layui-form-item block relative">
             <span class="color-green font-w7 label-required-prev">邮费模板</span>
             <span class="color-desc margin-left-5">Truck Template</span>
@@ -66,7 +66,7 @@
                 {/if}{/foreach}
             </select>
         </label>
-        {/notempty}
+        <!--{/notempty}-->
 
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">商品封面及轮播图片</span>
