@@ -45,8 +45,8 @@ class Oplog extends Controller
         $this->title = '系统日志管理';
         $this->isSupper = AdminService::instance()->isSuper();
         $this->actions = $this->app->db->name($this->table)->distinct(true)->column('action');
-        $query = $this->_query($this->table)->order('id desc');
-        $query->like('action,node,content,username,geoip')->dateBetween('create_at')->page();
+        $query = $this->_query($this->table)->dateBetween('create_at')->order('id desc');
+        $query->like('action,node,content,username,geoip')->page();
     }
 
     /**
@@ -67,15 +67,17 @@ class Oplog extends Controller
     /**
      * 清理系统日志
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function clear()
     {
-        if ($this->app->db->name($this->table)->whereRaw('1=1')->delete() !== false) {
+        try {
+            $this->_query($this->table)->empty();
             sysoplog('系统运维管理', '成功清理所有日志数据');
             $this->success('日志清理成功！');
-        } else {
-            $this->error('日志清理失败，请稍候再试！');
+        } catch (\think\exception\HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error("日志清理失败，{$exception->getMessage()}");
         }
     }
 
