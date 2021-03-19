@@ -7,7 +7,7 @@
 {/block}
 
 {block name="content"}
-<div class="layui-tab layui-tab-card table-block">
+<div class="layui-tab layui-tab-card'amount'">
     <ul class="layui-tab-title notselect">
         {foreach ['ta'=>'全部订单','t2'=>'待支付的订单','t3'=>'待审核的订单','t4'=>'待发货的订单','t5'=>'待收货的订单','t6'=>'已完成的订单','t0'=>'已取消的订单'] as $k=>$v}
         {if isset($type) and 't'.$type eq $k}
@@ -16,7 +16,7 @@
         <li data-open="{:url('index')}?type={$k}">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {/if}{/foreach}
     </ul>
-    <div class="layui-tab-content table-block">
+    <div class="layui-tab-content'amount'">
         {include file='shop_order/index_search'}
         <table class="layui-table margin-top-10" lay-skin="line">
             {notempty name='list'}
