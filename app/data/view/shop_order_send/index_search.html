@@ -98,6 +98,8 @@
                     rows.push([
                         order.order_no,
                         item.goods_name,
+                        item.goods_sku,
+                        item.goods_spec,
                         item.stock_sales,
                         item.price_selling,
                         item.total_selling,
@@ -110,10 +112,10 @@
                         order.truck.address_area,
                         order.truck.address_content,
                     ]);
-                })
+                });
             });
             rows.unshift([
-                '订单号', '物品名称', '数量', '单价', '总额',
+                '订单号', '物品名称', '物品SKU编码', '物品规格描述', '数量', '单价', '总额',
                 '寄件方', '身份证号', '收货人', '电话', '省份', '城市', '区', '地址'
             ]);
             return rows;
