@@ -91,7 +91,8 @@ class Plugs extends Controller
                         $newdata[] = ['type' => $type, 'name' => $name, 'value' => $value];
                     }
                 }
-                $this->app->db->name('SystemConfig')->whereRaw('1=1')->delete();
+                $sql = "truncate table {$this->app->db->name('SystemConfig')->getTable()}";
+                $this->app->db->execute($sql);
                 $this->app->db->name('SystemConfig')->insertAll($newdata);
             });
             $this->app->cache->delete('SystemConfig');
