@@ -89,4 +89,19 @@ class Wechat extends Controller
         $script[] = '';
         return Response::create(join(";\n", $script))->contentType('application/x-javascript');
     }
+
+    /**
+     * 网页授权测试
+     * @return string
+     */
+    public function test()
+    {
+        $base = sysuri('data/api.wechat/oauth', [], false, true);
+        return <<<EOL
+<script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+<script src="{$base}?mode=1"></script>
+<div id="content"></div>
+<script>document.getElementById('content').innerText = JSON.stringify(wx);</script>
+EOL;
+    }
 }
