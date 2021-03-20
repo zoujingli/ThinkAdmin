@@ -115,8 +115,8 @@ class Wechat extends Controller
     <div style="margin-top:30px">用户数据</div>
     <pre id="userdata">待网页授权，加载用户数据...</pre>
     
-    <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
-    <script src="//{$this->request->host()}/data/api.wechat/oauth?mode=1"></script>
+    <script src="{$this->request->scheme()}://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="{$this->request->scheme()}://{$this->request->host()}/data/api.wechat/oauth?mode=1"></script>
     <script>
         if(typeof window.WeChatFansInfo === 'object'){   
             document.getElementById('fansdata').innerText = JSON.stringify(window.WeChatFansInfo,null,2);
