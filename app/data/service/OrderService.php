@@ -32,7 +32,7 @@ class OrderService extends Service
     {
         $map = ['order_no' => $orderNo];
         $codes = $this->app->db->name('ShopOrderItem')->where($map)->column('goods_code');
-        foreach (array_unique($codes) as $code) GoodsService::instance()->syncStock($code);
+        foreach (array_unique($codes) as $code) GoodsService::instance()->stock($code);
         return true;
     }
 

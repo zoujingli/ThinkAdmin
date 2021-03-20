@@ -6,11 +6,12 @@
 
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">支付方式图标</span>
-            <span class="color-desc margin-left-5">Payment Cover</span>
-            <div class="margin-top-10">
-                <input type="hidden" required name="cover" value="{$vo.cover|default=''}"/>
-                <script>$('[name=cover]').uploadOneImage()</script>
-            </div>
+            <span class="color-desc margin-left-5">Payment Image</span>
+            <label class="relative block label-required-null">
+                <input required name="cover" value='{$vo.cover|default=""}' placeholder="请上传支付方式图标 &nbsp;&nbsp;&nbsp;&nbsp;" class="layui-input">
+                <a data-file data-type="png,jpg,gif" data-field="cover" class="layui-icon layui-icon-upload input-right-icon"></a>
+                <script>$('[name="cover"]').uploadOneImage()</script>
+            </label>
         </div>
 
         <label class="layui-form-item relative block">

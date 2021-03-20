@@ -14,6 +14,15 @@ class GoodsService extends Service
 {
 
     /**
+     * 最大分类级别
+     * @return integer
+     */
+    public function getCateMax(): int
+    {
+        return 3;
+    }
+
+    /**
      * 获取分类数据
      * @return array
      * @throws \think\db\exception\DataNotFoundException
@@ -66,15 +75,6 @@ class GoodsService extends Service
     }
 
     /**
-     * 最大分类级别
-     * @return integer
-     */
-    public function getCateMax(): int
-    {
-        return 3;
-    }
-
-    /**
      * 更新商品库存数据
      * @param string $code
      * @return boolean
@@ -82,7 +82,7 @@ class GoodsService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function syncStock(string $code): bool
+    public function stock(string $code): bool
     {
         // 商品入库统计
         $query = $this->app->db->name('ShopGoodsStock');
@@ -125,7 +125,7 @@ class GoodsService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function buildData(array &$data = [], $simple = true): array
+    public function bindData(array &$data = [], $simple = true): array
     {
         [$cates, $codes] = [$this->getCateData(), array_unique(array_column($data, 'code'))];
         $marks = $this->app->db->name('ShopGoodsMark')->where(['status' => 1])->column('name');

@@ -177,7 +177,7 @@ class Order extends Auth
             });
             // 同步商品库存销量
             foreach (array_unique(array_column($items, 'goods_code')) as $code) {
-                GoodsService::instance()->syncStock($code);
+                GoodsService::instance()->stock($code);
             }
             // 触发订单创建事件
             $this->app->event->trigger('ShopOrderCreate', $order['order_no']);

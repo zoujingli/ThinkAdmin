@@ -80,7 +80,7 @@ class ShopGoods extends Controller
     {
         $this->marks = GoodsService::instance()->getMarkData();
         $this->cates = GoodsService::instance()->getCateData();
-        GoodsService::instance()->buildData($data, false);
+        GoodsService::instance()->bindData($data, false);
     }
 
     /**
@@ -201,7 +201,7 @@ class ShopGoods extends Controller
     protected function _form_result(bool $result)
     {
         if ($result && $this->request->isPost()) {
-            GoodsService::instance()->syncStock(input('code'));
+            GoodsService::instance()->stock(input('code'));
             $this->success('商品编辑成功！', 'javascript:history.back()');
         }
     }
@@ -219,7 +219,7 @@ class ShopGoods extends Controller
         if ($this->request->isGet()) {
             $list = $this->app->db->name('ShopGoods')->where($map)->select()->toArray();
             if (empty($list)) $this->error('无效的商品数据，请稍候再试！');
-            [$this->vo] = GoodsService::instance()->buildData($list);
+            [$this->vo] = GoodsService::instance()->bindData($list);
             $this->fetch();
         } else {
             [$data, $post, $batch] = [[], $this->request->post(), CodeExtend::uniqidDate(12, 'B')];
@@ -234,7 +234,7 @@ class ShopGoods extends Controller
                 }
                 if (!empty($data)) {
                     $this->app->db->name('ShopGoodsStock')->insertAll($data);
-                    GoodsService::instance()->syncStock($map['code']);
+                    GoodsService::instance()->stock($map['code']);
                     $this->success('商品数据入库成功！');
                 }
             }
