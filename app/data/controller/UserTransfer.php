@@ -3,7 +3,6 @@
 namespace app\data\controller;
 
 use app\data\service\UserAdminService;
-use app\data\service\UserRebateService;
 use app\data\service\UserTransferService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;

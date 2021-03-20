@@ -2,9 +2,9 @@
 
 namespace app\data\controller;
 
+use app\data\service\ExpressService;
 use app\data\service\OrderService;
 use app\data\service\PaymentService;
-use app\data\service\ExpressService;
 use app\data\service\UserAdminService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;

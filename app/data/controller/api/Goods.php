@@ -2,8 +2,8 @@
 
 namespace app\data\controller\api;
 
-use app\data\service\GoodsService;
 use app\data\service\ExpressService;
+use app\data\service\GoodsService;
 use think\admin\Controller;
 
 /**
