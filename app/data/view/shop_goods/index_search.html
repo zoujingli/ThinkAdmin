@@ -19,9 +19,9 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">商品标签</label>
             <label class="layui-input-inline">
-                <select class="layui-select" name="mark" lay-search>
+                <select class="layui-select" name="marks" lay-search>
                     <option value="">-- 全部标签 --</option>
-                    {foreach $marks as $mark}{if input('mark','') eq $mark}
+                    {foreach $marks as $mark}{if input('marks','') eq $mark}
                     <option selected value="{$mark}">{$mark}</option>
                     {else}
                     <option value="{$mark}">{$mark}</option>
@@ -36,9 +36,9 @@
             <label class="layui-form-label">商品分类</label>
             <div class="layui-input-inline">
                 <label class="layui-input-inline">
-                    <select class="layui-select" name="cate" lay-search>
+                    <select class="layui-select" name="cateids" lay-search>
                         <option value="">-- 全部分类 --</option>
-                        {foreach $cates as $cate}{if input('cate') eq $cate.id}
+                        {foreach $cates as $cate}{if input('cateids') eq $cate.id}
                         <option selected value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
                         {else}
                         <option value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>

@@ -51,7 +51,7 @@ class ShopGoods extends Controller
         elseif ($this->type === 'recycle') $query->where(['deleted' => 1]);
         else $this->error("无法加载 {$this->type} 数据列表！");
         // 列表排序并显示
-        $query->like('code,name')->like('cate,mark', ',');
+        $query->like('code,name')->like('marks,cateids', ',');
         $query->equal('status,vip_entry,truck_type')->order('sort desc,id desc')->page();
     }
 
