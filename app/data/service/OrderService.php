@@ -84,9 +84,10 @@ class OrderService extends Service
         $query = $this->app->db->table('shop_order a')->join('shop_order_item b', 'a.order_no=b.order_no');
         $count = $query->where("a.uid={$uid} and a.status>=4 and a.payment_status=1 and b.vip_entry>0")->count();
         $buyVipEntry = $count > 0 ? 1 : 0;
-        // 查询用户最后支付时间
+        // 用户最后支付时间
+        $query = $this->app->db->name('ShopOrder');
         $buyLastMap = [['uid', '=', $uid], ['status', '>=', 4], ['payment_status', '=', 1]];
-        $buyLastDate = $this->app->db->name('ShopOrder')->where($buyLastMap)->max('payment_datetime');
+        $buyLastDate = $query->where($buyLastMap)->order('payment_datetime desc')->value('payment_datetime');
         // 更新用户支付信息
         $this->app->db->name('DataUser')->where(['id' => $uid])->update([
             'buy_vip_entry' => $buyVipEntry, 'buy_last_date' => $buyLastDate,
