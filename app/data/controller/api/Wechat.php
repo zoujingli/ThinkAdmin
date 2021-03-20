@@ -12,7 +12,6 @@ use think\Response;
  * Class Wechat
  * @package app\data\controller\api
  * @example 域名请修改为自己的地址，放到网页代码合适位置
- * <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
  * <script src="https://your.domain.com/data/api.wechat/oauth?mode=1"></script>
  *
  * 授权模式支持两种模块，参数 mode=0 时为静默授权，mode=1 时为完整授权
@@ -95,37 +94,36 @@ class Wechat extends Controller
      * 使用网页直接访问此链接
      * @return string
      */
-    public function test(): string
+    public function otest(): string
     {
         return <<<EOL
 <html lang="zh">
-<head>
-    <meta charset="utf-8">
-    <title>微信网页授权测试</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-    <style>pre{padding:20px;overflow:auto;margin-top:10px;background:#ccc;border-radius:6px;}</style>
-</head>
-<body>
-    <div>当前链接</div>
-    <pre>{$this->request->scheme()}://{$this->request->host()}/data/api.wechat/oauth?mode=1</pre>
-    
-    <div style="margin-top:30px">粉丝数据</div>
-    <pre id="fansdata">待网页授权，加载粉丝数据...</pre>
-    
-    <div style="margin-top:30px">用户数据</div>
-    <pre id="userdata">待网页授权，加载用户数据...</pre>
-    
-    <script src="{$this->request->scheme()}://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
-    <script src="{$this->request->scheme()}://{$this->request->host()}/data/api.wechat/oauth?mode=1"></script>
-    <script>
-        if(typeof window.WeChatFansInfo === 'object'){   
-            document.getElementById('fansdata').innerText = JSON.stringify(window.WeChatFansInfo,null,2);
-        }
-        if(typeof window.WeChatUserInfo === 'object'){
-            document.getElementById('userdata').innerText = JSON.stringify(window.WeChatUserInfo,null,2);
-        }
-    </script>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <title>微信网页授权测试</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+        <style>pre{padding:20px;overflow:auto;margin-top:10px;background:#ccc;border-radius:6px;}</style>
+    </head>
+    <body>
+        <div>当前链接</div>
+        <pre>{$this->request->scheme()}://{$this->request->host()}/data/api.wechat/oauth?mode=1</pre>
+        
+        <div style="margin-top:30px">粉丝数据</div>
+        <pre id="fansdata">待网页授权，加载粉丝数据...</pre>
+        
+        <div style="margin-top:30px">用户数据</div>
+        <pre id="userdata">待网页授权，加载用户数据...</pre>
+        
+        <script src="//{$this->request->host()}/data/api.wechat/oauth?mode=1"></script>
+        <script>
+            if(typeof window.WeChatFansInfo === 'object'){   
+                document.getElementById('fansdata').innerText = JSON.stringify(window.WeChatFansInfo, null, 2);
+            }
+            if(typeof window.WeChatUserInfo === 'object'){
+                document.getElementById('userdata').innerText = JSON.stringify(window.WeChatUserInfo, null, 2);
+            }
+        </script>
+    </body>
 </html>
 EOL;
     }
