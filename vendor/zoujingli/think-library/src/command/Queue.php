@@ -80,7 +80,7 @@ class Queue extends Command
     protected function webStopAction()
     {
         $root = $this->app->getRootPath() . 'public' . DIRECTORY_SEPARATOR;
-        if (count($result = $this->process->query("-t {$root} {$root}router.php")) < 1) {
+        if (count($result = $this->process->query("{$root} {$root}router.php")) < 1) {
             $this->output->writeln("># There are no WebServer processes to stop");
         } else foreach ($result as $item) {
             $this->process->close(intval($item['pid']));
@@ -107,7 +107,7 @@ class Queue extends Command
                 $this->output->writeln("># WebServer process started successfully for pid {$result[0]['pid']}");
                 if ($this->process->iswin()) $this->process->exec("start http://{$host}:{$port}");
             } else {
-                $this->output->writeln('>> WebServer process failed to start');
+                $this->output->writeln('># WebServer process failed to start');
             }
         }
     }
@@ -118,7 +118,7 @@ class Queue extends Command
     protected function webStatusAction()
     {
         $root = $this->app->getRootPath() . 'public' . DIRECTORY_SEPARATOR;
-        if (count($result = $this->process->query("-t {$root} {$root}router.php")) > 0) {
+        if (count($result = $this->process->query("{$root} {$root}router.php")) > 0) {
             $this->output->comment(">$ {$result[0]['cmd']}");
             $this->output->writeln("># WebServer process {$result[0]['pid']} running");
         } else {
@@ -176,7 +176,7 @@ class Queue extends Command
         if (count($list) > 0) foreach ($list as $item) {
             $this->output->writeln("># {$item['pid']}\t{$item['cmd']}");
         } else {
-            $this->output->writeln('>> No related task process found');
+            $this->output->writeln('># No related task process found');
         }
     }
 

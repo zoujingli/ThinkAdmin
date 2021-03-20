@@ -198,7 +198,7 @@ return array(
     'app\\admin\\controller\\api\\Queue' => $baseDir . '/app/admin/controller/api/Queue.php',
     'app\\admin\\controller\\api\\Update' => $baseDir . '/app/admin/controller/api/Update.php',
     'app\\admin\\controller\\api\\Upload' => $baseDir . '/app/admin/controller/api/Upload.php',
-    'app\\data\\command\\OrderClear' => $baseDir . '/app/data/command/OrderClear.php',
+    'app\\data\\command\\OrderClean' => $baseDir . '/app/data/command/OrderClean.php',
     'app\\data\\command\\UserAmount' => $baseDir . '/app/data/command/UserAmount.php',
     'app\\data\\command\\UserTransfer' => $baseDir . '/app/data/command/UserTransfer.php',
     'app\\data\\command\\UserUpgrade' => $baseDir . '/app/data/command/UserUpgrade.php',

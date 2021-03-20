@@ -327,7 +327,7 @@ class ComposerStaticInitebdef296d7d83da818fc7b45caf0540d
         'app\\admin\\controller\\api\\Queue' => __DIR__ . '/../..' . '/app/admin/controller/api/Queue.php',
         'app\\admin\\controller\\api\\Update' => __DIR__ . '/../..' . '/app/admin/controller/api/Update.php',
         'app\\admin\\controller\\api\\Upload' => __DIR__ . '/../..' . '/app/admin/controller/api/Upload.php',
-        'app\\data\\command\\OrderClear' => __DIR__ . '/../..' . '/app/data/command/OrderClear.php',
+        'app\\data\\command\\OrderClean' => __DIR__ . '/../..' . '/app/data/command/OrderClean.php',
         'app\\data\\command\\UserAmount' => __DIR__ . '/../..' . '/app/data/command/UserAmount.php',
         'app\\data\\command\\UserTransfer' => __DIR__ . '/../..' . '/app/data/command/UserTransfer.php',
         'app\\data\\command\\UserUpgrade' => __DIR__ . '/../..' . '/app/data/command/UserUpgrade.php',
