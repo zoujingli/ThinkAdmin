@@ -119,12 +119,10 @@ class RebateService extends Service
             if (empty($this->from2)) throw new Exception('间接推荐人不存在');
         }
         // 批量发放配置奖励
-        foreach (self::PRIZES as $vo) {
-            if (method_exists($this, $vo['func'])) {
-                $this->app->log->notice("订单 {$orderNo} 开始发放 [{$vo['func']}] {$vo['name']}");
-                $this->{$vo['func']}();
-                $this->app->log->notice("订单 {$orderNo} 完成发放 [{$vo['func']}] {$vo['name']}");
-            }
+        foreach (self::PRIZES as $vo) if (method_exists($this, $vo['func'])) {
+            $this->app->log->notice("订单 {$orderNo} 开始发放 [{$vo['func']}] {$vo['name']}");
+            $this->{$vo['func']}();
+            $this->app->log->notice("订单 {$orderNo} 完成发放 [{$vo['func']}] {$vo['name']}");
         }
     }
 
