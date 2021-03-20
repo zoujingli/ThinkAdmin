@@ -3,8 +3,8 @@
 namespace app\data\service\payment;
 
 use app\data\service\PaymentService;
-use think\admin\extend\CodeExtend;
 use think\admin\Exception;
+use think\admin\extend\CodeExtend;
 
 /**
  * 空支付支付

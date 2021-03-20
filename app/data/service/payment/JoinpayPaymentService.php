@@ -3,8 +3,8 @@
 namespace app\data\service\payment;
 
 use app\data\service\PaymentService;
-use think\admin\extend\HttpExtend;
 use think\admin\Exception;
+use think\admin\extend\HttpExtend;
 
 /**
  * 汇聚支付基础服务
