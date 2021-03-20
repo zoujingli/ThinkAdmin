@@ -51,8 +51,8 @@ class ShopGoods extends Controller
         elseif ($this->type === 'recycle') $query->where(['deleted' => 1]);
         else $this->error("无法加载 {$this->type} 数据列表！");
         // 列表排序并显示
-        $query->like('code,name,marks,cateids')->equal('status,vip_entry,truck_type');
-        $query->order('sort desc,id desc')->page();
+        $query->like('code,name')->like('cate,mark', ',');
+        $query->equal('status,vip_entry,truck_type')->order('sort desc,id desc')->page();
     }
 
     /**
@@ -65,7 +65,7 @@ class ShopGoods extends Controller
     public function select()
     {
         $query = $this->_query($this->table);
-        $query->equal('status')->like('code,name,marks')->in('cates');
+        $query->equal('status')->like('code,name,marks')->in('cateids');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
@@ -79,7 +79,7 @@ class ShopGoods extends Controller
     protected function _page_filter(array &$data)
     {
         $this->marks = GoodsService::instance()->getMarkData();
-        $this->cates = GoodsService::instance()->getCateData();
+        $this->cates = GoodsService::instance()->getCateTree('arr2table');
         GoodsService::instance()->bindData($data, false);
     }
 

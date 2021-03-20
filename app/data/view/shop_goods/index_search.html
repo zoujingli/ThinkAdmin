@@ -15,37 +15,39 @@
             </label>
         </div>
 
-        {notempty name='marks'}
+        <!--{notempty name='marks'}-->
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">商品标签</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="mark" lay-search>
                     <option value="">-- 全部标签 --</option>
-                    {foreach $marks as $mark}{if input('mark','') eq ','.$mark.','}
-                    <option selected value=",{$mark},">{$mark}</option>
+                    {foreach $marks as $mark}{if input('mark','') eq $mark}
+                    <option selected value="{$mark}">{$mark}</option>
                     {else}
-                    <option value=",{$mark},">{$mark}</option>
+                    <option value="{$mark}">{$mark}</option>
                     {/if}{/foreach}
                 </select>
             </label>
         </div>
-        {/notempty}
+        <!--{/notempty}-->
 
-        {notempty name='cates'}
+        <!--{notempty name='cates'}-->
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">商品分类</label>
-            <label class="layui-input-inline">
-                <select class="layui-select" name="cateids" lay-search>
-                    <option value="">-- 全部分类 --</option>
-                    {foreach $cates as $cate}{if input('cateids','') eq ','.$cate.id.','}
-                    <option selected value=",{$cate.id},">{:join(' ＞ ', $cate.names)}</option>
-                    {else}
-                    <option value=",{$cate.id},">{:join(' ＞ ', $cate.names)}</option>
-                    {/if}{/foreach}
-                </select>
-            </label>
+            <div class="layui-input-inline">
+                <label class="layui-input-inline">
+                    <select class="layui-select" name="cate" lay-search>
+                        <option value="">-- 全部分类 --</option>
+                        {foreach $cates as $cate}{if input('cate') eq $cate.id}
+                        <option selected value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
+                        {else}
+                        <option value="{$cate.id}">{$cate.spl}{$cate.name|default=''}</option>
+                        {/if}{/foreach}
+                    </select>
+                </label>
+            </div>
         </div>
-        {/notempty}
+        <!--{/notempty}-->
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">销售状态</label>

@@ -24,16 +24,17 @@ class GoodsService extends Service
 
     /**
      * 获取分类数据
+     * @param string $type 数据格式 arr2tree | arr2table
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getCateTree(): array
+    public function getCateTree($type = 'arr2tree'): array
     {
         $map = ['deleted' => 0, 'status' => 1];
         $query = $this->app->db->name('ShopGoodsCate')->where($map)->order('sort desc,id desc');
-        return DataExtend::arr2tree($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
+        return DataExtend::$type($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
     }
 
     /**
