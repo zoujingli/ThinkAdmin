@@ -70,9 +70,9 @@ class Wechat extends Controller
      */
     public function oauth(): Response
     {
-        [$script, $wechat] = [[], WechatService::instance()];
         $source = input('source') ?: $this->request->server('http_referer');
-        $result = $wechat->getWebOauthInfo($source ?: $this->request->url(true), input('mode', 1), false);
+        [$mode, $script, $wechat] = [input('mode', 1), [], WechatService::instance()];
+        $result = $wechat->getWebOauthInfo($source ?: $this->request->url(true), $mode, false);
         if (empty($result['openid'])) {
             $script[] = 'alert("Wechat WebOauth failed.")';
         } else {
