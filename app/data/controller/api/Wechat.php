@@ -94,14 +94,23 @@ class Wechat extends Controller
      * 网页授权测试
      * @return string
      */
-    public function test()
+    public function test(): string
     {
         $base = sysuri('data/api.wechat/oauth', [], false, true);
         return <<<EOL
-<script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
-<script src="{$base}?mode=1"></script>
-<div id="content"></div>
-<script>document.getElementById('content').innerText = JSON.stringify(wx);</script>
+<html lang="zh">
+<head>
+    <title>网页授权测试</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+</head>
+<body>
+    <div id="content"></div>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="{$base}?mode=1"></script>
+    <script>document.getElementById('content').innerText = JSON.stringify(window.WeChatFansInfo);</script>
+</body>
+</html>
 EOL;
     }
 }
