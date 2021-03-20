@@ -92,23 +92,39 @@ class Wechat extends Controller
 
     /**
      * 网页授权测试
+     * 使用网页直接访问此链接
      * @return string
      */
     public function test(): string
     {
-        $base = sysuri('data/api.wechat/oauth', [], false, true);
         return <<<EOL
 <html lang="zh">
 <head>
-    <title>网页授权测试</title>
     <meta charset="utf-8">
+    <title>微信网页授权测试</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <style>pre{padding:20px;overflow:auto;margin-top:10px;background:#ccc;border-radius:6px;}</style>
 </head>
 <body>
-    <div id="content"></div>
-    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
-    <script src="{$base}?mode=1"></script>
-    <script>document.getElementById('content').innerText = JSON.stringify(window.WeChatFansInfo);</script>
+    <div>当前链接</div>
+    <pre>{$this->request->scheme()}://{$this->request->host()}/data/api.wechat/oauth?mode=1</pre>
+    
+    <div style="margin-top:30px">粉丝数据</div>
+    <pre id="fansdata">待网页授权，加载粉丝数据...</pre>
+    
+    <div style="margin-top:30px">用户数据</div>
+    <pre id="userdata">待网页授权，加载用户数据...</pre>
+    
+    <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="//{$this->request->host()}/data/api.wechat/oauth?mode=1"></script>
+    <script>
+        if(typeof window.WeChatFansInfo === 'object'){   
+            document.getElementById('fansdata').innerText = JSON.stringify(window.WeChatFansInfo,null,2);
+        }
+        if(typeof window.WeChatUserInfo === 'object'){
+            document.getElementById('userdata').innerText = JSON.stringify(window.WeChatUserInfo,null,2);
+        }
+    </script>
 </body>
 </html>
 EOL;
