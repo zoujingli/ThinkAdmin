@@ -2,7 +2,9 @@
 
 namespace app\data\controller;
 
+use app\data\service\ExpressService;
 use app\data\service\GoodsService;
+use app\data\service\UserUpgradeService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 
@@ -152,11 +154,12 @@ class ShopGoods extends Controller
             $data['marks'] = str2arr($data['marks'] ?? '');
             $data['payment'] = str2arr($data['payment'] ?? '');
             $data['cateids'] = str2arr($data['cateids'] ?? '');
+            // 其他表单数据
             $this->marks = GoodsService::instance()->getMarkData();
             $this->cates = GoodsService::instance()->getCateData();
-            $this->trucks = $this->app->db->name('ShopTruckTemplate')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('code,name', 'code');
+            $this->trucks = ExpressService::instance()->templates();
+            $this->upgrades = UserUpgradeService::instance()->levels();
             $this->payments = $this->app->db->name('ShopPayment')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');
-            $this->upgrades = $this->app->db->name('DataUserUpgrade')->where(['status' => 1, 'deleted' => 0])->order('number asc,id desc')->column('number,name', 'id');
             $this->discounts = $this->app->db->name('DataUserDiscount')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('id,name,items', 'id');
             // 商品规格处理
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,reward_balance `balance`,reward_integral `integral`,status';

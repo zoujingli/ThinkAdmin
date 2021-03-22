@@ -2,6 +2,7 @@
 
 namespace app\data\controller;
 
+use app\data\service\UserUpgradeService;
 use think\admin\Controller;
 
 /**
@@ -70,9 +71,6 @@ class UserDiscount extends Controller
     /**
      * 表单数据处理
      * @param array $vo
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _form_filter(array &$vo)
     {
@@ -84,8 +82,7 @@ class UserDiscount extends Controller
             }
             $vo['items'] = json_encode($rule, JSON_UNESCAPED_UNICODE);
         } else {
-            $query = $this->app->db->name('DataUserUpgrade');
-            $this->levels = $query->where(['status' => 1])->order('number asc')->select()->toArray();
+            $this->levels = UserUpgradeService::instance()->levels();
             if (empty($this->levels)) $this->error('未配置用户等级！');
             if (!empty($vo['items'])) foreach (json_decode($vo['items'], true) as $item) {
                 $vo["_level_{$item['level']}"] = $item['discount'];

@@ -49,6 +49,18 @@ class ExpressService extends Service
         }
     }
 
+
+    /**
+     * 获取快递模板数据
+     * @return array
+     */
+    public function templates(): array
+    {
+        $map = ['status' => 1, 'deleted' => 0];
+        $query = $this->app->db->name('ShopTruckTemplate')->where($map);
+        return $query->order('sort desc,id desc')->column('code,name,normal,content', 'code');
+    }
+
     /**
      * 配送区域树型数据
      * @param integer $level 最大级别
