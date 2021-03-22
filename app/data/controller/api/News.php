@@ -34,9 +34,7 @@ class News extends Controller
     public function getItem()
     {
         if ($code = input('code', '')) {
-            $this->app->db->name('DataNewsItem')->where(['code' => $code])->update([
-                'num_read' => $this->app->db->raw('`num_read`+1'),
-            ]);
+            $this->app->db->name('DataNewsItem')->where(['code' => $code])->inc('num_read')->update();
             if (($uid = input('uid', 0)) > 0) {
                 $data = ['uid' => $uid, 'code' => $code, 'type' => 3, 'status' => 2];
                 $this->app->db->name('DataNewsXCollect')->where($data)->delete();

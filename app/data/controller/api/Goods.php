@@ -40,11 +40,10 @@ class Goods extends Controller
      */
     public function getGoods()
     {
-        if ($code = input('code', '')) {
-            $this->app->db->name('ShopGoods')->where(['code' => $code])->update([
-                'num_read' => $this->app->db->raw('num_read+1'),
-            ]);
-        }
+        // 更新访问统计
+        $map = $this->_vali(['code.default' => '']);
+        if ($map['code']) $this->app->db->name('ShopGoods')->where($map)->inc('num_read')->update();
+        // 商品数据处理
         $query = $this->_query('ShopGoods')->like('name,marks,cateids,payment')->equal('code,vip_entry');
         $result = $query->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc')->page(true, false, false, 10);
         if (count($result['list']) > 0) GoodsService::instance()->bindData($result['list']);
