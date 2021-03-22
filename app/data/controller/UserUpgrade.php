@@ -29,7 +29,8 @@ class UserUpgrade extends Controller
     public function index()
     {
         $this->title = '用户等级管理';
-        $this->_query($this->table)->order('number asc')->page();
+        $query = $this->_query($this->table);
+        $query->where(['deleted' => 0])->order('number asc')->page();
     }
 
     /**
