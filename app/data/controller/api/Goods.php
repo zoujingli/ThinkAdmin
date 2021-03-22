@@ -45,7 +45,7 @@ class Goods extends Controller
                 'num_read' => $this->app->db->raw('num_read+1'),
             ]);
         }
-        $query = $this->_query('ShopGoods')->like('name,cateids,marks,payment')->equal('code');
+        $query = $this->_query('ShopGoods')->like('name,marks,cateids,payment')->equal('code,vip_entry');
         $result = $query->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc')->page(true, false, false, 10);
         if (count($result['list']) > 0) GoodsService::instance()->bindData($result['list']);
         $this->success('获取商品数据', $result);
