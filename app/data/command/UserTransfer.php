@@ -140,12 +140,13 @@ class UserTransfer extends Command
     private function queryTransferWallet(array $item)
     {
         $config = $this->getConfig($item['uid']);
+        [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
         $result = Transfers::instance($config)->query($item['partner_trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
             $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
                 'status'      => 5,
-                'appid'       => $item['appid'],
-                'openid'      => $item['openid'],
+                'appid'       => $config['appid'],
+                'openid'      => $config['openid'],
                 'trade_time'  => $result['payment_time'],
                 'change_time' => date('Y-m-d H:i:s'),
                 'change_desc' => '微信提现打款成功',
@@ -166,13 +167,14 @@ class UserTransfer extends Command
     private function queryTransferBank(array $item)
     {
         $config = $this->getConfig($item['uid']);
+        [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
         $result = TransfersBank::instance($config)->query($item['partner_trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
             if ($result['status'] === 'SUCCESS') {
                 $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
                     'status'      => 5,
-                    'appid'       => $item['appid'],
-                    'openid'      => $item['openid'],
+                    'appid'       => $config['appid'],
+                    'openid'      => $config['openid'],
                     'trade_time'  => $result['pay_succ_time'] ?: date('Y-m-d H:i:s'),
                     'change_time' => date('Y-m-d H:i:s'),
                     'change_desc' => '微信提现打款成功',
