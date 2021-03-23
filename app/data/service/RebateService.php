@@ -203,9 +203,9 @@ class RebateService extends Service
         $key = "{$this->user['id']}";
         $map = ['type' => self::PRIZE_03, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("direct_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
-            $value = $this->config("direct_value_vip_{$key}");
-            $name = "{$this->name(self::PRIZE_03)}，订单 {$value}%";
-            $amount = floatval($value * $this->order['rebate_amount'] / 100);
+            $rate = $this->config("direct_value_vip_{$key}");
+            $name = "{$this->name(self::PRIZE_03)}，订单 {$rate}%";
+            $amount = floatval($rate * $this->order['rebate_amount'] / 100);
             // 写入返利记录
             $this->addRebateRecord($this->from1['id'], $map, $name, $amount);
         }
@@ -226,9 +226,9 @@ class RebateService extends Service
         $key = "{$this->user['id']}";
         $map = ['type' => self::PRIZE_04, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("indirect_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
-            $value = $this->config("indirect_value_vip_{$key}");
-            $name = "{$this->name(self::PRIZE_04)}，订单 {$value}%";
-            $amount = floatval($value * $this->order['rebate_amount'] / 100);
+            $rate = $this->config("indirect_value_vip_{$key}");
+            $name = "{$this->name(self::PRIZE_04)}，订单 {$rate}%";
+            $amount = floatval($rate * $this->order['rebate_amount'] / 100);
             // 写入返利记录
             $this->addRebateRecord($this->from2['id'], $map, $name, $amount);
         }
