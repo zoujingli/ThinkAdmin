@@ -61,18 +61,18 @@ class UserUpgradeService extends Service
         }
         // 购买入会商品升级
         $query = $this->app->db->name('ShopOrderItem')->alias('b')->join('shop_order a', 'b.order_no=a.order_no');
-        $tmpNumber = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_upgrade');
-        if ($tmpNumber > $vipCode) {
-            $map = ['status' => 1, 'number' => $tmpNumber];
+        $tmpCode = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_upgrade');
+        if ($tmpCode > $vipCode) {
+            $map = ['status' => 1, 'number' => $tmpCode];
             $upgrade = $this->app->db->name('DataUserUpgrade')->where($map)->find();
             if (!empty($upgrade)) [$vipName, $vipCode] = [$upgrade['name'], $upgrade['number']];
         } else {
             $orderNo = null;
         }
         // 后台余额充值升级
-        $tmpNumber = $this->app->db->name('DataUserBalance')->where(['uid' => $uid, 'deleted' => 0])->max('vip_upgrade');
-        if ($tmpNumber > $vipCode) {
-            $map = ['status' => 1, 'number' => $tmpNumber];
+        $tmpCode = $this->app->db->name('DataUserBalance')->where(['uid' => $uid, 'deleted' => 0])->max('vip_upgrade');
+        if ($tmpCode > $vipCode) {
+            $map = ['status' => 1, 'number' => $tmpCode];
             $upgrade = $this->app->db->name('DataUserUpgrade')->where($map)->find();
             if (!empty($upgrade)) [$vipName, $vipCode] = [$upgrade['name'], $upgrade['number']];
         }
