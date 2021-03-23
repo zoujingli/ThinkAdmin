@@ -95,12 +95,10 @@ class UserUpgradeService extends Service
         if (!empty($orderNo)) $data['vip_order'] = $orderNo;
         if ($data['vip_code'] !== $user['vip_code']) $data['vip_datetime'] = date('Y-m-d H:i:s');
         $this->app->db->name('DataUser')->where(['id' => $uid])->update($data);
-        if ($user['vip_code'] < $vipCode) {
-            // 用户升级事件
-            $this->app->event->trigger('UserUpgradeLevel', [
-                'uid' => $user['id'], 'order_no' => $orderNo, 'vip_code_old' => $user['vip_code'], 'vip_code_new' => $vipCode,
-            ]);
-        }
+        // 用户升级事件
+        if ($user['vip_code'] < $vipCode) $this->app->event->trigger('UserUpgradeLevel', [
+            'uid' => $user['id'], 'order_no' => $orderNo, 'vip_code_old' => $user['vip_code'], 'vip_code_new' => $vipCode,
+        ]);
         return ($parent && $user['pid2'] > 0) ? $this->upgrade($user['pid2'], false) : true;
     }
 
