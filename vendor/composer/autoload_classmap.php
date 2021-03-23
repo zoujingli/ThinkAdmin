@@ -180,6 +180,7 @@ return array(
     'WePayV3\\Refund' => $vendorDir . '/zoujingli/wechat-developer/WePayV3/Refund.php',
     'WePay\\Bill' => $vendorDir . '/zoujingli/wechat-developer/WePay/Bill.php',
     'WePay\\Coupon' => $vendorDir . '/zoujingli/wechat-developer/WePay/Coupon.php',
+    'WePay\\Custom' => $vendorDir . '/zoujingli/wechat-developer/WePay/Custom.php',
     'WePay\\Order' => $vendorDir . '/zoujingli/wechat-developer/WePay/Order.php',
     'WePay\\Redpack' => $vendorDir . '/zoujingli/wechat-developer/WePay/Redpack.php',
     'WePay\\Refund' => $vendorDir . '/zoujingli/wechat-developer/WePay/Refund.php',

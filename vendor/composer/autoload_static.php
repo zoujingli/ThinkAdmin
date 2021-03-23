@@ -309,6 +309,7 @@ class ComposerStaticInit6dcb8a18f830adceacf76408fbd14a53
         'WePayV3\\Refund' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Refund.php',
         'WePay\\Bill' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Bill.php',
         'WePay\\Coupon' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Coupon.php',
+        'WePay\\Custom' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Custom.php',
         'WePay\\Order' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Order.php',
         'WePay\\Redpack' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Redpack.php',
         'WePay\\Refund' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Refund.php',

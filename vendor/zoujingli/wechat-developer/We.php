@@ -74,8 +74,9 @@ use WeChat\Exceptions\InvalidInstanceException;
  *
  * ----- WePay -----
  * @method \WePay\Bill WePayBill($options = []) static 微信商户账单及评论
- * @method \WePay\Coupon WePayCoupon($options = []) static 微信商户代金券
  * @method \WePay\Order WePayOrder($options = []) static 微信商户订单
+ * @method \WePay\Coupon WePayCoupon($options = []) static 微信商户代金券
+ * @method \WePay\Custom WePayCustom($options = []) static 微信商户海关
  * @method \WePay\Refund WePayRefund($options = []) static 微信商户退款
  * @method \WePay\Redpack WePayRedpack($options = []) static 微信红包支持
  * @method \WePay\Transfers WePayTransfers($options = []) static 微信商户打款到零钱
@@ -87,7 +88,7 @@ class We
      * 定义当前版本
      * @var string
      */
-    const VERSION = '1.2.28';
+    const VERSION = '1.2.29';
 
     /**
      * 静态配置
