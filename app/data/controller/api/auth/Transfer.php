@@ -41,8 +41,6 @@ class Transfer extends Auth
         $data['uid'] = $this->uuid;
         $data['date'] = date('Y-m-d');
         $data['code'] = CodeExtend::uniqidDate(20, 'T');
-        $data['openid1'] = $this->user['openid1'];
-        $data['openid2'] = $this->user['openid2'];
         // 提现状态处理
         if (empty($transfers[$data['type']]['state']['audit'])) {
             $data['status'] = 1;

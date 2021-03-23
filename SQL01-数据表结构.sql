@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 22/03/2021 15:05:49
+ Date: 23/03/2021 14:35:38
 */
 
 SET NAMES utf8mb4;
@@ -300,8 +300,8 @@ CREATE TABLE `data_user_transfer`  (
   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '提现方式',
   `date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '提现日期',
   `code` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '提现单号',
-  `openid1` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '公众号OPENID1',
-  `openid2` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '公众号OPENID2',
+  `appid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '公众号APPID',
+  `openid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '公众号OPENID',
   `charge_rate` decimal(20, 4) NULL DEFAULT 0.0000 COMMENT '提现手续费比例',
   `charge_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '提现手续费金额',
   `amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '提现转账金额',
@@ -329,8 +329,8 @@ CREATE TABLE `data_user_transfer`  (
   INDEX `idx_data_user_transfer_type`(`type`) USING BTREE,
   INDEX `idx_data_user_transfer_code`(`code`) USING BTREE,
   INDEX `idx_data_user_transfer_status`(`status`) USING BTREE,
-  INDEX `idx_data_user_transfer_openid1`(`openid1`) USING BTREE,
-  INDEX `idx_data_user_transfer_openid2`(`openid2`) USING BTREE,
+  INDEX `idx_data_user_transfer_appid`(`appid`) USING BTREE,
+  INDEX `idx_data_user_transfer_openid`(`openid`) USING BTREE,
   INDEX `idx_data_user_transfer_audit_status`(`audit_status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-提现' ROW_FORMAT = Compact;
 
@@ -813,7 +813,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 94 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for system_queue
