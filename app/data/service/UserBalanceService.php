@@ -47,16 +47,18 @@ class UserBalanceService extends Service
      */
     public function confirm(string $orderNo): array
     {
-        $map = [['order_no', '=', $orderNo], ['status', '>=', 4]];
+        $map = [['status', '>=', 4], ['order_no', '=', $orderNo]];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) throw new \think\admin\Exception('需处理的订单状态异常');
-        data_save('DataUserBalance', [
+
+        if ($order['reward_balance'] > 0) data_save('DataUserBalance', [
             'uid'    => $order['uid'],
             'code'   => $order['order_no'],
             'name'   => "订单余额充值",
             'remark' => "来自订单{$order['order_no']}的余额充值",
             'amount' => $order['reward_balance'],
         ], 'code', ['name' => '订单余额充值']);
+
         return $this->amount($order['uid']);
     }
 
