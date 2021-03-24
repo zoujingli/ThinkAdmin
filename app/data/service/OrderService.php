@@ -68,7 +68,7 @@ class OrderService extends Service
             ]);
         }
         // 重新计算用户等级
-        UserUpgradeService::instance()->upgrade($user['id'], $orderNo);
+        UserUpgradeService::instance()->upgrade($user['id'], true, $orderNo);
         return [$user, $order, $entry];
     }
 

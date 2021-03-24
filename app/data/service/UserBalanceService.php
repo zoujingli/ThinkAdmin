@@ -56,7 +56,7 @@ class UserBalanceService extends Service
             'name'   => "订单余额充值",
             'remark' => "来自订单{$order['order_no']}的余额充值",
             'amount' => $order['reward_balance'],
-        ], 'code');
+        ], 'code', ['name' => '订单余额充值']);
         return $this->amount($order['uid']);
     }
 
