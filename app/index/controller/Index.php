@@ -33,18 +33,19 @@ class Index extends Controller
      */
     public function reset()
     {
-        exit();
-        $this->_query('data_user')->empty();
-        $this->_query('data_user_token')->empty();
-        $this->_query('data_user_address')->empty();
+        exit('Disable Reset!');
 
-        $this->_query('data_user_rebate')->empty();
-        $this->_query('data_user_balance')->empty();
-        $this->_query('data_user_transfer')->empty();
+        $this->_query('DataUser')->empty();
+        $this->_query('DataUserToken')->empty();
+        $this->_query('DataUserAddress')->empty();
 
-        $this->_query('shop_order')->empty();
-        $this->_query('shop_order_item')->empty();
-        $this->_query('shop_order_send')->empty();
-        $this->_query('shop_payment_item')->empty();
+        $this->_query('DataUserRebate')->empty();
+        $this->_query('DataUserBalance')->empty();
+        $this->_query('DataUserTransfer')->empty();
+
+        $this->_query('ShopOrder')->empty();
+        $this->_query('ShopOrderItem')->empty();
+        $this->_query('ShopOrderSend')->empty();
+        $this->_query('ShopPaymentItem')->empty();
     }
 }
