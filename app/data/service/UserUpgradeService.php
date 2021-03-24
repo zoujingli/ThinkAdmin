@@ -122,7 +122,7 @@ class UserUpgradeService extends Service
         if (empty($pid)) return [0, '绑定推荐人不存在'];
         if ($uid == $pid) return [0, '推荐人不能是自己'];
         $parant = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
-        if (empty($parant['pids']) || empty($parant['vip_code'])) return [0, '推荐人无推荐资格'];
+        if (empty($parant['vip_code'])) return [0, '推荐人无推荐资格'];
         if (stripos($parant['path'], "-{$uid}-") !== false) return [0, '不能绑定下属'];
         // 组装代理数据
         $path = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";

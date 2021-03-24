@@ -45,6 +45,46 @@ class User extends Controller
         UserAdminService::instance()->buildByUid($data, 'pid1', 'from');
     }
 
+    /**
+     * 修改用户上传
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function parent()
+    {
+        $data = $this->_vali(['pid.default' => '', 'uid.require' => '待操作UID不能为空']);
+        if ($data['uid'] === $data['pid']) $this->error('推荐人不能是自己');
+        if (empty($data['pid'])) {
+            $map = [['id', '<>', $data['uid']], ['deleted', '=', 0]];
+            $query = $this->_query($this->table)->where($map)->equal('status,vip_code');
+            $query->like('phone,username|nickname#username')->dateBetween('create_at')->order('id desc')->page();
+        } else try {
+            $user = $this->app->db->name('DataUser')->where(['id' => $data['uid']])->find();
+            $parent = $this->app->db->name('DataUser')->where(['id' => $data['pid']])->find();
+            if (empty($user)) $this->error('读取用户信息失败！');
+            if (empty($parent)) $this->error('推荐人UID不能为空！');
+            $this->app->db->transaction(function () use ($data, $user, $parent) {
+                if (empty($parent['vip_code'])) $this->error('推荐人无推荐资格');
+                if (is_numeric(strpos($parent['path'], "-{$data['uid']}-"))) $this->error('推荐人不能绑下属');
+                // 组装代理数据
+                $path = rtrim($parent['path'] ?: '-', '-') . "-{$parent['id']}-";
+                $this->app->db->name('DataUser')->where(['id' => $data['uid']])->update([
+                    'pid0' => $parent['id'], 'pid1' => $parent['id'], 'pid2' => $parent['pid1'],
+                    'path' => $path, 'layer' => substr_count($path, '-'),
+                ]);
+                $newPath = rtrim($path, '-') . "-{$user['id']}-";
+                $oldPath = rtrim($user['path'], '-') . "-{$user['id']}-";
+                $this->app->db->name('DataUser')->whereLike('path', "{$oldPath}%")->ex;
+            });
+            $this->success('修改推荐人成功！');
+        } catch (\think\exception\HttpResponseException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+        }
+    }
 
     /**
      * 重新计算用户余额返利
