@@ -28,6 +28,9 @@ class Transfer extends Auth
      */
     public function add()
     {
+        // 检查用户状态
+        $this->checkUserStatus();
+        // 接收输入数据
         $data = $this->_vali([
             'type.require'   => '提现方式不能为空！',
             'amount.require' => '提现金额不能为空！',

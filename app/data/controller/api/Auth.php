@@ -78,4 +78,12 @@ abstract class Auth extends Controller
         }
     }
 
+    /**
+     * 显示用户禁用提示
+     */
+    protected function checkUserStatus()
+    {
+        $this->error('抱歉，账户已被冻结！');
+    }
+
 }

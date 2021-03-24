@@ -52,6 +52,8 @@ class Order extends Auth
      */
     public function add()
     {
+        // 检查用户状态
+        $this->checkUserStatus();
         // 商品规则
         $rules = $this->request->post('items', '');
         if (empty($rules)) $this->error('商品不能为空');
