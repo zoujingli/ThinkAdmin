@@ -65,6 +65,21 @@
         </div>
 
         <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">返利状态</label>
+            <label class="layui-input-inline">
+                <select class="layui-select" name="rebate_type">
+                    <option value=''>-- 全部状态 --</option>
+                    {foreach ['非返利的商品','是返利的商品'] as $k=>$v}
+                    {if input('rebate_type','-') eq $k.''}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/if}{/foreach}
+                </select>
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
             <label class="layui-form-label">入会礼包</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="vip_entry">
