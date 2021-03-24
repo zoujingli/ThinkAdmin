@@ -104,7 +104,7 @@
                                     <input type="checkbox" ng-model="x.status" ng-change="SwitchActiveProvince(x, true)" ng-value="x.name" lay-ignore>
                                 </label>
                                 <span ng-if="x.name==city.name" class="pointer notselect color-blue" ng-click="SwitchActiveProvince(x, false)">{{x.name}}</span>
-                                <span ng-if="x.name!=city.name" class="pointer notselect" ng-click="SwitchActiveProvince(x, false)">{{x.name}}</span>
+                                <span ng-if="x.name!=city.name" class="pointer notselect color-text" ng-click="SwitchActiveProvince(x, false)">{{x.name}}</span>
                             </div>
                         </div>
                     </div>
@@ -308,7 +308,6 @@
                     if (province.subs.length > 0) provinces.push(province);
                 }
                 $rootScope.rule.city = provinces;
-
             }
             /*! 数据变化监听处理 */
             $rootScope.$watch('citys', $rootScope.SetRuleData, true);
