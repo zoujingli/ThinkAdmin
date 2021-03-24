@@ -120,7 +120,7 @@
                         {if $g.vip_entry > 0 and $g.vip_upgrade > $g.vip_code}
                         [ <b class="color-red">VIP{$g.vip_code}</b> <span class="layui-icon font-s10 color-blue">&#xe602;</span> <b class="color-red">VIP{$g.vip_upgrade}</b> ]
                         {else}
-                        [ <b class="color-blue">VIP{$g.vip_code}</b> ]
+                        [ <b class="color-text">VIP{$g.vip_code}</b> ]
                         {/if}
                         {if $g.discount_rate < 100.00}
                         <b class="color-blue">享{$g.discount_rate+0}%折扣</b><span class="color-red"> x </span>
