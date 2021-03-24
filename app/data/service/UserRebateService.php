@@ -42,7 +42,7 @@ class UserRebateService extends Service
      */
     public function confirm(string $orderNo): array
     {
-        $map = [['status', '>', 3], ['order_no', '=', $orderNo]];
+        $map = [['status', '>=', 4], ['order_no', '=', $orderNo]];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) return [0, '需处理的订单状态异常！'];
 
