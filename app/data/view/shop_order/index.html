@@ -80,9 +80,9 @@
                             支付时间：{$vo.payment_datetime|format_datetime}
                             {notempty name='vo.payment_name'}
                             <!--{notempty name='vo.payment_image'}-->
-                            <span data-tips-text="{$vo.payment_remark|default=''}" data-tips-image="{$vo.payment_image}" class="margin-left-5">({$vo.payment_name|default='-'})</span>
+                            <span data-tips-text="{$vo.payment_remark|default=''}" data-tips-image="{$vo.payment_image}" class="margin-left-5 color-blue">({$vo.payment_name|default='-'})</span>
                             <!--{else}-->
-                            <span class="margin-left-5">({$vo.payment_name|default='-'})</span>
+                            <span class="margin-left-5 color-blue">({$vo.payment_name|default='-'})</span>
                             <!--{/notempty}-->
                             {/notempty}
                         </div>
