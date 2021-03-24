@@ -99,7 +99,7 @@ class UserUpgradeService extends Service
         if ($user['vip_code'] < $vipCode) $this->app->event->trigger('UserUpgradeLevel', [
             'uid' => $user['id'], 'order_no' => $orderNo, 'vip_code_old' => $user['vip_code'], 'vip_code_new' => $vipCode,
         ]);
-        return ($parent && $user['pid2'] > 0) ? $this->upgrade($user['pid2'], false) : true;
+        return ($parent && $user['pid1'] > 0) ? $this->upgrade($user['pid1'], false) : true;
     }
 
     /**
