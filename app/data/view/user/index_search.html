@@ -32,6 +32,36 @@
         <!--{/notempty}-->
 
         <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">推荐人手机</label>
+            <label class="layui-input-inline">
+                <input name="from_phone" value="{:input('from_phone')}" placeholder="请输入推荐人手机" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">推荐人昵称</label>
+            <label class="layui-input-inline">
+                <input name="from_username" value="{:input('from_username')}" placeholder="请输入推荐人昵称" class="layui-input">
+            </label>
+        </div>
+
+        <!--{notempty name='upgrades'}-->
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">推荐人等级</label>
+            <div class="layui-input-inline">
+                <select name="from_vipcode" class="layui-select">
+                    <option value="">-- 全部 --</option>
+                    {foreach $upgrades as $upgrade}{if input('from_vipcode') eq $upgrade.number}
+                    <option selected value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                    {else}
+                    <option value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
+        </div>
+        <!--{/notempty}-->
+
+        <div class="layui-form-item layui-inline">
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
@@ -58,5 +88,6 @@
             <button type="button" data-export-list class="layui-btn layui-btn-primary layui-hide"><i class="layui-icon layui-icon-export"></i> 导 出</button>
         </div>
     </form>
+
     <script>form.render()</script>
 </fieldset>

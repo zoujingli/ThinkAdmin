@@ -31,8 +31,12 @@ class User extends Controller
     {
         $this->title = '普通用户管理';
         $query = $this->_query($this->table);
-        $query->like('phone,username|nickname#username')->equal('vip_code');
-        $query->order('id desc')->equal('status')->dateBetween('create_at')->page();
+        // 用户搜索查询
+        $db = $this->_query('DataUser')->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
+        if ($db->getOptions('where')) $query->whereRaw("pid1 in {$db->field('id')->buildSql()}");
+        // 数据查询分页
+        $query->like('phone,username|nickname#username')->equal('status,vip_code');
+        $query->order('id desc')->dateBetween('create_at')->page();
     }
 
     /**
