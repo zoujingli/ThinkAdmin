@@ -226,21 +226,19 @@ class Queue extends Command
 
     /**
      * 立即监听任务
-     * @throws \Exception
+     * @throws \think\db\exception\DbException
      */
     protected function listenAction()
     {
         set_time_limit(0);
+        ignore_user_abort(true);
         $this->app->db->setLog(new NullLogger());
         $this->app->db->name($this->table)->count();
-        if ($this->process->iswin()) {
-            $this->setProcessTitle("ThinkAdmin {$this->process->version()} Queue Listen");
-        }
         $this->output->writeln("\tYou can exit with <info>`CTRL-C`</info>");
-        $this->output->writeln('============== LISTENING ==============');
+        $this->output->writeln('=============== LISTENING ===============');
         while (true) {
-            [$start, $where] = [microtime(true), [['status', '=', 1], ['exec_time', '<=', time()]]];
-            foreach ($this->app->db->name($this->table)->where($where)->order('exec_time asc')->cursor() as $vo) try {
+            [$map, $start] = [[['status', '=', 1], ['exec_time', '<=', time()]], microtime(true)];
+            foreach ($this->app->db->name($this->table)->where($map)->order('exec_time asc')->cursor() as $vo) try {
                 $args = "xadmin:queue dorun {$vo['code']} -";
                 $this->output->comment(">$ {$this->process->think($args)}");
                 if (count($this->process->thinkQuery($args)) > 0) {
@@ -261,11 +259,12 @@ class Queue extends Command
 
     /**
      * 执行指定的任务内容
-     * @throws \Exception
+     * @throws \think\db\exception\DbException
      */
     protected function doRunAction()
     {
         set_time_limit(0);
+        ignore_user_abort(true);
         $this->code = trim($this->input->getArgument('code'));
         if (empty($this->code)) {
             $this->output->error('Task number needs to be specified for task execution');
@@ -281,10 +280,6 @@ class Queue extends Command
                     'outer_time' => 0, 'exec_pid' => getmypid(), 'exec_desc' => '', 'status' => 2,
                 ]);
                 $this->queue->progress(2, '>>> 任务处理开始 <<<', 0);
-                // 设置进程标题
-                if ($this->process->iswin()) {
-                    $this->setProcessTitle("ThinkAdmin {$this->process->version()} Queue - {$this->queue->title}");
-                }
                 // 执行任务内容
                 defined('WorkQueueCall') or define('WorkQueueCall', true);
                 defined('WorkQueueCode') or define('WorkQueueCode', $this->code);
@@ -316,7 +311,7 @@ class Queue extends Command
      * @param integer $status 任务状态
      * @param string $message 消息内容
      * @param boolean $isSplit 是否分隔
-     * @throws \Exception
+     * @throws \think\db\exception\DbException
      */
     protected function updateQueue(int $status, string $message, bool $isSplit = true)
     {
