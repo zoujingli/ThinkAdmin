@@ -56,8 +56,8 @@ class OrderService extends Service
         // 更新用户购买资格
         $entry = $this->vipEntry($order['uid']);
         // 尝试绑定代理用户
-        if (empty($user['pid1']) && ($order['puid1'] > 0 || $user['pid1'] > 0)) {
-            $puid1 = $order['puid1'] > 0 ? $order['puid1'] : $user['bid'];
+        if (empty($user['pids']) && ($order['puid1'] > 0 || $user['pid1'] > 0)) {
+            $puid1 = $order['puid1'] > 0 ? $order['puid1'] : $user['pid0'];
             UserUpgradeService::instance()->bindAgent($user['id'], $puid1);
         }
         // 重置用户信息并绑定订单
