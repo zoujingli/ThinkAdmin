@@ -33,7 +33,7 @@ class Index extends Controller
      */
     public function reset()
     {
-        exit('Disable Reset!');
+        exit('Disable Reset.');
 
         $this->_query('DataUser')->empty();
         $this->_query('DataUserToken')->empty();
