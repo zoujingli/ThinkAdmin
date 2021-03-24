@@ -99,6 +99,9 @@ class RebateService extends Service
         $map = ['order_no' => $orderNo, 'payment_status' => 1];
         $this->order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($this->order)) throw new Exception('订单不存在');
+        if ($this->order['payment_type'] === 'balance') {
+            throw new Exception('余额支付不反利');
+        }
         // 检查订单参与返利
         if ($this->order['amount_total'] <= 0) throw new Exception('订单金额为零');
         if ($this->order['rebate_amount'] <= 0) throw new Exception('订单返利为零');
