@@ -55,22 +55,31 @@ class BalancePyamentService extends PaymentService
         if ($order['status'] !== 2) throw new Exception("不可发起支付");
         // 创建支付行为
         $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
-        // 扣减用户余额
+        // 检查能否支付
         [$total, $count] = UserBalanceService::instance()->amount($order['uid'], [$orderNo]);
         if ($paymentAmount > $total - $count) throw new Exception("可抵扣余额不足");
-        $this->app->db->name('ShopOrder')->where(['order_no' => $orderNo])->update(['payment_balance' => $paymentAmount]);
-        // 扣除余额金额
-        data_save('DataUserBalance', [
-            'uid'    => $order['uid'],
-            'code'   => $order['order_no'],
-            'name'   => "账户余额支付",
-            'remark' => "使用余额支付订单{$order['order_no']}金额{$paymentAmount}元",
-            'amount' => -$paymentAmount,
-        ], 'code', ['name' => '账户余额支付']);
-        // 更新支付行为
-        $this->updatePaymentAction($orderNo, CodeExtend::uniqidDate(20), $paymentAmount, '账户余额支付');
-        // 刷新用户余额
-        UserBalanceService::instance()->amount($order['uid']);
-        return ['info' => '余额支付完成'];
+        try {
+            // 扣减用户余额
+            $this->app->db->transaction(function () use ($order, $paymentAmount) {
+                $this->app->db->name('ShopOrder')->where(['order_no' => $order['order_no']])->update([
+                    'payment_balance' => $paymentAmount,
+                ]);
+                // 扣除余额金额
+                data_save('DataUserBalance', [
+                    'uid'    => $order['uid'],
+                    'code'   => $order['order_no'],
+                    'name'   => "账户余额支付",
+                    'remark' => "使用余额支付订单{$order['order_no']}金额{$paymentAmount}元",
+                    'amount' => -$paymentAmount,
+                ], 'code', ['name' => '账户余额支付']);
+                // 更新支付行为
+                $this->updatePaymentAction($order['order_no'], CodeExtend::uniqidDate(20), $paymentAmount, '账户余额支付');
+            });
+            // 刷新用户余额
+            UserBalanceService::instance()->amount($order['uid']);
+            return ['code' => 1, 'info' => '余额支付完成'];
+        } catch (\Exception $exception) {
+            return ['code' => 0, 'info' => $exception->getMessage()];
+        }
     }
 }
