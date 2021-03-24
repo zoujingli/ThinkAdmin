@@ -199,8 +199,8 @@ class Order extends Auth
      */
     public function discount()
     {
-        $data = $this->_vali(['discount_id.require' => '折扣编号不能为空！']);
-        [$map, $rate] = [['status' => 1, 'deleted' => 0, 'id' => $data['discount_id']], 100.00];
+        $data = $this->_vali(['discount.require' => '折扣编号不能为空！']);
+        [$map, $rate] = [['status' => 1, 'deleted' => 0, 'id' => $data['discount']], 100.00];
         if ($discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
             foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $this->user['vip_code']) {
                 $rate = round($vo['discount']);
