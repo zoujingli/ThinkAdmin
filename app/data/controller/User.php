@@ -63,23 +63,31 @@ class User extends Controller
         } else try {
             $user = $this->app->db->name('DataUser')->where(['id' => $data['uid']])->find();
             $parent = $this->app->db->name('DataUser')->where(['id' => $data['pid']])->find();
-            if (empty($user)) $this->error('读取用户信息失败！');
-            if (empty($parent)) $this->error('推荐人UID不能为空！');
+            if (empty($user)) $this->error('读取用户数据失败！');
+            if (empty($parent)) $this->error('读取推荐人数据失败！');
             $this->app->db->transaction(function () use ($data, $user, $parent) {
                 if (empty($parent['vip_code'])) $this->error('推荐人无推荐资格');
                 if (is_numeric(strpos($parent['path'], "-{$data['uid']}-"))) $this->error('推荐人不能绑下属');
-                // 组装代理数据
+                // 组装当前用户上级数据
                 $path = rtrim($parent['path'] ?: '-', '-') . "-{$parent['id']}-";
-                $this->app->db->name('DataUser')->where(['id' => $data['uid']])->update([
-                    'pid0' => $parent['id'], 'pid1' => $parent['id'], 'pid2' => $parent['pid1'],
-                    'path' => $path, 'layer' => substr_count($path, '-'),
-                ]);
+//                $this->app->db->name('DataUser')->where(['id' => $data['uid']])->update([
+//                    'pid0' => $parent['id'], 'pid1' => $parent['id'], 'pid2' => $parent['pid1'],
+//                    'path' => $path, 'layer' => substr_count($path, '-'),
+//                ]);
+                // 替换原来用户的下级用户
                 $newPath = rtrim($path, '-') . "-{$user['id']}-";
                 $oldPath = rtrim($user['path'], '-') . "-{$user['id']}-";
-                $this->app->db->name('DataUser')->whereLike('path', "{$oldPath}%")->update([
-                    'path' => $this->app->db->raw("rep"),
-                ]);
+                foreach ($this->app->db->name('DataUser')->whereLike('path', "{$oldPath}%")->cursor() as $vo) {
+                    dump($vo);
+                }
+//                $this->app->db->name('DataUser')->whereLike('path', "{$oldPath}%")->update([
+//                    'path' => $this->app->db->raw("replace(path,'{$oldPath}','{$newPath}')"),
+//                ]);
+//                foreach (array_reverse(array_unique(array_merge(str2arr($newPath), str2arr($oldPath)))) as $uid) {
+//                    UserUpgradeService::instance()->upgrade($uid);
+//                }
             });
+            exit;
             $this->success('修改推荐人成功！');
         } catch (\think\exception\HttpResponseException $exception) {
             throw $exception;
