@@ -103,7 +103,8 @@
                                 <label class="think-checkbox margin-right-0">
                                     <input type="checkbox" ng-model="x.status" ng-change="SwitchActiveProvince(x, true)" ng-value="x.name" lay-ignore>
                                 </label>
-                                <span class="pointer notselect" ng-click="SwitchActiveProvince(x, false)">{{x.name}}</span>
+                                <span ng-if="x.name==city.name" class="pointer notselect color-blue" ng-click="SwitchActiveProvince(x, false)">{{x.name}}</span>
+                                <span ng-if="x.name!=city.name" class="pointer notselect" ng-click="SwitchActiveProvince(x, false)">{{x.name}}</span>
                             </div>
                         </div>
                     </div>
