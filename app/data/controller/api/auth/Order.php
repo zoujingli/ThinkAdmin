@@ -100,15 +100,7 @@ class Order extends Auth
                 $allowPayments = $_allowPayments;
             }
             // 商品折扣处理
-            [$discountId, $discountRate] = [0, 100.00];
-            if ($goodsInfo['discount_id'] > 0) {
-                $map = ['status' => 1, 'deleted' => 0, 'id' => $goodsInfo['discount_id']];
-                if ($discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
-                    foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $this->user['vip_code']) {
-                        [$discountId, $discountRate] = [$goodsInfo['discount_id'], $vo['discount']];
-                    }
-                }
-            }
+            [$discountId, $discountRate] = OrderService::instance()->discount($goodsInfo['discount_id'], $this->user['vip_code']);
             // 订单详情处理
             $items[] = [
                 'uid'             => $order['uid'],
@@ -200,12 +192,7 @@ class Order extends Auth
     public function discount()
     {
         $data = $this->_vali(['discount.require' => '折扣编号不能为空！']);
-        [$map, $rate] = [['status' => 1, 'deleted' => 0, 'id' => $data['discount']], 100.00];
-        if ($discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
-            foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $this->user['vip_code']) {
-                $rate = round($vo['discount']);
-            }
-        }
+        [, $rate] = OrderService::instance()->discount(intval($data['discount']), $this->user['vip_code']);
         $this->success('获取用户折扣', ['rate' => $rate]);
     }
 

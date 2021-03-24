@@ -96,6 +96,23 @@ class OrderService extends Service
     }
 
     /**
+     * 获取级别折扣比例
+     * @param integer $disId 折扣方案ID
+     * @param integer $vipCode 等级序号
+     * @return array [方案ID, 等级序号]
+     */
+    public function discount(int $disId, int $vipCode): array
+    {
+        [$map, $rate] = ['id' => $disId, ['status' => 1, 'deleted' => 0], 100.00];
+        if ($discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
+            foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $vipCode) {
+                $rate = round($vo['discount']);
+            }
+        }
+        return [$disId, $rate];
+    }
+
+    /**
      * 绑定订单详情数据
      * @param array $data
      * @param boolean $fromer
