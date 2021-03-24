@@ -42,9 +42,10 @@ class UserRebateService extends Service
      */
     public function confirm(string $orderNo): array
     {
-        $map = ['order_no' => $orderNo, 'status' => 6];
+        $map = [['status', '>', 3], ['order_no', '=', $orderNo]];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) return [0, '需处理的订单状态异常！'];
+
         $map = [['status', '=', 0], ['order_no', 'like', "{$orderNo}%"]];
         $this->app->db->name('DataUserRebate')->where($map)->update(['status' => 1]);
         if (UserUpgradeService::instance()->upgrade($order['uid'])) {
