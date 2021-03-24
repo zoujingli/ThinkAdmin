@@ -75,7 +75,7 @@ class UserRebate extends Controller
     }
 
     /**
-     * 返利奖励配置
+     * 用户返利配置
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -84,7 +84,7 @@ class UserRebate extends Controller
     public function config()
     {
         $this->skey = 'RebateRule';
-        $this->title = '返利奖励配置';
+        $this->title = '用户返利配置';
         if ($this->request->isGet()) {
             $this->data = sysdata($this->skey);
             $this->levels = UserUpgradeService::instance()->levels();

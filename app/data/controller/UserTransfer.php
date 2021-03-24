@@ -33,7 +33,7 @@ class UserTransfer extends Controller
     }
 
     /**
-     * 提现规则配置
+     * 用户提现配置
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -41,7 +41,7 @@ class UserTransfer extends Controller
     public function config()
     {
         $this->skey = 'TransferRule';
-        $this->title = '提现规则配置';
+        $this->title = '用户提现配置';
         $this->_sysdata();
     }
 
