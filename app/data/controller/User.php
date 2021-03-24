@@ -76,7 +76,9 @@ class User extends Controller
                 ]);
                 $newPath = rtrim($path, '-') . "-{$user['id']}-";
                 $oldPath = rtrim($user['path'], '-') . "-{$user['id']}-";
-                $this->app->db->name('DataUser')->whereLike('path', "{$oldPath}%")->ex;
+                $this->app->db->name('DataUser')->whereLike('path', "{$oldPath}%")->update([
+                    'path' => $this->app->db->raw("rep"),
+                ]);
             });
             $this->success('修改推荐人成功！');
         } catch (\think\exception\HttpResponseException $exception) {
