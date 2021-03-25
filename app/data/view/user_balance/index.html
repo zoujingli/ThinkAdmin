@@ -22,7 +22,6 @@
             <th class='text-left nowrap'>用户信息</th>
             <th class='text-left nowrap'>充值金额</th>
             <th class='text-left nowrap'>充值描述</th>
-            <th class='text-left nowrap'>操作用户</th>
             <th></th>
         </tr>
         </thead>
@@ -43,21 +42,17 @@
             </td>
             <td class="nowrap">
                 <div>交易金额：{if $vo.amount>=0}<b class="color-green">{$vo.amount+0}</b>{else}<b class="color-blue">{$vo.amount+0}</b>{/if} 元</div>
-                <div>升级等级：{if $vo.vip_upgrade>0}<span>升级到 [ <b class="color-text">VIP{$vo.vip_upgrade}</b> ] <b class="color-text">{$vo.vip_upgradeinfo.name|default=''}</b></span>{else}<span class="color-desc">不升级</span>{/if}</div>
+                <div>升级等级：{if $vo.vip_upgrade>0}<span>升级到 [ <b class="color-text">VIP{$vo.vip_upgrade}</b> ] <b class="color-text">{$vo.vip_upgradeinfo.name|default=''}</b></span>{else}<span class="color-desc">不进行用户升级</span>{/if}</div>
                 <div>充值单号：<b class="color-blue">{$vo.code|default='-'}</b></div>
             </td>
             <td class="nowrap sub-strong-blue">
                 <div>充值名称：{$vo.name|default='-'}</div>
-                <div>充值单号：<b>{$vo.code|default='-'}</b></div>
+                <div>操作时间：<span class="color-blue">{$vo.create_at|format_datetime}</span><span class="margin-left-5 color-desc">{$vo.create_byname|default=''}</span></div>
                 <!--{notempty name='vo.remark'}-->
                 <div>充值备注：{$vo.remark}</div>
                 <!--{else}-->
-                <div>充值备注：<span class="color-desc">未填写充值记录备注</span></div>
+                <div>充值备注：<span class="color-desc">未填写充值记录的备注内容</span></div>
                 <!--{/notempty}-->
-            </td>
-            <td class="nowrap">
-                <div>操作账号：{$vo.create_byname|default=''}</div>
-                <div>操作时间：{$vo.create_at|format_datetime}</div>
             </td>
             <td class="nowrap">
                 <!--{if auth("remove") and stripos($vo.code,'B') === 0}-->
