@@ -297,7 +297,7 @@ class RebateService extends Service
             if ($user['vip_code'] > $prevLevel) {
                 if (($amount = $this->_prize06amount($prevLevel + 1, $user['vip_code'])) > 0.00) {
                     $map = ['type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-                    $name = "{$this->name(self::PRIZE_06)}，[ {$prevLevel} > {$user['vip_code']} ] 每单 {$amount} 元";
+                    $name = "{$this->name(self::PRIZE_06)}，[ VIP{$prevLevel} > VIP{$user['vip_code']} ] 每单 {$amount} 元";
                     // 写入返利记录
                     $this->addRebateRecord($user['id'], $map, $name, $amount);
                 }
