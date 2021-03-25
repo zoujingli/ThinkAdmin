@@ -132,6 +132,7 @@ class UserUpgradeService extends Service
         ];
         // 更新用户代理
         if ($this->app->db->name('DataUser')->where(['id' => $uid])->update($data) !== false) {
+            $this->upgrade($uid);
             return [1, '绑定代理成功'];
         } else {
             return [0, '绑定代理失败'];
