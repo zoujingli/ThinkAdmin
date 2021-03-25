@@ -49,11 +49,11 @@
                 <div class="inline-block text-middle">
                     用户昵称：{$vo.user.nickname|default='--'}<br>
                     用户手机：{$vo.user.phone|default='--'}<br>
-                    用户级别：{notempty name='vo.user.vip_code'}[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b>{else}--{/notempty}
+                    用户等级：{notempty name='vo.user.vip_code'}[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b>{else}--{/notempty}
                 </div>
             </td>
             <td class='text-left nowrap'>
-                <div class="layui-badge layui-badge-middle layui-bg-black" style="line-height:14px">{$vo.type|default=''}</div>
+                <div class="layui-badge layui-badge-middle think-bg-violet" style="line-height:13px">{$vo.type|default=''}</div>
                 <div class="inline-block text-middle">
                     <div>返利时间：<span class="color-blue">{$vo.create_at|format_datetime}</span></div>
                     <div>返利描述：{$vo.name|default='-'} {empty name='vo.status'}<span class="layui-badge layui-bg-black margin-left-5">未到账</span>{else}<span class="layui-badge layui-bg-green margin-left-5">已到账</span>{/empty}</div>
