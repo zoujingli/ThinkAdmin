@@ -101,7 +101,7 @@ class User extends Controller
     }
 
     /**
-     * 重新计算用户余额返利
+     * 重算用户余额返利
      * @auth true
      */
     public function sync()

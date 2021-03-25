@@ -69,7 +69,7 @@ class UserNotify extends Controller
     }
 
     /**
-     * 修改系统通知状态
+     * 修改通知状态
      * @auth true
      * @throws \think\db\exception\DbException
      */

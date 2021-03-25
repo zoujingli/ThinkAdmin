@@ -119,12 +119,12 @@ class UserUpgrade extends Controller
     }
 
     /**
-     * 重新计算会员级别
+     * 重算用户等级
      * @auth true
      */
     public function sync()
     {
-        $this->_queue('重新计算所有会员等级', 'xdata:UserUpgrade');
+        $this->_queue('重新计算所有用户等级', 'xdata:UserUpgrade');
     }
 
     /**
