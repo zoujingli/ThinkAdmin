@@ -67,12 +67,12 @@
             <td class="nowrap sub-strong-blue">
                 <div>累计充值 <b>{$vo.balance_total+0}</b> 元</div>
                 <div>已经使用 <b>{$vo.balance_used+0}</b> 元</div>
-                <div>剩余可用 <b>{:round($vo.balance_total-$vo.balance_used,2)+0}</b> 元</div>
+                <div>可用余额 <b>{:round($vo.balance_total-$vo.balance_used,2)+0}</b> 元</div>
             </td>
             <td class="nowrap sub-strong-blue">
-                <div>累计返利 <b>{$vo.rebate_total+$vo.rebate_lock}</b> 元 ( 含锁定 <b>{$vo.rebate_lock+0}</b> 元 )</div>
-                <div>累计已提现 <b>{$vo.rebate_used+0}</b> 元</div>
-                <div>剩余可提现 <b>{:round($vo.rebate_total-$vo.rebate_used,2)+0}</b> 元</div>
+                <div>累计返利 <b>{$vo.rebate_total+$vo.rebate_lock}</b> 元 <span class="color-desc">( 含锁定 <b>{$vo.rebate_lock+0}</b> 元 )</span></div>
+                <div>已经提现 <b>{$vo.rebate_used+0}</b> 元</div>
+                <div>剩余提现 <b>{:round($vo.rebate_total-$vo.rebate_used,2)+0}</b> 元</div>
             </td>
             <td class="nowrap sub-strong-blue">
                 <div>全部团队 <b>{$vo.teams_users_total}</b> 人 ( 业绩 <b>{$vo.teams_amount_total+0}</b> 元 )</div>
