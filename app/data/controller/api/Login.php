@@ -30,7 +30,9 @@ class Login extends Controller
      */
     protected function initialize()
     {
-        $this->type = input('api', UserAdminService::API_TYPE_WAP);
+        $this->type = $this->request->header('api-name', input('api'));
+        $this->type = $this->type ?: $this->request->header('api-type');
+        $this->type = $this->type ?: UserAdminService::API_TYPE_WAP;
         if (empty(UserAdminService::TYPES[$this->type])) {
             $this->error("接口支付[{$this->type}]未定义规则！");
         }
