@@ -13,12 +13,12 @@
                     <label class="layui-form-item relative block">
                         <span class="color-green font-w7">微信昵称</span>
                         <span class="color-desc margin-left-5">Wechat Nickname</span>
-                        <input data-bind="nickname" class="layui-input layui-bg-gray" readonly placeholder="请使用微信扫码登录" value="{$user.nickname|default=''}"/>
+                        <input data-bind="nickname" class="layui-input layui-bg-gray" readonly placeholder="请使用微信扫码登录" value="{$user.nickname|default=''}">
                     </label>
                     <label class="relative block">
                         <span class="color-green font-w7">微信标识</span>
                         <span class="color-desc margin-left-5">Wechat Openid</span>
-                        <input data-bind="openid" class="layui-input layui-bg-gray" readonly placeholder="请使用微信扫码登录" value="{$user['openid1']?:$user['openid2']}"/>
+                        <input data-bind="openid" class="layui-input layui-bg-gray" readonly placeholder="请使用微信扫码登录" value="{$user['openid1']?:$user['openid2']}">
                     </label>
                 </div>
             </div>
@@ -27,19 +27,20 @@
         <label class="layui-form-item layui-hide">
             <span class="color-green font-w7">充值单号</span>
             <span class="color-desc margin-left-5">Code</span>
-            <input class="layui-input layui-bg-gray" readonly required placeholder="请输入充值单号" name="name" value="{$vo.code|default=''}"/>
+            <input class="layui-input layui-bg-gray" readonly required placeholder="请输入充值单号" name="name" value="{$vo.code|default=''}">
         </label>
 
         <label class="layui-form-item layui-hide">
             <span class="color-green font-w7">余额充值名称</span>
             <span class="color-desc margin-left-5">Name</span>
-            <input class="layui-input" maxlength="100" required placeholder="请输入余额充值名称" name="name" value="{$vo.name|default='后台余额充值'}"/>
+            <input class="layui-input" maxlength="100" required placeholder="请输入余额充值名称" name="name" value="{$vo.name|default='后台余额充值'}">
         </label>
 
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">充值账户余额</span>
             <span class="color-desc margin-left-5">Amount</span>
-            <input class="layui-input" maxlength="10" data-blur-number="2" required placeholder="请输入充值账户余额" name="amount" value="{$vo.amount|default='0.00'}"/>
+            <input class="layui-input" maxlength="10" data-blur-number="2" required placeholder="请输入充值账户余额" name="amount" value="{$vo.amount|default='0.00'}">
+            <span class="help-block">请输入要充值的金额，充值后可以使用此余额购买商品</span>
         </label>
 
         <div class="layui-form-item">
@@ -53,6 +54,7 @@
                 <option value="{$upgrade.number|default=0}">升级到 [ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
                 {/if}{/foreach}
             </select>
+            <span class="help-block">请选择目标升级等级，当用户等级少于当前等级时会进行用户升级操作</span>
         </div>
 
         <div class="layui-form-item relative block">

@@ -92,7 +92,7 @@ class UserBalance extends Controller
         if ($this->request->isPost()) {
             $data['create_by'] = AdminService::instance()->getUserId();
             if (empty(floatval($data['amount'])) && empty($data['vip_upgrade'])) {
-                $this->error('充值金额为零并没有升级行为！');
+                $this->error('金额为零并且没有升级行为！');
             }
         }
     }
