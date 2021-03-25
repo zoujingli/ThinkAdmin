@@ -55,7 +55,7 @@ class NewsItem extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        NewsService::instance()->buildListState($data);
+        NewsService::instance()->buildData($data);
     }
 
     /**

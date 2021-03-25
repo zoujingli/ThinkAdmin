@@ -56,13 +56,13 @@ class NewsService extends Service
      * @param integer $uid 用户UID
      * @return array
      */
-    public function buildListState(array &$list, int $uid = 0): array
+    public function buildData(array &$list, int $uid = 0): array
     {
         if (count($list) > 0) {
-            [$code2, $code1, $marks] = [[], [], []];
+            [$code2, $code1] = [[], []];
+            $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
             if ($uid > 0) {
                 $map = [['uid', '=', $uid], ['code', 'in', array_unique(array_column($list, 'code'))]];
-                $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
                 $code1 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 1])->column('code');
                 $code2 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 2])->column('code');
             }

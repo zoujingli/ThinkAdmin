@@ -44,7 +44,7 @@ class News extends Controller
         $query = $this->_query('DataNewsItem')->like('name,mark')->equal('id,code');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListState($result['list'], input('uid', 0));
+        NewsService::instance()->buildData($result['list'], input('uid', 0));
         $this->success('获取文章内容', $result);
     }
 
