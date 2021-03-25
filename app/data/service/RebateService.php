@@ -72,7 +72,9 @@ class RebateService extends Service
     protected function initialize()
     {
         // 返利奖励到账时机
-        $this->status = $this->config('settl_type') > 1 ? 1 : 0;
+        // settl_type 为 1 支付后立即到账
+        // settl_type 为 2 确认后立即到账
+        $this->status = $this->config('settl_type') > 1 ? 0 : 1;
     }
 
     /**
@@ -293,9 +295,9 @@ class RebateService extends Service
         $vips = $this->app->db->name('DataUserUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->column('number');
         foreach ($this->app->db->name('DataUser')->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
             if ($user['vip_code'] > $prevLevel) {
-                if (($amount = $this->_prize06amount($prevLevel, $user['vip_code'])) > 0.00) {
+                if (($amount = $this->_prize06amount($prevLevel + 1, $user['vip_code'])) > 0.00) {
                     $map = ['type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-                    $name = "{$this->name(self::PRIZE_06)}，[ {$prevLevel} > {$user['vip_code']} ]每单 {$amount} 元";
+                    $name = "{$this->name(self::PRIZE_06)}，[ {$prevLevel} > {$user['vip_code']} ] 每单 {$amount} 元";
                     // 写入返利记录
                     $this->addRebateRecord($user['id'], $map, $name, $amount);
                 }
