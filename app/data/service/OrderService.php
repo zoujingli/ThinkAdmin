@@ -104,10 +104,8 @@ class OrderService extends Service
     public function discount(int $disId, int $vipCode): array
     {
         [$map, $rate] = ['id' => $disId, ['status' => 1, 'deleted' => 0], 100.00];
-        if ($discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items')) {
-            foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $vipCode) {
-                $rate = round($vo['discount']);
-            }
+        if ($disId > 0 && ($discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items'))) {
+            foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $vipCode) $rate = round($vo['discount']);
         }
         return [$disId, $rate];
     }
