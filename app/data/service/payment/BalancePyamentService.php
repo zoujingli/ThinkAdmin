@@ -67,11 +67,11 @@ class BalancePyamentService extends PaymentService
                 // 扣除余额金额
                 data_save('DataUserBalance', [
                     'uid'    => $order['uid'],
-                    'code'   => $order['order_no'],
+                    'code'   => "KJ{$order['order_no']}",
                     'name'   => "账户余额支付",
                     'remark' => "使用余额支付订单{$order['order_no']}金额{$paymentAmount}元",
                     'amount' => -$paymentAmount,
-                ], 'code', ['name' => '账户余额支付']);
+                ], 'code');
                 // 更新支付行为
                 $this->updatePaymentAction($order['order_no'], CodeExtend::uniqidDate(20), $paymentAmount, '账户余额支付');
             });

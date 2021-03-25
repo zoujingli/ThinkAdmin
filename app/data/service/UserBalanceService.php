@@ -53,11 +53,11 @@ class UserBalanceService extends Service
 
         if ($order['reward_balance'] > 0) data_save('DataUserBalance', [
             'uid'    => $order['uid'],
-            'code'   => $order['order_no'],
+            'code'   => "CZ{$order['order_no']}",
             'name'   => "订单余额充值",
             'remark' => "来自订单{$order['order_no']}的余额充值",
             'amount' => $order['reward_balance'],
-        ], 'code', ['name' => '订单余额充值']);
+        ], 'code');
 
         return $this->amount($order['uid']);
     }
