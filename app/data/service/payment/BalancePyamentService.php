@@ -69,7 +69,7 @@ class BalancePyamentService extends PaymentService
                     'uid'    => $order['uid'],
                     'code'   => "KC{$order['order_no']}",
                     'name'   => "账户余额支付",
-                    'remark' => "使用余额支付订单{$order['order_no']}金额{$paymentAmount}元",
+                    'remark' => "扣除订单{$order['order_no']}的余额支付{$paymentAmount}元",
                     'amount' => -$paymentAmount,
                 ], 'code');
                 // 更新支付行为
