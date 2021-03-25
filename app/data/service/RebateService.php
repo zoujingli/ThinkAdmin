@@ -144,7 +144,7 @@ class RebateService extends Service
         if ($this->app->db->name($this->table)->where($map)->count() > 0) return false;
         if (!$this->isPrizeStatus(self::PRIZE_01, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
-        $key = "{$this->from1['id']}_{$this->user['id']}";
+        $key = "{$this->from1['vip_code']}_{$this->user['vip_code']}";
         $map = ['type' => self::PRIZE_01, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("frist_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $value = $this->config("frist_value_vip_{$key}");
@@ -175,7 +175,7 @@ class RebateService extends Service
         if ($this->app->db->name($this->table)->where($map)->count() < 1) return false;
         if (!$this->isPrizeStatus(self::PRIZE_02, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
-        $key = "{$this->from1['id']}_{$this->user['id']}";
+        $key = "{$this->from1['vip_code']}_{$this->user['vip_code']}";
         $map = ['type' => self::PRIZE_02, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("repeat_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $value = $this->config("repeat_value_vip_{$key}");
@@ -204,7 +204,7 @@ class RebateService extends Service
         if (empty($this->from1)) return false;
         if (!$this->isPrizeStatus(self::PRIZE_03, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
-        $key = "{$this->user['id']}";
+        $key = "{$this->user['vip_code']}";
         $map = ['type' => self::PRIZE_03, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("direct_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $rate = $this->config("direct_value_vip_{$key}");
@@ -227,7 +227,7 @@ class RebateService extends Service
     {
         if (empty($this->from2)) return false;
         if (!$this->isPrizeStatus(self::PRIZE_04, $this->from2['vip_code'])) return false;
-        $key = "{$this->user['id']}";
+        $key = "{$this->user['vip_code']}";
         $map = ['type' => self::PRIZE_04, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("indirect_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $rate = $this->config("indirect_value_vip_{$key}");
@@ -296,10 +296,11 @@ class RebateService extends Service
         foreach ($this->app->db->name('DataUser')->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
             if ($user['vip_code'] > $prevLevel) {
                 if (($amount = $this->_prize06amount($prevLevel + 1, $user['vip_code'])) > 0.00) {
-                    $map = ['type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-                    $name = "{$this->name(self::PRIZE_06)}，[ VIP{$prevLevel} > VIP{$user['vip_code']} ] 每单 {$amount} 元";
-                    // 写入返利记录
-                    $this->addRebateRecord($user['id'], $map, $name, $amount);
+                    $map = ['uid' => $user['id'], 'type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
+                    if ($this->app->db->name($this->table)->where($map)->count() < 1) {
+                        $name = "{$this->name(self::PRIZE_06)}，[ VIP{$prevLevel} > VIP{$user['vip_code']} ] 每单 {$amount} 元";
+                        $this->addRebateRecord($user['id'], $map, $name, $amount);
+                    }
                 }
                 $prevLevel = $user['vip_code'];
             }
@@ -346,7 +347,7 @@ class RebateService extends Service
         if ($this->order['order_no'] !== $this->user['vip_order']) return false;
         if (!$this->isPrizeStatus(self::PRIZE_07, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
-        $key = "{$this->user['id']}";
+        $key = "{$this->user['vip_code']}";
         $map = ['type' => self::PRIZE_07, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("upgrade_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
             $value = $this->config("upgrade_value_vip_{$key}");
