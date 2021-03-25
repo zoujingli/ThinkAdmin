@@ -102,15 +102,15 @@
                 <!--{/if}-->
 
                 <!--{if auth("user_balance/add")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('user_balance/add')}?uid={$vo.id}">余额充值</a>
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('user_balance/add')}?uid={$vo.id}">充 值</a>
                 <!--{/if}-->
 
                 <!--{if auth("state") and $vo.status eq 1}-->
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-confirm="账号冻结后将不能下单和提现，确认吗？">冻结账号</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-confirm="账号冻结后将不能下单和提现，确认吗？">冻 结</a>
                 <!--{/if}-->
 
                 <!--{if auth("state") and $vo.status eq 0}-->
-                <a class="layui-btn layui-btn-sm layui-btn-normal" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">解冻账号</a>
+                <a class="layui-btn layui-btn-sm layui-btn-normal" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">解 冻</a>
                 <!--{/if}-->
             </td>
         </tr>
