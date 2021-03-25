@@ -54,21 +54,21 @@
             </td>
             <td class='text-left nowrap'>
                 {if $vo.type eq '管理奖励'}
-                <div class="layui-badge layui-badge-middle layui-bg-black" style="line-height:13px">{$vo.type|default=''}</div>
+                <span class="layui-badge layui-badge-middle layui-bg-black" style="line-height:13px">{$vo.type|default=''}</span>
                 {elseif $vo.type eq '首推奖励'}
-                <div class="layui-badge layui-badge-middle layui-bg-red" style="line-height:13px">{$vo.type|default=''}</div>
+                <span class="layui-badge layui-badge-middle layui-bg-red" style="line-height:13px">{$vo.type|default=''}</span>
                 {elseif $vo.type eq '复购奖励'}
-                <div class="layui-badge layui-badge-middle layui-bg-red" style="line-height:13px">{$vo.type|default=''}</div>
+                <span class="layui-badge layui-badge-middle layui-bg-blue" style="line-height:13px">{$vo.type|default=''}</span>
                 {elseif $vo.type eq '直属团队'}
-                <div class="layui-badge layui-badge-middle layui-bg-blue" style="line-height:13px">{$vo.type|default=''}</div>
+                <span class="layui-badge layui-badge-middle layui-bg-green" style="line-height:13px">{$vo.type|default=''}</span>
                 {elseif $vo.type eq '间接团队'}
-                <div class="layui-badge layui-badge-middle layui-bg-orange" style="line-height:13px">{$vo.type|default=''}</div>
+                <span class="layui-badge layui-badge-middle layui-bg-orange" style="line-height:13px">{$vo.type|default=''}</span>
                 {elseif $vo.type eq '差额奖励'}
-                <div class="layui-badge layui-badge-middle think-bg-violet" style="line-height:13px">{$vo.type|default=''}</div>
+                <span class="layui-badge layui-badge-middle think-bg-violet" style="line-height:13px">{$vo.type|default=''}</span>
                 {elseif $vo.type eq '升级奖励'}
-                <div class="layui-badge layui-badge-middle think-bg-blue" style="line-height:13px">{$vo.type|default=''}</div>
+                <span class="layui-badge layui-badge-middle think-bg-blue" style="line-height:13px">{$vo.type|default=''}</span>
                 {else}
-                <div class="layui-badge layui-badge-middle layui-bg-green" style="line-height:13px">{$vo.type|default=''}</div>
+                <span class="layui-badge layui-badge-middle think-bg-orig" style="line-height:13px">{$vo.type|default=''}</span>
                 {/if}
                 <div class="inline-block text-middle">
                     <div>返利时间：<span class="color-blue">{$vo.create_at|format_datetime}</span></div>
