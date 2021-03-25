@@ -78,7 +78,7 @@
             </td>
             <td class="text-left nowrap">
                 {foreach $vo.list as $g}
-                <div>{$g.goods_name|default=''} x{$g.stock_sales|default=0}</div>
+                <div>{$g.goods_name|default=''}<span class="color-blue"> x </span>{$g.stock_sales|default=0}</div>
                 {/foreach}
             </td>
         </tr>
