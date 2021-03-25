@@ -102,7 +102,7 @@
                 <!--{/if}-->
 
                 <!--{if auth("user_balance/add")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('user_balance/add')}?uid={$vo.id}">充 值</a>
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('user_balance/add')}?uid={$vo.id}" data-title="充值账户余额">充 值</a>
                 <!--{/if}-->
 
                 <!--{if auth("state") and $vo.status eq 1}-->
