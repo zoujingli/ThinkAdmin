@@ -40,16 +40,20 @@
                 </td>
                 <td class="nowrap relative">
                     <div>
-                        <div class="headimg" data-tips-image data-lazy-src="{$vo.fromer.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                        <!--{notempty name='vo.from'}-->
+                        <div class="headimg" data-tips-image data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                         <div class="inline-block sub-span-blue">
-                            推荐用户：{$vo.fromer.nickname|default='--'}<br>
-                            推荐手机：<span>{$vo.fromer.phone|default='--'}</span><br>
+                            推荐用户：{$vo.from.nickname|default='--'} <span>[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></span><br>
+                            推荐手机：<span>{$vo.from.phone|default='--'}</span><br>
                         </div>
+                        <!--{else}-->
+                        <div class="color-desc padding-10">没有推荐人</div>
+                        <!--{/notempty}-->
                     </div>
                     <div>
                         <div class="headimg" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                         <div class="inline-block sub-span-blue">
-                            用户昵称：{$vo.user.nickname|default='--'}<br>
+                            用户昵称：{$vo.user.nickname|default='--'} <span>[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b></span><br>
                             用户手机：<span>{$vo.user.phone|default='--'}</span><br>
                         </div>
                     </div>

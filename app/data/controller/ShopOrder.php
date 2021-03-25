@@ -86,7 +86,7 @@ class ShopOrder extends Controller
     protected function _index_page_filter(array &$data)
     {
         UserAdminService::instance()->buildByUid($data);
-        UserAdminService::instance()->buildByUid($data, 'puid1', 'fromer');
+        UserAdminService::instance()->buildByUid($data, 'puid1', 'from');
         OrderService::instance()->buildData($data);
         foreach ($data as &$vo) $vo['payment_name'] = PaymentService::name($vo['payment_type']);
     }
