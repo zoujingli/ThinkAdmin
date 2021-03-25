@@ -97,17 +97,22 @@ class OrderService extends Service
 
     /**
      * 获取级别折扣比例
-     * @param integer $disId 折扣方案ID
-     * @param integer $vipCode 等级序号
+     * @param int $disId 折扣方案ID
+     * @param int $vipCode 等级序号
+     * @param float $disRate 折扣比例
      * @return array [方案ID, 等级序号]
      */
-    public function discount(int $disId, int $vipCode): array
+    public function discount(int $disId, int $vipCode, float $disRate = 100.00): array
     {
-        [$map, $rate] = ['id' => $disId, ['status' => 1, 'deleted' => 0], 100.00];
-        if ($disId > 0 && ($discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items'))) {
-            foreach (json_decode($discount, true) as $vo) if ($vo['level'] == $vipCode) $rate = round($vo['discount']);
+        if ($disId > 0) {
+            $map = ['id' => $disId, 'status' => 1, 'deleted' => 0];
+            $discount = $this->app->db->name('DataUserDiscount')->where($map)->value('items');
+            $disitems = json_decode($discount ?: '[]', true) ?: [];
+            if (is_array($disitems) && count($disitems) > 0) foreach ($disitems as $vo) {
+                if ($vo['level'] == $vipCode) $disRate = round($vo['discount']);
+            }
         }
-        return [$disId, $rate];
+        return [$disId, $disRate];
     }
 
     /**
