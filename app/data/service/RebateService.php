@@ -170,16 +170,19 @@ class RebateService extends Service
      */
     protected function _prize02(): bool
     {
-        if (empty($this->from1)) return false;
-        $map = ['order_uid' => $this->user['id']];
+        $map = [];
+        $map[] = ['order_uid', '=', $this->user['id']];
+        $map[] = ['order_no', '<>', $this->order['order_no']];
         if ($this->app->db->name($this->table)->where($map)->count() < 1) return false;
+        // 检查上级可否奖励
+        if (empty($this->from1) || empty($this->from1['vip_code'])) return false;
         if (!$this->isPrizeStatus(self::PRIZE_02, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
-        $key = "{$this->from1['vip_code']}_{$this->user['vip_code']}";
+        $key = "vip_{$this->from1['vip_code']}_{$this->user['vip_code']}";
         $map = ['type' => self::PRIZE_02, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
-        if ($this->config("repeat_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
-            $value = $this->config("repeat_value_vip_{$key}");
-            if ($this->config("repeat_type_vip_{$key}") == 1) {
+        if ($this->config("repeat_state_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
+            $value = $this->config("repeat_value_{$key}");
+            if ($this->config("repeat_type_{$key}") == 1) {
                 $val = floatval($value ?: '0.00');
                 $name = "{$this->name(self::PRIZE_02)}，每人 {$val} 元";
             } else {
