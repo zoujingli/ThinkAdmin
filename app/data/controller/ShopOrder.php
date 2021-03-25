@@ -190,11 +190,11 @@ class ShopOrder extends Controller
             $order = $this->app->db->name($this->table)->where(['order_no' => $data['order_no']])->find();
             if (empty($order) || $order['status'] !== 3) $this->error('不允许操作审核！');
             // 无需发货时的处理
-            if ($data['status'] === 4 && empty($order['truck_type'])) $data['status'] = 5;
+            if ($data['status'] === 4 && empty($order['truck_type'])) $data['status'] = 6;
             // 更新订单支付状态
             $map = ['status' => 3, 'order_no' => $data['order_no']];
             if ($this->app->db->name($this->table)->strict(false)->where($map)->update($data) !== false) {
-                if (in_array($data['status'], [4, 5])) {
+                if (in_array($data['status'], [4, 5, 6])) {
                     $this->app->event->trigger('ShopOrderPayment', $data['order_no']);
                     $this->success('订单审核通过成功！');
                 } else {

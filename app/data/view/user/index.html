@@ -31,7 +31,7 @@
                 <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
             </td>
             <td class="nowrap">
-                <div class="headimg" data-tips-image data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 <div class="inline-block">
                     <div>
                         {notempty name='vo.username'}
@@ -39,21 +39,21 @@
                         {else}
                         用户昵称：<span class="color-blue">{$vo.nickname|default='-'}</span>
                         {/notempty}
-                        <span class="margin-left-5">[ <b class="color-red">VIP{$vo.vip_code}</b> ] <b class="color-red">{$vo.vip_name}</b></span>
                     </div>
                     <div>用户手机：<span class="color-blue">{$vo.phone|default='-'}</span></div>
+                    <div>用户等级：[ <b class="color-red">VIP{$vo.vip_code}</b> ] <b class="color-red">{$vo.vip_name}</b></div>
                 </div>
             </td>
             <td class="nowrap">
                 {notempty name='vo.from'}
-                <div class="headimg" data-tips-image data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 <div class="inline-block text-middle">
                     <!--{notempty name='vo.pids'}-->
-                    <span class="layui-badge layui-badge-middle layui-bg-green">永久</span>
+                    <span class="layui-badge layui-badge-middle layui-bg-green">永 久</span>
                     <!--{else}-->
-                    <span class="layui-badge layui-badge-middle layui-bg-red">临时</span>
+                    <span class="layui-badge layui-badge-middle layui-bg-red">临 时</span>
                     <!--{/notempty}-->
                 </div>
+                <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                 <div class="inline-block text-middle">
                     <div>
                         {notempty name='vo.from.username'}
@@ -61,9 +61,9 @@
                         {else}
                         用户昵称：<span class="color-blue">{$vo.from.nickname|default='-'}</span>
                         {/notempty}
-                        <span class="margin-left-5">[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></span>
                     </div>
                     <div>用户手机：<span>{$vo.from.phone|default='-'}</span></div>
+                    <div>用户等级：[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></div>
                 </div>
                 {else}
                 <div class="color-desc">没有推荐人</div>
