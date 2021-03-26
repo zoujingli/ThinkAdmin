@@ -66,11 +66,11 @@
             </td>
             <td class="nowrap sub-strong-blue sub-strong-s14">
                 <div>累计充值 <b>{$vo.balance_total+0}</b> 元</div>
-                <div>已经使用 <b>{$vo.balance_used+0}</b> 元</div>
+                <div>已经交易 <b>{$vo.balance_used+0}</b> 元</div>
                 <div>可用余额 <b>{:round($vo.balance_total-$vo.balance_used,2)+0}</b> 元</div>
             </td>
             <td class="nowrap sub-strong-blue sub-strong-s14">
-                <div>返利统计 <b>{$vo.rebate_total+0}</b><span class="color-red font-w7" data-tips-text="未到账">+{$vo.rebate_lock+0}</span> 元</div>
+                <div>累计返利 <b>{$vo.rebate_total+0}</b><span class="color-red font-w7" data-tips-text="未到账">+{$vo.rebate_lock+0}</span> 元</div>
                 <div>已经提现 <b>{$vo.rebate_used+0}</b> 元</div>
                 <div>剩余提现 <b>{:round($vo.rebate_total-$vo.rebate_used,2)+0}</b> 元</div>
             </td>
