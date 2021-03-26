@@ -64,23 +64,23 @@
                 <div class="color-desc">没有推荐人</div>
                 {/notempty}
             </td>
-            <td class="nowrap sub-strong-blue">
+            <td class="nowrap sub-strong-blue sub-strong-s14">
                 <div>累计充值 <b>{$vo.balance_total+0}</b> 元</div>
                 <div>已经使用 <b>{$vo.balance_used+0}</b> 元</div>
                 <div>可用余额 <b>{:round($vo.balance_total-$vo.balance_used,2)+0}</b> 元</div>
             </td>
-            <td class="nowrap sub-strong-blue">
-                <div>累计返利 <b>{$vo.rebate_total+$vo.rebate_lock}</b> 元 <span class="color-desc">( 含锁定 <b>{$vo.rebate_lock+0}</b> 元 )</span></div>
+            <td class="nowrap sub-strong-blue sub-strong-s14">
+                <div>返利统计 <b>{$vo.rebate_total+0}</b><span class="color-red font-w7" data-tips-text="未到账">+{$vo.rebate_lock+0}</span> 元</div>
                 <div>已经提现 <b>{$vo.rebate_used+0}</b> 元</div>
                 <div>剩余提现 <b>{:round($vo.rebate_total-$vo.rebate_used,2)+0}</b> 元</div>
             </td>
-            <td class="nowrap sub-strong-blue">
+            <td class="nowrap sub-strong-blue sub-strong-s14">
                 <div>全部团队 <b>{$vo.teams_users_total}</b> 人 ( 业绩 <b>{$vo.teams_amount_total+0}</b> 元 )</div>
                 <div>直属团队 <b>{$vo.teams_users_direct}</b> 人 ( 业绩 <b>{$vo.teams_amount_direct+0}</b> 元 )</div>
                 <div>间接团队 <b>{$vo.teams_users_indirect}</b> 人 ( 业绩 <b>{$vo.teams_amount_indirect+0}</b> 元 )</div>
             </td>
             <td class="nowrap">
-                <div>累计交易：<b class="color-blue">{$vo.order_amount_total+0}</b> 元</div>
+                <div>累计交易：<b class="color-blue font-s14">{$vo.order_amount_total+0}</b> 元</div>
                 <div>使用状态：{if $vo.status eq 0}<b class="color-red">已冻结</b>{elseif $vo.status eq 1}<b class="color-green">已激活</b>{/if}
                     <!--{notempty name='vo.pids'}--><b class="margin-left-5 color-green">永久绑定</b><!--{else}-->
                     {notempty name='vo.pid0'}<b class="margin-left-5 color-red">临时绑定</b>{else}<b class="margin-left-5 color-desc">没有绑定</b>{/notempty}
