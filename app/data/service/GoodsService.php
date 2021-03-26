@@ -14,6 +14,17 @@ class GoodsService extends Service
 {
 
     /**
+     * 获取商品标签数据
+     * @return array
+     */
+    public function getMarkData(): array
+    {
+        $map = ['status' => 1];
+        $query = $this->app->db->name('ShopGoodsMark');
+        return $query->where($map)->order('sort desc,id desc')->column('name');
+    }
+
+    /**
      * 获取分类数据
      * @param string $type 数据格式 arr2tree | arr2table
      * @return array
@@ -29,14 +40,39 @@ class GoodsService extends Service
     }
 
     /**
-     * 获取商品标签数据
+     * 获取分类数据
+     * @param boolean $simple 简化数据
      * @return array
      */
-    public function getMarkData(): array
+    public function getCateData($simple = true): array
     {
-        $map = ['status' => 1];
-        $query = $this->app->db->name('ShopGoodsMark');
-        return $query->where($map)->order('sort desc,id desc')->column('name');
+        $map = ['status' => 1, 'deleted' => 0];
+        $cates = $this->app->db->name('ShopGoodsCate')->where($map)->column('id,pid,name', 'id');
+        foreach ($cates as $cate) if (isset($cates[$cate['pid']])) $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
+        foreach ($cates as $key => $cate) {
+            $id = $cate['id'];
+            $cates[$id]['ids'][] = $cate['id'];
+            $cates[$id]['names'][] = $cate['name'];
+            while (isset($cate['parent']) && $cate = $cate['parent']) {
+                $cates[$id]['ids'][] = $cate['id'];
+                $cates[$id]['names'][] = $cate['name'];
+            }
+            $cates[$id]['ids'] = array_reverse($cates[$id]['ids']);
+            $cates[$id]['names'] = array_reverse($cates[$id]['names']);
+            if ($simple && count($cates[$id]['names']) !== $this->getCateMax()) {
+                unset($cates[$key]);
+            }
+        }
+        return $cates;
+    }
+
+    /**
+     * 最大分类等级
+     * @return integer
+     */
+    public function getCateMax(): int
+    {
+        return 3;
     }
 
     /**
@@ -103,42 +139,6 @@ class GoodsService extends Service
             if ($simple) unset($vo['marks'], $vo['sort'], $vo['status'], $vo['deleted'], $vo['data_items'], $vo['data_specs'], $vo['cateinfo']['parent']);
         }
         return $data;
-    }
-
-    /**
-     * 获取分类数据
-     * @param boolean $simple 简化数据
-     * @return array
-     */
-    public function getCateData($simple = true): array
-    {
-        $map = ['status' => 1, 'deleted' => 0];
-        $cates = $this->app->db->name('ShopGoodsCate')->where($map)->column('id,pid,name', 'id');
-        foreach ($cates as $cate) if (isset($cates[$cate['pid']])) $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
-        foreach ($cates as $key => $cate) {
-            $id = $cate['id'];
-            $cates[$id]['ids'][] = $cate['id'];
-            $cates[$id]['names'][] = $cate['name'];
-            while (isset($cate['parent']) && $cate = $cate['parent']) {
-                $cates[$id]['ids'][] = $cate['id'];
-                $cates[$id]['names'][] = $cate['name'];
-            }
-            $cates[$id]['ids'] = array_reverse($cates[$id]['ids']);
-            $cates[$id]['names'] = array_reverse($cates[$id]['names']);
-            if ($simple && count($cates[$id]['names']) !== $this->getCateMax()) {
-                unset($cates[$key]);
-            }
-        }
-        return $cates;
-    }
-
-    /**
-     * 最大分类等级
-     * @return integer
-     */
-    public function getCateMax(): int
-    {
-        return 3;
     }
 
 }
