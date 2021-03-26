@@ -159,7 +159,7 @@ class ShopGoods extends Controller
             $this->cates = GoodsService::instance()->getCateData();
             $this->trucks = ExpressService::instance()->templates();
             $this->upgrades = UserUpgradeService::instance()->levels();
-            $this->payments = $this->app->db->name('ShopPayment')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');
+            $this->payments = $this->app->db->name('DataBasePayment')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');
             $this->discounts = $this->app->db->name('DataBaseDiscount')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('id,name,items', 'id');
             // 商品规格处理
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,reward_balance `balance`,reward_integral `integral`,status';

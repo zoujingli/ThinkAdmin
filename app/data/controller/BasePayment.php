@@ -9,16 +9,16 @@ use think\admin\extend\CodeExtend;
 
 /**
  * 支付参数支付
- * Class ShopPayment
+ * Class BasePayment
  * @package app\data\controller
  */
-class ShopPayment extends Controller
+class BasePayment extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    private $table = 'ShopPayment';
+    private $table = 'DataBasePayment';
 
     /**
      * 支付参数类型

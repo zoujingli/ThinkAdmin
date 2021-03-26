@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 26/03/2021 17:48:18
+ Date: 26/03/2021 18:05:56
 */
 
 SET NAMES utf8mb4;
@@ -36,10 +36,10 @@ CREATE TABLE `data_base_discount`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-折扣' ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Table structure for data_base_notify
+-- Table structure for data_base_message
 -- ----------------------------
-DROP TABLE IF EXISTS `data_base_notify`;
-CREATE TABLE `data_base_notify`  (
+DROP TABLE IF EXISTS `data_base_message`;
+CREATE TABLE `data_base_message`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息类型',
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息名称',
@@ -50,10 +50,33 @@ CREATE TABLE `data_base_notify`  (
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_base_notify_type`(`type`) USING BTREE,
-  INDEX `idx_data_base_notify_status`(`status`) USING BTREE,
-  INDEX `idx_data_base_notify_deleted`(`deleted`) USING BTREE
+  INDEX `idx_data_base_message_type`(`type`) USING BTREE,
+  INDEX `idx_data_base_message_status`(`status`) USING BTREE,
+  INDEX `idx_data_base_message_deleted`(`deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-通知' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Table structure for data_base_payment
+-- ----------------------------
+DROP TABLE IF EXISTS `data_base_payment`;
+CREATE TABLE `data_base_payment`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付类型',
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '通道编号',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付名称',
+  `cover` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付图标',
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '支付参数',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付说明',
+  `sort` bigint(20) NULL DEFAULT 0 COMMENT '排序权重',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '支付状态(1使用,0禁用)',
+  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_base_payment_type`(`type`) USING BTREE,
+  INDEX `idx_data_base_payment_code`(`code`) USING BTREE,
+  INDEX `idx_data_base_payment_status`(`status`) USING BTREE,
+  INDEX `idx_data_base_payment_deleted`(`deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-支付' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_base_upgrade
@@ -623,29 +646,6 @@ CREATE TABLE `shop_order_send`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
--- Table structure for shop_payment
--- ----------------------------
-DROP TABLE IF EXISTS `shop_payment`;
-CREATE TABLE `shop_payment`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付类型',
-  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '通道编号',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付名称',
-  `cover` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付图标',
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '支付参数',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付说明',
-  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '支付状态(1使用,0禁用)',
-  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_shop_payment_type`(`type`) USING BTREE,
-  INDEX `idx_shop_payment_code`(`code`) USING BTREE,
-  INDEX `idx_shop_payment_status`(`status`) USING BTREE,
-  INDEX `idx_shop_payment_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-方式' ROW_FORMAT = COMPACT;
-
--- ----------------------------
 -- Table structure for shop_payment_item
 -- ----------------------------
 DROP TABLE IF EXISTS `shop_payment_item`;
@@ -818,7 +818,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 153 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 155 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for system_queue

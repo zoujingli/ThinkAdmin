@@ -306,7 +306,7 @@ class Order extends Auth
         if (empty($payments)) $this->error('获取订单支付参数失败');
         [$map, $types] = [['status' => 1, 'deleted' => 0], []];
         foreach (PaymentService::TYPES as $type => $arr) if (in_array($this->type, $arr['bind'])) $types[] = $type;
-        $query = $this->app->db->name('ShopPayment')->where($map)->whereIn('type', $types)->whereIn('code', str2arr($payments));
+        $query = $this->app->db->name('DataBasePayment')->where($map)->whereIn('type', $types)->whereIn('code', str2arr($payments));
         $this->success('获取支付参数数据', $query->order('sort desc,id desc')->field('type,code,name,cover')->select()->toArray());
     }
 
