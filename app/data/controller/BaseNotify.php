@@ -6,10 +6,10 @@ use think\admin\Controller;
 
 /**
  * 用户通知管理
- * Class UserNotify
+ * Class BaseNotify
  * @package app\data\controller
  */
-class UserNotify extends Controller
+class BaseNotify extends Controller
 {
     /**
      * 绑定数据表

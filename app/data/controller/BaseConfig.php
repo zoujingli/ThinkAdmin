@@ -6,10 +6,10 @@ use think\admin\Controller;
 
 /**
  * 应用参数配置
- * Class Config
+ * Class BaseConfig
  * @package app\data\controller
  */
-class Config extends Controller
+class BaseConfig extends Controller
 {
     /**
      * 页面类型

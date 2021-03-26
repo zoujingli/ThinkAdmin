@@ -7,10 +7,10 @@ use think\admin\Controller;
 
 /**
  * 折扣方案管理
- * Class UserDiscount
+ * Class BaseDiscount
  * @package app\data\controller
  */
-class UserDiscount extends Controller
+class BaseDiscount extends Controller
 {
     /**
      * 绑定数据表

@@ -7,10 +7,10 @@ use think\admin\Controller;
 
 /**
  * 用户等级管理
- * Class UserUpgrade
+ * Class BaseUpgrade
  * @package app\data\controller
  */
-class UserUpgrade extends Controller
+class BaseUpgrade extends Controller
 {
     /**
      * 绑定数据表
